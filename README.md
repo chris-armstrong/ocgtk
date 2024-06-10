@@ -1,4 +1,4 @@
-# LablGTK3 3.1.4 : an interface to the GIMP Tool Kit
+# LablGTK3 3.1.5 : an interface to the GIMP Tool Kit
 
 ## Dependencies
 
@@ -264,12 +264,22 @@ it, you may use compaction through `Gc.compact` where it is safe
                 See examples in examples/sourceview/*3.ml
                 The executable must be linked with lablgtksourceview3.cma.
 - GtkSpell 3 support
+- RSVG2 support:
+                This binding was contributed by Olivier Andrieu.
+                It requires librsvg-2.x (preferably 2.2.x).
+                See an example in examples/rsvg.
+                The executable must be linked with lablrsvg.cma.
+- GooCanvas2 support:
+                This binding was contributed by Maxence Guesdon.
+                It requires libgoocanvas-2.x.
+                See examples in examples/goocanvas2.
+                The executable must be linked with lablgtk3_goocanvas2.cma.
+
 
 #### Not available in Gtk3
 
 - LibGlade support: not available in Gtk3 (replaced by GtkBuilder)
 - GL extension: not available in Gtk3
-- SVG support: not available in Gtk3
 - GnomeCanvas support: not available in Gtk3
 
 ### Running lablgtk3 in the toplevel
