@@ -172,10 +172,3 @@ Or add this to your shell profile (~/.bashrc or ~/.zshrc):
 eval $(opam env --switch=default)
 ```
 
-## Current Branch
-
-The Phase 1 work is on branch: `claude/phase1-repository-setup-011CV4cFyYNnCvrBhir8NeAg`
-
-```bash
-git checkout claude/phase1-repository-setup-011CV4cFyYNnCvrBhir8NeAg
-```
