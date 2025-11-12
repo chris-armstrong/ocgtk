@@ -1,0 +1,7 @@
+; Core GTK4 bindings will be added here
+; This is a placeholder for Phase 1
+
+(library
+ (name lablgtk4_placeholder)
+ (public_name lablgtk4)
+ (modules))
