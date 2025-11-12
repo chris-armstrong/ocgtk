@@ -1,6 +1,2 @@
 ; Test suite will be added in Phase 1.4
-; This is a placeholder
-
-(test
- (name placeholder_test)
- (modules))
+; Placeholder - no tests yet

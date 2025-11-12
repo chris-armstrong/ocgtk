@@ -1,4 +1,4 @@
-(lang dune 3.0)
+(lang dune 3.2)
 (name lablgtk4)
 (version 4.0.0~dev)
 
@@ -15,6 +15,6 @@
  (description "LablGTK4 provides OCaml bindings for GTK 4, the latest version of the GTK toolkit for building graphical user interfaces.")
  (depends
   (ocaml (>= 4.09))
-  (dune (>= 3.0))
+  (dune (>= 3.2))
   (conf-gtk4 (>= 4.10))
   cairo2))
