@@ -200,70 +200,37 @@ The migration will be considered successful when:
 
 ---
 
-### Phase 3: Base Widget Infrastructure (6-8 weeks)
+### Phases 3-7: Widget Layer & Advanced Features (30-38 weeks)
 
-**Objective**: Implement the core GtkWidget infrastructure with GTK4's new rendering and event systems.
+**[→ See high-level overview for Phases 3-7](port-phase3-7.md)**
 
-**Key deliverables:**
-- GtkWidget base class with snapshot rendering
-- Event controller system (replacing event signals)
-- New focus handling mechanism
-- Widget lifecycle management (root/unroot)
-- GObj module (widget operations, misc_ops, event_ops)
+These phases will be detailed after Phases 1-2 are complete and validated.
 
----
+**Phase 3: Base Widget Infrastructure** (6-8 weeks)
+- GtkWidget with snapshot rendering
+- Event controller system
+- Focus and lifecycle management
 
-### Phase 4: Container & Layout System (4-6 weeks)
+**Phase 4: Container & Layout System** (4-6 weeks)
+- Redesigned container APIs (no GtkContainer/GtkBin)
+- GtkBox, GtkGrid, and other containers
+- Constraint-based layouts
 
-**Objective**: Redesign container APIs without GtkContainer/GtkBin base classes.
+**Phase 5: High-Level Widgets** (8-12 weeks)
+- All essential widgets (buttons, entries, text, trees, etc.)
+- New menu system (GtkPopoverMenu)
+- Dialog async patterns
 
-**Key deliverables:**
-- GtkBox with append/prepend APIs
-- GtkGrid with attach APIs
-- GtkFixed, GtkPaned, GtkNotebook
-- Packing utilities (GPack module)
-- New constraint-based layout system
-
----
-
-### Phase 5: High-Level Widgets (8-12 weeks)
-
-**Objective**: Port all essential widgets and implement new GTK4 widget replacements.
-
-**Key deliverables:**
-- Button widgets (GButton module with grouped checkboxes)
-- Entry and text widgets (GEdit, GText modules)
-- Range widgets (GRange module - scales, scrollbars)
-- Tree/List widgets (GTree module with new list models)
-- Misc widgets (GMisc module - labels, images, etc.)
-- New menu system (GtkPopoverMenu replacing GtkMenu)
-
----
-
-### Phase 6: Advanced Features (4-6 weeks)
-
-**Objective**: Port advanced GTK features and application infrastructure.
-
-**Key deliverables:**
-- GtkBuilder with UI file migration support
-- GtkApplication and action system
+**Phase 6: Advanced Features** (4-6 weeks)
+- GtkBuilder and GtkApplication
 - File chooser with GFile API
-- Drag-and-drop with new controller API
-- GtkShortcutController for keyboard shortcuts
+- Drag-and-drop controllers
+- Keyboard shortcuts
 
----
-
-### Phase 7: Extensions & Polish (4-6 weeks)
-
-**Objective**: Port extensions, examples, and complete documentation.
-
-**Key deliverables:**
-- GtkSourceView 5 bindings (src-sourceview5/)
-- Evaluate other extensions (GooCanvas2 may not support GTK4)
-- Migrate all 30+ examples to GTK4
-- User migration guide (lablgtk3 → lablgtk4)
-- API documentation
-- Release preparation
+**Phase 7: Extensions & Polish** (4-6 weeks)
+- GtkSourceView 5
+- Example migration
+- Documentation and release
 
 ---
 
