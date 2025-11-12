@@ -484,7 +484,7 @@ This is a substantial API redesign requiring careful thought.
 
 | Phase | Duration | Cumulative | Milestone |
 |-------|----------|------------|-----------|
-| Phase 1: Foundation | 4-6 weeks | 1.5 months | Build system ready |
+| Phase 1: Foundation | 4.5-6.5 weeks | 1.5 months | Repo reorganized, build system ready |
 | Phase 2: Core Layer | 6-8 weeks | 3.5 months | GObject/Gdk working |
 | Phase 3: Widget Base | 6-8 weeks | 5.5 months | Event controllers, rendering |
 | Phase 4: Containers | 4-6 weeks | 7 months | Layout system working |
@@ -492,7 +492,7 @@ This is a substantial API redesign requiring careful thought.
 | Phase 6: Advanced | 4-6 weeks | 11.5 months | Full feature set |
 | Phase 7: Polish | 4-6 weeks | 13 months | Release ready |
 
-**Total estimated time**: 9-13 months for full migration
+**Total estimated time**: 9.5-13.5 months for full migration (with 0.5 week added for repository reorganization)
 
 ### Risk Factors
 

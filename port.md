@@ -90,7 +90,8 @@ lablgtk3/                    # Existing GTK3 bindings (maintenance mode)
 
 The migration is structured into 7 phases over an estimated 6-12 month timeline:
 
-**Phase 1: Foundation & Infrastructure** (4-6 weeks)
+**Phase 1: Foundation & Infrastructure** (4.5-6.5 weeks)
+- Reorganize repository (move lablgtk3 to subfolder)
 - Set up build system for GTK4
 - Update code generation tools (varcc, propcc)
 - Create new enumeration bindings
@@ -168,18 +169,19 @@ The migration will be considered successful when:
 
 ## Detailed Phase Plans
 
-### Phase 1: Foundation & Infrastructure (4-6 weeks)
+### Phase 1: Foundation & Infrastructure (4.5-6.5 weeks)
 
 **[→ See detailed Phase 1 plan](port-phase1.md)**
 
-**Objective**: Establish the build system, development environment, and code generation infrastructure required for GTK4 bindings.
+**Objective**: Reorganize repository structure and establish the build system, development environment, and code generation infrastructure required for GTK4 bindings.
 
 **Key deliverables:**
-- lablgtk4 repository with Dune build system
+- Repository reorganized with lablgtk3/ and lablgtk4/ subfolders
+- lablgtk4 directory with Dune build system
 - Updated varcc and propcc code generation tools
 - GTK4 enumeration bindings (5 .var files)
 - Basic C FFI infrastructure (wrappers.c/h)
-- Test framework with CI pipeline
+- Test framework with CI pipeline for both versions
 
 
 ---

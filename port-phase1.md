@@ -1,17 +1,149 @@
-### Phase 1: Foundation & Infrastructure (4-6 weeks)
+### Phase 1: Foundation & Infrastructure (4.5-6.5 weeks)
 
-**Objective**: Establish the build system, development environment, and code generation infrastructure required for GTK4 bindings.
+**Objective**: Reorganize repository structure and establish the build system, development environment, and code generation infrastructure required for GTK4 bindings.
+
+#### 1.0 Repository Reorganization (Prerequisite)
+
+**Tasks:**
+
+1. **Reorganize repository to support side-by-side GTK3 and GTK4**
+
+   Current structure (lablgtk3 at root):
+   ```
+   lablgtk/
+   ├── src/              # GTK3 bindings
+   ├── examples/         # GTK3 examples
+   ├── applications/
+   ├── dune-project
+   ├── lablgtk3.opam
+   └── ...
+   ```
+
+   New structure (both in subfolders):
+   ```
+   lablgtk/
+   ├── lablgtk3/                    # GTK3 bindings (moved)
+   │   ├── src/
+   │   ├── src-sourceview3/
+   │   ├── src-goocanvas2/
+   │   ├── src-gtkspell3/
+   │   ├── src-rsvg2/
+   │   ├── examples/
+   │   ├── applications/
+   │   ├── dune-project
+   │   ├── lablgtk3.opam
+   │   └── ...
+   ├── lablgtk4/                    # GTK4 bindings (new)
+   │   └── (to be created in 1.1)
+   ├── README.md                    # Root README
+   └── .github/                     # Shared CI
+   ```
+
+2. **Move lablgtk3 files into subfolder**
+
+   ```bash
+   # Create new directory structure
+   mkdir -p lablgtk3
+
+   # Move GTK3 files into lablgtk3/
+   git mv src lablgtk3/
+   git mv src-* lablgtk3/
+   git mv examples lablgtk3/
+   git mv applications lablgtk3/
+   git mv dune-project lablgtk3/
+   git mv *.opam lablgtk3/
+   git mv tools lablgtk3/  # if exists
+   # Move other relevant files (CHANGES.md, etc.)
+
+   # Update paths in dune files
+   # Fix any absolute paths that reference old structure
+   ```
+
+3. **Update root README.md**
+
+   Create new root README explaining the structure:
+   ```markdown
+   # LablGTK - OCaml interface to GTK+
+
+   This repository contains OCaml bindings for both GTK 3 and GTK 4.
+
+   ## Packages
+
+   - **lablgtk3/** - GTK 3 bindings (stable, maintenance mode)
+   - **lablgtk4/** - GTK 4 bindings (in development)
+
+   ## Building
+
+   ### LablGTK3 (GTK 3.x)
+   ```bash
+   cd lablgtk3
+   opam install . --deps-only
+   dune build
+   ```
+
+   ### LablGTK4 (GTK 4.x)
+   ```bash
+   cd lablgtk4
+   opam install . --deps-only
+   dune build
+   ```
+
+   See individual directories for detailed documentation.
+   ```
+
+4. **Update CI configuration**
+
+   Update `.github/workflows/ci.yml` to build both versions:
+   ```yaml
+   jobs:
+     build-gtk3:
+       runs-on: ubuntu-latest
+       steps:
+         - uses: actions/checkout@v3
+         - name: Install GTK3
+           run: sudo apt-get install -y libgtk-3-dev
+         - name: Build lablgtk3
+           working-directory: ./lablgtk3
+           run: |
+             opam install . --deps-only
+             dune build
+
+     build-gtk4:
+       runs-on: ubuntu-latest
+       steps:
+         - uses: actions/checkout@v3
+         - name: Install GTK4
+           run: sudo apt-get install -y libgtk-4-dev
+         - name: Build lablgtk4
+           working-directory: ./lablgtk4
+           run: |
+             opam install . --deps-only
+             dune build
+   ```
+
+**Success Criteria:**
+- lablgtk3/ subdirectory contains all GTK3 code
+- lablgtk3 still builds successfully from its subdirectory
+- Root README explains the structure
+- CI builds lablgtk3 from new location
+- Git history preserved (using `git mv`)
+
+**Estimated Time**: 0.5 weeks
+
+---
 
 #### 1.1 Repository and Build System Setup
 
 **Tasks:**
 
-1. **Create lablgtk4 repository structure**
+1. **Create lablgtk4 directory structure** (sibling to lablgtk3/)
+
+   In the repository root, create:
    ```
    lablgtk4/
    ├── src/                      # Core GTK4 bindings
    │   ├── dune                  # Main library configuration
-   │   ├── tools/                # Code generation tools
+   │   ├── tools/                # Code generation tools (copied from lablgtk3)
    │   │   ├── varcc.ml4        # Enum generator (update for GTK4)
    │   │   ├── propcc.ml4       # Property generator (update for GTK4)
    │   │   └── dune
@@ -21,6 +153,13 @@
    ├── dune-project              # Dune project configuration
    ├── lablgtk4.opam             # OPAM package definition
    └── README.md
+   ```
+
+   Copy code generation tools from lablgtk3 as starting point:
+   ```bash
+   mkdir -p lablgtk4/src/tools
+   cp lablgtk3/tools/* lablgtk4/src/tools/
+   # These will be updated in section 1.2
    ```
 
 2. **Configure dune-project for GTK4**
@@ -467,15 +606,18 @@
 At the end of Phase 1, the following should be complete:
 
 **Code:**
-- [ ] lablgtk4 repository with build system
+- [ ] Repository reorganized (lablgtk3/ and lablgtk4/ subfolders)
+- [ ] lablgtk3 still builds from new location
+- [ ] lablgtk4 directory with build system
 - [ ] Updated varcc and propcc tools
 - [ ] GTK4 enumeration bindings (5 .var files + generated code)
 - [ ] Basic wrappers.c/h infrastructure
 - [ ] Test framework with passing enum tests
-- [ ] CI pipeline running
+- [ ] CI pipeline running for both lablgtk3 and lablgtk4
 
 **Documentation:**
-- [ ] README with build instructions
+- [ ] Root README explaining directory structure
+- [ ] lablgtk4/README with build instructions
 - [ ] Enum changes GTK3→GTK4 document
 - [ ] Development setup guide
 
