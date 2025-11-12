@@ -1,0 +1,18 @@
+; Core GTK4 bindings will be added here
+; This is a placeholder for Phase 1
+
+(library
+ (name lablgtk4_placeholder)
+ (public_name lablgtk4)
+ (modules)
+ (c_library_flags (:include c_library_flags.sexp))
+ (c_flags (:include c_flags.sexp)))
+
+(rule
+ (targets c_flags.sexp c_library_flags.sexp)
+ (action
+  (progn
+   (with-stdout-to c_flags.sexp
+    (echo "()"))
+   (with-stdout-to c_library_flags.sexp
+    (echo "()")))))
