@@ -56,6 +56,9 @@ CAMLexport int ml_lookup_to_c (const lookup_info table[], value key);
 
 #define Val_emptylist Val_int(0)
 
+/* Helper macro for option types */
+#define Val_option(ptr, wrapper) ((ptr) ? Val_some(wrapper(ptr)) : Val_none)
+
 /* Helper macro to generate Val_option_T functions */
 #define Make_Val_option(T) \
 value Val_option_##T(T* v) { return v ? Val_some(Val_##T(v)) : Val_none; }

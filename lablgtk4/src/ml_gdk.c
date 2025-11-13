@@ -40,6 +40,7 @@
 #include "wrappers.h"
 #include "ml_gobject.h"
 #include "ml_glib.h"
+#include "gdk4_tags.h"
 
 /* Error handling */
 CAMLprim void ml_raise_gdk(const char *errmsg)
@@ -52,9 +53,6 @@ CAMLprim void ml_raise_gdk(const char *errmsg)
     else
         caml_failwith(errmsg);
 }
-
-/* Include generated tag conversions */
-#include "gdk4_tags.c"
 
 /* ========================================================================= */
 /* Display functions                                                         */
@@ -144,7 +142,7 @@ CAMLprim value ml_gdk_device_get_source(value device_val)
     CAMLparam1(device_val);
     GdkDevice *device = GdkDevice_val(device_val);
     GdkInputSource source = gdk_device_get_source(device);
-    CAMLreturn(Val_input_source(source));
+    CAMLreturn(Val_gdk4_input_source(source));
 }
 
 CAMLprim value ml_gdk_device_get_seat(value device_val)

@@ -1,6 +1,7 @@
 (* GdkPixbuf enumeration tags for GTK4 *)
 
-(* package "gdkPixbuf" *)
+package "GdkPixbuf"
+prefix ""
 
 type colorspace = "GDK_COLORSPACE_" [ `RGB ]
 type alpha_mode = "GDK_PIXBUF_ALPHA_" [ `BILEVEL | `FULL ]

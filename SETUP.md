@@ -36,8 +36,8 @@ opam --version
 # Initialize opam (disable sandboxing if running as root or in container)
 opam init --disable-sandboxing -y --bare
 
-# Create OCaml switch with 4.14.0
-opam switch create default ocaml-base-compiler.4.14.0 -y
+# Create OCaml switch with 5.3.0
+opam switch create default ocaml-base-compiler.5.3.0 -y
 
 # Configure shell environment
 eval $(opam env)
@@ -120,7 +120,7 @@ sudo ln -sf ~/opam-2.4.1-x86_64-linux /usr/local/bin/opam
 
 # Initialize opam
 opam init --disable-sandboxing -y --bare
-opam switch create default ocaml-base-compiler.4.14.0 -y
+opam switch create default ocaml-base-compiler.5.3.0 -y
 eval $(opam env)
 
 # Install system dependencies (GTK 3 + GTK 4)
@@ -174,7 +174,7 @@ export PATH="$HOME/bin:$PATH"
 
 # Initialize opam
 opam init --disable-sandboxing -y --bare
-opam switch create default ocaml-base-compiler.4.14.0 -y
+opam switch create default ocaml-base-compiler.5.3.0 -y
 eval $(opam env)
 
 # Install system dependencies (GTK 3 + GTK 4)
