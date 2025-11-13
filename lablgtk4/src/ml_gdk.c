@@ -309,20 +309,14 @@ CAMLprim value ml_gdk_color_get_blue(value color_val)
 CAMLprim value ml_gdk_rgba_create(value red, value green, value blue, value alpha)
 {
     CAMLparam4(red, green, blue, alpha);
-    CAMLlocal1(result);
-    GdkRGBA *rgba = g_new(GdkRGBA, 1);
+    GdkRGBA rgba;
 
-    if (rgba == NULL) {
-        ml_raise_gdk("Failed to allocate GdkRGBA");
-    }
+    rgba.red = Double_val(red);
+    rgba.green = Double_val(green);
+    rgba.blue = Double_val(blue);
+    rgba.alpha = Double_val(alpha);
 
-    rgba->red = Double_val(red);
-    rgba->green = Double_val(green);
-    rgba->blue = Double_val(blue);
-    rgba->alpha = Double_val(alpha);
-
-    result = Val_GdkRGBA(rgba);
-    CAMLreturn(result);
+    CAMLreturn(Val_copy(rgba));
 }
 
 CAMLprim value ml_gdk_rgba_get_red(value rgba_val)
@@ -370,12 +364,7 @@ CAMLprim value ml_gdk_rgba_parse(value str_val)
     const char *str = String_val(str_val);
 
     if (gdk_rgba_parse(&rgba, str)) {
-        GdkRGBA *result_rgba = g_new(GdkRGBA, 1);
-        if (result_rgba == NULL) {
-            ml_raise_gdk("Failed to allocate GdkRGBA");
-        }
-        *result_rgba = rgba;
-        CAMLreturn(Val_some(Val_GdkRGBA(result_rgba)));
+        CAMLreturn(Val_some(Val_copy(rgba)));
     }
     CAMLreturn(Val_none);
 }

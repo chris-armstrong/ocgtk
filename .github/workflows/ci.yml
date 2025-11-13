@@ -81,16 +81,10 @@ jobs:
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
           dune-cache: true
+          opam-depext: true
 
-      - name: Install GTK4 system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libgtk-4-dev \
-            libcairo2-dev \
-            libpango1.0-dev \
-            libgdk-pixbuf-2.0-dev \
-            libglib2.0-dev
+      - name: Pin conf-gtk4 package
+        run: opam pin add -n conf-gtk4 .
 
       - name: Install OCaml dependencies
         working-directory: lablgtk4
@@ -106,7 +100,7 @@ jobs:
         working-directory: lablgtk4
         run: opam exec -- dune build
 
-      - name: Run enum tests (individually to avoid segfault in test runner)
+      - name: Run tests (individually to avoid segfault in test runner)
         working-directory: lablgtk4
         run: |
           opam exec -- ./_build/default/tests/test_enum_roundtrip.exe
@@ -114,6 +108,9 @@ jobs:
           opam exec -- ./_build/default/tests/test_all_enums.exe
           opam exec -- ./_build/default/tests/test_glib.exe
           opam exec -- ./_build/default/tests/test_gobject.exe
+          opam exec -- ./_build/default/tests/test_ffi_integration.exe
+          opam exec -- ./_build/default/tests/test_gdkpixbuf.exe
+          opam exec -- ./_build/default/tests/test_gdk.exe
 
       - name: Display generated enum modules
         working-directory: lablgtk4
