@@ -208,9 +208,9 @@ end
 module Data : sig
   (** Enum and flags conversion *)
 
-  val enum : ([>  ] as 'a) Gpointer.variant_table -> ('a -> int) * (int -> 'a)
-  (** Create encoder/decoder pair for enum types *)
+  val enum : ([>  ] as 'a) Gpointer.variant_table -> (int -> 'a) * ('a -> int)
+  (** Create decoder/encoder pair for enum types *)
 
-  val flags : ([>  ] as 'a) Gpointer.variant_table -> ('a -> int) * (int -> 'a)
-  (** Create encoder/decoder pair for flags types *)
+  val flags : ([>  ] as 'a) Gpointer.variant_table -> (int -> 'a) * ('a -> int)
+  (** Create decoder/encoder pair for flags types *)
 end

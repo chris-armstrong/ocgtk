@@ -66,10 +66,11 @@ let test_gtype_operations () =
 (** Test GValue basic operations *)
 let test_gvalue_int () =
   (* Create a new GValue *)
-  let gv = Gobject.Value.create () in
+  let gv = Gobject.Value.create_empty () in
 
   (* Initialize it as an int *)
-  Gobject.Value.init gv `INT;
+  let int_type = Gobject.Type.of_fundamental `INT in
+  Gobject.Value.init gv int_type;
 
   (* Set an integer value *)
   Gobject.Value.set_int gv 42;
@@ -86,8 +87,9 @@ let test_gvalue_int () =
 
 let test_gvalue_string () =
   (* Create and initialize GValue for string *)
-  let gv = Gobject.Value.create () in
-  Gobject.Value.init gv `STRING;
+  let gv = Gobject.Value.create_empty () in
+  let string_type = Gobject.Type.of_fundamental `STRING in
+  Gobject.Value.init gv string_type;
 
   (* Set a string value *)
   Gobject.Value.set_string gv "Hello, GTK4!";
@@ -103,8 +105,9 @@ let test_gvalue_string () =
 
 let test_gvalue_boolean () =
   (* Create and initialize GValue for boolean *)
-  let gv = Gobject.Value.create () in
-  Gobject.Value.init gv `BOOLEAN;
+  let gv = Gobject.Value.create_empty () in
+  let bool_type = Gobject.Type.of_fundamental `BOOLEAN in
+  Gobject.Value.init gv bool_type;
 
   (* Test true *)
   Gobject.Value.set_boolean gv true;

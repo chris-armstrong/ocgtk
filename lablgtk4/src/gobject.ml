@@ -206,9 +206,9 @@ end
 module Data = struct
   (* enum: creates encoder/decoder pair for simple enumerations *)
   let enum tbl =
-    (Gpointer.encode_variant tbl, Gpointer.decode_variant tbl)
+    (Gpointer.decode_variant tbl, Gpointer.encode_variant tbl)
 
-  (* flags: creates encoder/decoder pair for flag-type enumerations *)
+  (* flags: creates decoder/encoder pair for flag-type enumerations *)
   let flags tbl =
     let decode flags =
       (* For now, decode as single value - full implementation would decode bits *)
@@ -218,5 +218,5 @@ module Data = struct
       (* For now, encode as single value - full implementation would combine bits *)
       Gpointer.encode_variant tbl flag
     in
-    (encode, decode)
+    (decode, encode)
 end

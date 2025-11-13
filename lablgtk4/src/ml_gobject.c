@@ -172,12 +172,20 @@ CAMLprim value ml_g_type_of_fundamental(value fund_int)
 /* GValue Handling */
 /* ==================================================================== */
 
+/* Wrapper to track GValue initialization state */
+typedef struct {
+    GValue gvalue;
+    int initialized;
+} ml_gvalue;
+
 /* Custom block operations for GValue */
 static void finalize_gvalue(value val)
 {
-    GValue *gv = (GValue *)Data_custom_val(val);
-    if (G_IS_VALUE(gv)) {
-        g_value_unset(gv);
+    ml_gvalue *mlgv = (ml_gvalue *)Data_custom_val(val);
+    /* Only unset if the GValue has been initialized */
+    if (mlgv->initialized) {
+        g_value_unset(&mlgv->gvalue);
+        mlgv->initialized = 0;
     }
 }
 
@@ -197,29 +205,33 @@ CAMLprim value ml_g_value_new(void)
     CAMLparam0();
     CAMLlocal1(val);
 
-    val = caml_alloc_custom(&gvalue_ops, sizeof(GValue), 0, 1);
-    memset(Data_custom_val(val), 0, sizeof(GValue));
+    val = caml_alloc_custom(&gvalue_ops, sizeof(ml_gvalue), 0, 1);
+    ml_gvalue *mlgv = (ml_gvalue *)Data_custom_val(val);
+    memset(&mlgv->gvalue, 0, sizeof(GValue));
+    mlgv->initialized = 0;
 
     CAMLreturn(val);
 }
 
 GValue *GValue_val(value val)
 {
-    return (GValue *)Data_custom_val(val);
+    ml_gvalue *mlgv = (ml_gvalue *)Data_custom_val(val);
+    return &mlgv->gvalue;
 }
 
 CAMLprim value ml_g_value_init_gtype(value val, value gtype)
 {
-    GValue *gv = GValue_val(val);
-    g_value_init(gv, (GType)Long_val(gtype));
+    ml_gvalue *mlgv = (ml_gvalue *)Data_custom_val(val);
+    g_value_init(&mlgv->gvalue, (GType)Long_val(gtype));
+    mlgv->initialized = 1;
     return Val_unit;
 }
 
 CAMLprim value ml_g_value_reset(value val)
 {
-    GValue *gv = GValue_val(val);
-    if (G_IS_VALUE(gv)) {
-        g_value_reset(gv);
+    ml_gvalue *mlgv = (ml_gvalue *)Data_custom_val(val);
+    if (mlgv->initialized) {
+        g_value_reset(&mlgv->gvalue);
     }
     return Val_unit;
 }
