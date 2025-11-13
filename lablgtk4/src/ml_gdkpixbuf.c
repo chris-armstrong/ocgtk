@@ -20,6 +20,7 @@
 /**************************************************************************/
 
 #include <string.h>
+#include <limits.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <caml/mlvalues.h>
 #include <caml/alloc.h>
@@ -65,15 +66,19 @@ value Val_GdkPixbuf_(GdkPixbuf *pb, gboolean ref)
 
 Make_Val_option(GdkPixbuf)
 
-/* Simple GError to OCaml exception conversion */
+/* GError to OCaml exception conversion
+ * Note: The formatted message string is intentionally leaked since
+ * caml_failwith() never returns (raises exception). This is acceptable
+ * because errors are exceptional and the leak is bounded to one string
+ * per error. Alternative would be stack buffer with truncation risk.
+ */
 static void ml_raise_gdkpixbuf_error(GError *err)
 {
-    char *msg;
     if (err == NULL) return;
-    msg = g_strdup_printf("GdkPixbuf error: %s", err->message);
+    char *msg = g_strdup_printf("GdkPixbuf error: %s", err->message);
     g_error_free(err);
     caml_failwith(msg);
-    g_free(msg);
+    /* msg is intentionally not freed here - unreachable code */
 }
 
 CAMLprim value ml_gdkpixbuf_init(value unit)
@@ -167,12 +172,23 @@ ML_bc12(ml_gdk_pixbuf_composite)
 
 /* Saving */
 
-static int list_length(value l)
+/* Calculate length of OCaml list with safety checks
+ * Validates list structure and detects overflow
+ */
+static unsigned int list_length(value l)
 {
-    int i = 0;
+    unsigned int i = 0;
     while (l != Val_emptylist) {
+        /* Validate list cell structure */
+        if (!Is_block(l) || Wosize_val(l) < 2) {
+            caml_invalid_argument("GdkPixbuf.save: malformed options list");
+        }
         l = Field(l, 1);
         i++;
+        /* Check for overflow (shouldn't happen in practice but be defensive) */
+        if (i == UINT_MAX) {
+            caml_invalid_argument("GdkPixbuf.save: options list too long");
+        }
     }
     return i;
 }
@@ -183,11 +199,35 @@ convert_gdk_pixbuf_options(value options, char ***opt_k, char ***opt_v, gboolean
     if (Is_block(options)) {
         value cell = Field(options, 0);
         unsigned int i, len = list_length(cell);
+
+        /* Check for integer overflow in allocation size
+         * Prevent: sizeof(char*) * (len + 1) from overflowing
+         */
+        if (len > (SIZE_MAX / sizeof(char *)) - 1) {
+            caml_invalid_argument("GdkPixbuf.save: options list too long for allocation");
+        }
+
         *opt_k = malloc(sizeof(char *) * (len + 1));
         *opt_v = malloc(sizeof(char *) * (len + 1));
+
+        /* Check malloc success */
+        if (*opt_k == NULL || *opt_v == NULL) {
+            if (*opt_k) free(*opt_k);
+            if (*opt_v) free(*opt_v);
+            caml_raise_out_of_memory();
+        }
+
         for (i = 0; i < len; i++) {
             const gchar *s;
             value pair = Field(cell, 0);
+
+            /* Validate pair structure */
+            if (!Is_block(pair) || Wosize_val(pair) < 2) {
+                free(*opt_k);
+                free(*opt_v);
+                caml_invalid_argument("GdkPixbuf.save: malformed option pair");
+            }
+
             s = (gchar*)String_val(Field(pair, 0));
             (*opt_k)[i] = (copy ? g_strdup(s) : (gchar*)s);
             s = (gchar*)String_val(Field(pair, 1));
@@ -209,28 +249,49 @@ CAMLprim value ml_gdk_pixbuf_save(value fname, value type, value options, value 
     char **opt_v;
     convert_gdk_pixbuf_options(options, &opt_k, &opt_v, FALSE);
     gdk_pixbuf_savev(GdkPixbuf_val(pixbuf), String_val(fname), String_val(type), opt_k, opt_v, &err);
+    /* Important: Free memory before potentially raising exception */
     if (opt_k) free(opt_k);
     if (opt_v) free(opt_v);
     if (err) ml_raise_gdkpixbuf_error(err);
     return Val_unit;
 }
 
-/* Save to callback */
+/* Save to callback - called from GdkPixbuf during save_to_callback
+ * Must use CAMLparam/CAMLlocal since it allocates OCaml values
+ */
 static gboolean
 ml_gdkpixbuf_savefunc(const gchar *buf, gsize count, GError **error, gpointer data)
 {
-    value *cb = data;
-    value res, s;
+    CAMLparam0();
+    CAMLlocal2(res, s);
+    value *cb = (value *)data;
+
+    /* Defensive check: verify buffer is valid if count > 0 */
+    if (count > 0 && buf == NULL) {
+        g_set_error(error, GDK_PIXBUF_ERROR, GDK_PIXBUF_ERROR_FAILED,
+                   "NULL buffer with non-zero count");
+        CAMLreturnT(gboolean, FALSE);
+    }
+
+    /* Allocate OCaml string and copy data
+     * caml_alloc_string allocates exactly 'count' bytes
+     * This can trigger GC, hence need for CAMLparam/CAMLlocal
+     */
     s = caml_alloc_string(count);
-    memcpy(Bytes_val(s), buf, count);
+    if (count > 0) {
+        memcpy(Bytes_val(s), buf, count);
+    }
+
+    /* Call OCaml callback - can also trigger GC */
     res = caml_callback_exn(*cb, s);
+
     if (Is_exception_result(res)) {
         g_set_error(error, GDK_PIXBUF_ERROR, GDK_PIXBUF_ERROR_FAILED,
                    "OCaml callback raised an exception");
-        return FALSE;
-    } else {
-        return TRUE;
+        CAMLreturnT(gboolean, FALSE);
     }
+
+    CAMLreturnT(gboolean, TRUE);
 }
 
 CAMLprim value
