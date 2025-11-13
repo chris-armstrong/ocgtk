@@ -1,5 +1,8 @@
 name: CI
-
+on:
+  push:
+    branches: [lablgtk4]
+  pull_request:
 # CI Notes:
 # - Repository now contains both lablgtk3/ (GTK 3) and lablgtk4/ (GTK 4)
 # - lablgtk3: depext for goocanvas2 is broken on windows and osx
