@@ -259,3 +259,337 @@ value copy_string_check(const char *str)
     else
         return caml_copy_string(str);
 }
+
+/* ==================================================================== */
+/* Main Event Loop */
+/* ==================================================================== */
+
+/* Helper: Wrap GMainLoop pointer in OCaml abstract block */
+static value Val_GMainLoop(GMainLoop *loop)
+{
+    CAMLparam0();
+    CAMLlocal1(val);
+    val = caml_alloc_small(1, Abstract_tag);
+    Field(val, 0) = (value)loop;
+    CAMLreturn(val);
+}
+
+/* Helper: Extract GMainLoop pointer from OCaml value */
+static GMainLoop *GMainLoop_val(value val)
+{
+    return (GMainLoop *)Field(val, 0);
+}
+
+/* Create a new main loop */
+CAMLprim value ml_g_main_new(value is_running)
+{
+    GMainLoop *loop = g_main_loop_new(NULL, Bool_val(is_running));
+    if (loop == NULL)
+        caml_failwith("g_main_loop_new: failed to create main loop");
+    return Val_GMainLoop(loop);
+}
+
+/* Run a main loop */
+CAMLprim value ml_g_main_run(value loop)
+{
+    g_main_loop_run(GMainLoop_val(loop));
+    return Val_unit;
+}
+
+/* Check if main loop is running */
+CAMLprim value ml_g_main_is_running(value loop)
+{
+    return Val_bool(g_main_loop_is_running(GMainLoop_val(loop)));
+}
+
+/* Quit a main loop */
+CAMLprim value ml_g_main_quit(value loop)
+{
+    g_main_loop_quit(GMainLoop_val(loop));
+    return Val_unit;
+}
+
+/* Destroy/unref a main loop */
+CAMLprim value ml_g_main_destroy(value loop)
+{
+    g_main_loop_unref(GMainLoop_val(loop));
+    return Val_unit;
+}
+
+/* Run one iteration of the main context (updated for GTK4/GLib 2.66+) */
+CAMLprim value ml_g_main_iteration(value may_block)
+{
+    gboolean result;
+    /* Don't release runtime - callbacks need it, and non-blocking is fast */
+    result = g_main_context_iteration(NULL, Bool_val(may_block));
+    return Val_bool(result);
+}
+
+/* Check if events are pending (updated for GTK4/GLib 2.66+) */
+CAMLprim value ml_g_main_pending(value unit)
+{
+    return Val_bool(g_main_context_pending(NULL));
+}
+
+/* ==================================================================== */
+/* Timeout and Idle Callbacks */
+/* ==================================================================== */
+
+/* Callback data structure for timeout/idle */
+typedef struct {
+    value closure;
+} ml_callback_data;
+
+/* Generic callback function for timeout/idle */
+static gboolean ml_callback_func(gpointer data)
+{
+    CAMLparam0();
+    CAMLlocal1(ret);
+    ml_callback_data *cbd = (ml_callback_data *)data;
+
+    ret = caml_callback(cbd->closure, Val_unit);
+
+    CAMLreturnT(gboolean, Bool_val(ret));
+}
+
+/* Destroy notify for callback data */
+static void ml_callback_destroy(gpointer data)
+{
+    ml_callback_data *cbd = (ml_callback_data *)data;
+    caml_remove_global_root(&cbd->closure);
+    g_free(cbd);
+}
+
+/* Add a timeout callback */
+CAMLprim value ml_g_timeout_add(value o_prio, value interval, value clos)
+{
+    ml_callback_data *cbd = g_new(ml_callback_data, 1);
+    guint id;
+
+    cbd->closure = clos;
+    caml_register_global_root(&cbd->closure);
+
+    if (o_prio == Val_none) {
+        id = g_timeout_add_full(G_PRIORITY_DEFAULT,
+                                 Int_val(interval),
+                                 ml_callback_func,
+                                 cbd,
+                                 ml_callback_destroy);
+    } else {
+        id = g_timeout_add_full(Int_val(Some_val(o_prio)),
+                                 Int_val(interval),
+                                 ml_callback_func,
+                                 cbd,
+                                 ml_callback_destroy);
+    }
+
+    return Val_int(id);
+}
+
+/* Remove a timeout */
+CAMLprim value ml_g_timeout_remove(value id)
+{
+    return Val_bool(g_source_remove(Int_val(id)));
+}
+
+/* Add an idle callback */
+CAMLprim value ml_g_idle_add(value o_prio, value clos)
+{
+    ml_callback_data *cbd = g_new(ml_callback_data, 1);
+    guint id;
+
+    cbd->closure = clos;
+    caml_register_global_root(&cbd->closure);
+
+    if (o_prio == Val_none) {
+        id = g_idle_add_full(G_PRIORITY_DEFAULT_IDLE,
+                              ml_callback_func,
+                              cbd,
+                              ml_callback_destroy);
+    } else {
+        id = g_idle_add_full(Int_val(Some_val(o_prio)),
+                              ml_callback_func,
+                              cbd,
+                              ml_callback_destroy);
+    }
+
+    return Val_int(id);
+}
+
+/* Remove an idle callback */
+CAMLprim value ml_g_idle_remove(value id)
+{
+    return Val_bool(g_source_remove(Int_val(id)));
+}
+
+/* ==================================================================== */
+/* UTF-8 and String Conversion */
+/* ==================================================================== */
+
+/* Validate UTF-8 string */
+CAMLprim value ml_g_utf8_validate(value str)
+{
+    const char *s = String_val(str);
+    gsize len = caml_string_length(str);
+    return Val_bool(g_utf8_validate(s, len, NULL));
+}
+
+/* Convert string between character sets */
+CAMLprim value ml_g_convert(value str, value to_codeset, value from_codeset)
+{
+    CAMLparam3(str, to_codeset, from_codeset);
+    CAMLlocal1(result);
+    GError *err = NULL;
+    gchar *converted;
+    gsize bytes_read, bytes_written;
+
+    converted = g_convert(String_val(str),
+                          caml_string_length(str),
+                          String_val(to_codeset),
+                          String_val(from_codeset),
+                          &bytes_read,
+                          &bytes_written,
+                          &err);
+
+    if (err != NULL) {
+        ml_raise_gerror(err);
+    }
+
+    result = caml_copy_string(converted != NULL ? converted : "");
+    g_free(converted);
+
+    CAMLreturn(result);
+}
+
+/* Convert locale to UTF-8 */
+CAMLprim value ml_g_locale_to_utf8(value str)
+{
+    CAMLparam1(str);
+    CAMLlocal1(result);
+    GError *err = NULL;
+    gchar *converted;
+    gsize bytes_read, bytes_written;
+
+    converted = g_locale_to_utf8(String_val(str),
+                                   caml_string_length(str),
+                                   &bytes_read,
+                                   &bytes_written,
+                                   &err);
+
+    if (err != NULL) {
+        ml_raise_gerror(err);
+    }
+
+    result = caml_copy_string(converted != NULL ? converted : "");
+    g_free(converted);
+
+    CAMLreturn(result);
+}
+
+/* Convert UTF-8 to locale */
+CAMLprim value ml_g_locale_from_utf8(value str)
+{
+    CAMLparam1(str);
+    CAMLlocal1(result);
+    GError *err = NULL;
+    gchar *converted;
+    gsize bytes_read, bytes_written;
+
+    converted = g_locale_from_utf8(String_val(str),
+                                     caml_string_length(str),
+                                     &bytes_read,
+                                     &bytes_written,
+                                     &err);
+
+    if (err != NULL) {
+        ml_raise_gerror(err);
+    }
+
+    result = caml_copy_string(converted != NULL ? converted : "");
+    g_free(converted);
+
+    CAMLreturn(result);
+}
+
+/* Convert filename to UTF-8 */
+CAMLprim value ml_g_filename_to_utf8(value str)
+{
+    CAMLparam1(str);
+    CAMLlocal1(result);
+    GError *err = NULL;
+    gchar *converted;
+    gsize bytes_read, bytes_written;
+
+    converted = g_filename_to_utf8(String_val(str),
+                                     caml_string_length(str),
+                                     &bytes_read,
+                                     &bytes_written,
+                                     &err);
+
+    if (err != NULL) {
+        ml_raise_gerror(err);
+    }
+
+    result = caml_copy_string(converted != NULL ? converted : "");
+    g_free(converted);
+
+    CAMLreturn(result);
+}
+
+/* Convert UTF-8 to filename */
+CAMLprim value ml_g_filename_from_utf8(value str)
+{
+    CAMLparam1(str);
+    CAMLlocal1(result);
+    GError *err = NULL;
+    gchar *converted;
+    gsize bytes_read, bytes_written;
+
+    converted = g_filename_from_utf8(String_val(str),
+                                       caml_string_length(str),
+                                       &bytes_read,
+                                       &bytes_written,
+                                       &err);
+
+    if (err != NULL) {
+        ml_raise_gerror(err);
+    }
+
+    result = caml_copy_string(converted != NULL ? converted : "");
+    g_free(converted);
+
+    CAMLreturn(result);
+}
+
+/* Get current charset */
+CAMLprim value ml_g_get_charset(value unit)
+{
+    CAMLparam1(unit);
+    CAMLlocal1(result);
+    const char *charset;
+    gboolean is_utf8;
+
+    is_utf8 = g_get_charset(&charset);
+
+    result = caml_alloc_tuple(2);
+    Store_field(result, 0, Val_bool(is_utf8));
+    Store_field(result, 1, caml_copy_string(charset));
+
+    CAMLreturn(result);
+}
+
+/* Priority conversion helper
+ * Note: Polymorphic variants are ordered alphabetically:
+ * `DEFAULT, `DEFAULT_IDLE, `HIGH, `HIGH_IDLE, `LOW
+ */
+CAMLprim value ml_g_int_of_priority(value prio)
+{
+    switch (Int_val(prio)) {
+        case 0: return Val_int(G_PRIORITY_DEFAULT);        /* `DEFAULT (alphabetically first) */
+        case 1: return Val_int(G_PRIORITY_DEFAULT_IDLE);   /* `DEFAULT_IDLE */
+        case 2: return Val_int(G_PRIORITY_HIGH);           /* `HIGH */
+        case 3: return Val_int(G_PRIORITY_HIGH_IDLE);      /* `HIGH_IDLE */
+        case 4: return Val_int(G_PRIORITY_LOW);            /* `LOW */
+        default: return Val_int(G_PRIORITY_DEFAULT);
+    }
+}
