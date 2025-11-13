@@ -227,4 +227,13 @@ module Test : sig
 
   val invoke_closure_string : g_closure -> string -> unit
   (** Test helper: Invoke a closure with a string argument *)
+
+  val invoke_closure_two_ints : g_closure -> int -> int -> unit
+  (** Test helper: Invoke a closure with two integer arguments *)
+
+  val invoke_closure_boolean : g_closure -> bool -> unit
+  (** Test helper: Invoke a closure with a boolean argument *)
+
+  val invoke_closure_double : g_closure -> float -> unit
+  (** Test helper: Invoke a closure with a double argument *)
 end

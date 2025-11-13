@@ -726,6 +726,70 @@ CAMLprim value ml_test_invoke_closure_string(value closure_val, value arg_val)
     CAMLreturn(Val_unit);
 }
 
+/* Test helper to invoke a closure with two integer arguments */
+CAMLprim value ml_test_invoke_closure_two_ints(value closure_val, value arg1_val, value arg2_val)
+{
+    CAMLparam3(closure_val, arg1_val, arg2_val);
+    GClosure *closure = GClosure_val_wrapped(closure_val);
+    GValue params[2] = {G_VALUE_INIT, G_VALUE_INIT};
+
+    /* Set up the parameters */
+    g_value_init(&params[0], G_TYPE_INT);
+    g_value_set_int(&params[0], Int_val(arg1_val));
+
+    g_value_init(&params[1], G_TYPE_INT);
+    g_value_set_int(&params[1], Int_val(arg2_val));
+
+    /* Invoke the closure with no return value */
+    g_closure_invoke(closure, NULL, 2, params, NULL);
+
+    /* Clean up */
+    g_value_unset(&params[0]);
+    g_value_unset(&params[1]);
+
+    CAMLreturn(Val_unit);
+}
+
+/* Test helper to invoke a closure with a boolean argument */
+CAMLprim value ml_test_invoke_closure_boolean(value closure_val, value arg_val)
+{
+    CAMLparam2(closure_val, arg_val);
+    GClosure *closure = GClosure_val_wrapped(closure_val);
+    GValue param = G_VALUE_INIT;
+
+    /* Set up the parameter */
+    g_value_init(&param, G_TYPE_BOOLEAN);
+    g_value_set_boolean(&param, Bool_val(arg_val));
+
+    /* Invoke the closure with no return value */
+    g_closure_invoke(closure, NULL, 1, &param, NULL);
+
+    /* Clean up */
+    g_value_unset(&param);
+
+    CAMLreturn(Val_unit);
+}
+
+/* Test helper to invoke a closure with a double argument */
+CAMLprim value ml_test_invoke_closure_double(value closure_val, value arg_val)
+{
+    CAMLparam2(closure_val, arg_val);
+    GClosure *closure = GClosure_val_wrapped(closure_val);
+    GValue param = G_VALUE_INIT;
+
+    /* Set up the parameter */
+    g_value_init(&param, G_TYPE_DOUBLE);
+    g_value_set_double(&param, Double_val(arg_val));
+
+    /* Invoke the closure with no return value */
+    g_closure_invoke(closure, NULL, 1, &param, NULL);
+
+    /* Clean up */
+    g_value_unset(&param);
+
+    CAMLreturn(Val_unit);
+}
+
 /* ==================================================================== */
 /* Object Creation (from Phase 1) */
 /* ==================================================================== */

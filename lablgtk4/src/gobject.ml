@@ -228,4 +228,7 @@ module Test = struct
   external invoke_closure_void : g_closure -> unit = "ml_test_invoke_closure_void"
   external invoke_closure_int : g_closure -> int -> unit = "ml_test_invoke_closure_int"
   external invoke_closure_string : g_closure -> string -> unit = "ml_test_invoke_closure_string"
+  external invoke_closure_two_ints : g_closure -> int -> int -> unit = "ml_test_invoke_closure_two_ints"
+  external invoke_closure_boolean : g_closure -> bool -> unit = "ml_test_invoke_closure_boolean"
+  external invoke_closure_double : g_closure -> float -> unit = "ml_test_invoke_closure_double"
 end
