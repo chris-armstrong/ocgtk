@@ -25,7 +25,7 @@ rm cflag-gtk4.tmp clink-gtk4.tmp\
  (public_name lablgtk4)
  (wrapped false)
  (flags :standard -w -6-7-9-10-27-32-33-34-35-36-50-52 -no-strict-sequence)
- (modules gpointer gobject Gtk4Enums Gdk4Enums GlibEnums PangoEnums GobjectEnums)
+ (modules gpointer gobject glib Gtk4Enums Gdk4Enums GlibEnums PangoEnums GobjectEnums)
  (foreign_stubs
   (language c)
   (names wrappers ml_glib ml_gobject gtk4_tags gdk4_tags glib_tags pango_tags gobject_tags)

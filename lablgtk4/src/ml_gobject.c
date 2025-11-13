@@ -149,11 +149,18 @@ CAMLprim GValue *GValue_val(value val)
     return (GValue *)Data_custom_val(val);
 }
 
-/* Initialize a GValue with a specific type */
-CAMLprim value ml_g_value_init(value val, value gtype)
+/* Initialize a GValue with a specific type
+ * Takes a fundamental_type variant and converts to GType
+ */
+CAMLprim value ml_g_value_init(value val, value gtype_variant)
 {
     GValue *gv = GValue_val(val);
-    g_value_init(gv, Long_val(gtype));
+
+    /* Convert OCaml variant to GType using the conversion table */
+    extern const lookup_info ml_table_gobject_fundamental_type[];
+    int gtype_int = ml_lookup_to_c(ml_table_gobject_fundamental_type, gtype_variant);
+
+    g_value_init(gv, (GType)gtype_int);
     return Val_unit;
 }
 
