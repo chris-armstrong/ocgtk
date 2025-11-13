@@ -167,13 +167,35 @@ caml_register_global_root((value*)&ptr);
 caml_remove_global_root((value*)&ptr);
 ```
 
+## Security Guidelines
+
+**IMPORTANT**: All C bindings must follow security best practices documented in:
+
+📘 **[SECURITY_GUIDELINES.md](SECURITY_GUIDELINES.md)** - Comprehensive security guidelines for OCaml C bindings
+
+Key security requirements:
+- **Always check allocation results** (malloc, g_new) for NULL
+- **Validate integer overflow** before size calculations
+- **Use CAMLparam/CAMLlocal** for all functions with OCaml values
+- **Protect OCaml values in C** with caml_register_global_root
+- **Deep copy GValues** with g_value_init + g_value_copy (never memcpy)
+- **Validate buffer bounds** before memcpy/strcpy
+- **Check callback exceptions** with caml_callback_exn
+- **Validate list structures** when converting to GList/GSList
+
+See also:
+- **[SECURITY_ANALYSIS_LABLGTK3.md](SECURITY_ANALYSIS_LABLGTK3.md)** - Vulnerabilities found in lablgtk3 (reference)
+
+All Phase 2 C code has been security-reviewed and hardened (commits 60ebaa9, 94a7ffb).
+
 ## When You Get Stuck
 
 1. **Check lablgtk3** - probably already solved
-2. **Add debug output to file** - stderr may not work
-3. **Check pointer values** - catch wrapping issues early
-4. **Test incrementally** - isolate the failing case
-5. **Verify GValue copying** - use g_value_copy, not memcpy
+2. **Check security guidelines** - ensure code follows best practices
+3. **Add debug output to file** - stderr may not work
+4. **Check pointer values** - catch wrapping issues early
+5. **Test incrementally** - isolate the failing case
+6. **Verify GValue copying** - use g_value_copy, not memcpy
 
 ## Success Metrics
 
