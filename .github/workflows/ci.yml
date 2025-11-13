@@ -23,15 +23,15 @@ jobs:
         test-target: [opam, dev-all]
         include:
         - os: ubuntu-latest
-          ocaml-compiler: [4.14.x, 5.3.x]
+          
           test-packages: lablgtk3 lablgtk3-sourceview3 lablgtk3-gtkspell3 lablgtk3-goocanvas2
           test-target: dev
         - os: macos-latest
-          ocaml-compiler: [4.14.x, 5.3.x]
+          
           test-packages: lablgtk3 lablgtk3-sourceview3 lablgtk3-gtkspell3
           test-target: dev-ci-osx
         - os: windows-latest
-          ocaml-compiler: [4.14.x, 5.3.x]
+          
           test-packages: lablgtk3 lablgtk3-sourceview3
           test-target: dev-ci-windows
 
