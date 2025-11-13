@@ -110,6 +110,26 @@ CAMLprim value fname##_bc(value *argv, int argn) \
 #define GdkSurface_val(val) ((GdkSurface*)Pointer_val(val))
 #define Val_GdkSurface(obj) (Val_pointer(obj))
 
+/* GdkDisplay */
+#define GdkDisplay_val(val) ((GdkDisplay*)Pointer_val(val))
+#define Val_GdkDisplay(obj) (Val_pointer(obj))
+
+/* GdkSeat (new in GDK4) */
+#define GdkSeat_val(val) ((GdkSeat*)Pointer_val(val))
+#define Val_GdkSeat(obj) (Val_pointer(obj))
+
+/* GdkDevice */
+#define GdkDevice_val(val) ((GdkDevice*)Pointer_val(val))
+#define Val_GdkDevice(obj) (Val_pointer(obj))
+
+/* GdkRGBA */
+#define GdkRGBA_val(val) ((GdkRGBA*)Pointer_val(val))
+#define Val_GdkRGBA(obj) (Val_pointer(obj))
+
+/* GdkCursor */
+#define GdkCursor_val(val) ((GdkCursor*)Pointer_val(val))
+#define Val_GdkCursor(obj) (Val_pointer(obj))
+
 /* GtkWidget */
 #define GtkWidget_val(val) ((GtkWidget*)Pointer_val(val))
 #define Val_GtkWidget(obj) (Val_pointer(obj))
