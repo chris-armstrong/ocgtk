@@ -22,6 +22,10 @@ grep -A 20 "<function_name>" lablgtk3/src/*.c
 diff lablgtk3/src/<file>.c lablgtk4/src/<file>.c
 ```
 
+## OCaml / C FFI Guidelines
+
+For instructions and best practices for writing and updating OCaml / C FFI, see [FFI Guidelines](./FFI_GUIDELINES.md).
+
 ## Testing Strategy
 
 ### Test Incrementally
