@@ -1,7 +1,35 @@
-; Core GTK4 bindings will be added here
-; This is a placeholder for Phase 1
+; Dune build file for lablgtk4 - minimal verification build
+
+; Include enum generation rules
+(include dune-enum.sexp)
+
+; Configure pkg-config for GTK4
+(rule
+ (targets
+   cflag-gtk4.sexp
+   clink-gtk4.sexp)
+ (action (bash "\
+pkg-config --cflags gtk4 > cflag-gtk4.tmp && \
+pkg-config --libs gtk4 > clink-gtk4.tmp && \
+echo \"(\" > cflag-gtk4.sexp && \
+tr ' ' '\\n' < cflag-gtk4.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> cflag-gtk4.sexp && \
+echo \")\" >> cflag-gtk4.sexp && \
+echo \"(\" > clink-gtk4.sexp && \
+tr ' ' '\\n' < clink-gtk4.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> clink-gtk4.sexp && \
+echo \")\" >> clink-gtk4.sexp && \
+rm cflag-gtk4.tmp clink-gtk4.tmp\
+")))
 
 (library
- (name lablgtk4_placeholder)
+ (name lablgtk4)
  (public_name lablgtk4)
- (modules))
+ (wrapped false)
+ (flags :standard -w -6-7-9-10-27-32-33-34-35-36-50-52 -no-strict-sequence)
+ (modules gpointer gobject Gtk4Enums)
+ (foreign_stubs
+  (language c)
+  (names wrappers gtk4_tags)
+  (flags -fPIC (:include cflag-gtk4.sexp) -Wno-deprecated-declarations))
+ (c_library_flags (:include clink-gtk4.sexp))
+ (install_c_headers wrappers gtk4_tags)
+ (libraries threads cairo2))

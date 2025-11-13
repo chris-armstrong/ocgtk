@@ -1,2 +1,5 @@
-; Test suite will be added in Phase 1.4
-; Placeholder - no tests yet
+; Test suite for lablgtk4
+
+(test
+ (name test_enums)
+ (libraries lablgtk4))
