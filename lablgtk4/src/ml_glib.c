@@ -126,6 +126,11 @@ CAMLprim GList *GList_val(value list, gpointer (*func)(value))
     GList *res = NULL;
 
     while (list != Val_emptylist) {
+        /* Validate list cell structure */
+        if (!Is_block(list) || Wosize_val(list) < 2) {
+            g_list_free(res);
+            caml_invalid_argument("GList_val: malformed list");
+        }
         res = g_list_prepend(res, func(Field(list, 0)));
         list = Field(list, 1);
     }
@@ -180,6 +185,11 @@ CAMLprim GSList *GSList_val(value list, gpointer (*func)(value))
     GSList *res = NULL;
 
     while (list != Val_emptylist) {
+        /* Validate list cell structure */
+        if (!Is_block(list) || Wosize_val(list) < 2) {
+            g_slist_free(res);
+            caml_invalid_argument("GSList_val: malformed list");
+        }
         res = g_slist_prepend(res, func(Field(list, 0)));
         list = Field(list, 1);
     }
@@ -366,6 +376,11 @@ CAMLprim value ml_g_timeout_add(value o_prio, value interval, value clos)
     ml_callback_data *cbd = g_new(ml_callback_data, 1);
     guint id;
 
+    /* Check allocation success */
+    if (cbd == NULL) {
+        caml_raise_out_of_memory();
+    }
+
     cbd->closure = clos;
     caml_register_global_root(&cbd->closure);
 
@@ -397,6 +412,11 @@ CAMLprim value ml_g_idle_add(value o_prio, value clos)
 {
     ml_callback_data *cbd = g_new(ml_callback_data, 1);
     guint id;
+
+    /* Check allocation success */
+    if (cbd == NULL) {
+        caml_raise_out_of_memory();
+    }
 
     cbd->closure = clos;
     caml_register_global_root(&cbd->closure);
