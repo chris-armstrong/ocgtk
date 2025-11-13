@@ -33,7 +33,8 @@ CAMLexport int ml_lookup_to_c (const lookup_info table[], value key)
 {
     int first = 1, last = table[0].data, current;
     while (first < last) {
-	current = (first+last)/2;
+	/* Avoid integer overflow in midpoint calculation */
+	current = first + (last - first) / 2;
 	if (table[current].key >= key) last = current;
 	else first = current + 1;
     }
