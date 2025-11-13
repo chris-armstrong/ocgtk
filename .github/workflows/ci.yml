@@ -18,20 +18,20 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        ocaml-compiler: [4.09.x, 4.10.x, 4.11.x, 4.12.x, 4.13.x, 4.14.x, 5.1.x]
+        ocaml-compiler: [4.14.x, 5.3.x]
         test-packages: [lablgtk3 lablgtk3-sourceview3 lablgtk3-gtkspell3 lablgtk3-goocanvas2]
         test-target: [opam, dev-all]
         include:
         - os: ubuntu-latest
-          ocaml-compiler: 4.14.x
+          ocaml-compiler: [4.14.x, 5.3.x]
           test-packages: lablgtk3 lablgtk3-sourceview3 lablgtk3-gtkspell3 lablgtk3-goocanvas2
           test-target: dev
         - os: macos-latest
-          ocaml-compiler: 4.14.x
+          ocaml-compiler: [4.14.x, 5.3.x]
           test-packages: lablgtk3 lablgtk3-sourceview3 lablgtk3-gtkspell3
           test-target: dev-ci-osx
         - os: windows-latest
-          ocaml-compiler: 4.14.x
+          ocaml-compiler: [4.14.x, 5.3.x]
           test-packages: lablgtk3 lablgtk3-sourceview3
           test-target: dev-ci-windows
 
@@ -46,7 +46,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up OCaml ${{ matrix.ocaml-compiler }}
-        uses: ocaml/setup-ocaml@v2
+        uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
           dune-cache: true
@@ -70,14 +70,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ocaml-compiler: [4.14.x, 5.1.x, 5.2.x]
+        ocaml-compiler: [5.3.x, 5.4.x]
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Set up OCaml
-        uses: ocaml/setup-ocaml@v2
+        uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
           dune-cache: true
