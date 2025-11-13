@@ -1,6 +1,53 @@
 (* -*- caml -*- *)
 (* $Id$ *)
 
+(*****************************************************************************)
+(** PROPCC - Property Compiler for LablGTK                                 **)
+(*****************************************************************************)
+(*
+   OVERVIEW:
+   propcc is a code generator that creates OCaml bindings for GTK widget
+   properties, methods, and signals. It processes .props files that describe
+   the GTK object hierarchy and generates type-safe OCaml wrapper code.
+
+   INPUT: .props files containing widget class definitions like:
+     classes {
+       GtkWidget parent : GObject [abstract]
+         method set_name : "gtk_widget_set_name" string -> unit
+         signal destroy : unit
+       GtkButton parent : GtkWidget
+         method set_label : "gtk_button_set_label" string -> unit
+         signal clicked : unit
+     }
+
+   OUTPUT:
+   1. OCaml modules (.ml and .mli files) with:
+      - Type-safe property getters and setters
+      - Method wrappers with proper type conversion
+      - Signal connection functions
+      - Class hierarchy maintained in types
+
+   2. C stub files (.c files) with:
+      - FFI wrappers for GTK functions
+      - Type conversions between OCaml and C
+      - Proper memory management with GC integration
+
+   HOW IT WORKS:
+   - Maintains type conversion tables (enum, boxed, object types)
+   - Generates appropriate marshallers for each type
+   - Creates class hierarchies using OCaml's object system
+   - Ensures type safety while maintaining GTK's dynamic dispatch
+
+   KEY DATA STRUCTURES:
+   - conversions: Hash table mapping C types to OCaml conversion functions
+   - enums: List of enum types from *Enums modules (Gtk4Enums, Gdk4Enums, etc.)
+   - boxeds: List of boxed types (RGBA, Cairo, etc.)
+   - classes: List of GObject-derived classes (Widget, Button, etc.)
+
+   COMPILATION:
+   This .ml4 file is preprocessed with camlp5 to support the "parser" syntax.
+*)
+
 open StdLabels
 open MoreLabels
 

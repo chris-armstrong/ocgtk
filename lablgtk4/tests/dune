@@ -1,5 +1,9 @@
-; Test suite for lablgtk4
+; Test suite for lablgtk4 - comprehensive enum testing
 
 (test
- (name test_enums)
- (libraries lablgtk4))
+ (name test_enum_roundtrip)
+ (libraries lablgtk4 alcotest))
+
+(test
+ (name test_enum_values)
+ (libraries lablgtk4 alcotest))
