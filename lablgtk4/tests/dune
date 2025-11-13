@@ -27,3 +27,7 @@
  (name test_gobject)
  (libraries lablgtk4 alcotest))
 
+(test
+ (name test_ffi_integration)
+ (libraries lablgtk4 alcotest))
+
