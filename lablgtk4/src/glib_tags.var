@@ -1,0 +1,48 @@
+(* Tags for GLib - OCaml variant bindings for GLib enumerations *)
+(*
+   GLib is the low-level core library that forms the foundation of GTK.
+   These enumerations remained stable from GTK3 to GTK4 as they are part
+   of GLib's stable API.
+
+   See: https://docs.gtk.org/glib/
+*)
+
+package "Glib"
+prefix "glib_"
+
+(* GLogLevelFlags: Log level and flags for g_log and friends *)
+type log_level = "G_LOG_LEVEL_"
+   [ `ERROR      (* Error log level *)
+   | `CRITICAL   (* Critical log level *)
+   | `WARNING    (* Warning log level *)
+   | `MESSAGE    (* Message log level *)
+   | `INFO       (* Info log level *)
+   | `DEBUG      (* Debug log level *)
+   | `FLAG_RECURSION "G_LOG_FLAG_RECURSION"  (* Internal flag: recursion *)
+   | `FLAG_FATAL "G_LOG_FLAG_FATAL" ]        (* Internal flag: fatal *)
+
+(* GIOCondition: IO channel conditions to watch for *)
+type io_condition = "G_IO_"
+   [ `IN    (* Data can be read *)
+   | `OUT   (* Data can be written *)
+   | `PRI   (* Urgent data to read *)
+   | `ERR   (* Error condition *)
+   | `HUP   (* Hung up *)
+   | `NVAL  (* Invalid request *) ]
+
+(* GNormalizeMode: Unicode normalization modes *)
+type normalize_mode = "G_NORMALIZE_"
+   [ `DEFAULT          (* Canonical decomposition *)
+   | `DEFAULT_COMPOSE  (* Canonical decomposition followed by composition *)
+   | `ALL              (* Compatibility decomposition *)
+   | `ALL_COMPOSE ]    (* Compatibility decomposition followed by composition *)
+
+(* Locale categories from C standard *)
+type locale_category = "LC_"
+    [ `ALL       (* All locale categories *)
+    | `COLLATE   (* Collation order *)
+    | `CTYPE     (* Character classification *)
+    | `MESSAGES  (* Message translations *)
+    | `MONETARY  (* Monetary formatting *)
+    | `NUMERIC   (* Numeric formatting *)
+    | `TIME ]    (* Time/date formatting *)
