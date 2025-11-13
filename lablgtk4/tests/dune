@@ -6,6 +6,7 @@
 ; - test_all_enums.ml: Comprehensive tests for all enum modules (GTK4, GDK4, GLib, Pango, GObject)
 ; - test_glib.ml: GLib binding tests (minimal for now)
 ; - test_gobject.ml: GObject binding tests (minimal for now)
+; - test_gdkpixbuf.ml: GdkPixbuf image manipulation tests (Phase 2.3)
 
 (test
  (name test_enum_roundtrip)
@@ -31,3 +32,6 @@
  (name test_ffi_integration)
  (libraries lablgtk4 alcotest))
 
+(test
+ (name test_gdkpixbuf)
+ (libraries lablgtk4 alcotest))

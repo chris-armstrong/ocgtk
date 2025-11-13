@@ -56,6 +56,52 @@ CAMLexport int ml_lookup_to_c (const lookup_info table[], value key);
 
 #define Val_emptylist Val_int(0)
 
+/* Helper macro to generate Val_option_T functions */
+#define Make_Val_option(T) \
+value Val_option_##T(T* v) { return v ? Val_some(Val_##T(v)) : Val_none; }
+
+/* Helper macros for wrapping C functions */
+#define Ignore(x)
+#define Unit(x) (((void)x), Val_unit)
+
+#define ML_1(cname, conv1, conv) \
+CAMLprim value ml_##cname (value arg1) { return conv (cname (conv1 (arg1))); }
+
+#define ML_2(cname, conv1, conv2, conv) \
+CAMLprim value ml_##cname (value arg1, value arg2) { return conv (cname (conv1(arg1), conv2(arg2))); }
+
+#define ML_4(cname, conv1, conv2, conv3, conv4, conv) \
+CAMLprim value ml_##cname (value arg1, value arg2, value arg3, value arg4) { return conv (cname (conv1(arg1), conv2(arg2), conv3(arg3), conv4(arg4))); }
+
+#define ML_5(cname, conv1, conv2, conv3, conv4, conv5, conv) \
+CAMLprim value ml_##cname (value arg1, value arg2, value arg3, value arg4, value arg5) \
+{ return conv (cname (conv1(arg1), conv2(arg2), conv3(arg3), conv4(arg4), conv5(arg5))); }
+
+#define ML_8(cname, conv1, conv2, conv3, conv4, conv5, conv6, conv7, conv8, conv) \
+CAMLprim value ml_##cname (value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7, value arg8) \
+{ return conv (cname (conv1(arg1), conv2(arg2), conv3(arg3), conv4(arg4), conv5(arg5), conv6(arg6), conv7(arg7), conv8(arg8))); }
+
+#define ML_11(cname, conv1, conv2, conv3, conv4, conv5, conv6, conv7, conv8, conv9, conv10, conv11, conv) \
+CAMLprim value ml_##cname (value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7, value arg8, value arg9, value arg10, value arg11) \
+{ return conv (cname (conv1(arg1), conv2(arg2), conv3(arg3), conv4(arg4), conv5(arg5), conv6(arg6), conv7(arg7), conv8(arg8), conv9(arg9), conv10(arg10), conv11(arg11))); }
+
+#define ML_12(cname, conv1, conv2, conv3, conv4, conv5, conv6, conv7, conv8, conv9, conv10, conv11, conv12, conv) \
+CAMLprim value ml_##cname (value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7, value arg8, value arg9, value arg10, value arg11, value arg12) \
+{ return conv (cname (conv1(arg1), conv2(arg2), conv3(arg3), conv4(arg4), conv5(arg5), conv6(arg6), conv7(arg7), conv8(arg8), conv9(arg9), conv10(arg10), conv11(arg11), conv12(arg12))); }
+
+/* Bytecode variants for functions with >5 args */
+#define ML_bc8(fname) \
+CAMLprim value fname##_bc(value *argv, int argn) \
+{ return fname(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6], argv[7]); }
+
+#define ML_bc11(fname) \
+CAMLprim value fname##_bc(value *argv, int argn) \
+{ return fname(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6], argv[7], argv[8], argv[9], argv[10]); }
+
+#define ML_bc12(fname) \
+CAMLprim value fname##_bc(value *argv, int argn) \
+{ return fname(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6], argv[7], argv[8], argv[9], argv[10], argv[11]); }
+
 /* ==================================================================== */
 /* GTK4/GDK4 Type Conversions */
 /* ==================================================================== */
@@ -83,6 +129,12 @@ CAMLexport int ml_lookup_to_c (const lookup_info table[], value key);
 /* GType */
 #define GType_val(val) ((GType)Long_val(val))
 #define Val_GType(t) (Val_long(t))
+
+/* GdkPixbuf */
+#define GdkPixbuf_val(val) (*(GdkPixbuf**)Data_custom_val(val))
+value Val_GdkPixbuf_(GdkPixbuf *pb, gboolean ref);
+#define Val_GdkPixbuf(pb) (Val_GdkPixbuf_((pb), TRUE))
+#define Val_GdkPixbuf_new(pb) (Val_GdkPixbuf_((pb), FALSE))
 
 /* ==================================================================== */
 /* String Utilities */
