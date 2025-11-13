@@ -220,3 +220,12 @@ module Data = struct
     in
     (decode, encode)
 end
+
+(** {2 Test Helpers} *)
+
+(* These functions are for testing closure invocation only *)
+module Test = struct
+  external invoke_closure_void : g_closure -> unit = "ml_test_invoke_closure_void"
+  external invoke_closure_int : g_closure -> int -> unit = "ml_test_invoke_closure_int"
+  external invoke_closure_string : g_closure -> string -> unit = "ml_test_invoke_closure_string"
+end

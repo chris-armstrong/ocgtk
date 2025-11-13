@@ -168,7 +168,7 @@ let test_gvalue_create_empty () =
   check int "Empty GValue init and use" 123 result
 
 (* ==================================================================== *)
-(* Test Signal System *)
+(* Test Signal System and Closure Invocation *)
 (* ==================================================================== *)
 
 let test_signal_closure_creation () =
@@ -179,6 +179,72 @@ let test_signal_closure_creation () =
   ) in
   (* Closure should be a valid pointer (not null) *)
   check bool "Closure created" true (Obj.magic closure <> 0)
+
+let test_closure_invocation_void () =
+  (* Test that we can invoke a closure and it updates OCaml values *)
+  let called = ref false in
+  let closure = Gobject.Closure.create (fun _argv ->
+    called := true
+  ) in
+
+  (* Initially not called *)
+  check bool "Closure not yet called" false !called;
+
+  (* Invoke the closure *)
+  Gobject.Test.invoke_closure_void closure;
+
+  (* Should now be called *)
+  check bool "Closure was invoked" true !called
+
+let test_closure_invocation_int () =
+  (* Test that closures can receive integer arguments *)
+  let received_value = ref 0 in
+  let closure = Gobject.Closure.create (fun argv ->
+    (* The first argument after the instance is at position 1 *)
+    let gval = Gobject.Closure.nth argv ~pos:0 in
+    received_value := Gobject.Value.get_int gval
+  ) in
+
+  (* Invoke with an integer *)
+  Gobject.Test.invoke_closure_int closure 42;
+
+  (* Check we received the value *)
+  check int "Closure received int argument" 42 !received_value;
+
+  (* Test with different value *)
+  Gobject.Test.invoke_closure_int closure 123;
+  check int "Closure received second int" 123 !received_value
+
+let test_closure_invocation_string () =
+  (* Test that closures can receive string arguments *)
+  let received_value = ref "" in
+  let closure = Gobject.Closure.create (fun argv ->
+    let gval = Gobject.Closure.nth argv ~pos:0 in
+    received_value := Gobject.Value.get_string gval
+  ) in
+
+  (* Invoke with a string *)
+  Gobject.Test.invoke_closure_string closure "Hello, GTK4!";
+
+  (* Check we received the value *)
+  check string "Closure received string argument" "Hello, GTK4!" !received_value;
+
+  (* Test with different string *)
+  Gobject.Test.invoke_closure_string closure "Another test";
+  check string "Closure received second string" "Another test" !received_value
+
+let test_closure_multiple_invocations () =
+  (* Test that a closure can be invoked multiple times *)
+  let call_count = ref 0 in
+  let closure = Gobject.Closure.create (fun _argv ->
+    incr call_count
+  ) in
+
+  (* Invoke multiple times *)
+  for i = 1 to 5 do
+    Gobject.Test.invoke_closure_void closure;
+    check int ("Closure called " ^ string_of_int i ^ " times") i !call_count
+  done
 
 (* ==================================================================== *)
 (* Test Data Conversions *)
@@ -401,8 +467,12 @@ let () =
       test_case "GValue create_empty" `Quick test_gvalue_create_empty;
     ];
 
-    "Signals", [
+    "Signals and Closures", [
       test_case "Closure creation" `Quick test_signal_closure_creation;
+      test_case "Closure invocation (void)" `Quick test_closure_invocation_void;
+      test_case "Closure invocation (int)" `Quick test_closure_invocation_int;
+      test_case "Closure invocation (string)" `Quick test_closure_invocation_string;
+      test_case "Multiple closure invocations" `Quick test_closure_multiple_invocations;
     ];
 
     "Data Conversions", [

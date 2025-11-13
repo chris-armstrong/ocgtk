@@ -214,3 +214,17 @@ module Data : sig
   val flags : ([>  ] as 'a) Gpointer.variant_table -> (int -> 'a) * ('a -> int)
   (** Create decoder/encoder pair for flags types *)
 end
+
+(** {2 Test Helpers} *)
+
+(** Functions for testing closure invocation - not part of the public API *)
+module Test : sig
+  val invoke_closure_void : g_closure -> unit
+  (** Test helper: Invoke a closure with no arguments *)
+
+  val invoke_closure_int : g_closure -> int -> unit
+  (** Test helper: Invoke a closure with an integer argument *)
+
+  val invoke_closure_string : g_closure -> string -> unit
+  (** Test helper: Invoke a closure with a string argument *)
+end

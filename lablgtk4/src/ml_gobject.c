@@ -411,10 +411,32 @@ CAMLprim value ml_g_object_notify(value obj, value prop_name)
 /* Closure Support */
 /* ==================================================================== */
 
-/* Structure to hold OCaml callback and metadata */
-typedef struct {
-    value callback;  /* OCaml closure */
-} ml_closure_data;
+/* Following lablgtk3's approach: Store the OCaml closure directly in closure->data */
+
+/* Helper: Wrap GClosure pointer in OCaml abstract block */
+static value Val_GClosure_wrapped(GClosure *closure)
+{
+    CAMLparam0();
+    CAMLlocal1(val);
+    val = caml_alloc_small(1, Abstract_tag);
+    Field(val, 0) = (value)closure;
+    CAMLreturn(val);
+}
+
+/* Helper: Extract GClosure pointer from OCaml value */
+static GClosure *GClosure_val_wrapped(value val)
+{
+    return (GClosure *)Field(val, 0);
+}
+
+/* Invalidate notifier - called when closure is destroyed */
+static void ml_closure_invalidate(gpointer data, GClosure *closure)
+{
+    fprintf(stderr, "DEBUG: Invalidate notifier called\n");
+    fflush(stderr);
+    /* Unregister the global root for the OCaml closure */
+    caml_remove_global_root((value*)&closure->data);
+}
 
 /* Marshaller that invokes OCaml callback */
 static void ml_closure_marshal(GClosure *closure,
@@ -424,65 +446,107 @@ static void ml_closure_marshal(GClosure *closure,
                                  gpointer invocation_hint,
                                  gpointer marshal_data)
 {
+    FILE *f = fopen("/tmp/closure_debug.txt", "a");
+    if (f) {
+        fprintf(f, "Entered marshaller\n");
+        fclose(f);
+    }
+
     CAMLparam0();
     CAMLlocal2(argv_val, result_val);
-    ml_closure_data *data = (ml_closure_data *)closure->data;
+
+    /* Get the OCaml closure from closure->data */
+    value callback = (value)closure->data;
+
+    f = fopen("/tmp/closure_debug.txt", "a");
+    if (f) {
+        fprintf(f, "Got callback = %p, n_params = %u\n", (void*)callback, n_params);
+        fclose(f);
+    }
 
     /* Create argv record: { result; nargs; args } */
     argv_val = caml_alloc(3, 0);
 
-    /* Wrap return_value */
+    /* Wrap return_value - create an ml_gvalue wrapper */
     result_val = ml_g_value_new();
-    if (return_value != NULL) {
-        memcpy(GValue_val(result_val), return_value, sizeof(GValue));
+    ml_gvalue *mlgv = (ml_gvalue *)Data_custom_val(result_val);
+
+    if (return_value != NULL && G_IS_VALUE(return_value)) {
+        /* Copy the GValue data and mark as initialized */
+        memcpy(&mlgv->gvalue, return_value, sizeof(GValue));
+        mlgv->initialized = 1;
     }
     Store_field(argv_val, 0, result_val);
 
     /* nargs */
     Store_field(argv_val, 1, Val_int(n_params));
 
-    /* args - store pointer to param_values array */
-    Store_field(argv_val, 2, Val_pointer((void*)param_values));
+    /* args - store pointer to param_values array directly as a value */
+    Store_field(argv_val, 2, (value)param_values);
+
+    f = fopen("/tmp/closure_debug.txt", "a");
+    if (f) {
+        fprintf(f, "About to call OCaml callback, argv_val = %p\n", (void*)argv_val);
+        fprintf(f, "  Field 0 (result): %p\n", (void*)Field(argv_val, 0));
+        fprintf(f, "  Field 1 (nargs): %ld\n", (long)Int_val(Field(argv_val, 1)));
+        fprintf(f, "  Field 2 (args): %p\n", (void*)Field(argv_val, 2));
+        fclose(f);
+    }
 
     /* Call OCaml callback */
-    caml_callback_exn(data->callback, argv_val);
+    value result = caml_callback_exn(callback, argv_val);
+
+    f = fopen("/tmp/closure_debug.txt", "a");
+    if (f) {
+        if (Is_exception_result(result)) {
+            fprintf(f, "OCaml callback raised exception!\n");
+        } else {
+            fprintf(f, "OCaml callback returned successfully\n");
+        }
+        fclose(f);
+    }
 
     /* Copy result back if needed */
     if (return_value != NULL && G_IS_VALUE(return_value)) {
-        GValue *result_gv = GValue_val(result_val);
-        if (G_IS_VALUE(result_gv)) {
-            g_value_copy(result_gv, return_value);
+        ml_gvalue *result_mlgv = (ml_gvalue *)Data_custom_val(result_val);
+        if (result_mlgv->initialized && G_IS_VALUE(&result_mlgv->gvalue)) {
+            g_value_copy(&result_mlgv->gvalue, return_value);
         }
     }
 
     CAMLreturn0;
 }
 
-/* Finalize closure */
-static void ml_closure_finalize(gpointer notify_data, GClosure *closure)
-{
-    ml_closure_data *data = (ml_closure_data *)closure->data;
-    if (data != NULL) {
-        caml_remove_global_root(&data->callback);
-        g_free(data);
-    }
-}
-
 CAMLprim value ml_g_closure_new(value callback)
 {
     CAMLparam1(callback);
+    FILE *f = fopen("/tmp/closure_debug.txt", "a");
+    if (f) {
+        fprintf(f, "Creating closure for callback %p\n", (void*)callback);
+        fclose(f);
+    }
 
-    /* Allocate closure data */
-    ml_closure_data *data = g_new0(ml_closure_data, 1);
-    data->callback = callback;
-    caml_register_global_root(&data->callback);
+    /* Create GClosure with the OCaml value directly as data */
+    GClosure *closure = g_closure_new_simple(sizeof(GClosure), (gpointer)callback);
 
-    /* Create GClosure */
-    GClosure *closure = g_closure_new_simple(sizeof(GClosure), data);
+    /* Register the OCaml closure as a global root so GC doesn't collect it */
+    caml_register_global_root((value*)&closure->data);
+
+    /* Set up marshaller and invalidate notifier */
     g_closure_set_marshal(closure, ml_closure_marshal);
-    g_closure_add_finalize_notifier(closure, NULL, ml_closure_finalize);
+    g_closure_add_invalidate_notifier(closure, NULL, ml_closure_invalidate);
 
-    CAMLreturn(Val_pointer(closure));
+    /* Take ownership of the floating reference */
+    g_closure_ref(closure);
+    g_closure_sink(closure);
+
+    f = fopen("/tmp/closure_debug.txt", "a");
+    if (f) {
+        fprintf(f, "Created closure %p with data %p\n", (void*)closure, (void*)closure->data);
+        fclose(f);
+    }
+
+    CAMLreturn(Val_GClosure_wrapped(closure));
 }
 
 /* Access closure arguments */
@@ -491,16 +555,24 @@ CAMLprim value ml_g_closure_get_arg(value argv_val, value pos)
     CAMLparam2(argv_val, pos);
     CAMLlocal1(result);
 
-    const GValue *param_values = (const GValue *)Pointer_val(Field(argv_val, 2));
+    const GValue *param_values = (const GValue *)Field(argv_val, 2);
     int index = Int_val(pos);
     int nargs = Int_val(Field(argv_val, 1));
 
     if (index < 0 || index >= nargs)
         caml_invalid_argument("closure_get_arg: index out of bounds");
 
-    /* Create OCaml GValue wrapper */
+    /* Create OCaml GValue wrapper and copy the parameter */
     result = ml_g_value_new();
-    memcpy(GValue_val(result), &param_values[index], sizeof(GValue));
+    ml_gvalue *mlgv = (ml_gvalue *)Data_custom_val(result);
+
+    /* Initialize the destination GValue with the same type */
+    g_value_init(&mlgv->gvalue, G_VALUE_TYPE(&param_values[index]));
+
+    /* Deep copy the GValue contents */
+    g_value_copy(&param_values[index], &mlgv->gvalue);
+
+    mlgv->initialized = 1;  /* Mark as initialized */
 
     CAMLreturn(result);
 }
@@ -581,6 +653,77 @@ CAMLprim value ml_g_signal_emit_by_name(value obj, value signal_name)
 {
     g_signal_emit_by_name(G_OBJECT(Pointer_val(obj)), String_val(signal_name));
     return Val_unit;
+}
+
+/* ==================================================================== */
+/* Test Helpers for Closure Invocation */
+/* ==================================================================== */
+
+/* Test helper to directly invoke a closure with no arguments and no return value */
+CAMLprim value ml_test_invoke_closure_void(value closure_val)
+{
+    CAMLparam1(closure_val);
+    GClosure *closure = GClosure_val_wrapped(closure_val);
+
+    FILE *f = fopen("/tmp/closure_debug.txt", "a");
+    if (f) {
+        fprintf(f, "Test helper - closure pointer = %p\n", (void*)closure);
+        fprintf(f, "Test helper - closure->data = %p\n", closure ? (void*)closure->data : NULL);
+        fprintf(f, "Test helper - closure->marshal = %p\n", closure ? (void*)closure->marshal : NULL);
+        fprintf(f, "About to call g_closure_invoke...\n");
+        fclose(f);
+    }
+
+    /* Invoke the closure with no parameters and no return value */
+    g_closure_invoke(closure, NULL, 0, NULL, NULL);
+
+    f = fopen("/tmp/closure_debug.txt", "a");
+    if (f) {
+        fprintf(f, "g_closure_invoke returned successfully\n");
+        fclose(f);
+    }
+
+    CAMLreturn(Val_unit);
+}
+
+/* Test helper to invoke a closure with an integer argument */
+CAMLprim value ml_test_invoke_closure_int(value closure_val, value arg_val)
+{
+    CAMLparam2(closure_val, arg_val);
+    GClosure *closure = GClosure_val_wrapped(closure_val);
+    GValue param = G_VALUE_INIT;
+
+    /* Set up the parameter */
+    g_value_init(&param, G_TYPE_INT);
+    g_value_set_int(&param, Int_val(arg_val));
+
+    /* Invoke the closure with no return value */
+    g_closure_invoke(closure, NULL, 1, &param, NULL);
+
+    /* Clean up */
+    g_value_unset(&param);
+
+    CAMLreturn(Val_unit);
+}
+
+/* Test helper to invoke a closure with a string argument */
+CAMLprim value ml_test_invoke_closure_string(value closure_val, value arg_val)
+{
+    CAMLparam2(closure_val, arg_val);
+    GClosure *closure = GClosure_val_wrapped(closure_val);
+    GValue param = G_VALUE_INIT;
+
+    /* Set up the parameter */
+    g_value_init(&param, G_TYPE_STRING);
+    g_value_set_string(&param, String_val(arg_val));
+
+    /* Invoke the closure with no return value */
+    g_closure_invoke(closure, NULL, 1, &param, NULL);
+
+    /* Clean up */
+    g_value_unset(&param);
+
+    CAMLreturn(Val_unit);
 }
 
 /* ==================================================================== */

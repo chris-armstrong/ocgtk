@@ -76,6 +76,10 @@ CAMLexport int ml_lookup_to_c (const lookup_info table[], value key);
 #define GObject_val(val) ((GObject*)Pointer_val(val))
 #define Val_GObject(obj) (Val_pointer(obj))
 
+/* GClosure */
+#define GClosure_val(val) ((GClosure*)Pointer_val(val))
+#define Val_GClosure(obj) (Val_pointer(obj))
+
 /* GType */
 #define GType_val(val) ((GType)Long_val(val))
 #define Val_GType(t) (Val_long(t))
