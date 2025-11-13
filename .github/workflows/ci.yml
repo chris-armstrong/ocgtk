@@ -74,7 +74,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ocaml-compiler: [4.14.x, 5.1.x]
+        ocaml-compiler: [4.14.x, 5.1.x, 5.2.x]
 
     steps:
       - name: Checkout code
@@ -86,26 +86,44 @@ jobs:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
           dune-cache: true
 
-      - name: Install system dependencies
+      - name: Install GTK4 system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
             libgtk-4-dev \
             libcairo2-dev \
             libpango1.0-dev \
-            libgdk-pixbuf-2.0-dev
+            libgdk-pixbuf-2.0-dev \
+            libglib2.0-dev
 
       - name: Install OCaml dependencies
         working-directory: lablgtk4
-        run: opam install cairo2 dune
-        continue-on-error: true
+        run: opam install . --deps-only --with-test
 
-      - name: Build lablgtk4
+      - name: Build code generation tools
+        working-directory: lablgtk4
+        run: |
+          opam exec -- dune build src/tools/varcc.exe
+          opam exec -- dune build src/tools/propcc.exe
+
+      - name: Build lablgtk4 library
         working-directory: lablgtk4
         run: opam exec -- dune build
-        continue-on-error: true
 
-      - name: Run lablgtk4 tests
+      - name: Run enum tests (individually to avoid segfault in test runner)
         working-directory: lablgtk4
-        run: opam exec -- dune runtest
-        continue-on-error: true
+        run: |
+          opam exec -- ./_build/default/tests/test_enum_roundtrip.exe
+          opam exec -- ./_build/default/tests/test_enum_values.exe
+          opam exec -- ./_build/default/tests/test_all_enums.exe
+          opam exec -- ./_build/default/tests/test_glib.exe
+          opam exec -- ./_build/default/tests/test_gobject.exe
+
+      - name: Display generated enum modules
+        working-directory: lablgtk4
+        run: |
+          echo "=== Generated enum modules ==="
+          ls -lh _build/default/src/*Enums.ml
+          echo ""
+          echo "=== Line counts ==="
+          wc -l _build/default/src/*Enums.ml

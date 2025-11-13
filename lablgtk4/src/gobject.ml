@@ -12,7 +12,22 @@
 (* Minimal Gobject module for enum conversions *)
 
 module Data = struct
-  (* For now, we just need the enum converter for testing *)
+  (* enum: creates encoder/decoder pair for simple enumerations *)
   let enum tbl =
     (Gpointer.decode_variant tbl, Gpointer.encode_variant tbl)
+
+  (* flags: creates encoder/decoder pair for flag-type enumerations
+     Flags can be combined with bitwise OR, so we need to handle lists *)
+  let flags tbl =
+    let decode flags =
+      (* For now, just decode as a single value - full flag support would
+         require decoding each bit and returning a list *)
+      Gpointer.decode_variant tbl flags
+    in
+    let encode flag =
+      (* For now, just encode as a single value - full flag support would
+         require encoding a list and combining with bitwise OR *)
+      Gpointer.encode_variant tbl flag
+    in
+    (decode, encode)
 end

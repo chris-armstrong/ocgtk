@@ -1,0 +1,62 @@
+(* Tags for GObject - OCaml variant bindings for GObject enumerations *)
+(*
+   GObject is the object system library that forms the foundation of GTK's
+   type system. These enumerations remained stable from GTK3 to GTK4.
+
+   See: https://docs.gtk.org/gobject/
+*)
+
+package "Gobject"
+prefix "gobject_"
+
+(* GType fundamental types - basic building blocks of the type system *)
+type fundamental_type = "G_TYPE_"
+  [ `INVALID    (* Invalid type *)
+  | `NONE       (* No type *)
+  | `INTERFACE  (* Interface type *)
+  | `CHAR       (* Signed char type *)
+  | `UCHAR      (* Unsigned char type *)
+  | `BOOLEAN    (* Boolean type *)
+  | `INT        (* Signed int type *)
+  | `UINT       (* Unsigned int type *)
+  | `LONG       (* Signed long type *)
+  | `ULONG      (* Unsigned long type *)
+  | `INT64      (* Signed 64-bit int type *)
+  | `UINT64     (* Unsigned 64-bit int type *)
+  | `ENUM       (* Enumeration type *)
+  | `FLAGS      (* Flags type *)
+  | `FLOAT      (* Float type *)
+  | `DOUBLE     (* Double type *)
+  | `STRING     (* String type *)
+  | `POINTER    (* Pointer type *)
+  | `BOXED      (* Boxed type *)
+  | `PARAM      (* Parameter type *)
+  | `OBJECT ]   (* Object type *)
+
+(* Internal data type tags for OCaml<->C conversion - not converted to C *)
+type noconv data =
+  [ `NONE     (* No data *)
+  | `CHAR     (* Character data *)
+  | `CAML     (* Caml value *)
+  | `BOOL     (* Boolean data *)
+  | `INT      (* Integer data *)
+  | `FLOAT    (* Float data *)
+  | `STRING   (* String data *)
+  | `OBJECT   (* Object data *)
+  | `POINTER  (* Pointer data *)
+  | `INT64    (* 64-bit integer *)
+  | `INT32    (* 32-bit integer *)
+  | `LONG ]   (* Long integer *)
+
+(* GSignalFlags: Signal emission and connection flags *)
+type signal_type = "G_SIGNAL_"
+  [ `RUN_FIRST   (* Invoke handler before default handler *)
+  | `RUN_LAST    (* Invoke handler after default handler *)
+  | `NO_RECURSE  (* Prevent recursive emission *)
+  | `ACTION      (* Signal is an action signal *)
+  | `NO_HOOKS ]  (* No emission hooks allowed *)
+
+(* GConnectFlags: Signal connection behavior flags *)
+type flags connect_flags = "G_CONNECT_"
+  [ `AFTER   (* Connect handler after default handler *)
+  | `SWAPPED ](* Swap instance and data parameters *)
