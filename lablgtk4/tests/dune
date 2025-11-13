@@ -1,4 +1,11 @@
-; Test suite for lablgtk4 - comprehensive enum testing
+; Test suite for lablgtk4
+;
+; Test organization:
+; - test_enum_roundtrip.ml: Simple roundtrip tests for basic GTK4 enums
+; - test_enum_values.ml: Value coverage tests for basic GTK4 enums
+; - test_all_enums.ml: Comprehensive tests for all enum modules (GTK4, GDK4, GLib, Pango, GObject)
+; - test_glib.ml: GLib binding tests (minimal for now)
+; - test_gobject.ml: GObject binding tests (minimal for now)
 
 (test
  (name test_enum_roundtrip)
@@ -7,3 +14,16 @@
 (test
  (name test_enum_values)
  (libraries lablgtk4 alcotest))
+
+(test
+ (name test_all_enums)
+ (libraries lablgtk4 alcotest))
+
+(test
+ (name test_glib)
+ (libraries lablgtk4 alcotest))
+
+(test
+ (name test_gobject)
+ (libraries lablgtk4 alcotest))
+
