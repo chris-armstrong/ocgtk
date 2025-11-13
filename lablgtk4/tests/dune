@@ -1,2 +1,9 @@
-; Test suite will be added in Phase 1.4
-; Placeholder - no tests yet
+; Test suite for lablgtk4 - comprehensive enum testing
+
+(test
+ (name test_enum_roundtrip)
+ (libraries lablgtk4 alcotest))
+
+(test
+ (name test_enum_values)
+ (libraries lablgtk4 alcotest))

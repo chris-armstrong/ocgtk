@@ -17,4 +17,5 @@
   (ocaml (>= 4.09))
   (dune (>= 3.2))
   (conf-gtk4 (>= 4.10))
-  cairo2))
+  cairo2
+  (alcotest :with-test)))

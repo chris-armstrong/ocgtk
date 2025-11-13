@@ -1,0 +1,24 @@
+(* GTK4 core enumerations - minimal set for verification *)
+package "Gtk4"
+prefix "gtk4_"
+
+(* GtkAlign - alignment constants *)
+type align = "GtkAlign" [
+  | `FILL     "GTK_ALIGN_FILL"
+  | `START    "GTK_ALIGN_START"
+  | `END      "GTK_ALIGN_END"
+  | `CENTER   "GTK_ALIGN_CENTER"
+  | `BASELINE "GTK_ALIGN_BASELINE"
+]
+
+(* GtkOrientation - horizontal or vertical *)
+type orientation = "GtkOrientation" [
+  | `HORIZONTAL "GTK_ORIENTATION_HORIZONTAL"
+  | `VERTICAL   "GTK_ORIENTATION_VERTICAL"
+]
+
+(* GtkPackType - packing direction *)
+type pack_type = "GtkPackType" [
+  | `START "GTK_PACK_START"
+  | `END   "GTK_PACK_END"
+]
