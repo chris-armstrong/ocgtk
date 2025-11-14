@@ -83,10 +83,9 @@ jobs:
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
           dune-cache: true
-          opam-depext: true
 
       - name: Pin conf-gtk4 package
-        run: opam pin add -n conf-gtk4 .
+        run: opam pin add -n conf-gtk4 conf-gtk4
 
       - name: Install OCaml dependencies
         working-directory: lablgtk4
