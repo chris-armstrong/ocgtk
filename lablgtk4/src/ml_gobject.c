@@ -413,27 +413,60 @@ CAMLprim value ml_g_object_notify(value obj, value prop_name)
 
 /* Following lablgtk3's approach: Store the OCaml closure directly in closure->data */
 
-/* Helper: Wrap GClosure pointer in OCaml abstract block */
-static value Val_GClosure_wrapped(GClosure *closure)
+/* Custom block for GClosure WITHOUT finalizer to avoid GC issues
+ * NOTE: This means GClosures will not be freed until program exit,
+ * but this is safer than trying to unref during GC which can cause
+ * segfaults when the invalidate notifier tries to modify global roots
+ * while they're being scanned.
+ */
+static struct custom_operations ml_custom_GClosure = {
+    "GClosure/4.0/",
+    NULL,  /* No finalizer - let GLib clean up at program exit */
+    custom_compare_default,
+    custom_hash_default,
+    custom_serialize_default,
+    custom_deserialize_default,
+    custom_compare_ext_default,
+    custom_fixed_length_default
+};
+
+/* Wrap GClosure with ref and sink */
+static value Val_GClosure_sink(GClosure *closure)
 {
     CAMLparam0();
-    CAMLlocal1(val);
-    val = caml_alloc_small(1, Abstract_tag);
-    Field(val, 0) = (value)closure;
-    CAMLreturn(val);
-}
+    CAMLlocal1(ret);
 
-/* Helper: Extract GClosure pointer from OCaml value */
-static GClosure *GClosure_val_wrapped(value val)
-{
-    return (GClosure *)Field(val, 0);
+    if (!closure) {
+        caml_failwith("Val_GClosure_sink: NULL closure");
+    }
+
+    /* Ref and sink the closure */
+    g_closure_ref(closure);
+    g_closure_sink(closure);
+
+    /* Create custom block WITHOUT finalizer */
+    ret = caml_alloc_custom(&ml_custom_GClosure, sizeof(GClosure*), 0, 0);
+    *((GClosure**)Data_custom_val(ret)) = closure;
+
+    CAMLreturn(ret);
 }
 
 /* Invalidate notifier - called when closure is destroyed */
 static void ml_closure_invalidate(gpointer data, GClosure *closure)
 {
-    /* Unregister the global root for the OCaml closure */
-    caml_remove_global_root((value*)&closure->data);
+    /* The data pointer is the allocated value* that we registered as global root
+     *
+     * IMPORTANT: We do NOT remove the global root or free the memory here because:
+     * 1. This function may be called during OCaml GC, which is scanning global roots
+     * 2. Modifying the global root list during GC causes segfaults
+     * 3. The memory will be reclaimed when the program exits anyway
+     *
+     * This is a small memory leak per closure, but it's safer than crashing.
+     * In a long-running GUI application, you should avoid creating/destroying
+     * many closures. Reuse them when possible.
+     */
+    (void)data;  /* Intentionally unused to avoid memory corruption */
+    (void)closure;
 }
 
 /* Marshaller that invokes OCaml callback */
@@ -447,7 +480,7 @@ static void ml_closure_marshal(GClosure *closure,
     CAMLparam0();
     CAMLlocal2(argv_val, result_val);
 
-    /* Get the OCaml closure from closure->data */
+    /* Get the OCaml closure directly from closure->data */
     value callback = (value)closure->data;
 
     /* Create argv record: { result; nargs; args } */
@@ -494,21 +527,25 @@ CAMLprim value ml_g_closure_new(value callback)
 {
     CAMLparam1(callback);
 
-    /* Create GClosure with the OCaml value directly as data */
+    /* Create GClosure with OCaml callback directly as data
+     * NOTE: We store the value directly as a pointer for compatibility with lablgtk3
+     */
     GClosure *closure = g_closure_new_simple(sizeof(GClosure), (gpointer)callback);
 
-    /* Register the OCaml closure as a global root so GC doesn't collect it */
+    /* Register the OCaml callback as a global root to prevent GC
+     * We register &closure->data which points into the GClosure struct.
+     * This is safe as long as the GClosure outlives the need for the callback.
+     */
     caml_register_global_root((value*)&closure->data);
 
-    /* Set up marshaller and invalidate notifier */
+    /* Set up marshaller only - no invalidate notifier to avoid GC race conditions
+     * The global root will be leaked, but this is safer than attempting cleanup
+     * during program exit which can cause GC race conditions.
+     */
     g_closure_set_marshal(closure, ml_closure_marshal);
-    g_closure_add_invalidate_notifier(closure, NULL, ml_closure_invalidate);
 
-    /* Take ownership of the floating reference */
-    g_closure_ref(closure);
-    g_closure_sink(closure);
-
-    CAMLreturn(Val_GClosure_wrapped(closure));
+    /* Wrap with custom block (no finalizer to avoid unreffing during GC) */
+    CAMLreturn(Val_GClosure_sink(closure));
 }
 
 /* Access closure arguments
@@ -633,7 +670,7 @@ CAMLprim value ml_g_signal_emit_by_name(value obj, value signal_name)
 CAMLprim value ml_test_invoke_closure_void(value closure_val)
 {
     CAMLparam1(closure_val);
-    GClosure *closure = GClosure_val_wrapped(closure_val);
+    GClosure *closure = GClosure_val(closure_val);
 
     /* Invoke the closure with no parameters and no return value */
     g_closure_invoke(closure, NULL, 0, NULL, NULL);
@@ -645,7 +682,7 @@ CAMLprim value ml_test_invoke_closure_void(value closure_val)
 CAMLprim value ml_test_invoke_closure_int(value closure_val, value arg_val)
 {
     CAMLparam2(closure_val, arg_val);
-    GClosure *closure = GClosure_val_wrapped(closure_val);
+    GClosure *closure = GClosure_val(closure_val);
     GValue param = G_VALUE_INIT;
 
     /* Set up the parameter */
@@ -665,7 +702,7 @@ CAMLprim value ml_test_invoke_closure_int(value closure_val, value arg_val)
 CAMLprim value ml_test_invoke_closure_string(value closure_val, value arg_val)
 {
     CAMLparam2(closure_val, arg_val);
-    GClosure *closure = GClosure_val_wrapped(closure_val);
+    GClosure *closure = GClosure_val(closure_val);
     GValue param = G_VALUE_INIT;
 
     /* Set up the parameter */
@@ -685,7 +722,7 @@ CAMLprim value ml_test_invoke_closure_string(value closure_val, value arg_val)
 CAMLprim value ml_test_invoke_closure_two_ints(value closure_val, value arg1_val, value arg2_val)
 {
     CAMLparam3(closure_val, arg1_val, arg2_val);
-    GClosure *closure = GClosure_val_wrapped(closure_val);
+    GClosure *closure = GClosure_val(closure_val);
     GValue params[2] = {G_VALUE_INIT, G_VALUE_INIT};
 
     /* Set up the parameters */
@@ -709,7 +746,7 @@ CAMLprim value ml_test_invoke_closure_two_ints(value closure_val, value arg1_val
 CAMLprim value ml_test_invoke_closure_boolean(value closure_val, value arg_val)
 {
     CAMLparam2(closure_val, arg_val);
-    GClosure *closure = GClosure_val_wrapped(closure_val);
+    GClosure *closure = GClosure_val(closure_val);
     GValue param = G_VALUE_INIT;
 
     /* Set up the parameter */
@@ -729,7 +766,7 @@ CAMLprim value ml_test_invoke_closure_boolean(value closure_val, value arg_val)
 CAMLprim value ml_test_invoke_closure_double(value closure_val, value arg_val)
 {
     CAMLparam2(closure_val, arg_val);
-    GClosure *closure = GClosure_val_wrapped(closure_val);
+    GClosure *closure = GClosure_val(closure_val);
     GValue param = G_VALUE_INIT;
 
     /* Set up the parameter */

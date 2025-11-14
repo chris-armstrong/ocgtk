@@ -153,9 +153,8 @@ CAMLprim value fname##_bc(value *argv, int argn) \
 #define GObject_val(val) ((GObject*)(val))
 #define Val_GObject(obj) ((value)(obj))
 
-/* GClosure - use direct cast */
-#define GClosure_val(val) ((GClosure*)(val))
-#define Val_GClosure(obj) ((value)(obj))
+/* GClosure - custom block with finalizer (defined in ml_gobject.c) */
+#define GClosure_val(val) (*((GClosure**)Data_custom_val(val)))
 
 /* GType */
 #define GType_val(val) ((GType)Long_val(val))
