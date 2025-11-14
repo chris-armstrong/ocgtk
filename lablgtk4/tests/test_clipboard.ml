@@ -253,6 +253,128 @@ let test_callback_exception = with_display (fun display ->
   check bool "callback was called" true !callback_called
 )
 
+let test_exception_cleanup = with_display (fun display ->
+  let clipboard = GdkClipboard.get display in
+
+  (* Set text *)
+  GdkClipboard.set_text clipboard "Cleanup test";
+
+  (* Track callback invocation and exception *)
+  let callback_called = ref false in
+  GdkClipboard.read_text_async clipboard ~callback:(fun _text ->
+    callback_called := true;
+    raise (Invalid_argument "Test exception for cleanup")
+  );
+
+  (* Run main loop *)
+  for _ = 1 to 100 do
+    if not !callback_called then
+      ignore (Glib.Main.iteration false)
+  done;
+
+  (* Verify callback was called *)
+  check bool "callback executed" true !callback_called;
+
+  (* Now verify we can still use the clipboard after exception *)
+  GdkClipboard.set_text clipboard "After exception";
+  let second_call = ref false in
+  GdkClipboard.read_text_async clipboard ~callback:(fun text ->
+    second_call := true;
+    match text with
+    | Some t -> check string "clipboard still works" "After exception" t
+    | None -> fail "clipboard read failed after exception"
+  );
+
+  (* Run main loop again *)
+  for _ = 1 to 100 do
+    if not !second_call then
+      ignore (Glib.Main.iteration false)
+  done;
+
+  check bool "second callback executed" true !second_call
+)
+
+let test_exception_types = with_display (fun display ->
+  let clipboard = GdkClipboard.get display in
+
+  (* Test different exception types *)
+  let exceptions_to_test = [
+    (fun () -> failwith "Failure");
+    (fun () -> raise (Invalid_argument "Invalid arg"));
+    (fun () -> raise Not_found);
+    (fun () -> raise (Sys_error "System error"));
+  ] in
+
+  let test_exception exn_fn =
+    GdkClipboard.set_text clipboard "Exception type test";
+    let called = ref false in
+    GdkClipboard.read_text_async clipboard ~callback:(fun _text ->
+      called := true;
+      exn_fn ()
+    );
+
+    for _ = 1 to 100 do
+      if not !called then ignore (Glib.Main.iteration false)
+    done;
+
+    !called
+  in
+
+  (* All exceptions should be caught and logged, none should crash *)
+  let results = List.map test_exception exceptions_to_test in
+  check bool "all exception types handled" true (List.for_all (fun x -> x) results)
+)
+
+let test_multiple_exceptions = with_display (fun display ->
+  let clipboard = GdkClipboard.get display in
+
+  (* Fire off multiple async operations that will all throw exceptions *)
+  let count = ref 0 in
+
+  for i = 1 to 5 do
+    GdkClipboard.set_text clipboard (Printf.sprintf "Exception test %d" i);
+    GdkClipboard.read_text_async clipboard ~callback:(fun _text ->
+      incr count;
+      failwith (Printf.sprintf "Exception %d" i)
+    );
+  done;
+
+  (* Run main loop to process all callbacks *)
+  for _ = 1 to 500 do
+    if !count < 5 then
+      ignore (Glib.Main.iteration false)
+  done;
+
+  (* All callbacks should have been called despite exceptions *)
+  check int "all callbacks executed" 5 !count
+)
+
+let test_exception_doesnt_leak = with_display (fun display ->
+  let clipboard = GdkClipboard.get display in
+
+  (* Create many callbacks that throw exceptions to test for memory leaks *)
+  let iterations = 50 in
+  let completed = ref 0 in
+
+  for i = 1 to iterations do
+    GdkClipboard.set_text clipboard (Printf.sprintf "Leak test %d" i);
+    GdkClipboard.read_text_async clipboard ~callback:(fun _text ->
+      incr completed;
+      if i mod 2 = 0 then
+        failwith "Exception for leak test"
+    );
+  done;
+
+  (* Process all callbacks *)
+  for _ = 1 to (iterations * 20) do
+    if !completed < iterations then
+      ignore (Glib.Main.iteration false)
+  done;
+
+  (* All should have completed *)
+  check int "all iterations completed" iterations !completed
+)
+
 (* ==================================================================== *)
 (* Test Suite Definition *)
 (* ==================================================================== *)
@@ -292,5 +414,9 @@ let () =
 
     "Error Handling", [
       test_case "callback exception" `Quick test_callback_exception;
+      test_case "exception cleanup" `Quick test_exception_cleanup;
+      test_case "different exception types" `Quick test_exception_types;
+      test_case "multiple exceptions" `Quick test_multiple_exceptions;
+      test_case "exception memory safety" `Slow test_exception_doesnt_leak;
     ];
   ]

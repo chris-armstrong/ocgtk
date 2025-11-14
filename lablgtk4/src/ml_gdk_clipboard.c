@@ -17,6 +17,7 @@
  * type-safe clipboard API.
  */
 
+#include <stdio.h>
 #include <string.h>
 #include <gtk/gtk.h>
 #include <caml/mlvalues.h>
@@ -147,7 +148,33 @@ static void ml_read_text_callback(GObject *source_object,
     /* Call OCaml callback with exception handling */
     value exn_result = caml_callback_exn(data->callback, result);
     if (Is_exception_result(exn_result)) {
-        /* Log error but don't crash - callback exceptions are handled in OCaml */
+        /* Extract the exception for logging */
+        value exn = Extract_exception(exn_result);
+
+        /* Try to get a string representation of the exception */
+        CAMLlocal1(exn_str);
+        static const value *printexc_to_string = NULL;
+
+        /* Cache the Printexc.to_string function */
+        if (printexc_to_string == NULL) {
+            printexc_to_string = caml_named_value("Printexc.to_string");
+        }
+
+        /* Log the exception to stderr */
+        if (printexc_to_string != NULL) {
+            exn_str = caml_callback_exn(*printexc_to_string, exn);
+            if (!Is_exception_result(exn_str)) {
+                fprintf(stderr, "GdkClipboard async callback raised exception: %s\n",
+                        String_val(exn_str));
+            } else {
+                fprintf(stderr, "GdkClipboard async callback raised an exception (details unavailable)\n");
+            }
+        } else {
+            fprintf(stderr, "GdkClipboard async callback raised an exception (Printexc.to_string not found)\n");
+        }
+        fflush(stderr);
+
+        /* Note: We continue with cleanup below - exceptions don't prevent resource cleanup */
     }
 
     /* Clean up */
