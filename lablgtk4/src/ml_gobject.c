@@ -411,17 +411,24 @@ CAMLprim value ml_g_object_notify(value obj, value prop_name)
 /* Closure Support */
 /* ==================================================================== */
 
-/* Following lablgtk3's approach: Store the OCaml closure directly in closure->data */
-
-/* Custom block for GClosure WITHOUT finalizer to avoid GC issues
- * NOTE: This means GClosures will not be freed until program exit,
- * but this is safer than trying to unref during GC which can cause
- * segfaults when the invalidate notifier tries to modify global roots
- * while they're being scanned.
+/* GClosure integration with OCaml callbacks
+ *
+ * IMPORTANT: We allocate separate storage for the OCaml callback value and
+ * register that storage as a global root, rather than registering &closure->data.
+ *
+ * This avoids a race condition during program exit:
+ * - If we register &closure->data (which points INTO the GClosure struct),
+ *   and GLib frees the GClosure before OCaml GC finishes scanning global roots,
+ *   the GC will try to access freed memory → segfault
+ * - By allocating our own storage, we control when it's freed (after unregistering)
+ *
+ * This pattern is essential for any C library that stores OCaml callbacks.
  */
+
+/* Custom block for GClosure - no finalizer needed since GLib manages the lifecycle */
 static struct custom_operations ml_custom_GClosure = {
     "GClosure/4.0/",
-    NULL,  /* No finalizer - let GLib clean up at program exit */
+    NULL,  /* No finalizer - GLib handles cleanup via invalidate notifier */
     custom_compare_default,
     custom_hash_default,
     custom_serialize_default,
@@ -451,22 +458,28 @@ static value Val_GClosure_sink(GClosure *closure)
     CAMLreturn(ret);
 }
 
-/* Invalidate notifier - called when closure is destroyed */
+/* Invalidate notifier - called when GLib destroys the closure
+ *
+ * The data parameter is a pointer to our allocated storage (value*) that
+ * we registered as a global root. We can safely clean it up here.
+ */
 static void ml_closure_invalidate(gpointer data, GClosure *closure)
 {
-    /* The data pointer is the allocated value* that we registered as global root
-     *
-     * IMPORTANT: We do NOT remove the global root or free the memory here because:
-     * 1. This function may be called during OCaml GC, which is scanning global roots
-     * 2. Modifying the global root list during GC causes segfaults
-     * 3. The memory will be reclaimed when the program exits anyway
-     *
-     * This is a small memory leak per closure, but it's safer than crashing.
-     * In a long-running GUI application, you should avoid creating/destroying
-     * many closures. Reuse them when possible.
+    (void)closure;  /* Unused parameter */
+
+    if (data == NULL) return;
+
+    value *callback_storage = (value*)data;
+
+    /* Remove from global roots - this is safe because:
+     * 1. OCaml's runtime lock protects the global roots list
+     * 2. If GC is scanning roots, it will finish before we modify the list
+     * 3. We're not touching closure->data (which GLib may have already freed)
      */
-    (void)data;  /* Intentionally unused to avoid memory corruption */
-    (void)closure;
+    caml_remove_global_root(callback_storage);
+
+    /* Now safe to free our storage */
+    free(callback_storage);
 }
 
 /* Marshaller that invokes OCaml callback */
@@ -480,8 +493,12 @@ static void ml_closure_marshal(GClosure *closure,
     CAMLparam0();
     CAMLlocal2(argv_val, result_val);
 
-    /* Get the OCaml closure directly from closure->data */
-    value callback = (value)closure->data;
+    /* Get the OCaml callback from our allocated storage */
+    value *callback_storage = (value*)closure->data;
+    if (callback_storage == NULL) {
+        CAMLreturn0;
+    }
+    value callback = *callback_storage;
 
     /* Create argv record: { result; nargs; args } */
     argv_val = caml_alloc(3, 0);
@@ -527,24 +544,32 @@ CAMLprim value ml_g_closure_new(value callback)
 {
     CAMLparam1(callback);
 
-    /* Create GClosure with OCaml callback directly as data
-     * NOTE: We store the value directly as a pointer for compatibility with lablgtk3
+    /* Allocate separate storage for the OCaml callback value
+     * This memory is owned by us, not by GLib, so we control when it's freed
      */
-    GClosure *closure = g_closure_new_simple(sizeof(GClosure), (gpointer)callback);
+    value *callback_storage = (value*)malloc(sizeof(value));
+    if (callback_storage == NULL) {
+        caml_failwith("ml_g_closure_new: failed to allocate callback storage");
+    }
 
-    /* Register the OCaml callback as a global root to prevent GC
-     * We register &closure->data which points into the GClosure struct.
-     * This is safe as long as the GClosure outlives the need for the callback.
+    /* Store the callback value in our allocated storage */
+    *callback_storage = callback;
+
+    /* Register our storage as a global root to prevent GC of the callback
+     * This is safe because we control the lifetime of callback_storage
      */
-    caml_register_global_root((value*)&closure->data);
+    caml_register_global_root(callback_storage);
 
-    /* Set up marshaller only - no invalidate notifier to avoid GC race conditions
-     * The global root will be leaked, but this is safer than attempting cleanup
-     * during program exit which can cause GC race conditions.
+    /* Create GClosure with pointer to our storage as data */
+    GClosure *closure = g_closure_new_simple(sizeof(GClosure), (gpointer)callback_storage);
+
+    /* Set up marshaller and invalidate notifier
+     * The invalidate notifier will unregister the global root and free our storage
      */
     g_closure_set_marshal(closure, ml_closure_marshal);
+    g_closure_add_invalidate_notifier(closure, (gpointer)callback_storage, ml_closure_invalidate);
 
-    /* Wrap with custom block (no finalizer to avoid unreffing during GC) */
+    /* Wrap with custom block */
     CAMLreturn(Val_GClosure_sink(closure));
 }
 
