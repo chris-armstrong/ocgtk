@@ -24,7 +24,9 @@ external decode_variant : 'a variant_table -> int -> 'a
     = "ml_lookup_from_c"
 external encode_variant : 'a variant_table -> 'a -> int
     = "ml_lookup_to_c"
+(* TODO: Add flags support when needed
 external decode_flags : 'a variant_table -> int -> 'a list
     = "ml_lookup_flags_from_c"
 external encode_flags : 'a variant_table -> 'a list -> int
     = "ml_lookup_flags_to_c"
+*)

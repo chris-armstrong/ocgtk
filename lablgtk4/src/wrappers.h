@@ -167,6 +167,35 @@ value Val_GdkPixbuf_(GdkPixbuf *pb, gboolean ref);
 #define Val_GdkPixbuf_new(pb) (Val_GdkPixbuf_((pb), FALSE))
 
 /* ==================================================================== */
+/* Pango Type Conversions */
+/* ==================================================================== */
+
+/* Pango GObject types - use direct cast */
+#define PangoContext_val(val) ((PangoContext*)(val))
+#define Val_PangoContext(obj) ((value)(obj))
+
+#define PangoLayout_val(val) ((PangoLayout*)(val))
+#define Val_PangoLayout(obj) ((value)(obj))
+
+#define PangoFont_val(val) ((PangoFont*)(val))
+#define Val_PangoFont(obj) ((value)(obj))
+
+#define PangoFontMap_val(val) ((PangoFontMap*)(val))
+#define Val_PangoFontMap(obj) ((value)(obj))
+
+/* Pango boxed types - custom blocks */
+#define PangoFontDescription_val(val) (*(PangoFontDescription**)Data_custom_val(val))
+value Val_PangoFontDescription_new(PangoFontDescription *fd);
+value Val_PangoFontDescription(PangoFontDescription *fd);
+
+#define PangoFontMetrics_val(val) (*(PangoFontMetrics**)Data_custom_val(val))
+value Val_PangoFontMetrics_new(PangoFontMetrics *fm);
+
+/* PangoLanguage - simple pointer (const static data) */
+#define PangoLanguage_val(val) ((PangoLanguage*)val)
+#define Val_PangoLanguage(lang) ((value)(lang))
+
+/* ==================================================================== */
 /* String Utilities */
 /* ==================================================================== */
 
