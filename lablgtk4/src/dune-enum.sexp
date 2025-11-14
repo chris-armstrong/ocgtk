@@ -55,7 +55,7 @@
 
 ; === Pango enums ===
 (rule
- (targets pango_tags_raw.h pango_tags_raw.c PangoEnums.ml)
+ (targets pango_tags_raw.h pango_tags_raw.c pangoEnums.ml)
  (deps %{project_root}/src/tools/varcc.exe)
  (action (run %{project_root}/src/tools/varcc.exe -h pango_tags_raw.h -c pango_tags_raw.c %{dep:pango_tags.var})))
 

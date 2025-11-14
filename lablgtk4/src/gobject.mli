@@ -45,6 +45,12 @@ val get_type : 'a obj -> g_type
 val is_a : 'a obj -> string -> bool
 (** Check if object is of a given type (by name) *)
 
+exception Cannot_cast of string * string
+(** Exception raised when type casting fails *)
+
+val try_cast : 'a obj -> string -> 'b obj
+(** Try to cast object to a specific type, raises Cannot_cast on failure *)
+
 external unsafe_cast : 'a obj -> 'b obj = "%identity"
 (** Unsafe cast between object types *)
 

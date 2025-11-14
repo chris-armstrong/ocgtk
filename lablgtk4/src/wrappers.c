@@ -10,6 +10,7 @@
 /**************************************************************************/
 
 #include <string.h>
+#include <stdio.h>
 #include <caml/mlvalues.h>
 #include <caml/alloc.h>
 #include <caml/memory.h>
@@ -29,7 +30,7 @@ CAMLexport value ml_lookup_from_c (const lookup_info table[], int data)
     caml_invalid_argument ("ml_lookup_from_c");
 }
 
-CAMLexport int ml_lookup_to_c (const lookup_info table[], value key)
+CAMLexport value ml_lookup_to_c (const lookup_info table[], value key)
 {
     int first = 1, last = table[0].data, current;
     while (first < last) {
@@ -38,7 +39,7 @@ CAMLexport int ml_lookup_to_c (const lookup_info table[], value key)
 	if (table[current].key >= key) last = current;
 	else first = current + 1;
     }
-    if (table[first].key == key) return table[first].data;
+    if (table[first].key == key) return Val_int(table[first].data);
     caml_invalid_argument ("ml_lookup_to_c");
 }
 

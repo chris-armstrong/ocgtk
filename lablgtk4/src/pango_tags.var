@@ -1,106 +1,38 @@
-(* Tags for Pango - OCaml variant bindings for Pango enumerations *)
-(*
-   Pango is the text layout and rendering library used by GTK.
-   These enumerations remained stable from GTK3 to GTK4.
+(* $Id$ *)
 
-   NOTE: Pango 1.44+ (used with GTK4) added some new enum values:
-   - PangoUnderline: Added ERROR_LINE, SINGLE_LINE, DOUBLE_LINE
-   - PangoWeight: Added THIN (100), BOOK (380), MEDIUM (500)
-
-   See: https://docs.gtk.org/Pango/
-*)
-
-package "Pango"
+package "pango"
 prefix "pango_"
 
-(* PangoStyle: Font slant style *)
 type style = "PANGO_STYLE_"
-  [ `NORMAL   (* Normal upright style *)
-  | `OBLIQUE  (* Slanted style (oblique/slant) *)
-  | `ITALIC ] (* Slanted style (italic/cursive) *)
+  [ `NORMAL | `OBLIQUE | `ITALIC ]
 
-(* PangoWeight: Font weight/boldness *)
 type weight = "PANGO_WEIGHT_"
-  [ `THIN         "PANGO_WEIGHT_THIN"        (* 100 - new in Pango 1.44 *)
-  | `ULTRALIGHT   "PANGO_WEIGHT_ULTRALIGHT"  (* 200 *)
-  | `LIGHT        "PANGO_WEIGHT_LIGHT"       (* 300 *)
-  | `BOOK         "PANGO_WEIGHT_BOOK"        (* 380 - new in Pango 1.44 *)
-  | `NORMAL       "PANGO_WEIGHT_NORMAL"      (* 400 *)
-  | `MEDIUM       "PANGO_WEIGHT_MEDIUM"      (* 500 - new in Pango 1.44 *)
-  | `SEMIBOLD     "PANGO_WEIGHT_SEMIBOLD"    (* 600 *)
-  | `BOLD         "PANGO_WEIGHT_BOLD"        (* 700 *)
-  | `ULTRABOLD    "PANGO_WEIGHT_ULTRABOLD"   (* 800 *)
-  | `HEAVY        "PANGO_WEIGHT_HEAVY"       (* 900 *)
-  | `ULTRAHEAVY   "PANGO_WEIGHT_ULTRAHEAVY" ](* 1000 - new in Pango 1.44 *)
+  [ `THIN | `ULTRALIGHT | `LIGHT | `BOOK | `NORMAL | `MEDIUM
+  | `SEMIBOLD | `BOLD | `ULTRABOLD | `HEAVY | `ULTRAHEAVY ]
 
-(* PangoVariant: Font variant for capitals *)
 type variant = "PANGO_VARIANT_"
-  [ `NORMAL      (* Normal capitals *)
-  | `SMALL_CAPS  (* Small capitals *)
-  | `ALL_SMALL_CAPS  "PANGO_VARIANT_ALL_SMALL_CAPS"    (* All small caps - Pango 1.50+ *)
-  | `PETITE_CAPS     "PANGO_VARIANT_PETITE_CAPS"       (* Petite caps - Pango 1.50+ *)
-  | `ALL_PETITE_CAPS "PANGO_VARIANT_ALL_PETITE_CAPS"   (* All petite caps - Pango 1.50+ *)
-  | `UNICASE         "PANGO_VARIANT_UNICASE"           (* Unicase - Pango 1.50+ *)
-  | `TITLE_CAPS      "PANGO_VARIANT_TITLE_CAPS" ]      (* Title caps - Pango 1.50+ *)
+  [ `NORMAL | `SMALL_CAPS ]
 
-(* PangoStretch: Font width/stretch *)
 type stretch = "PANGO_STRETCH_"
- [ `ULTRA_CONDENSED   (* 50% of normal width *)
- | `EXTRA_CONDENSED   (* 62.5% of normal width *)
- | `CONDENSED         (* 75% of normal width *)
- | `SEMI_CONDENSED    (* 87.5% of normal width *)
- | `NORMAL            (* 100% normal width *)
- | `SEMI_EXPANDED     (* 112.5% of normal width *)
- | `EXPANDED          (* 125% of normal width *)
- | `EXTRA_EXPANDED    (* 150% of normal width *)
- | `ULTRA_EXPANDED ]  (* 200% of normal width *)
+ [ `ULTRA_CONDENSED | `EXTRA_CONDENSED | 
+`CONDENSED | 
+`SEMI_CONDENSED | 
+`NORMAL | 
+`SEMI_EXPANDED | 
+`EXPANDED | 
+`EXTRA_EXPANDED | 
+`ULTRA_EXPANDED ]
 
-(* PangoScale: Font scale factors - not converted to C *)
 type noconv scale = "PANGO_SCALE_"
-  [ `XX_SMALL  (* 0.5787 scale *)
-  | `X_SMALL   (* 0.6944 scale *)
-  | `SMALL     (* 0.8333 scale *)
-  | `MEDIUM    (* 1.0 scale *)
-  | `LARGE     (* 1.2 scale *)
-  | `X_LARGE   (* 1.44 scale *)
-  | `XX_LARGE  (* 1.728 scale *)
-  | `CUSTOM ]  (* Custom scale *)
+  [ `XX_SMALL | `X_SMALL | `SMALL | `MEDIUM 
+  | `LARGE | `X_LARGE | `XX_LARGE | `CUSTOM ]
 
-(* PangoUnderline: Underline style *)
 type underline = "PANGO_UNDERLINE_"
-  [ `NONE         (* No underline *)
-  | `SINGLE       (* Single underline *)
-  | `DOUBLE       (* Double underline *)
-  | `LOW          (* Low underline *)
-  | `ERROR        (* Error/squiggle underline - Pango 1.4+ *)
-  | `SINGLE_LINE  "PANGO_UNDERLINE_SINGLE_LINE"  (* Single line - Pango 1.50+ *)
-  | `DOUBLE_LINE  "PANGO_UNDERLINE_DOUBLE_LINE" ](* Double line - Pango 1.50+ *)
+  [ `NONE | `SINGLE | `DOUBLE | `LOW ]
 
-(* PangoWrapMode: Text wrapping behavior *)
 type wrap_mode = "PANGO_WRAP_"
-  [ `WORD       (* Wrap at word boundaries *)
-  | `CHAR       (* Wrap at character boundaries *)
-  | `WORD_CHAR ](* Wrap at word boundaries, fall back to char *)
+  [ `WORD | `CHAR | `WORD_CHAR ]
 
-(* PangoEllipsizeMode: Text ellipsization behavior *)
-type ellipsize_mode = "PANGO_ELLIPSIZE_"
-  [ `NONE    (* No ellipsization *)
-  | `START   (* Ellipsize at start: "...world" *)
-  | `MIDDLE  (* Ellipsize in middle: "hel...rld" *)
-  | `END ]   (* Ellipsize at end: "hello..." *)
-
-(* PangoAlignment: Text alignment *)
-type alignment = "PANGO_ALIGN_"
-  [ `LEFT    (* Left alignment *)
-  | `CENTER  (* Center alignment *)
-  | `RIGHT ] (* Right alignment *)
-
-(* PangoDirection: Text direction *)
-type direction = "PANGO_DIRECTION_"
-  [ `LTR          (* Left-to-right *)
-  | `RTL          (* Right-to-left *)
-  | `TTB_LTR      (* Top-to-bottom, left-to-right *)
-  | `TTB_RTL      (* Top-to-bottom, right-to-left *)
-  | `WEAK_LTR     (* Weak left-to-right *)
-  | `WEAK_RTL     (* Weak right-to-left *)
-  | `NEUTRAL ]    (* Neutral direction *)
+type protect HASGTK26 ellipsize_mode = "PANGO_ELLIPSIZE_"
+  [ `NONE | `START | `MIDDLE | `END ]
+(* this enum was introduced in Pango 1.6 / GTK+ 2.6 *)
