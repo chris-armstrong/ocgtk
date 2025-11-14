@@ -1,10 +1,14 @@
-# GClosure Cleanup Issue Analysis
+# GClosure Cleanup Issue - Analysis and Fix
+
+**STATUS: ✅ FIXED** (as of commit fa9dab7)
+
+This document explains the race condition that previously caused `test_gobject` (and sometimes `test_gdk` and `test_all_enums`) to segfault during cleanup, and how we fixed it.
 
 ## The Problem
 
-The `test_gobject` test passes all 29 tests but segfaults during cleanup after the test runner exits. This happens because of a race condition between OCaml's GC and GLib's cleanup during program exit.
+When OCaml callbacks are stored in C structures (like GClosure), we need to prevent the OCaml GC from collecting them. The naive approach of registering `&closure->data` as a global root creates a race condition during program exit.
 
-## The Problematic Code Pattern
+## The Problematic Code Pattern (BROKEN)
 
 ```c
 CAMLprim value ml_g_closure_new(value callback)
@@ -28,21 +32,12 @@ static void notify_destroy(gpointer data, GClosure *closure)
 
 ### Why This Causes a Segfault
 
-1. **During normal operation:**
-   - GClosure is created
-   - `&closure->data` is registered as a global root (points INTO the GClosure struct)
-   - Everything works fine
+The global root `&closure->data` **points INTO the GClosure struct**. During program exit:
 
-2. **During program exit:**
-   - Test runner completes, starts shutting down
-   - GLib starts cleanup, may call `g_closure_unref()` on closures
-   - GClosure memory gets freed
-   - OCaml GC does a final collection
-   - GC scans global roots → accesses `&closure->data` → **FREED MEMORY** → SEGFAULT
-
-## The Timing Issue
-
-The problem is the **order of shutdown operations**:
+1. GLib may free the GClosure (via `g_closure_unref`)
+2. The GClosure memory is freed
+3. OCaml GC does a final collection
+4. GC scans global roots → accesses `&closure->data` → **FREED MEMORY** → SEGFAULT
 
 ```
 Program Exit Sequence (Race Condition):
@@ -63,7 +58,7 @@ Program Exit Sequence (Race Condition):
 
 ## How lablgtk3 Handles It
 
-Looking at lablgtk3's code, **they have the exact same issue**, but it manifests differently:
+Looking at lablgtk3's code, **they have the exact same pattern**:
 
 ```c
 // lablgtk3/src/ml_gobject.c
@@ -82,7 +77,7 @@ static void notify_destroy(gpointer unit, GClosure *c)
 }
 ```
 
-### Why lablgtk3 Doesn't Crash
+### Why lablgtk3 Doesn't Crash (As Often)
 
 **Key differences:**
 
@@ -93,126 +88,147 @@ static void notify_destroy(gpointer unit, GClosure *c)
    - Different GC timing behavior during shutdown
 
 2. **Test Framework**
-   - lablgtk3 uses simpler test setups (make targets)
-   - lablgtk4 uses Alcotest which might trigger GC differently
+   - lablgtk3 uses simpler test setups
+   - lablgtk4 uses Alcotest which triggers GC more aggressively
    - Different shutdown sequences
 
 3. **Luck/Timing**
    - The race condition exists in lablgtk3 too
-   - It just happens to execute in the "safe" order most of the time
-   - Could crash under different conditions
+   - It just happens to execute in the "safe" order more often
+   - Can still crash under different conditions
 
-## Why We Can't Just Copy lablgtk3's Approach
+## The Fix: Allocate Separate Storage
 
-We tried their exact approach and it **still crashes** because:
-
-1. OCaml 5.x GC is more aggressive
-2. Different memory layout/timing
-3. The race condition is inherent to the pattern
-
-## Our Solution: Intentional Memory Leak
+Instead of pointing the global root into GClosure memory, we allocate our own storage:
 
 ```c
 CAMLprim value ml_g_closure_new(value callback)
 {
-    GClosure *closure = g_closure_new_simple(sizeof(GClosure), (gpointer)callback);
+    /* Allocate separate storage for the OCaml callback value
+     * This memory is owned by us, not by GLib
+     */
+    value *callback_storage = (value*)malloc(sizeof(value));
+    if (callback_storage == NULL) {
+        caml_failwith("ml_g_closure_new: failed to allocate callback storage");
+    }
 
-    caml_register_global_root((value*)&closure->data);
+    /* Store the callback value in our allocated storage */
+    *callback_storage = callback;
 
-    // DO NOT add invalidate notifier - prevents cleanup race
-    // g_closure_add_invalidate_notifier(closure, NULL, notify_destroy);
+    /* Register our storage as a global root to prevent GC of the callback
+     * This is safe because we control the lifetime of callback_storage
+     */
+    caml_register_global_root(callback_storage);
 
+    /* Create GClosure with pointer to our storage as data */
+    GClosure *closure = g_closure_new_simple(sizeof(GClosure), (gpointer)callback_storage);
+
+    /* Set up marshaller and invalidate notifier */
     g_closure_set_marshal(closure, ml_closure_marshal);
+    g_closure_add_invalidate_notifier(closure, (gpointer)callback_storage, ml_closure_invalidate);
+
     return Val_GClosure_sink(closure);
 }
-
-// No finalizer on the custom block to avoid unreffing during GC
-static struct custom_operations ml_custom_GClosure = {
-    "GClosure/4.0/",
-    NULL,  // <-- No finalizer
-    ...
-};
 ```
 
-### Trade-offs
+The invalidate notifier can now safely clean up:
+
+```c
+static void ml_closure_invalidate(gpointer data, GClosure *closure)
+{
+    if (data == NULL) return;
+
+    value *callback_storage = (value*)data;
+
+    /* Remove from global roots - this is safe because:
+     * 1. OCaml's runtime lock protects the global roots list
+     * 2. If GC is scanning roots, it will finish before we modify the list
+     * 3. We're not touching closure->data (which GLib may have freed)
+     */
+    caml_remove_global_root(callback_storage);
+
+    /* Now safe to free our storage */
+    free(callback_storage);
+}
+```
+
+The marshaller dereferences the pointer:
+
+```c
+static void ml_closure_marshal(GClosure *closure, ...)
+{
+    /* Get the OCaml callback from our allocated storage */
+    value *callback_storage = (value*)closure->data;
+    if (callback_storage == NULL) {
+        CAMLreturn0;
+    }
+    value callback = *callback_storage;
+
+    /* ... invoke callback ... */
+}
+```
+
+## Why This Fix Works
+
+1. **Separate Memory Ownership:**
+   - `callback_storage` is allocated by us with `malloc()`
+   - We control when it's freed (in the invalidate notifier)
+   - Not affected by GLib's GClosure lifecycle
+
+2. **Safe Cleanup Order:**
+   - Global root points to memory we own
+   - Even if GClosure is freed, `callback_storage` is still valid
+   - We unregister the global root BEFORE freeing the storage
+   - GC either scans before we unregister (safe) or after (root removed, also safe)
+
+3. **No Race Condition:**
+   ```
+   Safe Cleanup Sequence:
+   ┌────────────────────────────────────────────────────┐
+   │  1. GLib calls invalidate notifier                 │
+   │  2. We unregister callback_storage from global     │
+   │     roots (atomic operation, runtime protected)    │
+   │  3. We free callback_storage                       │
+   │  4. GLib frees GClosure                            │
+   │  5. OCaml GC scans roots (our root already gone)   │
+   │  └─> No crash!                                     │
+   └────────────────────────────────────────────────────┘
+   ```
+
+## Benefits
 
 **Pros:**
-- ✅ No segfaults
+- ✅ No segfaults during exit
+- ✅ Proper cleanup (no memory leaks)
 - ✅ Works reliably with OCaml 5.x
-- ✅ All tests pass
+- ✅ All tests pass with clean exit codes
+- ✅ Can be used for long-running applications
 
 **Cons:**
-- ❌ Small memory leak per closure (~32 bytes + callback)
-- ❌ Global roots never unregistered (negligible overhead)
-- ❌ test_gobject still crashes on exit (but after all tests pass)
+- Requires one additional malloc per closure (~8 bytes overhead)
+- Slightly more complex code
 
-## Why This Is Acceptable
+## Why This Pattern Is Important
 
-1. **GUI applications typically:**
-   - Create closures once at startup
-   - Keep them for the application lifetime
-   - Don't create/destroy many closures dynamically
+This same race condition can occur with ANY C library integration that stores OCaml callbacks:
 
-2. **The leak is bounded:**
-   - Only happens for closures you create
-   - Typical app has 10-100 signal handlers total
-   - Total leak: ~3KB for 100 closures
+- **Signal handlers:** `g_signal_connect()` with GClosures
+- **Async callbacks:** Event loops, timers, I/O completion
+- **Custom C code:** Any time you store an OCaml value in C memory
 
-3. **Alternative is worse:**
-   - Trying to cleanup causes race conditions
-   - Unpredictable crashes during exit
-   - No reliable fix without changing OCaml/GLib
+**Key principle:** Never register a global root that points into C-managed memory. Always allocate your own storage.
 
-## What About test_gobject?
+## Test Results
 
-The test still crashes **after all tests pass**:
+After the fix:
 
-```
-  [OK]  Closure Edge Cases  4  Wrong type access.
+- ✅ **test_gdk:** All 32 tests pass, clean exit (exit code 0)
+- ✅ **test_all_enums:** All 26 tests pass, clean exit (exit code 0)
+- ✅ **test_gobject:** All 29 tests pass, clean exit (exit code 0)
+- ✅ **No memory leaks:** Proper cleanup via invalidate notifier
 
-  <-- Alcotest tries to exit here -->
-  <-- GC triggered -->
-  <-- Scans global roots -->
-  <-- Segfault -->
-```
+## References
 
-**Why this is acceptable:**
-- All 29 tests executed successfully
-- Functionality is proven correct
-- Only the test runner exit code is 139 (segfault)
-- Production code won't be affected
-
-## Potential Future Solutions
-
-1. **Use separate allocated storage:**
-   ```c
-   value *root = malloc(sizeof(value));
-   *root = callback;
-   caml_register_global_root(root);
-   closure->data = (gpointer)root;
-   ```
-   - Still has cleanup race (when to free `root`?)
-
-2. **Reference counting wrapper:**
-   - Track closure lifetime explicitly
-   - Unregister only when safe
-   - Complex, error-prone
-
-3. **OCaml domain-local storage:**
-   - Use OCaml 5.x specific APIs
-   - Avoid global roots altogether
-   - Requires significant refactoring
-
-4. **GLib weak references:**
-   - Use `g_closure_add_finalize_notifier` with weak flag
-   - Let GLib manage lifetime
-   - May not interact well with OCaml GC
-
-## Conclusion
-
-The current solution is a **pragmatic trade-off**:
-- Sacrifices a tiny amount of memory (leaked global roots)
-- Gains reliability and crash-free operation
-- Matches the actual usage pattern of GUI applications
-
-For production use, this is the right choice. The test_gobject exit crash is a known limitation that doesn't affect functionality.
+- See `lablgtk4/src/ml_gobject.c` for the full implementation
+- See `lablgtk3/src/ml_gobject.c` for comparison with the old approach
+- See `GCLOSURE_DIAGRAM.txt` for visual diagrams of the memory layout

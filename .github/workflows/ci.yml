@@ -101,7 +101,7 @@ jobs:
         working-directory: lablgtk4
         run: opam exec -- dune build
 
-      - name: Run tests (individually to avoid segfault in test runner)
+      - name: Run all tests
         working-directory: lablgtk4
         run: |
           opam exec -- ./_build/default/tests/test_enum_roundtrip.exe
@@ -111,22 +111,7 @@ jobs:
           opam exec -- ./_build/default/tests/test_ffi_integration.exe
           opam exec -- ./_build/default/tests/test_gdkpixbuf.exe
           opam exec -- ./_build/default/tests/test_gdk.exe
-
-      - name: Run test_gobject (known cleanup segfault - see GCLOSURE_CLEANUP_ANALYSIS.md)
-        working-directory: lablgtk4
-        run: |
-          # test_gobject passes all 29 tests but segfaults during cleanup due to
-          # OCaml 5.x GC race condition with GLib's cleanup. This is documented in
-          # GCLOSURE_CLEANUP_ANALYSIS.md and is a known limitation.
-          # We ignore the exit code since all tests pass successfully.
-          opam exec -- ./_build/default/tests/test_gobject.exe || EXIT_CODE=$?
-          if [ "${EXIT_CODE:-0}" -eq 139 ]; then
-            echo "test_gobject exited with code 139 (segfault during cleanup) - this is expected"
-            exit 0
-          elif [ "${EXIT_CODE:-0}" -ne 0 ]; then
-            echo "test_gobject failed with unexpected exit code: ${EXIT_CODE}"
-            exit ${EXIT_CODE}
-          fi
+          opam exec -- ./_build/default/tests/test_gobject.exe
 
       - name: Display generated enum modules
         working-directory: lablgtk4
