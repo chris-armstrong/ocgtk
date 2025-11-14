@@ -18,4 +18,5 @@
   (dune (>= 3.2))
   conf-gtk4
   cairo2
+  (camlp5 :build)
   (alcotest :with-test)))
