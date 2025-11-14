@@ -54,7 +54,9 @@ jobs:
 
 #   - name: Install deps
 #     working-directory: lablgtk3
-#     run: opam install ${{ matrix.test-packages }} --deps-only --with-test
+#     run: |
+#          opam install camlp5 -y
+#          opam install ${{ matrix.test-packages }} --deps-only --with-test
 
 #   - name: Display OPAM Setup
 #     run: opam exec -- opam list
