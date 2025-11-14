@@ -108,6 +108,12 @@ let is_a obj type_name =
     Type.is_a obj_type check_type
   with _ -> false
 
+exception Cannot_cast of string * string
+
+let try_cast w name =
+  if is_a w name then unsafe_cast w
+  else raise (Cannot_cast (Type.name (get_type w), name))
+
 (** {2 GValue Operations} *)
 
 module Value = struct
