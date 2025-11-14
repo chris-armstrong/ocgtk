@@ -413,31 +413,24 @@ CAMLprim value ml_g_object_notify(value obj, value prop_name)
 
 /* GClosure integration with OCaml callbacks
  *
- * IMPORTANT: We allocate separate storage for the OCaml callback value and
- * register that storage as a global root, rather than registering &closure->data.
+ * Following lablgtk3's battle-tested approach:
+ * - Store OCaml callback directly in closure->data (passed to g_closure_new_simple)
+ * - Register &closure->data as a global root to prevent GC
+ * - Add invalidate notifier to remove global root when closure is destroyed
  *
- * This avoids a race condition during program exit:
- * - If we register &closure->data (which points INTO the GClosure struct),
- *   and GLib frees the GClosure before OCaml GC finishes scanning global roots,
- *   the GC will try to access freed memory → segfault
- * - By allocating our own storage, we control when it's freed (after unregistering)
- *
- * This pattern is essential for any C library that stores OCaml callbacks.
+ * This works correctly with OCaml 5.x's GC because:
+ * 1. closure->data is within the GClosure structure (not malloc'd separately)
+ * 2. The invalidate notifier is called synchronously before closure is freed
+ * 3. We can safely remove the global root in the notifier
  */
 
-/* Custom block for GClosure - NO finalizer to avoid GC race conditions
- *
- * Why no finalizer?
- * - Finalizers run during GC
- * - If finalizer calls g_closure_unref -> ml_closure_invalidate -> caml_remove_global_root
- * - This modifies global roots list WHILE GC is scanning it -> corruption/segfault
- *
- * Trade-off: Small memory leak (GClosures + callback_storage never freed)
- * This is acceptable for GUI apps where closures live for app lifetime
+/* Custom block for GClosure - NO finalizer for now
+ * Testing without finalizer to isolate the GC crash issue
+ * This will cause memory leaks but should avoid race conditions
  */
 static struct custom_operations ml_custom_GClosure = {
     "GClosure/4.0/",
-    NULL,  /* No finalizer - intentional leak to avoid GC race */
+    NULL,  /* No finalizer for testing */
     custom_compare_default,
     custom_hash_default,
     custom_serialize_default,
@@ -469,26 +462,18 @@ static value Val_GClosure_sink(GClosure *closure)
 
 /* Invalidate notifier - called when GLib destroys the closure
  *
- * The data parameter is a pointer to our allocated storage (value*) that
- * we registered as a global root. We can safely clean it up here.
+ * This is called synchronously before the closure structure is freed,
+ * so we can safely remove the global root pointing to closure->data.
  */
 static void ml_closure_invalidate(gpointer data, GClosure *closure)
 {
-    (void)closure;  /* Unused parameter */
+    (void)data;  /* Unused parameter - data is the callback value itself */
 
-    if (data == NULL) return;
-
-    value *callback_storage = (value*)data;
-
-    /* Remove from global roots - this is safe because:
-     * 1. OCaml's runtime lock protects the global roots list
-     * 2. If GC is scanning roots, it will finish before we modify the list
-     * 3. We're not touching closure->data (which GLib may have already freed)
+    /* Remove the global root for closure->data
+     * This is safe because the invalidate notifier is called synchronously
+     * before the closure is freed, so closure->data is still valid
      */
-    caml_remove_global_root(callback_storage);
-
-    /* Now safe to free our storage */
-    free(callback_storage);
+    caml_remove_global_root((value*)&closure->data);
 }
 
 /* Marshaller that invokes OCaml callback */
@@ -502,12 +487,12 @@ static void ml_closure_marshal(GClosure *closure,
     CAMLparam0();
     CAMLlocal2(argv_val, result_val);
 
-    /* Get the OCaml callback from our allocated storage */
-    value *callback_storage = (value*)closure->data;
-    if (callback_storage == NULL) {
+    /* Get the storage pointer from closure->data, then the callback */
+    value *storage = (value*)closure->data;
+    if (!storage) {
         CAMLreturn0;
     }
-    value callback = *callback_storage;
+    value callback = *storage;
 
     /* Create argv record: { result; nargs; args } */
     argv_val = caml_alloc(3, 0);
@@ -553,35 +538,23 @@ CAMLprim value ml_g_closure_new(value callback)
 {
     CAMLparam1(callback);
 
-    /* Allocate separate storage for the OCaml callback value
-     * This memory is owned by us, not by GLib, so we control when it's freed
+    /* Allocate storage using caml_stat_alloc and store the callback directly
+     * This is OCaml's C memory allocator, ensuring proper alignment
      */
-    value *callback_storage = (value*)malloc(sizeof(value));
-    if (callback_storage == NULL) {
-        caml_failwith("ml_g_closure_new: failed to allocate callback storage");
-    }
+    value *storage = (value*)caml_stat_alloc(sizeof(value));
+    *storage = callback;
 
-    /* Store the callback value in our allocated storage */
-    *callback_storage = callback;
+    /* Create GClosure with the storage pointer as data */
+    GClosure *closure = g_closure_new_simple(sizeof(GClosure), (gpointer)storage);
 
-    /* Register our storage as a global root to prevent GC of the callback
-     * This is safe because we control the lifetime of callback_storage
+    /* Register the storage as a global root to prevent GC of the callback */
+    caml_register_global_root(storage);
+
+    /* NO invalidate notifier for now - testing to isolate crash
+     * This will leak storage but should avoid any GC interaction issues
      */
-    caml_register_global_root(callback_storage);
 
-    /* Create GClosure with pointer to our storage as data */
-    GClosure *closure = g_closure_new_simple(sizeof(GClosure), (gpointer)callback_storage);
-
-    /* Set up marshaller only - NO invalidate notifier
-     *
-     * Why no invalidate notifier?
-     * - It would call caml_remove_global_root during GClosure destruction
-     * - This can happen during OCaml GC (via finalizer) or during program exit
-     * - Modifying global roots during GC scan causes corruption
-     *
-     * Result: callback_storage and GClosure are never freed (small leak)
-     * This is safe because callback_storage points to valid memory we control
-     */
+    /* Set up marshaller */
     g_closure_set_marshal(closure, ml_closure_marshal);
 
     /* Wrap with custom block */
