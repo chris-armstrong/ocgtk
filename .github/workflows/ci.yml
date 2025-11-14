@@ -104,18 +104,9 @@ jobs:
       - name: Run all tests
         working-directory: lablgtk4
         run: |
-          # Run tests individually to avoid GTK cleanup issues with dune runtest
-          # Each test executable is run separately to isolate GTK/GDK state
-          opam exec -- ./_build/default/tests/test_enum_roundtrip.exe
-          opam exec -- ./_build/default/tests/test_enum_values.exe
-          opam exec -- ./_build/default/tests/test_all_enums.exe
-          opam exec -- ./_build/default/tests/test_ffi_integration.exe
-          opam exec -- ./_build/default/tests/test_glib.exe
-          opam exec -- ./_build/default/tests/test_gobject.exe
-          opam exec -- ./_build/default/tests/test_gdkpixbuf.exe
-          opam exec -- ./_build/default/tests/test_gdk.exe
-          opam exec -- ./_build/default/tests/test_pango.exe
-          opam exec -- ./_build/default/tests/test_clipboard.exe
+          # Use custom test runner script to avoid GTK cleanup issues
+          # See tests/dune for explanation of why we can't use 'dune runtest'
+          opam exec -- ./run_tests.sh
 
       - name: Display generated enum modules
         working-directory: lablgtk4
