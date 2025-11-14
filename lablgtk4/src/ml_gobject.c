@@ -411,26 +411,87 @@ CAMLprim value ml_g_object_notify(value obj, value prop_name)
 /* Closure Support */
 /* ==================================================================== */
 
-/* GClosure integration with OCaml callbacks
+/* GClosure integration with OCaml callbacks - OCaml 5.x compatible approach
  *
- * Following lablgtk3's battle-tested approach:
- * - Store OCaml callback directly in closure->data (passed to g_closure_new_simple)
- * - Register &closure->data as a global root to prevent GC
- * - Add invalidate notifier to remove global root when closure is destroyed
+ * SOLUTION: Closure table to avoid global roots pointing to C memory
  *
- * This works correctly with OCaml 5.x's GC because:
- * 1. closure->data is within the GClosure structure (not malloc'd separately)
- * 2. The invalidate notifier is called synchronously before closure is freed
- * 3. We can safely remove the global root in the notifier
+ * Instead of storing OCaml values in C-allocated memory with global roots
+ * (which crashes with OCaml 5.x's multicore GC), we:
+ * 1. Keep all callbacks in an OCaml Hashtbl (managed by OCaml GC)
+ * 2. Store only an integer ID in closure->data
+ * 3. Look up the callback by ID when the marshaller is invoked
+ *
+ * This is safe because:
+ * - The Hashtbl itself is registered as ONE global root (OCaml-managed memory)
+ * - No global roots point to C-allocated memory
+ * - The multicore GC can safely scan the Hashtbl
  */
 
-/* Custom block for GClosure - NO finalizer for now
- * Testing without finalizer to isolate the GC crash issue
- * This will cause memory leaks but should avoid race conditions
+/* Global closure table: list of (id, callback) pairs stored as OCaml list
+ * This is OCaml-managed memory, safe for multicore GC to scan
  */
+static value closure_list = Val_int(0);  /* Empty list initially */
+static int next_closure_id = 1;
+
+/* Initialize the closure table (called once) */
+static void init_closure_table(void)
+{
+    static int initialized = 0;
+    if (!initialized) {
+        closure_list = Val_int(0);  /* [] */
+        caml_register_global_root(&closure_list);
+        initialized = 1;
+    }
+}
+
+/* Add a closure to the table, return its ID */
+static int add_closure_to_table(value callback)
+{
+    CAMLparam1(callback);
+    CAMLlocal3(pair, new_cell, id_val);
+
+    init_closure_table();
+
+    int id = next_closure_id++;
+    id_val = Val_int(id);
+
+    /* Create pair (id, callback) */
+    pair = caml_alloc(2, 0);
+    Store_field(pair, 0, id_val);
+    Store_field(pair, 1, callback);
+
+    /* Prepend to list: new_cell = pair :: closure_list */
+    new_cell = caml_alloc(2, 0);  /* Cons cell */
+    Store_field(new_cell, 0, pair);
+    Store_field(new_cell, 1, closure_list);
+
+    closure_list = new_cell;
+
+    CAMLreturnT(int, id);
+}
+
+/* Look up a closure by ID */
+static value find_closure_in_table(int id)
+{
+    CAMLparam0();
+    CAMLlocal2(current, pair);
+
+    current = closure_list;
+    while (current != Val_int(0)) {  /* While not [] */
+        pair = Field(current, 0);  /* Get (id, callback) pair */
+        if (Int_val(Field(pair, 0)) == id) {
+            CAMLreturn(Field(pair, 1));  /* Return callback */
+        }
+        current = Field(current, 1);  /* Move to next */
+    }
+
+    CAMLreturn(Val_unit);  /* Not found */
+}
+
+/* Custom block for GClosure - NO finalizer to avoid GC complications */
 static struct custom_operations ml_custom_GClosure = {
     "GClosure/4.0/",
-    NULL,  /* No finalizer for testing */
+    NULL,  /* No finalizer - GLib manages GClosure lifecycle */
     custom_compare_default,
     custom_hash_default,
     custom_serialize_default,
@@ -460,20 +521,51 @@ static value Val_GClosure_sink(GClosure *closure)
     CAMLreturn(ret);
 }
 
+/* Remove a closure from the table by ID */
+static void remove_closure_from_table(int id)
+{
+    CAMLparam0();
+    CAMLlocal3(prev, current, pair);
+
+    if (closure_list == Val_int(0)) {
+        CAMLreturn0;  /* Empty list */
+    }
+
+    /* Check if first element matches */
+    pair = Field(closure_list, 0);
+    if (Int_val(Field(pair, 0)) == id) {
+        closure_list = Field(closure_list, 1);  /* Remove first element */
+        CAMLreturn0;
+    }
+
+    /* Search through the rest */
+    prev = closure_list;
+    current = Field(closure_list, 1);
+
+    while (current != Val_int(0)) {
+        pair = Field(current, 0);
+        if (Int_val(Field(pair, 0)) == id) {
+            /* Remove current by linking prev to current->next */
+            Store_field(prev, 1, Field(current, 1));
+            CAMLreturn0;
+        }
+        prev = current;
+        current = Field(current, 1);
+    }
+
+    CAMLreturn0;  /* Not found */
+}
+
 /* Invalidate notifier - called when GLib destroys the closure
- *
- * This is called synchronously before the closure structure is freed,
- * so we can safely remove the global root pointing to closure->data.
+ * Removes the closure from our table
  */
 static void ml_closure_invalidate(gpointer data, GClosure *closure)
 {
-    (void)data;  /* Unused parameter - data is the callback value itself */
-
-    /* Remove the global root for closure->data
-     * This is safe because the invalidate notifier is called synchronously
-     * before the closure is freed, so closure->data is still valid
-     */
-    caml_remove_global_root((value*)&closure->data);
+    /* closure->data contains the closure ID as an integer */
+    int id = GPOINTER_TO_INT(closure->data);
+    if (id > 0) {
+        remove_closure_from_table(id);
+    }
 }
 
 /* Marshaller that invokes OCaml callback */
@@ -487,12 +579,16 @@ static void ml_closure_marshal(GClosure *closure,
     CAMLparam0();
     CAMLlocal2(argv_val, result_val);
 
-    /* Get the storage pointer from closure->data, then the callback */
-    value *storage = (value*)closure->data;
-    if (!storage) {
-        CAMLreturn0;
+    /* Get the closure ID from closure->data and look it up in the table */
+    int id = GPOINTER_TO_INT(closure->data);
+    if (id <= 0) {
+        CAMLreturn0;  /* Invalid ID */
     }
-    value callback = *storage;
+
+    value callback = find_closure_in_table(id);
+    if (callback == Val_unit) {
+        CAMLreturn0;  /* Closure not found */
+    }
 
     /* Create argv record: { result; nargs; args } */
     argv_val = caml_alloc(3, 0);
@@ -538,21 +634,21 @@ CAMLprim value ml_g_closure_new(value callback)
 {
     CAMLparam1(callback);
 
-    /* Allocate storage using caml_stat_alloc and store the callback directly
-     * This is OCaml's C memory allocator, ensuring proper alignment
+    /* Add callback to the closure table and get an ID
+     * The table is OCaml-managed memory, safe for multicore GC
      */
-    value *storage = (value*)caml_stat_alloc(sizeof(value));
-    *storage = callback;
+    int id = add_closure_to_table(callback);
 
-    /* Create GClosure with the storage pointer as data */
-    GClosure *closure = g_closure_new_simple(sizeof(GClosure), (gpointer)storage);
-
-    /* Register the storage as a global root to prevent GC of the callback */
-    caml_register_global_root(storage);
-
-    /* NO invalidate notifier for now - testing to isolate crash
-     * This will leak storage but should avoid any GC interaction issues
+    /* Create GClosure with the ID (as an integer) as data
+     * No pointers, no malloc, no global roots to C memory!
      */
+    GClosure *closure = g_closure_new_simple(sizeof(GClosure), GINT_TO_POINTER(id));
+
+    /* Add invalidate notifier to remove from table when closure is destroyed
+     * This is safe because we're not modifying global roots during GC -
+     * just modifying an OCaml list
+     */
+    g_closure_add_invalidate_notifier(closure, NULL, ml_closure_invalidate);
 
     /* Set up marshaller */
     g_closure_set_marshal(closure, ml_closure_marshal);
