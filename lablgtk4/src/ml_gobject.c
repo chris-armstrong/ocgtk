@@ -425,10 +425,22 @@ CAMLprim value ml_g_object_notify(value obj, value prop_name)
  * This pattern is essential for any C library that stores OCaml callbacks.
  */
 
-/* Custom block for GClosure - no finalizer needed since GLib manages the lifecycle */
+/* Finalizer for GClosure custom block */
+static void ml_finalize_GClosure(value val)
+{
+    GClosure *closure = GClosure_val(val);
+    if (closure != NULL) {
+        /* Unreferencing the closure will eventually call ml_closure_invalidate
+         * which will clean up the callback_storage
+         */
+        g_closure_unref(closure);
+    }
+}
+
+/* Custom block for GClosure with finalizer */
 static struct custom_operations ml_custom_GClosure = {
     "GClosure/4.0/",
-    NULL,  /* No finalizer - GLib handles cleanup via invalidate notifier */
+    ml_finalize_GClosure,  /* Finalizer to unref the GClosure */
     custom_compare_default,
     custom_hash_default,
     custom_serialize_default,
