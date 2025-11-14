@@ -8,6 +8,7 @@
 ; - test_gobject.ml: GObject binding tests (minimal for now)
 ; - test_gdkpixbuf.ml: GdkPixbuf image manipulation tests (Phase 2.3)
 ; - test_gdk.ml: GDK module tests for Display, Seat, Device, Surface (Phase 2.4)
+; - test_clipboard.ml: GdkClipboard tests for clipboard operations (Phase 2.6)
 
 (test
  (name test_enum_roundtrip)
@@ -43,6 +44,10 @@
 
 (test
  (name test_pango)
+ (libraries lablgtk4 alcotest))
+
+(test
+ (name test_clipboard)
  (libraries lablgtk4 alcotest))
 
 (executable

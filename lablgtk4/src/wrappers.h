@@ -141,6 +141,14 @@ CAMLprim value fname##_bc(value *argv, int argn) \
 #define GdkCursor_val(val) ((GdkCursor*)(val))
 #define Val_GdkCursor(obj) ((value)(obj))
 
+/* GdkClipboard (new in GTK4) - GObject, use direct cast */
+#define GdkClipboard_val(val) ((GdkClipboard*)(val))
+#define Val_GdkClipboard(obj) ((value)(obj))
+
+/* GdkContentProvider (new in GTK4) - GObject, use direct cast */
+#define GdkContentProvider_val(val) ((GdkContentProvider*)(val))
+#define Val_GdkContentProvider(obj) ((value)(obj))
+
 /* GtkWidget - GObject, use direct cast */
 #define GtkWidget_val(val) ((GtkWidget*)(val))
 #define Val_GtkWidget(obj) ((value)(obj))
