@@ -40,3 +40,11 @@
 (test
  (name test_gdk)
  (libraries lablgtk4 alcotest))
+
+(executable
+ (name test_closure_stress)
+ (libraries lablgtk4))
+
+(executable
+ (name test_closure_with_gc)
+ (libraries lablgtk4))

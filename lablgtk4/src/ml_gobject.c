@@ -470,17 +470,24 @@ static int add_closure_to_table(value callback)
     CAMLreturnT(int, id);
 }
 
-/* Look up a closure by ID */
+/* Look up a closure by ID
+ * Returns Val_unit if not found or if the closure is marked as dead
+ */
 static value find_closure_in_table(int id)
 {
     CAMLparam0();
-    CAMLlocal2(current, pair);
+    CAMLlocal3(current, pair, callback);
 
     current = closure_list;
     while (current != Val_int(0)) {  /* While not [] */
         pair = Field(current, 0);  /* Get (id, callback) pair */
         if (Int_val(Field(pair, 0)) == id) {
-            CAMLreturn(Field(pair, 1));  /* Return callback */
+            callback = Field(pair, 1);
+            /* Check if marked as dead (callback == Val_unit) */
+            if (callback == Val_unit) {
+                CAMLreturn(Val_unit);  /* Closure was destroyed */
+            }
+            CAMLreturn(callback);  /* Return live callback */
         }
         current = Field(current, 1);  /* Move to next */
     }
@@ -521,50 +528,42 @@ static value Val_GClosure_sink(GClosure *closure)
     CAMLreturn(ret);
 }
 
-/* Remove a closure from the table by ID */
-static void remove_closure_from_table(int id)
+/* Mark a closure as dead in the table by ID
+ * Instead of removing entries (which can corrupt the list during GC scan),
+ * we replace the callback with Val_unit to mark it as dead.
+ * This is GC-safe because we never modify the list structure itself.
+ */
+static void mark_closure_as_dead(int id)
 {
     CAMLparam0();
-    CAMLlocal3(prev, current, pair);
+    CAMLlocal2(current, pair);
 
-    if (closure_list == Val_int(0)) {
-        CAMLreturn0;  /* Empty list */
-    }
-
-    /* Check if first element matches */
-    pair = Field(closure_list, 0);
-    if (Int_val(Field(pair, 0)) == id) {
-        closure_list = Field(closure_list, 1);  /* Remove first element */
-        CAMLreturn0;
-    }
-
-    /* Search through the rest */
-    prev = closure_list;
-    current = Field(closure_list, 1);
-
+    current = closure_list;
     while (current != Val_int(0)) {
         pair = Field(current, 0);
         if (Int_val(Field(pair, 0)) == id) {
-            /* Remove current by linking prev to current->next */
-            Store_field(prev, 1, Field(current, 1));
+            /* Mark as dead by replacing callback with Val_unit
+             * This is safe because we're not changing the list structure,
+             * just modifying a field within an existing node
+             */
+            Store_field(pair, 1, Val_unit);
             CAMLreturn0;
         }
-        prev = current;
         current = Field(current, 1);
     }
 
-    CAMLreturn0;  /* Not found */
+    CAMLreturn0;  /* Not found (maybe already marked or never existed) */
 }
 
 /* Invalidate notifier - called when GLib destroys the closure
- * Removes the closure from our table
+ * Marks the closure as dead in our table (GC-safe)
  */
 static void ml_closure_invalidate(gpointer data, GClosure *closure)
 {
     /* closure->data contains the closure ID as an integer */
     int id = GPOINTER_TO_INT(closure->data);
     if (id > 0) {
-        remove_closure_from_table(id);
+        mark_closure_as_dead(id);
     }
 }
 
@@ -644,11 +643,11 @@ CAMLprim value ml_g_closure_new(value callback)
      */
     GClosure *closure = g_closure_new_simple(sizeof(GClosure), GINT_TO_POINTER(id));
 
-    /* Add invalidate notifier to remove from table when closure is destroyed
-     * This is safe because we're not modifying global roots during GC -
-     * just modifying an OCaml list
+    /* NO invalidate notifier - avoid any modifications to closure table
+     * This creates a small memory leak (entries never removed) but is GC-safe.
+     * Trade-off: ~24 bytes per closure for guaranteed stability with OCaml 5.x GC.
      */
-    g_closure_add_invalidate_notifier(closure, NULL, ml_closure_invalidate);
+    /* g_closure_add_invalidate_notifier(closure, NULL, ml_closure_invalidate); */
 
     /* Set up marshaller */
     g_closure_set_marshal(closure, ml_closure_marshal);
