@@ -190,7 +190,7 @@ CAMLprim value ml_Pango_scale_val(value val)
 /* ========================================================================= */
 
 ML_1(pango_language_from_string, String_val, Val_PangoLanguage)
-ML_1(pango_language_to_string, PangoLanguage_val, Val_optstring)
+ML_1(pango_language_to_string, PangoLanguage_val, caml_copy_string)
 ML_2(pango_language_matches, PangoLanguage_val, String_val, Val_bool)
 
 /* ========================================================================= */

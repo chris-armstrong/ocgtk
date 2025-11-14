@@ -110,7 +110,8 @@ let test_language_from_string () =
 
 let test_language_matches () =
   let lang = Pango.Language.from_string "en-US" in
-  let matches = Pango.Language.matches lang "en-*" in
+  (* Pango's language matching: "en" matches all English variants including "en-us" *)
+  let matches = Pango.Language.matches lang "en" in
   check bool "language matches pattern" true matches
 
 let test_language_none () =
