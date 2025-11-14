@@ -425,22 +425,19 @@ CAMLprim value ml_g_object_notify(value obj, value prop_name)
  * This pattern is essential for any C library that stores OCaml callbacks.
  */
 
-/* Finalizer for GClosure custom block */
-static void ml_finalize_GClosure(value val)
-{
-    GClosure *closure = GClosure_val(val);
-    if (closure != NULL) {
-        /* Unreferencing the closure will eventually call ml_closure_invalidate
-         * which will clean up the callback_storage
-         */
-        g_closure_unref(closure);
-    }
-}
-
-/* Custom block for GClosure with finalizer */
+/* Custom block for GClosure - NO finalizer to avoid GC race conditions
+ *
+ * Why no finalizer?
+ * - Finalizers run during GC
+ * - If finalizer calls g_closure_unref -> ml_closure_invalidate -> caml_remove_global_root
+ * - This modifies global roots list WHILE GC is scanning it -> corruption/segfault
+ *
+ * Trade-off: Small memory leak (GClosures + callback_storage never freed)
+ * This is acceptable for GUI apps where closures live for app lifetime
+ */
 static struct custom_operations ml_custom_GClosure = {
     "GClosure/4.0/",
-    ml_finalize_GClosure,  /* Finalizer to unref the GClosure */
+    NULL,  /* No finalizer - intentional leak to avoid GC race */
     custom_compare_default,
     custom_hash_default,
     custom_serialize_default,
@@ -575,11 +572,17 @@ CAMLprim value ml_g_closure_new(value callback)
     /* Create GClosure with pointer to our storage as data */
     GClosure *closure = g_closure_new_simple(sizeof(GClosure), (gpointer)callback_storage);
 
-    /* Set up marshaller and invalidate notifier
-     * The invalidate notifier will unregister the global root and free our storage
+    /* Set up marshaller only - NO invalidate notifier
+     *
+     * Why no invalidate notifier?
+     * - It would call caml_remove_global_root during GClosure destruction
+     * - This can happen during OCaml GC (via finalizer) or during program exit
+     * - Modifying global roots during GC scan causes corruption
+     *
+     * Result: callback_storage and GClosure are never freed (small leak)
+     * This is safe because callback_storage points to valid memory we control
      */
     g_closure_set_marshal(closure, ml_closure_marshal);
-    g_closure_add_invalidate_notifier(closure, (gpointer)callback_storage, ml_closure_invalidate);
 
     /* Wrap with custom block */
     CAMLreturn(Val_GClosure_sink(closure));
