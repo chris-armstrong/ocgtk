@@ -242,7 +242,7 @@ let declaration ~hc ~cc = parser
     if static = "" then oh "extern const lookup_info ml_table_%s[];\n" name;
     oh "#define Val_%s(data) ml_lookup_from_c (ml_table_%s, data)\n"
       name name;
-    oh "#define %s_val(key) ml_lookup_to_c (ml_table_%s, key)\n\n"
+    oh "#define %s_val(key) Int_val(ml_lookup_to_c (ml_table_%s, key))\n\n"
       cname name;
 
   (* Handle package directive: package "Gtk4" *)

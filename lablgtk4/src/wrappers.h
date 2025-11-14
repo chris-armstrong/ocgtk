@@ -46,7 +46,7 @@ typedef struct { value key; int data; } lookup_info;
 
 /* Enum conversion functions (implemented in wrappers.c) */
 CAMLexport value ml_lookup_from_c (const lookup_info table[], int data);
-CAMLexport int ml_lookup_to_c (const lookup_info table[], value key);
+CAMLexport value ml_lookup_to_c (const lookup_info table[], value key);
 
 /* ==================================================================== */
 /* OCaml Value Helpers */
