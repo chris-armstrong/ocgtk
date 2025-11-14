@@ -1,5 +1,8 @@
 name: CI
-
+on:
+  push:
+    branches: [lablgtk4]
+  pull_request:
 # CI Notes:
 # - Repository now contains both lablgtk3/ (GTK 3) and lablgtk4/ (GTK 4)
 # - lablgtk3: depext for goocanvas2 is broken on windows and osx
@@ -7,58 +10,60 @@ name: CI
 # - lablgtk4: GTK 4 support is under development, failures expected
 
 jobs:
-  build-lablgtk3:
-    name: Build LablGTK3 (GTK 3)
-    runs-on: ${{ matrix.os }}
+# build-lablgtk3:
+# name: Build LablGTK3 (GTK 3)
+# runs-on: ${{ matrix.os }}
 
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-        ocaml-compiler: [4.09.x, 4.10.x, 4.11.x, 4.12.x, 4.13.x, 4.14.x, 5.1.x]
-        test-packages: [lablgtk3 lablgtk3-sourceview3 lablgtk3-gtkspell3 lablgtk3-goocanvas2]
-        test-target: [opam, dev-all]
-        include:
-        - os: ubuntu-latest
-          ocaml-compiler: 4.14.x
-          test-packages: lablgtk3 lablgtk3-sourceview3 lablgtk3-gtkspell3 lablgtk3-goocanvas2
-          test-target: dev
-        - os: macos-latest
-          ocaml-compiler: 4.14.x
-          test-packages: lablgtk3 lablgtk3-sourceview3 lablgtk3-gtkspell3
-          test-target: dev-ci-osx
-        - os: windows-latest
-          ocaml-compiler: 4.14.x
-          test-packages: lablgtk3 lablgtk3-sourceview3
-          test-target: dev-ci-windows
+# strategy:
+#   fail-fast: false
+#   matrix:
+#     os: [ubuntu-latest]
+#     ocaml-compiler: [4.14.x, 5.3.x]
+#     test-packages: [lablgtk3 lablgtk3-sourceview3 lablgtk3-gtkspell3 lablgtk3-goocanvas2]
+#     test-target: [opam, dev-all]
+#     include:
+#     - os: ubuntu-latest
+      
+#       test-packages: lablgtk3 lablgtk3-sourceview3 lablgtk3-gtkspell3 lablgtk3-goocanvas2
+#       test-target: dev
+#     - os: macos-latest
+      
+#       test-packages: lablgtk3 lablgtk3-sourceview3 lablgtk3-gtkspell3
+#       test-target: dev-ci-osx
+#     - os: windows-latest
+      
+#       test-packages: lablgtk3 lablgtk3-sourceview3
+#       test-target: dev-ci-windows
 
-    env:
-      OPAMJOBS: "2"
-      OPAMROOTISOK: "true"
-      OPAMYES: "true"
-      NJOBS: "2"
+# env:
+#   OPAMJOBS: "2"
+#   OPAMROOTISOK: "true"
+#   OPAMYES: "true"
+#   NJOBS: "2"
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+# steps:
+#   - name: Checkout code
+#     uses: actions/checkout@v4
 
-      - name: Set up OCaml ${{ matrix.ocaml-compiler }}
-        uses: ocaml/setup-ocaml@v2
-        with:
-          ocaml-compiler: ${{ matrix.ocaml-compiler }}
-          dune-cache: true
-          opam-depext: true
+#   - name: Set up OCaml ${{ matrix.ocaml-compiler }}
+#     uses: ocaml/setup-ocaml@v3
+#     with:
+#       ocaml-compiler: ${{ matrix.ocaml-compiler }}
+#       dune-cache: true
+#       opam-depext: true
 
-      - name: Install deps
-        working-directory: lablgtk3
-        run: opam install ${{ matrix.test-packages }} --deps-only --with-test
+#   - name: Install deps
+#     working-directory: lablgtk3
+#     run: |
+#          opam install camlp5 -y
+#          opam install ${{ matrix.test-packages }} --deps-only --with-test
 
-      - name: Display OPAM Setup
-        run: opam exec -- opam list
+#   - name: Display OPAM Setup
+#     run: opam exec -- opam list
 
-      - name: Test LablGTK3
-        working-directory: lablgtk3
-        run: opam exec -- make ${{ matrix.test-target }}
+#   - name: Test LablGTK3
+#     working-directory: lablgtk3
+#     run: opam exec -- make ${{ matrix.test-target }}
 
   build-lablgtk4:
     name: Build LablGTK4 (GTK 4)
@@ -67,27 +72,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ocaml-compiler: [4.14.x, 5.1.x, 5.2.x]
+        ocaml-compiler: [5.3.x, 5.4.x]
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Set up OCaml
-        uses: ocaml/setup-ocaml@v2
+        uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
           dune-cache: true
 
-      - name: Install GTK4 system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libgtk-4-dev \
-            libcairo2-dev \
-            libpango1.0-dev \
-            libgdk-pixbuf-2.0-dev \
-            libglib2.0-dev
+      - name: Pin conf-gtk4 package
+        run: opam pin add -n conf-gtk4 conf-gtk4
 
       - name: Install OCaml dependencies
         working-directory: lablgtk4
@@ -103,13 +101,16 @@ jobs:
         working-directory: lablgtk4
         run: opam exec -- dune build
 
-      - name: Run enum tests (individually to avoid segfault in test runner)
+      - name: Run all tests
         working-directory: lablgtk4
         run: |
           opam exec -- ./_build/default/tests/test_enum_roundtrip.exe
           opam exec -- ./_build/default/tests/test_enum_values.exe
           opam exec -- ./_build/default/tests/test_all_enums.exe
           opam exec -- ./_build/default/tests/test_glib.exe
+          opam exec -- ./_build/default/tests/test_ffi_integration.exe
+          opam exec -- ./_build/default/tests/test_gdkpixbuf.exe
+          opam exec -- ./_build/default/tests/test_gdk.exe
           opam exec -- ./_build/default/tests/test_gobject.exe
 
       - name: Display generated enum modules

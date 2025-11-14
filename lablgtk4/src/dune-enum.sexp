@@ -84,3 +84,14 @@
  (target gobject_tags.c)
  (deps gobject_tags_raw.c wrappers.h gobject_tags.h)
  (action (bash "echo '#include \"wrappers.h\"' > gobject_tags.c && echo '#include \"gobject_tags.h\"' >> gobject_tags.c && cat gobject_tags_raw.c >> gobject_tags.c")))
+
+; === GdkPixbuf enums ===
+(rule
+ (targets gdkpixbuf_tags_raw.h gdkpixbuf_tags_raw.c GdkPixbufEnums.ml)
+ (deps %{project_root}/src/tools/varcc.exe)
+ (action (run %{project_root}/src/tools/varcc.exe -h gdkpixbuf_tags_raw.h -c gdkpixbuf_tags_raw.c %{dep:gdkpixbuf_tags.var})))
+
+(rule
+ (target gdkpixbuf_tags.c)
+ (deps gdkpixbuf_tags_raw.c wrappers.h gdkpixbuf_tags.h)
+ (action (bash "echo '#include \"wrappers.h\"' > gdkpixbuf_tags.c && echo '#include \"gdkpixbuf_tags.h\"' >> gdkpixbuf_tags.c && cat gdkpixbuf_tags_raw.c >> gdkpixbuf_tags.c")))

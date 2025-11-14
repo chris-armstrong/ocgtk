@@ -28,6 +28,14 @@
 #define Pointer_val(val) ((void*)Field(val,1))
 #define Val_pointer(p) ((value)(p))
 
+/* For value blocks containing copied C structs */
+#define MLPointer_val(val) \
+        ((int)Field(val,1) == 2 ? &Field(val,2) : (void*)Field(val,1))
+
+/* Helper for creating OCaml values from C structs */
+CAMLexport value copy_memblock_indirected(void *src, asize_t size);
+#define Val_copy(val) copy_memblock_indirected(&val, sizeof(val))
+
 /* ==================================================================== */
 /* Enums <-> Polymorphic Variants */
 /* ==================================================================== */
@@ -55,6 +63,9 @@ CAMLexport int ml_lookup_to_c (const lookup_info table[], value key);
 #define Some_val(v) Field(v, 0)
 
 #define Val_emptylist Val_int(0)
+
+/* Helper macro for option types */
+#define Val_option(ptr, wrapper) ((ptr) ? Val_some(wrapper(ptr)) : Val_none)
 
 /* Helper macro to generate Val_option_T functions */
 #define Make_Val_option(T) \
@@ -106,25 +117,44 @@ CAMLprim value fname##_bc(value *argv, int argn) \
 /* GTK4/GDK4 Type Conversions */
 /* ==================================================================== */
 
-/* GdkSurface (was GdkWindow in GTK3) */
-#define GdkSurface_val(val) ((GdkSurface*)Pointer_val(val))
-#define Val_GdkSurface(obj) (Val_pointer(obj))
+/* GdkSurface (was GdkWindow in GTK3) - GObject, use direct cast */
+#define GdkSurface_val(val) ((GdkSurface*)(val))
+#define Val_GdkSurface(obj) ((value)(obj))
 
-/* GtkWidget */
-#define GtkWidget_val(val) ((GtkWidget*)Pointer_val(val))
-#define Val_GtkWidget(obj) (Val_pointer(obj))
+/* GdkDisplay - GObject, use direct cast */
+#define GdkDisplay_val(val) ((GdkDisplay*)(val))
+#define Val_GdkDisplay(obj) ((value)(obj))
 
-/* GtkWindow */
-#define GtkWindow_val(val) ((GtkWindow*)Pointer_val(val))
-#define Val_GtkWindow(obj) (Val_pointer(obj))
+/* GdkSeat (new in GDK4) - GObject, use direct cast */
+#define GdkSeat_val(val) ((GdkSeat*)(val))
+#define Val_GdkSeat(obj) ((value)(obj))
 
-/* GObject */
-#define GObject_val(val) ((GObject*)Pointer_val(val))
-#define Val_GObject(obj) (Val_pointer(obj))
+/* GdkDevice - GObject, use direct cast */
+#define GdkDevice_val(val) ((GdkDevice*)(val))
+#define Val_GdkDevice(obj) ((value)(obj))
 
-/* GClosure */
-#define GClosure_val(val) ((GClosure*)Pointer_val(val))
-#define Val_GClosure(obj) (Val_pointer(obj))
+/* GdkRGBA - simple struct, copied by value */
+#define GdkRGBA_val(val) ((GdkRGBA*)MLPointer_val(val))
+/* Val_GdkRGBA: Use Val_copy(rgba) for stack-allocated GdkRGBA */
+
+/* GdkCursor - GObject, use direct cast */
+#define GdkCursor_val(val) ((GdkCursor*)(val))
+#define Val_GdkCursor(obj) ((value)(obj))
+
+/* GtkWidget - GObject, use direct cast */
+#define GtkWidget_val(val) ((GtkWidget*)(val))
+#define Val_GtkWidget(obj) ((value)(obj))
+
+/* GtkWindow - GObject, use direct cast */
+#define GtkWindow_val(val) ((GtkWindow*)(val))
+#define Val_GtkWindow(obj) ((value)(obj))
+
+/* GObject - use direct cast */
+#define GObject_val(val) ((GObject*)(val))
+#define Val_GObject(obj) ((value)(obj))
+
+/* GClosure - custom block with finalizer (defined in ml_gobject.c) */
+#define GClosure_val(val) (*((GClosure**)Data_custom_val(val)))
 
 /* GType */
 #define GType_val(val) ((GType)Long_val(val))

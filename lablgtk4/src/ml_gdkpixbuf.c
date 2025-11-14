@@ -31,8 +31,6 @@
 #include "wrappers.h"
 #include "gdkpixbuf_tags.h"
 
-#include "gdkpixbuf_tags.c"
-
 /* Custom block with finalization for GdkPixbufs */
 static void ml_final_GdkPixbuf(value val)
 {

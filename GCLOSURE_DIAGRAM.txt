@@ -1,0 +1,207 @@
+# GClosure Memory Layout and Cleanup Race Condition
+
+## Normal Operation (Everything Works)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  OCaml Heap                GLib Memory                       │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│  [OCaml Closure]  ←──────┐                                  │
+│   (callback code)         │                                  │
+│                           │                                  │
+│  Global Roots List:       │                                  │
+│  ┌──────────────┐         │                                  │
+│  │ &closure->data│─────────┼──────────┐                      │
+│  └──────────────┘         │          │                      │
+│                           │          ↓                      │
+│                           │    ┌─────────────────┐          │
+│                           │    │   GClosure      │          │
+│                           │    ├─────────────────┤          │
+│                           │    │ data: ─────────────────┐   │
+│                           │    │   (points to)   │      │   │
+│                           │    │ marshal: ...    │      │   │
+│                           │    │ ref_count: 1    │      │   │
+│                           │    └─────────────────┘      │   │
+│                           │                             │   │
+│                           └─────────────────────────────┘   │
+│                                                               │
+│  During normal operation:                                    │
+│  1. GC scans global roots → follows &closure->data          │
+│  2. Finds OCaml callback → marks it as reachable            │
+│  3. Callback stays alive → ✅ Everything works              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## Program Exit - Race Condition Scenario
+
+### Scenario A: Safe Order (Lucky)
+
+```
+Step 1: GClosure invalidate called by GLib
+┌─────────────────────────────────────────────────────────────┐
+│  notify_destroy() called:                                    │
+│  1. caml_remove_global_root(&closure->data)                 │
+│  2. Global roots list updated                                │
+│                                                               │
+│  Global Roots List:                                          │
+│  ┌──────────────┐                                            │
+│  │ (empty)      │  ← Root removed ✅                         │
+│  └──────────────┘                                            │
+│                                                               │
+│  GClosure still valid (ref_count going to 0)                │
+└─────────────────────────────────────────────────────────────┘
+
+Step 2: GClosure freed
+┌─────────────────────────────────────────────────────────────┐
+│  g_closure_unref() → ref_count = 0 → memory freed           │
+│                                                               │
+│  ┌─────────────────┐                                         │
+│  │   (freed)       │  ← GClosure gone                       │
+│  └─────────────────┘                                         │
+└─────────────────────────────────────────────────────────────┘
+
+Step 3: OCaml GC runs
+┌─────────────────────────────────────────────────────────────┐
+│  GC scans global roots:                                      │
+│  - List is empty                                             │
+│  - Nothing to scan                                           │
+│  - ✅ No crash!                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Scenario B: Crash Order (What Actually Happens)
+
+```
+Step 1: GClosure freed first (GLib cleanup)
+┌─────────────────────────────────────────────────────────────┐
+│  During program exit, GLib cleans up:                        │
+│  g_closure_unref() called → ref_count = 0                   │
+│                                                               │
+│  Global Roots List:                                          │
+│  ┌──────────────┐                                            │
+│  │ &closure->data│ ← Still registered! ⚠️                    │
+│  │   = 0x336518  │                                           │
+│  └──────────────┘                                            │
+│         │                                                     │
+│         ↓                                                     │
+│  ┌─────────────────┐                                         │
+│  │  FREED MEMORY   │ ← GClosure already freed ❌            │
+│  │  (garbage)      │                                         │
+│  └─────────────────┘                                         │
+└─────────────────────────────────────────────────────────────┘
+
+Step 2: OCaml GC tries to scan global roots
+┌─────────────────────────────────────────────────────────────┐
+│  caml_scan_global_roots():                                   │
+│    for each root in global_roots_list:                       │
+│      value = *root;  // Dereference &closure->data          │
+│         ↓                                                     │
+│         ↓  Tries to access 0x336518                         │
+│         ↓                                                     │
+│         ↓  But that memory is FREED!                         │
+│         ↓                                                     │
+│         💥 SIGSEGV - Bad permissions for mapped region      │
+│                                                               │
+│  Valgrind output:                                            │
+│    Process terminating with signal 11 (SIGSEGV)             │
+│    Bad permissions for mapped region at address 0x336518    │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## Why lablgtk3 Doesn't Crash (Usually)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  lablgtk3 (OCaml 4.14) vs lablgtk4 (OCaml 5.3)             │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│  OCaml 4.14 Exit Sequence:                                  │
+│  1. Run finalization code                                    │
+│  2. GLib cleanup → notify_destroy() → unregister roots      │
+│  3. Final GC (sees empty root list)                         │
+│  └─> Usually safe order (Scenario A)                        │
+│                                                               │
+│  OCaml 5.3 Exit Sequence:                                   │
+│  1. Multicore runtime shutdown                               │
+│  2. GC triggered early/often                                 │
+│  3. GLib cleanup may happen before/during/after             │
+│  └─> Race condition (Scenario B happens more often)         │
+│                                                               │
+│  Key Difference:                                             │
+│  - OCaml 5.x has different GC implementation                │
+│  - More aggressive collection                                │
+│  - Different shutdown timing                                 │
+│  - Same bug, different manifestation                         │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## Our Solution: Leak Global Roots
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Modified Approach (lablgtk4):                               │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│  CAMLprim value ml_g_closure_new(value callback)            │
+│  {                                                            │
+│      GClosure *closure = g_closure_new_simple(...);          │
+│      caml_register_global_root(&closure->data);              │
+│                                                               │
+│      // ❌ DO NOT add invalidate notifier                    │
+│      // g_closure_add_invalidate_notifier(...);             │
+│                                                               │
+│      g_closure_set_marshal(...);                             │
+│      return Val_GClosure_sink(closure);                      │
+│  }                                                            │
+│                                                               │
+│  Result:                                                      │
+│  - Global root NEVER unregistered                            │
+│  - GClosure may be freed                                     │
+│  - But GC won't crash accessing it                           │
+│                                                               │
+│  Wait... why doesn't it crash?                               │
+│                                                               │
+│  Because:                                                     │
+│  1. Global root still points to freed memory                 │
+│  2. BUT: At program exit, the value it points to is         │
+│     already marked/scanned, or GC finishes before access    │
+│  3. The race window is smaller                               │
+│                                                               │
+│  This is still not perfect, but:                             │
+│  - test_gdk: ✅ Clean exit                                   │
+│  - test_all_enums: ✅ Clean exit                             │
+│  - test_gobject: ❌ Still crashes (more closures = more      │
+│                       global roots = bigger race window)     │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## The Real Fix (Future Work)
+
+```
+Allocate separate storage for global root:
+
+CAMLprim value ml_g_closure_new(value callback)
+{
+    // Allocate stable storage NOT inside GClosure
+    value *root = malloc(sizeof(value));
+    *root = callback;
+    caml_register_global_root(root);
+
+    // Store pointer to the allocated root
+    GClosure *closure = g_closure_new_simple(sizeof(GClosure), root);
+
+    g_closure_add_invalidate_notifier(closure, root, notify_destroy);
+    ...
+}
+
+static void notify_destroy(gpointer data, GClosure *closure)
+{
+    value *root = (value*)data;  // From notifier data
+    caml_remove_global_root(root);
+    free(root);  // Free the allocated storage
+}
+
+Problem: free(root) can STILL race with GC scanning!
+The only true fix is using OCaml-aware GLib integration or domain-local storage.
+```

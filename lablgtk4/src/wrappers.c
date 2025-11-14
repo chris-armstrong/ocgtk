@@ -41,3 +41,28 @@ CAMLexport int ml_lookup_to_c (const lookup_info table[], value key)
     if (table[first].key == key) return table[first].data;
     caml_invalid_argument ("ml_lookup_to_c");
 }
+
+/* Copy a C struct into an OCaml abstract block
+ * Layout: [header | unused | marker=2 | data...]
+ * Field 0: unused (for alignment/compatibility)
+ * Field 1: marker value 2
+ * Field 2+: actual struct data
+ */
+CAMLexport value copy_memblock_indirected(void *src, asize_t size)
+{
+    CAMLparam0();
+    CAMLlocal1(ret);
+    mlsize_t wosize;
+
+    if (!src) caml_failwith("copy_memblock_indirected: NULL pointer");
+
+    /* Calculate size in words for the data */
+    wosize = (size + sizeof(value) - 1) / sizeof(value);
+
+    /* Allocate: 1 unused + 1 marker + wosize for data = wosize + 2 */
+    ret = caml_alloc(wosize + 2, Abstract_tag);
+    Field(ret, 1) = (value)2;  /* Marker at Field 1 */
+    memcpy((void*)&Field(ret, 2), src, size);  /* Data starts at Field 2 */
+
+    CAMLreturn(ret);
+}
