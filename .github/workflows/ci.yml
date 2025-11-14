@@ -103,16 +103,7 @@ jobs:
 
       - name: Run all tests
         working-directory: lablgtk4
-        run: |
-          opam exec -- ./_build/default/tests/test_enum_roundtrip.exe
-          opam exec -- ./_build/default/tests/test_enum_values.exe
-          opam exec -- ./_build/default/tests/test_all_enums.exe
-          opam exec -- ./_build/default/tests/test_glib.exe
-          opam exec -- ./_build/default/tests/test_ffi_integration.exe
-          opam exec -- ./_build/default/tests/test_gdkpixbuf.exe
-          opam exec -- ./_build/default/tests/test_gdk.exe
-          opam exec -- ./_build/default/tests/test_gobject.exe
-          opam exec -- ./_build/default/tests/test_pango.exe
+        run: opam exec -- dune runtest
 
       - name: Display generated enum modules
         working-directory: lablgtk4
