@@ -1,5 +1,8 @@
 ; Test suite for lablgtk4
 ;
+; IMPORTANT: Tests are defined as (executable) not (test) to avoid GTK cleanup
+; issues when dune tries to run them in parallel. See custom runtest rule below.
+;
 ; Test organization:
 ; - test_enum_roundtrip.ml: Simple roundtrip tests for basic GTK4 enums
 ; - test_enum_values.ml: Value coverage tests for basic GTK4 enums
@@ -10,43 +13,43 @@
 ; - test_gdk.ml: GDK module tests for Display, Seat, Device, Surface (Phase 2.4)
 ; - test_clipboard.ml: GdkClipboard tests for clipboard operations (Phase 2.6)
 
-(test
+(executable
  (name test_enum_roundtrip)
  (libraries lablgtk4 alcotest))
 
-(test
+(executable
  (name test_enum_values)
  (libraries lablgtk4 alcotest))
 
-(test
+(executable
  (name test_all_enums)
  (libraries lablgtk4 alcotest))
 
-(test
+(executable
  (name test_glib)
  (libraries lablgtk4 alcotest))
 
-(test
+(executable
  (name test_gobject)
  (libraries lablgtk4 alcotest))
 
-(test
+(executable
  (name test_ffi_integration)
  (libraries lablgtk4 alcotest))
 
-(test
+(executable
  (name test_gdkpixbuf)
  (libraries lablgtk4 alcotest))
 
-(test
+(executable
  (name test_gdk)
  (libraries lablgtk4 alcotest))
 
-(test
+(executable
  (name test_pango)
  (libraries lablgtk4 alcotest))
 
-(test
+(executable
  (name test_clipboard)
  (libraries lablgtk4 alcotest))
 
@@ -97,10 +100,13 @@
    (echo "GTK/GDK creates process-wide state that causes cleanup issues\n")
    (echo "when running multiple test executables via dune's test harness.\n")
    (echo "\n")
-   (echo "Please use the test runner script instead:\n")
-   (echo "  ./run_tests.sh\n")
+   (echo "Please run the test runner script instead:\n")
    (echo "\n")
-   (echo "Running test script now...\n")
-   (echo "════════════════════════════════════════════════════════════════\n")
+   (echo "  cd lablgtk4 && ./run_tests.sh\n")
    (echo "\n")
-   (run ./run_tests.sh))))
+   (echo "Or from CI:\n")
+   (echo "\n")
+   (echo "  opam exec -- ./run_tests.sh\n")
+   (echo "\n")
+   (echo "See tests/dune for detailed explanation.\n")
+   (echo "════════════════════════════════════════════════════════════════\n"))))
