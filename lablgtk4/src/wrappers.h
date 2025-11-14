@@ -45,7 +45,7 @@ typedef struct { value key; int data; } lookup_info;
 #define Lookup_info_val(v) ((const lookup_info*)Pointer_val(v))
 
 /* Enum conversion functions (implemented in wrappers.c) */
-CAMLexport value ml_lookup_from_c (const lookup_info table[], int data);
+CAMLexport value ml_lookup_from_c (const lookup_info table[], value data);
 CAMLexport value ml_lookup_to_c (const lookup_info table[], value key);
 
 /* ==================================================================== */

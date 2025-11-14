@@ -22,7 +22,7 @@
 typedef struct { value key; int data; } lookup_info;
 
 /* Variant conversion functions (implemented in wrappers.c) */
-CAMLexport value ml_lookup_from_c(const lookup_info table[], int data);
-CAMLexport int ml_lookup_to_c(const lookup_info table[], value key);
+CAMLexport value ml_lookup_from_c(const lookup_info table[], value data);
+CAMLexport value ml_lookup_to_c(const lookup_info table[], value key);
 
 #endif /* _ML_GPOINTER_H_ */

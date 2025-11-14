@@ -22,8 +22,9 @@
 
 /* Enum/variant conversion functions */
 
-CAMLexport value ml_lookup_from_c (const lookup_info table[], int data)
+CAMLexport value ml_lookup_from_c (const lookup_info table[], value data_val)
 {
+    int data = Int_val(data_val);
     int i;
     for (i = table[0].data; i > 0; i--)
 	if (table[i].data == data) return table[i].key;
