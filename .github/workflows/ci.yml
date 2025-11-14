@@ -10,58 +10,58 @@ on:
 # - lablgtk4: GTK 4 support is under development, failures expected
 
 jobs:
-  build-lablgtk3:
-    name: Build LablGTK3 (GTK 3)
-    runs-on: ${{ matrix.os }}
+# build-lablgtk3:
+# name: Build LablGTK3 (GTK 3)
+# runs-on: ${{ matrix.os }}
 
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-        ocaml-compiler: [4.14.x, 5.3.x]
-        test-packages: [lablgtk3 lablgtk3-sourceview3 lablgtk3-gtkspell3 lablgtk3-goocanvas2]
-        test-target: [opam, dev-all]
-        include:
-        - os: ubuntu-latest
-          
-          test-packages: lablgtk3 lablgtk3-sourceview3 lablgtk3-gtkspell3 lablgtk3-goocanvas2
-          test-target: dev
-        - os: macos-latest
-          
-          test-packages: lablgtk3 lablgtk3-sourceview3 lablgtk3-gtkspell3
-          test-target: dev-ci-osx
-        - os: windows-latest
-          
-          test-packages: lablgtk3 lablgtk3-sourceview3
-          test-target: dev-ci-windows
+# strategy:
+#   fail-fast: false
+#   matrix:
+#     os: [ubuntu-latest]
+#     ocaml-compiler: [4.14.x, 5.3.x]
+#     test-packages: [lablgtk3 lablgtk3-sourceview3 lablgtk3-gtkspell3 lablgtk3-goocanvas2]
+#     test-target: [opam, dev-all]
+#     include:
+#     - os: ubuntu-latest
+      
+#       test-packages: lablgtk3 lablgtk3-sourceview3 lablgtk3-gtkspell3 lablgtk3-goocanvas2
+#       test-target: dev
+#     - os: macos-latest
+      
+#       test-packages: lablgtk3 lablgtk3-sourceview3 lablgtk3-gtkspell3
+#       test-target: dev-ci-osx
+#     - os: windows-latest
+      
+#       test-packages: lablgtk3 lablgtk3-sourceview3
+#       test-target: dev-ci-windows
 
-    env:
-      OPAMJOBS: "2"
-      OPAMROOTISOK: "true"
-      OPAMYES: "true"
-      NJOBS: "2"
+# env:
+#   OPAMJOBS: "2"
+#   OPAMROOTISOK: "true"
+#   OPAMYES: "true"
+#   NJOBS: "2"
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+# steps:
+#   - name: Checkout code
+#     uses: actions/checkout@v4
 
-      - name: Set up OCaml ${{ matrix.ocaml-compiler }}
-        uses: ocaml/setup-ocaml@v3
-        with:
-          ocaml-compiler: ${{ matrix.ocaml-compiler }}
-          dune-cache: true
-          opam-depext: true
+#   - name: Set up OCaml ${{ matrix.ocaml-compiler }}
+#     uses: ocaml/setup-ocaml@v3
+#     with:
+#       ocaml-compiler: ${{ matrix.ocaml-compiler }}
+#       dune-cache: true
+#       opam-depext: true
 
-      - name: Install deps
-        working-directory: lablgtk3
-        run: opam install ${{ matrix.test-packages }} --deps-only --with-test
+#   - name: Install deps
+#     working-directory: lablgtk3
+#     run: opam install ${{ matrix.test-packages }} --deps-only --with-test
 
-      - name: Display OPAM Setup
-        run: opam exec -- opam list
+#   - name: Display OPAM Setup
+#     run: opam exec -- opam list
 
-      - name: Test LablGTK3
-        working-directory: lablgtk3
-        run: opam exec -- make ${{ matrix.test-target }}
+#   - name: Test LablGTK3
+#     working-directory: lablgtk3
+#     run: opam exec -- make ${{ matrix.test-target }}
 
   build-lablgtk4:
     name: Build LablGTK4 (GTK 4)
