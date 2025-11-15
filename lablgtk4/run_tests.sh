@@ -31,6 +31,7 @@ echo "Running library tests..."
 ./_build/default/tests/test_gdk.exe
 ./_build/default/tests/test_pango.exe
 ./_build/default/tests/test_clipboard.exe
+./_build/default/tests/test_widget.exe
 
 echo ""
 echo "╔══════════════════════════════════════════════════════════════╗"

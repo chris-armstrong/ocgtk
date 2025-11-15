@@ -54,6 +54,10 @@
  (libraries lablgtk4 alcotest))
 
 (executable
+ (name test_widget)
+ (libraries lablgtk4 alcotest))
+
+(executable
  (name test_closure_stress)
  (libraries lablgtk4))
 
