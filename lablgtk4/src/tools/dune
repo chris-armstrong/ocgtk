@@ -22,3 +22,15 @@
  (modules varcc propcc)
  (libraries camlp-streams)
  (flags (:standard -w -32)))
+
+; Phase 3.0: GIR-based code generator
+(executable
+ (name gir_gen)
+ (modules gir_gen)
+ (libraries str unix))
+
+; Test for GIR generator
+(executable
+ (name test_gir_gen)
+ (modules test_gir_gen)
+ (libraries str unix))
