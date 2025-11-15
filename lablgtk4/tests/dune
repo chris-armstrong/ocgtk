@@ -70,6 +70,10 @@
  (libraries lablgtk4))
 
 (executable
+ (name test_gtk_init)
+ (libraries lablgtk4 alcotest))
+
+(executable
  (name test_event_controller)
  (libraries lablgtk4 alcotest))
 

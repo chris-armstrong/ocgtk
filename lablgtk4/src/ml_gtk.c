@@ -220,3 +220,59 @@ CAMLprim value ml_gtk_widget_destroy(value widget)
 
   CAMLreturn(Val_unit);
 }
+
+/* ========== Initialization and Main Loop ========== */
+
+/* GTK4 Note: gtk_init_check() no longer takes argc/argv parameters.
+ * Command-line argument parsing is now handled by GtkApplication.
+ * We keep the argv parameter for API compatibility but just return it unchanged. */
+CAMLprim value ml_gtk_init(value argv)
+{
+  CAMLparam1(argv);
+
+  /* GTK4: gtk_init_check has signature: gboolean gtk_init_check(void) */
+  if (!gtk_init_check()) {
+    caml_failwith("GTK initialization failed");
+  }
+
+  /* Return argv unchanged (GTK4 doesn't process it) */
+  CAMLreturn(argv);
+}
+
+/* GTK4 Note: gtk_main/gtk_main_quit were removed.
+ * For testing, we use GLib's main loop directly.
+ * Production apps should use GtkApplication (Phase 6.2). */
+
+static GMainLoop *main_loop = NULL;
+
+CAMLprim value ml_gtk_main(value unit)
+{
+  CAMLparam1(unit);
+
+  if (main_loop == NULL) {
+    main_loop = g_main_loop_new(NULL, FALSE);
+  }
+
+  g_main_loop_run(main_loop);
+
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_main_quit(value unit)
+{
+  CAMLparam1(unit);
+
+  if (main_loop != NULL) {
+    g_main_loop_quit(main_loop);
+  }
+
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_main_iteration_do(value block)
+{
+  CAMLparam1(block);
+  GMainContext *context = g_main_context_default();
+  gboolean result = g_main_context_iteration(context, Bool_val(block));
+  CAMLreturn(Val_bool(result));
+}
