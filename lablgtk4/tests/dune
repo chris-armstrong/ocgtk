@@ -78,6 +78,10 @@
  (libraries lablgtk4 alcotest))
 
 (executable
+ (name test_event_controller_runtime)
+ (libraries lablgtk4 alcotest))
+
+(executable
  (name test_gobj)
  (libraries lablgtk4 alcotest))
 
