@@ -1,13 +1,15 @@
 #!/bin/bash
 # run_tests.sh - Run all lablgtk4 tests individually
 #
-# WHY: GTK/GDK creates process-wide state that doesn't clean up properly
-# when multiple test executables run via dune's test harness. This causes
-# segmentation faults during process cleanup (AFTER tests pass).
+# WHY: Dune's process spawning mechanism (vfork + worker threads) creates a
+# race condition with OCaml 5.x runtime's global root cleanup during process
+# exit. This causes segmentation faults AFTER tests complete successfully.
 #
-# SOLUTION: Run each test executable separately to isolate GTK/GDK state.
+# SOLUTION: Run each test executable in simple sequential execution, avoiding
+# dune's complex process management entirely.
 #
 # This script is the canonical way to run all tests for lablgtk4.
+# See tests/dune for detailed technical explanation.
 
 set -e  # Exit on first failure
 
