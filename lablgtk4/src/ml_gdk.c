@@ -306,53 +306,22 @@ CAMLprim value ml_gdk_color_get_blue(value color_val)
 /* RGBA functions                                                            */
 /* ========================================================================= */
 
-CAMLprim value ml_gdk_rgba_create(value red, value green, value blue, value alpha)
-{
-    CAMLparam4(red, green, blue, alpha);
-    GdkRGBA rgba;
-
-    rgba.red = Double_val(red);
-    rgba.green = Double_val(green);
-    rgba.blue = Double_val(blue);
-    rgba.alpha = Double_val(alpha);
-
-    CAMLreturn(Val_copy(rgba));
-}
-
-CAMLprim value ml_gdk_rgba_get_red(value rgba_val)
-{
-    CAMLparam1(rgba_val);
-    GdkRGBA *rgba = GdkRGBA_val(rgba_val);
-    CAMLreturn(caml_copy_double(rgba->red));
-}
-
-CAMLprim value ml_gdk_rgba_get_green(value rgba_val)
-{
-    CAMLparam1(rgba_val);
-    GdkRGBA *rgba = GdkRGBA_val(rgba_val);
-    CAMLreturn(caml_copy_double(rgba->green));
-}
-
-CAMLprim value ml_gdk_rgba_get_blue(value rgba_val)
-{
-    CAMLparam1(rgba_val);
-    GdkRGBA *rgba = GdkRGBA_val(rgba_val);
-    CAMLreturn(caml_copy_double(rgba->blue));
-}
-
-CAMLprim value ml_gdk_rgba_get_alpha(value rgba_val)
-{
-    CAMLparam1(rgba_val);
-    GdkRGBA *rgba = GdkRGBA_val(rgba_val);
-    CAMLreturn(caml_copy_double(rgba->alpha));
-}
+/* RGBA is now a record type: { red : float; green : float; blue : float; alpha : float } */
 
 CAMLprim value ml_gdk_rgba_to_string(value rgba_val)
 {
     CAMLparam1(rgba_val);
-    GdkRGBA *rgba = GdkRGBA_val(rgba_val);
-    char *str = gdk_rgba_to_string(rgba);
-    value result = caml_copy_string(str ? str : "");
+    CAMLlocal1(result);
+    GdkRGBA rgba;
+
+    /* Extract fields from OCaml record */
+    rgba.red = Double_field(rgba_val, 0);
+    rgba.green = Double_field(rgba_val, 1);
+    rgba.blue = Double_field(rgba_val, 2);
+    rgba.alpha = Double_field(rgba_val, 3);
+
+    char *str = gdk_rgba_to_string(&rgba);
+    result = caml_copy_string(str ? str : "");
     g_free(str);
     CAMLreturn(result);
 }
@@ -360,11 +329,18 @@ CAMLprim value ml_gdk_rgba_to_string(value rgba_val)
 CAMLprim value ml_gdk_rgba_parse(value str_val)
 {
     CAMLparam1(str_val);
+    CAMLlocal1(result);
     GdkRGBA rgba;
     const char *str = String_val(str_val);
 
     if (gdk_rgba_parse(&rgba, str)) {
-        CAMLreturn(Val_some(Val_copy(rgba)));
+        /* Create OCaml record */
+        result = caml_alloc(4, 0);  /* 4 fields, tag 0 (record) */
+        Store_double_field(result, 0, rgba.red);
+        Store_double_field(result, 1, rgba.green);
+        Store_double_field(result, 2, rgba.blue);
+        Store_double_field(result, 3, rgba.alpha);
+        CAMLreturn(Val_some(result));
     }
     CAMLreturn(Val_none);
 }

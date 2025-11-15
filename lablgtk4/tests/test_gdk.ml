@@ -277,31 +277,31 @@ let test_rectangle_union () =
 (** {2 RGBA Color Tests} *)
 
 let test_rgba_create () =
-  let rgba = Gdk.RGBA.create ~red:1.0 ~green:0.5 ~blue:0.0 ~alpha:0.8 in
-  check (float 0.01) "red" 1.0 (Gdk.RGBA.get_red rgba);
-  check (float 0.01) "green" 0.5 (Gdk.RGBA.get_green rgba);
-  check (float 0.01) "blue" 0.0 (Gdk.RGBA.get_blue rgba);
-  check (float 0.01) "alpha" 0.8 (Gdk.RGBA.get_alpha rgba)
+  let rgba = Gdk.RGBA.make ~red:1.0 ~green:0.5 ~blue:0.0 ~alpha:0.8 in
+  check (float 0.01) "red" 1.0 rgba.Gdk.RGBA.red;
+  check (float 0.01) "green" 0.5 rgba.Gdk.RGBA.green;
+  check (float 0.01) "blue" 0.0 rgba.Gdk.RGBA.blue;
+  check (float 0.01) "alpha" 0.8 rgba.Gdk.RGBA.alpha
 
 let test_rgba_white () =
-  let white = Gdk.RGBA.create ~red:1.0 ~green:1.0 ~blue:1.0 ~alpha:1.0 in
-  check (float 0.01) "white red" 1.0 (Gdk.RGBA.get_red white);
-  check (float 0.01) "white green" 1.0 (Gdk.RGBA.get_green white);
-  check (float 0.01) "white blue" 1.0 (Gdk.RGBA.get_blue white);
-  check (float 0.01) "white alpha" 1.0 (Gdk.RGBA.get_alpha white)
+  let white = Gdk.RGBA.white in
+  check (float 0.01) "white red" 1.0 white.Gdk.RGBA.red;
+  check (float 0.01) "white green" 1.0 white.Gdk.RGBA.green;
+  check (float 0.01) "white blue" 1.0 white.Gdk.RGBA.blue;
+  check (float 0.01) "white alpha" 1.0 white.Gdk.RGBA.alpha
 
 let test_rgba_black () =
-  let black = Gdk.RGBA.create ~red:0.0 ~green:0.0 ~blue:0.0 ~alpha:1.0 in
-  check (float 0.01) "black red" 0.0 (Gdk.RGBA.get_red black);
-  check (float 0.01) "black green" 0.0 (Gdk.RGBA.get_green black);
-  check (float 0.01) "black blue" 0.0 (Gdk.RGBA.get_blue black)
+  let black = Gdk.RGBA.black in
+  check (float 0.01) "black red" 0.0 black.Gdk.RGBA.red;
+  check (float 0.01) "black green" 0.0 black.Gdk.RGBA.green;
+  check (float 0.01) "black blue" 0.0 black.Gdk.RGBA.blue
 
 let test_rgba_transparent () =
-  let transparent = Gdk.RGBA.create ~red:0.0 ~green:0.0 ~blue:0.0 ~alpha:0.0 in
-  check (float 0.01) "transparent alpha" 0.0 (Gdk.RGBA.get_alpha transparent)
+  let transparent = Gdk.RGBA.transparent in
+  check (float 0.01) "transparent alpha" 0.0 transparent.Gdk.RGBA.alpha
 
 let test_rgba_to_string () =
-  let rgba = Gdk.RGBA.create ~red:1.0 ~green:0.0 ~blue:0.0 ~alpha:1.0 in
+  let rgba = Gdk.RGBA.make ~red:1.0 ~green:0.0 ~blue:0.0 ~alpha:1.0 in
   let str = Gdk.RGBA.to_string rgba in
   (* GdkRGBA to_string formats as "rgb(r,g,b)" or "rgba(r,g,b,a)" *)
   check bool "to_string not empty" true (String.length str > 0);
@@ -313,9 +313,9 @@ let test_rgba_parse () =
   | None -> fail "should parse rgb(255,0,0)"
   | Some rgba ->
       (* Red should be close to 1.0 *)
-      check bool "parsed red" true (Gdk.RGBA.get_red rgba > 0.9);
-      check bool "parsed green" true (Gdk.RGBA.get_green rgba < 0.1);
-      check bool "parsed blue" true (Gdk.RGBA.get_blue rgba < 0.1)
+      check bool "parsed red" true (rgba.Gdk.RGBA.red > 0.9);
+      check bool "parsed green" true (rgba.Gdk.RGBA.green < 0.1);
+      check bool "parsed blue" true (rgba.Gdk.RGBA.blue < 0.1)
 
 let test_rgba_parse_invalid () =
   match Gdk.RGBA.parse "invalid color string" with

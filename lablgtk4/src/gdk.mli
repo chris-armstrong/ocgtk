@@ -241,16 +241,20 @@ module Color : sig
 end
 
 module RGBA : sig
-  type t = rgba
-  (** RGBA color with alpha *)
+  type t = { red : float; green : float; blue : float; alpha : float }
+  (** RGBA color with alpha (0.0-1.0 range for each component) *)
 
-  val create : red:float -> green:float -> blue:float -> alpha:float -> t
-  (** Create RGBA color (0.0-1.0 range) *)
+  val make : red:float -> green:float -> blue:float -> alpha:float -> t
+  (** Create RGBA color *)
 
-  val get_red : t -> float
-  val get_green : t -> float
-  val get_blue : t -> float
-  val get_alpha : t -> float
+  val black : t
+  (** Opaque black *)
+
+  val white : t
+  (** Opaque white *)
+
+  val transparent : t
+  (** Fully transparent *)
 
   val to_string : t -> string
   (** Convert to CSS-style string *)
