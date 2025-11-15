@@ -16,7 +16,11 @@ echo "║         LablGTK4 Test Suite - Individual Test Runner        ║"
 echo "╚══════════════════════════════════════════════════════════════╝"
 echo ""
 
-# Run each test executable
+echo "Running code generation tests..."
+./_build/default/src/tools/test_gir_gen.exe
+echo ""
+
+echo "Running library tests..."
 ./_build/default/tests/test_enum_roundtrip.exe
 ./_build/default/tests/test_enum_values.exe
 ./_build/default/tests/test_all_enums.exe
