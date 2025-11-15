@@ -19,7 +19,7 @@ type propagation_limit = [
 
 module Base : sig
   (** Get the widget this controller is attached to *)
-  val get_widget : t -> Gtk.widget option
+  val get_widget : t -> [`widget] Gobject.obj option
 
   (** Get propagation phase *)
   val get_propagation_phase : t -> propagation_phase
@@ -37,7 +37,7 @@ module Base : sig
   val reset : t -> unit
 
   (** Get the current event being processed *)
-  val get_current_event : t -> Gdk.Event.t option
+  val get_current_event : t -> _ Gdk.event option
 
   (** Get current event time *)
   val get_current_event_time : t -> int

@@ -13,13 +13,13 @@ val new_ : unit -> t
 val connect_enter :
   t ->
   callback:(x:float -> y:float -> unit) ->
-  Gobject.signal_id
+  Gobject.handler_id
 
 (** Emitted when pointer leaves widget *)
 val connect_leave :
   t ->
   callback:(unit -> unit) ->
-  Gobject.signal_id
+  Gobject.handler_id
 
 (** Emitted when pointer moves within widget.
     @param x X coordinate
@@ -27,7 +27,7 @@ val connect_leave :
 val connect_motion :
   t ->
   callback:(x:float -> y:float -> unit) ->
-  Gobject.signal_id
+  Gobject.handler_id
 
 (** {2 Methods} *)
 

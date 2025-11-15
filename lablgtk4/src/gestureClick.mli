@@ -14,7 +14,7 @@ val new_ : unit -> t
 val connect_pressed :
   t ->
   callback:(n_press:int -> x:float -> y:float -> unit) ->
-  Gobject.signal_id
+  Gobject.handler_id
 
 (** Emitted when button is released.
     @param n_press Click count
@@ -23,13 +23,13 @@ val connect_pressed :
 val connect_released :
   t ->
   callback:(n_press:int -> x:float -> y:float -> unit) ->
-  Gobject.signal_id
+  Gobject.handler_id
 
 (** Emitted when gesture is recognized as a stop event *)
 val connect_stopped :
   t ->
   callback:(unit -> unit) ->
-  Gobject.signal_id
+  Gobject.handler_id
 
 (** Emitted when click is not paired with release (drag started).
     @param x X coordinate
@@ -39,7 +39,7 @@ val connect_stopped :
 val connect_unpaired_release :
   t ->
   callback:(x:float -> y:float -> button:int -> unit) ->
-  Gobject.signal_id
+  Gobject.handler_id
 
 (** {2 Methods} *)
 

@@ -32,16 +32,16 @@
 /* ==================================================================== */
 
 static const lookup_info propagation_phase_table[] = {
-    { hash_variant("NONE"), GTK_PHASE_NONE },
-    { hash_variant("CAPTURE"), GTK_PHASE_CAPTURE },
-    { hash_variant("BUBBLE"), GTK_PHASE_BUBBLE },
-    { hash_variant("TARGET"), GTK_PHASE_TARGET },
+    { caml_hash_variant("NONE"), GTK_PHASE_NONE },
+    { caml_hash_variant("CAPTURE"), GTK_PHASE_CAPTURE },
+    { caml_hash_variant("BUBBLE"), GTK_PHASE_BUBBLE },
+    { caml_hash_variant("TARGET"), GTK_PHASE_TARGET },
     { 0, 0 }
 };
 
 static const lookup_info propagation_limit_table[] = {
-    { hash_variant("NONE"), GTK_LIMIT_NONE },
-    { hash_variant("SAME_NATIVE"), GTK_LIMIT_SAME_NATIVE },
+    { caml_hash_variant("NONE"), GTK_LIMIT_NONE },
+    { caml_hash_variant("SAME_NATIVE"), GTK_LIMIT_SAME_NATIVE },
     { 0, 0 }
 };
 
@@ -158,7 +158,7 @@ static gboolean key_pressed_callback_wrapper(
     value *ocaml_callback = (value*)user_data;
 
     /* Convert modifier state to OCaml list */
-    state_val = Val_flags_ModifierType(state);
+    state_val = Val_gdk4_modifier_type(state);
 
     /* Call OCaml callback with keyval, keycode, state */
     result = caml_callback3_exn(*ocaml_callback,
@@ -214,7 +214,7 @@ static void key_released_callback_wrapper(
     value *ocaml_callback = (value*)user_data;
 
     /* Convert modifier state to OCaml list */
-    state_val = Val_flags_ModifierType(state);
+    state_val = Val_gdk4_modifier_type(state);
 
     /* Call OCaml callback */
     value result = caml_callback3_exn(*ocaml_callback,
@@ -263,7 +263,7 @@ static gboolean modifiers_callback_wrapper(
     value *ocaml_callback = (value*)user_data;
 
     /* Convert modifier state to OCaml list */
-    state_val = Val_flags_ModifierType(state);
+    state_val = Val_gdk4_modifier_type(state);
 
     result = caml_callback_exn(*ocaml_callback, state_val);
 
@@ -302,9 +302,10 @@ CAMLprim value ml_gtk_event_controller_key_connect_modifiers(
 CAMLprim value ml_gtk_event_controller_key_forward(value controller, value event)
 {
     CAMLparam2(controller, event);
+    GdkEvent *gdk_event = GdkEvent_val(event);
     gboolean result = gtk_event_controller_key_forward(
         GTK_EVENT_CONTROLLER_KEY(GtkEventController_val(controller)),
-        GdkEvent_val(event)
+        gdk_event
     );
     CAMLreturn(Val_bool(result));
 }
@@ -436,11 +437,23 @@ CAMLprim value ml_gtk_event_controller_motion_connect_motion(
     CAMLreturn(Val_long(signal_id));
 }
 
-ML_1(gtk_event_controller_motion_contains_pointer,
-     GtkEventController_val, Val_bool)
+CAMLprim value ml_gtk_event_controller_motion_contains_pointer(value controller)
+{
+    CAMLparam1(controller);
+    gboolean result = gtk_event_controller_motion_contains_pointer(
+        GTK_EVENT_CONTROLLER_MOTION(GtkEventController_val(controller))
+    );
+    CAMLreturn(Val_bool(result));
+}
 
-ML_1(gtk_event_controller_motion_is_pointer,
-     GtkEventController_val, Val_bool)
+CAMLprim value ml_gtk_event_controller_motion_is_pointer(value controller)
+{
+    CAMLparam1(controller);
+    gboolean result = gtk_event_controller_motion_is_pointer(
+        GTK_EVENT_CONTROLLER_MOTION(GtkEventController_val(controller))
+    );
+    CAMLreturn(Val_bool(result));
+}
 
 /* ==================================================================== */
 /* Gesture Click */

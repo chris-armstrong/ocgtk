@@ -15,7 +15,7 @@ val new_ : unit -> t
 val connect_key_pressed :
   t ->
   callback:(keyval:int -> keycode:int -> state:Gdk.modifier_type list -> bool) ->
-  Gobject.signal_id
+  Gobject.handler_id
 
 (** Emitted when a key is released.
     @param keyval Key value
@@ -24,7 +24,7 @@ val connect_key_pressed :
 val connect_key_released :
   t ->
   callback:(keyval:int -> keycode:int -> state:Gdk.modifier_type list -> unit) ->
-  Gobject.signal_id
+  Gobject.handler_id
 
 (** Emitted for modifier-only events.
     @param state Modifier state
@@ -32,13 +32,13 @@ val connect_key_released :
 val connect_modifiers :
   t ->
   callback:(state:Gdk.modifier_type list -> bool) ->
-  Gobject.signal_id
+  Gobject.handler_id
 
 (** {2 Methods} *)
 
 (** Forward the event to the IM context.
     @return true if the event was consumed *)
-val forward : t -> Gdk.Event.t -> bool
+val forward : t -> _ Gdk.event -> bool
 
 (** Get the key group for the last processed event *)
 val get_group : t -> int
