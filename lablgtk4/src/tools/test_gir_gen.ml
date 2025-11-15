@@ -99,7 +99,7 @@ let test_gir_parsing () =
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
-  let cmd = sprintf "%s/gir_gen %s %s 2>&1"
+  let cmd = sprintf "%s/gir_gen.exe %s %s 2>&1"
     tools_dir test_gir output_dir in
 
   let exit_code = Sys.command cmd in
@@ -121,7 +121,7 @@ let test_c_code_generation () =
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
-  let cmd = sprintf "%s/gir_gen %s %s > /dev/null 2>&1"
+  let cmd = sprintf "%s/gir_gen.exe %s %s > /dev/null 2>&1"
     tools_dir test_gir output_dir in
   let _ = Sys.command cmd in
 
