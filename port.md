@@ -202,16 +202,27 @@ The migration will be considered successful when:
 
 ---
 
-### Phases 3-7: Widget Layer & Advanced Features (30-38 weeks)
+### Phase 3: Base Widget Infrastructure (6-8 weeks)
 
-**[→ See high-level overview for Phases 3-7](port-phase3-7.md)**
+**[→ See detailed Phase 3 plan](port-phase3.md)**
 
-These phases will be detailed after Phases 1-2 are complete and validated.
+**Objective**: Implement the core GtkWidget infrastructure with GTK4's new rendering and event systems.
 
-**Phase 3: Base Widget Infrastructure** (6-8 weeks)
-- GtkWidget with snapshot rendering
-- Event controller system
-- Focus and lifecycle management
+**Key deliverables:**
+- GtkWidget module with GTK4 API
+- GtkSnapshot rendering system with Cairo compatibility
+- Event controller system (EventControllerKey, EventControllerMotion, GestureClick)
+- Graphene geometry types (minimal bindings)
+- Updated GObj.widget class without event_ops
+- controller_ops for convenient event handling
+
+---
+
+### Phases 4-7: Widget Layer & Advanced Features (22-30 weeks)
+
+**[→ See high-level overview for Phases 4-7](port-phase3-7.md)**
+
+These phases will be detailed after Phase 3 is complete and validated.
 
 **Phase 4: Container & Layout System** (4-6 weeks)
 - Redesigned container APIs (no GtkContainer/GtkBin)

@@ -1,10 +1,12 @@
 # Phases 3-7: Widget Layer & Advanced Features
 
-**Note**: These phases are outlined at a high level. Detailed plans will be developed after completing Phases 1-2 and validating the approach.
+**Note**: Phase 3 now has a detailed plan. Phases 4-7 are outlined at a high level and will be detailed after completing Phase 3 and validating the approach.
 
 ---
 
 ## Phase 3: Base Widget Infrastructure (6-8 weeks)
+
+**[→ See detailed Phase 3 plan](port-phase3.md)** ✨ **DETAILED SPEC AVAILABLE**
 
 **Objective**: Implement the core GtkWidget infrastructure with GTK4's new rendering and event systems.
 
