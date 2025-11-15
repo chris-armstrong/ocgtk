@@ -158,14 +158,14 @@ module Color = struct
 end
 
 module RGBA = struct
-  type t = rgba
+  type t = { red : float; green : float; blue : float; alpha : float }
 
-  external create : red:float -> green:float -> blue:float -> alpha:float -> t
-    = "ml_gdk_rgba_create"
-  external get_red : t -> float = "ml_gdk_rgba_get_red"
-  external get_green : t -> float = "ml_gdk_rgba_get_green"
-  external get_blue : t -> float = "ml_gdk_rgba_get_blue"
-  external get_alpha : t -> float = "ml_gdk_rgba_get_alpha"
+  let make ~red ~green ~blue ~alpha = { red; green; blue; alpha }
+
+  let black = { red = 0.0; green = 0.0; blue = 0.0; alpha = 1.0 }
+  let white = { red = 1.0; green = 1.0; blue = 1.0; alpha = 1.0 }
+  let transparent = { red = 0.0; green = 0.0; blue = 0.0; alpha = 0.0 }
+
   external to_string : t -> string = "ml_gdk_rgba_to_string"
   external parse : string -> t option = "ml_gdk_rgba_parse"
 end

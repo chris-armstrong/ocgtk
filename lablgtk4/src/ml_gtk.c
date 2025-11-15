@@ -1,0 +1,222 @@
+/**************************************************************************/
+/*                LablGTK4 - OCaml bindings for GTK4                      */
+/*                                                                        */
+/*    This program is free software; you can redistribute it              */
+/*    and/or modify it under the terms of the GNU Library General         */
+/*    Public License as published by the Free Software Foundation         */
+/*    version 2, with the exception described in file COPYING which       */
+/*    comes with the library.                                             */
+/*                                                                        */
+/**************************************************************************/
+
+#include <gtk/gtk.h>
+#include <caml/mlvalues.h>
+#include <caml/memory.h>
+#include <caml/alloc.h>
+#include <caml/callback.h>
+#include <caml/fail.h>
+
+#include "wrappers.h"
+#include "ml_gobject.h"
+
+/* Widget type conversions are defined in wrappers.h */
+
+/* ========== Visibility ========== */
+
+ML_1 (gtk_widget_show, GtkWidget_val, Unit)
+ML_1 (gtk_widget_hide, GtkWidget_val, Unit)
+ML_1 (gtk_widget_get_visible, GtkWidget_val, Val_bool)
+ML_2 (gtk_widget_set_visible, GtkWidget_val, Bool_val, Unit)
+
+/* ========== Size and Allocation ========== */
+
+ML_1 (gtk_widget_get_allocated_width, GtkWidget_val, Val_int)
+ML_1 (gtk_widget_get_allocated_height, GtkWidget_val, Val_int)
+ML_1 (gtk_widget_get_width, GtkWidget_val, Val_int)
+ML_1 (gtk_widget_get_height, GtkWidget_val, Val_int)
+
+CAMLprim value ml_gtk_widget_set_size_request(value widget, value width, value height)
+{
+  CAMLparam3(widget, width, height);
+  gtk_widget_set_size_request(
+    GtkWidget_val(widget),
+    Int_val(width),
+    Int_val(height)
+  );
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_widget_get_size_request(value widget)
+{
+  CAMLparam1(widget);
+  CAMLlocal1(result);
+  int width, height;
+
+  gtk_widget_get_size_request(GtkWidget_val(widget), &width, &height);
+
+  result = caml_alloc_tuple(2);
+  Store_field(result, 0, Val_int(width));
+  Store_field(result, 1, Val_int(height));
+
+  CAMLreturn(result);
+}
+
+/* ========== Properties ========== */
+
+ML_1 (gtk_widget_get_sensitive, GtkWidget_val, Val_bool)
+ML_2 (gtk_widget_set_sensitive, GtkWidget_val, Bool_val, Unit)
+
+CAMLprim value ml_gtk_widget_get_name(value widget)
+{
+  CAMLparam1(widget);
+  CAMLlocal1(result);
+  const char *name;
+
+  name = gtk_widget_get_name(GtkWidget_val(widget));
+
+  /* Security: Check for NULL pointer */
+  if (name == NULL) {
+    result = caml_copy_string("");
+  } else {
+    result = caml_copy_string(name);
+  }
+
+  CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_widget_set_name(value widget, value name)
+{
+  CAMLparam2(widget, name);
+
+  /* String_val is safe - no need for NULL check on OCaml strings */
+  gtk_widget_set_name(GtkWidget_val(widget), String_val(name));
+
+  CAMLreturn(Val_unit);
+}
+
+/* ========== Focus ========== */
+
+ML_1 (gtk_widget_get_focusable, GtkWidget_val, Val_bool)
+ML_2 (gtk_widget_set_focusable, GtkWidget_val, Bool_val, Unit)
+ML_1 (gtk_widget_has_focus, GtkWidget_val, Val_bool)
+ML_1 (gtk_widget_grab_focus, GtkWidget_val, Val_bool)
+
+/* ========== Parent/Root ========== */
+
+CAMLprim value ml_gtk_widget_get_parent(value widget)
+{
+  CAMLparam1(widget);
+  GtkWidget *parent = gtk_widget_get_parent(GtkWidget_val(widget));
+  CAMLreturn(Val_option(parent, Val_GtkWidget));
+}
+
+CAMLprim value ml_gtk_widget_get_root(value widget)
+{
+  CAMLparam1(widget);
+  GtkRoot *root = gtk_widget_get_root(GtkWidget_val(widget));
+  /* GtkRoot is a GtkWidget */
+  CAMLreturn(Val_option(root, Val_GtkWidget));
+}
+
+/* ========== CSS Classes ========== */
+
+CAMLprim value ml_gtk_widget_add_css_class(value widget, value css_class)
+{
+  CAMLparam2(widget, css_class);
+  gtk_widget_add_css_class(GtkWidget_val(widget), String_val(css_class));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_widget_remove_css_class(value widget, value css_class)
+{
+  CAMLparam2(widget, css_class);
+  gtk_widget_remove_css_class(GtkWidget_val(widget), String_val(css_class));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_widget_has_css_class(value widget, value css_class)
+{
+  CAMLparam2(widget, css_class);
+  gboolean has_class = gtk_widget_has_css_class(
+    GtkWidget_val(widget),
+    String_val(css_class)
+  );
+  CAMLreturn(Val_bool(has_class));
+}
+
+CAMLprim value ml_gtk_widget_get_css_classes(value widget)
+{
+  CAMLparam1(widget);
+  CAMLlocal2(result, cons);
+
+  char **classes = gtk_widget_get_css_classes(GtkWidget_val(widget));
+
+  result = Val_emptylist;
+  /* Security: Check for NULL pointer */
+  if (classes != NULL) {
+    /* Build list in reverse order */
+    int i;
+    /* First count to build list properly */
+    for (i = 0; classes[i] != NULL; i++) {
+      cons = caml_alloc(2, 0);
+      Store_field(cons, 0, caml_copy_string(classes[i]));
+      Store_field(cons, 1, result);
+      result = cons;
+    }
+  }
+
+  /* Note: gtk_widget_get_css_classes returns internal const array,
+     not to be freed */
+  CAMLreturn(result);
+}
+
+/* ========== State Flags ========== */
+
+CAMLprim value ml_gtk_widget_get_state_flags(value widget)
+{
+  CAMLparam1(widget);
+  GtkStateFlags flags = gtk_widget_get_state_flags(GtkWidget_val(widget));
+  CAMLreturn(Val_int((int)flags));
+}
+
+CAMLprim value ml_gtk_widget_set_state_flags(value widget, value flags, value clear)
+{
+  CAMLparam3(widget, flags, clear);
+  gtk_widget_set_state_flags(
+    GtkWidget_val(widget),
+    (GtkStateFlags)Int_val(flags),
+    Bool_val(clear)
+  );
+  CAMLreturn(Val_unit);
+}
+
+/* ========== Queue Draw/Resize ========== */
+
+ML_1 (gtk_widget_queue_draw, GtkWidget_val, Unit)
+ML_1 (gtk_widget_queue_resize, GtkWidget_val, Unit)
+
+/* ========== Destruction ========== */
+
+/* Note: In GTK4, gtk_widget_destroy is deprecated.
+ * Widgets are destroyed via container removal or reference counting.
+ * We provide this for API compatibility but issue a warning. */
+CAMLprim value ml_gtk_widget_destroy(value widget)
+{
+  CAMLparam1(widget);
+  GtkWidget *w = GtkWidget_val(widget);
+  GtkWidget *parent;
+
+  /* Security: Check for NULL pointer */
+  if (w == NULL) {
+    CAMLreturn(Val_unit);
+  }
+
+  parent = gtk_widget_get_parent(w);
+  if (parent) {
+    /* GTK4: widget removal requires container-specific API
+     * For now, just unparent if possible */
+    gtk_widget_unparent(w);
+  }
+
+  CAMLreturn(Val_unit);
+}
