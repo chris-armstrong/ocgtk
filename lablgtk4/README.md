@@ -30,7 +30,18 @@ See the [migration plan](../port.md) for details on the GTK 3 → GTK 4 transiti
 
 ## Documentation
 
-See the [GTK 4 documentation](https://docs.gtk.org/gtk4/) for the underlying GTK 4 API.
+### Project Documentation
+
+- 📚 **[Complete Documentation Index](../DOCUMENTATION_INDEX.md)** - All project documentation
+- **Migration Plan**: [port-phase3.md](../port-phase3.md) - Phase 3 specification
+- **Code Generation**: [src/tools/README_GIR_GEN.md](src/tools/README_GIR_GEN.md) - GIR code generator
+- **FFI Guidelines**: [../FFI_GUIDELINES.md](../FFI_GUIDELINES.md) - C binding best practices
+- **Security Guidelines**: [../SECURITY_GUIDELINES.md](../SECURITY_GUIDELINES.md) - Security requirements
+
+### External Documentation
+
+- [GTK 4 Documentation](https://docs.gtk.org/gtk4/) - Underlying GTK 4 API
+- [GTK 3 → 4 Migration Guide](https://docs.gtk.org/gtk4/migrating-3to4.html) - Upstream migration guide
 
 ## License
 

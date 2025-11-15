@@ -55,11 +55,16 @@ The GTK 4 bindings are being developed in phases. See [`port.md`](port.md) for t
 - Pango module ✅
 - GdkClipboard (new API) ✅
 
-**Phase 3: Base Widget Infrastructure** 📋 **SPEC READY**
-- Detailed specification available: [`port-phase3.md`](port-phase3.md)
+**Phase 3: Base Widget Infrastructure** 🚧 **IN PROGRESS**
+- Detailed specification: [`port-phase3.md`](port-phase3.md)
+- Phase 3.0: Code generation infrastructure ✅ **COMPLETE**
+  - GIR-based code generator (gir_gen) ✅
+  - xmlm XML parser integration ✅
+  - Test suite (2/2 tests passing) ✅
+  - CI/CD integration ✅
 - GtkWidget with GTK4 API (Pending)
 - GtkSnapshot rendering system (Pending)
-- Event controller system (Pending)
+- Event controller bindings (Ready for generation)
 
 #### Quick Start (GTK 4)
 
@@ -122,6 +127,18 @@ See the [migration plan](port.md) for details on what needs to be done.
 ## License
 
 This library is distributed under the terms of the GNU Library General Public License version 2.1, with the special exception on linking described in the [LICENSE](LICENSE) file.
+
+## Documentation
+
+📚 **[Complete Documentation Index](DOCUMENTATION_INDEX.md)** - Comprehensive guide to all project documentation
+
+### Key Documents
+
+- **Development Setup**: [SETUP.md](SETUP.md)
+- **Migration Plan**: [port.md](port.md) and phase-specific documents
+- **FFI Guidelines**: [FFI_GUIDELINES.md](FFI_GUIDELINES.md)
+- **Security Guidelines**: [SECURITY_GUIDELINES.md](SECURITY_GUIDELINES.md)
+- **Code Generation**: [lablgtk4/src/tools/README_GIR_GEN.md](lablgtk4/src/tools/README_GIR_GEN.md)
 
 ## Resources
 
