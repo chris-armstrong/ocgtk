@@ -15,6 +15,7 @@ depends: [
   "conf-gtk4"
   "cairo2"
   "camlp5" {build}
+  "xmlm" {build}
   "alcotest" {with-test}
   "odoc" {with-doc}
 ]
