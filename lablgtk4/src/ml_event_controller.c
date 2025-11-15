@@ -31,17 +31,24 @@
 /* Enum conversions for propagation phase and limit */
 /* ==================================================================== */
 
+/* Pre-calculated variant hash values for event controller enums */
+#define EVCTL_NONE         ((value)(37469934*2+1))
+#define EVCTL_CAPTURE      ((value)(928956893*2+1))
+#define EVCTL_BUBBLE       ((value)(477126522*2+1))
+#define EVCTL_TARGET       ((value)(780720412*2+1))
+#define EVCTL_SAME_NATIVE  ((value)(14915700*2+1))
+
 static const lookup_info propagation_phase_table[] = {
-    { caml_hash_variant("NONE"), GTK_PHASE_NONE },
-    { caml_hash_variant("CAPTURE"), GTK_PHASE_CAPTURE },
-    { caml_hash_variant("BUBBLE"), GTK_PHASE_BUBBLE },
-    { caml_hash_variant("TARGET"), GTK_PHASE_TARGET },
+    { EVCTL_NONE, GTK_PHASE_NONE },
+    { EVCTL_CAPTURE, GTK_PHASE_CAPTURE },
+    { EVCTL_BUBBLE, GTK_PHASE_BUBBLE },
+    { EVCTL_TARGET, GTK_PHASE_TARGET },
     { 0, 0 }
 };
 
 static const lookup_info propagation_limit_table[] = {
-    { caml_hash_variant("NONE"), GTK_LIMIT_NONE },
-    { caml_hash_variant("SAME_NATIVE"), GTK_LIMIT_SAME_NATIVE },
+    { EVCTL_NONE, GTK_LIMIT_NONE },
+    { EVCTL_SAME_NATIVE, GTK_LIMIT_SAME_NATIVE },
     { 0, 0 }
 };
 
@@ -299,13 +306,12 @@ CAMLprim value ml_gtk_event_controller_key_connect_modifiers(
     CAMLreturn(Val_long(signal_id));
 }
 
-CAMLprim value ml_gtk_event_controller_key_forward(value controller, value event)
+CAMLprim value ml_gtk_event_controller_key_forward(value controller, value widget)
 {
-    CAMLparam2(controller, event);
-    GdkEvent *gdk_event = GdkEvent_val(event);
+    CAMLparam2(controller, widget);
     gboolean result = gtk_event_controller_key_forward(
         GTK_EVENT_CONTROLLER_KEY(GtkEventController_val(controller)),
-        gdk_event
+        GtkWidget_val(widget)
     );
     CAMLreturn(Val_bool(result));
 }
