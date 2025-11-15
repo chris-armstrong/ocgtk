@@ -153,6 +153,8 @@ let () =
 
 ## 2.2 GObject Module Migration (1.5 weeks)
 
+**Status**: ✅ **COMPLETE** (completed Nov 14, 2025)
+
 **Priority**: HIGH (type system foundation)
 
 ### Overview
@@ -371,6 +373,8 @@ let () =
 
 ## 2.3 GdkPixbuf Module Migration (0.5 weeks)
 
+**Status**: ✅ **COMPLETE** (completed Nov 14, 2025)
+
 **Priority**: MEDIUM (used by images, icons)
 
 ### Overview
@@ -425,6 +429,8 @@ CAMLprim value ml_gdk_pixbuf_get_pixels(value pixbuf)
 ---
 
 ## 2.4 Gdk Module Migration (2.5 weeks)
+
+**Status**: ✅ **COMPLETE** (completed Nov 14, 2025)
 
 **Priority**: CRITICAL (major API changes)
 
@@ -658,6 +664,8 @@ let () =
 
 ## 2.5 Pango Module Migration (1 week)
 
+**Status**: ✅ **COMPLETE** (completed Nov 14, 2025)
+
 **Priority**: MEDIUM (text rendering)
 
 ### Overview
@@ -731,6 +739,8 @@ CAMLprim value ml_pango_layout_get_pixel_size(value layout)
 ---
 
 ## 2.6 New GdkClipboard Implementation (1 week)
+
+**Status**: 🔄 **IN PROGRESS** (started Nov 14, 2025)
 
 **Priority**: HIGH (new API in GTK4)
 

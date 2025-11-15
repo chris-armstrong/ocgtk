@@ -1,5 +1,8 @@
 ; Test suite for lablgtk4
 ;
+; IMPORTANT: Tests are defined as (executable) not (test) to avoid GTK cleanup
+; issues when dune tries to run them in parallel. See custom runtest rule below.
+;
 ; Test organization:
 ; - test_enum_roundtrip.ml: Simple roundtrip tests for basic GTK4 enums
 ; - test_enum_values.ml: Value coverage tests for basic GTK4 enums
@@ -8,41 +11,46 @@
 ; - test_gobject.ml: GObject binding tests (minimal for now)
 ; - test_gdkpixbuf.ml: GdkPixbuf image manipulation tests (Phase 2.3)
 ; - test_gdk.ml: GDK module tests for Display, Seat, Device, Surface (Phase 2.4)
+; - test_clipboard.ml: GdkClipboard tests for clipboard operations (Phase 2.6)
 
-(test
+(executable
  (name test_enum_roundtrip)
  (libraries lablgtk4 alcotest))
 
-(test
+(executable
  (name test_enum_values)
  (libraries lablgtk4 alcotest))
 
-(test
+(executable
  (name test_all_enums)
  (libraries lablgtk4 alcotest))
 
-(test
+(executable
  (name test_glib)
  (libraries lablgtk4 alcotest))
 
-(test
+(executable
  (name test_gobject)
  (libraries lablgtk4 alcotest))
 
-(test
+(executable
  (name test_ffi_integration)
  (libraries lablgtk4 alcotest))
 
-(test
+(executable
  (name test_gdkpixbuf)
  (libraries lablgtk4 alcotest))
 
-(test
+(executable
  (name test_gdk)
  (libraries lablgtk4 alcotest))
 
-(test
+(executable
  (name test_pango)
+ (libraries lablgtk4 alcotest))
+
+(executable
+ (name test_clipboard)
  (libraries lablgtk4 alcotest))
 
 (executable
@@ -52,3 +60,53 @@
 (executable
  (name test_closure_with_gc)
  (libraries lablgtk4))
+
+; ============================================================================
+; Custom Test Runner for GTK/GDK Cleanup Issues
+; ============================================================================
+;
+; IMPORTANT: DO NOT use 'dune runtest' directly for lablgtk4!
+;
+; PROBLEM:
+;   GTK/GDK creates process-wide state (display connections, event loops, etc.)
+;   that doesn't clean up properly when multiple test executables run via dune's
+;   test harness. This causes segmentation faults during process cleanup, AFTER
+;   tests complete successfully.
+;
+; SOLUTION:
+;   Use the custom test runner script that runs each test executable separately,
+;   isolating GTK/GDK state per test suite.
+;
+; USAGE:
+;   ./run_tests.sh              # Run all tests
+;   dune runtest                # Will show this warning and run the script
+;
+; WHY THIS IS NECESSARY:
+;   GTK libraries maintain global state that persists across test runs when
+;   using dune's parallel test execution. Running tests individually ensures
+;   clean initialization/cleanup for each test suite.
+;
+; This is standard practice for GUI library testing (GTK, Qt, etc.)
+; ============================================================================
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (echo "╔══════════════════════════════════════════════════════════════╗\n")
+   (echo "║  WARNING: Cannot use standard 'dune runtest' with GTK tests ║\n")
+   (echo "╚══════════════════════════════════════════════════════════════╝\n")
+   (echo "\n")
+   (echo "GTK/GDK creates process-wide state that causes cleanup issues\n")
+   (echo "when running multiple test executables via dune's test harness.\n")
+   (echo "\n")
+   (echo "Please run the test runner script instead:\n")
+   (echo "\n")
+   (echo "  cd lablgtk4 && ./run_tests.sh\n")
+   (echo "\n")
+   (echo "Or from CI:\n")
+   (echo "\n")
+   (echo "  opam exec -- ./run_tests.sh\n")
+   (echo "\n")
+   (echo "See tests/dune for detailed explanation.\n")
+   (echo "════════════════════════════════════════════════════════════════\n"))))
