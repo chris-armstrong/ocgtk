@@ -149,4 +149,12 @@ module Widget : sig
 
   (** Queue a resize *)
   val queue_resize : t -> unit
+
+  (** {2 Event Controllers} *)
+
+  (** Add an event controller to this widget *)
+  val add_controller : t -> EventController.t -> unit
+
+  (** Remove an event controller from this widget *)
+  val remove_controller : t -> EventController.t -> unit
 end

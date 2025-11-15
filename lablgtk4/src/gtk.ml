@@ -84,6 +84,9 @@ module Widget = struct
   external queue_draw : t -> unit = "ml_gtk_widget_queue_draw"
   external queue_resize : t -> unit = "ml_gtk_widget_queue_resize"
 
+  external add_controller : t -> EventController.t -> unit = "ml_gtk_widget_add_controller"
+  external remove_controller : t -> EventController.t -> unit = "ml_gtk_widget_remove_controller"
+
   (** {2 Helper functions} *)
 
   (* Convert state flags to/from int representation *)
