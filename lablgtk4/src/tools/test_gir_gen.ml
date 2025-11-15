@@ -66,7 +66,9 @@ let read_file filename =
 let create_test_gir_file filename =
   let oc = open_out filename in
   output_string oc {|<?xml version="1.0"?>
-<repository>
+<repository version="1.2"
+            xmlns="http://www.gtk.org/introspection/core/1.0"
+            xmlns:c="http://www.gtk.org/introspection/c/1.0">
   <namespace name="Gtk">
     <class name="EventControllerKey"
            c:type="GtkEventControllerKey"

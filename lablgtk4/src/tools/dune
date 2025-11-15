@@ -27,7 +27,7 @@
 (executable
  (name gir_gen)
  (modules gir_gen)
- (libraries str unix))
+ (libraries str unix xmlm))
 
 ; Test for GIR generator
 (executable

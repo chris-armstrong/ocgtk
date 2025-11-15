@@ -136,125 +136,280 @@ let to_snake_case s =
   done;
   Buffer.contents b
 
-(* Extract attribute value from XML tag *)
-let extract_attr line attr =
-  let pattern = sprintf "%s=\"\\([^\"]*\\)\"" (Str.quote attr) in
+(* Get attribute value from XML attributes list *)
+let get_attr name attrs =
   try
-    ignore (Str.search_forward (Str.regexp pattern) line 0);
-    Some (Str.matched_group 1 line)
-  with Not_found -> None
-
-(* Check if line contains pattern *)
-let contains line pattern =
-  try
-    ignore (Str.search_forward (Str.regexp pattern) line 0);
-    true
-  with Not_found -> false
+    List.assoc ("", name) attrs |> fun x -> Some x
+  with Not_found ->
+    (* Try with c: namespace *)
+    try
+      List.assoc ("http://www.gtk.org/introspection/c/1.0", String.sub ~pos:2 ~len:(String.length name - 2) name) attrs |> fun x -> Some x
+    with Not_found -> None
 
 (* ========================================================================= *)
-(* GIR Parser *)
+(* GIR Parser using xmlm *)
 (* ========================================================================= *)
 
-(* Simple line-by-line parser for GIR files *)
 let parse_gir_file filename =
   let ic = open_in filename in
+  let input = Xmlm.make_input ~strip:true (`Channel ic) in
+
   let controllers = ref [] in
-  let current_class = ref None in
-  let in_class = ref false in
-  let current_method = ref None in
-  let current_signal = ref None in
-  let method_params = ref [] in
-  let signal_params = ref [] in
 
-  try
-    while true do
-      let line = input_line ic in
+  (* Check if class name is an event controller *)
+  let is_event_controller name =
+    name = "EventController" ||
+    (String.length name > 15 && String.sub ~pos:0 ~len:15 name = "EventController") ||
+    (String.length name > 7 && String.sub ~pos:0 ~len:7 name = "Gesture")
+  in
 
-      (* Detect class start *)
-      if contains line "<class name=\"" then begin
-        match extract_attr line "name" with
-        | Some name when
-            name = "EventController" ||
-            contains name "EventController" ||
-            contains name "Gesture" ->
-          let c_type = match extract_attr line "c:type" with
-            | Some t -> t
-            | None -> "Gtk" ^ name
-          in
-          let parent = extract_attr line "parent" in
-          in_class := true;
-          current_class := Some {
-            class_name = name;
-            c_type = c_type;
-            parent = parent;
-            constructors = [];
-            methods = [];
-            signals = [];
-            class_doc = None;
-          }
-        | _ -> in_class := false
-      end
+  (* Skip to end of current element *)
+  let rec skip_element depth =
+    if depth = 0 then ()
+    else
+      match Xmlm.input input with
+      | `El_start _ -> skip_element (depth + 1)
+      | `El_end -> skip_element (depth - 1)
+      | `Data _ -> skip_element depth
+      | `Dtd _ -> skip_element depth
+  in
 
-      (* Detect class end *)
-      else if contains line "</class>" then begin
-        (match !current_class with
-        | Some cls -> controllers := cls :: !controllers
-        | None -> ());
-        current_class := None;
-        in_class := false
-      end
+  (* Parse a class element *)
+  let rec parse_class attrs =
+    match get_attr "name" attrs with
+    | Some name when is_event_controller name ->
+      let c_type = match get_attr "c:type" attrs with
+        | Some t -> t
+        | None -> "Gtk" ^ name
+      in
+      let parent = get_attr "parent" attrs in
+      let constructors = ref [] in
+      let methods = ref [] in
 
-      (* Parse constructor *)
-      else if !in_class && contains line "<constructor name=\"" then begin
-        match extract_attr line "name", extract_attr line "c:identifier" with
-        | Some name, Some c_id ->
-          (match !current_class with
-          | Some cls ->
-            current_class := Some {
-              cls with
-              constructors = {
-                ctor_name = name;
+      let rec parse_class_contents () =
+        match Xmlm.input input with
+        | `El_start ((_, tag), tag_attrs) ->
+          (match tag with
+          | "constructor" ->
+            (match get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs with
+            | Some ctor_name, Some c_id ->
+              constructors := {
+                ctor_name = ctor_name;
                 c_identifier = c_id;
                 ctor_doc = None;
-              } :: cls.constructors
-            }
-          | None -> ())
-        | _ -> ()
-      end
+              } :: !constructors;
+              skip_element 1;
+              parse_class_contents ()
+            | _ ->
+              skip_element 1;
+              parse_class_contents ())
 
-      (* Parse method *)
-      else if !in_class && contains line "<method name=\"" then begin
-        match extract_attr line "name", extract_attr line "c:identifier" with
-        | Some name, Some c_id ->
-          method_params := [];
-          current_method := Some (name, c_id)
-        | _ -> ()
-      end
+          | "method" ->
+            (match get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs with
+            | Some method_name, Some c_id ->
+              let (return_type, params) = parse_method () in
+              methods := {
+                method_name = method_name;
+                c_identifier = c_id;
+                return_type = return_type;
+                parameters = params;
+                doc = None;
+              } :: !methods;
+              parse_class_contents ()
+            | _ ->
+              skip_element 1;
+              parse_class_contents ())
 
-      (* Parse method return type *)
-      else if !in_class && !current_method <> None && contains line "<return-value" then begin
-        (* Will parse type on next line *)
+          | _ ->
+            skip_element 1;
+            parse_class_contents ())
+
+        | `El_end ->
+          ()  (* End of class *)
+
+        | `Data _ ->
+          parse_class_contents ()
+
+        | `Dtd _ ->
+          parse_class_contents ()
+      in
+
+      parse_class_contents ();
+      Some {
+        class_name = name;
+        c_type = c_type;
+        parent = parent;
+        constructors = List.rev !constructors;
+        methods = List.rev !methods;
+        signals = [];
+        class_doc = None;
+      }
+
+    | _ ->
+      skip_element 1;
+      None
+
+  (* Parse method contents to extract return type and parameters *)
+  and parse_method () =
+    let return_type = ref { name = "void"; c_type = "void" } in
+    let params = ref [] in
+
+    let rec parse_method_contents () =
+      match Xmlm.input input with
+      | `El_start ((_, tag), _tag_attrs) ->
+        (match tag with
+        | "return-value" ->
+          return_type := parse_return_value ();
+          parse_method_contents ()
+
+        | "parameters" ->
+          params := parse_parameters ();
+          parse_method_contents ()
+
+        | _ ->
+          skip_element 1;
+          parse_method_contents ())
+
+      | `El_end ->
+        ()  (* End of method *)
+
+      | `Data _ ->
+        parse_method_contents ()
+
+      | `Dtd _ ->
+        parse_method_contents ()
+    in
+
+    parse_method_contents ();
+    (!return_type, List.rev !params)
+
+  (* Parse return value type *)
+  and parse_return_value () =
+    let type_info = ref { name = "void"; c_type = "void" } in
+
+    let rec parse_rv_contents () =
+      match Xmlm.input input with
+      | `El_start ((_, "type"), attrs) ->
+        let type_name = match get_attr "name" attrs with Some n -> n | None -> "void" in
+        let c_type_name = match get_attr "c:type" attrs with Some t -> t | None -> type_name in
+        type_info := { name = type_name; c_type = c_type_name };
+        skip_element 1;
+        parse_rv_contents ()
+
+      | `El_start _ ->
+        skip_element 1;
+        parse_rv_contents ()
+
+      | `El_end ->
         ()
-      end
 
-      (* Parse signal *)
-      else if !in_class && contains line "<glib:signal name=\"" then begin
-        match extract_attr line "name" with
-        | Some name ->
-          signal_params := [];
-          current_signal := Some name
-        | _ -> ()
-      end;
+      | `Data _ ->
+        parse_rv_contents ()
 
-    done;
-    []
-  with
-  | End_of_file ->
-    close_in ic;
-    List.rev !controllers
-  | e ->
-    close_in ic;
-    raise e
+      | `Dtd _ ->
+        parse_rv_contents ()
+    in
+
+    parse_rv_contents ();
+    !type_info
+
+  (* Parse parameters list *)
+  and parse_parameters () =
+    let params = ref [] in
+
+    let rec parse_params_contents () =
+      match Xmlm.input input with
+      | `El_start ((_, "parameter"), attrs) ->
+        let param_name = match get_attr "name" attrs with Some n -> n | None -> "arg" in
+        let param_type = parse_parameter_type () in
+        params := { param_name = param_name; param_type = param_type } :: !params;
+        parse_params_contents ()
+
+      | `El_start ((_, "instance-parameter"), _) ->
+        skip_element 1;
+        parse_params_contents ()
+
+      | `El_start _ ->
+        skip_element 1;
+        parse_params_contents ()
+
+      | `El_end ->
+        ()
+
+      | `Data _ ->
+        parse_params_contents ()
+
+      | `Dtd _ ->
+        parse_params_contents ()
+    in
+
+    parse_params_contents ();
+    !params
+
+  (* Parse parameter type *)
+  and parse_parameter_type () =
+    let type_info = ref { name = "void"; c_type = "void" } in
+
+    let rec parse_param_type_contents () =
+      match Xmlm.input input with
+      | `El_start ((_, "type"), attrs) ->
+        let type_name = match get_attr "name" attrs with Some n -> n | None -> "void" in
+        let c_type_name = match get_attr "c:type" attrs with Some t -> t | None -> type_name in
+        type_info := { name = type_name; c_type = c_type_name };
+        skip_element 1;
+        parse_param_type_contents ()
+
+      | `El_start _ ->
+        skip_element 1;
+        parse_param_type_contents ()
+
+      | `El_end ->
+        ()
+
+      | `Data _ ->
+        parse_param_type_contents ()
+
+      | `Dtd _ ->
+        parse_param_type_contents ()
+    in
+
+    parse_param_type_contents ();
+    !type_info
+  in
+
+  (* Main parsing loop *)
+  let rec parse_document () =
+    if Xmlm.eoi input then ()
+    else
+      match Xmlm.input input with
+      | `El_start ((_, "class"), attrs) ->
+        (match parse_class attrs with
+        | Some cls -> controllers := cls :: !controllers
+        | None -> ());
+        parse_document ()
+
+      | `El_start ((_, tag), _) when tag = "repository" || tag = "namespace" ->
+        (* Continue parsing into container elements *)
+        parse_document ()
+
+      | `El_start _ ->
+        (* Skip non-class, non-container elements *)
+        skip_element 1;
+        parse_document ()
+
+      | `El_end ->
+        parse_document ()
+
+      | `Data _ ->
+        parse_document ()
+
+      | `Dtd _ ->
+        parse_document ()
+  in
+
+  parse_document ();
+  close_in ic;
+  List.rev !controllers
 
 (* ========================================================================= *)
 (* C Code Generation *)
