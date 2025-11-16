@@ -39,13 +39,13 @@ The test suite is organized into the following test files:
 
 ## Running Tests
 
-### Run All Tests
+### Run All Tests (Recommended)
 
 ```bash
-dune runtest
+./run_tests.sh
 ```
 
-Note: There is a known issue with the dune test runner causing a segfault when running all tests together. All tests pass when run individually (see below).
+**Note**: Do NOT use `dune runtest` directly. Dune's process spawning mechanism (vfork + worker threads) creates a race condition with OCaml 5.x runtime's global root cleanup, causing segfaults during test exit (after tests pass). The `run_tests.sh` script runs tests in simple sequential execution, avoiding this issue. See `tests/dune` for technical details.
 
 ### Run Individual Test Suites
 

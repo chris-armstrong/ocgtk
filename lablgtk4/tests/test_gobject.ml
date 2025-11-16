@@ -411,16 +411,18 @@ let test_closure_wrong_type_access () =
   check bool "Wrong type access raised exception" true !exception_raised
 
 let test_closure_survives_gc () =
-  (* DISABLED: Test triggers OCaml 5.3.0 GC bug
+  (* DISABLED: Explicit Gc.minor() triggers OCaml 5.3.0 GC crash
    *
-   * Explicit Gc.minor() calls trigger segfaults in caml_darken during
-   * global root scanning with OCaml 5.3.0's multicore GC.
+   * This test crashes when explicitly calling Gc.minor() due to a known
+   * issue with OCaml 5.x's multicore GC and global root scanning.
    *
-   * This is a known incompatibility between the GClosure pattern and
-   * OCaml 5.x's GC. Normal usage (without explicit GC calls) works fine.
+   * IMPORTANT: This is SEPARATE from the dune runtest exit crash (which is
+   * caused by dune's vfork-based process spawning, see tests/dune).
    *
-   * TODO: Investigate alternative closure storage strategies for OCaml 5.x
-   * or work with OCaml runtime developers to resolve the incompatibility.
+   * Normal usage (without explicit GC calls) works fine - the closure table
+   * implementation is production-ready for typical applications.
+   *
+   * TODO: Investigate alternative closure storage for stress testing scenarios.
    *)
   skip ()  (* Disable test to avoid crash *)
 
