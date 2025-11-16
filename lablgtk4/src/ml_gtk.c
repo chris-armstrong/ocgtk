@@ -373,6 +373,189 @@ CAMLprim value ml_gtk_box_set_baseline_position(value box, value pos)
   CAMLreturn(Val_unit);
 }
 
+/* ========== GtkGrid ========== */
+
+CAMLprim value ml_gtk_grid_new(value unit)
+{
+  CAMLparam1(unit);
+  GtkWidget *grid = gtk_grid_new();
+  CAMLreturn(Val_GtkWidget(grid));
+}
+
+CAMLprim value ml_gtk_grid_attach(value grid, value child, value column, value row, value width, value height)
+{
+  CAMLparam5(grid, child, column, row, width);
+  CAMLxparam1(height);
+  gtk_grid_attach(
+    GTK_GRID(GtkWidget_val(grid)),
+    GtkWidget_val(child),
+    Int_val(column),
+    Int_val(row),
+    Int_val(width),
+    Int_val(height)
+  );
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_grid_attach_bc(value *argv, int argn)
+{
+  return ml_gtk_grid_attach(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+}
+
+CAMLprim value ml_gtk_grid_attach_next_to(value grid, value child, value sibling, value side, value width, value height)
+{
+  CAMLparam5(grid, child, sibling, side, width);
+  CAMLxparam1(height);
+
+  GtkWidget *sibling_widget = NULL;
+  if (Is_some(sibling)) {
+    sibling_widget = GtkWidget_val(Some_val(sibling));
+  }
+
+  gtk_grid_attach_next_to(
+    GTK_GRID(GtkWidget_val(grid)),
+    GtkWidget_val(child),
+    sibling_widget,
+    (GtkPositionType)Int_val(side),
+    Int_val(width),
+    Int_val(height)
+  );
+
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_grid_attach_next_to_bc(value *argv, int argn)
+{
+  return ml_gtk_grid_attach_next_to(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+}
+
+CAMLprim value ml_gtk_grid_remove(value grid, value child)
+{
+  CAMLparam2(grid, child);
+  gtk_grid_remove(GTK_GRID(GtkWidget_val(grid)), GtkWidget_val(child));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_grid_get_child_at(value grid, value column, value row)
+{
+  CAMLparam3(grid, column, row);
+  GtkWidget *child = gtk_grid_get_child_at(
+    GTK_GRID(GtkWidget_val(grid)),
+    Int_val(column),
+    Int_val(row)
+  );
+  CAMLreturn(Val_option(child, Val_GtkWidget));
+}
+
+CAMLprim value ml_gtk_grid_insert_row(value grid, value position)
+{
+  CAMLparam2(grid, position);
+  gtk_grid_insert_row(GTK_GRID(GtkWidget_val(grid)), Int_val(position));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_grid_insert_column(value grid, value position)
+{
+  CAMLparam2(grid, position);
+  gtk_grid_insert_column(GTK_GRID(GtkWidget_val(grid)), Int_val(position));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_grid_insert_next_to(value grid, value sibling, value side)
+{
+  CAMLparam3(grid, sibling, side);
+  gtk_grid_insert_next_to(
+    GTK_GRID(GtkWidget_val(grid)),
+    GtkWidget_val(sibling),
+    (GtkPositionType)Int_val(side)
+  );
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_grid_remove_row(value grid, value position)
+{
+  CAMLparam2(grid, position);
+  gtk_grid_remove_row(GTK_GRID(GtkWidget_val(grid)), Int_val(position));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_grid_remove_column(value grid, value position)
+{
+  CAMLparam2(grid, position);
+  gtk_grid_remove_column(GTK_GRID(GtkWidget_val(grid)), Int_val(position));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_grid_get_row_spacing(value grid)
+{
+  CAMLparam1(grid);
+  int spacing = gtk_grid_get_row_spacing(GTK_GRID(GtkWidget_val(grid)));
+  CAMLreturn(Val_int(spacing));
+}
+
+CAMLprim value ml_gtk_grid_set_row_spacing(value grid, value spacing)
+{
+  CAMLparam2(grid, spacing);
+  gtk_grid_set_row_spacing(GTK_GRID(GtkWidget_val(grid)), Int_val(spacing));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_grid_get_column_spacing(value grid)
+{
+  CAMLparam1(grid);
+  int spacing = gtk_grid_get_column_spacing(GTK_GRID(GtkWidget_val(grid)));
+  CAMLreturn(Val_int(spacing));
+}
+
+CAMLprim value ml_gtk_grid_set_column_spacing(value grid, value spacing)
+{
+  CAMLparam2(grid, spacing);
+  gtk_grid_set_column_spacing(GTK_GRID(GtkWidget_val(grid)), Int_val(spacing));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_grid_get_row_homogeneous(value grid)
+{
+  CAMLparam1(grid);
+  gboolean homogeneous = gtk_grid_get_row_homogeneous(GTK_GRID(GtkWidget_val(grid)));
+  CAMLreturn(Val_bool(homogeneous));
+}
+
+CAMLprim value ml_gtk_grid_set_row_homogeneous(value grid, value homogeneous)
+{
+  CAMLparam2(grid, homogeneous);
+  gtk_grid_set_row_homogeneous(GTK_GRID(GtkWidget_val(grid)), Bool_val(homogeneous));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_grid_get_column_homogeneous(value grid)
+{
+  CAMLparam1(grid);
+  gboolean homogeneous = gtk_grid_get_column_homogeneous(GTK_GRID(GtkWidget_val(grid)));
+  CAMLreturn(Val_bool(homogeneous));
+}
+
+CAMLprim value ml_gtk_grid_set_column_homogeneous(value grid, value homogeneous)
+{
+  CAMLparam2(grid, homogeneous);
+  gtk_grid_set_column_homogeneous(GTK_GRID(GtkWidget_val(grid)), Bool_val(homogeneous));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_grid_get_baseline_row(value grid)
+{
+  CAMLparam1(grid);
+  int row = gtk_grid_get_baseline_row(GTK_GRID(GtkWidget_val(grid)));
+  CAMLreturn(Val_int(row));
+}
+
+CAMLprim value ml_gtk_grid_set_baseline_row(value grid, value row)
+{
+  CAMLparam2(grid, row);
+  gtk_grid_set_baseline_row(GTK_GRID(GtkWidget_val(grid)), Int_val(row));
+  CAMLreturn(Val_unit);
+}
+
 /* ========== Initialization and Main Loop ========== */
 
 /* GTK4 Note: gtk_init_check() no longer takes argc/argv parameters.

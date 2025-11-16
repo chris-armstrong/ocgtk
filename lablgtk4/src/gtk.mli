@@ -55,6 +55,14 @@ type baseline_position = [
   | `BOTTOM
 ]
 
+(** Position type for side/position specification *)
+type position_type = [
+  | `LEFT
+  | `RIGHT
+  | `TOP
+  | `BOTTOM
+]
+
 module Widget : sig
   type t = widget
 
@@ -264,5 +272,72 @@ module Box : sig
   val set_baseline_position : t -> baseline_position -> unit
 
   (** Convert box to widget (simple upcast) *)
+  val as_widget : t -> widget
+end
+
+module Grid : sig
+  type t = [`grid | `widget] Gobject.obj
+
+  (** Create a new grid *)
+  val create : unit -> t
+
+  (** Attach child at position *)
+  val attach : t -> child:widget -> column:int -> row:int -> width:int -> height:int -> unit
+
+  (** Attach child next to sibling *)
+  val attach_next_to : t -> child:widget -> sibling:widget option -> side:position_type -> width:int -> height:int -> unit
+
+  (** Remove child *)
+  val remove : t -> widget -> unit
+
+  (** Get child at position *)
+  val get_child_at : t -> column:int -> row:int -> widget option
+
+  (** Insert row at position *)
+  val insert_row : t -> position:int -> unit
+
+  (** Insert column at position *)
+  val insert_column : t -> position:int -> unit
+
+  (** Insert next to sibling *)
+  val insert_next_to : t -> sibling:widget -> side:position_type -> unit
+
+  (** Remove row at position *)
+  val remove_row : t -> position:int -> unit
+
+  (** Remove column at position *)
+  val remove_column : t -> position:int -> unit
+
+  (** Get row spacing *)
+  val get_row_spacing : t -> int
+
+  (** Set row spacing *)
+  val set_row_spacing : t -> int -> unit
+
+  (** Get column spacing *)
+  val get_column_spacing : t -> int
+
+  (** Set column spacing *)
+  val set_column_spacing : t -> int -> unit
+
+  (** Get row homogeneous mode *)
+  val get_row_homogeneous : t -> bool
+
+  (** Set row homogeneous mode *)
+  val set_row_homogeneous : t -> bool -> unit
+
+  (** Get column homogeneous mode *)
+  val get_column_homogeneous : t -> bool
+
+  (** Set column homogeneous mode *)
+  val set_column_homogeneous : t -> bool -> unit
+
+  (** Get baseline row *)
+  val get_baseline_row : t -> int
+
+  (** Set baseline row *)
+  val set_baseline_row : t -> int -> unit
+
+  (** Convert grid to widget (simple upcast) *)
   val as_widget : t -> widget
 end
