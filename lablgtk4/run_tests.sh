@@ -73,6 +73,10 @@ echo "Running Phase 4.4 tests..."
 run_test ./_build/default/tests/test_containers.exe
 
 echo ""
+echo "Running Phase 4.5 tests..."
+run_test ./_build/default/tests/test_gpack.exe
+
+echo ""
 echo "╔══════════════════════════════════════════════════════════════╗"
 echo "║                   ✓ All Tests Passed                        ║"
 echo "╚══════════════════════════════════════════════════════════════╝"
