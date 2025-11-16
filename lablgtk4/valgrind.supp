@@ -1,0 +1,224 @@
+# Valgrind suppressions for LablGTK4
+#
+# GTK and GLib have some known "leaks" that are actually:
+# - Cached data that persists for application lifetime
+# - X11/Wayland display connections
+# - Font caches
+# - GType system registrations
+#
+# These are intentional and cleaned up on process exit.
+#
+# Usage:
+#   valgrind --leak-check=full --suppressions=valgrind.supp ./test_program
+
+# ============================================================================
+# GLib Type System
+# ============================================================================
+
+{
+   glib-type-registration
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:g_type_register_*
+}
+
+{
+   glib-type-init
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:g_type_init*
+}
+
+{
+   glib-type-class-ref
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:g_type_class_ref
+}
+
+# ============================================================================
+# GLib Memory Management
+# ============================================================================
+
+{
+   glib-quark-init
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:g_quark_*
+}
+
+{
+   glib-slice-alloc
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:g_slice_alloc*
+}
+
+{
+   glib-malloc
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:g_malloc*
+}
+
+# ============================================================================
+# GObject Signal System
+# ============================================================================
+
+{
+   gobject-signal-init
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:g_signal_*
+}
+
+{
+   gobject-closure
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:g_closure_*
+}
+
+# ============================================================================
+# GTK/GDK Display and Screen
+# ============================================================================
+
+{
+   gdk-display-init
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:gdk_display_*
+}
+
+{
+   gtk-init
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:gtk_init*
+}
+
+{
+   gtk-settings
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:gtk_settings_*
+}
+
+# ============================================================================
+# Pango Font System
+# ============================================================================
+
+{
+   pango-font-map
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:pango_*_font_map_*
+}
+
+{
+   pango-context
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:pango_context_*
+}
+
+{
+   fontconfig-cache
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   obj:*/libfontconfig.so.*
+}
+
+# ============================================================================
+# Cairo Graphics
+# ============================================================================
+
+{
+   cairo-init
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   obj:*/libcairo.so.*
+}
+
+{
+   cairo-ft-font
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:cairo_ft_font_*
+}
+
+# ============================================================================
+# X11/Wayland Backend
+# ============================================================================
+
+{
+   x11-display-open
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:XOpenDisplay
+}
+
+{
+   x11-init
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   obj:*/libX11.so.*
+}
+
+{
+   wayland-init
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   obj:*/libwayland-client.so.*
+}
+
+# ============================================================================
+# GdkPixbuf
+# ============================================================================
+
+{
+   gdkpixbuf-loader
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:gdk_pixbuf_*
+}
+
+# ============================================================================
+# OCaml Runtime (if needed)
+# ============================================================================
+
+{
+   ocaml-runtime
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:caml_*
+}
+
+{
+   ocaml-alloc
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:caml_alloc*
+}

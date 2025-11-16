@@ -62,6 +62,14 @@
  (libraries lablgtk4 alcotest))
 
 (executable
+ (name test_event_controller)
+ (libraries lablgtk4 alcotest))
+
+(executable
+ (name test_gobj)
+ (libraries lablgtk4 alcotest))
+
+(executable
  (name test_closure_stress)
  (libraries lablgtk4))
 
