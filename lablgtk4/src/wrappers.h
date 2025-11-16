@@ -21,14 +21,8 @@
 
 #include <gtk/gtk.h>
 
-/* Compatibility shim for older OCaml versions */
-#ifndef caml_alloc_some
-static inline value caml_alloc_some(value v) {
-  value res = caml_alloc(1, 0);
-  Store_field(res, 0, v);
-  return res;
-}
-#endif
+/* Note: caml_alloc_some is provided by OCaml 4.12+ in caml/alloc.h */
+/* For older versions, projects should use caml_alloc(1, 0) + Store_field */
 
 /* ==================================================================== */
 /* Basic Pointer Conversions */

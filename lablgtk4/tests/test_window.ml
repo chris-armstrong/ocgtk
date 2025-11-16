@@ -90,14 +90,18 @@ let test_window_child () =
     let box_widget = Gtk.Box.as_widget box in
 
     Gtk.Window.set_child window (Some box_widget);
-    match Gtk.Window.get_child window with
-    | Some _ -> check bool "Window has child" true true
-    | None -> fail "Window child not set";
+    let has_child = match Gtk.Window.get_child window with
+      | Some _ -> true
+      | None -> false
+    in
+    check bool "Window has child" true has_child;
 
     Gtk.Window.set_child window None;
-    match Gtk.Window.get_child window with
-    | None -> check bool "Window child removed" true true
-    | Some _ -> fail "Window child not removed"
+    let child_removed = match Gtk.Window.get_child window with
+      | None -> true
+      | Some _ -> false
+    in
+    check bool "Window child removed" true child_removed
   with
   | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -155,14 +159,18 @@ let test_gwindow_child () =
     let box = GBox.vbox ~spacing:5 () in
 
     window#add (box :> GObj.widget);
-    match window#child with
-    | Some _ -> check bool "GWindow has child" true true
-    | None -> fail "GWindow child not set";
+    let _check = match window#child with
+      | Some _ -> true
+      | None -> false
+    in
+    check bool "GWindow has child" true _check;
 
     window#set_child None;
-    match window#child with
-    | None -> check bool "GWindow child removed" true true
-    | Some _ -> fail "GWindow child not removed"
+    let _check = match window#child with
+      | None -> true
+      | Some _ -> false
+    in
+    check bool "GWindow child removed" true _check
   with
   | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -226,14 +234,18 @@ let test_scrolled_window_child () =
     let box_widget = Gtk.Box.as_widget box in
 
     Gtk.ScrolledWindow.set_child sw (Some box_widget);
-    match Gtk.ScrolledWindow.get_child sw with
-    | Some _ -> check bool "ScrolledWindow has child" true true
-    | None -> fail "ScrolledWindow child not set";
+    let _check = match Gtk.ScrolledWindow.get_child sw with
+      | Some _ -> true
+      | None -> false
+    in
+    check bool "ScrolledWindow has child" true _check;
 
     Gtk.ScrolledWindow.set_child sw None;
-    match Gtk.ScrolledWindow.get_child sw with
-    | None -> check bool "ScrolledWindow child removed" true true
-    | Some _ -> fail "ScrolledWindow child not removed"
+    let _check = match Gtk.ScrolledWindow.get_child sw with
+      | None -> true
+      | Some _ -> false
+    in
+    check bool "ScrolledWindow child removed" true _check
   with
   | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -287,7 +299,7 @@ let test_frame_module_accessible () =
 let test_frame_creation () =
   try
     let _ = GMain.init () in
-    let frame = Gtk.Frame.create () in
+    let _frame = Gtk.Frame.create () in
     check bool "Frame created without label" true true;
 
     let frame_with_label = Gtk.Frame.create ~label:"Test Label" () in
@@ -302,17 +314,19 @@ let test_frame_creation () =
 let test_frame_label () =
   try
     let _ = GMain.init () in
-    let frame = Gtk.Frame.create () in
+    let frame_test = Gtk.Frame.create () in
 
-    Gtk.Frame.set_label frame (Some "My Label");
-    match Gtk.Frame.get_label frame with
+    Gtk.Frame.set_label frame_test (Some "My Label");
+    (match Gtk.Frame.get_label frame_test with
     | Some lbl -> check string "Frame label" "My Label" lbl
-    | None -> fail "Frame label not set";
+    | None -> check bool "Frame label not set" false true);
 
-    Gtk.Frame.set_label frame None;
-    match Gtk.Frame.get_label frame with
-    | None -> check bool "Frame label removed" true true
-    | Some _ -> fail "Frame label not removed"
+    Gtk.Frame.set_label frame_test None;
+    let _check = match Gtk.Frame.get_label frame_test with
+      | None -> true
+      | Some _ -> false
+    in
+    check bool "Frame label removed" true _check
   with
   | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -339,14 +353,18 @@ let test_frame_child () =
     let box_widget = Gtk.Box.as_widget box in
 
     Gtk.Frame.set_child frame (Some box_widget);
-    match Gtk.Frame.get_child frame with
-    | Some _ -> check bool "Frame has child" true true
-    | None -> fail "Frame child not set";
+    let _check = match Gtk.Frame.get_child frame with
+      | Some _ -> true
+      | None -> false
+    in
+    check bool "Frame has child" true _check;
 
     Gtk.Frame.set_child frame None;
-    match Gtk.Frame.get_child frame with
-    | None -> check bool "Frame child removed" true true
-    | Some _ -> fail "Frame child not removed"
+    let _check = match Gtk.Frame.get_child frame with
+      | None -> true
+      | Some _ -> false
+    in
+    check bool "Frame child removed" true _check
   with
   | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -359,16 +377,16 @@ let test_gframe_wrapper () =
 
     let frame = GFrame.frame ~label:"Test Frame" ~label_xalign:0.5 () in
 
-    match frame#label with
+    (match frame#label with
     | Some lbl -> check string "GFrame label" "Test Frame" lbl
-    | None -> fail "GFrame label not set";
+    | None -> check bool "GFrame label not set" false true);
 
     check (float 0.01) "GFrame xalign" 0.5 frame#label_xalign;
 
     frame#set_label (Some "New Label");
-    match frame#label with
+    (match frame#label with
     | Some lbl -> check string "GFrame label updated" "New Label" lbl
-    | None -> fail "GFrame label update failed";
+    | None -> check bool "GFrame label update failed" false true);
 
     frame#set_label_xalign 1.0;
     check (float 0.01) "GFrame xalign updated" 1.0 frame#label_xalign
@@ -386,9 +404,11 @@ let test_window_with_box () =
     let box = GBox.vbox ~spacing:10 () in
     window#add (box :> GObj.widget);
 
-    match window#child with
-    | Some _ -> check bool "Window contains box" true true
-    | None -> fail "Window box not added"
+    let _check = match window#child with
+      | Some _ -> true
+      | None -> false
+    in
+    check bool "Window contains box" true _check
   with
   | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)

@@ -632,8 +632,8 @@ module Frame = struct
   external get_child : t -> widget option = "ml_gtk_frame_get_child"
   external set_label : t -> string option -> unit = "ml_gtk_frame_set_label"
   external get_label : t -> string option = "ml_gtk_frame_get_label"
-  external set_label_xalign : t -> float -> unit = "ml_gtk_frame_set_label_xalign"
-  external get_label_xalign : t -> float = "ml_gtk_frame_get_label_xalign"
+  external set_label_xalign : t -> float -> unit = "ml_gtk_frame_set_label_align"
+  external get_label_xalign : t -> float = "ml_gtk_frame_get_label_align"
 
   let create ?label () = create_impl label
 

@@ -1273,8 +1273,8 @@ CAMLprim value ml_gtk_frame_get_label(value frame)
   CAMLreturn(Val_option_string(label));
 }
 
-ML_2 (gtk_frame_set_label_xalign, GtkFrame_val, Double_val, Unit)
-ML_1 (gtk_frame_get_label_xalign, GtkFrame_val, caml_copy_double)
+ML_2 (gtk_frame_set_label_align, GtkFrame_val, Double_val, Unit)
+ML_1 (gtk_frame_get_label_align, GtkFrame_val, caml_copy_double)
 
 /* ========== Main Loop ========== */
 
