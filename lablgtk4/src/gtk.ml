@@ -62,6 +62,33 @@ type position_type = [
   | `BOTTOM
 ]
 
+(** Stack transition type *)
+type stack_transition_type = [
+  | `NONE
+  | `CROSSFADE
+  | `SLIDE_RIGHT
+  | `SLIDE_LEFT
+  | `SLIDE_UP
+  | `SLIDE_DOWN
+  | `SLIDE_LEFT_RIGHT
+  | `SLIDE_UP_DOWN
+  | `OVER_UP
+  | `OVER_DOWN
+  | `OVER_LEFT
+  | `OVER_RIGHT
+  | `UNDER_UP
+  | `UNDER_DOWN
+  | `UNDER_LEFT
+  | `UNDER_RIGHT
+  | `OVER_UP_DOWN
+  | `OVER_DOWN_UP
+  | `OVER_LEFT_RIGHT
+  | `OVER_RIGHT_LEFT
+  | `ROTATE_LEFT
+  | `ROTATE_RIGHT
+  | `ROTATE_LEFT_RIGHT
+]
+
 module Widget = struct
   type t = widget
 
@@ -330,4 +357,193 @@ module Grid = struct
 
   (* Convert to widget - uses Obj.magic since [`grid | `widget] can't be coerced to [`widget] *)
   let as_widget (grid : t) : widget = Obj.magic grid
+end
+
+module Fixed = struct
+  type t = [`fixed | `widget] Gobject.obj
+
+  (** {2 External C bindings} *)
+
+  external create : unit -> t = "ml_gtk_fixed_new"
+  external put_impl : t -> widget -> float -> float -> unit = "ml_gtk_fixed_put"
+  external remove : t -> widget -> unit = "ml_gtk_fixed_remove"
+  external move_impl : t -> widget -> float -> float -> unit = "ml_gtk_fixed_move"
+  external get_child_position_impl : t -> widget -> float * float = "ml_gtk_fixed_get_child_position"
+
+  (** {2 Wrapped functions} *)
+
+  let put fixed widget ~x ~y =
+    put_impl fixed widget x y
+
+  let move fixed widget ~x ~y =
+    move_impl fixed widget x y
+
+  let get_child_position fixed widget =
+    get_child_position_impl fixed widget
+
+  let as_widget (fixed : t) : widget = Obj.magic fixed
+end
+
+module Paned = struct
+  type t = [`paned | `widget] Gobject.obj
+
+  (** {2 External C bindings} *)
+
+  external create_impl : int -> t = "ml_gtk_paned_new"
+  external set_start_child : t -> widget option -> unit = "ml_gtk_paned_set_start_child"
+  external get_start_child : t -> widget option = "ml_gtk_paned_get_start_child"
+  external set_end_child : t -> widget option -> unit = "ml_gtk_paned_set_end_child"
+  external get_end_child : t -> widget option = "ml_gtk_paned_get_end_child"
+  external set_position : t -> int -> unit = "ml_gtk_paned_set_position"
+  external get_position : t -> int = "ml_gtk_paned_get_position"
+  external set_wide_handle : t -> bool -> unit = "ml_gtk_paned_set_wide_handle"
+  external get_wide_handle : t -> bool = "ml_gtk_paned_get_wide_handle"
+  external set_resize_start_child : t -> bool -> unit = "ml_gtk_paned_set_resize_start_child"
+  external get_resize_start_child : t -> bool = "ml_gtk_paned_get_resize_start_child"
+  external set_resize_end_child : t -> bool -> unit = "ml_gtk_paned_set_resize_end_child"
+  external get_resize_end_child : t -> bool = "ml_gtk_paned_get_resize_end_child"
+  external set_shrink_start_child : t -> bool -> unit = "ml_gtk_paned_set_shrink_start_child"
+  external get_shrink_start_child : t -> bool = "ml_gtk_paned_get_shrink_start_child"
+  external set_shrink_end_child : t -> bool -> unit = "ml_gtk_paned_set_shrink_end_child"
+  external get_shrink_end_child : t -> bool = "ml_gtk_paned_get_shrink_end_child"
+
+  (** {2 Helper functions} *)
+
+  (* Convert orientation to/from int *)
+  let orientation_to_int = function
+    | `HORIZONTAL -> 0
+    | `VERTICAL -> 1
+
+  let create ~orientation =
+    create_impl (orientation_to_int orientation)
+
+  let as_widget (paned : t) : widget = Obj.magic paned
+end
+
+module Notebook = struct
+  type t = [`notebook | `widget] Gobject.obj
+
+  (** {2 External C bindings} *)
+
+  external create : unit -> t = "ml_gtk_notebook_new"
+  external append_page_impl : t -> widget -> widget option -> int = "ml_gtk_notebook_append_page"
+  external prepend_page_impl : t -> widget -> widget option -> int = "ml_gtk_notebook_prepend_page"
+  external insert_page_impl : t -> widget -> widget option -> int -> int = "ml_gtk_notebook_insert_page"
+  external remove_page : t -> int -> unit = "ml_gtk_notebook_remove_page"
+  external detach_tab : t -> widget -> unit = "ml_gtk_notebook_detach_tab"
+  external get_current_page : t -> int = "ml_gtk_notebook_get_current_page"
+  external set_current_page : t -> int -> unit = "ml_gtk_notebook_set_current_page"
+  external next_page : t -> unit = "ml_gtk_notebook_next_page"
+  external prev_page : t -> unit = "ml_gtk_notebook_prev_page"
+  external get_nth_page : t -> int -> widget option = "ml_gtk_notebook_get_nth_page"
+  external get_n_pages : t -> int = "ml_gtk_notebook_get_n_pages"
+  external page_num : t -> widget -> int = "ml_gtk_notebook_page_num"
+  external set_show_tabs : t -> bool -> unit = "ml_gtk_notebook_set_show_tabs"
+  external get_show_tabs : t -> bool = "ml_gtk_notebook_get_show_tabs"
+  external set_show_border : t -> bool -> unit = "ml_gtk_notebook_set_show_border"
+  external get_show_border : t -> bool = "ml_gtk_notebook_get_show_border"
+  external set_scrollable : t -> bool -> unit = "ml_gtk_notebook_set_scrollable"
+  external get_scrollable : t -> bool = "ml_gtk_notebook_get_scrollable"
+
+  (** {2 Wrapped functions} *)
+
+  let append_page notebook ~child ?tab_label () =
+    append_page_impl notebook child tab_label
+
+  let prepend_page notebook ~child ?tab_label () =
+    prepend_page_impl notebook child tab_label
+
+  let insert_page notebook ~child ?tab_label ~position () =
+    insert_page_impl notebook child tab_label position
+
+  let as_widget (notebook : t) : widget = Obj.magic notebook
+end
+
+module Stack = struct
+  type t = [`stack | `widget] Gobject.obj
+
+  (** {2 External C bindings} *)
+
+  external create : unit -> t = "ml_gtk_stack_new"
+  external add_named_impl : t -> widget -> string -> unit = "ml_gtk_stack_add_named"
+  external add_titled_impl : t -> widget -> string -> string -> unit = "ml_gtk_stack_add_titled"
+  external add_child : t -> widget -> unit = "ml_gtk_stack_add_child"
+  external remove : t -> widget -> unit = "ml_gtk_stack_remove"
+  external get_visible_child : t -> widget option = "ml_gtk_stack_get_visible_child"
+  external set_visible_child : t -> widget -> unit = "ml_gtk_stack_set_visible_child"
+  external set_visible_child_name : t -> string -> unit = "ml_gtk_stack_set_visible_child_name"
+  external get_visible_child_name : t -> string option = "ml_gtk_stack_get_visible_child_name"
+  external set_transition_type_impl : t -> int -> unit = "ml_gtk_stack_set_transition_type"
+  external get_transition_type_impl : t -> int = "ml_gtk_stack_get_transition_type"
+  external set_transition_duration : t -> int -> unit = "ml_gtk_stack_set_transition_duration"
+  external get_transition_duration : t -> int = "ml_gtk_stack_get_transition_duration"
+
+  (** {2 Helper functions} *)
+
+  let stack_transition_type_to_int = function
+    | `NONE -> 0
+    | `CROSSFADE -> 1
+    | `SLIDE_RIGHT -> 2
+    | `SLIDE_LEFT -> 3
+    | `SLIDE_UP -> 4
+    | `SLIDE_DOWN -> 5
+    | `SLIDE_LEFT_RIGHT -> 6
+    | `SLIDE_UP_DOWN -> 7
+    | `OVER_UP -> 8
+    | `OVER_DOWN -> 9
+    | `OVER_LEFT -> 10
+    | `OVER_RIGHT -> 11
+    | `UNDER_UP -> 12
+    | `UNDER_DOWN -> 13
+    | `UNDER_LEFT -> 14
+    | `UNDER_RIGHT -> 15
+    | `OVER_UP_DOWN -> 16
+    | `OVER_DOWN_UP -> 17
+    | `OVER_LEFT_RIGHT -> 18
+    | `OVER_RIGHT_LEFT -> 19
+    | `ROTATE_LEFT -> 20
+    | `ROTATE_RIGHT -> 21
+    | `ROTATE_LEFT_RIGHT -> 22
+
+  let int_to_stack_transition_type = function
+    | 0 -> `NONE
+    | 1 -> `CROSSFADE
+    | 2 -> `SLIDE_RIGHT
+    | 3 -> `SLIDE_LEFT
+    | 4 -> `SLIDE_UP
+    | 5 -> `SLIDE_DOWN
+    | 6 -> `SLIDE_LEFT_RIGHT
+    | 7 -> `SLIDE_UP_DOWN
+    | 8 -> `OVER_UP
+    | 9 -> `OVER_DOWN
+    | 10 -> `OVER_LEFT
+    | 11 -> `OVER_RIGHT
+    | 12 -> `UNDER_UP
+    | 13 -> `UNDER_DOWN
+    | 14 -> `UNDER_LEFT
+    | 15 -> `UNDER_RIGHT
+    | 16 -> `OVER_UP_DOWN
+    | 17 -> `OVER_DOWN_UP
+    | 18 -> `OVER_LEFT_RIGHT
+    | 19 -> `OVER_RIGHT_LEFT
+    | 20 -> `ROTATE_LEFT
+    | 21 -> `ROTATE_RIGHT
+    | 22 -> `ROTATE_LEFT_RIGHT
+    | _ -> `NONE
+
+  (** {2 Wrapped functions} *)
+
+  let add_named stack ~child ~name =
+    add_named_impl stack child name
+
+  let add_titled stack ~child ~name ~title =
+    add_titled_impl stack child name title
+
+  let set_transition_type stack tt =
+    set_transition_type_impl stack (stack_transition_type_to_int tt)
+
+  let get_transition_type stack =
+    int_to_stack_transition_type (get_transition_type_impl stack)
+
+  let as_widget (stack : t) : widget = Obj.magic stack
 end

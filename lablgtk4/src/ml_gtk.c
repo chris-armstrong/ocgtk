@@ -556,6 +556,482 @@ CAMLprim value ml_gtk_grid_set_baseline_row(value grid, value row)
   CAMLreturn(Val_unit);
 }
 
+/* ========== GtkFixed ========== */
+
+CAMLprim value ml_gtk_fixed_new(value unit)
+{
+  CAMLparam1(unit);
+  GtkWidget *fixed = gtk_fixed_new();
+  CAMLreturn(Val_GtkWidget(fixed));
+}
+
+CAMLprim value ml_gtk_fixed_put(value fixed, value widget, value x, value y)
+{
+  CAMLparam4(fixed, widget, x, y);
+  gtk_fixed_put(
+    GTK_FIXED(GtkWidget_val(fixed)),
+    GtkWidget_val(widget),
+    Double_val(x),
+    Double_val(y)
+  );
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_fixed_remove(value fixed, value widget)
+{
+  CAMLparam2(fixed, widget);
+  gtk_fixed_remove(GTK_FIXED(GtkWidget_val(fixed)), GtkWidget_val(widget));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_fixed_move(value fixed, value widget, value x, value y)
+{
+  CAMLparam4(fixed, widget, x, y);
+  gtk_fixed_move(
+    GTK_FIXED(GtkWidget_val(fixed)),
+    GtkWidget_val(widget),
+    Double_val(x),
+    Double_val(y)
+  );
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_fixed_get_child_position(value fixed, value widget)
+{
+  CAMLparam2(fixed, widget);
+  CAMLlocal1(result);
+  double x, y;
+
+  gtk_fixed_get_child_position(
+    GTK_FIXED(GtkWidget_val(fixed)),
+    GtkWidget_val(widget),
+    &x,
+    &y
+  );
+
+  result = caml_alloc_tuple(2);
+  Store_field(result, 0, caml_copy_double(x));
+  Store_field(result, 1, caml_copy_double(y));
+  CAMLreturn(result);
+}
+
+/* ========== GtkPaned ========== */
+
+CAMLprim value ml_gtk_paned_new(value orientation)
+{
+  CAMLparam1(orientation);
+  GtkWidget *paned = gtk_paned_new((GtkOrientation)Int_val(orientation));
+  CAMLreturn(Val_GtkWidget(paned));
+}
+
+CAMLprim value ml_gtk_paned_set_start_child(value paned, value child)
+{
+  CAMLparam2(paned, child);
+
+  GtkWidget *child_widget = NULL;
+  if (Is_some(child)) {
+    child_widget = GtkWidget_val(Some_val(child));
+  }
+
+  gtk_paned_set_start_child(GTK_PANED(GtkWidget_val(paned)), child_widget);
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_paned_get_start_child(value paned)
+{
+  CAMLparam1(paned);
+  GtkWidget *child = gtk_paned_get_start_child(GTK_PANED(GtkWidget_val(paned)));
+  CAMLreturn(Val_option(child, Val_GtkWidget));
+}
+
+CAMLprim value ml_gtk_paned_set_end_child(value paned, value child)
+{
+  CAMLparam2(paned, child);
+
+  GtkWidget *child_widget = NULL;
+  if (Is_some(child)) {
+    child_widget = GtkWidget_val(Some_val(child));
+  }
+
+  gtk_paned_set_end_child(GTK_PANED(GtkWidget_val(paned)), child_widget);
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_paned_get_end_child(value paned)
+{
+  CAMLparam1(paned);
+  GtkWidget *child = gtk_paned_get_end_child(GTK_PANED(GtkWidget_val(paned)));
+  CAMLreturn(Val_option(child, Val_GtkWidget));
+}
+
+CAMLprim value ml_gtk_paned_set_position(value paned, value position)
+{
+  CAMLparam2(paned, position);
+  gtk_paned_set_position(GTK_PANED(GtkWidget_val(paned)), Int_val(position));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_paned_get_position(value paned)
+{
+  CAMLparam1(paned);
+  int position = gtk_paned_get_position(GTK_PANED(GtkWidget_val(paned)));
+  CAMLreturn(Val_int(position));
+}
+
+CAMLprim value ml_gtk_paned_set_wide_handle(value paned, value wide)
+{
+  CAMLparam2(paned, wide);
+  gtk_paned_set_wide_handle(GTK_PANED(GtkWidget_val(paned)), Bool_val(wide));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_paned_get_wide_handle(value paned)
+{
+  CAMLparam1(paned);
+  gboolean wide = gtk_paned_get_wide_handle(GTK_PANED(GtkWidget_val(paned)));
+  CAMLreturn(Val_bool(wide));
+}
+
+CAMLprim value ml_gtk_paned_set_resize_start_child(value paned, value resize)
+{
+  CAMLparam2(paned, resize);
+  gtk_paned_set_resize_start_child(GTK_PANED(GtkWidget_val(paned)), Bool_val(resize));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_paned_get_resize_start_child(value paned)
+{
+  CAMLparam1(paned);
+  gboolean resize = gtk_paned_get_resize_start_child(GTK_PANED(GtkWidget_val(paned)));
+  CAMLreturn(Val_bool(resize));
+}
+
+CAMLprim value ml_gtk_paned_set_resize_end_child(value paned, value resize)
+{
+  CAMLparam2(paned, resize);
+  gtk_paned_set_resize_end_child(GTK_PANED(GtkWidget_val(paned)), Bool_val(resize));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_paned_get_resize_end_child(value paned)
+{
+  CAMLparam1(paned);
+  gboolean resize = gtk_paned_get_resize_end_child(GTK_PANED(GtkWidget_val(paned)));
+  CAMLreturn(Val_bool(resize));
+}
+
+CAMLprim value ml_gtk_paned_set_shrink_start_child(value paned, value shrink)
+{
+  CAMLparam2(paned, shrink);
+  gtk_paned_set_shrink_start_child(GTK_PANED(GtkWidget_val(paned)), Bool_val(shrink));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_paned_get_shrink_start_child(value paned)
+{
+  CAMLparam1(paned);
+  gboolean shrink = gtk_paned_get_shrink_start_child(GTK_PANED(GtkWidget_val(paned)));
+  CAMLreturn(Val_bool(shrink));
+}
+
+CAMLprim value ml_gtk_paned_set_shrink_end_child(value paned, value shrink)
+{
+  CAMLparam2(paned, shrink);
+  gtk_paned_set_shrink_end_child(GTK_PANED(GtkWidget_val(paned)), Bool_val(shrink));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_paned_get_shrink_end_child(value paned)
+{
+  CAMLparam1(paned);
+  gboolean shrink = gtk_paned_get_shrink_end_child(GTK_PANED(GtkWidget_val(paned)));
+  CAMLreturn(Val_bool(shrink));
+}
+
+/* ========== GtkNotebook ========== */
+
+CAMLprim value ml_gtk_notebook_new(value unit)
+{
+  CAMLparam1(unit);
+  GtkWidget *notebook = gtk_notebook_new();
+  CAMLreturn(Val_GtkWidget(notebook));
+}
+
+CAMLprim value ml_gtk_notebook_append_page(value notebook, value child, value tab_label)
+{
+  CAMLparam3(notebook, child, tab_label);
+
+  GtkWidget *label_widget = NULL;
+  if (Is_some(tab_label)) {
+    label_widget = GtkWidget_val(Some_val(tab_label));
+  }
+
+  int page_num = gtk_notebook_append_page(
+    GTK_NOTEBOOK(GtkWidget_val(notebook)),
+    GtkWidget_val(child),
+    label_widget
+  );
+
+  CAMLreturn(Val_int(page_num));
+}
+
+CAMLprim value ml_gtk_notebook_prepend_page(value notebook, value child, value tab_label)
+{
+  CAMLparam3(notebook, child, tab_label);
+
+  GtkWidget *label_widget = NULL;
+  if (Is_some(tab_label)) {
+    label_widget = GtkWidget_val(Some_val(tab_label));
+  }
+
+  int page_num = gtk_notebook_prepend_page(
+    GTK_NOTEBOOK(GtkWidget_val(notebook)),
+    GtkWidget_val(child),
+    label_widget
+  );
+
+  CAMLreturn(Val_int(page_num));
+}
+
+CAMLprim value ml_gtk_notebook_insert_page(value notebook, value child, value tab_label, value position)
+{
+  CAMLparam4(notebook, child, tab_label, position);
+
+  GtkWidget *label_widget = NULL;
+  if (Is_some(tab_label)) {
+    label_widget = GtkWidget_val(Some_val(tab_label));
+  }
+
+  int page_num = gtk_notebook_insert_page(
+    GTK_NOTEBOOK(GtkWidget_val(notebook)),
+    GtkWidget_val(child),
+    label_widget,
+    Int_val(position)
+  );
+
+  CAMLreturn(Val_int(page_num));
+}
+
+CAMLprim value ml_gtk_notebook_remove_page(value notebook, value page)
+{
+  CAMLparam2(notebook, page);
+  gtk_notebook_remove_page(GTK_NOTEBOOK(GtkWidget_val(notebook)), Int_val(page));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_notebook_detach_tab(value notebook, value child)
+{
+  CAMLparam2(notebook, child);
+  gtk_notebook_detach_tab(GTK_NOTEBOOK(GtkWidget_val(notebook)), GtkWidget_val(child));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_notebook_get_current_page(value notebook)
+{
+  CAMLparam1(notebook);
+  int page = gtk_notebook_get_current_page(GTK_NOTEBOOK(GtkWidget_val(notebook)));
+  CAMLreturn(Val_int(page));
+}
+
+CAMLprim value ml_gtk_notebook_set_current_page(value notebook, value page)
+{
+  CAMLparam2(notebook, page);
+  gtk_notebook_set_current_page(GTK_NOTEBOOK(GtkWidget_val(notebook)), Int_val(page));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_notebook_next_page(value notebook)
+{
+  CAMLparam1(notebook);
+  gtk_notebook_next_page(GTK_NOTEBOOK(GtkWidget_val(notebook)));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_notebook_prev_page(value notebook)
+{
+  CAMLparam1(notebook);
+  gtk_notebook_prev_page(GTK_NOTEBOOK(GtkWidget_val(notebook)));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_notebook_get_nth_page(value notebook, value page_num)
+{
+  CAMLparam2(notebook, page_num);
+  GtkWidget *page = gtk_notebook_get_nth_page(
+    GTK_NOTEBOOK(GtkWidget_val(notebook)),
+    Int_val(page_num)
+  );
+  CAMLreturn(Val_option(page, Val_GtkWidget));
+}
+
+CAMLprim value ml_gtk_notebook_get_n_pages(value notebook)
+{
+  CAMLparam1(notebook);
+  int n_pages = gtk_notebook_get_n_pages(GTK_NOTEBOOK(GtkWidget_val(notebook)));
+  CAMLreturn(Val_int(n_pages));
+}
+
+CAMLprim value ml_gtk_notebook_page_num(value notebook, value child)
+{
+  CAMLparam2(notebook, child);
+  int page_num = gtk_notebook_page_num(
+    GTK_NOTEBOOK(GtkWidget_val(notebook)),
+    GtkWidget_val(child)
+  );
+  CAMLreturn(Val_int(page_num));
+}
+
+CAMLprim value ml_gtk_notebook_set_show_tabs(value notebook, value show)
+{
+  CAMLparam2(notebook, show);
+  gtk_notebook_set_show_tabs(GTK_NOTEBOOK(GtkWidget_val(notebook)), Bool_val(show));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_notebook_get_show_tabs(value notebook)
+{
+  CAMLparam1(notebook);
+  gboolean show = gtk_notebook_get_show_tabs(GTK_NOTEBOOK(GtkWidget_val(notebook)));
+  CAMLreturn(Val_bool(show));
+}
+
+CAMLprim value ml_gtk_notebook_set_show_border(value notebook, value show)
+{
+  CAMLparam2(notebook, show);
+  gtk_notebook_set_show_border(GTK_NOTEBOOK(GtkWidget_val(notebook)), Bool_val(show));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_notebook_get_show_border(value notebook)
+{
+  CAMLparam1(notebook);
+  gboolean show = gtk_notebook_get_show_border(GTK_NOTEBOOK(GtkWidget_val(notebook)));
+  CAMLreturn(Val_bool(show));
+}
+
+CAMLprim value ml_gtk_notebook_set_scrollable(value notebook, value scrollable)
+{
+  CAMLparam2(notebook, scrollable);
+  gtk_notebook_set_scrollable(GTK_NOTEBOOK(GtkWidget_val(notebook)), Bool_val(scrollable));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_notebook_get_scrollable(value notebook)
+{
+  CAMLparam1(notebook);
+  gboolean scrollable = gtk_notebook_get_scrollable(GTK_NOTEBOOK(GtkWidget_val(notebook)));
+  CAMLreturn(Val_bool(scrollable));
+}
+
+/* ========== GtkStack ========== */
+
+CAMLprim value ml_gtk_stack_new(value unit)
+{
+  CAMLparam1(unit);
+  GtkWidget *stack = gtk_stack_new();
+  CAMLreturn(Val_GtkWidget(stack));
+}
+
+CAMLprim value ml_gtk_stack_add_named(value stack, value child, value name)
+{
+  CAMLparam3(stack, child, name);
+  gtk_stack_add_named(
+    GTK_STACK(GtkWidget_val(stack)),
+    GtkWidget_val(child),
+    String_val(name)
+  );
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_stack_add_titled(value stack, value child, value name, value title)
+{
+  CAMLparam4(stack, child, name, title);
+  gtk_stack_add_titled(
+    GTK_STACK(GtkWidget_val(stack)),
+    GtkWidget_val(child),
+    String_val(name),
+    String_val(title)
+  );
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_stack_add_child(value stack, value child)
+{
+  CAMLparam2(stack, child);
+  gtk_stack_add_child(GTK_STACK(GtkWidget_val(stack)), GtkWidget_val(child));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_stack_remove(value stack, value child)
+{
+  CAMLparam2(stack, child);
+  gtk_stack_remove(GTK_STACK(GtkWidget_val(stack)), GtkWidget_val(child));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_stack_get_visible_child(value stack)
+{
+  CAMLparam1(stack);
+  GtkWidget *child = gtk_stack_get_visible_child(GTK_STACK(GtkWidget_val(stack)));
+  CAMLreturn(Val_option(child, Val_GtkWidget));
+}
+
+CAMLprim value ml_gtk_stack_set_visible_child(value stack, value child)
+{
+  CAMLparam2(stack, child);
+  gtk_stack_set_visible_child(GTK_STACK(GtkWidget_val(stack)), GtkWidget_val(child));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_stack_set_visible_child_name(value stack, value name)
+{
+  CAMLparam2(stack, name);
+  gtk_stack_set_visible_child_name(GTK_STACK(GtkWidget_val(stack)), String_val(name));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_stack_get_visible_child_name(value stack)
+{
+  CAMLparam1(stack);
+  const char *name = gtk_stack_get_visible_child_name(GTK_STACK(GtkWidget_val(stack)));
+  if (name == NULL) {
+    CAMLreturn(Val_none);
+  } else {
+    CAMLreturn(Val_some(caml_copy_string(name)));
+  }
+}
+
+CAMLprim value ml_gtk_stack_set_transition_type(value stack, value transition_type)
+{
+  CAMLparam2(stack, transition_type);
+  gtk_stack_set_transition_type(
+    GTK_STACK(GtkWidget_val(stack)),
+    (GtkStackTransitionType)Int_val(transition_type)
+  );
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_stack_get_transition_type(value stack)
+{
+  CAMLparam1(stack);
+  GtkStackTransitionType tt = gtk_stack_get_transition_type(GTK_STACK(GtkWidget_val(stack)));
+  CAMLreturn(Val_int((int)tt));
+}
+
+CAMLprim value ml_gtk_stack_set_transition_duration(value stack, value duration)
+{
+  CAMLparam2(stack, duration);
+  gtk_stack_set_transition_duration(GTK_STACK(GtkWidget_val(stack)), Int_val(duration));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_stack_get_transition_duration(value stack)
+{
+  CAMLparam1(stack);
+  guint duration = gtk_stack_get_transition_duration(GTK_STACK(GtkWidget_val(stack)));
+  CAMLreturn(Val_int(duration));
+}
+
 /* ========== Initialization and Main Loop ========== */
 
 /* GTK4 Note: gtk_init_check() no longer takes argc/argv parameters.
