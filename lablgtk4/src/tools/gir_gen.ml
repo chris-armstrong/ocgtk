@@ -605,14 +605,28 @@ let generate_c_method (meth : gir_method) =
 let generate_ml_interface cls =
   let buf = Buffer.create 1024 in
 
+  (* Determine if this is a controller or widget *)
+  let is_controller =
+    cls.class_name = "EventController" ||
+    (String.length cls.class_name > 15 && String.sub ~pos:0 ~len:15 cls.class_name = "EventController") ||
+    (String.length cls.class_name > 7 && String.sub ~pos:0 ~len:7 cls.class_name = "Gesture")
+  in
+
+  let (class_type_name, base_type) =
+    if is_controller then
+      ("Event controller", "EventController.t")
+    else
+      ("Widget", "Gtk.Widget.t")
+  in
+
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
-  bprintf buf "(* Event controller: %s *)\n\n" cls.class_name;
+  bprintf buf "(* %s: %s *)\n\n" class_type_name cls.class_name;
 
   (match cls.class_doc with
   | Some doc -> bprintf buf "(** %s *)\n" doc
   | None -> ());
 
-  bprintf buf "type t = EventController.t\n\n";
+  bprintf buf "type t = %s\n\n" base_type;
 
   (* Constructors *)
   List.iter ~f:(fun ctor ->
