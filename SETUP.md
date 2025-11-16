@@ -82,8 +82,13 @@ opam install camlp5 -y
 
 #### For LablGTK4:
 ```bash
-cd ../lablgtk4
-opam install cairo2 dune alcotest -y
+# Install local conf-gtk4 package (verifies GTK 4 system installation)
+cd /home/user/lablgtk
+opam install ./conf-gtk4 -y
+
+# Install other dependencies
+cd lablgtk4
+opam install cairo2 dune alcotest camlp-streams -y
 ```
 
 ### 5. Verify Builds
@@ -143,8 +148,10 @@ opam install . --deps-only --with-test -y
 opam install camlp5 -y
 
 # Install OCaml dependencies for lablgtk4
-cd /home/user/lablgtk/lablgtk4
-opam install cairo2 dune alcotest -y
+cd /home/user/lablgtk
+opam install ./conf-gtk4 -y
+cd lablgtk4
+opam install cairo2 dune alcotest camlp-streams -y
 
 # Verify builds
 cd /home/user/lablgtk/lablgtk3
@@ -203,8 +210,10 @@ opam install . --deps-only --with-test -y
 opam install camlp5 -y
 
 # Install OCaml dependencies for lablgtk4
-cd /home/user/lablgtk/lablgtk4
-opam install cairo2 dune alcotest -y
+cd /home/user/lablgtk
+opam install ./conf-gtk4 -y
+cd lablgtk4
+opam install cairo2 dune alcotest camlp-streams -y
 
 # Verify builds
 cd /home/user/lablgtk/lablgtk3

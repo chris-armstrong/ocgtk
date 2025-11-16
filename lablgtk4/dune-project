@@ -19,5 +19,6 @@
   conf-gtk4
   cairo2
   (camlp5 :build)
+  (camlp-streams :build)
   (xmlm :build)
   (alcotest :with-test)))
