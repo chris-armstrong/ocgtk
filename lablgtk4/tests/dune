@@ -69,6 +69,26 @@
  (name test_closure_with_gc)
  (libraries lablgtk4))
 
+(executable
+ (name test_gtk_init)
+ (libraries lablgtk4 alcotest))
+
+(executable
+ (name test_event_controller)
+ (libraries lablgtk4 alcotest))
+
+(executable
+ (name test_event_controller_runtime)
+ (libraries lablgtk4 alcotest))
+
+(executable
+ (name test_gobj)
+ (libraries lablgtk4 alcotest))
+
+(executable
+ (name test_integration)
+ (libraries lablgtk4 alcotest))
+
 ; ============================================================================
 ; Custom Test Runner for GTK/GDK Cleanup Issues
 ; ============================================================================

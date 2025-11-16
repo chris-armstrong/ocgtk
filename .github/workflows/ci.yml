@@ -104,6 +104,11 @@ jobs:
           opam exec -- dune build src/tools/test_gir_gen.exe
           opam exec -- ./_build/default/src/tools/test_gir_gen.exe
 
+      - name: Install xvfb for runtime tests
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+
       - name: Build lablgtk4 library
         working-directory: lablgtk4
         run: opam exec -- dune build
@@ -113,7 +118,8 @@ jobs:
         run: |
           # Use custom test runner script to avoid GTK cleanup issues
           # See tests/dune for explanation of why we can't use 'dune runtest'
-          opam exec -- ./run_tests.sh
+          # Use xvfb-run to provide virtual display for GTK runtime tests
+          opam exec -- xvfb-run -a ./run_tests.sh
 
       - name: Display generated enum modules
         working-directory: lablgtk4

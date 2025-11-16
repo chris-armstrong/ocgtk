@@ -35,6 +35,14 @@ echo "Running library tests..."
 ./_build/default/tests/test_snapshot.exe
 
 echo ""
+echo "Running Phase 3.3/3.4 tests..."
+./_build/default/tests/test_gtk_init.exe
+./_build/default/tests/test_event_controller.exe
+./_build/default/tests/test_event_controller_runtime.exe
+./_build/default/tests/test_gobj.exe
+./_build/default/tests/test_integration.exe
+
+echo ""
 echo "╔══════════════════════════════════════════════════════════════╗"
 echo "║                   ✓ All Tests Passed                        ║"
 echo "╚══════════════════════════════════════════════════════════════╝"
