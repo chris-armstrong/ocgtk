@@ -690,6 +690,41 @@ let generate_ml_interface cls =
     bprintf buf "external new_ : unit -> t = \"%s\"\n\n" ml_name;
   ) cls.constructors;
 
+  (* Properties - generate get/set externals *)
+  if List.length cls.properties > 0 then begin
+    bprintf buf "(* Properties *)\n\n";
+    List.iter ~f:(fun (prop : gir_property) ->
+      (* Convert property name: replace hyphens with underscores, then snake_case *)
+      let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
+      let prop_snake = to_snake_case prop_name_cleaned in
+      let class_snake = to_snake_case cls.class_name in
+
+      (* Determine property type in OCaml *)
+      let prop_ocaml_type = match find_type_mapping prop.prop_type.c_type with
+        | Some mapping -> mapping.ocaml_type
+        | None -> "unit" (* fallback for unknown types *)
+      in
+
+      (* Generate getter if readable *)
+      if prop.readable then begin
+        let getter_name = sprintf "get_%s" prop_snake in
+        let c_getter = sprintf "ml_gtk_%s_get_%s" class_snake prop_snake in
+        bprintf buf "(** Get property: %s *)\n" prop.prop_name;
+        bprintf buf "external %s : t -> %s = \"%s\"\n\n"
+          getter_name prop_ocaml_type c_getter;
+      end;
+
+      (* Generate setter if writable and not construct-only *)
+      if prop.writable && not prop.construct_only then begin
+        let setter_name = sprintf "set_%s" prop_snake in
+        let c_setter = sprintf "ml_gtk_%s_set_%s" class_snake prop_snake in
+        bprintf buf "(** Set property: %s *)\n" prop.prop_name;
+        bprintf buf "external %s : t -> %s -> unit = \"%s\"\n\n"
+          setter_name prop_ocaml_type c_setter;
+      end;
+    ) cls.properties;
+  end;
+
   (* Methods *)
   List.iter ~f:(fun (meth : gir_method) ->
     (match meth.doc with
