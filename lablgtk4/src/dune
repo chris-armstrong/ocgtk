@@ -25,7 +25,7 @@ rm cflag-gtk4.tmp clink-gtk4.tmp\
  (public_name lablgtk4)
  (wrapped false)
  (flags :standard -w -6-7-9-10-27-32-33-34-35-36-50-52 -no-strict-sequence)
- (modules gpointer gaux gobject glib gdk gdkPixbuf gdkClipboard pango graphene gtk gtkSnapshot eventController eventControllerKey eventControllerMotion gestureClick gObj gBox gGrid gFixed gPaned gNotebook gStack gMain Gtk4Enums Gdk4Enums GlibEnums pangoEnums GobjectEnums)
+ (modules gpointer gaux gobject glib gdk gdkPixbuf gdkClipboard pango graphene gtk gtkSnapshot eventController eventControllerKey eventControllerMotion gestureClick gObj gBox gGrid gFixed gPaned gNotebook gStack gPack gMain Gtk4Enums Gdk4Enums GlibEnums pangoEnums GobjectEnums)
  (foreign_stubs
   (language c)
   (names wrappers ml_glib ml_gobject ml_gdk ml_gdkpixbuf ml_gdk_clipboard ml_pango ml_gtk ml_gtk_snapshot ml_event_controller gtk4_tags gdk4_tags glib_tags pango_tags gobject_tags gdkpixbuf_tags)

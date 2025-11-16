@@ -123,6 +123,11 @@
  (modules test_containers)
  (libraries lablgtk4 alcotest))
 
+(executable
+ (name test_gpack)
+ (modules test_gpack)
+ (libraries lablgtk4 alcotest))
+
 ; ============================================================================
 ; Custom Test Runner for GTK/GDK Cleanup Issues
 ; ============================================================================
