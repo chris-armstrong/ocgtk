@@ -445,9 +445,9 @@ static void init_closure_table(void)
 }
 
 /* Add a closure to the table, return its ID */
-static int add_closure_to_table(value callback)
+static int add_closure_to_table(value callback_val)
 {
-    CAMLparam1(callback);
+    CAMLparam1(callback_val);
     CAMLlocal3(pair, new_cell, id_val);
 
     init_closure_table();
@@ -458,7 +458,7 @@ static int add_closure_to_table(value callback)
     /* Create pair (id, callback) */
     pair = caml_alloc(2, 0);
     Store_field(pair, 0, id_val);
-    Store_field(pair, 1, callback);
+    Store_field(pair, 1, callback_val);
 
     /* Prepend to list: new_cell = pair :: closure_list */
     new_cell = caml_alloc(2, 0);  /* Cons cell */
@@ -476,18 +476,18 @@ static int add_closure_to_table(value callback)
 static value find_closure_in_table(int id)
 {
     CAMLparam0();
-    CAMLlocal3(current, pair, callback);
+    CAMLlocal3(current, pair, callback_val);
 
     current = closure_list;
     while (current != Val_int(0)) {  /* While not [] */
         pair = Field(current, 0);  /* Get (id, callback) pair */
         if (Int_val(Field(pair, 0)) == id) {
-            callback = Field(pair, 1);
-            /* Check if marked as dead (callback == Val_unit) */
-            if (callback == Val_unit) {
+            callback_val = Field(pair, 1);
+            /* Check if marked as dead (callback_val == Val_unit) */
+            if (callback_val == Val_unit) {
                 CAMLreturn(Val_unit);  /* Closure was destroyed */
             }
-            CAMLreturn(callback);  /* Return live callback */
+            CAMLreturn(callback_val);  /* Return live callback */
         }
         current = Field(current, 1);  /* Move to next */
     }
@@ -584,8 +584,8 @@ static void ml_closure_marshal(GClosure *closure,
         CAMLreturn0;  /* Invalid ID */
     }
 
-    value callback = find_closure_in_table(id);
-    if (callback == Val_unit) {
+    value callback_val = find_closure_in_table(id);
+    if (callback_val == Val_unit) {
         CAMLreturn0;  /* Closure not found */
     }
 
@@ -616,7 +616,7 @@ static void ml_closure_marshal(GClosure *closure,
     Store_field(argv_val, 2, (value)param_values);
 
     /* Call OCaml callback */
-    value result = caml_callback_exn(callback, argv_val);
+    value result = caml_callback_exn(callback_val, argv_val);
 
     /* Copy result back if needed */
     if (return_value != NULL && G_IS_VALUE(return_value)) {
@@ -629,14 +629,14 @@ static void ml_closure_marshal(GClosure *closure,
     CAMLreturn0;
 }
 
-CAMLprim value ml_g_closure_new(value callback)
+CAMLprim value ml_g_closure_new(value callback_val)
 {
-    CAMLparam1(callback);
+    CAMLparam1(callback_val);
 
     /* Add callback to the closure table and get an ID
      * The table is OCaml-managed memory, safe for multicore GC
      */
-    int id = add_closure_to_table(callback);
+    int id = add_closure_to_table(callback_val);
 
     /* Create GClosure with the ID (as an integer) as data
      * No pointers, no malloc, no global roots to C memory!

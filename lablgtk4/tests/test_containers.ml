@@ -328,7 +328,7 @@ let test_gpaned_wrapper () =
     check bool "GPaned resize start" false paned#resize_start_child;
 
     (* Test vpaned creation *)
-    let vpaned = GPaned.vpaned () in
+    let _vpaned = GPaned.vpaned () in
     check bool "GPaned vpaned created" true true
   with
   | Failure msg when msg = "GTK initialization failed" -> skip ()
@@ -461,13 +461,13 @@ let test_fixed_with_containers () =
     fixed#put ~x:200.0 ~y:10.0 (notebook :> GObj.widget);
 
     (* Verify positions *)
-    let (x1, y1) = fixed#get_child_position (box :> GObj.widget) in
+    let (x1, _y1) = fixed#get_child_position (box :> GObj.widget) in
     check (float 0.01) "Fixed box x" 10.0 x1;
 
-    let (x2, y2) = fixed#get_child_position (grid :> GObj.widget) in
+    let (x2, _y2) = fixed#get_child_position (grid :> GObj.widget) in
     check (float 0.01) "Fixed grid x" 100.0 x2;
 
-    let (x3, y3) = fixed#get_child_position (notebook :> GObj.widget) in
+    let (x3, _y3) = fixed#get_child_position (notebook :> GObj.widget) in
     check (float 0.01) "Fixed notebook x" 200.0 x3;
 
     check bool "Fixed with containers works" true true

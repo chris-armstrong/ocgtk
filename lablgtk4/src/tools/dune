@@ -3,18 +3,20 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ; Generate varcc.ml from varcc.ml4 using camlp5
-(rule
- (targets varcc.ml)
- (deps (:source varcc.ml4))
- (mode promote)
- (action (bash "camlp5o o_keywords.cmo pr_o.cmo -impl %{source} -o %{targets}")))
+; Commented out: Using pre-generated .ml files to avoid camlp5 dependency
+; (rule
+;  (targets varcc.ml)
+;  (deps (:source varcc.ml4))
+;  (mode promote)
+;  (action (bash "camlp5o o_keywords.cmo pr_o.cmo -impl %{source} -o %{targets}")))
 
 ; Generate propcc.ml from propcc.ml4 using camlp5
-(rule
- (targets propcc.ml)
- (deps (:source propcc.ml4))
- (mode promote)
- (action (bash "camlp5o o_keywords.cmo pr_o.cmo -impl %{source} -o %{targets}")))
+; Commented out: Using pre-generated .ml files to avoid camlp5 dependency
+; (rule
+;  (targets propcc.ml)
+;  (deps (:source propcc.ml4))
+;  (mode promote)
+;  (action (bash "camlp5o o_keywords.cmo pr_o.cmo -impl %{source} -o %{targets}")))
 
 ; Build the code generation executables
 (executables

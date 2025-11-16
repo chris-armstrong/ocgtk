@@ -15,90 +15,112 @@
 
 (executable
  (name test_enum_roundtrip)
+ (modules test_enum_roundtrip)
  (libraries lablgtk4 alcotest))
 
 (executable
  (name test_enum_values)
+ (modules test_enum_values)
  (libraries lablgtk4 alcotest))
 
 (executable
  (name test_all_enums)
+ (modules test_all_enums)
  (libraries lablgtk4 alcotest))
 
 (executable
  (name test_glib)
+ (modules test_glib)
  (libraries lablgtk4 alcotest))
 
 (executable
  (name test_gobject)
+ (modules test_gobject)
  (libraries lablgtk4 alcotest))
 
 (executable
  (name test_ffi_integration)
+ (modules test_ffi_integration)
  (libraries lablgtk4 alcotest))
 
 (executable
  (name test_gdkpixbuf)
+ (modules test_gdkpixbuf)
  (libraries lablgtk4 alcotest))
 
 (executable
  (name test_gdk)
+ (modules test_gdk)
  (libraries lablgtk4 alcotest))
 
 (executable
  (name test_pango)
+ (modules test_pango)
  (libraries lablgtk4 alcotest))
 
 (executable
  (name test_clipboard)
+ (modules test_clipboard)
  (libraries lablgtk4 alcotest))
 
 (executable
  (name test_widget)
+ (modules test_widget)
  (libraries lablgtk4 alcotest))
 
 (executable
  (name test_snapshot)
+ (modules test_snapshot)
  (libraries lablgtk4 alcotest))
 
 (executable
  (name test_closure_stress)
+ (modules test_closure_stress)
  (libraries lablgtk4))
 
 (executable
  (name test_closure_with_gc)
+ (modules test_closure_with_gc)
  (libraries lablgtk4))
 
 (executable
  (name test_gtk_init)
+ (modules test_gtk_init)
  (libraries lablgtk4 alcotest))
 
 (executable
  (name test_event_controller)
+ (modules test_event_controller)
  (libraries lablgtk4 alcotest))
 
 (executable
  (name test_event_controller_runtime)
+ (modules test_event_controller_runtime)
  (libraries lablgtk4 alcotest))
 
 (executable
  (name test_gobj)
+ (modules test_gobj)
  (libraries lablgtk4 alcotest))
 
 (executable
  (name test_integration)
+ (modules test_integration)
  (libraries lablgtk4 alcotest))
 
 (executable
  (name test_box)
+ (modules test_box)
  (libraries lablgtk4 alcotest))
 
 (executable
  (name test_grid)
+ (modules test_grid)
  (libraries lablgtk4 alcotest))
 
 (executable
  (name test_containers)
+ (modules test_containers)
  (libraries lablgtk4 alcotest))
 
 ; ============================================================================
