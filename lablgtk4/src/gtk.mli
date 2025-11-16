@@ -558,3 +558,130 @@ module Stack : sig
   (** Convert stack to widget *)
   val as_widget : t -> widget
 end
+
+(** {1 Single-Child Containers} *)
+
+module Window : sig
+  type t = [`window | `widget] Gobject.obj
+
+  (** Create a new window *)
+  val create : unit -> t
+
+  (** Set the child widget (replaces previous child if any) *)
+  val set_child : t -> widget option -> unit
+
+  (** Get the current child widget *)
+  val get_child : t -> widget option
+
+  (** Set window title *)
+  val set_title : t -> string -> unit
+
+  (** Get window title *)
+  val get_title : t -> string
+
+  (** Set default size *)
+  val set_default_size : t -> width:int -> height:int -> unit
+
+  (** Get default size *)
+  val get_default_size : t -> int * int
+
+  (** Set resizability *)
+  val set_resizable : t -> bool -> unit
+
+  (** Get resizability *)
+  val get_resizable : t -> bool
+
+  (** Set modal *)
+  val set_modal : t -> bool -> unit
+
+  (** Get modal *)
+  val get_modal : t -> bool
+
+  (** Destroy window *)
+  val destroy : t -> unit
+
+  (** Present window to user *)
+  val present : t -> unit
+
+  (** Close window *)
+  val close : t -> unit
+
+  (** Convert window to widget *)
+  val as_widget : t -> widget
+end
+
+module ScrolledWindow : sig
+  type t = [`scrolled_window | `widget] Gobject.obj
+
+  (** Policy type for scrollbars *)
+  type policy_type = [
+    | `ALWAYS
+    | `AUTOMATIC
+    | `NEVER
+    | `EXTERNAL
+  ]
+
+  (** Create a new scrolled window *)
+  val create : unit -> t
+
+  (** Set the child widget *)
+  val set_child : t -> widget option -> unit
+
+  (** Get the child widget *)
+  val get_child : t -> widget option
+
+  (** Set scrollbar policies *)
+  val set_policy : t -> hpolicy:policy_type -> vpolicy:policy_type -> unit
+
+  (** Get scrollbar policies *)
+  val get_policy : t -> policy_type * policy_type
+
+  (** Get horizontal scrollbar *)
+  val get_hscrollbar : t -> widget option
+
+  (** Get vertical scrollbar *)
+  val get_vscrollbar : t -> widget option
+
+  (** Set minimum content width *)
+  val set_min_content_width : t -> int -> unit
+
+  (** Get minimum content width *)
+  val get_min_content_width : t -> int
+
+  (** Set minimum content height *)
+  val set_min_content_height : t -> int -> unit
+
+  (** Get minimum content height *)
+  val get_min_content_height : t -> int
+
+  (** Convert scrolled window to widget *)
+  val as_widget : t -> widget
+end
+
+module Frame : sig
+  type t = [`frame | `widget] Gobject.obj
+
+  (** Create a new frame *)
+  val create : ?label:string -> unit -> t
+
+  (** Set the child widget *)
+  val set_child : t -> widget option -> unit
+
+  (** Get the child widget *)
+  val get_child : t -> widget option
+
+  (** Set label *)
+  val set_label : t -> string option -> unit
+
+  (** Get label *)
+  val get_label : t -> string option
+
+  (** Set label horizontal alignment (0.0 = left, 1.0 = right) *)
+  val set_label_xalign : t -> float -> unit
+
+  (** Get label horizontal alignment *)
+  val get_label_xalign : t -> float
+
+  (** Convert frame to widget *)
+  val as_widget : t -> widget
+end
