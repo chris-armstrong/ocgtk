@@ -135,7 +135,10 @@ class virtual widget_impl (obj : [`widget] Gobject.obj) = object (self)
   method as_widget = obj
 end
 
-and widget = widget_impl
+(** Concrete widget class that can be instantiated *)
+and widget (obj : [`widget] Gobject.obj) = object (self)
+  inherit widget_impl obj
+end
 
 (** {2 Widget with Controller Operations} *)
 

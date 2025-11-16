@@ -16,15 +16,15 @@
 class notebook_skel (obj : Gtk.Notebook.t) = object (self)
   inherit GObj.widget_impl (Gtk.Notebook.as_widget obj)
 
-  method append_page ?tab_label (child : GObj.widget) =
+  method append_page ?(tab_label : GObj.widget option) (child : GObj.widget) =
     let label_widget = Option.map (fun l -> l#as_widget) tab_label in
     Gtk.Notebook.append_page obj ~child:child#as_widget ?tab_label:label_widget ()
 
-  method prepend_page ?tab_label (child : GObj.widget) =
+  method prepend_page ?(tab_label : GObj.widget option) (child : GObj.widget) =
     let label_widget = Option.map (fun l -> l#as_widget) tab_label in
     Gtk.Notebook.prepend_page obj ~child:child#as_widget ?tab_label:label_widget ()
 
-  method insert_page ?tab_label ~pos (child : GObj.widget) =
+  method insert_page ?(tab_label : GObj.widget option) ~pos (child : GObj.widget) =
     let label_widget = Option.map (fun l -> l#as_widget) tab_label in
     Gtk.Notebook.insert_page obj ~child:child#as_widget ?tab_label:label_widget ~position:pos ()
 

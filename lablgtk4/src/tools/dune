@@ -3,18 +3,20 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ; Generate varcc.ml from varcc.ml4 using camlp5
+; Use wrapper script to handle both old (o_keywords.cmo) and new (pa_o.cmo) camlp5 versions
 (rule
  (targets varcc.ml)
- (deps (:source varcc.ml4))
+ (deps (:source varcc.ml4) (:script camlp5_convert.sh))
  (mode promote)
- (action (bash "camlp5o o_keywords.cmo pr_o.cmo -impl %{source} -o %{targets}")))
+ (action (bash "bash %{script} %{source} %{targets}")))
 
 ; Generate propcc.ml from propcc.ml4 using camlp5
+; Use wrapper script to handle both old (o_keywords.cmo) and new (pa_o.cmo) camlp5 versions
 (rule
  (targets propcc.ml)
- (deps (:source propcc.ml4))
+ (deps (:source propcc.ml4) (:script camlp5_convert.sh))
  (mode promote)
- (action (bash "camlp5o o_keywords.cmo pr_o.cmo -impl %{source} -o %{targets}")))
+ (action (bash "bash %{script} %{source} %{targets}")))
 
 ; Build the code generation executables
 (executables

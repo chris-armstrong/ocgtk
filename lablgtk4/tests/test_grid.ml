@@ -42,7 +42,7 @@ let test_grid_creation () =
     check bool "grid row not homogeneous" false (Gtk.Grid.get_row_homogeneous grid);
     check bool "grid column not homogeneous" false (Gtk.Grid.get_column_homogeneous grid)
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()  (* No display available *)
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -73,7 +73,7 @@ let test_grid_properties () =
     Gtk.Grid.set_baseline_row grid 2;
     check int "baseline row set to 2" 2 (Gtk.Grid.get_baseline_row grid)
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -94,7 +94,7 @@ let test_child_attach () =
     | Some _ -> check bool "child found at position" true true
     | None -> fail "child not found at position (0,0)"
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -116,7 +116,7 @@ let test_child_removal () =
     | None -> check bool "child removed" true true
     | Some _ -> fail "child still present after removal"
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -143,7 +143,7 @@ let test_row_column_operations () =
 
     check bool "row/column operations successful" true true
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -166,7 +166,7 @@ let test_attach_next_to () =
 
     check bool "attach_next_to successful" true true
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -190,7 +190,7 @@ let test_insert_next_to () =
 
     check bool "insert_next_to successful" true true
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -218,7 +218,7 @@ let test_ggrid_wrapper () =
     grid#set_column_homogeneous true;
     check bool "ggrid column homogeneous" true grid#column_homogeneous
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -234,7 +234,7 @@ let test_as_widget () =
     Gtk.Widget.set_name widget "test_grid";
     check string "converted widget name" "test_grid" (Gtk.Widget.get_name widget)
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -268,7 +268,7 @@ let test_ggrid_attach_multiple () =
 
     check bool "GGrid multiple attach works" true true
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_ggrid_homogeneous () =
@@ -290,7 +290,7 @@ let test_ggrid_homogeneous () =
     grid#set_column_homogeneous false;
     check bool "GGrid column not homogeneous" false grid#column_homogeneous
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_ggrid_baseline () =
@@ -305,7 +305,7 @@ let test_ggrid_baseline () =
     grid#set_baseline_row 0;
     check int "GGrid baseline row reset" 0 grid#baseline_row
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_ggrid_with_nested_containers () =
@@ -328,7 +328,7 @@ let test_ggrid_with_nested_containers () =
     (* Verify grid can be used for complex layouts *)
     check bool "GGrid with nested containers" true true
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let () =

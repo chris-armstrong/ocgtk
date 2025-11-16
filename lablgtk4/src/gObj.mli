@@ -133,8 +133,11 @@ class virtual widget_impl : [`widget] Gobject.obj ->
     method as_widget : [`widget] Gobject.obj
   end
 
-(** Alias for widget_impl *)
-type widget = widget_impl
+(** Concrete widget class that can be instantiated *)
+class widget : [`widget] Gobject.obj ->
+  object
+    inherit widget_impl
+  end
 
 (** Widget with controller operations *)
 class virtual widget_full : [`widget] Gobject.obj ->
