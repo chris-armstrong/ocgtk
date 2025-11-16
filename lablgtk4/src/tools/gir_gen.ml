@@ -1,7 +1,10 @@
-(* GIR-based Event Controller Code Generator for LablGTK4 Phase 3
+(* GIR-based Code Generator for LablGTK4 Phase 3 & Phase 5
  *
  * This tool parses Gtk-4.0.gir and generates C FFI bindings and OCaml
- * modules for GTK4 event controllers.
+ * modules for GTK4 event controllers and widgets.
+ *
+ * Phase 3: Event controllers
+ * Phase 5: Widget classes with properties and signals
  *
  * Follows patterns from varcc.ml and propcc.ml.
  *)
@@ -44,15 +47,36 @@ type gir_constructor = {
   ctor_doc : string option;
 }
 
+(* Phase 5: Property support *)
+type gir_property = {
+  prop_name : string;
+  prop_type : gir_type;
+  readable : bool;
+  writable : bool;
+  construct_only : bool;
+  prop_doc : string option;
+}
+
 type gir_class = {
   class_name : string;
   c_type : string;
   parent : string option;
+  implements : string list;  (* Phase 5: interface support *)
   constructors : gir_constructor list;
   methods : gir_method list;
+  properties : gir_property list;  (* Phase 5: properties *)
   signals : gir_signal list;
   class_doc : string option;
 }
+
+(* ========================================================================= *)
+(* Generation Modes (Phase 5) *)
+(* ========================================================================= *)
+
+type generation_mode =
+  | EventControllers  (* Phase 3: Event controllers only *)
+  | Widgets           (* Phase 5: Widget classes *)
+  | All               (* Both controllers and widgets *)
 
 (* ========================================================================= *)
 (* Type Mappings *)
@@ -114,6 +138,43 @@ let type_mappings = [
     ml_to_c = "GtkWidget_val";
     needs_copy = false;
   });
+  (* Phase 5: Widget-specific types *)
+  ("GtkOrientation", {
+    ocaml_type = "Gtk.orientation";
+    c_to_ml = "Val_orientation";
+    ml_to_c = "Orientation_val";
+    needs_copy = false;
+  });
+  ("GtkAlign", {
+    ocaml_type = "Gtk.align";
+    c_to_ml = "Val_align";
+    ml_to_c = "Align_val";
+    needs_copy = false;
+  });
+  ("GtkJustification", {
+    ocaml_type = "Gtk.justification";
+    c_to_ml = "Val_justification";
+    ml_to_c = "Justification_val";
+    needs_copy = false;
+  });
+  ("PangoWrapMode", {
+    ocaml_type = "Pango.wrap_mode";
+    c_to_ml = "Val_PangoWrapMode";
+    ml_to_c = "PangoWrapMode_val";
+    needs_copy = false;
+  });
+  ("const gchar*", {
+    ocaml_type = "string";
+    c_to_ml = "caml_copy_string";
+    ml_to_c = "String_val";
+    needs_copy = true;
+  });
+  ("utf8", {
+    ocaml_type = "string";
+    c_to_ml = "caml_copy_string";
+    ml_to_c = "String_val";
+    needs_copy = true;
+  });
 ]
 
 let find_type_mapping c_type =
@@ -145,6 +206,38 @@ let get_attr name attrs =
     try
       List.assoc ("http://www.gtk.org/introspection/c/1.0", String.sub ~pos:2 ~len:(String.length name - 2) name) attrs |> fun x -> Some x
     with Not_found -> None
+
+(* ========================================================================= *)
+(* Filter File Support (Phase 5) *)
+(* ========================================================================= *)
+
+(* Read filter file and return set of class names to generate *)
+let read_filter_file filename =
+  if not (Sys.file_exists filename) then
+    []
+  else
+    let ic = open_in filename in
+    let rec read_lines acc =
+      try
+        let line = input_line ic in
+        let trimmed = String.trim line in
+        (* Skip empty lines and comments *)
+        if trimmed = "" || String.length trimmed > 0 && trimmed.[0] = '#' then
+          read_lines acc
+        else
+          (* Extract class name (first word) *)
+          let class_name =
+            try
+              let space_idx = String.index trimmed ' ' in
+              String.sub trimmed ~pos:0 ~len:space_idx
+            with Not_found -> trimmed
+          in
+          read_lines (class_name :: acc)
+      with End_of_file ->
+        close_in ic;
+        List.rev acc
+    in
+    read_lines []
 
 (* ========================================================================= *)
 (* GIR Parser using xmlm *)
@@ -239,8 +332,10 @@ let parse_gir_file filename =
         class_name = name;
         c_type = c_type;
         parent = parent;
+        implements = [];  (* Phase 5: TODO - parse interfaces *)
         constructors = List.rev !constructors;
         methods = List.rev !methods;
+        properties = [];  (* Phase 5: TODO - parse properties *)
         signals = [];
         class_doc = None;
       }
@@ -555,17 +650,68 @@ let generate_ml_interface cls =
 (* ========================================================================= *)
 
 let () =
-  if Array.length Sys.argv < 3 then begin
-    eprintf "Usage: %s <gir-file> <output-dir>\n" Sys.argv.(0);
+  (* Phase 5: Enhanced command-line parsing *)
+  let gir_file = ref "" in
+  let output_dir = ref "." in
+  let mode = ref EventControllers in
+  let filter_file = ref None in
+
+  let usage = sprintf "Usage: %s [options] <gir-file> <output-dir>\n\
+    \nOptions:\n\
+    \  -mode <controllers|widgets|all>  Generation mode (default: controllers)\n\
+    \  -filter <file>                   Filter file for widget selection\n"
+    Sys.argv.(0) in
+
+  let rec parse_args i =
+    if i >= Array.length Sys.argv then ()
+    else
+      match Sys.argv.(i) with
+      | "-mode" ->
+        if i + 1 < Array.length Sys.argv then begin
+          (match Sys.argv.(i + 1) with
+          | "controllers" -> mode := EventControllers
+          | "widgets" -> mode := Widgets
+          | "all" -> mode := All
+          | m -> eprintf "Unknown mode: %s\n" m; exit 1);
+          parse_args (i + 2)
+        end else begin
+          eprintf "Missing argument for -mode\n"; exit 1
+        end
+      | "-filter" ->
+        if i + 1 < Array.length Sys.argv then begin
+          filter_file := Some Sys.argv.(i + 1);
+          parse_args (i + 2)
+        end else begin
+          eprintf "Missing argument for -filter\n"; exit 1
+        end
+      | arg when arg.[0] <> '-' ->
+        if !gir_file = "" then begin
+          gir_file := arg;
+          parse_args (i + 1)
+        end else if !output_dir = "." then begin
+          output_dir := arg;
+          parse_args (i + 1)
+        end else begin
+          eprintf "Too many arguments\n"; exit 1
+        end
+      | arg ->
+        eprintf "Unknown option: %s\n" arg; exit 1
+  in
+
+  parse_args 1;
+
+  if !gir_file = "" then begin
+    eprintf "%s" usage;
     exit 1
   end;
 
-  let gir_file = Sys.argv.(1) in
-  let output_dir = Sys.argv.(2) in
+  printf "Parsing %s (mode: %s)...\n" !gir_file
+    (match !mode with
+     | EventControllers -> "controllers"
+     | Widgets -> "widgets"
+     | All -> "all");
 
-  printf "Parsing %s...\n" gir_file;
-
-  let controllers = parse_gir_file gir_file in
+  let controllers = parse_gir_file !gir_file in
 
   printf "Found %d event controller classes\n" (List.length controllers);
 
@@ -594,7 +740,7 @@ let () =
   ) controllers;
 
   (* Write C output *)
-  let c_file = Filename.concat output_dir "ml_event_controllers_gen.c" in
+  let c_file = Filename.concat !output_dir "ml_event_controllers_gen.c" in
   printf "\nWriting %s...\n" c_file;
   let oc = open_out c_file in
   Buffer.output_buffer oc c_buf;
@@ -602,7 +748,7 @@ let () =
 
   (* Generate OCaml modules *)
   List.iter ~f:(fun cls ->
-    let ml_file = Filename.concat output_dir
+    let ml_file = Filename.concat !output_dir
       (sprintf "%s.mli" (to_snake_case cls.class_name)) in
     printf "Writing %s...\n" ml_file;
     let oc = open_out ml_file in
