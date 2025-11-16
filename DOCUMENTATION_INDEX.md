@@ -76,6 +76,13 @@ Located in `lablgtk4/src/tools/`:
 |----------|-------------|
 | [GCLOSURE_CLEANUP_ANALYSIS.md](GCLOSURE_CLEANUP_ANALYSIS.md) | GClosure memory management analysis |
 
+### Testing Documentation
+
+| Document | Description |
+|----------|-------------|
+| [TESTING_WITH_GMAIN.md](TESTING_WITH_GMAIN.md) | Guide for using GMain.init() in runtime tests |
+| [CI_UPDATE_SUMMARY.md](CI_UPDATE_SUMMARY.md) | CI/CD pipeline updates for runtime GTK testing |
+
 ## Module-Specific Documentation
 
 ### LablGTK4
@@ -122,6 +129,12 @@ Located in `lablgtk4/src/tools/`:
 3. Check existing code in `lablgtk4/src/` for examples
 4. Refer to [CLAUDE.md](CLAUDE.md) for quick reference patterns
 
+### For Testing
+
+1. Start with [lablgtk4/tests/README.md](lablgtk4/tests/README.md) for test suite overview
+2. Read [TESTING_WITH_GMAIN.md](TESTING_WITH_GMAIN.md) for runtime testing with GTK initialization
+3. See [CI_UPDATE_SUMMARY.md](CI_UPDATE_SUMMARY.md) for CI/CD test execution details
+
 ## External Resources
 
 ### GTK Documentation
@@ -139,6 +152,7 @@ Located in `lablgtk4/src/tools/`:
 
 ### Recently Updated
 
+- **2025-11-16**: Added TESTING_WITH_GMAIN.md and CI_UPDATE_SUMMARY.md for Phase 3.3/3.4 testing
 - **2024-11-15**: Added XMLM_MIGRATION_SUMMARY.md documenting xmlm parser migration
 - **2024-11-15**: Updated with Phase 3.0 code generation infrastructure completion
 - **2024-11-15**: Created DOCUMENTATION_INDEX.md
@@ -154,5 +168,5 @@ Located in `lablgtk4/src/tools/`:
 
 ---
 
-**Last Updated**: 2024-11-15
+**Last Updated**: 2025-11-16
 **Maintained By**: LablGTK Development Team
