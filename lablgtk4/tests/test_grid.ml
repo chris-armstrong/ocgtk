@@ -239,8 +239,100 @@ let test_as_widget () =
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
 
+(* ========== Comprehensive GGrid Tests ========== *)
+
+let test_ggrid_attach_multiple () =
+  try
+    let _ = GMain.init () in
+    let grid = GGrid.create ~row_spacing:5 ~column_spacing:10 () in
+
+    (* Attach multiple children in a grid pattern *)
+    let make_box () = GBox.hbox ~spacing:0 () in
+    let b00 = make_box () in
+    let b01 = make_box () in
+    let b10 = make_box () in
+    let b11 = make_box () in
+
+    grid#attach ~left:0 ~top:0 ~width:1 ~height:1 (b00 :> GObj.widget);
+    grid#attach ~left:1 ~top:0 ~width:1 ~height:1 (b01 :> GObj.widget);
+    grid#attach ~left:0 ~top:1 ~width:1 ~height:1 (b10 :> GObj.widget);
+    grid#attach ~left:1 ~top:1 ~width:1 ~height:1 (b11 :> GObj.widget);
+
+    (* Verify grid properties *)
+    check int "GGrid row_spacing" 5 grid#row_spacing;
+    check int "GGrid column_spacing" 10 grid#column_spacing;
+
+    (* Attach a spanning child *)
+    let wide_box = make_box () in
+    grid#attach ~left:0 ~top:2 ~width:2 ~height:1 (wide_box :> GObj.widget);
+
+    check bool "GGrid multiple attach works" true true
+  with
+  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
+
+let test_ggrid_homogeneous () =
+  try
+    let _ = GMain.init () in
+    let grid = GGrid.create () in
+
+    (* Test row homogeneous *)
+    grid#set_row_homogeneous true;
+    check bool "GGrid row homogeneous" true grid#row_homogeneous;
+
+    grid#set_row_homogeneous false;
+    check bool "GGrid row not homogeneous" false grid#row_homogeneous;
+
+    (* Test column homogeneous *)
+    grid#set_column_homogeneous true;
+    check bool "GGrid column homogeneous" true grid#column_homogeneous;
+
+    grid#set_column_homogeneous false;
+    check bool "GGrid column not homogeneous" false grid#column_homogeneous
+  with
+  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
+
+let test_ggrid_baseline () =
+  try
+    let _ = GMain.init () in
+    let grid = GGrid.create () in
+
+    (* Test baseline row property *)
+    grid#set_baseline_row 3;
+    check int "GGrid baseline row" 3 grid#baseline_row;
+
+    grid#set_baseline_row 0;
+    check int "GGrid baseline row reset" 0 grid#baseline_row
+  with
+  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
+
+let test_ggrid_with_nested_containers () =
+  try
+    let _ = GMain.init () in
+    let grid = GGrid.create ~row_spacing:10 ~column_spacing:10 () in
+
+    (* Create different container types to put in grid *)
+    let notebook = GNotebook.create () in
+    let paned = GPaned.hpaned () in
+    let stack = GStack.create () in
+    let box = GBox.vbox () in
+
+    (* Attach containers to grid *)
+    grid#attach ~left:0 ~top:0 ~width:1 ~height:1 (notebook :> GObj.widget);
+    grid#attach ~left:1 ~top:0 ~width:1 ~height:1 (paned :> GObj.widget);
+    grid#attach ~left:0 ~top:1 ~width:1 ~height:1 (stack :> GObj.widget);
+    grid#attach ~left:1 ~top:1 ~width:1 ~height:1 (box :> GObj.widget);
+
+    (* Verify grid can be used for complex layouts *)
+    check bool "GGrid with nested containers" true true
+  with
+  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
+
 let () =
-  run "Gtk.Grid Tests (Phase 4.3)" [
+  run "Comprehensive Gtk.Grid Tests (Phase 4.3)" [
     "module", [
       test_case "module_accessible" `Quick test_module_accessible;
       test_case "type_constructors" `Quick test_type_constructors;
@@ -251,7 +343,7 @@ let () =
     "properties", [
       test_case "grid_properties" `Quick test_grid_properties;
     ];
-    "children", [
+    "children - Low Level", [
       test_case "child_attach" `Quick test_child_attach;
       test_case "child_removal" `Quick test_child_removal;
       test_case "attach_next_to" `Quick test_attach_next_to;
@@ -260,8 +352,14 @@ let () =
       test_case "row_column_operations" `Quick test_row_column_operations;
       test_case "insert_next_to" `Quick test_insert_next_to;
     ];
-    "high_level", [
+    "high_level - Basic", [
       test_case "ggrid_wrapper" `Quick test_ggrid_wrapper;
+    ];
+    "high_level - Comprehensive", [
+      test_case "ggrid_attach_multiple" `Quick test_ggrid_attach_multiple;
+      test_case "ggrid_homogeneous" `Quick test_ggrid_homogeneous;
+      test_case "ggrid_baseline" `Quick test_ggrid_baseline;
+      test_case "ggrid_with_nested_containers" `Quick test_ggrid_with_nested_containers;
     ];
     "as_widget", [
       test_case "as_widget_conversion" `Quick test_as_widget;

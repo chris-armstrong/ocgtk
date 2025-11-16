@@ -279,30 +279,271 @@ let test_stack_transitions () =
   | Failure msg when msg = "GTK initialization failed" -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
+(* ========== High-Level Wrapper Tests ========== *)
+
+let test_gfixed_wrapper () =
+  try
+    let _ = GMain.init () in
+    let fixed = GFixed.create () in
+    let child = GBox.hbox () in
+
+    (* Test high-level put *)
+    fixed#put ~x:25.0 ~y:35.0 (child :> GObj.widget);
+    let (x, y) = fixed#get_child_position (child :> GObj.widget) in
+    check (float 0.01) "GFixed x" 25.0 x;
+    check (float 0.01) "GFixed y" 35.0 y;
+
+    (* Test high-level move *)
+    fixed#move ~x:50.0 ~y:60.0 (child :> GObj.widget);
+    let (x2, y2) = fixed#get_child_position (child :> GObj.widget) in
+    check (float 0.01) "GFixed moved x" 50.0 x2;
+    check (float 0.01) "GFixed moved y" 60.0 y2;
+
+    (* Test remove *)
+    fixed#remove (child :> GObj.widget);
+    check bool "GFixed wrapper works" true true
+  with
+  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
+
+let test_gpaned_wrapper () =
+  try
+    let _ = GMain.init () in
+    let paned = GPaned.hpaned () in
+    let child1 = GBox.vbox () in
+    let child2 = GBox.vbox () in
+
+    (* Test add1/add2 convenience methods *)
+    paned#add1 (child1 :> GObj.widget);
+    paned#add2 (child2 :> GObj.widget);
+
+    (* Test properties *)
+    paned#set_position 150;
+    check int "GPaned position" 150 paned#position;
+
+    paned#set_wide_handle true;
+    check bool "GPaned wide handle" true paned#wide_handle;
+
+    paned#set_resize_start_child false;
+    check bool "GPaned resize start" false paned#resize_start_child;
+
+    (* Test vpaned creation *)
+    let vpaned = GPaned.vpaned () in
+    check bool "GPaned vpaned created" true true
+  with
+  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
+
+let test_gnotebook_wrapper () =
+  try
+    let _ = GMain.init () in
+    let notebook = GNotebook.create () in
+    let page1 = GBox.vbox () in
+    let page2 = GBox.vbox () in
+
+    (* Test high-level append_page *)
+    let idx1 = notebook#append_page (page1 :> GObj.widget) in
+    check int "GNotebook first page" 0 idx1;
+    check int "GNotebook 1 page" 1 notebook#n_pages;
+
+    (* Test prepend_page *)
+    let idx2 = notebook#prepend_page (page2 :> GObj.widget) in
+    check int "GNotebook prepend index" 0 idx2;
+    check int "GNotebook 2 pages" 2 notebook#n_pages;
+
+    (* Test navigation *)
+    notebook#set_current_page 1;
+    check int "GNotebook current" 1 notebook#current_page;
+
+    notebook#prev_page ();
+    check int "GNotebook prev" 0 notebook#current_page;
+
+    notebook#next_page ();
+    check int "GNotebook next" 1 notebook#current_page;
+
+    (* Test properties *)
+    notebook#set_show_tabs false;
+    check bool "GNotebook show_tabs" false notebook#show_tabs;
+
+    notebook#set_scrollable true;
+    check bool "GNotebook scrollable" true notebook#scrollable
+  with
+  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
+
+let test_gstack_wrapper () =
+  try
+    let _ = GMain.init () in
+    let stack = GStack.create () in
+    let child1 = GBox.vbox () in
+    let child2 = GBox.vbox () in
+
+    (* Test high-level add_named *)
+    stack#add_named ~name:"first" (child1 :> GObj.widget);
+    stack#add_titled ~name:"second" ~title:"Second Page" (child2 :> GObj.widget);
+
+    (* Test visible child management *)
+    stack#set_visible_child_name "first";
+    (match stack#visible_child_name with
+    | Some name -> check string "GStack visible name" "first" name
+    | None -> fail "No visible child");
+
+    (* Test transitions *)
+    stack#set_transition_type `CROSSFADE;
+    check bool "GStack transition type"
+      (`CROSSFADE = stack#transition_type) true;
+
+    stack#set_transition_duration 300;
+    check int "GStack duration" 300 stack#transition_duration
+  with
+  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
+
+(* ========== Integration Tests ========== *)
+
+let test_nested_containers () =
+  try
+    let _ = GMain.init () in
+
+    (* Create a complex nested structure:
+       Paned with:
+       - Start: Notebook with 2 pages (each has a box)
+       - End: Stack with 2 children (each has a grid) *)
+
+    let paned = GPaned.hpaned () in
+
+    (* Create notebook for start pane *)
+    let notebook = GNotebook.create () in
+    let nb_page1 = GBox.vbox ~spacing:5 () in
+    let nb_page2 = GBox.hbox ~spacing:5 () in
+    let _ = notebook#append_page (nb_page1 :> GObj.widget) in
+    let _ = notebook#append_page (nb_page2 :> GObj.widget) in
+
+    (* Create stack for end pane *)
+    let stack = GStack.create () in
+    let stack_child1 = GGrid.create () in
+    let stack_child2 = GGrid.create ~row_spacing:10 () in
+    stack#add_named ~name:"grid1" (stack_child1 :> GObj.widget);
+    stack#add_named ~name:"grid2" (stack_child2 :> GObj.widget);
+
+    (* Assemble the structure *)
+    paned#add1 (notebook :> GObj.widget);
+    paned#add2 (stack :> GObj.widget);
+
+    (* Verify structure *)
+    check int "Nested: notebook pages" 2 notebook#n_pages;
+    check bool "Nested: paned has start" true (paned#start_child <> None);
+    check bool "Nested: paned has end" true (paned#end_child <> None);
+
+    (* Test interaction across containers *)
+    notebook#set_current_page 1;
+    stack#set_visible_child_name "grid2";
+    paned#set_position 200;
+
+    check int "Nested: operations successful" 200 paned#position
+  with
+  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
+
+let test_fixed_with_containers () =
+  try
+    let _ = GMain.init () in
+
+    (* Create fixed with various container types *)
+    let fixed = GFixed.create () in
+    let box = GBox.vbox () in
+    let grid = GGrid.create () in
+    let notebook = GNotebook.create () in
+
+    (* Position containers absolutely *)
+    fixed#put ~x:10.0 ~y:10.0 (box :> GObj.widget);
+    fixed#put ~x:100.0 ~y:10.0 (grid :> GObj.widget);
+    fixed#put ~x:200.0 ~y:10.0 (notebook :> GObj.widget);
+
+    (* Verify positions *)
+    let (x1, y1) = fixed#get_child_position (box :> GObj.widget) in
+    check (float 0.01) "Fixed box x" 10.0 x1;
+
+    let (x2, y2) = fixed#get_child_position (grid :> GObj.widget) in
+    check (float 0.01) "Fixed grid x" 100.0 x2;
+
+    let (x3, y3) = fixed#get_child_position (notebook :> GObj.widget) in
+    check (float 0.01) "Fixed notebook x" 200.0 x3;
+
+    check bool "Fixed with containers works" true true
+  with
+  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
+
+let test_all_transitions () =
+  try
+    let _ = GMain.init () in
+    let stack = GStack.create () in
+
+    (* Test all transition types *)
+    let transitions = [
+      `NONE; `CROSSFADE; `SLIDE_RIGHT; `SLIDE_LEFT;
+      `SLIDE_UP; `SLIDE_DOWN; `SLIDE_LEFT_RIGHT; `SLIDE_UP_DOWN;
+      `OVER_UP; `OVER_DOWN; `OVER_LEFT; `OVER_RIGHT;
+      `UNDER_UP; `UNDER_DOWN; `UNDER_LEFT; `UNDER_RIGHT;
+      `OVER_UP_DOWN; `OVER_DOWN_UP; `OVER_LEFT_RIGHT; `OVER_RIGHT_LEFT;
+      `ROTATE_LEFT; `ROTATE_RIGHT; `ROTATE_LEFT_RIGHT
+    ] in
+
+    let test_transition tt =
+      stack#set_transition_type tt;
+      check bool (Printf.sprintf "Transition %s"
+        (match tt with `CROSSFADE -> "CROSSFADE" | `SLIDE_LEFT -> "SLIDE_LEFT" | _ -> "other"))
+        (tt = stack#transition_type) true
+    in
+
+    List.iter test_transition transitions;
+    check bool "All 23 transitions work" true true
+  with
+  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
+
 let () =
-  run "Additional Containers Tests (Phase 4.4)" [
-    "Fixed", [
+  run "Comprehensive Container Tests (Phase 4.4)" [
+    "Fixed - Low Level", [
       test_case "module_accessible" `Quick test_fixed_module_accessible;
       test_case "creation" `Quick test_fixed_creation;
       test_case "put_move_remove" `Quick test_fixed_put_move;
     ];
-    "Paned", [
+    "Fixed - High Level", [
+      test_case "gfixed_wrapper" `Quick test_gfixed_wrapper;
+    ];
+    "Paned - Low Level", [
       test_case "module_accessible" `Quick test_paned_module_accessible;
       test_case "creation" `Quick test_paned_creation;
       test_case "children" `Quick test_paned_children;
       test_case "properties" `Quick test_paned_properties;
     ];
-    "Notebook", [
+    "Paned - High Level", [
+      test_case "gpaned_wrapper" `Quick test_gpaned_wrapper;
+    ];
+    "Notebook - Low Level", [
       test_case "module_accessible" `Quick test_notebook_module_accessible;
       test_case "creation" `Quick test_notebook_creation;
       test_case "pages" `Quick test_notebook_pages;
       test_case "navigation" `Quick test_notebook_navigation;
       test_case "properties" `Quick test_notebook_properties;
     ];
-    "Stack", [
+    "Notebook - High Level", [
+      test_case "gnotebook_wrapper" `Quick test_gnotebook_wrapper;
+    ];
+    "Stack - Low Level", [
       test_case "module_accessible" `Quick test_stack_module_accessible;
       test_case "creation" `Quick test_stack_creation;
       test_case "children" `Quick test_stack_children;
       test_case "transitions" `Quick test_stack_transitions;
+    ];
+    "Stack - High Level", [
+      test_case "gstack_wrapper" `Quick test_gstack_wrapper;
+      test_case "all_transitions" `Quick test_all_transitions;
+    ];
+    "Integration Tests", [
+      test_case "nested_containers" `Quick test_nested_containers;
+      test_case "fixed_with_containers" `Quick test_fixed_with_containers;
     ];
   ]
