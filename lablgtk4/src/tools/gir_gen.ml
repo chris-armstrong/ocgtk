@@ -243,7 +243,7 @@ let read_filter_file filename =
 (* GIR Parser using xmlm *)
 (* ========================================================================= *)
 
-let parse_gir_file filename =
+let parse_gir_file filename mode filter_classes =
   let ic = open_in filename in
   let input = Xmlm.make_input ~strip:true (`Channel ic) in
 
@@ -254,6 +254,21 @@ let parse_gir_file filename =
     name = "EventController" ||
     (String.length name > 15 && String.sub ~pos:0 ~len:15 name = "EventController") ||
     (String.length name > 7 && String.sub ~pos:0 ~len:7 name = "Gesture")
+  in
+
+  (* Check if class should be included based on mode and filter *)
+  let should_include_class name =
+    match mode with
+    | EventControllers -> is_event_controller name
+    | Widgets ->
+      (match filter_classes with
+       | [] -> not (is_event_controller name)  (* No filter = all widgets *)
+       | classes -> List.mem name classes)     (* Filter specified *)
+    | All ->
+      (match filter_classes with
+       | [] -> true                             (* No filter = everything *)
+       | classes ->
+         is_event_controller name || List.mem name classes)
   in
 
   (* Skip to end of current element *)
@@ -270,7 +285,7 @@ let parse_gir_file filename =
   (* Parse a class element *)
   let rec parse_class attrs =
     match get_attr "name" attrs with
-    | Some name when is_event_controller name ->
+    | Some name when should_include_class name ->
       let c_type = match get_attr "c:type" attrs with
         | Some t -> t
         | None -> "Gtk" ^ name
@@ -711,9 +726,24 @@ let () =
      | Widgets -> "widgets"
      | All -> "all");
 
-  let controllers = parse_gir_file !gir_file in
+  (* Read filter file if specified *)
+  let filter_classes = match !filter_file with
+    | Some f ->
+      printf "Reading filter file: %s\n" f;
+      let classes = read_filter_file f in
+      printf "Filter includes %d classes\n" (List.length classes);
+      classes
+    | None -> []
+  in
 
-  printf "Found %d event controller classes\n" (List.length controllers);
+  let controllers = parse_gir_file !gir_file !mode filter_classes in
+
+  let class_type_name = match !mode with
+    | EventControllers -> "event controller"
+    | Widgets -> "widget"
+    | All -> "controller/widget"
+  in
+  printf "Found %d %s classes\n" (List.length controllers) class_type_name;
 
   (* Generate C code *)
   let c_buf = Buffer.create 10240 in
