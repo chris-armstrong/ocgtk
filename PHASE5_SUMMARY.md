@@ -47,15 +47,16 @@
 - ✅ Skip setters for construct-only properties
 - ✅ Convert hyphenated names to underscores (can-shrink → can_shrink)
 - ✅ Type mapping for property types
+- ✅ Deduplication: skip methods that duplicate property getters/setters
 
 ### 6. Comprehensive Testing
-- ✅ 4/4 tests passing
+- ✅ 5/5 tests passing
 - ✅ Tests for controller generation
 - ✅ Tests for widget generation with filters
+- ✅ Tests for property generation (read-only, read-write, construct-only)
 - ✅ Tests for C code structure validation
 - ✅ Tests for help output
 - ✅ Integration with dune build system
-- ✅ Custom test runner script (run_tests.sh)
 
 ## Generated Code Examples
 
@@ -109,7 +110,30 @@ external set_selectable : t -> bool -> unit = "ml_gtk_label_set_selectable"
 - **Widget Classes Generated**: 12 (Button, CheckButton, Entry, Label, Image, LinkButton, MenuButton, PasswordEntry, SearchEntry, SpinButton, Switch, ToggleButton)
 - **Event Controllers Generated**: 15 (EventController, EventControllerFocus, EventControllerKey, etc.)
 - **Lines of Code**: ~800 lines in gir_gen.ml
-- **Test Coverage**: 4 test cases, all passing
+- **Test Coverage**: 5 test cases, all passing
+
+## Bug Fixes
+
+### Duplicate External Declarations (Fixed)
+**Problem**: Generated `.mli` files contained duplicate `external` declarations when a widget had both properties and methods with the same name (e.g., `get_label`, `set_label`).
+
+**Solution**: Implemented deduplication by tracking property-generated external names and skipping methods that would create duplicates. This reduced generated code size (e.g., button.mli from 80 lines to 56 lines) and ensures valid OCaml syntax.
+
+**Impact**:
+- ✅ No duplicate externals in generated code
+- ✅ All tests still pass
+- ✅ Generated interfaces are cleaner and more maintainable
+
+## Build Integration Status
+
+**Current State**: Generated widget `.mli` files are OUTPUT files only - they are NOT currently compiled into the `lablgtk4` library.
+
+The main library dune file (`lablgtk4/src/dune:28`) explicitly lists modules that are compiled. Generated widgets (button, label, entry, etc.) would need to be added to this modules list to be included in the library build.
+
+**For Phase 5.1**: Integration will require:
+1. Adding generated modules to the dune `(modules ...)` list
+2. Implementing C stub functions for property getters/setters
+3. Adding corresponding C file names to `(foreign_stubs (names ...))`
 
 ## What's NOT Included (Deferred to Phase 5.1+)
 
