@@ -465,8 +465,8 @@ module Stack = struct
   (** {2 External C bindings} *)
 
   external create : unit -> t = "ml_gtk_stack_new"
-  external add_named : t -> widget -> string -> unit = "ml_gtk_stack_add_named"
-  external add_titled : t -> widget -> string -> string -> unit = "ml_gtk_stack_add_titled"
+  external add_named_impl : t -> widget -> string -> unit = "ml_gtk_stack_add_named"
+  external add_titled_impl : t -> widget -> string -> string -> unit = "ml_gtk_stack_add_titled"
   external add_child : t -> widget -> unit = "ml_gtk_stack_add_child"
   external remove : t -> widget -> unit = "ml_gtk_stack_remove"
   external get_visible_child : t -> widget option = "ml_gtk_stack_get_visible_child"
@@ -532,6 +532,12 @@ module Stack = struct
     | _ -> `NONE
 
   (** {2 Wrapped functions} *)
+
+  let add_named stack ~child ~name =
+    add_named_impl stack child name
+
+  let add_titled stack ~child ~name ~title =
+    add_titled_impl stack child name title
 
   let set_transition_type stack tt =
     set_transition_type_impl stack (stack_transition_type_to_int tt)
