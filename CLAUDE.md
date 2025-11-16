@@ -35,6 +35,12 @@ For instructions and best practices for writing and updating OCaml / C FFI, see 
 4. Test with complex parameter (string)
 5. Test multiple invocations
 
+### Runtime Testing with GTK
+For tests requiring GTK initialization:
+- Use `GMain.init()` for testing purposes (see [TESTING_WITH_GMAIN.md](TESTING_WITH_GMAIN.md))
+- Use `skip()` in Alcotest for tests that need display server or widgets
+- CI/CD uses `xvfb-run` to provide virtual display (see [CI_UPDATE_SUMMARY.md](CI_UPDATE_SUMMARY.md))
+
 ### Use Test Helpers
 Create C test helpers for direct invocation:
 ```c
