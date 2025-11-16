@@ -9,14 +9,14 @@
  (targets varcc.ml)
  (deps (:source varcc.ml4))
  (mode promote)
- (action (bash "camlp5o -I `camlp5o -where` pa_o.cmo pr_o.cmo -impl %{source} -o %{targets}")))
+ (action (bash "camlp5o -I `camlp5o -where` pa_o.cmo o_keywords.cmo pr_o.cmo -impl %{source} -o %{targets}")))
 
 ; Generate propcc.ml from propcc.ml4 using camlp5
 (rule
  (targets propcc.ml)
  (deps (:source propcc.ml4))
  (mode promote)
- (action (bash "camlp5o -I `camlp5o -where` pa_o.cmo pr_o.cmo -impl %{source} -o %{targets}")))
+ (action (bash "camlp5o -I `camlp5o -where` pa_o.cmo o_keywords.cmo pr_o.cmo -impl %{source} -o %{targets}")))
 
 ; Build the code generation executables
 (executables
