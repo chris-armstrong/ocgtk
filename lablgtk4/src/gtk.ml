@@ -409,6 +409,11 @@ module Paned = struct
 
   (** {2 Helper functions} *)
 
+  (* Convert orientation to/from int *)
+  let orientation_to_int = function
+    | `HORIZONTAL -> 0
+    | `VERTICAL -> 1
+
   let create ~orientation =
     create_impl (orientation_to_int orientation)
 
