@@ -3,20 +3,20 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ; Generate varcc.ml from varcc.ml4 using camlp5
-; Modern camlp5 doesn't have o_keywords.cmo - we load pa_o.cmo (parser) and pr_o.cmo (printer)
-; The -I flag ensures camlp5 can find the .cmo files in different opam environments
+; Use wrapper script to handle both old (o_keywords.cmo) and new (pa_o.cmo) camlp5 versions
 (rule
  (targets varcc.ml)
- (deps (:source varcc.ml4))
+ (deps (:source varcc.ml4) (:script camlp5_convert.sh))
  (mode promote)
- (action (bash "camlp5o -I `camlp5o -where` pa_o.cmo o_keywords.cmo pr_o.cmo -impl %{source} -o %{targets}")))
+ (action (bash "bash %{script} %{source} %{targets}")))
 
 ; Generate propcc.ml from propcc.ml4 using camlp5
+; Use wrapper script to handle both old (o_keywords.cmo) and new (pa_o.cmo) camlp5 versions
 (rule
  (targets propcc.ml)
- (deps (:source propcc.ml4))
+ (deps (:source propcc.ml4) (:script camlp5_convert.sh))
  (mode promote)
- (action (bash "camlp5o -I `camlp5o -where` pa_o.cmo o_keywords.cmo pr_o.cmo -impl %{source} -o %{targets}")))
+ (action (bash "bash %{script} %{source} %{targets}")))
 
 ; Build the code generation executables
 (executables
