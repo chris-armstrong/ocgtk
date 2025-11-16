@@ -109,6 +109,25 @@ class virtual widget_impl : [`widget] Gobject.obj ->
     method add_controller : EventController.t -> unit
     method remove_controller : EventController.t -> unit
 
+    (** {3 Packing Properties (NEW in GTK4)} *)
+
+    method hexpand : bool
+    method set_hexpand : bool -> unit
+    method vexpand : bool
+    method set_vexpand : bool -> unit
+    method halign : Gtk.align
+    method set_halign : Gtk.align -> unit
+    method valign : Gtk.align
+    method set_valign : Gtk.align -> unit
+    method margin_start : int
+    method set_margin_start : int -> unit
+    method margin_end : int
+    method set_margin_end : int -> unit
+    method margin_top : int
+    method set_margin_top : int -> unit
+    method margin_bottom : int
+    method set_margin_bottom : int -> unit
+
     (** {3 Conversion} *)
 
     method as_widget : [`widget] Gobject.obj

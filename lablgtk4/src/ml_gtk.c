@@ -221,6 +221,135 @@ CAMLprim value ml_gtk_widget_destroy(value widget)
   CAMLreturn(Val_unit);
 }
 
+/* ========== Packing Properties ========== */
+
+ML_1 (gtk_widget_get_hexpand, GtkWidget_val, Val_bool)
+ML_2 (gtk_widget_set_hexpand, GtkWidget_val, Bool_val, Unit)
+ML_1 (gtk_widget_get_vexpand, GtkWidget_val, Val_bool)
+ML_2 (gtk_widget_set_vexpand, GtkWidget_val, Bool_val, Unit)
+
+CAMLprim value ml_gtk_widget_get_halign(value widget)
+{
+  CAMLparam1(widget);
+  GtkAlign align = gtk_widget_get_halign(GtkWidget_val(widget));
+  CAMLreturn(Val_int((int)align));
+}
+
+CAMLprim value ml_gtk_widget_set_halign(value widget, value align)
+{
+  CAMLparam2(widget, align);
+  gtk_widget_set_halign(GtkWidget_val(widget), (GtkAlign)Int_val(align));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_widget_get_valign(value widget)
+{
+  CAMLparam1(widget);
+  GtkAlign align = gtk_widget_get_valign(GtkWidget_val(widget));
+  CAMLreturn(Val_int((int)align));
+}
+
+CAMLprim value ml_gtk_widget_set_valign(value widget, value align)
+{
+  CAMLparam2(widget, align);
+  gtk_widget_set_valign(GtkWidget_val(widget), (GtkAlign)Int_val(align));
+  CAMLreturn(Val_unit);
+}
+
+ML_1 (gtk_widget_get_margin_start, GtkWidget_val, Val_int)
+ML_2 (gtk_widget_set_margin_start, GtkWidget_val, Int_val, Unit)
+ML_1 (gtk_widget_get_margin_end, GtkWidget_val, Val_int)
+ML_2 (gtk_widget_set_margin_end, GtkWidget_val, Int_val, Unit)
+ML_1 (gtk_widget_get_margin_top, GtkWidget_val, Val_int)
+ML_2 (gtk_widget_set_margin_top, GtkWidget_val, Int_val, Unit)
+ML_1 (gtk_widget_get_margin_bottom, GtkWidget_val, Val_int)
+ML_2 (gtk_widget_set_margin_bottom, GtkWidget_val, Int_val, Unit)
+
+/* ========== GtkBox ========== */
+
+CAMLprim value ml_gtk_box_new(value orientation, value spacing)
+{
+  CAMLparam2(orientation, spacing);
+  GtkWidget *box = gtk_box_new((GtkOrientation)Int_val(orientation), Int_val(spacing));
+  CAMLreturn(Val_GtkWidget(box));
+}
+
+CAMLprim value ml_gtk_box_append(value box, value child)
+{
+  CAMLparam2(box, child);
+  gtk_box_append(GTK_BOX(GtkWidget_val(box)), GtkWidget_val(child));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_box_prepend(value box, value child)
+{
+  CAMLparam2(box, child);
+  gtk_box_prepend(GTK_BOX(GtkWidget_val(box)), GtkWidget_val(child));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_box_insert_child_after(value box, value child, value sibling)
+{
+  CAMLparam3(box, child, sibling);
+
+  GtkWidget *sibling_widget = NULL;
+  if (Is_some(sibling)) {
+    sibling_widget = GtkWidget_val(Some_val(sibling));
+  }
+
+  gtk_box_insert_child_after(
+    GTK_BOX(GtkWidget_val(box)),
+    GtkWidget_val(child),
+    sibling_widget
+  );
+
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_box_remove(value box, value child)
+{
+  CAMLparam2(box, child);
+  gtk_box_remove(GTK_BOX(GtkWidget_val(box)), GtkWidget_val(child));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_box_reorder_child_after(value box, value child, value sibling)
+{
+  CAMLparam3(box, child, sibling);
+
+  GtkWidget *sibling_widget = NULL;
+  if (Is_some(sibling)) {
+    sibling_widget = GtkWidget_val(Some_val(sibling));
+  }
+
+  gtk_box_reorder_child_after(
+    GTK_BOX(GtkWidget_val(box)),
+    GtkWidget_val(child),
+    sibling_widget
+  );
+
+  CAMLreturn(Val_unit);
+}
+
+ML_1 (gtk_box_get_spacing, GTK_BOX(GtkWidget_val), Val_int)
+ML_2 (gtk_box_set_spacing, GTK_BOX(GtkWidget_val), Int_val, Unit)
+ML_1 (gtk_box_get_homogeneous, GTK_BOX(GtkWidget_val), Val_bool)
+ML_2 (gtk_box_set_homogeneous, GTK_BOX(GtkWidget_val), Bool_val, Unit)
+
+CAMLprim value ml_gtk_box_get_baseline_position(value box)
+{
+  CAMLparam1(box);
+  GtkBaselinePosition pos = gtk_box_get_baseline_position(GTK_BOX(GtkWidget_val(box)));
+  CAMLreturn(Val_int((int)pos));
+}
+
+CAMLprim value ml_gtk_box_set_baseline_position(value box, value pos)
+{
+  CAMLparam2(box, pos);
+  gtk_box_set_baseline_position(GTK_BOX(GtkWidget_val(box)), (GtkBaselinePosition)Int_val(pos));
+  CAMLreturn(Val_unit);
+}
+
 /* ========== Initialization and Main Loop ========== */
 
 /* GTK4 Note: gtk_init_check() no longer takes argc/argv parameters.

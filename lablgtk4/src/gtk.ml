@@ -41,6 +41,19 @@ type state_flags = [
   | `DROP_ACTIVE
 ]
 
+(** Orientation type *)
+type orientation = [
+  | `HORIZONTAL
+  | `VERTICAL
+]
+
+(** Baseline position *)
+type baseline_position = [
+  | `TOP
+  | `CENTER
+  | `BOTTOM
+]
+
 module Widget = struct
   type t = widget
 
@@ -86,6 +99,27 @@ module Widget = struct
 
   external add_controller : t -> EventController.t -> unit = "ml_gtk_widget_add_controller"
   external remove_controller : t -> EventController.t -> unit = "ml_gtk_widget_remove_controller"
+
+  (** {2 Packing Properties} *)
+
+  external get_hexpand : t -> bool = "ml_gtk_widget_get_hexpand"
+  external set_hexpand : t -> bool -> unit = "ml_gtk_widget_set_hexpand"
+  external get_vexpand : t -> bool = "ml_gtk_widget_get_vexpand"
+  external set_vexpand : t -> bool -> unit = "ml_gtk_widget_set_vexpand"
+
+  external get_halign_impl : t -> int = "ml_gtk_widget_get_halign"
+  external set_halign_impl : t -> int -> unit = "ml_gtk_widget_set_halign"
+  external get_valign_impl : t -> int = "ml_gtk_widget_get_valign"
+  external set_valign_impl : t -> int -> unit = "ml_gtk_widget_set_valign"
+
+  external get_margin_start : t -> int = "ml_gtk_widget_get_margin_start"
+  external set_margin_start : t -> int -> unit = "ml_gtk_widget_set_margin_start"
+  external get_margin_end : t -> int = "ml_gtk_widget_get_margin_end"
+  external set_margin_end : t -> int -> unit = "ml_gtk_widget_set_margin_end"
+  external get_margin_top : t -> int = "ml_gtk_widget_get_margin_top"
+  external set_margin_top : t -> int -> unit = "ml_gtk_widget_set_margin_top"
+  external get_margin_bottom : t -> int = "ml_gtk_widget_get_margin_bottom"
+  external set_margin_bottom : t -> int -> unit = "ml_gtk_widget_set_margin_bottom"
 
   (** {2 Helper functions} *)
 
@@ -135,4 +169,96 @@ module Widget = struct
 
   let set_state_flags widget flags ~clear =
     set_state_flags_impl widget (state_flags_to_int flags) clear
+
+  (* Convert align to/from int representation *)
+  let align_to_int = function
+    | `FILL -> 0
+    | `START -> 1
+    | `END -> 2
+    | `CENTER -> 3
+    | `BASELINE -> 4
+
+  let int_to_align = function
+    | 0 -> `FILL
+    | 1 -> `START
+    | 2 -> `END
+    | 3 -> `CENTER
+    | 4 -> `BASELINE
+    | _ -> `FILL  (* default *)
+
+  let get_halign widget =
+    int_to_align (get_halign_impl widget)
+
+  let set_halign widget align =
+    set_halign_impl widget (align_to_int align)
+
+  let get_valign widget =
+    int_to_align (get_valign_impl widget)
+
+  let set_valign widget align =
+    set_valign_impl widget (align_to_int align)
+end
+
+(** {1 Container Widgets} *)
+
+module Box = struct
+  type t = [`box] Gobject.obj
+
+  (** {2 External C bindings} *)
+
+  external create_impl : int -> int -> t = "ml_gtk_box_new"
+  external append : t -> widget -> unit = "ml_gtk_box_append"
+  external prepend : t -> widget -> unit = "ml_gtk_box_prepend"
+  external insert_child_after_impl : t -> widget -> widget option -> unit = "ml_gtk_box_insert_child_after"
+  external remove : t -> widget -> unit = "ml_gtk_box_remove"
+  external reorder_child_after_impl : t -> widget -> widget option -> unit = "ml_gtk_box_reorder_child_after"
+  external get_spacing : t -> int = "ml_gtk_box_get_spacing"
+  external set_spacing : t -> int -> unit = "ml_gtk_box_set_spacing"
+  external get_homogeneous : t -> bool = "ml_gtk_box_get_homogeneous"
+  external set_homogeneous : t -> bool -> unit = "ml_gtk_box_set_homogeneous"
+  external get_baseline_position_impl : t -> int = "ml_gtk_box_get_baseline_position"
+  external set_baseline_position_impl : t -> int -> unit = "ml_gtk_box_set_baseline_position"
+
+  (** {2 Helper functions} *)
+
+  (* Convert orientation to/from int *)
+  let orientation_to_int = function
+    | `HORIZONTAL -> 0
+    | `VERTICAL -> 1
+
+  let int_to_orientation = function
+    | 0 -> `HORIZONTAL
+    | 1 -> `VERTICAL
+    | _ -> `HORIZONTAL  (* default *)
+
+  (* Convert baseline_position to/from int *)
+  let baseline_position_to_int = function
+    | `TOP -> 0
+    | `CENTER -> 1
+    | `BOTTOM -> 2
+
+  let int_to_baseline_position = function
+    | 0 -> `TOP
+    | 1 -> `CENTER
+    | 2 -> `BOTTOM
+    | _ -> `CENTER  (* default *)
+
+  (** {2 Wrapped functions} *)
+
+  let create ~orientation ~spacing =
+    create_impl (orientation_to_int orientation) spacing
+
+  let insert_child_after box ~child ~sibling =
+    insert_child_after_impl box child sibling
+
+  let reorder_child_after box ~child ~sibling =
+    reorder_child_after_impl box child sibling
+
+  let get_baseline_position box =
+    int_to_baseline_position (get_baseline_position_impl box)
+
+  let set_baseline_position box pos =
+    set_baseline_position_impl box (baseline_position_to_int pos)
+
+  let coerce (box : t) : widget = (box :> widget)
 end
