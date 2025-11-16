@@ -35,8 +35,10 @@ This document provides a comprehensive index of all documentation in the LablGTK
 |-------|----------|--------|-------------|
 | Phase 1 | [port-phase1.md](port-phase1.md) | ✅ Complete | Foundation & Infrastructure |
 | Phase 2 | [port-phase2.md](port-phase2.md) | ✅ Complete | Core Layer Migration (GLib, GObject, Gdk, Pango) |
-| Phase 3 | [port-phase3.md](port-phase3.md) | 🚧 In Progress | Base Widget Infrastructure |
-| Phase 3-7 | [port-phase3-7.md](port-phase3-7.md) | 📋 Planned | Advanced widget features |
+| Phase 3 | [port-phase3.md](port-phase3.md) | ✅ Complete | Base Widget Infrastructure (event controllers, snapshot rendering) |
+| Phase 4 | [port-phase4.md](port-phase4.md) | 📋 Ready to Start | Container & Layout System (no GtkContainer/GtkBin) |
+| Phase 5 | [port-phase5.md](port-phase5.md) | 📋 Ready to Start | High-Level Widgets (buttons, entries, text, trees, menus) |
+| Phase 3-7 | [port-phase3-7.md](port-phase3-7.md) | 📋 Overview | High-level overview of Phases 3-7 (superseded by detailed plans) |
 
 ### Phase 3 Detailed Documentation
 
@@ -152,6 +154,7 @@ Located in `lablgtk4/src/tools/`:
 
 ### Recently Updated
 
+- **2025-11-16**: Created port-phase5.md with comprehensive Phase 5 plan (High-Level Widgets)
 - **2025-11-16**: Added TESTING_WITH_GMAIN.md and CI_UPDATE_SUMMARY.md for Phase 3.3/3.4 testing
 - **2024-11-15**: Added XMLM_MIGRATION_SUMMARY.md documenting xmlm parser migration
 - **2024-11-15**: Updated with Phase 3.0 code generation infrastructure completion

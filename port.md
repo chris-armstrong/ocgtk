@@ -218,21 +218,46 @@ The migration will be considered successful when:
 
 ---
 
-### Phases 4-7: Widget Layer & Advanced Features (22-30 weeks)
+### Phase 4: Container & Layout System (4-6 weeks)
 
-**[→ See high-level overview for Phases 4-7](port-phase3-7.md)**
+**[→ See detailed Phase 4 plan](port-phase4.md)**
 
-These phases will be detailed after Phase 3 is complete and validated.
+**Objective**: Redesign container APIs without GtkContainer/GtkBin base classes and implement GTK4's new container-specific APIs.
 
-**Phase 4: Container & Layout System** (4-6 weeks)
-- Redesigned container APIs (no GtkContainer/GtkBin)
-- GtkBox, GtkGrid, and other containers
-- Constraint-based layouts
+**Key deliverables:**
+- GtkBox with new append/prepend API (no pack_start/pack_end)
+- Single-child containers (GtkWindow, GtkScrolledWindow, GtkFrame) with set_child()
+- GtkGrid, GtkFixed, GtkPaned, GtkNotebook, GtkStack
+- Widget packing properties (hexpand, vexpand, halign, valign, margins)
+- GPack module redesign
+- GtkConstraintLayout bindings (optional)
 
-**Phase 5: High-Level Widgets** (8-12 weeks)
-- All essential widgets (buttons, entries, text, trees, etc.)
-- New menu system (GtkPopoverMenu)
-- Dialog async patterns
+---
+
+### Phase 5: High-Level Widgets (8-12 weeks)
+
+**[→ See detailed Phase 5 plan](port-phase5.md)**
+
+**Objective**: Port all essential widgets to GTK4, implementing new GTK4 widget replacements and redesigning the menu system.
+
+**Key deliverables:**
+- Button widgets (Button, CheckButton with radio grouping, ToggleButton, LinkButton, MenuButton, Switch)
+- Entry widgets (Entry, SearchEntry, PasswordEntry, SpinButton)
+- Text widgets (TextView, TextBuffer, TextTag)
+- Range widgets (Scale, ProgressBar, LevelBar)
+- Tree/List widgets (TreeView, TreeModel, ListStore, TreeStore)
+- Misc widgets (Label, Image, Separator, Spinner, Statusbar)
+- Window widgets (Window, ApplicationWindow, Dialog, MessageDialog)
+- **Menu system complete redesign** (GMenuModel, GMenu, PopoverMenu, PopoverMenuBar)
+- High-level wrappers for all widgets (GButton, GEdit, GText, GRange, GTree, GMisc, GWindow, GMenu)
+
+---
+
+### Phases 6-7: Advanced Features & Polish (8-12 weeks)
+
+**[→ See high-level overview for Phases 6-7](port-phase3-7.md)**
+
+These phases will be detailed after Phase 5 is complete.
 
 **Phase 6: Advanced Features** (4-6 weeks)
 - GtkBuilder and GtkApplication
