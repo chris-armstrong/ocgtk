@@ -294,6 +294,7 @@ let parse_gir_file filename mode filter_classes =
       let parent = get_attr "parent" attrs in
       let constructors = ref [] in
       let methods = ref [] in
+      let properties = ref [] in
 
       let rec parse_class_contents () =
         match Xmlm.input input with
@@ -329,6 +330,16 @@ let parse_gir_file filename mode filter_classes =
               skip_element 1;
               parse_class_contents ())
 
+          | "property" ->
+            (match get_attr "name" tag_attrs with
+            | Some prop_name ->
+              let prop = parse_property prop_name tag_attrs in
+              properties := prop :: !properties;
+              parse_class_contents ()
+            | None ->
+              skip_element 1;
+              parse_class_contents ())
+
           | _ ->
             skip_element 1;
             parse_class_contents ())
@@ -351,7 +362,7 @@ let parse_gir_file filename mode filter_classes =
         implements = [];  (* Phase 5: TODO - parse interfaces *)
         constructors = List.rev !constructors;
         methods = List.rev !methods;
-        properties = [];  (* Phase 5: TODO - parse properties *)
+        properties = List.rev !properties;
         signals = [];
         class_doc = None;
       }
@@ -359,6 +370,49 @@ let parse_gir_file filename mode filter_classes =
     | _ ->
       skip_element 1;
       None
+
+  (* Parse property element *)
+  and parse_property prop_name attrs =
+    let writable = match get_attr "writable" attrs with
+      | Some "1" -> true
+      | _ -> false
+    in
+    let construct_only = match get_attr "construct-only" attrs with
+      | Some "1" -> true
+      | _ -> false
+    in
+
+    (* Parse property type from child element *)
+    let prop_type = ref { name = "unknown"; c_type = "unknown" } in
+
+    let rec parse_prop_contents () =
+      match Xmlm.input input with
+      | `El_start ((_, "type"), type_attrs) ->
+        let type_name = match get_attr "name" type_attrs with Some n -> n | None -> "unknown" in
+        let c_type_name = match get_attr "c:type" type_attrs with Some t -> t | None -> type_name in
+        prop_type := { name = type_name; c_type = c_type_name };
+        skip_element 1;
+        parse_prop_contents ()
+      | `El_start _ ->
+        skip_element 1;
+        parse_prop_contents ()
+      | `El_end ->
+        ()
+      | `Data _ ->
+        parse_prop_contents ()
+      | `Dtd _ ->
+        parse_prop_contents ()
+    in
+
+    parse_prop_contents ();
+    {
+      prop_name = prop_name;
+      prop_type = !prop_type;
+      readable = true;  (* Assume readable unless writable=0 and no getter *)
+      writable = writable;
+      construct_only = construct_only;
+      prop_doc = None;
+    }
 
   (* Parse method contents to extract return type and parameters *)
   and parse_method () =
