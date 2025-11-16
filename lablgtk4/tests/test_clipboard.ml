@@ -4,9 +4,14 @@ open Alcotest
 
 (* Helper function to run tests with display *)
 let with_display f () =
-  match Gdk.Display.get_default () with
-  | None -> skip ()  (* Skip test if no display available *)
-  | Some display -> f display
+  try
+    (* Initialize GTK first - required for display operations *)
+    let _ = GMain.init () in
+    match Gdk.Display.get_default () with
+    | None -> skip ()  (* Skip test if no display available *)
+    | Some display -> f display
+  with
+  | GMain.Error _ -> skip ()  (* Skip if GTK init fails (no display) *)
 
 (* Helper to run main loop briefly for async operations - disabled for now *)
 let _run_main_loop_briefly () =
