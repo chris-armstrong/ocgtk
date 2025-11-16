@@ -1110,7 +1110,15 @@ CAMLprim value ml_gtk_window_get_child(value window)
 }
 
 ML_2 (gtk_window_set_title, GtkWindow_val, String_val, Unit)
-ML_1 (gtk_window_get_title, GtkWindow_val, Val_string)
+
+CAMLprim value ml_gtk_window_get_title(value window)
+{
+  CAMLparam1(window);
+  CAMLlocal1(result);
+  const char *title = gtk_window_get_title(GTK_WINDOW(GtkWidget_val(window)));
+  result = caml_copy_string(title ? title : "");
+  CAMLreturn(result);
+}
 
 CAMLprim value ml_gtk_window_set_default_size(value window, value width, value height)
 {

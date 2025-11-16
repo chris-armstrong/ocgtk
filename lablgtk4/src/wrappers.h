@@ -21,6 +21,15 @@
 
 #include <gtk/gtk.h>
 
+/* Compatibility shim for older OCaml versions */
+#ifndef caml_alloc_some
+static inline value caml_alloc_some(value v) {
+  value res = caml_alloc(1, 0);
+  Store_field(res, 0, v);
+  return res;
+}
+#endif
+
 /* ==================================================================== */
 /* Basic Pointer Conversions */
 /* ==================================================================== */
@@ -62,6 +71,7 @@ CAMLexport value ml_lookup_to_c (const lookup_info table[], value key);
 #define Val_some(v) caml_alloc_some(v)
 #define Val_none Val_int(0)
 #define Some_val(v) Field(v, 0)
+#define Is_some(v) Is_block(v)
 
 #define Val_emptylist Val_int(0)
 
