@@ -219,6 +219,73 @@ let test_help_output () =
   assert_contains "Help should mention filter" help_text "filter";
   assert_contains "Help should show examples" help_text "EXAMPLES"
 
+(* Test property generation *)
+let create_test_property_gir filename =
+  let oc = open_out filename in
+  output_string oc {|<?xml version="1.0"?>
+<repository version="1.2"
+            xmlns="http://www.gtk.org/introspection/core/1.0"
+            xmlns:c="http://www.gtk.org/introspection/c/1.0">
+  <namespace name="Gtk">
+    <class name="TestWidget" c:type="GtkTestWidget" parent="Widget">
+      <constructor name="new" c:identifier="gtk_test_widget_new"/>
+      <property name="read-only-prop" readable="1">
+        <type name="utf8" c:type="const gchar*"/>
+      </property>
+      <property name="read-write-prop" readable="1" writable="1">
+        <type name="gboolean" c:type="gboolean"/>
+      </property>
+      <property name="construct-only-prop" readable="1" writable="1" construct-only="1">
+        <type name="gint" c:type="gint"/>
+      </property>
+    </class>
+  </namespace>
+</repository>
+|};
+  close_out oc
+
+let test_property_generation () =
+  let test_gir = "/tmp/test_property_gen.gir" in
+  let test_filter = "/tmp/test_property_filter.conf" in
+  let output_dir = "/tmp/test_property_output" in
+
+  create_test_property_gir test_gir;
+  let fc = open_out test_filter in
+  output_string fc "TestWidget\n";
+  close_out fc;
+  (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
+
+  let tools_dir = Filename.dirname Sys.argv.(0) in
+  let cmd = sprintf "%s/gir_gen.exe -m widgets -f %s %s %s > /dev/null 2>&1"
+    tools_dir test_filter test_gir output_dir in
+
+  let exit_code = Sys.command cmd in
+  assert_true "Property generator should exit successfully" (exit_code = 0);
+
+  let widget_file = Filename.concat output_dir "test_widget.mli" in
+  assert_true "TestWidget.mli should be created" (file_exists widget_file);
+
+  let content = read_file widget_file in
+  (* Check for read-only property getter *)
+  assert_contains "Should generate getter for read-only property" content "get_read_only_prop";
+  (* Should NOT have setter for read-only *)
+  if string_contains content "set_read_only_prop" then
+    failwith "Should not generate setter for read-only property";
+
+  (* Check for read-write property *)
+  assert_contains "Should generate getter for read-write property" content "get_read_write_prop";
+  assert_contains "Should generate setter for read-write property" content "set_read_write_prop";
+
+  (* Check for construct-only property *)
+  assert_contains "Should generate getter for construct-only property" content "get_construct_only_prop";
+  (* Should NOT have setter for construct-only *)
+  if string_contains content "set_construct_only_prop" then
+    failwith "Should not generate setter for construct-only property";
+
+  (* Verify type annotations *)
+  assert_contains "Bool property should have bool type" content "t -> bool";
+  assert_contains "Int property should have int type" content "t -> int"
+
 (* ========================================================================= *)
 (* Main Test Runner *)
 (* ========================================================================= *)
@@ -232,6 +299,7 @@ let () =
   ignore (test "GIR file parsing" test_gir_parsing);
   ignore (test "C code generation" test_c_code_generation);
   ignore (test "Widget generation" test_widget_generation);
+  ignore (test "Property generation" test_property_generation);
   ignore (test "Help output" test_help_output);
 
   printf "\n====================================\n";

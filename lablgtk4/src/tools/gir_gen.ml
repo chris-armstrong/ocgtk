@@ -690,12 +690,48 @@ let generate_ml_interface cls =
     bprintf buf "external new_ : unit -> t = \"%s\"\n\n" ml_name;
   ) cls.constructors;
 
-  (* Methods *)
-  List.iter ~f:(fun (meth : gir_method) ->
-    (match meth.doc with
-    | Some doc -> bprintf buf "(** %s *)\n" doc
-    | None -> ());
+  (* Properties - generate get/set externals *)
+  (* Track generated property names to avoid duplicates with methods *)
+  let property_names = ref [] in
 
+  if List.length cls.properties > 0 then begin
+    bprintf buf "(* Properties *)\n\n";
+    List.iter ~f:(fun (prop : gir_property) ->
+      (* Convert property name: replace hyphens with underscores, then snake_case *)
+      let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
+      let prop_snake = to_snake_case prop_name_cleaned in
+      let class_snake = to_snake_case cls.class_name in
+
+      (* Determine property type in OCaml *)
+      let prop_ocaml_type = match find_type_mapping prop.prop_type.c_type with
+        | Some mapping -> mapping.ocaml_type
+        | None -> "unit" (* fallback for unknown types *)
+      in
+
+      (* Generate getter if readable *)
+      if prop.readable then begin
+        let getter_name = sprintf "get_%s" prop_snake in
+        property_names := getter_name :: !property_names;
+        let c_getter = sprintf "ml_gtk_%s_get_%s" class_snake prop_snake in
+        bprintf buf "(** Get property: %s *)\n" prop.prop_name;
+        bprintf buf "external %s : t -> %s = \"%s\"\n\n"
+          getter_name prop_ocaml_type c_getter;
+      end;
+
+      (* Generate setter if writable and not construct-only *)
+      if prop.writable && not prop.construct_only then begin
+        let setter_name = sprintf "set_%s" prop_snake in
+        property_names := setter_name :: !property_names;
+        let c_setter = sprintf "ml_gtk_%s_set_%s" class_snake prop_snake in
+        bprintf buf "(** Set property: %s *)\n" prop.prop_name;
+        bprintf buf "external %s : t -> %s -> unit = \"%s\"\n\n"
+          setter_name prop_ocaml_type c_setter;
+      end;
+    ) cls.properties;
+  end;
+
+  (* Methods - skip those that duplicate property getters/setters *)
+  List.iter ~f:(fun (meth : gir_method) ->
     let c_name = meth.c_identifier in
     let ml_name = Str.global_replace (Str.regexp "gtk_") "ml_gtk_" c_name in
     let ocaml_name = to_snake_case (
@@ -703,28 +739,35 @@ let generate_ml_interface cls =
         (to_snake_case cls.class_name))) "" c_name
     ) in
 
-    (* Build OCaml type signature *)
-    let param_types = List.map ~f:(fun p ->
-      match find_type_mapping p.param_type.c_type with
-      | Some mapping -> mapping.ocaml_type
-      | None -> "unit" (* fallback *)
-    ) meth.parameters in
+    (* Skip methods that would duplicate property-generated externals *)
+    if not (List.mem ocaml_name ~set:!property_names) then begin
+      (match meth.doc with
+      | Some doc -> bprintf buf "(** %s *)\n" doc
+      | None -> ());
 
-    let ret_type_ocaml =
-      if meth.return_type.c_type = "void" then
-        "unit"
-      else
-        match find_type_mapping meth.return_type.c_type with
+      (* Build OCaml type signature *)
+      let param_types = List.map ~f:(fun p ->
+        match find_type_mapping p.param_type.c_type with
         | Some mapping -> mapping.ocaml_type
-        | None -> "unit"
-    in
+        | None -> "unit" (* fallback *)
+      ) meth.parameters in
 
-    let full_type =
-      String.concat ~sep:" -> " (["t"] @ param_types @ [ret_type_ocaml])
-    in
+      let ret_type_ocaml =
+        if meth.return_type.c_type = "void" then
+          "unit"
+        else
+          match find_type_mapping meth.return_type.c_type with
+          | Some mapping -> mapping.ocaml_type
+          | None -> "unit"
+      in
 
-    bprintf buf "external %s : %s = \"%s\"\n\n"
-      ocaml_name full_type ml_name;
+      let full_type =
+        String.concat ~sep:" -> " (["t"] @ param_types @ [ret_type_ocaml])
+      in
+
+      bprintf buf "external %s : %s = \"%s\"\n\n"
+        ocaml_name full_type ml_name;
+    end
   ) (List.rev cls.methods);
 
   Buffer.contents buf
