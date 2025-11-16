@@ -600,18 +600,31 @@ CAMLprim value ml_gtk_fixed_get_child_position(value fixed, value widget)
 {
   CAMLparam2(fixed, widget);
   CAMLlocal1(result);
-  double x, y;
 
-  gtk_fixed_get_child_position(
-    GTK_FIXED(GtkWidget_val(fixed)),
-    GtkWidget_val(widget),
-    &x,
-    &y
-  );
+  /* In GTK4, GtkFixed uses a layout manager and child positions are stored
+   * in the GtkFixedLayoutChild transform, not directly retrievable via
+   * gtk_fixed_get_child_position (which returns 0,0).
+   * We need to use the layout manager API instead. */
+
+  GtkWidget *fixed_widget = GtkWidget_val(fixed);
+  GtkWidget *child_widget = GtkWidget_val(widget);
+
+  /* Get the layout manager */
+  GtkLayoutManager *layout = gtk_widget_get_layout_manager(fixed_widget);
+  GtkLayoutChild *layout_child = gtk_layout_manager_get_layout_child(layout, child_widget);
+
+  float x = 0.0f, y = 0.0f;
+
+  if (GTK_IS_FIXED_LAYOUT_CHILD(layout_child)) {
+    GskTransform *transform = gtk_fixed_layout_child_get_transform(GTK_FIXED_LAYOUT_CHILD(layout_child));
+    if (transform != NULL) {
+      gsk_transform_to_translate(transform, &x, &y);
+    }
+  }
 
   result = caml_alloc_tuple(2);
-  Store_field(result, 0, caml_copy_double(x));
-  Store_field(result, 1, caml_copy_double(y));
+  Store_field(result, 0, caml_copy_double((double)x));
+  Store_field(result, 1, caml_copy_double((double)y));
   CAMLreturn(result);
 }
 
