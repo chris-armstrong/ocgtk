@@ -83,7 +83,7 @@ let test_packing_properties () =
   try
     let _ = GMain.init () in
     let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
-    let widget = Gtk.Box.coerce box in
+    let widget = Gtk.Box.as_widget box in
 
     (* Test hexpand/vexpand *)
     Gtk.Widget.set_hexpand widget true;
@@ -168,14 +168,14 @@ let test_child_management () =
     let _ = GMain.init () in
     let parent_box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
     let child_box = Gtk.Box.create ~orientation:`VERTICAL ~spacing:0 in
-    let child_widget = Gtk.Box.coerce child_box in
+    let child_widget = Gtk.Box.as_widget child_box in
 
     (* Test append *)
     Gtk.Box.append parent_box child_widget;
 
     (* Test prepend - create another child *)
     let child2_box = Gtk.Box.create ~orientation:`VERTICAL ~spacing:0 in
-    let child2_widget = Gtk.Box.coerce child2_box in
+    let child2_widget = Gtk.Box.as_widget child2_box in
     Gtk.Box.prepend parent_box child2_widget;
 
     (* Test remove *)
@@ -189,16 +189,16 @@ let test_child_management () =
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
 
-(* Test coerce function *)
-let test_coerce () =
+(* Test as_widget function *)
+let test_as_widget () =
   try
     let _ = GMain.init () in
     let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
-    let widget = Gtk.Box.coerce box in
+    let widget = Gtk.Box.as_widget box in
 
     (* Verify it's a valid widget by calling widget methods *)
     Gtk.Widget.set_name widget "test_box";
-    check string "coerced widget name" "test_box" (Gtk.Widget.get_name widget)
+    check string "converted widget name" "test_box" (Gtk.Widget.get_name widget)
   with
   | Failure msg when msg = "GTK initialization failed" ->
       skip ()
@@ -225,7 +225,7 @@ let () =
     "children", [
       test_case "child_management" `Quick test_child_management;
     ];
-    "coerce", [
-      test_case "coerce_to_widget" `Quick test_coerce;
+    "as_widget", [
+      test_case "as_widget_conversion" `Quick test_as_widget;
     ];
   ]

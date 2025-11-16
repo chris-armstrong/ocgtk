@@ -225,7 +225,7 @@ end
 (** {1 Container Widgets} *)
 
 module Box : sig
-  type t = [`box] Gobject.obj
+  type t = [`box | `widget] Gobject.obj
 
   (** Create a new box *)
   val create : orientation:orientation -> spacing:int -> t
@@ -263,6 +263,6 @@ module Box : sig
   (** Set baseline position *)
   val set_baseline_position : t -> baseline_position -> unit
 
-  (** Coerce box to widget *)
-  val coerce : t -> widget
+  (** Convert box to widget (simple upcast) *)
+  val as_widget : t -> widget
 end

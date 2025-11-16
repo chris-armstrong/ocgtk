@@ -331,10 +331,33 @@ CAMLprim value ml_gtk_box_reorder_child_after(value box, value child, value sibl
   CAMLreturn(Val_unit);
 }
 
-ML_1 (gtk_box_get_spacing, GTK_BOX(GtkWidget_val), Val_int)
-ML_2 (gtk_box_set_spacing, GTK_BOX(GtkWidget_val), Int_val, Unit)
-ML_1 (gtk_box_get_homogeneous, GTK_BOX(GtkWidget_val), Val_bool)
-ML_2 (gtk_box_set_homogeneous, GTK_BOX(GtkWidget_val), Bool_val, Unit)
+CAMLprim value ml_gtk_box_get_spacing(value box)
+{
+  CAMLparam1(box);
+  int spacing = gtk_box_get_spacing(GTK_BOX(GtkWidget_val(box)));
+  CAMLreturn(Val_int(spacing));
+}
+
+CAMLprim value ml_gtk_box_set_spacing(value box, value spacing)
+{
+  CAMLparam2(box, spacing);
+  gtk_box_set_spacing(GTK_BOX(GtkWidget_val(box)), Int_val(spacing));
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_box_get_homogeneous(value box)
+{
+  CAMLparam1(box);
+  gboolean homogeneous = gtk_box_get_homogeneous(GTK_BOX(GtkWidget_val(box)));
+  CAMLreturn(Val_bool(homogeneous));
+}
+
+CAMLprim value ml_gtk_box_set_homogeneous(value box, value homogeneous)
+{
+  CAMLparam2(box, homogeneous);
+  gtk_box_set_homogeneous(GTK_BOX(GtkWidget_val(box)), Bool_val(homogeneous));
+  CAMLreturn(Val_unit);
+}
 
 CAMLprim value ml_gtk_box_get_baseline_position(value box)
 {

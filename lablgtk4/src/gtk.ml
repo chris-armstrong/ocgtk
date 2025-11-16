@@ -202,7 +202,7 @@ end
 (** {1 Container Widgets} *)
 
 module Box = struct
-  type t = [`box] Gobject.obj
+  type t = [`box | `widget] Gobject.obj
 
   (** {2 External C bindings} *)
 
@@ -260,5 +260,6 @@ module Box = struct
   let set_baseline_position box pos =
     set_baseline_position_impl box (baseline_position_to_int pos)
 
-  let coerce (box : t) : widget = (box :> widget)
+  (* Convert to widget - uses Obj.magic since [`box | `widget] can't be coerced to [`widget] *)
+  let as_widget (box : t) : widget = Obj.magic box
 end
