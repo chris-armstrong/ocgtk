@@ -53,7 +53,7 @@ let test_widget_creation () =
     (* Verify widget was created *)
     check bool "widget created" true (widget <> Obj.magic 0)
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -83,7 +83,7 @@ let test_visibility () =
     Gtk.Widget.set_visible widget true;
     check bool "widget set visible" true (Gtk.Widget.get_visible widget)
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -101,7 +101,7 @@ let test_size_request () =
     check int "size request width" 200 w;
     check int "size request height" 100 h
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -123,7 +123,7 @@ let test_css_classes () =
     Gtk.Widget.remove_css_class widget "test-class";
     check bool "CSS class removed" false (Gtk.Widget.has_css_class widget "test-class")
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -148,7 +148,7 @@ let test_focus () =
     let _ = Gtk.Widget.grab_focus widget in
     check bool "focus API works" true true
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -167,7 +167,7 @@ let test_state_flags () =
     (* Just verify we can get/set flags - actual flag values may vary *)
     check bool "can set state flags" true (List.length flags >= 0)
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -195,7 +195,7 @@ let test_parent_root () =
     let _ = Gtk.Widget.get_root child_widget in
     check bool "get_root API works" true true
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -213,7 +213,7 @@ let test_queue_operations () =
 
     check bool "queue operations work" true true
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)

@@ -49,7 +49,7 @@ let test_box_creation () =
     check int "vertical box spacing" 10 (Gtk.Box.get_spacing vbox);
     check bool "vertical box not homogeneous" false (Gtk.Box.get_homogeneous vbox)
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()  (* No display available *)
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -73,7 +73,7 @@ let test_box_properties () =
     check bool "baseline position set to TOP"
       (`TOP = Gtk.Box.get_baseline_position box) true
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -114,7 +114,7 @@ let test_packing_properties () =
     Gtk.Widget.set_margin_bottom widget 15;
     check int "margin_bottom set" 15 (Gtk.Widget.get_margin_bottom widget)
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -140,7 +140,7 @@ let test_gbox_wrapper () =
     check int "gbox vbox spacing" 5 vbox#spacing;
     check bool "gbox vbox homogeneous" true vbox#homogeneous
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -157,7 +157,7 @@ let test_pack_compat () =
        but we can verify the box was created correctly *)
     check int "pack box spacing" 5 box#spacing
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -184,7 +184,7 @@ let test_child_management () =
 
     check bool "child management successful" true true
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -200,7 +200,7 @@ let test_as_widget () =
     Gtk.Widget.set_name widget "test_box";
     check string "converted widget name" "test_box" (Gtk.Widget.get_name widget)
   with
-  | Failure msg when msg = "GTK initialization failed" ->
+  | GMain.Error _ ->
       skip ()
   | e ->
       fail ("Unexpected error: " ^ Printexc.to_string e)

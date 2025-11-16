@@ -25,7 +25,7 @@ let test_fixed_creation () =
     let _widget = Gtk.Fixed.as_widget fixed in
     check bool "Fixed as_widget works" true true
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_fixed_put_move () =
@@ -53,7 +53,7 @@ let test_fixed_put_move () =
     Gtk.Fixed.remove fixed child_widget;
     check bool "Fixed remove works" true true
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* ========== GtkPaned Tests ========== *)
@@ -71,7 +71,7 @@ let test_paned_creation () =
     let _widget = Gtk.Paned.as_widget paned in
     check bool "Paned as_widget works" true true
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_paned_children () =
@@ -98,7 +98,7 @@ let test_paned_children () =
     Gtk.Paned.set_end_child paned None;
     check bool "Paned children removed" true true
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_paned_properties () =
@@ -128,7 +128,7 @@ let test_paned_properties () =
     Gtk.Paned.set_shrink_end_child paned false;
     check bool "Shrink end" false (Gtk.Paned.get_shrink_end_child paned)
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* ========== GtkNotebook Tests ========== *)
@@ -146,7 +146,7 @@ let test_notebook_creation () =
     let _widget = Gtk.Notebook.as_widget notebook in
     check bool "Notebook as_widget works" true true
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_notebook_pages () =
@@ -170,7 +170,7 @@ let test_notebook_pages () =
     Gtk.Notebook.remove_page notebook ~page:0;
     check int "1 page after removal" 1 (Gtk.Notebook.get_n_pages notebook)
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_notebook_navigation () =
@@ -194,7 +194,7 @@ let test_notebook_navigation () =
     Gtk.Notebook.next_page notebook;
     check int "Next page" 1 (Gtk.Notebook.get_current_page notebook)
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_notebook_properties () =
@@ -214,7 +214,7 @@ let test_notebook_properties () =
     Gtk.Notebook.set_scrollable notebook true;
     check bool "Scrollable on" true (Gtk.Notebook.get_scrollable notebook)
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* ========== GtkStack Tests ========== *)
@@ -233,7 +233,7 @@ let test_stack_creation () =
     let _widget = Gtk.Stack.as_widget stack in
     check bool "Stack as_widget works" true true
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_stack_children () =
@@ -259,7 +259,7 @@ let test_stack_children () =
     Gtk.Stack.remove stack (Gtk.Box.as_widget child1);
     check bool "Stack child removed" true true
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_stack_transitions () =
@@ -276,7 +276,7 @@ let test_stack_transitions () =
     Gtk.Stack.set_transition_duration stack 500;
     check int "Transition duration" 500 (Gtk.Stack.get_transition_duration stack)
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* ========== High-Level Wrapper Tests ========== *)
@@ -303,7 +303,7 @@ let test_gfixed_wrapper () =
     fixed#remove (child :> GObj.widget);
     check bool "GFixed wrapper works" true true
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_gpaned_wrapper () =
@@ -331,7 +331,7 @@ let test_gpaned_wrapper () =
     let _vpaned = GPaned.vpaned () in
     check bool "GPaned vpaned created" true true
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_gnotebook_wrapper () =
@@ -368,7 +368,7 @@ let test_gnotebook_wrapper () =
     notebook#set_scrollable true;
     check bool "GNotebook scrollable" true notebook#scrollable
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_gstack_wrapper () =
@@ -396,7 +396,7 @@ let test_gstack_wrapper () =
     stack#set_transition_duration 300;
     check int "GStack duration" 300 stack#transition_duration
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* ========== Integration Tests ========== *)
@@ -442,7 +442,7 @@ let test_nested_containers () =
 
     check int "Nested: operations successful" 200 paned#position
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_fixed_with_containers () =
@@ -472,7 +472,7 @@ let test_fixed_with_containers () =
 
     check bool "Fixed with containers works" true true
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_all_transitions () =
@@ -500,7 +500,7 @@ let test_all_transitions () =
     List.iter test_transition transitions;
     check bool "All 23 transitions work" true true
   with
-  | Failure msg when msg = "GTK initialization failed" -> skip ()
+  | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let () =
