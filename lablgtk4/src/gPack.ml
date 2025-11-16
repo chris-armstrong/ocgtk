@@ -89,3 +89,17 @@ let notebook ?(show_tabs=true) ?(show_border=true) pages =
     let _ = nb#append_page ?tab_label child in ()
   ) pages;
   nb
+
+(** {1 Window and ScrolledWindow Conveniences} *)
+
+(** Create a window with a child widget *)
+let window ?(title="") ?(width=(-1)) ?(height=(-1)) ?(resizable=true) ?(modal=false) child =
+  let w = GWindow.window ~title ~width ~height ~resizable ~modal () in
+  w#add child;
+  w
+
+(** Create a scrolled window with a child widget *)
+let scrolled ?(hpolicy=`AUTOMATIC) ?(vpolicy=`AUTOMATIC) ?(min_content_width=(-1)) ?(min_content_height=(-1)) child =
+  let sw = GScrolledWindow.scrolled_window ~hpolicy ~vpolicy ~min_content_width ~min_content_height () in
+  sw#add child;
+  sw

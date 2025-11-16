@@ -553,3 +553,89 @@ module Stack = struct
 
   let as_widget (stack : t) : widget = Obj.magic stack
 end
+
+(* ========== Single-Child Containers ========== *)
+
+module Window = struct
+  type t = [`window | `widget] Gobject.obj
+
+  external create : unit -> t = "ml_gtk_window_new"
+  external set_child : t -> widget option -> unit = "ml_gtk_window_set_child"
+  external get_child : t -> widget option = "ml_gtk_window_get_child"
+  external set_title : t -> string -> unit = "ml_gtk_window_set_title"
+  external get_title : t -> string = "ml_gtk_window_get_title"
+  external set_default_size : t -> width:int -> height:int -> unit = "ml_gtk_window_set_default_size"
+  external get_default_size : t -> int * int = "ml_gtk_window_get_default_size"
+  external set_resizable : t -> bool -> unit = "ml_gtk_window_set_resizable"
+  external get_resizable : t -> bool = "ml_gtk_window_get_resizable"
+  external set_modal : t -> bool -> unit = "ml_gtk_window_set_modal"
+  external get_modal : t -> bool = "ml_gtk_window_get_modal"
+  external destroy : t -> unit = "ml_gtk_window_destroy"
+  external present : t -> unit = "ml_gtk_window_present"
+  external close : t -> unit = "ml_gtk_window_close"
+
+  let as_widget (window : t) : widget = Obj.magic window
+end
+
+module ScrolledWindow = struct
+  type t = [`scrolled_window | `widget] Gobject.obj
+
+  type policy_type = [
+    | `ALWAYS
+    | `AUTOMATIC
+    | `NEVER
+    | `EXTERNAL
+  ]
+
+  external create : unit -> t = "ml_gtk_scrolled_window_new"
+  external set_child : t -> widget option -> unit = "ml_gtk_scrolled_window_set_child"
+  external get_child : t -> widget option = "ml_gtk_scrolled_window_get_child"
+
+  external set_policy_impl : t -> int -> int -> unit = "ml_gtk_scrolled_window_set_policy"
+  external get_policy_impl : t -> int * int = "ml_gtk_scrolled_window_get_policy"
+
+  external get_hscrollbar : t -> widget option = "ml_gtk_scrolled_window_get_hscrollbar"
+  external get_vscrollbar : t -> widget option = "ml_gtk_scrolled_window_get_vscrollbar"
+  external set_min_content_width : t -> int -> unit = "ml_gtk_scrolled_window_set_min_content_width"
+  external get_min_content_width : t -> int = "ml_gtk_scrolled_window_get_min_content_width"
+  external set_min_content_height : t -> int -> unit = "ml_gtk_scrolled_window_set_min_content_height"
+  external get_min_content_height : t -> int = "ml_gtk_scrolled_window_get_min_content_height"
+
+  let policy_type_to_int = function
+    | `ALWAYS -> 0
+    | `AUTOMATIC -> 1
+    | `NEVER -> 2
+    | `EXTERNAL -> 3
+
+  let int_to_policy_type = function
+    | 0 -> `ALWAYS
+    | 1 -> `AUTOMATIC
+    | 2 -> `NEVER
+    | 3 -> `EXTERNAL
+    | _ -> `AUTOMATIC
+
+  let set_policy t ~hpolicy ~vpolicy =
+    set_policy_impl t (policy_type_to_int hpolicy) (policy_type_to_int vpolicy)
+
+  let get_policy t =
+    let (h, v) = get_policy_impl t in
+    (int_to_policy_type h, int_to_policy_type v)
+
+  let as_widget (sw : t) : widget = Obj.magic sw
+end
+
+module Frame = struct
+  type t = [`frame | `widget] Gobject.obj
+
+  external create_impl : string option -> t = "ml_gtk_frame_new"
+  external set_child : t -> widget option -> unit = "ml_gtk_frame_set_child"
+  external get_child : t -> widget option = "ml_gtk_frame_get_child"
+  external set_label : t -> string option -> unit = "ml_gtk_frame_set_label"
+  external get_label : t -> string option = "ml_gtk_frame_get_label"
+  external set_label_xalign : t -> float -> unit = "ml_gtk_frame_set_label_align"
+  external get_label_xalign : t -> float = "ml_gtk_frame_get_label_align"
+
+  let create ?label () = create_impl label
+
+  let as_widget (frame : t) : widget = Obj.magic frame
+end

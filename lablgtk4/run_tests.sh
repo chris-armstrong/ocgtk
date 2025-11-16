@@ -67,6 +67,10 @@ echo "Running Phase 4.1 tests..."
 run_test ./_build/default/tests/test_box.exe
 
 echo ""
+echo "Running Phase 4.2 tests..."
+run_test ./_build/default/tests/test_window.exe
+
+echo ""
 echo "Running Phase 4.3 tests..."
 run_test ./_build/default/tests/test_grid.exe
 

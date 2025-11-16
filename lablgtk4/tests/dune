@@ -129,6 +129,11 @@
  (modules test_gpack)
  (libraries lablgtk4 alcotest))
 
+(executable
+ (name test_window)
+ (modules test_window)
+ (libraries lablgtk4 alcotest))
+
 ; ============================================================================
 ; Custom Test Runner to Avoid Dune Process Management Race Condition
 ; ============================================================================

@@ -128,12 +128,23 @@ val notebook :
   (GObj.widget * GObj.widget option) list ->
   GNotebook.notebook
 
-(** {1 Future Extensions} *)
+(** {1 Window and ScrolledWindow Conveniences} *)
 
-(** Note: Window and ScrolledWindow conveniences will be added when
-    those high-level wrapper modules are implemented.
+(** Create a window with a child widget *)
+val window :
+  ?title:string ->
+  ?width:int ->
+  ?height:int ->
+  ?resizable:bool ->
+  ?modal:bool ->
+  GObj.widget ->
+  GWindow.window
 
-    Planned additions:
-    - val window : ?title:string -> ?width:int -> ?height:int -> GObj.widget -> GWindow.window
-    - val scrolled : ?hpolicy:Gtk.policy_type -> ?vpolicy:Gtk.policy_type -> GObj.widget -> GScrolledWindow.scrolled_window
-*)
+(** Create a scrolled window with a child widget *)
+val scrolled :
+  ?hpolicy:Gtk.ScrolledWindow.policy_type ->
+  ?vpolicy:Gtk.ScrolledWindow.policy_type ->
+  ?min_content_width:int ->
+  ?min_content_height:int ->
+  GObj.widget ->
+  GScrolledWindow.scrolled_window

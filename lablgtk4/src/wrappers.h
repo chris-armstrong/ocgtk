@@ -21,6 +21,9 @@
 
 #include <gtk/gtk.h>
 
+/* Note: caml_alloc_some is provided by OCaml 4.12+ in caml/alloc.h */
+/* For older versions, projects should use caml_alloc(1, 0) + Store_field */
+
 /* ==================================================================== */
 /* Basic Pointer Conversions */
 /* ==================================================================== */
@@ -56,11 +59,13 @@ CAMLexport value ml_lookup_to_c (const lookup_info table[], value key);
 /* Val_bool and Bool_val are already defined in caml/mlvalues.h */
 
 #define Val_optstring(s) ((s) ? caml_alloc_some(caml_copy_string(s)) : Val_none)
+#define Val_option_string(s) Val_optstring(s)
 #define String_option_val(v) ((v) == Val_none ? NULL : String_val(Some_val(v)))
 
 #define Val_some(v) caml_alloc_some(v)
 #define Val_none Val_int(0)
 #define Some_val(v) Field(v, 0)
+#define Is_some(v) Is_block(v)
 
 #define Val_emptylist Val_int(0)
 
@@ -156,6 +161,14 @@ CAMLprim value fname##_bc(value *argv, int argn) \
 /* GtkWindow - GObject, use direct cast */
 #define GtkWindow_val(val) ((GtkWindow*)(val))
 #define Val_GtkWindow(obj) ((value)(obj))
+
+/* GtkScrolledWindow - GObject, use direct cast */
+#define GtkScrolledWindow_val(val) ((GtkScrolledWindow*)(val))
+#define Val_GtkScrolledWindow(obj) ((value)(obj))
+
+/* GtkFrame - GObject, use direct cast */
+#define GtkFrame_val(val) ((GtkFrame*)(val))
+#define Val_GtkFrame(obj) ((value)(obj))
 
 /* GObject - use direct cast */
 #define GObject_val(val) ((GObject*)(val))

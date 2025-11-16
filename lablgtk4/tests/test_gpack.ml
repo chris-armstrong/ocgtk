@@ -223,6 +223,37 @@ let test_composition_grid_in_paned () =
 
 (* Test suite *)
 
+(* Test window convenience *)
+
+let test_window_convenience () =
+  try
+    let _ = GMain.init () in
+    let box = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
+    let window = GPack.window ~title:"Test" ~width:400 ~height:300 box in
+
+    check string "GPack window title" "Test" window#title;
+    let (w, h) = window#get_default_size in
+    check int "GPack window width" 400 w;
+    check int "GPack window height" 300 h
+  with
+  | GMain.Error _ -> skip ()
+  | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
+
+(* Test scrolled window convenience *)
+
+let test_scrolled_convenience () =
+  try
+    let _ = GMain.init () in
+    let box = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
+    let sw = GPack.scrolled ~hpolicy:`ALWAYS ~vpolicy:`AUTOMATIC box in
+
+    let (h, v) = sw#policy in
+    check bool "GPack scrolled hpolicy" (`ALWAYS = h) true;
+    check bool "GPack scrolled vpolicy" (`AUTOMATIC = v) true
+  with
+  | GMain.Error _ -> skip ()
+  | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
+
 let () =
   run "GPack Module Tests (Phase 4.5)" [
     "Box Packing", [
@@ -244,6 +275,10 @@ let () =
     "Notebook Conveniences", [
       test_case "notebook empty" `Quick test_notebook_empty;
       test_case "notebook with pages" `Quick test_notebook_with_pages;
+    ];
+    "Window and ScrolledWindow Conveniences (Phase 4.2)", [
+      test_case "window convenience" `Quick test_window_convenience;
+      test_case "scrolled window convenience" `Quick test_scrolled_convenience;
     ];
     "Complex Composition", [
       test_case "hbox in vbox" `Quick test_composition_hbox_in_vbox;
