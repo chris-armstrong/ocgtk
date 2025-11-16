@@ -1,13 +1,17 @@
-(* GIR-based Event Controller Code Generator for LablGTK4 Phase 3
+(* GIR-based Code Generator for LablGTK4 Phase 3 & Phase 5
  *
  * This tool parses Gtk-4.0.gir and generates C FFI bindings and OCaml
- * modules for GTK4 event controllers.
+ * modules for GTK4 event controllers and widgets.
+ *
+ * Phase 3: Event controllers
+ * Phase 5: Widget classes with properties and signals
  *
  * Follows patterns from varcc.ml and propcc.ml.
  *)
 
 open Printf
 open StdLabels
+open Cmdliner
 
 (* ========================================================================= *)
 (* Type Definitions *)
@@ -44,15 +48,36 @@ type gir_constructor = {
   ctor_doc : string option;
 }
 
+(* Phase 5: Property support *)
+type gir_property = {
+  prop_name : string;
+  prop_type : gir_type;
+  readable : bool;
+  writable : bool;
+  construct_only : bool;
+  prop_doc : string option;
+}
+
 type gir_class = {
   class_name : string;
   c_type : string;
   parent : string option;
+  implements : string list;  (* Phase 5: interface support *)
   constructors : gir_constructor list;
   methods : gir_method list;
+  properties : gir_property list;  (* Phase 5: properties *)
   signals : gir_signal list;
   class_doc : string option;
 }
+
+(* ========================================================================= *)
+(* Generation Modes (Phase 5) *)
+(* ========================================================================= *)
+
+type generation_mode =
+  | EventControllers  (* Phase 3: Event controllers only *)
+  | Widgets           (* Phase 5: Widget classes *)
+  | All               (* Both controllers and widgets *)
 
 (* ========================================================================= *)
 (* Type Mappings *)
@@ -114,6 +139,43 @@ let type_mappings = [
     ml_to_c = "GtkWidget_val";
     needs_copy = false;
   });
+  (* Phase 5: Widget-specific types *)
+  ("GtkOrientation", {
+    ocaml_type = "Gtk.orientation";
+    c_to_ml = "Val_orientation";
+    ml_to_c = "Orientation_val";
+    needs_copy = false;
+  });
+  ("GtkAlign", {
+    ocaml_type = "Gtk.align";
+    c_to_ml = "Val_align";
+    ml_to_c = "Align_val";
+    needs_copy = false;
+  });
+  ("GtkJustification", {
+    ocaml_type = "Gtk.justification";
+    c_to_ml = "Val_justification";
+    ml_to_c = "Justification_val";
+    needs_copy = false;
+  });
+  ("PangoWrapMode", {
+    ocaml_type = "Pango.wrap_mode";
+    c_to_ml = "Val_PangoWrapMode";
+    ml_to_c = "PangoWrapMode_val";
+    needs_copy = false;
+  });
+  ("const gchar*", {
+    ocaml_type = "string";
+    c_to_ml = "caml_copy_string";
+    ml_to_c = "String_val";
+    needs_copy = true;
+  });
+  ("utf8", {
+    ocaml_type = "string";
+    c_to_ml = "caml_copy_string";
+    ml_to_c = "String_val";
+    needs_copy = true;
+  });
 ]
 
 let find_type_mapping c_type =
@@ -147,10 +209,42 @@ let get_attr name attrs =
     with Not_found -> None
 
 (* ========================================================================= *)
+(* Filter File Support (Phase 5) *)
+(* ========================================================================= *)
+
+(* Read filter file and return set of class names to generate *)
+let read_filter_file filename =
+  if not (Sys.file_exists filename) then
+    []
+  else
+    let ic = open_in filename in
+    let rec read_lines acc =
+      try
+        let line = input_line ic in
+        let trimmed = String.trim line in
+        (* Skip empty lines and comments *)
+        if trimmed = "" || String.length trimmed > 0 && trimmed.[0] = '#' then
+          read_lines acc
+        else
+          (* Extract class name (first word) *)
+          let class_name =
+            try
+              let space_idx = String.index trimmed ' ' in
+              String.sub trimmed ~pos:0 ~len:space_idx
+            with Not_found -> trimmed
+          in
+          read_lines (class_name :: acc)
+      with End_of_file ->
+        close_in ic;
+        List.rev acc
+    in
+    read_lines []
+
+(* ========================================================================= *)
 (* GIR Parser using xmlm *)
 (* ========================================================================= *)
 
-let parse_gir_file filename =
+let parse_gir_file filename mode filter_classes =
   let ic = open_in filename in
   let input = Xmlm.make_input ~strip:true (`Channel ic) in
 
@@ -161,6 +255,21 @@ let parse_gir_file filename =
     name = "EventController" ||
     (String.length name > 15 && String.sub ~pos:0 ~len:15 name = "EventController") ||
     (String.length name > 7 && String.sub ~pos:0 ~len:7 name = "Gesture")
+  in
+
+  (* Check if class should be included based on mode and filter *)
+  let should_include_class name =
+    match mode with
+    | EventControllers -> is_event_controller name
+    | Widgets ->
+      (match filter_classes with
+       | [] -> not (is_event_controller name)  (* No filter = all widgets *)
+       | classes -> List.mem name ~set:classes)     (* Filter specified *)
+    | All ->
+      (match filter_classes with
+       | [] -> true                             (* No filter = everything *)
+       | classes ->
+         is_event_controller name || List.mem name ~set:classes)
   in
 
   (* Skip to end of current element *)
@@ -177,7 +286,7 @@ let parse_gir_file filename =
   (* Parse a class element *)
   let rec parse_class attrs =
     match get_attr "name" attrs with
-    | Some name when is_event_controller name ->
+    | Some name when should_include_class name ->
       let c_type = match get_attr "c:type" attrs with
         | Some t -> t
         | None -> "Gtk" ^ name
@@ -185,6 +294,7 @@ let parse_gir_file filename =
       let parent = get_attr "parent" attrs in
       let constructors = ref [] in
       let methods = ref [] in
+      let properties = ref [] in
 
       let rec parse_class_contents () =
         match Xmlm.input input with
@@ -220,6 +330,16 @@ let parse_gir_file filename =
               skip_element 1;
               parse_class_contents ())
 
+          | "property" ->
+            (match get_attr "name" tag_attrs with
+            | Some prop_name ->
+              let prop = parse_property prop_name tag_attrs in
+              properties := prop :: !properties;
+              parse_class_contents ()
+            | None ->
+              skip_element 1;
+              parse_class_contents ())
+
           | _ ->
             skip_element 1;
             parse_class_contents ())
@@ -239,8 +359,10 @@ let parse_gir_file filename =
         class_name = name;
         c_type = c_type;
         parent = parent;
+        implements = [];  (* Phase 5: TODO - parse interfaces *)
         constructors = List.rev !constructors;
         methods = List.rev !methods;
+        properties = List.rev !properties;
         signals = [];
         class_doc = None;
       }
@@ -248,6 +370,49 @@ let parse_gir_file filename =
     | _ ->
       skip_element 1;
       None
+
+  (* Parse property element *)
+  and parse_property prop_name attrs =
+    let writable = match get_attr "writable" attrs with
+      | Some "1" -> true
+      | _ -> false
+    in
+    let construct_only = match get_attr "construct-only" attrs with
+      | Some "1" -> true
+      | _ -> false
+    in
+
+    (* Parse property type from child element *)
+    let prop_type = ref { name = "unknown"; c_type = "unknown" } in
+
+    let rec parse_prop_contents () =
+      match Xmlm.input input with
+      | `El_start ((_, "type"), type_attrs) ->
+        let type_name = match get_attr "name" type_attrs with Some n -> n | None -> "unknown" in
+        let c_type_name = match get_attr "c:type" type_attrs with Some t -> t | None -> type_name in
+        prop_type := { name = type_name; c_type = c_type_name };
+        skip_element 1;
+        parse_prop_contents ()
+      | `El_start _ ->
+        skip_element 1;
+        parse_prop_contents ()
+      | `El_end ->
+        ()
+      | `Data _ ->
+        parse_prop_contents ()
+      | `Dtd _ ->
+        parse_prop_contents ()
+    in
+
+    parse_prop_contents ();
+    {
+      prop_name = prop_name;
+      prop_type = !prop_type;
+      readable = true;  (* Assume readable unless writable=0 and no getter *)
+      writable = writable;
+      construct_only = construct_only;
+      prop_doc = None;
+    }
 
   (* Parse method contents to extract return type and parameters *)
   and parse_method () =
@@ -494,14 +659,28 @@ let generate_c_method (meth : gir_method) =
 let generate_ml_interface cls =
   let buf = Buffer.create 1024 in
 
+  (* Determine if this is a controller or widget *)
+  let is_controller =
+    cls.class_name = "EventController" ||
+    (String.length cls.class_name > 15 && String.sub ~pos:0 ~len:15 cls.class_name = "EventController") ||
+    (String.length cls.class_name > 7 && String.sub ~pos:0 ~len:7 cls.class_name = "Gesture")
+  in
+
+  let (class_type_name, base_type) =
+    if is_controller then
+      ("Event controller", "EventController.t")
+    else
+      ("Widget", "Gtk.Widget.t")
+  in
+
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
-  bprintf buf "(* Event controller: %s *)\n\n" cls.class_name;
+  bprintf buf "(* %s: %s *)\n\n" class_type_name cls.class_name;
 
   (match cls.class_doc with
   | Some doc -> bprintf buf "(** %s *)\n" doc
   | None -> ());
 
-  bprintf buf "type t = EventController.t\n\n";
+  bprintf buf "type t = %s\n\n" base_type;
 
   (* Constructors *)
   List.iter ~f:(fun ctor ->
@@ -554,20 +733,32 @@ let generate_ml_interface cls =
 (* Main *)
 (* ========================================================================= *)
 
-let () =
-  if Array.length Sys.argv < 3 then begin
-    eprintf "Usage: %s <gir-file> <output-dir>\n" Sys.argv.(0);
-    exit 1
-  end;
+(* Main generation function *)
+let generate_bindings mode filter_file gir_file output_dir =
+  printf "Parsing %s (mode: %s)...\n" gir_file
+    (match mode with
+     | EventControllers -> "controllers"
+     | Widgets -> "widgets"
+     | All -> "all");
 
-  let gir_file = Sys.argv.(1) in
-  let output_dir = Sys.argv.(2) in
+  (* Read filter file if specified *)
+  let filter_classes = match filter_file with
+    | Some f ->
+      printf "Reading filter file: %s\n" f;
+      let classes = read_filter_file f in
+      printf "Filter includes %d classes\n" (List.length classes);
+      classes
+    | None -> []
+  in
 
-  printf "Parsing %s...\n" gir_file;
+  let controllers = parse_gir_file gir_file mode filter_classes in
 
-  let controllers = parse_gir_file gir_file in
-
-  printf "Found %d event controller classes\n" (List.length controllers);
+  let class_type_name = match mode with
+    | EventControllers -> "event controller"
+    | Widgets -> "widget"
+    | All -> "controller/widget"
+  in
+  printf "Found %d %s classes\n" (List.length controllers) class_type_name;
 
   (* Generate C code *)
   let c_buf = Buffer.create 10240 in
@@ -612,4 +803,49 @@ let () =
 
   printf "\n✓ Code generation complete!\n";
   printf "  Generated: %s\n" c_file;
-  printf "  Generated: %d OCaml interface files\n" (List.length controllers)
+  printf "  Generated: %d OCaml interface files\n" (List.length controllers);
+  `Ok ()
+
+(* Cmdliner argument definitions *)
+let mode_arg =
+  let mode_enum = [
+    ("controllers", EventControllers);
+    ("widgets", Widgets);
+    ("all", All);
+  ] in
+  let doc = "Generation mode: controllers, widgets, or all (default: controllers)" in
+  Arg.(value & opt (enum mode_enum) EventControllers & info ["m"; "mode"] ~docv:"MODE" ~doc)
+
+let filter_arg =
+  let doc = "Filter file specifying which classes to generate" in
+  Arg.(value & opt (some file) None & info ["f"; "filter"] ~docv:"FILE" ~doc)
+
+let gir_file_arg =
+  let doc = "Path to GTK GIR file (e.g., /usr/share/gir-1.0/Gtk-4.0.gir)" in
+  Arg.(required & pos 0 (some file) None & info [] ~docv:"GIR_FILE" ~doc)
+
+let output_dir_arg =
+  let doc = "Output directory for generated files" in
+  Arg.(required & pos 1 (some dir) None & info [] ~docv:"OUTPUT_DIR" ~doc)
+
+(* Command definition *)
+let gir_gen_cmd =
+  let doc = "Generate C FFI bindings and OCaml modules from GTK GIR files" in
+  let man = [
+    `S Manpage.s_description;
+    `P "gir_gen parses GTK GObject Introspection (GIR) files and generates \
+        C FFI bindings and OCaml module interfaces for GTK4 event controllers \
+        and widgets.";
+    `S Manpage.s_examples;
+    `P "Generate event controller bindings:";
+    `Pre "  gir_gen /usr/share/gir-1.0/Gtk-4.0.gir ./output";
+    `P "Generate widget bindings with filter:";
+    `Pre "  gir_gen -m widgets -f widget_filter.conf Gtk-4.0.gir ./output";
+    `S Manpage.s_bugs;
+    `P "Report bugs to https://github.com/chris-armstrong/lablgtk/issues";
+  ] in
+  let info = Cmd.info "gir_gen" ~version:"5.0.0" ~doc ~man in
+  Cmd.v info Term.(ret (const generate_bindings $ mode_arg $ filter_arg $ gir_file_arg $ output_dir_arg))
+
+(* Main entry point *)
+let () = exit (Cmd.eval gir_gen_cmd)
