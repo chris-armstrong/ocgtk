@@ -43,6 +43,10 @@ echo "Running Phase 3.3/3.4 tests..."
 ./_build/default/tests/test_integration.exe
 
 echo ""
+echo "Running Phase 4.1 tests..."
+./_build/default/tests/test_box.exe
+
+echo ""
 echo "╔══════════════════════════════════════════════════════════════╗"
 echo "║                   ✓ All Tests Passed                        ║"
 echo "╚══════════════════════════════════════════════════════════════╝"

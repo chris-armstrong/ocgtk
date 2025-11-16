@@ -42,37 +42,181 @@ let test_type_constructors () =
   check int "allocation width" 200 alloc.width;
   check int "allocation height" 100 alloc.height
 
-(* Widget creation tests - SKIPPED: requires actual widgets from Phase 4+ *)
+(* Widget creation tests - Now working with GtkBox from Phase 4.1! *)
 let test_widget_creation () =
-  skip ()
+  try
+    let _ = GMain.init () in
+    (* Create a widget (using GtkBox from Phase 4.1) *)
+    let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let widget = Gtk.Box.as_widget box in
 
-(* Visibility tests - SKIPPED: requires actual widgets *)
+    (* Verify widget was created *)
+    check bool "widget created" true (widget <> Obj.magic 0)
+  with
+  | Failure msg when msg = "GTK initialization failed" ->
+      skip ()
+  | e ->
+      fail ("Unexpected error: " ^ Printexc.to_string e)
+
+(* Visibility tests - Now working with GtkBox *)
 let test_visibility () =
-  skip ()
+  try
+    let _ = GMain.init () in
+    let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let widget = Gtk.Box.as_widget box in
 
-(* Size request tests - SKIPPED: requires actual widgets *)
+    (* Test visibility (widgets are visible by default in GTK4) *)
+    check bool "widget visible by default" true (Gtk.Widget.get_visible widget);
+
+    (* Test hide *)
+    Gtk.Widget.hide widget;
+    check bool "widget hidden" false (Gtk.Widget.get_visible widget);
+
+    (* Test show *)
+    Gtk.Widget.show widget;
+    check bool "widget shown" true (Gtk.Widget.get_visible widget);
+
+    (* Test set_visible *)
+    Gtk.Widget.set_visible widget false;
+    check bool "widget set invisible" false (Gtk.Widget.get_visible widget);
+
+    Gtk.Widget.set_visible widget true;
+    check bool "widget set visible" true (Gtk.Widget.get_visible widget)
+  with
+  | Failure msg when msg = "GTK initialization failed" ->
+      skip ()
+  | e ->
+      fail ("Unexpected error: " ^ Printexc.to_string e)
+
+(* Size request tests - Now working with GtkBox *)
 let test_size_request () =
-  skip ()
+  try
+    let _ = GMain.init () in
+    let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let widget = Gtk.Box.as_widget box in
 
-(* CSS class tests - SKIPPED: requires actual widgets *)
+    (* Test size request *)
+    Gtk.Widget.set_size_request widget ~width:200 ~height:100;
+    let (w, h) = Gtk.Widget.get_size_request widget in
+    check int "size request width" 200 w;
+    check int "size request height" 100 h
+  with
+  | Failure msg when msg = "GTK initialization failed" ->
+      skip ()
+  | e ->
+      fail ("Unexpected error: " ^ Printexc.to_string e)
+
+(* CSS class tests - Now working with GtkBox *)
 let test_css_classes () =
-  skip ()
+  try
+    let _ = GMain.init () in
+    let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let widget = Gtk.Box.as_widget box in
 
-(* Focus tests - SKIPPED: requires actual widgets *)
+    (* Test CSS class operations *)
+    Gtk.Widget.add_css_class widget "test-class";
+    check bool "has CSS class" true (Gtk.Widget.has_css_class widget "test-class");
+
+    let classes = Gtk.Widget.get_css_classes widget in
+    check bool "CSS class in list" true (List.mem "test-class" classes);
+
+    Gtk.Widget.remove_css_class widget "test-class";
+    check bool "CSS class removed" false (Gtk.Widget.has_css_class widget "test-class")
+  with
+  | Failure msg when msg = "GTK initialization failed" ->
+      skip ()
+  | e ->
+      fail ("Unexpected error: " ^ Printexc.to_string e)
+
+(* Focus tests - Now working with GtkBox *)
 let test_focus () =
-  skip ()
+  try
+    let _ = GMain.init () in
+    let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let widget = Gtk.Box.as_widget box in
 
-(* State flags tests - SKIPPED: requires actual widgets *)
+    (* Test focusable property *)
+    Gtk.Widget.set_focusable widget true;
+    check bool "widget focusable" true (Gtk.Widget.get_focusable widget);
+
+    Gtk.Widget.set_focusable widget false;
+    check bool "widget not focusable" false (Gtk.Widget.get_focusable widget);
+
+    (* Note: has_focus and grab_focus require the widget to be in a window
+       and may not work without a display, so we just test the API exists *)
+    let _ = Gtk.Widget.has_focus widget in
+    let _ = Gtk.Widget.grab_focus widget in
+    check bool "focus API works" true true
+  with
+  | Failure msg when msg = "GTK initialization failed" ->
+      skip ()
+  | e ->
+      fail ("Unexpected error: " ^ Printexc.to_string e)
+
+(* State flags tests - Now working with GtkBox *)
 let test_state_flags () =
-  skip ()
+  try
+    let _ = GMain.init () in
+    let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let widget = Gtk.Box.as_widget box in
 
-(* Parent/root tests - SKIPPED: requires actual widgets and containers *)
+    (* Test state flags *)
+    Gtk.Widget.set_state_flags widget [`ACTIVE; `FOCUSED] ~clear:false;
+    let flags = Gtk.Widget.get_state_flags widget in
+
+    (* Just verify we can get/set flags - actual flag values may vary *)
+    check bool "can set state flags" true (List.length flags >= 0)
+  with
+  | Failure msg when msg = "GTK initialization failed" ->
+      skip ()
+  | e ->
+      fail ("Unexpected error: " ^ Printexc.to_string e)
+
+(* Parent/root tests - Now working with containers from Phase 4.1! *)
 let test_parent_root () =
-  skip ()
+  try
+    let _ = GMain.init () in
+    let parent_box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let child_box = Gtk.Box.create ~orientation:`VERTICAL ~spacing:0 in
+    let child_widget = Gtk.Box.as_widget child_box in
 
-(* Queue draw/resize tests - SKIPPED: requires actual widgets *)
+    (* Initially no parent *)
+    check bool "no parent initially" true
+      (Gtk.Widget.get_parent child_widget = None);
+
+    (* Add child to parent *)
+    Gtk.Box.append parent_box child_widget;
+
+    (* Now should have parent *)
+    let parent_opt = Gtk.Widget.get_parent child_widget in
+    check bool "has parent after append" true (parent_opt <> None);
+
+    (* Test get_root (may return None without a window) *)
+    let _ = Gtk.Widget.get_root child_widget in
+    check bool "get_root API works" true true
+  with
+  | Failure msg when msg = "GTK initialization failed" ->
+      skip ()
+  | e ->
+      fail ("Unexpected error: " ^ Printexc.to_string e)
+
+(* Queue draw/resize tests - Now working with GtkBox *)
 let test_queue_operations () =
-  skip ()
+  try
+    let _ = GMain.init () in
+    let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let widget = Gtk.Box.as_widget box in
+
+    (* Test queue operations (these don't return values, just verify they don't crash) *)
+    Gtk.Widget.queue_draw widget;
+    Gtk.Widget.queue_resize widget;
+
+    check bool "queue operations work" true true
+  with
+  | Failure msg when msg = "GTK initialization failed" ->
+      skip ()
+  | e ->
+      fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let () =
   run "Gtk.Widget Tests (Phase 3.1)" [

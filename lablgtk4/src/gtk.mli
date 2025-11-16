@@ -42,6 +42,19 @@ type state_flags = [
   | `DROP_ACTIVE
 ]
 
+(** Orientation type *)
+type orientation = [
+  | `HORIZONTAL
+  | `VERTICAL
+]
+
+(** Baseline position *)
+type baseline_position = [
+  | `TOP
+  | `CENTER
+  | `BOTTOM
+]
+
 module Widget : sig
   type t = widget
 
@@ -157,4 +170,99 @@ module Widget : sig
 
   (** Remove an event controller from this widget *)
   val remove_controller : t -> EventController.t -> unit
+
+  (** {2 Packing Properties} *)
+
+  (** Get horizontal expansion *)
+  val get_hexpand : t -> bool
+
+  (** Set horizontal expansion *)
+  val set_hexpand : t -> bool -> unit
+
+  (** Get vertical expansion *)
+  val get_vexpand : t -> bool
+
+  (** Set vertical expansion *)
+  val set_vexpand : t -> bool -> unit
+
+  (** Get horizontal alignment *)
+  val get_halign : t -> align
+
+  (** Set horizontal alignment *)
+  val set_halign : t -> align -> unit
+
+  (** Get vertical alignment *)
+  val get_valign : t -> align
+
+  (** Set vertical alignment *)
+  val set_valign : t -> align -> unit
+
+  (** Get start margin *)
+  val get_margin_start : t -> int
+
+  (** Set start margin *)
+  val set_margin_start : t -> int -> unit
+
+  (** Get end margin *)
+  val get_margin_end : t -> int
+
+  (** Set end margin *)
+  val set_margin_end : t -> int -> unit
+
+  (** Get top margin *)
+  val get_margin_top : t -> int
+
+  (** Set top margin *)
+  val set_margin_top : t -> int -> unit
+
+  (** Get bottom margin *)
+  val get_margin_bottom : t -> int
+
+  (** Set bottom margin *)
+  val set_margin_bottom : t -> int -> unit
+end
+
+(** {1 Container Widgets} *)
+
+module Box : sig
+  type t = [`box | `widget] Gobject.obj
+
+  (** Create a new box *)
+  val create : orientation:orientation -> spacing:int -> t
+
+  (** Add child at the end *)
+  val append : t -> widget -> unit
+
+  (** Add child at the start *)
+  val prepend : t -> widget -> unit
+
+  (** Insert child after sibling (None = at start) *)
+  val insert_child_after : t -> child:widget -> sibling:widget option -> unit
+
+  (** Remove child from box *)
+  val remove : t -> widget -> unit
+
+  (** Reorder child to position *)
+  val reorder_child_after : t -> child:widget -> sibling:widget option -> unit
+
+  (** Get spacing between children *)
+  val get_spacing : t -> int
+
+  (** Set spacing between children *)
+  val set_spacing : t -> int -> unit
+
+  (** Get homogeneous sizing *)
+  val get_homogeneous : t -> bool
+
+  (** Set homogeneous sizing *)
+  val set_homogeneous : t -> bool -> unit
+
+  (** Get baseline position *)
+  val get_baseline_position : t -> baseline_position
+
+  (** Set baseline position *)
+  val set_baseline_position : t -> baseline_position -> unit
+
+  (** Convert box to widget (simple upcast) *)
+  val as_widget : t -> widget
 end

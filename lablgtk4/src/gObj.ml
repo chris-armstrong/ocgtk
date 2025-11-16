@@ -113,6 +113,24 @@ class virtual widget_impl (obj : [`widget] Gobject.obj) = object (self)
   method add_controller ctrl = Gtk.Widget.add_controller obj ctrl
   method remove_controller ctrl = Gtk.Widget.remove_controller obj ctrl
 
+  (* Packing properties - NEW in GTK4 *)
+  method hexpand = Gtk.Widget.get_hexpand obj
+  method set_hexpand h = Gtk.Widget.set_hexpand obj h
+  method vexpand = Gtk.Widget.get_vexpand obj
+  method set_vexpand v = Gtk.Widget.set_vexpand obj v
+  method halign = Gtk.Widget.get_halign obj
+  method set_halign a = Gtk.Widget.set_halign obj a
+  method valign = Gtk.Widget.get_valign obj
+  method set_valign a = Gtk.Widget.set_valign obj a
+  method margin_start = Gtk.Widget.get_margin_start obj
+  method set_margin_start m = Gtk.Widget.set_margin_start obj m
+  method margin_end = Gtk.Widget.get_margin_end obj
+  method set_margin_end m = Gtk.Widget.set_margin_end obj m
+  method margin_top = Gtk.Widget.get_margin_top obj
+  method set_margin_top m = Gtk.Widget.set_margin_top obj m
+  method margin_bottom = Gtk.Widget.get_margin_bottom obj
+  method set_margin_bottom m = Gtk.Widget.set_margin_bottom obj m
+
   (* Conversion *)
   method as_widget = obj
 end

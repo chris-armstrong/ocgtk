@@ -1,0 +1,231 @@
+(** Test suite for Gtk.Box module (Phase 4.1)
+
+    This test file verifies:
+    - GtkBox module compiles and types are accessible
+    - Box creation with different orientations
+    - Child management (append, prepend, insert, remove)
+    - Box properties (spacing, homogeneous, baseline_position)
+    - High-level GBox wrapper functionality
+    - GTK3 compatibility helpers
+    *)
+
+open Alcotest
+
+(* Test that Box module is accessible and types compile *)
+let test_module_accessible () =
+  (* Test that we can reference the types *)
+  let _box_type : Gtk.Box.t option = None in
+  let _orientation : Gtk.orientation = `HORIZONTAL in
+  let _baseline : Gtk.baseline_position = `CENTER in
+
+  check bool "module accessible" true true
+
+(* Test type constructors for orientation and baseline_position *)
+let test_type_constructors () =
+  (* Test orientation *)
+  let _horiz : Gtk.orientation = `HORIZONTAL in
+  let _vert : Gtk.orientation = `VERTICAL in
+
+  (* Test baseline_position *)
+  let _top : Gtk.baseline_position = `TOP in
+  let _center : Gtk.baseline_position = `CENTER in
+  let _bottom : Gtk.baseline_position = `BOTTOM in
+
+  check bool "types construct" true true
+
+(* Test box creation - requires GTK init *)
+let test_box_creation () =
+  try
+    (* Initialize GTK *)
+    let _ = GMain.init () in
+
+    (* Create horizontal box *)
+    let hbox = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:5 in
+    check int "horizontal box spacing" 5 (Gtk.Box.get_spacing hbox);
+    check bool "horizontal box not homogeneous" false (Gtk.Box.get_homogeneous hbox);
+
+    (* Create vertical box *)
+    let vbox = Gtk.Box.create ~orientation:`VERTICAL ~spacing:10 in
+    check int "vertical box spacing" 10 (Gtk.Box.get_spacing vbox);
+    check bool "vertical box not homogeneous" false (Gtk.Box.get_homogeneous vbox)
+  with
+  | Failure msg when msg = "GTK initialization failed" ->
+      skip ()  (* No display available *)
+  | e ->
+      fail ("Unexpected error: " ^ Printexc.to_string e)
+
+(* Test box properties *)
+let test_box_properties () =
+  try
+    let _ = GMain.init () in
+    let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+
+    (* Test spacing *)
+    Gtk.Box.set_spacing box 15;
+    check int "spacing set to 15" 15 (Gtk.Box.get_spacing box);
+
+    (* Test homogeneous *)
+    Gtk.Box.set_homogeneous box true;
+    check bool "homogeneous set to true" true (Gtk.Box.get_homogeneous box);
+
+    (* Test baseline position *)
+    Gtk.Box.set_baseline_position box `TOP;
+    check bool "baseline position set to TOP"
+      (`TOP = Gtk.Box.get_baseline_position box) true
+  with
+  | Failure msg when msg = "GTK initialization failed" ->
+      skip ()
+  | e ->
+      fail ("Unexpected error: " ^ Printexc.to_string e)
+
+(* Test widget packing properties *)
+let test_packing_properties () =
+  try
+    let _ = GMain.init () in
+    let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let widget = Gtk.Box.as_widget box in
+
+    (* Test hexpand/vexpand *)
+    Gtk.Widget.set_hexpand widget true;
+    check bool "hexpand set" true (Gtk.Widget.get_hexpand widget);
+
+    Gtk.Widget.set_vexpand widget true;
+    check bool "vexpand set" true (Gtk.Widget.get_vexpand widget);
+
+    (* Test halign/valign *)
+    Gtk.Widget.set_halign widget `CENTER;
+    check bool "halign set to CENTER"
+      (`CENTER = Gtk.Widget.get_halign widget) true;
+
+    Gtk.Widget.set_valign widget `FILL;
+    check bool "valign set to FILL"
+      (`FILL = Gtk.Widget.get_valign widget) true;
+
+    (* Test margins *)
+    Gtk.Widget.set_margin_start widget 10;
+    check int "margin_start set" 10 (Gtk.Widget.get_margin_start widget);
+
+    Gtk.Widget.set_margin_end widget 20;
+    check int "margin_end set" 20 (Gtk.Widget.get_margin_end widget);
+
+    Gtk.Widget.set_margin_top widget 5;
+    check int "margin_top set" 5 (Gtk.Widget.get_margin_top widget);
+
+    Gtk.Widget.set_margin_bottom widget 15;
+    check int "margin_bottom set" 15 (Gtk.Widget.get_margin_bottom widget)
+  with
+  | Failure msg when msg = "GTK initialization failed" ->
+      skip ()
+  | e ->
+      fail ("Unexpected error: " ^ Printexc.to_string e)
+
+(* Test high-level GBox wrapper *)
+let test_gbox_wrapper () =
+  try
+    let _ = GMain.init () in
+
+    (* Create horizontal box with wrapper *)
+    let hbox = GBox.hbox ~spacing:10 () in
+    check int "gbox hbox spacing" 10 hbox#spacing;
+
+    (* Set properties *)
+    hbox#set_spacing 20;
+    check int "gbox spacing updated" 20 hbox#spacing;
+
+    hbox#set_homogeneous true;
+    check bool "gbox homogeneous" true hbox#homogeneous;
+
+    (* Create vertical box with wrapper *)
+    let vbox = GBox.vbox ~spacing:5 ~homogeneous:true () in
+    check int "gbox vbox spacing" 5 vbox#spacing;
+    check bool "gbox vbox homogeneous" true vbox#homogeneous
+  with
+  | Failure msg when msg = "GTK initialization failed" ->
+      skip ()
+  | e ->
+      fail ("Unexpected error: " ^ Printexc.to_string e)
+
+(* Test GTK3 compatibility pack methods *)
+let test_pack_compat () =
+  try
+    let _ = GMain.init () in
+
+    (* Create box with pack compatibility *)
+    let box = GBox.hbox_pack ~spacing:5 () in
+
+    (* Note: We can't really test packing without other widgets,
+       but we can verify the box was created correctly *)
+    check int "pack box spacing" 5 box#spacing
+  with
+  | Failure msg when msg = "GTK initialization failed" ->
+      skip ()
+  | e ->
+      fail ("Unexpected error: " ^ Printexc.to_string e)
+
+(* Test child append/prepend - requires actual child widgets *)
+let test_child_management () =
+  try
+    let _ = GMain.init () in
+    let parent_box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let child_box = Gtk.Box.create ~orientation:`VERTICAL ~spacing:0 in
+    let child_widget = Gtk.Box.as_widget child_box in
+
+    (* Test append *)
+    Gtk.Box.append parent_box child_widget;
+
+    (* Test prepend - create another child *)
+    let child2_box = Gtk.Box.create ~orientation:`VERTICAL ~spacing:0 in
+    let child2_widget = Gtk.Box.as_widget child2_box in
+    Gtk.Box.prepend parent_box child2_widget;
+
+    (* Test remove *)
+    Gtk.Box.remove parent_box child_widget;
+    Gtk.Box.remove parent_box child2_widget;
+
+    check bool "child management successful" true true
+  with
+  | Failure msg when msg = "GTK initialization failed" ->
+      skip ()
+  | e ->
+      fail ("Unexpected error: " ^ Printexc.to_string e)
+
+(* Test as_widget function *)
+let test_as_widget () =
+  try
+    let _ = GMain.init () in
+    let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let widget = Gtk.Box.as_widget box in
+
+    (* Verify it's a valid widget by calling widget methods *)
+    Gtk.Widget.set_name widget "test_box";
+    check string "converted widget name" "test_box" (Gtk.Widget.get_name widget)
+  with
+  | Failure msg when msg = "GTK initialization failed" ->
+      skip ()
+  | e ->
+      fail ("Unexpected error: " ^ Printexc.to_string e)
+
+let () =
+  run "Gtk.Box Tests (Phase 4.1)" [
+    "module", [
+      test_case "module_accessible" `Quick test_module_accessible;
+      test_case "type_constructors" `Quick test_type_constructors;
+    ];
+    "creation", [
+      test_case "box_creation" `Quick test_box_creation;
+    ];
+    "properties", [
+      test_case "box_properties" `Quick test_box_properties;
+      test_case "packing_properties" `Quick test_packing_properties;
+    ];
+    "high_level", [
+      test_case "gbox_wrapper" `Quick test_gbox_wrapper;
+      test_case "pack_compat" `Quick test_pack_compat;
+    ];
+    "children", [
+      test_case "child_management" `Quick test_child_management;
+    ];
+    "as_widget", [
+      test_case "as_widget_conversion" `Quick test_as_widget;
+    ];
+  ]
