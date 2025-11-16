@@ -25,11 +25,11 @@
  (libraries camlp-streams)
  (flags (:standard -w -32)))
 
-; Phase 3.0: GIR-based code generator
+; Phase 3.0 & 5.0: GIR-based code generator (with cmdliner)
 (executable
  (name gir_gen)
  (modules gir_gen)
- (libraries str unix xmlm))
+ (libraries str unix xmlm cmdliner))
 
 ; Test for GIR generator
 (executable

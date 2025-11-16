@@ -101,7 +101,7 @@ let test_gir_parsing () =
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
-  let cmd = sprintf "%s/gir_gen.exe %s %s 2>&1"
+  let cmd = sprintf "%s/gir_gen.exe -m controllers %s %s 2>&1"
     tools_dir test_gir output_dir in
 
   let exit_code = Sys.command cmd in
@@ -137,6 +137,88 @@ let test_c_code_generation () =
   end else
     failwith "C file not generated"
 
+(* Test widget generation with filter *)
+let create_test_widget_gir filename =
+  let oc = open_out filename in
+  output_string oc {|<?xml version="1.0"?>
+<repository version="1.2"
+            xmlns="http://www.gtk.org/introspection/core/1.0"
+            xmlns:c="http://www.gtk.org/introspection/c/1.0">
+  <namespace name="Gtk">
+    <class name="Button" c:type="GtkButton" parent="Widget">
+      <constructor name="new" c:identifier="gtk_button_new"/>
+      <method name="set_label" c:identifier="gtk_button_set_label">
+        <return-value><type name="none" c:type="void"/></return-value>
+        <parameters>
+          <parameter name="label"><type name="utf8" c:type="const gchar*"/></parameter>
+        </parameters>
+      </method>
+      <method name="get_label" c:identifier="gtk_button_get_label">
+        <return-value><type name="utf8" c:type="const gchar*"/></return-value>
+      </method>
+    </class>
+    <class name="Label" c:type="GtkLabel" parent="Widget">
+      <constructor name="new" c:identifier="gtk_label_new"/>
+      <method name="set_text" c:identifier="gtk_label_set_text">
+        <return-value><type name="none" c:type="void"/></return-value>
+        <parameters>
+          <parameter name="str"><type name="utf8" c:type="const gchar*"/></parameter>
+        </parameters>
+      </method>
+    </class>
+  </namespace>
+</repository>
+|};
+  close_out oc
+
+let create_test_filter_file filename =
+  let oc = open_out filename in
+  output_string oc "# Test filter\nButton\nLabel\n";
+  close_out oc
+
+let test_widget_generation () =
+  let test_gir = "/tmp/test_widget_gen.gir" in
+  let test_filter = "/tmp/test_widget_filter.conf" in
+  let output_dir = "/tmp/test_widget_output" in
+
+  create_test_widget_gir test_gir;
+  create_test_filter_file test_filter;
+  (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
+
+  let tools_dir = Filename.dirname Sys.argv.(0) in
+  let cmd = sprintf "%s/gir_gen.exe -m widgets -f %s %s %s > /dev/null 2>&1"
+    tools_dir test_filter test_gir output_dir in
+
+  let exit_code = Sys.command cmd in
+  assert_true "Widget generator should exit successfully" (exit_code = 0);
+
+  let button_file = Filename.concat output_dir "button.mli" in
+  assert_true "Button.mli should be created" (file_exists button_file);
+
+  let label_file = Filename.concat output_dir "label.mli" in
+  assert_true "Label.mli should be created" (file_exists label_file);
+
+  let button_content = read_file button_file in
+  assert_contains "Button should have constructor" button_content "external new_";
+  assert_contains "Button should have set_label" button_content "set_label"
+
+let test_help_output () =
+  let tools_dir = Filename.dirname Sys.argv.(0) in
+  let cmd = sprintf "%s/gir_gen.exe --help 2>&1" tools_dir in
+  let ic = Unix.open_process_in cmd in
+  let output = Buffer.create 1024 in
+  (try
+    while true do
+      Buffer.add_string output (input_line ic);
+      Buffer.add_char output '\n'
+    done
+  with End_of_file -> ());
+  let _ = Unix.close_process_in ic in
+  let help_text = Buffer.contents output in
+  assert_contains "Help should mention mode" help_text "mode";
+  assert_contains "Help should mention filter" help_text "filter";
+  assert_contains "Help should show examples" help_text "EXAMPLES"
+
 (* ========================================================================= *)
 (* Main Test Runner *)
 (* ========================================================================= *)
@@ -144,11 +226,13 @@ let test_c_code_generation () =
 let () =
   printf "\n";
   printf "====================================\n";
-  printf "GIR Generator Test Suite\n";
+  printf "GIR Generator Test Suite (Phase 5)\n";
   printf "====================================\n\n";
 
   ignore (test "GIR file parsing" test_gir_parsing);
   ignore (test "C code generation" test_c_code_generation);
+  ignore (test "Widget generation" test_widget_generation);
+  ignore (test "Help output" test_help_output);
 
   printf "\n====================================\n";
   printf "Test Summary\n";

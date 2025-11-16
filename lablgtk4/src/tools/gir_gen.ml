@@ -11,6 +11,7 @@
 
 open Printf
 open StdLabels
+open Cmdliner
 
 (* ========================================================================= *)
 (* Type Definitions *)
@@ -263,12 +264,12 @@ let parse_gir_file filename mode filter_classes =
     | Widgets ->
       (match filter_classes with
        | [] -> not (is_event_controller name)  (* No filter = all widgets *)
-       | classes -> List.mem name classes)     (* Filter specified *)
+       | classes -> List.mem name ~set:classes)     (* Filter specified *)
     | All ->
       (match filter_classes with
        | [] -> true                             (* No filter = everything *)
        | classes ->
-         is_event_controller name || List.mem name classes)
+         is_event_controller name || List.mem name ~set:classes)
   in
 
   (* Skip to end of current element *)
@@ -664,70 +665,16 @@ let generate_ml_interface cls =
 (* Main *)
 (* ========================================================================= *)
 
-let () =
-  (* Phase 5: Enhanced command-line parsing *)
-  let gir_file = ref "" in
-  let output_dir = ref "." in
-  let mode = ref EventControllers in
-  let filter_file = ref None in
-
-  let usage = sprintf "Usage: %s [options] <gir-file> <output-dir>\n\
-    \nOptions:\n\
-    \  -mode <controllers|widgets|all>  Generation mode (default: controllers)\n\
-    \  -filter <file>                   Filter file for widget selection\n"
-    Sys.argv.(0) in
-
-  let rec parse_args i =
-    if i >= Array.length Sys.argv then ()
-    else
-      match Sys.argv.(i) with
-      | "-mode" ->
-        if i + 1 < Array.length Sys.argv then begin
-          (match Sys.argv.(i + 1) with
-          | "controllers" -> mode := EventControllers
-          | "widgets" -> mode := Widgets
-          | "all" -> mode := All
-          | m -> eprintf "Unknown mode: %s\n" m; exit 1);
-          parse_args (i + 2)
-        end else begin
-          eprintf "Missing argument for -mode\n"; exit 1
-        end
-      | "-filter" ->
-        if i + 1 < Array.length Sys.argv then begin
-          filter_file := Some Sys.argv.(i + 1);
-          parse_args (i + 2)
-        end else begin
-          eprintf "Missing argument for -filter\n"; exit 1
-        end
-      | arg when arg.[0] <> '-' ->
-        if !gir_file = "" then begin
-          gir_file := arg;
-          parse_args (i + 1)
-        end else if !output_dir = "." then begin
-          output_dir := arg;
-          parse_args (i + 1)
-        end else begin
-          eprintf "Too many arguments\n"; exit 1
-        end
-      | arg ->
-        eprintf "Unknown option: %s\n" arg; exit 1
-  in
-
-  parse_args 1;
-
-  if !gir_file = "" then begin
-    eprintf "%s" usage;
-    exit 1
-  end;
-
-  printf "Parsing %s (mode: %s)...\n" !gir_file
-    (match !mode with
+(* Main generation function *)
+let generate_bindings mode filter_file gir_file output_dir =
+  printf "Parsing %s (mode: %s)...\n" gir_file
+    (match mode with
      | EventControllers -> "controllers"
      | Widgets -> "widgets"
      | All -> "all");
 
   (* Read filter file if specified *)
-  let filter_classes = match !filter_file with
+  let filter_classes = match filter_file with
     | Some f ->
       printf "Reading filter file: %s\n" f;
       let classes = read_filter_file f in
@@ -736,9 +683,9 @@ let () =
     | None -> []
   in
 
-  let controllers = parse_gir_file !gir_file !mode filter_classes in
+  let controllers = parse_gir_file gir_file mode filter_classes in
 
-  let class_type_name = match !mode with
+  let class_type_name = match mode with
     | EventControllers -> "event controller"
     | Widgets -> "widget"
     | All -> "controller/widget"
@@ -770,7 +717,7 @@ let () =
   ) controllers;
 
   (* Write C output *)
-  let c_file = Filename.concat !output_dir "ml_event_controllers_gen.c" in
+  let c_file = Filename.concat output_dir "ml_event_controllers_gen.c" in
   printf "\nWriting %s...\n" c_file;
   let oc = open_out c_file in
   Buffer.output_buffer oc c_buf;
@@ -778,7 +725,7 @@ let () =
 
   (* Generate OCaml modules *)
   List.iter ~f:(fun cls ->
-    let ml_file = Filename.concat !output_dir
+    let ml_file = Filename.concat output_dir
       (sprintf "%s.mli" (to_snake_case cls.class_name)) in
     printf "Writing %s...\n" ml_file;
     let oc = open_out ml_file in
@@ -788,4 +735,49 @@ let () =
 
   printf "\n✓ Code generation complete!\n";
   printf "  Generated: %s\n" c_file;
-  printf "  Generated: %d OCaml interface files\n" (List.length controllers)
+  printf "  Generated: %d OCaml interface files\n" (List.length controllers);
+  `Ok ()
+
+(* Cmdliner argument definitions *)
+let mode_arg =
+  let mode_enum = [
+    ("controllers", EventControllers);
+    ("widgets", Widgets);
+    ("all", All);
+  ] in
+  let doc = "Generation mode: controllers, widgets, or all (default: controllers)" in
+  Arg.(value & opt (enum mode_enum) EventControllers & info ["m"; "mode"] ~docv:"MODE" ~doc)
+
+let filter_arg =
+  let doc = "Filter file specifying which classes to generate" in
+  Arg.(value & opt (some file) None & info ["f"; "filter"] ~docv:"FILE" ~doc)
+
+let gir_file_arg =
+  let doc = "Path to GTK GIR file (e.g., /usr/share/gir-1.0/Gtk-4.0.gir)" in
+  Arg.(required & pos 0 (some file) None & info [] ~docv:"GIR_FILE" ~doc)
+
+let output_dir_arg =
+  let doc = "Output directory for generated files" in
+  Arg.(required & pos 1 (some dir) None & info [] ~docv:"OUTPUT_DIR" ~doc)
+
+(* Command definition *)
+let gir_gen_cmd =
+  let doc = "Generate C FFI bindings and OCaml modules from GTK GIR files" in
+  let man = [
+    `S Manpage.s_description;
+    `P "gir_gen parses GTK GObject Introspection (GIR) files and generates \
+        C FFI bindings and OCaml module interfaces for GTK4 event controllers \
+        and widgets.";
+    `S Manpage.s_examples;
+    `P "Generate event controller bindings:";
+    `Pre "  gir_gen /usr/share/gir-1.0/Gtk-4.0.gir ./output";
+    `P "Generate widget bindings with filter:";
+    `Pre "  gir_gen -m widgets -f widget_filter.conf Gtk-4.0.gir ./output";
+    `S Manpage.s_bugs;
+    `P "Report bugs to https://github.com/chris-armstrong/lablgtk/issues";
+  ] in
+  let info = Cmd.info "gir_gen" ~version:"5.0.0" ~doc ~man in
+  Cmd.v info Term.(ret (const generate_bindings $ mode_arg $ filter_arg $ gir_file_arg $ output_dir_arg))
+
+(* Main entry point *)
+let () = exit (Cmd.eval gir_gen_cmd)
