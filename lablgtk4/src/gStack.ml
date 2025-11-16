@@ -17,10 +17,10 @@ class stack_skel (obj : Gtk.Stack.t) = object (self)
   inherit GObj.widget_impl (Gtk.Stack.as_widget obj)
 
   method add_named ~name (child : GObj.widget) =
-    Gtk.Stack.add_named obj child#as_widget name
+    Gtk.Stack.add_named obj ~child:child#as_widget ~name:name
 
   method add_titled ~name ~title (child : GObj.widget) =
-    Gtk.Stack.add_titled obj child#as_widget name title
+    Gtk.Stack.add_titled obj ~child:child#as_widget ~name:name ~title:title
 
   method add_child (child : GObj.widget) =
     Gtk.Stack.add_child obj child#as_widget
