@@ -45,6 +45,7 @@ type gir_signal = {
 type gir_constructor = {
   ctor_name : string;
   c_identifier : string;
+  ctor_parameters : gir_param list;  (* Added: constructor parameters *)
   ctor_doc : string option;
 }
 
@@ -153,18 +154,24 @@ let type_mappings = [
     needs_copy = false;
   });
   ("GtkJustification", {
-    ocaml_type = "Gtk.justification";
-    c_to_ml = "Val_justification";
-    ml_to_c = "Justification_val";
+    ocaml_type = "int";
+    c_to_ml = "Val_int";
+    ml_to_c = "Int_val";
     needs_copy = false;
   });
   ("PangoWrapMode", {
-    ocaml_type = "Pango.wrap_mode";
-    c_to_ml = "Val_PangoWrapMode";
-    ml_to_c = "PangoWrapMode_val";
+    ocaml_type = "int";
+    c_to_ml = "Val_int";
+    ml_to_c = "Int_val";
     needs_copy = false;
   });
   ("const gchar*", {
+    ocaml_type = "string";
+    c_to_ml = "caml_copy_string";
+    ml_to_c = "String_val";
+    needs_copy = true;
+  });
+  ("const char*", {
     ocaml_type = "string";
     c_to_ml = "caml_copy_string";
     ml_to_c = "String_val";
@@ -174,6 +181,68 @@ let type_mappings = [
     ocaml_type = "string";
     c_to_ml = "caml_copy_string";
     ml_to_c = "String_val";
+    needs_copy = true;
+  });
+  (* Enum types - map to int for now *)
+  ("GtkInputPurpose", {
+    ocaml_type = "int";
+    c_to_ml = "Val_int";
+    ml_to_c = "Int_val";
+    needs_copy = false;
+  });
+  ("GtkInputHints", {
+    ocaml_type = "int";
+    c_to_ml = "Val_int";
+    ml_to_c = "Int_val";
+    needs_copy = false;
+  });
+  ("GtkImageType", {
+    ocaml_type = "int";
+    c_to_ml = "Val_int";
+    ml_to_c = "Int_val";
+    needs_copy = false;
+  });
+  ("GtkArrowType", {
+    ocaml_type = "int";
+    c_to_ml = "Val_int";
+    ml_to_c = "Int_val";
+    needs_copy = false;
+  });
+  ("GtkSpinButtonUpdatePolicy", {
+    ocaml_type = "int";
+    c_to_ml = "Val_int";
+    ml_to_c = "Int_val";
+    needs_copy = false;
+  });
+  ("GtkIconSize", {
+    ocaml_type = "int";
+    c_to_ml = "Val_int";
+    ml_to_c = "Int_val";
+    needs_copy = false;
+  });
+  ("GtkNaturalWrapMode", {
+    ocaml_type = "int";
+    c_to_ml = "Val_int";
+    ml_to_c = "Int_val";
+    needs_copy = false;
+  });
+  ("PangoEllipsizeMode", {
+    ocaml_type = "int";
+    c_to_ml = "Val_int";
+    ml_to_c = "Int_val";
+    needs_copy = false;
+  });
+  (* Primitive types *)
+  ("gfloat", {
+    ocaml_type = "float";
+    c_to_ml = "caml_copy_double";
+    ml_to_c = "Double_val";
+    needs_copy = true;
+  });
+  ("float", {
+    ocaml_type = "float";
+    c_to_ml = "caml_copy_double";
+    ml_to_c = "Double_val";
     needs_copy = true;
   });
 ]
@@ -303,12 +372,13 @@ let parse_gir_file filename mode filter_classes =
           | "constructor" ->
             (match get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs with
             | Some ctor_name, Some c_id ->
+              let (_return_type, params) = parse_method () in
               constructors := {
                 ctor_name = ctor_name;
                 c_identifier = c_id;
+                ctor_parameters = params;
                 ctor_doc = None;
               } :: !constructors;
-              skip_element 1;
               parse_class_contents ()
             | _ ->
               skip_element 1;
@@ -596,10 +666,7 @@ let generate_c_header () =
 /* Type conversions - use direct cast (GObjects) */\n\
 #define GtkEventController_val(val) ((GtkEventController*)Pointer_val(val))\n\
 #define Val_GtkEventController(obj) ((value)(obj))\n\
-\n\
-/* Phase 5: Widget type conversions */\n\
-#define GtkWidget_val(val) ((GtkWidget*)Pointer_val(val))\n\
-#define Val_GtkWidget(obj) ((value)(obj))\n\
+/* Note: GtkWidget_val and Val_GtkWidget are defined in wrappers.h */\n\
 \n"
 
 let generate_c_constructor ctor cls =
@@ -620,12 +687,42 @@ let generate_c_constructor ctor cls =
       ("Val_GtkEventController", "GtkEventController", "controller")
   in
 
-  sprintf "\nCAMLprim value %s(value unit)\n\
+  (* Generate parameters *)
+  let param_count = if List.length ctor.ctor_parameters = 0 then 1 else List.length ctor.ctor_parameters in
+  let params =
+    if List.length ctor.ctor_parameters = 0 then
+      ["value unit"]
+    else
+      List.mapi ~f:(fun i _ -> sprintf "value arg%d" (i + 1)) ctor.ctor_parameters
+  in
+  let param_names =
+    if List.length ctor.ctor_parameters = 0 then
+      ["unit"]
+    else
+      List.mapi ~f:(fun i _ -> sprintf "arg%d" (i + 1)) ctor.ctor_parameters
+  in
+
+  (* Build C call arguments *)
+  let c_args =
+    List.mapi ~f:(fun i p ->
+      match find_type_mapping p.param_type.c_type with
+      | Some mapping -> sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
+      | None -> sprintf "arg%d" (i + 1)
+    ) ctor.ctor_parameters
+  in
+
+  sprintf "\nCAMLprim value %s(%s)\n\
 {\n\
-    CAMLparam1(unit);\n\
-    %s *%s = %s();\n\
+    CAMLparam%d(%s);\n\
+    %s *%s = %s(%s);\n\
     CAMLreturn(%s(%s));\n\
-}\n" ml_name c_type_name var_name c_name val_macro var_name
+}\n"
+    ml_name
+    (String.concat ~sep:", " params)
+    param_count
+    (String.concat ~sep:", " param_names)
+    c_type_name var_name c_name (String.concat ~sep:", " c_args)
+    val_macro var_name
 
 let generate_c_method (meth : gir_method) cls =
   let c_name = meth.c_identifier in
@@ -633,6 +730,8 @@ let generate_c_method (meth : gir_method) cls =
   let param_count = 1 + List.length meth.parameters in
   let params = "value self" ::
     List.mapi ~f:(fun i _ -> sprintf "value arg%d" (i + 1)) meth.parameters in
+  let param_names = "self" ::
+    List.mapi ~f:(fun i _ -> sprintf "arg%d" (i + 1)) meth.parameters in
 
   (* Determine widget or controller cast *)
   let is_widget = not (
@@ -678,7 +777,7 @@ let generate_c_method (meth : gir_method) cls =
     ml_name
     (String.concat ~sep:", " params)
     param_count
-    (String.concat ~sep:", " params)
+    (String.concat ~sep:", " param_names)
     c_call
     ret_conv
 
@@ -719,9 +818,9 @@ let generate_c_property_getter (prop : gir_property) (cls : gir_class) =
     CAMLparam1(self);\n\
     CAMLlocal1(result);\n\
     %s *obj = (%s *)%s(self);\n\
-    %s value;\n\
-    g_object_get(G_OBJECT(obj), \"%s\", &value, NULL);\n\
-    result = %s(value);\n\
+    %s prop_value;\n\
+    g_object_get(G_OBJECT(obj), \"%s\", &prop_value, NULL);\n\
+    result = %s(prop_value);\n\
     CAMLreturn(result);\n\
 }\n"
     ml_name
@@ -820,36 +919,38 @@ let generate_ml_interface cls =
   if List.length cls.properties > 0 then begin
     bprintf buf "(* Properties *)\n\n";
     List.iter ~f:(fun (prop : gir_property) ->
-      (* Convert property name: replace hyphens with underscores, then snake_case *)
-      let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
-      let prop_snake = to_snake_case prop_name_cleaned in
-      let class_snake = to_snake_case cls.class_name in
+      (* Skip object types (GtkWidget*, etc.) - use methods instead *)
+      let type_mapping_opt = find_type_mapping prop.prop_type.c_type in
+      match type_mapping_opt with
+      | Some type_mapping ->
+        (* Convert property name: replace hyphens with underscores, then snake_case *)
+        let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
+        let prop_snake = to_snake_case prop_name_cleaned in
+        let class_snake = to_snake_case cls.class_name in
+        let prop_ocaml_type = type_mapping.ocaml_type in
 
-      (* Determine property type in OCaml *)
-      let prop_ocaml_type = match find_type_mapping prop.prop_type.c_type with
-        | Some mapping -> mapping.ocaml_type
-        | None -> "unit" (* fallback for unknown types *)
-      in
+        (* Generate getter if readable *)
+        if prop.readable then begin
+          let getter_name = sprintf "get_%s" prop_snake in
+          property_names := getter_name :: !property_names;
+          let c_getter = sprintf "ml_gtk_%s_get_%s" class_snake prop_snake in
+          bprintf buf "(** Get property: %s *)\n" prop.prop_name;
+          bprintf buf "external %s : t -> %s = \"%s\"\n\n"
+            getter_name prop_ocaml_type c_getter;
+        end;
 
-      (* Generate getter if readable *)
-      if prop.readable then begin
-        let getter_name = sprintf "get_%s" prop_snake in
-        property_names := getter_name :: !property_names;
-        let c_getter = sprintf "ml_gtk_%s_get_%s" class_snake prop_snake in
-        bprintf buf "(** Get property: %s *)\n" prop.prop_name;
-        bprintf buf "external %s : t -> %s = \"%s\"\n\n"
-          getter_name prop_ocaml_type c_getter;
-      end;
-
-      (* Generate setter if writable and not construct-only *)
-      if prop.writable && not prop.construct_only then begin
-        let setter_name = sprintf "set_%s" prop_snake in
-        property_names := setter_name :: !property_names;
-        let c_setter = sprintf "ml_gtk_%s_set_%s" class_snake prop_snake in
-        bprintf buf "(** Set property: %s *)\n" prop.prop_name;
-        bprintf buf "external %s : t -> %s -> unit = \"%s\"\n\n"
-          setter_name prop_ocaml_type c_setter;
-      end;
+        (* Generate setter if writable and not construct-only *)
+        if prop.writable && not prop.construct_only then begin
+          let setter_name = sprintf "set_%s" prop_snake in
+          property_names := setter_name :: !property_names;
+          let c_setter = sprintf "ml_gtk_%s_set_%s" class_snake prop_snake in
+          bprintf buf "(** Set property: %s *)\n" prop.prop_name;
+          bprintf buf "external %s : t -> %s -> unit = \"%s\"\n\n"
+            setter_name prop_ocaml_type c_setter;
+        end;
+      | None ->
+        (* Skip properties without type mapping (object types) *)
+        ()
     ) cls.properties;
   end;
 
@@ -939,17 +1040,49 @@ let generate_bindings mode filter_file gir_file output_dir =
       Buffer.add_string c_buf (generate_c_constructor ctor cls)
     ) cls.constructors;
 
-    (* Phase 5.2: Generate ALL methods (removed 5-method limit) *)
-    List.iter ~f:(fun meth ->
-      Buffer.add_string c_buf (generate_c_method meth cls)
+    (* Phase 5.2: Build list of property names to avoid duplicates *)
+    let property_method_names = ref [] in
+    List.iter ~f:(fun (prop : gir_property) ->
+      (* Only track properties with type mappings (simple types) *)
+      let has_type_mapping = match find_type_mapping prop.prop_type.c_type with
+        | Some _ -> true
+        | None -> false
+      in
+      if has_type_mapping then begin
+        let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
+        let prop_snake = to_snake_case prop_name_cleaned in
+        if prop.readable then
+          property_method_names := (sprintf "get_%s" prop_snake) :: !property_method_names;
+        if prop.writable && not prop.construct_only then
+          property_method_names := (sprintf "set_%s" prop_snake) :: !property_method_names;
+      end
+    ) cls.properties;
+
+    (* Phase 5.2: Generate ALL methods (removed 5-method limit), skip duplicates *)
+    List.iter ~f:(fun (meth : gir_method) ->
+      let c_name = meth.c_identifier in
+      let class_snake = to_snake_case cls.class_name in
+      let ocaml_name = to_snake_case (
+        Str.global_replace (Str.regexp (sprintf "gtk_%s_" class_snake)) "" c_name
+      ) in
+      (* Skip methods that would duplicate property-generated functions *)
+      if not (List.mem ocaml_name ~set:!property_method_names) then
+        Buffer.add_string c_buf (generate_c_method meth cls)
     ) (List.rev cls.methods);
 
     (* Phase 5.2: Generate property getters and setters *)
+    (* Skip object types (GtkWidget*, etc.) - use methods instead *)
     List.iter ~f:(fun (prop : gir_property) ->
-      if prop.readable then
-        Buffer.add_string c_buf (generate_c_property_getter prop cls);
-      if prop.writable && not prop.construct_only then
-        Buffer.add_string c_buf (generate_c_property_setter prop cls);
+      let is_simple_type = match find_type_mapping prop.prop_type.c_type with
+        | Some _ -> true
+        | None -> false
+      in
+      if is_simple_type then begin
+        if prop.readable then
+          Buffer.add_string c_buf (generate_c_property_getter prop cls);
+        if prop.writable && not prop.construct_only then
+          Buffer.add_string c_buf (generate_c_property_setter prop cls);
+      end
     ) cls.properties;
   ) controllers;
 
