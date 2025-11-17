@@ -19,7 +19,7 @@ echo "║         LablGTK4 Test Suite - Individual Test Runner        ║"
 echo "╚══════════════════════════════════════════════════════════════╝"
 echo ""
 
-echo "Running code generation tests..."
+echo "Running code generation tests (Phase 5.0 & 5.2)..."
 run_test ./_build/default/src/tools/test_gir_gen.exe
 echo ""
 
