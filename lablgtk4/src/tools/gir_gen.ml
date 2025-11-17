@@ -987,12 +987,42 @@ let generate_ml_interface cls =
 
   bprintf buf "type t = %s\n\n" base_type;
 
-  (* Constructors *)
+  (* Constructors - generate unique names and proper signatures *)
   List.iter ~f:(fun ctor ->
     bprintf buf "(** Create a new %s *)\n" cls.class_name;
     let c_name = ctor.c_identifier in
     let ml_name = Str.global_replace (Str.regexp "gtk_") "ml_gtk_" c_name in
-    bprintf buf "external new_ : unit -> t = \"%s\"\n\n" ml_name;
+
+    (* Generate OCaml constructor name from C identifier *)
+    let class_snake = to_snake_case cls.class_name in
+    let ocaml_ctor_name =
+      let base = Str.global_replace (Str.regexp (sprintf "gtk_%s_" class_snake)) "" c_name in
+      let snake = to_snake_case base in
+      (* Use "new_" for basic constructor to avoid "new" keyword *)
+      if snake = "new" then "new_" else snake
+    in
+
+    (* Build parameter types for constructor signature *)
+    let param_types = List.map ~f:(fun p ->
+      match find_type_mapping p.param_type.c_type with
+      | Some mapping ->
+        let base_type = mapping.ocaml_type in
+        if p.nullable then
+          sprintf "%s option" base_type
+        else
+          base_type
+      | None -> "unit" (* fallback *)
+    ) ctor.ctor_parameters in
+
+    (* Generate signature: param1 -> param2 -> ... -> t *)
+    let signature =
+      if List.length param_types = 0 then
+        "unit -> t"
+      else
+        String.concat ~sep:" -> " (param_types @ ["t"])
+    in
+
+    bprintf buf "external %s : %s = \"%s\"\n\n" ocaml_ctor_name signature ml_name;
   ) cls.constructors;
 
   (* Properties - generate get/set externals *)

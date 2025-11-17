@@ -7,10 +7,10 @@ type t = Gtk.Widget.t
 external new_ : unit -> t = "ml_gtk_toggle_button_new"
 
 (** Create a new ToggleButton *)
-external new_ : unit -> t = "ml_gtk_toggle_button_new_with_label"
+external new_with_label : string -> t = "ml_gtk_toggle_button_new_with_label"
 
 (** Create a new ToggleButton *)
-external new_ : unit -> t = "ml_gtk_toggle_button_new_with_mnemonic"
+external new_with_mnemonic : string -> t = "ml_gtk_toggle_button_new_with_mnemonic"
 
 (* Properties *)
 

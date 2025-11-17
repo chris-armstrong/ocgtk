@@ -7,13 +7,13 @@ type t = Gtk.Widget.t
 external new_ : unit -> t = "ml_gtk_button_new"
 
 (** Create a new Button *)
-external new_ : unit -> t = "ml_gtk_button_new_from_icon_name"
+external new_from_icon_name : string -> t = "ml_gtk_button_new_from_icon_name"
 
 (** Create a new Button *)
-external new_ : unit -> t = "ml_gtk_button_new_with_label"
+external new_with_label : string -> t = "ml_gtk_button_new_with_label"
 
 (** Create a new Button *)
-external new_ : unit -> t = "ml_gtk_button_new_with_mnemonic"
+external new_with_mnemonic : string -> t = "ml_gtk_button_new_with_mnemonic"
 
 (* Properties *)
 

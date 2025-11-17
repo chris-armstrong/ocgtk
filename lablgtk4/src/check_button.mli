@@ -7,10 +7,10 @@ type t = Gtk.Widget.t
 external new_ : unit -> t = "ml_gtk_check_button_new"
 
 (** Create a new CheckButton *)
-external new_ : unit -> t = "ml_gtk_check_button_new_with_label"
+external new_with_label : string option -> t = "ml_gtk_check_button_new_with_label"
 
 (** Create a new CheckButton *)
-external new_ : unit -> t = "ml_gtk_check_button_new_with_mnemonic"
+external new_with_mnemonic : string option -> t = "ml_gtk_check_button_new_with_mnemonic"
 
 (* Properties *)
 

@@ -4,7 +4,7 @@
 type t = Gtk.Widget.t
 
 (** Create a new TextTag *)
-external new_ : unit -> t = "ml_gtk_text_tag_new"
+external new_ : string option -> t = "ml_gtk_text_tag_new"
 
 (* Properties *)
 

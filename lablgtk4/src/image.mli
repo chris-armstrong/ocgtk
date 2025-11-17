@@ -7,22 +7,22 @@ type t = Gtk.Widget.t
 external new_ : unit -> t = "ml_gtk_image_new"
 
 (** Create a new Image *)
-external new_ : unit -> t = "ml_gtk_image_new_from_file"
+external new_from_file : string -> t = "ml_gtk_image_new_from_file"
 
 (** Create a new Image *)
-external new_ : unit -> t = "ml_gtk_image_new_from_gicon"
+external new_from_gicon : unit -> t = "ml_gtk_image_new_from_gicon"
 
 (** Create a new Image *)
-external new_ : unit -> t = "ml_gtk_image_new_from_icon_name"
+external new_from_icon_name : string option -> t = "ml_gtk_image_new_from_icon_name"
 
 (** Create a new Image *)
-external new_ : unit -> t = "ml_gtk_image_new_from_paintable"
+external new_from_paintable : unit -> t = "ml_gtk_image_new_from_paintable"
 
 (** Create a new Image *)
-external new_ : unit -> t = "ml_gtk_image_new_from_pixbuf"
+external new_from_pixbuf : unit -> t = "ml_gtk_image_new_from_pixbuf"
 
 (** Create a new Image *)
-external new_ : unit -> t = "ml_gtk_image_new_from_resource"
+external new_from_resource : string -> t = "ml_gtk_image_new_from_resource"
 
 (* Properties *)
 

@@ -5,8 +5,8 @@
 type t = Gtk.Widget.t
 
 (* External FFI bindings *)
-external new_ : unit -> t = "ml_gtk_spin_button_new"
-external new_ : unit -> t = "ml_gtk_spin_button_new_with_range"
+external new_ : Gtk.Widget.t option -> unit -> int -> t = "ml_gtk_spin_button_new"
+external new_with_range : unit -> unit -> unit -> t = "ml_gtk_spin_button_new_with_range"
 external get_activates_default : t -> bool = "ml_gtk_spin_button_get_activates_default"
 external set_activates_default : t -> bool -> unit = "ml_gtk_spin_button_set_activates_default"
 external get_climb_rate : t -> float = "ml_gtk_spin_button_get_climb_rate"

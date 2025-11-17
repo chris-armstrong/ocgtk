@@ -7,7 +7,7 @@ type t = Gtk.Widget.t
 external new_ : unit -> t = "ml_gtk_text_view_new"
 
 (** Create a new TextView *)
-external new_ : unit -> t = "ml_gtk_text_view_new_with_buffer"
+external new_with_buffer : Gtk.Widget.t -> t = "ml_gtk_text_view_new_with_buffer"
 
 (* Properties *)
 

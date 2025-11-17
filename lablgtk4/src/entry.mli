@@ -7,7 +7,7 @@ type t = Gtk.Widget.t
 external new_ : unit -> t = "ml_gtk_entry_new"
 
 (** Create a new Entry *)
-external new_ : unit -> t = "ml_gtk_entry_new_with_buffer"
+external new_with_buffer : Gtk.Widget.t -> t = "ml_gtk_entry_new_with_buffer"
 
 (* Properties *)
 

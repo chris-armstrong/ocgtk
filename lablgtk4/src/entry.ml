@@ -6,7 +6,7 @@ type t = Gtk.Widget.t
 
 (* External FFI bindings *)
 external new_ : unit -> t = "ml_gtk_entry_new"
-external new_ : unit -> t = "ml_gtk_entry_new_with_buffer"
+external new_with_buffer : Gtk.Widget.t -> t = "ml_gtk_entry_new_with_buffer"
 external get_activates_default : t -> bool = "ml_gtk_entry_get_activates_default"
 external set_activates_default : t -> bool -> unit = "ml_gtk_entry_set_activates_default"
 external get_enable_emoji_completion : t -> bool = "ml_gtk_entry_get_enable_emoji_completion"

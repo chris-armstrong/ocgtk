@@ -4,10 +4,10 @@
 type t = Gtk.Widget.t
 
 (** Create a new Label *)
-external new_ : unit -> t = "ml_gtk_label_new"
+external new_ : string option -> t = "ml_gtk_label_new"
 
 (** Create a new Label *)
-external new_ : unit -> t = "ml_gtk_label_new_with_mnemonic"
+external new_with_mnemonic : string option -> t = "ml_gtk_label_new_with_mnemonic"
 
 (* Properties *)
 

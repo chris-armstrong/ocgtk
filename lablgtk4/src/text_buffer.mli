@@ -4,7 +4,7 @@
 type t = Gtk.Widget.t
 
 (** Create a new TextBuffer *)
-external new_ : unit -> t = "ml_gtk_text_buffer_new"
+external new_ : Gtk.Widget.t option -> t = "ml_gtk_text_buffer_new"
 
 (* Properties *)
 
