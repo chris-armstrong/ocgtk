@@ -602,25 +602,51 @@ let generate_c_header () =
 #define Val_GtkWidget(obj) ((value)(obj))\n\
 \n"
 
-let generate_c_constructor ctor =
+let generate_c_constructor ctor cls =
   let c_name = ctor.c_identifier in
   let ml_name = Str.global_replace (Str.regexp "gtk_") "ml_gtk_" c_name in
+
+  (* Determine widget or controller cast *)
+  let is_widget = not (
+    cls.class_name = "EventController" ||
+    (String.length cls.class_name > 15 && String.sub ~pos:0 ~len:15 cls.class_name = "EventController") ||
+    (String.length cls.class_name > 7 && String.sub ~pos:0 ~len:7 cls.class_name = "Gesture")
+  ) in
+
+  let (val_macro, c_type_name, var_name) =
+    if is_widget then
+      ("Val_GtkWidget", "GtkWidget", "widget")
+    else
+      ("Val_GtkEventController", "GtkEventController", "controller")
+  in
+
   sprintf "\nCAMLprim value %s(value unit)\n\
 {\n\
     CAMLparam1(unit);\n\
-    GtkEventController *controller = %s();\n\
-    CAMLreturn(Val_GtkEventController(controller));\n\
-}\n" ml_name c_name
+    %s *%s = %s();\n\
+    CAMLreturn(%s(%s));\n\
+}\n" ml_name c_type_name var_name c_name val_macro var_name
 
-let generate_c_method (meth : gir_method) =
+let generate_c_method (meth : gir_method) cls =
   let c_name = meth.c_identifier in
   let ml_name = Str.global_replace (Str.regexp "gtk_") "ml_gtk_" c_name in
   let param_count = 1 + List.length meth.parameters in
   let params = "value self" ::
     List.mapi ~f:(fun i _ -> sprintf "value arg%d" (i + 1)) meth.parameters in
 
+  (* Determine widget or controller cast *)
+  let is_widget = not (
+    cls.class_name = "EventController" ||
+    (String.length cls.class_name > 15 && String.sub ~pos:0 ~len:15 cls.class_name = "EventController") ||
+    (String.length cls.class_name > 7 && String.sub ~pos:0 ~len:7 cls.class_name = "Gesture")
+  ) in
+
+  let self_cast =
+    if is_widget then "GtkWidget_val(self)" else "GtkEventController_val(self)"
+  in
+
   (* Build C call *)
-  let c_args = "GtkEventController_val(self)" ::
+  let c_args = self_cast ::
     List.mapi ~f:(fun i p ->
       match find_type_mapping p.param_type.c_type with
       | Some mapping -> sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
@@ -910,12 +936,12 @@ let generate_bindings mode filter_file gir_file output_dir =
 
     (* Constructors *)
     List.iter ~f:(fun ctor ->
-      Buffer.add_string c_buf (generate_c_constructor ctor)
+      Buffer.add_string c_buf (generate_c_constructor ctor cls)
     ) cls.constructors;
 
     (* Phase 5.2: Generate ALL methods (removed 5-method limit) *)
     List.iter ~f:(fun meth ->
-      Buffer.add_string c_buf (generate_c_method meth)
+      Buffer.add_string c_buf (generate_c_method meth cls)
     ) (List.rev cls.methods);
 
     (* Phase 5.2: Generate property getters and setters *)

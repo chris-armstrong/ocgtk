@@ -52,7 +52,16 @@ let parse_mli_file filename =
           let c_name_end = String.rindex type_part '"' in
           let c_name = String.sub ~pos:(c_name_start + 1)
             ~len:(c_name_end - c_name_start - 1) type_part in
-          let type_sig = String.trim (String.sub ~pos:0 ~len:c_name_start type_part) in
+
+          (* Extract type signature, excluding the '=' before the C name *)
+          let type_part_before_cname = String.sub ~pos:0 ~len:c_name_start type_part in
+          let type_sig = String.trim type_part_before_cname in
+          let type_sig =
+            if String.length type_sig > 0 && String.get type_sig (String.length type_sig - 1) = '=' then
+              String.trim (String.sub ~pos:0 ~len:(String.length type_sig - 1) type_sig)
+            else
+              type_sig
+          in
 
           externals := { ext_name = name; ext_type = type_sig; ext_c_name = c_name } :: !externals;
         with _ -> ()
