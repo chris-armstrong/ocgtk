@@ -130,7 +130,7 @@ let widget_categories = [
 ]
 
 let generate_category_file category widgets output_dir =
-  let (_, first_widget) = List.hd widgets in
+  let first_widget = List.hd widgets in
   let (_, module_name, _) = first_widget in
   let ml_file = Filename.concat output_dir (String.lowercase_ascii module_name ^ ".ml") in
   let mli_file = Filename.concat output_dir (String.lowercase_ascii module_name ^ ".mli") in
