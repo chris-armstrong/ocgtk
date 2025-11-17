@@ -85,10 +85,17 @@ let test_toggle_button_with_label () =
   check bool "toggle button activated" true (GtkToggleButton.get_active btn)
 
 let test_toggle_button_toggled () =
+  (* Note: gtk_toggle_button_toggled() emits the "toggled" signal but
+     does NOT change the active state. To change state, use set_active. *)
   let btn = GtkToggleButton.new_ () in
   GtkToggleButton.set_active btn false;
+  (* Call toggled - it should emit signal but not change state *)
   GtkToggleButton.toggled btn;
-  check bool "toggle button toggled" true (GtkToggleButton.get_active btn)
+  check bool "toggle button state unchanged after toggled" false (GtkToggleButton.get_active btn);
+  (* Try with active=true *)
+  GtkToggleButton.set_active btn true;
+  GtkToggleButton.toggled btn;
+  check bool "toggle button state still true after toggled" true (GtkToggleButton.get_active btn)
 
 let test_high_level_button () =
   let btn = GButton.button ~label:"Click me" () in
@@ -122,12 +129,14 @@ let test_high_level_radio_buttons () =
   check string "radio button 3 label" "Option 3" rb3#label
 
 let test_high_level_toggle_button () =
+  (* Note: toggled() emits signal but doesn't change state *)
   let tb = GButton.toggle_button ~label:"Toggle" () in
   check bool "GButton.toggle_button initial" false tb#active;
   tb#set_active true;
   check bool "GButton.toggle_button activated" true tb#active;
+  (* Test that we can call toggled() - it emits signal but doesn't change state *)
   tb#toggled ();
-  check bool "GButton.toggle_button toggled" false tb#active
+  check bool "GButton.toggle_button state unchanged after toggled()" true tb#active
 
 let () =
   run "Button Tests" [
