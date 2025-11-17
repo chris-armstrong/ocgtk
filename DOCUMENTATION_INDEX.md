@@ -51,24 +51,42 @@ Phase 3 introduces code generation infrastructure for event controllers and widg
 | [PHASE3_CODEGEN_PROPOSAL_GI.md](PHASE3_CODEGEN_PROPOSAL_GI.md) | GIR-based code generation approach (recommended) |
 | [PHASE3_OCaml_GENERATOR.md](PHASE3_OCaml_GENERATOR.md) | OCaml-based GIR code generator implementation |
 
+### Phase 4 Detailed Documentation
+
+| Document | Description |
+|----------|-------------|
+| [PHASE4_2_IMPLEMENTATION.md](PHASE4_2_IMPLEMENTATION.md) | Phase 4.2: Container and layout system implementation |
+| [PHASE4_GAP_ANALYSIS.md](PHASE4_GAP_ANALYSIS.md) | Gap analysis for Phase 4 container migration |
+
+### Phase 5 Detailed Documentation
+
+Phase 5 focuses on high-level widget bindings with automated code generation.
+
+| Document | Description |
+|----------|-------------|
+| [PHASE5_SUMMARY.md](PHASE5_SUMMARY.md) | Phase 5.0 & 5.2 implementation summary (consolidated) |
+
 ## Code Generation Tools
 
 ### Tool Documentation
 
 | Document | Description |
 |----------|-------------|
-| [lablgtk4/src/tools/README_GIR_GEN.md](lablgtk4/src/tools/README_GIR_GEN.md) | GIR code generator usage and design |
+| [lablgtk4/src/tools/README_GIR_GEN.md](lablgtk4/src/tools/README_GIR_GEN.md) | GIR code generator usage and design (Phase 3 & 5) |
+| [lablgtk4/src/tools/README_PHASE5_2_GENERATORS.md](lablgtk4/src/tools/README_PHASE5_2_GENERATORS.md) | **Phase 5.2 complete generator guide** (all 3 tools) |
 | [lablgtk4/XMLM_MIGRATION_SUMMARY.md](lablgtk4/XMLM_MIGRATION_SUMMARY.md) | Migration from regex to xmlm XML parser |
 
 ### Available Tools
 
 Located in `lablgtk4/src/tools/`:
 
-| Tool | Purpose | Language | Documentation |
-|------|---------|----------|---------------|
-| `varcc` | Generate variant types from .var files | OCaml (camlp5) | Inline comments |
-| `propcc` | Generate property/signal bindings from .props files | OCaml (camlp5) | Inline comments |
-| `gir_gen` | Generate event controller bindings from GIR files | OCaml | [README_GIR_GEN.md](lablgtk4/src/tools/README_GIR_GEN.md) |
+| Tool | Purpose | Phase | Documentation |
+|------|---------|-------|---------------|
+| `varcc` | Generate variant types from .var files | 1-2 | Inline comments |
+| `propcc` | Generate property/signal bindings from .props files | 1-2 | Inline comments |
+| `gir_gen` | Generate C FFI and .mli from GIR files (controllers & widgets) | 3 & 5 | [README_GIR_GEN.md](lablgtk4/src/tools/README_GIR_GEN.md) |
+| `wrapper_gen` | Generate high-level wrapper templates (GButton, GEdit, etc.) | **5.2** | [README_PHASE5_2_GENERATORS.md](lablgtk4/src/tools/README_PHASE5_2_GENERATORS.md) |
+| `ml_impl_gen` | Generate .ml implementation files from .mli interfaces | **5.2** | [README_PHASE5_2_GENERATORS.md](lablgtk4/src/tools/README_PHASE5_2_GENERATORS.md) |
 
 ## Technical Deep Dives
 
@@ -120,9 +138,11 @@ Located in `lablgtk4/src/tools/`:
 ### For Code Generation
 
 1. Read [PHASE3_CODEGEN_PROPOSAL_GI.md](PHASE3_CODEGEN_PROPOSAL_GI.md) for overall approach
-2. See [lablgtk4/src/tools/README_GIR_GEN.md](lablgtk4/src/tools/README_GIR_GEN.md) for tool usage
-3. Review [PHASE3_OCaml_GENERATOR.md](PHASE3_OCaml_GENERATOR.md) for implementation details
-4. Check [lablgtk4/XMLM_MIGRATION_SUMMARY.md](lablgtk4/XMLM_MIGRATION_SUMMARY.md) for parser architecture
+2. See [lablgtk4/src/tools/README_PHASE5_2_GENERATORS.md](lablgtk4/src/tools/README_PHASE5_2_GENERATORS.md) for **complete Phase 5.2 workflow**
+3. See [lablgtk4/src/tools/README_GIR_GEN.md](lablgtk4/src/tools/README_GIR_GEN.md) for gir_gen tool details
+4. Review [PHASE3_OCaml_GENERATOR.md](PHASE3_OCaml_GENERATOR.md) for implementation details
+5. Check [PHASE5_SUMMARY.md](PHASE5_SUMMARY.md) for Phase 5.0 & 5.2 implementation summary
+6. Check [lablgtk4/XMLM_MIGRATION_SUMMARY.md](lablgtk4/XMLM_MIGRATION_SUMMARY.md) for parser architecture
 
 ### For FFI Development
 
@@ -154,6 +174,7 @@ Located in `lablgtk4/src/tools/`:
 
 ### Recently Updated
 
+- **2025-11-17**: Phase 5.2 complete - Added README_PHASE5_2_GENERATORS.md, updated PHASE5_SUMMARY.md, consolidated documentation
 - **2025-11-16**: Created port-phase5.md with comprehensive Phase 5 plan (High-Level Widgets)
 - **2025-11-16**: Added TESTING_WITH_GMAIN.md and CI_UPDATE_SUMMARY.md for Phase 3.3/3.4 testing
 - **2024-11-15**: Added XMLM_MIGRATION_SUMMARY.md documenting xmlm parser migration
