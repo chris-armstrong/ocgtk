@@ -286,6 +286,115 @@ let test_property_generation () =
   assert_contains "Bool property should have bool type" content "t -> bool";
   assert_contains "Int property should have int type" content "t -> int"
 
+(* Phase 5.2: Test C property code generation *)
+let test_c_property_generation () =
+  let test_gir = "/tmp/test_c_property_gen.gir" in
+  let test_filter = "/tmp/test_c_property_filter.conf" in
+  let output_dir = "/tmp/test_c_property_output" in
+
+  create_test_property_gir test_gir;
+  let fc = open_out test_filter in
+  output_string fc "TestWidget\n";
+  close_out fc;
+  (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
+
+  let tools_dir = Filename.dirname Sys.argv.(0) in
+  let cmd = sprintf "%s/gir_gen.exe -m widgets -f %s %s %s > /dev/null 2>&1"
+    tools_dir test_filter test_gir output_dir in
+
+  let exit_code = Sys.command cmd in
+  assert_true "C property generator should exit successfully" (exit_code = 0);
+
+  let c_file = Filename.concat output_dir "ml_event_controllers_gen.c" in
+  assert_true "C file should be created" (file_exists c_file);
+
+  let c_content = read_file c_file in
+
+  (* Check for property getter C code *)
+  assert_contains "C getter for read-only property" c_content "ml_gtk_test_widget_get_read_only_prop";
+  assert_contains "C getter should use g_object_get" c_content "g_object_get";
+
+  (* Check for property setter C code *)
+  assert_contains "C setter for read-write property" c_content "ml_gtk_test_widget_set_read_write_prop";
+  assert_contains "C setter should use g_object_set" c_content "g_object_set";
+
+  (* Verify CAMLparam usage *)
+  assert_contains "C code should use CAMLparam" c_content "CAMLparam";
+  assert_contains "C code should use CAMLreturn" c_content "CAMLreturn";
+
+  (* Construct-only property should have getter but not setter *)
+  assert_contains "C getter for construct-only property" c_content "ml_gtk_test_widget_get_construct_only_prop";
+  if string_contains c_content "ml_gtk_test_widget_set_construct_only_prop" then
+    failwith "Should not generate C setter for construct-only property"
+
+(* Phase 5.2: Test that ALL methods are generated (no 5-method limit) *)
+let create_test_many_methods_gir filename =
+  let oc = open_out filename in
+  output_string oc {|<?xml version="1.0"?>
+<repository version="1.2"
+            xmlns="http://www.gtk.org/introspection/core/1.0"
+            xmlns:c="http://www.gtk.org/introspection/c/1.0">
+  <namespace name="Gtk">
+    <class name="ManyMethods" c:type="GtkManyMethods" parent="Widget">
+      <constructor name="new" c:identifier="gtk_many_methods_new"/>
+      <method name="method1" c:identifier="gtk_many_methods_method1">
+        <return-value><type name="none" c:type="void"/></return-value>
+      </method>
+      <method name="method2" c:identifier="gtk_many_methods_method2">
+        <return-value><type name="none" c:type="void"/></return-value>
+      </method>
+      <method name="method3" c:identifier="gtk_many_methods_method3">
+        <return-value><type name="none" c:type="void"/></return-value>
+      </method>
+      <method name="method4" c:identifier="gtk_many_methods_method4">
+        <return-value><type name="none" c:type="void"/></return-value>
+      </method>
+      <method name="method5" c:identifier="gtk_many_methods_method5">
+        <return-value><type name="none" c:type="void"/></return-value>
+      </method>
+      <method name="method6" c:identifier="gtk_many_methods_method6">
+        <return-value><type name="none" c:type="void"/></return-value>
+      </method>
+      <method name="method7" c:identifier="gtk_many_methods_method7">
+        <return-value><type name="none" c:type="void"/></return-value>
+      </method>
+      <method name="method8" c:identifier="gtk_many_methods_method8">
+        <return-value><type name="none" c:type="void"/></return-value>
+      </method>
+    </class>
+  </namespace>
+</repository>
+|};
+  close_out oc
+
+let test_all_methods_generated () =
+  let test_gir = "/tmp/test_many_methods.gir" in
+  let test_filter = "/tmp/test_many_methods_filter.conf" in
+  let output_dir = "/tmp/test_many_methods_output" in
+
+  create_test_many_methods_gir test_gir;
+  let fc = open_out test_filter in
+  output_string fc "ManyMethods\n";
+  close_out fc;
+  (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
+
+  let tools_dir = Filename.dirname Sys.argv.(0) in
+  let cmd = sprintf "%s/gir_gen.exe -m widgets -f %s %s %s > /dev/null 2>&1"
+    tools_dir test_filter test_gir output_dir in
+
+  let exit_code = Sys.command cmd in
+  assert_true "Many methods generator should exit successfully" (exit_code = 0);
+
+  let mli_file = Filename.concat output_dir "many_methods.mli" in
+  let content = read_file mli_file in
+
+  (* Check that all 8 methods are generated (not just first 5) *)
+  assert_contains "Method 1 should be generated" content "method1";
+  assert_contains "Method 5 should be generated" content "method5";
+  assert_contains "Method 6 should be generated (beyond old 5-method limit)" content "method6";
+  assert_contains "Method 7 should be generated" content "method7";
+  assert_contains "Method 8 should be generated" content "method8"
+
 (* ========================================================================= *)
 (* Main Test Runner *)
 (* ========================================================================= *)
@@ -300,6 +409,8 @@ let () =
   ignore (test "C code generation" test_c_code_generation);
   ignore (test "Widget generation" test_widget_generation);
   ignore (test "Property generation" test_property_generation);
+  ignore (test "C property generation (Phase 5.2)" test_c_property_generation);
+  ignore (test "All methods generated (Phase 5.2)" test_all_methods_generated);
   ignore (test "Help output" test_help_output);
 
   printf "\n====================================\n";
