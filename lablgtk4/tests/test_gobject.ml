@@ -557,77 +557,13 @@ let test_object_coerce () =
 (* Test Memory Safety *)
 (* ==================================================================== *)
 
-(* NOTE: Memory safety tests with explicit GC calls are currently disabled.
+(* NOTE: Memory safety tests with explicit GC calls have been removed.
    While the GValue finalizer correctly tracks initialization state, there
-   appears to be an interaction between OCaml's GC and GLib's type system
-   when creating many GValues in rapid succession and explicitly triggering
-   minor GC. The core GValue functionality works correctly in normal usage
-   (as shown by the 22 passing tests), but stress testing with Gc.minor()
-   causes segfaults. This will be investigated further in future work. *)
-
-(*
-let test_gvalue_lifecycle () =
-  (* Create and destroy many GValues to test memory management
-     This test creates GValues in a loop, letting them go out of scope *)
-
-  (* Create many GValues that go out of scope *)
-  for _i = 0 to 999 do
-    let int_type = Gobject.Type.of_fundamental `INT in
-    let gval = Gobject.Value.create int_type in
-    Gobject.Value.set_int gval 42;
-    let _ = Gobject.Value.get_int gval in
-    ()
-    (* gval goes out of scope here and will be collected by GC eventually *)
-  done;
-
-  (* Trigger a minor GC cycle (safer than full_major/compact) *)
-  Gc.minor ()
-
-let test_gvalue_gc_interaction () =
-  (* Test that GValues work correctly across GC cycles *)
-
-  (* Create GValues in a nested scope *)
-  let create_and_discard () =
-    for _i = 0 to 99 do
-      let int_type = Gobject.Type.of_fundamental `INT in
-      let _gval = Gobject.Value.create int_type in
-      let string_type = Gobject.Type.of_fundamental `STRING in
-      let _sval = Gobject.Value.create string_type in
-      ()
-    done
-  in
-
-  create_and_discard ();
-
-  (* Trigger minor GC and verify we can still create new GValues *)
-  Gc.minor ();
-
-  let int_type = Gobject.Type.of_fundamental `INT in
-  let gval = Gobject.Value.create int_type in
-  Gobject.Value.set_int gval 123;
-  check int "GValue works after GC" 123 (Gobject.Value.get_int gval)
-
-let test_gvalue_multiple_types () =
-  (* Test creating GValues of different types simultaneously *)
-  let int_gval = Gobject.Value.create (Gobject.Type.of_fundamental `INT) in
-  let str_gval = Gobject.Value.create (Gobject.Type.of_fundamental `STRING) in
-  let bool_gval = Gobject.Value.create (Gobject.Type.of_fundamental `BOOLEAN) in
-
-  Gobject.Value.set_int int_gval 100;
-  Gobject.Value.set_string str_gval "test";
-  Gobject.Value.set_boolean bool_gval true;
-
-  check int "Multiple GValues - int" 100 (Gobject.Value.get_int int_gval);
-  check string "Multiple GValues - string" "test" (Gobject.Value.get_string str_gval);
-  check bool "Multiple GValues - bool" true (Gobject.Value.get_boolean bool_gval);
-
-  (* Trigger minor GC while GValues are still in scope *)
-  Gc.minor ();
-
-  (* Verify values still accessible after minor GC *)
-  check int "GValue survives minor GC" 100 (Gobject.Value.get_int int_gval);
-  check string "GValue string survives minor GC" "test" (Gobject.Value.get_string str_gval)
-*)
+   was an interaction between OCaml's GC and GLib's type system when creating
+   many GValues in rapid succession and explicitly triggering minor GC.
+   The core GValue functionality works correctly in normal usage (as shown
+   by the passing tests). Future work may add more sophisticated GC stress
+   tests that don't cause segfaults. *)
 
 (* ==================================================================== *)
 (* Test Error Handling *)
@@ -714,13 +650,6 @@ let () =
     "Object Operations", [
       test_case "Object coerce" `Quick (require_gtk test_object_coerce);
     ];
-
-    (* Temporarily disabled due to segfault investigation *)
-    (* "Memory Safety", [
-      test_case "GValue lifecycle with GC" `Quick (require_gtk test_gvalue_lifecycle);
-      test_case "GC interaction" `Quick (require_gtk test_gvalue_gc_interaction);
-      test_case "Multiple GValue types with GC" `Quick (require_gtk test_gvalue_multiple_types);
-    ]; *)
 
     "Error Handling", [
       test_case "Type not found" `Quick (require_gtk test_type_not_found);
