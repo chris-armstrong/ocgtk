@@ -15,6 +15,10 @@
 #define Val_GtkEventController(obj) ((value)(obj))
 /* Note: GtkWidget_val and Val_GtkWidget are defined in wrappers.h */
 
+/* Phase 5.3: Option type conversions for nullable parameters */
+#define GtkWidget_option_val(v) ((v) == Val_none ? NULL : GtkWidget_val(Some_val(v)))
+#define GtkEventController_option_val(v) ((v) == Val_none ? NULL : GtkEventController_val(Some_val(v)))
+
 
 CAMLprim value ml_gtk_button_new(value unit)
 {
@@ -61,7 +65,7 @@ CAMLreturn(Val_unit);
 CAMLprim value ml_gtk_button_set_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
-gtk_button_set_child(GtkWidget_val(self), GtkWidget_val(arg1));
+gtk_button_set_child(GtkWidget_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -156,35 +160,35 @@ CAMLreturn(Val_GtkWidget(widget));
 CAMLprim value ml_gtk_check_button_new_with_label(value arg1)
 {
 CAMLparam1(arg1);
-GtkWidget *widget = gtk_check_button_new_with_label(String_val(arg1));
+GtkWidget *widget = gtk_check_button_new_with_label((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_GtkWidget(widget));
 }
 
 CAMLprim value ml_gtk_check_button_new_with_mnemonic(value arg1)
 {
 CAMLparam1(arg1);
-GtkWidget *widget = gtk_check_button_new_with_mnemonic(String_val(arg1));
+GtkWidget *widget = gtk_check_button_new_with_mnemonic((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_GtkWidget(widget));
 }
 
 CAMLprim value ml_gtk_check_button_set_label(value self, value arg1)
 {
 CAMLparam2(self, arg1);
-gtk_check_button_set_label(GtkWidget_val(self), String_val(arg1));
+gtk_check_button_set_label(GtkWidget_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_gtk_check_button_set_group(value self, value arg1)
 {
 CAMLparam2(self, arg1);
-gtk_check_button_set_group(GtkWidget_val(self), arg1);
+gtk_check_button_set_group(GtkWidget_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_gtk_check_button_set_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
-gtk_check_button_set_child(GtkWidget_val(self), GtkWidget_val(arg1));
+gtk_check_button_set_child(GtkWidget_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -272,7 +276,7 @@ CAMLreturn(Val_GtkWidget(widget));
 CAMLprim value ml_gtk_entry_new_with_buffer(value arg1)
 {
 CAMLparam1(arg1);
-GtkWidget *widget = gtk_entry_new_with_buffer(arg1);
+GtkWidget *widget = gtk_entry_new_with_buffer(GtkWidget_val(arg1));
 CAMLreturn(Val_GtkWidget(widget));
 }
 
@@ -293,7 +297,7 @@ CAMLreturn(Val_unit);
 CAMLprim value ml_gtk_entry_set_placeholder_text(value self, value arg1)
 {
 CAMLparam2(self, arg1);
-gtk_entry_set_placeholder_text(GtkWidget_val(self), String_val(arg1));
+gtk_entry_set_placeholder_text(GtkWidget_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -314,14 +318,14 @@ CAMLreturn(Val_unit);
 CAMLprim value ml_gtk_entry_set_icon_tooltip_text(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
-gtk_entry_set_icon_tooltip_text(GtkWidget_val(self), arg1, String_val(arg2));
+gtk_entry_set_icon_tooltip_text(GtkWidget_val(self), arg1, (Is_some(arg2) ? String_val(Some_val(arg2)) : NULL));
 CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_gtk_entry_set_icon_tooltip_markup(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
-gtk_entry_set_icon_tooltip_markup(GtkWidget_val(self), arg1, String_val(arg2));
+gtk_entry_set_icon_tooltip_markup(GtkWidget_val(self), arg1, (Is_some(arg2) ? String_val(Some_val(arg2)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -342,7 +346,7 @@ CAMLreturn(Val_unit);
 CAMLprim value ml_gtk_entry_set_icon_from_icon_name(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
-gtk_entry_set_icon_from_icon_name(GtkWidget_val(self), arg1, String_val(arg2));
+gtk_entry_set_icon_from_icon_name(GtkWidget_val(self), arg1, (Is_some(arg2) ? String_val(Some_val(arg2)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -377,14 +381,14 @@ CAMLreturn(Val_unit);
 CAMLprim value ml_gtk_entry_set_completion(value self, value arg1)
 {
 CAMLparam2(self, arg1);
-gtk_entry_set_completion(GtkWidget_val(self), arg1);
+gtk_entry_set_completion(GtkWidget_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_gtk_entry_set_buffer(value self, value arg1)
 {
 CAMLparam2(self, arg1);
-gtk_entry_set_buffer(GtkWidget_val(self), arg1);
+gtk_entry_set_buffer(GtkWidget_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -538,15 +542,15 @@ CAMLreturn((value)result);
 CAMLprim value ml_gtk_entry_get_completion(value self)
 {
 CAMLparam1(self);
-void *result = gtk_entry_get_completion(GtkWidget_val(self));
-CAMLreturn((value)result);
+GtkEntryCompletion* result = gtk_entry_get_completion(GtkWidget_val(self));
+CAMLreturn(Val_GtkWidget(result));
 }
 
 CAMLprim value ml_gtk_entry_get_buffer(value self)
 {
 CAMLparam1(self);
-void *result = gtk_entry_get_buffer(GtkWidget_val(self));
-CAMLreturn((value)result);
+GtkEntryBuffer* result = gtk_entry_get_buffer(GtkWidget_val(self));
+CAMLreturn(Val_GtkWidget(result));
 }
 
 CAMLprim value ml_gtk_entry_get_attributes(value self)
@@ -929,7 +933,7 @@ CAMLreturn(Val_GtkWidget(widget));
 CAMLprim value ml_gtk_image_new_from_icon_name(value arg1)
 {
 CAMLparam1(arg1);
-GtkWidget *widget = gtk_image_new_from_icon_name(String_val(arg1));
+GtkWidget *widget = gtk_image_new_from_icon_name((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_GtkWidget(widget));
 }
 
@@ -964,7 +968,7 @@ CAMLreturn(Val_unit);
 CAMLprim value ml_gtk_image_set_from_resource(value self, value arg1)
 {
 CAMLparam2(self, arg1);
-gtk_image_set_from_resource(GtkWidget_val(self), String_val(arg1));
+gtk_image_set_from_resource(GtkWidget_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -985,7 +989,7 @@ CAMLreturn(Val_unit);
 CAMLprim value ml_gtk_image_set_from_icon_name(value self, value arg1)
 {
 CAMLparam2(self, arg1);
-gtk_image_set_from_icon_name(GtkWidget_val(self), String_val(arg1));
+gtk_image_set_from_icon_name(GtkWidget_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -999,7 +1003,7 @@ CAMLreturn(Val_unit);
 CAMLprim value ml_gtk_image_set_from_file(value self, value arg1)
 {
 CAMLparam2(self, arg1);
-gtk_image_set_from_file(GtkWidget_val(self), String_val(arg1));
+gtk_image_set_from_file(GtkWidget_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -1088,14 +1092,14 @@ CAMLreturn(Val_unit);
 CAMLprim value ml_gtk_label_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkWidget *widget = gtk_label_new(String_val(arg1));
+GtkWidget *widget = gtk_label_new((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_GtkWidget(widget));
 }
 
 CAMLprim value ml_gtk_label_new_with_mnemonic(value arg1)
 {
 CAMLparam1(arg1);
-GtkWidget *widget = gtk_label_new_with_mnemonic(String_val(arg1));
+GtkWidget *widget = gtk_label_new_with_mnemonic((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_GtkWidget(widget));
 }
 
@@ -1137,7 +1141,7 @@ CAMLreturn(Val_unit);
 CAMLprim value ml_gtk_label_set_mnemonic_widget(value self, value arg1)
 {
 CAMLparam2(self, arg1);
-gtk_label_set_mnemonic_widget(GtkWidget_val(self), GtkWidget_val(arg1));
+gtk_label_set_mnemonic_widget(GtkWidget_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -1516,7 +1520,7 @@ CAMLreturn(Val_GtkWidget(widget));
 CAMLprim value ml_gtk_link_button_new_with_label(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
-GtkWidget *widget = gtk_link_button_new_with_label(String_val(arg1), String_val(arg2));
+GtkWidget *widget = gtk_link_button_new_with_label(String_val(arg1), (Is_some(arg2) ? String_val(Some_val(arg2)) : NULL));
 CAMLreturn(Val_GtkWidget(widget));
 }
 
@@ -1564,7 +1568,7 @@ CAMLreturn(Val_GtkWidget(widget));
 CAMLprim value ml_gtk_menu_button_set_popover(value self, value arg1)
 {
 CAMLparam2(self, arg1);
-gtk_menu_button_set_popover(GtkWidget_val(self), GtkWidget_val(arg1));
+gtk_menu_button_set_popover(GtkWidget_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -1606,7 +1610,7 @@ CAMLreturn(Val_unit);
 CAMLprim value ml_gtk_menu_button_set_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
-gtk_menu_button_set_child(GtkWidget_val(self), GtkWidget_val(arg1));
+gtk_menu_button_set_child(GtkWidget_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -1627,8 +1631,8 @@ CAMLreturn(Val_unit);
 CAMLprim value ml_gtk_menu_button_get_popover(value self)
 {
 CAMLparam1(self);
-void *result = gtk_menu_button_get_popover(GtkWidget_val(self));
-CAMLreturn((value)result);
+GtkPopover* result = gtk_menu_button_get_popover(GtkWidget_val(self));
+CAMLreturn(Val_GtkWidget(result));
 }
 
 CAMLprim value ml_gtk_menu_button_get_menu_model(value self)
@@ -1857,14 +1861,14 @@ CAMLreturn(Val_GtkWidget(widget));
 CAMLprim value ml_gtk_search_entry_set_placeholder_text(value self, value arg1)
 {
 CAMLparam2(self, arg1);
-gtk_search_entry_set_placeholder_text(GtkWidget_val(self), String_val(arg1));
+gtk_search_entry_set_placeholder_text(GtkWidget_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_gtk_search_entry_set_key_capture_widget(value self, value arg1)
 {
 CAMLparam2(self, arg1);
-gtk_search_entry_set_key_capture_widget(GtkWidget_val(self), GtkWidget_val(arg1));
+gtk_search_entry_set_key_capture_widget(GtkWidget_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -1953,7 +1957,7 @@ CAMLreturn(Val_unit);
 CAMLprim value ml_gtk_spin_button_new(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
-GtkWidget *widget = gtk_spin_button_new(arg1, arg2, Int_val(arg3));
+GtkWidget *widget = gtk_spin_button_new((Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL), arg2, Int_val(arg3));
 CAMLreturn(Val_GtkWidget(widget));
 }
 
@@ -2002,7 +2006,7 @@ CAMLreturn(Val_unit);
 CAMLprim value ml_gtk_spin_button_set_adjustment(value self, value arg1)
 {
 CAMLparam2(self, arg1);
-gtk_spin_button_set_adjustment(GtkWidget_val(self), arg1);
+gtk_spin_button_set_adjustment(GtkWidget_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -2037,14 +2041,14 @@ CAMLreturn(Val_unit);
 CAMLprim value ml_gtk_spin_button_get_adjustment(value self)
 {
 CAMLparam1(self);
-void *result = gtk_spin_button_get_adjustment(GtkWidget_val(self));
-CAMLreturn((value)result);
+GtkAdjustment* result = gtk_spin_button_get_adjustment(GtkWidget_val(self));
+CAMLreturn(Val_GtkWidget(result));
 }
 
 CAMLprim value ml_gtk_spin_button_configure(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
-gtk_spin_button_configure(GtkWidget_val(self), arg1, arg2, Int_val(arg3));
+gtk_spin_button_configure(GtkWidget_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL), arg2, Int_val(arg3));
 CAMLreturn(Val_unit);
 }
 
@@ -2235,6 +2239,2451 @@ g_object_set(G_OBJECT(obj), "state", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
+CAMLprim value ml_gtk_text_buffer_new(value arg1)
+{
+CAMLparam1(arg1);
+GtkWidget *widget = gtk_text_buffer_new((Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+CAMLreturn(Val_GtkWidget(widget));
+}
+
+CAMLprim value ml_gtk_text_buffer_undo(value self)
+{
+CAMLparam1(self);
+gtk_text_buffer_undo(GtkWidget_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_set_text(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gtk_text_buffer_set_text(GtkWidget_val(self), String_val(arg1), arg2);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_set_modified(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_buffer_set_modified(GtkWidget_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_set_max_undo_levels(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_buffer_set_max_undo_levels(GtkWidget_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_select_range(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gtk_text_buffer_select_range(GtkWidget_val(self), arg1, arg2);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_remove_tag_by_name(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+gtk_text_buffer_remove_tag_by_name(GtkWidget_val(self), String_val(arg1), arg2, arg3);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_remove_tag(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+gtk_text_buffer_remove_tag(GtkWidget_val(self), GtkWidget_val(arg1), arg2, arg3);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_remove_selection_clipboard(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_buffer_remove_selection_clipboard(GtkWidget_val(self), arg1);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_remove_all_tags(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gtk_text_buffer_remove_all_tags(GtkWidget_val(self), arg1, arg2);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_redo(value self)
+{
+CAMLparam1(self);
+gtk_text_buffer_redo(GtkWidget_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_place_cursor(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_buffer_place_cursor(GtkWidget_val(self), arg1);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_paste_clipboard(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+gtk_text_buffer_paste_clipboard(GtkWidget_val(self), arg1, (Is_some(arg2) ? GtkWidget_val(Some_val(arg2)) : NULL), Bool_val(arg3));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_move_mark_by_name(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gtk_text_buffer_move_mark_by_name(GtkWidget_val(self), String_val(arg1), arg2);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_move_mark(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gtk_text_buffer_move_mark(GtkWidget_val(self), GtkWidget_val(arg1), arg2);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_insert_with_tags_by_name(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam6(self, arg1, arg2, arg3, arg4, arg5);
+gtk_text_buffer_insert_with_tags_by_name(GtkWidget_val(self), GtkWidget_val(arg1), String_val(arg2), arg3, String_val(arg4), arg5);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_insert_with_tags(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam6(self, arg1, arg2, arg3, arg4, arg5);
+gtk_text_buffer_insert_with_tags(GtkWidget_val(self), GtkWidget_val(arg1), String_val(arg2), arg3, GtkWidget_val(arg4), arg5);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_insert_range_interactive(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+gboolean result = gtk_text_buffer_insert_range_interactive(GtkWidget_val(self), GtkWidget_val(arg1), arg2, arg3, Bool_val(arg4));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_buffer_insert_range(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+gtk_text_buffer_insert_range(GtkWidget_val(self), GtkWidget_val(arg1), arg2, arg3);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_insert_paintable(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gtk_text_buffer_insert_paintable(GtkWidget_val(self), GtkWidget_val(arg1), arg2);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_insert_markup(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+gtk_text_buffer_insert_markup(GtkWidget_val(self), GtkWidget_val(arg1), String_val(arg2), arg3);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_insert_interactive_at_cursor(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+gboolean result = gtk_text_buffer_insert_interactive_at_cursor(GtkWidget_val(self), String_val(arg1), arg2, Bool_val(arg3));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_buffer_insert_interactive(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+gboolean result = gtk_text_buffer_insert_interactive(GtkWidget_val(self), GtkWidget_val(arg1), String_val(arg2), arg3, Bool_val(arg4));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_buffer_insert_child_anchor(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gtk_text_buffer_insert_child_anchor(GtkWidget_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_insert_at_cursor(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gtk_text_buffer_insert_at_cursor(GtkWidget_val(self), String_val(arg1), arg2);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_insert(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+gtk_text_buffer_insert(GtkWidget_val(self), GtkWidget_val(arg1), String_val(arg2), arg3);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_get_text(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+void *result = gtk_text_buffer_get_text(GtkWidget_val(self), arg1, arg2, Bool_val(arg3));
+CAMLreturn((value)result);
+}
+
+CAMLprim value ml_gtk_text_buffer_get_tag_table(value self)
+{
+CAMLparam1(self);
+GtkTextTagTable* result = gtk_text_buffer_get_tag_table(GtkWidget_val(self));
+CAMLreturn(Val_GtkWidget(result));
+}
+
+CAMLprim value ml_gtk_text_buffer_get_start_iter(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_buffer_get_start_iter(GtkWidget_val(self), GtkWidget_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_get_slice(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+void *result = gtk_text_buffer_get_slice(GtkWidget_val(self), arg1, arg2, Bool_val(arg3));
+CAMLreturn((value)result);
+}
+
+CAMLprim value ml_gtk_text_buffer_get_selection_content(value self)
+{
+CAMLparam1(self);
+void *result = gtk_text_buffer_get_selection_content(GtkWidget_val(self));
+CAMLreturn((value)result);
+}
+
+CAMLprim value ml_gtk_text_buffer_get_selection_bounds(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gboolean result = gtk_text_buffer_get_selection_bounds(GtkWidget_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_buffer_get_selection_bound(value self)
+{
+CAMLparam1(self);
+GtkTextMark* result = gtk_text_buffer_get_selection_bound(GtkWidget_val(self));
+CAMLreturn(Val_GtkWidget(result));
+}
+
+CAMLprim value ml_gtk_text_buffer_get_modified(value self)
+{
+CAMLparam1(self);
+gboolean result = gtk_text_buffer_get_modified(GtkWidget_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_buffer_get_max_undo_levels(value self)
+{
+CAMLparam1(self);
+guint result = gtk_text_buffer_get_max_undo_levels(GtkWidget_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLprim value ml_gtk_text_buffer_get_mark(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GtkTextMark* result = gtk_text_buffer_get_mark(GtkWidget_val(self), String_val(arg1));
+CAMLreturn(Val_GtkWidget(result));
+}
+
+CAMLprim value ml_gtk_text_buffer_get_line_count(value self)
+{
+CAMLparam1(self);
+void *result = gtk_text_buffer_get_line_count(GtkWidget_val(self));
+CAMLreturn((value)result);
+}
+
+CAMLprim value ml_gtk_text_buffer_get_iter_at_offset(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gtk_text_buffer_get_iter_at_offset(GtkWidget_val(self), GtkWidget_val(arg1), arg2);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_get_iter_at_mark(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gtk_text_buffer_get_iter_at_mark(GtkWidget_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_get_iter_at_line_offset(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+gboolean result = gtk_text_buffer_get_iter_at_line_offset(GtkWidget_val(self), GtkWidget_val(arg1), arg2, arg3);
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_buffer_get_iter_at_line_index(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+gboolean result = gtk_text_buffer_get_iter_at_line_index(GtkWidget_val(self), GtkWidget_val(arg1), arg2, arg3);
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_buffer_get_iter_at_line(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gboolean result = gtk_text_buffer_get_iter_at_line(GtkWidget_val(self), GtkWidget_val(arg1), arg2);
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_buffer_get_iter_at_child_anchor(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gtk_text_buffer_get_iter_at_child_anchor(GtkWidget_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_get_insert(value self)
+{
+CAMLparam1(self);
+GtkTextMark* result = gtk_text_buffer_get_insert(GtkWidget_val(self));
+CAMLreturn(Val_GtkWidget(result));
+}
+
+CAMLprim value ml_gtk_text_buffer_get_end_iter(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_buffer_get_end_iter(GtkWidget_val(self), GtkWidget_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_get_char_count(value self)
+{
+CAMLparam1(self);
+void *result = gtk_text_buffer_get_char_count(GtkWidget_val(self));
+CAMLreturn((value)result);
+}
+
+CAMLprim value ml_gtk_text_buffer_get_bounds(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gtk_text_buffer_get_bounds(GtkWidget_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_end_user_action(value self)
+{
+CAMLparam1(self);
+gtk_text_buffer_end_user_action(GtkWidget_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_end_irreversible_action(value self)
+{
+CAMLparam1(self);
+gtk_text_buffer_end_irreversible_action(GtkWidget_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_delete_selection(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gboolean result = gtk_text_buffer_delete_selection(GtkWidget_val(self), Bool_val(arg1), Bool_val(arg2));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_buffer_delete_mark_by_name(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_buffer_delete_mark_by_name(GtkWidget_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_delete_mark(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_buffer_delete_mark(GtkWidget_val(self), GtkWidget_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_delete_interactive(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+gboolean result = gtk_text_buffer_delete_interactive(GtkWidget_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2), Bool_val(arg3));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_buffer_delete(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gtk_text_buffer_delete(GtkWidget_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_cut_clipboard(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gtk_text_buffer_cut_clipboard(GtkWidget_val(self), arg1, Bool_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_create_tag(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+GtkTextTag* result = gtk_text_buffer_create_tag(GtkWidget_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL), (Is_some(arg2) ? String_val(Some_val(arg2)) : NULL), arg3);
+CAMLreturn(Val_GtkWidget(result));
+}
+
+CAMLprim value ml_gtk_text_buffer_create_mark(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+GtkTextMark* result = gtk_text_buffer_create_mark(GtkWidget_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL), arg2, Bool_val(arg3));
+CAMLreturn(Val_GtkWidget(result));
+}
+
+CAMLprim value ml_gtk_text_buffer_create_child_anchor(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GtkTextChildAnchor* result = gtk_text_buffer_create_child_anchor(GtkWidget_val(self), GtkWidget_val(arg1));
+CAMLreturn(Val_GtkWidget(result));
+}
+
+CAMLprim value ml_gtk_text_buffer_copy_clipboard(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_buffer_copy_clipboard(GtkWidget_val(self), arg1);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_begin_user_action(value self)
+{
+CAMLparam1(self);
+gtk_text_buffer_begin_user_action(GtkWidget_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_begin_irreversible_action(value self)
+{
+CAMLparam1(self);
+gtk_text_buffer_begin_irreversible_action(GtkWidget_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_backspace(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+gboolean result = gtk_text_buffer_backspace(GtkWidget_val(self), GtkWidget_val(arg1), Bool_val(arg2), Bool_val(arg3));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_buffer_apply_tag_by_name(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+gtk_text_buffer_apply_tag_by_name(GtkWidget_val(self), String_val(arg1), arg2, arg3);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_apply_tag(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+gtk_text_buffer_apply_tag(GtkWidget_val(self), GtkWidget_val(arg1), arg2, arg3);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_add_selection_clipboard(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_buffer_add_selection_clipboard(GtkWidget_val(self), arg1);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_add_mark(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gtk_text_buffer_add_mark(GtkWidget_val(self), GtkWidget_val(arg1), arg2);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_get_can_redo(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "can-redo", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_buffer_get_can_undo(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "can-undo", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_buffer_get_cursor_position(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint prop_value;
+g_object_get(G_OBJECT(obj), "cursor-position", &prop_value, NULL);
+result = Val_int(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_buffer_get_enable_undo(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "enable-undo", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_buffer_set_enable_undo(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "enable-undo", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_buffer_get_has_selection(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "has-selection", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_new(value arg1)
+{
+CAMLparam1(arg1);
+GtkWidget *widget = gtk_text_tag_new((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+CAMLreturn(Val_GtkWidget(widget));
+}
+
+CAMLprim value ml_gtk_text_tag_set_priority(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_tag_set_priority(GtkWidget_val(self), arg1);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_priority(value self)
+{
+CAMLparam1(self);
+void *result = gtk_text_tag_get_priority(GtkWidget_val(self));
+CAMLreturn((value)result);
+}
+
+CAMLprim value ml_gtk_text_tag_changed(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_tag_changed(GtkWidget_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_accumulative_margin(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "accumulative-margin", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_accumulative_margin(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "accumulative-margin", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_allow_breaks(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "allow-breaks", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_allow_breaks(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "allow-breaks", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_allow_breaks_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "allow-breaks-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_allow_breaks_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "allow-breaks-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_background_full_height(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "background-full-height", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_background_full_height(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "background-full-height", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_background_full_height_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "background-full-height-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_background_full_height_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "background-full-height-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_background_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "background-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_background_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "background-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_editable(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "editable", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_editable(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "editable", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_editable_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "editable-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_editable_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "editable-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_fallback(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "fallback", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_fallback(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "fallback", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_fallback_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "fallback-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_fallback_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "fallback-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_family_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "family-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_family_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "family-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_font_features_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "font-features-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_font_features_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "font-features-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_foreground_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "foreground-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_foreground_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "foreground-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_indent(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint prop_value;
+g_object_get(G_OBJECT(obj), "indent", &prop_value, NULL);
+result = Val_int(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_indent(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint c_value = Int_val(new_value);
+g_object_set(G_OBJECT(obj), "indent", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_indent_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "indent-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_indent_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "indent-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_insert_hyphens(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "insert-hyphens", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_insert_hyphens(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "insert-hyphens", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_insert_hyphens_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "insert-hyphens-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_insert_hyphens_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "insert-hyphens-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_invisible(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "invisible", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_invisible(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "invisible", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_invisible_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "invisible-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_invisible_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "invisible-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_justification_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "justification-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_justification_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "justification-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_language_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "language-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_language_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "language-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_left_margin(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint prop_value;
+g_object_get(G_OBJECT(obj), "left-margin", &prop_value, NULL);
+result = Val_int(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_left_margin(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint c_value = Int_val(new_value);
+g_object_set(G_OBJECT(obj), "left-margin", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_left_margin_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "left-margin-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_left_margin_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "left-margin-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_letter_spacing(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint prop_value;
+g_object_get(G_OBJECT(obj), "letter-spacing", &prop_value, NULL);
+result = Val_int(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_letter_spacing(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint c_value = Int_val(new_value);
+g_object_set(G_OBJECT(obj), "letter-spacing", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_letter_spacing_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "letter-spacing-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_letter_spacing_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "letter-spacing-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_line_height(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gfloat prop_value;
+g_object_get(G_OBJECT(obj), "line-height", &prop_value, NULL);
+result = caml_copy_double(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_line_height(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gfloat c_value = Double_val(new_value);
+g_object_set(G_OBJECT(obj), "line-height", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_line_height_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "line-height-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_line_height_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "line-height-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_overline_rgba_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "overline-rgba-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_overline_rgba_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "overline-rgba-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_overline_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "overline-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_overline_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "overline-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_paragraph_background_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "paragraph-background-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_paragraph_background_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "paragraph-background-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_pixels_above_lines(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint prop_value;
+g_object_get(G_OBJECT(obj), "pixels-above-lines", &prop_value, NULL);
+result = Val_int(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_pixels_above_lines(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint c_value = Int_val(new_value);
+g_object_set(G_OBJECT(obj), "pixels-above-lines", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_pixels_above_lines_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "pixels-above-lines-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_pixels_above_lines_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "pixels-above-lines-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_pixels_below_lines(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint prop_value;
+g_object_get(G_OBJECT(obj), "pixels-below-lines", &prop_value, NULL);
+result = Val_int(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_pixels_below_lines(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint c_value = Int_val(new_value);
+g_object_set(G_OBJECT(obj), "pixels-below-lines", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_pixels_below_lines_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "pixels-below-lines-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_pixels_below_lines_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "pixels-below-lines-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_pixels_inside_wrap(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint prop_value;
+g_object_get(G_OBJECT(obj), "pixels-inside-wrap", &prop_value, NULL);
+result = Val_int(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_pixels_inside_wrap(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint c_value = Int_val(new_value);
+g_object_set(G_OBJECT(obj), "pixels-inside-wrap", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_pixels_inside_wrap_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "pixels-inside-wrap-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_pixels_inside_wrap_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "pixels-inside-wrap-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_right_margin(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint prop_value;
+g_object_get(G_OBJECT(obj), "right-margin", &prop_value, NULL);
+result = Val_int(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_right_margin(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint c_value = Int_val(new_value);
+g_object_set(G_OBJECT(obj), "right-margin", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_right_margin_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "right-margin-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_right_margin_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "right-margin-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_rise(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint prop_value;
+g_object_get(G_OBJECT(obj), "rise", &prop_value, NULL);
+result = Val_int(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_rise(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint c_value = Int_val(new_value);
+g_object_set(G_OBJECT(obj), "rise", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_rise_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "rise-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_rise_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "rise-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_scale(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gdouble prop_value;
+g_object_get(G_OBJECT(obj), "scale", &prop_value, NULL);
+result = caml_copy_double(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_scale(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gdouble c_value = Double_val(new_value);
+g_object_set(G_OBJECT(obj), "scale", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_scale_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "scale-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_scale_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "scale-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_sentence(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "sentence", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_sentence(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "sentence", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_sentence_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "sentence-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_sentence_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "sentence-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_show_spaces_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "show-spaces-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_show_spaces_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "show-spaces-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_size(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint prop_value;
+g_object_get(G_OBJECT(obj), "size", &prop_value, NULL);
+result = Val_int(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_size(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint c_value = Int_val(new_value);
+g_object_set(G_OBJECT(obj), "size", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_size_points(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gdouble prop_value;
+g_object_get(G_OBJECT(obj), "size-points", &prop_value, NULL);
+result = caml_copy_double(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_size_points(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gdouble c_value = Double_val(new_value);
+g_object_set(G_OBJECT(obj), "size-points", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_size_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "size-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_size_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "size-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_stretch_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "stretch-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_stretch_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "stretch-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_strikethrough(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "strikethrough", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_strikethrough(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "strikethrough", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_strikethrough_rgba_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "strikethrough-rgba-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_strikethrough_rgba_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "strikethrough-rgba-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_strikethrough_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "strikethrough-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_strikethrough_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "strikethrough-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_style_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "style-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_style_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "style-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_tabs_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "tabs-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_tabs_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "tabs-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_text_transform_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "text-transform-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_text_transform_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "text-transform-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_underline_rgba_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "underline-rgba-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_underline_rgba_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "underline-rgba-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_underline_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "underline-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_underline_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "underline-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_variant_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "variant-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_variant_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "variant-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_weight(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint prop_value;
+g_object_get(G_OBJECT(obj), "weight", &prop_value, NULL);
+result = Val_int(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_weight(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint c_value = Int_val(new_value);
+g_object_set(G_OBJECT(obj), "weight", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_weight_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "weight-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_weight_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "weight-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_word(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "word", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_word(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "word", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_word_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "word-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_word_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "word-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_get_wrap_mode_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "wrap-mode-set", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_tag_set_wrap_mode_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "wrap-mode-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_table_new(value unit)
+{
+CAMLparam1(unit);
+GtkWidget *widget = gtk_text_tag_table_new();
+CAMLreturn(Val_GtkWidget(widget));
+}
+
+CAMLprim value ml_gtk_text_tag_table_remove(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_tag_table_remove(GtkWidget_val(self), GtkWidget_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_table_lookup(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GtkTextTag* result = gtk_text_tag_table_lookup(GtkWidget_val(self), String_val(arg1));
+CAMLreturn(Val_GtkWidget(result));
+}
+
+CAMLprim value ml_gtk_text_tag_table_get_size(value self)
+{
+CAMLparam1(self);
+void *result = gtk_text_tag_table_get_size(GtkWidget_val(self));
+CAMLreturn((value)result);
+}
+
+CAMLprim value ml_gtk_text_tag_table_foreach(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gtk_text_tag_table_foreach(GtkWidget_val(self), arg1, arg2);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_tag_table_add(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gboolean result = gtk_text_tag_table_add(GtkWidget_val(self), GtkWidget_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_view_new(value unit)
+{
+CAMLparam1(unit);
+GtkWidget *widget = gtk_text_view_new();
+CAMLreturn(Val_GtkWidget(widget));
+}
+
+CAMLprim value ml_gtk_text_view_new_with_buffer(value arg1)
+{
+CAMLparam1(arg1);
+GtkWidget *widget = gtk_text_view_new_with_buffer(GtkWidget_val(arg1));
+CAMLreturn(Val_GtkWidget(widget));
+}
+
+CAMLprim value ml_gtk_text_view_window_to_buffer_coords(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam6(self, arg1, arg2, arg3, arg4, arg5);
+gtk_text_view_window_to_buffer_coords(GtkWidget_val(self), arg1, arg2, arg3, arg4, arg5);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_starts_display_line(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gboolean result = gtk_text_view_starts_display_line(GtkWidget_val(self), arg1);
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_view_set_wrap_mode(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_view_set_wrap_mode(GtkWidget_val(self), arg1);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_set_tabs(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_view_set_tabs(GtkWidget_val(self), arg1);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_set_justification(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_view_set_justification(GtkWidget_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_set_input_purpose(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_view_set_input_purpose(GtkWidget_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_set_input_hints(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_view_set_input_hints(GtkWidget_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_set_gutter(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gtk_text_view_set_gutter(GtkWidget_val(self), arg1, GtkWidget_option_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_set_extra_menu(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_view_set_extra_menu(GtkWidget_val(self), arg1);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_set_buffer(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_view_set_buffer(GtkWidget_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_scroll_to_mark(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam6(self, arg1, arg2, arg3, arg4, arg5);
+gtk_text_view_scroll_to_mark(GtkWidget_val(self), GtkWidget_val(arg1), arg2, Bool_val(arg3), arg4, arg5);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_scroll_to_iter(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam6(self, arg1, arg2, arg3, arg4, arg5);
+gboolean result = gtk_text_view_scroll_to_iter(GtkWidget_val(self), GtkWidget_val(arg1), arg2, Bool_val(arg3), arg4, arg5);
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_view_scroll_mark_onscreen(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_view_scroll_mark_onscreen(GtkWidget_val(self), GtkWidget_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_reset_im_context(value self)
+{
+CAMLparam1(self);
+gtk_text_view_reset_im_context(GtkWidget_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_reset_cursor_blink(value self)
+{
+CAMLparam1(self);
+gtk_text_view_reset_cursor_blink(GtkWidget_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_remove(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_view_remove(GtkWidget_val(self), GtkWidget_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_place_cursor_onscreen(value self)
+{
+CAMLparam1(self);
+gboolean result = gtk_text_view_place_cursor_onscreen(GtkWidget_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_view_move_visually(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gboolean result = gtk_text_view_move_visually(GtkWidget_val(self), GtkWidget_val(arg1), arg2);
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_view_move_overlay(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+gtk_text_view_move_overlay(GtkWidget_val(self), GtkWidget_val(arg1), arg2, arg3);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_move_mark_onscreen(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gboolean result = gtk_text_view_move_mark_onscreen(GtkWidget_val(self), GtkWidget_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_view_im_context_filter_keypress(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gboolean result = gtk_text_view_im_context_filter_keypress(GtkWidget_val(self), GdkEvent_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_view_get_wrap_mode(value self)
+{
+CAMLparam1(self);
+void *result = gtk_text_view_get_wrap_mode(GtkWidget_val(self));
+CAMLreturn((value)result);
+}
+
+CAMLprim value ml_gtk_text_view_get_visible_rect(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gtk_text_view_get_visible_rect(GtkWidget_val(self), arg1);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_get_tabs(value self)
+{
+CAMLparam1(self);
+void *result = gtk_text_view_get_tabs(GtkWidget_val(self));
+CAMLreturn((value)result);
+}
+
+CAMLprim value ml_gtk_text_view_get_rtl_context(value self)
+{
+CAMLparam1(self);
+void *result = gtk_text_view_get_rtl_context(GtkWidget_val(self));
+CAMLreturn((value)result);
+}
+
+CAMLprim value ml_gtk_text_view_get_ltr_context(value self)
+{
+CAMLparam1(self);
+void *result = gtk_text_view_get_ltr_context(GtkWidget_val(self));
+CAMLreturn((value)result);
+}
+
+CAMLprim value ml_gtk_text_view_get_line_yrange(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+gtk_text_view_get_line_yrange(GtkWidget_val(self), arg1, arg2, arg3);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_get_line_at_y(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+gtk_text_view_get_line_at_y(GtkWidget_val(self), GtkWidget_val(arg1), arg2, arg3);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_get_justification(value self)
+{
+CAMLparam1(self);
+GtkJustification result = gtk_text_view_get_justification(GtkWidget_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLprim value ml_gtk_text_view_get_iter_location(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gtk_text_view_get_iter_location(GtkWidget_val(self), arg1, arg2);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_get_iter_at_position(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+gboolean result = gtk_text_view_get_iter_at_position(GtkWidget_val(self), GtkWidget_val(arg1), arg2, arg3, arg4);
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_view_get_iter_at_location(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+gboolean result = gtk_text_view_get_iter_at_location(GtkWidget_val(self), GtkWidget_val(arg1), arg2, arg3);
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_view_get_input_purpose(value self)
+{
+CAMLparam1(self);
+GtkInputPurpose result = gtk_text_view_get_input_purpose(GtkWidget_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLprim value ml_gtk_text_view_get_input_hints(value self)
+{
+CAMLparam1(self);
+GtkInputHints result = gtk_text_view_get_input_hints(GtkWidget_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLprim value ml_gtk_text_view_get_gutter(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GtkWidget* result = gtk_text_view_get_gutter(GtkWidget_val(self), arg1);
+CAMLreturn(Val_GtkWidget(result));
+}
+
+CAMLprim value ml_gtk_text_view_get_extra_menu(value self)
+{
+CAMLparam1(self);
+void *result = gtk_text_view_get_extra_menu(GtkWidget_val(self));
+CAMLreturn((value)result);
+}
+
+CAMLprim value ml_gtk_text_view_get_cursor_locations(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+gtk_text_view_get_cursor_locations(GtkWidget_val(self), arg1, arg2, arg3);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_get_buffer(value self)
+{
+CAMLparam1(self);
+GtkTextBuffer* result = gtk_text_view_get_buffer(GtkWidget_val(self));
+CAMLreturn(Val_GtkWidget(result));
+}
+
+CAMLprim value ml_gtk_text_view_forward_display_line_end(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gboolean result = gtk_text_view_forward_display_line_end(GtkWidget_val(self), GtkWidget_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_view_forward_display_line(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gboolean result = gtk_text_view_forward_display_line(GtkWidget_val(self), GtkWidget_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_view_buffer_to_window_coords(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam6(self, arg1, arg2, arg3, arg4, arg5);
+gtk_text_view_buffer_to_window_coords(GtkWidget_val(self), arg1, arg2, arg3, arg4, arg5);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_backward_display_line_start(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gboolean result = gtk_text_view_backward_display_line_start(GtkWidget_val(self), GtkWidget_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_view_backward_display_line(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gboolean result = gtk_text_view_backward_display_line(GtkWidget_val(self), GtkWidget_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_text_view_add_overlay(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+gtk_text_view_add_overlay(GtkWidget_val(self), GtkWidget_val(arg1), arg2, arg3);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_add_child_at_anchor(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+gtk_text_view_add_child_at_anchor(GtkWidget_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_get_accepts_tab(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "accepts-tab", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_view_set_accepts_tab(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "accepts-tab", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_get_bottom_margin(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint prop_value;
+g_object_get(G_OBJECT(obj), "bottom-margin", &prop_value, NULL);
+result = Val_int(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_view_set_bottom_margin(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint c_value = Int_val(new_value);
+g_object_set(G_OBJECT(obj), "bottom-margin", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_get_cursor_visible(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "cursor-visible", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_view_set_cursor_visible(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "cursor-visible", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_get_editable(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "editable", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_view_set_editable(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "editable", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_get_indent(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint prop_value;
+g_object_get(G_OBJECT(obj), "indent", &prop_value, NULL);
+result = Val_int(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_view_set_indent(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint c_value = Int_val(new_value);
+g_object_set(G_OBJECT(obj), "indent", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_get_left_margin(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint prop_value;
+g_object_get(G_OBJECT(obj), "left-margin", &prop_value, NULL);
+result = Val_int(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_view_set_left_margin(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint c_value = Int_val(new_value);
+g_object_set(G_OBJECT(obj), "left-margin", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_get_monospace(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "monospace", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_view_set_monospace(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "monospace", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_get_overwrite(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "overwrite", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_view_set_overwrite(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "overwrite", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_get_pixels_above_lines(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint prop_value;
+g_object_get(G_OBJECT(obj), "pixels-above-lines", &prop_value, NULL);
+result = Val_int(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_view_set_pixels_above_lines(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint c_value = Int_val(new_value);
+g_object_set(G_OBJECT(obj), "pixels-above-lines", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_get_pixels_below_lines(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint prop_value;
+g_object_get(G_OBJECT(obj), "pixels-below-lines", &prop_value, NULL);
+result = Val_int(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_view_set_pixels_below_lines(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint c_value = Int_val(new_value);
+g_object_set(G_OBJECT(obj), "pixels-below-lines", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_get_pixels_inside_wrap(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint prop_value;
+g_object_get(G_OBJECT(obj), "pixels-inside-wrap", &prop_value, NULL);
+result = Val_int(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_view_set_pixels_inside_wrap(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint c_value = Int_val(new_value);
+g_object_set(G_OBJECT(obj), "pixels-inside-wrap", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_get_right_margin(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint prop_value;
+g_object_get(G_OBJECT(obj), "right-margin", &prop_value, NULL);
+result = Val_int(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_view_set_right_margin(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint c_value = Int_val(new_value);
+g_object_set(G_OBJECT(obj), "right-margin", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gtk_text_view_get_top_margin(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint prop_value;
+g_object_get(G_OBJECT(obj), "top-margin", &prop_value, NULL);
+result = Val_int(prop_value);
+CAMLreturn(result);
+}
+
+CAMLprim value ml_gtk_text_view_set_top_margin(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gint c_value = Int_val(new_value);
+g_object_set(G_OBJECT(obj), "top-margin", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
 CAMLprim value ml_gtk_toggle_button_new(value unit)
 {
 CAMLparam1(unit);
@@ -2266,7 +4715,7 @@ CAMLreturn(Val_unit);
 CAMLprim value ml_gtk_toggle_button_set_group(value self, value arg1)
 {
 CAMLparam2(self, arg1);
-gtk_toggle_button_set_group(GtkWidget_val(self), arg1);
+gtk_toggle_button_set_group(GtkWidget_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 

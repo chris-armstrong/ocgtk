@@ -39,7 +39,7 @@ external set_label : t -> string -> unit = "ml_gtk_button_set_label"
 
 external set_icon_name : t -> string -> unit = "ml_gtk_button_set_icon_name"
 
-external set_child : t -> Gtk.Widget.t -> unit = "ml_gtk_button_set_child"
+external set_child : t -> Gtk.Widget.t option -> unit = "ml_gtk_button_set_child"
 
 external get_label : t -> string = "ml_gtk_button_get_label"
 

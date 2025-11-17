@@ -22,5 +22,5 @@ external set_active : t -> bool -> unit = "ml_gtk_toggle_button_set_active"
 
 external toggled : t -> unit = "ml_gtk_toggle_button_toggled"
 
-external set_group : t -> unit -> unit = "ml_gtk_toggle_button_set_group"
+external set_group : t -> Gtk.Widget.t option -> unit = "ml_gtk_toggle_button_set_group"
 

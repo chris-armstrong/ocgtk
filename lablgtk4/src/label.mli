@@ -84,7 +84,7 @@ external set_tabs : t -> unit -> unit = "ml_gtk_label_set_tabs"
 
 external set_natural_wrap_mode : t -> int -> unit = "ml_gtk_label_set_natural_wrap_mode"
 
-external set_mnemonic_widget : t -> Gtk.Widget.t -> unit = "ml_gtk_label_set_mnemonic_widget"
+external set_mnemonic_widget : t -> Gtk.Widget.t option -> unit = "ml_gtk_label_set_mnemonic_widget"
 
 external set_markup_with_mnemonic : t -> string -> unit = "ml_gtk_label_set_markup_with_mnemonic"
 

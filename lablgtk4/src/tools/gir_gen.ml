@@ -25,6 +25,7 @@ type gir_type = {
 type gir_param = {
   param_name : string;
   param_type : gir_type;
+  nullable : bool;  (* Phase 5.3: Support nullable parameters *)
 }
 
 type gir_method = {
@@ -250,7 +251,19 @@ let type_mappings = [
 let find_type_mapping c_type =
   try
     Some (List.assoc c_type type_mappings)
-  with Not_found -> None
+  with Not_found ->
+    (* Phase 5.3: Handle any Gtk widget pointer type generically *)
+    if String.length c_type > 3 &&
+       String.sub c_type ~pos:0 ~len:3 = "Gtk" &&
+       String.sub c_type ~pos:(String.length c_type - 1) ~len:1 = "*" then
+      Some {
+        ocaml_type = "Gtk.Widget.t";
+        c_to_ml = "Val_GtkWidget";
+        ml_to_c = "GtkWidget_val";
+        needs_copy = false;
+      }
+    else
+      None
 
 (* ========================================================================= *)
 (* Utility Functions *)
@@ -556,8 +569,9 @@ let parse_gir_file filename mode filter_classes =
       match Xmlm.input input with
       | `El_start ((_, "parameter"), attrs) ->
         let param_name = match get_attr "name" attrs with Some n -> n | None -> "arg" in
+        let nullable = match get_attr "nullable" attrs with Some "1" -> true | _ -> false in
         let param_type = parse_parameter_type () in
-        params := { param_name = param_name; param_type = param_type } :: !params;
+        params := { param_name = param_name; param_type = param_type; nullable = nullable } :: !params;
         parse_params_contents ()
 
       | `El_start ((_, "instance-parameter"), _) ->
@@ -667,6 +681,10 @@ let generate_c_header () =
 #define GtkEventController_val(val) ((GtkEventController*)Pointer_val(val))\n\
 #define Val_GtkEventController(obj) ((value)(obj))\n\
 /* Note: GtkWidget_val and Val_GtkWidget are defined in wrappers.h */\n\
+\n\
+/* Phase 5.3: Option type conversions for nullable parameters */\n\
+#define GtkWidget_option_val(v) ((v) == Val_none ? NULL : GtkWidget_val(Some_val(v)))\n\
+#define GtkEventController_option_val(v) ((v) == Val_none ? NULL : GtkEventController_val(Some_val(v)))\n\
 \n"
 
 let generate_c_constructor ctor cls =
@@ -702,11 +720,23 @@ let generate_c_constructor ctor cls =
       List.mapi ~f:(fun i _ -> sprintf "arg%d" (i + 1)) ctor.ctor_parameters
   in
 
-  (* Build C call arguments *)
+  (* Build C call arguments - handle nullable parameters *)
   let c_args =
     List.mapi ~f:(fun i p ->
       match find_type_mapping p.param_type.c_type with
-      | Some mapping -> sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
+      | Some mapping ->
+        if p.nullable then
+          (* For nullable parameters, use option conversion macro *)
+          if p.param_type.c_type = "GtkWidget*" then
+            sprintf "GtkWidget_option_val(arg%d)" (i + 1)
+          else if String.length p.param_type.c_type > 3 &&
+                  String.sub p.param_type.c_type ~pos:(String.length p.param_type.c_type - 1) ~len:1 = "*" then
+            (* Generic pointer type - check for NULL *)
+            sprintf "(Is_some(arg%d) ? %s(Some_val(arg%d)) : NULL)" (i + 1) mapping.ml_to_c (i + 1)
+          else
+            sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
+        else
+          sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
       | None -> sprintf "arg%d" (i + 1)
     ) ctor.ctor_parameters
   in
@@ -744,11 +774,25 @@ let generate_c_method (meth : gir_method) cls =
     if is_widget then "GtkWidget_val(self)" else "GtkEventController_val(self)"
   in
 
-  (* Build C call *)
+  (* Build C call - handle nullable parameters *)
   let c_args = self_cast ::
     List.mapi ~f:(fun i p ->
       match find_type_mapping p.param_type.c_type with
-      | Some mapping -> sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
+      | Some mapping ->
+        if p.nullable then
+          (* For nullable parameters, use option conversion *)
+          if p.param_type.c_type = "GtkWidget*" then
+            sprintf "GtkWidget_option_val(arg%d)" (i + 1)
+          else if p.param_type.c_type = "GtkCheckButton*" then
+            sprintf "(Is_some(arg%d) ? GtkWidget_val(Some_val(arg%d)) : NULL)" (i + 1) (i + 1)
+          else if String.length p.param_type.c_type > 3 &&
+                  String.sub p.param_type.c_type ~pos:(String.length p.param_type.c_type - 1) ~len:1 = "*" then
+            (* Generic pointer type - check for NULL *)
+            sprintf "(Is_some(arg%d) ? %s(Some_val(arg%d)) : NULL)" (i + 1) mapping.ml_to_c (i + 1)
+          else
+            sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
+        else
+          sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
       | None -> sprintf "arg%d" (i + 1)
     ) meth.parameters in
 
@@ -969,10 +1013,16 @@ let generate_ml_interface cls =
       | Some doc -> bprintf buf "(** %s *)\n" doc
       | None -> ());
 
-      (* Build OCaml type signature *)
+      (* Build OCaml type signature - handle nullable parameters *)
       let param_types = List.map ~f:(fun p ->
         match find_type_mapping p.param_type.c_type with
-        | Some mapping -> mapping.ocaml_type
+        | Some mapping ->
+          let base_type = mapping.ocaml_type in
+          if p.nullable then
+            (* Wrap in option type *)
+            sprintf "%s option" base_type
+          else
+            base_type
         | None -> "unit" (* fallback *)
       ) meth.parameters in
 
