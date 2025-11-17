@@ -19,6 +19,10 @@
 #define GtkWidget_option_val(v) ((v) == Val_none ? NULL : GtkWidget_val(Some_val(v)))
 #define GtkEventController_option_val(v) ((v) == Val_none ? NULL : GtkEventController_val(Some_val(v)))
 
+/* GdkEvent conversions - from ml_event_controller.c */
+#define GdkEvent_val(val) ((GdkEvent*)Pointer_val(val))
+#define Val_GdkEvent(obj) ((value)(obj))
+
 
 CAMLprim value ml_gtk_button_new(value unit)
 {
@@ -2344,20 +2348,6 @@ gtk_text_buffer_move_mark(GtkWidget_val(self), GtkWidget_val(arg1), arg2);
 CAMLreturn(Val_unit);
 }
 
-CAMLprim value ml_gtk_text_buffer_insert_with_tags_by_name(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
-{
-CAMLparam6(self, arg1, arg2, arg3, arg4, arg5);
-gtk_text_buffer_insert_with_tags_by_name(GtkWidget_val(self), GtkWidget_val(arg1), String_val(arg2), arg3, String_val(arg4), arg5);
-CAMLreturn(Val_unit);
-}
-
-CAMLprim value ml_gtk_text_buffer_insert_with_tags(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
-{
-CAMLparam6(self, arg1, arg2, arg3, arg4, arg5);
-gtk_text_buffer_insert_with_tags(GtkWidget_val(self), GtkWidget_val(arg1), String_val(arg2), arg3, GtkWidget_val(arg4), arg5);
-CAMLreturn(Val_unit);
-}
-
 CAMLprim value ml_gtk_text_buffer_insert_range_interactive(value self, value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
@@ -2622,13 +2612,6 @@ CAMLprim value ml_gtk_text_buffer_cut_clipboard(value self, value arg1, value ar
 CAMLparam3(self, arg1, arg2);
 gtk_text_buffer_cut_clipboard(GtkWidget_val(self), arg1, Bool_val(arg2));
 CAMLreturn(Val_unit);
-}
-
-CAMLprim value ml_gtk_text_buffer_create_tag(value self, value arg1, value arg2, value arg3)
-{
-CAMLparam4(self, arg1, arg2, arg3);
-GtkTextTag* result = gtk_text_buffer_create_tag(GtkWidget_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL), (Is_some(arg2) ? String_val(Some_val(arg2)) : NULL), arg3);
-CAMLreturn(Val_GtkWidget(result));
 }
 
 CAMLprim value ml_gtk_text_buffer_create_mark(value self, value arg1, value arg2, value arg3)
@@ -4109,13 +4092,6 @@ GtkWidget *widget = gtk_text_view_new_with_buffer(GtkWidget_val(arg1));
 CAMLreturn(Val_GtkWidget(widget));
 }
 
-CAMLprim value ml_gtk_text_view_window_to_buffer_coords(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
-{
-CAMLparam6(self, arg1, arg2, arg3, arg4, arg5);
-gtk_text_view_window_to_buffer_coords(GtkWidget_val(self), arg1, arg2, arg3, arg4, arg5);
-CAMLreturn(Val_unit);
-}
-
 CAMLprim value ml_gtk_text_view_starts_display_line(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -4126,7 +4102,7 @@ CAMLreturn(Val_bool(result));
 CAMLprim value ml_gtk_text_view_set_wrap_mode(value self, value arg1)
 {
 CAMLparam2(self, arg1);
-gtk_text_view_set_wrap_mode(GtkWidget_val(self), arg1);
+gtk_text_view_set_wrap_mode(GtkWidget_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -4161,7 +4137,7 @@ CAMLreturn(Val_unit);
 CAMLprim value ml_gtk_text_view_set_gutter(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
-gtk_text_view_set_gutter(GtkWidget_val(self), arg1, GtkWidget_option_val(arg2));
+gtk_text_view_set_gutter(GtkWidget_val(self), Int_val(arg1), GtkWidget_option_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -4177,20 +4153,6 @@ CAMLprim value ml_gtk_text_view_set_buffer(value self, value arg1)
 CAMLparam2(self, arg1);
 gtk_text_view_set_buffer(GtkWidget_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
-}
-
-CAMLprim value ml_gtk_text_view_scroll_to_mark(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
-{
-CAMLparam6(self, arg1, arg2, arg3, arg4, arg5);
-gtk_text_view_scroll_to_mark(GtkWidget_val(self), GtkWidget_val(arg1), arg2, Bool_val(arg3), arg4, arg5);
-CAMLreturn(Val_unit);
-}
-
-CAMLprim value ml_gtk_text_view_scroll_to_iter(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
-{
-CAMLparam6(self, arg1, arg2, arg3, arg4, arg5);
-gboolean result = gtk_text_view_scroll_to_iter(GtkWidget_val(self), GtkWidget_val(arg1), arg2, Bool_val(arg3), arg4, arg5);
-CAMLreturn(Val_bool(result));
 }
 
 CAMLprim value ml_gtk_text_view_scroll_mark_onscreen(value self, value arg1)
@@ -4259,8 +4221,8 @@ CAMLreturn(Val_bool(result));
 CAMLprim value ml_gtk_text_view_get_wrap_mode(value self)
 {
 CAMLparam1(self);
-void *result = gtk_text_view_get_wrap_mode(GtkWidget_val(self));
-CAMLreturn((value)result);
+GtkWrapMode result = gtk_text_view_get_wrap_mode(GtkWidget_val(self));
+CAMLreturn(Val_int(result));
 }
 
 CAMLprim value ml_gtk_text_view_get_visible_rect(value self, value arg1)
@@ -4350,7 +4312,7 @@ CAMLreturn(Val_int(result));
 CAMLprim value ml_gtk_text_view_get_gutter(value self, value arg1)
 {
 CAMLparam2(self, arg1);
-GtkWidget* result = gtk_text_view_get_gutter(GtkWidget_val(self), arg1);
+GtkWidget* result = gtk_text_view_get_gutter(GtkWidget_val(self), Int_val(arg1));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -4387,13 +4349,6 @@ CAMLprim value ml_gtk_text_view_forward_display_line(value self, value arg1)
 CAMLparam2(self, arg1);
 gboolean result = gtk_text_view_forward_display_line(GtkWidget_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_bool(result));
-}
-
-CAMLprim value ml_gtk_text_view_buffer_to_window_coords(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
-{
-CAMLparam6(self, arg1, arg2, arg3, arg4, arg5);
-gtk_text_view_buffer_to_window_coords(GtkWidget_val(self), arg1, arg2, arg3, arg4, arg5);
-CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_gtk_text_view_backward_display_line_start(value self, value arg1)

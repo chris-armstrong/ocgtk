@@ -246,7 +246,42 @@ let type_mappings = [
     ml_to_c = "Double_val";
     needs_copy = true;
   });
+  (* GdkEvent - pointer type *)
+  ("GdkEvent*", {
+    ocaml_type = "Gdk.Event.t";
+    c_to_ml = "Val_GdkEvent";
+    ml_to_c = "GdkEvent_val";
+    needs_copy = false;
+  });
+  (* GtkWrapMode - enum, use int for now *)
+  ("GtkWrapMode", {
+    ocaml_type = "int"; (* TODO: Should be proper enum type *)
+    c_to_ml = "Val_int";
+    ml_to_c = "Int_val";
+    needs_copy = false;
+  });
+  (* GtkTextWindowType - enum, use int for now *)
+  ("GtkTextWindowType", {
+    ocaml_type = "int"; (* TODO: Should be proper enum type *)
+    c_to_ml = "Val_int";
+    ml_to_c = "Int_val";
+    needs_copy = false;
+  });
 ]
+
+(* Phase 5.3: Blacklist for variadic functions (can't be auto-generated) *)
+let variadic_function_blacklist = [
+  "gtk_text_buffer_insert_with_tags";
+  "gtk_text_buffer_insert_with_tags_by_name";
+  "gtk_text_buffer_create_tag";
+  (* Add more variadic functions as discovered *)
+]
+
+let is_variadic_function c_identifier =
+  List.mem c_identifier ~set:variadic_function_blacklist
+
+(* Phase 5.3: OCaml C FFI limitation - max 5 parameters *)
+let max_caml_params = 5
 
 let find_type_mapping c_type =
   try
@@ -685,6 +720,10 @@ let generate_c_header () =
 /* Phase 5.3: Option type conversions for nullable parameters */\n\
 #define GtkWidget_option_val(v) ((v) == Val_none ? NULL : GtkWidget_val(Some_val(v)))\n\
 #define GtkEventController_option_val(v) ((v) == Val_none ? NULL : GtkEventController_val(Some_val(v)))\n\
+\n\
+/* GdkEvent conversions - from ml_event_controller.c */\n\
+#define GdkEvent_val(val) ((GdkEvent*)Pointer_val(val))\n\
+#define Val_GdkEvent(obj) ((value)(obj))\n\
 \n"
 
 let generate_c_constructor ctor cls =
@@ -999,16 +1038,23 @@ let generate_ml_interface cls =
   end;
 
   (* Methods - skip those that duplicate property getters/setters *)
+  (* Phase 5.3: Also skip variadic functions and methods with >5 parameters *)
   List.iter ~f:(fun (meth : gir_method) ->
     let c_name = meth.c_identifier in
+    let param_count = 1 + List.length meth.parameters in (* +1 for self *)
     let ml_name = Str.global_replace (Str.regexp "gtk_") "ml_gtk_" c_name in
     let ocaml_name = to_snake_case (
       Str.global_replace (Str.regexp (sprintf "gtk_%s_"
         (to_snake_case cls.class_name))) "" c_name
     ) in
 
-    (* Skip methods that would duplicate property-generated externals *)
-    if not (List.mem ocaml_name ~set:!property_names) then begin
+    (* Skip if: variadic function, too many params, or duplicates property *)
+    let should_skip =
+      is_variadic_function c_name ||
+      param_count > max_caml_params ||
+      List.mem ocaml_name ~set:!property_names
+    in
+    if not should_skip then begin
       (match meth.doc with
       | Some doc -> bprintf buf "(** %s *)\n" doc
       | None -> ());
@@ -1109,14 +1155,21 @@ let generate_bindings mode filter_file gir_file output_dir =
     ) cls.properties;
 
     (* Phase 5.2: Generate ALL methods (removed 5-method limit), skip duplicates *)
+    (* Phase 5.3: Skip variadic functions and methods with >5 parameters *)
     List.iter ~f:(fun (meth : gir_method) ->
       let c_name = meth.c_identifier in
+      let param_count = 1 + List.length meth.parameters in (* +1 for self *)
       let class_snake = to_snake_case cls.class_name in
       let ocaml_name = to_snake_case (
         Str.global_replace (Str.regexp (sprintf "gtk_%s_" class_snake)) "" c_name
       ) in
-      (* Skip methods that would duplicate property-generated functions *)
-      if not (List.mem ocaml_name ~set:!property_method_names) then
+      (* Skip if: variadic function, too many params, or duplicates property *)
+      let should_skip =
+        is_variadic_function c_name ||
+        param_count > max_caml_params ||
+        List.mem ocaml_name ~set:!property_method_names
+      in
+      if not should_skip then
         Buffer.add_string c_buf (generate_c_method meth cls)
     ) (List.rev cls.methods);
 

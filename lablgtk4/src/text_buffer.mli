@@ -54,10 +54,6 @@ external move_mark_by_name : t -> string -> unit -> unit = "ml_gtk_text_buffer_m
 
 external move_mark : t -> Gtk.Widget.t -> unit -> unit = "ml_gtk_text_buffer_move_mark"
 
-external insert_with_tags_by_name : t -> Gtk.Widget.t -> string -> unit -> string -> unit -> unit = "ml_gtk_text_buffer_insert_with_tags_by_name"
-
-external insert_with_tags : t -> Gtk.Widget.t -> string -> unit -> Gtk.Widget.t -> unit -> unit = "ml_gtk_text_buffer_insert_with_tags"
-
 external insert_range_interactive : t -> Gtk.Widget.t -> unit -> unit -> bool -> bool = "ml_gtk_text_buffer_insert_range_interactive"
 
 external insert_range : t -> Gtk.Widget.t -> unit -> unit -> unit = "ml_gtk_text_buffer_insert_range"
@@ -133,8 +129,6 @@ external delete_interactive : t -> Gtk.Widget.t -> Gtk.Widget.t -> bool -> bool 
 external delete : t -> Gtk.Widget.t -> Gtk.Widget.t -> unit = "ml_gtk_text_buffer_delete"
 
 external cut_clipboard : t -> unit -> bool -> unit = "ml_gtk_text_buffer_cut_clipboard"
-
-external create_tag : t -> string option -> string option -> unit -> Gtk.Widget.t = "ml_gtk_text_buffer_create_tag"
 
 external create_mark : t -> string option -> unit -> bool -> Gtk.Widget.t = "ml_gtk_text_buffer_create_mark"
 

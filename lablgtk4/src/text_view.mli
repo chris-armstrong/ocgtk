@@ -89,11 +89,9 @@ external get_top_margin : t -> int = "ml_gtk_text_view_get_top_margin"
 (** Set property: top-margin *)
 external set_top_margin : t -> int -> unit = "ml_gtk_text_view_set_top_margin"
 
-external window_to_buffer_coords : t -> unit -> unit -> unit -> unit -> unit -> unit = "ml_gtk_text_view_window_to_buffer_coords"
-
 external starts_display_line : t -> unit -> bool = "ml_gtk_text_view_starts_display_line"
 
-external set_wrap_mode : t -> unit -> unit = "ml_gtk_text_view_set_wrap_mode"
+external set_wrap_mode : t -> int -> unit = "ml_gtk_text_view_set_wrap_mode"
 
 external set_tabs : t -> unit -> unit = "ml_gtk_text_view_set_tabs"
 
@@ -103,15 +101,11 @@ external set_input_purpose : t -> int -> unit = "ml_gtk_text_view_set_input_purp
 
 external set_input_hints : t -> int -> unit = "ml_gtk_text_view_set_input_hints"
 
-external set_gutter : t -> unit -> Gtk.Widget.t option -> unit = "ml_gtk_text_view_set_gutter"
+external set_gutter : t -> int -> Gtk.Widget.t option -> unit = "ml_gtk_text_view_set_gutter"
 
 external set_extra_menu : t -> unit -> unit = "ml_gtk_text_view_set_extra_menu"
 
 external set_buffer : t -> Gtk.Widget.t option -> unit = "ml_gtk_text_view_set_buffer"
-
-external scroll_to_mark : t -> Gtk.Widget.t -> unit -> bool -> unit -> unit -> unit = "ml_gtk_text_view_scroll_to_mark"
-
-external scroll_to_iter : t -> Gtk.Widget.t -> unit -> bool -> unit -> unit -> bool = "ml_gtk_text_view_scroll_to_iter"
 
 external scroll_mark_onscreen : t -> Gtk.Widget.t -> unit = "ml_gtk_text_view_scroll_mark_onscreen"
 
@@ -131,7 +125,7 @@ external move_mark_onscreen : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_move
 
 external im_context_filter_keypress : t -> Gdk.Event.t -> bool = "ml_gtk_text_view_im_context_filter_keypress"
 
-external get_wrap_mode : t -> unit = "ml_gtk_text_view_get_wrap_mode"
+external get_wrap_mode : t -> int = "ml_gtk_text_view_get_wrap_mode"
 
 external get_visible_rect : t -> unit -> unit = "ml_gtk_text_view_get_visible_rect"
 
@@ -157,7 +151,7 @@ external get_input_purpose : t -> int = "ml_gtk_text_view_get_input_purpose"
 
 external get_input_hints : t -> int = "ml_gtk_text_view_get_input_hints"
 
-external get_gutter : t -> unit -> Gtk.Widget.t = "ml_gtk_text_view_get_gutter"
+external get_gutter : t -> int -> Gtk.Widget.t = "ml_gtk_text_view_get_gutter"
 
 external get_extra_menu : t -> unit = "ml_gtk_text_view_get_extra_menu"
 
@@ -168,8 +162,6 @@ external get_buffer : t -> Gtk.Widget.t = "ml_gtk_text_view_get_buffer"
 external forward_display_line_end : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_forward_display_line_end"
 
 external forward_display_line : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_forward_display_line"
-
-external buffer_to_window_coords : t -> unit -> unit -> unit -> unit -> unit -> unit = "ml_gtk_text_view_buffer_to_window_coords"
 
 external backward_display_line_start : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_backward_display_line_start"
 
