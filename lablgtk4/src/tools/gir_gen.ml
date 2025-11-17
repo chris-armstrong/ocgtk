@@ -25,6 +25,7 @@ type gir_type = {
 type gir_param = {
   param_name : string;
   param_type : gir_type;
+  nullable : bool;  (* Phase 5.2: Support nullable parameters *)
 }
 
 type gir_method = {
@@ -251,6 +252,13 @@ let find_type_mapping c_type =
   try
     Some (List.assoc c_type type_mappings)
   with Not_found -> None
+
+(* Check if a C type is a widget/object pointer *)
+let is_widget_pointer c_type =
+  String.length c_type > 3 &&
+  String.sub ~pos:(String.length c_type - 1) ~len:1 c_type = "*" &&
+  (String.length c_type > 4 && String.sub ~pos:0 ~len:3 c_type = "Gtk" ||
+   String.length c_type > 4 && String.sub ~pos:0 ~len:1 c_type = "G")
 
 (* ========================================================================= *)
 (* Utility Functions *)
@@ -556,8 +564,9 @@ let parse_gir_file filename mode filter_classes =
       match Xmlm.input input with
       | `El_start ((_, "parameter"), attrs) ->
         let param_name = match get_attr "name" attrs with Some n -> n | None -> "arg" in
+        let nullable = match get_attr "nullable" attrs with Some "1" -> true | _ -> false in
         let param_type = parse_parameter_type () in
-        params := { param_name = param_name; param_type = param_type } :: !params;
+        params := { param_name = param_name; param_type = param_type; nullable = nullable } :: !params;
         parse_params_contents ()
 
       | `El_start ((_, "instance-parameter"), _) ->
@@ -744,33 +753,54 @@ let generate_c_method (meth : gir_method) cls =
     if is_widget then "GtkWidget_val(self)" else "GtkEventController_val(self)"
   in
 
-  (* Build C call *)
-  let c_args = self_cast ::
-    List.mapi ~f:(fun i p ->
+  (* Build parameter conversions with nullable support *)
+  let param_conversions = ref [] in
+  let c_args = ref [self_cast] in
+
+  List.iteri ~f:(fun i p ->
+    let arg_name = sprintf "arg%d" (i + 1) in
+    let c_var_name = sprintf "c_%s" arg_name in
+
+    (* Handle nullable widget pointers *)
+    if p.nullable && is_widget_pointer p.param_type.c_type then
+      (* Generate option type conversion *)
+      let conversion = sprintf "    %s %s = NULL;\n    if (Is_block(%s)) {\n        %s = (%s)GtkWidget_val(Field(%s, 0));\n    }\n"
+        p.param_type.c_type c_var_name arg_name
+        c_var_name p.param_type.c_type arg_name
+      in
+      param_conversions := conversion :: !param_conversions;
+      c_args := !c_args @ [c_var_name]
+    else
+      (* Non-nullable parameter *)
       match find_type_mapping p.param_type.c_type with
-      | Some mapping -> sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
-      | None -> sprintf "arg%d" (i + 1)
-    ) meth.parameters in
+      | Some mapping ->
+        c_args := !c_args @ [sprintf "%s(%s)" mapping.ml_to_c arg_name]
+      | None ->
+        c_args := !c_args @ [arg_name]
+  ) meth.parameters;
+
+  let param_conversion_code = String.concat ~sep:"" (List.rev !param_conversions) in
 
   (* Build return conversion *)
   let ret_type = meth.return_type.c_type in
   let (c_call, ret_conv) =
     if ret_type = "void" then
-      (sprintf "%s(%s);" c_name (String.concat ~sep:", " c_args),
+      (sprintf "%s(%s);" c_name (String.concat ~sep:", " !c_args),
        "CAMLreturn(Val_unit);")
     else
       match find_type_mapping ret_type with
       | Some mapping ->
-        (sprintf "%s result = %s(%s);" ret_type c_name (String.concat ~sep:", " c_args),
+        (sprintf "%s result = %s(%s);" ret_type c_name (String.concat ~sep:", " !c_args),
          sprintf "CAMLreturn(%s(result));" mapping.c_to_ml)
       | None ->
-        (sprintf "void *result = %s(%s);" c_name (String.concat ~sep:", " c_args),
+        (sprintf "void *result = %s(%s);" c_name (String.concat ~sep:", " !c_args),
          "CAMLreturn((value)result);")
   in
 
   sprintf "\nCAMLprim value %s(%s)\n\
 {\n\
     CAMLparam%d(%s);\n\
+%s\
     %s\n\
     %s\n\
 }\n"
@@ -778,6 +808,7 @@ let generate_c_method (meth : gir_method) cls =
     (String.concat ~sep:", " params)
     param_count
     (String.concat ~sep:", " param_names)
+    param_conversion_code
     c_call
     ret_conv
 
@@ -971,9 +1002,21 @@ let generate_ml_interface cls =
 
       (* Build OCaml type signature *)
       let param_types = List.map ~f:(fun p ->
-        match find_type_mapping p.param_type.c_type with
-        | Some mapping -> mapping.ocaml_type
-        | None -> "unit" (* fallback *)
+        let base_type =
+          match find_type_mapping p.param_type.c_type with
+          | Some mapping -> mapping.ocaml_type
+          | None ->
+            (* Check if it's a widget pointer without mapping *)
+            if is_widget_pointer p.param_type.c_type then
+              "Gtk.Widget.t"
+            else
+              "unit" (* fallback *)
+        in
+        (* Wrap in option if nullable *)
+        if p.nullable && is_widget_pointer p.param_type.c_type then
+          base_type ^ " option"
+        else
+          base_type
       ) meth.parameters in
 
       let ret_type_ocaml =
