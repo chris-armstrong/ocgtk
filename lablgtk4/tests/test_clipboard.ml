@@ -2,6 +2,20 @@
 
 open Alcotest
 
+(* Try to initialize GTK once for all tests *)
+let gtk_available =
+  try
+    let _ = GMain.init () in
+    true
+  with
+  | GMain.Error _ -> false
+
+(* Helper to skip tests when GTK is not available *)
+let require_gtk f () =
+  if not gtk_available then skip ()
+  else f ()
+
+
 (* Helper function to run tests with display *)
 let with_display f () =
   try
@@ -387,41 +401,41 @@ let test_exception_doesnt_leak = with_display (fun display ->
 let () =
   run "GdkClipboard Module Tests (Phase 2.6)" [
     "Getting Clipboard Instances", [
-      test_case "get default clipboard" `Quick test_get_clipboard;
-      test_case "get primary clipboard" `Quick test_get_primary_clipboard;
+      test_case "get default clipboard" `Quick (require_gtk test_get_clipboard);
+      test_case "get primary clipboard" `Quick (require_gtk test_get_primary_clipboard);
     ];
 
     "Synchronous Text Operations", [
-      test_case "set text basic" `Quick test_set_text_basic;
-      test_case "set empty text" `Quick test_set_text_empty;
-      test_case "set unicode text" `Quick test_set_text_unicode;
+      test_case "set text basic" `Quick (require_gtk test_set_text_basic);
+      test_case "set empty text" `Quick (require_gtk test_set_text_empty);
+      test_case "set unicode text" `Quick (require_gtk test_set_text_unicode);
     ];
 
     "Asynchronous Read Operations", [
-      test_case "read text async" `Quick test_read_text_async;
-      test_case "read empty text async" `Quick test_read_text_async_empty;
+      test_case "read text async" `Quick (require_gtk test_read_text_async);
+      test_case "read empty text async" `Quick (require_gtk test_read_text_async_empty);
       test_case "text roundtrip" `Slow test_read_text_roundtrip;
     ];
 
     "Content Formats", [
-      test_case "get formats" `Quick test_get_formats;
-      test_case "get mime types" `Quick test_get_mime_types;
+      test_case "get formats" `Quick (require_gtk test_get_formats);
+      test_case "get mime types" `Quick (require_gtk test_get_mime_types);
     ];
 
     "Clipboard Properties", [
-      test_case "is_local" `Quick test_is_local;
+      test_case "is_local" `Quick (require_gtk test_is_local);
     ];
 
     "Multiple Clipboards", [
-      test_case "multiple instances" `Quick test_multiple_clipboards;
-      test_case "primary vs default" `Quick test_primary_vs_default;
+      test_case "multiple instances" `Quick (require_gtk test_multiple_clipboards);
+      test_case "primary vs default" `Quick (require_gtk test_primary_vs_default);
     ];
 
     "Error Handling", [
-      test_case "callback exception" `Quick test_callback_exception;
-      test_case "exception cleanup" `Quick test_exception_cleanup;
-      test_case "different exception types" `Quick test_exception_types;
-      test_case "multiple exceptions" `Quick test_multiple_exceptions;
+      test_case "callback exception" `Quick (require_gtk test_callback_exception);
+      test_case "exception cleanup" `Quick (require_gtk test_exception_cleanup);
+      test_case "different exception types" `Quick (require_gtk test_exception_types);
+      test_case "multiple exceptions" `Quick (require_gtk test_multiple_exceptions);
       test_case "exception memory safety" `Slow test_exception_doesnt_leak;
     ];
   ]

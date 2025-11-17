@@ -15,6 +15,20 @@
 
 open Alcotest
 
+(* Try to initialize GTK once for all tests *)
+let gtk_available =
+  try
+    let _ = GMain.init () in
+    true
+  with
+  | GMain.Error _ -> false
+
+(* Helper to skip tests when GTK is not available *)
+let require_gtk f () =
+  if not gtk_available then skip ()
+  else f ()
+
+
 (* ==================================================================== *)
 (* Test Type System *)
 (* ==================================================================== *)
@@ -644,72 +658,72 @@ let test_gvalue_type_mismatch () =
 let () =
   run "GObject Module Tests (Phase 2.2)" [
     "Type System", [
-      test_case "Fundamental types" `Quick test_type_fundamental;
-      test_case "Type names" `Quick test_type_name;
-      test_case "Type from name" `Quick test_type_from_name;
-      test_case "Type hierarchy" `Quick test_type_parent;
-      test_case "Type is_a check" `Quick test_type_is_a;
+      test_case "Fundamental types" `Quick (require_gtk test_type_fundamental);
+      test_case "Type names" `Quick (require_gtk test_type_name);
+      test_case "Type from name" `Quick (require_gtk test_type_from_name);
+      test_case "Type hierarchy" `Quick (require_gtk test_type_parent);
+      test_case "Type is_a check" `Quick (require_gtk test_type_is_a);
     ];
 
     "GValue Operations", [
-      test_case "GValue int" `Quick test_gvalue_int;
-      test_case "GValue boolean" `Quick test_gvalue_boolean;
-      test_case "GValue string" `Quick test_gvalue_string;
-      test_case "GValue float" `Quick test_gvalue_float;
-      test_case "GValue double" `Quick test_gvalue_double;
-      test_case "GValue reset" `Quick test_gvalue_reset;
-      test_case "GValue get_type" `Quick test_gvalue_get_type;
-      test_case "GValue create_empty" `Quick test_gvalue_create_empty;
+      test_case "GValue int" `Quick (require_gtk test_gvalue_int);
+      test_case "GValue boolean" `Quick (require_gtk test_gvalue_boolean);
+      test_case "GValue string" `Quick (require_gtk test_gvalue_string);
+      test_case "GValue float" `Quick (require_gtk test_gvalue_float);
+      test_case "GValue double" `Quick (require_gtk test_gvalue_double);
+      test_case "GValue reset" `Quick (require_gtk test_gvalue_reset);
+      test_case "GValue get_type" `Quick (require_gtk test_gvalue_get_type);
+      test_case "GValue create_empty" `Quick (require_gtk test_gvalue_create_empty);
     ];
 
     "Signals and Closures", [
-      test_case "Closure creation" `Quick test_signal_closure_creation;
-      test_case "Closure invocation (void)" `Quick test_closure_invocation_void;
-      test_case "Closure invocation (int)" `Quick test_closure_invocation_int;
-      test_case "Closure invocation (string)" `Quick test_closure_invocation_string;
-      test_case "Multiple closure invocations" `Quick test_closure_multiple_invocations;
+      test_case "Closure creation" `Quick (require_gtk test_signal_closure_creation);
+      test_case "Closure invocation (void)" `Quick (require_gtk test_closure_invocation_void);
+      test_case "Closure invocation (int)" `Quick (require_gtk test_closure_invocation_int);
+      test_case "Closure invocation (string)" `Quick (require_gtk test_closure_invocation_string);
+      test_case "Multiple closure invocations" `Quick (require_gtk test_closure_multiple_invocations);
     ];
 
     "Closure Critical Tests", [
-      test_case "Multiple parameters" `Quick test_closure_multiple_params;
-      test_case "Boolean parameter" `Quick test_closure_boolean_param;
-      test_case "Double parameter" `Quick test_closure_double_param;
-      test_case "Exception handling" `Quick test_closure_exception_handling;
-      test_case "Out of bounds access" `Quick test_closure_out_of_bounds_access;
-      test_case "Multiple closures simultaneously" `Quick test_multiple_closures_simultaneously;
+      test_case "Multiple parameters" `Quick (require_gtk test_closure_multiple_params);
+      test_case "Boolean parameter" `Quick (require_gtk test_closure_boolean_param);
+      test_case "Double parameter" `Quick (require_gtk test_closure_double_param);
+      test_case "Exception handling" `Quick (require_gtk test_closure_exception_handling);
+      test_case "Out of bounds access" `Quick (require_gtk test_closure_out_of_bounds_access);
+      test_case "Multiple closures simultaneously" `Quick (require_gtk test_multiple_closures_simultaneously);
     ];
 
     "Closure Edge Cases", [
-      test_case "Empty string" `Quick test_closure_empty_string;
-      test_case "Unicode string" `Quick test_closure_unicode_string;
-      test_case "Large int (32-bit range)" `Quick test_closure_large_int;
-      test_case "Negative int" `Quick test_closure_negative_int;
-      test_case "Wrong type access" `Quick test_closure_wrong_type_access;
-      test_case "Survives GC" `Quick test_closure_survives_gc;
+      test_case "Empty string" `Quick (require_gtk test_closure_empty_string);
+      test_case "Unicode string" `Quick (require_gtk test_closure_unicode_string);
+      test_case "Large int (32-bit range)" `Quick (require_gtk test_closure_large_int);
+      test_case "Negative int" `Quick (require_gtk test_closure_negative_int);
+      test_case "Wrong type access" `Quick (require_gtk test_closure_wrong_type_access);
+      test_case "Survives GC" `Quick (require_gtk test_closure_survives_gc);
     ];
 
     "Data Conversions", [
-      test_case "Enum conversion (Gtk4)" `Quick test_data_enum;
-      test_case "Flags conversion (GLib)" `Quick test_data_flags;
-      test_case "GObject enums accessible" `Quick test_gobject_enums_accessible;
-      test_case "Signal type enum" `Quick test_data_enum_gobject;
-      test_case "Connect flags" `Quick test_data_flags_gobject;
-      test_case "Fundamental types" `Quick test_fundamental_types;
+      test_case "Enum conversion (Gtk4)" `Quick (require_gtk test_data_enum);
+      test_case "Flags conversion (GLib)" `Quick (require_gtk test_data_flags);
+      test_case "GObject enums accessible" `Quick (require_gtk test_gobject_enums_accessible);
+      test_case "Signal type enum" `Quick (require_gtk test_data_enum_gobject);
+      test_case "Connect flags" `Quick (require_gtk test_data_flags_gobject);
+      test_case "Fundamental types" `Quick (require_gtk test_fundamental_types);
     ];
 
     "Object Operations", [
-      test_case "Object coerce" `Quick test_object_coerce;
+      test_case "Object coerce" `Quick (require_gtk test_object_coerce);
     ];
 
     (* Temporarily disabled due to segfault investigation *)
     (* "Memory Safety", [
-      test_case "GValue lifecycle with GC" `Quick test_gvalue_lifecycle;
-      test_case "GC interaction" `Quick test_gvalue_gc_interaction;
-      test_case "Multiple GValue types with GC" `Quick test_gvalue_multiple_types;
+      test_case "GValue lifecycle with GC" `Quick (require_gtk test_gvalue_lifecycle);
+      test_case "GC interaction" `Quick (require_gtk test_gvalue_gc_interaction);
+      test_case "Multiple GValue types with GC" `Quick (require_gtk test_gvalue_multiple_types);
     ]; *)
 
     "Error Handling", [
-      test_case "Type not found" `Quick test_type_not_found;
-      test_case "GValue type mismatch" `Quick test_gvalue_type_mismatch;
+      test_case "Type not found" `Quick (require_gtk test_type_not_found);
+      test_case "GValue type mismatch" `Quick (require_gtk test_gvalue_type_mismatch);
     ];
   ]

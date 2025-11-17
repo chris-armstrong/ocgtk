@@ -10,6 +10,20 @@
 
 open Alcotest
 
+(* Try to initialize GTK once for all tests *)
+let gtk_available =
+  try
+    let _ = GMain.init () in
+    true
+  with
+  | GMain.Error _ -> false
+
+(* Helper to skip tests when GTK is not available *)
+let require_gtk f () =
+  if not gtk_available then skip ()
+  else f ()
+
+
 (* Test that module is accessible and types compile *)
 let test_module_accessible () =
   (* Test that we can reference the types *)
@@ -225,27 +239,27 @@ let () =
       test_case "type_constructors" `Quick test_type_constructors;
     ];
     "creation", [
-      test_case "widget_creation" `Quick test_widget_creation;
+      test_case "widget_creation" `Quick (require_gtk test_widget_creation);
     ];
     "visibility", [
-      test_case "show/hide" `Quick test_visibility;
+      test_case "show/hide" `Quick (require_gtk test_visibility);
     ];
     "size", [
-      test_case "size_request" `Quick test_size_request;
+      test_case "size_request" `Quick (require_gtk test_size_request);
     ];
     "css", [
-      test_case "css_classes" `Quick test_css_classes;
+      test_case "css_classes" `Quick (require_gtk test_css_classes);
     ];
     "focus", [
-      test_case "focusable" `Quick test_focus;
+      test_case "focusable" `Quick (require_gtk test_focus);
     ];
     "state", [
-      test_case "state_flags" `Quick test_state_flags;
+      test_case "state_flags" `Quick (require_gtk test_state_flags);
     ];
     "hierarchy", [
-      test_case "parent_root" `Quick test_parent_root;
+      test_case "parent_root" `Quick (require_gtk test_parent_root);
     ];
     "queue", [
-      test_case "queue_operations" `Quick test_queue_operations;
+      test_case "queue_operations" `Quick (require_gtk test_queue_operations);
     ];
   ]

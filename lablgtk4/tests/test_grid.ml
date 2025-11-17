@@ -11,6 +11,20 @@
 
 open Alcotest
 
+(* Try to initialize GTK once for all tests *)
+let gtk_available =
+  try
+    let _ = GMain.init () in
+    true
+  with
+  | GMain.Error _ -> false
+
+(* Helper to skip tests when GTK is not available *)
+let require_gtk f () =
+  if not gtk_available then skip ()
+  else f ()
+
+
 (* Test that Grid module is accessible and types compile *)
 let test_module_accessible () =
   (* Test that we can reference the types *)
@@ -338,30 +352,30 @@ let () =
       test_case "type_constructors" `Quick test_type_constructors;
     ];
     "creation", [
-      test_case "grid_creation" `Quick test_grid_creation;
+      test_case "grid_creation" `Quick (require_gtk test_grid_creation);
     ];
     "properties", [
-      test_case "grid_properties" `Quick test_grid_properties;
+      test_case "grid_properties" `Quick (require_gtk test_grid_properties);
     ];
     "children - Low Level", [
-      test_case "child_attach" `Quick test_child_attach;
-      test_case "child_removal" `Quick test_child_removal;
-      test_case "attach_next_to" `Quick test_attach_next_to;
+      test_case "child_attach" `Quick (require_gtk test_child_attach);
+      test_case "child_removal" `Quick (require_gtk test_child_removal);
+      test_case "attach_next_to" `Quick (require_gtk test_attach_next_to);
     ];
     "row_column", [
-      test_case "row_column_operations" `Quick test_row_column_operations;
-      test_case "insert_next_to" `Quick test_insert_next_to;
+      test_case "row_column_operations" `Quick (require_gtk test_row_column_operations);
+      test_case "insert_next_to" `Quick (require_gtk test_insert_next_to);
     ];
     "high_level - Basic", [
-      test_case "ggrid_wrapper" `Quick test_ggrid_wrapper;
+      test_case "ggrid_wrapper" `Quick (require_gtk test_ggrid_wrapper);
     ];
     "high_level - Comprehensive", [
-      test_case "ggrid_attach_multiple" `Quick test_ggrid_attach_multiple;
-      test_case "ggrid_homogeneous" `Quick test_ggrid_homogeneous;
-      test_case "ggrid_baseline" `Quick test_ggrid_baseline;
-      test_case "ggrid_with_nested_containers" `Quick test_ggrid_with_nested_containers;
+      test_case "ggrid_attach_multiple" `Quick (require_gtk test_ggrid_attach_multiple);
+      test_case "ggrid_homogeneous" `Quick (require_gtk test_ggrid_homogeneous);
+      test_case "ggrid_baseline" `Quick (require_gtk test_ggrid_baseline);
+      test_case "ggrid_with_nested_containers" `Quick (require_gtk test_ggrid_with_nested_containers);
     ];
     "as_widget", [
-      test_case "as_widget_conversion" `Quick test_as_widget;
+      test_case "as_widget_conversion" `Quick (require_gtk test_as_widget);
     ];
   ]
