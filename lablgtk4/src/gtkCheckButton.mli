@@ -4,8 +4,8 @@ type t = Gtk.Widget.t
 
 (** Constructors *)
 external new_ : unit -> t = "ml_gtk_check_button_new"
-external new_with_label : string -> t = "ml_gtk_check_button_new_with_label"
-external new_with_mnemonic : string -> t = "ml_gtk_check_button_new_with_mnemonic"
+external new_with_label : string option -> t = "ml_gtk_check_button_new_with_label"
+external new_with_mnemonic : string option -> t = "ml_gtk_check_button_new_with_mnemonic"
 
 (** Properties *)
 external get_active : t -> bool = "ml_gtk_check_button_get_active"

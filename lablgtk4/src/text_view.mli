@@ -89,6 +89,8 @@ external get_top_margin : t -> int = "ml_gtk_text_view_get_top_margin"
 (** Set property: top-margin *)
 external set_top_margin : t -> int -> unit = "ml_gtk_text_view_set_top_margin"
 
+external window_to_buffer_coords : t -> int -> unit -> unit -> unit -> unit -> unit = "ml_gtk_text_view_window_to_buffer_coords_bytecode" "ml_gtk_text_view_window_to_buffer_coords_native"
+
 external starts_display_line : t -> unit -> bool = "ml_gtk_text_view_starts_display_line"
 
 external set_wrap_mode : t -> int -> unit = "ml_gtk_text_view_set_wrap_mode"
@@ -106,6 +108,10 @@ external set_gutter : t -> int -> Gtk.Widget.t option -> unit = "ml_gtk_text_vie
 external set_extra_menu : t -> unit -> unit = "ml_gtk_text_view_set_extra_menu"
 
 external set_buffer : t -> Gtk.Widget.t option -> unit = "ml_gtk_text_view_set_buffer"
+
+external scroll_to_mark : t -> Gtk.Widget.t -> unit -> bool -> unit -> unit -> unit = "ml_gtk_text_view_scroll_to_mark_bytecode" "ml_gtk_text_view_scroll_to_mark_native"
+
+external scroll_to_iter : t -> Gtk.Widget.t -> unit -> bool -> unit -> unit -> bool = "ml_gtk_text_view_scroll_to_iter_bytecode" "ml_gtk_text_view_scroll_to_iter_native"
 
 external scroll_mark_onscreen : t -> Gtk.Widget.t -> unit = "ml_gtk_text_view_scroll_mark_onscreen"
 
@@ -162,6 +168,8 @@ external get_buffer : t -> Gtk.Widget.t = "ml_gtk_text_view_get_buffer"
 external forward_display_line_end : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_forward_display_line_end"
 
 external forward_display_line : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_forward_display_line"
+
+external buffer_to_window_coords : t -> int -> unit -> unit -> unit -> unit -> unit = "ml_gtk_text_view_buffer_to_window_coords_bytecode" "ml_gtk_text_view_buffer_to_window_coords_native"
 
 external backward_display_line_start : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_backward_display_line_start"
 

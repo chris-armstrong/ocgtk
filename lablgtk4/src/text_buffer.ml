@@ -5,7 +5,7 @@
 type t = Gtk.Widget.t
 
 (* External FFI bindings *)
-external new_ : unit -> t = "ml_gtk_text_buffer_new"
+external new_ : Gtk.Widget.t option -> t = "ml_gtk_text_buffer_new"
 external get_can_redo : t -> bool = "ml_gtk_text_buffer_get_can_redo"
 external get_can_undo : t -> bool = "ml_gtk_text_buffer_get_can_undo"
 external get_cursor_position : t -> int = "ml_gtk_text_buffer_get_cursor_position"

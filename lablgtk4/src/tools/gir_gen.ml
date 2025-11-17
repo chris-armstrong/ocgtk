@@ -851,18 +851,54 @@ let generate_c_method (meth : gir_method) cls =
          "CAMLreturn((value)result);")
   in
 
-  sprintf "\nCAMLprim value %s(%s)\n\
+  (* For functions with >5 parameters, generate both bytecode and native variants *)
+  if param_count > 5 then
+    (* Split param_names into first 5 and rest *)
+    let first_five = List.filteri ~f:(fun i _ -> i < 5) param_names in
+    let rest = List.filteri ~f:(fun i _ -> i >= 5) param_names in
+
+    (* Native code variant - individual parameters *)
+    let native_func = sprintf "\nCAMLprim value %s_native(%s)\n\
+{\n\
+    CAMLparam5(%s);\n\
+    CAMLxparam%d(%s);\n\
+    %s\n\
+    %s\n\
+}\n"
+      ml_name
+      (String.concat ~sep:", " params)
+      (String.concat ~sep:", " first_five)
+      (param_count - 5)
+      (String.concat ~sep:", " rest)
+      c_call
+      ret_conv
+    in
+
+    (* Bytecode variant - array of values *)
+    let bytecode_func = sprintf "\nCAMLprim value %s_bytecode(value * argv, int argn)\n\
+{\n\
+    return %s_native(%s);\n\
+}\n"
+      ml_name
+      ml_name
+      (String.concat ~sep:", " (List.mapi ~f:(fun i _ -> sprintf "argv[%d]" i) param_names))
+    in
+
+    native_func ^ bytecode_func
+  else
+    (* Standard single function for <=5 parameters *)
+    sprintf "\nCAMLprim value %s(%s)\n\
 {\n\
     CAMLparam%d(%s);\n\
     %s\n\
     %s\n\
 }\n"
-    ml_name
-    (String.concat ~sep:", " params)
-    param_count
-    (String.concat ~sep:", " param_names)
-    c_call
-    ret_conv
+      ml_name
+      (String.concat ~sep:", " params)
+      param_count
+      (String.concat ~sep:", " param_names)
+      c_call
+      ret_conv
 
 (* Phase 5.2: Generate C code for property getter *)
 let generate_c_property_getter (prop : gir_property) (cls : gir_class) =
@@ -1078,10 +1114,10 @@ let generate_ml_interface cls =
         (to_snake_case cls.class_name))) "" c_name
     ) in
 
-    (* Skip if: variadic function, too many params, or duplicates property *)
+    (* Skip if: variadic function or duplicates property *)
+    (* Note: No longer skip methods with >5 params - we generate bytecode/native variants *)
     let should_skip =
       is_variadic_function c_name ||
-      param_count > max_caml_params ||
       List.mem ocaml_name ~set:!property_names
     in
     if not should_skip then begin
@@ -1115,8 +1151,13 @@ let generate_ml_interface cls =
         String.concat ~sep:" -> " (["t"] @ param_types @ [ret_type_ocaml])
       in
 
-      bprintf buf "external %s : %s = \"%s\"\n\n"
-        ocaml_name full_type ml_name;
+      (* For methods with >5 parameters, use bytecode/native variant syntax *)
+      if param_count > 5 then
+        bprintf buf "external %s : %s = \"%s_bytecode\" \"%s_native\"\n\n"
+          ocaml_name full_type ml_name ml_name
+      else
+        bprintf buf "external %s : %s = \"%s\"\n\n"
+          ocaml_name full_type ml_name;
     end
   ) (List.rev cls.methods);
 

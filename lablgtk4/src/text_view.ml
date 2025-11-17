@@ -6,7 +6,7 @@ type t = Gtk.Widget.t
 
 (* External FFI bindings *)
 external new_ : unit -> t = "ml_gtk_text_view_new"
-external new_ : unit -> t = "ml_gtk_text_view_new_with_buffer"
+external new_with_buffer : Gtk.Widget.t -> t = "ml_gtk_text_view_new_with_buffer"
 external get_accepts_tab : t -> bool = "ml_gtk_text_view_get_accepts_tab"
 external set_accepts_tab : t -> bool -> unit = "ml_gtk_text_view_set_accepts_tab"
 external get_bottom_margin : t -> int = "ml_gtk_text_view_get_bottom_margin"
@@ -33,6 +33,7 @@ external get_right_margin : t -> int = "ml_gtk_text_view_get_right_margin"
 external set_right_margin : t -> int -> unit = "ml_gtk_text_view_set_right_margin"
 external get_top_margin : t -> int = "ml_gtk_text_view_get_top_margin"
 external set_top_margin : t -> int -> unit = "ml_gtk_text_view_set_top_margin"
+external window_to_buffer_coords : t -> int -> unit -> unit -> unit -> unit -> unit = "ml_gtk_text_view_window_to_buffer_coords_bytecode" "ml_gtk_text_view_window_to_buffer_coords_native"
 external starts_display_line : t -> unit -> bool = "ml_gtk_text_view_starts_display_line"
 external set_wrap_mode : t -> int -> unit = "ml_gtk_text_view_set_wrap_mode"
 external set_tabs : t -> unit -> unit = "ml_gtk_text_view_set_tabs"
@@ -42,6 +43,8 @@ external set_input_hints : t -> int -> unit = "ml_gtk_text_view_set_input_hints"
 external set_gutter : t -> int -> Gtk.Widget.t option -> unit = "ml_gtk_text_view_set_gutter"
 external set_extra_menu : t -> unit -> unit = "ml_gtk_text_view_set_extra_menu"
 external set_buffer : t -> Gtk.Widget.t option -> unit = "ml_gtk_text_view_set_buffer"
+external scroll_to_mark : t -> Gtk.Widget.t -> unit -> bool -> unit -> unit -> unit = "ml_gtk_text_view_scroll_to_mark_bytecode" "ml_gtk_text_view_scroll_to_mark_native"
+external scroll_to_iter : t -> Gtk.Widget.t -> unit -> bool -> unit -> unit -> bool = "ml_gtk_text_view_scroll_to_iter_bytecode" "ml_gtk_text_view_scroll_to_iter_native"
 external scroll_mark_onscreen : t -> Gtk.Widget.t -> unit = "ml_gtk_text_view_scroll_mark_onscreen"
 external reset_im_context : t -> unit = "ml_gtk_text_view_reset_im_context"
 external reset_cursor_blink : t -> unit = "ml_gtk_text_view_reset_cursor_blink"
@@ -70,6 +73,7 @@ external get_cursor_locations : t -> unit -> unit -> unit -> unit = "ml_gtk_text
 external get_buffer : t -> Gtk.Widget.t = "ml_gtk_text_view_get_buffer"
 external forward_display_line_end : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_forward_display_line_end"
 external forward_display_line : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_forward_display_line"
+external buffer_to_window_coords : t -> int -> unit -> unit -> unit -> unit -> unit = "ml_gtk_text_view_buffer_to_window_coords_bytecode" "ml_gtk_text_view_buffer_to_window_coords_native"
 external backward_display_line_start : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_backward_display_line_start"
 external backward_display_line : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_backward_display_line"
 external add_overlay : t -> Gtk.Widget.t -> unit -> unit -> unit = "ml_gtk_text_view_add_overlay"
@@ -77,5 +81,5 @@ external add_child_at_anchor : t -> Gtk.Widget.t -> Gtk.Widget.t -> unit = "ml_g
 
 (* Summary:
  * - 1 type declarations
- * - 69 external bindings
+ * - 73 external bindings
  *)

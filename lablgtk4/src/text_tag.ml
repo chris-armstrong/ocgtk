@@ -5,7 +5,7 @@
 type t = Gtk.Widget.t
 
 (* External FFI bindings *)
-external new_ : unit -> t = "ml_gtk_text_tag_new"
+external new_ : string option -> t = "ml_gtk_text_tag_new"
 external get_accumulative_margin : t -> bool = "ml_gtk_text_tag_get_accumulative_margin"
 external set_accumulative_margin : t -> bool -> unit = "ml_gtk_text_tag_set_accumulative_margin"
 external get_allow_breaks : t -> bool = "ml_gtk_text_tag_get_allow_breaks"

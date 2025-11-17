@@ -77,8 +77,8 @@ end
 let check_button ?label ?use_mnemonic ?active ?group ?packing ?show () =
   let btn =
     match label, use_mnemonic with
-    | Some l, Some true -> GtkCheckButton.new_with_mnemonic l
-    | Some l, _ -> GtkCheckButton.new_with_label l
+    | Some l, Some true -> GtkCheckButton.new_with_mnemonic (Some l)
+    | Some l, _ -> GtkCheckButton.new_with_label (Some l)
     | None, _ -> GtkCheckButton.new_ ()
   in
   let widget = new check_button btn in
