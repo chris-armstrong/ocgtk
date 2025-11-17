@@ -70,6 +70,10 @@ echo "Running Phase 5.1 tests..."
 run_test ./_build/default/tests/test_button.exe
 
 echo ""
+echo "Running Phase 5.3 tests..."
+run_test ./_build/default/tests/test_text.exe
+
+echo ""
 echo "╔══════════════════════════════════════════════════════════════╗"
 echo "║                   ✓ All Tests Passed                        ║"
 echo "╚══════════════════════════════════════════════════════════════╝"
