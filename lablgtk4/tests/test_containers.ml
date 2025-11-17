@@ -9,6 +9,20 @@
 
 open Alcotest
 
+(* Try to initialize GTK once for all tests *)
+let gtk_available =
+  try
+    let _ = GMain.init () in
+    true
+  with
+  | GMain.Error _ -> false
+
+(* Helper to skip tests when GTK is not available *)
+let require_gtk f () =
+  if not gtk_available then skip ()
+  else f ()
+
+
 (* ========== GtkFixed Tests ========== *)
 
 let test_fixed_module_accessible () =
@@ -507,43 +521,43 @@ let () =
   run "Comprehensive Container Tests (Phase 4.4)" [
     "Fixed - Low Level", [
       test_case "module_accessible" `Quick test_fixed_module_accessible;
-      test_case "creation" `Quick test_fixed_creation;
-      test_case "put_move_remove" `Quick test_fixed_put_move;
+      test_case "creation" `Quick (require_gtk test_fixed_creation);
+      test_case "put_move_remove" `Quick (require_gtk test_fixed_put_move);
     ];
     "Fixed - High Level", [
-      test_case "gfixed_wrapper" `Quick test_gfixed_wrapper;
+      test_case "gfixed_wrapper" `Quick (require_gtk test_gfixed_wrapper);
     ];
     "Paned - Low Level", [
       test_case "module_accessible" `Quick test_paned_module_accessible;
-      test_case "creation" `Quick test_paned_creation;
-      test_case "children" `Quick test_paned_children;
-      test_case "properties" `Quick test_paned_properties;
+      test_case "creation" `Quick (require_gtk test_paned_creation);
+      test_case "children" `Quick (require_gtk test_paned_children);
+      test_case "properties" `Quick (require_gtk test_paned_properties);
     ];
     "Paned - High Level", [
-      test_case "gpaned_wrapper" `Quick test_gpaned_wrapper;
+      test_case "gpaned_wrapper" `Quick (require_gtk test_gpaned_wrapper);
     ];
     "Notebook - Low Level", [
       test_case "module_accessible" `Quick test_notebook_module_accessible;
-      test_case "creation" `Quick test_notebook_creation;
-      test_case "pages" `Quick test_notebook_pages;
-      test_case "navigation" `Quick test_notebook_navigation;
-      test_case "properties" `Quick test_notebook_properties;
+      test_case "creation" `Quick (require_gtk test_notebook_creation);
+      test_case "pages" `Quick (require_gtk test_notebook_pages);
+      test_case "navigation" `Quick (require_gtk test_notebook_navigation);
+      test_case "properties" `Quick (require_gtk test_notebook_properties);
     ];
     "Notebook - High Level", [
-      test_case "gnotebook_wrapper" `Quick test_gnotebook_wrapper;
+      test_case "gnotebook_wrapper" `Quick (require_gtk test_gnotebook_wrapper);
     ];
     "Stack - Low Level", [
       test_case "module_accessible" `Quick test_stack_module_accessible;
-      test_case "creation" `Quick test_stack_creation;
-      test_case "children" `Quick test_stack_children;
-      test_case "transitions" `Quick test_stack_transitions;
+      test_case "creation" `Quick (require_gtk test_stack_creation);
+      test_case "children" `Quick (require_gtk test_stack_children);
+      test_case "transitions" `Quick (require_gtk test_stack_transitions);
     ];
     "Stack - High Level", [
-      test_case "gstack_wrapper" `Quick test_gstack_wrapper;
-      test_case "all_transitions" `Quick test_all_transitions;
+      test_case "gstack_wrapper" `Quick (require_gtk test_gstack_wrapper);
+      test_case "all_transitions" `Quick (require_gtk test_all_transitions);
     ];
     "Integration Tests", [
-      test_case "nested_containers" `Quick test_nested_containers;
-      test_case "fixed_with_containers" `Quick test_fixed_with_containers;
+      test_case "nested_containers" `Quick (require_gtk test_nested_containers);
+      test_case "fixed_with_containers" `Quick (require_gtk test_fixed_with_containers);
     ];
   ]

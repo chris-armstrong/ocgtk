@@ -40,6 +40,11 @@
  (libraries lablgtk4 alcotest))
 
 (executable
+ (name test_gobject_stress)
+ (modules test_gobject_stress)
+ (libraries lablgtk4 alcotest))
+
+(executable
  (name test_ffi_integration)
  (modules test_ffi_integration)
  (libraries lablgtk4 alcotest))
@@ -132,6 +137,11 @@
 (executable
  (name test_window)
  (modules test_window)
+ (libraries lablgtk4 alcotest))
+
+(executable
+ (name test_button)
+ (modules test_button)
  (libraries lablgtk4 alcotest))
 
 ; ============================================================================

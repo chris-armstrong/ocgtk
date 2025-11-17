@@ -13,6 +13,20 @@
 
 open Alcotest
 
+(* Try to initialize GTK once for all tests *)
+let gtk_available =
+  try
+    let _ = GMain.init () in
+    true
+  with
+  | GMain.Error _ -> false
+
+(* Helper to skip tests when GTK is not available *)
+let require_gtk f () =
+  if not gtk_available then skip ()
+  else f ()
+
+
 (* Test box packing conveniences *)
 
 let test_hbox_pack_empty () =
@@ -257,31 +271,31 @@ let test_scrolled_convenience () =
 let () =
   run "GPack Module Tests (Phase 4.5)" [
     "Box Packing", [
-      test_case "hbox_pack empty" `Quick test_hbox_pack_empty;
-      test_case "hbox_pack with widgets" `Quick test_hbox_pack_with_widgets;
-      test_case "vbox_pack empty" `Quick test_vbox_pack_empty;
-      test_case "vbox_pack with widgets" `Quick test_vbox_pack_with_widgets;
+      test_case "hbox_pack empty" `Quick (require_gtk test_hbox_pack_empty);
+      test_case "hbox_pack with widgets" `Quick (require_gtk test_hbox_pack_with_widgets);
+      test_case "vbox_pack empty" `Quick (require_gtk test_vbox_pack_empty);
+      test_case "vbox_pack with widgets" `Quick (require_gtk test_vbox_pack_with_widgets);
     ];
     "Grid Packing", [
-      test_case "grid_attach empty" `Quick test_grid_attach_empty;
-      test_case "grid_attach with widgets" `Quick test_grid_attach_with_widgets;
+      test_case "grid_attach empty" `Quick (require_gtk test_grid_attach_empty);
+      test_case "grid_attach with widgets" `Quick (require_gtk test_grid_attach_with_widgets);
     ];
     "Paned Conveniences", [
-      test_case "hpaned empty" `Quick test_hpaned_empty;
-      test_case "hpaned with children" `Quick test_hpaned_with_children;
-      test_case "vpaned empty" `Quick test_vpaned_empty;
-      test_case "vpaned with children" `Quick test_vpaned_with_children;
+      test_case "hpaned empty" `Quick (require_gtk test_hpaned_empty);
+      test_case "hpaned with children" `Quick (require_gtk test_hpaned_with_children);
+      test_case "vpaned empty" `Quick (require_gtk test_vpaned_empty);
+      test_case "vpaned with children" `Quick (require_gtk test_vpaned_with_children);
     ];
     "Notebook Conveniences", [
-      test_case "notebook empty" `Quick test_notebook_empty;
-      test_case "notebook with pages" `Quick test_notebook_with_pages;
+      test_case "notebook empty" `Quick (require_gtk test_notebook_empty);
+      test_case "notebook with pages" `Quick (require_gtk test_notebook_with_pages);
     ];
     "Window and ScrolledWindow Conveniences (Phase 4.2)", [
-      test_case "window convenience" `Quick test_window_convenience;
-      test_case "scrolled window convenience" `Quick test_scrolled_convenience;
+      test_case "window convenience" `Quick (require_gtk test_window_convenience);
+      test_case "scrolled window convenience" `Quick (require_gtk test_scrolled_convenience);
     ];
     "Complex Composition", [
-      test_case "hbox in vbox" `Quick test_composition_hbox_in_vbox;
-      test_case "grid in paned" `Quick test_composition_grid_in_paned;
+      test_case "hbox in vbox" `Quick (require_gtk test_composition_hbox_in_vbox);
+      test_case "grid in paned" `Quick (require_gtk test_composition_grid_in_paned);
     ];
   ]

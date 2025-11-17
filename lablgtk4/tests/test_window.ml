@@ -12,6 +12,20 @@
 
 open Alcotest
 
+(* Try to initialize GTK once for all tests *)
+let gtk_available =
+  try
+    let _ = GMain.init () in
+    true
+  with
+  | GMain.Error _ -> false
+
+(* Helper to skip tests when GTK is not available *)
+let require_gtk f () =
+  if not gtk_available then skip ()
+  else f ()
+
+
 (* ========== GtkWindow Tests ========== *)
 
 let test_window_module_accessible () =
@@ -469,43 +483,43 @@ let () =
   run "Single-Child Container Tests (Phase 4.2)" [
     "Window - Low Level", [
       test_case "module_accessible" `Quick test_window_module_accessible;
-      test_case "creation" `Quick test_window_creation;
-      test_case "title" `Quick test_window_title;
-      test_case "default_size" `Quick test_window_default_size;
-      test_case "resizable" `Quick test_window_resizable;
-      test_case "modal" `Quick test_window_modal;
-      test_case "child" `Quick test_window_child;
-      test_case "actions" `Quick test_window_actions;
+      test_case "creation" `Quick (require_gtk test_window_creation);
+      test_case "title" `Quick (require_gtk test_window_title);
+      test_case "default_size" `Quick (require_gtk test_window_default_size);
+      test_case "resizable" `Quick (require_gtk test_window_resizable);
+      test_case "modal" `Quick (require_gtk test_window_modal);
+      test_case "child" `Quick (require_gtk test_window_child);
+      test_case "actions" `Quick (require_gtk test_window_actions);
     ];
     "Window - High Level", [
-      test_case "gwindow_wrapper" `Quick test_gwindow_wrapper;
-      test_case "gwindow_child" `Quick test_gwindow_child;
+      test_case "gwindow_wrapper" `Quick (require_gtk test_gwindow_wrapper);
+      test_case "gwindow_child" `Quick (require_gtk test_gwindow_child);
     ];
     "ScrolledWindow - Low Level", [
       test_case "module_accessible" `Quick test_scrolled_window_module_accessible;
-      test_case "creation" `Quick test_scrolled_window_creation;
-      test_case "policy" `Quick test_scrolled_window_policy;
-      test_case "min_content_size" `Quick test_scrolled_window_min_content_size;
-      test_case "child" `Quick test_scrolled_window_child;
-      test_case "scrollbars" `Quick test_scrolled_window_scrollbars;
+      test_case "creation" `Quick (require_gtk test_scrolled_window_creation);
+      test_case "policy" `Quick (require_gtk test_scrolled_window_policy);
+      test_case "min_content_size" `Quick (require_gtk test_scrolled_window_min_content_size);
+      test_case "child" `Quick (require_gtk test_scrolled_window_child);
+      test_case "scrollbars" `Quick (require_gtk test_scrolled_window_scrollbars);
     ];
     "ScrolledWindow - High Level", [
-      test_case "gscrolled_window_wrapper" `Quick test_gscrolled_window_wrapper;
+      test_case "gscrolled_window_wrapper" `Quick (require_gtk test_gscrolled_window_wrapper);
     ];
     "Frame - Low Level", [
       test_case "module_accessible" `Quick test_frame_module_accessible;
-      test_case "creation" `Quick test_frame_creation;
-      test_case "label" `Quick test_frame_label;
-      test_case "label_xalign" `Quick test_frame_label_xalign;
-      test_case "child" `Quick test_frame_child;
+      test_case "creation" `Quick (require_gtk test_frame_creation);
+      test_case "label" `Quick (require_gtk test_frame_label);
+      test_case "label_xalign" `Quick (require_gtk test_frame_label_xalign);
+      test_case "child" `Quick (require_gtk test_frame_child);
     ];
     "Frame - High Level", [
-      test_case "gframe_wrapper" `Quick test_gframe_wrapper;
+      test_case "gframe_wrapper" `Quick (require_gtk test_gframe_wrapper);
     ];
     "Integration", [
-      test_case "window_with_box" `Quick test_window_with_box;
-      test_case "window_with_scrolled_window" `Quick test_window_with_scrolled_window;
-      test_case "window_with_frame" `Quick test_window_with_frame;
-      test_case "complex_nesting" `Quick test_complex_nesting;
+      test_case "window_with_box" `Quick (require_gtk test_window_with_box);
+      test_case "window_with_scrolled_window" `Quick (require_gtk test_window_with_scrolled_window);
+      test_case "window_with_frame" `Quick (require_gtk test_window_with_frame);
+      test_case "complex_nesting" `Quick (require_gtk test_complex_nesting);
     ];
   ]
