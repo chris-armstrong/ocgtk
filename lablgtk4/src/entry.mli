@@ -17,59 +17,17 @@ external get_activates_default : t -> bool = "ml_gtk_entry_get_activates_default
 (** Set property: activates-default *)
 external set_activates_default : t -> bool -> unit = "ml_gtk_entry_set_activates_default"
 
-(** Get property: attributes *)
-external get_attributes : t -> unit = "ml_gtk_entry_get_attributes"
-
-(** Set property: attributes *)
-external set_attributes : t -> unit -> unit = "ml_gtk_entry_set_attributes"
-
-(** Get property: buffer *)
-external get_buffer : t -> unit = "ml_gtk_entry_get_buffer"
-
-(** Set property: buffer *)
-external set_buffer : t -> unit -> unit = "ml_gtk_entry_set_buffer"
-
-(** Get property: completion *)
-external get_completion : t -> unit = "ml_gtk_entry_get_completion"
-
-(** Set property: completion *)
-external set_completion : t -> unit -> unit = "ml_gtk_entry_set_completion"
-
 (** Get property: enable-emoji-completion *)
 external get_enable_emoji_completion : t -> bool = "ml_gtk_entry_get_enable_emoji_completion"
 
 (** Set property: enable-emoji-completion *)
 external set_enable_emoji_completion : t -> bool -> unit = "ml_gtk_entry_set_enable_emoji_completion"
 
-(** Get property: extra-menu *)
-external get_extra_menu : t -> unit = "ml_gtk_entry_get_extra_menu"
-
-(** Set property: extra-menu *)
-external set_extra_menu : t -> unit -> unit = "ml_gtk_entry_set_extra_menu"
-
 (** Get property: has-frame *)
 external get_has_frame : t -> bool = "ml_gtk_entry_get_has_frame"
 
 (** Set property: has-frame *)
 external set_has_frame : t -> bool -> unit = "ml_gtk_entry_set_has_frame"
-
-(** Get property: im-module *)
-external get_im_module : t -> unit = "ml_gtk_entry_get_im_module"
-
-(** Set property: im-module *)
-external set_im_module : t -> unit -> unit = "ml_gtk_entry_set_im_module"
-
-(** Get property: input-hints *)
-external get_input_hints : t -> unit = "ml_gtk_entry_get_input_hints"
-
-(** Set property: input-hints *)
-external set_input_hints : t -> unit -> unit = "ml_gtk_entry_set_input_hints"
-
-(** Get property: input-purpose *)
-external get_input_purpose : t -> unit = "ml_gtk_entry_get_input_purpose"
-
-(** Set property: input-purpose *)
-external set_input_purpose : t -> unit -> unit = "ml_gtk_entry_set_input_purpose"
 
 (** Get property: invisible-char *)
 external get_invisible_char : t -> int = "ml_gtk_entry_get_invisible_char"
@@ -95,56 +53,17 @@ external get_overwrite_mode : t -> bool = "ml_gtk_entry_get_overwrite_mode"
 (** Set property: overwrite-mode *)
 external set_overwrite_mode : t -> bool -> unit = "ml_gtk_entry_set_overwrite_mode"
 
-(** Get property: placeholder-text *)
-external get_placeholder_text : t -> unit = "ml_gtk_entry_get_placeholder_text"
-
-(** Set property: placeholder-text *)
-external set_placeholder_text : t -> unit -> unit = "ml_gtk_entry_set_placeholder_text"
-
 (** Get property: primary-icon-activatable *)
 external get_primary_icon_activatable : t -> bool = "ml_gtk_entry_get_primary_icon_activatable"
 
 (** Set property: primary-icon-activatable *)
 external set_primary_icon_activatable : t -> bool -> unit = "ml_gtk_entry_set_primary_icon_activatable"
 
-(** Get property: primary-icon-gicon *)
-external get_primary_icon_gicon : t -> unit = "ml_gtk_entry_get_primary_icon_gicon"
-
-(** Set property: primary-icon-gicon *)
-external set_primary_icon_gicon : t -> unit -> unit = "ml_gtk_entry_set_primary_icon_gicon"
-
-(** Get property: primary-icon-name *)
-external get_primary_icon_name : t -> unit = "ml_gtk_entry_get_primary_icon_name"
-
-(** Set property: primary-icon-name *)
-external set_primary_icon_name : t -> unit -> unit = "ml_gtk_entry_set_primary_icon_name"
-
-(** Get property: primary-icon-paintable *)
-external get_primary_icon_paintable : t -> unit = "ml_gtk_entry_get_primary_icon_paintable"
-
-(** Set property: primary-icon-paintable *)
-external set_primary_icon_paintable : t -> unit -> unit = "ml_gtk_entry_set_primary_icon_paintable"
-
 (** Get property: primary-icon-sensitive *)
 external get_primary_icon_sensitive : t -> bool = "ml_gtk_entry_get_primary_icon_sensitive"
 
 (** Set property: primary-icon-sensitive *)
 external set_primary_icon_sensitive : t -> bool -> unit = "ml_gtk_entry_set_primary_icon_sensitive"
-
-(** Get property: primary-icon-storage-type *)
-external get_primary_icon_storage_type : t -> unit = "ml_gtk_entry_get_primary_icon_storage_type"
-
-(** Get property: primary-icon-tooltip-markup *)
-external get_primary_icon_tooltip_markup : t -> unit = "ml_gtk_entry_get_primary_icon_tooltip_markup"
-
-(** Set property: primary-icon-tooltip-markup *)
-external set_primary_icon_tooltip_markup : t -> unit -> unit = "ml_gtk_entry_set_primary_icon_tooltip_markup"
-
-(** Get property: primary-icon-tooltip-text *)
-external get_primary_icon_tooltip_text : t -> unit = "ml_gtk_entry_get_primary_icon_tooltip_text"
-
-(** Set property: primary-icon-tooltip-text *)
-external set_primary_icon_tooltip_text : t -> unit -> unit = "ml_gtk_entry_set_primary_icon_tooltip_text"
 
 (** Get property: progress-fraction *)
 external get_progress_fraction : t -> float = "ml_gtk_entry_get_progress_fraction"
@@ -167,56 +86,17 @@ external get_secondary_icon_activatable : t -> bool = "ml_gtk_entry_get_secondar
 (** Set property: secondary-icon-activatable *)
 external set_secondary_icon_activatable : t -> bool -> unit = "ml_gtk_entry_set_secondary_icon_activatable"
 
-(** Get property: secondary-icon-gicon *)
-external get_secondary_icon_gicon : t -> unit = "ml_gtk_entry_get_secondary_icon_gicon"
-
-(** Set property: secondary-icon-gicon *)
-external set_secondary_icon_gicon : t -> unit -> unit = "ml_gtk_entry_set_secondary_icon_gicon"
-
-(** Get property: secondary-icon-name *)
-external get_secondary_icon_name : t -> unit = "ml_gtk_entry_get_secondary_icon_name"
-
-(** Set property: secondary-icon-name *)
-external set_secondary_icon_name : t -> unit -> unit = "ml_gtk_entry_set_secondary_icon_name"
-
-(** Get property: secondary-icon-paintable *)
-external get_secondary_icon_paintable : t -> unit = "ml_gtk_entry_get_secondary_icon_paintable"
-
-(** Set property: secondary-icon-paintable *)
-external set_secondary_icon_paintable : t -> unit -> unit = "ml_gtk_entry_set_secondary_icon_paintable"
-
 (** Get property: secondary-icon-sensitive *)
 external get_secondary_icon_sensitive : t -> bool = "ml_gtk_entry_get_secondary_icon_sensitive"
 
 (** Set property: secondary-icon-sensitive *)
 external set_secondary_icon_sensitive : t -> bool -> unit = "ml_gtk_entry_set_secondary_icon_sensitive"
 
-(** Get property: secondary-icon-storage-type *)
-external get_secondary_icon_storage_type : t -> unit = "ml_gtk_entry_get_secondary_icon_storage_type"
-
-(** Get property: secondary-icon-tooltip-markup *)
-external get_secondary_icon_tooltip_markup : t -> unit = "ml_gtk_entry_get_secondary_icon_tooltip_markup"
-
-(** Set property: secondary-icon-tooltip-markup *)
-external set_secondary_icon_tooltip_markup : t -> unit -> unit = "ml_gtk_entry_set_secondary_icon_tooltip_markup"
-
-(** Get property: secondary-icon-tooltip-text *)
-external get_secondary_icon_tooltip_text : t -> unit = "ml_gtk_entry_get_secondary_icon_tooltip_text"
-
-(** Set property: secondary-icon-tooltip-text *)
-external set_secondary_icon_tooltip_text : t -> unit -> unit = "ml_gtk_entry_set_secondary_icon_tooltip_text"
-
 (** Get property: show-emoji-icon *)
 external get_show_emoji_icon : t -> bool = "ml_gtk_entry_get_show_emoji_icon"
 
 (** Set property: show-emoji-icon *)
 external set_show_emoji_icon : t -> bool -> unit = "ml_gtk_entry_set_show_emoji_icon"
-
-(** Get property: tabs *)
-external get_tabs : t -> unit = "ml_gtk_entry_get_tabs"
-
-(** Set property: tabs *)
-external set_tabs : t -> unit -> unit = "ml_gtk_entry_set_tabs"
 
 (** Get property: text-length *)
 external get_text_length : t -> int = "ml_gtk_entry_get_text_length"
@@ -235,15 +115,23 @@ external set_visibility : t -> bool -> unit = "ml_gtk_entry_set_visibility"
 
 external unset_invisible_char : t -> unit = "ml_gtk_entry_unset_invisible_char"
 
-external set_icon_tooltip_text : t -> unit -> unit -> unit = "ml_gtk_entry_set_icon_tooltip_text"
+external set_tabs : t -> unit -> unit = "ml_gtk_entry_set_tabs"
 
-external set_icon_tooltip_markup : t -> unit -> unit -> unit = "ml_gtk_entry_set_icon_tooltip_markup"
+external set_placeholder_text : t -> string -> unit = "ml_gtk_entry_set_placeholder_text"
+
+external set_input_purpose : t -> int -> unit = "ml_gtk_entry_set_input_purpose"
+
+external set_input_hints : t -> int -> unit = "ml_gtk_entry_set_input_hints"
+
+external set_icon_tooltip_text : t -> unit -> string -> unit = "ml_gtk_entry_set_icon_tooltip_text"
+
+external set_icon_tooltip_markup : t -> unit -> string -> unit = "ml_gtk_entry_set_icon_tooltip_markup"
 
 external set_icon_sensitive : t -> unit -> bool -> unit = "ml_gtk_entry_set_icon_sensitive"
 
 external set_icon_from_paintable : t -> unit -> unit -> unit = "ml_gtk_entry_set_icon_from_paintable"
 
-external set_icon_from_icon_name : t -> unit -> unit -> unit = "ml_gtk_entry_set_icon_from_icon_name"
+external set_icon_from_icon_name : t -> unit -> string -> unit = "ml_gtk_entry_set_icon_from_icon_name"
 
 external set_icon_from_gicon : t -> unit -> unit -> unit = "ml_gtk_entry_set_icon_from_gicon"
 
@@ -251,7 +139,15 @@ external set_icon_drag_source : t -> unit -> unit -> unit -> unit = "ml_gtk_entr
 
 external set_icon_activatable : t -> unit -> bool -> unit = "ml_gtk_entry_set_icon_activatable"
 
-external set_alignment : t -> unit -> unit = "ml_gtk_entry_set_alignment"
+external set_extra_menu : t -> unit -> unit = "ml_gtk_entry_set_extra_menu"
+
+external set_completion : t -> unit -> unit = "ml_gtk_entry_set_completion"
+
+external set_buffer : t -> unit -> unit = "ml_gtk_entry_set_buffer"
+
+external set_attributes : t -> unit -> unit = "ml_gtk_entry_set_attributes"
+
+external set_alignment : t -> float -> unit = "ml_gtk_entry_set_alignment"
 
 external reset_im_context : t -> unit = "ml_gtk_entry_reset_im_context"
 
@@ -259,17 +155,25 @@ external progress_pulse : t -> unit = "ml_gtk_entry_progress_pulse"
 
 external grab_focus_without_selecting : t -> bool = "ml_gtk_entry_grab_focus_without_selecting"
 
+external get_tabs : t -> unit = "ml_gtk_entry_get_tabs"
+
+external get_placeholder_text : t -> string = "ml_gtk_entry_get_placeholder_text"
+
+external get_input_purpose : t -> int = "ml_gtk_entry_get_input_purpose"
+
+external get_input_hints : t -> int = "ml_gtk_entry_get_input_hints"
+
 external get_icon_tooltip_text : t -> unit -> unit = "ml_gtk_entry_get_icon_tooltip_text"
 
 external get_icon_tooltip_markup : t -> unit -> unit = "ml_gtk_entry_get_icon_tooltip_markup"
 
-external get_icon_storage_type : t -> unit -> unit = "ml_gtk_entry_get_icon_storage_type"
+external get_icon_storage_type : t -> unit -> int = "ml_gtk_entry_get_icon_storage_type"
 
 external get_icon_sensitive : t -> unit -> bool = "ml_gtk_entry_get_icon_sensitive"
 
 external get_icon_paintable : t -> unit -> unit = "ml_gtk_entry_get_icon_paintable"
 
-external get_icon_name : t -> unit -> unit = "ml_gtk_entry_get_icon_name"
+external get_icon_name : t -> unit -> string = "ml_gtk_entry_get_icon_name"
 
 external get_icon_gicon : t -> unit -> unit = "ml_gtk_entry_get_icon_gicon"
 
@@ -279,7 +183,15 @@ external get_icon_area : t -> unit -> unit -> unit = "ml_gtk_entry_get_icon_area
 
 external get_icon_activatable : t -> unit -> bool = "ml_gtk_entry_get_icon_activatable"
 
+external get_extra_menu : t -> unit = "ml_gtk_entry_get_extra_menu"
+
 external get_current_icon_drag_source : t -> unit = "ml_gtk_entry_get_current_icon_drag_source"
 
-external get_alignment : t -> unit = "ml_gtk_entry_get_alignment"
+external get_completion : t -> unit = "ml_gtk_entry_get_completion"
+
+external get_buffer : t -> unit = "ml_gtk_entry_get_buffer"
+
+external get_attributes : t -> unit = "ml_gtk_entry_get_attributes"
+
+external get_alignment : t -> float = "ml_gtk_entry_get_alignment"
 

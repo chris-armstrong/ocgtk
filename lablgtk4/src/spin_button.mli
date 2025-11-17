@@ -17,12 +17,6 @@ external get_activates_default : t -> bool = "ml_gtk_spin_button_get_activates_d
 (** Set property: activates-default *)
 external set_activates_default : t -> bool -> unit = "ml_gtk_spin_button_set_activates_default"
 
-(** Get property: adjustment *)
-external get_adjustment : t -> unit = "ml_gtk_spin_button_get_adjustment"
-
-(** Set property: adjustment *)
-external set_adjustment : t -> unit -> unit = "ml_gtk_spin_button_set_adjustment"
-
 (** Get property: climb-rate *)
 external get_climb_rate : t -> float = "ml_gtk_spin_button_get_climb_rate"
 
@@ -47,12 +41,6 @@ external get_snap_to_ticks : t -> bool = "ml_gtk_spin_button_get_snap_to_ticks"
 (** Set property: snap-to-ticks *)
 external set_snap_to_ticks : t -> bool -> unit = "ml_gtk_spin_button_set_snap_to_ticks"
 
-(** Get property: update-policy *)
-external get_update_policy : t -> unit = "ml_gtk_spin_button_get_update_policy"
-
-(** Set property: update-policy *)
-external set_update_policy : t -> unit -> unit = "ml_gtk_spin_button_set_update_policy"
-
 (** Get property: value *)
 external get_value : t -> float = "ml_gtk_spin_button_get_value"
 
@@ -69,15 +57,23 @@ external update : t -> unit = "ml_gtk_spin_button_update"
 
 external spin : t -> unit -> unit -> unit = "ml_gtk_spin_button_spin"
 
+external set_update_policy : t -> int -> unit = "ml_gtk_spin_button_set_update_policy"
+
 external set_range : t -> unit -> unit -> unit = "ml_gtk_spin_button_set_range"
 
 external set_increments : t -> unit -> unit -> unit = "ml_gtk_spin_button_set_increments"
 
+external set_adjustment : t -> unit -> unit = "ml_gtk_spin_button_set_adjustment"
+
 external get_value_as_int : t -> unit = "ml_gtk_spin_button_get_value_as_int"
+
+external get_update_policy : t -> int = "ml_gtk_spin_button_get_update_policy"
 
 external get_range : t -> unit -> unit -> unit = "ml_gtk_spin_button_get_range"
 
 external get_increments : t -> unit -> unit -> unit = "ml_gtk_spin_button_get_increments"
+
+external get_adjustment : t -> unit = "ml_gtk_spin_button_get_adjustment"
 
 external configure : t -> unit -> unit -> int -> unit = "ml_gtk_spin_button_configure"
 
