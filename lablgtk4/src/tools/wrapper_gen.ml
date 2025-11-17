@@ -15,7 +15,7 @@ open Cmdliner
 (* Template Generation *)
 (* ========================================================================= *)
 
-let generate_wrapper_template ~widget_name ~module_name ~low_level_module =
+let generate_wrapper_template ~widget_name ~module_name:_ ~low_level_module =
   let class_name_lower = String.lowercase_ascii widget_name in
   let buf = Buffer.create 2048 in
 
@@ -62,7 +62,7 @@ let generate_wrapper_template ~widget_name ~module_name ~low_level_module =
 
   Buffer.contents buf
 
-let generate_wrapper_interface ~widget_name ~module_name ~low_level_module =
+let generate_wrapper_interface ~widget_name ~module_name:_ ~low_level_module:_ =
   let class_name_lower = String.lowercase_ascii widget_name in
   let buf = Buffer.create 1024 in
 
