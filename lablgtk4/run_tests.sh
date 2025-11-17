@@ -120,9 +120,13 @@ validate_test_file() {
     fi
 }
 
-# Validate each test file
+# Validate each test file (excluding stress tests)
 for test_exe in ./_build/default/tests/test_*.exe; do
     if [ -f "$test_exe" ]; then
+        # Skip stress tests - they're intentionally not run in main suite
+        if [[ "$test_exe" =~ _stress\.exe$ ]]; then
+            continue
+        fi
         validate_test_file "$test_exe"
     fi
 done
