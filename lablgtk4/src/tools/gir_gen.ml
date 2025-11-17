@@ -582,7 +582,7 @@ let parse_gir_file filename mode filter_classes =
 
 let generate_c_header () =
   "/* GENERATED CODE - DO NOT EDIT */\n\
-/* Generated from Gtk-4.0.gir for Phase 3 Event Controllers */\n\
+/* Generated from Gtk-4.0.gir for Phase 3 & Phase 5 */\n\
 \n\
 #include <gtk/gtk.h>\n\
 #include <caml/mlvalues.h>\n\
@@ -593,9 +593,13 @@ let generate_c_header () =
 #include \"wrappers.h\"\n\
 #include \"ml_gobject.h\"\n\
 \n\
-/* Event controller type conversion - use direct cast (GObjects) */\n\
+/* Type conversions - use direct cast (GObjects) */\n\
 #define GtkEventController_val(val) ((GtkEventController*)Pointer_val(val))\n\
 #define Val_GtkEventController(obj) ((value)(obj))\n\
+\n\
+/* Phase 5: Widget type conversions */\n\
+#define GtkWidget_val(val) ((GtkWidget*)Pointer_val(val))\n\
+#define Val_GtkWidget(obj) ((value)(obj))\n\
 \n"
 
 let generate_c_constructor ctor =
@@ -651,6 +655,99 @@ let generate_c_method (meth : gir_method) =
     (String.concat ~sep:", " params)
     c_call
     ret_conv
+
+(* Phase 5.2: Generate C code for property getter *)
+let generate_c_property_getter (prop : gir_property) (cls : gir_class) =
+  let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
+  let prop_snake = to_snake_case prop_name_cleaned in
+  let class_snake = to_snake_case cls.class_name in
+  let ml_name = sprintf "ml_gtk_%s_get_%s" class_snake prop_snake in
+
+  (* Determine property type mapping *)
+  let type_info = match find_type_mapping prop.prop_type.c_type with
+    | Some mapping -> mapping
+    | None -> {
+        ocaml_type = "unit";
+        c_to_ml = "Val_unit";
+        ml_to_c = "Unit_val";
+        needs_copy = false;
+      }
+  in
+
+  (* Determine widget or controller cast *)
+  let is_widget = not (
+    cls.class_name = "EventController" ||
+    (String.length cls.class_name > 15 && String.sub ~pos:0 ~len:15 cls.class_name = "EventController") ||
+    (String.length cls.class_name > 7 && String.sub ~pos:0 ~len:7 cls.class_name = "Gesture")
+  ) in
+
+  let (c_cast, c_type_name) =
+    if is_widget then
+      ("GtkWidget_val", "GtkWidget")
+    else
+      ("GtkEventController_val", "GtkEventController")
+  in
+
+  sprintf "\nCAMLprim value %s(value self)\n\
+{\n\
+    CAMLparam1(self);\n\
+    CAMLlocal1(result);\n\
+    %s *obj = (%s *)%s(self);\n\
+    %s value;\n\
+    g_object_get(G_OBJECT(obj), \"%s\", &value, NULL);\n\
+    result = %s(value);\n\
+    CAMLreturn(result);\n\
+}\n"
+    ml_name
+    c_type_name c_type_name c_cast
+    prop.prop_type.c_type
+    prop.prop_name
+    type_info.c_to_ml
+
+(* Phase 5.2: Generate C code for property setter *)
+let generate_c_property_setter (prop : gir_property) (cls : gir_class) =
+  let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
+  let prop_snake = to_snake_case prop_name_cleaned in
+  let class_snake = to_snake_case cls.class_name in
+  let ml_name = sprintf "ml_gtk_%s_set_%s" class_snake prop_snake in
+
+  (* Determine property type mapping *)
+  let type_info = match find_type_mapping prop.prop_type.c_type with
+    | Some mapping -> mapping
+    | None -> {
+        ocaml_type = "unit";
+        c_to_ml = "Val_unit";
+        ml_to_c = "Unit_val";
+        needs_copy = false;
+      }
+  in
+
+  (* Determine widget or controller cast *)
+  let is_widget = not (
+    cls.class_name = "EventController" ||
+    (String.length cls.class_name > 15 && String.sub ~pos:0 ~len:15 cls.class_name = "EventController") ||
+    (String.length cls.class_name > 7 && String.sub ~pos:0 ~len:7 cls.class_name = "Gesture")
+  ) in
+
+  let (c_cast, c_type_name) =
+    if is_widget then
+      ("GtkWidget_val", "GtkWidget")
+    else
+      ("GtkEventController_val", "GtkEventController")
+  in
+
+  sprintf "\nCAMLprim value %s(value self, value new_value)\n\
+{\n\
+    CAMLparam2(self, new_value);\n\
+    %s *obj = (%s *)%s(self);\n\
+    %s c_value = %s(new_value);\n\
+    g_object_set(G_OBJECT(obj), \"%s\", c_value, NULL);\n\
+    CAMLreturn(Val_unit);\n\
+}\n"
+    ml_name
+    c_type_name c_type_name c_cast
+    prop.prop_type.c_type type_info.ml_to_c
+    prop.prop_name
 
 (* ========================================================================= *)
 (* OCaml Code Generation *)
@@ -808,23 +905,26 @@ let generate_bindings mode filter_file gir_file output_dir =
   Buffer.add_string c_buf (generate_c_header ());
 
   List.iter ~f:(fun cls ->
-    printf "  - %s\n" cls.class_name;
+    printf "  - %s (%d methods, %d properties)\n"
+      cls.class_name (List.length cls.methods) (List.length cls.properties);
 
     (* Constructors *)
     List.iter ~f:(fun ctor ->
       Buffer.add_string c_buf (generate_c_constructor ctor)
     ) cls.constructors;
 
-    (* Methods (limit to first 5 for testing) *)
+    (* Phase 5.2: Generate ALL methods (removed 5-method limit) *)
     List.iter ~f:(fun meth ->
       Buffer.add_string c_buf (generate_c_method meth)
-    ) (List.rev cls.methods |> fun l ->
-        if List.length l > 5 then
-          let rec take n = function
-            | [] -> []
-            | x :: xs -> if n > 0 then x :: take (n-1) xs else []
-          in take 5 l
-        else l);
+    ) (List.rev cls.methods);
+
+    (* Phase 5.2: Generate property getters and setters *)
+    List.iter ~f:(fun (prop : gir_property) ->
+      if prop.readable then
+        Buffer.add_string c_buf (generate_c_property_getter prop cls);
+      if prop.writable && not prop.construct_only then
+        Buffer.add_string c_buf (generate_c_property_setter prop cls);
+    ) cls.properties;
   ) controllers;
 
   (* Write C output *)

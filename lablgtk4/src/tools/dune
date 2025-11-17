@@ -36,3 +36,15 @@
  (name test_gir_gen)
  (modules test_gir_gen)
  (libraries str unix))
+
+; Phase 5.2: High-level wrapper template generator
+(executable
+ (name wrapper_gen)
+ (modules wrapper_gen)
+ (libraries str cmdliner))
+
+; Phase 5.2: .ml implementation file generator
+(executable
+ (name ml_impl_gen)
+ (modules ml_impl_gen)
+ (libraries str cmdliner))

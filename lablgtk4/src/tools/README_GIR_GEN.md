@@ -1,6 +1,8 @@
-# GIR-Based Code Generator for Phase 3
+# GIR-Based Code Generator for Phase 3 & Phase 5
 
-This directory contains the OCaml-based GIR code generator for Phase 3 event controllers.
+This directory contains the OCaml-based GIR code generator for Phase 3 event controllers and Phase 5 widget bindings.
+
+**Phase 5.2 Updates**: This tool has been significantly enhanced to support widget property generation, remove method limitations, and work alongside new code generation tools. See [README_PHASE5_2_GENERATORS.md](README_PHASE5_2_GENERATORS.md) for complete Phase 5.2 documentation.
 
 ## Files
 
@@ -154,12 +156,20 @@ Event controllers are GObjects, so we use direct casts:
 - No custom finalizers needed
 - Widget takes ownership when added via `gtk_widget_add_controller`
 
+## Phase 5.2 Enhancements (Completed)
+
+✅ **Property Generation**: Auto-generates C property getters/setters using g_object_get/g_object_set
+✅ **No Method Limit**: Removed 5-method testing limitation, now generates ALL methods
+✅ **Widget Type Support**: Added GtkWidget_val/Val_GtkWidget macros
+✅ **Improved Output**: Shows method and property counts during generation
+
 ## Next Steps
 
 1. **Enhance Signal Generation**: Add signal marshalling code generation
 2. **Add More Type Mappings**: Support additional GIR types as needed
 3. **Widget Attachment**: Generate `add_controller` bindings for Gtk.Widget
 4. **Full Validation**: Run against complete Gtk-4.0.gir file
+5. **Documentation Extraction**: Pull GTK-Doc comments into generated code
 
 ## References
 
