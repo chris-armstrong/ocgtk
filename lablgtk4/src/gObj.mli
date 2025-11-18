@@ -150,3 +150,8 @@ class virtual widget_full : [`widget] Gobject.obj ->
     (** Connect to any GObject signal *)
     method connect : string -> callback:(unit -> unit) -> Gobject.Signal.handler_id
   end
+
+(** {2 Conversion Functions} *)
+
+(** Convert a raw widget object to a widget class instance *)
+val widget_of_obj : [`widget] Gobject.obj -> widget

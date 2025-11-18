@@ -53,7 +53,8 @@ external place_cursor_onscreen : t -> bool = "ml_gtk_text_view_place_cursor_onsc
 external move_visually : t -> Gtk.Widget.t -> unit -> bool = "ml_gtk_text_view_move_visually"
 external move_overlay : t -> Gtk.Widget.t -> unit -> unit -> unit = "ml_gtk_text_view_move_overlay"
 external move_mark_onscreen : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_move_mark_onscreen"
-external im_context_filter_keypress : t -> Gdk.Event.t -> bool = "ml_gtk_text_view_im_context_filter_keypress"
+(* Commented out - Gdk.Event.t not available yet *)
+(* external im_context_filter_keypress : t -> Gdk.Event.t -> bool = "ml_gtk_text_view_im_context_filter_keypress" *)
 external get_wrap_mode : t -> int = "ml_gtk_text_view_get_wrap_mode"
 external get_visible_rect : t -> unit -> unit = "ml_gtk_text_view_get_visible_rect"
 external get_tabs : t -> unit = "ml_gtk_text_view_get_tabs"

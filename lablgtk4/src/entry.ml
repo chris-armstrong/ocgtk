@@ -83,6 +83,10 @@ external get_buffer : t -> Gtk.Widget.t = "ml_gtk_entry_get_buffer"
 external get_attributes : t -> unit = "ml_gtk_entry_get_attributes"
 external get_alignment : t -> float = "ml_gtk_entry_get_alignment"
 
+(* GtkEditable interface methods *)
+external get_text : t -> string = "ml_gtk_editable_get_text"
+external set_text : t -> string -> unit = "ml_gtk_editable_set_text"
+
 (* Summary:
  * - 1 type declarations
  * - 77 external bindings

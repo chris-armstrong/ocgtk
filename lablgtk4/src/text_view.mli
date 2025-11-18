@@ -129,7 +129,8 @@ external move_overlay : t -> Gtk.Widget.t -> unit -> unit -> unit = "ml_gtk_text
 
 external move_mark_onscreen : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_move_mark_onscreen"
 
-external im_context_filter_keypress : t -> Gdk.Event.t -> bool = "ml_gtk_text_view_im_context_filter_keypress"
+(* Commented out - Gdk.Event.t not available yet *)
+(* external im_context_filter_keypress : t -> Gdk.Event.t -> bool = "ml_gtk_text_view_im_context_filter_keypress" *)
 
 external get_wrap_mode : t -> int = "ml_gtk_text_view_get_wrap_mode"
 

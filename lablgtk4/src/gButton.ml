@@ -6,10 +6,23 @@ open Gaux
 open Gtk
 open GObj
 
+(** {2 Button Signals} *)
+
+class button_signals obj = object
+  method clicked ~callback =
+    Gobject.Signal.connect_simple
+      (obj :> [`widget] Gobject.obj)
+      ~name:"clicked"
+      ~callback
+      ~after:false
+end
+
 (** {2 Button} *)
 
-class button_skel obj = object
+class button_skel obj = object (self)
   inherit widget_impl obj
+
+  method connect = new button_signals obj
 
   method set_label label = GtkButton.set_label obj label
   method label = GtkButton.get_label obj
