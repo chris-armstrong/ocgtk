@@ -238,57 +238,64 @@ GValue *GValue_val(value val)
 
 CAMLprim value ml_g_value_init_gtype(value val, value gtype)
 {
+    CAMLparam2(val, gtype);
     ml_gvalue *mlgv = (ml_gvalue *)Data_custom_val(val);
     g_value_init(&mlgv->gvalue, (GType)Long_val(gtype));
     mlgv->initialized = 1;
-    return Val_unit;
+    CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_g_value_reset(value val)
 {
+    CAMLparam1(val);
     ml_gvalue *mlgv = (ml_gvalue *)Data_custom_val(val);
     if (mlgv->initialized) {
         g_value_reset(&mlgv->gvalue);
     }
-    return Val_unit;
+    CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_g_value_get_gtype(value val)
 {
+    CAMLparam1(val);
     GValue *gv = GValue_val(val);
-    return Val_long(G_VALUE_TYPE(gv));
+    CAMLreturn(Val_long(G_VALUE_TYPE(gv)));
 }
 
 /* Type-specific getters/setters */
 
 CAMLprim value ml_g_value_get_int(value val)
 {
+    CAMLparam1(val);
     GValue *gv = GValue_val(val);
     if (!G_VALUE_HOLDS_INT(gv))
         caml_invalid_argument("g_value_get_int: not an int");
-    return Val_int(g_value_get_int(gv));
+    CAMLreturn(Val_int(g_value_get_int(gv)));
 }
 
 CAMLprim value ml_g_value_set_int(value val, value i)
 {
+    CAMLparam2(val, i);
     GValue *gv = GValue_val(val);
     g_value_set_int(gv, Int_val(i));
-    return Val_unit;
+    CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_g_value_get_boolean(value val)
 {
+    CAMLparam1(val);
     GValue *gv = GValue_val(val);
     if (!G_VALUE_HOLDS_BOOLEAN(gv))
         caml_invalid_argument("g_value_get_boolean: not a boolean");
-    return Val_bool(g_value_get_boolean(gv));
+    CAMLreturn(Val_bool(g_value_get_boolean(gv)));
 }
 
 CAMLprim value ml_g_value_set_boolean(value val, value b)
 {
+    CAMLparam2(val, b);
     GValue *gv = GValue_val(val);
     g_value_set_boolean(gv, Bool_val(b));
-    return Val_unit;
+    CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_g_value_get_string(value val)
@@ -311,9 +318,10 @@ CAMLprim value ml_g_value_get_string(value val)
 
 CAMLprim value ml_g_value_set_string(value val, value str)
 {
+    CAMLparam2(val, str);
     GValue *gv = GValue_val(val);
     g_value_set_string(gv, String_val(str));
-    return Val_unit;
+    CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_g_value_get_float(value val)
@@ -331,9 +339,10 @@ CAMLprim value ml_g_value_get_float(value val)
 
 CAMLprim value ml_g_value_set_float(value val, value f)
 {
+    CAMLparam2(val, f);
     GValue *gv = GValue_val(val);
     g_value_set_float(gv, (float)Double_val(f));
-    return Val_unit;
+    CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_g_value_get_double(value val)
@@ -351,13 +360,15 @@ CAMLprim value ml_g_value_get_double(value val)
 
 CAMLprim value ml_g_value_set_double(value val, value d)
 {
+    CAMLparam2(val, d);
     GValue *gv = GValue_val(val);
     g_value_set_double(gv, Double_val(d));
-    return Val_unit;
+    CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_g_value_get_object(value val)
 {
+    CAMLparam1(val);
     GValue *gv = GValue_val(val);
     if (!G_VALUE_HOLDS_OBJECT(gv))
         caml_invalid_argument("g_value_get_object: not an object");
@@ -366,11 +377,12 @@ CAMLprim value ml_g_value_get_object(value val)
     if (obj == NULL)
         caml_failwith("g_value_get_object: NULL object");
 
-    return Val_pointer(obj);
+    CAMLreturn(val_of_ext(obj));
 }
 
 CAMLprim value ml_g_value_set_object(value val, value obj)
 {
+    CAMLparam2(val, obj);
     GValue *gv = GValue_val(val);
     GObject *gobj = NULL;
 
@@ -378,7 +390,7 @@ CAMLprim value ml_g_value_set_object(value val, value obj)
         gobj = G_OBJECT(ext_of_val(obj));
 
     g_value_set_object(gv, gobj);
-    return Val_unit;
+    CAMLreturn(Val_unit);
 }
 
 /* ==================================================================== */
@@ -387,26 +399,29 @@ CAMLprim value ml_g_value_set_object(value val, value obj)
 
 CAMLprim value ml_g_object_get_property(value obj, value prop_name, value val)
 {
+    CAMLparam3(obj, prop_name, val);
     GObject *gobj = G_OBJECT(ext_of_val(obj));
     GValue *gv = GValue_val(val);
     const char *name = String_val(prop_name);
 
     g_object_get_property(gobj, name, gv);
-    return Val_unit;
+    CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_g_object_set_property(value obj, value prop_name, value val)
 {
+    CAMLparam3(obj, prop_name, val);
     GObject *gobj = G_OBJECT(ext_of_val(obj));
     GValue *gv = GValue_val(val);
     const char *name = String_val(prop_name);
 
     g_object_set_property(gobj, name, gv);
-    return Val_unit;
+    CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_g_object_get_property_type(value obj, value prop_name)
 {
+    CAMLparam2(obj, prop_name);
     GObject *gobj = G_OBJECT(ext_of_val(obj));
     const char *name = String_val(prop_name);
 
@@ -419,25 +434,28 @@ CAMLprim value ml_g_object_get_property_type(value obj, value prop_name)
         caml_invalid_argument(msg);
     }
 
-    return Val_long(pspec->value_type);
+    CAMLreturn(Val_long(pspec->value_type));
 }
 
 CAMLprim value ml_g_object_freeze_notify(value obj)
 {
+    CAMLparam1(obj);
     g_object_freeze_notify(G_OBJECT(ext_of_val(obj)));
-    return Val_unit;
+    CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_g_object_thaw_notify(value obj)
 {
+    CAMLparam1(obj);
     g_object_thaw_notify(G_OBJECT(ext_of_val(obj)));
-    return Val_unit;
+    CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_g_object_notify(value obj, value prop_name)
 {
+    CAMLparam2(obj, prop_name);
     g_object_notify(G_OBJECT(ext_of_val(obj)), String_val(prop_name));
-    return Val_unit;
+    CAMLreturn(Val_unit);
 }
 
 /* ==================================================================== */
@@ -453,9 +471,6 @@ CAMLprim value ml_g_object_notify(value obj, value prop_name)
  * When the GClosure is destroyed, the invalidate notifier removes the
  * global root, allowing the OCaml closure to be collected.
  */
-
-/* GClosure_val - extract GClosure pointer from custom block */
-#define GClosure_val(val) (*((GClosure**)Data_custom_val(val)))
 
 /* Custom block for GClosure - NO finalizer to avoid GC complications */
 static struct custom_operations ml_custom_GClosure = {
@@ -484,8 +499,9 @@ static value Val_GClosure_sink(GClosure *closure)
     g_closure_sink(closure);
 
     /* Create custom block WITHOUT finalizer */
-    ret = caml_alloc_custom(&ml_custom_GClosure, sizeof(GClosure*), 0, 0);
-    *((GClosure**)Data_custom_val(ret)) = closure;
+    ret = val_of_ext(closure);
+    //caml_alloc_custom(&ml_custom_GClosure, sizeof(GClosure*), 0, 0);
+    //*((GClosure**)Data_custom_val(ret)) = closure;
 
     CAMLreturn(ret);
 }
@@ -508,10 +524,10 @@ static void ml_closure_marshal(GClosure *closure,
                                  gpointer marshal_data)
 {
     CAMLparam0();
-    CAMLlocal2(argv_val, result_val);
+    CAMLlocal5(argv_val, result_val, callback_val, result, exn);
 
     /* Get the OCaml callback directly from closure->data */
-    value callback_val = (value)closure->data;
+    callback_val = (value)closure->data;
 
     /* Create argv record: { result; nargs; args } */
     argv_val = caml_alloc(3, 0);
@@ -540,12 +556,12 @@ static void ml_closure_marshal(GClosure *closure,
     Store_field(argv_val, 2, (value)param_values);
 
     /* Call OCaml callback with exception handling */
-    value result = caml_callback_exn(callback_val, argv_val);
+    result = caml_callback_exn(callback_val, argv_val);
 
     /* Check for exceptions */
     if (Is_exception_result(result)) {
         /* Log the exception for debugging */
-        value exn = Extract_exception(result);
+        exn = Extract_exception(result);
         /* Note: We can't do much here except log - GLib doesn't have exception handling */
         /* In production, consider logging to a file or using g_warning */
     }
@@ -623,24 +639,28 @@ CAMLprim value ml_g_closure_get_arg(value argv_val, value pos)
 
 CAMLprim value ml_g_closure_get_result(value argv_val)
 {
-    return Field(argv_val, 0);
+    CAMLparam1(argv_val);
+    CAMLreturn(Field(argv_val, 0));
 }
 
 CAMLprim value ml_g_closure_get_result_type(value argv_val)
 {
+    CAMLparam1(argv_val);
     GValue *gv = GValue_val(Field(argv_val, 0));
-    return Val_long(G_VALUE_TYPE(gv));
+    CAMLreturn(Val_long(G_VALUE_TYPE(gv)));
 }
 
 CAMLprim value ml_g_closure_get_arg_type(value argv_val, value pos)
 {
-    const GValue *param_values = (const GValue *)Pointer_val(Field(argv_val, 2));
+    CAMLparam2(argv_val, pos);
+    const GValue *param_values = (const GValue *)(Field(argv_val, 2));
     int index = Int_val(pos);
-    return Val_long(G_VALUE_TYPE(&param_values[index]));
+    CAMLreturn(Val_long(G_VALUE_TYPE(&param_values[index])));
 }
 
 CAMLprim value ml_g_closure_set_result(value argv_val, value new_result)
 {
+    CAMLparam2(argv_val, new_result);
     GValue *result_gv = GValue_val(Field(argv_val, 0));
     GValue *new_gv = GValue_val(new_result);
 
@@ -648,7 +668,7 @@ CAMLprim value ml_g_closure_set_result(value argv_val, value new_result)
         g_value_copy(new_gv, result_gv);
     }
 
-    return Val_unit;
+    CAMLreturn(Val_unit);
 }
 
 /* ==================================================================== */
@@ -660,7 +680,7 @@ CAMLprim value ml_g_signal_connect_closure(value obj, value signal_name,
 {
     CAMLparam4(obj, signal_name, closure, after);
     GObject *gobj = G_OBJECT(ext_of_val(obj));
-    GClosure *gclosure = (GClosure *)Pointer_val(closure);
+    GClosure *gclosure = (GClosure *)ext_of_val(closure);
     const char *name = String_val(signal_name);
     gboolean after_flag = Bool_val(after);
 
@@ -671,33 +691,38 @@ CAMLprim value ml_g_signal_connect_closure(value obj, value signal_name,
 
 CAMLprim value ml_g_signal_handler_disconnect(value obj, value handler_id)
 {
+    CAMLparam2(obj, handler_id);
     g_signal_handler_disconnect(G_OBJECT(ext_of_val(obj)), Long_val(handler_id));
-    return Val_unit;
+    CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_g_signal_handler_block(value obj, value handler_id)
 {
-    g_signal_handler_block(G_OBJECT(Pointer_val(obj)), Long_val(handler_id));
-    return Val_unit;
+    CAMLparam2(obj, handler_id);
+    g_signal_handler_block(G_OBJECT(ext_of_val(obj)), Long_val(handler_id));
+    CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_g_signal_handler_unblock(value obj, value handler_id)
 {
-    g_signal_handler_unblock(G_OBJECT(Pointer_val(obj)), Long_val(handler_id));
-    return Val_unit;
+    CAMLparam2(obj, handler_id);
+    g_signal_handler_unblock(G_OBJECT(ext_of_val(obj)), Long_val(handler_id));
+    CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_g_signal_handler_is_connected(value obj, value handler_id)
 {
+    CAMLparam2(obj, handler_id);
     gboolean connected = g_signal_handler_is_connected(
-        G_OBJECT(Pointer_val(obj)), Long_val(handler_id));
-    return Val_bool(connected);
+        G_OBJECT(ext_of_val(obj)), Long_val(handler_id));
+    CAMLreturn(Val_bool(connected));
 }
 
 CAMLprim value ml_g_signal_emit_by_name(value obj, value signal_name)
 {
-    g_signal_emit_by_name(G_OBJECT(Pointer_val(obj)), String_val(signal_name));
-    return Val_unit;
+    CAMLparam2(obj, signal_name);
+    g_signal_emit_by_name(G_OBJECT(ext_of_val(obj)), String_val(signal_name));
+    CAMLreturn(Val_unit);
 }
 
 /* ==================================================================== */
@@ -833,5 +858,5 @@ CAMLprim value ml_g_object_new(value type)
     if (obj == NULL)
         caml_failwith("g_object_new: failed to create object");
 
-    CAMLreturn(Val_pointer(obj));
+    CAMLreturn(val_of_ext(obj));
 }

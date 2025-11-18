@@ -21,16 +21,6 @@
 
 #include <gtk/gtk.h>
 
-/* Note: caml_alloc_some is provided by OCaml 4.12+ in caml/alloc.h */
-/* For older versions, projects should use caml_alloc(1, 0) + Store_field */
-
-/* ==================================================================== */
-/* Basic Pointer Conversions */
-/* ==================================================================== */
-
-#define Pointer_val(val) ((void*)Field(val,1))
-#define Val_pointer(p) ((value)(p))
-
 /* For value blocks containing copied C structs */
 #define MLPointer_val(val) \
         ((int)Field(val,1) == 2 ? &Field(val,2) : (void*)Field(val,1))
@@ -44,8 +34,8 @@ CAMLexport value copy_memblock_indirected(void *src, asize_t size);
 /* ==================================================================== */
 
 typedef struct { value key; int data; } lookup_info;
-#define Val_lookup_info(v) Val_pointer((void*)v)
-#define Lookup_info_val(v) ((const lookup_info*)Pointer_val(v))
+#define Val_lookup_info(v) ((value)v)
+#define Lookup_info_val(v) ((const lookup_info*)(Field(v, 1)))
 
 /* Enum conversion functions (implemented in wrappers.c) */
 CAMLexport value ml_lookup_from_c (const lookup_info table[], value data);
@@ -178,7 +168,7 @@ void* ext_of_val(value val);
 #define Val_GObject(obj) (val_of_ext(obj))
 
 /* GClosure - custom block with finalizer (defined in ml_gobject.c) */
-#define GClosure_val(val) (*((GClosure**)Data_custom_val(val)))
+#define GClosure_val(val) ((GClosure*)ext_of_val(val))
 
 /* GType */
 #define GType_val(val) ((GType)Long_val(val))
@@ -194,18 +184,18 @@ value Val_GdkPixbuf_(GdkPixbuf *pb, gboolean ref);
 /* Pango Type Conversions */
 /* ==================================================================== */
 
-/* Pango GObject types - use direct cast */
-#define PangoContext_val(val) ((PangoContext*)(val))
-#define Val_PangoContext(obj) ((value)(obj))
+/* Pango GObject types - OCaml 5.0+ requires proper wrapping */
+#define PangoContext_val(val) ((PangoContext*)ext_of_val(val))
+#define Val_PangoContext(obj) (val_of_ext(obj))
 
-#define PangoLayout_val(val) ((PangoLayout*)(val))
-#define Val_PangoLayout(obj) ((value)(obj))
+#define PangoLayout_val(val) ((PangoLayout*)ext_of_val(val))
+#define Val_PangoLayout(obj) (val_of_ext(obj))
 
-#define PangoFont_val(val) ((PangoFont*)(val))
-#define Val_PangoFont(obj) ((value)(obj))
+#define PangoFont_val(val) ((PangoFont*)ext_of_val(val))
+#define Val_PangoFont(obj) (val_of_ext(obj))
 
-#define PangoFontMap_val(val) ((PangoFontMap*)(val))
-#define Val_PangoFontMap(obj) ((value)(obj))
+#define PangoFontMap_val(val) ((PangoFontMap*)ext_of_val(val))
+#define Val_PangoFontMap(obj) (val_of_ext(obj))
 
 /* Pango boxed types - custom blocks */
 #define PangoFontDescription_val(val) (*(PangoFontDescription**)Data_custom_val(val))
@@ -215,9 +205,9 @@ value Val_PangoFontDescription(PangoFontDescription *fd);
 #define PangoFontMetrics_val(val) (*(PangoFontMetrics**)Data_custom_val(val))
 value Val_PangoFontMetrics_new(PangoFontMetrics *fm);
 
-/* PangoLanguage - simple pointer (const static data) */
-#define PangoLanguage_val(val) ((PangoLanguage*)val)
-#define Val_PangoLanguage(lang) ((value)(lang))
+/* PangoLanguage - simple pointer (const static data), OCaml 5.0+ compliant */
+#define PangoLanguage_val(val) ((PangoLanguage*)ext_of_val(val))
+#define Val_PangoLanguage(lang) (val_of_ext((void*)(lang)))
 
 /* ==================================================================== */
 /* String Utilities */

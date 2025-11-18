@@ -30,17 +30,8 @@
 /* ==================================================================== */
 /* Type Conversions */
 /* ==================================================================== */
-
-/* GdkClipboard - GObject, use direct cast */
-#define GdkClipboard_val(val) ((GdkClipboard*)(ext_of_val(val)))
-#define Val_GdkClipboard(obj) ((value)(val_of_ext(obj)))
-
-/* GdkContentProvider - GObject, use direct cast */
-#define GdkContentProvider_val(val) ((GdkContentProvider*)(ext_of_val(val)))
-#define Val_GdkContentProvider(obj) ((value)(val_of_ext(obj)))
-
 /* GdkContentFormats - Boxed type, use pointer */
-#define GdkContentFormats_val(val) ((GdkContentFormats*)Pointer_val(val))
+#define GdkContentFormats_val(val) ((GdkContentFormats*)ext_of_val(val))
 
 /* Wrapper for GdkContentFormats to OCaml value */
 static value Val_GdkContentFormats(GdkContentFormats *formats)
@@ -53,8 +44,9 @@ static value Val_GdkContentFormats(GdkContentFormats *formats)
     }
 
     /* Allocate a block to hold the pointer */
-    val = caml_alloc_small(1, Abstract_tag);
-    Field(val, 0) = (value)gdk_content_formats_ref(formats);
+    val = val_of_ext(formats); 
+    //caml_alloc_small(1, Abstract_tag);
+    //Field(val, 0) = (value)gdk_content_formats_ref(formats);
     CAMLreturn(val);
 }
 

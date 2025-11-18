@@ -53,13 +53,16 @@ CAMLprim value ml_glib_init(value unit)
 
 CAMLprim value ml_g_get_prgname(value unit)
 {
+    CAMLparam1(unit);
+    CAMLlocal1(res);
+
     const char *name = g_get_prgname();
     if (name == NULL)
-        return Val_int(0); /* None */
+        CAMLreturn(Val_int(0)); /* None */
     else {
-        value res = caml_alloc(1, 0); /* Some */
+        res = caml_alloc(1, 0); /* Some */
         Store_field(res, 0, caml_copy_string(name));
-        return res;
+        CAMLreturn(res);
     }
 }
 
@@ -71,13 +74,16 @@ CAMLprim value ml_g_set_prgname(value name)
 
 CAMLprim value ml_g_get_application_name(value unit)
 {
+    CAMLparam1(unit);
+    CAMLlocal1(res);
+
     const char *name = g_get_application_name();
     if (name == NULL)
-        return Val_int(0); /* None */
+        CAMLreturn(Val_int(0)); /* None */
     else {
-        value res = caml_alloc(1, 0); /* Some */
+        res = caml_alloc(1, 0); /* Some */
         Store_field(res, 0, caml_copy_string(name));
-        return res;
+        CAMLreturn(res);
     }
 }
 
@@ -115,9 +121,12 @@ CAMLprim value Val_GList(GList *list, value (*func)(gpointer))
 /* Convert GList to OCaml list and free the GList */
 CAMLprim value Val_GList_free(GList *list, value (*func)(gpointer))
 {
-    value res = Val_GList(list, func);
+    CAMLparam0();
+    CAMLlocal1(res);
+
+    res = Val_GList(list, func);
     g_list_free(list);
-    return res;
+    CAMLreturn(res);
 }
 
 /* Convert OCaml list to GList */
@@ -174,9 +183,12 @@ CAMLprim value Val_GSList(GSList *list, value (*func)(gpointer))
 /* Convert GSList to OCaml list and free the GSList */
 CAMLprim value Val_GSList_free(GSList *list, value (*func)(gpointer))
 {
-    value res = Val_GSList(list, func);
+    CAMLparam0();
+    CAMLlocal1(res);
+
+    res = Val_GSList(list, func);
     g_slist_free(list);
-    return res;
+    CAMLreturn(res);
 }
 
 /* Convert OCaml list to GSList */
@@ -256,9 +268,12 @@ value copy_string_v(const gchar * const *v)
 /* Copy a string and free it with g_free */
 CAMLprim value copy_string_g_free(char *str)
 {
-    value res = caml_copy_string(str != NULL ? str : "");
+    CAMLparam0();
+    CAMLlocal1(res);
+
+    res = caml_copy_string(str != NULL ? str : "");
     g_free(str);
-    return res;
+    CAMLreturn(res);
 }
 
 /* Check if string is NULL and copy appropriately */
@@ -279,8 +294,9 @@ static value Val_GMainLoop(GMainLoop *loop)
 {
     CAMLparam0();
     CAMLlocal1(val);
-    val = caml_alloc_small(1, Abstract_tag);
-    Field(val, 0) = (value)loop;
+    val = val_of_ext(loop);
+    // val = caml_alloc_small(1, Abstract_tag);
+    // Field(val, 0) = (value)loop;
     CAMLreturn(val);
 }
 

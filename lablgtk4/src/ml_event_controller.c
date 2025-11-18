@@ -216,7 +216,7 @@ static void key_released_callback_wrapper(
     gpointer user_data)
 {
     CAMLparam0();
-    CAMLlocal1(state_val);
+    CAMLlocal2(state_val, result);
 
     value *ocaml_callback = (value*)user_data;
 
@@ -224,7 +224,7 @@ static void key_released_callback_wrapper(
     state_val = Val_gdk4_modifier_type(state);
 
     /* Call OCaml callback */
-    value result = caml_callback3_exn(*ocaml_callback,
+    result = caml_callback3_exn(*ocaml_callback,
                                       Val_int(keyval),
                                       Val_int(keycode),
                                       state_val);
@@ -344,11 +344,12 @@ static void motion_callback_wrapper(
     gpointer user_data)
 {
     CAMLparam0();
+    CAMLlocal1(result);
 
     value *ocaml_callback = (value*)user_data;
 
     /* Call OCaml callback with x, y coordinates */
-    value result = caml_callback2_exn(*ocaml_callback,
+    result = caml_callback2_exn(*ocaml_callback,
                                       caml_copy_double(x),
                                       caml_copy_double(y));
 
@@ -387,10 +388,11 @@ static void leave_callback_wrapper(
     gpointer user_data)
 {
     CAMLparam0();
+    CAMLlocal1(result);
 
     value *ocaml_callback = (value*)user_data;
 
-    value result = caml_callback_exn(*ocaml_callback, Val_unit);
+    result = caml_callback_exn(*ocaml_callback, Val_unit);
 
     if (Is_exception_result(result)) {
         g_warning("Exception in leave callback");
@@ -481,10 +483,11 @@ static void gesture_pressed_callback_wrapper(
     gpointer user_data)
 {
     CAMLparam0();
+    CAMLlocal1(result);
 
     value *ocaml_callback = (value*)user_data;
 
-    value result = caml_callback3_exn(*ocaml_callback,
+    result = caml_callback3_exn(*ocaml_callback,
                                       Val_int(n_press),
                                       caml_copy_double(x),
                                       caml_copy_double(y));
@@ -546,10 +549,11 @@ static void gesture_stopped_callback_wrapper(
     gpointer user_data)
 {
     CAMLparam0();
+    CAMLlocal1(result);
 
     value *ocaml_callback = (value*)user_data;
 
-    value result = caml_callback_exn(*ocaml_callback, Val_unit);
+    result = caml_callback_exn(*ocaml_callback, Val_unit);
 
     if (Is_exception_result(result)) {
         g_warning("Exception in gesture stopped callback");
@@ -590,11 +594,12 @@ static void gesture_unpaired_release_callback_wrapper(
     gpointer user_data)
 {
     CAMLparam0();
+    CAMLlocal1(result);
 
     value *ocaml_callback = (value*)user_data;
 
     /* Note: sequence is ignored for now (would need GdkEventSequence bindings) */
-    value result = caml_callback3_exn(*ocaml_callback,
+    result = caml_callback3_exn(*ocaml_callback,
                                       caml_copy_double(x),
                                       caml_copy_double(y),
                                       Val_int(button));

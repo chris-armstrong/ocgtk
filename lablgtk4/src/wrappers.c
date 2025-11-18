@@ -24,15 +24,17 @@
 
 CAMLexport value ml_lookup_from_c (const lookup_info table[], value data_val)
 {
+    CAMLparam1(data_val);
     int data = Int_val(data_val);
     int i;
     for (i = table[0].data; i > 0; i--)
-	if (table[i].data == data) return table[i].key;
+	if (table[i].data == data) return (table[i].key);
     caml_invalid_argument ("ml_lookup_from_c");
 }
 
 CAMLexport value ml_lookup_to_c (const lookup_info table[], value key)
 {
+    CAMLparam1(key);
     int first = 1, last = table[0].data, current;
     while (first < last) {
 	/* Avoid integer overflow in midpoint calculation */
@@ -40,7 +42,7 @@ CAMLexport value ml_lookup_to_c (const lookup_info table[], value key)
 	if (table[current].key >= key) last = current;
 	else first = current + 1;
     }
-    if (table[first].key == key) return Val_int(table[first].data);
+    if (table[first].key == key) return (Val_int(table[first].data));
     caml_invalid_argument ("ml_lookup_to_c");
 }
 
@@ -70,10 +72,14 @@ CAMLexport value copy_memblock_indirected(void *src, asize_t size)
 }
 
 value val_of_ext(void *widget) {
-    value v = caml_alloc(1, Abstract_tag);
+    CAMLparam0();
+    CAMLlocal1(v);
+    v = caml_alloc(1, Abstract_tag);
     *((void**)Data_abstract_val(v)) = widget;
-    return v;
+    CAMLreturn(v);
 }
+
 void* ext_of_val(value val) {
-    return *((void**)Data_abstract_val(val));
+    CAMLparam1(val);
+    CAMLreturnT(void*, *((void**)Data_abstract_val(val)));
 }
