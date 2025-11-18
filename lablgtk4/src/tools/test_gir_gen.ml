@@ -395,6 +395,181 @@ let test_all_methods_generated () =
   assert_contains "Method 7 should be generated" content "method7";
   assert_contains "Method 8 should be generated" content "method8"
 
+(* Test enum generation *)
+let create_test_enum_gir filename =
+  let oc = open_out filename in
+  output_string oc {|<?xml version="1.0"?>
+<repository version="1.2"
+            xmlns="http://www.gtk.org/introspection/core/1.0"
+            xmlns:c="http://www.gtk.org/introspection/c/1.0">
+  <namespace name="Gtk">
+    <enumeration name="WrapMode" c:type="GtkWrapMode">
+      <member name="none" value="0" c:identifier="GTK_WRAP_NONE"/>
+      <member name="char" value="1" c:identifier="GTK_WRAP_CHAR"/>
+      <member name="word" value="2" c:identifier="GTK_WRAP_WORD"/>
+      <member name="word_char" value="3" c:identifier="GTK_WRAP_WORD_CHAR"/>
+    </enumeration>
+    <class name="EventControllerKey" c:type="GtkEventControllerKey" parent="EventController">
+      <constructor name="new" c:identifier="gtk_event_controller_key_new"/>
+    </class>
+  </namespace>
+</repository>
+|};
+  close_out oc
+
+let test_enum_generation () =
+  let test_gir = "/tmp/test_enum_gen.gir" in
+  let output_dir = "/tmp/test_enum_output" in
+
+  create_test_enum_gir test_gir;
+  (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
+
+  let tools_dir = Filename.dirname Sys.argv.(0) in
+  let cmd = sprintf "%s/gir_gen.exe -m controllers %s %s > /dev/null 2>&1"
+    tools_dir test_gir output_dir in
+
+  let exit_code = Sys.command cmd in
+  assert_true "Enum generator should exit successfully" (exit_code = 0);
+
+  let enum_file = Filename.concat output_dir "gtk_enums.mli" in
+  assert_true "gtk_enums.mli should be created" (file_exists enum_file);
+
+  let enum_content = read_file enum_file in
+  (* Check enum type definition *)
+  assert_contains "Enum type should be defined" enum_content "type wrapmode = [";
+  assert_contains "Should have NONE variant" enum_content "`NONE";
+  assert_contains "Should have CHAR variant" enum_content "`CHAR";
+  assert_contains "Should have WORD variant" enum_content "`WORD";
+  assert_contains "Should have WORD_CHAR variant" enum_content "`WORD_CHAR";
+
+  (* Check C converter generation *)
+  let c_file = Filename.concat output_dir "ml_event_controllers_gen.c" in
+  let c_content = read_file c_file in
+  assert_contains "C to OCaml converter" c_content "Val_WrapMode";
+  assert_contains "OCaml to C converter" c_content "WrapMode_val";
+  assert_contains "C converter should use switch" c_content "switch (val)";
+  assert_contains "C converter should check GTK constants" c_content "GTK_WRAP_NONE"
+
+(* Test bitfield generation *)
+let create_test_bitfield_gir filename =
+  let oc = open_out filename in
+  output_string oc {|<?xml version="1.0"?>
+<repository version="1.2"
+            xmlns="http://www.gtk.org/introspection/core/1.0"
+            xmlns:c="http://www.gtk.org/introspection/c/1.0">
+  <namespace name="Gtk">
+    <bitfield name="StateFlags" c:type="GtkStateFlags">
+      <member name="normal" value="0" c:identifier="GTK_STATE_FLAG_NORMAL"/>
+      <member name="active" value="1" c:identifier="GTK_STATE_FLAG_ACTIVE"/>
+      <member name="prelight" value="2" c:identifier="GTK_STATE_FLAG_PRELIGHT"/>
+      <member name="selected" value="4" c:identifier="GTK_STATE_FLAG_SELECTED"/>
+    </bitfield>
+    <class name="EventControllerKey" c:type="GtkEventControllerKey" parent="EventController">
+      <constructor name="new" c:identifier="gtk_event_controller_key_new"/>
+    </class>
+  </namespace>
+</repository>
+|};
+  close_out oc
+
+let test_bitfield_generation () =
+  let test_gir = "/tmp/test_bitfield_gen.gir" in
+  let output_dir = "/tmp/test_bitfield_output" in
+
+  create_test_bitfield_gir test_gir;
+  (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
+
+  let tools_dir = Filename.dirname Sys.argv.(0) in
+  let cmd = sprintf "%s/gir_gen.exe -m controllers %s %s > /dev/null 2>&1"
+    tools_dir test_gir output_dir in
+
+  let exit_code = Sys.command cmd in
+  assert_true "Bitfield generator should exit successfully" (exit_code = 0);
+
+  let enum_file = Filename.concat output_dir "gtk_enums.mli" in
+  assert_true "gtk_enums.mli should be created for bitfields" (file_exists enum_file);
+
+  let enum_content = read_file enum_file in
+  (* Check bitfield type definition *)
+  assert_contains "Flag variant type should be defined" enum_content "type stateflags_flag = [";
+  assert_contains "Should have NORMAL flag" enum_content "`NORMAL";
+  assert_contains "Should have ACTIVE flag" enum_content "`ACTIVE";
+  assert_contains "Should have PRELIGHT flag" enum_content "`PRELIGHT";
+  assert_contains "Should have SELECTED flag" enum_content "`SELECTED";
+  assert_contains "Bitfield list type should be defined" enum_content "type stateflags = stateflags_flag list";
+
+  (* Check C converter generation *)
+  let c_file = Filename.concat output_dir "ml_event_controllers_gen.c" in
+  let c_content = read_file c_file in
+  assert_contains "C to OCaml flag converter" c_content "Val_StateFlags";
+  assert_contains "OCaml to C flag converter" c_content "StateFlags_val";
+  assert_contains "Converter should check flags with &" c_content "flags & GTK_STATE_FLAG_";
+  assert_contains "Converter should OR flags" c_content "result |= GTK_STATE_FLAG_";
+  assert_contains "Converter should build list" c_content "Val_emptylist";
+  assert_contains "Converter should allocate cons cells" c_content "caml_alloc(2, 0)"
+
+(* Test nullable parameter generation *)
+let create_test_nullable_gir filename =
+  let oc = open_out filename in
+  output_string oc {|<?xml version="1.0"?>
+<repository version="1.2"
+            xmlns="http://www.gtk.org/introspection/core/1.0"
+            xmlns:c="http://www.gtk.org/introspection/c/1.0">
+  <namespace name="Gtk">
+    <class name="TestWidget" c:type="GtkTestWidget" parent="Widget">
+      <constructor name="new" c:identifier="gtk_test_widget_new">
+        <parameters>
+          <parameter name="label" nullable="1">
+            <type name="utf8" c:type="const gchar*"/>
+          </parameter>
+        </parameters>
+      </constructor>
+      <method name="set_group" c:identifier="gtk_test_widget_set_group">
+        <return-value><type name="none" c:type="void"/></return-value>
+        <parameters>
+          <parameter name="group" nullable="1">
+            <type name="Widget" c:type="GtkWidget*"/>
+          </parameter>
+        </parameters>
+      </method>
+    </class>
+  </namespace>
+</repository>
+|};
+  close_out oc
+
+let test_nullable_parameters () =
+  let test_gir = "/tmp/test_nullable_gen.gir" in
+  let test_filter = "/tmp/test_nullable_filter.conf" in
+  let output_dir = "/tmp/test_nullable_output" in
+
+  create_test_nullable_gir test_gir;
+  let fc = open_out test_filter in
+  output_string fc "TestWidget\n";
+  close_out fc;
+  (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
+
+  let tools_dir = Filename.dirname Sys.argv.(0) in
+  let cmd = sprintf "%s/gir_gen.exe -m widgets -f %s %s %s > /dev/null 2>&1"
+    tools_dir test_filter test_gir output_dir in
+
+  let exit_code = Sys.command cmd in
+  assert_true "Nullable generator should exit successfully" (exit_code = 0);
+
+  let mli_file = Filename.concat output_dir "test_widget.mli" in
+  let content = read_file mli_file in
+
+  (* Check OCaml interface uses option types *)
+  assert_contains "Constructor should have string option parameter" content "string option";
+  assert_contains "Method should have Widget option parameter" content "Gtk.Widget.t option";
+
+  (* Check C code uses option macros *)
+  let c_file = Filename.concat output_dir "ml_event_controllers_gen.c" in
+  let c_content = read_file c_file in
+  assert_contains "C should check Is_some" c_content "Is_some";
+  assert_contains "C should extract Some_val" c_content "Some_val";
+  assert_contains "C should handle NULL" c_content "NULL"
+
 (* ========================================================================= *)
 (* Main Test Runner *)
 (* ========================================================================= *)
@@ -411,6 +586,9 @@ let () =
   ignore (test "Property generation" test_property_generation);
   ignore (test "C property generation (Phase 5.2)" test_c_property_generation);
   ignore (test "All methods generated (Phase 5.2)" test_all_methods_generated);
+  ignore (test "Enum generation (Phase 5.3)" test_enum_generation);
+  ignore (test "Bitfield generation (Phase 5.3)" test_bitfield_generation);
+  ignore (test "Nullable parameters (Phase 5.3)" test_nullable_parameters);
   ignore (test "Help output" test_help_output);
 
   printf "\n====================================\n";
