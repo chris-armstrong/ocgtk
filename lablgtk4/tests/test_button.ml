@@ -55,14 +55,18 @@ let test_check_button_creation () =
   check bool "check button activated" true (GtkCheckButton.get_active btn)
 
 let test_check_button_with_label () =
-  let btn = GtkCheckButton.new_with_label "Enable feature" in
+  let btn = GtkCheckButton.new_with_label (Some "Enable feature") in
   check string "check button label" "Enable feature" (GtkCheckButton.get_label btn)
 
 let test_check_button_grouping () =
-  (* SKIP: Generated bindings don't yet support nullable/optional widget parameters.
-     The generator needs to be enhanced to handle nullable="1" in GIR files.
-     See: gtk_check_button_set_group takes nullable GtkCheckButton* *)
-  skip ()
+  (* Test nullable parameter support - set_group accepts widget option *)
+  let btn1 = GtkCheckButton.new_ () in
+  let btn2 = GtkCheckButton.new_ () in
+  (* Group btn2 with btn1 - btn1 is the group leader *)
+  GtkCheckButton.set_group btn2 (Some btn1);
+  (* Set btn1 active *)
+  GtkCheckButton.set_active btn1 true;
+  check bool "btn1 is active" true (GtkCheckButton.get_active btn1)
 
 let test_check_button_inconsistent () =
   let btn = GtkCheckButton.new_ () in

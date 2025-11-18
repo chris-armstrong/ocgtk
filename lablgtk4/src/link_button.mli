@@ -4,10 +4,10 @@
 type t = Gtk.Widget.t
 
 (** Create a new LinkButton *)
-external new_ : unit -> t = "ml_gtk_link_button_new"
+external new_ : string -> t = "ml_gtk_link_button_new"
 
 (** Create a new LinkButton *)
-external new_ : unit -> t = "ml_gtk_link_button_new_with_label"
+external new_with_label : string -> string option -> t = "ml_gtk_link_button_new_with_label"
 
 (* Properties *)
 

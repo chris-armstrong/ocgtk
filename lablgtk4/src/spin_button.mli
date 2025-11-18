@@ -4,10 +4,10 @@
 type t = Gtk.Widget.t
 
 (** Create a new SpinButton *)
-external new_ : unit -> t = "ml_gtk_spin_button_new"
+external new_ : Gtk.Widget.t option -> unit -> int -> t = "ml_gtk_spin_button_new"
 
 (** Create a new SpinButton *)
-external new_ : unit -> t = "ml_gtk_spin_button_new_with_range"
+external new_with_range : unit -> unit -> unit -> t = "ml_gtk_spin_button_new_with_range"
 
 (* Properties *)
 
@@ -63,7 +63,7 @@ external set_range : t -> unit -> unit -> unit = "ml_gtk_spin_button_set_range"
 
 external set_increments : t -> unit -> unit -> unit = "ml_gtk_spin_button_set_increments"
 
-external set_adjustment : t -> unit -> unit = "ml_gtk_spin_button_set_adjustment"
+external set_adjustment : t -> Gtk.Widget.t -> unit = "ml_gtk_spin_button_set_adjustment"
 
 external get_value_as_int : t -> unit = "ml_gtk_spin_button_get_value_as_int"
 
@@ -73,7 +73,7 @@ external get_range : t -> unit -> unit -> unit = "ml_gtk_spin_button_get_range"
 
 external get_increments : t -> unit -> unit -> unit = "ml_gtk_spin_button_get_increments"
 
-external get_adjustment : t -> unit = "ml_gtk_spin_button_get_adjustment"
+external get_adjustment : t -> Gtk.Widget.t = "ml_gtk_spin_button_get_adjustment"
 
-external configure : t -> unit -> unit -> int -> unit = "ml_gtk_spin_button_configure"
+external configure : t -> Gtk.Widget.t option -> unit -> int -> unit = "ml_gtk_spin_button_configure"
 

@@ -4,10 +4,10 @@
 type t = Gtk.Widget.t
 
 (** Create a new Label *)
-external new_ : unit -> t = "ml_gtk_label_new"
+external new_ : string option -> t = "ml_gtk_label_new"
 
 (** Create a new Label *)
-external new_ : unit -> t = "ml_gtk_label_new_with_mnemonic"
+external new_with_mnemonic : string option -> t = "ml_gtk_label_new_with_mnemonic"
 
 (* Properties *)
 
@@ -84,7 +84,7 @@ external set_tabs : t -> unit -> unit = "ml_gtk_label_set_tabs"
 
 external set_natural_wrap_mode : t -> int -> unit = "ml_gtk_label_set_natural_wrap_mode"
 
-external set_mnemonic_widget : t -> Gtk.Widget.t -> unit = "ml_gtk_label_set_mnemonic_widget"
+external set_mnemonic_widget : t -> Gtk.Widget.t option -> unit = "ml_gtk_label_set_mnemonic_widget"
 
 external set_markup_with_mnemonic : t -> string -> unit = "ml_gtk_label_set_markup_with_mnemonic"
 

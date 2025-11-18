@@ -25,6 +25,7 @@ type gir_type = {
 type gir_param = {
   param_name : string;
   param_type : gir_type;
+  nullable : bool;  (* Phase 5.3: Support nullable parameters *)
 }
 
 type gir_method = {
@@ -245,12 +246,59 @@ let type_mappings = [
     ml_to_c = "Double_val";
     needs_copy = true;
   });
+  (* GdkEvent - pointer type *)
+  ("GdkEvent*", {
+    ocaml_type = "Gdk.Event.t";
+    c_to_ml = "Val_GdkEvent";
+    ml_to_c = "GdkEvent_val";
+    needs_copy = false;
+  });
+  (* GtkWrapMode - enum, use int for now *)
+  ("GtkWrapMode", {
+    ocaml_type = "int"; (* TODO: Should be proper enum type *)
+    c_to_ml = "Val_int";
+    ml_to_c = "Int_val";
+    needs_copy = false;
+  });
+  (* GtkTextWindowType - enum, use int for now *)
+  ("GtkTextWindowType", {
+    ocaml_type = "int"; (* TODO: Should be proper enum type *)
+    c_to_ml = "Val_int";
+    ml_to_c = "Int_val";
+    needs_copy = false;
+  });
 ]
+
+(* Phase 5.3: Blacklist for variadic functions (can't be auto-generated) *)
+let variadic_function_blacklist = [
+  "gtk_text_buffer_insert_with_tags";
+  "gtk_text_buffer_insert_with_tags_by_name";
+  "gtk_text_buffer_create_tag";
+  (* Add more variadic functions as discovered *)
+]
+
+let is_variadic_function c_identifier =
+  List.mem c_identifier ~set:variadic_function_blacklist
+
+(* Phase 5.3: OCaml C FFI limitation - max 5 parameters *)
+let max_caml_params = 5
 
 let find_type_mapping c_type =
   try
     Some (List.assoc c_type type_mappings)
-  with Not_found -> None
+  with Not_found ->
+    (* Phase 5.3: Handle any Gtk widget pointer type generically *)
+    if String.length c_type > 3 &&
+       String.sub c_type ~pos:0 ~len:3 = "Gtk" &&
+       String.sub c_type ~pos:(String.length c_type - 1) ~len:1 = "*" then
+      Some {
+        ocaml_type = "Gtk.Widget.t";
+        c_to_ml = "Val_GtkWidget";
+        ml_to_c = "GtkWidget_val";
+        needs_copy = false;
+      }
+    else
+      None
 
 (* ========================================================================= *)
 (* Utility Functions *)
@@ -556,8 +604,9 @@ let parse_gir_file filename mode filter_classes =
       match Xmlm.input input with
       | `El_start ((_, "parameter"), attrs) ->
         let param_name = match get_attr "name" attrs with Some n -> n | None -> "arg" in
+        let nullable = match get_attr "nullable" attrs with Some "1" -> true | _ -> false in
         let param_type = parse_parameter_type () in
-        params := { param_name = param_name; param_type = param_type } :: !params;
+        params := { param_name = param_name; param_type = param_type; nullable = nullable } :: !params;
         parse_params_contents ()
 
       | `El_start ((_, "instance-parameter"), _) ->
@@ -667,6 +716,14 @@ let generate_c_header () =
 #define GtkEventController_val(val) ((GtkEventController*)Pointer_val(val))\n\
 #define Val_GtkEventController(obj) ((value)(obj))\n\
 /* Note: GtkWidget_val and Val_GtkWidget are defined in wrappers.h */\n\
+\n\
+/* Phase 5.3: Option type conversions for nullable parameters */\n\
+#define GtkWidget_option_val(v) ((v) == Val_none ? NULL : GtkWidget_val(Some_val(v)))\n\
+#define GtkEventController_option_val(v) ((v) == Val_none ? NULL : GtkEventController_val(Some_val(v)))\n\
+\n\
+/* GdkEvent conversions - from ml_event_controller.c */\n\
+#define GdkEvent_val(val) ((GdkEvent*)Pointer_val(val))\n\
+#define Val_GdkEvent(obj) ((value)(obj))\n\
 \n"
 
 let generate_c_constructor ctor cls =
@@ -702,11 +759,23 @@ let generate_c_constructor ctor cls =
       List.mapi ~f:(fun i _ -> sprintf "arg%d" (i + 1)) ctor.ctor_parameters
   in
 
-  (* Build C call arguments *)
+  (* Build C call arguments - handle nullable parameters *)
   let c_args =
     List.mapi ~f:(fun i p ->
       match find_type_mapping p.param_type.c_type with
-      | Some mapping -> sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
+      | Some mapping ->
+        if p.nullable then
+          (* For nullable parameters, use option conversion macro *)
+          if p.param_type.c_type = "GtkWidget*" then
+            sprintf "GtkWidget_option_val(arg%d)" (i + 1)
+          else if String.length p.param_type.c_type > 3 &&
+                  String.sub p.param_type.c_type ~pos:(String.length p.param_type.c_type - 1) ~len:1 = "*" then
+            (* Generic pointer type - check for NULL *)
+            sprintf "(Is_some(arg%d) ? %s(Some_val(arg%d)) : NULL)" (i + 1) mapping.ml_to_c (i + 1)
+          else
+            sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
+        else
+          sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
       | None -> sprintf "arg%d" (i + 1)
     ) ctor.ctor_parameters
   in
@@ -744,11 +813,25 @@ let generate_c_method (meth : gir_method) cls =
     if is_widget then "GtkWidget_val(self)" else "GtkEventController_val(self)"
   in
 
-  (* Build C call *)
+  (* Build C call - handle nullable parameters *)
   let c_args = self_cast ::
     List.mapi ~f:(fun i p ->
       match find_type_mapping p.param_type.c_type with
-      | Some mapping -> sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
+      | Some mapping ->
+        if p.nullable then
+          (* For nullable parameters, use option conversion *)
+          if p.param_type.c_type = "GtkWidget*" then
+            sprintf "GtkWidget_option_val(arg%d)" (i + 1)
+          else if p.param_type.c_type = "GtkCheckButton*" then
+            sprintf "(Is_some(arg%d) ? GtkWidget_val(Some_val(arg%d)) : NULL)" (i + 1) (i + 1)
+          else if String.length p.param_type.c_type > 3 &&
+                  String.sub p.param_type.c_type ~pos:(String.length p.param_type.c_type - 1) ~len:1 = "*" then
+            (* Generic pointer type - check for NULL *)
+            sprintf "(Is_some(arg%d) ? %s(Some_val(arg%d)) : NULL)" (i + 1) mapping.ml_to_c (i + 1)
+          else
+            sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
+        else
+          sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
       | None -> sprintf "arg%d" (i + 1)
     ) meth.parameters in
 
@@ -768,18 +851,54 @@ let generate_c_method (meth : gir_method) cls =
          "CAMLreturn((value)result);")
   in
 
-  sprintf "\nCAMLprim value %s(%s)\n\
+  (* For functions with >5 parameters, generate both bytecode and native variants *)
+  if param_count > 5 then
+    (* Split param_names into first 5 and rest *)
+    let first_five = List.filteri ~f:(fun i _ -> i < 5) param_names in
+    let rest = List.filteri ~f:(fun i _ -> i >= 5) param_names in
+
+    (* Native code variant - individual parameters *)
+    let native_func = sprintf "\nCAMLprim value %s_native(%s)\n\
+{\n\
+    CAMLparam5(%s);\n\
+    CAMLxparam%d(%s);\n\
+    %s\n\
+    %s\n\
+}\n"
+      ml_name
+      (String.concat ~sep:", " params)
+      (String.concat ~sep:", " first_five)
+      (param_count - 5)
+      (String.concat ~sep:", " rest)
+      c_call
+      ret_conv
+    in
+
+    (* Bytecode variant - array of values *)
+    let bytecode_func = sprintf "\nCAMLprim value %s_bytecode(value * argv, int argn)\n\
+{\n\
+    return %s_native(%s);\n\
+}\n"
+      ml_name
+      ml_name
+      (String.concat ~sep:", " (List.mapi ~f:(fun i _ -> sprintf "argv[%d]" i) param_names))
+    in
+
+    native_func ^ bytecode_func
+  else
+    (* Standard single function for <=5 parameters *)
+    sprintf "\nCAMLprim value %s(%s)\n\
 {\n\
     CAMLparam%d(%s);\n\
     %s\n\
     %s\n\
 }\n"
-    ml_name
-    (String.concat ~sep:", " params)
-    param_count
-    (String.concat ~sep:", " param_names)
-    c_call
-    ret_conv
+      ml_name
+      (String.concat ~sep:", " params)
+      param_count
+      (String.concat ~sep:", " param_names)
+      c_call
+      ret_conv
 
 (* Phase 5.2: Generate C code for property getter *)
 let generate_c_property_getter (prop : gir_property) (cls : gir_class) =
@@ -904,12 +1023,42 @@ let generate_ml_interface cls =
 
   bprintf buf "type t = %s\n\n" base_type;
 
-  (* Constructors *)
+  (* Constructors - generate unique names and proper signatures *)
   List.iter ~f:(fun ctor ->
     bprintf buf "(** Create a new %s *)\n" cls.class_name;
     let c_name = ctor.c_identifier in
     let ml_name = Str.global_replace (Str.regexp "gtk_") "ml_gtk_" c_name in
-    bprintf buf "external new_ : unit -> t = \"%s\"\n\n" ml_name;
+
+    (* Generate OCaml constructor name from C identifier *)
+    let class_snake = to_snake_case cls.class_name in
+    let ocaml_ctor_name =
+      let base = Str.global_replace (Str.regexp (sprintf "gtk_%s_" class_snake)) "" c_name in
+      let snake = to_snake_case base in
+      (* Use "new_" for basic constructor to avoid "new" keyword *)
+      if snake = "new" then "new_" else snake
+    in
+
+    (* Build parameter types for constructor signature *)
+    let param_types = List.map ~f:(fun p ->
+      match find_type_mapping p.param_type.c_type with
+      | Some mapping ->
+        let base_type = mapping.ocaml_type in
+        if p.nullable then
+          sprintf "%s option" base_type
+        else
+          base_type
+      | None -> "unit" (* fallback *)
+    ) ctor.ctor_parameters in
+
+    (* Generate signature: param1 -> param2 -> ... -> t *)
+    let signature =
+      if List.length param_types = 0 then
+        "unit -> t"
+      else
+        String.concat ~sep:" -> " (param_types @ ["t"])
+    in
+
+    bprintf buf "external %s : %s = \"%s\"\n\n" ocaml_ctor_name signature ml_name;
   ) cls.constructors;
 
   (* Properties - generate get/set externals *)
@@ -955,24 +1104,37 @@ let generate_ml_interface cls =
   end;
 
   (* Methods - skip those that duplicate property getters/setters *)
+  (* Phase 5.3: Also skip variadic functions and methods with >5 parameters *)
   List.iter ~f:(fun (meth : gir_method) ->
     let c_name = meth.c_identifier in
+    let param_count = 1 + List.length meth.parameters in (* +1 for self *)
     let ml_name = Str.global_replace (Str.regexp "gtk_") "ml_gtk_" c_name in
     let ocaml_name = to_snake_case (
       Str.global_replace (Str.regexp (sprintf "gtk_%s_"
         (to_snake_case cls.class_name))) "" c_name
     ) in
 
-    (* Skip methods that would duplicate property-generated externals *)
-    if not (List.mem ocaml_name ~set:!property_names) then begin
+    (* Skip if: variadic function or duplicates property *)
+    (* Note: No longer skip methods with >5 params - we generate bytecode/native variants *)
+    let should_skip =
+      is_variadic_function c_name ||
+      List.mem ocaml_name ~set:!property_names
+    in
+    if not should_skip then begin
       (match meth.doc with
       | Some doc -> bprintf buf "(** %s *)\n" doc
       | None -> ());
 
-      (* Build OCaml type signature *)
+      (* Build OCaml type signature - handle nullable parameters *)
       let param_types = List.map ~f:(fun p ->
         match find_type_mapping p.param_type.c_type with
-        | Some mapping -> mapping.ocaml_type
+        | Some mapping ->
+          let base_type = mapping.ocaml_type in
+          if p.nullable then
+            (* Wrap in option type *)
+            sprintf "%s option" base_type
+          else
+            base_type
         | None -> "unit" (* fallback *)
       ) meth.parameters in
 
@@ -989,8 +1151,13 @@ let generate_ml_interface cls =
         String.concat ~sep:" -> " (["t"] @ param_types @ [ret_type_ocaml])
       in
 
-      bprintf buf "external %s : %s = \"%s\"\n\n"
-        ocaml_name full_type ml_name;
+      (* For methods with >5 parameters, use bytecode/native variant syntax *)
+      if param_count > 5 then
+        bprintf buf "external %s : %s = \"%s_bytecode\" \"%s_native\"\n\n"
+          ocaml_name full_type ml_name ml_name
+      else
+        bprintf buf "external %s : %s = \"%s\"\n\n"
+          ocaml_name full_type ml_name;
     end
   ) (List.rev cls.methods);
 
@@ -1059,14 +1226,21 @@ let generate_bindings mode filter_file gir_file output_dir =
     ) cls.properties;
 
     (* Phase 5.2: Generate ALL methods (removed 5-method limit), skip duplicates *)
+    (* Phase 5.3: Skip variadic functions and methods with >5 parameters *)
     List.iter ~f:(fun (meth : gir_method) ->
       let c_name = meth.c_identifier in
+      let param_count = 1 + List.length meth.parameters in (* +1 for self *)
       let class_snake = to_snake_case cls.class_name in
       let ocaml_name = to_snake_case (
         Str.global_replace (Str.regexp (sprintf "gtk_%s_" class_snake)) "" c_name
       ) in
-      (* Skip methods that would duplicate property-generated functions *)
-      if not (List.mem ocaml_name ~set:!property_method_names) then
+      (* Skip if: variadic function, too many params, or duplicates property *)
+      let should_skip =
+        is_variadic_function c_name ||
+        param_count > max_caml_params ||
+        List.mem ocaml_name ~set:!property_method_names
+      in
+      if not should_skip then
         Buffer.add_string c_buf (generate_c_method meth cls)
     ) (List.rev cls.methods);
 

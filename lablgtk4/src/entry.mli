@@ -7,7 +7,7 @@ type t = Gtk.Widget.t
 external new_ : unit -> t = "ml_gtk_entry_new"
 
 (** Create a new Entry *)
-external new_ : unit -> t = "ml_gtk_entry_new_with_buffer"
+external new_with_buffer : Gtk.Widget.t -> t = "ml_gtk_entry_new_with_buffer"
 
 (* Properties *)
 
@@ -117,21 +117,21 @@ external unset_invisible_char : t -> unit = "ml_gtk_entry_unset_invisible_char"
 
 external set_tabs : t -> unit -> unit = "ml_gtk_entry_set_tabs"
 
-external set_placeholder_text : t -> string -> unit = "ml_gtk_entry_set_placeholder_text"
+external set_placeholder_text : t -> string option -> unit = "ml_gtk_entry_set_placeholder_text"
 
 external set_input_purpose : t -> int -> unit = "ml_gtk_entry_set_input_purpose"
 
 external set_input_hints : t -> int -> unit = "ml_gtk_entry_set_input_hints"
 
-external set_icon_tooltip_text : t -> unit -> string -> unit = "ml_gtk_entry_set_icon_tooltip_text"
+external set_icon_tooltip_text : t -> unit -> string option -> unit = "ml_gtk_entry_set_icon_tooltip_text"
 
-external set_icon_tooltip_markup : t -> unit -> string -> unit = "ml_gtk_entry_set_icon_tooltip_markup"
+external set_icon_tooltip_markup : t -> unit -> string option -> unit = "ml_gtk_entry_set_icon_tooltip_markup"
 
 external set_icon_sensitive : t -> unit -> bool -> unit = "ml_gtk_entry_set_icon_sensitive"
 
 external set_icon_from_paintable : t -> unit -> unit -> unit = "ml_gtk_entry_set_icon_from_paintable"
 
-external set_icon_from_icon_name : t -> unit -> string -> unit = "ml_gtk_entry_set_icon_from_icon_name"
+external set_icon_from_icon_name : t -> unit -> string option -> unit = "ml_gtk_entry_set_icon_from_icon_name"
 
 external set_icon_from_gicon : t -> unit -> unit -> unit = "ml_gtk_entry_set_icon_from_gicon"
 
@@ -141,9 +141,9 @@ external set_icon_activatable : t -> unit -> bool -> unit = "ml_gtk_entry_set_ic
 
 external set_extra_menu : t -> unit -> unit = "ml_gtk_entry_set_extra_menu"
 
-external set_completion : t -> unit -> unit = "ml_gtk_entry_set_completion"
+external set_completion : t -> Gtk.Widget.t option -> unit = "ml_gtk_entry_set_completion"
 
-external set_buffer : t -> unit -> unit = "ml_gtk_entry_set_buffer"
+external set_buffer : t -> Gtk.Widget.t -> unit = "ml_gtk_entry_set_buffer"
 
 external set_attributes : t -> unit -> unit = "ml_gtk_entry_set_attributes"
 
@@ -187,9 +187,9 @@ external get_extra_menu : t -> unit = "ml_gtk_entry_get_extra_menu"
 
 external get_current_icon_drag_source : t -> unit = "ml_gtk_entry_get_current_icon_drag_source"
 
-external get_completion : t -> unit = "ml_gtk_entry_get_completion"
+external get_completion : t -> Gtk.Widget.t = "ml_gtk_entry_get_completion"
 
-external get_buffer : t -> unit = "ml_gtk_entry_get_buffer"
+external get_buffer : t -> Gtk.Widget.t = "ml_gtk_entry_get_buffer"
 
 external get_attributes : t -> unit = "ml_gtk_entry_get_attributes"
 
