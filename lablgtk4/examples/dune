@@ -1,0 +1,6 @@
+; Example applications demonstrating lablgtk4
+
+(executable
+ (name counter_simple)
+ (modules counter_simple)
+ (libraries lablgtk4))
