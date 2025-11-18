@@ -159,23 +159,68 @@ Branch: `claude/add-code-generation-features-01NBQrBhb6bnAthqJUFCgY1D`
 
 ### Code Generator Enhancements
 
-#### 1. **Bitfield/Flags Support** 🔥 High Priority
-**Current State**: Flags types (like `GtkStateFlags`) are not parsed or generated
-**Improvement**:
-- Parse `<bitfield>` elements from GIR (similar to enums)
-- Generate OCaml list-based flag types (e.g., `type state_flags = flag list`)
-- Generate conversion functions that OR/AND flag values
-- Many GTK4 APIs use flags (StateFlags, EventControllerScrollFlags, etc.)
+#### 1. **Bitfield/Flags Support** ✅ COMPLETED
+**Status**: ✅ Implemented (commits be36f76, 2b6ca3c)
 
-**Example**:
+**Implementation**:
+- ✅ Parse `<bitfield>` elements from GIR (similar to enums)
+- ✅ Generate OCaml list-based flag types with polymorphic variants
+- ✅ Generate bidirectional C conversion functions (OR/AND flag values)
+- ✅ Successfully parsed 18 bitfields from Gtk-4.0.gir
+- ✅ Updated gtk_enums.mli to include bitfield types
+- ✅ All tests passing
+
+**Generated Code Example**:
 ```ocaml
-type state_flags = [
+(* OCaml types in gtk_enums.mli *)
+type stateflags_flag = [
   | `NORMAL
   | `ACTIVE
   | `PRELIGHT
   | `SELECTED
-] list
+  | `INSENSITIVE
+  | `FOCUSED
+  (* ... 12 more flags ... *)
+]
+type stateflags = stateflags_flag list
 ```
+
+**C Converters** (auto-generated):
+```c
+/* Convert C flags to OCaml list */
+static value Val_StateFlags(GtkStateFlags flags) {
+  CAMLparam0();
+  CAMLlocal2(result, cons);
+  result = Val_emptylist;
+  if (flags & GTK_STATE_FLAG_NORMAL) {
+    cons = caml_alloc(2, 0);
+    Store_field(cons, 0, Val_int(888717969)); /* hash(`NORMAL) */
+    Store_field(cons, 1, result);
+    result = cons;
+  }
+  /* ... check all flags ... */
+  CAMLreturn(result);
+}
+
+/* Convert OCaml list to C flags */
+static GtkStateFlags StateFlags_val(value list) {
+  GtkStateFlags result = 0;
+  while (list != Val_emptylist) {
+    int tag = Int_val(Field(list, 0));
+    if (tag == 888717969) result |= GTK_STATE_FLAG_NORMAL;
+    /* ... OR all matching flags ... */
+    list = Field(list, 1);
+  }
+  return result;
+}
+```
+
+**Parsed Bitfields** (18 total):
+- StateFlags, ApplicationInhibitFlags, BuilderClosureFlags
+- CellRendererState, DialogFlags, EventControllerScrollFlags
+- FontChooserLevel, IconLookupFlags, PickFlags
+- PrintCapabilities, StyleContextPrintFlags, TextSearchFlags
+- And 6 more...
 
 #### 2. **Use Generated Enums in Type Mappings** 🔥 High Priority
 **Current State**: Hardcoded `int` mappings for enums in `type_mappings`
@@ -326,10 +371,11 @@ val load_from_file : t -> string -> unit (* raises Gtk_error *)
 
 ### Immediate (Optional)
 1. ✅ ~~**Enum Types**: Replace `int` with proper enum types for WrapMode, etc.~~ - DONE
-2. **Bitfield/Flags Support**: Parse and generate flag types
-3. **Use Generated Enums**: Replace hardcoded int mappings with generated converters
-4. **Manual Bindings**: Implement variadic functions in separate C file
-5. **GtkTextIter**: Custom bindings for stack-allocated struct
+2. ✅ ~~**Bitfield/Flags Support**: Parse and generate flag types~~ - DONE
+3. **Generator Test Suite**: Add tests for enums, bitfields, and nullable params
+4. **Use Generated Enums/Flags**: Replace hardcoded int mappings with generated converters
+5. **Manual Bindings**: Implement variadic functions in separate C file
+6. **GtkTextIter**: Custom bindings for stack-allocated struct
 
 ### Phase 5.4+
 6. **Signal Support**: Generate signal connection functions
