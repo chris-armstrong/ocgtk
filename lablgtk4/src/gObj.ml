@@ -152,3 +152,8 @@ class virtual widget_full (obj : [`widget] Gobject.obj) = object (self)
   method connect signal ~callback =
     Gobject.Signal.connect_simple (obj :> _ Gobject.obj) ~name:signal ~callback ~after:false
 end
+
+(** {2 Conversion Functions} *)
+
+(** Convert a raw widget object to a widget class instance *)
+let widget_of_obj (obj : [`widget] Gobject.obj) = new widget obj

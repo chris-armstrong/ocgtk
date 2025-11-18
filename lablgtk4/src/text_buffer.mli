@@ -110,7 +110,7 @@ external get_insert : t -> Gtk.Widget.t = "ml_gtk_text_buffer_get_insert"
 
 external get_end_iter : t -> Gtk.Widget.t -> unit = "ml_gtk_text_buffer_get_end_iter"
 
-external get_char_count : t -> unit = "ml_gtk_text_buffer_get_char_count"
+external get_char_count : t -> int = "ml_gtk_text_buffer_get_char_count"
 
 external get_bounds : t -> Gtk.Widget.t -> Gtk.Widget.t -> unit = "ml_gtk_text_buffer_get_bounds"
 

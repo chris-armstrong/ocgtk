@@ -9,3 +9,23 @@
  (name demo_all)
  (modules demo_all)
  (libraries lablgtk4))
+
+(executable
+ (name counter)
+ (modules counter)
+ (libraries lablgtk4))
+
+(executable
+ (name settings_panel)
+ (modules settings_panel)
+ (libraries lablgtk4))
+
+(executable
+ (name text_editor)
+ (modules text_editor)
+ (libraries lablgtk4))
+
+(executable
+ (name login_form)
+ (modules login_form)
+ (libraries lablgtk4))

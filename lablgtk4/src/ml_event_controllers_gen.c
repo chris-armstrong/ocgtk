@@ -1855,6 +1855,39 @@ g_object_set(G_OBJECT(obj), "show-peek-icon", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
+CAMLprim value ml_gtk_password_entry_get_placeholder_text(value self)
+{
+CAMLparam1(self);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+const char *text = NULL;
+g_object_get(G_OBJECT(obj), "placeholder-text", &text, NULL);
+CAMLreturn(caml_copy_string(text ? text : ""));
+}
+
+CAMLprim value ml_gtk_password_entry_set_placeholder_text(value self, value text_opt)
+{
+CAMLparam2(self, text_opt);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+const char *text = Is_some(text_opt) ? String_val(Some_val(text_opt)) : NULL;
+g_object_set(G_OBJECT(obj), "placeholder-text", text, NULL);
+CAMLreturn(Val_unit);
+}
+
+/* GtkEditable interface methods */
+CAMLprim value ml_gtk_editable_get_text(value self)
+{
+CAMLparam1(self);
+const char* result = gtk_editable_get_text(GTK_EDITABLE(GtkWidget_val(self)));
+CAMLreturn(caml_copy_string(result));
+}
+
+CAMLprim value ml_gtk_editable_set_text(value self, value text)
+{
+CAMLparam2(self, text);
+gtk_editable_set_text(GTK_EDITABLE(GtkWidget_val(self)), String_val(text));
+CAMLreturn(Val_unit);
+}
+
 CAMLprim value ml_gtk_search_entry_new(value unit)
 {
 CAMLparam1(unit);
@@ -1968,7 +2001,7 @@ CAMLreturn(Val_GtkWidget(widget));
 CAMLprim value ml_gtk_spin_button_new_with_range(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
-GtkWidget *widget = gtk_spin_button_new_with_range(arg1, arg2, arg3);
+GtkWidget *widget = gtk_spin_button_new_with_range(Double_val(arg1), Double_val(arg2), Double_val(arg3));
 CAMLreturn(Val_GtkWidget(widget));
 }
 
@@ -1996,14 +2029,14 @@ CAMLreturn(Val_unit);
 CAMLprim value ml_gtk_spin_button_set_range(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
-gtk_spin_button_set_range(GtkWidget_val(self), arg1, arg2);
+gtk_spin_button_set_range(GtkWidget_val(self), Double_val(arg1), Double_val(arg2));
 CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_gtk_spin_button_set_increments(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
-gtk_spin_button_set_increments(GtkWidget_val(self), arg1, arg2);
+gtk_spin_button_set_increments(GtkWidget_val(self), Double_val(arg1), Double_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -2547,8 +2580,8 @@ CAMLreturn(Val_unit);
 CAMLprim value ml_gtk_text_buffer_get_char_count(value self)
 {
 CAMLparam1(self);
-void *result = gtk_text_buffer_get_char_count(GtkWidget_val(self));
-CAMLreturn((value)result);
+int result = gtk_text_buffer_get_char_count(GTK_TEXT_BUFFER(GtkWidget_val(self)));
+CAMLreturn(Val_int(result));
 }
 
 CAMLprim value ml_gtk_text_buffer_get_bounds(value self, value arg1, value arg2)
@@ -4692,4 +4725,25 @@ GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
 gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "active", c_value, NULL);
 CAMLreturn(Val_unit);
+}
+
+/* Stub implementations for text_view functions with >5 parameters */
+CAMLprim value ml_gtk_text_view_window_to_buffer_coords_native(value *argv, int argn)
+{
+return Val_unit;
+}
+
+CAMLprim value ml_gtk_text_view_buffer_to_window_coords_native(value *argv, int argn)
+{
+return Val_unit;
+}
+
+CAMLprim value ml_gtk_text_view_scroll_to_iter_native(value *argv, int argn)
+{
+return Val_bool(0);
+}
+
+CAMLprim value ml_gtk_text_view_scroll_to_mark_native(value *argv, int argn)
+{
+return Val_unit;
 }

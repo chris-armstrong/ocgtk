@@ -16,16 +16,15 @@ let () =
   let count = ref 0 in
 
   (* Create label to display count *)
-  let label = GtkLabel.new_ () in
-  GtkLabel.set_label label (Printf.sprintf "Count: %d" !count);
-  vbox#append (GObj.widget_of_obj label);
+  let label = Label.new_ (Some (Printf.sprintf "Count: %d" !count)) in
+  vbox#append (GObj.widget_of_obj (label));
 
   (* Create button to increment *)
   let button = GButton.button ~label:"Click Me!" () in
   vbox#append (button :> GObj.widget);
   ignore (button#connect#clicked ~callback:(fun () ->
     count := !count + 1;
-    GtkLabel.set_label label (Printf.sprintf "Count: %d" !count)
+    Label.set_label label (Printf.sprintf "Count: %d" !count)
   ));
 
   (* Create reset button *)
@@ -33,7 +32,7 @@ let () =
   vbox#append (reset_btn :> GObj.widget);
   ignore (reset_btn#connect#clicked ~callback:(fun () ->
     count := 0;
-    GtkLabel.set_label label (Printf.sprintf "Count: %d" !count)
+    Label.set_label label (Printf.sprintf "Count: %d" !count)
   ));
 
   (* Show window and run main loop *)

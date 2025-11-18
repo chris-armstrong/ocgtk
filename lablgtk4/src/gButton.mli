@@ -6,8 +6,14 @@
 
 (** {2 Button} *)
 
+(** Button signal connections *)
+class button_signals : Gtk.Widget.t -> object
+  method clicked : callback:(unit -> unit) -> Gobject.Signal.handler_id
+end
+
 class button_skel : Gtk.Widget.t -> object
   inherit GObj.widget_impl
+  method connect : button_signals
   method set_label : string -> unit
   method label : string
   method set_has_frame : bool -> unit

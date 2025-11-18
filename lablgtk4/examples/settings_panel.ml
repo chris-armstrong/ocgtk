@@ -13,7 +13,8 @@ let () =
   window#add (vbox :> GObj.widget);
 
   (* Section 1: Simple checkboxes *)
-  vbox#append (GObj.widget_of_obj (GtkLabel.new_with_label (Some "Preferences:")));
+  let lbl1 = Label.new_ (Some "Preferences:") in
+  vbox#append (GObj.widget_of_obj (lbl1));
 
   let email_check = GButton.check_button ~label:"Enable email notifications" () in
   vbox#append (email_check :> GObj.widget);
@@ -25,7 +26,8 @@ let () =
   vbox#append (auto_save :> GObj.widget);
 
   (* Section 2: Radio buttons using CheckButton grouping (GTK4 style) *)
-  vbox#append (GObj.widget_of_obj (GtkLabel.new_with_label (Some "\nTheme Selection:")));
+  let lbl2 = Label.new_ (Some "\nTheme Selection:") in
+  vbox#append (GObj.widget_of_obj (lbl2));
 
   let theme_light = GButton.radio_button ~label:"Light theme" () in
   vbox#append (theme_light :> GObj.widget);
@@ -38,20 +40,20 @@ let () =
   theme_light#set_active true;
 
   (* Section 3: Toggle button *)
-  vbox#append (GObj.widget_of_obj (GtkLabel.new_with_label (Some "\nAdvanced Mode:")));
+  let lbl3 = Label.new_ (Some "\nAdvanced Mode:") in
+  vbox#append (GObj.widget_of_obj (lbl3));
 
   let advanced_toggle = GButton.toggle_button ~label:"Advanced settings" () in
   vbox#append (advanced_toggle :> GObj.widget);
 
   (* Section 4: Spin button for numeric input *)
-  vbox#append (GObj.widget_of_obj (GtkLabel.new_with_label (Some "\nFont Size:")));
+  let lbl4 = Label.new_ (Some "\nFont Size:") in
+  vbox#append (GObj.widget_of_obj (lbl4));
 
-  let font_spin = GtkSpinButton.new_ () in
-  GtkSpinButton.set_range font_spin 8.0 72.0;
-  GtkSpinButton.set_increments font_spin 1.0 5.0;
-  GtkSpinButton.set_value font_spin 12.0;
-  GtkSpinButton.set_digits font_spin 0;
-  vbox#append (GObj.widget_of_obj font_spin);
+  let font_spin = Spin_button.new_with_range 8.0 72.0 1.0 in
+  Spin_button.set_value font_spin 12.0;
+  Spin_button.set_digits font_spin 0;
+  vbox#append (GObj.widget_of_obj (font_spin));
 
   (* Apply button to show current settings *)
   let apply_btn = GButton.button ~label:"Show Current Settings" () in
@@ -73,7 +75,7 @@ let () =
        else if theme_dark#active then "Dark"
        else "Auto")
       advanced_toggle#active
-      (GtkSpinButton.get_value font_spin)
+      (Spin_button.get_value font_spin)
     in
     print_endline settings
   ));
