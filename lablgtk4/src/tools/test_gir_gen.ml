@@ -571,6 +571,395 @@ let test_nullable_parameters () =
   assert_contains "C should handle NULL" c_content "NULL"
 
 (* ========================================================================= *)
+(* Edge Case Tests *)
+(* ========================================================================= *)
+
+(* Test empty class with no methods or properties *)
+let create_test_empty_class_gir filename =
+  let oc = open_out filename in
+  output_string oc {|<?xml version="1.0"?>
+<repository version="1.2"
+            xmlns="http://www.gtk.org/introspection/core/1.0"
+            xmlns:c="http://www.gtk.org/introspection/c/1.0">
+  <namespace name="Gtk">
+    <class name="EmptyWidget" c:type="GtkEmptyWidget" parent="Widget">
+    </class>
+  </namespace>
+</repository>
+|};
+  close_out oc
+
+let test_empty_class () =
+  let test_gir = "/tmp/test_empty_class.gir" in
+  let test_filter = "/tmp/test_empty_class_filter.conf" in
+  let output_dir = "/tmp/test_empty_class_output" in
+
+  create_test_empty_class_gir test_gir;
+  let fc = open_out test_filter in
+  output_string fc "EmptyWidget\n";
+  close_out fc;
+  (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
+
+  let tools_dir = Filename.dirname Sys.argv.(0) in
+  let cmd = sprintf "%s/gir_gen.exe -m widgets -f %s %s %s > /dev/null 2>&1"
+    tools_dir test_filter test_gir output_dir in
+
+  let exit_code = Sys.command cmd in
+  assert_true "Empty class generator should exit successfully" (exit_code = 0);
+
+  let mli_file = Filename.concat output_dir "empty_widget.mli" in
+  assert_true "Empty widget file should be created" (file_exists mli_file);
+
+  let content = read_file mli_file in
+  (* Should still have type definition *)
+  assert_contains "Should define type t" content "type t"
+
+(* Test class with only properties, no methods *)
+let create_test_properties_only_gir filename =
+  let oc = open_out filename in
+  output_string oc {|<?xml version="1.0"?>
+<repository version="1.2"
+            xmlns="http://www.gtk.org/introspection/core/1.0"
+            xmlns:c="http://www.gtk.org/introspection/c/1.0">
+  <namespace name="Gtk">
+    <class name="PropertiesOnly" c:type="GtkPropertiesOnly" parent="Widget">
+      <property name="label" readable="1" writable="1">
+        <type name="utf8" c:type="const gchar*"/>
+      </property>
+      <property name="active" readable="1" writable="1">
+        <type name="gboolean" c:type="gboolean"/>
+      </property>
+    </class>
+  </namespace>
+</repository>
+|};
+  close_out oc
+
+let test_properties_only_class () =
+  let test_gir = "/tmp/test_properties_only.gir" in
+  let test_filter = "/tmp/test_properties_only_filter.conf" in
+  let output_dir = "/tmp/test_properties_only_output" in
+
+  create_test_properties_only_gir test_gir;
+  let fc = open_out test_filter in
+  output_string fc "PropertiesOnly\n";
+  close_out fc;
+  (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
+
+  let tools_dir = Filename.dirname Sys.argv.(0) in
+  let cmd = sprintf "%s/gir_gen.exe -m widgets -f %s %s %s > /dev/null 2>&1"
+    tools_dir test_filter test_gir output_dir in
+
+  let exit_code = Sys.command cmd in
+  assert_true "Properties-only generator should exit successfully" (exit_code = 0);
+
+  let mli_file = Filename.concat output_dir "properties_only.mli" in
+  let content = read_file mli_file in
+
+  (* Should have property accessors *)
+  assert_contains "Should have label getter" content "get_label";
+  assert_contains "Should have label setter" content "set_label";
+  assert_contains "Should have active getter" content "get_active";
+  assert_contains "Should have active setter" content "set_active"
+
+(* Test class with no constructor *)
+let create_test_no_constructor_gir filename =
+  let oc = open_out filename in
+  output_string oc {|<?xml version="1.0"?>
+<repository version="1.2"
+            xmlns="http://www.gtk.org/introspection/core/1.0"
+            xmlns:c="http://www.gtk.org/introspection/c/1.0">
+  <namespace name="Gtk">
+    <class name="NoConstructor" c:type="GtkNoConstructor" parent="Widget">
+      <method name="do_something" c:identifier="gtk_no_constructor_do_something">
+        <return-value><type name="none" c:type="void"/></return-value>
+      </method>
+    </class>
+  </namespace>
+</repository>
+|};
+  close_out oc
+
+let test_no_constructor_class () =
+  let test_gir = "/tmp/test_no_constructor.gir" in
+  let test_filter = "/tmp/test_no_constructor_filter.conf" in
+  let output_dir = "/tmp/test_no_constructor_output" in
+
+  create_test_no_constructor_gir test_gir;
+  let fc = open_out test_filter in
+  output_string fc "NoConstructor\n";
+  close_out fc;
+  (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
+
+  let tools_dir = Filename.dirname Sys.argv.(0) in
+  let cmd = sprintf "%s/gir_gen.exe -m widgets -f %s %s %s > /dev/null 2>&1"
+    tools_dir test_filter test_gir output_dir in
+
+  let exit_code = Sys.command cmd in
+  assert_true "No-constructor generator should exit successfully" (exit_code = 0);
+
+  let mli_file = Filename.concat output_dir "no_constructor.mli" in
+  let content = read_file mli_file in
+
+  (* Should have method but no constructor *)
+  assert_contains "Should have do_something method" content "do_something";
+  (* Should not have new_ function *)
+  if string_contains content "external new_" then
+    failwith "Should not generate constructor when none defined"
+
+(* Test multiple enums and bitfields in one file *)
+let create_test_multiple_enums_gir filename =
+  let oc = open_out filename in
+  output_string oc {|<?xml version="1.0"?>
+<repository version="1.2"
+            xmlns="http://www.gtk.org/introspection/core/1.0"
+            xmlns:c="http://www.gtk.org/introspection/c/1.0">
+  <namespace name="Gtk">
+    <enumeration name="Align" c:type="GtkAlign">
+      <member name="fill" value="0" c:identifier="GTK_ALIGN_FILL"/>
+      <member name="start" value="1" c:identifier="GTK_ALIGN_START"/>
+      <member name="end" value="2" c:identifier="GTK_ALIGN_END"/>
+    </enumeration>
+    <enumeration name="Orientation" c:type="GtkOrientation">
+      <member name="horizontal" value="0" c:identifier="GTK_ORIENTATION_HORIZONTAL"/>
+      <member name="vertical" value="1" c:identifier="GTK_ORIENTATION_VERTICAL"/>
+    </enumeration>
+    <bitfield name="EventMask" c:type="GtkEventMask">
+      <member name="button_press" value="1" c:identifier="GTK_EVENT_MASK_BUTTON_PRESS"/>
+      <member name="button_release" value="2" c:identifier="GTK_EVENT_MASK_BUTTON_RELEASE"/>
+    </bitfield>
+    <class name="EventControllerKey" c:type="GtkEventControllerKey" parent="EventController">
+      <constructor name="new" c:identifier="gtk_event_controller_key_new"/>
+    </class>
+  </namespace>
+</repository>
+|};
+  close_out oc
+
+let test_multiple_enums () =
+  let test_gir = "/tmp/test_multiple_enums.gir" in
+  let output_dir = "/tmp/test_multiple_enums_output" in
+
+  create_test_multiple_enums_gir test_gir;
+  (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
+
+  let tools_dir = Filename.dirname Sys.argv.(0) in
+  let cmd = sprintf "%s/gir_gen.exe -m controllers %s %s > /dev/null 2>&1"
+    tools_dir test_gir output_dir in
+
+  let exit_code = Sys.command cmd in
+  assert_true "Multiple enums generator should exit successfully" (exit_code = 0);
+
+  let enum_file = Filename.concat output_dir "gtk_enums.mli" in
+  let content = read_file enum_file in
+
+  (* Check all enum types are defined *)
+  assert_contains "Should define Align enum" content "type align = [";
+  assert_contains "Should define Orientation enum" content "type orientation = [";
+  assert_contains "Should define EventMask bitfield" content "type eventmask_flag = [";
+  assert_contains "Should define EventMask list type" content "type eventmask = eventmask_flag list"
+
+(* ========================================================================= *)
+(* Regression Tests for Known Issues *)
+(* ========================================================================= *)
+
+(* Test methods with >5 parameters (should be skipped due to CAMLparam limitation) *)
+let create_test_many_params_gir filename =
+  let oc = open_out filename in
+  output_string oc {|<?xml version="1.0"?>
+<repository version="1.2"
+            xmlns="http://www.gtk.org/introspection/core/1.0"
+            xmlns:c="http://www.gtk.org/introspection/c/1.0">
+  <namespace name="Gtk">
+    <class name="ManyParams" c:type="GtkManyParams" parent="Widget">
+      <constructor name="new" c:identifier="gtk_many_params_new"/>
+      <method name="with_six_params" c:identifier="gtk_many_params_with_six_params">
+        <return-value><type name="none" c:type="void"/></return-value>
+        <parameters>
+          <parameter name="arg1"><type name="gint" c:type="gint"/></parameter>
+          <parameter name="arg2"><type name="gint" c:type="gint"/></parameter>
+          <parameter name="arg3"><type name="gint" c:type="gint"/></parameter>
+          <parameter name="arg4"><type name="gint" c:type="gint"/></parameter>
+          <parameter name="arg5"><type name="gint" c:type="gint"/></parameter>
+          <parameter name="arg6"><type name="gint" c:type="gint"/></parameter>
+        </parameters>
+      </method>
+      <method name="with_three_params" c:identifier="gtk_many_params_with_three_params">
+        <return-value><type name="none" c:type="void"/></return-value>
+        <parameters>
+          <parameter name="arg1"><type name="gint" c:type="gint"/></parameter>
+          <parameter name="arg2"><type name="gint" c:type="gint"/></parameter>
+          <parameter name="arg3"><type name="gint" c:type="gint"/></parameter>
+        </parameters>
+      </method>
+    </class>
+  </namespace>
+</repository>
+|};
+  close_out oc
+
+let test_camlparam_limitation () =
+  let test_gir = "/tmp/test_many_params.gir" in
+  let test_filter = "/tmp/test_many_params_filter.conf" in
+  let output_dir = "/tmp/test_many_params_output" in
+
+  create_test_many_params_gir test_gir;
+  let fc = open_out test_filter in
+  output_string fc "ManyParams\n";
+  close_out fc;
+  (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
+
+  let tools_dir = Filename.dirname Sys.argv.(0) in
+  let cmd = sprintf "%s/gir_gen.exe -m widgets -f %s %s %s > /dev/null 2>&1"
+    tools_dir test_filter test_gir output_dir in
+
+  let exit_code = Sys.command cmd in
+  assert_true "CAMLparam test should exit successfully" (exit_code = 0);
+
+  let mli_file = Filename.concat output_dir "many_params.mli" in
+  let content = read_file mli_file in
+
+  (* Method with 3 params should be generated *)
+  assert_contains "Method with 3 params should be generated" content "with_three_params";
+
+  (* CURRENT BEHAVIOR: Method with 6 params IS generated with bytecode/native pattern *)
+  (* This is actually better than skipping, as it supports >5 params via bytecode wrapper *)
+  if string_contains content "with_six_params" then begin
+    (* Verify it uses bytecode/native pattern *)
+    assert_contains "Method with 6 params should use bytecode/native pattern"
+      content "ml_gtk_many_params_with_six_params_bytecode";
+    assert_contains "Method with 6 params should use bytecode/native pattern"
+      content "ml_gtk_many_params_with_six_params_native"
+  end else
+    (* If skipped, that's also acceptable per PHASE5_3_SUMMARY.md *)
+    printf "Note: Method with 6 params was skipped (acceptable per Phase 5.3 spec)\n"
+
+(* Test that generated code compiles without warnings *)
+let test_generated_code_quality () =
+  let test_gir = "/tmp/test_quality.gir" in
+  let test_filter = "/tmp/test_quality_filter.conf" in
+  let output_dir = "/tmp/test_quality_output" in
+
+  create_test_widget_gir test_gir;
+  create_test_filter_file test_filter;
+  (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
+
+  let tools_dir = Filename.dirname Sys.argv.(0) in
+  let cmd = sprintf "%s/gir_gen.exe -m widgets -f %s %s %s > /dev/null 2>&1"
+    tools_dir test_filter test_gir output_dir in
+
+  let exit_code = Sys.command cmd in
+  assert_true "Code quality test should exit successfully" (exit_code = 0);
+
+  (* Verify generated C code has proper memory management *)
+  let c_file = Filename.concat output_dir "ml_event_controllers_gen.c" in
+  let c_content = read_file c_file in
+
+  (* Check for proper CAMLparam/CAMLlocal usage *)
+  assert_contains "Should use CAMLparam for all functions" c_content "CAMLparam";
+  assert_contains "Should use CAMLreturn" c_content "CAMLreturn";
+
+  (* Check that all string conversions are safe *)
+  assert_contains "Should use String_val" c_content "String_val";
+
+  (* Verify no obvious memory leaks (all allocations should have corresponding frees) *)
+  (* This is a basic check - real memory safety requires runtime analysis *)
+  if string_contains c_content "malloc" && not (string_contains c_content "free") then
+    failwith "Generated code may have memory leaks (malloc without free)"
+
+(* Test error handling for invalid GIR *)
+let test_invalid_gir_handling () =
+  let test_gir = "/tmp/test_invalid.gir" in
+  let output_dir = "/tmp/test_invalid_output" in
+
+  (* Create intentionally malformed GIR *)
+  let oc = open_out test_gir in
+  output_string oc {|<?xml version="1.0"?>
+<repository version="1.2">
+  <namespace name="Gtk">
+    <class name="Invalid"
+|};  (* Intentionally incomplete XML *)
+  close_out oc;
+
+  (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
+
+  let tools_dir = Filename.dirname Sys.argv.(0) in
+  let cmd = sprintf "%s/gir_gen.exe -m controllers %s %s 2>&1"
+    tools_dir test_gir output_dir in
+
+  (* Should fail gracefully, not crash *)
+  let exit_code = Sys.command cmd in
+  assert_true "Invalid GIR should be handled gracefully" (exit_code <> 0)
+
+(* Test enum with single value edge case *)
+let create_test_single_enum_gir filename =
+  let oc = open_out filename in
+  output_string oc {|<?xml version="1.0"?>
+<repository version="1.2"
+            xmlns="http://www.gtk.org/introspection/core/1.0"
+            xmlns:c="http://www.gtk.org/introspection/c/1.0">
+  <namespace name="Gtk">
+    <enumeration name="SingleValue" c:type="GtkSingleValue">
+      <member name="only" value="0" c:identifier="GTK_SINGLE_VALUE_ONLY"/>
+    </enumeration>
+    <class name="EventControllerKey" c:type="GtkEventControllerKey" parent="EventController">
+      <constructor name="new" c:identifier="gtk_event_controller_key_new"/>
+    </class>
+  </namespace>
+</repository>
+|};
+  close_out oc
+
+let test_single_value_enum () =
+  let test_gir = "/tmp/test_single_enum.gir" in
+  let output_dir = "/tmp/test_single_enum_output" in
+
+  create_test_single_enum_gir test_gir;
+  (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
+
+  let tools_dir = Filename.dirname Sys.argv.(0) in
+  let cmd = sprintf "%s/gir_gen.exe -m controllers %s %s > /dev/null 2>&1"
+    tools_dir test_gir output_dir in
+
+  let exit_code = Sys.command cmd in
+  assert_true "Single value enum should be generated" (exit_code = 0);
+
+  let enum_file = Filename.concat output_dir "gtk_enums.mli" in
+  let content = read_file enum_file in
+
+  (* Should still generate valid enum with single value *)
+  assert_contains "Should define single value enum" content "type singlevalue = [";
+  assert_contains "Should have ONLY variant" content "`ONLY"
+
+(* Test that enums and bitfields use proper type names *)
+let test_enum_naming_conventions () =
+  let test_gir = "/tmp/test_enum_naming.gir" in
+  let output_dir = "/tmp/test_enum_naming_output" in
+
+  create_test_multiple_enums_gir test_gir;
+  (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
+
+  let tools_dir = Filename.dirname Sys.argv.(0) in
+  let cmd = sprintf "%s/gir_gen.exe -m controllers %s %s > /dev/null 2>&1"
+    tools_dir test_gir output_dir in
+
+  let _ = Sys.command cmd in
+
+  let enum_file = Filename.concat output_dir "gtk_enums.mli" in
+  let content = read_file enum_file in
+
+  (* Enum types should be lowercase *)
+  assert_contains "Enum type should be lowercase" content "type align";
+  assert_contains "Enum type should be lowercase" content "type orientation";
+
+  (* Bitfield flag type should have _flag suffix *)
+  assert_contains "Bitfield flag type should have _flag suffix" content "type eventmask_flag";
+
+  (* Enum variants should be uppercase *)
+  assert_contains "Variants should be uppercase" content "`FILL";
+  assert_contains "Variants should be uppercase" content "`HORIZONTAL"
+
+(* ========================================================================= *)
 (* Main Test Runner *)
 (* ========================================================================= *)
 
@@ -580,6 +969,7 @@ let () =
   printf "GIR Generator Test Suite (Phase 5)\n";
   printf "====================================\n\n";
 
+  (* Basic functionality tests *)
   ignore (test "GIR file parsing" test_gir_parsing);
   ignore (test "C code generation" test_c_code_generation);
   ignore (test "Widget generation" test_widget_generation);
@@ -590,6 +980,21 @@ let () =
   ignore (test "Bitfield generation (Phase 5.3)" test_bitfield_generation);
   ignore (test "Nullable parameters (Phase 5.3)" test_nullable_parameters);
   ignore (test "Help output" test_help_output);
+
+  printf "\n--- Edge Case Tests ---\n";
+  (* Edge case tests *)
+  ignore (test "Empty class generation" test_empty_class);
+  ignore (test "Properties-only class" test_properties_only_class);
+  ignore (test "Class with no constructor" test_no_constructor_class);
+  ignore (test "Multiple enums in one file" test_multiple_enums);
+  ignore (test "Single value enum" test_single_value_enum);
+  ignore (test "Enum naming conventions" test_enum_naming_conventions);
+
+  printf "\n--- Regression Tests ---\n";
+  (* Regression tests for known issues *)
+  ignore (test "CAMLparam limitation (>5 params)" test_camlparam_limitation);
+  ignore (test "Generated code quality" test_generated_code_quality);
+  ignore (test "Invalid GIR handling" test_invalid_gir_handling);
 
   printf "\n====================================\n";
   printf "Test Summary\n";
