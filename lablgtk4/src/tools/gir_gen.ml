@@ -75,6 +75,21 @@ type gir_enum = {
   enum_doc : string option;
 }
 
+(* Bitfield/Flags support *)
+type gir_bitfield_member = {
+  flag_name : string;
+  flag_value : int;
+  flag_c_identifier : string;
+  flag_doc : string option;
+}
+
+type gir_bitfield = {
+  bitfield_name : string;
+  bitfield_c_type : string;
+  flags : gir_bitfield_member list;
+  bitfield_doc : string option;
+}
+
 type gir_class = {
   class_name : string;
   c_type : string;
@@ -382,6 +397,7 @@ let parse_gir_file filename mode filter_classes =
 
   let controllers = ref [] in
   let enums = ref [] in
+  let bitfields = ref [] in
 
   (* Check if class name is an event controller *)
   let is_event_controller name =
@@ -598,6 +614,56 @@ let parse_gir_file filename mode filter_classes =
       skip_element 1;
       None
 
+  (* Parse bitfield element *)
+  and parse_bitfield attrs =
+    match get_attr "name" attrs, get_attr "c:type" attrs with
+    | Some name, Some c_type ->
+      let flags = ref [] in
+
+      let rec parse_bitfield_contents () =
+        match Xmlm.input input with
+        | `El_start ((_, "member"), member_attrs) ->
+          (match get_attr "name" member_attrs, get_attr "value" member_attrs, get_attr "c:identifier" member_attrs with
+          | Some flag_name, Some value_str, Some c_id ->
+            let value = try int_of_string value_str with _ -> 0 in
+            flags := {
+              flag_name = flag_name;
+              flag_value = value;
+              flag_c_identifier = c_id;
+              flag_doc = None;
+            } :: !flags;
+            skip_element 1;
+            parse_bitfield_contents ()
+          | _ ->
+            skip_element 1;
+            parse_bitfield_contents ())
+
+        | `El_start _ ->
+          skip_element 1;
+          parse_bitfield_contents ()
+
+        | `El_end ->
+          ()  (* End of bitfield *)
+
+        | `Data _ ->
+          parse_bitfield_contents ()
+
+        | `Dtd _ ->
+          parse_bitfield_contents ()
+      in
+
+      parse_bitfield_contents ();
+      Some {
+        bitfield_name = name;
+        bitfield_c_type = c_type;
+        flags = List.rev !flags;
+        bitfield_doc = None;
+      }
+
+    | _ ->
+      skip_element 1;
+      None
+
   (* Parse method contents to extract return type and parameters *)
   and parse_method () =
     let return_type = ref { name = "void"; c_type = "void" } in
@@ -744,6 +810,12 @@ let parse_gir_file filename mode filter_classes =
         | None -> ());
         parse_document ()
 
+      | `El_start ((_, "bitfield"), attrs) ->
+        (match parse_bitfield attrs with
+        | Some bitfield -> bitfields := bitfield :: !bitfields
+        | None -> ());
+        parse_document ()
+
       | `El_start ((_, tag), _) when tag = "repository" || tag = "namespace" ->
         (* Continue parsing into container elements *)
         parse_document ()
@@ -765,7 +837,7 @@ let parse_gir_file filename mode filter_classes =
 
   parse_document ();
   close_in ic;
-  (List.rev !controllers, List.rev !enums)
+  (List.rev !controllers, List.rev !enums, List.rev !bitfields)
 
 (* ========================================================================= *)
 (* C Code Generation *)
@@ -1094,6 +1166,35 @@ let generate_ocaml_enum enum =
 
   Buffer.contents buf
 
+(* Generate OCaml bitfield type definition *)
+let generate_ocaml_bitfield bitfield =
+  let buf = Buffer.create 512 in
+
+  bprintf buf "(* %s - bitfield/flags *)\n" bitfield.bitfield_name;
+  (match bitfield.bitfield_doc with
+  | Some doc -> bprintf buf "(** %s *)\n" doc
+  | None -> ());
+
+  bprintf buf "type %s_flag = [\n" (String.lowercase_ascii bitfield.bitfield_name);
+
+  List.iteri ~f:(fun i flag ->
+    let variant_name = String.uppercase_ascii flag.flag_name in
+    (match flag.flag_doc with
+    | Some doc -> bprintf buf "  (** %s *)\n" doc
+    | None -> ());
+    bprintf buf "  | `%s" variant_name;
+    if i < List.length bitfield.flags - 1 then
+      bprintf buf "\n"
+    else
+      bprintf buf "\n]\n\n"
+  ) bitfield.flags;
+
+  bprintf buf "type %s = %s_flag list\n\n"
+    (String.lowercase_ascii bitfield.bitfield_name)
+    (String.lowercase_ascii bitfield.bitfield_name);
+
+  Buffer.contents buf
+
 (* Generate C conversion functions for enum *)
 let generate_c_enum_converters enum =
   (* Skip enums with no members *)
@@ -1135,6 +1236,59 @@ let generate_c_enum_converters enum =
 
     bprintf buf "  else return %s; /* fallback to first value */\n"
       first_member.c_identifier;
+    bprintf buf "}\n\n";
+
+    Buffer.contents buf
+  end
+
+(* Generate C conversion functions for bitfield *)
+let generate_c_bitfield_converters bitfield =
+  (* Skip bitfields with no flags *)
+  if List.length bitfield.flags = 0 then ""
+  else begin
+    let buf = Buffer.create 1024 in
+    let val_func = sprintf "Val_%s" bitfield.bitfield_name in
+    let c_val_func = sprintf "%s_val" bitfield.bitfield_name in
+
+    (* Generate C to OCaml converter (int flags -> list of variants) *)
+    bprintf buf "/* Convert %s to OCaml flag list */\n" bitfield.bitfield_c_type;
+    bprintf buf "static value %s(%s flags) {\n" val_func bitfield.bitfield_c_type;
+    bprintf buf "  CAMLparam0();\n";
+    bprintf buf "  CAMLlocal2(result, cons);\n";
+    bprintf buf "  result = Val_emptylist;\n\n";
+
+    (* Check each flag bit and add to list if set *)
+    List.iter ~f:(fun flag ->
+      let variant_name = String.uppercase_ascii flag.flag_name in
+      let hash = Hashtbl.hash variant_name in
+      bprintf buf "  if (flags & %s) {\n" flag.flag_c_identifier;
+      bprintf buf "    cons = caml_alloc(2, 0);\n";
+      bprintf buf "    Store_field(cons, 0, Val_int(%d)); /* `%s */\n" hash variant_name;
+      bprintf buf "    Store_field(cons, 1, result);\n";
+      bprintf buf "    result = cons;\n";
+      bprintf buf "  }\n";
+    ) bitfield.flags;
+
+    bprintf buf "\n  CAMLreturn(result);\n";
+    bprintf buf "}\n\n";
+
+    (* Generate OCaml to C converter (list of variants -> int flags) *)
+    bprintf buf "/* Convert OCaml flag list to %s */\n" bitfield.bitfield_c_type;
+    bprintf buf "static %s %s(value list) {\n" bitfield.bitfield_c_type c_val_func;
+    bprintf buf "  %s result = 0;\n" bitfield.bitfield_c_type;
+    bprintf buf "  while (list != Val_emptylist) {\n";
+    bprintf buf "    int tag = Int_val(Field(list, 0));\n";
+
+    List.iteri ~f:(fun i flag ->
+      let variant_name = String.uppercase_ascii flag.flag_name in
+      let hash = Hashtbl.hash variant_name in
+      bprintf buf "    %sif (tag == %d) result |= %s; /* `%s */\n"
+        (if i = 0 then "" else "else ") hash flag.flag_c_identifier variant_name;
+    ) bitfield.flags;
+
+    bprintf buf "    list = Field(list, 1);\n";
+    bprintf buf "  }\n";
+    bprintf buf "  return result;\n";
     bprintf buf "}\n\n";
 
     Buffer.contents buf
@@ -1328,7 +1482,7 @@ let generate_bindings mode filter_file gir_file output_dir =
     | None -> []
   in
 
-  let (controllers, enums) = parse_gir_file gir_file mode filter_classes in
+  let (controllers, enums, bitfields) = parse_gir_file gir_file mode filter_classes in
 
   let class_type_name = match mode with
     | EventControllers -> "event controller"
@@ -1337,6 +1491,7 @@ let generate_bindings mode filter_file gir_file output_dir =
   in
   printf "Found %d %s classes\n" (List.length controllers) class_type_name;
   printf "Found %d enumerations\n" (List.length enums);
+  printf "Found %d bitfields\n" (List.length bitfields);
 
   (* Generate C code *)
   let c_buf = Buffer.create 10240 in
@@ -1346,6 +1501,11 @@ let generate_bindings mode filter_file gir_file output_dir =
   List.iter ~f:(fun enum ->
     Buffer.add_string c_buf (generate_c_enum_converters enum);
   ) enums;
+
+  (* Generate bitfield converters *)
+  List.iter ~f:(fun bitfield ->
+    Buffer.add_string c_buf (generate_c_bitfield_converters bitfield);
+  ) bitfields;
 
   List.iter ~f:(fun cls ->
     printf "  - %s (%d methods, %d properties)\n"
@@ -1426,24 +1586,28 @@ let generate_bindings mode filter_file gir_file output_dir =
     close_out oc;
   ) controllers;
 
-  (* Generate enum types file if any enums were found *)
-  if List.length enums > 0 then begin
+  (* Generate enum and bitfield types file if any were found *)
+  if List.length enums > 0 || List.length bitfields > 0 then begin
     let enum_file = Filename.concat output_dir "gtk_enums.mli" in
     printf "Writing %s...\n" enum_file;
     let oc = open_out enum_file in
     output_string oc "(* GENERATED CODE - DO NOT EDIT *)\n";
-    output_string oc "(* GTK4 Enumeration Types *)\n\n";
+    output_string oc "(* GTK4 Enumeration and Bitfield Types *)\n\n";
     List.iter ~f:(fun enum ->
       output_string oc (generate_ocaml_enum enum);
     ) enums;
+    List.iter ~f:(fun bitfield ->
+      output_string oc (generate_ocaml_bitfield bitfield);
+    ) bitfields;
     close_out oc;
   end;
 
   printf "\n✓ Code generation complete!\n";
   printf "  Generated: %s\n" c_file;
   printf "  Generated: %d OCaml interface files\n" (List.length controllers);
-  if List.length enums > 0 then
-    printf "  Generated: gtk_enums.mli (%d enumerations)\n" (List.length enums);
+  if List.length enums > 0 || List.length bitfields > 0 then
+    printf "  Generated: gtk_enums.mli (%d enumerations, %d bitfields)\n"
+      (List.length enums) (List.length bitfields);
   `Ok ()
 
 (* Cmdliner argument definitions *)
