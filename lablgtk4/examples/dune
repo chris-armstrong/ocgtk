@@ -4,3 +4,8 @@
  (name counter_simple)
  (modules counter_simple)
  (libraries lablgtk4))
+
+(executable
+ (name demo_all)
+ (modules demo_all)
+ (libraries lablgtk4))
