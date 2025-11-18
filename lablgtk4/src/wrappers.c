@@ -68,3 +68,12 @@ CAMLexport value copy_memblock_indirected(void *src, asize_t size)
 
     CAMLreturn(ret);
 }
+
+value val_of_ext(void *widget) {
+    value v = caml_alloc(1, Abstract_tag);
+    *((void**)Data_abstract_val(v)) = widget;
+    return v;
+}
+void* ext_of_val(value val) {
+    return *((void**)Data_abstract_val(val));
+}

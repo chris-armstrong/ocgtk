@@ -24,8 +24,8 @@
 /* Event Controller Type Conversions */
 /* ==================================================================== */
 
-#define GtkEventController_val(val) ((GtkEventController*)Pointer_val(val))
-#define Val_GtkEventController(obj) ((value)(obj))
+#define GtkEventController_val(val) ((GtkEventController*)ext_of_val(val))
+#define Val_GtkEventController(obj) ((value)(val_of_ext(obj)))
 
 /* ==================================================================== */
 /* Enum conversions for propagation phase and limit */
@@ -66,8 +66,8 @@ static const lookup_info propagation_limit_table[] = {
 /* GdkEvent type (placeholder - will be properly implemented in Gdk) */
 /* ==================================================================== */
 
-#define GdkEvent_val(val) ((GdkEvent*)Pointer_val(val))
-#define Val_GdkEvent(obj) ((value)(obj))
+#define GdkEvent_val(val) ((GdkEvent*)val_of_ext(val))
+#define Val_GdkEvent(obj) ((value)(ext_of_val(obj)))
 
 /* ==================================================================== */
 /* Base Event Controller Methods */

@@ -32,12 +32,12 @@
 /* ==================================================================== */
 
 /* GdkClipboard - GObject, use direct cast */
-#define GdkClipboard_val(val) ((GdkClipboard*)(val))
-#define Val_GdkClipboard(obj) ((value)(obj))
+#define GdkClipboard_val(val) ((GdkClipboard*)(ext_of_val(val)))
+#define Val_GdkClipboard(obj) ((value)(val_of_ext(obj)))
 
 /* GdkContentProvider - GObject, use direct cast */
-#define GdkContentProvider_val(val) ((GdkContentProvider*)(val))
-#define Val_GdkContentProvider(obj) ((value)(obj))
+#define GdkContentProvider_val(val) ((GdkContentProvider*)(ext_of_val(val)))
+#define Val_GdkContentProvider(obj) ((value)(val_of_ext(obj)))
 
 /* GdkContentFormats - Boxed type, use pointer */
 #define GdkContentFormats_val(val) ((GdkContentFormats*)Pointer_val(val))

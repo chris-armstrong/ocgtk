@@ -41,29 +41,35 @@
 
 CAMLprim value ml_g_object_ref(value obj)
 {
-    if (obj == Val_unit || Pointer_val(obj) == NULL)
+    CAMLparam1(obj);
+
+    if (obj == Val_unit || ext_of_val(obj) == NULL)
         caml_invalid_argument("g_object_ref: NULL object");
 
-    g_object_ref(Pointer_val(obj));
-    return Val_unit;
+    g_object_ref(ext_of_val(obj));
+    CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_g_object_unref(value obj)
 {
-    if (obj == Val_unit || Pointer_val(obj) == NULL)
-        return Val_unit;
+    CAMLparam1(obj);
 
-    g_object_unref(Pointer_val(obj));
-    return Val_unit;
+    if (obj == Val_unit || ext_of_val(obj) == NULL)
+        CAMLreturn(Val_unit);
+
+    g_object_unref(ext_of_val(obj));
+    CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_g_object_get_ref_count(value obj)
 {
-    if (obj == Val_unit || Pointer_val(obj) == NULL)
+    CAMLparam1(obj);
+
+    if (obj == Val_unit || ext_of_val(obj) == NULL)
         caml_invalid_argument("g_object_get_ref_count: NULL object");
 
-    GObject *gobj = G_OBJECT(Pointer_val(obj));
-    return Val_int(gobj->ref_count);
+    GObject *gobj = G_OBJECT(ext_of_val(obj));
+    CAMLreturn(Val_int(gobj->ref_count));
 }
 
 /* ==================================================================== */
@@ -75,69 +81,80 @@ CAMLprim value ml_g_object_get_type(value obj)
     CAMLparam1(obj);
     GObject *gobj;
 
-    if (obj == Val_unit || Pointer_val(obj) == NULL)
+    if (obj == Val_unit || ext_of_val(obj) == NULL)
         caml_invalid_argument("g_object_get_type: NULL object");
 
-    gobj = G_OBJECT(Pointer_val(obj));
+    gobj = G_OBJECT(ext_of_val(obj));
     CAMLreturn(Val_long(G_OBJECT_TYPE(gobj)));
 }
 
 CAMLprim value ml_g_type_name(value type)
 {
+    CAMLparam1(type);
+    CAMLlocal1(result);
+
     const char *name = g_type_name(Long_val(type));
     if (name == NULL)
-        return caml_copy_string("<invalid type>");
-    return caml_copy_string(name);
+        result = caml_copy_string("<invalid type>");
+    else
+        result = caml_copy_string(name);
+
+    CAMLreturn(result);
 }
 
 CAMLprim value ml_g_type_from_name(value name)
 {
+    CAMLparam1(name);
     GType type = g_type_from_name(String_val(name));
-    return Val_long(type);
+    CAMLreturn(Val_long(type));
 }
 
 CAMLprim value ml_g_type_parent(value type)
 {
+    CAMLparam1(type);
     GType parent = g_type_parent(Long_val(type));
-    return Val_long(parent);
+    CAMLreturn(Val_long(parent));
 }
 
 CAMLprim value ml_g_type_is_a(value type, value is_a_type)
 {
+    CAMLparam2(type, is_a_type);
     gboolean result = g_type_is_a(Long_val(type), Long_val(is_a_type));
-    return Val_bool(result);
+    CAMLreturn(Val_bool(result));
 }
 
 CAMLprim value ml_g_type_fundamental(value type)
 {
+    CAMLparam1(type);
     GType fund = G_TYPE_FUNDAMENTAL(Long_val(type));
     /* Map GType fundamentals to our enum */
-    if (fund == G_TYPE_INVALID) return Val_int(0);
-    if (fund == G_TYPE_NONE) return Val_int(1);
-    if (fund == G_TYPE_INTERFACE) return Val_int(2);
-    if (fund == G_TYPE_CHAR) return Val_int(3);
-    if (fund == G_TYPE_UCHAR) return Val_int(4);
-    if (fund == G_TYPE_BOOLEAN) return Val_int(5);
-    if (fund == G_TYPE_INT) return Val_int(6);
-    if (fund == G_TYPE_UINT) return Val_int(7);
-    if (fund == G_TYPE_LONG) return Val_int(8);
-    if (fund == G_TYPE_ULONG) return Val_int(9);
-    if (fund == G_TYPE_INT64) return Val_int(10);
-    if (fund == G_TYPE_UINT64) return Val_int(11);
-    if (fund == G_TYPE_ENUM) return Val_int(12);
-    if (fund == G_TYPE_FLAGS) return Val_int(13);
-    if (fund == G_TYPE_FLOAT) return Val_int(14);
-    if (fund == G_TYPE_DOUBLE) return Val_int(15);
-    if (fund == G_TYPE_STRING) return Val_int(16);
-    if (fund == G_TYPE_POINTER) return Val_int(17);
-    if (fund == G_TYPE_BOXED) return Val_int(18);
-    if (fund == G_TYPE_PARAM) return Val_int(19);
-    if (fund == G_TYPE_OBJECT) return Val_int(20);
-    return Val_int(0); /* INVALID */
+    if (fund == G_TYPE_INVALID) CAMLreturn(Val_int(0));
+    if (fund == G_TYPE_NONE) CAMLreturn(Val_int(1));
+    if (fund == G_TYPE_INTERFACE) CAMLreturn(Val_int(2));
+    if (fund == G_TYPE_CHAR) CAMLreturn(Val_int(3));
+    if (fund == G_TYPE_UCHAR) CAMLreturn(Val_int(4));
+    if (fund == G_TYPE_BOOLEAN) CAMLreturn(Val_int(5));
+    if (fund == G_TYPE_INT) CAMLreturn(Val_int(6));
+    if (fund == G_TYPE_UINT) CAMLreturn(Val_int(7));
+    if (fund == G_TYPE_LONG) CAMLreturn(Val_int(8));
+    if (fund == G_TYPE_ULONG) CAMLreturn(Val_int(9));
+    if (fund == G_TYPE_INT64) CAMLreturn(Val_int(10));
+    if (fund == G_TYPE_UINT64) CAMLreturn(Val_int(11));
+    if (fund == G_TYPE_ENUM) CAMLreturn(Val_int(12));
+    if (fund == G_TYPE_FLAGS) CAMLreturn(Val_int(13));
+    if (fund == G_TYPE_FLOAT) CAMLreturn(Val_int(14));
+    if (fund == G_TYPE_DOUBLE) CAMLreturn(Val_int(15));
+    if (fund == G_TYPE_STRING) CAMLreturn(Val_int(16));
+    if (fund == G_TYPE_POINTER) CAMLreturn(Val_int(17));
+    if (fund == G_TYPE_BOXED) CAMLreturn(Val_int(18));
+    if (fund == G_TYPE_PARAM) CAMLreturn(Val_int(19));
+    if (fund == G_TYPE_OBJECT) CAMLreturn(Val_int(20));
+    CAMLreturn(Val_int(0)); /* INVALID */
 }
 
 CAMLprim value ml_g_type_of_fundamental(value fund_int)
 {
+    CAMLparam1(fund_int);
     int fund = Int_val(fund_int);
     GType type = G_TYPE_INVALID;
 
@@ -165,7 +182,7 @@ CAMLprim value ml_g_type_of_fundamental(value fund_int)
         case 20: type = G_TYPE_OBJECT; break;
     }
 
-    return Val_long(type);
+    CAMLreturn(Val_long(type));
 }
 
 /* ==================================================================== */
@@ -276,14 +293,20 @@ CAMLprim value ml_g_value_set_boolean(value val, value b)
 
 CAMLprim value ml_g_value_get_string(value val)
 {
+    CAMLparam1(val);
+    CAMLlocal1(result);
+
     GValue *gv = GValue_val(val);
     if (!G_VALUE_HOLDS_STRING(gv))
         caml_invalid_argument("g_value_get_string: not a string");
 
     const char *str = g_value_get_string(gv);
     if (str == NULL)
-        return caml_copy_string("");
-    return caml_copy_string(str);
+        result = caml_copy_string("");
+    else
+        result = caml_copy_string(str);
+
+    CAMLreturn(result);
 }
 
 CAMLprim value ml_g_value_set_string(value val, value str)
@@ -295,10 +318,15 @@ CAMLprim value ml_g_value_set_string(value val, value str)
 
 CAMLprim value ml_g_value_get_float(value val)
 {
+    CAMLparam1(val);
+    CAMLlocal1(result);
+
     GValue *gv = GValue_val(val);
     if (!G_VALUE_HOLDS_FLOAT(gv))
         caml_invalid_argument("g_value_get_float: not a float");
-    return caml_copy_double(g_value_get_float(gv));
+
+    result = caml_copy_double(g_value_get_float(gv));
+    CAMLreturn(result);
 }
 
 CAMLprim value ml_g_value_set_float(value val, value f)
@@ -310,10 +338,15 @@ CAMLprim value ml_g_value_set_float(value val, value f)
 
 CAMLprim value ml_g_value_get_double(value val)
 {
+    CAMLparam1(val);
+    CAMLlocal1(result);
+
     GValue *gv = GValue_val(val);
     if (!G_VALUE_HOLDS_DOUBLE(gv))
         caml_invalid_argument("g_value_get_double: not a double");
-    return caml_copy_double(g_value_get_double(gv));
+
+    result = caml_copy_double(g_value_get_double(gv));
+    CAMLreturn(result);
 }
 
 CAMLprim value ml_g_value_set_double(value val, value d)
@@ -341,8 +374,8 @@ CAMLprim value ml_g_value_set_object(value val, value obj)
     GValue *gv = GValue_val(val);
     GObject *gobj = NULL;
 
-    if (obj != Val_unit && Pointer_val(obj) != NULL)
-        gobj = G_OBJECT(Pointer_val(obj));
+    if (obj != Val_unit && ext_of_val(obj) != NULL)
+        gobj = G_OBJECT(ext_of_val(obj));
 
     g_value_set_object(gv, gobj);
     return Val_unit;
@@ -354,7 +387,7 @@ CAMLprim value ml_g_value_set_object(value val, value obj)
 
 CAMLprim value ml_g_object_get_property(value obj, value prop_name, value val)
 {
-    GObject *gobj = G_OBJECT(Pointer_val(obj));
+    GObject *gobj = G_OBJECT(ext_of_val(obj));
     GValue *gv = GValue_val(val);
     const char *name = String_val(prop_name);
 
@@ -364,7 +397,7 @@ CAMLprim value ml_g_object_get_property(value obj, value prop_name, value val)
 
 CAMLprim value ml_g_object_set_property(value obj, value prop_name, value val)
 {
-    GObject *gobj = G_OBJECT(Pointer_val(obj));
+    GObject *gobj = G_OBJECT(ext_of_val(obj));
     GValue *gv = GValue_val(val);
     const char *name = String_val(prop_name);
 
@@ -374,7 +407,7 @@ CAMLprim value ml_g_object_set_property(value obj, value prop_name, value val)
 
 CAMLprim value ml_g_object_get_property_type(value obj, value prop_name)
 {
-    GObject *gobj = G_OBJECT(Pointer_val(obj));
+    GObject *gobj = G_OBJECT(ext_of_val(obj));
     const char *name = String_val(prop_name);
 
     GParamSpec *pspec = g_object_class_find_property(
@@ -391,19 +424,19 @@ CAMLprim value ml_g_object_get_property_type(value obj, value prop_name)
 
 CAMLprim value ml_g_object_freeze_notify(value obj)
 {
-    g_object_freeze_notify(G_OBJECT(Pointer_val(obj)));
+    g_object_freeze_notify(G_OBJECT(ext_of_val(obj)));
     return Val_unit;
 }
 
 CAMLprim value ml_g_object_thaw_notify(value obj)
 {
-    g_object_thaw_notify(G_OBJECT(Pointer_val(obj)));
+    g_object_thaw_notify(G_OBJECT(ext_of_val(obj)));
     return Val_unit;
 }
 
 CAMLprim value ml_g_object_notify(value obj, value prop_name)
 {
-    g_object_notify(G_OBJECT(Pointer_val(obj)), String_val(prop_name));
+    g_object_notify(G_OBJECT(ext_of_val(obj)), String_val(prop_name));
     return Val_unit;
 }
 
@@ -411,89 +444,18 @@ CAMLprim value ml_g_object_notify(value obj, value prop_name)
 /* Closure Support */
 /* ==================================================================== */
 
-/* GClosure integration with OCaml callbacks - OCaml 5.x compatible approach
+/* GClosure integration with OCaml callbacks
  *
- * SOLUTION: Closure table to avoid global roots pointing to C memory
+ * This implementation stores the OCaml closure value directly in the
+ * GClosure->data field and registers it as a global root to protect it
+ * from garbage collection. This is the standard approach used in lablgtk3.
  *
- * Instead of storing OCaml values in C-allocated memory with global roots
- * (which crashes with OCaml 5.x's multicore GC), we:
- * 1. Keep all callbacks in an OCaml Hashtbl (managed by OCaml GC)
- * 2. Store only an integer ID in closure->data
- * 3. Look up the callback by ID when the marshaller is invoked
- *
- * This is safe because:
- * - The Hashtbl itself is registered as ONE global root (OCaml-managed memory)
- * - No global roots point to C-allocated memory
- * - The multicore GC can safely scan the Hashtbl
+ * When the GClosure is destroyed, the invalidate notifier removes the
+ * global root, allowing the OCaml closure to be collected.
  */
 
-/* Global closure table: list of (id, callback) pairs stored as OCaml list
- * This is OCaml-managed memory, safe for multicore GC to scan
- */
-static value closure_list = Val_int(0);  /* Empty list initially */
-static int next_closure_id = 1;
-
-/* Initialize the closure table (called once) */
-static void init_closure_table(void)
-{
-    static int initialized = 0;
-    if (!initialized) {
-        closure_list = Val_int(0);  /* [] */
-        caml_register_global_root(&closure_list);
-        initialized = 1;
-    }
-}
-
-/* Add a closure to the table, return its ID */
-static int add_closure_to_table(value callback_val)
-{
-    CAMLparam1(callback_val);
-    CAMLlocal3(pair, new_cell, id_val);
-
-    init_closure_table();
-
-    int id = next_closure_id++;
-    id_val = Val_int(id);
-
-    /* Create pair (id, callback) */
-    pair = caml_alloc(2, 0);
-    Store_field(pair, 0, id_val);
-    Store_field(pair, 1, callback_val);
-
-    /* Prepend to list: new_cell = pair :: closure_list */
-    new_cell = caml_alloc(2, 0);  /* Cons cell */
-    Store_field(new_cell, 0, pair);
-    Store_field(new_cell, 1, closure_list);
-
-    closure_list = new_cell;
-
-    CAMLreturnT(int, id);
-}
-
-/* Look up a closure by ID
- * Returns Val_unit if not found or if the closure is marked as dead
- */
-static value find_closure_in_table(int id)
-{
-    CAMLparam0();
-    CAMLlocal3(current, pair, callback_val);
-
-    current = closure_list;
-    while (current != Val_int(0)) {  /* While not [] */
-        pair = Field(current, 0);  /* Get (id, callback) pair */
-        if (Int_val(Field(pair, 0)) == id) {
-            callback_val = Field(pair, 1);
-            /* Check if marked as dead (callback_val == Val_unit) */
-            if (callback_val == Val_unit) {
-                CAMLreturn(Val_unit);  /* Closure was destroyed */
-            }
-            CAMLreturn(callback_val);  /* Return live callback */
-        }
-        current = Field(current, 1);  /* Move to next */
-    }
-
-    CAMLreturn(Val_unit);  /* Not found */
-}
+/* GClosure_val - extract GClosure pointer from custom block */
+#define GClosure_val(val) (*((GClosure**)Data_custom_val(val)))
 
 /* Custom block for GClosure - NO finalizer to avoid GC complications */
 static struct custom_operations ml_custom_GClosure = {
@@ -528,43 +490,13 @@ static value Val_GClosure_sink(GClosure *closure)
     CAMLreturn(ret);
 }
 
-/* Mark a closure as dead in the table by ID
- * Instead of removing entries (which can corrupt the list during GC scan),
- * we replace the callback with Val_unit to mark it as dead.
- * This is GC-safe because we never modify the list structure itself.
- */
-static void mark_closure_as_dead(int id)
-{
-    CAMLparam0();
-    CAMLlocal2(current, pair);
-
-    current = closure_list;
-    while (current != Val_int(0)) {
-        pair = Field(current, 0);
-        if (Int_val(Field(pair, 0)) == id) {
-            /* Mark as dead by replacing callback with Val_unit
-             * This is safe because we're not changing the list structure,
-             * just modifying a field within an existing node
-             */
-            Store_field(pair, 1, Val_unit);
-            CAMLreturn0;
-        }
-        current = Field(current, 1);
-    }
-
-    CAMLreturn0;  /* Not found (maybe already marked or never existed) */
-}
-
 /* Invalidate notifier - called when GLib destroys the closure
- * Marks the closure as dead in our table (GC-safe)
+ * Removes the global root to allow the OCaml closure to be collected
  */
 static void ml_closure_invalidate(gpointer data, GClosure *closure)
 {
-    /* closure->data contains the closure ID as an integer */
-    int id = GPOINTER_TO_INT(closure->data);
-    if (id > 0) {
-        mark_closure_as_dead(id);
-    }
+    /* closure->data contains the OCaml closure value */
+    caml_remove_global_root((value*)&closure->data);
 }
 
 /* Marshaller that invokes OCaml callback */
@@ -578,16 +510,8 @@ static void ml_closure_marshal(GClosure *closure,
     CAMLparam0();
     CAMLlocal2(argv_val, result_val);
 
-    /* Get the closure ID from closure->data and look it up in the table */
-    int id = GPOINTER_TO_INT(closure->data);
-    if (id <= 0) {
-        CAMLreturn0;  /* Invalid ID */
-    }
-
-    value callback_val = find_closure_in_table(id);
-    if (callback_val == Val_unit) {
-        CAMLreturn0;  /* Closure not found */
-    }
+    /* Get the OCaml callback directly from closure->data */
+    value callback_val = (value)closure->data;
 
     /* Create argv record: { result; nargs; args } */
     argv_val = caml_alloc(3, 0);
@@ -615,8 +539,16 @@ static void ml_closure_marshal(GClosure *closure,
      */
     Store_field(argv_val, 2, (value)param_values);
 
-    /* Call OCaml callback */
+    /* Call OCaml callback with exception handling */
     value result = caml_callback_exn(callback_val, argv_val);
+
+    /* Check for exceptions */
+    if (Is_exception_result(result)) {
+        /* Log the exception for debugging */
+        value exn = Extract_exception(result);
+        /* Note: We can't do much here except log - GLib doesn't have exception handling */
+        /* In production, consider logging to a file or using g_warning */
+    }
 
     /* Copy result back if needed */
     if (return_value != NULL && G_IS_VALUE(return_value)) {
@@ -633,21 +565,18 @@ CAMLprim value ml_g_closure_new(value callback_val)
 {
     CAMLparam1(callback_val);
 
-    /* Add callback to the closure table and get an ID
-     * The table is OCaml-managed memory, safe for multicore GC
+    /* Create GClosure with the OCaml closure as data
+     * The closure value is stored directly in closure->data
      */
-    int id = add_closure_to_table(callback_val);
+    GClosure *closure = g_closure_new_simple(sizeof(GClosure), (gpointer)callback_val);
 
-    /* Create GClosure with the ID (as an integer) as data
-     * No pointers, no malloc, no global roots to C memory!
+    /* Register the OCaml value as a global root to protect it from GC
+     * This is required because closure->data is C-allocated memory
      */
-    GClosure *closure = g_closure_new_simple(sizeof(GClosure), GINT_TO_POINTER(id));
+    caml_register_global_root((value*)&closure->data);
 
-    /* NO invalidate notifier - avoid any modifications to closure table
-     * This creates a small memory leak (entries never removed) but is GC-safe.
-     * Trade-off: ~24 bytes per closure for guaranteed stability with OCaml 5.x GC.
-     */
-    /* g_closure_add_invalidate_notifier(closure, NULL, ml_closure_invalidate); */
+    /* Set up invalidate notifier to remove global root when closure is destroyed */
+    g_closure_add_invalidate_notifier(closure, NULL, ml_closure_invalidate);
 
     /* Set up marshaller */
     g_closure_set_marshal(closure, ml_closure_marshal);
@@ -729,19 +658,20 @@ CAMLprim value ml_g_closure_set_result(value argv_val, value new_result)
 CAMLprim value ml_g_signal_connect_closure(value obj, value signal_name,
                                             value closure, value after)
 {
-    GObject *gobj = G_OBJECT(Pointer_val(obj));
+    CAMLparam4(obj, signal_name, closure, after);
+    GObject *gobj = G_OBJECT(ext_of_val(obj));
     GClosure *gclosure = (GClosure *)Pointer_val(closure);
     const char *name = String_val(signal_name);
     gboolean after_flag = Bool_val(after);
 
     gulong handler_id = g_signal_connect_closure(gobj, name, gclosure, after_flag);
 
-    return Val_long(handler_id);
+    CAMLreturn(Val_long(handler_id));
 }
 
 CAMLprim value ml_g_signal_handler_disconnect(value obj, value handler_id)
 {
-    g_signal_handler_disconnect(G_OBJECT(Pointer_val(obj)), Long_val(handler_id));
+    g_signal_handler_disconnect(G_OBJECT(ext_of_val(obj)), Long_val(handler_id));
     return Val_unit;
 }
 

@@ -11,8 +11,8 @@
 #include "ml_gobject.h"
 
 /* Type conversions - use direct cast (GObjects) */
-#define GtkEventController_val(val) ((GtkEventController*)Pointer_val(val))
-#define Val_GtkEventController(obj) ((value)(obj))
+#define GtkEventController_val(val) ((GtkEventController*)ext_of_val(val))
+#define Val_GtkEventController(obj) ((value)(val_of_ext(obj)))
 /* Note: GtkWidget_val and Val_GtkWidget are defined in wrappers.h */
 
 /* Phase 5.3: Option type conversions for nullable parameters */
@@ -20,8 +20,8 @@
 #define GtkEventController_option_val(v) ((v) == Val_none ? NULL : GtkEventController_val(Some_val(v)))
 
 /* GdkEvent conversions - from ml_event_controller.c */
-#define GdkEvent_val(val) ((GdkEvent*)Pointer_val(val))
-#define Val_GdkEvent(obj) ((value)(obj))
+#define GdkEvent_val(val) ((GdkEvent*)ext_of_val(val))
+#define Val_GdkEvent(obj) ((value)(val_of_ext(obj)))
 
 
 CAMLprim value ml_gtk_button_new(value unit)
