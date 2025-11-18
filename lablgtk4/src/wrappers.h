@@ -30,16 +30,24 @@ CAMLexport value copy_memblock_indirected(void *src, asize_t size);
 #define Val_copy(val) copy_memblock_indirected(&val, sizeof(val))
 
 /* ==================================================================== */
+/* Pointer Wrapping (OCaml 5.0+ compatible) */
+/* ==================================================================== */
+
+/* Wrap C pointers in Abstract blocks to prevent GC scanning */
+CAMLexport value Val_pointer(void *ptr);
+#define Pointer_val(val) ((void*)Field(val,1))
+
+/* ==================================================================== */
 /* Enums <-> Polymorphic Variants */
 /* ==================================================================== */
 
 typedef struct { value key; int data; } lookup_info;
-#define Val_lookup_info(v) ((value)v)
-#define Lookup_info_val(v) ((const lookup_info*)(Field(v, 1)))
+#define Val_lookup_info(v) Val_pointer((void*)v)
+#define Lookup_info_val(v) ((const lookup_info*)Pointer_val(v))
 
 /* Enum conversion functions (implemented in wrappers.c) */
-CAMLexport value ml_lookup_from_c (const lookup_info table[], value data);
-CAMLexport value ml_lookup_to_c (const lookup_info table[], value key);
+CAMLexport value ml_lookup_from_c (value table, value data);
+CAMLexport value ml_lookup_to_c (value table, value key);
 
 /* ==================================================================== */
 /* OCaml Value Helpers */

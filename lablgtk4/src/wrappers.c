@@ -22,19 +22,21 @@
 
 /* Enum/variant conversion functions */
 
-CAMLexport value ml_lookup_from_c (const lookup_info table[], value data_val)
+CAMLexport value ml_lookup_from_c (value table_val, value data_val)
 {
-    CAMLparam1(data_val);
+    CAMLparam2(table_val, data_val);
+    const lookup_info *table = Lookup_info_val(table_val);
     int data = Int_val(data_val);
     int i;
     for (i = table[0].data; i > 0; i--)
-	if (table[i].data == data) return (table[i].key);
+	if (table[i].data == data) CAMLreturn(table[i].key);
     caml_invalid_argument ("ml_lookup_from_c");
 }
 
-CAMLexport value ml_lookup_to_c (const lookup_info table[], value key)
+CAMLexport value ml_lookup_to_c (value table_val, value key)
 {
-    CAMLparam1(key);
+    CAMLparam2(table_val, key);
+    const lookup_info *table = Lookup_info_val(table_val);
     int first = 1, last = table[0].data, current;
     while (first < last) {
 	/* Avoid integer overflow in midpoint calculation */
@@ -42,7 +44,7 @@ CAMLexport value ml_lookup_to_c (const lookup_info table[], value key)
 	if (table[current].key >= key) last = current;
 	else first = current + 1;
     }
-    if (table[first].key == key) return (Val_int(table[first].data));
+    if (table[first].key == key) CAMLreturn(Val_int(table[first].data));
     caml_invalid_argument ("ml_lookup_to_c");
 }
 
@@ -68,6 +70,21 @@ CAMLexport value copy_memblock_indirected(void *src, asize_t size)
     Field(ret, 1) = (value)2;  /* Marker at Field 1 */
     memcpy((void*)&Field(ret, 2), src, size);  /* Data starts at Field 2 */
 
+    CAMLreturn(ret);
+}
+
+/* Wrap a C pointer in an Abstract block for OCaml 5.0+ compatibility.
+ * This prevents the GC from scanning C pointers as if they were heap values.
+ * Layout: [header | unused | pointer]
+ * Field 0: unused (for alignment)
+ * Field 1: the actual C pointer
+ */
+CAMLexport value Val_pointer(void *ptr)
+{
+    CAMLparam0();
+    CAMLlocal1(ret);
+    ret = caml_alloc_small(2, Abstract_tag);
+    Field(ret, 1) = (value)ptr;
     CAMLreturn(ret);
 }
 
