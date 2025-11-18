@@ -60,6 +60,21 @@ type gir_property = {
   prop_doc : string option;
 }
 
+(* Enum support *)
+type gir_enum_member = {
+  member_name : string;
+  member_value : int;
+  c_identifier : string;
+  member_doc : string option;
+}
+
+type gir_enum = {
+  enum_name : string;
+  enum_c_type : string;
+  members : gir_enum_member list;
+  enum_doc : string option;
+}
+
 type gir_class = {
   class_name : string;
   c_type : string;
@@ -366,6 +381,7 @@ let parse_gir_file filename mode filter_classes =
   let input = Xmlm.make_input ~strip:true (`Channel ic) in
 
   let controllers = ref [] in
+  let enums = ref [] in
 
   (* Check if class name is an event controller *)
   let is_event_controller name =
@@ -532,6 +548,56 @@ let parse_gir_file filename mode filter_classes =
       prop_doc = None;
     }
 
+  (* Parse enumeration element *)
+  and parse_enumeration attrs =
+    match get_attr "name" attrs, get_attr "c:type" attrs with
+    | Some name, Some c_type ->
+      let members = ref [] in
+
+      let rec parse_enum_contents () =
+        match Xmlm.input input with
+        | `El_start ((_, "member"), member_attrs) ->
+          (match get_attr "name" member_attrs, get_attr "value" member_attrs, get_attr "c:identifier" member_attrs with
+          | Some member_name, Some value_str, Some c_id ->
+            let value = try int_of_string value_str with _ -> 0 in
+            members := {
+              member_name = member_name;
+              member_value = value;
+              c_identifier = c_id;
+              member_doc = None;
+            } :: !members;
+            skip_element 1;
+            parse_enum_contents ()
+          | _ ->
+            skip_element 1;
+            parse_enum_contents ())
+
+        | `El_start _ ->
+          skip_element 1;
+          parse_enum_contents ()
+
+        | `El_end ->
+          ()  (* End of enumeration *)
+
+        | `Data _ ->
+          parse_enum_contents ()
+
+        | `Dtd _ ->
+          parse_enum_contents ()
+      in
+
+      parse_enum_contents ();
+      Some {
+        enum_name = name;
+        enum_c_type = c_type;
+        members = List.rev !members;
+        enum_doc = None;
+      }
+
+    | _ ->
+      skip_element 1;
+      None
+
   (* Parse method contents to extract return type and parameters *)
   and parse_method () =
     let return_type = ref { name = "void"; c_type = "void" } in
@@ -672,6 +738,12 @@ let parse_gir_file filename mode filter_classes =
         | None -> ());
         parse_document ()
 
+      | `El_start ((_, "enumeration"), attrs) ->
+        (match parse_enumeration attrs with
+        | Some enum -> enums := enum :: !enums
+        | None -> ());
+        parse_document ()
+
       | `El_start ((_, tag), _) when tag = "repository" || tag = "namespace" ->
         (* Continue parsing into container elements *)
         parse_document ()
@@ -693,7 +765,7 @@ let parse_gir_file filename mode filter_classes =
 
   parse_document ();
   close_in ic;
-  List.rev !controllers
+  (List.rev !controllers, List.rev !enums)
 
 (* ========================================================================= *)
 (* C Code Generation *)
@@ -726,7 +798,7 @@ let generate_c_header () =
 #define Val_GdkEvent(obj) ((value)(obj))\n\
 \n"
 
-let generate_c_constructor ctor cls =
+let generate_c_constructor (ctor : gir_constructor) (cls : gir_class) =
   let c_name = ctor.c_identifier in
   let ml_name = Str.global_replace (Str.regexp "gtk_") "ml_gtk_" c_name in
 
@@ -997,6 +1069,77 @@ let generate_c_property_setter (prop : gir_property) (cls : gir_class) =
 (* OCaml Code Generation *)
 (* ========================================================================= *)
 
+(* Generate OCaml enum type definition *)
+let generate_ocaml_enum enum =
+  let buf = Buffer.create 512 in
+
+  bprintf buf "(* %s - enumeration *)\n" enum.enum_name;
+  (match enum.enum_doc with
+  | Some doc -> bprintf buf "(** %s *)\n" doc
+  | None -> ());
+
+  bprintf buf "type %s = [\n" (String.lowercase_ascii enum.enum_name);
+
+  List.iteri ~f:(fun i member ->
+    let variant_name = String.uppercase_ascii member.member_name in
+    (match member.member_doc with
+    | Some doc -> bprintf buf "  (** %s *)\n" doc
+    | None -> ());
+    bprintf buf "  | `%s" variant_name;
+    if i < List.length enum.members - 1 then
+      bprintf buf "\n"
+    else
+      bprintf buf "\n]\n\n"
+  ) enum.members;
+
+  Buffer.contents buf
+
+(* Generate C conversion functions for enum *)
+let generate_c_enum_converters enum =
+  (* Skip enums with no members *)
+  if List.length enum.members = 0 then ""
+  else begin
+    let buf = Buffer.create 1024 in
+    let val_func = sprintf "Val_%s" enum.enum_name in
+    let c_val_func = sprintf "%s_val" enum.enum_name in
+    let first_member = List.hd enum.members in
+
+    (* Generate C to OCaml converter *)
+    bprintf buf "/* Convert %s to OCaml value */\n" enum.enum_c_type;
+    bprintf buf "static value %s(%s val) {\n" val_func enum.enum_c_type;
+    bprintf buf "  switch (val) {\n";
+
+    List.iter ~f:(fun enum_member ->
+      let variant_name = String.uppercase_ascii enum_member.member_name in
+      let hash = Hashtbl.hash variant_name in
+      bprintf buf "    case %s: return Val_int(%d); /* `%s */\n"
+        enum_member.c_identifier hash variant_name;
+    ) enum.members;
+
+    bprintf buf "    default: return Val_int(%d); /* fallback to first variant */\n"
+      (Hashtbl.hash (String.uppercase_ascii first_member.member_name));
+    bprintf buf "  }\n";
+    bprintf buf "}\n\n";
+
+    (* Generate OCaml to C converter *)
+    bprintf buf "/* Convert OCaml value to %s */\n" enum.enum_c_type;
+    bprintf buf "static %s %s(value val) {\n" enum.enum_c_type c_val_func;
+    bprintf buf "  int tag = Int_val(val);\n";
+
+    List.iteri ~f:(fun i enum_member ->
+      let variant_name = String.uppercase_ascii enum_member.member_name in
+      let hash = Hashtbl.hash variant_name in
+      bprintf buf "  %sif (tag == %d) return %s; /* `%s */\n"
+        (if i = 0 then "" else "else ") hash enum_member.c_identifier variant_name;
+    ) enum.members;
+
+    bprintf buf "  else return %s; /* fallback to first value */\n"
+      first_member.c_identifier;
+    bprintf buf "}\n\n";
+
+    Buffer.contents buf
+  end
+
 let generate_ml_interface cls =
   let buf = Buffer.create 1024 in
 
@@ -1024,7 +1167,7 @@ let generate_ml_interface cls =
   bprintf buf "type t = %s\n\n" base_type;
 
   (* Constructors - generate unique names and proper signatures *)
-  List.iter ~f:(fun ctor ->
+  List.iter ~f:(fun (ctor : gir_constructor) ->
     bprintf buf "(** Create a new %s *)\n" cls.class_name;
     let c_name = ctor.c_identifier in
     let ml_name = Str.global_replace (Str.regexp "gtk_") "ml_gtk_" c_name in
@@ -1185,7 +1328,7 @@ let generate_bindings mode filter_file gir_file output_dir =
     | None -> []
   in
 
-  let controllers = parse_gir_file gir_file mode filter_classes in
+  let (controllers, enums) = parse_gir_file gir_file mode filter_classes in
 
   let class_type_name = match mode with
     | EventControllers -> "event controller"
@@ -1193,10 +1336,16 @@ let generate_bindings mode filter_file gir_file output_dir =
     | All -> "controller/widget"
   in
   printf "Found %d %s classes\n" (List.length controllers) class_type_name;
+  printf "Found %d enumerations\n" (List.length enums);
 
   (* Generate C code *)
   let c_buf = Buffer.create 10240 in
   Buffer.add_string c_buf (generate_c_header ());
+
+  (* Generate enum converters *)
+  List.iter ~f:(fun enum ->
+    Buffer.add_string c_buf (generate_c_enum_converters enum);
+  ) enums;
 
   List.iter ~f:(fun cls ->
     printf "  - %s (%d methods, %d properties)\n"
@@ -1277,9 +1426,24 @@ let generate_bindings mode filter_file gir_file output_dir =
     close_out oc;
   ) controllers;
 
+  (* Generate enum types file if any enums were found *)
+  if List.length enums > 0 then begin
+    let enum_file = Filename.concat output_dir "gtk_enums.mli" in
+    printf "Writing %s...\n" enum_file;
+    let oc = open_out enum_file in
+    output_string oc "(* GENERATED CODE - DO NOT EDIT *)\n";
+    output_string oc "(* GTK4 Enumeration Types *)\n\n";
+    List.iter ~f:(fun enum ->
+      output_string oc (generate_ocaml_enum enum);
+    ) enums;
+    close_out oc;
+  end;
+
   printf "\n✓ Code generation complete!\n";
   printf "  Generated: %s\n" c_file;
   printf "  Generated: %d OCaml interface files\n" (List.length controllers);
+  if List.length enums > 0 then
+    printf "  Generated: gtk_enums.mli (%d enumerations)\n" (List.length enums);
   `Ok ()
 
 (* Cmdliner argument definitions *)
