@@ -499,9 +499,8 @@ static value Val_GClosure_sink(GClosure *closure)
     g_closure_sink(closure);
 
     /* Create custom block WITHOUT finalizer */
-    ret = val_of_ext(closure);
-    //caml_alloc_custom(&ml_custom_GClosure, sizeof(GClosure*), 0, 0);
-    //*((GClosure**)Data_custom_val(ret)) = closure;
+    ret = caml_alloc_custom(&ml_custom_GClosure, sizeof(GClosure*), 0, 1);
+    GClosure_val(ret) = closure;
 
     CAMLreturn(ret);
 }
@@ -680,7 +679,7 @@ CAMLprim value ml_g_signal_connect_closure(value obj, value signal_name,
 {
     CAMLparam4(obj, signal_name, closure, after);
     GObject *gobj = G_OBJECT(ext_of_val(obj));
-    GClosure *gclosure = (GClosure *)ext_of_val(closure);
+    GClosure *gclosure = (GClosure *)Data_custom_val(closure);
     const char *name = String_val(signal_name);
     gboolean after_flag = Bool_val(after);
 

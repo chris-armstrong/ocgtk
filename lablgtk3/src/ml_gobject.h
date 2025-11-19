@@ -36,7 +36,7 @@ CAMLexport void ml_g_object_unref_later (GObject *);
 #define GType_val(t) ((GType)Addr_val(t))
 #define Val_GType    Val_addr
 
-#define GClosure_val(val) ((GClosure*)Pointer_val(val))
+#define GClosure_val(val) ((GClosure*)Data_custom_val(val))
 CAMLexport value Val_GClosure (GClosure *);
 
 #define GValueptr_val(val) ((GValue*)MLPointer_val(val))

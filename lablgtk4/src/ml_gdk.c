@@ -286,20 +286,23 @@ CAMLprim value ml_gdk_color_create(value red, value green, value blue)
 
 CAMLprim value ml_gdk_color_get_red(value color_val)
 {
+    CAMLparam1(color_val);
     ml_raise_gdk("GdkColor is deprecated in GDK4, use RGBA");
-    return Val_int(0);
+    CAMLreturn(Val_int(0));
 }
 
 CAMLprim value ml_gdk_color_get_green(value color_val)
 {
+    CAMLparam1(color_val);
     ml_raise_gdk("GdkColor is deprecated in GDK4, use RGBA");
-    return Val_int(0);
+    CAMLreturn(Val_int(0));
 }
 
 CAMLprim value ml_gdk_color_get_blue(value color_val)
 {
+    CAMLparam1(color_val);
     ml_raise_gdk("GdkColor is deprecated in GDK4, use RGBA");
-    return Val_int(0);
+    CAMLreturn(Val_int(0));
 }
 
 /* ========================================================================= */

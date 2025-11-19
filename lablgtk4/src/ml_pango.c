@@ -213,17 +213,19 @@ ML_2(pango_context_set_language, PangoContext_val, PangoLanguage_val, Unit)
 ML_2(pango_context_load_font, PangoContext_val, PangoFontDescription_val, Val_PangoFont)
 CAMLprim value ml_pango_context_load_fontset(value context_val, value desc_val, value lang_val)
 {
+  CAMLparam3(context_val, desc_val, lang_val);
   PangoContext *context = PangoContext_val(context_val);
   PangoFontDescription *desc = PangoFontDescription_val(desc_val);
   PangoLanguage *lang = PangoLanguage_val(lang_val);
 
   PangoFontset *fontset = pango_context_load_fontset(context, desc, lang);
   /* Note: PangoFontset is a GObject, cast to PangoFont for simplicity */
-  return Val_PangoFont((gpointer)fontset);
+  CAMLreturn(Val_PangoFont((gpointer)fontset));
 }
 
 CAMLprim value ml_pango_context_get_metrics(value context_val, value desc_val, value lang_opt_val)
 {
+  CAMLparam3(context_val, desc_val, lang_opt_val);
   PangoContext *context = PangoContext_val(context_val);
   PangoFontDescription *desc = PangoFontDescription_val(desc_val);
   PangoLanguage *lang = (lang_opt_val == Val_none) ? NULL : PangoLanguage_val(Some_val(lang_opt_val));
@@ -231,7 +233,7 @@ CAMLprim value ml_pango_context_get_metrics(value context_val, value desc_val, v
   PangoFontMetrics *metrics = pango_context_get_metrics(context, desc, lang);
   if (!metrics) caml_failwith("pango_context_get_metrics failed");
 
-  return Val_PangoFontMetrics_new(metrics);
+  CAMLreturn(Val_PangoFontMetrics_new(metrics));
 }
 
 /* ========================================================================= */
