@@ -250,6 +250,22 @@ CAMLprim GSList *GSList_val(value list, gpointer (*func)(value));
 
 CAMLprim void ml_raise_gerror(GError *err);
 
+/* Result type construction for error handling */
+/* OCaml result type: type ('a, 'b) result = Ok of 'a | Error of 'b */
+/* Ok is tag 0, Error is tag 1 */
+
+/* Result type construction for error handling */
+/* These are defined in wrappers.c */
+value Res_Ok(value v);
+value Res_Error(value v);
+
+/* Special case for unit result */
+#define ValUnit Val_unit
+
+/* Convert GError to OCaml GError.t record */
+/* Defined in wrappers.c */
+value Val_GError(GError *error);
+
 /* ==================================================================== */
 /* GValue */
 /* ==================================================================== */

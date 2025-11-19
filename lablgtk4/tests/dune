@@ -1,209 +1,138 @@
 ; Test suite for lablgtk4
 ;
-; IMPORTANT: Tests are defined as (executable) not (test) to avoid a race
-; condition between dune's vfork-based process spawning and OCaml 5.x runtime
-; cleanup. See custom runtest rule below for detailed explanation.
-;
-; Test organization:
-; - test_enum_roundtrip.ml: Simple roundtrip tests for basic GTK4 enums
-; - test_enum_values.ml: Value coverage tests for basic GTK4 enums
-; - test_all_enums.ml: Comprehensive tests for all enum modules (GTK4, GDK4, GLib, Pango, GObject)
-; - test_glib.ml: GLib binding tests (minimal for now)
-; - test_gobject.ml: GObject binding tests (minimal for now)
-; - test_gdkpixbuf.ml: GdkPixbuf image manipulation tests (Phase 2.3)
-; - test_gdk.ml: GDK module tests for Display, Seat, Device, Surface (Phase 2.4)
-; - test_clipboard.ml: GdkClipboard tests for clipboard operations (Phase 2.6)
 
-(executable
+(test
  (name test_enum_roundtrip)
  (modules test_enum_roundtrip)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_enum_values)
  (modules test_enum_values)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_all_enums)
  (modules test_all_enums)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_glib)
  (modules test_glib)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_gobject)
  (modules test_gobject)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_gobject_stress)
  (modules test_gobject_stress)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_ffi_integration)
  (modules test_ffi_integration)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_gdkpixbuf)
  (modules test_gdkpixbuf)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_gdk)
  (modules test_gdk)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_pango)
  (modules test_pango)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_clipboard)
  (modules test_clipboard)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_widget)
  (modules test_widget)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_snapshot)
  (modules test_snapshot)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_closure_stress)
  (modules test_closure_stress)
  (libraries lablgtk4))
 
-(executable
+(test
  (name test_closure_with_gc)
  (modules test_closure_with_gc)
  (libraries lablgtk4))
 
-(executable
+(test
  (name test_gtk_init)
  (modules test_gtk_init)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_event_controller)
  (modules test_event_controller)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_event_controller_runtime)
  (modules test_event_controller_runtime)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_gobj)
  (modules test_gobj)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_integration)
  (modules test_integration)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_box)
  (modules test_box)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_grid)
  (modules test_grid)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_containers)
  (modules test_containers)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_gpack)
  (modules test_gpack)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_window)
  (modules test_window)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_button)
  (modules test_button)
  (libraries lablgtk4 alcotest))
 
-(executable
+(test
  (name test_range)
  (modules test_range)
  (libraries lablgtk4 alcotest))
 
-; ============================================================================
-; Custom Test Runner to Avoid Dune Process Management Race Condition
-; ============================================================================
-;
-; IMPORTANT: DO NOT use 'dune runtest' directly for lablgtk4!
-;
-; PROBLEM:
-;   Dune's process spawning mechanism (vfork + worker threads) creates a race
-;   condition with OCaml 5.x runtime's global root cleanup during process exit.
-;   This causes segmentation faults AFTER tests complete successfully.
-;
-;   Technical details:
-;   - Dune uses vfork (not fork) to spawn test processes from worker threads
-;   - test_gobject registers global roots for GClosure callback storage
-;   - During exit, OCaml GC scans global roots while vfork/thread cleanup occurs
-;   - Race condition → SEGV_ACCERR (invalid permissions for mapped object)
-;   - Only affects test_gobject (only test that registers global roots)
-;   - Does NOT occur when running tests directly or under gdb (different timing)
-;
-; SOLUTION:
-;   Use the custom test runner script that runs each test executable in simple
-;   sequential execution, avoiding dune's complex process management entirely.
-;
-; USAGE:
-;   ./run_tests.sh              # Run all tests (recommended)
-;   dune runtest                # Will show this warning
-;
-; WHY THIS IS NECESSARY:
-;   This is NOT a lablgtk bug - the code works correctly. It's an interaction
-;   between dune's vfork-based process spawning and OCaml 5.x runtime cleanup.
-;   Running tests via simple bash script avoids the race condition.
-;
-; NOTE: Tests run in headless environment - this is NOT about display servers
-;       or X11/Wayland connections (earlier documentation was incorrect).
-; ============================================================================
-
-(rule
- (alias runtest)
- (action
-  (progn
-   (echo "╔══════════════════════════════════════════════════════════════╗\n")
-   (echo "║  WARNING: Cannot use standard 'dune runtest' for lablgtk4   ║\n")
-   (echo "╚══════════════════════════════════════════════════════════════╝\n")
-   (echo "\n")
-   (echo "Dune's process management (vfork + worker threads) creates a\n")
-   (echo "race condition with OCaml 5.x runtime cleanup, causing segfaults\n")
-   (echo "during test exit (AFTER all tests pass successfully).\n")
-   (echo "\n")
-   (echo "Please run the test runner script instead:\n")
-   (echo "\n")
-   (echo "  cd lablgtk4 && ./run_tests.sh\n")
-   (echo "\n")
-   (echo "Or from CI:\n")
-   (echo "\n")
-   (echo "  opam exec -- ./run_tests.sh\n")
-   (echo "\n")
-   (echo "See tests/dune for technical details.\n")
-   (echo "════════════════════════════════════════════════════════════════\n"))))
