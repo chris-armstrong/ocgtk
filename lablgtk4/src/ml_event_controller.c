@@ -73,83 +73,83 @@ static const lookup_info propagation_limit_table[] = {
 /* Base Event Controller Methods */
 /* ==================================================================== */
 
-CAMLprim value ml_gtk_event_controller_get_widget(value controller)
-{
-    CAMLparam1(controller);
-    GtkWidget *widget = gtk_event_controller_get_widget(
-        GtkEventController_val(controller)
-    );
-    CAMLreturn(Val_option(widget, Val_GtkWidget));
-}
+// CAMLprim value ml_gtk_event_controller_get_widget(value controller)
+// {
+//     CAMLparam1(controller);
+//     GtkWidget *widget = gtk_event_controller_get_widget(
+//         GtkEventController_val(controller)
+//     );
+//     CAMLreturn(Val_option(widget, Val_GtkWidget));
+// }
 
-CAMLprim value ml_gtk_event_controller_get_propagation_phase(value controller)
-{
-    CAMLparam1(controller);
-    GtkPropagationPhase phase = gtk_event_controller_get_propagation_phase(
-        GtkEventController_val(controller)
-    );
-    CAMLreturn(Val_PropagationPhase(phase));
-}
+// CAMLprim value ml_gtk_event_controller_get_propagation_phase(value controller)
+// {
+//     CAMLparam1(controller);
+//     GtkPropagationPhase phase = gtk_event_controller_get_propagation_phase(
+//         GtkEventController_val(controller)
+//     );
+//     CAMLreturn(Val_PropagationPhase(phase));
+// }
 
-CAMLprim value ml_gtk_event_controller_set_propagation_phase(value controller, value phase)
-{
-    CAMLparam2(controller, phase);
-    gtk_event_controller_set_propagation_phase(
-        GtkEventController_val(controller),
-        PropagationPhase_val(phase)
-    );
-    CAMLreturn(Val_unit);
-}
+// CAMLprim value ml_gtk_event_controller_set_propagation_phase(value controller, value phase)
+// {
+//     CAMLparam2(controller, phase);
+//     gtk_event_controller_set_propagation_phase(
+//         GtkEventController_val(controller),
+//         PropagationPhase_val(phase)
+//     );
+//     CAMLreturn(Val_unit);
+// }
 
-CAMLprim value ml_gtk_event_controller_get_propagation_limit(value controller)
-{
-    CAMLparam1(controller);
-    GtkPropagationLimit limit = gtk_event_controller_get_propagation_limit(
-        GtkEventController_val(controller)
-    );
-    CAMLreturn(Val_PropagationLimit(limit));
-}
+// CAMLprim value ml_gtk_event_controller_get_propagation_limit(value controller)
+// {
+//     CAMLparam1(controller);
+//     GtkPropagationLimit limit = gtk_event_controller_get_propagation_limit(
+//         GtkEventController_val(controller)
+//     );
+//     CAMLreturn(Val_PropagationLimit(limit));
+// }
 
-CAMLprim value ml_gtk_event_controller_set_propagation_limit(value controller, value limit)
-{
-    CAMLparam2(controller, limit);
-    gtk_event_controller_set_propagation_limit(
-        GtkEventController_val(controller),
-        PropagationLimit_val(limit)
-    );
-    CAMLreturn(Val_unit);
-}
+// CAMLprim value ml_gtk_event_controller_set_propagation_limit(value controller, value limit)
+// {
+//     CAMLparam2(controller, limit);
+//     gtk_event_controller_set_propagation_limit(
+//         GtkEventController_val(controller),
+//         PropagationLimit_val(limit)
+//     );
+//     CAMLreturn(Val_unit);
+// }
 
-ML_1(gtk_event_controller_reset, GtkEventController_val, Unit)
+// ML_1(gtk_event_controller_reset, GtkEventController_val, Unit)
 
-CAMLprim value ml_gtk_event_controller_get_current_event(value controller)
-{
-    CAMLparam1(controller);
-    GdkEvent *event = gtk_event_controller_get_current_event(
-        GtkEventController_val(controller)
-    );
-    CAMLreturn(Val_option(event, Val_GdkEvent));
-}
-
-CAMLprim value ml_gtk_event_controller_get_current_event_time(value controller)
-{
-    CAMLparam1(controller);
-    guint32 time = gtk_event_controller_get_current_event_time(
-        GtkEventController_val(controller)
-    );
-    CAMLreturn(Val_int(time));
-}
+// CAMLprim value ml_gtk_event_controller_get_current_event(value controller)
+// {
+//     CAMLparam1(controller);
+//     GdkEvent *event = gtk_event_controller_get_current_event(
+//         GtkEventController_val(controller)
+//     );
+//     CAMLreturn(Val_option(event, Val_GdkEvent));
+// }
+//
+// CAMLprim value ml_gtk_event_controller_get_current_event_time(value controller)
+// {
+//     CAMLparam1(controller);
+//     guint32 time = gtk_event_controller_get_current_event_time(
+//         GtkEventController_val(controller)
+//     );
+//     CAMLreturn(Val_int(time));
+// }
 
 /* ==================================================================== */
 /* Keyboard Event Controller */
 /* ==================================================================== */
 
-CAMLprim value ml_gtk_event_controller_key_new(value unit)
-{
-    CAMLparam1(unit);
-    GtkEventController *controller = gtk_event_controller_key_new();
-    CAMLreturn(Val_GtkEventController(controller));
-}
+// CAMLprim value ml_gtk_event_controller_key_new(value unit)
+// {
+//     CAMLparam1(unit);
+//     GtkEventController *controller = gtk_event_controller_key_new();
+//     CAMLreturn(Val_GtkEventController(controller));
+// }
 
 /* Key press signal callback wrapper */
 static gboolean key_pressed_callback_wrapper(
@@ -306,35 +306,35 @@ CAMLprim value ml_gtk_event_controller_key_connect_modifiers(
     CAMLreturn(Val_long(signal_id));
 }
 
-CAMLprim value ml_gtk_event_controller_key_forward(value controller, value widget)
-{
-    CAMLparam2(controller, widget);
-    gboolean result = gtk_event_controller_key_forward(
-        GTK_EVENT_CONTROLLER_KEY(GtkEventController_val(controller)),
-        GtkWidget_val(widget)
-    );
-    CAMLreturn(Val_bool(result));
-}
+// CAMLprim value ml_gtk_event_controller_key_forward(value controller, value widget)
+// {
+//     CAMLparam2(controller, widget);
+//     gboolean result = gtk_event_controller_key_forward(
+//         GTK_EVENT_CONTROLLER_KEY(GtkEventController_val(controller)),
+//         GtkWidget_val(widget)
+//     );
+//     CAMLreturn(Val_bool(result));
+// }
 
-CAMLprim value ml_gtk_event_controller_key_get_group(value controller)
-{
-    CAMLparam1(controller);
-    guint group = gtk_event_controller_key_get_group(
-        GTK_EVENT_CONTROLLER_KEY(GtkEventController_val(controller))
-    );
-    CAMLreturn(Val_int(group));
-}
+// CAMLprim value ml_gtk_event_controller_key_get_group(value controller)
+// {
+//     CAMLparam1(controller);
+//     guint group = gtk_event_controller_key_get_group(
+//         GTK_EVENT_CONTROLLER_KEY(GtkEventController_val(controller))
+//     );
+//     CAMLreturn(Val_int(group));
+// }
 
 /* ==================================================================== */
 /* Motion Event Controller */
 /* ==================================================================== */
 
-CAMLprim value ml_gtk_event_controller_motion_new(value unit)
-{
-    CAMLparam1(unit);
-    GtkEventController *controller = gtk_event_controller_motion_new();
-    CAMLreturn(Val_GtkEventController(controller));
-}
+// CAMLprim value ml_gtk_event_controller_motion_new(value unit)
+// {
+//     CAMLparam1(unit);
+//     GtkEventController *controller = gtk_event_controller_motion_new();
+//     CAMLreturn(Val_GtkEventController(controller));
+// }
 
 /* Motion callback wrapper (for enter and motion signals) */
 static void motion_callback_wrapper(
@@ -445,34 +445,34 @@ CAMLprim value ml_gtk_event_controller_motion_connect_motion(
     CAMLreturn(Val_long(signal_id));
 }
 
-CAMLprim value ml_gtk_event_controller_motion_contains_pointer(value controller)
-{
-    CAMLparam1(controller);
-    gboolean result = gtk_event_controller_motion_contains_pointer(
-        GTK_EVENT_CONTROLLER_MOTION(GtkEventController_val(controller))
-    );
-    CAMLreturn(Val_bool(result));
-}
+// CAMLprim value ml_gtk_event_controller_motion_contains_pointer(value controller)
+// {
+//     CAMLparam1(controller);
+//     gboolean result = gtk_event_controller_motion_contains_pointer(
+//         GTK_EVENT_CONTROLLER_MOTION(GtkEventController_val(controller))
+//     );
+//     CAMLreturn(Val_bool(result));
+// }
 
-CAMLprim value ml_gtk_event_controller_motion_is_pointer(value controller)
-{
-    CAMLparam1(controller);
-    gboolean result = gtk_event_controller_motion_is_pointer(
-        GTK_EVENT_CONTROLLER_MOTION(GtkEventController_val(controller))
-    );
-    CAMLreturn(Val_bool(result));
-}
+// CAMLprim value ml_gtk_event_controller_motion_is_pointer(value controller)
+// {
+//     CAMLparam1(controller);
+//     gboolean result = gtk_event_controller_motion_is_pointer(
+//         GTK_EVENT_CONTROLLER_MOTION(GtkEventController_val(controller))
+//     );
+//     CAMLreturn(Val_bool(result));
+// }
 
 /* ==================================================================== */
 /* Gesture Click */
 /* ==================================================================== */
 
-CAMLprim value ml_gtk_gesture_click_new(value unit)
-{
-    CAMLparam1(unit);
-    GtkGesture *gesture = gtk_gesture_click_new();
-    CAMLreturn(Val_GtkEventController((GtkEventController*)gesture));
-}
+// CAMLprim value ml_gtk_gesture_click_new(value unit)
+// {
+//     CAMLparam1(unit);
+//     GtkGesture *gesture = gtk_gesture_click_new();
+//     CAMLreturn(Val_GtkEventController((GtkEventController*)gesture));
+// }
 
 /* Pressed/Released callback wrapper */
 static void gesture_pressed_callback_wrapper(
