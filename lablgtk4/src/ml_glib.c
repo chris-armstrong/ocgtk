@@ -42,9 +42,10 @@
 
 CAMLprim value ml_glib_init(value unit)
 {
+    CAMLparam1(unit);
     /* Initialize GLib error domain mappings */
     /* More error domains will be registered as needed */
-    return Val_unit;
+    CAMLreturn(Val_unit);
 }
 
 /* ==================================================================== */
@@ -53,38 +54,46 @@ CAMLprim value ml_glib_init(value unit)
 
 CAMLprim value ml_g_get_prgname(value unit)
 {
+    CAMLparam1(unit);
+    CAMLlocal1(res);
+
     const char *name = g_get_prgname();
     if (name == NULL)
-        return Val_int(0); /* None */
+        CAMLreturn(Val_int(0)); /* None */
     else {
-        value res = caml_alloc(1, 0); /* Some */
+        res = caml_alloc(1, 0); /* Some */
         Store_field(res, 0, caml_copy_string(name));
-        return res;
+        CAMLreturn(res);
     }
 }
 
 CAMLprim value ml_g_set_prgname(value name)
 {
+    CAMLparam1(name);
     g_set_prgname(String_val(name));
-    return Val_unit;
+    CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_g_get_application_name(value unit)
 {
+    CAMLparam1(unit);
+    CAMLlocal1(res);
+
     const char *name = g_get_application_name();
     if (name == NULL)
-        return Val_int(0); /* None */
+        CAMLreturn(Val_int(0)); /* None */
     else {
-        value res = caml_alloc(1, 0); /* Some */
+        res = caml_alloc(1, 0); /* Some */
         Store_field(res, 0, caml_copy_string(name));
-        return res;
+        CAMLreturn(res);
     }
 }
 
 CAMLprim value ml_g_set_application_name(value name)
 {
+    CAMLparam1(name);
     g_set_application_name(String_val(name));
-    return Val_unit;
+    CAMLreturn(Val_unit);
 }
 
 /* ==================================================================== */
@@ -115,9 +124,12 @@ CAMLprim value Val_GList(GList *list, value (*func)(gpointer))
 /* Convert GList to OCaml list and free the GList */
 CAMLprim value Val_GList_free(GList *list, value (*func)(gpointer))
 {
-    value res = Val_GList(list, func);
+    CAMLparam0();
+    CAMLlocal1(res);
+
+    res = Val_GList(list, func);
     g_list_free(list);
-    return res;
+    CAMLreturn(res);
 }
 
 /* Convert OCaml list to GList */
@@ -174,9 +186,12 @@ CAMLprim value Val_GSList(GSList *list, value (*func)(gpointer))
 /* Convert GSList to OCaml list and free the GSList */
 CAMLprim value Val_GSList_free(GSList *list, value (*func)(gpointer))
 {
-    value res = Val_GSList(list, func);
+    CAMLparam0();
+    CAMLlocal1(res);
+
+    res = Val_GSList(list, func);
     g_slist_free(list);
-    return res;
+    CAMLreturn(res);
 }
 
 /* Convert OCaml list to GSList */
@@ -256,9 +271,12 @@ value copy_string_v(const gchar * const *v)
 /* Copy a string and free it with g_free */
 CAMLprim value copy_string_g_free(char *str)
 {
-    value res = caml_copy_string(str != NULL ? str : "");
+    CAMLparam0();
+    CAMLlocal1(res);
+
+    res = caml_copy_string(str != NULL ? str : "");
     g_free(str);
-    return res;
+    CAMLreturn(res);
 }
 
 /* Check if string is NULL and copy appropriately */
@@ -279,8 +297,9 @@ static value Val_GMainLoop(GMainLoop *loop)
 {
     CAMLparam0();
     CAMLlocal1(val);
-    val = caml_alloc_small(1, Abstract_tag);
-    Field(val, 0) = (value)loop;
+    val = val_of_ext(loop);
+    // val = caml_alloc_small(1, Abstract_tag);
+    // Field(val, 0) = (value)loop;
     CAMLreturn(val);
 }
 
@@ -293,52 +312,59 @@ static GMainLoop *GMainLoop_val(value val)
 /* Create a new main loop */
 CAMLprim value ml_g_main_new(value is_running)
 {
+    CAMLparam1(is_running);
     GMainLoop *loop = g_main_loop_new(NULL, Bool_val(is_running));
     if (loop == NULL)
         caml_failwith("g_main_loop_new: failed to create main loop");
-    return Val_GMainLoop(loop);
+    CAMLreturn(Val_GMainLoop(loop));
 }
 
 /* Run a main loop */
 CAMLprim value ml_g_main_run(value loop)
 {
+    CAMLparam1(loop);
     g_main_loop_run(GMainLoop_val(loop));
-    return Val_unit;
+    CAMLreturn(Val_unit);
 }
 
 /* Check if main loop is running */
 CAMLprim value ml_g_main_is_running(value loop)
 {
-    return Val_bool(g_main_loop_is_running(GMainLoop_val(loop)));
+    CAMLparam1(loop);
+    CAMLreturn(Val_bool(g_main_loop_is_running(GMainLoop_val(loop))));
 }
 
 /* Quit a main loop */
 CAMLprim value ml_g_main_quit(value loop)
 {
+    CAMLparam1(loop);
     g_main_loop_quit(GMainLoop_val(loop));
-    return Val_unit;
+    CAMLreturn(Val_unit);
 }
 
 /* Destroy/unref a main loop */
 CAMLprim value ml_g_main_destroy(value loop)
 {
+    CAMLparam1(loop);
     g_main_loop_unref(GMainLoop_val(loop));
-    return Val_unit;
+    CAMLreturn(Val_unit);
 }
 
 /* Run one iteration of the main context (updated for GTK4/GLib 2.66+) */
 CAMLprim value ml_g_main_iteration(value may_block)
 {
+    CAMLparam1(may_block);
     gboolean result;
     /* Don't release runtime - callbacks need it, and non-blocking is fast */
     result = g_main_context_iteration(NULL, Bool_val(may_block));
-    return Val_bool(result);
+    CAMLreturn(Val_bool(result));
 }
 
 /* Check if events are pending (updated for GTK4/GLib 2.66+) */
 CAMLprim value ml_g_main_pending(value unit)
 {
-    return Val_bool(g_main_context_pending(NULL));
+    CAMLparam1(unit);
+    CAMLreturn(Val_bool(g_main_context_pending(NULL)));
 }
 
 /* ==================================================================== */
@@ -373,6 +399,7 @@ static void ml_callback_destroy(gpointer data)
 /* Add a timeout callback */
 CAMLprim value ml_g_timeout_add(value o_prio, value interval, value clos)
 {
+    CAMLparam3(o_prio, interval, clos);
     ml_callback_data *cbd = g_new(ml_callback_data, 1);
     guint id;
 
@@ -398,18 +425,20 @@ CAMLprim value ml_g_timeout_add(value o_prio, value interval, value clos)
                                  ml_callback_destroy);
     }
 
-    return Val_int(id);
+    CAMLreturn(Val_int(id));
 }
 
 /* Remove a timeout */
 CAMLprim value ml_g_timeout_remove(value id)
 {
-    return Val_bool(g_source_remove(Int_val(id)));
+    CAMLparam1(id);
+    CAMLreturn(Val_bool(g_source_remove(Int_val(id))));
 }
 
 /* Add an idle callback */
 CAMLprim value ml_g_idle_add(value o_prio, value clos)
 {
+    CAMLparam2(o_prio, clos);
     ml_callback_data *cbd = g_new(ml_callback_data, 1);
     guint id;
 
@@ -433,13 +462,14 @@ CAMLprim value ml_g_idle_add(value o_prio, value clos)
                               ml_callback_destroy);
     }
 
-    return Val_int(id);
+    CAMLreturn(Val_int(id));
 }
 
 /* Remove an idle callback */
 CAMLprim value ml_g_idle_remove(value id)
 {
-    return Val_bool(g_source_remove(Int_val(id)));
+    CAMLparam1(id);
+    CAMLreturn(Val_bool(g_source_remove(Int_val(id))));
 }
 
 /* ==================================================================== */
@@ -449,9 +479,10 @@ CAMLprim value ml_g_idle_remove(value id)
 /* Validate UTF-8 string */
 CAMLprim value ml_g_utf8_validate(value str)
 {
+    CAMLparam1(str);
     const char *s = String_val(str);
     gsize len = caml_string_length(str);
-    return Val_bool(g_utf8_validate(s, len, NULL));
+    CAMLreturn(Val_bool(g_utf8_validate(s, len, NULL)));
 }
 
 /* Convert string between character sets */
@@ -604,12 +635,15 @@ CAMLprim value ml_g_get_charset(value unit)
  */
 CAMLprim value ml_g_int_of_priority(value prio)
 {
+    CAMLparam1(prio);
+    int result;
     switch (Int_val(prio)) {
-        case 0: return Val_int(G_PRIORITY_DEFAULT);        /* `DEFAULT (alphabetically first) */
-        case 1: return Val_int(G_PRIORITY_DEFAULT_IDLE);   /* `DEFAULT_IDLE */
-        case 2: return Val_int(G_PRIORITY_HIGH);           /* `HIGH */
-        case 3: return Val_int(G_PRIORITY_HIGH_IDLE);      /* `HIGH_IDLE */
-        case 4: return Val_int(G_PRIORITY_LOW);            /* `LOW */
-        default: return Val_int(G_PRIORITY_DEFAULT);
+        case 0: result = G_PRIORITY_DEFAULT; break;        /* `DEFAULT (alphabetically first) */
+        case 1: result = G_PRIORITY_DEFAULT_IDLE; break;   /* `DEFAULT_IDLE */
+        case 2: result = G_PRIORITY_HIGH; break;           /* `HIGH */
+        case 3: result = G_PRIORITY_HIGH_IDLE; break;      /* `HIGH_IDLE */
+        case 4: result = G_PRIORITY_LOW; break;            /* `LOW */
+        default: result = G_PRIORITY_DEFAULT; break;
     }
+    CAMLreturn(Val_int(result));
 }

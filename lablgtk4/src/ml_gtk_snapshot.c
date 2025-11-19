@@ -19,8 +19,8 @@
 #include "wrappers.h"
 
 /* Snapshot type conversion */
-#define GtkSnapshot_val(val) ((GtkSnapshot*)Pointer_val(val))
-#define Val_GtkSnapshot(obj) (Val_pointer(obj))
+#define GtkSnapshot_val(val) ((GtkSnapshot*)ext_of_val(val))
+#define Val_GtkSnapshot(obj) (val_of_ext(obj))
 
 /* Helper to extract Graphene Point from OCaml record */
 static void graphene_point_from_value(graphene_point_t *point, value v)

@@ -240,9 +240,9 @@ let declaration ~hc ~cc = parser
        Macros: Val_gtk4_align and Gtk4_align_val for conversions *)
     if not !first then oh "\n";
     if static = "" then oh "extern const lookup_info ml_table_%s[];\n" name;
-    oh "#define Val_%s(data) ml_lookup_from_c (ml_table_%s, Val_int(data))\n"
+    oh "#define Val_%s(data) lookup_from_c_direct (ml_table_%s, data)\n"
       name name;
-    oh "#define %s_val(key) Int_val(ml_lookup_to_c (ml_table_%s, key))\n\n"
+    oh "#define %s_val(key) lookup_to_c_direct (ml_table_%s, key)\n\n"
       cname name;
 
   (* Handle package directive: package "Gtk4" *)

@@ -22,16 +22,21 @@
 
 /* Enum/variant conversion functions */
 
-CAMLexport value ml_lookup_from_c (const lookup_info table[], value data_val)
+/* Internal C variant - accepts lookup table pointer directly
+ * Converts C enum value to OCaml polymorphic variant
+ */
+value lookup_from_c_direct (const lookup_info *table, int data)
 {
-    int data = Int_val(data_val);
     int i;
     for (i = table[0].data; i > 0; i--)
 	if (table[i].data == data) return table[i].key;
-    caml_invalid_argument ("ml_lookup_from_c");
+    caml_invalid_argument ("lookup_from_c_direct");
 }
 
-CAMLexport value ml_lookup_to_c (const lookup_info table[], value key)
+/* Internal C variant - accepts lookup table pointer directly
+ * Converts OCaml polymorphic variant to C enum value
+ */
+int lookup_to_c_direct (const lookup_info *table, value key)
 {
     int first = 1, last = table[0].data, current;
     while (first < last) {
@@ -40,8 +45,29 @@ CAMLexport value ml_lookup_to_c (const lookup_info table[], value key)
 	if (table[current].key >= key) last = current;
 	else first = current + 1;
     }
-    if (table[first].key == key) return Val_int(table[first].data);
-    caml_invalid_argument ("ml_lookup_to_c");
+    if (table[first].key == key) return table[first].data;
+    caml_invalid_argument ("lookup_to_c_direct");
+}
+
+/* External OCaml FFI variant - accepts lookup table as OCaml value
+ * Converts C enum value to OCaml polymorphic variant
+ */
+CAMLexport value ml_lookup_from_c (value table_val, value data_val)
+{
+    CAMLparam2(table_val, data_val);
+    const lookup_info *table = Lookup_info_val(table_val);
+    int data = Int_val(data_val);
+    CAMLreturn(lookup_from_c_direct(table, data));
+}
+
+/* External OCaml FFI variant - accepts lookup table as OCaml value
+ * Converts OCaml polymorphic variant to C enum value
+ */
+CAMLexport value ml_lookup_to_c (value table_val, value key)
+{
+    CAMLparam2(table_val, key);
+    const lookup_info *table = Lookup_info_val(table_val);
+    CAMLreturn(Val_int(lookup_to_c_direct(table, key)));
 }
 
 /* Copy a C struct into an OCaml abstract block
@@ -67,4 +93,32 @@ CAMLexport value copy_memblock_indirected(void *src, asize_t size)
     memcpy((void*)&Field(ret, 2), src, size);  /* Data starts at Field 2 */
 
     CAMLreturn(ret);
+}
+
+/* Wrap a C pointer in an Abstract block for OCaml 5.0+ compatibility.
+ * This prevents the GC from scanning C pointers as if they were heap values.
+ * Layout: [header | unused | pointer]
+ * Field 0: unused (for alignment)
+ * Field 1: the actual C pointer
+ */
+CAMLexport value Val_pointer(void *ptr)
+{
+    CAMLparam0();
+    CAMLlocal1(ret);
+    ret = caml_alloc_small(2, Abstract_tag);
+    Field(ret, 1) = (value)ptr;
+    CAMLreturn(ret);
+}
+
+value val_of_ext(void *widget) {
+    CAMLparam0();
+    CAMLlocal1(v);
+    v = caml_alloc(1, Abstract_tag);
+    *((void**)Data_abstract_val(v)) = widget;
+    CAMLreturn(v);
+}
+
+void* ext_of_val(value val) {
+    CAMLparam1(val);
+    CAMLreturnT(void*, *((void**)Data_abstract_val(val)));
 }

@@ -21,16 +21,6 @@
 
 #include <gtk/gtk.h>
 
-/* Note: caml_alloc_some is provided by OCaml 4.12+ in caml/alloc.h */
-/* For older versions, projects should use caml_alloc(1, 0) + Store_field */
-
-/* ==================================================================== */
-/* Basic Pointer Conversions */
-/* ==================================================================== */
-
-#define Pointer_val(val) ((void*)Field(val,1))
-#define Val_pointer(p) ((value)(p))
-
 /* For value blocks containing copied C structs */
 #define MLPointer_val(val) \
         ((int)Field(val,1) == 2 ? &Field(val,2) : (void*)Field(val,1))
@@ -40,16 +30,29 @@ CAMLexport value copy_memblock_indirected(void *src, asize_t size);
 #define Val_copy(val) copy_memblock_indirected(&val, sizeof(val))
 
 /* ==================================================================== */
+/* Pointer Wrapping (OCaml 5.0+ compatible) */
+/* ==================================================================== */
+
+/* Wrap C pointers in Abstract blocks to prevent GC scanning */
+CAMLexport value Val_pointer(void *ptr);
+#define Pointer_val(val) ((void*)Field(val,1))
+
+/* ==================================================================== */
 /* Enums <-> Polymorphic Variants */
 /* ==================================================================== */
 
 typedef struct { value key; int data; } lookup_info;
-#define Val_lookup_info(v) Val_pointer((void*)v)
-#define Lookup_info_val(v) ((const lookup_info*)Pointer_val(v))
+#define Val_lookup_info(v) (val_of_ext(v))
+#define Lookup_info_val(v) ((const lookup_info*)ext_of_val(v))
 
 /* Enum conversion functions (implemented in wrappers.c) */
-CAMLexport value ml_lookup_from_c (const lookup_info table[], value data);
-CAMLexport value ml_lookup_to_c (const lookup_info table[], value key);
+/* Internal C variants - accept lookup table pointers directly */
+value lookup_from_c_direct (const lookup_info *table, int data);
+int lookup_to_c_direct (const lookup_info *table, value key);
+
+/* External OCaml FFI variants - accept lookup tables as OCaml values */
+CAMLexport value ml_lookup_from_c (value table, value data);
+CAMLexport value ml_lookup_to_c (value table, value key);
 
 /* ==================================================================== */
 /* OCaml Value Helpers */
@@ -122,60 +125,63 @@ CAMLprim value fname##_bc(value *argv, int argn) \
 /* GTK4/GDK4 Type Conversions */
 /* ==================================================================== */
 
+value val_of_ext(void *ext);
+void* ext_of_val(value val);
+
 /* GdkSurface (was GdkWindow in GTK3) - GObject, use direct cast */
-#define GdkSurface_val(val) ((GdkSurface*)(val))
-#define Val_GdkSurface(obj) ((value)(obj))
+#define GdkSurface_val(val) ((GdkSurface*)(ext_of_val(val)))
+#define Val_GdkSurface(obj) (val_of_ext(obj))
 
 /* GdkDisplay - GObject, use direct cast */
-#define GdkDisplay_val(val) ((GdkDisplay*)(val))
-#define Val_GdkDisplay(obj) ((value)(obj))
+#define GdkDisplay_val(val) ((GdkDisplay*)(ext_of_val(val)))
+#define Val_GdkDisplay(obj) (val_of_ext(obj))
 
 /* GdkSeat (new in GDK4) - GObject, use direct cast */
-#define GdkSeat_val(val) ((GdkSeat*)(val))
-#define Val_GdkSeat(obj) ((value)(obj))
+#define GdkSeat_val(val) ((GdkSeat*)(ext_of_val(val)))
+#define Val_GdkSeat(obj) (val_of_ext(obj))
 
 /* GdkDevice - GObject, use direct cast */
-#define GdkDevice_val(val) ((GdkDevice*)(val))
-#define Val_GdkDevice(obj) ((value)(obj))
+#define GdkDevice_val(val) ((GdkDevice*)(ext_of_val(val)))
+#define Val_GdkDevice(obj) (val_of_ext(obj))
 
 /* GdkRGBA - simple struct, copied by value */
 #define GdkRGBA_val(val) ((GdkRGBA*)MLPointer_val(val))
 /* Val_GdkRGBA: Use Val_copy(rgba) for stack-allocated GdkRGBA */
 
 /* GdkCursor - GObject, use direct cast */
-#define GdkCursor_val(val) ((GdkCursor*)(val))
-#define Val_GdkCursor(obj) ((value)(obj))
+#define GdkCursor_val(val) ((GdkCursor*)(ext_of_val(val)))
+#define Val_GdkCursor(obj) (val_of_ext(obj))
 
 /* GdkClipboard (new in GTK4) - GObject, use direct cast */
-#define GdkClipboard_val(val) ((GdkClipboard*)(val))
-#define Val_GdkClipboard(obj) ((value)(obj))
+#define GdkClipboard_val(val) ((GdkClipboard*)(ext_of_val(val)))
+#define Val_GdkClipboard(obj) (val_of_ext(obj))
 
 /* GdkContentProvider (new in GTK4) - GObject, use direct cast */
-#define GdkContentProvider_val(val) ((GdkContentProvider*)(val))
-#define Val_GdkContentProvider(obj) ((value)(obj))
+#define GdkContentProvider_val(val) ((GdkContentProvider*)(ext_of_val(val)))
+#define Val_GdkContentProvider(obj) (val_of_ext(obj))
 
 /* GtkWidget - GObject, use direct cast */
-#define GtkWidget_val(val) ((GtkWidget*)(val))
-#define Val_GtkWidget(obj) ((value)(obj))
+#define GtkWidget_val(val) ((GtkWidget*)(ext_of_val(val)))
+#define Val_GtkWidget(obj) (val_of_ext(obj))
 
 /* GtkWindow - GObject, use direct cast */
-#define GtkWindow_val(val) ((GtkWindow*)(val))
-#define Val_GtkWindow(obj) ((value)(obj))
+#define GtkWindow_val(val) ((GtkWindow*)(ext_of_val(val)))
+#define Val_GtkWindow(obj) (val_of_ext(obj))
 
 /* GtkScrolledWindow - GObject, use direct cast */
-#define GtkScrolledWindow_val(val) ((GtkScrolledWindow*)(val))
-#define Val_GtkScrolledWindow(obj) ((value)(obj))
+#define GtkScrolledWindow_val(val) ((GtkScrolledWindow*)(ext_of_val(val)))
+#define Val_GtkScrolledWindow(obj) (val_of_ext(obj))
 
 /* GtkFrame - GObject, use direct cast */
-#define GtkFrame_val(val) ((GtkFrame*)(val))
-#define Val_GtkFrame(obj) ((value)(obj))
+#define GtkFrame_val(val) ((GtkFrame*)(ext_of_val(val)))
+#define Val_GtkFrame(obj) (val_of_ext(obj))
 
 /* GObject - use direct cast */
-#define GObject_val(val) ((GObject*)(val))
-#define Val_GObject(obj) ((value)(obj))
+#define GObject_val(val) ((GObject*)(ext_of_val(val)))
+#define Val_GObject(obj) (val_of_ext(obj))
 
 /* GClosure - custom block with finalizer (defined in ml_gobject.c) */
-#define GClosure_val(val) (*((GClosure**)Data_custom_val(val)))
+#define GClosure_val(val) *((GClosure**)Data_custom_val(val))
 
 /* GType */
 #define GType_val(val) ((GType)Long_val(val))
@@ -191,18 +197,18 @@ value Val_GdkPixbuf_(GdkPixbuf *pb, gboolean ref);
 /* Pango Type Conversions */
 /* ==================================================================== */
 
-/* Pango GObject types - use direct cast */
-#define PangoContext_val(val) ((PangoContext*)(val))
-#define Val_PangoContext(obj) ((value)(obj))
+/* Pango GObject types - OCaml 5.0+ requires proper wrapping */
+#define PangoContext_val(val) ((PangoContext*)ext_of_val(val))
+#define Val_PangoContext(obj) (val_of_ext(obj))
 
-#define PangoLayout_val(val) ((PangoLayout*)(val))
-#define Val_PangoLayout(obj) ((value)(obj))
+#define PangoLayout_val(val) ((PangoLayout*)ext_of_val(val))
+#define Val_PangoLayout(obj) (val_of_ext(obj))
 
-#define PangoFont_val(val) ((PangoFont*)(val))
-#define Val_PangoFont(obj) ((value)(obj))
+#define PangoFont_val(val) ((PangoFont*)ext_of_val(val))
+#define Val_PangoFont(obj) (val_of_ext(obj))
 
-#define PangoFontMap_val(val) ((PangoFontMap*)(val))
-#define Val_PangoFontMap(obj) ((value)(obj))
+#define PangoFontMap_val(val) ((PangoFontMap*)ext_of_val(val))
+#define Val_PangoFontMap(obj) (val_of_ext(obj))
 
 /* Pango boxed types - custom blocks */
 #define PangoFontDescription_val(val) (*(PangoFontDescription**)Data_custom_val(val))
@@ -212,9 +218,9 @@ value Val_PangoFontDescription(PangoFontDescription *fd);
 #define PangoFontMetrics_val(val) (*(PangoFontMetrics**)Data_custom_val(val))
 value Val_PangoFontMetrics_new(PangoFontMetrics *fm);
 
-/* PangoLanguage - simple pointer (const static data) */
-#define PangoLanguage_val(val) ((PangoLanguage*)val)
-#define Val_PangoLanguage(lang) ((value)(lang))
+/* PangoLanguage - simple pointer (const static data), OCaml 5.0+ compliant */
+#define PangoLanguage_val(val) ((PangoLanguage*)ext_of_val(val))
+#define Val_PangoLanguage(lang) (val_of_ext((void*)(lang)))
 
 /* ==================================================================== */
 /* String Utilities */

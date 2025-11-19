@@ -34,9 +34,10 @@
 
 CAMLprim value ml_pango_init(value unit)
 {
+  CAMLparam1(unit);
   /* Since these are declared const, must force gcc to call them! */
   GType t = pango_font_description_get_type();
-  return Val_GType(t);
+  CAMLreturn(Val_GType(t));
 }
 
 /* ========================================================================= */
@@ -64,17 +65,20 @@ static struct custom_operations font_description_ops = {
 
 value Val_PangoFontDescription_new(PangoFontDescription *desc)
 {
+  CAMLparam0();
+  CAMLlocal1(val);
   if (!desc) caml_failwith("Val_PangoFontDescription_new: NULL pointer");
 
-  value val = caml_alloc_custom(&font_description_ops, sizeof(PangoFontDescription*), 0, 1);
+  val = caml_alloc_custom(&font_description_ops, sizeof(PangoFontDescription*), 0, 1);
   PangoFontDescription_val(val) = desc;
-  return val;
+  CAMLreturn(val);
 }
 
 value Val_PangoFontDescription(PangoFontDescription *desc)
 {
+  CAMLparam0();
   if (!desc) caml_failwith("Val_PangoFontDescription: NULL pointer");
-  return Val_PangoFontDescription_new(pango_font_description_copy(desc));
+  CAMLreturn(Val_PangoFontDescription_new(pango_font_description_copy(desc)));
 }
 
 ML_1(pango_font_description_from_string, String_val, Val_PangoFontDescription_new)
@@ -120,11 +124,13 @@ static struct custom_operations font_metrics_ops = {
 
 value Val_PangoFontMetrics_new(PangoFontMetrics *metrics)
 {
+  CAMLparam0();
+  CAMLlocal1(val);
   if (!metrics) caml_failwith("Val_PangoFontMetrics_new: NULL pointer");
 
-  value val = caml_alloc_custom(&font_metrics_ops, sizeof(PangoFontMetrics*), 0, 1);
+  val = caml_alloc_custom(&font_metrics_ops, sizeof(PangoFontMetrics*), 0, 1);
   PangoFontMetrics_val(val) = metrics;
-  return val;
+  CAMLreturn(val);
 }
 
 ML_1(pango_font_metrics_get_ascent, PangoFontMetrics_val, Val_int)
@@ -144,6 +150,7 @@ ML_2(pango_font_get_metrics, PangoFont_val, PangoLanguage_val, Val_PangoFontMetr
 
 CAMLprim value ml_pango_font_map_load_font(value map_val, value context_val, value desc_val)
 {
+  CAMLparam3(map_val, context_val, desc_val);
   PangoFontMap *map = PangoFontMap_val(map_val);
   PangoContext *context = PangoContext_val(context_val);
   PangoFontDescription *desc = PangoFontDescription_val(desc_val);
@@ -151,7 +158,7 @@ CAMLprim value ml_pango_font_map_load_font(value map_val, value context_val, val
   PangoFont *font = pango_font_map_load_font(map, context, desc);
   if (!font) caml_failwith("pango_font_map_load_font failed");
 
-  return Val_PangoFont((gpointer)font);
+  CAMLreturn(Val_PangoFont((gpointer)font));
 }
 
 /* ========================================================================= */
@@ -160,15 +167,17 @@ CAMLprim value ml_pango_font_map_load_font(value map_val, value context_val, val
 
 CAMLprim value ml_PANGO_SCALE(value unit)
 {
-  return Val_int(PANGO_SCALE);
+  CAMLparam1(unit);
+  CAMLreturn(Val_int(PANGO_SCALE));
 }
 
 /* This one uses the generated MLTAG but not the conversion functions because
    we have defined float values */
 CAMLprim value ml_Pango_scale_val(value val)
 {
+  CAMLparam1(val);
   double r;
-  if (Is_block(val)) return Field(val,1); /* `CUSTOM */
+  if (Is_block(val)) CAMLreturn(Field(val,1)); /* `CUSTOM */
   switch((long)val)
     {
     case (long)MLTAG_XX_SMALL: r = PANGO_SCALE_XX_SMALL; break;
@@ -182,7 +191,7 @@ CAMLprim value ml_Pango_scale_val(value val)
       r=1;
       break;
     }
-  return caml_copy_double(r);
+  CAMLreturn(caml_copy_double(r));
 }
 
 /* ========================================================================= */
@@ -204,17 +213,19 @@ ML_2(pango_context_set_language, PangoContext_val, PangoLanguage_val, Unit)
 ML_2(pango_context_load_font, PangoContext_val, PangoFontDescription_val, Val_PangoFont)
 CAMLprim value ml_pango_context_load_fontset(value context_val, value desc_val, value lang_val)
 {
+  CAMLparam3(context_val, desc_val, lang_val);
   PangoContext *context = PangoContext_val(context_val);
   PangoFontDescription *desc = PangoFontDescription_val(desc_val);
   PangoLanguage *lang = PangoLanguage_val(lang_val);
 
   PangoFontset *fontset = pango_context_load_fontset(context, desc, lang);
   /* Note: PangoFontset is a GObject, cast to PangoFont for simplicity */
-  return Val_PangoFont((gpointer)fontset);
+  CAMLreturn(Val_PangoFont((gpointer)fontset));
 }
 
 CAMLprim value ml_pango_context_get_metrics(value context_val, value desc_val, value lang_opt_val)
 {
+  CAMLparam3(context_val, desc_val, lang_opt_val);
   PangoContext *context = PangoContext_val(context_val);
   PangoFontDescription *desc = PangoFontDescription_val(desc_val);
   PangoLanguage *lang = (lang_opt_val == Val_none) ? NULL : PangoLanguage_val(Some_val(lang_opt_val));
@@ -222,7 +233,7 @@ CAMLprim value ml_pango_context_get_metrics(value context_val, value desc_val, v
   PangoFontMetrics *metrics = pango_context_get_metrics(context, desc, lang);
   if (!metrics) caml_failwith("pango_context_get_metrics failed");
 
-  return Val_PangoFontMetrics_new(metrics);
+  CAMLreturn(Val_PangoFontMetrics_new(metrics));
 }
 
 /* ========================================================================= */
@@ -235,34 +246,37 @@ ML_1(pango_layout_get_context, PangoLayout_val, Val_PangoContext)
 
 CAMLprim value ml_pango_layout_set_text(value layout_val, value text_val)
 {
+  CAMLparam2(layout_val, text_val);
   PangoLayout *layout = PangoLayout_val(layout_val);
   const char *text = String_val(text_val);
   int len = caml_string_length(text_val);
   pango_layout_set_text(layout, text, len);
-  return Val_unit;
+  CAMLreturn(Val_unit);
 }
 
 ML_1(pango_layout_get_text, PangoLayout_val, caml_copy_string)
 
 CAMLprim value ml_pango_layout_set_markup(value layout_val, value markup_val)
 {
+  CAMLparam2(layout_val, markup_val);
   PangoLayout *layout = PangoLayout_val(layout_val);
   const char *markup = String_val(markup_val);
   int len = caml_string_length(markup_val);
   pango_layout_set_markup(layout, markup, len);
-  return Val_unit;
+  CAMLreturn(Val_unit);
 }
 
 CAMLprim value ml_pango_layout_set_markup_with_accel(value layout_val, value markup_val,
                                                       value accel_val, value accel_out_val)
 {
+  CAMLparam4(layout_val, markup_val, accel_val, accel_out_val);
   PangoLayout *layout = PangoLayout_val(layout_val);
   const char *markup = String_val(markup_val);
   int len = caml_string_length(markup_val);
   gunichar accel_marker = Int_val(accel_val);
 
   pango_layout_set_markup_with_accel(layout, markup, len, accel_marker, NULL);
-  return Val_unit;
+  CAMLreturn(Val_unit);
 }
 
 ML_2(pango_layout_set_font_description, PangoLayout_val, PangoFontDescription_val, Unit)

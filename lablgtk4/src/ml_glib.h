@@ -16,8 +16,8 @@
 #include <caml/mlvalues.h>
 
 /* GMainLoop wrapper */
-#define GMainLoop_val(val) ((GMainLoop*)Pointer_val(val))
-#define Val_GMainLoop(obj) (Val_pointer(obj))
+#define GMainLoop_val(val) ((GMainLoop*)ext_of_val(val))
+#define Val_GMainLoop(obj) (val_of_ext(obj))
 
 /* List conversion functions (declared in wrappers.h but implemented in ml_glib.c) */
 /* These are exported for use by other modules */

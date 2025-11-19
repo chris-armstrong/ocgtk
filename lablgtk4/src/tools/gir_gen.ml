@@ -882,8 +882,8 @@ let generate_c_header () =
 #include \"ml_gobject.h\"\n\
 \n\
 /* Type conversions - use direct cast (GObjects) */\n\
-#define GtkEventController_val(val) ((GtkEventController*)Pointer_val(val))\n\
-#define Val_GtkEventController(obj) ((value)(obj))\n\
+#define GtkEventController_val(val) ((GtkEventController*)ext_of_val(val))\n\
+#define Val_GtkEventController(obj) ((value)(val_of_ext(obj)))\n\
 /* Note: GtkWidget_val and Val_GtkWidget are defined in wrappers.h */\n\
 \n\
 /* Phase 5.3: Option type conversions for nullable parameters */\n\
@@ -891,8 +891,8 @@ let generate_c_header () =
 #define GtkEventController_option_val(v) ((v) == Val_none ? NULL : GtkEventController_val(Some_val(v)))\n\
 \n\
 /* GdkEvent conversions - from ml_event_controller.c */\n\
-#define GdkEvent_val(val) ((GdkEvent*)Pointer_val(val))\n\
-#define Val_GdkEvent(obj) ((value)(obj))\n\
+#define GdkEvent_val(val) ((GdkEvent*)ext_of_val(val))\n\
+#define Val_GdkEvent(obj) ((value)(val_of_ext(obj)))\n\
 \n"
 
 let generate_c_constructor ~enums ~bitfields (ctor : gir_constructor) (cls : gir_class) =

@@ -51,15 +51,17 @@ static struct custom_operations ml_custom_GdkPixbuf = {
 
 value Val_GdkPixbuf_(GdkPixbuf *pb, gboolean ref)
 {
+    CAMLparam0();
+    CAMLlocal1(ret);
     GdkPixbuf **p;
-    value ret;
+
     if (pb == NULL) {
         caml_failwith("GdkPixbuf_val: NULL pointer");
     }
     ret = caml_alloc_custom(&ml_custom_GdkPixbuf, sizeof(pb), 100, 1000);
     p = Data_custom_val(ret);
     *p = ref ? g_object_ref(pb) : pb;
-    return ret;
+    CAMLreturn(ret);
 }
 
 Make_Val_option(GdkPixbuf)
