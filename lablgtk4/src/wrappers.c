@@ -22,21 +22,22 @@
 
 /* Enum/variant conversion functions */
 
-CAMLexport value ml_lookup_from_c (value table_val, value data_val)
+/* Internal C variant - accepts lookup table pointer directly
+ * Converts C enum value to OCaml polymorphic variant
+ */
+value lookup_from_c_direct (const lookup_info *table, int data)
 {
-    CAMLparam2(table_val, data_val);
-    const lookup_info *table = Lookup_info_val(table_val);
-    int data = Int_val(data_val);
     int i;
     for (i = table[0].data; i > 0; i--)
-	if (table[i].data == data) CAMLreturn(table[i].key);
-    caml_invalid_argument ("ml_lookup_from_c");
+	if (table[i].data == data) return table[i].key;
+    caml_invalid_argument ("lookup_from_c_direct");
 }
 
-CAMLexport value ml_lookup_to_c (value table_val, value key)
+/* Internal C variant - accepts lookup table pointer directly
+ * Converts OCaml polymorphic variant to C enum value
+ */
+int lookup_to_c_direct (const lookup_info *table, value key)
 {
-    CAMLparam2(table_val, key);
-    const lookup_info *table = Lookup_info_val(table_val);
     int first = 1, last = table[0].data, current;
     while (first < last) {
 	/* Avoid integer overflow in midpoint calculation */
@@ -44,8 +45,29 @@ CAMLexport value ml_lookup_to_c (value table_val, value key)
 	if (table[current].key >= key) last = current;
 	else first = current + 1;
     }
-    if (table[first].key == key) CAMLreturn(Val_int(table[first].data));
-    caml_invalid_argument ("ml_lookup_to_c");
+    if (table[first].key == key) return table[first].data;
+    caml_invalid_argument ("lookup_to_c_direct");
+}
+
+/* External OCaml FFI variant - accepts lookup table as OCaml value
+ * Converts C enum value to OCaml polymorphic variant
+ */
+CAMLexport value ml_lookup_from_c (value table_val, value data_val)
+{
+    CAMLparam2(table_val, data_val);
+    const lookup_info *table = Lookup_info_val(table_val);
+    int data = Int_val(data_val);
+    CAMLreturn(lookup_from_c_direct(table, data));
+}
+
+/* External OCaml FFI variant - accepts lookup table as OCaml value
+ * Converts OCaml polymorphic variant to C enum value
+ */
+CAMLexport value ml_lookup_to_c (value table_val, value key)
+{
+    CAMLparam2(table_val, key);
+    const lookup_info *table = Lookup_info_val(table_val);
+    CAMLreturn(Val_int(lookup_to_c_direct(table, key)));
 }
 
 /* Copy a C struct into an OCaml abstract block
