@@ -42,8 +42,8 @@ CAMLexport value Val_pointer(void *ptr);
 /* ==================================================================== */
 
 typedef struct { value key; int data; } lookup_info;
-#define Val_lookup_info(v) Val_pointer((void*)v)
-#define Lookup_info_val(v) ((const lookup_info*)Pointer_val(v))
+#define Val_lookup_info(v) (val_of_ext(v))
+#define Lookup_info_val(v) ((const lookup_info*)ext_of_val(v))
 
 /* Enum conversion functions (implemented in wrappers.c) */
 CAMLexport value ml_lookup_from_c (value table, value data);
