@@ -27,6 +27,7 @@ type gir_param = {
   param_name : string;
   param_type : gir_type;
   nullable : bool;  (* Phase 5.3: Support nullable parameters *)
+  varargs: bool;
 }
 
 type gir_method = {
@@ -35,6 +36,7 @@ type gir_method = {
   return_type : gir_type;
   parameters : gir_param list;
   doc : string option;
+  throws: bool;
 }
 
 type gir_signal = {
@@ -350,7 +352,7 @@ let is_platform_specific_type type_name =
   List.mem type_name ~set:platform_specific_type_blacklist
 
 (* Phase 5.3: OCaml C FFI limitation - max 5 parameters *)
-let max_caml_params = 5
+(* let max_caml_params = 5 *)
 
 (* Bug fix #5: Try to find type mapping using both c_type and GIR name *)
 let find_type_mapping_for_gir_type ?(enums=[]) ?(bitfields=[]) (gir_type : gir_type) =
@@ -455,6 +457,14 @@ let get_attr name attrs =
     try
       List.assoc ("http://www.gtk.org/introspection/c/1.0", String.sub ~pos:2 ~len:(String.length name - 2) name) attrs |> fun x -> Some x
     with Not_found -> None
+
+let parse_bool ?(default = false) attr =
+  match attr with
+  | Some "true" | Some "1"-> true
+  | Some "false" | Some "0"-> false
+  | Some "" -> default
+  | Some x -> failwith (sprintf "Invalid boolean attribute value: %s" x)
+  | None -> default
 
 (* ========================================================================= *)
 (* Filter File Support (Phase 5) *)
@@ -569,6 +579,7 @@ let parse_gir_file filename mode filter_classes =
           | "method" ->
             (match get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs with
             | Some method_name, Some c_id ->
+              let  throws = get_attr "throws" tag_attrs |> parse_bool in
               let (return_type, params) = parse_method () in
               methods := {
                 method_name = method_name;
@@ -576,6 +587,7 @@ let parse_gir_file filename mode filter_classes =
                 return_type = return_type;
                 parameters = params;
                 doc = None;
+                throws = throws;
               } :: !methods;
               parse_class_contents ()
             | _ ->
@@ -851,8 +863,29 @@ let parse_gir_file filename mode filter_classes =
       | `El_start ((_, "parameter"), attrs) ->
         let param_name = match get_attr "name" attrs with Some n -> n | None -> "arg" in
         let nullable = match get_attr "nullable" attrs with Some "1" -> true | _ -> false in
-        let param_type = parse_parameter_type () in
-        params := { param_name = param_name; param_type = param_type; nullable = nullable } :: !params;
+        let varargs = ref false in
+        let type_ = ref { name = "void"; c_type = "void"} in
+        let rec parse_param_contents () =
+          match Xmlm.input input with
+          | `El_start ((_, "varargs"), attrs) ->
+            varargs := true;
+            skip_element 1;
+            parse_param_contents ()
+          | `El_start ((_, "type"), attrs) ->
+            let type_name = match get_attr "name" attrs with Some n -> n | None -> "void" in
+            let c_type_name = match get_attr "c:type" attrs with Some t -> t | None -> type_name in
+            type_ := { name = type_name; c_type = c_type_name };
+            skip_element 1;
+            parse_param_contents ()
+          | `El_start _ ->
+            skip_element 1;
+            parse_param_contents ()
+          | `El_end -> (!type_, !varargs)
+          | `Data _ | `Dtd _ ->
+            parse_param_contents ()
+        in
+        let (param_type, varargs) = parse_param_contents () in
+        params := { param_name = param_name; param_type = param_type; nullable = nullable ; varargs = varargs} :: !params;
         parse_params_contents ()
 
       | `El_start ((_, "instance-parameter"), _) ->
@@ -876,35 +909,6 @@ let parse_gir_file filename mode filter_classes =
     parse_params_contents ();
     !params
 
-  (* Parse parameter type *)
-  and parse_parameter_type () =
-    let type_info = ref { name = "void"; c_type = "void" } in
-
-    let rec parse_param_type_contents () =
-      match Xmlm.input input with
-      | `El_start ((_, "type"), attrs) ->
-        let type_name = match get_attr "name" attrs with Some n -> n | None -> "void" in
-        let c_type_name = match get_attr "c:type" attrs with Some t -> t | None -> type_name in
-        type_info := { name = type_name; c_type = c_type_name };
-        skip_element 1;
-        parse_param_type_contents ()
-
-      | `El_start _ ->
-        skip_element 1;
-        parse_param_type_contents ()
-
-      | `El_end ->
-        ()
-
-      | `Data _ ->
-        parse_param_type_contents ()
-
-      | `Dtd _ ->
-        parse_param_type_contents ()
-    in
-
-    parse_param_type_contents ();
-    !type_info
   and parse_interface attrs () =
     let name  = get_attr "name" attrs  |> Option.get in
     let c_type = match get_attr "c:type" attrs with
@@ -922,6 +926,7 @@ let parse_gir_file filename mode filter_classes =
           | "method" ->
             (match get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs with
             | Some method_name, Some c_id ->
+                let  throws = get_attr "throws" tag_attrs |> parse_bool in
               let (return_type, params) = parse_method () in
               methods := {
                 method_name = method_name;
@@ -929,6 +934,7 @@ let parse_gir_file filename mode filter_classes =
                 return_type = return_type;
                 parameters = params;
                 doc = None;
+                throws = throws;
               } :: !methods;
               parse_class_contents ()
             | _ ->
@@ -1044,6 +1050,8 @@ let generate_c_header () =
 /* GdkEvent conversions - from ml_event_controller.c */\n\
 #define GdkEvent_val(val) ((GdkEvent*)ext_of_val(val))\n\
 #define Val_GdkEvent(obj) ((value)(val_of_ext(obj)))\n\
+\n\
+/* Note: Res_Ok, Res_Error, ValUnit, and Val_GError are defined in wrappers.h */\n\
 \n"
 
 let generate_c_constructor ~enums ~bitfields (ctor : gir_constructor) class_name =
@@ -1194,18 +1202,29 @@ let generate_c_method ~enums ~bitfields (meth : gir_method) class_name =
 
   (* Build return conversion *)
   let ret_type = meth.return_type.c_type in
+  let locals = if meth.throws then
+    sprintf "GError *error = NULL;\n"
+  else "" in
   let (c_call, ret_conv) =
+    let args = (String.concat ~sep:", " c_args) ^ (if meth.throws then ", &error" else "") in
+    
     if ret_type = "void" then
-      (sprintf "%s(%s);" c_name (String.concat ~sep:", " c_args),
-       "CAMLreturn(Val_unit);")
+      (sprintf "%s(%s);" c_name args,
+       if meth.throws then 
+         "if (error == NULL) CAMLreturn(Res_Ok(ValUnit)); else CAMLreturn(Res_Error(Val_GError(error)));"
+         else "CAMLreturn(Val_unit);")
     else
       match find_type_mapping ~enums ~bitfields ret_type with
       | Some mapping ->
-        (sprintf "%s result = %s(%s);" ret_type c_name (String.concat ~sep:", " c_args),
-         sprintf "CAMLreturn(%s(result));" mapping.c_to_ml)
+        (sprintf "%s result = %s(%s);" ret_type c_name args,
+         if meth.throws then 
+            sprintf "if (error == NULL) CAMLreturn(Res_Ok(%s(result))); else CAMLreturn(Res_Error(Val_GError(error)));" mapping.c_to_ml
+         else sprintf "CAMLreturn(%s(result));" mapping.c_to_ml)
       | None ->
-        (sprintf "void *result = %s(%s);" c_name (String.concat ~sep:", " c_args),
-         "CAMLreturn((value)result);")
+        (sprintf "void *result = %s(%s);" c_name args,
+         if meth.throws then 
+           "if (error == NULL) CAMLreturn(Res_Ok((value)result)); else CAMLreturn(Res_Error(Val_GError(error)));"
+         else "CAMLreturn((value)result);")
   in
 
   (* For functions with >5 parameters, generate both bytecode and native variants *)
@@ -1219,6 +1238,7 @@ let generate_c_method ~enums ~bitfields (meth : gir_method) class_name =
 {\n\
     CAMLparam5(%s);\n\
     CAMLxparam%d(%s);\n\
+    %s\n
     %s\n\
     %s\n\
 }\n"
@@ -1227,6 +1247,7 @@ let generate_c_method ~enums ~bitfields (meth : gir_method) class_name =
       (String.concat ~sep:", " first_five)
       (param_count - 5)
       (String.concat ~sep:", " rest)
+      locals
       c_call
       ret_conv
     in
@@ -1247,6 +1268,7 @@ let generate_c_method ~enums ~bitfields (meth : gir_method) class_name =
     sprintf "\nCAMLprim value %s(%s)\n\
 {\n\
     CAMLparam%d(%s);\n\
+    %s\n
     %s\n\
     %s\n\
 }\n"
@@ -1254,6 +1276,7 @@ let generate_c_method ~enums ~bitfields (meth : gir_method) class_name =
       (String.concat ~sep:", " params)
       param_count
       (String.concat ~sep:", " param_names)
+      locals
       c_call
       ret_conv
 
@@ -1667,7 +1690,7 @@ let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors
             base_type
         | None ->
           (* Still can't find it - warn and fallback to unit *)
-          eprintf "Warning: Unknown type for method parameter: name=%s c_type=%s\n"
+          eprintf "Warning: Unknown type for method '%s' parameter: name=%s c_type=%s\n" meth.method_name
             p.param_type.name p.param_type.c_type;
           "unit"
       ) meth.parameters in
@@ -1687,8 +1710,16 @@ let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors
             "unit"
       in
 
+      (* Wrap return type in result if method throws errors *)
+      let final_ret_type =
+        if meth.throws then
+          sprintf "(%s, GError.t) result" ret_type_ocaml
+        else
+          ret_type_ocaml
+      in
+
       let full_type =
-        String.concat ~sep:" -> " (["t"] @ param_types @ [ret_type_ocaml])
+        String.concat ~sep:" -> " (["t"] @ param_types @ [final_ret_type])
       in
 
       (* For methods with >5 parameters, use bytecode/native variant syntax *)
@@ -1782,15 +1813,15 @@ let generate_bindings mode filter_file gir_file output_dir =
     (* Phase 5.3: Skip variadic functions and methods with >5 parameters *)
     List.iter ~f:(fun (meth : gir_method) ->
       let c_name = meth.c_identifier in
-      let param_count = 1 + List.length meth.parameters in (* +1 for self *)
+      (* let param_count = 1 + List.length meth.parameters in (* +1 for self *) *)
       let class_snake = to_snake_case class_name in
       let ocaml_name = to_snake_case (
         Str.global_replace (Str.regexp (sprintf "gtk_%s_" class_snake)) "" c_name
       ) in
       (* Skip if: variadic function, too many params, or duplicates property *)
       let should_skip =
-        is_variadic_function c_name ||
-        param_count > max_caml_params ||
+        (meth.parameters |> List.exists ~f:(fun p -> p.varargs)) ||
+        (* param_count > max_caml_params || *)
         List.mem ocaml_name ~set:!property_method_names
       in
       if not should_skip then

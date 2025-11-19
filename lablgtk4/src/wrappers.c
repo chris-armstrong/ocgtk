@@ -122,3 +122,47 @@ void* ext_of_val(value val) {
     CAMLparam1(val);
     CAMLreturnT(void*, *((void**)Data_abstract_val(val)));
 }
+
+/* ========================================================================= */
+/* Error Handling - Result type support for GError                          */
+/* ========================================================================= */
+
+/* Construct an Ok result value */
+value Res_Ok(value v) {
+    CAMLparam1(v);
+    CAMLlocal1(result);
+    result = caml_alloc(1, 0);  /* Ok is tag 0 */
+    Store_field(result, 0, v);
+    CAMLreturn(result);
+}
+
+/* Construct an Error result value */
+value Res_Error(value v) {
+    CAMLparam1(v);
+    CAMLlocal1(result);
+    result = caml_alloc(1, 1);  /* Error is tag 1 */
+    Store_field(result, 0, v);
+    CAMLreturn(result);
+}
+
+/* Convert GError to OCaml GError.t record and free the GError */
+value Val_GError(GError *error) {
+    CAMLparam0();
+    CAMLlocal1(v);
+
+    if (error == NULL) {
+        /* Should not happen, but handle gracefully */
+        v = caml_alloc(3, 0);
+        Store_field(v, 0, Val_int(0));  /* domain */
+        Store_field(v, 1, Val_int(0));  /* code */
+        Store_field(v, 2, caml_copy_string("Unknown error"));  /* message */
+    } else {
+        v = caml_alloc(3, 0);
+        Store_field(v, 0, Val_int(error->domain));  /* domain (GQuark) */
+        Store_field(v, 1, Val_int(error->code));    /* code */
+        Store_field(v, 2, caml_copy_string(error->message ? error->message : "")); /* message */
+        g_error_free(error);  /* Free the GError as it's been converted */
+    }
+
+    CAMLreturn(v);
+}
