@@ -1,10 +1,4 @@
-(* GENERATED IMPLEMENTATION - DO NOT EDIT DIRECTLY *)
-(* Generated from entry.mli *)
-
-(* Type declarations *)
 type t = Gtk.Widget.t
-
-(* External FFI bindings *)
 external new_ : unit -> t = "ml_gtk_entry_new"
 external new_with_buffer : Gtk.Widget.t -> t = "ml_gtk_entry_new_with_buffer"
 external get_activates_default : t -> bool = "ml_gtk_entry_get_activates_default"
@@ -44,16 +38,16 @@ external set_visibility : t -> bool -> unit = "ml_gtk_entry_set_visibility"
 external unset_invisible_char : t -> unit = "ml_gtk_entry_unset_invisible_char"
 external set_tabs : t -> unit -> unit = "ml_gtk_entry_set_tabs"
 external set_placeholder_text : t -> string option -> unit = "ml_gtk_entry_set_placeholder_text"
-external set_input_purpose : t -> int -> unit = "ml_gtk_entry_set_input_purpose"
-external set_input_hints : t -> int -> unit = "ml_gtk_entry_set_input_hints"
-external set_icon_tooltip_text : t -> unit -> string option -> unit = "ml_gtk_entry_set_icon_tooltip_text"
-external set_icon_tooltip_markup : t -> unit -> string option -> unit = "ml_gtk_entry_set_icon_tooltip_markup"
-external set_icon_sensitive : t -> unit -> bool -> unit = "ml_gtk_entry_set_icon_sensitive"
-external set_icon_from_paintable : t -> unit -> unit -> unit = "ml_gtk_entry_set_icon_from_paintable"
-external set_icon_from_icon_name : t -> unit -> string option -> unit = "ml_gtk_entry_set_icon_from_icon_name"
-external set_icon_from_gicon : t -> unit -> unit -> unit = "ml_gtk_entry_set_icon_from_gicon"
-external set_icon_drag_source : t -> unit -> unit -> unit -> unit = "ml_gtk_entry_set_icon_drag_source"
-external set_icon_activatable : t -> unit -> bool -> unit = "ml_gtk_entry_set_icon_activatable"
+external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit = "ml_gtk_entry_set_input_purpose"
+external set_input_hints : t -> Gtk_enums.inputhints -> unit = "ml_gtk_entry_set_input_hints"
+external set_icon_tooltip_text : t -> Gtk_enums.entryiconposition -> string option -> unit = "ml_gtk_entry_set_icon_tooltip_text"
+external set_icon_tooltip_markup : t -> Gtk_enums.entryiconposition -> string option -> unit = "ml_gtk_entry_set_icon_tooltip_markup"
+external set_icon_sensitive : t -> Gtk_enums.entryiconposition -> bool -> unit = "ml_gtk_entry_set_icon_sensitive"
+external set_icon_from_paintable : t -> Gtk_enums.entryiconposition -> unit -> unit = "ml_gtk_entry_set_icon_from_paintable"
+external set_icon_from_icon_name : t -> Gtk_enums.entryiconposition -> string option -> unit = "ml_gtk_entry_set_icon_from_icon_name"
+external set_icon_from_gicon : t -> Gtk_enums.entryiconposition -> unit -> unit = "ml_gtk_entry_set_icon_from_gicon"
+external set_icon_drag_source : t -> Gtk_enums.entryiconposition -> unit -> unit -> unit = "ml_gtk_entry_set_icon_drag_source"
+external set_icon_activatable : t -> Gtk_enums.entryiconposition -> bool -> unit = "ml_gtk_entry_set_icon_activatable"
 external set_extra_menu : t -> unit -> unit = "ml_gtk_entry_set_extra_menu"
 external set_completion : t -> Gtk.Widget.t option -> unit = "ml_gtk_entry_set_completion"
 external set_buffer : t -> Gtk.Widget.t -> unit = "ml_gtk_entry_set_buffer"
@@ -64,30 +58,28 @@ external progress_pulse : t -> unit = "ml_gtk_entry_progress_pulse"
 external grab_focus_without_selecting : t -> bool = "ml_gtk_entry_grab_focus_without_selecting"
 external get_tabs : t -> unit = "ml_gtk_entry_get_tabs"
 external get_placeholder_text : t -> string = "ml_gtk_entry_get_placeholder_text"
-external get_input_purpose : t -> int = "ml_gtk_entry_get_input_purpose"
-external get_input_hints : t -> int = "ml_gtk_entry_get_input_hints"
-external get_icon_tooltip_text : t -> unit -> unit = "ml_gtk_entry_get_icon_tooltip_text"
-external get_icon_tooltip_markup : t -> unit -> unit = "ml_gtk_entry_get_icon_tooltip_markup"
-external get_icon_storage_type : t -> unit -> int = "ml_gtk_entry_get_icon_storage_type"
-external get_icon_sensitive : t -> unit -> bool = "ml_gtk_entry_get_icon_sensitive"
-external get_icon_paintable : t -> unit -> unit = "ml_gtk_entry_get_icon_paintable"
-external get_icon_name : t -> unit -> string = "ml_gtk_entry_get_icon_name"
-external get_icon_gicon : t -> unit -> unit = "ml_gtk_entry_get_icon_gicon"
-external get_icon_at_pos : t -> unit -> unit -> unit = "ml_gtk_entry_get_icon_at_pos"
-external get_icon_area : t -> unit -> unit -> unit = "ml_gtk_entry_get_icon_area"
-external get_icon_activatable : t -> unit -> bool = "ml_gtk_entry_get_icon_activatable"
+external get_input_purpose : t -> Gtk_enums.inputpurpose = "ml_gtk_entry_get_input_purpose"
+external get_input_hints : t -> Gtk_enums.inputhints = "ml_gtk_entry_get_input_hints"
+external get_icon_tooltip_text : t -> Gtk_enums.entryiconposition -> string = "ml_gtk_entry_get_icon_tooltip_text"
+external get_icon_tooltip_markup : t -> Gtk_enums.entryiconposition -> string = "ml_gtk_entry_get_icon_tooltip_markup"
+external get_icon_storage_type : t -> Gtk_enums.entryiconposition -> Gtk_enums.imagetype = "ml_gtk_entry_get_icon_storage_type"
+external get_icon_sensitive : t -> Gtk_enums.entryiconposition -> bool = "ml_gtk_entry_get_icon_sensitive"
+external get_icon_paintable : t -> Gtk_enums.entryiconposition -> unit = "ml_gtk_entry_get_icon_paintable"
+external get_icon_name : t -> Gtk_enums.entryiconposition -> string = "ml_gtk_entry_get_icon_name"
+external get_icon_gicon : t -> Gtk_enums.entryiconposition -> unit = "ml_gtk_entry_get_icon_gicon"
+external get_icon_at_pos : t -> int -> int -> int = "ml_gtk_entry_get_icon_at_pos"
+external get_icon_area : t -> Gtk_enums.entryiconposition -> unit -> unit = "ml_gtk_entry_get_icon_area"
+external get_icon_activatable : t -> Gtk_enums.entryiconposition -> bool = "ml_gtk_entry_get_icon_activatable"
 external get_extra_menu : t -> unit = "ml_gtk_entry_get_extra_menu"
-external get_current_icon_drag_source : t -> unit = "ml_gtk_entry_get_current_icon_drag_source"
+external get_current_icon_drag_source : t -> int = "ml_gtk_entry_get_current_icon_drag_source"
 external get_completion : t -> Gtk.Widget.t = "ml_gtk_entry_get_completion"
 external get_buffer : t -> Gtk.Widget.t = "ml_gtk_entry_get_buffer"
 external get_attributes : t -> unit = "ml_gtk_entry_get_attributes"
 external get_alignment : t -> float = "ml_gtk_entry_get_alignment"
-
-(* GtkEditable interface methods *)
 external get_text : t -> string = "ml_gtk_editable_get_text"
 external set_text : t -> string -> unit = "ml_gtk_editable_set_text"
 
 (* Summary:
  * - 1 type declarations
- * - 77 external bindings
+ * - 79 external function declarations
  *)

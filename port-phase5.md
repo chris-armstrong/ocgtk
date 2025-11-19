@@ -4,7 +4,7 @@
 
 **Dependencies**: Phase 4 complete (containers and layout system working)
 
-**Status**: 📋 **READY TO START**
+**Status**: 🚧 **IN PROGRESS** - Phase 5.4 (Range Widgets) code generation complete, generator bugs identified
 
 ---
 
@@ -1239,5 +1239,209 @@ Once Phase 5 is complete:
 
 ---
 
-**Last Updated**: 2025-11-16
-**Status**: Phase 5 plan rewritten for code generation approach
+---
+
+## Phase 5.4 Implementation Progress (2025-11-19)
+
+### ✅ Completed:
+
+1. **Code Generation Execution**
+   - Enabled range widgets in `widget_filter.conf`: Scale, Range, ProgressBar, LevelBar, Adjustment
+   - Successfully ran gir_gen to generate bindings for all 5 widgets
+   - Generated files: `scale.mli`, `range.mli`, `progress_bar.mli`, `level_bar.mli`, `adjustment.mli`
+   - Generated C bindings in `ml_event_controllers_gen.c`
+   - Generated enum types in `gtk_enums.mli`
+
+2. **High-Level Wrappers Created**
+   - `lablgtk4/src/gRange.ml` - Implementation (167 lines)
+   - `lablgtk4/src/gRange.mli` - Interface (162 lines)
+   - Classes: progress_bar, range, scale, level_bar
+   - Constructors: progress_bar(), scale(), level_bar(), level_bar_for_interval()
+
+3. **Test Suite**
+   - `lablgtk4/tests/test_range.ml` - Comprehensive tests (197 lines)
+   - Tests for all properties, methods, and high-level API
+   - 29 test cases across 5 test categories
+
+4. **Build Integration**
+   - Updated `src/dune` to include range widget modules
+   - Updated `tests/dune` to include test_range executable
+   - Added `modules_without_implementation` for generated .mli files
+   - Added `gtk_enums` module to module list
+
+### ⚠️ Code Generator Bugs Identified:
+
+The implementation revealed several bugs in `gir_gen.ml` that prevent compilation:
+
+1. **CAMLparam Limitation (CRITICAL)**
+   - Issue: GtkAdjustment constructor has 6 parameters
+   - Problem: OCaml C FFI only supports CAMLparam1-5
+   - Error: `CAMLparam6` undeclared
+   - Fix needed: Generator must use bytecode/native variants for functions with >5 params
+   - Location: `gir_gen.ml:generate_c_constructor`
+
+2. **Return Type Mapping (HIGH)**
+   - Issue: Functions returning `double` mapped to `void*`
+   - Affected: `gtk_range_get_value()`, `gtk_adjustment_get_minimum_increment()`
+   - Error: `incompatible types when initializing type 'void *' using type 'double'`
+   - Fix needed: Improve type_mappings for floating-point returns
+   - Location: `gir_gen.ml:find_type_mapping`, line 1009-1020
+
+3. **Type Qualification (MEDIUM)**
+   - Issue: Generated .mli files use unqualified type names
+   - Examples: `orientation` instead of `Gtk.orientation`, `positiontype` instead of `Gtk_enums.positiontype`
+   - Error: `Unbound type constructor`
+   - Workaround: Manually edited generated files to add proper module qualifiers
+   - Fix needed: Generator should output fully-qualified type names
+   - Location: `gir_gen.ml:generate_ml_interface`, parameters section
+
+4. **GTK3/GTK4 Compatibility (LOW)**
+   - Issue: Generator includes GTK3-only enums (PrintCapabilities)
+   - Error: `GTK_PRINT_CAPABILITY_*` constants undefined in GTK4
+   - Fix needed: Add GTK4 compatibility filter for deprecated types
+   - Location: `gir_gen.ml:parse_gir_file`
+
+5. **Parameter Type Inference (MEDIUM)**
+   - Issue: Some parameters incorrectly mapped to `unit` instead of proper types
+   - Examples: `new_with_range : orientation -> unit -> unit -> unit` should be `orientation -> float -> float -> float`
+   - Workaround: Manually corrected signatures in generated files
+   - Fix needed: Better parameter type detection from GIR introspection data
+
+### 📊 Generated Code Statistics:
+
+- **C Code**: ~3800 lines in `ml_event_controllers_gen.c` (total for all widgets)
+- **OCaml Interfaces**: 5 files totaling ~250 lines
+- **Enum Types**: 106 enumerations, 18 bitfields in `gtk_enums.mli`
+- **High-Level Wrapper**: 167 lines of implementation
+- **Tests**: 197 lines with 29 test cases
+
+### 🔧 Next Steps to Complete Phase 5.4:
+
+1. **Fix Code Generator**
+   - ✅ DONE: Fix return type mapping for doubles and other primitives (Bug #2)
+   - ✅ DONE: Add module qualification to generated type references (Bug #3)
+   - ✅ DONE: Fix parameter type inference using GIR name field (Bug #5)
+   - ⏭️ TODO: Implement bytecode/native variants for >5 parameter functions (Bug #1)
+   - ⏭️ TODO: Filter out GTK3-deprecated types (Bug #4)
+
+2. **Regenerate Bindings** ✅ DONE
+   - Re-run gir_gen after fixes
+   - Verified generated code compiles without manual edits (for bugs 2, 3, 5)
+
+3. **Complete Testing** (Blocked by Bug #1)
+   - Build and run test_range suite
+   - Validate all range widget functionality
+   - Memory leak testing with valgrind
+
+4. **Documentation**
+   - Document fixes applied
+   - Update code generation guide with lessons learned
+
+---
+
+## Code Generator Fixes Applied (2025-11-19)
+
+### ✅ Bug #1: CAMLparam Limitation - FIXED
+
+**Changes**: `lablgtk4/src/tools/gir_gen.ml:1004-1052,1478-1484`
+
+OCaml C FFI only supports CAMLparam1 through CAMLparam5. For functions with >5 parameters, we must use:
+- CAMLparam5 for first 5 parameters
+- CAMLxparamN for remaining N parameters
+- Separate bytecode and native variants
+
+**Implementation**:
+```ocaml
+(* Constructor generation at line 1004-1052 *)
+if param_count > 5 then begin
+  (* Native variant: CAMLparam5 + CAMLxparam *)
+  let native_func = sprintf "\nCAMLprim value %s_native(...)\n\
+  {\n\
+      CAMLparam5(%s);\n\
+      CAMLxparam%d(%s);\n\
+      ...\n\
+  }\n"
+
+  (* Bytecode variant: calls native with array *)
+  let bytecode_func = sprintf "\nCAMLprim value %s_bytecode(value * argv, int argn)\n\
+  {\n\
+      return %s_native(argv[0], argv[1], ...);\n\
+  }\n"
+end
+```
+
+**OCaml signature** (line 1478-1484):
+```ocaml
+external new_ : float -> float -> float -> float -> float -> float -> t =
+  "ml_gtk_adjustment_new_bytecode" "ml_gtk_adjustment_new_native"
+```
+
+**Result**: GtkAdjustment constructor now compiles correctly with 6 float parameters
+
+---
+
+### ✅ Bug #2: Return Type Mapping - FIXED
+
+**Changes**: `lablgtk4/src/tools/gir_gen.ml:145-293`
+
+Added type mappings for C primitive types that GIR uses in `c:type` attributes:
+- `("double", ...)` - Maps to OCaml `float` with `caml_copy_double`
+- `("float", ...)` - Maps to OCaml `float`
+- `("int", ...)` - Maps to OCaml `int`
+
+**Result**: Functions like `gtk_range_get_value()` now correctly return `float` instead of `unit`
+
+---
+
+### ✅ Bug #5: Parameter Type Inference - FIXED
+
+**Changes**: `lablgtk4/src/tools/gir_gen.ml:332-382,1392-1540`
+
+Created `find_type_mapping_for_gir_type` that tries both GIR fields:
+1. Try `c:type` attribute first
+2. Fall back to `name` attribute if c:type fails
+3. Emit warning if both fail (before silently falling back to `unit`)
+
+Updated all parameter and return type lookups to use the new function.
+
+**Result**: Constructors like `new_with_range` now have correct signatures:
+- Before: `orientation -> unit -> unit -> unit`
+- After: `Gtk.orientation -> float -> float -> float`
+
+---
+
+### ✅ Bug #3: Type Qualification - FIXED
+
+**Changes**: `lablgtk4/src/tools/gir_gen.ml:385-408,1421,1460,1514,1535`
+
+Created `qualify_ocaml_type` function that adds module prefixes:
+- Types in Gtk module: `orientation`, `align`, `position_type`, etc.
+- Types in Gtk_enums module: `levelbarmode`, `positiontype`, etc.
+- Preserves already-qualified types
+
+Applied to all generated type references in constructors, properties, methods.
+
+**Result**: No more "Unbound type constructor" errors. All types properly qualified:
+- `Gtk.orientation`
+- `Gtk_enums.positiontype`
+- `Gtk_enums.levelbarmode`
+
+---
+
+## Compilation Status
+
+**Before fixes**: 10+ compilation errors for range widgets
+**After fixes**: 0 errors for range widgets ✅
+
+**All 4 targeted bugs (1, 2, 3, 5) are now FIXED!**
+
+Remaining errors are unrelated to our fixes:
+- ~~Bug #1 (CAMLparam6 for Adjustment)~~ - ✅ FIXED
+- Bug #4 (GtkPrintCapabilities) - not yet fixed (low priority)
+- Pre-existing text widget issues (not from code generator)
+- Pre-existing enum naming issues (`0BSD`)
+
+---
+
+**Last Updated**: 2025-11-19
+**Status**: Bugs 1, 2, 3, 5 FIXED ✅ - All range widgets generate and compile correctly!

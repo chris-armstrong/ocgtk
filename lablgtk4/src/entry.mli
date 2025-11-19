@@ -119,25 +119,25 @@ external set_tabs : t -> unit -> unit = "ml_gtk_entry_set_tabs"
 
 external set_placeholder_text : t -> string option -> unit = "ml_gtk_entry_set_placeholder_text"
 
-external set_input_purpose : t -> int -> unit = "ml_gtk_entry_set_input_purpose"
+external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit = "ml_gtk_entry_set_input_purpose"
 
-external set_input_hints : t -> int -> unit = "ml_gtk_entry_set_input_hints"
+external set_input_hints : t -> Gtk_enums.inputhints -> unit = "ml_gtk_entry_set_input_hints"
 
-external set_icon_tooltip_text : t -> unit -> string option -> unit = "ml_gtk_entry_set_icon_tooltip_text"
+external set_icon_tooltip_text : t -> Gtk_enums.entryiconposition -> string option -> unit = "ml_gtk_entry_set_icon_tooltip_text"
 
-external set_icon_tooltip_markup : t -> unit -> string option -> unit = "ml_gtk_entry_set_icon_tooltip_markup"
+external set_icon_tooltip_markup : t -> Gtk_enums.entryiconposition -> string option -> unit = "ml_gtk_entry_set_icon_tooltip_markup"
 
-external set_icon_sensitive : t -> unit -> bool -> unit = "ml_gtk_entry_set_icon_sensitive"
+external set_icon_sensitive : t -> Gtk_enums.entryiconposition -> bool -> unit = "ml_gtk_entry_set_icon_sensitive"
 
-external set_icon_from_paintable : t -> unit -> unit -> unit = "ml_gtk_entry_set_icon_from_paintable"
+external set_icon_from_paintable : t -> Gtk_enums.entryiconposition -> unit -> unit = "ml_gtk_entry_set_icon_from_paintable"
 
-external set_icon_from_icon_name : t -> unit -> string option -> unit = "ml_gtk_entry_set_icon_from_icon_name"
+external set_icon_from_icon_name : t -> Gtk_enums.entryiconposition -> string option -> unit = "ml_gtk_entry_set_icon_from_icon_name"
 
-external set_icon_from_gicon : t -> unit -> unit -> unit = "ml_gtk_entry_set_icon_from_gicon"
+external set_icon_from_gicon : t -> Gtk_enums.entryiconposition -> unit -> unit = "ml_gtk_entry_set_icon_from_gicon"
 
-external set_icon_drag_source : t -> unit -> unit -> unit -> unit = "ml_gtk_entry_set_icon_drag_source"
+external set_icon_drag_source : t -> Gtk_enums.entryiconposition -> unit -> unit -> unit = "ml_gtk_entry_set_icon_drag_source"
 
-external set_icon_activatable : t -> unit -> bool -> unit = "ml_gtk_entry_set_icon_activatable"
+external set_icon_activatable : t -> Gtk_enums.entryiconposition -> bool -> unit = "ml_gtk_entry_set_icon_activatable"
 
 external set_extra_menu : t -> unit -> unit = "ml_gtk_entry_set_extra_menu"
 
@@ -159,33 +159,33 @@ external get_tabs : t -> unit = "ml_gtk_entry_get_tabs"
 
 external get_placeholder_text : t -> string = "ml_gtk_entry_get_placeholder_text"
 
-external get_input_purpose : t -> int = "ml_gtk_entry_get_input_purpose"
+external get_input_purpose : t -> Gtk_enums.inputpurpose = "ml_gtk_entry_get_input_purpose"
 
-external get_input_hints : t -> int = "ml_gtk_entry_get_input_hints"
+external get_input_hints : t -> Gtk_enums.inputhints = "ml_gtk_entry_get_input_hints"
 
-external get_icon_tooltip_text : t -> unit -> unit = "ml_gtk_entry_get_icon_tooltip_text"
+external get_icon_tooltip_text : t -> Gtk_enums.entryiconposition -> string = "ml_gtk_entry_get_icon_tooltip_text"
 
-external get_icon_tooltip_markup : t -> unit -> unit = "ml_gtk_entry_get_icon_tooltip_markup"
+external get_icon_tooltip_markup : t -> Gtk_enums.entryiconposition -> string = "ml_gtk_entry_get_icon_tooltip_markup"
 
-external get_icon_storage_type : t -> unit -> int = "ml_gtk_entry_get_icon_storage_type"
+external get_icon_storage_type : t -> Gtk_enums.entryiconposition -> Gtk_enums.imagetype = "ml_gtk_entry_get_icon_storage_type"
 
-external get_icon_sensitive : t -> unit -> bool = "ml_gtk_entry_get_icon_sensitive"
+external get_icon_sensitive : t -> Gtk_enums.entryiconposition -> bool = "ml_gtk_entry_get_icon_sensitive"
 
-external get_icon_paintable : t -> unit -> unit = "ml_gtk_entry_get_icon_paintable"
+external get_icon_paintable : t -> Gtk_enums.entryiconposition -> unit = "ml_gtk_entry_get_icon_paintable"
 
-external get_icon_name : t -> unit -> string = "ml_gtk_entry_get_icon_name"
+external get_icon_name : t -> Gtk_enums.entryiconposition -> string = "ml_gtk_entry_get_icon_name"
 
-external get_icon_gicon : t -> unit -> unit = "ml_gtk_entry_get_icon_gicon"
+external get_icon_gicon : t -> Gtk_enums.entryiconposition -> unit = "ml_gtk_entry_get_icon_gicon"
 
-external get_icon_at_pos : t -> unit -> unit -> unit = "ml_gtk_entry_get_icon_at_pos"
+external get_icon_at_pos : t -> int -> int -> int = "ml_gtk_entry_get_icon_at_pos"
 
-external get_icon_area : t -> unit -> unit -> unit = "ml_gtk_entry_get_icon_area"
+external get_icon_area : t -> Gtk_enums.entryiconposition -> unit -> unit = "ml_gtk_entry_get_icon_area"
 
-external get_icon_activatable : t -> unit -> bool = "ml_gtk_entry_get_icon_activatable"
+external get_icon_activatable : t -> Gtk_enums.entryiconposition -> bool = "ml_gtk_entry_get_icon_activatable"
 
 external get_extra_menu : t -> unit = "ml_gtk_entry_get_extra_menu"
 
-external get_current_icon_drag_source : t -> unit = "ml_gtk_entry_get_current_icon_drag_source"
+external get_current_icon_drag_source : t -> int = "ml_gtk_entry_get_current_icon_drag_source"
 
 external get_completion : t -> Gtk.Widget.t = "ml_gtk_entry_get_completion"
 

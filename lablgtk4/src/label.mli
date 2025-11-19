@@ -82,7 +82,7 @@ external set_text : t -> string -> unit = "ml_gtk_label_set_text"
 
 external set_tabs : t -> unit -> unit = "ml_gtk_label_set_tabs"
 
-external set_natural_wrap_mode : t -> int -> unit = "ml_gtk_label_set_natural_wrap_mode"
+external set_natural_wrap_mode : t -> Gtk_enums.naturalwrapmode -> unit = "ml_gtk_label_set_natural_wrap_mode"
 
 external set_mnemonic_widget : t -> Gtk.Widget.t option -> unit = "ml_gtk_label_set_mnemonic_widget"
 
@@ -92,7 +92,7 @@ external set_markup : t -> string -> unit = "ml_gtk_label_set_markup"
 
 external set_label : t -> string -> unit = "ml_gtk_label_set_label"
 
-external set_justify : t -> int -> unit = "ml_gtk_label_set_justify"
+external set_justify : t -> Gtk_enums.justification -> unit = "ml_gtk_label_set_justify"
 
 external set_extra_menu : t -> unit -> unit = "ml_gtk_label_set_extra_menu"
 
@@ -100,7 +100,7 @@ external set_ellipsize : t -> int -> unit = "ml_gtk_label_set_ellipsize"
 
 external set_attributes : t -> unit -> unit = "ml_gtk_label_set_attributes"
 
-external select_region : t -> unit -> unit -> unit = "ml_gtk_label_select_region"
+external select_region : t -> int -> int -> unit = "ml_gtk_label_select_region"
 
 external get_wrap_mode : t -> int = "ml_gtk_label_get_wrap_mode"
 
@@ -108,19 +108,19 @@ external get_text : t -> string = "ml_gtk_label_get_text"
 
 external get_tabs : t -> unit = "ml_gtk_label_get_tabs"
 
-external get_selection_bounds : t -> unit -> unit -> bool = "ml_gtk_label_get_selection_bounds"
+external get_selection_bounds : t -> int -> int -> bool = "ml_gtk_label_get_selection_bounds"
 
-external get_natural_wrap_mode : t -> int = "ml_gtk_label_get_natural_wrap_mode"
+external get_natural_wrap_mode : t -> Gtk_enums.naturalwrapmode = "ml_gtk_label_get_natural_wrap_mode"
 
 external get_mnemonic_widget : t -> Gtk.Widget.t = "ml_gtk_label_get_mnemonic_widget"
 
-external get_layout_offsets : t -> unit -> unit -> unit = "ml_gtk_label_get_layout_offsets"
+external get_layout_offsets : t -> int -> int -> unit = "ml_gtk_label_get_layout_offsets"
 
 external get_layout : t -> unit = "ml_gtk_label_get_layout"
 
 external get_label : t -> string = "ml_gtk_label_get_label"
 
-external get_justify : t -> int = "ml_gtk_label_get_justify"
+external get_justify : t -> Gtk_enums.justification = "ml_gtk_label_get_justify"
 
 external get_extra_menu : t -> unit = "ml_gtk_label_get_extra_menu"
 

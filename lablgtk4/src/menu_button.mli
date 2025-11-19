@@ -52,7 +52,7 @@ external set_label : t -> string -> unit = "ml_gtk_menu_button_set_label"
 
 external set_icon_name : t -> string -> unit = "ml_gtk_menu_button_set_icon_name"
 
-external set_direction : t -> int -> unit = "ml_gtk_menu_button_set_direction"
+external set_direction : t -> Gtk_enums.arrowtype -> unit = "ml_gtk_menu_button_set_direction"
 
 external set_create_popup_func : t -> unit -> unit -> unit -> unit = "ml_gtk_menu_button_set_create_popup_func"
 
@@ -70,7 +70,7 @@ external get_label : t -> string = "ml_gtk_menu_button_get_label"
 
 external get_icon_name : t -> string = "ml_gtk_menu_button_get_icon_name"
 
-external get_direction : t -> int = "ml_gtk_menu_button_get_direction"
+external get_direction : t -> Gtk_enums.arrowtype = "ml_gtk_menu_button_get_direction"
 
 external get_child : t -> Gtk.Widget.t = "ml_gtk_menu_button_get_child"
 

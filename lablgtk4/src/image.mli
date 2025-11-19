@@ -38,7 +38,7 @@ external get_use_fallback : t -> bool = "ml_gtk_image_get_use_fallback"
 (** Set property: use-fallback *)
 external set_use_fallback : t -> bool -> unit = "ml_gtk_image_set_use_fallback"
 
-external set_icon_size : t -> int -> unit = "ml_gtk_image_set_icon_size"
+external set_icon_size : t -> Gtk_enums.iconsize -> unit = "ml_gtk_image_set_icon_size"
 
 external set_from_resource : t -> string option -> unit = "ml_gtk_image_set_from_resource"
 
@@ -52,11 +52,11 @@ external set_from_gicon : t -> unit -> unit = "ml_gtk_image_set_from_gicon"
 
 external set_from_file : t -> string option -> unit = "ml_gtk_image_set_from_file"
 
-external get_storage_type : t -> int = "ml_gtk_image_get_storage_type"
+external get_storage_type : t -> Gtk_enums.imagetype = "ml_gtk_image_get_storage_type"
 
 external get_paintable : t -> unit = "ml_gtk_image_get_paintable"
 
-external get_icon_size : t -> int = "ml_gtk_image_get_icon_size"
+external get_icon_size : t -> Gtk_enums.iconsize = "ml_gtk_image_get_icon_size"
 
 external get_icon_name : t -> string = "ml_gtk_image_get_icon_name"
 

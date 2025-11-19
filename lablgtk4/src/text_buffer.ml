@@ -1,10 +1,4 @@
-(* GENERATED IMPLEMENTATION - DO NOT EDIT DIRECTLY *)
-(* Generated from text_buffer.mli *)
-
-(* Type declarations *)
 type t = Gtk.Widget.t
-
-(* External FFI bindings *)
 external new_ : Gtk.Widget.t option -> t = "ml_gtk_text_buffer_new"
 external get_can_redo : t -> bool = "ml_gtk_text_buffer_get_can_redo"
 external get_can_undo : t -> bool = "ml_gtk_text_buffer_get_can_undo"
@@ -13,7 +7,7 @@ external get_enable_undo : t -> bool = "ml_gtk_text_buffer_get_enable_undo"
 external set_enable_undo : t -> bool -> unit = "ml_gtk_text_buffer_set_enable_undo"
 external get_has_selection : t -> bool = "ml_gtk_text_buffer_get_has_selection"
 external undo : t -> unit = "ml_gtk_text_buffer_undo"
-external set_text : t -> string -> unit -> unit = "ml_gtk_text_buffer_set_text"
+external set_text : t -> string -> int -> unit = "ml_gtk_text_buffer_set_text"
 external set_modified : t -> bool -> unit = "ml_gtk_text_buffer_set_modified"
 external set_max_undo_levels : t -> int -> unit = "ml_gtk_text_buffer_set_max_undo_levels"
 external select_range : t -> unit -> unit -> unit = "ml_gtk_text_buffer_select_range"
@@ -29,28 +23,28 @@ external move_mark : t -> Gtk.Widget.t -> unit -> unit = "ml_gtk_text_buffer_mov
 external insert_range_interactive : t -> Gtk.Widget.t -> unit -> unit -> bool -> bool = "ml_gtk_text_buffer_insert_range_interactive"
 external insert_range : t -> Gtk.Widget.t -> unit -> unit -> unit = "ml_gtk_text_buffer_insert_range"
 external insert_paintable : t -> Gtk.Widget.t -> unit -> unit = "ml_gtk_text_buffer_insert_paintable"
-external insert_markup : t -> Gtk.Widget.t -> string -> unit -> unit = "ml_gtk_text_buffer_insert_markup"
-external insert_interactive_at_cursor : t -> string -> unit -> bool -> bool = "ml_gtk_text_buffer_insert_interactive_at_cursor"
-external insert_interactive : t -> Gtk.Widget.t -> string -> unit -> bool -> bool = "ml_gtk_text_buffer_insert_interactive"
+external insert_markup : t -> Gtk.Widget.t -> string -> int -> unit = "ml_gtk_text_buffer_insert_markup"
+external insert_interactive_at_cursor : t -> string -> int -> bool -> bool = "ml_gtk_text_buffer_insert_interactive_at_cursor"
+external insert_interactive : t -> Gtk.Widget.t -> string -> int -> bool -> bool = "ml_gtk_text_buffer_insert_interactive"
 external insert_child_anchor : t -> Gtk.Widget.t -> Gtk.Widget.t -> unit = "ml_gtk_text_buffer_insert_child_anchor"
-external insert_at_cursor : t -> string -> unit -> unit = "ml_gtk_text_buffer_insert_at_cursor"
-external insert : t -> Gtk.Widget.t -> string -> unit -> unit = "ml_gtk_text_buffer_insert"
-external get_text : t -> unit -> unit -> bool -> unit = "ml_gtk_text_buffer_get_text"
+external insert_at_cursor : t -> string -> int -> unit = "ml_gtk_text_buffer_insert_at_cursor"
+external insert : t -> Gtk.Widget.t -> string -> int -> unit = "ml_gtk_text_buffer_insert"
+external get_text : t -> unit -> unit -> bool -> string = "ml_gtk_text_buffer_get_text"
 external get_tag_table : t -> Gtk.Widget.t = "ml_gtk_text_buffer_get_tag_table"
 external get_start_iter : t -> Gtk.Widget.t -> unit = "ml_gtk_text_buffer_get_start_iter"
-external get_slice : t -> unit -> unit -> bool -> unit = "ml_gtk_text_buffer_get_slice"
+external get_slice : t -> unit -> unit -> bool -> string = "ml_gtk_text_buffer_get_slice"
 external get_selection_content : t -> unit = "ml_gtk_text_buffer_get_selection_content"
 external get_selection_bounds : t -> Gtk.Widget.t -> Gtk.Widget.t -> bool = "ml_gtk_text_buffer_get_selection_bounds"
 external get_selection_bound : t -> Gtk.Widget.t = "ml_gtk_text_buffer_get_selection_bound"
 external get_modified : t -> bool = "ml_gtk_text_buffer_get_modified"
 external get_max_undo_levels : t -> int = "ml_gtk_text_buffer_get_max_undo_levels"
 external get_mark : t -> string -> Gtk.Widget.t = "ml_gtk_text_buffer_get_mark"
-external get_line_count : t -> unit = "ml_gtk_text_buffer_get_line_count"
-external get_iter_at_offset : t -> Gtk.Widget.t -> unit -> unit = "ml_gtk_text_buffer_get_iter_at_offset"
+external get_line_count : t -> int = "ml_gtk_text_buffer_get_line_count"
+external get_iter_at_offset : t -> Gtk.Widget.t -> int -> unit = "ml_gtk_text_buffer_get_iter_at_offset"
 external get_iter_at_mark : t -> Gtk.Widget.t -> Gtk.Widget.t -> unit = "ml_gtk_text_buffer_get_iter_at_mark"
-external get_iter_at_line_offset : t -> Gtk.Widget.t -> unit -> unit -> bool = "ml_gtk_text_buffer_get_iter_at_line_offset"
-external get_iter_at_line_index : t -> Gtk.Widget.t -> unit -> unit -> bool = "ml_gtk_text_buffer_get_iter_at_line_index"
-external get_iter_at_line : t -> Gtk.Widget.t -> unit -> bool = "ml_gtk_text_buffer_get_iter_at_line"
+external get_iter_at_line_offset : t -> Gtk.Widget.t -> int -> int -> bool = "ml_gtk_text_buffer_get_iter_at_line_offset"
+external get_iter_at_line_index : t -> Gtk.Widget.t -> int -> int -> bool = "ml_gtk_text_buffer_get_iter_at_line_index"
+external get_iter_at_line : t -> Gtk.Widget.t -> int -> bool = "ml_gtk_text_buffer_get_iter_at_line"
 external get_iter_at_child_anchor : t -> Gtk.Widget.t -> Gtk.Widget.t -> unit = "ml_gtk_text_buffer_get_iter_at_child_anchor"
 external get_insert : t -> Gtk.Widget.t = "ml_gtk_text_buffer_get_insert"
 external get_end_iter : t -> Gtk.Widget.t -> unit = "ml_gtk_text_buffer_get_end_iter"
@@ -77,5 +71,5 @@ external add_mark : t -> Gtk.Widget.t -> unit -> unit = "ml_gtk_text_buffer_add_
 
 (* Summary:
  * - 1 type declarations
- * - 69 external bindings
+ * - 69 external function declarations
  *)

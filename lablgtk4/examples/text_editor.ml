@@ -16,7 +16,7 @@ let () =
   let buffer = Text_buffer.new_ None in
   let text_view = Text_view.new_ () in
   Text_view.set_buffer text_view (Some buffer);
-  Text_view.set_wrap_mode text_view 2; (* GTK_WRAP_WORD *)
+  Text_view.set_wrap_mode text_view `WORD;
 
   (* Add scrolled window for text view *)
   let scrolled = GScrolledWindow.scrolled_window () in
@@ -24,8 +24,8 @@ let () =
   vbox#append (scrolled :> GObj.widget);
 
   (* Insert some initial text *)
-  Text_buffer.insert_at_cursor buffer "Welcome to the Simple Text Editor!\n\n" ();
-  Text_buffer.insert_at_cursor buffer "Type your text here.\n" ();
+  Text_buffer.insert_at_cursor buffer "Welcome to the Simple Text Editor!\n\n" (-1);
+  Text_buffer.insert_at_cursor buffer "Type your text here.\n" (-1);
 
   (* Entry for new text *)
   let entry = Entry.new_ () in
@@ -43,7 +43,7 @@ let () =
   ignore (insert_btn#connect#clicked ~callback:(fun () ->
     let text = Entry.get_text entry in
     if text <> "" then begin
-      Text_buffer.insert_at_cursor buffer (text ^ "\n") ();
+      Text_buffer.insert_at_cursor buffer (text ^ "\n") (-1);
       Entry.set_text entry ""
     end
   ));
@@ -53,7 +53,7 @@ let () =
   button_box#append (clear_btn :> GObj.widget);
 
   ignore (clear_btn#connect#clicked ~callback:(fun () ->
-    Text_buffer.set_text buffer "" ()
+    Text_buffer.set_text buffer "" (-1)
   ));
 
   (* Status label *)

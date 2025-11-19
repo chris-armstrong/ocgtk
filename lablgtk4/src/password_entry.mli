@@ -24,10 +24,8 @@ external set_extra_menu : t -> unit -> unit = "ml_gtk_password_entry_set_extra_m
 
 external get_extra_menu : t -> unit = "ml_gtk_password_entry_get_extra_menu"
 
-(** Get property: placeholder-text *)
 external get_placeholder_text : t -> string = "ml_gtk_password_entry_get_placeholder_text"
 
-(** Set property: placeholder-text *)
 external set_placeholder_text : t -> string option -> unit = "ml_gtk_password_entry_set_placeholder_text"
 
 (* GtkEditable interface methods *)

@@ -132,8 +132,8 @@ external get_word_set : t -> bool = "ml_gtk_text_tag_get_word_set"
 external set_word_set : t -> bool -> unit = "ml_gtk_text_tag_set_word_set"
 external get_wrap_mode_set : t -> bool = "ml_gtk_text_tag_get_wrap_mode_set"
 external set_wrap_mode_set : t -> bool -> unit = "ml_gtk_text_tag_set_wrap_mode_set"
-external set_priority : t -> unit -> unit = "ml_gtk_text_tag_set_priority"
-external get_priority : t -> unit = "ml_gtk_text_tag_get_priority"
+external set_priority : t -> int -> unit = "ml_gtk_text_tag_set_priority"
+external get_priority : t -> int = "ml_gtk_text_tag_get_priority"
 external changed : t -> bool -> unit = "ml_gtk_text_tag_changed"
 
 (* Summary:

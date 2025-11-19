@@ -141,6 +141,13 @@ let type_mappings = [
     ml_to_c = "Double_val";
     needs_copy = true;
   });
+  (* Bug fix #2: Add "double" mapping for c:type="double" in GIR *)
+  ("double", {
+    ocaml_type = "float";
+    c_to_ml = "caml_copy_double";
+    ml_to_c = "Double_val";
+    needs_copy = true;
+  });
   ("gboolean", {
     ocaml_type = "bool";
     c_to_ml = "Val_bool";
@@ -270,11 +277,19 @@ let type_mappings = [
     ml_to_c = "Double_val";
     needs_copy = true;
   });
+  (* Bug fix #2: Ensure both gfloat and float are mapped *)
   ("float", {
     ocaml_type = "float";
     c_to_ml = "caml_copy_double";
     ml_to_c = "Double_val";
     needs_copy = true;
+  });
+  (* Bug fix #2: Add int mapping for c:type="int" in GIR *)
+  ("int", {
+    ocaml_type = "int";
+    c_to_ml = "Val_int";
+    ml_to_c = "Int_val";
+    needs_copy = false;
   });
   (* GdkEvent - pointer type *)
   ("GdkEvent*", {
@@ -310,50 +325,100 @@ let variadic_function_blacklist = [
 let is_variadic_function c_identifier =
   List.mem c_identifier ~set:variadic_function_blacklist
 
+(* Bug fix #4: Blacklist for types requiring platform-specific headers *)
+let platform_specific_type_blacklist = [
+  "PrintCapabilities";  (* Requires unix-print headers *)
+  "PageSetup";          (* Print-related *)
+  "PrintSettings";      (* Print-related *)
+  "PrintContext";       (* Print-related *)
+  "PrintOperation";     (* Print-related *)
+  "License";            (* Has invalid identifier 0BSD *)
+]
+
+let is_platform_specific_type type_name =
+  List.mem type_name ~set:platform_specific_type_blacklist
+
 (* Phase 5.3: OCaml C FFI limitation - max 5 parameters *)
 let max_caml_params = 5
 
-let find_type_mapping ?(enums=[]) ?(bitfields=[]) c_type =
-  (* First, check if this is a known enum *)
-  let enum_mapping =
-    List.find_opt ~f:(fun (e : gir_enum) -> e.enum_c_type = c_type) enums in
-  match enum_mapping with
-  | Some enum ->
-    Some {
-      ocaml_type = String.lowercase_ascii enum.enum_name;
-      c_to_ml = sprintf "Val_%s" enum.enum_name;
-      ml_to_c = sprintf "%s_val" enum.enum_name;
-      needs_copy = false;
-    }
-  | None ->
-    (* Check if this is a known bitfield *)
-    let bitfield_mapping =
-      List.find_opt ~f:(fun (b : gir_bitfield) -> b.bitfield_c_type = c_type) bitfields in
-    (match bitfield_mapping with
-    | Some bitfield ->
+(* Bug fix #5: Try to find type mapping using both c_type and GIR name *)
+let find_type_mapping_for_gir_type ?(enums=[]) ?(bitfields=[]) (gir_type : gir_type) =
+  let try_lookup lookup_str =
+    (* First, check if this is a known enum *)
+    let enum_mapping =
+      List.find_opt ~f:(fun (e : gir_enum) -> e.enum_c_type = lookup_str) enums in
+    match enum_mapping with
+    | Some enum ->
       Some {
-        ocaml_type = String.lowercase_ascii bitfield.bitfield_name;
-        c_to_ml = sprintf "Val_%s" bitfield.bitfield_name;
-        ml_to_c = sprintf "%s_val" bitfield.bitfield_name;
+        ocaml_type = String.lowercase_ascii enum.enum_name;
+        c_to_ml = sprintf "Val_%s" enum.enum_name;
+        ml_to_c = sprintf "%s_val" enum.enum_name;
         needs_copy = false;
       }
     | None ->
-      (* Fall back to hardcoded type mappings *)
-      try
-        Some (List.assoc c_type type_mappings)
-      with Not_found ->
-        (* Phase 5.3: Handle any Gtk widget pointer type generically *)
-        if String.length c_type > 3 &&
-           String.sub c_type ~pos:0 ~len:3 = "Gtk" &&
-           String.sub c_type ~pos:(String.length c_type - 1) ~len:1 = "*" then
-          Some {
-            ocaml_type = "Gtk.Widget.t";
-            c_to_ml = "Val_GtkWidget";
-            ml_to_c = "GtkWidget_val";
-            needs_copy = false;
-          }
-        else
-          None)
+      (* Check if this is a known bitfield *)
+      let bitfield_mapping =
+        List.find_opt ~f:(fun (b : gir_bitfield) -> b.bitfield_c_type = lookup_str) bitfields in
+      (match bitfield_mapping with
+      | Some bitfield ->
+        Some {
+          ocaml_type = String.lowercase_ascii bitfield.bitfield_name;
+          c_to_ml = sprintf "Val_%s" bitfield.bitfield_name;
+          ml_to_c = sprintf "%s_val" bitfield.bitfield_name;
+          needs_copy = false;
+        }
+      | None ->
+        (* Fall back to hardcoded type mappings *)
+        try
+          Some (List.assoc lookup_str type_mappings)
+        with Not_found ->
+          (* Phase 5.3: Handle any Gtk widget pointer type generically *)
+          if String.length lookup_str > 3 &&
+             String.sub lookup_str ~pos:0 ~len:3 = "Gtk" &&
+             String.sub lookup_str ~pos:(String.length lookup_str - 1) ~len:1 = "*" then
+            Some {
+              ocaml_type = "Gtk.Widget.t";
+              c_to_ml = "Val_GtkWidget";
+              ml_to_c = "GtkWidget_val";
+              needs_copy = false;
+            }
+          else
+            None)
+  in
+  (* Try c_type first, then GIR name if c_type fails *)
+  match try_lookup gir_type.c_type with
+  | Some mapping -> Some mapping
+  | None -> try_lookup gir_type.name
+
+(* Keep old function signature for compatibility *)
+let find_type_mapping ?(enums=[]) ?(bitfields=[]) c_type =
+  find_type_mapping_for_gir_type ~enums ~bitfields { name = c_type; c_type = c_type }
+
+(* Bug fix #3: Add module qualification for types that need it *)
+let qualify_ocaml_type ocaml_type =
+  (* Check if type is already qualified (contains a dot) *)
+  if String.contains ocaml_type '.' then
+    ocaml_type
+  else
+    (* List of types that should be qualified with Gtk module *)
+    let gtk_types = [
+      "orientation"; "align"; "baseline_position"; "position_type";
+      "size_request_mode"; "state_flags";
+    ] in
+    (* List of types from gtk_enums module *)
+    let gtk_enum_types = [
+      "levelbarmode"; "positiontype"; "orientation"; "align";
+      "justification"; "wrapmode"; "inputpurpose"; "inputhints";
+      "iconsize"; "imagetype"; "arrowtype"; "spintype";
+      "spinbuttonupdatepolicy"; "naturalwrapmode"; "textwindowtype";
+      "ellipsizemode"; "entryiconposition";
+    ] in
+    if List.mem ocaml_type ~set:gtk_types then
+      sprintf "Gtk.%s" ocaml_type
+    else if List.mem ocaml_type ~set:gtk_enum_types then
+      sprintf "Gtk_enums.%s" ocaml_type
+    else
+      ocaml_type
 
 (* ========================================================================= *)
 (* Utility Functions *)
@@ -593,47 +658,53 @@ let parse_gir_file filename mode filter_classes =
   and parse_enumeration attrs =
     match get_attr "name" attrs, get_attr "c:type" attrs with
     | Some name, Some c_type ->
-      let members = ref [] in
+      (* Bug fix #4: Skip platform-specific types *)
+      if is_platform_specific_type name then begin
+        skip_element 1;
+        None
+      end else begin
+        let members = ref [] in
 
-      let rec parse_enum_contents () =
-        match Xmlm.input input with
-        | `El_start ((_, "member"), member_attrs) ->
-          (match get_attr "name" member_attrs, get_attr "value" member_attrs, get_attr "c:identifier" member_attrs with
-          | Some member_name, Some value_str, Some c_id ->
-            let value = try int_of_string value_str with _ -> 0 in
-            members := {
-              member_name = member_name;
-              member_value = value;
-              c_identifier = c_id;
-              member_doc = None;
-            } :: !members;
+        let rec parse_enum_contents () =
+          match Xmlm.input input with
+          | `El_start ((_, "member"), member_attrs) ->
+            (match get_attr "name" member_attrs, get_attr "value" member_attrs, get_attr "c:identifier" member_attrs with
+            | Some member_name, Some value_str, Some c_id ->
+              let value = try int_of_string value_str with _ -> 0 in
+              members := {
+                member_name = member_name;
+                member_value = value;
+                c_identifier = c_id;
+                member_doc = None;
+              } :: !members;
+              skip_element 1;
+              parse_enum_contents ()
+            | _ ->
+              skip_element 1;
+              parse_enum_contents ())
+
+          | `El_start _ ->
             skip_element 1;
             parse_enum_contents ()
-          | _ ->
-            skip_element 1;
-            parse_enum_contents ())
 
-        | `El_start _ ->
-          skip_element 1;
-          parse_enum_contents ()
+          | `El_end ->
+            ()  (* End of enumeration *)
 
-        | `El_end ->
-          ()  (* End of enumeration *)
+          | `Data _ ->
+            parse_enum_contents ()
 
-        | `Data _ ->
-          parse_enum_contents ()
+          | `Dtd _ ->
+            parse_enum_contents ()
+        in
 
-        | `Dtd _ ->
-          parse_enum_contents ()
-      in
-
-      parse_enum_contents ();
-      Some {
-        enum_name = name;
-        enum_c_type = c_type;
-        members = List.rev !members;
-        enum_doc = None;
-      }
+        parse_enum_contents ();
+        Some {
+          enum_name = name;
+          enum_c_type = c_type;
+          members = List.rev !members;
+          enum_doc = None;
+        }
+      end
 
     | _ ->
       skip_element 1;
@@ -643,47 +714,53 @@ let parse_gir_file filename mode filter_classes =
   and parse_bitfield attrs =
     match get_attr "name" attrs, get_attr "c:type" attrs with
     | Some name, Some c_type ->
-      let flags = ref [] in
+      (* Bug fix #4: Skip platform-specific types *)
+      if is_platform_specific_type name then begin
+        skip_element 1;
+        None
+      end else begin
+        let flags = ref [] in
 
-      let rec parse_bitfield_contents () =
-        match Xmlm.input input with
-        | `El_start ((_, "member"), member_attrs) ->
-          (match get_attr "name" member_attrs, get_attr "value" member_attrs, get_attr "c:identifier" member_attrs with
-          | Some flag_name, Some value_str, Some c_id ->
-            let value = try int_of_string value_str with _ -> 0 in
-            flags := {
-              flag_name = flag_name;
-              flag_value = value;
-              flag_c_identifier = c_id;
-              flag_doc = None;
-            } :: !flags;
+        let rec parse_bitfield_contents () =
+          match Xmlm.input input with
+          | `El_start ((_, "member"), member_attrs) ->
+            (match get_attr "name" member_attrs, get_attr "value" member_attrs, get_attr "c:identifier" member_attrs with
+            | Some flag_name, Some value_str, Some c_id ->
+              let value = try int_of_string value_str with _ -> 0 in
+              flags := {
+                flag_name = flag_name;
+                flag_value = value;
+                flag_c_identifier = c_id;
+                flag_doc = None;
+              } :: !flags;
+              skip_element 1;
+              parse_bitfield_contents ()
+            | _ ->
+              skip_element 1;
+              parse_bitfield_contents ())
+
+          | `El_start _ ->
             skip_element 1;
             parse_bitfield_contents ()
-          | _ ->
-            skip_element 1;
-            parse_bitfield_contents ())
 
-        | `El_start _ ->
-          skip_element 1;
-          parse_bitfield_contents ()
+          | `El_end ->
+            ()  (* End of bitfield *)
 
-        | `El_end ->
-          ()  (* End of bitfield *)
+          | `Data _ ->
+            parse_bitfield_contents ()
 
-        | `Data _ ->
-          parse_bitfield_contents ()
+          | `Dtd _ ->
+            parse_bitfield_contents ()
+        in
 
-        | `Dtd _ ->
-          parse_bitfield_contents ()
-      in
-
-      parse_bitfield_contents ();
-      Some {
-        bitfield_name = name;
-        bitfield_c_type = c_type;
-        flags = List.rev !flags;
-        bitfield_doc = None;
-      }
+        parse_bitfield_contents ();
+        Some {
+          bitfield_name = name;
+          bitfield_c_type = c_type;
+          flags = List.rev !flags;
+          bitfield_doc = None;
+        }
+      end
 
     | _ ->
       skip_element 1;
@@ -949,18 +1026,55 @@ let generate_c_constructor ~enums ~bitfields (ctor : gir_constructor) (cls : gir
     ) ctor.ctor_parameters
   in
 
-  sprintf "\nCAMLprim value %s(%s)\n\
+  (* Bug fix #1: Handle >5 parameters with bytecode/native variants *)
+  if param_count > 5 then begin
+    (* Split param_names into first 5 and rest *)
+    let first_five = List.filteri ~f:(fun i _ -> i < 5) param_names in
+    let rest = List.filteri ~f:(fun i _ -> i >= 5) param_names in
+
+    (* Native code variant - individual parameters *)
+    let native_func = sprintf "\nCAMLprim value %s_native(%s)\n\
+{\n\
+    CAMLparam5(%s);\n\
+    CAMLxparam%d(%s);\n\
+    %s *%s = %s(%s);\n\
+    CAMLreturn(%s(%s));\n\
+}\n"
+      ml_name
+      (String.concat ~sep:", " params)
+      (String.concat ~sep:", " first_five)
+      (param_count - 5)
+      (String.concat ~sep:", " rest)
+      c_type_name var_name c_name (String.concat ~sep:", " c_args)
+      val_macro var_name
+    in
+
+    (* Bytecode variant - array of values *)
+    let bytecode_func = sprintf "\nCAMLprim value %s_bytecode(value * argv, int argn)\n\
+{\n\
+    return %s_native(%s);\n\
+}\n"
+      ml_name
+      ml_name
+      (String.concat ~sep:", " (List.mapi ~f:(fun i _ -> sprintf "argv[%d]" i) param_names))
+    in
+
+    native_func ^ bytecode_func
+  end else begin
+    (* Standard single function for <=5 parameters *)
+    sprintf "\nCAMLprim value %s(%s)\n\
 {\n\
     CAMLparam%d(%s);\n\
     %s *%s = %s(%s);\n\
     CAMLreturn(%s(%s));\n\
 }\n"
-    ml_name
-    (String.concat ~sep:", " params)
-    param_count
-    (String.concat ~sep:", " param_names)
-    c_type_name var_name c_name (String.concat ~sep:", " c_args)
-    val_macro var_name
+      ml_name
+      (String.concat ~sep:", " params)
+      param_count
+      (String.concat ~sep:", " param_names)
+      c_type_name var_name c_name (String.concat ~sep:", " c_args)
+      val_macro var_name
+  end
 
 let generate_c_method ~enums ~bitfields (meth : gir_method) cls =
   let c_name = meth.c_identifier in
@@ -1235,11 +1349,16 @@ let generate_c_enum_converters enum =
     bprintf buf "static value %s(%s val) {\n" val_func enum.enum_c_type;
     bprintf buf "  switch (val) {\n";
 
+    (* Track seen values to avoid duplicate case statements (e.g., GTK_ALIGN_BASELINE = GTK_ALIGN_BASELINE_FILL) *)
+    let seen_values = Hashtbl.create 10 in
     List.iter ~f:(fun enum_member ->
-      let variant_name = String.uppercase_ascii enum_member.member_name in
-      let hash = Hashtbl.hash variant_name in
-      bprintf buf "    case %s: return Val_int(%d); /* `%s */\n"
-        enum_member.c_identifier hash variant_name;
+      if not (Hashtbl.mem seen_values enum_member.member_value) then begin
+        Hashtbl.add seen_values enum_member.member_value true;
+        let variant_name = String.uppercase_ascii enum_member.member_name in
+        let hash = Hashtbl.hash variant_name in
+        bprintf buf "    case %s: return Val_int(%d); /* `%s */\n"
+          enum_member.c_identifier hash variant_name;
+      end
     ) enum.members;
 
     bprintf buf "    default: return Val_int(%d); /* fallback to first variant */\n"
@@ -1361,15 +1480,21 @@ let generate_ml_interface ~enums ~bitfields cls =
     in
 
     (* Build parameter types for constructor signature *)
+    (* Bug fix #5: Use find_type_mapping_for_gir_type to try both c_type and name *)
     let param_types = List.map ~f:(fun p ->
-      match find_type_mapping ~enums ~bitfields p.param_type.c_type with
+      match find_type_mapping_for_gir_type ~enums ~bitfields p.param_type with
       | Some mapping ->
-        let base_type = mapping.ocaml_type in
+        (* Bug fix #3: Qualify type names *)
+        let base_type = qualify_ocaml_type mapping.ocaml_type in
         if p.nullable then
           sprintf "%s option" base_type
         else
           base_type
-      | None -> "unit" (* fallback *)
+      | None ->
+        (* Still can't find it - warn and fallback to unit *)
+        eprintf "Warning: Unknown type for parameter: name=%s c_type=%s\n"
+          p.param_type.name p.param_type.c_type;
+        "unit"
     ) ctor.ctor_parameters in
 
     (* Generate signature: param1 -> param2 -> ... -> t *)
@@ -1380,7 +1505,13 @@ let generate_ml_interface ~enums ~bitfields cls =
         String.concat ~sep:" -> " (param_types @ ["t"])
     in
 
-    bprintf buf "external %s : %s = \"%s\"\n\n" ocaml_ctor_name signature ml_name;
+    (* Bug fix #1: For >5 parameters, reference bytecode/native variants *)
+    let param_count = if List.length ctor.ctor_parameters = 0 then 1 else List.length ctor.ctor_parameters in
+    if param_count > 5 then
+      bprintf buf "external %s : %s = \"%s_bytecode\" \"%s_native\"\n\n"
+        ocaml_ctor_name signature ml_name ml_name
+    else
+      bprintf buf "external %s : %s = \"%s\"\n\n" ocaml_ctor_name signature ml_name;
   ) cls.constructors;
 
   (* Properties - generate get/set externals *)
@@ -1398,7 +1529,8 @@ let generate_ml_interface ~enums ~bitfields cls =
         let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
         let prop_snake = to_snake_case prop_name_cleaned in
         let class_snake = to_snake_case cls.class_name in
-        let prop_ocaml_type = type_mapping.ocaml_type in
+        (* Bug fix #3: Qualify type names *)
+        let prop_ocaml_type = qualify_ocaml_type type_mapping.ocaml_type in
 
         (* Generate getter if readable *)
         if prop.readable then begin
@@ -1448,25 +1580,37 @@ let generate_ml_interface ~enums ~bitfields cls =
       | None -> ());
 
       (* Build OCaml type signature - handle nullable parameters *)
+      (* Bug fix #5: Use find_type_mapping_for_gir_type to try both c_type and name *)
       let param_types = List.map ~f:(fun p ->
-        match find_type_mapping ~enums ~bitfields p.param_type.c_type with
+        match find_type_mapping_for_gir_type ~enums ~bitfields p.param_type with
         | Some mapping ->
-          let base_type = mapping.ocaml_type in
+          (* Bug fix #3: Qualify type names *)
+          let base_type = qualify_ocaml_type mapping.ocaml_type in
           if p.nullable then
             (* Wrap in option type *)
             sprintf "%s option" base_type
           else
             base_type
-        | None -> "unit" (* fallback *)
+        | None ->
+          (* Still can't find it - warn and fallback to unit *)
+          eprintf "Warning: Unknown type for method parameter: name=%s c_type=%s\n"
+            p.param_type.name p.param_type.c_type;
+          "unit"
       ) meth.parameters in
 
       let ret_type_ocaml =
         if meth.return_type.c_type = "void" then
           "unit"
         else
-          match find_type_mapping ~enums ~bitfields meth.return_type.c_type with
-          | Some mapping -> mapping.ocaml_type
-          | None -> "unit"
+          (* Bug fix #5: Use find_type_mapping_for_gir_type for return types *)
+          match find_type_mapping_for_gir_type ~enums ~bitfields meth.return_type with
+          | Some mapping ->
+            (* Bug fix #3: Qualify type names *)
+            qualify_ocaml_type mapping.ocaml_type
+          | None ->
+            eprintf "Warning: Unknown return type for method %s: name=%s c_type=%s\n"
+              meth.method_name meth.return_type.name meth.return_type.c_type;
+            "unit"
       in
 
       let full_type =

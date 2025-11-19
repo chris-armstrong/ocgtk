@@ -24,15 +24,15 @@ external set_placeholder_text : t -> string option -> unit = "ml_gtk_search_entr
 
 external set_key_capture_widget : t -> Gtk.Widget.t option -> unit = "ml_gtk_search_entry_set_key_capture_widget"
 
-external set_input_purpose : t -> int -> unit = "ml_gtk_search_entry_set_input_purpose"
+external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit = "ml_gtk_search_entry_set_input_purpose"
 
-external set_input_hints : t -> int -> unit = "ml_gtk_search_entry_set_input_hints"
+external set_input_hints : t -> Gtk_enums.inputhints -> unit = "ml_gtk_search_entry_set_input_hints"
 
 external get_placeholder_text : t -> string = "ml_gtk_search_entry_get_placeholder_text"
 
 external get_key_capture_widget : t -> Gtk.Widget.t = "ml_gtk_search_entry_get_key_capture_widget"
 
-external get_input_purpose : t -> int = "ml_gtk_search_entry_get_input_purpose"
+external get_input_purpose : t -> Gtk_enums.inputpurpose = "ml_gtk_search_entry_get_input_purpose"
 
-external get_input_hints : t -> int = "ml_gtk_search_entry_get_input_hints"
+external get_input_hints : t -> Gtk_enums.inputhints = "ml_gtk_search_entry_get_input_hints"
 

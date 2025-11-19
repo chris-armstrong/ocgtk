@@ -144,6 +144,11 @@
  (modules test_button)
  (libraries lablgtk4 alcotest))
 
+(executable
+ (name test_range)
+ (modules test_range)
+ (libraries lablgtk4 alcotest))
+
 ; ============================================================================
 ; Custom Test Runner to Avoid Dune Process Management Race Condition
 ; ============================================================================
