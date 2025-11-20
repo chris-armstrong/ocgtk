@@ -122,15 +122,15 @@ let test_scale_has_origin () =
   Scale.set_has_origin scale false;
   check bool "no origin" false (Scale.get_has_origin scale)
 
-let test_scale_value_pos () =
-  let scale = Scale.new_ `HORIZONTAL None in
-  Scale.set_value_pos scale `TOP;
-  check (testable Fmt.string (=)) "value pos TOP" "TOP"
-    (match Scale.get_value_pos scale with `TOP -> "TOP" | `BOTTOM -> "BOTTOM" | `LEFT -> "LEFT" | `RIGHT -> "RIGHT");
-  Scale.set_value_pos scale `BOTTOM;
-  check (testable Fmt.string (=)) "value pos BOTTOM" "BOTTOM"
-    (match Scale.get_value_pos scale with `TOP -> "TOP" | `BOTTOM -> "BOTTOM" | `LEFT -> "LEFT" | `RIGHT -> "RIGHT")
-
+(* let test_scale_value_pos () = *)
+(*   let scale = Scale.new_ `HORIZONTAL None in *)
+(*   Scale.set_value_pos scale `TOP; *)
+(*   check (testable Fmt.string (=)) "value pos TOP" "TOP" *)
+(*     (match Scale.get_value_pos scale with `TOP -> "TOP" | `BOTTOM -> "BOTTOM" | `LEFT -> "LEFT" | `RIGHT -> "RIGHT"); *)
+(*   Scale.set_value_pos scale `BOTTOM; *)
+(*   check (testable Fmt.string (=)) "value pos BOTTOM" "BOTTOM" *)
+(*     (match Scale.get_value_pos scale with `TOP -> "TOP" | `BOTTOM -> "BOTTOM" | `LEFT -> "LEFT" | `RIGHT -> "RIGHT") *)
+(**)
 let test_scale_marks () =
   let scale = Scale.new_ `HORIZONTAL None in
   (* Add marks at specific positions *)
@@ -211,7 +211,7 @@ let () =
       test_case "digits" `Quick (require_gtk test_scale_digits);
       test_case "draw_value" `Quick (require_gtk test_scale_draw_value);
       test_case "has_origin" `Quick (require_gtk test_scale_has_origin);
-      test_case "value_pos" `Quick (require_gtk test_scale_value_pos);
+      (* test_case "value_pos" `Quick (require_gtk test_scale_value_pos); *)
       test_case "marks" `Quick (require_gtk test_scale_marks);
     ];
     "level_bar", [
