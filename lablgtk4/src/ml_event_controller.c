@@ -131,14 +131,14 @@ static const lookup_info propagation_limit_table[] = {
 //     CAMLreturn(Val_option(event, Val_GdkEvent));
 // }
 //
-// CAMLprim value ml_gtk_event_controller_get_current_event_time(value controller)
-// {
-//     CAMLparam1(controller);
-//     guint32 time = gtk_event_controller_get_current_event_time(
-//         GtkEventController_val(controller)
-//     );
-//     CAMLreturn(Val_int(time));
-// }
+CAMLprim value ml_gtk_event_controller_get_current_event_time(value controller)
+{
+    CAMLparam1(controller);
+    guint32 time = gtk_event_controller_get_current_event_time(
+        GtkEventController_val(controller)
+    );
+    CAMLreturn(Val_int(time));
+}
 //
 /* ==================================================================== */
 /* Keyboard Event Controller */

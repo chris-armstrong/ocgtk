@@ -44,11 +44,3 @@ external get_level : t -> Gtk_enums.fontchooserlevel = "ml_gtk_font_chooser_get_
 
 external get_font_size : t -> int = "ml_gtk_font_chooser_get_font_size"
 
-external get_font_map : t -> unit = "ml_gtk_font_chooser_get_font_map"
-
-external get_font_family : t -> unit = "ml_gtk_font_chooser_get_font_family"
-
-external get_font_face : t -> unit = "ml_gtk_font_chooser_get_font_face"
-
-external get_font_desc : t -> unit = "ml_gtk_font_chooser_get_font_desc"
-

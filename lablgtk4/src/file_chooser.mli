@@ -35,19 +35,7 @@ external remove_filter : t -> Gtk.Widget.t -> unit = "ml_gtk_file_chooser_remove
 
 external remove_choice : t -> string -> unit = "ml_gtk_file_chooser_remove_choice"
 
-external get_shortcut_folders : t -> unit = "ml_gtk_file_chooser_get_shortcut_folders"
-
-external get_filters : t -> unit = "ml_gtk_file_chooser_get_filters"
-
 external get_filter : t -> Gtk.Widget.t = "ml_gtk_file_chooser_get_filter"
-
-external get_files : t -> unit = "ml_gtk_file_chooser_get_files"
-
-external get_file : t -> unit = "ml_gtk_file_chooser_get_file"
-
-external get_current_name : t -> string = "ml_gtk_file_chooser_get_current_name"
-
-external get_current_folder : t -> unit = "ml_gtk_file_chooser_get_current_folder"
 
 external get_choice : t -> string -> string = "ml_gtk_file_chooser_get_choice"
 

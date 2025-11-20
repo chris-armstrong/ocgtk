@@ -80,10 +80,6 @@ external get_tag_table : t -> Gtk.Widget.t = "ml_gtk_text_buffer_get_tag_table"
 
 external get_start_iter : t -> Gtk.Widget.t -> unit = "ml_gtk_text_buffer_get_start_iter"
 
-external get_slice : t -> unit -> unit -> bool -> string = "ml_gtk_text_buffer_get_slice"
-
-external get_selection_content : t -> unit = "ml_gtk_text_buffer_get_selection_content"
-
 external get_selection_bounds : t -> Gtk.Widget.t -> Gtk.Widget.t -> bool = "ml_gtk_text_buffer_get_selection_bounds"
 
 external get_selection_bound : t -> Gtk.Widget.t = "ml_gtk_text_buffer_get_selection_bound"

@@ -72,11 +72,7 @@ external set_from_file : t -> string option -> unit = "ml_gtk_image_set_from_fil
 
 external get_storage_type : t -> Gtk_enums.imagetype = "ml_gtk_image_get_storage_type"
 
-external get_paintable : t -> unit = "ml_gtk_image_get_paintable"
-
 external get_icon_size : t -> Gtk_enums.iconsize = "ml_gtk_image_get_icon_size"
-
-external get_gicon : t -> unit = "ml_gtk_image_get_gicon"
 
 external clear : t -> unit = "ml_gtk_image_clear"
 

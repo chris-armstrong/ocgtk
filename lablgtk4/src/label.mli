@@ -110,8 +110,6 @@ external get_wrap_mode : t -> Pango.wrapmode = "ml_gtk_label_get_wrap_mode"
 
 external get_text : t -> string = "ml_gtk_label_get_text"
 
-external get_tabs : t -> unit = "ml_gtk_label_get_tabs"
-
 external get_selection_bounds : t -> int -> int -> bool = "ml_gtk_label_get_selection_bounds"
 
 external get_natural_wrap_mode : t -> Gtk_enums.naturalwrapmode = "ml_gtk_label_get_natural_wrap_mode"
@@ -120,15 +118,9 @@ external get_mnemonic_widget : t -> Gtk.Widget.t = "ml_gtk_label_get_mnemonic_wi
 
 external get_layout_offsets : t -> int -> int -> unit = "ml_gtk_label_get_layout_offsets"
 
-external get_layout : t -> unit = "ml_gtk_label_get_layout"
-
 external get_justify : t -> Gtk_enums.justification = "ml_gtk_label_get_justify"
-
-external get_extra_menu : t -> unit = "ml_gtk_label_get_extra_menu"
 
 external get_ellipsize : t -> Pango.ellipsizemode = "ml_gtk_label_get_ellipsize"
 
 external get_current_uri : t -> string = "ml_gtk_label_get_current_uri"
-
-external get_attributes : t -> unit = "ml_gtk_label_get_attributes"
 

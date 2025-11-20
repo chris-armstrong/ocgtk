@@ -37,8 +37,6 @@ external get_value_pos : t -> Gtk_enums.positiontype = "ml_gtk_scale_get_value_p
 
 external get_layout_offsets : t -> int -> int -> unit = "ml_gtk_scale_get_layout_offsets"
 
-external get_layout : t -> unit = "ml_gtk_scale_get_layout"
-
 external clear_marks : t -> unit = "ml_gtk_scale_clear_marks"
 
 external add_mark : t -> float -> Gtk_enums.positiontype -> string option -> unit = "ml_gtk_scale_add_mark"

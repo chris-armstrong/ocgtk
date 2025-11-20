@@ -141,12 +141,6 @@ external get_wrap_mode : t -> Gtk_enums.wrapmode = "ml_gtk_text_view_get_wrap_mo
 
 external get_visible_rect : t -> unit -> unit = "ml_gtk_text_view_get_visible_rect"
 
-external get_tabs : t -> unit = "ml_gtk_text_view_get_tabs"
-
-external get_rtl_context : t -> unit = "ml_gtk_text_view_get_rtl_context"
-
-external get_ltr_context : t -> unit = "ml_gtk_text_view_get_ltr_context"
-
 external get_line_yrange : t -> unit -> int -> int -> unit = "ml_gtk_text_view_get_line_yrange"
 
 external get_line_at_y : t -> Gtk.Widget.t -> int -> int -> unit = "ml_gtk_text_view_get_line_at_y"
@@ -164,8 +158,6 @@ external get_input_purpose : t -> Gtk_enums.inputpurpose = "ml_gtk_text_view_get
 external get_input_hints : t -> Gtk_enums.inputhints = "ml_gtk_text_view_get_input_hints"
 
 external get_gutter : t -> Gtk_enums.textwindowtype -> Gtk.Widget.t = "ml_gtk_text_view_get_gutter"
-
-external get_extra_menu : t -> unit = "ml_gtk_text_view_get_extra_menu"
 
 external get_cursor_locations : t -> unit -> unit -> unit -> unit = "ml_gtk_text_view_get_cursor_locations"
 

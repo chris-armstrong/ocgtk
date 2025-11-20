@@ -13,8 +13,6 @@ external pack_start : t -> Gtk.Widget.t -> bool -> unit = "ml_gtk_cell_layout_pa
 
 external pack_end : t -> Gtk.Widget.t -> bool -> unit = "ml_gtk_cell_layout_pack_end"
 
-external get_cells : t -> unit = "ml_gtk_cell_layout_get_cells"
-
 external get_area : t -> Gtk.Widget.t = "ml_gtk_cell_layout_get_area"
 
 external clear_attributes : t -> Gtk.Widget.t -> unit = "ml_gtk_cell_layout_clear_attributes"

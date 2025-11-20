@@ -72,8 +72,6 @@ external popdown : t -> unit = "ml_gtk_menu_button_popdown"
 
 external get_popover : t -> Gtk.Widget.t = "ml_gtk_menu_button_get_popover"
 
-external get_menu_model : t -> unit = "ml_gtk_menu_button_get_menu_model"
-
 external get_direction : t -> Gtk_enums.arrowtype = "ml_gtk_menu_button_get_direction"
 
 external get_child : t -> Gtk.Widget.t = "ml_gtk_menu_button_get_child"

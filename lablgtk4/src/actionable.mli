@@ -17,5 +17,3 @@ external set_action_target_value : t -> unit -> unit = "ml_gtk_actionable_set_ac
 
 external set_action_target : t -> string -> unit -> unit = "ml_gtk_actionable_set_action_target"
 
-external get_action_target_value : t -> unit = "ml_gtk_actionable_get_action_target_value"
-

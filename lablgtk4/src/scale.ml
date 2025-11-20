@@ -37,7 +37,7 @@ external get_value_pos : t -> Gtk_enums.positiontype = "ml_gtk_scale_get_value_p
 
 external get_layout_offsets : t -> int -> int -> unit = "ml_gtk_scale_get_layout_offsets"
 
-external get_layout : t -> unit = "ml_gtk_scale_get_layout"
+(* SKIPPED: unmapped return type - external get_layout : t -> unit = "ml_gtk_scale_get_layout" *)
 
 external clear_marks : t -> unit = "ml_gtk_scale_clear_marks"
 

@@ -37,8 +37,6 @@ external get_value : t -> Gtk.Widget.t -> int -> unit -> unit = "ml_gtk_tree_mod
 
 external get_valist : t -> Gtk.Widget.t -> unit -> unit = "ml_gtk_tree_model_get_valist"
 
-external get_string_from_iter : t -> Gtk.Widget.t -> string = "ml_gtk_tree_model_get_string_from_iter"
-
 external get_path : t -> Gtk.Widget.t -> Gtk.Widget.t = "ml_gtk_tree_model_get_path"
 
 external get_n_columns : t -> int = "ml_gtk_tree_model_get_n_columns"
@@ -50,8 +48,6 @@ external get_iter_first : t -> Gtk.Widget.t -> bool = "ml_gtk_tree_model_get_ite
 external get_iter : t -> Gtk.Widget.t -> Gtk.Widget.t -> bool = "ml_gtk_tree_model_get_iter"
 
 external get_flags : t -> Gtk_enums.treemodelflags = "ml_gtk_tree_model_get_flags"
-
-external get_column_type : t -> int -> unit = "ml_gtk_tree_model_get_column_type"
 
 external get : t -> Gtk.Widget.t -> unit -> unit = "ml_gtk_tree_model_get"
 

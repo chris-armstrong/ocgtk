@@ -1,0 +1,307 @@
+/* GENERATED CODE - DO NOT EDIT */
+/* C bindings for PrintDialog */
+
+#include <gtk/gtk.h>
+#include <caml/mlvalues.h>
+#include <caml/memory.h>
+#include <caml/alloc.h>
+#include <caml/callback.h>
+#include <caml/fail.h>
+#include "wrappers.h"
+#include "ml_gobject.h"
+
+/* Type conversions - use direct cast (GObjects) */
+#define GtkEventController_val(val) ((GtkEventController*)ext_of_val(val))
+#define Val_GtkEventController(obj) ((value)(val_of_ext(obj)))
+/* Note: GtkWidget_val and Val_GtkWidget are defined in wrappers.h */
+
+/* Phase 5.3: Option type conversions for nullable parameters */
+#define GtkWidget_option_val(v) ((v) == Val_none ? NULL : GtkWidget_val(Some_val(v)))
+#define GtkEventController_option_val(v) ((v) == Val_none ? NULL : GtkEventController_val(Some_val(v)))
+
+/* GdkEvent conversions - from ml_event_controller.c */
+#define GdkEvent_val(val) ((GdkEvent*)ext_of_val(val))
+#define Val_GdkEvent(obj) ((value)(val_of_ext(obj)))
+
+/* Note: Res_Ok, Res_Error, ValUnit, and Val_GError are defined in wrappers.h */
+
+/* Forward declarations for external namespace enum/bitfield converters */
+value Val_GdkAxisUse(GdkAxisUse val);
+GdkAxisUse GdkAxisUse_val(value val);
+value Val_GdkCrossingMode(GdkCrossingMode val);
+GdkCrossingMode GdkCrossingMode_val(value val);
+value Val_GdkDevicePadFeature(GdkDevicePadFeature val);
+GdkDevicePadFeature GdkDevicePadFeature_val(value val);
+value Val_GdkDeviceToolType(GdkDeviceToolType val);
+GdkDeviceToolType GdkDeviceToolType_val(value val);
+value Val_GdkDmabufError(GdkDmabufError val);
+GdkDmabufError GdkDmabufError_val(value val);
+value Val_GdkDragCancelReason(GdkDragCancelReason val);
+GdkDragCancelReason GdkDragCancelReason_val(value val);
+value Val_GdkEventType(GdkEventType val);
+GdkEventType GdkEventType_val(value val);
+value Val_GdkFullscreenMode(GdkFullscreenMode val);
+GdkFullscreenMode GdkFullscreenMode_val(value val);
+value Val_GdkGLError(GdkGLError val);
+GdkGLError GdkGLError_val(value val);
+value Val_GdkGravity(GdkGravity val);
+GdkGravity GdkGravity_val(value val);
+value Val_GdkInputSource(GdkInputSource val);
+GdkInputSource GdkInputSource_val(value val);
+value Val_GdkKeyMatch(GdkKeyMatch val);
+GdkKeyMatch GdkKeyMatch_val(value val);
+value Val_GdkMemoryFormat(GdkMemoryFormat val);
+GdkMemoryFormat GdkMemoryFormat_val(value val);
+value Val_GdkNotifyType(GdkNotifyType val);
+GdkNotifyType GdkNotifyType_val(value val);
+value Val_GdkScrollDirection(GdkScrollDirection val);
+GdkScrollDirection GdkScrollDirection_val(value val);
+value Val_GdkScrollUnit(GdkScrollUnit val);
+GdkScrollUnit GdkScrollUnit_val(value val);
+value Val_GdkSubpixelLayout(GdkSubpixelLayout val);
+GdkSubpixelLayout GdkSubpixelLayout_val(value val);
+value Val_GdkSurfaceEdge(GdkSurfaceEdge val);
+GdkSurfaceEdge GdkSurfaceEdge_val(value val);
+value Val_GdkTextureError(GdkTextureError val);
+GdkTextureError GdkTextureError_val(value val);
+value Val_GdkTitlebarGesture(GdkTitlebarGesture val);
+GdkTitlebarGesture GdkTitlebarGesture_val(value val);
+value Val_GdkTouchpadGesturePhase(GdkTouchpadGesturePhase val);
+GdkTouchpadGesturePhase GdkTouchpadGesturePhase_val(value val);
+value Val_GdkVulkanError(GdkVulkanError val);
+GdkVulkanError GdkVulkanError_val(value val);
+value Val_PangoAlignment(PangoAlignment val);
+PangoAlignment PangoAlignment_val(value val);
+value Val_PangoAttrType(PangoAttrType val);
+PangoAttrType PangoAttrType_val(value val);
+value Val_PangoBaselineShift(PangoBaselineShift val);
+PangoBaselineShift PangoBaselineShift_val(value val);
+value Val_PangoBidiType(PangoBidiType val);
+PangoBidiType PangoBidiType_val(value val);
+value Val_PangoCoverageLevel(PangoCoverageLevel val);
+PangoCoverageLevel PangoCoverageLevel_val(value val);
+value Val_PangoDirection(PangoDirection val);
+PangoDirection PangoDirection_val(value val);
+value Val_PangoEllipsizeMode(PangoEllipsizeMode val);
+PangoEllipsizeMode PangoEllipsizeMode_val(value val);
+value Val_PangoFontScale(PangoFontScale val);
+PangoFontScale PangoFontScale_val(value val);
+value Val_PangoGravity(PangoGravity val);
+PangoGravity PangoGravity_val(value val);
+value Val_PangoGravityHint(PangoGravityHint val);
+PangoGravityHint PangoGravityHint_val(value val);
+value Val_PangoLayoutDeserializeError(PangoLayoutDeserializeError val);
+PangoLayoutDeserializeError PangoLayoutDeserializeError_val(value val);
+value Val_PangoOverline(PangoOverline val);
+PangoOverline PangoOverline_val(value val);
+value Val_PangoRenderPart(PangoRenderPart val);
+PangoRenderPart PangoRenderPart_val(value val);
+value Val_PangoScript(PangoScript val);
+PangoScript PangoScript_val(value val);
+value Val_PangoStretch(PangoStretch val);
+PangoStretch PangoStretch_val(value val);
+value Val_PangoStyle(PangoStyle val);
+PangoStyle PangoStyle_val(value val);
+value Val_PangoTabAlign(PangoTabAlign val);
+PangoTabAlign PangoTabAlign_val(value val);
+value Val_PangoTextTransform(PangoTextTransform val);
+PangoTextTransform PangoTextTransform_val(value val);
+value Val_PangoUnderline(PangoUnderline val);
+PangoUnderline PangoUnderline_val(value val);
+value Val_PangoVariant(PangoVariant val);
+PangoVariant PangoVariant_val(value val);
+value Val_PangoWeight(PangoWeight val);
+PangoWeight PangoWeight_val(value val);
+value Val_PangoWrapMode(PangoWrapMode val);
+PangoWrapMode PangoWrapMode_val(value val);
+value Val_GdkAnchorHints(GdkAnchorHints flags);
+GdkAnchorHints GdkAnchorHints_val(value list);
+value Val_GdkAxisFlags(GdkAxisFlags flags);
+GdkAxisFlags GdkAxisFlags_val(value list);
+value Val_GdkDragAction(GdkDragAction flags);
+GdkDragAction GdkDragAction_val(value list);
+value Val_GdkFrameClockPhase(GdkFrameClockPhase flags);
+GdkFrameClockPhase GdkFrameClockPhase_val(value list);
+value Val_GdkGLAPI(GdkGLAPI flags);
+GdkGLAPI GdkGLAPI_val(value list);
+value Val_GdkModifierType(GdkModifierType flags);
+GdkModifierType GdkModifierType_val(value list);
+value Val_GdkPaintableFlags(GdkPaintableFlags flags);
+GdkPaintableFlags GdkPaintableFlags_val(value list);
+value Val_GdkSeatCapabilities(GdkSeatCapabilities flags);
+GdkSeatCapabilities GdkSeatCapabilities_val(value list);
+value Val_GdkToplevelState(GdkToplevelState flags);
+GdkToplevelState GdkToplevelState_val(value list);
+value Val_PangoFontMask(PangoFontMask flags);
+PangoFontMask PangoFontMask_val(value list);
+value Val_PangoLayoutDeserializeFlags(PangoLayoutDeserializeFlags flags);
+PangoLayoutDeserializeFlags PangoLayoutDeserializeFlags_val(value list);
+value Val_PangoLayoutSerializeFlags(PangoLayoutSerializeFlags flags);
+PangoLayoutSerializeFlags PangoLayoutSerializeFlags_val(value list);
+value Val_PangoShapeFlags(PangoShapeFlags flags);
+PangoShapeFlags PangoShapeFlags_val(value list);
+value Val_PangoShowFlags(PangoShowFlags flags);
+PangoShowFlags PangoShowFlags_val(value list);
+
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_new(value unit)
+{
+CAMLparam1(unit);
+GtkWidget *widget = gtk_print_dialog_new();
+CAMLreturn(Val_GtkWidget(widget));
+}
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_setup_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+
+    GtkPrintSetup* result = gtk_print_dialog_setup_finish(GtkWidget_val(self), arg1, &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GtkWidget(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_setup(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+
+
+    gtk_print_dialog_setup(GtkWidget_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL), arg2, arg3, arg4);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_set_print_settings(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+
+    gtk_print_dialog_set_print_settings(GtkWidget_val(self), GtkWidget_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_set_page_setup(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+
+    gtk_print_dialog_set_page_setup(GtkWidget_val(self), GtkWidget_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_print_file_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+
+    gboolean result = gtk_print_dialog_print_file_finish(GtkWidget_val(self), arg1, &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_print_file_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam2(arg5, arg6);
+
+
+    gtk_print_dialog_print_file(GtkWidget_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL), (Is_some(arg2) ? GtkWidget_val(Some_val(arg2)) : NULL), arg3, arg4, arg5, arg6);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_print_file_bytecode(value * argv, int argn)
+{
+return ml_gtk_print_dialog_print_file_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6]);
+}
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_print_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam1(arg5);
+
+
+    gtk_print_dialog_print(GtkWidget_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL), (Is_some(arg2) ? GtkWidget_val(Some_val(arg2)) : NULL), arg3, arg4, arg5);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_print_bytecode(value * argv, int argn)
+{
+return ml_gtk_print_dialog_print_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+}
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_get_print_settings(value self)
+{
+CAMLparam1(self);
+
+
+    GtkPrintSettings* result = gtk_print_dialog_get_print_settings(GtkWidget_val(self));
+CAMLreturn(Val_GtkWidget(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_get_page_setup(value self)
+{
+CAMLparam1(self);
+
+
+    GtkPageSetup* result = gtk_print_dialog_get_page_setup(GtkWidget_val(self));
+CAMLreturn(Val_GtkWidget(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_get_accept_label(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "accept-label", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_set_accept_label(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "accept-label", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_get_modal(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "modal", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_set_modal(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "modal", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_get_title(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "title", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_set_title(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "title", c_value, NULL);
+CAMLreturn(Val_unit);
+}

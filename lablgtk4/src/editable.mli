@@ -63,8 +63,6 @@ external get_position : t -> int = "ml_gtk_editable_get_position"
 
 external get_delegate : t -> Gtk.Widget.t = "ml_gtk_editable_get_delegate"
 
-external get_chars : t -> int -> int -> string = "ml_gtk_editable_get_chars"
-
 external get_alignment : t -> float = "ml_gtk_editable_get_alignment"
 
 external finish_delegate : t -> unit = "ml_gtk_editable_finish_delegate"

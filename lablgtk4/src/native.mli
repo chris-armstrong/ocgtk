@@ -9,7 +9,3 @@ external realize : t -> unit = "ml_gtk_native_realize"
 
 external get_surface_transform : t -> float -> float -> unit = "ml_gtk_native_get_surface_transform"
 
-external get_surface : t -> unit = "ml_gtk_native_get_surface"
-
-external get_renderer : t -> unit = "ml_gtk_native_get_renderer"
-

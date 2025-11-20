@@ -23,7 +23,5 @@ external get_touch_only : t -> bool = "ml_gtk_gesture_single_get_touch_only"
 (** Set property: touch-only *)
 external set_touch_only : t -> bool -> unit = "ml_gtk_gesture_single_set_touch_only"
 
-external get_current_sequence : t -> unit = "ml_gtk_gesture_single_get_current_sequence"
-
 external get_current_button : t -> int = "ml_gtk_gesture_single_get_current_button"
 

@@ -201,25 +201,15 @@ external progress_pulse : t -> unit = "ml_gtk_entry_progress_pulse"
 
 external grab_focus_without_selecting : t -> bool = "ml_gtk_entry_grab_focus_without_selecting"
 
-external get_tabs : t -> unit = "ml_gtk_entry_get_tabs"
-
 external get_input_purpose : t -> Gtk_enums.inputpurpose = "ml_gtk_entry_get_input_purpose"
 
 external get_input_hints : t -> Gtk_enums.inputhints = "ml_gtk_entry_get_input_hints"
-
-external get_icon_tooltip_text : t -> Gtk_enums.entryiconposition -> string = "ml_gtk_entry_get_icon_tooltip_text"
-
-external get_icon_tooltip_markup : t -> Gtk_enums.entryiconposition -> string = "ml_gtk_entry_get_icon_tooltip_markup"
 
 external get_icon_storage_type : t -> Gtk_enums.entryiconposition -> Gtk_enums.imagetype = "ml_gtk_entry_get_icon_storage_type"
 
 external get_icon_sensitive : t -> Gtk_enums.entryiconposition -> bool = "ml_gtk_entry_get_icon_sensitive"
 
-external get_icon_paintable : t -> Gtk_enums.entryiconposition -> unit = "ml_gtk_entry_get_icon_paintable"
-
 external get_icon_name : t -> Gtk_enums.entryiconposition -> string = "ml_gtk_entry_get_icon_name"
-
-external get_icon_gicon : t -> Gtk_enums.entryiconposition -> unit = "ml_gtk_entry_get_icon_gicon"
 
 external get_icon_at_pos : t -> int -> int -> int = "ml_gtk_entry_get_icon_at_pos"
 
@@ -227,15 +217,11 @@ external get_icon_area : t -> Gtk_enums.entryiconposition -> unit -> unit = "ml_
 
 external get_icon_activatable : t -> Gtk_enums.entryiconposition -> bool = "ml_gtk_entry_get_icon_activatable"
 
-external get_extra_menu : t -> unit = "ml_gtk_entry_get_extra_menu"
-
 external get_current_icon_drag_source : t -> int = "ml_gtk_entry_get_current_icon_drag_source"
 
 external get_completion : t -> Gtk.Widget.t = "ml_gtk_entry_get_completion"
 
 external get_buffer : t -> Gtk.Widget.t = "ml_gtk_entry_get_buffer"
-
-external get_attributes : t -> unit = "ml_gtk_entry_get_attributes"
 
 external get_alignment : t -> float = "ml_gtk_entry_get_alignment"
 
