@@ -29,7 +29,7 @@ let () =
 
   (* Entry for new text *)
   let entry = Entry.new_ () in
-  Entry.set_placeholder_text entry (Some "Type text to insert...");
+  Entry.set_placeholder_text entry "Type text to insert...";
   vbox#append (GObj.widget_of_obj (entry));
 
   (* Button row *)
@@ -41,10 +41,10 @@ let () =
   button_box#append (insert_btn :> GObj.widget);
 
   ignore (insert_btn#connect#clicked ~callback:(fun () ->
-    let text = Entry.get_text entry in
+    let text = Editable.get_text entry in
     if text <> "" then begin
       Text_buffer.insert_at_cursor buffer (text ^ "\n") (-1);
-      Entry.set_text entry ""
+      Editable.set_text entry ""
     end
   ));
 
@@ -53,7 +53,7 @@ let () =
   button_box#append (clear_btn :> GObj.widget);
 
   ignore (clear_btn#connect#clicked ~callback:(fun () ->
-    Text_buffer.set_text buffer "" (-1)
+    Text_buffer.set_text buffer ""
   ));
 
   (* Status label *)

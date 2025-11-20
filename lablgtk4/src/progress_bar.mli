@@ -32,13 +32,15 @@ external get_show_text : t -> bool = "ml_gtk_progress_bar_get_show_text"
 (** Set property: show-text *)
 external set_show_text : t -> bool -> unit = "ml_gtk_progress_bar_set_show_text"
 
-external set_text : t -> string option -> unit = "ml_gtk_progress_bar_set_text"
+(** Get property: text *)
+external get_text : t -> string = "ml_gtk_progress_bar_get_text"
 
-external set_ellipsize : t -> int -> unit = "ml_gtk_progress_bar_set_ellipsize"
+(** Set property: text *)
+external set_text : t -> string -> unit = "ml_gtk_progress_bar_set_text"
+
+external set_ellipsize : t -> Pango.ellipsizemode -> unit = "ml_gtk_progress_bar_set_ellipsize"
 
 external pulse : t -> unit = "ml_gtk_progress_bar_pulse"
 
-external get_text : t -> string = "ml_gtk_progress_bar_get_text"
-
-external get_ellipsize : t -> int = "ml_gtk_progress_bar_get_ellipsize"
+external get_ellipsize : t -> Pango.ellipsizemode = "ml_gtk_progress_bar_get_ellipsize"
 

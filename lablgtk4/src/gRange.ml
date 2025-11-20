@@ -27,20 +27,19 @@ class progress_bar (obj : Gtk.Widget.t) = object (self)
   method pulse () = Progress_bar.pulse self#obj
 
   method set_ellipsize (mode : [`NONE | `START | `MIDDLE | `END]) =
-    let mode_int = match mode with
-      | `NONE -> 0
-      | `START -> 1
-      | `MIDDLE -> 2
-      | `END -> 3
+    let pango_mode : Pango_enums.ellipsizemode = match mode with
+      | `NONE -> `NONE
+      | `START -> `START
+      | `MIDDLE -> `MIDDLE
+      | `END -> `END
     in
-    Progress_bar.set_ellipsize self#obj mode_int
+    Progress_bar.set_ellipsize self#obj pango_mode
   method ellipsize : [`NONE | `START | `MIDDLE | `END] =
     match Progress_bar.get_ellipsize self#obj with
-    | 0 -> `NONE
-    | 1 -> `START
-    | 2 -> `MIDDLE
-    | 3 -> `END
-    | _ -> `NONE
+    | `NONE -> `NONE
+    | `START -> `START
+    | `MIDDLE -> `MIDDLE
+    | `END -> `END
 end
 
 let progress_bar ?pulse_step ?fraction ?show_text ?inverted ?packing ?show () =

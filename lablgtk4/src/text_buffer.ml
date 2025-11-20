@@ -1,4 +1,10 @@
+(* GENERATED IMPLEMENTATION - DO NOT EDIT DIRECTLY *)
+(* Generated from text_buffer.mli *)
+
+(* Type declarations *)
 type t = Gtk.Widget.t
+
+(* External FFI bindings *)
 external new_ : Gtk.Widget.t option -> t = "ml_gtk_text_buffer_new"
 external get_can_redo : t -> bool = "ml_gtk_text_buffer_get_can_redo"
 external get_can_undo : t -> bool = "ml_gtk_text_buffer_get_can_undo"
@@ -6,8 +12,9 @@ external get_cursor_position : t -> int = "ml_gtk_text_buffer_get_cursor_positio
 external get_enable_undo : t -> bool = "ml_gtk_text_buffer_get_enable_undo"
 external set_enable_undo : t -> bool -> unit = "ml_gtk_text_buffer_set_enable_undo"
 external get_has_selection : t -> bool = "ml_gtk_text_buffer_get_has_selection"
+external get_text : t -> string = "ml_gtk_text_buffer_get_text"
+external set_text : t -> string -> unit = "ml_gtk_text_buffer_set_text"
 external undo : t -> unit = "ml_gtk_text_buffer_undo"
-external set_text : t -> string -> int -> unit = "ml_gtk_text_buffer_set_text"
 external set_modified : t -> bool -> unit = "ml_gtk_text_buffer_set_modified"
 external set_max_undo_levels : t -> int -> unit = "ml_gtk_text_buffer_set_max_undo_levels"
 external select_range : t -> unit -> unit -> unit = "ml_gtk_text_buffer_select_range"
@@ -29,7 +36,6 @@ external insert_interactive : t -> Gtk.Widget.t -> string -> int -> bool -> bool
 external insert_child_anchor : t -> Gtk.Widget.t -> Gtk.Widget.t -> unit = "ml_gtk_text_buffer_insert_child_anchor"
 external insert_at_cursor : t -> string -> int -> unit = "ml_gtk_text_buffer_insert_at_cursor"
 external insert : t -> Gtk.Widget.t -> string -> int -> unit = "ml_gtk_text_buffer_insert"
-external get_text : t -> unit -> unit -> bool -> string = "ml_gtk_text_buffer_get_text"
 external get_tag_table : t -> Gtk.Widget.t = "ml_gtk_text_buffer_get_tag_table"
 external get_start_iter : t -> Gtk.Widget.t -> unit = "ml_gtk_text_buffer_get_start_iter"
 external get_slice : t -> unit -> unit -> bool -> string = "ml_gtk_text_buffer_get_slice"
@@ -71,5 +77,5 @@ external add_mark : t -> Gtk.Widget.t -> unit -> unit = "ml_gtk_text_buffer_add_
 
 (* Summary:
  * - 1 type declarations
- * - 69 external function declarations
+ * - 69 external bindings
  *)

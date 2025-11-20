@@ -27,7 +27,7 @@ external set_current_folder : t -> unit -> (bool, GError.t) result = "ml_gtk_fil
 
 external set_choice : t -> string -> string -> unit = "ml_gtk_file_chooser_set_choice"
 
-external set_action : t -> filechooseraction -> unit = "ml_gtk_file_chooser_set_action"
+external set_action : t -> Gtk_enums.filechooseraction -> unit = "ml_gtk_file_chooser_set_action"
 
 external remove_shortcut_folder : t -> unit -> (bool, GError.t) result = "ml_gtk_file_chooser_remove_shortcut_folder"
 
@@ -51,7 +51,7 @@ external get_current_folder : t -> unit = "ml_gtk_file_chooser_get_current_folde
 
 external get_choice : t -> string -> string = "ml_gtk_file_chooser_get_choice"
 
-external get_action : t -> filechooseraction = "ml_gtk_file_chooser_get_action"
+external get_action : t -> Gtk_enums.filechooseraction = "ml_gtk_file_chooser_get_action"
 
 external add_shortcut_folder : t -> unit -> (bool, GError.t) result = "ml_gtk_file_chooser_add_shortcut_folder"
 

@@ -3927,24 +3927,6 @@ GtkWidget *widget = gtk_button_new_with_mnemonic(String_val(arg1));
 CAMLreturn(Val_GtkWidget(widget));
 }
 
-CAMLexport CAMLprim value ml_gtk_button_set_label(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-
-    gtk_button_set_label(GtkWidget_val(self), String_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_button_set_icon_name(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-
-    gtk_button_set_icon_name(GtkWidget_val(self), String_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_button_set_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -3952,24 +3934,6 @@ CAMLparam2(self, arg1);
 
     gtk_button_set_child(GtkWidget_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_button_get_label(value self)
-{
-CAMLparam1(self);
-
-
-    const char* result = gtk_button_get_label(GtkWidget_val(self));
-CAMLreturn(caml_copy_string(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_button_get_icon_name(value self)
-{
-CAMLparam1(self);
-
-
-    const char* result = gtk_button_get_icon_name(GtkWidget_val(self));
-CAMLreturn(caml_copy_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_button_get_child(value self)
@@ -4021,6 +3985,46 @@ g_object_set(G_OBJECT(obj), "has-frame", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_button_get_icon_name(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "icon-name", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_button_set_icon_name(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "icon-name", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_button_get_label(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "label", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_button_set_label(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "label", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_button_get_use_underline(value self)
 {
 CAMLparam1(self);
@@ -4062,15 +4066,6 @@ GtkWidget *widget = gtk_check_button_new_with_mnemonic((Is_some(arg1) ? String_v
 CAMLreturn(Val_GtkWidget(widget));
 }
 
-CAMLexport CAMLprim value ml_gtk_check_button_set_label(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-
-    gtk_check_button_set_label(GtkWidget_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_check_button_set_group(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -4087,15 +4082,6 @@ CAMLparam2(self, arg1);
 
     gtk_check_button_set_child(GtkWidget_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_check_button_get_label(value self)
-{
-CAMLparam1(self);
-
-
-    const char* result = gtk_check_button_get_label(GtkWidget_val(self));
-CAMLreturn(caml_copy_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_check_button_get_child(value self)
@@ -4144,6 +4130,26 @@ CAMLexport CAMLparam2(self, new_value);
 GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
 gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "inconsistent", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_check_button_get_label(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "label", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_check_button_set_label(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "label", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
@@ -4196,15 +4202,6 @@ CAMLparam2(self, arg1);
 
 
     gtk_entry_set_tabs(GtkWidget_val(self), arg1);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_entry_set_placeholder_text(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-
-    gtk_entry_set_placeholder_text(GtkWidget_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -4377,15 +4374,6 @@ CAMLparam1(self);
 
     void *result = gtk_entry_get_tabs(GtkWidget_val(self));
 CAMLreturn((value)result);
-}
-
-CAMLexport CAMLprim value ml_gtk_entry_get_placeholder_text(value self)
-{
-CAMLparam1(self);
-
-
-    const char* result = gtk_entry_get_placeholder_text(GtkWidget_val(self));
-CAMLreturn(caml_copy_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_input_purpose(value self)
@@ -4610,6 +4598,26 @@ g_object_set(G_OBJECT(obj), "has-frame", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_entry_get_im_module(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "im-module", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_set_im_module(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "im-module", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_entry_get_invisible_char(value self)
 {
 CAMLparam1(self);
@@ -4690,6 +4698,26 @@ g_object_set(G_OBJECT(obj), "overwrite-mode", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_entry_get_placeholder_text(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "placeholder-text", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_set_placeholder_text(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "placeholder-text", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_entry_get_primary_icon_activatable(value self)
 {
 CAMLparam1(self);
@@ -4710,6 +4738,26 @@ g_object_set(G_OBJECT(obj), "primary-icon-activatable", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_entry_get_primary_icon_name(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "primary-icon-name", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_set_primary_icon_name(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "primary-icon-name", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_entry_get_primary_icon_sensitive(value self)
 {
 CAMLparam1(self);
@@ -4727,6 +4775,46 @@ CAMLexport CAMLparam2(self, new_value);
 GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
 gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "primary-icon-sensitive", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_get_primary_icon_tooltip_markup(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "primary-icon-tooltip-markup", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_set_primary_icon_tooltip_markup(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "primary-icon-tooltip-markup", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_get_primary_icon_tooltip_text(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "primary-icon-tooltip-text", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_set_primary_icon_tooltip_text(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "primary-icon-tooltip-text", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
@@ -4801,6 +4889,26 @@ g_object_set(G_OBJECT(obj), "secondary-icon-activatable", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_entry_get_secondary_icon_name(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "secondary-icon-name", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_set_secondary_icon_name(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "secondary-icon-name", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_entry_get_secondary_icon_sensitive(value self)
 {
 CAMLparam1(self);
@@ -4818,6 +4926,46 @@ CAMLexport CAMLparam2(self, new_value);
 GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
 gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "secondary-icon-sensitive", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_get_secondary_icon_tooltip_markup(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "secondary-icon-tooltip-markup", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_set_secondary_icon_tooltip_markup(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "secondary-icon-tooltip-markup", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_get_secondary_icon_tooltip_text(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "secondary-icon-tooltip-text", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_set_secondary_icon_tooltip_text(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "secondary-icon-tooltip-text", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
@@ -4919,15 +5067,6 @@ CAMLparam2(self, arg1);
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_event_controller_set_name(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-
-    gtk_event_controller_set_name(GtkEventController_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_event_controller_reset(value self)
 {
 CAMLparam1(self);
@@ -4964,15 +5103,6 @@ CAMLparam1(self);
 CAMLreturn(Val_GtkPropagationLimit(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_event_controller_get_name(value self)
-{
-CAMLparam1(self);
-
-
-    const char* result = gtk_event_controller_get_name(GtkEventController_val(self));
-CAMLreturn(caml_copy_string(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_event_controller_get_current_event_time(value self)
 {
 CAMLparam1(self);
@@ -5007,6 +5137,26 @@ CAMLparam1(self);
 
     GdkEvent* result = gtk_event_controller_get_current_event(GtkEventController_val(self));
 CAMLreturn(Val_GdkEvent(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_event_controller_get_name(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkEventController *obj = (GtkEventController *)GtkEventController_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "name", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_event_controller_set_name(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkEventController *obj = (GtkEventController *)GtkEventController_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "name", c_value, NULL);
+CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_event_controller_focus_new(value unit)
@@ -5599,15 +5749,6 @@ CAMLparam1(self);
 CAMLreturn(Val_GtkIconSize(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_image_get_icon_name(value self)
-{
-CAMLparam1(self);
-
-
-    const char* result = gtk_image_get_icon_name(GtkWidget_val(self));
-CAMLreturn(caml_copy_string(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_image_get_gicon(value self)
 {
 CAMLparam1(self);
@@ -5623,6 +5764,46 @@ CAMLparam1(self);
 
 
     gtk_image_clear(GtkWidget_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_image_get_file(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "file", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_image_set_file(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "file", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_image_get_icon_name(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "icon-name", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_image_set_icon_name(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "icon-name", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
@@ -5643,6 +5824,26 @@ CAMLexport CAMLparam2(self, new_value);
 GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
 gint c_value = Int_val(new_value);
 g_object_set(G_OBJECT(obj), "pixel-size", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_image_get_resource(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "resource", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_image_set_resource(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "resource", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
@@ -5749,15 +5950,6 @@ CAMLparam2(self, arg1);
 
 
     gtk_label_set_markup(GtkWidget_val(self), String_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_label_set_label(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-
-    gtk_label_set_label(GtkWidget_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -5878,15 +6070,6 @@ CAMLparam1(self);
 CAMLreturn((value)result);
 }
 
-CAMLexport CAMLprim value ml_gtk_label_get_label(value self)
-{
-CAMLparam1(self);
-
-
-    const char* result = gtk_label_get_label(GtkWidget_val(self));
-CAMLreturn(caml_copy_string(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_label_get_justify(value self)
 {
 CAMLparam1(self);
@@ -5930,6 +6113,26 @@ CAMLparam1(self);
 
     void *result = gtk_label_get_attributes(GtkWidget_val(self));
 CAMLreturn((value)result);
+}
+
+CAMLexport CAMLprim value ml_gtk_label_get_label(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "label", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_label_set_label(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "label", c_value, NULL);
+CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_label_get_lines(value self)
@@ -6296,22 +6499,24 @@ GtkWidget *widget = gtk_link_button_new_with_label(String_val(arg1), (Is_some(ar
 CAMLreturn(Val_GtkWidget(widget));
 }
 
-CAMLexport CAMLprim value ml_gtk_link_button_set_uri(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-
-    gtk_link_button_set_uri(GtkWidget_val(self), String_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_link_button_get_uri(value self)
 {
 CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "uri", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
 
-
-    const char* result = gtk_link_button_get_uri(GtkWidget_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLexport CAMLprim value ml_gtk_link_button_set_uri(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "uri", c_value, NULL);
+CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_link_button_get_visited(value self)
@@ -6356,24 +6561,6 @@ CAMLparam2(self, arg1);
 
 
     gtk_menu_button_set_menu_model(GtkWidget_val(self), arg1);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_menu_button_set_label(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-
-    gtk_menu_button_set_label(GtkWidget_val(self), String_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_menu_button_set_icon_name(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-
-    gtk_menu_button_set_icon_name(GtkWidget_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -6438,24 +6625,6 @@ CAMLparam1(self);
 
     void *result = gtk_menu_button_get_menu_model(GtkWidget_val(self));
 CAMLreturn((value)result);
-}
-
-CAMLexport CAMLprim value ml_gtk_menu_button_get_label(value self)
-{
-CAMLparam1(self);
-
-
-    const char* result = gtk_menu_button_get_label(GtkWidget_val(self));
-CAMLreturn(caml_copy_string(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_menu_button_get_icon_name(value self)
-{
-CAMLparam1(self);
-
-
-    const char* result = gtk_menu_button_get_icon_name(GtkWidget_val(self));
-CAMLreturn(caml_copy_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_menu_button_get_direction(value self)
@@ -6556,6 +6725,46 @@ g_object_set(G_OBJECT(obj), "has-frame", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_menu_button_get_icon_name(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "icon-name", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_menu_button_set_icon_name(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "icon-name", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_menu_button_get_label(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "label", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_menu_button_set_label(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "label", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_menu_button_get_primary(value self)
 {
 CAMLparam1(self);
@@ -6641,6 +6850,26 @@ g_object_set(G_OBJECT(obj), "activates-default", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_password_entry_get_placeholder_text(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "placeholder-text", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_password_entry_set_placeholder_text(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "placeholder-text", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_password_entry_get_show_peek_icon(value self)
 {
 CAMLparam1(self);
@@ -6668,15 +6897,6 @@ GtkWidget *widget = gtk_progress_bar_new();
 CAMLreturn(Val_GtkWidget(widget));
 }
 
-CAMLexport CAMLprim value ml_gtk_progress_bar_set_text(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-
-    gtk_progress_bar_set_text(GtkWidget_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_progress_bar_set_ellipsize(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -6693,15 +6913,6 @@ CAMLparam1(self);
 
     gtk_progress_bar_pulse(GtkWidget_val(self));
 CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_progress_bar_get_text(value self)
-{
-CAMLparam1(self);
-
-
-    const char* result = gtk_progress_bar_get_text(GtkWidget_val(self));
-CAMLreturn(caml_copy_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_progress_bar_get_ellipsize(value self)
@@ -6790,6 +7001,26 @@ CAMLexport CAMLparam2(self, new_value);
 GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
 gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "show-text", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_progress_bar_get_text(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "text", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_progress_bar_set_text(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "text", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
@@ -7145,15 +7376,6 @@ GtkWidget *widget = gtk_search_entry_new();
 CAMLreturn(Val_GtkWidget(widget));
 }
 
-CAMLexport CAMLprim value ml_gtk_search_entry_set_placeholder_text(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-
-    gtk_search_entry_set_placeholder_text(GtkWidget_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_search_entry_set_key_capture_widget(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -7179,15 +7401,6 @@ CAMLparam2(self, arg1);
 
     gtk_search_entry_set_input_hints(GtkWidget_val(self), GtkInputHints_val(arg1));
 CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_search_entry_get_placeholder_text(value self)
-{
-CAMLparam1(self);
-
-
-    const char* result = gtk_search_entry_get_placeholder_text(GtkWidget_val(self));
-CAMLreturn(caml_copy_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_search_entry_get_key_capture_widget(value self)
@@ -7234,6 +7447,26 @@ CAMLexport CAMLparam2(self, new_value);
 GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
 gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "activates-default", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_search_entry_get_placeholder_text(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "placeholder-text", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_search_entry_set_placeholder_text(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "placeholder-text", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
@@ -7582,15 +7815,6 @@ CAMLparam1(self);
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_text_buffer_set_text(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-
-
-    gtk_text_buffer_set_text(GtkWidget_val(self), String_val(arg1), Int_val(arg2));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_text_buffer_set_modified(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -7778,15 +8002,6 @@ CAMLparam4(self, arg1, arg2, arg3);
 
     gtk_text_buffer_insert(GtkWidget_val(self), GtkWidget_val(arg1), String_val(arg2), Int_val(arg3));
 CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_text_buffer_get_text(value self, value arg1, value arg2, value arg3)
-{
-CAMLparam4(self, arg1, arg2, arg3);
-
-
-    void *result = gtk_text_buffer_get_text(GtkWidget_val(self), arg1, arg2, Bool_val(arg3));
-CAMLreturn((value)result);
 }
 
 CAMLexport CAMLprim value ml_gtk_text_buffer_get_tag_table(value self)
@@ -8195,6 +8410,26 @@ result = Val_bool(prop_value);
 CAMLreturn(result);
 }
 
+CAMLexport CAMLprim value ml_gtk_text_buffer_get_text(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "text", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_set_text(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "text", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_tag_new(value arg1)
 {
 CAMLparam1(arg1);
@@ -8286,6 +8521,26 @@ CAMLexport CAMLparam2(self, new_value);
 GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
 gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "allow-breaks-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_get_background(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "background", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_background(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "background", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
@@ -8429,6 +8684,26 @@ g_object_set(G_OBJECT(obj), "fallback-set", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_text_tag_get_family(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "family", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_family(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "family", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_tag_get_family_set(value self)
 {
 CAMLparam1(self);
@@ -8449,6 +8724,46 @@ g_object_set(G_OBJECT(obj), "family-set", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_text_tag_get_font(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "font", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_font(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "font", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_get_font_features(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "font-features", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_font_features(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "font-features", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_tag_get_font_features_set(value self)
 {
 CAMLparam1(self);
@@ -8466,6 +8781,26 @@ CAMLexport CAMLparam2(self, new_value);
 GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
 gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "font-features-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_get_foreground(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "foreground", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_foreground(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "foreground", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
@@ -8629,6 +8964,26 @@ g_object_set(G_OBJECT(obj), "justification-set", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_text_tag_get_language(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "language", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_language(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "language", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_tag_get_language_set(value self)
 {
 CAMLparam1(self);
@@ -8769,6 +9124,17 @@ g_object_set(G_OBJECT(obj), "line-height-set", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_text_tag_get_name(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "name", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_tag_get_overline_rgba_set(value self)
 {
 CAMLparam1(self);
@@ -8806,6 +9172,26 @@ CAMLexport CAMLparam2(self, new_value);
 GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
 gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "overline-set", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_get_paragraph_background(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "paragraph-background", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_paragraph_background(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "paragraph-background", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
@@ -10064,6 +10450,26 @@ g_object_set(G_OBJECT(obj), "editable", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_text_view_get_im_module(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "im-module", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_set_im_module(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "im-module", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_view_get_indent(value self)
 {
 CAMLparam1(self);
@@ -10492,15 +10898,6 @@ CAMLparam2(self, arg1);
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_actionable_set_action_name(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-
-    gtk_actionable_set_action_name(GtkWidget_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_actionable_get_action_target_value(value self)
 {
 CAMLparam1(self);
@@ -10513,10 +10910,21 @@ CAMLreturn((value)result);
 CAMLexport CAMLprim value ml_gtk_actionable_get_action_name(value self)
 {
 CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "action-name", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
 
-
-    const char* result = gtk_actionable_get_action_name(GtkWidget_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLexport CAMLprim value ml_gtk_actionable_set_action_name(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "action-name", c_value, NULL);
+CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_app_chooser_refresh(value self)
@@ -10528,15 +10936,6 @@ CAMLparam1(self);
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_app_chooser_get_content_type(value self)
-{
-CAMLparam1(self);
-
-
-    void *result = gtk_app_chooser_get_content_type(GtkWidget_val(self));
-CAMLreturn((value)result);
-}
-
 CAMLexport CAMLprim value ml_gtk_app_chooser_get_app_info(value self)
 {
 CAMLparam1(self);
@@ -10544,6 +10943,17 @@ CAMLparam1(self);
 
     void *result = gtk_app_chooser_get_app_info(GtkWidget_val(self));
 CAMLreturn((value)result);
+}
+
+CAMLexport CAMLprim value ml_gtk_app_chooser_get_content_type(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "content-type", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
 }
 
 CAMLexport CAMLprim value ml_gtk_buildable_get_buildable_id(value self)
@@ -10730,15 +11140,6 @@ g_object_set(G_OBJECT(obj), "use-alpha", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_editable_set_text(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-
-    gtk_editable_set_text(GtkWidget_val(self), String_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_editable_set_position(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -10782,15 +11183,6 @@ CAMLparam1(self);
 
     gtk_editable_init_delegate(GtkWidget_val(self));
 CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_editable_get_text(value self)
-{
-CAMLparam1(self);
-
-
-    const char* result = gtk_editable_get_text(GtkWidget_val(self));
-CAMLreturn(caml_copy_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_editable_get_selection_bounds(value self, value arg1, value arg2)
@@ -10954,6 +11346,26 @@ gint prop_value;
 g_object_get(G_OBJECT(obj), "selection-bound", &prop_value, NULL);
 result = Val_int(prop_value);
 CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_editable_get_text(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "text", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_editable_set_text(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "text", c_value, NULL);
+CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_editable_get_width_chars(value self)
@@ -11229,30 +11641,12 @@ g_object_set(G_OBJECT(obj), "select-multiple", c_value, NULL);
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_font_chooser_set_preview_text(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-
-    gtk_font_chooser_set_preview_text(GtkWidget_val(self), String_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_font_chooser_set_level(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 
     gtk_font_chooser_set_level(GtkWidget_val(self), GtkFontChooserLevel_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_font_chooser_set_language(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-
-    gtk_font_chooser_set_language(GtkWidget_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -11274,15 +11668,6 @@ CAMLparam2(self, arg1);
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_font_chooser_set_font(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-
-    gtk_font_chooser_set_font(GtkWidget_val(self), String_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_font_chooser_set_filter_func(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
@@ -11292,15 +11677,6 @@ CAMLparam4(self, arg1, arg2, arg3);
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_font_chooser_get_preview_text(value self)
-{
-CAMLparam1(self);
-
-
-    void *result = gtk_font_chooser_get_preview_text(GtkWidget_val(self));
-CAMLreturn((value)result);
-}
-
 CAMLexport CAMLprim value ml_gtk_font_chooser_get_level(value self)
 {
 CAMLparam1(self);
@@ -11308,15 +11684,6 @@ CAMLparam1(self);
 
     GtkFontChooserLevel result = gtk_font_chooser_get_level(GtkWidget_val(self));
 CAMLreturn(Val_GtkFontChooserLevel(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_font_chooser_get_language(value self)
-{
-CAMLparam1(self);
-
-
-    void *result = gtk_font_chooser_get_language(GtkWidget_val(self));
-CAMLreturn((value)result);
 }
 
 CAMLexport CAMLprim value ml_gtk_font_chooser_get_font_size(value self)
@@ -11334,15 +11701,6 @@ CAMLparam1(self);
 
 
     void *result = gtk_font_chooser_get_font_map(GtkWidget_val(self));
-CAMLreturn((value)result);
-}
-
-CAMLexport CAMLprim value ml_gtk_font_chooser_get_font_features(value self)
-{
-CAMLparam1(self);
-
-
-    void *result = gtk_font_chooser_get_font_features(GtkWidget_val(self));
 CAMLreturn((value)result);
 }
 
@@ -11376,10 +11734,72 @@ CAMLreturn((value)result);
 CAMLexport CAMLprim value ml_gtk_font_chooser_get_font(value self)
 {
 CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "font", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
 
+CAMLexport CAMLprim value ml_gtk_font_chooser_set_font(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "font", c_value, NULL);
+CAMLreturn(Val_unit);
+}
 
-    void *result = gtk_font_chooser_get_font(GtkWidget_val(self));
-CAMLreturn((value)result);
+CAMLexport CAMLprim value ml_gtk_font_chooser_get_font_features(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "font-features", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_font_chooser_get_language(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "language", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_font_chooser_set_language(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "language", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_font_chooser_get_preview_text(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* prop_value;
+g_object_get(G_OBJECT(obj), "preview-text", &prop_value, NULL);
+result = caml_copy_string(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_font_chooser_set_preview_text(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+gchar* c_value = String_val(new_value);
+g_object_set(G_OBJECT(obj), "preview-text", c_value, NULL);
+CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_font_chooser_get_show_preview_entry(value self)

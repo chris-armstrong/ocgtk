@@ -175,7 +175,7 @@ let type_mappings = [
   });
   (* GdkModifierType is now generated from Gdk-4.0.gir *)
   ("GdkEvent*", {
-    ocaml_type = "Gdk.Event.t";
+    ocaml_type = "_ Gdk.event";
     c_to_ml = "Val_GdkEvent";
     ml_to_c = "GdkEvent_val";
     needs_copy = false;
@@ -212,6 +212,20 @@ let type_mappings = [
     needs_copy = false;
   });
   ("const gchar*", {
+    ocaml_type = "string";
+    c_to_ml = "caml_copy_string";
+    ml_to_c = "String_val";
+    needs_copy = true;
+  });
+  (* Bug fix: Add "gchar*" mapping for properties like placeholder-text *)
+  ("gchar*", {
+    ocaml_type = "string";
+    c_to_ml = "caml_copy_string";
+    ml_to_c = "String_val";
+    needs_copy = true;
+  });
+  (* Bug fix: Add "utf8" mapping for GIR type name *)
+  ("utf8", {
     ocaml_type = "string";
     c_to_ml = "caml_copy_string";
     ml_to_c = "String_val";
@@ -301,7 +315,7 @@ let type_mappings = [
   });
   (* GdkEvent - pointer type *)
   ("GdkEvent*", {
-    ocaml_type = "Gdk.Event.t";
+    ocaml_type = "_ Gdk.event";
     c_to_ml = "Val_GdkEvent";
     ml_to_c = "GdkEvent_val";
     needs_copy = false;
@@ -415,31 +429,46 @@ let find_type_mapping_for_gir_type ?(enums=[]) ?(bitfields=[]) (gir_type : gir_t
 let find_type_mapping ?(enums=[]) ?(bitfields=[]) c_type =
   find_type_mapping_for_gir_type ~enums ~bitfields { name = c_type; c_type = c_type }
 
-(* Bug fix #3: Add module qualification for types that need it *)
-let qualify_ocaml_type ocaml_type =
+(* Bug fix #3: Add module qualification based on GIR namespace *)
+let qualify_ocaml_type ?(gir_type_name=None) ocaml_type =
   (* Check if type is already qualified (contains a dot) *)
   if String.contains ocaml_type '.' then
     ocaml_type
   else
-    (* List of types that should be qualified with Gtk module *)
-    let gtk_types = [
-      "orientation"; "align"; "baseline_position"; "position_type";
-      "size_request_mode"; "state_flags";
-    ] in
-    (* List of types from gtk_enums module *)
-    let gtk_enum_types = [
-      "levelbarmode"; "positiontype"; "orientation"; "align";
-      "justification"; "wrapmode"; "inputpurpose"; "inputhints";
-      "iconsize"; "imagetype"; "arrowtype"; "spintype";
-      "spinbuttonupdatepolicy"; "naturalwrapmode"; "textwindowtype";
-      "ellipsizemode"; "entryiconposition";
-    ] in
-    if List.mem ocaml_type ~set:gtk_types then
-      sprintf "Gtk.%s" ocaml_type
-    else if List.mem ocaml_type ~set:gtk_enum_types then
-      sprintf "Gtk_enums.%s" ocaml_type
-    else
-      ocaml_type
+    (* Extract namespace from GIR type name (e.g., "Pango.EllipsizeMode" -> "Pango") *)
+    let namespace = match gir_type_name with
+      | Some name when String.contains name '.' ->
+        let dot_pos = String.index name '.' in
+        Some (String.sub ~pos:0 ~len:dot_pos name)
+      | _ -> None
+    in
+
+    (* Qualify based on namespace *)
+    match namespace with
+    | Some "Pango" -> sprintf "Pango.%s" ocaml_type
+    | Some "Gdk" -> sprintf "Gdk.%s" ocaml_type
+    | Some "Gtk" ->
+      (* Check if it's a core Gtk type or an enum *)
+      let gtk_core_types = [
+        "orientation"; "align"; "baseline_position"; "position_type";
+        "size_request_mode"; "state_flags";
+      ] in
+      if List.mem ocaml_type ~set:gtk_core_types then
+        sprintf "Gtk.%s" ocaml_type
+      else
+        sprintf "Gtk_enums.%s" ocaml_type  (* Gtk enums in Gtk_enums module *)
+    | _ ->
+      (* No namespace - don't qualify built-in OCaml types *)
+      let builtin_types = [
+        "unit"; "bool"; "int"; "float"; "string"; "char";
+        "list"; "array"; "option"; "result";
+      ] in
+      if List.mem ocaml_type ~set:builtin_types then
+        ocaml_type  (* Don't qualify built-in types *)
+      else if String.contains ocaml_type '.' then
+        ocaml_type  (* Already qualified *)
+      else
+        sprintf "Gtk_enums.%s" ocaml_type  (* Likely a Gtk enum without namespace *)
 
 (* ========================================================================= *)
 (* Utility Functions *)
@@ -1732,6 +1761,9 @@ let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
   bprintf buf "(* %s: %s *)\n\n" class_type_name class_name;
 
+  (* Note: Don't open enum modules to avoid shadowing built-in types like 'unit' *)
+  (* All enum types are qualified: Gtk_enums.*, Pango.*, Gdk.* *)
+
   (match class_doc with
   | Some doc -> bprintf buf "(** %s *)\n" doc
   | None -> ());
@@ -1758,8 +1790,8 @@ let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors
     let param_types = List.map ~f:(fun p ->
       match find_type_mapping_for_gir_type ~enums ~bitfields p.param_type with
       | Some mapping ->
-        (* Bug fix #3: Qualify type names *)
-        let base_type = qualify_ocaml_type mapping.ocaml_type in
+        (* Bug fix #3: Qualify type names using GIR namespace *)
+        let base_type = qualify_ocaml_type ~gir_type_name:(Some p.param_type.name) mapping.ocaml_type in
         if p.nullable then
           sprintf "%s option" base_type
         else
@@ -1803,8 +1835,8 @@ let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors
         let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
         let prop_snake = to_snake_case prop_name_cleaned in
         let class_snake = to_snake_case class_name in
-        (* Bug fix #3: Qualify type names *)
-        let prop_ocaml_type = qualify_ocaml_type type_mapping.ocaml_type in
+        (* Bug fix #3: Qualify type names using GIR namespace *)
+        let prop_ocaml_type = qualify_ocaml_type ~gir_type_name:(Some prop.prop_type.name) type_mapping.ocaml_type in
 
         (* Generate getter if readable *)
         if prop.readable then begin
@@ -1858,8 +1890,8 @@ let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors
       let param_types = List.map ~f:(fun p ->
         match find_type_mapping_for_gir_type ~enums ~bitfields p.param_type with
         | Some mapping ->
-          (* Bug fix #3: Qualify type names *)
-          let base_type = qualify_ocaml_type mapping.ocaml_type in
+          (* Bug fix #3: Qualify type names using GIR namespace *)
+          let base_type = qualify_ocaml_type ~gir_type_name:(Some p.param_type.name) mapping.ocaml_type in
           if p.nullable then
             (* Wrap in option type *)
             sprintf "%s option" base_type
@@ -1879,8 +1911,8 @@ let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors
           (* Bug fix #5: Use find_type_mapping_for_gir_type for return types *)
           match find_type_mapping_for_gir_type ~enums ~bitfields meth.return_type with
           | Some mapping ->
-            (* Bug fix #3: Qualify type names *)
-            qualify_ocaml_type mapping.ocaml_type
+            (* Bug fix #3: Qualify type names using GIR namespace *)
+            qualify_ocaml_type ~gir_type_name:(Some meth.return_type.name) mapping.ocaml_type
           | None ->
             eprintf "Warning: Unknown return type for method %s: name=%s c_type=%s\n"
               meth.method_name meth.return_type.name meth.return_type.c_type;

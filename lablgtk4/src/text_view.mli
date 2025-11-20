@@ -35,6 +35,12 @@ external get_editable : t -> bool = "ml_gtk_text_view_get_editable"
 (** Set property: editable *)
 external set_editable : t -> bool -> unit = "ml_gtk_text_view_set_editable"
 
+(** Get property: im-module *)
+external get_im_module : t -> string = "ml_gtk_text_view_get_im_module"
+
+(** Set property: im-module *)
+external set_im_module : t -> string -> unit = "ml_gtk_text_view_set_im_module"
+
 (** Get property: indent *)
 external get_indent : t -> int = "ml_gtk_text_view_get_indent"
 
@@ -129,7 +135,7 @@ external move_overlay : t -> Gtk.Widget.t -> int -> int -> unit = "ml_gtk_text_v
 
 external move_mark_onscreen : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_move_mark_onscreen"
 
-external im_context_filter_keypress : t -> unit -> bool = "ml_gtk_text_view_im_context_filter_keypress"
+external im_context_filter_keypress : t -> _ Gdk.event -> bool = "ml_gtk_text_view_im_context_filter_keypress"
 
 external get_wrap_mode : t -> Gtk_enums.wrapmode = "ml_gtk_text_view_get_wrap_mode"
 

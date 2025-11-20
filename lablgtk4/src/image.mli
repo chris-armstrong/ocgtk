@@ -26,11 +26,29 @@ external new_from_resource : string -> t = "ml_gtk_image_new_from_resource"
 
 (* Properties *)
 
+(** Get property: file *)
+external get_file : t -> string = "ml_gtk_image_get_file"
+
+(** Set property: file *)
+external set_file : t -> string -> unit = "ml_gtk_image_set_file"
+
+(** Get property: icon-name *)
+external get_icon_name : t -> string = "ml_gtk_image_get_icon_name"
+
+(** Set property: icon-name *)
+external set_icon_name : t -> string -> unit = "ml_gtk_image_set_icon_name"
+
 (** Get property: pixel-size *)
 external get_pixel_size : t -> int = "ml_gtk_image_get_pixel_size"
 
 (** Set property: pixel-size *)
 external set_pixel_size : t -> int -> unit = "ml_gtk_image_set_pixel_size"
+
+(** Get property: resource *)
+external get_resource : t -> string = "ml_gtk_image_get_resource"
+
+(** Set property: resource *)
+external set_resource : t -> string -> unit = "ml_gtk_image_set_resource"
 
 (** Get property: use-fallback *)
 external get_use_fallback : t -> bool = "ml_gtk_image_get_use_fallback"
@@ -57,8 +75,6 @@ external get_storage_type : t -> Gtk_enums.imagetype = "ml_gtk_image_get_storage
 external get_paintable : t -> unit = "ml_gtk_image_get_paintable"
 
 external get_icon_size : t -> Gtk_enums.iconsize = "ml_gtk_image_get_icon_size"
-
-external get_icon_name : t -> string = "ml_gtk_image_get_icon_name"
 
 external get_gicon : t -> unit = "ml_gtk_image_get_gicon"
 

@@ -11,6 +11,12 @@ external new_with_mnemonic : string option -> t = "ml_gtk_label_new_with_mnemoni
 
 (* Properties *)
 
+(** Get property: label *)
+external get_label : t -> string = "ml_gtk_label_get_label"
+
+(** Set property: label *)
+external set_label : t -> string -> unit = "ml_gtk_label_set_label"
+
 (** Get property: lines *)
 external get_lines : t -> int = "ml_gtk_label_get_lines"
 
@@ -74,7 +80,7 @@ external get_yalign : t -> float = "ml_gtk_label_get_yalign"
 (** Set property: yalign *)
 external set_yalign : t -> float -> unit = "ml_gtk_label_set_yalign"
 
-external set_wrap_mode : t -> int -> unit = "ml_gtk_label_set_wrap_mode"
+external set_wrap_mode : t -> Pango.wrapmode -> unit = "ml_gtk_label_set_wrap_mode"
 
 external set_text_with_mnemonic : t -> string -> unit = "ml_gtk_label_set_text_with_mnemonic"
 
@@ -90,19 +96,17 @@ external set_markup_with_mnemonic : t -> string -> unit = "ml_gtk_label_set_mark
 
 external set_markup : t -> string -> unit = "ml_gtk_label_set_markup"
 
-external set_label : t -> string -> unit = "ml_gtk_label_set_label"
-
 external set_justify : t -> Gtk_enums.justification -> unit = "ml_gtk_label_set_justify"
 
 external set_extra_menu : t -> unit -> unit = "ml_gtk_label_set_extra_menu"
 
-external set_ellipsize : t -> int -> unit = "ml_gtk_label_set_ellipsize"
+external set_ellipsize : t -> Pango.ellipsizemode -> unit = "ml_gtk_label_set_ellipsize"
 
 external set_attributes : t -> unit -> unit = "ml_gtk_label_set_attributes"
 
 external select_region : t -> int -> int -> unit = "ml_gtk_label_select_region"
 
-external get_wrap_mode : t -> int = "ml_gtk_label_get_wrap_mode"
+external get_wrap_mode : t -> Pango.wrapmode = "ml_gtk_label_get_wrap_mode"
 
 external get_text : t -> string = "ml_gtk_label_get_text"
 
@@ -118,13 +122,11 @@ external get_layout_offsets : t -> int -> int -> unit = "ml_gtk_label_get_layout
 
 external get_layout : t -> unit = "ml_gtk_label_get_layout"
 
-external get_label : t -> string = "ml_gtk_label_get_label"
-
 external get_justify : t -> Gtk_enums.justification = "ml_gtk_label_get_justify"
 
 external get_extra_menu : t -> unit = "ml_gtk_label_get_extra_menu"
 
-external get_ellipsize : t -> int = "ml_gtk_label_get_ellipsize"
+external get_ellipsize : t -> Pango.ellipsizemode = "ml_gtk_label_get_ellipsize"
 
 external get_current_uri : t -> string = "ml_gtk_label_get_current_uri"
 

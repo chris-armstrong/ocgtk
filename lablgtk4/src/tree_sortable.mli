@@ -7,7 +7,7 @@ external sort_column_changed : t -> unit = "ml_gtk_tree_sortable_sort_column_cha
 
 external set_sort_func : t -> int -> unit -> unit -> unit -> unit = "ml_gtk_tree_sortable_set_sort_func"
 
-external set_sort_column_id : t -> int -> sorttype -> unit = "ml_gtk_tree_sortable_set_sort_column_id"
+external set_sort_column_id : t -> int -> Gtk_enums.sorttype -> unit = "ml_gtk_tree_sortable_set_sort_column_id"
 
 external set_default_sort_func : t -> unit -> unit -> unit -> unit = "ml_gtk_tree_sortable_set_default_sort_func"
 

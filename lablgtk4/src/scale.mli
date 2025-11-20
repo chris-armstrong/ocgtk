@@ -4,10 +4,10 @@
 type t = Gtk.Widget.t
 
 (** Create a new Scale *)
-external new_ : Gtk.orientation -> Gtk.Widget.t option -> t = "ml_gtk_scale_new"
+external new_ : Gtk_enums.orientation -> Gtk.Widget.t option -> t = "ml_gtk_scale_new"
 
 (** Create a new Scale *)
-external new_with_range : Gtk.orientation -> float -> float -> float -> t = "ml_gtk_scale_new_with_range"
+external new_with_range : Gtk_enums.orientation -> float -> float -> float -> t = "ml_gtk_scale_new_with_range"
 
 (* Properties *)
 

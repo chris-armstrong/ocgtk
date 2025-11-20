@@ -227,3 +227,4 @@ module Layout = struct
   external get_ellipsize : layout -> ellipsize_mode
     = "ml_pango_layout_get_ellipsize"
 end
+include Pango_enums

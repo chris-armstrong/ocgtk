@@ -1,4 +1,10 @@
+(* GENERATED IMPLEMENTATION - DO NOT EDIT DIRECTLY *)
+(* Generated from text_view.mli *)
+
+(* Type declarations *)
 type t = Gtk.Widget.t
+
+(* External FFI bindings *)
 external new_ : unit -> t = "ml_gtk_text_view_new"
 external new_with_buffer : Gtk.Widget.t -> t = "ml_gtk_text_view_new_with_buffer"
 external get_accepts_tab : t -> bool = "ml_gtk_text_view_get_accepts_tab"
@@ -9,6 +15,8 @@ external get_cursor_visible : t -> bool = "ml_gtk_text_view_get_cursor_visible"
 external set_cursor_visible : t -> bool -> unit = "ml_gtk_text_view_set_cursor_visible"
 external get_editable : t -> bool = "ml_gtk_text_view_get_editable"
 external set_editable : t -> bool -> unit = "ml_gtk_text_view_set_editable"
+external get_im_module : t -> string = "ml_gtk_text_view_get_im_module"
+external set_im_module : t -> string -> unit = "ml_gtk_text_view_set_im_module"
 external get_indent : t -> int = "ml_gtk_text_view_get_indent"
 external set_indent : t -> int -> unit = "ml_gtk_text_view_set_indent"
 external get_left_margin : t -> int = "ml_gtk_text_view_get_left_margin"
@@ -47,7 +55,7 @@ external place_cursor_onscreen : t -> bool = "ml_gtk_text_view_place_cursor_onsc
 external move_visually : t -> Gtk.Widget.t -> int -> bool = "ml_gtk_text_view_move_visually"
 external move_overlay : t -> Gtk.Widget.t -> int -> int -> unit = "ml_gtk_text_view_move_overlay"
 external move_mark_onscreen : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_move_mark_onscreen"
-external im_context_filter_keypress : t -> unit -> bool = "ml_gtk_text_view_im_context_filter_keypress"
+external im_context_filter_keypress : t -> _ Gdk.event -> bool = "ml_gtk_text_view_im_context_filter_keypress"
 external get_wrap_mode : t -> Gtk_enums.wrapmode = "ml_gtk_text_view_get_wrap_mode"
 external get_visible_rect : t -> unit -> unit = "ml_gtk_text_view_get_visible_rect"
 external get_tabs : t -> unit = "ml_gtk_text_view_get_tabs"
@@ -75,5 +83,5 @@ external add_child_at_anchor : t -> Gtk.Widget.t -> Gtk.Widget.t -> unit = "ml_g
 
 (* Summary:
  * - 1 type declarations
- * - 73 external function declarations
+ * - 75 external bindings
  *)

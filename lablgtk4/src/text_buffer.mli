@@ -26,9 +26,13 @@ external set_enable_undo : t -> bool -> unit = "ml_gtk_text_buffer_set_enable_un
 (** Get property: has-selection *)
 external get_has_selection : t -> bool = "ml_gtk_text_buffer_get_has_selection"
 
-external undo : t -> unit = "ml_gtk_text_buffer_undo"
+(** Get property: text *)
+external get_text : t -> string = "ml_gtk_text_buffer_get_text"
 
-external set_text : t -> string -> int -> unit = "ml_gtk_text_buffer_set_text"
+(** Set property: text *)
+external set_text : t -> string -> unit = "ml_gtk_text_buffer_set_text"
+
+external undo : t -> unit = "ml_gtk_text_buffer_undo"
 
 external set_modified : t -> bool -> unit = "ml_gtk_text_buffer_set_modified"
 
@@ -71,8 +75,6 @@ external insert_child_anchor : t -> Gtk.Widget.t -> Gtk.Widget.t -> unit = "ml_g
 external insert_at_cursor : t -> string -> int -> unit = "ml_gtk_text_buffer_insert_at_cursor"
 
 external insert : t -> Gtk.Widget.t -> string -> int -> unit = "ml_gtk_text_buffer_insert"
-
-external get_text : t -> unit -> unit -> bool -> string = "ml_gtk_text_buffer_get_text"
 
 external get_tag_table : t -> Gtk.Widget.t = "ml_gtk_text_buffer_get_tag_table"
 

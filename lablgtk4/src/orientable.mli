@@ -5,7 +5,7 @@ type t = Gtk.Widget.t
 
 (* Properties *)
 
-external set_orientation : t -> Gtk.orientation -> unit = "ml_gtk_orientable_set_orientation"
+external set_orientation : t -> Gtk_enums.orientation -> unit = "ml_gtk_orientable_set_orientation"
 
-external get_orientation : t -> Gtk.orientation = "ml_gtk_orientable_get_orientation"
+external get_orientation : t -> Gtk_enums.orientation = "ml_gtk_orientable_get_orientation"
 

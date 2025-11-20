@@ -20,11 +20,6 @@ The executable is built to `_build/default/src/tools/gir_gen.exe`
 dune exec src/tools/gir_gen.exe -- -m all -f src/gtk4_controllers.controller \
   /usr/share/gir-1.0/Gtk-4.0.gir src
 
-# Generate specific widgets only (using filter file)
-echo "Builder" > /tmp/filter.txt
-dune exec src/tools/gir_gen.exe -- -m widgets -f /tmp/filter.txt \
-  /usr/share/gir-1.0/Gtk-4.0.gir output
-```
 
 ### Options
 

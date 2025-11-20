@@ -20,7 +20,7 @@ class progress_bar : Gtk.Widget.t ->
     method set_pulse_step : float -> unit
     method pulse_step : float
 
-    method set_text : string option -> unit
+    method set_text : string -> unit
     method text : string
 
     method set_show_text : bool -> unit
