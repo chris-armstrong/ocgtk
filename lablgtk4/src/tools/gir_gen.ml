@@ -173,12 +173,7 @@ let type_mappings = [
     ml_to_c = "String_val";
     needs_copy = true;
   });
-  ("GdkModifierType", {
-    ocaml_type = "Gdk.modifier_type list";
-    c_to_ml = "Val_ModifierType";
-    ml_to_c = "ModifierType_val";
-    needs_copy = false;
-  });
+  (* GdkModifierType is now generated from Gdk-4.0.gir *)
   ("GdkEvent*", {
     ocaml_type = "Gdk.Event.t";
     c_to_ml = "Val_GdkEvent";
@@ -354,6 +349,15 @@ let is_platform_specific_type type_name =
 (* Phase 5.3: OCaml C FFI limitation - max 5 parameters *)
 (* let max_caml_params = 5 *)
 
+(* Extract namespace from C type name (e.g., "GtkAlign" -> "Gtk", "GdkGravity" -> "Gdk") *)
+let extract_namespace_from_c_type c_type =
+  (* Known namespace prefixes *)
+  let prefixes = ["Gtk"; "Gdk"; "Pango"; "Gio"; "GLib"; "GObject"; "Graphene"; "GdkPixbuf"; "Gsk"] in
+  List.find_opt ~f:(fun prefix ->
+    String.length c_type >= String.length prefix &&
+    String.sub c_type ~pos:0 ~len:(String.length prefix) = prefix
+  ) prefixes
+
 (* Bug fix #5: Try to find type mapping using both c_type and GIR name *)
 let find_type_mapping_for_gir_type ?(enums=[]) ?(bitfields=[]) (gir_type : gir_type) =
   let try_lookup lookup_str =
@@ -362,10 +366,12 @@ let find_type_mapping_for_gir_type ?(enums=[]) ?(bitfields=[]) (gir_type : gir_t
       List.find_opt ~f:(fun (e : gir_enum) -> e.enum_c_type = lookup_str) enums in
     match enum_mapping with
     | Some enum ->
+      (* Extract namespace from C type to prefix converter functions *)
+      let namespace = Option.value (extract_namespace_from_c_type enum.enum_c_type) ~default:"" in
       Some {
         ocaml_type = String.lowercase_ascii enum.enum_name;
-        c_to_ml = sprintf "Val_%s" enum.enum_name;
-        ml_to_c = sprintf "%s_val" enum.enum_name;
+        c_to_ml = sprintf "Val_%s%s" namespace enum.enum_name;
+        ml_to_c = sprintf "%s%s_val" namespace enum.enum_name;
         needs_copy = false;
       }
     | None ->
@@ -374,10 +380,12 @@ let find_type_mapping_for_gir_type ?(enums=[]) ?(bitfields=[]) (gir_type : gir_t
         List.find_opt ~f:(fun (b : gir_bitfield) -> b.bitfield_c_type = lookup_str) bitfields in
       (match bitfield_mapping with
       | Some bitfield ->
+        (* Extract namespace from C type to prefix converter functions *)
+        let namespace = Option.value (extract_namespace_from_c_type bitfield.bitfield_c_type) ~default:"" in
         Some {
           ocaml_type = String.lowercase_ascii bitfield.bitfield_name;
-          c_to_ml = sprintf "Val_%s" bitfield.bitfield_name;
-          ml_to_c = sprintf "%s_val" bitfield.bitfield_name;
+          c_to_ml = sprintf "Val_%s%s" namespace bitfield.bitfield_name;
+          ml_to_c = sprintf "%s%s_val" namespace bitfield.bitfield_name;
           needs_copy = false;
         }
       | None ->
@@ -501,6 +509,158 @@ let read_filter_file filename =
 (* ========================================================================= *)
 (* GIR Parser using xmlm *)
 (* ========================================================================= *)
+
+(* Parse only enums and bitfields from a GIR file (for external namespaces) *)
+let parse_gir_enums_only filename =
+  let ic = open_in filename in
+  let input = Xmlm.make_input ~strip:true (`Channel ic) in
+
+  let enums = ref [] in
+  let bitfields = ref [] in
+
+  (* Skip to end of current element *)
+  let rec skip_element depth =
+    if depth = 0 then ()
+    else
+      match Xmlm.input input with
+      | `El_start _ -> skip_element (depth + 1)
+      | `El_end -> skip_element (depth - 1)
+      | `Data _ -> skip_element depth
+      | `Dtd _ -> skip_element depth
+  in
+
+  (* Parse enumeration element - same as in parse_gir_file *)
+  let parse_enumeration attrs =
+    match get_attr "name" attrs, get_attr "c:type" attrs with
+    | Some name, Some c_type ->
+      if is_platform_specific_type name then begin
+        skip_element 1;
+        None
+      end else begin
+        let members = ref [] in
+
+        let rec parse_enum_contents () =
+          match Xmlm.input input with
+          | `El_start ((_, "member"), member_attrs) ->
+            (match get_attr "name" member_attrs, get_attr "value" member_attrs, get_attr "c:identifier" member_attrs with
+            | Some member_name, Some value_str, Some c_id ->
+              let value = try int_of_string value_str with _ -> 0 in
+              members := {
+                member_name = member_name;
+                member_value = value;
+                c_identifier = c_id;
+                member_doc = None;
+              } :: !members;
+              skip_element 1;
+              parse_enum_contents ()
+            | _ ->
+              skip_element 1;
+              parse_enum_contents ())
+
+          | `El_start _ ->
+            skip_element 1;
+            parse_enum_contents ()
+
+          | `El_end -> ()
+          | `Data _ -> parse_enum_contents ()
+          | `Dtd _ -> parse_enum_contents ()
+        in
+
+        parse_enum_contents ();
+        Some {
+          enum_name = name;
+          enum_c_type = c_type;
+          members = List.rev !members;
+          enum_doc = None;
+        }
+      end
+    | _ ->
+      skip_element 1;
+      None
+  in
+
+  (* Parse bitfield element - same as in parse_gir_file *)
+  let parse_bitfield attrs =
+    match get_attr "name" attrs, get_attr "c:type" attrs with
+    | Some name, Some c_type ->
+      if is_platform_specific_type name then begin
+        skip_element 1;
+        None
+      end else begin
+        let flags = ref [] in
+
+        let rec parse_bitfield_contents () =
+          match Xmlm.input input with
+          | `El_start ((_, "member"), member_attrs) ->
+            (match get_attr "name" member_attrs, get_attr "value" member_attrs, get_attr "c:identifier" member_attrs with
+            | Some flag_name, Some value_str, Some c_id ->
+              let value = try int_of_string value_str with _ -> 0 in
+              flags := {
+                flag_name = flag_name;
+                flag_value = value;
+                flag_c_identifier = c_id;
+                flag_doc = None;
+              } :: !flags;
+              skip_element 1;
+              parse_bitfield_contents ()
+            | _ ->
+              skip_element 1;
+              parse_bitfield_contents ())
+
+          | `El_start _ ->
+            skip_element 1;
+            parse_bitfield_contents ()
+
+          | `El_end -> ()
+          | `Data _ -> parse_bitfield_contents ()
+          | `Dtd _ -> parse_bitfield_contents ()
+        in
+
+        parse_bitfield_contents ();
+        Some {
+          bitfield_name = name;
+          bitfield_c_type = c_type;
+          flags = List.rev !flags;
+          bitfield_doc = None;
+        }
+      end
+    | _ ->
+      skip_element 1;
+      None
+  in
+
+  (* Main parsing loop - only look for enums and bitfields *)
+  let rec parse_document () =
+    if Xmlm.eoi input then ()
+    else
+      match Xmlm.input input with
+      | `El_start ((_, "enumeration"), attrs) ->
+        (match parse_enumeration attrs with
+        | Some enum -> enums := enum :: !enums
+        | None -> ());
+        parse_document ()
+
+      | `El_start ((_, "bitfield"), attrs) ->
+        (match parse_bitfield attrs with
+        | Some bitfield -> bitfields := bitfield :: !bitfields
+        | None -> ());
+        parse_document ()
+
+      | `El_start ((_, tag), _) when tag = "repository" || tag = "namespace" ->
+        parse_document ()
+
+      | `El_start _ ->
+        skip_element 1;
+        parse_document ()
+
+      | `El_end -> parse_document ()
+      | `Data _ -> parse_document ()
+      | `Dtd _ -> parse_document ()
+  in
+
+  parse_document ();
+  close_in ic;
+  (List.rev !enums, List.rev !bitfields)
 
 let parse_gir_file filename mode filter_classes =
   let ic = open_in filename in
@@ -1025,34 +1185,51 @@ let parse_gir_file filename mode filter_classes =
 (* C Code Generation *)
 (* ========================================================================= *)
 
-let generate_c_header () =
-  "/* GENERATED CODE - DO NOT EDIT */\n\
-/* Generated from Gtk-4.0.gir */\n\
-\n\
-#include <gtk/gtk.h>\n\
-#include <caml/mlvalues.h>\n\
-#include <caml/memory.h>\n\
-#include <caml/alloc.h>\n\
-#include <caml/callback.h>\n\
-#include <caml/fail.h>\n\
-#include \"wrappers.h\"\n\
-#include \"ml_gobject.h\"\n\
-\n\
-/* Type conversions - use direct cast (GObjects) */\n\
-#define GtkEventController_val(val) ((GtkEventController*)ext_of_val(val))\n\
-#define Val_GtkEventController(obj) ((value)(val_of_ext(obj)))\n\
-/* Note: GtkWidget_val and Val_GtkWidget are defined in wrappers.h */\n\
-\n\
-/* Phase 5.3: Option type conversions for nullable parameters */\n\
-#define GtkWidget_option_val(v) ((v) == Val_none ? NULL : GtkWidget_val(Some_val(v)))\n\
-#define GtkEventController_option_val(v) ((v) == Val_none ? NULL : GtkEventController_val(Some_val(v)))\n\
-\n\
-/* GdkEvent conversions - from ml_event_controller.c */\n\
-#define GdkEvent_val(val) ((GdkEvent*)ext_of_val(val))\n\
-#define Val_GdkEvent(obj) ((value)(val_of_ext(obj)))\n\
-\n\
-/* Note: Res_Ok, Res_Error, ValUnit, and Val_GError are defined in wrappers.h */\n\
-\n"
+let generate_c_header ?(external_enums=[]) ?(external_bitfields=[]) () =
+  let buf = Buffer.create 1024 in
+  Buffer.add_string buf "/* GENERATED CODE - DO NOT EDIT */\n";
+  Buffer.add_string buf "/* Generated from Gtk-4.0.gir */\n";
+  Buffer.add_string buf "\n";
+  Buffer.add_string buf "#include <gtk/gtk.h>\n";
+  Buffer.add_string buf "#include <caml/mlvalues.h>\n";
+  Buffer.add_string buf "#include <caml/memory.h>\n";
+  Buffer.add_string buf "#include <caml/alloc.h>\n";
+  Buffer.add_string buf "#include <caml/callback.h>\n";
+  Buffer.add_string buf "#include <caml/fail.h>\n";
+  Buffer.add_string buf "#include \"wrappers.h\"\n";
+  Buffer.add_string buf "#include \"ml_gobject.h\"\n";
+  Buffer.add_string buf "\n";
+  Buffer.add_string buf "/* Type conversions - use direct cast (GObjects) */\n";
+  Buffer.add_string buf "#define GtkEventController_val(val) ((GtkEventController*)ext_of_val(val))\n";
+  Buffer.add_string buf "#define Val_GtkEventController(obj) ((value)(val_of_ext(obj)))\n";
+  Buffer.add_string buf "/* Note: GtkWidget_val and Val_GtkWidget are defined in wrappers.h */\n";
+  Buffer.add_string buf "\n";
+  Buffer.add_string buf "/* Phase 5.3: Option type conversions for nullable parameters */\n";
+  Buffer.add_string buf "#define GtkWidget_option_val(v) ((v) == Val_none ? NULL : GtkWidget_val(Some_val(v)))\n";
+  Buffer.add_string buf "#define GtkEventController_option_val(v) ((v) == Val_none ? NULL : GtkEventController_val(Some_val(v)))\n";
+  Buffer.add_string buf "\n";
+  Buffer.add_string buf "/* GdkEvent conversions - from ml_event_controller.c */\n";
+  Buffer.add_string buf "#define GdkEvent_val(val) ((GdkEvent*)ext_of_val(val))\n";
+  Buffer.add_string buf "#define Val_GdkEvent(obj) ((value)(val_of_ext(obj)))\n";
+  Buffer.add_string buf "\n";
+  Buffer.add_string buf "/* Note: Res_Ok, Res_Error, ValUnit, and Val_GError are defined in wrappers.h */\n";
+  Buffer.add_string buf "\n";
+
+  (* Add forward declarations for external namespace enum/bitfield converters *)
+  if List.length external_enums > 0 || List.length external_bitfields > 0 then begin
+    Buffer.add_string buf "/* Forward declarations for external namespace enum/bitfield converters */\n";
+    List.iter ~f:(fun (ns, enum : string * gir_enum) ->
+      bprintf buf "value Val_%s%s(%s val);\n" ns enum.enum_name enum.enum_c_type;
+      bprintf buf "%s %s%s_val(value val);\n" enum.enum_c_type ns enum.enum_name;
+    ) external_enums;
+    List.iter ~f:(fun (ns, bitfield : string * gir_bitfield) ->
+      bprintf buf "value Val_%s%s(%s flags);\n" ns bitfield.bitfield_name bitfield.bitfield_c_type;
+      bprintf buf "%s %s%s_val(value list);\n" bitfield.bitfield_c_type ns bitfield.bitfield_name;
+    ) external_bitfields;
+    Buffer.add_string buf "\n";
+  end;
+
+  Buffer.contents buf
 
 let generate_c_constructor ~enums ~bitfields (ctor : gir_constructor) class_name =
   let c_name = ctor.c_identifier in
@@ -1115,7 +1292,7 @@ let generate_c_constructor ~enums ~bitfields (ctor : gir_constructor) class_name
     let rest = List.filteri ~f:(fun i _ -> i >= 5) param_names in
 
     (* Native code variant - individual parameters *)
-    let native_func = sprintf "\nCAMLprim value %s_native(%s)\n\
+    let native_func = sprintf "\nCAMLexport CAMLprim value %s_native(%s)\n\
 {\n\
     CAMLparam5(%s);\n\
     CAMLxparam%d(%s);\n\
@@ -1132,7 +1309,7 @@ let generate_c_constructor ~enums ~bitfields (ctor : gir_constructor) class_name
     in
 
     (* Bytecode variant - array of values *)
-    let bytecode_func = sprintf "\nCAMLprim value %s_bytecode(value * argv, int argn)\n\
+    let bytecode_func = sprintf "\nCAMLexport CAMLprim value %s_bytecode(value * argv, int argn)\n\
 {\n\
     return %s_native(%s);\n\
 }\n"
@@ -1144,7 +1321,7 @@ let generate_c_constructor ~enums ~bitfields (ctor : gir_constructor) class_name
     native_func ^ bytecode_func
   end else begin
     (* Standard single function for <=5 parameters *)
-    sprintf "\nCAMLprim value %s(%s)\n\
+    sprintf "\nCAMLexport CAMLprim value %s(%s)\n\
 {\n\
     CAMLparam%d(%s);\n\
     %s *%s = %s(%s);\n\
@@ -1234,7 +1411,7 @@ let generate_c_method ~enums ~bitfields (meth : gir_method) class_name =
     let rest = List.filteri ~f:(fun i _ -> i >= 5) param_names in
 
     (* Native code variant - individual parameters *)
-    let native_func = sprintf "\nCAMLprim value %s_native(%s)\n\
+    let native_func = sprintf "\nCAMLexport CAMLprim value %s_native(%s)\n\
 {\n\
     CAMLparam5(%s);\n\
     CAMLxparam%d(%s);\n\
@@ -1253,7 +1430,7 @@ let generate_c_method ~enums ~bitfields (meth : gir_method) class_name =
     in
 
     (* Bytecode variant - array of values *)
-    let bytecode_func = sprintf "\nCAMLprim value %s_bytecode(value * argv, int argn)\n\
+    let bytecode_func = sprintf "\nCAMLexport CAMLprim value %s_bytecode(value * argv, int argn)\n\
 {\n\
     return %s_native(%s);\n\
 }\n"
@@ -1265,7 +1442,7 @@ let generate_c_method ~enums ~bitfields (meth : gir_method) class_name =
     native_func ^ bytecode_func
   else
     (* Standard single function for <=5 parameters *)
-    sprintf "\nCAMLprim value %s(%s)\n\
+    sprintf "\nCAMLexport CAMLprim value %s(%s)\n\
 {\n\
     CAMLparam%d(%s);\n\
     %s\n
@@ -1312,7 +1489,7 @@ let generate_c_property_getter ~enums ~bitfields (prop : gir_property) class_nam
       ("GtkEventController_val", "GtkEventController")
   in
 
-  sprintf "\nCAMLprim value %s(value self)\n\
+  sprintf "\nCAMLexport CAMLprim value %s(value self)\n\
 {\n\
     CAMLparam1(self);\n\
     CAMLlocal1(result);\n\
@@ -1360,9 +1537,9 @@ let generate_c_property_setter ~enums ~bitfields (prop : gir_property) class_nam
       ("GtkEventController_val", "GtkEventController")
   in
 
-  sprintf "\nCAMLprim value %s(value self, value new_value)\n\
+  sprintf "\nCAMLexport CAMLprim value %s(value self, value new_value)\n\
 {\n\
-    CAMLparam2(self, new_value);\n\
+    CAMLexport CAMLparam2(self, new_value);\n\
     %s *obj = (%s *)%s(self);\n\
     %s c_value = %s(new_value);\n\
     g_object_set(G_OBJECT(obj), \"%s\", c_value, NULL);\n\
@@ -1432,18 +1609,18 @@ let generate_ocaml_bitfield bitfield =
   Buffer.contents buf
 
 (* Generate C conversion functions for enum *)
-let generate_c_enum_converters enum =
+let generate_c_enum_converters ~namespace enum =
   (* Skip enums with no members *)
   if List.length enum.members = 0 then ""
   else begin
     let buf = Buffer.create 1024 in
-    let val_func = sprintf "Val_%s" enum.enum_name in
-    let c_val_func = sprintf "%s_val" enum.enum_name in
+    let val_func = sprintf "Val_%s%s" namespace enum.enum_name in
+    let c_val_func = sprintf "%s%s_val" namespace enum.enum_name in
     let first_member = List.hd enum.members in
 
     (* Generate C to OCaml converter *)
     bprintf buf "/* Convert %s to OCaml value */\n" enum.enum_c_type;
-    bprintf buf "static value %s(%s val) {\n" val_func enum.enum_c_type;
+    bprintf buf "value %s(%s val) {\n" val_func enum.enum_c_type;
     bprintf buf "  switch (val) {\n";
 
     (* Track seen values to avoid duplicate case statements (e.g., GTK_ALIGN_BASELINE = GTK_ALIGN_BASELINE_FILL) *)
@@ -1465,7 +1642,7 @@ let generate_c_enum_converters enum =
 
     (* Generate OCaml to C converter *)
     bprintf buf "/* Convert OCaml value to %s */\n" enum.enum_c_type;
-    bprintf buf "static %s %s(value val) {\n" enum.enum_c_type c_val_func;
+    bprintf buf "%s %s(value val) {\n" enum.enum_c_type c_val_func;
     bprintf buf "  int tag = Int_val(val);\n";
 
     List.iteri ~f:(fun i enum_member ->
@@ -1483,17 +1660,17 @@ let generate_c_enum_converters enum =
   end
 
 (* Generate C conversion functions for bitfield *)
-let generate_c_bitfield_converters bitfield =
+let generate_c_bitfield_converters ~namespace bitfield =
   (* Skip bitfields with no flags *)
   if List.length bitfield.flags = 0 then ""
   else begin
     let buf = Buffer.create 1024 in
-    let val_func = sprintf "Val_%s" bitfield.bitfield_name in
-    let c_val_func = sprintf "%s_val" bitfield.bitfield_name in
+    let val_func = sprintf "Val_%s%s" namespace bitfield.bitfield_name in
+    let c_val_func = sprintf "%s%s_val" namespace bitfield.bitfield_name in
 
     (* Generate C to OCaml converter (int flags -> list of variants) *)
     bprintf buf "/* Convert %s to OCaml flag list */\n" bitfield.bitfield_c_type;
-    bprintf buf "static value %s(%s flags) {\n" val_func bitfield.bitfield_c_type;
+    bprintf buf "value %s(%s flags) {\n" val_func bitfield.bitfield_c_type;
     bprintf buf "  CAMLparam0();\n";
     bprintf buf "  CAMLlocal2(result, cons);\n";
     bprintf buf "  result = Val_emptylist;\n\n";
@@ -1515,7 +1692,7 @@ let generate_c_bitfield_converters bitfield =
 
     (* Generate OCaml to C converter (list of variants -> int flags) *)
     bprintf buf "/* Convert OCaml flag list to %s */\n" bitfield.bitfield_c_type;
-    bprintf buf "static %s %s(value list) {\n" bitfield.bitfield_c_type c_val_func;
+    bprintf buf "%s %s(value list) {\n" bitfield.bitfield_c_type c_val_func;
     bprintf buf "  %s result = 0;\n" bitfield.bitfield_c_type;
     bprintf buf "  while (list != Val_emptylist) {\n";
     bprintf buf "    int tag = Int_val(Field(list, 0));\n";
@@ -1756,7 +1933,7 @@ let generate_bindings mode filter_file gir_file output_dir =
     | None -> []
   in
 
-  let (controllers, interfaces, enums, bitfields) = parse_gir_file gir_file mode filter_classes in
+  let (controllers, interfaces, gtk_enums, gtk_bitfields) = parse_gir_file gir_file mode filter_classes in
 
   let class_type_name = match mode with
     | EventControllers -> "event controller"
@@ -1765,22 +1942,58 @@ let generate_bindings mode filter_file gir_file output_dir =
   in
   printf "Found %d %s classes\n" (List.length controllers) class_type_name;
   printf "Found %d %s interfaces\n" (List.length interfaces) class_type_name;
-  printf "Found %d enumerations\n" (List.length enums);
-  printf "Found %d bitfields\n" (List.length bitfields);
+  printf "Found %d Gtk enumerations\n" (List.length gtk_enums);
+  printf "Found %d Gtk bitfields\n" (List.length gtk_bitfields);
+
+  (* Parse external namespace GIR files for enums/bitfields *)
+  let external_namespaces = [
+    ("Gdk", "/usr/share/gir-1.0/Gdk-4.0.gir");
+    ("Pango", "/usr/share/gir-1.0/Pango-1.0.gir");
+  ] in
+
+  let external_enums_bitfields = List.map ~f:(fun (ns_name, gir_path) ->
+    if Sys.file_exists gir_path then begin
+      printf "Parsing %s for enums/bitfields...\n" gir_path;
+      let (ns_enums, ns_bitfields) = parse_gir_enums_only gir_path in
+      printf "Found %d %s enumerations, %d %s bitfields\n"
+        (List.length ns_enums) ns_name (List.length ns_bitfields) ns_name;
+      Some (ns_name, ns_enums, ns_bitfields)
+    end else begin
+      eprintf "Warning: %s not found, skipping external namespace %s\n" gir_path ns_name;
+      None
+    end
+  ) external_namespaces |> List.filter_map ~f:(fun x -> x) in
+
+  (* Combine all enums and bitfields for type mapping lookups *)
+  let all_enums = gtk_enums @ (external_enums_bitfields |> List.concat_map ~f:(fun (_, enums, _) -> enums)) in
+  let all_bitfields = gtk_bitfields @ (external_enums_bitfields |> List.concat_map ~f:(fun (_, _, bitfields) -> bitfields)) in
+
+  (* Use combined enums/bitfields for all type lookups *)
+  let enums = all_enums in
+  let bitfields = all_bitfields in
+
+  (* Prepare external namespace enum/bitfield list with namespace prefixes for declarations *)
+  let external_enums_with_ns = external_enums_bitfields |> List.concat_map ~f:(fun (ns, ns_enums, _) ->
+    List.map ~f:(fun enum -> (ns, enum)) ns_enums
+  ) in
+  let external_bitfields_with_ns = external_enums_bitfields |> List.concat_map ~f:(fun (ns, _, ns_bitfields) ->
+    List.map ~f:(fun bitfield -> (ns, bitfield)) ns_bitfields
+  ) in
 
   (* Generate C code *)
   let c_buf = Buffer.create 10240 in
-  Buffer.add_string c_buf (generate_c_header ());
+  Buffer.add_string c_buf (generate_c_header ~external_enums:external_enums_with_ns ~external_bitfields:external_bitfields_with_ns ());
 
-  (* Generate enum converters *)
+  (* Generate enum converters - only for GTK-specific enums *)
+  (* External namespace enums are generated in their own files *)
   List.iter ~f:(fun enum ->
-    Buffer.add_string c_buf (generate_c_enum_converters enum);
-  ) enums;
+    Buffer.add_string c_buf (generate_c_enum_converters ~namespace:"Gtk" enum);
+  ) gtk_enums;
 
-  (* Generate bitfield converters *)
+  (* Generate bitfield converters - only for GTK-specific bitfields *)
   List.iter ~f:(fun bitfield ->
-    Buffer.add_string c_buf (generate_c_bitfield_converters bitfield);
-  ) bitfields;
+    Buffer.add_string c_buf (generate_c_bitfield_converters ~namespace:"Gtk" bitfield);
+  ) gtk_bitfields;
 
   let print_class_or_interface class_name constructors methods properties =
     printf "  - %s (%d methods, %d properties)\n"
@@ -1874,8 +2087,8 @@ let generate_bindings mode filter_file gir_file output_dir =
     close_out oc;
   ) interfaces;
 
-  (* Generate enum and bitfield types file if any were found *)
-  if List.length enums > 0 || List.length bitfields > 0 then begin
+  (* Generate GTK enum and bitfield types file *)
+  if List.length gtk_enums > 0 || List.length gtk_bitfields > 0 then begin
     let enum_file = Filename.concat output_dir "gtk_enums.mli" in
     printf "Writing %s...\n" enum_file;
     let oc = open_out enum_file in
@@ -1883,19 +2096,72 @@ let generate_bindings mode filter_file gir_file output_dir =
     output_string oc "(* GTK4 Enumeration and Bitfield Types *)\n\n";
     List.iter ~f:(fun enum ->
       output_string oc (generate_ocaml_enum enum);
-    ) enums;
+    ) gtk_enums;
     List.iter ~f:(fun bitfield ->
       output_string oc (generate_ocaml_bitfield bitfield);
-    ) bitfields;
+    ) gtk_bitfields;
     close_out oc;
   end;
+
+  (* Generate separate enum files and C converters for external namespaces *)
+  List.iter ~f:(fun (ns_name, ns_enums, ns_bitfields) ->
+    let ns_lower = String.lowercase_ascii ns_name in
+
+    (* Generate OCaml enum file *)
+    if List.length ns_enums > 0 || List.length ns_bitfields > 0 then begin
+      let enum_file = Filename.concat output_dir (sprintf "%s_enums.mli" ns_lower) in
+      printf "Writing %s...\n" enum_file;
+      let oc = open_out enum_file in
+      output_string oc "(* GENERATED CODE - DO NOT EDIT *)\n";
+      output_string oc (sprintf "(* %s Enumeration and Bitfield Types *)\n\n" ns_name);
+      List.iter ~f:(fun enum ->
+        output_string oc (generate_ocaml_enum enum);
+      ) ns_enums;
+      List.iter ~f:(fun bitfield ->
+        output_string oc (generate_ocaml_bitfield bitfield);
+      ) ns_bitfields;
+      close_out oc;
+    end;
+
+    (* Generate C converter file *)
+    if List.length ns_enums > 0 || List.length ns_bitfields > 0 then begin
+      let c_file = Filename.concat output_dir (sprintf "ml_%s_enums_gen.c" ns_lower) in
+      printf "Writing %s...\n" c_file;
+      let oc = open_out c_file in
+      output_string oc (sprintf "/* GENERATED CODE - DO NOT EDIT */\n");
+      output_string oc (sprintf "/* %s enum/bitfield converters */\n\n" ns_name);
+      output_string oc "#include <caml/mlvalues.h>\n";
+      output_string oc "#include <caml/memory.h>\n";
+      output_string oc "#include <caml/alloc.h>\n";
+      if ns_lower = "gdk" then
+        output_string oc "#include <gdk/gdk.h>\n\n"
+      else if ns_lower = "pango" then
+        output_string oc "#include <pango/pango.h>\n\n"
+      else
+        output_string oc (sprintf "#include <%s/%s.h>\n\n" ns_lower ns_lower);
+
+      List.iter ~f:(fun enum ->
+        output_string oc (generate_c_enum_converters ~namespace:ns_name enum);
+      ) ns_enums;
+      List.iter ~f:(fun bitfield ->
+        output_string oc (generate_c_bitfield_converters ~namespace:ns_name bitfield);
+      ) ns_bitfields;
+      close_out oc;
+    end;
+  ) external_enums_bitfields;
 
   printf "\n✓ Code generation complete!\n";
   printf "  Generated: %s\n" c_file;
   printf "  Generated: %d OCaml interface files\n" ((List.length controllers) + (List.length interfaces));
-  if List.length enums > 0 || List.length bitfields > 0 then
+  if List.length gtk_enums > 0 || List.length gtk_bitfields > 0 then
     printf "  Generated: gtk_enums.mli (%d enumerations, %d bitfields)\n"
-      (List.length enums) (List.length bitfields);
+      (List.length gtk_enums) (List.length gtk_bitfields);
+  List.iter ~f:(fun (ns_name, ns_enums, ns_bitfields) ->
+    if List.length ns_enums > 0 || List.length ns_bitfields > 0 then
+      printf "  Generated: %s_enums.mli and ml_%s_enums_gen.c (%d enums, %d bitfields)\n"
+        (String.lowercase_ascii ns_name) (String.lowercase_ascii ns_name)
+        (List.length ns_enums) (List.length ns_bitfields);
+  ) external_enums_bitfields;
   `Ok ()
 
 (* Cmdliner argument definitions *)

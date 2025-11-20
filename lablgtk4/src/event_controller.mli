@@ -25,7 +25,7 @@ external get_name : t -> string = "ml_gtk_event_controller_get_name"
 
 external get_current_event_time : t -> unit = "ml_gtk_event_controller_get_current_event_time"
 
-external get_current_event_state : t -> Gdk.modifier_type list = "ml_gtk_event_controller_get_current_event_state"
+external get_current_event_state : t -> modifiertype = "ml_gtk_event_controller_get_current_event_state"
 
 external get_current_event_device : t -> unit = "ml_gtk_event_controller_get_current_event_device"
 
