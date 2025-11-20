@@ -119,7 +119,7 @@ jobs:
           # Use custom test runner script to avoid GTK cleanup issues
           # See tests/dune for explanation of why we can't use 'dune runtest'
           # Use xvfb-run to provide virtual display for GTK runtime tests
-          opam exec -- xvfb-run -a "dune test"
+          opam exec -- xvfb-run -a dune test
 
       - name: Display generated enum modules
         working-directory: lablgtk4
