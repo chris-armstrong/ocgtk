@@ -679,7 +679,7 @@ CAMLprim value ml_g_signal_connect_closure(value obj, value signal_name,
 {
     CAMLparam4(obj, signal_name, closure, after);
     GObject *gobj = G_OBJECT(ext_of_val(obj));
-    GClosure *gclosure = (GClosure *)Data_custom_val(closure);
+    GClosure *gclosure = GClosure_val(closure);
     const char *name = String_val(signal_name);
     gboolean after_flag = Bool_val(after);
 

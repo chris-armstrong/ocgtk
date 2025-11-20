@@ -4,7 +4,7 @@
 type t = Gtk.Widget.t
 
 (** Create a new SpinButton *)
-external new_ : Gtk.Widget.t option -> unit -> int -> t = "ml_gtk_spin_button_new"
+external new_ : Gtk.Widget.t option -> float -> int -> t = "ml_gtk_spin_button_new"
 
 (** Create a new SpinButton *)
 external new_with_range : float -> float -> float -> t = "ml_gtk_spin_button_new_with_range"
@@ -55,9 +55,9 @@ external set_wrap : t -> bool -> unit = "ml_gtk_spin_button_set_wrap"
 
 external update : t -> unit = "ml_gtk_spin_button_update"
 
-external spin : t -> unit -> unit -> unit = "ml_gtk_spin_button_spin"
+external spin : t -> Gtk_enums.spintype -> float -> unit = "ml_gtk_spin_button_spin"
 
-external set_update_policy : t -> int -> unit = "ml_gtk_spin_button_set_update_policy"
+external set_update_policy : t -> Gtk_enums.spinbuttonupdatepolicy -> unit = "ml_gtk_spin_button_set_update_policy"
 
 external set_range : t -> float -> float -> unit = "ml_gtk_spin_button_set_range"
 
@@ -65,15 +65,15 @@ external set_increments : t -> float -> float -> unit = "ml_gtk_spin_button_set_
 
 external set_adjustment : t -> Gtk.Widget.t -> unit = "ml_gtk_spin_button_set_adjustment"
 
-external get_value_as_int : t -> unit = "ml_gtk_spin_button_get_value_as_int"
+external get_value_as_int : t -> int = "ml_gtk_spin_button_get_value_as_int"
 
-external get_update_policy : t -> int = "ml_gtk_spin_button_get_update_policy"
+external get_update_policy : t -> Gtk_enums.spinbuttonupdatepolicy = "ml_gtk_spin_button_get_update_policy"
 
-external get_range : t -> unit -> unit -> unit = "ml_gtk_spin_button_get_range"
+external get_range : t -> float -> float -> unit = "ml_gtk_spin_button_get_range"
 
-external get_increments : t -> unit -> unit -> unit = "ml_gtk_spin_button_get_increments"
+external get_increments : t -> float -> float -> unit = "ml_gtk_spin_button_get_increments"
 
 external get_adjustment : t -> Gtk.Widget.t = "ml_gtk_spin_button_get_adjustment"
 
-external configure : t -> Gtk.Widget.t option -> unit -> int -> unit = "ml_gtk_spin_button_configure"
+external configure : t -> Gtk.Widget.t option -> float -> int -> unit = "ml_gtk_spin_button_configure"
 

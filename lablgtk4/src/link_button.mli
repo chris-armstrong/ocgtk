@@ -11,13 +11,15 @@ external new_with_label : string -> string option -> t = "ml_gtk_link_button_new
 
 (* Properties *)
 
+(** Get property: uri *)
+external get_uri : t -> string = "ml_gtk_link_button_get_uri"
+
+(** Set property: uri *)
+external set_uri : t -> string -> unit = "ml_gtk_link_button_set_uri"
+
 (** Get property: visited *)
 external get_visited : t -> bool = "ml_gtk_link_button_get_visited"
 
 (** Set property: visited *)
 external set_visited : t -> bool -> unit = "ml_gtk_link_button_set_visited"
-
-external set_uri : t -> string -> unit = "ml_gtk_link_button_set_uri"
-
-external get_uri : t -> string = "ml_gtk_link_button_get_uri"
 

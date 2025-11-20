@@ -25,10 +25,11 @@ rm cflag-gtk4.tmp clink-gtk4.tmp\
  (public_name lablgtk4)
  (wrapped false)
  (flags :standard -w -6-7-9-10-27-32-33-34-35-36-50-52 -no-strict-sequence)
- (modules gpointer gaux gobject glib gdk gdkPixbuf gdkClipboard pango graphene gtk gtkSnapshot eventController eventControllerKey eventControllerMotion gestureClick gObj gBox gGrid gFixed gPaned gNotebook gStack gWindow gScrolledWindow gFrame gPack gMain Gtk4Enums Gdk4Enums GlibEnums pangoEnums GobjectEnums gtkButton gtkCheckButton gtkToggleButton gButton entry search_entry password_entry spin_button label image link_button menu_button switch text_buffer text_view text_tag text_tag_table button check_button toggle_button)
+ (modules gError gpointer gaux gobject glib gdk gdkPixbuf gdkClipboard pango graphene gtk gtkSnapshot eventController eventControllerKey eventControllerMotion gestureClick gObj gBox gGrid gFixed gPaned gNotebook gStack gWindow gScrolledWindow gFrame gPack gMain Gtk4Enums Gdk4Enums GlibEnums pangoEnums GobjectEnums gtk_enums gdk_enums pango_enums gtkButton gtkCheckButton gtkToggleButton gButton gRange entry search_entry password_entry spin_button label image link_button menu_button switch text_buffer text_view text_tag text_tag_table button check_button toggle_button adjustment range progress_bar adjustment level_bar scale editable)
+ (modules_without_implementation gtk_enums)
  (foreign_stubs
   (language c)
-  (names wrappers ml_glib ml_gobject ml_gdk ml_gdkpixbuf ml_gdk_clipboard ml_pango ml_gtk ml_gtk_snapshot ml_event_controller ml_event_controllers_gen gtk4_tags gdk4_tags glib_tags pango_tags gobject_tags gdkpixbuf_tags)
+  (names wrappers ml_glib ml_gobject ml_gdk ml_gdkpixbuf ml_gdk_clipboard ml_pango ml_gtk ml_gtk_snapshot ml_event_controllers_gen ml_event_controller ml_gdk_enums_gen ml_pango_enums_gen gtk4_tags gdk4_tags glib_tags pango_tags gobject_tags gdkpixbuf_tags)
   (flags -fPIC (:include cflag-gtk4.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
  (c_library_flags (:include clink-gtk4.sexp))
  (install_c_headers wrappers gtk4_tags gdk4_tags glib_tags pango_tags gobject_tags gdkpixbuf_tags)

@@ -26,6 +26,12 @@ external get_allow_breaks_set : t -> bool = "ml_gtk_text_tag_get_allow_breaks_se
 (** Set property: allow-breaks-set *)
 external set_allow_breaks_set : t -> bool -> unit = "ml_gtk_text_tag_set_allow_breaks_set"
 
+(** Get property: background *)
+external get_background : t -> string = "ml_gtk_text_tag_get_background"
+
+(** Set property: background *)
+external set_background : t -> string -> unit = "ml_gtk_text_tag_set_background"
+
 (** Get property: background-full-height *)
 external get_background_full_height : t -> bool = "ml_gtk_text_tag_get_background_full_height"
 
@@ -68,17 +74,41 @@ external get_fallback_set : t -> bool = "ml_gtk_text_tag_get_fallback_set"
 (** Set property: fallback-set *)
 external set_fallback_set : t -> bool -> unit = "ml_gtk_text_tag_set_fallback_set"
 
+(** Get property: family *)
+external get_family : t -> string = "ml_gtk_text_tag_get_family"
+
+(** Set property: family *)
+external set_family : t -> string -> unit = "ml_gtk_text_tag_set_family"
+
 (** Get property: family-set *)
 external get_family_set : t -> bool = "ml_gtk_text_tag_get_family_set"
 
 (** Set property: family-set *)
 external set_family_set : t -> bool -> unit = "ml_gtk_text_tag_set_family_set"
 
+(** Get property: font *)
+external get_font : t -> string = "ml_gtk_text_tag_get_font"
+
+(** Set property: font *)
+external set_font : t -> string -> unit = "ml_gtk_text_tag_set_font"
+
+(** Get property: font-features *)
+external get_font_features : t -> string = "ml_gtk_text_tag_get_font_features"
+
+(** Set property: font-features *)
+external set_font_features : t -> string -> unit = "ml_gtk_text_tag_set_font_features"
+
 (** Get property: font-features-set *)
 external get_font_features_set : t -> bool = "ml_gtk_text_tag_get_font_features_set"
 
 (** Set property: font-features-set *)
 external set_font_features_set : t -> bool -> unit = "ml_gtk_text_tag_set_font_features_set"
+
+(** Get property: foreground *)
+external get_foreground : t -> string = "ml_gtk_text_tag_get_foreground"
+
+(** Set property: foreground *)
+external set_foreground : t -> string -> unit = "ml_gtk_text_tag_set_foreground"
 
 (** Get property: foreground-set *)
 external get_foreground_set : t -> bool = "ml_gtk_text_tag_get_foreground_set"
@@ -128,6 +158,12 @@ external get_justification_set : t -> bool = "ml_gtk_text_tag_get_justification_
 (** Set property: justification-set *)
 external set_justification_set : t -> bool -> unit = "ml_gtk_text_tag_set_justification_set"
 
+(** Get property: language *)
+external get_language : t -> string = "ml_gtk_text_tag_get_language"
+
+(** Set property: language *)
+external set_language : t -> string -> unit = "ml_gtk_text_tag_set_language"
+
 (** Get property: language-set *)
 external get_language_set : t -> bool = "ml_gtk_text_tag_get_language_set"
 
@@ -170,6 +206,9 @@ external get_line_height_set : t -> bool = "ml_gtk_text_tag_get_line_height_set"
 (** Set property: line-height-set *)
 external set_line_height_set : t -> bool -> unit = "ml_gtk_text_tag_set_line_height_set"
 
+(** Get property: name *)
+external get_name : t -> string = "ml_gtk_text_tag_get_name"
+
 (** Get property: overline-rgba-set *)
 external get_overline_rgba_set : t -> bool = "ml_gtk_text_tag_get_overline_rgba_set"
 
@@ -181,6 +220,12 @@ external get_overline_set : t -> bool = "ml_gtk_text_tag_get_overline_set"
 
 (** Set property: overline-set *)
 external set_overline_set : t -> bool -> unit = "ml_gtk_text_tag_set_overline_set"
+
+(** Get property: paragraph-background *)
+external get_paragraph_background : t -> string = "ml_gtk_text_tag_get_paragraph_background"
+
+(** Set property: paragraph-background *)
+external set_paragraph_background : t -> string -> unit = "ml_gtk_text_tag_set_paragraph_background"
 
 (** Get property: paragraph-background-set *)
 external get_paragraph_background_set : t -> bool = "ml_gtk_text_tag_get_paragraph_background_set"
@@ -386,9 +431,9 @@ external get_wrap_mode_set : t -> bool = "ml_gtk_text_tag_get_wrap_mode_set"
 (** Set property: wrap-mode-set *)
 external set_wrap_mode_set : t -> bool -> unit = "ml_gtk_text_tag_set_wrap_mode_set"
 
-external set_priority : t -> unit -> unit = "ml_gtk_text_tag_set_priority"
+external set_priority : t -> int -> unit = "ml_gtk_text_tag_set_priority"
 
-external get_priority : t -> unit = "ml_gtk_text_tag_get_priority"
+external get_priority : t -> int = "ml_gtk_text_tag_get_priority"
 
 external changed : t -> bool -> unit = "ml_gtk_text_tag_changed"
 

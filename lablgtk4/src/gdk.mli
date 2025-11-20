@@ -282,3 +282,4 @@ module Cairo : sig
   val set_source_rgba : cairo -> rgba -> unit
   (** Set source color from RGBA *)
 end
+include module type of Gdk_enums

@@ -1,5 +1,15 @@
 # Development Notes for lablgtk4 Port
 
+## MANDATORY: Development Essentials
+
+1. ALWAYS build the project after making changes with `dune build`
+2. ALWAYS run tests with `dune runtest`
+
+## Setting up the project
+
+If you are running in a clean container (e.g. Claude Code Web), you will need to follow the instructions in [SETUP.md](./SETUP.md) for instructions.
+
+
 ## Essential: Always Check lablgtk3 First
 
 **CRITICAL RULE**: When working on lablgtk4, ALWAYS check the lablgtk3 implementation first before writing new code.
@@ -55,6 +65,14 @@ module Test : sig
   val invoke_closure_int : g_closure -> int -> unit
 end
 ```
+
+## Development Tools
+
+### GIR Code Generator
+For generating GTK bindings from GObject Introspection (GIR) files:
+- See [lablgtk4/src/tools/README_GIR_GEN.md](lablgtk4/src/tools/README_GIR_GEN.md) for complete usage instructions
+- Generates C FFI bindings and OCaml interfaces from Gtk-4.0.gir
+- Supports error handling with result types for throwing functions
 
 ## Memory Safety
 

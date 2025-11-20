@@ -185,3 +185,4 @@ module Cairo = struct
   external create : surface -> cairo = "ml_gdk_cairo_create"
   external set_source_rgba : cairo -> rgba -> unit = "ml_gdk_cairo_set_source_rgba"
 end
+include Gdk_enums

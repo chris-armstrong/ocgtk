@@ -25,7 +25,7 @@ let () =
   username_box#append (GObj.widget_of_obj (username_label));
 
   let username_entry = Entry.new_ () in
-  Entry.set_placeholder_text username_entry (Some "Enter username");
+  Entry.set_placeholder_text username_entry "Enter username";
   username_box#append (GObj.widget_of_obj (username_entry));
 
   (* Password field *)
@@ -36,7 +36,7 @@ let () =
   password_box#append (GObj.widget_of_obj (password_label));
 
   let password_entry = Password_entry.new_ () in
-  Password_entry.set_placeholder_text password_entry (Some "Enter password");
+  Password_entry.set_placeholder_text password_entry "Enter password";
   Password_entry.set_show_peek_icon password_entry true;
   password_box#append (GObj.widget_of_obj (password_entry));
 
@@ -58,8 +58,8 @@ let () =
   button_box#append (login_btn :> GObj.widget);
 
   ignore (login_btn#connect#clicked ~callback:(fun () ->
-    let username = Entry.get_text username_entry in
-    let password = Password_entry.get_text password_entry in
+    let username = Editable.get_text username_entry in
+    let password = Editable.get_text password_entry in
 
     if username = "" || password = "" then
       Label.set_label status_label "Please fill in all fields"
@@ -76,8 +76,8 @@ let () =
   button_box#append (cancel_btn :> GObj.widget);
 
   ignore (cancel_btn#connect#clicked ~callback:(fun () ->
-    Entry.set_text username_entry "";
-    Password_entry.set_text password_entry "";
+    Editable.set_text username_entry "";
+    Editable.set_text password_entry "";
     Label.set_label status_label "";
     remember_check#set_active false
   ));

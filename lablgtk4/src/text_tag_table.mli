@@ -10,7 +10,7 @@ external remove : t -> Gtk.Widget.t -> unit = "ml_gtk_text_tag_table_remove"
 
 external lookup : t -> string -> Gtk.Widget.t = "ml_gtk_text_tag_table_lookup"
 
-external get_size : t -> unit = "ml_gtk_text_tag_table_get_size"
+external get_size : t -> int = "ml_gtk_text_tag_table_get_size"
 
 external foreach : t -> unit -> unit -> unit = "ml_gtk_text_tag_table_foreach"
 
