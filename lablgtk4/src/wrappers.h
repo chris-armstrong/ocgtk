@@ -181,7 +181,7 @@ void* ext_of_val(value val);
 #define Val_GObject(obj) (val_of_ext(obj))
 
 /* GClosure - custom block with finalizer (defined in ml_gobject.c) */
-#define GClosure_val(val) *((GClosure**)Data_custom_val(val))
+#define GClosure_val(val) (*((GClosure**)Data_custom_val(val)))
 
 /* GType */
 #define GType_val(val) ((GType)Long_val(val))
