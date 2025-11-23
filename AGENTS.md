@@ -4,11 +4,11 @@
 
 1. ALWAYS build the project after making changes with `dune build`
 2. ALWAYS run tests with `dune runtest`
+3. ALWAYS write scripts and supporting code in OCaml
 
 ## Setting up the project
 
 If you are running in a clean container (e.g. Claude Code Web), you will need to follow the instructions in [SETUP.md](./SETUP.md) for instructions.
-
 
 ## Essential: Always Check lablgtk3 First
 
