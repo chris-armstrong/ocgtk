@@ -2025,6 +2025,36 @@ let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors
   Buffer.contents buf
 
 (* ========================================================================= *)
+(* Dune Library Generation *)
+(* ========================================================================= *)
+
+(* Generate dune library stanza for generated C stubs *)
+let generate_dune_library stub_names =
+  let buf = Buffer.create 2048 in
+
+  Buffer.add_string buf "; Auto-generated library for generated C bindings\n";
+  Buffer.add_string buf "; Regenerate by running gir_gen\n\n";
+
+  Buffer.add_string buf "(library\n";
+  Buffer.add_string buf " (name lablgtk4_generated_stubs)\n";
+  Buffer.add_string buf " (public_name lablgtk4.generated_stubs)\n";
+  Buffer.add_string buf " (wrapped false)\n";
+  Buffer.add_string buf " (modules)  ; No OCaml modules, only C stubs\n";
+  Buffer.add_string buf " (foreign_stubs\n";
+  Buffer.add_string buf "  (language c)\n";
+  Buffer.add_string buf "  (names\n";
+
+  List.iter ~f:(fun name ->
+    bprintf buf "   %s\n" name
+  ) stub_names;
+
+  Buffer.add_string buf "  )\n";
+  Buffer.add_string buf "  (flags -fPIC (:include cflag-gtk4.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))\n";
+  Buffer.add_string buf " (c_library_flags (:include clink-gtk4.sexp)))\n";
+
+  Buffer.contents buf
+
+(* ========================================================================= *)
 (* Main *)
 (* ========================================================================= *)
 
@@ -2032,6 +2062,9 @@ let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors
 let generate_bindings filter_file gir_file output_dir =
   printf "Parsing %s ...\n" gir_file
     ;
+
+  (* Track generated C stub files *)
+  let generated_stubs = ref [] in
 
   (* Read filter file if specified *)
   let filter_classes = match filter_file with
@@ -2098,6 +2131,7 @@ let generate_bindings filter_file gir_file output_dir =
       output_string oc (generate_c_bitfield_converters ~namespace:"Gtk" bitfield);
     ) gtk_bitfields;
     close_out oc;
+    generated_stubs := "ml_gtk_enums_gen" :: !generated_stubs;
   end;
 
   (* Generate individual C files for each controller *)
@@ -2108,8 +2142,8 @@ let generate_bindings filter_file gir_file output_dir =
       printf "  - %s (%d methods, %d properties)\n"
         cls.class_name (List.length cls.methods) (List.length cls.properties);
 
-      let c_file = Filename.concat output_dir
-        (sprintf "ml_%s_gen.c" (to_snake_case cls.class_name)) in
+      let stub_name = sprintf "ml_%s_gen" (to_snake_case cls.class_name) in
+      let c_file = Filename.concat output_dir (stub_name ^ ".c") in
       printf "Writing %s...\n" c_file;
 
       let c_code = generate_class_c_code
@@ -2121,6 +2155,7 @@ let generate_bindings filter_file gir_file output_dir =
       let oc = open_out c_file in
       output_string oc c_code;
       close_out oc;
+      generated_stubs := stub_name :: !generated_stubs;
     end
   ) controllers;
 
@@ -2132,8 +2167,8 @@ let generate_bindings filter_file gir_file output_dir =
       printf "  - %s (%d methods, %d properties)\n"
         intf.interface_name (List.length intf.methods) (List.length intf.properties);
 
-      let c_file = Filename.concat output_dir
-        (sprintf "ml_%s_gen.c" (to_snake_case intf.interface_name)) in
+      let stub_name = sprintf "ml_%s_gen" (to_snake_case intf.interface_name) in
+      let c_file = Filename.concat output_dir (stub_name ^ ".c") in
       printf "Writing %s...\n" c_file;
 
       let c_code = generate_class_c_code
@@ -2145,6 +2180,7 @@ let generate_bindings filter_file gir_file output_dir =
       let oc = open_out c_file in
       output_string oc c_code;
       close_out oc;
+      generated_stubs := stub_name :: !generated_stubs;
     end
   ) interfaces;
 
@@ -2209,7 +2245,8 @@ let generate_bindings filter_file gir_file output_dir =
 
     (* Generate C converter file *)
     if List.length ns_enums > 0 || List.length ns_bitfields > 0 then begin
-      let c_file = Filename.concat output_dir (sprintf "ml_%s_enums_gen.c" ns_lower) in
+      let stub_name = sprintf "ml_%s_enums_gen" ns_lower in
+      let c_file = Filename.concat output_dir (stub_name ^ ".c") in
       printf "Writing %s...\n" c_file;
       let oc = open_out c_file in
       output_string oc (sprintf "/* GENERATED CODE - DO NOT EDIT */\n");
@@ -2231,8 +2268,18 @@ let generate_bindings filter_file gir_file output_dir =
         output_string oc (generate_c_bitfield_converters ~namespace:ns_name bitfield);
       ) ns_bitfields;
       close_out oc;
+      generated_stubs := stub_name :: !generated_stubs;
     end;
   ) external_enums_bitfields;
+
+  (* Write dune library include file *)
+  let dune_file = Filename.concat output_dir "dune-generated.inc" in
+  printf "\nWriting %s...\n" dune_file;
+  let stub_list = List.rev !generated_stubs |> List.sort ~cmp:String.compare in
+  let dune_content = generate_dune_library stub_list in
+  let oc = open_out dune_file in
+  output_string oc dune_content;
+  close_out oc;
 
   printf "\n✓ Code generation complete!\n";
   printf "  Generated: %d C files (one per class/interface)\n" ((List.length controllers) + (List.length interfaces));
@@ -2246,6 +2293,7 @@ let generate_bindings filter_file gir_file output_dir =
         (String.lowercase_ascii ns_name) (String.lowercase_ascii ns_name)
         (List.length ns_enums) (List.length ns_bitfields);
   ) external_enums_bitfields;
+  printf "  Generated: dune-generated.inc with %d C stub names\n" (List.length stub_list);
   `Ok ()
 
 (* Cmdliner argument definitions *)
