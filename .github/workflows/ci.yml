@@ -84,6 +84,9 @@ jobs:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
           dune-cache: true
 
+      - name: Install external dependencies
+        run: apt-get update && apt-get install -y  libcairo2-dev libgtk-4-dev xdot xvfb
+
       - name: Pin conf-gtk4 package
         run: opam pin add -n conf-gtk4 conf-gtk4
 
@@ -104,11 +107,6 @@ jobs:
       #     opam exec -- dune build src/tools/test_gir_gen.exe
       #     opam exec -- ./_build/default/src/tools/test_gir_gen.exe
 
-      - name: Install xvfb for runtime tests
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y xvfb
-
       - name: Build lablgtk4 library
         working-directory: lablgtk4
         run: opam exec -- dune build
@@ -121,11 +119,3 @@ jobs:
           # Use xvfb-run to provide virtual display for GTK runtime tests
           opam exec -- xvfb-run -a dune test
 
-      - name: Display generated enum modules
-        working-directory: lablgtk4
-        run: |
-          echo "=== Generated enum modules ==="
-          ls -lh _build/default/src/*Enums.ml
-          echo ""
-          echo "=== Line counts ==="
-          wc -l _build/default/src/*Enums.ml
