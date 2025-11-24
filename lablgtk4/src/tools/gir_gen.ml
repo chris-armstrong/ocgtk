@@ -1187,24 +1187,30 @@ let parse_gir_file filename filter_classes =
 (* C Code Generation *)
 (* ========================================================================= *)
 
-(* Generate C file header with common includes and type conversions *)
-let generate_c_file_header ?(class_name="") ?(external_enums=[]) ?(external_bitfields=[]) () =
-  let buf = Buffer.create 1024 in
+(* Generate common header file with forward declarations for enum/bitfield converters *)
+let generate_forward_decls_header ~external_enums ~external_bitfields =
+  let buf = Buffer.create 4096 in
+  Buffer.add_string buf "/**************************************************************************/\n";
+  Buffer.add_string buf "/*                LablGTK4 - OCaml bindings for GTK4                      */\n";
+  Buffer.add_string buf "/*                                                                        */\n";
+  Buffer.add_string buf "/*    This program is free software; you can redistribute it              */\n";
+  Buffer.add_string buf "/*    and/or modify it under the terms of the GNU Library General         */\n";
+  Buffer.add_string buf "/*    Public License as published by the Free Software Foundation         */\n";
+  Buffer.add_string buf "/*    version 2, with the exception described in file COPYING which       */\n";
+  Buffer.add_string buf "/*    comes with the library.                                             */\n";
+  Buffer.add_string buf "/*                                                                        */\n";
+  Buffer.add_string buf "/**************************************************************************/\n";
+  Buffer.add_string buf "\n";
   Buffer.add_string buf "/* GENERATED CODE - DO NOT EDIT */\n";
-  if class_name <> "" then
-    bprintf buf "/* C bindings for %s */\n" class_name
-  else
-    Buffer.add_string buf "/* Generated from Gtk-4.0.gir */\n";
+  Buffer.add_string buf "/* Forward declarations for generated enum and bitfield converters */\n";
   Buffer.add_string buf "\n";
-  Buffer.add_string buf "#include <gtk/gtk.h>\n";
+  Buffer.add_string buf "#ifndef _gtk4_generated_forward_decls_\n";
+  Buffer.add_string buf "#define _gtk4_generated_forward_decls_\n";
+  Buffer.add_string buf "\n";
   Buffer.add_string buf "#include <caml/mlvalues.h>\n";
-  Buffer.add_string buf "#include <caml/memory.h>\n";
-  Buffer.add_string buf "#include <caml/alloc.h>\n";
-  Buffer.add_string buf "#include <caml/callback.h>\n";
-  Buffer.add_string buf "#include <caml/fail.h>\n";
-  Buffer.add_string buf "#include \"wrappers.h\"\n";
-  Buffer.add_string buf "#include \"ml_gobject.h\"\n";
   Buffer.add_string buf "\n";
+
+  (* Add common type conversions used by all generated files *)
   Buffer.add_string buf "/* Type conversions - use direct cast (GObjects) */\n";
   Buffer.add_string buf "#define GtkEventController_val(val) ((GtkEventController*)ext_of_val(val))\n";
   Buffer.add_string buf "#define Val_GtkEventController(obj) ((value)(val_of_ext(obj)))\n";
@@ -1228,12 +1234,40 @@ let generate_c_file_header ?(class_name="") ?(external_enums=[]) ?(external_bitf
       bprintf buf "value Val_%s%s(%s val);\n" ns enum.enum_name enum.enum_c_type;
       bprintf buf "%s %s%s_val(value val);\n" enum.enum_c_type ns enum.enum_name;
     ) external_enums;
+    Buffer.add_string buf "\n";
     List.iter ~f:(fun (ns, bitfield : string * gir_bitfield) ->
       bprintf buf "value Val_%s%s(%s flags);\n" ns bitfield.bitfield_name bitfield.bitfield_c_type;
       bprintf buf "%s %s%s_val(value list);\n" bitfield.bitfield_c_type ns bitfield.bitfield_name;
     ) external_bitfields;
-    Buffer.add_string buf "\n";
   end;
+
+  Buffer.add_string buf "\n";
+  Buffer.add_string buf "#endif /* _gtk4_generated_forward_decls_ */\n";
+  Buffer.contents buf
+
+(* Generate C file header with common includes and type conversions *)
+let generate_c_file_header ?(class_name="") ?(external_enums=[]) ?(external_bitfields=[]) () =
+  let buf = Buffer.create 1024 in
+  Buffer.add_string buf "/* GENERATED CODE - DO NOT EDIT */\n";
+  if class_name <> "" then
+    bprintf buf "/* C bindings for %s */\n" class_name
+  else
+    Buffer.add_string buf "/* Generated from Gtk-4.0.gir */\n";
+  Buffer.add_string buf "\n";
+  Buffer.add_string buf "#include <gtk/gtk.h>\n";
+  Buffer.add_string buf "#include <caml/mlvalues.h>\n";
+  Buffer.add_string buf "#include <caml/memory.h>\n";
+  Buffer.add_string buf "#include <caml/alloc.h>\n";
+  Buffer.add_string buf "#include <caml/callback.h>\n";
+  Buffer.add_string buf "#include <caml/fail.h>\n";
+  Buffer.add_string buf "#include \"wrappers.h\"\n";
+  Buffer.add_string buf "#include \"ml_gobject.h\"\n";
+  Buffer.add_string buf "\n";
+
+  (* Include common header for type conversions and forward declarations instead of duplicating them *)
+  Buffer.add_string buf "/* Include common type conversions and forward declarations */\n";
+  Buffer.add_string buf "#include \"generated_forward_decls.h\"\n";
+  Buffer.add_string buf "\n";
 
   Buffer.contents buf
 
@@ -2117,6 +2151,16 @@ let generate_bindings filter_file gir_file output_dir =
   let external_bitfields_with_ns = external_enums_bitfields |> List.concat_map ~f:(fun (ns, _, ns_bitfields) ->
     List.map ~f:(fun bitfield -> (ns, bitfield)) ns_bitfields
   ) in
+
+  (* Generate common header file with type conversions and forward declarations *)
+  let header_file = Filename.concat output_dir "generated_forward_decls.h" in
+  printf "\nWriting %s...\n" header_file;
+  let header_content = generate_forward_decls_header
+    ~external_enums:external_enums_with_ns
+    ~external_bitfields:external_bitfields_with_ns in
+  let oc = open_out header_file in
+  output_string oc header_content;
+  close_out oc;
 
   (* Generate GTK enum and bitfield converters in a separate file *)
   if List.length gtk_enums > 0 || List.length gtk_bitfields > 0 then begin
