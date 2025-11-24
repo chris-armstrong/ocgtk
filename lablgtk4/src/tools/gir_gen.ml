@@ -4,9 +4,6 @@
  * This tool parses Gtk-4.0.gir and generates C FFI bindings and OCaml
  * modules for GTK4 event controllers and widgets.
  *
- * Phase 3: Event controllers
- * Phase 5: Widget classes with properties and signals
- *
  * Follows patterns from varcc.ml and propcc.ml.
  *)
 
@@ -51,6 +48,7 @@ type gir_constructor = {
   c_identifier : string;
   ctor_parameters : gir_param list;  (* Added: constructor parameters *)
   ctor_doc : string option;
+  throws : bool;  (* Whether the constructor can throw GError *)
 }
 
 (* Phase 5: Property support *)
@@ -114,15 +112,6 @@ type gir_interface = {
   signals: gir_signal list;
   interface_doc: string option;
 }
-
-(* ========================================================================= *)
-(* Generation Modes (Phase 5) *)
-(* ========================================================================= *)
-
-type generation_mode =
-  | EventControllers  (* Phase 3: Event controllers only *)
-  | Widgets           (* Phase 5: Widget classes *)
-  | All               (* Both controllers and widgets *)
 
 (* ========================================================================= *)
 (* Type Mappings *)
@@ -349,12 +338,15 @@ let is_variadic_function c_identifier =
 
 (* Bug fix #4: Blacklist for types requiring platform-specific headers *)
 let platform_specific_type_blacklist = [
-  "PrintCapabilities";  (* Requires unix-print headers *)
-  "PageSetup";          (* Print-related *)
-  "PrintSettings";      (* Print-related *)
-  "PrintContext";       (* Print-related *)
-  "PrintOperation";     (* Print-related *)
-  "License";            (* Has invalid identifier 0BSD *)
+  "PrintCapabilities";        (* Requires unix-print headers *)
+  "PageSetup";                (* Print-related *)
+  "PageSetupUnixDialog";      (* Unix-specific print dialog *)
+  "PrintSettings";            (* Print-related *)
+  "PrintContext";             (* Print-related *)
+  "PrintOperation";           (* Print-related *)
+  "PrintOperationPreview";    (* Print-related *)
+  "PrintUnixDialog";          (* Unix-specific print dialog *)
+  "License";                  (* Has invalid identifier 0BSD *)
 ]
 
 let is_platform_specific_type type_name =
@@ -691,7 +683,7 @@ let parse_gir_enums_only filename =
   close_in ic;
   (List.rev !enums, List.rev !bitfields)
 
-let parse_gir_file filename mode filter_classes =
+let parse_gir_file filename filter_classes =
   let ic = open_in filename in
   let input = Xmlm.make_input ~strip:true (`Channel ic) in
 
@@ -700,26 +692,8 @@ let parse_gir_file filename mode filter_classes =
   let enums = ref [] in
   let bitfields = ref [] in
 
-  (* Check if class name is an event controller *)
-  let is_event_controller name =
-    name = "EventController" ||
-    (String.length name > 15 && String.sub ~pos:0 ~len:15 name = "EventController") ||
-    (String.length name > 7 && String.sub ~pos:0 ~len:7 name = "Gesture")
-  in
-
   (* Check if class should be included based on mode and filter *)
-  let should_include_class name =
-    match mode with
-    | EventControllers -> is_event_controller name
-    | Widgets ->
-      (match filter_classes with
-       | [] -> not (is_event_controller name)  (* No filter = all widgets *)
-       | classes -> List.mem name ~set:classes)     (* Filter specified *)
-    | All ->
-      (match filter_classes with
-       | [] -> true                             (* No filter = everything *)
-       | classes ->
-         is_event_controller name || List.mem name ~set:classes)
+  let should_include_class name = true
   in
 
   (* Skip to end of current element *)
@@ -753,12 +727,14 @@ let parse_gir_file filename mode filter_classes =
           | "constructor" ->
             (match get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs with
             | Some ctor_name, Some c_id ->
+              let throws = (get_attr "throws" tag_attrs = Some "1") in
               let (_return_type, params) = parse_method () in
               constructors := {
                 ctor_name = ctor_name;
                 c_identifier = c_id;
                 ctor_parameters = params;
                 ctor_doc = None;
+                throws = throws;
               } :: !constructors;
               parse_class_contents ()
             | _ ->
@@ -1214,20 +1190,30 @@ let parse_gir_file filename mode filter_classes =
 (* C Code Generation *)
 (* ========================================================================= *)
 
-let generate_c_header ?(external_enums=[]) ?(external_bitfields=[]) () =
-  let buf = Buffer.create 1024 in
+(* Generate common header file with forward declarations for enum/bitfield converters *)
+let generate_forward_decls_header ~external_enums ~external_bitfields =
+  let buf = Buffer.create 4096 in
+  Buffer.add_string buf "/**************************************************************************/\n";
+  Buffer.add_string buf "/*                LablGTK4 - OCaml bindings for GTK4                      */\n";
+  Buffer.add_string buf "/*                                                                        */\n";
+  Buffer.add_string buf "/*    This program is free software; you can redistribute it              */\n";
+  Buffer.add_string buf "/*    and/or modify it under the terms of the GNU Library General         */\n";
+  Buffer.add_string buf "/*    Public License as published by the Free Software Foundation         */\n";
+  Buffer.add_string buf "/*    version 2, with the exception described in file COPYING which       */\n";
+  Buffer.add_string buf "/*    comes with the library.                                             */\n";
+  Buffer.add_string buf "/*                                                                        */\n";
+  Buffer.add_string buf "/**************************************************************************/\n";
+  Buffer.add_string buf "\n";
   Buffer.add_string buf "/* GENERATED CODE - DO NOT EDIT */\n";
-  Buffer.add_string buf "/* Generated from Gtk-4.0.gir */\n";
+  Buffer.add_string buf "/* Forward declarations for generated enum and bitfield converters */\n";
   Buffer.add_string buf "\n";
-  Buffer.add_string buf "#include <gtk/gtk.h>\n";
+  Buffer.add_string buf "#ifndef _gtk4_generated_forward_decls_\n";
+  Buffer.add_string buf "#define _gtk4_generated_forward_decls_\n";
+  Buffer.add_string buf "\n";
   Buffer.add_string buf "#include <caml/mlvalues.h>\n";
-  Buffer.add_string buf "#include <caml/memory.h>\n";
-  Buffer.add_string buf "#include <caml/alloc.h>\n";
-  Buffer.add_string buf "#include <caml/callback.h>\n";
-  Buffer.add_string buf "#include <caml/fail.h>\n";
-  Buffer.add_string buf "#include \"wrappers.h\"\n";
-  Buffer.add_string buf "#include \"ml_gobject.h\"\n";
   Buffer.add_string buf "\n";
+
+  (* Add common type conversions used by all generated files *)
   Buffer.add_string buf "/* Type conversions - use direct cast (GObjects) */\n";
   Buffer.add_string buf "#define GtkEventController_val(val) ((GtkEventController*)ext_of_val(val))\n";
   Buffer.add_string buf "#define Val_GtkEventController(obj) ((value)(val_of_ext(obj)))\n";
@@ -1251,32 +1237,59 @@ let generate_c_header ?(external_enums=[]) ?(external_bitfields=[]) () =
       bprintf buf "value Val_%s%s(%s val);\n" ns enum.enum_name enum.enum_c_type;
       bprintf buf "%s %s%s_val(value val);\n" enum.enum_c_type ns enum.enum_name;
     ) external_enums;
+    Buffer.add_string buf "\n";
     List.iter ~f:(fun (ns, bitfield : string * gir_bitfield) ->
       bprintf buf "value Val_%s%s(%s flags);\n" ns bitfield.bitfield_name bitfield.bitfield_c_type;
       bprintf buf "%s %s%s_val(value list);\n" bitfield.bitfield_c_type ns bitfield.bitfield_name;
     ) external_bitfields;
+  end;
+
+  Buffer.add_string buf "\n";
+  Buffer.add_string buf "#endif /* _gtk4_generated_forward_decls_ */\n";
+  Buffer.contents buf
+
+(* Generate C file header with common includes and type conversions *)
+let generate_c_file_header ?(class_name="") ?(c_type="") ?(external_enums=[]) ?(external_bitfields=[]) () =
+  let buf = Buffer.create 1024 in
+  Buffer.add_string buf "/* GENERATED CODE - DO NOT EDIT */\n";
+  if class_name <> "" then
+    bprintf buf "/* C bindings for %s */\n" class_name
+  else
+    Buffer.add_string buf "/* Generated from Gtk-4.0.gir */\n";
+  Buffer.add_string buf "\n";
+  Buffer.add_string buf "#include <gtk/gtk.h>\n";
+  Buffer.add_string buf "#include <caml/mlvalues.h>\n";
+  Buffer.add_string buf "#include <caml/memory.h>\n";
+  Buffer.add_string buf "#include <caml/alloc.h>\n";
+  Buffer.add_string buf "#include <caml/callback.h>\n";
+  Buffer.add_string buf "#include <caml/fail.h>\n";
+  Buffer.add_string buf "#include \"wrappers.h\"\n";
+  Buffer.add_string buf "#include \"ml_gobject.h\"\n";
+  Buffer.add_string buf "\n";
+
+  (* Include common header for type conversions and forward declarations instead of duplicating them *)
+  Buffer.add_string buf "/* Include common type conversions and forward declarations */\n";
+  Buffer.add_string buf "#include \"generated_forward_decls.h\"\n";
+  Buffer.add_string buf "\n";
+
+  (* Generate type-specific conversion macros for this class *)
+  if c_type <> "" && c_type <> "GtkWidget" && c_type <> "GtkEventController" then begin
+    bprintf buf "/* Type-specific conversion macros for %s */\n" c_type;
+    bprintf buf "#define %s_val(val) ((%s*)ext_of_val(val))\n" c_type c_type;
+    bprintf buf "#define Val_%s(obj) ((value)(val_of_ext(obj)))\n" c_type;
     Buffer.add_string buf "\n";
   end;
 
   Buffer.contents buf
 
-let generate_c_constructor ~enums ~bitfields (ctor : gir_constructor) class_name =
+let generate_c_constructor ~enums ~bitfields ~c_type (ctor : gir_constructor) class_name =
   let c_name = ctor.c_identifier in
   let ml_name = Str.global_replace (Str.regexp "gtk_") "ml_gtk_" c_name in
 
-  (* Determine widget or controller cast *)
-  let is_widget = not (
-    class_name = "EventController" ||
-    (String.length class_name > 15 && String.sub ~pos:0 ~len:15 class_name = "EventController") ||
-    (String.length class_name > 7 && String.sub ~pos:0 ~len:7 class_name = "Gesture")
-  ) in
-
-  let (val_macro, c_type_name, var_name) =
-    if is_widget then
-      ("Val_GtkWidget", "GtkWidget", "widget")
-    else
-      ("Val_GtkEventController", "GtkEventController", "controller")
-  in
+  (* Use the actual C type from the GIR file *)
+  (* c_type is something like "GtkEntryBuffer" (without the asterisk) *)
+  let val_macro = sprintf "Val_%s" c_type in  (* e.g., Val_GtkEntryBuffer *)
+  let var_name = "obj" in
 
   (* Generate parameters *)
   let param_count = if List.length ctor.ctor_parameters = 0 then 1 else List.length ctor.ctor_parameters in
@@ -1333,7 +1346,7 @@ let generate_c_constructor ~enums ~bitfields (ctor : gir_constructor) class_name
       (String.concat ~sep:", " first_five)
       (param_count - 5)
       (String.concat ~sep:", " rest)
-      c_type_name var_name c_name (String.concat ~sep:", " c_args)
+      c_type var_name c_name (String.concat ~sep:", " c_args)
       val_macro var_name
     in
 
@@ -1360,11 +1373,11 @@ let generate_c_constructor ~enums ~bitfields (ctor : gir_constructor) class_name
       (String.concat ~sep:", " params)
       param_count
       (String.concat ~sep:", " param_names)
-      c_type_name var_name c_name (String.concat ~sep:", " c_args)
+      c_type var_name c_name (String.concat ~sep:", " c_args)
       val_macro var_name
   end
 
-let generate_c_method ~enums ~bitfields (meth : gir_method) class_name =
+let generate_c_method ~enums ~bitfields ~c_type (meth : gir_method) class_name =
   let c_name = meth.c_identifier in
   let ml_name = Str.global_replace (Str.regexp "gtk_") "ml_gtk_" c_name in
   let param_count = 1 + List.length meth.parameters in
@@ -1373,16 +1386,9 @@ let generate_c_method ~enums ~bitfields (meth : gir_method) class_name =
   let param_names = "self" ::
     List.mapi ~f:(fun i _ -> sprintf "arg%d" (i + 1)) meth.parameters in
 
-  (* Determine widget or controller cast *)
-  let is_widget = not (
-    class_name = "EventController" ||
-    (String.length class_name > 15 && String.sub ~pos:0 ~len:15 class_name = "EventController") ||
-    (String.length class_name > 7 && String.sub ~pos:0 ~len:7 class_name = "Gesture")
-  ) in
-
-  let self_cast =
-    if is_widget then "GtkWidget_val(self)" else "GtkEventController_val(self)"
-  in
+  (* Use the actual C type from the GIR file *)
+  let type_val_macro = sprintf "%s_val" c_type in  (* e.g., GtkEntryBuffer_val *)
+  let self_cast = sprintf "%s(self)" type_val_macro in
 
   (* Build C call - handle nullable parameters *)
   let c_args = self_cast ::
@@ -1487,7 +1493,7 @@ let generate_c_method ~enums ~bitfields (meth : gir_method) class_name =
       ret_conv
 
 (* Phase 5.2: Generate C code for property getter *)
-let generate_c_property_getter ~enums ~bitfields (prop : gir_property) class_name =
+let generate_c_property_getter ~enums ~bitfields ~c_type (prop : gir_property) class_name =
   let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
   let prop_snake = to_snake_case prop_name_cleaned in
   let class_snake = to_snake_case class_name in
@@ -1504,19 +1510,9 @@ let generate_c_property_getter ~enums ~bitfields (prop : gir_property) class_nam
       }
   in
 
-  (* Determine widget or controller cast *)
-  let is_widget = not (
-   class_name = "EventController" ||
-    (String.length class_name > 15 && String.sub ~pos:0 ~len:15 class_name = "EventController") ||
-    (String.length class_name > 7 && String.sub ~pos:0 ~len:7 class_name = "Gesture")
-  ) in
-
-  let (c_cast, c_type_name) =
-    if is_widget then
-      ("GtkWidget_val", "GtkWidget")
-    else
-      ("GtkEventController_val", "GtkEventController")
-  in
+  (* Use the actual C type from the GIR file *)
+  let c_cast = sprintf "%s_val" c_type in
+  let c_type_name = c_type in
 
   sprintf "\nCAMLexport CAMLprim value %s(value self)\n\
 {\n\
@@ -1535,7 +1531,7 @@ let generate_c_property_getter ~enums ~bitfields (prop : gir_property) class_nam
     type_info.c_to_ml
 
 (* Phase 5.2: Generate C code for property setter *)
-let generate_c_property_setter ~enums ~bitfields (prop : gir_property) class_name =
+let generate_c_property_setter ~enums ~bitfields ~c_type (prop : gir_property) class_name =
   let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
   let prop_snake = to_snake_case prop_name_cleaned in
   let class_snake = to_snake_case class_name in
@@ -1552,19 +1548,9 @@ let generate_c_property_setter ~enums ~bitfields (prop : gir_property) class_nam
       }
   in
 
-  (* Determine widget or controller cast *)
-  let is_widget = not (
-    class_name = "EventController" ||
-    (String.length class_name > 15 && String.sub ~pos:0 ~len:15 class_name = "EventController") ||
-    (String.length class_name > 7 && String.sub ~pos:0 ~len:7 class_name = "Gesture")
-  ) in
-
-  let (c_cast, c_type_name) =
-    if is_widget then
-      ("GtkWidget_val", "GtkWidget")
-    else
-      ("GtkEventController_val", "GtkEventController")
-  in
+  (* Use the actual C type from the GIR file *)
+  let c_cast = sprintf "%s_val" c_type in
+  let c_type_name = c_type in
 
   sprintf "\nCAMLexport CAMLprim value %s(value self, value new_value)\n\
 {\n\
@@ -1741,6 +1727,124 @@ let generate_c_bitfield_converters ~namespace bitfield =
     Buffer.contents buf
   end
 
+(* Classes to skip during generation due to incomplete support or hand-written implementations *)
+let should_skip_class class_name =
+  let skip_list = [
+    (* Incomplete type support: *)
+    "PrintJob";               (* Has GtkPrinter* return types not yet supported *)
+    "PrintUnixDialog";        (* Has GtkPrinter* return types *)
+    "PageSetupUnixDialog";    (* Unix-specific, requires special headers *)
+    "Printer";                (* Has GtkPrintBackend* return types *)
+    (* Hand-written implementations in ml_gtk.c and ml_gtk_snapshot.c: *)
+    "Box";
+    "Fixed";
+    "Frame";
+    "Grid";
+    "Notebook";
+    "Paned";
+    "ScrolledWindow";
+    "Snapshot";
+    "Stack";
+    "Widget";
+    "Window";
+  ] in
+  List.mem class_name ~set:skip_list
+
+(* Check if a method should be skipped during generation *)
+let should_skip_method ~enums ~bitfields (meth : gir_method) =
+  (* Skip if return type is unknown and not void *)
+  let has_unknown_return =
+    if meth.return_type.c_type <> "void" then
+      match find_type_mapping ~enums ~bitfields meth.return_type.c_type with
+      | None ->
+        (* Unknown return type - would generate void* which causes errors *)
+        eprintf "Skipping method %s: unknown return type %s\n" meth.method_name meth.return_type.c_type;
+        true
+      | Some _ -> false
+    else
+      false
+  in
+
+  (* Skip if any parameter has an unknown type *)
+  let has_unknown_params =
+    List.exists ~f:(fun p ->
+      match find_type_mapping ~enums ~bitfields p.param_type.c_type with
+      | None ->
+        eprintf "Skipping method %s: unknown parameter type %s for parameter %s\n"
+          meth.method_name p.param_type.c_type p.param_name;
+        true
+      | Some _ -> false
+    ) meth.parameters
+  in
+
+  has_unknown_return || has_unknown_params
+
+(* Generate complete C file for a single class/interface *)
+let generate_class_c_code ~enums ~bitfields ~external_enums ~external_bitfields ~c_type class_name constructors methods properties =
+  let buf = Buffer.create 4096 in
+
+  (* Add header *)
+  Buffer.add_string buf (generate_c_file_header ~class_name ~c_type ~external_enums ~external_bitfields ());
+
+  (* Constructors - skip those that throw GError (not yet supported) *)
+  List.iter ~f:(fun ctor ->
+    if not ctor.throws then
+      Buffer.add_string buf (generate_c_constructor ~enums ~bitfields ~c_type ctor class_name)
+  ) constructors;
+
+  (* Phase 5.2: Build list of property names to avoid duplicates *)
+  let property_method_names = ref [] in
+  List.iter ~f:(fun (prop : gir_property) ->
+    (* Only track properties with type mappings (simple types) *)
+    let has_type_mapping = match find_type_mapping ~enums ~bitfields prop.prop_type.c_type with
+      | Some _ -> true
+      | None -> false
+    in
+    if has_type_mapping then begin
+      let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
+      let prop_snake = to_snake_case prop_name_cleaned in
+      if prop.readable then
+        property_method_names := (sprintf "get_%s" prop_snake) :: !property_method_names;
+      if prop.writable && not prop.construct_only then
+        property_method_names := (sprintf "set_%s" prop_snake) :: !property_method_names;
+    end
+  ) properties;
+
+  (* Phase 5.2: Generate ALL methods (removed 5-method limit), skip duplicates *)
+  (* Phase 5.3: Skip variadic functions and methods with >5 parameters *)
+  List.iter ~f:(fun (meth : gir_method) ->
+    let c_name = meth.c_identifier in
+    let class_snake = to_snake_case class_name in
+    let ocaml_name = to_snake_case (
+      Str.global_replace (Str.regexp (sprintf "gtk_%s_" class_snake)) "" c_name
+    ) in
+    (* Skip if: variadic function, too many params, duplicates property, or unmapped return type *)
+    let should_skip =
+      (meth.parameters |> List.exists ~f:(fun p -> p.varargs)) ||
+      List.mem ocaml_name ~set:!property_method_names ||
+      should_skip_method ~enums ~bitfields meth
+    in
+    if not should_skip then
+      Buffer.add_string buf (generate_c_method ~enums ~bitfields ~c_type meth class_name)
+  ) (List.rev methods);
+
+  (* Phase 5.2: Generate property getters and setters *)
+  (* Skip object types (GtkWidget*, etc.) - use methods instead *)
+  List.iter ~f:(fun (prop : gir_property) ->
+    let is_simple_type = match find_type_mapping ~enums ~bitfields prop.prop_type.c_type with
+      | Some _ -> true
+      | None -> false
+    in
+    if is_simple_type then begin
+      if prop.readable then
+        Buffer.add_string buf (generate_c_property_getter ~enums ~bitfields ~c_type prop class_name);
+      if prop.writable && not prop.construct_only then
+        Buffer.add_string buf (generate_c_property_setter ~enums ~bitfields ~c_type prop class_name);
+    end
+  ) properties;
+
+  Buffer.contents buf
+
 let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors ~methods ~properties ~signals =
   let buf = Buffer.create 1024 in
 
@@ -1770,20 +1874,21 @@ let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors
 
   bprintf buf "type t = %s\n\n" base_type;
 
-  (* Constructors - generate unique names and proper signatures *)
+  (* Constructors - generate unique names and proper signatures, skip those that throw *)
   List.iter ~f:(fun (ctor : gir_constructor) ->
-    bprintf buf "(** Create a new %s *)\n" class_name;
-    let c_name = ctor.c_identifier in
-    let ml_name = Str.global_replace (Str.regexp "gtk_") "ml_gtk_" c_name in
+    if not ctor.throws then begin
+      bprintf buf "(** Create a new %s *)\n" class_name;
+      let c_name = ctor.c_identifier in
+      let ml_name = Str.global_replace (Str.regexp "gtk_") "ml_gtk_" c_name in
 
-    (* Generate OCaml constructor name from C identifier *)
-    let class_snake = to_snake_case class_name in
-    let ocaml_ctor_name =
-      let base = Str.global_replace (Str.regexp (sprintf "gtk_%s_" class_snake)) "" c_name in
-      let snake = to_snake_case base in
-      (* Use "new_" for basic constructor to avoid "new" keyword *)
-      if snake = "new" then "new_" else snake
-    in
+      (* Generate OCaml constructor name from C identifier *)
+      let class_snake = to_snake_case class_name in
+      let ocaml_ctor_name =
+        let base = Str.global_replace (Str.regexp (sprintf "gtk_%s_" class_snake)) "" c_name in
+        let snake = to_snake_case base in
+        (* Use "new_" for basic constructor to avoid "new" keyword *)
+        if snake = "new" then "new_" else snake
+      in
 
     (* Build parameter types for constructor signature *)
     (* Bug fix #5: Use find_type_mapping_for_gir_type to try both c_type and name *)
@@ -1818,6 +1923,7 @@ let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors
         ocaml_ctor_name signature ml_name ml_name
     else
       bprintf buf "external %s : %s = \"%s\"\n\n" ocaml_ctor_name signature ml_name;
+    end (* close: if not ctor.throws *)
   ) (constructors |> Option.value ~default:[]);
 
   (* Properties - generate get/set externals *)
@@ -1874,13 +1980,14 @@ let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors
         (to_snake_case class_name))) "" c_name
     ) in
 
-    (* Skip if: variadic function or duplicates property *)
+    (* Skip if: variadic function, duplicates property, or unmapped return type *)
     (* Note: No longer skip methods with >5 params - we generate bytecode/native variants *)
-    let should_skip =
+    let should_skip_mli =
       is_variadic_function c_name ||
-      List.mem ocaml_name ~set:!property_names
+      List.mem ocaml_name ~set:!property_names ||
+      should_skip_method ~enums ~bitfields meth
     in
-    if not should_skip then begin
+    if not should_skip_mli then begin
       (match meth.doc with
       | Some doc -> bprintf buf "(** %s *)\n" doc
       | None -> ());
@@ -1944,16 +2051,46 @@ let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors
   Buffer.contents buf
 
 (* ========================================================================= *)
+(* Dune Library Generation *)
+(* ========================================================================= *)
+
+(* Generate dune library stanza for generated C stubs *)
+let generate_dune_library stub_names =
+  let buf = Buffer.create 2048 in
+
+  Buffer.add_string buf "; Auto-generated library for generated C bindings\n";
+  Buffer.add_string buf "; Regenerate by running gir_gen\n\n";
+
+  Buffer.add_string buf "(library\n";
+  Buffer.add_string buf " (name lablgtk4_generated_stubs)\n";
+  Buffer.add_string buf " (public_name lablgtk4.generated_stubs)\n";
+  Buffer.add_string buf " (wrapped false)\n";
+  Buffer.add_string buf " (modules)  ; No OCaml modules, only C stubs\n";
+  Buffer.add_string buf " (foreign_stubs\n";
+  Buffer.add_string buf "  (language c)\n";
+  Buffer.add_string buf "  (names\n";
+
+  List.iter ~f:(fun name ->
+    bprintf buf "   %s\n" name
+  ) stub_names;
+
+  Buffer.add_string buf "  )\n";
+  Buffer.add_string buf "  (flags -fPIC (:include cflag-gtk4.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))\n";
+  Buffer.add_string buf " (c_library_flags (:include clink-gtk4.sexp)))\n";
+
+  Buffer.contents buf
+
+(* ========================================================================= *)
 (* Main *)
 (* ========================================================================= *)
 
 (* Main generation function *)
-let generate_bindings mode filter_file gir_file output_dir =
-  printf "Parsing %s (mode: %s)...\n" gir_file
-    (match mode with
-     | EventControllers -> "controllers"
-     | Widgets -> "widgets"
-     | All -> "all");
+let generate_bindings filter_file gir_file output_dir =
+  printf "Parsing %s ...\n" gir_file
+    ;
+
+  (* Track generated C stub files *)
+  let generated_stubs = ref [] in
 
   (* Read filter file if specified *)
   let filter_classes = match filter_file with
@@ -1965,15 +2102,10 @@ let generate_bindings mode filter_file gir_file output_dir =
     | None -> []
   in
 
-  let (controllers, interfaces, gtk_enums, gtk_bitfields) = parse_gir_file gir_file mode filter_classes in
+  let (controllers, interfaces, gtk_enums, gtk_bitfields) = parse_gir_file gir_file filter_classes in
 
-  let class_type_name = match mode with
-    | EventControllers -> "event controller"
-    | Widgets -> "widget"
-    | All -> "controller/widget"
-  in
-  printf "Found %d %s classes\n" (List.length controllers) class_type_name;
-  printf "Found %d %s interfaces\n" (List.length interfaces) class_type_name;
+  printf "Found %d classes\n" (List.length controllers) ;
+  printf "Found %d interfaces\n" (List.length interfaces) ;
   printf "Found %d Gtk enumerations\n" (List.length gtk_enums);
   printf "Found %d Gtk bitfields\n" (List.length gtk_bitfields);
 
@@ -2012,111 +2144,105 @@ let generate_bindings mode filter_file gir_file output_dir =
     List.map ~f:(fun bitfield -> (ns, bitfield)) ns_bitfields
   ) in
 
-  (* Generate C code *)
-  let c_buf = Buffer.create 10240 in
-  Buffer.add_string c_buf (generate_c_header ~external_enums:external_enums_with_ns ~external_bitfields:external_bitfields_with_ns ());
-
-  (* Generate enum converters - only for GTK-specific enums *)
-  (* External namespace enums are generated in their own files *)
-  List.iter ~f:(fun enum ->
-    Buffer.add_string c_buf (generate_c_enum_converters ~namespace:"Gtk" enum);
-  ) gtk_enums;
-
-  (* Generate bitfield converters - only for GTK-specific bitfields *)
-  List.iter ~f:(fun bitfield ->
-    Buffer.add_string c_buf (generate_c_bitfield_converters ~namespace:"Gtk" bitfield);
-  ) gtk_bitfields;
-
-  let print_class_or_interface class_name constructors methods properties =
-    printf "  - %s (%d methods, %d properties)\n"
-      class_name (List.length methods) (List.length properties);
-
-    (* Constructors *)
-    List.iter ~f:(fun ctor ->
-      Buffer.add_string c_buf (generate_c_constructor ~enums ~bitfields ctor class_name)
-    ) (constructors |> Option.value ~default:[]);
-
-    (* Phase 5.2: Build list of property names to avoid duplicates *)
-    let property_method_names = ref [] in
-    List.iter ~f:(fun (prop : gir_property) ->
-      (* Only track properties with type mappings (simple types) *)
-      let has_type_mapping = match find_type_mapping ~enums ~bitfields prop.prop_type.c_type with
-        | Some _ -> true
-        | None -> false
-      in
-      if has_type_mapping then begin
-        let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
-        let prop_snake = to_snake_case prop_name_cleaned in
-        if prop.readable then
-          property_method_names := (sprintf "get_%s" prop_snake) :: !property_method_names;
-        if prop.writable && not prop.construct_only then
-          property_method_names := (sprintf "set_%s" prop_snake) :: !property_method_names;
-      end
-    ) properties;
-
-    (* Phase 5.2: Generate ALL methods (removed 5-method limit), skip duplicates *)
-    (* Phase 5.3: Skip variadic functions and methods with >5 parameters *)
-    List.iter ~f:(fun (meth : gir_method) ->
-      let c_name = meth.c_identifier in
-      (* let param_count = 1 + List.length meth.parameters in (* +1 for self *) *)
-      let class_snake = to_snake_case class_name in
-      let ocaml_name = to_snake_case (
-        Str.global_replace (Str.regexp (sprintf "gtk_%s_" class_snake)) "" c_name
-      ) in
-      (* Skip if: variadic function, too many params, or duplicates property *)
-      let should_skip =
-        (meth.parameters |> List.exists ~f:(fun p -> p.varargs)) ||
-        (* param_count > max_caml_params || *)
-        List.mem ocaml_name ~set:!property_method_names
-      in
-      if not should_skip then
-        Buffer.add_string c_buf (generate_c_method ~enums ~bitfields meth class_name)
-    ) (List.rev methods);
-
-    (* Phase 5.2: Generate property getters and setters *)
-    (* Skip object types (GtkWidget*, etc.) - use methods instead *)
-    List.iter ~f:(fun (prop : gir_property) ->
-      let is_simple_type = match find_type_mapping ~enums ~bitfields prop.prop_type.c_type with
-        | Some _ -> true
-        | None -> false
-      in
-      if is_simple_type then begin
-        if prop.readable then
-          Buffer.add_string c_buf (generate_c_property_getter ~enums ~bitfields prop class_name);
-        if prop.writable && not prop.construct_only then
-          Buffer.add_string c_buf (generate_c_property_setter ~enums ~bitfields prop class_name);
-      end
-    ) properties
-  in
-  
-  List.iter ~f:(fun cls -> print_class_or_interface cls.class_name (Some cls.constructors )cls.methods cls.properties) controllers;
-  List.iter ~f:(fun intf -> print_class_or_interface intf.interface_name None intf.methods intf.properties) interfaces;
-
-
-  (* Write C output *)
-  let c_file = Filename.concat output_dir "ml_event_controllers_gen.c" in
-  printf "\nWriting %s...\n" c_file;
-  let oc = open_out c_file in
-  Buffer.output_buffer oc c_buf;
+  (* Generate common header file with type conversions and forward declarations *)
+  let header_file = Filename.concat output_dir "generated_forward_decls.h" in
+  printf "\nWriting %s...\n" header_file;
+  let header_content = generate_forward_decls_header
+    ~external_enums:external_enums_with_ns
+    ~external_bitfields:external_bitfields_with_ns in
+  let oc = open_out header_file in
+  output_string oc header_content;
   close_out oc;
+
+  (* Generate GTK enum and bitfield converters in a separate file *)
+  if List.length gtk_enums > 0 || List.length gtk_bitfields > 0 then begin
+    let c_file = Filename.concat output_dir "ml_gtk_enums_gen.c" in
+    printf "\nWriting %s...\n" c_file;
+    let oc = open_out c_file in
+    output_string oc (generate_c_file_header ~class_name:"GTK enums and bitfields" ~external_enums:[] ~external_bitfields:[] ());
+    List.iter ~f:(fun enum ->
+      output_string oc (generate_c_enum_converters ~namespace:"Gtk" enum);
+    ) gtk_enums;
+    List.iter ~f:(fun bitfield ->
+      output_string oc (generate_c_bitfield_converters ~namespace:"Gtk" bitfield);
+    ) gtk_bitfields;
+    close_out oc;
+    generated_stubs := "ml_gtk_enums_gen" :: !generated_stubs;
+  end;
+
+  (* Generate individual C files for each controller *)
+  List.iter ~f:(fun cls ->
+    if should_skip_class cls.class_name then begin
+      printf "  - %s (SKIPPED - incomplete support)\n" cls.class_name
+    end else begin
+      printf "  - %s (%d methods, %d properties)\n"
+        cls.class_name (List.length cls.methods) (List.length cls.properties);
+
+      let stub_name = sprintf "ml_%s_gen" (to_snake_case cls.class_name) in
+      let c_file = Filename.concat output_dir (stub_name ^ ".c") in
+      printf "Writing %s...\n" c_file;
+
+      let c_code = generate_class_c_code
+        ~enums ~bitfields
+        ~external_enums:external_enums_with_ns
+        ~external_bitfields:external_bitfields_with_ns
+        ~c_type:cls.c_type
+        cls.class_name cls.constructors cls.methods cls.properties in
+
+      let oc = open_out c_file in
+      output_string oc c_code;
+      close_out oc;
+      generated_stubs := stub_name :: !generated_stubs;
+    end
+  ) controllers;
+
+  (* Generate individual C files for each interface *)
+  List.iter ~f:(fun intf ->
+    if should_skip_class intf.interface_name then begin
+      printf "  - %s (SKIPPED - incomplete support)\n" intf.interface_name
+    end else begin
+      printf "  - %s (%d methods, %d properties)\n"
+        intf.interface_name (List.length intf.methods) (List.length intf.properties);
+
+      let stub_name = sprintf "ml_%s_gen" (to_snake_case intf.interface_name) in
+      let c_file = Filename.concat output_dir (stub_name ^ ".c") in
+      printf "Writing %s...\n" c_file;
+
+      let c_code = generate_class_c_code
+        ~enums ~bitfields
+        ~external_enums:external_enums_with_ns
+        ~external_bitfields:external_bitfields_with_ns
+        ~c_type:intf.c_type
+        intf.interface_name [] intf.methods intf.properties in
+
+      let oc = open_out c_file in
+      output_string oc c_code;
+      close_out oc;
+      generated_stubs := stub_name :: !generated_stubs;
+    end
+  ) interfaces;
 
   (* Generate OCaml modules *)
   List.iter ~f:(fun cls ->
-    let ml_file = Filename.concat output_dir
-      (sprintf "%s.mli" (to_snake_case cls.class_name)) in
-    printf "Writing %s...\n" ml_file;
-    let oc = open_out ml_file in
-    output_string oc (generate_ml_interface ~class_name:cls.class_name ~class_doc:cls.class_doc ~enums ~bitfields ~constructors:(Some cls.constructors) ~methods:cls.methods ~properties:cls.properties ~signals:cls.signals);
-    close_out oc;
+    if not (should_skip_class cls.class_name) then begin
+      let ml_file = Filename.concat output_dir
+        (sprintf "%s.mli" (to_snake_case cls.class_name)) in
+      printf "Writing %s...\n" ml_file;
+      let oc = open_out ml_file in
+      output_string oc (generate_ml_interface ~class_name:cls.class_name ~class_doc:cls.class_doc ~enums ~bitfields ~constructors:(Some cls.constructors) ~methods:cls.methods ~properties:cls.properties ~signals:cls.signals);
+      close_out oc;
+    end
   ) controllers;
 
   List.iter ~f:(fun cls ->
-    let ml_file = Filename.concat output_dir
-      (sprintf "%s.mli" (to_snake_case cls.interface_name)) in
-    printf "Writing %s...\n" ml_file;
-    let oc = open_out ml_file in
-    output_string oc (generate_ml_interface ~class_name:cls.interface_name ~class_doc:cls.interface_doc ~enums ~bitfields ~constructors:None ~methods:cls.methods ~properties:cls.properties ~signals:cls.signals);
-    close_out oc;
+    if not (should_skip_class cls.interface_name) then begin
+      let ml_file = Filename.concat output_dir
+        (sprintf "%s.mli" (to_snake_case cls.interface_name)) in
+      printf "Writing %s...\n" ml_file;
+      let oc = open_out ml_file in
+      output_string oc (generate_ml_interface ~class_name:cls.interface_name ~class_doc:cls.interface_doc ~enums ~bitfields ~constructors:None ~methods:cls.methods ~properties:cls.properties ~signals:cls.signals);
+      close_out oc;
+    end
   ) interfaces;
 
   (* Generate GTK enum and bitfield types file *)
@@ -2157,7 +2283,8 @@ let generate_bindings mode filter_file gir_file output_dir =
 
     (* Generate C converter file *)
     if List.length ns_enums > 0 || List.length ns_bitfields > 0 then begin
-      let c_file = Filename.concat output_dir (sprintf "ml_%s_enums_gen.c" ns_lower) in
+      let stub_name = sprintf "ml_%s_enums_gen" ns_lower in
+      let c_file = Filename.concat output_dir (stub_name ^ ".c") in
       printf "Writing %s...\n" c_file;
       let oc = open_out c_file in
       output_string oc (sprintf "/* GENERATED CODE - DO NOT EDIT */\n");
@@ -2179,14 +2306,24 @@ let generate_bindings mode filter_file gir_file output_dir =
         output_string oc (generate_c_bitfield_converters ~namespace:ns_name bitfield);
       ) ns_bitfields;
       close_out oc;
+      generated_stubs := stub_name :: !generated_stubs;
     end;
   ) external_enums_bitfields;
 
+  (* Write dune library include file *)
+  let dune_file = Filename.concat output_dir "dune-generated.inc" in
+  printf "\nWriting %s...\n" dune_file;
+  let stub_list = List.rev !generated_stubs |> List.sort ~cmp:String.compare in
+  let dune_content = generate_dune_library stub_list in
+  let oc = open_out dune_file in
+  output_string oc dune_content;
+  close_out oc;
+
   printf "\n✓ Code generation complete!\n";
-  printf "  Generated: %s\n" c_file;
+  printf "  Generated: %d C files (one per class/interface)\n" ((List.length controllers) + (List.length interfaces));
   printf "  Generated: %d OCaml interface files\n" ((List.length controllers) + (List.length interfaces));
   if List.length gtk_enums > 0 || List.length gtk_bitfields > 0 then
-    printf "  Generated: gtk_enums.mli (%d enumerations, %d bitfields)\n"
+    printf "  Generated: gtk_enums.mli and ml_gtk_enums_gen.c (%d enumerations, %d bitfields)\n"
       (List.length gtk_enums) (List.length gtk_bitfields);
   List.iter ~f:(fun (ns_name, ns_enums, ns_bitfields) ->
     if List.length ns_enums > 0 || List.length ns_bitfields > 0 then
@@ -2194,17 +2331,10 @@ let generate_bindings mode filter_file gir_file output_dir =
         (String.lowercase_ascii ns_name) (String.lowercase_ascii ns_name)
         (List.length ns_enums) (List.length ns_bitfields);
   ) external_enums_bitfields;
+  printf "  Generated: dune-generated.inc with %d C stub names\n" (List.length stub_list);
   `Ok ()
 
 (* Cmdliner argument definitions *)
-let mode_arg =
-  let mode_enum = [
-    ("controllers", EventControllers);
-    ("widgets", Widgets);
-    ("all", All);
-  ] in
-  let doc = "Generation mode: controllers, widgets, or all (default: controllers)" in
-  Arg.(value & opt (enum mode_enum) EventControllers & info ["m"; "mode"] ~docv:"MODE" ~doc)
 
 let filter_arg =
   let doc = "Filter file specifying which classes to generate" in
@@ -2229,13 +2359,11 @@ let gir_gen_cmd =
     `S Manpage.s_examples;
     `P "Generate event controller bindings:";
     `Pre "  gir_gen /usr/share/gir-1.0/Gtk-4.0.gir ./output";
-    `P "Generate widget bindings with filter:";
-    `Pre "  gir_gen -m widgets -f widget_filter.conf Gtk-4.0.gir ./output";
     `S Manpage.s_bugs;
     `P "Report bugs to https://github.com/chris-armstrong/lablgtk/issues";
   ] in
   let info = Cmd.info "gir_gen" ~version:"5.0.0" ~doc ~man in
-  Cmd.v info Term.(ret (const generate_bindings $ mode_arg $ filter_arg $ gir_file_arg $ output_dir_arg))
+  Cmd.v info Term.(ret (const generate_bindings $ filter_arg $ gir_file_arg $ output_dir_arg))
 
 (* Main entry point *)
 let () = exit (Cmd.eval gir_gen_cmd)

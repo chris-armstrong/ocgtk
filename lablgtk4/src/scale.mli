@@ -31,13 +31,7 @@ external set_has_origin : t -> bool -> unit = "ml_gtk_scale_set_has_origin"
 
 external set_value_pos : t -> Gtk_enums.positiontype -> unit = "ml_gtk_scale_set_value_pos"
 
-external set_format_value_func : t -> unit -> unit -> unit -> unit = "ml_gtk_scale_set_format_value_func"
-
 external get_value_pos : t -> Gtk_enums.positiontype = "ml_gtk_scale_get_value_pos"
-
-external get_layout_offsets : t -> int -> int -> unit = "ml_gtk_scale_get_layout_offsets"
-
-external get_layout : t -> unit = "ml_gtk_scale_get_layout"
 
 external clear_marks : t -> unit = "ml_gtk_scale_clear_marks"
 

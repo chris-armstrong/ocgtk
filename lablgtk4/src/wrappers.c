@@ -110,7 +110,7 @@ CAMLexport value Val_pointer(void *ptr)
     CAMLreturn(ret);
 }
 
-value val_of_ext(void *widget) {
+value val_of_ext(const void *widget) {
     CAMLparam0();
     CAMLlocal1(v);
     v = caml_alloc(1, Abstract_tag);
@@ -118,7 +118,7 @@ value val_of_ext(void *widget) {
     CAMLreturn(v);
 }
 
-void* ext_of_val(value val) {
+void* ext_of_val(const value val) {
     CAMLparam1(val);
     CAMLreturnT(void*, *((void**)Data_abstract_val(val)));
 }

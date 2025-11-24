@@ -25,11 +25,7 @@ external get_propagation_phase : t -> Gtk_enums.propagationphase = "ml_gtk_event
 
 external get_propagation_limit : t -> Gtk_enums.propagationlimit = "ml_gtk_event_controller_get_propagation_limit"
 
-external get_current_event_time : t -> unit = "ml_gtk_event_controller_get_current_event_time"
-
 external get_current_event_state : t -> Gdk.modifiertype = "ml_gtk_event_controller_get_current_event_state"
-
-external get_current_event_device : t -> unit = "ml_gtk_event_controller_get_current_event_device"
 
 external get_current_event : t -> _ Gdk.event = "ml_gtk_event_controller_get_current_event"
 

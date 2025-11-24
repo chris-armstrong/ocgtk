@@ -7,5 +7,3 @@ external set_focus : t -> Gtk.Widget.t option -> unit = "ml_gtk_root_set_focus"
 
 external get_focus : t -> Gtk.Widget.t = "ml_gtk_root_get_focus"
 
-external get_display : t -> unit = "ml_gtk_root_get_display"
-

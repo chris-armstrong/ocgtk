@@ -34,7 +34,7 @@ let () =
     count := 0;
     Label.set_label label (Printf.sprintf "Count: %d" !count)
   ));
-
+  
   (* Show window and run main loop *)
   window#show;
   GMain.main ()

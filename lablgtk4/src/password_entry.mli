@@ -26,7 +26,3 @@ external get_show_peek_icon : t -> bool = "ml_gtk_password_entry_get_show_peek_i
 (** Set property: show-peek-icon *)
 external set_show_peek_icon : t -> bool -> unit = "ml_gtk_password_entry_set_show_peek_icon"
 
-external set_extra_menu : t -> unit -> unit = "ml_gtk_password_entry_set_extra_menu"
-
-external get_extra_menu : t -> unit = "ml_gtk_password_entry_get_extra_menu"
-

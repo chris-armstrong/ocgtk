@@ -34,21 +34,7 @@ external set_show_preview_entry : t -> bool -> unit = "ml_gtk_font_chooser_set_s
 
 external set_level : t -> Gtk_enums.fontchooserlevel -> unit = "ml_gtk_font_chooser_set_level"
 
-external set_font_map : t -> unit -> unit = "ml_gtk_font_chooser_set_font_map"
-
-external set_font_desc : t -> unit -> unit = "ml_gtk_font_chooser_set_font_desc"
-
-external set_filter_func : t -> unit -> unit -> unit -> unit = "ml_gtk_font_chooser_set_filter_func"
-
 external get_level : t -> Gtk_enums.fontchooserlevel = "ml_gtk_font_chooser_get_level"
 
 external get_font_size : t -> int = "ml_gtk_font_chooser_get_font_size"
-
-external get_font_map : t -> unit = "ml_gtk_font_chooser_get_font_map"
-
-external get_font_family : t -> unit = "ml_gtk_font_chooser_get_font_family"
-
-external get_font_face : t -> unit = "ml_gtk_font_chooser_get_font_face"
-
-external get_font_desc : t -> unit = "ml_gtk_font_chooser_get_font_desc"
 

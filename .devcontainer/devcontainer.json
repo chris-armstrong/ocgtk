@@ -3,10 +3,7 @@
 {
 	"name": "Ubuntu",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/base:noble",
-	"features": {
-		"ghcr.io/devcontainers-extra/features/opam-asdf:2": {}
-	},
+	"image": "ghcr.io/chris-armstrong/ocaml-devcontainer:5.3-ubuntu",
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
@@ -15,7 +12,7 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sudo apt-get update && sudo apt-get -y install build-essential bubblewrap libgtk-4-dev m4 xdot && opam init --reinit --bare --disable-sandboxing --bypass-checks -n && opam switch create default --packages=ocaml.5.3.0,dune,ocaml-lsp-server -y"
+	"postCreateCommand": "sudo apt-get update && sudo ln -fs /usr/share/zoneinfo/Australia/Sydney /etc/localtime && sudo DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y install libgtk-4-dev m4 xdot && opam update && pushd conf-gtk4 && opam pin -y . && popd && pushd lablgtk4 && opam install . --deps-only --with-test -y"
 
 	// Configure tool-specific properties.
 	// "customizations": {},

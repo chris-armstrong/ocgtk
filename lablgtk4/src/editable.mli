@@ -53,17 +53,11 @@ external set_alignment : t -> float -> unit = "ml_gtk_editable_set_alignment"
 
 external select_region : t -> int -> int -> unit = "ml_gtk_editable_select_region"
 
-external insert_text : t -> string -> int -> int -> unit = "ml_gtk_editable_insert_text"
-
 external init_delegate : t -> unit = "ml_gtk_editable_init_delegate"
-
-external get_selection_bounds : t -> int -> int -> bool = "ml_gtk_editable_get_selection_bounds"
 
 external get_position : t -> int = "ml_gtk_editable_get_position"
 
 external get_delegate : t -> Gtk.Widget.t = "ml_gtk_editable_get_delegate"
-
-external get_chars : t -> int -> int -> string = "ml_gtk_editable_get_chars"
 
 external get_alignment : t -> float = "ml_gtk_editable_get_alignment"
 

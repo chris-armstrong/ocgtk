@@ -39,7 +39,7 @@ external set_mode : t -> Gtk_enums.levelbarmode -> unit = "ml_gtk_level_bar_set_
 
 external remove_offset_value : t -> string option -> unit = "ml_gtk_level_bar_remove_offset_value"
 
-external get_offset_value : t -> string option -> float -> bool = "ml_gtk_level_bar_get_offset_value"
+(* SKIPPED: unmapped parameter type - external get_offset_value : t -> string option -> float -> bool = "ml_gtk_level_bar_get_offset_value" *)
 
 external get_mode : t -> Gtk_enums.levelbarmode = "ml_gtk_level_bar_get_mode"
 

@@ -17,13 +17,12 @@ The executable is built to `_build/default/src/tools/gir_gen.exe`
 
 ```bash
 # Generate event controllers and widgets (recommended)
-dune exec src/tools/gir_gen.exe -- -m all -f src/gtk4_controllers.controller \
+dune exec src/tools/gir_gen.exe -- -f src/gtk4_controllers.controller \
   /usr/share/gir-1.0/Gtk-4.0.gir src
 
 
 ### Options
 
-- `-m MODE`: `controllers`, `widgets`, or `all` (default: controllers)
 - `-f FILE`: Filter file listing class names to generate (one per line)
 - `GIR_FILE`: Path to GTK GIR file (usually `/usr/share/gir-1.0/Gtk-4.0.gir`)
 - `OUTPUT_DIR`: Where to write generated files
@@ -35,7 +34,7 @@ dune exec src/tools/gir_gen.exe -- -m all -f src/gtk4_controllers.controller \
 # Generate test output
 mkdir -p output/test
 echo "Label" > output/test/filter.txt
-dune exec src/tools/gir_gen.exe -- -m widgets -f output/test/filter.txt \
+dune exec src/tools/gir_gen.exe -- -f output/test/filter.txt \
   /usr/share/gir-1.0/Gtk-4.0.gir output/test
 
 # Verify files generated
@@ -53,7 +52,7 @@ gcc -c output/test/ml_event_controllers_gen.c \
 ### Full Rebuild
 ```bash
 # Regenerate all src bindings and rebuild library
-dune exec src/tools/gir_gen.exe -- -m all -f src/gtk4_controllers.controller \
+dune exec src/tools/gir_gen.exe -- -f src/gtk4_controllers.controller \
   /usr/share/gir-1.0/Gtk-4.0.gir src
 dune build src/lablgtk4.cma
 ```

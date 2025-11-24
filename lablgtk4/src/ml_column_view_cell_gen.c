@@ -1,0 +1,79 @@
+/* GENERATED CODE - DO NOT EDIT */
+/* C bindings for ColumnViewCell */
+
+#include <gtk/gtk.h>
+#include <caml/mlvalues.h>
+#include <caml/memory.h>
+#include <caml/alloc.h>
+#include <caml/callback.h>
+#include <caml/fail.h>
+#include "wrappers.h"
+#include "ml_gobject.h"
+
+/* Include common type conversions and forward declarations */
+#include "generated_forward_decls.h"
+
+/* Type-specific conversion macros for GtkColumnViewCell */
+#define GtkColumnViewCell_val(val) ((GtkColumnViewCell*)ext_of_val(val))
+#define Val_GtkColumnViewCell(obj) ((value)(val_of_ext(obj)))
+
+
+CAMLexport CAMLprim value ml_gtk_column_view_cell_set_child(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+
+    gtk_column_view_cell_set_child(GtkColumnViewCell_val(self), GtkWidget_option_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_cell_get_child(value self)
+{
+CAMLparam1(self);
+
+
+    GtkWidget* result = gtk_column_view_cell_get_child(GtkColumnViewCell_val(self));
+CAMLreturn(Val_GtkWidget(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_cell_get_focusable(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkColumnViewCell *obj = (GtkColumnViewCell *)GtkColumnViewCell_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "focusable", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_cell_set_focusable(value self, value new_value)
+{
+CAMLexport CAMLparam2(self, new_value);
+GtkColumnViewCell *obj = (GtkColumnViewCell *)GtkColumnViewCell_val(self);
+gboolean c_value = Bool_val(new_value);
+g_object_set(G_OBJECT(obj), "focusable", c_value, NULL);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_cell_get_position(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkColumnViewCell *obj = (GtkColumnViewCell *)GtkColumnViewCell_val(self);
+guint prop_value;
+g_object_get(G_OBJECT(obj), "position", &prop_value, NULL);
+result = Val_int(prop_value);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_cell_get_selected(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkColumnViewCell *obj = (GtkColumnViewCell *)GtkColumnViewCell_val(self);
+gboolean prop_value;
+g_object_get(G_OBJECT(obj), "selected", &prop_value, NULL);
+result = Val_bool(prop_value);
+CAMLreturn(result);
+}

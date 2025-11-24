@@ -31,13 +31,13 @@ external set_has_origin : t -> bool -> unit = "ml_gtk_scale_set_has_origin"
 
 external set_value_pos : t -> Gtk_enums.positiontype -> unit = "ml_gtk_scale_set_value_pos"
 
-external set_format_value_func : t -> unit -> unit -> unit -> unit = "ml_gtk_scale_set_format_value_func"
+(* SKIPPED: unmapped parameter type - external set_format_value_func : t -> unit -> unit -> unit -> unit = "ml_gtk_scale_set_format_value_func" *)
 
 external get_value_pos : t -> Gtk_enums.positiontype = "ml_gtk_scale_get_value_pos"
 
-external get_layout_offsets : t -> int -> int -> unit = "ml_gtk_scale_get_layout_offsets"
+(* SKIPPED: unmapped parameter type - external get_layout_offsets : t -> int -> int -> unit = "ml_gtk_scale_get_layout_offsets" *)
 
-external get_layout : t -> unit = "ml_gtk_scale_get_layout"
+(* SKIPPED: unmapped return type - external get_layout : t -> unit = "ml_gtk_scale_get_layout" *)
 
 external clear_marks : t -> unit = "ml_gtk_scale_clear_marks"
 
