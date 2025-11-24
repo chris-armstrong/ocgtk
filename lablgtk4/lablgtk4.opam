@@ -11,7 +11,7 @@ homepage: "https://github.com/chris-armstrong/lablgtk"
 bug-reports: "https://github.com/chris-armstrong/lablgtk/issues"
 depends: [
   "ocaml" {>= "4.09"}
-  "dune" {>= "3.2" & >= "3.2"}
+  "dune" {>= "3.7" & >= "3.2"}
   "conf-gtk4"
   "cairo2"
   "camlp5" {build}

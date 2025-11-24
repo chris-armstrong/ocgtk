@@ -1,4 +1,4 @@
-(lang dune 3.2)
+(lang dune 3.7)
 (name lablgtk4)
 (version 4.0.0~dev)
 
