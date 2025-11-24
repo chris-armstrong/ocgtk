@@ -27,7 +27,7 @@ let require_gtk f () =
 (* Test that Box module is accessible and types compile *)
 let test_module_accessible () =
   (* Test that we can reference the types *)
-  let _box_type : Gtk.Box.t option = None in
+  let _box_type : Box.t option = None in
   let _orientation : Gtk.orientation = `HORIZONTAL in
   let _baseline : Gtk.baseline_position = `CENTER in
 
@@ -49,65 +49,65 @@ let test_type_constructors () =
 (* Test box creation - requires GTK init *)
 let test_box_creation () =
   (* Create horizontal box *)
-  let hbox = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:5 in
-  check int "horizontal box spacing" 5 (Gtk.Box.get_spacing hbox);
-  check bool "horizontal box not homogeneous" false (Gtk.Box.get_homogeneous hbox);
+  let hbox = Box.create ~orientation:`HORIZONTAL ~spacing:5 in
+  check int "horizontal box spacing" 5 (Box.get_spacing hbox);
+  check bool "horizontal box not homogeneous" false (Box.get_homogeneous hbox);
 
   (* Create vertical box *)
-  let vbox = Gtk.Box.create ~orientation:`VERTICAL ~spacing:10 in
-  check int "vertical box spacing" 10 (Gtk.Box.get_spacing vbox);
-  check bool "vertical box not homogeneous" false (Gtk.Box.get_homogeneous vbox)
+  let vbox = Box.create ~orientation:`VERTICAL ~spacing:10 in
+  check int "vertical box spacing" 10 (Box.get_spacing vbox);
+  check bool "vertical box not homogeneous" false (Box.get_homogeneous vbox)
 
 (* Test box properties *)
 let test_box_properties () =
-  let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+  let box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
 
   (* Test spacing *)
-  Gtk.Box.set_spacing box 15;
-  check int "spacing set to 15" 15 (Gtk.Box.get_spacing box);
+  Box.set_spacing box 15;
+  check int "spacing set to 15" 15 (Box.get_spacing box);
 
   (* Test homogeneous *)
-  Gtk.Box.set_homogeneous box true;
-  check bool "homogeneous set to true" true (Gtk.Box.get_homogeneous box);
+  Box.set_homogeneous box true;
+  check bool "homogeneous set to true" true (Box.get_homogeneous box);
 
   (* Test baseline position *)
-  Gtk.Box.set_baseline_position box `TOP;
+  Box.set_baseline_position box `TOP;
   check bool "baseline position set to TOP"
-    (`TOP = Gtk.Box.get_baseline_position box) true
+    (`TOP = Box.get_baseline_position box) true
 
 (* Test widget packing properties *)
 let test_packing_properties () =
-  let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
-  let widget = Gtk.Box.as_widget box in
+  let box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+  let widget = Box.as_widget box in
 
   (* Test hexpand/vexpand *)
-  Gtk.Widget.set_hexpand widget true;
-  check bool "hexpand set" true (Gtk.Widget.get_hexpand widget);
+  Widget.set_hexpand widget true;
+  check bool "hexpand set" true (Widget.get_hexpand widget);
 
-  Gtk.Widget.set_vexpand widget true;
-  check bool "vexpand set" true (Gtk.Widget.get_vexpand widget);
+  Widget.set_vexpand widget true;
+  check bool "vexpand set" true (Widget.get_vexpand widget);
 
   (* Test halign/valign *)
-  Gtk.Widget.set_halign widget `CENTER;
+  Widget.set_halign widget `CENTER;
   check bool "halign set to CENTER"
-    (`CENTER = Gtk.Widget.get_halign widget) true;
+    (`CENTER = Widget.get_halign widget) true;
 
-  Gtk.Widget.set_valign widget `FILL;
+  Widget.set_valign widget `FILL;
   check bool "valign set to FILL"
-    (`FILL = Gtk.Widget.get_valign widget) true;
+    (`FILL = Widget.get_valign widget) true;
 
   (* Test margins *)
-  Gtk.Widget.set_margin_start widget 10;
-  check int "margin_start set" 10 (Gtk.Widget.get_margin_start widget);
+  Widget.set_margin_start widget 10;
+  check int "margin_start set" 10 (Widget.get_margin_start widget);
 
-  Gtk.Widget.set_margin_end widget 20;
-  check int "margin_end set" 20 (Gtk.Widget.get_margin_end widget);
+  Widget.set_margin_end widget 20;
+  check int "margin_end set" 20 (Widget.get_margin_end widget);
 
-  Gtk.Widget.set_margin_top widget 5;
-  check int "margin_top set" 5 (Gtk.Widget.get_margin_top widget);
+  Widget.set_margin_top widget 5;
+  check int "margin_top set" 5 (Widget.get_margin_top widget);
 
-  Gtk.Widget.set_margin_bottom widget 15;
-  check int "margin_bottom set" 15 (Gtk.Widget.get_margin_bottom widget)
+  Widget.set_margin_bottom widget 15;
+  check int "margin_bottom set" 15 (Widget.get_margin_bottom widget)
 
 (* Test high-level GBox wrapper *)
 let test_gbox_wrapper () =
@@ -138,32 +138,32 @@ let test_pack_compat () =
 
 (* Test child append/prepend - requires actual child widgets *)
 let test_child_management () =
-  let parent_box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
-  let child_box = Gtk.Box.create ~orientation:`VERTICAL ~spacing:0 in
-  let child_widget = Gtk.Box.as_widget child_box in
+  let parent_box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+  let child_box = Box.create ~orientation:`VERTICAL ~spacing:0 in
+  let child_widget = Box.as_widget child_box in
 
   (* Test append *)
-  Gtk.Box.append parent_box child_widget;
+  Box.append parent_box child_widget;
 
   (* Test prepend - create another child *)
-  let child2_box = Gtk.Box.create ~orientation:`VERTICAL ~spacing:0 in
-  let child2_widget = Gtk.Box.as_widget child2_box in
-  Gtk.Box.prepend parent_box child2_widget;
+  let child2_box = Box.create ~orientation:`VERTICAL ~spacing:0 in
+  let child2_widget = Box.as_widget child2_box in
+  Box.prepend parent_box child2_widget;
 
   (* Test remove *)
-  Gtk.Box.remove parent_box child_widget;
-  Gtk.Box.remove parent_box child2_widget;
+  Box.remove parent_box child_widget;
+  Box.remove parent_box child2_widget;
 
   check bool "child management successful" true true
 
 (* Test as_widget function *)
 let test_as_widget () =
-  let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
-  let widget = Gtk.Box.as_widget box in
+  let box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+  let widget = Box.as_widget box in
 
   (* Verify it's a valid widget by calling widget methods *)
-  Gtk.Widget.set_name widget "test_box";
-  check string "converted widget name" "test_box" (Gtk.Widget.get_name widget)
+  Widget.set_name widget "test_box";
+  check string "converted widget name" "test_box" (Widget.get_name widget)
 
 let () =
   run "Gtk.Box Tests (Phase 4.1)" [

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: CellRendererText *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : unit -> t = "ml_gtk_cell_renderer_text_new"
 

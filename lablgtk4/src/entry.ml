@@ -1,11 +1,11 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Entry *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : unit -> t = "ml_gtk_entry_new"
 
-external new_with_buffer : Gtk.Widget.t -> t = "ml_gtk_entry_new_with_buffer"
+external new_with_buffer : Gtk.widget -> t = "ml_gtk_entry_new_with_buffer"
 
 (* Properties *)
 
@@ -125,9 +125,9 @@ external set_icon_from_icon_name : t -> Gtk_enums.entryiconposition -> string op
 
 external set_icon_activatable : t -> Gtk_enums.entryiconposition -> bool -> unit = "ml_gtk_entry_set_icon_activatable"
 
-external set_completion : t -> Gtk.Widget.t option -> unit = "ml_gtk_entry_set_completion"
+external set_completion : t -> Gtk.widget option -> unit = "ml_gtk_entry_set_completion"
 
-external set_buffer : t -> Gtk.Widget.t -> unit = "ml_gtk_entry_set_buffer"
+external set_buffer : t -> Gtk.widget -> unit = "ml_gtk_entry_set_buffer"
 
 external set_alignment : t -> float -> unit = "ml_gtk_entry_set_alignment"
 
@@ -153,9 +153,9 @@ external get_icon_activatable : t -> Gtk_enums.entryiconposition -> bool = "ml_g
 
 external get_current_icon_drag_source : t -> int = "ml_gtk_entry_get_current_icon_drag_source"
 
-external get_completion : t -> Gtk.Widget.t = "ml_gtk_entry_get_completion"
+external get_completion : t -> Gtk.widget = "ml_gtk_entry_get_completion"
 
-external get_buffer : t -> Gtk.Widget.t = "ml_gtk_entry_get_buffer"
+external get_buffer : t -> Gtk.widget = "ml_gtk_entry_get_buffer"
 
 external get_alignment : t -> float = "ml_gtk_entry_get_alignment"
 

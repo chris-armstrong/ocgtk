@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: ShortcutTrigger *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external parse_string : string -> t = "ml_gtk_shortcut_trigger_parse_string"
 

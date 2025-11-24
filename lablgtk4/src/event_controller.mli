@@ -19,7 +19,7 @@ external set_propagation_limit : t -> Gtk_enums.propagationlimit -> unit = "ml_g
 
 external reset : t -> unit = "ml_gtk_event_controller_reset"
 
-external get_widget : t -> Gtk.Widget.t = "ml_gtk_event_controller_get_widget"
+external get_widget : t -> Gtk.widget = "ml_gtk_event_controller_get_widget"
 
 external get_propagation_phase : t -> Gtk_enums.propagationphase = "ml_gtk_event_controller_get_propagation_phase"
 

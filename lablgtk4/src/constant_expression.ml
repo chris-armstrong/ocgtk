@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: ConstantExpression *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : unit -> unit -> t = "ml_gtk_constant_expression_new"
 

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Expander *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new Expander *)
 external new_ : string option -> t = "ml_gtk_expander_new"
@@ -41,11 +41,11 @@ external get_use_underline : t -> bool = "ml_gtk_expander_get_use_underline"
 (** Set property: use-underline *)
 external set_use_underline : t -> bool -> unit = "ml_gtk_expander_set_use_underline"
 
-external set_label_widget : t -> Gtk.Widget.t option -> unit = "ml_gtk_expander_set_label_widget"
+external set_label_widget : t -> Gtk.widget option -> unit = "ml_gtk_expander_set_label_widget"
 
-external set_child : t -> Gtk.Widget.t option -> unit = "ml_gtk_expander_set_child"
+external set_child : t -> Gtk.widget option -> unit = "ml_gtk_expander_set_child"
 
-external get_label_widget : t -> Gtk.Widget.t = "ml_gtk_expander_get_label_widget"
+external get_label_widget : t -> Gtk.widget = "ml_gtk_expander_get_label_widget"
 
-external get_child : t -> Gtk.Widget.t = "ml_gtk_expander_get_child"
+external get_child : t -> Gtk.widget = "ml_gtk_expander_get_child"
 

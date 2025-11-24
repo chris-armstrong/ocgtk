@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: ShortcutController *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : unit -> t = "ml_gtk_shortcut_controller_new"
 
@@ -15,11 +15,11 @@ external set_scope : t -> Gtk_enums.shortcutscope -> unit = "ml_gtk_shortcut_con
 
 external set_mnemonics_modifiers : t -> Gdk.modifiertype -> unit = "ml_gtk_shortcut_controller_set_mnemonics_modifiers"
 
-external remove_shortcut : t -> Gtk.Widget.t -> unit = "ml_gtk_shortcut_controller_remove_shortcut"
+external remove_shortcut : t -> Gtk.widget -> unit = "ml_gtk_shortcut_controller_remove_shortcut"
 
 external get_scope : t -> Gtk_enums.shortcutscope = "ml_gtk_shortcut_controller_get_scope"
 
 external get_mnemonics_modifiers : t -> Gdk.modifiertype = "ml_gtk_shortcut_controller_get_mnemonics_modifiers"
 
-external add_shortcut : t -> Gtk.Widget.t -> unit = "ml_gtk_shortcut_controller_add_shortcut"
+external add_shortcut : t -> Gtk.widget -> unit = "ml_gtk_shortcut_controller_add_shortcut"
 

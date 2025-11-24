@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: EntryBuffer *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : string option -> int -> t = "ml_gtk_entry_buffer_new"
 

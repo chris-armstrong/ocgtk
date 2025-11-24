@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: CellRenderer *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (* Properties *)
 
@@ -90,9 +90,9 @@ external set_alignment : t -> float -> float -> unit = "ml_gtk_cell_renderer_set
 
 external is_activatable : t -> bool = "ml_gtk_cell_renderer_is_activatable"
 
-external get_state : t -> Gtk.Widget.t option -> Gtk_enums.cellrendererstate -> Gtk_enums.stateflags = "ml_gtk_cell_renderer_get_state"
+external get_state : t -> Gtk.widget option -> Gtk_enums.cellrendererstate -> Gtk_enums.stateflags = "ml_gtk_cell_renderer_get_state"
 
 external get_request_mode : t -> Gtk_enums.sizerequestmode = "ml_gtk_cell_renderer_get_request_mode"
 
-external get_preferred_size : t -> Gtk.Widget.t -> Gtk.Widget.t -> Gtk.Widget.t -> unit = "ml_gtk_cell_renderer_get_preferred_size"
+external get_preferred_size : t -> Gtk.widget -> Gtk.widget -> Gtk.widget -> unit = "ml_gtk_cell_renderer_get_preferred_size"
 

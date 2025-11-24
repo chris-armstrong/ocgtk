@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Inscription *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : string option -> t = "ml_gtk_inscription_new"
 

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: AlertDialog *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : string -> unit -> t = "ml_gtk_alert_dialog_new"
 
@@ -27,7 +27,7 @@ external get_modal : t -> bool = "ml_gtk_alert_dialog_get_modal"
 
 external set_modal : t -> bool -> unit = "ml_gtk_alert_dialog_set_modal"
 
-external show : t -> Gtk.Widget.t option -> unit = "ml_gtk_alert_dialog_show"
+external show : t -> Gtk.widget option -> unit = "ml_gtk_alert_dialog_show"
 
 external get_buttons : t -> unit = "ml_gtk_alert_dialog_get_buttons"
 

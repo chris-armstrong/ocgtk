@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: PrintDialog *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : unit -> t = "ml_gtk_print_dialog_new"
 
@@ -19,11 +19,11 @@ external get_title : t -> string = "ml_gtk_print_dialog_get_title"
 
 external set_title : t -> string -> unit = "ml_gtk_print_dialog_set_title"
 
-external set_print_settings : t -> Gtk.Widget.t -> unit = "ml_gtk_print_dialog_set_print_settings"
+external set_print_settings : t -> Gtk.widget -> unit = "ml_gtk_print_dialog_set_print_settings"
 
-external set_page_setup : t -> Gtk.Widget.t -> unit = "ml_gtk_print_dialog_set_page_setup"
+external set_page_setup : t -> Gtk.widget -> unit = "ml_gtk_print_dialog_set_page_setup"
 
-external get_print_settings : t -> Gtk.Widget.t = "ml_gtk_print_dialog_get_print_settings"
+external get_print_settings : t -> Gtk.widget = "ml_gtk_print_dialog_get_print_settings"
 
-external get_page_setup : t -> Gtk.Widget.t = "ml_gtk_print_dialog_get_page_setup"
+external get_page_setup : t -> Gtk.widget = "ml_gtk_print_dialog_get_page_setup"
 

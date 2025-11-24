@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: FlowBox *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new FlowBox *)
 external new_ : unit -> t = "ml_gtk_flow_box_new"
@@ -50,37 +50,37 @@ external get_row_spacing : t -> int = "ml_gtk_flow_box_get_row_spacing"
 (** Set property: row-spacing *)
 external set_row_spacing : t -> int -> unit = "ml_gtk_flow_box_set_row_spacing"
 
-external unselect_child : t -> Gtk.Widget.t -> unit = "ml_gtk_flow_box_unselect_child"
+external unselect_child : t -> Gtk.widget -> unit = "ml_gtk_flow_box_unselect_child"
 
 external unselect_all : t -> unit = "ml_gtk_flow_box_unselect_all"
 
-external set_vadjustment : t -> Gtk.Widget.t -> unit = "ml_gtk_flow_box_set_vadjustment"
+external set_vadjustment : t -> Gtk.widget -> unit = "ml_gtk_flow_box_set_vadjustment"
 
 external set_selection_mode : t -> Gtk_enums.selectionmode -> unit = "ml_gtk_flow_box_set_selection_mode"
 
-external set_hadjustment : t -> Gtk.Widget.t -> unit = "ml_gtk_flow_box_set_hadjustment"
+external set_hadjustment : t -> Gtk.widget -> unit = "ml_gtk_flow_box_set_hadjustment"
 
-external select_child : t -> Gtk.Widget.t -> unit = "ml_gtk_flow_box_select_child"
+external select_child : t -> Gtk.widget -> unit = "ml_gtk_flow_box_select_child"
 
 external select_all : t -> unit = "ml_gtk_flow_box_select_all"
 
 external remove_all : t -> unit = "ml_gtk_flow_box_remove_all"
 
-external remove : t -> Gtk.Widget.t -> unit = "ml_gtk_flow_box_remove"
+external remove : t -> Gtk.widget -> unit = "ml_gtk_flow_box_remove"
 
-external prepend : t -> Gtk.Widget.t -> unit = "ml_gtk_flow_box_prepend"
+external prepend : t -> Gtk.widget -> unit = "ml_gtk_flow_box_prepend"
 
 external invalidate_sort : t -> unit = "ml_gtk_flow_box_invalidate_sort"
 
 external invalidate_filter : t -> unit = "ml_gtk_flow_box_invalidate_filter"
 
-external insert : t -> Gtk.Widget.t -> int -> unit = "ml_gtk_flow_box_insert"
+external insert : t -> Gtk.widget -> int -> unit = "ml_gtk_flow_box_insert"
 
 external get_selection_mode : t -> Gtk_enums.selectionmode = "ml_gtk_flow_box_get_selection_mode"
 
-external get_child_at_pos : t -> int -> int -> Gtk.Widget.t = "ml_gtk_flow_box_get_child_at_pos"
+external get_child_at_pos : t -> int -> int -> Gtk.widget = "ml_gtk_flow_box_get_child_at_pos"
 
-external get_child_at_index : t -> int -> Gtk.Widget.t = "ml_gtk_flow_box_get_child_at_index"
+external get_child_at_index : t -> int -> Gtk.widget = "ml_gtk_flow_box_get_child_at_index"
 
-external append : t -> Gtk.Widget.t -> unit = "ml_gtk_flow_box_append"
+external append : t -> Gtk.widget -> unit = "ml_gtk_flow_box_append"
 

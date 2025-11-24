@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: RecentManager *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : unit -> t = "ml_gtk_recent_manager_new"
 
@@ -17,7 +17,7 @@ external purge_items : t -> (int, GError.t) result = "ml_gtk_recent_manager_purg
 
 external move_item : t -> string -> string option -> (bool, GError.t) result = "ml_gtk_recent_manager_move_item"
 
-external lookup_item : t -> string -> (Gtk.Widget.t, GError.t) result = "ml_gtk_recent_manager_lookup_item"
+external lookup_item : t -> string -> (Gtk.widget, GError.t) result = "ml_gtk_recent_manager_lookup_item"
 
 external has_item : t -> string -> bool = "ml_gtk_recent_manager_has_item"
 

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: AccessibleText *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external update_selection_bound : t -> unit = "ml_gtk_accessible_text_update_selection_bound"
 

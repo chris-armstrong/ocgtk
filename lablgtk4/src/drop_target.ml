@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: DropTarget *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : unit -> Gdk.dragaction -> t = "ml_gtk_drop_target_new"
 

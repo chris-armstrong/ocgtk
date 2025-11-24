@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: AppChooser *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (* Properties *)
 

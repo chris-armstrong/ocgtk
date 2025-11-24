@@ -1,11 +1,11 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: EntryCompletion *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : unit -> t = "ml_gtk_entry_completion_new"
 
-external new_with_area : Gtk.Widget.t -> t = "ml_gtk_entry_completion_new_with_area"
+external new_with_area : Gtk.widget -> t = "ml_gtk_entry_completion_new_with_area"
 
 (* Properties *)
 
@@ -37,13 +37,13 @@ external get_text_column : t -> int = "ml_gtk_entry_completion_get_text_column"
 
 external set_text_column : t -> int -> unit = "ml_gtk_entry_completion_set_text_column"
 
-external set_model : t -> Gtk.Widget.t option -> unit = "ml_gtk_entry_completion_set_model"
+external set_model : t -> Gtk.widget option -> unit = "ml_gtk_entry_completion_set_model"
 
 external insert_prefix : t -> unit = "ml_gtk_entry_completion_insert_prefix"
 
-external get_model : t -> Gtk.Widget.t = "ml_gtk_entry_completion_get_model"
+external get_model : t -> Gtk.widget = "ml_gtk_entry_completion_get_model"
 
-external get_entry : t -> Gtk.Widget.t = "ml_gtk_entry_completion_get_entry"
+external get_entry : t -> Gtk.widget = "ml_gtk_entry_completion_get_entry"
 
 external get_completion_prefix : t -> string = "ml_gtk_entry_completion_get_completion_prefix"
 

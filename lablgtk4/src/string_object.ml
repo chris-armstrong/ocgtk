@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: StringObject *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : string -> t = "ml_gtk_string_object_new"
 

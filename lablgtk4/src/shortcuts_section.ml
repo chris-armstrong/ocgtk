@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: ShortcutsSection *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (* Properties *)
 
@@ -21,5 +21,5 @@ external get_view_name : t -> string = "ml_gtk_shortcuts_section_get_view_name"
 
 external set_view_name : t -> string -> unit = "ml_gtk_shortcuts_section_set_view_name"
 
-external add_group : t -> Gtk.Widget.t -> unit = "ml_gtk_shortcuts_section_add_group"
+external add_group : t -> Gtk.widget -> unit = "ml_gtk_shortcuts_section_add_group"
 

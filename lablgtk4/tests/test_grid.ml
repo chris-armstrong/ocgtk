@@ -28,7 +28,7 @@ let require_gtk f () =
 (* Test that Grid module is accessible and types compile *)
 let test_module_accessible () =
   (* Test that we can reference the types *)
-  let _grid_type : Gtk.Grid.t option = None in
+  let _grid_type : Grid.t option = None in
   let _position : Gtk.position_type = `LEFT in
 
   check bool "module accessible" true true
@@ -50,11 +50,11 @@ let test_grid_creation () =
     let _ = GMain.init () in
 
     (* Create grid *)
-    let grid = Gtk.Grid.create () in
-    check int "grid row spacing" 0 (Gtk.Grid.get_row_spacing grid);
-    check int "grid column spacing" 0 (Gtk.Grid.get_column_spacing grid);
-    check bool "grid row not homogeneous" false (Gtk.Grid.get_row_homogeneous grid);
-    check bool "grid column not homogeneous" false (Gtk.Grid.get_column_homogeneous grid)
+    let grid = Grid.create () in
+    check int "grid row spacing" 0 (Grid.get_row_spacing grid);
+    check int "grid column spacing" 0 (Grid.get_column_spacing grid);
+    check bool "grid row not homogeneous" false (Grid.get_row_homogeneous grid);
+    check bool "grid column not homogeneous" false (Grid.get_column_homogeneous grid)
   with
   | GMain.Error _ ->
       skip ()  (* No display available *)
@@ -65,27 +65,27 @@ let test_grid_creation () =
 let test_grid_properties () =
   try
     let _ = GMain.init () in
-    let grid = Gtk.Grid.create () in
+    let grid = Grid.create () in
 
     (* Test row spacing *)
-    Gtk.Grid.set_row_spacing grid 10;
-    check int "row spacing set to 10" 10 (Gtk.Grid.get_row_spacing grid);
+    Grid.set_row_spacing grid 10;
+    check int "row spacing set to 10" 10 (Grid.get_row_spacing grid);
 
     (* Test column spacing *)
-    Gtk.Grid.set_column_spacing grid 15;
-    check int "column spacing set to 15" 15 (Gtk.Grid.get_column_spacing grid);
+    Grid.set_column_spacing grid 15;
+    check int "column spacing set to 15" 15 (Grid.get_column_spacing grid);
 
     (* Test row homogeneous *)
-    Gtk.Grid.set_row_homogeneous grid true;
-    check bool "row homogeneous set to true" true (Gtk.Grid.get_row_homogeneous grid);
+    Grid.set_row_homogeneous grid true;
+    check bool "row homogeneous set to true" true (Grid.get_row_homogeneous grid);
 
     (* Test column homogeneous *)
-    Gtk.Grid.set_column_homogeneous grid true;
-    check bool "column homogeneous set to true" true (Gtk.Grid.get_column_homogeneous grid);
+    Grid.set_column_homogeneous grid true;
+    check bool "column homogeneous set to true" true (Grid.get_column_homogeneous grid);
 
     (* Test baseline row *)
-    Gtk.Grid.set_baseline_row grid 2;
-    check int "baseline row set to 2" 2 (Gtk.Grid.get_baseline_row grid)
+    Grid.set_baseline_row grid 2;
+    check int "baseline row set to 2" 2 (Grid.get_baseline_row grid)
   with
   | GMain.Error _ ->
       skip ()
@@ -96,15 +96,15 @@ let test_grid_properties () =
 let test_child_attach () =
   try
     let _ = GMain.init () in
-    let grid = Gtk.Grid.create () in
-    let child_box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
-    let child_widget = Gtk.Box.as_widget child_box in
+    let grid = Grid.create () in
+    let child_box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let child_widget = Box.as_widget child_box in
 
     (* Test attach *)
-    Gtk.Grid.attach grid ~child:child_widget ~column:0 ~row:0 ~width:1 ~height:1;
+    Grid.attach grid ~child:child_widget ~column:0 ~row:0 ~width:1 ~height:1;
 
     (* Test get_child_at *)
-    match Gtk.Grid.get_child_at grid ~column:0 ~row:0 with
+    match Grid.get_child_at grid ~column:0 ~row:0 with
     | Some _ -> check bool "child found at position" true true
     | None -> fail "child not found at position (0,0)"
   with
@@ -117,16 +117,16 @@ let test_child_attach () =
 let test_child_removal () =
   try
     let _ = GMain.init () in
-    let grid = Gtk.Grid.create () in
-    let child_box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
-    let child_widget = Gtk.Box.as_widget child_box in
+    let grid = Grid.create () in
+    let child_box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let child_widget = Box.as_widget child_box in
 
     (* Attach and then remove *)
-    Gtk.Grid.attach grid ~child:child_widget ~column:0 ~row:0 ~width:1 ~height:1;
-    Gtk.Grid.remove grid child_widget;
+    Grid.attach grid ~child:child_widget ~column:0 ~row:0 ~width:1 ~height:1;
+    Grid.remove grid child_widget;
 
     (* Verify child is gone *)
-    match Gtk.Grid.get_child_at grid ~column:0 ~row:0 with
+    match Grid.get_child_at grid ~column:0 ~row:0 with
     | None -> check bool "child removed" true true
     | Some _ -> fail "child still present after removal"
   with
@@ -139,21 +139,21 @@ let test_child_removal () =
 let test_row_column_operations () =
   try
     let _ = GMain.init () in
-    let grid = Gtk.Grid.create () in
+    let grid = Grid.create () in
 
     (* Test insert row *)
-    Gtk.Grid.insert_row grid ~position:0;
-    Gtk.Grid.insert_row grid ~position:1;
+    Grid.insert_row grid ~position:0;
+    Grid.insert_row grid ~position:1;
 
     (* Test insert column *)
-    Gtk.Grid.insert_column grid ~position:0;
-    Gtk.Grid.insert_column grid ~position:1;
+    Grid.insert_column grid ~position:0;
+    Grid.insert_column grid ~position:1;
 
     (* Test remove row *)
-    Gtk.Grid.remove_row grid ~position:0;
+    Grid.remove_row grid ~position:0;
 
     (* Test remove column *)
-    Gtk.Grid.remove_column grid ~position:0;
+    Grid.remove_column grid ~position:0;
 
     check bool "row/column operations successful" true true
   with
@@ -166,17 +166,17 @@ let test_row_column_operations () =
 let test_attach_next_to () =
   try
     let _ = GMain.init () in
-    let grid = Gtk.Grid.create () in
-    let child1_box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
-    let child1_widget = Gtk.Box.as_widget child1_box in
-    let child2_box = Gtk.Box.create ~orientation:`VERTICAL ~spacing:0 in
-    let child2_widget = Gtk.Box.as_widget child2_box in
+    let grid = Grid.create () in
+    let child1_box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let child1_widget = Box.as_widget child1_box in
+    let child2_box = Box.create ~orientation:`VERTICAL ~spacing:0 in
+    let child2_widget = Box.as_widget child2_box in
 
     (* Attach first child *)
-    Gtk.Grid.attach grid ~child:child1_widget ~column:0 ~row:0 ~width:1 ~height:1;
+    Grid.attach grid ~child:child1_widget ~column:0 ~row:0 ~width:1 ~height:1;
 
     (* Attach second child next to first *)
-    Gtk.Grid.attach_next_to grid ~child:child2_widget ~sibling:(Some child1_widget) ~side:`RIGHT ~width:1 ~height:1;
+    Grid.attach_next_to grid ~child:child2_widget ~sibling:(Some child1_widget) ~side:`RIGHT ~width:1 ~height:1;
 
     check bool "attach_next_to successful" true true
   with
@@ -189,18 +189,18 @@ let test_attach_next_to () =
 let test_insert_next_to () =
   try
     let _ = GMain.init () in
-    let grid = Gtk.Grid.create () in
-    let child_box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
-    let child_widget = Gtk.Box.as_widget child_box in
+    let grid = Grid.create () in
+    let child_box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let child_widget = Box.as_widget child_box in
 
     (* Attach child *)
-    Gtk.Grid.attach grid ~child:child_widget ~column:0 ~row:0 ~width:1 ~height:1;
+    Grid.attach grid ~child:child_widget ~column:0 ~row:0 ~width:1 ~height:1;
 
     (* Insert row next to child *)
-    Gtk.Grid.insert_next_to grid ~sibling:child_widget ~side:`BOTTOM;
+    Grid.insert_next_to grid ~sibling:child_widget ~side:`BOTTOM;
 
     (* Insert column next to child *)
-    Gtk.Grid.insert_next_to grid ~sibling:child_widget ~side:`RIGHT;
+    Grid.insert_next_to grid ~sibling:child_widget ~side:`RIGHT;
 
     check bool "insert_next_to successful" true true
   with
@@ -241,12 +241,12 @@ let test_ggrid_wrapper () =
 let test_as_widget () =
   try
     let _ = GMain.init () in
-    let grid = Gtk.Grid.create () in
-    let widget = Gtk.Grid.as_widget grid in
+    let grid = Grid.create () in
+    let widget = Grid.as_widget grid in
 
     (* Verify it's a valid widget by calling widget methods *)
-    Gtk.Widget.set_name widget "test_grid";
-    check string "converted widget name" "test_grid" (Gtk.Widget.get_name widget)
+    Widget.set_name widget "test_grid";
+    check string "converted widget name" "test_grid" (Widget.get_name widget)
   with
   | GMain.Error _ ->
       skip ()

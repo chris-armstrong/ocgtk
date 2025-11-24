@@ -10,7 +10,7 @@ open GObj
 
 (** A widget which indicates progress visually
    @gtkdoc gtk GtkProgressBar *)
-class progress_bar : Gtk.Widget.t ->
+class progress_bar : Gtk.widget ->
   object
     inherit GObj.widget_impl
 
@@ -52,11 +52,11 @@ val progress_bar :
 
 (** Base class for widgets which visualize an adjustment
    @gtkdoc gtk GtkRange *)
-class range : Gtk.Widget.t ->
+class range : Gtk.widget ->
   object
     inherit GObj.widget_impl
 
-    method as_range : Gtk.Widget.t
+    method as_range : Gtk.widget
 
     method set_fill_level : float -> unit
     method fill_level : float
@@ -84,7 +84,7 @@ class range : Gtk.Widget.t ->
 
 (** A slider widget for selecting a value from a range
    @gtkdoc gtk GtkScale *)
-class scale : Gtk.Widget.t ->
+class scale : Gtk.widget ->
   object
     inherit range
 
@@ -136,7 +136,7 @@ val scale :
 
 (** A bar that can be used as a level indicator
    @gtkdoc gtk GtkLevelBar *)
-class level_bar : Gtk.Widget.t ->
+class level_bar : Gtk.widget ->
   object
     inherit GObj.widget_impl
 

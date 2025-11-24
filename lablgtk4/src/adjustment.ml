@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Adjustment *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : float -> float -> float -> float -> float -> float -> t = "ml_gtk_adjustment_new_bytecode" "ml_gtk_adjustment_new_native"
 

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Editable *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (* Properties *)
 
@@ -43,7 +43,7 @@ external init_delegate : t -> unit = "ml_gtk_editable_init_delegate"
 
 external get_position : t -> int = "ml_gtk_editable_get_position"
 
-external get_delegate : t -> Gtk.Widget.t = "ml_gtk_editable_get_delegate"
+external get_delegate : t -> Gtk.widget = "ml_gtk_editable_get_delegate"
 
 external get_alignment : t -> float = "ml_gtk_editable_get_alignment"
 

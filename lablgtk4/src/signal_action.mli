@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: SignalAction *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new SignalAction *)
 external new_ : string -> t = "ml_gtk_signal_action_new"

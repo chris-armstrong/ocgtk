@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: ColorButton *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new ColorButton *)
 external new_ : unit -> t = "ml_gtk_color_button_new"

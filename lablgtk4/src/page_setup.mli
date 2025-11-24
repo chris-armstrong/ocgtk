@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: PageSetup *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new PageSetup *)
 external new_ : unit -> t = "ml_gtk_page_setup_new"
@@ -15,9 +15,9 @@ external set_top_margin : t -> float -> unit -> unit = "ml_gtk_page_setup_set_to
 
 external set_right_margin : t -> float -> unit -> unit = "ml_gtk_page_setup_set_right_margin"
 
-external set_paper_size_and_default_margins : t -> Gtk.Widget.t -> unit = "ml_gtk_page_setup_set_paper_size_and_default_margins"
+external set_paper_size_and_default_margins : t -> Gtk.widget -> unit = "ml_gtk_page_setup_set_paper_size_and_default_margins"
 
-external set_paper_size : t -> Gtk.Widget.t -> unit = "ml_gtk_page_setup_set_paper_size"
+external set_paper_size : t -> Gtk.widget -> unit = "ml_gtk_page_setup_set_paper_size"
 
 external set_orientation : t -> Gtk_enums.pageorientation -> unit = "ml_gtk_page_setup_set_orientation"
 
@@ -33,7 +33,7 @@ external get_right_margin : t -> unit -> float = "ml_gtk_page_setup_get_right_ma
 
 external get_paper_width : t -> unit -> float = "ml_gtk_page_setup_get_paper_width"
 
-external get_paper_size : t -> Gtk.Widget.t = "ml_gtk_page_setup_get_paper_size"
+external get_paper_size : t -> Gtk.widget = "ml_gtk_page_setup_get_paper_size"
 
 external get_paper_height : t -> unit -> float = "ml_gtk_page_setup_get_paper_height"
 
@@ -47,5 +47,5 @@ external get_left_margin : t -> unit -> float = "ml_gtk_page_setup_get_left_marg
 
 external get_bottom_margin : t -> unit -> float = "ml_gtk_page_setup_get_bottom_margin"
 
-external copy : t -> Gtk.Widget.t = "ml_gtk_page_setup_copy"
+external copy : t -> Gtk.widget = "ml_gtk_page_setup_copy"
 

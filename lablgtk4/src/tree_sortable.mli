@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: TreeSortable *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external sort_column_changed : t -> unit = "ml_gtk_tree_sortable_sort_column_changed"
 

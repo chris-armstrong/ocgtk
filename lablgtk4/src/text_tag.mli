@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: TextTag *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new TextTag *)
 external new_ : string option -> t = "ml_gtk_text_tag_new"

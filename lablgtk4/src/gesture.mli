@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Gesture *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (* Properties *)
 
@@ -14,9 +14,9 @@ external set_state : t -> Gtk_enums.eventsequencestate -> bool = "ml_gtk_gesture
 
 external is_recognized : t -> bool = "ml_gtk_gesture_is_recognized"
 
-external is_grouped_with : t -> Gtk.Widget.t -> bool = "ml_gtk_gesture_is_grouped_with"
+external is_grouped_with : t -> Gtk.widget -> bool = "ml_gtk_gesture_is_grouped_with"
 
 external is_active : t -> bool = "ml_gtk_gesture_is_active"
 
-external group : t -> Gtk.Widget.t -> unit = "ml_gtk_gesture_group"
+external group : t -> Gtk.widget -> unit = "ml_gtk_gesture_group"
 

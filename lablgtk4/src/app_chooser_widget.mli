@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: AppChooserWidget *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new AppChooserWidget *)
 external new_ : string -> t = "ml_gtk_app_chooser_widget_new"

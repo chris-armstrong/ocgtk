@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: IMMulticontext *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new IMMulticontext *)
 external gtk_im_multicontext_new : unit -> t = "ml_gtk_im_multicontext_new"

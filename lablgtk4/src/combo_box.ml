@@ -1,15 +1,15 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: ComboBox *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : unit -> t = "ml_gtk_combo_box_new"
 
 external new_with_entry : unit -> t = "ml_gtk_combo_box_new_with_entry"
 
-external new_with_model : Gtk.Widget.t -> t = "ml_gtk_combo_box_new_with_model"
+external new_with_model : Gtk.widget -> t = "ml_gtk_combo_box_new_with_model"
 
-external new_with_model_and_entry : Gtk.Widget.t -> t = "ml_gtk_combo_box_new_with_model_and_entry"
+external new_with_model_and_entry : Gtk.widget -> t = "ml_gtk_combo_box_new_with_model_and_entry"
 
 (* Properties *)
 
@@ -41,23 +41,23 @@ external set_popup_fixed_width : t -> bool -> unit = "ml_gtk_combo_box_set_popup
 
 external get_popup_shown : t -> bool = "ml_gtk_combo_box_get_popup_shown"
 
-external set_model : t -> Gtk.Widget.t option -> unit = "ml_gtk_combo_box_set_model"
+external set_model : t -> Gtk.widget option -> unit = "ml_gtk_combo_box_set_model"
 
-external set_child : t -> Gtk.Widget.t option -> unit = "ml_gtk_combo_box_set_child"
+external set_child : t -> Gtk.widget option -> unit = "ml_gtk_combo_box_set_child"
 
 external set_button_sensitivity : t -> Gtk_enums.sensitivitytype -> unit = "ml_gtk_combo_box_set_button_sensitivity"
 
-external set_active_iter : t -> Gtk.Widget.t option -> unit = "ml_gtk_combo_box_set_active_iter"
+external set_active_iter : t -> Gtk.widget option -> unit = "ml_gtk_combo_box_set_active_iter"
 
 external popup : t -> unit = "ml_gtk_combo_box_popup"
 
 external popdown : t -> unit = "ml_gtk_combo_box_popdown"
 
-external get_model : t -> Gtk.Widget.t = "ml_gtk_combo_box_get_model"
+external get_model : t -> Gtk.widget = "ml_gtk_combo_box_get_model"
 
-external get_child : t -> Gtk.Widget.t = "ml_gtk_combo_box_get_child"
+external get_child : t -> Gtk.widget = "ml_gtk_combo_box_get_child"
 
 external get_button_sensitivity : t -> Gtk_enums.sensitivitytype = "ml_gtk_combo_box_get_button_sensitivity"
 
-external get_active_iter : t -> Gtk.Widget.t -> bool = "ml_gtk_combo_box_get_active_iter"
+external get_active_iter : t -> Gtk.widget -> bool = "ml_gtk_combo_box_get_active_iter"
 

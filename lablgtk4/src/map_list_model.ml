@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: MapListModel *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : unit -> unit -> unit -> unit -> t = "ml_gtk_map_list_model_new"
 

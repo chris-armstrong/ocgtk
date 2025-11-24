@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: FileChooserWidget *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : Gtk_enums.filechooseraction -> t = "ml_gtk_file_chooser_widget_new"
 

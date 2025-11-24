@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: FileDialog *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : unit -> t = "ml_gtk_file_dialog_new"
 
@@ -23,7 +23,7 @@ external get_title : t -> string = "ml_gtk_file_dialog_get_title"
 
 external set_title : t -> string -> unit = "ml_gtk_file_dialog_set_title"
 
-external set_default_filter : t -> Gtk.Widget.t option -> unit = "ml_gtk_file_dialog_set_default_filter"
+external set_default_filter : t -> Gtk.widget option -> unit = "ml_gtk_file_dialog_set_default_filter"
 
-external get_default_filter : t -> Gtk.Widget.t = "ml_gtk_file_dialog_get_default_filter"
+external get_default_filter : t -> Gtk.widget = "ml_gtk_file_dialog_get_default_filter"
 

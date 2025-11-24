@@ -13,40 +13,40 @@
 
 (** {1 GtkBox Container} *)
 
-class box_skel (obj : Gtk.Box.t) = object (self)
-  inherit GObj.widget_impl (Gtk.Box.as_widget obj)
+class box_skel (obj : Box.t) = object (self)
+  inherit GObj.widget_impl (Box.as_widget obj)
 
   method append (child : GObj.widget) =
-    Gtk.Box.append obj child#as_widget
+    Box.append obj child#as_widget
 
   method prepend (child : GObj.widget) =
-    Gtk.Box.prepend obj child#as_widget
+    Box.prepend obj child#as_widget
 
   method insert_child_after ~(child : GObj.widget) ~(sibling : GObj.widget option) =
     let sibling_widget = match sibling with
       | None -> None
       | Some w -> Some w#as_widget
     in
-    Gtk.Box.insert_child_after obj ~child:child#as_widget ~sibling:sibling_widget
+    Box.insert_child_after obj ~child:child#as_widget ~sibling:sibling_widget
 
   method remove (child : GObj.widget) =
-    Gtk.Box.remove obj child#as_widget
+    Box.remove obj child#as_widget
 
   method reorder_child_after ~(child : GObj.widget) ~(sibling : GObj.widget option) =
     let sibling_widget = match sibling with
       | None -> None
       | Some w -> Some w#as_widget
     in
-    Gtk.Box.reorder_child_after obj ~child:child#as_widget ~sibling:sibling_widget
+    Box.reorder_child_after obj ~child:child#as_widget ~sibling:sibling_widget
 
-  method spacing = Gtk.Box.get_spacing obj
-  method set_spacing spacing = Gtk.Box.set_spacing obj spacing
+  method spacing = Box.get_spacing obj
+  method set_spacing spacing = Box.set_spacing obj spacing
 
-  method homogeneous = Gtk.Box.get_homogeneous obj
-  method set_homogeneous h = Gtk.Box.set_homogeneous obj h
+  method homogeneous = Box.get_homogeneous obj
+  method set_homogeneous h = Box.set_homogeneous obj h
 
-  method baseline_position = Gtk.Box.get_baseline_position obj
-  method set_baseline_position pos = Gtk.Box.set_baseline_position obj pos
+  method baseline_position = Box.get_baseline_position obj
+  method set_baseline_position pos = Box.set_baseline_position obj pos
 end
 
 class box obj = object
@@ -55,14 +55,14 @@ end
 
 (** Create a horizontal box *)
 let hbox ?(spacing=0) ?(homogeneous=false) () =
-  let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing in
-  Gtk.Box.set_homogeneous box homogeneous;
+  let box = Box.create ~orientation:`HORIZONTAL ~spacing in
+  Box.set_homogeneous box homogeneous;
   new box box
 
 (** Create a vertical box *)
 let vbox ?(spacing=0) ?(homogeneous=false) () =
-  let box = Gtk.Box.create ~orientation:`VERTICAL ~spacing in
-  Gtk.Box.set_homogeneous box homogeneous;
+  let box = Box.create ~orientation:`VERTICAL ~spacing in
+  Box.set_homogeneous box homogeneous;
   new box box
 
 (** {2 Migration Helpers} *)
@@ -97,13 +97,13 @@ class box_pack obj = object (self)
 end
 
 let hbox_pack ?spacing ?homogeneous () =
-  let box = Gtk.Box.create ~orientation:`HORIZONTAL
+  let box = Box.create ~orientation:`HORIZONTAL
               ~spacing:(match spacing with None -> 0 | Some s -> s) in
-  (match homogeneous with None -> () | Some h -> Gtk.Box.set_homogeneous box h);
+  (match homogeneous with None -> () | Some h -> Box.set_homogeneous box h);
   new box_pack box
 
 let vbox_pack ?spacing ?homogeneous () =
-  let box = Gtk.Box.create ~orientation:`VERTICAL
+  let box = Box.create ~orientation:`VERTICAL
               ~spacing:(match spacing with None -> 0 | Some s -> s) in
-  (match homogeneous with None -> () | Some h -> Gtk.Box.set_homogeneous box h);
+  (match homogeneous with None -> () | Some h -> Box.set_homogeneous box h);
   new box_pack box

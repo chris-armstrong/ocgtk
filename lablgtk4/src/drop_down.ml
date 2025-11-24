@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: DropDown *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
-external new_ : unit -> Gtk.Widget.t option -> t = "ml_gtk_drop_down_new"
+external new_ : unit -> Gtk.widget option -> t = "ml_gtk_drop_down_new"
 
 external new_from_strings : unit -> t = "ml_gtk_drop_down_new_from_strings"
 
@@ -23,21 +23,21 @@ external set_show_arrow : t -> bool -> unit = "ml_gtk_drop_down_set_show_arrow"
 
 external set_search_match_mode : t -> Gtk_enums.stringfiltermatchmode -> unit = "ml_gtk_drop_down_set_search_match_mode"
 
-external set_list_factory : t -> Gtk.Widget.t option -> unit = "ml_gtk_drop_down_set_list_factory"
+external set_list_factory : t -> Gtk.widget option -> unit = "ml_gtk_drop_down_set_list_factory"
 
-external set_header_factory : t -> Gtk.Widget.t option -> unit = "ml_gtk_drop_down_set_header_factory"
+external set_header_factory : t -> Gtk.widget option -> unit = "ml_gtk_drop_down_set_header_factory"
 
-external set_factory : t -> Gtk.Widget.t option -> unit = "ml_gtk_drop_down_set_factory"
+external set_factory : t -> Gtk.widget option -> unit = "ml_gtk_drop_down_set_factory"
 
-external set_expression : t -> Gtk.Widget.t option -> unit = "ml_gtk_drop_down_set_expression"
+external set_expression : t -> Gtk.widget option -> unit = "ml_gtk_drop_down_set_expression"
 
 external get_search_match_mode : t -> Gtk_enums.stringfiltermatchmode = "ml_gtk_drop_down_get_search_match_mode"
 
-external get_list_factory : t -> Gtk.Widget.t = "ml_gtk_drop_down_get_list_factory"
+external get_list_factory : t -> Gtk.widget = "ml_gtk_drop_down_get_list_factory"
 
-external get_header_factory : t -> Gtk.Widget.t = "ml_gtk_drop_down_get_header_factory"
+external get_header_factory : t -> Gtk.widget = "ml_gtk_drop_down_get_header_factory"
 
-external get_factory : t -> Gtk.Widget.t = "ml_gtk_drop_down_get_factory"
+external get_factory : t -> Gtk.widget = "ml_gtk_drop_down_get_factory"
 
-external get_expression : t -> Gtk.Widget.t = "ml_gtk_drop_down_get_expression"
+external get_expression : t -> Gtk.widget = "ml_gtk_drop_down_get_expression"
 

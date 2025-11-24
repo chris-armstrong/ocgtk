@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: ListItem *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (* Properties *)
 
@@ -29,7 +29,7 @@ external set_selectable : t -> bool -> unit = "ml_gtk_list_item_set_selectable"
 
 external get_selected : t -> bool = "ml_gtk_list_item_get_selected"
 
-external set_child : t -> Gtk.Widget.t option -> unit = "ml_gtk_list_item_set_child"
+external set_child : t -> Gtk.widget option -> unit = "ml_gtk_list_item_set_child"
 
-external get_child : t -> Gtk.Widget.t = "ml_gtk_list_item_get_child"
+external get_child : t -> Gtk.widget = "ml_gtk_list_item_get_child"
 

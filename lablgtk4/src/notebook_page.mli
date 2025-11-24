@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: NotebookPage *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (* Properties *)
 
@@ -47,5 +47,5 @@ external get_tab_label : t -> string = "ml_gtk_notebook_page_get_tab_label"
 (** Set property: tab-label *)
 external set_tab_label : t -> string -> unit = "ml_gtk_notebook_page_set_tab_label"
 
-external get_child : t -> Gtk.Widget.t = "ml_gtk_notebook_page_get_child"
+external get_child : t -> Gtk.widget = "ml_gtk_notebook_page_get_child"
 

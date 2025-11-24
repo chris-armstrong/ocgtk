@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Snapshot *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new Snapshot *)
 external new_ : unit -> t = "ml_gtk_snapshot_new"
@@ -30,15 +30,15 @@ external rotate : t -> float -> unit = "ml_gtk_snapshot_rotate"
 
 external restore : t -> unit = "ml_gtk_snapshot_restore"
 
-external render_layout : t -> Gtk.Widget.t -> float -> float -> unit -> unit = "ml_gtk_snapshot_render_layout"
+external render_layout : t -> Gtk.widget -> float -> float -> unit -> unit = "ml_gtk_snapshot_render_layout"
 
-external render_insertion_cursor : t -> Gtk.Widget.t -> float -> float -> unit -> int -> Pango.direction -> unit = "ml_gtk_snapshot_render_insertion_cursor_bytecode" "ml_gtk_snapshot_render_insertion_cursor_native"
+external render_insertion_cursor : t -> Gtk.widget -> float -> float -> unit -> int -> Pango.direction -> unit = "ml_gtk_snapshot_render_insertion_cursor_bytecode" "ml_gtk_snapshot_render_insertion_cursor_native"
 
-external render_frame : t -> Gtk.Widget.t -> float -> float -> float -> float -> unit = "ml_gtk_snapshot_render_frame_bytecode" "ml_gtk_snapshot_render_frame_native"
+external render_frame : t -> Gtk.widget -> float -> float -> float -> float -> unit = "ml_gtk_snapshot_render_frame_bytecode" "ml_gtk_snapshot_render_frame_native"
 
-external render_focus : t -> Gtk.Widget.t -> float -> float -> float -> float -> unit = "ml_gtk_snapshot_render_focus_bytecode" "ml_gtk_snapshot_render_focus_native"
+external render_focus : t -> Gtk.widget -> float -> float -> float -> float -> unit = "ml_gtk_snapshot_render_focus_bytecode" "ml_gtk_snapshot_render_focus_native"
 
-external render_background : t -> Gtk.Widget.t -> float -> float -> float -> float -> unit = "ml_gtk_snapshot_render_background_bytecode" "ml_gtk_snapshot_render_background_native"
+external render_background : t -> Gtk.widget -> float -> float -> float -> float -> unit = "ml_gtk_snapshot_render_background_bytecode" "ml_gtk_snapshot_render_background_native"
 
 external push_stroke : t -> unit -> unit -> unit = "ml_gtk_snapshot_push_stroke"
 

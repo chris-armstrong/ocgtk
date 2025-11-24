@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Scale *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
-external new_ : Gtk_enums.orientation -> Gtk.Widget.t option -> t = "ml_gtk_scale_new"
+external new_ : Gtk_enums.orientation -> Gtk.widget option -> t = "ml_gtk_scale_new"
 
 external new_with_range : Gtk_enums.orientation -> float -> float -> float -> t = "ml_gtk_scale_new_with_range"
 

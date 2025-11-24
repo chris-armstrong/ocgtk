@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: CellRendererSpinner *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new CellRendererSpinner *)
 external new_ : unit -> t = "ml_gtk_cell_renderer_spinner_new"

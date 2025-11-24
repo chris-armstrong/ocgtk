@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: KeyvalTrigger *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new KeyvalTrigger *)
 external new_ : int -> Gdk.modifiertype -> t = "ml_gtk_keyval_trigger_new"

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Native *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external unrealize : t -> unit = "ml_gtk_native_unrealize"
 

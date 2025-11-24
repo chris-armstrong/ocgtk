@@ -13,20 +13,20 @@
 
 (** {1 GtkFixed Container} *)
 
-class fixed_skel (obj : Gtk.Fixed.t) = object (self)
-  inherit GObj.widget_impl (Gtk.Fixed.as_widget obj)
+class fixed_skel (obj : Fixed.t) = object (self)
+  inherit GObj.widget_impl (Fixed.as_widget obj)
 
   method put ~x ~y (child : GObj.widget) =
-    Gtk.Fixed.put obj child#as_widget ~x ~y
+    Fixed.put obj child#as_widget ~x ~y
 
   method move ~x ~y (child : GObj.widget) =
-    Gtk.Fixed.move obj child#as_widget ~x ~y
+    Fixed.move obj child#as_widget ~x ~y
 
   method remove (child : GObj.widget) =
-    Gtk.Fixed.remove obj child#as_widget
+    Fixed.remove obj child#as_widget
 
   method get_child_position (child : GObj.widget) =
-    Gtk.Fixed.get_child_position obj child#as_widget
+    Fixed.get_child_position obj child#as_widget
 end
 
 class fixed obj = object
@@ -35,5 +35,5 @@ end
 
 (** Create a new fixed container *)
 let create () =
-  let fixed = Gtk.Fixed.create () in
+  let fixed = Fixed.create () in
   new fixed fixed

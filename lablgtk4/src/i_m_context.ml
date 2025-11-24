@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: IMContext *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (* Properties *)
 
@@ -11,7 +11,7 @@ external gtk_im_context_set_surrounding_with_selection : t -> string -> int -> i
 
 external gtk_im_context_set_surrounding : t -> string -> int -> int -> unit = "ml_gtk_im_context_set_surrounding"
 
-external gtk_im_context_set_client_widget : t -> Gtk.Widget.t option -> unit = "ml_gtk_im_context_set_client_widget"
+external gtk_im_context_set_client_widget : t -> Gtk.widget option -> unit = "ml_gtk_im_context_set_client_widget"
 
 external gtk_im_context_reset : t -> unit = "ml_gtk_im_context_reset"
 

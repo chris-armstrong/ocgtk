@@ -1,13 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Scrollbar *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
-external new_ : Gtk_enums.orientation -> Gtk.Widget.t option -> t = "ml_gtk_scrollbar_new"
+external new_ : Gtk_enums.orientation -> Gtk.widget option -> t = "ml_gtk_scrollbar_new"
 
 (* Properties *)
 
-external set_adjustment : t -> Gtk.Widget.t option -> unit = "ml_gtk_scrollbar_set_adjustment"
+external set_adjustment : t -> Gtk.widget option -> unit = "ml_gtk_scrollbar_set_adjustment"
 
-external get_adjustment : t -> Gtk.Widget.t = "ml_gtk_scrollbar_get_adjustment"
+external get_adjustment : t -> Gtk.widget = "ml_gtk_scrollbar_get_adjustment"
 

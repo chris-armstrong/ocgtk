@@ -1,13 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: AlternativeTrigger *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
-external new_ : Gtk.Widget.t -> Gtk.Widget.t -> t = "ml_gtk_alternative_trigger_new"
+external new_ : Gtk.widget -> Gtk.widget -> t = "ml_gtk_alternative_trigger_new"
 
 (* Properties *)
 
-external get_second : t -> Gtk.Widget.t = "ml_gtk_alternative_trigger_get_second"
+external get_second : t -> Gtk.widget = "ml_gtk_alternative_trigger_get_second"
 
-external get_first : t -> Gtk.Widget.t = "ml_gtk_alternative_trigger_get_first"
+external get_first : t -> Gtk.widget = "ml_gtk_alternative_trigger_get_first"
 

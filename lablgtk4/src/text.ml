@@ -1,11 +1,11 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Text *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : unit -> t = "ml_gtk_text_new"
 
-external new_with_buffer : Gtk.Widget.t -> t = "ml_gtk_text_new_with_buffer"
+external new_with_buffer : Gtk.widget -> t = "ml_gtk_text_new_with_buffer"
 
 (* Properties *)
 
@@ -61,7 +61,7 @@ external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit = "ml_gtk_text_
 
 external set_input_hints : t -> Gtk_enums.inputhints -> unit = "ml_gtk_text_set_input_hints"
 
-external set_buffer : t -> Gtk.Widget.t -> unit = "ml_gtk_text_set_buffer"
+external set_buffer : t -> Gtk.widget -> unit = "ml_gtk_text_set_buffer"
 
 external grab_focus_without_selecting : t -> bool = "ml_gtk_text_grab_focus_without_selecting"
 
@@ -69,5 +69,5 @@ external get_input_purpose : t -> Gtk_enums.inputpurpose = "ml_gtk_text_get_inpu
 
 external get_input_hints : t -> Gtk_enums.inputhints = "ml_gtk_text_get_input_hints"
 
-external get_buffer : t -> Gtk.Widget.t = "ml_gtk_text_get_buffer"
+external get_buffer : t -> Gtk.widget = "ml_gtk_text_get_buffer"
 

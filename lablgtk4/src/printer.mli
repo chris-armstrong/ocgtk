@@ -1,10 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Printer *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new Printer *)
-external new_ : string -> Gtk.Widget.t -> bool -> t = "ml_gtk_printer_new"
+external new_ : string -> Gtk.widget -> bool -> t = "ml_gtk_printer_new"
 
 (* Properties *)
 
@@ -54,19 +54,19 @@ external is_accepting_jobs : t -> bool = "ml_gtk_printer_is_accepting_jobs"
 
 external has_details : t -> bool = "ml_gtk_printer_has_details"
 
-external get_hard_margins_for_paper_size : t -> Gtk.Widget.t -> float -> float -> float -> float -> bool = "ml_gtk_printer_get_hard_margins_for_paper_size_bytecode" "ml_gtk_printer_get_hard_margins_for_paper_size_native"
+external get_hard_margins_for_paper_size : t -> Gtk.widget -> float -> float -> float -> float -> bool = "ml_gtk_printer_get_hard_margins_for_paper_size_bytecode" "ml_gtk_printer_get_hard_margins_for_paper_size_native"
 
 external get_hard_margins : t -> float -> float -> float -> float -> bool = "ml_gtk_printer_get_hard_margins"
 
 external get_description : t -> string = "ml_gtk_printer_get_description"
 
-external get_default_page_size : t -> Gtk.Widget.t = "ml_gtk_printer_get_default_page_size"
+external get_default_page_size : t -> Gtk.widget = "ml_gtk_printer_get_default_page_size"
 
 external get_capabilities : t -> unit = "ml_gtk_printer_get_capabilities"
 
-external get_backend : t -> Gtk.Widget.t = "ml_gtk_printer_get_backend"
+external get_backend : t -> Gtk.widget = "ml_gtk_printer_get_backend"
 
-external compare : t -> Gtk.Widget.t -> int = "ml_gtk_printer_compare"
+external compare : t -> Gtk.widget -> int = "ml_gtk_printer_compare"
 
 external accepts_ps : t -> bool = "ml_gtk_printer_accepts_ps"
 

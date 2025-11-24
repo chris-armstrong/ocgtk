@@ -18,7 +18,7 @@ let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors
     if is_controller then
       ("Event controller", "EventController.t")
     else
-      ("Widget", "Gtk.Widget.t")
+      ("Widget", "Gtk.widget")
   in
 
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";

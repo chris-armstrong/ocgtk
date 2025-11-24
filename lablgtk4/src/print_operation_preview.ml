@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: PrintOperationPreview *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external render_page : t -> int -> unit = "ml_gtk_print_operation_preview_render_page"
 

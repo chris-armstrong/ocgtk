@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: FileChooserNative *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
-external new_ : string option -> Gtk.Widget.t option -> Gtk_enums.filechooseraction -> string option -> string option -> t = "ml_gtk_file_chooser_native_new"
+external new_ : string option -> Gtk.widget option -> Gtk_enums.filechooseraction -> string option -> string option -> t = "ml_gtk_file_chooser_native_new"
 
 (* Properties *)
 

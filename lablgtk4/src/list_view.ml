@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: ListView *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
-external new_ : Gtk.Widget.t option -> Gtk.Widget.t option -> t = "ml_gtk_list_view_new"
+external new_ : Gtk.widget option -> Gtk.widget option -> t = "ml_gtk_list_view_new"
 
 (* Properties *)
 
@@ -21,19 +21,19 @@ external set_single_click_activate : t -> bool -> unit = "ml_gtk_list_view_set_s
 
 external set_tab_behavior : t -> Gtk_enums.listtabbehavior -> unit = "ml_gtk_list_view_set_tab_behavior"
 
-external set_model : t -> Gtk.Widget.t option -> unit = "ml_gtk_list_view_set_model"
+external set_model : t -> Gtk.widget option -> unit = "ml_gtk_list_view_set_model"
 
-external set_header_factory : t -> Gtk.Widget.t option -> unit = "ml_gtk_list_view_set_header_factory"
+external set_header_factory : t -> Gtk.widget option -> unit = "ml_gtk_list_view_set_header_factory"
 
-external set_factory : t -> Gtk.Widget.t option -> unit = "ml_gtk_list_view_set_factory"
+external set_factory : t -> Gtk.widget option -> unit = "ml_gtk_list_view_set_factory"
 
-external scroll_to : t -> int -> Gtk_enums.listscrollflags -> Gtk.Widget.t option -> unit = "ml_gtk_list_view_scroll_to"
+external scroll_to : t -> int -> Gtk_enums.listscrollflags -> Gtk.widget option -> unit = "ml_gtk_list_view_scroll_to"
 
 external get_tab_behavior : t -> Gtk_enums.listtabbehavior = "ml_gtk_list_view_get_tab_behavior"
 
-external get_model : t -> Gtk.Widget.t = "ml_gtk_list_view_get_model"
+external get_model : t -> Gtk.widget = "ml_gtk_list_view_get_model"
 
-external get_header_factory : t -> Gtk.Widget.t = "ml_gtk_list_view_get_header_factory"
+external get_header_factory : t -> Gtk.widget = "ml_gtk_list_view_get_header_factory"
 
-external get_factory : t -> Gtk.Widget.t = "ml_gtk_list_view_get_factory"
+external get_factory : t -> Gtk.widget = "ml_gtk_list_view_get_factory"
 

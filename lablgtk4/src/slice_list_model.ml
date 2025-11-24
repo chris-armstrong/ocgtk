@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: SliceListModel *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : unit -> int -> int -> t = "ml_gtk_slice_list_model_new"
 

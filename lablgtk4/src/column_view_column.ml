@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: ColumnViewColumn *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
-external new_ : string option -> Gtk.Widget.t option -> t = "ml_gtk_column_view_column_new"
+external new_ : string option -> Gtk.widget option -> t = "ml_gtk_column_view_column_new"
 
 (* Properties *)
 
@@ -31,13 +31,13 @@ external get_visible : t -> bool = "ml_gtk_column_view_column_get_visible"
 
 external set_visible : t -> bool -> unit = "ml_gtk_column_view_column_set_visible"
 
-external set_sorter : t -> Gtk.Widget.t option -> unit = "ml_gtk_column_view_column_set_sorter"
+external set_sorter : t -> Gtk.widget option -> unit = "ml_gtk_column_view_column_set_sorter"
 
-external set_factory : t -> Gtk.Widget.t option -> unit = "ml_gtk_column_view_column_set_factory"
+external set_factory : t -> Gtk.widget option -> unit = "ml_gtk_column_view_column_set_factory"
 
-external get_sorter : t -> Gtk.Widget.t = "ml_gtk_column_view_column_get_sorter"
+external get_sorter : t -> Gtk.widget = "ml_gtk_column_view_column_get_sorter"
 
-external get_factory : t -> Gtk.Widget.t = "ml_gtk_column_view_column_get_factory"
+external get_factory : t -> Gtk.widget = "ml_gtk_column_view_column_get_factory"
 
-external get_column_view : t -> Gtk.Widget.t = "ml_gtk_column_view_column_get_column_view"
+external get_column_view : t -> Gtk.widget = "ml_gtk_column_view_column_get_column_view"
 

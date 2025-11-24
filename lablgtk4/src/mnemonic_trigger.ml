@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: MnemonicTrigger *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : int -> t = "ml_gtk_mnemonic_trigger_new"
 

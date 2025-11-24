@@ -14,7 +14,7 @@
 (** {1 GtkBox Container} *)
 
 (** Base box skeleton with basic container operations *)
-class box_skel : Gtk.Box.t ->
+class box_skel : Box.t ->
   object
     inherit GObj.widget_impl
 
@@ -53,7 +53,7 @@ class box_skel : Gtk.Box.t ->
   end
 
 (** Box widget with full functionality *)
-class box : Gtk.Box.t ->
+class box : Box.t ->
   object
     inherit box_skel
   end
@@ -73,7 +73,7 @@ val vbox : ?spacing:int -> ?homogeneous:bool -> unit -> box
 (** Box with GTK3-compatible pack methods for easier migration.
     Note: These methods internally set widget properties (hexpand, halign, margins)
     which is different from GTK3's packing parameters. *)
-class box_pack : Gtk.Box.t ->
+class box_pack : Box.t ->
   object
     inherit box
 

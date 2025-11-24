@@ -1,13 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: MessageDialog *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new MessageDialog *)
-external new_ : Gtk.Widget.t option -> Gtk_enums.dialogflags -> Gtk_enums.messagetype -> Gtk_enums.buttonstype -> string option -> unit -> t = "ml_gtk_message_dialog_new_bytecode" "ml_gtk_message_dialog_new_native"
+external new_ : Gtk.widget option -> Gtk_enums.dialogflags -> Gtk_enums.messagetype -> Gtk_enums.buttonstype -> string option -> unit -> t = "ml_gtk_message_dialog_new_bytecode" "ml_gtk_message_dialog_new_native"
 
 (** Create a new MessageDialog *)
-external new_with_markup : Gtk.Widget.t option -> Gtk_enums.dialogflags -> Gtk_enums.messagetype -> Gtk_enums.buttonstype -> string option -> unit -> t = "ml_gtk_message_dialog_new_with_markup_bytecode" "ml_gtk_message_dialog_new_with_markup_native"
+external new_with_markup : Gtk.widget option -> Gtk_enums.dialogflags -> Gtk_enums.messagetype -> Gtk_enums.buttonstype -> string option -> unit -> t = "ml_gtk_message_dialog_new_with_markup_bytecode" "ml_gtk_message_dialog_new_with_markup_native"
 
 (* Properties *)
 
@@ -37,5 +37,5 @@ external set_use_markup : t -> bool -> unit = "ml_gtk_message_dialog_set_use_mar
 
 external set_markup : t -> string -> unit = "ml_gtk_message_dialog_set_markup"
 
-external get_message_area : t -> Gtk.Widget.t = "ml_gtk_message_dialog_get_message_area"
+external get_message_area : t -> Gtk.widget = "ml_gtk_message_dialog_get_message_area"
 

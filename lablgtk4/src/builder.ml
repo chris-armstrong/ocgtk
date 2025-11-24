@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Builder *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : unit -> t = "ml_gtk_builder_new"
 
@@ -17,9 +17,9 @@ external get_translation_domain : t -> string = "ml_gtk_builder_get_translation_
 
 external set_translation_domain : t -> string -> unit = "ml_gtk_builder_set_translation_domain"
 
-external set_scope : t -> Gtk.Widget.t option -> unit = "ml_gtk_builder_set_scope"
+external set_scope : t -> Gtk.widget option -> unit = "ml_gtk_builder_set_scope"
 
-external get_scope : t -> Gtk.Widget.t = "ml_gtk_builder_get_scope"
+external get_scope : t -> Gtk.widget = "ml_gtk_builder_get_scope"
 
 external add_from_resource : t -> string -> (bool, GError.t) result = "ml_gtk_builder_add_from_resource"
 

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: StackPage *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (* Properties *)
 
@@ -29,5 +29,5 @@ external get_visible : t -> bool = "ml_gtk_stack_page_get_visible"
 
 external set_visible : t -> bool -> unit = "ml_gtk_stack_page_set_visible"
 
-external get_child : t -> Gtk.Widget.t = "ml_gtk_stack_page_get_child"
+external get_child : t -> Gtk.widget = "ml_gtk_stack_page_get_child"
 

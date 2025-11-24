@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: GLArea *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external gtk_gl_area_new : unit -> t = "ml_gtk_gl_area_new"
 

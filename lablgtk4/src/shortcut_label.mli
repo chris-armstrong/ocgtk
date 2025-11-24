@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: ShortcutLabel *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new ShortcutLabel *)
 external new_ : string -> t = "ml_gtk_shortcut_label_new"

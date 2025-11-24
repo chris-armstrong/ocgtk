@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: DragSource *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new DragSource *)
 external new_ : unit -> t = "ml_gtk_drag_source_new"

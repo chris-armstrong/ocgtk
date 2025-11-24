@@ -1,10 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: ColumnView *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new ColumnView *)
-external new_ : Gtk.Widget.t option -> t = "ml_gtk_column_view_new"
+external new_ : Gtk.widget option -> t = "ml_gtk_column_view_new"
 
 (* Properties *)
 
@@ -38,31 +38,31 @@ external get_single_click_activate : t -> bool = "ml_gtk_column_view_get_single_
 (** Set property: single-click-activate *)
 external set_single_click_activate : t -> bool -> unit = "ml_gtk_column_view_set_single_click_activate"
 
-external sort_by_column : t -> Gtk.Widget.t option -> Gtk_enums.sorttype -> unit = "ml_gtk_column_view_sort_by_column"
+external sort_by_column : t -> Gtk.widget option -> Gtk_enums.sorttype -> unit = "ml_gtk_column_view_sort_by_column"
 
 external set_tab_behavior : t -> Gtk_enums.listtabbehavior -> unit = "ml_gtk_column_view_set_tab_behavior"
 
-external set_row_factory : t -> Gtk.Widget.t option -> unit = "ml_gtk_column_view_set_row_factory"
+external set_row_factory : t -> Gtk.widget option -> unit = "ml_gtk_column_view_set_row_factory"
 
-external set_model : t -> Gtk.Widget.t option -> unit = "ml_gtk_column_view_set_model"
+external set_model : t -> Gtk.widget option -> unit = "ml_gtk_column_view_set_model"
 
-external set_header_factory : t -> Gtk.Widget.t option -> unit = "ml_gtk_column_view_set_header_factory"
+external set_header_factory : t -> Gtk.widget option -> unit = "ml_gtk_column_view_set_header_factory"
 
-external scroll_to : t -> int -> Gtk.Widget.t option -> Gtk_enums.listscrollflags -> Gtk.Widget.t option -> unit = "ml_gtk_column_view_scroll_to"
+external scroll_to : t -> int -> Gtk.widget option -> Gtk_enums.listscrollflags -> Gtk.widget option -> unit = "ml_gtk_column_view_scroll_to"
 
-external remove_column : t -> Gtk.Widget.t -> unit = "ml_gtk_column_view_remove_column"
+external remove_column : t -> Gtk.widget -> unit = "ml_gtk_column_view_remove_column"
 
-external insert_column : t -> int -> Gtk.Widget.t -> unit = "ml_gtk_column_view_insert_column"
+external insert_column : t -> int -> Gtk.widget -> unit = "ml_gtk_column_view_insert_column"
 
 external get_tab_behavior : t -> Gtk_enums.listtabbehavior = "ml_gtk_column_view_get_tab_behavior"
 
-external get_sorter : t -> Gtk.Widget.t = "ml_gtk_column_view_get_sorter"
+external get_sorter : t -> Gtk.widget = "ml_gtk_column_view_get_sorter"
 
-external get_row_factory : t -> Gtk.Widget.t = "ml_gtk_column_view_get_row_factory"
+external get_row_factory : t -> Gtk.widget = "ml_gtk_column_view_get_row_factory"
 
-external get_model : t -> Gtk.Widget.t = "ml_gtk_column_view_get_model"
+external get_model : t -> Gtk.widget = "ml_gtk_column_view_get_model"
 
-external get_header_factory : t -> Gtk.Widget.t = "ml_gtk_column_view_get_header_factory"
+external get_header_factory : t -> Gtk.widget = "ml_gtk_column_view_get_header_factory"
 
-external append_column : t -> Gtk.Widget.t -> unit = "ml_gtk_column_view_append_column"
+external append_column : t -> Gtk.widget -> unit = "ml_gtk_column_view_append_column"
 

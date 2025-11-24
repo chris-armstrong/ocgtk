@@ -1,10 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: StringFilter *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new StringFilter *)
-external new_ : Gtk.Widget.t option -> t = "ml_gtk_string_filter_new"
+external new_ : Gtk.widget option -> t = "ml_gtk_string_filter_new"
 
 (* Properties *)
 
@@ -22,9 +22,9 @@ external set_search : t -> string -> unit = "ml_gtk_string_filter_set_search"
 
 external set_match_mode : t -> Gtk_enums.stringfiltermatchmode -> unit = "ml_gtk_string_filter_set_match_mode"
 
-external set_expression : t -> Gtk.Widget.t option -> unit = "ml_gtk_string_filter_set_expression"
+external set_expression : t -> Gtk.widget option -> unit = "ml_gtk_string_filter_set_expression"
 
 external get_match_mode : t -> Gtk_enums.stringfiltermatchmode = "ml_gtk_string_filter_get_match_mode"
 
-external get_expression : t -> Gtk.Widget.t = "ml_gtk_string_filter_get_expression"
+external get_expression : t -> Gtk.widget = "ml_gtk_string_filter_get_expression"
 

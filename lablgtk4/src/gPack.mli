@@ -128,7 +128,7 @@ val notebook :
   (GObj.widget * GObj.widget option) list ->
   GNotebook.notebook
 
-(** {1 Window and ScrolledWindow Conveniences} *)
+(** {1 Window and Scrolled_window Conveniences} *)
 
 (** Create a window with a child widget *)
 val window :
@@ -142,8 +142,8 @@ val window :
 
 (** Create a scrolled window with a child widget *)
 val scrolled :
-  ?hpolicy:Gtk.ScrolledWindow.policy_type ->
-  ?vpolicy:Gtk.ScrolledWindow.policy_type ->
+  ?hpolicy:Scrolled_window.policy_type ->
+  ?vpolicy:Scrolled_window.policy_type ->
   ?min_content_width:int ->
   ?min_content_height:int ->
   GObj.widget ->

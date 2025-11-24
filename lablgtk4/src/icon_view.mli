@@ -1,16 +1,16 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: IconView *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new IconView *)
 external new_ : unit -> t = "ml_gtk_icon_view_new"
 
 (** Create a new IconView *)
-external new_with_area : Gtk.Widget.t -> t = "ml_gtk_icon_view_new_with_area"
+external new_with_area : Gtk.widget -> t = "ml_gtk_icon_view_new_with_area"
 
 (** Create a new IconView *)
-external new_with_model : Gtk.Widget.t -> t = "ml_gtk_icon_view_new_with_model"
+external new_with_model : Gtk.widget -> t = "ml_gtk_icon_view_new_with_model"
 
 (* Properties *)
 
@@ -96,55 +96,55 @@ external unset_model_drag_source : t -> unit = "ml_gtk_icon_view_unset_model_dra
 
 external unset_model_drag_dest : t -> unit = "ml_gtk_icon_view_unset_model_drag_dest"
 
-external unselect_path : t -> Gtk.Widget.t -> unit = "ml_gtk_icon_view_unselect_path"
+external unselect_path : t -> Gtk.widget -> unit = "ml_gtk_icon_view_unselect_path"
 
 external unselect_all : t -> unit = "ml_gtk_icon_view_unselect_all"
 
-external set_tooltip_item : t -> Gtk.Widget.t -> Gtk.Widget.t -> unit = "ml_gtk_icon_view_set_tooltip_item"
+external set_tooltip_item : t -> Gtk.widget -> Gtk.widget -> unit = "ml_gtk_icon_view_set_tooltip_item"
 
-external set_tooltip_cell : t -> Gtk.Widget.t -> Gtk.Widget.t -> Gtk.Widget.t option -> unit = "ml_gtk_icon_view_set_tooltip_cell"
+external set_tooltip_cell : t -> Gtk.widget -> Gtk.widget -> Gtk.widget option -> unit = "ml_gtk_icon_view_set_tooltip_cell"
 
 external set_selection_mode : t -> Gtk_enums.selectionmode -> unit = "ml_gtk_icon_view_set_selection_mode"
 
-external set_model : t -> Gtk.Widget.t option -> unit = "ml_gtk_icon_view_set_model"
+external set_model : t -> Gtk.widget option -> unit = "ml_gtk_icon_view_set_model"
 
 external set_item_orientation : t -> Gtk_enums.orientation -> unit = "ml_gtk_icon_view_set_item_orientation"
 
-external set_drag_dest_item : t -> Gtk.Widget.t option -> Gtk_enums.iconviewdropposition -> unit = "ml_gtk_icon_view_set_drag_dest_item"
+external set_drag_dest_item : t -> Gtk.widget option -> Gtk_enums.iconviewdropposition -> unit = "ml_gtk_icon_view_set_drag_dest_item"
 
-external set_cursor : t -> Gtk.Widget.t -> Gtk.Widget.t option -> bool -> unit = "ml_gtk_icon_view_set_cursor"
+external set_cursor : t -> Gtk.widget -> Gtk.widget option -> bool -> unit = "ml_gtk_icon_view_set_cursor"
 
-external select_path : t -> Gtk.Widget.t -> unit = "ml_gtk_icon_view_select_path"
+external select_path : t -> Gtk.widget -> unit = "ml_gtk_icon_view_select_path"
 
 external select_all : t -> unit = "ml_gtk_icon_view_select_all"
 
-external scroll_to_path : t -> Gtk.Widget.t -> bool -> float -> float -> unit = "ml_gtk_icon_view_scroll_to_path"
+external scroll_to_path : t -> Gtk.widget -> bool -> float -> float -> unit = "ml_gtk_icon_view_scroll_to_path"
 
-external path_is_selected : t -> Gtk.Widget.t -> bool = "ml_gtk_icon_view_path_is_selected"
+external path_is_selected : t -> Gtk.widget -> bool = "ml_gtk_icon_view_path_is_selected"
 
-external item_activated : t -> Gtk.Widget.t -> unit = "ml_gtk_icon_view_item_activated"
+external item_activated : t -> Gtk.widget -> unit = "ml_gtk_icon_view_item_activated"
 
-external get_visible_range : t -> Gtk.Widget.t -> Gtk.Widget.t -> bool = "ml_gtk_icon_view_get_visible_range"
+external get_visible_range : t -> Gtk.widget -> Gtk.widget -> bool = "ml_gtk_icon_view_get_visible_range"
 
-external get_tooltip_context : t -> int -> int -> bool -> Gtk.Widget.t -> Gtk.Widget.t -> Gtk.Widget.t -> bool = "ml_gtk_icon_view_get_tooltip_context_bytecode" "ml_gtk_icon_view_get_tooltip_context_native"
+external get_tooltip_context : t -> int -> int -> bool -> Gtk.widget -> Gtk.widget -> Gtk.widget -> bool = "ml_gtk_icon_view_get_tooltip_context_bytecode" "ml_gtk_icon_view_get_tooltip_context_native"
 
 external get_selection_mode : t -> Gtk_enums.selectionmode = "ml_gtk_icon_view_get_selection_mode"
 
-external get_path_at_pos : t -> int -> int -> Gtk.Widget.t = "ml_gtk_icon_view_get_path_at_pos"
+external get_path_at_pos : t -> int -> int -> Gtk.widget = "ml_gtk_icon_view_get_path_at_pos"
 
-external get_model : t -> Gtk.Widget.t = "ml_gtk_icon_view_get_model"
+external get_model : t -> Gtk.widget = "ml_gtk_icon_view_get_model"
 
-external get_item_row : t -> Gtk.Widget.t -> int = "ml_gtk_icon_view_get_item_row"
+external get_item_row : t -> Gtk.widget -> int = "ml_gtk_icon_view_get_item_row"
 
 external get_item_orientation : t -> Gtk_enums.orientation = "ml_gtk_icon_view_get_item_orientation"
 
-external get_item_column : t -> Gtk.Widget.t -> int = "ml_gtk_icon_view_get_item_column"
+external get_item_column : t -> Gtk.widget -> int = "ml_gtk_icon_view_get_item_column"
 
-external get_item_at_pos : t -> int -> int -> Gtk.Widget.t -> Gtk.Widget.t -> bool = "ml_gtk_icon_view_get_item_at_pos"
+external get_item_at_pos : t -> int -> int -> Gtk.widget -> Gtk.widget -> bool = "ml_gtk_icon_view_get_item_at_pos"
 
-external get_drag_dest_item : t -> Gtk.Widget.t option -> Gtk.Widget.t -> unit = "ml_gtk_icon_view_get_drag_dest_item"
+external get_drag_dest_item : t -> Gtk.widget option -> Gtk.widget -> unit = "ml_gtk_icon_view_get_drag_dest_item"
 
-external get_dest_item_at_pos : t -> int -> int -> Gtk.Widget.t -> Gtk.Widget.t -> bool = "ml_gtk_icon_view_get_dest_item_at_pos"
+external get_dest_item_at_pos : t -> int -> int -> Gtk.widget -> Gtk.widget -> bool = "ml_gtk_icon_view_get_dest_item_at_pos"
 
-external get_cursor : t -> Gtk.Widget.t -> Gtk.Widget.t -> bool = "ml_gtk_icon_view_get_cursor"
+external get_cursor : t -> Gtk.widget -> Gtk.widget -> bool = "ml_gtk_icon_view_get_cursor"
 

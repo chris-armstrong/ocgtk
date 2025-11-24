@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: InfoBar *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : unit -> t = "ml_gtk_info_bar_new"
 
@@ -25,15 +25,15 @@ external set_default_response : t -> int -> unit = "ml_gtk_info_bar_set_default_
 
 external response : t -> int -> unit = "ml_gtk_info_bar_response"
 
-external remove_child : t -> Gtk.Widget.t -> unit = "ml_gtk_info_bar_remove_child"
+external remove_child : t -> Gtk.widget -> unit = "ml_gtk_info_bar_remove_child"
 
-external remove_action_widget : t -> Gtk.Widget.t -> unit = "ml_gtk_info_bar_remove_action_widget"
+external remove_action_widget : t -> Gtk.widget -> unit = "ml_gtk_info_bar_remove_action_widget"
 
 external get_message_type : t -> Gtk_enums.messagetype = "ml_gtk_info_bar_get_message_type"
 
-external add_child : t -> Gtk.Widget.t -> unit = "ml_gtk_info_bar_add_child"
+external add_child : t -> Gtk.widget -> unit = "ml_gtk_info_bar_add_child"
 
-external add_button : t -> string -> int -> Gtk.Widget.t = "ml_gtk_info_bar_add_button"
+external add_button : t -> string -> int -> Gtk.widget = "ml_gtk_info_bar_add_button"
 
-external add_action_widget : t -> Gtk.Widget.t -> int -> unit = "ml_gtk_info_bar_add_action_widget"
+external add_action_widget : t -> Gtk.widget -> int -> unit = "ml_gtk_info_bar_add_action_widget"
 

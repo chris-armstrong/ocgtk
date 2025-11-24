@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Popover *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : unit -> t = "ml_gtk_popover_new"
 
@@ -27,9 +27,9 @@ external set_position : t -> Gtk_enums.positiontype -> unit = "ml_gtk_popover_se
 
 external set_offset : t -> int -> int -> unit = "ml_gtk_popover_set_offset"
 
-external set_default_widget : t -> Gtk.Widget.t option -> unit = "ml_gtk_popover_set_default_widget"
+external set_default_widget : t -> Gtk.widget option -> unit = "ml_gtk_popover_set_default_widget"
 
-external set_child : t -> Gtk.Widget.t option -> unit = "ml_gtk_popover_set_child"
+external set_child : t -> Gtk.widget option -> unit = "ml_gtk_popover_set_child"
 
 external present : t -> unit = "ml_gtk_popover_present"
 
@@ -39,5 +39,5 @@ external popdown : t -> unit = "ml_gtk_popover_popdown"
 
 external get_position : t -> Gtk_enums.positiontype = "ml_gtk_popover_get_position"
 
-external get_child : t -> Gtk.Widget.t = "ml_gtk_popover_get_child"
+external get_child : t -> Gtk.widget = "ml_gtk_popover_get_child"
 

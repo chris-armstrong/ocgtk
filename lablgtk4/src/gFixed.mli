@@ -14,7 +14,7 @@
 (** {1 GtkFixed Container} *)
 
 (** Base fixed skeleton with absolute positioning operations *)
-class fixed_skel : Gtk.Fixed.t ->
+class fixed_skel : Fixed.t ->
   object
     inherit GObj.widget_impl
 
@@ -32,7 +32,7 @@ class fixed_skel : Gtk.Fixed.t ->
   end
 
 (** Fixed widget with full functionality *)
-class fixed : Gtk.Fixed.t ->
+class fixed : Fixed.t ->
   object
     inherit fixed_skel
   end

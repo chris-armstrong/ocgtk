@@ -14,7 +14,7 @@
 (** {1 GtkStack Container} *)
 
 (** Base stack skeleton with layered child operations *)
-class stack_skel : Gtk.Stack.t ->
+class stack_skel : Stack.t ->
   object
     inherit GObj.widget_impl
 
@@ -56,7 +56,7 @@ class stack_skel : Gtk.Stack.t ->
   end
 
 (** Stack widget with full functionality *)
-class stack : Gtk.Stack.t ->
+class stack : Stack.t ->
   object
     inherit stack_skel
   end

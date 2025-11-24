@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: DirectoryList *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 external new_ : string option -> unit -> t = "ml_gtk_directory_list_new"
 

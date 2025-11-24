@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: MenuButton *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new MenuButton *)
 external new_ : unit -> t = "ml_gtk_menu_button_new"
@@ -56,19 +56,19 @@ external get_use_underline : t -> bool = "ml_gtk_menu_button_get_use_underline"
 (** Set property: use-underline *)
 external set_use_underline : t -> bool -> unit = "ml_gtk_menu_button_set_use_underline"
 
-external set_popover : t -> Gtk.Widget.t option -> unit = "ml_gtk_menu_button_set_popover"
+external set_popover : t -> Gtk.widget option -> unit = "ml_gtk_menu_button_set_popover"
 
 external set_direction : t -> Gtk_enums.arrowtype -> unit = "ml_gtk_menu_button_set_direction"
 
-external set_child : t -> Gtk.Widget.t option -> unit = "ml_gtk_menu_button_set_child"
+external set_child : t -> Gtk.widget option -> unit = "ml_gtk_menu_button_set_child"
 
 external popup : t -> unit = "ml_gtk_menu_button_popup"
 
 external popdown : t -> unit = "ml_gtk_menu_button_popdown"
 
-external get_popover : t -> Gtk.Widget.t = "ml_gtk_menu_button_get_popover"
+external get_popover : t -> Gtk.widget = "ml_gtk_menu_button_get_popover"
 
 external get_direction : t -> Gtk_enums.arrowtype = "ml_gtk_menu_button_get_direction"
 
-external get_child : t -> Gtk.Widget.t = "ml_gtk_menu_button_get_child"
+external get_child : t -> Gtk.widget = "ml_gtk_menu_button_get_child"
 
