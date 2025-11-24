@@ -4,8 +4,11 @@ open StdLabels
 open Printf
 open Types
 
-let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors ~methods ~properties ~signals:_ =
+type output_mode = Interface | Implementation
+
+let generate_ml_interface ~output_mode ~class_name ~class_doc ~enums ~bitfields ~classes ~parent_chain ~constructors ~methods ~properties ~signals:_ =
   let buf = Buffer.create 1024 in
+  let is_impl = match output_mode with Implementation -> true | Interface -> false in
 
   (* Determine if this is a controller or widget *)
   let is_controller =
@@ -14,9 +17,46 @@ let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors
     (String.length class_name > 7 && String.sub ~pos:0 ~len:7 class_name = "Gesture")
   in
 
-  let (class_type_name, base_type) =
+  let normalized_class = Utils.normalize_class_name class_name in
+  let parent_chain =
+    (* parent_chain is ordered immediate parent -> root; stop at Widget for variant generation *)
+    let rec take_until_widget acc = function
+      | [] -> List.rev acc
+      | p :: rest ->
+        let normalized_parent = Utils.normalize_class_name p in
+        let acc' = normalized_parent :: acc in
+        if String.lowercase_ascii normalized_parent = "widget" then
+          List.rev acc'
+        else
+          take_until_widget acc' rest
+    in
+    take_until_widget [] parent_chain
+  in
+  let has_widget_parent =
+    String.lowercase_ascii normalized_class = "widget" ||
+    List.exists parent_chain ~f:(fun p -> String.lowercase_ascii p = "widget")
+  in
+
+  let class_type_name, base_type =
     if is_controller then
       ("Event controller", "EventController.t")
+    else if has_widget_parent then
+      let self_variant = "`" ^ Utils.to_snake_case normalized_class in
+      let parent_variants =
+        if String.lowercase_ascii normalized_class = "widget" then
+          []
+        else
+          List.fold_left parent_chain ~init:[] ~f:(fun acc parent ->
+            let tag = "`" ^ Utils.to_snake_case parent in
+            (* Stop adding parents once we hit widget to avoid pulling in GObject ancestry *)
+            if String.lowercase_ascii parent = "widget" then
+              acc @ [tag]
+            else
+              acc @ [tag]
+          )
+      in
+      let variants = String.concat ~sep:" | " (self_variant :: parent_variants) in
+      ("Widget", sprintf "[%s] Gobject.obj" variants)
     else
       ("Widget", "Gtk.widget")
   in
@@ -29,6 +69,13 @@ let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors
   | None -> ());
 
   bprintf buf "type t = %s\n\n" base_type;
+
+  if has_widget_parent then begin
+    if is_impl then
+      bprintf buf "let as_widget (obj : t) : Gtk.widget = Obj.magic obj\n\n"
+    else
+      bprintf buf "val as_widget : t -> Gtk.widget\n\n"
+  end;
 
   (* Constructors - generate unique names and proper signatures, skip those that throw *)
   List.iter ~f:(fun (ctor : gir_constructor) ->
@@ -47,7 +94,7 @@ let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors
 
     (* Build parameter types for constructor signature *)
     let param_types = List.map ~f:(fun p ->
-      match Type_mappings.find_type_mapping_for_gir_type ~enums ~bitfields p.param_type with
+      match Type_mappings.find_type_mapping_for_gir_type ~enums ~bitfields ~classes p.param_type with
       | Some mapping ->
         let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some p.param_type.name) mapping.ocaml_type in
         if p.nullable then
@@ -84,7 +131,7 @@ let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors
   if List.length properties > 0 then begin
     bprintf buf "(* Properties *)\n\n";
     List.iter ~f:(fun (prop : gir_property) ->
-      let type_mapping_opt = Type_mappings.find_type_mapping ~enums ~bitfields prop.prop_type.c_type in
+      let type_mapping_opt = Type_mappings.find_type_mapping ~enums ~bitfields ~classes prop.prop_type.c_type in
       match type_mapping_opt with
       | Some type_mapping ->
         let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
@@ -130,7 +177,7 @@ let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors
     let should_skip_mli =
       Blacklists.is_variadic_function c_name ||
       List.mem ocaml_name ~set:!property_names ||
-      Blacklists.should_skip_method ~find_type_mapping:(Type_mappings.find_type_mapping ~enums ~bitfields) ~enums ~bitfields meth
+      Blacklists.should_skip_method ~find_type_mapping:(Type_mappings.find_type_mapping ~enums ~bitfields ~classes) ~enums ~bitfields meth
     in
     if not should_skip_mli then begin
       (match meth.doc with
@@ -139,7 +186,7 @@ let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors
 
       (* Build OCaml type signature - handle nullable parameters *)
       let param_types = List.map ~f:(fun p ->
-        match Type_mappings.find_type_mapping_for_gir_type ~enums ~bitfields p.param_type with
+        match Type_mappings.find_type_mapping_for_gir_type ~enums ~bitfields ~classes p.param_type with
         | Some mapping ->
           let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some p.param_type.name) mapping.ocaml_type in
           if p.nullable then
@@ -156,7 +203,7 @@ let generate_ml_interface ~class_name ~class_doc ~enums ~bitfields ~constructors
         if meth.return_type.c_type = "void" then
           "unit"
         else
-          match Type_mappings.find_type_mapping_for_gir_type ~enums ~bitfields meth.return_type with
+          match Type_mappings.find_type_mapping_for_gir_type ~enums ~bitfields ~classes meth.return_type with
           | Some mapping ->
             Type_mappings.qualify_ocaml_type ~gir_type_name:(Some meth.return_type.name) mapping.ocaml_type
           | None ->

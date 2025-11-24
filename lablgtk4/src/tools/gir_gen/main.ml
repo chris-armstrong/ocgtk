@@ -31,6 +31,24 @@ let generate_bindings filter_file gir_file output_dir =
   printf "Found %d Gtk enumerations\n" (List.length gtk_enums);
   printf "Found %d Gtk bitfields\n" (List.length gtk_bitfields);
 
+  (* Build parent lookup table for inheritance chains *)
+  let parent_table = Hashtbl.create (List.length controllers + 10) in
+  List.iter ~f:(fun (cls : Gir_gen_lib.Types.gir_class) ->
+    Hashtbl.replace parent_table
+      (Gir_gen_lib.Utils.normalize_class_name cls.class_name)
+      (Option.map Gir_gen_lib.Utils.normalize_class_name cls.parent)
+  ) controllers;
+
+  let parent_chain_for_class name =
+    let rec aux current depth =
+      if depth > 100 then [] (* avoid accidental cycles *) else
+      match Hashtbl.find_opt parent_table current with
+      | Some (Some parent) -> parent :: aux parent (depth + 1)
+      | _ -> []
+    in
+    aux (Gir_gen_lib.Utils.normalize_class_name name) 0
+  in
+
   (* Parse external namespace GIR files for enums/bitfields *)
   let external_namespaces = [
     ("Gdk", "/usr/share/gir-1.0/Gdk-4.0.gir");
@@ -71,6 +89,7 @@ let generate_bindings filter_file gir_file output_dir =
   let header_file = Filename.concat output_dir "generated_forward_decls.h" in
   printf "\nWriting %s...\n" header_file;
   let header_content = Gir_gen_lib.Generate.C_stubs.generate_forward_decls_header
+    ~classes:controllers
     ~external_enums:external_enums_with_ns
     ~external_bitfields:external_bitfields_with_ns in
   let oc = open_out header_file in
@@ -106,6 +125,7 @@ let generate_bindings filter_file gir_file output_dir =
       printf "Writing %s...\n" c_file;
 
       let c_code = Gir_gen_lib.Generate.C_stubs.generate_class_c_code
+        ~classes:controllers
         ~enums ~bitfields
         ~external_enums:external_enums_with_ns
         ~external_bitfields:external_bitfields_with_ns
@@ -132,6 +152,7 @@ let generate_bindings filter_file gir_file output_dir =
       printf "Writing %s...\n" c_file;
 
       let c_code = Gir_gen_lib.Generate.C_stubs.generate_class_c_code
+        ~classes:controllers
         ~enums ~bitfields
         ~external_enums:external_enums_with_ns
         ~external_bitfields:external_bitfields_with_ns
@@ -148,38 +169,80 @@ let generate_bindings filter_file gir_file output_dir =
   (* Generate OCaml interface files for classes *)
   List.iter ~f:(fun cls ->
     if not (Gir_gen_lib.Blacklists.should_skip_class cls.Gir_gen_lib.Types.class_name) then begin
+      let parent_chain = parent_chain_for_class cls.Gir_gen_lib.Types.class_name in
       let ml_file = Filename.concat output_dir
         (sprintf "%s.mli" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.class_name)) in
       printf "Writing %s...\n" ml_file;
       let oc = open_out ml_file in
       output_string oc (Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
+        ~output_mode:Gir_gen_lib.Generate.Ml_interface.Interface
         ~class_name:cls.Gir_gen_lib.Types.class_name
         ~class_doc:cls.Gir_gen_lib.Types.class_doc
         ~enums ~bitfields
+        ~classes:controllers
+        ~parent_chain
         ~constructors:(Some cls.Gir_gen_lib.Types.constructors)
         ~methods:cls.Gir_gen_lib.Types.methods
         ~properties:cls.Gir_gen_lib.Types.properties
         ~signals:cls.Gir_gen_lib.Types.signals);
       close_out oc;
+
+      let ml_impl_file = Filename.concat output_dir
+        (sprintf "%s.ml" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.class_name)) in
+      printf "Writing %s...\n" ml_impl_file;
+      let oc_impl = open_out ml_impl_file in
+      output_string oc_impl (Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
+        ~output_mode:Gir_gen_lib.Generate.Ml_interface.Implementation
+        ~class_name:cls.Gir_gen_lib.Types.class_name
+        ~class_doc:cls.Gir_gen_lib.Types.class_doc
+        ~enums ~bitfields
+        ~classes:controllers
+        ~parent_chain
+        ~constructors:(Some cls.Gir_gen_lib.Types.constructors)
+        ~methods:cls.Gir_gen_lib.Types.methods
+        ~properties:cls.Gir_gen_lib.Types.properties
+        ~signals:cls.Gir_gen_lib.Types.signals);
+      close_out oc_impl;
     end
   ) controllers;
 
   (* Generate OCaml interface files for interfaces *)
   List.iter ~f:(fun cls ->
     if not (Gir_gen_lib.Blacklists.should_skip_class cls.Gir_gen_lib.Types.interface_name) then begin
+      let parent_chain = parent_chain_for_class cls.Gir_gen_lib.Types.interface_name in
       let ml_file = Filename.concat output_dir
         (sprintf "%s.mli" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.interface_name)) in
       printf "Writing %s...\n" ml_file;
       let oc = open_out ml_file in
       output_string oc (Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
+        ~output_mode:Gir_gen_lib.Generate.Ml_interface.Interface
         ~class_name:cls.Gir_gen_lib.Types.interface_name
         ~class_doc:cls.Gir_gen_lib.Types.interface_doc
         ~enums ~bitfields
+        ~classes:controllers
+        ~parent_chain
         ~constructors:None
         ~methods:cls.Gir_gen_lib.Types.methods
         ~properties:cls.Gir_gen_lib.Types.properties
         ~signals:cls.Gir_gen_lib.Types.signals);
       close_out oc;
+
+      let ml_impl_file = Filename.concat output_dir
+        (sprintf "%s.ml" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.interface_name)) in
+      printf "Writing %s...\n" ml_impl_file;
+      let oc_impl = open_out ml_impl_file in
+      output_string oc_impl (Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
+        ~output_mode:Gir_gen_lib.Generate.Ml_interface.Implementation
+        ~class_name:cls.Gir_gen_lib.Types.interface_name
+        ~class_doc:cls.Gir_gen_lib.Types.interface_doc
+        ~enums ~bitfields
+        ~classes:controllers
+        ~parent_chain
+        ~constructors:None
+        ~methods:cls.Gir_gen_lib.Types.methods
+        ~properties:cls.Gir_gen_lib.Types.properties
+        ~signals:cls.Gir_gen_lib.Types.signals);
+      close_out oc_impl;
     end
   ) interfaces;
 
