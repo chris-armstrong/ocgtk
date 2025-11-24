@@ -101,7 +101,7 @@ jobs:
         run: |
           opam exec -- dune build src/tools/varcc.exe
           opam exec -- dune build src/tools/propcc.exe
-          opam exec -- dune build src/tools/gir_gen.exe
+          opam exec -- dune build src/tools/gir_gen/main.exe
 
       # - name: Test code generation tools
       #   working-directory: lablgtk4

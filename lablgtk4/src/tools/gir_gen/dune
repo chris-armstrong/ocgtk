@@ -1,0 +1,19 @@
+; Dune file for GIR Code Generator modules
+; Use qualified subdirectories for better organization
+
+(include_subdirs qualified)
+
+; Common modules library (excludes main)
+(library
+ (name gir_gen_lib)
+ (modules :standard \ main)
+ (libraries str unix xmlm)
+ (flags (:standard -w -32)))
+
+; Main executable
+(executable
+ (name main)
+ (public_name gir_gen)
+ (modules main)
+ (libraries gir_gen_lib cmdliner)
+ (flags (:standard -w -27)))

@@ -26,10 +26,7 @@
  (flags (:standard -w -32)))
 
 ; Phase 3.0 & 5.0: GIR-based code generator (with cmdliner)
-(executable
- (name gir_gen)
- (modules gir_gen)
- (libraries str unix xmlm cmdliner))
+; Now built in gir_gen/ subdirectory with modular structure
 
 ; Test for GIR generator
 (executable

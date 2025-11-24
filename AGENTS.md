@@ -32,6 +32,13 @@ grep -A 20 "<function_name>" lablgtk3/src/*.c
 diff lablgtk3/src/<file>.c lablgtk4/src/<file>.c
 ```
 
+## Running Build Tools
+
+This project uses `dune` to compile code and run tests. NEVER compile code directly with `ocamlc/ocamlc.opt`.
+
+* Use `dune build` to compile the code. IMPORTANT: Always check the return code grep for "error|warning|undefined reference", and not just error when parsing its output to determine if it succeeded. If the return code is still an error, re-run without filtering the output.
+* Use `dune test` to run all the unit and integration tests.
+
 ## OCaml / C FFI Guidelines
 
 For instructions and best practices for writing and updating OCaml / C FFI, see [FFI Guidelines](./FFI_GUIDELINES.md).
