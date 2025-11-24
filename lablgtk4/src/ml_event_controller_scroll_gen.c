@@ -13,12 +13,16 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkEventControllerScroll */
+#define GtkEventControllerScroll_val(val) ((GtkEventControllerScroll*)ext_of_val(val))
+#define Val_GtkEventControllerScroll(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_event_controller_scroll_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkEventController *controller = gtk_event_controller_scroll_new(GtkEventControllerScrollFlags_val(arg1));
-CAMLreturn(Val_GtkEventController(controller));
+GtkEventControllerScroll *obj = gtk_event_controller_scroll_new(GtkEventControllerScrollFlags_val(arg1));
+CAMLreturn(Val_GtkEventControllerScroll(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_event_controller_scroll_set_flags(value self, value arg1)
@@ -26,7 +30,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_scroll_set_flags(value self, v
 CAMLparam2(self, arg1);
 
 
-    gtk_event_controller_scroll_set_flags(GtkEventController_val(self), GtkEventControllerScrollFlags_val(arg1));
+    gtk_event_controller_scroll_set_flags(GtkEventControllerScroll_val(self), GtkEventControllerScrollFlags_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -35,7 +39,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_scroll_get_unit(value self)
 CAMLparam1(self);
 
 
-    GdkScrollUnit result = gtk_event_controller_scroll_get_unit(GtkEventController_val(self));
+    GdkScrollUnit result = gtk_event_controller_scroll_get_unit(GtkEventControllerScroll_val(self));
 CAMLreturn(Val_GdkScrollUnit(result));
 }
 
@@ -44,6 +48,6 @@ CAMLexport CAMLprim value ml_gtk_event_controller_scroll_get_flags(value self)
 CAMLparam1(self);
 
 
-    GtkEventControllerScrollFlags result = gtk_event_controller_scroll_get_flags(GtkEventController_val(self));
+    GtkEventControllerScrollFlags result = gtk_event_controller_scroll_get_flags(GtkEventControllerScroll_val(self));
 CAMLreturn(Val_GtkEventControllerScrollFlags(result));
 }

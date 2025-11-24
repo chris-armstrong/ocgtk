@@ -13,10 +13,14 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkEveryFilter */
+#define GtkEveryFilter_val(val) ((GtkEveryFilter*)ext_of_val(val))
+#define Val_GtkEveryFilter(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_every_filter_new(value unit)
 {
 CAMLparam1(unit);
-GtkWidget *widget = gtk_every_filter_new();
-CAMLreturn(Val_GtkWidget(widget));
+GtkEveryFilter *obj = gtk_every_filter_new();
+CAMLreturn(Val_GtkEveryFilter(obj));
 }

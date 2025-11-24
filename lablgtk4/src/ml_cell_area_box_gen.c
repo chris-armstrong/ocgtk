@@ -13,12 +13,16 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkCellAreaBox */
+#define GtkCellAreaBox_val(val) ((GtkCellAreaBox*)ext_of_val(val))
+#define Val_GtkCellAreaBox(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_cell_area_box_new(value unit)
 {
 CAMLparam1(unit);
-GtkWidget *widget = gtk_cell_area_box_new();
-CAMLreturn(Val_GtkWidget(widget));
+GtkCellAreaBox *obj = gtk_cell_area_box_new();
+CAMLreturn(Val_GtkCellAreaBox(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_cell_area_box_pack_start(value self, value arg1, value arg2, value arg3, value arg4)
@@ -26,7 +30,7 @@ CAMLexport CAMLprim value ml_gtk_cell_area_box_pack_start(value self, value arg1
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 
 
-    gtk_cell_area_box_pack_start(GtkWidget_val(self), GtkWidget_val(arg1), Bool_val(arg2), Bool_val(arg3), Bool_val(arg4));
+    gtk_cell_area_box_pack_start(GtkCellAreaBox_val(self), GtkWidget_val(arg1), Bool_val(arg2), Bool_val(arg3), Bool_val(arg4));
 CAMLreturn(Val_unit);
 }
 
@@ -35,7 +39,7 @@ CAMLexport CAMLprim value ml_gtk_cell_area_box_pack_end(value self, value arg1, 
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 
 
-    gtk_cell_area_box_pack_end(GtkWidget_val(self), GtkWidget_val(arg1), Bool_val(arg2), Bool_val(arg3), Bool_val(arg4));
+    gtk_cell_area_box_pack_end(GtkCellAreaBox_val(self), GtkWidget_val(arg1), Bool_val(arg2), Bool_val(arg3), Bool_val(arg4));
 CAMLreturn(Val_unit);
 }
 
@@ -43,7 +47,7 @@ CAMLexport CAMLprim value ml_gtk_cell_area_box_get_spacing(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+GtkCellAreaBox *obj = (GtkCellAreaBox *)GtkCellAreaBox_val(self);
 gint prop_value;
 g_object_get(G_OBJECT(obj), "spacing", &prop_value, NULL);
 result = Val_int(prop_value);
@@ -53,7 +57,7 @@ CAMLreturn(result);
 CAMLexport CAMLprim value ml_gtk_cell_area_box_set_spacing(value self, value new_value)
 {
 CAMLexport CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+GtkCellAreaBox *obj = (GtkCellAreaBox *)GtkCellAreaBox_val(self);
 gint c_value = Int_val(new_value);
 g_object_set(G_OBJECT(obj), "spacing", c_value, NULL);
 CAMLreturn(Val_unit);

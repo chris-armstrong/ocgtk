@@ -13,10 +13,14 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkSeparator */
+#define GtkSeparator_val(val) ((GtkSeparator*)ext_of_val(val))
+#define Val_GtkSeparator(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_separator_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkWidget *widget = gtk_separator_new(GtkOrientation_val(arg1));
-CAMLreturn(Val_GtkWidget(widget));
+GtkSeparator *obj = gtk_separator_new(GtkOrientation_val(arg1));
+CAMLreturn(Val_GtkSeparator(obj));
 }

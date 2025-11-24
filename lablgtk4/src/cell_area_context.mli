@@ -23,17 +23,7 @@ external push_preferred_width : t -> int -> int -> unit = "ml_gtk_cell_area_cont
 
 external push_preferred_height : t -> int -> int -> unit = "ml_gtk_cell_area_context_push_preferred_height"
 
-external get_preferred_width_for_height : t -> int -> int -> int -> unit = "ml_gtk_cell_area_context_get_preferred_width_for_height"
-
-external get_preferred_width : t -> int -> int -> unit = "ml_gtk_cell_area_context_get_preferred_width"
-
-external get_preferred_height_for_width : t -> int -> int -> int -> unit = "ml_gtk_cell_area_context_get_preferred_height_for_width"
-
-external get_preferred_height : t -> int -> int -> unit = "ml_gtk_cell_area_context_get_preferred_height"
-
 external get_area : t -> Gtk.Widget.t = "ml_gtk_cell_area_context_get_area"
-
-external get_allocation : t -> int -> int -> unit = "ml_gtk_cell_area_context_get_allocation"
 
 external allocate : t -> int -> int -> unit = "ml_gtk_cell_area_context_allocate"
 

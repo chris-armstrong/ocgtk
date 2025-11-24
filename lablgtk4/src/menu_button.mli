@@ -58,11 +58,7 @@ external set_use_underline : t -> bool -> unit = "ml_gtk_menu_button_set_use_und
 
 external set_popover : t -> Gtk.Widget.t option -> unit = "ml_gtk_menu_button_set_popover"
 
-external set_menu_model : t -> unit -> unit = "ml_gtk_menu_button_set_menu_model"
-
 external set_direction : t -> Gtk_enums.arrowtype -> unit = "ml_gtk_menu_button_set_direction"
-
-external set_create_popup_func : t -> unit -> unit -> unit -> unit = "ml_gtk_menu_button_set_create_popup_func"
 
 external set_child : t -> Gtk.Widget.t option -> unit = "ml_gtk_menu_button_set_child"
 

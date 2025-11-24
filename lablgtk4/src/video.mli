@@ -40,8 +40,6 @@ external set_graphics_offload : t -> Gtk_enums.graphicsoffloadenabled -> unit = 
 
 external set_filename : t -> string option -> unit = "ml_gtk_video_set_filename"
 
-external set_file : t -> unit -> unit = "ml_gtk_video_set_file"
-
 external get_media_stream : t -> Gtk.Widget.t = "ml_gtk_video_get_media_stream"
 
 external get_graphics_offload : t -> Gtk_enums.graphicsoffloadenabled = "ml_gtk_video_get_graphics_offload"

@@ -13,10 +13,14 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkPasswordEntryBuffer */
+#define GtkPasswordEntryBuffer_val(val) ((GtkPasswordEntryBuffer*)ext_of_val(val))
+#define Val_GtkPasswordEntryBuffer(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_password_entry_buffer_new(value unit)
 {
 CAMLparam1(unit);
-GtkWidget *widget = gtk_password_entry_buffer_new();
-CAMLreturn(Val_GtkWidget(widget));
+GtkPasswordEntryBuffer *obj = gtk_password_entry_buffer_new();
+CAMLreturn(Val_GtkPasswordEntryBuffer(obj));
 }

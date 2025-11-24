@@ -95,13 +95,7 @@ external get_top_margin : t -> int = "ml_gtk_text_view_get_top_margin"
 (** Set property: top-margin *)
 external set_top_margin : t -> int -> unit = "ml_gtk_text_view_set_top_margin"
 
-external window_to_buffer_coords : t -> Gtk_enums.textwindowtype -> int -> int -> int -> int -> unit = "ml_gtk_text_view_window_to_buffer_coords_bytecode" "ml_gtk_text_view_window_to_buffer_coords_native"
-
-external starts_display_line : t -> unit -> bool = "ml_gtk_text_view_starts_display_line"
-
 external set_wrap_mode : t -> Gtk_enums.wrapmode -> unit = "ml_gtk_text_view_set_wrap_mode"
-
-external set_tabs : t -> unit -> unit = "ml_gtk_text_view_set_tabs"
 
 external set_justification : t -> Gtk_enums.justification -> unit = "ml_gtk_text_view_set_justification"
 
@@ -110,8 +104,6 @@ external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit = "ml_gtk_text_
 external set_input_hints : t -> Gtk_enums.inputhints -> unit = "ml_gtk_text_view_set_input_hints"
 
 external set_gutter : t -> Gtk_enums.textwindowtype -> Gtk.Widget.t option -> unit = "ml_gtk_text_view_set_gutter"
-
-external set_extra_menu : t -> unit -> unit = "ml_gtk_text_view_set_extra_menu"
 
 external set_buffer : t -> Gtk.Widget.t option -> unit = "ml_gtk_text_view_set_buffer"
 
@@ -139,17 +131,7 @@ external im_context_filter_keypress : t -> _ Gdk.event -> bool = "ml_gtk_text_vi
 
 external get_wrap_mode : t -> Gtk_enums.wrapmode = "ml_gtk_text_view_get_wrap_mode"
 
-external get_visible_rect : t -> unit -> unit = "ml_gtk_text_view_get_visible_rect"
-
-external get_line_yrange : t -> unit -> int -> int -> unit = "ml_gtk_text_view_get_line_yrange"
-
-external get_line_at_y : t -> Gtk.Widget.t -> int -> int -> unit = "ml_gtk_text_view_get_line_at_y"
-
 external get_justification : t -> Gtk_enums.justification = "ml_gtk_text_view_get_justification"
-
-external get_iter_location : t -> unit -> unit -> unit = "ml_gtk_text_view_get_iter_location"
-
-external get_iter_at_position : t -> Gtk.Widget.t -> int -> int -> int -> bool = "ml_gtk_text_view_get_iter_at_position"
 
 external get_iter_at_location : t -> Gtk.Widget.t -> int -> int -> bool = "ml_gtk_text_view_get_iter_at_location"
 
@@ -159,15 +141,11 @@ external get_input_hints : t -> Gtk_enums.inputhints = "ml_gtk_text_view_get_inp
 
 external get_gutter : t -> Gtk_enums.textwindowtype -> Gtk.Widget.t = "ml_gtk_text_view_get_gutter"
 
-external get_cursor_locations : t -> unit -> unit -> unit -> unit = "ml_gtk_text_view_get_cursor_locations"
-
 external get_buffer : t -> Gtk.Widget.t = "ml_gtk_text_view_get_buffer"
 
 external forward_display_line_end : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_forward_display_line_end"
 
 external forward_display_line : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_forward_display_line"
-
-external buffer_to_window_coords : t -> Gtk_enums.textwindowtype -> int -> int -> int -> int -> unit = "ml_gtk_text_view_buffer_to_window_coords_bytecode" "ml_gtk_text_view_buffer_to_window_coords_native"
 
 external backward_display_line_start : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_backward_display_line_start"
 

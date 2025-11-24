@@ -60,8 +60,6 @@ external set_wrap_mode : t -> Pango.wrapmode -> unit = "ml_gtk_inscription_set_w
 
 external set_text_overflow : t -> Gtk_enums.inscriptionoverflow -> unit = "ml_gtk_inscription_set_text_overflow"
 
-external set_attributes : t -> unit -> unit = "ml_gtk_inscription_set_attributes"
-
 external get_wrap_mode : t -> Pango.wrapmode = "ml_gtk_inscription_get_wrap_mode"
 
 external get_text_overflow : t -> Gtk_enums.inscriptionoverflow = "ml_gtk_inscription_get_text_overflow"

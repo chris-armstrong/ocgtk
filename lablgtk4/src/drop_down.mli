@@ -31,8 +31,6 @@ external set_show_arrow : t -> bool -> unit = "ml_gtk_drop_down_set_show_arrow"
 
 external set_search_match_mode : t -> Gtk_enums.stringfiltermatchmode -> unit = "ml_gtk_drop_down_set_search_match_mode"
 
-external set_model : t -> unit -> unit = "ml_gtk_drop_down_set_model"
-
 external set_list_factory : t -> Gtk.Widget.t option -> unit = "ml_gtk_drop_down_set_list_factory"
 
 external set_header_factory : t -> Gtk.Widget.t option -> unit = "ml_gtk_drop_down_set_header_factory"

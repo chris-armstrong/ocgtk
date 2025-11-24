@@ -13,11 +13,7 @@ external unselect_iter : t -> Gtk.Widget.t -> unit = "ml_gtk_tree_selection_unse
 
 external unselect_all : t -> unit = "ml_gtk_tree_selection_unselect_all"
 
-external set_select_function : t -> unit -> unit -> unit -> unit = "ml_gtk_tree_selection_set_select_function"
-
 external set_mode : t -> Gtk_enums.selectionmode -> unit = "ml_gtk_tree_selection_set_mode"
-
-external selected_foreach : t -> unit -> unit -> unit = "ml_gtk_tree_selection_selected_foreach"
 
 external select_range : t -> Gtk.Widget.t -> Gtk.Widget.t -> unit = "ml_gtk_tree_selection_select_range"
 

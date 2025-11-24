@@ -19,10 +19,6 @@ external get_screensaver_active : t -> bool = "ml_gtk_application_get_screensave
 
 external uninhibit : t -> int -> unit = "ml_gtk_application_uninhibit"
 
-external set_menubar : t -> unit -> unit = "ml_gtk_application_set_menubar"
-
-external set_accels_for_action : t -> string -> unit -> unit = "ml_gtk_application_set_accels_for_action"
-
 external remove_window : t -> Gtk.Widget.t -> unit = "ml_gtk_application_remove_window"
 
 external list_action_descriptions : t -> unit = "ml_gtk_application_list_action_descriptions"

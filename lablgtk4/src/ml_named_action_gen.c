@@ -13,19 +13,23 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkNamedAction */
+#define GtkNamedAction_val(val) ((GtkNamedAction*)ext_of_val(val))
+#define Val_GtkNamedAction(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_named_action_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkWidget *widget = gtk_named_action_new(String_val(arg1));
-CAMLreturn(Val_GtkWidget(widget));
+GtkNamedAction *obj = gtk_named_action_new(String_val(arg1));
+CAMLreturn(Val_GtkNamedAction(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_named_action_get_action_name(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+GtkNamedAction *obj = (GtkNamedAction *)GtkNamedAction_val(self);
 gchar* prop_value;
 g_object_get(G_OBJECT(obj), "action-name", &prop_value, NULL);
 result = caml_copy_string(prop_value);

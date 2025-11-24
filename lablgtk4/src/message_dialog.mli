@@ -39,7 +39,3 @@ external set_markup : t -> string -> unit = "ml_gtk_message_dialog_set_markup"
 
 external get_message_area : t -> Gtk.Widget.t = "ml_gtk_message_dialog_get_message_area"
 
-external format_secondary_text : t -> string option -> unit -> unit = "ml_gtk_message_dialog_format_secondary_text"
-
-external format_secondary_markup : t -> string -> unit -> unit = "ml_gtk_message_dialog_format_secondary_markup"
-

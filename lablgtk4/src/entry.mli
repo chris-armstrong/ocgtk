@@ -163,8 +163,6 @@ external set_visibility : t -> bool -> unit = "ml_gtk_entry_set_visibility"
 
 external unset_invisible_char : t -> unit = "ml_gtk_entry_unset_invisible_char"
 
-external set_tabs : t -> unit -> unit = "ml_gtk_entry_set_tabs"
-
 external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit = "ml_gtk_entry_set_input_purpose"
 
 external set_input_hints : t -> Gtk_enums.inputhints -> unit = "ml_gtk_entry_set_input_hints"
@@ -175,23 +173,13 @@ external set_icon_tooltip_markup : t -> Gtk_enums.entryiconposition -> string op
 
 external set_icon_sensitive : t -> Gtk_enums.entryiconposition -> bool -> unit = "ml_gtk_entry_set_icon_sensitive"
 
-external set_icon_from_paintable : t -> Gtk_enums.entryiconposition -> unit -> unit = "ml_gtk_entry_set_icon_from_paintable"
-
 external set_icon_from_icon_name : t -> Gtk_enums.entryiconposition -> string option -> unit = "ml_gtk_entry_set_icon_from_icon_name"
 
-external set_icon_from_gicon : t -> Gtk_enums.entryiconposition -> unit -> unit = "ml_gtk_entry_set_icon_from_gicon"
-
-external set_icon_drag_source : t -> Gtk_enums.entryiconposition -> unit -> Gdk.dragaction -> unit = "ml_gtk_entry_set_icon_drag_source"
-
 external set_icon_activatable : t -> Gtk_enums.entryiconposition -> bool -> unit = "ml_gtk_entry_set_icon_activatable"
-
-external set_extra_menu : t -> unit -> unit = "ml_gtk_entry_set_extra_menu"
 
 external set_completion : t -> Gtk.Widget.t option -> unit = "ml_gtk_entry_set_completion"
 
 external set_buffer : t -> Gtk.Widget.t -> unit = "ml_gtk_entry_set_buffer"
-
-external set_attributes : t -> unit -> unit = "ml_gtk_entry_set_attributes"
 
 external set_alignment : t -> float -> unit = "ml_gtk_entry_set_alignment"
 
@@ -212,8 +200,6 @@ external get_icon_sensitive : t -> Gtk_enums.entryiconposition -> bool = "ml_gtk
 external get_icon_name : t -> Gtk_enums.entryiconposition -> string = "ml_gtk_entry_get_icon_name"
 
 external get_icon_at_pos : t -> int -> int -> int = "ml_gtk_entry_get_icon_at_pos"
-
-external get_icon_area : t -> Gtk_enums.entryiconposition -> unit -> unit = "ml_gtk_entry_get_icon_area"
 
 external get_icon_activatable : t -> Gtk_enums.entryiconposition -> bool = "ml_gtk_entry_get_icon_activatable"
 

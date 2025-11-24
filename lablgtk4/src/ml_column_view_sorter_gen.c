@@ -13,13 +13,17 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkColumnViewSorter */
+#define GtkColumnViewSorter_val(val) ((GtkColumnViewSorter*)ext_of_val(val))
+#define Val_GtkColumnViewSorter(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_column_view_sorter_get_primary_sort_order(value self)
 {
 CAMLparam1(self);
 
 
-    GtkSortType result = gtk_column_view_sorter_get_primary_sort_order(GtkWidget_val(self));
+    GtkSortType result = gtk_column_view_sorter_get_primary_sort_order(GtkColumnViewSorter_val(self));
 CAMLreturn(Val_GtkSortType(result));
 }
 
@@ -28,7 +32,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_sorter_get_primary_sort_column(valu
 CAMLparam1(self);
 
 
-    GtkColumnViewColumn* result = gtk_column_view_sorter_get_primary_sort_column(GtkWidget_val(self));
+    GtkColumnViewColumn* result = gtk_column_view_sorter_get_primary_sort_column(GtkColumnViewSorter_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -37,7 +41,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_sorter_get_nth_sort_column(value se
 CAMLparam3(self, arg1, arg2);
 
 
-    GtkColumnViewColumn* result = gtk_column_view_sorter_get_nth_sort_column(GtkWidget_val(self), Int_val(arg1), GtkWidget_val(arg2));
+    GtkColumnViewColumn* result = gtk_column_view_sorter_get_nth_sort_column(GtkColumnViewSorter_val(self), Int_val(arg1), GtkWidget_val(arg2));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -46,6 +50,6 @@ CAMLexport CAMLprim value ml_gtk_column_view_sorter_get_n_sort_columns(value sel
 CAMLparam1(self);
 
 
-    guint result = gtk_column_view_sorter_get_n_sort_columns(GtkWidget_val(self));
+    guint result = gtk_column_view_sorter_get_n_sort_columns(GtkColumnViewSorter_val(self));
 CAMLreturn(Val_int(result));
 }

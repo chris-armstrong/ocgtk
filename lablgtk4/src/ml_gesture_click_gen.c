@@ -13,10 +13,14 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkGestureClick */
+#define GtkGestureClick_val(val) ((GtkGestureClick*)ext_of_val(val))
+#define Val_GtkGestureClick(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_gesture_click_new(value unit)
 {
 CAMLparam1(unit);
-GtkEventController *controller = gtk_gesture_click_new();
-CAMLreturn(Val_GtkEventController(controller));
+GtkGestureClick *obj = gtk_gesture_click_new();
+CAMLreturn(Val_GtkGestureClick(obj));
 }

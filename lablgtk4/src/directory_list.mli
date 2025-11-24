@@ -32,7 +32,5 @@ external set_monitored : t -> bool -> unit = "ml_gtk_directory_list_set_monitore
 (** Get property: n-items *)
 external get_n_items : t -> int = "ml_gtk_directory_list_get_n_items"
 
-external set_file : t -> unit -> unit = "ml_gtk_directory_list_set_file"
-
 external is_loading : t -> bool = "ml_gtk_directory_list_is_loading"
 

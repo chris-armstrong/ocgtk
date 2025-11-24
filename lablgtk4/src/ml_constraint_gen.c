@@ -13,13 +13,17 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkConstraint */
+#define GtkConstraint_val(val) ((GtkConstraint*)ext_of_val(val))
+#define Val_GtkConstraint(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_constraint_new_native(value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7, value arg8)
 {
 CAMLparam5(arg1, arg2, arg3, arg4, arg5);
 CAMLxparam3(arg6, arg7, arg8);
-GtkWidget *widget = gtk_constraint_new(arg1, GtkConstraintAttribute_val(arg2), GtkConstraintRelation_val(arg3), arg4, GtkConstraintAttribute_val(arg5), Double_val(arg6), Double_val(arg7), Int_val(arg8));
-CAMLreturn(Val_GtkWidget(widget));
+GtkConstraint *obj = gtk_constraint_new(arg1, GtkConstraintAttribute_val(arg2), GtkConstraintRelation_val(arg3), arg4, GtkConstraintAttribute_val(arg5), Double_val(arg6), Double_val(arg7), Int_val(arg8));
+CAMLreturn(Val_GtkConstraint(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_constraint_new_bytecode(value * argv, int argn)
@@ -30,8 +34,8 @@ return ml_gtk_constraint_new_native(argv[0], argv[1], argv[2], argv[3], argv[4],
 CAMLexport CAMLprim value ml_gtk_constraint_new_constant(value arg1, value arg2, value arg3, value arg4, value arg5)
 {
 CAMLparam5(arg1, arg2, arg3, arg4, arg5);
-GtkWidget *widget = gtk_constraint_new_constant(arg1, GtkConstraintAttribute_val(arg2), GtkConstraintRelation_val(arg3), Double_val(arg4), Int_val(arg5));
-CAMLreturn(Val_GtkWidget(widget));
+GtkConstraint *obj = gtk_constraint_new_constant(arg1, GtkConstraintAttribute_val(arg2), GtkConstraintRelation_val(arg3), Double_val(arg4), Int_val(arg5));
+CAMLreturn(Val_GtkConstraint(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_constraint_is_required(value self)
@@ -39,7 +43,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_is_required(value self)
 CAMLparam1(self);
 
 
-    gboolean result = gtk_constraint_is_required(GtkWidget_val(self));
+    gboolean result = gtk_constraint_is_required(GtkConstraint_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -48,7 +52,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_is_constant(value self)
 CAMLparam1(self);
 
 
-    gboolean result = gtk_constraint_is_constant(GtkWidget_val(self));
+    gboolean result = gtk_constraint_is_constant(GtkConstraint_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -57,7 +61,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_is_attached(value self)
 CAMLparam1(self);
 
 
-    gboolean result = gtk_constraint_is_attached(GtkWidget_val(self));
+    gboolean result = gtk_constraint_is_attached(GtkConstraint_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -66,7 +70,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_get_target_attribute(value self)
 CAMLparam1(self);
 
 
-    GtkConstraintAttribute result = gtk_constraint_get_target_attribute(GtkWidget_val(self));
+    GtkConstraintAttribute result = gtk_constraint_get_target_attribute(GtkConstraint_val(self));
 CAMLreturn(Val_GtkConstraintAttribute(result));
 }
 
@@ -75,7 +79,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_get_target(value self)
 CAMLparam1(self);
 
 
-    GtkConstraintTarget* result = gtk_constraint_get_target(GtkWidget_val(self));
+    GtkConstraintTarget* result = gtk_constraint_get_target(GtkConstraint_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -84,7 +88,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_get_source_attribute(value self)
 CAMLparam1(self);
 
 
-    GtkConstraintAttribute result = gtk_constraint_get_source_attribute(GtkWidget_val(self));
+    GtkConstraintAttribute result = gtk_constraint_get_source_attribute(GtkConstraint_val(self));
 CAMLreturn(Val_GtkConstraintAttribute(result));
 }
 
@@ -93,7 +97,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_get_source(value self)
 CAMLparam1(self);
 
 
-    GtkConstraintTarget* result = gtk_constraint_get_source(GtkWidget_val(self));
+    GtkConstraintTarget* result = gtk_constraint_get_source(GtkConstraint_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -102,7 +106,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_get_relation(value self)
 CAMLparam1(self);
 
 
-    GtkConstraintRelation result = gtk_constraint_get_relation(GtkWidget_val(self));
+    GtkConstraintRelation result = gtk_constraint_get_relation(GtkConstraint_val(self));
 CAMLreturn(Val_GtkConstraintRelation(result));
 }
 
@@ -110,7 +114,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_get_constant(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+GtkConstraint *obj = (GtkConstraint *)GtkConstraint_val(self);
 gdouble prop_value;
 g_object_get(G_OBJECT(obj), "constant", &prop_value, NULL);
 result = caml_copy_double(prop_value);
@@ -121,7 +125,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_get_multiplier(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+GtkConstraint *obj = (GtkConstraint *)GtkConstraint_val(self);
 gdouble prop_value;
 g_object_get(G_OBJECT(obj), "multiplier", &prop_value, NULL);
 result = caml_copy_double(prop_value);
@@ -132,7 +136,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_get_strength(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+GtkConstraint *obj = (GtkConstraint *)GtkConstraint_val(self);
 gint prop_value;
 g_object_get(G_OBJECT(obj), "strength", &prop_value, NULL);
 result = Val_int(prop_value);

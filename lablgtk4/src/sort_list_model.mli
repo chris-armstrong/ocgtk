@@ -24,8 +24,6 @@ external set_sorter : t -> Gtk.Widget.t option -> unit = "ml_gtk_sort_list_model
 
 external set_section_sorter : t -> Gtk.Widget.t option -> unit = "ml_gtk_sort_list_model_set_section_sorter"
 
-external set_model : t -> unit -> unit = "ml_gtk_sort_list_model_set_model"
-
 external get_sorter : t -> Gtk.Widget.t = "ml_gtk_sort_list_model_get_sorter"
 
 external get_section_sorter : t -> Gtk.Widget.t = "ml_gtk_sort_list_model_get_section_sorter"

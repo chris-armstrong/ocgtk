@@ -20,5 +20,3 @@ external get_content_width : t -> int = "ml_gtk_drawing_area_get_content_width"
 (** Set property: content-width *)
 external set_content_width : t -> int -> unit = "ml_gtk_drawing_area_set_content_width"
 
-external set_draw_func : t -> unit -> unit -> unit -> unit = "ml_gtk_drawing_area_set_draw_func"
-

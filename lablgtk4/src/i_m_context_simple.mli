@@ -6,7 +6,5 @@ type t = Gtk.Widget.t
 (** Create a new IMContextSimple *)
 external gtk_im_context_simple_new : unit -> t = "ml_gtk_im_context_simple_new"
 
-external gtk_im_context_simple_add_table : t -> unit -> int -> int -> unit = "ml_gtk_im_context_simple_add_table"
-
 external gtk_im_context_simple_add_compose_file : t -> string -> unit = "ml_gtk_im_context_simple_add_compose_file"
 

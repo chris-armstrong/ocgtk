@@ -13,3 +13,7 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkShortcutManager */
+#define GtkShortcutManager_val(val) ((GtkShortcutManager*)ext_of_val(val))
+#define Val_GtkShortcutManager(obj) ((value)(val_of_ext(obj)))
+

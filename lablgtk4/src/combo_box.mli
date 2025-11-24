@@ -59,8 +59,6 @@ external set_popup_fixed_width : t -> bool -> unit = "ml_gtk_combo_box_set_popup
 (** Get property: popup-shown *)
 external get_popup_shown : t -> bool = "ml_gtk_combo_box_get_popup_shown"
 
-external set_row_separator_func : t -> unit -> unit -> unit -> unit = "ml_gtk_combo_box_set_row_separator_func"
-
 external set_model : t -> Gtk.Widget.t option -> unit = "ml_gtk_combo_box_set_model"
 
 external set_child : t -> Gtk.Widget.t option -> unit = "ml_gtk_combo_box_set_child"
@@ -68,8 +66,6 @@ external set_child : t -> Gtk.Widget.t option -> unit = "ml_gtk_combo_box_set_ch
 external set_button_sensitivity : t -> Gtk_enums.sensitivitytype -> unit = "ml_gtk_combo_box_set_button_sensitivity"
 
 external set_active_iter : t -> Gtk.Widget.t option -> unit = "ml_gtk_combo_box_set_active_iter"
-
-external popup_for_device : t -> unit -> unit = "ml_gtk_combo_box_popup_for_device"
 
 external popup : t -> unit = "ml_gtk_combo_box_popup"
 

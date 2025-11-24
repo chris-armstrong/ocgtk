@@ -104,10 +104,6 @@ external set_sort_order : t -> Gtk_enums.sorttype -> unit = "ml_gtk_tree_view_co
 
 external set_sizing : t -> Gtk_enums.treeviewcolumnsizing -> unit = "ml_gtk_tree_view_column_set_sizing"
 
-external set_cell_data_func : t -> Gtk.Widget.t -> unit -> unit -> unit -> unit = "ml_gtk_tree_view_column_set_cell_data_func"
-
-external set_attributes : t -> Gtk.Widget.t -> unit -> unit = "ml_gtk_tree_view_column_set_attributes"
-
 external queue_resize : t -> unit = "ml_gtk_tree_view_column_queue_resize"
 
 external pack_start : t -> Gtk.Widget.t -> bool -> unit = "ml_gtk_tree_view_column_pack_start"
@@ -135,10 +131,6 @@ external clear : t -> unit = "ml_gtk_tree_view_column_clear"
 external cell_set_cell_data : t -> Gtk.Widget.t -> Gtk.Widget.t -> bool -> bool -> unit = "ml_gtk_tree_view_column_cell_set_cell_data"
 
 external cell_is_visible : t -> bool = "ml_gtk_tree_view_column_cell_is_visible"
-
-external cell_get_size : t -> int -> int -> int -> int -> unit = "ml_gtk_tree_view_column_cell_get_size"
-
-external cell_get_position : t -> Gtk.Widget.t -> int -> int -> bool = "ml_gtk_tree_view_column_cell_get_position"
 
 external add_attribute : t -> Gtk.Widget.t -> string -> int -> unit = "ml_gtk_tree_view_column_add_attribute"
 

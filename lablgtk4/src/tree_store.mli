@@ -11,18 +11,6 @@ external newv : int -> unit -> t = "ml_gtk_tree_store_newv"
 
 external swap : t -> Gtk.Widget.t -> Gtk.Widget.t -> unit = "ml_gtk_tree_store_swap"
 
-external set_valuesv : t -> Gtk.Widget.t -> unit -> unit -> int -> unit = "ml_gtk_tree_store_set_valuesv"
-
-external set_value : t -> Gtk.Widget.t -> int -> unit -> unit = "ml_gtk_tree_store_set_value"
-
-external set_valist : t -> Gtk.Widget.t -> unit -> unit = "ml_gtk_tree_store_set_valist"
-
-external set_column_types : t -> int -> unit -> unit = "ml_gtk_tree_store_set_column_types"
-
-external set : t -> Gtk.Widget.t -> unit -> unit = "ml_gtk_tree_store_set"
-
-external reorder : t -> Gtk.Widget.t option -> unit -> unit = "ml_gtk_tree_store_reorder"
-
 external remove : t -> Gtk.Widget.t -> bool = "ml_gtk_tree_store_remove"
 
 external prepend : t -> Gtk.Widget.t -> Gtk.Widget.t option -> unit = "ml_gtk_tree_store_prepend"
@@ -36,10 +24,6 @@ external iter_is_valid : t -> Gtk.Widget.t -> bool = "ml_gtk_tree_store_iter_is_
 external iter_depth : t -> Gtk.Widget.t -> int = "ml_gtk_tree_store_iter_depth"
 
 external is_ancestor : t -> Gtk.Widget.t -> Gtk.Widget.t -> bool = "ml_gtk_tree_store_is_ancestor"
-
-external insert_with_valuesv : t -> Gtk.Widget.t -> Gtk.Widget.t option -> int -> unit -> unit -> int -> unit = "ml_gtk_tree_store_insert_with_valuesv_bytecode" "ml_gtk_tree_store_insert_with_valuesv_native"
-
-external insert_with_values : t -> Gtk.Widget.t -> Gtk.Widget.t option -> int -> unit -> unit = "ml_gtk_tree_store_insert_with_values"
 
 external insert_before : t -> Gtk.Widget.t -> Gtk.Widget.t option -> Gtk.Widget.t option -> unit = "ml_gtk_tree_store_insert_before"
 

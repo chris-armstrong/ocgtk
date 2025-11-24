@@ -60,9 +60,3 @@ external set_max_size : t -> int -> int -> unit = "ml_gtk_constraint_guide_set_m
 
 external get_strength : t -> Gtk_enums.constraintstrength = "ml_gtk_constraint_guide_get_strength"
 
-external get_nat_size : t -> int -> int -> unit = "ml_gtk_constraint_guide_get_nat_size"
-
-external get_min_size : t -> int -> int -> unit = "ml_gtk_constraint_guide_get_min_size"
-
-external get_max_size : t -> int -> int -> unit = "ml_gtk_constraint_guide_get_max_size"
-

@@ -11,8 +11,6 @@ external new_from_gvariant : unit -> t = "ml_gtk_print_settings_new_from_gvarian
 
 external unset : t -> string -> unit = "ml_gtk_print_settings_unset"
 
-external to_key_file : t -> unit -> string option -> unit = "ml_gtk_print_settings_to_key_file"
-
 external to_file : t -> string -> (bool, GError.t) result = "ml_gtk_print_settings_to_file"
 
 external set_use_color : t -> bool -> unit = "ml_gtk_print_settings_set_use_color"
@@ -40,8 +38,6 @@ external set_paper_size : t -> Gtk.Widget.t -> unit = "ml_gtk_print_settings_set
 external set_paper_height : t -> float -> unit -> unit = "ml_gtk_print_settings_set_paper_height"
 
 external set_page_set : t -> Gtk_enums.pageset -> unit = "ml_gtk_print_settings_set_page_set"
-
-external set_page_ranges : t -> unit -> int -> unit = "ml_gtk_print_settings_set_page_ranges"
 
 external set_output_bin : t -> string -> unit = "ml_gtk_print_settings_set_output_bin"
 
@@ -75,8 +71,6 @@ external set_bool : t -> string -> bool -> unit = "ml_gtk_print_settings_set_boo
 
 external set : t -> string -> string option -> unit = "ml_gtk_print_settings_set"
 
-external load_key_file : t -> unit -> string option -> (bool, GError.t) result = "ml_gtk_print_settings_load_key_file"
-
 external load_file : t -> string -> (bool, GError.t) result = "ml_gtk_print_settings_load_file"
 
 external has_key : t -> string -> bool = "ml_gtk_print_settings_has_key"
@@ -108,8 +102,6 @@ external get_paper_size : t -> Gtk.Widget.t = "ml_gtk_print_settings_get_paper_s
 external get_paper_height : t -> unit -> float = "ml_gtk_print_settings_get_paper_height"
 
 external get_page_set : t -> Gtk_enums.pageset = "ml_gtk_print_settings_get_page_set"
-
-external get_page_ranges : t -> int -> unit = "ml_gtk_print_settings_get_page_ranges"
 
 external get_output_bin : t -> string = "ml_gtk_print_settings_get_output_bin"
 
@@ -146,8 +138,6 @@ external get_collate : t -> bool = "ml_gtk_print_settings_get_collate"
 external get_bool : t -> string -> bool = "ml_gtk_print_settings_get_bool"
 
 external get : t -> string -> string = "ml_gtk_print_settings_get"
-
-external foreach : t -> unit -> unit -> unit = "ml_gtk_print_settings_foreach"
 
 external copy : t -> Gtk.Widget.t = "ml_gtk_print_settings_copy"
 

@@ -39,8 +39,6 @@ external get_message_type : t -> Gtk_enums.messagetype = "ml_gtk_info_bar_get_me
 
 external add_child : t -> Gtk.Widget.t -> unit = "ml_gtk_info_bar_add_child"
 
-external add_buttons : t -> string -> unit -> unit = "ml_gtk_info_bar_add_buttons"
-
 external add_button : t -> string -> int -> Gtk.Widget.t = "ml_gtk_info_bar_add_button"
 
 external add_action_widget : t -> Gtk.Widget.t -> int -> unit = "ml_gtk_info_bar_add_action_widget"

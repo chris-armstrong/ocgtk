@@ -13,3 +13,7 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkMnemonicAction */
+#define GtkMnemonicAction_val(val) ((GtkMnemonicAction*)ext_of_val(val))
+#define Val_GtkMnemonicAction(obj) ((value)(val_of_ext(obj)))
+

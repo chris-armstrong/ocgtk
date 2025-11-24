@@ -13,7 +13,3 @@ external set_action_name : t -> string -> unit = "ml_gtk_actionable_set_action_n
 
 external set_detailed_action_name : t -> string -> unit = "ml_gtk_actionable_set_detailed_action_name"
 
-external set_action_target_value : t -> unit -> unit = "ml_gtk_actionable_set_action_target_value"
-
-external set_action_target : t -> string -> unit -> unit = "ml_gtk_actionable_set_action_target"
-

@@ -13,8 +13,6 @@ external new_with_arguments : Gtk.Widget.t option -> Gtk.Widget.t option -> stri
 
 external set_trigger : t -> Gtk.Widget.t option -> unit = "ml_gtk_shortcut_set_trigger"
 
-external set_arguments : t -> unit -> unit = "ml_gtk_shortcut_set_arguments"
-
 external set_action : t -> Gtk.Widget.t option -> unit = "ml_gtk_shortcut_set_action"
 
 external get_trigger : t -> Gtk.Widget.t = "ml_gtk_shortcut_get_trigger"

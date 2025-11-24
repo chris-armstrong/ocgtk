@@ -198,7 +198,6 @@
    ml_overlay_layout_gen
    ml_pad_controller_gen
    ml_page_setup_gen
-   ml_page_setup_unix_dialog_gen
    ml_pango_enums_gen
    ml_param_spec_expression_gen
    ml_password_entry_buffer_gen

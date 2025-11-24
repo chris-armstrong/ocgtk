@@ -30,19 +30,11 @@ external unselect_row : t -> Gtk.Widget.t -> unit = "ml_gtk_list_box_unselect_ro
 
 external unselect_all : t -> unit = "ml_gtk_list_box_unselect_all"
 
-external set_sort_func : t -> unit -> unit -> unit -> unit = "ml_gtk_list_box_set_sort_func"
-
 external set_selection_mode : t -> Gtk_enums.selectionmode -> unit = "ml_gtk_list_box_set_selection_mode"
 
 external set_placeholder : t -> Gtk.Widget.t option -> unit = "ml_gtk_list_box_set_placeholder"
 
-external set_header_func : t -> unit -> unit -> unit -> unit = "ml_gtk_list_box_set_header_func"
-
-external set_filter_func : t -> unit -> unit -> unit -> unit = "ml_gtk_list_box_set_filter_func"
-
 external set_adjustment : t -> Gtk.Widget.t option -> unit = "ml_gtk_list_box_set_adjustment"
-
-external selected_foreach : t -> unit -> unit -> unit = "ml_gtk_list_box_selected_foreach"
 
 external select_row : t -> Gtk.Widget.t option -> unit = "ml_gtk_list_box_select_row"
 
@@ -75,8 +67,6 @@ external get_adjustment : t -> Gtk.Widget.t = "ml_gtk_list_box_get_adjustment"
 external drag_unhighlight_row : t -> unit = "ml_gtk_list_box_drag_unhighlight_row"
 
 external drag_highlight_row : t -> Gtk.Widget.t -> unit = "ml_gtk_list_box_drag_highlight_row"
-
-external bind_model : t -> unit -> unit -> unit -> unit -> unit = "ml_gtk_list_box_bind_model"
 
 external append : t -> Gtk.Widget.t -> unit = "ml_gtk_list_box_append"
 

@@ -13,22 +13,17 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkAccessibleText */
+#define GtkAccessibleText_val(val) ((GtkAccessibleText*)ext_of_val(val))
+#define Val_GtkAccessibleText(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_accessible_text_update_selection_bound(value self)
 {
 CAMLparam1(self);
 
 
-    gtk_accessible_text_update_selection_bound(GtkWidget_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_accessible_text_update_contents(value self, value arg1, value arg2, value arg3)
-{
-CAMLparam4(self, arg1, arg2, arg3);
-
-
-    gtk_accessible_text_update_contents(GtkWidget_val(self), GtkAccessibleTextContentChange_val(arg1), arg2, arg3);
+    gtk_accessible_text_update_selection_bound(GtkAccessibleText_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -37,6 +32,6 @@ CAMLexport CAMLprim value ml_gtk_accessible_text_update_caret_position(value sel
 CAMLparam1(self);
 
 
-    gtk_accessible_text_update_caret_position(GtkWidget_val(self));
+    gtk_accessible_text_update_caret_position(GtkAccessibleText_val(self));
 CAMLreturn(Val_unit);
 }

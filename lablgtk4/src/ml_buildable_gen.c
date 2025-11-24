@@ -13,12 +13,16 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkBuildable */
+#define GtkBuildable_val(val) ((GtkBuildable*)ext_of_val(val))
+#define Val_GtkBuildable(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_buildable_get_buildable_id(value self)
 {
 CAMLparam1(self);
 
 
-    const char* result = gtk_buildable_get_buildable_id(GtkWidget_val(self));
+    const char* result = gtk_buildable_get_buildable_id(GtkBuildable_val(self));
 CAMLreturn(caml_copy_string(result));
 }

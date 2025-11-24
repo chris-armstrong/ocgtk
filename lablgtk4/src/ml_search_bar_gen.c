@@ -13,12 +13,16 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkSearchBar */
+#define GtkSearchBar_val(val) ((GtkSearchBar*)ext_of_val(val))
+#define Val_GtkSearchBar(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_search_bar_new(value unit)
 {
 CAMLparam1(unit);
-GtkWidget *widget = gtk_search_bar_new();
-CAMLreturn(Val_GtkWidget(widget));
+GtkSearchBar *obj = gtk_search_bar_new();
+CAMLreturn(Val_GtkSearchBar(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_search_bar_set_search_mode(value self, value arg1)
@@ -26,7 +30,7 @@ CAMLexport CAMLprim value ml_gtk_search_bar_set_search_mode(value self, value ar
 CAMLparam2(self, arg1);
 
 
-    gtk_search_bar_set_search_mode(GtkWidget_val(self), Bool_val(arg1));
+    gtk_search_bar_set_search_mode(GtkSearchBar_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -35,7 +39,7 @@ CAMLexport CAMLprim value ml_gtk_search_bar_set_key_capture_widget(value self, v
 CAMLparam2(self, arg1);
 
 
-    gtk_search_bar_set_key_capture_widget(GtkWidget_val(self), GtkWidget_option_val(arg1));
+    gtk_search_bar_set_key_capture_widget(GtkSearchBar_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -44,7 +48,7 @@ CAMLexport CAMLprim value ml_gtk_search_bar_set_child(value self, value arg1)
 CAMLparam2(self, arg1);
 
 
-    gtk_search_bar_set_child(GtkWidget_val(self), GtkWidget_option_val(arg1));
+    gtk_search_bar_set_child(GtkSearchBar_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -53,7 +57,7 @@ CAMLexport CAMLprim value ml_gtk_search_bar_get_search_mode(value self)
 CAMLparam1(self);
 
 
-    gboolean result = gtk_search_bar_get_search_mode(GtkWidget_val(self));
+    gboolean result = gtk_search_bar_get_search_mode(GtkSearchBar_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -62,7 +66,7 @@ CAMLexport CAMLprim value ml_gtk_search_bar_get_key_capture_widget(value self)
 CAMLparam1(self);
 
 
-    GtkWidget* result = gtk_search_bar_get_key_capture_widget(GtkWidget_val(self));
+    GtkWidget* result = gtk_search_bar_get_key_capture_widget(GtkSearchBar_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -71,7 +75,7 @@ CAMLexport CAMLprim value ml_gtk_search_bar_get_child(value self)
 CAMLparam1(self);
 
 
-    GtkWidget* result = gtk_search_bar_get_child(GtkWidget_val(self));
+    GtkWidget* result = gtk_search_bar_get_child(GtkSearchBar_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -80,7 +84,7 @@ CAMLexport CAMLprim value ml_gtk_search_bar_connect_entry(value self, value arg1
 CAMLparam2(self, arg1);
 
 
-    gtk_search_bar_connect_entry(GtkWidget_val(self), GtkWidget_val(arg1));
+    gtk_search_bar_connect_entry(GtkSearchBar_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -88,7 +92,7 @@ CAMLexport CAMLprim value ml_gtk_search_bar_get_search_mode_enabled(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+GtkSearchBar *obj = (GtkSearchBar *)GtkSearchBar_val(self);
 gboolean prop_value;
 g_object_get(G_OBJECT(obj), "search-mode-enabled", &prop_value, NULL);
 result = Val_bool(prop_value);
@@ -98,7 +102,7 @@ CAMLreturn(result);
 CAMLexport CAMLprim value ml_gtk_search_bar_set_search_mode_enabled(value self, value new_value)
 {
 CAMLexport CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+GtkSearchBar *obj = (GtkSearchBar *)GtkSearchBar_val(self);
 gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "search-mode-enabled", c_value, NULL);
 CAMLreturn(Val_unit);
@@ -108,7 +112,7 @@ CAMLexport CAMLprim value ml_gtk_search_bar_get_show_close_button(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+GtkSearchBar *obj = (GtkSearchBar *)GtkSearchBar_val(self);
 gboolean prop_value;
 g_object_get(G_OBJECT(obj), "show-close-button", &prop_value, NULL);
 result = Val_bool(prop_value);
@@ -118,7 +122,7 @@ CAMLreturn(result);
 CAMLexport CAMLprim value ml_gtk_search_bar_set_show_close_button(value self, value new_value)
 {
 CAMLexport CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+GtkSearchBar *obj = (GtkSearchBar *)GtkSearchBar_val(self);
 gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "show-close-button", c_value, NULL);
 CAMLreturn(Val_unit);

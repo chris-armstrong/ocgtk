@@ -69,10 +69,6 @@ external get_value_as_int : t -> int = "ml_gtk_spin_button_get_value_as_int"
 
 external get_update_policy : t -> Gtk_enums.spinbuttonupdatepolicy = "ml_gtk_spin_button_get_update_policy"
 
-external get_range : t -> float -> float -> unit = "ml_gtk_spin_button_get_range"
-
-external get_increments : t -> float -> float -> unit = "ml_gtk_spin_button_get_increments"
-
 external get_adjustment : t -> Gtk.Widget.t = "ml_gtk_spin_button_get_adjustment"
 
 external configure : t -> Gtk.Widget.t option -> float -> int -> unit = "ml_gtk_spin_button_configure"

@@ -13,10 +13,14 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkBinLayout */
+#define GtkBinLayout_val(val) ((GtkBinLayout*)ext_of_val(val))
+#define Val_GtkBinLayout(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_bin_layout_new(value unit)
 {
 CAMLparam1(unit);
-GtkWidget *widget = gtk_bin_layout_new();
-CAMLreturn(Val_GtkWidget(widget));
+GtkBinLayout *obj = gtk_bin_layout_new();
+CAMLreturn(Val_GtkBinLayout(obj));
 }

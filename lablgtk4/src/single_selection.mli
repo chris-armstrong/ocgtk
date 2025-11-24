@@ -29,5 +29,3 @@ external get_selected : t -> int = "ml_gtk_single_selection_get_selected"
 (** Set property: selected *)
 external set_selected : t -> int -> unit = "ml_gtk_single_selection_set_selected"
 
-external set_model : t -> unit -> unit = "ml_gtk_single_selection_set_model"
-

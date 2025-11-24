@@ -13,28 +13,14 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkGestureDrag */
+#define GtkGestureDrag_val(val) ((GtkGestureDrag*)ext_of_val(val))
+#define Val_GtkGestureDrag(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_gesture_drag_new(value unit)
 {
 CAMLparam1(unit);
-GtkEventController *controller = gtk_gesture_drag_new();
-CAMLreturn(Val_GtkEventController(controller));
-}
-
-CAMLexport CAMLprim value ml_gtk_gesture_drag_get_start_point(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-
-
-    gboolean result = gtk_gesture_drag_get_start_point(GtkEventController_val(self), arg1, arg2);
-CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_gesture_drag_get_offset(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-
-
-    gboolean result = gtk_gesture_drag_get_offset(GtkEventController_val(self), arg1, arg2);
-CAMLreturn(Val_bool(result));
+GtkGestureDrag *obj = gtk_gesture_drag_new();
+CAMLreturn(Val_GtkGestureDrag(obj));
 }

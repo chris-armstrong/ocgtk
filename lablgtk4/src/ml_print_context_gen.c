@@ -13,22 +13,17 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkPrintContext */
+#define GtkPrintContext_val(val) ((GtkPrintContext*)ext_of_val(val))
+#define Val_GtkPrintContext(obj) ((value)(val_of_ext(obj)))
 
-CAMLexport CAMLprim value ml_gtk_print_context_set_cairo_context(value self, value arg1, value arg2, value arg3)
-{
-CAMLparam4(self, arg1, arg2, arg3);
-
-
-    gtk_print_context_set_cairo_context(GtkWidget_val(self), arg1, Double_val(arg2), Double_val(arg3));
-CAMLreturn(Val_unit);
-}
 
 CAMLexport CAMLprim value ml_gtk_print_context_get_width(value self)
 {
 CAMLparam1(self);
 
 
-    double result = gtk_print_context_get_width(GtkWidget_val(self));
+    double result = gtk_print_context_get_width(GtkPrintContext_val(self));
 CAMLreturn(caml_copy_double(result));
 }
 
@@ -37,7 +32,7 @@ CAMLexport CAMLprim value ml_gtk_print_context_get_page_setup(value self)
 CAMLparam1(self);
 
 
-    GtkPageSetup* result = gtk_print_context_get_page_setup(GtkWidget_val(self));
+    GtkPageSetup* result = gtk_print_context_get_page_setup(GtkPrintContext_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -46,17 +41,8 @@ CAMLexport CAMLprim value ml_gtk_print_context_get_height(value self)
 CAMLparam1(self);
 
 
-    double result = gtk_print_context_get_height(GtkWidget_val(self));
+    double result = gtk_print_context_get_height(GtkPrintContext_val(self));
 CAMLreturn(caml_copy_double(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_print_context_get_hard_margins(value self, value arg1, value arg2, value arg3, value arg4)
-{
-CAMLparam5(self, arg1, arg2, arg3, arg4);
-
-
-    gboolean result = gtk_print_context_get_hard_margins(GtkWidget_val(self), arg1, arg2, arg3, arg4);
-CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_print_context_get_dpi_y(value self)
@@ -64,7 +50,7 @@ CAMLexport CAMLprim value ml_gtk_print_context_get_dpi_y(value self)
 CAMLparam1(self);
 
 
-    double result = gtk_print_context_get_dpi_y(GtkWidget_val(self));
+    double result = gtk_print_context_get_dpi_y(GtkPrintContext_val(self));
 CAMLreturn(caml_copy_double(result));
 }
 
@@ -73,6 +59,6 @@ CAMLexport CAMLprim value ml_gtk_print_context_get_dpi_x(value self)
 CAMLparam1(self);
 
 
-    double result = gtk_print_context_get_dpi_x(GtkWidget_val(self));
+    double result = gtk_print_context_get_dpi_x(GtkPrintContext_val(self));
 CAMLreturn(caml_copy_double(result));
 }

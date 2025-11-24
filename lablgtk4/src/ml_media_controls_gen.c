@@ -13,12 +13,16 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkMediaControls */
+#define GtkMediaControls_val(val) ((GtkMediaControls*)ext_of_val(val))
+#define Val_GtkMediaControls(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_media_controls_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkWidget *widget = gtk_media_controls_new((Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
-CAMLreturn(Val_GtkWidget(widget));
+GtkMediaControls *obj = gtk_media_controls_new((Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+CAMLreturn(Val_GtkMediaControls(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_media_controls_set_media_stream(value self, value arg1)
@@ -26,7 +30,7 @@ CAMLexport CAMLprim value ml_gtk_media_controls_set_media_stream(value self, val
 CAMLparam2(self, arg1);
 
 
-    gtk_media_controls_set_media_stream(GtkWidget_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+    gtk_media_controls_set_media_stream(GtkMediaControls_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -35,6 +39,6 @@ CAMLexport CAMLprim value ml_gtk_media_controls_get_media_stream(value self)
 CAMLparam1(self);
 
 
-    GtkMediaStream* result = gtk_media_controls_get_media_stream(GtkWidget_val(self));
+    GtkMediaStream* result = gtk_media_controls_get_media_stream(GtkMediaControls_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }

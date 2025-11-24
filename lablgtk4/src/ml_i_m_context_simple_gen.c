@@ -13,21 +13,16 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkIMContextSimple */
+#define GtkIMContextSimple_val(val) ((GtkIMContextSimple*)ext_of_val(val))
+#define Val_GtkIMContextSimple(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_im_context_simple_new(value unit)
 {
 CAMLparam1(unit);
-GtkWidget *widget = gtk_im_context_simple_new();
-CAMLreturn(Val_GtkWidget(widget));
-}
-
-CAMLexport CAMLprim value ml_gtk_im_context_simple_add_table(value self, value arg1, value arg2, value arg3)
-{
-CAMLparam4(self, arg1, arg2, arg3);
-
-
-    gtk_im_context_simple_add_table(GtkWidget_val(self), arg1, Int_val(arg2), Int_val(arg3));
-CAMLreturn(Val_unit);
+GtkIMContextSimple *obj = gtk_im_context_simple_new();
+CAMLreturn(Val_GtkIMContextSimple(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_im_context_simple_add_compose_file(value self, value arg1)
@@ -35,6 +30,6 @@ CAMLexport CAMLprim value ml_gtk_im_context_simple_add_compose_file(value self, 
 CAMLparam2(self, arg1);
 
 
-    gtk_im_context_simple_add_compose_file(GtkWidget_val(self), String_val(arg1));
+    gtk_im_context_simple_add_compose_file(GtkIMContextSimple_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }

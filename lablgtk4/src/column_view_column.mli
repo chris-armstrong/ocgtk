@@ -46,8 +46,6 @@ external set_visible : t -> bool -> unit = "ml_gtk_column_view_column_set_visibl
 
 external set_sorter : t -> Gtk.Widget.t option -> unit = "ml_gtk_column_view_column_set_sorter"
 
-external set_header_menu : t -> unit -> unit = "ml_gtk_column_view_column_set_header_menu"
-
 external set_factory : t -> Gtk.Widget.t option -> unit = "ml_gtk_column_view_column_set_factory"
 
 external get_sorter : t -> Gtk.Widget.t = "ml_gtk_column_view_column_get_sorter"

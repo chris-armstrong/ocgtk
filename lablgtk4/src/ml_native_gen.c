@@ -13,13 +13,17 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkNative */
+#define GtkNative_val(val) ((GtkNative*)ext_of_val(val))
+#define Val_GtkNative(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_native_unrealize(value self)
 {
 CAMLparam1(self);
 
 
-    gtk_native_unrealize(GtkWidget_val(self));
+    gtk_native_unrealize(GtkNative_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -28,15 +32,6 @@ CAMLexport CAMLprim value ml_gtk_native_realize(value self)
 CAMLparam1(self);
 
 
-    gtk_native_realize(GtkWidget_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_native_get_surface_transform(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-
-
-    gtk_native_get_surface_transform(GtkWidget_val(self), arg1, arg2);
+    gtk_native_realize(GtkNative_val(self));
 CAMLreturn(Val_unit);
 }

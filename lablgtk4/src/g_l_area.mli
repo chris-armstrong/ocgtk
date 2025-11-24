@@ -40,8 +40,6 @@ external gtk_gl_area_set_has_stencil_buffer : t -> bool -> unit = "ml_gtk_gl_are
 
 external gtk_gl_area_set_has_depth_buffer : t -> bool -> unit = "ml_gtk_gl_area_set_has_depth_buffer"
 
-external gtk_gl_area_set_error : t -> unit -> unit = "ml_gtk_gl_area_set_error"
-
 external gtk_gl_area_set_auto_render : t -> bool -> unit = "ml_gtk_gl_area_set_auto_render"
 
 external gtk_gl_area_set_allowed_apis : t -> Gdk.glapi -> unit = "ml_gtk_gl_area_set_allowed_apis"
@@ -51,8 +49,6 @@ external gtk_gl_area_queue_render : t -> unit = "ml_gtk_gl_area_queue_render"
 external gtk_gl_area_make_current : t -> unit = "ml_gtk_gl_area_make_current"
 
 external gtk_gl_area_get_use_es : t -> bool = "ml_gtk_gl_area_get_use_es"
-
-external gtk_gl_area_get_required_version : t -> int -> int -> unit = "ml_gtk_gl_area_get_required_version"
 
 external gtk_gl_area_get_has_stencil_buffer : t -> bool = "ml_gtk_gl_area_get_has_stencil_buffer"
 

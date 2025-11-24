@@ -9,8 +9,6 @@ external new_ : unit -> t = "ml_gtk_page_setup_new"
 (** Create a new PageSetup *)
 external new_from_gvariant : unit -> t = "ml_gtk_page_setup_new_from_gvariant"
 
-external to_key_file : t -> unit -> string option -> unit = "ml_gtk_page_setup_to_key_file"
-
 external to_file : t -> string -> (bool, GError.t) result = "ml_gtk_page_setup_to_file"
 
 external set_top_margin : t -> float -> unit -> unit = "ml_gtk_page_setup_set_top_margin"
@@ -26,8 +24,6 @@ external set_orientation : t -> Gtk_enums.pageorientation -> unit = "ml_gtk_page
 external set_left_margin : t -> float -> unit -> unit = "ml_gtk_page_setup_set_left_margin"
 
 external set_bottom_margin : t -> float -> unit -> unit = "ml_gtk_page_setup_set_bottom_margin"
-
-external load_key_file : t -> unit -> string option -> (bool, GError.t) result = "ml_gtk_page_setup_load_key_file"
 
 external load_file : t -> string -> (bool, GError.t) result = "ml_gtk_page_setup_load_file"
 

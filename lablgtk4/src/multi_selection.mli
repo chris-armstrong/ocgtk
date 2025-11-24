@@ -11,5 +11,3 @@ external new_ : unit -> t = "ml_gtk_multi_selection_new"
 (** Get property: n-items *)
 external get_n_items : t -> int = "ml_gtk_multi_selection_get_n_items"
 
-external set_model : t -> unit -> unit = "ml_gtk_multi_selection_set_model"
-

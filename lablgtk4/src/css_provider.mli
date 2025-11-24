@@ -14,9 +14,3 @@ external load_from_resource : t -> string -> unit = "ml_gtk_css_provider_load_fr
 
 external load_from_path : t -> string -> unit = "ml_gtk_css_provider_load_from_path"
 
-external load_from_file : t -> unit -> unit = "ml_gtk_css_provider_load_from_file"
-
-external load_from_data : t -> string -> unit -> unit = "ml_gtk_css_provider_load_from_data"
-
-external load_from_bytes : t -> unit -> unit = "ml_gtk_css_provider_load_from_bytes"
-

@@ -13,19 +13,23 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkSignalAction */
+#define GtkSignalAction_val(val) ((GtkSignalAction*)ext_of_val(val))
+#define Val_GtkSignalAction(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_signal_action_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkWidget *widget = gtk_signal_action_new(String_val(arg1));
-CAMLreturn(Val_GtkWidget(widget));
+GtkSignalAction *obj = gtk_signal_action_new(String_val(arg1));
+CAMLreturn(Val_GtkSignalAction(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_signal_action_get_signal_name(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+GtkSignalAction *obj = (GtkSignalAction *)GtkSignalAction_val(self);
 gchar* prop_value;
 g_object_get(G_OBJECT(obj), "signal-name", &prop_value, NULL);
 result = caml_copy_string(prop_value);

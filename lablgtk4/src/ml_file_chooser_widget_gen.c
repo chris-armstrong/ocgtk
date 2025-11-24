@@ -13,19 +13,23 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkFileChooserWidget */
+#define GtkFileChooserWidget_val(val) ((GtkFileChooserWidget*)ext_of_val(val))
+#define Val_GtkFileChooserWidget(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_file_chooser_widget_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkWidget *widget = gtk_file_chooser_widget_new(GtkFileChooserAction_val(arg1));
-CAMLreturn(Val_GtkWidget(widget));
+GtkFileChooserWidget *obj = gtk_file_chooser_widget_new(GtkFileChooserAction_val(arg1));
+CAMLreturn(Val_GtkFileChooserWidget(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_file_chooser_widget_get_search_mode(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+GtkFileChooserWidget *obj = (GtkFileChooserWidget *)GtkFileChooserWidget_val(self);
 gboolean prop_value;
 g_object_get(G_OBJECT(obj), "search-mode", &prop_value, NULL);
 result = Val_bool(prop_value);
@@ -35,7 +39,7 @@ CAMLreturn(result);
 CAMLexport CAMLprim value ml_gtk_file_chooser_widget_set_search_mode(value self, value new_value)
 {
 CAMLexport CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+GtkFileChooserWidget *obj = (GtkFileChooserWidget *)GtkFileChooserWidget_val(self);
 gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "search-mode", c_value, NULL);
 CAMLreturn(Val_unit);
@@ -45,7 +49,7 @@ CAMLexport CAMLprim value ml_gtk_file_chooser_widget_get_show_time(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+GtkFileChooserWidget *obj = (GtkFileChooserWidget *)GtkFileChooserWidget_val(self);
 gboolean prop_value;
 g_object_get(G_OBJECT(obj), "show-time", &prop_value, NULL);
 result = Val_bool(prop_value);
@@ -56,7 +60,7 @@ CAMLexport CAMLprim value ml_gtk_file_chooser_widget_get_subtitle(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+GtkFileChooserWidget *obj = (GtkFileChooserWidget *)GtkFileChooserWidget_val(self);
 gchar* prop_value;
 g_object_get(G_OBJECT(obj), "subtitle", &prop_value, NULL);
 result = caml_copy_string(prop_value);

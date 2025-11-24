@@ -13,21 +13,16 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkPadController */
+#define GtkPadController_val(val) ((GtkPadController*)ext_of_val(val))
+#define Val_GtkPadController(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_pad_controller_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
-GtkWidget *widget = gtk_pad_controller_new(arg1, arg2);
-CAMLreturn(Val_GtkWidget(widget));
-}
-
-CAMLexport CAMLprim value ml_gtk_pad_controller_set_action_entries(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-
-
-    gtk_pad_controller_set_action_entries(GtkWidget_val(self), arg1, Int_val(arg2));
-CAMLreturn(Val_unit);
+GtkPadController *obj = gtk_pad_controller_new(arg1, arg2);
+CAMLreturn(Val_GtkPadController(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_pad_controller_set_action_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
@@ -36,7 +31,7 @@ CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam1(arg5);
 
 
-    gtk_pad_controller_set_action(GtkWidget_val(self), GtkPadActionType_val(arg1), Int_val(arg2), Int_val(arg3), String_val(arg4), String_val(arg5));
+    gtk_pad_controller_set_action(GtkPadController_val(self), GtkPadActionType_val(arg1), Int_val(arg2), Int_val(arg3), String_val(arg4), String_val(arg5));
 CAMLreturn(Val_unit);
 }
 

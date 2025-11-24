@@ -40,11 +40,5 @@ external set_modal : t -> bool -> unit = "ml_gtk_alert_dialog_set_modal"
 
 external show : t -> Gtk.Widget.t option -> unit = "ml_gtk_alert_dialog_show"
 
-external set_buttons : t -> unit -> unit = "ml_gtk_alert_dialog_set_buttons"
-
 external get_buttons : t -> unit = "ml_gtk_alert_dialog_get_buttons"
-
-external choose_finish : t -> unit -> (int, GError.t) result = "ml_gtk_alert_dialog_choose_finish"
-
-external choose : t -> Gtk.Widget.t option -> unit -> unit -> unit -> unit = "ml_gtk_alert_dialog_choose"
 

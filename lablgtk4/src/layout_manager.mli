@@ -3,8 +3,6 @@
 
 type t = Gtk.Widget.t
 
-external measure : t -> Gtk.Widget.t -> Gtk_enums.orientation -> int -> int -> int -> int -> int -> unit = "ml_gtk_layout_manager_measure_bytecode" "ml_gtk_layout_manager_measure_native"
-
 external layout_changed : t -> unit = "ml_gtk_layout_manager_layout_changed"
 
 external get_widget : t -> Gtk.Widget.t = "ml_gtk_layout_manager_get_widget"

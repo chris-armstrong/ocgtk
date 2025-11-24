@@ -13,12 +13,16 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkCssProvider */
+#define GtkCssProvider_val(val) ((GtkCssProvider*)ext_of_val(val))
+#define Val_GtkCssProvider(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_css_provider_new(value unit)
 {
 CAMLparam1(unit);
-GtkWidget *widget = gtk_css_provider_new();
-CAMLreturn(Val_GtkWidget(widget));
+GtkCssProvider *obj = gtk_css_provider_new();
+CAMLreturn(Val_GtkCssProvider(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_css_provider_load_named(value self, value arg1, value arg2)
@@ -26,7 +30,7 @@ CAMLexport CAMLprim value ml_gtk_css_provider_load_named(value self, value arg1,
 CAMLparam3(self, arg1, arg2);
 
 
-    gtk_css_provider_load_named(GtkWidget_val(self), String_val(arg1), (Is_some(arg2) ? String_val(Some_val(arg2)) : NULL));
+    gtk_css_provider_load_named(GtkCssProvider_val(self), String_val(arg1), (Is_some(arg2) ? String_val(Some_val(arg2)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -35,7 +39,7 @@ CAMLexport CAMLprim value ml_gtk_css_provider_load_from_string(value self, value
 CAMLparam2(self, arg1);
 
 
-    gtk_css_provider_load_from_string(GtkWidget_val(self), String_val(arg1));
+    gtk_css_provider_load_from_string(GtkCssProvider_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -44,7 +48,7 @@ CAMLexport CAMLprim value ml_gtk_css_provider_load_from_resource(value self, val
 CAMLparam2(self, arg1);
 
 
-    gtk_css_provider_load_from_resource(GtkWidget_val(self), String_val(arg1));
+    gtk_css_provider_load_from_resource(GtkCssProvider_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -53,33 +57,6 @@ CAMLexport CAMLprim value ml_gtk_css_provider_load_from_path(value self, value a
 CAMLparam2(self, arg1);
 
 
-    gtk_css_provider_load_from_path(GtkWidget_val(self), String_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_css_provider_load_from_file(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-
-    gtk_css_provider_load_from_file(GtkWidget_val(self), arg1);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_css_provider_load_from_data(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-
-
-    gtk_css_provider_load_from_data(GtkWidget_val(self), String_val(arg1), arg2);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_css_provider_load_from_bytes(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-
-    gtk_css_provider_load_from_bytes(GtkWidget_val(self), arg1);
+    gtk_css_provider_load_from_path(GtkCssProvider_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }

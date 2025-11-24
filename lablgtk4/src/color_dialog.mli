@@ -26,5 +26,3 @@ external get_with_alpha : t -> bool = "ml_gtk_color_dialog_get_with_alpha"
 (** Set property: with-alpha *)
 external set_with_alpha : t -> bool -> unit = "ml_gtk_color_dialog_set_with_alpha"
 
-external choose_rgba : t -> Gtk.Widget.t option -> unit -> unit -> unit -> unit -> unit = "ml_gtk_color_dialog_choose_rgba_bytecode" "ml_gtk_color_dialog_choose_rgba_native"
-

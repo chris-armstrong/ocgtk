@@ -13,12 +13,16 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkWindowHandle */
+#define GtkWindowHandle_val(val) ((GtkWindowHandle*)ext_of_val(val))
+#define Val_GtkWindowHandle(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_window_handle_new(value unit)
 {
 CAMLparam1(unit);
-GtkWidget *widget = gtk_window_handle_new();
-CAMLreturn(Val_GtkWidget(widget));
+GtkWindowHandle *obj = gtk_window_handle_new();
+CAMLreturn(Val_GtkWindowHandle(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_window_handle_set_child(value self, value arg1)
@@ -26,7 +30,7 @@ CAMLexport CAMLprim value ml_gtk_window_handle_set_child(value self, value arg1)
 CAMLparam2(self, arg1);
 
 
-    gtk_window_handle_set_child(GtkWidget_val(self), GtkWidget_option_val(arg1));
+    gtk_window_handle_set_child(GtkWindowHandle_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -35,6 +39,6 @@ CAMLexport CAMLprim value ml_gtk_window_handle_get_child(value self)
 CAMLparam1(self);
 
 
-    GtkWidget* result = gtk_window_handle_get_child(GtkWidget_val(self));
+    GtkWidget* result = gtk_window_handle_get_child(GtkWindowHandle_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }

@@ -13,12 +13,16 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkStackSidebar */
+#define GtkStackSidebar_val(val) ((GtkStackSidebar*)ext_of_val(val))
+#define Val_GtkStackSidebar(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_stack_sidebar_new(value unit)
 {
 CAMLparam1(unit);
-GtkWidget *widget = gtk_stack_sidebar_new();
-CAMLreturn(Val_GtkWidget(widget));
+GtkStackSidebar *obj = gtk_stack_sidebar_new();
+CAMLreturn(Val_GtkStackSidebar(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_stack_sidebar_set_stack(value self, value arg1)
@@ -26,7 +30,7 @@ CAMLexport CAMLprim value ml_gtk_stack_sidebar_set_stack(value self, value arg1)
 CAMLparam2(self, arg1);
 
 
-    gtk_stack_sidebar_set_stack(GtkWidget_val(self), GtkWidget_val(arg1));
+    gtk_stack_sidebar_set_stack(GtkStackSidebar_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -35,6 +39,6 @@ CAMLexport CAMLprim value ml_gtk_stack_sidebar_get_stack(value self)
 CAMLparam1(self);
 
 
-    GtkStack* result = gtk_stack_sidebar_get_stack(GtkWidget_val(self));
+    GtkStack* result = gtk_stack_sidebar_get_stack(GtkStackSidebar_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }

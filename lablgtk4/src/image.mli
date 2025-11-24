@@ -60,13 +60,7 @@ external set_icon_size : t -> Gtk_enums.iconsize -> unit = "ml_gtk_image_set_ico
 
 external set_from_resource : t -> string option -> unit = "ml_gtk_image_set_from_resource"
 
-external set_from_pixbuf : t -> unit -> unit = "ml_gtk_image_set_from_pixbuf"
-
-external set_from_paintable : t -> unit -> unit = "ml_gtk_image_set_from_paintable"
-
 external set_from_icon_name : t -> string option -> unit = "ml_gtk_image_set_from_icon_name"
-
-external set_from_gicon : t -> unit -> unit = "ml_gtk_image_set_from_gicon"
 
 external set_from_file : t -> string option -> unit = "ml_gtk_image_set_from_file"
 

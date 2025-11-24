@@ -13,12 +13,7 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkFixedLayoutChild */
+#define GtkFixedLayoutChild_val(val) ((GtkFixedLayoutChild*)ext_of_val(val))
+#define Val_GtkFixedLayoutChild(obj) ((value)(val_of_ext(obj)))
 
-CAMLexport CAMLprim value ml_gtk_fixed_layout_child_set_transform(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-
-    gtk_fixed_layout_child_set_transform(GtkWidget_val(self), arg1);
-CAMLreturn(Val_unit);
-}

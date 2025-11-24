@@ -13,28 +13,23 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkTextChildAnchor */
+#define GtkTextChildAnchor_val(val) ((GtkTextChildAnchor*)ext_of_val(val))
+#define Val_GtkTextChildAnchor(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_text_child_anchor_new(value unit)
 {
 CAMLparam1(unit);
-GtkWidget *widget = gtk_text_child_anchor_new();
-CAMLreturn(Val_GtkWidget(widget));
+GtkTextChildAnchor *obj = gtk_text_child_anchor_new();
+CAMLreturn(Val_GtkTextChildAnchor(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_child_anchor_new_with_replacement(value arg1)
 {
 CAMLparam1(arg1);
-GtkWidget *widget = gtk_text_child_anchor_new_with_replacement(String_val(arg1));
-CAMLreturn(Val_GtkWidget(widget));
-}
-
-CAMLexport CAMLprim value ml_gtk_text_child_anchor_get_widgets(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-
-    gtk_text_child_anchor_get_widgets(GtkWidget_val(self), arg1);
-CAMLreturn(Val_unit);
+GtkTextChildAnchor *obj = gtk_text_child_anchor_new_with_replacement(String_val(arg1));
+CAMLreturn(Val_GtkTextChildAnchor(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_child_anchor_get_deleted(value self)
@@ -42,6 +37,6 @@ CAMLexport CAMLprim value ml_gtk_text_child_anchor_get_deleted(value self)
 CAMLparam1(self);
 
 
-    gboolean result = gtk_text_child_anchor_get_deleted(GtkWidget_val(self));
+    gboolean result = gtk_text_child_anchor_get_deleted(GtkTextChildAnchor_val(self));
 CAMLreturn(Val_bool(result));
 }

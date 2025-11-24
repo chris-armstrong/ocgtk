@@ -114,8 +114,6 @@ external set_drag_dest_item : t -> Gtk.Widget.t option -> Gtk_enums.iconviewdrop
 
 external set_cursor : t -> Gtk.Widget.t -> Gtk.Widget.t option -> bool -> unit = "ml_gtk_icon_view_set_cursor"
 
-external selected_foreach : t -> unit -> unit -> unit = "ml_gtk_icon_view_selected_foreach"
-
 external select_path : t -> Gtk.Widget.t -> unit = "ml_gtk_icon_view_select_path"
 
 external select_all : t -> unit = "ml_gtk_icon_view_select_all"
@@ -149,10 +147,4 @@ external get_drag_dest_item : t -> Gtk.Widget.t option -> Gtk.Widget.t -> unit =
 external get_dest_item_at_pos : t -> int -> int -> Gtk.Widget.t -> Gtk.Widget.t -> bool = "ml_gtk_icon_view_get_dest_item_at_pos"
 
 external get_cursor : t -> Gtk.Widget.t -> Gtk.Widget.t -> bool = "ml_gtk_icon_view_get_cursor"
-
-external get_cell_rect : t -> Gtk.Widget.t -> Gtk.Widget.t option -> unit -> bool = "ml_gtk_icon_view_get_cell_rect"
-
-external enable_model_drag_source : t -> Gdk.modifiertype -> unit -> Gdk.dragaction -> unit = "ml_gtk_icon_view_enable_model_drag_source"
-
-external enable_model_drag_dest : t -> unit -> Gdk.dragaction -> unit = "ml_gtk_icon_view_enable_model_drag_dest"
 

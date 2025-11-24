@@ -23,5 +23,3 @@ external get_size : t -> int = "ml_gtk_slice_list_model_get_size"
 (** Set property: size *)
 external set_size : t -> int -> unit = "ml_gtk_slice_list_model_set_size"
 
-external set_model : t -> unit -> unit = "ml_gtk_slice_list_model_set_model"
-

@@ -13,12 +13,16 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkGraphicsOffload */
+#define GtkGraphicsOffload_val(val) ((GtkGraphicsOffload*)ext_of_val(val))
+#define Val_GtkGraphicsOffload(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_graphics_offload_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkWidget *widget = gtk_graphics_offload_new(GtkWidget_option_val(arg1));
-CAMLreturn(Val_GtkWidget(widget));
+GtkGraphicsOffload *obj = gtk_graphics_offload_new(GtkWidget_option_val(arg1));
+CAMLreturn(Val_GtkGraphicsOffload(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_graphics_offload_set_enabled(value self, value arg1)
@@ -26,7 +30,7 @@ CAMLexport CAMLprim value ml_gtk_graphics_offload_set_enabled(value self, value 
 CAMLparam2(self, arg1);
 
 
-    gtk_graphics_offload_set_enabled(GtkWidget_val(self), GtkGraphicsOffloadEnabled_val(arg1));
+    gtk_graphics_offload_set_enabled(GtkGraphicsOffload_val(self), GtkGraphicsOffloadEnabled_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -35,7 +39,7 @@ CAMLexport CAMLprim value ml_gtk_graphics_offload_set_child(value self, value ar
 CAMLparam2(self, arg1);
 
 
-    gtk_graphics_offload_set_child(GtkWidget_val(self), GtkWidget_option_val(arg1));
+    gtk_graphics_offload_set_child(GtkGraphicsOffload_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -44,7 +48,7 @@ CAMLexport CAMLprim value ml_gtk_graphics_offload_get_enabled(value self)
 CAMLparam1(self);
 
 
-    GtkGraphicsOffloadEnabled result = gtk_graphics_offload_get_enabled(GtkWidget_val(self));
+    GtkGraphicsOffloadEnabled result = gtk_graphics_offload_get_enabled(GtkGraphicsOffload_val(self));
 CAMLreturn(Val_GtkGraphicsOffloadEnabled(result));
 }
 
@@ -53,6 +57,6 @@ CAMLexport CAMLprim value ml_gtk_graphics_offload_get_child(value self)
 CAMLparam1(self);
 
 
-    GtkWidget* result = gtk_graphics_offload_get_child(GtkWidget_val(self));
+    GtkWidget* result = gtk_graphics_offload_get_child(GtkGraphicsOffload_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }

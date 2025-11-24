@@ -5,11 +5,7 @@ type t = Gtk.Widget.t
 
 (* Properties *)
 
-external set_visible_func : t -> unit -> unit -> unit -> unit = "ml_gtk_tree_model_filter_set_visible_func"
-
 external set_visible_column : t -> int -> unit = "ml_gtk_tree_model_filter_set_visible_column"
-
-external set_modify_func : t -> int -> unit -> unit -> unit -> unit -> unit = "ml_gtk_tree_model_filter_set_modify_func_bytecode" "ml_gtk_tree_model_filter_set_modify_func_native"
 
 external refilter : t -> unit = "ml_gtk_tree_model_filter_refilter"
 

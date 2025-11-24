@@ -23,8 +23,6 @@ external get_value : t -> float = "ml_gtk_scale_button_get_value"
 (** Set property: value *)
 external set_value : t -> float -> unit = "ml_gtk_scale_button_set_value"
 
-external set_icons : t -> unit -> unit = "ml_gtk_scale_button_set_icons"
-
 external set_adjustment : t -> Gtk.Widget.t -> unit = "ml_gtk_scale_button_set_adjustment"
 
 external get_popup : t -> Gtk.Widget.t = "ml_gtk_scale_button_get_popup"

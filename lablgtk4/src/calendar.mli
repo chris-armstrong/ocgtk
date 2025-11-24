@@ -46,8 +46,6 @@ external set_year : t -> int -> unit = "ml_gtk_calendar_set_year"
 
 external unmark_day : t -> int -> unit = "ml_gtk_calendar_unmark_day"
 
-external select_day : t -> unit -> unit = "ml_gtk_calendar_select_day"
-
 external mark_day : t -> int -> unit = "ml_gtk_calendar_mark_day"
 
 external get_day_is_marked : t -> int -> bool = "ml_gtk_calendar_get_day_is_marked"

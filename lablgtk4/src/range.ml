@@ -51,9 +51,9 @@ external get_value : t -> float = "ml_gtk_range_get_value"
 
 external get_slider_size_fixed : t -> bool = "ml_gtk_range_get_slider_size_fixed"
 
-external get_slider_range : t -> int -> int -> unit = "ml_gtk_range_get_slider_range"
+(* SKIPPED: unmapped parameter type - external get_slider_range : t -> int -> int -> unit = "ml_gtk_range_get_slider_range" *)
 
-external get_range_rect : t -> unit -> unit = "ml_gtk_range_get_range_rect"
+(* SKIPPED: unmapped parameter type - external get_range_rect : t -> unit -> unit = "ml_gtk_range_get_range_rect" *)
 
 external get_flippable : t -> bool = "ml_gtk_range_get_flippable"
 

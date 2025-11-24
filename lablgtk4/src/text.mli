@@ -82,17 +82,11 @@ external set_visibility : t -> bool -> unit = "ml_gtk_text_set_visibility"
 
 external unset_invisible_char : t -> unit = "ml_gtk_text_unset_invisible_char"
 
-external set_tabs : t -> unit -> unit = "ml_gtk_text_set_tabs"
-
 external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit = "ml_gtk_text_set_input_purpose"
 
 external set_input_hints : t -> Gtk_enums.inputhints -> unit = "ml_gtk_text_set_input_hints"
 
-external set_extra_menu : t -> unit -> unit = "ml_gtk_text_set_extra_menu"
-
 external set_buffer : t -> Gtk.Widget.t -> unit = "ml_gtk_text_set_buffer"
-
-external set_attributes : t -> unit -> unit = "ml_gtk_text_set_attributes"
 
 external grab_focus_without_selecting : t -> bool = "ml_gtk_text_grab_focus_without_selecting"
 
@@ -101,6 +95,4 @@ external get_input_purpose : t -> Gtk_enums.inputpurpose = "ml_gtk_text_get_inpu
 external get_input_hints : t -> Gtk_enums.inputhints = "ml_gtk_text_get_input_hints"
 
 external get_buffer : t -> Gtk.Widget.t = "ml_gtk_text_get_buffer"
-
-external compute_cursor_extents : t -> unit -> unit -> unit -> unit = "ml_gtk_text_compute_cursor_extents"
 

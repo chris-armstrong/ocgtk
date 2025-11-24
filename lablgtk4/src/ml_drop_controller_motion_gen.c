@@ -13,12 +13,16 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkDropControllerMotion */
+#define GtkDropControllerMotion_val(val) ((GtkDropControllerMotion*)ext_of_val(val))
+#define Val_GtkDropControllerMotion(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_drop_controller_motion_new(value unit)
 {
 CAMLparam1(unit);
-GtkWidget *widget = gtk_drop_controller_motion_new();
-CAMLreturn(Val_GtkWidget(widget));
+GtkDropControllerMotion *obj = gtk_drop_controller_motion_new();
+CAMLreturn(Val_GtkDropControllerMotion(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_drop_controller_motion_is_pointer(value self)
@@ -26,7 +30,7 @@ CAMLexport CAMLprim value ml_gtk_drop_controller_motion_is_pointer(value self)
 CAMLparam1(self);
 
 
-    gboolean result = gtk_drop_controller_motion_is_pointer(GtkWidget_val(self));
+    gboolean result = gtk_drop_controller_motion_is_pointer(GtkDropControllerMotion_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -35,7 +39,7 @@ CAMLexport CAMLprim value ml_gtk_drop_controller_motion_contains_pointer(value s
 CAMLparam1(self);
 
 
-    gboolean result = gtk_drop_controller_motion_contains_pointer(GtkWidget_val(self));
+    gboolean result = gtk_drop_controller_motion_contains_pointer(GtkDropControllerMotion_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -43,7 +47,7 @@ CAMLexport CAMLprim value ml_gtk_drop_controller_motion_get_contains_pointer(val
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+GtkDropControllerMotion *obj = (GtkDropControllerMotion *)GtkDropControllerMotion_val(self);
 gboolean prop_value;
 g_object_get(G_OBJECT(obj), "contains-pointer", &prop_value, NULL);
 result = Val_bool(prop_value);
@@ -54,7 +58,7 @@ CAMLexport CAMLprim value ml_gtk_drop_controller_motion_get_is_pointer(value sel
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+GtkDropControllerMotion *obj = (GtkDropControllerMotion *)GtkDropControllerMotion_val(self);
 gboolean prop_value;
 g_object_get(G_OBJECT(obj), "is-pointer", &prop_value, NULL);
 result = Val_bool(prop_value);

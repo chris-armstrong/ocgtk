@@ -13,12 +13,16 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkEventControllerFocus */
+#define GtkEventControllerFocus_val(val) ((GtkEventControllerFocus*)ext_of_val(val))
+#define Val_GtkEventControllerFocus(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_event_controller_focus_new(value unit)
 {
 CAMLparam1(unit);
-GtkEventController *controller = gtk_event_controller_focus_new();
-CAMLreturn(Val_GtkEventController(controller));
+GtkEventControllerFocus *obj = gtk_event_controller_focus_new();
+CAMLreturn(Val_GtkEventControllerFocus(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_event_controller_focus_is_focus(value self)
@@ -26,7 +30,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_focus_is_focus(value self)
 CAMLparam1(self);
 
 
-    gboolean result = gtk_event_controller_focus_is_focus(GtkEventController_val(self));
+    gboolean result = gtk_event_controller_focus_is_focus(GtkEventControllerFocus_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -35,7 +39,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_focus_contains_focus(value sel
 CAMLparam1(self);
 
 
-    gboolean result = gtk_event_controller_focus_contains_focus(GtkEventController_val(self));
+    gboolean result = gtk_event_controller_focus_contains_focus(GtkEventControllerFocus_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -43,7 +47,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_focus_get_contains_focus(value
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkEventController *obj = (GtkEventController *)GtkEventController_val(self);
+GtkEventControllerFocus *obj = (GtkEventControllerFocus *)GtkEventControllerFocus_val(self);
 gboolean prop_value;
 g_object_get(G_OBJECT(obj), "contains-focus", &prop_value, NULL);
 result = Val_bool(prop_value);
@@ -54,7 +58,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_focus_get_is_focus(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkEventController *obj = (GtkEventController *)GtkEventController_val(self);
+GtkEventControllerFocus *obj = (GtkEventControllerFocus *)GtkEventControllerFocus_val(self);
 gboolean prop_value;
 g_object_get(G_OBJECT(obj), "is-focus", &prop_value, NULL);
 result = Val_bool(prop_value);

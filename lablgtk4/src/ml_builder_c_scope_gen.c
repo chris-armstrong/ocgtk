@@ -13,19 +13,14 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkBuilderCScope */
+#define GtkBuilderCScope_val(val) ((GtkBuilderCScope*)ext_of_val(val))
+#define Val_GtkBuilderCScope(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_builder_cscope_new(value unit)
 {
 CAMLparam1(unit);
-GtkWidget *widget = gtk_builder_cscope_new();
-CAMLreturn(Val_GtkWidget(widget));
-}
-
-CAMLexport CAMLprim value ml_gtk_builder_cscope_add_callback_symbol(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-
-
-    gtk_builder_cscope_add_callback_symbol(GtkWidget_val(self), String_val(arg1), arg2);
-CAMLreturn(Val_unit);
+GtkBuilderCScope *obj = gtk_builder_cscope_new();
+CAMLreturn(Val_GtkBuilderCScope(obj));
 }

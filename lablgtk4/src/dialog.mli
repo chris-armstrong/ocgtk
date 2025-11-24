@@ -28,8 +28,6 @@ external get_header_bar : t -> Gtk.Widget.t = "ml_gtk_dialog_get_header_bar"
 
 external get_content_area : t -> Gtk.Widget.t = "ml_gtk_dialog_get_content_area"
 
-external add_buttons : t -> string -> unit -> unit = "ml_gtk_dialog_add_buttons"
-
 external add_button : t -> string -> int -> Gtk.Widget.t = "ml_gtk_dialog_add_button"
 
 external add_action_widget : t -> Gtk.Widget.t -> int -> unit = "ml_gtk_dialog_add_action_widget"

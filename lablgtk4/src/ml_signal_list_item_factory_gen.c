@@ -13,10 +13,14 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkSignalListItemFactory */
+#define GtkSignalListItemFactory_val(val) ((GtkSignalListItemFactory*)ext_of_val(val))
+#define Val_GtkSignalListItemFactory(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_signal_list_item_factory_new(value unit)
 {
 CAMLparam1(unit);
-GtkWidget *widget = gtk_signal_list_item_factory_new();
-CAMLreturn(Val_GtkWidget(widget));
+GtkSignalListItemFactory *obj = gtk_signal_list_item_factory_new();
+CAMLreturn(Val_GtkSignalListItemFactory(obj));
 }

@@ -13,10 +13,14 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkEmojiChooser */
+#define GtkEmojiChooser_val(val) ((GtkEmojiChooser*)ext_of_val(val))
+#define Val_GtkEmojiChooser(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_emoji_chooser_new(value unit)
 {
 CAMLparam1(unit);
-GtkWidget *widget = gtk_emoji_chooser_new();
-CAMLreturn(Val_GtkWidget(widget));
+GtkEmojiChooser *obj = gtk_emoji_chooser_new();
+CAMLreturn(Val_GtkEmojiChooser(obj));
 }

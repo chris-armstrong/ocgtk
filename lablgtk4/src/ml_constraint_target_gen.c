@@ -13,3 +13,7 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkConstraintTarget */
+#define GtkConstraintTarget_val(val) ((GtkConstraintTarget*)ext_of_val(val))
+#define Val_GtkConstraintTarget(obj) ((value)(val_of_ext(obj)))
+

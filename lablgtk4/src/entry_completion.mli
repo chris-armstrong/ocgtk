@@ -55,8 +55,6 @@ external set_text_column : t -> int -> unit = "ml_gtk_entry_completion_set_text_
 
 external set_model : t -> Gtk.Widget.t option -> unit = "ml_gtk_entry_completion_set_model"
 
-external set_match_func : t -> unit -> unit -> unit -> unit = "ml_gtk_entry_completion_set_match_func"
-
 external insert_prefix : t -> unit = "ml_gtk_entry_completion_insert_prefix"
 
 external get_model : t -> Gtk.Widget.t = "ml_gtk_entry_completion_get_model"

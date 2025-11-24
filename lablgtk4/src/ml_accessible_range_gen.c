@@ -13,3 +13,7 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkAccessibleRange */
+#define GtkAccessibleRange_val(val) ((GtkAccessibleRange*)ext_of_val(val))
+#define Val_GtkAccessibleRange(obj) ((value)(val_of_ext(obj)))
+

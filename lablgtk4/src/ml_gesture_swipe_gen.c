@@ -13,19 +13,14 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkGestureSwipe */
+#define GtkGestureSwipe_val(val) ((GtkGestureSwipe*)ext_of_val(val))
+#define Val_GtkGestureSwipe(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_gesture_swipe_new(value unit)
 {
 CAMLparam1(unit);
-GtkEventController *controller = gtk_gesture_swipe_new();
-CAMLreturn(Val_GtkEventController(controller));
-}
-
-CAMLexport CAMLprim value ml_gtk_gesture_swipe_get_velocity(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-
-
-    gboolean result = gtk_gesture_swipe_get_velocity(GtkEventController_val(self), arg1, arg2);
-CAMLreturn(Val_bool(result));
+GtkGestureSwipe *obj = gtk_gesture_swipe_new();
+CAMLreturn(Val_GtkGestureSwipe(obj));
 }

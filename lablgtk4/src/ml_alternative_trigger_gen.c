@@ -13,12 +13,16 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkAlternativeTrigger */
+#define GtkAlternativeTrigger_val(val) ((GtkAlternativeTrigger*)ext_of_val(val))
+#define Val_GtkAlternativeTrigger(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_alternative_trigger_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
-GtkWidget *widget = gtk_alternative_trigger_new(GtkWidget_val(arg1), GtkWidget_val(arg2));
-CAMLreturn(Val_GtkWidget(widget));
+GtkAlternativeTrigger *obj = gtk_alternative_trigger_new(GtkWidget_val(arg1), GtkWidget_val(arg2));
+CAMLreturn(Val_GtkAlternativeTrigger(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_alternative_trigger_get_second(value self)
@@ -26,7 +30,7 @@ CAMLexport CAMLprim value ml_gtk_alternative_trigger_get_second(value self)
 CAMLparam1(self);
 
 
-    GtkShortcutTrigger* result = gtk_alternative_trigger_get_second(GtkWidget_val(self));
+    GtkShortcutTrigger* result = gtk_alternative_trigger_get_second(GtkAlternativeTrigger_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -35,6 +39,6 @@ CAMLexport CAMLprim value ml_gtk_alternative_trigger_get_first(value self)
 CAMLparam1(self);
 
 
-    GtkShortcutTrigger* result = gtk_alternative_trigger_get_first(GtkWidget_val(self));
+    GtkShortcutTrigger* result = gtk_alternative_trigger_get_first(GtkAlternativeTrigger_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }

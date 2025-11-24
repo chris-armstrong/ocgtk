@@ -8,7 +8,5 @@ external new_ : unit -> unit -> t = "ml_gtk_pad_controller_new"
 
 (* Properties *)
 
-external set_action_entries : t -> unit -> int -> unit = "ml_gtk_pad_controller_set_action_entries"
-
 external set_action : t -> Gtk_enums.padactiontype -> int -> int -> string -> string -> unit = "ml_gtk_pad_controller_set_action_bytecode" "ml_gtk_pad_controller_set_action_native"
 

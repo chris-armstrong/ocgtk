@@ -13,10 +13,14 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkObjectExpression */
+#define GtkObjectExpression_val(val) ((GtkObjectExpression*)ext_of_val(val))
+#define Val_GtkObjectExpression(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_object_expression_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkWidget *widget = gtk_object_expression_new(arg1);
-CAMLreturn(Val_GtkWidget(widget));
+GtkObjectExpression *obj = gtk_object_expression_new(arg1);
+CAMLreturn(Val_GtkObjectExpression(obj));
 }

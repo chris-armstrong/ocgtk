@@ -13,13 +13,17 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkMultiFilter */
+#define GtkMultiFilter_val(val) ((GtkMultiFilter*)ext_of_val(val))
+#define Val_GtkMultiFilter(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_multi_filter_remove(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 
-    gtk_multi_filter_remove(GtkWidget_val(self), Int_val(arg1));
+    gtk_multi_filter_remove(GtkMultiFilter_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -28,7 +32,7 @@ CAMLexport CAMLprim value ml_gtk_multi_filter_append(value self, value arg1)
 CAMLparam2(self, arg1);
 
 
-    gtk_multi_filter_append(GtkWidget_val(self), GtkWidget_val(arg1));
+    gtk_multi_filter_append(GtkMultiFilter_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -36,7 +40,7 @@ CAMLexport CAMLprim value ml_gtk_multi_filter_get_n_items(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
+GtkMultiFilter *obj = (GtkMultiFilter *)GtkMultiFilter_val(self);
 guint prop_value;
 g_object_get(G_OBJECT(obj), "n-items", &prop_value, NULL);
 result = Val_int(prop_value);

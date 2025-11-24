@@ -13,21 +13,7 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkTreeDragDest */
+#define GtkTreeDragDest_val(val) ((GtkTreeDragDest*)ext_of_val(val))
+#define Val_GtkTreeDragDest(obj) ((value)(val_of_ext(obj)))
 
-CAMLexport CAMLprim value ml_gtk_tree_drag_dest_row_drop_possible(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-
-
-    gboolean result = gtk_tree_drag_dest_row_drop_possible(GtkWidget_val(self), GtkWidget_val(arg1), arg2);
-CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_drag_dest_drag_data_received(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-
-
-    gboolean result = gtk_tree_drag_dest_drag_data_received(GtkWidget_val(self), GtkWidget_val(arg1), arg2);
-CAMLreturn(Val_bool(result));
-}

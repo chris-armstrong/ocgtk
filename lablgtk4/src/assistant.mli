@@ -19,8 +19,6 @@ external set_page_title : t -> Gtk.Widget.t -> string -> unit = "ml_gtk_assistan
 
 external set_page_complete : t -> Gtk.Widget.t -> bool -> unit = "ml_gtk_assistant_set_page_complete"
 
-external set_forward_page_func : t -> unit -> unit -> unit -> unit = "ml_gtk_assistant_set_forward_page_func"
-
 external set_current_page : t -> int -> unit = "ml_gtk_assistant_set_current_page"
 
 external remove_page : t -> int -> unit = "ml_gtk_assistant_remove_page"

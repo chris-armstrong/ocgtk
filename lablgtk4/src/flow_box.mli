@@ -56,15 +56,9 @@ external unselect_all : t -> unit = "ml_gtk_flow_box_unselect_all"
 
 external set_vadjustment : t -> Gtk.Widget.t -> unit = "ml_gtk_flow_box_set_vadjustment"
 
-external set_sort_func : t -> unit -> unit -> unit -> unit = "ml_gtk_flow_box_set_sort_func"
-
 external set_selection_mode : t -> Gtk_enums.selectionmode -> unit = "ml_gtk_flow_box_set_selection_mode"
 
 external set_hadjustment : t -> Gtk.Widget.t -> unit = "ml_gtk_flow_box_set_hadjustment"
-
-external set_filter_func : t -> unit -> unit -> unit -> unit = "ml_gtk_flow_box_set_filter_func"
-
-external selected_foreach : t -> unit -> unit -> unit = "ml_gtk_flow_box_selected_foreach"
 
 external select_child : t -> Gtk.Widget.t -> unit = "ml_gtk_flow_box_select_child"
 
@@ -87,8 +81,6 @@ external get_selection_mode : t -> Gtk_enums.selectionmode = "ml_gtk_flow_box_ge
 external get_child_at_pos : t -> int -> int -> Gtk.Widget.t = "ml_gtk_flow_box_get_child_at_pos"
 
 external get_child_at_index : t -> int -> Gtk.Widget.t = "ml_gtk_flow_box_get_child_at_index"
-
-external bind_model : t -> unit -> unit -> unit -> unit -> unit = "ml_gtk_flow_box_bind_model"
 
 external append : t -> Gtk.Widget.t -> unit = "ml_gtk_flow_box_append"
 

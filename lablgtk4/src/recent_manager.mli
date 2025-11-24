@@ -26,5 +26,3 @@ external has_item : t -> string -> bool = "ml_gtk_recent_manager_has_item"
 
 external add_item : t -> string -> bool = "ml_gtk_recent_manager_add_item"
 
-external add_full : t -> string -> unit -> bool = "ml_gtk_recent_manager_add_full"
-

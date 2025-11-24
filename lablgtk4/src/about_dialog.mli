@@ -74,21 +74,9 @@ external get_wrap_license : t -> bool = "ml_gtk_about_dialog_get_wrap_license"
 (** Set property: wrap-license *)
 external set_wrap_license : t -> bool -> unit = "ml_gtk_about_dialog_set_wrap_license"
 
-external set_logo : t -> unit -> unit = "ml_gtk_about_dialog_set_logo"
-
-external set_license_type : t -> unit -> unit = "ml_gtk_about_dialog_set_license_type"
-
-external set_documenters : t -> unit -> unit = "ml_gtk_about_dialog_set_documenters"
-
-external set_authors : t -> unit -> unit = "ml_gtk_about_dialog_set_authors"
-
-external set_artists : t -> unit -> unit = "ml_gtk_about_dialog_set_artists"
-
 external get_documenters : t -> unit = "ml_gtk_about_dialog_get_documenters"
 
 external get_authors : t -> unit = "ml_gtk_about_dialog_get_authors"
 
 external get_artists : t -> unit = "ml_gtk_about_dialog_get_artists"
-
-external add_credit_section : t -> string -> unit -> unit = "ml_gtk_about_dialog_add_credit_section"
 

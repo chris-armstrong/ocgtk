@@ -3,10 +3,6 @@
 
 type t = Gtk.Widget.t
 
-external set_cell_data_func : t -> Gtk.Widget.t -> unit -> unit -> unit -> unit = "ml_gtk_cell_layout_set_cell_data_func"
-
-external set_attributes : t -> Gtk.Widget.t -> unit -> unit = "ml_gtk_cell_layout_set_attributes"
-
 external reorder : t -> Gtk.Widget.t -> int -> unit = "ml_gtk_cell_layout_reorder"
 
 external pack_start : t -> Gtk.Widget.t -> bool -> unit = "ml_gtk_cell_layout_pack_start"

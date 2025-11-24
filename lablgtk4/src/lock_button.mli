@@ -38,5 +38,3 @@ external get_tooltip_unlock : t -> string = "ml_gtk_lock_button_get_tooltip_unlo
 (** Set property: tooltip-unlock *)
 external set_tooltip_unlock : t -> string -> unit = "ml_gtk_lock_button_set_tooltip_unlock"
 
-external set_permission : t -> unit -> unit = "ml_gtk_lock_button_set_permission"
-

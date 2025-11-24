@@ -11,18 +11,6 @@ external newv : int -> unit -> t = "ml_gtk_list_store_newv"
 
 external swap : t -> Gtk.Widget.t -> Gtk.Widget.t -> unit = "ml_gtk_list_store_swap"
 
-external set_valuesv : t -> Gtk.Widget.t -> unit -> unit -> int -> unit = "ml_gtk_list_store_set_valuesv"
-
-external set_value : t -> Gtk.Widget.t -> int -> unit -> unit = "ml_gtk_list_store_set_value"
-
-external set_valist : t -> Gtk.Widget.t -> unit -> unit = "ml_gtk_list_store_set_valist"
-
-external set_column_types : t -> int -> unit -> unit = "ml_gtk_list_store_set_column_types"
-
-external set : t -> Gtk.Widget.t -> unit -> unit = "ml_gtk_list_store_set"
-
-external reorder : t -> unit -> unit = "ml_gtk_list_store_reorder"
-
 external remove : t -> Gtk.Widget.t -> bool = "ml_gtk_list_store_remove"
 
 external prepend : t -> Gtk.Widget.t -> unit = "ml_gtk_list_store_prepend"
@@ -32,10 +20,6 @@ external move_before : t -> Gtk.Widget.t -> Gtk.Widget.t option -> unit = "ml_gt
 external move_after : t -> Gtk.Widget.t -> Gtk.Widget.t option -> unit = "ml_gtk_list_store_move_after"
 
 external iter_is_valid : t -> Gtk.Widget.t -> bool = "ml_gtk_list_store_iter_is_valid"
-
-external insert_with_valuesv : t -> Gtk.Widget.t -> int -> unit -> unit -> int -> unit = "ml_gtk_list_store_insert_with_valuesv_bytecode" "ml_gtk_list_store_insert_with_valuesv_native"
-
-external insert_with_values : t -> Gtk.Widget.t -> int -> unit -> unit = "ml_gtk_list_store_insert_with_values"
 
 external insert_before : t -> Gtk.Widget.t -> Gtk.Widget.t option -> unit = "ml_gtk_list_store_insert_before"
 

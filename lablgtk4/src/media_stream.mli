@@ -50,27 +50,15 @@ external get_volume : t -> float = "ml_gtk_media_stream_get_volume"
 (** Set property: volume *)
 external set_volume : t -> float -> unit = "ml_gtk_media_stream_set_volume"
 
-external update : t -> unit -> unit = "ml_gtk_media_stream_update"
-
-external unrealize : t -> unit -> unit = "ml_gtk_media_stream_unrealize"
-
 external unprepared : t -> unit = "ml_gtk_media_stream_unprepared"
 
 external stream_unprepared : t -> unit = "ml_gtk_media_stream_stream_unprepared"
-
-external stream_prepared : t -> bool -> bool -> bool -> unit -> unit = "ml_gtk_media_stream_stream_prepared"
 
 external stream_ended : t -> unit = "ml_gtk_media_stream_stream_ended"
 
 external seek_success : t -> unit = "ml_gtk_media_stream_seek_success"
 
 external seek_failed : t -> unit = "ml_gtk_media_stream_seek_failed"
-
-external seek : t -> unit -> unit = "ml_gtk_media_stream_seek"
-
-external realize : t -> unit -> unit = "ml_gtk_media_stream_realize"
-
-external prepared : t -> bool -> bool -> bool -> unit -> unit = "ml_gtk_media_stream_prepared"
 
 external play : t -> unit = "ml_gtk_media_stream_play"
 
@@ -85,12 +73,6 @@ external is_prepared : t -> bool = "ml_gtk_media_stream_is_prepared"
 external has_video : t -> bool = "ml_gtk_media_stream_has_video"
 
 external has_audio : t -> bool = "ml_gtk_media_stream_has_audio"
-
-external gerror : t -> unit -> unit = "ml_gtk_media_stream_gerror"
-
-external error_valist : t -> unit -> int -> string -> unit -> unit = "ml_gtk_media_stream_error_valist"
-
-external error : t -> unit -> int -> string -> unit -> unit = "ml_gtk_media_stream_error"
 
 external ended : t -> unit = "ml_gtk_media_stream_ended"
 

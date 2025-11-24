@@ -13,10 +13,14 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkEventControllerLegacy */
+#define GtkEventControllerLegacy_val(val) ((GtkEventControllerLegacy*)ext_of_val(val))
+#define Val_GtkEventControllerLegacy(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_event_controller_legacy_new(value unit)
 {
 CAMLparam1(unit);
-GtkEventController *controller = gtk_event_controller_legacy_new();
-CAMLreturn(Val_GtkEventController(controller));
+GtkEventControllerLegacy *obj = gtk_event_controller_legacy_new();
+CAMLreturn(Val_GtkEventControllerLegacy(obj));
 }

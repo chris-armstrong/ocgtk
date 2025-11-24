@@ -82,10 +82,6 @@ external set_ypad : t -> int -> unit = "ml_gtk_cell_renderer_set_ypad"
 
 external stop_editing : t -> bool -> unit = "ml_gtk_cell_renderer_stop_editing"
 
-external start_editing : t -> _ Gdk.event option -> Gtk.Widget.t -> string -> unit -> unit -> Gtk_enums.cellrendererstate -> Gtk.Widget.t = "ml_gtk_cell_renderer_start_editing_bytecode" "ml_gtk_cell_renderer_start_editing_native"
-
-external snapshot : t -> Gtk.Widget.t -> Gtk.Widget.t -> unit -> unit -> Gtk_enums.cellrendererstate -> unit = "ml_gtk_cell_renderer_snapshot_bytecode" "ml_gtk_cell_renderer_snapshot_native"
-
 external set_padding : t -> int -> int -> unit = "ml_gtk_cell_renderer_set_padding"
 
 external set_fixed_size : t -> int -> int -> unit = "ml_gtk_cell_renderer_set_fixed_size"
@@ -98,23 +94,5 @@ external get_state : t -> Gtk.Widget.t option -> Gtk_enums.cellrendererstate -> 
 
 external get_request_mode : t -> Gtk_enums.sizerequestmode = "ml_gtk_cell_renderer_get_request_mode"
 
-external get_preferred_width_for_height : t -> Gtk.Widget.t -> int -> int -> int -> unit = "ml_gtk_cell_renderer_get_preferred_width_for_height"
-
-external get_preferred_width : t -> Gtk.Widget.t -> int -> int -> unit = "ml_gtk_cell_renderer_get_preferred_width"
-
 external get_preferred_size : t -> Gtk.Widget.t -> Gtk.Widget.t -> Gtk.Widget.t -> unit = "ml_gtk_cell_renderer_get_preferred_size"
-
-external get_preferred_height_for_width : t -> Gtk.Widget.t -> int -> int -> int -> unit = "ml_gtk_cell_renderer_get_preferred_height_for_width"
-
-external get_preferred_height : t -> Gtk.Widget.t -> int -> int -> unit = "ml_gtk_cell_renderer_get_preferred_height"
-
-external get_padding : t -> int -> int -> unit = "ml_gtk_cell_renderer_get_padding"
-
-external get_fixed_size : t -> int -> int -> unit = "ml_gtk_cell_renderer_get_fixed_size"
-
-external get_alignment : t -> float -> float -> unit = "ml_gtk_cell_renderer_get_alignment"
-
-external get_aligned_area : t -> Gtk.Widget.t -> Gtk_enums.cellrendererstate -> unit -> unit -> unit = "ml_gtk_cell_renderer_get_aligned_area"
-
-external activate : t -> _ Gdk.event -> Gtk.Widget.t -> string -> unit -> unit -> Gtk_enums.cellrendererstate -> bool = "ml_gtk_cell_renderer_activate_bytecode" "ml_gtk_cell_renderer_activate_native"
 

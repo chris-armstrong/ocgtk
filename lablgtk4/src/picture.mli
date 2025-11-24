@@ -43,13 +43,7 @@ external set_keep_aspect_ratio : t -> bool -> unit = "ml_gtk_picture_set_keep_as
 
 external set_resource : t -> string option -> unit = "ml_gtk_picture_set_resource"
 
-external set_pixbuf : t -> unit -> unit = "ml_gtk_picture_set_pixbuf"
-
-external set_paintable : t -> unit -> unit = "ml_gtk_picture_set_paintable"
-
 external set_filename : t -> string option -> unit = "ml_gtk_picture_set_filename"
-
-external set_file : t -> unit -> unit = "ml_gtk_picture_set_file"
 
 external set_content_fit : t -> Gtk_enums.contentfit -> unit = "ml_gtk_picture_set_content_fit"
 

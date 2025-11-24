@@ -22,11 +22,7 @@ external new_for_resource : string -> t = "ml_gtk_media_file_new_for_resource"
 
 external set_resource : t -> string option -> unit = "ml_gtk_media_file_set_resource"
 
-external set_input_stream : t -> unit -> unit = "ml_gtk_media_file_set_input_stream"
-
 external set_filename : t -> string option -> unit = "ml_gtk_media_file_set_filename"
-
-external set_file : t -> unit -> unit = "ml_gtk_media_file_set_file"
 
 external clear : t -> unit = "ml_gtk_media_file_clear"
 

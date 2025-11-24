@@ -13,10 +13,14 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkOverlayLayout */
+#define GtkOverlayLayout_val(val) ((GtkOverlayLayout*)ext_of_val(val))
+#define Val_GtkOverlayLayout(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_overlay_layout_new(value unit)
 {
 CAMLparam1(unit);
-GtkWidget *widget = gtk_overlay_layout_new();
-CAMLreturn(Val_GtkWidget(widget));
+GtkOverlayLayout *obj = gtk_overlay_layout_new();
+CAMLreturn(Val_GtkOverlayLayout(obj));
 }

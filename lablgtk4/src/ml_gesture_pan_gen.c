@@ -13,12 +13,16 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Type-specific conversion macros for GtkGesturePan */
+#define GtkGesturePan_val(val) ((GtkGesturePan*)ext_of_val(val))
+#define Val_GtkGesturePan(obj) ((value)(val_of_ext(obj)))
+
 
 CAMLexport CAMLprim value ml_gtk_gesture_pan_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkEventController *controller = gtk_gesture_pan_new(GtkOrientation_val(arg1));
-CAMLreturn(Val_GtkEventController(controller));
+GtkGesturePan *obj = gtk_gesture_pan_new(GtkOrientation_val(arg1));
+CAMLreturn(Val_GtkGesturePan(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_gesture_pan_set_orientation(value self, value arg1)
@@ -26,7 +30,7 @@ CAMLexport CAMLprim value ml_gtk_gesture_pan_set_orientation(value self, value a
 CAMLparam2(self, arg1);
 
 
-    gtk_gesture_pan_set_orientation(GtkEventController_val(self), GtkOrientation_val(arg1));
+    gtk_gesture_pan_set_orientation(GtkGesturePan_val(self), GtkOrientation_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -35,6 +39,6 @@ CAMLexport CAMLprim value ml_gtk_gesture_pan_get_orientation(value self)
 CAMLparam1(self);
 
 
-    GtkOrientation result = gtk_gesture_pan_get_orientation(GtkEventController_val(self));
+    GtkOrientation result = gtk_gesture_pan_get_orientation(GtkGesturePan_val(self));
 CAMLreturn(Val_GtkOrientation(result));
 }

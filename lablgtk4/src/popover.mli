@@ -34,8 +34,6 @@ external set_mnemonics_visible : t -> bool -> unit = "ml_gtk_popover_set_mnemoni
 
 external set_position : t -> Gtk_enums.positiontype -> unit = "ml_gtk_popover_set_position"
 
-external set_pointing_to : t -> unit -> unit = "ml_gtk_popover_set_pointing_to"
-
 external set_offset : t -> int -> int -> unit = "ml_gtk_popover_set_offset"
 
 external set_default_widget : t -> Gtk.Widget.t option -> unit = "ml_gtk_popover_set_default_widget"
@@ -49,10 +47,6 @@ external popup : t -> unit = "ml_gtk_popover_popup"
 external popdown : t -> unit = "ml_gtk_popover_popdown"
 
 external get_position : t -> Gtk_enums.positiontype = "ml_gtk_popover_get_position"
-
-external get_pointing_to : t -> unit -> bool = "ml_gtk_popover_get_pointing_to"
-
-external get_offset : t -> int -> int -> unit = "ml_gtk_popover_get_offset"
 
 external get_child : t -> Gtk.Widget.t = "ml_gtk_popover_get_child"
 

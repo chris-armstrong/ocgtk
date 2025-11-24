@@ -36,5 +36,3 @@ external set_active_custom_item : t -> string -> unit = "ml_gtk_app_chooser_butt
 
 external append_separator : t -> unit = "ml_gtk_app_chooser_button_append_separator"
 
-external append_custom_item : t -> string -> string -> unit -> unit = "ml_gtk_app_chooser_button_append_custom_item"
-

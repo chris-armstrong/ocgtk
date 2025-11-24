@@ -20,8 +20,6 @@ external get_n_items : t -> int = "ml_gtk_filter_list_model_get_n_items"
 (** Get property: pending *)
 external get_pending : t -> int = "ml_gtk_filter_list_model_get_pending"
 
-external set_model : t -> unit -> unit = "ml_gtk_filter_list_model_set_model"
-
 external set_filter : t -> Gtk.Widget.t option -> unit = "ml_gtk_filter_list_model_set_filter"
 
 external get_filter : t -> Gtk.Widget.t = "ml_gtk_filter_list_model_get_filter"
