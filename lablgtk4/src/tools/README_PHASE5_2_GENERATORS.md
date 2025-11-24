@@ -27,17 +27,17 @@ Together, these tools automate ~90% of the code needed for widget bindings.
 **Usage**:
 ```bash
 # Build the generator
-dune build src/tools/gir_gen.exe
+dune build src/tools/gir_gen/main.exe
 
 # Generate widget bindings
-./_build/default/src/tools/gir_gen.exe \
+./_build/default/src/tools/gir_gen/main.exe \
   -m widgets \
   -f src/tools/widget_filter.conf \
   /usr/share/gir-1.0/Gtk-4.0.gir \
   ./output
 
 # Generate event controller bindings
-./_build/default/src/tools/gir_gen.exe \
+./_build/default/src/tools/gir_gen/main.exe \
   -m controllers \
   /usr/share/gir-1.0/Gtk-4.0.gir \
   ./output
@@ -230,9 +230,9 @@ GtkYourWidget
 
 Run gir_gen to generate C and .mli files:
 ```bash
-dune build src/tools/gir_gen.exe
+dune build src/tools/gir_gen/main.exe
 
-./_build/default/src/tools/gir_gen.exe \
+./_build/default/src/tools/gir_gen/main.exe \
   -m widgets \
   -f src/tools/widget_filter.conf \
   /usr/share/gir-1.0/Gtk-4.0.gir \
