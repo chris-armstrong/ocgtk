@@ -1,63 +1,91 @@
-(* GENERATED IMPLEMENTATION - DO NOT EDIT DIRECTLY *)
-(* Generated from label.mli *)
+(* GENERATED CODE - DO NOT EDIT *)
+(* Widget: Label *)
 
-(* Type declarations *)
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
-(* External FFI bindings *)
 external new_ : string option -> t = "ml_gtk_label_new"
-external new_with_mnemonic : string option -> t = "ml_gtk_label_new_with_mnemonic"
-external get_label : t -> string = "ml_gtk_label_get_label"
-external set_label : t -> string -> unit = "ml_gtk_label_set_label"
-external get_lines : t -> int = "ml_gtk_label_get_lines"
-external set_lines : t -> int -> unit = "ml_gtk_label_set_lines"
-external get_max_width_chars : t -> int = "ml_gtk_label_get_max_width_chars"
-external set_max_width_chars : t -> int -> unit = "ml_gtk_label_set_max_width_chars"
-external get_mnemonic_keyval : t -> int = "ml_gtk_label_get_mnemonic_keyval"
-external get_selectable : t -> bool = "ml_gtk_label_get_selectable"
-external set_selectable : t -> bool -> unit = "ml_gtk_label_set_selectable"
-external get_single_line_mode : t -> bool = "ml_gtk_label_get_single_line_mode"
-external set_single_line_mode : t -> bool -> unit = "ml_gtk_label_set_single_line_mode"
-external get_use_markup : t -> bool = "ml_gtk_label_get_use_markup"
-external set_use_markup : t -> bool -> unit = "ml_gtk_label_set_use_markup"
-external get_use_underline : t -> bool = "ml_gtk_label_get_use_underline"
-external set_use_underline : t -> bool -> unit = "ml_gtk_label_set_use_underline"
-external get_width_chars : t -> int = "ml_gtk_label_get_width_chars"
-external set_width_chars : t -> int -> unit = "ml_gtk_label_set_width_chars"
-external get_wrap : t -> bool = "ml_gtk_label_get_wrap"
-external set_wrap : t -> bool -> unit = "ml_gtk_label_set_wrap"
-external get_xalign : t -> float = "ml_gtk_label_get_xalign"
-external set_xalign : t -> float -> unit = "ml_gtk_label_set_xalign"
-external get_yalign : t -> float = "ml_gtk_label_get_yalign"
-external set_yalign : t -> float -> unit = "ml_gtk_label_set_yalign"
-external set_wrap_mode : t -> Pango.wrapmode -> unit = "ml_gtk_label_set_wrap_mode"
-external set_text_with_mnemonic : t -> string -> unit = "ml_gtk_label_set_text_with_mnemonic"
-external set_text : t -> string -> unit = "ml_gtk_label_set_text"
-(* SKIPPED: unmapped parameter type - external set_tabs : t -> unit -> unit = "ml_gtk_label_set_tabs" *)
-external set_natural_wrap_mode : t -> Gtk_enums.naturalwrapmode -> unit = "ml_gtk_label_set_natural_wrap_mode"
-external set_mnemonic_widget : t -> Gtk.Widget.t option -> unit = "ml_gtk_label_set_mnemonic_widget"
-external set_markup_with_mnemonic : t -> string -> unit = "ml_gtk_label_set_markup_with_mnemonic"
-external set_markup : t -> string -> unit = "ml_gtk_label_set_markup"
-external set_justify : t -> Gtk_enums.justification -> unit = "ml_gtk_label_set_justify"
-(* SKIPPED: unmapped parameter type - external set_extra_menu : t -> unit -> unit = "ml_gtk_label_set_extra_menu" *)
-external set_ellipsize : t -> Pango.ellipsizemode -> unit = "ml_gtk_label_set_ellipsize"
-(* SKIPPED: unmapped parameter type - external set_attributes : t -> unit -> unit = "ml_gtk_label_set_attributes" *)
-external select_region : t -> int -> int -> unit = "ml_gtk_label_select_region"
-external get_wrap_mode : t -> Pango.wrapmode = "ml_gtk_label_get_wrap_mode"
-external get_text : t -> string = "ml_gtk_label_get_text"
-(* SKIPPED: unmapped return type - external get_tabs : t -> unit = "ml_gtk_label_get_tabs" *)
-(* SKIPPED: unmapped parameter type - external get_selection_bounds : t -> int -> int -> bool = "ml_gtk_label_get_selection_bounds" *)
-external get_natural_wrap_mode : t -> Gtk_enums.naturalwrapmode = "ml_gtk_label_get_natural_wrap_mode"
-external get_mnemonic_widget : t -> Gtk.Widget.t = "ml_gtk_label_get_mnemonic_widget"
-(* SKIPPED: unmapped parameter type - external get_layout_offsets : t -> int -> int -> unit = "ml_gtk_label_get_layout_offsets" *)
-(* SKIPPED: unmapped return type - external get_layout : t -> unit = "ml_gtk_label_get_layout" *)
-external get_justify : t -> Gtk_enums.justification = "ml_gtk_label_get_justify"
-(* SKIPPED: unmapped return type - external get_extra_menu : t -> unit = "ml_gtk_label_get_extra_menu" *)
-external get_ellipsize : t -> Pango.ellipsizemode = "ml_gtk_label_get_ellipsize"
-external get_current_uri : t -> string = "ml_gtk_label_get_current_uri"
-(* SKIPPED: unmapped return type - external get_attributes : t -> unit = "ml_gtk_label_get_attributes" *)
 
-(* Summary:
- * - 1 type declarations
- * - 51 external bindings
- *)
+external new_with_mnemonic : string option -> t = "ml_gtk_label_new_with_mnemonic"
+
+(* Properties *)
+
+external get_label : t -> string = "ml_gtk_label_get_label"
+
+external set_label : t -> string -> unit = "ml_gtk_label_set_label"
+
+external get_lines : t -> int = "ml_gtk_label_get_lines"
+
+external set_lines : t -> int -> unit = "ml_gtk_label_set_lines"
+
+external get_max_width_chars : t -> int = "ml_gtk_label_get_max_width_chars"
+
+external set_max_width_chars : t -> int -> unit = "ml_gtk_label_set_max_width_chars"
+
+external get_mnemonic_keyval : t -> int = "ml_gtk_label_get_mnemonic_keyval"
+
+external get_selectable : t -> bool = "ml_gtk_label_get_selectable"
+
+external set_selectable : t -> bool -> unit = "ml_gtk_label_set_selectable"
+
+external get_single_line_mode : t -> bool = "ml_gtk_label_get_single_line_mode"
+
+external set_single_line_mode : t -> bool -> unit = "ml_gtk_label_set_single_line_mode"
+
+external get_use_markup : t -> bool = "ml_gtk_label_get_use_markup"
+
+external set_use_markup : t -> bool -> unit = "ml_gtk_label_set_use_markup"
+
+external get_use_underline : t -> bool = "ml_gtk_label_get_use_underline"
+
+external set_use_underline : t -> bool -> unit = "ml_gtk_label_set_use_underline"
+
+external get_width_chars : t -> int = "ml_gtk_label_get_width_chars"
+
+external set_width_chars : t -> int -> unit = "ml_gtk_label_set_width_chars"
+
+external get_wrap : t -> bool = "ml_gtk_label_get_wrap"
+
+external set_wrap : t -> bool -> unit = "ml_gtk_label_set_wrap"
+
+external get_xalign : t -> float = "ml_gtk_label_get_xalign"
+
+external set_xalign : t -> float -> unit = "ml_gtk_label_set_xalign"
+
+external get_yalign : t -> float = "ml_gtk_label_get_yalign"
+
+external set_yalign : t -> float -> unit = "ml_gtk_label_set_yalign"
+
+external set_wrap_mode : t -> Pango.wrapmode -> unit = "ml_gtk_label_set_wrap_mode"
+
+external set_text_with_mnemonic : t -> string -> unit = "ml_gtk_label_set_text_with_mnemonic"
+
+external set_text : t -> string -> unit = "ml_gtk_label_set_text"
+
+external set_natural_wrap_mode : t -> Gtk_enums.naturalwrapmode -> unit = "ml_gtk_label_set_natural_wrap_mode"
+
+external set_mnemonic_widget : t -> Gtk.widget option -> unit = "ml_gtk_label_set_mnemonic_widget"
+
+external set_markup_with_mnemonic : t -> string -> unit = "ml_gtk_label_set_markup_with_mnemonic"
+
+external set_markup : t -> string -> unit = "ml_gtk_label_set_markup"
+
+external set_justify : t -> Gtk_enums.justification -> unit = "ml_gtk_label_set_justify"
+
+external set_ellipsize : t -> Pango.ellipsizemode -> unit = "ml_gtk_label_set_ellipsize"
+
+external select_region : t -> int -> int -> unit = "ml_gtk_label_select_region"
+
+external get_wrap_mode : t -> Pango.wrapmode = "ml_gtk_label_get_wrap_mode"
+
+external get_text : t -> string = "ml_gtk_label_get_text"
+
+external get_natural_wrap_mode : t -> Gtk_enums.naturalwrapmode = "ml_gtk_label_get_natural_wrap_mode"
+
+external get_mnemonic_widget : t -> Gtk.widget = "ml_gtk_label_get_mnemonic_widget"
+
+external get_justify : t -> Gtk_enums.justification = "ml_gtk_label_get_justify"
+
+external get_ellipsize : t -> Pango.ellipsizemode = "ml_gtk_label_get_ellipsize"
+
+external get_current_uri : t -> string = "ml_gtk_label_get_current_uri"
+

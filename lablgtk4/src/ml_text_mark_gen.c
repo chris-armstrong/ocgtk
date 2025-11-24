@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_text_mark_set_visible(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_text_mark_set_visible(GtkTextMark_val(self), Bool_val(arg1));
+gtk_text_mark_set_visible(GtkTextMark_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_text_mark_get_visible(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_text_mark_get_visible(GtkTextMark_val(self));
+gboolean result = gtk_text_mark_get_visible(GtkTextMark_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_text_mark_get_deleted(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_text_mark_get_deleted(GtkTextMark_val(self));
+gboolean result = gtk_text_mark_get_deleted(GtkTextMark_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_text_mark_get_buffer(value self)
 {
 CAMLparam1(self);
 
-
-    GtkTextBuffer* result = gtk_text_mark_get_buffer(GtkTextMark_val(self));
+GtkTextBuffer* result = gtk_text_mark_get_buffer(GtkTextMark_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

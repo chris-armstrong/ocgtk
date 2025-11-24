@@ -36,8 +36,7 @@ CAMLexport CAMLprim value ml_gtk_app_chooser_dialog_get_widget(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_app_chooser_dialog_get_widget(GtkAppChooserDialog_val(self));
+GtkWidget* result = gtk_app_chooser_dialog_get_widget(GtkAppChooserDialog_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

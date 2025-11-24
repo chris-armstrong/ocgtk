@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_range_set_value(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_range_set_value(GtkRange_val(self), Double_val(arg1));
+gtk_range_set_value(GtkRange_val(self), Double_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -31,8 +30,7 @@ CAMLexport CAMLprim value ml_gtk_range_set_slider_size_fixed(value self, value a
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_range_set_slider_size_fixed(GtkRange_val(self), Bool_val(arg1));
+gtk_range_set_slider_size_fixed(GtkRange_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -40,8 +38,7 @@ CAMLexport CAMLprim value ml_gtk_range_set_range(value self, value arg1, value a
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_range_set_range(GtkRange_val(self), Double_val(arg1), Double_val(arg2));
+gtk_range_set_range(GtkRange_val(self), Double_val(arg1), Double_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -49,8 +46,7 @@ CAMLexport CAMLprim value ml_gtk_range_set_increments(value self, value arg1, va
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_range_set_increments(GtkRange_val(self), Double_val(arg1), Double_val(arg2));
+gtk_range_set_increments(GtkRange_val(self), Double_val(arg1), Double_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -58,8 +54,7 @@ CAMLexport CAMLprim value ml_gtk_range_set_flippable(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_range_set_flippable(GtkRange_val(self), Bool_val(arg1));
+gtk_range_set_flippable(GtkRange_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -67,8 +62,7 @@ CAMLexport CAMLprim value ml_gtk_range_set_adjustment(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_range_set_adjustment(GtkRange_val(self), GtkWidget_val(arg1));
+gtk_range_set_adjustment(GtkRange_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -76,8 +70,7 @@ CAMLexport CAMLprim value ml_gtk_range_get_value(value self)
 {
 CAMLparam1(self);
 
-
-    double result = gtk_range_get_value(GtkRange_val(self));
+double result = gtk_range_get_value(GtkRange_val(self));
 CAMLreturn(caml_copy_double(result));
 }
 
@@ -85,8 +78,7 @@ CAMLexport CAMLprim value ml_gtk_range_get_slider_size_fixed(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_range_get_slider_size_fixed(GtkRange_val(self));
+gboolean result = gtk_range_get_slider_size_fixed(GtkRange_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -94,8 +86,7 @@ CAMLexport CAMLprim value ml_gtk_range_get_flippable(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_range_get_flippable(GtkRange_val(self));
+gboolean result = gtk_range_get_flippable(GtkRange_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -103,8 +94,7 @@ CAMLexport CAMLprim value ml_gtk_range_get_adjustment(value self)
 {
 CAMLparam1(self);
 
-
-    GtkAdjustment* result = gtk_range_get_adjustment(GtkRange_val(self));
+GtkAdjustment* result = gtk_range_get_adjustment(GtkRange_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

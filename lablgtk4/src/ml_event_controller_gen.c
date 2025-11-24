@@ -18,8 +18,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_set_static_name(value self, va
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_event_controller_set_static_name(GtkEventController_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_event_controller_set_static_name(GtkEventController_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -27,8 +26,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_set_propagation_phase(value se
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_event_controller_set_propagation_phase(GtkEventController_val(self), GtkPropagationPhase_val(arg1));
+gtk_event_controller_set_propagation_phase(GtkEventController_val(self), GtkPropagationPhase_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -36,8 +34,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_set_propagation_limit(value se
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_event_controller_set_propagation_limit(GtkEventController_val(self), GtkPropagationLimit_val(arg1));
+gtk_event_controller_set_propagation_limit(GtkEventController_val(self), GtkPropagationLimit_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -45,8 +42,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_reset(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_event_controller_reset(GtkEventController_val(self));
+gtk_event_controller_reset(GtkEventController_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -54,8 +50,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_get_widget(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_event_controller_get_widget(GtkEventController_val(self));
+GtkWidget* result = gtk_event_controller_get_widget(GtkEventController_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -63,8 +58,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_get_propagation_phase(value se
 {
 CAMLparam1(self);
 
-
-    GtkPropagationPhase result = gtk_event_controller_get_propagation_phase(GtkEventController_val(self));
+GtkPropagationPhase result = gtk_event_controller_get_propagation_phase(GtkEventController_val(self));
 CAMLreturn(Val_GtkPropagationPhase(result));
 }
 
@@ -72,8 +66,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_get_propagation_limit(value se
 {
 CAMLparam1(self);
 
-
-    GtkPropagationLimit result = gtk_event_controller_get_propagation_limit(GtkEventController_val(self));
+GtkPropagationLimit result = gtk_event_controller_get_propagation_limit(GtkEventController_val(self));
 CAMLreturn(Val_GtkPropagationLimit(result));
 }
 
@@ -81,8 +74,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_get_current_event_state(value 
 {
 CAMLparam1(self);
 
-
-    GdkModifierType result = gtk_event_controller_get_current_event_state(GtkEventController_val(self));
+GdkModifierType result = gtk_event_controller_get_current_event_state(GtkEventController_val(self));
 CAMLreturn(Val_GdkModifierType(result));
 }
 
@@ -90,8 +82,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_get_current_event(value self)
 {
 CAMLparam1(self);
 
-
-    GdkEvent* result = gtk_event_controller_get_current_event(GtkEventController_val(self));
+GdkEvent* result = gtk_event_controller_get_current_event(GtkEventController_val(self));
 CAMLreturn(Val_GdkEvent(result));
 }
 

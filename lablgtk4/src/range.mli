@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Range *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (* Properties *)
 
@@ -45,7 +45,7 @@ external set_increments : t -> float -> float -> unit = "ml_gtk_range_set_increm
 
 external set_flippable : t -> bool -> unit = "ml_gtk_range_set_flippable"
 
-external set_adjustment : t -> Gtk.Widget.t -> unit = "ml_gtk_range_set_adjustment"
+external set_adjustment : t -> Gtk.widget -> unit = "ml_gtk_range_set_adjustment"
 
 external get_value : t -> float = "ml_gtk_range_get_value"
 
@@ -53,5 +53,5 @@ external get_slider_size_fixed : t -> bool = "ml_gtk_range_get_slider_size_fixed
 
 external get_flippable : t -> bool = "ml_gtk_range_get_flippable"
 
-external get_adjustment : t -> Gtk.Widget.t = "ml_gtk_range_get_adjustment"
+external get_adjustment : t -> Gtk.widget = "ml_gtk_range_get_adjustment"
 

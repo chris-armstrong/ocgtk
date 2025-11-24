@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_drop_target_async_set_actions(value self, value
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_drop_target_async_set_actions(GtkDropTargetAsync_val(self), GdkDragAction_val(arg1));
+gtk_drop_target_async_set_actions(GtkDropTargetAsync_val(self), GdkDragAction_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,7 +37,6 @@ CAMLexport CAMLprim value ml_gtk_drop_target_async_get_actions(value self)
 {
 CAMLparam1(self);
 
-
-    GdkDragAction result = gtk_drop_target_async_get_actions(GtkDropTargetAsync_val(self));
+GdkDragAction result = gtk_drop_target_async_get_actions(GtkDropTargetAsync_val(self));
 CAMLreturn(Val_GdkDragAction(result));
 }

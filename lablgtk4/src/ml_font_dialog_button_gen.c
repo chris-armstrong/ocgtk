@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_font_dialog_button_set_level(value self, value 
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_font_dialog_button_set_level(GtkFontDialogButton_val(self), GtkFontLevel_val(arg1));
+gtk_font_dialog_button_set_level(GtkFontDialogButton_val(self), GtkFontLevel_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_font_dialog_button_set_dialog(value self, value
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_font_dialog_button_set_dialog(GtkFontDialogButton_val(self), GtkWidget_val(arg1));
+gtk_font_dialog_button_set_dialog(GtkFontDialogButton_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_font_dialog_button_get_level(value self)
 {
 CAMLparam1(self);
 
-
-    GtkFontLevel result = gtk_font_dialog_button_get_level(GtkFontDialogButton_val(self));
+GtkFontLevel result = gtk_font_dialog_button_get_level(GtkFontDialogButton_val(self));
 CAMLreturn(Val_GtkFontLevel(result));
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_font_dialog_button_get_dialog(value self)
 {
 CAMLparam1(self);
 
-
-    GtkFontDialog* result = gtk_font_dialog_button_get_dialog(GtkFontDialogButton_val(self));
+GtkFontDialog* result = gtk_font_dialog_button_get_dialog(GtkFontDialogButton_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

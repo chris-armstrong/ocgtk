@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: PrintOperation *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new PrintOperation *)
 external new_ : unit -> t = "ml_gtk_print_operation_new"
@@ -88,23 +88,23 @@ external set_use_full_page : t -> bool -> unit = "ml_gtk_print_operation_set_use
 
 external set_unit : t -> unit -> unit = "ml_gtk_print_operation_set_unit"
 
-external set_print_settings : t -> Gtk.Widget.t option -> unit = "ml_gtk_print_operation_set_print_settings"
+external set_print_settings : t -> Gtk.widget option -> unit = "ml_gtk_print_operation_set_print_settings"
 
 external set_defer_drawing : t -> unit = "ml_gtk_print_operation_set_defer_drawing"
 
-external set_default_page_setup : t -> Gtk.Widget.t option -> unit = "ml_gtk_print_operation_set_default_page_setup"
+external set_default_page_setup : t -> Gtk.widget option -> unit = "ml_gtk_print_operation_set_default_page_setup"
 
-external run : t -> Gtk_enums.printoperationaction -> Gtk.Widget.t option -> (Gtk_enums.printoperationresult, GError.t) result = "ml_gtk_print_operation_run"
+external run : t -> Gtk_enums.printoperationaction -> Gtk.widget option -> (Gtk_enums.printoperationresult, GError.t) result = "ml_gtk_print_operation_run"
 
 external is_finished : t -> bool = "ml_gtk_print_operation_is_finished"
 
 external get_status : t -> Gtk_enums.printstatus = "ml_gtk_print_operation_get_status"
 
-external get_print_settings : t -> Gtk.Widget.t = "ml_gtk_print_operation_get_print_settings"
+external get_print_settings : t -> Gtk.widget = "ml_gtk_print_operation_get_print_settings"
 
 external get_error : t -> (unit, GError.t) result = "ml_gtk_print_operation_get_error"
 
-external get_default_page_setup : t -> Gtk.Widget.t = "ml_gtk_print_operation_get_default_page_setup"
+external get_default_page_setup : t -> Gtk.widget = "ml_gtk_print_operation_get_default_page_setup"
 
 external draw_page_finish : t -> unit = "ml_gtk_print_operation_draw_page_finish"
 

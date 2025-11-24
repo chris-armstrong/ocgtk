@@ -14,7 +14,7 @@
 (** {1 GtkNotebook Container} *)
 
 (** Base notebook skeleton with page operations *)
-class notebook_skel : Gtk.Notebook.t ->
+class notebook_skel : Notebook.t ->
   object
     inherit GObj.widget_impl
 
@@ -74,7 +74,7 @@ class notebook_skel : Gtk.Notebook.t ->
   end
 
 (** Notebook widget with full functionality *)
-class notebook : Gtk.Notebook.t ->
+class notebook : Notebook.t ->
   object
     inherit notebook_skel
   end

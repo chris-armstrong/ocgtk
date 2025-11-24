@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: CellAreaContext *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (* Properties *)
 
@@ -23,7 +23,7 @@ external push_preferred_width : t -> int -> int -> unit = "ml_gtk_cell_area_cont
 
 external push_preferred_height : t -> int -> int -> unit = "ml_gtk_cell_area_context_push_preferred_height"
 
-external get_area : t -> Gtk.Widget.t = "ml_gtk_cell_area_context_get_area"
+external get_area : t -> Gtk.widget = "ml_gtk_cell_area_context_get_area"
 
 external allocate : t -> int -> int -> unit = "ml_gtk_cell_area_context_allocate"
 

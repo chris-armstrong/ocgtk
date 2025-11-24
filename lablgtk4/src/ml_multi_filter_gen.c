@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_multi_filter_remove(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_multi_filter_remove(GtkMultiFilter_val(self), Int_val(arg1));
+gtk_multi_filter_remove(GtkMultiFilter_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -31,8 +30,7 @@ CAMLexport CAMLprim value ml_gtk_multi_filter_append(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_multi_filter_append(GtkMultiFilter_val(self), GtkWidget_val(arg1));
+gtk_multi_filter_append(GtkMultiFilter_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 

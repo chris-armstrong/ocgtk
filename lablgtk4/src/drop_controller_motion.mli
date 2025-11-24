@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: DropControllerMotion *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new DropControllerMotion *)
 external new_ : unit -> t = "ml_gtk_drop_controller_motion_new"

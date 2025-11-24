@@ -26,7 +26,7 @@ let generate_wrapper_template ~widget_name ~module_name:_ ~low_level_module =
 
   (* Skeleton class *)
   bprintf buf "(** %s widget skeleton *)\n" widget_name;
-  bprintf buf "class %s_skel (obj : Gtk.Widget.t) = object\n" class_name_lower;
+  bprintf buf "class %s_skel (obj : Gtk.widget) = object\n" class_name_lower;
   bprintf buf "  inherit GObj.widget_impl obj\n\n";
 
   bprintf buf "  (* TODO: Add property accessors from %s module *)\n" low_level_module;
@@ -46,7 +46,7 @@ let generate_wrapper_template ~widget_name ~module_name:_ ~low_level_module =
   (* Main class *)
   bprintf buf "(** %s widget *)\n" widget_name;
   bprintf buf "class %s obj = object\n" class_name_lower;
-  bprintf buf "  inherit %s_skel (Gtk.Widget.coerce obj)\n" class_name_lower;
+  bprintf buf "  inherit %s_skel (Widget.coerce obj)\n" class_name_lower;
   bprintf buf "end\n\n";
 
   (* Constructor function *)
@@ -71,7 +71,7 @@ let generate_wrapper_interface ~widget_name ~module_name:_ ~low_level_module:_ =
 
   (* Skeleton class *)
   bprintf buf "(** %s widget skeleton *)\n" widget_name;
-  bprintf buf "class %s_skel : Gtk.Widget.t ->\n" class_name_lower;
+  bprintf buf "class %s_skel : Gtk.widget ->\n" class_name_lower;
   bprintf buf "  object\n";
   bprintf buf "    inherit GObj.widget_impl\n";
   bprintf buf "    (* TODO: Add method signatures *)\n";
@@ -79,7 +79,7 @@ let generate_wrapper_interface ~widget_name ~module_name:_ ~low_level_module:_ =
 
   (* Main class *)
   bprintf buf "(** %s widget *)\n" widget_name;
-  bprintf buf "class %s : Gtk.Widget.t ->\n" class_name_lower;
+  bprintf buf "class %s : Gtk.widget ->\n" class_name_lower;
   bprintf buf "  object\n";
   bprintf buf "    inherit %s_skel\n" class_name_lower;
   bprintf buf "  end\n\n";

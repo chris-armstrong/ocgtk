@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_shortcuts_section_add_group(value self, value a
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_shortcuts_section_add_group(GtkShortcutsSection_val(self), GtkWidget_val(arg1));
+gtk_shortcuts_section_add_group(GtkShortcutsSection_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 

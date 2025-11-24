@@ -35,8 +35,7 @@ CAMLexport CAMLprim value ml_gtk_adjustment_get_minimum_increment(value self)
 {
 CAMLparam1(self);
 
-
-    double result = gtk_adjustment_get_minimum_increment(GtkAdjustment_val(self));
+double result = gtk_adjustment_get_minimum_increment(GtkAdjustment_val(self));
 CAMLreturn(caml_copy_double(result));
 }
 
@@ -45,8 +44,7 @@ CAMLexport CAMLprim value ml_gtk_adjustment_configure_native(value self, value a
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam2(arg5, arg6);
 
-
-    gtk_adjustment_configure(GtkAdjustment_val(self), Double_val(arg1), Double_val(arg2), Double_val(arg3), Double_val(arg4), Double_val(arg5), Double_val(arg6));
+gtk_adjustment_configure(GtkAdjustment_val(self), Double_val(arg1), Double_val(arg2), Double_val(arg3), Double_val(arg4), Double_val(arg5), Double_val(arg6));
 CAMLreturn(Val_unit);
 }
 
@@ -59,8 +57,7 @@ CAMLexport CAMLprim value ml_gtk_adjustment_clamp_page(value self, value arg1, v
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_adjustment_clamp_page(GtkAdjustment_val(self), Double_val(arg1), Double_val(arg2));
+gtk_adjustment_clamp_page(GtkAdjustment_val(self), Double_val(arg1), Double_val(arg2));
 CAMLreturn(Val_unit);
 }
 

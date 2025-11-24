@@ -2,7 +2,7 @@
 (* Generated from gtkCheckButton.mli *)
 
 (* Type declarations *)
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (* External FFI bindings *)
 external new_ : unit -> t = "ml_gtk_check_button_new"

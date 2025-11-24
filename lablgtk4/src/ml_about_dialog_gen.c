@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_get_documenters(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_about_dialog_get_documenters(GtkAboutDialog_val(self));
+gtk_about_dialog_get_documenters(GtkAboutDialog_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_get_authors(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_about_dialog_get_authors(GtkAboutDialog_val(self));
+gtk_about_dialog_get_authors(GtkAboutDialog_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_get_artists(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_about_dialog_get_artists(GtkAboutDialog_val(self));
+gtk_about_dialog_get_artists(GtkAboutDialog_val(self));
 CAMLreturn(Val_unit);
 }
 

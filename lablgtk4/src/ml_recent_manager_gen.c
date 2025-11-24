@@ -30,8 +30,7 @@ CAMLexport CAMLprim value ml_gtk_recent_manager_remove_item(value self, value ar
 CAMLparam2(self, arg1);
 GError *error = NULL;
 
-
-    gboolean result = gtk_recent_manager_remove_item(GtkRecentManager_val(self), String_val(arg1), &error);
+gboolean result = gtk_recent_manager_remove_item(GtkRecentManager_val(self), String_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -40,8 +39,7 @@ CAMLexport CAMLprim value ml_gtk_recent_manager_purge_items(value self)
 CAMLparam1(self);
 GError *error = NULL;
 
-
-    int result = gtk_recent_manager_purge_items(GtkRecentManager_val(self), &error);
+int result = gtk_recent_manager_purge_items(GtkRecentManager_val(self), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_int(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -50,8 +48,7 @@ CAMLexport CAMLprim value ml_gtk_recent_manager_move_item(value self, value arg1
 CAMLparam3(self, arg1, arg2);
 GError *error = NULL;
 
-
-    gboolean result = gtk_recent_manager_move_item(GtkRecentManager_val(self), String_val(arg1), (Is_some(arg2) ? String_val(Some_val(arg2)) : NULL), &error);
+gboolean result = gtk_recent_manager_move_item(GtkRecentManager_val(self), String_val(arg1), (Is_some(arg2) ? String_val(Some_val(arg2)) : NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -60,8 +57,7 @@ CAMLexport CAMLprim value ml_gtk_recent_manager_lookup_item(value self, value ar
 CAMLparam2(self, arg1);
 GError *error = NULL;
 
-
-    GtkRecentInfo* result = gtk_recent_manager_lookup_item(GtkRecentManager_val(self), String_val(arg1), &error);
+GtkRecentInfo* result = gtk_recent_manager_lookup_item(GtkRecentManager_val(self), String_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GtkWidget(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -69,8 +65,7 @@ CAMLexport CAMLprim value ml_gtk_recent_manager_has_item(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gboolean result = gtk_recent_manager_has_item(GtkRecentManager_val(self), String_val(arg1));
+gboolean result = gtk_recent_manager_has_item(GtkRecentManager_val(self), String_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -78,8 +73,7 @@ CAMLexport CAMLprim value ml_gtk_recent_manager_add_item(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gboolean result = gtk_recent_manager_add_item(GtkRecentManager_val(self), String_val(arg1));
+gboolean result = gtk_recent_manager_add_item(GtkRecentManager_val(self), String_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 

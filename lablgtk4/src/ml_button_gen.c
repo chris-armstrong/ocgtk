@@ -50,8 +50,7 @@ CAMLexport CAMLprim value ml_gtk_button_set_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_button_set_child(GtkButton_val(self), GtkWidget_option_val(arg1));
+gtk_button_set_child(GtkButton_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -59,8 +58,7 @@ CAMLexport CAMLprim value ml_gtk_button_get_child(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_button_get_child(GtkButton_val(self));
+GtkWidget* result = gtk_button_get_child(GtkButton_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

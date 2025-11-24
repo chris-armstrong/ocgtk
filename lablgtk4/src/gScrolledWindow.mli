@@ -9,11 +9,11 @@
 (*                                                                        *)
 (**************************************************************************)
 
-(** High-level GtkScrolledWindow wrapper for GTK4 *)
+(** High-level GtkScrolled_window wrapper for GTK4 *)
 
-(** {1 GtkScrolledWindow} *)
+(** {1 GtkScrolled_window} *)
 
-class scrolled_window_skel : Gtk.ScrolledWindow.t ->
+class scrolled_window_skel : Scrolled_window.t ->
   object
     inherit GObj.widget_impl
 
@@ -22,10 +22,10 @@ class scrolled_window_skel : Gtk.ScrolledWindow.t ->
     method add : GObj.widget -> unit
 
     method set_policy :
-      hpolicy:Gtk.ScrolledWindow.policy_type ->
-      vpolicy:Gtk.ScrolledWindow.policy_type ->
+      hpolicy:Scrolled_window.policy_type ->
+      vpolicy:Scrolled_window.policy_type ->
       unit
-    method policy : Gtk.ScrolledWindow.policy_type * Gtk.ScrolledWindow.policy_type
+    method policy : Scrolled_window.policy_type * Scrolled_window.policy_type
 
     method hscrollbar : GObj.widget option
     method vscrollbar : GObj.widget option
@@ -37,7 +37,7 @@ class scrolled_window_skel : Gtk.ScrolledWindow.t ->
     method set_min_content_height : int -> unit
   end
 
-class scrolled_window : Gtk.ScrolledWindow.t ->
+class scrolled_window : Scrolled_window.t ->
   object
     inherit scrolled_window_skel
   end
@@ -49,8 +49,8 @@ class scrolled_window : Gtk.ScrolledWindow.t ->
     @param min_content_height Minimum content height (default: -1, no minimum)
 *)
 val scrolled_window :
-  ?hpolicy:Gtk.ScrolledWindow.policy_type ->
-  ?vpolicy:Gtk.ScrolledWindow.policy_type ->
+  ?hpolicy:Scrolled_window.policy_type ->
+  ?vpolicy:Scrolled_window.policy_type ->
   ?min_content_width:int ->
   ?min_content_height:int ->
   unit -> scrolled_window

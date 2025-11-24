@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_header_bar_set_title_widget(value self, value a
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_header_bar_set_title_widget(GtkHeaderBar_val(self), GtkWidget_option_val(arg1));
+gtk_header_bar_set_title_widget(GtkHeaderBar_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_header_bar_remove(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_header_bar_remove(GtkHeaderBar_val(self), GtkWidget_val(arg1));
+gtk_header_bar_remove(GtkHeaderBar_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_header_bar_pack_start(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_header_bar_pack_start(GtkHeaderBar_val(self), GtkWidget_val(arg1));
+gtk_header_bar_pack_start(GtkHeaderBar_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_header_bar_pack_end(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_header_bar_pack_end(GtkHeaderBar_val(self), GtkWidget_val(arg1));
+gtk_header_bar_pack_end(GtkHeaderBar_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -65,8 +61,7 @@ CAMLexport CAMLprim value ml_gtk_header_bar_get_title_widget(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_header_bar_get_title_widget(GtkHeaderBar_val(self));
+GtkWidget* result = gtk_header_bar_get_title_widget(GtkHeaderBar_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

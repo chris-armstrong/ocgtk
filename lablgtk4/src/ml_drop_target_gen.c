@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_drop_target_set_actions(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_drop_target_set_actions(GtkDropTarget_val(self), GdkDragAction_val(arg1));
+gtk_drop_target_set_actions(GtkDropTarget_val(self), GdkDragAction_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_drop_target_reject(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_drop_target_reject(GtkDropTarget_val(self));
+gtk_drop_target_reject(GtkDropTarget_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_drop_target_get_actions(value self)
 {
 CAMLparam1(self);
 
-
-    GdkDragAction result = gtk_drop_target_get_actions(GtkDropTarget_val(self));
+GdkDragAction result = gtk_drop_target_get_actions(GtkDropTarget_val(self));
 CAMLreturn(Val_GdkDragAction(result));
 }
 

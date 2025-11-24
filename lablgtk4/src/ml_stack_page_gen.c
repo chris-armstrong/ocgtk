@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_stack_page_get_child(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_stack_page_get_child(GtkStackPage_val(self));
+GtkWidget* result = gtk_stack_page_get_child(GtkStackPage_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

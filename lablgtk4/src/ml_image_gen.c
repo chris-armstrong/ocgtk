@@ -71,8 +71,7 @@ CAMLexport CAMLprim value ml_gtk_image_set_icon_size(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_image_set_icon_size(GtkImage_val(self), GtkIconSize_val(arg1));
+gtk_image_set_icon_size(GtkImage_val(self), GtkIconSize_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -80,8 +79,7 @@ CAMLexport CAMLprim value ml_gtk_image_set_from_resource(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_image_set_from_resource(GtkImage_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_image_set_from_resource(GtkImage_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -89,8 +87,7 @@ CAMLexport CAMLprim value ml_gtk_image_set_from_icon_name(value self, value arg1
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_image_set_from_icon_name(GtkImage_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_image_set_from_icon_name(GtkImage_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -98,8 +95,7 @@ CAMLexport CAMLprim value ml_gtk_image_set_from_file(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_image_set_from_file(GtkImage_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_image_set_from_file(GtkImage_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -107,8 +103,7 @@ CAMLexport CAMLprim value ml_gtk_image_get_storage_type(value self)
 {
 CAMLparam1(self);
 
-
-    GtkImageType result = gtk_image_get_storage_type(GtkImage_val(self));
+GtkImageType result = gtk_image_get_storage_type(GtkImage_val(self));
 CAMLreturn(Val_GtkImageType(result));
 }
 
@@ -116,8 +111,7 @@ CAMLexport CAMLprim value ml_gtk_image_get_icon_size(value self)
 {
 CAMLparam1(self);
 
-
-    GtkIconSize result = gtk_image_get_icon_size(GtkImage_val(self));
+GtkIconSize result = gtk_image_get_icon_size(GtkImage_val(self));
 CAMLreturn(Val_GtkIconSize(result));
 }
 
@@ -125,8 +119,7 @@ CAMLexport CAMLprim value ml_gtk_image_clear(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_image_clear(GtkImage_val(self));
+gtk_image_clear(GtkImage_val(self));
 CAMLreturn(Val_unit);
 }
 

@@ -561,7 +561,7 @@ let test_nullable_parameters () =
 
   (* Check OCaml interface uses option types *)
   assert_contains "Constructor should have string option parameter" content "string option";
-  assert_contains "Method should have Widget option parameter" content "Gtk.Widget.t option";
+  assert_contains "Method should have Widget option parameter" content "Gtk.widget option";
 
   (* Check C code uses option macros *)
   let c_file = Filename.concat output_dir "ml_event_controllers_gen.c" in

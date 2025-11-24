@@ -1,30 +1,57 @@
-(* Generated from menu_button.mli *)
-type t = Gtk.Widget.t
+(* GENERATED CODE - DO NOT EDIT *)
+(* Widget: MenuButton *)
+
+type t = Gtk.widget
+
 external new_ : unit -> t = "ml_gtk_menu_button_new"
+
+(* Properties *)
+
 external get_active : t -> bool = "ml_gtk_menu_button_get_active"
+
 external set_active : t -> bool -> unit = "ml_gtk_menu_button_set_active"
+
 external get_always_show_arrow : t -> bool = "ml_gtk_menu_button_get_always_show_arrow"
+
 external set_always_show_arrow : t -> bool -> unit = "ml_gtk_menu_button_set_always_show_arrow"
+
 external get_can_shrink : t -> bool = "ml_gtk_menu_button_get_can_shrink"
+
 external set_can_shrink : t -> bool -> unit = "ml_gtk_menu_button_set_can_shrink"
+
 external get_has_frame : t -> bool = "ml_gtk_menu_button_get_has_frame"
+
 external set_has_frame : t -> bool -> unit = "ml_gtk_menu_button_set_has_frame"
-external get_primary : t -> bool = "ml_gtk_menu_button_get_primary"
-external set_primary : t -> bool -> unit = "ml_gtk_menu_button_set_primary"
-external get_use_underline : t -> bool = "ml_gtk_menu_button_get_use_underline"
-external set_use_underline : t -> bool -> unit = "ml_gtk_menu_button_set_use_underline"
-external set_popover : t -> Gtk.Widget.t option -> unit = "ml_gtk_menu_button_set_popover"
-external set_menu_model : t -> unit -> unit = "ml_gtk_menu_button_set_menu_model"
-external set_label : t -> string -> unit = "ml_gtk_menu_button_set_label"
-external set_icon_name : t -> string -> unit = "ml_gtk_menu_button_set_icon_name"
-external set_direction : t -> Gtk_enums.arrowtype -> unit = "ml_gtk_menu_button_set_direction"
-external set_create_popup_func : t -> unit -> unit -> unit -> unit = "ml_gtk_menu_button_set_create_popup_func"
-external set_child : t -> Gtk.Widget.t option -> unit = "ml_gtk_menu_button_set_child"
-external popup : t -> unit = "ml_gtk_menu_button_popup"
-external popdown : t -> unit = "ml_gtk_menu_button_popdown"
-external get_popover : t -> Gtk.Widget.t = "ml_gtk_menu_button_get_popover"
-external get_menu_model : t -> unit = "ml_gtk_menu_button_get_menu_model"
-external get_label : t -> string = "ml_gtk_menu_button_get_label"
+
 external get_icon_name : t -> string = "ml_gtk_menu_button_get_icon_name"
+
+external set_icon_name : t -> string -> unit = "ml_gtk_menu_button_set_icon_name"
+
+external get_label : t -> string = "ml_gtk_menu_button_get_label"
+
+external set_label : t -> string -> unit = "ml_gtk_menu_button_set_label"
+
+external get_primary : t -> bool = "ml_gtk_menu_button_get_primary"
+
+external set_primary : t -> bool -> unit = "ml_gtk_menu_button_set_primary"
+
+external get_use_underline : t -> bool = "ml_gtk_menu_button_get_use_underline"
+
+external set_use_underline : t -> bool -> unit = "ml_gtk_menu_button_set_use_underline"
+
+external set_popover : t -> Gtk.widget option -> unit = "ml_gtk_menu_button_set_popover"
+
+external set_direction : t -> Gtk_enums.arrowtype -> unit = "ml_gtk_menu_button_set_direction"
+
+external set_child : t -> Gtk.widget option -> unit = "ml_gtk_menu_button_set_child"
+
+external popup : t -> unit = "ml_gtk_menu_button_popup"
+
+external popdown : t -> unit = "ml_gtk_menu_button_popdown"
+
+external get_popover : t -> Gtk.widget = "ml_gtk_menu_button_get_popover"
+
 external get_direction : t -> Gtk_enums.arrowtype = "ml_gtk_menu_button_get_direction"
-external get_child : t -> Gtk.Widget.t = "ml_gtk_menu_button_get_child"
+
+external get_child : t -> Gtk.widget = "ml_gtk_menu_button_get_child"
+

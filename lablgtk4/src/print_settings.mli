@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: PrintSettings *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new PrintSettings *)
 external new_ : unit -> t = "ml_gtk_print_settings_new"
@@ -33,7 +33,7 @@ external set_print_pages : t -> Gtk_enums.printpages -> unit = "ml_gtk_print_set
 
 external set_paper_width : t -> float -> unit -> unit = "ml_gtk_print_settings_set_paper_width"
 
-external set_paper_size : t -> Gtk.Widget.t -> unit = "ml_gtk_print_settings_set_paper_size"
+external set_paper_size : t -> Gtk.widget -> unit = "ml_gtk_print_settings_set_paper_size"
 
 external set_paper_height : t -> float -> unit -> unit = "ml_gtk_print_settings_set_paper_height"
 
@@ -97,7 +97,7 @@ external get_print_pages : t -> Gtk_enums.printpages = "ml_gtk_print_settings_ge
 
 external get_paper_width : t -> unit -> float = "ml_gtk_print_settings_get_paper_width"
 
-external get_paper_size : t -> Gtk.Widget.t = "ml_gtk_print_settings_get_paper_size"
+external get_paper_size : t -> Gtk.widget = "ml_gtk_print_settings_get_paper_size"
 
 external get_paper_height : t -> unit -> float = "ml_gtk_print_settings_get_paper_height"
 
@@ -139,5 +139,5 @@ external get_bool : t -> string -> bool = "ml_gtk_print_settings_get_bool"
 
 external get : t -> string -> string = "ml_gtk_print_settings_get"
 
-external copy : t -> Gtk.Widget.t = "ml_gtk_print_settings_copy"
+external copy : t -> Gtk.widget = "ml_gtk_print_settings_copy"
 

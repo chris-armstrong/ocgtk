@@ -36,8 +36,7 @@ CAMLexport CAMLprim value ml_gtk_level_bar_set_mode(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_level_bar_set_mode(GtkLevelBar_val(self), GtkLevelBarMode_val(arg1));
+gtk_level_bar_set_mode(GtkLevelBar_val(self), GtkLevelBarMode_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -45,8 +44,7 @@ CAMLexport CAMLprim value ml_gtk_level_bar_remove_offset_value(value self, value
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_level_bar_remove_offset_value(GtkLevelBar_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_level_bar_remove_offset_value(GtkLevelBar_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -54,8 +52,7 @@ CAMLexport CAMLprim value ml_gtk_level_bar_get_mode(value self)
 {
 CAMLparam1(self);
 
-
-    GtkLevelBarMode result = gtk_level_bar_get_mode(GtkLevelBar_val(self));
+GtkLevelBarMode result = gtk_level_bar_get_mode(GtkLevelBar_val(self));
 CAMLreturn(Val_GtkLevelBarMode(result));
 }
 
@@ -63,8 +60,7 @@ CAMLexport CAMLprim value ml_gtk_level_bar_add_offset_value(value self, value ar
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_level_bar_add_offset_value(GtkLevelBar_val(self), String_val(arg1), Double_val(arg2));
+gtk_level_bar_add_offset_value(GtkLevelBar_val(self), String_val(arg1), Double_val(arg2));
 CAMLreturn(Val_unit);
 }
 

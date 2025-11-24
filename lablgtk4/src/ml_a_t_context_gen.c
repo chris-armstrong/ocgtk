@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_at_context_get_accessible_role(value self)
 {
 CAMLparam1(self);
 
-
-    GtkAccessibleRole result = gtk_at_context_get_accessible_role(GtkATContext_val(self));
+GtkAccessibleRole result = gtk_at_context_get_accessible_role(GtkATContext_val(self));
 CAMLreturn(Val_GtkAccessibleRole(result));
 }
 
@@ -38,7 +37,6 @@ CAMLexport CAMLprim value ml_gtk_at_context_get_accessible(value self)
 {
 CAMLparam1(self);
 
-
-    GtkAccessible* result = gtk_at_context_get_accessible(GtkATContext_val(self));
+GtkAccessible* result = gtk_at_context_get_accessible(GtkATContext_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }

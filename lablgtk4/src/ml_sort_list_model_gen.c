@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_sort_list_model_set_sorter(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_sort_list_model_set_sorter(GtkSortListModel_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_sort_list_model_set_sorter(GtkSortListModel_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_sort_list_model_set_section_sorter(value self, 
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_sort_list_model_set_section_sorter(GtkSortListModel_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_sort_list_model_set_section_sorter(GtkSortListModel_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_sort_list_model_get_sorter(value self)
 {
 CAMLparam1(self);
 
-
-    GtkSorter* result = gtk_sort_list_model_get_sorter(GtkSortListModel_val(self));
+GtkSorter* result = gtk_sort_list_model_get_sorter(GtkSortListModel_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_sort_list_model_get_section_sorter(value self)
 {
 CAMLparam1(self);
 
-
-    GtkSorter* result = gtk_sort_list_model_get_section_sorter(GtkSortListModel_val(self));
+GtkSorter* result = gtk_sort_list_model_get_section_sorter(GtkSortListModel_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

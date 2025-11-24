@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_widget_paintable_set_widget(value self, value a
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_widget_paintable_set_widget(GtkWidgetPaintable_val(self), GtkWidget_option_val(arg1));
+gtk_widget_paintable_set_widget(GtkWidgetPaintable_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,7 +37,6 @@ CAMLexport CAMLprim value ml_gtk_widget_paintable_get_widget(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_widget_paintable_get_widget(GtkWidgetPaintable_val(self));
+GtkWidget* result = gtk_widget_paintable_get_widget(GtkWidgetPaintable_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }

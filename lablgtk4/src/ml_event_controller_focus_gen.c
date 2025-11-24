@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_focus_is_focus(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_event_controller_focus_is_focus(GtkEventControllerFocus_val(self));
+gboolean result = gtk_event_controller_focus_is_focus(GtkEventControllerFocus_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_focus_contains_focus(value sel
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_event_controller_focus_contains_focus(GtkEventControllerFocus_val(self));
+gboolean result = gtk_event_controller_focus_contains_focus(GtkEventControllerFocus_val(self));
 CAMLreturn(Val_bool(result));
 }
 

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Label *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new Label *)
 external new_ : string option -> t = "ml_gtk_label_new"
@@ -88,7 +88,7 @@ external set_text : t -> string -> unit = "ml_gtk_label_set_text"
 
 external set_natural_wrap_mode : t -> Gtk_enums.naturalwrapmode -> unit = "ml_gtk_label_set_natural_wrap_mode"
 
-external set_mnemonic_widget : t -> Gtk.Widget.t option -> unit = "ml_gtk_label_set_mnemonic_widget"
+external set_mnemonic_widget : t -> Gtk.widget option -> unit = "ml_gtk_label_set_mnemonic_widget"
 
 external set_markup_with_mnemonic : t -> string -> unit = "ml_gtk_label_set_markup_with_mnemonic"
 
@@ -106,7 +106,7 @@ external get_text : t -> string = "ml_gtk_label_get_text"
 
 external get_natural_wrap_mode : t -> Gtk_enums.naturalwrapmode = "ml_gtk_label_get_natural_wrap_mode"
 
-external get_mnemonic_widget : t -> Gtk.Widget.t = "ml_gtk_label_get_mnemonic_widget"
+external get_mnemonic_widget : t -> Gtk.widget = "ml_gtk_label_get_mnemonic_widget"
 
 external get_justify : t -> Gtk_enums.justification = "ml_gtk_label_get_justify"
 

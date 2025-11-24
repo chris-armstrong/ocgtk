@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_box_layout_set_baseline_position(value self, va
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_box_layout_set_baseline_position(GtkBoxLayout_val(self), GtkBaselinePosition_val(arg1));
+gtk_box_layout_set_baseline_position(GtkBoxLayout_val(self), GtkBaselinePosition_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_box_layout_get_baseline_position(value self)
 {
 CAMLparam1(self);
 
-
-    GtkBaselinePosition result = gtk_box_layout_get_baseline_position(GtkBoxLayout_val(self));
+GtkBaselinePosition result = gtk_box_layout_get_baseline_position(GtkBoxLayout_val(self));
 CAMLreturn(Val_GtkBaselinePosition(result));
 }
 

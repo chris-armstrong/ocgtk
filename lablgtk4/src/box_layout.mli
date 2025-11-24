@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: BoxLayout *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new BoxLayout *)
 external new_ : Gtk_enums.orientation -> t = "ml_gtk_box_layout_new"

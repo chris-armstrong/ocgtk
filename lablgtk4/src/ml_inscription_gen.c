@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_inscription_set_wrap_mode(value self, value arg
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_inscription_set_wrap_mode(GtkInscription_val(self), PangoWrapMode_val(arg1));
+gtk_inscription_set_wrap_mode(GtkInscription_val(self), PangoWrapMode_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_inscription_set_text_overflow(value self, value
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_inscription_set_text_overflow(GtkInscription_val(self), GtkInscriptionOverflow_val(arg1));
+gtk_inscription_set_text_overflow(GtkInscription_val(self), GtkInscriptionOverflow_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_inscription_get_wrap_mode(value self)
 {
 CAMLparam1(self);
 
-
-    PangoWrapMode result = gtk_inscription_get_wrap_mode(GtkInscription_val(self));
+PangoWrapMode result = gtk_inscription_get_wrap_mode(GtkInscription_val(self));
 CAMLreturn(Val_PangoWrapMode(result));
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_inscription_get_text_overflow(value self)
 {
 CAMLparam1(self);
 
-
-    GtkInscriptionOverflow result = gtk_inscription_get_text_overflow(GtkInscription_val(self));
+GtkInscriptionOverflow result = gtk_inscription_get_text_overflow(GtkInscription_val(self));
 CAMLreturn(Val_GtkInscriptionOverflow(result));
 }
 

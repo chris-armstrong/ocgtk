@@ -36,8 +36,7 @@ CAMLexport CAMLprim value ml_gtk_drop_down_set_search_match_mode(value self, val
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_drop_down_set_search_match_mode(GtkDropDown_val(self), GtkStringFilterMatchMode_val(arg1));
+gtk_drop_down_set_search_match_mode(GtkDropDown_val(self), GtkStringFilterMatchMode_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -45,8 +44,7 @@ CAMLexport CAMLprim value ml_gtk_drop_down_set_list_factory(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_drop_down_set_list_factory(GtkDropDown_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_drop_down_set_list_factory(GtkDropDown_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -54,8 +52,7 @@ CAMLexport CAMLprim value ml_gtk_drop_down_set_header_factory(value self, value 
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_drop_down_set_header_factory(GtkDropDown_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_drop_down_set_header_factory(GtkDropDown_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -63,8 +60,7 @@ CAMLexport CAMLprim value ml_gtk_drop_down_set_factory(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_drop_down_set_factory(GtkDropDown_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_drop_down_set_factory(GtkDropDown_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -72,8 +68,7 @@ CAMLexport CAMLprim value ml_gtk_drop_down_set_expression(value self, value arg1
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_drop_down_set_expression(GtkDropDown_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_drop_down_set_expression(GtkDropDown_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -81,8 +76,7 @@ CAMLexport CAMLprim value ml_gtk_drop_down_get_search_match_mode(value self)
 {
 CAMLparam1(self);
 
-
-    GtkStringFilterMatchMode result = gtk_drop_down_get_search_match_mode(GtkDropDown_val(self));
+GtkStringFilterMatchMode result = gtk_drop_down_get_search_match_mode(GtkDropDown_val(self));
 CAMLreturn(Val_GtkStringFilterMatchMode(result));
 }
 
@@ -90,8 +84,7 @@ CAMLexport CAMLprim value ml_gtk_drop_down_get_list_factory(value self)
 {
 CAMLparam1(self);
 
-
-    GtkListItemFactory* result = gtk_drop_down_get_list_factory(GtkDropDown_val(self));
+GtkListItemFactory* result = gtk_drop_down_get_list_factory(GtkDropDown_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -99,8 +92,7 @@ CAMLexport CAMLprim value ml_gtk_drop_down_get_header_factory(value self)
 {
 CAMLparam1(self);
 
-
-    GtkListItemFactory* result = gtk_drop_down_get_header_factory(GtkDropDown_val(self));
+GtkListItemFactory* result = gtk_drop_down_get_header_factory(GtkDropDown_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -108,8 +100,7 @@ CAMLexport CAMLprim value ml_gtk_drop_down_get_factory(value self)
 {
 CAMLparam1(self);
 
-
-    GtkListItemFactory* result = gtk_drop_down_get_factory(GtkDropDown_val(self));
+GtkListItemFactory* result = gtk_drop_down_get_factory(GtkDropDown_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -117,8 +108,7 @@ CAMLexport CAMLprim value ml_gtk_drop_down_get_expression(value self)
 {
 CAMLparam1(self);
 
-
-    GtkExpression* result = gtk_drop_down_get_expression(GtkDropDown_val(self));
+GtkExpression* result = gtk_drop_down_get_expression(GtkDropDown_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

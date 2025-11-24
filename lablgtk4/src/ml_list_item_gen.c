@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_list_item_set_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_list_item_set_child(GtkListItem_val(self), GtkWidget_option_val(arg1));
+gtk_list_item_set_child(GtkListItem_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -31,8 +30,7 @@ CAMLexport CAMLprim value ml_gtk_list_item_get_child(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_list_item_get_child(GtkListItem_val(self));
+GtkWidget* result = gtk_list_item_get_child(GtkListItem_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

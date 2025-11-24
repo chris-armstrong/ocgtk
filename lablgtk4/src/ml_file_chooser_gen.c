@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_file_chooser_set_filter(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_file_chooser_set_filter(GtkFileChooser_val(self), GtkWidget_val(arg1));
+gtk_file_chooser_set_filter(GtkFileChooser_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -31,8 +30,7 @@ CAMLexport CAMLprim value ml_gtk_file_chooser_set_current_name(value self, value
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_file_chooser_set_current_name(GtkFileChooser_val(self), String_val(arg1));
+gtk_file_chooser_set_current_name(GtkFileChooser_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -40,8 +38,7 @@ CAMLexport CAMLprim value ml_gtk_file_chooser_set_choice(value self, value arg1,
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_file_chooser_set_choice(GtkFileChooser_val(self), String_val(arg1), String_val(arg2));
+gtk_file_chooser_set_choice(GtkFileChooser_val(self), String_val(arg1), String_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -49,8 +46,7 @@ CAMLexport CAMLprim value ml_gtk_file_chooser_set_action(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_file_chooser_set_action(GtkFileChooser_val(self), GtkFileChooserAction_val(arg1));
+gtk_file_chooser_set_action(GtkFileChooser_val(self), GtkFileChooserAction_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -58,8 +54,7 @@ CAMLexport CAMLprim value ml_gtk_file_chooser_remove_filter(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_file_chooser_remove_filter(GtkFileChooser_val(self), GtkWidget_val(arg1));
+gtk_file_chooser_remove_filter(GtkFileChooser_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -67,8 +62,7 @@ CAMLexport CAMLprim value ml_gtk_file_chooser_remove_choice(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_file_chooser_remove_choice(GtkFileChooser_val(self), String_val(arg1));
+gtk_file_chooser_remove_choice(GtkFileChooser_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -76,8 +70,7 @@ CAMLexport CAMLprim value ml_gtk_file_chooser_get_filter(value self)
 {
 CAMLparam1(self);
 
-
-    GtkFileFilter* result = gtk_file_chooser_get_filter(GtkFileChooser_val(self));
+GtkFileFilter* result = gtk_file_chooser_get_filter(GtkFileChooser_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -85,8 +78,7 @@ CAMLexport CAMLprim value ml_gtk_file_chooser_get_choice(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    const char* result = gtk_file_chooser_get_choice(GtkFileChooser_val(self), String_val(arg1));
+const char* result = gtk_file_chooser_get_choice(GtkFileChooser_val(self), String_val(arg1));
 CAMLreturn(caml_copy_string(result));
 }
 
@@ -94,8 +86,7 @@ CAMLexport CAMLprim value ml_gtk_file_chooser_get_action(value self)
 {
 CAMLparam1(self);
 
-
-    GtkFileChooserAction result = gtk_file_chooser_get_action(GtkFileChooser_val(self));
+GtkFileChooserAction result = gtk_file_chooser_get_action(GtkFileChooser_val(self));
 CAMLreturn(Val_GtkFileChooserAction(result));
 }
 
@@ -103,8 +94,7 @@ CAMLexport CAMLprim value ml_gtk_file_chooser_add_filter(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_file_chooser_add_filter(GtkFileChooser_val(self), GtkWidget_val(arg1));
+gtk_file_chooser_add_filter(GtkFileChooser_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 

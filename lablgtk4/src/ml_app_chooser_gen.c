@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_app_chooser_refresh(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_app_chooser_refresh(GtkAppChooser_val(self));
+gtk_app_chooser_refresh(GtkAppChooser_val(self));
 CAMLreturn(Val_unit);
 }
 

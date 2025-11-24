@@ -1,13 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: TextView *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new TextView *)
 external new_ : unit -> t = "ml_gtk_text_view_new"
 
 (** Create a new TextView *)
-external new_with_buffer : Gtk.Widget.t -> t = "ml_gtk_text_view_new_with_buffer"
+external new_with_buffer : Gtk.widget -> t = "ml_gtk_text_view_new_with_buffer"
 
 (* Properties *)
 
@@ -103,29 +103,29 @@ external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit = "ml_gtk_text_
 
 external set_input_hints : t -> Gtk_enums.inputhints -> unit = "ml_gtk_text_view_set_input_hints"
 
-external set_gutter : t -> Gtk_enums.textwindowtype -> Gtk.Widget.t option -> unit = "ml_gtk_text_view_set_gutter"
+external set_gutter : t -> Gtk_enums.textwindowtype -> Gtk.widget option -> unit = "ml_gtk_text_view_set_gutter"
 
-external set_buffer : t -> Gtk.Widget.t option -> unit = "ml_gtk_text_view_set_buffer"
+external set_buffer : t -> Gtk.widget option -> unit = "ml_gtk_text_view_set_buffer"
 
-external scroll_to_mark : t -> Gtk.Widget.t -> float -> bool -> float -> float -> unit = "ml_gtk_text_view_scroll_to_mark_bytecode" "ml_gtk_text_view_scroll_to_mark_native"
+external scroll_to_mark : t -> Gtk.widget -> float -> bool -> float -> float -> unit = "ml_gtk_text_view_scroll_to_mark_bytecode" "ml_gtk_text_view_scroll_to_mark_native"
 
-external scroll_to_iter : t -> Gtk.Widget.t -> float -> bool -> float -> float -> bool = "ml_gtk_text_view_scroll_to_iter_bytecode" "ml_gtk_text_view_scroll_to_iter_native"
+external scroll_to_iter : t -> Gtk.widget -> float -> bool -> float -> float -> bool = "ml_gtk_text_view_scroll_to_iter_bytecode" "ml_gtk_text_view_scroll_to_iter_native"
 
-external scroll_mark_onscreen : t -> Gtk.Widget.t -> unit = "ml_gtk_text_view_scroll_mark_onscreen"
+external scroll_mark_onscreen : t -> Gtk.widget -> unit = "ml_gtk_text_view_scroll_mark_onscreen"
 
 external reset_im_context : t -> unit = "ml_gtk_text_view_reset_im_context"
 
 external reset_cursor_blink : t -> unit = "ml_gtk_text_view_reset_cursor_blink"
 
-external remove : t -> Gtk.Widget.t -> unit = "ml_gtk_text_view_remove"
+external remove : t -> Gtk.widget -> unit = "ml_gtk_text_view_remove"
 
 external place_cursor_onscreen : t -> bool = "ml_gtk_text_view_place_cursor_onscreen"
 
-external move_visually : t -> Gtk.Widget.t -> int -> bool = "ml_gtk_text_view_move_visually"
+external move_visually : t -> Gtk.widget -> int -> bool = "ml_gtk_text_view_move_visually"
 
-external move_overlay : t -> Gtk.Widget.t -> int -> int -> unit = "ml_gtk_text_view_move_overlay"
+external move_overlay : t -> Gtk.widget -> int -> int -> unit = "ml_gtk_text_view_move_overlay"
 
-external move_mark_onscreen : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_move_mark_onscreen"
+external move_mark_onscreen : t -> Gtk.widget -> bool = "ml_gtk_text_view_move_mark_onscreen"
 
 external im_context_filter_keypress : t -> _ Gdk.event -> bool = "ml_gtk_text_view_im_context_filter_keypress"
 
@@ -133,25 +133,25 @@ external get_wrap_mode : t -> Gtk_enums.wrapmode = "ml_gtk_text_view_get_wrap_mo
 
 external get_justification : t -> Gtk_enums.justification = "ml_gtk_text_view_get_justification"
 
-external get_iter_at_location : t -> Gtk.Widget.t -> int -> int -> bool = "ml_gtk_text_view_get_iter_at_location"
+external get_iter_at_location : t -> Gtk.widget -> int -> int -> bool = "ml_gtk_text_view_get_iter_at_location"
 
 external get_input_purpose : t -> Gtk_enums.inputpurpose = "ml_gtk_text_view_get_input_purpose"
 
 external get_input_hints : t -> Gtk_enums.inputhints = "ml_gtk_text_view_get_input_hints"
 
-external get_gutter : t -> Gtk_enums.textwindowtype -> Gtk.Widget.t = "ml_gtk_text_view_get_gutter"
+external get_gutter : t -> Gtk_enums.textwindowtype -> Gtk.widget = "ml_gtk_text_view_get_gutter"
 
-external get_buffer : t -> Gtk.Widget.t = "ml_gtk_text_view_get_buffer"
+external get_buffer : t -> Gtk.widget = "ml_gtk_text_view_get_buffer"
 
-external forward_display_line_end : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_forward_display_line_end"
+external forward_display_line_end : t -> Gtk.widget -> bool = "ml_gtk_text_view_forward_display_line_end"
 
-external forward_display_line : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_forward_display_line"
+external forward_display_line : t -> Gtk.widget -> bool = "ml_gtk_text_view_forward_display_line"
 
-external backward_display_line_start : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_backward_display_line_start"
+external backward_display_line_start : t -> Gtk.widget -> bool = "ml_gtk_text_view_backward_display_line_start"
 
-external backward_display_line : t -> Gtk.Widget.t -> bool = "ml_gtk_text_view_backward_display_line"
+external backward_display_line : t -> Gtk.widget -> bool = "ml_gtk_text_view_backward_display_line"
 
-external add_overlay : t -> Gtk.Widget.t -> int -> int -> unit = "ml_gtk_text_view_add_overlay"
+external add_overlay : t -> Gtk.widget -> int -> int -> unit = "ml_gtk_text_view_add_overlay"
 
-external add_child_at_anchor : t -> Gtk.Widget.t -> Gtk.Widget.t -> unit = "ml_gtk_text_view_add_child_at_anchor"
+external add_child_at_anchor : t -> Gtk.widget -> Gtk.widget -> unit = "ml_gtk_text_view_add_child_at_anchor"
 

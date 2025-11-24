@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: TextChildAnchor *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new TextChildAnchor *)
 external new_ : unit -> t = "ml_gtk_text_child_anchor_new"

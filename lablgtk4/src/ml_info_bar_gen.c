@@ -36,8 +36,7 @@ CAMLexport CAMLprim value ml_gtk_info_bar_set_response_sensitive(value self, val
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_info_bar_set_response_sensitive(GtkInfoBar_val(self), Int_val(arg1), Bool_val(arg2));
+gtk_info_bar_set_response_sensitive(GtkInfoBar_val(self), Int_val(arg1), Bool_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -45,8 +44,7 @@ CAMLexport CAMLprim value ml_gtk_info_bar_set_message_type(value self, value arg
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_info_bar_set_message_type(GtkInfoBar_val(self), GtkMessageType_val(arg1));
+gtk_info_bar_set_message_type(GtkInfoBar_val(self), GtkMessageType_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -54,8 +52,7 @@ CAMLexport CAMLprim value ml_gtk_info_bar_set_default_response(value self, value
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_info_bar_set_default_response(GtkInfoBar_val(self), Int_val(arg1));
+gtk_info_bar_set_default_response(GtkInfoBar_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -63,8 +60,7 @@ CAMLexport CAMLprim value ml_gtk_info_bar_response(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_info_bar_response(GtkInfoBar_val(self), Int_val(arg1));
+gtk_info_bar_response(GtkInfoBar_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -72,8 +68,7 @@ CAMLexport CAMLprim value ml_gtk_info_bar_remove_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_info_bar_remove_child(GtkInfoBar_val(self), GtkWidget_val(arg1));
+gtk_info_bar_remove_child(GtkInfoBar_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -81,8 +76,7 @@ CAMLexport CAMLprim value ml_gtk_info_bar_remove_action_widget(value self, value
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_info_bar_remove_action_widget(GtkInfoBar_val(self), GtkWidget_val(arg1));
+gtk_info_bar_remove_action_widget(GtkInfoBar_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -90,8 +84,7 @@ CAMLexport CAMLprim value ml_gtk_info_bar_get_message_type(value self)
 {
 CAMLparam1(self);
 
-
-    GtkMessageType result = gtk_info_bar_get_message_type(GtkInfoBar_val(self));
+GtkMessageType result = gtk_info_bar_get_message_type(GtkInfoBar_val(self));
 CAMLreturn(Val_GtkMessageType(result));
 }
 
@@ -99,8 +92,7 @@ CAMLexport CAMLprim value ml_gtk_info_bar_add_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_info_bar_add_child(GtkInfoBar_val(self), GtkWidget_val(arg1));
+gtk_info_bar_add_child(GtkInfoBar_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -108,8 +100,7 @@ CAMLexport CAMLprim value ml_gtk_info_bar_add_button(value self, value arg1, val
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    GtkWidget* result = gtk_info_bar_add_button(GtkInfoBar_val(self), String_val(arg1), Int_val(arg2));
+GtkWidget* result = gtk_info_bar_add_button(GtkInfoBar_val(self), String_val(arg1), Int_val(arg2));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -117,8 +108,7 @@ CAMLexport CAMLprim value ml_gtk_info_bar_add_action_widget(value self, value ar
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_info_bar_add_action_widget(GtkInfoBar_val(self), GtkWidget_val(arg1), Int_val(arg2));
+gtk_info_bar_add_action_widget(GtkInfoBar_val(self), GtkWidget_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
 

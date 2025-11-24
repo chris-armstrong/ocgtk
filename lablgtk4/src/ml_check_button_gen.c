@@ -43,8 +43,7 @@ CAMLexport CAMLprim value ml_gtk_check_button_set_group(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_check_button_set_group(GtkCheckButton_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_check_button_set_group(GtkCheckButton_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -52,8 +51,7 @@ CAMLexport CAMLprim value ml_gtk_check_button_set_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_check_button_set_child(GtkCheckButton_val(self), GtkWidget_option_val(arg1));
+gtk_check_button_set_child(GtkCheckButton_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -61,8 +59,7 @@ CAMLexport CAMLprim value ml_gtk_check_button_get_child(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_check_button_get_child(GtkCheckButton_val(self));
+GtkWidget* result = gtk_check_button_get_child(GtkCheckButton_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

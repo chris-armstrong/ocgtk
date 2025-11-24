@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_sort_by_column(value self, value ar
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_column_view_sort_by_column(GtkColumnView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL), GtkSortType_val(arg2));
+gtk_column_view_sort_by_column(GtkColumnView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL), GtkSortType_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_set_tab_behavior(value self, value 
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_column_view_set_tab_behavior(GtkColumnView_val(self), GtkListTabBehavior_val(arg1));
+gtk_column_view_set_tab_behavior(GtkColumnView_val(self), GtkListTabBehavior_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_set_row_factory(value self, value a
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_column_view_set_row_factory(GtkColumnView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_column_view_set_row_factory(GtkColumnView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_set_model(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_column_view_set_model(GtkColumnView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_column_view_set_model(GtkColumnView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -65,8 +61,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_set_header_factory(value self, valu
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_column_view_set_header_factory(GtkColumnView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_column_view_set_header_factory(GtkColumnView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -74,8 +69,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_scroll_to(value self, value arg1, v
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 
-
-    gtk_column_view_scroll_to(GtkColumnView_val(self), Int_val(arg1), (Is_some(arg2) ? GtkWidget_val(Some_val(arg2)) : NULL), GtkListScrollFlags_val(arg3), (Is_some(arg4) ? GtkWidget_val(Some_val(arg4)) : NULL));
+gtk_column_view_scroll_to(GtkColumnView_val(self), Int_val(arg1), (Is_some(arg2) ? GtkWidget_val(Some_val(arg2)) : NULL), GtkListScrollFlags_val(arg3), (Is_some(arg4) ? GtkWidget_val(Some_val(arg4)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -83,8 +77,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_remove_column(value self, value arg
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_column_view_remove_column(GtkColumnView_val(self), GtkWidget_val(arg1));
+gtk_column_view_remove_column(GtkColumnView_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -92,8 +85,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_insert_column(value self, value arg
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_column_view_insert_column(GtkColumnView_val(self), Int_val(arg1), GtkWidget_val(arg2));
+gtk_column_view_insert_column(GtkColumnView_val(self), Int_val(arg1), GtkWidget_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -101,8 +93,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_get_tab_behavior(value self)
 {
 CAMLparam1(self);
 
-
-    GtkListTabBehavior result = gtk_column_view_get_tab_behavior(GtkColumnView_val(self));
+GtkListTabBehavior result = gtk_column_view_get_tab_behavior(GtkColumnView_val(self));
 CAMLreturn(Val_GtkListTabBehavior(result));
 }
 
@@ -110,8 +101,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_get_sorter(value self)
 {
 CAMLparam1(self);
 
-
-    GtkSorter* result = gtk_column_view_get_sorter(GtkColumnView_val(self));
+GtkSorter* result = gtk_column_view_get_sorter(GtkColumnView_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -119,8 +109,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_get_row_factory(value self)
 {
 CAMLparam1(self);
 
-
-    GtkListItemFactory* result = gtk_column_view_get_row_factory(GtkColumnView_val(self));
+GtkListItemFactory* result = gtk_column_view_get_row_factory(GtkColumnView_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -128,8 +117,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_get_model(value self)
 {
 CAMLparam1(self);
 
-
-    GtkSelectionModel* result = gtk_column_view_get_model(GtkColumnView_val(self));
+GtkSelectionModel* result = gtk_column_view_get_model(GtkColumnView_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -137,8 +125,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_get_header_factory(value self)
 {
 CAMLparam1(self);
 
-
-    GtkListItemFactory* result = gtk_column_view_get_header_factory(GtkColumnView_val(self));
+GtkListItemFactory* result = gtk_column_view_get_header_factory(GtkColumnView_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -146,8 +133,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_append_column(value self, value arg
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_column_view_append_column(GtkColumnView_val(self), GtkWidget_val(arg1));
+gtk_column_view_append_column(GtkColumnView_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 

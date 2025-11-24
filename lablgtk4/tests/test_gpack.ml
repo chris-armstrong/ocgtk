@@ -42,9 +42,9 @@ let test_hbox_pack_empty () =
 let test_hbox_pack_with_widgets () =
   try
     let _ = GMain.init () in
-    let widget1 = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
-    let widget2 = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
-    let widget3 = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
+    let widget1 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
+    let widget2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
+    let widget3 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
 
     let box = GPack.hbox_pack ~spacing:10 ~homogeneous:true
                 [widget1; widget2; widget3] in
@@ -68,8 +68,8 @@ let test_vbox_pack_empty () =
 let test_vbox_pack_with_widgets () =
   try
     let _ = GMain.init () in
-    let widget1 = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
-    let widget2 = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
+    let widget1 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
+    let widget2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
 
     let box = GPack.vbox_pack ~spacing:5 [widget1; widget2] in
 
@@ -94,9 +94,9 @@ let test_grid_attach_empty () =
 let test_grid_attach_with_widgets () =
   try
     let _ = GMain.init () in
-    let widget1 = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
-    let widget2 = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
-    let widget3 = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
+    let widget1 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
+    let widget2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
+    let widget3 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
 
     let grid = GPack.grid_attach
                  ~row_spacing:5
@@ -131,8 +131,8 @@ let test_hpaned_empty () =
 let test_hpaned_with_children () =
   try
     let _ = GMain.init () in
-    let child1 = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
-    let child2 = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
+    let child1 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
+    let child2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
 
     let paned = GPack.hpaned ~start_child:child1 ~end_child:child2 ~position:100 () in
 
@@ -153,8 +153,8 @@ let test_vpaned_empty () =
 let test_vpaned_with_children () =
   try
     let _ = GMain.init () in
-    let child1 = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
-    let child2 = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
+    let child1 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
+    let child2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
 
     let paned = GPack.vpaned ~start_child:child1 ~end_child:child2 ~position:200 () in
 
@@ -179,9 +179,9 @@ let test_notebook_empty () =
 let test_notebook_with_pages () =
   try
     let _ = GMain.init () in
-    let page1 = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
-    let page2 = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
-    let page3 = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
+    let page1 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
+    let page2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
+    let page3 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
 
     let nb = GPack.notebook
                ~show_tabs:false
@@ -204,10 +204,10 @@ let test_notebook_with_pages () =
 let test_composition_hbox_in_vbox () =
   try
     let _ = GMain.init () in
-    let widget1 = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
-    let widget2 = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
-    let widget3 = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
-    let widget4 = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
+    let widget1 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
+    let widget2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
+    let widget3 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
+    let widget4 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
 
     let hbox = GPack.hbox_pack ~spacing:5 [widget1; widget2] in
     let hbox_as_widget = new GObj.widget (hbox#as_widget) in
@@ -222,9 +222,9 @@ let test_composition_hbox_in_vbox () =
 let test_composition_grid_in_paned () =
   try
     let _ = GMain.init () in
-    let widget1 = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
-    let widget2 = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
-    let widget3 = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
+    let widget1 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
+    let widget2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
+    let widget3 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
 
     let grid = GPack.grid_attach [(widget1, 0, 0, 1, 1); (widget2, 1, 0, 1, 1)] in
     let grid_as_widget = new GObj.widget (grid#as_widget) in
@@ -242,7 +242,7 @@ let test_composition_grid_in_paned () =
 let test_window_convenience () =
   try
     let _ = GMain.init () in
-    let box = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
+    let box = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let window = GPack.window ~title:"Test" ~width:400 ~height:300 box in
 
     check string "GPack window title" "Test" window#title;
@@ -258,7 +258,7 @@ let test_window_convenience () =
 let test_scrolled_convenience () =
   try
     let _ = GMain.init () in
-    let box = new GObj.widget (Gtk.Fixed.as_widget (Gtk.Fixed.create ())) in
+    let box = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let sw = GPack.scrolled ~hpolicy:`ALWAYS ~vpolicy:`AUTOMATIC box in
 
     let (h, v) = sw#policy in
@@ -290,7 +290,7 @@ let () =
       test_case "notebook empty" `Quick (require_gtk test_notebook_empty);
       test_case "notebook with pages" `Quick (require_gtk test_notebook_with_pages);
     ];
-    "Window and ScrolledWindow Conveniences (Phase 4.2)", [
+    "Window and Scrolled_window Conveniences (Phase 4.2)", [
       test_case "window convenience" `Quick (require_gtk test_window_convenience);
       test_case "scrolled window convenience" `Quick (require_gtk test_scrolled_convenience);
     ];

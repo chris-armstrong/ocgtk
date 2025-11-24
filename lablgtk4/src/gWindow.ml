@@ -13,41 +13,41 @@
 
 (** {1 GtkWindow} *)
 
-class window_skel (obj : Gtk.Window.t) = object (self)
-  inherit GObj.widget_impl (Gtk.Window.as_widget obj)
+class window_skel (obj : Window.t) = object (self)
+  inherit GObj.widget_impl (Window.as_widget obj)
 
   method set_child (child : GObj.widget option) =
     let widget_opt = match child with
       | None -> None
       | Some w -> Some w#as_widget
     in
-    Gtk.Window.set_child obj widget_opt
+    Window.set_child obj widget_opt
 
   method child =
-    match Gtk.Window.get_child obj with
+    match Window.get_child obj with
     | None -> None
     | Some w -> Some (new GObj.widget w)
 
   method add (child : GObj.widget) =
     self#set_child (Some child)
 
-  method title = Gtk.Window.get_title obj
-  method set_title title = Gtk.Window.set_title obj title
+  method title = Window.get_title obj
+  method set_title title = Window.set_title obj title
 
   method set_default_size ~width ~height =
-    Gtk.Window.set_default_size obj ~width ~height
+    Window.set_default_size obj ~width ~height
 
-  method get_default_size = Gtk.Window.get_default_size obj
+  method get_default_size = Window.get_default_size obj
 
-  method resizable = Gtk.Window.get_resizable obj
-  method set_resizable r = Gtk.Window.set_resizable obj r
+  method resizable = Window.get_resizable obj
+  method set_resizable r = Window.set_resizable obj r
 
-  method modal = Gtk.Window.get_modal obj
-  method set_modal m = Gtk.Window.set_modal obj m
+  method modal = Window.get_modal obj
+  method set_modal m = Window.set_modal obj m
 
-  method destroy = Gtk.Window.destroy obj
-  method present = Gtk.Window.present obj
-  method close = Gtk.Window.close obj
+  method destroy = Window.destroy obj
+  method present = Window.present obj
+  method close = Window.close obj
 end
 
 class window obj = object
@@ -56,11 +56,11 @@ end
 
 (** Create a new window *)
 let window ?(title="") ?(width=(-1)) ?(height=(-1)) ?(resizable=true) ?(modal=false) () =
-  let w = Gtk.Window.create () in
-  if title <> "" then Gtk.Window.set_title w title;
+  let w = Window.create () in
+  if title <> "" then Window.set_title w title;
   if width > 0 || height > 0 then
-    Gtk.Window.set_default_size w ~width:(if width > 0 then width else -1)
+    Window.set_default_size w ~width:(if width > 0 then width else -1)
                                    ~height:(if height > 0 then height else -1);
-  Gtk.Window.set_resizable w resizable;
-  Gtk.Window.set_modal w modal;
+  Window.set_resizable w resizable;
+  Window.set_modal w modal;
   new window w

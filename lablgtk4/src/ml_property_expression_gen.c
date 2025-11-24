@@ -36,7 +36,6 @@ CAMLexport CAMLprim value ml_gtk_property_expression_get_expression(value self)
 {
 CAMLparam1(self);
 
-
-    GtkExpression* result = gtk_property_expression_get_expression(GtkPropertyExpression_val(self));
+GtkExpression* result = gtk_property_expression_get_expression(GtkPropertyExpression_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }

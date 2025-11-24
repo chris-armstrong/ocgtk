@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: ComboBoxText *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new ComboBoxText *)
 external new_ : unit -> t = "ml_gtk_combo_box_text_new"

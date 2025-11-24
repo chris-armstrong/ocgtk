@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_bookmark_list_is_loading(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_bookmark_list_is_loading(GtkBookmarkList_val(self));
+gboolean result = gtk_bookmark_list_is_loading(GtkBookmarkList_val(self));
 CAMLreturn(Val_bool(result));
 }
 

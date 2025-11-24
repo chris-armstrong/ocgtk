@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_editable_set_position(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_editable_set_position(GtkEditable_val(self), Int_val(arg1));
+gtk_editable_set_position(GtkEditable_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -31,8 +30,7 @@ CAMLexport CAMLprim value ml_gtk_editable_set_alignment(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_editable_set_alignment(GtkEditable_val(self), Double_val(arg1));
+gtk_editable_set_alignment(GtkEditable_val(self), Double_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -40,8 +38,7 @@ CAMLexport CAMLprim value ml_gtk_editable_select_region(value self, value arg1, 
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_editable_select_region(GtkEditable_val(self), Int_val(arg1), Int_val(arg2));
+gtk_editable_select_region(GtkEditable_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -49,8 +46,7 @@ CAMLexport CAMLprim value ml_gtk_editable_init_delegate(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_editable_init_delegate(GtkEditable_val(self));
+gtk_editable_init_delegate(GtkEditable_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -58,8 +54,7 @@ CAMLexport CAMLprim value ml_gtk_editable_get_position(value self)
 {
 CAMLparam1(self);
 
-
-    int result = gtk_editable_get_position(GtkEditable_val(self));
+int result = gtk_editable_get_position(GtkEditable_val(self));
 CAMLreturn(Val_int(result));
 }
 
@@ -67,8 +62,7 @@ CAMLexport CAMLprim value ml_gtk_editable_get_delegate(value self)
 {
 CAMLparam1(self);
 
-
-    GtkEditable* result = gtk_editable_get_delegate(GtkEditable_val(self));
+GtkEditable* result = gtk_editable_get_delegate(GtkEditable_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -76,8 +70,7 @@ CAMLexport CAMLprim value ml_gtk_editable_get_alignment(value self)
 {
 CAMLparam1(self);
 
-
-    float result = gtk_editable_get_alignment(GtkEditable_val(self));
+float result = gtk_editable_get_alignment(GtkEditable_val(self));
 CAMLreturn(caml_copy_double(result));
 }
 
@@ -85,8 +78,7 @@ CAMLexport CAMLprim value ml_gtk_editable_finish_delegate(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_editable_finish_delegate(GtkEditable_val(self));
+gtk_editable_finish_delegate(GtkEditable_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -94,8 +86,7 @@ CAMLexport CAMLprim value ml_gtk_editable_delete_text(value self, value arg1, va
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_editable_delete_text(GtkEditable_val(self), Int_val(arg1), Int_val(arg2));
+gtk_editable_delete_text(GtkEditable_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -103,8 +94,7 @@ CAMLexport CAMLprim value ml_gtk_editable_delete_selection(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_editable_delete_selection(GtkEditable_val(self));
+gtk_editable_delete_selection(GtkEditable_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -112,8 +102,7 @@ CAMLexport CAMLprim value ml_gtk_editable_delegate_get_accessible_platform_state
 {
 CAMLparam2(self, arg1);
 
-
-    gboolean result = gtk_editable_delegate_get_accessible_platform_state(GtkEditable_val(self), GtkAccessiblePlatformState_val(arg1));
+gboolean result = gtk_editable_delegate_get_accessible_platform_state(GtkEditable_val(self), GtkAccessiblePlatformState_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 

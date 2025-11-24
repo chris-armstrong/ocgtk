@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_string_filter_set_match_mode(value self, value 
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_string_filter_set_match_mode(GtkStringFilter_val(self), GtkStringFilterMatchMode_val(arg1));
+gtk_string_filter_set_match_mode(GtkStringFilter_val(self), GtkStringFilterMatchMode_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_string_filter_set_expression(value self, value 
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_string_filter_set_expression(GtkStringFilter_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_string_filter_set_expression(GtkStringFilter_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_string_filter_get_match_mode(value self)
 {
 CAMLparam1(self);
 
-
-    GtkStringFilterMatchMode result = gtk_string_filter_get_match_mode(GtkStringFilter_val(self));
+GtkStringFilterMatchMode result = gtk_string_filter_get_match_mode(GtkStringFilter_val(self));
 CAMLreturn(Val_GtkStringFilterMatchMode(result));
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_string_filter_get_expression(value self)
 {
 CAMLparam1(self);
 
-
-    GtkExpression* result = gtk_string_filter_get_expression(GtkStringFilter_val(self));
+GtkExpression* result = gtk_string_filter_get_expression(GtkStringFilter_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

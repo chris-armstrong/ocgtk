@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: WindowControls *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new WindowControls *)
 external new_ : Gtk_enums.packtype -> t = "ml_gtk_window_controls_new"

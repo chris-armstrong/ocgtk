@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_print_context_get_width(value self)
 {
 CAMLparam1(self);
 
-
-    double result = gtk_print_context_get_width(GtkPrintContext_val(self));
+double result = gtk_print_context_get_width(GtkPrintContext_val(self));
 CAMLreturn(caml_copy_double(result));
 }
 
@@ -31,8 +30,7 @@ CAMLexport CAMLprim value ml_gtk_print_context_get_page_setup(value self)
 {
 CAMLparam1(self);
 
-
-    GtkPageSetup* result = gtk_print_context_get_page_setup(GtkPrintContext_val(self));
+GtkPageSetup* result = gtk_print_context_get_page_setup(GtkPrintContext_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -40,8 +38,7 @@ CAMLexport CAMLprim value ml_gtk_print_context_get_height(value self)
 {
 CAMLparam1(self);
 
-
-    double result = gtk_print_context_get_height(GtkPrintContext_val(self));
+double result = gtk_print_context_get_height(GtkPrintContext_val(self));
 CAMLreturn(caml_copy_double(result));
 }
 
@@ -49,8 +46,7 @@ CAMLexport CAMLprim value ml_gtk_print_context_get_dpi_y(value self)
 {
 CAMLparam1(self);
 
-
-    double result = gtk_print_context_get_dpi_y(GtkPrintContext_val(self));
+double result = gtk_print_context_get_dpi_y(GtkPrintContext_val(self));
 CAMLreturn(caml_copy_double(result));
 }
 
@@ -58,7 +54,6 @@ CAMLexport CAMLprim value ml_gtk_print_context_get_dpi_x(value self)
 {
 CAMLparam1(self);
 
-
-    double result = gtk_print_context_get_dpi_x(GtkPrintContext_val(self));
+double result = gtk_print_context_get_dpi_x(GtkPrintContext_val(self));
 CAMLreturn(caml_copy_double(result));
 }

@@ -29,7 +29,6 @@ CAMLexport CAMLprim value ml_gtk_gesture_rotate_get_angle_delta(value self)
 {
 CAMLparam1(self);
 
-
-    double result = gtk_gesture_rotate_get_angle_delta(GtkGestureRotate_val(self));
+double result = gtk_gesture_rotate_get_angle_delta(GtkGestureRotate_val(self));
 CAMLreturn(caml_copy_double(result));
 }

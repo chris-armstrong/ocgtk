@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_spinner_stop(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_spinner_stop(GtkSpinner_val(self));
+gtk_spinner_stop(GtkSpinner_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_spinner_start(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_spinner_start(GtkSpinner_val(self));
+gtk_spinner_start(GtkSpinner_val(self));
 CAMLreturn(Val_unit);
 }
 

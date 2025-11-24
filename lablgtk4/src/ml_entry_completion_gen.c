@@ -36,8 +36,7 @@ CAMLexport CAMLprim value ml_gtk_entry_completion_set_model(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_entry_completion_set_model(GtkEntryCompletion_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_entry_completion_set_model(GtkEntryCompletion_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -45,8 +44,7 @@ CAMLexport CAMLprim value ml_gtk_entry_completion_insert_prefix(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_entry_completion_insert_prefix(GtkEntryCompletion_val(self));
+gtk_entry_completion_insert_prefix(GtkEntryCompletion_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -54,8 +52,7 @@ CAMLexport CAMLprim value ml_gtk_entry_completion_get_model(value self)
 {
 CAMLparam1(self);
 
-
-    GtkTreeModel* result = gtk_entry_completion_get_model(GtkEntryCompletion_val(self));
+GtkTreeModel* result = gtk_entry_completion_get_model(GtkEntryCompletion_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -63,8 +60,7 @@ CAMLexport CAMLprim value ml_gtk_entry_completion_get_entry(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_entry_completion_get_entry(GtkEntryCompletion_val(self));
+GtkWidget* result = gtk_entry_completion_get_entry(GtkEntryCompletion_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -72,8 +68,7 @@ CAMLexport CAMLprim value ml_gtk_entry_completion_get_completion_prefix(value se
 {
 CAMLparam1(self);
 
-
-    const char* result = gtk_entry_completion_get_completion_prefix(GtkEntryCompletion_val(self));
+const char* result = gtk_entry_completion_get_completion_prefix(GtkEntryCompletion_val(self));
 CAMLreturn(caml_copy_string(result));
 }
 
@@ -81,8 +76,7 @@ CAMLexport CAMLprim value ml_gtk_entry_completion_complete(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_entry_completion_complete(GtkEntryCompletion_val(self));
+gtk_entry_completion_complete(GtkEntryCompletion_val(self));
 CAMLreturn(Val_unit);
 }
 

@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_alert_dialog_show(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_alert_dialog_show(GtkAlertDialog_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_alert_dialog_show(GtkAlertDialog_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_alert_dialog_get_buttons(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_alert_dialog_get_buttons(GtkAlertDialog_val(self));
+gtk_alert_dialog_get_buttons(GtkAlertDialog_val(self));
 CAMLreturn(Val_unit);
 }
 

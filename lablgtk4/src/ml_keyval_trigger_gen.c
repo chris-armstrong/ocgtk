@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_keyval_trigger_get_modifiers(value self)
 {
 CAMLparam1(self);
 
-
-    GdkModifierType result = gtk_keyval_trigger_get_modifiers(GtkKeyvalTrigger_val(self));
+GdkModifierType result = gtk_keyval_trigger_get_modifiers(GtkKeyvalTrigger_val(self));
 CAMLreturn(Val_GdkModifierType(result));
 }
 

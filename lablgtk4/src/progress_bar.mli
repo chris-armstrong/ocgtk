@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: ProgressBar *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new ProgressBar *)
 external new_ : unit -> t = "ml_gtk_progress_bar_new"

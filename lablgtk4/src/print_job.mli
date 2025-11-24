@@ -1,10 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: PrintJob *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new PrintJob *)
-external new_ : string -> Gtk.Widget.t -> Gtk.Widget.t -> Gtk.Widget.t -> t = "ml_gtk_print_job_new"
+external new_ : string -> Gtk.widget -> Gtk.widget -> Gtk.widget -> t = "ml_gtk_print_job_new"
 
 (* Properties *)
 
@@ -47,7 +47,7 @@ external get_surface : t -> (unit, GError.t) result = "ml_gtk_print_job_get_surf
 
 external get_status : t -> Gtk_enums.printstatus = "ml_gtk_print_job_get_status"
 
-external get_settings : t -> Gtk.Widget.t = "ml_gtk_print_job_get_settings"
+external get_settings : t -> Gtk.widget = "ml_gtk_print_job_get_settings"
 
 external get_scale : t -> float = "ml_gtk_print_job_get_scale"
 
@@ -55,7 +55,7 @@ external get_rotate : t -> bool = "ml_gtk_print_job_get_rotate"
 
 external get_reverse : t -> bool = "ml_gtk_print_job_get_reverse"
 
-external get_printer : t -> Gtk.Widget.t = "ml_gtk_print_job_get_printer"
+external get_printer : t -> Gtk.widget = "ml_gtk_print_job_get_printer"
 
 external get_pages : t -> Gtk_enums.printpages = "ml_gtk_print_job_get_pages"
 

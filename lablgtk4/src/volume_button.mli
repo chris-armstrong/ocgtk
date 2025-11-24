@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: VolumeButton *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new VolumeButton *)
 external new_ : unit -> t = "ml_gtk_volume_button_new"

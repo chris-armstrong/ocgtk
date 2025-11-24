@@ -9,22 +9,22 @@
 (*                                                                        *)
 (**************************************************************************)
 
-(** High-level GtkScrolledWindow wrapper for GTK4 *)
+(** High-level GtkScrolled_window wrapper for GTK4 *)
 
-(** {1 GtkScrolledWindow} *)
+(** {1 GtkScrolled_window} *)
 
-class scrolled_window_skel (obj : Gtk.ScrolledWindow.t) = object (self)
-  inherit GObj.widget_impl (Gtk.ScrolledWindow.as_widget obj)
+class scrolled_window_skel (obj : Scrolled_window.t) = object (self)
+  inherit GObj.widget_impl (Scrolled_window.as_widget obj)
 
   method set_child (child : GObj.widget option) =
     let widget_opt = match child with
       | None -> None
       | Some w -> Some w#as_widget
     in
-    Gtk.ScrolledWindow.set_child obj widget_opt
+    Scrolled_window.set_child obj widget_opt
 
   method child =
-    match Gtk.ScrolledWindow.get_child obj with
+    match Scrolled_window.get_child obj with
     | None -> None
     | Some w -> Some (new GObj.widget w)
 
@@ -32,25 +32,25 @@ class scrolled_window_skel (obj : Gtk.ScrolledWindow.t) = object (self)
     self#set_child (Some child)
 
   method set_policy ~hpolicy ~vpolicy =
-    Gtk.ScrolledWindow.set_policy obj ~hpolicy ~vpolicy
+    Scrolled_window.set_policy obj ~hpolicy ~vpolicy
 
-  method policy = Gtk.ScrolledWindow.get_policy obj
+  method policy = Scrolled_window.get_policy obj
 
   method hscrollbar =
-    match Gtk.ScrolledWindow.get_hscrollbar obj with
+    match Scrolled_window.get_hscrollbar obj with
     | None -> None
     | Some w -> Some (new GObj.widget w)
 
   method vscrollbar =
-    match Gtk.ScrolledWindow.get_vscrollbar obj with
+    match Scrolled_window.get_vscrollbar obj with
     | None -> None
     | Some w -> Some (new GObj.widget w)
 
-  method min_content_width = Gtk.ScrolledWindow.get_min_content_width obj
-  method set_min_content_width w = Gtk.ScrolledWindow.set_min_content_width obj w
+  method min_content_width = Scrolled_window.get_min_content_width obj
+  method set_min_content_width w = Scrolled_window.set_min_content_width obj w
 
-  method min_content_height = Gtk.ScrolledWindow.get_min_content_height obj
-  method set_min_content_height h = Gtk.ScrolledWindow.set_min_content_height obj h
+  method min_content_height = Scrolled_window.get_min_content_height obj
+  method set_min_content_height h = Scrolled_window.set_min_content_height obj h
 end
 
 class scrolled_window obj = object
@@ -64,10 +64,10 @@ let scrolled_window
     ?(min_content_width=(-1))
     ?(min_content_height=(-1))
     () =
-  let sw = Gtk.ScrolledWindow.create () in
-  Gtk.ScrolledWindow.set_policy sw ~hpolicy ~vpolicy;
+  let sw = Scrolled_window.create () in
+  Scrolled_window.set_policy sw ~hpolicy ~vpolicy;
   if min_content_width >= 0 then
-    Gtk.ScrolledWindow.set_min_content_width sw min_content_width;
+    Scrolled_window.set_min_content_width sw min_content_width;
   if min_content_height >= 0 then
-    Gtk.ScrolledWindow.set_min_content_height sw min_content_height;
+    Scrolled_window.set_min_content_height sw min_content_height;
   new scrolled_window sw

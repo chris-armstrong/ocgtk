@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: UriLauncher *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new UriLauncher *)
 external new_ : string option -> t = "ml_gtk_uri_launcher_new"

@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_list_box_row_set_header(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_list_box_row_set_header(GtkListBoxRow_val(self), GtkWidget_option_val(arg1));
+gtk_list_box_row_set_header(GtkListBoxRow_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_list_box_row_set_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_list_box_row_set_child(GtkListBoxRow_val(self), GtkWidget_option_val(arg1));
+gtk_list_box_row_set_child(GtkListBoxRow_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_list_box_row_is_selected(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_list_box_row_is_selected(GtkListBoxRow_val(self));
+gboolean result = gtk_list_box_row_is_selected(GtkListBoxRow_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_list_box_row_get_index(value self)
 {
 CAMLparam1(self);
 
-
-    int result = gtk_list_box_row_get_index(GtkListBoxRow_val(self));
+int result = gtk_list_box_row_get_index(GtkListBoxRow_val(self));
 CAMLreturn(Val_int(result));
 }
 
@@ -65,8 +61,7 @@ CAMLexport CAMLprim value ml_gtk_list_box_row_get_header(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_list_box_row_get_header(GtkListBoxRow_val(self));
+GtkWidget* result = gtk_list_box_row_get_header(GtkListBoxRow_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -74,8 +69,7 @@ CAMLexport CAMLprim value ml_gtk_list_box_row_get_child(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_list_box_row_get_child(GtkListBoxRow_val(self));
+GtkWidget* result = gtk_list_box_row_get_child(GtkListBoxRow_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -83,8 +77,7 @@ CAMLexport CAMLprim value ml_gtk_list_box_row_changed(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_list_box_row_changed(GtkListBoxRow_val(self));
+gtk_list_box_row_changed(GtkListBoxRow_val(self));
 CAMLreturn(Val_unit);
 }
 

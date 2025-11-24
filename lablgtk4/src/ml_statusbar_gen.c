@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_statusbar_remove_all(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_statusbar_remove_all(GtkStatusbar_val(self), Int_val(arg1));
+gtk_statusbar_remove_all(GtkStatusbar_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_statusbar_remove(value self, value arg1, value 
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_statusbar_remove(GtkStatusbar_val(self), Int_val(arg1), Int_val(arg2));
+gtk_statusbar_remove(GtkStatusbar_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_statusbar_push(value self, value arg1, value ar
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    guint result = gtk_statusbar_push(GtkStatusbar_val(self), Int_val(arg1), String_val(arg2));
+guint result = gtk_statusbar_push(GtkStatusbar_val(self), Int_val(arg1), String_val(arg2));
 CAMLreturn(Val_int(result));
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_statusbar_pop(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_statusbar_pop(GtkStatusbar_val(self), Int_val(arg1));
+gtk_statusbar_pop(GtkStatusbar_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -65,7 +61,6 @@ CAMLexport CAMLprim value ml_gtk_statusbar_get_context_id(value self, value arg1
 {
 CAMLparam2(self, arg1);
 
-
-    guint result = gtk_statusbar_get_context_id(GtkStatusbar_val(self), String_val(arg1));
+guint result = gtk_statusbar_get_context_id(GtkStatusbar_val(self), String_val(arg1));
 CAMLreturn(Val_int(result));
 }

@@ -41,7 +41,7 @@ let grid_attach
 (* Paned conveniences *)
 
 let paned ~orientation ?start_child ?end_child ?position () =
-  let paned = new GPaned.paned (Gtk.Paned.create ~orientation) in
+  let paned = new GPaned.paned (Paned.create ~orientation) in
   (match start_child with
    | Some w -> paned#set_start_child (Some w)
    | None -> ());
@@ -90,7 +90,7 @@ let notebook ?(show_tabs=true) ?(show_border=true) pages =
   ) pages;
   nb
 
-(** {1 Window and ScrolledWindow Conveniences} *)
+(** {1 Window and Scrolled_window Conveniences} *)
 
 (** Create a window with a child widget *)
 let window ?(title="") ?(width=(-1)) ?(height=(-1)) ?(resizable=true) ?(modal=false) child =

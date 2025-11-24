@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_tree_sortable_sort_column_changed(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_tree_sortable_sort_column_changed(GtkTreeSortable_val(self));
+gtk_tree_sortable_sort_column_changed(GtkTreeSortable_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -31,8 +30,7 @@ CAMLexport CAMLprim value ml_gtk_tree_sortable_set_sort_column_id(value self, va
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_tree_sortable_set_sort_column_id(GtkTreeSortable_val(self), Int_val(arg1), GtkSortType_val(arg2));
+gtk_tree_sortable_set_sort_column_id(GtkTreeSortable_val(self), Int_val(arg1), GtkSortType_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -40,7 +38,6 @@ CAMLexport CAMLprim value ml_gtk_tree_sortable_has_default_sort_func(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_tree_sortable_has_default_sort_func(GtkTreeSortable_val(self));
+gboolean result = gtk_tree_sortable_has_default_sort_func(GtkTreeSortable_val(self));
 CAMLreturn(Val_bool(result));
 }

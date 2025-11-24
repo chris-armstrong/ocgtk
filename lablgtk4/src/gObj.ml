@@ -20,14 +20,14 @@ class controller_ops (widget : [`widget] Gobject.obj) = object (self)
   method on_key_pressed ~callback =
     let ctrl = EventControllerKey.new_ () in
     let sig_id = EventControllerKey.connect_key_pressed ctrl ~callback in
-    Gtk.Widget.add_controller widget ctrl;
+    Widget.add_controller widget ctrl;
     controllers <- ctrl :: controllers;
     sig_id
 
   method on_key_released ~callback =
     let ctrl = EventControllerKey.new_ () in
     let sig_id = EventControllerKey.connect_key_released ctrl ~callback in
-    Gtk.Widget.add_controller widget ctrl;
+    Widget.add_controller widget ctrl;
     controllers <- ctrl :: controllers;
     sig_id
 
@@ -35,28 +35,28 @@ class controller_ops (widget : [`widget] Gobject.obj) = object (self)
     let gesture = GestureClick.new_ () in
     GestureClick.set_button gesture button;
     let sig_id = GestureClick.connect_pressed gesture ~callback in
-    Gtk.Widget.add_controller widget gesture;
+    Widget.add_controller widget gesture;
     controllers <- gesture :: controllers;
     sig_id
 
   method on_motion ~callback =
     let ctrl = EventControllerMotion.new_ () in
     let sig_id = EventControllerMotion.connect_motion ctrl ~callback in
-    Gtk.Widget.add_controller widget ctrl;
+    Widget.add_controller widget ctrl;
     controllers <- ctrl :: controllers;
     sig_id
 
   method on_enter ~callback =
     let ctrl = EventControllerMotion.new_ () in
     let sig_id = EventControllerMotion.connect_enter ctrl ~callback in
-    Gtk.Widget.add_controller widget ctrl;
+    Widget.add_controller widget ctrl;
     controllers <- ctrl :: controllers;
     sig_id
 
   method on_leave ~callback =
     let ctrl = EventControllerMotion.new_ () in
     let sig_id = EventControllerMotion.connect_leave ctrl ~callback in
-    Gtk.Widget.add_controller widget ctrl;
+    Widget.add_controller widget ctrl;
     controllers <- ctrl :: controllers;
     sig_id
 
@@ -69,67 +69,67 @@ class virtual widget_impl (obj : [`widget] Gobject.obj) = object (self)
   method private obj = obj
 
   (* Visibility *)
-  method show = Gtk.Widget.show obj
-  method hide = Gtk.Widget.hide obj
-  method visible = Gtk.Widget.get_visible obj
-  method set_visible v = Gtk.Widget.set_visible obj v
+  method show = Widget.show obj
+  method hide = Widget.hide obj
+  method visible = Widget.get_visible obj
+  method set_visible v = Widget.set_visible obj v
 
   (* Size *)
-  method width = Gtk.Widget.get_width obj
-  method height = Gtk.Widget.get_height obj
-  method allocated_width = Gtk.Widget.get_allocated_width obj
-  method allocated_height = Gtk.Widget.get_allocated_height obj
+  method width = Widget.get_width obj
+  method height = Widget.get_height obj
+  method allocated_width = Widget.get_allocated_width obj
+  method allocated_height = Widget.get_allocated_height obj
   method set_size_request ~width ~height =
-    Gtk.Widget.set_size_request obj ~width ~height
-  method size_request = Gtk.Widget.get_size_request obj
+    Widget.set_size_request obj ~width ~height
+  method size_request = Widget.get_size_request obj
 
   (* Focus - NOTE: focusable not can_focus in GTK4! *)
-  method focusable = Gtk.Widget.get_focusable obj
-  method set_focusable f = Gtk.Widget.set_focusable obj f
-  method has_focus = Gtk.Widget.has_focus obj
-  method grab_focus = ignore (Gtk.Widget.grab_focus obj)
+  method focusable = Widget.get_focusable obj
+  method set_focusable f = Widget.set_focusable obj f
+  method has_focus = Widget.has_focus obj
+  method grab_focus = ignore (Widget.grab_focus obj)
 
   (* CSS classes - NEW in GTK4 *)
-  method add_css_class cls = Gtk.Widget.add_css_class obj cls
-  method remove_css_class cls = Gtk.Widget.remove_css_class obj cls
-  method has_css_class cls = Gtk.Widget.has_css_class obj cls
-  method css_classes = Gtk.Widget.get_css_classes obj
+  method add_css_class cls = Widget.add_css_class obj cls
+  method remove_css_class cls = Widget.remove_css_class obj cls
+  method has_css_class cls = Widget.has_css_class obj cls
+  method css_classes = Widget.get_css_classes obj
 
   (* State *)
-  method sensitive = Gtk.Widget.get_sensitive obj
-  method set_sensitive s = Gtk.Widget.set_sensitive obj s
-  method name = Gtk.Widget.get_name obj
-  method set_name n = Gtk.Widget.set_name obj n
+  method sensitive = Widget.get_sensitive obj
+  method set_sensitive s = Widget.set_sensitive obj s
+  method name = Widget.get_name obj
+  method set_name n = Widget.set_name obj n
 
   (* Hierarchy *)
-  method parent = Gtk.Widget.get_parent obj
-  method root = Gtk.Widget.get_root obj
+  method parent = Widget.get_parent obj
+  method root = Widget.get_root obj
 
   (* Drawing *)
-  method queue_draw = Gtk.Widget.queue_draw obj
-  method queue_resize = Gtk.Widget.queue_resize obj
+  method queue_draw = Widget.queue_draw obj
+  method queue_resize = Widget.queue_resize obj
 
   (* Event controllers - NEW in GTK4 *)
-  method add_controller ctrl = Gtk.Widget.add_controller obj ctrl
-  method remove_controller ctrl = Gtk.Widget.remove_controller obj ctrl
+  method add_controller ctrl = Widget.add_controller obj ctrl
+  method remove_controller ctrl = Widget.remove_controller obj ctrl
 
   (* Packing properties - NEW in GTK4 *)
-  method hexpand = Gtk.Widget.get_hexpand obj
-  method set_hexpand h = Gtk.Widget.set_hexpand obj h
-  method vexpand = Gtk.Widget.get_vexpand obj
-  method set_vexpand v = Gtk.Widget.set_vexpand obj v
-  method halign = Gtk.Widget.get_halign obj
-  method set_halign a = Gtk.Widget.set_halign obj a
-  method valign = Gtk.Widget.get_valign obj
-  method set_valign a = Gtk.Widget.set_valign obj a
-  method margin_start = Gtk.Widget.get_margin_start obj
-  method set_margin_start m = Gtk.Widget.set_margin_start obj m
-  method margin_end = Gtk.Widget.get_margin_end obj
-  method set_margin_end m = Gtk.Widget.set_margin_end obj m
-  method margin_top = Gtk.Widget.get_margin_top obj
-  method set_margin_top m = Gtk.Widget.set_margin_top obj m
-  method margin_bottom = Gtk.Widget.get_margin_bottom obj
-  method set_margin_bottom m = Gtk.Widget.set_margin_bottom obj m
+  method hexpand = Widget.get_hexpand obj
+  method set_hexpand h = Widget.set_hexpand obj h
+  method vexpand = Widget.get_vexpand obj
+  method set_vexpand v = Widget.set_vexpand obj v
+  method halign = Widget.get_halign obj
+  method set_halign a = Widget.set_halign obj a
+  method valign = Widget.get_valign obj
+  method set_valign a = Widget.set_valign obj a
+  method margin_start = Widget.get_margin_start obj
+  method set_margin_start m = Widget.set_margin_start obj m
+  method margin_end = Widget.get_margin_end obj
+  method set_margin_end m = Widget.set_margin_end obj m
+  method margin_top = Widget.get_margin_top obj
+  method set_margin_top m = Widget.set_margin_top obj m
+  method margin_bottom = Widget.get_margin_bottom obj
+  method set_margin_bottom m = Widget.set_margin_bottom obj m
 
   (* Conversion *)
   method as_widget = obj

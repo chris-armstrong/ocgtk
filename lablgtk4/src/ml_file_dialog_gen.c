@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_file_dialog_set_default_filter(value self, valu
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_file_dialog_set_default_filter(GtkFileDialog_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_file_dialog_set_default_filter(GtkFileDialog_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_file_dialog_get_default_filter(value self)
 {
 CAMLparam1(self);
 
-
-    GtkFileFilter* result = gtk_file_dialog_get_default_filter(GtkFileDialog_val(self));
+GtkFileFilter* result = gtk_file_dialog_get_default_filter(GtkFileDialog_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

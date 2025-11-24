@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_media_stream_unprepared(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_media_stream_unprepared(GtkMediaStream_val(self));
+gtk_media_stream_unprepared(GtkMediaStream_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -31,8 +30,7 @@ CAMLexport CAMLprim value ml_gtk_media_stream_stream_unprepared(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_media_stream_stream_unprepared(GtkMediaStream_val(self));
+gtk_media_stream_stream_unprepared(GtkMediaStream_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -40,8 +38,7 @@ CAMLexport CAMLprim value ml_gtk_media_stream_stream_ended(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_media_stream_stream_ended(GtkMediaStream_val(self));
+gtk_media_stream_stream_ended(GtkMediaStream_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -49,8 +46,7 @@ CAMLexport CAMLprim value ml_gtk_media_stream_seek_success(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_media_stream_seek_success(GtkMediaStream_val(self));
+gtk_media_stream_seek_success(GtkMediaStream_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -58,8 +54,7 @@ CAMLexport CAMLprim value ml_gtk_media_stream_seek_failed(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_media_stream_seek_failed(GtkMediaStream_val(self));
+gtk_media_stream_seek_failed(GtkMediaStream_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -67,8 +62,7 @@ CAMLexport CAMLprim value ml_gtk_media_stream_play(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_media_stream_play(GtkMediaStream_val(self));
+gtk_media_stream_play(GtkMediaStream_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -76,8 +70,7 @@ CAMLexport CAMLprim value ml_gtk_media_stream_pause(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_media_stream_pause(GtkMediaStream_val(self));
+gtk_media_stream_pause(GtkMediaStream_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -85,8 +78,7 @@ CAMLexport CAMLprim value ml_gtk_media_stream_is_seeking(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_media_stream_is_seeking(GtkMediaStream_val(self));
+gboolean result = gtk_media_stream_is_seeking(GtkMediaStream_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -94,8 +86,7 @@ CAMLexport CAMLprim value ml_gtk_media_stream_is_seekable(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_media_stream_is_seekable(GtkMediaStream_val(self));
+gboolean result = gtk_media_stream_is_seekable(GtkMediaStream_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -103,8 +94,7 @@ CAMLexport CAMLprim value ml_gtk_media_stream_is_prepared(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_media_stream_is_prepared(GtkMediaStream_val(self));
+gboolean result = gtk_media_stream_is_prepared(GtkMediaStream_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -112,8 +102,7 @@ CAMLexport CAMLprim value ml_gtk_media_stream_has_video(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_media_stream_has_video(GtkMediaStream_val(self));
+gboolean result = gtk_media_stream_has_video(GtkMediaStream_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -121,8 +110,7 @@ CAMLexport CAMLprim value ml_gtk_media_stream_has_audio(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_media_stream_has_audio(GtkMediaStream_val(self));
+gboolean result = gtk_media_stream_has_audio(GtkMediaStream_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -130,8 +118,7 @@ CAMLexport CAMLprim value ml_gtk_media_stream_ended(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_media_stream_ended(GtkMediaStream_val(self));
+gtk_media_stream_ended(GtkMediaStream_val(self));
 CAMLreturn(Val_unit);
 }
 

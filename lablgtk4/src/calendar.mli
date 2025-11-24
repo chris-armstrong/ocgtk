@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Calendar *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new Calendar *)
 external new_ : unit -> t = "ml_gtk_calendar_new"

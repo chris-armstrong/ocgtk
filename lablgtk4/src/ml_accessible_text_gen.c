@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_accessible_text_update_selection_bound(value se
 {
 CAMLparam1(self);
 
-
-    gtk_accessible_text_update_selection_bound(GtkAccessibleText_val(self));
+gtk_accessible_text_update_selection_bound(GtkAccessibleText_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -31,7 +30,6 @@ CAMLexport CAMLprim value ml_gtk_accessible_text_update_caret_position(value sel
 {
 CAMLparam1(self);
 
-
-    gtk_accessible_text_update_caret_position(GtkAccessibleText_val(self));
+gtk_accessible_text_update_caret_position(GtkAccessibleText_val(self));
 CAMLreturn(Val_unit);
 }

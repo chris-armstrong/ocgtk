@@ -1,6 +1,6 @@
 (* GTK4 ToggleButton low-level bindings *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Constructors *)
 external new_ : unit -> t = "ml_gtk_toggle_button_new"

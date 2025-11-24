@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_actionable_set_detailed_action_name(value self,
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_actionable_set_detailed_action_name(GtkActionable_val(self), String_val(arg1));
+gtk_actionable_set_detailed_action_name(GtkActionable_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 

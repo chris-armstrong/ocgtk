@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: EditableLabel *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new EditableLabel *)
 external new_ : string -> t = "ml_gtk_editable_label_new"

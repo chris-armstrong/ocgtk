@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_media_controls_set_media_stream(value self, val
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_media_controls_set_media_stream(GtkMediaControls_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_media_controls_set_media_stream(GtkMediaControls_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -38,7 +37,6 @@ CAMLexport CAMLprim value ml_gtk_media_controls_get_media_stream(value self)
 {
 CAMLparam1(self);
 
-
-    GtkMediaStream* result = gtk_media_controls_get_media_stream(GtkMediaControls_val(self));
+GtkMediaStream* result = gtk_media_controls_get_media_stream(GtkMediaControls_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }

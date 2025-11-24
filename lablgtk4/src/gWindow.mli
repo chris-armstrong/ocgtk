@@ -13,7 +13,7 @@
 
 (** {1 GtkWindow} *)
 
-class window_skel : Gtk.Window.t ->
+class window_skel : Window.t ->
   object
     inherit GObj.widget_impl
 
@@ -38,7 +38,7 @@ class window_skel : Gtk.Window.t ->
     method close : unit
   end
 
-class window : Gtk.Window.t ->
+class window : Window.t ->
   object
     inherit window_skel
   end

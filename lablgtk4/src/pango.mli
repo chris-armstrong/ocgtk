@@ -76,7 +76,7 @@ module Language : sig
 end
 
 module Context : sig
-  val cast : Gtk.Widget.t -> context
+  val cast : Gtk.widget -> context
   val get_font_description : context -> font_description
   val set_font_description : context -> font_description -> unit
   val get_language : context -> language
@@ -89,7 +89,7 @@ end
 val scale : int
 
 module Layout : sig
-  val cast : Gtk.Widget.t -> layout
+  val cast : Gtk.widget -> layout
   val create : context -> layout
   val copy : layout -> layout
   val get_context : layout -> context

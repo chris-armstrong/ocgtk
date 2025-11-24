@@ -43,8 +43,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_set_widget(value self, value a
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_tree_view_column_set_widget(GtkTreeViewColumn_val(self), GtkWidget_option_val(arg1));
+gtk_tree_view_column_set_widget(GtkTreeViewColumn_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -52,8 +51,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_set_sort_order(value self, val
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_tree_view_column_set_sort_order(GtkTreeViewColumn_val(self), GtkSortType_val(arg1));
+gtk_tree_view_column_set_sort_order(GtkTreeViewColumn_val(self), GtkSortType_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -61,8 +59,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_set_sizing(value self, value a
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_tree_view_column_set_sizing(GtkTreeViewColumn_val(self), GtkTreeViewColumnSizing_val(arg1));
+gtk_tree_view_column_set_sizing(GtkTreeViewColumn_val(self), GtkTreeViewColumnSizing_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -70,8 +67,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_queue_resize(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_tree_view_column_queue_resize(GtkTreeViewColumn_val(self));
+gtk_tree_view_column_queue_resize(GtkTreeViewColumn_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -79,8 +75,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_pack_start(value self, value a
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_tree_view_column_pack_start(GtkTreeViewColumn_val(self), GtkWidget_val(arg1), Bool_val(arg2));
+gtk_tree_view_column_pack_start(GtkTreeViewColumn_val(self), GtkWidget_val(arg1), Bool_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -88,8 +83,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_pack_end(value self, value arg
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_tree_view_column_pack_end(GtkTreeViewColumn_val(self), GtkWidget_val(arg1), Bool_val(arg2));
+gtk_tree_view_column_pack_end(GtkTreeViewColumn_val(self), GtkWidget_val(arg1), Bool_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -97,8 +91,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_get_widget(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_tree_view_column_get_widget(GtkTreeViewColumn_val(self));
+GtkWidget* result = gtk_tree_view_column_get_widget(GtkTreeViewColumn_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -106,8 +99,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_get_tree_view(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_tree_view_column_get_tree_view(GtkTreeViewColumn_val(self));
+GtkWidget* result = gtk_tree_view_column_get_tree_view(GtkTreeViewColumn_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -115,8 +107,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_get_sort_order(value self)
 {
 CAMLparam1(self);
 
-
-    GtkSortType result = gtk_tree_view_column_get_sort_order(GtkTreeViewColumn_val(self));
+GtkSortType result = gtk_tree_view_column_get_sort_order(GtkTreeViewColumn_val(self));
 CAMLreturn(Val_GtkSortType(result));
 }
 
@@ -124,8 +115,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_get_sizing(value self)
 {
 CAMLparam1(self);
 
-
-    GtkTreeViewColumnSizing result = gtk_tree_view_column_get_sizing(GtkTreeViewColumn_val(self));
+GtkTreeViewColumnSizing result = gtk_tree_view_column_get_sizing(GtkTreeViewColumn_val(self));
 CAMLreturn(Val_GtkTreeViewColumnSizing(result));
 }
 
@@ -133,8 +123,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_get_button(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_tree_view_column_get_button(GtkTreeViewColumn_val(self));
+GtkWidget* result = gtk_tree_view_column_get_button(GtkTreeViewColumn_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -142,8 +131,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_focus_cell(value self, value a
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_tree_view_column_focus_cell(GtkTreeViewColumn_val(self), GtkWidget_val(arg1));
+gtk_tree_view_column_focus_cell(GtkTreeViewColumn_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -151,8 +139,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_clicked(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_tree_view_column_clicked(GtkTreeViewColumn_val(self));
+gtk_tree_view_column_clicked(GtkTreeViewColumn_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -160,8 +147,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_clear_attributes(value self, v
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_tree_view_column_clear_attributes(GtkTreeViewColumn_val(self), GtkWidget_val(arg1));
+gtk_tree_view_column_clear_attributes(GtkTreeViewColumn_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -169,8 +155,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_clear(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_tree_view_column_clear(GtkTreeViewColumn_val(self));
+gtk_tree_view_column_clear(GtkTreeViewColumn_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -178,8 +163,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_cell_set_cell_data(value self,
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 
-
-    gtk_tree_view_column_cell_set_cell_data(GtkTreeViewColumn_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2), Bool_val(arg3), Bool_val(arg4));
+gtk_tree_view_column_cell_set_cell_data(GtkTreeViewColumn_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2), Bool_val(arg3), Bool_val(arg4));
 CAMLreturn(Val_unit);
 }
 
@@ -187,8 +171,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_cell_is_visible(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_tree_view_column_cell_is_visible(GtkTreeViewColumn_val(self));
+gboolean result = gtk_tree_view_column_cell_is_visible(GtkTreeViewColumn_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -196,8 +179,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_add_attribute(value self, valu
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
-
-    gtk_tree_view_column_add_attribute(GtkTreeViewColumn_val(self), GtkWidget_val(arg1), String_val(arg2), Int_val(arg3));
+gtk_tree_view_column_add_attribute(GtkTreeViewColumn_val(self), GtkWidget_val(arg1), String_val(arg2), Int_val(arg3));
 CAMLreturn(Val_unit);
 }
 

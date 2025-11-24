@@ -36,8 +36,7 @@ CAMLexport CAMLprim value ml_gtk_label_set_wrap_mode(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_label_set_wrap_mode(GtkLabel_val(self), PangoWrapMode_val(arg1));
+gtk_label_set_wrap_mode(GtkLabel_val(self), PangoWrapMode_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -45,8 +44,7 @@ CAMLexport CAMLprim value ml_gtk_label_set_text_with_mnemonic(value self, value 
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_label_set_text_with_mnemonic(GtkLabel_val(self), String_val(arg1));
+gtk_label_set_text_with_mnemonic(GtkLabel_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -54,8 +52,7 @@ CAMLexport CAMLprim value ml_gtk_label_set_text(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_label_set_text(GtkLabel_val(self), String_val(arg1));
+gtk_label_set_text(GtkLabel_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -63,8 +60,7 @@ CAMLexport CAMLprim value ml_gtk_label_set_natural_wrap_mode(value self, value a
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_label_set_natural_wrap_mode(GtkLabel_val(self), GtkNaturalWrapMode_val(arg1));
+gtk_label_set_natural_wrap_mode(GtkLabel_val(self), GtkNaturalWrapMode_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -72,8 +68,7 @@ CAMLexport CAMLprim value ml_gtk_label_set_mnemonic_widget(value self, value arg
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_label_set_mnemonic_widget(GtkLabel_val(self), GtkWidget_option_val(arg1));
+gtk_label_set_mnemonic_widget(GtkLabel_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -81,8 +76,7 @@ CAMLexport CAMLprim value ml_gtk_label_set_markup_with_mnemonic(value self, valu
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_label_set_markup_with_mnemonic(GtkLabel_val(self), String_val(arg1));
+gtk_label_set_markup_with_mnemonic(GtkLabel_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -90,8 +84,7 @@ CAMLexport CAMLprim value ml_gtk_label_set_markup(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_label_set_markup(GtkLabel_val(self), String_val(arg1));
+gtk_label_set_markup(GtkLabel_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -99,8 +92,7 @@ CAMLexport CAMLprim value ml_gtk_label_set_justify(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_label_set_justify(GtkLabel_val(self), GtkJustification_val(arg1));
+gtk_label_set_justify(GtkLabel_val(self), GtkJustification_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -108,8 +100,7 @@ CAMLexport CAMLprim value ml_gtk_label_set_ellipsize(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_label_set_ellipsize(GtkLabel_val(self), PangoEllipsizeMode_val(arg1));
+gtk_label_set_ellipsize(GtkLabel_val(self), PangoEllipsizeMode_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -117,8 +108,7 @@ CAMLexport CAMLprim value ml_gtk_label_select_region(value self, value arg1, val
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_label_select_region(GtkLabel_val(self), Int_val(arg1), Int_val(arg2));
+gtk_label_select_region(GtkLabel_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -126,8 +116,7 @@ CAMLexport CAMLprim value ml_gtk_label_get_wrap_mode(value self)
 {
 CAMLparam1(self);
 
-
-    PangoWrapMode result = gtk_label_get_wrap_mode(GtkLabel_val(self));
+PangoWrapMode result = gtk_label_get_wrap_mode(GtkLabel_val(self));
 CAMLreturn(Val_PangoWrapMode(result));
 }
 
@@ -135,8 +124,7 @@ CAMLexport CAMLprim value ml_gtk_label_get_text(value self)
 {
 CAMLparam1(self);
 
-
-    const char* result = gtk_label_get_text(GtkLabel_val(self));
+const char* result = gtk_label_get_text(GtkLabel_val(self));
 CAMLreturn(caml_copy_string(result));
 }
 
@@ -144,8 +132,7 @@ CAMLexport CAMLprim value ml_gtk_label_get_natural_wrap_mode(value self)
 {
 CAMLparam1(self);
 
-
-    GtkNaturalWrapMode result = gtk_label_get_natural_wrap_mode(GtkLabel_val(self));
+GtkNaturalWrapMode result = gtk_label_get_natural_wrap_mode(GtkLabel_val(self));
 CAMLreturn(Val_GtkNaturalWrapMode(result));
 }
 
@@ -153,8 +140,7 @@ CAMLexport CAMLprim value ml_gtk_label_get_mnemonic_widget(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_label_get_mnemonic_widget(GtkLabel_val(self));
+GtkWidget* result = gtk_label_get_mnemonic_widget(GtkLabel_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -162,8 +148,7 @@ CAMLexport CAMLprim value ml_gtk_label_get_justify(value self)
 {
 CAMLparam1(self);
 
-
-    GtkJustification result = gtk_label_get_justify(GtkLabel_val(self));
+GtkJustification result = gtk_label_get_justify(GtkLabel_val(self));
 CAMLreturn(Val_GtkJustification(result));
 }
 
@@ -171,8 +156,7 @@ CAMLexport CAMLprim value ml_gtk_label_get_ellipsize(value self)
 {
 CAMLparam1(self);
 
-
-    PangoEllipsizeMode result = gtk_label_get_ellipsize(GtkLabel_val(self));
+PangoEllipsizeMode result = gtk_label_get_ellipsize(GtkLabel_val(self));
 CAMLreturn(Val_PangoEllipsizeMode(result));
 }
 
@@ -180,8 +164,7 @@ CAMLexport CAMLprim value ml_gtk_label_get_current_uri(value self)
 {
 CAMLparam1(self);
 
-
-    const char* result = gtk_label_get_current_uri(GtkLabel_val(self));
+const char* result = gtk_label_get_current_uri(GtkLabel_val(self));
 CAMLreturn(caml_copy_string(result));
 }
 

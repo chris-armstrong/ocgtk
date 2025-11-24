@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Statusbar *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new Statusbar *)
 external new_ : unit -> t = "ml_gtk_statusbar_new"

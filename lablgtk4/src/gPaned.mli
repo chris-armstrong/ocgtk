@@ -14,7 +14,7 @@
 (** {1 GtkPaned Container} *)
 
 (** Base paned skeleton with two-child operations *)
-class paned_skel : Gtk.Paned.t ->
+class paned_skel : Paned.t ->
   object
     inherit GObj.widget_impl
 
@@ -74,7 +74,7 @@ class paned_skel : Gtk.Paned.t ->
   end
 
 (** Paned widget with full functionality *)
-class paned : Gtk.Paned.t ->
+class paned : Paned.t ->
   object
     inherit paned_skel
   end

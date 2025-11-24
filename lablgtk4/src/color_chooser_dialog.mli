@@ -1,10 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: ColorChooserDialog *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new ColorChooserDialog *)
-external new_ : string option -> Gtk.Widget.t option -> t = "ml_gtk_color_chooser_dialog_new"
+external new_ : string option -> Gtk.widget option -> t = "ml_gtk_color_chooser_dialog_new"
 
 (* Properties *)
 

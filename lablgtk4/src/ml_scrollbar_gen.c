@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_scrollbar_set_adjustment(value self, value arg1
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_scrollbar_set_adjustment(GtkScrollbar_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_scrollbar_set_adjustment(GtkScrollbar_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -38,7 +37,6 @@ CAMLexport CAMLprim value ml_gtk_scrollbar_get_adjustment(value self)
 {
 CAMLparam1(self);
 
-
-    GtkAdjustment* result = gtk_scrollbar_get_adjustment(GtkScrollbar_val(self));
+GtkAdjustment* result = gtk_scrollbar_get_adjustment(GtkScrollbar_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }

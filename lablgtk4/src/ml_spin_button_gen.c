@@ -36,8 +36,7 @@ CAMLexport CAMLprim value ml_gtk_spin_button_update(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_spin_button_update(GtkSpinButton_val(self));
+gtk_spin_button_update(GtkSpinButton_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -45,8 +44,7 @@ CAMLexport CAMLprim value ml_gtk_spin_button_spin(value self, value arg1, value 
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_spin_button_spin(GtkSpinButton_val(self), GtkSpinType_val(arg1), Double_val(arg2));
+gtk_spin_button_spin(GtkSpinButton_val(self), GtkSpinType_val(arg1), Double_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -54,8 +52,7 @@ CAMLexport CAMLprim value ml_gtk_spin_button_set_update_policy(value self, value
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_spin_button_set_update_policy(GtkSpinButton_val(self), GtkSpinButtonUpdatePolicy_val(arg1));
+gtk_spin_button_set_update_policy(GtkSpinButton_val(self), GtkSpinButtonUpdatePolicy_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -63,8 +60,7 @@ CAMLexport CAMLprim value ml_gtk_spin_button_set_range(value self, value arg1, v
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_spin_button_set_range(GtkSpinButton_val(self), Double_val(arg1), Double_val(arg2));
+gtk_spin_button_set_range(GtkSpinButton_val(self), Double_val(arg1), Double_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -72,8 +68,7 @@ CAMLexport CAMLprim value ml_gtk_spin_button_set_increments(value self, value ar
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_spin_button_set_increments(GtkSpinButton_val(self), Double_val(arg1), Double_val(arg2));
+gtk_spin_button_set_increments(GtkSpinButton_val(self), Double_val(arg1), Double_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -81,8 +76,7 @@ CAMLexport CAMLprim value ml_gtk_spin_button_set_adjustment(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_spin_button_set_adjustment(GtkSpinButton_val(self), GtkWidget_val(arg1));
+gtk_spin_button_set_adjustment(GtkSpinButton_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -90,8 +84,7 @@ CAMLexport CAMLprim value ml_gtk_spin_button_get_value_as_int(value self)
 {
 CAMLparam1(self);
 
-
-    int result = gtk_spin_button_get_value_as_int(GtkSpinButton_val(self));
+int result = gtk_spin_button_get_value_as_int(GtkSpinButton_val(self));
 CAMLreturn(Val_int(result));
 }
 
@@ -99,8 +92,7 @@ CAMLexport CAMLprim value ml_gtk_spin_button_get_update_policy(value self)
 {
 CAMLparam1(self);
 
-
-    GtkSpinButtonUpdatePolicy result = gtk_spin_button_get_update_policy(GtkSpinButton_val(self));
+GtkSpinButtonUpdatePolicy result = gtk_spin_button_get_update_policy(GtkSpinButton_val(self));
 CAMLreturn(Val_GtkSpinButtonUpdatePolicy(result));
 }
 
@@ -108,8 +100,7 @@ CAMLexport CAMLprim value ml_gtk_spin_button_get_adjustment(value self)
 {
 CAMLparam1(self);
 
-
-    GtkAdjustment* result = gtk_spin_button_get_adjustment(GtkSpinButton_val(self));
+GtkAdjustment* result = gtk_spin_button_get_adjustment(GtkSpinButton_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -117,8 +108,7 @@ CAMLexport CAMLprim value ml_gtk_spin_button_configure(value self, value arg1, v
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
-
-    gtk_spin_button_configure(GtkSpinButton_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL), Double_val(arg2), Int_val(arg3));
+gtk_spin_button_configure(GtkSpinButton_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL), Double_val(arg2), Int_val(arg3));
 CAMLreturn(Val_unit);
 }
 

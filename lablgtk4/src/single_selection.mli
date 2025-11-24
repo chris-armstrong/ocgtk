@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: SingleSelection *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new SingleSelection *)
 external new_ : unit -> t = "ml_gtk_single_selection_new"

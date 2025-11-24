@@ -35,8 +35,7 @@ CAMLexport CAMLprim value ml_gtk_tree_list_model_get_row(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    GtkTreeListRow* result = gtk_tree_list_model_get_row(GtkTreeListModel_val(self), Int_val(arg1));
+GtkTreeListRow* result = gtk_tree_list_model_get_row(GtkTreeListModel_val(self), Int_val(arg1));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -44,8 +43,7 @@ CAMLexport CAMLprim value ml_gtk_tree_list_model_get_child_row(value self, value
 {
 CAMLparam2(self, arg1);
 
-
-    GtkTreeListRow* result = gtk_tree_list_model_get_child_row(GtkTreeListModel_val(self), Int_val(arg1));
+GtkTreeListRow* result = gtk_tree_list_model_get_child_row(GtkTreeListModel_val(self), Int_val(arg1));
 CAMLreturn(Val_GtkWidget(result));
 }
 

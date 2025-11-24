@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_orientable_set_orientation(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_orientable_set_orientation(GtkOrientable_val(self), GtkOrientation_val(arg1));
+gtk_orientable_set_orientation(GtkOrientable_val(self), GtkOrientation_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -31,7 +30,6 @@ CAMLexport CAMLprim value ml_gtk_orientable_get_orientation(value self)
 {
 CAMLparam1(self);
 
-
-    GtkOrientation result = gtk_orientable_get_orientation(GtkOrientable_val(self));
+GtkOrientation result = gtk_orientable_get_orientation(GtkOrientable_val(self));
 CAMLreturn(Val_GtkOrientation(result));
 }

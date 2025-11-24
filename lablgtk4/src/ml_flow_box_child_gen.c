@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_flow_box_child_set_child(value self, value arg1
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_flow_box_child_set_child(GtkFlowBoxChild_val(self), GtkWidget_option_val(arg1));
+gtk_flow_box_child_set_child(GtkFlowBoxChild_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_flow_box_child_is_selected(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_flow_box_child_is_selected(GtkFlowBoxChild_val(self));
+gboolean result = gtk_flow_box_child_is_selected(GtkFlowBoxChild_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_flow_box_child_get_index(value self)
 {
 CAMLparam1(self);
 
-
-    int result = gtk_flow_box_child_get_index(GtkFlowBoxChild_val(self));
+int result = gtk_flow_box_child_get_index(GtkFlowBoxChild_val(self));
 CAMLreturn(Val_int(result));
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_flow_box_child_get_child(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_flow_box_child_get_child(GtkFlowBoxChild_val(self));
+GtkWidget* result = gtk_flow_box_child_get_child(GtkFlowBoxChild_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -65,7 +61,6 @@ CAMLexport CAMLprim value ml_gtk_flow_box_child_changed(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_flow_box_child_changed(GtkFlowBoxChild_val(self));
+gtk_flow_box_child_changed(GtkFlowBoxChild_val(self));
 CAMLreturn(Val_unit);
 }

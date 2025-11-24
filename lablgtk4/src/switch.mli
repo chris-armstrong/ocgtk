@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Switch *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new Switch *)
 external new_ : unit -> t = "ml_gtk_switch_new"

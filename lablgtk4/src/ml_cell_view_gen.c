@@ -57,8 +57,7 @@ CAMLexport CAMLprim value ml_gtk_cell_view_set_model(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_cell_view_set_model(GtkCellView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_cell_view_set_model(GtkCellView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -66,8 +65,7 @@ CAMLexport CAMLprim value ml_gtk_cell_view_set_displayed_row(value self, value a
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_cell_view_set_displayed_row(GtkCellView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_cell_view_set_displayed_row(GtkCellView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -75,8 +73,7 @@ CAMLexport CAMLprim value ml_gtk_cell_view_get_model(value self)
 {
 CAMLparam1(self);
 
-
-    GtkTreeModel* result = gtk_cell_view_get_model(GtkCellView_val(self));
+GtkTreeModel* result = gtk_cell_view_get_model(GtkCellView_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -84,8 +81,7 @@ CAMLexport CAMLprim value ml_gtk_cell_view_get_displayed_row(value self)
 {
 CAMLparam1(self);
 
-
-    GtkTreePath* result = gtk_cell_view_get_displayed_row(GtkCellView_val(self));
+GtkTreePath* result = gtk_cell_view_get_displayed_row(GtkCellView_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

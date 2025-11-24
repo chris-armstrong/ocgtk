@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_entry_buffer_insert_text(value self, value arg1
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
-
-    guint result = gtk_entry_buffer_insert_text(GtkEntryBuffer_val(self), Int_val(arg1), String_val(arg2), Int_val(arg3));
+guint result = gtk_entry_buffer_insert_text(GtkEntryBuffer_val(self), Int_val(arg1), String_val(arg2), Int_val(arg3));
 CAMLreturn(Val_int(result));
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_entry_buffer_emit_inserted_text(value self, val
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
-
-    gtk_entry_buffer_emit_inserted_text(GtkEntryBuffer_val(self), Int_val(arg1), String_val(arg2), Int_val(arg3));
+gtk_entry_buffer_emit_inserted_text(GtkEntryBuffer_val(self), Int_val(arg1), String_val(arg2), Int_val(arg3));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_entry_buffer_emit_deleted_text(value self, valu
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_entry_buffer_emit_deleted_text(GtkEntryBuffer_val(self), Int_val(arg1), Int_val(arg2));
+gtk_entry_buffer_emit_deleted_text(GtkEntryBuffer_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_entry_buffer_delete_text(value self, value arg1
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    guint result = gtk_entry_buffer_delete_text(GtkEntryBuffer_val(self), Int_val(arg1), Int_val(arg2));
+guint result = gtk_entry_buffer_delete_text(GtkEntryBuffer_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_int(result));
 }
 

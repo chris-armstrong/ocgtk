@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Button *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new Button *)
 external new_ : unit -> t = "ml_gtk_button_new"
@@ -47,7 +47,7 @@ external get_use_underline : t -> bool = "ml_gtk_button_get_use_underline"
 (** Set property: use-underline *)
 external set_use_underline : t -> bool -> unit = "ml_gtk_button_set_use_underline"
 
-external set_child : t -> Gtk.Widget.t option -> unit = "ml_gtk_button_set_child"
+external set_child : t -> Gtk.widget option -> unit = "ml_gtk_button_set_child"
 
-external get_child : t -> Gtk.Widget.t = "ml_gtk_button_get_child"
+external get_child : t -> Gtk.widget = "ml_gtk_button_get_child"
 

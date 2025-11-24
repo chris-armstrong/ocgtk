@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_application_uninhibit(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_application_uninhibit(GtkApplication_val(self), Int_val(arg1));
+gtk_application_uninhibit(GtkApplication_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_application_remove_window(value self, value arg
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_application_remove_window(GtkApplication_val(self), GtkWidget_val(arg1));
+gtk_application_remove_window(GtkApplication_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_application_list_action_descriptions(value self
 {
 CAMLparam1(self);
 
-
-    gtk_application_list_action_descriptions(GtkApplication_val(self));
+gtk_application_list_action_descriptions(GtkApplication_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_application_inhibit(value self, value arg1, val
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
-
-    guint result = gtk_application_inhibit(GtkApplication_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL), GtkApplicationInhibitFlags_val(arg2), (Is_some(arg3) ? String_val(Some_val(arg3)) : NULL));
+guint result = gtk_application_inhibit(GtkApplication_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL), GtkApplicationInhibitFlags_val(arg2), (Is_some(arg3) ? String_val(Some_val(arg3)) : NULL));
 CAMLreturn(Val_int(result));
 }
 
@@ -65,8 +61,7 @@ CAMLexport CAMLprim value ml_gtk_application_get_window_by_id(value self, value 
 {
 CAMLparam2(self, arg1);
 
-
-    GtkWindow* result = gtk_application_get_window_by_id(GtkApplication_val(self), Int_val(arg1));
+GtkWindow* result = gtk_application_get_window_by_id(GtkApplication_val(self), Int_val(arg1));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -74,8 +69,7 @@ CAMLexport CAMLprim value ml_gtk_application_get_active_window(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWindow* result = gtk_application_get_active_window(GtkApplication_val(self));
+GtkWindow* result = gtk_application_get_active_window(GtkApplication_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -83,8 +77,7 @@ CAMLexport CAMLprim value ml_gtk_application_get_actions_for_accel(value self, v
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_application_get_actions_for_accel(GtkApplication_val(self), String_val(arg1));
+gtk_application_get_actions_for_accel(GtkApplication_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -92,8 +85,7 @@ CAMLexport CAMLprim value ml_gtk_application_get_accels_for_action(value self, v
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_application_get_accels_for_action(GtkApplication_val(self), String_val(arg1));
+gtk_application_get_accels_for_action(GtkApplication_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -101,8 +93,7 @@ CAMLexport CAMLprim value ml_gtk_application_add_window(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_application_add_window(GtkApplication_val(self), GtkWidget_val(arg1));
+gtk_application_add_window(GtkApplication_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 

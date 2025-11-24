@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: PasswordEntry *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new PasswordEntry *)
 external new_ : unit -> t = "ml_gtk_password_entry_new"

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: DrawingArea *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new DrawingArea *)
 external new_ : unit -> t = "ml_gtk_drawing_area_new"

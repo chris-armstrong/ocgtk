@@ -39,7 +39,7 @@ let should_skip_class class_name =
     "Grid";
     "Notebook";
     "Paned";
-    "ScrolledWindow";
+    "Scrolled_window";
     "Snapshot";
     "Stack";
     "Widget";

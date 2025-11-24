@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_icon_theme_has_icon(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gboolean result = gtk_icon_theme_has_icon(GtkIconTheme_val(self), String_val(arg1));
+gboolean result = gtk_icon_theme_has_icon(GtkIconTheme_val(self), String_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_icon_theme_get_search_path(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_icon_theme_get_search_path(GtkIconTheme_val(self));
+gtk_icon_theme_get_search_path(GtkIconTheme_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_icon_theme_get_resource_path(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_icon_theme_get_resource_path(GtkIconTheme_val(self));
+gtk_icon_theme_get_resource_path(GtkIconTheme_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_icon_theme_get_icon_sizes(value self, value arg
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_icon_theme_get_icon_sizes(GtkIconTheme_val(self), String_val(arg1));
+gtk_icon_theme_get_icon_sizes(GtkIconTheme_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -65,8 +61,7 @@ CAMLexport CAMLprim value ml_gtk_icon_theme_get_icon_names(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_icon_theme_get_icon_names(GtkIconTheme_val(self));
+gtk_icon_theme_get_icon_names(GtkIconTheme_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -74,8 +69,7 @@ CAMLexport CAMLprim value ml_gtk_icon_theme_add_search_path(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_icon_theme_add_search_path(GtkIconTheme_val(self), String_val(arg1));
+gtk_icon_theme_add_search_path(GtkIconTheme_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -83,8 +77,7 @@ CAMLexport CAMLprim value ml_gtk_icon_theme_add_resource_path(value self, value 
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_icon_theme_add_resource_path(GtkIconTheme_val(self), String_val(arg1));
+gtk_icon_theme_add_resource_path(GtkIconTheme_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 

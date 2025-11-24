@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_stack_sidebar_set_stack(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_stack_sidebar_set_stack(GtkStackSidebar_val(self), GtkWidget_val(arg1));
+gtk_stack_sidebar_set_stack(GtkStackSidebar_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,7 +37,6 @@ CAMLexport CAMLprim value ml_gtk_stack_sidebar_get_stack(value self)
 {
 CAMLparam1(self);
 
-
-    GtkStack* result = gtk_stack_sidebar_get_stack(GtkStackSidebar_val(self));
+GtkStack* result = gtk_stack_sidebar_get_stack(GtkStackSidebar_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }

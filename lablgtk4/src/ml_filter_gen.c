@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_filter_get_strictness(value self)
 {
 CAMLparam1(self);
 
-
-    GtkFilterMatch result = gtk_filter_get_strictness(GtkFilter_val(self));
+GtkFilterMatch result = gtk_filter_get_strictness(GtkFilter_val(self));
 CAMLreturn(Val_GtkFilterMatch(result));
 }
 
@@ -31,7 +30,6 @@ CAMLexport CAMLprim value ml_gtk_filter_changed(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_filter_changed(GtkFilter_val(self), GtkFilterChange_val(arg1));
+gtk_filter_changed(GtkFilter_val(self), GtkFilterChange_val(arg1));
 CAMLreturn(Val_unit);
 }

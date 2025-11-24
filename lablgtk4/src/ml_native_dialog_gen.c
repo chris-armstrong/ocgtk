@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_native_dialog_show(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_native_dialog_show(GtkNativeDialog_val(self));
+gtk_native_dialog_show(GtkNativeDialog_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -31,8 +30,7 @@ CAMLexport CAMLprim value ml_gtk_native_dialog_set_transient_for(value self, val
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_native_dialog_set_transient_for(GtkNativeDialog_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_native_dialog_set_transient_for(GtkNativeDialog_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -40,8 +38,7 @@ CAMLexport CAMLprim value ml_gtk_native_dialog_hide(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_native_dialog_hide(GtkNativeDialog_val(self));
+gtk_native_dialog_hide(GtkNativeDialog_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -49,8 +46,7 @@ CAMLexport CAMLprim value ml_gtk_native_dialog_get_transient_for(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWindow* result = gtk_native_dialog_get_transient_for(GtkNativeDialog_val(self));
+GtkWindow* result = gtk_native_dialog_get_transient_for(GtkNativeDialog_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -58,8 +54,7 @@ CAMLexport CAMLprim value ml_gtk_native_dialog_destroy(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_native_dialog_destroy(GtkNativeDialog_val(self));
+gtk_native_dialog_destroy(GtkNativeDialog_val(self));
 CAMLreturn(Val_unit);
 }
 

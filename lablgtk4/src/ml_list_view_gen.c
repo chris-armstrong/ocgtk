@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_list_view_set_tab_behavior(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_list_view_set_tab_behavior(GtkListView_val(self), GtkListTabBehavior_val(arg1));
+gtk_list_view_set_tab_behavior(GtkListView_val(self), GtkListTabBehavior_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_list_view_set_model(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_list_view_set_model(GtkListView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_list_view_set_model(GtkListView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_list_view_set_header_factory(value self, value 
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_list_view_set_header_factory(GtkListView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_list_view_set_header_factory(GtkListView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_list_view_set_factory(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_list_view_set_factory(GtkListView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_list_view_set_factory(GtkListView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -65,8 +61,7 @@ CAMLexport CAMLprim value ml_gtk_list_view_scroll_to(value self, value arg1, val
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
-
-    gtk_list_view_scroll_to(GtkListView_val(self), Int_val(arg1), GtkListScrollFlags_val(arg2), (Is_some(arg3) ? GtkWidget_val(Some_val(arg3)) : NULL));
+gtk_list_view_scroll_to(GtkListView_val(self), Int_val(arg1), GtkListScrollFlags_val(arg2), (Is_some(arg3) ? GtkWidget_val(Some_val(arg3)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -74,8 +69,7 @@ CAMLexport CAMLprim value ml_gtk_list_view_get_tab_behavior(value self)
 {
 CAMLparam1(self);
 
-
-    GtkListTabBehavior result = gtk_list_view_get_tab_behavior(GtkListView_val(self));
+GtkListTabBehavior result = gtk_list_view_get_tab_behavior(GtkListView_val(self));
 CAMLreturn(Val_GtkListTabBehavior(result));
 }
 
@@ -83,8 +77,7 @@ CAMLexport CAMLprim value ml_gtk_list_view_get_model(value self)
 {
 CAMLparam1(self);
 
-
-    GtkSelectionModel* result = gtk_list_view_get_model(GtkListView_val(self));
+GtkSelectionModel* result = gtk_list_view_get_model(GtkListView_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -92,8 +85,7 @@ CAMLexport CAMLprim value ml_gtk_list_view_get_header_factory(value self)
 {
 CAMLparam1(self);
 
-
-    GtkListItemFactory* result = gtk_list_view_get_header_factory(GtkListView_val(self));
+GtkListItemFactory* result = gtk_list_view_get_header_factory(GtkListView_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -101,8 +93,7 @@ CAMLexport CAMLprim value ml_gtk_list_view_get_factory(value self)
 {
 CAMLparam1(self);
 
-
-    GtkListItemFactory* result = gtk_list_view_get_factory(GtkListView_val(self));
+GtkListItemFactory* result = gtk_list_view_get_factory(GtkListView_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

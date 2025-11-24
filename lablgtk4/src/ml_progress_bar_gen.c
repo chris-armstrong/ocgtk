@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_progress_bar_set_ellipsize(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_progress_bar_set_ellipsize(GtkProgressBar_val(self), PangoEllipsizeMode_val(arg1));
+gtk_progress_bar_set_ellipsize(GtkProgressBar_val(self), PangoEllipsizeMode_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_progress_bar_pulse(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_progress_bar_pulse(GtkProgressBar_val(self));
+gtk_progress_bar_pulse(GtkProgressBar_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_progress_bar_get_ellipsize(value self)
 {
 CAMLparam1(self);
 
-
-    PangoEllipsizeMode result = gtk_progress_bar_get_ellipsize(GtkProgressBar_val(self));
+PangoEllipsizeMode result = gtk_progress_bar_get_ellipsize(GtkProgressBar_val(self));
 CAMLreturn(Val_PangoEllipsizeMode(result));
 }
 

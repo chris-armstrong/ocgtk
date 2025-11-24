@@ -6,7 +6,7 @@ open GObj
 
 (** {3 GtkProgressBar} *)
 
-class progress_bar (obj : Gtk.Widget.t) = object (self)
+class progress_bar (obj : Gtk.widget) = object (self)
   inherit GObj.widget_impl obj
 
   method set_fraction f = Progress_bar.set_fraction self#obj f
@@ -55,7 +55,7 @@ let progress_bar ?pulse_step ?fraction ?show_text ?inverted ?packing ?show () =
 
 (** {3 GtkRange} *)
 
-class range (obj : Gtk.Widget.t) = object (self)
+class range (obj : Gtk.widget) = object (self)
   inherit GObj.widget_impl obj
 
   method as_range = obj
@@ -85,7 +85,7 @@ end
 
 (** {3 GtkScale} *)
 
-class scale (obj : Gtk.Widget.t) = object (self)
+class scale (obj : Gtk.widget) = object (self)
   inherit range obj
 
   method set_digits d = Scale.set_digits obj d
@@ -124,7 +124,7 @@ let scale orientation ?digits ?draw_value ?has_origin ?value_pos
 
 (** {3 GtkLevelBar} *)
 
-class level_bar (obj : Gtk.Widget.t) = object (self)
+class level_bar (obj : Gtk.widget) = object (self)
   inherit GObj.widget_impl obj
 
   method set_value v = Level_bar.set_value obj v

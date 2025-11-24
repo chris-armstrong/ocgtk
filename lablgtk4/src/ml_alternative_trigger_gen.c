@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_alternative_trigger_get_second(value self)
 {
 CAMLparam1(self);
 
-
-    GtkShortcutTrigger* result = gtk_alternative_trigger_get_second(GtkAlternativeTrigger_val(self));
+GtkShortcutTrigger* result = gtk_alternative_trigger_get_second(GtkAlternativeTrigger_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -38,7 +37,6 @@ CAMLexport CAMLprim value ml_gtk_alternative_trigger_get_first(value self)
 {
 CAMLparam1(self);
 
-
-    GtkShortcutTrigger* result = gtk_alternative_trigger_get_first(GtkAlternativeTrigger_val(self));
+GtkShortcutTrigger* result = gtk_alternative_trigger_get_first(GtkAlternativeTrigger_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }

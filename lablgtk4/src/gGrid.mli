@@ -14,7 +14,7 @@
 (** {1 GtkGrid Container} *)
 
 (** Base grid skeleton with basic container operations *)
-class grid_skel : Gtk.Grid.t ->
+class grid_skel : Grid.t ->
   object
     inherit GObj.widget_impl
 
@@ -77,7 +77,7 @@ class grid_skel : Gtk.Grid.t ->
   end
 
 (** Grid widget with full functionality *)
-class grid : Gtk.Grid.t ->
+class grid : Grid.t ->
   object
     inherit grid_skel
   end

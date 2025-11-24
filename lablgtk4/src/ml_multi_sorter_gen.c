@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_multi_sorter_remove(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_multi_sorter_remove(GtkMultiSorter_val(self), Int_val(arg1));
+gtk_multi_sorter_remove(GtkMultiSorter_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_multi_sorter_append(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_multi_sorter_append(GtkMultiSorter_val(self), GtkWidget_val(arg1));
+gtk_multi_sorter_append(GtkMultiSorter_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 

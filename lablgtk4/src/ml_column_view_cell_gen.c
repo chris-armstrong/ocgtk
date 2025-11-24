@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_cell_set_child(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_column_view_cell_set_child(GtkColumnViewCell_val(self), GtkWidget_option_val(arg1));
+gtk_column_view_cell_set_child(GtkColumnViewCell_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -31,8 +30,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_cell_get_child(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_column_view_cell_get_child(GtkColumnViewCell_val(self));
+GtkWidget* result = gtk_column_view_cell_get_child(GtkColumnViewCell_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

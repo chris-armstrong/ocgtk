@@ -61,8 +61,8 @@ let test_widget_creation () =
   try
     let _ = GMain.init () in
     (* Create a widget (using GtkBox from Phase 4.1) *)
-    let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
-    let widget = Gtk.Box.as_widget box in
+    let box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let widget = Box.as_widget box in
 
     (* Verify widget was created *)
     check bool "widget created" true (widget <> Obj.magic 0)
@@ -76,26 +76,26 @@ let test_widget_creation () =
 let test_visibility () =
   try
     let _ = GMain.init () in
-    let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
-    let widget = Gtk.Box.as_widget box in
+    let box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let widget = Box.as_widget box in
 
     (* Test visibility (widgets are visible by default in GTK4) *)
-    check bool "widget visible by default" true (Gtk.Widget.get_visible widget);
+    check bool "widget visible by default" true (Widget.get_visible widget);
 
     (* Test hide *)
-    Gtk.Widget.hide widget;
-    check bool "widget hidden" false (Gtk.Widget.get_visible widget);
+    Widget.hide widget;
+    check bool "widget hidden" false (Widget.get_visible widget);
 
     (* Test show *)
-    Gtk.Widget.show widget;
-    check bool "widget shown" true (Gtk.Widget.get_visible widget);
+    Widget.show widget;
+    check bool "widget shown" true (Widget.get_visible widget);
 
     (* Test set_visible *)
-    Gtk.Widget.set_visible widget false;
-    check bool "widget set invisible" false (Gtk.Widget.get_visible widget);
+    Widget.set_visible widget false;
+    check bool "widget set invisible" false (Widget.get_visible widget);
 
-    Gtk.Widget.set_visible widget true;
-    check bool "widget set visible" true (Gtk.Widget.get_visible widget)
+    Widget.set_visible widget true;
+    check bool "widget set visible" true (Widget.get_visible widget)
   with
   | GMain.Error _ ->
       skip ()
@@ -106,12 +106,12 @@ let test_visibility () =
 let test_size_request () =
   try
     let _ = GMain.init () in
-    let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
-    let widget = Gtk.Box.as_widget box in
+    let box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let widget = Box.as_widget box in
 
     (* Test size request *)
-    Gtk.Widget.set_size_request widget ~width:200 ~height:100;
-    let (w, h) = Gtk.Widget.get_size_request widget in
+    Widget.set_size_request widget ~width:200 ~height:100;
+    let (w, h) = Widget.get_size_request widget in
     check int "size request width" 200 w;
     check int "size request height" 100 h
   with
@@ -124,18 +124,18 @@ let test_size_request () =
 let test_css_classes () =
   try
     let _ = GMain.init () in
-    let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
-    let widget = Gtk.Box.as_widget box in
+    let box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let widget = Box.as_widget box in
 
     (* Test CSS class operations *)
-    Gtk.Widget.add_css_class widget "test-class";
-    check bool "has CSS class" true (Gtk.Widget.has_css_class widget "test-class");
+    Widget.add_css_class widget "test-class";
+    check bool "has CSS class" true (Widget.has_css_class widget "test-class");
 
-    let classes = Gtk.Widget.get_css_classes widget in
+    let classes = Widget.get_css_classes widget in
     check bool "CSS class in list" true (List.mem "test-class" classes);
 
-    Gtk.Widget.remove_css_class widget "test-class";
-    check bool "CSS class removed" false (Gtk.Widget.has_css_class widget "test-class")
+    Widget.remove_css_class widget "test-class";
+    check bool "CSS class removed" false (Widget.has_css_class widget "test-class")
   with
   | GMain.Error _ ->
       skip ()
@@ -146,20 +146,20 @@ let test_css_classes () =
 let test_focus () =
   try
     let _ = GMain.init () in
-    let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
-    let widget = Gtk.Box.as_widget box in
+    let box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let widget = Box.as_widget box in
 
     (* Test focusable property *)
-    Gtk.Widget.set_focusable widget true;
-    check bool "widget focusable" true (Gtk.Widget.get_focusable widget);
+    Widget.set_focusable widget true;
+    check bool "widget focusable" true (Widget.get_focusable widget);
 
-    Gtk.Widget.set_focusable widget false;
-    check bool "widget not focusable" false (Gtk.Widget.get_focusable widget);
+    Widget.set_focusable widget false;
+    check bool "widget not focusable" false (Widget.get_focusable widget);
 
     (* Note: has_focus and grab_focus require the widget to be in a window
        and may not work without a display, so we just test the API exists *)
-    let _ = Gtk.Widget.has_focus widget in
-    let _ = Gtk.Widget.grab_focus widget in
+    let _ = Widget.has_focus widget in
+    let _ = Widget.grab_focus widget in
     check bool "focus API works" true true
   with
   | GMain.Error _ ->
@@ -171,12 +171,12 @@ let test_focus () =
 let test_state_flags () =
   try
     let _ = GMain.init () in
-    let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
-    let widget = Gtk.Box.as_widget box in
+    let box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let widget = Box.as_widget box in
 
     (* Test state flags *)
-    Gtk.Widget.set_state_flags widget [`ACTIVE; `FOCUSED] ~clear:false;
-    let flags = Gtk.Widget.get_state_flags widget in
+    Widget.set_state_flags widget [`ACTIVE; `FOCUSED] ~clear:false;
+    let flags = Widget.get_state_flags widget in
 
     (* Just verify we can get/set flags - actual flag values may vary *)
     check bool "can set state flags" true (List.length flags >= 0)
@@ -190,23 +190,23 @@ let test_state_flags () =
 let test_parent_root () =
   try
     let _ = GMain.init () in
-    let parent_box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
-    let child_box = Gtk.Box.create ~orientation:`VERTICAL ~spacing:0 in
-    let child_widget = Gtk.Box.as_widget child_box in
+    let parent_box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let child_box = Box.create ~orientation:`VERTICAL ~spacing:0 in
+    let child_widget = Box.as_widget child_box in
 
     (* Initially no parent *)
     check bool "no parent initially" true
-      (Gtk.Widget.get_parent child_widget = None);
+      (Widget.get_parent child_widget = None);
 
     (* Add child to parent *)
-    Gtk.Box.append parent_box child_widget;
+    Box.append parent_box child_widget;
 
     (* Now should have parent *)
-    let parent_opt = Gtk.Widget.get_parent child_widget in
+    let parent_opt = Widget.get_parent child_widget in
     check bool "has parent after append" true (parent_opt <> None);
 
     (* Test get_root (may return None without a window) *)
-    let _ = Gtk.Widget.get_root child_widget in
+    let _ = Widget.get_root child_widget in
     check bool "get_root API works" true true
   with
   | GMain.Error _ ->
@@ -218,12 +218,12 @@ let test_parent_root () =
 let test_queue_operations () =
   try
     let _ = GMain.init () in
-    let box = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
-    let widget = Gtk.Box.as_widget box in
+    let box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let widget = Box.as_widget box in
 
     (* Test queue operations (these don't return values, just verify they don't crash) *)
-    Gtk.Widget.queue_draw widget;
-    Gtk.Widget.queue_resize widget;
+    Widget.queue_draw widget;
+    Widget.queue_resize widget;
 
     check bool "queue operations work" true true
   with

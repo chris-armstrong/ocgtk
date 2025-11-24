@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_app_chooser_button_set_active_custom_item(value
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_app_chooser_button_set_active_custom_item(GtkAppChooserButton_val(self), String_val(arg1));
+gtk_app_chooser_button_set_active_custom_item(GtkAppChooserButton_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_app_chooser_button_append_separator(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_app_chooser_button_append_separator(GtkAppChooserButton_val(self));
+gtk_app_chooser_button_append_separator(GtkAppChooserButton_val(self));
 CAMLreturn(Val_unit);
 }
 

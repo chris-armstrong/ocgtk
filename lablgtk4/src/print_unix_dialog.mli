@@ -1,10 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: PrintUnixDialog *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new PrintUnixDialog *)
-external new_ : string option -> Gtk.Widget.t option -> t = "ml_gtk_print_unix_dialog_new"
+external new_ : string option -> Gtk.widget option -> t = "ml_gtk_print_unix_dialog_new"
 
 (* Properties *)
 
@@ -32,21 +32,21 @@ external get_support_selection : t -> bool = "ml_gtk_print_unix_dialog_get_suppo
 (** Set property: support-selection *)
 external set_support_selection : t -> bool -> unit = "ml_gtk_print_unix_dialog_set_support_selection"
 
-external set_settings : t -> Gtk.Widget.t option -> unit = "ml_gtk_print_unix_dialog_set_settings"
+external set_settings : t -> Gtk.widget option -> unit = "ml_gtk_print_unix_dialog_set_settings"
 
-external set_page_setup : t -> Gtk.Widget.t -> unit = "ml_gtk_print_unix_dialog_set_page_setup"
+external set_page_setup : t -> Gtk.widget -> unit = "ml_gtk_print_unix_dialog_set_page_setup"
 
 external set_manual_capabilities : t -> unit -> unit = "ml_gtk_print_unix_dialog_set_manual_capabilities"
 
-external get_settings : t -> Gtk.Widget.t = "ml_gtk_print_unix_dialog_get_settings"
+external get_settings : t -> Gtk.widget = "ml_gtk_print_unix_dialog_get_settings"
 
-external get_selected_printer : t -> Gtk.Widget.t = "ml_gtk_print_unix_dialog_get_selected_printer"
+external get_selected_printer : t -> Gtk.widget = "ml_gtk_print_unix_dialog_get_selected_printer"
 
 external get_page_setup_set : t -> bool = "ml_gtk_print_unix_dialog_get_page_setup_set"
 
-external get_page_setup : t -> Gtk.Widget.t = "ml_gtk_print_unix_dialog_get_page_setup"
+external get_page_setup : t -> Gtk.widget = "ml_gtk_print_unix_dialog_get_page_setup"
 
 external get_manual_capabilities : t -> unit = "ml_gtk_print_unix_dialog_get_manual_capabilities"
 
-external add_custom_tab : t -> Gtk.Widget.t -> Gtk.Widget.t -> unit = "ml_gtk_print_unix_dialog_add_custom_tab"
+external add_custom_tab : t -> Gtk.widget -> Gtk.widget -> unit = "ml_gtk_print_unix_dialog_add_custom_tab"
 

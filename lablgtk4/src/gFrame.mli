@@ -13,7 +13,7 @@
 
 (** {1 GtkFrame} *)
 
-class frame_skel : Gtk.Frame.t ->
+class frame_skel : Frame.t ->
   object
     inherit GObj.widget_impl
 
@@ -28,7 +28,7 @@ class frame_skel : Gtk.Frame.t ->
     method set_label_xalign : float -> unit
   end
 
-class frame : Gtk.Frame.t ->
+class frame : Frame.t ->
   object
     inherit frame_skel
   end

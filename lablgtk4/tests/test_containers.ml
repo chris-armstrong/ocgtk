@@ -26,17 +26,17 @@ let require_gtk f () =
 (* ========== GtkFixed Tests ========== *)
 
 let test_fixed_module_accessible () =
-  let _fixed_type : Gtk.Fixed.t option = None in
+  let _fixed_type : Fixed.t option = None in
   check bool "Fixed module accessible" true true
 
 let test_fixed_creation () =
   try
     let _ = GMain.init () in
-    let fixed = Gtk.Fixed.create () in
+    let fixed = Fixed.create () in
     check bool "Fixed created" true true;
 
     (* Test as_widget *)
-    let _widget = Gtk.Fixed.as_widget fixed in
+    let _widget = Fixed.as_widget fixed in
     check bool "Fixed as_widget works" true true
   with
   | GMain.Error _ -> skip ()
@@ -45,26 +45,26 @@ let test_fixed_creation () =
 let test_fixed_put_move () =
   try
     let _ = GMain.init () in
-    let fixed = Gtk.Fixed.create () in
-    let child = Gtk.Box.create ~orientation:`HORIZONTAL ~spacing:0 in
-    let child_widget = Gtk.Box.as_widget child in
+    let fixed = Fixed.create () in
+    let child = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let child_widget = Box.as_widget child in
 
     (* Put child at position *)
-    Gtk.Fixed.put fixed child_widget ~x:10.0 ~y:20.0;
+    Fixed.put fixed child_widget ~x:10.0 ~y:20.0;
 
     (* Get position *)
-    let (x, y) = Gtk.Fixed.get_child_position fixed child_widget in
+    let (x, y) = Fixed.get_child_position fixed child_widget in
     check (float 0.01) "Fixed x position" 10.0 x;
     check (float 0.01) "Fixed y position" 20.0 y;
 
     (* Move child *)
-    Gtk.Fixed.move fixed child_widget ~x:30.0 ~y:40.0;
-    let (x2, y2) = Gtk.Fixed.get_child_position fixed child_widget in
+    Fixed.move fixed child_widget ~x:30.0 ~y:40.0;
+    let (x2, y2) = Fixed.get_child_position fixed child_widget in
     check (float 0.01) "Fixed moved x" 30.0 x2;
     check (float 0.01) "Fixed moved y" 40.0 y2;
 
     (* Remove child *)
-    Gtk.Fixed.remove fixed child_widget;
+    Fixed.remove fixed child_widget;
     check bool "Fixed remove works" true true
   with
   | GMain.Error _ -> skip ()
@@ -73,16 +73,16 @@ let test_fixed_put_move () =
 (* ========== GtkPaned Tests ========== *)
 
 let test_paned_module_accessible () =
-  let _paned_type : Gtk.Paned.t option = None in
+  let _paned_type : Paned.t option = None in
   check bool "Paned module accessible" true true
 
 let test_paned_creation () =
   try
     let _ = GMain.init () in
-    let paned = Gtk.Paned.create ~orientation:`HORIZONTAL in
+    let paned = Paned.create ~orientation:`HORIZONTAL in
     check bool "Paned created" true true;
 
-    let _widget = Gtk.Paned.as_widget paned in
+    let _widget = Paned.as_widget paned in
     check bool "Paned as_widget works" true true
   with
   | GMain.Error _ -> skip ()
@@ -91,25 +91,25 @@ let test_paned_creation () =
 let test_paned_children () =
   try
     let _ = GMain.init () in
-    let paned = Gtk.Paned.create ~orientation:`HORIZONTAL in
-    let child1 = Gtk.Box.create ~orientation:`VERTICAL ~spacing:0 in
-    let child2 = Gtk.Box.create ~orientation:`VERTICAL ~spacing:0 in
+    let paned = Paned.create ~orientation:`HORIZONTAL in
+    let child1 = Box.create ~orientation:`VERTICAL ~spacing:0 in
+    let child2 = Box.create ~orientation:`VERTICAL ~spacing:0 in
 
     (* Set start child *)
-    Gtk.Paned.set_start_child paned (Some (Gtk.Box.as_widget child1));
-    (match Gtk.Paned.get_start_child paned with
+    Paned.set_start_child paned (Some (Box.as_widget child1));
+    (match Paned.get_start_child paned with
     | Some _ -> check bool "Start child set" true true
     | None -> fail "Start child not set");
 
     (* Set end child *)
-    Gtk.Paned.set_end_child paned (Some (Gtk.Box.as_widget child2));
-    (match Gtk.Paned.get_end_child paned with
+    Paned.set_end_child paned (Some (Box.as_widget child2));
+    (match Paned.get_end_child paned with
     | Some _ -> check bool "End child set" true true
     | None -> fail "End child not set");
 
     (* Remove children *)
-    Gtk.Paned.set_start_child paned None;
-    Gtk.Paned.set_end_child paned None;
+    Paned.set_start_child paned None;
+    Paned.set_end_child paned None;
     check bool "Paned children removed" true true
   with
   | GMain.Error _ -> skip ()
@@ -118,29 +118,29 @@ let test_paned_children () =
 let test_paned_properties () =
   try
     let _ = GMain.init () in
-    let paned = Gtk.Paned.create ~orientation:`VERTICAL in
+    let paned = Paned.create ~orientation:`VERTICAL in
 
     (* Position *)
-    Gtk.Paned.set_position paned 100;
-    check int "Paned position" 100 (Gtk.Paned.get_position paned);
+    Paned.set_position paned 100;
+    check int "Paned position" 100 (Paned.get_position paned);
 
     (* Wide handle *)
-    Gtk.Paned.set_wide_handle paned true;
-    check bool "Wide handle" true (Gtk.Paned.get_wide_handle paned);
+    Paned.set_wide_handle paned true;
+    check bool "Wide handle" true (Paned.get_wide_handle paned);
 
     (* Resize properties *)
-    Gtk.Paned.set_resize_start_child paned true;
-    check bool "Resize start" true (Gtk.Paned.get_resize_start_child paned);
+    Paned.set_resize_start_child paned true;
+    check bool "Resize start" true (Paned.get_resize_start_child paned);
 
-    Gtk.Paned.set_resize_end_child paned false;
-    check bool "Resize end" false (Gtk.Paned.get_resize_end_child paned);
+    Paned.set_resize_end_child paned false;
+    check bool "Resize end" false (Paned.get_resize_end_child paned);
 
     (* Shrink properties *)
-    Gtk.Paned.set_shrink_start_child paned true;
-    check bool "Shrink start" true (Gtk.Paned.get_shrink_start_child paned);
+    Paned.set_shrink_start_child paned true;
+    check bool "Shrink start" true (Paned.get_shrink_start_child paned);
 
-    Gtk.Paned.set_shrink_end_child paned false;
-    check bool "Shrink end" false (Gtk.Paned.get_shrink_end_child paned)
+    Paned.set_shrink_end_child paned false;
+    check bool "Shrink end" false (Paned.get_shrink_end_child paned)
   with
   | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -148,16 +148,16 @@ let test_paned_properties () =
 (* ========== GtkNotebook Tests ========== *)
 
 let test_notebook_module_accessible () =
-  let _notebook_type : Gtk.Notebook.t option = None in
+  let _notebook_type : Notebook.t option = None in
   check bool "Notebook module accessible" true true
 
 let test_notebook_creation () =
   try
     let _ = GMain.init () in
-    let notebook = Gtk.Notebook.create () in
-    check int "Notebook starts with 0 pages" 0 (Gtk.Notebook.get_n_pages notebook);
+    let notebook = Notebook.create () in
+    check int "Notebook starts with 0 pages" 0 (Notebook.get_n_pages notebook);
 
-    let _widget = Gtk.Notebook.as_widget notebook in
+    let _widget = Notebook.as_widget notebook in
     check bool "Notebook as_widget works" true true
   with
   | GMain.Error _ -> skip ()
@@ -166,23 +166,23 @@ let test_notebook_creation () =
 let test_notebook_pages () =
   try
     let _ = GMain.init () in
-    let notebook = Gtk.Notebook.create () in
-    let page1 = Gtk.Box.create ~orientation:`VERTICAL ~spacing:0 in
-    let page2 = Gtk.Box.create ~orientation:`VERTICAL ~spacing:0 in
+    let notebook = Notebook.create () in
+    let page1 = Box.create ~orientation:`VERTICAL ~spacing:0 in
+    let page2 = Box.create ~orientation:`VERTICAL ~spacing:0 in
 
     (* Append page *)
-    let idx1 = Gtk.Notebook.append_page notebook ~child:(Gtk.Box.as_widget page1) () in
+    let idx1 = Notebook.append_page notebook ~child:(Box.as_widget page1) () in
     check int "First page index" 0 idx1;
-    check int "1 page" 1 (Gtk.Notebook.get_n_pages notebook);
+    check int "1 page" 1 (Notebook.get_n_pages notebook);
 
     (* Prepend page *)
-    let idx2 = Gtk.Notebook.prepend_page notebook ~child:(Gtk.Box.as_widget page2) () in
+    let idx2 = Notebook.prepend_page notebook ~child:(Box.as_widget page2) () in
     check int "Prepended page index" 0 idx2;
-    check int "2 pages" 2 (Gtk.Notebook.get_n_pages notebook);
+    check int "2 pages" 2 (Notebook.get_n_pages notebook);
 
     (* Remove page *)
-    Gtk.Notebook.remove_page notebook ~page:0;
-    check int "1 page after removal" 1 (Gtk.Notebook.get_n_pages notebook)
+    Notebook.remove_page notebook ~page:0;
+    check int "1 page after removal" 1 (Notebook.get_n_pages notebook)
   with
   | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -190,23 +190,23 @@ let test_notebook_pages () =
 let test_notebook_navigation () =
   try
     let _ = GMain.init () in
-    let notebook = Gtk.Notebook.create () in
-    let page1 = Gtk.Box.create ~orientation:`VERTICAL ~spacing:0 in
-    let page2 = Gtk.Box.create ~orientation:`VERTICAL ~spacing:0 in
+    let notebook = Notebook.create () in
+    let page1 = Box.create ~orientation:`VERTICAL ~spacing:0 in
+    let page2 = Box.create ~orientation:`VERTICAL ~spacing:0 in
 
-    let _ = Gtk.Notebook.append_page notebook ~child:(Gtk.Box.as_widget page1) () in
-    let _ = Gtk.Notebook.append_page notebook ~child:(Gtk.Box.as_widget page2) () in
+    let _ = Notebook.append_page notebook ~child:(Box.as_widget page1) () in
+    let _ = Notebook.append_page notebook ~child:(Box.as_widget page2) () in
 
     (* Set current page *)
-    Gtk.Notebook.set_current_page notebook 1;
-    check int "Current page" 1 (Gtk.Notebook.get_current_page notebook);
+    Notebook.set_current_page notebook 1;
+    check int "Current page" 1 (Notebook.get_current_page notebook);
 
     (* Navigate *)
-    Gtk.Notebook.prev_page notebook;
-    check int "Previous page" 0 (Gtk.Notebook.get_current_page notebook);
+    Notebook.prev_page notebook;
+    check int "Previous page" 0 (Notebook.get_current_page notebook);
 
-    Gtk.Notebook.next_page notebook;
-    check int "Next page" 1 (Gtk.Notebook.get_current_page notebook)
+    Notebook.next_page notebook;
+    check int "Next page" 1 (Notebook.get_current_page notebook)
   with
   | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -214,19 +214,19 @@ let test_notebook_navigation () =
 let test_notebook_properties () =
   try
     let _ = GMain.init () in
-    let notebook = Gtk.Notebook.create () in
+    let notebook = Notebook.create () in
 
     (* Show tabs *)
-    Gtk.Notebook.set_show_tabs notebook false;
-    check bool "Show tabs off" false (Gtk.Notebook.get_show_tabs notebook);
+    Notebook.set_show_tabs notebook false;
+    check bool "Show tabs off" false (Notebook.get_show_tabs notebook);
 
     (* Show border *)
-    Gtk.Notebook.set_show_border notebook true;
-    check bool "Show border on" true (Gtk.Notebook.get_show_border notebook);
+    Notebook.set_show_border notebook true;
+    check bool "Show border on" true (Notebook.get_show_border notebook);
 
     (* Scrollable *)
-    Gtk.Notebook.set_scrollable notebook true;
-    check bool "Scrollable on" true (Gtk.Notebook.get_scrollable notebook)
+    Notebook.set_scrollable notebook true;
+    check bool "Scrollable on" true (Notebook.get_scrollable notebook)
   with
   | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -234,17 +234,17 @@ let test_notebook_properties () =
 (* ========== GtkStack Tests ========== *)
 
 let test_stack_module_accessible () =
-  let _stack_type : Gtk.Stack.t option = None in
+  let _stack_type : Stack.t option = None in
   let _transition : Gtk.stack_transition_type = `CROSSFADE in
   check bool "Stack module accessible" true true
 
 let test_stack_creation () =
   try
     let _ = GMain.init () in
-    let stack = Gtk.Stack.create () in
+    let stack = Stack.create () in
     check bool "Stack created" true true;
 
-    let _widget = Gtk.Stack.as_widget stack in
+    let _widget = Stack.as_widget stack in
     check bool "Stack as_widget works" true true
   with
   | GMain.Error _ -> skip ()
@@ -253,24 +253,24 @@ let test_stack_creation () =
 let test_stack_children () =
   try
     let _ = GMain.init () in
-    let stack = Gtk.Stack.create () in
-    let child1 = Gtk.Box.create ~orientation:`VERTICAL ~spacing:0 in
-    let child2 = Gtk.Box.create ~orientation:`VERTICAL ~spacing:0 in
+    let stack = Stack.create () in
+    let child1 = Box.create ~orientation:`VERTICAL ~spacing:0 in
+    let child2 = Box.create ~orientation:`VERTICAL ~spacing:0 in
 
     (* Add named child *)
-    Gtk.Stack.add_named stack ~child:(Gtk.Box.as_widget child1) ~name:"page1";
+    Stack.add_named stack ~child:(Box.as_widget child1) ~name:"page1";
 
     (* Add titled child *)
-    Gtk.Stack.add_titled stack ~child:(Gtk.Box.as_widget child2) ~name:"page2" ~title:"Page 2";
+    Stack.add_titled stack ~child:(Box.as_widget child2) ~name:"page2" ~title:"Page 2";
 
     (* Set visible child *)
-    Gtk.Stack.set_visible_child_name stack "page1";
-    (match Gtk.Stack.get_visible_child_name stack with
+    Stack.set_visible_child_name stack "page1";
+    (match Stack.get_visible_child_name stack with
     | Some name -> check string "Visible child name" "page1" name
     | None -> fail "No visible child");
 
     (* Remove child *)
-    Gtk.Stack.remove stack (Gtk.Box.as_widget child1);
+    Stack.remove stack (Box.as_widget child1);
     check bool "Stack child removed" true true
   with
   | GMain.Error _ -> skip ()
@@ -279,16 +279,16 @@ let test_stack_children () =
 let test_stack_transitions () =
   try
     let _ = GMain.init () in
-    let stack = Gtk.Stack.create () in
+    let stack = Stack.create () in
 
     (* Transition type *)
-    Gtk.Stack.set_transition_type stack `SLIDE_LEFT;
+    Stack.set_transition_type stack `SLIDE_LEFT;
     check bool "Transition type set"
-      (`SLIDE_LEFT = Gtk.Stack.get_transition_type stack) true;
+      (`SLIDE_LEFT = Stack.get_transition_type stack) true;
 
     (* Transition duration *)
-    Gtk.Stack.set_transition_duration stack 500;
-    check int "Transition duration" 500 (Gtk.Stack.get_transition_duration stack)
+    Stack.set_transition_duration stack 500;
+    check int "Transition duration" 500 (Stack.get_transition_duration stack)
   with
   | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: LevelBar *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new LevelBar *)
 external new_ : unit -> t = "ml_gtk_level_bar_new"

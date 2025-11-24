@@ -137,13 +137,13 @@ let test_propagation_phase_gtk4_values () =
 (** {2 Widget Integration Tests} *)
 
 let test_widget_add_controller_method () =
-  (* Verify Gtk.Widget.add_controller exists *)
-  let _ = Gtk.Widget.add_controller in
+  (* Verify Widget.add_controller exists *)
+  let _ = Widget.add_controller in
   check bool "add_controller method exists" true true
 
 let test_widget_remove_controller_method () =
-  (* Verify Gtk.Widget.remove_controller exists *)
-  let _ = Gtk.Widget.remove_controller in
+  (* Verify Widget.remove_controller exists *)
+  let _ = Widget.remove_controller in
   check bool "remove_controller method exists" true true
 
 (** {2 Test Suite} *)

@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_stop_editing(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_cell_renderer_stop_editing(GtkCellRenderer_val(self), Bool_val(arg1));
+gtk_cell_renderer_stop_editing(GtkCellRenderer_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -31,8 +30,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_set_padding(value self, value arg
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_cell_renderer_set_padding(GtkCellRenderer_val(self), Int_val(arg1), Int_val(arg2));
+gtk_cell_renderer_set_padding(GtkCellRenderer_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -40,8 +38,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_set_fixed_size(value self, value 
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_cell_renderer_set_fixed_size(GtkCellRenderer_val(self), Int_val(arg1), Int_val(arg2));
+gtk_cell_renderer_set_fixed_size(GtkCellRenderer_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -49,8 +46,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_set_alignment(value self, value a
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_cell_renderer_set_alignment(GtkCellRenderer_val(self), Double_val(arg1), Double_val(arg2));
+gtk_cell_renderer_set_alignment(GtkCellRenderer_val(self), Double_val(arg1), Double_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -58,8 +54,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_is_activatable(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_cell_renderer_is_activatable(GtkCellRenderer_val(self));
+gboolean result = gtk_cell_renderer_is_activatable(GtkCellRenderer_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -67,8 +62,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_get_state(value self, value arg1,
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    GtkStateFlags result = gtk_cell_renderer_get_state(GtkCellRenderer_val(self), GtkWidget_option_val(arg1), GtkCellRendererState_val(arg2));
+GtkStateFlags result = gtk_cell_renderer_get_state(GtkCellRenderer_val(self), GtkWidget_option_val(arg1), GtkCellRendererState_val(arg2));
 CAMLreturn(Val_GtkStateFlags(result));
 }
 
@@ -76,8 +70,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_get_request_mode(value self)
 {
 CAMLparam1(self);
 
-
-    GtkSizeRequestMode result = gtk_cell_renderer_get_request_mode(GtkCellRenderer_val(self));
+GtkSizeRequestMode result = gtk_cell_renderer_get_request_mode(GtkCellRenderer_val(self));
 CAMLreturn(Val_GtkSizeRequestMode(result));
 }
 
@@ -85,8 +78,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_get_preferred_size(value self, va
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
-
-    gtk_cell_renderer_get_preferred_size(GtkCellRenderer_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2), GtkWidget_val(arg3));
+gtk_cell_renderer_get_preferred_size(GtkCellRenderer_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2), GtkWidget_val(arg3));
 CAMLreturn(Val_unit);
 }
 

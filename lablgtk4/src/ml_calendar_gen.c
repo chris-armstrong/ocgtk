@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_calendar_unmark_day(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_calendar_unmark_day(GtkCalendar_val(self), Int_val(arg1));
+gtk_calendar_unmark_day(GtkCalendar_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_calendar_mark_day(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_calendar_mark_day(GtkCalendar_val(self), Int_val(arg1));
+gtk_calendar_mark_day(GtkCalendar_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_calendar_get_day_is_marked(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-
-    gboolean result = gtk_calendar_get_day_is_marked(GtkCalendar_val(self), Int_val(arg1));
+gboolean result = gtk_calendar_get_day_is_marked(GtkCalendar_val(self), Int_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_calendar_clear_marks(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_calendar_clear_marks(GtkCalendar_val(self));
+gtk_calendar_clear_marks(GtkCalendar_val(self));
 CAMLreturn(Val_unit);
 }
 

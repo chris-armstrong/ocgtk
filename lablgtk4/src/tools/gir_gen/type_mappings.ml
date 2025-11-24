@@ -50,7 +50,7 @@ let type_mappings = [
     needs_copy = false;
   });
   ("GtkWidget*", {
-    ocaml_type = "Gtk.Widget.t";
+    ocaml_type = "Gtk.widget";
     c_to_ml = "Val_GtkWidget";
     ml_to_c = "GtkWidget_val";
     needs_copy = false;
@@ -244,7 +244,7 @@ let find_type_mapping_for_gir_type ?(enums=[]) ?(bitfields=[]) (gir_type : Types
              String.sub lookup_str ~pos:0 ~len:3 = "Gtk" &&
              String.sub lookup_str ~pos:(String.length lookup_str - 1) ~len:1 = "*" then
             Some {
-              ocaml_type = "Gtk.Widget.t";
+              ocaml_type = "Gtk.widget";
               c_to_ml = "Val_GtkWidget";
               ml_to_c = "GtkWidget_val";
               needs_copy = false;

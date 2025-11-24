@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: PadController *)
 
-type t = Gtk.Widget.t
+type t = Gtk.widget
 
 (** Create a new PadController *)
 external new_ : unit -> unit -> t = "ml_gtk_pad_controller_new"
