@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_tooltip_set_text(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_tooltip_set_text(GtkTooltip_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_tooltip_set_text(GtkTooltip_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -31,8 +30,7 @@ CAMLexport CAMLprim value ml_gtk_tooltip_set_markup(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_tooltip_set_markup(GtkTooltip_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_tooltip_set_markup(GtkTooltip_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -40,8 +38,7 @@ CAMLexport CAMLprim value ml_gtk_tooltip_set_icon_from_icon_name(value self, val
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_tooltip_set_icon_from_icon_name(GtkTooltip_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_tooltip_set_icon_from_icon_name(GtkTooltip_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -49,7 +46,6 @@ CAMLexport CAMLprim value ml_gtk_tooltip_set_custom(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_tooltip_set_custom(GtkTooltip_val(self), GtkWidget_option_val(arg1));
+gtk_tooltip_set_custom(GtkTooltip_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }

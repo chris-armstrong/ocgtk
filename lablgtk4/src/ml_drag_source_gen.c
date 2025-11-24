@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_drag_source_set_actions(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_drag_source_set_actions(GtkDragSource_val(self), GdkDragAction_val(arg1));
+gtk_drag_source_set_actions(GtkDragSource_val(self), GdkDragAction_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_drag_source_get_actions(value self)
 {
 CAMLparam1(self);
 
-
-    GdkDragAction result = gtk_drag_source_get_actions(GtkDragSource_val(self));
+GdkDragAction result = gtk_drag_source_get_actions(GtkDragSource_val(self));
 CAMLreturn(Val_GdkDragAction(result));
 }
 
@@ -47,7 +45,6 @@ CAMLexport CAMLprim value ml_gtk_drag_source_drag_cancel(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_drag_source_drag_cancel(GtkDragSource_val(self));
+gtk_drag_source_drag_cancel(GtkDragSource_val(self));
 CAMLreturn(Val_unit);
 }

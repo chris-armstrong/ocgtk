@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_window_controls_set_side(value self, value arg1
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_window_controls_set_side(GtkWindowControls_val(self), GtkPackType_val(arg1));
+gtk_window_controls_set_side(GtkWindowControls_val(self), GtkPackType_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_window_controls_get_side(value self)
 {
 CAMLparam1(self);
 
-
-    GtkPackType result = gtk_window_controls_get_side(GtkWindowControls_val(self));
+GtkPackType result = gtk_window_controls_get_side(GtkWindowControls_val(self));
 CAMLreturn(Val_GtkPackType(result));
 }
 

@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_center_box_set_start_widget(value self, value a
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_center_box_set_start_widget(GtkCenterBox_val(self), GtkWidget_option_val(arg1));
+gtk_center_box_set_start_widget(GtkCenterBox_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_center_box_set_end_widget(value self, value arg
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_center_box_set_end_widget(GtkCenterBox_val(self), GtkWidget_option_val(arg1));
+gtk_center_box_set_end_widget(GtkCenterBox_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_center_box_set_center_widget(value self, value 
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_center_box_set_center_widget(GtkCenterBox_val(self), GtkWidget_option_val(arg1));
+gtk_center_box_set_center_widget(GtkCenterBox_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_center_box_set_baseline_position(value self, va
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_center_box_set_baseline_position(GtkCenterBox_val(self), GtkBaselinePosition_val(arg1));
+gtk_center_box_set_baseline_position(GtkCenterBox_val(self), GtkBaselinePosition_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -65,8 +61,7 @@ CAMLexport CAMLprim value ml_gtk_center_box_get_start_widget(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_center_box_get_start_widget(GtkCenterBox_val(self));
+GtkWidget* result = gtk_center_box_get_start_widget(GtkCenterBox_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -74,8 +69,7 @@ CAMLexport CAMLprim value ml_gtk_center_box_get_end_widget(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_center_box_get_end_widget(GtkCenterBox_val(self));
+GtkWidget* result = gtk_center_box_get_end_widget(GtkCenterBox_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -83,8 +77,7 @@ CAMLexport CAMLprim value ml_gtk_center_box_get_center_widget(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_center_box_get_center_widget(GtkCenterBox_val(self));
+GtkWidget* result = gtk_center_box_get_center_widget(GtkCenterBox_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -92,8 +85,7 @@ CAMLexport CAMLprim value ml_gtk_center_box_get_baseline_position(value self)
 {
 CAMLparam1(self);
 
-
-    GtkBaselinePosition result = gtk_center_box_get_baseline_position(GtkCenterBox_val(self));
+GtkBaselinePosition result = gtk_center_box_get_baseline_position(GtkCenterBox_val(self));
 CAMLreturn(Val_GtkBaselinePosition(result));
 }
 

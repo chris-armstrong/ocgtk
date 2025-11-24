@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_motion_is_pointer(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_event_controller_motion_is_pointer(GtkEventControllerMotion_val(self));
+gboolean result = gtk_event_controller_motion_is_pointer(GtkEventControllerMotion_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_motion_contains_pointer(value 
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_event_controller_motion_contains_pointer(GtkEventControllerMotion_val(self));
+gboolean result = gtk_event_controller_motion_contains_pointer(GtkEventControllerMotion_val(self));
 CAMLreturn(Val_bool(result));
 }
 

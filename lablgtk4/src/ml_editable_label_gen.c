@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_editable_label_stop_editing(value self, value a
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_editable_label_stop_editing(GtkEditableLabel_val(self), Bool_val(arg1));
+gtk_editable_label_stop_editing(GtkEditableLabel_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_editable_label_start_editing(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_editable_label_start_editing(GtkEditableLabel_val(self));
+gtk_editable_label_start_editing(GtkEditableLabel_val(self));
 CAMLreturn(Val_unit);
 }
 

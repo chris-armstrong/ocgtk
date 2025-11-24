@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_gesture_pan_set_orientation(value self, value a
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_gesture_pan_set_orientation(GtkGesturePan_val(self), GtkOrientation_val(arg1));
+gtk_gesture_pan_set_orientation(GtkGesturePan_val(self), GtkOrientation_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,7 +37,6 @@ CAMLexport CAMLprim value ml_gtk_gesture_pan_get_orientation(value self)
 {
 CAMLparam1(self);
 
-
-    GtkOrientation result = gtk_gesture_pan_get_orientation(GtkGesturePan_val(self));
+GtkOrientation result = gtk_gesture_pan_get_orientation(GtkGesturePan_val(self));
 CAMLreturn(Val_GtkOrientation(result));
 }

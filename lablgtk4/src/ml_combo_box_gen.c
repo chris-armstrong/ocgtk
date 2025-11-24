@@ -50,8 +50,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_set_model(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_combo_box_set_model(GtkComboBox_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_combo_box_set_model(GtkComboBox_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -59,8 +58,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_set_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_combo_box_set_child(GtkComboBox_val(self), GtkWidget_option_val(arg1));
+gtk_combo_box_set_child(GtkComboBox_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -68,8 +66,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_set_button_sensitivity(value self, va
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_combo_box_set_button_sensitivity(GtkComboBox_val(self), GtkSensitivityType_val(arg1));
+gtk_combo_box_set_button_sensitivity(GtkComboBox_val(self), GtkSensitivityType_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -77,8 +74,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_set_active_iter(value self, value arg
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_combo_box_set_active_iter(GtkComboBox_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_combo_box_set_active_iter(GtkComboBox_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -86,8 +82,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_popup(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_combo_box_popup(GtkComboBox_val(self));
+gtk_combo_box_popup(GtkComboBox_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -95,8 +90,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_popdown(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_combo_box_popdown(GtkComboBox_val(self));
+gtk_combo_box_popdown(GtkComboBox_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -104,8 +98,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_get_model(value self)
 {
 CAMLparam1(self);
 
-
-    GtkTreeModel* result = gtk_combo_box_get_model(GtkComboBox_val(self));
+GtkTreeModel* result = gtk_combo_box_get_model(GtkComboBox_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -113,8 +106,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_get_child(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_combo_box_get_child(GtkComboBox_val(self));
+GtkWidget* result = gtk_combo_box_get_child(GtkComboBox_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -122,8 +114,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_get_button_sensitivity(value self)
 {
 CAMLparam1(self);
 
-
-    GtkSensitivityType result = gtk_combo_box_get_button_sensitivity(GtkComboBox_val(self));
+GtkSensitivityType result = gtk_combo_box_get_button_sensitivity(GtkComboBox_val(self));
 CAMLreturn(Val_GtkSensitivityType(result));
 }
 
@@ -131,8 +122,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_get_active_iter(value self, value arg
 {
 CAMLparam2(self, arg1);
 
-
-    gboolean result = gtk_combo_box_get_active_iter(GtkComboBox_val(self), GtkWidget_val(arg1));
+gboolean result = gtk_combo_box_get_active_iter(GtkComboBox_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 

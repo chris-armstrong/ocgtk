@@ -36,7 +36,6 @@ CAMLexport CAMLprim value ml_gtk_text_child_anchor_get_deleted(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_text_child_anchor_get_deleted(GtkTextChildAnchor_val(self));
+gboolean result = gtk_text_child_anchor_get_deleted(GtkTextChildAnchor_val(self));
 CAMLreturn(Val_bool(result));
 }

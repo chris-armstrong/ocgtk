@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_numeric_sorter_set_sort_order(value self, value
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_numeric_sorter_set_sort_order(GtkNumericSorter_val(self), GtkSortType_val(arg1));
+gtk_numeric_sorter_set_sort_order(GtkNumericSorter_val(self), GtkSortType_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_numeric_sorter_set_expression(value self, value
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_numeric_sorter_set_expression(GtkNumericSorter_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_numeric_sorter_set_expression(GtkNumericSorter_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_numeric_sorter_get_sort_order(value self)
 {
 CAMLparam1(self);
 
-
-    GtkSortType result = gtk_numeric_sorter_get_sort_order(GtkNumericSorter_val(self));
+GtkSortType result = gtk_numeric_sorter_get_sort_order(GtkNumericSorter_val(self));
 CAMLreturn(Val_GtkSortType(result));
 }
 
@@ -56,7 +53,6 @@ CAMLexport CAMLprim value ml_gtk_numeric_sorter_get_expression(value self)
 {
 CAMLparam1(self);
 
-
-    GtkExpression* result = gtk_numeric_sorter_get_expression(GtkNumericSorter_val(self));
+GtkExpression* result = gtk_numeric_sorter_get_expression(GtkNumericSorter_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }

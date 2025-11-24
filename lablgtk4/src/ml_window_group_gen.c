@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_window_group_remove_window(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_window_group_remove_window(GtkWindowGroup_val(self), GtkWidget_val(arg1));
+gtk_window_group_remove_window(GtkWindowGroup_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,7 +37,6 @@ CAMLexport CAMLprim value ml_gtk_window_group_add_window(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_window_group_add_window(GtkWindowGroup_val(self), GtkWidget_val(arg1));
+gtk_window_group_add_window(GtkWindowGroup_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }

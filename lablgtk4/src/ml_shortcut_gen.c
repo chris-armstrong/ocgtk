@@ -36,8 +36,7 @@ CAMLexport CAMLprim value ml_gtk_shortcut_set_trigger(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_shortcut_set_trigger(GtkShortcut_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_shortcut_set_trigger(GtkShortcut_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -45,8 +44,7 @@ CAMLexport CAMLprim value ml_gtk_shortcut_set_action(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_shortcut_set_action(GtkShortcut_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_shortcut_set_action(GtkShortcut_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -54,8 +52,7 @@ CAMLexport CAMLprim value ml_gtk_shortcut_get_trigger(value self)
 {
 CAMLparam1(self);
 
-
-    GtkShortcutTrigger* result = gtk_shortcut_get_trigger(GtkShortcut_val(self));
+GtkShortcutTrigger* result = gtk_shortcut_get_trigger(GtkShortcut_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -63,7 +60,6 @@ CAMLexport CAMLprim value ml_gtk_shortcut_get_action(value self)
 {
 CAMLparam1(self);
 
-
-    GtkShortcutAction* result = gtk_shortcut_get_action(GtkShortcut_val(self));
+GtkShortcutAction* result = gtk_shortcut_get_action(GtkShortcut_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }

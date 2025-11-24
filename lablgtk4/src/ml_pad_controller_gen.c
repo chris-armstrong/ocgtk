@@ -30,8 +30,7 @@ CAMLexport CAMLprim value ml_gtk_pad_controller_set_action_native(value self, va
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam1(arg5);
 
-
-    gtk_pad_controller_set_action(GtkPadController_val(self), GtkPadActionType_val(arg1), Int_val(arg2), Int_val(arg3), String_val(arg4), String_val(arg5));
+gtk_pad_controller_set_action(GtkPadController_val(self), GtkPadActionType_val(arg1), Int_val(arg2), Int_val(arg3), String_val(arg4), String_val(arg5));
 CAMLreturn(Val_unit);
 }
 

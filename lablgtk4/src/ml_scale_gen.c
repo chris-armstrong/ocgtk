@@ -36,8 +36,7 @@ CAMLexport CAMLprim value ml_gtk_scale_set_value_pos(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_scale_set_value_pos(GtkScale_val(self), GtkPositionType_val(arg1));
+gtk_scale_set_value_pos(GtkScale_val(self), GtkPositionType_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -45,8 +44,7 @@ CAMLexport CAMLprim value ml_gtk_scale_get_value_pos(value self)
 {
 CAMLparam1(self);
 
-
-    GtkPositionType result = gtk_scale_get_value_pos(GtkScale_val(self));
+GtkPositionType result = gtk_scale_get_value_pos(GtkScale_val(self));
 CAMLreturn(Val_GtkPositionType(result));
 }
 
@@ -54,8 +52,7 @@ CAMLexport CAMLprim value ml_gtk_scale_clear_marks(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_scale_clear_marks(GtkScale_val(self));
+gtk_scale_clear_marks(GtkScale_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -63,8 +60,7 @@ CAMLexport CAMLprim value ml_gtk_scale_add_mark(value self, value arg1, value ar
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
-
-    gtk_scale_add_mark(GtkScale_val(self), Double_val(arg1), GtkPositionType_val(arg2), (Is_some(arg3) ? String_val(Some_val(arg3)) : NULL));
+gtk_scale_add_mark(GtkScale_val(self), Double_val(arg1), GtkPositionType_val(arg2), (Is_some(arg3) ? String_val(Some_val(arg3)) : NULL));
 CAMLreturn(Val_unit);
 }
 

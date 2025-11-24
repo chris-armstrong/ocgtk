@@ -1,157 +1,297 @@
-(* GENERATED IMPLEMENTATION - DO NOT EDIT DIRECTLY *)
-(* Generated from text_tag.mli *)
+(* GENERATED CODE - DO NOT EDIT *)
+(* Widget: TextTag *)
 
-(* Type declarations *)
 type t = Gtk.Widget.t
 
-(* External FFI bindings *)
 external new_ : string option -> t = "ml_gtk_text_tag_new"
+
+(* Properties *)
+
 external get_accumulative_margin : t -> bool = "ml_gtk_text_tag_get_accumulative_margin"
+
 external set_accumulative_margin : t -> bool -> unit = "ml_gtk_text_tag_set_accumulative_margin"
+
 external get_allow_breaks : t -> bool = "ml_gtk_text_tag_get_allow_breaks"
+
 external set_allow_breaks : t -> bool -> unit = "ml_gtk_text_tag_set_allow_breaks"
+
 external get_allow_breaks_set : t -> bool = "ml_gtk_text_tag_get_allow_breaks_set"
+
 external set_allow_breaks_set : t -> bool -> unit = "ml_gtk_text_tag_set_allow_breaks_set"
+
 external get_background : t -> string = "ml_gtk_text_tag_get_background"
+
 external set_background : t -> string -> unit = "ml_gtk_text_tag_set_background"
+
 external get_background_full_height : t -> bool = "ml_gtk_text_tag_get_background_full_height"
+
 external set_background_full_height : t -> bool -> unit = "ml_gtk_text_tag_set_background_full_height"
+
 external get_background_full_height_set : t -> bool = "ml_gtk_text_tag_get_background_full_height_set"
+
 external set_background_full_height_set : t -> bool -> unit = "ml_gtk_text_tag_set_background_full_height_set"
+
 external get_background_set : t -> bool = "ml_gtk_text_tag_get_background_set"
+
 external set_background_set : t -> bool -> unit = "ml_gtk_text_tag_set_background_set"
+
 external get_editable : t -> bool = "ml_gtk_text_tag_get_editable"
+
 external set_editable : t -> bool -> unit = "ml_gtk_text_tag_set_editable"
+
 external get_editable_set : t -> bool = "ml_gtk_text_tag_get_editable_set"
+
 external set_editable_set : t -> bool -> unit = "ml_gtk_text_tag_set_editable_set"
+
 external get_fallback : t -> bool = "ml_gtk_text_tag_get_fallback"
+
 external set_fallback : t -> bool -> unit = "ml_gtk_text_tag_set_fallback"
+
 external get_fallback_set : t -> bool = "ml_gtk_text_tag_get_fallback_set"
+
 external set_fallback_set : t -> bool -> unit = "ml_gtk_text_tag_set_fallback_set"
+
 external get_family : t -> string = "ml_gtk_text_tag_get_family"
+
 external set_family : t -> string -> unit = "ml_gtk_text_tag_set_family"
+
 external get_family_set : t -> bool = "ml_gtk_text_tag_get_family_set"
+
 external set_family_set : t -> bool -> unit = "ml_gtk_text_tag_set_family_set"
+
 external get_font : t -> string = "ml_gtk_text_tag_get_font"
+
 external set_font : t -> string -> unit = "ml_gtk_text_tag_set_font"
+
 external get_font_features : t -> string = "ml_gtk_text_tag_get_font_features"
+
 external set_font_features : t -> string -> unit = "ml_gtk_text_tag_set_font_features"
+
 external get_font_features_set : t -> bool = "ml_gtk_text_tag_get_font_features_set"
+
 external set_font_features_set : t -> bool -> unit = "ml_gtk_text_tag_set_font_features_set"
+
 external get_foreground : t -> string = "ml_gtk_text_tag_get_foreground"
+
 external set_foreground : t -> string -> unit = "ml_gtk_text_tag_set_foreground"
+
 external get_foreground_set : t -> bool = "ml_gtk_text_tag_get_foreground_set"
+
 external set_foreground_set : t -> bool -> unit = "ml_gtk_text_tag_set_foreground_set"
+
 external get_indent : t -> int = "ml_gtk_text_tag_get_indent"
+
 external set_indent : t -> int -> unit = "ml_gtk_text_tag_set_indent"
+
 external get_indent_set : t -> bool = "ml_gtk_text_tag_get_indent_set"
+
 external set_indent_set : t -> bool -> unit = "ml_gtk_text_tag_set_indent_set"
+
 external get_insert_hyphens : t -> bool = "ml_gtk_text_tag_get_insert_hyphens"
+
 external set_insert_hyphens : t -> bool -> unit = "ml_gtk_text_tag_set_insert_hyphens"
+
 external get_insert_hyphens_set : t -> bool = "ml_gtk_text_tag_get_insert_hyphens_set"
+
 external set_insert_hyphens_set : t -> bool -> unit = "ml_gtk_text_tag_set_insert_hyphens_set"
+
 external get_invisible : t -> bool = "ml_gtk_text_tag_get_invisible"
+
 external set_invisible : t -> bool -> unit = "ml_gtk_text_tag_set_invisible"
+
 external get_invisible_set : t -> bool = "ml_gtk_text_tag_get_invisible_set"
+
 external set_invisible_set : t -> bool -> unit = "ml_gtk_text_tag_set_invisible_set"
+
 external get_justification_set : t -> bool = "ml_gtk_text_tag_get_justification_set"
+
 external set_justification_set : t -> bool -> unit = "ml_gtk_text_tag_set_justification_set"
+
 external get_language : t -> string = "ml_gtk_text_tag_get_language"
+
 external set_language : t -> string -> unit = "ml_gtk_text_tag_set_language"
+
 external get_language_set : t -> bool = "ml_gtk_text_tag_get_language_set"
+
 external set_language_set : t -> bool -> unit = "ml_gtk_text_tag_set_language_set"
+
 external get_left_margin : t -> int = "ml_gtk_text_tag_get_left_margin"
+
 external set_left_margin : t -> int -> unit = "ml_gtk_text_tag_set_left_margin"
+
 external get_left_margin_set : t -> bool = "ml_gtk_text_tag_get_left_margin_set"
+
 external set_left_margin_set : t -> bool -> unit = "ml_gtk_text_tag_set_left_margin_set"
+
 external get_letter_spacing : t -> int = "ml_gtk_text_tag_get_letter_spacing"
+
 external set_letter_spacing : t -> int -> unit = "ml_gtk_text_tag_set_letter_spacing"
+
 external get_letter_spacing_set : t -> bool = "ml_gtk_text_tag_get_letter_spacing_set"
+
 external set_letter_spacing_set : t -> bool -> unit = "ml_gtk_text_tag_set_letter_spacing_set"
+
 external get_line_height : t -> float = "ml_gtk_text_tag_get_line_height"
+
 external set_line_height : t -> float -> unit = "ml_gtk_text_tag_set_line_height"
+
 external get_line_height_set : t -> bool = "ml_gtk_text_tag_get_line_height_set"
+
 external set_line_height_set : t -> bool -> unit = "ml_gtk_text_tag_set_line_height_set"
+
 external get_name : t -> string = "ml_gtk_text_tag_get_name"
+
 external get_overline_rgba_set : t -> bool = "ml_gtk_text_tag_get_overline_rgba_set"
+
 external set_overline_rgba_set : t -> bool -> unit = "ml_gtk_text_tag_set_overline_rgba_set"
+
 external get_overline_set : t -> bool = "ml_gtk_text_tag_get_overline_set"
+
 external set_overline_set : t -> bool -> unit = "ml_gtk_text_tag_set_overline_set"
+
 external get_paragraph_background : t -> string = "ml_gtk_text_tag_get_paragraph_background"
+
 external set_paragraph_background : t -> string -> unit = "ml_gtk_text_tag_set_paragraph_background"
+
 external get_paragraph_background_set : t -> bool = "ml_gtk_text_tag_get_paragraph_background_set"
+
 external set_paragraph_background_set : t -> bool -> unit = "ml_gtk_text_tag_set_paragraph_background_set"
+
 external get_pixels_above_lines : t -> int = "ml_gtk_text_tag_get_pixels_above_lines"
+
 external set_pixels_above_lines : t -> int -> unit = "ml_gtk_text_tag_set_pixels_above_lines"
+
 external get_pixels_above_lines_set : t -> bool = "ml_gtk_text_tag_get_pixels_above_lines_set"
+
 external set_pixels_above_lines_set : t -> bool -> unit = "ml_gtk_text_tag_set_pixels_above_lines_set"
+
 external get_pixels_below_lines : t -> int = "ml_gtk_text_tag_get_pixels_below_lines"
+
 external set_pixels_below_lines : t -> int -> unit = "ml_gtk_text_tag_set_pixels_below_lines"
+
 external get_pixels_below_lines_set : t -> bool = "ml_gtk_text_tag_get_pixels_below_lines_set"
+
 external set_pixels_below_lines_set : t -> bool -> unit = "ml_gtk_text_tag_set_pixels_below_lines_set"
+
 external get_pixels_inside_wrap : t -> int = "ml_gtk_text_tag_get_pixels_inside_wrap"
+
 external set_pixels_inside_wrap : t -> int -> unit = "ml_gtk_text_tag_set_pixels_inside_wrap"
+
 external get_pixels_inside_wrap_set : t -> bool = "ml_gtk_text_tag_get_pixels_inside_wrap_set"
+
 external set_pixels_inside_wrap_set : t -> bool -> unit = "ml_gtk_text_tag_set_pixels_inside_wrap_set"
+
 external get_right_margin : t -> int = "ml_gtk_text_tag_get_right_margin"
+
 external set_right_margin : t -> int -> unit = "ml_gtk_text_tag_set_right_margin"
+
 external get_right_margin_set : t -> bool = "ml_gtk_text_tag_get_right_margin_set"
+
 external set_right_margin_set : t -> bool -> unit = "ml_gtk_text_tag_set_right_margin_set"
+
 external get_rise : t -> int = "ml_gtk_text_tag_get_rise"
+
 external set_rise : t -> int -> unit = "ml_gtk_text_tag_set_rise"
+
 external get_rise_set : t -> bool = "ml_gtk_text_tag_get_rise_set"
+
 external set_rise_set : t -> bool -> unit = "ml_gtk_text_tag_set_rise_set"
+
 external get_scale : t -> float = "ml_gtk_text_tag_get_scale"
+
 external set_scale : t -> float -> unit = "ml_gtk_text_tag_set_scale"
+
 external get_scale_set : t -> bool = "ml_gtk_text_tag_get_scale_set"
+
 external set_scale_set : t -> bool -> unit = "ml_gtk_text_tag_set_scale_set"
+
 external get_sentence : t -> bool = "ml_gtk_text_tag_get_sentence"
+
 external set_sentence : t -> bool -> unit = "ml_gtk_text_tag_set_sentence"
+
 external get_sentence_set : t -> bool = "ml_gtk_text_tag_get_sentence_set"
+
 external set_sentence_set : t -> bool -> unit = "ml_gtk_text_tag_set_sentence_set"
+
 external get_show_spaces_set : t -> bool = "ml_gtk_text_tag_get_show_spaces_set"
+
 external set_show_spaces_set : t -> bool -> unit = "ml_gtk_text_tag_set_show_spaces_set"
+
 external get_size : t -> int = "ml_gtk_text_tag_get_size"
+
 external set_size : t -> int -> unit = "ml_gtk_text_tag_set_size"
+
 external get_size_points : t -> float = "ml_gtk_text_tag_get_size_points"
+
 external set_size_points : t -> float -> unit = "ml_gtk_text_tag_set_size_points"
+
 external get_size_set : t -> bool = "ml_gtk_text_tag_get_size_set"
+
 external set_size_set : t -> bool -> unit = "ml_gtk_text_tag_set_size_set"
+
 external get_stretch_set : t -> bool = "ml_gtk_text_tag_get_stretch_set"
+
 external set_stretch_set : t -> bool -> unit = "ml_gtk_text_tag_set_stretch_set"
+
 external get_strikethrough : t -> bool = "ml_gtk_text_tag_get_strikethrough"
+
 external set_strikethrough : t -> bool -> unit = "ml_gtk_text_tag_set_strikethrough"
+
 external get_strikethrough_rgba_set : t -> bool = "ml_gtk_text_tag_get_strikethrough_rgba_set"
+
 external set_strikethrough_rgba_set : t -> bool -> unit = "ml_gtk_text_tag_set_strikethrough_rgba_set"
+
 external get_strikethrough_set : t -> bool = "ml_gtk_text_tag_get_strikethrough_set"
+
 external set_strikethrough_set : t -> bool -> unit = "ml_gtk_text_tag_set_strikethrough_set"
+
 external get_style_set : t -> bool = "ml_gtk_text_tag_get_style_set"
+
 external set_style_set : t -> bool -> unit = "ml_gtk_text_tag_set_style_set"
+
 external get_tabs_set : t -> bool = "ml_gtk_text_tag_get_tabs_set"
+
 external set_tabs_set : t -> bool -> unit = "ml_gtk_text_tag_set_tabs_set"
+
 external get_text_transform_set : t -> bool = "ml_gtk_text_tag_get_text_transform_set"
+
 external set_text_transform_set : t -> bool -> unit = "ml_gtk_text_tag_set_text_transform_set"
+
 external get_underline_rgba_set : t -> bool = "ml_gtk_text_tag_get_underline_rgba_set"
+
 external set_underline_rgba_set : t -> bool -> unit = "ml_gtk_text_tag_set_underline_rgba_set"
+
 external get_underline_set : t -> bool = "ml_gtk_text_tag_get_underline_set"
+
 external set_underline_set : t -> bool -> unit = "ml_gtk_text_tag_set_underline_set"
+
 external get_variant_set : t -> bool = "ml_gtk_text_tag_get_variant_set"
+
 external set_variant_set : t -> bool -> unit = "ml_gtk_text_tag_set_variant_set"
+
 external get_weight : t -> int = "ml_gtk_text_tag_get_weight"
+
 external set_weight : t -> int -> unit = "ml_gtk_text_tag_set_weight"
+
 external get_weight_set : t -> bool = "ml_gtk_text_tag_get_weight_set"
+
 external set_weight_set : t -> bool -> unit = "ml_gtk_text_tag_set_weight_set"
+
 external get_word : t -> bool = "ml_gtk_text_tag_get_word"
+
 external set_word : t -> bool -> unit = "ml_gtk_text_tag_set_word"
+
 external get_word_set : t -> bool = "ml_gtk_text_tag_get_word_set"
+
 external set_word_set : t -> bool -> unit = "ml_gtk_text_tag_set_word_set"
+
 external get_wrap_mode_set : t -> bool = "ml_gtk_text_tag_get_wrap_mode_set"
+
 external set_wrap_mode_set : t -> bool -> unit = "ml_gtk_text_tag_set_wrap_mode_set"
+
 external set_priority : t -> int -> unit = "ml_gtk_text_tag_set_priority"
+
 external get_priority : t -> int = "ml_gtk_text_tag_get_priority"
+
 external changed : t -> bool -> unit = "ml_gtk_text_tag_changed"
 
-(* Summary:
- * - 1 type declarations
- * - 145 external bindings
- *)

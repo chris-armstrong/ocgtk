@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_css_provider_load_named(value self, value arg1,
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_css_provider_load_named(GtkCssProvider_val(self), String_val(arg1), (Is_some(arg2) ? String_val(Some_val(arg2)) : NULL));
+gtk_css_provider_load_named(GtkCssProvider_val(self), String_val(arg1), (Is_some(arg2) ? String_val(Some_val(arg2)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_css_provider_load_from_string(value self, value
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_css_provider_load_from_string(GtkCssProvider_val(self), String_val(arg1));
+gtk_css_provider_load_from_string(GtkCssProvider_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_css_provider_load_from_resource(value self, val
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_css_provider_load_from_resource(GtkCssProvider_val(self), String_val(arg1));
+gtk_css_provider_load_from_resource(GtkCssProvider_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -56,7 +53,6 @@ CAMLexport CAMLprim value ml_gtk_css_provider_load_from_path(value self, value a
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_css_provider_load_from_path(GtkCssProvider_val(self), String_val(arg1));
+gtk_css_provider_load_from_path(GtkCssProvider_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }

@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_action_bar_set_center_widget(value self, value 
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_action_bar_set_center_widget(GtkActionBar_val(self), GtkWidget_option_val(arg1));
+gtk_action_bar_set_center_widget(GtkActionBar_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_action_bar_remove(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_action_bar_remove(GtkActionBar_val(self), GtkWidget_val(arg1));
+gtk_action_bar_remove(GtkActionBar_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_action_bar_pack_start(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_action_bar_pack_start(GtkActionBar_val(self), GtkWidget_val(arg1));
+gtk_action_bar_pack_start(GtkActionBar_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_action_bar_pack_end(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_action_bar_pack_end(GtkActionBar_val(self), GtkWidget_val(arg1));
+gtk_action_bar_pack_end(GtkActionBar_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -65,8 +61,7 @@ CAMLexport CAMLprim value ml_gtk_action_bar_get_center_widget(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_action_bar_get_center_widget(GtkActionBar_val(self));
+GtkWidget* result = gtk_action_bar_get_center_widget(GtkActionBar_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

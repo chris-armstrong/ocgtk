@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_cell_area_context_reset(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_cell_area_context_reset(GtkCellAreaContext_val(self));
+gtk_cell_area_context_reset(GtkCellAreaContext_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -31,8 +30,7 @@ CAMLexport CAMLprim value ml_gtk_cell_area_context_push_preferred_width(value se
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_cell_area_context_push_preferred_width(GtkCellAreaContext_val(self), Int_val(arg1), Int_val(arg2));
+gtk_cell_area_context_push_preferred_width(GtkCellAreaContext_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -40,8 +38,7 @@ CAMLexport CAMLprim value ml_gtk_cell_area_context_push_preferred_height(value s
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_cell_area_context_push_preferred_height(GtkCellAreaContext_val(self), Int_val(arg1), Int_val(arg2));
+gtk_cell_area_context_push_preferred_height(GtkCellAreaContext_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -49,8 +46,7 @@ CAMLexport CAMLprim value ml_gtk_cell_area_context_get_area(value self)
 {
 CAMLparam1(self);
 
-
-    GtkCellArea* result = gtk_cell_area_context_get_area(GtkCellAreaContext_val(self));
+GtkCellArea* result = gtk_cell_area_context_get_area(GtkCellAreaContext_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -58,8 +54,7 @@ CAMLexport CAMLprim value ml_gtk_cell_area_context_allocate(value self, value ar
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_cell_area_context_allocate(GtkCellAreaContext_val(self), Int_val(arg1), Int_val(arg2));
+gtk_cell_area_context_allocate(GtkCellAreaContext_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
 

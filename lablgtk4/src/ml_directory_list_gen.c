@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_directory_list_is_loading(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_directory_list_is_loading(GtkDirectoryList_val(self));
+gboolean result = gtk_directory_list_is_loading(GtkDirectoryList_val(self));
 CAMLreturn(Val_bool(result));
 }
 

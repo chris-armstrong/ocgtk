@@ -22,7 +22,6 @@ CAMLexport CAMLprim value ml_gtk_section_model_sections_changed(value self, valu
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_section_model_sections_changed(GtkSectionModel_val(self), Int_val(arg1), Int_val(arg2));
+gtk_section_model_sections_changed(GtkSectionModel_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }

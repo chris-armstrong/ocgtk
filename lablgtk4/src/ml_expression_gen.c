@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_expression_unref(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_expression_unref(GtkExpression_val(self));
+gtk_expression_unref(GtkExpression_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -31,8 +30,7 @@ CAMLexport CAMLprim value ml_gtk_expression_ref(value self)
 {
 CAMLparam1(self);
 
-
-    GtkExpression* result = gtk_expression_ref(GtkExpression_val(self));
+GtkExpression* result = gtk_expression_ref(GtkExpression_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -40,7 +38,6 @@ CAMLexport CAMLprim value ml_gtk_expression_is_static(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_expression_is_static(GtkExpression_val(self));
+gboolean result = gtk_expression_is_static(GtkExpression_val(self));
 CAMLreturn(Val_bool(result));
 }

@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_print_operation_set_unit(value self, value arg1
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_print_operation_set_unit(GtkPrintOperation_val(self), GtkUnit_val(arg1));
+gtk_print_operation_set_unit(GtkPrintOperation_val(self), GtkUnit_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_print_operation_set_print_settings(value self, 
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_print_operation_set_print_settings(GtkPrintOperation_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_print_operation_set_print_settings(GtkPrintOperation_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_print_operation_set_defer_drawing(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_print_operation_set_defer_drawing(GtkPrintOperation_val(self));
+gtk_print_operation_set_defer_drawing(GtkPrintOperation_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_print_operation_set_default_page_setup(value se
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_print_operation_set_default_page_setup(GtkPrintOperation_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_print_operation_set_default_page_setup(GtkPrintOperation_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -66,8 +62,7 @@ CAMLexport CAMLprim value ml_gtk_print_operation_run(value self, value arg1, val
 CAMLparam3(self, arg1, arg2);
 GError *error = NULL;
 
-
-    GtkPrintOperationResult result = gtk_print_operation_run(GtkPrintOperation_val(self), GtkPrintOperationAction_val(arg1), (Is_some(arg2) ? GtkWidget_val(Some_val(arg2)) : NULL), &error);
+GtkPrintOperationResult result = gtk_print_operation_run(GtkPrintOperation_val(self), GtkPrintOperationAction_val(arg1), (Is_some(arg2) ? GtkWidget_val(Some_val(arg2)) : NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GtkPrintOperationResult(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -75,8 +70,7 @@ CAMLexport CAMLprim value ml_gtk_print_operation_is_finished(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_print_operation_is_finished(GtkPrintOperation_val(self));
+gboolean result = gtk_print_operation_is_finished(GtkPrintOperation_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -84,8 +78,7 @@ CAMLexport CAMLprim value ml_gtk_print_operation_get_status(value self)
 {
 CAMLparam1(self);
 
-
-    GtkPrintStatus result = gtk_print_operation_get_status(GtkPrintOperation_val(self));
+GtkPrintStatus result = gtk_print_operation_get_status(GtkPrintOperation_val(self));
 CAMLreturn(Val_GtkPrintStatus(result));
 }
 
@@ -93,8 +86,7 @@ CAMLexport CAMLprim value ml_gtk_print_operation_get_print_settings(value self)
 {
 CAMLparam1(self);
 
-
-    GtkPrintSettings* result = gtk_print_operation_get_print_settings(GtkPrintOperation_val(self));
+GtkPrintSettings* result = gtk_print_operation_get_print_settings(GtkPrintOperation_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -103,8 +95,7 @@ CAMLexport CAMLprim value ml_gtk_print_operation_get_error(value self)
 CAMLparam1(self);
 GError *error = NULL;
 
-
-    gtk_print_operation_get_error(GtkPrintOperation_val(self), &error);
+gtk_print_operation_get_error(GtkPrintOperation_val(self), &error);
 if (error == NULL) CAMLreturn(Res_Ok(ValUnit)); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -112,8 +103,7 @@ CAMLexport CAMLprim value ml_gtk_print_operation_get_default_page_setup(value se
 {
 CAMLparam1(self);
 
-
-    GtkPageSetup* result = gtk_print_operation_get_default_page_setup(GtkPrintOperation_val(self));
+GtkPageSetup* result = gtk_print_operation_get_default_page_setup(GtkPrintOperation_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -121,8 +111,7 @@ CAMLexport CAMLprim value ml_gtk_print_operation_draw_page_finish(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_print_operation_draw_page_finish(GtkPrintOperation_val(self));
+gtk_print_operation_draw_page_finish(GtkPrintOperation_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -130,8 +119,7 @@ CAMLexport CAMLprim value ml_gtk_print_operation_cancel(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_print_operation_cancel(GtkPrintOperation_val(self));
+gtk_print_operation_cancel(GtkPrintOperation_val(self));
 CAMLreturn(Val_unit);
 }
 

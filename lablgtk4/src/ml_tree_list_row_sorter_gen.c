@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_tree_list_row_sorter_set_sorter(value self, val
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_tree_list_row_sorter_set_sorter(GtkTreeListRowSorter_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_tree_list_row_sorter_set_sorter(GtkTreeListRowSorter_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -38,7 +37,6 @@ CAMLexport CAMLprim value ml_gtk_tree_list_row_sorter_get_sorter(value self)
 {
 CAMLparam1(self);
 
-
-    GtkSorter* result = gtk_tree_list_row_sorter_get_sorter(GtkTreeListRowSorter_val(self));
+GtkSorter* result = gtk_tree_list_row_sorter_get_sorter(GtkTreeListRowSorter_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }

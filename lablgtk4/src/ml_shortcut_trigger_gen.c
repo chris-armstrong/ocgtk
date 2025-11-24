@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_shortcut_trigger_trigger(value self, value arg1
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    GdkKeyMatch result = gtk_shortcut_trigger_trigger(GtkShortcutTrigger_val(self), GdkEvent_val(arg1), Bool_val(arg2));
+GdkKeyMatch result = gtk_shortcut_trigger_trigger(GtkShortcutTrigger_val(self), GdkEvent_val(arg1), Bool_val(arg2));
 CAMLreturn(Val_GdkKeyMatch(result));
 }
 
@@ -38,7 +37,6 @@ CAMLexport CAMLprim value ml_gtk_shortcut_trigger_hash(value self)
 {
 CAMLparam1(self);
 
-
-    guint result = gtk_shortcut_trigger_hash(GtkShortcutTrigger_val(self));
+guint result = gtk_shortcut_trigger_hash(GtkShortcutTrigger_val(self));
 CAMLreturn(Val_int(result));
 }

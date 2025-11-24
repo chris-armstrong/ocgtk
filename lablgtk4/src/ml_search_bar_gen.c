@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_search_bar_set_search_mode(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_search_bar_set_search_mode(GtkSearchBar_val(self), Bool_val(arg1));
+gtk_search_bar_set_search_mode(GtkSearchBar_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_search_bar_set_key_capture_widget(value self, v
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_search_bar_set_key_capture_widget(GtkSearchBar_val(self), GtkWidget_option_val(arg1));
+gtk_search_bar_set_key_capture_widget(GtkSearchBar_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_search_bar_set_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_search_bar_set_child(GtkSearchBar_val(self), GtkWidget_option_val(arg1));
+gtk_search_bar_set_child(GtkSearchBar_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_search_bar_get_search_mode(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_search_bar_get_search_mode(GtkSearchBar_val(self));
+gboolean result = gtk_search_bar_get_search_mode(GtkSearchBar_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -65,8 +61,7 @@ CAMLexport CAMLprim value ml_gtk_search_bar_get_key_capture_widget(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_search_bar_get_key_capture_widget(GtkSearchBar_val(self));
+GtkWidget* result = gtk_search_bar_get_key_capture_widget(GtkSearchBar_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -74,8 +69,7 @@ CAMLexport CAMLprim value ml_gtk_search_bar_get_child(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_search_bar_get_child(GtkSearchBar_val(self));
+GtkWidget* result = gtk_search_bar_get_child(GtkSearchBar_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -83,8 +77,7 @@ CAMLexport CAMLprim value ml_gtk_search_bar_connect_entry(value self, value arg1
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_search_bar_connect_entry(GtkSearchBar_val(self), GtkWidget_val(arg1));
+gtk_search_bar_connect_entry(GtkSearchBar_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 

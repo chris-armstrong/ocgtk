@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_popover_menu_bar_remove_child(value self, value
 {
 CAMLparam2(self, arg1);
 
-
-    gboolean result = gtk_popover_menu_bar_remove_child(GtkPopoverMenuBar_val(self), GtkWidget_val(arg1));
+gboolean result = gtk_popover_menu_bar_remove_child(GtkPopoverMenuBar_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -38,7 +37,6 @@ CAMLexport CAMLprim value ml_gtk_popover_menu_bar_add_child(value self, value ar
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gboolean result = gtk_popover_menu_bar_add_child(GtkPopoverMenuBar_val(self), GtkWidget_val(arg1), String_val(arg2));
+gboolean result = gtk_popover_menu_bar_add_child(GtkPopoverMenuBar_val(self), GtkWidget_val(arg1), String_val(arg2));
 CAMLreturn(Val_bool(result));
 }

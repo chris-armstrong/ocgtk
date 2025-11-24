@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_map_list_model_has_map(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_map_list_model_has_map(GtkMapListModel_val(self));
+gboolean result = gtk_map_list_model_has_map(GtkMapListModel_val(self));
 CAMLreturn(Val_bool(result));
 }
 

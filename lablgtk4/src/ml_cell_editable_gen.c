@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_cell_editable_start_editing(value self, value a
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_cell_editable_start_editing(GtkCellEditable_val(self), (Is_some(arg1) ? GdkEvent_val(Some_val(arg1)) : NULL));
+gtk_cell_editable_start_editing(GtkCellEditable_val(self), (Is_some(arg1) ? GdkEvent_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -31,8 +30,7 @@ CAMLexport CAMLprim value ml_gtk_cell_editable_remove_widget(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_cell_editable_remove_widget(GtkCellEditable_val(self));
+gtk_cell_editable_remove_widget(GtkCellEditable_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -40,8 +38,7 @@ CAMLexport CAMLprim value ml_gtk_cell_editable_editing_done(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_cell_editable_editing_done(GtkCellEditable_val(self));
+gtk_cell_editable_editing_done(GtkCellEditable_val(self));
 CAMLreturn(Val_unit);
 }
 

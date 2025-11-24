@@ -57,8 +57,7 @@ CAMLexport CAMLprim value ml_gtk_video_set_resource(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_video_set_resource(GtkVideo_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_video_set_resource(GtkVideo_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -66,8 +65,7 @@ CAMLexport CAMLprim value ml_gtk_video_set_media_stream(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_video_set_media_stream(GtkVideo_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_video_set_media_stream(GtkVideo_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -75,8 +73,7 @@ CAMLexport CAMLprim value ml_gtk_video_set_graphics_offload(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_video_set_graphics_offload(GtkVideo_val(self), GtkGraphicsOffloadEnabled_val(arg1));
+gtk_video_set_graphics_offload(GtkVideo_val(self), GtkGraphicsOffloadEnabled_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -84,8 +81,7 @@ CAMLexport CAMLprim value ml_gtk_video_set_filename(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_video_set_filename(GtkVideo_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_video_set_filename(GtkVideo_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -93,8 +89,7 @@ CAMLexport CAMLprim value ml_gtk_video_get_media_stream(value self)
 {
 CAMLparam1(self);
 
-
-    GtkMediaStream* result = gtk_video_get_media_stream(GtkVideo_val(self));
+GtkMediaStream* result = gtk_video_get_media_stream(GtkVideo_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -102,8 +97,7 @@ CAMLexport CAMLprim value ml_gtk_video_get_graphics_offload(value self)
 {
 CAMLparam1(self);
 
-
-    GtkGraphicsOffloadEnabled result = gtk_video_get_graphics_offload(GtkVideo_val(self));
+GtkGraphicsOffloadEnabled result = gtk_video_get_graphics_offload(GtkVideo_val(self));
 CAMLreturn(Val_GtkGraphicsOffloadEnabled(result));
 }
 

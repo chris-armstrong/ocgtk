@@ -29,7 +29,6 @@ CAMLexport CAMLprim value ml_gtk_gesture_zoom_get_scale_delta(value self)
 {
 CAMLparam1(self);
 
-
-    double result = gtk_gesture_zoom_get_scale_delta(GtkGestureZoom_val(self));
+double result = gtk_gesture_zoom_get_scale_delta(GtkGestureZoom_val(self));
 CAMLreturn(caml_copy_double(result));
 }

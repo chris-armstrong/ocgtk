@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_menu_button_set_popover(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_menu_button_set_popover(GtkMenuButton_val(self), GtkWidget_option_val(arg1));
+gtk_menu_button_set_popover(GtkMenuButton_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_menu_button_set_direction(value self, value arg
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_menu_button_set_direction(GtkMenuButton_val(self), GtkArrowType_val(arg1));
+gtk_menu_button_set_direction(GtkMenuButton_val(self), GtkArrowType_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_menu_button_set_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_menu_button_set_child(GtkMenuButton_val(self), GtkWidget_option_val(arg1));
+gtk_menu_button_set_child(GtkMenuButton_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_menu_button_popup(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_menu_button_popup(GtkMenuButton_val(self));
+gtk_menu_button_popup(GtkMenuButton_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -65,8 +61,7 @@ CAMLexport CAMLprim value ml_gtk_menu_button_popdown(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_menu_button_popdown(GtkMenuButton_val(self));
+gtk_menu_button_popdown(GtkMenuButton_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -74,8 +69,7 @@ CAMLexport CAMLprim value ml_gtk_menu_button_get_popover(value self)
 {
 CAMLparam1(self);
 
-
-    GtkPopover* result = gtk_menu_button_get_popover(GtkMenuButton_val(self));
+GtkPopover* result = gtk_menu_button_get_popover(GtkMenuButton_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -83,8 +77,7 @@ CAMLexport CAMLprim value ml_gtk_menu_button_get_direction(value self)
 {
 CAMLparam1(self);
 
-
-    GtkArrowType result = gtk_menu_button_get_direction(GtkMenuButton_val(self));
+GtkArrowType result = gtk_menu_button_get_direction(GtkMenuButton_val(self));
 CAMLreturn(Val_GtkArrowType(result));
 }
 
@@ -92,8 +85,7 @@ CAMLexport CAMLprim value ml_gtk_menu_button_get_child(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_menu_button_get_child(GtkMenuButton_val(self));
+GtkWidget* result = gtk_menu_button_get_child(GtkMenuButton_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

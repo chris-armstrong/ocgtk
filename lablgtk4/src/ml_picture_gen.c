@@ -64,8 +64,7 @@ CAMLexport CAMLprim value ml_gtk_picture_set_resource(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_picture_set_resource(GtkPicture_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_picture_set_resource(GtkPicture_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -73,8 +72,7 @@ CAMLexport CAMLprim value ml_gtk_picture_set_filename(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_picture_set_filename(GtkPicture_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_picture_set_filename(GtkPicture_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -82,8 +80,7 @@ CAMLexport CAMLprim value ml_gtk_picture_set_content_fit(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_picture_set_content_fit(GtkPicture_val(self), GtkContentFit_val(arg1));
+gtk_picture_set_content_fit(GtkPicture_val(self), GtkContentFit_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -91,8 +88,7 @@ CAMLexport CAMLprim value ml_gtk_picture_get_content_fit(value self)
 {
 CAMLparam1(self);
 
-
-    GtkContentFit result = gtk_picture_get_content_fit(GtkPicture_val(self));
+GtkContentFit result = gtk_picture_get_content_fit(GtkPicture_val(self));
 CAMLreturn(Val_GtkContentFit(result));
 }
 

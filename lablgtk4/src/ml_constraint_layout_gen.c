@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_layout_remove_guide(value self, valu
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_constraint_layout_remove_guide(GtkConstraintLayout_val(self), GtkWidget_val(arg1));
+gtk_constraint_layout_remove_guide(GtkConstraintLayout_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_layout_remove_constraint(value self,
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_constraint_layout_remove_constraint(GtkConstraintLayout_val(self), GtkWidget_val(arg1));
+gtk_constraint_layout_remove_constraint(GtkConstraintLayout_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_layout_remove_all_constraints(value 
 {
 CAMLparam1(self);
 
-
-    gtk_constraint_layout_remove_all_constraints(GtkConstraintLayout_val(self));
+gtk_constraint_layout_remove_all_constraints(GtkConstraintLayout_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_layout_add_guide(value self, value a
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_constraint_layout_add_guide(GtkConstraintLayout_val(self), GtkWidget_val(arg1));
+gtk_constraint_layout_add_guide(GtkConstraintLayout_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -65,7 +61,6 @@ CAMLexport CAMLprim value ml_gtk_constraint_layout_add_constraint(value self, va
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_constraint_layout_add_constraint(GtkConstraintLayout_val(self), GtkWidget_val(arg1));
+gtk_constraint_layout_add_constraint(GtkConstraintLayout_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }

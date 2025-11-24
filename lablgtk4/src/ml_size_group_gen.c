@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_size_group_set_mode(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_size_group_set_mode(GtkSizeGroup_val(self), GtkSizeGroupMode_val(arg1));
+gtk_size_group_set_mode(GtkSizeGroup_val(self), GtkSizeGroupMode_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_size_group_remove_widget(value self, value arg1
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_size_group_remove_widget(GtkSizeGroup_val(self), GtkWidget_val(arg1));
+gtk_size_group_remove_widget(GtkSizeGroup_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_size_group_get_mode(value self)
 {
 CAMLparam1(self);
 
-
-    GtkSizeGroupMode result = gtk_size_group_get_mode(GtkSizeGroup_val(self));
+GtkSizeGroupMode result = gtk_size_group_get_mode(GtkSizeGroup_val(self));
 CAMLreturn(Val_GtkSizeGroupMode(result));
 }
 
@@ -56,7 +53,6 @@ CAMLexport CAMLprim value ml_gtk_size_group_add_widget(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_size_group_add_widget(GtkSizeGroup_val(self), GtkWidget_val(arg1));
+gtk_size_group_add_widget(GtkSizeGroup_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }

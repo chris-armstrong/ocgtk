@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_tree_drag_source_row_draggable(value self, valu
 {
 CAMLparam2(self, arg1);
 
-
-    gboolean result = gtk_tree_drag_source_row_draggable(GtkTreeDragSource_val(self), GtkWidget_val(arg1));
+gboolean result = gtk_tree_drag_source_row_draggable(GtkTreeDragSource_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -31,7 +30,6 @@ CAMLexport CAMLprim value ml_gtk_tree_drag_source_drag_data_delete(value self, v
 {
 CAMLparam2(self, arg1);
 
-
-    gboolean result = gtk_tree_drag_source_drag_data_delete(GtkTreeDragSource_val(self), GtkWidget_val(arg1));
+gboolean result = gtk_tree_drag_source_drag_data_delete(GtkTreeDragSource_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_bool(result));
 }

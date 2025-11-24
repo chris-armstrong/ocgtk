@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_fixed_height_from_font(v
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_cell_renderer_text_set_fixed_height_from_font(GtkCellRendererText_val(self), Int_val(arg1));
+gtk_cell_renderer_text_set_fixed_height_from_font(GtkCellRendererText_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 

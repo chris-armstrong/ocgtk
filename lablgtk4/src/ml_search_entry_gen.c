@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_search_entry_set_key_capture_widget(value self,
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_search_entry_set_key_capture_widget(GtkSearchEntry_val(self), GtkWidget_option_val(arg1));
+gtk_search_entry_set_key_capture_widget(GtkSearchEntry_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_search_entry_set_input_purpose(value self, valu
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_search_entry_set_input_purpose(GtkSearchEntry_val(self), GtkInputPurpose_val(arg1));
+gtk_search_entry_set_input_purpose(GtkSearchEntry_val(self), GtkInputPurpose_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_search_entry_set_input_hints(value self, value 
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_search_entry_set_input_hints(GtkSearchEntry_val(self), GtkInputHints_val(arg1));
+gtk_search_entry_set_input_hints(GtkSearchEntry_val(self), GtkInputHints_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_search_entry_get_key_capture_widget(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_search_entry_get_key_capture_widget(GtkSearchEntry_val(self));
+GtkWidget* result = gtk_search_entry_get_key_capture_widget(GtkSearchEntry_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -65,8 +61,7 @@ CAMLexport CAMLprim value ml_gtk_search_entry_get_input_purpose(value self)
 {
 CAMLparam1(self);
 
-
-    GtkInputPurpose result = gtk_search_entry_get_input_purpose(GtkSearchEntry_val(self));
+GtkInputPurpose result = gtk_search_entry_get_input_purpose(GtkSearchEntry_val(self));
 CAMLreturn(Val_GtkInputPurpose(result));
 }
 
@@ -74,8 +69,7 @@ CAMLexport CAMLprim value ml_gtk_search_entry_get_input_hints(value self)
 {
 CAMLparam1(self);
 
-
-    GtkInputHints result = gtk_search_entry_get_input_hints(GtkSearchEntry_val(self));
+GtkInputHints result = gtk_search_entry_get_input_hints(GtkSearchEntry_val(self));
 CAMLreturn(Val_GtkInputHints(result));
 }
 

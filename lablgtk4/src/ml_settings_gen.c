@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_settings_reset_property(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_settings_reset_property(GtkSettings_val(self), String_val(arg1));
+gtk_settings_reset_property(GtkSettings_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 

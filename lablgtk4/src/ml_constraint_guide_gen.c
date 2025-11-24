@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_guide_set_strength(value self, value
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_constraint_guide_set_strength(GtkConstraintGuide_val(self), GtkConstraintStrength_val(arg1));
+gtk_constraint_guide_set_strength(GtkConstraintGuide_val(self), GtkConstraintStrength_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_guide_set_nat_size(value self, value
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_constraint_guide_set_nat_size(GtkConstraintGuide_val(self), Int_val(arg1), Int_val(arg2));
+gtk_constraint_guide_set_nat_size(GtkConstraintGuide_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_guide_set_min_size(value self, value
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_constraint_guide_set_min_size(GtkConstraintGuide_val(self), Int_val(arg1), Int_val(arg2));
+gtk_constraint_guide_set_min_size(GtkConstraintGuide_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_guide_set_max_size(value self, value
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_constraint_guide_set_max_size(GtkConstraintGuide_val(self), Int_val(arg1), Int_val(arg2));
+gtk_constraint_guide_set_max_size(GtkConstraintGuide_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -65,8 +61,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_guide_get_strength(value self)
 {
 CAMLparam1(self);
 
-
-    GtkConstraintStrength result = gtk_constraint_guide_get_strength(GtkConstraintGuide_val(self));
+GtkConstraintStrength result = gtk_constraint_guide_get_strength(GtkConstraintGuide_val(self));
 CAMLreturn(Val_GtkConstraintStrength(result));
 }
 

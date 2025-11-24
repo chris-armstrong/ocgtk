@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_aspect_frame_set_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_aspect_frame_set_child(GtkAspectFrame_val(self), GtkWidget_option_val(arg1));
+gtk_aspect_frame_set_child(GtkAspectFrame_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_aspect_frame_get_child(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_aspect_frame_get_child(GtkAspectFrame_val(self));
+GtkWidget* result = gtk_aspect_frame_get_child(GtkAspectFrame_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

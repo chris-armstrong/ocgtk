@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_scale_button_set_adjustment(value self, value a
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_scale_button_set_adjustment(GtkScaleButton_val(self), GtkWidget_val(arg1));
+gtk_scale_button_set_adjustment(GtkScaleButton_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_scale_button_get_popup(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_scale_button_get_popup(GtkScaleButton_val(self));
+GtkWidget* result = gtk_scale_button_get_popup(GtkScaleButton_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_scale_button_get_plus_button(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_scale_button_get_plus_button(GtkScaleButton_val(self));
+GtkWidget* result = gtk_scale_button_get_plus_button(GtkScaleButton_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_scale_button_get_minus_button(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_scale_button_get_minus_button(GtkScaleButton_val(self));
+GtkWidget* result = gtk_scale_button_get_minus_button(GtkScaleButton_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -65,8 +61,7 @@ CAMLexport CAMLprim value ml_gtk_scale_button_get_adjustment(value self)
 {
 CAMLparam1(self);
 
-
-    GtkAdjustment* result = gtk_scale_button_get_adjustment(GtkScaleButton_val(self));
+GtkAdjustment* result = gtk_scale_button_get_adjustment(GtkScaleButton_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

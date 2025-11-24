@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_drop_controller_motion_is_pointer(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_drop_controller_motion_is_pointer(GtkDropControllerMotion_val(self));
+gboolean result = gtk_drop_controller_motion_is_pointer(GtkDropControllerMotion_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_drop_controller_motion_contains_pointer(value s
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_drop_controller_motion_contains_pointer(GtkDropControllerMotion_val(self));
+gboolean result = gtk_drop_controller_motion_contains_pointer(GtkDropControllerMotion_val(self));
 CAMLreturn(Val_bool(result));
 }
 

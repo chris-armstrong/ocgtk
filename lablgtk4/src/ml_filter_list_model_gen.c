@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_filter_list_model_set_filter(value self, value 
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_filter_list_model_set_filter(GtkFilterListModel_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_filter_list_model_set_filter(GtkFilterListModel_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_filter_list_model_get_filter(value self)
 {
 CAMLparam1(self);
 
-
-    GtkFilter* result = gtk_filter_list_model_get_filter(GtkFilterListModel_val(self));
+GtkFilter* result = gtk_filter_list_model_get_filter(GtkFilterListModel_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

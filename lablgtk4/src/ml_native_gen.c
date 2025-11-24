@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_native_unrealize(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_native_unrealize(GtkNative_val(self));
+gtk_native_unrealize(GtkNative_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -31,7 +30,6 @@ CAMLexport CAMLprim value ml_gtk_native_realize(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_native_realize(GtkNative_val(self));
+gtk_native_realize(GtkNative_val(self));
 CAMLreturn(Val_unit);
 }

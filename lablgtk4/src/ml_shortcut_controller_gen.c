@@ -36,8 +36,7 @@ CAMLexport CAMLprim value ml_gtk_shortcut_controller_set_scope(value self, value
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_shortcut_controller_set_scope(GtkShortcutController_val(self), GtkShortcutScope_val(arg1));
+gtk_shortcut_controller_set_scope(GtkShortcutController_val(self), GtkShortcutScope_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -45,8 +44,7 @@ CAMLexport CAMLprim value ml_gtk_shortcut_controller_set_mnemonics_modifiers(val
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_shortcut_controller_set_mnemonics_modifiers(GtkShortcutController_val(self), GdkModifierType_val(arg1));
+gtk_shortcut_controller_set_mnemonics_modifiers(GtkShortcutController_val(self), GdkModifierType_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -54,8 +52,7 @@ CAMLexport CAMLprim value ml_gtk_shortcut_controller_remove_shortcut(value self,
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_shortcut_controller_remove_shortcut(GtkShortcutController_val(self), GtkWidget_val(arg1));
+gtk_shortcut_controller_remove_shortcut(GtkShortcutController_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -63,8 +60,7 @@ CAMLexport CAMLprim value ml_gtk_shortcut_controller_get_scope(value self)
 {
 CAMLparam1(self);
 
-
-    GtkShortcutScope result = gtk_shortcut_controller_get_scope(GtkShortcutController_val(self));
+GtkShortcutScope result = gtk_shortcut_controller_get_scope(GtkShortcutController_val(self));
 CAMLreturn(Val_GtkShortcutScope(result));
 }
 
@@ -72,8 +68,7 @@ CAMLexport CAMLprim value ml_gtk_shortcut_controller_get_mnemonics_modifiers(val
 {
 CAMLparam1(self);
 
-
-    GdkModifierType result = gtk_shortcut_controller_get_mnemonics_modifiers(GtkShortcutController_val(self));
+GdkModifierType result = gtk_shortcut_controller_get_mnemonics_modifiers(GtkShortcutController_val(self));
 CAMLreturn(Val_GdkModifierType(result));
 }
 
@@ -81,8 +76,7 @@ CAMLexport CAMLprim value ml_gtk_shortcut_controller_add_shortcut(value self, va
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_shortcut_controller_add_shortcut(GtkShortcutController_val(self), GtkWidget_val(arg1));
+gtk_shortcut_controller_add_shortcut(GtkShortcutController_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 

@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_scroll_set_flags(value self, v
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_event_controller_scroll_set_flags(GtkEventControllerScroll_val(self), GtkEventControllerScrollFlags_val(arg1));
+gtk_event_controller_scroll_set_flags(GtkEventControllerScroll_val(self), GtkEventControllerScrollFlags_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_scroll_get_unit(value self)
 {
 CAMLparam1(self);
 
-
-    GdkScrollUnit result = gtk_event_controller_scroll_get_unit(GtkEventControllerScroll_val(self));
+GdkScrollUnit result = gtk_event_controller_scroll_get_unit(GtkEventControllerScroll_val(self));
 CAMLreturn(Val_GdkScrollUnit(result));
 }
 
@@ -47,7 +45,6 @@ CAMLexport CAMLprim value ml_gtk_event_controller_scroll_get_flags(value self)
 {
 CAMLparam1(self);
 
-
-    GtkEventControllerScrollFlags result = gtk_event_controller_scroll_get_flags(GtkEventControllerScroll_val(self));
+GtkEventControllerScrollFlags result = gtk_event_controller_scroll_get_flags(GtkEventControllerScroll_val(self));
 CAMLreturn(Val_GtkEventControllerScrollFlags(result));
 }

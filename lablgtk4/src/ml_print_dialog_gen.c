@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_print_dialog_set_print_settings(value self, val
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_print_dialog_set_print_settings(GtkPrintDialog_val(self), GtkWidget_val(arg1));
+gtk_print_dialog_set_print_settings(GtkPrintDialog_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_print_dialog_set_page_setup(value self, value a
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_print_dialog_set_page_setup(GtkPrintDialog_val(self), GtkWidget_val(arg1));
+gtk_print_dialog_set_page_setup(GtkPrintDialog_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_print_dialog_get_print_settings(value self)
 {
 CAMLparam1(self);
 
-
-    GtkPrintSettings* result = gtk_print_dialog_get_print_settings(GtkPrintDialog_val(self));
+GtkPrintSettings* result = gtk_print_dialog_get_print_settings(GtkPrintDialog_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_print_dialog_get_page_setup(value self)
 {
 CAMLparam1(self);
 
-
-    GtkPageSetup* result = gtk_print_dialog_get_page_setup(GtkPrintDialog_val(self));
+GtkPageSetup* result = gtk_print_dialog_get_page_setup(GtkPrintDialog_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

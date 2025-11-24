@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_gesture_single_get_current_button(value self)
 {
 CAMLparam1(self);
 
-
-    guint result = gtk_gesture_single_get_current_button(GtkGestureSingle_val(self));
+guint result = gtk_gesture_single_get_current_button(GtkGestureSingle_val(self));
 CAMLreturn(Val_int(result));
 }
 

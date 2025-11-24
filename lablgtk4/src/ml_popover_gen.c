@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_popover_set_position(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_popover_set_position(GtkPopover_val(self), GtkPositionType_val(arg1));
+gtk_popover_set_position(GtkPopover_val(self), GtkPositionType_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_popover_set_offset(value self, value arg1, valu
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_popover_set_offset(GtkPopover_val(self), Int_val(arg1), Int_val(arg2));
+gtk_popover_set_offset(GtkPopover_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_popover_set_default_widget(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_popover_set_default_widget(GtkPopover_val(self), GtkWidget_option_val(arg1));
+gtk_popover_set_default_widget(GtkPopover_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -56,8 +53,7 @@ CAMLexport CAMLprim value ml_gtk_popover_set_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_popover_set_child(GtkPopover_val(self), GtkWidget_option_val(arg1));
+gtk_popover_set_child(GtkPopover_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -65,8 +61,7 @@ CAMLexport CAMLprim value ml_gtk_popover_present(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_popover_present(GtkPopover_val(self));
+gtk_popover_present(GtkPopover_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -74,8 +69,7 @@ CAMLexport CAMLprim value ml_gtk_popover_popup(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_popover_popup(GtkPopover_val(self));
+gtk_popover_popup(GtkPopover_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -83,8 +77,7 @@ CAMLexport CAMLprim value ml_gtk_popover_popdown(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_popover_popdown(GtkPopover_val(self));
+gtk_popover_popdown(GtkPopover_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -92,8 +85,7 @@ CAMLexport CAMLprim value ml_gtk_popover_get_position(value self)
 {
 CAMLparam1(self);
 
-
-    GtkPositionType result = gtk_popover_get_position(GtkPopover_val(self));
+GtkPositionType result = gtk_popover_get_position(GtkPopover_val(self));
 CAMLreturn(Val_GtkPositionType(result));
 }
 
@@ -101,8 +93,7 @@ CAMLexport CAMLprim value ml_gtk_popover_get_child(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_popover_get_child(GtkPopover_val(self));
+GtkWidget* result = gtk_popover_get_child(GtkPopover_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

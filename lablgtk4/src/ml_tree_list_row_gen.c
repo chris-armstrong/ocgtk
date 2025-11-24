@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_tree_list_row_is_expandable(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_tree_list_row_is_expandable(GtkTreeListRow_val(self));
+gboolean result = gtk_tree_list_row_is_expandable(GtkTreeListRow_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -31,8 +30,7 @@ CAMLexport CAMLprim value ml_gtk_tree_list_row_get_position(value self)
 {
 CAMLparam1(self);
 
-
-    guint result = gtk_tree_list_row_get_position(GtkTreeListRow_val(self));
+guint result = gtk_tree_list_row_get_position(GtkTreeListRow_val(self));
 CAMLreturn(Val_int(result));
 }
 
@@ -40,8 +38,7 @@ CAMLexport CAMLprim value ml_gtk_tree_list_row_get_parent(value self)
 {
 CAMLparam1(self);
 
-
-    GtkTreeListRow* result = gtk_tree_list_row_get_parent(GtkTreeListRow_val(self));
+GtkTreeListRow* result = gtk_tree_list_row_get_parent(GtkTreeListRow_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -49,8 +46,7 @@ CAMLexport CAMLprim value ml_gtk_tree_list_row_get_child_row(value self, value a
 {
 CAMLparam2(self, arg1);
 
-
-    GtkTreeListRow* result = gtk_tree_list_row_get_child_row(GtkTreeListRow_val(self), Int_val(arg1));
+GtkTreeListRow* result = gtk_tree_list_row_get_child_row(GtkTreeListRow_val(self), Int_val(arg1));
 CAMLreturn(Val_GtkWidget(result));
 }
 

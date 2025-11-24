@@ -36,8 +36,7 @@ CAMLexport CAMLprim value ml_gtk_file_filter_get_attributes(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_file_filter_get_attributes(GtkFileFilter_val(self));
+gtk_file_filter_get_attributes(GtkFileFilter_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -45,8 +44,7 @@ CAMLexport CAMLprim value ml_gtk_file_filter_add_suffix(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_file_filter_add_suffix(GtkFileFilter_val(self), String_val(arg1));
+gtk_file_filter_add_suffix(GtkFileFilter_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -54,8 +52,7 @@ CAMLexport CAMLprim value ml_gtk_file_filter_add_pixbuf_formats(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_file_filter_add_pixbuf_formats(GtkFileFilter_val(self));
+gtk_file_filter_add_pixbuf_formats(GtkFileFilter_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -63,8 +60,7 @@ CAMLexport CAMLprim value ml_gtk_file_filter_add_pattern(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_file_filter_add_pattern(GtkFileFilter_val(self), String_val(arg1));
+gtk_file_filter_add_pattern(GtkFileFilter_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -72,8 +68,7 @@ CAMLexport CAMLprim value ml_gtk_file_filter_add_mime_type(value self, value arg
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_file_filter_add_mime_type(GtkFileFilter_val(self), String_val(arg1));
+gtk_file_filter_add_mime_type(GtkFileFilter_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 

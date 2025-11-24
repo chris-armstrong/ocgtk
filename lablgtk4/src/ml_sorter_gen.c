@@ -22,8 +22,7 @@ CAMLexport CAMLprim value ml_gtk_sorter_get_order(value self)
 {
 CAMLparam1(self);
 
-
-    GtkSorterOrder result = gtk_sorter_get_order(GtkSorter_val(self));
+GtkSorterOrder result = gtk_sorter_get_order(GtkSorter_val(self));
 CAMLreturn(Val_GtkSorterOrder(result));
 }
 
@@ -31,7 +30,6 @@ CAMLexport CAMLprim value ml_gtk_sorter_changed(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_sorter_changed(GtkSorter_val(self), GtkSorterChange_val(arg1));
+gtk_sorter_changed(GtkSorter_val(self), GtkSorterChange_val(arg1));
 CAMLreturn(Val_unit);
 }

@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_window_handle_set_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_window_handle_set_child(GtkWindowHandle_val(self), GtkWidget_option_val(arg1));
+gtk_window_handle_set_child(GtkWindowHandle_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,7 +37,6 @@ CAMLexport CAMLprim value ml_gtk_window_handle_get_child(value self)
 {
 CAMLparam1(self);
 
-
-    GtkWidget* result = gtk_window_handle_get_child(GtkWindowHandle_val(self));
+GtkWidget* result = gtk_window_handle_get_child(GtkWindowHandle_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }

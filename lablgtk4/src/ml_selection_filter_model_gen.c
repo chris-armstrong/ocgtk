@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_selection_filter_model_set_model(value self, va
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_selection_filter_model_set_model(GtkSelectionFilterModel_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_selection_filter_model_set_model(GtkSelectionFilterModel_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_selection_filter_model_get_model(value self)
 {
 CAMLparam1(self);
 
-
-    GtkSelectionModel* result = gtk_selection_filter_model_get_model(GtkSelectionFilterModel_val(self));
+GtkSelectionModel* result = gtk_selection_filter_model_get_model(GtkSelectionFilterModel_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

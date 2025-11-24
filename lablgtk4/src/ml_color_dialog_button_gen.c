@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_color_dialog_button_set_dialog(value self, valu
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_color_dialog_button_set_dialog(GtkColorDialogButton_val(self), GtkWidget_val(arg1));
+gtk_color_dialog_button_set_dialog(GtkColorDialogButton_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,7 +37,6 @@ CAMLexport CAMLprim value ml_gtk_color_dialog_button_get_dialog(value self)
 {
 CAMLparam1(self);
 
-
-    GtkColorDialog* result = gtk_color_dialog_button_get_dialog(GtkColorDialogButton_val(self));
+GtkColorDialog* result = gtk_color_dialog_button_get_dialog(GtkColorDialogButton_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }

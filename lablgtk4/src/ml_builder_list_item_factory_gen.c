@@ -36,8 +36,7 @@ CAMLexport CAMLprim value ml_gtk_builder_list_item_factory_get_scope(value self)
 {
 CAMLparam1(self);
 
-
-    GtkBuilderScope* result = gtk_builder_list_item_factory_get_scope(GtkBuilderListItemFactory_val(self));
+GtkBuilderScope* result = gtk_builder_list_item_factory_get_scope(GtkBuilderListItemFactory_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

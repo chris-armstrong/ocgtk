@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_grid_layout_set_row_baseline_position(value sel
 {
 CAMLparam3(self, arg1, arg2);
 
-
-    gtk_grid_layout_set_row_baseline_position(GtkGridLayout_val(self), Int_val(arg1), GtkBaselinePosition_val(arg2));
+gtk_grid_layout_set_row_baseline_position(GtkGridLayout_val(self), Int_val(arg1), GtkBaselinePosition_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_grid_layout_get_row_baseline_position(value sel
 {
 CAMLparam2(self, arg1);
 
-
-    GtkBaselinePosition result = gtk_grid_layout_get_row_baseline_position(GtkGridLayout_val(self), Int_val(arg1));
+GtkBaselinePosition result = gtk_grid_layout_get_row_baseline_position(GtkGridLayout_val(self), Int_val(arg1));
 CAMLreturn(Val_GtkBaselinePosition(result));
 }
 

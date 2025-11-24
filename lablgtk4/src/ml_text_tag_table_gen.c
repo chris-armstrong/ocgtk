@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_table_remove(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_text_tag_table_remove(GtkTextTagTable_val(self), GtkWidget_val(arg1));
+gtk_text_tag_table_remove(GtkTextTagTable_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_table_lookup(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    GtkTextTag* result = gtk_text_tag_table_lookup(GtkTextTagTable_val(self), String_val(arg1));
+GtkTextTag* result = gtk_text_tag_table_lookup(GtkTextTagTable_val(self), String_val(arg1));
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_table_get_size(value self)
 {
 CAMLparam1(self);
 
-
-    int result = gtk_text_tag_table_get_size(GtkTextTagTable_val(self));
+int result = gtk_text_tag_table_get_size(GtkTextTagTable_val(self));
 CAMLreturn(Val_int(result));
 }
 
@@ -56,7 +53,6 @@ CAMLexport CAMLprim value ml_gtk_text_tag_table_add(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gboolean result = gtk_text_tag_table_add(GtkTextTagTable_val(self), GtkWidget_val(arg1));
+gboolean result = gtk_text_tag_table_add(GtkTextTagTable_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_bool(result));
 }

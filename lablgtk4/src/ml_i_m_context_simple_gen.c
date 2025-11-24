@@ -29,7 +29,6 @@ CAMLexport CAMLprim value ml_gtk_im_context_simple_add_compose_file(value self, 
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_im_context_simple_add_compose_file(GtkIMContextSimple_val(self), String_val(arg1));
+gtk_im_context_simple_add_compose_file(GtkIMContextSimple_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }

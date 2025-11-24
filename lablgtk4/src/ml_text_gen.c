@@ -36,8 +36,7 @@ CAMLexport CAMLprim value ml_gtk_text_unset_invisible_char(value self)
 {
 CAMLparam1(self);
 
-
-    gtk_text_unset_invisible_char(GtkText_val(self));
+gtk_text_unset_invisible_char(GtkText_val(self));
 CAMLreturn(Val_unit);
 }
 
@@ -45,8 +44,7 @@ CAMLexport CAMLprim value ml_gtk_text_set_input_purpose(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_text_set_input_purpose(GtkText_val(self), GtkInputPurpose_val(arg1));
+gtk_text_set_input_purpose(GtkText_val(self), GtkInputPurpose_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -54,8 +52,7 @@ CAMLexport CAMLprim value ml_gtk_text_set_input_hints(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_text_set_input_hints(GtkText_val(self), GtkInputHints_val(arg1));
+gtk_text_set_input_hints(GtkText_val(self), GtkInputHints_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -63,8 +60,7 @@ CAMLexport CAMLprim value ml_gtk_text_set_buffer(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_text_set_buffer(GtkText_val(self), GtkWidget_val(arg1));
+gtk_text_set_buffer(GtkText_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -72,8 +68,7 @@ CAMLexport CAMLprim value ml_gtk_text_grab_focus_without_selecting(value self)
 {
 CAMLparam1(self);
 
-
-    gboolean result = gtk_text_grab_focus_without_selecting(GtkText_val(self));
+gboolean result = gtk_text_grab_focus_without_selecting(GtkText_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -81,8 +76,7 @@ CAMLexport CAMLprim value ml_gtk_text_get_input_purpose(value self)
 {
 CAMLparam1(self);
 
-
-    GtkInputPurpose result = gtk_text_get_input_purpose(GtkText_val(self));
+GtkInputPurpose result = gtk_text_get_input_purpose(GtkText_val(self));
 CAMLreturn(Val_GtkInputPurpose(result));
 }
 
@@ -90,8 +84,7 @@ CAMLexport CAMLprim value ml_gtk_text_get_input_hints(value self)
 {
 CAMLparam1(self);
 
-
-    GtkInputHints result = gtk_text_get_input_hints(GtkText_val(self));
+GtkInputHints result = gtk_text_get_input_hints(GtkText_val(self));
 CAMLreturn(Val_GtkInputHints(result));
 }
 
@@ -99,8 +92,7 @@ CAMLexport CAMLprim value ml_gtk_text_get_buffer(value self)
 {
 CAMLparam1(self);
 
-
-    GtkEntryBuffer* result = gtk_text_get_buffer(GtkText_val(self));
+GtkEntryBuffer* result = gtk_text_get_buffer(GtkText_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 

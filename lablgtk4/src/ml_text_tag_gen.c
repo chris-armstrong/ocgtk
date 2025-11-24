@@ -29,8 +29,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_priority(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_text_tag_set_priority(GtkTextTag_val(self), Int_val(arg1));
+gtk_text_tag_set_priority(GtkTextTag_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,8 +37,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_priority(value self)
 {
 CAMLparam1(self);
 
-
-    int result = gtk_text_tag_get_priority(GtkTextTag_val(self));
+int result = gtk_text_tag_get_priority(GtkTextTag_val(self));
 CAMLreturn(Val_int(result));
 }
 
@@ -47,8 +45,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_changed(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-
-    gtk_text_tag_changed(GtkTextTag_val(self), Bool_val(arg1));
+gtk_text_tag_changed(GtkTextTag_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
