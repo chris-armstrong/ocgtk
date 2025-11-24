@@ -85,7 +85,9 @@ jobs:
           dune-cache: true
 
       - name: Install external dependencies
-        run: apt-get update && apt-get install -y  libcairo2-dev libgtk-4-dev xdot xvfb
+        run: |
+          sudo apt-get update && 
+          sudo apt-get install -y libcairo2-dev libgtk-4-dev xdot xvfb
 
       - name: Pin conf-gtk4 package
         run: opam pin add -n conf-gtk4 conf-gtk4
