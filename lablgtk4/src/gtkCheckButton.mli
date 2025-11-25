@@ -1,24 +1,17 @@
-(* GTK4 CheckButton low-level bindings *)
+(* Compatibility wrapper around generated Check_button bindings *)
+type t = Check_button.t
 
-type t = Gtk.widget
+val as_widget : t -> Gtk.widget
 
-(** Constructors *)
-external new_ : unit -> t = "ml_gtk_check_button_new"
-external new_with_label : string option -> t = "ml_gtk_check_button_new_with_label"
-external new_with_mnemonic : string option -> t = "ml_gtk_check_button_new_with_mnemonic"
-
-(** Properties *)
-external get_active : t -> bool = "ml_gtk_check_button_get_active"
-external set_active : t -> bool -> unit = "ml_gtk_check_button_set_active"
-
-external get_label : t -> string = "ml_gtk_check_button_get_label"
-external set_label : t -> string -> unit = "ml_gtk_check_button_set_label"
-
-external get_use_underline : t -> bool = "ml_gtk_check_button_get_use_underline"
-external set_use_underline : t -> bool -> unit = "ml_gtk_check_button_set_use_underline"
-
-external get_inconsistent : t -> bool = "ml_gtk_check_button_get_inconsistent"
-external set_inconsistent : t -> bool -> unit = "ml_gtk_check_button_set_inconsistent"
-
-(** Radio button grouping (GTK4 uses CheckButton for radio buttons) *)
-external set_group : t -> t option -> unit = "ml_gtk_check_button_set_group"
+val new_ : unit -> t
+val new_with_label : string option -> t
+val new_with_mnemonic : string option -> t
+val get_active : t -> bool
+val set_active : t -> bool -> unit
+val get_label : t -> string
+val set_label : t -> string -> unit
+val get_use_underline : t -> bool
+val set_use_underline : t -> bool -> unit
+val get_inconsistent : t -> bool
+val set_inconsistent : t -> bool -> unit
+val set_group : t -> t option -> unit

@@ -1,12 +1,13 @@
-(* GTK4 ToggleButton low-level bindings - implementation *)
+(* Compatibility wrapper around generated Toggle_button bindings *)
+type t = Toggle_button.t
 
-type t = Gtk.widget
+let as_widget = Toggle_button.as_widget
 
-external new_ : unit -> t = "ml_gtk_toggle_button_new"
-external new_with_label : string -> t = "ml_gtk_toggle_button_new_with_label"
-external new_with_mnemonic : string -> t = "ml_gtk_toggle_button_new_with_mnemonic"
+let new_ = Toggle_button.new_
+let new_with_label = Toggle_button.new_with_label
+let new_with_mnemonic = Toggle_button.new_with_mnemonic
 
-external get_active : t -> bool = "ml_gtk_toggle_button_get_active"
-external set_active : t -> bool -> unit = "ml_gtk_toggle_button_set_active"
+let get_active = Toggle_button.get_active
+let set_active = Toggle_button.set_active
 
-external toggled : t -> unit = "ml_gtk_toggle_button_toggled"
+let toggled = Toggle_button.toggled

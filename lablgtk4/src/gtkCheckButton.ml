@@ -1,24 +1,17 @@
-(* GENERATED IMPLEMENTATION - DO NOT EDIT DIRECTLY *)
-(* Generated from gtkCheckButton.mli *)
+(* Compatibility wrapper around generated Check_button bindings *)
+type t = Check_button.t
 
-(* Type declarations *)
-type t = Gtk.widget
+let as_widget = Check_button.as_widget
 
-(* External FFI bindings *)
-external new_ : unit -> t = "ml_gtk_check_button_new"
-external new_with_label : string option -> t = "ml_gtk_check_button_new_with_label"
-external new_with_mnemonic : string option -> t = "ml_gtk_check_button_new_with_mnemonic"
-external get_active : t -> bool = "ml_gtk_check_button_get_active"
-external set_active : t -> bool -> unit = "ml_gtk_check_button_set_active"
-external get_label : t -> string = "ml_gtk_check_button_get_label"
-external set_label : t -> string -> unit = "ml_gtk_check_button_set_label"
-external get_use_underline : t -> bool = "ml_gtk_check_button_get_use_underline"
-external set_use_underline : t -> bool -> unit = "ml_gtk_check_button_set_use_underline"
-external get_inconsistent : t -> bool = "ml_gtk_check_button_get_inconsistent"
-external set_inconsistent : t -> bool -> unit = "ml_gtk_check_button_set_inconsistent"
-external set_group : t -> t option -> unit = "ml_gtk_check_button_set_group"
-
-(* Summary:
- * - 1 type declarations
- * - 12 external bindings
- *)
+let new_ = Check_button.new_
+let new_with_label = Check_button.new_with_label
+let new_with_mnemonic = Check_button.new_with_mnemonic
+let get_active = Check_button.get_active
+let set_active = Check_button.set_active
+let get_label t = Option.value ~default:"" (Check_button.get_label t)
+let set_label t s = Check_button.set_label t (Some s)
+let get_use_underline = Check_button.get_use_underline
+let set_use_underline = Check_button.set_use_underline
+let get_inconsistent = Check_button.get_inconsistent
+let set_inconsistent = Check_button.set_inconsistent
+let set_group t opt = Check_button.set_group t (Option.map Check_button.as_widget opt)

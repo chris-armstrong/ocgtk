@@ -1,29 +1,27 @@
-(* GTK4 Button low-level bindings *)
+(* Compatibility wrapper around generated Button bindings *)
+type t = Button.t
 
-type t = Gtk.widget
+val as_widget : t -> Gtk.widget
 
-(** Constructors *)
-external new_ : unit -> t = "ml_gtk_button_new"
-external new_with_label : string -> t = "ml_gtk_button_new_with_label"
-external new_with_mnemonic : string -> t = "ml_gtk_button_new_with_mnemonic"
-external new_from_icon_name : string -> t = "ml_gtk_button_new_from_icon_name"
+val new_ : unit -> t
+val new_with_label : string -> t
+val new_with_mnemonic : string -> t
+val new_from_icon_name : string -> t
 
-(** Properties *)
-external get_label : t -> string = "ml_gtk_button_get_label"
-external set_label : t -> string -> unit = "ml_gtk_button_set_label"
+val get_label : t -> string
+val set_label : t -> string -> unit
 
-external get_has_frame : t -> bool = "ml_gtk_button_get_has_frame"
-external set_has_frame : t -> bool -> unit = "ml_gtk_button_set_has_frame"
+val get_has_frame : t -> bool
+val set_has_frame : t -> bool -> unit
 
-external get_use_underline : t -> bool = "ml_gtk_button_get_use_underline"
-external set_use_underline : t -> bool -> unit = "ml_gtk_button_set_use_underline"
+val get_use_underline : t -> bool
+val set_use_underline : t -> bool -> unit
 
-external get_icon_name : t -> string = "ml_gtk_button_get_icon_name"
-external set_icon_name : t -> string -> unit = "ml_gtk_button_set_icon_name"
+val get_icon_name : t -> string
+val set_icon_name : t -> string -> unit
 
-external get_can_shrink : t -> bool = "ml_gtk_button_get_can_shrink"
-external set_can_shrink : t -> bool -> unit = "ml_gtk_button_set_can_shrink"
+val get_can_shrink : t -> bool
+val set_can_shrink : t -> bool -> unit
 
-(** Child management *)
-external get_child : t -> Gtk.widget option = "ml_gtk_button_get_child"
-external set_child : t -> Gtk.widget option -> unit = "ml_gtk_button_set_child"
+val get_child : t -> Gtk.widget option
+val set_child : t -> Gtk.widget option -> unit
