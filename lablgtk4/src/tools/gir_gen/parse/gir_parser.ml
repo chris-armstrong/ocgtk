@@ -23,6 +23,12 @@ let parse_gir_enums_only filename =
   let ic = open_in filename in
   let input = Xmlm.make_input ~strip:true (`Channel ic) in
 
+  let local_name tag =
+    match String.index_opt tag ':' with
+    | Some idx -> String.sub ~pos:(idx + 1) ~len:(String.length tag - idx - 1) tag
+    | None -> tag
+  in
+
   let enums = ref [] in
   let bitfields = ref [] in
 
@@ -49,7 +55,7 @@ let parse_gir_enums_only filename =
 
         let rec parse_enum_contents () =
           match Xmlm.input input with
-          | `El_start ((_, "member"), member_attrs) ->
+          | `El_start ((_, tag), member_attrs) when local_name tag = "member" ->
             (match get_attr "name" member_attrs, get_attr "value" member_attrs, get_attr "c:identifier" member_attrs with
             | Some member_name, Some value_str, Some c_id ->
               let value = try int_of_string value_str with _ -> 0 in
@@ -142,13 +148,13 @@ let parse_gir_enums_only filename =
     if Xmlm.eoi input then ()
     else
       match Xmlm.input input with
-      | `El_start ((_, "enumeration"), attrs) ->
+      | `El_start ((_, tag), attrs) when local_name tag = "enumeration" ->
         (match parse_enumeration attrs with
         | Some enum -> enums := enum :: !enums
         | None -> ());
         parse_document ()
 
-      | `El_start ((_, "bitfield"), attrs) ->
+      | `El_start ((_, tag), attrs) when local_name tag = "bitfield" ->
         (match parse_bitfield attrs with
         | Some bitfield -> bitfields := bitfield :: !bitfields
         | None -> ());
@@ -174,6 +180,12 @@ let parse_gir_enums_only filename =
 let parse_gir_file filename _filter_classes =
   let ic = open_in filename in
   let input = Xmlm.make_input ~strip:true (`Channel ic) in
+
+  let local_name tag =
+    match String.index_opt tag ':' with
+    | Some idx -> String.sub ~pos:(idx + 1) ~len:(String.length tag - idx - 1) tag
+    | None -> tag
+  in
 
   let controllers = ref [] in
   let interfaces : gir_interface list ref = ref [] in
@@ -221,7 +233,8 @@ let parse_gir_file filename _filter_classes =
 
       let rec parse_class_contents () =
         match Xmlm.input input with
-        | `El_start ((_, tag), tag_attrs) ->
+        | `El_start ((_, raw_tag), tag_attrs) ->
+          let tag = local_name raw_tag in
           (match tag with
           | "constructor" ->
             (match get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs with
@@ -547,7 +560,8 @@ let parse_gir_file filename _filter_classes =
 
       let rec parse_signal_contents () =
         match Xmlm.input input with
-        | `El_start ((_, tag), tag_attrs) ->
+        | `El_start ((_, raw_tag), tag_attrs) ->
+          let tag = local_name raw_tag in
           (match tag with
           | "return-value" ->
             return_type := parse_return_value tag_attrs;
@@ -684,7 +698,8 @@ let parse_gir_file filename _filter_classes =
     let signals = ref [] in
       let rec parse_class_contents () =
         match Xmlm.input input with
-        | `El_start ((_, tag), tag_attrs) ->
+        | `El_start ((_, raw_tag), tag_attrs) ->
+          let tag = local_name raw_tag in
           (match tag with
 
           | "signal" ->
@@ -812,17 +827,17 @@ let parse_gir_file filename _filter_classes =
       if Xmlm.eoi input2 then ()
       else
         match Xmlm.input input2 with
-        | `El_start ((_, "class"), attrs) ->
+        | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "class" ->
           current := get_attr "name" attrs;
           current_is_interface := false;
           depth := 1;
           loop ()
-        | `El_start ((_, "interface"), attrs) ->
+        | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "interface" ->
           current := get_attr "name" attrs;
           current_is_interface := true;
           depth := 1;
           loop ()
-        | `El_start ((_, "signal"), attrs) when !current <> None ->
+        | `El_start ((_, raw_tag), attrs) when !current <> None && local_name raw_tag = "signal" ->
           incr depth;
           record_signal attrs;
           decr depth;
@@ -849,36 +864,37 @@ let parse_gir_file filename _filter_classes =
     if Xmlm.eoi input then ()
     else
       match Xmlm.input input with
-      | `El_start ((_, "class"), attrs) ->
+        | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "class" ->
         (match parse_class attrs with
         | Some cls -> controllers := cls :: !controllers
         | None -> ());
         parse_document ()
 
-      | `El_start ((_, "interface"), attrs) ->
+      | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "interface" ->
         (match parse_interface attrs () with
         | Some cls -> interfaces := cls :: !interfaces
         | None -> ());
         parse_document ()
 
-      | `El_start ((_, "enumeration"), attrs) ->
+      | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "enumeration" ->
         (match parse_enumeration attrs with
         | Some enum -> enums := enum :: !enums
         | None -> ());
         parse_document ()
 
-      | `El_start ((_, "bitfield"), attrs) ->
+      | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "bitfield" ->
         (match parse_bitfield attrs with
         | Some bitfield -> bitfields := bitfield :: !bitfields
         | None -> ());
         parse_document ()
 
-      | `El_start ((_, tag), _) when tag = "repository" || tag = "namespace" ->
+      | `El_start ((_, raw_tag), _) ->
+        let tag = local_name raw_tag in
+        if tag = "repository" || tag = "namespace" then
+          parse_document ()
+        else begin
         parse_document ()
-
-      | `El_start _ ->
-        skip_element 1;
-        parse_document ()
+        end
 
       | `El_end ->
         parse_document ()
@@ -896,13 +912,23 @@ let parse_gir_file filename _filter_classes =
 
   let merge_class_signals cls =
     let extras = Hashtbl.find_opt signal_table cls.class_name |> Option.value ~default:[] |> List.rev in
-    let combined = cls.signals @ extras in
+    let base = cls.signals in
+    let deduped_extras =
+      List.filter extras ~f:(fun (s:gir_signal) ->
+        not (List.exists base ~f:(fun existing -> existing.signal_name = s.signal_name)))
+    in
+    let combined = base @ deduped_extras in
     if combined == cls.signals then cls else { cls with signals = combined }
   in
 
   let merge_interface_signals iface =
     let extras = Hashtbl.find_opt iface_signal_table iface.interface_name |> Option.value ~default:[] |> List.rev in
-    let combined = iface.signals @ extras in
+    let base = iface.signals in
+    let deduped_extras =
+      List.filter extras ~f:(fun (s:gir_signal) ->
+        not (List.exists base ~f:(fun existing -> existing.signal_name = s.signal_name)))
+    in
+    let combined = base @ deduped_extras in
     if combined == iface.signals then iface else { iface with signals = combined }
   in
 
