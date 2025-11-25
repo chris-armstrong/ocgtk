@@ -23,6 +23,8 @@ type gir_method = {
   parameters : gir_param list;
   doc : string option;
   throws: bool;
+  get_property : string option;
+  set_property : string option;
 }
 
 type gir_signal = {

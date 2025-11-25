@@ -54,6 +54,7 @@ gcc -c output/test/ml_event_controllers_gen.c \
 # Regenerate all src bindings and rebuild library
 dune exec src/tools/gir_gen/main.exe -- -f src/gtk4_controllers.controller \
   /usr/share/gir-1.0/Gtk-4.0.gir src
+dune build
 dune build src/lablgtk4.cma
 ```
 

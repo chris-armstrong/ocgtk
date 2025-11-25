@@ -131,6 +131,8 @@ class virtual widget_impl : [`widget] Gobject.obj ->
     (** {3 Conversion} *)
 
     method as_widget : [`widget] Gobject.obj
+
+    method widget : widget_impl
   end
 
 (** Concrete widget class that can be instantiated *)

@@ -10,6 +10,9 @@ let sanitize_doc s =
   (* Prevent premature comment termination when GIR doc contains "*)" *)
   Str.global_replace (Str.regexp_string "*)") "\"*)\"" s
 
+let generate_signal_bindings ~output_mode:_ ~module_name:_ ~has_widget_parent:_ _signals =
+  ""  (* Signals are only generated in high-level g*.ml wrappers *)
+
 let generate_ml_interface ~output_mode ~class_name ~class_doc ~enums ~bitfields ~classes ~parent_chain ~constructors ~methods ~properties ~signals:_ =
   let buf = Buffer.create 1024 in
   let is_impl = match output_mode with Implementation -> true | Interface -> false in
@@ -136,8 +139,8 @@ let generate_ml_interface ~output_mode ~class_name ~class_doc ~enums ~bitfields 
     bprintf buf "(* Properties *)\n\n";
   List.iter ~f:(fun (prop : gir_property) ->
       let skip_prop =
-        Blacklists.is_blacklisted_type_name prop.prop_type.name ||
-        Blacklists.is_blacklisted_type_name prop.prop_type.c_type
+        Exclude_list.is_excluded_type_name prop.prop_type.name ||
+        Exclude_list.is_excluded_type_name prop.prop_type.c_type
       in
       let type_mapping_opt = if skip_prop then None else Type_mappings.find_type_mapping ~enums ~bitfields ~classes prop.prop_type.c_type in
       match type_mapping_opt with
@@ -188,18 +191,18 @@ let generate_ml_interface ~output_mode ~class_name ~class_doc ~enums ~bitfields 
     ) in
 
     (* Skip if: variadic function, duplicates property, or unmapped return type *)
-    let has_blacklisted_type =
-      Blacklists.is_blacklisted_type_name meth.return_type.name ||
-      Blacklists.is_blacklisted_type_name meth.return_type.c_type ||
+    let has_excluded_type =
+      Exclude_list.is_excluded_type_name meth.return_type.name ||
+      Exclude_list.is_excluded_type_name meth.return_type.c_type ||
       List.exists meth.parameters ~f:(fun p ->
-        Blacklists.is_blacklisted_type_name p.param_type.name ||
-        Blacklists.is_blacklisted_type_name p.param_type.c_type)
+        Exclude_list.is_excluded_type_name p.param_type.name ||
+        Exclude_list.is_excluded_type_name p.param_type.c_type)
     in
     let should_skip_mli =
-      Blacklists.is_variadic_function c_name ||
+      Exclude_list.is_variadic_function c_name ||
       List.mem ocaml_name ~set:!property_names ||
-      has_blacklisted_type ||
-      Blacklists.should_skip_method ~find_type_mapping:(Type_mappings.find_type_mapping ~enums ~bitfields ~classes) ~enums ~bitfields meth
+      has_excluded_type ||
+      Exclude_list.should_skip_method ~find_type_mapping:(Type_mappings.find_type_mapping ~enums ~bitfields ~classes) ~enums ~bitfields meth
     in
     if not should_skip_mli then begin
       (match meth.doc with

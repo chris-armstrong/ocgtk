@@ -4,10 +4,23 @@ open StdLabels
 open Printf
 open Types
 
+let ocaml_keywords = [
+  "and"; "as"; "assert"; "begin"; "class"; "constraint"; "do"; "done";
+  "downto"; "else"; "end"; "exception"; "external"; "false"; "for"; "fun";
+  "function"; "functor"; "if"; "in"; "include"; "inherit"; "initializer";
+  "land"; "lazy"; "let"; "lor"; "lsl"; "lsr"; "lxor"; "match"; "method";
+  "mod"; "module"; "mutable"; "new"; "nonrec"; "object"; "of"; "open";
+  "or"; "private"; "rec"; "sig"; "struct"; "then"; "to"; "true"; "try";
+  "type"; "val"; "virtual"; "when"; "while"; "with";
+]
+
 let sanitize_signal_name name =
-  name
-  |> String.map ~f:(function '-' -> '_' | c -> c)
-  |> Utils.to_snake_case
+  let base =
+    name
+    |> String.map ~f:(function '-' -> '_' | c -> c)
+    |> Utils.to_snake_case
+  in
+  if List.exists ocaml_keywords ~f:(String.equal base) then base ^ "_" else base
 
 let has_widget_parent class_name parent_chain =
   let normalized_class = Utils.normalize_class_name class_name |> String.lowercase_ascii in
