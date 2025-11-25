@@ -55,6 +55,10 @@ let stub_c_file output_dir class_name =
   Filename.concat output_dir
     (Printf.sprintf "ml_%s_gen.c" (Gir_gen_lib.Utils.to_snake_case class_name))
 
+let g_wrapper_file output_dir class_name =
+  Filename.concat output_dir
+    (Printf.sprintf "g%s.ml" (Gir_gen_lib.Utils.module_name_of_class class_name))
+
 let read_file filename =
   let ic = open_in filename in
   let len = in_channel_length ic in
@@ -213,7 +217,14 @@ let test_widget_generation () =
 
   let button_content = read_file button_file in
   assert_contains "Button should have constructor" button_content "external new_";
-  assert_contains "Button should have set_label" button_content "set_label"
+  assert_contains "Button should have set_label" button_content "set_label";
+
+  (* High-level wrapper generation *)
+  let gbutton = g_wrapper_file output_dir "Button" in
+  assert_true "gButton.ml should be created" (file_exists gbutton);
+  let gbutton_content = read_file gbutton in
+  assert_contains "gButton should define skeleton" gbutton_content "class button_skel";
+  assert_contains "gButton should include connect method" gbutton_content "method connect"
 
 (* Test signal parsing and code generation *)
 let create_test_signal_gir filename =

@@ -207,6 +207,26 @@ let generate_bindings filter_file gir_file output_dir =
         ~properties:cls.Gir_gen_lib.Types.properties
         ~signals:cls.Gir_gen_lib.Types.signals);
       close_out oc_impl;
+
+      (* Generate high-level wrapper class (g<Widget>.ml) *)
+      let has_widget_parent =
+        String.lowercase_ascii (Gir_gen_lib.Utils.normalize_class_name cls.Gir_gen_lib.Types.class_name) = "widget" ||
+        List.exists parent_chain ~f:(fun p -> String.lowercase_ascii (Gir_gen_lib.Utils.normalize_class_name p) = "widget")
+      in
+      if has_widget_parent then begin
+        let g_file = Filename.concat output_dir
+          (sprintf "g%s.ml" (Gir_gen_lib.Utils.module_name_of_class cls.Gir_gen_lib.Types.class_name)) in
+        printf "Writing %s...\n" g_file;
+        let oc_g = open_out g_file in
+        output_string oc_g (Gir_gen_lib.Generate.Class_gen.generate_class_module
+          ~class_name:cls.Gir_gen_lib.Types.class_name
+          ~parent_chain
+          ~methods:cls.Gir_gen_lib.Types.methods
+          ~properties:cls.Gir_gen_lib.Types.properties
+          ~signals:cls.Gir_gen_lib.Types.signals);
+        close_out oc_g;
+        generated_modules := (sprintf "g%s" (Gir_gen_lib.Utils.module_name_of_class cls.Gir_gen_lib.Types.class_name)) :: !generated_modules;
+      end;
     end
   ) controllers;
 

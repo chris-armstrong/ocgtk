@@ -220,12 +220,11 @@ let as_widget (button : t) : Gtk.widget = Obj.magic button
 
 ### Step 2: Signal Definition Generation
 
-**Module**: New `signal_gen.ml`
+**Status**: Implemented for parameterless void signals (see `parse/gir_parser.ml`, `generate/signal_gen.ml`, and tests in `test_gir_gen.ml`).
 
-**Tasks**:
-1. Parse `<glib:signal>` elements from GIR
-2. Extract signal name, parameters, return type
-3. Generate signal handler classes
+- Parses `<glib:signal>` elements into the GIR AST.
+- Generates `<widget>_signals` classes that use `Gobject.Signal.connect_simple` for signals with no parameters and `void` return types.
+- Current limitation: signals with parameters or non-void returns are still skipped (the generator logs skips); extend `signal_gen.ml` to add callback wrappers when needed.
 
 **GIR signal example**:
 ```xml
@@ -248,21 +247,36 @@ let as_widget (button : t) : Gtk.widget = Obj.magic button
 ```ocaml
 class button_signals obj = object
   method clicked ~callback =
-    Gobject.Signal.connect_simple obj ~name:"clicked" ~callback ~after:false
+    Gobject.Signal.connect_simple
+      (Button.as_widget obj :> [`widget] Gobject.obj)
+      ~name:"clicked" ~callback ~after:false
 
   method activate ~callback =
-    Gobject.Signal.connect_simple obj ~name:"activate" ~callback ~after:false
+    Gobject.Signal.connect_simple
+      (Button.as_widget obj :> [`widget] Gobject.obj)
+      ~name:"activate" ~callback ~after:false
 end
 ```
 
 **Implementation approach**:
-- Use `Gobject.Signal.connect_simple` for simple signals (no parameters)
-- For signals with parameters, generate callback wrappers with proper type conversion
-- Handle signal return values (e.g., key-press-event returns bool)
+- Use `Gobject.Signal.connect_simple` for simple signals (no parameters). Already shipped.
+- For signals with parameters, generate callback wrappers with proper type conversion. **TODO**.
+- Handle signal return values (e.g., key-press-event returns bool). **TODO**.
 
 ### Step 3: High-Level Class Generation
 
-**Module**: New `class_gen.ml`
+**Status**: Initial generator added (`generate/class_gen.ml`) and wired into `gir_gen` to emit `g<Widget>.ml` for widget classes.
+
+- Emits `<widget>_skel` + concrete class when the class has a widget parent.
+- Adds `connect` method returning the generated `<widget>_signals` class.
+- Generates property wrappers (getters/setters) and method wrappers for non-variadic, non-`out` methods.
+- Uses the low-level module (e.g., `Button.set_label`) and `GObj.widget_impl` for inheritance.
+
+**Next steps** (future work):
+- Add container/window/range specializations (add/remove/append, present/close, adjustment/value).
+- Handle inheritance between generated skeletons (parent `_skel`).
+- Support methods with `out` params and signals with arguments.
+- Wire the generator into `main.ml` to emit `g<Widget>.ml/.mli` files, and add Dune includes.
 
 **Tasks**:
 1. Generate skeleton class (`<widget>_skel`) with:
