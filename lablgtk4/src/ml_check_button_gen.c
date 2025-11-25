@@ -30,14 +30,14 @@ CAMLreturn(Val_GtkCheckButton(obj));
 CAMLexport CAMLprim value ml_gtk_check_button_new_with_label(value arg1)
 {
 CAMLparam1(arg1);
-GtkCheckButton *obj = gtk_check_button_new_with_label((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+GtkCheckButton *obj = gtk_check_button_new_with_label(String_option_val(arg1));
 CAMLreturn(Val_GtkCheckButton(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_check_button_new_with_mnemonic(value arg1)
 {
 CAMLparam1(arg1);
-GtkCheckButton *obj = gtk_check_button_new_with_mnemonic((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+GtkCheckButton *obj = gtk_check_button_new_with_mnemonic(String_option_val(arg1));
 CAMLreturn(Val_GtkCheckButton(obj));
 }
 
@@ -53,7 +53,7 @@ CAMLexport CAMLprim value ml_gtk_check_button_set_label(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_check_button_set_label(GtkCheckButton_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_check_button_set_label(GtkCheckButton_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -69,7 +69,7 @@ CAMLexport CAMLprim value ml_gtk_check_button_set_group(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_check_button_set_group(GtkCheckButton_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_check_button_set_group(GtkCheckButton_val(self), Option_val(arg1, GtkCheckButton_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -102,7 +102,7 @@ CAMLexport CAMLprim value ml_gtk_check_button_get_label(value self)
 CAMLparam1(self);
 
 const char* result = gtk_check_button_get_label(GtkCheckButton_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_check_button_get_inconsistent(value self)
@@ -118,7 +118,7 @@ CAMLexport CAMLprim value ml_gtk_check_button_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_check_button_get_child(GtkCheckButton_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_check_button_get_active(value self)

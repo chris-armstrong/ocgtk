@@ -24,7 +24,7 @@ CAMLexport CAMLprim value ml_gtk_cell_editable_start_editing(value self, value a
 {
 CAMLparam2(self, arg1);
 
-gtk_cell_editable_start_editing(GtkCellEditable_val(self), (Is_some(arg1) ? GdkEvent_val(Some_val(arg1)) : NULL));
+gtk_cell_editable_start_editing(GtkCellEditable_val(self), Option_val(arg1, GdkEvent_val, NULL));
 CAMLreturn(Val_unit);
 }
 

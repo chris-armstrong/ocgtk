@@ -30,7 +30,7 @@ CAMLreturn(Val_GtkInfoBar(obj));
 CAMLexport CAMLprim value ml_gtk_info_bar_new_with_buttons(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
-GtkInfoBar *obj = gtk_info_bar_new_with_buttons((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL), arg2);
+GtkInfoBar *obj = gtk_info_bar_new_with_buttons(String_option_val(arg1), arg2);
 CAMLreturn(Val_GtkInfoBar(obj));
 }
 

@@ -37,21 +37,21 @@ CAMLreturn(Val_GtkVideo(obj));
 CAMLexport CAMLprim value ml_gtk_video_new_for_filename(value arg1)
 {
 CAMLparam1(arg1);
-GtkVideo *obj = gtk_video_new_for_filename((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+GtkVideo *obj = gtk_video_new_for_filename(String_option_val(arg1));
 CAMLreturn(Val_GtkVideo(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_video_new_for_media_stream(value arg1)
 {
 CAMLparam1(arg1);
-GtkVideo *obj = gtk_video_new_for_media_stream((Is_some(arg1) ? GtkMediaStream_val(Some_val(arg1)) : NULL));
+GtkVideo *obj = gtk_video_new_for_media_stream(Option_val(arg1, GtkMediaStream_val, NULL));
 CAMLreturn(Val_GtkVideo(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_video_new_for_resource(value arg1)
 {
 CAMLparam1(arg1);
-GtkVideo *obj = gtk_video_new_for_resource((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+GtkVideo *obj = gtk_video_new_for_resource(String_option_val(arg1));
 CAMLreturn(Val_GtkVideo(obj));
 }
 
@@ -59,7 +59,7 @@ CAMLexport CAMLprim value ml_gtk_video_set_resource(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_video_set_resource(GtkVideo_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_video_set_resource(GtkVideo_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -67,7 +67,7 @@ CAMLexport CAMLprim value ml_gtk_video_set_media_stream(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_video_set_media_stream(GtkVideo_val(self), (Is_some(arg1) ? GtkMediaStream_val(Some_val(arg1)) : NULL));
+gtk_video_set_media_stream(GtkVideo_val(self), Option_val(arg1, GtkMediaStream_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -91,7 +91,7 @@ CAMLexport CAMLprim value ml_gtk_video_set_filename(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_video_set_filename(GtkVideo_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_video_set_filename(GtkVideo_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -108,7 +108,7 @@ CAMLexport CAMLprim value ml_gtk_video_get_media_stream(value self)
 CAMLparam1(self);
 
 GtkMediaStream* result = gtk_video_get_media_stream(GtkVideo_val(self));
-CAMLreturn(Val_GtkMediaStream(result));
+CAMLreturn(Val_option(result, Val_GtkMediaStream));
 }
 
 CAMLexport CAMLprim value ml_gtk_video_get_loop(value self)

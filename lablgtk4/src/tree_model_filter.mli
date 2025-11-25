@@ -26,7 +26,7 @@ external get_model : t -> Gtk.widget = "ml_gtk_tree_model_filter_get_model"
 @filter_path points to a location in @filter. The returned path will
 point to the same location in the model not being filtered. If @filter_path
 does not point to a location in the child model, %NULL is returned. *)
-external convert_path_to_child_path : t -> Gtk.widget -> Gtk.widget = "ml_gtk_tree_model_filter_convert_path_to_child_path"
+external convert_path_to_child_path : t -> Gtk.widget -> Gtk.widget option = "ml_gtk_tree_model_filter_convert_path_to_child_path"
 
 (** Sets @child_iter to point to the row pointed to by @filter_iter. *)
 external convert_iter_to_child_iter : t -> Gtk.widget -> Gtk.widget -> unit = "ml_gtk_tree_model_filter_convert_iter_to_child_iter"
@@ -36,7 +36,7 @@ points to a path in the child model. The rerturned path will point to the
 same row in the filtered model. If @child_path isn’t a valid path on the
 child model or points to a row which is not visible in @filter, then %NULL
 is returned. *)
-external convert_child_path_to_path : t -> Gtk.widget -> Gtk.widget = "ml_gtk_tree_model_filter_convert_child_path_to_path"
+external convert_child_path_to_path : t -> Gtk.widget -> Gtk.widget option = "ml_gtk_tree_model_filter_convert_child_path_to_path"
 
 (** Sets @filter_iter to point to the row in @filter that corresponds to the
 row pointed at by @child_iter.  If @filter_iter was not set, %FALSE is

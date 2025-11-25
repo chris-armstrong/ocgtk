@@ -38,7 +38,7 @@ CAMLexport CAMLprim value ml_gtk_file_filter_set_name(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_file_filter_set_name(GtkFileFilter_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_file_filter_set_name(GtkFileFilter_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -47,7 +47,7 @@ CAMLexport CAMLprim value ml_gtk_file_filter_get_name(value self)
 CAMLparam1(self);
 
 const char* result = gtk_file_filter_get_name(GtkFileFilter_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_file_filter_get_attributes(value self)

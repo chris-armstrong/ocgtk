@@ -48,7 +48,7 @@ CAMLexport CAMLprim value ml_gtk_shortcut_label_get_disabled_text(value self)
 CAMLparam1(self);
 
 const char* result = gtk_shortcut_label_get_disabled_text(GtkShortcutLabel_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_shortcut_label_get_accelerator(value self)
@@ -56,5 +56,5 @@ CAMLexport CAMLprim value ml_gtk_shortcut_label_get_accelerator(value self)
 CAMLparam1(self);
 
 const char* result = gtk_shortcut_label_get_accelerator(GtkShortcutLabel_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }

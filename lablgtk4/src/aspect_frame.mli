@@ -45,5 +45,5 @@ the set aspect ratio of the `GtkAspectFrame`. *)
 external get_obey_child : t -> bool = "ml_gtk_aspect_frame_get_obey_child"
 
 (** Gets the child widget of @self. *)
-external get_child : t -> Gtk.widget = "ml_gtk_aspect_frame_get_child"
+external get_child : t -> Gtk.widget option = "ml_gtk_aspect_frame_get_child"
 

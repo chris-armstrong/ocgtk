@@ -23,7 +23,7 @@
 CAMLexport CAMLprim value ml_gtk_bool_filter_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkBoolFilter *obj = gtk_bool_filter_new((Is_some(arg1) ? GtkExpression_val(Some_val(arg1)) : NULL));
+GtkBoolFilter *obj = gtk_bool_filter_new(Option_val(arg1, GtkExpression_val, NULL));
 CAMLreturn(Val_GtkBoolFilter(obj));
 }
 
@@ -39,7 +39,7 @@ CAMLexport CAMLprim value ml_gtk_bool_filter_set_expression(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-gtk_bool_filter_set_expression(GtkBoolFilter_val(self), (Is_some(arg1) ? GtkExpression_val(Some_val(arg1)) : NULL));
+gtk_bool_filter_set_expression(GtkBoolFilter_val(self), Option_val(arg1, GtkExpression_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -56,5 +56,5 @@ CAMLexport CAMLprim value ml_gtk_bool_filter_get_expression(value self)
 CAMLparam1(self);
 
 GtkExpression* result = gtk_bool_filter_get_expression(GtkBoolFilter_val(self));
-CAMLreturn(Val_GtkExpression(result));
+CAMLreturn(Val_option(result, Val_GtkExpression));
 }

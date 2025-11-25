@@ -53,7 +53,7 @@ CAMLexport CAMLprim value ml_gtk_toggle_button_set_group(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_toggle_button_set_group(GtkToggleButton_val(self), (Is_some(arg1) ? GtkToggleButton_val(Some_val(arg1)) : NULL));
+gtk_toggle_button_set_group(GtkToggleButton_val(self), Option_val(arg1, GtkToggleButton_val, NULL));
 CAMLreturn(Val_unit);
 }
 

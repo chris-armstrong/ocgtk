@@ -145,7 +145,7 @@ CAMLexport CAMLprim value ml_gtk_editable_get_delegate(value self)
 CAMLparam1(self);
 
 GtkEditable* result = gtk_editable_get_delegate(GtkEditable_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_editable_get_alignment(value self)

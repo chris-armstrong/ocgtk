@@ -28,5 +28,5 @@ child in view. *)
 external get_scroll_to_focus : t -> bool = "ml_gtk_viewport_get_scroll_to_focus"
 
 (** Gets the child widget of @viewport. *)
-external get_child : t -> Gtk.widget = "ml_gtk_viewport_get_child"
+external get_child : t -> Gtk.widget option = "ml_gtk_viewport_get_child"
 

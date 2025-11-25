@@ -26,7 +26,7 @@ external pack_end : t -> Gtk.widget -> bool -> unit = "ml_gtk_cell_layout_pack_e
 (** Returns the underlying `GtkCellArea` which might be @cell_layout
 if called on a `GtkCellArea` or might be %NULL if no `GtkCellArea`
 is used by @cell_layout. *)
-external get_area : t -> Gtk.widget = "ml_gtk_cell_layout_get_area"
+external get_area : t -> Gtk.widget option = "ml_gtk_cell_layout_get_area"
 
 (** Clears all existing attributes previously set with
 gtk_cell_layout_set_attributes(). *)

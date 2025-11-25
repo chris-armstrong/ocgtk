@@ -206,7 +206,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_get_widget(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_tree_view_column_get_widget(GtkTreeViewColumn_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_view_column_get_visible(value self)
@@ -222,7 +222,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_get_tree_view(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_tree_view_column_get_tree_view(GtkTreeViewColumn_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_view_column_get_title(value self)
@@ -406,7 +406,7 @@ CAMLreturn(result);
 
 CAMLexport CAMLprim value ml_gtk_tree_view_column_set_alignment(value self, value new_value)
 {
-CAMLexport CAMLparam2(self, new_value);
+CAMLparam2(self, new_value);
 GtkTreeViewColumn *obj = (GtkTreeViewColumn *)GtkTreeViewColumn_val(self);
 gfloat c_value = Double_val(new_value);
 g_object_set(G_OBJECT(obj), "alignment", c_value, NULL);

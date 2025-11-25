@@ -51,5 +51,5 @@ to the revealed state is completed. *)
 external get_child_revealed : t -> bool = "ml_gtk_revealer_get_child_revealed"
 
 (** Gets the child widget of @revealer. *)
-external get_child : t -> Gtk.widget = "ml_gtk_revealer_get_child"
+external get_child : t -> Gtk.widget option = "ml_gtk_revealer_get_child"
 

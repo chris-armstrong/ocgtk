@@ -54,22 +54,22 @@ external get_selected : t -> int = "ml_gtk_drop_down_get_selected"
 external get_search_match_mode : t -> Gtk_enums.stringfiltermatchmode = "ml_gtk_drop_down_get_search_match_mode"
 
 (** Gets the factory that's currently used to populate list items in the popup. *)
-external get_list_factory : t -> Gtk.widget = "ml_gtk_drop_down_get_list_factory"
+external get_list_factory : t -> Gtk.widget option = "ml_gtk_drop_down_get_list_factory"
 
 (** Gets the factory that's currently used to create header widgets for the popup. *)
-external get_header_factory : t -> Gtk.widget = "ml_gtk_drop_down_get_header_factory"
+external get_header_factory : t -> Gtk.widget option = "ml_gtk_drop_down_get_header_factory"
 
 (** Gets the factory that's currently used to populate list items.
 
 The factory returned by this function is always used for the
 item in the button. It is also used for items in the popup
 if [property@Gtk.DropDown:list-factory] is not set. *)
-external get_factory : t -> Gtk.widget = "ml_gtk_drop_down_get_factory"
+external get_factory : t -> Gtk.widget option = "ml_gtk_drop_down_get_factory"
 
 (** Gets the expression set that is used to obtain strings from items.
 
 See [method@Gtk.DropDown.set_expression]. *)
-external get_expression : t -> Gtk.widget = "ml_gtk_drop_down_get_expression"
+external get_expression : t -> Gtk.widget option = "ml_gtk_drop_down_get_expression"
 
 (** Returns whether search is enabled. *)
 external get_enable_search : t -> bool = "ml_gtk_drop_down_get_enable_search"

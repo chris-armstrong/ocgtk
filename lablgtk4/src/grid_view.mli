@@ -59,7 +59,7 @@ selected on hover. *)
 external get_single_click_activate : t -> bool = "ml_gtk_grid_view_get_single_click_activate"
 
 (** Gets the model that's currently used to read the items displayed. *)
-external get_model : t -> Gtk.widget = "ml_gtk_grid_view_get_model"
+external get_model : t -> Gtk.widget option = "ml_gtk_grid_view_get_model"
 
 (** Gets the minimum number of columns that the grid will use. *)
 external get_min_columns : t -> int = "ml_gtk_grid_view_get_min_columns"
@@ -68,7 +68,7 @@ external get_min_columns : t -> int = "ml_gtk_grid_view_get_min_columns"
 external get_max_columns : t -> int = "ml_gtk_grid_view_get_max_columns"
 
 (** Gets the factory that's currently used to populate list items. *)
-external get_factory : t -> Gtk.widget = "ml_gtk_grid_view_get_factory"
+external get_factory : t -> Gtk.widget option = "ml_gtk_grid_view_get_factory"
 
 (** Returns whether rows can be selected by dragging with the mouse. *)
 external get_enable_rubberband : t -> bool = "ml_gtk_grid_view_get_enable_rubberband"

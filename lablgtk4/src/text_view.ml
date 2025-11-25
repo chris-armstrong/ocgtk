@@ -307,7 +307,7 @@ See [method@Gtk.TextView.set_gutter].
 
 @win must be one of %GTK_TEXT_WINDOW_LEFT, %GTK_TEXT_WINDOW_RIGHT,
 %GTK_TEXT_WINDOW_TOP, or %GTK_TEXT_WINDOW_BOTTOM. *)
-external get_gutter : t -> Gtk_enums.textwindowtype -> Gtk.widget = "ml_gtk_text_view_get_gutter"
+external get_gutter : t -> Gtk_enums.textwindowtype -> Gtk.widget option = "ml_gtk_text_view_get_gutter"
 
 (** Returns the default editability of the `GtkTextView`.
 

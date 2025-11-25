@@ -24,7 +24,7 @@ CAMLexport CAMLprim value ml_gtk_accessible_update_next_accessible_sibling(value
 {
 CAMLparam2(self, arg1);
 
-gtk_accessible_update_next_accessible_sibling(GtkAccessible_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_accessible_update_next_accessible_sibling(GtkAccessible_val(self), Option_val(arg1, GtkWidget_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -32,7 +32,7 @@ CAMLexport CAMLprim value ml_gtk_accessible_set_accessible_parent(value self, va
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_accessible_set_accessible_parent(GtkAccessible_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL), (Is_some(arg2) ? GtkWidget_val(Some_val(arg2)) : NULL));
+gtk_accessible_set_accessible_parent(GtkAccessible_val(self), Option_val(arg1, GtkWidget_val, NULL), Option_val(arg2, GtkWidget_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -73,7 +73,7 @@ CAMLexport CAMLprim value ml_gtk_accessible_get_next_accessible_sibling(value se
 CAMLparam1(self);
 
 GtkAccessible* result = gtk_accessible_get_next_accessible_sibling(GtkAccessible_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_accessible_get_first_accessible_child(value self)
@@ -81,7 +81,7 @@ CAMLexport CAMLprim value ml_gtk_accessible_get_first_accessible_child(value sel
 CAMLparam1(self);
 
 GtkAccessible* result = gtk_accessible_get_first_accessible_child(GtkAccessible_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_accessible_get_at_context(value self)
@@ -105,7 +105,7 @@ CAMLexport CAMLprim value ml_gtk_accessible_get_accessible_parent(value self)
 CAMLparam1(self);
 
 GtkAccessible* result = gtk_accessible_get_accessible_parent(GtkAccessible_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_accessible_announce(value self, value arg1, value arg2)

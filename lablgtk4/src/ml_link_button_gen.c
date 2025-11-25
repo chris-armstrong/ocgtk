@@ -30,7 +30,7 @@ CAMLreturn(Val_GtkLinkButton(obj));
 CAMLexport CAMLprim value ml_gtk_link_button_new_with_label(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
-GtkLinkButton *obj = gtk_link_button_new_with_label(String_val(arg1), (Is_some(arg2) ? String_val(Some_val(arg2)) : NULL));
+GtkLinkButton *obj = gtk_link_button_new_with_label(String_val(arg1), String_option_val(arg2));
 CAMLreturn(Val_GtkLinkButton(obj));
 }
 

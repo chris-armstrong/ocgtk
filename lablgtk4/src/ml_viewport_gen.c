@@ -23,7 +23,7 @@
 CAMLexport CAMLprim value ml_gtk_viewport_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
-GtkViewport *obj = gtk_viewport_new((Is_some(arg1) ? GtkAdjustment_val(Some_val(arg1)) : NULL), (Is_some(arg2) ? GtkAdjustment_val(Some_val(arg2)) : NULL));
+GtkViewport *obj = gtk_viewport_new(Option_val(arg1, GtkAdjustment_val, NULL), Option_val(arg2, GtkAdjustment_val, NULL));
 CAMLreturn(Val_GtkViewport(obj));
 }
 
@@ -47,7 +47,7 @@ CAMLexport CAMLprim value ml_gtk_viewport_scroll_to(value self, value arg1, valu
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_viewport_scroll_to(GtkViewport_val(self), GtkWidget_val(arg1), (Is_some(arg2) ? GtkWidget_val(Some_val(arg2)) : NULL));
+gtk_viewport_scroll_to(GtkViewport_val(self), GtkWidget_val(arg1), Option_val(arg2, GtkWidget_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -64,5 +64,5 @@ CAMLexport CAMLprim value ml_gtk_viewport_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_viewport_get_child(GtkViewport_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }

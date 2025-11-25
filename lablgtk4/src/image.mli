@@ -71,7 +71,7 @@ The storage type of the image must be %GTK_IMAGE_EMPTY or
 %GTK_IMAGE_ICON_NAME (see [method@Gtk.Image.get_storage_type]).
 The returned string is owned by the `GtkImage` and should not
 be freed. *)
-external get_icon_name : t -> string = "ml_gtk_image_get_icon_name"
+external get_icon_name : t -> string option = "ml_gtk_image_get_icon_name"
 
 (** Resets the image to be empty. *)
 external clear : t -> unit = "ml_gtk_image_clear"

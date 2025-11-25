@@ -71,7 +71,7 @@ external pulse : t -> unit = "ml_gtk_progress_bar_pulse"
 
 The return value is a reference to the text, not a copy of it,
 so will become invalid if you change the text in the progress bar. *)
-external get_text : t -> string = "ml_gtk_progress_bar_get_text"
+external get_text : t -> string option = "ml_gtk_progress_bar_get_text"
 
 (** Returns whether the `GtkProgressBar` shows text.
 

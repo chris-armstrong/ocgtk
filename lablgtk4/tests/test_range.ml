@@ -40,7 +40,7 @@ let test_progress_bar_pulse () =
 let test_progress_bar_text () =
   let pb = Progress_bar.new_ () in
   Progress_bar.set_text pb (Some "Loading...");
-  check string "text set" "Loading..." (Progress_bar.get_text pb);
+  check (option string) "text set" (Some "Loading...") (Progress_bar.get_text pb);
   Progress_bar.set_show_text pb true;
   check bool "show_text enabled" true (Progress_bar.get_show_text pb)
 

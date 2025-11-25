@@ -99,7 +99,7 @@ external popdown : t -> unit = "ml_gtk_combo_box_popdown"
 external get_popup_fixed_width : t -> bool = "ml_gtk_combo_box_get_popup_fixed_width"
 
 (** Returns the `GtkTreeModel` of @combo_box. *)
-external get_model : t -> Gtk.widget = "ml_gtk_combo_box_get_model"
+external get_model : t -> Gtk.widget option = "ml_gtk_combo_box_get_model"
 
 (** Returns the column which @combo_box is using to get string IDs
 for values from. *)
@@ -113,7 +113,7 @@ from to display in the internal entry. *)
 external get_entry_text_column : t -> int = "ml_gtk_combo_box_get_entry_text_column"
 
 (** Gets the child widget of @combo_box. *)
-external get_child : t -> Gtk.widget = "ml_gtk_combo_box_get_child"
+external get_child : t -> Gtk.widget option = "ml_gtk_combo_box_get_child"
 
 (** Returns whether the combo box sets the dropdown button
 sensitive or not when there are no items in the model. *)
@@ -137,7 +137,7 @@ must not free it.
 If the [property@Gtk.ComboBox:id-column] property of @combo_box is
 not set, or if no row is active, or if the active row has a %NULL
 ID value, then %NULL is returned. *)
-external get_active_id : t -> string = "ml_gtk_combo_box_get_active_id"
+external get_active_id : t -> string option = "ml_gtk_combo_box_get_active_id"
 
 (** Returns the index of the currently active item.
 

@@ -79,7 +79,7 @@ external get_focusable : t -> bool = "ml_gtk_list_item_get_focusable"
 
 (** Gets the child previously set via gtk_list_item_set_child() or
 %NULL if none was set. *)
-external get_child : t -> Gtk.widget = "ml_gtk_list_item_get_child"
+external get_child : t -> Gtk.widget option = "ml_gtk_list_item_get_child"
 
 (** Checks if a list item has been set to be activatable via
 gtk_list_item_set_activatable(). *)

@@ -19,13 +19,13 @@ external get_primary_sort_order : t -> Gtk_enums.sorttype = "ml_gtk_column_view_
 
 The primary sort column is the one that displays the triangle
 in a column view header. *)
-external get_primary_sort_column : t -> Gtk.widget = "ml_gtk_column_view_sorter_get_primary_sort_column"
+external get_primary_sort_column : t -> Gtk.widget option = "ml_gtk_column_view_sorter_get_primary_sort_column"
 
 (** Gets the @position'th sort column and its associated sort order.
 
 Use the [signal@Gtk.Sorter::changed] signal to get notified
 when sort columns change. *)
-external get_nth_sort_column : t -> int -> Gtk.widget -> Gtk.widget = "ml_gtk_column_view_sorter_get_nth_sort_column"
+external get_nth_sort_column : t -> int -> Gtk.widget -> Gtk.widget option = "ml_gtk_column_view_sorter_get_nth_sort_column"
 
 (** Returns the number of columns by which the sorter sorts.
 

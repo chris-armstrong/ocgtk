@@ -40,5 +40,5 @@ CAMLexport CAMLprim value ml_gtk_window_handle_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_window_handle_get_child(GtkWindowHandle_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }

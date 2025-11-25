@@ -19,5 +19,5 @@ Note that this is the widget that would have the focus
 if the root is active; if the root is not focused then
 `gtk_widget_has_focus (widget)` will be %FALSE for the
 widget. *)
-external get_focus : t -> Gtk.widget = "ml_gtk_root_get_focus"
+external get_focus : t -> Gtk.widget option = "ml_gtk_root_get_focus"
 

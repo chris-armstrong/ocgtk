@@ -26,7 +26,7 @@ external set_hide_expander : t -> bool -> unit = "ml_gtk_tree_expander_set_hide_
 external set_child : t -> Gtk.widget option -> unit = "ml_gtk_tree_expander_set_child"
 
 (** Gets the list row managed by @self. *)
-external get_list_row : t -> Gtk.widget = "ml_gtk_tree_expander_get_list_row"
+external get_list_row : t -> Gtk.widget option = "ml_gtk_tree_expander_get_list_row"
 
 (** TreeExpander indents the child by the width of an expander-icon if it is not expandable. *)
 external get_indent_for_icon : t -> bool = "ml_gtk_tree_expander_get_indent_for_icon"
@@ -38,5 +38,5 @@ external get_indent_for_depth : t -> bool = "ml_gtk_tree_expander_get_indent_for
 external get_hide_expander : t -> bool = "ml_gtk_tree_expander_get_hide_expander"
 
 (** Gets the child widget displayed by @self. *)
-external get_child : t -> Gtk.widget = "ml_gtk_tree_expander_get_child"
+external get_child : t -> Gtk.widget option = "ml_gtk_tree_expander_get_child"
 

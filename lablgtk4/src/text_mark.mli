@@ -18,7 +18,7 @@ external get_visible : t -> bool = "ml_gtk_text_mark_get_visible"
 (** Returns the mark name.
 
 Returns %NULL for anonymous marks. *)
-external get_name : t -> string = "ml_gtk_text_mark_get_name"
+external get_name : t -> string option = "ml_gtk_text_mark_get_name"
 
 (** Determines whether the mark has left gravity. *)
 external get_left_gravity : t -> bool = "ml_gtk_text_mark_get_left_gravity"
@@ -32,5 +32,5 @@ external get_deleted : t -> bool = "ml_gtk_text_mark_get_deleted"
 (** Gets the buffer this mark is located inside.
 
 Returns %NULL if the mark is deleted. *)
-external get_buffer : t -> Gtk.widget = "ml_gtk_text_mark_get_buffer"
+external get_buffer : t -> Gtk.widget option = "ml_gtk_text_mark_get_buffer"
 

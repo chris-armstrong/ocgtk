@@ -80,7 +80,7 @@ CAMLexport CAMLprim value ml_gtk_search_bar_get_key_capture_widget(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_search_bar_get_key_capture_widget(GtkSearchBar_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_search_bar_get_child(value self)
@@ -88,7 +88,7 @@ CAMLexport CAMLprim value ml_gtk_search_bar_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_search_bar_get_child(GtkSearchBar_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_search_bar_connect_entry(value self, value arg1)

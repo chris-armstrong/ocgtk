@@ -14,5 +14,5 @@ external new_ : Gtk.widget option -> t = "ml_gtk_media_controls_new"
 external set_media_stream : t -> Gtk.widget option -> unit = "ml_gtk_media_controls_set_media_stream"
 
 (** Gets the media stream managed by @controls or %NULL if none. *)
-external get_media_stream : t -> Gtk.widget = "ml_gtk_media_controls_get_media_stream"
+external get_media_stream : t -> Gtk.widget option = "ml_gtk_media_controls_get_media_stream"
 

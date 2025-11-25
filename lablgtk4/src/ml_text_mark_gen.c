@@ -23,7 +23,7 @@
 CAMLexport CAMLprim value ml_gtk_text_mark_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
-GtkTextMark *obj = gtk_text_mark_new((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL), Bool_val(arg2));
+GtkTextMark *obj = gtk_text_mark_new(String_option_val(arg1), Bool_val(arg2));
 CAMLreturn(Val_GtkTextMark(obj));
 }
 
@@ -48,7 +48,7 @@ CAMLexport CAMLprim value ml_gtk_text_mark_get_name(value self)
 CAMLparam1(self);
 
 const char* result = gtk_text_mark_get_name(GtkTextMark_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_mark_get_left_gravity(value self)
@@ -72,5 +72,5 @@ CAMLexport CAMLprim value ml_gtk_text_mark_get_buffer(value self)
 CAMLparam1(self);
 
 GtkTextBuffer* result = gtk_text_mark_get_buffer(GtkTextMark_val(self));
-CAMLreturn(Val_GtkTextBuffer(result));
+CAMLreturn(Val_option(result, Val_GtkTextBuffer));
 }

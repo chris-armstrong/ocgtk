@@ -48,10 +48,10 @@ external hide : t -> unit = "ml_gtk_native_dialog_hide"
 external get_visible : t -> bool = "ml_gtk_native_dialog_get_visible"
 
 (** Fetches the transient parent for this window. *)
-external get_transient_for : t -> Gtk.widget = "ml_gtk_native_dialog_get_transient_for"
+external get_transient_for : t -> Gtk.widget option = "ml_gtk_native_dialog_get_transient_for"
 
 (** Gets the title of the `GtkNativeDialog`. *)
-external get_title : t -> string = "ml_gtk_native_dialog_get_title"
+external get_title : t -> string option = "ml_gtk_native_dialog_get_title"
 
 (** Returns whether the dialog is modal. *)
 external get_modal : t -> bool = "ml_gtk_native_dialog_get_modal"

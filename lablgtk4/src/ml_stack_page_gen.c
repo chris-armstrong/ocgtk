@@ -89,7 +89,7 @@ CAMLexport CAMLprim value ml_gtk_stack_page_get_title(value self)
 CAMLparam1(self);
 
 const char* result = gtk_stack_page_get_title(GtkStackPage_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_stack_page_get_needs_attention(value self)
@@ -105,7 +105,7 @@ CAMLexport CAMLprim value ml_gtk_stack_page_get_name(value self)
 CAMLparam1(self);
 
 const char* result = gtk_stack_page_get_name(GtkStackPage_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_stack_page_get_icon_name(value self)
@@ -113,7 +113,7 @@ CAMLexport CAMLprim value ml_gtk_stack_page_get_icon_name(value self)
 CAMLparam1(self);
 
 const char* result = gtk_stack_page_get_icon_name(GtkStackPage_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_stack_page_get_child(value self)

@@ -163,7 +163,7 @@ external get_max_undo_levels : t -> int = "ml_gtk_text_buffer_get_max_undo_level
 
 (** Returns the mark named @name in buffer @buffer, or %NULL if no such
 mark exists in the buffer. *)
-external get_mark : t -> string -> Gtk.widget = "ml_gtk_text_buffer_get_mark"
+external get_mark : t -> string -> Gtk.widget option = "ml_gtk_text_buffer_get_mark"
 
 (** Obtains the number of lines in the buffer.
 

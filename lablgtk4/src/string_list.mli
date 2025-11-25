@@ -20,7 +20,7 @@ If @self does not contain @position items, %NULL is returned.
 
 This function returns the const char *. To get the
 object wrapping it, use g_list_model_get_item(). *)
-external get_string : t -> int -> string = "ml_gtk_string_list_get_string"
+external get_string : t -> int -> string option = "ml_gtk_string_list_get_string"
 
 (** Appends @string to @self.
 

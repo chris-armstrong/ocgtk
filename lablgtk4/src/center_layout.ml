@@ -40,7 +40,7 @@ external set_center_widget : t -> Gtk.widget option -> unit = "ml_gtk_center_lay
 external set_baseline_position : t -> Gtk_enums.baselineposition -> unit = "ml_gtk_center_layout_set_baseline_position"
 
 (** Returns the start widget of the layout. *)
-external get_start_widget : t -> Gtk.widget = "ml_gtk_center_layout_get_start_widget"
+external get_start_widget : t -> Gtk.widget option = "ml_gtk_center_layout_get_start_widget"
 
 (** Gets whether @self shrinks the center widget after other children. *)
 external get_shrink_center_last : t -> bool = "ml_gtk_center_layout_get_shrink_center_last"
@@ -49,10 +49,10 @@ external get_shrink_center_last : t -> bool = "ml_gtk_center_layout_get_shrink_c
 external get_orientation : t -> Gtk_enums.orientation = "ml_gtk_center_layout_get_orientation"
 
 (** Returns the end widget of the layout. *)
-external get_end_widget : t -> Gtk.widget = "ml_gtk_center_layout_get_end_widget"
+external get_end_widget : t -> Gtk.widget option = "ml_gtk_center_layout_get_end_widget"
 
 (** Returns the center widget of the layout. *)
-external get_center_widget : t -> Gtk.widget = "ml_gtk_center_layout_get_center_widget"
+external get_center_widget : t -> Gtk.widget option = "ml_gtk_center_layout_get_center_widget"
 
 (** Returns the baseline position of the layout. *)
 external get_baseline_position : t -> Gtk_enums.baselineposition = "ml_gtk_center_layout_get_baseline_position"

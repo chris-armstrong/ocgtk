@@ -144,7 +144,7 @@ CAMLexport CAMLprim value ml_gtk_popover_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_popover_get_child(GtkPopover_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_popover_get_cascade_popdown(value self)

@@ -62,7 +62,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_text_prepend(value self, value arg1, 
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_combo_box_text_prepend(GtkComboBoxText_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL), String_val(arg2));
+gtk_combo_box_text_prepend(GtkComboBoxText_val(self), String_option_val(arg1), String_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -78,7 +78,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_text_insert(value self, value arg1, v
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
-gtk_combo_box_text_insert(GtkComboBoxText_val(self), Int_val(arg1), (Is_some(arg2) ? String_val(Some_val(arg2)) : NULL), String_val(arg3));
+gtk_combo_box_text_insert(GtkComboBoxText_val(self), Int_val(arg1), String_option_val(arg2), String_val(arg3));
 CAMLreturn(Val_unit);
 }
 
@@ -94,6 +94,6 @@ CAMLexport CAMLprim value ml_gtk_combo_box_text_append(value self, value arg1, v
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_combo_box_text_append(GtkComboBoxText_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL), String_val(arg2));
+gtk_combo_box_text_append(GtkComboBoxText_val(self), String_option_val(arg1), String_val(arg2));
 CAMLreturn(Val_unit);
 }

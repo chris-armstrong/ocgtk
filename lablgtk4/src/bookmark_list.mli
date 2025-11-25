@@ -34,5 +34,5 @@ this list is loading. *)
 external get_filename : t -> string = "ml_gtk_bookmark_list_get_filename"
 
 (** Gets the attributes queried on the children. *)
-external get_attributes : t -> string = "ml_gtk_bookmark_list_get_attributes"
+external get_attributes : t -> string option = "ml_gtk_bookmark_list_get_attributes"
 

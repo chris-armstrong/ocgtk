@@ -96,6 +96,6 @@ CAMLexport CAMLprim value ml_gtk_im_context_activate_osk(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gboolean result = gtk_im_context_activate_osk(GtkIMContext_val(self), (Is_some(arg1) ? GdkEvent_val(Some_val(arg1)) : NULL));
+gboolean result = gtk_im_context_activate_osk(GtkIMContext_val(self), Option_val(arg1, GdkEvent_val, NULL));
 CAMLreturn(Val_bool(result));
 }

@@ -31,7 +31,7 @@ the constraint.
 
 If the targe is set to `NULL` at creation, the constraint will use
 the widget using the [class@Gtk.ConstraintLayout] as the target. *)
-external get_target : t -> Gtk.widget = "ml_gtk_constraint_get_target"
+external get_target : t -> Gtk.widget option = "ml_gtk_constraint_get_target"
 
 (** Retrieves the strength of the constraint. *)
 external get_strength : t -> int = "ml_gtk_constraint_get_strength"
@@ -44,7 +44,7 @@ constraint.
 
 If the source is set to `NULL` at creation, the constraint will use
 the widget using the [class@Gtk.ConstraintLayout] as the source. *)
-external get_source : t -> Gtk.widget = "ml_gtk_constraint_get_source"
+external get_source : t -> Gtk.widget option = "ml_gtk_constraint_get_source"
 
 (** The order relation between the terms of the constraint. *)
 external get_relation : t -> Gtk_enums.constraintrelation = "ml_gtk_constraint_get_relation"

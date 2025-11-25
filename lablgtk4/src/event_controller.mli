@@ -37,7 +37,7 @@ external get_propagation_phase : t -> Gtk_enums.propagationphase = "ml_gtk_event
 external get_propagation_limit : t -> Gtk_enums.propagationlimit = "ml_gtk_event_controller_get_propagation_limit"
 
 (** Gets the name of @controller. *)
-external get_name : t -> string = "ml_gtk_event_controller_get_name"
+external get_name : t -> string option = "ml_gtk_event_controller_get_name"
 
 (** Returns the modifier state of the event that is currently being
 handled by the controller.
@@ -48,5 +48,5 @@ external get_current_event_state : t -> Gdk.modifiertype = "ml_gtk_event_control
 (** Returns the event that is currently being handled by the controller.
 
 At other times, %NULL is returned. *)
-external get_current_event : t -> _ Gdk.event = "ml_gtk_event_controller_get_current_event"
+external get_current_event : t -> _ Gdk.event option = "ml_gtk_event_controller_get_current_event"
 

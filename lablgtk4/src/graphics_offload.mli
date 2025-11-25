@@ -21,5 +21,5 @@ external set_child : t -> Gtk.widget option -> unit = "ml_gtk_graphics_offload_s
 external get_enabled : t -> Gtk_enums.graphicsoffloadenabled = "ml_gtk_graphics_offload_get_enabled"
 
 (** Gets the child of @self. *)
-external get_child : t -> Gtk.widget = "ml_gtk_graphics_offload_get_child"
+external get_child : t -> Gtk.widget option = "ml_gtk_graphics_offload_get_child"
 

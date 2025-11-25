@@ -55,7 +55,7 @@ becomes visible or when a new file gets loaded. *)
 external set_autoplay : t -> bool -> unit = "ml_gtk_video_set_autoplay"
 
 (** Gets the media stream managed by @self or %NULL if none. *)
-external get_media_stream : t -> Gtk.widget = "ml_gtk_video_get_media_stream"
+external get_media_stream : t -> Gtk.widget option = "ml_gtk_video_get_media_stream"
 
 (** Returns %TRUE if videos have been set to loop. *)
 external get_loop : t -> bool = "ml_gtk_video_get_loop"

@@ -26,7 +26,7 @@ If @scope is %NULL, a new [class@Gtk.BuilderCScope] will be created. *)
 external set_scope : t -> Gtk.widget option -> unit = "ml_gtk_builder_set_scope"
 
 (** Gets the translation domain of @builder. *)
-external get_translation_domain : t -> string = "ml_gtk_builder_get_translation_domain"
+external get_translation_domain : t -> string option = "ml_gtk_builder_get_translation_domain"
 
 (** Gets the scope in use that was set via gtk_builder_set_scope(). *)
 external get_scope : t -> Gtk.widget = "ml_gtk_builder_get_scope"

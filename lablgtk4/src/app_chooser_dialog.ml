@@ -22,5 +22,5 @@ external set_heading : t -> string -> unit = "ml_gtk_app_chooser_dialog_set_head
 external get_widget : t -> Gtk.widget = "ml_gtk_app_chooser_dialog_get_widget"
 
 (** Returns the text to display at the top of the dialog. *)
-external get_heading : t -> string = "ml_gtk_app_chooser_dialog_get_heading"
+external get_heading : t -> string option = "ml_gtk_app_chooser_dialog_get_heading"
 

@@ -81,7 +81,7 @@ external get_popup_completion : t -> bool = "ml_gtk_entry_completion_get_popup_c
 (** Returns the model the `GtkEntryCompletion` is using as data source.
 
 Returns %NULL if the model is unset. *)
-external get_model : t -> Gtk.widget = "ml_gtk_entry_completion_get_model"
+external get_model : t -> Gtk.widget option = "ml_gtk_entry_completion_get_model"
 
 (** Returns the minimum key length as set for @completion. *)
 external get_minimum_key_length : t -> int = "ml_gtk_entry_completion_get_minimum_key_length"
@@ -98,7 +98,7 @@ external get_entry : t -> Gtk.widget = "ml_gtk_entry_completion_get_entry"
 
 (** Get the original text entered by the user that triggered
 the completion or %NULL if there’s no completion ongoing. *)
-external get_completion_prefix : t -> string = "ml_gtk_entry_completion_get_completion_prefix"
+external get_completion_prefix : t -> string option = "ml_gtk_entry_completion_get_completion_prefix"
 
 (** Requests a completion operation, or in other words a refiltering of the
 current list with completions, using the current key.

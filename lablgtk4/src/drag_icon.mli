@@ -11,5 +11,5 @@ val as_widget : t -> Gtk.widget
 external set_child : t -> Gtk.widget option -> unit = "ml_gtk_drag_icon_set_child"
 
 (** Gets the widget currently used as drag icon. *)
-external get_child : t -> Gtk.widget = "ml_gtk_drag_icon_get_child"
+external get_child : t -> Gtk.widget option = "ml_gtk_drag_icon_get_child"
 

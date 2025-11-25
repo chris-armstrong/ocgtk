@@ -54,5 +54,5 @@ external get_monitored : t -> bool = "ml_gtk_directory_list_get_monitored"
 external get_io_priority : t -> int = "ml_gtk_directory_list_get_io_priority"
 
 (** Gets the attributes queried on the children. *)
-external get_attributes : t -> string = "ml_gtk_directory_list_get_attributes"
+external get_attributes : t -> string option = "ml_gtk_directory_list_get_attributes"
 

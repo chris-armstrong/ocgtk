@@ -69,13 +69,13 @@ external set_active : t -> bool -> unit = "ml_gtk_check_button_set_active"
 external get_use_underline : t -> bool = "ml_gtk_check_button_get_use_underline"
 
 (** Returns the label of the check button or `NULL` if [property@CheckButton:child] is set. *)
-external get_label : t -> string = "ml_gtk_check_button_get_label"
+external get_label : t -> string option = "ml_gtk_check_button_get_label"
 
 (** Returns whether the check button is in an inconsistent state. *)
 external get_inconsistent : t -> bool = "ml_gtk_check_button_get_inconsistent"
 
 (** Gets the child widget of @button or `NULL` if [property@CheckButton:label] is set. *)
-external get_child : t -> Gtk.widget = "ml_gtk_check_button_get_child"
+external get_child : t -> Gtk.widget option = "ml_gtk_check_button_get_child"
 
 (** Returns whether the check button is active. *)
 external get_active : t -> bool = "ml_gtk_check_button_get_active"

@@ -279,7 +279,7 @@ CAMLexport CAMLprim value ml_gtk_print_settings_set(value self, value arg1, valu
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_print_settings_set(GtkPrintSettings_val(self), String_val(arg1), (Is_some(arg2) ? String_val(Some_val(arg2)) : NULL));
+gtk_print_settings_set(GtkPrintSettings_val(self), String_val(arg1), String_option_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -369,7 +369,7 @@ CAMLexport CAMLprim value ml_gtk_print_settings_get_printer(value self)
 CAMLparam1(self);
 
 const char* result = gtk_print_settings_get_printer(GtkPrintSettings_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_print_settings_get_print_pages(value self)
@@ -393,7 +393,7 @@ CAMLexport CAMLprim value ml_gtk_print_settings_get_paper_size(value self)
 CAMLparam1(self);
 
 GtkPaperSize* result = gtk_print_settings_get_paper_size(GtkPrintSettings_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_print_settings_get_paper_height(value self, value arg1)
@@ -417,7 +417,7 @@ CAMLexport CAMLprim value ml_gtk_print_settings_get_output_bin(value self)
 CAMLparam1(self);
 
 const char* result = gtk_print_settings_get_output_bin(GtkPrintSettings_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_print_settings_get_orientation(value self)
@@ -457,7 +457,7 @@ CAMLexport CAMLprim value ml_gtk_print_settings_get_media_type(value self)
 CAMLparam1(self);
 
 const char* result = gtk_print_settings_get_media_type(GtkPrintSettings_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_print_settings_get_length(value self, value arg1, value arg2)
@@ -489,7 +489,7 @@ CAMLexport CAMLprim value ml_gtk_print_settings_get_finishings(value self)
 CAMLparam1(self);
 
 const char* result = gtk_print_settings_get_finishings(GtkPrintSettings_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_print_settings_get_duplex(value self)
@@ -521,7 +521,7 @@ CAMLexport CAMLprim value ml_gtk_print_settings_get_dither(value self)
 CAMLparam1(self);
 
 const char* result = gtk_print_settings_get_dither(GtkPrintSettings_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_print_settings_get_default_source(value self)
@@ -529,7 +529,7 @@ CAMLexport CAMLprim value ml_gtk_print_settings_get_default_source(value self)
 CAMLparam1(self);
 
 const char* result = gtk_print_settings_get_default_source(GtkPrintSettings_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_print_settings_get_collate(value self)
@@ -553,5 +553,5 @@ CAMLexport CAMLprim value ml_gtk_print_settings_get(value self, value arg1)
 CAMLparam2(self, arg1);
 
 const char* result = gtk_print_settings_get(GtkPrintSettings_val(self), String_val(arg1));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }

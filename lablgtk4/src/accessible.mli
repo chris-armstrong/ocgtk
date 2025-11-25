@@ -41,10 +41,10 @@ child widget, as is the case for `GtkText` wrappers. *)
 external get_platform_state : t -> Gtk_enums.accessibleplatformstate -> bool = "ml_gtk_accessible_get_platform_state"
 
 (** Retrieves the next accessible sibling of an accessible object *)
-external get_next_accessible_sibling : t -> Gtk.widget = "ml_gtk_accessible_get_next_accessible_sibling"
+external get_next_accessible_sibling : t -> Gtk.widget option = "ml_gtk_accessible_get_next_accessible_sibling"
 
 (** Retrieves the first accessible child of an accessible object. *)
-external get_first_accessible_child : t -> Gtk.widget = "ml_gtk_accessible_get_first_accessible_child"
+external get_first_accessible_child : t -> Gtk.widget option = "ml_gtk_accessible_get_first_accessible_child"
 
 (** Retrieves the accessible implementation for the given `GtkAccessible`. *)
 external get_at_context : t -> Gtk.widget = "ml_gtk_accessible_get_at_context"
@@ -55,7 +55,7 @@ external get_accessible_role : t -> Gtk_enums.accessiblerole = "ml_gtk_accessibl
 (** Retrieves the accessible parent for an accessible object.
 
 This function returns `NULL` for top level widgets. *)
-external get_accessible_parent : t -> Gtk.widget = "ml_gtk_accessible_get_accessible_parent"
+external get_accessible_parent : t -> Gtk.widget option = "ml_gtk_accessible_get_accessible_parent"
 
 (** Requests the user's screen reader to announce the given message.
 

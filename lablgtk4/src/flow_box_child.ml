@@ -21,7 +21,7 @@ external is_selected : t -> bool = "ml_gtk_flow_box_child_is_selected"
 external get_index : t -> int = "ml_gtk_flow_box_child_get_index"
 
 (** Gets the child widget of @self. *)
-external get_child : t -> Gtk.widget = "ml_gtk_flow_box_child_get_child"
+external get_child : t -> Gtk.widget option = "ml_gtk_flow_box_child_get_child"
 
 (** Marks @child as changed, causing any state that depends on this
 to be updated.

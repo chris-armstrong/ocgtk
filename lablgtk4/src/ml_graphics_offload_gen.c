@@ -56,5 +56,5 @@ CAMLexport CAMLprim value ml_gtk_graphics_offload_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_graphics_offload_get_child(GtkGraphicsOffload_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }

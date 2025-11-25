@@ -15,7 +15,7 @@ a reference to it. *)
 external remove : t -> Gtk.widget -> unit = "ml_gtk_text_tag_table_remove"
 
 (** Look up a named tag. *)
-external lookup : t -> string -> Gtk.widget = "ml_gtk_text_tag_table_lookup"
+external lookup : t -> string -> Gtk.widget option = "ml_gtk_text_tag_table_lookup"
 
 (** Returns the size of the table (number of tags) *)
 external get_size : t -> int = "ml_gtk_text_tag_table_get_size"

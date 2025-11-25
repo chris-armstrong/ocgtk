@@ -27,13 +27,13 @@ external set_hadjustment : t -> Gtk.widget option -> unit = "ml_gtk_scrollable_s
 external get_vscroll_policy : t -> Gtk_enums.scrollablepolicy = "ml_gtk_scrollable_get_vscroll_policy"
 
 (** Retrieves the `GtkAdjustment` used for vertical scrolling. *)
-external get_vadjustment : t -> Gtk.widget = "ml_gtk_scrollable_get_vadjustment"
+external get_vadjustment : t -> Gtk.widget option = "ml_gtk_scrollable_get_vadjustment"
 
 (** Gets the horizontal `GtkScrollablePolicy`. *)
 external get_hscroll_policy : t -> Gtk_enums.scrollablepolicy = "ml_gtk_scrollable_get_hscroll_policy"
 
 (** Retrieves the `GtkAdjustment` used for horizontal scrolling. *)
-external get_hadjustment : t -> Gtk.widget = "ml_gtk_scrollable_get_hadjustment"
+external get_hadjustment : t -> Gtk.widget option = "ml_gtk_scrollable_get_hadjustment"
 
 (** Returns the size of a non-scrolling border around the
 outside of the scrollable.

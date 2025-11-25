@@ -73,7 +73,7 @@ external get_wrap_mode : t -> Pango.wrapmode = "ml_gtk_inscription_get_wrap_mode
 external get_text_overflow : t -> Gtk_enums.inscriptionoverflow = "ml_gtk_inscription_get_text_overflow"
 
 (** Gets the text that is displayed. *)
-external get_text : t -> string = "ml_gtk_inscription_get_text"
+external get_text : t -> string option = "ml_gtk_inscription_get_text"
 
 (** Gets the `nat-lines` of the inscription.
 

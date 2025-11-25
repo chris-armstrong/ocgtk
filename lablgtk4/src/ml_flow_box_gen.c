@@ -232,7 +232,7 @@ CAMLexport CAMLprim value ml_gtk_flow_box_get_child_at_pos(value self, value arg
 CAMLparam3(self, arg1, arg2);
 
 GtkFlowBoxChild* result = gtk_flow_box_get_child_at_pos(GtkFlowBox_val(self), Int_val(arg1), Int_val(arg2));
-CAMLreturn(Val_GtkFlowBoxChild(result));
+CAMLreturn(Val_option(result, Val_GtkFlowBoxChild));
 }
 
 CAMLexport CAMLprim value ml_gtk_flow_box_get_child_at_index(value self, value arg1)
@@ -240,7 +240,7 @@ CAMLexport CAMLprim value ml_gtk_flow_box_get_child_at_index(value self, value a
 CAMLparam2(self, arg1);
 
 GtkFlowBoxChild* result = gtk_flow_box_get_child_at_index(GtkFlowBox_val(self), Int_val(arg1));
-CAMLreturn(Val_GtkFlowBoxChild(result));
+CAMLreturn(Val_option(result, Val_GtkFlowBoxChild));
 }
 
 CAMLexport CAMLprim value ml_gtk_flow_box_get_activate_on_single_click(value self)
@@ -272,7 +272,7 @@ CAMLreturn(result);
 
 CAMLexport CAMLprim value ml_gtk_flow_box_set_accept_unpaired_release(value self, value new_value)
 {
-CAMLexport CAMLparam2(self, new_value);
+CAMLparam2(self, new_value);
 GtkFlowBox *obj = (GtkFlowBox *)GtkFlowBox_val(self);
 gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "accept-unpaired-release", c_value, NULL);

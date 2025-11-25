@@ -31,7 +31,7 @@ CAMLexport CAMLprim value ml_gtk_im_multicontext_set_context_id(value self, valu
 {
 CAMLparam2(self, arg1);
 
-gtk_im_multicontext_set_context_id(GtkIMMulticontext_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_im_multicontext_set_context_id(GtkIMMulticontext_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 

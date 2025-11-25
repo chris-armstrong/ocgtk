@@ -30,7 +30,7 @@ CAMLreturn(Val_GtkDialog(obj));
 CAMLexport CAMLprim value ml_gtk_dialog_new_with_buttons(value arg1, value arg2, value arg3, value arg4, value arg5)
 {
 CAMLparam5(arg1, arg2, arg3, arg4, arg5);
-GtkDialog *obj = gtk_dialog_new_with_buttons((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL), (Is_some(arg2) ? GtkWindow_val(Some_val(arg2)) : NULL), GtkDialogFlags_val(arg3), (Is_some(arg4) ? String_val(Some_val(arg4)) : NULL), arg5);
+GtkDialog *obj = gtk_dialog_new_with_buttons(String_option_val(arg1), Option_val(arg2, GtkWindow_val, NULL), GtkDialogFlags_val(arg3), String_option_val(arg4), arg5);
 CAMLreturn(Val_GtkDialog(obj));
 }
 
@@ -63,7 +63,7 @@ CAMLexport CAMLprim value ml_gtk_dialog_get_widget_for_response(value self, valu
 CAMLparam2(self, arg1);
 
 GtkWidget* result = gtk_dialog_get_widget_for_response(GtkDialog_val(self), Int_val(arg1));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_dialog_get_response_for_widget(value self, value arg1)

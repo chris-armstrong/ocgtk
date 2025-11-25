@@ -152,7 +152,7 @@ CAMLexport CAMLprim value ml_gtk_assistant_get_nth_page(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkWidget* result = gtk_assistant_get_nth_page(GtkAssistant_val(self), Int_val(arg1));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_assistant_get_n_pages(value self)

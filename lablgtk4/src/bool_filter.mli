@@ -22,5 +22,5 @@ external get_invert : t -> bool = "ml_gtk_bool_filter_get_invert"
 
 (** Gets the expression that the filter uses to evaluate if
 an item should be filtered. *)
-external get_expression : t -> Gtk.widget = "ml_gtk_bool_filter_get_expression"
+external get_expression : t -> Gtk.widget option = "ml_gtk_bool_filter_get_expression"
 

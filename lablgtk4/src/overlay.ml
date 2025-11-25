@@ -34,7 +34,7 @@ external get_measure_overlay : t -> Gtk.widget -> bool = "ml_gtk_overlay_get_mea
 external get_clip_overlay : t -> Gtk.widget -> bool = "ml_gtk_overlay_get_clip_overlay"
 
 (** Gets the child widget of @overlay. *)
-external get_child : t -> Gtk.widget = "ml_gtk_overlay_get_child"
+external get_child : t -> Gtk.widget option = "ml_gtk_overlay_get_child"
 
 (** Adds @widget to @overlay.
 

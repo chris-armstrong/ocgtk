@@ -62,23 +62,23 @@ external set_expand : t -> bool -> unit = "ml_gtk_column_view_column_set_expand"
 external get_visible : t -> bool = "ml_gtk_column_view_column_get_visible"
 
 (** Returns the title set with gtk_column_view_column_set_title(). *)
-external get_title : t -> string = "ml_gtk_column_view_column_get_title"
+external get_title : t -> string option = "ml_gtk_column_view_column_get_title"
 
 (** Returns the sorter that is associated with the column. *)
-external get_sorter : t -> Gtk.widget = "ml_gtk_column_view_column_get_sorter"
+external get_sorter : t -> Gtk.widget option = "ml_gtk_column_view_column_get_sorter"
 
 (** Returns whether this column is resizable. *)
 external get_resizable : t -> bool = "ml_gtk_column_view_column_get_resizable"
 
 (** Returns the ID set with gtk_column_view_column_set_id(). *)
-external get_id : t -> string = "ml_gtk_column_view_column_get_id"
+external get_id : t -> string option = "ml_gtk_column_view_column_get_id"
 
 (** Gets the fixed width of the column. *)
 external get_fixed_width : t -> int = "ml_gtk_column_view_column_get_fixed_width"
 
 (** Gets the factory that's currently used to populate list items for
 this column. *)
-external get_factory : t -> Gtk.widget = "ml_gtk_column_view_column_get_factory"
+external get_factory : t -> Gtk.widget option = "ml_gtk_column_view_column_get_factory"
 
 (** Returns whether this column should expand. *)
 external get_expand : t -> bool = "ml_gtk_column_view_column_get_expand"
@@ -86,5 +86,5 @@ external get_expand : t -> bool = "ml_gtk_column_view_column_get_expand"
 (** Gets the column view that's currently displaying this column.
 
 If @self has not been added to a column view yet, %NULL is returned. *)
-external get_column_view : t -> Gtk.widget = "ml_gtk_column_view_column_get_column_view"
+external get_column_view : t -> Gtk.widget option = "ml_gtk_column_view_column_get_column_view"
 

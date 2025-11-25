@@ -39,5 +39,5 @@ external set_max_size : t -> int -> int -> unit = "ml_gtk_constraint_guide_set_m
 external get_strength : t -> Gtk_enums.constraintstrength = "ml_gtk_constraint_guide_get_strength"
 
 (** Retrieves the name set using gtk_constraint_guide_set_name(). *)
-external get_name : t -> string = "ml_gtk_constraint_guide_get_name"
+external get_name : t -> string option = "ml_gtk_constraint_guide_get_name"
 

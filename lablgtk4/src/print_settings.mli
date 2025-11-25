@@ -153,7 +153,7 @@ external get_printer_lpi : t -> float = "ml_gtk_print_settings_get_printer_lpi"
 
 (** Convenience function to obtain the value of
 %GTK_PRINT_SETTINGS_PRINTER. *)
-external get_printer : t -> string = "ml_gtk_print_settings_get_printer"
+external get_printer : t -> string option = "ml_gtk_print_settings_get_printer"
 
 (** Gets the value of %GTK_PRINT_SETTINGS_PRINT_PAGES. *)
 external get_print_pages : t -> Gtk_enums.printpages = "ml_gtk_print_settings_get_print_pages"
@@ -164,7 +164,7 @@ external get_paper_width : t -> unit -> float = "ml_gtk_print_settings_get_paper
 
 (** Gets the value of %GTK_PRINT_SETTINGS_PAPER_FORMAT,
 converted to a `GtkPaperSize`. *)
-external get_paper_size : t -> Gtk.widget = "ml_gtk_print_settings_get_paper_size"
+external get_paper_size : t -> Gtk.widget option = "ml_gtk_print_settings_get_paper_size"
 
 (** Gets the value of %GTK_PRINT_SETTINGS_PAPER_HEIGHT,
 converted to @unit. *)
@@ -174,7 +174,7 @@ external get_paper_height : t -> unit -> float = "ml_gtk_print_settings_get_pape
 external get_page_set : t -> Gtk_enums.pageset = "ml_gtk_print_settings_get_page_set"
 
 (** Gets the value of %GTK_PRINT_SETTINGS_OUTPUT_BIN. *)
-external get_output_bin : t -> string = "ml_gtk_print_settings_get_output_bin"
+external get_output_bin : t -> string option = "ml_gtk_print_settings_get_output_bin"
 
 (** Get the value of %GTK_PRINT_SETTINGS_ORIENTATION,
 converted to a `GtkPageOrientation`. *)
@@ -192,7 +192,7 @@ external get_n_copies : t -> int = "ml_gtk_print_settings_get_n_copies"
 (** Gets the value of %GTK_PRINT_SETTINGS_MEDIA_TYPE.
 
 The set of media types is defined in PWG 5101.1-2002 PWG. *)
-external get_media_type : t -> string = "ml_gtk_print_settings_get_media_type"
+external get_media_type : t -> string option = "ml_gtk_print_settings_get_media_type"
 
 (** Returns the value associated with @key, interpreted
 as a length.
@@ -208,7 +208,7 @@ external get_int_with_default : t -> string -> int -> int = "ml_gtk_print_settin
 external get_int : t -> string -> int = "ml_gtk_print_settings_get_int"
 
 (** Gets the value of %GTK_PRINT_SETTINGS_FINISHINGS. *)
-external get_finishings : t -> string = "ml_gtk_print_settings_get_finishings"
+external get_finishings : t -> string option = "ml_gtk_print_settings_get_finishings"
 
 (** Gets the value of %GTK_PRINT_SETTINGS_DUPLEX. *)
 external get_duplex : t -> Gtk_enums.printduplex = "ml_gtk_print_settings_get_duplex"
@@ -224,10 +224,10 @@ external get_double_with_default : t -> string -> float -> float = "ml_gtk_print
 external get_double : t -> string -> float = "ml_gtk_print_settings_get_double"
 
 (** Gets the value of %GTK_PRINT_SETTINGS_DITHER. *)
-external get_dither : t -> string = "ml_gtk_print_settings_get_dither"
+external get_dither : t -> string option = "ml_gtk_print_settings_get_dither"
 
 (** Gets the value of %GTK_PRINT_SETTINGS_DEFAULT_SOURCE. *)
-external get_default_source : t -> string = "ml_gtk_print_settings_get_default_source"
+external get_default_source : t -> string option = "ml_gtk_print_settings_get_default_source"
 
 (** Gets the value of %GTK_PRINT_SETTINGS_COLLATE. *)
 external get_collate : t -> bool = "ml_gtk_print_settings_get_collate"
@@ -240,5 +240,5 @@ string %FALSE. *)
 external get_bool : t -> string -> bool = "ml_gtk_print_settings_get_bool"
 
 (** Looks up the string value associated with @key. *)
-external get : t -> string -> string = "ml_gtk_print_settings_get"
+external get : t -> string -> string option = "ml_gtk_print_settings_get"
 

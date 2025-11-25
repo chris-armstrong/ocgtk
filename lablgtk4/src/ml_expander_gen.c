@@ -23,14 +23,14 @@
 CAMLexport CAMLprim value ml_gtk_expander_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkExpander *obj = gtk_expander_new((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+GtkExpander *obj = gtk_expander_new(String_option_val(arg1));
 CAMLreturn(Val_GtkExpander(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_expander_new_with_mnemonic(value arg1)
 {
 CAMLparam1(arg1);
-GtkExpander *obj = gtk_expander_new_with_mnemonic((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+GtkExpander *obj = gtk_expander_new_with_mnemonic(String_option_val(arg1));
 CAMLreturn(Val_GtkExpander(obj));
 }
 
@@ -70,7 +70,7 @@ CAMLexport CAMLprim value ml_gtk_expander_set_label(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_expander_set_label(GtkExpander_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_expander_set_label(GtkExpander_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -119,7 +119,7 @@ CAMLexport CAMLprim value ml_gtk_expander_get_label_widget(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_expander_get_label_widget(GtkExpander_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_expander_get_label(value self)
@@ -127,7 +127,7 @@ CAMLexport CAMLprim value ml_gtk_expander_get_label(value self)
 CAMLparam1(self);
 
 const char* result = gtk_expander_get_label(GtkExpander_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_expander_get_expanded(value self)
@@ -143,5 +143,5 @@ CAMLexport CAMLprim value ml_gtk_expander_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_expander_get_child(GtkExpander_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }

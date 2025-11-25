@@ -123,6 +123,12 @@ void* ext_of_val(const value val) {
     CAMLreturnT(void*, *((void**)Data_abstract_val(val)));
 }
 
+CAMLexport value Val_GtkWidget_option(GtkWidget *widget) {
+    CAMLparam0();
+    if (widget == NULL) CAMLreturn(Val_none);
+    CAMLreturn(Val_some(val_of_ext(widget)));
+}
+
 /* ========================================================================= */
 /* Error Handling - Result type support for GError                          */
 /* ========================================================================= */

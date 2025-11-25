@@ -35,5 +35,5 @@ external pack_end : t -> Gtk.widget -> unit = "ml_gtk_action_bar_pack_end"
 external get_revealed : t -> bool = "ml_gtk_action_bar_get_revealed"
 
 (** Retrieves the center bar widget of the bar. *)
-external get_center_widget : t -> Gtk.widget = "ml_gtk_action_bar_get_center_widget"
+external get_center_widget : t -> Gtk.widget option = "ml_gtk_action_bar_get_center_widget"
 

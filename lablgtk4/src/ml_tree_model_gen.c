@@ -88,7 +88,7 @@ CAMLexport CAMLprim value ml_gtk_tree_model_iter_nth_child(value self, value arg
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
-gboolean result = gtk_tree_model_iter_nth_child(GtkTreeModel_val(self), GtkWidget_val(arg1), (Is_some(arg2) ? GtkWidget_val(Some_val(arg2)) : NULL), Int_val(arg3));
+gboolean result = gtk_tree_model_iter_nth_child(GtkTreeModel_val(self), GtkWidget_val(arg1), Option_val(arg2, GtkWidget_val, NULL), Int_val(arg3));
 CAMLreturn(Val_bool(result));
 }
 
@@ -104,7 +104,7 @@ CAMLexport CAMLprim value ml_gtk_tree_model_iter_n_children(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-int result = gtk_tree_model_iter_n_children(GtkTreeModel_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+int result = gtk_tree_model_iter_n_children(GtkTreeModel_val(self), Option_val(arg1, GtkWidget_val, NULL));
 CAMLreturn(Val_int(result));
 }
 
@@ -120,7 +120,7 @@ CAMLexport CAMLprim value ml_gtk_tree_model_iter_children(value self, value arg1
 {
 CAMLparam3(self, arg1, arg2);
 
-gboolean result = gtk_tree_model_iter_children(GtkTreeModel_val(self), GtkWidget_val(arg1), (Is_some(arg2) ? GtkWidget_val(Some_val(arg2)) : NULL));
+gboolean result = gtk_tree_model_iter_children(GtkTreeModel_val(self), GtkWidget_val(arg1), Option_val(arg2, GtkWidget_val, NULL));
 CAMLreturn(Val_bool(result));
 }
 
@@ -176,6 +176,6 @@ CAMLexport CAMLprim value ml_gtk_tree_model_filter_new(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-GtkTreeModel* result = gtk_tree_model_filter_new(GtkTreeModel_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+GtkTreeModel* result = gtk_tree_model_filter_new(GtkTreeModel_val(self), Option_val(arg1, GtkWidget_val, NULL));
 CAMLreturn(Val_GtkWidget(result));
 }

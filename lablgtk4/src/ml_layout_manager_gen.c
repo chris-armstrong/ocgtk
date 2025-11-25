@@ -33,7 +33,7 @@ CAMLexport CAMLprim value ml_gtk_layout_manager_get_widget(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_layout_manager_get_widget(GtkLayoutManager_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_layout_manager_get_request_mode(value self)

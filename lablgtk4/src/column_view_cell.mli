@@ -40,5 +40,5 @@ external get_focusable : t -> bool = "ml_gtk_column_view_cell_get_focusable"
 
 (** Gets the child previously set via gtk_column_view_cell_set_child() or
 %NULL if none was set. *)
-external get_child : t -> Gtk.widget = "ml_gtk_column_view_cell_get_child"
+external get_child : t -> Gtk.widget option = "ml_gtk_column_view_cell_get_child"
 

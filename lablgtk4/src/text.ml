@@ -114,7 +114,7 @@ external get_propagate_text_width : t -> bool = "ml_gtk_text_get_propagate_text_
 @self is empty and unfocused
 
 If no placeholder text has been set, %NULL will be returned. *)
-external get_placeholder_text : t -> string = "ml_gtk_text_get_placeholder_text"
+external get_placeholder_text : t -> string option = "ml_gtk_text_get_placeholder_text"
 
 (** Gets whether text is overwritten when typing in the `GtkText`.
 

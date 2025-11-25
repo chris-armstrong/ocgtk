@@ -31,7 +31,7 @@ CAMLexport CAMLprim value ml_gtk_alert_dialog_show(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_alert_dialog_show(GtkAlertDialog_val(self), (Is_some(arg1) ? GtkWindow_val(Some_val(arg1)) : NULL));
+gtk_alert_dialog_show(GtkAlertDialog_val(self), Option_val(arg1, GtkWindow_val, NULL));
 CAMLreturn(Val_unit);
 }
 

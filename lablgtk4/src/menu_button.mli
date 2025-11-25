@@ -102,13 +102,13 @@ external get_primary : t -> bool = "ml_gtk_menu_button_get_primary"
 
 If the button is not using a `GtkPopover`, this function
 returns %NULL. *)
-external get_popover : t -> Gtk.widget = "ml_gtk_menu_button_get_popover"
+external get_popover : t -> Gtk.widget option = "ml_gtk_menu_button_get_popover"
 
 (** Gets the label shown in the button *)
-external get_label : t -> string = "ml_gtk_menu_button_get_label"
+external get_label : t -> string option = "ml_gtk_menu_button_get_label"
 
 (** Gets the name of the icon shown in the button. *)
-external get_icon_name : t -> string = "ml_gtk_menu_button_get_icon_name"
+external get_icon_name : t -> string option = "ml_gtk_menu_button_get_icon_name"
 
 (** Returns whether the button has a frame. *)
 external get_has_frame : t -> bool = "ml_gtk_menu_button_get_has_frame"
@@ -117,7 +117,7 @@ external get_has_frame : t -> bool = "ml_gtk_menu_button_get_has_frame"
 external get_direction : t -> Gtk_enums.arrowtype = "ml_gtk_menu_button_get_direction"
 
 (** Gets the child widget of @menu_button. *)
-external get_child : t -> Gtk.widget = "ml_gtk_menu_button_get_child"
+external get_child : t -> Gtk.widget option = "ml_gtk_menu_button_get_child"
 
 (** Retrieves whether the button can be smaller than the natural
 size of its contents. *)

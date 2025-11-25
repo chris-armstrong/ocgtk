@@ -56,7 +56,7 @@ CAMLexport CAMLprim value ml_gtk_flow_box_child_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_flow_box_child_get_child(GtkFlowBoxChild_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_flow_box_child_changed(value self)

@@ -23,7 +23,7 @@
 CAMLexport CAMLprim value ml_gtk_text_buffer_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkTextBuffer *obj = gtk_text_buffer_new((Is_some(arg1) ? GtkTextTagTable_val(Some_val(arg1)) : NULL));
+GtkTextBuffer *obj = gtk_text_buffer_new(Option_val(arg1, GtkTextTagTable_val, NULL));
 CAMLreturn(Val_GtkTextBuffer(obj));
 }
 
@@ -176,7 +176,7 @@ CAMLexport CAMLprim value ml_gtk_text_buffer_get_mark(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkTextMark* result = gtk_text_buffer_get_mark(GtkTextBuffer_val(self), String_val(arg1));
-CAMLreturn(Val_GtkTextMark(result));
+CAMLreturn(Val_option(result, Val_GtkTextMark));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_buffer_get_line_count(value self)

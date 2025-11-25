@@ -44,10 +44,10 @@ external get_show_close_button : t -> bool = "ml_gtk_search_bar_get_show_close_b
 external get_search_mode : t -> bool = "ml_gtk_search_bar_get_search_mode"
 
 (** Gets the widget that @bar is capturing key events from. *)
-external get_key_capture_widget : t -> Gtk.widget = "ml_gtk_search_bar_get_key_capture_widget"
+external get_key_capture_widget : t -> Gtk.widget option = "ml_gtk_search_bar_get_key_capture_widget"
 
 (** Gets the child widget of @bar. *)
-external get_child : t -> Gtk.widget = "ml_gtk_search_bar_get_child"
+external get_child : t -> Gtk.widget option = "ml_gtk_search_bar_get_child"
 
 (** Connects the `GtkEditable` widget passed as the one to be used in
 this search bar.

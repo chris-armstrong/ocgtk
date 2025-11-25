@@ -25,5 +25,5 @@ CAMLexport CAMLprim value ml_gtk_buildable_get_buildable_id(value self)
 CAMLparam1(self);
 
 const char* result = gtk_buildable_get_buildable_id(GtkBuildable_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }

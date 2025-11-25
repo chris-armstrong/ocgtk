@@ -24,5 +24,5 @@ external set_expression : t -> Gtk.widget option -> unit = "ml_gtk_numeric_sorte
 external get_sort_order : t -> Gtk_enums.sorttype = "ml_gtk_numeric_sorter_get_sort_order"
 
 (** Gets the expression that is evaluated to obtain numbers from items. *)
-external get_expression : t -> Gtk.widget = "ml_gtk_numeric_sorter_get_expression"
+external get_expression : t -> Gtk.widget option = "ml_gtk_numeric_sorter_get_expression"
 

@@ -104,5 +104,5 @@ CAMLexport CAMLprim value ml_gtk_aspect_frame_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_aspect_frame_get_child(GtkAspectFrame_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }

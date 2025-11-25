@@ -93,7 +93,7 @@ CAMLexport CAMLprim value ml_gtk_icon_view_set_tooltip_cell(value self, value ar
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
-gtk_icon_view_set_tooltip_cell(GtkIconView_val(self), GtkTooltip_val(arg1), GtkWidget_val(arg2), (Is_some(arg3) ? GtkCellRenderer_val(Some_val(arg3)) : NULL));
+gtk_icon_view_set_tooltip_cell(GtkIconView_val(self), GtkTooltip_val(arg1), GtkWidget_val(arg2), Option_val(arg3, GtkCellRenderer_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -149,7 +149,7 @@ CAMLexport CAMLprim value ml_gtk_icon_view_set_model(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_icon_view_set_model(GtkIconView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_icon_view_set_model(GtkIconView_val(self), Option_val(arg1, GtkWidget_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -197,7 +197,7 @@ CAMLexport CAMLprim value ml_gtk_icon_view_set_drag_dest_item(value self, value 
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_icon_view_set_drag_dest_item(GtkIconView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL), GtkIconViewDropPosition_val(arg2));
+gtk_icon_view_set_drag_dest_item(GtkIconView_val(self), Option_val(arg1, GtkWidget_val, NULL), GtkIconViewDropPosition_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -205,7 +205,7 @@ CAMLexport CAMLprim value ml_gtk_icon_view_set_cursor(value self, value arg1, va
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
-gtk_icon_view_set_cursor(GtkIconView_val(self), GtkWidget_val(arg1), (Is_some(arg2) ? GtkCellRenderer_val(Some_val(arg2)) : NULL), Bool_val(arg3));
+gtk_icon_view_set_cursor(GtkIconView_val(self), GtkWidget_val(arg1), Option_val(arg2, GtkCellRenderer_val, NULL), Bool_val(arg3));
 CAMLreturn(Val_unit);
 }
 
@@ -356,7 +356,7 @@ CAMLexport CAMLprim value ml_gtk_icon_view_get_path_at_pos(value self, value arg
 CAMLparam3(self, arg1, arg2);
 
 GtkTreePath* result = gtk_icon_view_get_path_at_pos(GtkIconView_val(self), Int_val(arg1), Int_val(arg2));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_icon_view_get_model(value self)
@@ -364,7 +364,7 @@ CAMLexport CAMLprim value ml_gtk_icon_view_get_model(value self)
 CAMLparam1(self);
 
 GtkTreeModel* result = gtk_icon_view_get_model(GtkIconView_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_icon_view_get_markup_column(value self)
@@ -435,7 +435,7 @@ CAMLexport CAMLprim value ml_gtk_icon_view_get_drag_dest_item(value self, value 
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_icon_view_get_drag_dest_item(GtkIconView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL), GtkWidget_val(arg2));
+gtk_icon_view_get_drag_dest_item(GtkIconView_val(self), Option_val(arg1, GtkWidget_val, NULL), GtkWidget_val(arg2));
 CAMLreturn(Val_unit);
 }
 

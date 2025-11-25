@@ -54,7 +54,7 @@ containing the expander upon resizing and collapsing. *)
 external get_resize_toplevel : t -> bool = "ml_gtk_expander_get_resize_toplevel"
 
 (** Retrieves the label widget for the frame. *)
-external get_label_widget : t -> Gtk.widget = "ml_gtk_expander_get_label_widget"
+external get_label_widget : t -> Gtk.widget option = "ml_gtk_expander_get_label_widget"
 
 (** Fetches the text from a label widget.
 
@@ -63,7 +63,7 @@ Pango markup, as set by [method@Gtk.Expander.set_label]. If the label
 text has not been set the return value will be %NULL. This will be the
 case if you create an empty button with gtk_button_new() to use as a
 container. *)
-external get_label : t -> string = "ml_gtk_expander_get_label"
+external get_label : t -> string option = "ml_gtk_expander_get_label"
 
 (** Queries a `GtkExpander` and returns its current state.
 
@@ -71,5 +71,5 @@ Returns %TRUE if the child widget is revealed. *)
 external get_expanded : t -> bool = "ml_gtk_expander_get_expanded"
 
 (** Gets the child widget of @expander. *)
-external get_child : t -> Gtk.widget = "ml_gtk_expander_get_child"
+external get_child : t -> Gtk.widget option = "ml_gtk_expander_get_child"
 

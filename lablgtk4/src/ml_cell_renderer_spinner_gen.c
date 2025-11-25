@@ -40,7 +40,7 @@ CAMLreturn(result);
 
 CAMLexport CAMLprim value ml_gtk_cell_renderer_spinner_set_active(value self, value new_value)
 {
-CAMLexport CAMLparam2(self, new_value);
+CAMLparam2(self, new_value);
 GtkCellRendererSpinner *obj = (GtkCellRendererSpinner *)GtkCellRendererSpinner_val(self);
 gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "active", c_value, NULL);

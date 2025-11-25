@@ -43,10 +43,10 @@ This can be used
 in a [callback@Gtk.ListBoxUpdateHeaderFunc] to see if
 there is a header set already, and if so to update
 the state of it. *)
-external get_header : t -> Gtk.widget = "ml_gtk_list_box_row_get_header"
+external get_header : t -> Gtk.widget option = "ml_gtk_list_box_row_get_header"
 
 (** Gets the child widget of @row. *)
-external get_child : t -> Gtk.widget = "ml_gtk_list_box_row_get_child"
+external get_child : t -> Gtk.widget option = "ml_gtk_list_box_row_get_child"
 
 (** Gets whether the row is activatable. *)
 external get_activatable : t -> bool = "ml_gtk_list_box_row_get_activatable"

@@ -28,7 +28,7 @@ That is, @sorted_path points to a location in @tree_model_sort.  The
 returned path will point to the same location in the model not being
 sorted.  If @sorted_path does not point to a location in the child model,
 %NULL is returned. *)
-external convert_path_to_child_path : t -> Gtk.widget -> Gtk.widget = "ml_gtk_tree_model_sort_convert_path_to_child_path"
+external convert_path_to_child_path : t -> Gtk.widget -> Gtk.widget option = "ml_gtk_tree_model_sort_convert_path_to_child_path"
 
 (** Sets @child_iter to point to the row pointed to by @sorted_iter. *)
 external convert_iter_to_child_iter : t -> Gtk.widget -> Gtk.widget -> unit = "ml_gtk_tree_model_sort_convert_iter_to_child_iter"
@@ -37,7 +37,7 @@ external convert_iter_to_child_iter : t -> Gtk.widget -> Gtk.widget -> unit = "m
 @child_path points to a path in the child model.  The returned path will
 point to the same row in the sorted model.  If @child_path isn’t a valid
 path on the child model, then %NULL is returned. *)
-external convert_child_path_to_path : t -> Gtk.widget -> Gtk.widget = "ml_gtk_tree_model_sort_convert_child_path_to_path"
+external convert_child_path_to_path : t -> Gtk.widget -> Gtk.widget option = "ml_gtk_tree_model_sort_convert_child_path_to_path"
 
 (** Sets @sort_iter to point to the row in @tree_model_sort that corresponds to
 the row pointed at by @child_iter.  If @sort_iter was not set, %FALSE

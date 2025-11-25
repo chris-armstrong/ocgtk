@@ -40,7 +40,7 @@ CAMLreturn(result);
 
 CAMLexport CAMLprim value ml_gtk_file_chooser_widget_set_search_mode(value self, value new_value)
 {
-CAMLexport CAMLparam2(self, new_value);
+CAMLparam2(self, new_value);
 GtkFileChooserWidget *obj = (GtkFileChooserWidget *)GtkFileChooserWidget_val(self);
 gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "search-mode", c_value, NULL);

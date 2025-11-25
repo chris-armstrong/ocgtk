@@ -47,7 +47,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_guide_set_name(value self, value arg
 {
 CAMLparam2(self, arg1);
 
-gtk_constraint_guide_set_name(GtkConstraintGuide_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_constraint_guide_set_name(GtkConstraintGuide_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -80,5 +80,5 @@ CAMLexport CAMLprim value ml_gtk_constraint_guide_get_name(value self)
 CAMLparam1(self);
 
 const char* result = gtk_constraint_guide_get_name(GtkConstraintGuide_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }

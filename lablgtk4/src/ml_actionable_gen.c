@@ -41,7 +41,7 @@ CAMLreturn(result);
 
 CAMLexport CAMLprim value ml_gtk_actionable_set_action_name(value self, value new_value)
 {
-CAMLexport CAMLparam2(self, new_value);
+CAMLparam2(self, new_value);
 GtkActionable *obj = (GtkActionable *)GtkActionable_val(self);
 gchar* c_value = String_val(new_value);
 g_object_set(G_OBJECT(obj), "action-name", c_value, NULL);

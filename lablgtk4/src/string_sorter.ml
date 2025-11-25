@@ -23,7 +23,7 @@ external set_collation : t -> Gtk_enums.collation -> unit = "ml_gtk_string_sorte
 external get_ignore_case : t -> bool = "ml_gtk_string_sorter_get_ignore_case"
 
 (** Gets the expression that is evaluated to obtain strings from items. *)
-external get_expression : t -> Gtk.widget = "ml_gtk_string_sorter_get_expression"
+external get_expression : t -> Gtk.widget option = "ml_gtk_string_sorter_get_expression"
 
 (** Gets which collation method the sorter uses. *)
 external get_collation : t -> Gtk_enums.collation = "ml_gtk_string_sorter_get_collation"

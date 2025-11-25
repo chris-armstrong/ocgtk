@@ -48,11 +48,11 @@ while it is presented. *)
 external get_modal : t -> bool = "ml_gtk_file_dialog_get_modal"
 
 (** Gets the name for the file that should be initially set. *)
-external get_initial_name : t -> string = "ml_gtk_file_dialog_get_initial_name"
+external get_initial_name : t -> string option = "ml_gtk_file_dialog_get_initial_name"
 
 (** Gets the filter that will be selected by default
 in the file chooser dialog. *)
-external get_default_filter : t -> Gtk.widget = "ml_gtk_file_dialog_get_default_filter"
+external get_default_filter : t -> Gtk.widget option = "ml_gtk_file_dialog_get_default_filter"
 
-external get_accept_label : t -> string = "ml_gtk_file_dialog_get_accept_label"
+external get_accept_label : t -> string option = "ml_gtk_file_dialog_get_accept_label"
 

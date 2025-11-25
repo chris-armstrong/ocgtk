@@ -23,7 +23,7 @@
 CAMLexport CAMLprim value ml_gtk_entry_buffer_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
-GtkEntryBuffer *obj = gtk_entry_buffer_new((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL), Int_val(arg2));
+GtkEntryBuffer *obj = gtk_entry_buffer_new(String_option_val(arg1), Int_val(arg2));
 CAMLreturn(Val_GtkEntryBuffer(obj));
 }
 

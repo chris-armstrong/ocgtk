@@ -24,7 +24,7 @@ CAMLexport CAMLprim value ml_gtk_message_dialog_new_native(value arg1, value arg
 {
 CAMLparam5(arg1, arg2, arg3, arg4, arg5);
 CAMLxparam1(arg6);
-GtkMessageDialog *obj = gtk_message_dialog_new((Is_some(arg1) ? GtkWindow_val(Some_val(arg1)) : NULL), GtkDialogFlags_val(arg2), GtkMessageType_val(arg3), GtkButtonsType_val(arg4), (Is_some(arg5) ? String_val(Some_val(arg5)) : NULL), arg6);
+GtkMessageDialog *obj = gtk_message_dialog_new(Option_val(arg1, GtkWindow_val, NULL), GtkDialogFlags_val(arg2), GtkMessageType_val(arg3), GtkButtonsType_val(arg4), String_option_val(arg5), arg6);
 CAMLreturn(Val_GtkMessageDialog(obj));
 }
 
@@ -37,7 +37,7 @@ CAMLexport CAMLprim value ml_gtk_message_dialog_new_with_markup_native(value arg
 {
 CAMLparam5(arg1, arg2, arg3, arg4, arg5);
 CAMLxparam1(arg6);
-GtkMessageDialog *obj = gtk_message_dialog_new_with_markup((Is_some(arg1) ? GtkWindow_val(Some_val(arg1)) : NULL), GtkDialogFlags_val(arg2), GtkMessageType_val(arg3), GtkButtonsType_val(arg4), (Is_some(arg5) ? String_val(Some_val(arg5)) : NULL), arg6);
+GtkMessageDialog *obj = gtk_message_dialog_new_with_markup(Option_val(arg1, GtkWindow_val, NULL), GtkDialogFlags_val(arg2), GtkMessageType_val(arg3), GtkButtonsType_val(arg4), String_option_val(arg5), arg6);
 CAMLreturn(Val_GtkMessageDialog(obj));
 }
 

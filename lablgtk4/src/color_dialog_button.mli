@@ -16,5 +16,5 @@ presented when the user clicks the button. *)
 external set_dialog : t -> Gtk.widget -> unit = "ml_gtk_color_dialog_button_set_dialog"
 
 (** Returns the `GtkColorDialog` of @self. *)
-external get_dialog : t -> Gtk.widget = "ml_gtk_color_dialog_button_get_dialog"
+external get_dialog : t -> Gtk.widget option = "ml_gtk_color_dialog_button_get_dialog"
 

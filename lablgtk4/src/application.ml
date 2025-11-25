@@ -59,7 +59,7 @@ external inhibit : t -> Gtk.widget option -> Gtk_enums.applicationinhibitflags -
 
 The ID of a `GtkApplicationWindow` can be retrieved with
 [method@Gtk.ApplicationWindow.get_id]. *)
-external get_window_by_id : t -> int -> Gtk.widget = "ml_gtk_application_get_window_by_id"
+external get_window_by_id : t -> int -> Gtk.widget option = "ml_gtk_application_get_window_by_id"
 
 (** Gets the “active” window for the application.
 
@@ -67,7 +67,7 @@ The active window is the one that was most recently focused (within
 the application).  This window may not have the focus at the moment
 if another application has it — this is just the most
 recently-focused window within this application. *)
-external get_active_window : t -> Gtk.widget = "ml_gtk_application_get_active_window"
+external get_active_window : t -> Gtk.widget option = "ml_gtk_application_get_active_window"
 
 (** Returns the list of actions (possibly empty) that `accel` maps to.
 

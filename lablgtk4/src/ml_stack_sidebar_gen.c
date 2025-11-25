@@ -40,5 +40,5 @@ CAMLexport CAMLprim value ml_gtk_stack_sidebar_get_stack(value self)
 CAMLparam1(self);
 
 GtkStack* result = gtk_stack_sidebar_get_stack(GtkStackSidebar_val(self));
-CAMLreturn(Val_GtkStack(result));
+CAMLreturn(Val_option(result, Val_GtkStack));
 }

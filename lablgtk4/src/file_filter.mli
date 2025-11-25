@@ -20,7 +20,7 @@ external set_name : t -> string option -> unit = "ml_gtk_file_filter_set_name"
 (** Gets the human-readable name for the filter.
 
 See [method@Gtk.FileFilter.set_name]. *)
-external get_name : t -> string = "ml_gtk_file_filter_get_name"
+external get_name : t -> string option = "ml_gtk_file_filter_get_name"
 
 (** Gets the attributes that need to be filled in for the `GFileInfo`
 passed to this filter.

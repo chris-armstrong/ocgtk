@@ -166,7 +166,7 @@ CAMLexport CAMLprim value ml_gtk_text_view_set_buffer(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_text_view_set_buffer(GtkTextView_val(self), (Is_some(arg1) ? GtkTextBuffer_val(Some_val(arg1)) : NULL));
+gtk_text_view_set_buffer(GtkTextView_val(self), Option_val(arg1, GtkTextBuffer_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -403,7 +403,7 @@ CAMLexport CAMLprim value ml_gtk_text_view_get_gutter(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkWidget* result = gtk_text_view_get_gutter(GtkTextView_val(self), GtkTextWindowType_val(arg1));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_view_get_editable(value self)

@@ -80,7 +80,7 @@ CAMLexport CAMLprim value ml_gtk_overlay_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_overlay_get_child(GtkOverlay_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_overlay_add_overlay(value self, value arg1)

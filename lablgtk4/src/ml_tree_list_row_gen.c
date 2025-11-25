@@ -49,7 +49,7 @@ CAMLexport CAMLprim value ml_gtk_tree_list_row_get_parent(value self)
 CAMLparam1(self);
 
 GtkTreeListRow* result = gtk_tree_list_row_get_parent(GtkTreeListRow_val(self));
-CAMLreturn(Val_GtkTreeListRow(result));
+CAMLreturn(Val_option(result, Val_GtkTreeListRow));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_list_row_get_expanded(value self)
@@ -73,5 +73,5 @@ CAMLexport CAMLprim value ml_gtk_tree_list_row_get_child_row(value self, value a
 CAMLparam2(self, arg1);
 
 GtkTreeListRow* result = gtk_tree_list_row_get_child_row(GtkTreeListRow_val(self), Int_val(arg1));
-CAMLreturn(Val_GtkTreeListRow(result));
+CAMLreturn(Val_option(result, Val_GtkTreeListRow));
 }

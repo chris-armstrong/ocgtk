@@ -23,7 +23,7 @@
 CAMLexport CAMLprim value ml_gtk_uri_launcher_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkUriLauncher *obj = gtk_uri_launcher_new((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+GtkUriLauncher *obj = gtk_uri_launcher_new(String_option_val(arg1));
 CAMLreturn(Val_GtkUriLauncher(obj));
 }
 
@@ -31,7 +31,7 @@ CAMLexport CAMLprim value ml_gtk_uri_launcher_set_uri(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_uri_launcher_set_uri(GtkUriLauncher_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_uri_launcher_set_uri(GtkUriLauncher_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -40,5 +40,5 @@ CAMLexport CAMLprim value ml_gtk_uri_launcher_get_uri(value self)
 CAMLparam1(self);
 
 const char* result = gtk_uri_launcher_get_uri(GtkUriLauncher_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }

@@ -31,5 +31,5 @@ external get_end : t -> int = "ml_gtk_list_header_get_end"
 
 (** Gets the child previously set via gtk_list_header_set_child() or
 %NULL if none was set. *)
-external get_child : t -> Gtk.widget = "ml_gtk_list_header_get_child"
+external get_child : t -> Gtk.widget option = "ml_gtk_list_header_get_child"
 

@@ -90,7 +90,7 @@ pointing at the widget that it is relative to. *)
 external get_has_arrow : t -> bool = "ml_gtk_popover_get_has_arrow"
 
 (** Gets the child widget of @popover. *)
-external get_child : t -> Gtk.widget = "ml_gtk_popover_get_child"
+external get_child : t -> Gtk.widget option = "ml_gtk_popover_get_child"
 
 (** Returns whether the popover will close after a modal child is closed. *)
 external get_cascade_popdown : t -> bool = "ml_gtk_popover_get_cascade_popdown"

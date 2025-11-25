@@ -39,7 +39,7 @@ CAMLexport CAMLprim value ml_gtk_window_controls_set_decoration_layout(value sel
 {
 CAMLparam2(self, arg1);
 
-gtk_window_controls_set_decoration_layout(GtkWindowControls_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_window_controls_set_decoration_layout(GtkWindowControls_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -64,5 +64,5 @@ CAMLexport CAMLprim value ml_gtk_window_controls_get_decoration_layout(value sel
 CAMLparam1(self);
 
 const char* result = gtk_window_controls_get_decoration_layout(GtkWindowControls_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }

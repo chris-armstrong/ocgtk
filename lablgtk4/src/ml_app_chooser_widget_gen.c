@@ -120,5 +120,5 @@ CAMLexport CAMLprim value ml_gtk_app_chooser_widget_get_default_text(value self)
 CAMLparam1(self);
 
 const char* result = gtk_app_chooser_widget_get_default_text(GtkAppChooserWidget_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }

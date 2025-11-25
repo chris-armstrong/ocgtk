@@ -23,7 +23,7 @@
 CAMLexport CAMLprim value ml_gtk_text_tag_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkTextTag *obj = gtk_text_tag_new((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+GtkTextTag *obj = gtk_text_tag_new(String_option_val(arg1));
 CAMLreturn(Val_GtkTextTag(obj));
 }
 

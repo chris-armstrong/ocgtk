@@ -17,5 +17,5 @@ types match. *)
 external set_model : t -> Gtk.widget option -> unit = "ml_gtk_selection_filter_model_set_model"
 
 (** Gets the model currently filtered or %NULL if none. *)
-external get_model : t -> Gtk.widget = "ml_gtk_selection_filter_model_get_model"
+external get_model : t -> Gtk.widget option = "ml_gtk_selection_filter_model_get_model"
 

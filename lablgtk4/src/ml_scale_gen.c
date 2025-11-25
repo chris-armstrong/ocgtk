@@ -23,7 +23,7 @@
 CAMLexport CAMLprim value ml_gtk_scale_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
-GtkScale *obj = gtk_scale_new(GtkOrientation_val(arg1), (Is_some(arg2) ? GtkAdjustment_val(Some_val(arg2)) : NULL));
+GtkScale *obj = gtk_scale_new(GtkOrientation_val(arg1), Option_val(arg2, GtkAdjustment_val, NULL));
 CAMLreturn(Val_GtkScale(obj));
 }
 
@@ -110,6 +110,6 @@ CAMLexport CAMLprim value ml_gtk_scale_add_mark(value self, value arg1, value ar
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
-gtk_scale_add_mark(GtkScale_val(self), Double_val(arg1), GtkPositionType_val(arg2), (Is_some(arg3) ? String_val(Some_val(arg3)) : NULL));
+gtk_scale_add_mark(GtkScale_val(self), Double_val(arg1), GtkPositionType_val(arg2), String_option_val(arg3));
 CAMLreturn(Val_unit);
 }

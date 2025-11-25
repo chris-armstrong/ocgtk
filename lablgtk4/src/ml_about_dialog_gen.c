@@ -47,7 +47,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_set_website(value self, value arg1
 {
 CAMLparam2(self, arg1);
 
-gtk_about_dialog_set_website(GtkAboutDialog_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_about_dialog_set_website(GtkAboutDialog_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -55,7 +55,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_set_version(value self, value arg1
 {
 CAMLparam2(self, arg1);
 
-gtk_about_dialog_set_version(GtkAboutDialog_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_about_dialog_set_version(GtkAboutDialog_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -63,7 +63,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_set_translator_credits(value self,
 {
 CAMLparam2(self, arg1);
 
-gtk_about_dialog_set_translator_credits(GtkAboutDialog_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_about_dialog_set_translator_credits(GtkAboutDialog_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -71,7 +71,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_set_system_information(value self,
 {
 CAMLparam2(self, arg1);
 
-gtk_about_dialog_set_system_information(GtkAboutDialog_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_about_dialog_set_system_information(GtkAboutDialog_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -79,7 +79,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_set_program_name(value self, value
 {
 CAMLparam2(self, arg1);
 
-gtk_about_dialog_set_program_name(GtkAboutDialog_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_about_dialog_set_program_name(GtkAboutDialog_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -87,7 +87,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_set_logo_icon_name(value self, val
 {
 CAMLparam2(self, arg1);
 
-gtk_about_dialog_set_logo_icon_name(GtkAboutDialog_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_about_dialog_set_logo_icon_name(GtkAboutDialog_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -95,7 +95,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_set_license(value self, value arg1
 {
 CAMLparam2(self, arg1);
 
-gtk_about_dialog_set_license(GtkAboutDialog_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_about_dialog_set_license(GtkAboutDialog_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -103,7 +103,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_set_copyright(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-gtk_about_dialog_set_copyright(GtkAboutDialog_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_about_dialog_set_copyright(GtkAboutDialog_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -111,7 +111,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_set_comments(value self, value arg
 {
 CAMLparam2(self, arg1);
 
-gtk_about_dialog_set_comments(GtkAboutDialog_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_about_dialog_set_comments(GtkAboutDialog_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -128,7 +128,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_get_website_label(value self)
 CAMLparam1(self);
 
 const char* result = gtk_about_dialog_get_website_label(GtkAboutDialog_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_about_dialog_get_website(value self)
@@ -136,7 +136,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_get_website(value self)
 CAMLparam1(self);
 
 const char* result = gtk_about_dialog_get_website(GtkAboutDialog_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_about_dialog_get_version(value self)
@@ -144,7 +144,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_get_version(value self)
 CAMLparam1(self);
 
 const char* result = gtk_about_dialog_get_version(GtkAboutDialog_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_about_dialog_get_translator_credits(value self)
@@ -152,7 +152,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_get_translator_credits(value self)
 CAMLparam1(self);
 
 const char* result = gtk_about_dialog_get_translator_credits(GtkAboutDialog_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_about_dialog_get_system_information(value self)
@@ -160,7 +160,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_get_system_information(value self)
 CAMLparam1(self);
 
 const char* result = gtk_about_dialog_get_system_information(GtkAboutDialog_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_about_dialog_get_program_name(value self)
@@ -168,7 +168,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_get_program_name(value self)
 CAMLparam1(self);
 
 const char* result = gtk_about_dialog_get_program_name(GtkAboutDialog_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_about_dialog_get_logo_icon_name(value self)
@@ -176,7 +176,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_get_logo_icon_name(value self)
 CAMLparam1(self);
 
 const char* result = gtk_about_dialog_get_logo_icon_name(GtkAboutDialog_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_about_dialog_get_license(value self)
@@ -184,7 +184,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_get_license(value self)
 CAMLparam1(self);
 
 const char* result = gtk_about_dialog_get_license(GtkAboutDialog_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_about_dialog_get_documenters(value self)
@@ -200,7 +200,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_get_copyright(value self)
 CAMLparam1(self);
 
 const char* result = gtk_about_dialog_get_copyright(GtkAboutDialog_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_about_dialog_get_comments(value self)
@@ -208,7 +208,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_get_comments(value self)
 CAMLparam1(self);
 
 const char* result = gtk_about_dialog_get_comments(GtkAboutDialog_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_about_dialog_get_authors(value self)

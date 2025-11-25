@@ -23,14 +23,14 @@
 CAMLexport CAMLprim value ml_gtk_app_chooser_dialog_new(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
-GtkAppChooserDialog *obj = gtk_app_chooser_dialog_new((Is_some(arg1) ? GtkWindow_val(Some_val(arg1)) : NULL), GtkDialogFlags_val(arg2), arg3);
+GtkAppChooserDialog *obj = gtk_app_chooser_dialog_new(Option_val(arg1, GtkWindow_val, NULL), GtkDialogFlags_val(arg2), arg3);
 CAMLreturn(Val_GtkAppChooserDialog(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_app_chooser_dialog_new_for_content_type(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
-GtkAppChooserDialog *obj = gtk_app_chooser_dialog_new_for_content_type((Is_some(arg1) ? GtkWindow_val(Some_val(arg1)) : NULL), GtkDialogFlags_val(arg2), String_val(arg3));
+GtkAppChooserDialog *obj = gtk_app_chooser_dialog_new_for_content_type(Option_val(arg1, GtkWindow_val, NULL), GtkDialogFlags_val(arg2), String_val(arg3));
 CAMLreturn(Val_GtkAppChooserDialog(obj));
 }
 
@@ -55,5 +55,5 @@ CAMLexport CAMLprim value ml_gtk_app_chooser_dialog_get_heading(value self)
 CAMLparam1(self);
 
 const char* result = gtk_app_chooser_dialog_get_heading(GtkAppChooserDialog_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }

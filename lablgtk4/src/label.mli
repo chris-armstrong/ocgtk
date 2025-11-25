@@ -250,7 +250,7 @@ external get_natural_wrap_mode : t -> Gtk_enums.naturalwrapmode = "ml_gtk_label_
 label.
 
 See [method@Gtk.Label.set_mnemonic_widget]. *)
-external get_mnemonic_widget : t -> Gtk.widget = "ml_gtk_label_get_mnemonic_widget"
+external get_mnemonic_widget : t -> Gtk.widget option = "ml_gtk_label_get_mnemonic_widget"
 
 (** Return the mnemonic accelerator.
 
@@ -294,5 +294,5 @@ positioned.
 
 This function is intended for use in a [signal@Gtk.Label::activate-link]
 handler or for use in a [signal@Gtk.Widget::query-tooltip] handler. *)
-external get_current_uri : t -> string = "ml_gtk_label_get_current_uri"
+external get_current_uri : t -> string option = "ml_gtk_label_get_current_uri"
 

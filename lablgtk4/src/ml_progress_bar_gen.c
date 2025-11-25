@@ -31,7 +31,7 @@ CAMLexport CAMLprim value ml_gtk_progress_bar_set_text(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_progress_bar_set_text(GtkProgressBar_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_progress_bar_set_text(GtkProgressBar_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -88,7 +88,7 @@ CAMLexport CAMLprim value ml_gtk_progress_bar_get_text(value self)
 CAMLparam1(self);
 
 const char* result = gtk_progress_bar_get_text(GtkProgressBar_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_progress_bar_get_show_text(value self)

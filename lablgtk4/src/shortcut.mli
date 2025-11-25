@@ -18,8 +18,8 @@ external set_trigger : t -> Gtk.widget option -> unit = "ml_gtk_shortcut_set_tri
 external set_action : t -> Gtk.widget option -> unit = "ml_gtk_shortcut_set_action"
 
 (** Gets the trigger used to trigger @self. *)
-external get_trigger : t -> Gtk.widget = "ml_gtk_shortcut_get_trigger"
+external get_trigger : t -> Gtk.widget option = "ml_gtk_shortcut_get_trigger"
 
 (** Gets the action that is activated by this shortcut. *)
-external get_action : t -> Gtk.widget = "ml_gtk_shortcut_get_action"
+external get_action : t -> Gtk.widget option = "ml_gtk_shortcut_get_action"
 

@@ -148,10 +148,10 @@ external get_column_spacing : t -> int = "ml_gtk_flow_box_get_column_spacing"
 (** Gets the child in the (@x, @y) position.
 
 Both @x and @y are assumed to be relative to the origin of @box. *)
-external get_child_at_pos : t -> int -> int -> Gtk.widget = "ml_gtk_flow_box_get_child_at_pos"
+external get_child_at_pos : t -> int -> int -> Gtk.widget option = "ml_gtk_flow_box_get_child_at_pos"
 
 (** Gets the nth child in the @box. *)
-external get_child_at_index : t -> int -> Gtk.widget = "ml_gtk_flow_box_get_child_at_index"
+external get_child_at_index : t -> int -> Gtk.widget option = "ml_gtk_flow_box_get_child_at_index"
 
 (** Returns whether children activate on single clicks. *)
 external get_activate_on_single_click : t -> bool = "ml_gtk_flow_box_get_activate_on_single_click"

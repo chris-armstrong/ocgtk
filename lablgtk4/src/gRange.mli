@@ -21,7 +21,7 @@ class progress_bar : Progress_bar.t ->
     method pulse_step : float
 
     method set_text : string option -> unit
-    method text : string
+    method text : string option
 
     method set_show_text : bool -> unit
     method show_text : bool

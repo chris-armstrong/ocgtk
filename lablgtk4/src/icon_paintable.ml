@@ -26,5 +26,5 @@ gtk_icon_theme_lookup_icon() or the always-available
 
 If the icon was created without an icon theme, this function
 returns %NULL. *)
-external get_icon_name : t -> string = "ml_gtk_icon_paintable_get_icon_name"
+external get_icon_name : t -> string option = "ml_gtk_icon_paintable_get_icon_name"
 

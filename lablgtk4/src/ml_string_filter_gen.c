@@ -23,7 +23,7 @@
 CAMLexport CAMLprim value ml_gtk_string_filter_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkStringFilter *obj = gtk_string_filter_new((Is_some(arg1) ? GtkExpression_val(Some_val(arg1)) : NULL));
+GtkStringFilter *obj = gtk_string_filter_new(Option_val(arg1, GtkExpression_val, NULL));
 CAMLreturn(Val_GtkStringFilter(obj));
 }
 
@@ -31,7 +31,7 @@ CAMLexport CAMLprim value ml_gtk_string_filter_set_search(value self, value arg1
 {
 CAMLparam2(self, arg1);
 
-gtk_string_filter_set_search(GtkStringFilter_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_string_filter_set_search(GtkStringFilter_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -55,7 +55,7 @@ CAMLexport CAMLprim value ml_gtk_string_filter_set_expression(value self, value 
 {
 CAMLparam2(self, arg1);
 
-gtk_string_filter_set_expression(GtkStringFilter_val(self), (Is_some(arg1) ? GtkExpression_val(Some_val(arg1)) : NULL));
+gtk_string_filter_set_expression(GtkStringFilter_val(self), Option_val(arg1, GtkExpression_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -64,7 +64,7 @@ CAMLexport CAMLprim value ml_gtk_string_filter_get_search(value self)
 CAMLparam1(self);
 
 const char* result = gtk_string_filter_get_search(GtkStringFilter_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_string_filter_get_match_mode(value self)
@@ -88,5 +88,5 @@ CAMLexport CAMLprim value ml_gtk_string_filter_get_expression(value self)
 CAMLparam1(self);
 
 GtkExpression* result = gtk_string_filter_get_expression(GtkStringFilter_val(self));
-CAMLreturn(Val_GtkExpression(result));
+CAMLreturn(Val_option(result, Val_GtkExpression));
 }

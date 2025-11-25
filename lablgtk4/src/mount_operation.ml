@@ -17,5 +17,5 @@ a window. *)
 external is_showing : t -> bool = "ml_gtk_mount_operation_is_showing"
 
 (** Gets the transient parent used by the `GtkMountOperation`. *)
-external get_parent : t -> Gtk.widget = "ml_gtk_mount_operation_get_parent"
+external get_parent : t -> Gtk.widget option = "ml_gtk_mount_operation_get_parent"
 

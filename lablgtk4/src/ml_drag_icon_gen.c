@@ -33,5 +33,5 @@ CAMLexport CAMLprim value ml_gtk_drag_icon_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_drag_icon_get_child(GtkDragIcon_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }

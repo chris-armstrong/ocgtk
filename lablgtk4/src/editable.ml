@@ -94,7 +94,7 @@ external get_editable : t -> bool = "ml_gtk_editable_get_editable"
 implementation to.
 
 Typically, the delegate is a [class@Gtk.Text] widget. *)
-external get_delegate : t -> Gtk.widget = "ml_gtk_editable_get_delegate"
+external get_delegate : t -> Gtk.widget option = "ml_gtk_editable_get_delegate"
 
 (** Gets the alignment of the editable. *)
 external get_alignment : t -> float = "ml_gtk_editable_get_alignment"

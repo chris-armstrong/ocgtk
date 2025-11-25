@@ -60,7 +60,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_set_model(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_combo_box_set_model(GtkComboBox_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_combo_box_set_model(GtkComboBox_val(self), Option_val(arg1, GtkWidget_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -100,7 +100,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_set_active_iter(value self, value arg
 {
 CAMLparam2(self, arg1);
 
-gtk_combo_box_set_active_iter(GtkComboBox_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_combo_box_set_active_iter(GtkComboBox_val(self), Option_val(arg1, GtkWidget_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -108,7 +108,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_set_active_id(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gboolean result = gtk_combo_box_set_active_id(GtkComboBox_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gboolean result = gtk_combo_box_set_active_id(GtkComboBox_val(self), String_option_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -149,7 +149,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_get_model(value self)
 CAMLparam1(self);
 
 GtkTreeModel* result = gtk_combo_box_get_model(GtkComboBox_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_combo_box_get_id_column(value self)
@@ -181,7 +181,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_combo_box_get_child(GtkComboBox_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_combo_box_get_button_sensitivity(value self)
@@ -205,7 +205,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_get_active_id(value self)
 CAMLparam1(self);
 
 const char* result = gtk_combo_box_get_active_id(GtkComboBox_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_combo_box_get_active(value self)

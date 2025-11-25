@@ -29,8 +29,8 @@ Pressing Alt and that key should activate the button. *)
 external set_accept_label : t -> string option -> unit = "ml_gtk_file_chooser_native_set_accept_label"
 
 (** Retrieves the custom label text for the cancel button. *)
-external get_cancel_label : t -> string = "ml_gtk_file_chooser_native_get_cancel_label"
+external get_cancel_label : t -> string option = "ml_gtk_file_chooser_native_get_cancel_label"
 
 (** Retrieves the custom label text for the accept button. *)
-external get_accept_label : t -> string = "ml_gtk_file_chooser_native_get_accept_label"
+external get_accept_label : t -> string option = "ml_gtk_file_chooser_native_get_accept_label"
 

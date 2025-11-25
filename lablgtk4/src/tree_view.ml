@@ -278,7 +278,7 @@ external get_selection : t -> Gtk.widget = "ml_gtk_tree_view_get_selection"
 (** Returns the `GtkEntry` which is currently in use as interactive search
 entry for @tree_view.  In case the built-in entry is being used, %NULL
 will be returned. *)
-external get_search_entry : t -> Gtk.widget = "ml_gtk_tree_view_get_search_entry"
+external get_search_entry : t -> Gtk.widget option = "ml_gtk_tree_view_get_search_entry"
 
 (** Gets the column searched on by the interactive search code. *)
 external get_search_column : t -> int = "ml_gtk_tree_view_get_search_column"
@@ -297,7 +297,7 @@ external get_n_columns : t -> int = "ml_gtk_tree_view_get_n_columns"
 
 (** Returns the model the `GtkTreeView` is based on.  Returns %NULL if the
 model is unset. *)
-external get_model : t -> Gtk.widget = "ml_gtk_tree_view_get_model"
+external get_model : t -> Gtk.widget option = "ml_gtk_tree_view_get_model"
 
 (** Returns the amount, in pixels, of extra indentation for child levels
 in @tree_view. *)
@@ -324,7 +324,7 @@ external get_fixed_height_mode : t -> bool = "ml_gtk_tree_view_get_fixed_height_
 (** Returns the column that is the current expander column,
 or %NULL if none has been set.
 This column has the expander arrow drawn next to it. *)
-external get_expander_column : t -> Gtk.widget = "ml_gtk_tree_view_get_expander_column"
+external get_expander_column : t -> Gtk.widget option = "ml_gtk_tree_view_get_expander_column"
 
 (** Returns whether or not tree lines are drawn in @tree_view. *)
 external get_enable_tree_lines : t -> bool = "ml_gtk_tree_view_get_enable_tree_lines"
@@ -351,7 +351,7 @@ you are done with it. *)
 external get_cursor : t -> Gtk.widget option -> Gtk.widget option -> unit = "ml_gtk_tree_view_get_cursor"
 
 (** Gets the `GtkTreeViewColumn` at the given position in the #tree_view. *)
-external get_column : t -> int -> Gtk.widget = "ml_gtk_tree_view_get_column"
+external get_column : t -> int -> Gtk.widget option = "ml_gtk_tree_view_get_column"
 
 (** Gets the setting set by gtk_tree_view_set_activate_on_single_click(). *)
 external get_activate_on_single_click : t -> bool = "ml_gtk_tree_view_get_activate_on_single_click"

@@ -18,7 +18,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_set_static_name(value self, va
 {
 CAMLparam2(self, arg1);
 
-gtk_event_controller_set_static_name(GtkEventController_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_event_controller_set_static_name(GtkEventController_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -42,7 +42,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_set_name(value self, value arg
 {
 CAMLparam2(self, arg1);
 
-gtk_event_controller_set_name(GtkEventController_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_event_controller_set_name(GtkEventController_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -83,7 +83,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_get_name(value self)
 CAMLparam1(self);
 
 const char* result = gtk_event_controller_get_name(GtkEventController_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_event_controller_get_current_event_state(value self)
@@ -99,5 +99,5 @@ CAMLexport CAMLprim value ml_gtk_event_controller_get_current_event(value self)
 CAMLparam1(self);
 
 GdkEvent* result = gtk_event_controller_get_current_event(GtkEventController_val(self));
-CAMLreturn(Val_GdkEvent(result));
+CAMLreturn(Val_option(result, Val_GdkEvent));
 }

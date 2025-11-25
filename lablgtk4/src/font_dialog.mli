@@ -35,5 +35,5 @@ external get_modal : t -> bool = "ml_gtk_font_dialog_get_modal"
 
 (** Returns the filter that decides which fonts to display
 in the font chooser dialog. *)
-external get_filter : t -> Gtk.widget = "ml_gtk_font_dialog_get_filter"
+external get_filter : t -> Gtk.widget option = "ml_gtk_font_dialog_get_filter"
 

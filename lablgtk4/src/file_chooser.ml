@@ -70,13 +70,13 @@ chooser. *)
 external get_select_multiple : t -> bool = "ml_gtk_file_chooser_get_select_multiple"
 
 (** Gets the current filter. *)
-external get_filter : t -> Gtk.widget = "ml_gtk_file_chooser_get_filter"
+external get_filter : t -> Gtk.widget option = "ml_gtk_file_chooser_get_filter"
 
 (** Gets whether file chooser will offer to create new folders. *)
 external get_create_folders : t -> bool = "ml_gtk_file_chooser_get_create_folders"
 
 (** Gets the currently selected option in the 'choice' with the given ID. *)
-external get_choice : t -> string -> string = "ml_gtk_file_chooser_get_choice"
+external get_choice : t -> string -> string option = "ml_gtk_file_chooser_get_choice"
 
 (** Gets the type of operation that the file chooser is performing. *)
 external get_action : t -> Gtk_enums.filechooseraction = "ml_gtk_file_chooser_get_action"

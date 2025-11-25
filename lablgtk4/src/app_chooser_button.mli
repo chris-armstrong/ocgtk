@@ -46,7 +46,7 @@ external get_show_default_item : t -> bool = "ml_gtk_app_chooser_button_get_show
 external get_modal : t -> bool = "ml_gtk_app_chooser_button_get_modal"
 
 (** Returns the text to display at the top of the dialog. *)
-external get_heading : t -> string = "ml_gtk_app_chooser_button_get_heading"
+external get_heading : t -> string option = "ml_gtk_app_chooser_button_get_heading"
 
 (** Appends a separator to the list of applications that is shown
 in the popup. *)

@@ -23,6 +23,6 @@
 CAMLexport CAMLprim value ml_gtk_file_chooser_dialog_new(value arg1, value arg2, value arg3, value arg4, value arg5)
 {
 CAMLparam5(arg1, arg2, arg3, arg4, arg5);
-GtkFileChooserDialog *obj = gtk_file_chooser_dialog_new((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL), (Is_some(arg2) ? GtkWindow_val(Some_val(arg2)) : NULL), GtkFileChooserAction_val(arg3), (Is_some(arg4) ? String_val(Some_val(arg4)) : NULL), arg5);
+GtkFileChooserDialog *obj = gtk_file_chooser_dialog_new(String_option_val(arg1), Option_val(arg2, GtkWindow_val, NULL), GtkFileChooserAction_val(arg3), String_option_val(arg4), arg5);
 CAMLreturn(Val_GtkFileChooserDialog(obj));
 }

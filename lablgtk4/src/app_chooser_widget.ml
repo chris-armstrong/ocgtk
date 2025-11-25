@@ -56,5 +56,5 @@ external get_show_all : t -> bool = "ml_gtk_app_chooser_widget_get_show_all"
 
 (** Returns the text that is shown if there are not applications
 that can handle the content type. *)
-external get_default_text : t -> string = "ml_gtk_app_chooser_widget_get_default_text"
+external get_default_text : t -> string option = "ml_gtk_app_chooser_widget_get_default_text"
 

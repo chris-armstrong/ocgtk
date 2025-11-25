@@ -217,11 +217,11 @@ external get_reorderable : t -> bool = "ml_gtk_icon_view_get_reorderable"
 external get_pixbuf_column : t -> int = "ml_gtk_icon_view_get_pixbuf_column"
 
 (** Gets the path for the icon at the given position. *)
-external get_path_at_pos : t -> int -> int -> Gtk.widget = "ml_gtk_icon_view_get_path_at_pos"
+external get_path_at_pos : t -> int -> int -> Gtk.widget option = "ml_gtk_icon_view_get_path_at_pos"
 
 (** Returns the model the `GtkIconView` is based on.  Returns %NULL if the
 model is unset. *)
-external get_model : t -> Gtk.widget = "ml_gtk_icon_view_get_model"
+external get_model : t -> Gtk.widget option = "ml_gtk_icon_view_get_model"
 
 (** Returns the column with markup text for @icon_view. *)
 external get_markup_column : t -> int = "ml_gtk_icon_view_get_markup_column"

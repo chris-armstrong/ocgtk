@@ -40,7 +40,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_table_lookup(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkTextTag* result = gtk_text_tag_table_lookup(GtkTextTagTable_val(self), String_val(arg1));
-CAMLreturn(Val_GtkTextTag(result));
+CAMLreturn(Val_option(result, Val_GtkTextTag));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_tag_table_get_size(value self)

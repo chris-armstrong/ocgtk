@@ -31,7 +31,7 @@ CAMLexport CAMLprim value ml_gtk_tree_expander_set_list_row(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-gtk_tree_expander_set_list_row(GtkTreeExpander_val(self), (Is_some(arg1) ? GtkTreeListRow_val(Some_val(arg1)) : NULL));
+gtk_tree_expander_set_list_row(GtkTreeExpander_val(self), Option_val(arg1, GtkTreeListRow_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -72,7 +72,7 @@ CAMLexport CAMLprim value ml_gtk_tree_expander_get_list_row(value self)
 CAMLparam1(self);
 
 GtkTreeListRow* result = gtk_tree_expander_get_list_row(GtkTreeExpander_val(self));
-CAMLreturn(Val_GtkTreeListRow(result));
+CAMLreturn(Val_option(result, Val_GtkTreeListRow));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_expander_get_indent_for_icon(value self)
@@ -104,5 +104,5 @@ CAMLexport CAMLprim value ml_gtk_tree_expander_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_tree_expander_get_child(GtkTreeExpander_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }

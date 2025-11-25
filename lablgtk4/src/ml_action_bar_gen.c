@@ -80,5 +80,5 @@ CAMLexport CAMLprim value ml_gtk_action_bar_get_center_widget(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_action_bar_get_center_widget(GtkActionBar_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }

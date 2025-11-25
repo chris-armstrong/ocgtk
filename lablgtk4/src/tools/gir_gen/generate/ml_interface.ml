@@ -145,7 +145,13 @@ let generate_ml_interface ~output_mode ~class_name ~class_doc ~enums ~bitfields 
         let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
         let prop_snake = Utils.to_snake_case prop_name_cleaned in
         let class_snake = Utils.to_snake_case class_name in
-        let prop_ocaml_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some prop.prop_type.name) type_mapping.ocaml_type in
+        let base_prop_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some prop.prop_type.name) type_mapping.ocaml_type in
+        let prop_ocaml_type =
+          if prop.prop_type.nullable then
+            sprintf "%s option" base_prop_type
+          else
+            base_prop_type
+        in
 
         (* Generate getter if readable *)
         if prop.readable then begin
@@ -221,7 +227,11 @@ let generate_ml_interface ~output_mode ~class_name ~class_doc ~enums ~bitfields 
         else
           match Type_mappings.find_type_mapping_for_gir_type ~enums ~bitfields ~classes meth.return_type with
           | Some mapping ->
-            Type_mappings.qualify_ocaml_type ~gir_type_name:(Some meth.return_type.name) mapping.ocaml_type
+            let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some meth.return_type.name) mapping.ocaml_type in
+            if meth.return_type.nullable then
+              sprintf "%s option" base_type
+            else
+              base_type
           | None ->
             eprintf "Warning: Unknown return type for method %s: name=%s c_type=%s\n"
               meth.method_name meth.return_type.name meth.return_type.c_type;

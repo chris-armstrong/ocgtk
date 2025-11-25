@@ -53,5 +53,5 @@ See [method@Gtk.FilterListModel.set_incremental]. *)
 external get_incremental : t -> bool = "ml_gtk_filter_list_model_get_incremental"
 
 (** Gets the `GtkFilter` currently set on @self. *)
-external get_filter : t -> Gtk.widget = "ml_gtk_filter_list_model_get_filter"
+external get_filter : t -> Gtk.widget option = "ml_gtk_filter_list_model_get_filter"
 

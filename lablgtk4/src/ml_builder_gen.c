@@ -52,7 +52,7 @@ CAMLexport CAMLprim value ml_gtk_builder_set_translation_domain(value self, valu
 {
 CAMLparam2(self, arg1);
 
-gtk_builder_set_translation_domain(GtkBuilder_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_builder_set_translation_domain(GtkBuilder_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -60,7 +60,7 @@ CAMLexport CAMLprim value ml_gtk_builder_set_scope(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_builder_set_scope(GtkBuilder_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_builder_set_scope(GtkBuilder_val(self), Option_val(arg1, GtkWidget_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -69,7 +69,7 @@ CAMLexport CAMLprim value ml_gtk_builder_get_translation_domain(value self)
 CAMLparam1(self);
 
 const char* result = gtk_builder_get_translation_domain(GtkBuilder_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_builder_get_scope(value self)

@@ -86,5 +86,5 @@ external get_can_shrink : t -> bool = "ml_gtk_picture_get_can_shrink"
 (** Gets the alternative textual description of the picture.
 
 The returned string will be %NULL if the picture cannot be described textually. *)
-external get_alternative_text : t -> string = "ml_gtk_picture_get_alternative_text"
+external get_alternative_text : t -> string option = "ml_gtk_picture_get_alternative_text"
 

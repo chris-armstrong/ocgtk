@@ -82,39 +82,39 @@ automatically wrapped. *)
 external get_wrap_license : t -> bool = "ml_gtk_about_dialog_get_wrap_license"
 
 (** Returns the label used for the website link. *)
-external get_website_label : t -> string = "ml_gtk_about_dialog_get_website_label"
+external get_website_label : t -> string option = "ml_gtk_about_dialog_get_website_label"
 
 (** Returns the website URL. *)
-external get_website : t -> string = "ml_gtk_about_dialog_get_website"
+external get_website : t -> string option = "ml_gtk_about_dialog_get_website"
 
 (** Returns the version string. *)
-external get_version : t -> string = "ml_gtk_about_dialog_get_version"
+external get_version : t -> string option = "ml_gtk_about_dialog_get_version"
 
 (** Returns the translator credits string which is displayed
 in the credits page. *)
-external get_translator_credits : t -> string = "ml_gtk_about_dialog_get_translator_credits"
+external get_translator_credits : t -> string option = "ml_gtk_about_dialog_get_translator_credits"
 
 (** Returns the system information that is shown in the about dialog. *)
-external get_system_information : t -> string = "ml_gtk_about_dialog_get_system_information"
+external get_system_information : t -> string option = "ml_gtk_about_dialog_get_system_information"
 
 (** Returns the program name displayed in the about dialog. *)
-external get_program_name : t -> string = "ml_gtk_about_dialog_get_program_name"
+external get_program_name : t -> string option = "ml_gtk_about_dialog_get_program_name"
 
 (** Returns the icon name displayed as logo in the about dialog. *)
-external get_logo_icon_name : t -> string = "ml_gtk_about_dialog_get_logo_icon_name"
+external get_logo_icon_name : t -> string option = "ml_gtk_about_dialog_get_logo_icon_name"
 
 (** Returns the license information. *)
-external get_license : t -> string = "ml_gtk_about_dialog_get_license"
+external get_license : t -> string option = "ml_gtk_about_dialog_get_license"
 
 (** Returns the name of the documenters which are displayed
 in the credits page. *)
 external get_documenters : t -> unit = "ml_gtk_about_dialog_get_documenters"
 
 (** Returns the copyright string. *)
-external get_copyright : t -> string = "ml_gtk_about_dialog_get_copyright"
+external get_copyright : t -> string option = "ml_gtk_about_dialog_get_copyright"
 
 (** Returns the comments string. *)
-external get_comments : t -> string = "ml_gtk_about_dialog_get_comments"
+external get_comments : t -> string option = "ml_gtk_about_dialog_get_comments"
 
 (** Returns the names of the authors which are displayed
 in the credits page. *)

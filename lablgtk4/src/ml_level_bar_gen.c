@@ -78,7 +78,7 @@ CAMLexport CAMLprim value ml_gtk_level_bar_remove_offset_value(value self, value
 {
 CAMLparam2(self, arg1);
 
-gtk_level_bar_remove_offset_value(GtkLevelBar_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_level_bar_remove_offset_value(GtkLevelBar_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 

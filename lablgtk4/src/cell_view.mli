@@ -50,7 +50,7 @@ external set_displayed_row : t -> Gtk.widget option -> unit = "ml_gtk_cell_view_
 
 (** Returns the model for @cell_view. If no model is used %NULL is
 returned. *)
-external get_model : t -> Gtk.widget = "ml_gtk_cell_view_get_model"
+external get_model : t -> Gtk.widget option = "ml_gtk_cell_view_get_model"
 
 (** Gets whether @cell_view is configured to request space
 to fit the entire `GtkTreeModel`. *)
@@ -63,5 +63,5 @@ external get_draw_sensitive : t -> bool = "ml_gtk_cell_view_get_draw_sensitive"
 (** Returns a `GtkTreePath` referring to the currently
 displayed row. If no row is currently displayed,
 %NULL is returned. *)
-external get_displayed_row : t -> Gtk.widget = "ml_gtk_cell_view_get_displayed_row"
+external get_displayed_row : t -> Gtk.widget option = "ml_gtk_cell_view_get_displayed_row"
 

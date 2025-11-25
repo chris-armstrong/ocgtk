@@ -23,14 +23,14 @@
 CAMLexport CAMLprim value ml_gtk_property_expression_new(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
-GtkPropertyExpression *obj = gtk_property_expression_new(arg1, (Is_some(arg2) ? GtkExpression_val(Some_val(arg2)) : NULL), String_val(arg3));
+GtkPropertyExpression *obj = gtk_property_expression_new(arg1, Option_val(arg2, GtkExpression_val, NULL), String_val(arg3));
 CAMLreturn(Val_GtkPropertyExpression(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_property_expression_new_for_pspec(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
-GtkPropertyExpression *obj = gtk_property_expression_new_for_pspec((Is_some(arg1) ? GtkExpression_val(Some_val(arg1)) : NULL), arg2);
+GtkPropertyExpression *obj = gtk_property_expression_new_for_pspec(Option_val(arg1, GtkExpression_val, NULL), arg2);
 CAMLreturn(Val_GtkPropertyExpression(obj));
 }
 
@@ -39,5 +39,5 @@ CAMLexport CAMLprim value ml_gtk_property_expression_get_expression(value self)
 CAMLparam1(self);
 
 GtkExpression* result = gtk_property_expression_get_expression(GtkPropertyExpression_val(self));
-CAMLreturn(Val_GtkExpression(result));
+CAMLreturn(Val_option(result, Val_GtkExpression));
 }

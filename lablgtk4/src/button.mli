@@ -68,20 +68,20 @@ external get_use_underline : t -> bool = "ml_gtk_button_get_use_underline"
 If the label text has not been set with [method@Gtk.Button.set_label]
 the return value will be %NULL. This will be the case if you create
 an empty button with [ctor@Gtk.Button.new] to use as a container. *)
-external get_label : t -> string = "ml_gtk_button_get_label"
+external get_label : t -> string option = "ml_gtk_button_get_label"
 
 (** Returns the icon name of the button.
 
 If the icon name has not been set with [method@Gtk.Button.set_icon_name]
 the return value will be %NULL. This will be the case if you create
 an empty button with [ctor@Gtk.Button.new] to use as a container. *)
-external get_icon_name : t -> string = "ml_gtk_button_get_icon_name"
+external get_icon_name : t -> string option = "ml_gtk_button_get_icon_name"
 
 (** Returns whether the button has a frame. *)
 external get_has_frame : t -> bool = "ml_gtk_button_get_has_frame"
 
 (** Gets the child widget of @button. *)
-external get_child : t -> Gtk.widget = "ml_gtk_button_get_child"
+external get_child : t -> Gtk.widget option = "ml_gtk_button_get_child"
 
 (** Retrieves whether the button can be smaller than the natural
 size of its contents. *)

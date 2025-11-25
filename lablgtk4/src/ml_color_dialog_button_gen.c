@@ -23,7 +23,7 @@
 CAMLexport CAMLprim value ml_gtk_color_dialog_button_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkColorDialogButton *obj = gtk_color_dialog_button_new((Is_some(arg1) ? GtkColorDialog_val(Some_val(arg1)) : NULL));
+GtkColorDialogButton *obj = gtk_color_dialog_button_new(Option_val(arg1, GtkColorDialog_val, NULL));
 CAMLreturn(Val_GtkColorDialogButton(obj));
 }
 
@@ -40,5 +40,5 @@ CAMLexport CAMLprim value ml_gtk_color_dialog_button_get_dialog(value self)
 CAMLparam1(self);
 
 GtkColorDialog* result = gtk_color_dialog_button_get_dialog(GtkColorDialogButton_val(self));
-CAMLreturn(Val_GtkColorDialog(result));
+CAMLreturn(Val_option(result, Val_GtkColorDialog));
 }

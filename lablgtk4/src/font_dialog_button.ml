@@ -49,8 +49,8 @@ to "notify::font-features".
 Note that the button will only let users choose font features
 if [property@Gtk.FontDialogButton:level] is set to
 `GTK_FONT_LEVEL_FEATURES`. *)
-external get_font_features : t -> string = "ml_gtk_font_dialog_button_get_font_features"
+external get_font_features : t -> string option = "ml_gtk_font_dialog_button_get_font_features"
 
 (** Returns the `GtkFontDialog` of @self. *)
-external get_dialog : t -> Gtk.widget = "ml_gtk_font_dialog_button_get_dialog"
+external get_dialog : t -> Gtk.widget option = "ml_gtk_font_dialog_button_get_dialog"
 

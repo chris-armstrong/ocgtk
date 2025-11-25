@@ -109,7 +109,7 @@ CAMLexport CAMLprim value ml_gtk_button_get_label(value self)
 CAMLparam1(self);
 
 const char* result = gtk_button_get_label(GtkButton_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_button_get_icon_name(value self)
@@ -117,7 +117,7 @@ CAMLexport CAMLprim value ml_gtk_button_get_icon_name(value self)
 CAMLparam1(self);
 
 const char* result = gtk_button_get_icon_name(GtkButton_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_button_get_has_frame(value self)
@@ -133,7 +133,7 @@ CAMLexport CAMLprim value ml_gtk_button_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_button_get_child(GtkButton_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_button_get_can_shrink(value self)

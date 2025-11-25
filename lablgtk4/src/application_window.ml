@@ -34,5 +34,5 @@ external get_id : t -> int = "ml_gtk_application_window_get_id"
 (** Gets the `GtkShortcutsWindow` that is associated with @window.
 
 See [method@Gtk.ApplicationWindow.set_help_overlay]. *)
-external get_help_overlay : t -> Gtk.widget = "ml_gtk_application_window_get_help_overlay"
+external get_help_overlay : t -> Gtk.widget option = "ml_gtk_application_window_get_help_overlay"
 

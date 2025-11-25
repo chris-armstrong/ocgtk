@@ -57,13 +57,13 @@ between rows. *)
 external get_show_separators : t -> bool = "ml_gtk_list_view_get_show_separators"
 
 (** Gets the model that's currently used to read the items displayed. *)
-external get_model : t -> Gtk.widget = "ml_gtk_list_view_get_model"
+external get_model : t -> Gtk.widget option = "ml_gtk_list_view_get_model"
 
 (** Gets the factory that's currently used to populate section headers. *)
-external get_header_factory : t -> Gtk.widget = "ml_gtk_list_view_get_header_factory"
+external get_header_factory : t -> Gtk.widget option = "ml_gtk_list_view_get_header_factory"
 
 (** Gets the factory that's currently used to populate list items. *)
-external get_factory : t -> Gtk.widget = "ml_gtk_list_view_get_factory"
+external get_factory : t -> Gtk.widget option = "ml_gtk_list_view_get_factory"
 
 (** Returns whether rows can be selected by dragging with the mouse. *)
 external get_enable_rubberband : t -> bool = "ml_gtk_list_view_get_enable_rubberband"

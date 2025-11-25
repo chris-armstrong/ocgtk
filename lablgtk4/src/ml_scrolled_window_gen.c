@@ -39,7 +39,7 @@ CAMLexport CAMLprim value ml_gtk_scrolled_window_set_vadjustment(value self, val
 {
 CAMLparam2(self, arg1);
 
-gtk_scrolled_window_set_vadjustment(GtkScrolledWindow_val(self), (Is_some(arg1) ? GtkAdjustment_val(Some_val(arg1)) : NULL));
+gtk_scrolled_window_set_vadjustment(GtkScrolledWindow_val(self), Option_val(arg1, GtkAdjustment_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -135,7 +135,7 @@ CAMLexport CAMLprim value ml_gtk_scrolled_window_set_hadjustment(value self, val
 {
 CAMLparam2(self, arg1);
 
-gtk_scrolled_window_set_hadjustment(GtkScrolledWindow_val(self), (Is_some(arg1) ? GtkAdjustment_val(Some_val(arg1)) : NULL));
+gtk_scrolled_window_set_hadjustment(GtkScrolledWindow_val(self), Option_val(arg1, GtkAdjustment_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -272,5 +272,5 @@ CAMLexport CAMLprim value ml_gtk_scrolled_window_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_scrolled_window_get_child(GtkScrolledWindow_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }

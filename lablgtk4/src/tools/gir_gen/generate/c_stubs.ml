@@ -4,6 +4,40 @@ open StdLabels
 open Printf
 open Types
 
+let nullable_c_to_ml_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping) =
+  if not gir_type.nullable then
+    sprintf "%s(%s)" mapping.c_to_ml var
+  else
+    match gir_type.c_type with
+    | "gchararray" | "gchar*" | "utf8" | "const gchar*" | "const char*" ->
+      sprintf "Val_option_string(%s)" var
+    | "GtkWidget*" ->
+      sprintf "Val_GtkWidget_option(%s)" var
+    | _ when mapping.c_to_ml = "Val_GtkWidget" ->
+      sprintf "Val_GtkWidget_option(%s)" var
+    | _ when String.length gir_type.c_type > 0 &&
+             String.sub gir_type.c_type ~pos:(String.length gir_type.c_type - 1) ~len:1 = "*" ->
+      sprintf "Val_option(%s, %s)" var mapping.c_to_ml
+    | _ ->
+      sprintf "%s(%s)" mapping.c_to_ml var
+
+let nullable_ml_to_c_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping) =
+  if not gir_type.nullable then
+    sprintf "%s(%s)" mapping.ml_to_c var
+  else
+    match gir_type.c_type with
+    | "gchararray" | "gchar*" | "utf8" | "const gchar*" | "const char*" ->
+      sprintf "String_option_val(%s)" var
+    | "GtkWidget*" ->
+      sprintf "GtkWidget_option_val(%s)" var
+    | "GtkEventController*" ->
+      sprintf "GtkEventController_option_val(%s)" var
+    | _ when String.length gir_type.c_type > 0 &&
+             String.sub gir_type.c_type ~pos:(String.length gir_type.c_type - 1) ~len:1 = "*" ->
+      sprintf "Option_val(%s, %s, NULL)" var mapping.ml_to_c
+    | _ ->
+      sprintf "%s(%s)" mapping.ml_to_c var
+
 (* Generate common header file with forward declarations for enum/bitfield converters *)
 let generate_forward_decls_header ~classes ~external_enums ~external_bitfields =
   let buf = Buffer.create 4096 in
@@ -139,16 +173,8 @@ let generate_c_constructor ~classes ~enums ~bitfields ~c_type (ctor : gir_constr
     List.mapi ~f:(fun i p ->
       match Type_mappings.find_type_mapping ~enums ~bitfields ~classes p.param_type.c_type with
       | Some mapping ->
-        if p.nullable then
-          if p.param_type.c_type = "GtkWidget*" then
-            sprintf "GtkWidget_option_val(arg%d)" (i + 1)
-          else if String.length p.param_type.c_type > 3 &&
-                  String.sub p.param_type.c_type ~pos:(String.length p.param_type.c_type - 1) ~len:1 = "*" then
-            sprintf "(Is_some(arg%d) ? %s(Some_val(arg%d)) : NULL)" (i + 1) mapping.ml_to_c (i + 1)
-          else
-            sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
-        else
-          sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
+        let param_type = { p.param_type with nullable = p.nullable || p.param_type.nullable } in
+        nullable_ml_to_c_expr ~var:(sprintf "arg%d" (i + 1)) ~gir_type:param_type ~mapping
       | None -> sprintf "arg%d" (i + 1)
     ) ctor.ctor_parameters
   in
@@ -216,18 +242,8 @@ let generate_c_method ~classes ~enums ~bitfields ~c_type (meth : gir_method) _cl
     List.mapi ~f:(fun i p ->
       match Type_mappings.find_type_mapping ~enums ~bitfields ~classes p.param_type.c_type with
       | Some mapping ->
-        if p.nullable then
-          if p.param_type.c_type = "GtkWidget*" then
-            sprintf "GtkWidget_option_val(arg%d)" (i + 1)
-          else if p.param_type.c_type = "GtkCheckButton*" then
-            sprintf "(Is_some(arg%d) ? GtkWidget_val(Some_val(arg%d)) : NULL)" (i + 1) (i + 1)
-          else if String.length p.param_type.c_type > 3 &&
-                  String.sub p.param_type.c_type ~pos:(String.length p.param_type.c_type - 1) ~len:1 = "*" then
-            sprintf "(Is_some(arg%d) ? %s(Some_val(arg%d)) : NULL)" (i + 1) mapping.ml_to_c (i + 1)
-          else
-            sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
-        else
-          sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
+        let param_type = { p.param_type with nullable = p.nullable || p.param_type.nullable } in
+        nullable_ml_to_c_expr ~var:(sprintf "arg%d" (i + 1)) ~gir_type:param_type ~mapping
       | None -> sprintf "arg%d" (i + 1)
     ) meth.parameters in
 
@@ -247,10 +263,11 @@ let generate_c_method ~classes ~enums ~bitfields ~c_type (meth : gir_method) _cl
     else
       match Type_mappings.find_type_mapping ~enums ~bitfields ~classes ret_type with
       | Some mapping ->
+        let ml_result = nullable_c_to_ml_expr ~var:"result" ~gir_type:meth.return_type ~mapping in
         (sprintf "%s result = %s(%s);" ret_type c_name args,
          if meth.throws then
-            sprintf "if (error == NULL) CAMLreturn(Res_Ok(%s(result))); else CAMLreturn(Res_Error(Val_GError(error)));" mapping.c_to_ml
-         else sprintf "CAMLreturn(%s(result));" mapping.c_to_ml)
+            sprintf "if (error == NULL) CAMLreturn(Res_Ok(%s)); else CAMLreturn(Res_Error(Val_GError(error)));" ml_result
+         else sprintf "CAMLreturn(%s);" ml_result)
       | None ->
         (sprintf "void *result = %s(%s);" c_name args,
          if meth.throws then
@@ -324,6 +341,10 @@ let generate_c_property_getter ~classes ~enums ~bitfields ~c_type (prop : gir_pr
       }
   in
 
+  let ml_prop_value =
+    nullable_c_to_ml_expr ~var:"prop_value" ~gir_type:prop.prop_type ~mapping:type_info
+  in
+
   let c_cast = sprintf "%s_val" c_type in
   let c_type_name = c_type in
 
@@ -334,14 +355,14 @@ let generate_c_property_getter ~classes ~enums ~bitfields ~c_type (prop : gir_pr
     %s *obj = (%s *)%s(self);\n\
     %s prop_value;\n\
     g_object_get(G_OBJECT(obj), \"%s\", &prop_value, NULL);\n\
-    result = %s(prop_value);\n\
+    result = %s;\n\
     CAMLreturn(result);\n\
 }\n"
     ml_name
     c_type_name c_type_name c_cast
     prop.prop_type.c_type
     prop.prop_name
-    type_info.c_to_ml
+    ml_prop_value
 
 let generate_c_property_setter ~classes ~enums ~bitfields ~c_type (prop : gir_property) class_name =
   let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
@@ -360,20 +381,24 @@ let generate_c_property_setter ~classes ~enums ~bitfields ~c_type (prop : gir_pr
       }
   in
 
+  let c_value_expr =
+    nullable_ml_to_c_expr ~var:"new_value" ~gir_type:prop.prop_type ~mapping:type_info
+  in
+
   let c_cast = sprintf "%s_val" c_type in
   let c_type_name = c_type in
 
   sprintf "\nCAMLexport CAMLprim value %s(value self, value new_value)\n\
 {\n\
-    CAMLexport CAMLparam2(self, new_value);\n\
+    CAMLparam2(self, new_value);\n\
     %s *obj = (%s *)%s(self);\n\
-    %s c_value = %s(new_value);\n\
+    %s c_value = %s;\n\
     g_object_set(G_OBJECT(obj), \"%s\", c_value, NULL);\n\
     CAMLreturn(Val_unit);\n\
 }\n"
     ml_name
     c_type_name c_type_name c_cast
-    prop.prop_type.c_type type_info.ml_to_c
+    prop.prop_type.c_type c_value_expr
     prop.prop_name
 
 (* Generate complete C file for a single class/interface *)

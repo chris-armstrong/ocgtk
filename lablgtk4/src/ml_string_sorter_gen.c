@@ -23,7 +23,7 @@
 CAMLexport CAMLprim value ml_gtk_string_sorter_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkStringSorter *obj = gtk_string_sorter_new((Is_some(arg1) ? GtkExpression_val(Some_val(arg1)) : NULL));
+GtkStringSorter *obj = gtk_string_sorter_new(Option_val(arg1, GtkExpression_val, NULL));
 CAMLreturn(Val_GtkStringSorter(obj));
 }
 
@@ -39,7 +39,7 @@ CAMLexport CAMLprim value ml_gtk_string_sorter_set_expression(value self, value 
 {
 CAMLparam2(self, arg1);
 
-gtk_string_sorter_set_expression(GtkStringSorter_val(self), (Is_some(arg1) ? GtkExpression_val(Some_val(arg1)) : NULL));
+gtk_string_sorter_set_expression(GtkStringSorter_val(self), Option_val(arg1, GtkExpression_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -64,7 +64,7 @@ CAMLexport CAMLprim value ml_gtk_string_sorter_get_expression(value self)
 CAMLparam1(self);
 
 GtkExpression* result = gtk_string_sorter_get_expression(GtkStringSorter_val(self));
-CAMLreturn(Val_GtkExpression(result));
+CAMLreturn(Val_option(result, Val_GtkExpression));
 }
 
 CAMLexport CAMLprim value ml_gtk_string_sorter_get_collation(value self)

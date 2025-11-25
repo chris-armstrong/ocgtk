@@ -14,5 +14,5 @@ external new_ : unit -> t = "ml_gtk_stack_switcher_new"
 external set_stack : t -> Gtk.widget option -> unit = "ml_gtk_stack_switcher_set_stack"
 
 (** Retrieves the stack. *)
-external get_stack : t -> Gtk.widget = "ml_gtk_stack_switcher_get_stack"
+external get_stack : t -> Gtk.widget option = "ml_gtk_stack_switcher_get_stack"
 

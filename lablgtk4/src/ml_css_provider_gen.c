@@ -31,7 +31,7 @@ CAMLexport CAMLprim value ml_gtk_css_provider_load_named(value self, value arg1,
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_css_provider_load_named(GtkCssProvider_val(self), String_val(arg1), (Is_some(arg2) ? String_val(Some_val(arg2)) : NULL));
+gtk_css_provider_load_named(GtkCssProvider_val(self), String_val(arg1), String_option_val(arg2));
 CAMLreturn(Val_unit);
 }
 

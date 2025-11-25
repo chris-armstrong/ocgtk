@@ -188,7 +188,7 @@ external get_progress_fraction : t -> float = "ml_gtk_entry_get_progress_fractio
 
 (** Retrieves the text that will be displayed when @entry
 is empty and unfocused *)
-external get_placeholder_text : t -> string = "ml_gtk_entry_get_placeholder_text"
+external get_placeholder_text : t -> string option = "ml_gtk_entry_get_placeholder_text"
 
 (** Gets whether the `GtkEntry` is in overwrite mode. *)
 external get_overwrite_mode : t -> bool = "ml_gtk_entry_get_overwrite_mode"
@@ -218,7 +218,7 @@ external get_icon_sensitive : t -> Gtk_enums.entryiconposition -> bool = "ml_gtk
 
 %NULL is returned if there is no icon or if the icon was set
 by some other method (e.g., by `GdkPaintable` or gicon). *)
-external get_icon_name : t -> Gtk_enums.entryiconposition -> string = "ml_gtk_entry_get_icon_name"
+external get_icon_name : t -> Gtk_enums.entryiconposition -> string option = "ml_gtk_entry_get_icon_name"
 
 (** Finds the icon at the given position and return its index.
 
@@ -240,7 +240,7 @@ external get_current_icon_drag_source : t -> int = "ml_gtk_entry_get_current_ico
 
 (** Returns the auxiliary completion object currently
 in use by @entry. *)
-external get_completion : t -> Gtk.widget = "ml_gtk_entry_get_completion"
+external get_completion : t -> Gtk.widget option = "ml_gtk_entry_get_completion"
 
 (** Get the `GtkEntryBuffer` object which holds the text for
 this widget. *)

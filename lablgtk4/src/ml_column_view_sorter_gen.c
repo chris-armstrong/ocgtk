@@ -33,7 +33,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_sorter_get_primary_sort_column(valu
 CAMLparam1(self);
 
 GtkColumnViewColumn* result = gtk_column_view_sorter_get_primary_sort_column(GtkColumnViewSorter_val(self));
-CAMLreturn(Val_GtkColumnViewColumn(result));
+CAMLreturn(Val_option(result, Val_GtkColumnViewColumn));
 }
 
 CAMLexport CAMLprim value ml_gtk_column_view_sorter_get_nth_sort_column(value self, value arg1, value arg2)
@@ -41,7 +41,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_sorter_get_nth_sort_column(value se
 CAMLparam3(self, arg1, arg2);
 
 GtkColumnViewColumn* result = gtk_column_view_sorter_get_nth_sort_column(GtkColumnViewSorter_val(self), Int_val(arg1), GtkWidget_val(arg2));
-CAMLreturn(Val_GtkColumnViewColumn(result));
+CAMLreturn(Val_option(result, Val_GtkColumnViewColumn));
 }
 
 CAMLexport CAMLprim value ml_gtk_column_view_sorter_get_n_sort_columns(value self)

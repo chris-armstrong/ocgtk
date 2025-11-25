@@ -32,7 +32,7 @@ If @self is set to not be passthrough, this function is
 equivalent to calling g_list_model_get_item().
 
 Do not confuse this function with [method@Gtk.TreeListModel.get_child_row]. *)
-external get_row : t -> int -> Gtk.widget = "ml_gtk_tree_list_model_get_row"
+external get_row : t -> int -> Gtk.widget option = "ml_gtk_tree_list_model_get_row"
 
 (** Gets whether the model is passing through original row items.
 
@@ -53,7 +53,7 @@ If @position is greater than the number of children in the root model,
 %NULL is returned.
 
 Do not confuse this function with [method@Gtk.TreeListModel.get_row]. *)
-external get_child_row : t -> int -> Gtk.widget = "ml_gtk_tree_list_model_get_child_row"
+external get_child_row : t -> int -> Gtk.widget option = "ml_gtk_tree_list_model_get_child_row"
 
 (** Gets whether the model is set to automatically expand new rows
 that get added.

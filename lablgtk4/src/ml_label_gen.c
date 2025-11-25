@@ -23,14 +23,14 @@
 CAMLexport CAMLprim value ml_gtk_label_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkLabel *obj = gtk_label_new((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+GtkLabel *obj = gtk_label_new(String_option_val(arg1));
 CAMLreturn(Val_GtkLabel(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_label_new_with_mnemonic(value arg1)
 {
 CAMLparam1(arg1);
-GtkLabel *obj = gtk_label_new_with_mnemonic((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+GtkLabel *obj = gtk_label_new_with_mnemonic(String_option_val(arg1));
 CAMLreturn(Val_GtkLabel(obj));
 }
 
@@ -295,7 +295,7 @@ CAMLexport CAMLprim value ml_gtk_label_get_mnemonic_widget(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_label_get_mnemonic_widget(GtkLabel_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_label_get_mnemonic_keyval(value self)
@@ -351,5 +351,5 @@ CAMLexport CAMLprim value ml_gtk_label_get_current_uri(value self)
 CAMLparam1(self);
 
 const char* result = gtk_label_get_current_uri(GtkLabel_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }

@@ -88,7 +88,7 @@ external get_page_complete : t -> Gtk.widget -> bool = "ml_gtk_assistant_get_pag
 external get_page : t -> Gtk.widget -> Gtk.widget = "ml_gtk_assistant_get_page"
 
 (** Returns the child widget contained in page number @page_num. *)
-external get_nth_page : t -> int -> Gtk.widget = "ml_gtk_assistant_get_nth_page"
+external get_nth_page : t -> int -> Gtk.widget option = "ml_gtk_assistant_get_nth_page"
 
 (** Returns the number of pages in the @assistant *)
 external get_n_pages : t -> int = "ml_gtk_assistant_get_n_pages"

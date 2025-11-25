@@ -10,7 +10,7 @@ in response to changes to their layout management policies. *)
 external layout_changed : t -> unit = "ml_gtk_layout_manager_layout_changed"
 
 (** Retrieves the `GtkWidget` using the given `GtkLayoutManager`. *)
-external get_widget : t -> Gtk.widget = "ml_gtk_layout_manager_get_widget"
+external get_widget : t -> Gtk.widget option = "ml_gtk_layout_manager_get_widget"
 
 (** Retrieves the request mode of @manager. *)
 external get_request_mode : t -> Gtk_enums.sizerequestmode = "ml_gtk_layout_manager_get_request_mode"

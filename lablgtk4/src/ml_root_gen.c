@@ -33,5 +33,5 @@ CAMLexport CAMLprim value ml_gtk_root_get_focus(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_root_get_focus(GtkRoot_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }

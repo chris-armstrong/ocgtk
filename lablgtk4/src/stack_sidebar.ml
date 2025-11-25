@@ -17,5 +17,5 @@ the order and items within the given `GtkStack`. *)
 external set_stack : t -> Gtk.widget -> unit = "ml_gtk_stack_sidebar_set_stack"
 
 (** Retrieves the stack. *)
-external get_stack : t -> Gtk.widget = "ml_gtk_stack_sidebar_get_stack"
+external get_stack : t -> Gtk.widget option = "ml_gtk_stack_sidebar_get_stack"
 

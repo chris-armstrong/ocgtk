@@ -132,7 +132,7 @@ external get_width : t -> int = "ml_gtk_tree_view_column_get_width"
 (** Returns the `GtkWidget` in the button on the column header.
 
 If a custom widget has not been set then %NULL is returned. *)
-external get_widget : t -> Gtk.widget = "ml_gtk_tree_view_column_get_widget"
+external get_widget : t -> Gtk.widget option = "ml_gtk_tree_view_column_get_widget"
 
 (** Returns %TRUE if @tree_column is visible. *)
 external get_visible : t -> bool = "ml_gtk_tree_view_column_get_visible"
@@ -140,7 +140,7 @@ external get_visible : t -> bool = "ml_gtk_tree_view_column_get_visible"
 (** Returns the `GtkTreeView` wherein @tree_column has been inserted.
 If @column is currently not inserted in any tree view, %NULL is
 returned. *)
-external get_tree_view : t -> Gtk.widget = "ml_gtk_tree_view_column_get_tree_view"
+external get_tree_view : t -> Gtk.widget option = "ml_gtk_tree_view_column_get_tree_view"
 
 (** Returns the title of the widget. *)
 external get_title : t -> string = "ml_gtk_tree_view_column_get_title"

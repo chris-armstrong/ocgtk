@@ -49,7 +49,7 @@ CAMLexport CAMLprim value ml_gtk_cell_layout_get_area(value self)
 CAMLparam1(self);
 
 GtkCellArea* result = gtk_cell_layout_get_area(GtkCellLayout_val(self));
-CAMLreturn(Val_GtkCellArea(result));
+CAMLreturn(Val_option(result, Val_GtkCellArea));
 }
 
 CAMLexport CAMLprim value ml_gtk_cell_layout_clear_attributes(value self, value arg1)

@@ -301,6 +301,7 @@ let parse_gir_file filename _filter_classes =
       | Some "1" -> true
       | _ -> false
     in
+    let property_nullable = get_attr "nullable" attrs |> Utils.parse_bool in
 
     (* Parse property type from child element *)
     let prop_type = ref { name = "unknown"; c_type = "unknown"; nullable = false } in
@@ -312,7 +313,7 @@ let parse_gir_file filename _filter_classes =
       | `El_start ((_, "type"), type_attrs) ->
         let type_name = match get_attr "name" type_attrs with Some n -> n | None -> "unknown" in
         let c_type_name = match get_attr "c:type" type_attrs with Some t -> t | None -> type_name in
-        let nullable = get_attr "nullable" type_attrs |> Utils.parse_bool in
+        let nullable = (get_attr "nullable" type_attrs |> Utils.parse_bool) || property_nullable in
         prop_type := { name = type_name; c_type = c_type_name; nullable };
         skip_element 1;
         parse_prop_contents ()
@@ -459,7 +460,7 @@ let parse_gir_file filename _filter_classes =
       | `El_start ((_, tag), _tag_attrs) ->
         (match tag with
         | "return-value" ->
-          return_type := parse_return_value ();
+          return_type := parse_return_value _tag_attrs;
           parse_method_contents ()
 
         | "parameters" ->
@@ -486,15 +487,16 @@ let parse_gir_file filename _filter_classes =
     (!return_type, List.rev !params, !doc)
 
   (* Parse return value type *)
-  and parse_return_value () =
-    let type_info = ref { name = "void"; c_type = "void"; nullable = false } in
+  and parse_return_value attrs =
+    let nullable_attr = get_attr "nullable" attrs |> Utils.parse_bool in
+    let type_info = ref { name = "void"; c_type = "void"; nullable = nullable_attr } in
 
     let rec parse_rv_contents () =
       match Xmlm.input input with
       | `El_start ((_, "type"), attrs) ->
         let type_name = match get_attr "name" attrs with Some n -> n | None -> "void" in
         let c_type_name = match get_attr "c:type" attrs with Some t -> t | None -> type_name in
-        let nullable = get_attr "nullable" attrs |> Utils.parse_bool in
+        let nullable = (get_attr "nullable" attrs |> Utils.parse_bool) || nullable_attr in
         type_info := ({ name = type_name; c_type = c_type_name ; nullable = nullable}:gir_type);
         skip_element 1;
         parse_rv_contents ()

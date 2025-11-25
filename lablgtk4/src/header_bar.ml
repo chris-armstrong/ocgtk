@@ -65,12 +65,12 @@ external pack_end : t -> Gtk.widget -> unit = "ml_gtk_header_bar_pack_end"
 (** Retrieves the title widget of the header.
 
 See [method@Gtk.HeaderBar.set_title_widget]. *)
-external get_title_widget : t -> Gtk.widget = "ml_gtk_header_bar_get_title_widget"
+external get_title_widget : t -> Gtk.widget option = "ml_gtk_header_bar_get_title_widget"
 
 (** Returns whether this header bar shows the standard window
 title buttons. *)
 external get_show_title_buttons : t -> bool = "ml_gtk_header_bar_get_show_title_buttons"
 
 (** Gets the decoration layout of the `GtkHeaderBar`. *)
-external get_decoration_layout : t -> string = "ml_gtk_header_bar_get_decoration_layout"
+external get_decoration_layout : t -> string option = "ml_gtk_header_bar_get_decoration_layout"
 

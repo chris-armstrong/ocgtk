@@ -71,7 +71,7 @@ CAMLexport CAMLprim value ml_gtk_list_box_set_adjustment(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_list_box_set_adjustment(GtkListBox_val(self), (Is_some(arg1) ? GtkAdjustment_val(Some_val(arg1)) : NULL));
+gtk_list_box_set_adjustment(GtkListBox_val(self), Option_val(arg1, GtkAdjustment_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -87,7 +87,7 @@ CAMLexport CAMLprim value ml_gtk_list_box_select_row(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_list_box_select_row(GtkListBox_val(self), (Is_some(arg1) ? GtkListBoxRow_val(Some_val(arg1)) : NULL));
+gtk_list_box_select_row(GtkListBox_val(self), Option_val(arg1, GtkListBoxRow_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -176,7 +176,7 @@ CAMLexport CAMLprim value ml_gtk_list_box_get_selected_row(value self)
 CAMLparam1(self);
 
 GtkListBoxRow* result = gtk_list_box_get_selected_row(GtkListBox_val(self));
-CAMLreturn(Val_GtkListBoxRow(result));
+CAMLreturn(Val_option(result, Val_GtkListBoxRow));
 }
 
 CAMLexport CAMLprim value ml_gtk_list_box_get_row_at_y(value self, value arg1)
@@ -184,7 +184,7 @@ CAMLexport CAMLprim value ml_gtk_list_box_get_row_at_y(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkListBoxRow* result = gtk_list_box_get_row_at_y(GtkListBox_val(self), Int_val(arg1));
-CAMLreturn(Val_GtkListBoxRow(result));
+CAMLreturn(Val_option(result, Val_GtkListBoxRow));
 }
 
 CAMLexport CAMLprim value ml_gtk_list_box_get_row_at_index(value self, value arg1)
@@ -192,7 +192,7 @@ CAMLexport CAMLprim value ml_gtk_list_box_get_row_at_index(value self, value arg
 CAMLparam2(self, arg1);
 
 GtkListBoxRow* result = gtk_list_box_get_row_at_index(GtkListBox_val(self), Int_val(arg1));
-CAMLreturn(Val_GtkListBoxRow(result));
+CAMLreturn(Val_option(result, Val_GtkListBoxRow));
 }
 
 CAMLexport CAMLprim value ml_gtk_list_box_get_adjustment(value self)
@@ -200,7 +200,7 @@ CAMLexport CAMLprim value ml_gtk_list_box_get_adjustment(value self)
 CAMLparam1(self);
 
 GtkAdjustment* result = gtk_list_box_get_adjustment(GtkListBox_val(self));
-CAMLreturn(Val_GtkAdjustment(result));
+CAMLreturn(Val_option(result, Val_GtkAdjustment));
 }
 
 CAMLexport CAMLprim value ml_gtk_list_box_get_activate_on_single_click(value self)

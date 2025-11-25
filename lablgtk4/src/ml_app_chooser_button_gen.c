@@ -96,7 +96,7 @@ CAMLexport CAMLprim value ml_gtk_app_chooser_button_get_heading(value self)
 CAMLparam1(self);
 
 const char* result = gtk_app_chooser_button_get_heading(GtkAppChooserButton_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_app_chooser_button_append_separator(value self)

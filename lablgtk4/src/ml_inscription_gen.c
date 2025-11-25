@@ -23,7 +23,7 @@
 CAMLexport CAMLprim value ml_gtk_inscription_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkInscription *obj = gtk_inscription_new((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+GtkInscription *obj = gtk_inscription_new(String_option_val(arg1));
 CAMLreturn(Val_GtkInscription(obj));
 }
 
@@ -63,7 +63,7 @@ CAMLexport CAMLprim value ml_gtk_inscription_set_text(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_inscription_set_text(GtkInscription_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_inscription_set_text(GtkInscription_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -103,7 +103,7 @@ CAMLexport CAMLprim value ml_gtk_inscription_set_markup(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_inscription_set_markup(GtkInscription_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_inscription_set_markup(GtkInscription_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -144,7 +144,7 @@ CAMLexport CAMLprim value ml_gtk_inscription_get_text(value self)
 CAMLparam1(self);
 
 const char* result = gtk_inscription_get_text(GtkInscription_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_inscription_get_nat_lines(value self)

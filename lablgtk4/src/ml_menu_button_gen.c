@@ -152,7 +152,7 @@ CAMLexport CAMLprim value ml_gtk_menu_button_get_popover(value self)
 CAMLparam1(self);
 
 GtkPopover* result = gtk_menu_button_get_popover(GtkMenuButton_val(self));
-CAMLreturn(Val_GtkPopover(result));
+CAMLreturn(Val_option(result, Val_GtkPopover));
 }
 
 CAMLexport CAMLprim value ml_gtk_menu_button_get_label(value self)
@@ -160,7 +160,7 @@ CAMLexport CAMLprim value ml_gtk_menu_button_get_label(value self)
 CAMLparam1(self);
 
 const char* result = gtk_menu_button_get_label(GtkMenuButton_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_menu_button_get_icon_name(value self)
@@ -168,7 +168,7 @@ CAMLexport CAMLprim value ml_gtk_menu_button_get_icon_name(value self)
 CAMLparam1(self);
 
 const char* result = gtk_menu_button_get_icon_name(GtkMenuButton_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_menu_button_get_has_frame(value self)
@@ -192,7 +192,7 @@ CAMLexport CAMLprim value ml_gtk_menu_button_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_menu_button_get_child(GtkMenuButton_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_menu_button_get_can_shrink(value self)

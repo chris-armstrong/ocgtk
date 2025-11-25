@@ -88,7 +88,7 @@ CAMLexport CAMLprim value ml_gtk_list_box_row_get_header(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_list_box_row_get_header(GtkListBoxRow_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_list_box_row_get_child(value self)
@@ -96,7 +96,7 @@ CAMLexport CAMLprim value ml_gtk_list_box_row_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_list_box_row_get_child(GtkListBoxRow_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_list_box_row_get_activatable(value self)

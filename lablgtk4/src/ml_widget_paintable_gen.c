@@ -40,5 +40,5 @@ CAMLexport CAMLprim value ml_gtk_widget_paintable_get_widget(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_widget_paintable_get_widget(GtkWidgetPaintable_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }

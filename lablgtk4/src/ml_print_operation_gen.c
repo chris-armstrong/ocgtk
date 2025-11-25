@@ -119,7 +119,7 @@ CAMLexport CAMLprim value ml_gtk_print_operation_set_custom_tab_label(value self
 {
 CAMLparam2(self, arg1);
 
-gtk_print_operation_set_custom_tab_label(GtkPrintOperation_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_print_operation_set_custom_tab_label(GtkPrintOperation_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -144,7 +144,7 @@ CAMLexport CAMLprim value ml_gtk_print_operation_run(value self, value arg1, val
 CAMLparam3(self, arg1, arg2);
 GError *error = NULL;
 
-GtkPrintOperationResult result = gtk_print_operation_run(GtkPrintOperation_val(self), GtkPrintOperationAction_val(arg1), (Is_some(arg2) ? GtkWindow_val(Some_val(arg2)) : NULL), &error);
+GtkPrintOperationResult result = gtk_print_operation_run(GtkPrintOperation_val(self), GtkPrintOperationAction_val(arg1), Option_val(arg2, GtkWindow_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GtkPrintOperationResult(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 

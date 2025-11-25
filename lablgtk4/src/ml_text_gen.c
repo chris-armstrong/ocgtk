@@ -70,7 +70,7 @@ CAMLexport CAMLprim value ml_gtk_text_set_placeholder_text(value self, value arg
 {
 CAMLparam2(self, arg1);
 
-gtk_text_set_placeholder_text(GtkText_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_text_set_placeholder_text(GtkText_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -167,7 +167,7 @@ CAMLexport CAMLprim value ml_gtk_text_get_placeholder_text(value self)
 CAMLparam1(self);
 
 const char* result = gtk_text_get_placeholder_text(GtkText_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_get_overwrite_mode(value self)

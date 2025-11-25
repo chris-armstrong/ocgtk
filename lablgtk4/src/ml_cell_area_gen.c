@@ -32,7 +32,7 @@ CAMLexport CAMLprim value ml_gtk_cell_area_set_focus_cell(value self, value arg1
 {
 CAMLparam2(self, arg1);
 
-gtk_cell_area_set_focus_cell(GtkCellArea_val(self), (Is_some(arg1) ? GtkCellRenderer_val(Some_val(arg1)) : NULL));
+gtk_cell_area_set_focus_cell(GtkCellArea_val(self), Option_val(arg1, GtkCellRenderer_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -89,7 +89,7 @@ CAMLexport CAMLprim value ml_gtk_cell_area_get_focus_from_sibling(value self, va
 CAMLparam2(self, arg1);
 
 GtkCellRenderer* result = gtk_cell_area_get_focus_from_sibling(GtkCellArea_val(self), GtkCellRenderer_val(arg1));
-CAMLreturn(Val_GtkCellRenderer(result));
+CAMLreturn(Val_option(result, Val_GtkCellRenderer));
 }
 
 CAMLexport CAMLprim value ml_gtk_cell_area_get_focus_cell(value self)
@@ -97,7 +97,7 @@ CAMLexport CAMLprim value ml_gtk_cell_area_get_focus_cell(value self)
 CAMLparam1(self);
 
 GtkCellRenderer* result = gtk_cell_area_get_focus_cell(GtkCellArea_val(self));
-CAMLreturn(Val_GtkCellRenderer(result));
+CAMLreturn(Val_option(result, Val_GtkCellRenderer));
 }
 
 CAMLexport CAMLprim value ml_gtk_cell_area_get_edited_cell(value self)
@@ -105,7 +105,7 @@ CAMLexport CAMLprim value ml_gtk_cell_area_get_edited_cell(value self)
 CAMLparam1(self);
 
 GtkCellRenderer* result = gtk_cell_area_get_edited_cell(GtkCellArea_val(self));
-CAMLreturn(Val_GtkCellRenderer(result));
+CAMLreturn(Val_option(result, Val_GtkCellRenderer));
 }
 
 CAMLexport CAMLprim value ml_gtk_cell_area_get_edit_widget(value self)
@@ -113,7 +113,7 @@ CAMLexport CAMLprim value ml_gtk_cell_area_get_edit_widget(value self)
 CAMLparam1(self);
 
 GtkCellEditable* result = gtk_cell_area_get_edit_widget(GtkCellArea_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_cell_area_get_current_path_string(value self)

@@ -70,7 +70,7 @@ CAMLexport CAMLprim value ml_gtk_entry_set_placeholder_text(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-gtk_entry_set_placeholder_text(GtkEntry_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_entry_set_placeholder_text(GtkEntry_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -110,7 +110,7 @@ CAMLexport CAMLprim value ml_gtk_entry_set_icon_tooltip_text(value self, value a
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_entry_set_icon_tooltip_text(GtkEntry_val(self), GtkEntryIconPosition_val(arg1), (Is_some(arg2) ? String_val(Some_val(arg2)) : NULL));
+gtk_entry_set_icon_tooltip_text(GtkEntry_val(self), GtkEntryIconPosition_val(arg1), String_option_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -118,7 +118,7 @@ CAMLexport CAMLprim value ml_gtk_entry_set_icon_tooltip_markup(value self, value
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_entry_set_icon_tooltip_markup(GtkEntry_val(self), GtkEntryIconPosition_val(arg1), (Is_some(arg2) ? String_val(Some_val(arg2)) : NULL));
+gtk_entry_set_icon_tooltip_markup(GtkEntry_val(self), GtkEntryIconPosition_val(arg1), String_option_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -134,7 +134,7 @@ CAMLexport CAMLprim value ml_gtk_entry_set_icon_from_icon_name(value self, value
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_entry_set_icon_from_icon_name(GtkEntry_val(self), GtkEntryIconPosition_val(arg1), (Is_some(arg2) ? String_val(Some_val(arg2)) : NULL));
+gtk_entry_set_icon_from_icon_name(GtkEntry_val(self), GtkEntryIconPosition_val(arg1), String_option_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -158,7 +158,7 @@ CAMLexport CAMLprim value ml_gtk_entry_set_completion(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_entry_set_completion(GtkEntry_val(self), (Is_some(arg1) ? GtkEntryCompletion_val(Some_val(arg1)) : NULL));
+gtk_entry_set_completion(GtkEntry_val(self), Option_val(arg1, GtkEntryCompletion_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -239,7 +239,7 @@ CAMLexport CAMLprim value ml_gtk_entry_get_placeholder_text(value self)
 CAMLparam1(self);
 
 const char* result = gtk_entry_get_placeholder_text(GtkEntry_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_overwrite_mode(value self)
@@ -295,7 +295,7 @@ CAMLexport CAMLprim value ml_gtk_entry_get_icon_name(value self, value arg1)
 CAMLparam2(self, arg1);
 
 const char* result = gtk_entry_get_icon_name(GtkEntry_val(self), GtkEntryIconPosition_val(arg1));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_icon_at_pos(value self, value arg1, value arg2)
@@ -335,7 +335,7 @@ CAMLexport CAMLprim value ml_gtk_entry_get_completion(value self)
 CAMLparam1(self);
 
 GtkEntryCompletion* result = gtk_entry_get_completion(GtkEntry_val(self));
-CAMLreturn(Val_GtkEntryCompletion(result));
+CAMLreturn(Val_option(result, Val_GtkEntryCompletion));
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_buffer(value self)

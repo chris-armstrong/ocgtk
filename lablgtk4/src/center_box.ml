@@ -45,16 +45,16 @@ available. *)
 external set_baseline_position : t -> Gtk_enums.baselineposition -> unit = "ml_gtk_center_box_set_baseline_position"
 
 (** Gets the start widget, or %NULL if there is none. *)
-external get_start_widget : t -> Gtk.widget = "ml_gtk_center_box_get_start_widget"
+external get_start_widget : t -> Gtk.widget option = "ml_gtk_center_box_get_start_widget"
 
 (** Gets whether @self shrinks the center widget after other children. *)
 external get_shrink_center_last : t -> bool = "ml_gtk_center_box_get_shrink_center_last"
 
 (** Gets the end widget, or %NULL if there is none. *)
-external get_end_widget : t -> Gtk.widget = "ml_gtk_center_box_get_end_widget"
+external get_end_widget : t -> Gtk.widget option = "ml_gtk_center_box_get_end_widget"
 
 (** Gets the center widget, or %NULL if there is none. *)
-external get_center_widget : t -> Gtk.widget = "ml_gtk_center_box_get_center_widget"
+external get_center_widget : t -> Gtk.widget option = "ml_gtk_center_box_get_center_widget"
 
 (** Gets the value set by gtk_center_box_set_baseline_position(). *)
 external get_baseline_position : t -> Gtk_enums.baselineposition = "ml_gtk_center_box_get_baseline_position"

@@ -31,7 +31,7 @@ CAMLexport CAMLprim value ml_gtk_icon_theme_set_theme_name(value self, value arg
 {
 CAMLparam2(self, arg1);
 
-gtk_icon_theme_set_theme_name(GtkIconTheme_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_icon_theme_set_theme_name(GtkIconTheme_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 

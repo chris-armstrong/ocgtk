@@ -39,5 +39,5 @@ external get_side : t -> Gtk_enums.packtype = "ml_gtk_window_controls_get_side"
 external get_empty : t -> bool = "ml_gtk_window_controls_get_empty"
 
 (** Gets the decoration layout of this `GtkWindowControls`. *)
-external get_decoration_layout : t -> string = "ml_gtk_window_controls_get_decoration_layout"
+external get_decoration_layout : t -> string option = "ml_gtk_window_controls_get_decoration_layout"
 

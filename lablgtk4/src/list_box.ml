@@ -107,20 +107,20 @@ external get_selection_mode : t -> Gtk_enums.selectionmode = "ml_gtk_list_box_ge
 Note that the box may allow multiple selection, in which
 case you should use [method@Gtk.ListBox.selected_foreach] to
 find all selected rows. *)
-external get_selected_row : t -> Gtk.widget = "ml_gtk_list_box_get_selected_row"
+external get_selected_row : t -> Gtk.widget option = "ml_gtk_list_box_get_selected_row"
 
 (** Gets the row at the @y position. *)
-external get_row_at_y : t -> int -> Gtk.widget = "ml_gtk_list_box_get_row_at_y"
+external get_row_at_y : t -> int -> Gtk.widget option = "ml_gtk_list_box_get_row_at_y"
 
 (** Gets the n-th child in the list (not counting headers).
 
 If @index_ is negative or larger than the number of items in the
 list, %NULL is returned. *)
-external get_row_at_index : t -> int -> Gtk.widget = "ml_gtk_list_box_get_row_at_index"
+external get_row_at_index : t -> int -> Gtk.widget option = "ml_gtk_list_box_get_row_at_index"
 
 (** Gets the adjustment (if any) that the widget uses to
 for vertical scrolling. *)
-external get_adjustment : t -> Gtk.widget = "ml_gtk_list_box_get_adjustment"
+external get_adjustment : t -> Gtk.widget option = "ml_gtk_list_box_get_adjustment"
 
 (** Returns whether rows activate on single clicks. *)
 external get_activate_on_single_click : t -> bool = "ml_gtk_list_box_get_activate_on_single_click"

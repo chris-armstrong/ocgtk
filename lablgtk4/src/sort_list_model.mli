@@ -33,11 +33,11 @@ about an ongoing incremental sorting operation. *)
 external set_incremental : t -> bool -> unit = "ml_gtk_sort_list_model_set_incremental"
 
 (** Gets the sorter that is used to sort @self. *)
-external get_sorter : t -> Gtk.widget = "ml_gtk_sort_list_model_get_sorter"
+external get_sorter : t -> Gtk.widget option = "ml_gtk_sort_list_model_get_sorter"
 
 (** Gets the section sorter that is used to sort items of @self into
 sections. *)
-external get_section_sorter : t -> Gtk.widget = "ml_gtk_sort_list_model_get_section_sorter"
+external get_section_sorter : t -> Gtk.widget option = "ml_gtk_sort_list_model_get_section_sorter"
 
 (** Estimates progress of an ongoing sorting operation.
 

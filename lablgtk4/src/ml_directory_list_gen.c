@@ -23,7 +23,7 @@
 CAMLexport CAMLprim value ml_gtk_directory_list_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
-GtkDirectoryList *obj = gtk_directory_list_new((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL), arg2);
+GtkDirectoryList *obj = gtk_directory_list_new(String_option_val(arg1), arg2);
 CAMLreturn(Val_GtkDirectoryList(obj));
 }
 
@@ -47,7 +47,7 @@ CAMLexport CAMLprim value ml_gtk_directory_list_set_attributes(value self, value
 {
 CAMLparam2(self, arg1);
 
-gtk_directory_list_set_attributes(GtkDirectoryList_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_directory_list_set_attributes(GtkDirectoryList_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -80,5 +80,5 @@ CAMLexport CAMLprim value ml_gtk_directory_list_get_attributes(value self)
 CAMLparam1(self);
 
 const char* result = gtk_directory_list_get_attributes(GtkDirectoryList_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }

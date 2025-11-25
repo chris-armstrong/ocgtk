@@ -31,7 +31,7 @@ external response : t -> int -> unit = "ml_gtk_dialog_response"
 
 (** Gets the widget button that uses the given response ID in the action area
 of a dialog. *)
-external get_widget_for_response : t -> int -> Gtk.widget = "ml_gtk_dialog_get_widget_for_response"
+external get_widget_for_response : t -> int -> Gtk.widget option = "ml_gtk_dialog_get_widget_for_response"
 
 (** Gets the response id of a widget in the action area
 of a dialog. *)

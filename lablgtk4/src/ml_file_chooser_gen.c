@@ -97,7 +97,7 @@ CAMLexport CAMLprim value ml_gtk_file_chooser_get_filter(value self)
 CAMLparam1(self);
 
 GtkFileFilter* result = gtk_file_chooser_get_filter(GtkFileChooser_val(self));
-CAMLreturn(Val_GtkFileFilter(result));
+CAMLreturn(Val_option(result, Val_GtkFileFilter));
 }
 
 CAMLexport CAMLprim value ml_gtk_file_chooser_get_create_folders(value self)
@@ -113,7 +113,7 @@ CAMLexport CAMLprim value ml_gtk_file_chooser_get_choice(value self, value arg1)
 CAMLparam2(self, arg1);
 
 const char* result = gtk_file_chooser_get_choice(GtkFileChooser_val(self), String_val(arg1));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_file_chooser_get_action(value self)

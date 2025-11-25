@@ -105,7 +105,7 @@ CAMLexport CAMLprim value ml_gtk_list_item_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_list_item_get_child(GtkListItem_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_list_item_get_activatable(value self)

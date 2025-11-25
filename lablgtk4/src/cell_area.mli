@@ -52,18 +52,18 @@ This is handy for `GtkCellArea` subclasses when handling events,
 after determining the renderer at the event location it can
 then chose to activate the focus cell for which the event
 cell may have been a sibling. *)
-external get_focus_from_sibling : t -> Gtk.widget -> Gtk.widget = "ml_gtk_cell_area_get_focus_from_sibling"
+external get_focus_from_sibling : t -> Gtk.widget -> Gtk.widget option = "ml_gtk_cell_area_get_focus_from_sibling"
 
 (** Retrieves the currently focused cell for @area *)
-external get_focus_cell : t -> Gtk.widget = "ml_gtk_cell_area_get_focus_cell"
+external get_focus_cell : t -> Gtk.widget option = "ml_gtk_cell_area_get_focus_cell"
 
 (** Gets the `GtkCellRenderer` in @area that is currently
 being edited. *)
-external get_edited_cell : t -> Gtk.widget = "ml_gtk_cell_area_get_edited_cell"
+external get_edited_cell : t -> Gtk.widget option = "ml_gtk_cell_area_get_edited_cell"
 
 (** Gets the `GtkCellEditable` widget currently used
 to edit the currently edited cell. *)
-external get_edit_widget : t -> Gtk.widget = "ml_gtk_cell_area_get_edit_widget"
+external get_edit_widget : t -> Gtk.widget option = "ml_gtk_cell_area_get_edit_widget"
 
 (** Gets the current `GtkTreePath` string for the currently
 applied `GtkTreeIter`, this is implicitly updated when

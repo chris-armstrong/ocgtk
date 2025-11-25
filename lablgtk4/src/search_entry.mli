@@ -47,10 +47,10 @@ external set_input_hints : t -> Gtk_enums.inputhints -> unit = "ml_gtk_search_en
 external get_search_delay : t -> int = "ml_gtk_search_entry_get_search_delay"
 
 (** Gets the placeholder text associated with @entry. *)
-external get_placeholder_text : t -> string = "ml_gtk_search_entry_get_placeholder_text"
+external get_placeholder_text : t -> string option = "ml_gtk_search_entry_get_placeholder_text"
 
 (** Gets the widget that @entry is capturing key events from. *)
-external get_key_capture_widget : t -> Gtk.widget = "ml_gtk_search_entry_get_key_capture_widget"
+external get_key_capture_widget : t -> Gtk.widget option = "ml_gtk_search_entry_get_key_capture_widget"
 
 (** Gets the input purpose of @entry. *)
 external get_input_purpose : t -> Gtk_enums.inputpurpose = "ml_gtk_search_entry_get_input_purpose"

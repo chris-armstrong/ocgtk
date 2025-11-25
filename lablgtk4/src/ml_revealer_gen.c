@@ -96,5 +96,5 @@ CAMLexport CAMLprim value ml_gtk_revealer_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_revealer_get_child(GtkRevealer_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }

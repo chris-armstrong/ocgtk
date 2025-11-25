@@ -32,7 +32,7 @@ CAMLexport CAMLprim value ml_gtk_native_dialog_set_transient_for(value self, val
 {
 CAMLparam2(self, arg1);
 
-gtk_native_dialog_set_transient_for(GtkNativeDialog_val(self), (Is_some(arg1) ? GtkWindow_val(Some_val(arg1)) : NULL));
+gtk_native_dialog_set_transient_for(GtkNativeDialog_val(self), Option_val(arg1, GtkWindow_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -73,7 +73,7 @@ CAMLexport CAMLprim value ml_gtk_native_dialog_get_transient_for(value self)
 CAMLparam1(self);
 
 GtkWindow* result = gtk_native_dialog_get_transient_for(GtkNativeDialog_val(self));
-CAMLreturn(Val_GtkWindow(result));
+CAMLreturn(Val_option(result, Val_GtkWindow));
 }
 
 CAMLexport CAMLprim value ml_gtk_native_dialog_get_title(value self)
@@ -81,7 +81,7 @@ CAMLexport CAMLprim value ml_gtk_native_dialog_get_title(value self)
 CAMLparam1(self);
 
 const char* result = gtk_native_dialog_get_title(GtkNativeDialog_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_native_dialog_get_modal(value self)

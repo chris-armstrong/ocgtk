@@ -23,7 +23,7 @@
 CAMLexport CAMLprim value ml_gtk_mount_operation_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkMountOperation *obj = gtk_mount_operation_new((Is_some(arg1) ? GtkWindow_val(Some_val(arg1)) : NULL));
+GtkMountOperation *obj = gtk_mount_operation_new(Option_val(arg1, GtkWindow_val, NULL));
 CAMLreturn(Val_GtkMountOperation(obj));
 }
 
@@ -31,7 +31,7 @@ CAMLexport CAMLprim value ml_gtk_mount_operation_set_parent(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-gtk_mount_operation_set_parent(GtkMountOperation_val(self), (Is_some(arg1) ? GtkWindow_val(Some_val(arg1)) : NULL));
+gtk_mount_operation_set_parent(GtkMountOperation_val(self), Option_val(arg1, GtkWindow_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -48,5 +48,5 @@ CAMLexport CAMLprim value ml_gtk_mount_operation_get_parent(value self)
 CAMLparam1(self);
 
 GtkWindow* result = gtk_mount_operation_get_parent(GtkMountOperation_val(self));
-CAMLreturn(Val_GtkWindow(result));
+CAMLreturn(Val_option(result, Val_GtkWindow));
 }

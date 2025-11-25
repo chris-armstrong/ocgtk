@@ -56,7 +56,7 @@ CAMLexport CAMLprim value ml_gtk_tree_model_sort_convert_path_to_child_path(valu
 CAMLparam2(self, arg1);
 
 GtkTreePath* result = gtk_tree_model_sort_convert_path_to_child_path(GtkTreeModelSort_val(self), GtkWidget_val(arg1));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_model_sort_convert_iter_to_child_iter(value self, value arg1, value arg2)
@@ -72,7 +72,7 @@ CAMLexport CAMLprim value ml_gtk_tree_model_sort_convert_child_path_to_path(valu
 CAMLparam2(self, arg1);
 
 GtkTreePath* result = gtk_tree_model_sort_convert_child_path_to_path(GtkTreeModelSort_val(self), GtkWidget_val(arg1));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_model_sort_convert_child_iter_to_iter(value self, value arg1, value arg2)

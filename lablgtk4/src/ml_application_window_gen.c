@@ -39,7 +39,7 @@ CAMLexport CAMLprim value ml_gtk_application_window_set_help_overlay(value self,
 {
 CAMLparam2(self, arg1);
 
-gtk_application_window_set_help_overlay(GtkApplicationWindow_val(self), (Is_some(arg1) ? GtkShortcutsWindow_val(Some_val(arg1)) : NULL));
+gtk_application_window_set_help_overlay(GtkApplicationWindow_val(self), Option_val(arg1, GtkShortcutsWindow_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -64,5 +64,5 @@ CAMLexport CAMLprim value ml_gtk_application_window_get_help_overlay(value self)
 CAMLparam1(self);
 
 GtkShortcutsWindow* result = gtk_application_window_get_help_overlay(GtkApplicationWindow_val(self));
-CAMLreturn(Val_GtkShortcutsWindow(result));
+CAMLreturn(Val_option(result, Val_GtkShortcutsWindow));
 }

@@ -37,7 +37,7 @@ CAMLreturn(Val_GtkPicture(obj));
 CAMLexport CAMLprim value ml_gtk_picture_new_for_filename(value arg1)
 {
 CAMLparam1(arg1);
-GtkPicture *obj = gtk_picture_new_for_filename((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+GtkPicture *obj = gtk_picture_new_for_filename(String_option_val(arg1));
 CAMLreturn(Val_GtkPicture(obj));
 }
 
@@ -58,7 +58,7 @@ CAMLreturn(Val_GtkPicture(obj));
 CAMLexport CAMLprim value ml_gtk_picture_new_for_resource(value arg1)
 {
 CAMLparam1(arg1);
-GtkPicture *obj = gtk_picture_new_for_resource((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+GtkPicture *obj = gtk_picture_new_for_resource(String_option_val(arg1));
 CAMLreturn(Val_GtkPicture(obj));
 }
 
@@ -66,7 +66,7 @@ CAMLexport CAMLprim value ml_gtk_picture_set_resource(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_picture_set_resource(GtkPicture_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_picture_set_resource(GtkPicture_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -82,7 +82,7 @@ CAMLexport CAMLprim value ml_gtk_picture_set_filename(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_picture_set_filename(GtkPicture_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_picture_set_filename(GtkPicture_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -106,7 +106,7 @@ CAMLexport CAMLprim value ml_gtk_picture_set_alternative_text(value self, value 
 {
 CAMLparam2(self, arg1);
 
-gtk_picture_set_alternative_text(GtkPicture_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_picture_set_alternative_text(GtkPicture_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -139,5 +139,5 @@ CAMLexport CAMLprim value ml_gtk_picture_get_alternative_text(value self)
 CAMLparam1(self);
 
 const char* result = gtk_picture_get_alternative_text(GtkPicture_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
