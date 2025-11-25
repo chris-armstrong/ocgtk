@@ -6,25 +6,25 @@ open GObj
 
 (** {3 GtkProgressBar} *)
 
-class progress_bar (obj : Gtk.widget) = object (self)
-  inherit GObj.widget_impl obj
+class progress_bar (obj : Progress_bar.t) = object (self)
+  inherit GObj.widget_impl (Progress_bar.as_widget obj)
 
-  method set_fraction f = Progress_bar.set_fraction self#obj f
-  method fraction = Progress_bar.get_fraction self#obj
+  method set_fraction f = Progress_bar.set_fraction obj f
+  method fraction = Progress_bar.get_fraction obj
 
-  method set_pulse_step step = Progress_bar.set_pulse_step self#obj step
-  method pulse_step = Progress_bar.get_pulse_step self#obj
+  method set_pulse_step step = Progress_bar.set_pulse_step obj step
+  method pulse_step = Progress_bar.get_pulse_step obj
 
-  method set_text text = Progress_bar.set_text self#obj text
-  method text = Progress_bar.get_text self#obj
+  method set_text text_opt = Progress_bar.set_text obj text_opt
+  method text = Progress_bar.get_text obj
 
-  method set_show_text show = Progress_bar.set_show_text self#obj show
-  method show_text = Progress_bar.get_show_text self#obj
+  method set_show_text show = Progress_bar.set_show_text obj show
+  method show_text = Progress_bar.get_show_text obj
 
-  method set_inverted inv = Progress_bar.set_inverted self#obj inv
-  method inverted = Progress_bar.get_inverted self#obj
+  method set_inverted inv = Progress_bar.set_inverted obj inv
+  method inverted = Progress_bar.get_inverted obj
 
-  method pulse () = Progress_bar.pulse self#obj
+  method pulse () = Progress_bar.pulse obj
 
   method set_ellipsize (mode : [`NONE | `START | `MIDDLE | `END]) =
     let pango_mode : Pango_enums.ellipsizemode = match mode with
@@ -33,9 +33,9 @@ class progress_bar (obj : Gtk.widget) = object (self)
       | `MIDDLE -> `MIDDLE
       | `END -> `END
     in
-    Progress_bar.set_ellipsize self#obj pango_mode
+    Progress_bar.set_ellipsize obj pango_mode
   method ellipsize : [`NONE | `START | `MIDDLE | `END] =
-    match Progress_bar.get_ellipsize self#obj with
+    match Progress_bar.get_ellipsize obj with
     | `NONE -> `NONE
     | `START -> `START
     | `MIDDLE -> `MIDDLE
@@ -55,8 +55,8 @@ let progress_bar ?pulse_step ?fraction ?show_text ?inverted ?packing ?show () =
 
 (** {3 GtkRange} *)
 
-class range (obj : Gtk.widget) = object (self)
-  inherit GObj.widget_impl obj
+class range (obj : Range.t) = object (self)
+  inherit GObj.widget_impl (Range.as_widget obj)
 
   method as_range = obj
 
@@ -85,8 +85,8 @@ end
 
 (** {3 GtkScale} *)
 
-class scale (obj : Gtk.widget) = object (self)
-  inherit range obj
+class scale (obj : Scale.t) = object (self)
+  inherit range (Obj.magic obj : Range.t)
 
   method set_digits d = Scale.set_digits obj d
   method digits = Scale.get_digits obj
@@ -124,8 +124,8 @@ let scale orientation ?digits ?draw_value ?has_origin ?value_pos
 
 (** {3 GtkLevelBar} *)
 
-class level_bar (obj : Gtk.widget) = object (self)
-  inherit GObj.widget_impl obj
+class level_bar (obj : Level_bar.t) = object (self)
+  inherit GObj.widget_impl (Level_bar.as_widget obj)
 
   method set_value v = Level_bar.set_value obj v
   method value = Level_bar.get_value obj

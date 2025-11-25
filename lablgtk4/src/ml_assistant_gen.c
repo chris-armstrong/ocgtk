@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkAssistant */
+#ifndef Val_GtkAssistant
 #define GtkAssistant_val(val) ((GtkAssistant*)ext_of_val(val))
 #define Val_GtkAssistant(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkAssistant */
 
 
 CAMLexport CAMLprim value ml_gtk_assistant_new(value unit)
@@ -142,7 +145,7 @@ CAMLexport CAMLprim value ml_gtk_assistant_get_page(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkAssistantPage* result = gtk_assistant_get_page(GtkAssistant_val(self), GtkWidget_val(arg1));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkAssistantPage(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_assistant_get_nth_page(value self, value arg1)
@@ -150,7 +153,7 @@ CAMLexport CAMLprim value ml_gtk_assistant_get_nth_page(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkWidget* result = gtk_assistant_get_nth_page(GtkAssistant_val(self), Int_val(arg1));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_assistant_get_n_pages(value self)
@@ -191,15 +194,4 @@ CAMLparam2(self, arg1);
 
 gtk_assistant_add_action_widget(GtkAssistant_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_assistant_get_use_header_bar(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkAssistant *obj = (GtkAssistant *)GtkAssistant_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "use-header-bar", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
 }

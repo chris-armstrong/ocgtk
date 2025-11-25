@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkCustomFilter */
+#ifndef Val_GtkCustomFilter
 #define GtkCustomFilter_val(val) ((GtkCustomFilter*)ext_of_val(val))
 #define Val_GtkCustomFilter(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkCustomFilter */
 
 
 CAMLexport CAMLprim value ml_gtk_custom_filter_new(value arg1, value arg2, value arg3)

@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkBuilderCScope */
+#ifndef Val_GtkBuilderCScope
 #define GtkBuilderCScope_val(val) ((GtkBuilderCScope*)ext_of_val(val))
 #define Val_GtkBuilderCScope(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkBuilderCScope */
 
 
 CAMLexport CAMLprim value ml_gtk_builder_cscope_new(value unit)

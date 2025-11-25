@@ -8,6 +8,6 @@ external new_ : string -> t = "ml_gtk_string_object_new"
 
 (* Properties *)
 
-(** Get property: string *)
+(** Returns the string contained in a `GtkStringObject`. *)
 external get_string : t -> string = "ml_gtk_string_object_get_string"
 

@@ -3,5 +3,6 @@
 
 type t = Gtk.widget
 
+(** Create a new OverlayLayout *)
 external new_ : unit -> t = "ml_gtk_overlay_layout_new"
 

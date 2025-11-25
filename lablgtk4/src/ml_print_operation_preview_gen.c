@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkPrintOperationPreview */
+#ifndef Val_GtkPrintOperationPreview
 #define GtkPrintOperationPreview_val(val) ((GtkPrintOperationPreview*)ext_of_val(val))
 #define Val_GtkPrintOperationPreview(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkPrintOperationPreview */
 
 
 CAMLexport CAMLprim value ml_gtk_print_operation_preview_render_page(value self, value arg1)

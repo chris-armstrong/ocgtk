@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkIMMulticontext */
+#ifndef Val_GtkIMMulticontext
 #define GtkIMMulticontext_val(val) ((GtkIMMulticontext*)ext_of_val(val))
 #define Val_GtkIMMulticontext(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkIMMulticontext */
 
 
 CAMLexport CAMLprim value ml_gtk_im_multicontext_new(value unit)
@@ -29,7 +32,7 @@ CAMLexport CAMLprim value ml_gtk_im_multicontext_set_context_id(value self, valu
 {
 CAMLparam2(self, arg1);
 
-gtk_im_multicontext_set_context_id(GtkIMMulticontext_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_im_multicontext_set_context_id(GtkIMMulticontext_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 

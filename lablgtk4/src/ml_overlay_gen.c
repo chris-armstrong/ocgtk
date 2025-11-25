@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkOverlay */
+#ifndef Val_GtkOverlay
 #define GtkOverlay_val(val) ((GtkOverlay*)ext_of_val(val))
 #define Val_GtkOverlay(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkOverlay */
 
 
 CAMLexport CAMLprim value ml_gtk_overlay_new(value unit)
@@ -78,7 +81,7 @@ CAMLexport CAMLprim value ml_gtk_overlay_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_overlay_get_child(GtkOverlay_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_overlay_add_overlay(value self, value arg1)

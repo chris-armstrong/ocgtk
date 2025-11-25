@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkDropControllerMotion */
+#ifndef Val_GtkDropControllerMotion
 #define GtkDropControllerMotion_val(val) ((GtkDropControllerMotion*)ext_of_val(val))
 #define Val_GtkDropControllerMotion(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkDropControllerMotion */
 
 
 CAMLexport CAMLprim value ml_gtk_drop_controller_motion_new(value unit)
@@ -39,26 +42,4 @@ CAMLparam1(self);
 
 gboolean result = gtk_drop_controller_motion_contains_pointer(GtkDropControllerMotion_val(self));
 CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_drop_controller_motion_get_contains_pointer(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkDropControllerMotion *obj = (GtkDropControllerMotion *)GtkDropControllerMotion_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "contains-pointer", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_drop_controller_motion_get_is_pointer(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkDropControllerMotion *obj = (GtkDropControllerMotion *)GtkDropControllerMotion_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "is-pointer", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
 }

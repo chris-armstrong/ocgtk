@@ -4,8 +4,42 @@ open StdLabels
 open Printf
 open Types
 
+let nullable_c_to_ml_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping) =
+  if not gir_type.nullable then
+    sprintf "%s(%s)" mapping.c_to_ml var
+  else
+    match gir_type.c_type with
+    | "gchararray" | "gchar*" | "utf8" | "const gchar*" | "const char*" ->
+      sprintf "Val_option_string(%s)" var
+    | "GtkWidget*" ->
+      sprintf "Val_GtkWidget_option(%s)" var
+    | _ when mapping.c_to_ml = "Val_GtkWidget" ->
+      sprintf "Val_GtkWidget_option(%s)" var
+    | _ when String.length gir_type.c_type > 0 &&
+             String.sub gir_type.c_type ~pos:(String.length gir_type.c_type - 1) ~len:1 = "*" ->
+      sprintf "Val_option(%s, %s)" var mapping.c_to_ml
+    | _ ->
+      sprintf "%s(%s)" mapping.c_to_ml var
+
+let nullable_ml_to_c_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping) =
+  if not gir_type.nullable then
+    sprintf "%s(%s)" mapping.ml_to_c var
+  else
+    match gir_type.c_type with
+    | "gchararray" | "gchar*" | "utf8" | "const gchar*" | "const char*" ->
+      sprintf "String_option_val(%s)" var
+    | "GtkWidget*" ->
+      sprintf "GtkWidget_option_val(%s)" var
+    | "GtkEventController*" ->
+      sprintf "GtkEventController_option_val(%s)" var
+    | _ when String.length gir_type.c_type > 0 &&
+             String.sub gir_type.c_type ~pos:(String.length gir_type.c_type - 1) ~len:1 = "*" ->
+      sprintf "Option_val(%s, %s, NULL)" var mapping.ml_to_c
+    | _ ->
+      sprintf "%s(%s)" mapping.ml_to_c var
+
 (* Generate common header file with forward declarations for enum/bitfield converters *)
-let generate_forward_decls_header ~external_enums ~external_bitfields =
+let generate_forward_decls_header ~classes ~external_enums ~external_bitfields =
   let buf = Buffer.create 4096 in
   Buffer.add_string buf "/**************************************************************************/\n";
   Buffer.add_string buf "/*                LablGTK4 - OCaml bindings for GTK4                      */\n";
@@ -32,6 +66,20 @@ let generate_forward_decls_header ~external_enums ~external_bitfields =
   Buffer.add_string buf "#define GtkEventController_val(val) ((GtkEventController*)ext_of_val(val))\n";
   Buffer.add_string buf "#define Val_GtkEventController(obj) ((value)(val_of_ext(obj)))\n";
   Buffer.add_string buf "/* Note: GtkWidget_val and Val_GtkWidget are defined in wrappers.h */\n";
+  Buffer.add_string buf "\n";
+  Buffer.add_string buf "/* Class-specific conversion macros (shared) */\n";
+  let seen = Hashtbl.create 97 in
+  List.iter ~f:(fun (cls : gir_class) ->
+    if not (Hashtbl.mem seen cls.c_type) then begin
+      Hashtbl.add seen cls.c_type ();
+      if cls.c_type <> "GtkWidget" && cls.c_type <> "GtkEventController" then begin
+        bprintf buf "#ifndef Val_%s\n" cls.c_type;
+        bprintf buf "#define %s_val(val) ((%s*)ext_of_val(val))\n" cls.c_type cls.c_type;
+        bprintf buf "#define Val_%s(obj) ((value)(val_of_ext(obj)))\n" cls.c_type;
+        bprintf buf "#endif /* Val_%s */\n\n" cls.c_type;
+      end
+    end
+  ) classes;
   Buffer.add_string buf "\n";
   Buffer.add_string buf "/* Phase 5.3: Option type conversions for nullable parameters */\n";
   Buffer.add_string buf "#define GtkWidget_option_val(v) ((v) == Val_none ? NULL : GtkWidget_val(Some_val(v)))\n";
@@ -78,6 +126,7 @@ let generate_c_file_header ?(class_name="") ?(c_type="") ?(external_enums=[]) ?(
   Buffer.add_string buf "#include <caml/alloc.h>\n";
   Buffer.add_string buf "#include <caml/callback.h>\n";
   Buffer.add_string buf "#include <caml/fail.h>\n";
+  Buffer.add_string buf "#include <caml/hash.h>\n";
   Buffer.add_string buf "#include \"wrappers.h\"\n";
   Buffer.add_string buf "#include \"ml_gobject.h\"\n";
   Buffer.add_string buf "\n";
@@ -90,14 +139,15 @@ let generate_c_file_header ?(class_name="") ?(c_type="") ?(external_enums=[]) ?(
   (* Generate type-specific conversion macros for this class *)
   if c_type <> "" && c_type <> "GtkWidget" && c_type <> "GtkEventController" then begin
     bprintf buf "/* Type-specific conversion macros for %s */\n" c_type;
+    bprintf buf "#ifndef Val_%s\n" c_type;
     bprintf buf "#define %s_val(val) ((%s*)ext_of_val(val))\n" c_type c_type;
     bprintf buf "#define Val_%s(obj) ((value)(val_of_ext(obj)))\n" c_type;
-    Buffer.add_string buf "\n";
+    bprintf buf "#endif /* Val_%s */\n\n" c_type;
   end;
 
   Buffer.contents buf
 
-let generate_c_constructor ~enums ~bitfields ~c_type (ctor : gir_constructor) _class_name =
+let generate_c_constructor ~classes ~enums ~bitfields ~c_type (ctor : gir_constructor) _class_name =
   let c_name = ctor.c_identifier in
   let ml_name = Str.global_replace (Str.regexp "gtk_") "ml_gtk_" c_name in
 
@@ -122,18 +172,10 @@ let generate_c_constructor ~enums ~bitfields ~c_type (ctor : gir_constructor) _c
   (* Build C call arguments - handle nullable parameters *)
   let c_args =
     List.mapi ~f:(fun i p ->
-      match Type_mappings.find_type_mapping ~enums ~bitfields p.param_type.c_type with
+      match Type_mappings.find_type_mapping ~enums ~bitfields ~classes p.param_type.c_type with
       | Some mapping ->
-        if p.nullable then
-          if p.param_type.c_type = "GtkWidget*" then
-            sprintf "GtkWidget_option_val(arg%d)" (i + 1)
-          else if String.length p.param_type.c_type > 3 &&
-                  String.sub p.param_type.c_type ~pos:(String.length p.param_type.c_type - 1) ~len:1 = "*" then
-            sprintf "(Is_some(arg%d) ? %s(Some_val(arg%d)) : NULL)" (i + 1) mapping.ml_to_c (i + 1)
-          else
-            sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
-        else
-          sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
+        let param_type = { p.param_type with nullable = p.nullable || p.param_type.nullable } in
+        nullable_ml_to_c_expr ~var:(sprintf "arg%d" (i + 1)) ~gir_type:param_type ~mapping
       | None -> sprintf "arg%d" (i + 1)
     ) ctor.ctor_parameters
   in
@@ -184,63 +226,122 @@ let generate_c_constructor ~enums ~bitfields ~c_type (ctor : gir_constructor) _c
       val_macro var_name
   end
 
-let generate_c_method ~enums ~bitfields ~c_type (meth : gir_method) _class_name =
+let generate_c_method ~classes ~enums ~bitfields ~c_type (meth : gir_method) _class_name =
   let c_name = meth.c_identifier in
   let ml_name = Str.global_replace (Str.regexp "gtk_") "ml_gtk_" c_name in
-  let param_count = 1 + List.length meth.parameters in
+  let in_params = List.filter ~f:(fun p -> p.direction <> Out) meth.parameters in
+  let param_count = 1 + List.length in_params in
   let params = "value self" ::
-    List.mapi ~f:(fun i _ -> sprintf "value arg%d" (i + 1)) meth.parameters in
+    List.mapi ~f:(fun i _ -> sprintf "value arg%d" (i + 1)) in_params in
   let param_names = "self" ::
-    List.mapi ~f:(fun i _ -> sprintf "arg%d" (i + 1)) meth.parameters in
+    List.mapi ~f:(fun i _ -> sprintf "arg%d" (i + 1)) in_params in
 
   let type_val_macro = sprintf "%s_val" c_type in
   let self_cast = sprintf "%s(self)" type_val_macro in
 
   (* Build C call - handle nullable parameters *)
-  let c_args = self_cast ::
-    List.mapi ~f:(fun i p ->
-      match Type_mappings.find_type_mapping ~enums ~bitfields p.param_type.c_type with
-      | Some mapping ->
-        if p.nullable then
-          if p.param_type.c_type = "GtkWidget*" then
-            sprintf "GtkWidget_option_val(arg%d)" (i + 1)
-          else if p.param_type.c_type = "GtkCheckButton*" then
-            sprintf "(Is_some(arg%d) ? GtkWidget_val(Some_val(arg%d)) : NULL)" (i + 1) (i + 1)
-          else if String.length p.param_type.c_type > 3 &&
-                  String.sub p.param_type.c_type ~pos:(String.length p.param_type.c_type - 1) ~len:1 = "*" then
-            sprintf "(Is_some(arg%d) ? %s(Some_val(arg%d)) : NULL)" (i + 1) mapping.ml_to_c (i + 1)
-          else
-            sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
-        else
-          sprintf "%s(arg%d)" mapping.ml_to_c (i + 1)
-      | None -> sprintf "arg%d" (i + 1)
-    ) meth.parameters in
+  let out_decls, c_args =
+    let ocaml_idx = ref 0 in
+    let out_decl_buf = Buffer.create 128 in
+    let args = ref [] in
+    List.iteri ~f:(fun i p ->
+      match p.direction with
+      | Out ->
+        let var_name = sprintf "out%d" (i + 1) in
+        let base_c_type =
+          if String.length p.param_type.c_type > 0 &&
+             String.sub p.param_type.c_type ~pos:(String.length p.param_type.c_type - 1) ~len:1 = "*"
+          then String.sub p.param_type.c_type ~pos:0 ~len:(String.length p.param_type.c_type - 1)
+          else p.param_type.c_type
+        in
+        bprintf out_decl_buf "%s %s;\n" base_c_type var_name;
+        args := !args @ [sprintf "&%s" var_name]
+      | In | InOut ->
+        incr ocaml_idx;
+        let arg_name = sprintf "arg%d" !ocaml_idx in
+        let arg_expr = match Type_mappings.find_type_mapping ~enums ~bitfields ~classes p.param_type.c_type with
+          | Some mapping ->
+            let param_type = { p.param_type with nullable = p.nullable || p.param_type.nullable } in
+            nullable_ml_to_c_expr ~var:arg_name ~gir_type:param_type ~mapping
+          | None -> arg_name
+        in
+        args := !args @ [arg_expr]
+    ) meth.parameters;
+    Buffer.contents out_decl_buf, self_cast :: !args
+  in
 
   (* Build return conversion *)
   let ret_type = meth.return_type.c_type in
-  let locals = if meth.throws then
-    sprintf "GError *error = NULL;\n"
-  else "" in
+  let locals = Buffer.create 256 in
+  if meth.throws then Buffer.add_string locals "GError *error = NULL;\n";
+  Buffer.add_string locals out_decls;
+  let locals = Buffer.contents locals in
   let (c_call, ret_conv) =
     let args = (String.concat ~sep:", " c_args) ^ (if meth.throws then ", &error" else "") in
 
+    let out_conversions =
+      List.filter_map ~f:(fun (p, idx) ->
+        if p.direction = Out then
+          let base_gir_type =
+            if String.length p.param_type.c_type > 0 &&
+               String.sub p.param_type.c_type ~pos:(String.length p.param_type.c_type - 1) ~len:1 = "*"
+            then { p.param_type with c_type = String.sub p.param_type.c_type ~pos:0 ~len:(String.length p.param_type.c_type - 1) }
+            else p.param_type
+          in
+          match Type_mappings.find_type_mapping ~enums ~bitfields ~classes base_gir_type.c_type with
+          | Some mapping ->
+            let var_name = sprintf "out%d" (idx + 1) in
+            Some (nullable_c_to_ml_expr ~var:var_name ~gir_type:base_gir_type ~mapping)
+          | None -> None
+        else None
+      ) (List.mapi ~f:(fun i p -> (p, i)) meth.parameters)
+    in
+
+    let combine_results ml_primary =
+      match (ml_primary, out_conversions) with
+      | (None, []) -> if meth.throws then
+          "if (error == NULL) CAMLreturn(Res_Ok(ValUnit)); else CAMLreturn(Res_Error(Val_GError(error)));"
+        else "CAMLreturn(Val_unit);"
+      | (Some v, []) -> if meth.throws then
+          sprintf "if (error == NULL) CAMLreturn(Res_Ok(%s)); else CAMLreturn(Res_Error(Val_GError(error)));" v
+        else sprintf "CAMLreturn(%s);" v
+      | (None, [single]) -> if meth.throws then
+          "CAMLlocal1(ret);\n    ret = " ^ single ^ ";\n    if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));"
+        else sprintf "CAMLreturn(%s);" single
+      | (Some v, outs) ->
+        let all = v :: outs in
+        let stores = List.mapi ~f:(fun i expr -> sprintf "Store_field(ret, %d, %s);" i expr) all in
+        let alloc = sprintf "ret = caml_alloc(%d, 0);" (List.length all) in
+        if meth.throws then
+          String.concat ~sep:"\n    " (
+            ["CAMLlocal1(ret);"; alloc] @ stores @
+            ["if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));"]
+          )
+        else
+          String.concat ~sep:"\n    " (["CAMLlocal1(ret);"; alloc] @ stores @ ["CAMLreturn(ret);"])
+      | (None, outs) ->
+        let stores = List.mapi ~f:(fun i expr -> sprintf "Store_field(ret, %d, %s);" i expr) outs in
+        let alloc = sprintf "ret = caml_alloc(%d, 0);" (List.length outs) in
+        if meth.throws then
+          String.concat ~sep:"\n    " (
+            ["CAMLlocal1(ret);"; alloc] @ stores @
+            ["if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));"]
+          )
+        else
+          String.concat ~sep:"\n    " (["CAMLlocal1(ret);"; alloc] @ stores @ ["CAMLreturn(ret);"])
+    in
+
     if ret_type = "void" then
-      (sprintf "%s(%s);" c_name args,
-       if meth.throws then
-         "if (error == NULL) CAMLreturn(Res_Ok(ValUnit)); else CAMLreturn(Res_Error(Val_GError(error)));"
-         else "CAMLreturn(Val_unit);")
+      (sprintf "%s(%s);" c_name args, combine_results None)
     else
-      match Type_mappings.find_type_mapping ~enums ~bitfields ret_type with
+      match Type_mappings.find_type_mapping ~enums ~bitfields ~classes ret_type with
       | Some mapping ->
+        let ml_result = nullable_c_to_ml_expr ~var:"result" ~gir_type:meth.return_type ~mapping in
         (sprintf "%s result = %s(%s);" ret_type c_name args,
-         if meth.throws then
-            sprintf "if (error == NULL) CAMLreturn(Res_Ok(%s(result))); else CAMLreturn(Res_Error(Val_GError(error)));" mapping.c_to_ml
-         else sprintf "CAMLreturn(%s(result));" mapping.c_to_ml)
+         combine_results (Some ml_result))
       | None ->
         (sprintf "void *result = %s(%s);" c_name args,
-         if meth.throws then
-           "if (error == NULL) CAMLreturn(Res_Ok((value)result)); else CAMLreturn(Res_Error(Val_GError(error)));"
-         else "CAMLreturn((value)result);")
+         combine_results (Some "(value)result"))
   in
 
   (* For functions with >5 parameters, generate both bytecode and native variants *)
@@ -292,14 +393,14 @@ let generate_c_method ~enums ~bitfields ~c_type (meth : gir_method) _class_name 
       c_call
       ret_conv
 
-let generate_c_property_getter ~enums ~bitfields ~c_type (prop : gir_property) class_name =
+let generate_c_property_getter ~classes ~enums ~bitfields ~c_type (prop : gir_property) class_name =
   let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
   let prop_snake = Utils.to_snake_case prop_name_cleaned in
   let class_snake = Utils.to_snake_case class_name in
   let ml_name = sprintf "ml_gtk_%s_get_%s" class_snake prop_snake in
 
   (* Determine property type mapping *)
-  let type_info = match Type_mappings.find_type_mapping ~enums ~bitfields prop.prop_type.c_type with
+  let type_info = match Type_mappings.find_type_mapping ~enums ~bitfields ~classes prop.prop_type.c_type with
     | Some mapping -> mapping
     | None -> {
         ocaml_type = "unit";
@@ -307,6 +408,10 @@ let generate_c_property_getter ~enums ~bitfields ~c_type (prop : gir_property) c
         ml_to_c = "Unit_val";
         needs_copy = false;
       }
+  in
+
+  let ml_prop_value =
+    nullable_c_to_ml_expr ~var:"prop_value" ~gir_type:prop.prop_type ~mapping:type_info
   in
 
   let c_cast = sprintf "%s_val" c_type in
@@ -319,23 +424,23 @@ let generate_c_property_getter ~enums ~bitfields ~c_type (prop : gir_property) c
     %s *obj = (%s *)%s(self);\n\
     %s prop_value;\n\
     g_object_get(G_OBJECT(obj), \"%s\", &prop_value, NULL);\n\
-    result = %s(prop_value);\n\
+    result = %s;\n\
     CAMLreturn(result);\n\
 }\n"
     ml_name
     c_type_name c_type_name c_cast
     prop.prop_type.c_type
     prop.prop_name
-    type_info.c_to_ml
+    ml_prop_value
 
-let generate_c_property_setter ~enums ~bitfields ~c_type (prop : gir_property) class_name =
+let generate_c_property_setter ~classes ~enums ~bitfields ~c_type (prop : gir_property) class_name =
   let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
   let prop_snake = Utils.to_snake_case prop_name_cleaned in
   let class_snake = Utils.to_snake_case class_name in
   let ml_name = sprintf "ml_gtk_%s_set_%s" class_snake prop_snake in
 
   (* Determine property type mapping *)
-  let type_info = match Type_mappings.find_type_mapping ~enums ~bitfields prop.prop_type.c_type with
+  let type_info = match Type_mappings.find_type_mapping ~enums ~bitfields ~classes prop.prop_type.c_type with
     | Some mapping -> mapping
     | None -> {
         ocaml_type = "unit";
@@ -345,24 +450,28 @@ let generate_c_property_setter ~enums ~bitfields ~c_type (prop : gir_property) c
       }
   in
 
+  let c_value_expr =
+    nullable_ml_to_c_expr ~var:"new_value" ~gir_type:prop.prop_type ~mapping:type_info
+  in
+
   let c_cast = sprintf "%s_val" c_type in
   let c_type_name = c_type in
 
   sprintf "\nCAMLexport CAMLprim value %s(value self, value new_value)\n\
 {\n\
-    CAMLexport CAMLparam2(self, new_value);\n\
+    CAMLparam2(self, new_value);\n\
     %s *obj = (%s *)%s(self);\n\
-    %s c_value = %s(new_value);\n\
+    %s c_value = %s;\n\
     g_object_set(G_OBJECT(obj), \"%s\", c_value, NULL);\n\
     CAMLreturn(Val_unit);\n\
 }\n"
     ml_name
     c_type_name c_type_name c_cast
-    prop.prop_type.c_type type_info.ml_to_c
+    prop.prop_type.c_type c_value_expr
     prop.prop_name
 
 (* Generate complete C file for a single class/interface *)
-let generate_class_c_code ~enums ~bitfields ~external_enums ~external_bitfields ~c_type class_name constructors methods properties =
+let generate_class_c_code ~classes ~enums ~bitfields ~external_enums ~external_bitfields ~c_type class_name constructors methods properties =
   let buf = Buffer.create 4096 in
 
   (* Add header *)
@@ -371,13 +480,13 @@ let generate_class_c_code ~enums ~bitfields ~external_enums ~external_bitfields 
   (* Constructors - skip those that throw GError *)
   List.iter ~f:(fun ctor ->
     if not ctor.throws then
-      Buffer.add_string buf (generate_c_constructor ~enums ~bitfields ~c_type ctor class_name)
+      Buffer.add_string buf (generate_c_constructor ~classes ~enums ~bitfields ~c_type ctor class_name)
   ) constructors;
 
   (* Build list of property names to avoid duplicates *)
   let property_method_names = ref [] in
   List.iter ~f:(fun (prop : gir_property) ->
-    let has_type_mapping = match Type_mappings.find_type_mapping ~enums ~bitfields prop.prop_type.c_type with
+    let has_type_mapping = match Type_mappings.find_type_mapping ~enums ~bitfields ~classes prop.prop_type.c_type with
       | Some _ -> true
       | None -> false
     in
@@ -398,27 +507,39 @@ let generate_class_c_code ~enums ~bitfields ~external_enums ~external_bitfields 
     let ocaml_name = Utils.to_snake_case (
       Str.global_replace (Str.regexp (sprintf "gtk_%s_" class_snake)) "" c_name
     ) in
+    let has_blacklisted_type =
+      Blacklists.is_blacklisted_type_name meth.return_type.name ||
+      Blacklists.is_blacklisted_type_name meth.return_type.c_type ||
+      List.exists meth.parameters ~f:(fun p ->
+        Blacklists.is_blacklisted_type_name p.param_type.name ||
+        Blacklists.is_blacklisted_type_name p.param_type.c_type)
+    in
     (* Skip if: variadic function, duplicates property, or unmapped return type *)
     let should_skip =
       (meth.parameters |> List.exists ~f:(fun p -> p.varargs)) ||
       List.mem ocaml_name ~set:!property_method_names ||
-      Blacklists.should_skip_method ~find_type_mapping:(Type_mappings.find_type_mapping ~enums ~bitfields) ~enums ~bitfields meth
+      has_blacklisted_type ||
+      Blacklists.should_skip_method ~find_type_mapping:(Type_mappings.find_type_mapping ~enums ~bitfields ~classes) ~enums ~bitfields meth
     in
     if not should_skip then
-      Buffer.add_string buf (generate_c_method ~enums ~bitfields ~c_type meth class_name)
+      Buffer.add_string buf (generate_c_method ~classes ~enums ~bitfields ~c_type meth class_name)
   ) (List.rev methods);
 
   (* Generate property getters and setters *)
   List.iter ~f:(fun (prop : gir_property) ->
-    let is_simple_type = match Type_mappings.find_type_mapping ~enums ~bitfields prop.prop_type.c_type with
+    let is_blacklisted =
+      Blacklists.is_blacklisted_type_name prop.prop_type.name ||
+      Blacklists.is_blacklisted_type_name prop.prop_type.c_type
+    in
+    let is_simple_type = not is_blacklisted && match Type_mappings.find_type_mapping ~enums ~bitfields ~classes prop.prop_type.c_type with
       | Some _ -> true
       | None -> false
     in
     if is_simple_type then begin
       if prop.readable then
-        Buffer.add_string buf (generate_c_property_getter ~enums ~bitfields ~c_type prop class_name);
+        Buffer.add_string buf (generate_c_property_getter ~classes ~enums ~bitfields ~c_type prop class_name);
       if prop.writable && not prop.construct_only then
-        Buffer.add_string buf (generate_c_property_setter ~enums ~bitfields ~c_type prop class_name);
+        Buffer.add_string buf (generate_c_property_setter ~classes ~enums ~bitfields ~c_type prop class_name);
     end
   ) properties;
 

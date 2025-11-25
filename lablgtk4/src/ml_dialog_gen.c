@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkDialog */
+#ifndef Val_GtkDialog
 #define GtkDialog_val(val) ((GtkDialog*)ext_of_val(val))
 #define Val_GtkDialog(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkDialog */
 
 
 CAMLexport CAMLprim value ml_gtk_dialog_new(value unit)
@@ -28,7 +31,7 @@ CAMLreturn(Val_GtkDialog(obj));
 CAMLexport CAMLprim value ml_gtk_dialog_new_with_buttons(value arg1, value arg2, value arg3, value arg4, value arg5)
 {
 CAMLparam5(arg1, arg2, arg3, arg4, arg5);
-GtkDialog *obj = gtk_dialog_new_with_buttons((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL), (Is_some(arg2) ? GtkWidget_val(Some_val(arg2)) : NULL), GtkDialogFlags_val(arg3), (Is_some(arg4) ? String_val(Some_val(arg4)) : NULL), arg5);
+GtkDialog *obj = gtk_dialog_new_with_buttons(String_option_val(arg1), Option_val(arg2, GtkWindow_val, NULL), GtkDialogFlags_val(arg3), String_option_val(arg4), arg5);
 CAMLreturn(Val_GtkDialog(obj));
 }
 
@@ -61,7 +64,7 @@ CAMLexport CAMLprim value ml_gtk_dialog_get_widget_for_response(value self, valu
 CAMLparam2(self, arg1);
 
 GtkWidget* result = gtk_dialog_get_widget_for_response(GtkDialog_val(self), Int_val(arg1));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_dialog_get_response_for_widget(value self, value arg1)
@@ -102,15 +105,4 @@ CAMLparam3(self, arg1, arg2);
 
 gtk_dialog_add_action_widget(GtkDialog_val(self), GtkWidget_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_dialog_get_use_header_bar(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkDialog *obj = (GtkDialog *)GtkDialog_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "use-header-bar", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
 }

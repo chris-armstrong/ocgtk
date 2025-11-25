@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkGraphicsOffload */
+#ifndef Val_GtkGraphicsOffload
 #define GtkGraphicsOffload_val(val) ((GtkGraphicsOffload*)ext_of_val(val))
 #define Val_GtkGraphicsOffload(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkGraphicsOffload */
 
 
 CAMLexport CAMLprim value ml_gtk_graphics_offload_new(value arg1)
@@ -54,5 +57,5 @@ CAMLexport CAMLprim value ml_gtk_graphics_offload_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_graphics_offload_get_child(GtkGraphicsOffload_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }

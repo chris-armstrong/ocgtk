@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkTreeModelFilter */
+#ifndef Val_GtkTreeModelFilter
 #define GtkTreeModelFilter_val(val) ((GtkTreeModelFilter*)ext_of_val(val))
 #define Val_GtkTreeModelFilter(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkTreeModelFilter */
 
 
 CAMLexport CAMLprim value ml_gtk_tree_model_filter_set_visible_column(value self, value arg1)
@@ -47,14 +50,15 @@ CAMLexport CAMLprim value ml_gtk_tree_model_filter_convert_path_to_child_path(va
 CAMLparam2(self, arg1);
 
 GtkTreePath* result = gtk_tree_model_filter_convert_path_to_child_path(GtkTreeModelFilter_val(self), GtkWidget_val(arg1));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_model_filter_convert_iter_to_child_iter(value self, value arg1, value arg2)
+CAMLexport CAMLprim value ml_gtk_tree_model_filter_convert_iter_to_child_iter(value self, value arg1)
 {
-CAMLparam3(self, arg1, arg2);
+CAMLparam2(self, arg1);
+GtkTreeIter out1;
 
-gtk_tree_model_filter_convert_iter_to_child_iter(GtkTreeModelFilter_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2));
+gtk_tree_model_filter_convert_iter_to_child_iter(GtkTreeModelFilter_val(self), &out1, GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -63,14 +67,15 @@ CAMLexport CAMLprim value ml_gtk_tree_model_filter_convert_child_path_to_path(va
 CAMLparam2(self, arg1);
 
 GtkTreePath* result = gtk_tree_model_filter_convert_child_path_to_path(GtkTreeModelFilter_val(self), GtkWidget_val(arg1));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_model_filter_convert_child_iter_to_iter(value self, value arg1, value arg2)
+CAMLexport CAMLprim value ml_gtk_tree_model_filter_convert_child_iter_to_iter(value self, value arg1)
 {
-CAMLparam3(self, arg1, arg2);
+CAMLparam2(self, arg1);
+GtkTreeIter out1;
 
-gboolean result = gtk_tree_model_filter_convert_child_iter_to_iter(GtkTreeModelFilter_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2));
+gboolean result = gtk_tree_model_filter_convert_child_iter_to_iter(GtkTreeModelFilter_val(self), &out1, GtkWidget_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 

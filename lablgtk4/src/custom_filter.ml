@@ -3,5 +3,6 @@
 
 type t = Gtk.widget
 
+(** Create a new CustomFilter *)
 external new_ : unit -> unit -> unit -> t = "ml_gtk_custom_filter_new"
 

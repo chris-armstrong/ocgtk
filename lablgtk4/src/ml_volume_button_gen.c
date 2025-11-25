@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkVolumeButton */
+#ifndef Val_GtkVolumeButton
 #define GtkVolumeButton_val(val) ((GtkVolumeButton*)ext_of_val(val))
 #define Val_GtkVolumeButton(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkVolumeButton */
 
 
 CAMLexport CAMLprim value ml_gtk_volume_button_new(value unit)
@@ -23,24 +26,4 @@ CAMLexport CAMLprim value ml_gtk_volume_button_new(value unit)
 CAMLparam1(unit);
 GtkVolumeButton *obj = gtk_volume_button_new();
 CAMLreturn(Val_GtkVolumeButton(obj));
-}
-
-CAMLexport CAMLprim value ml_gtk_volume_button_get_use_symbolic(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkVolumeButton *obj = (GtkVolumeButton *)GtkVolumeButton_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "use-symbolic", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_volume_button_set_use_symbolic(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkVolumeButton *obj = (GtkVolumeButton *)GtkVolumeButton_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "use-symbolic", c_value, NULL);
-CAMLreturn(Val_unit);
 }

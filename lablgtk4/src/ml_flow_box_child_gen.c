@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkFlowBoxChild */
+#ifndef Val_GtkFlowBoxChild
 #define GtkFlowBoxChild_val(val) ((GtkFlowBoxChild*)ext_of_val(val))
 #define Val_GtkFlowBoxChild(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkFlowBoxChild */
 
 
 CAMLexport CAMLprim value ml_gtk_flow_box_child_new(value unit)
@@ -54,7 +57,7 @@ CAMLexport CAMLprim value ml_gtk_flow_box_child_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_flow_box_child_get_child(GtkFlowBoxChild_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_flow_box_child_changed(value self)

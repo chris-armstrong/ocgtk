@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkGestureSwipe */
+#ifndef Val_GtkGestureSwipe
 #define GtkGestureSwipe_val(val) ((GtkGestureSwipe*)ext_of_val(val))
 #define Val_GtkGestureSwipe(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkGestureSwipe */
 
 
 CAMLexport CAMLprim value ml_gtk_gesture_swipe_new(value unit)

@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkTreeDragSource */
+#ifndef Val_GtkTreeDragSource
 #define GtkTreeDragSource_val(val) ((GtkTreeDragSource*)ext_of_val(val))
 #define Val_GtkTreeDragSource(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkTreeDragSource */
 
 
 CAMLexport CAMLprim value ml_gtk_tree_drag_source_row_draggable(value self, value arg1)

@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkPasswordEntryBuffer */
+#ifndef Val_GtkPasswordEntryBuffer
 #define GtkPasswordEntryBuffer_val(val) ((GtkPasswordEntryBuffer*)ext_of_val(val))
 #define Val_GtkPasswordEntryBuffer(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkPasswordEntryBuffer */
 
 
 CAMLexport CAMLprim value ml_gtk_password_entry_buffer_new(value unit)

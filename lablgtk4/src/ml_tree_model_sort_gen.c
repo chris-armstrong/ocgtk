@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkTreeModelSort */
+#ifndef Val_GtkTreeModelSort
 #define GtkTreeModelSort_val(val) ((GtkTreeModelSort*)ext_of_val(val))
 #define Val_GtkTreeModelSort(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkTreeModelSort */
 
 
 CAMLexport CAMLprim value ml_gtk_tree_model_sort_new_with_model(value arg1)
@@ -54,14 +57,15 @@ CAMLexport CAMLprim value ml_gtk_tree_model_sort_convert_path_to_child_path(valu
 CAMLparam2(self, arg1);
 
 GtkTreePath* result = gtk_tree_model_sort_convert_path_to_child_path(GtkTreeModelSort_val(self), GtkWidget_val(arg1));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_model_sort_convert_iter_to_child_iter(value self, value arg1, value arg2)
+CAMLexport CAMLprim value ml_gtk_tree_model_sort_convert_iter_to_child_iter(value self, value arg1)
 {
-CAMLparam3(self, arg1, arg2);
+CAMLparam2(self, arg1);
+GtkTreeIter out1;
 
-gtk_tree_model_sort_convert_iter_to_child_iter(GtkTreeModelSort_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2));
+gtk_tree_model_sort_convert_iter_to_child_iter(GtkTreeModelSort_val(self), &out1, GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -70,14 +74,15 @@ CAMLexport CAMLprim value ml_gtk_tree_model_sort_convert_child_path_to_path(valu
 CAMLparam2(self, arg1);
 
 GtkTreePath* result = gtk_tree_model_sort_convert_child_path_to_path(GtkTreeModelSort_val(self), GtkWidget_val(arg1));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_model_sort_convert_child_iter_to_iter(value self, value arg1, value arg2)
+CAMLexport CAMLprim value ml_gtk_tree_model_sort_convert_child_iter_to_iter(value self, value arg1)
 {
-CAMLparam3(self, arg1, arg2);
+CAMLparam2(self, arg1);
+GtkTreeIter out1;
 
-gboolean result = gtk_tree_model_sort_convert_child_iter_to_iter(GtkTreeModelSort_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2));
+gboolean result = gtk_tree_model_sort_convert_child_iter_to_iter(GtkTreeModelSort_val(self), &out1, GtkWidget_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 

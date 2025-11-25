@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkPopover */
+#ifndef Val_GtkPopover
 #define GtkPopover_val(val) ((GtkPopover*)ext_of_val(val))
 #define Val_GtkPopover(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkPopover */
 
 
 CAMLexport CAMLprim value ml_gtk_popover_new(value unit)
@@ -41,6 +44,22 @@ gtk_popover_set_offset(GtkPopover_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_popover_set_mnemonics_visible(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_popover_set_mnemonics_visible(GtkPopover_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_popover_set_has_arrow(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_popover_set_has_arrow(GtkPopover_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_popover_set_default_widget(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -54,6 +73,22 @@ CAMLexport CAMLprim value ml_gtk_popover_set_child(value self, value arg1)
 CAMLparam2(self, arg1);
 
 gtk_popover_set_child(GtkPopover_val(self), GtkWidget_option_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_popover_set_cascade_popdown(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_popover_set_cascade_popdown(GtkPopover_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_popover_set_autohide(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_popover_set_autohide(GtkPopover_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -89,90 +124,42 @@ GtkPositionType result = gtk_popover_get_position(GtkPopover_val(self));
 CAMLreturn(Val_GtkPositionType(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_popover_get_child(value self)
+CAMLexport CAMLprim value ml_gtk_popover_get_mnemonics_visible(value self)
 {
 CAMLparam1(self);
 
-GtkWidget* result = gtk_popover_get_child(GtkPopover_val(self));
-CAMLreturn(Val_GtkWidget(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_popover_get_autohide(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkPopover *obj = (GtkPopover *)GtkPopover_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "autohide", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_popover_set_autohide(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkPopover *obj = (GtkPopover *)GtkPopover_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "autohide", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_popover_get_cascade_popdown(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkPopover *obj = (GtkPopover *)GtkPopover_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "cascade-popdown", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_popover_set_cascade_popdown(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkPopover *obj = (GtkPopover *)GtkPopover_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "cascade-popdown", c_value, NULL);
-CAMLreturn(Val_unit);
+gboolean result = gtk_popover_get_mnemonics_visible(GtkPopover_val(self));
+CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_popover_get_has_arrow(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkPopover *obj = (GtkPopover *)GtkPopover_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "has-arrow", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
+
+gboolean result = gtk_popover_get_has_arrow(GtkPopover_val(self));
+CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_popover_set_has_arrow(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkPopover *obj = (GtkPopover *)GtkPopover_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "has-arrow", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_popover_get_mnemonics_visible(value self)
+CAMLexport CAMLprim value ml_gtk_popover_get_child(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkPopover *obj = (GtkPopover *)GtkPopover_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "mnemonics-visible", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
+
+GtkWidget* result = gtk_popover_get_child(GtkPopover_val(self));
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_popover_set_mnemonics_visible(value self, value new_value)
+CAMLexport CAMLprim value ml_gtk_popover_get_cascade_popdown(value self)
 {
-CAMLexport CAMLparam2(self, new_value);
-GtkPopover *obj = (GtkPopover *)GtkPopover_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "mnemonics-visible", c_value, NULL);
-CAMLreturn(Val_unit);
+CAMLparam1(self);
+
+gboolean result = gtk_popover_get_cascade_popdown(GtkPopover_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_popover_get_autohide(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_popover_get_autohide(GtkPopover_val(self));
+CAMLreturn(Val_bool(result));
 }

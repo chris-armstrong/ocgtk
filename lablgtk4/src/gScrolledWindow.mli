@@ -22,10 +22,10 @@ class scrolled_window_skel : Scrolled_window.t ->
     method add : GObj.widget -> unit
 
     method set_policy :
-      hpolicy:Scrolled_window.policy_type ->
-      vpolicy:Scrolled_window.policy_type ->
+      hpolicy:Gtk_enums.policytype ->
+      vpolicy:Gtk_enums.policytype ->
       unit
-    method policy : Scrolled_window.policy_type * Scrolled_window.policy_type
+    method policy : Gtk_enums.policytype * Gtk_enums.policytype
 
     method hscrollbar : GObj.widget option
     method vscrollbar : GObj.widget option
@@ -49,8 +49,8 @@ class scrolled_window : Scrolled_window.t ->
     @param min_content_height Minimum content height (default: -1, no minimum)
 *)
 val scrolled_window :
-  ?hpolicy:Scrolled_window.policy_type ->
-  ?vpolicy:Scrolled_window.policy_type ->
+  ?hpolicy:Gtk_enums.policytype ->
+  ?vpolicy:Gtk_enums.policytype ->
   ?min_content_width:int ->
   ?min_content_height:int ->
   unit -> scrolled_window

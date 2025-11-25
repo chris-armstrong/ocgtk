@@ -70,6 +70,8 @@ CAMLexport value ml_lookup_to_c (value table, value key);
 #define Some_val(v) Field(v, 0)
 #define Is_some(v) Is_block(v)
 
+#define Option_val(val, unwrap, default) ((val) == Val_none ? (default) : unwrap(Some_val(val)))
+
 #define Val_emptylist Val_int(0)
 
 /* Helper macro for option types */
@@ -163,6 +165,7 @@ void* ext_of_val(const value val);
 /* GtkWidget - GObject, use direct cast */
 #define GtkWidget_val(val) ((GtkWidget*)(ext_of_val(val)))
 #define Val_GtkWidget(obj) (val_of_ext(obj))
+CAMLexport value Val_GtkWidget_option(GtkWidget *obj);
 
 /* GtkWindow - GObject, use direct cast */
 #define GtkWindow_val(val) ((GtkWindow*)(ext_of_val(val)))

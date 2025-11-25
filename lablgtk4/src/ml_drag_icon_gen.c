@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkDragIcon */
+#ifndef Val_GtkDragIcon
 #define GtkDragIcon_val(val) ((GtkDragIcon*)ext_of_val(val))
 #define Val_GtkDragIcon(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkDragIcon */
 
 
 CAMLexport CAMLprim value ml_gtk_drag_icon_set_child(value self, value arg1)
@@ -31,5 +34,5 @@ CAMLexport CAMLprim value ml_gtk_drag_icon_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_drag_icon_get_child(GtkDragIcon_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }

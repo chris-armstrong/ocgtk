@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkIconPaintable */
+#ifndef Val_GtkIconPaintable
 #define GtkIconPaintable_val(val) ((GtkIconPaintable*)ext_of_val(val))
 #define Val_GtkIconPaintable(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkIconPaintable */
 
 
 CAMLexport CAMLprim value ml_gtk_icon_paintable_new_for_file(value arg1, value arg2, value arg3)
@@ -36,21 +39,7 @@ CAMLreturn(Val_bool(result));
 CAMLexport CAMLprim value ml_gtk_icon_paintable_get_icon_name(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkIconPaintable *obj = (GtkIconPaintable *)GtkIconPaintable_val(self);
-gchar* prop_value;
-g_object_get(G_OBJECT(obj), "icon-name", &prop_value, NULL);
-result = caml_copy_string(prop_value);
-CAMLreturn(result);
-}
 
-CAMLexport CAMLprim value ml_gtk_icon_paintable_get_is_symbolic(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkIconPaintable *obj = (GtkIconPaintable *)GtkIconPaintable_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "is-symbolic", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
+const char* result = gtk_icon_paintable_get_icon_name(GtkIconPaintable_val(self));
+CAMLreturn(Val_option_string(result));
 }

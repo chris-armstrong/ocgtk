@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkTreeSortable */
+#ifndef Val_GtkTreeSortable
 #define GtkTreeSortable_val(val) ((GtkTreeSortable*)ext_of_val(val))
 #define Val_GtkTreeSortable(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkTreeSortable */
 
 
 CAMLexport CAMLprim value ml_gtk_tree_sortable_sort_column_changed(value self)

@@ -142,8 +142,8 @@ val window :
 
 (** Create a scrolled window with a child widget *)
 val scrolled :
-  ?hpolicy:Scrolled_window.policy_type ->
-  ?vpolicy:Scrolled_window.policy_type ->
+  ?hpolicy:Gtk_enums.policytype ->
+  ?vpolicy:Gtk_enums.policytype ->
   ?min_content_width:int ->
   ?min_content_height:int ->
   GObj.widget ->

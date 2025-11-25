@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,14 +15,16 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkNumericSorter */
+#ifndef Val_GtkNumericSorter
 #define GtkNumericSorter_val(val) ((GtkNumericSorter*)ext_of_val(val))
 #define Val_GtkNumericSorter(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkNumericSorter */
 
 
 CAMLexport CAMLprim value ml_gtk_numeric_sorter_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkNumericSorter *obj = gtk_numeric_sorter_new((Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+GtkNumericSorter *obj = gtk_numeric_sorter_new(Option_val(arg1, GtkExpression_val, NULL));
 CAMLreturn(Val_GtkNumericSorter(obj));
 }
 
@@ -37,7 +40,7 @@ CAMLexport CAMLprim value ml_gtk_numeric_sorter_set_expression(value self, value
 {
 CAMLparam2(self, arg1);
 
-gtk_numeric_sorter_set_expression(GtkNumericSorter_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_numeric_sorter_set_expression(GtkNumericSorter_val(self), Option_val(arg1, GtkExpression_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -54,5 +57,5 @@ CAMLexport CAMLprim value ml_gtk_numeric_sorter_get_expression(value self)
 CAMLparam1(self);
 
 GtkExpression* result = gtk_numeric_sorter_get_expression(GtkNumericSorter_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_option(result, Val_GtkExpression));
 }

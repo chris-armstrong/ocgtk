@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkConstraintLayout */
+#ifndef Val_GtkConstraintLayout
 #define GtkConstraintLayout_val(val) ((GtkConstraintLayout*)ext_of_val(val))
 #define Val_GtkConstraintLayout(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkConstraintLayout */
 
 
 CAMLexport CAMLprim value ml_gtk_constraint_layout_new(value unit)
@@ -29,7 +32,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_layout_remove_guide(value self, valu
 {
 CAMLparam2(self, arg1);
 
-gtk_constraint_layout_remove_guide(GtkConstraintLayout_val(self), GtkWidget_val(arg1));
+gtk_constraint_layout_remove_guide(GtkConstraintLayout_val(self), GtkConstraintGuide_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -37,7 +40,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_layout_remove_constraint(value self,
 {
 CAMLparam2(self, arg1);
 
-gtk_constraint_layout_remove_constraint(GtkConstraintLayout_val(self), GtkWidget_val(arg1));
+gtk_constraint_layout_remove_constraint(GtkConstraintLayout_val(self), GtkConstraint_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -53,7 +56,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_layout_add_guide(value self, value a
 {
 CAMLparam2(self, arg1);
 
-gtk_constraint_layout_add_guide(GtkConstraintLayout_val(self), GtkWidget_val(arg1));
+gtk_constraint_layout_add_guide(GtkConstraintLayout_val(self), GtkConstraintGuide_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -61,6 +64,6 @@ CAMLexport CAMLprim value ml_gtk_constraint_layout_add_constraint(value self, va
 {
 CAMLparam2(self, arg1);
 
-gtk_constraint_layout_add_constraint(GtkConstraintLayout_val(self), GtkWidget_val(arg1));
+gtk_constraint_layout_add_constraint(GtkConstraintLayout_val(self), GtkConstraint_val(arg1));
 CAMLreturn(Val_unit);
 }

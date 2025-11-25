@@ -7,11 +7,11 @@
 (** {2 Button} *)
 
 (** Button signal connections *)
-class button_signals : Gtk.widget -> object
+class button_signals : Button.t -> object
   method clicked : callback:(unit -> unit) -> Gobject.Signal.handler_id
 end
 
-class button_skel : Gtk.widget -> object
+class button_skel : Button.t -> object
   inherit GObj.widget_impl
   method connect : button_signals
   method set_label : string -> unit
@@ -28,7 +28,7 @@ class button_skel : Gtk.widget -> object
   method child : Gtk.widget option
 end
 
-class button : Gtk.widget -> object
+class button : Button.t -> object
   inherit button_skel
 end
 
@@ -43,7 +43,7 @@ val button :
 
 (** {2 Check Button} *)
 
-class check_button_skel : Gtk.widget -> object
+class check_button_skel : Check_button.t -> object
   inherit GObj.widget_impl
   method set_active : bool -> unit
   method active : bool
@@ -56,7 +56,7 @@ class check_button_skel : Gtk.widget -> object
   method set_group : check_button option -> unit
 end
 
-and check_button : Gtk.widget -> object
+and check_button : Check_button.t -> object
   inherit check_button_skel
 end
 
@@ -80,14 +80,27 @@ val radio_button :
 
 (** {2 Toggle Button} *)
 
-class toggle_button_skel : Gtk.widget -> object
-  inherit button_skel
+class toggle_button_skel : Toggle_button.t -> object
+  inherit GObj.widget_impl
+  method connect : button_signals
+  method set_label : string -> unit
+  method label : string
+  method set_has_frame : bool -> unit
+  method has_frame : bool
+  method set_use_underline : bool -> unit
+  method use_underline : bool
+  method set_icon_name : string -> unit
+  method icon_name : string
+  method set_can_shrink : bool -> unit
+  method can_shrink : bool
+  method set_child : Gtk.widget option -> unit
+  method child : Gtk.widget option
   method set_active : bool -> unit
   method active : bool
   method toggled : unit -> unit
 end
 
-class toggle_button : Gtk.widget -> object
+class toggle_button : Toggle_button.t -> object
   inherit toggle_button_skel
 end
 

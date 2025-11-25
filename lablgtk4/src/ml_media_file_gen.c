@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkMediaFile */
+#ifndef Val_GtkMediaFile
 #define GtkMediaFile_val(val) ((GtkMediaFile*)ext_of_val(val))
 #define Val_GtkMediaFile(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkMediaFile */
 
 
 CAMLexport CAMLprim value ml_gtk_media_file_new(value unit)
@@ -57,7 +60,7 @@ CAMLexport CAMLprim value ml_gtk_media_file_set_resource(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_media_file_set_resource(GtkMediaFile_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_media_file_set_resource(GtkMediaFile_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -65,7 +68,7 @@ CAMLexport CAMLprim value ml_gtk_media_file_set_filename(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_media_file_set_filename(GtkMediaFile_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_media_file_set_filename(GtkMediaFile_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 

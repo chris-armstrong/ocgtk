@@ -8,10 +8,10 @@ open GObj
 
 (** {2 Button Signals} *)
 
-class button_signals obj = object
+class button_signals (obj : Button.t) = object
   method clicked ~callback =
     Gobject.Signal.connect_simple
-      (obj :> [`widget] Gobject.obj)
+      (Button.as_widget obj :> [`widget] Gobject.obj)
       ~name:"clicked"
       ~callback
       ~after:false
@@ -19,8 +19,8 @@ end
 
 (** {2 Button} *)
 
-class button_skel obj = object (self)
-  inherit widget_impl obj
+class button_skel (obj : Button.t) = object (self)
+  inherit widget_impl (Button.as_widget obj)
 
   method connect = new button_signals obj
 
@@ -64,8 +64,9 @@ let button ?label ?use_mnemonic ?icon_name ?has_frame ?packing ?show () =
 
 (** {2 Check Button} *)
 
-class check_button_skel obj = object
-  inherit widget_impl obj
+class check_button_skel (obj : Check_button.t) = object
+  inherit widget_impl (Check_button.as_widget obj)
+  method as_widget = Check_button.as_widget obj
 
   method set_active active = GtkCheckButton.set_active obj active
   method active = GtkCheckButton.get_active obj
@@ -80,10 +81,11 @@ class check_button_skel obj = object
   method inconsistent = GtkCheckButton.get_inconsistent obj
 
   method set_group group =
-    GtkCheckButton.set_group obj (Option.map (fun (g : check_button) -> g#as_widget) group)
+    let mapped = Option.map (fun (g : check_button) -> (Obj.magic g : Check_button.t)) group in
+    GtkCheckButton.set_group obj mapped
 end
 
-and check_button obj = object
+and check_button (obj : Check_button.t) = object
   inherit check_button_skel obj
 end
 
@@ -107,8 +109,30 @@ let radio_button ?label ?use_mnemonic ?group ?packing ?show () =
 
 (** {2 Toggle Button} *)
 
-class toggle_button_skel obj = object
-  inherit button_skel obj
+class toggle_button_skel (obj : Toggle_button.t) = object
+  (* ToggleButton is a subclass of Button; we downcast for shared helpers. *)
+  val btn = (Obj.magic obj : Button.t)
+  inherit widget_impl (Toggle_button.as_widget obj)
+
+  method connect = new button_signals btn
+
+  method set_label label = GtkButton.set_label btn label
+  method label = GtkButton.get_label btn
+
+  method set_has_frame has_frame = GtkButton.set_has_frame btn has_frame
+  method has_frame = GtkButton.get_has_frame btn
+
+  method set_use_underline use_underline = GtkButton.set_use_underline btn use_underline
+  method use_underline = GtkButton.get_use_underline btn
+
+  method set_icon_name icon_name = GtkButton.set_icon_name btn icon_name
+  method icon_name = GtkButton.get_icon_name btn
+
+  method set_can_shrink can_shrink = GtkButton.set_can_shrink btn can_shrink
+  method can_shrink = GtkButton.get_can_shrink btn
+
+  method set_child child = GtkButton.set_child btn child
+  method child = GtkButton.get_child btn
 
   method set_active active = GtkToggleButton.set_active obj active
   method active = GtkToggleButton.get_active obj
@@ -116,7 +140,7 @@ class toggle_button_skel obj = object
   method toggled () = GtkToggleButton.toggled obj
 end
 
-class toggle_button obj = object
+class toggle_button (obj : Toggle_button.t) = object
   inherit toggle_button_skel obj
 end
 

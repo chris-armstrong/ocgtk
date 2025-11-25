@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkMenuButton */
+#ifndef Val_GtkMenuButton
 #define GtkMenuButton_val(val) ((GtkMenuButton*)ext_of_val(val))
 #define Val_GtkMenuButton(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkMenuButton */
 
 
 CAMLexport CAMLprim value ml_gtk_menu_button_new(value unit)
@@ -25,11 +28,51 @@ GtkMenuButton *obj = gtk_menu_button_new();
 CAMLreturn(Val_GtkMenuButton(obj));
 }
 
+CAMLexport CAMLprim value ml_gtk_menu_button_set_use_underline(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_menu_button_set_use_underline(GtkMenuButton_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_menu_button_set_primary(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_menu_button_set_primary(GtkMenuButton_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_menu_button_set_popover(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gtk_menu_button_set_popover(GtkMenuButton_val(self), GtkWidget_option_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_menu_button_set_label(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_menu_button_set_label(GtkMenuButton_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_menu_button_set_icon_name(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_menu_button_set_icon_name(GtkMenuButton_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_menu_button_set_has_frame(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_menu_button_set_has_frame(GtkMenuButton_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -49,6 +92,30 @@ gtk_menu_button_set_child(GtkMenuButton_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_menu_button_set_can_shrink(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_menu_button_set_can_shrink(GtkMenuButton_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_menu_button_set_always_show_arrow(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_menu_button_set_always_show_arrow(GtkMenuButton_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_menu_button_set_active(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_menu_button_set_active(GtkMenuButton_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_menu_button_popup(value self)
 {
 CAMLparam1(self);
@@ -65,12 +132,52 @@ gtk_menu_button_popdown(GtkMenuButton_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_menu_button_get_use_underline(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_menu_button_get_use_underline(GtkMenuButton_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_menu_button_get_primary(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_menu_button_get_primary(GtkMenuButton_val(self));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_menu_button_get_popover(value self)
 {
 CAMLparam1(self);
 
 GtkPopover* result = gtk_menu_button_get_popover(GtkMenuButton_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_option(result, Val_GtkPopover));
+}
+
+CAMLexport CAMLprim value ml_gtk_menu_button_get_label(value self)
+{
+CAMLparam1(self);
+
+const char* result = gtk_menu_button_get_label(GtkMenuButton_val(self));
+CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_menu_button_get_icon_name(value self)
+{
+CAMLparam1(self);
+
+const char* result = gtk_menu_button_get_icon_name(GtkMenuButton_val(self));
+CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_menu_button_get_has_frame(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_menu_button_get_has_frame(GtkMenuButton_val(self));
+CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_menu_button_get_direction(value self)
@@ -86,165 +193,29 @@ CAMLexport CAMLprim value ml_gtk_menu_button_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_menu_button_get_child(GtkMenuButton_val(self));
-CAMLreturn(Val_GtkWidget(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_menu_button_get_active(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkMenuButton *obj = (GtkMenuButton *)GtkMenuButton_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "active", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_menu_button_set_active(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkMenuButton *obj = (GtkMenuButton *)GtkMenuButton_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "active", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_menu_button_get_always_show_arrow(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkMenuButton *obj = (GtkMenuButton *)GtkMenuButton_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "always-show-arrow", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_menu_button_set_always_show_arrow(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkMenuButton *obj = (GtkMenuButton *)GtkMenuButton_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "always-show-arrow", c_value, NULL);
-CAMLreturn(Val_unit);
+CAMLreturn(Val_GtkWidget_option(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_menu_button_get_can_shrink(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkMenuButton *obj = (GtkMenuButton *)GtkMenuButton_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "can-shrink", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
+
+gboolean result = gtk_menu_button_get_can_shrink(GtkMenuButton_val(self));
+CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_menu_button_set_can_shrink(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkMenuButton *obj = (GtkMenuButton *)GtkMenuButton_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "can-shrink", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_menu_button_get_has_frame(value self)
+CAMLexport CAMLprim value ml_gtk_menu_button_get_always_show_arrow(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkMenuButton *obj = (GtkMenuButton *)GtkMenuButton_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "has-frame", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
+
+gboolean result = gtk_menu_button_get_always_show_arrow(GtkMenuButton_val(self));
+CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_menu_button_set_has_frame(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkMenuButton *obj = (GtkMenuButton *)GtkMenuButton_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "has-frame", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_menu_button_get_icon_name(value self)
+CAMLexport CAMLprim value ml_gtk_menu_button_get_active(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkMenuButton *obj = (GtkMenuButton *)GtkMenuButton_val(self);
-gchar* prop_value;
-g_object_get(G_OBJECT(obj), "icon-name", &prop_value, NULL);
-result = caml_copy_string(prop_value);
-CAMLreturn(result);
-}
 
-CAMLexport CAMLprim value ml_gtk_menu_button_set_icon_name(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkMenuButton *obj = (GtkMenuButton *)GtkMenuButton_val(self);
-gchar* c_value = String_val(new_value);
-g_object_set(G_OBJECT(obj), "icon-name", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_menu_button_get_label(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkMenuButton *obj = (GtkMenuButton *)GtkMenuButton_val(self);
-gchar* prop_value;
-g_object_get(G_OBJECT(obj), "label", &prop_value, NULL);
-result = caml_copy_string(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_menu_button_set_label(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkMenuButton *obj = (GtkMenuButton *)GtkMenuButton_val(self);
-gchar* c_value = String_val(new_value);
-g_object_set(G_OBJECT(obj), "label", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_menu_button_get_primary(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkMenuButton *obj = (GtkMenuButton *)GtkMenuButton_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "primary", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_menu_button_set_primary(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkMenuButton *obj = (GtkMenuButton *)GtkMenuButton_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "primary", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_menu_button_get_use_underline(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkMenuButton *obj = (GtkMenuButton *)GtkMenuButton_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "use-underline", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_menu_button_set_use_underline(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkMenuButton *obj = (GtkMenuButton *)GtkMenuButton_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "use-underline", c_value, NULL);
-CAMLreturn(Val_unit);
+gboolean result = gtk_menu_button_get_active(GtkMenuButton_val(self));
+CAMLreturn(Val_bool(result));
 }

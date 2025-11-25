@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkActionable */
+#ifndef Val_GtkActionable
 #define GtkActionable_val(val) ((GtkActionable*)ext_of_val(val))
 #define Val_GtkActionable(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkActionable */
 
 
 CAMLexport CAMLprim value ml_gtk_actionable_set_detailed_action_name(value self, value arg1)
@@ -39,7 +42,7 @@ CAMLreturn(result);
 
 CAMLexport CAMLprim value ml_gtk_actionable_set_action_name(value self, value new_value)
 {
-CAMLexport CAMLparam2(self, new_value);
+CAMLparam2(self, new_value);
 GtkActionable *obj = (GtkActionable *)GtkActionable_val(self);
 gchar* c_value = String_val(new_value);
 g_object_set(G_OBJECT(obj), "action-name", c_value, NULL);

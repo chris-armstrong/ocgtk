@@ -12,7 +12,7 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sudo apt-get update && sudo ln -fs /usr/share/zoneinfo/Australia/Sydney /etc/localtime && sudo DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y install libgtk-4-dev m4 xdot && opam update && pushd conf-gtk4 && opam pin -y . && popd && pushd lablgtk4 && opam install . --deps-only --with-test -y"
+	"postCreateCommand": "sudo apt-get update && sudo ln -fs /usr/share/zoneinfo/Australia/Sydney /etc/localtime && sudo DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y install libgtk-4-dev m4 xdot ripgrep && opam update && pushd conf-gtk4 && opam pin -y . && popd && pushd lablgtk4 && opam install . --deps-only --with-test -y"
 
 	// Configure tool-specific properties.
 	// "customizations": {},

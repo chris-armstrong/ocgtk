@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkSelectionModel */
+#ifndef Val_GtkSelectionModel
 #define GtkSelectionModel_val(val) ((GtkSelectionModel*)ext_of_val(val))
 #define Val_GtkSelectionModel(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkSelectionModel */
 
 
 CAMLexport CAMLprim value ml_gtk_selection_model_unselect_range(value self, value arg1, value arg2)

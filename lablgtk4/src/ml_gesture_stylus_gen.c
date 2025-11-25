@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkGestureStylus */
+#ifndef Val_GtkGestureStylus
 #define GtkGestureStylus_val(val) ((GtkGestureStylus*)ext_of_val(val))
 #define Val_GtkGestureStylus(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkGestureStylus */
 
 
 CAMLexport CAMLprim value ml_gtk_gesture_stylus_new(value unit)
@@ -25,22 +28,18 @@ GtkGestureStylus *obj = gtk_gesture_stylus_new();
 CAMLreturn(Val_GtkGestureStylus(obj));
 }
 
+CAMLexport CAMLprim value ml_gtk_gesture_stylus_set_stylus_only(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_gesture_stylus_set_stylus_only(GtkGestureStylus_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_gesture_stylus_get_stylus_only(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkGestureStylus *obj = (GtkGestureStylus *)GtkGestureStylus_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "stylus-only", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
 
-CAMLexport CAMLprim value ml_gtk_gesture_stylus_set_stylus_only(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkGestureStylus *obj = (GtkGestureStylus *)GtkGestureStylus_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "stylus-only", c_value, NULL);
-CAMLreturn(Val_unit);
+gboolean result = gtk_gesture_stylus_get_stylus_only(GtkGestureStylus_val(self));
+CAMLreturn(Val_bool(result));
 }

@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkIMContext */
+#ifndef Val_GtkIMContext
 #define GtkIMContext_val(val) ((GtkIMContext*)ext_of_val(val))
 #define Val_GtkIMContext(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkIMContext */
 
 
 CAMLexport CAMLprim value ml_gtk_im_context_set_use_preedit(value self, value arg1)
@@ -94,6 +97,6 @@ CAMLexport CAMLprim value ml_gtk_im_context_activate_osk(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gboolean result = gtk_im_context_activate_osk(GtkIMContext_val(self), (Is_some(arg1) ? GdkEvent_val(Some_val(arg1)) : NULL));
+gboolean result = gtk_im_context_activate_osk(GtkIMContext_val(self), Option_val(arg1, GdkEvent_val, NULL));
 CAMLreturn(Val_bool(result));
 }

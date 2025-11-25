@@ -205,8 +205,45 @@ let type_mappings = [
   });
 ]
 
-let find_type_mapping_for_gir_type ?(enums=[]) ?(bitfields=[]) (gir_type : Types.gir_type) =
+let find_class_mapping classes lookup_str =
+  let normalized_lookup =
+    if String.length lookup_str > 0 && lookup_str.[String.length lookup_str - 1] = '*' then
+      String.sub lookup_str ~pos:0 ~len:(String.length lookup_str - 1)
+    else
+      lookup_str
+  in
+  List.find_opt ~f:(fun (cls : Types.gir_class) ->
+    let normalized_name = Utils.normalize_class_name cls.class_name in
+    cls.c_type = normalized_lookup ||
+    (cls.c_type ^ "*") = lookup_str ||
+    (("Gtk" ^ normalized_name) = normalized_lookup) ||
+    (("Gtk" ^ normalized_name ^ "*") = lookup_str)
+  ) classes
+
+let find_type_mapping_for_gir_type ?(enums=[]) ?(bitfields=[]) ?(classes=[]) (gir_type : Types.gir_type) =
   let try_lookup lookup_str =
+    (* First, check if this is a known class type (GtkButton*, GtkWidget*, etc.) *)
+    let class_mapping =
+      match find_class_mapping classes lookup_str with
+      | Some cls ->
+        let normalized_name = Utils.normalize_class_name cls.class_name in
+        let ocaml_type =
+          if String.lowercase_ascii normalized_name = "widget" then
+            "Gtk.widget"
+          else
+            "Gtk.widget"
+        in
+        Some {
+          ocaml_type;
+          c_to_ml = sprintf "Val_%s" cls.c_type;
+          ml_to_c = sprintf "%s_val" cls.c_type;
+          needs_copy = false;
+        }
+      | None -> None
+    in
+    match class_mapping with
+    | Some mapping -> Some mapping
+    | None ->
     (* First, check if this is a known enum *)
     let enum_mapping =
       List.find_opt ~f:(fun (e : Types.gir_enum) -> e.enum_c_type = lookup_str) enums in
@@ -258,8 +295,8 @@ let find_type_mapping_for_gir_type ?(enums=[]) ?(bitfields=[]) (gir_type : Types
   | None -> try_lookup gir_type.name
 
 (* Keep old function signature for compatibility *)
-let find_type_mapping ?(enums=[]) ?(bitfields=[]) c_type =
-  find_type_mapping_for_gir_type ~enums ~bitfields { name = c_type; c_type = c_type }
+let find_type_mapping ?(enums=[]) ?(bitfields=[]) ?(classes=[]) c_type =
+  find_type_mapping_for_gir_type ~enums ~bitfields ~classes { name = c_type; c_type = c_type; nullable = false }
 
 (* Bug fix #3: Add module qualification based on GIR namespace *)
 let qualify_ocaml_type ?(gir_type_name=None) ocaml_type =
@@ -301,4 +338,3 @@ let qualify_ocaml_type ?(gir_type_name=None) ocaml_type =
         ocaml_type  (* Already qualified *)
       else
         sprintf "Gtk_enums.%s" ocaml_type  (* Likely a Gtk enum without namespace *)
-

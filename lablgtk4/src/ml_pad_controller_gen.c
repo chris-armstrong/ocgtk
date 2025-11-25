@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkPadController */
+#ifndef Val_GtkPadController
 #define GtkPadController_val(val) ((GtkPadController*)ext_of_val(val))
 #define Val_GtkPadController(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkPadController */
 
 
 CAMLexport CAMLprim value ml_gtk_pad_controller_new(value arg1, value arg2)

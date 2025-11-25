@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkTextTagTable */
+#ifndef Val_GtkTextTagTable
 #define GtkTextTagTable_val(val) ((GtkTextTagTable*)ext_of_val(val))
 #define Val_GtkTextTagTable(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkTextTagTable */
 
 
 CAMLexport CAMLprim value ml_gtk_text_tag_table_new(value unit)
@@ -29,7 +32,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_table_remove(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_text_tag_table_remove(GtkTextTagTable_val(self), GtkWidget_val(arg1));
+gtk_text_tag_table_remove(GtkTextTagTable_val(self), GtkTextTag_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,7 +41,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_table_lookup(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkTextTag* result = gtk_text_tag_table_lookup(GtkTextTagTable_val(self), String_val(arg1));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_option(result, Val_GtkTextTag));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_tag_table_get_size(value self)
@@ -53,6 +56,6 @@ CAMLexport CAMLprim value ml_gtk_text_tag_table_add(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gboolean result = gtk_text_tag_table_add(GtkTextTagTable_val(self), GtkWidget_val(arg1));
+gboolean result = gtk_text_tag_table_add(GtkTextTagTable_val(self), GtkTextTag_val(arg1));
 CAMLreturn(Val_bool(result));
 }

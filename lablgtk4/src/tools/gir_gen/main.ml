@@ -10,8 +10,9 @@ open Cmdliner
 let generate_bindings filter_file gir_file output_dir =
   printf "Parsing %s ...\n" gir_file;
 
-  (* Track generated C stub files *)
+  (* Track generated C stub files and OCaml modules *)
   let generated_stubs = ref [] in
+  let generated_modules = ref [] in
 
   (* Read filter file if specified *)
   let filter_classes = match filter_file with
@@ -30,6 +31,24 @@ let generate_bindings filter_file gir_file output_dir =
   printf "Found %d interfaces\n" (List.length interfaces);
   printf "Found %d Gtk enumerations\n" (List.length gtk_enums);
   printf "Found %d Gtk bitfields\n" (List.length gtk_bitfields);
+
+  (* Build parent lookup table for inheritance chains *)
+  let parent_table = Hashtbl.create (List.length controllers + 10) in
+  List.iter ~f:(fun (cls : Gir_gen_lib.Types.gir_class) ->
+    Hashtbl.replace parent_table
+      (Gir_gen_lib.Utils.normalize_class_name cls.class_name)
+      (Option.map Gir_gen_lib.Utils.normalize_class_name cls.parent)
+  ) controllers;
+
+  let parent_chain_for_class name =
+    let rec aux current depth =
+      if depth > 100 then [] (* avoid accidental cycles *) else
+      match Hashtbl.find_opt parent_table current with
+      | Some (Some parent) -> parent :: aux parent (depth + 1)
+      | _ -> []
+    in
+    aux (Gir_gen_lib.Utils.normalize_class_name name) 0
+  in
 
   (* Parse external namespace GIR files for enums/bitfields *)
   let external_namespaces = [
@@ -71,6 +90,7 @@ let generate_bindings filter_file gir_file output_dir =
   let header_file = Filename.concat output_dir "generated_forward_decls.h" in
   printf "\nWriting %s...\n" header_file;
   let header_content = Gir_gen_lib.Generate.C_stubs.generate_forward_decls_header
+    ~classes:controllers
     ~external_enums:external_enums_with_ns
     ~external_bitfields:external_bitfields_with_ns in
   let oc = open_out header_file in
@@ -91,6 +111,7 @@ let generate_bindings filter_file gir_file output_dir =
     ) gtk_bitfields;
     close_out oc;
     generated_stubs := "ml_gtk_enums_gen" :: !generated_stubs;
+    generated_modules := "Gtk_enums" :: !generated_modules;
   end;
 
   (* Generate C files for each class *)
@@ -106,6 +127,7 @@ let generate_bindings filter_file gir_file output_dir =
       printf "Writing %s...\n" c_file;
 
       let c_code = Gir_gen_lib.Generate.C_stubs.generate_class_c_code
+        ~classes:controllers
         ~enums ~bitfields
         ~external_enums:external_enums_with_ns
         ~external_bitfields:external_bitfields_with_ns
@@ -116,6 +138,7 @@ let generate_bindings filter_file gir_file output_dir =
       output_string oc c_code;
       close_out oc;
       generated_stubs := stub_name :: !generated_stubs;
+      generated_modules := (Gir_gen_lib.Utils.module_name_of_class cls.Gir_gen_lib.Types.class_name) :: !generated_modules;
     end
   ) controllers;
 
@@ -132,6 +155,7 @@ let generate_bindings filter_file gir_file output_dir =
       printf "Writing %s...\n" c_file;
 
       let c_code = Gir_gen_lib.Generate.C_stubs.generate_class_c_code
+        ~classes:controllers
         ~enums ~bitfields
         ~external_enums:external_enums_with_ns
         ~external_bitfields:external_bitfields_with_ns
@@ -142,44 +166,87 @@ let generate_bindings filter_file gir_file output_dir =
       output_string oc c_code;
       close_out oc;
       generated_stubs := stub_name :: !generated_stubs;
+      generated_modules := (Gir_gen_lib.Utils.module_name_of_class intf.Gir_gen_lib.Types.interface_name) :: !generated_modules;
     end
   ) interfaces;
 
   (* Generate OCaml interface files for classes *)
   List.iter ~f:(fun cls ->
     if not (Gir_gen_lib.Blacklists.should_skip_class cls.Gir_gen_lib.Types.class_name) then begin
+      let parent_chain = parent_chain_for_class cls.Gir_gen_lib.Types.class_name in
       let ml_file = Filename.concat output_dir
         (sprintf "%s.mli" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.class_name)) in
       printf "Writing %s...\n" ml_file;
       let oc = open_out ml_file in
       output_string oc (Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
+        ~output_mode:Gir_gen_lib.Generate.Ml_interface.Interface
         ~class_name:cls.Gir_gen_lib.Types.class_name
         ~class_doc:cls.Gir_gen_lib.Types.class_doc
         ~enums ~bitfields
+        ~classes:controllers
+        ~parent_chain
         ~constructors:(Some cls.Gir_gen_lib.Types.constructors)
         ~methods:cls.Gir_gen_lib.Types.methods
         ~properties:cls.Gir_gen_lib.Types.properties
         ~signals:cls.Gir_gen_lib.Types.signals);
       close_out oc;
+
+      let ml_impl_file = Filename.concat output_dir
+        (sprintf "%s.ml" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.class_name)) in
+      printf "Writing %s...\n" ml_impl_file;
+      let oc_impl = open_out ml_impl_file in
+      output_string oc_impl (Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
+        ~output_mode:Gir_gen_lib.Generate.Ml_interface.Implementation
+        ~class_name:cls.Gir_gen_lib.Types.class_name
+        ~class_doc:cls.Gir_gen_lib.Types.class_doc
+        ~enums ~bitfields
+        ~classes:controllers
+        ~parent_chain
+        ~constructors:(Some cls.Gir_gen_lib.Types.constructors)
+        ~methods:cls.Gir_gen_lib.Types.methods
+        ~properties:cls.Gir_gen_lib.Types.properties
+        ~signals:cls.Gir_gen_lib.Types.signals);
+      close_out oc_impl;
     end
   ) controllers;
 
   (* Generate OCaml interface files for interfaces *)
   List.iter ~f:(fun cls ->
     if not (Gir_gen_lib.Blacklists.should_skip_class cls.Gir_gen_lib.Types.interface_name) then begin
+      let parent_chain = parent_chain_for_class cls.Gir_gen_lib.Types.interface_name in
       let ml_file = Filename.concat output_dir
         (sprintf "%s.mli" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.interface_name)) in
       printf "Writing %s...\n" ml_file;
       let oc = open_out ml_file in
       output_string oc (Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
+        ~output_mode:Gir_gen_lib.Generate.Ml_interface.Interface
         ~class_name:cls.Gir_gen_lib.Types.interface_name
         ~class_doc:cls.Gir_gen_lib.Types.interface_doc
         ~enums ~bitfields
+        ~classes:controllers
+        ~parent_chain
         ~constructors:None
         ~methods:cls.Gir_gen_lib.Types.methods
         ~properties:cls.Gir_gen_lib.Types.properties
         ~signals:cls.Gir_gen_lib.Types.signals);
       close_out oc;
+
+      let ml_impl_file = Filename.concat output_dir
+        (sprintf "%s.ml" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.interface_name)) in
+      printf "Writing %s...\n" ml_impl_file;
+      let oc_impl = open_out ml_impl_file in
+      output_string oc_impl (Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
+        ~output_mode:Gir_gen_lib.Generate.Ml_interface.Implementation
+        ~class_name:cls.Gir_gen_lib.Types.interface_name
+        ~class_doc:cls.Gir_gen_lib.Types.interface_doc
+        ~enums ~bitfields
+        ~classes:controllers
+        ~parent_chain
+        ~constructors:None
+        ~methods:cls.Gir_gen_lib.Types.methods
+        ~properties:cls.Gir_gen_lib.Types.properties
+        ~signals:cls.Gir_gen_lib.Types.signals);
+      close_out oc_impl;
     end
   ) interfaces;
 
@@ -202,6 +269,7 @@ let generate_bindings filter_file gir_file output_dir =
   (* Generate enum files for external namespaces *)
   List.iter ~f:(fun (ns_name, ns_enums, ns_bitfields) ->
     let ns_lower = String.lowercase_ascii ns_name in
+    let ns_module = String.capitalize_ascii (ns_lower ^ "_enums") in
 
     (* Generate OCaml enum file *)
     if List.length ns_enums > 0 || List.length ns_bitfields > 0 then begin
@@ -217,6 +285,7 @@ let generate_bindings filter_file gir_file output_dir =
         output_string oc (Gir_gen_lib.Generate.Enum_code.generate_ocaml_bitfield bitfield);
       ) ns_bitfields;
       close_out oc;
+      generated_modules := ns_module :: !generated_modules;
     end;
 
     (* Generate C converter file *)
@@ -230,6 +299,8 @@ let generate_bindings filter_file gir_file output_dir =
       output_string oc "#include <caml/mlvalues.h>\n";
       output_string oc "#include <caml/memory.h>\n";
       output_string oc "#include <caml/alloc.h>\n";
+      output_string oc "#include <caml/fail.h>\n";
+      output_string oc "#include <caml/hash.h>\n";
       if ns_lower = "gdk" then
         output_string oc "#include <gdk/gdk.h>\n\n"
       else if ns_lower = "pango" then
@@ -252,7 +323,29 @@ let generate_bindings filter_file gir_file output_dir =
   let dune_file = Filename.concat output_dir "dune-generated.inc" in
   printf "\nWriting %s...\n" dune_file;
   let stub_list = List.rev !generated_stubs |> List.sort ~cmp:String.compare in
-  let dune_content = Gir_gen_lib.Generate.Dune_file.generate_dune_library stub_list in
+  let base_modules = [
+    "gError"; "gpointer"; "gaux"; "gobject"; "glib"; "gdk"; "gdkPixbuf";
+    "gdkClipboard"; "pango"; "graphene"; "gtk"; "gtkSnapshot";
+    "eventController"; "eventControllerKey"; "eventControllerMotion"; "gestureClick";
+    "gObj"; "gBox"; "gGrid"; "gFixed"; "gPaned"; "gNotebook"; "gStack"; "gWindow";
+    "gScrolledWindow"; "gFrame"; "gPack"; "gMain";
+    "Gtk4Enums"; "Gdk4Enums"; "GlibEnums"; "pangoEnums"; "GobjectEnums";
+    "gtk_enums"; "gdk_enums"; "pango_enums"; "gtkButton"; "gtkCheckButton";
+    "gtkToggleButton"; "gButton"; "gRange"; "entry"; "search_entry"; "password_entry";
+    "spin_button"; "label"; "image"; "link_button"; "menu_button"; "switch";
+    "text_buffer"; "text_view"; "text_tag"; "text_tag_table"; "button"; "check_button";
+    "toggle_button"; "adjustment"; "range"; "progress_bar"; "level_bar"; "scale";
+    "editable"; "widget"; "box"; "grid"; "fixed"; "paned"; "notebook"; "stack";
+    "window"; "scrolled_window"; "frame";
+  ] in
+  let module_list =
+    (base_modules @ !generated_modules)
+    |> List.map ~f:String.capitalize_ascii
+    |> List.sort_uniq ~cmp:String.compare
+  in
+  let dune_content = Gir_gen_lib.Generate.Dune_file.generate_dune_library
+    ~stub_names:stub_list
+    ~module_names:module_list in
   let oc = open_out dune_file in
   output_string oc dune_content;
   close_out oc;

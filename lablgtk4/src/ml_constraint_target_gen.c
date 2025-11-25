@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,6 +15,8 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkConstraintTarget */
+#ifndef Val_GtkConstraintTarget
 #define GtkConstraintTarget_val(val) ((GtkConstraintTarget*)ext_of_val(val))
 #define Val_GtkConstraintTarget(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkConstraintTarget */
 

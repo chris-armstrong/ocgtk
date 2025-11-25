@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkSwitch */
+#ifndef Val_GtkSwitch
 #define GtkSwitch_val(val) ((GtkSwitch*)ext_of_val(val))
 #define Val_GtkSwitch(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkSwitch */
 
 
 CAMLexport CAMLprim value ml_gtk_switch_new(value unit)
@@ -25,42 +28,34 @@ GtkSwitch *obj = gtk_switch_new();
 CAMLreturn(Val_GtkSwitch(obj));
 }
 
-CAMLexport CAMLprim value ml_gtk_switch_get_active(value self)
+CAMLexport CAMLprim value ml_gtk_switch_set_state(value self, value arg1)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkSwitch *obj = (GtkSwitch *)GtkSwitch_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "active", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
+CAMLparam2(self, arg1);
+
+gtk_switch_set_state(GtkSwitch_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_switch_set_active(value self, value new_value)
+CAMLexport CAMLprim value ml_gtk_switch_set_active(value self, value arg1)
 {
-CAMLexport CAMLparam2(self, new_value);
-GtkSwitch *obj = (GtkSwitch *)GtkSwitch_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "active", c_value, NULL);
+CAMLparam2(self, arg1);
+
+gtk_switch_set_active(GtkSwitch_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_switch_get_state(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkSwitch *obj = (GtkSwitch *)GtkSwitch_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "state", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
+
+gboolean result = gtk_switch_get_state(GtkSwitch_val(self));
+CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_switch_set_state(value self, value new_value)
+CAMLexport CAMLprim value ml_gtk_switch_get_active(value self)
 {
-CAMLexport CAMLparam2(self, new_value);
-GtkSwitch *obj = (GtkSwitch *)GtkSwitch_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "state", c_value, NULL);
-CAMLreturn(Val_unit);
+CAMLparam1(self);
+
+gboolean result = gtk_switch_get_active(GtkSwitch_val(self));
+CAMLreturn(Val_bool(result));
 }

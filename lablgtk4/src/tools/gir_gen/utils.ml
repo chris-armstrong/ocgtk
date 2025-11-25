@@ -40,6 +40,27 @@ let extract_namespace_from_c_type c_type =
     String.sub c_type ~pos:0 ~len:(String.length prefix) = prefix
   ) prefixes
 
+(* Normalize a GIR class name for comparisons (strip namespace/prefix) *)
+let normalize_class_name name =
+  let without_namespace =
+    try
+      let dot_idx = String.rindex name '.' in
+      String.sub name ~pos:(dot_idx + 1) ~len:(String.length name - dot_idx - 1)
+    with Not_found -> name
+  in
+  if String.length without_namespace > 3 &&
+     String.sub without_namespace ~pos:0 ~len:3 = "Gtk" &&
+     (* Avoid stripping short names like "Gtl" accidentally *)
+     (let c = String.get without_namespace 3 in Char.uppercase_ascii c = c)
+  then
+    String.sub without_namespace ~pos:3 ~len:(String.length without_namespace - 3)
+  else
+    without_namespace
+
+(* Convert a class name to the expected OCaml module name (file name capitalized) *)
+let module_name_of_class class_name =
+  class_name |> to_snake_case |> String.capitalize_ascii
+
 (* Read filter file and return set of class names to generate *)
 let read_filter_file filename =
   if not (Sys.file_exists filename) then

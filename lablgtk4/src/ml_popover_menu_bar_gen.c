@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkPopoverMenuBar */
+#ifndef Val_GtkPopoverMenuBar
 #define GtkPopoverMenuBar_val(val) ((GtkPopoverMenuBar*)ext_of_val(val))
 #define Val_GtkPopoverMenuBar(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkPopoverMenuBar */
 
 
 CAMLexport CAMLprim value ml_gtk_popover_menu_bar_new_from_model(value arg1)

@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,15 +15,17 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkTooltip */
+#ifndef Val_GtkTooltip
 #define GtkTooltip_val(val) ((GtkTooltip*)ext_of_val(val))
 #define Val_GtkTooltip(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkTooltip */
 
 
 CAMLexport CAMLprim value ml_gtk_tooltip_set_text(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_tooltip_set_text(GtkTooltip_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_tooltip_set_text(GtkTooltip_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -30,7 +33,7 @@ CAMLexport CAMLprim value ml_gtk_tooltip_set_markup(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_tooltip_set_markup(GtkTooltip_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_tooltip_set_markup(GtkTooltip_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,7 +41,7 @@ CAMLexport CAMLprim value ml_gtk_tooltip_set_icon_from_icon_name(value self, val
 {
 CAMLparam2(self, arg1);
 
-gtk_tooltip_set_icon_from_icon_name(GtkTooltip_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+gtk_tooltip_set_icon_from_icon_name(GtkTooltip_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 

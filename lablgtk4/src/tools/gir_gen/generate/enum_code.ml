@@ -67,8 +67,6 @@ let generate_c_enum_converters ~namespace enum =
     let buf = Buffer.create 1024 in
     let val_func = sprintf "Val_%s%s" namespace enum.enum_name in
     let c_val_func = sprintf "%s%s_val" namespace enum.enum_name in
-    let first_member = List.hd enum.members in
-
     (* Generate C to OCaml converter *)
     bprintf buf "/* Convert %s to OCaml value */\n" enum.enum_c_type;
     bprintf buf "value %s(%s val) {\n" val_func enum.enum_c_type;
@@ -80,31 +78,36 @@ let generate_c_enum_converters ~namespace enum =
       if not (Hashtbl.mem seen_values enum_member.member_value) then begin
         Hashtbl.add seen_values enum_member.member_value true;
         let variant_name = String.uppercase_ascii enum_member.member_name in
-        let hash = Hashtbl.hash variant_name in
-        bprintf buf "    case %s: return Val_int(%d); /* `%s */\n"
-          enum_member.c_identifier hash variant_name;
+        bprintf buf "    case %s: return caml_hash_variant(\"%s\"); /* `%s */\n"
+          enum_member.c_identifier variant_name variant_name;
       end
     ) enum.members;
 
-    bprintf buf "    default: return Val_int(%d); /* fallback to first variant */\n"
-      (Hashtbl.hash (String.uppercase_ascii first_member.member_name));
+    bprintf buf "    default: {\n";
+    bprintf buf "      char msg[128];\n";
+    bprintf buf "      g_snprintf(msg, sizeof(msg), \"Unknown %s value: %%d\", (int)val);\n" enum.enum_c_type;
+    bprintf buf "      g_warning(\"%%s\", msg);\n";
+    bprintf buf "      caml_failwith(msg);\n";
+    bprintf buf "    }\n";
     bprintf buf "  }\n";
     bprintf buf "}\n\n";
 
     (* Generate OCaml to C converter *)
     bprintf buf "/* Convert OCaml value to %s */\n" enum.enum_c_type;
     bprintf buf "%s %s(value val) {\n" enum.enum_c_type c_val_func;
-    bprintf buf "  int tag = Int_val(val);\n";
 
     List.iteri ~f:(fun i enum_member ->
       let variant_name = String.uppercase_ascii enum_member.member_name in
-      let hash = Hashtbl.hash variant_name in
-      bprintf buf "  %sif (tag == %d) return %s; /* `%s */\n"
-        (if i = 0 then "" else "else ") hash enum_member.c_identifier variant_name;
+      bprintf buf "  %sif (val == caml_hash_variant(\"%s\")) return %s; /* `%s */\n"
+        (if i = 0 then "" else "else ") variant_name enum_member.c_identifier variant_name;
     ) enum.members;
 
-    bprintf buf "  else return %s; /* fallback to first value */\n"
-      first_member.c_identifier;
+    bprintf buf "  else {\n";
+    bprintf buf "    char msg[128];\n";
+    bprintf buf "    g_snprintf(msg, sizeof(msg), \"Unknown %s tag: %%ld\", val);\n" enum.enum_c_type;
+    bprintf buf "    g_warning(\"%%s\", msg);\n";
+    bprintf buf "    caml_failwith(msg);\n";
+    bprintf buf "  }\n";
     bprintf buf "}\n\n";
 
     Buffer.contents buf
@@ -129,10 +132,9 @@ let generate_c_bitfield_converters ~namespace bitfield =
     (* Check each flag bit and add to list if set *)
     List.iter ~f:(fun flag ->
       let variant_name = String.uppercase_ascii flag.flag_name in
-      let hash = Hashtbl.hash variant_name in
       bprintf buf "  if (flags & %s) {\n" flag.flag_c_identifier;
       bprintf buf "    cons = caml_alloc(2, 0);\n";
-      bprintf buf "    Store_field(cons, 0, Val_int(%d)); /* `%s */\n" hash variant_name;
+      bprintf buf "    Store_field(cons, 0, Val_int(caml_hash_variant(\"%s\"))); /* `%s */\n" variant_name variant_name;
       bprintf buf "    Store_field(cons, 1, result);\n";
       bprintf buf "    result = cons;\n";
       bprintf buf "  }\n";
@@ -150,9 +152,8 @@ let generate_c_bitfield_converters ~namespace bitfield =
 
     List.iteri ~f:(fun i flag ->
       let variant_name = String.uppercase_ascii flag.flag_name in
-      let hash = Hashtbl.hash variant_name in
-      bprintf buf "    %sif (tag == %d) result |= %s; /* `%s */\n"
-        (if i = 0 then "" else "else ") hash flag.flag_c_identifier variant_name;
+      bprintf buf "    %sif (tag == caml_hash_variant(\"%s\")) result |= %s; /* `%s */\n"
+        (if i = 0 then "" else "else ") variant_name flag.flag_c_identifier variant_name;
     ) bitfield.flags;
 
     bprintf buf "    list = Field(list, 1);\n";

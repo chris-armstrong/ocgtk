@@ -8,9 +8,9 @@ external new_ : string option -> t = "ml_gtk_uri_launcher_new"
 
 (* Properties *)
 
-(** Get property: uri *)
-external get_uri : t -> string = "ml_gtk_uri_launcher_get_uri"
+(** Sets the uri that will be opened. *)
+external set_uri : t -> string option -> unit = "ml_gtk_uri_launcher_set_uri"
 
-(** Set property: uri *)
-external set_uri : t -> string -> unit = "ml_gtk_uri_launcher_set_uri"
+(** Gets the uri that will be opened. *)
+external get_uri : t -> string option = "ml_gtk_uri_launcher_get_uri"
 

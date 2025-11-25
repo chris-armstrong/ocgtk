@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkCellRendererToggle */
+#ifndef Val_GtkCellRendererToggle
 #define GtkCellRendererToggle_val(val) ((GtkCellRendererToggle*)ext_of_val(val))
 #define Val_GtkCellRendererToggle(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkCellRendererToggle */
 
 
 CAMLexport CAMLprim value ml_gtk_cell_renderer_toggle_new(value unit)
@@ -38,7 +41,7 @@ CAMLreturn(result);
 
 CAMLexport CAMLprim value ml_gtk_cell_renderer_toggle_set_activatable(value self, value new_value)
 {
-CAMLexport CAMLparam2(self, new_value);
+CAMLparam2(self, new_value);
 GtkCellRendererToggle *obj = (GtkCellRendererToggle *)GtkCellRendererToggle_val(self);
 gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "activatable", c_value, NULL);
@@ -58,7 +61,7 @@ CAMLreturn(result);
 
 CAMLexport CAMLprim value ml_gtk_cell_renderer_toggle_set_active(value self, value new_value)
 {
-CAMLexport CAMLparam2(self, new_value);
+CAMLparam2(self, new_value);
 GtkCellRendererToggle *obj = (GtkCellRendererToggle *)GtkCellRendererToggle_val(self);
 gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "active", c_value, NULL);
@@ -78,7 +81,7 @@ CAMLreturn(result);
 
 CAMLexport CAMLprim value ml_gtk_cell_renderer_toggle_set_inconsistent(value self, value new_value)
 {
-CAMLexport CAMLparam2(self, new_value);
+CAMLparam2(self, new_value);
 GtkCellRendererToggle *obj = (GtkCellRendererToggle *)GtkCellRendererToggle_val(self);
 gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "inconsistent", c_value, NULL);
@@ -98,7 +101,7 @@ CAMLreturn(result);
 
 CAMLexport CAMLprim value ml_gtk_cell_renderer_toggle_set_radio(value self, value new_value)
 {
-CAMLexport CAMLparam2(self, new_value);
+CAMLparam2(self, new_value);
 GtkCellRendererToggle *obj = (GtkCellRendererToggle *)GtkCellRendererToggle_val(self);
 gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "radio", c_value, NULL);

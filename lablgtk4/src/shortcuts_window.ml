@@ -1,17 +1,18 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: ShortcutsWindow *)
 
-type t = Gtk.widget
+type t = [`shortcuts_window | `window | `widget] Gobject.obj
+
+let as_widget (obj : t) : Gtk.widget = Obj.magic obj
 
 (* Properties *)
 
-external get_section_name : t -> string = "ml_gtk_shortcuts_window_get_section_name"
+(** Adds a section to the shortcuts window.
 
-external set_section_name : t -> string -> unit = "ml_gtk_shortcuts_window_set_section_name"
+This is the programmatic equivalent to using [class@Gtk.Builder] and a
+`<child>` tag to add the child.
 
-external get_view_name : t -> string = "ml_gtk_shortcuts_window_get_view_name"
-
-external set_view_name : t -> string -> unit = "ml_gtk_shortcuts_window_set_view_name"
-
+Using [method@Gtk.Window.set_child] is not appropriate as the shortcuts
+window manages its children internally. *)
 external add_section : t -> Gtk.widget -> unit = "ml_gtk_shortcuts_window_add_section"
 

@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkButton */
+#ifndef Val_GtkButton
 #define GtkButton_val(val) ((GtkButton*)ext_of_val(val))
 #define Val_GtkButton(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkButton */
 
 
 CAMLexport CAMLprim value ml_gtk_button_new(value unit)
@@ -46,6 +49,38 @@ GtkButton *obj = gtk_button_new_with_mnemonic(String_val(arg1));
 CAMLreturn(Val_GtkButton(obj));
 }
 
+CAMLexport CAMLprim value ml_gtk_button_set_use_underline(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_button_set_use_underline(GtkButton_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_button_set_label(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_button_set_label(GtkButton_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_button_set_icon_name(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_button_set_icon_name(GtkButton_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_button_set_has_frame(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_button_set_has_frame(GtkButton_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_button_set_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -54,110 +89,58 @@ gtk_button_set_child(GtkButton_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_button_get_child(value self)
+CAMLexport CAMLprim value ml_gtk_button_set_can_shrink(value self, value arg1)
 {
-CAMLparam1(self);
+CAMLparam2(self, arg1);
 
-GtkWidget* result = gtk_button_get_child(GtkButton_val(self));
-CAMLreturn(Val_GtkWidget(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_button_get_can_shrink(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkButton *obj = (GtkButton *)GtkButton_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "can-shrink", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_button_set_can_shrink(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkButton *obj = (GtkButton *)GtkButton_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "can-shrink", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_button_get_has_frame(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkButton *obj = (GtkButton *)GtkButton_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "has-frame", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_button_set_has_frame(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkButton *obj = (GtkButton *)GtkButton_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "has-frame", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_button_get_icon_name(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkButton *obj = (GtkButton *)GtkButton_val(self);
-gchar* prop_value;
-g_object_get(G_OBJECT(obj), "icon-name", &prop_value, NULL);
-result = caml_copy_string(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_button_set_icon_name(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkButton *obj = (GtkButton *)GtkButton_val(self);
-gchar* c_value = String_val(new_value);
-g_object_set(G_OBJECT(obj), "icon-name", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_button_get_label(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkButton *obj = (GtkButton *)GtkButton_val(self);
-gchar* prop_value;
-g_object_get(G_OBJECT(obj), "label", &prop_value, NULL);
-result = caml_copy_string(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_button_set_label(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkButton *obj = (GtkButton *)GtkButton_val(self);
-gchar* c_value = String_val(new_value);
-g_object_set(G_OBJECT(obj), "label", c_value, NULL);
+gtk_button_set_can_shrink(GtkButton_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_button_get_use_underline(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkButton *obj = (GtkButton *)GtkButton_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "use-underline", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
+
+gboolean result = gtk_button_get_use_underline(GtkButton_val(self));
+CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_button_set_use_underline(value self, value new_value)
+CAMLexport CAMLprim value ml_gtk_button_get_label(value self)
 {
-CAMLexport CAMLparam2(self, new_value);
-GtkButton *obj = (GtkButton *)GtkButton_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "use-underline", c_value, NULL);
-CAMLreturn(Val_unit);
+CAMLparam1(self);
+
+const char* result = gtk_button_get_label(GtkButton_val(self));
+CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_button_get_icon_name(value self)
+{
+CAMLparam1(self);
+
+const char* result = gtk_button_get_icon_name(GtkButton_val(self));
+CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_button_get_has_frame(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_button_get_has_frame(GtkButton_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_button_get_child(value self)
+{
+CAMLparam1(self);
+
+GtkWidget* result = gtk_button_get_child(GtkButton_val(self));
+CAMLreturn(Val_GtkWidget_option(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_button_get_can_shrink(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_button_get_can_shrink(GtkButton_val(self));
+CAMLreturn(Val_bool(result));
 }

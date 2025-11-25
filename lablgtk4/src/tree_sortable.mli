@@ -3,9 +3,22 @@
 
 type t = Gtk.widget
 
+(** Emits a `GtkTreeSortable::sort-column-changed` signal on @sortable. *)
 external sort_column_changed : t -> unit = "ml_gtk_tree_sortable_sort_column_changed"
 
+(** Sets the current sort column to be @sort_column_id. The @sortable will
+resort itself to reflect this change, after emitting a
+`GtkTreeSortable::sort-column-changed` signal. @sort_column_id may either be
+a regular column id, or one of the following special values:
+
+- %GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID: the default sort function
+  will be used, if it is set
+
+- %GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID: no sorting will occur *)
 external set_sort_column_id : t -> int -> Gtk_enums.sorttype -> unit = "ml_gtk_tree_sortable_set_sort_column_id"
 
+(** Returns %TRUE if the model has a default sort function. This is used
+primarily by GtkTreeViewColumns in order to determine if a model can
+go back to the default state, or not. *)
 external has_default_sort_func : t -> bool = "ml_gtk_tree_sortable_has_default_sort_func"
 

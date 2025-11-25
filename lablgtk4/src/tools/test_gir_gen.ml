@@ -101,7 +101,7 @@ let test_gir_parsing () =
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
-  let cmd = sprintf "%s/gir_gen.exe %s %s 2>&1"
+  let cmd = sprintf "%s/gir_gen/main.exe %s %s 2>&1"
     tools_dir test_gir output_dir in
 
   let exit_code = Sys.command cmd in
@@ -123,7 +123,7 @@ let test_c_code_generation () =
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
-  let cmd = sprintf "%s/gir_gen.exe %s %s > /dev/null 2>&1"
+  let cmd = sprintf "%s/gir_gen/main.exe %s %s > /dev/null 2>&1"
     tools_dir test_gir output_dir in
   let _ = Sys.command cmd in
 
@@ -186,7 +186,7 @@ let test_widget_generation () =
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
-  let cmd = sprintf "%s/gir_gen.exe -f %s %s %s > /dev/null 2>&1"
+  let cmd = sprintf "%s/gir_gen/main.exe -f %s %s %s > /dev/null 2>&1"
     tools_dir test_filter test_gir output_dir in
 
   let exit_code = Sys.command cmd in
@@ -204,7 +204,7 @@ let test_widget_generation () =
 
 let test_help_output () =
   let tools_dir = Filename.dirname Sys.argv.(0) in
-  let cmd = sprintf "%s/gir_gen.exe --help 2>&1" tools_dir in
+  let cmd = sprintf "%s/gir_gen/main.exe --help 2>&1" tools_dir in
   let ic = Unix.open_process_in cmd in
   let output = Buffer.create 1024 in
   (try
@@ -256,7 +256,7 @@ let test_property_generation () =
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
-  let cmd = sprintf "%s/gir_gen.exe -f %s %s %s > /dev/null 2>&1"
+  let cmd = sprintf "%s/gir_gen/main.exe -f %s %s %s > /dev/null 2>&1"
     tools_dir test_filter test_gir output_dir in
 
   let exit_code = Sys.command cmd in
@@ -299,7 +299,7 @@ let test_c_property_generation () =
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
-  let cmd = sprintf "%s/gir_gen.exe -f %s %s %s > /dev/null 2>&1"
+  let cmd = sprintf "%s/gir_gen/main.exe -f %s %s %s > /dev/null 2>&1"
     tools_dir test_filter test_gir output_dir in
 
   let exit_code = Sys.command cmd in
@@ -379,7 +379,7 @@ let test_all_methods_generated () =
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
-  let cmd = sprintf "%s/gir_gen.exe -f %s %s %s > /dev/null 2>&1"
+  let cmd = sprintf "%s/gir_gen/main.exe -f %s %s %s > /dev/null 2>&1"
     tools_dir test_filter test_gir output_dir in
 
   let exit_code = Sys.command cmd in
@@ -425,7 +425,7 @@ let test_enum_generation () =
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
-  let cmd = sprintf "%s/gir_gen.exe %s %s > /dev/null 2>&1"
+  let cmd = sprintf "%s/gir_gen/main.exe %s %s > /dev/null 2>&1"
     tools_dir test_gir output_dir in
 
   let exit_code = Sys.command cmd in
@@ -480,7 +480,7 @@ let test_bitfield_generation () =
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
-  let cmd = sprintf "%s/gir_gen.exe %s %s > /dev/null 2>&1"
+  let cmd = sprintf "%s/gir_gen/main.exe %s %s > /dev/null 2>&1"
     tools_dir test_gir output_dir in
 
   let exit_code = Sys.command cmd in
@@ -550,7 +550,7 @@ let test_nullable_parameters () =
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
-  let cmd = sprintf "%s/gir_gen.exe -f %s %s %s > /dev/null 2>&1"
+  let cmd = sprintf "%s/gir_gen/main.exe -f %s %s %s > /dev/null 2>&1"
     tools_dir test_filter test_gir output_dir in
 
   let exit_code = Sys.command cmd in
@@ -601,7 +601,7 @@ let test_empty_class () =
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
-  let cmd = sprintf "%s/gir_gen.exe -f %s %s %s > /dev/null 2>&1"
+  let cmd = sprintf "%s/gir_gen/main.exe -f %s %s %s > /dev/null 2>&1"
     tools_dir test_filter test_gir output_dir in
 
   let exit_code = Sys.command cmd in
@@ -647,7 +647,7 @@ let test_properties_only_class () =
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
-  let cmd = sprintf "%s/gir_gen.exe -f %s %s %s > /dev/null 2>&1"
+  let cmd = sprintf "%s/gir_gen/main.exe -f %s %s %s > /dev/null 2>&1"
     tools_dir test_filter test_gir output_dir in
 
   let exit_code = Sys.command cmd in
@@ -692,7 +692,7 @@ let test_no_constructor_class () =
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
-  let cmd = sprintf "%s/gir_gen.exe -f %s %s %s > /dev/null 2>&1"
+  let cmd = sprintf "%s/gir_gen/main.exe -f %s %s %s > /dev/null 2>&1"
     tools_dir test_filter test_gir output_dir in
 
   let exit_code = Sys.command cmd in
@@ -744,7 +744,7 @@ let test_multiple_enums () =
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
-  let cmd = sprintf "%s/gir_gen.exe %s %s > /dev/null 2>&1"
+  let cmd = sprintf "%s/gir_gen/main.exe %s %s > /dev/null 2>&1"
     tools_dir test_gir output_dir in
 
   let exit_code = Sys.command cmd in
@@ -810,7 +810,7 @@ let test_camlparam_limitation () =
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
-  let cmd = sprintf "%s/gir_gen.exe -f %s %s %s > /dev/null 2>&1"
+  let cmd = sprintf "%s/gir_gen/main.exe -f %s %s %s > /dev/null 2>&1"
     tools_dir test_filter test_gir output_dir in
 
   let exit_code = Sys.command cmd in
@@ -845,7 +845,7 @@ let test_generated_code_quality () =
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
-  let cmd = sprintf "%s/gir_gen.exe -f %s %s %s > /dev/null 2>&1"
+  let cmd = sprintf "%s/gir_gen/main.exe -f %s %s %s > /dev/null 2>&1"
     tools_dir test_filter test_gir output_dir in
 
   let exit_code = Sys.command cmd in
@@ -884,7 +884,7 @@ let test_invalid_gir_handling () =
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
-  let cmd = sprintf "%s/gir_gen.exe %s %s 2>&1"
+  let cmd = sprintf "%s/gir_gen/main.exe %s %s 2>&1"
     tools_dir test_gir output_dir in
 
   (* Should fail gracefully, not crash *)
@@ -918,7 +918,7 @@ let test_single_value_enum () =
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
-  let cmd = sprintf "%s/gir_gen.exe %s %s > /dev/null 2>&1"
+  let cmd = sprintf "%s/gir_gen/main.exe %s %s > /dev/null 2>&1"
     tools_dir test_gir output_dir in
 
   let exit_code = Sys.command cmd in
@@ -940,7 +940,7 @@ let test_enum_naming_conventions () =
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
-  let cmd = sprintf "%s/gir_gen.exe  %s %s > /dev/null 2>&1"
+  let cmd = sprintf "%s/gir_gen/main.exe  %s %s > /dev/null 2>&1"
     tools_dir test_gir output_dir in
 
   let _ = Sys.command cmd in

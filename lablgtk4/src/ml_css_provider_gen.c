@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkCssProvider */
+#ifndef Val_GtkCssProvider
 #define GtkCssProvider_val(val) ((GtkCssProvider*)ext_of_val(val))
 #define Val_GtkCssProvider(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkCssProvider */
 
 
 CAMLexport CAMLprim value ml_gtk_css_provider_new(value unit)
@@ -29,7 +32,7 @@ CAMLexport CAMLprim value ml_gtk_css_provider_load_named(value self, value arg1,
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_css_provider_load_named(GtkCssProvider_val(self), String_val(arg1), (Is_some(arg2) ? String_val(Some_val(arg2)) : NULL));
+gtk_css_provider_load_named(GtkCssProvider_val(self), String_val(arg1), String_option_val(arg2));
 CAMLreturn(Val_unit);
 }
 

@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkEditableLabel */
+#ifndef Val_GtkEditableLabel
 #define GtkEditableLabel_val(val) ((GtkEditableLabel*)ext_of_val(val))
 #define Val_GtkEditableLabel(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkEditableLabel */
 
 
 CAMLexport CAMLprim value ml_gtk_editable_label_new(value arg1)
@@ -44,19 +47,7 @@ CAMLreturn(Val_unit);
 CAMLexport CAMLprim value ml_gtk_editable_label_get_editing(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkEditableLabel *obj = (GtkEditableLabel *)GtkEditableLabel_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "editing", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
 
-CAMLexport CAMLprim value ml_gtk_editable_label_set_editing(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkEditableLabel *obj = (GtkEditableLabel *)GtkEditableLabel_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "editing", c_value, NULL);
-CAMLreturn(Val_unit);
+gboolean result = gtk_editable_label_get_editing(GtkEditableLabel_val(self));
+CAMLreturn(Val_bool(result));
 }

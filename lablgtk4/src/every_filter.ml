@@ -3,5 +3,6 @@
 
 type t = Gtk.widget
 
+(** Create a new EveryFilter *)
 external new_ : unit -> t = "ml_gtk_every_filter_new"
 

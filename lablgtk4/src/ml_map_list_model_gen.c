@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkMapListModel */
+#ifndef Val_GtkMapListModel
 #define GtkMapListModel_val(val) ((GtkMapListModel*)ext_of_val(val))
 #define Val_GtkMapListModel(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkMapListModel */
 
 
 CAMLexport CAMLprim value ml_gtk_map_list_model_new(value arg1, value arg2, value arg3, value arg4)
@@ -31,26 +34,4 @@ CAMLparam1(self);
 
 gboolean result = gtk_map_list_model_has_map(GtkMapListModel_val(self));
 CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_map_list_model_get_has_map(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkMapListModel *obj = (GtkMapListModel *)GtkMapListModel_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "has-map", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_map_list_model_get_n_items(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkMapListModel *obj = (GtkMapListModel *)GtkMapListModel_val(self);
-guint prop_value;
-g_object_get(G_OBJECT(obj), "n-items", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
 }

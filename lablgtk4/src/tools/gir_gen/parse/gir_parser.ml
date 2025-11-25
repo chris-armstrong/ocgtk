@@ -190,6 +190,13 @@ let parse_gir_file filename _filter_classes =
       | `Dtd _ -> skip_element depth
   in
 
+  let rec element_data ?(str = None) () =
+    match Xmlm.input input with
+    | `Data s -> element_data ~str:(Some((Option.value str ~default:"") ^ s)) ()
+    | `El_end -> str
+    | `El_start _ | `Dtd _ -> failwith "unwanted element inside data element"
+  in
+
   (* Parse a class element *)
   let rec parse_class attrs =
     match get_attr "name" attrs with
@@ -211,12 +218,12 @@ let parse_gir_file filename _filter_classes =
             (match get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs with
             | Some ctor_name, Some c_id ->
               let throws = (get_attr "throws" tag_attrs = Some "1") in
-              let (_return_type, params) = parse_method () in
+              let (_return_type, params, doc) = parse_method () in
               constructors := {
                 ctor_name = ctor_name;
                 c_identifier = c_id;
                 ctor_parameters = params;
-                ctor_doc = None;
+                ctor_doc = doc;
                 throws = throws;
               } :: !constructors;
               parse_class_contents ()
@@ -228,13 +235,13 @@ let parse_gir_file filename _filter_classes =
             (match get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs with
             | Some method_name, Some c_id ->
               let  throws = get_attr "throws" tag_attrs |> Utils.parse_bool in
-              let (return_type, params) = parse_method () in
+              let (return_type, params, doc) = parse_method () in
               methods := {
                 method_name = method_name;
                 c_identifier = c_id;
                 return_type = return_type;
                 parameters = params;
-                doc = None;
+                doc = doc;
                 throws = throws;
               } :: !methods;
               parse_class_contents ()
@@ -243,6 +250,7 @@ let parse_gir_file filename _filter_classes =
               parse_class_contents ())
 
           | "property" ->
+                       
             (match get_attr "name" tag_attrs with
             | Some prop_name ->
               let prop = parse_property prop_name tag_attrs in
@@ -293,18 +301,24 @@ let parse_gir_file filename _filter_classes =
       | Some "1" -> true
       | _ -> false
     in
+    let property_nullable = get_attr "nullable" attrs |> Utils.parse_bool in
 
     (* Parse property type from child element *)
-    let prop_type = ref { name = "unknown"; c_type = "unknown" } in
+    let prop_type = ref { name = "unknown"; c_type = "unknown"; nullable = false } in
+
+    let doc : string option ref = ref None in
 
     let rec parse_prop_contents () =
       match Xmlm.input input with
       | `El_start ((_, "type"), type_attrs) ->
         let type_name = match get_attr "name" type_attrs with Some n -> n | None -> "unknown" in
         let c_type_name = match get_attr "c:type" type_attrs with Some t -> t | None -> type_name in
-        prop_type := { name = type_name; c_type = c_type_name };
+        let nullable = (get_attr "nullable" type_attrs |> Utils.parse_bool) || property_nullable in
+        prop_type := { name = type_name; c_type = c_type_name; nullable };
         skip_element 1;
         parse_prop_contents ()
+      | `El_start ((_, "doc"), _) ->
+        doc := element_data ();
       | `El_start _ ->
         skip_element 1;
         parse_prop_contents ()
@@ -438,21 +452,23 @@ let parse_gir_file filename _filter_classes =
 
   (* Parse method contents to extract return type and parameters *)
   and parse_method () =
-    let return_type = ref { name = "void"; c_type = "void" } in
+    let return_type = ref { name = "void"; c_type = "void"; nullable = false } in
     let params = ref [] in
-
+    let doc: string option ref = ref None in
     let rec parse_method_contents () =
       match Xmlm.input input with
       | `El_start ((_, tag), _tag_attrs) ->
         (match tag with
         | "return-value" ->
-          return_type := parse_return_value ();
+          return_type := parse_return_value _tag_attrs;
           parse_method_contents ()
 
         | "parameters" ->
           params := parse_parameters ();
           parse_method_contents ()
-
+        | "doc" ->
+          doc := element_data ();
+          parse_method_contents ()
         | _ ->
           skip_element 1;
           parse_method_contents ())
@@ -468,18 +484,20 @@ let parse_gir_file filename _filter_classes =
     in
 
     parse_method_contents ();
-    (!return_type, List.rev !params)
+    (!return_type, List.rev !params, !doc)
 
   (* Parse return value type *)
-  and parse_return_value () =
-    let type_info = ref { name = "void"; c_type = "void" } in
+  and parse_return_value attrs =
+    let nullable_attr = get_attr "nullable" attrs |> Utils.parse_bool in
+    let type_info = ref { name = "void"; c_type = "void"; nullable = nullable_attr } in
 
     let rec parse_rv_contents () =
       match Xmlm.input input with
       | `El_start ((_, "type"), attrs) ->
         let type_name = match get_attr "name" attrs with Some n -> n | None -> "void" in
         let c_type_name = match get_attr "c:type" attrs with Some t -> t | None -> type_name in
-        type_info := { name = type_name; c_type = c_type_name };
+        let nullable = (get_attr "nullable" attrs |> Utils.parse_bool) || nullable_attr in
+        type_info := ({ name = type_name; c_type = c_type_name ; nullable = nullable}:gir_type);
         skip_element 1;
         parse_rv_contents ()
 
@@ -509,8 +527,14 @@ let parse_gir_file filename _filter_classes =
       | `El_start ((_, "parameter"), attrs) ->
         let param_name = match get_attr "name" attrs with Some n -> n | None -> "arg" in
         let nullable = match get_attr "nullable" attrs with Some "1" -> true | _ -> false in
+        let direction =
+          match get_attr "direction" attrs with
+          | Some "out" -> Out
+          | Some "inout" -> InOut
+          | _ -> In
+        in
         let varargs = ref false in
-        let type_ = ref { name = "void"; c_type = "void"} in
+        let type_ = ref { name = "void"; c_type = "void"; nullable = false} in
         let rec parse_param_contents () =
           match Xmlm.input input with
           | `El_start ((_, "varargs"), _attrs) ->
@@ -520,7 +544,8 @@ let parse_gir_file filename _filter_classes =
           | `El_start ((_, "type"), attrs) ->
             let type_name = match get_attr "name" attrs with Some n -> n | None -> "void" in
             let c_type_name = match get_attr "c:type" attrs with Some t -> t | None -> type_name in
-            type_ := { name = type_name; c_type = c_type_name };
+            let nullable = get_attr "nullable" attrs |> Utils.parse_bool in
+            type_ := { name = type_name; c_type = c_type_name; nullable };
             skip_element 1;
             parse_param_contents ()
           | `El_start _ ->
@@ -531,7 +556,7 @@ let parse_gir_file filename _filter_classes =
             parse_param_contents ()
         in
         let (param_type, varargs) = parse_param_contents () in
-        params := { param_name = param_name; param_type = param_type; nullable = nullable ; varargs = varargs} :: !params;
+        params := { param_name = param_name; param_type = param_type; direction; nullable = nullable ; varargs = varargs} :: !params;
         parse_params_contents ()
 
       | `El_start ((_, "instance-parameter"), _) ->
@@ -572,13 +597,13 @@ let parse_gir_file filename _filter_classes =
             (match get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs with
             | Some method_name, Some c_id ->
                 let  throws = get_attr "throws" tag_attrs |> Utils.parse_bool in
-              let (return_type, params) = parse_method () in
+              let (return_type, params, doc) = parse_method () in
               methods := {
                 method_name = method_name;
                 c_identifier = c_id;
                 return_type = return_type;
                 parameters = params;
-                doc = None;
+                doc = doc;
                 throws = throws;
               } :: !methods;
               parse_class_contents ()

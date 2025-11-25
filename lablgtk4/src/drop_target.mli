@@ -8,15 +8,25 @@ external new_ : unit -> Gdk.dragaction -> t = "ml_gtk_drop_target_new"
 
 (* Properties *)
 
-(** Get property: preload *)
-external get_preload : t -> bool = "ml_gtk_drop_target_get_preload"
-
-(** Set property: preload *)
+(** Sets whether data should be preloaded on hover. *)
 external set_preload : t -> bool -> unit = "ml_gtk_drop_target_set_preload"
 
+(** Sets the actions that this drop target supports. *)
 external set_actions : t -> Gdk.dragaction -> unit = "ml_gtk_drop_target_set_actions"
 
+(** Rejects the ongoing drop operation.
+
+If no drop operation is ongoing, i.e when [property@Gtk.DropTarget:current-drop]
+is %NULL, this function does nothing.
+
+This function should be used when delaying the decision
+on whether to accept a drag or not until after reading
+the data. *)
 external reject : t -> unit = "ml_gtk_drop_target_reject"
 
+(** Gets whether data should be preloaded on hover. *)
+external get_preload : t -> bool = "ml_gtk_drop_target_get_preload"
+
+(** Gets the actions that this drop target supports. *)
 external get_actions : t -> Gdk.dragaction = "ml_gtk_drop_target_get_actions"
 

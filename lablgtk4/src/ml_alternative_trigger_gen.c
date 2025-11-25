@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,14 +15,16 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkAlternativeTrigger */
+#ifndef Val_GtkAlternativeTrigger
 #define GtkAlternativeTrigger_val(val) ((GtkAlternativeTrigger*)ext_of_val(val))
 #define Val_GtkAlternativeTrigger(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkAlternativeTrigger */
 
 
 CAMLexport CAMLprim value ml_gtk_alternative_trigger_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
-GtkAlternativeTrigger *obj = gtk_alternative_trigger_new(GtkWidget_val(arg1), GtkWidget_val(arg2));
+GtkAlternativeTrigger *obj = gtk_alternative_trigger_new(GtkShortcutTrigger_val(arg1), GtkShortcutTrigger_val(arg2));
 CAMLreturn(Val_GtkAlternativeTrigger(obj));
 }
 
@@ -30,7 +33,7 @@ CAMLexport CAMLprim value ml_gtk_alternative_trigger_get_second(value self)
 CAMLparam1(self);
 
 GtkShortcutTrigger* result = gtk_alternative_trigger_get_second(GtkAlternativeTrigger_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkShortcutTrigger(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_alternative_trigger_get_first(value self)
@@ -38,5 +41,5 @@ CAMLexport CAMLprim value ml_gtk_alternative_trigger_get_first(value self)
 CAMLparam1(self);
 
 GtkShortcutTrigger* result = gtk_alternative_trigger_get_first(GtkAlternativeTrigger_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkShortcutTrigger(result));
 }

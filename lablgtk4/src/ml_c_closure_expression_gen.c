@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkCClosureExpression */
+#ifndef Val_GtkCClosureExpression
 #define GtkCClosureExpression_val(val) ((GtkCClosureExpression*)ext_of_val(val))
 #define Val_GtkCClosureExpression(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkCClosureExpression */
 
 
 CAMLexport CAMLprim value ml_gtk_cclosure_expression_new_native(value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7)

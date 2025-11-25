@@ -1,13 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: VolumeButton *)
 
-type t = Gtk.widget
+type t = [`volume_button | `scale_button | `widget] Gobject.obj
 
+let as_widget (obj : t) : Gtk.widget = Obj.magic obj
+
+(** Create a new VolumeButton *)
 external new_ : unit -> t = "ml_gtk_volume_button_new"
 
 (* Properties *)
-
-external get_use_symbolic : t -> bool = "ml_gtk_volume_button_get_use_symbolic"
-
-external set_use_symbolic : t -> bool -> unit = "ml_gtk_volume_button_set_use_symbolic"
 

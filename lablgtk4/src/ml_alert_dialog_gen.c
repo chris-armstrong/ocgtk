@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkAlertDialog */
+#ifndef Val_GtkAlertDialog
 #define GtkAlertDialog_val(val) ((GtkAlertDialog*)ext_of_val(val))
 #define Val_GtkAlertDialog(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkAlertDialog */
 
 
 CAMLexport CAMLprim value ml_gtk_alert_dialog_new(value arg1, value arg2)
@@ -29,8 +32,88 @@ CAMLexport CAMLprim value ml_gtk_alert_dialog_show(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_alert_dialog_show(GtkAlertDialog_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_alert_dialog_show(GtkAlertDialog_val(self), Option_val(arg1, GtkWindow_val, NULL));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_alert_dialog_set_modal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_alert_dialog_set_modal(GtkAlertDialog_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_alert_dialog_set_message(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_alert_dialog_set_message(GtkAlertDialog_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_alert_dialog_set_detail(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_alert_dialog_set_detail(GtkAlertDialog_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_alert_dialog_set_default_button(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_alert_dialog_set_default_button(GtkAlertDialog_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_alert_dialog_set_cancel_button(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_alert_dialog_set_cancel_button(GtkAlertDialog_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_alert_dialog_get_modal(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_alert_dialog_get_modal(GtkAlertDialog_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_alert_dialog_get_message(value self)
+{
+CAMLparam1(self);
+
+const char* result = gtk_alert_dialog_get_message(GtkAlertDialog_val(self));
+CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_alert_dialog_get_detail(value self)
+{
+CAMLparam1(self);
+
+const char* result = gtk_alert_dialog_get_detail(GtkAlertDialog_val(self));
+CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_alert_dialog_get_default_button(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_alert_dialog_get_default_button(GtkAlertDialog_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_alert_dialog_get_cancel_button(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_alert_dialog_get_cancel_button(GtkAlertDialog_val(self));
+CAMLreturn(Val_int(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_alert_dialog_get_buttons(value self)
@@ -38,105 +121,5 @@ CAMLexport CAMLprim value ml_gtk_alert_dialog_get_buttons(value self)
 CAMLparam1(self);
 
 gtk_alert_dialog_get_buttons(GtkAlertDialog_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_alert_dialog_get_cancel_button(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkAlertDialog *obj = (GtkAlertDialog *)GtkAlertDialog_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "cancel-button", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_alert_dialog_set_cancel_button(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkAlertDialog *obj = (GtkAlertDialog *)GtkAlertDialog_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "cancel-button", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_alert_dialog_get_default_button(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkAlertDialog *obj = (GtkAlertDialog *)GtkAlertDialog_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "default-button", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_alert_dialog_set_default_button(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkAlertDialog *obj = (GtkAlertDialog *)GtkAlertDialog_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "default-button", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_alert_dialog_get_detail(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkAlertDialog *obj = (GtkAlertDialog *)GtkAlertDialog_val(self);
-gchar* prop_value;
-g_object_get(G_OBJECT(obj), "detail", &prop_value, NULL);
-result = caml_copy_string(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_alert_dialog_set_detail(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkAlertDialog *obj = (GtkAlertDialog *)GtkAlertDialog_val(self);
-gchar* c_value = String_val(new_value);
-g_object_set(G_OBJECT(obj), "detail", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_alert_dialog_get_message(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkAlertDialog *obj = (GtkAlertDialog *)GtkAlertDialog_val(self);
-gchar* prop_value;
-g_object_get(G_OBJECT(obj), "message", &prop_value, NULL);
-result = caml_copy_string(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_alert_dialog_set_message(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkAlertDialog *obj = (GtkAlertDialog *)GtkAlertDialog_val(self);
-gchar* c_value = String_val(new_value);
-g_object_set(G_OBJECT(obj), "message", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_alert_dialog_get_modal(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkAlertDialog *obj = (GtkAlertDialog *)GtkAlertDialog_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "modal", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_alert_dialog_set_modal(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkAlertDialog *obj = (GtkAlertDialog *)GtkAlertDialog_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "modal", c_value, NULL);
 CAMLreturn(Val_unit);
 }

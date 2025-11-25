@@ -1,17 +1,29 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Switch *)
 
-type t = Gtk.widget
+type t = [`switch | `widget] Gobject.obj
 
+let as_widget (obj : t) : Gtk.widget = Obj.magic obj
+
+(** Create a new Switch *)
 external new_ : unit -> t = "ml_gtk_switch_new"
 
 (* Properties *)
 
-external get_active : t -> bool = "ml_gtk_switch_get_active"
+(** Sets the underlying state of the `GtkSwitch`.
 
+This function is typically called from a [signal@Gtk.Switch::state-set]
+signal handler in order to set up delayed state changes.
+
+See [signal@Gtk.Switch::state-set] for details. *)
+external set_state : t -> bool -> unit = "ml_gtk_switch_set_state"
+
+(** Changes the state of @self to the desired one. *)
 external set_active : t -> bool -> unit = "ml_gtk_switch_set_active"
 
+(** Gets the underlying state of the `GtkSwitch`. *)
 external get_state : t -> bool = "ml_gtk_switch_get_state"
 
-external set_state : t -> bool -> unit = "ml_gtk_switch_set_state"
+(** Gets whether the `GtkSwitch` is in its “on” or “off” state. *)
+external get_active : t -> bool = "ml_gtk_switch_get_active"
 

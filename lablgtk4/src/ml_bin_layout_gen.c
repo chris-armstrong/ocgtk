@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkBinLayout */
+#ifndef Val_GtkBinLayout
 #define GtkBinLayout_val(val) ((GtkBinLayout*)ext_of_val(val))
 #define Val_GtkBinLayout(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkBinLayout */
 
 
 CAMLexport CAMLprim value ml_gtk_bin_layout_new(value unit)

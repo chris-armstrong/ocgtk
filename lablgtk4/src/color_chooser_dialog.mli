@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: ColorChooserDialog *)
 
-type t = Gtk.widget
+type t = [`color_chooser_dialog | `dialog | `window | `widget] Gobject.obj
+
+val as_widget : t -> Gtk.widget
 
 (** Create a new ColorChooserDialog *)
 external new_ : string option -> Gtk.widget option -> t = "ml_gtk_color_chooser_dialog_new"

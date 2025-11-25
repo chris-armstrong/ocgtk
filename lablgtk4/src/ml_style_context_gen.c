@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkStyleContext */
+#ifndef Val_GtkStyleContext
 #define GtkStyleContext_val(val) ((GtkStyleContext*)ext_of_val(val))
 #define Val_GtkStyleContext(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkStyleContext */
 
 
 CAMLexport CAMLprim value ml_gtk_style_context_set_state(value self, value arg1)
@@ -90,27 +93,30 @@ int result = gtk_style_context_get_scale(GtkStyleContext_val(self));
 CAMLreturn(Val_int(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_style_context_get_padding(value self, value arg1)
+CAMLexport CAMLprim value ml_gtk_style_context_get_padding(value self)
 {
-CAMLparam2(self, arg1);
+CAMLparam1(self);
+GtkBorder out1;
 
-gtk_style_context_get_padding(GtkStyleContext_val(self), GtkWidget_val(arg1));
+gtk_style_context_get_padding(GtkStyleContext_val(self), &out1);
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_style_context_get_margin(value self, value arg1)
+CAMLexport CAMLprim value ml_gtk_style_context_get_margin(value self)
 {
-CAMLparam2(self, arg1);
+CAMLparam1(self);
+GtkBorder out1;
 
-gtk_style_context_get_margin(GtkStyleContext_val(self), GtkWidget_val(arg1));
+gtk_style_context_get_margin(GtkStyleContext_val(self), &out1);
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_style_context_get_border(value self, value arg1)
+CAMLexport CAMLprim value ml_gtk_style_context_get_border(value self)
 {
-CAMLparam2(self, arg1);
+CAMLparam1(self);
+GtkBorder out1;
 
-gtk_style_context_get_border(GtkStyleContext_val(self), GtkWidget_val(arg1));
+gtk_style_context_get_border(GtkStyleContext_val(self), &out1);
 CAMLreturn(Val_unit);
 }
 

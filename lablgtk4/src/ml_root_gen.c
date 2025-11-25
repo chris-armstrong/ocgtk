@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkRoot */
+#ifndef Val_GtkRoot
 #define GtkRoot_val(val) ((GtkRoot*)ext_of_val(val))
 #define Val_GtkRoot(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkRoot */
 
 
 CAMLexport CAMLprim value ml_gtk_root_set_focus(value self, value arg1)
@@ -31,5 +34,5 @@ CAMLexport CAMLprim value ml_gtk_root_get_focus(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_root_get_focus(GtkRoot_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWidget_option(result));
 }

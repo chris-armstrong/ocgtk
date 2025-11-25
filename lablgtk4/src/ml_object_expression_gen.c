@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkObjectExpression */
+#ifndef Val_GtkObjectExpression
 #define GtkObjectExpression_val(val) ((GtkObjectExpression*)ext_of_val(val))
 #define Val_GtkObjectExpression(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkObjectExpression */
 
 
 CAMLexport CAMLprim value ml_gtk_object_expression_new(value arg1)

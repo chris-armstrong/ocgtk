@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -14,8 +15,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkDrawingArea */
+#ifndef Val_GtkDrawingArea
 #define GtkDrawingArea_val(val) ((GtkDrawingArea*)ext_of_val(val))
 #define Val_GtkDrawingArea(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkDrawingArea */
 
 
 CAMLexport CAMLprim value ml_gtk_drawing_area_new(value unit)
@@ -25,42 +28,34 @@ GtkDrawingArea *obj = gtk_drawing_area_new();
 CAMLreturn(Val_GtkDrawingArea(obj));
 }
 
-CAMLexport CAMLprim value ml_gtk_drawing_area_get_content_height(value self)
+CAMLexport CAMLprim value ml_gtk_drawing_area_set_content_width(value self, value arg1)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkDrawingArea *obj = (GtkDrawingArea *)GtkDrawingArea_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "content-height", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
+CAMLparam2(self, arg1);
+
+gtk_drawing_area_set_content_width(GtkDrawingArea_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_drawing_area_set_content_height(value self, value new_value)
+CAMLexport CAMLprim value ml_gtk_drawing_area_set_content_height(value self, value arg1)
 {
-CAMLexport CAMLparam2(self, new_value);
-GtkDrawingArea *obj = (GtkDrawingArea *)GtkDrawingArea_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "content-height", c_value, NULL);
+CAMLparam2(self, arg1);
+
+gtk_drawing_area_set_content_height(GtkDrawingArea_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_drawing_area_get_content_width(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkDrawingArea *obj = (GtkDrawingArea *)GtkDrawingArea_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "content-width", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
+
+int result = gtk_drawing_area_get_content_width(GtkDrawingArea_val(self));
+CAMLreturn(Val_int(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_drawing_area_set_content_width(value self, value new_value)
+CAMLexport CAMLprim value ml_gtk_drawing_area_get_content_height(value self)
 {
-CAMLexport CAMLparam2(self, new_value);
-GtkDrawingArea *obj = (GtkDrawingArea *)GtkDrawingArea_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "content-width", c_value, NULL);
-CAMLreturn(Val_unit);
+CAMLparam1(self);
+
+int result = gtk_drawing_area_get_content_height(GtkDrawingArea_val(self));
+CAMLreturn(Val_int(result));
 }
