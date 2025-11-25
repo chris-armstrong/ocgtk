@@ -299,6 +299,8 @@ let generate_bindings filter_file gir_file output_dir =
       output_string oc "#include <caml/mlvalues.h>\n";
       output_string oc "#include <caml/memory.h>\n";
       output_string oc "#include <caml/alloc.h>\n";
+      output_string oc "#include <caml/fail.h>\n";
+      output_string oc "#include <caml/hash.h>\n";
       if ns_lower = "gdk" then
         output_string oc "#include <gdk/gdk.h>\n\n"
       else if ns_lower = "pango" then

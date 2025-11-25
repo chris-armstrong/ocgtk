@@ -126,6 +126,7 @@ let generate_c_file_header ?(class_name="") ?(c_type="") ?(external_enums=[]) ?(
   Buffer.add_string buf "#include <caml/alloc.h>\n";
   Buffer.add_string buf "#include <caml/callback.h>\n";
   Buffer.add_string buf "#include <caml/fail.h>\n";
+  Buffer.add_string buf "#include <caml/hash.h>\n";
   Buffer.add_string buf "#include \"wrappers.h\"\n";
   Buffer.add_string buf "#include \"ml_gobject.h\"\n";
   Buffer.add_string buf "\n";

@@ -7,6 +7,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/hash.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
