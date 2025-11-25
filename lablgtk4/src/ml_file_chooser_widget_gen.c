@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkFileChooserWidget */
+#ifndef Val_GtkFileChooserWidget
 #define GtkFileChooserWidget_val(val) ((GtkFileChooserWidget*)ext_of_val(val))
 #define Val_GtkFileChooserWidget(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkFileChooserWidget */
 
 
 CAMLexport CAMLprim value ml_gtk_file_chooser_widget_new(value arg1)
@@ -43,26 +45,4 @@ GtkFileChooserWidget *obj = (GtkFileChooserWidget *)GtkFileChooserWidget_val(sel
 gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "search-mode", c_value, NULL);
 CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_file_chooser_widget_get_show_time(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkFileChooserWidget *obj = (GtkFileChooserWidget *)GtkFileChooserWidget_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "show-time", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_file_chooser_widget_get_subtitle(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkFileChooserWidget *obj = (GtkFileChooserWidget *)GtkFileChooserWidget_val(self);
-gchar* prop_value;
-g_object_get(G_OBJECT(obj), "subtitle", &prop_value, NULL);
-result = caml_copy_string(prop_value);
-CAMLreturn(result);
 }

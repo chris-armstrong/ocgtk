@@ -14,6 +14,8 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkAccessibleRange */
+#ifndef Val_GtkAccessibleRange
 #define GtkAccessibleRange_val(val) ((GtkAccessibleRange*)ext_of_val(val))
 #define Val_GtkAccessibleRange(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkAccessibleRange */
 

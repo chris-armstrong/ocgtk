@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkSignalAction */
+#ifndef Val_GtkSignalAction
 #define GtkSignalAction_val(val) ((GtkSignalAction*)ext_of_val(val))
 #define Val_GtkSignalAction(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkSignalAction */
 
 
 CAMLexport CAMLprim value ml_gtk_signal_action_new(value arg1)
@@ -28,10 +30,7 @@ CAMLreturn(Val_GtkSignalAction(obj));
 CAMLexport CAMLprim value ml_gtk_signal_action_get_signal_name(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkSignalAction *obj = (GtkSignalAction *)GtkSignalAction_val(self);
-gchar* prop_value;
-g_object_get(G_OBJECT(obj), "signal-name", &prop_value, NULL);
-result = caml_copy_string(prop_value);
-CAMLreturn(result);
+
+const char* result = gtk_signal_action_get_signal_name(GtkSignalAction_val(self));
+CAMLreturn(caml_copy_string(result));
 }

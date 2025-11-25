@@ -14,6 +14,8 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkActivateAction */
+#ifndef Val_GtkActivateAction
 #define GtkActivateAction_val(val) ((GtkActivateAction*)ext_of_val(val))
 #define Val_GtkActivateAction(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkActivateAction */
 

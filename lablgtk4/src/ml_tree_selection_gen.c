@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkTreeSelection */
+#ifndef Val_GtkTreeSelection
 #define GtkTreeSelection_val(val) ((GtkTreeSelection*)ext_of_val(val))
 #define Val_GtkTreeSelection(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkTreeSelection */
 
 
 CAMLexport CAMLprim value ml_gtk_tree_selection_unselect_range(value self, value arg1, value arg2)
@@ -111,7 +113,7 @@ CAMLexport CAMLprim value ml_gtk_tree_selection_get_tree_view(value self)
 CAMLparam1(self);
 
 GtkTreeView* result = gtk_tree_selection_get_tree_view(GtkTreeSelection_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkTreeView(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_selection_get_selected(value self, value arg1, value arg2)

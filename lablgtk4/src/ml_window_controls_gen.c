@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkWindowControls */
+#ifndef Val_GtkWindowControls
 #define GtkWindowControls_val(val) ((GtkWindowControls*)ext_of_val(val))
 #define Val_GtkWindowControls(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkWindowControls */
 
 
 CAMLexport CAMLprim value ml_gtk_window_controls_new(value arg1)
@@ -33,6 +35,14 @@ gtk_window_controls_set_side(GtkWindowControls_val(self), GtkPackType_val(arg1))
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_window_controls_set_decoration_layout(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_window_controls_set_decoration_layout(GtkWindowControls_val(self), (Is_some(arg1) ? String_val(Some_val(arg1)) : NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_window_controls_get_side(value self)
 {
 CAMLparam1(self);
@@ -41,33 +51,18 @@ GtkPackType result = gtk_window_controls_get_side(GtkWindowControls_val(self));
 CAMLreturn(Val_GtkPackType(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_window_controls_get_decoration_layout(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWindowControls *obj = (GtkWindowControls *)GtkWindowControls_val(self);
-gchar* prop_value;
-g_object_get(G_OBJECT(obj), "decoration-layout", &prop_value, NULL);
-result = caml_copy_string(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_window_controls_set_decoration_layout(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkWindowControls *obj = (GtkWindowControls *)GtkWindowControls_val(self);
-gchar* c_value = String_val(new_value);
-g_object_set(G_OBJECT(obj), "decoration-layout", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_window_controls_get_empty(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkWindowControls *obj = (GtkWindowControls *)GtkWindowControls_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "empty", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
+
+gboolean result = gtk_window_controls_get_empty(GtkWindowControls_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_window_controls_get_decoration_layout(value self)
+{
+CAMLparam1(self);
+
+const char* result = gtk_window_controls_get_decoration_layout(GtkWindowControls_val(self));
+CAMLreturn(caml_copy_string(result));
 }

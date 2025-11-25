@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkAppChooserButton */
+#ifndef Val_GtkAppChooserButton
 #define GtkAppChooserButton_val(val) ((GtkAppChooserButton*)ext_of_val(val))
 #define Val_GtkAppChooserButton(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkAppChooserButton */
 
 
 CAMLexport CAMLprim value ml_gtk_app_chooser_button_new(value arg1)
@@ -23,6 +25,38 @@ CAMLexport CAMLprim value ml_gtk_app_chooser_button_new(value arg1)
 CAMLparam1(arg1);
 GtkAppChooserButton *obj = gtk_app_chooser_button_new(String_val(arg1));
 CAMLreturn(Val_GtkAppChooserButton(obj));
+}
+
+CAMLexport CAMLprim value ml_gtk_app_chooser_button_set_show_dialog_item(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_app_chooser_button_set_show_dialog_item(GtkAppChooserButton_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_app_chooser_button_set_show_default_item(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_app_chooser_button_set_show_default_item(GtkAppChooserButton_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_app_chooser_button_set_modal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_app_chooser_button_set_modal(GtkAppChooserButton_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_app_chooser_button_set_heading(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_app_chooser_button_set_heading(GtkAppChooserButton_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_app_chooser_button_set_active_custom_item(value self, value arg1)
@@ -33,90 +67,42 @@ gtk_app_chooser_button_set_active_custom_item(GtkAppChooserButton_val(self), Str
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_app_chooser_button_append_separator(value self)
+CAMLexport CAMLprim value ml_gtk_app_chooser_button_get_show_dialog_item(value self)
 {
 CAMLparam1(self);
 
-gtk_app_chooser_button_append_separator(GtkAppChooserButton_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_app_chooser_button_get_heading(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkAppChooserButton *obj = (GtkAppChooserButton *)GtkAppChooserButton_val(self);
-gchar* prop_value;
-g_object_get(G_OBJECT(obj), "heading", &prop_value, NULL);
-result = caml_copy_string(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_app_chooser_button_set_heading(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkAppChooserButton *obj = (GtkAppChooserButton *)GtkAppChooserButton_val(self);
-gchar* c_value = String_val(new_value);
-g_object_set(G_OBJECT(obj), "heading", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_app_chooser_button_get_modal(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkAppChooserButton *obj = (GtkAppChooserButton *)GtkAppChooserButton_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "modal", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_app_chooser_button_set_modal(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkAppChooserButton *obj = (GtkAppChooserButton *)GtkAppChooserButton_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "modal", c_value, NULL);
-CAMLreturn(Val_unit);
+gboolean result = gtk_app_chooser_button_get_show_dialog_item(GtkAppChooserButton_val(self));
+CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_app_chooser_button_get_show_default_item(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkAppChooserButton *obj = (GtkAppChooserButton *)GtkAppChooserButton_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "show-default-item", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
+
+gboolean result = gtk_app_chooser_button_get_show_default_item(GtkAppChooserButton_val(self));
+CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_app_chooser_button_set_show_default_item(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkAppChooserButton *obj = (GtkAppChooserButton *)GtkAppChooserButton_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "show-default-item", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_app_chooser_button_get_show_dialog_item(value self)
+CAMLexport CAMLprim value ml_gtk_app_chooser_button_get_modal(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkAppChooserButton *obj = (GtkAppChooserButton *)GtkAppChooserButton_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "show-dialog-item", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
+
+gboolean result = gtk_app_chooser_button_get_modal(GtkAppChooserButton_val(self));
+CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_app_chooser_button_set_show_dialog_item(value self, value new_value)
+CAMLexport CAMLprim value ml_gtk_app_chooser_button_get_heading(value self)
 {
-CAMLexport CAMLparam2(self, new_value);
-GtkAppChooserButton *obj = (GtkAppChooserButton *)GtkAppChooserButton_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "show-dialog-item", c_value, NULL);
+CAMLparam1(self);
+
+const char* result = gtk_app_chooser_button_get_heading(GtkAppChooserButton_val(self));
+CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_app_chooser_button_append_separator(value self)
+{
+CAMLparam1(self);
+
+gtk_app_chooser_button_append_separator(GtkAppChooserButton_val(self));
 CAMLreturn(Val_unit);
 }

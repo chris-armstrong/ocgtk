@@ -14,9 +14,27 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkListItem */
+#ifndef Val_GtkListItem
 #define GtkListItem_val(val) ((GtkListItem*)ext_of_val(val))
 #define Val_GtkListItem(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkListItem */
 
+
+CAMLexport CAMLprim value ml_gtk_list_item_set_selectable(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_list_item_set_selectable(GtkListItem_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_list_item_set_focusable(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_list_item_set_focusable(GtkListItem_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
 
 CAMLexport CAMLprim value ml_gtk_list_item_set_child(value self, value arg1)
 {
@@ -24,6 +42,62 @@ CAMLparam2(self, arg1);
 
 gtk_list_item_set_child(GtkListItem_val(self), GtkWidget_option_val(arg1));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_list_item_set_activatable(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_list_item_set_activatable(GtkListItem_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_list_item_set_accessible_label(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_list_item_set_accessible_label(GtkListItem_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_list_item_set_accessible_description(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_list_item_set_accessible_description(GtkListItem_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_list_item_get_selected(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_list_item_get_selected(GtkListItem_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_list_item_get_selectable(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_list_item_get_selectable(GtkListItem_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_list_item_get_position(value self)
+{
+CAMLparam1(self);
+
+guint result = gtk_list_item_get_position(GtkListItem_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_list_item_get_focusable(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_list_item_get_focusable(GtkListItem_val(self));
+CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_list_item_get_child(value self)
@@ -34,124 +108,26 @@ GtkWidget* result = gtk_list_item_get_child(GtkListItem_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_list_item_get_accessible_description(value self)
+CAMLexport CAMLprim value ml_gtk_list_item_get_activatable(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkListItem *obj = (GtkListItem *)GtkListItem_val(self);
-gchar* prop_value;
-g_object_get(G_OBJECT(obj), "accessible-description", &prop_value, NULL);
-result = caml_copy_string(prop_value);
-CAMLreturn(result);
-}
 
-CAMLexport CAMLprim value ml_gtk_list_item_set_accessible_description(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkListItem *obj = (GtkListItem *)GtkListItem_val(self);
-gchar* c_value = String_val(new_value);
-g_object_set(G_OBJECT(obj), "accessible-description", c_value, NULL);
-CAMLreturn(Val_unit);
+gboolean result = gtk_list_item_get_activatable(GtkListItem_val(self));
+CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_list_item_get_accessible_label(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkListItem *obj = (GtkListItem *)GtkListItem_val(self);
-gchar* prop_value;
-g_object_get(G_OBJECT(obj), "accessible-label", &prop_value, NULL);
-result = caml_copy_string(prop_value);
-CAMLreturn(result);
+
+const char* result = gtk_list_item_get_accessible_label(GtkListItem_val(self));
+CAMLreturn(caml_copy_string(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_list_item_set_accessible_label(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkListItem *obj = (GtkListItem *)GtkListItem_val(self);
-gchar* c_value = String_val(new_value);
-g_object_set(G_OBJECT(obj), "accessible-label", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_list_item_get_activatable(value self)
+CAMLexport CAMLprim value ml_gtk_list_item_get_accessible_description(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkListItem *obj = (GtkListItem *)GtkListItem_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "activatable", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
 
-CAMLexport CAMLprim value ml_gtk_list_item_set_activatable(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkListItem *obj = (GtkListItem *)GtkListItem_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "activatable", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_list_item_get_focusable(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkListItem *obj = (GtkListItem *)GtkListItem_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "focusable", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_list_item_set_focusable(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkListItem *obj = (GtkListItem *)GtkListItem_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "focusable", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_list_item_get_position(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkListItem *obj = (GtkListItem *)GtkListItem_val(self);
-guint prop_value;
-g_object_get(G_OBJECT(obj), "position", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_list_item_get_selectable(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkListItem *obj = (GtkListItem *)GtkListItem_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "selectable", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_list_item_set_selectable(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkListItem *obj = (GtkListItem *)GtkListItem_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "selectable", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_list_item_get_selected(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkListItem *obj = (GtkListItem *)GtkListItem_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "selected", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
+const char* result = gtk_list_item_get_accessible_description(GtkListItem_val(self));
+CAMLreturn(caml_copy_string(result));
 }

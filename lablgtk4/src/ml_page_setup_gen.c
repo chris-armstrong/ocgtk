@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkPageSetup */
+#ifndef Val_GtkPageSetup
 #define GtkPageSetup_val(val) ((GtkPageSetup*)ext_of_val(val))
 #define Val_GtkPageSetup(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkPageSetup */
 
 
 CAMLexport CAMLprim value ml_gtk_page_setup_new(value unit)
@@ -184,12 +186,4 @@ CAMLparam2(self, arg1);
 
 double result = gtk_page_setup_get_bottom_margin(GtkPageSetup_val(self), GtkUnit_val(arg1));
 CAMLreturn(caml_copy_double(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_page_setup_copy(value self)
-{
-CAMLparam1(self);
-
-GtkPageSetup* result = gtk_page_setup_copy(GtkPageSetup_val(self));
-CAMLreturn(Val_GtkWidget(result));
 }

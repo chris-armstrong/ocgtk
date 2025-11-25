@@ -14,15 +14,25 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkFileChooser */
+#ifndef Val_GtkFileChooser
 #define GtkFileChooser_val(val) ((GtkFileChooser*)ext_of_val(val))
 #define Val_GtkFileChooser(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkFileChooser */
 
+
+CAMLexport CAMLprim value ml_gtk_file_chooser_set_select_multiple(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_file_chooser_set_select_multiple(GtkFileChooser_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
 
 CAMLexport CAMLprim value ml_gtk_file_chooser_set_filter(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_file_chooser_set_filter(GtkFileChooser_val(self), GtkWidget_val(arg1));
+gtk_file_chooser_set_filter(GtkFileChooser_val(self), GtkFileFilter_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -31,6 +41,14 @@ CAMLexport CAMLprim value ml_gtk_file_chooser_set_current_name(value self, value
 CAMLparam2(self, arg1);
 
 gtk_file_chooser_set_current_name(GtkFileChooser_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_file_chooser_set_create_folders(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_file_chooser_set_create_folders(GtkFileChooser_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -54,7 +72,7 @@ CAMLexport CAMLprim value ml_gtk_file_chooser_remove_filter(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-gtk_file_chooser_remove_filter(GtkFileChooser_val(self), GtkWidget_val(arg1));
+gtk_file_chooser_remove_filter(GtkFileChooser_val(self), GtkFileFilter_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -66,12 +84,28 @@ gtk_file_chooser_remove_choice(GtkFileChooser_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_file_chooser_get_select_multiple(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_file_chooser_get_select_multiple(GtkFileChooser_val(self));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_file_chooser_get_filter(value self)
 {
 CAMLparam1(self);
 
 GtkFileFilter* result = gtk_file_chooser_get_filter(GtkFileChooser_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkFileFilter(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_file_chooser_get_create_folders(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_file_chooser_get_create_folders(GtkFileChooser_val(self));
+CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_file_chooser_get_choice(value self, value arg1)
@@ -94,46 +128,6 @@ CAMLexport CAMLprim value ml_gtk_file_chooser_add_filter(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_file_chooser_add_filter(GtkFileChooser_val(self), GtkWidget_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_file_chooser_get_create_folders(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkFileChooser *obj = (GtkFileChooser *)GtkFileChooser_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "create-folders", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_file_chooser_set_create_folders(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkFileChooser *obj = (GtkFileChooser *)GtkFileChooser_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "create-folders", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_file_chooser_get_select_multiple(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkFileChooser *obj = (GtkFileChooser *)GtkFileChooser_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "select-multiple", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_file_chooser_set_select_multiple(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkFileChooser *obj = (GtkFileChooser *)GtkFileChooser_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "select-multiple", c_value, NULL);
+gtk_file_chooser_add_filter(GtkFileChooser_val(self), GtkFileFilter_val(arg1));
 CAMLreturn(Val_unit);
 }

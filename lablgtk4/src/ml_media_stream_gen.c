@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkMediaStream */
+#ifndef Val_GtkMediaStream
 #define GtkMediaStream_val(val) ((GtkMediaStream*)ext_of_val(val))
 #define Val_GtkMediaStream(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkMediaStream */
 
 
 CAMLexport CAMLprim value ml_gtk_media_stream_unprepared(value self)
@@ -39,6 +41,38 @@ CAMLexport CAMLprim value ml_gtk_media_stream_stream_ended(value self)
 CAMLparam1(self);
 
 gtk_media_stream_stream_ended(GtkMediaStream_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_media_stream_set_volume(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_media_stream_set_volume(GtkMediaStream_val(self), Double_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_media_stream_set_playing(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_media_stream_set_playing(GtkMediaStream_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_media_stream_set_muted(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_media_stream_set_muted(GtkMediaStream_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_media_stream_set_loop(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_media_stream_set_loop(GtkMediaStream_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -114,165 +148,50 @@ gboolean result = gtk_media_stream_has_audio(GtkMediaStream_val(self));
 CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_media_stream_ended(value self)
+CAMLexport CAMLprim value ml_gtk_media_stream_get_volume(value self)
 {
 CAMLparam1(self);
 
-gtk_media_stream_ended(GtkMediaStream_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_media_stream_get_ended(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkMediaStream *obj = (GtkMediaStream *)GtkMediaStream_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "ended", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_media_stream_get_has_audio(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkMediaStream *obj = (GtkMediaStream *)GtkMediaStream_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "has-audio", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_media_stream_get_has_video(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkMediaStream *obj = (GtkMediaStream *)GtkMediaStream_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "has-video", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_media_stream_get_loop(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkMediaStream *obj = (GtkMediaStream *)GtkMediaStream_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "loop", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_media_stream_set_loop(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkMediaStream *obj = (GtkMediaStream *)GtkMediaStream_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "loop", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_media_stream_get_muted(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkMediaStream *obj = (GtkMediaStream *)GtkMediaStream_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "muted", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_media_stream_set_muted(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkMediaStream *obj = (GtkMediaStream *)GtkMediaStream_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "muted", c_value, NULL);
-CAMLreturn(Val_unit);
+double result = gtk_media_stream_get_volume(GtkMediaStream_val(self));
+CAMLreturn(caml_copy_double(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_media_stream_get_playing(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkMediaStream *obj = (GtkMediaStream *)GtkMediaStream_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "playing", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
+
+gboolean result = gtk_media_stream_get_playing(GtkMediaStream_val(self));
+CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_media_stream_set_playing(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkMediaStream *obj = (GtkMediaStream *)GtkMediaStream_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "playing", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_media_stream_get_prepared(value self)
+CAMLexport CAMLprim value ml_gtk_media_stream_get_muted(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkMediaStream *obj = (GtkMediaStream *)GtkMediaStream_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "prepared", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
+
+gboolean result = gtk_media_stream_get_muted(GtkMediaStream_val(self));
+CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_media_stream_set_prepared(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkMediaStream *obj = (GtkMediaStream *)GtkMediaStream_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "prepared", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_media_stream_get_seekable(value self)
+CAMLexport CAMLprim value ml_gtk_media_stream_get_loop(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkMediaStream *obj = (GtkMediaStream *)GtkMediaStream_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "seekable", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
+
+gboolean result = gtk_media_stream_get_loop(GtkMediaStream_val(self));
+CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_media_stream_get_seeking(value self)
+CAMLexport CAMLprim value ml_gtk_media_stream_get_ended(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkMediaStream *obj = (GtkMediaStream *)GtkMediaStream_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "seeking", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
+
+gboolean result = gtk_media_stream_get_ended(GtkMediaStream_val(self));
+CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_media_stream_get_volume(value self)
+CAMLexport CAMLprim value ml_gtk_media_stream_ended(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkMediaStream *obj = (GtkMediaStream *)GtkMediaStream_val(self);
-gdouble prop_value;
-g_object_get(G_OBJECT(obj), "volume", &prop_value, NULL);
-result = caml_copy_double(prop_value);
-CAMLreturn(result);
-}
 
-CAMLexport CAMLprim value ml_gtk_media_stream_set_volume(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkMediaStream *obj = (GtkMediaStream *)GtkMediaStream_val(self);
-gdouble c_value = Double_val(new_value);
-g_object_set(G_OBJECT(obj), "volume", c_value, NULL);
+gtk_media_stream_ended(GtkMediaStream_val(self));
 CAMLreturn(Val_unit);
 }

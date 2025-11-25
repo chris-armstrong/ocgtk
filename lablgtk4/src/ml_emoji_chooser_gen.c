@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkEmojiChooser */
+#ifndef Val_GtkEmojiChooser
 #define GtkEmojiChooser_val(val) ((GtkEmojiChooser*)ext_of_val(val))
 #define Val_GtkEmojiChooser(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkEmojiChooser */
 
 
 CAMLexport CAMLprim value ml_gtk_emoji_chooser_new(value unit)

@@ -14,14 +14,16 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkColorChooserDialog */
+#ifndef Val_GtkColorChooserDialog
 #define GtkColorChooserDialog_val(val) ((GtkColorChooserDialog*)ext_of_val(val))
 #define Val_GtkColorChooserDialog(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkColorChooserDialog */
 
 
 CAMLexport CAMLprim value ml_gtk_color_chooser_dialog_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
-GtkColorChooserDialog *obj = gtk_color_chooser_dialog_new((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL), (Is_some(arg2) ? GtkWidget_val(Some_val(arg2)) : NULL));
+GtkColorChooserDialog *obj = gtk_color_chooser_dialog_new((Is_some(arg1) ? String_val(Some_val(arg1)) : NULL), (Is_some(arg2) ? GtkWindow_val(Some_val(arg2)) : NULL));
 CAMLreturn(Val_GtkColorChooserDialog(obj));
 }
 

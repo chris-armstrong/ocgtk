@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkEventControllerKey */
+#ifndef Val_GtkEventControllerKey
 #define GtkEventControllerKey_val(val) ((GtkEventControllerKey*)ext_of_val(val))
 #define Val_GtkEventControllerKey(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkEventControllerKey */
 
 
 CAMLexport CAMLprim value ml_gtk_event_controller_key_new(value unit)
@@ -29,7 +31,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_key_set_im_context(value self,
 {
 CAMLparam2(self, arg1);
 
-gtk_event_controller_key_set_im_context(GtkEventControllerKey_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_event_controller_key_set_im_context(GtkEventControllerKey_val(self), (Is_some(arg1) ? GtkIMContext_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -38,7 +40,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_key_get_im_context(value self)
 CAMLparam1(self);
 
 GtkIMContext* result = gtk_event_controller_key_get_im_context(GtkEventControllerKey_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkIMContext(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_event_controller_key_get_group(value self)

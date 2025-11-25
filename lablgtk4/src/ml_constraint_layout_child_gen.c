@@ -14,6 +14,8 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkConstraintLayoutChild */
+#ifndef Val_GtkConstraintLayoutChild
 #define GtkConstraintLayoutChild_val(val) ((GtkConstraintLayoutChild*)ext_of_val(val))
 #define Val_GtkConstraintLayoutChild(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkConstraintLayoutChild */
 

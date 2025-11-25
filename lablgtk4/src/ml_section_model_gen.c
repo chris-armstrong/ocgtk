@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkSectionModel */
+#ifndef Val_GtkSectionModel
 #define GtkSectionModel_val(val) ((GtkSectionModel*)ext_of_val(val))
 #define Val_GtkSectionModel(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkSectionModel */
 
 
 CAMLexport CAMLprim value ml_gtk_section_model_sections_changed(value self, value arg1, value arg2)

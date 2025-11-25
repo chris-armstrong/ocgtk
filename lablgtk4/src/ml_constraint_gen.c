@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkConstraint */
+#ifndef Val_GtkConstraint
 #define GtkConstraint_val(val) ((GtkConstraint*)ext_of_val(val))
 #define Val_GtkConstraint(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkConstraint */
 
 
 CAMLexport CAMLprim value ml_gtk_constraint_new_native(value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7, value arg8)
@@ -78,6 +80,14 @@ GtkConstraintTarget* result = gtk_constraint_get_target(GtkConstraint_val(self))
 CAMLreturn(Val_GtkWidget(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_constraint_get_strength(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_constraint_get_strength(GtkConstraint_val(self));
+CAMLreturn(Val_int(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_constraint_get_source_attribute(value self)
 {
 CAMLparam1(self);
@@ -102,35 +112,18 @@ GtkConstraintRelation result = gtk_constraint_get_relation(GtkConstraint_val(sel
 CAMLreturn(Val_GtkConstraintRelation(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_constraint_get_constant(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkConstraint *obj = (GtkConstraint *)GtkConstraint_val(self);
-gdouble prop_value;
-g_object_get(G_OBJECT(obj), "constant", &prop_value, NULL);
-result = caml_copy_double(prop_value);
-CAMLreturn(result);
-}
-
 CAMLexport CAMLprim value ml_gtk_constraint_get_multiplier(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkConstraint *obj = (GtkConstraint *)GtkConstraint_val(self);
-gdouble prop_value;
-g_object_get(G_OBJECT(obj), "multiplier", &prop_value, NULL);
-result = caml_copy_double(prop_value);
-CAMLreturn(result);
+
+double result = gtk_constraint_get_multiplier(GtkConstraint_val(self));
+CAMLreturn(caml_copy_double(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_constraint_get_strength(value self)
+CAMLexport CAMLprim value ml_gtk_constraint_get_constant(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkConstraint *obj = (GtkConstraint *)GtkConstraint_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "strength", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
+
+double result = gtk_constraint_get_constant(GtkConstraint_val(self));
+CAMLreturn(caml_copy_double(result));
 }

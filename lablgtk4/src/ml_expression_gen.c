@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkExpression */
+#ifndef Val_GtkExpression
 #define GtkExpression_val(val) ((GtkExpression*)ext_of_val(val))
 #define Val_GtkExpression(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkExpression */
 
 
 CAMLexport CAMLprim value ml_gtk_expression_unref(value self)
@@ -31,7 +33,7 @@ CAMLexport CAMLprim value ml_gtk_expression_ref(value self)
 CAMLparam1(self);
 
 GtkExpression* result = gtk_expression_ref(GtkExpression_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkExpression(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_expression_is_static(value self)

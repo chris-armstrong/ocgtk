@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkWidgetPaintable */
+#ifndef Val_GtkWidgetPaintable
 #define GtkWidgetPaintable_val(val) ((GtkWidgetPaintable*)ext_of_val(val))
 #define Val_GtkWidgetPaintable(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkWidgetPaintable */
 
 
 CAMLexport CAMLprim value ml_gtk_widget_paintable_new(value arg1)

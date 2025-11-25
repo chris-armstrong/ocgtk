@@ -14,14 +14,16 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkColorDialogButton */
+#ifndef Val_GtkColorDialogButton
 #define GtkColorDialogButton_val(val) ((GtkColorDialogButton*)ext_of_val(val))
 #define Val_GtkColorDialogButton(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkColorDialogButton */
 
 
 CAMLexport CAMLprim value ml_gtk_color_dialog_button_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkColorDialogButton *obj = gtk_color_dialog_button_new((Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+GtkColorDialogButton *obj = gtk_color_dialog_button_new((Is_some(arg1) ? GtkColorDialog_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_GtkColorDialogButton(obj));
 }
 
@@ -29,7 +31,7 @@ CAMLexport CAMLprim value ml_gtk_color_dialog_button_set_dialog(value self, valu
 {
 CAMLparam2(self, arg1);
 
-gtk_color_dialog_button_set_dialog(GtkColorDialogButton_val(self), GtkWidget_val(arg1));
+gtk_color_dialog_button_set_dialog(GtkColorDialogButton_val(self), GtkColorDialog_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,5 +40,5 @@ CAMLexport CAMLprim value ml_gtk_color_dialog_button_get_dialog(value self)
 CAMLparam1(self);
 
 GtkColorDialog* result = gtk_color_dialog_button_get_dialog(GtkColorDialogButton_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkColorDialog(result));
 }

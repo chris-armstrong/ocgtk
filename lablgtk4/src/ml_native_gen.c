@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkNative */
+#ifndef Val_GtkNative
 #define GtkNative_val(val) ((GtkNative*)ext_of_val(val))
 #define Val_GtkNative(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkNative */
 
 
 CAMLexport CAMLprim value ml_gtk_native_unrealize(value self)

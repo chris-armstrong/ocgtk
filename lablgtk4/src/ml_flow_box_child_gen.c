@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkFlowBoxChild */
+#ifndef Val_GtkFlowBoxChild
 #define GtkFlowBoxChild_val(val) ((GtkFlowBoxChild*)ext_of_val(val))
 #define Val_GtkFlowBoxChild(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkFlowBoxChild */
 
 
 CAMLexport CAMLprim value ml_gtk_flow_box_child_new(value unit)

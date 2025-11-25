@@ -14,14 +14,16 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkListView */
+#ifndef Val_GtkListView
 #define GtkListView_val(val) ((GtkListView*)ext_of_val(val))
 #define Val_GtkListView(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkListView */
 
 
 CAMLexport CAMLprim value ml_gtk_list_view_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
-GtkListView *obj = gtk_list_view_new((Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL), (Is_some(arg2) ? GtkWidget_val(Some_val(arg2)) : NULL));
+GtkListView *obj = gtk_list_view_new((Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL), (Is_some(arg2) ? GtkListItemFactory_val(Some_val(arg2)) : NULL));
 CAMLreturn(Val_GtkListView(obj));
 }
 
@@ -30,6 +32,22 @@ CAMLexport CAMLprim value ml_gtk_list_view_set_tab_behavior(value self, value ar
 CAMLparam2(self, arg1);
 
 gtk_list_view_set_tab_behavior(GtkListView_val(self), GtkListTabBehavior_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_list_view_set_single_click_activate(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_list_view_set_single_click_activate(GtkListView_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_list_view_set_show_separators(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_list_view_set_show_separators(GtkListView_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -45,7 +63,7 @@ CAMLexport CAMLprim value ml_gtk_list_view_set_header_factory(value self, value 
 {
 CAMLparam2(self, arg1);
 
-gtk_list_view_set_header_factory(GtkListView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_list_view_set_header_factory(GtkListView_val(self), (Is_some(arg1) ? GtkListItemFactory_val(Some_val(arg1)) : NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -53,7 +71,15 @@ CAMLexport CAMLprim value ml_gtk_list_view_set_factory(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_list_view_set_factory(GtkListView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+gtk_list_view_set_factory(GtkListView_val(self), (Is_some(arg1) ? GtkListItemFactory_val(Some_val(arg1)) : NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_list_view_set_enable_rubberband(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_list_view_set_enable_rubberband(GtkListView_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -73,6 +99,22 @@ GtkListTabBehavior result = gtk_list_view_get_tab_behavior(GtkListView_val(self)
 CAMLreturn(Val_GtkListTabBehavior(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_list_view_get_single_click_activate(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_list_view_get_single_click_activate(GtkListView_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_list_view_get_show_separators(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_list_view_get_show_separators(GtkListView_val(self));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_list_view_get_model(value self)
 {
 CAMLparam1(self);
@@ -86,7 +128,7 @@ CAMLexport CAMLprim value ml_gtk_list_view_get_header_factory(value self)
 CAMLparam1(self);
 
 GtkListItemFactory* result = gtk_list_view_get_header_factory(GtkListView_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkListItemFactory(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_list_view_get_factory(value self)
@@ -94,65 +136,13 @@ CAMLexport CAMLprim value ml_gtk_list_view_get_factory(value self)
 CAMLparam1(self);
 
 GtkListItemFactory* result = gtk_list_view_get_factory(GtkListView_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkListItemFactory(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_list_view_get_enable_rubberband(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkListView *obj = (GtkListView *)GtkListView_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "enable-rubberband", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
 
-CAMLexport CAMLprim value ml_gtk_list_view_set_enable_rubberband(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkListView *obj = (GtkListView *)GtkListView_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "enable-rubberband", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_list_view_get_show_separators(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkListView *obj = (GtkListView *)GtkListView_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "show-separators", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_list_view_set_show_separators(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkListView *obj = (GtkListView *)GtkListView_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "show-separators", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_list_view_get_single_click_activate(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkListView *obj = (GtkListView *)GtkListView_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "single-click-activate", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_list_view_set_single_click_activate(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkListView *obj = (GtkListView *)GtkListView_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "single-click-activate", c_value, NULL);
-CAMLreturn(Val_unit);
+gboolean result = gtk_list_view_get_enable_rubberband(GtkListView_val(self));
+CAMLreturn(Val_bool(result));
 }

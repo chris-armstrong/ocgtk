@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkAnyFilter */
+#ifndef Val_GtkAnyFilter
 #define GtkAnyFilter_val(val) ((GtkAnyFilter*)ext_of_val(val))
 #define Val_GtkAnyFilter(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkAnyFilter */
 
 
 CAMLexport CAMLprim value ml_gtk_any_filter_new(value unit)

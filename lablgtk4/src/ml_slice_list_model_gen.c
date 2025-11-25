@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkSliceListModel */
+#ifndef Val_GtkSliceListModel
 #define GtkSliceListModel_val(val) ((GtkSliceListModel*)ext_of_val(val))
 #define Val_GtkSliceListModel(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkSliceListModel */
 
 
 CAMLexport CAMLprim value ml_gtk_slice_list_model_new(value arg1, value arg2, value arg3)
@@ -25,53 +27,34 @@ GtkSliceListModel *obj = gtk_slice_list_model_new(arg1, Int_val(arg2), Int_val(a
 CAMLreturn(Val_GtkSliceListModel(obj));
 }
 
-CAMLexport CAMLprim value ml_gtk_slice_list_model_get_n_items(value self)
+CAMLexport CAMLprim value ml_gtk_slice_list_model_set_size(value self, value arg1)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkSliceListModel *obj = (GtkSliceListModel *)GtkSliceListModel_val(self);
-guint prop_value;
-g_object_get(G_OBJECT(obj), "n-items", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
+CAMLparam2(self, arg1);
+
+gtk_slice_list_model_set_size(GtkSliceListModel_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_slice_list_model_get_offset(value self)
+CAMLexport CAMLprim value ml_gtk_slice_list_model_set_offset(value self, value arg1)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkSliceListModel *obj = (GtkSliceListModel *)GtkSliceListModel_val(self);
-guint prop_value;
-g_object_get(G_OBJECT(obj), "offset", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
-}
+CAMLparam2(self, arg1);
 
-CAMLexport CAMLprim value ml_gtk_slice_list_model_set_offset(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkSliceListModel *obj = (GtkSliceListModel *)GtkSliceListModel_val(self);
-guint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "offset", c_value, NULL);
+gtk_slice_list_model_set_offset(GtkSliceListModel_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_slice_list_model_get_size(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkSliceListModel *obj = (GtkSliceListModel *)GtkSliceListModel_val(self);
-guint prop_value;
-g_object_get(G_OBJECT(obj), "size", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
+
+guint result = gtk_slice_list_model_get_size(GtkSliceListModel_val(self));
+CAMLreturn(Val_int(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_slice_list_model_set_size(value self, value new_value)
+CAMLexport CAMLprim value ml_gtk_slice_list_model_get_offset(value self)
 {
-CAMLexport CAMLparam2(self, new_value);
-GtkSliceListModel *obj = (GtkSliceListModel *)GtkSliceListModel_val(self);
-guint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "size", c_value, NULL);
-CAMLreturn(Val_unit);
+CAMLparam1(self);
+
+guint result = gtk_slice_list_model_get_offset(GtkSliceListModel_val(self));
+CAMLreturn(Val_int(result));
 }

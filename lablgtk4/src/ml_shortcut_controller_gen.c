@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkShortcutController */
+#ifndef Val_GtkShortcutController
 #define GtkShortcutController_val(val) ((GtkShortcutController*)ext_of_val(val))
 #define Val_GtkShortcutController(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkShortcutController */
 
 
 CAMLexport CAMLprim value ml_gtk_shortcut_controller_new(value unit)
@@ -52,7 +54,7 @@ CAMLexport CAMLprim value ml_gtk_shortcut_controller_remove_shortcut(value self,
 {
 CAMLparam2(self, arg1);
 
-gtk_shortcut_controller_remove_shortcut(GtkShortcutController_val(self), GtkWidget_val(arg1));
+gtk_shortcut_controller_remove_shortcut(GtkShortcutController_val(self), GtkShortcut_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -76,17 +78,6 @@ CAMLexport CAMLprim value ml_gtk_shortcut_controller_add_shortcut(value self, va
 {
 CAMLparam2(self, arg1);
 
-gtk_shortcut_controller_add_shortcut(GtkShortcutController_val(self), GtkWidget_val(arg1));
+gtk_shortcut_controller_add_shortcut(GtkShortcutController_val(self), GtkShortcut_val(arg1));
 CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_shortcut_controller_get_n_items(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkShortcutController *obj = (GtkShortcutController *)GtkShortcutController_val(self);
-guint prop_value;
-g_object_get(G_OBJECT(obj), "n-items", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
 }

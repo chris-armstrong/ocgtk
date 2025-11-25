@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkDragIcon */
+#ifndef Val_GtkDragIcon
 #define GtkDragIcon_val(val) ((GtkDragIcon*)ext_of_val(val))
 #define Val_GtkDragIcon(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkDragIcon */
 
 
 CAMLexport CAMLprim value ml_gtk_drag_icon_set_child(value self, value arg1)

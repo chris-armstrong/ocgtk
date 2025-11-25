@@ -1,25 +1,18 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: ShortcutsSection *)
 
-type t = Gtk.widget
+type t = [`shortcuts_section | `box | `widget] Gobject.obj
+
+let as_widget (obj : t) : Gtk.widget = Obj.magic obj
 
 (* Properties *)
 
-external get_max_height : t -> int = "ml_gtk_shortcuts_section_get_max_height"
+(** Adds a group to the shortcuts section.
 
-external set_max_height : t -> int -> unit = "ml_gtk_shortcuts_section_set_max_height"
+This is the programmatic equivalent to using [class@Gtk.Builder] and a
+`<child>` tag to add the child.
 
-external get_section_name : t -> string = "ml_gtk_shortcuts_section_get_section_name"
-
-external set_section_name : t -> string -> unit = "ml_gtk_shortcuts_section_set_section_name"
-
-external get_title : t -> string = "ml_gtk_shortcuts_section_get_title"
-
-external set_title : t -> string -> unit = "ml_gtk_shortcuts_section_set_title"
-
-external get_view_name : t -> string = "ml_gtk_shortcuts_section_get_view_name"
-
-external set_view_name : t -> string -> unit = "ml_gtk_shortcuts_section_set_view_name"
-
+Adding children with the `GtkBox` API is not appropriate, as
+`GtkShortcutsSection` manages its children internally. *)
 external add_group : t -> Gtk.widget -> unit = "ml_gtk_shortcuts_section_add_group"
 

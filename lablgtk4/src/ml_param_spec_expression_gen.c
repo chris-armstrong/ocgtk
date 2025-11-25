@@ -14,6 +14,8 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkParamSpecExpression */
+#ifndef Val_GtkParamSpecExpression
 #define GtkParamSpecExpression_val(val) ((GtkParamSpecExpression*)ext_of_val(val))
 #define Val_GtkParamSpecExpression(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkParamSpecExpression */
 

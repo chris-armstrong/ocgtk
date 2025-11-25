@@ -14,22 +14,32 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkAppChooserDialog */
+#ifndef Val_GtkAppChooserDialog
 #define GtkAppChooserDialog_val(val) ((GtkAppChooserDialog*)ext_of_val(val))
 #define Val_GtkAppChooserDialog(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkAppChooserDialog */
 
 
 CAMLexport CAMLprim value ml_gtk_app_chooser_dialog_new(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
-GtkAppChooserDialog *obj = gtk_app_chooser_dialog_new((Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL), GtkDialogFlags_val(arg2), arg3);
+GtkAppChooserDialog *obj = gtk_app_chooser_dialog_new((Is_some(arg1) ? GtkWindow_val(Some_val(arg1)) : NULL), GtkDialogFlags_val(arg2), arg3);
 CAMLreturn(Val_GtkAppChooserDialog(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_app_chooser_dialog_new_for_content_type(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
-GtkAppChooserDialog *obj = gtk_app_chooser_dialog_new_for_content_type((Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL), GtkDialogFlags_val(arg2), String_val(arg3));
+GtkAppChooserDialog *obj = gtk_app_chooser_dialog_new_for_content_type((Is_some(arg1) ? GtkWindow_val(Some_val(arg1)) : NULL), GtkDialogFlags_val(arg2), String_val(arg3));
 CAMLreturn(Val_GtkAppChooserDialog(obj));
+}
+
+CAMLexport CAMLprim value ml_gtk_app_chooser_dialog_set_heading(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_app_chooser_dialog_set_heading(GtkAppChooserDialog_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_app_chooser_dialog_get_widget(value self)
@@ -43,19 +53,7 @@ CAMLreturn(Val_GtkWidget(result));
 CAMLexport CAMLprim value ml_gtk_app_chooser_dialog_get_heading(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkAppChooserDialog *obj = (GtkAppChooserDialog *)GtkAppChooserDialog_val(self);
-gchar* prop_value;
-g_object_get(G_OBJECT(obj), "heading", &prop_value, NULL);
-result = caml_copy_string(prop_value);
-CAMLreturn(result);
-}
 
-CAMLexport CAMLprim value ml_gtk_app_chooser_dialog_set_heading(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkAppChooserDialog *obj = (GtkAppChooserDialog *)GtkAppChooserDialog_val(self);
-gchar* c_value = String_val(new_value);
-g_object_set(G_OBJECT(obj), "heading", c_value, NULL);
-CAMLreturn(Val_unit);
+const char* result = gtk_app_chooser_dialog_get_heading(GtkAppChooserDialog_val(self));
+CAMLreturn(caml_copy_string(result));
 }

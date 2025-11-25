@@ -14,6 +14,8 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkSymbolicPaintable */
+#ifndef Val_GtkSymbolicPaintable
 #define GtkSymbolicPaintable_val(val) ((GtkSymbolicPaintable*)ext_of_val(val))
 #define Val_GtkSymbolicPaintable(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkSymbolicPaintable */
 

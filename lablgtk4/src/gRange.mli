@@ -10,7 +10,7 @@ open GObj
 
 (** A widget which indicates progress visually
    @gtkdoc gtk GtkProgressBar *)
-class progress_bar : Gtk.widget ->
+class progress_bar : Progress_bar.t ->
   object
     inherit GObj.widget_impl
 
@@ -20,7 +20,7 @@ class progress_bar : Gtk.widget ->
     method set_pulse_step : float -> unit
     method pulse_step : float
 
-    method set_text : string -> unit
+    method set_text : string option -> unit
     method text : string
 
     method set_show_text : bool -> unit
@@ -52,11 +52,11 @@ val progress_bar :
 
 (** Base class for widgets which visualize an adjustment
    @gtkdoc gtk GtkRange *)
-class range : Gtk.widget ->
+class range : Range.t ->
   object
     inherit GObj.widget_impl
 
-    method as_range : Gtk.widget
+    method as_range : Range.t
 
     method set_fill_level : float -> unit
     method fill_level : float
@@ -84,7 +84,7 @@ class range : Gtk.widget ->
 
 (** A slider widget for selecting a value from a range
    @gtkdoc gtk GtkScale *)
-class scale : Gtk.widget ->
+class scale : Scale.t ->
   object
     inherit range
 
@@ -97,11 +97,11 @@ class scale : Gtk.widget ->
     method set_has_origin : bool -> unit
     method has_origin : bool
 
-    method set_value_pos : Gtk.position_type -> unit
-    method value_pos : Gtk.position_type
+    method set_value_pos : Gtk_enums.positiontype -> unit
+    method value_pos : Gtk_enums.positiontype
 
     method clear_marks : unit -> unit
-    method add_mark : float -> Gtk.position_type -> string option -> unit
+    method add_mark : float -> Gtk_enums.positiontype -> string option -> unit
   end
 
 (** Create a new scale widget
@@ -136,7 +136,7 @@ val scale :
 
 (** A bar that can be used as a level indicator
    @gtkdoc gtk GtkLevelBar *)
-class level_bar : Gtk.widget ->
+class level_bar : Level_bar.t ->
   object
     inherit GObj.widget_impl
 

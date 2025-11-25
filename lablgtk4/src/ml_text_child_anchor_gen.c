@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkTextChildAnchor */
+#ifndef Val_GtkTextChildAnchor
 #define GtkTextChildAnchor_val(val) ((GtkTextChildAnchor*)ext_of_val(val))
 #define Val_GtkTextChildAnchor(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkTextChildAnchor */
 
 
 CAMLexport CAMLprim value ml_gtk_text_child_anchor_new(value unit)

@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkKeyvalTrigger */
+#ifndef Val_GtkKeyvalTrigger
 #define GtkKeyvalTrigger_val(val) ((GtkKeyvalTrigger*)ext_of_val(val))
 #define Val_GtkKeyvalTrigger(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkKeyvalTrigger */
 
 
 CAMLexport CAMLprim value ml_gtk_keyval_trigger_new(value arg1, value arg2)
@@ -36,10 +38,7 @@ CAMLreturn(Val_GdkModifierType(result));
 CAMLexport CAMLprim value ml_gtk_keyval_trigger_get_keyval(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkKeyvalTrigger *obj = (GtkKeyvalTrigger *)GtkKeyvalTrigger_val(self);
-guint prop_value;
-g_object_get(G_OBJECT(obj), "keyval", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
+
+guint result = gtk_keyval_trigger_get_keyval(GtkKeyvalTrigger_val(self));
+CAMLreturn(Val_int(result));
 }

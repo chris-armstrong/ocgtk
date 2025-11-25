@@ -14,6 +14,8 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkTreeDragDest */
+#ifndef Val_GtkTreeDragDest
 #define GtkTreeDragDest_val(val) ((GtkTreeDragDest*)ext_of_val(val))
 #define Val_GtkTreeDragDest(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkTreeDragDest */
 

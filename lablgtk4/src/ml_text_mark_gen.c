@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkTextMark */
+#ifndef Val_GtkTextMark
 #define GtkTextMark_val(val) ((GtkTextMark*)ext_of_val(val))
 #define Val_GtkTextMark(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkTextMark */
 
 
 CAMLexport CAMLprim value ml_gtk_text_mark_new(value arg1, value arg2)
@@ -41,6 +43,22 @@ gboolean result = gtk_text_mark_get_visible(GtkTextMark_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_text_mark_get_name(value self)
+{
+CAMLparam1(self);
+
+const char* result = gtk_text_mark_get_name(GtkTextMark_val(self));
+CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_mark_get_left_gravity(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_text_mark_get_left_gravity(GtkTextMark_val(self));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_text_mark_get_deleted(value self)
 {
 CAMLparam1(self);
@@ -54,27 +72,5 @@ CAMLexport CAMLprim value ml_gtk_text_mark_get_buffer(value self)
 CAMLparam1(self);
 
 GtkTextBuffer* result = gtk_text_mark_get_buffer(GtkTextMark_val(self));
-CAMLreturn(Val_GtkWidget(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_text_mark_get_left_gravity(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkTextMark *obj = (GtkTextMark *)GtkTextMark_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "left-gravity", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_text_mark_get_name(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkTextMark *obj = (GtkTextMark *)GtkTextMark_val(self);
-gchar* prop_value;
-g_object_get(G_OBJECT(obj), "name", &prop_value, NULL);
-result = caml_copy_string(prop_value);
-CAMLreturn(result);
+CAMLreturn(Val_GtkTextBuffer(result));
 }

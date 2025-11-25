@@ -1153,76 +1153,76 @@ ML_1 (gtk_window_close, GtkWindow_val, Unit)
 
 /* ========== ScrolledWindow ========== */
 
-CAMLprim value ml_gtk_scrolled_window_new(value unit)
-{
-  CAMLparam1(unit);
-  GtkWidget *sw = gtk_scrolled_window_new();
-  CAMLreturn(Val_GtkWidget(sw));
-}
+// CAMLprim value ml_gtk_scrolled_window_new(value unit)
+// {
+//   CAMLparam1(unit);
+//   GtkWidget *sw = gtk_scrolled_window_new();
+//   CAMLreturn(Val_GtkWidget(sw));
+// }
 
-CAMLprim value ml_gtk_scrolled_window_set_child(value sw, value child)
-{
-  CAMLparam2(sw, child);
-  GtkWidget *child_widget = NULL;
-  if (Is_some(child)) {
-    child_widget = GtkWidget_val(Some_val(child));
-  }
-  gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(GtkWidget_val(sw)), child_widget);
-  CAMLreturn(Val_unit);
-}
+// CAMLprim value ml_gtk_scrolled_window_set_child(value sw, value child)
+// {
+//   CAMLparam2(sw, child);
+//   GtkWidget *child_widget = NULL;
+//   if (Is_some(child)) {
+//     child_widget = GtkWidget_val(Some_val(child));
+//   }
+//   gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(GtkWidget_val(sw)), child_widget);
+//   CAMLreturn(Val_unit);
+// }
 
-CAMLprim value ml_gtk_scrolled_window_get_child(value sw)
-{
-  CAMLparam1(sw);
-  GtkWidget *child = gtk_scrolled_window_get_child(GTK_SCROLLED_WINDOW(GtkWidget_val(sw)));
-  CAMLreturn(Val_option(child, Val_GtkWidget));
-}
+// CAMLprim value ml_gtk_scrolled_window_get_child(value sw)
+// {
+//   CAMLparam1(sw);
+//   GtkWidget *child = gtk_scrolled_window_get_child(GTK_SCROLLED_WINDOW(GtkWidget_val(sw)));
+//   CAMLreturn(Val_option(child, Val_GtkWidget));
+// }
 
-CAMLprim value ml_gtk_scrolled_window_set_policy(value sw, value hpolicy, value vpolicy)
-{
-  CAMLparam3(sw, hpolicy, vpolicy);
-  gtk_scrolled_window_set_policy(
-    GTK_SCROLLED_WINDOW(GtkWidget_val(sw)),
-    (GtkPolicyType)Int_val(hpolicy),
-    (GtkPolicyType)Int_val(vpolicy)
-  );
-  CAMLreturn(Val_unit);
-}
+// CAMLprim value ml_gtk_scrolled_window_set_policy(value sw, value hpolicy, value vpolicy)
+// {
+//   CAMLparam3(sw, hpolicy, vpolicy);
+//   gtk_scrolled_window_set_policy(
+//     GTK_SCROLLED_WINDOW(GtkWidget_val(sw)),
+//     (GtkPolicyType)Int_val(hpolicy),
+//     (GtkPolicyType)Int_val(vpolicy)
+//   );
+//   CAMLreturn(Val_unit);
+// }
 
-CAMLprim value ml_gtk_scrolled_window_get_policy(value sw)
-{
-  CAMLparam1(sw);
-  CAMLlocal1(result);
-  GtkPolicyType hpolicy, vpolicy;
-  gtk_scrolled_window_get_policy(
-    GTK_SCROLLED_WINDOW(GtkWidget_val(sw)),
-    &hpolicy,
-    &vpolicy
-  );
-  result = caml_alloc_tuple(2);
-  Store_field(result, 0, Val_int(hpolicy));
-  Store_field(result, 1, Val_int(vpolicy));
-  CAMLreturn(result);
-}
+// CAMLprim value ml_gtk_scrolled_window_get_policy(value sw)
+// {
+//   CAMLparam1(sw);
+//   CAMLlocal1(result);
+//   GtkPolicyType hpolicy, vpolicy;
+//   gtk_scrolled_window_get_policy(
+//     GTK_SCROLLED_WINDOW(GtkWidget_val(sw)),
+//     &hpolicy,
+//     &vpolicy
+//   );
+//   result = caml_alloc_tuple(2);
+//   Store_field(result, 0, Val_int(hpolicy));
+//   Store_field(result, 1, Val_int(vpolicy));
+//   CAMLreturn(result);
+// }
 
-CAMLprim value ml_gtk_scrolled_window_get_hscrollbar(value sw)
-{
-  CAMLparam1(sw);
-  GtkWidget *scrollbar = gtk_scrolled_window_get_hscrollbar(GTK_SCROLLED_WINDOW(GtkWidget_val(sw)));
-  CAMLreturn(Val_option(scrollbar, Val_GtkWidget));
-}
+// CAMLprim value ml_gtk_scrolled_window_get_hscrollbar(value sw)
+// {
+//   CAMLparam1(sw);
+//   GtkWidget *scrollbar = gtk_scrolled_window_get_hscrollbar(GTK_SCROLLED_WINDOW(GtkWidget_val(sw)));
+//   CAMLreturn(Val_option(scrollbar, Val_GtkWidget));
+// }
 
-CAMLprim value ml_gtk_scrolled_window_get_vscrollbar(value sw)
-{
-  CAMLparam1(sw);
-  GtkWidget *scrollbar = gtk_scrolled_window_get_vscrollbar(GTK_SCROLLED_WINDOW(GtkWidget_val(sw)));
-  CAMLreturn(Val_option(scrollbar, Val_GtkWidget));
-}
+// CAMLprim value ml_gtk_scrolled_window_get_vscrollbar(value sw)
+// {
+//   CAMLparam1(sw);
+//   GtkWidget *scrollbar = gtk_scrolled_window_get_vscrollbar(GTK_SCROLLED_WINDOW(GtkWidget_val(sw)));
+//   CAMLreturn(Val_option(scrollbar, Val_GtkWidget));
+// }
 
-ML_2 (gtk_scrolled_window_set_min_content_width, GtkScrolledWindow_val, Int_val, Unit)
-ML_1 (gtk_scrolled_window_get_min_content_width, GtkScrolledWindow_val, Val_int)
-ML_2 (gtk_scrolled_window_set_min_content_height, GtkScrolledWindow_val, Int_val, Unit)
-ML_1 (gtk_scrolled_window_get_min_content_height, GtkScrolledWindow_val, Val_int)
+// ML_2 (gtk_scrolled_window_set_min_content_width, GtkScrolledWindow_val, Int_val, Unit)
+// ML_1 (gtk_scrolled_window_get_min_content_width, GtkScrolledWindow_val, Val_int)
+// ML_2 (gtk_scrolled_window_set_min_content_height, GtkScrolledWindow_val, Int_val, Unit)
+// ML_1 (gtk_scrolled_window_get_min_content_height, GtkScrolledWindow_val, Val_int)
 
 /* ========== Frame ========== */
 

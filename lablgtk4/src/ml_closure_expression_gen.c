@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkClosureExpression */
+#ifndef Val_GtkClosureExpression
 #define GtkClosureExpression_val(val) ((GtkClosureExpression*)ext_of_val(val))
 #define Val_GtkClosureExpression(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkClosureExpression */
 
 
 CAMLexport CAMLprim value ml_gtk_closure_expression_new(value arg1, value arg2, value arg3, value arg4)

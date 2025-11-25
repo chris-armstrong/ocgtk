@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkFileLauncher */
+#ifndef Val_GtkFileLauncher
 #define GtkFileLauncher_val(val) ((GtkFileLauncher*)ext_of_val(val))
 #define Val_GtkFileLauncher(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkFileLauncher */
 
 
 CAMLexport CAMLprim value ml_gtk_file_launcher_new(value arg1)
@@ -25,42 +27,34 @@ GtkFileLauncher *obj = gtk_file_launcher_new(arg1);
 CAMLreturn(Val_GtkFileLauncher(obj));
 }
 
-CAMLexport CAMLprim value ml_gtk_file_launcher_get_always_ask(value self)
+CAMLexport CAMLprim value ml_gtk_file_launcher_set_writable(value self, value arg1)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkFileLauncher *obj = (GtkFileLauncher *)GtkFileLauncher_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "always-ask", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
+CAMLparam2(self, arg1);
+
+gtk_file_launcher_set_writable(GtkFileLauncher_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_file_launcher_set_always_ask(value self, value new_value)
+CAMLexport CAMLprim value ml_gtk_file_launcher_set_always_ask(value self, value arg1)
 {
-CAMLexport CAMLparam2(self, new_value);
-GtkFileLauncher *obj = (GtkFileLauncher *)GtkFileLauncher_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "always-ask", c_value, NULL);
+CAMLparam2(self, arg1);
+
+gtk_file_launcher_set_always_ask(GtkFileLauncher_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_file_launcher_get_writable(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkFileLauncher *obj = (GtkFileLauncher *)GtkFileLauncher_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "writable", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
+
+gboolean result = gtk_file_launcher_get_writable(GtkFileLauncher_val(self));
+CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_file_launcher_set_writable(value self, value new_value)
+CAMLexport CAMLprim value ml_gtk_file_launcher_get_always_ask(value self)
 {
-CAMLexport CAMLparam2(self, new_value);
-GtkFileLauncher *obj = (GtkFileLauncher *)GtkFileLauncher_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "writable", c_value, NULL);
-CAMLreturn(Val_unit);
+CAMLparam1(self);
+
+gboolean result = gtk_file_launcher_get_always_ask(GtkFileLauncher_val(self));
+CAMLreturn(Val_bool(result));
 }

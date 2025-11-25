@@ -3,15 +3,14 @@
 
 type t = EventController.t
 
+(** Create a new EventControllerFocus *)
 external new_ : unit -> t = "ml_gtk_event_controller_focus_new"
 
 (* Properties *)
 
-external get_contains_focus : t -> bool = "ml_gtk_event_controller_focus_get_contains_focus"
-
-external get_is_focus : t -> bool = "ml_gtk_event_controller_focus_get_is_focus"
-
+(** Returns %TRUE if focus is within @self, but not one of its children. *)
 external is_focus : t -> bool = "ml_gtk_event_controller_focus_is_focus"
 
+(** Returns %TRUE if focus is within @self or one of its children. *)
 external contains_focus : t -> bool = "ml_gtk_event_controller_focus_contains_focus"
 

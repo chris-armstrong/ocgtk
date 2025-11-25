@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkTreeModelFilter */
+#ifndef Val_GtkTreeModelFilter
 #define GtkTreeModelFilter_val(val) ((GtkTreeModelFilter*)ext_of_val(val))
 #define Val_GtkTreeModelFilter(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkTreeModelFilter */
 
 
 CAMLexport CAMLprim value ml_gtk_tree_model_filter_set_visible_column(value self, value arg1)

@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkWindowHandle */
+#ifndef Val_GtkWindowHandle
 #define GtkWindowHandle_val(val) ((GtkWindowHandle*)ext_of_val(val))
 #define Val_GtkWindowHandle(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkWindowHandle */
 
 
 CAMLexport CAMLprim value ml_gtk_window_handle_new(value unit)

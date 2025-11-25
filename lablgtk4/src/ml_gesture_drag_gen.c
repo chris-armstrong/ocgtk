@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkGestureDrag */
+#ifndef Val_GtkGestureDrag
 #define GtkGestureDrag_val(val) ((GtkGestureDrag*)ext_of_val(val))
 #define Val_GtkGestureDrag(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkGestureDrag */
 
 
 CAMLexport CAMLprim value ml_gtk_gesture_drag_new(value unit)

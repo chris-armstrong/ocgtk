@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkCustomLayout */
+#ifndef Val_GtkCustomLayout
 #define GtkCustomLayout_val(val) ((GtkCustomLayout*)ext_of_val(val))
 #define Val_GtkCustomLayout(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkCustomLayout */
 
 
 CAMLexport CAMLprim value ml_gtk_custom_layout_new(value arg1, value arg2, value arg3)

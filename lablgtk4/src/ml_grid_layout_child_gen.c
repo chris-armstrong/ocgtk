@@ -14,86 +14,72 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkGridLayoutChild */
+#ifndef Val_GtkGridLayoutChild
 #define GtkGridLayoutChild_val(val) ((GtkGridLayoutChild*)ext_of_val(val))
 #define Val_GtkGridLayoutChild(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkGridLayoutChild */
 
 
-CAMLexport CAMLprim value ml_gtk_grid_layout_child_get_column(value self)
+CAMLexport CAMLprim value ml_gtk_grid_layout_child_set_row_span(value self, value arg1)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkGridLayoutChild *obj = (GtkGridLayoutChild *)GtkGridLayoutChild_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "column", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
-}
+CAMLparam2(self, arg1);
 
-CAMLexport CAMLprim value ml_gtk_grid_layout_child_set_column(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkGridLayoutChild *obj = (GtkGridLayoutChild *)GtkGridLayoutChild_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "column", c_value, NULL);
+gtk_grid_layout_child_set_row_span(GtkGridLayoutChild_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_grid_layout_child_get_column_span(value self)
+CAMLexport CAMLprim value ml_gtk_grid_layout_child_set_row(value self, value arg1)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkGridLayoutChild *obj = (GtkGridLayoutChild *)GtkGridLayoutChild_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "column-span", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
-}
+CAMLparam2(self, arg1);
 
-CAMLexport CAMLprim value ml_gtk_grid_layout_child_set_column_span(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkGridLayoutChild *obj = (GtkGridLayoutChild *)GtkGridLayoutChild_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "column-span", c_value, NULL);
+gtk_grid_layout_child_set_row(GtkGridLayoutChild_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_grid_layout_child_get_row(value self)
+CAMLexport CAMLprim value ml_gtk_grid_layout_child_set_column_span(value self, value arg1)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkGridLayoutChild *obj = (GtkGridLayoutChild *)GtkGridLayoutChild_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "row", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
+CAMLparam2(self, arg1);
+
+gtk_grid_layout_child_set_column_span(GtkGridLayoutChild_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_grid_layout_child_set_row(value self, value new_value)
+CAMLexport CAMLprim value ml_gtk_grid_layout_child_set_column(value self, value arg1)
 {
-CAMLexport CAMLparam2(self, new_value);
-GtkGridLayoutChild *obj = (GtkGridLayoutChild *)GtkGridLayoutChild_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "row", c_value, NULL);
+CAMLparam2(self, arg1);
+
+gtk_grid_layout_child_set_column(GtkGridLayoutChild_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_grid_layout_child_get_row_span(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkGridLayoutChild *obj = (GtkGridLayoutChild *)GtkGridLayoutChild_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "row-span", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
+
+int result = gtk_grid_layout_child_get_row_span(GtkGridLayoutChild_val(self));
+CAMLreturn(Val_int(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_grid_layout_child_set_row_span(value self, value new_value)
+CAMLexport CAMLprim value ml_gtk_grid_layout_child_get_row(value self)
 {
-CAMLexport CAMLparam2(self, new_value);
-GtkGridLayoutChild *obj = (GtkGridLayoutChild *)GtkGridLayoutChild_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "row-span", c_value, NULL);
-CAMLreturn(Val_unit);
+CAMLparam1(self);
+
+int result = gtk_grid_layout_child_get_row(GtkGridLayoutChild_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_grid_layout_child_get_column_span(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_grid_layout_child_get_column_span(GtkGridLayoutChild_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_grid_layout_child_get_column(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_grid_layout_child_get_column(GtkGridLayoutChild_val(self));
+CAMLreturn(Val_int(result));
 }

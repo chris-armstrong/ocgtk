@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkFilter */
+#ifndef Val_GtkFilter
 #define GtkFilter_val(val) ((GtkFilter*)ext_of_val(val))
 #define Val_GtkFilter(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkFilter */
 
 
 CAMLexport CAMLprim value ml_gtk_filter_get_strictness(value self)

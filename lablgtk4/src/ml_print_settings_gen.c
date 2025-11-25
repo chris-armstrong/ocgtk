@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkPrintSettings */
+#ifndef Val_GtkPrintSettings
 #define GtkPrintSettings_val(val) ((GtkPrintSettings*)ext_of_val(val))
 #define Val_GtkPrintSettings(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkPrintSettings */
 
 
 CAMLexport CAMLprim value ml_gtk_print_settings_new(value unit)
@@ -552,12 +554,4 @@ CAMLparam2(self, arg1);
 
 const char* result = gtk_print_settings_get(GtkPrintSettings_val(self), String_val(arg1));
 CAMLreturn(caml_copy_string(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_print_settings_copy(value self)
-{
-CAMLparam1(self);
-
-GtkPrintSettings* result = gtk_print_settings_copy(GtkPrintSettings_val(self));
-CAMLreturn(Val_GtkWidget(result));
 }

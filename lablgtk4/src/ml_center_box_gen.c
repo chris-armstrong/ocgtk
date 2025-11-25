@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkCenterBox */
+#ifndef Val_GtkCenterBox
 #define GtkCenterBox_val(val) ((GtkCenterBox*)ext_of_val(val))
 #define Val_GtkCenterBox(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkCenterBox */
 
 
 CAMLexport CAMLprim value ml_gtk_center_box_new(value unit)
@@ -30,6 +32,14 @@ CAMLexport CAMLprim value ml_gtk_center_box_set_start_widget(value self, value a
 CAMLparam2(self, arg1);
 
 gtk_center_box_set_start_widget(GtkCenterBox_val(self), GtkWidget_option_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_center_box_set_shrink_center_last(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_center_box_set_shrink_center_last(GtkCenterBox_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -65,6 +75,14 @@ GtkWidget* result = gtk_center_box_get_start_widget(GtkCenterBox_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_center_box_get_shrink_center_last(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_center_box_get_shrink_center_last(GtkCenterBox_val(self));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_center_box_get_end_widget(value self)
 {
 CAMLparam1(self);
@@ -87,24 +105,4 @@ CAMLparam1(self);
 
 GtkBaselinePosition result = gtk_center_box_get_baseline_position(GtkCenterBox_val(self));
 CAMLreturn(Val_GtkBaselinePosition(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_center_box_get_shrink_center_last(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkCenterBox *obj = (GtkCenterBox *)GtkCenterBox_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "shrink-center-last", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_center_box_set_shrink_center_last(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkCenterBox *obj = (GtkCenterBox *)GtkCenterBox_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "shrink-center-last", c_value, NULL);
-CAMLreturn(Val_unit);
 }

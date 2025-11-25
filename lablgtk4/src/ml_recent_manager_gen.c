@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkRecentManager */
+#ifndef Val_GtkRecentManager
 #define GtkRecentManager_val(val) ((GtkRecentManager*)ext_of_val(val))
 #define Val_GtkRecentManager(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkRecentManager */
 
 
 CAMLexport CAMLprim value ml_gtk_recent_manager_new(value unit)
@@ -75,26 +77,4 @@ CAMLparam2(self, arg1);
 
 gboolean result = gtk_recent_manager_add_item(GtkRecentManager_val(self), String_val(arg1));
 CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_recent_manager_get_filename(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkRecentManager *obj = (GtkRecentManager *)GtkRecentManager_val(self);
-gchar* prop_value;
-g_object_get(G_OBJECT(obj), "filename", &prop_value, NULL);
-result = caml_copy_string(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_recent_manager_get_size(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkRecentManager *obj = (GtkRecentManager *)GtkRecentManager_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "size", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
 }

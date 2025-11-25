@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkApplication */
+#ifndef Val_GtkApplication
 #define GtkApplication_val(val) ((GtkApplication*)ext_of_val(val))
 #define Val_GtkApplication(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkApplication */
 
 
 CAMLexport CAMLprim value ml_gtk_application_new(value arg1, value arg2)
@@ -37,7 +39,7 @@ CAMLexport CAMLprim value ml_gtk_application_remove_window(value self, value arg
 {
 CAMLparam2(self, arg1);
 
-gtk_application_remove_window(GtkApplication_val(self), GtkWidget_val(arg1));
+gtk_application_remove_window(GtkApplication_val(self), GtkWindow_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -53,7 +55,7 @@ CAMLexport CAMLprim value ml_gtk_application_inhibit(value self, value arg1, val
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
-guint result = gtk_application_inhibit(GtkApplication_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL), GtkApplicationInhibitFlags_val(arg2), (Is_some(arg3) ? String_val(Some_val(arg3)) : NULL));
+guint result = gtk_application_inhibit(GtkApplication_val(self), (Is_some(arg1) ? GtkWindow_val(Some_val(arg1)) : NULL), GtkApplicationInhibitFlags_val(arg2), (Is_some(arg3) ? String_val(Some_val(arg3)) : NULL));
 CAMLreturn(Val_int(result));
 }
 
@@ -62,7 +64,7 @@ CAMLexport CAMLprim value ml_gtk_application_get_window_by_id(value self, value 
 CAMLparam2(self, arg1);
 
 GtkWindow* result = gtk_application_get_window_by_id(GtkApplication_val(self), Int_val(arg1));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWindow(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_application_get_active_window(value self)
@@ -70,7 +72,7 @@ CAMLexport CAMLprim value ml_gtk_application_get_active_window(value self)
 CAMLparam1(self);
 
 GtkWindow* result = gtk_application_get_active_window(GtkApplication_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkWindow(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_application_get_actions_for_accel(value self, value arg1)
@@ -93,37 +95,6 @@ CAMLexport CAMLprim value ml_gtk_application_add_window(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_application_add_window(GtkApplication_val(self), GtkWidget_val(arg1));
+gtk_application_add_window(GtkApplication_val(self), GtkWindow_val(arg1));
 CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_application_get_register_session(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkApplication *obj = (GtkApplication *)GtkApplication_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "register-session", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_application_set_register_session(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkApplication *obj = (GtkApplication *)GtkApplication_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "register-session", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_application_get_screensaver_active(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkApplication *obj = (GtkApplication *)GtkApplication_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "screensaver-active", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
 }

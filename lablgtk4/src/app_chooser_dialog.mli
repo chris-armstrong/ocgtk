@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: AppChooserDialog *)
 
-type t = Gtk.widget
+type t = [`app_chooser_dialog | `dialog | `window | `widget] Gobject.obj
+
+val as_widget : t -> Gtk.widget
 
 (** Create a new AppChooserDialog *)
 external new_ : Gtk.widget option -> Gtk_enums.dialogflags -> unit -> t = "ml_gtk_app_chooser_dialog_new"
@@ -11,11 +13,14 @@ external new_for_content_type : Gtk.widget option -> Gtk_enums.dialogflags -> st
 
 (* Properties *)
 
-(** Get property: heading *)
-external get_heading : t -> string = "ml_gtk_app_chooser_dialog_get_heading"
+(** Sets the text to display at the top of the dialog.
 
-(** Set property: heading *)
+If the heading is not set, the dialog displays a default text. *)
 external set_heading : t -> string -> unit = "ml_gtk_app_chooser_dialog_set_heading"
 
+(** Returns the `GtkAppChooserWidget` of this dialog. *)
 external get_widget : t -> Gtk.widget = "ml_gtk_app_chooser_dialog_get_widget"
+
+(** Returns the text to display at the top of the dialog. *)
+external get_heading : t -> string = "ml_gtk_app_chooser_dialog_get_heading"
 

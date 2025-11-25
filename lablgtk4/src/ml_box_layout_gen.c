@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkBoxLayout */
+#ifndef Val_GtkBoxLayout
 #define GtkBoxLayout_val(val) ((GtkBoxLayout*)ext_of_val(val))
 #define Val_GtkBoxLayout(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkBoxLayout */
 
 
 CAMLexport CAMLprim value ml_gtk_box_layout_new(value arg1)
@@ -25,12 +27,52 @@ GtkBoxLayout *obj = gtk_box_layout_new(GtkOrientation_val(arg1));
 CAMLreturn(Val_GtkBoxLayout(obj));
 }
 
+CAMLexport CAMLprim value ml_gtk_box_layout_set_spacing(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_box_layout_set_spacing(GtkBoxLayout_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_box_layout_set_homogeneous(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_box_layout_set_homogeneous(GtkBoxLayout_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_box_layout_set_baseline_position(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gtk_box_layout_set_baseline_position(GtkBoxLayout_val(self), GtkBaselinePosition_val(arg1));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_box_layout_set_baseline_child(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_box_layout_set_baseline_child(GtkBoxLayout_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_box_layout_get_spacing(value self)
+{
+CAMLparam1(self);
+
+guint result = gtk_box_layout_get_spacing(GtkBoxLayout_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_box_layout_get_homogeneous(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_box_layout_get_homogeneous(GtkBoxLayout_val(self));
+CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_box_layout_get_baseline_position(value self)
@@ -44,59 +86,7 @@ CAMLreturn(Val_GtkBaselinePosition(result));
 CAMLexport CAMLprim value ml_gtk_box_layout_get_baseline_child(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkBoxLayout *obj = (GtkBoxLayout *)GtkBoxLayout_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "baseline-child", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
-}
 
-CAMLexport CAMLprim value ml_gtk_box_layout_set_baseline_child(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkBoxLayout *obj = (GtkBoxLayout *)GtkBoxLayout_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "baseline-child", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_box_layout_get_homogeneous(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkBoxLayout *obj = (GtkBoxLayout *)GtkBoxLayout_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "homogeneous", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_box_layout_set_homogeneous(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkBoxLayout *obj = (GtkBoxLayout *)GtkBoxLayout_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "homogeneous", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_box_layout_get_spacing(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkBoxLayout *obj = (GtkBoxLayout *)GtkBoxLayout_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "spacing", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_box_layout_set_spacing(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkBoxLayout *obj = (GtkBoxLayout *)GtkBoxLayout_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "spacing", c_value, NULL);
-CAMLreturn(Val_unit);
+int result = gtk_box_layout_get_baseline_child(GtkBoxLayout_val(self));
+CAMLreturn(Val_int(result));
 }

@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkLayoutChild */
+#ifndef Val_GtkLayoutChild
 #define GtkLayoutChild_val(val) ((GtkLayoutChild*)ext_of_val(val))
 #define Val_GtkLayoutChild(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkLayoutChild */
 
 
 CAMLexport CAMLprim value ml_gtk_layout_child_get_layout_manager(value self)
@@ -23,7 +25,7 @@ CAMLexport CAMLprim value ml_gtk_layout_child_get_layout_manager(value self)
 CAMLparam1(self);
 
 GtkLayoutManager* result = gtk_layout_child_get_layout_manager(GtkLayoutChild_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkLayoutManager(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_layout_child_get_child_widget(value self)

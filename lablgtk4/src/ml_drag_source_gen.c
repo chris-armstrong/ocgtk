@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkDragSource */
+#ifndef Val_GtkDragSource
 #define GtkDragSource_val(val) ((GtkDragSource*)ext_of_val(val))
 #define Val_GtkDragSource(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkDragSource */
 
 
 CAMLexport CAMLprim value ml_gtk_drag_source_new(value unit)

@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkAccessibleText */
+#ifndef Val_GtkAccessibleText
 #define GtkAccessibleText_val(val) ((GtkAccessibleText*)ext_of_val(val))
 #define Val_GtkAccessibleText(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkAccessibleText */
 
 
 CAMLexport CAMLprim value ml_gtk_accessible_text_update_selection_bound(value self)

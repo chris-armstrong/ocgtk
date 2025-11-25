@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkEntryCompletion */
+#ifndef Val_GtkEntryCompletion
 #define GtkEntryCompletion_val(val) ((GtkEntryCompletion*)ext_of_val(val))
 #define Val_GtkEntryCompletion(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkEntryCompletion */
 
 
 CAMLexport CAMLprim value ml_gtk_entry_completion_new(value unit)
@@ -28,8 +30,40 @@ CAMLreturn(Val_GtkEntryCompletion(obj));
 CAMLexport CAMLprim value ml_gtk_entry_completion_new_with_area(value arg1)
 {
 CAMLparam1(arg1);
-GtkEntryCompletion *obj = gtk_entry_completion_new_with_area(GtkWidget_val(arg1));
+GtkEntryCompletion *obj = gtk_entry_completion_new_with_area(GtkCellArea_val(arg1));
 CAMLreturn(Val_GtkEntryCompletion(obj));
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_completion_set_text_column(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_entry_completion_set_text_column(GtkEntryCompletion_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_completion_set_popup_single_match(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_entry_completion_set_popup_single_match(GtkEntryCompletion_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_completion_set_popup_set_width(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_entry_completion_set_popup_set_width(GtkEntryCompletion_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_completion_set_popup_completion(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_entry_completion_set_popup_completion(GtkEntryCompletion_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_completion_set_model(value self, value arg1)
@@ -37,6 +71,30 @@ CAMLexport CAMLprim value ml_gtk_entry_completion_set_model(value self, value ar
 CAMLparam2(self, arg1);
 
 gtk_entry_completion_set_model(GtkEntryCompletion_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_completion_set_minimum_key_length(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_entry_completion_set_minimum_key_length(GtkEntryCompletion_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_completion_set_inline_selection(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_entry_completion_set_inline_selection(GtkEntryCompletion_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_completion_set_inline_completion(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_entry_completion_set_inline_completion(GtkEntryCompletion_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -48,12 +106,68 @@ gtk_entry_completion_insert_prefix(GtkEntryCompletion_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_entry_completion_get_text_column(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_entry_completion_get_text_column(GtkEntryCompletion_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_completion_get_popup_single_match(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_entry_completion_get_popup_single_match(GtkEntryCompletion_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_completion_get_popup_set_width(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_entry_completion_get_popup_set_width(GtkEntryCompletion_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_completion_get_popup_completion(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_entry_completion_get_popup_completion(GtkEntryCompletion_val(self));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_entry_completion_get_model(value self)
 {
 CAMLparam1(self);
 
 GtkTreeModel* result = gtk_entry_completion_get_model(GtkEntryCompletion_val(self));
 CAMLreturn(Val_GtkWidget(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_completion_get_minimum_key_length(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_entry_completion_get_minimum_key_length(GtkEntryCompletion_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_completion_get_inline_selection(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_entry_completion_get_inline_selection(GtkEntryCompletion_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_completion_get_inline_completion(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_entry_completion_get_inline_completion(GtkEntryCompletion_val(self));
+CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_completion_get_entry(value self)
@@ -77,145 +191,5 @@ CAMLexport CAMLprim value ml_gtk_entry_completion_complete(value self)
 CAMLparam1(self);
 
 gtk_entry_completion_complete(GtkEntryCompletion_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_entry_completion_get_inline_completion(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkEntryCompletion *obj = (GtkEntryCompletion *)GtkEntryCompletion_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "inline-completion", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_entry_completion_set_inline_completion(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkEntryCompletion *obj = (GtkEntryCompletion *)GtkEntryCompletion_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "inline-completion", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_entry_completion_get_inline_selection(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkEntryCompletion *obj = (GtkEntryCompletion *)GtkEntryCompletion_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "inline-selection", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_entry_completion_set_inline_selection(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkEntryCompletion *obj = (GtkEntryCompletion *)GtkEntryCompletion_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "inline-selection", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_entry_completion_get_minimum_key_length(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkEntryCompletion *obj = (GtkEntryCompletion *)GtkEntryCompletion_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "minimum-key-length", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_entry_completion_set_minimum_key_length(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkEntryCompletion *obj = (GtkEntryCompletion *)GtkEntryCompletion_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "minimum-key-length", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_entry_completion_get_popup_completion(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkEntryCompletion *obj = (GtkEntryCompletion *)GtkEntryCompletion_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "popup-completion", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_entry_completion_set_popup_completion(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkEntryCompletion *obj = (GtkEntryCompletion *)GtkEntryCompletion_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "popup-completion", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_entry_completion_get_popup_set_width(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkEntryCompletion *obj = (GtkEntryCompletion *)GtkEntryCompletion_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "popup-set-width", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_entry_completion_set_popup_set_width(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkEntryCompletion *obj = (GtkEntryCompletion *)GtkEntryCompletion_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "popup-set-width", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_entry_completion_get_popup_single_match(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkEntryCompletion *obj = (GtkEntryCompletion *)GtkEntryCompletion_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "popup-single-match", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_entry_completion_set_popup_single_match(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkEntryCompletion *obj = (GtkEntryCompletion *)GtkEntryCompletion_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "popup-single-match", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_entry_completion_get_text_column(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkEntryCompletion *obj = (GtkEntryCompletion *)GtkEntryCompletion_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "text-column", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_entry_completion_set_text_column(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkEntryCompletion *obj = (GtkEntryCompletion *)GtkEntryCompletion_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "text-column", c_value, NULL);
 CAMLreturn(Val_unit);
 }

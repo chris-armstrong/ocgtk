@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkStyleContext */
+#ifndef Val_GtkStyleContext
 #define GtkStyleContext_val(val) ((GtkStyleContext*)ext_of_val(val))
 #define Val_GtkStyleContext(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkStyleContext */
 
 
 CAMLexport CAMLprim value ml_gtk_style_context_set_state(value self, value arg1)

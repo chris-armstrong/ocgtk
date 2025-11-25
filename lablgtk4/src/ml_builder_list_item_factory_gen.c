@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkBuilderListItemFactory */
+#ifndef Val_GtkBuilderListItemFactory
 #define GtkBuilderListItemFactory_val(val) ((GtkBuilderListItemFactory*)ext_of_val(val))
 #define Val_GtkBuilderListItemFactory(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkBuilderListItemFactory */
 
 
 CAMLexport CAMLprim value ml_gtk_builder_list_item_factory_new_from_bytes(value arg1, value arg2)
@@ -43,10 +45,7 @@ CAMLreturn(Val_GtkWidget(result));
 CAMLexport CAMLprim value ml_gtk_builder_list_item_factory_get_resource(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkBuilderListItemFactory *obj = (GtkBuilderListItemFactory *)GtkBuilderListItemFactory_val(self);
-gchar* prop_value;
-g_object_get(G_OBJECT(obj), "resource", &prop_value, NULL);
-result = caml_copy_string(prop_value);
-CAMLreturn(result);
+
+const char* result = gtk_builder_list_item_factory_get_resource(GtkBuilderListItemFactory_val(self));
+CAMLreturn(caml_copy_string(result));
 }

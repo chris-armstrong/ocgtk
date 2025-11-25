@@ -3,5 +3,6 @@
 
 type t = Gtk.widget
 
+(** Create a new FixedLayout *)
 external new_ : unit -> t = "ml_gtk_fixed_layout_new"
 

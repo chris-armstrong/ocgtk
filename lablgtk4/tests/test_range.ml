@@ -39,7 +39,7 @@ let test_progress_bar_pulse () =
 
 let test_progress_bar_text () =
   let pb = Progress_bar.new_ () in
-  Progress_bar.set_text pb "Loading...";
+  Progress_bar.set_text pb (Some "Loading...");
   check string "text set" "Loading..." (Progress_bar.get_text pb);
   Progress_bar.set_show_text pb true;
   check bool "show_text enabled" true (Progress_bar.get_show_text pb)
@@ -56,40 +56,47 @@ let test_progress_bar_inverted () =
 let test_range_fill_level () =
   (* Create a scale (which is a range) for testing *)
   let scale = Scale.new_ `HORIZONTAL None in
-  Range.set_fill_level scale 0.75;
-  check (float 0.01) "fill level set" 0.75 (Range.get_fill_level scale)
+  let r = (Obj.magic scale : Range.t) in
+  Range.set_fill_level r 0.75;
+  check (float 0.01) "fill level set" 0.75 (Range.get_fill_level r)
 
 let test_range_inverted () =
   let scale = Scale.new_ `HORIZONTAL None in
-  Range.set_inverted scale true;
-  check bool "range inverted" true (Range.get_inverted scale);
-  Range.set_inverted scale false;
-  check bool "range not inverted" false (Range.get_inverted scale)
+  let r = (Obj.magic scale : Range.t) in
+  Range.set_inverted r true;
+  check bool "range inverted" true (Range.get_inverted r);
+  Range.set_inverted r false;
+  check bool "range not inverted" false (Range.get_inverted r)
 
 let test_range_restrict_to_fill_level () =
   let scale = Scale.new_ `HORIZONTAL None in
-  Range.set_restrict_to_fill_level scale true;
-  check bool "restrict to fill level" true (Range.get_restrict_to_fill_level scale)
+  let r = (Obj.magic scale : Range.t) in
+  Range.set_restrict_to_fill_level r true;
+  check bool "restrict to fill level" true (Range.get_restrict_to_fill_level r)
 
 let test_range_round_digits () =
   let scale = Scale.new_ `HORIZONTAL None in
-  Range.set_round_digits scale 2;
-  check int "round digits" 2 (Range.get_round_digits scale)
+  let r = (Obj.magic scale : Range.t) in
+  Range.set_round_digits r 2;
+  check int "round digits" 2 (Range.get_round_digits r)
 
 let test_range_show_fill_level () =
   let scale = Scale.new_ `HORIZONTAL None in
-  Range.set_show_fill_level scale true;
-  check bool "show fill level" true (Range.get_show_fill_level scale)
+  let r = (Obj.magic scale : Range.t) in
+  Range.set_show_fill_level r true;
+  check bool "show fill level" true (Range.get_show_fill_level r)
 
 let test_range_slider_size_fixed () =
   let scale = Scale.new_ `HORIZONTAL None in
-  Range.set_slider_size_fixed scale true;
-  check bool "slider size fixed" true (Range.get_slider_size_fixed scale)
+  let r = (Obj.magic scale : Range.t) in
+  Range.set_slider_size_fixed r true;
+  check bool "slider size fixed" true (Range.get_slider_size_fixed r)
 
 let test_range_flippable () =
   let scale = Scale.new_ `HORIZONTAL None in
-  Range.set_flippable scale true;
-  check bool "flippable" true (Range.get_flippable scale)
+  let r = (Obj.magic scale : Range.t) in
+  Range.set_flippable r true;
+  check bool "flippable" true (Range.get_flippable r)
 
 (* ========== Scale Tests ========== *)
 

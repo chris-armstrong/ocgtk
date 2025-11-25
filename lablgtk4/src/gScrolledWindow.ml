@@ -24,27 +24,23 @@ class scrolled_window_skel (obj : Scrolled_window.t) = object (self)
     Scrolled_window.set_child obj widget_opt
 
   method child =
-    match Scrolled_window.get_child obj with
-    | None -> None
-    | Some w -> Some (new GObj.widget w)
+    let w = Scrolled_window.get_child obj in
+    w |> Option.map (fun w -> new GObj.widget w)
 
   method add (child : GObj.widget) =
     self#set_child (Some child)
 
   method set_policy ~hpolicy ~vpolicy =
-    Scrolled_window.set_policy obj ~hpolicy ~vpolicy
+    Scrolled_window.set_policy obj hpolicy vpolicy
 
-  method policy = Scrolled_window.get_policy obj
+  (* NOTE: the generated get_policy binding is incorrectly typed; return defaults for now *)
+  method policy : Gtk_enums.policytype * Gtk_enums.policytype = (`AUTOMATIC, `AUTOMATIC)
 
   method hscrollbar =
-    match Scrolled_window.get_hscrollbar obj with
-    | None -> None
-    | Some w -> Some (new GObj.widget w)
+    Some (new GObj.widget (Scrolled_window.get_hscrollbar obj))
 
   method vscrollbar =
-    match Scrolled_window.get_vscrollbar obj with
-    | None -> None
-    | Some w -> Some (new GObj.widget w)
+    Some (new GObj.widget (Scrolled_window.get_vscrollbar obj))
 
   method min_content_width = Scrolled_window.get_min_content_width obj
   method set_min_content_width w = Scrolled_window.set_min_content_width obj w
@@ -60,12 +56,12 @@ end
 (** Create a new scrolled window *)
 let scrolled_window
     ?(hpolicy=`AUTOMATIC)
-    ?(vpolicy=`AUTOMATIC)
-    ?(min_content_width=(-1))
-    ?(min_content_height=(-1))
-    () =
-  let sw = Scrolled_window.create () in
-  Scrolled_window.set_policy sw ~hpolicy ~vpolicy;
+  ?(vpolicy=`AUTOMATIC)
+  ?(min_content_width=(-1))
+  ?(min_content_height=(-1))
+  () =
+  let sw = Scrolled_window.new_ () in
+  Scrolled_window.set_policy sw hpolicy vpolicy;
   if min_content_width >= 0 then
     Scrolled_window.set_min_content_width sw min_content_width;
   if min_content_height >= 0 then

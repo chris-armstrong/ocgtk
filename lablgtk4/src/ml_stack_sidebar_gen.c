@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkStackSidebar */
+#ifndef Val_GtkStackSidebar
 #define GtkStackSidebar_val(val) ((GtkStackSidebar*)ext_of_val(val))
 #define Val_GtkStackSidebar(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkStackSidebar */
 
 
 CAMLexport CAMLprim value ml_gtk_stack_sidebar_new(value unit)
@@ -29,7 +31,7 @@ CAMLexport CAMLprim value ml_gtk_stack_sidebar_set_stack(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_stack_sidebar_set_stack(GtkStackSidebar_val(self), GtkWidget_val(arg1));
+gtk_stack_sidebar_set_stack(GtkStackSidebar_val(self), GtkStack_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -38,5 +40,5 @@ CAMLexport CAMLprim value ml_gtk_stack_sidebar_get_stack(value self)
 CAMLparam1(self);
 
 GtkStack* result = gtk_stack_sidebar_get_stack(GtkStackSidebar_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkStack(result));
 }

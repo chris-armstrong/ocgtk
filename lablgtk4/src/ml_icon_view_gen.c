@@ -14,8 +14,10 @@
 #include "generated_forward_decls.h"
 
 /* Type-specific conversion macros for GtkIconView */
+#ifndef Val_GtkIconView
 #define GtkIconView_val(val) ((GtkIconView*)ext_of_val(val))
 #define Val_GtkIconView(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkIconView */
 
 
 CAMLexport CAMLprim value ml_gtk_icon_view_new(value unit)
@@ -28,7 +30,7 @@ CAMLreturn(Val_GtkIconView(obj));
 CAMLexport CAMLprim value ml_gtk_icon_view_new_with_area(value arg1)
 {
 CAMLparam1(arg1);
-GtkIconView *obj = gtk_icon_view_new_with_area(GtkWidget_val(arg1));
+GtkIconView *obj = gtk_icon_view_new_with_area(GtkCellArea_val(arg1));
 CAMLreturn(Val_GtkIconView(obj));
 }
 
@@ -75,7 +77,15 @@ CAMLexport CAMLprim value ml_gtk_icon_view_set_tooltip_item(value self, value ar
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_icon_view_set_tooltip_item(GtkIconView_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2));
+gtk_icon_view_set_tooltip_item(GtkIconView_val(self), GtkTooltip_val(arg1), GtkWidget_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_set_tooltip_column(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_icon_view_set_tooltip_column(GtkIconView_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -83,7 +93,23 @@ CAMLexport CAMLprim value ml_gtk_icon_view_set_tooltip_cell(value self, value ar
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
-gtk_icon_view_set_tooltip_cell(GtkIconView_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2), (Is_some(arg3) ? GtkWidget_val(Some_val(arg3)) : NULL));
+gtk_icon_view_set_tooltip_cell(GtkIconView_val(self), GtkTooltip_val(arg1), GtkWidget_val(arg2), (Is_some(arg3) ? GtkCellRenderer_val(Some_val(arg3)) : NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_set_text_column(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_icon_view_set_text_column(GtkIconView_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_set_spacing(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_icon_view_set_spacing(GtkIconView_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -95,11 +121,67 @@ gtk_icon_view_set_selection_mode(GtkIconView_val(self), GtkSelectionMode_val(arg
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_icon_view_set_row_spacing(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_icon_view_set_row_spacing(GtkIconView_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_set_reorderable(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_icon_view_set_reorderable(GtkIconView_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_set_pixbuf_column(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_icon_view_set_pixbuf_column(GtkIconView_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_icon_view_set_model(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gtk_icon_view_set_model(GtkIconView_val(self), (Is_some(arg1) ? GtkWidget_val(Some_val(arg1)) : NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_set_markup_column(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_icon_view_set_markup_column(GtkIconView_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_set_margin(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_icon_view_set_margin(GtkIconView_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_set_item_width(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_icon_view_set_item_width(GtkIconView_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_set_item_padding(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_icon_view_set_item_padding(GtkIconView_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -123,7 +205,31 @@ CAMLexport CAMLprim value ml_gtk_icon_view_set_cursor(value self, value arg1, va
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
-gtk_icon_view_set_cursor(GtkIconView_val(self), GtkWidget_val(arg1), (Is_some(arg2) ? GtkWidget_val(Some_val(arg2)) : NULL), Bool_val(arg3));
+gtk_icon_view_set_cursor(GtkIconView_val(self), GtkWidget_val(arg1), (Is_some(arg2) ? GtkCellRenderer_val(Some_val(arg2)) : NULL), Bool_val(arg3));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_set_columns(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_icon_view_set_columns(GtkIconView_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_set_column_spacing(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_icon_view_set_column_spacing(GtkIconView_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_set_activate_on_single_click(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_icon_view_set_activate_on_single_click(GtkIconView_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -189,12 +295,60 @@ CAMLexport CAMLprim value ml_gtk_icon_view_get_tooltip_context_bytecode(value * 
 return ml_gtk_icon_view_get_tooltip_context_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6]);
 }
 
+CAMLexport CAMLprim value ml_gtk_icon_view_get_tooltip_column(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_icon_view_get_tooltip_column(GtkIconView_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_get_text_column(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_icon_view_get_text_column(GtkIconView_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_get_spacing(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_icon_view_get_spacing(GtkIconView_val(self));
+CAMLreturn(Val_int(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_icon_view_get_selection_mode(value self)
 {
 CAMLparam1(self);
 
 GtkSelectionMode result = gtk_icon_view_get_selection_mode(GtkIconView_val(self));
 CAMLreturn(Val_GtkSelectionMode(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_get_row_spacing(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_icon_view_get_row_spacing(GtkIconView_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_get_reorderable(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_icon_view_get_reorderable(GtkIconView_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_get_pixbuf_column(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_icon_view_get_pixbuf_column(GtkIconView_val(self));
+CAMLreturn(Val_int(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_icon_view_get_path_at_pos(value self, value arg1, value arg2)
@@ -213,11 +367,43 @@ GtkTreeModel* result = gtk_icon_view_get_model(GtkIconView_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_icon_view_get_markup_column(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_icon_view_get_markup_column(GtkIconView_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_get_margin(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_icon_view_get_margin(GtkIconView_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_get_item_width(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_icon_view_get_item_width(GtkIconView_val(self));
+CAMLreturn(Val_int(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_icon_view_get_item_row(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 int result = gtk_icon_view_get_item_row(GtkIconView_val(self), GtkWidget_val(arg1));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_get_item_padding(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_icon_view_get_item_padding(GtkIconView_val(self));
 CAMLreturn(Val_int(result));
 }
 
@@ -269,262 +455,26 @@ gboolean result = gtk_icon_view_get_cursor(GtkIconView_val(self), GtkWidget_val(
 CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_icon_view_get_activate_on_single_click(value self)
+CAMLexport CAMLprim value ml_gtk_icon_view_get_columns(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "activate-on-single-click", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
 
-CAMLexport CAMLprim value ml_gtk_icon_view_set_activate_on_single_click(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "activate-on-single-click", c_value, NULL);
-CAMLreturn(Val_unit);
+int result = gtk_icon_view_get_columns(GtkIconView_val(self));
+CAMLreturn(Val_int(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_icon_view_get_column_spacing(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "column-spacing", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
+
+int result = gtk_icon_view_get_column_spacing(GtkIconView_val(self));
+CAMLreturn(Val_int(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_icon_view_set_column_spacing(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "column-spacing", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_get_columns(value self)
+CAMLexport CAMLprim value ml_gtk_icon_view_get_activate_on_single_click(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "columns", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
-}
 
-CAMLexport CAMLprim value ml_gtk_icon_view_set_columns(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "columns", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_get_item_padding(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "item-padding", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_set_item_padding(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "item-padding", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_get_item_width(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "item-width", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_set_item_width(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "item-width", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_get_margin(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "margin", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_set_margin(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "margin", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_get_markup_column(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "markup-column", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_set_markup_column(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "markup-column", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_get_pixbuf_column(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "pixbuf-column", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_set_pixbuf_column(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "pixbuf-column", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_get_reorderable(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gboolean prop_value;
-g_object_get(G_OBJECT(obj), "reorderable", &prop_value, NULL);
-result = Val_bool(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_set_reorderable(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "reorderable", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_get_row_spacing(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "row-spacing", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_set_row_spacing(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "row-spacing", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_get_spacing(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "spacing", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_set_spacing(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "spacing", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_get_text_column(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "text-column", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_set_text_column(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "text-column", c_value, NULL);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_get_tooltip_column(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gint prop_value;
-g_object_get(G_OBJECT(obj), "tooltip-column", &prop_value, NULL);
-result = Val_int(prop_value);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_set_tooltip_column(value self, value new_value)
-{
-CAMLexport CAMLparam2(self, new_value);
-GtkIconView *obj = (GtkIconView *)GtkIconView_val(self);
-gint c_value = Int_val(new_value);
-g_object_set(G_OBJECT(obj), "tooltip-column", c_value, NULL);
-CAMLreturn(Val_unit);
+gboolean result = gtk_icon_view_get_activate_on_single_click(GtkIconView_val(self));
+CAMLreturn(Val_bool(result));
 }
