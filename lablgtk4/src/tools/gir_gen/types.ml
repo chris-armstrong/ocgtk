@@ -3,6 +3,7 @@
 type gir_type = {
   name : string;
   c_type : string;
+  nullable: bool;
 }
 
 type gir_param = {

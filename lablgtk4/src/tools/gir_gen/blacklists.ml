@@ -27,6 +27,14 @@ let platform_specific_type_blacklist = [
 let is_platform_specific_type type_name =
   List.mem type_name ~set:platform_specific_type_blacklist
 
+(* Normalized type names (namespace and Gtk prefix stripped) that should be skipped wherever they appear *)
+let type_name_blacklist =
+  List.map ~f:String.lowercase_ascii platform_specific_type_blacklist
+
+let is_blacklisted_type_name name =
+  let normalized = Utils.normalize_class_name name |> String.lowercase_ascii in
+  List.mem normalized ~set:type_name_blacklist
+
 let should_skip_class class_name =
   let skip_list = [
     "PrintJob";

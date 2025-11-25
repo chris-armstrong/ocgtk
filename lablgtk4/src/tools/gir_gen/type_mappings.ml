@@ -227,12 +227,11 @@ let find_type_mapping_for_gir_type ?(enums=[]) ?(bitfields=[]) ?(classes=[]) (gi
       match find_class_mapping classes lookup_str with
       | Some cls ->
         let normalized_name = Utils.normalize_class_name cls.class_name in
-        let module_name = Utils.module_name_of_class cls.class_name in
         let ocaml_type =
           if String.lowercase_ascii normalized_name = "widget" then
             "Gtk.widget"
           else
-            sprintf "%s.t" module_name
+            "Gtk.widget"
         in
         Some {
           ocaml_type;
@@ -297,7 +296,7 @@ let find_type_mapping_for_gir_type ?(enums=[]) ?(bitfields=[]) ?(classes=[]) (gi
 
 (* Keep old function signature for compatibility *)
 let find_type_mapping ?(enums=[]) ?(bitfields=[]) ?(classes=[]) c_type =
-  find_type_mapping_for_gir_type ~enums ~bitfields ~classes { name = c_type; c_type = c_type }
+  find_type_mapping_for_gir_type ~enums ~bitfields ~classes { name = c_type; c_type = c_type; nullable = false }
 
 (* Bug fix #3: Add module qualification based on GIR namespace *)
 let qualify_ocaml_type ?(gir_type_name=None) ocaml_type =

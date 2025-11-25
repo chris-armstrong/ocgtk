@@ -10,8 +10,9 @@ open Cmdliner
 let generate_bindings filter_file gir_file output_dir =
   printf "Parsing %s ...\n" gir_file;
 
-  (* Track generated C stub files *)
+  (* Track generated C stub files and OCaml modules *)
   let generated_stubs = ref [] in
+  let generated_modules = ref [] in
 
   (* Read filter file if specified *)
   let filter_classes = match filter_file with
@@ -110,6 +111,7 @@ let generate_bindings filter_file gir_file output_dir =
     ) gtk_bitfields;
     close_out oc;
     generated_stubs := "ml_gtk_enums_gen" :: !generated_stubs;
+    generated_modules := "Gtk_enums" :: !generated_modules;
   end;
 
   (* Generate C files for each class *)
@@ -136,6 +138,7 @@ let generate_bindings filter_file gir_file output_dir =
       output_string oc c_code;
       close_out oc;
       generated_stubs := stub_name :: !generated_stubs;
+      generated_modules := (Gir_gen_lib.Utils.module_name_of_class cls.Gir_gen_lib.Types.class_name) :: !generated_modules;
     end
   ) controllers;
 
@@ -163,6 +166,7 @@ let generate_bindings filter_file gir_file output_dir =
       output_string oc c_code;
       close_out oc;
       generated_stubs := stub_name :: !generated_stubs;
+      generated_modules := (Gir_gen_lib.Utils.module_name_of_class intf.Gir_gen_lib.Types.interface_name) :: !generated_modules;
     end
   ) interfaces;
 
@@ -265,6 +269,7 @@ let generate_bindings filter_file gir_file output_dir =
   (* Generate enum files for external namespaces *)
   List.iter ~f:(fun (ns_name, ns_enums, ns_bitfields) ->
     let ns_lower = String.lowercase_ascii ns_name in
+    let ns_module = String.capitalize_ascii (ns_lower ^ "_enums") in
 
     (* Generate OCaml enum file *)
     if List.length ns_enums > 0 || List.length ns_bitfields > 0 then begin
@@ -280,6 +285,7 @@ let generate_bindings filter_file gir_file output_dir =
         output_string oc (Gir_gen_lib.Generate.Enum_code.generate_ocaml_bitfield bitfield);
       ) ns_bitfields;
       close_out oc;
+      generated_modules := ns_module :: !generated_modules;
     end;
 
     (* Generate C converter file *)
@@ -315,7 +321,29 @@ let generate_bindings filter_file gir_file output_dir =
   let dune_file = Filename.concat output_dir "dune-generated.inc" in
   printf "\nWriting %s...\n" dune_file;
   let stub_list = List.rev !generated_stubs |> List.sort ~cmp:String.compare in
-  let dune_content = Gir_gen_lib.Generate.Dune_file.generate_dune_library stub_list in
+  let base_modules = [
+    "gError"; "gpointer"; "gaux"; "gobject"; "glib"; "gdk"; "gdkPixbuf";
+    "gdkClipboard"; "pango"; "graphene"; "gtk"; "gtkSnapshot";
+    "eventController"; "eventControllerKey"; "eventControllerMotion"; "gestureClick";
+    "gObj"; "gBox"; "gGrid"; "gFixed"; "gPaned"; "gNotebook"; "gStack"; "gWindow";
+    "gScrolledWindow"; "gFrame"; "gPack"; "gMain";
+    "Gtk4Enums"; "Gdk4Enums"; "GlibEnums"; "pangoEnums"; "GobjectEnums";
+    "gtk_enums"; "gdk_enums"; "pango_enums"; "gtkButton"; "gtkCheckButton";
+    "gtkToggleButton"; "gButton"; "gRange"; "entry"; "search_entry"; "password_entry";
+    "spin_button"; "label"; "image"; "link_button"; "menu_button"; "switch";
+    "text_buffer"; "text_view"; "text_tag"; "text_tag_table"; "button"; "check_button";
+    "toggle_button"; "adjustment"; "range"; "progress_bar"; "level_bar"; "scale";
+    "editable"; "widget"; "box"; "grid"; "fixed"; "paned"; "notebook"; "stack";
+    "window"; "scrolled_window"; "frame";
+  ] in
+  let module_list =
+    (base_modules @ !generated_modules)
+    |> List.map ~f:String.capitalize_ascii
+    |> List.sort_uniq ~cmp:String.compare
+  in
+  let dune_content = Gir_gen_lib.Generate.Dune_file.generate_dune_library
+    ~stub_names:stub_list
+    ~module_names:module_list in
   let oc = open_out dune_file in
   output_string oc dune_content;
   close_out oc;

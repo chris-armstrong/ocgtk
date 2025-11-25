@@ -413,10 +413,18 @@ let generate_class_c_code ~classes ~enums ~bitfields ~external_enums ~external_b
     let ocaml_name = Utils.to_snake_case (
       Str.global_replace (Str.regexp (sprintf "gtk_%s_" class_snake)) "" c_name
     ) in
+    let has_blacklisted_type =
+      Blacklists.is_blacklisted_type_name meth.return_type.name ||
+      Blacklists.is_blacklisted_type_name meth.return_type.c_type ||
+      List.exists meth.parameters ~f:(fun p ->
+        Blacklists.is_blacklisted_type_name p.param_type.name ||
+        Blacklists.is_blacklisted_type_name p.param_type.c_type)
+    in
     (* Skip if: variadic function, duplicates property, or unmapped return type *)
     let should_skip =
       (meth.parameters |> List.exists ~f:(fun p -> p.varargs)) ||
       List.mem ocaml_name ~set:!property_method_names ||
+      has_blacklisted_type ||
       Blacklists.should_skip_method ~find_type_mapping:(Type_mappings.find_type_mapping ~enums ~bitfields ~classes) ~enums ~bitfields meth
     in
     if not should_skip then
@@ -425,7 +433,11 @@ let generate_class_c_code ~classes ~enums ~bitfields ~external_enums ~external_b
 
   (* Generate property getters and setters *)
   List.iter ~f:(fun (prop : gir_property) ->
-    let is_simple_type = match Type_mappings.find_type_mapping ~enums ~bitfields ~classes prop.prop_type.c_type with
+    let is_blacklisted =
+      Blacklists.is_blacklisted_type_name prop.prop_type.name ||
+      Blacklists.is_blacklisted_type_name prop.prop_type.c_type
+    in
+    let is_simple_type = not is_blacklisted && match Type_mappings.find_type_mapping ~enums ~bitfields ~classes prop.prop_type.c_type with
       | Some _ -> true
       | None -> false
     in
