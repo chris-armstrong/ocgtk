@@ -5,13 +5,18 @@ open Types
 
 (* Get attribute value from XML attributes list *)
 let get_attr name attrs =
+  let glib_ns = "http://www.gtk.org/introspection/glib/1.0" in
   try
     List.assoc ("", name) attrs |> fun x -> Some x
   with Not_found ->
     (* Try with c: namespace *)
     try
       List.assoc ("http://www.gtk.org/introspection/c/1.0", String.sub ~pos:2 ~len:(String.length name - 2) name) attrs |> fun x -> Some x
-    with Not_found -> None
+    with Not_found ->
+      (* Try with glib: namespace (used by signals) *)
+      try
+        List.assoc (glib_ns, name) attrs |> fun x -> Some x
+      with Not_found -> None
 
 (* Parse only enums and bitfields from a GIR file (for external namespaces) *)
 let parse_gir_enums_only filename =
@@ -209,6 +214,7 @@ let parse_gir_file filename _filter_classes =
       let constructors = ref [] in
       let methods = ref [] in
       let properties = ref [] in
+      let signals = ref [] in
 
       let rec parse_class_contents () =
         match Xmlm.input input with
@@ -228,6 +234,15 @@ let parse_gir_file filename _filter_classes =
               } :: !constructors;
               parse_class_contents ()
             | _ ->
+              skip_element 1;
+              parse_class_contents ())
+
+          | "signal" ->
+            (match parse_signal tag_attrs with
+            | Some signal ->
+              signals := signal :: !signals;
+              parse_class_contents ()
+            | None ->
               skip_element 1;
               parse_class_contents ())
 
@@ -283,7 +298,7 @@ let parse_gir_file filename _filter_classes =
         constructors = List.rev !constructors;
         methods = List.rev !methods;
         properties = List.rev !properties;
-        signals = [];
+        signals = List.rev !signals;
         class_doc = None;
       }
 
@@ -486,6 +501,47 @@ let parse_gir_file filename _filter_classes =
     parse_method_contents ();
     (!return_type, List.rev !params, !doc)
 
+  (* Parse glib:signal elements *)
+  and parse_signal attrs =
+    match get_attr "name" attrs with
+    | Some signal_name ->
+      let return_type = ref { name = "void"; c_type = "void"; nullable = false } in
+      let params = ref [] in
+      let doc : string option ref = ref None in
+
+      let rec parse_signal_contents () =
+        match Xmlm.input input with
+        | `El_start ((_, tag), tag_attrs) ->
+          (match tag with
+          | "return-value" ->
+            return_type := parse_return_value tag_attrs;
+            parse_signal_contents ()
+          | "parameters" ->
+            params := parse_parameters ();
+            parse_signal_contents ()
+          | "doc" ->
+            doc := element_data ();
+            parse_signal_contents ()
+          | _ ->
+            skip_element 1;
+            parse_signal_contents ())
+
+        | `El_end -> ()
+        | `Data _ -> parse_signal_contents ()
+        | `Dtd _ -> parse_signal_contents ()
+      in
+
+      parse_signal_contents ();
+      Some {
+        signal_name = signal_name;
+        return_type = !return_type;
+        sig_parameters = List.rev !params;
+        doc = !doc;
+      }
+    | None ->
+      skip_element 1;
+      None
+
   (* Parse return value type *)
   and parse_return_value attrs =
     let nullable_attr = get_attr "nullable" attrs |> Utils.parse_bool in
@@ -588,10 +644,20 @@ let parse_gir_file filename _filter_classes =
     in
     let methods = ref [] in
     let properties = ref [] in
+    let signals = ref [] in
       let rec parse_class_contents () =
         match Xmlm.input input with
         | `El_start ((_, tag), tag_attrs) ->
           (match tag with
+
+          | "signal" ->
+            (match parse_signal tag_attrs with
+            | Some signal ->
+              signals := signal :: !signals;
+              parse_class_contents ()
+            | None ->
+              skip_element 1;
+              parse_class_contents ())
 
           | "method" ->
             (match get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs with
@@ -636,7 +702,7 @@ let parse_gir_file filename _filter_classes =
       in
 
       parse_class_contents ();
-    Some { interface_name = name; c_type = c_type; c_symbol_prefix = name; methods = List.rev !methods; properties = List.rev !properties; signals = []; interface_doc = None }
+    Some { interface_name = name; c_type = c_type; c_symbol_prefix = name; methods = List.rev !methods; properties = List.rev !properties; signals = List.rev !signals; interface_doc = None }
   in
 
   (* Main parsing loop *)
