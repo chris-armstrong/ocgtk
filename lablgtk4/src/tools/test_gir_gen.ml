@@ -51,6 +51,10 @@ let file_exists path =
     true
   with Unix.Unix_error _ -> false
 
+let stub_c_file output_dir class_name =
+  Filename.concat output_dir
+    (Printf.sprintf "ml_%s_gen.c" (Gir_gen_lib.Utils.to_snake_case class_name))
+
 let read_file filename =
   let ic = open_in filename in
   let len = in_channel_length ic in
@@ -107,7 +111,7 @@ let test_gir_parsing () =
   let exit_code = Sys.command cmd in
   assert_true "Generator should exit successfully" (exit_code = 0);
 
-  let c_file = Filename.concat output_dir "ml_event_controllers_gen.c" in
+  let c_file = stub_c_file output_dir "EventControllerKey" in
   assert_true "C file should be created" (file_exists c_file);
 
   let content = read_file c_file in
@@ -127,13 +131,13 @@ let test_c_code_generation () =
     tools_dir test_gir output_dir in
   let _ = Sys.command cmd in
 
-  let c_file = Filename.concat output_dir "ml_event_controllers_gen.c" in
+  let c_file = stub_c_file output_dir "EventControllerKey" in
   if file_exists c_file then begin
     let content = read_file c_file in
     assert_contains "Should use CAMLparam" content "CAMLparam";
     assert_contains "Should use CAMLreturn" content "CAMLreturn";
     assert_contains "Should define type converter macros" content
-      "GtkEventController_val";
+      "GtkEventControllerKey_val";
   end else
     failwith "C file not generated"
 
@@ -143,7 +147,8 @@ let create_test_widget_gir filename =
   output_string oc {|<?xml version="1.0"?>
 <repository version="1.2"
             xmlns="http://www.gtk.org/introspection/core/1.0"
-            xmlns:c="http://www.gtk.org/introspection/c/1.0">
+            xmlns:c="http://www.gtk.org/introspection/c/1.0"
+            xmlns:glib="http://www.gtk.org/introspection/glib/1.0">
   <namespace name="Gtk">
     <class name="Button" c:type="GtkButton" parent="Widget">
       <constructor name="new" c:identifier="gtk_button_new"/>
@@ -156,6 +161,14 @@ let create_test_widget_gir filename =
       <method name="get_label" c:identifier="gtk_button_get_label">
         <return-value><type name="utf8" c:type="const gchar*"/></return-value>
       </method>
+      <glib:signal name="clicked" when="first">
+        <return-value transfer-ownership="none"><type name="none" c:type="void"/></return-value>
+        <parameters/>
+      </glib:signal>
+      <glib:signal name="activate" when="last">
+        <return-value transfer-ownership="none"><type name="none" c:type="void"/></return-value>
+        <parameters/>
+      </glib:signal>
     </class>
     <class name="Label" c:type="GtkLabel" parent="Widget">
       <constructor name="new" c:identifier="gtk_label_new"/>
@@ -202,6 +215,49 @@ let test_widget_generation () =
   assert_contains "Button should have constructor" button_content "external new_";
   assert_contains "Button should have set_label" button_content "set_label"
 
+(* Test signal parsing and code generation *)
+let create_test_signal_gir filename =
+  let oc = open_out filename in
+  output_string oc {|<?xml version="1.0"?>
+<repository version="1.2"
+            xmlns="http://www.gtk.org/introspection/core/1.0"
+            xmlns:c="http://www.gtk.org/introspection/c/1.0"
+            xmlns:glib="http://www.gtk.org/introspection/glib/1.0">
+  <namespace name="Gtk">
+    <class name="Button" c:type="GtkButton" parent="Widget">
+      <constructor name="new" c:identifier="gtk_button_new"/>
+      <glib:signal name="clicked" when="first">
+        <return-value transfer-ownership="none"><type name="none" c:type="void"/></return-value>
+        <parameters/>
+      </glib:signal>
+      <glib:signal name="activate" when="last">
+        <return-value transfer-ownership="none"><type name="none" c:type="void"/></return-value>
+        <parameters/>
+      </glib:signal>
+    </class>
+  </namespace>
+</repository>
+|};
+  close_out oc
+
+let test_signal_parsing_and_generation () =
+  let test_gir = "/tmp/test_signal_gen.gir" in
+  create_test_signal_gir test_gir;
+  let (classes, _, _, _) = Gir_gen_lib.Parse.Gir_parser.parse_gir_file test_gir [] in
+  let button =
+    List.find (fun (c : Gir_gen_lib.Types.gir_class) -> c.class_name = "Button") classes
+  in
+  assert_true "Button signals should be parsed" (List.length button.signals = 2);
+  let parent_chain = match button.parent with Some p -> [p] | None -> [] in
+  let code = Gir_gen_lib.Generate.Signal_gen.generate_signal_class
+    ~class_name:button.class_name
+    ~signals:button.signals
+    ~parent_chain in
+  assert_contains "Should generate signal class" code "class button_signals";
+  assert_contains "Should generate clicked method" code "method clicked";
+  assert_contains "Should generate activate method" code "method activate";
+  assert_contains "Should connect via connect_simple" code "Gobject.Signal.connect_simple"
+
 let test_help_output () =
   let tools_dir = Filename.dirname Sys.argv.(0) in
   let cmd = sprintf "%s/gir_gen/main.exe --help 2>&1" tools_dir in
@@ -215,8 +271,8 @@ let test_help_output () =
   with End_of_file -> ());
   let _ = Unix.close_process_in ic in
   let help_text = Buffer.contents output in
-  assert_contains "Help should mention mode" help_text "mode";
-  assert_contains "Help should mention filter" help_text "filter";
+  assert_contains "Help should mention filter option" help_text "--filter";
+  assert_contains "Help should mention GIR_FILE argument" help_text "GIR_FILE";
   assert_contains "Help should show examples" help_text "EXAMPLES"
 
 (* Test property generation *)
@@ -305,7 +361,7 @@ let test_c_property_generation () =
   let exit_code = Sys.command cmd in
   assert_true "C property generator should exit successfully" (exit_code = 0);
 
-  let c_file = Filename.concat output_dir "ml_event_controllers_gen.c" in
+  let c_file = stub_c_file output_dir "TestWidget" in
   assert_true "C file should be created" (file_exists c_file);
 
   let c_content = read_file c_file in
@@ -443,10 +499,10 @@ let test_enum_generation () =
   assert_contains "Should have WORD_CHAR variant" enum_content "`WORD_CHAR";
 
   (* Check C converter generation *)
-  let c_file = Filename.concat output_dir "ml_event_controllers_gen.c" in
+  let c_file = Filename.concat output_dir "ml_gtk_enums_gen.c" in
   let c_content = read_file c_file in
-  assert_contains "C to OCaml converter" c_content "Val_WrapMode";
-  assert_contains "OCaml to C converter" c_content "WrapMode_val";
+  assert_contains "C to OCaml converter" c_content "Val_GtkWrapMode";
+  assert_contains "OCaml to C converter" c_content "GtkWrapMode_val";
   assert_contains "C converter should use switch" c_content "switch (val)";
   assert_contains "C converter should check GTK constants" c_content "GTK_WRAP_NONE"
 
@@ -499,10 +555,10 @@ let test_bitfield_generation () =
   assert_contains "Bitfield list type should be defined" enum_content "type stateflags = stateflags_flag list";
 
   (* Check C converter generation *)
-  let c_file = Filename.concat output_dir "ml_event_controllers_gen.c" in
+  let c_file = Filename.concat output_dir "ml_gtk_enums_gen.c" in
   let c_content = read_file c_file in
-  assert_contains "C to OCaml flag converter" c_content "Val_StateFlags";
-  assert_contains "OCaml to C flag converter" c_content "StateFlags_val";
+  assert_contains "C to OCaml flag converter" c_content "Val_GtkStateFlags";
+  assert_contains "OCaml to C flag converter" c_content "GtkStateFlags_val";
   assert_contains "Converter should check flags with &" c_content "flags & GTK_STATE_FLAG_";
   assert_contains "Converter should OR flags" c_content "result |= GTK_STATE_FLAG_";
   assert_contains "Converter should build list" c_content "Val_emptylist";
@@ -563,12 +619,11 @@ let test_nullable_parameters () =
   assert_contains "Constructor should have string option parameter" content "string option";
   assert_contains "Method should have Widget option parameter" content "Gtk.widget option";
 
-  (* Check C code uses option macros *)
-  let c_file = Filename.concat output_dir "ml_event_controllers_gen.c" in
+  (* Check C code uses option-aware conversions *)
+  let c_file = stub_c_file output_dir "TestWidget" in
   let c_content = read_file c_file in
-  assert_contains "C should check Is_some" c_content "Is_some";
-  assert_contains "C should extract Some_val" c_content "Some_val";
-  assert_contains "C should handle NULL" c_content "NULL"
+  assert_contains "C should use option helper for string" c_content "String_option_val";
+  assert_contains "C should use option helper for widget" c_content "GtkWidget_option_val"
 
 (* ========================================================================= *)
 (* Edge Case Tests *)
@@ -852,7 +907,7 @@ let test_generated_code_quality () =
   assert_true "Code quality test should exit successfully" (exit_code = 0);
 
   (* Verify generated C code has proper memory management *)
-  let c_file = Filename.concat output_dir "ml_event_controllers_gen.c" in
+  let c_file = stub_c_file output_dir "Button" in
   let c_content = read_file c_file in
 
   (* Check for proper CAMLparam/CAMLlocal usage *)
@@ -973,6 +1028,7 @@ let () =
   ignore (test "GIR file parsing" test_gir_parsing);
   ignore (test "C code generation" test_c_code_generation);
   ignore (test "Widget generation" test_widget_generation);
+  ignore (test "Signal parsing and generation (Step 2)" test_signal_parsing_and_generation);
   ignore (test "Property generation" test_property_generation);
   ignore (test "C property generation (Phase 5.2)" test_c_property_generation);
   ignore (test "All methods generated (Phase 5.2)" test_all_methods_generated);

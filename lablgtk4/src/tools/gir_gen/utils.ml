@@ -16,13 +16,18 @@ let to_snake_case s =
 
 (* Get attribute value from XML attributes list *)
 let get_attr name attrs =
+  let glib_ns = "http://www.gtk.org/introspection/glib/1.0" in
   try
     List.assoc ("", name) attrs |> fun x -> Some x
   with Not_found ->
     (* Try with c: namespace *)
     try
       List.assoc ("http://www.gtk.org/introspection/c/1.0", String.sub ~pos:2 ~len:(String.length name - 2) name) attrs |> fun x -> Some x
-    with Not_found -> None
+    with Not_found ->
+      (* Try with glib namespace (used for signals and annotations) *)
+      try
+        List.assoc (glib_ns, name) attrs |> fun x -> Some x
+      with Not_found -> None
 
 let parse_bool ?(default = false) attr =
   match attr with
