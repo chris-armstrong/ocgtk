@@ -122,7 +122,7 @@ external get_button_sensitivity : t -> Gtk_enums.sensitivitytype = "ml_gtk_combo
 (** Sets @iter to point to the currently active item.
 
 If no item is active, @iter is left unchanged. *)
-external get_active_iter : t -> Gtk.widget -> bool = "ml_gtk_combo_box_get_active_iter"
+external get_active_iter : t -> bool * unit = "ml_gtk_combo_box_get_active_iter"
 
 (** Returns the ID of the active row of @combo_box.
 

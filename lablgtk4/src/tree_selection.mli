@@ -52,7 +52,7 @@ external get_tree_view : t -> Gtk.widget = "ml_gtk_tree_selection_get_tree_view"
 just want to test if @selection has any selected nodes.  @model is filled
 with the current model as a convenience.  This function will not work if you
 use @selection is %GTK_SELECTION_MULTIPLE. *)
-external get_selected : t -> Gtk.widget -> Gtk.widget -> bool = "ml_gtk_tree_selection_get_selected"
+external get_selected : t -> bool * Gtk.widget * unit = "ml_gtk_tree_selection_get_selected"
 
 (** Gets the selection mode for @selection. See
 gtk_tree_selection_set_mode(). *)

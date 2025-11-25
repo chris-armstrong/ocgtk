@@ -250,7 +250,7 @@ external insert_column : t -> Gtk.widget -> int -> int = "ml_gtk_tree_view_inser
 Note that there may be invisible paths in between.
 
 The paths should be freed with gtk_tree_path_free() after use. *)
-external get_visible_range : t -> Gtk.widget -> Gtk.widget -> bool = "ml_gtk_tree_view_get_visible_range"
+external get_visible_range : t -> bool * Gtk.widget * Gtk.widget = "ml_gtk_tree_view_get_visible_range"
 
 (** This function is supposed to be used in a ::query-tooltip
 signal handler for `GtkTreeView`. The @x, @y and @keyboard_tip values
@@ -263,7 +263,7 @@ tooltips the row returned will be the cursor row. When %TRUE, then any of
 @model, @path and @iter which have been provided will be set to point to
 that row and the corresponding model. @x and @y will always be converted
 to be relative to @tree_view’s bin_window if @keyboard_tooltip is %FALSE. *)
-external get_tooltip_context : t -> int -> int -> bool -> Gtk.widget option -> Gtk.widget -> Gtk.widget -> bool = "ml_gtk_tree_view_get_tooltip_context_bytecode" "ml_gtk_tree_view_get_tooltip_context_native"
+external get_tooltip_context : t -> int -> int -> bool -> bool * Gtk.widget option * Gtk.widget * unit = "ml_gtk_tree_view_get_tooltip_context_bytecode" "ml_gtk_tree_view_get_tooltip_context_native"
 
 (** Returns the column of @tree_view’s model which is being used for
 displaying tooltips on @tree_view’s rows. *)
@@ -334,13 +334,13 @@ by typing in text. *)
 external get_enable_search : t -> bool = "ml_gtk_tree_view_get_enable_search"
 
 (** Gets information about the row that is highlighted for feedback. *)
-external get_drag_dest_row : t -> Gtk.widget option -> Gtk.widget -> unit = "ml_gtk_tree_view_get_drag_dest_row"
+external get_drag_dest_row : t -> Gtk.widget option * Gtk_enums.treeviewdropposition = "ml_gtk_tree_view_get_drag_dest_row"
 
 (** Determines the destination row for a given position.  @drag_x and
 @drag_y are expected to be in widget coordinates.  This function is only
 meaningful if @tree_view is realized.  Therefore this function will always
 return %FALSE if @tree_view is not realized or does not have a model. *)
-external get_dest_row_at_pos : t -> int -> int -> Gtk.widget option -> Gtk.widget -> bool = "ml_gtk_tree_view_get_dest_row_at_pos"
+external get_dest_row_at_pos : t -> int -> int -> bool * Gtk.widget option * Gtk_enums.treeviewdropposition = "ml_gtk_tree_view_get_dest_row_at_pos"
 
 (** Fills in @path and @focus_column with the current path and focus column.  If
 the cursor isn’t currently set, then *@path will be %NULL.  If no column
@@ -348,7 +348,7 @@ currently has focus, then *@focus_column will be %NULL.
 
 The returned `GtkTreePath` must be freed with gtk_tree_path_free() when
 you are done with it. *)
-external get_cursor : t -> Gtk.widget option -> Gtk.widget option -> unit = "ml_gtk_tree_view_get_cursor"
+external get_cursor : t -> Gtk.widget option * Gtk.widget option = "ml_gtk_tree_view_get_cursor"
 
 (** Gets the `GtkTreeViewColumn` at the given position in the #tree_view. *)
 external get_column : t -> int -> Gtk.widget option = "ml_gtk_tree_view_get_column"

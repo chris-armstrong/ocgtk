@@ -124,11 +124,13 @@ GtkSizeRequestMode result = gtk_cell_renderer_get_request_mode(GtkCellRenderer_v
 CAMLreturn(Val_GtkSizeRequestMode(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_cell_renderer_get_preferred_size(value self, value arg1, value arg2, value arg3)
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_preferred_size(value self, value arg1)
 {
-CAMLparam4(self, arg1, arg2, arg3);
+CAMLparam2(self, arg1);
+GtkRequisition out2;
+GtkRequisition out3;
 
-gtk_cell_renderer_get_preferred_size(GtkCellRenderer_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2), GtkWidget_val(arg3));
+gtk_cell_renderer_get_preferred_size(GtkCellRenderer_val(self), GtkWidget_val(arg1), &out2, &out3);
 CAMLreturn(Val_unit);
 }
 

@@ -84,10 +84,11 @@ GtkAdjustment* result = gtk_scrollable_get_hadjustment(GtkScrollable_val(self));
 CAMLreturn(Val_option(result, Val_GtkAdjustment));
 }
 
-CAMLexport CAMLprim value ml_gtk_scrollable_get_border(value self, value arg1)
+CAMLexport CAMLprim value ml_gtk_scrollable_get_border(value self)
 {
-CAMLparam2(self, arg1);
+CAMLparam1(self);
+GtkBorder out1;
 
-gboolean result = gtk_scrollable_get_border(GtkScrollable_val(self), GtkWidget_val(arg1));
+gboolean result = gtk_scrollable_get_border(GtkScrollable_val(self), &out1);
 CAMLreturn(Val_bool(result));
 }

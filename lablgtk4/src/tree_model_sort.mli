@@ -31,7 +31,7 @@ sorted.  If @sorted_path does not point to a location in the child model,
 external convert_path_to_child_path : t -> Gtk.widget -> Gtk.widget option = "ml_gtk_tree_model_sort_convert_path_to_child_path"
 
 (** Sets @child_iter to point to the row pointed to by @sorted_iter. *)
-external convert_iter_to_child_iter : t -> Gtk.widget -> Gtk.widget -> unit = "ml_gtk_tree_model_sort_convert_iter_to_child_iter"
+external convert_iter_to_child_iter : t -> Gtk.widget -> unit = "ml_gtk_tree_model_sort_convert_iter_to_child_iter"
 
 (** Converts @child_path to a path relative to @tree_model_sort.  That is,
 @child_path points to a path in the child model.  The returned path will
@@ -42,7 +42,7 @@ external convert_child_path_to_path : t -> Gtk.widget -> Gtk.widget option = "ml
 (** Sets @sort_iter to point to the row in @tree_model_sort that corresponds to
 the row pointed at by @child_iter.  If @sort_iter was not set, %FALSE
 is returned.  Note: a boolean is only returned since 2.14. *)
-external convert_child_iter_to_iter : t -> Gtk.widget -> Gtk.widget -> bool = "ml_gtk_tree_model_sort_convert_child_iter_to_iter"
+external convert_child_iter_to_iter : t -> Gtk.widget -> bool * unit = "ml_gtk_tree_model_sort_convert_child_iter_to_iter"
 
 (** This function should almost never be called.  It clears the @tree_model_sort
 of any cached iterators that haven’t been reffed with

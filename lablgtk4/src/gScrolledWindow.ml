@@ -34,7 +34,7 @@ class scrolled_window_skel (obj : Scrolled_window.t) = object (self)
     Scrolled_window.set_policy obj hpolicy vpolicy
 
   (* NOTE: the generated get_policy binding is incorrectly typed; return defaults for now *)
-  method policy : Gtk_enums.policytype * Gtk_enums.policytype = (`AUTOMATIC, `AUTOMATIC)
+  method policy : Gtk_enums.policytype * Gtk_enums.policytype = Scrolled_window.get_policy obj
 
   method hscrollbar =
     Some (new GObj.widget (Scrolled_window.get_hscrollbar obj))

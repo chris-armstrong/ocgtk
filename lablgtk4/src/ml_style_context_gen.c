@@ -92,27 +92,30 @@ int result = gtk_style_context_get_scale(GtkStyleContext_val(self));
 CAMLreturn(Val_int(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_style_context_get_padding(value self, value arg1)
+CAMLexport CAMLprim value ml_gtk_style_context_get_padding(value self)
 {
-CAMLparam2(self, arg1);
+CAMLparam1(self);
+GtkBorder out1;
 
-gtk_style_context_get_padding(GtkStyleContext_val(self), GtkWidget_val(arg1));
+gtk_style_context_get_padding(GtkStyleContext_val(self), &out1);
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_style_context_get_margin(value self, value arg1)
+CAMLexport CAMLprim value ml_gtk_style_context_get_margin(value self)
 {
-CAMLparam2(self, arg1);
+CAMLparam1(self);
+GtkBorder out1;
 
-gtk_style_context_get_margin(GtkStyleContext_val(self), GtkWidget_val(arg1));
+gtk_style_context_get_margin(GtkStyleContext_val(self), &out1);
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_style_context_get_border(value self, value arg1)
+CAMLexport CAMLprim value ml_gtk_style_context_get_border(value self)
 {
-CAMLparam2(self, arg1);
+CAMLparam1(self);
+GtkBorder out1;
 
-gtk_style_context_get_border(GtkStyleContext_val(self), GtkWidget_val(arg1));
+gtk_style_context_get_border(GtkStyleContext_val(self), &out1);
 CAMLreturn(Val_unit);
 }
 

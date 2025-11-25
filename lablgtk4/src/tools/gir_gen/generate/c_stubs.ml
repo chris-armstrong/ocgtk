@@ -228,51 +228,119 @@ let generate_c_constructor ~classes ~enums ~bitfields ~c_type (ctor : gir_constr
 let generate_c_method ~classes ~enums ~bitfields ~c_type (meth : gir_method) _class_name =
   let c_name = meth.c_identifier in
   let ml_name = Str.global_replace (Str.regexp "gtk_") "ml_gtk_" c_name in
-  let param_count = 1 + List.length meth.parameters in
+  let in_params = List.filter ~f:(fun p -> p.direction <> Out) meth.parameters in
+  let param_count = 1 + List.length in_params in
   let params = "value self" ::
-    List.mapi ~f:(fun i _ -> sprintf "value arg%d" (i + 1)) meth.parameters in
+    List.mapi ~f:(fun i _ -> sprintf "value arg%d" (i + 1)) in_params in
   let param_names = "self" ::
-    List.mapi ~f:(fun i _ -> sprintf "arg%d" (i + 1)) meth.parameters in
+    List.mapi ~f:(fun i _ -> sprintf "arg%d" (i + 1)) in_params in
 
   let type_val_macro = sprintf "%s_val" c_type in
   let self_cast = sprintf "%s(self)" type_val_macro in
 
   (* Build C call - handle nullable parameters *)
-  let c_args = self_cast ::
-    List.mapi ~f:(fun i p ->
-      match Type_mappings.find_type_mapping ~enums ~bitfields ~classes p.param_type.c_type with
-      | Some mapping ->
-        let param_type = { p.param_type with nullable = p.nullable || p.param_type.nullable } in
-        nullable_ml_to_c_expr ~var:(sprintf "arg%d" (i + 1)) ~gir_type:param_type ~mapping
-      | None -> sprintf "arg%d" (i + 1)
-    ) meth.parameters in
+  let out_decls, c_args =
+    let ocaml_idx = ref 0 in
+    let out_decl_buf = Buffer.create 128 in
+    let args = ref [] in
+    List.iteri ~f:(fun i p ->
+      match p.direction with
+      | Out ->
+        let var_name = sprintf "out%d" (i + 1) in
+        let base_c_type =
+          if String.length p.param_type.c_type > 0 &&
+             String.sub p.param_type.c_type ~pos:(String.length p.param_type.c_type - 1) ~len:1 = "*"
+          then String.sub p.param_type.c_type ~pos:0 ~len:(String.length p.param_type.c_type - 1)
+          else p.param_type.c_type
+        in
+        bprintf out_decl_buf "%s %s;\n" base_c_type var_name;
+        args := !args @ [sprintf "&%s" var_name]
+      | In | InOut ->
+        incr ocaml_idx;
+        let arg_name = sprintf "arg%d" !ocaml_idx in
+        let arg_expr = match Type_mappings.find_type_mapping ~enums ~bitfields ~classes p.param_type.c_type with
+          | Some mapping ->
+            let param_type = { p.param_type with nullable = p.nullable || p.param_type.nullable } in
+            nullable_ml_to_c_expr ~var:arg_name ~gir_type:param_type ~mapping
+          | None -> arg_name
+        in
+        args := !args @ [arg_expr]
+    ) meth.parameters;
+    Buffer.contents out_decl_buf, self_cast :: !args
+  in
 
   (* Build return conversion *)
   let ret_type = meth.return_type.c_type in
-  let locals = if meth.throws then
-    sprintf "GError *error = NULL;\n"
-  else "" in
+  let locals = Buffer.create 256 in
+  if meth.throws then Buffer.add_string locals "GError *error = NULL;\n";
+  Buffer.add_string locals out_decls;
+  let locals = Buffer.contents locals in
   let (c_call, ret_conv) =
     let args = (String.concat ~sep:", " c_args) ^ (if meth.throws then ", &error" else "") in
 
+    let out_conversions =
+      List.filter_map ~f:(fun (p, idx) ->
+        if p.direction = Out then
+          let base_gir_type =
+            if String.length p.param_type.c_type > 0 &&
+               String.sub p.param_type.c_type ~pos:(String.length p.param_type.c_type - 1) ~len:1 = "*"
+            then { p.param_type with c_type = String.sub p.param_type.c_type ~pos:0 ~len:(String.length p.param_type.c_type - 1) }
+            else p.param_type
+          in
+          match Type_mappings.find_type_mapping ~enums ~bitfields ~classes base_gir_type.c_type with
+          | Some mapping ->
+            let var_name = sprintf "out%d" (idx + 1) in
+            Some (nullable_c_to_ml_expr ~var:var_name ~gir_type:base_gir_type ~mapping)
+          | None -> None
+        else None
+      ) (List.mapi ~f:(fun i p -> (p, i)) meth.parameters)
+    in
+
+    let combine_results ml_primary =
+      match (ml_primary, out_conversions) with
+      | (None, []) -> if meth.throws then
+          "if (error == NULL) CAMLreturn(Res_Ok(ValUnit)); else CAMLreturn(Res_Error(Val_GError(error)));"
+        else "CAMLreturn(Val_unit);"
+      | (Some v, []) -> if meth.throws then
+          sprintf "if (error == NULL) CAMLreturn(Res_Ok(%s)); else CAMLreturn(Res_Error(Val_GError(error)));" v
+        else sprintf "CAMLreturn(%s);" v
+      | (None, [single]) -> if meth.throws then
+          "CAMLlocal1(ret);\n    ret = " ^ single ^ ";\n    if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));"
+        else sprintf "CAMLreturn(%s);" single
+      | (Some v, outs) ->
+        let all = v :: outs in
+        let stores = List.mapi ~f:(fun i expr -> sprintf "Store_field(ret, %d, %s);" i expr) all in
+        let alloc = sprintf "ret = caml_alloc(%d, 0);" (List.length all) in
+        if meth.throws then
+          String.concat ~sep:"\n    " (
+            ["CAMLlocal1(ret);"; alloc] @ stores @
+            ["if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));"]
+          )
+        else
+          String.concat ~sep:"\n    " (["CAMLlocal1(ret);"; alloc] @ stores @ ["CAMLreturn(ret);"])
+      | (None, outs) ->
+        let stores = List.mapi ~f:(fun i expr -> sprintf "Store_field(ret, %d, %s);" i expr) outs in
+        let alloc = sprintf "ret = caml_alloc(%d, 0);" (List.length outs) in
+        if meth.throws then
+          String.concat ~sep:"\n    " (
+            ["CAMLlocal1(ret);"; alloc] @ stores @
+            ["if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));"]
+          )
+        else
+          String.concat ~sep:"\n    " (["CAMLlocal1(ret);"; alloc] @ stores @ ["CAMLreturn(ret);"])
+    in
+
     if ret_type = "void" then
-      (sprintf "%s(%s);" c_name args,
-       if meth.throws then
-         "if (error == NULL) CAMLreturn(Res_Ok(ValUnit)); else CAMLreturn(Res_Error(Val_GError(error)));"
-         else "CAMLreturn(Val_unit);")
+      (sprintf "%s(%s);" c_name args, combine_results None)
     else
       match Type_mappings.find_type_mapping ~enums ~bitfields ~classes ret_type with
       | Some mapping ->
         let ml_result = nullable_c_to_ml_expr ~var:"result" ~gir_type:meth.return_type ~mapping in
         (sprintf "%s result = %s(%s);" ret_type c_name args,
-         if meth.throws then
-            sprintf "if (error == NULL) CAMLreturn(Res_Ok(%s)); else CAMLreturn(Res_Error(Val_GError(error)));" ml_result
-         else sprintf "CAMLreturn(%s);" ml_result)
+         combine_results (Some ml_result))
       | None ->
         (sprintf "void *result = %s(%s);" c_name args,
-         if meth.throws then
-           "if (error == NULL) CAMLreturn(Res_Ok((value)result)); else CAMLreturn(Res_Error(Val_GError(error)));"
-         else "CAMLreturn((value)result);")
+         combine_results (Some "(value)result"))
   in
 
   (* For functions with >5 parameters, generate both bytecode and native variants *)

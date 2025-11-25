@@ -207,18 +207,21 @@ let generate_ml_interface ~output_mode ~class_name ~class_doc ~enums ~bitfields 
       | None -> ());
 
       (* Build OCaml type signature - handle nullable parameters *)
-      let param_types = List.map ~f:(fun p ->
-        match Type_mappings.find_type_mapping_for_gir_type ~enums ~bitfields ~classes p.param_type with
-        | Some mapping ->
-          let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some p.param_type.name) mapping.ocaml_type in
-          if p.nullable then
-            sprintf "%s option" base_type
-          else
-            base_type
-        | None ->
-          eprintf "Warning: Unknown type for method '%s' parameter: name=%s c_type=%s\n" meth.method_name
-            p.param_type.name p.param_type.c_type;
-          "unit"
+      let param_types = List.filter_map ~f:(fun p ->
+        match p.direction with
+        | Out -> None
+        | In | InOut ->
+          Some (match Type_mappings.find_type_mapping_for_gir_type ~enums ~bitfields ~classes p.param_type with
+          | Some mapping ->
+            let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some p.param_type.name) mapping.ocaml_type in
+            if p.nullable then
+              sprintf "%s option" base_type
+            else
+              base_type
+          | None ->
+            eprintf "Warning: Unknown type for method '%s' parameter: name=%s c_type=%s\n" meth.method_name
+              p.param_type.name p.param_type.c_type;
+            "unit")
       ) meth.parameters in
 
       let ret_type_ocaml =
@@ -238,13 +241,40 @@ let generate_ml_interface ~output_mode ~class_name ~class_doc ~enums ~bitfields 
             "unit"
       in
 
-      (* Wrap return type in result if method throws errors *)
-      let final_ret_type =
-        if meth.throws then
-          sprintf "(%s, GError.t) result" ret_type_ocaml
-        else
-          ret_type_ocaml
+      let out_types =
+        meth.parameters
+        |> List.filter_map ~f:(fun p ->
+          match p.direction with
+          | Out ->
+            let base_param_type =
+              if String.length p.param_type.c_type > 0 &&
+                 String.sub p.param_type.c_type ~pos:(String.length p.param_type.c_type - 1) ~len:1 = "*"
+              then { p.param_type with c_type = String.sub p.param_type.c_type ~pos:0 ~len:(String.length p.param_type.c_type - 1) }
+              else p.param_type
+            in
+            (match Type_mappings.find_type_mapping_for_gir_type ~enums ~bitfields ~classes base_param_type with
+            | Some mapping ->
+              let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some base_param_type.name) mapping.ocaml_type in
+              if base_param_type.nullable || p.nullable then
+                Some (sprintf "%s option" base_type)
+              else Some base_type
+            | None ->
+              eprintf "Warning: Unknown out parameter type for method %s: name=%s c_type=%s\n"
+                meth.method_name p.param_type.name p.param_type.c_type;
+              Some "unit")
+          | In | InOut -> None)
       in
+
+      let final_ret_type =
+        match ret_type_ocaml, out_types with
+        | "unit", [] -> "unit"
+        | "unit", [single] -> single
+        | "unit", lst -> String.concat ~sep:" * " lst
+        | ret, [] -> ret
+        | ret, lst -> String.concat ~sep:" * " (ret :: lst)
+      in
+
+      let final_ret_type = if meth.throws then sprintf "(%s, GError.t) result" final_ret_type else final_ret_type in
 
       let full_type =
         String.concat ~sep:" -> " (["t"] @ param_types @ [final_ret_type])

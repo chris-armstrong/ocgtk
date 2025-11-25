@@ -179,12 +179,18 @@ gboolean result = gtk_scrolled_window_get_propagate_natural_height(GtkScrolledWi
 CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_scrolled_window_get_policy(value self, value arg1, value arg2)
+CAMLexport CAMLprim value ml_gtk_scrolled_window_get_policy(value self)
 {
-CAMLparam3(self, arg1, arg2);
+CAMLparam1(self);
+GtkPolicyType out1;
+GtkPolicyType out2;
 
-gtk_scrolled_window_get_policy(GtkScrolledWindow_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2));
-CAMLreturn(Val_unit);
+gtk_scrolled_window_get_policy(GtkScrolledWindow_val(self), &out1, &out2);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_GtkPolicyType(out1));
+    Store_field(ret, 1, Val_GtkPolicyType(out2));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_scrolled_window_get_placement(value self)

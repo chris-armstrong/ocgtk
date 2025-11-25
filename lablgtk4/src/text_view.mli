@@ -287,7 +287,7 @@ Buffer coordinates are coordinates for the entire buffer, not just
 the currently-displayed portion. If you have coordinates from an
 event, you have to convert those to buffer coordinates with
 [method@Gtk.TextView.window_to_buffer_coords]. *)
-external get_iter_at_location : t -> Gtk.widget -> int -> int -> bool = "ml_gtk_text_view_get_iter_at_location"
+external get_iter_at_location : t -> int -> int -> bool * unit = "ml_gtk_text_view_get_iter_at_location"
 
 (** Gets the `input-purpose` of the `GtkTextView`. *)
 external get_input_purpose : t -> Gtk_enums.inputpurpose = "ml_gtk_text_view_get_input_purpose"

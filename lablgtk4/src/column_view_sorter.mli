@@ -25,7 +25,7 @@ external get_primary_sort_column : t -> Gtk.widget option = "ml_gtk_column_view_
 
 Use the [signal@Gtk.Sorter::changed] signal to get notified
 when sort columns change. *)
-external get_nth_sort_column : t -> int -> Gtk.widget -> Gtk.widget option = "ml_gtk_column_view_sorter_get_nth_sort_column"
+external get_nth_sort_column : t -> int -> Gtk.widget option * Gtk_enums.sorttype = "ml_gtk_column_view_sorter_get_nth_sort_column"
 
 (** Returns the number of columns by which the sorter sorts.
 

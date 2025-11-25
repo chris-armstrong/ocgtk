@@ -366,11 +366,12 @@ GtkJustification result = gtk_text_view_get_justification(GtkTextView_val(self))
 CAMLreturn(Val_GtkJustification(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_text_view_get_iter_at_location(value self, value arg1, value arg2, value arg3)
+CAMLexport CAMLprim value ml_gtk_text_view_get_iter_at_location(value self, value arg1, value arg2)
 {
-CAMLparam4(self, arg1, arg2, arg3);
+CAMLparam3(self, arg1, arg2);
+GtkTextIter out1;
 
-gboolean result = gtk_text_view_get_iter_at_location(GtkTextView_val(self), GtkWidget_val(arg1), Int_val(arg2), Int_val(arg3));
+gboolean result = gtk_text_view_get_iter_at_location(GtkTextView_val(self), &out1, Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_bool(result));
 }
 

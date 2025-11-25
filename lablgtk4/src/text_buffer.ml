@@ -122,7 +122,7 @@ external get_tag_table : t -> Gtk.widget = "ml_gtk_text_buffer_get_tag_table"
 
 This is the same as using [method@Gtk.TextBuffer.get_iter_at_offset]
 to get the iter at character offset 0. *)
-external get_start_iter : t -> Gtk.widget -> unit = "ml_gtk_text_buffer_get_start_iter"
+external get_start_iter : t -> unit = "ml_gtk_text_buffer_get_start_iter"
 
 (** Returns %TRUE if some text is selected; places the bounds
 of the selection in @start and @end.
@@ -131,7 +131,7 @@ If the selection has length 0, then @start and @end are filled
 in with the same value. @start and @end will be in ascending order.
 If @start and @end are %NULL, then they are not filled in, but the
 return value still indicates whether text is selected. *)
-external get_selection_bounds : t -> Gtk.widget -> Gtk.widget -> bool = "ml_gtk_text_buffer_get_selection_bounds"
+external get_selection_bounds : t -> bool * unit * unit = "ml_gtk_text_buffer_get_selection_bounds"
 
 (** Returns the mark that represents the selection bound.
 
@@ -176,10 +176,10 @@ of the entire buffer.
 If @char_offset is -1 or greater than the number
 of characters in the buffer, @iter is initialized to the end iterator,
 the iterator one past the last valid character in the buffer. *)
-external get_iter_at_offset : t -> Gtk.widget -> int -> unit = "ml_gtk_text_buffer_get_iter_at_offset"
+external get_iter_at_offset : t -> int -> unit = "ml_gtk_text_buffer_get_iter_at_offset"
 
 (** Initializes @iter with the current position of @mark. *)
-external get_iter_at_mark : t -> Gtk.widget -> Gtk.widget -> unit = "ml_gtk_text_buffer_get_iter_at_mark"
+external get_iter_at_mark : t -> Gtk.widget -> unit = "ml_gtk_text_buffer_get_iter_at_mark"
 
 (** Obtains an iterator pointing to @char_offset within the given line.
 
@@ -189,7 +189,7 @@ bytes.
 If @line_number is greater than or equal to the number of lines in the @buffer,
 the end iterator is returned. And if @char_offset is off the
 end of the line, the iterator at the end of the line is returned. *)
-external get_iter_at_line_offset : t -> Gtk.widget -> int -> int -> bool = "ml_gtk_text_buffer_get_iter_at_line_offset"
+external get_iter_at_line_offset : t -> int -> int -> bool * unit = "ml_gtk_text_buffer_get_iter_at_line_offset"
 
 (** Obtains an iterator pointing to @byte_index within the given line.
 
@@ -199,16 +199,16 @@ characters; UTF-8 may encode one character as multiple bytes.
 If @line_number is greater than or equal to the number of lines in the @buffer,
 the end iterator is returned. And if @byte_index is off the
 end of the line, the iterator at the end of the line is returned. *)
-external get_iter_at_line_index : t -> Gtk.widget -> int -> int -> bool = "ml_gtk_text_buffer_get_iter_at_line_index"
+external get_iter_at_line_index : t -> int -> int -> bool * unit = "ml_gtk_text_buffer_get_iter_at_line_index"
 
 (** Initializes @iter to the start of the given line.
 
 If @line_number is greater than or equal to the number of lines
 in the @buffer, the end iterator is returned. *)
-external get_iter_at_line : t -> Gtk.widget -> int -> bool = "ml_gtk_text_buffer_get_iter_at_line"
+external get_iter_at_line : t -> int -> bool * unit = "ml_gtk_text_buffer_get_iter_at_line"
 
 (** Obtains the location of @anchor within @buffer. *)
-external get_iter_at_child_anchor : t -> Gtk.widget -> Gtk.widget -> unit = "ml_gtk_text_buffer_get_iter_at_child_anchor"
+external get_iter_at_child_anchor : t -> Gtk.widget -> unit = "ml_gtk_text_buffer_get_iter_at_child_anchor"
 
 (** Returns the mark that represents the cursor (insertion point).
 
@@ -228,7 +228,7 @@ iterator has a character value of 0.
 The entire buffer lies in the range from the first position in
 the buffer (call [method@Gtk.TextBuffer.get_start_iter] to get
 character position 0) to the end iterator. *)
-external get_end_iter : t -> Gtk.widget -> unit = "ml_gtk_text_buffer_get_end_iter"
+external get_end_iter : t -> unit = "ml_gtk_text_buffer_get_end_iter"
 
 (** Gets whether the buffer is saving modifications to the buffer
 to allow for undo and redo actions.
@@ -255,7 +255,7 @@ external get_can_redo : t -> bool = "ml_gtk_text_buffer_get_can_redo"
 
 (** Retrieves the first and last iterators in the buffer, i.e. the
 entire buffer lies within the range [@start,@end). *)
-external get_bounds : t -> Gtk.widget -> Gtk.widget -> unit = "ml_gtk_text_buffer_get_bounds"
+external get_bounds : t -> unit * unit = "ml_gtk_text_buffer_get_bounds"
 
 (** Ends a user-visible operation.
 

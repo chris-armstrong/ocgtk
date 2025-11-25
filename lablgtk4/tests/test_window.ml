@@ -289,8 +289,8 @@ let test_gscrolled_window_wrapper () =
                () in
 
     let (h, v) = sw#policy in
-    check bool "GScrolledWindow vpolicy" (`AUTOMATIC = v) true;
     check bool "GScrolledWindow hpolicy" (`ALWAYS = h) true;
+    check bool "GScrolledWindow vpolicy" (`AUTOMATIC = v) true;
 
     check int "GScrolledWindow min width" 300 sw#min_content_width;
     check int "GScrolledWindow min height" 200 sw#min_content_height;

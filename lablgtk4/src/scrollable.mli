@@ -41,5 +41,5 @@ outside of the scrollable.
 An example for this would be treeview headers. GTK can use
 this information to display overlaid graphics, like the
 overshoot indication, at the right position. *)
-external get_border : t -> Gtk.widget -> bool = "ml_gtk_scrollable_get_border"
+external get_border : t -> bool * unit = "ml_gtk_scrollable_get_border"
 

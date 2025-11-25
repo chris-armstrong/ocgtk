@@ -192,11 +192,12 @@ GtkSensitivityType result = gtk_combo_box_get_button_sensitivity(GtkComboBox_val
 CAMLreturn(Val_GtkSensitivityType(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_combo_box_get_active_iter(value self, value arg1)
+CAMLexport CAMLprim value ml_gtk_combo_box_get_active_iter(value self)
 {
-CAMLparam2(self, arg1);
+CAMLparam1(self);
+GtkTreeIter out1;
 
-gboolean result = gtk_combo_box_get_active_iter(GtkComboBox_val(self), GtkWidget_val(arg1));
+gboolean result = gtk_combo_box_get_active_iter(GtkComboBox_val(self), &out1);
 CAMLreturn(Val_bool(result));
 }
 

@@ -6,9 +6,12 @@ type gir_type = {
   nullable: bool;
 }
 
+type gir_direction = In | Out | InOut
+
 type gir_param = {
   param_name : string;
   param_type : gir_type;
+  direction : gir_direction;
   nullable : bool;
   varargs: bool;
 }

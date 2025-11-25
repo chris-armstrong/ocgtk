@@ -61,7 +61,7 @@ external get_request_mode : t -> Gtk_enums.sizerequestmode = "ml_gtk_cell_render
 
 (** Retrieves the minimum and natural size of a cell taking
 into account the widget’s preference for height-for-width management. *)
-external get_preferred_size : t -> Gtk.widget -> Gtk.widget -> Gtk.widget -> unit = "ml_gtk_cell_renderer_get_preferred_size"
+external get_preferred_size : t -> Gtk.widget -> unit * unit = "ml_gtk_cell_renderer_get_preferred_size"
 
 (** Checks whether the given `GtkCellRenderer` is an expander. *)
 external get_is_expander : t -> bool = "ml_gtk_cell_renderer_get_is_expander"

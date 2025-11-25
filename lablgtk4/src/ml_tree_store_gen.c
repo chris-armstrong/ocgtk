@@ -50,11 +50,12 @@ gboolean result = gtk_tree_store_remove(GtkTreeStore_val(self), GtkWidget_val(ar
 CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_store_prepend(value self, value arg1, value arg2)
+CAMLexport CAMLprim value ml_gtk_tree_store_prepend(value self, value arg1)
 {
-CAMLparam3(self, arg1, arg2);
+CAMLparam2(self, arg1);
+GtkTreeIter out1;
 
-gtk_tree_store_prepend(GtkTreeStore_val(self), GtkWidget_val(arg1), Option_val(arg2, GtkWidget_val, NULL));
+gtk_tree_store_prepend(GtkTreeStore_val(self), &out1, Option_val(arg1, GtkWidget_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -98,27 +99,30 @@ gboolean result = gtk_tree_store_is_ancestor(GtkTreeStore_val(self), GtkWidget_v
 CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_store_insert_before(value self, value arg1, value arg2, value arg3)
+CAMLexport CAMLprim value ml_gtk_tree_store_insert_before(value self, value arg1, value arg2)
 {
-CAMLparam4(self, arg1, arg2, arg3);
+CAMLparam3(self, arg1, arg2);
+GtkTreeIter out1;
 
-gtk_tree_store_insert_before(GtkTreeStore_val(self), GtkWidget_val(arg1), Option_val(arg2, GtkWidget_val, NULL), Option_val(arg3, GtkWidget_val, NULL));
+gtk_tree_store_insert_before(GtkTreeStore_val(self), &out1, Option_val(arg1, GtkWidget_val, NULL), Option_val(arg2, GtkWidget_val, NULL));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_store_insert_after(value self, value arg1, value arg2, value arg3)
+CAMLexport CAMLprim value ml_gtk_tree_store_insert_after(value self, value arg1, value arg2)
 {
-CAMLparam4(self, arg1, arg2, arg3);
+CAMLparam3(self, arg1, arg2);
+GtkTreeIter out1;
 
-gtk_tree_store_insert_after(GtkTreeStore_val(self), GtkWidget_val(arg1), Option_val(arg2, GtkWidget_val, NULL), Option_val(arg3, GtkWidget_val, NULL));
+gtk_tree_store_insert_after(GtkTreeStore_val(self), &out1, Option_val(arg1, GtkWidget_val, NULL), Option_val(arg2, GtkWidget_val, NULL));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_store_insert(value self, value arg1, value arg2, value arg3)
+CAMLexport CAMLprim value ml_gtk_tree_store_insert(value self, value arg1, value arg2)
 {
-CAMLparam4(self, arg1, arg2, arg3);
+CAMLparam3(self, arg1, arg2);
+GtkTreeIter out1;
 
-gtk_tree_store_insert(GtkTreeStore_val(self), GtkWidget_val(arg1), Option_val(arg2, GtkWidget_val, NULL), Int_val(arg3));
+gtk_tree_store_insert(GtkTreeStore_val(self), &out1, Option_val(arg1, GtkWidget_val, NULL), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -130,10 +134,11 @@ gtk_tree_store_clear(GtkTreeStore_val(self));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_store_append(value self, value arg1, value arg2)
+CAMLexport CAMLprim value ml_gtk_tree_store_append(value self, value arg1)
 {
-CAMLparam3(self, arg1, arg2);
+CAMLparam2(self, arg1);
+GtkTreeIter out1;
 
-gtk_tree_store_append(GtkTreeStore_val(self), GtkWidget_val(arg1), Option_val(arg2, GtkWidget_val, NULL));
+gtk_tree_store_append(GtkTreeStore_val(self), &out1, Option_val(arg1, GtkWidget_val, NULL));
 CAMLreturn(Val_unit);
 }

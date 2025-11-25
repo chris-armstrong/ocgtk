@@ -77,7 +77,7 @@ called.
 
 @iter will be initialized before the lookup is performed, so @child
 and @iter cannot point to the same memory location. *)
-external iter_parent : t -> Gtk.widget -> Gtk.widget -> bool = "ml_gtk_tree_model_iter_parent"
+external iter_parent : t -> Gtk.widget -> bool * unit = "ml_gtk_tree_model_iter_parent"
 
 (** Sets @iter to be the child of @parent, using the given index.
 
@@ -86,7 +86,7 @@ The first index is 0. If @n is too big, or @parent has no children,
 will remain a valid node after this function has been called. As a
 special case, if @parent is %NULL, then the @n-th root node
 is set. *)
-external iter_nth_child : t -> Gtk.widget -> Gtk.widget option -> int -> bool = "ml_gtk_tree_model_iter_nth_child"
+external iter_nth_child : t -> Gtk.widget option -> int -> bool * unit = "ml_gtk_tree_model_iter_nth_child"
 
 (** Sets @iter to point to the node following it at the current level.
 
@@ -111,7 +111,7 @@ function has been called.
 
 If @parent is %NULL returns the first node, equivalent to
 `gtk_tree_model_get_iter_first (tree_model, iter);` *)
-external iter_children : t -> Gtk.widget -> Gtk.widget option -> bool = "ml_gtk_tree_model_iter_children"
+external iter_children : t -> Gtk.widget option -> bool * unit = "ml_gtk_tree_model_iter_children"
 
 (** Returns a newly-created `GtkTreePath` referenced by @iter.
 
@@ -125,19 +125,19 @@ external get_n_columns : t -> int = "ml_gtk_tree_model_get_n_columns"
 exists.
 
 Otherwise, @iter is left invalid and %FALSE is returned. *)
-external get_iter_from_string : t -> Gtk.widget -> string -> bool = "ml_gtk_tree_model_get_iter_from_string"
+external get_iter_from_string : t -> string -> bool * unit = "ml_gtk_tree_model_get_iter_from_string"
 
 (** Initializes @iter with the first iterator in the tree
 (the one at the path "0").
 
 Returns %FALSE if the tree is empty, %TRUE otherwise. *)
-external get_iter_first : t -> Gtk.widget -> bool = "ml_gtk_tree_model_get_iter_first"
+external get_iter_first : t -> bool * unit = "ml_gtk_tree_model_get_iter_first"
 
 (** Sets @iter to a valid iterator pointing to @path.
 
 If @path does not exist, @iter is set to an invalid
 iterator and %FALSE is returned. *)
-external get_iter : t -> Gtk.widget -> Gtk.widget -> bool = "ml_gtk_tree_model_get_iter"
+external get_iter : t -> Gtk.widget -> bool * unit = "ml_gtk_tree_model_get_iter"
 
 (** Returns a set of flags supported by this interface.
 

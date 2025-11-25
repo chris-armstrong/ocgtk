@@ -179,7 +179,7 @@ external item_activated : t -> Gtk.widget -> unit = "ml_gtk_icon_view_item_activ
 Note that there may be invisible paths in between.
 
 Both paths should be freed with gtk_tree_path_free() after use. *)
-external get_visible_range : t -> Gtk.widget -> Gtk.widget -> bool = "ml_gtk_icon_view_get_visible_range"
+external get_visible_range : t -> bool * Gtk.widget * Gtk.widget = "ml_gtk_icon_view_get_visible_range"
 
 (** This function is supposed to be used in a `GtkWidget::query-tooltip`
 signal handler for `GtkIconView`. The @x, @y and @keyboard_tip values
@@ -191,7 +191,7 @@ coordinates (%TRUE) or not (%FALSE) for mouse tooltips. For keyboard
 tooltips the item returned will be the cursor item. When %TRUE, then any of
 @model, @path and @iter which have been provided will be set to point to
 that row and the corresponding model. *)
-external get_tooltip_context : t -> int -> int -> bool -> Gtk.widget -> Gtk.widget -> Gtk.widget -> bool = "ml_gtk_icon_view_get_tooltip_context_bytecode" "ml_gtk_icon_view_get_tooltip_context_native"
+external get_tooltip_context : t -> int -> int -> bool -> bool * Gtk.widget * Gtk.widget * unit = "ml_gtk_icon_view_get_tooltip_context_bytecode" "ml_gtk_icon_view_get_tooltip_context_native"
 
 (** Returns the column of @icon_view’s model which is being used for
 displaying tooltips on @icon_view’s rows. *)
@@ -248,20 +248,20 @@ displayed. Column numbers start at 0. *)
 external get_item_column : t -> Gtk.widget -> int = "ml_gtk_icon_view_get_item_column"
 
 (** Gets the path and cell for the icon at the given position. *)
-external get_item_at_pos : t -> int -> int -> Gtk.widget -> Gtk.widget -> bool = "ml_gtk_icon_view_get_item_at_pos"
+external get_item_at_pos : t -> int -> int -> bool * Gtk.widget * Gtk.widget = "ml_gtk_icon_view_get_item_at_pos"
 
 (** Gets information about the item that is highlighted for feedback. *)
-external get_drag_dest_item : t -> Gtk.widget option -> Gtk.widget -> unit = "ml_gtk_icon_view_get_drag_dest_item"
+external get_drag_dest_item : t -> Gtk.widget option * Gtk_enums.iconviewdropposition = "ml_gtk_icon_view_get_drag_dest_item"
 
 (** Determines the destination item for a given position. *)
-external get_dest_item_at_pos : t -> int -> int -> Gtk.widget -> Gtk.widget -> bool = "ml_gtk_icon_view_get_dest_item_at_pos"
+external get_dest_item_at_pos : t -> int -> int -> bool * Gtk.widget * Gtk_enums.iconviewdropposition = "ml_gtk_icon_view_get_dest_item_at_pos"
 
 (** Fills in @path and @cell with the current cursor path and cell.
 If the cursor isn’t currently set, then *@path will be %NULL.
 If no cell currently has focus, then *@cell will be %NULL.
 
 The returned `GtkTreePath` must be freed with gtk_tree_path_free(). *)
-external get_cursor : t -> Gtk.widget -> Gtk.widget -> bool = "ml_gtk_icon_view_get_cursor"
+external get_cursor : t -> bool * Gtk.widget * Gtk.widget = "ml_gtk_icon_view_get_cursor"
 
 (** Returns the value of the ::columns property. *)
 external get_columns : t -> int = "ml_gtk_icon_view_get_columns"

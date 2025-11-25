@@ -128,7 +128,7 @@ external get_propagate_natural_height : t -> bool = "ml_gtk_scrolled_window_get_
 scrollbars.
 
 See [method@Gtk.ScrolledWindow.set_policy]. *)
-external get_policy : t -> Gtk.widget -> Gtk.widget -> unit = "ml_gtk_scrolled_window_get_policy"
+external get_policy : t -> Gtk_enums.policytype * Gtk_enums.policytype = "ml_gtk_scrolled_window_get_policy"
 
 (** Gets the placement of the contents with respect to the scrollbars. *)
 external get_placement : t -> Gtk_enums.cornertype = "ml_gtk_scrolled_window_get_placement"

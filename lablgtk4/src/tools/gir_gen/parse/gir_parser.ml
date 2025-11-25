@@ -527,6 +527,12 @@ let parse_gir_file filename _filter_classes =
       | `El_start ((_, "parameter"), attrs) ->
         let param_name = match get_attr "name" attrs with Some n -> n | None -> "arg" in
         let nullable = match get_attr "nullable" attrs with Some "1" -> true | _ -> false in
+        let direction =
+          match get_attr "direction" attrs with
+          | Some "out" -> Out
+          | Some "inout" -> InOut
+          | _ -> In
+        in
         let varargs = ref false in
         let type_ = ref { name = "void"; c_type = "void"; nullable = false} in
         let rec parse_param_contents () =
@@ -550,7 +556,7 @@ let parse_gir_file filename _filter_classes =
             parse_param_contents ()
         in
         let (param_type, varargs) = parse_param_contents () in
-        params := { param_name = param_name; param_type = param_type; nullable = nullable ; varargs = varargs} :: !params;
+        params := { param_name = param_name; param_type = param_type; direction; nullable = nullable ; varargs = varargs} :: !params;
         parse_params_contents ()
 
       | `El_start ((_, "instance-parameter"), _) ->

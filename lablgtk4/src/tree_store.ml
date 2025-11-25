@@ -27,7 +27,7 @@ child of @parent, otherwise it will prepend a row to the top level. The
 `iter` parameter will be changed to point to this new row.  The row will
 be empty after this function is called. To fill in values, you need to
 call gtk_tree_store_set() or gtk_tree_store_set_value(). *)
-external prepend : t -> Gtk.widget -> Gtk.widget option -> unit = "ml_gtk_tree_store_prepend"
+external prepend : t -> Gtk.widget option -> unit = "ml_gtk_tree_store_prepend"
 
 (** Moves @iter in @tree_store to the position before @position.
 
@@ -75,7 +75,7 @@ of @sibling. When @sibling is set, @parent is optional.
 The @iter parameter will be changed to point to this new row. The row will
 be empty after this function is called. To fill in values, you need to call
 gtk_tree_store_set() or gtk_tree_store_set_value(). *)
-external insert_before : t -> Gtk.widget -> Gtk.widget option -> Gtk.widget option -> unit = "ml_gtk_tree_store_insert_before"
+external insert_before : t -> Gtk.widget option -> Gtk.widget option -> unit = "ml_gtk_tree_store_insert_before"
 
 (** Inserts a new row after @sibling.
 
@@ -90,7 +90,7 @@ of @sibling. When @sibling is set, @parent is optional.
 The @iter parameter will be changed to point to this new row. The row will
 be empty after this function is called. To fill in values, you need to call
 gtk_tree_store_set() or gtk_tree_store_set_value(). *)
-external insert_after : t -> Gtk.widget -> Gtk.widget option -> Gtk.widget option -> unit = "ml_gtk_tree_store_insert_after"
+external insert_after : t -> Gtk.widget option -> Gtk.widget option -> unit = "ml_gtk_tree_store_insert_after"
 
 (** Creates a new row at @position.
 
@@ -103,7 +103,7 @@ then the new row will be inserted to the end of the list.
 The @iter parameter will be changed to point to this new row. The row
 will be empty after this function is called. To fill in values, you
 need to call gtk_tree_store_set() or gtk_tree_store_set_value(). *)
-external insert : t -> Gtk.widget -> Gtk.widget option -> int -> unit = "ml_gtk_tree_store_insert"
+external insert : t -> Gtk.widget option -> int -> unit = "ml_gtk_tree_store_insert"
 
 (** Removes all rows from @tree_store *)
 external clear : t -> unit = "ml_gtk_tree_store_clear"
@@ -116,5 +116,5 @@ child of @parent, otherwise it will append a row to the top level.
 The @iter parameter will be changed to point to this new row. The row will
 be empty after this function is called. To fill in values, you need to call
 gtk_tree_store_set() or gtk_tree_store_set_value(). *)
-external append : t -> Gtk.widget -> Gtk.widget option -> unit = "ml_gtk_tree_store_append"
+external append : t -> Gtk.widget option -> unit = "ml_gtk_tree_store_append"
 
