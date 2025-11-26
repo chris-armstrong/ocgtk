@@ -275,7 +275,7 @@ CAMLexport CAMLprim value ml_gtk_flow_box_set_accept_unpaired_release(value self
 {
 CAMLparam2(self, new_value);
 GtkFlowBox *obj = (GtkFlowBox *)GtkFlowBox_val(self);
-gboolean c_value = Bool_val(new_value);
+    gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "accept-unpaired-release", c_value, NULL);
 CAMLreturn(Val_unit);
 }

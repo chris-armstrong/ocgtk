@@ -43,7 +43,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_toggle_set_activatable(value self
 {
 CAMLparam2(self, new_value);
 GtkCellRendererToggle *obj = (GtkCellRendererToggle *)GtkCellRendererToggle_val(self);
-gboolean c_value = Bool_val(new_value);
+    gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "activatable", c_value, NULL);
 CAMLreturn(Val_unit);
 }
@@ -63,7 +63,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_toggle_set_active(value self, val
 {
 CAMLparam2(self, new_value);
 GtkCellRendererToggle *obj = (GtkCellRendererToggle *)GtkCellRendererToggle_val(self);
-gboolean c_value = Bool_val(new_value);
+    gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "active", c_value, NULL);
 CAMLreturn(Val_unit);
 }
@@ -83,7 +83,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_toggle_set_inconsistent(value sel
 {
 CAMLparam2(self, new_value);
 GtkCellRendererToggle *obj = (GtkCellRendererToggle *)GtkCellRendererToggle_val(self);
-gboolean c_value = Bool_val(new_value);
+    gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "inconsistent", c_value, NULL);
 CAMLreturn(Val_unit);
 }
@@ -103,7 +103,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_toggle_set_radio(value self, valu
 {
 CAMLparam2(self, new_value);
 GtkCellRendererToggle *obj = (GtkCellRendererToggle *)GtkCellRendererToggle_val(self);
-gboolean c_value = Bool_val(new_value);
+    gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "radio", c_value, NULL);
 CAMLreturn(Val_unit);
 }

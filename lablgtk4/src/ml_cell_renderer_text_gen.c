@@ -51,7 +51,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_align_set(value self, va
 {
 CAMLparam2(self, new_value);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-gboolean c_value = Bool_val(new_value);
+    gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "align-set", c_value, NULL);
 CAMLreturn(Val_unit);
 }

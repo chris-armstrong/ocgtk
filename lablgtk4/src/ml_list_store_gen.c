@@ -21,13 +21,6 @@
 #endif /* Val_GtkListStore */
 
 
-CAMLexport CAMLprim value ml_gtk_list_store_new(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-GtkListStore *obj = gtk_list_store_new(Int_val(arg1), arg2);
-CAMLreturn(Val_GtkListStore(obj));
-}
-
 CAMLexport CAMLprim value ml_gtk_list_store_newv(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
