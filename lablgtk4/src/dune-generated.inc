@@ -9,6 +9,7 @@
       (echo "A_t_context")
       (echo "About_dialog")
       (echo "Accessible")
+      (echo "Accessible_list")
       (echo "Accessible_range")
       (echo "Accessible_text")
       (echo "Action_bar")
@@ -28,8 +29,11 @@
       (echo "Assistant")
       (echo "Assistant_page")
       (echo "Bin_layout")
+      (echo "Bitset")
+      (echo "Bitset_iter")
       (echo "Bookmark_list")
       (echo "Bool_filter")
+      (echo "Border")
       (echo "Box")
       (echo "Box_layout")
       (echo "Buildable")
@@ -80,6 +84,7 @@
       (echo "Constraint_layout_child")
       (echo "Constraint_target")
       (echo "Css_provider")
+      (echo "Css_section")
       (echo "Custom_filter")
       (echo "Custom_layout")
       (echo "Custom_sorter")
@@ -110,6 +115,7 @@
       (echo "Every_filter")
       (echo "Expander")
       (echo "Expression")
+      (echo "Expression_watch")
       (echo "File_chooser")
       (echo "File_chooser_dialog")
       (echo "File_chooser_native")
@@ -241,6 +247,7 @@
       (echo "Pango")
       (echo "PangoEnums")
       (echo "Pango_enums")
+      (echo "Paper_size")
       (echo "Param_spec_expression")
       (echo "Password_entry")
       (echo "Password_entry_buffer")
@@ -253,14 +260,18 @@
       (echo "Print_operation")
       (echo "Print_operation_preview")
       (echo "Print_settings")
+      (echo "Print_setup")
       (echo "Progress_bar")
       (echo "Property_expression")
       (echo "Range")
+      (echo "Recent_info")
       (echo "Recent_manager")
+      (echo "Requisition")
       (echo "Revealer")
       (echo "Root")
       (echo "Scale")
       (echo "Scale_button")
+      (echo "Scroll_info")
       (echo "Scrollable")
       (echo "Scrollbar")
       (echo "Scrolled_window")
@@ -306,6 +317,7 @@
       (echo "Text")
       (echo "Text_buffer")
       (echo "Text_child_anchor")
+      (echo "Text_iter")
       (echo "Text_mark")
       (echo "Text_tag")
       (echo "Text_tag_table")
@@ -315,12 +327,15 @@
       (echo "Tree_drag_dest")
       (echo "Tree_drag_source")
       (echo "Tree_expander")
+      (echo "Tree_iter")
       (echo "Tree_list_model")
       (echo "Tree_list_row")
       (echo "Tree_list_row_sorter")
       (echo "Tree_model")
       (echo "Tree_model_filter")
       (echo "Tree_model_sort")
+      (echo "Tree_path")
+      (echo "Tree_row_reference")
       (echo "Tree_selection")
       (echo "Tree_sortable")
       (echo "Tree_store")
@@ -350,6 +365,7 @@
    ml_a_t_context_gen
    ml_about_dialog_gen
    ml_accessible_gen
+   ml_accessible_list_record_gen
    ml_accessible_range_gen
    ml_accessible_text_gen
    ml_action_bar_gen
@@ -369,8 +385,11 @@
    ml_assistant_gen
    ml_assistant_page_gen
    ml_bin_layout_gen
+   ml_bitset_iter_record_gen
+   ml_bitset_record_gen
    ml_bookmark_list_gen
    ml_bool_filter_gen
+   ml_border_record_gen
    ml_box_layout_gen
    ml_buildable_gen
    ml_builder_c_scope_gen
@@ -420,6 +439,7 @@
    ml_constraint_layout_gen
    ml_constraint_target_gen
    ml_css_provider_gen
+   ml_css_section_record_gen
    ml_custom_filter_gen
    ml_custom_layout_gen
    ml_custom_sorter_gen
@@ -447,6 +467,7 @@
    ml_every_filter_gen
    ml_expander_gen
    ml_expression_gen
+   ml_expression_watch_record_gen
    ml_file_chooser_dialog_gen
    ml_file_chooser_gen
    ml_file_chooser_native_gen
@@ -537,6 +558,7 @@
    ml_pad_controller_gen
    ml_page_setup_gen
    ml_pango_enums_gen
+   ml_paper_size_record_gen
    ml_param_spec_expression_gen
    ml_password_entry_buffer_gen
    ml_password_entry_gen
@@ -549,14 +571,18 @@
    ml_print_operation_gen
    ml_print_operation_preview_gen
    ml_print_settings_gen
+   ml_print_setup_record_gen
    ml_progress_bar_gen
    ml_property_expression_gen
    ml_range_gen
+   ml_recent_info_record_gen
    ml_recent_manager_gen
+   ml_requisition_record_gen
    ml_revealer_gen
    ml_root_gen
    ml_scale_button_gen
    ml_scale_gen
+   ml_scroll_info_record_gen
    ml_scrollable_gen
    ml_scrollbar_gen
    ml_scrolled_window_gen
@@ -601,6 +627,7 @@
    ml_text_buffer_gen
    ml_text_child_anchor_gen
    ml_text_gen
+   ml_text_iter_record_gen
    ml_text_mark_gen
    ml_text_tag_gen
    ml_text_tag_table_gen
@@ -610,12 +637,15 @@
    ml_tree_drag_dest_gen
    ml_tree_drag_source_gen
    ml_tree_expander_gen
+   ml_tree_iter_record_gen
    ml_tree_list_model_gen
    ml_tree_list_row_gen
    ml_tree_list_row_sorter_gen
    ml_tree_model_filter_gen
    ml_tree_model_gen
    ml_tree_model_sort_gen
+   ml_tree_path_record_gen
+   ml_tree_row_reference_record_gen
    ml_tree_selection_gen
    ml_tree_sortable_gen
    ml_tree_store_gen

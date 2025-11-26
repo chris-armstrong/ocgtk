@@ -21,7 +21,7 @@ external set_child : t -> Gtk.widget option -> unit = "ml_gtk_viewport_set_child
 
 The viewport and the descendant must be visible and mapped for
 this function to work, otherwise no scrolling will be performed. *)
-external scroll_to : t -> Gtk.widget -> Gtk.widget option -> unit = "ml_gtk_viewport_scroll_to"
+external scroll_to : t -> Gtk.widget -> Obj.t option -> unit = "ml_gtk_viewport_scroll_to"
 
 (** Gets whether the viewport is scrolling to keep the focused
 child in view. *)

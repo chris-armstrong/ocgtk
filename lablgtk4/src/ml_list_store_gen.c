@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -32,7 +33,7 @@ CAMLexport CAMLprim value ml_gtk_list_store_swap(value self, value arg1, value a
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_list_store_swap(GtkListStore_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2));
+gtk_list_store_swap(GtkListStore_val(self), GtkTreeIter_val(arg1), GtkTreeIter_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -40,7 +41,7 @@ CAMLexport CAMLprim value ml_gtk_list_store_remove(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gboolean result = gtk_list_store_remove(GtkListStore_val(self), GtkWidget_val(arg1));
+gboolean result = gtk_list_store_remove(GtkListStore_val(self), GtkTreeIter_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -50,14 +51,14 @@ CAMLparam1(self);
 GtkTreeIter out1;
 
 gtk_list_store_prepend(GtkListStore_val(self), &out1);
-CAMLreturn(Val_unit);
+CAMLreturn(Val_GtkTreeIter(out1));
 }
 
 CAMLexport CAMLprim value ml_gtk_list_store_move_before(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_list_store_move_before(GtkListStore_val(self), GtkWidget_val(arg1), Option_val(arg2, GtkWidget_val, NULL));
+gtk_list_store_move_before(GtkListStore_val(self), GtkTreeIter_val(arg1), Option_val(arg2, GtkTreeIter_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -65,7 +66,7 @@ CAMLexport CAMLprim value ml_gtk_list_store_move_after(value self, value arg1, v
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_list_store_move_after(GtkListStore_val(self), GtkWidget_val(arg1), Option_val(arg2, GtkWidget_val, NULL));
+gtk_list_store_move_after(GtkListStore_val(self), GtkTreeIter_val(arg1), Option_val(arg2, GtkTreeIter_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -73,7 +74,7 @@ CAMLexport CAMLprim value ml_gtk_list_store_iter_is_valid(value self, value arg1
 {
 CAMLparam2(self, arg1);
 
-gboolean result = gtk_list_store_iter_is_valid(GtkListStore_val(self), GtkWidget_val(arg1));
+gboolean result = gtk_list_store_iter_is_valid(GtkListStore_val(self), GtkTreeIter_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -82,8 +83,8 @@ CAMLexport CAMLprim value ml_gtk_list_store_insert_before(value self, value arg1
 CAMLparam2(self, arg1);
 GtkTreeIter out1;
 
-gtk_list_store_insert_before(GtkListStore_val(self), &out1, Option_val(arg1, GtkWidget_val, NULL));
-CAMLreturn(Val_unit);
+gtk_list_store_insert_before(GtkListStore_val(self), &out1, Option_val(arg1, GtkTreeIter_val, NULL));
+CAMLreturn(Val_GtkTreeIter(out1));
 }
 
 CAMLexport CAMLprim value ml_gtk_list_store_insert_after(value self, value arg1)
@@ -91,8 +92,8 @@ CAMLexport CAMLprim value ml_gtk_list_store_insert_after(value self, value arg1)
 CAMLparam2(self, arg1);
 GtkTreeIter out1;
 
-gtk_list_store_insert_after(GtkListStore_val(self), &out1, Option_val(arg1, GtkWidget_val, NULL));
-CAMLreturn(Val_unit);
+gtk_list_store_insert_after(GtkListStore_val(self), &out1, Option_val(arg1, GtkTreeIter_val, NULL));
+CAMLreturn(Val_GtkTreeIter(out1));
 }
 
 CAMLexport CAMLprim value ml_gtk_list_store_insert(value self, value arg1)
@@ -101,7 +102,7 @@ CAMLparam2(self, arg1);
 GtkTreeIter out1;
 
 gtk_list_store_insert(GtkListStore_val(self), &out1, Int_val(arg1));
-CAMLreturn(Val_unit);
+CAMLreturn(Val_GtkTreeIter(out1));
 }
 
 CAMLexport CAMLprim value ml_gtk_list_store_clear(value self)
@@ -118,5 +119,5 @@ CAMLparam1(self);
 GtkTreeIter out1;
 
 gtk_list_store_append(GtkListStore_val(self), &out1);
-CAMLreturn(Val_unit);
+CAMLreturn(Val_GtkTreeIter(out1));
 }

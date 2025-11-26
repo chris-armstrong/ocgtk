@@ -47,7 +47,13 @@ let emit_bitfield_proto buf ~namespace (bitfield : gir_bitfield) =
   bprintf buf "%s %s%s_val(value list);\n" bitfield.bitfield_c_type namespace bitfield.bitfield_name
 
 (* Generate common header file with forward declarations for enum/bitfield converters *)
-let generate_forward_decls_header ~classes ~gtk_enums ~gtk_bitfields ~external_enums ~external_bitfields =
+let value_record_macros = ["GtkTreeIter"; "GtkTextIter"; "GtkRequisition"; "GtkBorder"]
+
+let is_value_like_record (record : gir_record) =
+  List.mem record.c_type ~set:value_record_macros
+  || (List.length record.fields > 0 && List.length record.constructors = 0)
+
+let generate_forward_decls_header ~classes ~records ~gtk_enums ~gtk_bitfields ~external_enums ~external_bitfields =
   let buf = Buffer.create 4096 in
   Buffer.add_string buf "/**************************************************************************/\n";
   Buffer.add_string buf "/*                LablGTK4 - OCaml bindings for GTK4                      */\n";
@@ -89,6 +95,45 @@ let generate_forward_decls_header ~classes ~gtk_enums ~gtk_bitfields ~external_e
       end
     end
   ) classes;
+  List.iter ~f:(fun (record : gir_record) ->
+    if (Type_mappings.is_boxed_record record || record.disguised) && not (Hashtbl.mem seen record.c_type) then begin
+      if List.mem record.c_type ~set:value_record_macros then
+        () (* value-returning structs handled explicitly below *)
+      else begin
+        Hashtbl.add seen record.c_type ();
+        bprintf buf "#ifndef Val_%s\n" record.c_type;
+        bprintf buf "#define %s_val(val) ((%s*)ext_of_val(val))\n" record.c_type record.c_type;
+        bprintf buf "#define Val_%s(obj) ((value)(val_of_ext(obj)))\n" record.c_type;
+        bprintf buf "#endif /* Val_%s */\n\n" record.c_type;
+      end
+    end
+  ) records;
+
+  (* Special-case value structs that are returned via out parameters *)
+  Buffer.add_string buf "/* Value-returning structs copied into OCaml */\n";
+  Buffer.add_string buf "#ifndef Val_GtkTreeIter\n";
+  Buffer.add_string buf "#define GtkTreeIter_val(val) ((GtkTreeIter*)ext_of_val(val))\n";
+  Buffer.add_string buf "#define Val_GtkTreeIter(obj) copy_GtkTreeIter(&(obj))\n";
+  Buffer.add_string buf "#define Val_GtkTreeIter_option(ptr) ((ptr) ? Val_some(copy_GtkTreeIter(ptr)) : Val_none)\n";
+  Buffer.add_string buf "#endif /* Val_GtkTreeIter */\n\n";
+
+  Buffer.add_string buf "#ifndef Val_GtkTextIter\n";
+  Buffer.add_string buf "#define GtkTextIter_val(val) ((GtkTextIter*)ext_of_val(val))\n";
+  Buffer.add_string buf "#define Val_GtkTextIter(obj) copy_GtkTextIter(&(obj))\n";
+  Buffer.add_string buf "#define Val_GtkTextIter_option(ptr) ((ptr) ? Val_some(copy_GtkTextIter(ptr)) : Val_none)\n";
+  Buffer.add_string buf "#endif /* Val_GtkTextIter */\n\n";
+
+  Buffer.add_string buf "#ifndef Val_GtkRequisition\n";
+  Buffer.add_string buf "#define GtkRequisition_val(val) ((GtkRequisition*)ext_of_val(val))\n";
+  Buffer.add_string buf "#define Val_GtkRequisition(obj) copy_GtkRequisition(&(obj))\n";
+  Buffer.add_string buf "#define Val_GtkRequisition_option(ptr) ((ptr) ? Val_some(copy_GtkRequisition(ptr)) : Val_none)\n";
+  Buffer.add_string buf "#endif /* Val_GtkRequisition */\n\n";
+
+  Buffer.add_string buf "#ifndef Val_GtkBorder\n";
+  Buffer.add_string buf "#define GtkBorder_val(val) ((GtkBorder*)ext_of_val(val))\n";
+  Buffer.add_string buf "#define Val_GtkBorder(obj) copy_GtkBorder(&(obj))\n";
+  Buffer.add_string buf "#define Val_GtkBorder_option(ptr) ((ptr) ? Val_some(copy_GtkBorder(ptr)) : Val_none)\n";
+  Buffer.add_string buf "#endif /* Val_GtkBorder */\n\n";
   Buffer.add_string buf "\n";
   Buffer.add_string buf "/* Phase 5.3: Option type conversions for nullable parameters */\n";
   Buffer.add_string buf "#define GtkWidget_option_val(v) ((v) == Val_none ? NULL : GtkWidget_val(Some_val(v)))\n";
@@ -145,6 +190,7 @@ let generate_c_file_header ?(class_name="") ?(c_type="") ?(external_enums=[]) ?(
   Buffer.add_string buf "#include <caml/callback.h>\n";
   Buffer.add_string buf "#include <caml/fail.h>\n";
   Buffer.add_string buf "#include <caml/hash.h>\n";
+  Buffer.add_string buf "#include <caml/custom.h>\n";
   Buffer.add_string buf "#include \"wrappers.h\"\n";
   Buffer.add_string buf "#include \"ml_gobject.h\"\n";
   Buffer.add_string buf "\n";
@@ -165,9 +211,15 @@ let generate_c_file_header ?(class_name="") ?(c_type="") ?(external_enums=[]) ?(
 
   Buffer.contents buf
 
-let generate_c_constructor ~classes ~enums ~bitfields ~c_type (ctor : gir_constructor) _class_name =
+let generate_c_constructor ~classes ~records ~enums ~bitfields ~c_type (ctor : gir_constructor) _class_name =
   let c_name = ctor.c_identifier in
-  let ml_name = Str.global_replace (Str.regexp "gtk_") "ml_gtk_" c_name in
+  let ml_name =
+    let prefixed = Str.global_replace (Str.regexp "^gtk_") "ml_gtk_" c_name in
+    if String.length prefixed >= 3 && String.sub prefixed ~pos:0 ~len:3 = "ml_" then
+      prefixed
+    else
+      "ml_" ^ c_name
+  in
 
   let val_macro = sprintf "Val_%s" c_type in
   let var_name = "obj" in
@@ -190,7 +242,7 @@ let generate_c_constructor ~classes ~enums ~bitfields ~c_type (ctor : gir_constr
   (* Build C call arguments - handle nullable parameters *)
   let c_args =
     List.mapi ~f:(fun i p ->
-      match Type_mappings.find_type_mapping ~enums ~bitfields ~classes p.param_type.c_type with
+      match Type_mappings.find_type_mapping ~enums ~bitfields ~classes ~records p.param_type.c_type with
       | Some mapping ->
         let param_type = { p.param_type with nullable = p.nullable || p.param_type.nullable } in
         nullable_ml_to_c_expr ~var:(sprintf "arg%d" (i + 1)) ~gir_type:param_type ~mapping
@@ -244,9 +296,15 @@ let generate_c_constructor ~classes ~enums ~bitfields ~c_type (ctor : gir_constr
       val_macro var_name
   end
 
-let generate_c_method ~classes ~enums ~bitfields ~c_type (meth : gir_method) _class_name =
+let generate_c_method ~classes ~records ~enums ~bitfields ~c_type (meth : gir_method) _class_name =
   let c_name = meth.c_identifier in
-  let ml_name = Str.global_replace (Str.regexp "gtk_") "ml_gtk_" c_name in
+  let ml_name =
+    let prefixed = Str.global_replace (Str.regexp "^gtk_") "ml_gtk_" c_name in
+    if String.length prefixed >= 3 && String.sub prefixed ~pos:0 ~len:3 = "ml_" then
+      prefixed
+    else
+      "ml_" ^ c_name
+  in
   let in_params = List.filter ~f:(fun p -> p.direction <> Out) meth.parameters in
   let param_count = 1 + List.length in_params in
   let params = "value self" ::
@@ -277,7 +335,7 @@ let generate_c_method ~classes ~enums ~bitfields ~c_type (meth : gir_method) _cl
       | In | InOut ->
         incr ocaml_idx;
         let arg_name = sprintf "arg%d" !ocaml_idx in
-        let arg_expr = match Type_mappings.find_type_mapping ~enums ~bitfields ~classes p.param_type.c_type with
+        let arg_expr = match Type_mappings.find_type_mapping ~enums ~bitfields ~classes ~records p.param_type.c_type with
           | Some mapping ->
             let param_type = { p.param_type with nullable = p.nullable || p.param_type.nullable } in
             nullable_ml_to_c_expr ~var:arg_name ~gir_type:param_type ~mapping
@@ -306,7 +364,7 @@ let generate_c_method ~classes ~enums ~bitfields ~c_type (meth : gir_method) _cl
             then { p.param_type with c_type = String.sub p.param_type.c_type ~pos:0 ~len:(String.length p.param_type.c_type - 1) }
             else p.param_type
           in
-          match Type_mappings.find_type_mapping ~enums ~bitfields ~classes base_gir_type.c_type with
+          match Type_mappings.find_type_mapping ~enums ~bitfields ~classes ~records base_gir_type.c_type with
           | Some mapping ->
             let var_name = sprintf "out%d" (idx + 1) in
             Some (nullable_c_to_ml_expr ~var:var_name ~gir_type:base_gir_type ~mapping)
@@ -352,7 +410,7 @@ let generate_c_method ~classes ~enums ~bitfields ~c_type (meth : gir_method) _cl
     if ret_type = "void" then
       (sprintf "%s(%s);" c_name args, combine_results None)
     else
-      match Type_mappings.find_type_mapping ~enums ~bitfields ~classes ret_type with
+      match Type_mappings.find_type_mapping ~enums ~bitfields ~classes ~records ret_type with
       | Some mapping ->
         let ml_result = nullable_c_to_ml_expr ~var:"result" ~gir_type:meth.return_type ~mapping in
         (sprintf "%s result = %s(%s);" ret_type c_name args,
@@ -411,14 +469,14 @@ let generate_c_method ~classes ~enums ~bitfields ~c_type (meth : gir_method) _cl
       c_call
       ret_conv
 
-let generate_c_property_getter ~classes ~enums ~bitfields ~c_type (prop : gir_property) class_name =
+let generate_c_property_getter ~classes ~records ~enums ~bitfields ~c_type (prop : gir_property) class_name =
   let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
   let prop_snake = Utils.to_snake_case prop_name_cleaned in
   let class_snake = Utils.to_snake_case class_name in
   let ml_name = sprintf "ml_gtk_%s_get_%s" class_snake prop_snake in
 
   (* Determine property type mapping *)
-  let type_info = match Type_mappings.find_type_mapping ~enums ~bitfields ~classes prop.prop_type.c_type with
+  let type_info = match Type_mappings.find_type_mapping ~enums ~bitfields ~classes ~records prop.prop_type.c_type with
     | Some mapping -> mapping
     | None -> {
         ocaml_type = "unit";
@@ -433,7 +491,17 @@ let generate_c_property_getter ~classes ~enums ~bitfields ~c_type (prop : gir_pr
   in
 
   let c_cast = sprintf "%s_val" c_type in
-  let c_type_name = c_type in
+  let c_type_name =
+    let normalized = Utils.normalize_class_name prop.prop_type.c_type in
+    match List.find_opt records ~f:(fun r ->
+      let rname = Utils.normalize_class_name r.record_name in
+      let rc = Utils.normalize_class_name r.c_type in
+      rname = normalized || rc = normalized) with
+    | Some record ->
+      let base = record.c_type in
+      if String.contains prop.prop_type.c_type '*' then base ^ "*" else base
+    | None -> prop.prop_type.c_type
+  in
 
   sprintf "\nCAMLexport CAMLprim value %s(value self)\n\
 {\n\
@@ -451,14 +519,14 @@ let generate_c_property_getter ~classes ~enums ~bitfields ~c_type (prop : gir_pr
     prop.prop_name
     ml_prop_value
 
-let generate_c_property_setter ~classes ~enums ~bitfields ~c_type (prop : gir_property) class_name =
+let generate_c_property_setter ~classes ~records ~enums ~bitfields ~c_type (prop : gir_property) class_name =
   let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
   let prop_snake = Utils.to_snake_case prop_name_cleaned in
   let class_snake = Utils.to_snake_case class_name in
   let ml_name = sprintf "ml_gtk_%s_set_%s" class_snake prop_snake in
 
   (* Determine property type mapping *)
-  let type_info = match Type_mappings.find_type_mapping ~enums ~bitfields ~classes prop.prop_type.c_type with
+  let type_info = match Type_mappings.find_type_mapping ~enums ~bitfields ~classes ~records prop.prop_type.c_type with
     | Some mapping -> mapping
     | None -> {
         ocaml_type = "unit";
@@ -497,7 +565,7 @@ let generate_c_property_setter ~classes ~enums ~bitfields ~c_type (prop : gir_pr
     prop.prop_name
 
 (* Generate complete C file for a single class/interface *)
-let generate_class_c_code ~classes ~enums ~bitfields ~external_enums ~external_bitfields ~c_type class_name constructors methods properties =
+let generate_class_c_code ~classes ~records ~enums ~bitfields ~external_enums ~external_bitfields ~c_type class_name constructors methods properties =
   let buf = Buffer.create 4096 in
 
   (* Add header *)
@@ -506,35 +574,109 @@ let generate_class_c_code ~classes ~enums ~bitfields ~external_enums ~external_b
   (* Constructors - skip those that throw GError or are variadic *)
   List.iter ~f:(fun ctor ->
     if (not ctor.throws) && (not (Filtering.constructor_has_varargs ctor)) then
-      Buffer.add_string buf (generate_c_constructor ~classes ~enums ~bitfields ~c_type ctor class_name)
+      Buffer.add_string buf (generate_c_constructor ~classes ~records ~enums ~bitfields ~c_type ctor class_name)
   ) constructors;
 
   (* Build list of property names to avoid duplicates *)
   let property_method_names =
-    Filtering.property_method_names ~classes ~enums ~bitfields properties
+    Filtering.property_method_names ~classes ~enums ~bitfields ~records properties
   in
   let property_base_names =
-    Filtering.property_base_names ~classes ~enums ~bitfields properties
+    Filtering.property_base_names ~classes ~enums ~bitfields ~records properties
   in
 
   (* Generate methods, skip duplicates *)
   List.iter ~f:(fun (meth : gir_method) ->
     let should_skip =
       Filtering.should_skip_method_binding
-        ~classes ~enums ~bitfields ~property_method_names ~property_base_names ~class_name meth
+        ~classes ~enums ~bitfields ~records ~property_method_names ~property_base_names ~class_name ~c_type meth
     in
     if not should_skip then
-      Buffer.add_string buf (generate_c_method ~classes ~enums ~bitfields ~c_type meth class_name)
+      Buffer.add_string buf (generate_c_method ~classes ~records ~enums ~bitfields ~c_type meth class_name)
   ) (List.rev methods);
 
   (* Generate property getters and setters *)
   List.iter ~f:(fun (prop : gir_property) ->
-    if Filtering.should_generate_property ~classes ~enums ~bitfields prop then begin
+    if Filtering.should_generate_property ~classes ~enums ~bitfields ~records prop then begin
       if prop.readable then
-        Buffer.add_string buf (generate_c_property_getter ~classes ~enums ~bitfields ~c_type prop class_name);
+        Buffer.add_string buf (generate_c_property_getter ~classes ~records ~enums ~bitfields ~c_type prop class_name);
       if prop.writable && not prop.construct_only then
-        Buffer.add_string buf (generate_c_property_setter ~classes ~enums ~bitfields ~c_type prop class_name);
+        Buffer.add_string buf (generate_c_property_setter ~classes ~records ~enums ~bitfields ~c_type prop class_name);
     end
   ) properties;
+
+  Buffer.contents buf
+
+let generate_record_c_code ~classes ~records ~enums ~bitfields ~external_enums ~external_bitfields (record : gir_record) =
+  let buf = Buffer.create 2048 in
+
+  Buffer.add_string buf (generate_c_file_header ~class_name:record.record_name ~c_type:record.c_type ~external_enums ~external_bitfields ());
+
+  let class_snake = Utils.to_snake_case record.record_name in
+
+  (* Override conversion macros to accept both abstract and custom blocks, and add owned wrappers for non-opaque records. *)
+  let is_value_record = is_value_like_record record in
+
+  if (not record.opaque) && (not is_value_record) then begin
+    bprintf buf "/* Custom ownership helpers for %s */\n" record.c_type;
+    bprintf buf "static inline %s *%s_ptr_val(value v) {\n" record.c_type record.c_type;
+    bprintf buf "  if (Tag_val(v) == Custom_tag) return *(%s **)Data_custom_val(v);\n" record.c_type;
+    bprintf buf "  else return (%s*)ext_of_val(v);\n" record.c_type;
+    bprintf buf "}\n";
+    bprintf buf "static void finalize_%s(value v) {\n" record.c_type;
+    bprintf buf "  %s *ptr = (%s*)%s_ptr_val(v);\n" record.c_type record.c_type record.c_type;
+    bprintf buf "  if (ptr != NULL) g_free(ptr);\n";
+    bprintf buf "}\n";
+    bprintf buf "static struct custom_operations %s_custom_ops = {\n" record.c_type;
+    bprintf buf "  \"%s_custom\",\n" record.c_type;
+    bprintf buf "  finalize_%s,\n" record.c_type;
+    bprintf buf "  custom_compare_default,\n";
+    bprintf buf "  custom_hash_default,\n";
+    bprintf buf "  custom_serialize_default,\n";
+    bprintf buf "  custom_deserialize_default,\n";
+    bprintf buf "  custom_compare_ext_default\n";
+    bprintf buf "};\n";
+    bprintf buf "static value Val_owned_%s(%s *ptr) {\n" record.c_type record.c_type;
+    bprintf buf "  CAMLparam0();\n";
+    bprintf buf "  CAMLlocal1(v);\n";
+    bprintf buf "  v = caml_alloc_custom(&%s_custom_ops, sizeof(%s*), 0, 1);\n" record.c_type record.c_type;
+    bprintf buf "  *(%s**)Data_custom_val(v) = ptr;\n" record.c_type;
+    bprintf buf "  CAMLreturn(v);\n";
+    bprintf buf "}\n";
+    bprintf buf "#undef %s_val\n" record.c_type;
+    bprintf buf "#define %s_val(v) (%s_ptr_val(v))\n\n" record.c_type record.c_type;
+  end;
+
+  List.iter ~f:(fun ctor ->
+    if (not ctor.throws) && (not (Filtering.constructor_has_varargs ctor)) then
+      Buffer.add_string buf (generate_c_constructor ~classes ~records ~enums ~bitfields ~c_type:record.c_type ctor record.record_name)
+  ) record.constructors;
+
+  (* Synthetic allocator for non-opaque records without constructors *)
+  if (not record.opaque) && (not is_value_record) && record.constructors = [] then begin
+    let ml_name = sprintf "ml_gtk_%s_new" class_snake in
+    bprintf buf "\n/* Synthetic allocator for non-opaque record %s */\n" record.record_name;
+    bprintf buf "CAMLexport CAMLprim value %s(value unit)\n{\n" ml_name;
+    bprintf buf "    CAMLparam1(unit);\n";
+    bprintf buf "    %s *obj = g_new0(%s, 1);\n" record.c_type record.c_type;
+    bprintf buf "    if (obj == NULL) caml_failwith(\"%s allocation failed\");\n" record.c_type;
+    bprintf buf "    CAMLreturn(Val_owned_%s(obj));\n" record.c_type;
+    bprintf buf "}\n";
+  end;
+
+  List.iter ~f:(fun (meth : gir_method) ->
+    let should_skip =
+      Filtering.should_skip_method_binding
+        ~classes ~enums ~bitfields ~records
+        ~property_method_names:[]
+        ~property_base_names:[]
+        ~class_name:record.record_name
+        ~c_type:record.c_type
+        ?c_symbol_prefix:record.c_symbol_prefix
+        meth
+    in
+    if not should_skip then
+      Buffer.add_string buf (generate_c_method ~classes ~records ~enums ~bitfields ~c_type:record.c_type meth record.record_name)
+  ) (List.rev record.methods);
 
   Buffer.contents buf

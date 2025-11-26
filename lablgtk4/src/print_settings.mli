@@ -58,7 +58,7 @@ external set_paper_width : t -> float -> unit -> unit = "ml_gtk_print_settings_s
 (** Sets the value of %GTK_PRINT_SETTINGS_PAPER_FORMAT,
 %GTK_PRINT_SETTINGS_PAPER_WIDTH and
 %GTK_PRINT_SETTINGS_PAPER_HEIGHT. *)
-external set_paper_size : t -> Gtk.widget -> unit = "ml_gtk_print_settings_set_paper_size"
+external set_paper_size : t -> Obj.t -> unit = "ml_gtk_print_settings_set_paper_size"
 
 (** Sets the value of %GTK_PRINT_SETTINGS_PAPER_HEIGHT. *)
 external set_paper_height : t -> float -> unit -> unit = "ml_gtk_print_settings_set_paper_height"
@@ -164,7 +164,7 @@ external get_paper_width : t -> unit -> float = "ml_gtk_print_settings_get_paper
 
 (** Gets the value of %GTK_PRINT_SETTINGS_PAPER_FORMAT,
 converted to a `GtkPaperSize`. *)
-external get_paper_size : t -> Gtk.widget option = "ml_gtk_print_settings_get_paper_size"
+external get_paper_size : t -> Obj.t option = "ml_gtk_print_settings_get_paper_size"
 
 (** Gets the value of %GTK_PRINT_SETTINGS_PAPER_HEIGHT,
 converted to @unit. *)

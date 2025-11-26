@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -49,7 +50,7 @@ CAMLexport CAMLprim value ml_gtk_selection_model_set_selection(value self, value
 {
 CAMLparam3(self, arg1, arg2);
 
-gboolean result = gtk_selection_model_set_selection(GtkSelectionModel_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2));
+gboolean result = gtk_selection_model_set_selection(GtkSelectionModel_val(self), GtkBitset_val(arg1), GtkBitset_val(arg2));
 CAMLreturn(Val_bool(result));
 }
 
@@ -98,7 +99,7 @@ CAMLexport CAMLprim value ml_gtk_selection_model_get_selection_in_range(value se
 CAMLparam3(self, arg1, arg2);
 
 GtkBitset* result = gtk_selection_model_get_selection_in_range(GtkSelectionModel_val(self), Int_val(arg1), Int_val(arg2));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkBitset(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_selection_model_get_selection(value self)
@@ -106,5 +107,5 @@ CAMLexport CAMLprim value ml_gtk_selection_model_get_selection(value self)
 CAMLparam1(self);
 
 GtkBitset* result = gtk_selection_model_get_selection(GtkSelectionModel_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkBitset(result));
 }

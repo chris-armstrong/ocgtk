@@ -263,7 +263,7 @@ let create_test_signal_gir filename =
 let test_signal_parsing_and_generation () =
   let test_gir = "/tmp/test_signal_gen.gir" in
   create_test_signal_gir test_gir;
-  let (classes, _, _, _) = Gir_gen_lib.Parse.Gir_parser.parse_gir_file test_gir [] in
+  let (classes, _, _, _, _) = Gir_gen_lib.Parse.Gir_parser.parse_gir_file test_gir [] in
   let button =
     List.find (fun (c : Gir_gen_lib.Types.gir_class) -> c.class_name = "Button") classes
   in
@@ -361,6 +361,84 @@ let test_property_generation () =
   (* Verify type annotations *)
   assert_contains "Bool property should have bool type" content "t -> bool";
   assert_contains "Int property should have int type" content "t -> int"
+
+let create_test_record_gir filename =
+  let oc = open_out filename in
+  output_string oc {|<?xml version="1.0"?>
+<repository version="1.2"
+            xmlns="http://www.gtk.org/introspection/core/1.0"
+            xmlns:c="http://www.gtk.org/introspection/c/1.0"
+            xmlns:glib="http://www.gtk.org/introspection/glib/1.0">
+  <namespace name="Gtk">
+    <record name="TestRecord" c:type="GtkTestRecord" glib:type-name="GtkTestRecord" glib:get-type="gtk_test_record_get_type">
+      <field name="width"><type name="gint" c:type="gint"/></field>
+    </record>
+    <record name="OpaqueRec" c:type="GtkOpaqueRec" disguised="1"/>
+    <class name="RecordUser" c:type="GtkRecordUser" parent="Widget">
+      <constructor name="new" c:identifier="gtk_record_user_new"/>
+      <method name="set_boxed" c:identifier="gtk_record_user_set_boxed">
+        <return-value><type name="none" c:type="void"/></return-value>
+        <parameters>
+          <parameter name="value"><type name="TestRecord" c:type="GtkTestRecord*"/></parameter>
+        </parameters>
+      </method>
+      <method name="get_boxed" c:identifier="gtk_record_user_get_boxed">
+        <return-value><type name="TestRecord" c:type="GtkTestRecord*"/></return-value>
+      </method>
+      <method name="get_nullable_boxed" c:identifier="gtk_record_user_get_nullable_boxed">
+        <return-value><type name="TestRecord" c:type="GtkTestRecord*" nullable="1"/></return-value>
+      </method>
+      <method name="set_nullable_boxed" c:identifier="gtk_record_user_set_nullable_boxed">
+        <return-value><type name="none" c:type="void"/></return-value>
+        <parameters>
+          <parameter name="value" nullable="1"><type name="TestRecord" c:type="GtkTestRecord*"/></parameter>
+        </parameters>
+      </method>
+      <property name="opaque-prop" readable="1" writable="1">
+        <type name="OpaqueRec" c:type="GtkOpaqueRec*" nullable="1"/>
+      </property>
+    </class>
+  </namespace>
+</repository>
+|};
+  close_out oc
+
+let test_record_support () =
+  let test_gir = "/tmp/test_record_gen.gir" in
+  let test_filter = "/tmp/test_record_filter.conf" in
+  let output_dir = "/tmp/test_record_output" in
+
+  create_test_record_gir test_gir;
+  let fc = open_out test_filter in
+  output_string fc "RecordUser\n";
+  close_out fc;
+  (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
+
+  let (classes, _, _, _, records) = Gir_gen_lib.Parse.Gir_parser.parse_gir_file test_gir [] in
+  assert_true "Should parse two records" (List.length records = 2);
+  assert_true "Should parse RecordUser class" (List.exists (fun (c : Gir_gen_lib.Types.gir_class) -> c.class_name = "RecordUser") classes);
+
+  let tools_dir = Filename.dirname Sys.argv.(0) in
+  let cmd = sprintf "%s/gir_gen/main.exe -f %s %s %s > /dev/null 2>&1"
+    tools_dir test_filter test_gir output_dir in
+
+  let exit_code = Sys.command cmd in
+  assert_true "Record generator should exit successfully" (exit_code = 0);
+
+  let c_file = stub_c_file output_dir "RecordUser" in
+  assert_true "RecordUser C file should be created" (file_exists c_file);
+  let c_content = read_file c_file in
+  assert_contains "Should use record conversion macro" c_content "Val_GtkTestRecord";
+  assert_contains "Should convert record pointer in setter" c_content "GtkTestRecord_val";
+
+  let mli_file = Filename.concat output_dir "record_user.mli" in
+  assert_true "record_user.mli should be created" (file_exists mli_file);
+  let mli_content = read_file mli_file in
+  assert_contains "Record param should map to Obj.t" mli_content "set_boxed : t -> Obj.t -> unit";
+  assert_contains "Nullable record return should be option" mli_content "get_nullable_boxed : t -> Obj.t option";
+  assert_contains "Disguised record property should be option" mli_content "get_opaque_prop : t -> Obj.t option";
+
+  ()
 
 (* Phase 5.2: Test C property code generation *)
 let test_c_property_generation () =
@@ -1050,6 +1128,7 @@ let () =
   ignore (test "Widget generation" test_widget_generation);
   ignore (test "Signal parsing and generation (Step 2)" test_signal_parsing_and_generation);
   ignore (test "Property generation" test_property_generation);
+  ignore (test "Record type support" test_record_support);
   ignore (test "C property generation (Phase 5.2)" test_c_property_generation);
   ignore (test "All methods generated (Phase 5.2)" test_all_methods_generated);
   ignore (test "Enum generation (Phase 5.3)" test_enum_generation);

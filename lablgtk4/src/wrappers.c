@@ -172,3 +172,32 @@ value Val_GError(GError *error) {
 
     CAMLreturn(v);
 }
+
+/* ==================================================================== */
+/* Copies for value-returning GTK structs                              */
+/* ==================================================================== */
+
+static value copy_struct_as_block(const void *src, size_t sz) {
+    CAMLparam0();
+    CAMLlocal1(block);
+    /* Allocate an abstract block large enough to hold the struct bytes */
+    block = caml_alloc((sz + sizeof(value) - 1) / sizeof(value), Abstract_tag);
+    memcpy((void *)block, src, sz);
+    CAMLreturn(block);
+}
+
+value copy_GtkTreeIter(const GtkTreeIter *iter) {
+    return copy_struct_as_block(iter, sizeof(GtkTreeIter));
+}
+
+value copy_GtkTextIter(const GtkTextIter *iter) {
+    return copy_struct_as_block(iter, sizeof(GtkTextIter));
+}
+
+value copy_GtkRequisition(const GtkRequisition *req) {
+    return copy_struct_as_block(req, sizeof(GtkRequisition));
+}
+
+value copy_GtkBorder(const GtkBorder *border) {
+    return copy_struct_as_block(border, sizeof(GtkBorder));
+}

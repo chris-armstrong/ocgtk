@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -177,7 +178,7 @@ CAMLexport CAMLprim value ml_gtk_cell_area_apply_attributes(value self, value ar
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 
-gtk_cell_area_apply_attributes(GtkCellArea_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2), Bool_val(arg3), Bool_val(arg4));
+gtk_cell_area_apply_attributes(GtkCellArea_val(self), GtkWidget_val(arg1), GtkTreeIter_val(arg2), Bool_val(arg3), Bool_val(arg4));
 CAMLreturn(Val_unit);
 }
 

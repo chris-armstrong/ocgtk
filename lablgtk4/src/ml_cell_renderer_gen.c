@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -132,7 +133,11 @@ GtkRequisition out2;
 GtkRequisition out3;
 
 gtk_cell_renderer_get_preferred_size(GtkCellRenderer_val(self), GtkWidget_val(arg1), &out2, &out3);
-CAMLreturn(Val_unit);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_GtkRequisition(out2));
+    Store_field(ret, 1, Val_GtkRequisition(out3));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_cell_renderer_get_is_expander(value self)
@@ -155,7 +160,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_get_cell_background(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+gchar* *obj = (gchar* *)GtkCellRenderer_val(self);
 gchar* prop_value;
 g_object_get(G_OBJECT(obj), "cell-background", &prop_value, NULL);
 result = caml_copy_string(prop_value);

@@ -269,6 +269,12 @@ value Res_Error(value v);
 /* Defined in wrappers.c */
 value Val_GError(GError *error);
 
+/* Copies of value-returning GTK structs (stack-safe) */
+value copy_GtkTreeIter(const GtkTreeIter *iter);
+value copy_GtkTextIter(const GtkTextIter *iter);
+value copy_GtkRequisition(const GtkRequisition *req);
+value copy_GtkBorder(const GtkBorder *border);
+
 /* ==================================================================== */
 /* GValue */
 /* ==================================================================== */

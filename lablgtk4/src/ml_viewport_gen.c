@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -48,7 +49,7 @@ CAMLexport CAMLprim value ml_gtk_viewport_scroll_to(value self, value arg1, valu
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_viewport_scroll_to(GtkViewport_val(self), GtkWidget_val(arg1), Option_val(arg2, GtkWidget_val, NULL));
+gtk_viewport_scroll_to(GtkViewport_val(self), GtkWidget_val(arg1), Option_val(arg2, GtkScrollInfo_val, NULL));
 CAMLreturn(Val_unit);
 }
 

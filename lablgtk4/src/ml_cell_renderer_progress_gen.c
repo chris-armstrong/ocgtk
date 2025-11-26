@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -32,7 +33,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_progress_get_inverted(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkCellRendererProgress *obj = (GtkCellRendererProgress *)GtkCellRendererProgress_val(self);
+gboolean *obj = (gboolean *)GtkCellRendererProgress_val(self);
 gboolean prop_value;
 g_object_get(G_OBJECT(obj), "inverted", &prop_value, NULL);
 result = Val_bool(prop_value);

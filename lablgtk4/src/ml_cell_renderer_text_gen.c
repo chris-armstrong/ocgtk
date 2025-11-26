@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -40,7 +41,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_align_set(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+gboolean *obj = (gboolean *)GtkCellRendererText_val(self);
 gboolean prop_value;
 g_object_get(G_OBJECT(obj), "align-set", &prop_value, NULL);
 result = Val_bool(prop_value);

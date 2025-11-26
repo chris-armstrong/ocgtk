@@ -51,13 +51,13 @@ external get_state : t -> Gtk_enums.stateflags = "ml_gtk_style_context_get_state
 external get_scale : t -> int = "ml_gtk_style_context_get_scale"
 
 (** Gets the padding for a given state as a `GtkBorder`. *)
-external get_padding : t -> unit = "ml_gtk_style_context_get_padding"
+external get_padding : t -> Obj.t = "ml_gtk_style_context_get_padding"
 
 (** Gets the margin for a given state as a `GtkBorder`. *)
-external get_margin : t -> unit = "ml_gtk_style_context_get_margin"
+external get_margin : t -> Obj.t = "ml_gtk_style_context_get_margin"
 
 (** Gets the border for a given state as a `GtkBorder`. *)
-external get_border : t -> unit = "ml_gtk_style_context_get_border"
+external get_border : t -> Obj.t = "ml_gtk_style_context_get_border"
 
 (** Adds a style provider to @context, to be used in style construction.
 
