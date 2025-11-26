@@ -51,9 +51,16 @@ let file_exists path =
     true
   with Unix.Unix_error _ -> false
 
+let delete_if_exists path =
+  try Unix.unlink path with Unix.Unix_error _ -> ()
+
 let stub_c_file output_dir class_name =
   Filename.concat output_dir
     (Printf.sprintf "ml_%s_gen.c" (Gir_gen_lib.Utils.to_snake_case class_name))
+
+let g_wrapper_file output_dir class_name =
+  Filename.concat output_dir
+    (Printf.sprintf "g%s.ml" (Gir_gen_lib.Utils.module_name_of_class class_name))
 
 let read_file filename =
   let ic = open_in filename in
@@ -197,6 +204,9 @@ let test_widget_generation () =
   create_test_widget_gir test_gir;
   create_test_filter_file test_filter;
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
+  delete_if_exists (Filename.concat output_dir "button.mli");
+  delete_if_exists (Filename.concat output_dir "button.ml");
+  delete_if_exists (g_wrapper_file output_dir "Button");
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
   let cmd = sprintf "%s/gir_gen/main.exe -f %s %s %s > /dev/null 2>&1"
@@ -213,7 +223,17 @@ let test_widget_generation () =
 
   let button_content = read_file button_file in
   assert_contains "Button should have constructor" button_content "external new_";
-  assert_contains "Button should have set_label" button_content "set_label"
+  assert_contains "Button should have set_label" button_content "set_label";
+
+  (* High-level wrapper generation *)
+  let gbutton = g_wrapper_file output_dir "Button" in
+  assert_true "gButton.ml should be created" (file_exists gbutton);
+  let gbutton_content = read_file gbutton in
+  assert_contains "gButton should define skeleton" gbutton_content "class button_skel";
+  assert_contains "gButton should include connect method" gbutton_content "method connect";
+  assert_contains "gButton should expose property getter" gbutton_content "method label";
+  assert_contains "gButton should expose property setter" gbutton_content "method set_label";
+  assert_contains "gButton should expose method wrapper" gbutton_content "method clicked"
 
 (* Test signal parsing and code generation *)
 let create_test_signal_gir filename =

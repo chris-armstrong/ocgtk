@@ -23,6 +23,12 @@ let parse_gir_enums_only filename =
   let ic = open_in filename in
   let input = Xmlm.make_input ~strip:true (`Channel ic) in
 
+  let local_name tag =
+    match String.index_opt tag ':' with
+    | Some idx -> String.sub ~pos:(idx + 1) ~len:(String.length tag - idx - 1) tag
+    | None -> tag
+  in
+
   let enums = ref [] in
   let bitfields = ref [] in
 
@@ -41,7 +47,7 @@ let parse_gir_enums_only filename =
   let parse_enumeration attrs =
     match get_attr "name" attrs, get_attr "c:type" attrs with
     | Some name, Some c_type ->
-      if Blacklists.is_platform_specific_type name then begin
+      if Exclude_list.is_platform_specific_type name then begin
         skip_element 1;
         None
       end else begin
@@ -49,7 +55,7 @@ let parse_gir_enums_only filename =
 
         let rec parse_enum_contents () =
           match Xmlm.input input with
-          | `El_start ((_, "member"), member_attrs) ->
+          | `El_start ((_, tag), member_attrs) when local_name tag = "member" ->
             (match get_attr "name" member_attrs, get_attr "value" member_attrs, get_attr "c:identifier" member_attrs with
             | Some member_name, Some value_str, Some c_id ->
               let value = try int_of_string value_str with _ -> 0 in
@@ -91,7 +97,7 @@ let parse_gir_enums_only filename =
   let parse_bitfield attrs =
     match get_attr "name" attrs, get_attr "c:type" attrs with
     | Some name, Some c_type ->
-      if Blacklists.is_platform_specific_type name then begin
+      if Exclude_list.is_platform_specific_type name then begin
         skip_element 1;
         None
       end else begin
@@ -142,13 +148,13 @@ let parse_gir_enums_only filename =
     if Xmlm.eoi input then ()
     else
       match Xmlm.input input with
-      | `El_start ((_, "enumeration"), attrs) ->
+      | `El_start ((_, tag), attrs) when local_name tag = "enumeration" ->
         (match parse_enumeration attrs with
         | Some enum -> enums := enum :: !enums
         | None -> ());
         parse_document ()
 
-      | `El_start ((_, "bitfield"), attrs) ->
+      | `El_start ((_, tag), attrs) when local_name tag = "bitfield" ->
         (match parse_bitfield attrs with
         | Some bitfield -> bitfields := bitfield :: !bitfields
         | None -> ());
@@ -175,10 +181,18 @@ let parse_gir_file filename _filter_classes =
   let ic = open_in filename in
   let input = Xmlm.make_input ~strip:true (`Channel ic) in
 
+  let local_name tag =
+    match String.index_opt tag ':' with
+    | Some idx -> String.sub ~pos:(idx + 1) ~len:(String.length tag - idx - 1) tag
+    | None -> tag
+  in
+
   let controllers = ref [] in
   let interfaces : gir_interface list ref = ref [] in
   let enums = ref [] in
   let bitfields = ref [] in
+  let signal_table : (string, gir_signal list) Hashtbl.t = Hashtbl.create 256 in
+  let iface_signal_table : (string, gir_signal list) Hashtbl.t = Hashtbl.create 128 in
 
   (* Check if class should be included based on mode and filter *)
   let should_include_class _name = true
@@ -213,18 +227,20 @@ let parse_gir_file filename _filter_classes =
       let parent = get_attr "parent" attrs in
       let constructors = ref [] in
       let methods = ref [] in
+      let virtual_methods = ref [] in
       let properties = ref [] in
       let signals = ref [] in
 
       let rec parse_class_contents () =
         match Xmlm.input input with
-        | `El_start ((_, tag), tag_attrs) ->
+        | `El_start ((_, raw_tag), tag_attrs) ->
+          let tag = local_name raw_tag in
           (match tag with
           | "constructor" ->
             (match get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs with
             | Some ctor_name, Some c_id ->
               let throws = (get_attr "throws" tag_attrs = Some "1") in
-              let (_return_type, params, doc) = parse_method () in
+              let (_return_type, params, doc, _, _) = parse_method tag_attrs in
               constructors := {
                 ctor_name = ctor_name;
                 c_identifier = c_id;
@@ -250,7 +266,7 @@ let parse_gir_file filename _filter_classes =
             (match get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs with
             | Some method_name, Some c_id ->
               let  throws = get_attr "throws" tag_attrs |> Utils.parse_bool in
-              let (return_type, params, doc) = parse_method () in
+              let (return_type, params, doc, get_property, set_property) = parse_method tag_attrs in
               methods := {
                 method_name = method_name;
                 c_identifier = c_id;
@@ -258,7 +274,29 @@ let parse_gir_file filename _filter_classes =
                 parameters = params;
                 doc = doc;
                 throws = throws;
+                get_property = get_property;
+                set_property = set_property;
               } :: !methods;
+              parse_class_contents ()
+            | _ ->
+              skip_element 1;
+              parse_class_contents ())
+
+          | "virtual-method" ->
+            (match get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs with
+            | Some method_name, Some c_id ->
+              let throws = get_attr "throws" tag_attrs |> Utils.parse_bool in
+              let (return_type, params, doc, get_property, set_property) = parse_method tag_attrs in
+              virtual_methods := {
+                method_name = method_name;
+                c_identifier = c_id;
+                return_type = return_type;
+                parameters = params;
+                doc = doc;
+                throws = throws;
+                get_property = get_property;
+                set_property = set_property;
+              } :: !virtual_methods;
               parse_class_contents ()
             | _ ->
               skip_element 1;
@@ -290,13 +328,22 @@ let parse_gir_file filename _filter_classes =
       in
 
       parse_class_contents ();
+      let methods =
+        let concrete = List.rev !methods in
+        let virtuals = List.rev !virtual_methods in
+        let is_dup m =
+          List.exists ~f:(fun (c:gir_method) ->
+            c.method_name = m.method_name || c.c_identifier = m.c_identifier) concrete
+        in
+        concrete @ (List.filter ~f:(fun m -> not (is_dup m)) virtuals)
+      in
       Some {
         class_name = name;
         c_type = c_type;
         parent = parent;
         implements = [];
         constructors = List.rev !constructors;
-        methods = List.rev !methods;
+        methods;
         properties = List.rev !properties;
         signals = List.rev !signals;
         class_doc = None;
@@ -359,7 +406,7 @@ let parse_gir_file filename _filter_classes =
   and parse_enumeration attrs =
     match get_attr "name" attrs, get_attr "c:type" attrs with
     | Some name, Some c_type ->
-      if Blacklists.is_platform_specific_type name then begin
+      if Exclude_list.is_platform_specific_type name then begin
         skip_element 1;
         None
       end else begin
@@ -414,7 +461,7 @@ let parse_gir_file filename _filter_classes =
   and parse_bitfield attrs =
     match get_attr "name" attrs, get_attr "c:type" attrs with
     | Some name, Some c_type ->
-      if Blacklists.is_platform_specific_type name then begin
+      if Exclude_list.is_platform_specific_type name then begin
         skip_element 1;
         None
       end else begin
@@ -466,7 +513,9 @@ let parse_gir_file filename _filter_classes =
       None
 
   (* Parse method contents to extract return type and parameters *)
-  and parse_method () =
+  and parse_method tag_attrs =
+    let get_property = get_attr "glib:get-property" tag_attrs in
+    let set_property = get_attr "glib:set-property" tag_attrs in
     let return_type = ref { name = "void"; c_type = "void"; nullable = false } in
     let params = ref [] in
     let doc: string option ref = ref None in
@@ -499,7 +548,7 @@ let parse_gir_file filename _filter_classes =
     in
 
     parse_method_contents ();
-    (!return_type, List.rev !params, !doc)
+    (!return_type, List.rev !params, !doc, get_property, set_property)
 
   (* Parse glib:signal elements *)
   and parse_signal attrs =
@@ -511,7 +560,8 @@ let parse_gir_file filename _filter_classes =
 
       let rec parse_signal_contents () =
         match Xmlm.input input with
-        | `El_start ((_, tag), tag_attrs) ->
+        | `El_start ((_, raw_tag), tag_attrs) ->
+          let tag = local_name raw_tag in
           (match tag with
           | "return-value" ->
             return_type := parse_return_value tag_attrs;
@@ -643,11 +693,13 @@ let parse_gir_file filename _filter_classes =
       | None -> "Gtk" ^ name
     in
     let methods = ref [] in
+    let virtual_methods = ref [] in
     let properties = ref [] in
     let signals = ref [] in
       let rec parse_class_contents () =
         match Xmlm.input input with
-        | `El_start ((_, tag), tag_attrs) ->
+        | `El_start ((_, raw_tag), tag_attrs) ->
+          let tag = local_name raw_tag in
           (match tag with
 
           | "signal" ->
@@ -663,7 +715,7 @@ let parse_gir_file filename _filter_classes =
             (match get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs with
             | Some method_name, Some c_id ->
                 let  throws = get_attr "throws" tag_attrs |> Utils.parse_bool in
-              let (return_type, params, doc) = parse_method () in
+              let (return_type, params, doc, get_property, set_property) = parse_method tag_attrs in
               methods := {
                 method_name = method_name;
                 c_identifier = c_id;
@@ -671,7 +723,29 @@ let parse_gir_file filename _filter_classes =
                 parameters = params;
                 doc = doc;
                 throws = throws;
+                get_property = get_property;
+                set_property = set_property;
               } :: !methods;
+              parse_class_contents ()
+            | _ ->
+              skip_element 1;
+              parse_class_contents ())
+
+          | "virtual-method" ->
+            (match get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs with
+            | Some method_name, Some c_id ->
+              let  throws = get_attr "throws" tag_attrs |> Utils.parse_bool in
+              let (return_type, params, doc, get_property, set_property) = parse_method tag_attrs in
+              virtual_methods := {
+                method_name = method_name;
+                c_identifier = c_id;
+                return_type = return_type;
+                parameters = params;
+                doc = doc;
+                throws = throws;
+                get_property = get_property;
+                set_property = set_property;
+              } :: !virtual_methods;
               parse_class_contents ()
             | _ ->
               skip_element 1;
@@ -702,7 +776,87 @@ let parse_gir_file filename _filter_classes =
       in
 
       parse_class_contents ();
-    Some { interface_name = name; c_type = c_type; c_symbol_prefix = name; methods = List.rev !methods; properties = List.rev !properties; signals = List.rev !signals; interface_doc = None }
+    let methods =
+      let concrete = List.rev !methods in
+      let virtuals = List.rev !virtual_methods in
+      let is_dup m =
+        List.exists ~f:(fun (c:gir_method) ->
+          c.method_name = m.method_name || c.c_identifier = m.c_identifier) concrete
+      in
+      concrete @ (List.filter ~f:(fun m -> not (is_dup m)) virtuals)
+    in
+    Some { interface_name = name; c_type = c_type; c_symbol_prefix = name; methods; properties = List.rev !properties; signals = List.rev !signals; interface_doc = None }
+  in
+
+  (* Second pass: collect signals reliably across classes/interfaces *)
+  let collect_signals () =
+    let ic2 = open_in filename in
+    let input2 = Xmlm.make_input ~strip:true (`Channel ic2) in
+    let current = ref None in
+    let current_is_interface = ref false in
+    let depth = ref 0 in
+
+    let rec skip_element2 d =
+      if d = 0 then ()
+      else
+        match Xmlm.input input2 with
+        | `El_start _ -> skip_element2 (d + 1)
+        | `El_end -> skip_element2 (d - 1)
+        | `Data _ | `Dtd _ -> skip_element2 d
+    in
+
+    let record_signal attrs =
+      match (!current, get_attr "name" attrs) with
+      | Some cls_name, Some signal_name ->
+        (* Consume nested children to keep the stream in sync *)
+        skip_element2 1;
+        let signal = {
+          signal_name;
+          return_type = { name = "none"; c_type = "void"; nullable = false };
+          sig_parameters = [];
+          doc = None;
+        } in
+        let tbl = if !current_is_interface then iface_signal_table else signal_table in
+        let existing = Hashtbl.find_opt tbl cls_name |> Option.value ~default:[] in
+        Hashtbl.replace tbl cls_name (signal :: existing)
+      | _ ->
+        skip_element2 1
+    in
+
+    let rec loop () =
+      if Xmlm.eoi input2 then ()
+      else
+        match Xmlm.input input2 with
+        | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "class" ->
+          current := get_attr "name" attrs;
+          current_is_interface := false;
+          depth := 1;
+          loop ()
+        | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "interface" ->
+          current := get_attr "name" attrs;
+          current_is_interface := true;
+          depth := 1;
+          loop ()
+        | `El_start ((_, raw_tag), attrs) when !current <> None && local_name raw_tag = "signal" ->
+          incr depth;
+          record_signal attrs;
+          decr depth;
+          loop ()
+        | `El_start _ ->
+          if !current <> None then incr depth;
+          loop ()
+        | `El_end ->
+          if !current <> None then begin
+            decr depth;
+            if !depth = 0 then current := None
+          end;
+          loop ()
+        | `Data _ | `Dtd _ ->
+          loop ()
+    in
+
+    loop ();
+    close_in ic2
   in
 
   (* Main parsing loop *)
@@ -710,36 +864,37 @@ let parse_gir_file filename _filter_classes =
     if Xmlm.eoi input then ()
     else
       match Xmlm.input input with
-      | `El_start ((_, "class"), attrs) ->
+        | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "class" ->
         (match parse_class attrs with
         | Some cls -> controllers := cls :: !controllers
         | None -> ());
         parse_document ()
 
-      | `El_start ((_, "interface"), attrs) ->
+      | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "interface" ->
         (match parse_interface attrs () with
         | Some cls -> interfaces := cls :: !interfaces
         | None -> ());
         parse_document ()
 
-      | `El_start ((_, "enumeration"), attrs) ->
+      | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "enumeration" ->
         (match parse_enumeration attrs with
         | Some enum -> enums := enum :: !enums
         | None -> ());
         parse_document ()
 
-      | `El_start ((_, "bitfield"), attrs) ->
+      | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "bitfield" ->
         (match parse_bitfield attrs with
         | Some bitfield -> bitfields := bitfield :: !bitfields
         | None -> ());
         parse_document ()
 
-      | `El_start ((_, tag), _) when tag = "repository" || tag = "namespace" ->
+      | `El_start ((_, raw_tag), _) ->
+        let tag = local_name raw_tag in
+        if tag = "repository" || tag = "namespace" then
+          parse_document ()
+        else begin
         parse_document ()
-
-      | `El_start _ ->
-        skip_element 1;
-        parse_document ()
+        end
 
       | `El_end ->
         parse_document ()
@@ -753,4 +908,31 @@ let parse_gir_file filename _filter_classes =
 
   parse_document ();
   close_in ic;
-  (List.rev !controllers, List.rev !interfaces, List.rev !enums, List.rev !bitfields)
+  collect_signals ();
+
+  let merge_class_signals cls =
+    let extras = Hashtbl.find_opt signal_table cls.class_name |> Option.value ~default:[] |> List.rev in
+    let base = cls.signals in
+    let deduped_extras =
+      List.filter extras ~f:(fun (s:gir_signal) ->
+        not (List.exists base ~f:(fun existing -> existing.signal_name = s.signal_name)))
+    in
+    let combined = base @ deduped_extras in
+    if combined == cls.signals then cls else { cls with signals = combined }
+  in
+
+  let merge_interface_signals iface =
+    let extras = Hashtbl.find_opt iface_signal_table iface.interface_name |> Option.value ~default:[] |> List.rev in
+    let base = iface.signals in
+    let deduped_extras =
+      List.filter extras ~f:(fun (s:gir_signal) ->
+        not (List.exists base ~f:(fun existing -> existing.signal_name = s.signal_name)))
+    in
+    let combined = base @ deduped_extras in
+    if combined == iface.signals then iface else { iface with signals = combined }
+  in
+
+  let controllers = List.rev_map ~f:merge_class_signals !controllers in
+  let interfaces = List.rev_map ~f:merge_interface_signals !interfaces in
+
+  (controllers, interfaces, List.rev !enums, List.rev !bitfields)

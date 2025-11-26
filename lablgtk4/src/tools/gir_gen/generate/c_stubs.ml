@@ -484,42 +484,18 @@ let generate_class_c_code ~classes ~enums ~bitfields ~external_enums ~external_b
   ) constructors;
 
   (* Build list of property names to avoid duplicates *)
-  let property_method_names = ref [] in
-  List.iter ~f:(fun (prop : gir_property) ->
-    let has_type_mapping = match Type_mappings.find_type_mapping ~enums ~bitfields ~classes prop.prop_type.c_type with
-      | Some _ -> true
-      | None -> false
-    in
-    if has_type_mapping then begin
-      let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
-      let prop_snake = Utils.to_snake_case prop_name_cleaned in
-      if prop.readable then
-        property_method_names := (sprintf "get_%s" prop_snake) :: !property_method_names;
-      if prop.writable && not prop.construct_only then
-        property_method_names := (sprintf "set_%s" prop_snake) :: !property_method_names;
-    end
-  ) properties;
+  let property_method_names =
+    Filtering.property_method_names ~classes ~enums ~bitfields properties
+  in
+  let property_base_names =
+    Filtering.property_base_names ~classes ~enums ~bitfields properties
+  in
 
   (* Generate methods, skip duplicates *)
   List.iter ~f:(fun (meth : gir_method) ->
-    let c_name = meth.c_identifier in
-    let class_snake = Utils.to_snake_case class_name in
-    let ocaml_name = Utils.to_snake_case (
-      Str.global_replace (Str.regexp (sprintf "gtk_%s_" class_snake)) "" c_name
-    ) in
-    let has_blacklisted_type =
-      Blacklists.is_blacklisted_type_name meth.return_type.name ||
-      Blacklists.is_blacklisted_type_name meth.return_type.c_type ||
-      List.exists meth.parameters ~f:(fun p ->
-        Blacklists.is_blacklisted_type_name p.param_type.name ||
-        Blacklists.is_blacklisted_type_name p.param_type.c_type)
-    in
-    (* Skip if: variadic function, duplicates property, or unmapped return type *)
     let should_skip =
-      (meth.parameters |> List.exists ~f:(fun p -> p.varargs)) ||
-      List.mem ocaml_name ~set:!property_method_names ||
-      has_blacklisted_type ||
-      Blacklists.should_skip_method ~find_type_mapping:(Type_mappings.find_type_mapping ~enums ~bitfields ~classes) ~enums ~bitfields meth
+      Filtering.should_skip_method_binding
+        ~classes ~enums ~bitfields ~property_method_names ~property_base_names ~class_name meth
     in
     if not should_skip then
       Buffer.add_string buf (generate_c_method ~classes ~enums ~bitfields ~c_type meth class_name)
@@ -527,15 +503,7 @@ let generate_class_c_code ~classes ~enums ~bitfields ~external_enums ~external_b
 
   (* Generate property getters and setters *)
   List.iter ~f:(fun (prop : gir_property) ->
-    let is_blacklisted =
-      Blacklists.is_blacklisted_type_name prop.prop_type.name ||
-      Blacklists.is_blacklisted_type_name prop.prop_type.c_type
-    in
-    let is_simple_type = not is_blacklisted && match Type_mappings.find_type_mapping ~enums ~bitfields ~classes prop.prop_type.c_type with
-      | Some _ -> true
-      | None -> false
-    in
-    if is_simple_type then begin
+    if Filtering.should_generate_property ~classes ~enums ~bitfields prop then begin
       if prop.readable then
         Buffer.add_string buf (generate_c_property_getter ~classes ~enums ~bitfields ~c_type prop class_name);
       if prop.writable && not prop.construct_only then

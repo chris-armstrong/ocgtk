@@ -20,16 +20,20 @@ let () =
   vbox#append (GObj.widget_of_obj (label));
 
   (* Create button to increment *)
-  let button = GButton.button ~label:"Click Me!" () in
-  vbox#append (button :> GObj.widget);
+  let button_obj = GtkButton.new_ () in
+  GtkButton.set_label button_obj "Click Me!";
+  let button = new GButton.button button_obj in
+  vbox#append (button#widget);
   ignore (button#connect#clicked ~callback:(fun () ->
     count := !count + 1;
     Label.set_label label (Printf.sprintf "Count: %d" !count)
   ));
 
   (* Create reset button *)
-  let reset_btn = GButton.button ~label:"Reset" () in
-  vbox#append (reset_btn :> GObj.widget);
+  let reset_obj = GtkButton.new_ () in
+  GtkButton.set_label reset_obj "Reset";
+  let reset_btn = new GButton.button reset_obj in
+  vbox#append (reset_btn#widget);
   ignore (reset_btn#connect#clicked ~callback:(fun () ->
     count := 0;
     Label.set_label label (Printf.sprintf "Count: %d" !count)

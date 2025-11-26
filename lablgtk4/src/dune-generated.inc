@@ -138,6 +138,7 @@
       (echo "GFixed")
       (echo "GFrame")
       (echo "GGrid")
+      (echo "GLabel")
       (echo "GMain")
       (echo "GNotebook")
       (echo "GObj")

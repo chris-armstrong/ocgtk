@@ -85,6 +85,16 @@ let generate_bindings filter_file gir_file output_dir =
   ) in
 
   (* Generate stage: produce output files *)
+  let forced_widget_classes =
+    (* Keep this list small: we overwrite these even if files already exist to validate class_gen output. *)
+    ["Button"; "Label"; "Range"]
+    |> List.map ~f:(fun name ->
+      name |> Gir_gen_lib.Utils.normalize_class_name |> String.lowercase_ascii)
+  in
+  let should_force_generate class_name =
+    let normalized = class_name |> Gir_gen_lib.Utils.normalize_class_name |> String.lowercase_ascii in
+    List.exists forced_widget_classes ~f:(String.equal normalized)
+  in
 
   (* Generate common header file *)
   let header_file = Filename.concat output_dir "generated_forward_decls.h" in
@@ -116,7 +126,7 @@ let generate_bindings filter_file gir_file output_dir =
 
   (* Generate C files for each class *)
   List.iter ~f:(fun cls ->
-    if Gir_gen_lib.Blacklists.should_skip_class cls.Gir_gen_lib.Types.class_name then begin
+    if Gir_gen_lib.Exclude_list.should_skip_class cls.Gir_gen_lib.Types.class_name then begin
       printf "  - %s (SKIPPED - incomplete support)\n" cls.Gir_gen_lib.Types.class_name
     end else begin
       printf "  - %s (%d methods, %d properties)\n"
@@ -144,7 +154,7 @@ let generate_bindings filter_file gir_file output_dir =
 
   (* Generate C files for each interface *)
   List.iter ~f:(fun intf ->
-    if Gir_gen_lib.Blacklists.should_skip_class intf.Gir_gen_lib.Types.interface_name then begin
+    if Gir_gen_lib.Exclude_list.should_skip_class intf.Gir_gen_lib.Types.interface_name then begin
       printf "  - %s (SKIPPED - incomplete support)\n" intf.Gir_gen_lib.Types.interface_name
     end else begin
       printf "  - %s (%d methods, %d properties)\n"
@@ -172,7 +182,7 @@ let generate_bindings filter_file gir_file output_dir =
 
   (* Generate OCaml interface files for classes *)
   List.iter ~f:(fun cls ->
-    if not (Gir_gen_lib.Blacklists.should_skip_class cls.Gir_gen_lib.Types.class_name) then begin
+    if not (Gir_gen_lib.Exclude_list.should_skip_class cls.Gir_gen_lib.Types.class_name) then begin
       let parent_chain = parent_chain_for_class cls.Gir_gen_lib.Types.class_name in
       let ml_file = Filename.concat output_dir
         (sprintf "%s.mli" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.class_name)) in
@@ -207,12 +217,68 @@ let generate_bindings filter_file gir_file output_dir =
         ~properties:cls.Gir_gen_lib.Types.properties
         ~signals:cls.Gir_gen_lib.Types.signals);
       close_out oc_impl;
+
+      (* Generate high-level wrapper class (g<Widget>.ml) *)
+      let has_widget_parent =
+        String.lowercase_ascii (Gir_gen_lib.Utils.normalize_class_name cls.Gir_gen_lib.Types.class_name) = "widget" ||
+        List.exists parent_chain ~f:(fun p -> String.lowercase_ascii (Gir_gen_lib.Utils.normalize_class_name p) = "widget")
+      in
+      if has_widget_parent then begin
+        let g_file = Filename.concat output_dir
+          (sprintf "g%s.ml" (Gir_gen_lib.Utils.module_name_of_class cls.Gir_gen_lib.Types.class_name)) in
+        let g_sig_file = Filename.concat output_dir
+          (sprintf "g%s.mli" (Gir_gen_lib.Utils.module_name_of_class cls.Gir_gen_lib.Types.class_name)) in
+        let output_under_src =
+          let norm p = Filename.concat (Filename.dirname p) (Filename.basename p) in
+          String.equal (Filename.basename output_dir) "src" || String.equal (norm output_dir) (norm "src")
+        in
+        let should_overwrite = should_force_generate cls.Gir_gen_lib.Types.class_name in
+        let g_file_exists = output_under_src && Sys.file_exists g_file in
+        if g_file_exists && not should_overwrite then
+          printf "Skipping %s (already exists)\n" g_file
+        else begin
+          if should_overwrite && g_file_exists then
+            printf "Overwriting %s (forced validation)\n" g_file
+          else
+            printf "Writing %s...\n" g_file;
+          let oc_g = open_out g_file in
+          output_string oc_g (Gir_gen_lib.Generate.Class_gen.generate_class_module
+            ~classes:controllers
+            ~enums ~bitfields
+            ~class_name:cls.Gir_gen_lib.Types.class_name
+            ~parent_chain
+            ~methods:cls.Gir_gen_lib.Types.methods
+            ~properties:cls.Gir_gen_lib.Types.properties
+            ~signals:cls.Gir_gen_lib.Types.signals);
+          close_out oc_g;
+          generated_modules := (sprintf "g%s" (Gir_gen_lib.Utils.module_name_of_class cls.Gir_gen_lib.Types.class_name)) :: !generated_modules;
+
+          let g_sig_exists = output_under_src && Sys.file_exists g_sig_file in
+          if not (g_sig_exists && not should_overwrite) then begin
+            if should_overwrite && g_sig_exists then
+              printf "Overwriting %s (forced validation)\n" g_sig_file
+            else
+              printf "Writing %s...\n" g_sig_file;
+            let oc_gi = open_out g_sig_file in
+            output_string oc_gi (Gir_gen_lib.Generate.Class_gen.generate_class_signature
+              ~classes:controllers
+              ~enums ~bitfields
+              ~class_name:cls.Gir_gen_lib.Types.class_name
+              ~parent_chain
+              ~methods:cls.Gir_gen_lib.Types.methods
+              ~properties:cls.Gir_gen_lib.Types.properties
+              ~signals:cls.Gir_gen_lib.Types.signals);
+            close_out oc_gi;
+          end else
+            printf "Skipping %s (already exists)\n" g_sig_file;
+        end
+      end;
     end
   ) controllers;
 
   (* Generate OCaml interface files for interfaces *)
   List.iter ~f:(fun cls ->
-    if not (Gir_gen_lib.Blacklists.should_skip_class cls.Gir_gen_lib.Types.interface_name) then begin
+    if not (Gir_gen_lib.Exclude_list.should_skip_class cls.Gir_gen_lib.Types.interface_name) then begin
       let parent_chain = parent_chain_for_class cls.Gir_gen_lib.Types.interface_name in
       let ml_file = Filename.concat output_dir
         (sprintf "%s.mli" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.interface_name)) in
