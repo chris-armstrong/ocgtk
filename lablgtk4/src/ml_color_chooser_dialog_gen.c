@@ -43,7 +43,7 @@ CAMLexport CAMLprim value ml_gtk_color_chooser_dialog_set_show_editor(value self
 {
 CAMLparam2(self, new_value);
 GtkColorChooserDialog *obj = (GtkColorChooserDialog *)GtkColorChooserDialog_val(self);
-gboolean c_value = Bool_val(new_value);
+    gboolean c_value = Bool_val(new_value);
 g_object_set(G_OBJECT(obj), "show-editor", c_value, NULL);
 CAMLreturn(Val_unit);
 }

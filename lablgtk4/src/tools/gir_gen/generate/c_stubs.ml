@@ -38,8 +38,16 @@ let nullable_ml_to_c_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping) 
     | _ ->
       sprintf "%s(%s)" mapping.ml_to_c var
 
+let emit_enum_proto buf ~namespace (enum : gir_enum) =
+  bprintf buf "value Val_%s%s(%s val);\n" namespace enum.enum_name enum.enum_c_type;
+  bprintf buf "%s %s%s_val(value val);\n" enum.enum_c_type namespace enum.enum_name
+
+let emit_bitfield_proto buf ~namespace (bitfield : gir_bitfield) =
+  bprintf buf "value Val_%s%s(%s flags);\n" namespace bitfield.bitfield_name bitfield.bitfield_c_type;
+  bprintf buf "%s %s%s_val(value list);\n" bitfield.bitfield_c_type namespace bitfield.bitfield_name
+
 (* Generate common header file with forward declarations for enum/bitfield converters *)
-let generate_forward_decls_header ~classes ~external_enums ~external_bitfields =
+let generate_forward_decls_header ~classes ~gtk_enums ~gtk_bitfields ~external_enums ~external_bitfields =
   let buf = Buffer.create 4096 in
   Buffer.add_string buf "/**************************************************************************/\n";
   Buffer.add_string buf "/*                LablGTK4 - OCaml bindings for GTK4                      */\n";
@@ -58,6 +66,7 @@ let generate_forward_decls_header ~classes ~external_enums ~external_bitfields =
   Buffer.add_string buf "#ifndef _gtk4_generated_forward_decls_\n";
   Buffer.add_string buf "#define _gtk4_generated_forward_decls_\n";
   Buffer.add_string buf "\n";
+  Buffer.add_string buf "#include <gtk/gtk.h>\n";
   Buffer.add_string buf "#include <caml/mlvalues.h>\n";
   Buffer.add_string buf "\n";
 
@@ -85,6 +94,9 @@ let generate_forward_decls_header ~classes ~external_enums ~external_bitfields =
   Buffer.add_string buf "#define GtkWidget_option_val(v) ((v) == Val_none ? NULL : GtkWidget_val(Some_val(v)))\n";
   Buffer.add_string buf "#define GtkEventController_option_val(v) ((v) == Val_none ? NULL : GtkEventController_val(Some_val(v)))\n";
   Buffer.add_string buf "\n";
+  Buffer.add_string buf "/* Const-safe string extraction for setters */\n";
+  Buffer.add_string buf "#define ML_DECL_CONST_STRING(name, expr) const gchar *name = (const gchar *)(expr)\n";
+  Buffer.add_string buf "\n";
   Buffer.add_string buf "/* GdkEvent conversions - from ml_event_controller.c */\n";
   Buffer.add_string buf "#define GdkEvent_val(val) ((GdkEvent*)ext_of_val(val))\n";
   Buffer.add_string buf "#define Val_GdkEvent(obj) ((value)(val_of_ext(obj)))\n";
@@ -92,17 +104,23 @@ let generate_forward_decls_header ~classes ~external_enums ~external_bitfields =
   Buffer.add_string buf "/* Note: Res_Ok, Res_Error, ValUnit, and Val_GError are defined in wrappers.h */\n";
   Buffer.add_string buf "\n";
 
+  (* Add forward declarations for Gtk enum/bitfield converters *)
+  if List.length gtk_enums > 0 || List.length gtk_bitfields > 0 then begin
+    Buffer.add_string buf "/* Forward declarations for Gtk enum/bitfield converters */\n";
+    List.iter ~f:(emit_enum_proto buf ~namespace:"Gtk") gtk_enums;
+    Buffer.add_string buf "\n";
+    List.iter ~f:(emit_bitfield_proto buf ~namespace:"Gtk") gtk_bitfields;
+  end;
+
   (* Add forward declarations for external namespace enum/bitfield converters *)
   if List.length external_enums > 0 || List.length external_bitfields > 0 then begin
-    Buffer.add_string buf "/* Forward declarations for external namespace enum/bitfield converters */\n";
+    Buffer.add_string buf "\n/* Forward declarations for external namespace enum/bitfield converters */\n";
     List.iter ~f:(fun (ns, enum : string * gir_enum) ->
-      bprintf buf "value Val_%s%s(%s val);\n" ns enum.enum_name enum.enum_c_type;
-      bprintf buf "%s %s%s_val(value val);\n" enum.enum_c_type ns enum.enum_name;
+      emit_enum_proto buf ~namespace:ns enum;
     ) external_enums;
     Buffer.add_string buf "\n";
     List.iter ~f:(fun (ns, bitfield : string * gir_bitfield) ->
-      bprintf buf "value Val_%s%s(%s flags);\n" ns bitfield.bitfield_name bitfield.bitfield_c_type;
-      bprintf buf "%s %s%s_val(value list);\n" bitfield.bitfield_c_type ns bitfield.bitfield_name;
+      emit_bitfield_proto buf ~namespace:ns bitfield;
     ) external_bitfields;
   end;
 
@@ -454,6 +472,14 @@ let generate_c_property_setter ~classes ~enums ~bitfields ~c_type (prop : gir_pr
     nullable_ml_to_c_expr ~var:"new_value" ~gir_type:prop.prop_type ~mapping:type_info
   in
 
+  let value_declaration =
+    match String.lowercase_ascii prop.prop_type.c_type with
+    | "gchar*" | "gchararray" | "utf8" | "const gchar*" | "const char*" ->
+      sprintf "    ML_DECL_CONST_STRING(c_value, %s);\n" c_value_expr
+    | _ ->
+      sprintf "    %s c_value = %s;\n" prop.prop_type.c_type c_value_expr
+  in
+
   let c_cast = sprintf "%s_val" c_type in
   let c_type_name = c_type in
 
@@ -461,13 +487,13 @@ let generate_c_property_setter ~classes ~enums ~bitfields ~c_type (prop : gir_pr
 {\n\
     CAMLparam2(self, new_value);\n\
     %s *obj = (%s *)%s(self);\n\
-    %s c_value = %s;\n\
+%s\
     g_object_set(G_OBJECT(obj), \"%s\", c_value, NULL);\n\
     CAMLreturn(Val_unit);\n\
 }\n"
     ml_name
     c_type_name c_type_name c_cast
-    prop.prop_type.c_type c_value_expr
+    value_declaration
     prop.prop_name
 
 (* Generate complete C file for a single class/interface *)
@@ -477,9 +503,9 @@ let generate_class_c_code ~classes ~enums ~bitfields ~external_enums ~external_b
   (* Add header *)
   Buffer.add_string buf (generate_c_file_header ~class_name ~c_type ~external_enums ~external_bitfields ());
 
-  (* Constructors - skip those that throw GError *)
+  (* Constructors - skip those that throw GError or are variadic *)
   List.iter ~f:(fun ctor ->
-    if not ctor.throws then
+    if (not ctor.throws) && (not (Filtering.constructor_has_varargs ctor)) then
       Buffer.add_string buf (generate_c_constructor ~classes ~enums ~bitfields ~c_type ctor class_name)
   ) constructors;
 

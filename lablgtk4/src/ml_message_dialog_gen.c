@@ -21,32 +21,6 @@
 #endif /* Val_GtkMessageDialog */
 
 
-CAMLexport CAMLprim value ml_gtk_message_dialog_new_native(value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
-{
-CAMLparam5(arg1, arg2, arg3, arg4, arg5);
-CAMLxparam1(arg6);
-GtkMessageDialog *obj = gtk_message_dialog_new(Option_val(arg1, GtkWindow_val, NULL), GtkDialogFlags_val(arg2), GtkMessageType_val(arg3), GtkButtonsType_val(arg4), String_option_val(arg5), arg6);
-CAMLreturn(Val_GtkMessageDialog(obj));
-}
-
-CAMLexport CAMLprim value ml_gtk_message_dialog_new_bytecode(value * argv, int argn)
-{
-return ml_gtk_message_dialog_new_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
-}
-
-CAMLexport CAMLprim value ml_gtk_message_dialog_new_with_markup_native(value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
-{
-CAMLparam5(arg1, arg2, arg3, arg4, arg5);
-CAMLxparam1(arg6);
-GtkMessageDialog *obj = gtk_message_dialog_new_with_markup(Option_val(arg1, GtkWindow_val, NULL), GtkDialogFlags_val(arg2), GtkMessageType_val(arg3), GtkButtonsType_val(arg4), String_option_val(arg5), arg6);
-CAMLreturn(Val_GtkMessageDialog(obj));
-}
-
-CAMLexport CAMLprim value ml_gtk_message_dialog_new_with_markup_bytecode(value * argv, int argn)
-{
-return ml_gtk_message_dialog_new_with_markup_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
-}
-
 CAMLexport CAMLprim value ml_gtk_message_dialog_set_markup(value self, value arg1)
 {
 CAMLparam2(self, arg1);

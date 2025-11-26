@@ -166,7 +166,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_set_cell_background(value self, v
 {
 CAMLparam2(self, new_value);
 GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
-gchar* c_value = String_val(new_value);
+    ML_DECL_CONST_STRING(c_value, String_val(new_value));
 g_object_set(G_OBJECT(obj), "cell-background", c_value, NULL);
 CAMLreturn(Val_unit);
 }

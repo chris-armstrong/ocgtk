@@ -98,3 +98,6 @@ let should_skip_method_binding
   in
   let marked_property = attr_matches_property meth.get_property || attr_matches_property meth.set_property in
   is_variadic || duplicates_property || marked_property || has_excluded_type || has_unknown_type
+
+let constructor_has_varargs (ctor : gir_constructor) =
+  List.exists ctor.ctor_parameters ~f:(fun p -> p.varargs)

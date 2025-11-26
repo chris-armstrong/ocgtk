@@ -28,13 +28,6 @@ GtkInfoBar *obj = gtk_info_bar_new();
 CAMLreturn(Val_GtkInfoBar(obj));
 }
 
-CAMLexport CAMLprim value ml_gtk_info_bar_new_with_buttons(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-GtkInfoBar *obj = gtk_info_bar_new_with_buttons(String_option_val(arg1), arg2);
-CAMLreturn(Val_GtkInfoBar(obj));
-}
-
 CAMLexport CAMLprim value ml_gtk_info_bar_set_show_close_button(value self, value arg1)
 {
 CAMLparam2(self, arg1);

@@ -21,13 +21,6 @@
 #endif /* Val_GtkTreeStore */
 
 
-CAMLexport CAMLprim value ml_gtk_tree_store_new(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-GtkTreeStore *obj = gtk_tree_store_new(Int_val(arg1), arg2);
-CAMLreturn(Val_GtkTreeStore(obj));
-}
-
 CAMLexport CAMLprim value ml_gtk_tree_store_newv(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);

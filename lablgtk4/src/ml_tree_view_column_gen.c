@@ -35,13 +35,6 @@ GtkTreeViewColumn *obj = gtk_tree_view_column_new_with_area(GtkCellArea_val(arg1
 CAMLreturn(Val_GtkTreeViewColumn(obj));
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_view_column_new_with_attributes(value arg1, value arg2, value arg3)
-{
-CAMLparam3(arg1, arg2, arg3);
-GtkTreeViewColumn *obj = gtk_tree_view_column_new_with_attributes(String_val(arg1), GtkCellRenderer_val(arg2), arg3);
-CAMLreturn(Val_GtkTreeViewColumn(obj));
-}
-
 CAMLexport CAMLprim value ml_gtk_tree_view_column_set_widget(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -409,7 +402,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_set_alignment(value self, valu
 {
 CAMLparam2(self, new_value);
 GtkTreeViewColumn *obj = (GtkTreeViewColumn *)GtkTreeViewColumn_val(self);
-gfloat c_value = Double_val(new_value);
+    gfloat c_value = Double_val(new_value);
 g_object_set(G_OBJECT(obj), "alignment", c_value, NULL);
 CAMLreturn(Val_unit);
 }
