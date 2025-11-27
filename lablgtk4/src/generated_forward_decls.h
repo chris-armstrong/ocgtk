@@ -1370,9 +1370,18 @@
 #endif /* Val_GtkBitset */
 
 #ifndef Val_GtkBitsetIter
-#define GtkBitsetIter_val(val) ((GtkBitsetIter*)ext_of_val(val))
-#define Val_GtkBitsetIter(obj) ((value)(val_of_ext(obj)))
+#define GtkBitsetIter_val(val) ((GtkBitsetIter*)ml_gir_record_ptr_val((val), "GtkBitsetIter"))
+#define Val_GtkBitsetIter_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GtkBitsetIter), "GtkBitsetIter", NULL)
+#define Val_GtkBitsetIter(obj) Val_GtkBitsetIter_ptr(obj)
+#define Val_GtkBitsetIter_option(ptr) ((ptr) ? Val_some(Val_GtkBitsetIter_ptr(ptr)) : Val_none)
 #endif /* Val_GtkBitsetIter */
+
+#ifndef Val_GtkBorder
+#define GtkBorder_val(val) ((GtkBorder*)ml_gir_record_ptr_val((val), "GtkBorder"))
+#define Val_GtkBorder_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GtkBorder), "GtkBorder", NULL)
+#define Val_GtkBorder(obj) Val_GtkBorder_ptr(&(obj))
+#define Val_GtkBorder_option(ptr) ((ptr) ? Val_some(Val_GtkBorder_ptr(ptr)) : Val_none)
+#endif /* Val_GtkBorder */
 
 #ifndef Val_GtkBuildableParseContext
 #define GtkBuildableParseContext_val(val) ((GtkBuildableParseContext*)ext_of_val(val))
@@ -1714,6 +1723,13 @@
 #define Val_GtkRecentManagerPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GtkRecentManagerPrivate */
 
+#ifndef Val_GtkRequisition
+#define GtkRequisition_val(val) ((GtkRequisition*)ml_gir_record_ptr_val((val), "GtkRequisition"))
+#define Val_GtkRequisition_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GtkRequisition), "GtkRequisition", NULL)
+#define Val_GtkRequisition(obj) Val_GtkRequisition_ptr(&(obj))
+#define Val_GtkRequisition_option(ptr) ((ptr) ? Val_some(Val_GtkRequisition_ptr(ptr)) : Val_none)
+#endif /* Val_GtkRequisition */
+
 #ifndef Val_GtkRootInterface
 #define GtkRootInterface_val(val) ((GtkRootInterface*)ext_of_val(val))
 #define Val_GtkRootInterface(obj) ((value)(val_of_ext(obj)))
@@ -1779,6 +1795,13 @@
 #define Val_GtkTextBufferPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GtkTextBufferPrivate */
 
+#ifndef Val_GtkTextIter
+#define GtkTextIter_val(val) ((GtkTextIter*)ml_gir_record_ptr_val((val), "GtkTextIter"))
+#define Val_GtkTextIter_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GtkTextIter), "GtkTextIter", NULL)
+#define Val_GtkTextIter(obj) Val_GtkTextIter_ptr(&(obj))
+#define Val_GtkTextIter_option(ptr) ((ptr) ? Val_some(Val_GtkTextIter_ptr(ptr)) : Val_none)
+#endif /* Val_GtkTextIter */
+
 #ifndef Val_GtkTextTagPrivate
 #define GtkTextTagPrivate_val(val) ((GtkTextTagPrivate*)ext_of_val(val))
 #define Val_GtkTextTagPrivate(obj) ((value)(val_of_ext(obj)))
@@ -1788,6 +1811,13 @@
 #define GtkTextViewPrivate_val(val) ((GtkTextViewPrivate*)ext_of_val(val))
 #define Val_GtkTextViewPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GtkTextViewPrivate */
+
+#ifndef Val_GtkTreeIter
+#define GtkTreeIter_val(val) ((GtkTreeIter*)ml_gir_record_ptr_val((val), "GtkTreeIter"))
+#define Val_GtkTreeIter_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GtkTreeIter), "GtkTreeIter", NULL)
+#define Val_GtkTreeIter(obj) Val_GtkTreeIter_ptr(&(obj))
+#define Val_GtkTreeIter_option(ptr) ((ptr) ? Val_some(Val_GtkTreeIter_ptr(ptr)) : Val_none)
+#endif /* Val_GtkTreeIter */
 
 #ifndef Val_GtkTreeModelFilterPrivate
 #define GtkTreeModelFilterPrivate_val(val) ((GtkTreeModelFilterPrivate*)ext_of_val(val))

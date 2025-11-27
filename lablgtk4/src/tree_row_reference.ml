@@ -22,3 +22,4 @@ external get_path : t -> Obj.t option = "ml_gtk_tree_row_reference_get_path"
 
 (** Returns the model that the row reference is monitoring. *)
 external get_model : t -> Gtk.widget = "ml_gtk_tree_row_reference_get_model"
+

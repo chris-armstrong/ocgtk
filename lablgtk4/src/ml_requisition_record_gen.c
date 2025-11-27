@@ -26,5 +26,5 @@ CAMLexport CAMLprim value ml_gtk_requisition_new(value unit)
 {
 CAMLparam1(unit);
 GtkRequisition *obj = gtk_requisition_new();
-CAMLreturn(Val_GtkRequisition_ptr(obj));
+CAMLreturn(Val_GtkRequisition(obj));
 }

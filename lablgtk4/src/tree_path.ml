@@ -57,3 +57,4 @@ external compare : t -> Obj.t -> int = "ml_gtk_tree_path_compare"
 
 As a result, the depth of the path is increased. *)
 external append_index : t -> int -> unit = "ml_gtk_tree_path_append_index"
+

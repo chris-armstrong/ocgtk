@@ -26,5 +26,5 @@ CAMLexport CAMLprim value ml_gtk_border_new(value unit)
 {
 CAMLparam1(unit);
 GtkBorder *obj = gtk_border_new();
-CAMLreturn(Val_GtkBorder_ptr(obj));
+CAMLreturn(Val_GtkBorder(obj));
 }

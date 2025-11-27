@@ -596,3 +596,4 @@ iterators can be assigned with `GtkTextIter i = j;`.
 
 The function is used by language bindings. *)
 external assign : t -> Obj.t -> unit = "ml_gtk_text_iter_assign"
+

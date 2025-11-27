@@ -2,7 +2,6 @@
 /* C bindings for TreeIter */
 
 #include <gtk/gtk.h>
-#include <string.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>

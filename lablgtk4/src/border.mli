@@ -8,3 +8,4 @@ type t
 
 (** Create a new Border *)
 external new_ : unit -> t = "ml_gtk_border_new"
+

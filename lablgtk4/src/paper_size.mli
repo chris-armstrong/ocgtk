@@ -70,3 +70,4 @@ external get_default_left_margin : t -> unit -> float = "ml_gtk_paper_size_get_d
 
 (** Gets the default bottom margin for the `GtkPaperSize`. *)
 external get_default_bottom_margin : t -> unit -> float = "ml_gtk_paper_size_get_default_bottom_margin"
+

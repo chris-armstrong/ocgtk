@@ -7,3 +7,4 @@ integer in the @stamp member, and put
 model-specific data in the three @user_data
 members. *)
 type t = Obj.t
+
