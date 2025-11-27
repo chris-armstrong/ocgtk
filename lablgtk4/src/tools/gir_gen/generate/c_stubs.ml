@@ -101,7 +101,7 @@ let generate_forward_decls_header ~classes ~records ~gtk_enums ~gtk_bitfields ~e
       bprintf buf "#ifndef Val_%s\n" record.c_type;
       if not record.opaque then begin
         bprintf buf "#define %s_val(val) ((%s*)ml_gir_record_ptr_val((val), \"%s\"))\n" record.c_type record.c_type record.c_type;
-        bprintf buf "#define Val_%s_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(%s), \"%s\")\n" record.c_type record.c_type record.c_type;
+        bprintf buf "#define Val_%s_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(%s), \"%s\", NULL)\n" record.c_type record.c_type record.c_type;
         if List.mem record.c_type ~set:value_record_macros then begin
           bprintf buf "#define Val_%s(obj) Val_%s_ptr(&(obj))\n" record.c_type record.c_type;
           bprintf buf "#define Val_%s_option(ptr) ((ptr) ? Val_some(Val_%s_ptr(ptr)) : Val_none)\n" record.c_type record.c_type;

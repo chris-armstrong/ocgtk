@@ -101,6 +101,7 @@ CAMLexport value copy_memblock_indirected(void *src, asize_t size)
 
 static void finalize_gir_record(value v) {
     void *ptr = *((void**)Data_custom_val(v));
+    printf("[d] %p\n", v);
     if (ptr != NULL) g_free(ptr);
 }
 
@@ -114,21 +115,25 @@ static struct custom_operations gir_record_custom_ops = {
     custom_compare_ext_default
 };
 
-CAMLexport value ml_gir_record_alloc(const void *src, size_t size, const char *type_name) {
+CAMLexport value ml_gir_record_alloc(const void *src, size_t size, const char *type_name, void *(*copy_fn)(const void *)) {
     CAMLparam0();
     CAMLlocal1(v);
 
     (void)type_name;
-
     if (src == NULL) caml_failwith("ml_gir_record_alloc: NULL source");
-
-    void *copy = g_new0(guint8, size);
+    
+    void *copy = NULL;
+    if (copy_fn != NULL) {
+        copy = copy_fn(src);
+    } else {
+        copy = g_memdup2(src, size);
+    }
     if (copy == NULL) caml_failwith("ml_gir_record_alloc: allocation failed");
-
-    memcpy(copy, src, size);
+    
     v = caml_alloc_custom(&gir_record_custom_ops, sizeof(void*), 0, 1);
     *((void**)Data_custom_val(v)) = copy;
-
+    
+    printf("[a]  %s %p\n", type_name, copy);
     CAMLreturn(v);
 }
 
@@ -233,17 +238,17 @@ value Val_GError(GError *error) {
 
 
 value copy_GtkTreeIter(const GtkTreeIter *iter) {
-    return ml_gir_record_alloc(iter, sizeof(GtkTreeIter), "GtkTreeIter");
+    return ml_gir_record_alloc(iter, sizeof(GtkTreeIter), "GtkTreeIter", (void *(*)(const void *))gtk_tree_iter_copy);
 }
 
 value copy_GtkTextIter(const GtkTextIter *iter) {
-    return ml_gir_record_alloc(iter, sizeof(GtkTextIter), "GtkTextIter");
+    return ml_gir_record_alloc(iter, sizeof(GtkTextIter), "GtkTextIter", (void *(*)(const void *))gtk_text_iter_copy);
 }
 
 value copy_GtkRequisition(const GtkRequisition *req) {
-    return ml_gir_record_alloc(req, sizeof(GtkRequisition), "GtkRequisition");
+    return ml_gir_record_alloc(req, sizeof(GtkRequisition), "GtkRequisition", (void *(*)(const void *))gtk_requisition_copy);
 }
 
 value copy_GtkBorder(const GtkBorder *border) {
-    return ml_gir_record_alloc(border, sizeof(GtkBorder), "GtkBorder");
+    return ml_gir_record_alloc(border, sizeof(GtkBorder), "GtkBorder", (void *(*)(const void *))gtk_border_copy);
 }
