@@ -59,19 +59,3 @@ CAMLparam1(self);
 GtkTreeModel* result = gtk_tree_row_reference_get_model(GtkTreeRowReference_val(self));
 CAMLreturn(Val_GtkWidget(result));
 }
-
-CAMLexport CAMLprim value ml_gtk_tree_row_reference_free(value self)
-{
-CAMLparam1(self);
-
-gtk_tree_row_reference_free(GtkTreeRowReference_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_row_reference_copy(value self)
-{
-CAMLparam1(self);
-
-GtkTreeRowReference* result = gtk_tree_row_reference_copy(GtkTreeRowReference_val(self));
-CAMLreturn(Val_GtkTreeRowReference(result));
-}

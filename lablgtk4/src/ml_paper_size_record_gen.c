@@ -160,19 +160,3 @@ CAMLparam2(self, arg1);
 double result = gtk_paper_size_get_default_bottom_margin(GtkPaperSize_val(self), GtkUnit_val(arg1));
 CAMLreturn(caml_copy_double(result));
 }
-
-CAMLexport CAMLprim value ml_gtk_paper_size_free(value self)
-{
-CAMLparam1(self);
-
-gtk_paper_size_free(GtkPaperSize_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_paper_size_copy(value self)
-{
-CAMLparam1(self);
-
-GtkPaperSize* result = gtk_paper_size_copy(GtkPaperSize_val(self));
-CAMLreturn(Val_GtkPaperSize(result));
-}

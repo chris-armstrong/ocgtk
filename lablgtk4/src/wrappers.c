@@ -95,6 +95,60 @@ CAMLexport value copy_memblock_indirected(void *src, asize_t size)
     CAMLreturn(ret);
 }
 
+/* ==================================================================== */
+/* GIR record helpers                                                   */
+/* ==================================================================== */
+
+static void finalize_gir_record(value v) {
+    void *ptr = *((void**)Data_custom_val(v));
+    if (ptr != NULL) g_free(ptr);
+}
+
+static struct custom_operations gir_record_custom_ops = {
+    "lablgtk4.gir_record",
+    finalize_gir_record,
+    custom_compare_default,
+    custom_hash_default,
+    custom_serialize_default,
+    custom_deserialize_default,
+    custom_compare_ext_default
+};
+
+CAMLexport value ml_gir_record_alloc(const void *src, size_t size, const char *type_name) {
+    CAMLparam0();
+    CAMLlocal1(v);
+
+    (void)type_name;
+
+    if (src == NULL) caml_failwith("ml_gir_record_alloc: NULL source");
+
+    void *copy = g_new0(guint8, size);
+    if (copy == NULL) caml_failwith("ml_gir_record_alloc: allocation failed");
+
+    memcpy(copy, src, size);
+    v = caml_alloc_custom(&gir_record_custom_ops, sizeof(void*), 0, 1);
+    *((void**)Data_custom_val(v)) = copy;
+
+    CAMLreturn(v);
+}
+
+CAMLexport void *ml_gir_record_ptr_val(value v, const char *type_name) {
+    CAMLparam1(v);
+    void *ptr;
+
+    (void)type_name;
+
+    if (Tag_val(v) == Custom_tag)
+        ptr = *((void**)Data_custom_val(v));
+    else
+        ptr = ext_of_val(v);
+
+    if (ptr == NULL)
+        caml_failwith("ml_gir_record_ptr_val: NULL record pointer");
+
+    CAMLreturnT(void*, ptr);
+}
+
 /* Wrap a C pointer in an Abstract block for OCaml 5.0+ compatibility.
  * This prevents the GC from scanning C pointers as if they were heap values.
  * Layout: [header | unused | pointer]
@@ -187,17 +241,17 @@ static value copy_struct_as_block(const void *src, size_t sz) {
 }
 
 value copy_GtkTreeIter(const GtkTreeIter *iter) {
-    return copy_struct_as_block(iter, sizeof(GtkTreeIter));
+    return ml_gir_record_alloc(iter, sizeof(GtkTreeIter), "GtkTreeIter");
 }
 
 value copy_GtkTextIter(const GtkTextIter *iter) {
-    return copy_struct_as_block(iter, sizeof(GtkTextIter));
+    return ml_gir_record_alloc(iter, sizeof(GtkTextIter), "GtkTextIter");
 }
 
 value copy_GtkRequisition(const GtkRequisition *req) {
-    return copy_struct_as_block(req, sizeof(GtkRequisition));
+    return ml_gir_record_alloc(req, sizeof(GtkRequisition), "GtkRequisition");
 }
 
 value copy_GtkBorder(const GtkBorder *border) {
-    return copy_struct_as_block(border, sizeof(GtkBorder));
+    return ml_gir_record_alloc(border, sizeof(GtkBorder), "GtkBorder");
 }

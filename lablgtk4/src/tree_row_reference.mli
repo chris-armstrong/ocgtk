@@ -22,10 +22,3 @@ external get_path : t -> Obj.t option = "ml_gtk_tree_row_reference_get_path"
 
 (** Returns the model that the row reference is monitoring. *)
 external get_model : t -> Gtk.widget = "ml_gtk_tree_row_reference_get_model"
-
-(** Free’s @reference. @reference may be %NULL *)
-external free : t -> unit = "ml_gtk_tree_row_reference_free"
-
-(** Copies a `GtkTreeRowReference`. *)
-external copy : t -> Obj.t = "ml_gtk_tree_row_reference_copy"
-

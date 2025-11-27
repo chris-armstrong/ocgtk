@@ -188,14 +188,6 @@ gtk_bitset_difference(GtkBitset_val(self), GtkBitset_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_bitset_copy(value self)
-{
-CAMLparam1(self);
-
-GtkBitset* result = gtk_bitset_copy(GtkBitset_val(self));
-CAMLreturn(Val_GtkBitset(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_bitset_contains(value self, value arg1)
 {
 CAMLparam2(self, arg1);

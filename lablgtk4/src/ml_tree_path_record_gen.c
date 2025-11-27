@@ -106,28 +106,12 @@ int result = gtk_tree_path_get_depth(GtkTreePath_val(self));
 CAMLreturn(Val_int(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_path_free(value self)
-{
-CAMLparam1(self);
-
-gtk_tree_path_free(GtkTreePath_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_tree_path_down(value self)
 {
 CAMLparam1(self);
 
 gtk_tree_path_down(GtkTreePath_val(self));
 CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_path_copy(value self)
-{
-CAMLparam1(self);
-
-GtkTreePath* result = gtk_tree_path_copy(GtkTreePath_val(self));
-CAMLreturn(Val_GtkTreePath(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_path_compare(value self, value arg1)

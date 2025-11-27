@@ -70,10 +70,3 @@ external get_default_left_margin : t -> unit -> float = "ml_gtk_paper_size_get_d
 
 (** Gets the default bottom margin for the `GtkPaperSize`. *)
 external get_default_bottom_margin : t -> unit -> float = "ml_gtk_paper_size_get_default_bottom_margin"
-
-(** Free the given `GtkPaperSize` object. *)
-external free : t -> unit = "ml_gtk_paper_size_free"
-
-(** Copies an existing `GtkPaperSize`. *)
-external copy : t -> Obj.t = "ml_gtk_paper_size_copy"
-

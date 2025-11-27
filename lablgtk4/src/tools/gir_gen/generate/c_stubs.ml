@@ -97,15 +97,23 @@ let generate_forward_decls_header ~classes ~records ~gtk_enums ~gtk_bitfields ~e
   ) classes;
   List.iter ~f:(fun (record : gir_record) ->
     if (Type_mappings.is_boxed_record record || record.disguised) && not (Hashtbl.mem seen record.c_type) then begin
-      if List.mem record.c_type ~set:value_record_macros then
-        () (* value-returning structs handled explicitly below *)
-      else begin
-        Hashtbl.add seen record.c_type ();
-        bprintf buf "#ifndef Val_%s\n" record.c_type;
+      Hashtbl.add seen record.c_type ();
+      bprintf buf "#ifndef Val_%s\n" record.c_type;
+      if not record.opaque then begin
+        bprintf buf "#define %s_val(val) ((%s*)ml_gir_record_ptr_val((val), \"%s\"))\n" record.c_type record.c_type record.c_type;
+        bprintf buf "#define Val_%s_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(%s), \"%s\")\n" record.c_type record.c_type record.c_type;
+        if List.mem record.c_type ~set:value_record_macros then begin
+          bprintf buf "#define Val_%s(obj) Val_%s_ptr(&(obj))\n" record.c_type record.c_type;
+          bprintf buf "#define Val_%s_option(ptr) ((ptr) ? Val_some(Val_%s_ptr(ptr)) : Val_none)\n" record.c_type record.c_type;
+        end else begin
+          bprintf buf "#define Val_%s(obj) Val_%s_ptr(obj)\n" record.c_type record.c_type;
+          bprintf buf "#define Val_%s_option(ptr) ((ptr) ? Val_some(Val_%s_ptr(ptr)) : Val_none)\n" record.c_type record.c_type;
+        end
+      end else begin
         bprintf buf "#define %s_val(val) ((%s*)ext_of_val(val))\n" record.c_type record.c_type;
         bprintf buf "#define Val_%s(obj) ((value)(val_of_ext(obj)))\n" record.c_type;
-        bprintf buf "#endif /* Val_%s */\n\n" record.c_type;
-      end
+      end;
+      bprintf buf "#endif /* Val_%s */\n\n" record.c_type;
     end
   ) records;
 
@@ -613,6 +621,16 @@ let generate_record_c_code ~classes ~records ~enums ~bitfields ~external_enums ~
   Buffer.add_string buf (generate_c_file_header ~class_name:record.record_name ~c_type:record.c_type ~external_enums ~external_bitfields ());
 
   let class_snake = Utils.to_snake_case record.record_name in
+  let is_copy_or_free (meth : gir_method) =
+    let lower_name = String.lowercase_ascii meth.method_name in
+    let lower_cid = String.lowercase_ascii meth.c_identifier in
+    let ends_with suffix str =
+      let len_s = String.length suffix and len_str = String.length str in
+      len_str >= len_s && String.sub str ~pos:(len_str - len_s) ~len:len_s = suffix
+    in
+    lower_name = "copy" || lower_name = "free" ||
+    ends_with "_copy" lower_cid || ends_with "_free" lower_cid
+  in
 
   (* Override conversion macros to accept both abstract and custom blocks, and add owned wrappers for non-opaque records. *)
   let is_value_record = is_value_like_record record in
@@ -675,7 +693,7 @@ let generate_record_c_code ~classes ~records ~enums ~bitfields ~external_enums ~
         ?c_symbol_prefix:record.c_symbol_prefix
         meth
     in
-    if not should_skip then
+    if (not should_skip) && (not (is_copy_or_free meth)) then
       Buffer.add_string buf (generate_c_method ~classes ~records ~enums ~bitfields ~c_type:record.c_type meth record.record_name)
   ) (List.rev record.methods);
 

@@ -7,17 +7,3 @@ integer in the @stamp member, and put
 model-specific data in the three @user_data
 members. *)
 type t = Obj.t
-
-(** Frees an iterator that has been allocated by gtk_tree_iter_copy().
-
-This function is mainly used for language bindings. *)
-external free : t -> unit = "ml_gtk_tree_iter_free"
-
-(** Creates a dynamically allocated tree iterator as a copy of @iter.
-
-This function is not intended for use in applications,
-because you can just copy the structs by value
-(`GtkTreeIter new_iter = iter;`).
-You must free this iter with gtk_tree_iter_free(). *)
-external copy : t -> Obj.t = "ml_gtk_tree_iter_copy"
-

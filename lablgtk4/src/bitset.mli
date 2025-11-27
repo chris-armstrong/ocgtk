@@ -128,9 +128,6 @@ It is allowed for @self and @other to be the same bitset. The bitset
 will be emptied in that case. *)
 external difference : t -> Obj.t -> unit = "ml_gtk_bitset_difference"
 
-(** Creates a copy of @self. *)
-external copy : t -> Obj.t = "ml_gtk_bitset_copy"
-
 (** Checks if the given @value has been added to @self *)
 external contains : t -> int -> bool = "ml_gtk_bitset_contains"
 
@@ -148,4 +145,3 @@ external add_range : t -> int -> int -> unit = "ml_gtk_bitset_add_range"
 
 (** Adds @value to @self if it wasn't part of it before. *)
 external add : t -> int -> bool = "ml_gtk_bitset_add"
-

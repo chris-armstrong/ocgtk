@@ -30,6 +30,16 @@ let generate_ml_interface
     () =
   let buf = Buffer.create 1024 in
   let is_impl = match output_mode with Implementation -> true | Interface -> false in
+  let is_copy_or_free (meth : gir_method) =
+    let lower_name = String.lowercase_ascii meth.method_name in
+    let lower_cid = String.lowercase_ascii meth.c_identifier in
+    let ends_with suffix str =
+      let len_s = String.length suffix and len_str = String.length str in
+      len_str >= len_s && String.sub str ~pos:(len_str - len_s) ~len:len_s = suffix
+    in
+    lower_name = "copy" || lower_name = "free" ||
+    ends_with "_copy" lower_cid || ends_with "_free" lower_cid
+  in
 
   (* Determine if this is a controller or widget *)
   let is_controller =
@@ -232,7 +242,8 @@ let generate_ml_interface
       Exclude_list.is_variadic_function c_name ||
       List.mem ocaml_name ~set:!property_names ||
       has_excluded_type ||
-      Exclude_list.should_skip_method ~find_type_mapping:(Type_mappings.find_type_mapping ~enums ~bitfields ~classes ~records) ~enums ~bitfields meth
+      Exclude_list.should_skip_method ~find_type_mapping:(Type_mappings.find_type_mapping ~enums ~bitfields ~classes ~records) ~enums ~bitfields meth ||
+      (is_record && is_copy_or_free meth)
     in
     if not should_skip_mli then begin
       (match meth.doc with

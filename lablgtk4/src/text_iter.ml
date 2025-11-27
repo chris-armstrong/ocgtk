@@ -201,13 +201,6 @@ external get_bytes_in_line : t -> int = "ml_gtk_text_iter_get_bytes_in_line"
 (** Returns the `GtkTextBuffer` this iterator is associated with. *)
 external get_buffer : t -> Gtk.widget = "ml_gtk_text_iter_get_buffer"
 
-(** Free an iterator allocated on the heap.
-
-This function is intended for use in language bindings,
-and is not especially useful for applications, because
-iterators can simply be allocated on the stack. *)
-external free : t -> unit = "ml_gtk_text_iter_free"
-
 (** Calls [method@Gtk.TextIter.forward_word_end] up to @count times. *)
 external forward_word_ends : t -> int -> bool = "ml_gtk_text_iter_forward_word_ends"
 
@@ -442,15 +435,6 @@ editable range. Use [method@Gtk.TextIter.can_insert] to handle this
 case. *)
 external editable : t -> bool -> bool = "ml_gtk_text_iter_editable"
 
-(** Creates a dynamically-allocated copy of an iterator.
-
-This function is not useful in applications, because
-iterators can be copied with a simple assignment
-(`GtkTextIter i = j;`).
-
-The function is used by language bindings. *)
-external copy : t -> Obj.t = "ml_gtk_text_iter_copy"
-
 (** A qsort()-style function that returns negative if @lhs is less than
 @rhs, positive if @lhs is greater than @rhs, and 0 if they’re equal.
 
@@ -612,4 +596,3 @@ iterators can be assigned with `GtkTextIter i = j;`.
 
 The function is used by language bindings. *)
 external assign : t -> Obj.t -> unit = "ml_gtk_text_iter_assign"
-

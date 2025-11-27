@@ -8,10 +8,3 @@ type t = Obj.t
 
 (** Create a new Border *)
 external new_ : unit -> t = "ml_gtk_border_new"
-
-(** Frees a `GtkBorder`. *)
-external free : t -> unit = "ml_gtk_border_free"
-
-(** Copies a `GtkBorder`. *)
-external copy : t -> Obj.t = "ml_gtk_border_copy"
-

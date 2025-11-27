@@ -136,3 +136,18 @@
  (modules test_range)
  (libraries lablgtk4 alcotest))
 
+(library 
+ (name test_records_support)
+ (foreign_stubs 
+  (language c) 
+  (names test_records)
+  (flags (:include ../src/cflag-gtk4.sexp))
+ )
+ (modules test_records_stub)
+ (c_library_flags (:include ../src/clink-gtk4.sexp))
+)
+
+(test
+ (name test_records)
+ (modules test_records)
+ (libraries lablgtk4 alcotest test_records_support))

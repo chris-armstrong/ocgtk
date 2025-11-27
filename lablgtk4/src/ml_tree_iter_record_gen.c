@@ -2,6 +2,7 @@
 /* C bindings for TreeIter */
 
 #include <gtk/gtk.h>
+#include <string.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -21,19 +22,3 @@
 #define Val_GtkTreeIter(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GtkTreeIter */
 
-
-CAMLexport CAMLprim value ml_gtk_tree_iter_free(value self)
-{
-CAMLparam1(self);
-
-gtk_tree_iter_free(GtkTreeIter_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_iter_copy(value self)
-{
-CAMLparam1(self);
-
-GtkTreeIter* result = gtk_tree_iter_copy(GtkTreeIter_val(self));
-CAMLreturn(Val_GtkTreeIter(result));
-}

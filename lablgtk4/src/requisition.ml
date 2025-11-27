@@ -8,10 +8,3 @@ type t = Obj.t
 
 (** Create a new Requisition *)
 external new_ : unit -> t = "ml_gtk_requisition_new"
-
-(** Frees a `GtkRequisition`. *)
-external free : t -> unit = "ml_gtk_requisition_free"
-
-(** Copies a `GtkRequisition`. *)
-external copy : t -> Obj.t = "ml_gtk_requisition_copy"
-

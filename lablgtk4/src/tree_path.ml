@@ -43,14 +43,8 @@ external is_ancestor : t -> Obj.t -> bool = "ml_gtk_tree_path_is_ancestor"
 (** Returns the current depth of @path. *)
 external get_depth : t -> int = "ml_gtk_tree_path_get_depth"
 
-(** Frees @path. If @path is %NULL, it simply returns. *)
-external free : t -> unit = "ml_gtk_tree_path_free"
-
 (** Moves @path to point to the first child of the current path. *)
 external down : t -> unit = "ml_gtk_tree_path_down"
-
-(** Creates a new `GtkTreePath` as a copy of @path. *)
-external copy : t -> Obj.t = "ml_gtk_tree_path_copy"
 
 (** Compares two paths.
 
@@ -63,4 +57,3 @@ external compare : t -> Obj.t -> int = "ml_gtk_tree_path_compare"
 
 As a result, the depth of the path is increased. *)
 external append_index : t -> int -> unit = "ml_gtk_tree_path_append_index"
-
