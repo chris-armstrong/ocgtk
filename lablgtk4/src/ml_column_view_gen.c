@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -112,7 +113,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_scroll_to(value self, value arg1, v
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 
-gtk_column_view_scroll_to(GtkColumnView_val(self), Int_val(arg1), Option_val(arg2, GtkColumnViewColumn_val, NULL), GtkListScrollFlags_val(arg3), Option_val(arg4, GtkWidget_val, NULL));
+gtk_column_view_scroll_to(GtkColumnView_val(self), Int_val(arg1), Option_val(arg2, GtkColumnViewColumn_val, NULL), GtkListScrollFlags_val(arg3), Option_val(arg4, GtkScrollInfo_val, NULL));
 CAMLreturn(Val_unit);
 }
 

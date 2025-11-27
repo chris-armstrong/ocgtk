@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -33,7 +34,7 @@ CAMLexport CAMLprim value ml_gtk_actionable_get_action_name(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkActionable *obj = (GtkActionable *)GtkActionable_val(self);
+gchar* *obj = (gchar* *)GtkActionable_val(self);
 gchar* prop_value;
 g_object_get(G_OBJECT(obj), "action-name", &prop_value, NULL);
 result = caml_copy_string(prop_value);

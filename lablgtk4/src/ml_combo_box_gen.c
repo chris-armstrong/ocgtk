@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -101,7 +102,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_set_active_iter(value self, value arg
 {
 CAMLparam2(self, arg1);
 
-gtk_combo_box_set_active_iter(GtkComboBox_val(self), Option_val(arg1, GtkWidget_val, NULL));
+gtk_combo_box_set_active_iter(GtkComboBox_val(self), Option_val(arg1, GtkTreeIter_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -199,7 +200,11 @@ CAMLparam1(self);
 GtkTreeIter out1;
 
 gboolean result = gtk_combo_box_get_active_iter(GtkComboBox_val(self), &out1);
-CAMLreturn(Val_bool(result));
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_GtkTreeIter(out1));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_combo_box_get_active_id(value self)

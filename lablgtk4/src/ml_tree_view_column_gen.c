@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -367,7 +368,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_cell_set_cell_data(value self,
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 
-gtk_tree_view_column_cell_set_cell_data(GtkTreeViewColumn_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2), Bool_val(arg3), Bool_val(arg4));
+gtk_tree_view_column_cell_set_cell_data(GtkTreeViewColumn_val(self), GtkWidget_val(arg1), GtkTreeIter_val(arg2), Bool_val(arg3), Bool_val(arg4));
 CAMLreturn(Val_unit);
 }
 
@@ -391,7 +392,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_get_alignment(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkTreeViewColumn *obj = (GtkTreeViewColumn *)GtkTreeViewColumn_val(self);
+gfloat *obj = (gfloat *)GtkTreeViewColumn_val(self);
 gfloat prop_value;
 g_object_get(G_OBJECT(obj), "alignment", &prop_value, NULL);
 result = caml_copy_double(prop_value);

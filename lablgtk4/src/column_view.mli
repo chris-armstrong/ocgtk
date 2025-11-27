@@ -71,7 +71,7 @@ given - and performs the actions specified in @flags.
 
 This function works no matter if the listview is shown or focused.
 If it isn't, then the changes will take effect once that happens. *)
-external scroll_to : t -> int -> Gtk.widget option -> Gtk_enums.listscrollflags -> Gtk.widget option -> unit = "ml_gtk_column_view_scroll_to"
+external scroll_to : t -> int -> Gtk.widget option -> Gtk_enums.listscrollflags -> Obj.t option -> unit = "ml_gtk_column_view_scroll_to"
 
 (** Removes the @column from the list of columns of @self. *)
 external remove_column : t -> Gtk.widget -> unit = "ml_gtk_column_view_remove_column"

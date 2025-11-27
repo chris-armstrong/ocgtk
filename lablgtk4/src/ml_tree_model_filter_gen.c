@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -49,8 +50,8 @@ CAMLexport CAMLprim value ml_gtk_tree_model_filter_convert_path_to_child_path(va
 {
 CAMLparam2(self, arg1);
 
-GtkTreePath* result = gtk_tree_model_filter_convert_path_to_child_path(GtkTreeModelFilter_val(self), GtkWidget_val(arg1));
-CAMLreturn(Val_GtkWidget_option(result));
+GtkTreePath* result = gtk_tree_model_filter_convert_path_to_child_path(GtkTreeModelFilter_val(self), GtkTreePath_val(arg1));
+CAMLreturn(Val_option(result, Val_GtkTreePath));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_model_filter_convert_iter_to_child_iter(value self, value arg1)
@@ -58,16 +59,16 @@ CAMLexport CAMLprim value ml_gtk_tree_model_filter_convert_iter_to_child_iter(va
 CAMLparam2(self, arg1);
 GtkTreeIter out1;
 
-gtk_tree_model_filter_convert_iter_to_child_iter(GtkTreeModelFilter_val(self), &out1, GtkWidget_val(arg1));
-CAMLreturn(Val_unit);
+gtk_tree_model_filter_convert_iter_to_child_iter(GtkTreeModelFilter_val(self), &out1, GtkTreeIter_val(arg1));
+CAMLreturn(Val_GtkTreeIter(out1));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_model_filter_convert_child_path_to_path(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-GtkTreePath* result = gtk_tree_model_filter_convert_child_path_to_path(GtkTreeModelFilter_val(self), GtkWidget_val(arg1));
-CAMLreturn(Val_GtkWidget_option(result));
+GtkTreePath* result = gtk_tree_model_filter_convert_child_path_to_path(GtkTreeModelFilter_val(self), GtkTreePath_val(arg1));
+CAMLreturn(Val_option(result, Val_GtkTreePath));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_model_filter_convert_child_iter_to_iter(value self, value arg1)
@@ -75,8 +76,12 @@ CAMLexport CAMLprim value ml_gtk_tree_model_filter_convert_child_iter_to_iter(va
 CAMLparam2(self, arg1);
 GtkTreeIter out1;
 
-gboolean result = gtk_tree_model_filter_convert_child_iter_to_iter(GtkTreeModelFilter_val(self), &out1, GtkWidget_val(arg1));
-CAMLreturn(Val_bool(result));
+gboolean result = gtk_tree_model_filter_convert_child_iter_to_iter(GtkTreeModelFilter_val(self), &out1, GtkTreeIter_val(arg1));
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_GtkTreeIter(out1));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_model_filter_clear_cache(value self)
@@ -85,4 +90,15 @@ CAMLparam1(self);
 
 gtk_tree_model_filter_clear_cache(GtkTreeModelFilter_val(self));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_model_filter_get_virtual_root(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTreePath *obj = (GtkTreePath *)GtkTreeModelFilter_val(self);
+TreePath prop_value;
+g_object_get(G_OBJECT(obj), "virtual-root", &prop_value, NULL);
+result = Val_GtkTreePath(prop_value);
+CAMLreturn(result);
 }

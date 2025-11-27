@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -264,7 +265,7 @@ CAMLexport CAMLprim value ml_gtk_flow_box_get_accept_unpaired_release(value self
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkFlowBox *obj = (GtkFlowBox *)GtkFlowBox_val(self);
+gboolean *obj = (gboolean *)GtkFlowBox_val(self);
 gboolean prop_value;
 g_object_get(G_OBJECT(obj), "accept-unpaired-release", &prop_value, NULL);
 result = Val_bool(prop_value);

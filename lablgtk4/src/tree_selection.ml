@@ -7,13 +7,13 @@ type t = Gtk.widget
 
 (** Unselects a range of nodes, determined by @start_path and @end_path
 inclusive. *)
-external unselect_range : t -> Gtk.widget -> Gtk.widget -> unit = "ml_gtk_tree_selection_unselect_range"
+external unselect_range : t -> Obj.t -> Obj.t -> unit = "ml_gtk_tree_selection_unselect_range"
 
 (** Unselects the row at @path. *)
-external unselect_path : t -> Gtk.widget -> unit = "ml_gtk_tree_selection_unselect_path"
+external unselect_path : t -> Obj.t -> unit = "ml_gtk_tree_selection_unselect_path"
 
 (** Unselects the specified iterator. *)
-external unselect_iter : t -> Gtk.widget -> unit = "ml_gtk_tree_selection_unselect_iter"
+external unselect_iter : t -> Obj.t -> unit = "ml_gtk_tree_selection_unselect_iter"
 
 (** Unselects all the nodes. *)
 external unselect_all : t -> unit = "ml_gtk_tree_selection_unselect_all"
@@ -25,13 +25,13 @@ external set_mode : t -> Gtk_enums.selectionmode -> unit = "ml_gtk_tree_selectio
 
 (** Selects a range of nodes, determined by @start_path and @end_path inclusive.
 @selection must be set to %GTK_SELECTION_MULTIPLE mode. *)
-external select_range : t -> Gtk.widget -> Gtk.widget -> unit = "ml_gtk_tree_selection_select_range"
+external select_range : t -> Obj.t -> Obj.t -> unit = "ml_gtk_tree_selection_select_range"
 
 (** Select the row at @path. *)
-external select_path : t -> Gtk.widget -> unit = "ml_gtk_tree_selection_select_path"
+external select_path : t -> Obj.t -> unit = "ml_gtk_tree_selection_select_path"
 
 (** Selects the specified iterator. *)
-external select_iter : t -> Gtk.widget -> unit = "ml_gtk_tree_selection_select_iter"
+external select_iter : t -> Obj.t -> unit = "ml_gtk_tree_selection_select_iter"
 
 (** Selects all the nodes. @selection must be set to %GTK_SELECTION_MULTIPLE
 mode. *)
@@ -39,10 +39,10 @@ external select_all : t -> unit = "ml_gtk_tree_selection_select_all"
 
 (** Returns %TRUE if the row pointed to by @path is currently selected.  If @path
 does not point to a valid location, %FALSE is returned *)
-external path_is_selected : t -> Gtk.widget -> bool = "ml_gtk_tree_selection_path_is_selected"
+external path_is_selected : t -> Obj.t -> bool = "ml_gtk_tree_selection_path_is_selected"
 
 (** Returns %TRUE if the row at @iter is currently selected. *)
-external iter_is_selected : t -> Gtk.widget -> bool = "ml_gtk_tree_selection_iter_is_selected"
+external iter_is_selected : t -> Obj.t -> bool = "ml_gtk_tree_selection_iter_is_selected"
 
 (** Returns the tree view associated with @selection. *)
 external get_tree_view : t -> Gtk.widget = "ml_gtk_tree_selection_get_tree_view"
@@ -52,7 +52,7 @@ external get_tree_view : t -> Gtk.widget = "ml_gtk_tree_selection_get_tree_view"
 just want to test if @selection has any selected nodes.  @model is filled
 with the current model as a convenience.  This function will not work if you
 use @selection is %GTK_SELECTION_MULTIPLE. *)
-external get_selected : t -> bool * Gtk.widget * unit = "ml_gtk_tree_selection_get_selected"
+external get_selected : t -> bool * Gtk.widget * Obj.t = "ml_gtk_tree_selection_get_selected"
 
 (** Gets the selection mode for @selection. See
 gtk_tree_selection_set_mode(). *)

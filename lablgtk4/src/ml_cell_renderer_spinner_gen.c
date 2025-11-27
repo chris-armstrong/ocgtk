@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -32,7 +33,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_spinner_get_active(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-GtkCellRendererSpinner *obj = (GtkCellRendererSpinner *)GtkCellRendererSpinner_val(self);
+gboolean *obj = (gboolean *)GtkCellRendererSpinner_val(self);
 gboolean prop_value;
 g_object_get(G_OBJECT(obj), "active", &prop_value, NULL);
 result = Val_bool(prop_value);

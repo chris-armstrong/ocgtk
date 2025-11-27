@@ -35,6 +35,14 @@ let is_excluded_type_name name =
   let normalized = Utils.normalize_class_name name |> String.lowercase_ascii in
   List.mem normalized ~set:type_name_exclude_list
 
+(* Specific functions that should not be generated *)
+let function_exclude_list = [
+  "gtk_tree_model_filter_get_virtual_root";
+]
+
+let is_excluded_function name =
+  List.mem name ~set:function_exclude_list
+
 let should_skip_class class_name =
   let skip_list = [
     "PrintJob";

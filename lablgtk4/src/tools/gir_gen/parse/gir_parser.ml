@@ -15,7 +15,12 @@ let get_attr name attrs =
     with Not_found ->
       (* Try with glib: namespace (used by signals) *)
       try
-        List.assoc (glib_ns, name) attrs |> fun x -> Some x
+        let glib_name =
+          match String.index_opt name ':' with
+          | Some idx -> String.sub ~pos:(idx + 1) ~len:(String.length name - idx - 1) name
+          | None -> name
+        in
+        List.assoc (glib_ns, glib_name) attrs |> fun x -> Some x
       with Not_found -> None
 
 (* Parse only enums and bitfields from a GIR file (for external namespaces) *)
@@ -191,6 +196,7 @@ let parse_gir_file filename _filter_classes =
   let interfaces : gir_interface list ref = ref [] in
   let enums = ref [] in
   let bitfields = ref [] in
+  let records : gir_record list ref = ref [] in
   let signal_table : (string, gir_signal list) Hashtbl.t = Hashtbl.create 256 in
   let iface_signal_table : (string, gir_signal list) Hashtbl.t = Hashtbl.create 128 in
 
@@ -686,6 +692,136 @@ let parse_gir_file filename _filter_classes =
     parse_params_contents ();
     !params
 
+  (* Parse a record element *)
+  and parse_record attrs =
+    match get_attr "name" attrs, get_attr "c:type" attrs with
+    | Some record_name, Some c_type ->
+      (* glib:type-name/get-type are namespaced attributes; the local names are "type-name" and "get-type" *)
+      let glib_type_name = match get_attr "type-name" attrs with
+        | Some v -> Some v
+        | None -> get_attr "glib:type-name" attrs
+      in
+      let glib_get_type = match get_attr "get-type" attrs with
+        | Some v -> Some v
+        | None -> get_attr "glib:get-type" attrs
+      in
+      let opaque = get_attr "opaque" attrs |> Utils.parse_bool in
+      let disguised = get_attr "disguised" attrs |> Utils.parse_bool in
+      let c_symbol_prefix = get_attr "c:symbol-prefix" attrs in
+      let fields = ref [] in
+      let constructors = ref [] in
+      let methods = ref [] in
+      let record_doc : string option ref = ref None in
+
+      let rec parse_record_contents () =
+        match Xmlm.input input with
+        | `El_start ((_, raw_tag), field_attrs) when local_name raw_tag = "field" ->
+          let field_name = get_attr "name" field_attrs in
+          let readable = get_attr "readable" field_attrs |> Utils.parse_bool in
+          let writable = get_attr "writable" field_attrs |> Utils.parse_bool in
+          let field_type = ref None in
+
+          let rec parse_field_contents () =
+            match Xmlm.input input with
+            | `El_start ((_, "type"), type_attrs) ->
+              let type_name = Option.value ~default:"unknown" (get_attr "name" type_attrs) in
+              let c_type_name = Option.value ~default:type_name (get_attr "c:type" type_attrs) in
+              let nullable = get_attr "nullable" type_attrs |> Utils.parse_bool in
+              field_type := Some { name = type_name; c_type = c_type_name; nullable };
+              skip_element 1;
+              parse_field_contents ()
+            | `El_start _ ->
+              skip_element 1;
+              parse_field_contents ()
+            | `El_end -> ()
+            | `Data _ | `Dtd _ ->
+              parse_field_contents ()
+          in
+
+          parse_field_contents ();
+          (match field_name with
+          | Some name ->
+            fields := {
+              field_name = name;
+              field_type = !field_type;
+              readable;
+              writable;
+              field_doc = None;
+            } :: !fields
+          | None -> ());
+          parse_record_contents ()
+
+        | `El_start ((_, raw_tag), tag_attrs) when local_name raw_tag = "constructor" ->
+          (match get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs with
+          | Some ctor_name, Some c_id ->
+            let throws = (get_attr "throws" tag_attrs = Some "1") in
+            let (_return_type, params, doc, _, _) = parse_method tag_attrs in
+            constructors := {
+              ctor_name = ctor_name;
+              c_identifier = c_id;
+              ctor_parameters = params;
+              ctor_doc = doc;
+              throws;
+            } :: !constructors;
+            parse_record_contents ()
+          | _ ->
+            skip_element 1;
+            parse_record_contents ())
+
+        | `El_start ((_, raw_tag), tag_attrs) when local_name raw_tag = "method" ->
+          (match get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs with
+          | Some method_name, Some c_id ->
+            let  throws = get_attr "throws" tag_attrs |> Utils.parse_bool in
+            let (return_type, params, doc, get_property, set_property) = parse_method tag_attrs in
+            methods := {
+              method_name = method_name;
+              c_identifier = c_id;
+              return_type = return_type;
+              parameters = params;
+              doc = doc;
+              throws = throws;
+              get_property = get_property;
+              set_property = set_property;
+            } :: !methods;
+            parse_record_contents ()
+          | _ ->
+            skip_element 1;
+            parse_record_contents ())
+
+        | `El_start ((_, raw_tag), _tag_attrs) when local_name raw_tag = "doc" ->
+          record_doc := element_data ();
+          parse_record_contents ()
+
+        | `El_start _ ->
+          skip_element 1;
+          parse_record_contents ()
+
+        | `El_end -> ()
+        | `Data _ ->
+          parse_record_contents ()
+        | `Dtd _ ->
+          parse_record_contents ()
+      in
+
+      parse_record_contents ();
+      Some {
+        record_name;
+        c_type;
+        glib_type_name;
+        glib_get_type;
+        opaque;
+        disguised;
+        c_symbol_prefix;
+        fields = List.rev !fields;
+        constructors = List.rev !constructors;
+        methods = List.rev !methods;
+        record_doc = !record_doc;
+      }
+
+    | _ ->
+      skip_element 1;
+      None
+
   and parse_interface attrs () =
     let name  = get_attr "name" attrs  |> Option.get in
     let c_type = match get_attr "c:type" attrs with
@@ -888,6 +1024,12 @@ let parse_gir_file filename _filter_classes =
         | None -> ());
         parse_document ()
 
+      | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "record" ->
+        (match parse_record attrs with
+        | Some record -> records := record :: !records
+        | None -> ());
+        parse_document ()
+
       | `El_start ((_, raw_tag), _) ->
         let tag = local_name raw_tag in
         if tag = "repository" || tag = "namespace" then
@@ -935,4 +1077,4 @@ let parse_gir_file filename _filter_classes =
   let controllers = List.rev_map ~f:merge_class_signals !controllers in
   let interfaces = List.rev_map ~f:merge_interface_signals !interfaces in
 
-  (controllers, interfaces, List.rev !enums, List.rev !bitfields)
+  (controllers, interfaces, List.rev !enums, List.rev !bitfields, List.rev !records)

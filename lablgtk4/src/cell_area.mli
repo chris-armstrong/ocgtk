@@ -117,7 +117,7 @@ external attribute_connect : t -> Gtk.widget -> string -> int -> unit = "ml_gtk_
 
 (** Applies any connected attributes to the renderers in
 @area by pulling the values from @tree_model. *)
-external apply_attributes : t -> Gtk.widget -> Gtk.widget -> bool -> bool -> unit = "ml_gtk_cell_area_apply_attributes"
+external apply_attributes : t -> Gtk.widget -> Obj.t -> bool -> bool -> unit = "ml_gtk_cell_area_apply_attributes"
 
 (** Adds @sibling to @renderer’s focusable area, focus will be drawn
 around @renderer and all of its siblings if @renderer can

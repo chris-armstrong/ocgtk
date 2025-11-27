@@ -51,6 +51,28 @@ type gir_property = {
   prop_doc : string option;
 }
 
+type gir_record_field = {
+  field_name : string;
+  field_type : gir_type option;
+  readable : bool;
+  writable : bool;
+  field_doc : string option;
+}
+
+type gir_record = {
+  record_name : string;
+  c_type : string;
+  glib_type_name : string option;
+  glib_get_type : string option;
+  opaque : bool;
+  disguised : bool;
+  c_symbol_prefix : string option;
+  fields : gir_record_field list;
+  constructors : gir_constructor list;
+  methods : gir_method list;
+  record_doc : string option;
+}
+
 type gir_enum_member = {
   member_name : string;
   member_value : int;

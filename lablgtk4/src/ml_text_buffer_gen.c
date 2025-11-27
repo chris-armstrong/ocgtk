@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -68,6 +69,38 @@ gtk_text_buffer_set_enable_undo(GtkTextBuffer_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_text_buffer_select_range(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_text_buffer_select_range(GtkTextBuffer_val(self), GtkTextIter_val(arg1), GtkTextIter_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_remove_tag_by_name(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gtk_text_buffer_remove_tag_by_name(GtkTextBuffer_val(self), String_val(arg1), GtkTextIter_val(arg2), GtkTextIter_val(arg3));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_remove_tag(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gtk_text_buffer_remove_tag(GtkTextBuffer_val(self), GtkTextTag_val(arg1), GtkTextIter_val(arg2), GtkTextIter_val(arg3));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_remove_all_tags(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_text_buffer_remove_all_tags(GtkTextBuffer_val(self), GtkTextIter_val(arg1), GtkTextIter_val(arg2));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_buffer_redo(value self)
 {
 CAMLparam1(self);
@@ -76,11 +109,51 @@ gtk_text_buffer_redo(GtkTextBuffer_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_text_buffer_place_cursor(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_text_buffer_place_cursor(GtkTextBuffer_val(self), GtkTextIter_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_move_mark_by_name(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_text_buffer_move_mark_by_name(GtkTextBuffer_val(self), String_val(arg1), GtkTextIter_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_move_mark(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_text_buffer_move_mark(GtkTextBuffer_val(self), GtkTextMark_val(arg1), GtkTextIter_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_insert_range_interactive(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+
+gboolean result = gtk_text_buffer_insert_range_interactive(GtkTextBuffer_val(self), GtkTextIter_val(arg1), GtkTextIter_val(arg2), GtkTextIter_val(arg3), Bool_val(arg4));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_insert_range(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gtk_text_buffer_insert_range(GtkTextBuffer_val(self), GtkTextIter_val(arg1), GtkTextIter_val(arg2), GtkTextIter_val(arg3));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_buffer_insert_markup(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
-gtk_text_buffer_insert_markup(GtkTextBuffer_val(self), GtkWidget_val(arg1), String_val(arg2), Int_val(arg3));
+gtk_text_buffer_insert_markup(GtkTextBuffer_val(self), GtkTextIter_val(arg1), String_val(arg2), Int_val(arg3));
 CAMLreturn(Val_unit);
 }
 
@@ -96,7 +169,7 @@ CAMLexport CAMLprim value ml_gtk_text_buffer_insert_interactive(value self, valu
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 
-gboolean result = gtk_text_buffer_insert_interactive(GtkTextBuffer_val(self), GtkWidget_val(arg1), String_val(arg2), Int_val(arg3), Bool_val(arg4));
+gboolean result = gtk_text_buffer_insert_interactive(GtkTextBuffer_val(self), GtkTextIter_val(arg1), String_val(arg2), Int_val(arg3), Bool_val(arg4));
 CAMLreturn(Val_bool(result));
 }
 
@@ -104,7 +177,7 @@ CAMLexport CAMLprim value ml_gtk_text_buffer_insert_child_anchor(value self, val
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_text_buffer_insert_child_anchor(GtkTextBuffer_val(self), GtkWidget_val(arg1), GtkTextChildAnchor_val(arg2));
+gtk_text_buffer_insert_child_anchor(GtkTextBuffer_val(self), GtkTextIter_val(arg1), GtkTextChildAnchor_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -120,7 +193,7 @@ CAMLexport CAMLprim value ml_gtk_text_buffer_insert(value self, value arg1, valu
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
-gtk_text_buffer_insert(GtkTextBuffer_val(self), GtkWidget_val(arg1), String_val(arg2), Int_val(arg3));
+gtk_text_buffer_insert(GtkTextBuffer_val(self), GtkTextIter_val(arg1), String_val(arg2), Int_val(arg3));
 CAMLreturn(Val_unit);
 }
 
@@ -138,7 +211,7 @@ CAMLparam1(self);
 GtkTextIter out1;
 
 gtk_text_buffer_get_start_iter(GtkTextBuffer_val(self), &out1);
-CAMLreturn(Val_unit);
+CAMLreturn(Val_GtkTextIter(out1));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_buffer_get_selection_bounds(value self)
@@ -148,7 +221,12 @@ GtkTextIter out1;
 GtkTextIter out2;
 
 gboolean result = gtk_text_buffer_get_selection_bounds(GtkTextBuffer_val(self), &out1, &out2);
-CAMLreturn(Val_bool(result));
+CAMLlocal1(ret);
+    ret = caml_alloc(3, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_GtkTextIter(out1));
+    Store_field(ret, 2, Val_GtkTextIter(out2));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_text_buffer_get_selection_bound(value self)
@@ -197,7 +275,7 @@ CAMLparam2(self, arg1);
 GtkTextIter out1;
 
 gtk_text_buffer_get_iter_at_offset(GtkTextBuffer_val(self), &out1, Int_val(arg1));
-CAMLreturn(Val_unit);
+CAMLreturn(Val_GtkTextIter(out1));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_buffer_get_iter_at_mark(value self, value arg1)
@@ -206,7 +284,7 @@ CAMLparam2(self, arg1);
 GtkTextIter out1;
 
 gtk_text_buffer_get_iter_at_mark(GtkTextBuffer_val(self), &out1, GtkTextMark_val(arg1));
-CAMLreturn(Val_unit);
+CAMLreturn(Val_GtkTextIter(out1));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_buffer_get_iter_at_line_offset(value self, value arg1, value arg2)
@@ -215,7 +293,11 @@ CAMLparam3(self, arg1, arg2);
 GtkTextIter out1;
 
 gboolean result = gtk_text_buffer_get_iter_at_line_offset(GtkTextBuffer_val(self), &out1, Int_val(arg1), Int_val(arg2));
-CAMLreturn(Val_bool(result));
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_GtkTextIter(out1));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_text_buffer_get_iter_at_line_index(value self, value arg1, value arg2)
@@ -224,7 +306,11 @@ CAMLparam3(self, arg1, arg2);
 GtkTextIter out1;
 
 gboolean result = gtk_text_buffer_get_iter_at_line_index(GtkTextBuffer_val(self), &out1, Int_val(arg1), Int_val(arg2));
-CAMLreturn(Val_bool(result));
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_GtkTextIter(out1));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_text_buffer_get_iter_at_line(value self, value arg1)
@@ -233,7 +319,11 @@ CAMLparam2(self, arg1);
 GtkTextIter out1;
 
 gboolean result = gtk_text_buffer_get_iter_at_line(GtkTextBuffer_val(self), &out1, Int_val(arg1));
-CAMLreturn(Val_bool(result));
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_GtkTextIter(out1));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_text_buffer_get_iter_at_child_anchor(value self, value arg1)
@@ -242,7 +332,7 @@ CAMLparam2(self, arg1);
 GtkTextIter out1;
 
 gtk_text_buffer_get_iter_at_child_anchor(GtkTextBuffer_val(self), &out1, GtkTextChildAnchor_val(arg1));
-CAMLreturn(Val_unit);
+CAMLreturn(Val_GtkTextIter(out1));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_buffer_get_insert(value self)
@@ -267,7 +357,7 @@ CAMLparam1(self);
 GtkTextIter out1;
 
 gtk_text_buffer_get_end_iter(GtkTextBuffer_val(self), &out1);
-CAMLreturn(Val_unit);
+CAMLreturn(Val_GtkTextIter(out1));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_buffer_get_enable_undo(value self)
@@ -309,7 +399,11 @@ GtkTextIter out1;
 GtkTextIter out2;
 
 gtk_text_buffer_get_bounds(GtkTextBuffer_val(self), &out1, &out2);
-CAMLreturn(Val_unit);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_GtkTextIter(out1));
+    Store_field(ret, 1, Val_GtkTextIter(out2));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_text_buffer_end_user_action(value self)
@@ -356,7 +450,7 @@ CAMLexport CAMLprim value ml_gtk_text_buffer_delete_interactive(value self, valu
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
-gboolean result = gtk_text_buffer_delete_interactive(GtkTextBuffer_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2), Bool_val(arg3));
+gboolean result = gtk_text_buffer_delete_interactive(GtkTextBuffer_val(self), GtkTextIter_val(arg1), GtkTextIter_val(arg2), Bool_val(arg3));
 CAMLreturn(Val_bool(result));
 }
 
@@ -364,15 +458,23 @@ CAMLexport CAMLprim value ml_gtk_text_buffer_delete(value self, value arg1, valu
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_text_buffer_delete(GtkTextBuffer_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2));
+gtk_text_buffer_delete(GtkTextBuffer_val(self), GtkTextIter_val(arg1), GtkTextIter_val(arg2));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_create_mark(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+GtkTextMark* result = gtk_text_buffer_create_mark(GtkTextBuffer_val(self), String_option_val(arg1), GtkTextIter_val(arg2), Bool_val(arg3));
+CAMLreturn(Val_GtkTextMark(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_buffer_create_child_anchor(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-GtkTextChildAnchor* result = gtk_text_buffer_create_child_anchor(GtkTextBuffer_val(self), GtkWidget_val(arg1));
+GtkTextChildAnchor* result = gtk_text_buffer_create_child_anchor(GtkTextBuffer_val(self), GtkTextIter_val(arg1));
 CAMLreturn(Val_GtkTextChildAnchor(result));
 }
 
@@ -396,6 +498,30 @@ CAMLexport CAMLprim value ml_gtk_text_buffer_backspace(value self, value arg1, v
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
-gboolean result = gtk_text_buffer_backspace(GtkTextBuffer_val(self), GtkWidget_val(arg1), Bool_val(arg2), Bool_val(arg3));
+gboolean result = gtk_text_buffer_backspace(GtkTextBuffer_val(self), GtkTextIter_val(arg1), Bool_val(arg2), Bool_val(arg3));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_apply_tag_by_name(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gtk_text_buffer_apply_tag_by_name(GtkTextBuffer_val(self), String_val(arg1), GtkTextIter_val(arg2), GtkTextIter_val(arg3));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_apply_tag(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gtk_text_buffer_apply_tag(GtkTextBuffer_val(self), GtkTextTag_val(arg1), GtkTextIter_val(arg2), GtkTextIter_val(arg3));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_add_mark(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_text_buffer_add_mark(GtkTextBuffer_val(self), GtkTextMark_val(arg1), GtkTextIter_val(arg2));
+CAMLreturn(Val_unit);
 }
