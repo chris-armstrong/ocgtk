@@ -231,14 +231,6 @@ value Val_GError(GError *error) {
 /* Copies for value-returning GTK structs                              */
 /* ==================================================================== */
 
-static value copy_struct_as_block(const void *src, size_t sz) {
-    CAMLparam0();
-    CAMLlocal1(block);
-    /* Allocate an abstract block large enough to hold the struct bytes */
-    block = caml_alloc((sz + sizeof(value) - 1) / sizeof(value), Abstract_tag);
-    memcpy((void *)block, src, sz);
-    CAMLreturn(block);
-}
 
 value copy_GtkTreeIter(const GtkTreeIter *iter) {
     return ml_gir_record_alloc(iter, sizeof(GtkTreeIter), "GtkTreeIter");
