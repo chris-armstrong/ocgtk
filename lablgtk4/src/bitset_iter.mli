@@ -7,7 +7,7 @@ over the elements of a `GtkBitset`.
 Before a `GtkBitsetIter` can be used, it needs to be initialized with
 [func@Gtk.BitsetIter.init_first], [func@Gtk.BitsetIter.init_last]
 or [func@Gtk.BitsetIter.init_at]. *)
-type t = Obj.t
+type t
 
 (** Checks if @iter points to a valid value. *)
 external is_valid : t -> bool = "ml_gtk_bitset_iter_is_valid"

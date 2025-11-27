@@ -6,7 +6,7 @@ operation should be performed.
 
 Scrolling functions usually allow passing a %NULL scroll info which will cause
 the default values to be used and just scroll the element into view. *)
-type t = Obj.t
+type t
 
 (** Create a new ScrollInfo *)
 external new_ : unit -> t = "ml_gtk_scroll_info_new"

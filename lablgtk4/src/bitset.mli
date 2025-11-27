@@ -16,7 +16,7 @@ The fastest way to iterate values in a bitset is [struct@Gtk.BitsetIter].
 
 The main use case for `GtkBitset` is implementing complex selections for
 [iface@Gtk.SelectionModel]. *)
-type t = Obj.t
+type t
 
 (** Create a new Bitset *)
 external new_empty : unit -> t = "ml_gtk_bitset_new_empty"

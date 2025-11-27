@@ -12,7 +12,7 @@ construct custom paper sizes with arbitrary dimensions.
 The `GtkPaperSize` object stores not only the dimensions (width
 and height) of a paper size and its name, it also provides
 default print margins. *)
-type t = Obj.t
+type t
 
 (** Create a new PaperSize *)
 external new_ : string option -> t = "ml_gtk_paper_size_new"

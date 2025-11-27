@@ -7,7 +7,7 @@ You may wish to begin by reading the
 [text widget conceptual overview](section-text-widget.html),
 which gives an overview of all the objects and data types
 related to the text widget and how they work together. *)
-type t = Obj.t
+type t
 
 (** Gets whether a range with @tag applied to it begins
 or ends at @iter.

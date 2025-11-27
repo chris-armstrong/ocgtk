@@ -11,7 +11,7 @@ Print setups can be reused for multiple print calls.
 
 Applications may wish to store the page_setup and print_settings from the print setup
 and copy them to the PrintDialog if they want to keep using them. *)
-type t = Obj.t
+type t
 
 (** Decrease the reference count of @setup.
 

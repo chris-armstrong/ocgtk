@@ -5,7 +5,7 @@
 
 Because sections are nested into one another, you can use
 [method@CssSection.get_parent] to get the containing region. *)
-type t = Obj.t
+type t
 
 (** Create a new CssSection *)
 external new_ : unit -> unit -> unit -> t = "ml_gtk_css_section_new"

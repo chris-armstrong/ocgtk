@@ -4,7 +4,7 @@
 (** A GtkTreeRowReference tracks model changes so that it always refers to the
 same row (a `GtkTreePath` refers to a position, not a fixed row). Create a
 new GtkTreeRowReference with gtk_tree_row_reference_new(). *)
-type t = Obj.t
+type t
 
 (** Create a new TreeRowReference *)
 external new_ : Gtk.widget -> Obj.t -> t = "ml_gtk_tree_row_reference_new"

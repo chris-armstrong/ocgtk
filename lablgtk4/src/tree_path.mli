@@ -2,7 +2,7 @@
 (* Record: TreePath *)
 
 (** An opaque structure representing a path to a row in a model. *)
-type t = Obj.t
+type t
 
 (** Create a new TreePath *)
 external new_ : unit -> t = "ml_gtk_tree_path_new"

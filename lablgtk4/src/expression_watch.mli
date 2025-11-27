@@ -5,7 +5,7 @@
 
 The contents of `GtkExpressionWatch` should only be accessed through the
 provided API. *)
-type t = Obj.t
+type t
 
 (** Stops watching an expression.
 

@@ -105,7 +105,10 @@ let generate_ml_interface
   | Some doc -> bprintf buf "(** %s *)\n" (sanitize_doc doc)
   | None -> ());
 
-  bprintf buf "type t = %s\n\n" base_type;
+  if is_record && not is_impl then
+    bprintf buf "type t\n\n"
+  else
+    bprintf buf "type t = %s\n\n" base_type;
 
   if has_widget_parent then begin
     if is_impl then

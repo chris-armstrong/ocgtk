@@ -3,7 +3,7 @@
 
 (** `GtkRecentInfo` contains the metadata associated with an item in the
 recently used files list. *)
-type t = Obj.t
+type t
 
 (** Decreases the reference count of @info by one.
 
