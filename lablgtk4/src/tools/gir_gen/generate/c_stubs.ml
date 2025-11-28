@@ -511,19 +511,25 @@ let generate_c_property_getter ~classes ~records ~enums ~bitfields ~c_type (prop
     | None -> prop.prop_type.c_type
   in
 
+  let prop_decl =
+    if String.contains prop.prop_type.c_type '*' then
+      sprintf "    %s *prop_value;\n" c_type_name
+    else
+      sprintf "    %s prop_value;\n" c_type_name
+  in
   sprintf "\nCAMLexport CAMLprim value %s(value self)\n\
 {\n\
     CAMLparam1(self);\n\
     CAMLlocal1(result);\n\
     %s *obj = (%s *)%s(self);\n\
-    %s prop_value;\n\
+%s\
     g_object_get(G_OBJECT(obj), \"%s\", &prop_value, NULL);\n\
     result = %s;\n\
     CAMLreturn(result);\n\
 }\n"
     ml_name
     c_type_name c_type_name c_cast
-    prop.prop_type.c_type
+    prop_decl
     prop.prop_name
     ml_prop_value
 

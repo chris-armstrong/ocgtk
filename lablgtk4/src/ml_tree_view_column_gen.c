@@ -393,7 +393,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_get_alignment(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 gfloat *obj = (gfloat *)GtkTreeViewColumn_val(self);
-gfloat prop_value;
+    gfloat prop_value;
 g_object_get(G_OBJECT(obj), "alignment", &prop_value, NULL);
 result = caml_copy_double(prop_value);
 CAMLreturn(result);

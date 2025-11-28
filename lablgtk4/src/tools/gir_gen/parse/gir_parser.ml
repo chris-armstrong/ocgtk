@@ -3,6 +3,8 @@
 open StdLabels
 open Types
 
+module StringSet = Set.Make(String)
+
 (* Get attribute value from XML attributes list *)
 let get_attr name attrs =
   let glib_ns = "http://www.gtk.org/introspection/glib/1.0" in
@@ -182,7 +184,7 @@ let parse_gir_enums_only filename =
   (List.rev !enums, List.rev !bitfields)
 
 (* Parse a full GIR file including classes, interfaces, enums, and bitfields *)
-let parse_gir_file filename _filter_classes =
+let parse_gir_file filename filter_classes =
   let ic = open_in filename in
   let input = Xmlm.make_input ~strip:true (`Channel ic) in
 
@@ -200,8 +202,16 @@ let parse_gir_file filename _filter_classes =
   let signal_table : (string, gir_signal list) Hashtbl.t = Hashtbl.create 256 in
   let iface_signal_table : (string, gir_signal list) Hashtbl.t = Hashtbl.create 128 in
 
-  (* Check if class should be included based on mode and filter *)
-  let should_include_class _name = true
+  let normalized_filters =
+    List.fold_left filter_classes ~init:StringSet.empty ~f:(fun acc name ->
+      StringSet.add (Utils.normalize_class_name name |> String.lowercase_ascii) acc)
+  in
+  let should_include_class name =
+    if StringSet.is_empty normalized_filters then
+      true
+    else
+      let normalized = Utils.normalize_class_name name |> String.lowercase_ascii in
+      StringSet.mem normalized normalized_filters
   in
 
   (* Skip to end of current element *)

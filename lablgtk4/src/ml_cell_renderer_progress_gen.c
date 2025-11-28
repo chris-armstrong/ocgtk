@@ -34,7 +34,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_progress_get_inverted(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 gboolean *obj = (gboolean *)GtkCellRendererProgress_val(self);
-gboolean prop_value;
+    gboolean prop_value;
 g_object_get(G_OBJECT(obj), "inverted", &prop_value, NULL);
 result = Val_bool(prop_value);
 CAMLreturn(result);
