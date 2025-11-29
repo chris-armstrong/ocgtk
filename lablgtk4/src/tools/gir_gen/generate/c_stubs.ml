@@ -155,13 +155,8 @@ let generate_gvalue_getter_assignment ~ml_name ~prop ~c_type_name ~prop_info =
         if is_pointer then
           sprintf "    prop_value = (%s*)g_value_get_boxed(&prop_gvalue);\n" record.c_type
         else
-          sprintf
-            "    {\n\
-        const %s *boxed = g_value_get_boxed(&prop_gvalue);\n\
-        if (boxed == NULL) caml_failwith(\"%s: property '%s' returned NULL boxed value\");\n\
-        prop_value = *boxed;\n\
-    }\n"
-            record.c_type ml_name prop.prop_name
+          (* For non-pointer records (value-like structs), we can use the boxed pointer directly *)
+          sprintf "    prop_value = (%s*)g_value_get_boxed(&prop_gvalue);\n" record.c_type
     | None ->
         if Option.is_some prop_info.class_info then
           sprintf "    prop_value = (%s)g_value_get_object(&prop_gvalue);\n" c_type_name
@@ -707,7 +702,8 @@ let generate_c_property_getter ~classes ~records ~enums ~bitfields ~c_type (prop
     | Some (record, _, _) when prop_info.has_pointer ->
         sprintf "    %s *prop_value;\n" record.c_type
     | Some (record, _, _) when prop_record_is_pointer ->
-        sprintf "    %s prop_value;\n" record.c_type
+        (* Value-like records should also use pointer since we get the boxed pointer directly *)
+        sprintf "    %s *prop_value;\n" record.c_type
     | _ when record_pointer ->
         (match record_match with
         | Some record -> sprintf "    %s *prop_value;\n" record.c_type
