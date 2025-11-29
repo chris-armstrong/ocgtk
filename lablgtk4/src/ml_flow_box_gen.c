@@ -265,10 +265,17 @@ CAMLexport CAMLprim value ml_gtk_flow_box_get_accept_unpaired_release(value self
 {
 CAMLparam1(self);
 CAMLlocal1(result);
-gboolean *obj = (gboolean *)GtkFlowBox_val(self);
+GtkFlowBox *obj = (GtkFlowBox *)GtkFlowBox_val(self);
     gboolean prop_value;
-g_object_get(G_OBJECT(obj), "accept-unpaired-release", &prop_value, NULL);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accept-unpaired-release");
+if (pspec == NULL) caml_failwith("ml_gtk_flow_box_get_accept_unpaired_release: property 'accept-unpaired-release' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "accept-unpaired-release", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
 result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
 CAMLreturn(result);
 }
 
@@ -277,6 +284,12 @@ CAMLexport CAMLprim value ml_gtk_flow_box_set_accept_unpaired_release(value self
 CAMLparam2(self, new_value);
 GtkFlowBox *obj = (GtkFlowBox *)GtkFlowBox_val(self);
     gboolean c_value = Bool_val(new_value);
-g_object_set(G_OBJECT(obj), "accept-unpaired-release", c_value, NULL);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accept-unpaired-release");
+if (pspec == NULL) caml_failwith("ml_gtk_flow_box_set_accept_unpaired_release: property 'accept-unpaired-release' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "accept-unpaired-release", &prop_gvalue);
+g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }

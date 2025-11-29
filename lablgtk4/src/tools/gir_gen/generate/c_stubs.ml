@@ -46,6 +46,174 @@ let emit_bitfield_proto buf ~namespace (bitfield : gir_bitfield) =
   bprintf buf "value Val_%s%s(%s flags);\n" namespace bitfield.bitfield_name bitfield.bitfield_c_type;
   bprintf buf "%s %s%s_val(value list);\n" bitfield.bitfield_c_type namespace bitfield.bitfield_name
 
+type property_gvalue_info = {
+  base_type : string;
+  base_lower : string;
+  has_pointer : bool;
+  pointer_like : bool;
+  record_info : (gir_record * bool * bool) option;
+  class_info : gir_class option;
+  is_enum : bool;
+  is_bitfield : bool;
+}
+
+let list_contains ~value list =
+  List.exists list ~f:(fun candidate -> candidate = value)
+
+let analyze_property_type ~classes ~records ~enums ~bitfields (gir_type : gir_type) =
+  let normalized = Type_mappings.normalize_c_pointer_type gir_type.c_type |> String.trim in
+  let rec find_last idx =
+    if idx < 0 then None
+    else
+      match String.get normalized idx with
+      | ' ' | '\t' -> find_last (idx - 1)
+      | '*' -> Some idx
+      | _ -> None
+  in
+  let (base_type, has_pointer) =
+    match find_last (String.length normalized - 1) with
+    | Some idx ->
+        let stripped = String.trim (String.sub normalized ~pos:0 ~len:idx) in
+        (stripped, true)
+    | None -> (normalized, false)
+  in
+  let base_lower = String.lowercase_ascii base_type in
+  let record_info = Type_mappings.find_record_mapping records gir_type.c_type in
+  let class_info = Type_mappings.find_class_mapping classes gir_type.c_type in
+  let is_enum =
+    List.exists enums ~f:(fun e ->
+      e.enum_c_type = base_type || e.enum_c_type = gir_type.c_type)
+  in
+  let is_bitfield =
+    List.exists bitfields ~f:(fun b ->
+      b.bitfield_c_type = base_type || b.bitfield_c_type = gir_type.c_type)
+  in
+  let pointer_like =
+    has_pointer ||
+    List.exists ["gpointer"; "gconstpointer"] ~f:(fun candidate -> candidate = base_lower)
+  in
+  {
+    base_type;
+    base_lower;
+    has_pointer;
+    pointer_like;
+    record_info;
+    class_info;
+    is_enum;
+    is_bitfield;
+  }
+
+let string_base_types = ["gchar"; "char"; "utf8"; "gchararray"]
+let int32_types = ["gint"; "int"; "gint32"; "int32"; "gint16"; "int16"; "gint8"; "int8"]
+let uint32_types = ["guint"; "uint"; "guint32"; "uint32"; "guint16"; "uint16"; "guint8"; "uint8"]
+let int64_types = ["gint64"; "int64"]
+let uint64_types = ["guint64"; "uint64"]
+let long_types = ["glong"; "long"; "goffset"; "off_t"]
+let ulong_types = ["gulong"; "ulong"]
+let ssize_types = ["gssize"; "ssize_t"]
+let size_types = ["gsize"; "size_t"]
+let float_types = ["gfloat"; "float"]
+let double_types = ["gdouble"; "double"]
+
+let generate_gvalue_getter_assignment ~ml_name ~prop ~c_type_name ~prop_info =
+  let base_lower = prop_info.base_lower in
+  let fallback =
+    sprintf "    caml_failwith(\"%s: unsupported property type '%s'\");\n"
+      ml_name prop.prop_name
+  in
+  if prop_info.is_enum then
+    sprintf "    prop_value = (%s)g_value_get_enum(&prop_gvalue);\n" c_type_name
+  else if prop_info.is_bitfield then
+    sprintf "    prop_value = (%s)g_value_get_flags(&prop_gvalue);\n" c_type_name
+  else if base_lower = "gboolean" then
+    "    prop_value = g_value_get_boolean(&prop_gvalue);\n"
+  else if list_contains ~value:base_lower int32_types then
+    sprintf "    prop_value = (%s)g_value_get_int(&prop_gvalue);\n" c_type_name
+  else if list_contains ~value:base_lower uint32_types then
+    sprintf "    prop_value = (%s)g_value_get_uint(&prop_gvalue);\n" c_type_name
+  else if list_contains ~value:base_lower int64_types then
+    sprintf "    prop_value = (%s)g_value_get_int64(&prop_gvalue);\n" c_type_name
+  else if list_contains ~value:base_lower uint64_types then
+    sprintf "    prop_value = (%s)g_value_get_uint64(&prop_gvalue);\n" c_type_name
+  else if list_contains ~value:base_lower long_types then
+    sprintf "    prop_value = (%s)g_value_get_long(&prop_gvalue);\n" c_type_name
+  else if list_contains ~value:base_lower ulong_types then
+    sprintf "    prop_value = (%s)g_value_get_ulong(&prop_gvalue);\n" c_type_name
+  else if list_contains ~value:base_lower ssize_types then
+    sprintf "    prop_value = (%s)g_value_get_ssize(&prop_gvalue);\n" c_type_name
+  else if list_contains ~value:base_lower size_types then
+    sprintf "    prop_value = (%s)g_value_get_size(&prop_gvalue);\n" c_type_name
+  else if list_contains ~value:base_lower double_types then
+    "    prop_value = g_value_get_double(&prop_gvalue);\n"
+  else if list_contains ~value:base_lower float_types then
+    "    prop_value = g_value_get_float(&prop_gvalue);\n"
+  else if prop_info.has_pointer && list_contains ~value:base_lower string_base_types then
+    "    prop_value = g_value_get_string(&prop_gvalue);\n"
+  else
+    match prop_info.record_info with
+    | Some (record, is_pointer, _) ->
+        if is_pointer then
+          sprintf "    prop_value = (%s*)g_value_get_boxed(&prop_gvalue);\n" record.c_type
+        else
+          (* For non-pointer records (value-like structs), we can use the boxed pointer directly *)
+          sprintf "    prop_value = (%s*)g_value_get_boxed(&prop_gvalue);\n" record.c_type
+    | None ->
+        if Option.is_some prop_info.class_info then
+          sprintf "    prop_value = (%s)g_value_get_object(&prop_gvalue);\n" c_type_name
+        else if prop_info.pointer_like then
+          sprintf "    prop_value = (%s)g_value_get_pointer(&prop_gvalue);\n" c_type_name
+        else
+          fallback
+let generate_gvalue_setter_assignment ~ml_name ~prop ~prop_info =
+  let base_lower = prop_info.base_lower in
+  let fallback =
+    sprintf "    caml_failwith(\"%s: unsupported property type '%s'\");\n"
+      ml_name prop.prop_name
+  in
+  if prop_info.is_enum then
+    "    g_value_set_enum(&prop_gvalue, c_value);\n"
+  else if prop_info.is_bitfield then
+    "    g_value_set_flags(&prop_gvalue, c_value);\n"
+  else if base_lower = "gboolean" then
+    "    g_value_set_boolean(&prop_gvalue, c_value);\n"
+  else if list_contains ~value:base_lower int32_types then
+    "    g_value_set_int(&prop_gvalue, c_value);\n"
+  else if list_contains ~value:base_lower uint32_types then
+    "    g_value_set_uint(&prop_gvalue, c_value);\n"
+  else if list_contains ~value:base_lower int64_types then
+    "    g_value_set_int64(&prop_gvalue, c_value);\n"
+  else if list_contains ~value:base_lower uint64_types then
+    "    g_value_set_uint64(&prop_gvalue, c_value);\n"
+  else if list_contains ~value:base_lower long_types then
+    "    g_value_set_long(&prop_gvalue, c_value);\n"
+  else if list_contains ~value:base_lower ulong_types then
+    "    g_value_set_ulong(&prop_gvalue, c_value);\n"
+  else if list_contains ~value:base_lower ssize_types then
+    "    g_value_set_ssize(&prop_gvalue, c_value);\n"
+  else if list_contains ~value:base_lower size_types then
+    "    g_value_set_size(&prop_gvalue, c_value);\n"
+  else if list_contains ~value:base_lower double_types then
+    "    g_value_set_double(&prop_gvalue, c_value);\n"
+  else if list_contains ~value:base_lower float_types then
+    "    g_value_set_float(&prop_gvalue, c_value);\n"
+  else if prop_info.has_pointer && list_contains ~value:base_lower string_base_types then
+    "    g_value_set_string(&prop_gvalue, c_value);\n"
+  else
+    match prop_info.record_info with
+    | Some (_, is_pointer, _) ->
+        if is_pointer then
+          "    g_value_set_boxed(&prop_gvalue, c_value);\n"
+        else
+          "    g_value_set_boxed(&prop_gvalue, &c_value);\n"
+    | None ->
+        if Option.is_some prop_info.class_info then
+          "    g_value_set_object(&prop_gvalue, c_value);\n"
+        else if prop_info.pointer_like then
+          "    g_value_set_pointer(&prop_gvalue, c_value);\n"
+        else
+          fallback
+
+
 (* Generate common header file with forward declarations for enum/bitfield converters *)
 let value_record_macros = ["GtkTreeIter"; "GtkTextIter"; "GtkRequisition"; "GtkBorder"]
 
@@ -499,48 +667,77 @@ let generate_c_property_getter ~classes ~records ~enums ~bitfields ~c_type (prop
   in
 
   let c_cast = sprintf "%s_val" c_type in
-  let c_type_name =
-    let normalized = Utils.normalize_class_name prop.prop_type.c_type in
-    match List.find_opt records ~f:(fun r ->
+  let normalized = Utils.normalize_class_name prop.prop_type.c_type in
+  let record_match =
+    List.find_opt records ~f:(fun r ->
       let rname = Utils.normalize_class_name r.record_name in
       let rc = Utils.normalize_class_name r.c_type in
-      rname = normalized || rc = normalized) with
+      rname = normalized || rc = normalized)
+  in
+  let c_type_name =
+    match record_match with
     | Some record ->
       let base = record.c_type in
       if String.contains prop.prop_type.c_type '*' then base ^ "*" else base
     | None -> prop.prop_type.c_type
   in
 
-  let record_opt =
-    List.find_opt records ~f:(fun r ->
-      let rname = Utils.normalize_class_name r.record_name in
-      let rc = Utils.normalize_class_name r.c_type in
-      rname = Utils.normalize_class_name prop.prop_type.c_type || rc = Utils.normalize_class_name prop.prop_type.c_type)
+  let record_info = Type_mappings.find_record_mapping records prop.prop_type.c_type in
+  let prop_info = analyze_property_type ~classes ~records ~enums ~bitfields prop.prop_type in
+  let prop_record =
+    match record_info with
+    | Some (record, _, _) -> Some record
+    | None -> None
   in
+  let prop_record_is_pointer =
+    match prop_record with
+    | Some record -> not (is_value_like_record record)
+    | None -> false
+  in
+  let record_pointer = Option.is_some record_match && String.contains prop.prop_type.c_type '*' in
   let prop_decl =
-    match record_opt with
-    | Some record when not (is_value_like_record record) ->
-        sprintf "    %s *prop_value;\n" c_type_name
+    match record_info with
+    | Some (record, true, _) ->
+        sprintf "    %s *prop_value;\n" record.c_type
+    | Some (record, _, _) when prop_info.has_pointer ->
+        sprintf "    %s *prop_value;\n" record.c_type
+    | Some (record, _, _) when prop_record_is_pointer ->
+        (* Value-like records should also use pointer since we get the boxed pointer directly *)
+        sprintf "    %s *prop_value;\n" record.c_type
+    | _ when record_pointer ->
+        (match record_match with
+        | Some record -> sprintf "    %s *prop_value;\n" record.c_type
+        | None -> sprintf "    %s *prop_value;\n" c_type_name)
     | _ ->
       if String.contains prop.prop_type.c_type '*' then
         sprintf "    %s *prop_value;\n" c_type_name
       else
         sprintf "    %s prop_value;\n" c_type_name
   in
+  let gvalue_assignment = generate_gvalue_getter_assignment ~ml_name ~prop ~c_type_name ~prop_info in
   sprintf "\nCAMLexport CAMLprim value %s(value self)\n\
 {\n\
     CAMLparam1(self);\n\
     CAMLlocal1(result);\n\
     %s *obj = (%s *)%s(self);\n\
 %s\
-    g_object_get(G_OBJECT(obj), \"%s\", &prop_value, NULL);\n\
+    GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), \"%s\");\n\
+    if (pspec == NULL) caml_failwith(\"%s: property '%s' not found\");\n\
+    GValue prop_gvalue = G_VALUE_INIT;\n\
+    g_value_init(&prop_gvalue, pspec->value_type);\n\
+    g_object_get_property(G_OBJECT(obj), \"%s\", &prop_gvalue);\n\
+%s\n\
     result = %s;\n\
+    g_value_unset(&prop_gvalue);\n\
     CAMLreturn(result);\n\
 }\n"
     ml_name
-    c_type_name c_type_name c_cast
+    c_type c_type c_cast
     prop_decl
     prop.prop_name
+    ml_name prop.prop_name
+    prop.prop_name
+    gvalue_assignment
     ml_prop_value
 
 let generate_c_property_setter ~classes ~records ~enums ~bitfields ~c_type (prop : gir_property) class_name =
@@ -573,19 +770,29 @@ let generate_c_property_setter ~classes ~records ~enums ~bitfields ~c_type (prop
   in
 
   let c_cast = sprintf "%s_val" c_type in
-  let c_type_name = c_type in
+  let prop_info = analyze_property_type ~classes ~records ~enums ~bitfields prop.prop_type in
+  let setter_assignment = generate_gvalue_setter_assignment ~ml_name ~prop ~prop_info in
 
   sprintf "\nCAMLexport CAMLprim value %s(value self, value new_value)\n\
 {\n\
     CAMLparam2(self, new_value);\n\
     %s *obj = (%s *)%s(self);\n\
 %s\
-    g_object_set(G_OBJECT(obj), \"%s\", c_value, NULL);\n\
+    GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), \"%s\");\n\
+    if (pspec == NULL) caml_failwith(\"%s: property '%s' not found\");\n\
+    GValue prop_gvalue = G_VALUE_INIT;\n\
+    g_value_init(&prop_gvalue, pspec->value_type);\n\
+%s\
+    g_object_set_property(G_OBJECT(obj), \"%s\", &prop_gvalue);\n\
+    g_value_unset(&prop_gvalue);\n\
     CAMLreturn(Val_unit);\n\
 }\n"
     ml_name
-    c_type_name c_type_name c_cast
+    c_type c_type c_cast
     value_declaration
+    prop.prop_name
+    ml_name prop.prop_name
+    setter_assignment
     prop.prop_name
 
 (* Generate complete C file for a single class/interface *)
