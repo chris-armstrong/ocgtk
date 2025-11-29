@@ -511,11 +511,21 @@ let generate_c_property_getter ~classes ~records ~enums ~bitfields ~c_type (prop
     | None -> prop.prop_type.c_type
   in
 
+  let record_opt =
+    List.find_opt records ~f:(fun r ->
+      let rname = Utils.normalize_class_name r.record_name in
+      let rc = Utils.normalize_class_name r.c_type in
+      rname = Utils.normalize_class_name prop.prop_type.c_type || rc = Utils.normalize_class_name prop.prop_type.c_type)
+  in
   let prop_decl =
-    if String.contains prop.prop_type.c_type '*' then
-      sprintf "    %s *prop_value;\n" c_type_name
-    else
-      sprintf "    %s prop_value;\n" c_type_name
+    match record_opt with
+    | Some record when not (is_value_like_record record) ->
+        sprintf "    %s *prop_value;\n" c_type_name
+    | _ ->
+      if String.contains prop.prop_type.c_type '*' then
+        sprintf "    %s *prop_value;\n" c_type_name
+      else
+        sprintf "    %s prop_value;\n" c_type_name
   in
   sprintf "\nCAMLexport CAMLprim value %s(value self)\n\
 {\n\

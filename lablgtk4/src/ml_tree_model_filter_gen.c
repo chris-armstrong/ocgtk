@@ -92,13 +92,3 @@ gtk_tree_model_filter_clear_cache(GtkTreeModelFilter_val(self));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_model_filter_get_virtual_root(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkTreePath *obj = (GtkTreePath *)GtkTreeModelFilter_val(self);
-    GtkTreePath prop_value;
-g_object_get(G_OBJECT(obj), "virtual-root", &prop_value, NULL);
-result = Val_GtkTreePath(prop_value);
-CAMLreturn(result);
-}
