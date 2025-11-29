@@ -34,7 +34,7 @@ CAMLexport CAMLprim value ml_gtk_file_chooser_widget_get_search_mode(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 gboolean *obj = (gboolean *)GtkFileChooserWidget_val(self);
-gboolean prop_value;
+    gboolean prop_value;
 g_object_get(G_OBJECT(obj), "search-mode", &prop_value, NULL);
 result = Val_bool(prop_value);
 CAMLreturn(result);

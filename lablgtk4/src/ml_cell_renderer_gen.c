@@ -161,7 +161,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_get_cell_background(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 gchar* *obj = (gchar* *)GtkCellRenderer_val(self);
-gchar* prop_value;
+    gchar* *prop_value;
 g_object_get(G_OBJECT(obj), "cell-background", &prop_value, NULL);
 result = caml_copy_string(prop_value);
 CAMLreturn(result);

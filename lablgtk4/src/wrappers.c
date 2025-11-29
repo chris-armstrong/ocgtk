@@ -101,7 +101,7 @@ CAMLexport value copy_memblock_indirected(void *src, asize_t size)
 
 static void finalize_gir_record(value v) {
     void *ptr = *((void**)Data_custom_val(v));
-    printf("[d] %p\n", v);
+    printf("[d] %p\n", (void*)v);
     if (ptr != NULL) g_free(ptr);
 }
 
