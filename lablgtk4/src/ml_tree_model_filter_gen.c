@@ -92,3 +92,24 @@ gtk_tree_model_filter_clear_cache(GtkTreeModelFilter_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_tree_model_filter_get_virtual_root(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTreeModelFilter *obj = (GtkTreeModelFilter *)GtkTreeModelFilter_val(self);
+    GtkTreePath prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "virtual-root");
+if (pspec == NULL) caml_failwith("ml_gtk_tree_model_filter_get_virtual_root: property 'virtual-root' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "virtual-root", &prop_gvalue);
+    {
+const GtkTreePath *boxed = g_value_get_boxed(&prop_gvalue);
+if (boxed == NULL) caml_failwith("ml_gtk_tree_model_filter_get_virtual_root: property 'virtual-root' returned NULL boxed value");
+prop_value = *boxed;
+}
+
+result = Val_GtkTreePath(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
