@@ -23,7 +23,7 @@ dune exec src/tools/gir_gen/main.exe -- -f src/gtk4_controllers.controller \
 
 ### Options
 
-- `-f FILE`: Filter file listing class names to generate (one per line)
+- `-f FILE`: (optional) Filter file listing class names to generate (one per line)
 - `GIR_FILE`: Path to GTK GIR file (usually `/usr/share/gir-1.0/Gtk-4.0.gir`)
 - `OUTPUT_DIR`: Where to write generated files
 

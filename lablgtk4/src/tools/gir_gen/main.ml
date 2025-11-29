@@ -91,6 +91,8 @@ let generate_bindings filter_file gir_file output_dir =
   printf "\nWriting %s...\n" header_file;
   let header_content = Gir_gen_lib.Generate.C_stubs.generate_forward_decls_header
     ~classes:controllers
+    ~gtk_enums
+    ~gtk_bitfields
     ~external_enums:external_enums_with_ns
     ~external_bitfields:external_bitfields_with_ns in
   let oc = open_out header_file in

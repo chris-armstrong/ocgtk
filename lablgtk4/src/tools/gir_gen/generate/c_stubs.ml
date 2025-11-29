@@ -39,7 +39,7 @@ let nullable_ml_to_c_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping) 
       sprintf "%s(%s)" mapping.ml_to_c var
 
 (* Generate common header file with forward declarations for enum/bitfield converters *)
-let generate_forward_decls_header ~classes ~external_enums ~external_bitfields =
+let generate_forward_decls_header ~classes ~gtk_enums ~gtk_bitfields ~external_enums ~external_bitfields =
   let buf = Buffer.create 4096 in
   Buffer.add_string buf "/**************************************************************************/\n";
   Buffer.add_string buf "/*                LablGTK4 - OCaml bindings for GTK4                      */\n";
@@ -91,6 +91,21 @@ let generate_forward_decls_header ~classes ~external_enums ~external_bitfields =
   Buffer.add_string buf "\n";
   Buffer.add_string buf "/* Note: Res_Ok, Res_Error, ValUnit, and Val_GError are defined in wrappers.h */\n";
   Buffer.add_string buf "\n";
+
+  (* Add forward declarations for Gtk enum/bitfield converters *)
+  if List.length gtk_enums > 0 || List.length gtk_bitfields > 0 then begin
+    Buffer.add_string buf "/* Forward declarations for Gtk enum/bitfield converters */\n";
+    List.iter ~f:(fun (enum : gir_enum) ->
+      bprintf buf "value Val_Gtk%s(%s val);\n" enum.enum_name enum.enum_c_type;
+      bprintf buf "%s Gtk%s_val(value val);\n" enum.enum_c_type enum.enum_name;
+    ) gtk_enums;
+    Buffer.add_string buf "\n";
+    List.iter ~f:(fun (bitfield : gir_bitfield) ->
+      bprintf buf "value Val_Gtk%s(%s flags);\n" bitfield.bitfield_name bitfield.bitfield_c_type;
+      bprintf buf "%s Gtk%s_val(value list);\n" bitfield.bitfield_c_type bitfield.bitfield_name;
+    ) gtk_bitfields;
+    Buffer.add_string buf "\n";
+  end;
 
   (* Add forward declarations for external namespace enum/bitfield converters *)
   if List.length external_enums > 0 || List.length external_bitfields > 0 then begin
