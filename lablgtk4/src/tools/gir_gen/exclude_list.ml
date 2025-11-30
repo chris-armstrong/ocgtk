@@ -1,18 +1,18 @@
-(* Blacklists and filtering logic for GIR Code Generator *)
+(* Exclusion lists and filtering logic for GIR Code Generator *)
 
 open StdLabels
 open Printf
 
-let variadic_function_blacklist = [
+let variadic_function_exclude_list = [
   "gtk_text_buffer_insert_with_tags";
   "gtk_text_buffer_insert_with_tags_by_name";
   "gtk_text_buffer_create_tag";
 ]
 
 let is_variadic_function c_identifier =
-  List.mem c_identifier ~set:variadic_function_blacklist
+  List.mem c_identifier ~set:variadic_function_exclude_list
 
-let platform_specific_type_blacklist = [
+let platform_specific_type_exclude_list = [
   "PrintCapabilities";
   "PageSetup";
   "PageSetupUnixDialog";
@@ -25,15 +25,23 @@ let platform_specific_type_blacklist = [
 ]
 
 let is_platform_specific_type type_name =
-  List.mem type_name ~set:platform_specific_type_blacklist
+  List.mem type_name ~set:platform_specific_type_exclude_list
 
 (* Normalized type names (namespace and Gtk prefix stripped) that should be skipped wherever they appear *)
-let type_name_blacklist =
-  List.map ~f:String.lowercase_ascii platform_specific_type_blacklist
+let type_name_exclude_list =
+  List.map ~f:String.lowercase_ascii platform_specific_type_exclude_list
 
-let is_blacklisted_type_name name =
+let is_excluded_type_name name =
   let normalized = Utils.normalize_class_name name |> String.lowercase_ascii in
-  List.mem normalized ~set:type_name_blacklist
+  List.mem normalized ~set:type_name_exclude_list
+
+(* Specific functions that should not be generated *)
+let function_exclude_list = [
+  "gtk_tree_model_filter_get_virtual_root";
+]
+
+let is_excluded_function name =
+  List.mem name ~set:function_exclude_list
 
 let should_skip_class class_name =
   let skip_list = [

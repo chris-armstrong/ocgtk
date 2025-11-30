@@ -37,8 +37,8 @@ let () =
   vbox#append (button_box :> GObj.widget);
 
   (* Insert text button *)
-  let insert_btn = GButton.button ~label:"Insert Text" () in
-  button_box#append (insert_btn :> GObj.widget);
+  let insert_btn = new GButton.button (GtkButton.new_with_label "Insert Text") in
+  button_box#append (insert_btn#widget);
 
   ignore (insert_btn#connect#clicked ~callback:(fun () ->
     let text = Editable.get_text (Entry.as_widget entry) in
@@ -49,8 +49,8 @@ let () =
   ));
 
   (* Clear button *)
-  let clear_btn = GButton.button ~label:"Clear All" () in
-  button_box#append (clear_btn :> GObj.widget);
+  let clear_btn = new GButton.button (GtkButton.new_with_label "Clear All") in
+  button_box#append (clear_btn#widget);
 
   ignore (clear_btn#connect#clicked ~callback:(fun () ->
     Text_buffer.set_text buffer "" (-1)

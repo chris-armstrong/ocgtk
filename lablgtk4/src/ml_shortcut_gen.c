@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -25,13 +26,6 @@ CAMLexport CAMLprim value ml_gtk_shortcut_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 GtkShortcut *obj = gtk_shortcut_new(Option_val(arg1, GtkShortcutTrigger_val, NULL), Option_val(arg2, GtkShortcutAction_val, NULL));
-CAMLreturn(Val_GtkShortcut(obj));
-}
-
-CAMLexport CAMLprim value ml_gtk_shortcut_new_with_arguments(value arg1, value arg2, value arg3, value arg4)
-{
-CAMLparam4(arg1, arg2, arg3, arg4);
-GtkShortcut *obj = gtk_shortcut_new_with_arguments(Option_val(arg1, GtkShortcutTrigger_val, NULL), Option_val(arg2, GtkShortcutAction_val, NULL), String_option_val(arg3), arg4);
 CAMLreturn(Val_GtkShortcut(obj));
 }
 

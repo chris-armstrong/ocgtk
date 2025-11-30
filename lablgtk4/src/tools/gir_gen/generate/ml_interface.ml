@@ -10,39 +10,72 @@ let sanitize_doc s =
   (* Prevent premature comment termination when GIR doc contains "*)" *)
   Str.global_replace (Str.regexp_string "*)") "\"*)\"" s
 
-let generate_ml_interface ~output_mode ~class_name ~class_doc ~enums ~bitfields ~classes ~parent_chain ~constructors ~methods ~properties ~signals:_ =
+let generate_signal_bindings ~output_mode:_ ~module_name:_ ~has_widget_parent:_ _signals =
+  ""  (* Signals are only generated in high-level g*.ml wrappers *)
+
+let generate_ml_interface
+    ~output_mode
+    ~class_name
+    ~class_doc
+    ~enums ~bitfields ~classes ~records
+    ~c_type
+    ~parent_chain
+    ~constructors
+    ~methods
+    ~properties
+    ~signals:_
+    ?c_symbol_prefix
+    ?record_base_type
+    ?(is_record = false)
+    () =
   let buf = Buffer.create 1024 in
   let is_impl = match output_mode with Implementation -> true | Interface -> false in
+  let is_copy_or_free (meth : gir_method) =
+    let lower_name = String.lowercase_ascii meth.method_name in
+    let lower_cid = String.lowercase_ascii meth.c_identifier in
+    let ends_with suffix str =
+      let len_s = String.length suffix and len_str = String.length str in
+      len_str >= len_s && String.sub str ~pos:(len_str - len_s) ~len:len_s = suffix
+    in
+    lower_name = "copy" || lower_name = "free" ||
+    ends_with "_copy" lower_cid || ends_with "_free" lower_cid
+  in
 
   (* Determine if this is a controller or widget *)
   let is_controller =
-    class_name = "EventController" ||
-    (String.length class_name > 15 && String.sub ~pos:0 ~len:15 class_name = "EventController") ||
-    (String.length class_name > 7 && String.sub ~pos:0 ~len:7 class_name = "Gesture")
+    (not is_record) &&
+    (class_name = "EventController" ||
+     (String.length class_name > 15 && String.sub ~pos:0 ~len:15 class_name = "EventController") ||
+     (String.length class_name > 7 && String.sub ~pos:0 ~len:7 class_name = "Gesture"))
   in
 
   let normalized_class = Utils.normalize_class_name class_name in
   let parent_chain =
-    (* parent_chain is ordered immediate parent -> root; stop at Widget for variant generation *)
-    let rec take_until_widget acc = function
-      | [] -> List.rev acc
-      | p :: rest ->
-        let normalized_parent = Utils.normalize_class_name p in
-        let acc' = normalized_parent :: acc in
-        if String.lowercase_ascii normalized_parent = "widget" then
-          List.rev acc'
-        else
-          take_until_widget acc' rest
-    in
-    take_until_widget [] parent_chain
+    if is_record then []
+    else
+      (* parent_chain is ordered immediate parent -> root; stop at Widget for variant generation *)
+      let rec take_until_widget acc = function
+        | [] -> List.rev acc
+        | p :: rest ->
+          let normalized_parent = Utils.normalize_class_name p in
+          let acc' = normalized_parent :: acc in
+          if String.lowercase_ascii normalized_parent = "widget" then
+            List.rev acc'
+          else
+            take_until_widget acc' rest
+      in
+      take_until_widget [] parent_chain
   in
   let has_widget_parent =
-    String.lowercase_ascii normalized_class = "widget" ||
-    List.exists parent_chain ~f:(fun p -> String.lowercase_ascii p = "widget")
+    (not is_record) &&
+    (String.lowercase_ascii normalized_class = "widget" ||
+     List.exists parent_chain ~f:(fun p -> String.lowercase_ascii p = "widget"))
   in
 
   let class_type_name, base_type =
-    if is_controller then
+    if is_record then
+      ("Record", Option.value record_base_type ~default:"Obj.t")
+    else if is_controller then
       ("Event controller", "EventController.t")
     else if has_widget_parent then
       let self_variant = "`" ^ Utils.to_snake_case normalized_class in
@@ -72,7 +105,10 @@ let generate_ml_interface ~output_mode ~class_name ~class_doc ~enums ~bitfields 
   | Some doc -> bprintf buf "(** %s *)\n" (sanitize_doc doc)
   | None -> ());
 
-  bprintf buf "type t = %s\n\n" base_type;
+  if is_record && not is_impl then
+    bprintf buf "type t\n\n"
+  else
+    bprintf buf "type t = %s\n\n" base_type;
 
   if has_widget_parent then begin
     if is_impl then
@@ -86,19 +122,24 @@ let generate_ml_interface ~output_mode ~class_name ~class_doc ~enums ~bitfields 
     if not ctor.throws then begin
       bprintf buf "(** Create a new %s *)\n" class_name;
       let c_name = ctor.c_identifier in
-      let ml_name = Str.global_replace (Str.regexp "gtk_") "ml_gtk_" c_name in
+      let ml_name =
+        let prefixed = Str.global_replace (Str.regexp "^gtk_") "ml_gtk_" c_name in
+        if String.length prefixed >= 3 && String.sub prefixed ~pos:0 ~len:3 = "ml_" then
+          prefixed
+        else
+          "ml_" ^ c_name
+      in
 
       (* Generate OCaml constructor name from C identifier *)
-      let class_snake = Utils.to_snake_case class_name in
       let ocaml_ctor_name =
-        let base = Str.global_replace (Str.regexp (sprintf "gtk_%s_" class_snake)) "" c_name in
+        let base = Filtering.ocaml_function_name ~class_name ~c_type ?c_symbol_prefix c_name in
         let snake = Utils.to_snake_case base in
         if snake = "new" then "new_" else snake
       in
 
     (* Build parameter types for constructor signature *)
     let param_types = List.map ~f:(fun p ->
-      match Type_mappings.find_type_mapping_for_gir_type ~enums ~bitfields ~classes p.param_type with
+      match Type_mappings.find_type_mapping_for_gir_type ~enums ~bitfields ~classes ~records p.param_type with
       | Some mapping ->
         let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some p.param_type.name) mapping.ocaml_type in
         if p.nullable then
@@ -136,10 +177,10 @@ let generate_ml_interface ~output_mode ~class_name ~class_doc ~enums ~bitfields 
     bprintf buf "(* Properties *)\n\n";
   List.iter ~f:(fun (prop : gir_property) ->
       let skip_prop =
-        Blacklists.is_blacklisted_type_name prop.prop_type.name ||
-        Blacklists.is_blacklisted_type_name prop.prop_type.c_type
+        Exclude_list.is_excluded_type_name prop.prop_type.name ||
+        Exclude_list.is_excluded_type_name prop.prop_type.c_type
       in
-      let type_mapping_opt = if skip_prop then None else Type_mappings.find_type_mapping ~enums ~bitfields ~classes prop.prop_type.c_type in
+      let type_mapping_opt = if skip_prop then None else Type_mappings.find_type_mapping ~enums ~bitfields ~classes ~records prop.prop_type.c_type in
       match type_mapping_opt with
       | Some type_mapping ->
         let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
@@ -181,25 +222,31 @@ let generate_ml_interface ~output_mode ~class_name ~class_doc ~enums ~bitfields 
   List.iter ~f:(fun (meth : gir_method) ->
     let c_name = meth.c_identifier in
     let param_count = 1 + List.length meth.parameters in
-    let ml_name = Str.global_replace (Str.regexp "gtk_") "ml_gtk_" c_name in
-    let ocaml_name = Utils.to_snake_case (
-      Str.global_replace (Str.regexp (sprintf "gtk_%s_"
-        (Utils.to_snake_case class_name))) "" c_name
-    ) in
+    let ml_name =
+      let prefixed = Str.global_replace (Str.regexp "^gtk_") "ml_gtk_" c_name in
+      if String.length prefixed >= 3 && String.sub prefixed ~pos:0 ~len:3 = "ml_" then
+        prefixed
+      else
+        "ml_" ^ c_name
+    in
+    let ocaml_name =
+      Filtering.ocaml_function_name ~class_name ~c_type ?c_symbol_prefix c_name
+    in
 
     (* Skip if: variadic function, duplicates property, or unmapped return type *)
-    let has_blacklisted_type =
-      Blacklists.is_blacklisted_type_name meth.return_type.name ||
-      Blacklists.is_blacklisted_type_name meth.return_type.c_type ||
+    let has_excluded_type =
+      Exclude_list.is_excluded_type_name meth.return_type.name ||
+      Exclude_list.is_excluded_type_name meth.return_type.c_type ||
       List.exists meth.parameters ~f:(fun p ->
-        Blacklists.is_blacklisted_type_name p.param_type.name ||
-        Blacklists.is_blacklisted_type_name p.param_type.c_type)
+        Exclude_list.is_excluded_type_name p.param_type.name ||
+        Exclude_list.is_excluded_type_name p.param_type.c_type)
     in
     let should_skip_mli =
-      Blacklists.is_variadic_function c_name ||
+      Exclude_list.is_variadic_function c_name ||
       List.mem ocaml_name ~set:!property_names ||
-      has_blacklisted_type ||
-      Blacklists.should_skip_method ~find_type_mapping:(Type_mappings.find_type_mapping ~enums ~bitfields ~classes) ~enums ~bitfields meth
+      has_excluded_type ||
+      Exclude_list.should_skip_method ~find_type_mapping:(Type_mappings.find_type_mapping ~enums ~bitfields ~classes ~records) ~enums ~bitfields meth ||
+      (is_record && is_copy_or_free meth)
     in
     if not should_skip_mli then begin
       (match meth.doc with
@@ -211,7 +258,7 @@ let generate_ml_interface ~output_mode ~class_name ~class_doc ~enums ~bitfields 
         match p.direction with
         | Out -> None
         | In | InOut ->
-          Some (match Type_mappings.find_type_mapping_for_gir_type ~enums ~bitfields ~classes p.param_type with
+          Some (match Type_mappings.find_type_mapping_for_gir_type ~enums ~bitfields ~classes ~records p.param_type with
           | Some mapping ->
             let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some p.param_type.name) mapping.ocaml_type in
             if p.nullable then
@@ -228,7 +275,7 @@ let generate_ml_interface ~output_mode ~class_name ~class_doc ~enums ~bitfields 
         if meth.return_type.c_type = "void" then
           "unit"
         else
-          match Type_mappings.find_type_mapping_for_gir_type ~enums ~bitfields ~classes meth.return_type with
+          match Type_mappings.find_type_mapping_for_gir_type ~enums ~bitfields ~classes ~records meth.return_type with
           | Some mapping ->
             let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some meth.return_type.name) mapping.ocaml_type in
             if meth.return_type.nullable then
@@ -252,7 +299,7 @@ let generate_ml_interface ~output_mode ~class_name ~class_doc ~enums ~bitfields 
               then { p.param_type with c_type = String.sub p.param_type.c_type ~pos:0 ~len:(String.length p.param_type.c_type - 1) }
               else p.param_type
             in
-            (match Type_mappings.find_type_mapping_for_gir_type ~enums ~bitfields ~classes base_param_type with
+            (match Type_mappings.find_type_mapping_for_gir_type ~enums ~bitfields ~classes ~records base_param_type with
             | Some mapping ->
               let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some base_param_type.name) mapping.ocaml_type in
               if base_param_type.nullable || p.nullable then

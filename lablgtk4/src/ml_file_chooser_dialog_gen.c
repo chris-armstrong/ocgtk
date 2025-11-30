@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -20,10 +21,3 @@
 #define Val_GtkFileChooserDialog(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GtkFileChooserDialog */
 
-
-CAMLexport CAMLprim value ml_gtk_file_chooser_dialog_new(value arg1, value arg2, value arg3, value arg4, value arg5)
-{
-CAMLparam5(arg1, arg2, arg3, arg4, arg5);
-GtkFileChooserDialog *obj = gtk_file_chooser_dialog_new(String_option_val(arg1), Option_val(arg2, GtkWindow_val, NULL), GtkFileChooserAction_val(arg3), String_option_val(arg4), arg5);
-CAMLreturn(Val_GtkFileChooserDialog(obj));
-}

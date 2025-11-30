@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -32,13 +33,6 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_new_with_area(value arg1)
 {
 CAMLparam1(arg1);
 GtkTreeViewColumn *obj = gtk_tree_view_column_new_with_area(GtkCellArea_val(arg1));
-CAMLreturn(Val_GtkTreeViewColumn(obj));
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_column_new_with_attributes(value arg1, value arg2, value arg3)
-{
-CAMLparam3(arg1, arg2, arg3);
-GtkTreeViewColumn *obj = gtk_tree_view_column_new_with_attributes(String_val(arg1), GtkCellRenderer_val(arg2), arg3);
 CAMLreturn(Val_GtkTreeViewColumn(obj));
 }
 
@@ -374,7 +368,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_cell_set_cell_data(value self,
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 
-gtk_tree_view_column_cell_set_cell_data(GtkTreeViewColumn_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2), Bool_val(arg3), Bool_val(arg4));
+gtk_tree_view_column_cell_set_cell_data(GtkTreeViewColumn_val(self), GtkWidget_val(arg1), GtkTreeIter_val(arg2), Bool_val(arg3), Bool_val(arg4));
 CAMLreturn(Val_unit);
 }
 
@@ -399,9 +393,16 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_get_alignment(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTreeViewColumn *obj = (GtkTreeViewColumn *)GtkTreeViewColumn_val(self);
-gfloat prop_value;
-g_object_get(G_OBJECT(obj), "alignment", &prop_value, NULL);
+    gfloat prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "alignment");
+if (pspec == NULL) caml_failwith("ml_gtk_tree_view_column_get_alignment: property 'alignment' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "alignment", &prop_gvalue);
+    prop_value = g_value_get_float(&prop_gvalue);
+
 result = caml_copy_double(prop_value);
+g_value_unset(&prop_gvalue);
 CAMLreturn(result);
 }
 
@@ -409,7 +410,13 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_set_alignment(value self, valu
 {
 CAMLparam2(self, new_value);
 GtkTreeViewColumn *obj = (GtkTreeViewColumn *)GtkTreeViewColumn_val(self);
-gfloat c_value = Double_val(new_value);
-g_object_set(G_OBJECT(obj), "alignment", c_value, NULL);
+    gfloat c_value = Double_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "alignment");
+if (pspec == NULL) caml_failwith("ml_gtk_tree_view_column_set_alignment: property 'alignment' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_float(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "alignment", &prop_gvalue);
+g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }

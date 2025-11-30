@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -84,7 +85,7 @@ CAMLexport CAMLprim value ml_gtk_cell_view_set_displayed_row(value self, value a
 {
 CAMLparam2(self, arg1);
 
-gtk_cell_view_set_displayed_row(GtkCellView_val(self), Option_val(arg1, GtkWidget_val, NULL));
+gtk_cell_view_set_displayed_row(GtkCellView_val(self), Option_val(arg1, GtkTreePath_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -117,5 +118,5 @@ CAMLexport CAMLprim value ml_gtk_cell_view_get_displayed_row(value self)
 CAMLparam1(self);
 
 GtkTreePath* result = gtk_cell_view_get_displayed_row(GtkCellView_val(self));
-CAMLreturn(Val_GtkWidget_option(result));
+CAMLreturn(Val_option(result, Val_GtkTreePath));
 }

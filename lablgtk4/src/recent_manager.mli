@@ -24,7 +24,7 @@ external move_item : t -> string -> string option -> (bool, GError.t) result = "
 (** Searches for a URI inside the recently used resources list, and
 returns a `GtkRecentInfo` containing information about the resource
 like its MIME type, or its display name. *)
-external lookup_item : t -> string -> (Gtk.widget option, GError.t) result = "ml_gtk_recent_manager_lookup_item"
+external lookup_item : t -> string -> (Obj.t option, GError.t) result = "ml_gtk_recent_manager_lookup_item"
 
 (** Checks whether there is a recently used resource registered
 with @uri inside the recent manager. *)

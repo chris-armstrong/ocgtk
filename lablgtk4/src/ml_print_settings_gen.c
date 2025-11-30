@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -136,7 +137,7 @@ CAMLexport CAMLprim value ml_gtk_print_settings_set_paper_size(value self, value
 {
 CAMLparam2(self, arg1);
 
-gtk_print_settings_set_paper_size(GtkPrintSettings_val(self), GtkWidget_val(arg1));
+gtk_print_settings_set_paper_size(GtkPrintSettings_val(self), GtkPaperSize_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -394,7 +395,7 @@ CAMLexport CAMLprim value ml_gtk_print_settings_get_paper_size(value self)
 CAMLparam1(self);
 
 GtkPaperSize* result = gtk_print_settings_get_paper_size(GtkPrintSettings_val(self));
-CAMLreturn(Val_GtkWidget_option(result));
+CAMLreturn(Val_option(result, Val_GtkPaperSize));
 }
 
 CAMLexport CAMLprim value ml_gtk_print_settings_get_paper_height(value self, value arg1)

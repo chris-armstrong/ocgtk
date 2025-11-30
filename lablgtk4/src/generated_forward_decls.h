@@ -15,6 +15,7 @@
 #ifndef _gtk4_generated_forward_decls_
 #define _gtk4_generated_forward_decls_
 
+#include <gtk/gtk.h>
 #include <caml/mlvalues.h>
 
 /* Type conversions - use direct cast (GObjects) */
@@ -1338,10 +1339,558 @@
 #define Val_GtkWindowHandle(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GtkWindowHandle */
 
+#ifndef Val_GtkATContextClass
+#define GtkATContextClass_val(val) ((GtkATContextClass*)ext_of_val(val))
+#define Val_GtkATContextClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkATContextClass */
+
+#ifndef Val_GtkAccessibleList
+#define GtkAccessibleList_val(val) ((GtkAccessibleList*)ext_of_val(val))
+#define Val_GtkAccessibleList(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkAccessibleList */
+
+#ifndef Val_GtkActivateActionClass
+#define GtkActivateActionClass_val(val) ((GtkActivateActionClass*)ext_of_val(val))
+#define Val_GtkActivateActionClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkActivateActionClass */
+
+#ifndef Val_GtkAlternativeTriggerClass
+#define GtkAlternativeTriggerClass_val(val) ((GtkAlternativeTriggerClass*)ext_of_val(val))
+#define Val_GtkAlternativeTriggerClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkAlternativeTriggerClass */
+
+#ifndef Val_GtkAnyFilterClass
+#define GtkAnyFilterClass_val(val) ((GtkAnyFilterClass*)ext_of_val(val))
+#define Val_GtkAnyFilterClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkAnyFilterClass */
+
+#ifndef Val_GtkBitset
+#define GtkBitset_val(val) ((GtkBitset*)ext_of_val(val))
+#define Val_GtkBitset(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkBitset */
+
+#ifndef Val_GtkBitsetIter
+#define GtkBitsetIter_val(val) ((GtkBitsetIter*)ml_gir_record_ptr_val((val), "GtkBitsetIter"))
+#define Val_GtkBitsetIter_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GtkBitsetIter), "GtkBitsetIter", NULL)
+#define Val_GtkBitsetIter(obj) Val_GtkBitsetIter_ptr(obj)
+#define Val_GtkBitsetIter_option(ptr) ((ptr) ? Val_some(Val_GtkBitsetIter_ptr(ptr)) : Val_none)
+#endif /* Val_GtkBitsetIter */
+
+#ifndef Val_GtkBorder
+#define GtkBorder_val(val) ((GtkBorder*)ml_gir_record_ptr_val((val), "GtkBorder"))
+#define Val_GtkBorder_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GtkBorder), "GtkBorder", NULL)
+#define Val_GtkBorder(obj) Val_GtkBorder_ptr(&(obj))
+#define Val_GtkBorder_option(ptr) ((ptr) ? Val_some(Val_GtkBorder_ptr(ptr)) : Val_none)
+#endif /* Val_GtkBorder */
+
+#ifndef Val_GtkBuildableParseContext
+#define GtkBuildableParseContext_val(val) ((GtkBuildableParseContext*)ext_of_val(val))
+#define Val_GtkBuildableParseContext(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkBuildableParseContext */
+
+#ifndef Val_GtkBuilderClass
+#define GtkBuilderClass_val(val) ((GtkBuilderClass*)ext_of_val(val))
+#define Val_GtkBuilderClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkBuilderClass */
+
+#ifndef Val_GtkBuilderListItemFactoryClass
+#define GtkBuilderListItemFactoryClass_val(val) ((GtkBuilderListItemFactoryClass*)ext_of_val(val))
+#define Val_GtkBuilderListItemFactoryClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkBuilderListItemFactoryClass */
+
+#ifndef Val_GtkButtonPrivate
+#define GtkButtonPrivate_val(val) ((GtkButtonPrivate*)ext_of_val(val))
+#define Val_GtkButtonPrivate(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkButtonPrivate */
+
+#ifndef Val_GtkCallbackActionClass
+#define GtkCallbackActionClass_val(val) ((GtkCallbackActionClass*)ext_of_val(val))
+#define Val_GtkCallbackActionClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkCallbackActionClass */
+
+#ifndef Val_GtkCellAreaContextPrivate
+#define GtkCellAreaContextPrivate_val(val) ((GtkCellAreaContextPrivate*)ext_of_val(val))
+#define Val_GtkCellAreaContextPrivate(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkCellAreaContextPrivate */
+
+#ifndef Val_GtkCellRendererClassPrivate
+#define GtkCellRendererClassPrivate_val(val) ((GtkCellRendererClassPrivate*)ext_of_val(val))
+#define Val_GtkCellRendererClassPrivate(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkCellRendererClassPrivate */
+
+#ifndef Val_GtkCellRendererPrivate
+#define GtkCellRendererPrivate_val(val) ((GtkCellRendererPrivate*)ext_of_val(val))
+#define Val_GtkCellRendererPrivate(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkCellRendererPrivate */
+
+#ifndef Val_GtkCenterBoxClass
+#define GtkCenterBoxClass_val(val) ((GtkCenterBoxClass*)ext_of_val(val))
+#define Val_GtkCenterBoxClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkCenterBoxClass */
+
+#ifndef Val_GtkColumnViewCellClass
+#define GtkColumnViewCellClass_val(val) ((GtkColumnViewCellClass*)ext_of_val(val))
+#define Val_GtkColumnViewCellClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkColumnViewCellClass */
+
+#ifndef Val_GtkColumnViewClass
+#define GtkColumnViewClass_val(val) ((GtkColumnViewClass*)ext_of_val(val))
+#define Val_GtkColumnViewClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkColumnViewClass */
+
+#ifndef Val_GtkColumnViewColumnClass
+#define GtkColumnViewColumnClass_val(val) ((GtkColumnViewColumnClass*)ext_of_val(val))
+#define Val_GtkColumnViewColumnClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkColumnViewColumnClass */
+
+#ifndef Val_GtkColumnViewRowClass
+#define GtkColumnViewRowClass_val(val) ((GtkColumnViewRowClass*)ext_of_val(val))
+#define Val_GtkColumnViewRowClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkColumnViewRowClass */
+
+#ifndef Val_GtkConstraintTargetInterface
+#define GtkConstraintTargetInterface_val(val) ((GtkConstraintTargetInterface*)ext_of_val(val))
+#define Val_GtkConstraintTargetInterface(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkConstraintTargetInterface */
+
+#ifndef Val_GtkCssProviderClass
+#define GtkCssProviderClass_val(val) ((GtkCssProviderClass*)ext_of_val(val))
+#define Val_GtkCssProviderClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkCssProviderClass */
+
+#ifndef Val_GtkCssProviderPrivate
+#define GtkCssProviderPrivate_val(val) ((GtkCssProviderPrivate*)ext_of_val(val))
+#define Val_GtkCssProviderPrivate(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkCssProviderPrivate */
+
+#ifndef Val_GtkCssSection
+#define GtkCssSection_val(val) ((GtkCssSection*)ext_of_val(val))
+#define Val_GtkCssSection(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkCssSection */
+
+#ifndef Val_GtkCssStyleChange
+#define GtkCssStyleChange_val(val) ((GtkCssStyleChange*)ext_of_val(val))
+#define Val_GtkCssStyleChange(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkCssStyleChange */
+
+#ifndef Val_GtkDragSourceClass
+#define GtkDragSourceClass_val(val) ((GtkDragSourceClass*)ext_of_val(val))
+#define Val_GtkDragSourceClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkDragSourceClass */
+
+#ifndef Val_GtkDropControllerMotionClass
+#define GtkDropControllerMotionClass_val(val) ((GtkDropControllerMotionClass*)ext_of_val(val))
+#define Val_GtkDropControllerMotionClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkDropControllerMotionClass */
+
+#ifndef Val_GtkDropTargetAsyncClass
+#define GtkDropTargetAsyncClass_val(val) ((GtkDropTargetAsyncClass*)ext_of_val(val))
+#define Val_GtkDropTargetAsyncClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkDropTargetAsyncClass */
+
+#ifndef Val_GtkDropTargetClass
+#define GtkDropTargetClass_val(val) ((GtkDropTargetClass*)ext_of_val(val))
+#define Val_GtkDropTargetClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkDropTargetClass */
+
+#ifndef Val_GtkEmojiChooserClass
+#define GtkEmojiChooserClass_val(val) ((GtkEmojiChooserClass*)ext_of_val(val))
+#define Val_GtkEmojiChooserClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkEmojiChooserClass */
+
+#ifndef Val_GtkEventControllerClass
+#define GtkEventControllerClass_val(val) ((GtkEventControllerClass*)ext_of_val(val))
+#define Val_GtkEventControllerClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkEventControllerClass */
+
+#ifndef Val_GtkEventControllerFocusClass
+#define GtkEventControllerFocusClass_val(val) ((GtkEventControllerFocusClass*)ext_of_val(val))
+#define Val_GtkEventControllerFocusClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkEventControllerFocusClass */
+
+#ifndef Val_GtkEventControllerKeyClass
+#define GtkEventControllerKeyClass_val(val) ((GtkEventControllerKeyClass*)ext_of_val(val))
+#define Val_GtkEventControllerKeyClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkEventControllerKeyClass */
+
+#ifndef Val_GtkEventControllerLegacyClass
+#define GtkEventControllerLegacyClass_val(val) ((GtkEventControllerLegacyClass*)ext_of_val(val))
+#define Val_GtkEventControllerLegacyClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkEventControllerLegacyClass */
+
+#ifndef Val_GtkEventControllerMotionClass
+#define GtkEventControllerMotionClass_val(val) ((GtkEventControllerMotionClass*)ext_of_val(val))
+#define Val_GtkEventControllerMotionClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkEventControllerMotionClass */
+
+#ifndef Val_GtkEventControllerScrollClass
+#define GtkEventControllerScrollClass_val(val) ((GtkEventControllerScrollClass*)ext_of_val(val))
+#define Val_GtkEventControllerScrollClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkEventControllerScrollClass */
+
+#ifndef Val_GtkEveryFilterClass
+#define GtkEveryFilterClass_val(val) ((GtkEveryFilterClass*)ext_of_val(val))
+#define Val_GtkEveryFilterClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkEveryFilterClass */
+
+#ifndef Val_GtkExpressionWatch
+#define GtkExpressionWatch_val(val) ((GtkExpressionWatch*)ext_of_val(val))
+#define Val_GtkExpressionWatch(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkExpressionWatch */
+
+#ifndef Val_GtkGestureClass
+#define GtkGestureClass_val(val) ((GtkGestureClass*)ext_of_val(val))
+#define Val_GtkGestureClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkGestureClass */
+
+#ifndef Val_GtkGestureClickClass
+#define GtkGestureClickClass_val(val) ((GtkGestureClickClass*)ext_of_val(val))
+#define Val_GtkGestureClickClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkGestureClickClass */
+
+#ifndef Val_GtkGestureDragClass
+#define GtkGestureDragClass_val(val) ((GtkGestureDragClass*)ext_of_val(val))
+#define Val_GtkGestureDragClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkGestureDragClass */
+
+#ifndef Val_GtkGestureLongPressClass
+#define GtkGestureLongPressClass_val(val) ((GtkGestureLongPressClass*)ext_of_val(val))
+#define Val_GtkGestureLongPressClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkGestureLongPressClass */
+
+#ifndef Val_GtkGesturePanClass
+#define GtkGesturePanClass_val(val) ((GtkGesturePanClass*)ext_of_val(val))
+#define Val_GtkGesturePanClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkGesturePanClass */
+
+#ifndef Val_GtkGestureRotateClass
+#define GtkGestureRotateClass_val(val) ((GtkGestureRotateClass*)ext_of_val(val))
+#define Val_GtkGestureRotateClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkGestureRotateClass */
+
+#ifndef Val_GtkGestureSingleClass
+#define GtkGestureSingleClass_val(val) ((GtkGestureSingleClass*)ext_of_val(val))
+#define Val_GtkGestureSingleClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkGestureSingleClass */
+
+#ifndef Val_GtkGestureStylusClass
+#define GtkGestureStylusClass_val(val) ((GtkGestureStylusClass*)ext_of_val(val))
+#define Val_GtkGestureStylusClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkGestureStylusClass */
+
+#ifndef Val_GtkGestureSwipeClass
+#define GtkGestureSwipeClass_val(val) ((GtkGestureSwipeClass*)ext_of_val(val))
+#define Val_GtkGestureSwipeClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkGestureSwipeClass */
+
+#ifndef Val_GtkGestureZoomClass
+#define GtkGestureZoomClass_val(val) ((GtkGestureZoomClass*)ext_of_val(val))
+#define Val_GtkGestureZoomClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkGestureZoomClass */
+
+#ifndef Val_GtkGridViewClass
+#define GtkGridViewClass_val(val) ((GtkGridViewClass*)ext_of_val(val))
+#define Val_GtkGridViewClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkGridViewClass */
+
+#ifndef Val_GtkIMContextSimplePrivate
+#define GtkIMContextSimplePrivate_val(val) ((GtkIMContextSimplePrivate*)ext_of_val(val))
+#define Val_GtkIMContextSimplePrivate(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkIMContextSimplePrivate */
+
+#ifndef Val_GtkIMMulticontextPrivate
+#define GtkIMMulticontextPrivate_val(val) ((GtkIMMulticontextPrivate*)ext_of_val(val))
+#define Val_GtkIMMulticontextPrivate(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkIMMulticontextPrivate */
+
+#ifndef Val_GtkKeyvalTriggerClass
+#define GtkKeyvalTriggerClass_val(val) ((GtkKeyvalTriggerClass*)ext_of_val(val))
+#define Val_GtkKeyvalTriggerClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkKeyvalTriggerClass */
+
+#ifndef Val_GtkListBaseClass
+#define GtkListBaseClass_val(val) ((GtkListBaseClass*)ext_of_val(val))
+#define Val_GtkListBaseClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkListBaseClass */
+
+#ifndef Val_GtkListHeaderClass
+#define GtkListHeaderClass_val(val) ((GtkListHeaderClass*)ext_of_val(val))
+#define Val_GtkListHeaderClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkListHeaderClass */
+
+#ifndef Val_GtkListItemClass
+#define GtkListItemClass_val(val) ((GtkListItemClass*)ext_of_val(val))
+#define Val_GtkListItemClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkListItemClass */
+
+#ifndef Val_GtkListItemFactoryClass
+#define GtkListItemFactoryClass_val(val) ((GtkListItemFactoryClass*)ext_of_val(val))
+#define Val_GtkListItemFactoryClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkListItemFactoryClass */
+
+#ifndef Val_GtkListStorePrivate
+#define GtkListStorePrivate_val(val) ((GtkListStorePrivate*)ext_of_val(val))
+#define Val_GtkListStorePrivate(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkListStorePrivate */
+
+#ifndef Val_GtkListViewClass
+#define GtkListViewClass_val(val) ((GtkListViewClass*)ext_of_val(val))
+#define Val_GtkListViewClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkListViewClass */
+
+#ifndef Val_GtkMessageDialogClass
+#define GtkMessageDialogClass_val(val) ((GtkMessageDialogClass*)ext_of_val(val))
+#define Val_GtkMessageDialogClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkMessageDialogClass */
+
+#ifndef Val_GtkMnemonicActionClass
+#define GtkMnemonicActionClass_val(val) ((GtkMnemonicActionClass*)ext_of_val(val))
+#define Val_GtkMnemonicActionClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkMnemonicActionClass */
+
+#ifndef Val_GtkMnemonicTriggerClass
+#define GtkMnemonicTriggerClass_val(val) ((GtkMnemonicTriggerClass*)ext_of_val(val))
+#define Val_GtkMnemonicTriggerClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkMnemonicTriggerClass */
+
+#ifndef Val_GtkMountOperationPrivate
+#define GtkMountOperationPrivate_val(val) ((GtkMountOperationPrivate*)ext_of_val(val))
+#define Val_GtkMountOperationPrivate(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkMountOperationPrivate */
+
+#ifndef Val_GtkMultiFilterClass
+#define GtkMultiFilterClass_val(val) ((GtkMultiFilterClass*)ext_of_val(val))
+#define Val_GtkMultiFilterClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkMultiFilterClass */
+
+#ifndef Val_GtkNamedActionClass
+#define GtkNamedActionClass_val(val) ((GtkNamedActionClass*)ext_of_val(val))
+#define Val_GtkNamedActionClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkNamedActionClass */
+
+#ifndef Val_GtkNativeInterface
+#define GtkNativeInterface_val(val) ((GtkNativeInterface*)ext_of_val(val))
+#define Val_GtkNativeInterface(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkNativeInterface */
+
+#ifndef Val_GtkNeverTriggerClass
+#define GtkNeverTriggerClass_val(val) ((GtkNeverTriggerClass*)ext_of_val(val))
+#define Val_GtkNeverTriggerClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkNeverTriggerClass */
+
+#ifndef Val_GtkNothingActionClass
+#define GtkNothingActionClass_val(val) ((GtkNothingActionClass*)ext_of_val(val))
+#define Val_GtkNothingActionClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkNothingActionClass */
+
+#ifndef Val_GtkPadControllerClass
+#define GtkPadControllerClass_val(val) ((GtkPadControllerClass*)ext_of_val(val))
+#define Val_GtkPadControllerClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkPadControllerClass */
+
+#ifndef Val_GtkPaperSize
+#define GtkPaperSize_val(val) ((GtkPaperSize*)ext_of_val(val))
+#define Val_GtkPaperSize(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkPaperSize */
+
+#ifndef Val_GtkPasswordEntryClass
+#define GtkPasswordEntryClass_val(val) ((GtkPasswordEntryClass*)ext_of_val(val))
+#define Val_GtkPasswordEntryClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkPasswordEntryClass */
+
+#ifndef Val_GtkPrintBackend
+#define GtkPrintBackend_val(val) ((GtkPrintBackend*)ext_of_val(val))
+#define Val_GtkPrintBackend(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkPrintBackend */
+
+#ifndef Val_GtkPrintOperationPrivate
+#define GtkPrintOperationPrivate_val(val) ((GtkPrintOperationPrivate*)ext_of_val(val))
+#define Val_GtkPrintOperationPrivate(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkPrintOperationPrivate */
+
+#ifndef Val_GtkPrintSetup
+#define GtkPrintSetup_val(val) ((GtkPrintSetup*)ext_of_val(val))
+#define Val_GtkPrintSetup(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkPrintSetup */
+
+#ifndef Val_GtkRecentInfo
+#define GtkRecentInfo_val(val) ((GtkRecentInfo*)ext_of_val(val))
+#define Val_GtkRecentInfo(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkRecentInfo */
+
+#ifndef Val_GtkRecentManagerPrivate
+#define GtkRecentManagerPrivate_val(val) ((GtkRecentManagerPrivate*)ext_of_val(val))
+#define Val_GtkRecentManagerPrivate(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkRecentManagerPrivate */
+
+#ifndef Val_GtkRequisition
+#define GtkRequisition_val(val) ((GtkRequisition*)ml_gir_record_ptr_val((val), "GtkRequisition"))
+#define Val_GtkRequisition_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GtkRequisition), "GtkRequisition", NULL)
+#define Val_GtkRequisition(obj) Val_GtkRequisition_ptr(&(obj))
+#define Val_GtkRequisition_option(ptr) ((ptr) ? Val_some(Val_GtkRequisition_ptr(ptr)) : Val_none)
+#endif /* Val_GtkRequisition */
+
+#ifndef Val_GtkRootInterface
+#define GtkRootInterface_val(val) ((GtkRootInterface*)ext_of_val(val))
+#define Val_GtkRootInterface(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkRootInterface */
+
+#ifndef Val_GtkScrollInfo
+#define GtkScrollInfo_val(val) ((GtkScrollInfo*)ext_of_val(val))
+#define Val_GtkScrollInfo(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkScrollInfo */
+
+#ifndef Val_GtkShortcutActionClass
+#define GtkShortcutActionClass_val(val) ((GtkShortcutActionClass*)ext_of_val(val))
+#define Val_GtkShortcutActionClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkShortcutActionClass */
+
+#ifndef Val_GtkShortcutControllerClass
+#define GtkShortcutControllerClass_val(val) ((GtkShortcutControllerClass*)ext_of_val(val))
+#define Val_GtkShortcutControllerClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkShortcutControllerClass */
+
+#ifndef Val_GtkShortcutLabelClass
+#define GtkShortcutLabelClass_val(val) ((GtkShortcutLabelClass*)ext_of_val(val))
+#define Val_GtkShortcutLabelClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkShortcutLabelClass */
+
+#ifndef Val_GtkShortcutTriggerClass
+#define GtkShortcutTriggerClass_val(val) ((GtkShortcutTriggerClass*)ext_of_val(val))
+#define Val_GtkShortcutTriggerClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkShortcutTriggerClass */
+
+#ifndef Val_GtkShortcutsGroupClass
+#define GtkShortcutsGroupClass_val(val) ((GtkShortcutsGroupClass*)ext_of_val(val))
+#define Val_GtkShortcutsGroupClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkShortcutsGroupClass */
+
+#ifndef Val_GtkShortcutsSectionClass
+#define GtkShortcutsSectionClass_val(val) ((GtkShortcutsSectionClass*)ext_of_val(val))
+#define Val_GtkShortcutsSectionClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkShortcutsSectionClass */
+
+#ifndef Val_GtkShortcutsShortcutClass
+#define GtkShortcutsShortcutClass_val(val) ((GtkShortcutsShortcutClass*)ext_of_val(val))
+#define Val_GtkShortcutsShortcutClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkShortcutsShortcutClass */
+
+#ifndef Val_GtkSignalActionClass
+#define GtkSignalActionClass_val(val) ((GtkSignalActionClass*)ext_of_val(val))
+#define Val_GtkSignalActionClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkSignalActionClass */
+
+#ifndef Val_GtkSignalListItemFactoryClass
+#define GtkSignalListItemFactoryClass_val(val) ((GtkSignalListItemFactoryClass*)ext_of_val(val))
+#define Val_GtkSignalListItemFactoryClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkSignalListItemFactoryClass */
+
+#ifndef Val_GtkSnapshotClass
+#define GtkSnapshotClass_val(val) ((GtkSnapshotClass*)ext_of_val(val))
+#define Val_GtkSnapshotClass(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkSnapshotClass */
+
+#ifndef Val_GtkTextBufferPrivate
+#define GtkTextBufferPrivate_val(val) ((GtkTextBufferPrivate*)ext_of_val(val))
+#define Val_GtkTextBufferPrivate(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkTextBufferPrivate */
+
+#ifndef Val_GtkTextIter
+#define GtkTextIter_val(val) ((GtkTextIter*)ml_gir_record_ptr_val((val), "GtkTextIter"))
+#define Val_GtkTextIter_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GtkTextIter), "GtkTextIter", NULL)
+#define Val_GtkTextIter(obj) Val_GtkTextIter_ptr(&(obj))
+#define Val_GtkTextIter_option(ptr) ((ptr) ? Val_some(Val_GtkTextIter_ptr(ptr)) : Val_none)
+#endif /* Val_GtkTextIter */
+
+#ifndef Val_GtkTextTagPrivate
+#define GtkTextTagPrivate_val(val) ((GtkTextTagPrivate*)ext_of_val(val))
+#define Val_GtkTextTagPrivate(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkTextTagPrivate */
+
+#ifndef Val_GtkTextViewPrivate
+#define GtkTextViewPrivate_val(val) ((GtkTextViewPrivate*)ext_of_val(val))
+#define Val_GtkTextViewPrivate(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkTextViewPrivate */
+
+#ifndef Val_GtkTreeIter
+#define GtkTreeIter_val(val) ((GtkTreeIter*)ml_gir_record_ptr_val((val), "GtkTreeIter"))
+#define Val_GtkTreeIter_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GtkTreeIter), "GtkTreeIter", NULL)
+#define Val_GtkTreeIter(obj) Val_GtkTreeIter_ptr(&(obj))
+#define Val_GtkTreeIter_option(ptr) ((ptr) ? Val_some(Val_GtkTreeIter_ptr(ptr)) : Val_none)
+#endif /* Val_GtkTreeIter */
+
+#ifndef Val_GtkTreeModelFilterPrivate
+#define GtkTreeModelFilterPrivate_val(val) ((GtkTreeModelFilterPrivate*)ext_of_val(val))
+#define Val_GtkTreeModelFilterPrivate(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkTreeModelFilterPrivate */
+
+#ifndef Val_GtkTreeModelSortPrivate
+#define GtkTreeModelSortPrivate_val(val) ((GtkTreeModelSortPrivate*)ext_of_val(val))
+#define Val_GtkTreeModelSortPrivate(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkTreeModelSortPrivate */
+
+#ifndef Val_GtkTreePath
+#define GtkTreePath_val(val) ((GtkTreePath*)ext_of_val(val))
+#define Val_GtkTreePath(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkTreePath */
+
+#ifndef Val_GtkTreeRowReference
+#define GtkTreeRowReference_val(val) ((GtkTreeRowReference*)ext_of_val(val))
+#define Val_GtkTreeRowReference(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkTreeRowReference */
+
+#ifndef Val_GtkTreeStorePrivate
+#define GtkTreeStorePrivate_val(val) ((GtkTreeStorePrivate*)ext_of_val(val))
+#define Val_GtkTreeStorePrivate(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkTreeStorePrivate */
+
+#ifndef Val_GtkWidgetClassPrivate
+#define GtkWidgetClassPrivate_val(val) ((GtkWidgetClassPrivate*)ext_of_val(val))
+#define Val_GtkWidgetClassPrivate(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkWidgetClassPrivate */
+
+#ifndef Val_GtkWidgetPrivate
+#define GtkWidgetPrivate_val(val) ((GtkWidgetPrivate*)ext_of_val(val))
+#define Val_GtkWidgetPrivate(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkWidgetPrivate */
+
+#ifndef Val_GtkWindowGroupPrivate
+#define GtkWindowGroupPrivate_val(val) ((GtkWindowGroupPrivate*)ext_of_val(val))
+#define Val_GtkWindowGroupPrivate(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GtkWindowGroupPrivate */
+
+/* Value-returning structs copied into OCaml */
+#ifndef Val_GtkTreeIter
+#define GtkTreeIter_val(val) ((GtkTreeIter*)ext_of_val(val))
+#define Val_GtkTreeIter(obj) copy_GtkTreeIter(&(obj))
+#define Val_GtkTreeIter_option(ptr) ((ptr) ? Val_some(copy_GtkTreeIter(ptr)) : Val_none)
+#endif /* Val_GtkTreeIter */
+
+#ifndef Val_GtkTextIter
+#define GtkTextIter_val(val) ((GtkTextIter*)ext_of_val(val))
+#define Val_GtkTextIter(obj) copy_GtkTextIter(&(obj))
+#define Val_GtkTextIter_option(ptr) ((ptr) ? Val_some(copy_GtkTextIter(ptr)) : Val_none)
+#endif /* Val_GtkTextIter */
+
+#ifndef Val_GtkRequisition
+#define GtkRequisition_val(val) ((GtkRequisition*)ext_of_val(val))
+#define Val_GtkRequisition(obj) copy_GtkRequisition(&(obj))
+#define Val_GtkRequisition_option(ptr) ((ptr) ? Val_some(copy_GtkRequisition(ptr)) : Val_none)
+#endif /* Val_GtkRequisition */
+
+#ifndef Val_GtkBorder
+#define GtkBorder_val(val) ((GtkBorder*)ext_of_val(val))
+#define Val_GtkBorder(obj) copy_GtkBorder(&(obj))
+#define Val_GtkBorder_option(ptr) ((ptr) ? Val_some(copy_GtkBorder(ptr)) : Val_none)
+#endif /* Val_GtkBorder */
+
 
 /* Phase 5.3: Option type conversions for nullable parameters */
 #define GtkWidget_option_val(v) ((v) == Val_none ? NULL : GtkWidget_val(Some_val(v)))
 #define GtkEventController_option_val(v) ((v) == Val_none ? NULL : GtkEventController_val(Some_val(v)))
+
+/* Const-safe string extraction for setters */
+#define ML_DECL_CONST_STRING(name, expr) const gchar *name = (const gchar *)(expr)
 
 /* GdkEvent conversions - from ml_event_controller.c */
 #define GdkEvent_val(val) ((GdkEvent*)ext_of_val(val))

@@ -23,6 +23,8 @@ type gir_method = {
   parameters : gir_param list;
   doc : string option;
   throws: bool;
+  get_property : string option;
+  set_property : string option;
 }
 
 type gir_signal = {
@@ -47,6 +49,28 @@ type gir_property = {
   writable : bool;
   construct_only : bool;
   prop_doc : string option;
+}
+
+type gir_record_field = {
+  field_name : string;
+  field_type : gir_type option;
+  readable : bool;
+  writable : bool;
+  field_doc : string option;
+}
+
+type gir_record = {
+  record_name : string;
+  c_type : string;
+  glib_type_name : string option;
+  glib_get_type : string option;
+  opaque : bool;
+  disguised : bool;
+  c_symbol_prefix : string option;
+  fields : gir_record_field list;
+  constructors : gir_constructor list;
+  methods : gir_method list;
+  record_doc : string option;
 }
 
 type gir_enum_member = {

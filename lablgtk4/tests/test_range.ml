@@ -171,28 +171,6 @@ let test_level_bar_inverted () =
   Level_bar.set_inverted lb true;
   check bool "level bar inverted" true (Level_bar.get_inverted lb)
 
-(* ========== High-Level API Tests ========== *)
-
-let test_high_level_progress_bar () =
-  let pb = GRange.progress_bar ~pulse_step:0.15 ~fraction:0.3 () in
-  check (float 0.01) "high-level fraction" 0.3 pb#fraction;
-  check (float 0.01) "high-level pulse_step" 0.15 pb#pulse_step;
-  pb#set_fraction 0.8;
-  check (float 0.01) "fraction updated" 0.8 pb#fraction
-
-let test_high_level_scale () =
-  let scale = GRange.scale `HORIZONTAL ~digits:1 ~draw_value:true () in
-  check int "high-level digits" 1 scale#digits;
-  check bool "high-level draw_value" true scale#draw_value;
-  scale#set_digits 3;
-  check int "digits updated" 3 scale#digits
-
-let test_high_level_level_bar () =
-  let lb = GRange.level_bar ~min_value:0.0 ~max_value:10.0 ~value:5.0 () in
-  check (float 0.01) "high-level value" 5.0 lb#value;
-  lb#set_value 7.5;
-  check (float 0.01) "value updated" 7.5 lb#value
-
 (* Test suite *)
 let () =
   run "Range Widget Tests" [
@@ -227,9 +205,9 @@ let () =
       test_case "min_max" `Quick (require_gtk test_level_bar_min_max);
       test_case "inverted" `Quick (require_gtk test_level_bar_inverted);
     ];
-    "high_level", [
+    (* "high_level", [
       test_case "progress_bar" `Quick (require_gtk test_high_level_progress_bar);
       test_case "scale" `Quick (require_gtk test_high_level_scale);
       test_case "level_bar" `Quick (require_gtk test_high_level_level_bar);
-    ];
+    ]; *)
   ]

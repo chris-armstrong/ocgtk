@@ -54,6 +54,7 @@ gcc -c output/test/ml_event_controllers_gen.c \
 # Regenerate all src bindings and rebuild library
 dune exec src/tools/gir_gen/main.exe -- -f src/gtk4_controllers.controller \
   /usr/share/gir-1.0/Gtk-4.0.gir src
+dune build
 dune build src/lablgtk4.cma
 ```
 
@@ -220,12 +221,11 @@ let as_widget (button : t) : Gtk.widget = Obj.magic button
 
 ### Step 2: Signal Definition Generation
 
-**Module**: New `signal_gen.ml`
+**Status**: Implemented for parameterless void signals (see `parse/gir_parser.ml`, `generate/signal_gen.ml`, and tests in `test_gir_gen.ml`).
 
-**Tasks**:
-1. Parse `<glib:signal>` elements from GIR
-2. Extract signal name, parameters, return type
-3. Generate signal handler classes
+- Parses `<glib:signal>` elements into the GIR AST.
+- Generates `<widget>_signals` classes that use `Gobject.Signal.connect_simple` for signals with no parameters and `void` return types.
+- Current limitation: signals with parameters or non-void returns are still skipped (the generator logs skips); extend `signal_gen.ml` to add callback wrappers when needed.
 
 **GIR signal example**:
 ```xml
@@ -248,21 +248,36 @@ let as_widget (button : t) : Gtk.widget = Obj.magic button
 ```ocaml
 class button_signals obj = object
   method clicked ~callback =
-    Gobject.Signal.connect_simple obj ~name:"clicked" ~callback ~after:false
+    Gobject.Signal.connect_simple
+      (Button.as_widget obj :> [`widget] Gobject.obj)
+      ~name:"clicked" ~callback ~after:false
 
   method activate ~callback =
-    Gobject.Signal.connect_simple obj ~name:"activate" ~callback ~after:false
+    Gobject.Signal.connect_simple
+      (Button.as_widget obj :> [`widget] Gobject.obj)
+      ~name:"activate" ~callback ~after:false
 end
 ```
 
 **Implementation approach**:
-- Use `Gobject.Signal.connect_simple` for simple signals (no parameters)
-- For signals with parameters, generate callback wrappers with proper type conversion
-- Handle signal return values (e.g., key-press-event returns bool)
+- Use `Gobject.Signal.connect_simple` for simple signals (no parameters). Already shipped.
+- For signals with parameters, generate callback wrappers with proper type conversion. **TODO**.
+- Handle signal return values (e.g., key-press-event returns bool). **TODO**.
 
 ### Step 3: High-Level Class Generation
 
-**Module**: New `class_gen.ml`
+**Status**: Initial generator added (`generate/class_gen.ml`) and wired into `gir_gen` to emit `g<Widget>.ml` for widget classes.
+
+- Emits `<widget>_skel` + concrete class when the class has a widget parent.
+- Adds `connect` method returning the generated `<widget>_signals` class.
+- Generates property wrappers (getters/setters) and method wrappers for non-variadic, non-`out` methods.
+- Uses the low-level module (e.g., `Button.set_label`) and `GObj.widget_impl` for inheritance.
+
+**Next steps** (future work):
+- Add container/window/range specializations (add/remove/append, present/close, adjustment/value).
+- Handle inheritance between generated skeletons (parent `_skel`).
+- Support methods with `out` params and signals with arguments.
+- Wire the generator into `main.ml` to emit `g<Widget>.ml/.mli` files, and add Dune includes.
 
 **Tasks**:
 1. Generate skeleton class (`<widget>_skel`) with:
@@ -504,6 +519,23 @@ GIR File (Gtk-4.0.gir)
        └─> Factory Functions (factory_gen.ml - NEW)
            └─> Convenient constructors in g<Widget>.ml
 ```
+
+## Record Type Support Plan
+
+- **Goal**: Parse and generate support for GIR `<record>` elements so methods/properties that use them no longer get skipped, mirroring lablgtk3’s record-aware stubs (`extract_prototype.ml` marks record conversions) and following `FFI_GUIDELINES.md` / `SECURITY_GUIDELINES.md`.
+- **Parser updates**: Add a `gir_record` type (name, c_type, glib:type-name/get-type, disguised flag, fields with types/docs) in `types.ml` and extend `parse/gir_parser.ml` to collect `<record>` entries into the AST rather than discarding them (reuse the existing `record_signal` hook to keep coverage in one place).
+- **Type mapping**: Teach `type_mappings.ml` to resolve record C types and GIR names:
+  - GBoxed-style (`glib:type-name`/`glib:get-type`) -> emit `Val_<Type>` / `<Type>_val` converters like classes, with NULL checks and deep copies where required.
+  - Disguised/opaque records -> map to abstract custom blocks or pointer wrappers; preserve nullable/ownership semantics so method/property generators can still wire them through.
+- **Generation integration**: Use the resolved record mappings in the generators so properties, parameters, and return values referencing records produce externals instead of being filtered out. Start with pointer-level support; optionally add field accessors once GIR exposes usable fields.
+- **Safety**: Any new C helpers must follow the security checklist (CAMLparam/CAMLlocal, bounds/overflow checks, no memcpy on `GValue`-like data, register/unregister roots as needed).
+- **Testing**: Add `test_gir_gen.ml` fixtures for (1) boxed record with get_type, (2) disguised opaque record, (3) nullable record parameter/return. Assert parsed AST contents and generated type mappings/stub signatures cover those cases.
+
+**Current status (implemented):**
+- `gir_record` parsing is wired; boxed records populate the AST and type mapping lookups.
+- Type mapping emits conversion macros for boxed records; disguised/opaque records are ignored for converter emission to avoid struct-by-value mishandling.
+- Generators (C stubs, ML interfaces, class wrappers) accept `~records` and use record mappings for parameters/properties/returns.
+- Regression test `Record type support` exists and should be kept in sync with any future tweaks to record handling.
 
 ## Configuration and Control
 

@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -91,5 +92,9 @@ CAMLparam1(self);
 GtkBorder out1;
 
 gboolean result = gtk_scrollable_get_border(GtkScrollable_val(self), &out1);
-CAMLreturn(Val_bool(result));
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_GtkBorder(out1));
+    CAMLreturn(ret);
 }

@@ -13,6 +13,12 @@ external new_with_buffer : Gtk.widget -> t = "ml_gtk_text_view_new_with_buffer"
 
 (* Properties *)
 
+(** Determines whether @iter is at the start of a display line.
+
+See [method@Gtk.TextView.forward_display_line] for an
+explanation of display lines vs. paragraphs. *)
+external starts_display_line : t -> Obj.t -> bool = "ml_gtk_text_view_starts_display_line"
+
 (** Sets the line wrapping for the view. *)
 external set_wrap_mode : t -> Gtk_enums.wrapmode -> unit = "ml_gtk_text_view_set_wrap_mode"
 
@@ -153,7 +159,7 @@ handler; so this function may not have the desired effect if it’s
 called before the height computations. To avoid oddness, consider
 using [method@Gtk.TextView.scroll_to_mark] which saves a point to be
 scrolled to after line validation. *)
-external scroll_to_iter : t -> Gtk.widget -> float -> bool -> float -> float -> bool = "ml_gtk_text_view_scroll_to_iter_bytecode" "ml_gtk_text_view_scroll_to_iter_native"
+external scroll_to_iter : t -> Obj.t -> float -> bool -> float -> float -> bool = "ml_gtk_text_view_scroll_to_iter_bytecode" "ml_gtk_text_view_scroll_to_iter_native"
 
 (** Scrolls @text_view the minimum distance such that @mark is contained
 within the visible area of the widget. *)
@@ -194,7 +200,7 @@ In the presence of bi-directional text, the correspondence
 between logical and visual order will depend on the direction
 of the current run, and there may be jumps when the cursor
 is moved off of the end of a run. *)
-external move_visually : t -> Gtk.widget -> int -> bool = "ml_gtk_text_view_move_visually"
+external move_visually : t -> Obj.t -> int -> bool = "ml_gtk_text_view_move_visually"
 
 (** Updates the position of a child.
 
@@ -287,7 +293,7 @@ Buffer coordinates are coordinates for the entire buffer, not just
 the currently-displayed portion. If you have coordinates from an
 event, you have to convert those to buffer coordinates with
 [method@Gtk.TextView.window_to_buffer_coords]. *)
-external get_iter_at_location : t -> int -> int -> bool * unit = "ml_gtk_text_view_get_iter_at_location"
+external get_iter_at_location : t -> int -> int -> bool * Obj.t = "ml_gtk_text_view_get_iter_at_location"
 
 (** Gets the `input-purpose` of the `GtkTextView`. *)
 external get_input_purpose : t -> Gtk_enums.inputpurpose = "ml_gtk_text_view_get_input_purpose"
@@ -340,7 +346,7 @@ wrapping is turned off, display lines and paragraphs will be the
 same. Display lines are divided differently for each view, since
 they depend on the view’s width; paragraphs are the same in all
 views, since they depend on the contents of the `GtkTextBuffer`. *)
-external forward_display_line_end : t -> Gtk.widget -> bool = "ml_gtk_text_view_forward_display_line_end"
+external forward_display_line_end : t -> Obj.t -> bool = "ml_gtk_text_view_forward_display_line_end"
 
 (** Moves the given @iter forward by one display (wrapped) line.
 
@@ -351,7 +357,7 @@ wrapping is turned off, display lines and paragraphs will be the
 same. Display lines are divided differently for each view, since
 they depend on the view’s width; paragraphs are the same in all
 views, since they depend on the contents of the `GtkTextBuffer`. *)
-external forward_display_line : t -> Gtk.widget -> bool = "ml_gtk_text_view_forward_display_line"
+external forward_display_line : t -> Obj.t -> bool = "ml_gtk_text_view_forward_display_line"
 
 (** Moves the given @iter backward to the next display line start.
 
@@ -362,7 +368,7 @@ wrapping is turned off, display lines and paragraphs will be the
 same. Display lines are divided differently for each view, since
 they depend on the view’s width; paragraphs are the same in all
 views, since they depend on the contents of the `GtkTextBuffer`. *)
-external backward_display_line_start : t -> Gtk.widget -> bool = "ml_gtk_text_view_backward_display_line_start"
+external backward_display_line_start : t -> Obj.t -> bool = "ml_gtk_text_view_backward_display_line_start"
 
 (** Moves the given @iter backward by one display (wrapped) line.
 
@@ -373,7 +379,7 @@ wrapping is turned off, display lines and paragraphs will be the
 same. Display lines are divided differently for each view, since
 they depend on the view’s width; paragraphs are the same in all
 views, since they depend on the contents of the `GtkTextBuffer`. *)
-external backward_display_line : t -> Gtk.widget -> bool = "ml_gtk_text_view_backward_display_line"
+external backward_display_line : t -> Obj.t -> bool = "ml_gtk_text_view_backward_display_line"
 
 (** Adds @child at a fixed coordinate in the `GtkTextView`'s text window.
 

@@ -41,8 +41,9 @@ let () =
   password_box#append (GObj.widget_of_obj (password_entry));
 
   (* Remember me checkbox *)
-  let remember_check = GButton.check_button ~label:"Remember me" () in
-  vbox#append (remember_check :> GObj.widget);
+  let remember_obj = GtkCheckButton.new_with_label (Some "Remember me") in
+  let remember_check = new GCheck_button.check_button remember_obj in
+  vbox#append (remember_check#widget);
 
   (* Status label *)
   let status_label = Label.new_ None in
@@ -54,8 +55,8 @@ let () =
   vbox#append (button_box :> GObj.widget);
 
   (* Login button *)
-  let login_btn = GButton.button ~label:"Login" () in
-  button_box#append (login_btn :> GObj.widget);
+  let login_btn = new GButton.button (GtkButton.new_with_label "Login") in
+  button_box#append (login_btn#widget);
 
   ignore (login_btn#connect#clicked ~callback:(fun () ->
     let username = Editable.get_text (Entry.as_widget username_entry) in
@@ -66,20 +67,20 @@ let () =
     else if username = "admin" && password = "password" then begin
       Label.set_markup status_label "<span foreground='green'>✓ Login successful!</span>";
       print_endline (Printf.sprintf "Logged in as: %s (Remember me: %b)"
-        username remember_check#active)
+        username (GtkCheckButton.get_active remember_obj))
     end else
       Label.set_markup status_label "<span foreground='red'>✗ Invalid credentials</span>"
   ));
 
   (* Cancel button *)
-  let cancel_btn = GButton.button ~label:"Cancel" () in
-  button_box#append (cancel_btn :> GObj.widget);
+  let cancel_btn = new GButton.button (GtkButton.new_with_label "Cancel") in
+  button_box#append (cancel_btn#widget);
 
   ignore (cancel_btn#connect#clicked ~callback:(fun () ->
     Editable.set_text (username_entry |> Entry.as_widget) "";
     Editable.set_text (password_entry|> Password_entry.as_widget) "";
     Label.set_label status_label "";
-    remember_check#set_active false
+    GtkCheckButton.set_active remember_obj false
   ));
 
   (* Show window and run main loop *)

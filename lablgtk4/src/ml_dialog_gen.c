@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -25,13 +26,6 @@ CAMLexport CAMLprim value ml_gtk_dialog_new(value unit)
 {
 CAMLparam1(unit);
 GtkDialog *obj = gtk_dialog_new();
-CAMLreturn(Val_GtkDialog(obj));
-}
-
-CAMLexport CAMLprim value ml_gtk_dialog_new_with_buttons(value arg1, value arg2, value arg3, value arg4, value arg5)
-{
-CAMLparam5(arg1, arg2, arg3, arg4, arg5);
-GtkDialog *obj = gtk_dialog_new_with_buttons(String_option_val(arg1), Option_val(arg2, GtkWindow_val, NULL), GtkDialogFlags_val(arg3), String_option_val(arg4), arg5);
 CAMLreturn(Val_GtkDialog(obj));
 }
 

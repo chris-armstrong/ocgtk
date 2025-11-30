@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -20,13 +21,6 @@
 #define Val_GtkConstantExpression(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GtkConstantExpression */
 
-
-CAMLexport CAMLprim value ml_gtk_constant_expression_new(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-GtkConstantExpression *obj = gtk_constant_expression_new(arg1, arg2);
-CAMLreturn(Val_GtkConstantExpression(obj));
-}
 
 CAMLexport CAMLprim value ml_gtk_constant_expression_new_for_value(value arg1)
 {

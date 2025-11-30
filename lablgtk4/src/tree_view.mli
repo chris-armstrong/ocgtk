@@ -26,7 +26,7 @@ external unset_rows_drag_dest : t -> unit = "ml_gtk_tree_view_unset_rows_drag_de
 (** Sets the tip area of @tooltip to be the area covered by the row at @path.
 See also gtk_tree_view_set_tooltip_column() for a simpler alternative.
 See also gtk_tooltip_set_tip_area(). *)
-external set_tooltip_row : t -> Gtk.widget -> Gtk.widget -> unit = "ml_gtk_tree_view_set_tooltip_row"
+external set_tooltip_row : t -> Gtk.widget -> Obj.t -> unit = "ml_gtk_tree_view_set_tooltip_row"
 
 (** If you only plan to have simple (text-only) tooltips on full rows, you
 can use this function to have `GtkTreeView` handle these automatically
@@ -51,7 +51,7 @@ position.  In such cases @path must be set to the current node under the
 mouse cursor for this function to operate correctly.
 
 See also gtk_tree_view_set_tooltip_column() for a simpler alternative. *)
-external set_tooltip_cell : t -> Gtk.widget -> Gtk.widget option -> Gtk.widget option -> Gtk.widget option -> unit = "ml_gtk_tree_view_set_tooltip_cell"
+external set_tooltip_cell : t -> Gtk.widget -> Obj.t option -> Gtk.widget option -> Gtk.widget option -> unit = "ml_gtk_tree_view_set_tooltip_cell"
 
 (** Sets whether to draw and enable expanders and indent child rows in
 @tree_view.  When disabled there will be no expanders visible in trees
@@ -161,7 +161,7 @@ external set_enable_search : t -> bool -> unit = "ml_gtk_tree_view_set_enable_se
 
 (** Sets the row that is highlighted for feedback.
 If @path is %NULL, an existing highlight is removed. *)
-external set_drag_dest_row : t -> Gtk.widget option -> Gtk_enums.treeviewdropposition -> unit = "ml_gtk_tree_view_set_drag_dest_row"
+external set_drag_dest_row : t -> Obj.t option -> Gtk_enums.treeviewdropposition -> unit = "ml_gtk_tree_view_set_drag_dest_row"
 
 (** Sets the current keyboard focus to be at @path, and selects it.  This is
 useful when you want to focus the user’s attention on a particular row.  If
@@ -177,7 +177,7 @@ realized.
 
 If @path is invalid for @model, the current cursor (if any) will be unset
 and the function will return without failing. *)
-external set_cursor_on_cell : t -> Gtk.widget -> Gtk.widget option -> Gtk.widget option -> bool -> unit = "ml_gtk_tree_view_set_cursor_on_cell"
+external set_cursor_on_cell : t -> Obj.t -> Gtk.widget option -> Gtk.widget option -> bool -> unit = "ml_gtk_tree_view_set_cursor_on_cell"
 
 (** Sets the current keyboard focus to be at @path, and selects it.  This is
 useful when you want to focus the user’s attention on a particular row.  If
@@ -190,7 +190,7 @@ can only happen when the widget is realized.
 
 If @path is invalid for @model, the current cursor (if any) will be unset
 and the function will return without failing. *)
-external set_cursor : t -> Gtk.widget -> Gtk.widget option -> bool -> unit = "ml_gtk_tree_view_set_cursor"
+external set_cursor : t -> Obj.t -> Gtk.widget option -> bool -> unit = "ml_gtk_tree_view_set_cursor"
 
 (** Cause the `GtkTreeView`::row-activated signal to be emitted
 on a single click instead of a double click. *)
@@ -221,13 +221,13 @@ position.  If the cell is currently visible on the screen, nothing is done.
 This function only works if the model is set, and @path is a valid row on the
 model.  If the model changes before the @tree_view is realized, the centered
 path will be modified to reflect this change. *)
-external scroll_to_cell : t -> Gtk.widget option -> Gtk.widget option -> bool -> float -> float -> unit = "ml_gtk_tree_view_scroll_to_cell_bytecode" "ml_gtk_tree_view_scroll_to_cell_native"
+external scroll_to_cell : t -> Obj.t option -> Gtk.widget option -> bool -> float -> float -> unit = "ml_gtk_tree_view_scroll_to_cell_bytecode" "ml_gtk_tree_view_scroll_to_cell_native"
 
 (** Returns %TRUE if the node pointed to by @path is expanded in @tree_view. *)
-external row_expanded : t -> Gtk.widget -> bool = "ml_gtk_tree_view_row_expanded"
+external row_expanded : t -> Obj.t -> bool = "ml_gtk_tree_view_row_expanded"
 
 (** Activates the cell determined by @path and @column. *)
-external row_activated : t -> Gtk.widget -> Gtk.widget option -> unit = "ml_gtk_tree_view_row_activated"
+external row_activated : t -> Obj.t -> Gtk.widget option -> unit = "ml_gtk_tree_view_row_activated"
 
 (** Removes @column from @tree_view. *)
 external remove_column : t -> Gtk.widget -> int = "ml_gtk_tree_view_remove_column"
@@ -250,7 +250,7 @@ external insert_column : t -> Gtk.widget -> int -> int = "ml_gtk_tree_view_inser
 Note that there may be invisible paths in between.
 
 The paths should be freed with gtk_tree_path_free() after use. *)
-external get_visible_range : t -> bool * Gtk.widget * Gtk.widget = "ml_gtk_tree_view_get_visible_range"
+external get_visible_range : t -> bool * Obj.t * Obj.t = "ml_gtk_tree_view_get_visible_range"
 
 (** This function is supposed to be used in a ::query-tooltip
 signal handler for `GtkTreeView`. The @x, @y and @keyboard_tip values
@@ -263,7 +263,7 @@ tooltips the row returned will be the cursor row. When %TRUE, then any of
 @model, @path and @iter which have been provided will be set to point to
 that row and the corresponding model. @x and @y will always be converted
 to be relative to @tree_view’s bin_window if @keyboard_tooltip is %FALSE. *)
-external get_tooltip_context : t -> int -> int -> bool -> bool * Gtk.widget option * Gtk.widget * unit = "ml_gtk_tree_view_get_tooltip_context_bytecode" "ml_gtk_tree_view_get_tooltip_context_native"
+external get_tooltip_context : t -> int -> int -> bool -> bool * Gtk.widget option * Obj.t * Obj.t = "ml_gtk_tree_view_get_tooltip_context_bytecode" "ml_gtk_tree_view_get_tooltip_context_native"
 
 (** Returns the column of @tree_view’s model which is being used for
 displaying tooltips on @tree_view’s rows. *)
@@ -334,13 +334,13 @@ by typing in text. *)
 external get_enable_search : t -> bool = "ml_gtk_tree_view_get_enable_search"
 
 (** Gets information about the row that is highlighted for feedback. *)
-external get_drag_dest_row : t -> Gtk.widget option * Gtk_enums.treeviewdropposition = "ml_gtk_tree_view_get_drag_dest_row"
+external get_drag_dest_row : t -> Obj.t option * Gtk_enums.treeviewdropposition = "ml_gtk_tree_view_get_drag_dest_row"
 
 (** Determines the destination row for a given position.  @drag_x and
 @drag_y are expected to be in widget coordinates.  This function is only
 meaningful if @tree_view is realized.  Therefore this function will always
 return %FALSE if @tree_view is not realized or does not have a model. *)
-external get_dest_row_at_pos : t -> int -> int -> bool * Gtk.widget option * Gtk_enums.treeviewdropposition = "ml_gtk_tree_view_get_dest_row_at_pos"
+external get_dest_row_at_pos : t -> int -> int -> bool * Obj.t option * Gtk_enums.treeviewdropposition = "ml_gtk_tree_view_get_dest_row_at_pos"
 
 (** Fills in @path and @focus_column with the current path and focus column.  If
 the cursor isn’t currently set, then *@path will be %NULL.  If no column
@@ -348,7 +348,7 @@ currently has focus, then *@focus_column will be %NULL.
 
 The returned `GtkTreePath` must be freed with gtk_tree_path_free() when
 you are done with it. *)
-external get_cursor : t -> Gtk.widget option * Gtk.widget option = "ml_gtk_tree_view_get_cursor"
+external get_cursor : t -> Obj.t option * Gtk.widget option = "ml_gtk_tree_view_get_cursor"
 
 (** Gets the `GtkTreeViewColumn` at the given position in the #tree_view. *)
 external get_column : t -> int -> Gtk.widget option = "ml_gtk_tree_view_get_column"
@@ -358,10 +358,10 @@ external get_activate_on_single_click : t -> bool = "ml_gtk_tree_view_get_activa
 
 (** Expands the row at @path. This will also expand all parent rows of
 @path as necessary. *)
-external expand_to_path : t -> Gtk.widget -> unit = "ml_gtk_tree_view_expand_to_path"
+external expand_to_path : t -> Obj.t -> unit = "ml_gtk_tree_view_expand_to_path"
 
 (** Opens the row so its children are visible. *)
-external expand_row : t -> Gtk.widget -> bool -> bool = "ml_gtk_tree_view_expand_row"
+external expand_row : t -> Obj.t -> bool -> bool = "ml_gtk_tree_view_expand_row"
 
 (** Recursively expands all nodes in the @tree_view. *)
 external expand_all : t -> unit = "ml_gtk_tree_view_expand_all"
@@ -371,7 +371,7 @@ treeview has been realized. *)
 external columns_autosize : t -> unit = "ml_gtk_tree_view_columns_autosize"
 
 (** Collapses a row (hides its child rows, if they exist). *)
-external collapse_row : t -> Gtk.widget -> bool = "ml_gtk_tree_view_collapse_row"
+external collapse_row : t -> Obj.t -> bool = "ml_gtk_tree_view_collapse_row"
 
 (** Recursively collapses all visible, expanded nodes in @tree_view. *)
 external collapse_all : t -> unit = "ml_gtk_tree_view_collapse_all"

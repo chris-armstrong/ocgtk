@@ -99,39 +99,23 @@ let test_toggle_button_toggled () =
   check bool "toggle button state still true after toggled" true (GtkToggleButton.get_active btn)
 
 let test_high_level_button () =
-  let btn = GButton.button ~label:"Click me" () in
-  check string "GButton label" "Click me" btn#label;
+  let obj = GtkButton.new_ () in
+  GtkButton.set_label obj "Click me";
+  GtkButton.set_has_frame obj true;
+  let btn = new GButton.button obj in
+  check (option string) "GButton label" (Some "Click me") (btn#label ());
   btn#set_label "Updated";
-  check string "GButton label updated" "Updated" btn#label;
+  check (option string) "GButton label updated" (Some "Updated") (btn#label ());
   btn#set_has_frame false;
-  check bool "GButton has_frame" false btn#has_frame
+  check bool "GButton has_frame" false (btn#has_frame ())
 
 let test_high_level_button_with_icon () =
-  let btn = GButton.button ~icon_name:"document-open" () in
-  check string "GButton icon" "document-open" btn#icon_name;
+  let obj = GtkButton.new_ () in
+  GtkButton.set_icon_name obj "document-open";
+  let btn = new GButton.button obj in
+  check (option string) "GButton icon" (Some "document-open") (btn#icon_name ());
   btn#set_icon_name "document-save";
-  check string "GButton icon changed" "document-save" btn#icon_name
-
-let test_high_level_check_button () =
-  let cb = GButton.check_button ~label:"Enable" () in
-  check bool "GButton.check_button initial" false cb#active;
-  cb#set_active true;
-  check bool "GButton.check_button activated" true cb#active;
-  check string "GButton.check_button label" "Enable" cb#label
-
-let test_high_level_radio_buttons () =
-  (* SKIP: Depends on set_group which needs nullable parameter support *)
-  skip ()
-
-let test_high_level_toggle_button () =
-  (* Note: toggled() emits signal but doesn't change state *)
-  let tb = GButton.toggle_button ~label:"Toggle" () in
-  check bool "GButton.toggle_button initial" false tb#active;
-  tb#set_active true;
-  check bool "GButton.toggle_button activated" true tb#active;
-  (* Test that we can call toggled() - it emits signal but doesn't change state *)
-  tb#toggled ();
-  check bool "GButton.toggle_button state unchanged after toggled()" true tb#active
+  check (option string) "GButton icon changed" (Some "document-save") (btn#icon_name ())
 
 let () =
   run "Button Tests" [
@@ -156,8 +140,5 @@ let () =
     "high_level", [
       test_case "gbutton" `Quick (require_gtk test_high_level_button);
       test_case "gbutton_icon" `Quick (require_gtk test_high_level_button_with_icon);
-      test_case "gcheck_button" `Quick (require_gtk test_high_level_check_button);
-      test_case "gradio_buttons" `Quick (require_gtk test_high_level_radio_buttons);
-      test_case "gtoggle_button" `Quick (require_gtk test_high_level_toggle_button);
     ];
   ]

@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -25,13 +26,6 @@ CAMLexport CAMLprim value ml_gtk_info_bar_new(value unit)
 {
 CAMLparam1(unit);
 GtkInfoBar *obj = gtk_info_bar_new();
-CAMLreturn(Val_GtkInfoBar(obj));
-}
-
-CAMLexport CAMLprim value ml_gtk_info_bar_new_with_buttons(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-GtkInfoBar *obj = gtk_info_bar_new_with_buttons(String_option_val(arg1), arg2);
 CAMLreturn(Val_GtkInfoBar(obj));
 }
 

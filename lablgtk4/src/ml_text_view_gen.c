@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -33,6 +34,14 @@ CAMLexport CAMLprim value ml_gtk_text_view_new_with_buffer(value arg1)
 CAMLparam1(arg1);
 GtkTextView *obj = gtk_text_view_new_with_buffer(GtkTextBuffer_val(arg1));
 CAMLreturn(Val_GtkTextView(obj));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_starts_display_line(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gboolean result = gtk_text_view_starts_display_line(GtkTextView_val(self), GtkTextIter_val(arg1));
+CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_view_set_wrap_mode(value self, value arg1)
@@ -206,7 +215,7 @@ CAMLexport CAMLprim value ml_gtk_text_view_scroll_to_iter_native(value self, val
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam1(arg5);
 
-gboolean result = gtk_text_view_scroll_to_iter(GtkTextView_val(self), GtkWidget_val(arg1), Double_val(arg2), Bool_val(arg3), Double_val(arg4), Double_val(arg5));
+gboolean result = gtk_text_view_scroll_to_iter(GtkTextView_val(self), GtkTextIter_val(arg1), Double_val(arg2), Bool_val(arg3), Double_val(arg4), Double_val(arg5));
 CAMLreturn(Val_bool(result));
 }
 
@@ -259,7 +268,7 @@ CAMLexport CAMLprim value ml_gtk_text_view_move_visually(value self, value arg1,
 {
 CAMLparam3(self, arg1, arg2);
 
-gboolean result = gtk_text_view_move_visually(GtkTextView_val(self), GtkWidget_val(arg1), Int_val(arg2));
+gboolean result = gtk_text_view_move_visually(GtkTextView_val(self), GtkTextIter_val(arg1), Int_val(arg2));
 CAMLreturn(Val_bool(result));
 }
 
@@ -373,7 +382,11 @@ CAMLparam3(self, arg1, arg2);
 GtkTextIter out1;
 
 gboolean result = gtk_text_view_get_iter_at_location(GtkTextView_val(self), &out1, Int_val(arg1), Int_val(arg2));
-CAMLreturn(Val_bool(result));
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_GtkTextIter(out1));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_text_view_get_input_purpose(value self)
@@ -452,7 +465,7 @@ CAMLexport CAMLprim value ml_gtk_text_view_forward_display_line_end(value self, 
 {
 CAMLparam2(self, arg1);
 
-gboolean result = gtk_text_view_forward_display_line_end(GtkTextView_val(self), GtkWidget_val(arg1));
+gboolean result = gtk_text_view_forward_display_line_end(GtkTextView_val(self), GtkTextIter_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -460,7 +473,7 @@ CAMLexport CAMLprim value ml_gtk_text_view_forward_display_line(value self, valu
 {
 CAMLparam2(self, arg1);
 
-gboolean result = gtk_text_view_forward_display_line(GtkTextView_val(self), GtkWidget_val(arg1));
+gboolean result = gtk_text_view_forward_display_line(GtkTextView_val(self), GtkTextIter_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -468,7 +481,7 @@ CAMLexport CAMLprim value ml_gtk_text_view_backward_display_line_start(value sel
 {
 CAMLparam2(self, arg1);
 
-gboolean result = gtk_text_view_backward_display_line_start(GtkTextView_val(self), GtkWidget_val(arg1));
+gboolean result = gtk_text_view_backward_display_line_start(GtkTextView_val(self), GtkTextIter_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -476,7 +489,7 @@ CAMLexport CAMLprim value ml_gtk_text_view_backward_display_line(value self, val
 {
 CAMLparam2(self, arg1);
 
-gboolean result = gtk_text_view_backward_display_line(GtkTextView_val(self), GtkWidget_val(arg1));
+gboolean result = gtk_text_view_backward_display_line(GtkTextView_val(self), GtkTextIter_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 

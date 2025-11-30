@@ -43,7 +43,7 @@ specified in @flags.
 
 This function works no matter if the listview is shown or focused.
 If it isn't, then the changes will take effect once that happens. *)
-external scroll_to : t -> int -> Gtk_enums.listscrollflags -> Gtk.widget option -> unit = "ml_gtk_list_view_scroll_to"
+external scroll_to : t -> int -> Gtk_enums.listscrollflags -> Obj.t option -> unit = "ml_gtk_list_view_scroll_to"
 
 (** Gets the behavior set for the <kbd>Tab</kbd> key. *)
 external get_tab_behavior : t -> Gtk_enums.listtabbehavior = "ml_gtk_list_view_get_tab_behavior"

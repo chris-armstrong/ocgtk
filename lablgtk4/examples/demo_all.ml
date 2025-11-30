@@ -76,14 +76,19 @@ let () =
   (* High-Level OO Wrappers *)
   section "High-Level OO Wrappers";
 
-  let gbutton = GButton.button ~label:"Click Me" () in
-  Printf.printf "✓ Created GButton: '%s'\n" gbutton#label;
+  let gbutton_obj = GtkButton.new_ () in
+  GtkButton.set_label gbutton_obj "Click Me";
+  let gbutton = new GButton.button gbutton_obj in
+  Printf.printf "✓ Created GButton: '%s'\n" (Option.value ~default:"" (gbutton#label ()));
 
-  let gcheck = GButton.check_button ~label:"Feature enabled" ~active:true () in
-  Printf.printf "✓ Created GButton.check_button (active=%b)\n" gcheck#active;
+  let gcheck_obj = GtkCheckButton.new_with_label (Some "Feature enabled") in
+  GtkCheckButton.set_active gcheck_obj true;
+  let _ = new GCheck_button.check_button gcheck_obj in
+  Printf.printf "✓ Created GCheck_button (active=%b)\n" (GtkCheckButton.get_active gcheck_obj);
 
-  let gtoggle = GButton.toggle_button ~label:"Power" () in
-  Printf.printf "✓ Created GButton.toggle_button (active=%b)\n" gtoggle#active;
+  let gtoggle_obj = GtkToggleButton.new_with_label "Power" in
+  let _ = new GToggle_button.toggle_button gtoggle_obj in
+  Printf.printf "✓ Created GToggle_button (active=%b)\n" (GtkToggleButton.get_active gtoggle_obj);
 
   (* Summary *)
   section "Summary";

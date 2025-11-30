@@ -205,12 +205,29 @@ let type_mappings = [
   });
 ]
 
+let normalize_c_pointer_type lookup_str =
+  let trimmed = String.trim lookup_str in
+  let without_const =
+    if String.length trimmed >= 6 &&
+       String.sub trimmed ~pos:0 ~len:6 = "const "
+    then String.trim (String.sub trimmed ~pos:6 ~len:(String.length trimmed - 6))
+    else trimmed
+  in
+  let without_trailing_const =
+    if String.length without_const >= 6 &&
+       String.sub without_const ~pos:(String.length without_const - 6) ~len:6 = " const"
+    then String.trim (String.sub without_const ~pos:0 ~len:(String.length without_const - 6))
+    else without_const
+  in
+  String.trim without_trailing_const
+
 let find_class_mapping classes lookup_str =
   let normalized_lookup =
-    if String.length lookup_str > 0 && lookup_str.[String.length lookup_str - 1] = '*' then
-      String.sub lookup_str ~pos:0 ~len:(String.length lookup_str - 1)
+    let base = normalize_c_pointer_type lookup_str in
+    if String.length base > 0 && base.[String.length base - 1] = '*' then
+      String.sub base ~pos:0 ~len:(String.length base - 1)
     else
-      lookup_str
+      base
   in
   List.find_opt ~f:(fun (cls : Types.gir_class) ->
     let normalized_name = Utils.normalize_class_name cls.class_name in
@@ -220,7 +237,36 @@ let find_class_mapping classes lookup_str =
     (("Gtk" ^ normalized_name ^ "*") = lookup_str)
   ) classes
 
-let find_type_mapping_for_gir_type ?(enums=[]) ?(bitfields=[]) ?(classes=[]) (gir_type : Types.gir_type) =
+let is_boxed_record (record : Types.gir_record) =
+  (match record.glib_get_type, record.glib_type_name with
+  | Some _, _ | _, Some _ -> true
+  | _ -> false)
+  && not record.disguised
+
+let find_record_mapping records lookup_str =
+  let normalized_lookup = normalize_c_pointer_type lookup_str in
+  let is_pointer =
+    String.length normalized_lookup > 0 &&
+    Char.equal normalized_lookup.[String.length normalized_lookup - 1] '*'
+  in
+  let base_lookup =
+    if is_pointer then
+      String.sub normalized_lookup ~pos:0 ~len:(String.length normalized_lookup - 1)
+    else
+      normalized_lookup
+  in
+  List.find_opt ~f:(fun (record : Types.gir_record) ->
+    let is_supported = is_boxed_record record || (record.disguised && is_pointer) in
+    is_supported &&
+    let normalized_name = Utils.normalize_class_name record.record_name in
+    record.c_type = base_lookup
+    || (record.record_name = base_lookup)
+    || (normalized_name = base_lookup)
+    || (("Gtk" ^ normalized_name) = base_lookup)
+  ) records
+  |> Option.map (fun record -> (record, is_pointer, is_boxed_record record))
+
+let find_type_mapping_for_gir_type ?(enums=[]) ?(bitfields=[]) ?(classes=[]) ?(records=[]) (gir_type : Types.gir_type) =
   let try_lookup lookup_str =
     (* First, check if this is a known class type (GtkButton*, GtkWidget*, etc.) *)
     let class_mapping =
@@ -239,7 +285,18 @@ let find_type_mapping_for_gir_type ?(enums=[]) ?(bitfields=[]) ?(classes=[]) (gi
           ml_to_c = sprintf "%s_val" cls.c_type;
           needs_copy = false;
         }
-      | None -> None
+      | None ->
+        (* Next, check for known records (boxed/disguised) *)
+        (match find_record_mapping records lookup_str with
+        | Some (record, _is_pointer, _) ->
+          let ocaml_type = "Obj.t" in
+          Some {
+            ocaml_type;
+            c_to_ml = sprintf "Val_%s" record.c_type;
+            ml_to_c = sprintf "%s_val" record.c_type;
+            needs_copy = false;
+          }
+        | None -> None)
     in
     match class_mapping with
     | Some mapping -> Some mapping
@@ -295,8 +352,8 @@ let find_type_mapping_for_gir_type ?(enums=[]) ?(bitfields=[]) ?(classes=[]) (gi
   | None -> try_lookup gir_type.name
 
 (* Keep old function signature for compatibility *)
-let find_type_mapping ?(enums=[]) ?(bitfields=[]) ?(classes=[]) c_type =
-  find_type_mapping_for_gir_type ~enums ~bitfields ~classes { name = c_type; c_type = c_type; nullable = false }
+let find_type_mapping ?(enums=[]) ?(bitfields=[]) ?(classes=[]) ?(records=[]) c_type =
+  find_type_mapping_for_gir_type ~enums ~bitfields ~classes ~records { name = c_type; c_type = c_type; nullable = false }
 
 (* Bug fix #3: Add module qualification based on GIR namespace *)
 let qualify_ocaml_type ?(gir_type_name=None) ocaml_type =

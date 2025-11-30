@@ -8,6 +8,7 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <caml/custom.h>
 #include "wrappers.h"
 #include "ml_gobject.h"
 
@@ -25,7 +26,7 @@ CAMLexport CAMLprim value ml_gtk_tree_selection_unselect_range(value self, value
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_tree_selection_unselect_range(GtkTreeSelection_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2));
+gtk_tree_selection_unselect_range(GtkTreeSelection_val(self), GtkTreePath_val(arg1), GtkTreePath_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -33,7 +34,7 @@ CAMLexport CAMLprim value ml_gtk_tree_selection_unselect_path(value self, value 
 {
 CAMLparam2(self, arg1);
 
-gtk_tree_selection_unselect_path(GtkTreeSelection_val(self), GtkWidget_val(arg1));
+gtk_tree_selection_unselect_path(GtkTreeSelection_val(self), GtkTreePath_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -41,7 +42,7 @@ CAMLexport CAMLprim value ml_gtk_tree_selection_unselect_iter(value self, value 
 {
 CAMLparam2(self, arg1);
 
-gtk_tree_selection_unselect_iter(GtkTreeSelection_val(self), GtkWidget_val(arg1));
+gtk_tree_selection_unselect_iter(GtkTreeSelection_val(self), GtkTreeIter_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -65,7 +66,7 @@ CAMLexport CAMLprim value ml_gtk_tree_selection_select_range(value self, value a
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_tree_selection_select_range(GtkTreeSelection_val(self), GtkWidget_val(arg1), GtkWidget_val(arg2));
+gtk_tree_selection_select_range(GtkTreeSelection_val(self), GtkTreePath_val(arg1), GtkTreePath_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -73,7 +74,7 @@ CAMLexport CAMLprim value ml_gtk_tree_selection_select_path(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-gtk_tree_selection_select_path(GtkTreeSelection_val(self), GtkWidget_val(arg1));
+gtk_tree_selection_select_path(GtkTreeSelection_val(self), GtkTreePath_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -81,7 +82,7 @@ CAMLexport CAMLprim value ml_gtk_tree_selection_select_iter(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-gtk_tree_selection_select_iter(GtkTreeSelection_val(self), GtkWidget_val(arg1));
+gtk_tree_selection_select_iter(GtkTreeSelection_val(self), GtkTreeIter_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -97,7 +98,7 @@ CAMLexport CAMLprim value ml_gtk_tree_selection_path_is_selected(value self, val
 {
 CAMLparam2(self, arg1);
 
-gboolean result = gtk_tree_selection_path_is_selected(GtkTreeSelection_val(self), GtkWidget_val(arg1));
+gboolean result = gtk_tree_selection_path_is_selected(GtkTreeSelection_val(self), GtkTreePath_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -105,7 +106,7 @@ CAMLexport CAMLprim value ml_gtk_tree_selection_iter_is_selected(value self, val
 {
 CAMLparam2(self, arg1);
 
-gboolean result = gtk_tree_selection_iter_is_selected(GtkTreeSelection_val(self), GtkWidget_val(arg1));
+gboolean result = gtk_tree_selection_iter_is_selected(GtkTreeSelection_val(self), GtkTreeIter_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -125,9 +126,10 @@ GtkTreeIter out2;
 
 gboolean result = gtk_tree_selection_get_selected(GtkTreeSelection_val(self), &out1, &out2);
 CAMLlocal1(ret);
-    ret = caml_alloc(2, 0);
+    ret = caml_alloc(3, 0);
     Store_field(ret, 0, Val_bool(result));
     Store_field(ret, 1, Val_GtkWidget(out1));
+    Store_field(ret, 2, Val_GtkTreeIter(out2));
     CAMLreturn(ret);
 }
 
