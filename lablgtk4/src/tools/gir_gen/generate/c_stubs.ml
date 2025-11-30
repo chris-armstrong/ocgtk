@@ -221,8 +221,7 @@ let is_value_like_record (record : gir_record) =
   List.mem record.c_type ~set:value_record_macros
   || (List.length record.fields > 0 && List.length record.constructors = 0)
 
-let generate_forward_decls_header ~classes ~records ~gtk_enums ~gtk_bitfields ~external_enums ~external_bitfields =
-let generate_forward_decls_header ~classes ~gtk_enums ~gtk_bitfields ~external_enums ~external_bitfields =
+let generate_forward_decls_header ~classes ~gtk_enums ~gtk_bitfields ~external_enums ~external_bitfields ~records =
   let buf = Buffer.create 4096 in
   Buffer.add_string buf "/**************************************************************************/\n";
   Buffer.add_string buf "/*                LablGTK4 - OCaml bindings for GTK4                      */\n";

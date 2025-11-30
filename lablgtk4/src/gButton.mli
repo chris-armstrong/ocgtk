@@ -1,13 +1,7 @@
-class button_signals : Button.t ->
-  object
-    method activate : callback:(unit -> unit) -> int
-    method clicked : callback:(unit -> unit) -> int
-  end
-
 class button_skel : Button.t ->
   object
     inherit GObj.widget_impl
-    method connect : button_signals
+    method connect : Gbutton_signals.button_signals
     method get_can_shrink : unit -> bool
     method can_shrink : unit -> bool
     method get_child : unit -> Gtk.widget option

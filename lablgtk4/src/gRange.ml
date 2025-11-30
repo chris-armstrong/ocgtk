@@ -1,24 +1,10 @@
-(* Signal handlers for Range *)
-class range_signals (obj : Range.t) = object
-  method adjust_bounds ~callback =
-    Gobject.Signal.connect_simple (Range.as_widget obj :> [`widget] Gobject.obj) ~name:"adjust-bounds" ~callback ~after:false
-
-  method change_value ~callback =
-    Gobject.Signal.connect_simple (Range.as_widget obj :> [`widget] Gobject.obj) ~name:"change-value" ~callback ~after:false
-
-  method move_slider ~callback =
-    Gobject.Signal.connect_simple (Range.as_widget obj :> [`widget] Gobject.obj) ~name:"move-slider" ~callback ~after:false
-
-  method value_changed ~callback =
-    Gobject.Signal.connect_simple (Range.as_widget obj :> [`widget] Gobject.obj) ~name:"value-changed" ~callback ~after:false
-
-end
+(* Signal class defined in grange_signals.ml *)
 
 (* High-level class for Range *)
 class range_skel (obj : Range.t) = object (self)
   inherit GObj.widget_impl (Range.as_widget obj)
 
-  method connect = new range_signals obj
+  method connect = new Grange_signals.range_signals obj
 
   method get_adjustment () = Range.get_adjustment obj
   method adjustment () = Range.get_adjustment obj

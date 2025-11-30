@@ -2145,6 +2145,7 @@ GtkTextSearchFlags GtkTextSearchFlags_val(value list);
 value Val_GtkTreeModelFlags(GtkTreeModelFlags flags);
 GtkTreeModelFlags GtkTreeModelFlags_val(value list);
 
+
 /* Forward declarations for external namespace enum/bitfield converters */
 value Val_GdkAxisUse(GdkAxisUse val);
 GdkAxisUse GdkAxisUse_val(value val);
