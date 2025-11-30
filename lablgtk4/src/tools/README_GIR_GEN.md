@@ -17,13 +17,11 @@ The executable is built to `_build/default/src/tools/gir_gen/main.exe`
 
 ```bash
 # Generate event controllers and widgets (recommended)
-dune exec src/tools/gir_gen/main.exe -- -f src/gtk4_controllers.controller \
-  /usr/share/gir-1.0/Gtk-4.0.gir src
+dune exec src/tools/gir_gen/main.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src
 
 
 ### Options
 
-- `-f FILE`: (optional) Filter file listing class names to generate (one per line)
 - `GIR_FILE`: Path to GTK GIR file (usually `/usr/share/gir-1.0/Gtk-4.0.gir`)
 - `OUTPUT_DIR`: Where to write generated files
 
@@ -52,8 +50,7 @@ gcc -c output/test/ml_event_controllers_gen.c \
 ### Full Rebuild
 ```bash
 # Regenerate all src bindings and rebuild library
-dune exec src/tools/gir_gen/main.exe -- -f src/gtk4_controllers.controller \
-  /usr/share/gir-1.0/Gtk-4.0.gir src
+dune exec src/tools/gir_gen/main.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src
 dune build
 dune build src/lablgtk4.cma
 ```
@@ -536,30 +533,6 @@ GIR File (Gtk-4.0.gir)
 - Type mapping emits conversion macros for boxed records; disguised/opaque records are ignored for converter emission to avoid struct-by-value mishandling.
 - Generators (C stubs, ML interfaces, class wrappers) accept `~records` and use record mappings for parameters/properties/returns.
 - Regression test `Record type support` exists and should be kept in sync with any future tweaks to record handling.
-
-## Configuration and Control
-
-### Widget Filters
-
-Extend `gtk4_controllers.controller` to include widget class names:
-
-```
-# Event Controllers (existing)
-EventController
-EventControllerKey
-EventControllerMotion
-GestureClick
-
-# Widgets to generate (new)
-Button
-ToggleButton
-CheckButton
-Label
-Entry
-Box
-Window
-Dialog
-```
 
 ### Generation Modes
 
