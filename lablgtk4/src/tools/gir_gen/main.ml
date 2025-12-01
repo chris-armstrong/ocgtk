@@ -104,6 +104,12 @@ let generate_bindings filter_file gir_file output_dir =
     external_bitfields = external_bitfields_with_ns;
   } in
 
+  (* Create unified entity list combining classes and interfaces *)
+  let _entities : Gir_gen_lib.Types.entity list =
+    (List.map ~f:Gir_gen_lib.Types.entity_of_class controllers) @
+    (List.map ~f:Gir_gen_lib.Types.entity_of_interface interfaces)
+  in
+
   (* Generate stage: produce output files *)
   let forced_widget_classes =
     (* Keep this list small: we overwrite these even if files already exist to validate class_gen output. *)

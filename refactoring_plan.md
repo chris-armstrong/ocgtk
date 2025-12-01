@@ -28,10 +28,13 @@
   - [x] Updated c_stubs.ml to use ctx (created local contexts in functions)
   - [x] Verified build succeeds after all refactoring
   - [x] All tests pass (21/21)
-- [ ] **Step 2: Create Unified Entity Type**
-  - [ ] Add `entity_kind` and `entity` types
-  - [ ] Implement `entity_of_class` and `entity_of_interface` converters
-  - [ ] Create combined entity list
+- [x] **Step 2: Create Unified Entity Type**
+  - [x] Add `entity_kind` variant (Class | Interface) and `entity` record type
+  - [x] Implement `entity_of_class` and `entity_of_interface` converters
+  - [x] Create combined entity list in main.ml
+  - [x] Verified build succeeds
+  - [x] All tests pass (21/21)
+  - [ ] Update generator functions to work with entities instead of separate class/interface types (deferred to later steps)
 - [ ] **Step 3: Extract C Code Generation**
   - [ ] Create `generate_c_stub` function
   - [ ] Create `generate_all_c_stubs` function
@@ -143,26 +146,51 @@ let write_file ~path ~content =
 Abstract over class vs interface differences:
 
 ```ocaml
-type entity_kind =
-  | Class of gir_class
-  | Interface of gir_interface
+(* Simple variant - no redundant data in constructors *)
+type entity_kind = Class | Interface
 
 type entity = {
   kind: entity_kind;
   name: string;
   c_type: string;
   doc: string option;
-  constructors: gir_constructor list;
+  parent: string option;  (* None for interfaces *)
+  implements: string list;  (* Empty for interfaces *)
+  constructors: gir_constructor list;  (* Empty for interfaces *)
   methods: gir_method list;
   properties: gir_property list;
   signals: gir_signal list;
 }
 
-let entity_of_class (cls: gir_class) : entity = { ... }
-let entity_of_interface (intf: gir_interface) : entity = { ... }
+let entity_of_class (cls: gir_class) : entity = {
+  kind = Class;
+  name = cls.class_name;
+  c_type = cls.c_type;
+  doc = cls.class_doc;
+  parent = cls.parent;
+  implements = cls.implements;
+  constructors = cls.constructors;
+  methods = cls.methods;
+  properties = cls.properties;
+  signals = cls.signals;
+}
+
+let entity_of_interface (intf: gir_interface) : entity = {
+  kind = Interface;
+  name = intf.interface_name;
+  c_type = intf.c_type;
+  doc = intf.interface_doc;
+  parent = None;
+  implements = [];
+  constructors = [];
+  methods = intf.methods;
+  properties = intf.properties;
+  signals = intf.signals;
+}
 ```
 
 **Impact**: Allows single iteration over all entities instead of separate class/interface loops
+**Design**: `entity_kind` is a simple variant without data - all shared fields are in the `entity` record to avoid redundancy
 
 ### Step 4: Extract C Code Generation
 ```ocaml
