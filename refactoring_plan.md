@@ -35,10 +35,13 @@
   - [x] Verified build succeeds
   - [x] All tests pass (21/21)
   - [ ] Update generator functions to work with entities instead of separate class/interface types (deferred to later steps)
-- [ ] **Step 3: Extract C Code Generation**
-  - [ ] Create `generate_c_stub` function
-  - [ ] Create `generate_all_c_stubs` function
-  - [ ] Replace duplicate class/interface C generation loops
+- [x] **Step 3: Extract C Code Generation**
+  - [x] Create `generate_c_stub` function (lines 17-40 in main.ml)
+  - [x] Create `generate_all_c_stubs` function (lines 43-44 in main.ml)
+  - [x] Replace duplicate class/interface C generation loops (line 184)
+  - [x] Verified build succeeds
+  - [x] Code generation produces no changes
+  - [x] All tests pass (21/21)
 - [ ] **Step 4: Extract ML Interface Generation**
   - [ ] Create `generate_ml_file` function
   - [ ] Create `generate_ml_interfaces` function

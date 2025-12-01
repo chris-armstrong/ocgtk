@@ -13,6 +13,36 @@ let write_file ~path ~content =
   output_string oc content;
   close_out oc
 
+(* Generate C stub file for a single entity (class or interface) *)
+let generate_c_stub ~ctx ~output_dir ~generated_stubs ~generated_modules entity =
+  if Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name then begin
+    printf "  - %s (SKIPPED - incomplete support)\n" entity.Gir_gen_lib.Types.name
+  end else begin
+    printf "  - %s (%d methods, %d properties)\n"
+      entity.Gir_gen_lib.Types.name
+      (List.length entity.Gir_gen_lib.Types.methods)
+      (List.length entity.Gir_gen_lib.Types.properties);
+
+    let stub_name = sprintf "ml_%s_gen" (Gir_gen_lib.Utils.to_snake_case entity.Gir_gen_lib.Types.name) in
+    let c_file = Filename.concat output_dir (stub_name ^ ".c") in
+
+    let c_code = Gir_gen_lib.Generate.C_stubs.generate_class_c_code
+      ~ctx
+      ~c_type:entity.Gir_gen_lib.Types.c_type
+      entity.Gir_gen_lib.Types.name
+      entity.Gir_gen_lib.Types.constructors
+      entity.Gir_gen_lib.Types.methods
+      entity.Gir_gen_lib.Types.properties in
+
+    write_file ~path:c_file ~content:c_code;
+    generated_stubs := stub_name :: !generated_stubs;
+    generated_modules := (Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name) :: !generated_modules;
+  end
+
+(* Generate C stub files for all entities *)
+let generate_all_c_stubs ~ctx ~output_dir ~generated_stubs ~generated_modules entities =
+  List.iter ~f:(generate_c_stub ~ctx ~output_dir ~generated_stubs ~generated_modules) entities
+
 (* Main generation function *)
 let generate_bindings filter_file gir_file output_dir =
   printf "Parsing %s ...\n" gir_file;
@@ -105,7 +135,7 @@ let generate_bindings filter_file gir_file output_dir =
   } in
 
   (* Create unified entity list combining classes and interfaces *)
-  let _entities : Gir_gen_lib.Types.entity list =
+  let entities : Gir_gen_lib.Types.entity list =
     (List.map ~f:Gir_gen_lib.Types.entity_of_class controllers) @
     (List.map ~f:Gir_gen_lib.Types.entity_of_interface interfaces)
   in
@@ -150,49 +180,8 @@ let generate_bindings filter_file gir_file output_dir =
     generated_modules := "Gtk_enums" :: !generated_modules;
   end;
 
-  (* Generate C files for each class *)
-  List.iter ~f:(fun cls ->
-    if Gir_gen_lib.Exclude_list.should_skip_class cls.Gir_gen_lib.Types.class_name then begin
-      printf "  - %s (SKIPPED - incomplete support)\n" cls.Gir_gen_lib.Types.class_name
-    end else begin
-      printf "  - %s (%d methods, %d properties)\n"
-        cls.Gir_gen_lib.Types.class_name (List.length cls.Gir_gen_lib.Types.methods) (List.length cls.Gir_gen_lib.Types.properties);
-
-      let stub_name = sprintf "ml_%s_gen" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.class_name) in
-      let c_file = Filename.concat output_dir (stub_name ^ ".c") in
-
-      let c_code = Gir_gen_lib.Generate.C_stubs.generate_class_c_code
-        ~ctx
-        ~c_type:cls.Gir_gen_lib.Types.c_type
-        cls.Gir_gen_lib.Types.class_name cls.Gir_gen_lib.Types.constructors cls.Gir_gen_lib.Types.methods cls.Gir_gen_lib.Types.properties in
-
-      write_file ~path:c_file ~content:c_code;
-      generated_stubs := stub_name :: !generated_stubs;
-      generated_modules := (Gir_gen_lib.Utils.module_name_of_class cls.Gir_gen_lib.Types.class_name) :: !generated_modules;
-    end
-  ) ctx.classes;
-
-  (* Generate C files for each interface *)
-  List.iter ~f:(fun intf ->
-    if Gir_gen_lib.Exclude_list.should_skip_class intf.Gir_gen_lib.Types.interface_name then begin
-      printf "  - %s (SKIPPED - incomplete support)\n" intf.Gir_gen_lib.Types.interface_name
-    end else begin
-      printf "  - %s (%d methods, %d properties)\n"
-        intf.Gir_gen_lib.Types.interface_name (List.length intf.Gir_gen_lib.Types.methods) (List.length intf.Gir_gen_lib.Types.properties);
-
-      let stub_name = sprintf "ml_%s_gen" (Gir_gen_lib.Utils.to_snake_case intf.Gir_gen_lib.Types.interface_name) in
-      let c_file = Filename.concat output_dir (stub_name ^ ".c") in
-
-      let c_code = Gir_gen_lib.Generate.C_stubs.generate_class_c_code
-        ~ctx
-        ~c_type:intf.Gir_gen_lib.Types.c_type
-        intf.Gir_gen_lib.Types.interface_name [] intf.Gir_gen_lib.Types.methods intf.Gir_gen_lib.Types.properties in
-
-      write_file ~path:c_file ~content:c_code;
-      generated_stubs := stub_name :: !generated_stubs;
-      generated_modules := (Gir_gen_lib.Utils.module_name_of_class intf.Gir_gen_lib.Types.interface_name) :: !generated_modules;
-    end
-  ) ctx.interfaces;
+  (* Generate C files for all entities (classes and interfaces) *)
+  generate_all_c_stubs ~ctx ~output_dir ~generated_stubs ~generated_modules entities;
 
   (* Generate OCaml interface files for classes *)
   List.iter ~f:(fun cls ->
