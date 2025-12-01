@@ -221,7 +221,7 @@ let is_value_like_record (record : gir_record) =
   List.mem record.c_type ~set:value_record_macros
   || (List.length record.fields > 0 && List.length record.constructors = 0)
 
-let generate_forward_decls_header ~classes ~records ~gtk_enums ~gtk_bitfields ~external_enums ~external_bitfields =
+let generate_forward_decls_header ~classes ~gtk_enums ~gtk_bitfields ~external_enums ~external_bitfields ~records =
   let buf = Buffer.create 4096 in
   Buffer.add_string buf "/**************************************************************************/\n";
   Buffer.add_string buf "/*                LablGTK4 - OCaml bindings for GTK4                      */\n";
@@ -328,9 +328,16 @@ let generate_forward_decls_header ~classes ~records ~gtk_enums ~gtk_bitfields ~e
   (* Add forward declarations for Gtk enum/bitfield converters *)
   if List.length gtk_enums > 0 || List.length gtk_bitfields > 0 then begin
     Buffer.add_string buf "/* Forward declarations for Gtk enum/bitfield converters */\n";
-    List.iter ~f:(emit_enum_proto buf ~namespace:"Gtk") gtk_enums;
+    List.iter ~f:(fun (enum : gir_enum) ->
+      bprintf buf "value Val_Gtk%s(%s val);\n" enum.enum_name enum.enum_c_type;
+      bprintf buf "%s Gtk%s_val(value val);\n" enum.enum_c_type enum.enum_name;
+    ) gtk_enums;
     Buffer.add_string buf "\n";
-    List.iter ~f:(emit_bitfield_proto buf ~namespace:"Gtk") gtk_bitfields;
+    List.iter ~f:(fun (bitfield : gir_bitfield) ->
+      bprintf buf "value Val_Gtk%s(%s flags);\n" bitfield.bitfield_name bitfield.bitfield_c_type;
+      bprintf buf "%s Gtk%s_val(value list);\n" bitfield.bitfield_c_type bitfield.bitfield_name;
+    ) gtk_bitfields;
+    Buffer.add_string buf "\n";
   end;
 
   (* Add forward declarations for external namespace enum/bitfield converters *)

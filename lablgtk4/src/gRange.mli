@@ -1,15 +1,7 @@
-class range_signals : Range.t ->
-  object
-    method adjust_bounds : callback:(unit -> unit) -> int
-    method change_value : callback:(unit -> unit) -> int
-    method move_slider : callback:(unit -> unit) -> int
-    method value_changed : callback:(unit -> unit) -> int
-  end
-
 class range_skel : Range.t ->
   object
     inherit GObj.widget_impl
-    method connect : range_signals
+    method connect : Grange_signals.range_signals
     method get_adjustment : unit -> Gtk.widget
     method adjustment : unit -> Gtk.widget
     method get_fill_level : unit -> float

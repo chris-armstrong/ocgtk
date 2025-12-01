@@ -1,15 +1,7 @@
-class label_signals : Label.t ->
-  object
-    method activate_current_link : callback:(unit -> unit) -> int
-    method activate_link : callback:(unit -> unit) -> int
-    method copy_clipboard : callback:(unit -> unit) -> int
-    method move_cursor : callback:(unit -> unit) -> int
-  end
-
 class label_skel : Label.t ->
   object
     inherit GObj.widget_impl
-    method connect : label_signals
+    method connect : Glabel_signals.label_signals
     method get_current_uri : unit -> string option
     method current_uri : unit -> string option
     method get_ellipsize : unit -> Pango.ellipsizemode

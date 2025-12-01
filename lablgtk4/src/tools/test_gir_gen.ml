@@ -45,6 +45,10 @@ let assert_contains msg haystack needle =
   if not (string_contains haystack needle) then
     failwith (sprintf "%s: expected to find '%s' in output" msg needle)
 
+let assert_not_contains msg haystack needle =
+  if  (string_contains haystack needle) then
+    failwith (sprintf "%s: expected NOT to find '%s' in output" msg needle)
+
 let file_exists path =
   try
     let _ = Unix.stat path in
@@ -230,10 +234,10 @@ let test_widget_generation () =
   assert_true "gButton.ml should be created" (file_exists gbutton);
   let gbutton_content = read_file gbutton in
   assert_contains "gButton should define skeleton" gbutton_content "class button_skel";
-  assert_contains "gButton should include connect method" gbutton_content "method connect";
+  assert_contains "gButton should include signals connect property" gbutton_content "method connect";
   assert_contains "gButton should expose property getter" gbutton_content "method label";
   assert_contains "gButton should expose property setter" gbutton_content "method set_label";
-  assert_contains "gButton should expose method wrapper" gbutton_content "method clicked"
+  assert_not_contains "gButton should not expose method wrapper that overlaps signal" gbutton_content "method clicked"
 
 (* Test signal parsing and code generation *)
 let create_test_signal_gir filename =

@@ -25,13 +25,13 @@ let generate_bindings filter_file gir_file output_dir =
   in
 
   (* Parse stage: read GIR files *)
-  let (controllers, interfaces, gtk_enums, gtk_bitfields, gir_records) = Gir_gen_lib.Parse.Gir_parser.parse_gir_file gir_file filter_classes in
+  let (controllers, interfaces, gtk_enums, gtk_bitfields, gtk_records) = Gir_gen_lib.Parse.Gir_parser.parse_gir_file gir_file filter_classes in
 
   printf "Found %d classes\n" (List.length controllers);
   printf "Found %d interfaces\n" (List.length interfaces);
   printf "Found %d Gtk enumerations\n" (List.length gtk_enums);
   printf "Found %d Gtk bitfields\n" (List.length gtk_bitfields);
-  printf "Found %d records\n" (List.length gir_records);
+  printf "Found %d records\n" (List.length gtk_records);
 
   (* Build parent lookup table for inheritance chains *)
   let parent_table = Hashtbl.create (List.length controllers + 10) in
@@ -76,6 +76,7 @@ let generate_bindings filter_file gir_file output_dir =
 
   let enums = all_enums in
   let bitfields = all_bitfields in
+  let records = gtk_records in
 
   (* Prepare external namespace enum/bitfield list with namespace prefixes *)
   let external_enums_with_ns = external_enums_bitfields |> List.concat_map ~f:(fun (ns, ns_enums, _) ->
@@ -102,10 +103,10 @@ let generate_bindings filter_file gir_file output_dir =
   printf "\nWriting %s...\n" header_file;
   let header_content = Gir_gen_lib.Generate.C_stubs.generate_forward_decls_header
     ~classes:controllers
-    ~records:gir_records
     ~gtk_enums:gtk_enums
     ~gtk_bitfields:gtk_bitfields
     ~external_enums:external_enums_with_ns
+    ~records
     ~external_bitfields:external_bitfields_with_ns in
   let oc = open_out header_file in
   output_string oc header_content;
@@ -142,7 +143,7 @@ let generate_bindings filter_file gir_file output_dir =
 
       let c_code = Gir_gen_lib.Generate.C_stubs.generate_class_c_code
         ~classes:controllers
-        ~records:gir_records
+        ~records
         ~enums ~bitfields
         ~external_enums:external_enums_with_ns
         ~external_bitfields:external_bitfields_with_ns
@@ -171,7 +172,7 @@ let generate_bindings filter_file gir_file output_dir =
 
       let c_code = Gir_gen_lib.Generate.C_stubs.generate_class_c_code
         ~classes:controllers
-        ~records:gir_records
+        ~records
         ~enums ~bitfields
         ~external_enums:external_enums_with_ns
         ~external_bitfields:external_bitfields_with_ns
@@ -201,7 +202,7 @@ let generate_bindings filter_file gir_file output_dir =
         ~c_type:cls.Gir_gen_lib.Types.c_type
         ~enums ~bitfields
         ~classes:controllers
-        ~records:gir_records
+        ~records
         ~parent_chain
         ~constructors:(Some cls.Gir_gen_lib.Types.constructors)
         ~methods:cls.Gir_gen_lib.Types.methods
@@ -221,7 +222,7 @@ let generate_bindings filter_file gir_file output_dir =
         ~c_type:cls.Gir_gen_lib.Types.c_type
         ~enums ~bitfields
         ~classes:controllers
-        ~records:gir_records
+        ~records
         ~parent_chain
         ~constructors:(Some cls.Gir_gen_lib.Types.constructors)
         ~methods:cls.Gir_gen_lib.Types.methods
@@ -257,7 +258,7 @@ let generate_bindings filter_file gir_file output_dir =
           output_string oc_g (Gir_gen_lib.Generate.Class_gen.generate_class_module
             ~classes:controllers
             ~enums ~bitfields
-            ~records:gir_records
+            ~records
             ~c_type:cls.Gir_gen_lib.Types.c_type
             ~class_name:cls.Gir_gen_lib.Types.class_name
             ~parent_chain
@@ -277,7 +278,7 @@ let generate_bindings filter_file gir_file output_dir =
             output_string oc_gi (Gir_gen_lib.Generate.Class_gen.generate_class_signature
               ~classes:controllers
               ~enums ~bitfields
-              ~records:gir_records
+              ~records
               ~c_type:cls.Gir_gen_lib.Types.c_type
               ~class_name:cls.Gir_gen_lib.Types.class_name
               ~parent_chain
@@ -307,7 +308,7 @@ let generate_bindings filter_file gir_file output_dir =
         ~c_type:cls.Gir_gen_lib.Types.c_type
         ~enums ~bitfields
         ~classes:controllers
-        ~records:gir_records
+        ~records
         ~parent_chain
         ~constructors:None
         ~methods:cls.Gir_gen_lib.Types.methods
@@ -327,7 +328,7 @@ let generate_bindings filter_file gir_file output_dir =
         ~c_type:cls.Gir_gen_lib.Types.c_type
         ~enums ~bitfields
         ~classes:controllers
-        ~records:gir_records
+        ~records
         ~parent_chain
         ~constructors:None
         ~methods:cls.Gir_gen_lib.Types.methods
@@ -338,13 +339,56 @@ let generate_bindings filter_file gir_file output_dir =
     end
   ) interfaces;
 
+  (* Generate signal classes for ALL classes (controllers and interfaces) *)
+  printf "\nGenerating signal classes...\n";
+
+  (* Process controllers *)
+  List.iter ~f:(fun cls ->
+    if not (Gir_gen_lib.Exclude_list.should_skip_class cls.Gir_gen_lib.Types.class_name) then begin
+      if List.length cls.Gir_gen_lib.Types.signals > 0 then begin
+        let parent_chain = parent_chain_for_class cls.Gir_gen_lib.Types.class_name in
+        let signal_code = Gir_gen_lib.Generate.Signal_gen.generate_signal_class
+          ~class_name:cls.Gir_gen_lib.Types.class_name
+          ~signals:cls.Gir_gen_lib.Types.signals
+          ~parent_chain in
+
+        let signal_file = Filename.concat output_dir
+          (sprintf "g%s_signals.ml" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.class_name)) in
+        printf "Writing %s...\n" signal_file;
+        let oc = open_out signal_file in
+        output_string oc signal_code;
+        close_out oc;
+      end
+    end
+  ) controllers;
+
+  (* Process interfaces *)
+  List.iter ~f:(fun intf ->
+    if not (Gir_gen_lib.Exclude_list.should_skip_class intf.Gir_gen_lib.Types.interface_name) then begin
+      if List.length intf.Gir_gen_lib.Types.signals > 0 then begin
+        let parent_chain = parent_chain_for_class intf.Gir_gen_lib.Types.interface_name in
+        let signal_code = Gir_gen_lib.Generate.Signal_gen.generate_signal_class
+          ~class_name:intf.Gir_gen_lib.Types.interface_name
+          ~signals:intf.Gir_gen_lib.Types.signals
+          ~parent_chain in
+
+        let signal_file = Filename.concat output_dir
+          (sprintf "g%s_signals.ml" (Gir_gen_lib.Utils.to_snake_case intf.Gir_gen_lib.Types.interface_name)) in
+        printf "Writing %s...\n" signal_file;
+        let oc = open_out signal_file in
+        output_string oc signal_code;
+        close_out oc;
+      end
+    end
+  ) interfaces;
+
   (* Generate C files and OCaml bindings for boxed records *)
   List.iter ~f:(fun record ->
     if Gir_gen_lib.Type_mappings.is_boxed_record record then begin
-      let value_record_macros = ["GtkTreeIter"; "GtkTextIter"; "GtkRequisition"; "GtkBorder"] in
-      let is_value_record =
-        List.mem record.Gir_gen_lib.Types.c_type ~set:value_record_macros
-        || (List.length record.Gir_gen_lib.Types.fields > 0 && List.length record.Gir_gen_lib.Types.constructors = 0)
+      (* let value_record_macros = ["GtkTreeIter"; "GtkTextIter"; "GtkRequisition"; "GtkBorder"] in *)
+      let is_value_record = not record.opaque
+        (* List.mem record.Gir_gen_lib.Types.c_type ~set:value_record_macros
+        || (List.length record.Gir_gen_lib.Types.fields > 0 && List.length record.Gir_gen_lib.Types.constructors = 0) *)
       in
       let constructors =
         if (not record.Gir_gen_lib.Types.opaque) && (not is_value_record) && record.Gir_gen_lib.Types.constructors = [] then
@@ -369,7 +413,7 @@ let generate_bindings filter_file gir_file output_dir =
 
       let c_code = Gir_gen_lib.Generate.C_stubs.generate_record_c_code
         ~classes:controllers
-        ~records:gir_records
+        ~records
         ~enums ~bitfields
         ~external_enums:external_enums_with_ns
         ~external_bitfields:external_bitfields_with_ns
@@ -387,7 +431,7 @@ let generate_bindings filter_file gir_file output_dir =
       if has_bindings then begin
         let base_type =
           match Gir_gen_lib.Type_mappings.find_type_mapping_for_gir_type
-              ~enums ~bitfields ~classes:controllers ~records:gir_records
+              ~enums ~bitfields ~classes:controllers ~records
               { Gir_gen_lib.Types.name = record.Gir_gen_lib.Types.record_name;
                 c_type = record.Gir_gen_lib.Types.c_type ^ "*";
                 nullable = false; } with
@@ -408,7 +452,7 @@ let generate_bindings filter_file gir_file output_dir =
           ~c_type:record.Gir_gen_lib.Types.c_type
           ~enums ~bitfields
           ~classes:controllers
-          ~records:gir_records
+          ~records
           ~parent_chain:[]
           ~constructors:(Some constructors)
           ~methods:record.Gir_gen_lib.Types.methods
@@ -431,7 +475,7 @@ let generate_bindings filter_file gir_file output_dir =
           ~c_type:record.Gir_gen_lib.Types.c_type
           ~enums ~bitfields
           ~classes:controllers
-          ~records:gir_records
+          ~records
           ~parent_chain:[]
           ~constructors:(Some constructors)
           ~methods:record.Gir_gen_lib.Types.methods
@@ -446,7 +490,7 @@ let generate_bindings filter_file gir_file output_dir =
         generated_modules := (Gir_gen_lib.Utils.module_name_of_class record.Gir_gen_lib.Types.record_name) :: !generated_modules;
       end
     end
-  ) gir_records;
+  ) records;
 
   (* Generate GTK enum and bitfield types file *)
   if List.length gtk_enums > 0 || List.length gtk_bitfields > 0 then begin
@@ -549,10 +593,10 @@ let generate_bindings filter_file gir_file output_dir =
   close_out oc;
 
   let boxed_record_count =
-    List.length (List.filter gir_records ~f:Gir_gen_lib.Type_mappings.is_boxed_record)
+    List.length (List.filter records ~f:Gir_gen_lib.Type_mappings.is_boxed_record)
   in
   let record_binding_count =
-    List.length (List.filter gir_records ~f:(fun r ->
+    List.length (List.filter records ~f:(fun r ->
       Gir_gen_lib.Type_mappings.is_boxed_record r &&
       ((List.length r.Gir_gen_lib.Types.constructors) > 0 || (List.length r.Gir_gen_lib.Types.methods) > 0)))
   in

@@ -1,18 +1,10 @@
-(* Signal handlers for Button *)
-class button_signals (obj : Button.t) = object
-  method activate ~callback =
-    Gobject.Signal.connect_simple (Button.as_widget obj :> [`widget] Gobject.obj) ~name:"activate" ~callback ~after:false
-
-  method clicked ~callback =
-    Gobject.Signal.connect_simple (Button.as_widget obj :> [`widget] Gobject.obj) ~name:"clicked" ~callback ~after:false
-
-end
+(* Signal class defined in gbutton_signals.ml *)
 
 (* High-level class for Button *)
 class button_skel (obj : Button.t) = object (self)
   inherit GObj.widget_impl (Button.as_widget obj)
 
-  method connect = new button_signals obj
+  method connect = new Gbutton_signals.button_signals obj
 
   method get_can_shrink () = Button.get_can_shrink obj
   method can_shrink () = Button.get_can_shrink obj

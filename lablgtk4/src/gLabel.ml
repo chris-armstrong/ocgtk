@@ -1,24 +1,10 @@
-(* Signal handlers for Label *)
-class label_signals (obj : Label.t) = object
-  method activate_current_link ~callback =
-    Gobject.Signal.connect_simple (Label.as_widget obj :> [`widget] Gobject.obj) ~name:"activate-current-link" ~callback ~after:false
-
-  method activate_link ~callback =
-    Gobject.Signal.connect_simple (Label.as_widget obj :> [`widget] Gobject.obj) ~name:"activate-link" ~callback ~after:false
-
-  method copy_clipboard ~callback =
-    Gobject.Signal.connect_simple (Label.as_widget obj :> [`widget] Gobject.obj) ~name:"copy-clipboard" ~callback ~after:false
-
-  method move_cursor ~callback =
-    Gobject.Signal.connect_simple (Label.as_widget obj :> [`widget] Gobject.obj) ~name:"move-cursor" ~callback ~after:false
-
-end
+(* Signal class defined in glabel_signals.ml *)
 
 (* High-level class for Label *)
 class label_skel (obj : Label.t) = object (self)
   inherit GObj.widget_impl (Label.as_widget obj)
 
-  method connect = new label_signals obj
+  method connect = new Glabel_signals.label_signals obj
 
   method get_current_uri () = Label.get_current_uri obj
   method current_uri () = Label.get_current_uri obj

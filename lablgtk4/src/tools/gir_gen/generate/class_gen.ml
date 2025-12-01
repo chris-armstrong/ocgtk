@@ -191,14 +191,28 @@ let generate_class_module ~classes ~enums ~bitfields ~records ~class_name ~c_typ
     bprintf buf "(* Class generation skipped for non-widget class %s *)\n" class_name;
     Buffer.contents buf
   end else begin
-    Buffer.add_string buf (generate_signal_class ~class_name ~module_name ~signals);
+    (* Reference external signal class module if signals exist *)
+    let has_any_void_signals = List.exists signals ~f:(fun s ->
+      let is_void =
+        let c_type = String.lowercase_ascii s.return_type.c_type in
+        let name = String.lowercase_ascii s.return_type.name in
+        c_type = "void" || name = "none"
+      in
+      is_void
+    ) in
+
+    if has_any_void_signals then
+      bprintf buf "(* Signal class defined in g%s_signals.ml *)\n\n" class_snake;
 
     bprintf buf "(* High-level class for %s *)\n" class_name;
     bprintf buf "class %s_skel (obj : %s.t) = object (self)\n" class_snake module_name;
     bprintf buf "  inherit GObj.widget_impl (%s.as_widget obj)\n\n" module_name;
 
-    if List.exists signals ~f:(fun s -> s.sig_parameters = [] && String.lowercase_ascii s.return_type.c_type = "void") then
-      bprintf buf "  method connect = new %s obj\n\n" (signal_class_name class_name);
+    if has_any_void_signals then begin
+      let signal_module = "G" ^ class_snake ^ "_signals" in
+      bprintf buf "  method connect = new %s.%s obj\n\n"
+        signal_module (signal_class_name class_name)
+    end;
 
     let seen = StringSet.empty in
     let property_method_names =
@@ -242,20 +256,12 @@ let generate_class_signature ~classes ~enums ~bitfields ~records ~class_name ~c_
     bprintf buf "(* Class signature skipped for non-widget class %s *)\n" class_name;
     Buffer.contents buf
   end else begin
-    let signal_methods =
-      signals
-      |> List.filter ~f:(fun s ->
-        let c_type = String.lowercase_ascii s.return_type.c_type in
-        let name = String.lowercase_ascii s.return_type.name in
-        (c_type = "void" || name = "none") && s.sig_parameters = [])
-      |> List.map ~f:(fun s -> sanitize_name s.signal_name)
-    in
-    if signal_methods <> [] then begin
-      bprintf buf "class %s_signals : %s.t ->\n  object\n" class_snake module_name;
-      List.iter signal_methods ~f:(fun m ->
-        bprintf buf "    method %s : callback:(unit -> unit) -> int\n" m);
-      bprintf buf "  end\n\n"
-    end;
+    (* Check if there are any void signals *)
+    let has_any_void_signals = List.exists signals ~f:(fun s ->
+      let c_type = String.lowercase_ascii s.return_type.c_type in
+      let name = String.lowercase_ascii s.return_type.name in
+      c_type = "void" || name = "none"
+    ) in
 
     let property_method_names =
       Filtering.property_method_names ~classes ~enums ~bitfields ~records properties
@@ -267,8 +273,10 @@ let generate_class_signature ~classes ~enums ~bitfields ~records ~class_name ~c_
     bprintf buf "class %s_skel : %s.t ->\n" class_snake module_name;
     bprintf buf "  object\n";
     bprintf buf "    inherit GObj.widget_impl\n";
-    if signal_methods <> [] then
-      bprintf buf "    method connect : %s\n" (signal_class_name class_name);
+    if has_any_void_signals then begin
+      let signal_module = "G" ^ class_snake ^ "_signals" in
+      bprintf buf "    method connect : %s.%s\n" signal_module (signal_class_name class_name)
+    end;
     let seen = StringSet.empty in
     let seen, () =
       List.fold_left properties ~init:(seen, ()) ~f:(fun (seen, ()) prop ->
