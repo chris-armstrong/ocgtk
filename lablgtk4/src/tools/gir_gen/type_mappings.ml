@@ -266,11 +266,11 @@ let find_record_mapping records lookup_str =
   ) records
   |> Option.map (fun record -> (record, is_pointer, is_boxed_record record))
 
-let find_type_mapping_for_gir_type ?(enums=[]) ?(bitfields=[]) ?(classes=[]) ?(records=[]) (gir_type : Types.gir_type) =
+let find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
   let try_lookup lookup_str =
     (* First, check if this is a known class type (GtkButton*, GtkWidget*, etc.) *)
     let class_mapping =
-      match find_class_mapping classes lookup_str with
+      match find_class_mapping ctx.classes lookup_str with
       | Some cls ->
         let normalized_name = Utils.normalize_class_name cls.class_name in
         let ocaml_type =
@@ -287,7 +287,7 @@ let find_type_mapping_for_gir_type ?(enums=[]) ?(bitfields=[]) ?(classes=[]) ?(r
         }
       | None ->
         (* Next, check for known records (boxed/disguised) *)
-        (match find_record_mapping records lookup_str with
+        (match find_record_mapping ctx.records lookup_str with
         | Some (record, _is_pointer, _) ->
           let ocaml_type = "Obj.t" in
           Some {
@@ -303,7 +303,7 @@ let find_type_mapping_for_gir_type ?(enums=[]) ?(bitfields=[]) ?(classes=[]) ?(r
     | None ->
     (* First, check if this is a known enum *)
     let enum_mapping =
-      List.find_opt ~f:(fun (e : Types.gir_enum) -> e.enum_c_type = lookup_str) enums in
+      List.find_opt ~f:(fun (e : Types.gir_enum) -> e.enum_c_type = lookup_str) ctx.enums in
     match enum_mapping with
     | Some enum ->
       (* Extract namespace from C type to prefix converter functions *)
@@ -317,7 +317,7 @@ let find_type_mapping_for_gir_type ?(enums=[]) ?(bitfields=[]) ?(classes=[]) ?(r
     | None ->
       (* Check if this is a known bitfield *)
       let bitfield_mapping =
-        List.find_opt ~f:(fun (b : Types.gir_bitfield) -> b.bitfield_c_type = lookup_str) bitfields in
+        List.find_opt ~f:(fun (b : Types.gir_bitfield) -> b.bitfield_c_type = lookup_str) ctx.bitfields in
       (match bitfield_mapping with
       | Some bitfield ->
         (* Extract namespace from C type to prefix converter functions *)
@@ -352,8 +352,8 @@ let find_type_mapping_for_gir_type ?(enums=[]) ?(bitfields=[]) ?(classes=[]) ?(r
   | None -> try_lookup gir_type.name
 
 (* Keep old function signature for compatibility *)
-let find_type_mapping ?(enums=[]) ?(bitfields=[]) ?(classes=[]) ?(records=[]) c_type =
-  find_type_mapping_for_gir_type ~enums ~bitfields ~classes ~records { name = c_type; c_type = c_type; nullable = false }
+let find_type_mapping ~ctx c_type =
+  find_type_mapping_for_gir_type ~ctx { name = c_type; c_type = c_type; nullable = false }
 
 (* Bug fix #3: Add module qualification based on GIR namespace *)
 let qualify_ocaml_type ?(gir_type_name=None) ocaml_type =

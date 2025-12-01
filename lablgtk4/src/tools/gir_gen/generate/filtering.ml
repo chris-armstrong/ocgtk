@@ -60,25 +60,25 @@ let ocaml_function_name ~class_name ?c_type ?c_symbol_prefix c_identifier =
 let ocaml_method_name ~class_name ?c_type ?c_symbol_prefix (meth : gir_method) =
   ocaml_function_name ~class_name ?c_type ?c_symbol_prefix meth.c_identifier
 
-let has_simple_type ~classes ~enums ~bitfields ~records (gir_type : gir_type) =
+let has_simple_type ~ctx (gir_type : gir_type) =
   let is_excluded =
     Exclude_list.is_excluded_type_name gir_type.name
     || Exclude_list.is_excluded_type_name gir_type.c_type
   in
   not is_excluded
   &&
-  match Type_mappings.find_type_mapping ~enums ~bitfields ~classes ~records gir_type.c_type with
+  match Type_mappings.find_type_mapping ~ctx gir_type.c_type with
   | Some _ -> true
   | None -> false
 
-let should_generate_property ~classes ~enums ~bitfields ~records (prop : gir_property) =
-  has_simple_type ~classes ~enums ~bitfields ~records prop.prop_type
+let should_generate_property ~ctx (prop : gir_property) =
+  has_simple_type ~ctx prop.prop_type
 
-let property_method_names ~classes ~enums ~bitfields ~records (properties : gir_property list) =
+let property_method_names ~ctx (properties : gir_property list) =
   let names, _ =
     List.fold_left properties ~init:([], StringSet.empty)
       ~f:(fun (acc, seen) (prop : gir_property) ->
-        if not (should_generate_property ~classes ~enums ~bitfields ~records prop) then
+        if not (should_generate_property ~ctx prop) then
           (acc, seen)
         else
         let prop_snake = sanitize_property_name prop.prop_name in
@@ -98,9 +98,9 @@ let property_method_names ~classes ~enums ~bitfields ~records (properties : gir_
   in
   names
 
-let property_base_names ~classes ~enums ~bitfields ~records (properties : gir_property list) =
+let property_base_names ~ctx (properties : gir_property list) =
   properties
-  |> List.filter ~f:(fun prop -> should_generate_property ~classes ~enums ~bitfields ~records prop)
+  |> List.filter ~f:(fun prop -> should_generate_property ~ctx prop)
   |> List.map ~f:(fun (prop : gir_property) -> sanitize_property_name prop.prop_name)
 
 let method_has_excluded_type (meth : gir_method) =
@@ -111,15 +111,15 @@ let method_has_excluded_type (meth : gir_method) =
          || Exclude_list.is_excluded_type_name p.param_type.c_type)
 
 let should_skip_method_binding
-    ~classes ~enums ~bitfields ~records ~property_method_names ~property_base_names ~class_name ?c_type ?c_symbol_prefix (meth : gir_method) =
+    ~ctx ~property_method_names ~property_base_names ~class_name ?c_type ?c_symbol_prefix (meth : gir_method) =
   let ocaml_name = ocaml_method_name ~class_name ?c_type ?c_symbol_prefix meth in
   let is_excluded_function =
     Exclude_list.is_excluded_function meth.c_identifier
   in
   let has_unknown_type =
     Exclude_list.should_skip_method
-      ~find_type_mapping:(Type_mappings.find_type_mapping ~enums ~bitfields ~classes ~records)
-      ~enums ~bitfields meth
+      ~find_type_mapping:(Type_mappings.find_type_mapping ~ctx)
+      ~enums:ctx.enums ~bitfields:ctx.bitfields meth
   in
   let has_excluded_type = method_has_excluded_type meth in
   let is_variadic =

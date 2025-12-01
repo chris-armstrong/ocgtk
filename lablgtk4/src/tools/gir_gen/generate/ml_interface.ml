@@ -14,10 +14,10 @@ let generate_signal_bindings ~output_mode:_ ~module_name:_ ~has_widget_parent:_ 
   ""  (* Signals are only generated in high-level g*.ml wrappers *)
 
 let generate_ml_interface
+    ~ctx
     ~output_mode
     ~class_name
     ~class_doc
-    ~enums ~bitfields ~classes ~records
     ~c_type
     ~parent_chain
     ~constructors
@@ -139,7 +139,7 @@ let generate_ml_interface
 
     (* Build parameter types for constructor signature *)
     let param_types = List.map ~f:(fun p ->
-      match Type_mappings.find_type_mapping_for_gir_type ~enums ~bitfields ~classes ~records p.param_type with
+      match Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type with
       | Some mapping ->
         let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some p.param_type.name) mapping.ocaml_type in
         if p.nullable then
@@ -180,7 +180,7 @@ let generate_ml_interface
         Exclude_list.is_excluded_type_name prop.prop_type.name ||
         Exclude_list.is_excluded_type_name prop.prop_type.c_type
       in
-      let type_mapping_opt = if skip_prop then None else Type_mappings.find_type_mapping ~enums ~bitfields ~classes ~records prop.prop_type.c_type in
+      let type_mapping_opt = if skip_prop then None else Type_mappings.find_type_mapping ~ctx prop.prop_type.c_type in
       match type_mapping_opt with
       | Some type_mapping ->
         let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
@@ -245,7 +245,7 @@ let generate_ml_interface
       Exclude_list.is_variadic_function c_name ||
       List.mem ocaml_name ~set:!property_names ||
       has_excluded_type ||
-      Exclude_list.should_skip_method ~find_type_mapping:(Type_mappings.find_type_mapping ~enums ~bitfields ~classes ~records) ~enums ~bitfields meth ||
+      Exclude_list.should_skip_method ~find_type_mapping:(Type_mappings.find_type_mapping ~ctx) ~enums:ctx.enums ~bitfields:ctx.bitfields meth ||
       (is_record && is_copy_or_free meth)
     in
     if not should_skip_mli then begin
@@ -258,7 +258,7 @@ let generate_ml_interface
         match p.direction with
         | Out -> None
         | In | InOut ->
-          Some (match Type_mappings.find_type_mapping_for_gir_type ~enums ~bitfields ~classes ~records p.param_type with
+          Some (match Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type with
           | Some mapping ->
             let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some p.param_type.name) mapping.ocaml_type in
             if p.nullable then
@@ -275,7 +275,7 @@ let generate_ml_interface
         if meth.return_type.c_type = "void" then
           "unit"
         else
-          match Type_mappings.find_type_mapping_for_gir_type ~enums ~bitfields ~classes ~records meth.return_type with
+          match Type_mappings.find_type_mapping_for_gir_type ~ctx meth.return_type with
           | Some mapping ->
             let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some meth.return_type.name) mapping.ocaml_type in
             if meth.return_type.nullable then
@@ -299,7 +299,7 @@ let generate_ml_interface
               then { p.param_type with c_type = String.sub p.param_type.c_type ~pos:0 ~len:(String.length p.param_type.c_type - 1) }
               else p.param_type
             in
-            (match Type_mappings.find_type_mapping_for_gir_type ~enums ~bitfields ~classes ~records base_param_type with
+            (match Type_mappings.find_type_mapping_for_gir_type ~ctx base_param_type with
             | Some mapping ->
               let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some base_param_type.name) mapping.ocaml_type in
               if base_param_type.nullable || p.nullable then

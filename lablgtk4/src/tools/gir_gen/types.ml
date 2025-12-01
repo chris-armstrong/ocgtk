@@ -129,3 +129,13 @@ type type_mapping = {
   ml_to_c : string;
   needs_copy : bool;
 }
+
+type generation_context = {
+  classes: gir_class list;
+  interfaces: gir_interface list;
+  enums: gir_enum list;
+  bitfields: gir_bitfield list;
+  records: gir_record list;
+  external_enums: (string * gir_enum) list;
+  external_bitfields: (string * gir_bitfield) list;
+}

@@ -267,13 +267,23 @@ let create_test_signal_gir filename =
 let test_signal_parsing_and_generation () =
   let test_gir = "/tmp/test_signal_gen.gir" in
   create_test_signal_gir test_gir;
-  let (classes, _, _, _, _) = Gir_gen_lib.Parse.Gir_parser.parse_gir_file test_gir [] in
+  let (classes, interfaces, gtk_enums, gtk_bitfields, gtk_records) = Gir_gen_lib.Parse.Gir_parser.parse_gir_file test_gir [] in
   let button =
     List.find (fun (c : Gir_gen_lib.Types.gir_class) -> c.class_name = "Button") classes
   in
   assert_true "Button signals should be parsed" (List.length button.signals = 2);
   let parent_chain = match button.parent with Some p -> [p] | None -> [] in
+  let ctx : Gir_gen_lib.Types.generation_context = {
+    classes;
+    interfaces;
+    enums = gtk_enums;
+    bitfields = gtk_bitfields;
+    records = gtk_records;
+    external_enums = [];
+    external_bitfields = [];
+  } in
   let code = Gir_gen_lib.Generate.Signal_gen.generate_signal_class
+    ~ctx
     ~class_name:button.class_name
     ~signals:button.signals
     ~parent_chain in

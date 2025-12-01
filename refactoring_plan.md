@@ -10,6 +10,24 @@
   - [x] Updated all file writing to use `write_file` helper
   - [x] Verified build succeeds
   - [x] Tested code generation (297 C files, 389 .mli files)
+  - [x] Moved `generation_context` to types.ml for reuse across modules
+  - [x] Updated signal_gen.ml to accept ~ctx parameter
+  - [x] Updated class_gen.ml public functions to accept ~ctx parameter
+  - [x] Updated class_gen.ml internal functions to accept ~ctx parameter:
+    - [x] ocaml_type_of_gir_type
+    - [x] generate_property_methods
+    - [x] generate_property_signatures
+    - [x] generate_method_wrappers
+    - [x] generate_method_signatures
+  - [x] Updated filtering.ml functions to accept ~ctx parameter:
+    - [x] has_simple_type
+    - [x] should_generate_property
+    - [x] property_method_names
+    - [x] property_base_names
+    - [x] should_skip_method_binding
+  - [x] Updated c_stubs.ml to use ctx (created local contexts in functions)
+  - [x] Verified build succeeds after all refactoring
+  - [x] All tests pass (21/21)
 - [ ] **Step 2: Create Unified Entity Type**
   - [ ] Add `entity_kind` and `entity` types
   - [ ] Implement `entity_of_class` and `entity_of_interface` converters

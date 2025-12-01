@@ -6,17 +6,6 @@ open Printf
 open StdLabels
 open Cmdliner
 
-(* Type context for code generation *)
-type generation_context = {
-  classes: Gir_gen_lib.Types.gir_class list;
-  interfaces: Gir_gen_lib.Types.gir_interface list;
-  enums: Gir_gen_lib.Types.gir_enum list;
-  bitfields: Gir_gen_lib.Types.gir_bitfield list;
-  records: Gir_gen_lib.Types.gir_record list;
-  external_enums: (string * Gir_gen_lib.Types.gir_enum) list;
-  external_bitfields: (string * Gir_gen_lib.Types.gir_bitfield) list;
-}
-
 (* Helper function to write content to a file *)
 let write_file ~path ~content =
   printf "Writing %s...\n" path;
@@ -105,7 +94,7 @@ let generate_bindings filter_file gir_file output_dir =
   ) in
 
   (* Create generation context with all type information *)
-  let ctx = {
+  let ctx : Gir_gen_lib.Types.generation_context = {
     classes = controllers;
     interfaces;
     enums;
@@ -167,12 +156,7 @@ let generate_bindings filter_file gir_file output_dir =
       let c_file = Filename.concat output_dir (stub_name ^ ".c") in
 
       let c_code = Gir_gen_lib.Generate.C_stubs.generate_class_c_code
-        ~classes:ctx.classes
-        ~records:ctx.records
-        ~enums:ctx.enums
-        ~bitfields:ctx.bitfields
-        ~external_enums:ctx.external_enums
-        ~external_bitfields:ctx.external_bitfields
+        ~ctx
         ~c_type:cls.Gir_gen_lib.Types.c_type
         cls.Gir_gen_lib.Types.class_name cls.Gir_gen_lib.Types.constructors cls.Gir_gen_lib.Types.methods cls.Gir_gen_lib.Types.properties in
 
@@ -194,12 +178,7 @@ let generate_bindings filter_file gir_file output_dir =
       let c_file = Filename.concat output_dir (stub_name ^ ".c") in
 
       let c_code = Gir_gen_lib.Generate.C_stubs.generate_class_c_code
-        ~classes:ctx.classes
-        ~records:ctx.records
-        ~enums:ctx.enums
-        ~bitfields:ctx.bitfields
-        ~external_enums:ctx.external_enums
-        ~external_bitfields:ctx.external_bitfields
+        ~ctx
         ~c_type:intf.Gir_gen_lib.Types.c_type
         intf.Gir_gen_lib.Types.interface_name [] intf.Gir_gen_lib.Types.methods intf.Gir_gen_lib.Types.properties in
 
@@ -216,14 +195,11 @@ let generate_bindings filter_file gir_file output_dir =
       let ml_file = Filename.concat output_dir
         (sprintf "%s.mli" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.class_name)) in
       write_file ~path:ml_file ~content:(Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
+        ~ctx
         ~output_mode:Gir_gen_lib.Generate.Ml_interface.Interface
         ~class_name:cls.Gir_gen_lib.Types.class_name
         ~class_doc:cls.Gir_gen_lib.Types.class_doc
         ~c_type:cls.Gir_gen_lib.Types.c_type
-        ~enums:ctx.enums
-        ~bitfields:ctx.bitfields
-        ~classes:ctx.classes
-        ~records:ctx.records
         ~parent_chain
         ~constructors:(Some cls.Gir_gen_lib.Types.constructors)
         ~methods:cls.Gir_gen_lib.Types.methods
@@ -234,14 +210,11 @@ let generate_bindings filter_file gir_file output_dir =
       let ml_impl_file = Filename.concat output_dir
         (sprintf "%s.ml" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.class_name)) in
       write_file ~path:ml_impl_file ~content:(Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
+        ~ctx
         ~output_mode:Gir_gen_lib.Generate.Ml_interface.Implementation
         ~class_name:cls.Gir_gen_lib.Types.class_name
         ~class_doc:cls.Gir_gen_lib.Types.class_doc
         ~c_type:cls.Gir_gen_lib.Types.c_type
-        ~enums:ctx.enums
-        ~bitfields:ctx.bitfields
-        ~classes:ctx.classes
-        ~records:ctx.records
         ~parent_chain
         ~constructors:(Some cls.Gir_gen_lib.Types.constructors)
         ~methods:cls.Gir_gen_lib.Types.methods
@@ -271,10 +244,7 @@ let generate_bindings filter_file gir_file output_dir =
           if should_overwrite && g_file_exists then
             printf "Overwriting %s (forced validation)\n" g_file;
           write_file ~path:g_file ~content:(Gir_gen_lib.Generate.Class_gen.generate_class_module
-            ~classes:ctx.classes
-            ~enums:ctx.enums
-            ~bitfields:ctx.bitfields
-            ~records:ctx.records
+            ~ctx
             ~c_type:cls.Gir_gen_lib.Types.c_type
             ~class_name:cls.Gir_gen_lib.Types.class_name
             ~parent_chain
@@ -288,10 +258,7 @@ let generate_bindings filter_file gir_file output_dir =
             if should_overwrite && g_sig_exists then
               printf "Overwriting %s (forced validation)\n" g_sig_file;
             write_file ~path:g_sig_file ~content:(Gir_gen_lib.Generate.Class_gen.generate_class_signature
-              ~classes:ctx.classes
-              ~enums:ctx.enums
-              ~bitfields:ctx.bitfields
-              ~records:ctx.records
+              ~ctx
               ~c_type:cls.Gir_gen_lib.Types.c_type
               ~class_name:cls.Gir_gen_lib.Types.class_name
               ~parent_chain
@@ -312,14 +279,11 @@ let generate_bindings filter_file gir_file output_dir =
       let ml_file = Filename.concat output_dir
         (sprintf "%s.mli" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.interface_name)) in
       write_file ~path:ml_file ~content:(Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
+        ~ctx
         ~output_mode:Gir_gen_lib.Generate.Ml_interface.Interface
         ~class_name:cls.Gir_gen_lib.Types.interface_name
         ~class_doc:cls.Gir_gen_lib.Types.interface_doc
         ~c_type:cls.Gir_gen_lib.Types.c_type
-        ~enums:ctx.enums
-        ~bitfields:ctx.bitfields
-        ~classes:ctx.classes
-        ~records:ctx.records
         ~parent_chain
         ~constructors:None
         ~methods:cls.Gir_gen_lib.Types.methods
@@ -330,14 +294,11 @@ let generate_bindings filter_file gir_file output_dir =
       let ml_impl_file = Filename.concat output_dir
         (sprintf "%s.ml" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.interface_name)) in
       write_file ~path:ml_impl_file ~content:(Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
+        ~ctx
         ~output_mode:Gir_gen_lib.Generate.Ml_interface.Implementation
         ~class_name:cls.Gir_gen_lib.Types.interface_name
         ~class_doc:cls.Gir_gen_lib.Types.interface_doc
         ~c_type:cls.Gir_gen_lib.Types.c_type
-        ~enums:ctx.enums
-        ~bitfields:ctx.bitfields
-        ~classes:ctx.classes
-        ~records:ctx.records
         ~parent_chain
         ~constructors:None
         ~methods:cls.Gir_gen_lib.Types.methods
@@ -356,6 +317,7 @@ let generate_bindings filter_file gir_file output_dir =
       if List.length cls.Gir_gen_lib.Types.signals > 0 then begin
         let parent_chain = parent_chain_for_class cls.Gir_gen_lib.Types.class_name in
         let signal_code = Gir_gen_lib.Generate.Signal_gen.generate_signal_class
+          ~ctx
           ~class_name:cls.Gir_gen_lib.Types.class_name
           ~signals:cls.Gir_gen_lib.Types.signals
           ~parent_chain in
@@ -373,6 +335,7 @@ let generate_bindings filter_file gir_file output_dir =
       if List.length intf.Gir_gen_lib.Types.signals > 0 then begin
         let parent_chain = parent_chain_for_class intf.Gir_gen_lib.Types.interface_name in
         let signal_code = Gir_gen_lib.Generate.Signal_gen.generate_signal_class
+          ~ctx
           ~class_name:intf.Gir_gen_lib.Types.interface_name
           ~signals:intf.Gir_gen_lib.Types.signals
           ~parent_chain in
@@ -413,12 +376,7 @@ let generate_bindings filter_file gir_file output_dir =
       let c_file = Filename.concat output_dir (stub_name ^ ".c") in
 
       let c_code = Gir_gen_lib.Generate.C_stubs.generate_record_c_code
-        ~classes:ctx.classes
-        ~records:ctx.records
-        ~enums:ctx.enums
-        ~bitfields:ctx.bitfields
-        ~external_enums:ctx.external_enums
-        ~external_bitfields:ctx.external_bitfields
+        ~ctx
         { record with Gir_gen_lib.Types.constructors = constructors }
       in
       write_file ~path:c_file ~content:c_code;
@@ -431,7 +389,7 @@ let generate_bindings filter_file gir_file output_dir =
       if has_bindings then begin
         let base_type =
           match Gir_gen_lib.Type_mappings.find_type_mapping_for_gir_type
-              ~enums:ctx.enums ~bitfields:ctx.bitfields ~classes:ctx.classes ~records:ctx.records
+              ~ctx
               { Gir_gen_lib.Types.name = record.Gir_gen_lib.Types.record_name;
                 c_type = record.Gir_gen_lib.Types.c_type ^ "*";
                 nullable = false; } with
@@ -444,14 +402,11 @@ let generate_bindings filter_file gir_file output_dir =
         let ml_file = Filename.concat output_dir
           (sprintf "%s.mli" (Gir_gen_lib.Utils.to_snake_case record.Gir_gen_lib.Types.record_name)) in
         write_file ~path:ml_file ~content:(Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
+          ~ctx
           ~output_mode:Gir_gen_lib.Generate.Ml_interface.Interface
           ~class_name:record.Gir_gen_lib.Types.record_name
           ~class_doc:record.Gir_gen_lib.Types.record_doc
           ~c_type:record.Gir_gen_lib.Types.c_type
-          ~enums:ctx.enums
-          ~bitfields:ctx.bitfields
-          ~classes:ctx.classes
-          ~records:ctx.records
           ~parent_chain:[]
           ~constructors:(Some constructors)
           ~methods:record.Gir_gen_lib.Types.methods
@@ -465,14 +420,11 @@ let generate_bindings filter_file gir_file output_dir =
         let ml_impl_file = Filename.concat output_dir
           (sprintf "%s.ml" (Gir_gen_lib.Utils.to_snake_case record.Gir_gen_lib.Types.record_name)) in
         write_file ~path:ml_impl_file ~content:(Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
+          ~ctx
           ~output_mode:Gir_gen_lib.Generate.Ml_interface.Implementation
           ~class_name:record.Gir_gen_lib.Types.record_name
           ~class_doc:record.Gir_gen_lib.Types.record_doc
           ~c_type:record.Gir_gen_lib.Types.c_type
-          ~enums:ctx.enums
-          ~bitfields:ctx.bitfields
-          ~classes:ctx.classes
-          ~records:ctx.records
           ~parent_chain:[]
           ~constructors:(Some constructors)
           ~methods:record.Gir_gen_lib.Types.methods
