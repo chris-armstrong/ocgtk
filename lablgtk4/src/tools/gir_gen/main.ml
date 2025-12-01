@@ -6,9 +6,303 @@ open Printf
 open StdLabels
 open Cmdliner
 
+(* Helper function to write content to a file *)
+let write_file ~path ~content =
+  printf "Writing %s...\n" path;
+  let oc = open_out path in
+  output_string oc content;
+  close_out oc
+
+(* Generate C stub file for a single entity (class or interface) *)
+let generate_c_stub ~ctx ~output_dir ~generated_stubs ~generated_modules entity =
+  if Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name then begin
+    printf "  - %s (SKIPPED - incomplete support)\n" entity.Gir_gen_lib.Types.name
+  end else begin
+    printf "  - %s (%d methods, %d properties)\n"
+      entity.Gir_gen_lib.Types.name
+      (List.length entity.Gir_gen_lib.Types.methods)
+      (List.length entity.Gir_gen_lib.Types.properties);
+
+    let stub_name = sprintf "ml_%s_gen" (Gir_gen_lib.Utils.to_snake_case entity.Gir_gen_lib.Types.name) in
+    let c_file = Filename.concat output_dir (stub_name ^ ".c") in
+
+    let c_code = Gir_gen_lib.Generate.C_stubs.generate_class_c_code
+      ~ctx
+      ~c_type:entity.Gir_gen_lib.Types.c_type
+      entity.Gir_gen_lib.Types.name
+      entity.Gir_gen_lib.Types.constructors
+      entity.Gir_gen_lib.Types.methods
+      entity.Gir_gen_lib.Types.properties in
+
+    write_file ~path:c_file ~content:c_code;
+    generated_stubs := stub_name :: !generated_stubs;
+    generated_modules := (Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name) :: !generated_modules;
+  end
+
+(* Generate C stub files for all entities *)
+let generate_all_c_stubs ~ctx ~output_dir ~generated_stubs ~generated_modules entities =
+  List.iter ~f:(generate_c_stub ~ctx ~output_dir ~generated_stubs ~generated_modules) entities
+
+(* Output file kind for ML generation *)
+type output_file_kind = Interface | Implementation
+
+(* Namespace information for enum/bitfield generation *)
+type namespace_info = {
+  name: string;           (* Display name, e.g., "Gtk" *)
+  prefix: string;         (* Lowercase prefix for files, e.g., "gtk" *)
+  include_header: string; (* C include directive, e.g., "#include <gtk/gtk.h>" *)
+}
+
+(* Generate a single ML file (interface or implementation) for an entity *)
+let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain entity =
+  let ext = match kind with Interface -> ".mli" | Implementation -> ".ml" in
+  let ml_file = Filename.concat output_dir
+    (sprintf "%s%s" (Gir_gen_lib.Utils.to_snake_case entity.Gir_gen_lib.Types.name) ext) in
+
+  let output_mode = match kind with
+    | Interface -> Gir_gen_lib.Generate.Ml_interface.Interface
+    | Implementation -> Gir_gen_lib.Generate.Ml_interface.Implementation in
+
+  let content = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
+    ~ctx
+    ~output_mode
+    ~class_name:entity.Gir_gen_lib.Types.name
+    ~class_doc:entity.Gir_gen_lib.Types.doc
+    ~c_type:entity.Gir_gen_lib.Types.c_type
+    ~parent_chain
+    ~constructors:(if List.length entity.Gir_gen_lib.Types.constructors > 0 then Some entity.Gir_gen_lib.Types.constructors else None)
+    ~methods:entity.Gir_gen_lib.Types.methods
+    ~properties:entity.Gir_gen_lib.Types.properties
+    ~signals:entity.Gir_gen_lib.Types.signals
+    () in
+
+  write_file ~path:ml_file ~content
+
+(* Generate both .mli and .ml files for an entity *)
+let generate_ml_interfaces ~ctx ~output_dir ~parent_chain entity =
+  if not (Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name) then begin
+    generate_ml_file ~ctx ~output_dir ~kind:Interface ~parent_chain entity;
+    generate_ml_file ~ctx ~output_dir ~kind:Implementation ~parent_chain entity
+  end
+
+(* Check if entity should have a high-level wrapper class (g<Widget>.ml) *)
+let should_generate_high_level_class entity parent_chain =
+  (* Only classes can have high-level wrappers *)
+  entity.Gir_gen_lib.Types.kind = Gir_gen_lib.Types.Class &&
+  (* Must have Widget in parent chain *)
+  let has_widget_parent =
+    String.lowercase_ascii (Gir_gen_lib.Utils.normalize_class_name entity.Gir_gen_lib.Types.name) = "widget" ||
+    List.exists parent_chain ~f:(fun p -> String.lowercase_ascii (Gir_gen_lib.Utils.normalize_class_name p) = "widget")
+  in
+  has_widget_parent
+
+(* Generate high-level wrapper class (g<Widget>.ml) for a class entity *)
+let generate_high_level_class ~ctx ~output_dir ~generated_modules ~should_force_generate entity parent_chain =
+  if not (should_generate_high_level_class entity parent_chain) then ()
+  else if Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name then ()
+  else begin
+    let module_name = Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name in
+    let g_file = Filename.concat output_dir (sprintf "g%s.ml" module_name) in
+    let g_sig_file = Filename.concat output_dir (sprintf "g%s.mli" module_name) in
+
+    (* Check if we're generating to src directory *)
+    let output_under_src =
+      let norm p = Filename.concat (Filename.dirname p) (Filename.basename p) in
+      String.equal (Filename.basename output_dir) "src" || String.equal (norm output_dir) (norm "src")
+    in
+
+    let should_overwrite = should_force_generate entity.Gir_gen_lib.Types.name in
+    let g_file_exists = output_under_src && Sys.file_exists g_file in
+
+    if g_file_exists && not should_overwrite then
+      printf "Skipping %s (already exists)\n" g_file
+    else begin
+      if should_overwrite && g_file_exists then
+        printf "Overwriting %s (forced validation)\n" g_file;
+
+      write_file ~path:g_file ~content:(Gir_gen_lib.Generate.Class_gen.generate_class_module
+        ~ctx
+        ~c_type:entity.Gir_gen_lib.Types.c_type
+        ~class_name:entity.Gir_gen_lib.Types.name
+        ~parent_chain
+        ~methods:entity.Gir_gen_lib.Types.methods
+        ~properties:entity.Gir_gen_lib.Types.properties
+        ~signals:entity.Gir_gen_lib.Types.signals);
+      generated_modules := (sprintf "g%s" module_name) :: !generated_modules;
+
+      let g_sig_exists = output_under_src && Sys.file_exists g_sig_file in
+      if not (g_sig_exists && not should_overwrite) then begin
+        if should_overwrite && g_sig_exists then
+          printf "Overwriting %s (forced validation)\n" g_sig_file;
+        write_file ~path:g_sig_file ~content:(Gir_gen_lib.Generate.Class_gen.generate_class_signature
+          ~ctx
+          ~c_type:entity.Gir_gen_lib.Types.c_type
+          ~class_name:entity.Gir_gen_lib.Types.name
+          ~parent_chain
+          ~methods:entity.Gir_gen_lib.Types.methods
+          ~properties:entity.Gir_gen_lib.Types.properties
+          ~signals:entity.Gir_gen_lib.Types.signals);
+      end else
+        printf "Skipping %s (already exists)\n" g_sig_file;
+    end
+  end
+
+(* Generate signal class file for a single entity *)
+let generate_signal_class ~ctx ~output_dir ~parent_chain entity =
+  if Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name then ()
+  else if List.length entity.Gir_gen_lib.Types.signals = 0 then ()
+  else begin
+    let signal_code = Gir_gen_lib.Generate.Signal_gen.generate_signal_class
+      ~ctx
+      ~class_name:entity.Gir_gen_lib.Types.name
+      ~signals:entity.Gir_gen_lib.Types.signals
+      ~parent_chain in
+
+    let signal_file = Filename.concat output_dir
+      (sprintf "g%s_signals.ml" (Gir_gen_lib.Utils.to_snake_case entity.Gir_gen_lib.Types.name)) in
+    write_file ~path:signal_file ~content:signal_code
+  end
+
+(* Generate signal classes for all entities *)
+let generate_all_signal_classes ~ctx ~output_dir ~parent_chain_for_class entities =
+  printf "\nGenerating signal classes...\n";
+  List.iter ~f:(fun entity ->
+    let parent_chain = parent_chain_for_class entity.Gir_gen_lib.Types.name in
+    generate_signal_class ~ctx ~output_dir ~parent_chain entity
+  ) entities
+
+(* Generate enum and bitfield files for a namespace *)
+let generate_enum_files ~output_dir ~generated_stubs ~generated_modules namespace enums bitfields =
+  if List.length enums = 0 && List.length bitfields = 0 then ()
+  else begin
+    (* Generate OCaml .mli file with type definitions *)
+    let enum_file = Filename.concat output_dir (sprintf "%s_enums.mli" namespace.prefix) in
+    let ocaml_content_parts = [
+      "(* GENERATED CODE - DO NOT EDIT *)\n";
+      sprintf "(* %s Enumeration and Bitfield Types *)\n\n" namespace.name;
+    ] @ (List.map ~f:Gir_gen_lib.Generate.Enum_code.generate_ocaml_enum enums)
+      @ (List.map ~f:Gir_gen_lib.Generate.Enum_code.generate_ocaml_bitfield bitfields) in
+    write_file ~path:enum_file ~content:(String.concat ~sep:"" ocaml_content_parts);
+
+    (* Generate C converter file *)
+    let stub_name = sprintf "ml_%s_enums_gen" namespace.prefix in
+    let c_file = Filename.concat output_dir (stub_name ^ ".c") in
+    let c_content_parts = [
+      "/* GENERATED CODE - DO NOT EDIT */\n";
+      sprintf "/* %s enum/bitfield converters */\n\n" namespace.name;
+      "#include <caml/mlvalues.h>\n";
+      "#include <caml/memory.h>\n";
+      "#include <caml/alloc.h>\n";
+      "#include <caml/fail.h>\n";
+      "#include <caml/hash.h>\n";
+      namespace.include_header ^ "\n";
+    ] @ (List.map ~f:(fun enum ->
+      Gir_gen_lib.Generate.Enum_code.generate_c_enum_converters ~namespace:namespace.name enum
+    ) enums) @ (List.map ~f:(fun bitfield ->
+      Gir_gen_lib.Generate.Enum_code.generate_c_bitfield_converters ~namespace:namespace.name bitfield
+    ) bitfields) in
+    write_file ~path:c_file ~content:(String.concat ~sep:"" c_content_parts);
+
+    generated_stubs := stub_name :: !generated_stubs;
+    generated_modules := (String.capitalize_ascii (namespace.prefix ^ "_enums")) :: !generated_modules;
+  end
+
+(* Generate C files and OCaml bindings for boxed records *)
+let generate_all_record_bindings ~ctx ~output_dir ~generated_stubs ~generated_modules records =
+  List.iter ~f:(fun record ->
+    if Gir_gen_lib.Type_mappings.is_boxed_record record then begin
+      let is_value_record = not record.opaque in
+      let constructors =
+        if (not record.Gir_gen_lib.Types.opaque) && (not is_value_record) && record.Gir_gen_lib.Types.constructors = [] then
+          let class_snake = Gir_gen_lib.Utils.to_snake_case record.Gir_gen_lib.Types.record_name in
+          let c_id = "gtk_" ^ class_snake ^ "_new" in
+          [{ Gir_gen_lib.Types.ctor_name = "new";
+             c_identifier = c_id;
+             ctor_parameters = [];
+             ctor_doc = Some ("Allocate a new " ^ record.Gir_gen_lib.Types.record_name ^ " using g_new0");
+             throws = false; }]
+        else
+          record.Gir_gen_lib.Types.constructors
+      in
+      printf "  - %s (record: %d constructors, %d methods)\n"
+        record.Gir_gen_lib.Types.record_name
+        (List.length constructors)
+        (List.length record.Gir_gen_lib.Types.methods);
+
+      (* Generate C stub file *)
+      let stub_name = sprintf "ml_%s_record_gen" (Gir_gen_lib.Utils.to_snake_case record.Gir_gen_lib.Types.record_name) in
+      let c_file = Filename.concat output_dir (stub_name ^ ".c") in
+      let c_code = Gir_gen_lib.Generate.C_stubs.generate_record_c_code
+        ~ctx
+        { record with Gir_gen_lib.Types.constructors = constructors }
+      in
+      write_file ~path:c_file ~content:c_code;
+      generated_stubs := stub_name :: !generated_stubs;
+
+      (* Generate OCaml interface files if the record has bindings *)
+      let has_bindings =
+        (List.length constructors > 0) ||
+        (List.length record.Gir_gen_lib.Types.methods > 0)
+      in
+      if has_bindings then begin
+        let base_type =
+          match Gir_gen_lib.Type_mappings.find_type_mapping_for_gir_type
+              ~ctx
+              { Gir_gen_lib.Types.name = record.Gir_gen_lib.Types.record_name;
+                c_type = record.Gir_gen_lib.Types.c_type ^ "*";
+                nullable = false; } with
+          | Some mapping ->
+            Gir_gen_lib.Type_mappings.qualify_ocaml_type
+              ~gir_type_name:(Some record.Gir_gen_lib.Types.record_name) mapping.ocaml_type
+          | None -> "Obj.t"
+        in
+
+        let ml_file = Filename.concat output_dir
+          (sprintf "%s.mli" (Gir_gen_lib.Utils.to_snake_case record.Gir_gen_lib.Types.record_name)) in
+        write_file ~path:ml_file ~content:(Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
+          ~ctx
+          ~output_mode:Gir_gen_lib.Generate.Ml_interface.Interface
+          ~class_name:record.Gir_gen_lib.Types.record_name
+          ~class_doc:record.Gir_gen_lib.Types.record_doc
+          ~c_type:record.Gir_gen_lib.Types.c_type
+          ~parent_chain:[]
+          ~constructors:(Some constructors)
+          ~methods:record.Gir_gen_lib.Types.methods
+          ~properties:[]
+          ~signals:[]
+          ?c_symbol_prefix:record.Gir_gen_lib.Types.c_symbol_prefix
+          ~record_base_type:base_type
+          ~is_record:true
+          ());
+
+        let ml_impl_file = Filename.concat output_dir
+          (sprintf "%s.ml" (Gir_gen_lib.Utils.to_snake_case record.Gir_gen_lib.Types.record_name)) in
+        write_file ~path:ml_impl_file ~content:(Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
+          ~ctx
+          ~output_mode:Gir_gen_lib.Generate.Ml_interface.Implementation
+          ~class_name:record.Gir_gen_lib.Types.record_name
+          ~class_doc:record.Gir_gen_lib.Types.record_doc
+          ~c_type:record.Gir_gen_lib.Types.c_type
+          ~parent_chain:[]
+          ~constructors:(Some constructors)
+          ~methods:record.Gir_gen_lib.Types.methods
+          ~properties:[]
+          ~signals:[]
+          ?c_symbol_prefix:record.Gir_gen_lib.Types.c_symbol_prefix
+          ~record_base_type:base_type
+          ~is_record:true
+          ());
+
+        generated_modules := (Gir_gen_lib.Utils.module_name_of_class record.Gir_gen_lib.Types.record_name) :: !generated_modules;
+      end
+    end
+  ) records
+
 (* Main generation function *)
 let generate_bindings filter_file gir_file output_dir =
   printf "Parsing %s ...\n" gir_file;
+
+  (* ==== INITIALIZATION ==== *)
 
   (* Track generated C stub files and OCaml modules *)
   let generated_stubs = ref [] in
@@ -24,7 +318,9 @@ let generate_bindings filter_file gir_file output_dir =
     | None -> []
   in
 
-  (* Parse stage: read GIR files *)
+  (* ==== PARSING STAGE ==== *)
+
+  (* Parse GTK GIR file *)
   let (controllers, interfaces, gtk_enums, gtk_bitfields, gtk_records) = Gir_gen_lib.Parse.Gir_parser.parse_gir_file gir_file filter_classes in
 
   printf "Found %d classes\n" (List.length controllers);
@@ -32,6 +328,8 @@ let generate_bindings filter_file gir_file output_dir =
   printf "Found %d Gtk enumerations\n" (List.length gtk_enums);
   printf "Found %d Gtk bitfields\n" (List.length gtk_bitfields);
   printf "Found %d records\n" (List.length gtk_records);
+
+  (* ==== PREPROCESSING STAGE ==== *)
 
   (* Build parent lookup table for inheritance chains *)
   let parent_table = Hashtbl.create (List.length controllers + 10) in
@@ -86,7 +384,24 @@ let generate_bindings filter_file gir_file output_dir =
     List.map ~f:(fun bitfield -> (ns, bitfield)) ns_bitfields
   ) in
 
-  (* Generate stage: produce output files *)
+  (* Create generation context with all type information *)
+  let ctx : Gir_gen_lib.Types.generation_context = {
+    classes = controllers;
+    interfaces;
+    enums;
+    bitfields;
+    records;
+    external_enums = external_enums_with_ns;
+    external_bitfields = external_bitfields_with_ns;
+  } in
+
+  (* Create unified entity list combining classes and interfaces *)
+  let entities : Gir_gen_lib.Types.entity list =
+    (List.map ~f:Gir_gen_lib.Types.entity_of_class controllers) @
+    (List.map ~f:Gir_gen_lib.Types.entity_of_interface interfaces)
+  in
+
+  (* Configure forced generation for validation *)
   let forced_widget_classes =
     (* Keep this list small: we overwrite these even if files already exist to validate class_gen output. *)
     ["Button"; "Label"; "Range"]
@@ -98,472 +413,70 @@ let generate_bindings filter_file gir_file output_dir =
     List.exists forced_widget_classes ~f:(String.equal normalized)
   in
 
+  (* ==== GENERATION STAGE ==== *)
+
   (* Generate common header file *)
   let header_file = Filename.concat output_dir "generated_forward_decls.h" in
-  printf "\nWriting %s...\n" header_file;
+  printf "\n";
   let header_content = Gir_gen_lib.Generate.C_stubs.generate_forward_decls_header
-    ~classes:controllers
+    ~classes:ctx.classes
     ~gtk_enums:gtk_enums
     ~gtk_bitfields:gtk_bitfields
-    ~external_enums:external_enums_with_ns
-    ~records
-    ~external_bitfields:external_bitfields_with_ns in
-  let oc = open_out header_file in
-  output_string oc header_content;
-  close_out oc;
+    ~external_enums:ctx.external_enums
+    ~records:ctx.records
+    ~external_bitfields:ctx.external_bitfields in
+  write_file ~path:header_file ~content:header_content;
 
-  (* Generate GTK enum and bitfield converters *)
-  if List.length gtk_enums > 0 || List.length gtk_bitfields > 0 then begin
-    let c_file = Filename.concat output_dir "ml_gtk_enums_gen.c" in
-    printf "\nWriting %s...\n" c_file;
-    let oc = open_out c_file in
-    output_string oc (Gir_gen_lib.Generate.C_stubs.generate_c_file_header ~class_name:"GTK enums and bitfields" ~external_enums:[] ~external_bitfields:[] ());
-    List.iter ~f:(fun enum ->
-      output_string oc (Gir_gen_lib.Generate.Enum_code.generate_c_enum_converters ~namespace:"Gtk" enum);
-    ) gtk_enums;
-    List.iter ~f:(fun bitfield ->
-      output_string oc (Gir_gen_lib.Generate.Enum_code.generate_c_bitfield_converters ~namespace:"Gtk" bitfield);
-    ) gtk_bitfields;
-    close_out oc;
-    generated_stubs := "ml_gtk_enums_gen" :: !generated_stubs;
-    generated_modules := "Gtk_enums" :: !generated_modules;
-  end;
+  (* Generate GTK enum and bitfield files *)
+  let gtk_namespace = {
+    name = "Gtk";
+    prefix = "gtk";
+    include_header = "#include <gtk/gtk.h>";
+  } in
+  generate_enum_files ~output_dir ~generated_stubs ~generated_modules gtk_namespace gtk_enums gtk_bitfields;
 
-  (* Generate C files for each class *)
-  List.iter ~f:(fun cls ->
-    if Gir_gen_lib.Exclude_list.should_skip_class cls.Gir_gen_lib.Types.class_name then begin
-      printf "  - %s (SKIPPED - incomplete support)\n" cls.Gir_gen_lib.Types.class_name
-    end else begin
-      printf "  - %s (%d methods, %d properties)\n"
-        cls.Gir_gen_lib.Types.class_name (List.length cls.Gir_gen_lib.Types.methods) (List.length cls.Gir_gen_lib.Types.properties);
+  (* Generate C files for all entities (classes and interfaces) *)
+  generate_all_c_stubs ~ctx ~output_dir ~generated_stubs ~generated_modules entities;
 
-      let stub_name = sprintf "ml_%s_gen" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.class_name) in
-      let c_file = Filename.concat output_dir (stub_name ^ ".c") in
-      printf "Writing %s...\n" c_file;
+  (* Generate OCaml interface files for all entities *)
+  List.iter ~f:(fun entity ->
+    let parent_chain = parent_chain_for_class entity.Gir_gen_lib.Types.name in
+    generate_ml_interfaces ~ctx ~output_dir ~parent_chain entity
+  ) entities;
 
-      let c_code = Gir_gen_lib.Generate.C_stubs.generate_class_c_code
-        ~classes:controllers
-        ~records
-        ~enums ~bitfields
-        ~external_enums:external_enums_with_ns
-        ~external_bitfields:external_bitfields_with_ns
-        ~c_type:cls.Gir_gen_lib.Types.c_type
-        cls.Gir_gen_lib.Types.class_name cls.Gir_gen_lib.Types.constructors cls.Gir_gen_lib.Types.methods cls.Gir_gen_lib.Types.properties in
+  (* Generate high-level wrapper classes for classes with Widget parent *)
+  List.iter ~f:(fun entity ->
+    let parent_chain = parent_chain_for_class entity.Gir_gen_lib.Types.name in
+    generate_high_level_class ~ctx ~output_dir ~generated_modules ~should_force_generate entity parent_chain
+  ) entities;
 
-      let oc = open_out c_file in
-      output_string oc c_code;
-      close_out oc;
-      generated_stubs := stub_name :: !generated_stubs;
-      generated_modules := (Gir_gen_lib.Utils.module_name_of_class cls.Gir_gen_lib.Types.class_name) :: !generated_modules;
-    end
-  ) controllers;
-
-  (* Generate C files for each interface *)
-  List.iter ~f:(fun intf ->
-    if Gir_gen_lib.Exclude_list.should_skip_class intf.Gir_gen_lib.Types.interface_name then begin
-      printf "  - %s (SKIPPED - incomplete support)\n" intf.Gir_gen_lib.Types.interface_name
-    end else begin
-      printf "  - %s (%d methods, %d properties)\n"
-        intf.Gir_gen_lib.Types.interface_name (List.length intf.Gir_gen_lib.Types.methods) (List.length intf.Gir_gen_lib.Types.properties);
-
-      let stub_name = sprintf "ml_%s_gen" (Gir_gen_lib.Utils.to_snake_case intf.Gir_gen_lib.Types.interface_name) in
-      let c_file = Filename.concat output_dir (stub_name ^ ".c") in
-      printf "Writing %s...\n" c_file;
-
-      let c_code = Gir_gen_lib.Generate.C_stubs.generate_class_c_code
-        ~classes:controllers
-        ~records
-        ~enums ~bitfields
-        ~external_enums:external_enums_with_ns
-        ~external_bitfields:external_bitfields_with_ns
-        ~c_type:intf.Gir_gen_lib.Types.c_type
-        intf.Gir_gen_lib.Types.interface_name [] intf.Gir_gen_lib.Types.methods intf.Gir_gen_lib.Types.properties in
-
-      let oc = open_out c_file in
-      output_string oc c_code;
-      close_out oc;
-      generated_stubs := stub_name :: !generated_stubs;
-      generated_modules := (Gir_gen_lib.Utils.module_name_of_class intf.Gir_gen_lib.Types.interface_name) :: !generated_modules;
-    end
-  ) interfaces;
-
-  (* Generate OCaml interface files for classes *)
-  List.iter ~f:(fun cls ->
-    if not (Gir_gen_lib.Exclude_list.should_skip_class cls.Gir_gen_lib.Types.class_name) then begin
-      let parent_chain = parent_chain_for_class cls.Gir_gen_lib.Types.class_name in
-      let ml_file = Filename.concat output_dir
-        (sprintf "%s.mli" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.class_name)) in
-      printf "Writing %s...\n" ml_file;
-      let oc = open_out ml_file in
-      output_string oc (Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
-        ~output_mode:Gir_gen_lib.Generate.Ml_interface.Interface
-        ~class_name:cls.Gir_gen_lib.Types.class_name
-        ~class_doc:cls.Gir_gen_lib.Types.class_doc
-        ~c_type:cls.Gir_gen_lib.Types.c_type
-        ~enums ~bitfields
-        ~classes:controllers
-        ~records
-        ~parent_chain
-        ~constructors:(Some cls.Gir_gen_lib.Types.constructors)
-        ~methods:cls.Gir_gen_lib.Types.methods
-        ~properties:cls.Gir_gen_lib.Types.properties
-        ~signals:cls.Gir_gen_lib.Types.signals
-        ());
-      close_out oc;
-
-      let ml_impl_file = Filename.concat output_dir
-        (sprintf "%s.ml" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.class_name)) in
-      printf "Writing %s...\n" ml_impl_file;
-      let oc_impl = open_out ml_impl_file in
-      output_string oc_impl (Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
-        ~output_mode:Gir_gen_lib.Generate.Ml_interface.Implementation
-        ~class_name:cls.Gir_gen_lib.Types.class_name
-        ~class_doc:cls.Gir_gen_lib.Types.class_doc
-        ~c_type:cls.Gir_gen_lib.Types.c_type
-        ~enums ~bitfields
-        ~classes:controllers
-        ~records
-        ~parent_chain
-        ~constructors:(Some cls.Gir_gen_lib.Types.constructors)
-        ~methods:cls.Gir_gen_lib.Types.methods
-        ~properties:cls.Gir_gen_lib.Types.properties
-        ~signals:cls.Gir_gen_lib.Types.signals
-        ());
-      close_out oc_impl;
-
-      (* Generate high-level wrapper class (g<Widget>.ml) *)
-      let has_widget_parent =
-        String.lowercase_ascii (Gir_gen_lib.Utils.normalize_class_name cls.Gir_gen_lib.Types.class_name) = "widget" ||
-        List.exists parent_chain ~f:(fun p -> String.lowercase_ascii (Gir_gen_lib.Utils.normalize_class_name p) = "widget")
-      in
-      if has_widget_parent then begin
-        let g_file = Filename.concat output_dir
-          (sprintf "g%s.ml" (Gir_gen_lib.Utils.module_name_of_class cls.Gir_gen_lib.Types.class_name)) in
-        let g_sig_file = Filename.concat output_dir
-          (sprintf "g%s.mli" (Gir_gen_lib.Utils.module_name_of_class cls.Gir_gen_lib.Types.class_name)) in
-        let output_under_src =
-          let norm p = Filename.concat (Filename.dirname p) (Filename.basename p) in
-          String.equal (Filename.basename output_dir) "src" || String.equal (norm output_dir) (norm "src")
-        in
-        let should_overwrite = should_force_generate cls.Gir_gen_lib.Types.class_name in
-        let g_file_exists = output_under_src && Sys.file_exists g_file in
-        if g_file_exists && not should_overwrite then
-          printf "Skipping %s (already exists)\n" g_file
-        else begin
-          if should_overwrite && g_file_exists then
-            printf "Overwriting %s (forced validation)\n" g_file
-          else
-            printf "Writing %s...\n" g_file;
-          let oc_g = open_out g_file in
-          output_string oc_g (Gir_gen_lib.Generate.Class_gen.generate_class_module
-            ~classes:controllers
-            ~enums ~bitfields
-            ~records
-            ~c_type:cls.Gir_gen_lib.Types.c_type
-            ~class_name:cls.Gir_gen_lib.Types.class_name
-            ~parent_chain
-            ~methods:cls.Gir_gen_lib.Types.methods
-            ~properties:cls.Gir_gen_lib.Types.properties
-            ~signals:cls.Gir_gen_lib.Types.signals);
-          close_out oc_g;
-          generated_modules := (sprintf "g%s" (Gir_gen_lib.Utils.module_name_of_class cls.Gir_gen_lib.Types.class_name)) :: !generated_modules;
-
-          let g_sig_exists = output_under_src && Sys.file_exists g_sig_file in
-          if not (g_sig_exists && not should_overwrite) then begin
-            if should_overwrite && g_sig_exists then
-              printf "Overwriting %s (forced validation)\n" g_sig_file
-            else
-              printf "Writing %s...\n" g_sig_file;
-            let oc_gi = open_out g_sig_file in
-            output_string oc_gi (Gir_gen_lib.Generate.Class_gen.generate_class_signature
-              ~classes:controllers
-              ~enums ~bitfields
-              ~records
-              ~c_type:cls.Gir_gen_lib.Types.c_type
-              ~class_name:cls.Gir_gen_lib.Types.class_name
-              ~parent_chain
-              ~methods:cls.Gir_gen_lib.Types.methods
-              ~properties:cls.Gir_gen_lib.Types.properties
-              ~signals:cls.Gir_gen_lib.Types.signals);
-            close_out oc_gi;
-          end else
-            printf "Skipping %s (already exists)\n" g_sig_file;
-        end
-      end;
-    end
-  ) controllers;
-
-  (* Generate OCaml interface files for interfaces *)
-  List.iter ~f:(fun cls ->
-    if not (Gir_gen_lib.Exclude_list.should_skip_class cls.Gir_gen_lib.Types.interface_name) then begin
-      let parent_chain = parent_chain_for_class cls.Gir_gen_lib.Types.interface_name in
-      let ml_file = Filename.concat output_dir
-        (sprintf "%s.mli" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.interface_name)) in
-      printf "Writing %s...\n" ml_file;
-      let oc = open_out ml_file in
-      output_string oc (Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
-        ~output_mode:Gir_gen_lib.Generate.Ml_interface.Interface
-        ~class_name:cls.Gir_gen_lib.Types.interface_name
-        ~class_doc:cls.Gir_gen_lib.Types.interface_doc
-        ~c_type:cls.Gir_gen_lib.Types.c_type
-        ~enums ~bitfields
-        ~classes:controllers
-        ~records
-        ~parent_chain
-        ~constructors:None
-        ~methods:cls.Gir_gen_lib.Types.methods
-        ~properties:cls.Gir_gen_lib.Types.properties
-        ~signals:cls.Gir_gen_lib.Types.signals
-        ());
-      close_out oc;
-
-      let ml_impl_file = Filename.concat output_dir
-        (sprintf "%s.ml" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.interface_name)) in
-      printf "Writing %s...\n" ml_impl_file;
-      let oc_impl = open_out ml_impl_file in
-      output_string oc_impl (Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
-        ~output_mode:Gir_gen_lib.Generate.Ml_interface.Implementation
-        ~class_name:cls.Gir_gen_lib.Types.interface_name
-        ~class_doc:cls.Gir_gen_lib.Types.interface_doc
-        ~c_type:cls.Gir_gen_lib.Types.c_type
-        ~enums ~bitfields
-        ~classes:controllers
-        ~records
-        ~parent_chain
-        ~constructors:None
-        ~methods:cls.Gir_gen_lib.Types.methods
-        ~properties:cls.Gir_gen_lib.Types.properties
-        ~signals:cls.Gir_gen_lib.Types.signals
-        ());
-      close_out oc_impl;
-    end
-  ) interfaces;
-
-  (* Generate signal classes for ALL classes (controllers and interfaces) *)
-  printf "\nGenerating signal classes...\n";
-
-  (* Process controllers *)
-  List.iter ~f:(fun cls ->
-    if not (Gir_gen_lib.Exclude_list.should_skip_class cls.Gir_gen_lib.Types.class_name) then begin
-      if List.length cls.Gir_gen_lib.Types.signals > 0 then begin
-        let parent_chain = parent_chain_for_class cls.Gir_gen_lib.Types.class_name in
-        let signal_code = Gir_gen_lib.Generate.Signal_gen.generate_signal_class
-          ~class_name:cls.Gir_gen_lib.Types.class_name
-          ~signals:cls.Gir_gen_lib.Types.signals
-          ~parent_chain in
-
-        let signal_file = Filename.concat output_dir
-          (sprintf "g%s_signals.ml" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.class_name)) in
-        printf "Writing %s...\n" signal_file;
-        let oc = open_out signal_file in
-        output_string oc signal_code;
-        close_out oc;
-      end
-    end
-  ) controllers;
-
-  (* Process interfaces *)
-  List.iter ~f:(fun intf ->
-    if not (Gir_gen_lib.Exclude_list.should_skip_class intf.Gir_gen_lib.Types.interface_name) then begin
-      if List.length intf.Gir_gen_lib.Types.signals > 0 then begin
-        let parent_chain = parent_chain_for_class intf.Gir_gen_lib.Types.interface_name in
-        let signal_code = Gir_gen_lib.Generate.Signal_gen.generate_signal_class
-          ~class_name:intf.Gir_gen_lib.Types.interface_name
-          ~signals:intf.Gir_gen_lib.Types.signals
-          ~parent_chain in
-
-        let signal_file = Filename.concat output_dir
-          (sprintf "g%s_signals.ml" (Gir_gen_lib.Utils.to_snake_case intf.Gir_gen_lib.Types.interface_name)) in
-        printf "Writing %s...\n" signal_file;
-        let oc = open_out signal_file in
-        output_string oc signal_code;
-        close_out oc;
-      end
-    end
-  ) interfaces;
+  (* Generate signal classes for all entities (classes and interfaces) *)
+  generate_all_signal_classes ~ctx ~output_dir ~parent_chain_for_class entities;
 
   (* Generate C files and OCaml bindings for boxed records *)
-  List.iter ~f:(fun record ->
-    if Gir_gen_lib.Type_mappings.is_boxed_record record then begin
-      (* let value_record_macros = ["GtkTreeIter"; "GtkTextIter"; "GtkRequisition"; "GtkBorder"] in *)
-      let is_value_record = not record.opaque
-        (* List.mem record.Gir_gen_lib.Types.c_type ~set:value_record_macros
-        || (List.length record.Gir_gen_lib.Types.fields > 0 && List.length record.Gir_gen_lib.Types.constructors = 0) *)
-      in
-      let constructors =
-        if (not record.Gir_gen_lib.Types.opaque) && (not is_value_record) && record.Gir_gen_lib.Types.constructors = [] then
-          let class_snake = Gir_gen_lib.Utils.to_snake_case record.Gir_gen_lib.Types.record_name in
-          let c_id = "gtk_" ^ class_snake ^ "_new" in
-          [{ Gir_gen_lib.Types.ctor_name = "new";
-             c_identifier = c_id;
-             ctor_parameters = [];
-             ctor_doc = Some ("Allocate a new " ^ record.Gir_gen_lib.Types.record_name ^ " using g_new0");
-             throws = false; }]
-        else
-          record.Gir_gen_lib.Types.constructors
-      in
-      printf "  - %s (record: %d constructors, %d methods)\n"
-        record.Gir_gen_lib.Types.record_name
-        (List.length constructors)
-        (List.length record.Gir_gen_lib.Types.methods);
-
-      let stub_name = sprintf "ml_%s_record_gen" (Gir_gen_lib.Utils.to_snake_case record.Gir_gen_lib.Types.record_name) in
-      let c_file = Filename.concat output_dir (stub_name ^ ".c") in
-      printf "Writing %s...\n" c_file;
-
-      let c_code = Gir_gen_lib.Generate.C_stubs.generate_record_c_code
-        ~classes:controllers
-        ~records
-        ~enums ~bitfields
-        ~external_enums:external_enums_with_ns
-        ~external_bitfields:external_bitfields_with_ns
-        { record with Gir_gen_lib.Types.constructors = constructors }
-      in
-      let oc = open_out c_file in
-      output_string oc c_code;
-      close_out oc;
-      generated_stubs := stub_name :: !generated_stubs;
-
-      let has_bindings =
-        (List.length constructors > 0) ||
-        (List.length record.Gir_gen_lib.Types.methods > 0)
-      in
-      if has_bindings then begin
-        let base_type =
-          match Gir_gen_lib.Type_mappings.find_type_mapping_for_gir_type
-              ~enums ~bitfields ~classes:controllers ~records
-              { Gir_gen_lib.Types.name = record.Gir_gen_lib.Types.record_name;
-                c_type = record.Gir_gen_lib.Types.c_type ^ "*";
-                nullable = false; } with
-          | Some mapping ->
-            Gir_gen_lib.Type_mappings.qualify_ocaml_type
-              ~gir_type_name:(Some record.Gir_gen_lib.Types.record_name) mapping.ocaml_type
-          | None -> "Obj.t"
-        in
-
-        let ml_file = Filename.concat output_dir
-          (sprintf "%s.mli" (Gir_gen_lib.Utils.to_snake_case record.Gir_gen_lib.Types.record_name)) in
-        printf "Writing %s...\n" ml_file;
-        let oc = open_out ml_file in
-        output_string oc (Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
-          ~output_mode:Gir_gen_lib.Generate.Ml_interface.Interface
-          ~class_name:record.Gir_gen_lib.Types.record_name
-          ~class_doc:record.Gir_gen_lib.Types.record_doc
-          ~c_type:record.Gir_gen_lib.Types.c_type
-          ~enums ~bitfields
-          ~classes:controllers
-          ~records
-          ~parent_chain:[]
-          ~constructors:(Some constructors)
-          ~methods:record.Gir_gen_lib.Types.methods
-          ~properties:[]
-          ~signals:[]
-          ?c_symbol_prefix:record.Gir_gen_lib.Types.c_symbol_prefix
-          ~record_base_type:base_type
-          ~is_record:true
-          ());
-        close_out oc;
-
-        let ml_impl_file = Filename.concat output_dir
-          (sprintf "%s.ml" (Gir_gen_lib.Utils.to_snake_case record.Gir_gen_lib.Types.record_name)) in
-        printf "Writing %s...\n" ml_impl_file;
-        let oc_impl = open_out ml_impl_file in
-        output_string oc_impl (Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
-          ~output_mode:Gir_gen_lib.Generate.Ml_interface.Implementation
-          ~class_name:record.Gir_gen_lib.Types.record_name
-          ~class_doc:record.Gir_gen_lib.Types.record_doc
-          ~c_type:record.Gir_gen_lib.Types.c_type
-          ~enums ~bitfields
-          ~classes:controllers
-          ~records
-          ~parent_chain:[]
-          ~constructors:(Some constructors)
-          ~methods:record.Gir_gen_lib.Types.methods
-          ~properties:[]
-          ~signals:[]
-          ?c_symbol_prefix:record.Gir_gen_lib.Types.c_symbol_prefix
-          ~record_base_type:base_type
-          ~is_record:true
-          ());
-        close_out oc_impl;
-
-        generated_modules := (Gir_gen_lib.Utils.module_name_of_class record.Gir_gen_lib.Types.record_name) :: !generated_modules;
-      end
-    end
-  ) records;
-
-  (* Generate GTK enum and bitfield types file *)
-  if List.length gtk_enums > 0 || List.length gtk_bitfields > 0 then begin
-    let enum_file = Filename.concat output_dir "gtk_enums.mli" in
-    printf "Writing %s...\n" enum_file;
-    let oc = open_out enum_file in
-    output_string oc "(* GENERATED CODE - DO NOT EDIT *)\n";
-    output_string oc "(* GTK4 Enumeration and Bitfield Types *)\n\n";
-    List.iter ~f:(fun enum ->
-      output_string oc (Gir_gen_lib.Generate.Enum_code.generate_ocaml_enum enum);
-    ) gtk_enums;
-    List.iter ~f:(fun bitfield ->
-      output_string oc (Gir_gen_lib.Generate.Enum_code.generate_ocaml_bitfield bitfield);
-    ) gtk_bitfields;
-    close_out oc;
-  end;
+  generate_all_record_bindings ~ctx ~output_dir ~generated_stubs ~generated_modules ctx.records;
 
   (* Generate enum files for external namespaces *)
   List.iter ~f:(fun (ns_name, ns_enums, ns_bitfields) ->
     let ns_lower = String.lowercase_ascii ns_name in
-    let ns_module = String.capitalize_ascii (ns_lower ^ "_enums") in
-
-    (* Generate OCaml enum file *)
-    if List.length ns_enums > 0 || List.length ns_bitfields > 0 then begin
-      let enum_file = Filename.concat output_dir (sprintf "%s_enums.mli" ns_lower) in
-      printf "Writing %s...\n" enum_file;
-      let oc = open_out enum_file in
-      output_string oc "(* GENERATED CODE - DO NOT EDIT *)\n";
-      output_string oc (sprintf "(* %s Enumeration and Bitfield Types *)\n\n" ns_name);
-      List.iter ~f:(fun enum ->
-        output_string oc (Gir_gen_lib.Generate.Enum_code.generate_ocaml_enum enum);
-      ) ns_enums;
-      List.iter ~f:(fun bitfield ->
-        output_string oc (Gir_gen_lib.Generate.Enum_code.generate_ocaml_bitfield bitfield);
-      ) ns_bitfields;
-      close_out oc;
-      generated_modules := ns_module :: !generated_modules;
-    end;
-
-    (* Generate C converter file *)
-    if List.length ns_enums > 0 || List.length ns_bitfields > 0 then begin
-      let stub_name = sprintf "ml_%s_enums_gen" ns_lower in
-      let c_file = Filename.concat output_dir (stub_name ^ ".c") in
-      printf "Writing %s...\n" c_file;
-      let oc = open_out c_file in
-      output_string oc (sprintf "/* GENERATED CODE - DO NOT EDIT */\n");
-      output_string oc (sprintf "/* %s enum/bitfield converters */\n\n" ns_name);
-      output_string oc "#include <caml/mlvalues.h>\n";
-      output_string oc "#include <caml/memory.h>\n";
-      output_string oc "#include <caml/alloc.h>\n";
-      output_string oc "#include <caml/fail.h>\n";
-      output_string oc "#include <caml/hash.h>\n";
-      if ns_lower = "gdk" then
-        output_string oc "#include <gdk/gdk.h>\n\n"
-      else if ns_lower = "pango" then
-        output_string oc "#include <pango/pango.h>\n\n"
-      else
-        output_string oc (sprintf "#include <%s/%s.h>\n\n" ns_lower ns_lower);
-
-      List.iter ~f:(fun enum ->
-        output_string oc (Gir_gen_lib.Generate.Enum_code.generate_c_enum_converters ~namespace:ns_name enum);
-      ) ns_enums;
-      List.iter ~f:(fun bitfield ->
-        output_string oc (Gir_gen_lib.Generate.Enum_code.generate_c_bitfield_converters ~namespace:ns_name bitfield);
-      ) ns_bitfields;
-      close_out oc;
-      generated_stubs := stub_name :: !generated_stubs;
-    end;
+    let include_header =
+      if ns_lower = "gdk" then "#include <gdk/gdk.h>"
+      else if ns_lower = "pango" then "#include <pango/pango.h>"
+      else sprintf "#include <%s/%s.h>" ns_lower ns_lower
+    in
+    let namespace = {
+      name = ns_name;
+      prefix = ns_lower;
+      include_header;
+    } in
+    generate_enum_files ~output_dir ~generated_stubs ~generated_modules namespace ns_enums ns_bitfields
   ) external_enums_bitfields;
+
+  (* ==== BUILD CONFIGURATION ==== *)
 
   (* Generate dune file *)
   let dune_file = Filename.concat output_dir "dune-generated.inc" in
-  printf "\nWriting %s...\n" dune_file;
+  printf "\n";
   let stub_list = List.rev !generated_stubs |> List.sort ~cmp:String.compare in
   let base_modules = [
     "gError"; "gpointer"; "gaux"; "gobject"; "glib"; "gdk"; "gdkPixbuf";
@@ -588,9 +501,9 @@ let generate_bindings filter_file gir_file output_dir =
   let dune_content = Gir_gen_lib.Generate.Dune_file.generate_dune_library
     ~stub_names:stub_list
     ~module_names:module_list in
-  let oc = open_out dune_file in
-  output_string oc dune_content;
-  close_out oc;
+  write_file ~path:dune_file ~content:dune_content;
+
+  (* ==== SUMMARY ==== *)
 
   let boxed_record_count =
     List.length (List.filter records ~f:Gir_gen_lib.Type_mappings.is_boxed_record)

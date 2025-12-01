@@ -39,7 +39,7 @@ let is_void_signal (signal : gir_signal) =
   let name = String.lowercase_ascii signal.return_type.name in
   c_type = "void" || name = "none"
 
-let generate_signal_class ~class_name ~signals ~parent_chain =
+let generate_signal_class ~ctx:_ ~class_name ~signals ~parent_chain =
   let buf = Buffer.create 512 in
   let module_name = Utils.module_name_of_class class_name in
   let class_snake = Utils.to_snake_case class_name in

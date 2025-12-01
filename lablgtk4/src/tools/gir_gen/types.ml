@@ -123,9 +123,61 @@ type gir_interface = {
   interface_doc: string option;
 }
 
+(* Unified entity type for classes and interfaces *)
+type entity_kind = Class | Interface
+
+type entity = {
+  kind: entity_kind;
+  name: string;
+  c_type: string;
+  doc: string option;
+  parent: string option;  (* None for interfaces *)
+  implements: string list;  (* Empty for interfaces *)
+  constructors: gir_constructor list;  (* Empty for interfaces *)
+  methods: gir_method list;
+  properties: gir_property list;
+  signals: gir_signal list;
+}
+
+let entity_of_class (cls: gir_class) : entity = {
+  kind = Class;
+  name = cls.class_name;
+  c_type = cls.c_type;
+  doc = cls.class_doc;
+  parent = cls.parent;
+  implements = cls.implements;
+  constructors = cls.constructors;
+  methods = cls.methods;
+  properties = cls.properties;
+  signals = cls.signals;
+}
+
+let entity_of_interface (intf: gir_interface) : entity = {
+  kind = Interface;
+  name = intf.interface_name;
+  c_type = intf.c_type;
+  doc = intf.interface_doc;
+  parent = None;
+  implements = [];
+  constructors = [];
+  methods = intf.methods;
+  properties = intf.properties;
+  signals = intf.signals;
+}
+
 type type_mapping = {
   ocaml_type : string;
   c_to_ml : string;
   ml_to_c : string;
   needs_copy : bool;
+}
+
+type generation_context = {
+  classes: gir_class list;
+  interfaces: gir_interface list;
+  enums: gir_enum list;
+  bitfields: gir_bitfield list;
+  records: gir_record list;
+  external_enums: (string * gir_enum) list;
+  external_bitfields: (string * gir_bitfield) list;
 }
