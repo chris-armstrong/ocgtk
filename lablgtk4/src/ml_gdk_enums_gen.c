@@ -7,7 +7,6 @@
 #include <caml/fail.h>
 #include <caml/hash.h>
 #include <gdk/gdk.h>
-
 /* Convert GdkAxisUse to OCaml value */
 value Val_GdkAxisUse(GdkAxisUse val) {
   switch (val) {

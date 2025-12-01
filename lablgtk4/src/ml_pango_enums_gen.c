@@ -7,7 +7,6 @@
 #include <caml/fail.h>
 #include <caml/hash.h>
 #include <pango/pango.h>
-
 /* Convert PangoAlignment to OCaml value */
 value Val_PangoAlignment(PangoAlignment val) {
   switch (val) {

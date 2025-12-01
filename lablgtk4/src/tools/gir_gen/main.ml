@@ -46,6 +46,13 @@ let generate_all_c_stubs ~ctx ~output_dir ~generated_stubs ~generated_modules en
 (* Output file kind for ML generation *)
 type output_file_kind = Interface | Implementation
 
+(* Namespace information for enum/bitfield generation *)
+type namespace_info = {
+  name: string;           (* Display name, e.g., "Gtk" *)
+  prefix: string;         (* Lowercase prefix for files, e.g., "gtk" *)
+  include_header: string; (* C include directive, e.g., "#include <gtk/gtk.h>" *)
+}
+
 (* Generate a single ML file (interface or implementation) for an entity *)
 let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain entity =
   let ext = match kind with Interface -> ".mli" | Implementation -> ".ml" in
@@ -138,6 +145,66 @@ let generate_high_level_class ~ctx ~output_dir ~generated_modules ~should_force_
       end else
         printf "Skipping %s (already exists)\n" g_sig_file;
     end
+  end
+
+(* Generate signal class file for a single entity *)
+let generate_signal_class ~ctx ~output_dir ~parent_chain entity =
+  if Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name then ()
+  else if List.length entity.Gir_gen_lib.Types.signals = 0 then ()
+  else begin
+    let signal_code = Gir_gen_lib.Generate.Signal_gen.generate_signal_class
+      ~ctx
+      ~class_name:entity.Gir_gen_lib.Types.name
+      ~signals:entity.Gir_gen_lib.Types.signals
+      ~parent_chain in
+
+    let signal_file = Filename.concat output_dir
+      (sprintf "g%s_signals.ml" (Gir_gen_lib.Utils.to_snake_case entity.Gir_gen_lib.Types.name)) in
+    write_file ~path:signal_file ~content:signal_code
+  end
+
+(* Generate signal classes for all entities *)
+let generate_all_signal_classes ~ctx ~output_dir ~parent_chain_for_class entities =
+  printf "\nGenerating signal classes...\n";
+  List.iter ~f:(fun entity ->
+    let parent_chain = parent_chain_for_class entity.Gir_gen_lib.Types.name in
+    generate_signal_class ~ctx ~output_dir ~parent_chain entity
+  ) entities
+
+(* Generate enum and bitfield files for a namespace *)
+let generate_enum_files ~output_dir ~generated_stubs ~generated_modules namespace enums bitfields =
+  if List.length enums = 0 && List.length bitfields = 0 then ()
+  else begin
+    (* Generate OCaml .mli file with type definitions *)
+    let enum_file = Filename.concat output_dir (sprintf "%s_enums.mli" namespace.prefix) in
+    let ocaml_content_parts = [
+      "(* GENERATED CODE - DO NOT EDIT *)\n";
+      sprintf "(* %s Enumeration and Bitfield Types *)\n\n" namespace.name;
+    ] @ (List.map ~f:Gir_gen_lib.Generate.Enum_code.generate_ocaml_enum enums)
+      @ (List.map ~f:Gir_gen_lib.Generate.Enum_code.generate_ocaml_bitfield bitfields) in
+    write_file ~path:enum_file ~content:(String.concat ~sep:"" ocaml_content_parts);
+
+    (* Generate C converter file *)
+    let stub_name = sprintf "ml_%s_enums_gen" namespace.prefix in
+    let c_file = Filename.concat output_dir (stub_name ^ ".c") in
+    let c_content_parts = [
+      "/* GENERATED CODE - DO NOT EDIT */\n";
+      sprintf "/* %s enum/bitfield converters */\n\n" namespace.name;
+      "#include <caml/mlvalues.h>\n";
+      "#include <caml/memory.h>\n";
+      "#include <caml/alloc.h>\n";
+      "#include <caml/fail.h>\n";
+      "#include <caml/hash.h>\n";
+      namespace.include_header ^ "\n";
+    ] @ (List.map ~f:(fun enum ->
+      Gir_gen_lib.Generate.Enum_code.generate_c_enum_converters ~namespace:namespace.name enum
+    ) enums) @ (List.map ~f:(fun bitfield ->
+      Gir_gen_lib.Generate.Enum_code.generate_c_bitfield_converters ~namespace:namespace.name bitfield
+    ) bitfields) in
+    write_file ~path:c_file ~content:(String.concat ~sep:"" c_content_parts);
+
+    generated_stubs := stub_name :: !generated_stubs;
+    generated_modules := (String.capitalize_ascii (namespace.prefix ^ "_enums")) :: !generated_modules;
   end
 
 (* Main generation function *)
@@ -261,21 +328,13 @@ let generate_bindings filter_file gir_file output_dir =
     ~external_bitfields:ctx.external_bitfields in
   write_file ~path:header_file ~content:header_content;
 
-  (* Generate GTK enum and bitfield converters *)
-  if List.length gtk_enums > 0 || List.length gtk_bitfields > 0 then begin
-    let c_file = Filename.concat output_dir "ml_gtk_enums_gen.c" in
-    printf "\n";
-    let content_parts = [
-      Gir_gen_lib.Generate.C_stubs.generate_c_file_header ~class_name:"GTK enums and bitfields" ~external_enums:[] ~external_bitfields:[] ();
-    ] @ (List.map ~f:(fun enum ->
-      Gir_gen_lib.Generate.Enum_code.generate_c_enum_converters ~namespace:"Gtk" enum
-    ) gtk_enums) @ (List.map ~f:(fun bitfield ->
-      Gir_gen_lib.Generate.Enum_code.generate_c_bitfield_converters ~namespace:"Gtk" bitfield
-    ) gtk_bitfields) in
-    write_file ~path:c_file ~content:(String.concat ~sep:"" content_parts);
-    generated_stubs := "ml_gtk_enums_gen" :: !generated_stubs;
-    generated_modules := "Gtk_enums" :: !generated_modules;
-  end;
+  (* Generate GTK enum and bitfield files *)
+  let gtk_namespace = {
+    name = "Gtk";
+    prefix = "gtk";
+    include_header = "#include <gtk/gtk.h>";
+  } in
+  generate_enum_files ~output_dir ~generated_stubs ~generated_modules gtk_namespace gtk_enums gtk_bitfields;
 
   (* Generate C files for all entities (classes and interfaces) *)
   generate_all_c_stubs ~ctx ~output_dir ~generated_stubs ~generated_modules entities;
@@ -292,44 +351,8 @@ let generate_bindings filter_file gir_file output_dir =
     generate_high_level_class ~ctx ~output_dir ~generated_modules ~should_force_generate entity parent_chain
   ) entities;
 
-  (* Generate signal classes for ALL classes (controllers and interfaces) *)
-  printf "\nGenerating signal classes...\n";
-
-  (* Process controllers *)
-  List.iter ~f:(fun cls ->
-    if not (Gir_gen_lib.Exclude_list.should_skip_class cls.Gir_gen_lib.Types.class_name) then begin
-      if List.length cls.Gir_gen_lib.Types.signals > 0 then begin
-        let parent_chain = parent_chain_for_class cls.Gir_gen_lib.Types.class_name in
-        let signal_code = Gir_gen_lib.Generate.Signal_gen.generate_signal_class
-          ~ctx
-          ~class_name:cls.Gir_gen_lib.Types.class_name
-          ~signals:cls.Gir_gen_lib.Types.signals
-          ~parent_chain in
-
-        let signal_file = Filename.concat output_dir
-          (sprintf "g%s_signals.ml" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.class_name)) in
-        write_file ~path:signal_file ~content:signal_code;
-      end
-    end
-  ) ctx.classes;
-
-  (* Process interfaces *)
-  List.iter ~f:(fun intf ->
-    if not (Gir_gen_lib.Exclude_list.should_skip_class intf.Gir_gen_lib.Types.interface_name) then begin
-      if List.length intf.Gir_gen_lib.Types.signals > 0 then begin
-        let parent_chain = parent_chain_for_class intf.Gir_gen_lib.Types.interface_name in
-        let signal_code = Gir_gen_lib.Generate.Signal_gen.generate_signal_class
-          ~ctx
-          ~class_name:intf.Gir_gen_lib.Types.interface_name
-          ~signals:intf.Gir_gen_lib.Types.signals
-          ~parent_chain in
-
-        let signal_file = Filename.concat output_dir
-          (sprintf "g%s_signals.ml" (Gir_gen_lib.Utils.to_snake_case intf.Gir_gen_lib.Types.interface_name)) in
-        write_file ~path:signal_file ~content:signal_code;
-      end
-    end
-  ) ctx.interfaces;
+  (* Generate signal classes for all entities (classes and interfaces) *)
+  generate_all_signal_classes ~ctx ~output_dir ~parent_chain_for_class entities;
 
   (* Generate C files and OCaml bindings for boxed records *)
   List.iter ~f:(fun record ->
@@ -424,60 +447,20 @@ let generate_bindings filter_file gir_file output_dir =
     end
   ) ctx.records;
 
-  (* Generate GTK enum and bitfield types file *)
-  if List.length gtk_enums > 0 || List.length gtk_bitfields > 0 then begin
-    let enum_file = Filename.concat output_dir "gtk_enums.mli" in
-    let content_parts = [
-      "(* GENERATED CODE - DO NOT EDIT *)\n";
-      "(* GTK4 Enumeration and Bitfield Types *)\n\n";
-    ] @ (List.map ~f:Gir_gen_lib.Generate.Enum_code.generate_ocaml_enum gtk_enums)
-      @ (List.map ~f:Gir_gen_lib.Generate.Enum_code.generate_ocaml_bitfield gtk_bitfields) in
-    write_file ~path:enum_file ~content:(String.concat ~sep:"" content_parts);
-  end;
-
   (* Generate enum files for external namespaces *)
   List.iter ~f:(fun (ns_name, ns_enums, ns_bitfields) ->
     let ns_lower = String.lowercase_ascii ns_name in
-    let ns_module = String.capitalize_ascii (ns_lower ^ "_enums") in
-
-    (* Generate OCaml enum file *)
-    if List.length ns_enums > 0 || List.length ns_bitfields > 0 then begin
-      let enum_file = Filename.concat output_dir (sprintf "%s_enums.mli" ns_lower) in
-      let content_parts = [
-        "(* GENERATED CODE - DO NOT EDIT *)\n";
-        sprintf "(* %s Enumeration and Bitfield Types *)\n\n" ns_name;
-      ] @ (List.map ~f:Gir_gen_lib.Generate.Enum_code.generate_ocaml_enum ns_enums)
-        @ (List.map ~f:Gir_gen_lib.Generate.Enum_code.generate_ocaml_bitfield ns_bitfields) in
-      write_file ~path:enum_file ~content:(String.concat ~sep:"" content_parts);
-      generated_modules := ns_module :: !generated_modules;
-    end;
-
-    (* Generate C converter file *)
-    if List.length ns_enums > 0 || List.length ns_bitfields > 0 then begin
-      let stub_name = sprintf "ml_%s_enums_gen" ns_lower in
-      let c_file = Filename.concat output_dir (stub_name ^ ".c") in
-      let include_header =
-        if ns_lower = "gdk" then "#include <gdk/gdk.h>\n\n"
-        else if ns_lower = "pango" then "#include <pango/pango.h>\n\n"
-        else sprintf "#include <%s/%s.h>\n\n" ns_lower ns_lower
-      in
-      let content_parts = [
-        sprintf "/* GENERATED CODE - DO NOT EDIT */\n";
-        sprintf "/* %s enum/bitfield converters */\n\n" ns_name;
-        "#include <caml/mlvalues.h>\n";
-        "#include <caml/memory.h>\n";
-        "#include <caml/alloc.h>\n";
-        "#include <caml/fail.h>\n";
-        "#include <caml/hash.h>\n";
-        include_header;
-      ] @ (List.map ~f:(fun enum ->
-        Gir_gen_lib.Generate.Enum_code.generate_c_enum_converters ~namespace:ns_name enum
-      ) ns_enums) @ (List.map ~f:(fun bitfield ->
-        Gir_gen_lib.Generate.Enum_code.generate_c_bitfield_converters ~namespace:ns_name bitfield
-      ) ns_bitfields) in
-      write_file ~path:c_file ~content:(String.concat ~sep:"" content_parts);
-      generated_stubs := stub_name :: !generated_stubs;
-    end;
+    let include_header =
+      if ns_lower = "gdk" then "#include <gdk/gdk.h>"
+      else if ns_lower = "pango" then "#include <pango/pango.h>"
+      else sprintf "#include <%s/%s.h>" ns_lower ns_lower
+    in
+    let namespace = {
+      name = ns_name;
+      prefix = ns_lower;
+      include_header;
+    } in
+    generate_enum_files ~output_dir ~generated_stubs ~generated_modules namespace ns_enums ns_bitfields
   ) external_enums_bitfields;
 
   (* Generate dune file *)

@@ -1,20 +1,12 @@
 /* GENERATED CODE - DO NOT EDIT */
-/* C bindings for GTK enums and bitfields */
+/* Gtk enum/bitfield converters */
 
-#include <gtk/gtk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
-#include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
-#include <caml/custom.h>
-#include "wrappers.h"
-#include "ml_gobject.h"
-
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
-
+#include <gtk/gtk.h>
 /* Convert GtkAccessibleAnnouncementPriority to OCaml value */
 value Val_GtkAccessibleAnnouncementPriority(GtkAccessibleAnnouncementPriority val) {
   switch (val) {

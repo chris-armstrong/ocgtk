@@ -1,5 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* GTK4 Enumeration and Bitfield Types *)
+(* Gtk Enumeration and Bitfield Types *)
 
 (* AccessibleAnnouncementPriority - enumeration *)
 type accessibleannouncementpriority = [

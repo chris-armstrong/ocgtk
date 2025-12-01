@@ -58,13 +58,21 @@
   - [x] Verified build succeeds
   - [x] Code generation produces no changes
   - [x] All tests pass (21/21)
-- [ ] **Step 6: Extract Signal Generation**
-  - [ ] Create `generate_signal_class` function
-  - [ ] Create `generate_all_signal_classes` function
-- [ ] **Step 7: Extract Enum/Bitfield Generation**
-  - [ ] Create `namespace_info` type
-  - [ ] Create `generate_enum_files` function
-  - [ ] Replace duplicate enum generation code
+- [x] **Step 6: Extract Signal Generation**
+  - [x] Create `generate_signal_class` function
+  - [x] Create `generate_all_signal_classes` function
+  - [x] Replace duplicate class/interface signal generation loops with unified entity-based loop
+  - [x] Verified build succeeds
+  - [x] Code generation produces no changes
+  - [x] All tests pass (21/21)
+- [x] **Step 7: Extract Enum/Bitfield Generation**
+  - [x] Create `namespace_info` type
+  - [x] Create `generate_enum_files` function
+  - [x] Replace duplicate GTK enum generation code with unified function call
+  - [x] Replace duplicate external namespace enum generation loop with unified function calls
+  - [x] Verified build succeeds
+  - [x] Code generation produces cleaner output (simpler C headers without unnecessary includes)
+  - [x] All tests pass (21/21)
 - [ ] **Step 8: Restructure Main Function**
   - [ ] Simplify main function to high-level orchestration
 - [ ] **Step 9: Split into Modules (Optional)**
