@@ -78,6 +78,68 @@ let generate_ml_interfaces ~ctx ~output_dir ~parent_chain entity =
     generate_ml_file ~ctx ~output_dir ~kind:Implementation ~parent_chain entity
   end
 
+(* Check if entity should have a high-level wrapper class (g<Widget>.ml) *)
+let should_generate_high_level_class entity parent_chain =
+  (* Only classes can have high-level wrappers *)
+  entity.Gir_gen_lib.Types.kind = Gir_gen_lib.Types.Class &&
+  (* Must have Widget in parent chain *)
+  let has_widget_parent =
+    String.lowercase_ascii (Gir_gen_lib.Utils.normalize_class_name entity.Gir_gen_lib.Types.name) = "widget" ||
+    List.exists parent_chain ~f:(fun p -> String.lowercase_ascii (Gir_gen_lib.Utils.normalize_class_name p) = "widget")
+  in
+  has_widget_parent
+
+(* Generate high-level wrapper class (g<Widget>.ml) for a class entity *)
+let generate_high_level_class ~ctx ~output_dir ~generated_modules ~should_force_generate entity parent_chain =
+  if not (should_generate_high_level_class entity parent_chain) then ()
+  else if Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name then ()
+  else begin
+    let module_name = Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name in
+    let g_file = Filename.concat output_dir (sprintf "g%s.ml" module_name) in
+    let g_sig_file = Filename.concat output_dir (sprintf "g%s.mli" module_name) in
+
+    (* Check if we're generating to src directory *)
+    let output_under_src =
+      let norm p = Filename.concat (Filename.dirname p) (Filename.basename p) in
+      String.equal (Filename.basename output_dir) "src" || String.equal (norm output_dir) (norm "src")
+    in
+
+    let should_overwrite = should_force_generate entity.Gir_gen_lib.Types.name in
+    let g_file_exists = output_under_src && Sys.file_exists g_file in
+
+    if g_file_exists && not should_overwrite then
+      printf "Skipping %s (already exists)\n" g_file
+    else begin
+      if should_overwrite && g_file_exists then
+        printf "Overwriting %s (forced validation)\n" g_file;
+
+      write_file ~path:g_file ~content:(Gir_gen_lib.Generate.Class_gen.generate_class_module
+        ~ctx
+        ~c_type:entity.Gir_gen_lib.Types.c_type
+        ~class_name:entity.Gir_gen_lib.Types.name
+        ~parent_chain
+        ~methods:entity.Gir_gen_lib.Types.methods
+        ~properties:entity.Gir_gen_lib.Types.properties
+        ~signals:entity.Gir_gen_lib.Types.signals);
+      generated_modules := (sprintf "g%s" module_name) :: !generated_modules;
+
+      let g_sig_exists = output_under_src && Sys.file_exists g_sig_file in
+      if not (g_sig_exists && not should_overwrite) then begin
+        if should_overwrite && g_sig_exists then
+          printf "Overwriting %s (forced validation)\n" g_sig_file;
+        write_file ~path:g_sig_file ~content:(Gir_gen_lib.Generate.Class_gen.generate_class_signature
+          ~ctx
+          ~c_type:entity.Gir_gen_lib.Types.c_type
+          ~class_name:entity.Gir_gen_lib.Types.name
+          ~parent_chain
+          ~methods:entity.Gir_gen_lib.Types.methods
+          ~properties:entity.Gir_gen_lib.Types.properties
+          ~signals:entity.Gir_gen_lib.Types.signals);
+      end else
+        printf "Skipping %s (already exists)\n" g_sig_file;
+    end
+  end
+
 (* Main generation function *)
 let generate_bindings filter_file gir_file output_dir =
   printf "Parsing %s ...\n" gir_file;
@@ -225,58 +287,10 @@ let generate_bindings filter_file gir_file output_dir =
   ) entities;
 
   (* Generate high-level wrapper classes for classes with Widget parent *)
-  List.iter ~f:(fun cls ->
-    if not (Gir_gen_lib.Exclude_list.should_skip_class cls.Gir_gen_lib.Types.class_name) then begin
-      let parent_chain = parent_chain_for_class cls.Gir_gen_lib.Types.class_name in
-      (* Generate high-level wrapper class (g<Widget>.ml) *)
-      let has_widget_parent =
-        String.lowercase_ascii (Gir_gen_lib.Utils.normalize_class_name cls.Gir_gen_lib.Types.class_name) = "widget" ||
-        List.exists parent_chain ~f:(fun p -> String.lowercase_ascii (Gir_gen_lib.Utils.normalize_class_name p) = "widget")
-      in
-      if has_widget_parent then begin
-        let g_file = Filename.concat output_dir
-          (sprintf "g%s.ml" (Gir_gen_lib.Utils.module_name_of_class cls.Gir_gen_lib.Types.class_name)) in
-        let g_sig_file = Filename.concat output_dir
-          (sprintf "g%s.mli" (Gir_gen_lib.Utils.module_name_of_class cls.Gir_gen_lib.Types.class_name)) in
-        let output_under_src =
-          let norm p = Filename.concat (Filename.dirname p) (Filename.basename p) in
-          String.equal (Filename.basename output_dir) "src" || String.equal (norm output_dir) (norm "src")
-        in
-        let should_overwrite = should_force_generate cls.Gir_gen_lib.Types.class_name in
-        let g_file_exists = output_under_src && Sys.file_exists g_file in
-        if g_file_exists && not should_overwrite then
-          printf "Skipping %s (already exists)\n" g_file
-        else begin
-          if should_overwrite && g_file_exists then
-            printf "Overwriting %s (forced validation)\n" g_file;
-          write_file ~path:g_file ~content:(Gir_gen_lib.Generate.Class_gen.generate_class_module
-            ~ctx
-            ~c_type:cls.Gir_gen_lib.Types.c_type
-            ~class_name:cls.Gir_gen_lib.Types.class_name
-            ~parent_chain
-            ~methods:cls.Gir_gen_lib.Types.methods
-            ~properties:cls.Gir_gen_lib.Types.properties
-            ~signals:cls.Gir_gen_lib.Types.signals);
-          generated_modules := (sprintf "g%s" (Gir_gen_lib.Utils.module_name_of_class cls.Gir_gen_lib.Types.class_name)) :: !generated_modules;
-
-          let g_sig_exists = output_under_src && Sys.file_exists g_sig_file in
-          if not (g_sig_exists && not should_overwrite) then begin
-            if should_overwrite && g_sig_exists then
-              printf "Overwriting %s (forced validation)\n" g_sig_file;
-            write_file ~path:g_sig_file ~content:(Gir_gen_lib.Generate.Class_gen.generate_class_signature
-              ~ctx
-              ~c_type:cls.Gir_gen_lib.Types.c_type
-              ~class_name:cls.Gir_gen_lib.Types.class_name
-              ~parent_chain
-              ~methods:cls.Gir_gen_lib.Types.methods
-              ~properties:cls.Gir_gen_lib.Types.properties
-              ~signals:cls.Gir_gen_lib.Types.signals);
-          end else
-            printf "Skipping %s (already exists)\n" g_sig_file;
-        end
-      end;
-    end
-  ) ctx.classes;
+  List.iter ~f:(fun entity ->
+    let parent_chain = parent_chain_for_class entity.Gir_gen_lib.Types.name in
+    generate_high_level_class ~ctx ~output_dir ~generated_modules ~should_force_generate entity parent_chain
+  ) entities;
 
   (* Generate signal classes for ALL classes (controllers and interfaces) *)
   printf "\nGenerating signal classes...\n";

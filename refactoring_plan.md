@@ -51,9 +51,13 @@
   - [x] Verified build succeeds
   - [x] Code generation produces no changes
   - [x] All tests pass (21/21)
-- [ ] **Step 5: Extract High-Level Class Generation**
-  - [ ] Extract `should_generate_high_level_class` function
-  - [ ] Extract `generate_high_level_class` function
+- [x] **Step 5: Extract High-Level Class Generation**
+  - [x] Extract `should_generate_high_level_class` function
+  - [x] Extract `generate_high_level_class` function
+  - [x] Replace duplicate high-level class generation loop with unified entity-based loop
+  - [x] Verified build succeeds
+  - [x] Code generation produces no changes
+  - [x] All tests pass (21/21)
 - [ ] **Step 6: Extract Signal Generation**
   - [ ] Create `generate_signal_class` function
   - [ ] Create `generate_all_signal_classes` function
