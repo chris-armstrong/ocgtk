@@ -207,9 +207,102 @@ let generate_enum_files ~output_dir ~generated_stubs ~generated_modules namespac
     generated_modules := (String.capitalize_ascii (namespace.prefix ^ "_enums")) :: !generated_modules;
   end
 
+(* Generate C files and OCaml bindings for boxed records *)
+let generate_all_record_bindings ~ctx ~output_dir ~generated_stubs ~generated_modules records =
+  List.iter ~f:(fun record ->
+    if Gir_gen_lib.Type_mappings.is_boxed_record record then begin
+      let is_value_record = not record.opaque in
+      let constructors =
+        if (not record.Gir_gen_lib.Types.opaque) && (not is_value_record) && record.Gir_gen_lib.Types.constructors = [] then
+          let class_snake = Gir_gen_lib.Utils.to_snake_case record.Gir_gen_lib.Types.record_name in
+          let c_id = "gtk_" ^ class_snake ^ "_new" in
+          [{ Gir_gen_lib.Types.ctor_name = "new";
+             c_identifier = c_id;
+             ctor_parameters = [];
+             ctor_doc = Some ("Allocate a new " ^ record.Gir_gen_lib.Types.record_name ^ " using g_new0");
+             throws = false; }]
+        else
+          record.Gir_gen_lib.Types.constructors
+      in
+      printf "  - %s (record: %d constructors, %d methods)\n"
+        record.Gir_gen_lib.Types.record_name
+        (List.length constructors)
+        (List.length record.Gir_gen_lib.Types.methods);
+
+      (* Generate C stub file *)
+      let stub_name = sprintf "ml_%s_record_gen" (Gir_gen_lib.Utils.to_snake_case record.Gir_gen_lib.Types.record_name) in
+      let c_file = Filename.concat output_dir (stub_name ^ ".c") in
+      let c_code = Gir_gen_lib.Generate.C_stubs.generate_record_c_code
+        ~ctx
+        { record with Gir_gen_lib.Types.constructors = constructors }
+      in
+      write_file ~path:c_file ~content:c_code;
+      generated_stubs := stub_name :: !generated_stubs;
+
+      (* Generate OCaml interface files if the record has bindings *)
+      let has_bindings =
+        (List.length constructors > 0) ||
+        (List.length record.Gir_gen_lib.Types.methods > 0)
+      in
+      if has_bindings then begin
+        let base_type =
+          match Gir_gen_lib.Type_mappings.find_type_mapping_for_gir_type
+              ~ctx
+              { Gir_gen_lib.Types.name = record.Gir_gen_lib.Types.record_name;
+                c_type = record.Gir_gen_lib.Types.c_type ^ "*";
+                nullable = false; } with
+          | Some mapping ->
+            Gir_gen_lib.Type_mappings.qualify_ocaml_type
+              ~gir_type_name:(Some record.Gir_gen_lib.Types.record_name) mapping.ocaml_type
+          | None -> "Obj.t"
+        in
+
+        let ml_file = Filename.concat output_dir
+          (sprintf "%s.mli" (Gir_gen_lib.Utils.to_snake_case record.Gir_gen_lib.Types.record_name)) in
+        write_file ~path:ml_file ~content:(Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
+          ~ctx
+          ~output_mode:Gir_gen_lib.Generate.Ml_interface.Interface
+          ~class_name:record.Gir_gen_lib.Types.record_name
+          ~class_doc:record.Gir_gen_lib.Types.record_doc
+          ~c_type:record.Gir_gen_lib.Types.c_type
+          ~parent_chain:[]
+          ~constructors:(Some constructors)
+          ~methods:record.Gir_gen_lib.Types.methods
+          ~properties:[]
+          ~signals:[]
+          ?c_symbol_prefix:record.Gir_gen_lib.Types.c_symbol_prefix
+          ~record_base_type:base_type
+          ~is_record:true
+          ());
+
+        let ml_impl_file = Filename.concat output_dir
+          (sprintf "%s.ml" (Gir_gen_lib.Utils.to_snake_case record.Gir_gen_lib.Types.record_name)) in
+        write_file ~path:ml_impl_file ~content:(Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
+          ~ctx
+          ~output_mode:Gir_gen_lib.Generate.Ml_interface.Implementation
+          ~class_name:record.Gir_gen_lib.Types.record_name
+          ~class_doc:record.Gir_gen_lib.Types.record_doc
+          ~c_type:record.Gir_gen_lib.Types.c_type
+          ~parent_chain:[]
+          ~constructors:(Some constructors)
+          ~methods:record.Gir_gen_lib.Types.methods
+          ~properties:[]
+          ~signals:[]
+          ?c_symbol_prefix:record.Gir_gen_lib.Types.c_symbol_prefix
+          ~record_base_type:base_type
+          ~is_record:true
+          ());
+
+        generated_modules := (Gir_gen_lib.Utils.module_name_of_class record.Gir_gen_lib.Types.record_name) :: !generated_modules;
+      end
+    end
+  ) records
+
 (* Main generation function *)
 let generate_bindings filter_file gir_file output_dir =
   printf "Parsing %s ...\n" gir_file;
+
+  (* ==== INITIALIZATION ==== *)
 
   (* Track generated C stub files and OCaml modules *)
   let generated_stubs = ref [] in
@@ -225,7 +318,9 @@ let generate_bindings filter_file gir_file output_dir =
     | None -> []
   in
 
-  (* Parse stage: read GIR files *)
+  (* ==== PARSING STAGE ==== *)
+
+  (* Parse GTK GIR file *)
   let (controllers, interfaces, gtk_enums, gtk_bitfields, gtk_records) = Gir_gen_lib.Parse.Gir_parser.parse_gir_file gir_file filter_classes in
 
   printf "Found %d classes\n" (List.length controllers);
@@ -233,6 +328,8 @@ let generate_bindings filter_file gir_file output_dir =
   printf "Found %d Gtk enumerations\n" (List.length gtk_enums);
   printf "Found %d Gtk bitfields\n" (List.length gtk_bitfields);
   printf "Found %d records\n" (List.length gtk_records);
+
+  (* ==== PREPROCESSING STAGE ==== *)
 
   (* Build parent lookup table for inheritance chains *)
   let parent_table = Hashtbl.create (List.length controllers + 10) in
@@ -304,7 +401,7 @@ let generate_bindings filter_file gir_file output_dir =
     (List.map ~f:Gir_gen_lib.Types.entity_of_interface interfaces)
   in
 
-  (* Generate stage: produce output files *)
+  (* Configure forced generation for validation *)
   let forced_widget_classes =
     (* Keep this list small: we overwrite these even if files already exist to validate class_gen output. *)
     ["Button"; "Label"; "Range"]
@@ -315,6 +412,8 @@ let generate_bindings filter_file gir_file output_dir =
     let normalized = class_name |> Gir_gen_lib.Utils.normalize_class_name |> String.lowercase_ascii in
     List.exists forced_widget_classes ~f:(String.equal normalized)
   in
+
+  (* ==== GENERATION STAGE ==== *)
 
   (* Generate common header file *)
   let header_file = Filename.concat output_dir "generated_forward_decls.h" in
@@ -355,97 +454,7 @@ let generate_bindings filter_file gir_file output_dir =
   generate_all_signal_classes ~ctx ~output_dir ~parent_chain_for_class entities;
 
   (* Generate C files and OCaml bindings for boxed records *)
-  List.iter ~f:(fun record ->
-    if Gir_gen_lib.Type_mappings.is_boxed_record record then begin
-      (* let value_record_macros = ["GtkTreeIter"; "GtkTextIter"; "GtkRequisition"; "GtkBorder"] in *)
-      let is_value_record = not record.opaque
-        (* List.mem record.Gir_gen_lib.Types.c_type ~set:value_record_macros
-        || (List.length record.Gir_gen_lib.Types.fields > 0 && List.length record.Gir_gen_lib.Types.constructors = 0) *)
-      in
-      let constructors =
-        if (not record.Gir_gen_lib.Types.opaque) && (not is_value_record) && record.Gir_gen_lib.Types.constructors = [] then
-          let class_snake = Gir_gen_lib.Utils.to_snake_case record.Gir_gen_lib.Types.record_name in
-          let c_id = "gtk_" ^ class_snake ^ "_new" in
-          [{ Gir_gen_lib.Types.ctor_name = "new";
-             c_identifier = c_id;
-             ctor_parameters = [];
-             ctor_doc = Some ("Allocate a new " ^ record.Gir_gen_lib.Types.record_name ^ " using g_new0");
-             throws = false; }]
-        else
-          record.Gir_gen_lib.Types.constructors
-      in
-      printf "  - %s (record: %d constructors, %d methods)\n"
-        record.Gir_gen_lib.Types.record_name
-        (List.length constructors)
-        (List.length record.Gir_gen_lib.Types.methods);
-
-      let stub_name = sprintf "ml_%s_record_gen" (Gir_gen_lib.Utils.to_snake_case record.Gir_gen_lib.Types.record_name) in
-      let c_file = Filename.concat output_dir (stub_name ^ ".c") in
-
-      let c_code = Gir_gen_lib.Generate.C_stubs.generate_record_c_code
-        ~ctx
-        { record with Gir_gen_lib.Types.constructors = constructors }
-      in
-      write_file ~path:c_file ~content:c_code;
-      generated_stubs := stub_name :: !generated_stubs;
-
-      let has_bindings =
-        (List.length constructors > 0) ||
-        (List.length record.Gir_gen_lib.Types.methods > 0)
-      in
-      if has_bindings then begin
-        let base_type =
-          match Gir_gen_lib.Type_mappings.find_type_mapping_for_gir_type
-              ~ctx
-              { Gir_gen_lib.Types.name = record.Gir_gen_lib.Types.record_name;
-                c_type = record.Gir_gen_lib.Types.c_type ^ "*";
-                nullable = false; } with
-          | Some mapping ->
-            Gir_gen_lib.Type_mappings.qualify_ocaml_type
-              ~gir_type_name:(Some record.Gir_gen_lib.Types.record_name) mapping.ocaml_type
-          | None -> "Obj.t"
-        in
-
-        let ml_file = Filename.concat output_dir
-          (sprintf "%s.mli" (Gir_gen_lib.Utils.to_snake_case record.Gir_gen_lib.Types.record_name)) in
-        write_file ~path:ml_file ~content:(Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
-          ~ctx
-          ~output_mode:Gir_gen_lib.Generate.Ml_interface.Interface
-          ~class_name:record.Gir_gen_lib.Types.record_name
-          ~class_doc:record.Gir_gen_lib.Types.record_doc
-          ~c_type:record.Gir_gen_lib.Types.c_type
-          ~parent_chain:[]
-          ~constructors:(Some constructors)
-          ~methods:record.Gir_gen_lib.Types.methods
-          ~properties:[]
-          ~signals:[]
-          ?c_symbol_prefix:record.Gir_gen_lib.Types.c_symbol_prefix
-          ~record_base_type:base_type
-          ~is_record:true
-          ());
-
-        let ml_impl_file = Filename.concat output_dir
-          (sprintf "%s.ml" (Gir_gen_lib.Utils.to_snake_case record.Gir_gen_lib.Types.record_name)) in
-        write_file ~path:ml_impl_file ~content:(Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
-          ~ctx
-          ~output_mode:Gir_gen_lib.Generate.Ml_interface.Implementation
-          ~class_name:record.Gir_gen_lib.Types.record_name
-          ~class_doc:record.Gir_gen_lib.Types.record_doc
-          ~c_type:record.Gir_gen_lib.Types.c_type
-          ~parent_chain:[]
-          ~constructors:(Some constructors)
-          ~methods:record.Gir_gen_lib.Types.methods
-          ~properties:[]
-          ~signals:[]
-          ?c_symbol_prefix:record.Gir_gen_lib.Types.c_symbol_prefix
-          ~record_base_type:base_type
-          ~is_record:true
-          ());
-
-        generated_modules := (Gir_gen_lib.Utils.module_name_of_class record.Gir_gen_lib.Types.record_name) :: !generated_modules;
-      end
-    end
-  ) ctx.records;
+  generate_all_record_bindings ~ctx ~output_dir ~generated_stubs ~generated_modules ctx.records;
 
   (* Generate enum files for external namespaces *)
   List.iter ~f:(fun (ns_name, ns_enums, ns_bitfields) ->
@@ -462,6 +471,8 @@ let generate_bindings filter_file gir_file output_dir =
     } in
     generate_enum_files ~output_dir ~generated_stubs ~generated_modules namespace ns_enums ns_bitfields
   ) external_enums_bitfields;
+
+  (* ==== BUILD CONFIGURATION ==== *)
 
   (* Generate dune file *)
   let dune_file = Filename.concat output_dir "dune-generated.inc" in
@@ -491,6 +502,8 @@ let generate_bindings filter_file gir_file output_dir =
     ~stub_names:stub_list
     ~module_names:module_list in
   write_file ~path:dune_file ~content:dune_content;
+
+  (* ==== SUMMARY ==== *)
 
   let boxed_record_count =
     List.length (List.filter records ~f:Gir_gen_lib.Type_mappings.is_boxed_record)

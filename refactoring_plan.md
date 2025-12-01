@@ -73,8 +73,13 @@
   - [x] Verified build succeeds
   - [x] Code generation produces cleaner output (simpler C headers without unnecessary includes)
   - [x] All tests pass (21/21)
-- [ ] **Step 8: Restructure Main Function**
-  - [ ] Simplify main function to high-level orchestration
+- [x] **Step 8: Restructure Main Function**
+  - [x] Extract `generate_all_record_bindings` function for boxed record generation
+  - [x] Add clear section comments to main function (INITIALIZATION, PARSING STAGE, PREPROCESSING STAGE, GENERATION STAGE, BUILD CONFIGURATION, SUMMARY)
+  - [x] Main function now reads as high-level orchestration with clear flow
+  - [x] Verified build succeeds
+  - [x] Code generation produces no changes
+  - [x] All tests pass (21/21)
 - [ ] **Step 9: Split into Modules (Optional)**
   - [ ] Create generation/ subdirectory
   - [ ] Move helper functions to separate modules
