@@ -42,10 +42,15 @@
   - [x] Verified build succeeds
   - [x] Code generation produces no changes
   - [x] All tests pass (21/21)
-- [ ] **Step 4: Extract ML Interface Generation**
-  - [ ] Create `generate_ml_file` function
-  - [ ] Create `generate_ml_interfaces` function
-  - [ ] Replace duplicate ML generation loops
+- [x] **Step 4: Extract ML Interface Generation**
+  - [x] Create `output_file_kind` type (line 47 in main.ml)
+  - [x] Create `generate_ml_file` function (lines 50-72 in main.ml)
+  - [x] Create `generate_ml_interfaces` function (lines 75-79 in main.ml)
+  - [x] Replace duplicate ML generation loops with unified entity-based loop (lines 222-225)
+  - [x] Removed duplicate interface loop (previously lines 281-315)
+  - [x] Verified build succeeds
+  - [x] Code generation produces no changes
+  - [x] All tests pass (21/21)
 - [ ] **Step 5: Extract High-Level Class Generation**
   - [ ] Extract `should_generate_high_level_class` function
   - [ ] Extract `generate_high_level_class` function

@@ -43,6 +43,41 @@ let generate_c_stub ~ctx ~output_dir ~generated_stubs ~generated_modules entity 
 let generate_all_c_stubs ~ctx ~output_dir ~generated_stubs ~generated_modules entities =
   List.iter ~f:(generate_c_stub ~ctx ~output_dir ~generated_stubs ~generated_modules) entities
 
+(* Output file kind for ML generation *)
+type output_file_kind = Interface | Implementation
+
+(* Generate a single ML file (interface or implementation) for an entity *)
+let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain entity =
+  let ext = match kind with Interface -> ".mli" | Implementation -> ".ml" in
+  let ml_file = Filename.concat output_dir
+    (sprintf "%s%s" (Gir_gen_lib.Utils.to_snake_case entity.Gir_gen_lib.Types.name) ext) in
+
+  let output_mode = match kind with
+    | Interface -> Gir_gen_lib.Generate.Ml_interface.Interface
+    | Implementation -> Gir_gen_lib.Generate.Ml_interface.Implementation in
+
+  let content = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
+    ~ctx
+    ~output_mode
+    ~class_name:entity.Gir_gen_lib.Types.name
+    ~class_doc:entity.Gir_gen_lib.Types.doc
+    ~c_type:entity.Gir_gen_lib.Types.c_type
+    ~parent_chain
+    ~constructors:(if List.length entity.Gir_gen_lib.Types.constructors > 0 then Some entity.Gir_gen_lib.Types.constructors else None)
+    ~methods:entity.Gir_gen_lib.Types.methods
+    ~properties:entity.Gir_gen_lib.Types.properties
+    ~signals:entity.Gir_gen_lib.Types.signals
+    () in
+
+  write_file ~path:ml_file ~content
+
+(* Generate both .mli and .ml files for an entity *)
+let generate_ml_interfaces ~ctx ~output_dir ~parent_chain entity =
+  if not (Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name) then begin
+    generate_ml_file ~ctx ~output_dir ~kind:Interface ~parent_chain entity;
+    generate_ml_file ~ctx ~output_dir ~kind:Implementation ~parent_chain entity
+  end
+
 (* Main generation function *)
 let generate_bindings filter_file gir_file output_dir =
   printf "Parsing %s ...\n" gir_file;
@@ -183,40 +218,16 @@ let generate_bindings filter_file gir_file output_dir =
   (* Generate C files for all entities (classes and interfaces) *)
   generate_all_c_stubs ~ctx ~output_dir ~generated_stubs ~generated_modules entities;
 
-  (* Generate OCaml interface files for classes *)
+  (* Generate OCaml interface files for all entities *)
+  List.iter ~f:(fun entity ->
+    let parent_chain = parent_chain_for_class entity.Gir_gen_lib.Types.name in
+    generate_ml_interfaces ~ctx ~output_dir ~parent_chain entity
+  ) entities;
+
+  (* Generate high-level wrapper classes for classes with Widget parent *)
   List.iter ~f:(fun cls ->
     if not (Gir_gen_lib.Exclude_list.should_skip_class cls.Gir_gen_lib.Types.class_name) then begin
       let parent_chain = parent_chain_for_class cls.Gir_gen_lib.Types.class_name in
-      let ml_file = Filename.concat output_dir
-        (sprintf "%s.mli" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.class_name)) in
-      write_file ~path:ml_file ~content:(Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
-        ~ctx
-        ~output_mode:Gir_gen_lib.Generate.Ml_interface.Interface
-        ~class_name:cls.Gir_gen_lib.Types.class_name
-        ~class_doc:cls.Gir_gen_lib.Types.class_doc
-        ~c_type:cls.Gir_gen_lib.Types.c_type
-        ~parent_chain
-        ~constructors:(Some cls.Gir_gen_lib.Types.constructors)
-        ~methods:cls.Gir_gen_lib.Types.methods
-        ~properties:cls.Gir_gen_lib.Types.properties
-        ~signals:cls.Gir_gen_lib.Types.signals
-        ());
-
-      let ml_impl_file = Filename.concat output_dir
-        (sprintf "%s.ml" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.class_name)) in
-      write_file ~path:ml_impl_file ~content:(Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
-        ~ctx
-        ~output_mode:Gir_gen_lib.Generate.Ml_interface.Implementation
-        ~class_name:cls.Gir_gen_lib.Types.class_name
-        ~class_doc:cls.Gir_gen_lib.Types.class_doc
-        ~c_type:cls.Gir_gen_lib.Types.c_type
-        ~parent_chain
-        ~constructors:(Some cls.Gir_gen_lib.Types.constructors)
-        ~methods:cls.Gir_gen_lib.Types.methods
-        ~properties:cls.Gir_gen_lib.Types.properties
-        ~signals:cls.Gir_gen_lib.Types.signals
-        ());
-
       (* Generate high-level wrapper class (g<Widget>.ml) *)
       let has_widget_parent =
         String.lowercase_ascii (Gir_gen_lib.Utils.normalize_class_name cls.Gir_gen_lib.Types.class_name) = "widget" ||
@@ -266,42 +277,6 @@ let generate_bindings filter_file gir_file output_dir =
       end;
     end
   ) ctx.classes;
-
-  (* Generate OCaml interface files for interfaces *)
-  List.iter ~f:(fun cls ->
-    if not (Gir_gen_lib.Exclude_list.should_skip_class cls.Gir_gen_lib.Types.interface_name) then begin
-      let parent_chain = parent_chain_for_class cls.Gir_gen_lib.Types.interface_name in
-      let ml_file = Filename.concat output_dir
-        (sprintf "%s.mli" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.interface_name)) in
-      write_file ~path:ml_file ~content:(Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
-        ~ctx
-        ~output_mode:Gir_gen_lib.Generate.Ml_interface.Interface
-        ~class_name:cls.Gir_gen_lib.Types.interface_name
-        ~class_doc:cls.Gir_gen_lib.Types.interface_doc
-        ~c_type:cls.Gir_gen_lib.Types.c_type
-        ~parent_chain
-        ~constructors:None
-        ~methods:cls.Gir_gen_lib.Types.methods
-        ~properties:cls.Gir_gen_lib.Types.properties
-        ~signals:cls.Gir_gen_lib.Types.signals
-        ());
-
-      let ml_impl_file = Filename.concat output_dir
-        (sprintf "%s.ml" (Gir_gen_lib.Utils.to_snake_case cls.Gir_gen_lib.Types.interface_name)) in
-      write_file ~path:ml_impl_file ~content:(Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
-        ~ctx
-        ~output_mode:Gir_gen_lib.Generate.Ml_interface.Implementation
-        ~class_name:cls.Gir_gen_lib.Types.interface_name
-        ~class_doc:cls.Gir_gen_lib.Types.interface_doc
-        ~c_type:cls.Gir_gen_lib.Types.c_type
-        ~parent_chain
-        ~constructors:None
-        ~methods:cls.Gir_gen_lib.Types.methods
-        ~properties:cls.Gir_gen_lib.Types.properties
-        ~signals:cls.Gir_gen_lib.Types.signals
-        ());
-    end
-  ) ctx.interfaces;
 
   (* Generate signal classes for ALL classes (controllers and interfaces) *)
   printf "\nGenerating signal classes...\n";
