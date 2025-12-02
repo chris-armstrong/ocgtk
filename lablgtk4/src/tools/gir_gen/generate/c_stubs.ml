@@ -43,6 +43,17 @@ let emit_enum_proto buf ~namespace (enum : gir_enum) =
   bprintf buf "%s %s%s_val(value val);\n" enum.enum_c_type namespace enum.enum_name
 
 let emit_bitfield_proto buf ~namespace (bitfield : gir_bitfield) =
+  (* Special case: GdkPixbufFormatFlags is in GIR but marked skip in C headers *)
+  if bitfield.bitfield_c_type = "GdkPixbufFormatFlags" then begin
+    bprintf buf "/* GdkPixbufFormatFlags is in GIR but marked skip in C headers */\n";
+    bprintf buf "#ifndef GDK_PIXBUF_FORMAT_WRITABLE\n";
+    bprintf buf "typedef enum {\n";
+    List.iter ~f:(fun flag ->
+      bprintf buf "  %s = %d,\n" flag.flag_c_identifier flag.flag_value;
+    ) bitfield.flags;
+    bprintf buf "} GdkPixbufFormatFlags;\n";
+    bprintf buf "#endif\n";
+  end;
   bprintf buf "value Val_%s%s(%s flags);\n" namespace bitfield.bitfield_name bitfield.bitfield_c_type;
   bprintf buf "%s %s%s_val(value list);\n" bitfield.bitfield_c_type namespace bitfield.bitfield_name
 
@@ -241,6 +252,8 @@ let generate_forward_decls_header ~classes ~gtk_enums ~gtk_bitfields ~external_e
   Buffer.add_string buf "#define _gtk4_generated_forward_decls_\n";
   Buffer.add_string buf "\n";
   Buffer.add_string buf "#include <gtk/gtk.h>\n";
+  Buffer.add_string buf "#include <gdk-pixbuf/gdk-pixbuf.h>\n";
+  Buffer.add_string buf "#include <graphene.h>\n";
   Buffer.add_string buf "#include <caml/mlvalues.h>\n";
   Buffer.add_string buf "\n";
 

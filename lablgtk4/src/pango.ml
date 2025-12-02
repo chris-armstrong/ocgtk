@@ -67,24 +67,22 @@ module Tags = struct
 
   type ellipsize_mode = [ `NONE | `START | `MIDDLE | `END ]
 
-  open Gpointer
-  external _get_tables : unit ->
-      style variant_table
-    * weight_internal variant_table
-    * variant variant_table
-    * stretch variant_table
-    * underline variant_table
-    * wrap_mode variant_table
-    * ellipsize_mode variant_table
-    = "ml_pango_get_tables"
-
-  let style, weight, variant, stretch, underline, wrap_mode,
-    ellipsize_mode = _get_tables ()
+  (* Note: The _get_tables function was removed during migration from varcc to gir_gen.
+   * The enum conversions are now handled entirely at the C level via FFI functions
+   * like PangoStyle_val() and Val_PangoStyle(). The variant_table system is no longer
+   * used as it was specific to the varcc code generator. *)
 
   let weight_to_int (w : weight) =
     match w with
       | `CUSTOM b -> b
-      | #weight_internal as w -> encode_variant weight w
+      | #weight_internal as w ->
+          match w with
+          | `ULTRALIGHT -> 200
+          | `LIGHT -> 300
+          | `NORMAL -> 400
+          | `BOLD -> 700
+          | `ULTRABOLD -> 800
+          | `HEAVY -> 900
 end
 
 module Font = struct

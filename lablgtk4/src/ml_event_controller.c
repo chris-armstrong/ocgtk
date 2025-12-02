@@ -18,7 +18,7 @@
 
 #include "wrappers.h"
 #include "ml_gobject.h"
-#include "gdk4_tags.h"
+#include "generated_forward_decls.h"
 
 /* ==================================================================== */
 /* Event Controller Type Conversions */
@@ -165,7 +165,7 @@ static gboolean key_pressed_callback_wrapper(
     value *ocaml_callback = (value*)user_data;
 
     /* Convert modifier state to OCaml list */
-    state_val = Val_gdk4_modifier_type(state);
+    state_val = Val_GdkModifierType(state);
 
     /* Call OCaml callback with keyval, keycode, state */
     result = caml_callback3_exn(*ocaml_callback,
@@ -221,7 +221,7 @@ static void key_released_callback_wrapper(
     value *ocaml_callback = (value*)user_data;
 
     /* Convert modifier state to OCaml list */
-    state_val = Val_gdk4_modifier_type(state);
+    state_val = Val_GdkModifierType(state);
 
     /* Call OCaml callback */
     result = caml_callback3_exn(*ocaml_callback,
@@ -270,7 +270,7 @@ static gboolean modifiers_callback_wrapper(
     value *ocaml_callback = (value*)user_data;
 
     /* Convert modifier state to OCaml list */
-    state_val = Val_gdk4_modifier_type(state);
+    state_val = Val_GdkModifierType(state);
 
     result = caml_callback_exn(*ocaml_callback, state_val);
 

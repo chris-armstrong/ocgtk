@@ -353,6 +353,9 @@ let generate_bindings filter_file gir_file output_dir =
   let external_namespaces = [
     ("Gdk", "/usr/share/gir-1.0/Gdk-4.0.gir");
     ("Pango", "/usr/share/gir-1.0/Pango-1.0.gir");
+    ("GdkPixbuf", "/usr/share/gir-1.0/GdkPixbuf-2.0.gir");
+    ("Gsk", "/usr/share/gir-1.0/Gsk-4.0.gir");
+    ("Graphene", "/usr/share/gir-1.0/Graphene-1.0.gir");
   ] in
 
   let external_enums_bitfields = List.map ~f:(fun (ns_name, gir_path) ->
@@ -462,6 +465,9 @@ let generate_bindings filter_file gir_file output_dir =
     let include_header =
       if ns_lower = "gdk" then "#include <gdk/gdk.h>"
       else if ns_lower = "pango" then "#include <pango/pango.h>"
+      else if ns_lower = "gdkpixbuf" then "#include <gdk-pixbuf/gdk-pixbuf.h>"
+      else if ns_lower = "gsk" then "#include <gsk/gsk.h>"
+      else if ns_lower = "graphene" then "#include <graphene.h>"
       else sprintf "#include <%s/%s.h>" ns_lower ns_lower
     in
     let namespace = {
@@ -484,7 +490,9 @@ let generate_bindings filter_file gir_file output_dir =
     "eventController"; "eventControllerKey"; "eventControllerMotion"; "gestureClick";
     "gObj"; "gBox"; "gGrid"; "gFixed"; "gPaned"; "gNotebook"; "gStack"; "gWindow";
     "gScrolledWindow"; "gFrame"; "gPack"; "gMain";
-    "Gtk4Enums"; "Gdk4Enums"; "GlibEnums"; "pangoEnums"; "GobjectEnums";
+    (* OLD varcc enum modules - REMOVED during migration *)
+    (* "Gtk4Enums"; "Gdk4Enums"; "GlibEnums"; "pangoEnums"; "GobjectEnums"; *)
+    (* NEW gir_gen enum modules - using lowercase_with_underscore convention *)
     "gtk_enums"; "gdk_enums"; "pango_enums"; "gtkButton"; "gtkCheckButton";
     "gtkToggleButton"; "gButton"; "gRange"; "entry"; "search_entry"; "password_entry";
     "spin_button"; "label"; "image"; "link_button"; "menu_button"; "switch";

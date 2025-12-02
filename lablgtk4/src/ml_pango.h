@@ -14,7 +14,7 @@
 #ifndef _ML_PANGO_H_
 #define _ML_PANGO_H_
 
-#include "pango_tags.h"
+#include "generated_forward_decls.h"
 
 /* Val_PangoRectangle is exported for use in layout functions */
 CAMLexport value Val_PangoRectangle(PangoRectangle *rect);

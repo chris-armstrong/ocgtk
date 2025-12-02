@@ -157,10 +157,10 @@
       (echo "G_l_area")
       (echo "Gaux")
       (echo "Gdk")
-      (echo "Gdk4Enums")
       (echo "GdkClipboard")
       (echo "GdkPixbuf")
       (echo "Gdk_enums")
+      (echo "Gdkpixbuf_enums")
       (echo "Gesture")
       (echo "GestureClick")
       (echo "Gesture_click")
@@ -173,18 +173,17 @@
       (echo "Gesture_swipe")
       (echo "Gesture_zoom")
       (echo "Glib")
-      (echo "GlibEnums")
       (echo "Gobject")
-      (echo "GobjectEnums")
       (echo "Gpointer")
       (echo "Graphene")
+      (echo "Graphene_enums")
       (echo "Graphics_offload")
       (echo "Grid")
       (echo "Grid_layout")
       (echo "Grid_layout_child")
       (echo "Grid_view")
+      (echo "Gsk_enums")
       (echo "Gtk")
-      (echo "Gtk4Enums")
       (echo "GtkButton")
       (echo "GtkCheckButton")
       (echo "GtkSnapshot")
@@ -245,7 +244,6 @@
       (echo "Page_setup")
       (echo "Paned")
       (echo "Pango")
-      (echo "PangoEnums")
       (echo "Pango_enums")
       (echo "Paper_size")
       (echo "Param_spec_expression")
@@ -490,6 +488,7 @@
    ml_font_dialog_gen
    ml_g_l_area_gen
    ml_gdk_enums_gen
+   ml_gdkpixbuf_enums_gen
    ml_gesture_click_gen
    ml_gesture_drag_gen
    ml_gesture_gen
@@ -500,10 +499,12 @@
    ml_gesture_stylus_gen
    ml_gesture_swipe_gen
    ml_gesture_zoom_gen
+   ml_graphene_enums_gen
    ml_graphics_offload_gen
    ml_grid_layout_child_gen
    ml_grid_layout_gen
    ml_grid_view_gen
+   ml_gsk_enums_gen
    ml_gtk_enums_gen
    ml_header_bar_gen
    ml_i_m_context_gen
