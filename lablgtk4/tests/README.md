@@ -42,7 +42,7 @@ The test suite is organized into the following test files:
 ### Run All Tests (Recommended)
 
 ```bash
-./run_tests.sh
+xvfb-run dune runtest
 ```
 
 ## CI Integration
@@ -50,7 +50,7 @@ The test suite is organized into the following test files:
 Tests are run automatically on every push and pull request via GitHub Actions. See `.github/workflows/ci.yml` for the full CI configuration.
 
 The CI runs tests on:
-- OCaml versions: 4.14.x, 5.1.x, 5.2.x
+- OCaml versions: 5.3.x,5.4.x
 - OS: Ubuntu Latest
 - GTK version: 4.10+
 
