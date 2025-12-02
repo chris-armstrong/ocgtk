@@ -33,7 +33,7 @@
 #include <caml/custom.h>
 
 #include "wrappers.h"
-#include "gobject_tags.h"
+#include "generated_forward_decls.h"
 
 /* ==================================================================== */
 /* GObject Reference Counting */

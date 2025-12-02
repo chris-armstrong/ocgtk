@@ -20,12 +20,13 @@
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/custom.h>
+#include <caml/hash.h>
 
 #include "wrappers.h"
 #include "ml_glib.h"
 #include "ml_gobject.h"
 #include "ml_pango.h"
-#include "pango_tags.h"
+#include "generated_forward_decls.h"
 
 
 /* ========================================================================= */
@@ -86,14 +87,14 @@ ML_1(pango_font_description_copy, PangoFontDescription_val, Val_PangoFontDescrip
 ML_1(pango_font_description_to_string, PangoFontDescription_val, copy_string_g_free)
 ML_2(pango_font_description_set_family, PangoFontDescription_val, String_val, Unit)
 ML_1(pango_font_description_get_family, PangoFontDescription_val, caml_copy_string)
-ML_2(pango_font_description_set_style, PangoFontDescription_val, Pango_style_val, Unit)
-ML_1(pango_font_description_get_style, PangoFontDescription_val, Val_pango_style)
-ML_2(pango_font_description_set_variant, PangoFontDescription_val, Pango_variant_val, Unit)
-ML_1(pango_font_description_get_variant, PangoFontDescription_val, Val_pango_variant)
+ML_2(pango_font_description_set_style, PangoFontDescription_val, PangoStyle_val, Unit)
+ML_1(pango_font_description_get_style, PangoFontDescription_val, Val_PangoStyle)
+ML_2(pango_font_description_set_variant, PangoFontDescription_val, PangoVariant_val, Unit)
+ML_1(pango_font_description_get_variant, PangoFontDescription_val, Val_PangoVariant)
 ML_2(pango_font_description_set_weight, PangoFontDescription_val, Int_val, Unit)
 ML_1(pango_font_description_get_weight, PangoFontDescription_val, Val_int)
-ML_2(pango_font_description_set_stretch, PangoFontDescription_val, Pango_stretch_val, Unit)
-ML_1(pango_font_description_get_stretch, PangoFontDescription_val, Val_pango_stretch)
+ML_2(pango_font_description_set_stretch, PangoFontDescription_val, PangoStretch_val, Unit)
+ML_1(pango_font_description_get_stretch, PangoFontDescription_val, Val_PangoStretch)
 ML_2(pango_font_description_set_size, PangoFontDescription_val, Int_val, Unit)
 ML_1(pango_font_description_get_size, PangoFontDescription_val, Val_int)
 ML_2(pango_font_description_set_absolute_size, PangoFontDescription_val, Double_val, Unit)
@@ -173,24 +174,40 @@ CAMLprim value ml_PANGO_SCALE(value unit)
 
 /* This one uses the generated MLTAG but not the conversion functions because
    we have defined float values */
+/* Variant hash values for Pango.scale constants */
+#define MLTAG_XX_SMALL  caml_hash_variant("XX_SMALL")
+#define MLTAG_X_SMALL   caml_hash_variant("X_SMALL")
+#define MLTAG_SMALL     caml_hash_variant("SMALL")
+#define MLTAG_MEDIUM    caml_hash_variant("MEDIUM")
+#define MLTAG_LARGE     caml_hash_variant("LARGE")
+#define MLTAG_X_LARGE   caml_hash_variant("X_LARGE")
+#define MLTAG_XX_LARGE  caml_hash_variant("XX_LARGE")
+
 CAMLprim value ml_Pango_scale_val(value val)
 {
   CAMLparam1(val);
   double r;
   if (Is_block(val)) CAMLreturn(Field(val,1)); /* `CUSTOM */
-  switch((long)val)
-    {
-    case (long)MLTAG_XX_SMALL: r = PANGO_SCALE_XX_SMALL; break;
-    case (long)MLTAG_X_SMALL:  r = PANGO_SCALE_X_SMALL; break;
-    case (long)MLTAG_SMALL:    r = PANGO_SCALE_SMALL; break;
-    case (long)MLTAG_MEDIUM:   r = PANGO_SCALE_MEDIUM; break;
-    case (long)MLTAG_LARGE:    r = PANGO_SCALE_LARGE; break;
-    case (long)MLTAG_X_LARGE:  r = PANGO_SCALE_X_LARGE; break;
-    case (long)MLTAG_XX_LARGE: r = PANGO_SCALE_XX_LARGE; break;
-    default: printf("Bug in ml_PangoScale_val. Please report");
-      r=1;
-      break;
-    }
+
+  /* Use if-else since variant hashes are not compile-time constants */
+  if (val == MLTAG_XX_SMALL) {
+    r = PANGO_SCALE_XX_SMALL;
+  } else if (val == MLTAG_X_SMALL) {
+    r = PANGO_SCALE_X_SMALL;
+  } else if (val == MLTAG_SMALL) {
+    r = PANGO_SCALE_SMALL;
+  } else if (val == MLTAG_MEDIUM) {
+    r = PANGO_SCALE_MEDIUM;
+  } else if (val == MLTAG_LARGE) {
+    r = PANGO_SCALE_LARGE;
+  } else if (val == MLTAG_X_LARGE) {
+    r = PANGO_SCALE_X_LARGE;
+  } else if (val == MLTAG_XX_LARGE) {
+    r = PANGO_SCALE_XX_LARGE;
+  } else {
+    printf("Bug in ml_PangoScale_val. Please report");
+    r = 1;
+  }
   CAMLreturn(caml_copy_double(r));
 }
 
@@ -283,8 +300,8 @@ ML_2(pango_layout_set_font_description, PangoLayout_val, PangoFontDescription_va
 ML_1(pango_layout_get_font_description, PangoLayout_val, Val_PangoFontDescription)
 ML_2(pango_layout_set_width, PangoLayout_val, Int_val, Unit)
 ML_1(pango_layout_get_width, PangoLayout_val, Val_int)
-ML_2(pango_layout_set_wrap, PangoLayout_val, Pango_wrap_mode_val, Unit)
-ML_1(pango_layout_get_wrap, PangoLayout_val, Val_pango_wrap_mode)
+ML_2(pango_layout_set_wrap, PangoLayout_val, PangoWrapMode_val, Unit)
+ML_1(pango_layout_get_wrap, PangoLayout_val, Val_PangoWrapMode)
 ML_2(pango_layout_set_indent, PangoLayout_val, Int_val, Unit)
 ML_1(pango_layout_get_indent, PangoLayout_val, Val_int)
 ML_2(pango_layout_set_spacing, PangoLayout_val, Int_val, Unit)
@@ -388,5 +405,5 @@ CAMLprim value ml_pango_layout_get_pixel_extent(value layout_val)
   CAMLreturn(Val_PangoRectangle(&ink));
 }
 
-ML_1(pango_layout_get_ellipsize, PangoLayout_val, Val_pango_ellipsize_mode)
-ML_2(pango_layout_set_ellipsize, PangoLayout_val, Pango_ellipsize_mode_val, Unit)
+ML_1(pango_layout_get_ellipsize, PangoLayout_val, Val_PangoEllipsizeMode)
+ML_2(pango_layout_set_ellipsize, PangoLayout_val, PangoEllipsizeMode_val, Unit)
