@@ -17,6 +17,13 @@ let generate_ocaml_enum enum =
 
   List.iteri ~f:(fun i member ->
     let variant_name = String.uppercase_ascii member.member_name in
+    (* Prefix variant names that start with a digit *)
+    let variant_name =
+      if String.length variant_name > 0 && variant_name.[0] >= '0' && variant_name.[0] <= '9' then
+        "V" ^ variant_name
+      else
+        variant_name
+    in
     (match member.member_doc with
     | Some doc -> bprintf buf "  (** %s *)\n" doc
     | None -> ());
@@ -43,6 +50,13 @@ let generate_ocaml_bitfield bitfield =
 
   List.iteri ~f:(fun i flag ->
     let variant_name = String.uppercase_ascii flag.flag_name in
+    (* Prefix variant names that start with a digit *)
+    let variant_name =
+      if String.length variant_name > 0 && variant_name.[0] >= '0' && variant_name.[0] <= '9' then
+        "V" ^ variant_name
+      else
+        variant_name
+    in
     (match flag.flag_doc with
     | Some doc -> bprintf buf "  (** %s *)\n" doc
     | None -> ());
@@ -78,6 +92,13 @@ let generate_c_enum_converters ~namespace enum =
       if not (Hashtbl.mem seen_values enum_member.member_value) then begin
         Hashtbl.add seen_values enum_member.member_value true;
         let variant_name = String.uppercase_ascii enum_member.member_name in
+        (* Prefix variant names that start with a digit *)
+        let variant_name =
+          if String.length variant_name > 0 && variant_name.[0] >= '0' && variant_name.[0] <= '9' then
+            "V" ^ variant_name
+          else
+            variant_name
+        in
         bprintf buf "    case %s: return caml_hash_variant(\"%s\"); /* `%s */\n"
           enum_member.c_identifier variant_name variant_name;
       end
@@ -98,6 +119,13 @@ let generate_c_enum_converters ~namespace enum =
 
     List.iteri ~f:(fun i enum_member ->
       let variant_name = String.uppercase_ascii enum_member.member_name in
+      (* Prefix variant names that start with a digit *)
+      let variant_name =
+        if String.length variant_name > 0 && variant_name.[0] >= '0' && variant_name.[0] <= '9' then
+          "V" ^ variant_name
+        else
+          variant_name
+      in
       bprintf buf "  %sif (val == caml_hash_variant(\"%s\")) return %s; /* `%s */\n"
         (if i = 0 then "" else "else ") variant_name enum_member.c_identifier variant_name;
     ) enum.members;
@@ -122,6 +150,18 @@ let generate_c_bitfield_converters ~namespace bitfield =
     let val_func = sprintf "Val_%s%s" namespace bitfield.bitfield_name in
     let c_val_func = sprintf "%s%s_val" namespace bitfield.bitfield_name in
 
+    (* Special case: GdkPixbufFormatFlags is in GIR but marked skip in C headers *)
+    if bitfield.bitfield_c_type = "GdkPixbufFormatFlags" then begin
+      bprintf buf "/* GdkPixbufFormatFlags is in GIR but marked skip in C headers */\n";
+      bprintf buf "#ifndef GDK_PIXBUF_FORMAT_WRITABLE\n";
+      bprintf buf "typedef enum {\n";
+      List.iter ~f:(fun flag ->
+        bprintf buf "  %s = %d,\n" flag.flag_c_identifier flag.flag_value;
+      ) bitfield.flags;
+      bprintf buf "} GdkPixbufFormatFlags;\n";
+      bprintf buf "#endif\n\n";
+    end;
+
     (* Generate C to OCaml converter (int flags -> list of variants) *)
     bprintf buf "/* Convert %s to OCaml flag list */\n" bitfield.bitfield_c_type;
     bprintf buf "value %s(%s flags) {\n" val_func bitfield.bitfield_c_type;
@@ -132,6 +172,13 @@ let generate_c_bitfield_converters ~namespace bitfield =
     (* Check each flag bit and add to list if set *)
     List.iter ~f:(fun flag ->
       let variant_name = String.uppercase_ascii flag.flag_name in
+      (* Prefix variant names that start with a digit *)
+      let variant_name =
+        if String.length variant_name > 0 && variant_name.[0] >= '0' && variant_name.[0] <= '9' then
+          "V" ^ variant_name
+        else
+          variant_name
+      in
       bprintf buf "  if (flags & %s) {\n" flag.flag_c_identifier;
       bprintf buf "    cons = caml_alloc(2, 0);\n";
       bprintf buf "    Store_field(cons, 0, Val_int(caml_hash_variant(\"%s\"))); /* `%s */\n" variant_name variant_name;
@@ -152,6 +199,13 @@ let generate_c_bitfield_converters ~namespace bitfield =
 
     List.iteri ~f:(fun i flag ->
       let variant_name = String.uppercase_ascii flag.flag_name in
+      (* Prefix variant names that start with a digit *)
+      let variant_name =
+        if String.length variant_name > 0 && variant_name.[0] >= '0' && variant_name.[0] <= '9' then
+          "V" ^ variant_name
+        else
+          variant_name
+      in
       bprintf buf "    %sif (tag == caml_hash_variant(\"%s\")) result |= %s; /* `%s */\n"
         (if i = 0 then "" else "else ") variant_name flag.flag_c_identifier variant_name;
     ) bitfield.flags;

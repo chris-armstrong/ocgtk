@@ -16,6 +16,8 @@
 #define _gtk4_generated_forward_decls_
 
 #include <gtk/gtk.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <graphene.h>
 #include <caml/mlvalues.h>
 
 /* Type conversions - use direct cast (GObjects) */
@@ -2235,6 +2237,46 @@ value Val_PangoWeight(PangoWeight val);
 PangoWeight PangoWeight_val(value val);
 value Val_PangoWrapMode(PangoWrapMode val);
 PangoWrapMode PangoWrapMode_val(value val);
+value Val_GdkPixbufColorspace(GdkColorspace val);
+GdkColorspace GdkPixbufColorspace_val(value val);
+value Val_GdkPixbufInterpType(GdkInterpType val);
+GdkInterpType GdkPixbufInterpType_val(value val);
+value Val_GdkPixbufPixbufAlphaMode(GdkPixbufAlphaMode val);
+GdkPixbufAlphaMode GdkPixbufPixbufAlphaMode_val(value val);
+value Val_GdkPixbufPixbufError(GdkPixbufError val);
+GdkPixbufError GdkPixbufPixbufError_val(value val);
+value Val_GdkPixbufPixbufRotation(GdkPixbufRotation val);
+GdkPixbufRotation GdkPixbufPixbufRotation_val(value val);
+value Val_GskBlendMode(GskBlendMode val);
+GskBlendMode GskBlendMode_val(value val);
+value Val_GskCorner(GskCorner val);
+GskCorner GskCorner_val(value val);
+value Val_GskFillRule(GskFillRule val);
+GskFillRule GskFillRule_val(value val);
+value Val_GskGLUniformType(GskGLUniformType val);
+GskGLUniformType GskGLUniformType_val(value val);
+value Val_GskLineCap(GskLineCap val);
+GskLineCap GskLineCap_val(value val);
+value Val_GskLineJoin(GskLineJoin val);
+GskLineJoin GskLineJoin_val(value val);
+value Val_GskMaskMode(GskMaskMode val);
+GskMaskMode GskMaskMode_val(value val);
+value Val_GskPathDirection(GskPathDirection val);
+GskPathDirection GskPathDirection_val(value val);
+value Val_GskPathOperation(GskPathOperation val);
+GskPathOperation GskPathOperation_val(value val);
+value Val_GskRenderNodeType(GskRenderNodeType val);
+GskRenderNodeType GskRenderNodeType_val(value val);
+value Val_GskScalingFilter(GskScalingFilter val);
+GskScalingFilter GskScalingFilter_val(value val);
+value Val_GskSerializationError(GskSerializationError val);
+GskSerializationError GskSerializationError_val(value val);
+value Val_GskTransformCategory(GskTransformCategory val);
+GskTransformCategory GskTransformCategory_val(value val);
+value Val_GrapheneEulerOrder(graphene_euler_order_t val);
+graphene_euler_order_t GrapheneEulerOrder_val(value val);
+value Val_GrapheneRayIntersectionKind(graphene_ray_intersection_kind_t val);
+graphene_ray_intersection_kind_t GrapheneRayIntersectionKind_val(value val);
 
 value Val_GdkAnchorHints(GdkAnchorHints flags);
 GdkAnchorHints GdkAnchorHints_val(value list);
@@ -2264,5 +2306,17 @@ value Val_PangoShapeFlags(PangoShapeFlags flags);
 PangoShapeFlags PangoShapeFlags_val(value list);
 value Val_PangoShowFlags(PangoShowFlags flags);
 PangoShowFlags PangoShowFlags_val(value list);
+/* GdkPixbufFormatFlags is in GIR but marked skip in C headers */
+#ifndef GDK_PIXBUF_FORMAT_WRITABLE
+typedef enum {
+  GDK_PIXBUF_FORMAT_WRITABLE = 1,
+  GDK_PIXBUF_FORMAT_SCALABLE = 2,
+  GDK_PIXBUF_FORMAT_THREADSAFE = 4,
+} GdkPixbufFormatFlags;
+#endif
+value Val_GdkPixbufPixbufFormatFlags(GdkPixbufFormatFlags flags);
+GdkPixbufFormatFlags GdkPixbufPixbufFormatFlags_val(value list);
+value Val_GskPathForeachFlags(GskPathForeachFlags flags);
+GskPathForeachFlags GskPathForeachFlags_val(value list);
 
 #endif /* _gtk4_generated_forward_decls_ */
