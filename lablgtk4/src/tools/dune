@@ -2,28 +2,9 @@
 ; Code generation tools for GTK4 bindings                                 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-; Generate varcc.ml from varcc.ml4 using camlp5
-; Use wrapper script to handle both old (o_keywords.cmo) and new (pa_o.cmo) camlp5 versions
-(rule
- (targets varcc.ml)
- (deps (:source varcc.ml4) (:script camlp5_convert.sh))
- (mode promote)
- (action (bash "bash %{script} %{source} %{targets}")))
-
-; Generate propcc.ml from propcc.ml4 using camlp5
-; Use wrapper script to handle both old (o_keywords.cmo) and new (pa_o.cmo) camlp5 versions
-(rule
- (targets propcc.ml)
- (deps (:source propcc.ml4) (:script camlp5_convert.sh))
- (mode promote)
- (action (bash "bash %{script} %{source} %{targets}")))
-
-; Build the code generation executables
-(executables
- (names varcc propcc)
- (modules varcc propcc)
- (libraries camlp-streams)
- (flags (:standard -w -32)))
+; Note: varcc and propcc have been removed during migration to gir_gen
+; varcc - Legacy enum generator (replaced by gir_gen enum generation)
+; propcc - Legacy property compiler (not used in lablgtk4, only lablgtk3)
 
 ; Phase 3.0 & 5.0: GIR-based code generator (with cmdliner)
 ; Now built in gir_gen/ subdirectory with modular structure
