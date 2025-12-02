@@ -1,0 +1,81 @@
+Using old camlp5 approach with o_keywords.cmo
+Using old camlp5 approach with o_keywords.cmo
+File "src/dune", line 37, characters 106-125:
+37 |   (names wrappers ml_glib ml_gobject ml_gdk ml_gdkpixbuf ml_gdk_clipboard ml_pango ml_gtk ml_gtk_snapshot ml_event_controller)
+                                                                                                               ^^^^^^^^^^^^^^^^^^^
+ml_event_controller.c:21:10: fatal error: gdk4_tags.h: No such file or directory
+   21 | #include "gdk4_tags.h"
+      |          ^~~~~~~~~~~~~
+compilation terminated.
+File "src/dune", line 37, characters 37-43:
+37 |   (names wrappers ml_glib ml_gobject ml_gdk ml_gdkpixbuf ml_gdk_clipboard ml_pango ml_gtk ml_gtk_snapshot ml_event_controller)
+                                          ^^^^^^
+ml_gdk.c:43:10: fatal error: gdk4_tags.h: No such file or directory
+   43 | #include "gdk4_tags.h"
+      |          ^~~~~~~~~~~~~
+compilation terminated.
+File "src/dune", line 37, characters 18-25:
+37 |   (names wrappers ml_glib ml_gobject ml_gdk ml_gdkpixbuf ml_gdk_clipboard ml_pango ml_gtk ml_gtk_snapshot ml_event_controller)
+                       ^^^^^^^
+ml_glib.c:37:10: fatal error: glib_tags.h: No such file or directory
+   37 | #include "glib_tags.h"
+      |          ^~~~~~~~~~~~~
+compilation terminated.
+File "src/dune", line 37, characters 26-36:
+37 |   (names wrappers ml_glib ml_gobject ml_gdk ml_gdkpixbuf ml_gdk_clipboard ml_pango ml_gtk ml_gtk_snapshot ml_event_controller)
+                               ^^^^^^^^^^
+ml_gobject.c:36:10: fatal error: gobject_tags.h: No such file or directory
+   36 | #include "gobject_tags.h"
+      |          ^~~~~~~~~~~~~~~~
+compilation terminated.
+File "src/dune", line 37, characters 74-82:
+37 |   (names wrappers ml_glib ml_gobject ml_gdk ml_gdkpixbuf ml_gdk_clipboard ml_pango ml_gtk ml_gtk_snapshot ml_event_controller)
+                                                                               ^^^^^^^^
+In file included from ml_pango.c:27:
+ml_pango.h:17:10: fatal error: pango_tags.h: No such file or directory
+   17 | #include "pango_tags.h"
+      |          ^~~~~~~~~~~~~~
+compilation terminated.
+wrappers.c: In function ‘val_of_ext’:
+wrappers.c:176:37: warning: assignment discards ‘const’ qualifier from pointer target type [-Wdiscarded-qualifiers]
+  176 |     *((void**)Data_abstract_val(v)) = widget;
+      |                                     ^
+In file included from wrappers.c:16:
+wrappers.c: In function ‘ext_of_val’:
+/home/ocaml/.opam/5.3.0/lib/ocaml/caml/memory.h:311:33: warning: assignment discards ‘const’ qualifier from pointer target type [-Wdiscarded-qualifiers]
+  311 |     (caml__roots_##x.tables [0] = &x), \
+      |                                 ^
+/home/ocaml/.opam/5.3.0/lib/ocaml/caml/memory.h:282:3: note: in expansion of macro ‘CAMLxparam1’
+  282 |   CAMLxparam1 (x)
+      |   ^~~~~~~~~~~
+wrappers.c:181:5: note: in expansion of macro ‘CAMLparam1’
+  181 |     CAMLparam1(val);
+      |     ^~~~~~~~~~
+File "tests/test_all_enums.ml", line 47, characters 11-26:
+47 |   type t = Gtk4Enums.align
+                ^^^^^^^^^^^^^^^
+Error: Unbound module "Gtk4Enums"
+File "tests/test_enum_roundtrip.ml", line 7, characters 5-14:
+7 | open Gtk4Enums
+         ^^^^^^^^^
+Error: Unbound module "Gtk4Enums"
+File "tests/test_enum_values.ml", line 9, characters 5-14:
+9 | open Gtk4Enums
+         ^^^^^^^^^
+Error: Unbound module "Gtk4Enums"
+File "tests/test_ffi_integration.ml", line 48, characters 26-60:
+48 |   let (_decode, encode) = GobjectEnums.Conv.fundamental_type in
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Error: Unbound module "GobjectEnums"
+File "tests/test_gdk.ml", line 23, characters 10-32:
+23 |   let _ = Gdk4Enums.Conv.gravity in
+               ^^^^^^^^^^^^^^^^^^^^^^
+Error: Unbound module "Gdk4Enums"
+File "tests/test_glib.ml", line 17, characters 10-34:
+17 |   let _ = GlibEnums.Conv.log_level in
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+Error: Unbound module "GlibEnums"
+File "tests/test_gobject.ml", line 464, characters 25-45:
+464 |   let (decode, encode) = Gtk4Enums.Conv.align in
+                               ^^^^^^^^^^^^^^^^^^^^
+Error: Unbound module "Gtk4Enums"
