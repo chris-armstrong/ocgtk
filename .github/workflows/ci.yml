@@ -96,19 +96,6 @@ jobs:
         working-directory: lablgtk4
         run: opam install . --deps-only --with-test
 
-      - name: Build code generation tools
-        working-directory: lablgtk4
-        run: |
-          opam exec -- dune build src/tools/varcc.exe
-          opam exec -- dune build src/tools/propcc.exe
-          opam exec -- dune build src/tools/gir_gen/main.exe
-
-      # - name: Test code generation tools
-      #   working-directory: lablgtk4
-      #   run: |
-      #     opam exec -- dune build src/tools/test_gir_gen.exe
-      #     opam exec -- ./_build/default/src/tools/test_gir_gen.exe
-
       - name: Build lablgtk4 library
         working-directory: lablgtk4
         run: opam exec -- dune build
@@ -116,8 +103,6 @@ jobs:
       - name: Run all tests
         working-directory: lablgtk4
         run: |
-          # Use custom test runner script to avoid GTK cleanup issues
-          # See tests/dune for explanation of why we can't use 'dune runtest'
           # Use xvfb-run to provide virtual display for GTK runtime tests
           opam exec -- xvfb-run -a dune test
 
