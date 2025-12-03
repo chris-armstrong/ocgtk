@@ -9,13 +9,13 @@ open Types
 module StringSet = Set.Make(String)
 
 let sanitize_name s =
-  s |> String.map ~f:(function '-' -> '_' | c -> c) |> Utils.to_snake_case
+  s |> String.map ~f:(function '-' -> '_' | c -> c) |> Utils.to_snake_case |> Filtering.sanitize_identifier
 
-let has_widget_parent class_name parent_chain =
+(* let has_widget_parent class_name parent_chain =
   let normalized = Utils.normalize_class_name class_name |> String.lowercase_ascii in
   normalized = "widget" ||
   List.exists parent_chain ~f:(fun p ->
-    String.lowercase_ascii (Utils.normalize_class_name p) = "widget")
+    String.lowercase_ascii (Utils.normalize_class_name p) = "widget") *)
 
 let signal_class_name class_name =
   sanitize_name class_name ^ "_signals"
@@ -25,6 +25,10 @@ let ocaml_method_name ~class_name ~c_type (meth : gir_method) =
 
 let parameter_name (p : gir_param) =
   Filtering.sanitize_identifier (sanitize_name p.param_name)
+
+(* Check if a parameter is a hierarchy type and get its info *)
+let get_param_hierarchy_info ~ctx (param : gir_param) : hierarchy_info option =
+  Hierarchy_detection.get_hierarchy_info ctx param.param_type.name
 
 let generate_signal_class ~class_name ~module_name ~signals =
   let buf = Buffer.create 256 in
@@ -107,22 +111,63 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
   in
   if should_skip then ("", seen)
   else
-    let params = List.map meth.parameters ~f:parameter_name in
-    let param_list =
-      match params with
-      | [] -> "()"
-      | _ -> String.concat ~sep:" " params
-    in
     let ocaml_name = ocaml_method_name ~class_name ~c_type meth in
     if StringSet.mem ocaml_name seen then ("", seen) else
     let seen = StringSet.add ocaml_name seen in
+
+    (* Check for hierarchy parameters *)
+    let param_info = List.map meth.parameters ~f:(fun p ->
+      (parameter_name p, p, get_param_hierarchy_info ~ctx p)
+    ) in
+    let has_hierarchy_params = List.exists param_info ~f:(fun (_, _, hier_opt) ->
+      match hier_opt with
+      | Some info -> info.hierarchy <> MonomorphicType
+      | None -> false
+    ) in
+
     let buf = Buffer.create 256 in
-    bprintf buf "  method %s %s = %s.%s obj%s\n"
-      ocaml_name
-      (if param_list = "()" then "()" else param_list)
-      module_name
-      ocaml_name
-      (if param_list = "()" then "" else " " ^ param_list);
+
+    if has_hierarchy_params then begin
+      (* Generate method with hierarchy parameter coercion *)
+      let param_names = List.map param_info ~f:(fun (name, _, _) -> name) in
+      let param_list = match param_names with
+        | [] -> "()"
+        | _ -> String.concat ~sep:" " param_names
+      in
+
+      bprintf buf "  method %s %s =\n" ocaml_name
+        (if param_list = "()" then "()" else param_list);
+      bprintf buf "    %s.%s obj" module_name ocaml_name;
+
+      List.iter param_info ~f:(fun (name, p, hier_opt) ->
+        match hier_opt with
+        | Some hier when hier.hierarchy <> MonomorphicType ->
+            if p.nullable || p.param_type.nullable then
+              bprintf buf " (Option.map (fun c -> (c#%s : %s)) %s)"
+                hier.accessor_method hier.layer1_base_type name
+            else
+              bprintf buf " (%s#%s : %s)"
+                name hier.accessor_method hier.layer1_base_type
+        | _ ->
+            bprintf buf " %s" name
+      );
+      bprintf buf "\n"
+    end else begin
+      (* Regular method without hierarchy parameters *)
+      let params = List.map meth.parameters ~f:parameter_name in
+      let param_list =
+        match params with
+        | [] -> "()"
+        | _ -> String.concat ~sep:" " params
+      in
+      bprintf buf "  method %s %s = %s.%s obj%s\n"
+        ocaml_name
+        (if param_list = "()" then "()" else param_list)
+        module_name
+        ocaml_name
+        (if param_list = "()" then "" else " " ^ param_list)
+    end;
+
     (Buffer.contents buf, seen)
 
 let has_type_variable type_str =
@@ -140,10 +185,31 @@ let generate_method_signatures ~ctx ~property_method_names ~property_base_names 
   else
     let ocaml_name = ocaml_method_name ~class_name ~c_type meth in
     if StringSet.mem ocaml_name seen then ("", seen) else
+
+    (* Check for hierarchy parameters *)
+    let param_hier_info = List.map meth.parameters ~f:(fun p ->
+      (p, get_param_hierarchy_info ~ctx p)
+    ) in
+    let has_hierarchy_params = List.exists param_hier_info ~f:(fun (_, hier_opt) ->
+      match hier_opt with
+      | Some info -> info.hierarchy <> MonomorphicType
+      | None -> false
+    ) in
+
     let param_types =
-      List.map meth.parameters ~f:(fun p ->
-        let gir_type = { p.param_type with nullable = p.nullable || p.param_type.nullable } in
-        ocaml_type_of_gir_type ~ctx gir_type)
+      List.map param_hier_info ~f:(fun (p, hier_opt) ->
+        match hier_opt with
+        | Some hier when hier.hierarchy <> MonomorphicType ->
+            (* Use # syntax for hierarchy types *)
+            let class_type = sprintf "#%s.%s" hier.layer2_module hier.class_type_name in
+            if p.nullable || p.param_type.nullable then
+              Some (class_type ^ " option")
+            else
+              Some class_type
+        | _ ->
+            (* Regular type *)
+            let gir_type = { p.param_type with nullable = p.nullable || p.param_type.nullable } in
+            ocaml_type_of_gir_type ~ctx gir_type)
     in
     if List.exists param_types ~f:(fun x -> x = None) then ("", seen) else
     let param_types = List.filter_map param_types ~f:(fun x -> x) in
@@ -155,8 +221,9 @@ let generate_method_signatures ~ctx ~property_method_names ~property_base_names 
     | None -> ("", seen)
     | Some return_type ->
         let param_types = if param_types = [] then ["unit"] else param_types in
-        (* Check if any type contains a type variable *)
-        let has_poly = List.exists (param_types @ [return_type]) ~f:has_type_variable in
+        (* Check if any type contains a type variable or has hierarchy params *)
+        let has_type_var = List.exists (param_types @ [return_type]) ~f:has_type_variable in
+        let has_poly = has_type_var || has_hierarchy_params in
         let signature = String.concat ~sep:" -> " (param_types @ [return_type]) in
         let seen = StringSet.add ocaml_name seen in
         let buf = Buffer.create 256 in
@@ -167,26 +234,35 @@ let generate_method_signatures ~ctx ~property_method_names ~property_base_names 
           bprintf buf "    method %s : %s\n" ocaml_name signature;
         (Buffer.contents buf, seen)
 
-let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods ~properties ~signals =
+let generate_class_module ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~properties ~signals =
   let buf = Buffer.create 2048 in
   let module_name = Utils.module_name_of_class class_name in
   let class_snake = sanitize_name class_name in
-  let widget_parent = has_widget_parent class_name parent_chain in
+  (* let widget_parent = has_widget_parent class_name parent_chain in *)
 
-  if not widget_parent then begin
-    bprintf buf "(* Class generation skipped for non-widget class %s *)\n" class_name;
-    Buffer.contents buf
-  end else begin
+  begin
     (* Include signal class if widget has ANY signals defined in GIR *)
     (* This ensures method connect is always present when signals exist *)
     let has_any_signals = List.length signals > 0 in
+
+    (* Check if this class is in the Widget hierarchy *)
+    let in_widget_hierarchy =
+      match Hierarchy_detection.get_hierarchy_info ctx class_name with
+      | Some info -> info.hierarchy = WidgetHierarchy
+      | None -> false
+    in
 
     if has_any_signals then
       bprintf buf "(* Signal class defined in g%s_signals.ml *)\n\n" class_snake;
 
     bprintf buf "(* High-level class for %s *)\n" class_name;
     bprintf buf "class %s_skel (obj : %s.t) = object (self)\n" class_snake module_name;
-    bprintf buf "  inherit GObj.widget_impl (%s.as_widget obj)\n\n" module_name;
+
+    if in_widget_hierarchy then
+      bprintf buf "  inherit GObj.widget_impl (%s.as_widget obj)\n\n" module_name
+    else
+      (* Non-widget classes don't inherit from widget_impl *)
+      bprintf buf "\n";
 
     if has_any_signals then begin
       let signal_module = "G" ^ class_snake ^ "_signals" in
@@ -226,19 +302,23 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods ~prope
     Buffer.contents buf
   end
 
-let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain ~methods ~properties ~signals =
+let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~properties ~signals =
   let buf = Buffer.create 1024 in
   let module_name = Utils.module_name_of_class class_name in
   let class_snake = sanitize_name class_name in
-  let widget_parent = has_widget_parent class_name parent_chain in
+  (* let widget_parent = has_widget_parent class_name parent_chain in *)
 
-  if not widget_parent then begin
-    bprintf buf "(* Class signature skipped for non-widget class %s *)\n" class_name;
-    Buffer.contents buf
-  end else begin
+  begin
     (* Include signal class if widget has ANY signals defined in GIR *)
     (* This ensures method connect is always present when signals exist *)
     let has_any_signals = List.length signals > 0 in
+
+    (* Check if this class is in the Widget hierarchy *)
+    let in_widget_hierarchy =
+      match Hierarchy_detection.get_hierarchy_info ctx class_name with
+      | Some info -> info.hierarchy = WidgetHierarchy
+      | None -> false
+    in
 
     let property_method_names =
       Filtering.property_method_names ~ctx properties
@@ -249,7 +329,8 @@ let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain ~methods ~pr
 
     bprintf buf "class %s_skel : %s.t ->\n" class_snake module_name;
     bprintf buf "  object\n";
-    bprintf buf "    inherit GObj.widget_impl\n";
+    if in_widget_hierarchy then
+      bprintf buf "    inherit GObj.widget_impl\n";
     if has_any_signals then begin
       let signal_module = "G" ^ class_snake ^ "_signals" in
       bprintf buf "    method connect : %s.%s\n" signal_module (signal_class_name class_name)

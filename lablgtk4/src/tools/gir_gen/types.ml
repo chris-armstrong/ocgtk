@@ -172,6 +172,24 @@ type type_mapping = {
   needs_copy : bool;
 }
 
+(* Hierarchy classification *)
+type hierarchy_kind =
+  | WidgetHierarchy
+  | EventControllerHierarchy
+  | CellRendererHierarchy
+  | LayoutManagerHierarchy
+  | ExpressionHierarchy
+  | MonomorphicType
+
+type hierarchy_info = {
+  hierarchy: hierarchy_kind;
+  gir_root: string;           (* "Widget", "EventController", etc. *)
+  layer2_module: string;       (* "GWidget", "GController", etc. *)
+  class_type_name: string;     (* "widget_skel", "controller_skel", etc. *)
+  accessor_method: string;     (* "as_widget", "as_controller", etc. *)
+  layer1_base_type: string;    (* "Widget.t", "EventController.t", etc. *)
+}
+
 type generation_context = {
   classes: gir_class list;
   interfaces: gir_interface list;
@@ -180,4 +198,5 @@ type generation_context = {
   records: gir_record list;
   external_enums: (string * gir_enum) list;
   external_bitfields: (string * gir_bitfield) list;
+  hierarchy_map: (string, hierarchy_info) Hashtbl.t;
 }

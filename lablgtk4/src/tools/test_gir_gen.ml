@@ -273,7 +273,7 @@ let test_signal_parsing_and_generation () =
   in
   assert_true "Button signals should be parsed" (List.length button.signals = 2);
   let parent_chain = match button.parent with Some p -> [p] | None -> [] in
-  let ctx : Gir_gen_lib.Types.generation_context = {
+  let ctx_initial : Gir_gen_lib.Types.generation_context = {
     classes;
     interfaces;
     enums = gtk_enums;
@@ -281,7 +281,10 @@ let test_signal_parsing_and_generation () =
     records = gtk_records;
     external_enums = [];
     external_bitfields = [];
+    hierarchy_map = Hashtbl.create 0;
   } in
+  let hierarchy_map = Gir_gen_lib.Hierarchy_detection.build_hierarchy_map ctx_initial in
+  let ctx = { ctx_initial with hierarchy_map } in
   let code = Gir_gen_lib.Generate.Signal_gen.generate_signal_class
     ~ctx
     ~class_name:button.class_name

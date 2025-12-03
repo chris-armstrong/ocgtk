@@ -87,17 +87,20 @@ let generate_ml_interfaces ~ctx ~output_dir ~parent_chain entity =
 
 (* Check if entity should have a high-level wrapper class (g<Widget>.ml) *)
 let should_generate_high_level_class entity parent_chain =
-  (* Only classes can have high-level wrappers *)
-  entity.Gir_gen_lib.Types.kind = Gir_gen_lib.Types.Class &&
+  true
+  (* Only classes can have high-level wrappers
+  (match (entity.Gir_gen_lib.Types.kind : Gir_gen_lib.Types.entity_kind) with
+   | Class -> true
+   | Interface -> false) &&
   (* Must have Widget in parent chain *)
   let has_widget_parent =
     String.lowercase_ascii (Gir_gen_lib.Utils.normalize_class_name entity.Gir_gen_lib.Types.name) = "widget" ||
     List.exists parent_chain ~f:(fun p -> String.lowercase_ascii (Gir_gen_lib.Utils.normalize_class_name p) = "widget")
   in
-  has_widget_parent
+  has_widget_parent *)
 
 (* Generate high-level wrapper class (g<Widget>.ml) for a class entity *)
-let generate_high_level_class ~ctx ~output_dir ~generated_modules ~should_force_generate entity parent_chain =
+let generate_high_level_class ~ctx ~output_dir ~generated_modules entity parent_chain =
   if not (should_generate_high_level_class entity parent_chain) then ()
   else if Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name then ()
   else begin
@@ -114,7 +117,7 @@ let generate_high_level_class ~ctx ~output_dir ~generated_modules ~should_force_
     let g_file_exists = output_under_src && Sys.file_exists g_file in
 
     (* Always overwrite to enable wholesale regeneration *)
-    if true then begin
+    
       if g_file_exists then
         printf "Overwriting %s (wholesale regeneration enabled)\n" g_file
       else
@@ -144,7 +147,7 @@ let generate_high_level_class ~ctx ~output_dir ~generated_modules ~should_force_
         ~methods:entity.Gir_gen_lib.Types.methods
         ~properties:entity.Gir_gen_lib.Types.properties
         ~signals:entity.Gir_gen_lib.Types.signals);
-    end
+    
   end
 
 (* Generate signal class file for a single entity *)
@@ -245,17 +248,8 @@ let generate_all_record_bindings ~ctx ~output_dir ~generated_stubs ~generated_mo
         (List.length record.Gir_gen_lib.Types.methods > 0)
       in
       if has_bindings then begin
-        let base_type =
-          match Gir_gen_lib.Type_mappings.find_type_mapping_for_gir_type
-              ~ctx
-              { Gir_gen_lib.Types.name = record.Gir_gen_lib.Types.record_name;
-                c_type = record.Gir_gen_lib.Types.c_type ^ "*";
-                nullable = false; } with
-          | Some mapping ->
-            Gir_gen_lib.Type_mappings.qualify_ocaml_type
-              ~gir_type_name:(Some record.Gir_gen_lib.Types.record_name) mapping.ocaml_type
-          | None -> "Obj.t"
-        in
+        (* Records always use Obj.t as their base type implementation *)
+        let base_type = "Obj.t" in
 
         let ml_file = Filename.concat output_dir
           (sprintf "%s.mli" (Gir_gen_lib.Utils.to_snake_case record.Gir_gen_lib.Types.record_name)) in
@@ -388,7 +382,7 @@ let generate_bindings filter_file gir_file output_dir =
   ) in
 
   (* Create generation context with all type information *)
-  let ctx : Gir_gen_lib.Types.generation_context = {
+  let ctx_initial : Gir_gen_lib.Types.generation_context = {
     classes = controllers;
     interfaces;
     enums;
@@ -396,6 +390,15 @@ let generate_bindings filter_file gir_file output_dir =
     records;
     external_enums = external_enums_with_ns;
     external_bitfields = external_bitfields_with_ns;
+    hierarchy_map = Hashtbl.create 0; (* Temporary empty map *)
+  } in
+
+  (* Build hierarchy map based on class inheritance chains *)
+  let hierarchy_map = Gir_gen_lib.Hierarchy_detection.build_hierarchy_map ctx_initial in
+
+  (* Final context with hierarchy map populated *)
+  let ctx : Gir_gen_lib.Types.generation_context = {
+    ctx_initial with hierarchy_map
   } in
 
   (* Create unified entity list combining classes and interfaces *)
@@ -404,17 +407,6 @@ let generate_bindings filter_file gir_file output_dir =
     (List.map ~f:Gir_gen_lib.Types.entity_of_interface interfaces)
   in
 
-  (* Configure forced generation for validation *)
-  let forced_widget_classes =
-    (* Keep this list small: we overwrite these even if files already exist to validate class_gen output. *)
-    ["Button"; "Label"; "Range"]
-    |> List.map ~f:(fun name ->
-      name |> Gir_gen_lib.Utils.normalize_class_name |> String.lowercase_ascii)
-  in
-  let should_force_generate class_name =
-    let normalized = class_name |> Gir_gen_lib.Utils.normalize_class_name |> String.lowercase_ascii in
-    List.exists forced_widget_classes ~f:(String.equal normalized)
-  in
 
   (* ==== GENERATION STAGE ==== *)
 
@@ -450,7 +442,7 @@ let generate_bindings filter_file gir_file output_dir =
   (* Generate high-level wrapper classes for classes with Widget parent *)
   List.iter ~f:(fun entity ->
     let parent_chain = parent_chain_for_class entity.Gir_gen_lib.Types.name in
-    generate_high_level_class ~ctx ~output_dir ~generated_modules ~should_force_generate entity parent_chain
+    generate_high_level_class ~ctx ~output_dir ~generated_modules entity parent_chain
   ) entities;
 
   (* Generate signal classes for all entities (classes and interfaces) *)

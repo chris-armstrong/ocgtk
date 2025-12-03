@@ -11,6 +11,15 @@ let sanitize_doc s =
   s |> Str.global_replace (Str.regexp_string "*)") "\"*)\"" |>
   Str.global_replace (Str.regexp_string "(*") "\"(*\""
 
+(* Simplify type references when they refer to the current module's type *)
+let simplify_self_reference ~class_name ocaml_type =
+  let current_module = Utils.module_name_of_class class_name in
+  let self_type = current_module ^ ".t" in
+  if ocaml_type = self_type then
+    "t"
+  else
+    ocaml_type
+
 let generate_signal_bindings ~output_mode:_ ~module_name:_ ~has_widget_parent:_ _signals =
   ""  (* Signals are only generated in high-level g*.ml wrappers *)
 
@@ -42,61 +51,56 @@ let generate_ml_interface
     ends_with "_copy" lower_cid || ends_with "_free" lower_cid
   in
 
-  (* Determine if this is a controller or widget *)
-  let is_controller =
-    (not is_record) &&
-    (class_name = "EventController" ||
-     (String.length class_name > 15 && String.sub ~pos:0 ~len:15 class_name = "EventController") ||
-     (String.length class_name > 7 && String.sub ~pos:0 ~len:7 class_name = "Gesture"))
-  in
-
   let normalized_class = Utils.normalize_class_name class_name in
   let parent_chain =
     if is_record then []
     else
-      (* parent_chain is ordered immediate parent -> root; stop at Widget for variant generation *)
-      let rec take_until_widget acc = function
-        | [] -> List.rev acc
-        | p :: rest ->
-          let normalized_parent = Utils.normalize_class_name p in
-          let acc' = normalized_parent :: acc in
-          if String.lowercase_ascii normalized_parent = "widget" then
-            List.rev acc'
-          else
-            take_until_widget acc' rest
-      in
-      take_until_widget [] parent_chain
-  in
-  let has_widget_parent =
-    (not is_record) &&
-    (String.lowercase_ascii normalized_class = "widget" ||
-     List.exists parent_chain ~f:(fun p -> String.lowercase_ascii p = "widget"))
+      (* parent_chain is ordered immediate parent -> root *)
+      List.map ~f:Utils.normalize_class_name parent_chain
   in
 
   let class_type_name, base_type =
     if is_record then
       ("Record", Option.value record_base_type ~default:"Obj.t")
-    else if is_controller then
-      ("Event controller", "EventController.t")
-    else if has_widget_parent then
-      let self_variant = "`" ^ Utils.to_snake_case normalized_class in
-      let parent_variants =
-        if String.lowercase_ascii normalized_class = "widget" then
-          []
-        else
-          List.fold_left parent_chain ~init:[] ~f:(fun acc parent ->
-            let tag = "`" ^ Utils.to_snake_case parent in
-            (* Stop adding parents once we hit widget to avoid pulling in GObject ancestry *)
-            if String.lowercase_ascii parent = "widget" then
-              acc @ [tag]
-            else
-              acc @ [tag]
-          )
-      in
-      let variants = String.concat ~sep:" | " (self_variant :: parent_variants) in
-      ("Widget", sprintf "[%s] Gobject.obj" variants)
     else
-      ("Widget", "Gtk.widget")
+      (* Use hierarchy detection to determine type *)
+      match Hierarchy_detection.get_hierarchy_info ctx class_name with
+      | Some hier_info when hier_info.hierarchy <> MonomorphicType ->
+          (* This class is in a known hierarchy *)
+          let self_variant = "`" ^ (Utils.to_snake_case normalized_class |> Filtering.sanitize_identifier) in
+          let parent_variants =
+            if String.lowercase_ascii normalized_class = String.lowercase_ascii hier_info.gir_root then
+              (* This is the root of the hierarchy *)
+              []
+            else
+              (* Build parent chain variants up to hierarchy root *)
+              List.fold_left parent_chain ~init:[] ~f:(fun acc parent ->
+                let tag = "`" ^ (Utils.to_snake_case parent |> Filtering.sanitize_identifier) in
+                (* Stop at hierarchy root *)
+                if String.lowercase_ascii parent = String.lowercase_ascii hier_info.gir_root then
+                  acc @ [tag]
+                else
+                  acc @ [tag]
+              )
+          in
+          let variants = String.concat ~sep:" | " (self_variant :: parent_variants) in
+          let type_name = match hier_info.hierarchy with
+            | WidgetHierarchy -> "Widget"
+            | EventControllerHierarchy -> "Event controller"
+            | CellRendererHierarchy -> "Cell renderer"
+            | LayoutManagerHierarchy -> "Layout manager"
+            | ExpressionHierarchy -> "Expression"
+            | MonomorphicType -> class_name
+          in
+          (type_name, sprintf "[%s] Gobject.obj" variants)
+      | _ ->
+          (* Monomorphic type or unknown - still use polymorphic variant since all GTK classes inherit from GObject *)
+          let self_variant = "`" ^ (Utils.to_snake_case normalized_class |> Filtering.sanitize_identifier) in
+          (* Add parent chain variants *)
+          let parent_variants = List.map parent_chain ~f:(fun p -> "`" ^ (Utils.to_snake_case p |> Filtering.sanitize_identifier)) in
+          let all_variants = self_variant :: parent_variants in
+          let variants = String.concat ~sep:" | " all_variants in
+          (class_name, sprintf "[%s] Gobject.obj" variants)
   in
 
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
@@ -111,12 +115,22 @@ let generate_ml_interface
   else
     bprintf buf "type t = %s\n\n" base_type;
 
-  if has_widget_parent then begin
-    if is_impl then
-      bprintf buf "let as_widget (obj : t) : Gtk.widget = Obj.magic obj\n\n"
-    else
-      bprintf buf "val as_widget : t -> Gtk.widget\n\n"
-  end;
+  (* Generate accessor method for hierarchy types *)
+  (match Hierarchy_detection.get_hierarchy_info ctx class_name with
+   | Some hier_info when hier_info.hierarchy <> MonomorphicType ->
+       (* Only generate accessor if this is NOT the hierarchy root itself *)
+       (* (e.g., Button should have as_widget, but Widget should not have as_widget : t -> Widget.t) *)
+       if class_name <> hier_info.gir_root then begin
+         let accessor = hier_info.accessor_method in
+         let base_type = hier_info.layer1_base_type in
+         (* Simplify self-references (though this should never happen for accessors) *)
+         let base_type = simplify_self_reference ~class_name base_type in
+         if is_impl then
+           bprintf buf "let %s (obj : t) : %s = Obj.magic obj\n\n" accessor base_type
+         else
+           bprintf buf "val %s : t -> %s\n\n" accessor base_type
+       end
+   | _ -> ());
 
   (* Constructors - generate unique names and proper signatures, skip those that throw *)
   List.iter ~f:(fun (ctor : gir_constructor) ->
@@ -262,6 +276,8 @@ let generate_ml_interface
           Some (match Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type with
           | Some mapping ->
             let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some p.param_type.name) mapping.ocaml_type in
+            (* Simplify self-references (e.g., Tree_model.t -> t in tree_model.ml) *)
+            let base_type = simplify_self_reference ~class_name base_type in
             if p.nullable then
               sprintf "%s option" base_type
             else
@@ -279,6 +295,8 @@ let generate_ml_interface
           match Type_mappings.find_type_mapping_for_gir_type ~ctx meth.return_type with
           | Some mapping ->
             let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some meth.return_type.name) mapping.ocaml_type in
+            (* Simplify self-references (e.g., Tree_model.t -> t in tree_model.ml) *)
+            let base_type = simplify_self_reference ~class_name base_type in
             if meth.return_type.nullable then
               sprintf "%s option" base_type
             else
@@ -303,6 +321,8 @@ let generate_ml_interface
             (match Type_mappings.find_type_mapping_for_gir_type ~ctx base_param_type with
             | Some mapping ->
               let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some base_param_type.name) mapping.ocaml_type in
+              (* Simplify self-references (e.g., Tree_model.t -> t in tree_model.ml) *)
+              let base_type = simplify_self_reference ~class_name base_type in
               if base_param_type.nullable || p.nullable then
                 Some (sprintf "%s option" base_type)
               else Some base_type

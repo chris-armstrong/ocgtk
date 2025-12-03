@@ -50,7 +50,7 @@ let type_mappings = [
     needs_copy = false;
   });
   ("GtkWidget*", {
-    ocaml_type = "Gtk.widget";
+    ocaml_type = "Widget.t";
     c_to_ml = "Val_GtkWidget";
     ml_to_c = "GtkWidget_val";
     needs_copy = false;
@@ -243,6 +243,23 @@ let find_class_mapping classes lookup_str =
     (("Gtk" ^ normalized_name ^ "*") = lookup_str)
   ) classes
 
+(* Find interface mapping - similar to class mapping *)
+let find_interface_mapping interfaces lookup_str =
+  let normalized_lookup =
+    let base = normalize_c_pointer_type lookup_str in
+    if String.length base > 0 && base.[String.length base - 1] = '*' then
+      String.sub base ~pos:0 ~len:(String.length base - 1)
+    else
+      base
+  in
+  List.find_opt ~f:(fun (iface : Types.gir_interface) ->
+    let normalized_name = Utils.normalize_class_name iface.interface_name in
+    iface.c_type = normalized_lookup ||
+    (iface.c_type ^ "*") = lookup_str ||
+    (("Gtk" ^ normalized_name) = normalized_lookup) ||
+    (("Gtk" ^ normalized_name ^ "*") = lookup_str)
+  ) interfaces
+
 let is_boxed_record (record : Types.gir_record) =
   (match record.glib_get_type, record.glib_type_name with
   | Some _, _ | _, Some _ -> true
@@ -275,19 +292,13 @@ let find_record_mapping records lookup_str =
 let find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
   let try_lookup lookup_str =
     (* First, check if this is a known class type (GtkButton*, GtkWidget*, etc.) *)
-    let class_mapping =
+    let class_or_interface_mapping =
       match find_class_mapping ctx.classes lookup_str with
       | Some cls ->
-        let normalized_name = Utils.normalize_class_name cls.class_name in
+        (* Use proper Layer 1 type based on hierarchy *)
         let ocaml_type =
-          if String.lowercase_ascii normalized_name = "widget" then
-            "Gtk.widget"
-          else if normalized_name = "EventController" ||
-                  (String.length normalized_name > 15 && String.sub ~pos:0 ~len:15 normalized_name = "EventController") ||
-                  (String.length normalized_name > 7 && String.sub ~pos:0 ~len:7 normalized_name = "Gesture") then
-            "EventController.t"
-          else
-            "Gtk.widget"
+          let module_name = Utils.module_name_of_class cls.class_name in
+          module_name ^ ".t"
         in
         Some {
           ocaml_type;
@@ -296,19 +307,37 @@ let find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
           needs_copy = false;
         }
       | None ->
+        (* Check if this is a known interface type (GtkTreeModel*, etc.) *)
+        (match find_interface_mapping ctx.interfaces lookup_str with
+        | Some iface ->
+          let ocaml_type =
+            let module_name = Utils.module_name_of_class iface.interface_name in
+            module_name ^ ".t"
+          in
+          Some {
+            ocaml_type;
+            c_to_ml = sprintf "Val_%s" iface.c_type;
+            ml_to_c = sprintf "%s_val" iface.c_type;
+            needs_copy = false;
+          }
+        | None ->
         (* Next, check for known records (boxed/disguised) *)
         (match find_record_mapping ctx.records lookup_str with
         | Some (record, _is_pointer, _) ->
-          let ocaml_type = "Obj.t" in
+          (* Use proper record module type (e.g., Tree_iter.t) instead of Obj.t *)
+          let ocaml_type =
+            let module_name = Utils.module_name_of_class record.record_name in
+            module_name ^ ".t"
+          in
           Some {
             ocaml_type;
             c_to_ml = sprintf "Val_%s" record.c_type;
             ml_to_c = sprintf "%s_val" record.c_type;
             needs_copy = false;
           }
-        | None -> None)
+        | None -> None))
     in
-    match class_mapping with
+    match class_or_interface_mapping with
     | Some mapping -> Some mapping
     | None ->
     (* First, check if this is a known enum *)
