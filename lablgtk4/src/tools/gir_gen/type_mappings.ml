@@ -55,6 +55,12 @@ let type_mappings = [
     ml_to_c = "GtkWidget_val";
     needs_copy = false;
   });
+  ("GtkEventController*", {
+    ocaml_type = "EventController.t";
+    c_to_ml = "Val_GtkEventController";
+    ml_to_c = "GtkEventController_val";
+    needs_copy = false;
+  });
   (* Phase 5: Widget-specific types *)
   ("GtkOrientation", {
     ocaml_type = "Gtk.orientation";
@@ -276,6 +282,10 @@ let find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
         let ocaml_type =
           if String.lowercase_ascii normalized_name = "widget" then
             "Gtk.widget"
+          else if normalized_name = "EventController" ||
+                  (String.length normalized_name > 15 && String.sub ~pos:0 ~len:15 normalized_name = "EventController") ||
+                  (String.length normalized_name > 7 && String.sub ~pos:0 ~len:7 normalized_name = "Gesture") then
+            "EventController.t"
           else
             "Gtk.widget"
         in
@@ -373,6 +383,7 @@ let qualify_ocaml_type ?(gir_type_name=None) ocaml_type =
     match namespace with
     | Some "Pango" -> sprintf "Pango.%s" ocaml_type
     | Some "Gdk" -> sprintf "Gdk.%s" ocaml_type
+    | Some "Gsk" -> sprintf "Gsk_enums.%s" ocaml_type  (* Gsk enums in Gsk_enums module *)
     | Some "Gtk" ->
       (* Check if it's a core Gtk type or an enum *)
       let gtk_core_types = [

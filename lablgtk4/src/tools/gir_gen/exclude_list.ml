@@ -44,22 +44,14 @@ let is_excluded_function name =
   List.mem name ~set:function_exclude_list
 
 let should_skip_class class_name =
+  (* Removed skip list to allow wholesale regeneration of all classes *)
   let skip_list = [
+    (* Print-related classes are platform-specific *)
     "PrintJob";
     "PrintUnixDialog";
     "PageSetupUnixDialog";
     "Printer";
-    "Box";
-    "Fixed";
-    "Frame";
-    "Grid";
-    "Notebook";
-    "Paned";
-    "Scrolled_window";
-    "Snapshot";
-    "Stack";
-    "Widget";
-    "Window";
+    (* All other classes now allowed for generation *)
   ] in
   List.mem class_name ~set:skip_list
 

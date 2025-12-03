@@ -8,7 +8,8 @@ type output_mode = Interface | Implementation
 
 let sanitize_doc s =
   (* Prevent premature comment termination when GIR doc contains "*)" *)
-  Str.global_replace (Str.regexp_string "*)") "\"*)\"" s
+  s |> Str.global_replace (Str.regexp_string "*)") "\"*)\"" |>
+  Str.global_replace (Str.regexp_string "(*") "\"(*\""
 
 let generate_signal_bindings ~output_mode:_ ~module_name:_ ~has_widget_parent:_ _signals =
   ""  (* Signals are only generated in high-level g*.ml wrappers *)

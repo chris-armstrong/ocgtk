@@ -111,14 +111,14 @@ let generate_high_level_class ~ctx ~output_dir ~generated_modules ~should_force_
       String.equal (Filename.basename output_dir) "src" || String.equal (norm output_dir) (norm "src")
     in
 
-    let should_overwrite = should_force_generate entity.Gir_gen_lib.Types.name in
     let g_file_exists = output_under_src && Sys.file_exists g_file in
 
-    if g_file_exists && not should_overwrite then
-      printf "Skipping %s (already exists)\n" g_file
-    else begin
-      if should_overwrite && g_file_exists then
-        printf "Overwriting %s (forced validation)\n" g_file;
+    (* Always overwrite to enable wholesale regeneration *)
+    if true then begin
+      if g_file_exists then
+        printf "Overwriting %s (wholesale regeneration enabled)\n" g_file
+      else
+        printf "Creating %s\n" g_file;
 
       write_file ~path:g_file ~content:(Gir_gen_lib.Generate.Class_gen.generate_class_module
         ~ctx
@@ -130,20 +130,20 @@ let generate_high_level_class ~ctx ~output_dir ~generated_modules ~should_force_
         ~signals:entity.Gir_gen_lib.Types.signals);
       generated_modules := (sprintf "g%s" module_name) :: !generated_modules;
 
+      (* Always overwrite signature files too *)
       let g_sig_exists = output_under_src && Sys.file_exists g_sig_file in
-      if not (g_sig_exists && not should_overwrite) then begin
-        if should_overwrite && g_sig_exists then
-          printf "Overwriting %s (forced validation)\n" g_sig_file;
-        write_file ~path:g_sig_file ~content:(Gir_gen_lib.Generate.Class_gen.generate_class_signature
-          ~ctx
-          ~c_type:entity.Gir_gen_lib.Types.c_type
-          ~class_name:entity.Gir_gen_lib.Types.name
-          ~parent_chain
-          ~methods:entity.Gir_gen_lib.Types.methods
-          ~properties:entity.Gir_gen_lib.Types.properties
-          ~signals:entity.Gir_gen_lib.Types.signals);
-      end else
-        printf "Skipping %s (already exists)\n" g_sig_file;
+      if g_sig_exists then
+        printf "Overwriting %s (wholesale regeneration enabled)\n" g_sig_file
+      else
+        printf "Creating %s\n" g_sig_file;
+      write_file ~path:g_sig_file ~content:(Gir_gen_lib.Generate.Class_gen.generate_class_signature
+        ~ctx
+        ~c_type:entity.Gir_gen_lib.Types.c_type
+        ~class_name:entity.Gir_gen_lib.Types.name
+        ~parent_chain
+        ~methods:entity.Gir_gen_lib.Types.methods
+        ~properties:entity.Gir_gen_lib.Types.properties
+        ~signals:entity.Gir_gen_lib.Types.signals);
     end
   end
 

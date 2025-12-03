@@ -24,7 +24,7 @@ let ocaml_method_name ~class_name ~c_type (meth : gir_method) =
   Filtering.ocaml_method_name ~class_name ~c_type meth |> sanitize_name
 
 let parameter_name (p : gir_param) =
-  sanitize_name p.param_name
+  Filtering.sanitize_identifier (sanitize_name p.param_name)
 
 let generate_signal_class ~class_name ~module_name ~signals =
   let buf = Buffer.create 256 in
@@ -69,13 +69,11 @@ let generate_property_methods ~ctx ~module_name ~seen (prop : gir_property) =
     let seen = StringSet.add prop_snake seen in
     let buf = Buffer.create 128 in
     if prop.readable then begin
-      bprintf buf "  method get_%s () = %s.get_%s obj\n" prop_snake module_name prop_snake;
       bprintf buf "  method %s () = %s.get_%s obj\n" prop_snake module_name prop_snake;
     end;
     if prop.writable && not prop.construct_only then
       bprintf buf "  method set_%s v = %s.set_%s obj v\n" prop_snake module_name prop_snake;
     let seen =
-      let seen = if prop.readable then StringSet.add ("get_" ^ prop_snake) seen else seen in
       if prop.writable && not prop.construct_only then StringSet.add ("set_" ^ prop_snake) seen
       else seen
     in
@@ -92,13 +90,11 @@ let generate_property_signatures ~ctx ~seen (prop : gir_property) =
         let seen = StringSet.add prop_snake seen in
         let buf = Buffer.create 128 in
         if prop.readable then begin
-          bprintf buf "    method get_%s : unit -> %s\n" prop_snake ocaml_type;
           bprintf buf "    method %s : unit -> %s\n" prop_snake ocaml_type;
         end;
         if prop.writable && not prop.construct_only then
           bprintf buf "    method set_%s : %s -> unit\n" prop_snake ocaml_type;
         let seen =
-          let seen = if prop.readable then StringSet.add ("get_" ^ prop_snake) seen else seen in
           if prop.writable && not prop.construct_only then StringSet.add ("set_" ^ prop_snake) seen
           else seen
         in
@@ -127,19 +123,13 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
       module_name
       ocaml_name
       (if param_list = "()" then "" else " " ^ param_list);
-
-    (* Convenience alias for getters: get_x -> x *)
-    let seen =
-      if String.length ocaml_name > 4 && String.sub ocaml_name ~pos:0 ~len:4 = "get_" then
-        let base = String.sub ocaml_name ~pos:4 ~len:(String.length ocaml_name - 4) in
-        if StringSet.mem base seen then seen
-        else begin
-          bprintf buf "  method %s () = %s.%s obj\n" base module_name ocaml_name;
-          StringSet.add base seen
-        end
-      else seen
-    in
     (Buffer.contents buf, seen)
+
+let has_type_variable type_str =
+  (* Check if the type contains an underscore wildcard (like "_ Gdk.event") *)
+  (* We look for patterns like "_ Gdk.event" which have a standalone underscore *)
+  let parts = Str.split (Str.regexp "[ \t]+") type_str in
+  List.exists ~f:(fun part -> part = "_") parts
 
 let generate_method_signatures ~ctx ~property_method_names ~property_base_names ~class_name ~c_type ~seen (meth : gir_method) =
   let should_skip =
@@ -165,20 +155,16 @@ let generate_method_signatures ~ctx ~property_method_names ~property_base_names 
     | None -> ("", seen)
     | Some return_type ->
         let param_types = if param_types = [] then ["unit"] else param_types in
+        (* Check if any type contains a type variable *)
+        let has_poly = List.exists (param_types @ [return_type]) ~f:has_type_variable in
         let signature = String.concat ~sep:" -> " (param_types @ [return_type]) in
         let seen = StringSet.add ocaml_name seen in
         let buf = Buffer.create 256 in
-        bprintf buf "    method %s : %s\n" ocaml_name signature;
-        let seen =
-          if String.length ocaml_name > 4 && String.sub ocaml_name ~pos:0 ~len:4 = "get_" then
-            let base = String.sub ocaml_name ~pos:4 ~len:(String.length ocaml_name - 4) in
-            if StringSet.mem base seen then seen
-            else begin
-              bprintf buf "    method %s : %s\n" base signature;
-              StringSet.add base seen
-            end
-          else seen
-        in
+        (* Add explicit polymorphism if needed *)
+        if has_poly then
+          bprintf buf "    method %s : 'a. %s\n" ocaml_name signature
+        else
+          bprintf buf "    method %s : %s\n" ocaml_name signature;
         (Buffer.contents buf, seen)
 
 let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods ~properties ~signals =
@@ -191,24 +177,18 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods ~prope
     bprintf buf "(* Class generation skipped for non-widget class %s *)\n" class_name;
     Buffer.contents buf
   end else begin
-    (* Reference external signal class module if signals exist *)
-    let has_any_void_signals = List.exists signals ~f:(fun s ->
-      let is_void =
-        let c_type = String.lowercase_ascii s.return_type.c_type in
-        let name = String.lowercase_ascii s.return_type.name in
-        c_type = "void" || name = "none"
-      in
-      is_void
-    ) in
+    (* Include signal class if widget has ANY signals defined in GIR *)
+    (* This ensures method connect is always present when signals exist *)
+    let has_any_signals = List.length signals > 0 in
 
-    if has_any_void_signals then
+    if has_any_signals then
       bprintf buf "(* Signal class defined in g%s_signals.ml *)\n\n" class_snake;
 
     bprintf buf "(* High-level class for %s *)\n" class_name;
     bprintf buf "class %s_skel (obj : %s.t) = object (self)\n" class_snake module_name;
     bprintf buf "  inherit GObj.widget_impl (%s.as_widget obj)\n\n" module_name;
 
-    if has_any_void_signals then begin
+    if has_any_signals then begin
       let signal_module = "G" ^ class_snake ^ "_signals" in
       bprintf buf "  method connect = new %s.%s obj\n\n"
         signal_module (signal_class_name class_name)
@@ -256,12 +236,9 @@ let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain ~methods ~pr
     bprintf buf "(* Class signature skipped for non-widget class %s *)\n" class_name;
     Buffer.contents buf
   end else begin
-    (* Check if there are any void signals *)
-    let has_any_void_signals = List.exists signals ~f:(fun s ->
-      let c_type = String.lowercase_ascii s.return_type.c_type in
-      let name = String.lowercase_ascii s.return_type.name in
-      c_type = "void" || name = "none"
-    ) in
+    (* Include signal class if widget has ANY signals defined in GIR *)
+    (* This ensures method connect is always present when signals exist *)
+    let has_any_signals = List.length signals > 0 in
 
     let property_method_names =
       Filtering.property_method_names ~ctx properties
@@ -273,7 +250,7 @@ let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain ~methods ~pr
     bprintf buf "class %s_skel : %s.t ->\n" class_snake module_name;
     bprintf buf "  object\n";
     bprintf buf "    inherit GObj.widget_impl\n";
-    if has_any_void_signals then begin
+    if has_any_signals then begin
       let signal_module = "G" ^ class_snake ^ "_signals" in
       bprintf buf "    method connect : %s.%s\n" signal_module (signal_class_name class_name)
     end;
