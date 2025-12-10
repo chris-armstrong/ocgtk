@@ -220,11 +220,16 @@ let generate_method_signatures ~ctx ~property_method_names ~property_base_names 
     match return_type with
     | None -> ("", seen)
     | Some return_type ->
+        (* Wrap with result type if method throws *)
+        let final_return_type =
+          if meth.throws then sprintf "(%s, GError.t) result" return_type
+          else return_type
+        in
         let param_types = if param_types = [] then ["unit"] else param_types in
         (* Check if any type contains a type variable or has hierarchy params *)
-        let has_type_var = List.exists (param_types @ [return_type]) ~f:has_type_variable in
+        let has_type_var = List.exists (param_types @ [final_return_type]) ~f:has_type_variable in
         let has_poly = has_type_var || has_hierarchy_params in
-        let signature = String.concat ~sep:" -> " (param_types @ [return_type]) in
+        let signature = String.concat ~sep:" -> " (param_types @ [final_return_type]) in
         let seen = StringSet.add ocaml_name seen in
         let buf = Buffer.create 256 in
         (* Add explicit polymorphism if needed *)
@@ -357,3 +362,153 @@ let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~
 
     Buffer.contents buf
   end
+
+(* Generate combined class modules for cyclic dependencies *)
+let generate_combined_class_module ~ctx ~entities ~parent_chain_for_entity =
+  let buf = Buffer.create 4096 in
+
+  bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
+  bprintf buf "(* Combined classes for cyclic dependencies *)\n\n";
+
+  (* Sort entities by name for consistent output *)
+  let sorted_entities = List.sort ~cmp:(fun e1 e2 -> String.compare e1.name e2.name) entities in
+
+  (* Generate each class *)
+  List.iteri ~f:(fun i entity ->
+    let _parent_chain = parent_chain_for_entity entity.name in
+    let module_name = Utils.module_name_of_class entity.name in
+    let class_snake = sanitize_name entity.name in
+
+    let has_any_signals = List.length entity.signals > 0 in
+    let in_widget_hierarchy =
+      match Hierarchy_detection.get_hierarchy_info ctx entity.name with
+      | Some info -> info.hierarchy = WidgetHierarchy
+      | None -> false
+    in
+
+    if has_any_signals then
+      bprintf buf "(* Signal class defined in g%s_signals.ml *)\n\n" class_snake;
+
+    (* Class declaration with 'and' for subsequent classes *)
+    if i = 0 then
+      bprintf buf "class %s_skel (obj : %s.%s.t) = object (self)\n"
+        class_snake module_name module_name
+    else
+      bprintf buf "\nand %s_skel (obj : %s.%s.t) = object (self)\n"
+        class_snake module_name module_name;
+
+    if in_widget_hierarchy then
+      bprintf buf "  inherit GObj.widget_impl (%s.%s.as_widget obj)\n\n"
+        module_name module_name
+    else
+      bprintf buf "\n";
+
+    if has_any_signals then begin
+      let signal_module = "G" ^ class_snake ^ "_signals" in
+      bprintf buf "  method connect = new %s.%s obj\n\n"
+        signal_module (signal_class_name entity.name)
+    end;
+
+    let property_method_names = Filtering.property_method_names ~ctx entity.properties in
+    let property_base_names = Filtering.property_base_names ~ctx entity.properties in
+    let seen = StringSet.empty in
+
+    let seen, () =
+      List.fold_left entity.properties ~init:(seen, ()) ~f:(fun (seen, ()) prop ->
+        let chunk, seen = generate_property_methods ~ctx ~module_name ~seen prop in
+        Buffer.add_string buf chunk;
+        if chunk <> "" then Buffer.add_char buf '\n';
+        (seen, ()))
+    in
+
+    let _seen, () =
+      List.fold_left entity.methods ~init:(seen, ()) ~f:(fun (seen, ()) m ->
+        let chunk, seen = generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~module_name ~class_name:entity.name ~c_type:entity.c_type ~seen m in
+        Buffer.add_string buf chunk;
+        if chunk <> "" then Buffer.add_char buf '\n';
+        (seen, ()))
+    in
+
+    bprintf buf "end\n";
+  ) sorted_entities;
+
+  (* Now generate the non-_skel classes *)
+  bprintf buf "\n";
+  List.iteri ~f:(fun i entity ->
+    let _module_name = Utils.module_name_of_class entity.name in
+    let class_snake = sanitize_name entity.name in
+
+    if i = 0 then
+      bprintf buf "class %s obj = object\n" class_snake
+    else
+      bprintf buf "\nand %s obj = object\n" class_snake;
+
+    bprintf buf "  inherit %s_skel obj\n" class_snake;
+    bprintf buf "end\n";
+  ) sorted_entities;
+
+  Buffer.contents buf
+
+(* Generate combined class signatures for cyclic dependencies *)
+let generate_combined_class_signature ~ctx ~entities ~parent_chain_for_entity =
+  let buf = Buffer.create 4096 in
+
+  (* Sort entities by name for consistent output *)
+  let sorted_entities = List.sort ~cmp:(fun e1 e2 -> String.compare e1.name e2.name) entities in
+
+  (* Generate each class signature *)
+  List.iteri ~f:(fun i entity ->
+    let _parent_chain = parent_chain_for_entity entity.name in
+    let module_name = Utils.module_name_of_class entity.name in
+    let class_snake = sanitize_name entity.name in
+
+    let has_any_signals = List.length entity.signals > 0 in
+    let in_widget_hierarchy =
+      match Hierarchy_detection.get_hierarchy_info ctx entity.name with
+      | Some info -> info.hierarchy = WidgetHierarchy
+      | None -> false
+    in
+
+    let property_method_names = Filtering.property_method_names ~ctx entity.properties in
+    let property_base_names = Filtering.property_base_names ~ctx entity.properties in
+
+    if i > 0 then bprintf buf "\n";
+    bprintf buf "class %s_skel : %s.%s.t ->\n" class_snake module_name module_name;
+    bprintf buf "  object\n";
+    if in_widget_hierarchy then
+      bprintf buf "    inherit GObj.widget_impl\n";
+    if has_any_signals then begin
+      let signal_module = "G" ^ class_snake ^ "_signals" in
+      bprintf buf "    method connect : %s.%s\n" signal_module (signal_class_name entity.name)
+    end;
+
+    let seen = StringSet.empty in
+    let seen, () =
+      List.fold_left entity.properties ~init:(seen, ()) ~f:(fun (seen, ()) prop ->
+        let chunk, seen = generate_property_signatures ~ctx ~seen prop in
+        Buffer.add_string buf chunk;
+        (seen, ()))
+    in
+    let _seen, () =
+      List.fold_left entity.methods ~init:(seen, ()) ~f:(fun (seen, ()) meth ->
+        let chunk, seen = generate_method_signatures ~ctx ~property_method_names ~property_base_names ~class_name:entity.name ~c_type:entity.c_type ~seen meth in
+        Buffer.add_string buf chunk;
+        (seen, ()))
+    in
+    bprintf buf "  end\n";
+  ) sorted_entities;
+
+  (* Now generate the non-_skel class signatures *)
+  bprintf buf "\n";
+  List.iteri ~f:(fun i entity ->
+    let module_name = Utils.module_name_of_class entity.name in
+    let class_snake = sanitize_name entity.name in
+
+    if i > 0 then bprintf buf "\n";
+    bprintf buf "class %s : %s.%s.t ->\n" class_snake module_name module_name;
+    bprintf buf "  object\n";
+    bprintf buf "    inherit %s_skel\n" class_snake;
+    bprintf buf "  end\n";
+  ) sorted_entities;
+
+  Buffer.contents buf

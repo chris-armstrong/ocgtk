@@ -23,44 +23,15 @@ let simplify_self_reference ~class_name ocaml_type =
 let generate_signal_bindings ~output_mode:_ ~module_name:_ ~has_widget_parent:_ _signals =
   ""  (* Signals are only generated in high-level g*.ml wrappers *)
 
-let generate_ml_interface
-    ~ctx
-    ~output_mode
-    ~class_name
-    ~class_doc
-    ~c_type
-    ~parent_chain
-    ~constructors
-    ~methods
-    ~properties
-    ~signals:_
-    ?c_symbol_prefix
-    ?record_base_type
-    ?(is_record = false)
-    () =
-  let buf = Buffer.create 1024 in
-  let is_impl = match output_mode with Implementation -> true | Interface -> false in
-  let is_copy_or_free (meth : gir_method) =
-    let lower_name = String.lowercase_ascii meth.method_name in
-    let lower_cid = String.lowercase_ascii meth.c_identifier in
-    let ends_with suffix str =
-      let len_s = String.length suffix and len_str = String.length str in
-      len_str >= len_s && String.sub str ~pos:(len_str - len_s) ~len:len_s = suffix
-    in
-    lower_name = "copy" || lower_name = "free" ||
-    ends_with "_copy" lower_cid || ends_with "_free" lower_cid
-  in
-
+let detect_class_hierarchy_names ~ctx ~class_name ~parent_chain ?record_base_type ?(is_record = false) () =
   let normalized_class = Utils.normalize_class_name class_name in
-  let parent_chain =
+      let parent_chain =
     if is_record then []
     else
       (* parent_chain is ordered immediate parent -> root *)
       List.map ~f:Utils.normalize_class_name parent_chain
   in
-
-  let class_type_name, base_type =
-    if is_record then
+  if is_record then
       ("Record", Option.value record_base_type ~default:"Obj.t")
     else
       (* Use hierarchy detection to determine type *)
@@ -101,18 +72,49 @@ let generate_ml_interface
           let all_variants = self_variant :: parent_variants in
           let variants = String.concat ~sep:" | " all_variants in
           (class_name, sprintf "[%s] Gobject.obj" variants)
-  in
 
-  bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
-  bprintf buf "(* %s: %s *)\n\n" class_type_name class_name;
+  let is_copy_or_free (meth : gir_method) =
+    let lower_name = String.lowercase_ascii meth.method_name in
+    let lower_cid = String.lowercase_ascii meth.c_identifier in
+    let ends_with suffix str =
+      let len_s = String.length suffix and len_str = String.length str in
+      len_str >= len_s && String.sub str ~pos:(len_str - len_s) ~len:len_s = suffix
+    in
+    lower_name = "copy" || lower_name = "free" ||
+    ends_with "_copy" lower_cid || ends_with "_free" lower_cid
+  
+let print_indent contents buf =
+  let lines = String.split_on_char ~sep:'\n' contents in
+  (* Indent the content *)
+  List.iter ~f:(fun line ->
+    if String.trim line <> "" then
+      bprintf buf "  %s\n" line
+    else
+      bprintf buf "\n"
+  ) lines
 
-  (match class_doc with
-  | Some doc -> bprintf buf "(** %s *)\n" (sanitize_doc doc)
-  | None -> ());
+let generate_ml_interface_internal
+    ~ctx
+    ~output_mode
+    ~class_name
+    
+    ~c_type
+    
+    ~constructors
+    ~methods
+    ~properties
+    ~signals:_
+    ~base_type
+    ?c_symbol_prefix
+    ?(is_record = false)
+    buf
+     =
 
-  if is_record && not is_impl then
+  match (is_record, output_mode) with
+  | true, Interface -> 
+  
     bprintf buf "type t\n\n"
-  else
+  | _ -> 
     bprintf buf "type t = %s\n\n" base_type;
 
   (* Generate accessor method for hierarchy types *)
@@ -125,9 +127,10 @@ let generate_ml_interface
          let base_type = hier_info.layer1_base_type in
          (* Simplify self-references (though this should never happen for accessors) *)
          let base_type = simplify_self_reference ~class_name base_type in
-         if is_impl then
+         match output_mode with
+         | Implementation -> 
            bprintf buf "let %s (obj : t) : %s = Obj.magic obj\n\n" accessor base_type
-         else
+         | Interface ->
            bprintf buf "val %s : t -> %s\n\n" accessor base_type
        end
    | _ -> ());
@@ -356,6 +359,120 @@ let generate_ml_interface
         bprintf buf "external %s : %s = \"%s\"\n\n"
           ocaml_name full_type ml_name;
     end
-  ) (List.rev methods);
+  ) (List.rev methods)
+  
+
+let generate_ml_interface
+    ~ctx
+    ~output_mode
+    ~class_name
+    ~class_doc
+    ~c_type
+    ~parent_chain
+    ~constructors
+    ~methods
+    ~properties
+    ~signals
+    ?c_symbol_prefix
+    ?record_base_type
+    ?(is_record = false)
+    ()
+    = 
+  let buf = Buffer.create 1024 in
+
+  let class_type_name, base_type = detect_class_hierarchy_names ~ctx ~class_name ~parent_chain ?record_base_type ~is_record ()
+    
+  in
+
+  bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
+  bprintf buf "(* %s: %s *)\n\n" class_type_name class_name;
+
+  (match class_doc with
+  | Some doc -> bprintf buf "(** %s *)\n" (sanitize_doc doc)
+  | None -> ());
+  generate_ml_interface_internal 
+  ~ctx ~output_mode ~class_name ~c_type ~constructors ~methods ~properties ~signals ?c_symbol_prefix ~base_type  ~is_record buf;
+  Buffer.contents buf
+
+(* Generate combined modules for cyclic dependencies *)
+let generate_combined_ml_modules
+    ~ctx
+    ~output_mode
+    ~entities
+    ~parent_chain_for_entity
+    () =
+  let buf = Buffer.create 4096 in
+  let is_impl = match output_mode with Implementation -> true | Interface -> false in
+
+  bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
+  bprintf buf "(* Combined modules for cyclic dependencies *)\n\n";
+
+  (* Sort entities by name for consistent output *)
+  let sorted_entities = List.sort ~cmp:(fun e1 e2 -> String.compare e1.name e2.name) entities in
+
+  (* Generate each module *)
+  List.iteri ~f:(fun i entity ->
+    let parent_chain = parent_chain_for_entity entity.name in
+    let class_name = entity.name in
+    let _, base_type = detect_class_hierarchy_names ~ctx ~class_name ~parent_chain () in
+    let module_name = Utils.module_name_of_class class_name in
+
+    (* Module declaration *)
+    let start = i = 0 in
+    if start then
+    
+      bprintf buf "module rec %s" module_name
+    else 
+      bprintf buf "\nand %s\n" module_name;
+
+    if is_impl then begin
+      bprintf buf " : sig\n";
+      let singature_contents = 
+        let buf = Buffer.create 1024 in   
+        generate_ml_interface_internal
+        ~ctx
+        ~output_mode:Interface
+        ~class_name:entity.name
+        
+        ~c_type:entity.c_type
+        
+        ~constructors:(if List.length entity.constructors > 0 then Some entity.constructors else None)
+        ~methods:entity.methods
+        ~properties:entity.properties
+        ~signals:entity.signals
+        ~base_type
+        buf;
+        Buffer.contents buf 
+      in
+      print_indent singature_contents buf;
+      bprintf buf "end = struct\n"
+    end
+    else 
+      bprintf buf " : sig\n"
+    ;
+ 
+    (* Generate module content using existing single-file generator *)
+    (* We need to adapt the output to fit inside a module *)
+    let single_content = 
+      let buf = Buffer.create 1024 in
+      generate_ml_interface_internal
+      ~ctx
+      ~output_mode
+      ~class_name:entity.name
+   
+      ~c_type:entity.c_type
+      ~base_type
+      ~constructors:(if List.length entity.constructors > 0 then Some entity.constructors else None)
+      ~methods:entity.methods
+      ~properties:entity.properties
+      ~signals:entity.signals
+      buf;
+      Buffer.contents buf 
+    in
+
+    print_indent single_content buf;
+
+    bprintf buf "end\n";
+  ) sorted_entities;
 
   Buffer.contents buf

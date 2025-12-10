@@ -14,7 +14,7 @@ let write_file ~path ~content =
   close_out oc
 
 (* Generate C stub file for a single entity (class or interface) *)
-let generate_c_stub ~ctx ~output_dir ~generated_stubs ~generated_modules entity =
+let generate_c_stub ~ctx ~output_dir ~generated_stubs entity =
   if Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name then begin
     printf "  - %s (SKIPPED - incomplete support)\n" entity.Gir_gen_lib.Types.name
   end else begin
@@ -36,12 +36,11 @@ let generate_c_stub ~ctx ~output_dir ~generated_stubs ~generated_modules entity 
 
     write_file ~path:c_file ~content:c_code;
     generated_stubs := stub_name :: !generated_stubs;
-    generated_modules := (Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name) :: !generated_modules;
   end
 
 (* Generate C stub files for all entities *)
-let generate_all_c_stubs ~ctx ~output_dir ~generated_stubs ~generated_modules entities =
-  List.iter ~f:(generate_c_stub ~ctx ~output_dir ~generated_stubs ~generated_modules) entities
+let generate_all_c_stubs ~ctx ~output_dir ~generated_stubs entities =
+  List.iter ~f:(generate_c_stub ~ctx ~output_dir ~generated_stubs) entities
 
 (* Output file kind for ML generation *)
 type output_file_kind = Interface | Implementation
@@ -79,10 +78,11 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain entity =
   write_file ~path:ml_file ~content
 
 (* Generate both .mli and .ml files for an entity *)
-let generate_ml_interfaces ~ctx ~output_dir ~parent_chain entity =
+let generate_ml_interfaces ~ctx ~output_dir ~generated_modules ~parent_chain entity =
   if not (Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name) then begin
     generate_ml_file ~ctx ~output_dir ~kind:Interface ~parent_chain entity;
-    generate_ml_file ~ctx ~output_dir ~kind:Implementation ~parent_chain entity
+    generate_ml_file ~ctx ~output_dir ~kind:Implementation ~parent_chain entity;
+    generated_modules := (Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name) :: !generated_modules
   end
 
 (* Check if entity should have a high-level wrapper class (g<Widget>.ml) *)
@@ -173,6 +173,42 @@ let generate_all_signal_classes ~ctx ~output_dir ~parent_chain_for_class entitie
     let parent_chain = parent_chain_for_class entity.Gir_gen_lib.Types.name in
     generate_signal_class ~ctx ~output_dir ~parent_chain entity
   ) entities
+
+(* Generate combined .ml + .mli for cyclic Layer 1 modules *)
+let generate_combined_ml_files ~ctx ~output_dir ~generated_modules ~module_group ~parent_chain_for_class =
+  let entities = Gir_gen_lib.Dependency_analysis.entities_of_group module_group in
+  let combined_name = Gir_gen_lib.Dependency_analysis.module_name_of_group module_group in
+  let combined_snake = Gir_gen_lib.Utils.to_snake_case combined_name in
+
+  let mli_path = Filename.concat output_dir (combined_snake ^ ".mli") in
+  let ml_path = Filename.concat output_dir (combined_snake ^ ".ml") in
+
+  let parent_chain_for_entity name = parent_chain_for_class name in
+
+  let mli_content = Gir_gen_lib.Generate.Ml_interface.generate_combined_ml_modules
+    ~ctx ~output_mode:Gir_gen_lib.Generate.Ml_interface.Interface ~entities ~parent_chain_for_entity () in
+  let ml_content = Gir_gen_lib.Generate.Ml_interface.generate_combined_ml_modules
+    ~ctx ~output_mode:Gir_gen_lib.Generate.Ml_interface.Implementation ~entities ~parent_chain_for_entity () in
+
+  write_file ~path:mli_path ~content:mli_content;
+  write_file ~path:ml_path ~content:ml_content;
+  generated_modules := combined_name :: !generated_modules
+
+(* Generate combined g*.ml + g*.mli for cyclic Layer 2 classes *)
+let generate_combined_class_files ~ctx ~output_dir ~generated_modules ~module_group ~parent_chain_for_class =
+  let entities = Gir_gen_lib.Dependency_analysis.entities_of_group module_group in
+  let combined_name = Gir_gen_lib.Dependency_analysis.module_name_of_group module_group in
+  let g_file = Filename.concat output_dir ("g" ^ Gir_gen_lib.Utils.module_name_of_class combined_name ^ ".ml") in
+  let g_sig_file = Filename.concat output_dir ("g" ^ Gir_gen_lib.Utils.module_name_of_class combined_name ^ ".mli") in
+
+  let parent_chain_for_entity name = parent_chain_for_class name in
+
+  let g_content = Gir_gen_lib.Generate.Class_gen.generate_combined_class_module ~ctx ~entities ~parent_chain_for_entity in
+  let g_sig = Gir_gen_lib.Generate.Class_gen.generate_combined_class_signature ~ctx ~entities ~parent_chain_for_entity in
+
+  write_file ~path:g_file ~content:g_content;
+  write_file ~path:g_sig_file ~content:g_sig;
+  generated_modules := ("g" ^ Gir_gen_lib.Utils.module_name_of_class combined_name) :: !generated_modules
 
 (* Generate enum and bitfield files for a namespace *)
 let generate_enum_files ~output_dir ~generated_stubs ~generated_modules namespace enums bitfields =
@@ -431,19 +467,43 @@ let generate_bindings filter_file gir_file output_dir =
   generate_enum_files ~output_dir ~generated_stubs ~generated_modules gtk_namespace gtk_enums gtk_bitfields;
 
   (* Generate C files for all entities (classes and interfaces) *)
-  generate_all_c_stubs ~ctx ~output_dir ~generated_stubs ~generated_modules entities;
+  generate_all_c_stubs ~ctx ~output_dir ~generated_stubs entities;
 
-  (* Generate OCaml interface files for all entities *)
-  List.iter ~f:(fun entity ->
-    let parent_chain = parent_chain_for_class entity.Gir_gen_lib.Types.name in
-    generate_ml_interfaces ~ctx ~output_dir ~parent_chain entity
-  ) entities;
+  (* ==== SCC-BASED GENERATION ==== *)
 
-  (* Generate high-level wrapper classes for classes with Widget parent *)
-  List.iter ~f:(fun entity ->
-    let parent_chain = parent_chain_for_class entity.Gir_gen_lib.Types.name in
-    generate_high_level_class ~ctx ~output_dir ~generated_modules entity parent_chain
-  ) entities;
+  (* Compute module groups using SCC algorithm *)
+  printf "\nComputing dependency groups using SCC...\n";
+  let module_groups = Gir_gen_lib.Dependency_analysis.compute_module_groups ctx entities in
+  printf "Found %d module groups (%d cyclic, %d acyclic)\n"
+    (List.length module_groups)
+    (List.length (List.filter module_groups ~f:Gir_gen_lib.Dependency_analysis.is_cyclic_group))
+    (List.length (List.filter module_groups ~f:(fun g -> not (Gir_gen_lib.Dependency_analysis.is_cyclic_group g))));
+
+  (* Generate Layer 1 files (OCaml interfaces) *)
+  printf "\nGenerating Layer 1 interface files...\n";
+  List.iter ~f:(fun group ->
+    match group with
+    | Gir_gen_lib.Dependency_analysis.Single entity ->
+        let parent_chain = parent_chain_for_class entity.Gir_gen_lib.Types.name in
+        generate_ml_interfaces ~ctx ~output_dir ~generated_modules ~parent_chain entity
+    | Gir_gen_lib.Dependency_analysis.Cycle cycle_entities ->
+        let names = String.concat ~sep:", " (List.map cycle_entities ~f:(fun e -> e.Gir_gen_lib.Types.name)) in
+        printf "  Generating combined module for cycle: %s\n" names;
+        generate_combined_ml_files ~ctx ~output_dir ~generated_modules ~module_group:group ~parent_chain_for_class
+  ) module_groups;
+
+  (* Generate Layer 2 files (high-level wrapper classes) *)
+  printf "\nGenerating Layer 2 class files...\n";
+  List.iter ~f:(fun group ->
+    match group with
+    | Gir_gen_lib.Dependency_analysis.Single entity ->
+        let parent_chain = parent_chain_for_class entity.Gir_gen_lib.Types.name in
+        generate_high_level_class ~ctx ~output_dir ~generated_modules entity parent_chain
+    | Gir_gen_lib.Dependency_analysis.Cycle cycle_entities ->
+        let names = String.concat ~sep:", " (List.map cycle_entities ~f:(fun e -> e.Gir_gen_lib.Types.name)) in
+        printf "  Generating combined class for cycle: %s\n" names;
+        generate_combined_class_files ~ctx ~output_dir ~generated_modules ~module_group:group ~parent_chain_for_class
+  ) module_groups;
 
   (* Generate signal classes for all entities (classes and interfaces) *)
   generate_all_signal_classes ~ctx ~output_dir ~parent_chain_for_class entities;
@@ -490,8 +550,9 @@ let generate_bindings filter_file gir_file output_dir =
     "spin_button"; "label"; "image"; "link_button"; "menu_button"; "switch";
     "text_buffer"; "text_view"; "text_tag"; "text_tag_table"; "button"; "check_button";
     "toggle_button"; "adjustment"; "range"; "progress_bar"; "level_bar"; "scale";
-    "editable"; "widget"; "box"; "grid"; "fixed"; "paned"; "notebook"; "stack";
-    "window"; "scrolled_window"; "frame";
+    "box"; "grid"; "fixed"; "paned"; "notebook"; "stack";
+    "scrolled_window"; "frame";
+    (* NOTE: "editable", "widget", "window" removed - they are generated as part of recursive modules *)
   ] in
   let module_list =
     (base_modules @ !generated_modules)
