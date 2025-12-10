@@ -2,7 +2,7 @@
 
 ## MANDATORY: Development Essentials
 
-1. ALWAYS build the project after making changes with `dune build`
+1. ALWAYS build the project after making changes with `dune build`. Always use its output in full - DO NOT FILTER its output with `head`/`grep`/`tail` because you will miss critical context.
 2. ALWAYS run tests with `dune runtest`
 3. ALWAYS write scripts and supporting code in OCaml
 
@@ -44,8 +44,8 @@ diff lablgtk3/src/<file>.c lablgtk4/src/<file>.c
 
 This project uses `dune` to compile code and run tests. NEVER compile code directly with `ocamlc/ocamlc.opt`.
 
-* Use `dune build` to compile the code. IMPORTANT: Always check the return code grep for "error|warning|undefined reference", and not just error when parsing its output to determine if it succeeded. If the return code is still an error, re-run without filtering the output.
-* Use `dune test` to run all the unit and integration tests.
+* Use `dune build` to compile the code. IMPORTANT: Always check the return code grep for "error|warning|undefined reference". DO NOT filter its output with `grep`/`head`/`tail` etc. otherwise you will miss critical error context.
+* Use `dune test` to run all the unit and integration tests. ALWAYS check the return code to determine success - do not rely on the console output.
 
 ## OCaml / C FFI Guidelines
 
