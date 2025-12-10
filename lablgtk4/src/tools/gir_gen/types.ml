@@ -199,4 +199,6 @@ type generation_context = {
   external_enums: (string * gir_enum) list;
   external_bitfields: (string * gir_bitfield) list;
   hierarchy_map: (string, hierarchy_info) Hashtbl.t;
+  module_groups: (string, string) Hashtbl.t;  (* class_name -> combined_module_name *)
+  current_cycle_classes: string list;  (* Class names in the current cyclic module being generated *)
 }

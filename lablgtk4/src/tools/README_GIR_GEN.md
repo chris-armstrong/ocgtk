@@ -91,6 +91,7 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 - External function declarations for constructors, methods, and properties
 - Hierarchy accessor methods (`as_widget`, `as_event_controller`, etc.) for 5 predefined hierarchies (see `hierarchy_detection.ml`)
 - Combined modules for cyclic dependencies using Tarjan's SCC algorithm (see `dependency_analysis.ml`)
+- **Smart type resolution for cyclic modules** - automatically uses simple names within a cycle (`Window.t`) and fully-qualified names for external references (`Application_and__window_and__window_group.Window.t`)
 - Over 600 generated binding files
 
 ### Layer 3: High-Level Wrapper Classes (`g<Class>.ml/.mli`)
@@ -132,7 +133,7 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 - Callback types not extracted
 - Interface method implementations not tracked beyond interface names
 
-### Type Mapping (type_mappings.ml - 437 lines)
+### Type Mapping (type_mappings.ml - 500+ lines)
 **Working:**
 - ~150 hardcoded GTK/GLib type mappings to OCaml types
 - Nullable type handling with `option` wrapper
@@ -142,6 +143,11 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 - EventController, CellRenderer, LayoutManager, Expression hierarchies
 - Pango, Gdk, and GdkPixbuf type support
 - GdkEvent special handling
+- Context-aware cyclic module type resolution:
+  - Detects when generating within a cyclic module via `current_cycle_classes`
+  - Uses unqualified names for same-cycle references
+  - Uses fully qualified names for cross-module references
+  - Applies to classes, interfaces, and records
 
 **Limitations:**
 - Static mapping list, requires manual addition for new types
@@ -183,12 +189,17 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 - Namespace prefix handling (Gtk, Gdk, Pango, etc.)
 - Digit-prefixed variant name sanitization
 
-### Dependency Handling (dependency_analysis.ml - 150+ lines)
+### Dependency Handling (dependency_analysis.ml - 225+ lines)
 **Working:**
 - Tarjan's strongly connected components algorithm
 - Cyclic dependency detection and resolution
 - Combined module generation for mutual recursion
 - Topological ordering for compilation
+- Smart type resolution for cyclic modules:
+  - Within same cycle: uses simple submodule names (e.g., `Window.t`)
+  - Cross-cycle references: uses full qualified names (e.g., `Application_and__window_and__window_group.Window.t`)
+- Module name mapping table (`module_groups`) tracks which classes belong to which combined modules
+- Proper handling of snake_case → capitalization for OCaml module name mapping
 
 ### Hierarchy Support (hierarchy_detection.ml - 108 lines)
 **Working:**
@@ -411,7 +422,8 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 3. **Polymorphic variant types** - Type safety superior to lablgtk3's unified type approach
 4. **External namespace support** - Enum/bitfield generation works across 5 namespaces
 5. **Filtering system** - Prevents generation of unsupported code patterns
-6. **Combined modules** - Handles OCaml's restriction on cyclic dependencies
+6. **Combined modules** - Handles OCaml's restriction on cyclic dependencies with intelligent type resolution
+7. **Context-aware type generation** - Automatically uses correct module paths for self-references vs. cross-module references in cyclic dependencies
 
 ---
 
@@ -464,10 +476,15 @@ The original design plan (formerly lines 74-676 of this document) outlined a com
 
 ### Parser and Type System
 - `parse/gir_parser.ml` (1090 lines) - GIR XML parsing, extracts classes/interfaces/enums/records/signals
-- `parse/types.ml` - AST type definitions for GIR elements
-- `type_mappings.ml` (437 lines) - GTK/GLib to OCaml type mappings, nullable handling, record/class lookups
+- `types.ml` (204 lines) - AST type definitions for GIR elements, generation_context with:
+  - `module_groups: (string, string) Hashtbl.t` - Maps class names to combined module names for cyclic groups
+  - `current_cycle_classes: string list` - Tracks which classes are in the currently-generating cyclic module
+- `type_mappings.ml` (500+ lines) - GTK/GLib to OCaml type mappings, nullable handling, record/class lookups, context-aware cyclic module resolution
 - `hierarchy_detection.ml` (108 lines) - 5 hardcoded widget hierarchies, parent chain traversal
-- `dependency_analysis.ml` (150+ lines) - Tarjan's SCC algorithm for cyclic dependency resolution
+- `dependency_analysis.ml` (225+ lines) - Tarjan's SCC algorithm for cyclic dependency resolution, module group management:
+  - `create_module_groups_table()` - Builds class-to-module mapping
+  - `module_name_of_group()` - Generates proper snake_case-then-capitalized module names
+  - `create_module_name_for_cycle()` - Combines multiple class names with `_and_` separator
 
 ### Code Generators
 - `generate/c_stubs.ml` (943 lines) - C FFI stubs, type converters, property GValue access, memory management
@@ -490,6 +507,10 @@ The original design plan (formerly lines 74-676 of this document) outlined a com
 - `lablgtk4/src/button.ml/.mli` - Low-level FFI example with polymorphic variant types
 - `lablgtk4/src/gButton.ml/.mli` - High-level class wrapper example (if manually created)
 - `lablgtk4/src/gtk_enums.ml/.mli` - Enum/bitfield type examples
+- `lablgtk4/src/application_and__window_and__window_group.ml/.mli` - Combined cyclic module example showing:
+  - `module rec Application : sig ... end and Window : sig ... end and Window_group : sig ... end` structure
+  - Internal references using simple names (e.g., `Window.t`)
+  - External files using fully qualified names (e.g., `Application_and__window_and__window_group.Window.t`)
 
 ### Runtime Dependencies
 - `lablgtk4/src/gObj.ml` - Base `widget_impl` class for high-level wrappers

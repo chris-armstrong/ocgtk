@@ -168,7 +168,9 @@ type module_group =
 let create_module_name_for_cycle (entities: entity list) : string =
   (* Sort entity names for consistent ordering *)
   let names = List.map entities ~f:(fun e -> e.name) |> List.sort ~cmp:String.compare in
-  String.concat ~sep:"_and_" names
+  (* Convert each class name to module name format *)
+  let module_names = List.map names ~f:Utils.module_name_of_class in
+  String.concat ~sep:"_and_" module_names
 
 (* Compute SCC-based module groups *)
 let compute_module_groups (ctx: generation_context) (entities: entity list) : module_group list =
@@ -208,4 +210,22 @@ let entities_of_group = function
 (* Get module name for a group *)
 let module_name_of_group = function
   | Single e -> Utils.module_name_of_class e.name
-  | Cycle es -> create_module_name_for_cycle es
+  | Cycle es ->
+      (* For cyclic modules, we need to return the name as OCaml will see it
+         after file naming conversion: CamelCase -> snake_case -> Capitalized *)
+      let combined = create_module_name_for_cycle es in
+      let snake_case = Utils.to_snake_case combined in
+      String.capitalize_ascii snake_case
+
+(* Create a hashtable mapping class names to their module names
+   For cyclic modules, maps each class to the combined module name *)
+let create_module_groups_table (groups: module_group list) : (string, string) Hashtbl.t =
+  let tbl = Hashtbl.create 256 in
+  List.iter groups ~f:(fun group ->
+    let module_name = module_name_of_group group in
+    let entities = entities_of_group group in
+    List.iter entities ~f:(fun entity ->
+      Hashtbl.add tbl entity.name module_name
+    )
+  );
+  tbl

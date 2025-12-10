@@ -185,10 +185,14 @@ let generate_combined_ml_files ~ctx ~output_dir ~generated_modules ~module_group
 
   let parent_chain_for_entity name = parent_chain_for_class name in
 
+  (* Create a context with current_cycle_classes set *)
+  let cycle_class_names = List.map ~f:(fun e -> e.Gir_gen_lib.Types.name) entities in
+  let ctx_with_cycle = { ctx with Gir_gen_lib.Types.current_cycle_classes = cycle_class_names } in
+
   let mli_content = Gir_gen_lib.Generate.Ml_interface.generate_combined_ml_modules
-    ~ctx ~output_mode:Gir_gen_lib.Generate.Ml_interface.Interface ~entities ~parent_chain_for_entity () in
+    ~ctx:ctx_with_cycle ~output_mode:Gir_gen_lib.Generate.Ml_interface.Interface ~entities ~parent_chain_for_entity () in
   let ml_content = Gir_gen_lib.Generate.Ml_interface.generate_combined_ml_modules
-    ~ctx ~output_mode:Gir_gen_lib.Generate.Ml_interface.Implementation ~entities ~parent_chain_for_entity () in
+    ~ctx:ctx_with_cycle ~output_mode:Gir_gen_lib.Generate.Ml_interface.Implementation ~entities ~parent_chain_for_entity () in
 
   write_file ~path:mli_path ~content:mli_content;
   write_file ~path:ml_path ~content:ml_content;
@@ -203,8 +207,12 @@ let generate_combined_class_files ~ctx ~output_dir ~generated_modules ~module_gr
 
   let parent_chain_for_entity name = parent_chain_for_class name in
 
-  let g_content = Gir_gen_lib.Generate.Class_gen.generate_combined_class_module ~ctx ~entities ~parent_chain_for_entity in
-  let g_sig = Gir_gen_lib.Generate.Class_gen.generate_combined_class_signature ~ctx ~entities ~parent_chain_for_entity in
+  (* Create a context with current_cycle_classes set *)
+  let cycle_class_names = List.map ~f:(fun e -> e.Gir_gen_lib.Types.name) entities in
+  let ctx_with_cycle = { ctx with Gir_gen_lib.Types.current_cycle_classes = cycle_class_names } in
+
+  let g_content = Gir_gen_lib.Generate.Class_gen.generate_combined_class_module ~ctx:ctx_with_cycle ~entities ~parent_chain_for_entity in
+  let g_sig = Gir_gen_lib.Generate.Class_gen.generate_combined_class_signature ~ctx:ctx_with_cycle ~entities ~parent_chain_for_entity in
 
   write_file ~path:g_file ~content:g_content;
   write_file ~path:g_sig_file ~content:g_sig;
@@ -427,21 +435,30 @@ let generate_bindings filter_file gir_file output_dir =
     external_enums = external_enums_with_ns;
     external_bitfields = external_bitfields_with_ns;
     hierarchy_map = Hashtbl.create 0; (* Temporary empty map *)
+    module_groups = Hashtbl.create 0; (* Temporary empty map *)
+    current_cycle_classes = [];  (* No cycle context initially *)
   } in
 
   (* Build hierarchy map based on class inheritance chains *)
   let hierarchy_map = Gir_gen_lib.Hierarchy_detection.build_hierarchy_map ctx_initial in
 
-  (* Final context with hierarchy map populated *)
-  let ctx : Gir_gen_lib.Types.generation_context = {
-    ctx_initial with hierarchy_map
-  } in
-
   (* Create unified entity list combining classes and interfaces *)
-  let entities : Gir_gen_lib.Types.entity list =
+  let entities_temp : Gir_gen_lib.Types.entity list =
     (List.map ~f:Gir_gen_lib.Types.entity_of_class controllers) @
     (List.map ~f:Gir_gen_lib.Types.entity_of_interface interfaces)
   in
+
+  (* Compute module groups using SCC algorithm to populate module_groups *)
+  let module_groups_list = Gir_gen_lib.Dependency_analysis.compute_module_groups ctx_initial entities_temp in
+  let module_groups = Gir_gen_lib.Dependency_analysis.create_module_groups_table module_groups_list in
+
+  (* Final context with hierarchy map and module_groups populated *)
+  let ctx : Gir_gen_lib.Types.generation_context = {
+    ctx_initial with hierarchy_map; module_groups; current_cycle_classes = []
+  } in
+
+  (* Use the already created entity list *)
+  let entities = entities_temp in
 
 
   (* ==== GENERATION STAGE ==== *)
@@ -471,13 +488,12 @@ let generate_bindings filter_file gir_file output_dir =
 
   (* ==== SCC-BASED GENERATION ==== *)
 
-  (* Compute module groups using SCC algorithm *)
-  printf "\nComputing dependency groups using SCC...\n";
-  let module_groups = Gir_gen_lib.Dependency_analysis.compute_module_groups ctx entities in
+  (* Use the already computed module groups *)
+  printf "\nUsing computed dependency groups...\n";
   printf "Found %d module groups (%d cyclic, %d acyclic)\n"
-    (List.length module_groups)
-    (List.length (List.filter module_groups ~f:Gir_gen_lib.Dependency_analysis.is_cyclic_group))
-    (List.length (List.filter module_groups ~f:(fun g -> not (Gir_gen_lib.Dependency_analysis.is_cyclic_group g))));
+    (List.length module_groups_list)
+    (List.length (List.filter module_groups_list ~f:Gir_gen_lib.Dependency_analysis.is_cyclic_group))
+    (List.length (List.filter module_groups_list ~f:(fun g -> not (Gir_gen_lib.Dependency_analysis.is_cyclic_group g))));
 
   (* Generate Layer 1 files (OCaml interfaces) *)
   printf "\nGenerating Layer 1 interface files...\n";
@@ -490,7 +506,7 @@ let generate_bindings filter_file gir_file output_dir =
         let names = String.concat ~sep:", " (List.map cycle_entities ~f:(fun e -> e.Gir_gen_lib.Types.name)) in
         printf "  Generating combined module for cycle: %s\n" names;
         generate_combined_ml_files ~ctx ~output_dir ~generated_modules ~module_group:group ~parent_chain_for_class
-  ) module_groups;
+  ) module_groups_list;
 
   (* Generate Layer 2 files (high-level wrapper classes) *)
   printf "\nGenerating Layer 2 class files...\n";
@@ -503,7 +519,7 @@ let generate_bindings filter_file gir_file output_dir =
         let names = String.concat ~sep:", " (List.map cycle_entities ~f:(fun e -> e.Gir_gen_lib.Types.name)) in
         printf "  Generating combined class for cycle: %s\n" names;
         generate_combined_class_files ~ctx ~output_dir ~generated_modules ~module_group:group ~parent_chain_for_class
-  ) module_groups;
+  ) module_groups_list;
 
   (* Generate signal classes for all entities (classes and interfaces) *)
   generate_all_signal_classes ~ctx ~output_dir ~parent_chain_for_class entities;

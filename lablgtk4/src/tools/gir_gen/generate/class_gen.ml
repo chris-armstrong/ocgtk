@@ -20,6 +20,25 @@ let sanitize_name s =
 let signal_class_name class_name =
   sanitize_name class_name ^ "_signals"
 
+(* Get the properly qualified module name for a class, accounting for cyclic modules *)
+let get_qualified_module_name ~ctx class_name =
+  (* Check if this class is in the current cycle being generated *)
+  if List.mem class_name ~set:ctx.current_cycle_classes then
+    (* Within the same cycle, use just the submodule name *)
+    Utils.module_name_of_class class_name
+  else
+    match Hashtbl.find_opt ctx.module_groups class_name with
+    | Some combined_module_name ->
+        let simple_module_name = Utils.module_name_of_class class_name in
+        (* Check if this is a cyclic module by comparing names *)
+        if combined_module_name <> simple_module_name then
+          (* For cyclic modules, we need CombinedModule.ClassName *)
+          combined_module_name ^ "." ^ simple_module_name
+        else
+          (* Single module *)
+          combined_module_name
+    | None -> Utils.module_name_of_class class_name
+
 let ocaml_method_name ~class_name ~c_type (meth : gir_method) =
   Filtering.ocaml_method_name ~class_name ~c_type meth |> sanitize_name
 
@@ -30,7 +49,7 @@ let parameter_name (p : gir_param) =
 let get_param_hierarchy_info ~ctx (param : gir_param) : hierarchy_info option =
   Hierarchy_detection.get_hierarchy_info ctx param.param_type.name
 
-let generate_signal_class ~class_name ~module_name ~signals =
+let generate_signal_class ~ctx:_ ~class_name ~module_name ~signals =
   let buf = Buffer.create 256 in
   let signals =
     List.filter signals ~f:(fun s ->
@@ -241,7 +260,7 @@ let generate_method_signatures ~ctx ~property_method_names ~property_base_names 
 
 let generate_class_module ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~properties ~signals =
   let buf = Buffer.create 2048 in
-  let module_name = Utils.module_name_of_class class_name in
+  let module_name = get_qualified_module_name ~ctx class_name in
   let class_snake = sanitize_name class_name in
   (* let widget_parent = has_widget_parent class_name parent_chain in *)
 
@@ -309,7 +328,7 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~pro
 
 let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~properties ~signals =
   let buf = Buffer.create 1024 in
-  let module_name = Utils.module_name_of_class class_name in
+  let module_name = get_qualified_module_name ~ctx class_name in
   let class_snake = sanitize_name class_name in
   (* let widget_parent = has_widget_parent class_name parent_chain in *)
 
@@ -376,7 +395,8 @@ let generate_combined_class_module ~ctx ~entities ~parent_chain_for_entity =
   (* Generate each class *)
   List.iteri ~f:(fun i entity ->
     let _parent_chain = parent_chain_for_entity entity.name in
-    let module_name = Utils.module_name_of_class entity.name in
+    (* When generating inside a combined module, we need the qualified name *)
+    let module_name = get_qualified_module_name ~ctx entity.name in
     let class_snake = sanitize_name entity.name in
 
     let has_any_signals = List.length entity.signals > 0 in
@@ -391,15 +411,15 @@ let generate_combined_class_module ~ctx ~entities ~parent_chain_for_entity =
 
     (* Class declaration with 'and' for subsequent classes *)
     if i = 0 then
-      bprintf buf "class %s_skel (obj : %s.%s.t) = object (self)\n"
-        class_snake module_name module_name
+      bprintf buf "class %s_skel (obj : %s.t) = object (self)\n"
+        class_snake module_name
     else
-      bprintf buf "\nand %s_skel (obj : %s.%s.t) = object (self)\n"
-        class_snake module_name module_name;
+      bprintf buf "\nand %s_skel (obj : %s.t) = object (self)\n"
+        class_snake module_name;
 
     if in_widget_hierarchy then
-      bprintf buf "  inherit GObj.widget_impl (%s.%s.as_widget obj)\n\n"
-        module_name module_name
+      bprintf buf "  inherit GObj.widget_impl (%s.as_widget obj)\n\n"
+        module_name
     else
       bprintf buf "\n";
 
@@ -459,7 +479,8 @@ let generate_combined_class_signature ~ctx ~entities ~parent_chain_for_entity =
   (* Generate each class signature *)
   List.iteri ~f:(fun i entity ->
     let _parent_chain = parent_chain_for_entity entity.name in
-    let module_name = Utils.module_name_of_class entity.name in
+    (* When generating inside a combined module, we need the qualified name *)
+    let module_name = get_qualified_module_name ~ctx entity.name in
     let class_snake = sanitize_name entity.name in
 
     let has_any_signals = List.length entity.signals > 0 in
@@ -473,7 +494,7 @@ let generate_combined_class_signature ~ctx ~entities ~parent_chain_for_entity =
     let property_base_names = Filtering.property_base_names ~ctx entity.properties in
 
     if i > 0 then bprintf buf "\n";
-    bprintf buf "class %s_skel : %s.%s.t ->\n" class_snake module_name module_name;
+    bprintf buf "class %s_skel : %s.t ->\n" class_snake module_name;
     bprintf buf "  object\n";
     if in_widget_hierarchy then
       bprintf buf "    inherit GObj.widget_impl\n";
@@ -501,11 +522,11 @@ let generate_combined_class_signature ~ctx ~entities ~parent_chain_for_entity =
   (* Now generate the non-_skel class signatures *)
   bprintf buf "\n";
   List.iteri ~f:(fun i entity ->
-    let module_name = Utils.module_name_of_class entity.name in
+    let module_name = get_qualified_module_name ~ctx entity.name in
     let class_snake = sanitize_name entity.name in
 
     if i > 0 then bprintf buf "\n";
-    bprintf buf "class %s : %s.%s.t ->\n" class_snake module_name module_name;
+    bprintf buf "class %s : %s.t ->\n" class_snake module_name;
     bprintf buf "  object\n";
     bprintf buf "    inherit %s_skel\n" class_snake;
     bprintf buf "  end\n";

@@ -297,7 +297,25 @@ let find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
       | Some cls ->
         (* Use proper Layer 1 type based on hierarchy *)
         let ocaml_type =
-          let module_name = Utils.module_name_of_class cls.class_name in
+          (* Look up the module name from module_groups table *)
+          let module_name =
+            (* Check if this class is in the current cycle being generated *)
+            if List.mem cls.class_name ~set:ctx.current_cycle_classes then
+              (* Within the same cycle, use just the submodule name *)
+              Utils.module_name_of_class cls.class_name
+            else
+              match Hashtbl.find_opt ctx.module_groups cls.class_name with
+              | Some combined_module_name ->
+                  let simple_module_name = Utils.module_name_of_class cls.class_name in
+                  (* Check if this is a cyclic module by comparing names *)
+                  if combined_module_name <> simple_module_name then
+                    (* For cyclic modules, we need CombinedModule.ClassName.t *)
+                    combined_module_name ^ "." ^ simple_module_name
+                  else
+                    (* Single module *)
+                    combined_module_name
+              | None -> Utils.module_name_of_class cls.class_name
+          in
           module_name ^ ".t"
         in
         Some {
@@ -311,7 +329,25 @@ let find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
         (match find_interface_mapping ctx.interfaces lookup_str with
         | Some iface ->
           let ocaml_type =
-            let module_name = Utils.module_name_of_class iface.interface_name in
+            (* Look up the module name from module_groups table *)
+            let module_name =
+              (* Check if this interface is in the current cycle being generated *)
+              if List.mem iface.interface_name ~set:ctx.current_cycle_classes then
+                (* Within the same cycle, use just the submodule name *)
+                Utils.module_name_of_class iface.interface_name
+              else
+                match Hashtbl.find_opt ctx.module_groups iface.interface_name with
+                | Some combined_module_name ->
+                    let simple_module_name = Utils.module_name_of_class iface.interface_name in
+                    (* Check if this is a cyclic module by comparing names *)
+                    if combined_module_name <> simple_module_name then
+                      (* For cyclic modules, we need CombinedModule.InterfaceName.t *)
+                      combined_module_name ^ "." ^ simple_module_name
+                    else
+                      (* Single module *)
+                      combined_module_name
+                | None -> Utils.module_name_of_class iface.interface_name
+            in
             module_name ^ ".t"
           in
           Some {
@@ -326,7 +362,25 @@ let find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
         | Some (record, _is_pointer, _) ->
           (* Use proper record module type (e.g., Tree_iter.t) instead of Obj.t *)
           let ocaml_type =
-            let module_name = Utils.module_name_of_class record.record_name in
+            (* Look up the module name from module_groups table *)
+            let module_name =
+              (* Check if this record is in the current cycle being generated *)
+              if List.mem record.record_name ~set:ctx.current_cycle_classes then
+                (* Within the same cycle, use just the submodule name *)
+                Utils.module_name_of_class record.record_name
+              else
+                match Hashtbl.find_opt ctx.module_groups record.record_name with
+                | Some combined_module_name ->
+                    let simple_module_name = Utils.module_name_of_class record.record_name in
+                    (* Check if this is a cyclic module by comparing names *)
+                    if combined_module_name <> simple_module_name then
+                      (* For cyclic modules, we need CombinedModule.RecordName.t *)
+                      combined_module_name ^ "." ^ simple_module_name
+                    else
+                      (* Single module *)
+                      combined_module_name
+                | None -> Utils.module_name_of_class record.record_name
+            in
             module_name ^ ".t"
           in
           Some {
