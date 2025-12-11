@@ -257,7 +257,10 @@ let generate_enum_files ~output_dir ~generated_stubs ~generated_modules namespac
 (* Generate C files and OCaml bindings for boxed records *)
 let generate_all_record_bindings ~ctx ~output_dir ~generated_stubs ~generated_modules records =
   List.iter ~f:(fun record ->
-    if Gir_gen_lib.Type_mappings.is_boxed_record record then begin
+    (* Skip records that are part of cyclic modules - they're already generated in combined modules *)
+    let open Gir_gen_lib.Types in
+    let is_in_cycle = Hashtbl.mem ctx.module_groups record.record_name in
+    if Gir_gen_lib.Type_mappings.is_boxed_record record && not is_in_cycle then begin
       let is_value_record = not record.opaque in
       let constructors =
         if (not record.Gir_gen_lib.Types.opaque) && (not is_value_record) && record.Gir_gen_lib.Types.constructors = [] then
@@ -442,10 +445,11 @@ let generate_bindings filter_file gir_file output_dir =
   (* Build hierarchy map based on class inheritance chains *)
   let hierarchy_map = Gir_gen_lib.Hierarchy_detection.build_hierarchy_map ctx_initial in
 
-  (* Create unified entity list combining classes and interfaces *)
+  (* Create unified entity list combining classes, interfaces, and records *)
   let entities_temp : Gir_gen_lib.Types.entity list =
     (List.map ~f:Gir_gen_lib.Types.entity_of_class controllers) @
-    (List.map ~f:Gir_gen_lib.Types.entity_of_interface interfaces)
+    (List.map ~f:Gir_gen_lib.Types.entity_of_interface interfaces) @
+    (List.map ~f:Gir_gen_lib.Types.entity_of_record records)
   in
 
   (* Compute module groups using SCC algorithm to populate module_groups *)

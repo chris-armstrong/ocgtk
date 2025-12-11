@@ -103,7 +103,14 @@ let extract_dependencies_from_type (ctx: generation_context) (gir_type: gir_type
     else []
   in
 
-  class_deps @ interface_deps
+  (* Check if it's a record *)
+  let record_deps =
+    if List.exists ~f:(fun rec_ -> rec_.record_name = type_name) ctx.records then
+      [type_name]
+    else []
+  in
+
+  class_deps @ interface_deps @ record_deps
 
 (* Extract all dependencies from parameters *)
 let extract_param_dependencies (ctx: generation_context) (params: gir_param list) : string list =
@@ -148,6 +155,16 @@ let extract_interface_dependencies (ctx: generation_context) (intf: gir_interfac
   List.filter all_deps ~f:(fun dep -> dep <> intf.interface_name)
   |> List.sort_uniq ~cmp:String.compare
 
+(* Extract all dependencies for a record *)
+let extract_record_dependencies (ctx: generation_context) (rec_: gir_record) : string list =
+  let method_deps = List.concat_map rec_.methods ~f:(extract_method_dependencies ctx) in
+  let constructor_deps = List.concat_map rec_.constructors ~f:(extract_constructor_dependencies ctx) in
+
+  (* Remove self-references and duplicates *)
+  let all_deps = method_deps @ constructor_deps in
+  List.filter all_deps ~f:(fun dep -> dep <> rec_.record_name)
+  |> List.sort_uniq ~cmp:String.compare
+
 (* Build dependency graph for all entities *)
 let build_dependency_graph (ctx: generation_context) : (string * string list) list =
   let class_graph = List.map ctx.classes ~f:(fun cls ->
@@ -158,7 +175,11 @@ let build_dependency_graph (ctx: generation_context) : (string * string list) li
     (intf.interface_name, extract_interface_dependencies ctx intf)
   ) in
 
-  class_graph @ interface_graph
+  let record_graph = List.map ctx.records ~f:(fun rec_ ->
+    (rec_.record_name, extract_record_dependencies ctx rec_)
+  ) in
+
+  class_graph @ interface_graph @ record_graph
 
 (* Module group type *)
 type module_group =

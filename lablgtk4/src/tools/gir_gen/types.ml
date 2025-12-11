@@ -123,8 +123,8 @@ type gir_interface = {
   interface_doc: string option;
 }
 
-(* Unified entity type for classes and interfaces *)
-type entity_kind = Class | Interface
+(* Unified entity type for classes, interfaces, and records *)
+type entity_kind = Class | Interface | Record
 
 type entity = {
   kind: entity_kind;
@@ -163,6 +163,19 @@ let entity_of_interface (intf: gir_interface) : entity = {
   methods = intf.methods;
   properties = intf.properties;
   signals = intf.signals;
+}
+
+let entity_of_record (rec_: gir_record) : entity = {
+  kind = Record;
+  name = rec_.record_name;
+  c_type = rec_.c_type;
+  doc = rec_.record_doc;
+  parent = None;
+  implements = [];
+  constructors = rec_.constructors;
+  methods = rec_.methods;
+  properties = [];
+  signals = [];
 }
 
 type type_mapping = {
