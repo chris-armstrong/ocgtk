@@ -23,7 +23,7 @@ let hierarchy_definitions = [
   {
     hierarchy = CellRendererHierarchy;
     gir_root = "CellRenderer";
-    layer2_module = "GCell";
+    layer2_module = "GCell_renderer";
     class_type_name = "cell_renderer_skel";
     accessor_method = "as_cellrenderer";
     layer1_base_type = "Cell_renderer.t";

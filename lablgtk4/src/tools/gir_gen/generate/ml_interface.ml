@@ -20,6 +20,25 @@ let simplify_self_reference ~class_name ocaml_type =
   else
     ocaml_type
 
+(* Qualify module references for cyclic dependencies *)
+let qualify_module_reference ~ctx module_type =
+  (* Extract module name from types like "Layout_manager.t" or "Widget.t" *)
+  match String.split_on_char ~sep:'.' module_type with
+  | [module_name; "t"] ->
+      (* Check if this module is part of a cyclic group *)
+      (match Hashtbl.find_opt ctx.module_groups module_name with
+       | Some combined_module_name ->
+           let simple_module_name = module_name in
+           (* Check if this is a cyclic module by comparing names *)
+           if combined_module_name <> simple_module_name then
+             (* For cyclic modules, use CombinedModule.ClassName.t *)
+             combined_module_name ^ "." ^ simple_module_name ^ ".t"
+           else
+             (* Single module *)
+             module_type
+       | None -> module_type)
+  | _ -> module_type
+
 let generate_signal_bindings ~output_mode:_ ~module_name:_ ~has_widget_parent:_ _signals =
   ""  (* Signals are only generated in high-level g*.ml wrappers *)
 
@@ -124,11 +143,28 @@ let generate_ml_interface_internal
        (* (e.g., Button should have as_widget, but Widget should not have as_widget : t -> Widget.t) *)
        if class_name <> hier_info.gir_root then begin
          let accessor = hier_info.accessor_method in
-         let base_type = hier_info.layer1_base_type in
+         (* Build the base type reference using the GIR root name *)
+         let gir_root_class = hier_info.gir_root in
+         (* Check if the root class is in a cyclic group *)
+         let base_type =
+           match Hashtbl.find_opt ctx.module_groups gir_root_class with
+           | Some combined_module_name ->
+               let simple_module_name = Utils.module_name_of_class gir_root_class in
+               (* Check if this is actually a cyclic module (combined != simple) *)
+               if combined_module_name <> simple_module_name then
+                 (* For cyclic modules, use CombinedModule.ClassName.t *)
+                 combined_module_name ^ "." ^ simple_module_name ^ ".t"
+               else
+                 (* Single-class module, just use ClassName.t *)
+                 simple_module_name ^ ".t"
+           | None ->
+               (* Not in module_groups table at all, use simple ClassName.t *)
+               Utils.module_name_of_class gir_root_class ^ ".t"
+         in
          (* Simplify self-references (though this should never happen for accessors) *)
          let base_type = simplify_self_reference ~class_name base_type in
          match output_mode with
-         | Implementation -> 
+         | Implementation ->
            bprintf buf "let %s (obj : t) : %s = Obj.magic obj\n\n" accessor base_type
          | Interface ->
            bprintf buf "val %s : t -> %s\n\n" accessor base_type

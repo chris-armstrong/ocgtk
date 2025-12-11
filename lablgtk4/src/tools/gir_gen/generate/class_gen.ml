@@ -22,22 +22,18 @@ let signal_class_name class_name =
 
 (* Get the properly qualified module name for a class, accounting for cyclic modules *)
 let get_qualified_module_name ~ctx class_name =
-  (* Check if this class is in the current cycle being generated *)
-  if List.mem class_name ~set:ctx.current_cycle_classes then
-    (* Within the same cycle, use just the submodule name *)
-    Utils.module_name_of_class class_name
-  else
-    match Hashtbl.find_opt ctx.module_groups class_name with
-    | Some combined_module_name ->
-        let simple_module_name = Utils.module_name_of_class class_name in
-        (* Check if this is a cyclic module by comparing names *)
-        if combined_module_name <> simple_module_name then
-          (* For cyclic modules, we need CombinedModule.ClassName *)
-          combined_module_name ^ "." ^ simple_module_name
-        else
-          (* Single module *)
-          combined_module_name
-    | None -> Utils.module_name_of_class class_name
+  (* Always check if this class is in a cyclic group and use the full path if so *)
+  match Hashtbl.find_opt ctx.module_groups class_name with
+  | Some combined_module_name ->
+      let simple_module_name = Utils.module_name_of_class class_name in
+      (* Check if this is a cyclic module by comparing names *)
+      if combined_module_name <> simple_module_name then
+        (* For cyclic modules, we need CombinedModule.ClassName *)
+        combined_module_name ^ "." ^ simple_module_name
+      else
+        (* Single module (non-cyclic even though in module_groups table) *)
+        combined_module_name
+  | None -> Utils.module_name_of_class class_name
 
 let ocaml_method_name ~class_name ~c_type (meth : gir_method) =
   Filtering.ocaml_method_name ~class_name ~c_type meth |> sanitize_name
@@ -209,11 +205,6 @@ let generate_method_signatures ~ctx ~property_method_names ~property_base_names 
     let param_hier_info = List.map meth.parameters ~f:(fun p ->
       (p, get_param_hierarchy_info ~ctx p)
     ) in
-    let has_hierarchy_params = List.exists param_hier_info ~f:(fun (_, hier_opt) ->
-      match hier_opt with
-      | Some info -> info.hierarchy <> MonomorphicType
-      | None -> false
-    ) in
 
     let param_types =
       List.map param_hier_info ~f:(fun (p, hier_opt) ->
@@ -245,14 +236,14 @@ let generate_method_signatures ~ctx ~property_method_names ~property_base_names 
           else return_type
         in
         let param_types = if param_types = [] then ["unit"] else param_types in
-        (* Check if any type contains a type variable or has hierarchy params *)
+        (* Check if any type contains a type variable (like _ Gdk.event) *)
+        (* Note: # syntax for object types is implicitly polymorphic, so we don't need 'a. for those *)
         let has_type_var = List.exists (param_types @ [final_return_type]) ~f:has_type_variable in
-        let has_poly = has_type_var || has_hierarchy_params in
         let signature = String.concat ~sep:" -> " (param_types @ [final_return_type]) in
         let seen = StringSet.add ocaml_name seen in
         let buf = Buffer.create 256 in
-        (* Add explicit polymorphism if needed *)
-        if has_poly then
+        (* Add explicit polymorphism only for actual type variables (like _), not for # object types *)
+        if has_type_var then
           bprintf buf "    method %s : 'a. %s\n" ocaml_name signature
         else
           bprintf buf "    method %s : %s\n" ocaml_name signature;

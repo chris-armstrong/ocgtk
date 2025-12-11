@@ -207,12 +207,12 @@ let generate_combined_class_files ~ctx ~output_dir ~generated_modules ~module_gr
 
   let parent_chain_for_entity name = parent_chain_for_class name in
 
-  (* Create a context with current_cycle_classes set *)
-  let cycle_class_names = List.map ~f:(fun e -> e.Gir_gen_lib.Types.name) entities in
-  let ctx_with_cycle = { ctx with Gir_gen_lib.Types.current_cycle_classes = cycle_class_names } in
+  (* For class layer (g*.ml files), do NOT set current_cycle_classes *)
+  (* Class files are not mutually recursive - they reference the combined C binding module *)
+  (* So all references must be fully qualified *)
 
-  let g_content = Gir_gen_lib.Generate.Class_gen.generate_combined_class_module ~ctx:ctx_with_cycle ~entities ~parent_chain_for_entity in
-  let g_sig = Gir_gen_lib.Generate.Class_gen.generate_combined_class_signature ~ctx:ctx_with_cycle ~entities ~parent_chain_for_entity in
+  let g_content = Gir_gen_lib.Generate.Class_gen.generate_combined_class_module ~ctx ~entities ~parent_chain_for_entity in
+  let g_sig = Gir_gen_lib.Generate.Class_gen.generate_combined_class_signature ~ctx ~entities ~parent_chain_for_entity in
 
   write_file ~path:g_file ~content:g_content;
   write_file ~path:g_sig_file ~content:g_sig;
