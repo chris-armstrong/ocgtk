@@ -282,6 +282,8 @@ let test_signal_parsing_and_generation () =
     external_enums = [];
     external_bitfields = [];
     hierarchy_map = Hashtbl.create 0;
+    module_groups = Hashtbl.create 0;
+    current_cycle_classes = [];
   } in
   let hierarchy_map = Gir_gen_lib.Hierarchy_detection.build_hierarchy_map ctx_initial in
   let ctx = { ctx_initial with hierarchy_map } in

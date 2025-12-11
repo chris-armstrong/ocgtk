@@ -98,6 +98,12 @@ let generate_property_methods ~ctx ~module_name ~seen (prop : gir_property) =
     in
     (Buffer.contents buf, seen)
 
+let has_type_variable type_str =
+  (* Check if the type contains an underscore wildcard (like "_ Gdk.event") *)
+  (* We look for patterns like "_ Gdk.event" which have a standalone underscore *)
+  let parts = Str.split (Str.regexp "[ \t]+") type_str in
+  List.exists ~f:(fun part -> part = "_") parts
+
 let generate_property_signatures ~ctx ~seen (prop : gir_property) =
   if not (Filtering.should_generate_property ~ctx prop) then ("", seen)
   else
@@ -140,6 +146,82 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
       | None -> false
     ) in
 
+    (* Build type signature for the method (needed for type annotation) *)
+    let param_hier_info = List.map meth.parameters ~f:(fun p ->
+      (p, get_param_hierarchy_info ~ctx p)
+    ) in
+    let param_types =
+      List.map param_hier_info ~f:(fun (p, hier_opt) ->
+        match hier_opt with
+        | Some hier when hier.hierarchy <> MonomorphicType ->
+            
+            let class_type = sprintf "%s.%s" hier.layer2_module hier.class_type_name in
+            if p.nullable || p.param_type.nullable then
+              Some (class_type ^ " option")
+            else
+              Some class_type
+        | _ ->
+            (* Regular type *)
+            let gir_type = { p.param_type with nullable = p.nullable || p.param_type.nullable } in
+            ocaml_type_of_gir_type ~ctx gir_type)
+    in
+    let return_type =
+      if String.lowercase_ascii meth.return_type.c_type = "void" then Some "unit"
+      else ocaml_type_of_gir_type ~ctx meth.return_type
+    in
+
+    (* Check if we need a type annotation (for polymorphic methods or object types) *)
+    let needs_type_annotation =
+      match param_types, return_type with
+      | types, Some ret ->
+          let all_types = List.filter_map types ~f:(fun x -> x) @ [ret] in
+          (* Need annotation if we have type variables or # object types *)
+          List.exists all_types ~f:has_type_variable ||
+          List.exists all_types ~f:(fun t -> String.contains t '#')
+      | _ -> false
+    in
+
+    (* Convert #Module.class_type to partial object type for .ml files *)
+    let convert_to_partial_object_type type_str =
+      (* Convert #GExpression.expression_skel to (<as_expression: Expression.t; ..> as 'a) *)
+      List.fold_left param_hier_info ~init:type_str ~f:(fun acc (_, hier_opt) ->
+        match hier_opt with
+        | Some hier when hier.hierarchy <> MonomorphicType ->
+            let class_type_pattern = sprintf "%s.%s" hier.layer2_module hier.class_type_name in
+            let partial_obj = sprintf "%s.%s" hier.accessor_method hier.layer1_base_type in
+            let pattern_option = class_type_pattern ^ " option" in
+            let partial_option = partial_obj ^ " option" in
+            (* Replace both with and without option *)
+            acc
+            |> Str.global_replace (Str.regexp_string pattern_option) partial_option
+            |> Str.global_replace (Str.regexp_string class_type_pattern) partial_obj
+        | _ -> acc)
+    in
+
+    let type_annotation_opt =
+      if needs_type_annotation then
+        match return_type with
+        | Some ret when not (List.exists param_types ~f:(fun x -> x = None)) ->
+            let param_types_clean = List.filter_map param_types ~f:(fun x -> x) in
+            let final_ret =
+              if meth.throws then sprintf "(%s, GError.t) result" ret
+              else ret
+            in
+            let param_types_clean = if param_types_clean = [] then ["unit"] else param_types_clean in
+            let signature = String.concat ~sep:" -> " (param_types_clean @ [final_ret]) in
+            (* Convert # syntax to partial object types for .ml files *)
+            let signature = convert_to_partial_object_type signature in
+            (* Add explicit polymorphism if we have type variables OR # object types *)
+            let has_type_var = List.exists (param_types_clean @ [final_ret]) ~f:has_type_variable in
+            let has_object_type = List.exists (param_types_clean @ [final_ret]) ~f:(fun t -> String.contains t '#') in
+            if has_type_var || has_object_type then
+              Some (sprintf "'a. %s" signature)
+            else
+              Some signature
+        | _ -> None
+      else None
+    in
+
     let buf = Buffer.create 256 in
 
     if has_hierarchy_params then begin
@@ -150,8 +232,15 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
         | _ -> String.concat ~sep:" " param_names
       in
 
-      bprintf buf "  method %s %s =\n" ocaml_name
-        (if param_list = "()" then "()" else param_list);
+      (* Add type annotation if needed *)
+      (match type_annotation_opt with
+       | Some type_ann ->
+           bprintf buf "  method %s : %s =\n    fun %s ->\n" ocaml_name type_ann
+             (if param_list = "()" then "()" else param_list)
+       | None ->
+           bprintf buf "  method %s %s =\n" ocaml_name
+             (if param_list = "()" then "()" else param_list));
+
       bprintf buf "    %s.%s obj" module_name ocaml_name;
 
       List.iter param_info ~f:(fun (name, p, hier_opt) ->
@@ -175,21 +264,24 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
         | [] -> "()"
         | _ -> String.concat ~sep:" " params
       in
-      bprintf buf "  method %s %s = %s.%s obj%s\n"
-        ocaml_name
-        (if param_list = "()" then "()" else param_list)
-        module_name
-        ocaml_name
-        (if param_list = "()" then "" else " " ^ param_list)
+      (* Add type annotation if needed *)
+      (match type_annotation_opt with
+       | Some type_ann ->
+           bprintf buf "  method %s : %s = fun %s -> %s.%s obj%s\n"
+             ocaml_name type_ann
+             (if param_list = "()" then "()" else param_list)
+             module_name ocaml_name
+             (if param_list = "()" then "" else " " ^ param_list)
+       | None ->
+           bprintf buf "  method %s %s = %s.%s obj%s\n"
+             ocaml_name
+             (if param_list = "()" then "()" else param_list)
+             module_name
+             ocaml_name
+             (if param_list = "()" then "" else " " ^ param_list))
     end;
 
     (Buffer.contents buf, seen)
-
-let has_type_variable type_str =
-  (* Check if the type contains an underscore wildcard (like "_ Gdk.event") *)
-  (* We look for patterns like "_ Gdk.event" which have a standalone underscore *)
-  let parts = Str.split (Str.regexp "[ \t]+") type_str in
-  List.exists ~f:(fun part -> part = "_") parts
 
 let generate_method_signatures ~ctx ~property_method_names ~property_base_names ~class_name ~c_type ~seen (meth : gir_method) =
   let should_skip =
