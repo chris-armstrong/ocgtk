@@ -211,8 +211,12 @@ let generate_combined_class_files ~ctx ~output_dir ~generated_modules ~module_gr
   (* Class files are not mutually recursive - they reference the combined C binding module *)
   (* So all references must be fully qualified *)
 
-  let g_content = Gir_gen_lib.Generate.Class_gen.generate_combined_class_module ~ctx ~entities ~parent_chain_for_entity in
-  let g_sig = Gir_gen_lib.Generate.Class_gen.generate_combined_class_signature ~ctx ~entities ~parent_chain_for_entity in
+  let g_content = Gir_gen_lib.Generate.Class_gen.generate_combined_class_module
+    ~ctx ~combined_module_name:combined_name ~entities ~parent_chain_for_entity
+     in
+  let g_sig = Gir_gen_lib.Generate.Class_gen.generate_combined_class_signature
+    ~ctx ~combined_module_name:combined_name ~entities ~parent_chain_for_entity
+     in
 
   write_file ~path:g_file ~content:g_content;
   write_file ~path:g_sig_file ~content:g_sig;
