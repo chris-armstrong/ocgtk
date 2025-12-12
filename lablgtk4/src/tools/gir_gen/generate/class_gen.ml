@@ -599,8 +599,9 @@ let generate_combined_class_signature ~ctx ~entities ~parent_chain_for_entity =
     let property_method_names = Filtering.property_method_names ~ctx entity.properties in
     let property_base_names = Filtering.property_base_names ~ctx entity.properties in
 
-    if i > 0 then bprintf buf "\n";
-    bprintf buf "class %s_skel : %s.t ->\n" class_snake module_name;
+    if i > 0 then bprintf buf "\nand ";
+    if i = 0 then bprintf buf "class ";
+    bprintf buf "%s_skel : %s.t ->\n" class_snake module_name;
     bprintf buf "  object\n";
     if in_widget_hierarchy then
       bprintf buf "    inherit GObj.widget_impl\n";
