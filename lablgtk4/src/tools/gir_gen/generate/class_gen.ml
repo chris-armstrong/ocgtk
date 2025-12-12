@@ -399,8 +399,9 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~pro
 
     if has_any_signals then begin
       let signal_module = "G" ^ class_snake ^ "_signals" in
-      bprintf buf "  method connect = new %s.%s obj\n\n"
-        signal_module (signal_class_name class_name)
+      let _ = signal_module in ()
+      (* bprintf buf "  method connect = new %s.%s obj\n\n"
+        signal_module (signal_class_name class_name) *)
     end;
 
     let seen = StringSet.empty in
@@ -472,7 +473,8 @@ let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~
     ) hierarchy_info;
     if has_any_signals then begin
       let signal_module = "G" ^ class_snake ^ "_signals" in
-      bprintf buf "    method connect : %s.%s\n" signal_module (signal_class_name class_name)
+      let _ = signal_module in ()
+      (* bprintf buf "    method connect : %s.%s\n" signal_module (signal_class_name class_name) *)
     end;
     let seen = StringSet.empty in
     let seen, () =
@@ -546,8 +548,9 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities ~parent_
 
     if has_any_signals then begin
       let signal_module = "G" ^ class_snake ^ "_signals" in
-      bprintf buf "  method connect = new %s.%s obj\n\n"
-        signal_module (signal_class_name entity.name)
+      let _ = signal_module in ()
+      (* bprintf buf "  method connect = new %s.%s obj\n\n"
+        signal_module (signal_class_name entity.name) *)
     end;
 
     let property_method_names = Filtering.property_method_names ~ctx entity.properties in
@@ -629,7 +632,8 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities ~pare
     ) hierarchy_info;
     if has_any_signals then begin
       let signal_module = "G" ^ class_snake ^ "_signals" in
-      bprintf buf "    method connect : %s.%s\n" signal_module (signal_class_name entity.name)
+      let _ = signal_module in ()
+      (* bprintf buf "    method connect : %s.%s\n" signal_module (signal_class_name entity.name) *)
     end;
 
     let seen = StringSet.empty in
