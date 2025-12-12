@@ -5,7 +5,7 @@ open Types
 (* Base hierarchy configuration - layer2_module will be computed dynamically *)
 let base_hierarchy_definitions = [
   (WidgetHierarchy, "Widget", "widget_skel", "as_widget");
-  (EventControllerHierarchy, "EventController", "controller_skel", "as_event_controller");
+  (EventControllerHierarchy, "EventController", "event_controller_skel", "as_event_controller");
   (CellRendererHierarchy, "CellRenderer", "cell_renderer_skel", "as_cell_renderer");
   (LayoutManagerHierarchy, "LayoutManager", "layout_manager_skel", "as_layoutmanager");
   (ExpressionHierarchy, "Expression", "expression_skel", "as_expression");
