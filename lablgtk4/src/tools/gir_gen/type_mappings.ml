@@ -44,7 +44,7 @@ let type_mappings = [
   });
   (* GdkModifierType is now generated from Gdk-4.0.gir *)
   ("GdkEvent*", {
-    ocaml_type = "_ Gdk.event";
+    ocaml_type = "'a Gdk.event";
     c_to_ml = "Val_GdkEvent";
     ml_to_c = "GdkEvent_val";
     needs_copy = false;
@@ -190,7 +190,7 @@ let type_mappings = [
   });
   (* GdkEvent - pointer type *)
   ("GdkEvent*", {
-    ocaml_type = "_ Gdk.event";
+    ocaml_type = "'a Gdk.event";
     c_to_ml = "Val_GdkEvent";
     ml_to_c = "GdkEvent_val";
     needs_copy = false;

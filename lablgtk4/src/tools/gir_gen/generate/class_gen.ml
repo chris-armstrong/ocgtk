@@ -80,10 +80,10 @@ let generate_property_methods ~ctx ~module_name ~seen (prop : gir_property) =
     (Buffer.contents buf, seen)
 
 let has_type_variable type_str =
-  (* Check if the type contains an underscore wildcard (like "_ Gdk.event") *)
-  (* We look for patterns like "_ Gdk.event" which have a standalone underscore *)
+  (* Check if the type contains an type-variable wildcard (like "_ Gdk.event") *)
+  
   let parts = Str.split (Str.regexp "[ \t]+") type_str in
-  List.exists ~f:(fun part -> part = "_") parts
+  List.exists ~f:(fun part -> part = "'a") parts
 
 let generate_property_signatures ~ctx ~seen (prop : gir_property) =
   if not (Filtering.should_generate_property ~ctx prop) then ("", seen)
@@ -135,8 +135,8 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
       List.map param_hier_info ~f:(fun (p, hier_opt) ->
         match hier_opt with
         | Some hier when hier.hierarchy <> MonomorphicType ->
-            
-            let class_type = sprintf "%s.%s" hier.layer2_module hier.class_type_name in
+            (* Use # syntax for hierarchy types (will be converted later for .ml files) *)
+            let class_type = sprintf "#%s.%s" hier.layer2_module hier.class_type_name in
             if p.nullable || p.param_type.nullable then
               Some (class_type ^ " option")
             else
@@ -164,18 +164,17 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
 
     (* Convert #Module.class_type to partial object type for .ml files *)
     let convert_to_partial_object_type type_str =
-      (* Convert #GExpression.expression_skel to (<as_expression: Expression.t; ..> as 'a) *)
+      (* Convert #GExpression.expression_skel to (#GExpression.expression_skel as 'a) for explicit polymorphism *)
+      (* We keep the # syntax but add 'as 'a' to make the type variable explicit *)
       List.fold_left param_hier_info ~init:type_str ~f:(fun acc (_, hier_opt) ->
         match hier_opt with
         | Some hier when hier.hierarchy <> MonomorphicType ->
-            let class_type_pattern = sprintf "%s.%s" hier.layer2_module hier.class_type_name in
-            let partial_obj = sprintf "%s.%s" hier.accessor_method hier.layer1_base_type in
+            let class_type_pattern = sprintf "#%s.%s" hier.layer2_module hier.class_type_name in
             let pattern_option = class_type_pattern ^ " option" in
-            let partial_option = partial_obj ^ " option" in
-            (* Replace both with and without option *)
+            let partial_option = sprintf "(%s as 'a) option" class_type_pattern in
+            (* Replace with 'as 'a' for option types, keep as-is for non-option *)
             acc
             |> Str.global_replace (Str.regexp_string pattern_option) partial_option
-            |> Str.global_replace (Str.regexp_string class_type_pattern) partial_obj
         | _ -> acc)
     in
 
@@ -189,12 +188,13 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
               else ret
             in
             let param_types_clean = if param_types_clean = [] then ["unit"] else param_types_clean in
+            (* Check for # object types BEFORE conversion *)
+            let has_type_var = List.exists (param_types_clean @ [final_ret]) ~f:has_type_variable in
+            let has_object_type = List.exists (param_types_clean @ [final_ret]) ~f:(fun t -> String.contains t '#') in
             let signature = String.concat ~sep:" -> " (param_types_clean @ [final_ret]) in
             (* Convert # syntax to partial object types for .ml files *)
             let signature = convert_to_partial_object_type signature in
             (* Add explicit polymorphism if we have type variables OR # object types *)
-            let has_type_var = List.exists (param_types_clean @ [final_ret]) ~f:has_type_variable in
-            let has_object_type = List.exists (param_types_clean @ [final_ret]) ~f:(fun t -> String.contains t '#') in
             if has_type_var || has_object_type then
               Some (sprintf "'a. %s" signature)
             else
@@ -222,17 +222,36 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
            bprintf buf "  method %s %s =\n" ocaml_name
              (if param_list = "()" then "()" else param_list));
 
-      bprintf buf "    %s.%s obj" module_name ocaml_name;
+      (* For hierarchy params with type annotations, we need let bindings *)
+      let has_hierarchy_with_annotation = type_annotation_opt <> None && has_hierarchy_params in
+      if has_hierarchy_with_annotation then begin
+        List.iter param_info ~f:(fun (name, p, hier_opt) ->
+          match hier_opt with
+          | Some hier when hier.hierarchy <> MonomorphicType ->
+              if p.nullable || p.param_type.nullable then
+                bprintf buf "      let %s = Option.map (fun (c: #%s.%s) -> c#%s) %s in\n"
+                  name hier.layer2_module hier.class_type_name hier.accessor_method name
+              else
+                ()
+          | _ -> ()
+        );
+        bprintf buf "      %s.%s obj" module_name ocaml_name
+      end else begin
+        bprintf buf "    %s.%s obj" module_name ocaml_name
+      end;
 
       List.iter param_info ~f:(fun (name, p, hier_opt) ->
         match hier_opt with
         | Some hier when hier.hierarchy <> MonomorphicType ->
             if p.nullable || p.param_type.nullable then
-              bprintf buf " (Option.map (fun c -> (c#%s )) %s)"
-                hier.accessor_method  name
+              if has_hierarchy_with_annotation then
+                bprintf buf " %s" name
+              else
+                bprintf buf " (Option.map (fun c -> (c#%s )) %s)"
+                  hier.accessor_method  name
             else
               bprintf buf " (%s#%s )"
-                name hier.accessor_method 
+                name hier.accessor_method
         | _ ->
             bprintf buf " %s" name
       );
