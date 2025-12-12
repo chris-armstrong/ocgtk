@@ -28,9 +28,10 @@ let has_widget_parent class_name parent_chain =
   List.exists parent_chain ~f:(fun p ->
     String.lowercase_ascii (Utils.normalize_class_name p) = "widget")
 
-let connect_target_expr module_name ~has_widget_parent =
+let connect_target_expr ~has_widget_parent =
   if has_widget_parent then
-    sprintf "(%s.as_widget obj :> [`widget] Gobject.obj)" module_name
+    (* Use Obj.magic to coerce widget subtypes to base widget type for signal connection *)
+    "(Obj.magic (obj :> _ Gobject.obj) : [`widget] Gobject.obj)"
   else
     "(Obj.magic obj :> _ Gobject.obj)"
 
@@ -64,7 +65,7 @@ let generate_signal_class ~ctx ~class_name ~signals ~parent_chain =
   let class_snake = Utils.to_snake_case class_name in
   let signal_class_name = sprintf "%s_signals" class_snake in
   let widget_parent = has_widget_parent class_name parent_chain in
-  let target_expr = connect_target_expr module_name ~has_widget_parent:widget_parent in
+  let target_expr = connect_target_expr ~has_widget_parent:widget_parent in
 
   bprintf buf "(* Signal handlers for %s *)\n" class_name;
   bprintf buf "class %s (obj : %s.t) = object\n" signal_class_name module_name;

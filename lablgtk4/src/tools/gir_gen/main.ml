@@ -442,9 +442,6 @@ let generate_bindings filter_file gir_file output_dir =
     current_cycle_classes = [];  (* No cycle context initially *)
   } in
 
-  (* Build hierarchy map based on class inheritance chains *)
-  let hierarchy_map = Gir_gen_lib.Hierarchy_detection.build_hierarchy_map ctx_initial in
-
   (* Create unified entity list combining classes, interfaces, and records *)
   let entities_temp : Gir_gen_lib.Types.entity list =
     (List.map ~f:Gir_gen_lib.Types.entity_of_class controllers) @
@@ -456,9 +453,17 @@ let generate_bindings filter_file gir_file output_dir =
   let module_groups_list = Gir_gen_lib.Dependency_analysis.compute_module_groups ctx_initial entities_temp in
   let module_groups = Gir_gen_lib.Dependency_analysis.create_module_groups_table module_groups_list in
 
-  (* Final context with hierarchy map and module_groups populated *)
+  (* Create context with module_groups populated so hierarchy info can use correct module names *)
+  let ctx_with_modules = {
+    ctx_initial with module_groups; current_cycle_classes = []
+  } in
+
+  (* Build hierarchy map based on class inheritance chains, now with correct module names *)
+  let hierarchy_map = Gir_gen_lib.Hierarchy_detection.build_hierarchy_map ctx_with_modules in
+
+  (* Final context with both hierarchy map and module_groups populated *)
   let ctx : Gir_gen_lib.Types.generation_context = {
-    ctx_initial with hierarchy_map; module_groups; current_cycle_classes = []
+    ctx_with_modules with hierarchy_map
   } in
 
   (* Use the already created entity list *)

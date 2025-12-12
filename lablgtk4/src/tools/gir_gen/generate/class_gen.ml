@@ -341,12 +341,12 @@ let generate_method_signatures ~ctx ~property_method_names ~property_base_names 
           bprintf buf "    method %s : %s\n" ocaml_name signature;
         (Buffer.contents buf, seen)
 
-let generate_hierarchy_converter_method_impl ~(hierarchy_info : hierarchy_info) ~class_name buf =
+let generate_hierarchy_converter_method_impl ~ctx ~(hierarchy_info : hierarchy_info) ~class_name buf =
   if String.equal class_name (hierarchy_info.gir_root) then
     bprintf buf "  method %s = obj\n"  hierarchy_info.accessor_method 
   else
 
-  bprintf buf "  method %s = (%s.%s obj)\n"  hierarchy_info.accessor_method (Utils.module_name_of_class class_name) hierarchy_info.accessor_method
+  bprintf buf "  method %s = (%s.%s obj)\n"  hierarchy_info.accessor_method (Class_utils.get_qualified_module_name ~ctx class_name) hierarchy_info.accessor_method
 
 let generate_hierarchy_converter_method_sig ~hierarchy_info buf =
   bprintf buf "  method %s : %s\n" hierarchy_info.accessor_method hierarchy_info.layer1_base_type
@@ -412,7 +412,7 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~pro
     in
     ignore seen;
 
-    Option.iter (fun hierarchy_info -> generate_hierarchy_converter_method_impl ~class_name ~hierarchy_info buf) hierarchy_info;
+    Option.iter (fun hierarchy_info -> generate_hierarchy_converter_method_impl ~ctx ~class_name ~hierarchy_info buf) hierarchy_info;
 
     bprintf buf "end\n\n";
 
@@ -552,7 +552,7 @@ let generate_combined_class_module ~ctx ~entities ~parent_chain_for_entity =
         (seen, ()))
     in
 
-    Option.iter (fun hierarchy_info -> generate_hierarchy_converter_method_impl ~class_name:entity.name ~hierarchy_info buf) hierarchy_info;
+    Option.iter (fun hierarchy_info -> generate_hierarchy_converter_method_impl ~ctx ~class_name:entity.name ~hierarchy_info buf) hierarchy_info;
 
     bprintf buf "end\n";
   ) sorted_entities;

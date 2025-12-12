@@ -2,54 +2,47 @@
 
 open Types
 
-(* Hierarchy configuration *)
-let hierarchy_definitions = [
-  {
-    hierarchy = WidgetHierarchy;
-    gir_root = "Widget";
-    layer2_module = "GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget";
-    class_type_name = "widget_skel";
-    accessor_method = "as_widget";
-    layer1_base_type = "Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t";
-    base_conversion_method = "Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.as_widget"
-  };
-  {
-    hierarchy = EventControllerHierarchy;
-    gir_root = "EventController";
-    layer2_module = "GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget";
-    class_type_name = "controller_skel";
-    accessor_method = "as_event_controller";
-    layer1_base_type = "Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t";
-    base_conversion_method = "Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.as_event_controller"
-  };
-  {
-    hierarchy = CellRendererHierarchy;
-    gir_root = "CellRenderer";
-    layer2_module = "GCell_renderer";
-    class_type_name = "cell_renderer_skel";
-    accessor_method = "as_cell_renderer";
-    layer1_base_type = "Cell_renderer.t";
-    base_conversion_method = "Cell_renderer.as_event_controller"
-  };
-  {
-    hierarchy = LayoutManagerHierarchy;
-    gir_root = "LayoutManager";
-    layer2_module = "GLayout";
-    class_type_name = "layout_manager_skel";
-    accessor_method = "as_layoutmanager";
-    layer1_base_type = "Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Layout_manager.t";
-    base_conversion_method = "Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Layout_manager.as_layout_manager"
-  };
-  {
-    hierarchy = ExpressionHierarchy;
-    gir_root = "Expression";
-    layer2_module = "GExpression";
-    class_type_name = "expression_skel";
-    accessor_method = "as_expression";
-    layer1_base_type = "Expression.t";
-    base_conversion_method = "Expression.as_expression"
-  };
+(* Base hierarchy configuration - layer2_module will be computed dynamically *)
+let base_hierarchy_definitions = [
+  (WidgetHierarchy, "Widget", "widget_skel", "as_widget");
+  (EventControllerHierarchy, "EventController", "controller_skel", "as_event_controller");
+  (CellRendererHierarchy, "CellRenderer", "cell_renderer_skel", "as_cell_renderer");
+  (LayoutManagerHierarchy, "LayoutManager", "layout_manager_skel", "as_layoutmanager");
+  (ExpressionHierarchy, "Expression", "expression_skel", "as_expression");
 ]
+
+(* Build hierarchy definitions with proper module names from context *)
+let build_hierarchy_definitions (ctx : generation_context) : hierarchy_info list =
+  List.map (fun (hierarchy, gir_root, class_type_name, accessor_method) ->
+    (* Compute the layer1 qualified module name *)
+    let layer1_qualified = Class_utils.get_qualified_module_name ~ctx gir_root in
+
+    (* Compute the layer2 module name (G-prefixed version) *)
+    (* For cyclic modules, we need G + CombinedModuleName *)
+    (* For non-cyclic, we need G + ClassName *)
+    let layer2_module =
+      match Hashtbl.find_opt ctx.module_groups gir_root with
+      | Some combined_module_name ->
+          let simple_module_name = Utils.module_name_of_class gir_root in
+          if combined_module_name <> simple_module_name then
+            (* Cyclic module - use G + CombinedModuleName *)
+            "G" ^ combined_module_name
+          else
+            (* Single module *)
+            "G" ^ simple_module_name
+      | None -> "G" ^ Utils.module_name_of_class gir_root
+    in
+
+    {
+      hierarchy;
+      gir_root;
+      layer2_module;
+      class_type_name;
+      accessor_method;
+      layer1_base_type = layer1_qualified ^ ".t";
+      base_conversion_method = layer1_qualified ^ "." ^ accessor_method;
+    }
+  ) base_hierarchy_definitions
 
 (* Build parent chain for a class *)
 let rec build_parent_chain (ctx : generation_context) (class_name : string) : string list =
@@ -66,14 +59,30 @@ let classify_class (ctx : generation_context) (class_name : string) : hierarchy_
   let parent_chain = build_parent_chain ctx class_name in
   let all_ancestors = class_name :: parent_chain in
 
+  (* Build hierarchy definitions dynamically *)
+  let hierarchy_definitions = build_hierarchy_definitions ctx in
+
   (* Check each hierarchy definition *)
   let rec find_hierarchy = function
     | [] ->
         (* Default to monomorphic type *)
+        (* Compute layer2 module name for non-hierarchy classes *)
+        let layer2_module =
+          match Hashtbl.find_opt ctx.module_groups class_name with
+          | Some combined_module_name ->
+              let simple_module_name = Utils.module_name_of_class class_name in
+              if combined_module_name <> simple_module_name then
+                (* Cyclic module - use G + CombinedModuleName *)
+                "G" ^ combined_module_name
+              else
+                (* Single module *)
+                "G" ^ simple_module_name
+          | None -> "G" ^ Utils.module_name_of_class class_name
+        in
         {
           hierarchy = MonomorphicType;
           gir_root = class_name;
-          layer2_module = "G" ^ class_name;
+          layer2_module;
           class_type_name = String.lowercase_ascii class_name ^ "_skel";
           accessor_method = "as_" ^ String.lowercase_ascii class_name;
           layer1_base_type = (Class_utils.get_qualified_module_name ~ctx class_name) ^ ".t";
