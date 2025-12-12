@@ -11,29 +11,10 @@ module StringSet = Set.Make(String)
 let sanitize_name s =
   s |> String.map ~f:(function '-' -> '_' | c -> c) |> Utils.to_snake_case |> Filtering.sanitize_identifier
 
-(* let has_widget_parent class_name parent_chain =
-  let normalized = Utils.normalize_class_name class_name |> String.lowercase_ascii in
-  normalized = "widget" ||
-  List.exists parent_chain ~f:(fun p ->
-    String.lowercase_ascii (Utils.normalize_class_name p) = "widget") *)
-
 let signal_class_name class_name =
   sanitize_name class_name ^ "_signals"
 
-(* Get the properly qualified module name for a class, accounting for cyclic modules *)
-let get_qualified_module_name ~ctx class_name =
-  (* Always check if this class is in a cyclic group and use the full path if so *)
-  match Hashtbl.find_opt ctx.module_groups class_name with
-  | Some combined_module_name ->
-      let simple_module_name = Utils.module_name_of_class class_name in
-      (* Check if this is a cyclic module by comparing names *)
-      if combined_module_name <> simple_module_name then
-        (* For cyclic modules, we need CombinedModule.ClassName *)
-        combined_module_name ^ "." ^ simple_module_name
-      else
-        (* Single module (non-cyclic even though in module_groups table) *)
-        combined_module_name
-  | None -> Utils.module_name_of_class class_name
+
 
 let ocaml_method_name ~class_name ~c_type (meth : gir_method) =
   Filtering.ocaml_method_name ~class_name ~c_type meth |> sanitize_name
@@ -247,11 +228,11 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
         match hier_opt with
         | Some hier when hier.hierarchy <> MonomorphicType ->
             if p.nullable || p.param_type.nullable then
-              bprintf buf " (Option.map (fun c -> (c#%s : %s)) %s)"
-                hier.accessor_method hier.layer1_base_type name
+              bprintf buf " (Option.map (fun c -> (c#%s )) %s)"
+                hier.accessor_method  name
             else
-              bprintf buf " (%s#%s : %s)"
-                name hier.accessor_method hier.layer1_base_type
+              bprintf buf " (%s#%s )"
+                name hier.accessor_method 
         | _ ->
             bprintf buf " %s" name
       );
@@ -341,9 +322,19 @@ let generate_method_signatures ~ctx ~property_method_names ~property_base_names 
           bprintf buf "    method %s : %s\n" ocaml_name signature;
         (Buffer.contents buf, seen)
 
+let generate_hierarchy_converter_method_impl ~(hierarchy_info : hierarchy_info) ~class_name buf =
+  if String.equal class_name (hierarchy_info.gir_root) then
+    bprintf buf "  method %s = obj\n"  hierarchy_info.accessor_method 
+  else
+
+  bprintf buf "  method %s = (%s.%s obj)\n"  hierarchy_info.accessor_method (Utils.module_name_of_class class_name) hierarchy_info.accessor_method
+
+let generate_hierarchy_converter_method_sig ~hierarchy_info buf =
+  bprintf buf "  method %s : %s\n" hierarchy_info.accessor_method hierarchy_info.layer1_base_type
+
 let generate_class_module ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~properties ~signals =
   let buf = Buffer.create 2048 in
-  let module_name = get_qualified_module_name ~ctx class_name in
+  let module_name = Class_utils.get_qualified_module_name ~ctx class_name in
   let class_snake = sanitize_name class_name in
   (* let widget_parent = has_widget_parent class_name parent_chain in *)
 
@@ -352,9 +343,11 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~pro
     (* This ensures method connect is always present when signals exist *)
     let has_any_signals = List.length signals > 0 in
 
+    let hierarchy_info =  Hierarchy_detection.get_hierarchy_info ctx class_name in
+
     (* Check if this class is in the Widget hierarchy *)
     let in_widget_hierarchy =
-      match Hierarchy_detection.get_hierarchy_info ctx class_name with
+      match hierarchy_info with
       | Some info -> info.hierarchy = WidgetHierarchy
       | None -> false
     in
@@ -400,6 +393,8 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~pro
     in
     ignore seen;
 
+    Option.iter (fun hierarchy_info -> generate_hierarchy_converter_method_impl ~class_name ~hierarchy_info buf) hierarchy_info;
+
     bprintf buf "end\n\n";
 
     bprintf buf "class %s obj = object\n" class_snake;
@@ -411,7 +406,7 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~pro
 
 let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~properties ~signals =
   let buf = Buffer.create 1024 in
-  let module_name = get_qualified_module_name ~ctx class_name in
+  let module_name = Class_utils.get_qualified_module_name ~ctx class_name in
   let class_snake = sanitize_name class_name in
   (* let widget_parent = has_widget_parent class_name parent_chain in *)
 
@@ -420,9 +415,11 @@ let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~
     (* This ensures method connect is always present when signals exist *)
     let has_any_signals = List.length signals > 0 in
 
+    let hierarchy_info =  Hierarchy_detection.get_hierarchy_info ctx class_name in
+
     (* Check if this class is in the Widget hierarchy *)
     let in_widget_hierarchy =
-      match Hierarchy_detection.get_hierarchy_info ctx class_name with
+      match hierarchy_info with
       | Some info -> info.hierarchy = WidgetHierarchy
       | None -> false
     in
@@ -455,6 +452,9 @@ let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~
         Buffer.add_string buf chunk;
         (seen, ()))
     in
+
+    Option.iter (fun hierarchy_info -> generate_hierarchy_converter_method_sig ~hierarchy_info buf) hierarchy_info;
+
     bprintf buf "  end\n\n";
 
     bprintf buf "class %s : %s.t ->\n" class_snake module_name;
@@ -479,12 +479,13 @@ let generate_combined_class_module ~ctx ~entities ~parent_chain_for_entity =
   List.iteri ~f:(fun i entity ->
     let _parent_chain = parent_chain_for_entity entity.name in
     (* When generating inside a combined module, we need the qualified name *)
-    let module_name = get_qualified_module_name ~ctx entity.name in
+    let module_name = Class_utils.get_qualified_module_name ~ctx entity.name in
     let class_snake = sanitize_name entity.name in
 
+    let hierarchy_info =  Hierarchy_detection.get_hierarchy_info ctx entity.name in
     let has_any_signals = List.length entity.signals > 0 in
     let in_widget_hierarchy =
-      match Hierarchy_detection.get_hierarchy_info ctx entity.name with
+      match hierarchy_info with
       | Some info -> info.hierarchy = WidgetHierarchy
       | None -> false
     in
@@ -532,6 +533,8 @@ let generate_combined_class_module ~ctx ~entities ~parent_chain_for_entity =
         (seen, ()))
     in
 
+    Option.iter (fun hierarchy_info -> generate_hierarchy_converter_method_impl ~class_name:entity.name ~hierarchy_info buf) hierarchy_info;
+
     bprintf buf "end\n";
   ) sorted_entities;
 
@@ -563,12 +566,13 @@ let generate_combined_class_signature ~ctx ~entities ~parent_chain_for_entity =
   List.iteri ~f:(fun i entity ->
     let _parent_chain = parent_chain_for_entity entity.name in
     (* When generating inside a combined module, we need the qualified name *)
-    let module_name = get_qualified_module_name ~ctx entity.name in
+    let module_name = Class_utils.get_qualified_module_name ~ctx entity.name in
     let class_snake = sanitize_name entity.name in
 
     let has_any_signals = List.length entity.signals > 0 in
+    let hierarchy_info =  Hierarchy_detection.get_hierarchy_info ctx entity.name in
     let in_widget_hierarchy =
-      match Hierarchy_detection.get_hierarchy_info ctx entity.name with
+      match hierarchy_info with
       | Some info -> info.hierarchy = WidgetHierarchy
       | None -> false
     in
@@ -599,13 +603,14 @@ let generate_combined_class_signature ~ctx ~entities ~parent_chain_for_entity =
         Buffer.add_string buf chunk;
         (seen, ()))
     in
+    Option.iter (fun hierarchy_info -> generate_hierarchy_converter_method_sig ~hierarchy_info buf) hierarchy_info;
     bprintf buf "  end\n";
   ) sorted_entities;
 
   (* Now generate the non-_skel class signatures *)
   bprintf buf "\n";
   List.iteri ~f:(fun i entity ->
-    let module_name = get_qualified_module_name ~ctx entity.name in
+    let module_name = Class_utils.get_qualified_module_name ~ctx entity.name in
     let class_snake = sanitize_name entity.name in
 
     if i > 0 then bprintf buf "\n";

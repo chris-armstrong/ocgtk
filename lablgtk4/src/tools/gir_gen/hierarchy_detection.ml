@@ -7,26 +7,29 @@ let hierarchy_definitions = [
   {
     hierarchy = WidgetHierarchy;
     gir_root = "Widget";
-    layer2_module = "GWidget";
+    layer2_module = "GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget";
     class_type_name = "widget_skel";
     accessor_method = "as_widget";
-    layer1_base_type = "Widget.t";
+    layer1_base_type = "Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t";
+    base_conversion_method = "Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.as_widget"
   };
   {
     hierarchy = EventControllerHierarchy;
     gir_root = "EventController";
-    layer2_module = "GController";
+    layer2_module = "GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget";
     class_type_name = "controller_skel";
-    accessor_method = "as_controller";
-    layer1_base_type = "Event_controller.t";
+    accessor_method = "as_event_controller";
+    layer1_base_type = "Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t";
+    base_conversion_method = "Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.as_event_controller"
   };
   {
     hierarchy = CellRendererHierarchy;
     gir_root = "CellRenderer";
     layer2_module = "GCell_renderer";
     class_type_name = "cell_renderer_skel";
-    accessor_method = "as_cellrenderer";
+    accessor_method = "as_cell_renderer";
     layer1_base_type = "Cell_renderer.t";
+    base_conversion_method = "Cell_renderer.as_event_controller"
   };
   {
     hierarchy = LayoutManagerHierarchy;
@@ -34,7 +37,8 @@ let hierarchy_definitions = [
     layer2_module = "GLayout";
     class_type_name = "layout_manager_skel";
     accessor_method = "as_layoutmanager";
-    layer1_base_type = "Layout_manager.t";
+    layer1_base_type = "Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Layout_manager.t";
+    base_conversion_method = "Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Layout_manager.as_layout_manager"
   };
   {
     hierarchy = ExpressionHierarchy;
@@ -43,6 +47,7 @@ let hierarchy_definitions = [
     class_type_name = "expression_skel";
     accessor_method = "as_expression";
     layer1_base_type = "Expression.t";
+    base_conversion_method = "Expression.as_expression"
   };
 ]
 
@@ -71,7 +76,8 @@ let classify_class (ctx : generation_context) (class_name : string) : hierarchy_
           layer2_module = "G" ^ class_name;
           class_type_name = String.lowercase_ascii class_name ^ "_skel";
           accessor_method = "as_" ^ String.lowercase_ascii class_name;
-          layer1_base_type = class_name ^ ".t";
+          layer1_base_type = (Class_utils.get_qualified_module_name ~ctx class_name) ^ ".t";
+          base_conversion_method = (Class_utils.get_qualified_module_name ~ctx class_name) ^ ".as_" ^ Utils.to_snake_case class_name;
         }
     | hdef :: rest ->
         if List.mem hdef.gir_root all_ancestors then

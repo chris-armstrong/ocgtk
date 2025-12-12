@@ -201,6 +201,7 @@ type hierarchy_info = {
   class_type_name: string;     (* "widget_skel", "controller_skel", etc. *)
   accessor_method: string;     (* "as_widget", "as_controller", etc. *)
   layer1_base_type: string;    (* "Widget.t", "EventController.t", etc. *)
+  base_conversion_method: string; (* Widget.as_widget *)
 }
 
 type generation_context = {
