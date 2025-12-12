@@ -3,16 +3,59 @@
 open StdLabels
 open Printf
 
+let stripLeadingNumbers name =
+  if String.length name = 0 then name
+  else (
+    match name.[0] with
+    | '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' -> {js|x|js} ^ name
+    | _ -> name)
+
 (* Convert CamelCase to snake_case *)
-let to_snake_case s =
-  let b = Buffer.create (String.length s + 10) in
+let uppercaseStartRe = Str.regexp "^\\([A-Z]*\\)\\(.*\\)$"
+let uppercaseRe = Str.regexp "\\([A-Z][A-Z0-9]+[A-Z]\\|[A-Z]+\\)\\([^A-Z]*\\)"
+let to_snake_case name =
+  let start_pos = ref 0 in
+  let name_len = String.length name in
+  let components : string list ref = ref [] in
+
+  while !start_pos < name_len do
+    try
+      let next_pos = Str.search_forward uppercaseRe name !start_pos in
+      if not (Int.equal next_pos !start_pos) then begin
+        (*first section not uppercase - add first section as_is*)
+        let len = next_pos - !start_pos in
+        let group = String.sub ~pos:!start_pos ~len name in
+        components := group :: !components;
+        start_pos := next_pos
+      end;
+
+      let upperpart = Str.matched_group 1 name in
+      let lowerpart = Str.matched_group 2 name in
+      if String.length upperpart > 1 then (
+        (* sequence of uppercase characters - convert all but one to their own group *)
+        let group_len = String.length upperpart - 1 in
+        let group = Str.string_before upperpart group_len |> String.lowercase_ascii in
+        components := group :: !components;
+        start_pos := !start_pos + group_len)
+      else (
+        (* one uppercase followed by some not-upper *)
+        let group_len = String.length lowerpart + 1 in
+        let group = String.lowercase_ascii upperpart ^ lowerpart in
+        components := group :: !components;
+        start_pos := !start_pos + group_len)
+    with Stdlib.Not_found ->
+      components := Str.string_after name !start_pos :: !components;
+      start_pos := name_len + 1
+  done;
+  !components |> List.rev |> String.concat ~sep:"_" |> stripLeadingNumbers
+  (* let b = Buffer.create (String.length s + 10) in
   for i = 0 to String.length s - 1 do
     let c = String.get s i in
     if i > 0 && c >= 'A' && c <= 'Z' then
       Buffer.add_char b '_';
     Buffer.add_char b (Char.lowercase_ascii c)
   done;
-  Buffer.contents b
+  Buffer.contents b *)
 
 (* Get attribute value from XML attributes list *)
 let get_attr name attrs =
