@@ -4,11 +4,11 @@ open Types
 
 (* Base hierarchy configuration - layer2_module will be computed dynamically *)
 let base_hierarchy_definitions = [
-  (WidgetHierarchy, "Widget", "widget_skel", "as_widget");
-  (EventControllerHierarchy, "EventController", "event_controller_skel", "as_event_controller");
-  (CellRendererHierarchy, "CellRenderer", "cell_renderer_skel", "as_cell_renderer");
-  (LayoutManagerHierarchy, "LayoutManager", "layout_manager_skel", "as_layoutmanager");
-  (ExpressionHierarchy, "Expression", "expression_skel", "as_expression");
+  (WidgetHierarchy, "Widget", "widget", "as_widget");
+  (EventControllerHierarchy, "EventController", "event_controller", "as_event_controller");
+  (CellRendererHierarchy, "CellRenderer", "cell_renderer", "as_cell_renderer");
+  (LayoutManagerHierarchy, "LayoutManager", "layout_manager", "as_layoutmanager");
+  (ExpressionHierarchy, "Expression", "expression", "as_expression");
 ]
 
 (* Build hierarchy definitions with proper module names from context *)
@@ -83,8 +83,8 @@ let classify_class (ctx : generation_context) (class_name : string) : hierarchy_
           hierarchy = MonomorphicType;
           gir_root = class_name;
           layer2_module;
-          class_type_name = String.lowercase_ascii class_name ^ "_skel";
-          accessor_method = "as_" ^ String.lowercase_ascii class_name;
+          class_type_name = (Utils.ocaml_class_name class_name) ^ "_skel";
+          accessor_method = "as_" ^ (Utils.ocaml_class_name class_name);
           layer1_base_type = (Class_utils.get_qualified_module_name ~ctx class_name) ^ ".t";
           base_conversion_method = (Class_utils.get_qualified_module_name ~ctx class_name) ^ ".as_" ^ Utils.to_snake_case class_name;
         }

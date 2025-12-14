@@ -14,3 +14,4 @@ let get_qualified_module_name ~ctx class_name =
         (* Single module (non-cyclic even though in module_groups table) *)
         combined_module_name
   | None -> Utils.module_name_of_class class_name
+

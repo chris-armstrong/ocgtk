@@ -178,8 +178,16 @@ let entity_of_record (rec_: gir_record) : entity = {
   signals = [];
 }
 
+(* A generated OCaml class for a GIR Class or Interface *)
+type ocaml_class = {
+  class_module : string;
+  class_type : string;
+  class_layer1_accessor : string;
+}
+
 type type_mapping = {
-  ocaml_type : string;
+  ocaml_type : string; (* classes: Application_window.t *)
+  layer2_class : ocaml_class option; (* when this is a class or interface, the OCaml module *)
   c_to_ml : string;
   ml_to_c : string;
   needs_copy : bool;
