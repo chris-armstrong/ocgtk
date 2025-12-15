@@ -180,6 +180,7 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
   if should_skip then ("", seen)
   else
     let ocaml_name = ocaml_method_name ~class_name ~c_type meth in
+    let ocaml_function_name = Utils.ocaml_function_name ~class_name ~c_type meth.c_identifier in 
     if StringSet.mem ocaml_name seen then ("", seen) else
     let seen = StringSet.add ocaml_name seen in
 
@@ -335,34 +336,49 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
         (* Generate let bindings for all hierarchy parameters *)
         List.iter param_info ~f:(fun (name, p, hier_opt) ->
           match hier_opt with
-          | Some hier ->
-              (* Generate let binding for ALL hierarchy parameters (both Mono and Poly) *)
+          | Some _hier ->
+              (* Use class-specific accessor, not hierarchy accessor *)
+              let accessor =
+                match Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type with
+                | Some { layer2_class = Some layer2_class; _ } -> layer2_class.class_layer1_accessor
+                | _ ->
+                    (* Fallback to class-specific accessor based on class name *)
+                    "as_" ^ (Utils.ocaml_class_name p.param_type.name)
+              in
               if p.nullable || p.param_type.nullable then
                 bprintf buf "      let %s = Option.map (fun (c) -> c#%s) %s in\n"
-                  name hier.accessor_method name
+                  name accessor name
               else
                 bprintf buf "      let %s = %s#%s in\n"
-                  name name hier.accessor_method
+                  name name accessor
           | _ -> ()
         );
-        bprintf buf "      %s(%s.%s obj" ret_wrapper module_name ocaml_name
+        bprintf buf "      %s(%s.%s obj" ret_wrapper module_name ocaml_function_name
       end else begin
-        bprintf buf "    %s(%s.%s obj" ret_wrapper module_name ocaml_name
+        bprintf buf "    %s(%s.%s obj" ret_wrapper module_name ocaml_function_name
       end;
 
       List.iter param_info ~f:(fun (name, p, hier_opt) ->
         match hier_opt with
-        | Some hier ->
+        | Some _hier ->
+            (* Use class-specific accessor, not hierarchy accessor *)
+            let accessor =
+              match Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type with
+              | Some { layer2_class = Some layer2_class; _ } -> layer2_class.class_layer1_accessor
+              | _ ->
+                  (* Fallback to class-specific accessor based on class name *)
+                  "as_" ^ (Utils.ocaml_class_name p.param_type.name)
+            in
             if p.nullable || p.param_type.nullable then
               if has_hierarchy_with_annotation then
                 bprintf buf " %s" name
               else
-                bprintf buf " (Option.map (fun c -> (c#%s )) %s)" hier.accessor_method name
+                bprintf buf " (Option.map (fun c -> (c#%s )) %s)" accessor name
             else
               if has_hierarchy_with_annotation then
                 bprintf buf " %s" name
               else
-                bprintf buf " (%s#%s )" name hier.accessor_method
+                bprintf buf " (%s#%s )" name accessor
         | _ ->
             bprintf buf " %s" name
       );
@@ -387,10 +403,10 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
       match type_annotation_opt with
       | Some type_ann ->
           bprintf buf "  method %s : %s = fun %s -> %s(%s.%s obj %s)\n"
-            ocaml_name type_ann param_list ret_wrapper module_name ocaml_name layer1_params
+            ocaml_name type_ann param_list ret_wrapper module_name ocaml_function_name layer1_params
       | None ->
           bprintf buf "  method %s %s = %s(%s.%s obj %s)\n"
-            ocaml_name param_list ret_wrapper module_name ocaml_name layer1_params
+            ocaml_name param_list ret_wrapper module_name ocaml_function_name layer1_params
     end;
 
     (Buffer.contents buf, seen)
