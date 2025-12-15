@@ -57,7 +57,7 @@ let detect_class_hierarchy_names ~ctx ~class_name ~parent_chain ?record_base_typ
       match Hierarchy_detection.get_hierarchy_info ctx class_name with
       | Some hier_info when hier_info.hierarchy <> MonomorphicType ->
           (* This class is in a known hierarchy *)
-          let self_variant = "`" ^ (Utils.to_snake_case normalized_class |> Filtering.sanitize_identifier) in
+          let self_variant = "`" ^ (Utils.to_snake_case normalized_class |> Utils.sanitize_identifier) in
           let parent_variants =
             if String.lowercase_ascii normalized_class = String.lowercase_ascii hier_info.gir_root then
               (* This is the root of the hierarchy *)
@@ -65,7 +65,7 @@ let detect_class_hierarchy_names ~ctx ~class_name ~parent_chain ?record_base_typ
             else
               (* Build parent chain variants up to hierarchy root *)
               List.fold_left parent_chain ~init:[] ~f:(fun acc parent ->
-                let tag = "`" ^ (Utils.to_snake_case parent |> Filtering.sanitize_identifier) in
+                let tag = "`" ^ (Utils.to_snake_case parent |> Utils.sanitize_identifier) in
                 (* Stop at hierarchy root *)
                 if String.lowercase_ascii parent = String.lowercase_ascii hier_info.gir_root then
                   acc @ [tag]
@@ -85,9 +85,9 @@ let detect_class_hierarchy_names ~ctx ~class_name ~parent_chain ?record_base_typ
           (type_name, sprintf "[%s] Gobject.obj" variants)
       | _ ->
           (* Monomorphic type or unknown - still use polymorphic variant since all GTK classes inherit from GObject *)
-          let self_variant = "`" ^ (Utils.to_snake_case normalized_class |> Filtering.sanitize_identifier) in
+          let self_variant = "`" ^ (Utils.to_snake_case normalized_class |> Utils.sanitize_identifier) in
           (* Add parent chain variants *)
-          let parent_variants = List.map parent_chain ~f:(fun p -> "`" ^ (Utils.to_snake_case p |> Filtering.sanitize_identifier)) in
+          let parent_variants = List.map parent_chain ~f:(fun p -> "`" ^ (Utils.to_snake_case p |> Utils.sanitize_identifier)) in
           let all_variants = self_variant :: parent_variants in
           let variants = String.concat ~sep:" | " all_variants in
           (class_name, sprintf "[%s] Gobject.obj" variants)
@@ -186,7 +186,7 @@ let generate_ml_interface_internal
 
       (* Generate OCaml constructor name from C identifier *)
       let ocaml_ctor_name =
-        let base = Filtering.ocaml_function_name ~class_name ~c_type ?c_symbol_prefix c_name in
+        let base = Utils.ocaml_function_name ~class_name ~c_type ?c_symbol_prefix c_name in
         let snake = Utils.to_snake_case base in
         if snake = "new" then "new_" else snake
       in
@@ -284,7 +284,7 @@ let generate_ml_interface_internal
         "ml_" ^ c_name
     in
     let ocaml_name =
-      Filtering.ocaml_function_name ~class_name ~c_type ?c_symbol_prefix c_name
+      Utils.ocaml_function_name ~class_name ~c_type ?c_symbol_prefix c_name
     in
 
     (* Skip if: variadic function, duplicates property, or unmapped return type *)
