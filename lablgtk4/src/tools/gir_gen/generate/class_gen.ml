@@ -50,6 +50,66 @@ let structural_type_for_class ~ctx class_name =
 let ocaml_method_name ~class_name ~c_type (meth : gir_method) =
   Utils.ocaml_method_name ~class_name ~c_type meth.method_name |> sanitize_name
 
+(* Helper to get method signature for comparison *)
+let method_signature_for_comparison (meth : gir_method) : string =
+  (* Create a comparable signature from parameter types *)
+  let param_sig =
+    List.map meth.parameters ~f:(fun p -> p.param_type.name)
+    |> String.concat ~sep:","
+  in
+  sprintf "%s(%s)->%s" meth.method_name param_sig meth.return_type.name
+
+(* Get all methods from a class *)
+let get_class_methods ~ctx class_name : gir_method list =
+  match List.find_opt ~f:(fun cls -> cls.class_name = class_name) ctx.classes with
+  | Some cls -> cls.methods
+  | None -> []
+
+(* Build parent chain for a class *)
+let rec build_parent_chain ~ctx class_name : string list =
+  match List.find_opt ~f:(fun cls -> cls.class_name = class_name) ctx.classes with
+  | None -> []
+  | Some cls ->
+      match cls.parent with
+      | None -> []
+      | Some parent -> parent :: build_parent_chain ~ctx parent
+
+(* Get all methods from parent chain *)
+let get_parent_methods ~ctx ~parent_chain : (string * gir_method) list =
+  List.concat_map parent_chain ~f:(fun parent_name ->
+    let methods = get_class_methods ~ctx parent_name in
+    List.map methods ~f:(fun meth -> (parent_name, meth))
+  )
+
+(* Check if two methods have conflicting signatures *)
+let methods_have_signature_conflict ~ctx:_ ~class_name ~c_type meth1 meth2 =
+  let name1 = ocaml_method_name ~class_name ~c_type meth1 in
+  let name2 = ocaml_method_name ~class_name ~c_type meth2 in
+
+  (* Same name but different signatures *)
+  if String.equal name1 name2 then
+    let sig1 = method_signature_for_comparison meth1 in
+    let sig2 = method_signature_for_comparison meth2 in
+    not (String.equal sig1 sig2)
+  else
+    false
+
+(* Detect which methods conflict with parent methods *)
+let detect_method_conflicts ~ctx ~class_name ~c_type ~methods : StringSet.t =
+  let parent_chain = build_parent_chain ~ctx class_name in
+  let parent_methods = get_parent_methods ~ctx ~parent_chain in
+
+  let conflicts = ref StringSet.empty in
+
+  List.iter methods ~f:(fun child_meth ->
+    List.iter parent_methods ~f:(fun (_parent_name, parent_meth) ->
+      if methods_have_signature_conflict ~ctx ~class_name ~c_type child_meth parent_meth then
+        let ocaml_name = ocaml_method_name ~class_name ~c_type child_meth in
+        conflicts := StringSet.add ocaml_name !conflicts
+    )
+  );
+
+  !conflicts
 
 (* Check if a parameter is a hierarchy type and get its info *)
 let get_param_hierarchy_info ~ctx (param : gir_param) : hierarchy_info option =
@@ -172,7 +232,7 @@ let generate_property_signatures ~ctx ~seen ~current_layer2_module ~same_cluster
       in
       generate_property_code ~ctx ~seen ~generate_getter ~generate_setter prop
 
-let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~module_name ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes (meth : gir_method) =
+let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~module_name ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes ~conflicting_methods (meth : gir_method) =
   let should_skip =
     Filtering.should_skip_method_binding ~ctx ~property_method_names ~property_base_names ~class_name ~c_type meth ||
     List.exists meth.parameters ~f:(fun p -> p.direction = Out || p.direction = InOut)
@@ -180,8 +240,13 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
   if should_skip then ("", seen)
   else
     let ocaml_name = ocaml_method_name ~class_name ~c_type meth in
-    let ocaml_function_name = Utils.ocaml_function_name ~class_name ~c_type meth.c_identifier in 
-    if StringSet.mem ocaml_name seen then ("", seen) else
+    let ocaml_function_name = Utils.ocaml_function_name ~class_name ~c_type meth.c_identifier in
+    if StringSet.mem ocaml_name seen then ("", seen)
+    else if StringSet.mem ocaml_name conflicting_methods then
+      (* Comment out conflicting methods in implementation too *)
+      let seen = StringSet.add ocaml_name seen in
+      (sprintf "  (* method %s = ... *) (* CONFLICT: incompatible signature with parent method *)\n" ocaml_name, seen)
+    else
     let seen = StringSet.add ocaml_name seen in
 
     (* Check for hierarchy parameters *)
@@ -411,7 +476,7 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
 
     (Buffer.contents buf, seen)
 
-let generate_method_signatures ~ctx ~property_method_names ~property_base_names ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes (meth : gir_method) =
+let generate_method_signatures ~ctx ~property_method_names ~property_base_names ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes ~conflicting_methods (meth : gir_method) =
   let should_skip =
     Filtering.should_skip_method_binding ~ctx ~property_method_names ~property_base_names ~class_name ~c_type meth ||
     List.exists meth.parameters ~f:(fun p -> p.direction = Out || p.direction = InOut)
@@ -419,7 +484,12 @@ let generate_method_signatures ~ctx ~property_method_names ~property_base_names 
   if should_skip then ("", seen)
   else
     let ocaml_name = ocaml_method_name ~class_name ~c_type meth in
-    if StringSet.mem ocaml_name seen then ("", seen) else
+    if StringSet.mem ocaml_name seen then ("", seen)
+    else if StringSet.mem ocaml_name conflicting_methods then
+      (* Comment out conflicting methods *)
+      let seen = StringSet.add ocaml_name seen in
+      (sprintf "    (* method %s : ... *) (* CONFLICT: incompatible signature with parent method *)\n" ocaml_name, seen)
+    else
 
     (* Check for hierarchy parameters *)
     let param_hier_info = List.map meth.parameters ~f:(fun p ->
@@ -501,6 +571,9 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name ~current_layer2_mod
   let has_any_signals = List.length signals > 0 in
   let property_filters = get_property_filters ~ctx properties in
 
+  (* Detect method conflicts with parent classes *)
+  let conflicting_methods = detect_method_conflicts ~ctx ~class_name ~c_type ~methods in
+
   (* Inheritance *)
   Option.iter (fun hierarchy_info ->
     if not (String.equal hierarchy_info.gir_root class_name) then
@@ -530,7 +603,7 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name ~current_layer2_mod
   (* Methods *)
   let seen, () =
     List.fold_left methods ~init:(seen, ()) ~f:(fun (seen, ()) m ->
-      let chunk, seen = generate_method_wrappers ~ctx ~property_method_names:property_filters.method_names ~property_base_names:property_filters.base_names ~module_name:layer1_module_name ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes m in
+      let chunk, seen = generate_method_wrappers ~ctx ~property_method_names:property_filters.method_names ~property_base_names:property_filters.base_names ~module_name:layer1_module_name ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes ~conflicting_methods m in
       Buffer.add_string buf chunk;
       if chunk <> "" then Buffer.add_char buf '\n';
       (seen, ()))
@@ -545,6 +618,9 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name ~current_layer2_mod
 let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_ ~current_layer2_module ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info ~same_cluster_classes () =
   let has_any_signals = List.length signals > 0 in
   let property_filters = get_property_filters ~ctx properties in
+
+  (* Detect method conflicts with parent classes *)
+  let conflicting_methods = detect_method_conflicts ~ctx ~class_name ~c_type ~methods in
 
   (* Inheritance *)
   Option.iter (fun hierarchy_info ->
@@ -571,7 +647,7 @@ let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_ ~current_layer
   (* Methods *)
   let _seen, () =
     List.fold_left methods ~init:(seen, ()) ~f:(fun (seen, ()) meth ->
-      let chunk, seen = generate_method_signatures ~ctx ~property_method_names:property_filters.method_names ~property_base_names:property_filters.base_names ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes meth in
+      let chunk, seen = generate_method_signatures ~ctx ~property_method_names:property_filters.method_names ~property_base_names:property_filters.base_names ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes ~conflicting_methods meth in
       Buffer.add_string buf chunk;
       (seen, ()))
   in
