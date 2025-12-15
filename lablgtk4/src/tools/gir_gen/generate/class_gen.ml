@@ -37,7 +37,15 @@ let get_property_filters ~ctx properties = {
   base_names = Filtering.property_base_names ~ctx properties;
 }
 
+(* Helper to check if a class name is in the same cluster *)
+let is_same_cluster_class ~same_cluster_classes class_name =
+  List.mem class_name ~set:same_cluster_classes
 
+(* Helper to generate structural type for same-cluster class references *)
+let structural_type_for_class ~ctx class_name =
+  let layer1_module = Class_utils.get_qualified_module_name ~ctx class_name in
+  let accessor = "as_" ^ (Utils.ocaml_class_name class_name) in
+  sprintf "<%s: %s.t; ..>" accessor layer1_module
 
 let ocaml_method_name ~class_name ~c_type (meth : gir_method) =
   Utils.ocaml_method_name ~class_name ~c_type meth.method_name |> sanitize_name
@@ -116,7 +124,7 @@ let generate_property_code ~ctx ~seen ~generate_getter ~generate_setter (prop : 
     in
     (Buffer.contents buf, seen)
 
-let generate_property_methods ~ctx ~module_name ~current_layer2_module ~seen (prop : gir_property) =
+let generate_property_methods ~ctx ~module_name ~current_layer2_module ~seen ~same_cluster_classes (prop : gir_property) =
   let generate_getter _prop prop_snake =
     let impl = match resolve_layer2_class ~ctx ~current_layer2_module prop.prop_type with
       | Some class_ref ->
@@ -136,6 +144,7 @@ let generate_property_methods ~ctx ~module_name ~current_layer2_module ~seen (pr
     in
     sprintf "  method set_%s v = %s\n" prop_snake impl
   in
+  let _ = same_cluster_classes in (* Will be used in type annotations if needed *)
   generate_property_code ~ctx ~seen ~generate_getter ~generate_setter prop
 
 let has_type_variable type_str =
@@ -144,10 +153,17 @@ let has_type_variable type_str =
   let parts = Str.split (Str.regexp "[ \t]+") type_str in
   List.exists ~f:(fun part -> part = "'a") parts
 
-let generate_property_signatures ~ctx ~seen ~current_layer2_module (prop : gir_property) =
+let generate_property_signatures ~ctx ~seen ~current_layer2_module ~same_cluster_classes (prop : gir_property) =
   match ocaml_type_of_gir_type ~ctx ~current_layer2_module prop.prop_type with
   | None -> ("", seen)
   | Some ocaml_type ->
+      (* Check if this is a same-cluster class reference and convert to structural type *)
+      let ocaml_type =
+        if is_same_cluster_class ~same_cluster_classes prop.prop_type.name then
+          let structural = structural_type_for_class ~ctx prop.prop_type.name in
+          if prop.prop_type.nullable then structural ^ " option" else structural
+        else ocaml_type
+      in
       let generate_getter _prop prop_snake =
         sprintf "    method %s : %s\n" prop_snake ocaml_type
       in
@@ -156,7 +172,7 @@ let generate_property_signatures ~ctx ~seen ~current_layer2_module (prop : gir_p
       in
       generate_property_code ~ctx ~seen ~generate_getter ~generate_setter prop
 
-let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~module_name ~class_name ~c_type ~seen ~current_layer2_module (meth : gir_method) =
+let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~module_name ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes (meth : gir_method) =
   let should_skip =
     Filtering.should_skip_method_binding ~ctx ~property_method_names ~property_base_names ~class_name ~c_type meth ||
     List.exists meth.parameters ~f:(fun p -> p.direction = Out || p.direction = InOut)
@@ -185,13 +201,23 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
       List.map param_hier_info ~f:(fun (p, hier_opt) ->
         match hier_opt with
         | Some _  ->
-            (* class or interface type *)
-            let class_name = (ocaml_type_of_gir_type ~ctx ~current_layer2_module p.param_type) in
-            let class_type = sprintf "(#%s as 'a)" (Option.get class_name) in
-            if p.nullable || p.param_type.nullable then
-              Some (class_type ^ " option")
-            else 
-              Some class_type
+            (* class or interface type - check if same cluster *)
+            if is_same_cluster_class ~same_cluster_classes p.param_type.name then
+              (* Use structural type for same-cluster classes *)
+              let structural = structural_type_for_class ~ctx p.param_type.name in
+              let class_type = sprintf "(%s as 'a)" structural in
+              if p.nullable || p.param_type.nullable then
+                Some (class_type ^ " option")
+              else
+                Some class_type
+            else
+              (* Use class type for different-cluster classes *)
+              let class_name = (ocaml_type_of_gir_type ~ctx ~current_layer2_module p.param_type) in
+              let class_type = sprintf "(#%s as 'a)" (Option.get class_name) in
+              if p.nullable || p.param_type.nullable then
+                Some (class_type ^ " option")
+              else
+                Some class_type
         | _ ->
             (* Regular type *)
 
@@ -215,19 +241,24 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
     (* Convert #Module.class_type to partial object type for .ml files *)
     let convert_to_partial_object_type type_str =
       (* Convert #GExpression.expression to (#GExpression.expression as 'a) for explicit polymorphism *)
+      (* For same-cluster classes, structural types are already in correct format *)
       (* We keep the # syntax but add 'as 'a' to make the type variable explicit *)
       List.fold_left param_hier_info ~init:type_str ~f:(fun acc (p, hier_opt) ->
         match hier_opt with
         | Some hier when hier.hierarchy <> MonomorphicType ->
-            (* let class_type = hierarchy_class_type ~current_layer2_module hier in *)
-            let class_name = (ocaml_type_of_gir_type ~ctx ~current_layer2_module p.param_type) in
-            let class_type = "#"^ (Option.get class_name) in
-            let class_type_pattern = class_type in
-            let pattern_option = class_type_pattern ^ " option" in
-            let partial_option = sprintf "(%s as 'a) option" class_type in
-            (* Replace with 'as 'a' for option types, keep as-is for non-option *)
-            acc
-            |> Str.global_replace (Str.regexp_string pattern_option) partial_option
+            (* Skip if same cluster - structural type already correct *)
+            if is_same_cluster_class ~same_cluster_classes p.param_type.name then
+              acc
+            else
+              (* let class_type = hierarchy_class_type ~current_layer2_module hier in *)
+              let class_name = (ocaml_type_of_gir_type ~ctx ~current_layer2_module p.param_type) in
+              let class_type = "#"^ (Option.get class_name) in
+              let class_type_pattern = class_type in
+              let pattern_option = class_type_pattern ^ " option" in
+              let partial_option = sprintf "(%s as 'a) option" class_type in
+              (* Replace with 'as 'a' for option types, keep as-is for non-option *)
+              acc
+              |> Str.global_replace (Str.regexp_string pattern_option) partial_option
         | _ -> acc)
     in
 
@@ -241,13 +272,13 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
               else ret
             in
             let param_types_clean = if param_types_clean = [] then ["unit"] else param_types_clean in
-            (* Check for # object types BEFORE conversion *)
+            (* Check for # object types or < structural types BEFORE conversion *)
             let has_type_var = List.exists (param_types_clean @ [final_ret]) ~f:has_type_variable in
-            let has_object_type = List.exists (param_types_clean @ [final_ret]) ~f:(fun t -> String.contains t '#') in
+            let has_object_type = List.exists (param_types_clean @ [final_ret]) ~f:(fun t -> String.contains t '#' || String.contains t '<') in
             let signature = String.concat ~sep:" -> " (param_types_clean @ [final_ret]) in
             (* Convert # syntax to partial object types for .ml files *)
             let signature = convert_to_partial_object_type signature in
-            (* Add explicit polymorphism if we have type variables OR # object types *)
+            (* Add explicit polymorphism if we have type variables OR # object types OR structural types *)
             if has_type_var || has_object_type then
               Some (sprintf "'a. %s" signature)
             else
@@ -282,10 +313,10 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
           match hier_opt with
           | Some hier when hier.hierarchy <> MonomorphicType ->
               if p.nullable || p.param_type.nullable then
-                let class_name = (ocaml_type_of_gir_type ~ctx ~current_layer2_module p.param_type) in
-                let class_type = "#"^ (Option.get class_name) in
-                bprintf buf "      let %s = Option.map (fun (c: %s) -> c#%s) %s in\n"
-                  name class_type hier.accessor_method name
+                
+                
+                bprintf buf "      let %s = Option.map (fun (c) -> c#%s) %s in\n"
+                  name hier.accessor_method name
               else ()
           | _ -> ()
         );
@@ -336,7 +367,7 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
 
     (Buffer.contents buf, seen)
 
-let generate_method_signatures ~ctx ~property_method_names ~property_base_names ~class_name ~c_type ~seen ~current_layer2_module (meth : gir_method) =
+let generate_method_signatures ~ctx ~property_method_names ~property_base_names ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes (meth : gir_method) =
   let should_skip =
     Filtering.should_skip_method_binding ~ctx ~property_method_names ~property_base_names ~class_name ~c_type meth ||
     List.exists meth.parameters ~f:(fun p -> p.direction = Out || p.direction = InOut)
@@ -355,15 +386,22 @@ let generate_method_signatures ~ctx ~property_method_names ~property_base_names 
       List.map param_hier_info ~f:(fun (p, hier_opt) ->
         match hier_opt with
         | Some _  ->
-            (* Use # syntax for hierarchy types *)
-
-            (* let class_type = hierarchy_class_type ~current_layer2_module hier in *)
-            let class_name = (ocaml_type_of_gir_type ~ctx ~current_layer2_module p.param_type) in
-            let class_type = "#"^ (Option.get class_name) in
-            if p.nullable || p.param_type.nullable then
-              Some (class_type ^ " option")
+            (* Check if same cluster - use structural type *)
+            if is_same_cluster_class ~same_cluster_classes p.param_type.name then
+              let structural = structural_type_for_class ~ctx p.param_type.name in
+              if p.nullable || p.param_type.nullable then
+                Some (structural ^ " option")
+              else
+                Some structural
             else
-              Some class_type
+              (* Use # syntax for hierarchy types *)
+              (* let class_type = hierarchy_class_type ~current_layer2_module hier in *)
+              let class_name = (ocaml_type_of_gir_type ~ctx ~current_layer2_module p.param_type) in
+              let class_type = "#"^ (Option.get class_name) in
+              if p.nullable || p.param_type.nullable then
+                Some (class_type ^ " option")
+              else
+                Some class_type
         | _ ->
             (* Regular type *)
             let gir_type = { p.param_type with nullable = p.nullable || p.param_type.nullable } in
@@ -415,7 +453,7 @@ let generate_class_converter_method_sig ~ctx ~class_name buf = bprintf buf "    
 let generate_class_converter_method_impl ~class_name buf = bprintf buf "    method as_%s = obj\n" (Utils.ocaml_class_name class_name)
 
 (* Shared class module body generation - refactoring #1 *)
-let generate_class_module_body ~ctx ~buf ~layer1_module_name ~current_layer2_module ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info () =
+let generate_class_module_body ~ctx ~buf ~layer1_module_name ~current_layer2_module ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info ~same_cluster_classes () =
   let has_any_signals = List.length signals > 0 in
   let property_filters = get_property_filters ~ctx properties in
 
@@ -439,7 +477,7 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name ~current_layer2_mod
   let seen = StringSet.empty in
   let seen, () =
     List.fold_left properties ~init:(seen, ()) ~f:(fun (seen, ()) prop ->
-      let chunk, seen = generate_property_methods ~ctx ~module_name:layer1_module_name ~current_layer2_module ~seen prop in
+      let chunk, seen = generate_property_methods ~ctx ~module_name:layer1_module_name ~current_layer2_module ~seen ~same_cluster_classes prop in
       Buffer.add_string buf chunk;
       if chunk <> "" then Buffer.add_char buf '\n';
       (seen, ()))
@@ -448,7 +486,7 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name ~current_layer2_mod
   (* Methods *)
   let seen, () =
     List.fold_left methods ~init:(seen, ()) ~f:(fun (seen, ()) m ->
-      let chunk, seen = generate_method_wrappers ~ctx ~property_method_names:property_filters.method_names ~property_base_names:property_filters.base_names ~module_name:layer1_module_name ~class_name ~c_type ~seen ~current_layer2_module m in
+      let chunk, seen = generate_method_wrappers ~ctx ~property_method_names:property_filters.method_names ~property_base_names:property_filters.base_names ~module_name:layer1_module_name ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes m in
       Buffer.add_string buf chunk;
       if chunk <> "" then Buffer.add_char buf '\n';
       (seen, ()))
@@ -460,7 +498,7 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name ~current_layer2_mod
   generate_class_converter_method_impl ~class_name buf
 
 (* Shared signature body generation - refactoring #2 *)
-let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_ ~current_layer2_module ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info () =
+let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_ ~current_layer2_module ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info ~same_cluster_classes () =
   let has_any_signals = List.length signals > 0 in
   let property_filters = get_property_filters ~ctx properties in
 
@@ -481,7 +519,7 @@ let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_ ~current_layer
   let seen = StringSet.empty in
   let seen, () =
     List.fold_left properties ~init:(seen, ()) ~f:(fun (seen, ()) prop ->
-      let chunk, seen = generate_property_signatures ~ctx ~seen ~current_layer2_module prop in
+      let chunk, seen = generate_property_signatures ~ctx ~seen ~current_layer2_module ~same_cluster_classes prop in
       Buffer.add_string buf chunk;
       (seen, ()))
   in
@@ -489,7 +527,7 @@ let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_ ~current_layer
   (* Methods *)
   let _seen, () =
     List.fold_left methods ~init:(seen, ()) ~f:(fun (seen, ()) meth ->
-      let chunk, seen = generate_method_signatures ~ctx ~property_method_names:property_filters.method_names ~property_base_names:property_filters.base_names ~class_name ~c_type ~seen ~current_layer2_module meth in
+      let chunk, seen = generate_method_signatures ~ctx ~property_method_names:property_filters.method_names ~property_base_names:property_filters.base_names ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes meth in
       Buffer.add_string buf chunk;
       (seen, ()))
   in
@@ -511,10 +549,11 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~pro
   bprintf buf "(* High-level class for %s *)\n" class_name;
   bprintf buf "class %s (obj : %s.t) = object (self)\n" class_snake module_names.layer1;
 
+  (* For standalone classes, no same-cluster classes *)
   generate_class_module_body ~ctx ~buf
     ~layer1_module_name:module_names.layer1
     ~current_layer2_module:module_names.layer2
-    ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info ();
+    ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info ~same_cluster_classes:[] ();
 
   bprintf buf "end\n\n";
   Buffer.contents buf
@@ -528,10 +567,11 @@ let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~
   bprintf buf "class %s : %s.t ->\n" class_snake module_names.layer1;
   bprintf buf "  object\n";
 
+  (* For standalone classes, no same-cluster classes *)
   generate_class_signature_body ~ctx ~buf
     ~layer1_module_name:module_names.layer1
     ~current_layer2_module:module_names.layer2
-    ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info ();
+    ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info ~same_cluster_classes:[] ();
 
   bprintf buf "  end\n\n";
   Buffer.contents buf
@@ -544,6 +584,9 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities ~parent_
 
   let current_layer2_module = "G" ^ combined_module_name in
   let sorted_entities = List.sort ~cmp:(fun e1 e2 -> String.compare e1.name e2.name) entities in
+
+  (* Extract all class names in this cluster for same-cluster detection *)
+  let same_cluster_classes = List.map sorted_entities ~f:(fun e -> e.name) in
 
   (* Generate each class *)
   List.iteri ~f:(fun i entity ->
@@ -567,7 +610,7 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities ~parent_
       ~current_layer2_module
       ~class_name:entity.name ~class_snake ~c_type:entity.c_type
       ~methods:entity.methods ~properties:entity.properties ~signals:entity.signals
-      ~hierarchy_info ();
+      ~hierarchy_info ~same_cluster_classes ();
 
     bprintf buf "end\n";
   ) sorted_entities;
@@ -579,6 +622,9 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities ~pare
   let buf = Buffer.create 4096 in
   let current_layer2_module = "G" ^ combined_module_name in
   let sorted_entities = List.sort ~cmp:(fun e1 e2 -> String.compare e1.name e2.name) entities in
+
+  (* Extract all class names in this cluster for same-cluster detection *)
+  let same_cluster_classes = List.map sorted_entities ~f:(fun e -> e.name) in
 
   (* Generate each class signature *)
   List.iteri ~f:(fun i entity ->
@@ -597,7 +643,7 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities ~pare
       ~current_layer2_module
       ~class_name:entity.name ~class_snake ~c_type:entity.c_type
       ~methods:entity.methods ~properties:entity.properties ~signals:entity.signals
-      ~hierarchy_info ();
+      ~hierarchy_info ~same_cluster_classes ();
 
     bprintf buf "  end\n";
   ) sorted_entities;
