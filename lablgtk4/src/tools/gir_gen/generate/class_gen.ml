@@ -258,39 +258,36 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
 
     let buf = Buffer.create 256 in
 
+    (* Helper to generate method header with optional type annotation *)
+    let generate_method_header param_list =
+      match type_annotation_opt with
+      | Some type_ann ->
+          bprintf buf "  method %s : %s =\n    fun %s ->\n" ocaml_name type_ann param_list
+      | None ->
+          bprintf buf "  method %s %s =\n" ocaml_name param_list
+    in
+
     if has_hierarchy_params then begin
       (* Generate method with hierarchy parameter coercion *)
       let param_names = List.map param_info ~f:(fun (name, _, _) -> name) in
-      let param_list = match param_names with
-        | [] -> "()"
-        | _ -> String.concat ~sep:" " param_names
-      in
+      let param_list = if param_names = [] then "()" else String.concat ~sep:" " param_names in
 
-      (* Add type annotation if needed *)
-      (match type_annotation_opt with
-       | Some type_ann ->
-           bprintf buf "  method %s : %s =\n    fun %s ->\n" ocaml_name type_ann
-             (if param_list = "()" then "()" else param_list)
-       | None ->
-           bprintf buf "  method %s %s =\n" ocaml_name
-             (if param_list = "()" then "()" else param_list));
+      generate_method_header param_list;
 
       (* For hierarchy params with type annotations, we need let bindings *)
       let has_hierarchy_with_annotation = type_annotation_opt <> None && has_hierarchy_params in
-      
+
       if has_hierarchy_with_annotation then begin
         List.iter param_info ~f:(fun (name, p, hier_opt) ->
-        match hier_opt with
-        | Some hier when hier.hierarchy <> MonomorphicType ->
-            if p.nullable || p.param_type.nullable then
-              (* let class_type = hierarchy_class_type ~current_layer2_module hier in *)
-              let class_name = (ocaml_type_of_gir_type ~ctx ~current_layer2_module p.param_type) in
-              let class_type = "#"^ (Option.get class_name) in
-              bprintf buf "      let %s = Option.map (fun (c: %s) -> c#%s) %s in\n"
-                name class_type hier.accessor_method name
-            else
-              ()
-        | _ -> ()
+          match hier_opt with
+          | Some hier when hier.hierarchy <> MonomorphicType ->
+              if p.nullable || p.param_type.nullable then
+                let class_name = (ocaml_type_of_gir_type ~ctx ~current_layer2_module p.param_type) in
+                let class_type = "#"^ (Option.get class_name) in
+                bprintf buf "      let %s = Option.map (fun (c: %s) -> c#%s) %s in\n"
+                  name class_type hier.accessor_method name
+              else ()
+          | _ -> ()
         );
         bprintf buf "      %s(%s.%s obj" ret_wrapper module_name ocaml_name
       end else begin
@@ -304,11 +301,9 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
               if has_hierarchy_with_annotation then
                 bprintf buf " %s" name
               else
-                bprintf buf " (Option.map (fun c -> (c#%s )) %s)"
-                  hier.accessor_method  name
+                bprintf buf " (Option.map (fun c -> (c#%s )) %s)" hier.accessor_method name
             else
-              bprintf buf " (%s#%s )"
-                name hier.accessor_method
+              bprintf buf " (%s#%s )" name hier.accessor_method
         | _ ->
             bprintf buf " %s" name
       );
@@ -319,35 +314,24 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
       let layer1_params = List.map meth.parameters ~f:(fun p ->
         let p_name = Utils.ocaml_parameter_name p.param_name in
         let tm = Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type in
-        match tm with Some ({ layer2_class = Some layer2_class; _ } ) ->
-            (if (p.param_type.nullable || p.nullable) then
-              sprintf "( %s |> Option.map (fun x -> x#%s) )" p_name layer2_class.class_layer1_accessor 
-            else 
-              sprintf "( %s#%s )" p_name layer2_class.class_layer1_accessor)
-          | _ -> p_name
+        match tm with
+        | Some ({ layer2_class = Some layer2_class; _ } ) ->
+            if p.param_type.nullable || p.nullable then
+              sprintf "( %s |> Option.map (fun x -> x#%s) )" p_name layer2_class.class_layer1_accessor
+            else
+              sprintf "( %s#%s )" p_name layer2_class.class_layer1_accessor
+        | _ -> p_name
       ) |> String.concat ~sep:" " in
-      let param_list =
-        match method_params with
-        | [] -> "()"
-        | _ -> String.concat ~sep:" " method_params
-      in
-      (* Add type annotation if needed *)
-      (match type_annotation_opt with
-       | Some type_ann ->
-           bprintf buf "  method %s : %s = fun %s -> %s(%s.%s obj %s)\n"
-             ocaml_name type_ann 
-             param_list
-             ret_wrapper
-             module_name ocaml_name
-             layer1_params
-       | None ->
-           bprintf buf "  method %s %s = %s(%s.%s obj %s)\n"
-             ocaml_name
-             param_list
-             ret_wrapper
-             module_name
-             ocaml_name
-             layer1_params)
+
+      let param_list = if method_params = [] then "()" else String.concat ~sep:" " method_params in
+
+      match type_annotation_opt with
+      | Some type_ann ->
+          bprintf buf "  method %s : %s = fun %s -> %s(%s.%s obj %s)\n"
+            ocaml_name type_ann param_list ret_wrapper module_name ocaml_name layer1_params
+      | None ->
+          bprintf buf "  method %s %s = %s(%s.%s obj %s)\n"
+            ocaml_name param_list ret_wrapper module_name ocaml_name layer1_params
     end;
 
     (Buffer.contents buf, seen)
