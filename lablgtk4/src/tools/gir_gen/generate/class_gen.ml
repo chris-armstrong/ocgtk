@@ -8,12 +8,34 @@ open Types
 
 module StringSet = Set.Make(String)
 
+(* Helper types and functions *)
+
+type module_names = {
+  layer1: string;
+  layer2: string;
+}
+
+type property_filters = {
+  method_names: string list;
+  base_names: string list;
+}
 
 let sanitize_name s =
-  s |> String.map ~f:(function '-' -> '_' | c -> c) |> Utils.to_snake_case |> Utils.sanitize_identifier 
+  s |> String.map ~f:(function '-' -> '_' | c -> c) |> Utils.to_snake_case |> Utils.sanitize_identifier
 
 let signal_class_name class_name = Utils.ocaml_class_name (
   sanitize_name class_name ^ "_signals")
+
+let get_signal_module_name class_snake = "G" ^ class_snake ^ "_signals"
+
+let get_module_names ~ctx class_name =
+  let layer1 = Class_utils.get_qualified_module_name ~ctx class_name in
+  { layer1; layer2 = "G" ^ layer1 }
+
+let get_property_filters ~ctx properties = {
+  method_names = Filtering.property_method_names ~ctx properties;
+  base_names = Filtering.property_base_names ~ctx properties;
+}
 
 
 
@@ -62,43 +84,59 @@ let resolve_layer2_class ~ctx ~current_layer2_module (gir_type:gir_type) =
 let ocaml_type_of_gir_type ~ctx ~current_layer2_module (gir_type : gir_type) =
   (match Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type with
   | Some { layer2_class = Some layer2_class; _ } ->
-    Some (if String.equal current_layer2_module layer2_class.class_module then layer2_class.class_type 
-      else layer2_class.class_module ^ "." ^ layer2_class.class_type)   
+    Some (if String.equal current_layer2_module layer2_class.class_module then layer2_class.class_type
+      else layer2_class.class_module ^ "." ^ layer2_class.class_type)
   | Some mapping ->
       Some (Type_mappings.qualify_ocaml_type ~gir_type_name:(Some gir_type.name) mapping.ocaml_type)
   | None -> None)
   |> Option.map (fun base -> if gir_type.nullable then base ^ " option" else base)
 
-let generate_property_methods ~ctx ~module_name ~current_layer2_module ~seen (prop : gir_property) =
+(* Generic property code generation - refactoring #6 *)
+let generate_property_code ~ctx ~seen ~generate_getter ~generate_setter (prop : gir_property) =
   if not (Filtering.should_generate_property ~ctx prop) then ("", seen)
   else
-    (* FIXME: we should function specifically for converting properties/methods *)
     let prop_snake = Utils.ocaml_parameter_name prop.prop_name in
     if StringSet.mem prop_snake seen then ("", seen) else
     let seen = StringSet.add prop_snake seen in
     let buf = Buffer.create 128 in
+
     if prop.readable then begin
-      let impl = match resolve_layer2_class ~ctx ~current_layer2_module prop.prop_type with 
-        | Some class_ref ->
-          if (prop.prop_type.nullable) then
-            sprintf "(%s.get_%s obj) |> Option.map (fun x -> new %s x)" module_name prop_snake class_ref
-          else
-            sprintf "new %s (%s.get_%s obj)" class_ref module_name prop_snake
-        | _ -> sprintf "%s.get_%s obj"  module_name prop_snake in
-      bprintf buf "  method %s = %s\n" prop_snake impl;
+      let code = generate_getter prop prop_snake in
+      Buffer.add_string buf code;
     end;
-    if prop.writable && not prop.construct_only then
-      (let impl = (if prop.prop_type.nullable then
-        sprintf "match v with | Some v -> %s.set_%s obj v | None -> %s.set_%s None" module_name prop_snake module_name prop_snake
-      else
-        sprintf "%s.set_%s obj v" module_name prop_snake)
-      in
-      bprintf buf "  method set_%s v = %s\n" prop_snake impl);
+
+    if prop.writable && not prop.construct_only then begin
+      let code = generate_setter prop prop_snake in
+      Buffer.add_string buf code;
+    end;
+
     let seen =
       if prop.writable && not prop.construct_only then StringSet.add ("set_" ^ prop_snake) seen
       else seen
     in
     (Buffer.contents buf, seen)
+
+let generate_property_methods ~ctx ~module_name ~current_layer2_module ~seen (prop : gir_property) =
+  let generate_getter _prop prop_snake =
+    let impl = match resolve_layer2_class ~ctx ~current_layer2_module prop.prop_type with
+      | Some class_ref ->
+        if prop.prop_type.nullable then
+          sprintf "(%s.get_%s obj) |> Option.map (fun x -> new %s x)" module_name prop_snake class_ref
+        else
+          sprintf "new %s (%s.get_%s obj)" class_ref module_name prop_snake
+      | _ -> sprintf "%s.get_%s obj" module_name prop_snake
+    in
+    sprintf "  method %s = %s\n" prop_snake impl
+  in
+  let generate_setter _prop prop_snake =
+    let impl = if prop.prop_type.nullable then
+      sprintf "match v with | Some v -> %s.set_%s obj v | None -> %s.set_%s obj None" module_name prop_snake module_name prop_snake
+    else
+      sprintf "%s.set_%s obj v" module_name prop_snake
+    in
+    sprintf "  method set_%s v = %s\n" prop_snake impl
+  in
+  generate_property_code ~ctx ~seen ~generate_getter ~generate_setter prop
 
 let has_type_variable type_str =
   (* Check if the type contains an type-variable wildcard (like "_ Gdk.event") *)
@@ -107,25 +145,16 @@ let has_type_variable type_str =
   List.exists ~f:(fun part -> part = "'a") parts
 
 let generate_property_signatures ~ctx ~seen ~current_layer2_module (prop : gir_property) =
-  if not (Filtering.should_generate_property ~ctx prop) then ("", seen)
-  else
-    match ocaml_type_of_gir_type ~ctx ~current_layer2_module prop.prop_type with
-    | None -> ("", seen)
-    | Some ocaml_type ->
-        let prop_snake = sanitize_name prop.prop_name in
-        if StringSet.mem prop_snake seen then ("", seen) else
-        let seen = StringSet.add prop_snake seen in
-        let buf = Buffer.create 128 in
-        if prop.readable then begin
-          bprintf buf "    method %s : %s\n" prop_snake ocaml_type;
-        end;
-        if prop.writable && not prop.construct_only then
-          bprintf buf "    method set_%s : %s -> unit\n" prop_snake ocaml_type;
-        let seen =
-          if prop.writable && not prop.construct_only then StringSet.add ("set_" ^ prop_snake) seen
-          else seen
-        in
-        (Buffer.contents buf, seen)
+  match ocaml_type_of_gir_type ~ctx ~current_layer2_module prop.prop_type with
+  | None -> ("", seen)
+  | Some ocaml_type ->
+      let generate_getter _prop prop_snake =
+        sprintf "    method %s : %s\n" prop_snake ocaml_type
+      in
+      let generate_setter _prop prop_snake =
+        sprintf "    method set_%s : %s -> unit\n" prop_snake ocaml_type
+      in
+      generate_property_code ~ctx ~seen ~generate_getter ~generate_setter prop
 
 let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~module_name ~class_name ~c_type ~seen ~current_layer2_module (meth : gir_method) =
   let should_skip =
@@ -202,8 +231,6 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
         | _ -> acc)
     in
 
-
-
     let type_annotation_opt =
       (* if needs_type_annotation then *)
         match return_type with
@@ -250,8 +277,6 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
 
       (* For hierarchy params with type annotations, we need let bindings *)
       let has_hierarchy_with_annotation = type_annotation_opt <> None && has_hierarchy_params in
-
-
       
       if has_hierarchy_with_annotation then begin
         List.iter param_info ~f:(fun (name, p, hier_opt) ->
@@ -408,8 +433,7 @@ let generate_class_converter_method_impl ~class_name buf = bprintf buf "    meth
 let generate_class_module ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~properties ~signals =
   let buf = Buffer.create 2048 in
 
-  let layer1_module_name = Class_utils.get_qualified_module_name ~ctx class_name in
-  let layer2_module_name  = "G"^layer1_module_name in
+  let module_names = get_module_names ~ctx class_name in
   let class_snake = sanitize_name class_name in
   (* let widget_parent = has_widget_parent class_name parent_chain in *)
 
@@ -420,50 +444,38 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~pro
 
     let hierarchy_info =  Hierarchy_detection.get_hierarchy_info ctx class_name in
 
-    (* Check if this class is in the Widget hierarchy *)
-    (* let in_widget_hierarchy =
-      match hierarchy_info with
-      | Some info -> info.hierarchy = WidgetHierarchy
-      | None -> false
-    in *)
-
     if has_any_signals then
       bprintf buf "(* Signal class defined in g%s_signals.ml *)\n\n" class_snake;
 
     bprintf buf "(* High-level class for %s *)\n" class_name;
-    bprintf buf "class %s (obj : %s.t) = object (self)\n" class_snake layer1_module_name;
+    bprintf buf "class %s (obj : %s.t) = object (self)\n" class_snake module_names.layer1;
 
-    Option.iter (fun hierarchy_info -> 
+    Option.iter (fun hierarchy_info ->
       if not (String.equal hierarchy_info.gir_root class_name) then
-        bprintf buf "  inherit %s.%s (%s.%s obj)\n" hierarchy_info.layer2_module hierarchy_info.class_type_name layer1_module_name hierarchy_info.accessor_method
+        bprintf buf "  inherit %s.%s (%s.%s obj)\n" hierarchy_info.layer2_module hierarchy_info.class_type_name module_names.layer1 hierarchy_info.accessor_method
     ) hierarchy_info;
 
     bprintf buf "\n";
 
     if has_any_signals then begin
-      let signal_module = "G" ^ class_snake ^ "_signals" in
+      let signal_module = get_signal_module_name class_snake in
       let _ = signal_module in ()
       (* bprintf buf "  method connect = new %s.%s obj\n\n"
         signal_module (signal_class_name class_name) *)
     end;
 
     let seen = StringSet.empty in
-    let property_method_names =
-      Filtering.property_method_names ~ctx properties
-    in
-    let property_base_names =
-      Filtering.property_base_names ~ctx properties
-    in
+    let property_filters = get_property_filters ~ctx properties in
     let seen, () =
       List.fold_left properties ~init:(seen, ()) ~f:(fun (seen, ()) prop ->
-        let chunk, seen = generate_property_methods ~ctx ~module_name:layer1_module_name ~current_layer2_module:layer2_module_name ~seen prop in
+        let chunk, seen = generate_property_methods ~ctx ~module_name:module_names.layer1 ~current_layer2_module:module_names.layer2 ~seen prop in
         Buffer.add_string buf chunk;
         if chunk <> "" then Buffer.add_char buf '\n';
         (seen, ()))
     in
     let seen, () =
       List.fold_left methods ~init:(seen, ()) ~f:(fun (seen, ()) m ->
-        let chunk, seen = generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~module_name:layer1_module_name ~class_name ~c_type ~seen ~current_layer2_module:layer2_module_name m in
+        let chunk, seen = generate_method_wrappers ~ctx ~property_method_names:property_filters.method_names ~property_base_names:property_filters.base_names ~module_name:module_names.layer1 ~class_name ~c_type ~seen ~current_layer2_module:module_names.layer2 m in
         Buffer.add_string buf chunk;
         if chunk <> "" then Buffer.add_char buf '\n';
         (seen, ()))
@@ -479,8 +491,7 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~pro
 
 let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~properties ~signals =
   let buf = Buffer.create 1024 in
-  let layer1_module_name =  Class_utils.get_qualified_module_name ~ctx class_name in
-  let layer2_module_name = "G"^ layer1_module_name in
+  let module_names = get_module_names ~ctx class_name in
   let class_snake = sanitize_name class_name in
   (* let widget_parent = has_widget_parent class_name parent_chain in *)
 
@@ -491,41 +502,29 @@ let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~
 
     let hierarchy_info =  Hierarchy_detection.get_hierarchy_info ctx class_name in
 
-    (* Check if this class is in the Widget hierarchy
-    let in_widget_hierarchy =
-      match hierarchy_info with
-      | Some info -> info.hierarchy = WidgetHierarchy
-      | None -> false
-    in *)
+    let property_filters = get_property_filters ~ctx properties in
 
-    let property_method_names =
-      Filtering.property_method_names ~ctx properties
-    in
-    let property_base_names =
-      Filtering.property_base_names ~ctx properties
-    in
-
-    bprintf buf "class %s : %s.t ->\n" class_snake layer1_module_name;
+    bprintf buf "class %s : %s.t ->\n" class_snake module_names.layer1;
     bprintf buf "  object\n";
-    Option.iter (fun hierarchy_info -> 
+    Option.iter (fun hierarchy_info ->
       if not (String.equal hierarchy_info.gir_root class_name) then
         bprintf buf "    inherit %s.%s\n" hierarchy_info.layer2_module hierarchy_info.class_type_name
     ) hierarchy_info;
     if has_any_signals then begin
-      let signal_module = "G" ^ class_snake ^ "_signals" in
+      let signal_module = get_signal_module_name class_snake in
       let _ = signal_module in ()
       (* bprintf buf "    method connect : %s.%s\n" signal_module (signal_class_name class_name) *)
     end;
     let seen = StringSet.empty in
     let seen, () =
       List.fold_left properties ~init:(seen, ()) ~f:(fun (seen, ()) prop ->
-        let chunk, seen = generate_property_signatures ~ctx ~seen ~current_layer2_module:layer2_module_name prop in
+        let chunk, seen = generate_property_signatures ~ctx ~seen ~current_layer2_module:module_names.layer2 prop in
         Buffer.add_string buf chunk;
         (seen, ()))
     in
     let _seen, () =
       List.fold_left methods ~init:(seen, ()) ~f:(fun (seen, ()) meth ->
-        let chunk, seen = generate_method_signatures ~ctx ~property_method_names ~property_base_names ~class_name ~c_type ~seen meth ~current_layer2_module:layer2_module_name in
+        let chunk, seen = generate_method_signatures ~ctx ~property_method_names:property_filters.method_names ~property_base_names:property_filters.base_names ~class_name ~c_type ~seen meth ~current_layer2_module:module_names.layer2 in
         Buffer.add_string buf chunk;
         (seen, ()))
     in
@@ -582,14 +581,13 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities ~parent_
       bprintf buf "\n";
 
     if has_any_signals then begin
-      let signal_module = "G" ^ class_snake ^ "_signals" in
+      let signal_module = get_signal_module_name class_snake in
       let _ = signal_module in ()
       (* bprintf buf "  method connect = new %s.%s obj\n\n"
         signal_module (signal_class_name entity.name) *)
     end;
 
-    let property_method_names = Filtering.property_method_names ~ctx entity.properties in
-    let property_base_names = Filtering.property_base_names ~ctx entity.properties in
+    let property_filters = get_property_filters ~ctx entity.properties in
     let seen = StringSet.empty in
 
     let seen, () =
@@ -602,7 +600,7 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities ~parent_
 
     let _seen, () =
       List.fold_left entity.methods ~init:(seen, ()) ~f:(fun (seen, ()) m ->
-        let chunk, seen = generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~module_name ~class_name:entity.name ~c_type:entity.c_type ~seen ~current_layer2_module m in
+        let chunk, seen = generate_method_wrappers ~ctx ~property_method_names:property_filters.method_names ~property_base_names:property_filters.base_names ~module_name ~class_name:entity.name ~c_type:entity.c_type ~seen ~current_layer2_module  m in
         Buffer.add_string buf chunk;
         if chunk <> "" then Buffer.add_char buf '\n';
         (seen, ()))
@@ -639,19 +637,18 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities ~pare
       | None -> false
     in *)
 
-    let property_method_names = Filtering.property_method_names ~ctx entity.properties in
-    let property_base_names = Filtering.property_base_names ~ctx entity.properties in
+    let property_filters = get_property_filters ~ctx entity.properties in
 
     if i > 0 then bprintf buf "\nand ";
     if i = 0 then bprintf buf "class ";
     bprintf buf "%s : %s.t ->\n" class_snake module_name;
     bprintf buf "  object\n";
-    Option.iter (fun hierarchy_info -> 
+    Option.iter (fun hierarchy_info ->
       if not (String.equal hierarchy_info.gir_root entity.name) then
         bprintf buf "  inherit %s.%s\n" hierarchy_info.layer2_module hierarchy_info.class_type_name
     ) hierarchy_info;
     if has_any_signals then begin
-      let signal_module = "G" ^ class_snake ^ "_signals" in
+      let signal_module = get_signal_module_name class_snake in
       let _ = signal_module in ()
       (* bprintf buf "    method connect : %s.%s\n" signal_module (signal_class_name entity.name) *)
     end;
@@ -665,7 +662,7 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities ~pare
     in
     let _seen, () =
       List.fold_left entity.methods ~init:(seen, ()) ~f:(fun (seen, ()) meth ->
-        let chunk, seen = generate_method_signatures ~ctx ~property_method_names ~property_base_names ~class_name:entity.name ~c_type:entity.c_type ~seen ~current_layer2_module meth in
+        let chunk, seen = generate_method_signatures ~ctx ~property_method_names:property_filters.method_names ~property_base_names:property_filters.base_names ~class_name:entity.name ~c_type:entity.c_type ~seen ~current_layer2_module meth in
         Buffer.add_string buf chunk;
         (seen, ()))
     in
