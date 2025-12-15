@@ -197,6 +197,14 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
     let param_hier_info = List.map meth.parameters ~f:(fun p ->
       (p, get_param_hierarchy_info ~ctx p)
     ) in
+
+    (* Track polymorphic parameter index for unique type variables *)
+    let poly_param_counter = ref 0 in
+    let get_next_type_var () =
+      poly_param_counter := !poly_param_counter + 1;
+      sprintf "'p%d" !poly_param_counter
+    in
+
     let param_types =
       List.map param_hier_info ~f:(fun (p, hier_opt) ->
         match hier_opt with
@@ -205,7 +213,8 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
             if is_same_cluster_class ~same_cluster_classes p.param_type.name then
               (* Use structural type for same-cluster classes *)
               let structural = structural_type_for_class ~ctx p.param_type.name in
-              let class_type = sprintf "(%s as 'a)" structural in
+              let type_var = get_next_type_var () in
+              let class_type = sprintf "(%s as %s)" structural type_var in
               if p.nullable || p.param_type.nullable then
                 Some (class_type ^ " option")
               else
@@ -213,7 +222,8 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
             else
               (* Use class type for different-cluster classes *)
               let class_name = (ocaml_type_of_gir_type ~ctx ~current_layer2_module p.param_type) in
-              let class_type = sprintf "(#%s as 'a)" (Option.get class_name) in
+              let type_var = get_next_type_var () in
+              let class_type = sprintf "(#%s as %s)" (Option.get class_name) type_var in
               if p.nullable || p.param_type.nullable then
                 Some (class_type ^ " option")
               else
@@ -240,26 +250,30 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
 
     (* Convert #Module.class_type to partial object type for .ml files *)
     let convert_to_partial_object_type type_str =
-      (* Convert #GExpression.expression to (#GExpression.expression as 'a) for explicit polymorphism *)
+      (* Convert #GExpression.expression to (#GExpression.expression as 'p1) for explicit polymorphism *)
       (* For same-cluster classes, structural types are already in correct format *)
-      (* We keep the # syntax but add 'as 'a' to make the type variable explicit *)
-      List.fold_left param_hier_info ~init:type_str ~f:(fun acc (p, hier_opt) ->
+      (* We keep the # syntax but add 'as 'pN' to make the type variable explicit *)
+      let _, result = List.fold_left param_hier_info ~init:(0, type_str) ~f:(fun (idx, acc) (p, hier_opt) ->
         match hier_opt with
         | Some hier when hier.hierarchy <> MonomorphicType ->
+            let idx = idx + 1 in
             (* Skip if same cluster - structural type already correct *)
             if is_same_cluster_class ~same_cluster_classes p.param_type.name then
-              acc
+              (idx, acc)
             else
               (* let class_type = hierarchy_class_type ~current_layer2_module hier in *)
               let class_name = (ocaml_type_of_gir_type ~ctx ~current_layer2_module p.param_type) in
               let class_type = "#"^ (Option.get class_name) in
               let class_type_pattern = class_type in
               let pattern_option = class_type_pattern ^ " option" in
-              let partial_option = sprintf "(%s as 'a) option" class_type in
-              (* Replace with 'as 'a' for option types, keep as-is for non-option *)
-              acc
-              |> Str.global_replace (Str.regexp_string pattern_option) partial_option
-        | _ -> acc)
+              let type_var = sprintf "'p%d" idx in
+              let partial_option = sprintf "(%s as %s) option" class_type type_var in
+              (* Replace with 'as 'pN' for option types, keep as-is for non-option *)
+              let new_acc = acc |> Str.global_replace (Str.regexp_string pattern_option) partial_option in
+              (idx, new_acc)
+        | _ -> (idx, acc))
+      in
+      result
     in
 
     let type_annotation_opt =
@@ -280,7 +294,16 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
             let signature = convert_to_partial_object_type signature in
             (* Add explicit polymorphism if we have type variables OR # object types OR structural types *)
             if has_type_var || has_object_type then
-              Some (sprintf "'a. %s" signature)
+              (* Generate type variable list: 'p1 'p2 'p3 ... *)
+              let num_poly_params = !poly_param_counter in
+              let type_vars =
+                if num_poly_params > 0 then
+                  let vars = List.init ~len:num_poly_params ~f:(fun i -> sprintf "'p%d" (i + 1)) in
+                  String.concat ~sep:" " vars ^ ". "
+                else
+                  "'a. "
+              in
+              Some (sprintf "%s%s" type_vars signature)
             else
               Some signature
         | _ -> None
