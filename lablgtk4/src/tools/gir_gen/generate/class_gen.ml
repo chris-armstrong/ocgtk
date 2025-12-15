@@ -332,15 +332,17 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
       let has_hierarchy_with_annotation = type_annotation_opt <> None && has_hierarchy_params in
 
       if has_hierarchy_with_annotation then begin
+        (* Generate let bindings for all hierarchy parameters *)
         List.iter param_info ~f:(fun (name, p, hier_opt) ->
           match hier_opt with
-          | Some hier when hier.hierarchy <> MonomorphicType ->
+          | Some hier ->
+              (* Generate let binding for ALL hierarchy parameters (both Mono and Poly) *)
               if p.nullable || p.param_type.nullable then
-                
-                
                 bprintf buf "      let %s = Option.map (fun (c) -> c#%s) %s in\n"
                   name hier.accessor_method name
-              else ()
+              else
+                bprintf buf "      let %s = %s#%s in\n"
+                  name name hier.accessor_method
           | _ -> ()
         );
         bprintf buf "      %s(%s.%s obj" ret_wrapper module_name ocaml_name
@@ -357,7 +359,10 @@ let generate_method_wrappers ~ctx ~property_method_names ~property_base_names ~m
               else
                 bprintf buf " (Option.map (fun c -> (c#%s )) %s)" hier.accessor_method name
             else
-              bprintf buf " (%s#%s )" name hier.accessor_method
+              if has_hierarchy_with_annotation then
+                bprintf buf " %s" name
+              else
+                bprintf buf " (%s#%s )" name hier.accessor_method
         | _ ->
             bprintf buf " %s" name
       );
