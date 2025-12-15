@@ -430,6 +430,51 @@ let generate_hierarchy_converter_method_sig ~hierarchy_info ~class_name buf =
 let generate_class_converter_method_sig ~ctx ~class_name buf = bprintf buf "    method as_%s : %s.t\n" (Utils.ocaml_class_name class_name) (Class_utils.get_qualified_module_name ~ctx class_name)
 let generate_class_converter_method_impl ~class_name buf = bprintf buf "    method as_%s = obj\n" (Utils.ocaml_class_name class_name)
 
+(* Shared class module body generation - refactoring #1 *)
+let generate_class_module_body ~ctx ~buf ~layer1_module_name ~current_layer2_module ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info () =
+  let has_any_signals = List.length signals > 0 in
+  let property_filters = get_property_filters ~ctx properties in
+
+  (* Inheritance *)
+  Option.iter (fun hierarchy_info ->
+    if not (String.equal hierarchy_info.gir_root class_name) then
+      bprintf buf "  inherit %s.%s (%s.%s obj)\n" hierarchy_info.layer2_module hierarchy_info.class_type_name layer1_module_name hierarchy_info.accessor_method
+  ) hierarchy_info;
+
+  bprintf buf "\n";
+
+  (* Signal handler (currently commented out) *)
+  if has_any_signals then begin
+    let signal_module = get_signal_module_name class_snake in
+    let _ = signal_module in ()
+    (* bprintf buf "  method connect = new %s.%s obj\n\n"
+      signal_module (signal_class_name class_name) *)
+  end;
+
+  (* Properties *)
+  let seen = StringSet.empty in
+  let seen, () =
+    List.fold_left properties ~init:(seen, ()) ~f:(fun (seen, ()) prop ->
+      let chunk, seen = generate_property_methods ~ctx ~module_name:layer1_module_name ~current_layer2_module ~seen prop in
+      Buffer.add_string buf chunk;
+      if chunk <> "" then Buffer.add_char buf '\n';
+      (seen, ()))
+  in
+
+  (* Methods *)
+  let seen, () =
+    List.fold_left methods ~init:(seen, ()) ~f:(fun (seen, ()) m ->
+      let chunk, seen = generate_method_wrappers ~ctx ~property_method_names:property_filters.method_names ~property_base_names:property_filters.base_names ~module_name:layer1_module_name ~class_name ~c_type ~seen ~current_layer2_module m in
+      Buffer.add_string buf chunk;
+      if chunk <> "" then Buffer.add_char buf '\n';
+      (seen, ()))
+  in
+  ignore seen;
+
+  (* Converter methods *)
+  Option.iter (fun hierarchy_info -> generate_hierarchy_converter_method_impl ~ctx ~class_name ~hierarchy_info buf) hierarchy_info;
+  generate_class_converter_method_impl ~class_name buf
+
 (* Shared signature body generation - refactoring #2 *)
 let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_ ~current_layer2_module ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info () =
   let has_any_signals = List.length signals > 0 in
@@ -471,62 +516,24 @@ let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_ ~current_layer
 
 let generate_class_module ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~properties ~signals =
   let buf = Buffer.create 2048 in
-
   let module_names = get_module_names ~ctx class_name in
   let class_snake = sanitize_name class_name in
-  (* let widget_parent = has_widget_parent class_name parent_chain in *)
+  let hierarchy_info = Hierarchy_detection.get_hierarchy_info ctx class_name in
+  let has_any_signals = List.length signals > 0 in
 
-  begin
-    (* Include signal class if widget has ANY signals defined in GIR *)
-    (* This ensures method connect is always present when signals exist *)
-    let has_any_signals = List.length signals > 0 in
+  if has_any_signals then
+    bprintf buf "(* Signal class defined in g%s_signals.ml *)\n\n" class_snake;
 
-    let hierarchy_info =  Hierarchy_detection.get_hierarchy_info ctx class_name in
+  bprintf buf "(* High-level class for %s *)\n" class_name;
+  bprintf buf "class %s (obj : %s.t) = object (self)\n" class_snake module_names.layer1;
 
-    if has_any_signals then
-      bprintf buf "(* Signal class defined in g%s_signals.ml *)\n\n" class_snake;
+  generate_class_module_body ~ctx ~buf
+    ~layer1_module_name:module_names.layer1
+    ~current_layer2_module:module_names.layer2
+    ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info ();
 
-    bprintf buf "(* High-level class for %s *)\n" class_name;
-    bprintf buf "class %s (obj : %s.t) = object (self)\n" class_snake module_names.layer1;
-
-    Option.iter (fun hierarchy_info ->
-      if not (String.equal hierarchy_info.gir_root class_name) then
-        bprintf buf "  inherit %s.%s (%s.%s obj)\n" hierarchy_info.layer2_module hierarchy_info.class_type_name module_names.layer1 hierarchy_info.accessor_method
-    ) hierarchy_info;
-
-    bprintf buf "\n";
-
-    if has_any_signals then begin
-      let signal_module = get_signal_module_name class_snake in
-      let _ = signal_module in ()
-      (* bprintf buf "  method connect = new %s.%s obj\n\n"
-        signal_module (signal_class_name class_name) *)
-    end;
-
-    let seen = StringSet.empty in
-    let property_filters = get_property_filters ~ctx properties in
-    let seen, () =
-      List.fold_left properties ~init:(seen, ()) ~f:(fun (seen, ()) prop ->
-        let chunk, seen = generate_property_methods ~ctx ~module_name:module_names.layer1 ~current_layer2_module:module_names.layer2 ~seen prop in
-        Buffer.add_string buf chunk;
-        if chunk <> "" then Buffer.add_char buf '\n';
-        (seen, ()))
-    in
-    let seen, () =
-      List.fold_left methods ~init:(seen, ()) ~f:(fun (seen, ()) m ->
-        let chunk, seen = generate_method_wrappers ~ctx ~property_method_names:property_filters.method_names ~property_base_names:property_filters.base_names ~module_name:module_names.layer1 ~class_name ~c_type ~seen ~current_layer2_module:module_names.layer2 m in
-        Buffer.add_string buf chunk;
-        if chunk <> "" then Buffer.add_char buf '\n';
-        (seen, ()))
-    in
-    ignore seen;
-
-    Option.iter (fun hierarchy_info -> generate_hierarchy_converter_method_impl ~ctx ~class_name ~hierarchy_info buf) hierarchy_info;
-    generate_class_converter_method_impl ~class_name buf;
-    bprintf buf "end\n\n";
-
-    Buffer.contents buf
-  end
+  bprintf buf "end\n\n";
+  Buffer.contents buf
 
 let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~properties ~signals =
   let buf = Buffer.create 1024 in
@@ -548,75 +555,36 @@ let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~
 (* Generate combined class modules for cyclic dependencies *)
 let generate_combined_class_module ~ctx ~combined_module_name ~entities ~parent_chain_for_entity =
   let buf = Buffer.create 4096 in
-
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
   bprintf buf "(* Combined classes for cyclic dependencies *)\n\n";
 
   let current_layer2_module = "G" ^ combined_module_name in
-
-  (* Sort entities by name for consistent output *)
   let sorted_entities = List.sort ~cmp:(fun e1 e2 -> String.compare e1.name e2.name) entities in
 
   (* Generate each class *)
   List.iteri ~f:(fun i entity ->
     let _parent_chain = parent_chain_for_entity entity.name in
-    (* When generating inside a combined module, we need the qualified name *)
     let module_name = Class_utils.get_qualified_module_name ~ctx entity.name in
     let class_snake = sanitize_name entity.name in
-
-    let hierarchy_info =  Hierarchy_detection.get_hierarchy_info ctx entity.name in
+    let hierarchy_info = Hierarchy_detection.get_hierarchy_info ctx entity.name in
     let has_any_signals = List.length entity.signals > 0 in
-    (* let in_widget_hierarchy =
-      match hierarchy_info with
-      | Some info -> info.hierarchy = WidgetHierarchy
-      | None -> false
-    in *)
 
     if has_any_signals then
       bprintf buf "(* Signal class defined in g%s_signals.ml *)\n\n" class_snake;
-    
+
     (* Class declaration with 'and' for subsequent classes *)
     if i = 0 then
-      bprintf buf "class %s (obj : %s.t) = object (self)\n"
-        class_snake module_name
+      bprintf buf "class %s (obj : %s.t) = object (self)\n" class_snake module_name
     else
-      bprintf buf "\nand %s (obj : %s.t) = object (self)\n"
-        class_snake module_name;
+      bprintf buf "\nand %s (obj : %s.t) = object (self)\n" class_snake module_name;
 
-    Option.iter (fun hierarchy_info -> 
-      if not (String.equal hierarchy_info.gir_root entity.name) then
-        bprintf buf "    inherit %s.%s (%s.%s obj)\n" hierarchy_info.layer2_module hierarchy_info.class_type_name module_name hierarchy_info.accessor_method
-    ) hierarchy_info;
-      bprintf buf "\n";
+    generate_class_module_body ~ctx ~buf
+      ~layer1_module_name:module_name
+      ~current_layer2_module
+      ~class_name:entity.name ~class_snake ~c_type:entity.c_type
+      ~methods:entity.methods ~properties:entity.properties ~signals:entity.signals
+      ~hierarchy_info ();
 
-    if has_any_signals then begin
-      let signal_module = get_signal_module_name class_snake in
-      let _ = signal_module in ()
-      (* bprintf buf "  method connect = new %s.%s obj\n\n"
-        signal_module (signal_class_name entity.name) *)
-    end;
-
-    let property_filters = get_property_filters ~ctx entity.properties in
-    let seen = StringSet.empty in
-
-    let seen, () =
-      List.fold_left entity.properties ~init:(seen, ()) ~f:(fun (seen, ()) prop ->
-        let chunk, seen = generate_property_methods ~ctx ~module_name ~current_layer2_module ~seen prop in
-        Buffer.add_string buf chunk;
-        if chunk <> "" then Buffer.add_char buf '\n';
-        (seen, ()))
-    in
-
-    let _seen, () =
-      List.fold_left entity.methods ~init:(seen, ()) ~f:(fun (seen, ()) m ->
-        let chunk, seen = generate_method_wrappers ~ctx ~property_method_names:property_filters.method_names ~property_base_names:property_filters.base_names ~module_name ~class_name:entity.name ~c_type:entity.c_type ~seen ~current_layer2_module  m in
-        Buffer.add_string buf chunk;
-        if chunk <> "" then Buffer.add_char buf '\n';
-        (seen, ()))
-    in
-
-    Option.iter (fun hierarchy_info -> generate_hierarchy_converter_method_impl ~ctx ~class_name:entity.name ~hierarchy_info buf) hierarchy_info;
-    generate_class_converter_method_impl ~class_name:entity.name buf;
     bprintf buf "end\n";
   ) sorted_entities;
 
