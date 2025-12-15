@@ -569,13 +569,12 @@ let generate_bindings filter_file gir_file output_dir =
     "gError"; "gpointer"; "gaux"; "gobject"; "glib"; "gdk"; "gdkPixbuf";
     "gdkClipboard"; "pango"; "graphene"; "gtk"; "gtkSnapshot";
     "eventController"; "eventControllerKey"; "eventControllerMotion"; "gestureClick";
-    "gObj"; "gBox"; "gGrid"; "gFixed"; "gPaned"; "gNotebook"; "gStack"; "gWindow";
-    "gScrolledWindow"; "gFrame"; "gPack"; "gMain";
+    
     (* OLD varcc enum modules - REMOVED during migration *)
     (* "Gtk4Enums"; "Gdk4Enums"; "GlibEnums"; "pangoEnums"; "GobjectEnums"; *)
     (* NEW gir_gen enum modules - using lowercase_with_underscore convention *)
     "gtk_enums"; "gdk_enums"; "pango_enums"; "gtkButton"; "gtkCheckButton";
-    "gtkToggleButton"; "gButton"; "gRange"; "entry"; "search_entry"; "password_entry";
+    "gtkToggleButton";  "entry"; "search_entry"; "password_entry";
     "spin_button"; "label"; "image"; "link_button"; "menu_button"; "switch";
     "text_buffer"; "text_view"; "text_tag"; "text_tag_table"; "button"; "check_button";
     "toggle_button"; "adjustment"; "range"; "progress_bar"; "level_bar"; "scale";

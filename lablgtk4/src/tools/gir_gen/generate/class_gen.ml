@@ -581,7 +581,7 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~pro
   generate_class_module_body ~ctx ~buf
     ~layer1_module_name:module_names.layer1
     ~current_layer2_module:module_names.layer2
-    ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info ~same_cluster_classes:[] ();
+    ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info ~same_cluster_classes:[class_name] ();
 
   bprintf buf "end\n\n";
   Buffer.contents buf
@@ -599,7 +599,7 @@ let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain:_ ~methods ~
   generate_class_signature_body ~ctx ~buf
     ~layer1_module_name:module_names.layer1
     ~current_layer2_module:module_names.layer2
-    ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info ~same_cluster_classes:[] ();
+    ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info ~same_cluster_classes:[class_name] ();
 
   bprintf buf "  end\n\n";
   Buffer.contents buf
