@@ -61,7 +61,7 @@ let test_widget_creation () =
   try
     let _ = GMain.init () in
     (* Create a widget (using GtkBox from Phase 4.1) *)
-    let box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let box = Box.new_ `HORIZONTAL 0 in
     let widget = Box.as_widget box in
 
     (* Verify widget was created *)

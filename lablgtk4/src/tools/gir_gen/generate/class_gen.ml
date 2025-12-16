@@ -115,33 +115,6 @@ let detect_method_conflicts ~ctx ~class_name ~c_type ~methods : StringSet.t =
 let get_param_hierarchy_info ~ctx (param : gir_param) : hierarchy_info option =
   Hierarchy_detection.get_hierarchy_info ctx param.param_type.name
 
-let generate_signal_class ~ctx:_ ~class_name ~module_name ~signals =
-  let buf = Buffer.create 256 in
-  let signals =
-    List.filter signals ~f:(fun s ->
-      let is_void =
-        let c_type = String.lowercase_ascii s.return_type.c_type in
-        let name = String.lowercase_ascii s.return_type.name in
-        c_type = "void" || name = "none"
-      in
-      is_void && s.sig_parameters = [])
-  in
-  if signals = [] then
-    ""
-  else begin
-    let sig_class = signal_class_name class_name in
-    bprintf buf "(* Signal handlers for %s *)\n" class_name;
-    bprintf buf "class %s (obj : %s.t) = object\n" sig_class module_name;
-    List.iter signals ~f:(fun s ->
-      let m = sanitize_name s.signal_name in
-      bprintf buf "  method %s ~callback =\n" m;
-      bprintf buf "    Gobject.Signal.connect_simple (%s.as_widget obj :> [`widget] Gobject.obj) ~name:\"%s\" ~callback ~after:false\n\n"
-        module_name s.signal_name;
-    );
-    bprintf buf "end\n\n";
-    Buffer.contents buf
-  end
-
 let resolve_layer2_class ~ctx ~current_layer2_module (gir_type:gir_type) =
   match Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type with
   | Some { layer2_class = Some layer2_class; _ } ->
@@ -580,15 +553,13 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name ~current_layer2_mod
       bprintf buf "  inherit %s.%s (%s.%s obj)\n" hierarchy_info.layer2_module hierarchy_info.class_type_name layer1_module_name hierarchy_info.accessor_method
   ) hierarchy_info;
 
-  bprintf buf "\n";
-
-  (* Signal handler (currently commented out) *)
+  (* Signal handlers via inherit *)
   if has_any_signals then begin
     let signal_module = get_signal_module_name class_snake in
-    let _ = signal_module in ()
-    (* bprintf buf "  method connect = new %s.%s obj\n\n"
-      signal_module (signal_class_name class_name) *)
+    bprintf buf "  inherit %s.%s obj\n" signal_module (signal_class_name class_name)
   end;
+
+  bprintf buf "\n";
 
   (* Properties *)
   let seen = StringSet.empty in
@@ -628,11 +599,10 @@ let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_ ~current_layer
       bprintf buf "    inherit %s.%s\n" hierarchy_info.layer2_module hierarchy_info.class_type_name
   ) hierarchy_info;
 
-  (* Signal handler (currently commented out) *)
+  (* Signal handlers via inherit *)
   if has_any_signals then begin
     let signal_module = get_signal_module_name class_snake in
-    let _ = signal_module in ()
-    (* bprintf buf "    method connect : %s.%s\n" signal_module (signal_class_name class_name) *)
+    bprintf buf "    inherit %s.%s\n" signal_module (signal_class_name class_name)
   end;
 
   (* Properties *)

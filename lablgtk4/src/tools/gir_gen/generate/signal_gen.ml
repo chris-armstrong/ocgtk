@@ -20,7 +20,7 @@ let sanitize_signal_name name =
     |> String.map ~f:(function '-' -> '_' | c -> c)
     |> Utils.to_snake_case
   in
-  if List.exists ocaml_keywords ~f:(String.equal base) then base ^ "_" else base
+  "on_" ^ if List.exists ocaml_keywords ~f:(String.equal base) then base ^ "_" else base
 
 let has_widget_parent class_name parent_chain =
   let normalized_class = Utils.normalize_class_name class_name |> String.lowercase_ascii in
