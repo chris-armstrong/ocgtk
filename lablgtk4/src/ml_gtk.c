@@ -22,14 +22,17 @@
 /* Widget type conversions are defined in wrappers.h */
 
 /* ========== Visibility ========== */
-
+/* Commented out - conflicts with generated code in ml_widget_gen.c */
+/*
 ML_1 (gtk_widget_show, GtkWidget_val, Unit)
 ML_1 (gtk_widget_hide, GtkWidget_val, Unit)
 ML_1 (gtk_widget_get_visible, GtkWidget_val, Val_bool)
 ML_2 (gtk_widget_set_visible, GtkWidget_val, Bool_val, Unit)
+*/
 
 /* ========== Size and Allocation ========== */
-
+/* Commented out - conflicts with generated code in ml_widget_gen.c */
+/*
 ML_1 (gtk_widget_get_allocated_width, GtkWidget_val, Val_int)
 ML_1 (gtk_widget_get_allocated_height, GtkWidget_val, Val_int)
 ML_1 (gtk_widget_get_width, GtkWidget_val, Val_int)
@@ -45,6 +48,7 @@ CAMLprim value ml_gtk_widget_set_size_request(value widget, value width, value h
   );
   CAMLreturn(Val_unit);
 }
+*/
 
 CAMLprim value ml_gtk_widget_get_size_request(value widget)
 {
@@ -62,7 +66,8 @@ CAMLprim value ml_gtk_widget_get_size_request(value widget)
 }
 
 /* ========== Properties ========== */
-
+/* Commented out - conflicts with generated code in ml_widget_gen.c */
+/*
 ML_1 (gtk_widget_get_sensitive, GtkWidget_val, Val_bool)
 ML_2 (gtk_widget_set_sensitive, GtkWidget_val, Bool_val, Unit)
 
@@ -74,7 +79,7 @@ CAMLprim value ml_gtk_widget_get_name(value widget)
 
   name = gtk_widget_get_name(GtkWidget_val(widget));
 
-  /* Security: Check for NULL pointer */
+  // Security: Check for NULL pointer
   if (name == NULL) {
     result = caml_copy_string("");
   } else {
@@ -88,21 +93,25 @@ CAMLprim value ml_gtk_widget_set_name(value widget, value name)
 {
   CAMLparam2(widget, name);
 
-  /* String_val is safe - no need for NULL check on OCaml strings */
+  // String_val is safe - no need for NULL check on OCaml strings
   gtk_widget_set_name(GtkWidget_val(widget), String_val(name));
 
   CAMLreturn(Val_unit);
 }
+*/
 
 /* ========== Focus ========== */
-
+/* Commented out - conflicts with generated code in ml_widget_gen.c */
+/*
 ML_1 (gtk_widget_get_focusable, GtkWidget_val, Val_bool)
 ML_2 (gtk_widget_set_focusable, GtkWidget_val, Bool_val, Unit)
 ML_1 (gtk_widget_has_focus, GtkWidget_val, Val_bool)
 ML_1 (gtk_widget_grab_focus, GtkWidget_val, Val_bool)
+*/
 
 /* ========== Parent/Root ========== */
-
+/* Commented out - conflicts with generated code in ml_widget_gen.c */
+/*
 CAMLprim value ml_gtk_widget_get_parent(value widget)
 {
   CAMLparam1(widget);
@@ -114,12 +123,14 @@ CAMLprim value ml_gtk_widget_get_root(value widget)
 {
   CAMLparam1(widget);
   GtkRoot *root = gtk_widget_get_root(GtkWidget_val(widget));
-  /* GtkRoot is a GtkWidget */
+  // GtkRoot is a GtkWidget
   CAMLreturn(Val_option(root, Val_GtkWidget));
 }
+*/
 
 /* ========== CSS Classes ========== */
-
+/* Commented out - conflicts with generated code in ml_widget_gen.c */
+/*
 CAMLprim value ml_gtk_widget_add_css_class(value widget, value css_class)
 {
   CAMLparam2(widget, css_class);
@@ -152,11 +163,11 @@ CAMLprim value ml_gtk_widget_get_css_classes(value widget)
   char **classes = gtk_widget_get_css_classes(GtkWidget_val(widget));
 
   result = Val_emptylist;
-  /* Security: Check for NULL pointer */
+  // Security: Check for NULL pointer
   if (classes != NULL) {
-    /* Build list in reverse order */
+    // Build list in reverse order
     int i;
-    /* First count to build list properly */
+    // First count to build list properly
     for (i = 0; classes[i] != NULL; i++) {
       cons = caml_alloc(2, 0);
       Store_field(cons, 0, caml_copy_string(classes[i]));
@@ -165,13 +176,15 @@ CAMLprim value ml_gtk_widget_get_css_classes(value widget)
     }
   }
 
-  /* Note: gtk_widget_get_css_classes returns internal const array,
-     not to be freed */
+  // Note: gtk_widget_get_css_classes returns internal const array,
+  //   not to be freed
   CAMLreturn(result);
 }
+*/
 
 /* ========== State Flags ========== */
-
+/* Commented out - conflicts with generated code in ml_widget_gen.c */
+/*
 CAMLprim value ml_gtk_widget_get_state_flags(value widget)
 {
   CAMLparam1(widget);
@@ -189,11 +202,14 @@ CAMLprim value ml_gtk_widget_set_state_flags(value widget, value flags, value cl
   );
   CAMLreturn(Val_unit);
 }
+*/
 
 /* ========== Queue Draw/Resize ========== */
-
+/* Commented out - conflicts with generated code in ml_widget_gen.c */
+/*
 ML_1 (gtk_widget_queue_draw, GtkWidget_val, Unit)
 ML_1 (gtk_widget_queue_resize, GtkWidget_val, Unit)
+*/
 
 /* ========== Destruction ========== */
 
@@ -222,7 +238,8 @@ CAMLprim value ml_gtk_widget_destroy(value widget)
 }
 
 /* ========== Packing Properties ========== */
-
+/* Commented out - conflicts with generated code in ml_widget_gen.c */
+/*
 ML_1 (gtk_widget_get_hexpand, GtkWidget_val, Val_bool)
 ML_2 (gtk_widget_set_hexpand, GtkWidget_val, Bool_val, Unit)
 ML_1 (gtk_widget_get_vexpand, GtkWidget_val, Val_bool)
@@ -264,9 +281,11 @@ ML_1 (gtk_widget_get_margin_top, GtkWidget_val, Val_int)
 ML_2 (gtk_widget_set_margin_top, GtkWidget_val, Int_val, Unit)
 ML_1 (gtk_widget_get_margin_bottom, GtkWidget_val, Val_int)
 ML_2 (gtk_widget_set_margin_bottom, GtkWidget_val, Int_val, Unit)
+*/
 
 /* ========== GtkBox ========== */
-
+/* Commented out - conflicts with generated code in ml_box_gen.c */
+/*
 CAMLprim value ml_gtk_box_new(value orientation, value spacing)
 {
   CAMLparam2(orientation, spacing);
@@ -372,6 +391,7 @@ CAMLprim value ml_gtk_box_set_baseline_position(value box, value pos)
   gtk_box_set_baseline_position(GTK_BOX(GtkWidget_val(box)), (GtkBaselinePosition)Int_val(pos));
   CAMLreturn(Val_unit);
 }
+*/
 
 /* ========== GtkGrid ========== */
 
@@ -1083,7 +1103,8 @@ CAMLprim value ml_gtk_main(value unit)
 }
 
 /* ========== Window ========== */
-
+/* Commented out - conflicts with generated code in ml_window_gen.c */
+/*
 CAMLprim value ml_gtk_window_new(value unit)
 {
   CAMLparam1(unit);
@@ -1150,6 +1171,7 @@ ML_1 (gtk_window_get_modal, GtkWindow_val, Val_bool)
 ML_1 (gtk_window_destroy, GtkWindow_val, Unit)
 ML_1 (gtk_window_present, GtkWindow_val, Unit)
 ML_1 (gtk_window_close, GtkWindow_val, Unit)
+*/
 
 /* ========== ScrolledWindow ========== */
 

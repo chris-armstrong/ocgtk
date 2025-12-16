@@ -213,6 +213,18 @@ CAMLexport value Val_GtkWidget_option(GtkWidget *obj);
 #define GtkWindow_val(val) ((GtkWindow*)(ext_of_val(val)))
 #define Val_GtkWindow(obj) (val_of_ext(obj))
 
+/* GtkRoot - Interface, use direct cast */
+#define GtkRoot_val(val) ((GtkRoot*)(ext_of_val(val)))
+#define Val_GtkRoot(obj) (val_of_ext(obj))
+
+/* GtkNative - Interface, use direct cast */
+#define GtkNative_val(val) ((GtkNative*)(ext_of_val(val)))
+#define Val_GtkNative(obj) (val_of_ext(obj))
+
+/* GtkStyleProvider - Interface, use direct cast */
+#define GtkStyleProvider_val(val) ((GtkStyleProvider*)(ext_of_val(val)))
+#define Val_GtkStyleProvider(obj) (val_of_ext(obj))
+
 /* GtkScrolledWindow - GObject, use direct cast */
 #define GtkScrolledWindow_val(val) ((GtkScrolledWindow*)(ext_of_val(val)))
 #define Val_GtkScrolledWindow(obj) (val_of_ext(obj))
