@@ -11,6 +11,8 @@
 
 open Alcotest
 
+module Widget = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget
+
 (* Try to initialize GTK once for all tests *)
 let gtk_available =
   try
@@ -49,18 +51,18 @@ let test_type_constructors () =
 (* Test box creation - requires GTK init *)
 let test_box_creation () =
   (* Create horizontal box *)
-  let hbox = Box.create ~orientation:`HORIZONTAL ~spacing:5 in
+  let hbox = Box.new_ `HORIZONTAL 5 in
   check int "horizontal box spacing" 5 (Box.get_spacing hbox);
   check bool "horizontal box not homogeneous" false (Box.get_homogeneous hbox);
 
   (* Create vertical box *)
-  let vbox = Box.create ~orientation:`VERTICAL ~spacing:10 in
+  let vbox = Box.new_ `VERTICAL 10 in
   check int "vertical box spacing" 10 (Box.get_spacing vbox);
   check bool "vertical box not homogeneous" false (Box.get_homogeneous vbox)
 
 (* Test box properties *)
 let test_box_properties () =
-  let box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+  let box = Box.new_ `HORIZONTAL 0 in
 
   (* Test spacing *)
   Box.set_spacing box 15;
@@ -77,7 +79,7 @@ let test_box_properties () =
 
 (* Test widget packing properties *)
 let test_packing_properties () =
-  let box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+  let box = Box.new_ `HORIZONTAL 0 in
   let widget = Box.as_widget box in
 
   (* Test hexpand/vexpand *)
@@ -112,41 +114,35 @@ let test_packing_properties () =
 (* Test high-level GBox wrapper *)
 let test_gbox_wrapper () =
   (* Create horizontal box with wrapper *)
-  let hbox = GBox.hbox ~spacing:10 () in
-  check int "gbox hbox spacing" 10 hbox#spacing;
+  let hbox_obj = Box.new_ `HORIZONTAL 10 in
+  let hbox = new GBox.box hbox_obj in
+  check int "gbox hbox spacing" 10 (hbox#get_spacing ());
 
   (* Set properties *)
   hbox#set_spacing 20;
-  check int "gbox spacing updated" 20 hbox#spacing;
+  check int "gbox spacing updated" 20 (hbox#get_spacing ());
 
   hbox#set_homogeneous true;
-  check bool "gbox homogeneous" true hbox#homogeneous;
+  check bool "gbox homogeneous" true (hbox#get_homogeneous ());
 
   (* Create vertical box with wrapper *)
-  let vbox = GBox.vbox ~spacing:5 ~homogeneous:true () in
-  check int "gbox vbox spacing" 5 vbox#spacing;
-  check bool "gbox vbox homogeneous" true vbox#homogeneous
-
-(* Test GTK3 compatibility pack methods *)
-let test_pack_compat () =
-  (* Create box with pack compatibility *)
-  let box = GBox.hbox_pack ~spacing:5 () in
-
-  (* Note: We can't really test packing without other widgets,
-     but we can verify the box was created correctly *)
-  check int "pack box spacing" 5 box#spacing
+  let vbox_obj = Box.new_ `VERTICAL 5 in
+  let vbox = new GBox.box vbox_obj in
+  vbox#set_homogeneous true;
+  check int "gbox vbox spacing" 5 (vbox#get_spacing ());
+  check bool "gbox vbox homogeneous" true (vbox#get_homogeneous ())
 
 (* Test child append/prepend - requires actual child widgets *)
 let test_child_management () =
-  let parent_box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
-  let child_box = Box.create ~orientation:`VERTICAL ~spacing:0 in
+  let parent_box = Box.new_ `HORIZONTAL 0 in
+  let child_box = Box.new_ `VERTICAL 0 in
   let child_widget = Box.as_widget child_box in
 
   (* Test append *)
   Box.append parent_box child_widget;
 
   (* Test prepend - create another child *)
-  let child2_box = Box.create ~orientation:`VERTICAL ~spacing:0 in
+  let child2_box = Box.new_ `VERTICAL 0 in
   let child2_widget = Box.as_widget child2_box in
   Box.prepend parent_box child2_widget;
 
@@ -158,7 +154,7 @@ let test_child_management () =
 
 (* Test as_widget function *)
 let test_as_widget () =
-  let box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+  let box = Box.new_ `HORIZONTAL 0 in
   let widget = Box.as_widget box in
 
   (* Verify it's a valid widget by calling widget methods *)
@@ -180,7 +176,6 @@ let () =
     ];
     "high_level", [
       test_case "gbox_wrapper" `Quick (require_gtk test_gbox_wrapper);
-      test_case "pack_compat" `Quick (require_gtk test_pack_compat);
     ];
     "children", [
       test_case "child_management" `Quick (require_gtk test_child_management);
