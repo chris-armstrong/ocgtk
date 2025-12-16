@@ -2,8 +2,8 @@
 
 ## MANDATORY: Development Essentials
 
-1. ALWAYS build the project after making changes with `dune build`. Always use its output in full - DO NOT FILTER its output with `head`/`grep`/`tail` because you will miss critical context.
-2. ALWAYS run tests with `dune runtest`
+1. ALWAYS build the project after making changes with `cd lablgtk4 && dune build`. Always use its output in full - DO NOT FILTER its output with `head`/`grep`/`tail` because you will miss critical context.
+2. ALWAYS run tests with `cd lablgtk4 && dune runtest`
 3. ALWAYS write scripts and supporting code in OCaml
 
 ## Setting up the project
