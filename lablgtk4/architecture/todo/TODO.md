@@ -1,3 +1,20 @@
+# Todos
+
+a high level overview of porting and cleanup tasks needed to get lablgtk4 to a 1.0
+
+## Known bugs
+
+See [KNOWN_BUGS.md](./KNOWN_BUGS.md)
+
+## Split up into several sub-libraries.
+
+At the moment, all of gtk4.gir is generated into lablgtk4/src. We want to be able to bind against
+other libaries, to at least be able to cross-reference types and classes as needed. This will require
+generating gtk4 into a sub-directory and separating the generated from non-generated files internally.
+
+See [REFACTORING_PLAN.md](./REFACTORING_PLAN.md).
+
+
 ## Class hirearchy
 
 * Generate all classes in a class hierarchy with #as_<type>, not just those in the Widget hierarchy (e.g. Expression)
