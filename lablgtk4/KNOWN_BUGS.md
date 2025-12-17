@@ -147,3 +147,192 @@ The issue is in the **code generation phase**, not the parsing phase.
 - PasswordEntry has 4 properties in GIR, but only 1 has accessors generated (75% loss)
 - The same issues affect many other GTK widgets
 - Type mapping gaps and property generation logic are the root causes
+
+## Non-class/record/interface types and types from other libraries prevent method and property generation
+
+There are a number of types which are skipped by gir_gen in `type_mapping.ml` which prevent property and method generation:
+1. Types from other libraries such as GDK or GIO e.g.
+```
+Skipping method set_logo: unknown parameter type GdkPaintable* for parameter logo
+Skipping method set_menubar: unknown parameter type GMenuModel* for parameter menubar
+```
+```xml
+        <return-value transfer-ownership="none" nullable="1">
+          <doc xml:space="preserve"
+               filename="gtk/gtkapplication.c"
+               line="886">the menubar for windows of `application`</doc>
+          <type name="Gio.MenuModel" c:type="GMenuModel*"/>
+        </return-value>
+```
+```xml
+        <return-value transfer-ownership="none">
+          <doc xml:space="preserve"
+               filename="gtk/gtkapplication.c"
+               line="759">a `GList` of `GtkWindow`
+  instances</doc>
+          <type name="GLib.List" c:type="GList*">
+            <type name="Window"/>
+          </type>
+        </return-value>
+```
+
+2. array parameters e.g. "documenters" e.g.
+
+```xml
+          <parameter name="documenters" transfer-ownership="none">
+            <doc xml:space="preserve"
+                 filename="gtk/gtkaboutdialog.c"
+                 line="1463">the authors of the documentation
+  of the application</doc>
+            <array c:type="const char**">
+              <type name="utf8" c:type="char*"/>
+            </array>
+          </parameter>
+```          
+```xml
+      <property name="authors"
+                writable="1"
+                transfer-ownership="none"
+                setter="set_authors"
+                getter="get_authors">
+        <attribute name="org.gtk.Property.get"
+                   value="gtk_about_dialog_get_authors"/>
+        <attribute name="org.gtk.Property.set"
+                   value="gtk_about_dialog_set_authors"/>
+        <doc xml:space="preserve"
+             filename="gtk/gtkaboutdialog.c"
+             line="509">The authors of the program, as a `NULL`-terminated array of strings.
+
+Each string may contain email addresses and URLs, which will be displayed
+as links, see the introduction for more details.</doc>
+        <array>
+          <type name="utf8"/>
+        </array>
+      </property>
+```
+
+3. GObject types which require special handling like GClosure*, GCallback, gssize, GDateTime*, etc.
+4. Callback function parameters e.g. GtkListBoxSortFunc, GtkListBoxUpdateHeaderFunc
+
+```
+Skipping method set_sort_func: unknown parameter type GtkListBoxSortFunc for parameter sort_func
+Skipping method set_header_func: unknown parameter type GtkListBoxUpdateHeaderFunc for parameter update_header
+Skipping method set_filter_func: unknown parameter type GtkListBoxFilterFunc for parameter filter_func
+Skipping method selected_foreach: unknown parameter type GtkListBoxForeachFunc for parameter func
+```
+```xml
+    <callback name="ListBoxSortFunc" c:type="GtkListBoxSortFunc">
+      <doc xml:space="preserve"
+           filename="gtk/gtklistbox.h"
+           line="84">Compare two rows to determine which should be first.</doc>
+      <source-position filename="gtk/gtklistbox.h" line="95"/>
+      <return-value transfer-ownership="none">
+        <doc xml:space="preserve"
+             filename="gtk/gtklistbox.h"
+             line="92">&lt; 0 if @row1 should be before @row2, 0 if they are
+  equal and &gt; 0 otherwise</doc>
+        <type name="gint" c:type="int"/>
+      </return-value>
+      <parameters>
+        <parameter name="row1" transfer-ownership="none">
+          <doc xml:space="preserve"
+               filename="gtk/gtklistbox.h"
+               line="86">the first row</doc>
+          <type name="ListBoxRow" c:type="GtkListBoxRow*"/>
+        </parameter>
+        <parameter name="row2" transfer-ownership="none">
+          <doc xml:space="preserve"
+               filename="gtk/gtklistbox.h"
+               line="87">the second row</doc>
+          <type name="ListBoxRow" c:type="GtkListBoxRow*"/>
+        </parameter>
+        <parameter name="user_data"
+                   transfer-ownership="none"
+                   nullable="1"
+                   allow-none="1"
+                   closure="2">
+          <doc xml:space="preserve"
+               filename="gtk/gtklistbox.h"
+               line="88">user data</doc>
+          <type name="gpointer" c:type="gpointer"/>
+        </parameter>
+      </parameters>
+    </callback>
+    <callback name="ListBoxUpdateHeaderFunc"
+              c:type="GtkListBoxUpdateHeaderFunc">
+      <doc xml:space="preserve"
+           filename="gtk/gtklistbox.h"
+           line="99">Whenever @row changes or which row is before @row changes this
+is called, which lets you update the header on @row.
+
+You may remove or set a new one via [method@Gtk.ListBoxRow.set_header]
+or just change the state of the current header widget.</doc>
+      <source-position filename="gtk/gtklistbox.h" line="111"/>
+      <return-value transfer-ownership="none">
+        <type name="none" c:type="void"/>
+      </return-value>
+      <parameters>
+        <parameter name="row" transfer-ownership="none">
+          <doc xml:space="preserve"
+               filename="gtk/gtklistbox.h"
+               line="101">the row to update</doc>
+          <type name="ListBoxRow" c:type="GtkListBoxRow*"/>
+        </parameter>
+        <parameter name="before"
+                   transfer-ownership="none"
+                   nullable="1"
+                   allow-none="1">
+          <doc xml:space="preserve"
+               filename="gtk/gtklistbox.h"
+               line="102">the row before @row, or %NULL if it is first</doc>
+          <type name="ListBoxRow" c:type="GtkListBoxRow*"/>
+        </parameter>
+        <parameter name="user_data"
+                   transfer-ownership="none"
+                   nullable="1"
+                   allow-none="1"
+                   closure="2">
+          <doc xml:space="preserve"
+               filename="gtk/gtklistbox.h"
+               line="103">user data</doc>
+          <type name="gpointer" c:type="gpointer"/>
+        </parameter>
+      </parameters>
+    </callback>
+```
+
+## Layer 1 polymorphism support does not use extensible variants
+
+Layer 1 variant types are generated as closed variants with a constructor for each class in their
+inheritence chain i.e.
+
+type t = [`button | `widget | `initially_unowned] Gobject.obj
+
+This means if we want to coerce the type to a superclass, we have to use Obj.magic in the `as_<class_name>` converter i.e.:
+
+```ocaml
+let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
+```
+
+If we instead used an open variant type, this would become unnecessary, and we would simply
+be able to pass objects of type `t` as-is, and remove the `as_<class_name>` functions.
+
+It would require:
+
+* defining `t` as an open variant e.g.:
+
+type 'a t = ([> `button | `widget | `initially_unowned] as 'a) Gobject.obj
+
+* updating generated layer 1 wrapper types with an 'a parameter
+
+```
+(** Create a new Button *)
+external new_from_icon_name : string -> 'a t = "ml_gtk_button_new_from_icon_name"
+(** Sets the text of the label of the button to @label.
+
+This will also clear any previously set labels. *)
+external set_label : 'a t -> string -> unit = "ml_gtk_button_set_label"
+````
+
+
+
