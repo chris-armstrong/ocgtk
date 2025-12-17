@@ -141,8 +141,8 @@ CAMLprim value fname##_bc(value *argv, int argn) \
 /* GTK4/GDK4 Type Conversions */
 /* ==================================================================== */
 
-value val_of_ext(const void *ext);
-void* ext_of_val(const value val);
+CAMLexport value val_of_ext(const void *ext);
+CAMLexport void* ext_of_val(const value val);
 
 /* GdkSurface (was GdkWindow in GTK3) - GObject, use direct cast */
 #define GdkSurface_val(val) ((GdkSurface*)(ext_of_val(val)))

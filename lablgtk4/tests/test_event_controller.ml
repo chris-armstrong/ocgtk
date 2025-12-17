@@ -10,21 +10,21 @@ open Alcotest
 
 let test_eventcontroller_module_exists () =
   (* Verify EventController module types compile *)
-  let _phase_type : EventController.propagation_phase option = None in
-  let _limit_type : EventController.propagation_limit option = None in
+  let _phase_type : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.propagation_phase option = None in
+  let _limit_type : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.propagation_limit option = None in
   check bool "EventController module accessible" true true
 
 let test_eventcontrollerkey_module_exists () =
-  (* Verify EventControllerKey module types compile *)
-  check bool "EventControllerKey module accessible" true true
+  (* Verify Event_controller_key module types compile *)
+  check bool "Event_controller_key module accessible" true true
 
 let test_eventcontrollermotion_module_exists () =
-  (* Verify EventControllerMotion module types compile *)
-  check bool "EventControllerMotion module accessible" true true
+  (* Verify Event_controller_motion module types compile *)
+  check bool "Event_controller_motion module accessible" true true
 
 let test_gestureclick_module_exists () =
-  (* Verify GestureClick module types compile *)
-  check bool "GestureClick module accessible" true true
+  (* Verify Gesture_click module types compile *)
+  check bool "Gesture_click module accessible" true true
 
 (** {2 Type System Tests} *)
 
@@ -42,46 +42,46 @@ let test_propagation_limit_variants () =
 
 let test_base_methods_exist () =
   (* Verify Base module methods exist by checking they compile *)
-  let _ = EventController.Base.get_widget in
-  let _ = EventController.Base.get_propagation_phase in
-  let _ = EventController.Base.set_propagation_phase in
-  let _ = EventController.Base.get_propagation_limit in
-  let _ = EventController.Base.set_propagation_limit in
-  let _ = EventController.Base.reset in
-  let _ = EventController.Base.get_current_event in
-  let _ = EventController.Base.get_current_event_time in
+  let _ = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.Base.get_widget in
+  let _ = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.Base.get_propagation_phase in
+  let _ = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.Base.set_propagation_phase in
+  let _ = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.Base.get_propagation_limit in
+  let _ = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.Base.set_propagation_limit in
+  let _ = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.Base.reset in
+  let _ = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.Base.get_current_event in
+  let _ = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.Base.get_current_event_time in
   check bool "Base module methods exist" true true
 
 let test_key_controller_methods_exist () =
-  (* Verify EventControllerKey methods exist *)
-  let _ = EventControllerKey.new_ in
-  let _ = EventControllerKey.forward in
-  let _ = EventControllerKey.get_group in
-  let _ = EventControllerKey.connect_key_pressed in
-  let _ = EventControllerKey.connect_key_released in
-  let _ = EventControllerKey.connect_modifiers in
-  check bool "EventControllerKey methods exist" true true
+  (* Verify Event_controller_key methods exist *)
+  let _ = Event_controller_key.new_ in
+  let _ = Event_controller_key.forward in
+  let _ = Event_controller_key.get_group in
+  let _ = Event_controller_key.connect_key_pressed in
+  let _ = Event_controller_key.connect_key_released in
+  let _ = Event_controller_key.connect_modifiers in
+  check bool "Event_controller_key methods exist" true true
 
 let test_motion_controller_methods_exist () =
-  (* Verify EventControllerMotion methods exist *)
-  let _ = EventControllerMotion.new_ in
-  let _ = EventControllerMotion.contains_pointer in
-  let _ = EventControllerMotion.is_pointer in
-  let _ = EventControllerMotion.connect_enter in
-  let _ = EventControllerMotion.connect_leave in
-  let _ = EventControllerMotion.connect_motion in
-  check bool "EventControllerMotion methods exist" true true
+  (* Verify Event_controller_motion methods exist *)
+  let _ = Event_controller_motion.new_ in
+  let _ = Event_controller_motion.contains_pointer in
+  let _ = Event_controller_motion.is_pointer in
+  let _ = Event_controller_motion.connect_enter in
+  let _ = Event_controller_motion.connect_leave in
+  let _ = Event_controller_motion.connect_motion in
+  check bool "Event_controller_motion methods exist" true true
 
 let test_gesture_click_methods_exist () =
-  (* Verify GestureClick methods exist *)
-  let _ = GestureClick.new_ in
-  let _ = GestureClick.get_button in
-  let _ = GestureClick.set_button in
-  let _ = GestureClick.connect_pressed in
-  let _ = GestureClick.connect_released in
-  let _ = GestureClick.connect_stopped in
-  let _ = GestureClick.connect_unpaired_release in
-  check bool "GestureClick methods exist" true true
+  (* Verify Gesture_click methods exist *)
+  let _ = Gesture_click.new_ in
+  let _ = Gesture_click.get_button in
+  let _ = Gesture_click.set_button in
+  let _ = Gesture_click.connect_pressed in
+  let _ = Gesture_click.connect_released in
+  let _ = Gesture_click.connect_stopped in
+  let _ = Gesture_click.connect_unpaired_release in
+  check bool "Gesture_click methods exist" true true
 
 (** {2 Signal Signature Tests} *)
 
@@ -152,9 +152,9 @@ let () =
   run "Event Controller Tests (Phase 3.3)" [
     "module_structure", [
       test_case "EventController module" `Quick test_eventcontroller_module_exists;
-      test_case "EventControllerKey module" `Quick test_eventcontrollerkey_module_exists;
-      test_case "EventControllerMotion module" `Quick test_eventcontrollermotion_module_exists;
-      test_case "GestureClick module" `Quick test_gestureclick_module_exists;
+      test_case "Event_controller_key module" `Quick test_eventcontrollerkey_module_exists;
+      test_case "Event_controller_motion module" `Quick test_eventcontrollermotion_module_exists;
+      test_case "Gesture_click module" `Quick test_gestureclick_module_exists;
     ];
 
     "type_system", [
@@ -164,9 +164,9 @@ let () =
 
     "api_signatures", [
       test_case "Base methods" `Quick test_base_methods_exist;
-      test_case "EventControllerKey methods" `Quick test_key_controller_methods_exist;
-      test_case "EventControllerMotion methods" `Quick test_motion_controller_methods_exist;
-      test_case "GestureClick methods" `Quick test_gesture_click_methods_exist;
+      test_case "Event_controller_key methods" `Quick test_key_controller_methods_exist;
+      test_case "Event_controller_motion methods" `Quick test_motion_controller_methods_exist;
+      test_case "Gesture_click methods" `Quick test_gesture_click_methods_exist;
     ];
 
     "callback_signatures", [

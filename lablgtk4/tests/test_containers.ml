@@ -32,7 +32,7 @@ let test_fixed_module_accessible () =
 let test_fixed_creation () =
   try
     let _ = GMain.init () in
-    let fixed = Fixed.create () in
+    let fixed = Fixed.new_ () in
     check bool "Fixed created" true true;
 
     (* Test as_widget *)
@@ -45,8 +45,8 @@ let test_fixed_creation () =
 let test_fixed_put_move () =
   try
     let _ = GMain.init () in
-    let fixed = Fixed.create () in
-    let child = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let fixed = Fixed.new_ () in
+    let child = Box.new_ `HORIZONTAL 0 in
     let child_widget = Box.as_widget child in
 
     (* Put child at position *)
@@ -92,8 +92,8 @@ let test_paned_children () =
   try
     let _ = GMain.init () in
     let paned = Paned.create ~orientation:`HORIZONTAL in
-    let child1 = Box.create ~orientation:`VERTICAL ~spacing:0 in
-    let child2 = Box.create ~orientation:`VERTICAL ~spacing:0 in
+    let child1 = Box.new_ `VERTICAL 0 in
+    let child2 = Box.new_ `VERTICAL 0 in
 
     (* Set start child *)
     Paned.set_start_child paned (Some (Box.as_widget child1));
@@ -167,8 +167,8 @@ let test_notebook_pages () =
   try
     let _ = GMain.init () in
     let notebook = Notebook.create () in
-    let page1 = Box.create ~orientation:`VERTICAL ~spacing:0 in
-    let page2 = Box.create ~orientation:`VERTICAL ~spacing:0 in
+    let page1 = Box.new_ `VERTICAL 0 in
+    let page2 = Box.new_ `VERTICAL 0 in
 
     (* Append page *)
     let idx1 = Notebook.append_page notebook ~child:(Box.as_widget page1) () in
@@ -191,8 +191,8 @@ let test_notebook_navigation () =
   try
     let _ = GMain.init () in
     let notebook = Notebook.create () in
-    let page1 = Box.create ~orientation:`VERTICAL ~spacing:0 in
-    let page2 = Box.create ~orientation:`VERTICAL ~spacing:0 in
+    let page1 = Box.new_ `VERTICAL 0 in
+    let page2 = Box.new_ `VERTICAL 0 in
 
     let _ = Notebook.append_page notebook ~child:(Box.as_widget page1) () in
     let _ = Notebook.append_page notebook ~child:(Box.as_widget page2) () in
@@ -254,8 +254,8 @@ let test_stack_children () =
   try
     let _ = GMain.init () in
     let stack = Stack.create () in
-    let child1 = Box.create ~orientation:`VERTICAL ~spacing:0 in
-    let child2 = Box.create ~orientation:`VERTICAL ~spacing:0 in
+    let child1 = Box.new_ `VERTICAL 0 in
+    let child2 = Box.new_ `VERTICAL 0 in
 
     (* Add named child *)
     Stack.add_named stack ~child:(Box.as_widget child1) ~name:"page1";
@@ -298,7 +298,7 @@ let test_stack_transitions () =
 let test_gfixed_wrapper () =
   try
     let _ = GMain.init () in
-    let fixed = GFixed.create () in
+    let fixed = GFixed.new_ () in
     let child = GBox.hbox () in
 
     (* Test high-level put *)
@@ -464,7 +464,7 @@ let test_fixed_with_containers () =
     let _ = GMain.init () in
 
     (* Create fixed with various container types *)
-    let fixed = GFixed.create () in
+    let fixed = GFixed.new_ () in
     let box = GBox.vbox () in
     let grid = GGrid.create () in
     let notebook = GNotebook.create () in
