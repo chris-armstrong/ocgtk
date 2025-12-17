@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: TreeListRow *)
+(* TreeListRow: TreeListRow *)
 
-type t = Gtk.widget
+type t = [`tree_list_row | `object_] Gobject.obj
 
 (* Properties *)
 
@@ -39,7 +39,7 @@ If @self is a row corresponding to the root model,
 The value returned by this function never changes
 until the row is removed from its model at which point
 it will forever return %NULL. *)
-external get_parent : t -> Gtk.widget option = "ml_gtk_tree_list_row_get_parent"
+external get_parent : t -> t option = "ml_gtk_tree_list_row_get_parent"
 
 (** Gets if a row is currently expanded. *)
 external get_expanded : t -> bool = "ml_gtk_tree_list_row_get_expanded"
@@ -56,5 +56,5 @@ external get_depth : t -> int = "ml_gtk_tree_list_row_get_depth"
 
 (** If @self is not expanded or @position is greater than the
 number of children, %NULL is returned. *)
-external get_child_row : t -> int -> Gtk.widget option = "ml_gtk_tree_list_row_get_child_row"
+external get_child_row : t -> int -> t option = "ml_gtk_tree_list_row_get_child_row"
 

@@ -1,11 +1,11 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Record: CssSection *)
+(* CssSection: CssSection *)
 
 (** Defines a part of a CSS document.
 
 Because sections are nested into one another, you can use
 [method@CssSection.get_parent] to get the containing region. *)
-type t = Obj.t
+type t = [`css_section] Gobject.obj
 
 (** Create a new CssSection *)
 external new_ : unit -> unit -> unit -> t = "ml_gtk_css_section_new"
@@ -15,7 +15,7 @@ structure if the reference count reaches 0. *)
 external unref : t -> unit = "ml_gtk_css_section_unref"
 
 (** Increments the reference count on `section`. *)
-external ref : t -> Obj.t = "ml_gtk_css_section_ref"
+external ref : t -> t = "ml_gtk_css_section_ref"
 
 (** Gets the parent section for the given `section`.
 
@@ -25,5 +25,5 @@ either be `NULL` if they are the original CSS document that was loaded by
 [method@Gtk.CssProvider.load_from_file] or a section of type
 `GTK_CSS_SECTION_IMPORT` if it was loaded with an `@import` rule from
 a different file. *)
-external get_parent : t -> Obj.t option = "ml_gtk_css_section_get_parent"
+external get_parent : t -> t option = "ml_gtk_css_section_get_parent"
 

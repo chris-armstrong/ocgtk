@@ -659,12 +659,13 @@ CAMLprim value ml_gtk_gesture_click_get_button(value gesture)
 /* ==================================================================== */
 /* Widget Controller Attachment */
 /* ==================================================================== */
-
+/* Commented out - conflicts with generated code in ml_widget_gen.c */
+/*
 CAMLprim value ml_gtk_widget_add_controller(value widget, value controller)
 {
     CAMLparam2(widget, controller);
 
-    /* Security: Check for NULL pointers */
+    // Security: Check for NULL pointers
     GtkWidget *w = GtkWidget_val(widget);
     GtkEventController *c = GtkEventController_val(controller);
 
@@ -674,7 +675,7 @@ CAMLprim value ml_gtk_widget_add_controller(value widget, value controller)
 
     gtk_widget_add_controller(w, c);
 
-    /* Note: widget takes ownership of controller */
+    // Note: widget takes ownership of controller
     CAMLreturn(Val_unit);
 }
 
@@ -682,7 +683,7 @@ CAMLprim value ml_gtk_widget_remove_controller(value widget, value controller)
 {
     CAMLparam2(widget, controller);
 
-    /* Security: Check for NULL pointers */
+    // Security: Check for NULL pointers
     GtkWidget *w = GtkWidget_val(widget);
     GtkEventController *c = GtkEventController_val(controller);
 
@@ -694,3 +695,4 @@ CAMLprim value ml_gtk_widget_remove_controller(value widget, value controller)
 
     CAMLreturn(Val_unit);
 }
+*/

@@ -10,30 +10,30 @@ let () =
   print_endline "This is a demonstration of the bindings";
 
   (* Show that we can create GTK objects *)
-  let btn = GtkButton.new_with_label "Click Me!" in
+  let btn = Button.new_with_label "Click Me!" in
   print_endline "✓ Created button";
 
-  GtkButton.set_label btn "Counter: 0";
+  Button.set_label btn "Counter: 0";
   print_endline "✓ Set label";
 
-  let label_text = GtkButton.get_label btn in
-  Printf.printf "✓ Got label: %s\n" label_text;
+  let label_text = Button.get_label btn in
+  Printf.printf "✓ Got label: %s\n" (Option.value ~default:"" label_text);
 
   (* Demonstrate CheckButton with nullable parameters *)
-  let check1 = GtkCheckButton.new_with_label (Some "Enable feature") in
+  let check1 = Check_button.new_with_label (Some "Enable feature") in
   print_endline "✓ Created CheckButton with nullable string parameter";
 
-  let check2 = GtkCheckButton.new_ () in
-  GtkCheckButton.set_group check2 (Some check1);
+  let check2 = Check_button.new_ () in
+  Check_button.set_group check2 (Some check1);
   print_endline "✓ Created CheckButton group (radio buttons)";
 
-  GtkCheckButton.set_active check1 true;
-  Printf.printf "✓ Check button 1 active: %b\n" (GtkCheckButton.get_active check1);
+  Check_button.set_active check1 true;
+  Printf.printf "✓ Check button 1 active: %b\n" (Check_button.get_active check1);
 
   (* Demonstrate ToggleButton *)
-  let toggle = GtkToggleButton.new_with_label "Toggle Me" in
-  GtkToggleButton.set_active toggle true;
-  Printf.printf "✓ Toggle button active: %b\n" (GtkToggleButton.get_active toggle);
+  let toggle = Toggle_button.new_with_label "Toggle Me" in
+  Toggle_button.set_active toggle true;
+  Printf.printf "✓ Toggle button active: %b\n" (Toggle_button.get_active toggle);
 
   print_endline "\n✅ All bindings working correctly!";
   print_endline "Nullable parameters: WORKING ✓";

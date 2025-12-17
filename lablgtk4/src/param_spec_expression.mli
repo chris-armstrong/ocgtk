@@ -1,5 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: ParamSpecExpression *)
+(* ParamSpecExpression: ParamSpecExpression *)
 
-type t = Gtk.widget
+type t = [`param_spec_expression | `param_spec] Gobject.obj
 

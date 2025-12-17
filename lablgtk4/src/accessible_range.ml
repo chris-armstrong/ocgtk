@@ -1,5 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: AccessibleRange *)
+(* AccessibleRange: AccessibleRange *)
 
-type t = Gtk.widget
+type t = [`accessible_range] Gobject.obj
 

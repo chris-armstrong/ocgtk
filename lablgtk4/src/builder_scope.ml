@@ -1,5 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: BuilderScope *)
+(* BuilderScope: BuilderScope *)
 
-type t = Gtk.widget
+type t = [`builder_scope] Gobject.obj
 

@@ -16,25 +16,25 @@ let () =
   (* Button Widgets *)
   section "Button Widgets";
 
-  let btn = GtkButton.new_with_label "Hello World" in
-  Printf.printf "✓ Created Button with label: '%s'\n" (GtkButton.get_label btn);
+  let btn = Button.new_with_label "Hello World" in
+  Printf.printf "✓ Created Button with label: '%s'\n" (Option.value ~default:"" (Button.get_label btn));
 
-  GtkButton.set_label btn "Updated Label";
-  Printf.printf "✓ Updated label to: '%s'\n" (GtkButton.get_label btn);
+  Button.set_label btn "Updated Label";
+  Printf.printf "✓ Updated label to: '%s'\n" (Option.value ~default:"" (Button.get_label btn));
 
   (* CheckButton with Nullable Parameters *)
   section "CheckButton - Nullable Parameters (KEY FEATURE)";
 
   Printf.printf "Creating CheckButton with nullable parameter...\n";
-  let check1 = GtkCheckButton.new_with_label (Some "Enable notifications") in
+  let check1 = Check_button.new_with_label (Some "Enable notifications") in
   Printf.printf "✓ CheckButton created with label: '%s'\n"
-    (GtkCheckButton.get_label check1);
+    (Option.value ~default:"" (Check_button.get_label check1));
 
-  let check2 = GtkCheckButton.new_with_mnemonic (Some "_Advanced mode") in
+  let check2 = Check_button.new_with_mnemonic (Some "_Advanced mode") in
   Printf.printf "✓ CheckButton created with mnemonic: '%s'\n"
-    (GtkCheckButton.get_label check2);
+    (Option.value ~default:"" (Check_button.get_label check2));
 
-  let _check3 = GtkCheckButton.new_ () in
+  let _check3 = Check_button.new_ () in
   Printf.printf "✓ CheckButton created without label (nullable None)\n";
 
   Printf.printf "\n💡 NOTE: Constructors take 'string option' (Some/None)\n";
@@ -42,53 +42,53 @@ let () =
   (* Radio Button Grouping *)
   section "Radio Buttons - GTK4 CheckButton Grouping";
 
-  let radio1 = GtkCheckButton.new_with_label (Some "Option A") in
-  let radio2 = GtkCheckButton.new_with_label (Some "Option B") in
-  let radio3 = GtkCheckButton.new_with_label (Some "Option C") in
+  let radio1 = Check_button.new_with_label (Some "Option A") in
+  let radio2 = Check_button.new_with_label (Some "Option B") in
+  let radio3 = Check_button.new_with_label (Some "Option C") in
 
-  GtkCheckButton.set_group radio2 (Some radio1);
-  GtkCheckButton.set_group radio3 (Some radio1);
+  Check_button.set_group radio2 (Some radio1);
+  Check_button.set_group radio3 (Some radio1);
   Printf.printf "✓ Created radio button group (3 buttons)\n";
 
-  GtkCheckButton.set_active radio1 true;
+  Check_button.set_active radio1 true;
   Printf.printf "  - Option A: %b, Option B: %b, Option C: %b\n"
-    (GtkCheckButton.get_active radio1)
-    (GtkCheckButton.get_active radio2)
-    (GtkCheckButton.get_active radio3);
+    (Check_button.get_active radio1)
+    (Check_button.get_active radio2)
+    (Check_button.get_active radio3);
 
-  GtkCheckButton.set_active radio2 true;
+  Check_button.set_active radio2 true;
   Printf.printf "✓ Activated Option B:\n";
   Printf.printf "  - Option A: %b, Option B: %b, Option C: %b\n"
-    (GtkCheckButton.get_active radio1)
-    (GtkCheckButton.get_active radio2)
-    (GtkCheckButton.get_active radio3);
+    (Check_button.get_active radio1)
+    (Check_button.get_active radio2)
+    (Check_button.get_active radio3);
 
   (* ToggleButton *)
   section "ToggleButton";
 
-  let toggle = GtkToggleButton.new_with_label "Toggle Feature" in
-  GtkToggleButton.set_active toggle true;
-  Printf.printf "✓ Created ToggleButton (active: %b)\n" (GtkToggleButton.get_active toggle);
+  let toggle = Toggle_button.new_with_label "Toggle Feature" in
+  Toggle_button.set_active toggle true;
+  Printf.printf "✓ Created ToggleButton (active: %b)\n" (Toggle_button.get_active toggle);
 
-  GtkToggleButton.toggled toggle;
-  Printf.printf "✓ Toggled (active: %b)\n" (GtkToggleButton.get_active toggle);
+  Toggle_button.toggled toggle;
+  Printf.printf "✓ Toggled (active: %b)\n" (Toggle_button.get_active toggle);
 
   (* High-Level OO Wrappers *)
   section "High-Level OO Wrappers";
 
-  let gbutton_obj = GtkButton.new_ () in
-  GtkButton.set_label gbutton_obj "Click Me";
+  let gbutton_obj = Button.new_ () in
+  Button.set_label gbutton_obj "Click Me";
   let gbutton = new GButton.button gbutton_obj in
-  Printf.printf "✓ Created GButton: '%s'\n" (Option.value ~default:"" (gbutton#label ()));
+  Printf.printf "✓ Created GButton: '%s'\n" (Option.value ~default:"" (gbutton#get_label ()));
 
-  let gcheck_obj = GtkCheckButton.new_with_label (Some "Feature enabled") in
-  GtkCheckButton.set_active gcheck_obj true;
+  let gcheck_obj = Check_button.new_with_label (Some "Feature enabled") in
+  Check_button.set_active gcheck_obj true;
   let _ = new GCheck_button.check_button gcheck_obj in
-  Printf.printf "✓ Created GCheck_button (active=%b)\n" (GtkCheckButton.get_active gcheck_obj);
+  Printf.printf "✓ Created GCheck_button (active=%b)\n" (Check_button.get_active gcheck_obj);
 
-  let gtoggle_obj = GtkToggleButton.new_with_label "Power" in
+  let gtoggle_obj = Toggle_button.new_with_label "Power" in
   let _ = new GToggle_button.toggle_button gtoggle_obj in
-  Printf.printf "✓ Created GToggle_button (active=%b)\n" (GtkToggleButton.get_active gtoggle_obj);
+  Printf.printf "✓ Created GToggle_button (active=%b)\n" (Toggle_button.get_active gtoggle_obj);
 
   (* Summary *)
   section "Summary";

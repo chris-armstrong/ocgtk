@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: PrintContext *)
+(* PrintContext: PrintContext *)
 
-type t = Gtk.widget
+type t = [`print_context | `object_] Gobject.obj
 
 (** Obtains the width of the `GtkPrintContext`, in pixels. *)
 external get_width : t -> float = "ml_gtk_print_context_get_width"

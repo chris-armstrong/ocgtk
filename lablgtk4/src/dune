@@ -28,7 +28,7 @@ rm cflag-gtk4.tmp clink-gtk4.tmp\
  (wrapped false)
  (flags :standard -w -6-7-9-10-27-32-33-34-35-36-50-52 -no-strict-sequence)
  (modules :standard)
- (modules_without_implementation gtk_enums gdkpixbuf_enums gsk_enums graphene_enums page_setup_unix_dialog print_job print_unix_dialog printer snapshot)
+ (modules_without_implementation gtk_enums gdkpixbuf_enums gsk_enums graphene_enums page_setup_unix_dialog print_job print_unix_dialog printer)
  (foreign_stubs
   (language c)
   ; Hand-written C stubs (legacy generated C files removed):

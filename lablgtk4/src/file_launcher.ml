@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: FileLauncher *)
+(* FileLauncher: FileLauncher *)
 
-type t = Gtk.widget
+type t = [`file_launcher | `object_] Gobject.obj
 
 (** Create a new FileLauncher *)
 external new_ : unit -> t = "ml_gtk_file_launcher_new"

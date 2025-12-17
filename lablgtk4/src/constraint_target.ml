@@ -1,5 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: ConstraintTarget *)
+(* ConstraintTarget: ConstraintTarget *)
 
-type t = Gtk.widget
+type t = [`constraint_target] Gobject.obj
 

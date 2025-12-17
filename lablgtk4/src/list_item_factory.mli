@@ -1,5 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: ListItemFactory *)
+(* ListItemFactory: ListItemFactory *)
 
-type t = Gtk.widget
+type t = [`list_item_factory | `object_] Gobject.obj
 

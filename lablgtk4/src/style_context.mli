@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: StyleContext *)
+(* StyleContext: StyleContext *)
 
-type t = Gtk.widget
+type t = [`style_context | `object_] Gobject.obj
 
 (* Properties *)
 
@@ -29,7 +29,7 @@ See [method@Gtk.StyleContext.save]. *)
 external restore : t -> unit = "ml_gtk_style_context_restore"
 
 (** Removes @provider from the style providers list in @context. *)
-external remove_provider : t -> Gtk.widget -> unit = "ml_gtk_style_context_remove_provider"
+external remove_provider : t -> Style_provider.t -> unit = "ml_gtk_style_context_remove_provider"
 
 (** Removes @class_name from @context. *)
 external remove_class : t -> string -> unit = "ml_gtk_style_context_remove_class"
@@ -51,13 +51,13 @@ external get_state : t -> Gtk_enums.stateflags = "ml_gtk_style_context_get_state
 external get_scale : t -> int = "ml_gtk_style_context_get_scale"
 
 (** Gets the padding for a given state as a `GtkBorder`. *)
-external get_padding : t -> Obj.t = "ml_gtk_style_context_get_padding"
+external get_padding : t -> Border.t = "ml_gtk_style_context_get_padding"
 
 (** Gets the margin for a given state as a `GtkBorder`. *)
-external get_margin : t -> Obj.t = "ml_gtk_style_context_get_margin"
+external get_margin : t -> Border.t = "ml_gtk_style_context_get_margin"
 
 (** Gets the border for a given state as a `GtkBorder`. *)
-external get_border : t -> Obj.t = "ml_gtk_style_context_get_border"
+external get_border : t -> Border.t = "ml_gtk_style_context_get_border"
 
 (** Adds a style provider to @context, to be used in style construction.
 
@@ -69,7 +69,7 @@ to affect the style of all widgets, use
 Note: If both priorities are the same, a `GtkStyleProvider`
 added through this function takes precedence over another added
 through [func@Gtk.StyleContext.add_provider_for_display]. *)
-external add_provider : t -> Gtk.widget -> int -> unit = "ml_gtk_style_context_add_provider"
+external add_provider : t -> Style_provider.t -> int -> unit = "ml_gtk_style_context_add_provider"
 
 (** Adds a style class to @context, so later uses of the
 style context will make use of this new class for styling.

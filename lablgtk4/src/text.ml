@@ -1,15 +1,15 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Text *)
 
-type t = [`text | `widget] Gobject.obj
+type t = [`text | `widget | `initially_unowned] Gobject.obj
 
-let as_widget (obj : t) : Gtk.widget = Obj.magic obj
+let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new Text *)
 external new_ : unit -> t = "ml_gtk_text_new"
 
 (** Create a new Text *)
-external new_with_buffer : Gtk.widget -> t = "ml_gtk_text_new_with_buffer"
+external new_with_buffer : Entry_buffer.t -> t = "ml_gtk_text_new_with_buffer"
 
 (* Properties *)
 
@@ -80,7 +80,7 @@ external set_enable_emoji_completion : t -> bool -> unit = "ml_gtk_text_set_enab
 
 (** Set the `GtkEntryBuffer` object which holds the text for
 this widget. *)
-external set_buffer : t -> Gtk.widget -> unit = "ml_gtk_text_set_buffer"
+external set_buffer : t -> Entry_buffer.t -> unit = "ml_gtk_text_set_buffer"
 
 (** If @activates is %TRUE, pressing Enter will activate
 the default widget for the window containing @self.
@@ -141,7 +141,7 @@ external get_enable_emoji_completion : t -> bool = "ml_gtk_text_get_enable_emoji
 
 (** Get the `GtkEntryBuffer` object which holds the text for
 this widget. *)
-external get_buffer : t -> Gtk.widget = "ml_gtk_text_get_buffer"
+external get_buffer : t -> Entry_buffer.t = "ml_gtk_text_get_buffer"
 
 (** Returns whether pressing Enter will activate
 the default widget for the window containing @self.

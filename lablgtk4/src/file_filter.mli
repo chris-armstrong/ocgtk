@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: FileFilter *)
+(* FileFilter: FileFilter *)
 
-type t = Gtk.widget
+type t = [`file_filter | `filter | `object_] Gobject.obj
 
 (** Create a new FileFilter *)
 external new_ : unit -> t = "ml_gtk_file_filter_new"

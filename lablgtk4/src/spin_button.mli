@@ -1,12 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: SpinButton *)
 
-type t = [`spin_button | `widget] Gobject.obj
+type t = [`spin_button | `widget | `initially_unowned] Gobject.obj
 
-val as_widget : t -> Gtk.widget
+val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new SpinButton *)
-external new_ : Gtk.widget option -> float -> int -> t = "ml_gtk_spin_button_new"
+external new_ : Adjustment.t option -> float -> int -> t = "ml_gtk_spin_button_new"
 
 (** Create a new SpinButton *)
 external new_with_range : float -> float -> float -> t = "ml_gtk_spin_button_new_with_range"
@@ -65,7 +65,7 @@ hold down a button or key. *)
 external set_climb_rate : t -> float -> unit = "ml_gtk_spin_button_set_climb_rate"
 
 (** Replaces the `GtkAdjustment` associated with @spin_button. *)
-external set_adjustment : t -> Gtk.widget -> unit = "ml_gtk_spin_button_set_adjustment"
+external set_adjustment : t -> Adjustment.t -> unit = "ml_gtk_spin_button_set_adjustment"
 
 (** Sets whether activating the spin button will activate the default
 widget for the window containing the spin button.
@@ -102,7 +102,7 @@ external get_digits : t -> int = "ml_gtk_spin_button_get_digits"
 external get_climb_rate : t -> float = "ml_gtk_spin_button_get_climb_rate"
 
 (** Get the adjustment associated with a `GtkSpinButton`. *)
-external get_adjustment : t -> Gtk.widget = "ml_gtk_spin_button_get_adjustment"
+external get_adjustment : t -> Adjustment.t = "ml_gtk_spin_button_get_adjustment"
 
 (** Retrieves the value set by [method@Gtk.SpinButton.set_activates_default]. *)
 external get_activates_default : t -> bool = "ml_gtk_spin_button_get_activates_default"
@@ -111,5 +111,5 @@ external get_activates_default : t -> bool = "ml_gtk_spin_button_get_activates_d
 
 The adjustment, climb rate, and number of decimal places
 are updated accordingly. *)
-external configure : t -> Gtk.widget option -> float -> int -> unit = "ml_gtk_spin_button_configure"
+external configure : t -> Adjustment.t option -> float -> int -> unit = "ml_gtk_spin_button_configure"
 

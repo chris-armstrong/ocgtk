@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: CellRendererPixbuf *)
+(* Cell renderer: CellRendererPixbuf *)
 
-type t = Gtk.widget
+type t = [`cell_renderer_pixbuf | `cell_renderer | `initially_unowned] Gobject.obj
+
+val as_cell_renderer : t -> Cell_renderer.t
 
 (** Create a new CellRendererPixbuf *)
 external new_ : unit -> t = "ml_gtk_cell_renderer_pixbuf_new"

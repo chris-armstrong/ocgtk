@@ -1,83 +1,51 @@
-(**************************************************************************)
-(*                Lablgtk4                                                *)
-(*                                                                        *)
-(*    This program is free software; you can redistribute it              *)
-(*    and/or modify it under the terms of the GNU Library General         *)
-(*    Public License as published by the Free Software Foundation         *)
-(*    version 2, with the exception described in file COPYING which       *)
-(*    comes with the library.                                             *)
-(*                                                                        *)
-(**************************************************************************)
-
-(** High-level GtkNotebook wrapper for GTK4 *)
-
-(** {1 GtkNotebook Container} *)
-
-(** Base notebook skeleton with page operations *)
-class notebook_skel : Notebook.t ->
-  object
-    inherit GObj.widget_impl
-
-    (** Append a page *)
-    method append_page : ?tab_label:GObj.widget -> GObj.widget -> int
-
-    (** Prepend a page *)
-    method prepend_page : ?tab_label:GObj.widget -> GObj.widget -> int
-
-    (** Insert a page at position *)
-    method insert_page : ?tab_label:GObj.widget -> pos:int -> GObj.widget -> int
-
-    (** Remove a page by index *)
-    method remove_page : int -> unit
-
-    (** Detach a tab (remove by child widget) *)
-    method detach_tab : GObj.widget -> unit
-
-    (** Get current page number *)
-    method current_page : int
-
-    (** Set current page *)
-    method set_current_page : int -> unit
-
-    (** Go to next page *)
-    method next_page : unit -> unit
-
-    (** Go to previous page *)
-    method prev_page : unit -> unit
-
-    (** Get nth page widget *)
-    method get_nth_page : int -> GObj.widget option
-
-    (** Get number of pages *)
-    method n_pages : int
-
-    (** Get page number for child widget *)
-    method page_num : GObj.widget -> int
-
-    (** Get whether tabs are shown *)
-    method show_tabs : bool
-
-    (** Set whether to show tabs *)
-    method set_show_tabs : bool -> unit
-
-    (** Get whether border is shown *)
-    method show_border : bool
-
-    (** Set whether to show border *)
-    method set_show_border : bool -> unit
-
-    (** Get scrollable mode *)
-    method scrollable : bool
-
-    (** Set scrollable mode *)
-    method set_scrollable : bool -> unit
-  end
-
-(** Notebook widget with full functionality *)
 class notebook : Notebook.t ->
   object
-    inherit notebook_skel
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
+    inherit Gnotebook_signals.notebook_signals
+    method append_page : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option -> int
+    method append_page_menu : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option -> #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option -> int
+    method detach_tab : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> unit
+    method get_action_widget : Gtk_enums.packtype -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option
+    method get_current_page : unit -> int
+    method get_group_name : unit -> string option
+    method get_menu_label : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option
+    method get_menu_label_text : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> string option
+    method get_n_pages : unit -> int
+    method get_nth_page : int -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option
+    method get_page : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> GNotebook_page.notebook_page
+    method get_scrollable : unit -> bool
+    method get_show_border : unit -> bool
+    method get_show_tabs : unit -> bool
+    method get_tab_detachable : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> bool
+    method get_tab_label : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option
+    method get_tab_label_text : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> string option
+    method get_tab_pos : unit -> Gtk_enums.positiontype
+    method get_tab_reorderable : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> bool
+    method insert_page : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option -> int -> int
+    method insert_page_menu : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option -> #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option -> int -> int
+    method next_page : unit -> unit
+    method page_num : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> int
+    method popup_disable : unit -> unit
+    method popup_enable : unit -> unit
+    method prepend_page : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option -> int
+    method prepend_page_menu : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option -> #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option -> int
+    method prev_page : unit -> unit
+    method remove_page : int -> unit
+    method reorder_child : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> int -> unit
+    method set_action_widget : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> Gtk_enums.packtype -> unit
+    method set_current_page : int -> unit
+    method set_group_name : string option -> unit
+    method set_menu_label : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option -> unit
+    method set_menu_label_text : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> string -> unit
+    method set_scrollable : bool -> unit
+    method set_show_border : bool -> unit
+    method set_show_tabs : bool -> unit
+    method set_tab_detachable : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> bool -> unit
+    method set_tab_label : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option -> unit
+    method set_tab_label_text : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> string -> unit
+    method set_tab_pos : Gtk_enums.positiontype -> unit
+    method set_tab_reorderable : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> bool -> unit
+  method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
+    method as_notebook : Notebook.t
   end
 
-(** Create a new notebook *)
-val create : unit -> notebook

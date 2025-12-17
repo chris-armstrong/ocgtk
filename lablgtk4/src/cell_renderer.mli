@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: CellRenderer *)
+(* Cell renderer: CellRenderer *)
 
-type t = Gtk.widget
+type t = [`cell_renderer] Gobject.obj
 
 (* Properties *)
 
@@ -50,7 +50,7 @@ external get_visible : t -> bool = "ml_gtk_cell_renderer_get_visible"
 (** Translates the cell renderer state to `GtkStateFlags`,
 based on the cell renderer and widget sensitivity, and
 the given `GtkCellRenderer`State. *)
-external get_state : t -> Gtk.widget option -> Gtk_enums.cellrendererstate -> Gtk_enums.stateflags = "ml_gtk_cell_renderer_get_state"
+external get_state : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> Gtk_enums.cellrendererstate -> Gtk_enums.stateflags = "ml_gtk_cell_renderer_get_state"
 
 (** Returns the cell renderer’s sensitivity. *)
 external get_sensitive : t -> bool = "ml_gtk_cell_renderer_get_sensitive"
@@ -61,7 +61,7 @@ external get_request_mode : t -> Gtk_enums.sizerequestmode = "ml_gtk_cell_render
 
 (** Retrieves the minimum and natural size of a cell taking
 into account the widget’s preference for height-for-width management. *)
-external get_preferred_size : t -> Gtk.widget -> Obj.t * Obj.t = "ml_gtk_cell_renderer_get_preferred_size"
+external get_preferred_size : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Requisition.t * Requisition.t = "ml_gtk_cell_renderer_get_preferred_size"
 
 (** Checks whether the given `GtkCellRenderer` is an expander. *)
 external get_is_expander : t -> bool = "ml_gtk_cell_renderer_get_is_expander"

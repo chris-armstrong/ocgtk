@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: InfoBar *)
 
-type t = [`info_bar | `widget] Gobject.obj
+type t = [`info_bar | `widget | `initially_unowned] Gobject.obj
 
-val as_widget : t -> Gtk.widget
+val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new InfoBar *)
 external new_ : unit -> t = "ml_gtk_info_bar_new"
@@ -53,13 +53,13 @@ external set_default_response : t -> int -> unit = "ml_gtk_info_bar_set_default_
 external response : t -> int -> unit = "ml_gtk_info_bar_response"
 
 (** Removes a widget from the content area of the info bar. *)
-external remove_child : t -> Gtk.widget -> unit = "ml_gtk_info_bar_remove_child"
+external remove_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_info_bar_remove_child"
 
 (** Removes a widget from the action area of @info_bar.
 
 The widget must have been put there by a call to
 [method@Gtk.InfoBar.add_action_widget] or [method@Gtk.InfoBar.add_button]. *)
-external remove_action_widget : t -> Gtk.widget -> unit = "ml_gtk_info_bar_remove_action_widget"
+external remove_action_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_info_bar_remove_action_widget"
 
 (** Returns whether the widget will display a standard close button. *)
 external get_show_close_button : t -> bool = "ml_gtk_info_bar_get_show_close_button"
@@ -71,7 +71,7 @@ external get_revealed : t -> bool = "ml_gtk_info_bar_get_revealed"
 external get_message_type : t -> Gtk_enums.messagetype = "ml_gtk_info_bar_get_message_type"
 
 (** Adds a widget to the content area of the info bar. *)
-external add_child : t -> Gtk.widget -> unit = "ml_gtk_info_bar_add_child"
+external add_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_info_bar_add_child"
 
 (** Adds a button with the given text.
 
@@ -79,7 +79,7 @@ Clicking the button will emit the [signal@Gtk.InfoBar::response]
 signal with the given response_id. The button is appended to the
 end of the info bar's action area. The button widget is returned,
 but usually you don't need it. *)
-external add_button : t -> string -> int -> Gtk.widget = "ml_gtk_info_bar_add_button"
+external add_button : t -> string -> int -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = "ml_gtk_info_bar_add_button"
 
 (** Add an activatable widget to the action area of a `GtkInfoBar`.
 
@@ -87,5 +87,5 @@ This also connects a signal handler that will emit the
 [signal@Gtk.InfoBar::response] signal on the message area
 when the widget is activated. The widget is appended to the
 end of the message areas action area. *)
-external add_action_widget : t -> Gtk.widget -> int -> unit = "ml_gtk_info_bar_add_action_widget"
+external add_action_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int -> unit = "ml_gtk_info_bar_add_action_widget"
 

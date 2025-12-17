@@ -1,10 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: AlternativeTrigger *)
+(* AlternativeTrigger: AlternativeTrigger *)
 
-type t = Gtk.widget
+type t = [`alternative_trigger | `shortcut_trigger | `object_] Gobject.obj
 
 (** Create a new AlternativeTrigger *)
-external new_ : Gtk.widget -> Gtk.widget -> t = "ml_gtk_alternative_trigger_new"
+external new_ : Shortcut_trigger.t -> Shortcut_trigger.t -> t = "ml_gtk_alternative_trigger_new"
 
 (* Properties *)
 
@@ -13,12 +13,12 @@ trigger @self.
 
 [method@Gtk.AlternativeTrigger.get_first] will return
 the other one. *)
-external get_second : t -> Gtk.widget = "ml_gtk_alternative_trigger_get_second"
+external get_second : t -> Shortcut_trigger.t = "ml_gtk_alternative_trigger_get_second"
 
 (** Gets the first of the two alternative triggers that may
 trigger @self.
 
 [method@Gtk.AlternativeTrigger.get_second] will return
 the other one. *)
-external get_first : t -> Gtk.widget = "ml_gtk_alternative_trigger_get_first"
+external get_first : t -> Shortcut_trigger.t = "ml_gtk_alternative_trigger_get_first"
 

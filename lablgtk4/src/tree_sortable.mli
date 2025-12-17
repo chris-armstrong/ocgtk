@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: TreeSortable *)
+(* TreeSortable: TreeSortable *)
 
-type t = Gtk.widget
+type t = [`tree_sortable] Gobject.obj
 
 (** Emits a `GtkTreeSortable::sort-column-changed` signal on @sortable. *)
 external sort_column_changed : t -> unit = "ml_gtk_tree_sortable_sort_column_changed"

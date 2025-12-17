@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: ShortcutAction *)
+(* ShortcutAction: ShortcutAction *)
 
-type t = Gtk.widget
+type t = [`shortcut_action | `object_] Gobject.obj
 
 (** Create a new ShortcutAction *)
 external parse_string : string -> t = "ml_gtk_shortcut_action_parse_string"

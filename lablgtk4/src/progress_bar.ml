@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: ProgressBar *)
 
-type t = [`progress_bar | `widget] Gobject.obj
+type t = [`progress_bar | `widget | `initially_unowned] Gobject.obj
 
-let as_widget (obj : t) : Gtk.widget = Obj.magic obj
+let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new ProgressBar *)
 external new_ : unit -> t = "ml_gtk_progress_bar_new"

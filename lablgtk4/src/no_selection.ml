@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: NoSelection *)
+(* NoSelection: NoSelection *)
 
-type t = Gtk.widget
+type t = [`no_selection | `object_] Gobject.obj
 
 (** Create a new NoSelection *)
 external new_ : unit -> t = "ml_gtk_no_selection_new"

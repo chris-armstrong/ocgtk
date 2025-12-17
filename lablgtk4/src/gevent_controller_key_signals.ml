@@ -5,7 +5,7 @@ a keypress and prevents the @controller receiving it.
 
 See [method@Gtk.EventControllerKey.set_im_context] and
 [method@Gtk.IMContext.filter_keypress]. *)
-  method im_update ~callback =
+  method on_im_update ~callback =
     Gobject.Signal.connect_simple (Obj.magic obj :> _ Gobject.obj) ~name:"im-update" ~callback ~after:false
 
 end

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: MediaFile *)
+(* MediaFile: MediaFile *)
 
-type t = Gtk.widget
+type t = [`media_file | `media_stream | `object_] Gobject.obj
 
 (** Create a new MediaFile *)
 external new_ : unit -> t = "ml_gtk_media_file_new"

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: BookmarkList *)
+(* BookmarkList: BookmarkList *)
 
-type t = Gtk.widget
+type t = [`bookmark_list | `object_] Gobject.obj
 
 (** Create a new BookmarkList *)
 external new_ : string option -> string option -> t = "ml_gtk_bookmark_list_new"

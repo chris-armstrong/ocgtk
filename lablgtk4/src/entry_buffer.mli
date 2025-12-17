@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: EntryBuffer *)
+(* EntryBuffer: EntryBuffer *)
 
-type t = Gtk.widget
+type t = [`entry_buffer | `object_] Gobject.obj
 
 (** Create a new EntryBuffer *)
 external new_ : string option -> int -> t = "ml_gtk_entry_buffer_new"

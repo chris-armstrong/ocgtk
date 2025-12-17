@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: StringObject *)
+(* StringObject: StringObject *)
 
-type t = Gtk.widget
+type t = [`string_object | `object_] Gobject.obj
 
 (** Create a new StringObject *)
 external new_ : string -> t = "ml_gtk_string_object_new"

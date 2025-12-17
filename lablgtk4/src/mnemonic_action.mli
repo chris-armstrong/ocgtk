@@ -1,5 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: MnemonicAction *)
+(* MnemonicAction: MnemonicAction *)
 
-type t = Gtk.widget
+type t = [`mnemonic_action | `shortcut_action | `object_] Gobject.obj
 

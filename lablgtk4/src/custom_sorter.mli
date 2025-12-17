@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: CustomSorter *)
+(* CustomSorter: CustomSorter *)
 
-type t = Gtk.widget
+type t = [`custom_sorter | `sorter | `object_] Gobject.obj
 
 (** Create a new CustomSorter *)
 external new_ : unit -> unit -> unit -> t = "ml_gtk_custom_sorter_new"

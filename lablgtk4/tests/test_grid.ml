@@ -50,7 +50,7 @@ let test_grid_creation () =
     let _ = GMain.init () in
 
     (* Create grid *)
-    let grid = Grid.create () in
+    let grid = Grid.new_ () in
     check int "grid row spacing" 0 (Grid.get_row_spacing grid);
     check int "grid column spacing" 0 (Grid.get_column_spacing grid);
     check bool "grid row not homogeneous" false (Grid.get_row_homogeneous grid);
@@ -65,7 +65,7 @@ let test_grid_creation () =
 let test_grid_properties () =
   try
     let _ = GMain.init () in
-    let grid = Grid.create () in
+    let grid = Grid.new_ () in
 
     (* Test row spacing *)
     Grid.set_row_spacing grid 10;
@@ -96,15 +96,15 @@ let test_grid_properties () =
 let test_child_attach () =
   try
     let _ = GMain.init () in
-    let grid = Grid.create () in
-    let child_box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let grid = Grid.new_ () in
+    let child_box = Box.new_ `HORIZONTAL 0 in
     let child_widget = Box.as_widget child_box in
 
-    (* Test attach *)
-    Grid.attach grid ~child:child_widget ~column:0 ~row:0 ~width:1 ~height:1;
+    (* Test attach - parameters are: grid widget column row width height *)
+    Grid.attach grid child_widget 0 0 1 1;
 
     (* Test get_child_at *)
-    match Grid.get_child_at grid ~column:0 ~row:0 with
+    match Grid.get_child_at grid 0 0 with
     | Some _ -> check bool "child found at position" true true
     | None -> fail "child not found at position (0,0)"
   with
@@ -117,8 +117,8 @@ let test_child_attach () =
 let test_child_removal () =
   try
     let _ = GMain.init () in
-    let grid = Grid.create () in
-    let child_box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let grid = Grid.new_ () in
+    let child_box = Box.new_ `HORIZONTAL 0 in
     let child_widget = Box.as_widget child_box in
 
     (* Attach and then remove *)
@@ -139,7 +139,7 @@ let test_child_removal () =
 let test_row_column_operations () =
   try
     let _ = GMain.init () in
-    let grid = Grid.create () in
+    let grid = Grid.new_ () in
 
     (* Test insert row *)
     Grid.insert_row grid ~position:0;
@@ -166,10 +166,10 @@ let test_row_column_operations () =
 let test_attach_next_to () =
   try
     let _ = GMain.init () in
-    let grid = Grid.create () in
-    let child1_box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let grid = Grid.new_ () in
+    let child1_box = Box.new_ `HORIZONTAL 0 in
     let child1_widget = Box.as_widget child1_box in
-    let child2_box = Box.create ~orientation:`VERTICAL ~spacing:0 in
+    let child2_box = Box.new_ `VERTICAL 0 in
     let child2_widget = Box.as_widget child2_box in
 
     (* Attach first child *)
@@ -189,8 +189,8 @@ let test_attach_next_to () =
 let test_insert_next_to () =
   try
     let _ = GMain.init () in
-    let grid = Grid.create () in
-    let child_box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
+    let grid = Grid.new_ () in
+    let child_box = Box.new_ `HORIZONTAL 0 in
     let child_widget = Box.as_widget child_box in
 
     (* Attach child *)
@@ -215,7 +215,7 @@ let test_ggrid_wrapper () =
     let _ = GMain.init () in
 
     (* Create grid with wrapper *)
-    let grid = GGrid.create ~row_spacing:10 ~column_spacing:15 () in
+    let grid = GGrid.new_ ~row_spacing:10 ~column_spacing:15 () in
     check int "ggrid row spacing" 10 grid#row_spacing;
     check int "ggrid column spacing" 15 grid#column_spacing;
 
@@ -241,7 +241,7 @@ let test_ggrid_wrapper () =
 let test_as_widget () =
   try
     let _ = GMain.init () in
-    let grid = Grid.create () in
+    let grid = Grid.new_ () in
     let widget = Grid.as_widget grid in
 
     (* Verify it's a valid widget by calling widget methods *)
@@ -258,7 +258,7 @@ let test_as_widget () =
 let test_ggrid_attach_multiple () =
   try
     let _ = GMain.init () in
-    let grid = GGrid.create ~row_spacing:5 ~column_spacing:10 () in
+    let grid = GGrid.new_ ~row_spacing:5 ~column_spacing:10 () in
 
     (* Attach multiple children in a grid pattern *)
     let make_box () = GBox.hbox ~spacing:0 () in
@@ -288,7 +288,7 @@ let test_ggrid_attach_multiple () =
 let test_ggrid_homogeneous () =
   try
     let _ = GMain.init () in
-    let grid = GGrid.create () in
+    let grid = GGrid.new_ () in
 
     (* Test row homogeneous *)
     grid#set_row_homogeneous true;
@@ -310,7 +310,7 @@ let test_ggrid_homogeneous () =
 let test_ggrid_baseline () =
   try
     let _ = GMain.init () in
-    let grid = GGrid.create () in
+    let grid = GGrid.new_ () in
 
     (* Test baseline row property *)
     grid#set_baseline_row 3;
@@ -325,7 +325,7 @@ let test_ggrid_baseline () =
 let test_ggrid_with_nested_containers () =
   try
     let _ = GMain.init () in
-    let grid = GGrid.create ~row_spacing:10 ~column_spacing:10 () in
+    let grid = GGrid.new_ ~row_spacing:10 ~column_spacing:10 () in
 
     (* Create different container types to put in grid *)
     let notebook = GNotebook.create () in

@@ -679,6 +679,7 @@ let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
         c_to_ml = "Val_unit";
         ml_to_c = "Unit_val";
         needs_copy = false;
+        layer2_class = None;
       }
   in
 
@@ -774,6 +775,7 @@ let generate_c_property_setter ~ctx ~c_type (prop : gir_property) class_name =
         c_to_ml = "Val_unit";
         ml_to_c = "Unit_val";
         needs_copy = false;
+        layer2_class = None;
       }
   in
 

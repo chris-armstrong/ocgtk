@@ -3,16 +3,59 @@
 open StdLabels
 open Printf
 
+let stripLeadingNumbers name =
+  if String.length name = 0 then name
+  else (
+    match name.[0] with
+    | '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' -> {js|x|js} ^ name
+    | _ -> name)
+
 (* Convert CamelCase to snake_case *)
-let to_snake_case s =
-  let b = Buffer.create (String.length s + 10) in
+let uppercaseStartRe = Str.regexp "^\\([A-Z]*\\)\\(.*\\)$"
+let uppercaseRe = Str.regexp "\\([A-Z][A-Z0-9]+[A-Z]\\|[A-Z]+\\)\\([^A-Z]*\\)"
+let to_snake_case name =
+  let start_pos = ref 0 in
+  let name_len = String.length name in
+  let components : string list ref = ref [] in
+
+  while !start_pos < name_len do
+    try
+      let next_pos = Str.search_forward uppercaseRe name !start_pos in
+      if not (Int.equal next_pos !start_pos) then begin
+        (*first section not uppercase - add first section as_is*)
+        let len = next_pos - !start_pos in
+        let group = String.sub ~pos:!start_pos ~len name in
+        components := group :: !components;
+        start_pos := next_pos
+      end;
+
+      let upperpart = Str.matched_group 1 name in
+      let lowerpart = Str.matched_group 2 name in
+      if String.length upperpart > 1 then (
+        (* sequence of uppercase characters - convert all but one to their own group *)
+        let group_len = String.length upperpart - 1 in
+        let group = Str.string_before upperpart group_len |> String.lowercase_ascii in
+        components := group :: !components;
+        start_pos := !start_pos + group_len)
+      else (
+        (* one uppercase followed by some not-upper *)
+        let group_len = String.length lowerpart + 1 in
+        let group = String.lowercase_ascii upperpart ^ lowerpart in
+        components := group :: !components;
+        start_pos := !start_pos + group_len)
+    with Stdlib.Not_found ->
+      components := Str.string_after name !start_pos :: !components;
+      start_pos := name_len + 1
+  done;
+  !components |> List.rev |> String.concat ~sep:"_" |> stripLeadingNumbers
+  (* let b = Buffer.create (String.length s + 10) in
   for i = 0 to String.length s - 1 do
     let c = String.get s i in
     if i > 0 && c >= 'A' && c <= 'Z' then
       Buffer.add_char b '_';
     Buffer.add_char b (Char.lowercase_ascii c)
   done;
-  Buffer.contents b
+  Buffer.contents b *)
 
 (* Get attribute value from XML attributes list *)
 let get_attr name attrs =
@@ -93,3 +136,69 @@ let read_filter_file filename =
         List.rev acc
     in
     read_lines []
+
+
+
+let reserved_identifiers = [
+  "and"; "as"; "assert"; "begin"; "class"; "constraint"; "do"; "done";
+  "downto"; "else"; "end"; "exception"; "external"; "false"; "for";
+  "fun"; "function"; "functor"; "if"; "in"; "include"; "inherit"; "initializer";
+  "land"; "lazy"; "let"; "lor"; "lsl"; "lsr"; "lxor"; "match"; "method";
+  "mod"; "module"; "mutable"; "new"; "nonrec"; "object"; "of"; "open";
+  "or"; "private"; "rec"; "sig"; "struct"; "then"; "to"; "true"; "try";
+  "type"; "val"; "virtual"; "when"; "while"; "with";
+]
+
+let sanitize_identifier id =
+  if List.mem id ~set:reserved_identifiers then id ^ "_" else id
+
+let sanitize_property_name name =
+  name |> sanitize_identifier |> String.map ~f:(function '-' -> '_' | c -> c) |> to_snake_case
+
+let strip_function_prefix ~class_name ?c_type ?c_symbol_prefix c_identifier =
+  let snake_identifier = to_snake_case c_identifier in
+  let prefixes =
+    let base = [
+      to_snake_case class_name;
+    ] in
+    let base =
+      match c_symbol_prefix with
+      | Some prefix when prefix <> "" -> (to_snake_case prefix) :: base
+      | _ -> base
+    in
+    match c_type with
+    | Some ct -> (to_snake_case ct) :: base
+    | None -> base
+  in
+  let sorted_prefixes =
+    prefixes
+    |> List.sort_uniq ~cmp:String.compare
+    |> List.sort ~cmp:(fun a b -> compare (String.length b) (String.length a))
+  in
+  let rec strip name = function
+    | [] -> name
+    | prefix :: rest ->
+      let prefix_with_sep = prefix ^ "_" in
+      if String.length name >= String.length prefix_with_sep &&
+         String.sub name ~pos:0 ~len:(String.length prefix_with_sep) = prefix_with_sep
+      then
+        String.sub name ~pos:(String.length prefix_with_sep) ~len:(String.length name - String.length prefix_with_sep)
+      else
+        strip name rest
+  in
+  sanitize_identifier (strip snake_identifier sorted_prefixes)
+
+let ocaml_function_name ~class_name ?c_type ?c_symbol_prefix c_identifier =
+  strip_function_prefix ~class_name ?c_type ?c_symbol_prefix c_identifier
+
+let ocaml_method_name ~class_name ?c_type ?c_symbol_prefix method_identifier =
+  ocaml_function_name ~class_name ?c_type ?c_symbol_prefix method_identifier
+
+let ocaml_parameter_name name = 
+   name |> sanitize_identifier |> String.map ~f:(function '-' -> '_' | c -> c) |> to_snake_case
+
+let ocaml_class_name cn = cn 
+  |>  normalize_class_name 
+  |> String.map ~f:(function '-' -> '_' | c -> c) 
+  |> to_snake_case 
+  |> sanitize_identifier

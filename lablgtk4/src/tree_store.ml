@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: TreeStore *)
+(* TreeStore: TreeStore *)
 
-type t = Gtk.widget
+type t = [`tree_store | `object_] Gobject.obj
 
 (** Create a new TreeStore *)
 external new_ : int -> unit -> t = "ml_gtk_tree_store_new"
@@ -12,13 +12,13 @@ external newv : int -> unit -> t = "ml_gtk_tree_store_newv"
 (** Swaps @a and @b in the same level of @tree_store.
 
 Note that this function only works with unsorted stores. *)
-external swap : t -> Obj.t -> Obj.t -> unit = "ml_gtk_tree_store_swap"
+external swap : t -> Tree_iter.t -> Tree_iter.t -> unit = "ml_gtk_tree_store_swap"
 
 (** Removes @iter from @tree_store.
 
 After being removed, @iter is set to the next valid row at that level, or
 invalidated if it previously pointed to the last one. *)
-external remove : t -> Obj.t -> bool = "ml_gtk_tree_store_remove"
+external remove : t -> Tree_iter.t -> bool = "ml_gtk_tree_store_remove"
 
 (** Prepends a new row to @tree_store.
 
@@ -27,7 +27,7 @@ child of @parent, otherwise it will prepend a row to the top level. The
 `iter` parameter will be changed to point to this new row.  The row will
 be empty after this function is called. To fill in values, you need to
 call gtk_tree_store_set() or gtk_tree_store_set_value(). *)
-external prepend : t -> Obj.t option -> Obj.t = "ml_gtk_tree_store_prepend"
+external prepend : t -> Tree_iter.t option -> Tree_iter.t = "ml_gtk_tree_store_prepend"
 
 (** Moves @iter in @tree_store to the position before @position.
 
@@ -36,7 +36,7 @@ external prepend : t -> Obj.t option -> Obj.t = "ml_gtk_tree_store_prepend"
 Note that this function only works with unsorted stores.
 
 If @position is %NULL, @iter will be moved to the end of the level. *)
-external move_before : t -> Obj.t -> Obj.t option -> unit = "ml_gtk_tree_store_move_before"
+external move_before : t -> Tree_iter.t -> Tree_iter.t option -> unit = "ml_gtk_tree_store_move_before"
 
 (** Moves @iter in @tree_store to the position after @position.
 
@@ -45,22 +45,22 @@ external move_before : t -> Obj.t -> Obj.t option -> unit = "ml_gtk_tree_store_m
 Note that this function only works with unsorted stores.
 
 If @position is %NULL, @iter will be moved to the start of the level. *)
-external move_after : t -> Obj.t -> Obj.t option -> unit = "ml_gtk_tree_store_move_after"
+external move_after : t -> Tree_iter.t -> Tree_iter.t option -> unit = "ml_gtk_tree_store_move_after"
 
 (** Checks if the given iter is a valid iter for this `GtkTreeStore`.
 
 This function is slow. Only use it for debugging and/or testing
 purposes. *)
-external iter_is_valid : t -> Obj.t -> bool = "ml_gtk_tree_store_iter_is_valid"
+external iter_is_valid : t -> Tree_iter.t -> bool = "ml_gtk_tree_store_iter_is_valid"
 
 (** Returns the depth of the position pointed by the iterator
 
 The depth will be 0 for anything on the root level, 1 for anything down
 a level, etc. *)
-external iter_depth : t -> Obj.t -> int = "ml_gtk_tree_store_iter_depth"
+external iter_depth : t -> Tree_iter.t -> int = "ml_gtk_tree_store_iter_depth"
 
 (** Checks if @iter is an ancestor of @descendant. *)
-external is_ancestor : t -> Obj.t -> Obj.t -> bool = "ml_gtk_tree_store_is_ancestor"
+external is_ancestor : t -> Tree_iter.t -> Tree_iter.t -> bool = "ml_gtk_tree_store_is_ancestor"
 
 (** Inserts a new row before @sibling.
 
@@ -75,7 +75,7 @@ of @sibling. When @sibling is set, @parent is optional.
 The @iter parameter will be changed to point to this new row. The row will
 be empty after this function is called. To fill in values, you need to call
 gtk_tree_store_set() or gtk_tree_store_set_value(). *)
-external insert_before : t -> Obj.t option -> Obj.t option -> Obj.t = "ml_gtk_tree_store_insert_before"
+external insert_before : t -> Tree_iter.t option -> Tree_iter.t option -> Tree_iter.t = "ml_gtk_tree_store_insert_before"
 
 (** Inserts a new row after @sibling.
 
@@ -90,7 +90,7 @@ of @sibling. When @sibling is set, @parent is optional.
 The @iter parameter will be changed to point to this new row. The row will
 be empty after this function is called. To fill in values, you need to call
 gtk_tree_store_set() or gtk_tree_store_set_value(). *)
-external insert_after : t -> Obj.t option -> Obj.t option -> Obj.t = "ml_gtk_tree_store_insert_after"
+external insert_after : t -> Tree_iter.t option -> Tree_iter.t option -> Tree_iter.t = "ml_gtk_tree_store_insert_after"
 
 (** Creates a new row at @position.
 
@@ -103,7 +103,7 @@ then the new row will be inserted to the end of the list.
 The @iter parameter will be changed to point to this new row. The row
 will be empty after this function is called. To fill in values, you
 need to call gtk_tree_store_set() or gtk_tree_store_set_value(). *)
-external insert : t -> Obj.t option -> int -> Obj.t = "ml_gtk_tree_store_insert"
+external insert : t -> Tree_iter.t option -> int -> Tree_iter.t = "ml_gtk_tree_store_insert"
 
 (** Removes all rows from @tree_store *)
 external clear : t -> unit = "ml_gtk_tree_store_clear"
@@ -116,5 +116,5 @@ child of @parent, otherwise it will append a row to the top level.
 The @iter parameter will be changed to point to this new row. The row will
 be empty after this function is called. To fill in values, you need to call
 gtk_tree_store_set() or gtk_tree_store_set_value(). *)
-external append : t -> Obj.t option -> Obj.t = "ml_gtk_tree_store_append"
+external append : t -> Tree_iter.t option -> Tree_iter.t = "ml_gtk_tree_store_append"
 

@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: AppChooserWidget *)
 
-type t = [`app_chooser_widget | `widget] Gobject.obj
+type t = [`app_chooser_widget | `widget | `initially_unowned] Gobject.obj
 
-val as_widget : t -> Gtk.widget
+val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new AppChooserWidget *)
 external new_ : string -> t = "ml_gtk_app_chooser_widget_new"

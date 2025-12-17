@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: SelectionModel *)
+(* SelectionModel: SelectionModel *)
 
-type t = Gtk.widget
+type t = [`selection_model] Gobject.obj
 
 (** Requests to unselect a range of items in the model. *)
 external unselect_range : t -> int -> int -> bool = "ml_gtk_selection_model_unselect_range"
@@ -45,7 +45,7 @@ gtk_selection_model_selection_changed (model,
 @mask and @selected must not be modified. They may refer to the
 same bitset, which would mean that every item in the set should
 be selected. *)
-external set_selection : t -> Obj.t -> Obj.t -> bool = "ml_gtk_selection_model_set_selection"
+external set_selection : t -> Bitset.t -> Bitset.t -> bool = "ml_gtk_selection_model_set_selection"
 
 (** Helper function for implementations of `GtkSelectionModel`.
 
@@ -72,12 +72,12 @@ This function is an optimization for
 interested in part of the model's selected state. A common use
 case is in response to the [signal@Gtk.SelectionModel::selection-changed]
 signal. *)
-external get_selection_in_range : t -> int -> int -> Obj.t = "ml_gtk_selection_model_get_selection_in_range"
+external get_selection_in_range : t -> int -> int -> Bitset.t = "ml_gtk_selection_model_get_selection_in_range"
 
 (** Gets the set containing all currently selected items in the model.
 
 This function may be slow, so if you are only interested in single item,
 consider using [method@Gtk.SelectionModel.is_selected] or if you are only
 interested in a few, consider [method@Gtk.SelectionModel.get_selection_in_range]. *)
-external get_selection : t -> Obj.t = "ml_gtk_selection_model_get_selection"
+external get_selection : t -> Bitset.t = "ml_gtk_selection_model_get_selection"
 

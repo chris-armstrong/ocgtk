@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: AppChooser *)
+(* AppChooser: AppChooser *)
 
-type t = Gtk.widget
+type t = [`app_chooser] Gobject.obj
 
 (* Properties *)
 

@@ -62,7 +62,7 @@ CAMLexport CAMLprim value ml_gtk_builder_set_scope(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_builder_set_scope(GtkBuilder_val(self), Option_val(arg1, GtkWidget_val, NULL));
+gtk_builder_set_scope(GtkBuilder_val(self), Option_val(arg1, GtkBuilderScope_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -79,7 +79,7 @@ CAMLexport CAMLprim value ml_gtk_builder_get_scope(value self)
 CAMLparam1(self);
 
 GtkBuilderScope* result = gtk_builder_get_scope(GtkBuilder_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkBuilderScope(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_builder_add_from_resource(value self, value arg1)

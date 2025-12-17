@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: CallbackAction *)
+(* CallbackAction: CallbackAction *)
 
-type t = Gtk.widget
+type t = [`callback_action | `shortcut_action | `object_] Gobject.obj
 
 (** Create a new CallbackAction *)
 external new_ : unit -> unit -> unit -> t = "ml_gtk_callback_action_new"

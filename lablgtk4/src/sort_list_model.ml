@@ -1,18 +1,18 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: SortListModel *)
+(* SortListModel: SortListModel *)
 
-type t = Gtk.widget
+type t = [`sort_list_model | `object_] Gobject.obj
 
 (** Create a new SortListModel *)
-external new_ : unit -> Gtk.widget option -> t = "ml_gtk_sort_list_model_new"
+external new_ : unit -> Sorter.t option -> t = "ml_gtk_sort_list_model_new"
 
 (* Properties *)
 
 (** Sets a new sorter on @self. *)
-external set_sorter : t -> Gtk.widget option -> unit = "ml_gtk_sort_list_model_set_sorter"
+external set_sorter : t -> Sorter.t option -> unit = "ml_gtk_sort_list_model_set_sorter"
 
 (** Sets a new section sorter on @self. *)
-external set_section_sorter : t -> Gtk.widget option -> unit = "ml_gtk_sort_list_model_set_section_sorter"
+external set_section_sorter : t -> Sorter.t option -> unit = "ml_gtk_sort_list_model_set_section_sorter"
 
 (** Sets the sort model to do an incremental sort.
 
@@ -33,11 +33,11 @@ about an ongoing incremental sorting operation. *)
 external set_incremental : t -> bool -> unit = "ml_gtk_sort_list_model_set_incremental"
 
 (** Gets the sorter that is used to sort @self. *)
-external get_sorter : t -> Gtk.widget option = "ml_gtk_sort_list_model_get_sorter"
+external get_sorter : t -> Sorter.t option = "ml_gtk_sort_list_model_get_sorter"
 
 (** Gets the section sorter that is used to sort items of @self into
 sections. *)
-external get_section_sorter : t -> Gtk.widget option = "ml_gtk_sort_list_model_get_section_sorter"
+external get_section_sorter : t -> Sorter.t option = "ml_gtk_sort_list_model_get_section_sorter"
 
 (** Estimates progress of an ongoing sorting operation.
 

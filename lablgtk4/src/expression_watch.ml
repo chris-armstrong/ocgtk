@@ -1,11 +1,11 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Record: ExpressionWatch *)
+(* ExpressionWatch: ExpressionWatch *)
 
 (** An opaque structure representing a watched `GtkExpression`.
 
 The contents of `GtkExpressionWatch` should only be accessed through the
 provided API. *)
-type t = Obj.t
+type t = [`expression_watch] Gobject.obj
 
 (** Stops watching an expression.
 
@@ -20,5 +20,5 @@ freed. *)
 external unref : t -> unit = "ml_gtk_expression_watch_unref"
 
 (** Acquires a reference on the given `GtkExpressionWatch`. *)
-external ref : t -> Obj.t = "ml_gtk_expression_watch_ref"
+external ref : t -> t = "ml_gtk_expression_watch_ref"
 

@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: HeaderBar *)
 
-type t = [`header_bar | `widget] Gobject.obj
+type t = [`header_bar | `widget | `initially_unowned] Gobject.obj
 
-val as_widget : t -> Gtk.widget
+val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new HeaderBar *)
 external new_ : unit -> t = "ml_gtk_header_bar_new"
@@ -21,7 +21,7 @@ To achieve the same style as the builtin title, use the
 
 You should set the title widget to %NULL, for the window
 title label to be visible again. *)
-external set_title_widget : t -> Gtk.widget option -> unit = "ml_gtk_header_bar_set_title_widget"
+external set_title_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_header_bar_set_title_widget"
 
 (** Sets whether this header bar shows the standard window
 title buttons. *)
@@ -52,20 +52,20 @@ The child must have been added with
 [method@Gtk.HeaderBar.pack_start],
 [method@Gtk.HeaderBar.pack_end] or
 [method@Gtk.HeaderBar.set_title_widget]. *)
-external remove : t -> Gtk.widget -> unit = "ml_gtk_header_bar_remove"
+external remove : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_header_bar_remove"
 
 (** Adds @child to @bar, packed with reference to the
 start of the @bar. *)
-external pack_start : t -> Gtk.widget -> unit = "ml_gtk_header_bar_pack_start"
+external pack_start : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_header_bar_pack_start"
 
 (** Adds @child to @bar, packed with reference to the
 end of the @bar. *)
-external pack_end : t -> Gtk.widget -> unit = "ml_gtk_header_bar_pack_end"
+external pack_end : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_header_bar_pack_end"
 
 (** Retrieves the title widget of the header.
 
 See [method@Gtk.HeaderBar.set_title_widget]. *)
-external get_title_widget : t -> Gtk.widget option = "ml_gtk_header_bar_get_title_widget"
+external get_title_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_header_bar_get_title_widget"
 
 (** Returns whether this header bar shows the standard window
 title buttons. *)

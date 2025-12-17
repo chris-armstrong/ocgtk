@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Record: RecentInfo *)
+(* RecentInfo: RecentInfo *)
 
 (** `GtkRecentInfo` contains the metadata associated with an item in the
 recently used files list. *)
-type t = Obj.t
+type t = [`recent_info] Gobject.obj
 
 (** Decreases the reference count of @info by one.
 
@@ -12,10 +12,10 @@ deallocated, and the memory freed. *)
 external unref : t -> unit = "ml_gtk_recent_info_unref"
 
 (** Increases the reference count of @recent_info by one. *)
-external ref : t -> Obj.t = "ml_gtk_recent_info_ref"
+external ref : t -> t = "ml_gtk_recent_info_ref"
 
 (** Checks whether two `GtkRecentInfo` point to the same resource. *)
-external match_ : t -> Obj.t -> bool = "ml_gtk_recent_info_match"
+external match_ : t -> t -> bool = "ml_gtk_recent_info_match"
 
 (** Checks whether the resource is local or not by looking at the
 scheme of its URI. *)

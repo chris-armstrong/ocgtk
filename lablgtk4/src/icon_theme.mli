@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: IconTheme *)
+(* IconTheme: IconTheme *)
 
-type t = Gtk.widget
+type t = [`icon_theme | `object_] Gobject.obj
 
 (** Create a new IconTheme *)
 external new_ : unit -> t = "ml_gtk_icon_theme_new"

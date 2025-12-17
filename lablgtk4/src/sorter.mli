@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Sorter *)
+(* Sorter: Sorter *)
 
-type t = Gtk.widget
+type t = [`sorter | `object_] Gobject.obj
 
 (** Gets the order that @self conforms to.
 

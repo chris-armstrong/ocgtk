@@ -1,12 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Scale *)
 
-type t = [`scale | `range | `widget] Gobject.obj
+type t = [`scale | `range | `widget | `initially_unowned] Gobject.obj
 
-val as_widget : t -> Gtk.widget
+val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new Scale *)
-external new_ : Gtk_enums.orientation -> Gtk.widget option -> t = "ml_gtk_scale_new"
+external new_ : Gtk_enums.orientation -> Adjustment.t option -> t = "ml_gtk_scale_new"
 
 (** Create a new Scale *)
 external new_with_range : Gtk_enums.orientation -> float -> float -> float -> t = "ml_gtk_scale_new_with_range"

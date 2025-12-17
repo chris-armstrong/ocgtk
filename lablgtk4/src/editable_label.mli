@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: EditableLabel *)
 
-type t = [`editable_label | `widget] Gobject.obj
+type t = [`editable_label | `widget | `initially_unowned] Gobject.obj
 
-val as_widget : t -> Gtk.widget
+val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new EditableLabel *)
 external new_ : string -> t = "ml_gtk_editable_label_new"

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Adjustment *)
+(* Adjustment: Adjustment *)
 
-type t = Gtk.widget
+type t = [`adjustment | `initially_unowned] Gobject.obj
 
 (** Create a new Adjustment *)
 external new_ : float -> float -> float -> float -> float -> float -> t = "ml_gtk_adjustment_new_bytecode" "ml_gtk_adjustment_new_native"

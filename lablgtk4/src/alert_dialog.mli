@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: AlertDialog *)
+(* AlertDialog: AlertDialog *)
 
-type t = Gtk.widget
+type t = [`alert_dialog | `object_] Gobject.obj
 
 (** Create a new AlertDialog *)
 external new_ : string -> unit -> t = "ml_gtk_alert_dialog_new"
@@ -15,7 +15,7 @@ intended for dialogs with a single button.
 If you want to cancel the dialog or if the alert has more than one button,
 you should use that function instead and provide it with a #GCancellable or
 callback respectively. *)
-external show : t -> Gtk.widget option -> unit = "ml_gtk_alert_dialog_show"
+external show : t -> Application_and__window_and__window_group.Window.t option -> unit = "ml_gtk_alert_dialog_show"
 
 (** Sets whether the alert blocks interaction
 with the parent window while it is presented. *)

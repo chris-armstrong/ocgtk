@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: PrintDialog *)
+(* PrintDialog: PrintDialog *)
 
-type t = Gtk.widget
+type t = [`print_dialog | `object_] Gobject.obj
 
 (** Create a new PrintDialog *)
 external new_ : unit -> t = "ml_gtk_print_dialog_new"

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: GridLayoutChild *)
+(* GridLayoutChild: GridLayoutChild *)
 
-type t = Gtk.widget
+type t = [`grid_layout_child | `layout_child | `object_] Gobject.obj
 
 (* Properties *)
 

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: TextTag *)
+(* TextTag: TextTag *)
 
-type t = Gtk.widget
+type t = [`text_tag | `object_] Gobject.obj
 
 (** Create a new TextTag *)
 external new_ : string option -> t = "ml_gtk_text_tag_new"

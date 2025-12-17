@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Button *)
 
-type t = [`button | `widget] Gobject.obj
+type t = [`button | `widget | `initially_unowned] Gobject.obj
 
-let as_widget (obj : t) : Gtk.widget = Obj.magic obj
+let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new Button *)
 external new_ : unit -> t = "ml_gtk_button_new"
@@ -48,7 +48,7 @@ up the proper accessibility label and description information for @button.
 Most likely, you'll either set the accessibility label or description
 for @button explicitly, or you'll set a labelled-by or described-by
 relations from @child to @button. *)
-external set_child : t -> Gtk.widget option -> unit = "ml_gtk_button_set_child"
+external set_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_button_set_child"
 
 (** Sets whether the button size can be smaller than the natural size of
 its contents.
@@ -81,7 +81,7 @@ external get_icon_name : t -> string option = "ml_gtk_button_get_icon_name"
 external get_has_frame : t -> bool = "ml_gtk_button_get_has_frame"
 
 (** Gets the child widget of @button. *)
-external get_child : t -> Gtk.widget option = "ml_gtk_button_get_child"
+external get_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_button_get_child"
 
 (** Retrieves whether the button can be smaller than the natural
 size of its contents. *)

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: MultiFilter *)
+(* MultiFilter: MultiFilter *)
 
-type t = Gtk.widget
+type t = [`multi_filter | `filter | `object_] Gobject.obj
 
 (* Properties *)
 
@@ -13,5 +13,5 @@ the function returns. *)
 external remove : t -> int -> unit = "ml_gtk_multi_filter_remove"
 
 (** Adds a @filter to @self to use for matching. *)
-external append : t -> Gtk.widget -> unit = "ml_gtk_multi_filter_append"
+external append : t -> Filter.t -> unit = "ml_gtk_multi_filter_append"
 

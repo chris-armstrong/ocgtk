@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: SignalAction *)
+(* SignalAction: SignalAction *)
 
-type t = Gtk.widget
+type t = [`signal_action | `shortcut_action | `object_] Gobject.obj
 
 (** Create a new SignalAction *)
 external new_ : string -> t = "ml_gtk_signal_action_new"

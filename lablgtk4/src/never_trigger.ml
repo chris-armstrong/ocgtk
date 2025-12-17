@@ -1,5 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: NeverTrigger *)
+(* NeverTrigger: NeverTrigger *)
 
-type t = Gtk.widget
+type t = [`never_trigger | `shortcut_trigger | `object_] Gobject.obj
 

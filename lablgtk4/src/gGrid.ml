@@ -1,79 +1,63 @@
-(**************************************************************************)
-(*                Lablgtk4                                                *)
-(*                                                                        *)
-(*    This program is free software; you can redistribute it              *)
-(*    and/or modify it under the terms of the GNU Library General         *)
-(*    Public License as published by the Free Software Foundation         *)
-(*    version 2, with the exception described in file COPYING which       *)
-(*    comes with the library.                                             *)
-(*                                                                        *)
-(**************************************************************************)
+(* High-level class for Grid *)
+class grid (obj : Grid.t) = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Grid.as_widget obj)
 
-(** High-level GtkGrid wrapper for GTK4 *)
+  method attach : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> int -> int -> int -> int -> unit =
+    fun child column row width height ->
+      let child = child#as_widget in
+      (Grid.attach obj child column row width height)
 
-(** {1 GtkGrid Container} *)
+  method attach_next_to : 'p1 'p2. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p2) option -> Gtk_enums.positiontype -> int -> int -> unit =
+    fun child sibling side width height ->
+      let child = child#as_widget in
+      let sibling = Option.map (fun (c) -> c#as_widget) sibling in
+      (Grid.attach_next_to obj child sibling side width height)
 
-class grid_skel (obj : Grid.t) = object (self)
-  inherit GObj.widget_impl (Grid.as_widget obj)
+  method get_baseline_row : unit -> int = fun () -> (Grid.get_baseline_row obj )
 
-  method attach ~left ~top ~width ~height (child : GObj.widget) =
-    Grid.attach obj ~child:child#as_widget ~column:left ~row:top ~width ~height
+  method get_child_at : int -> int -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option = fun column row -> Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Grid.get_child_at obj column row)
 
-  method attach_next_to ~(child : GObj.widget) ~(sibling : GObj.widget option) ~side ~width ~height =
-    let sibling_widget = match sibling with
-      | None -> None
-      | Some w -> Some w#as_widget
-    in
-    Grid.attach_next_to obj ~child:child#as_widget ~sibling:sibling_widget ~side ~width ~height
+  method get_column_homogeneous : unit -> bool = fun () -> (Grid.get_column_homogeneous obj )
 
-  method remove (child : GObj.widget) =
-    Grid.remove obj child#as_widget
+  method get_column_spacing : unit -> int = fun () -> (Grid.get_column_spacing obj )
 
-  method get_child_at ~column ~row =
-    match Grid.get_child_at obj ~column ~row with
-    | None -> None
-    | Some w -> Some (new GObj.widget w)
+  method get_row_baseline_position : int -> Gtk_enums.baselineposition = fun row -> (Grid.get_row_baseline_position obj row)
 
-  method insert_row position =
-    Grid.insert_row obj ~position
+  method get_row_homogeneous : unit -> bool = fun () -> (Grid.get_row_homogeneous obj )
 
-  method insert_column position =
-    Grid.insert_column obj ~position
+  method get_row_spacing : unit -> int = fun () -> (Grid.get_row_spacing obj )
 
-  method insert_next_to ~(sibling : GObj.widget) ~side =
-    Grid.insert_next_to obj ~sibling:sibling#as_widget ~side
+  method insert_column : int -> unit = fun position -> (Grid.insert_column obj position)
 
-  method remove_row position =
-    Grid.remove_row obj ~position
+  method insert_next_to : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> Gtk_enums.positiontype -> unit =
+    fun sibling side ->
+      let sibling = sibling#as_widget in
+      (Grid.insert_next_to obj sibling side)
 
-  method remove_column position =
-    Grid.remove_column obj ~position
+  method insert_row : int -> unit = fun position -> (Grid.insert_row obj position)
 
-  method row_spacing = Grid.get_row_spacing obj
-  method set_row_spacing spacing = Grid.set_row_spacing obj spacing
+  method remove : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> unit =
+    fun child ->
+      let child = child#as_widget in
+      (Grid.remove obj child)
 
-  method column_spacing = Grid.get_column_spacing obj
-  method set_column_spacing spacing = Grid.set_column_spacing obj spacing
+  method remove_column : int -> unit = fun position -> (Grid.remove_column obj position)
 
-  method row_homogeneous = Grid.get_row_homogeneous obj
-  method set_row_homogeneous h = Grid.set_row_homogeneous obj h
+  method remove_row : int -> unit = fun position -> (Grid.remove_row obj position)
 
-  method column_homogeneous = Grid.get_column_homogeneous obj
-  method set_column_homogeneous h = Grid.set_column_homogeneous obj h
+  method set_baseline_row : int -> unit = fun row -> (Grid.set_baseline_row obj row)
 
-  method baseline_row = Grid.get_baseline_row obj
-  method set_baseline_row row = Grid.set_baseline_row obj row
+  method set_column_homogeneous : bool -> unit = fun homogeneous -> (Grid.set_column_homogeneous obj homogeneous)
+
+  method set_column_spacing : int -> unit = fun spacing -> (Grid.set_column_spacing obj spacing)
+
+  method set_row_baseline_position : int -> Gtk_enums.baselineposition -> unit = fun row pos -> (Grid.set_row_baseline_position obj row pos)
+
+  method set_row_homogeneous : bool -> unit = fun homogeneous -> (Grid.set_row_homogeneous obj homogeneous)
+
+  method set_row_spacing : int -> unit = fun spacing -> (Grid.set_row_spacing obj spacing)
+
+  method as_widget = (Grid.as_widget obj)
+    method as_grid = obj
 end
 
-class grid obj = object
-  inherit grid_skel obj
-end
-
-(** Create a new grid *)
-let create ?(row_spacing=0) ?(column_spacing=0) ?(row_homogeneous=false) ?(column_homogeneous=false) () =
-  let grid = Grid.create () in
-  Grid.set_row_spacing grid row_spacing;
-  Grid.set_column_spacing grid column_spacing;
-  Grid.set_row_homogeneous grid row_homogeneous;
-  Grid.set_column_homogeneous grid column_homogeneous;
-  new grid grid

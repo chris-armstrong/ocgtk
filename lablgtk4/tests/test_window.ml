@@ -29,16 +29,16 @@ let require_gtk f () =
 (* ========== GtkWindow Tests ========== *)
 
 let test_window_module_accessible () =
-  let _window_type : Window.t option = None in
+  let _window_type : Application_and__window_and__window_group.Window.t option = None in
   check bool "Window module accessible" true true
 
 let test_window_creation () =
   try
     let _ = GMain.init () in
-    let window = Window.create () in
+    let window = Application_and__window_and__window_group.Window.new_ () in
     check bool "Window created" true true;
 
-    let _widget = Window.as_widget window in
+    let _widget = Application_and__window_and__window_group.Window.as_widget window in
     check bool "Window as_widget works" true true
   with
   | GMain.Error _ -> skip ()

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Buildable *)
+(* Buildable: Buildable *)
 
-type t = Gtk.widget
+type t = [`buildable] Gobject.obj
 
 (** Gets the ID of the @buildable object.
 

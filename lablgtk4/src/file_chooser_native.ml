@@ -1,10 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: FileChooserNative *)
+(* FileChooserNative: FileChooserNative *)
 
-type t = Gtk.widget
+type t = [`file_chooser_native | `native_dialog | `object_] Gobject.obj
 
 (** Create a new FileChooserNative *)
-external new_ : string option -> Gtk.widget option -> Gtk_enums.filechooseraction -> string option -> string option -> t = "ml_gtk_file_chooser_native_new"
+external new_ : string option -> Application_and__window_and__window_group.Window.t option -> Gtk_enums.filechooseraction -> string option -> string option -> t = "ml_gtk_file_chooser_native_new"
 
 (* Properties *)
 

@@ -209,5 +209,5 @@ CAMLexport CAMLprim value ml_gtk_tree_model_filter_new(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkTreeModel* result = gtk_tree_model_filter_new(GtkTreeModel_val(self), Option_val(arg1, GtkTreePath_val, NULL));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkTreeModel(result));
 }

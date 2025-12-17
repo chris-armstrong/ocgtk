@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: PrintOperation *)
+(* PrintOperation: PrintOperation *)
 
-type t = Gtk.widget
+type t = [`print_operation | `object_] Gobject.obj
 
 (** Create a new PrintOperation *)
 external new_ : unit -> t = "ml_gtk_print_operation_new"
@@ -167,7 +167,7 @@ g_object_unref (settings);
 
 Note that gtk_print_operation_run() can only be called once on a
 given `GtkPrintOperation`. *)
-external run : t -> Gtk_enums.printoperationaction -> Gtk.widget option -> (Gtk_enums.printoperationresult, GError.t) result = "ml_gtk_print_operation_run"
+external run : t -> Gtk_enums.printoperationaction -> Application_and__window_and__window_group.Window.t option -> (Gtk_enums.printoperationresult, GError.t) result = "ml_gtk_print_operation_run"
 
 (** A convenience function to find out if the print operation
 is finished.

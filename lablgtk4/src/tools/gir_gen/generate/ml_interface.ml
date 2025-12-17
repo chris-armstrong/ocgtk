@@ -8,28 +8,90 @@ type output_mode = Interface | Implementation
 
 let sanitize_doc s =
   (* Prevent premature comment termination when GIR doc contains "*)" *)
-  Str.global_replace (Str.regexp_string "*)") "\"*)\"" s
+  s |> Str.global_replace (Str.regexp_string "*)") "\"*)\"" |>
+  Str.global_replace (Str.regexp_string "(*") "\"(*\""
+
+(* Simplify type references when they refer to the current module's type *)
+let simplify_self_reference ~class_name ocaml_type =
+  let current_module = Utils.module_name_of_class class_name in
+  let self_type = current_module ^ ".t" in
+  if ocaml_type = self_type then
+    "t"
+  else
+    ocaml_type
+
+(* Qualify module references for cyclic dependencies *)
+let qualify_module_reference ~ctx module_type =
+  (* Extract module name from types like "Layout_manager.t" or "Widget.t" *)
+  match String.split_on_char ~sep:'.' module_type with
+  | [module_name; "t"] ->
+      (* Check if this module is part of a cyclic group *)
+      (match Hashtbl.find_opt ctx.module_groups module_name with
+       | Some combined_module_name ->
+           let simple_module_name = module_name in
+           (* Check if this is a cyclic module by comparing names *)
+           if combined_module_name <> simple_module_name then
+             (* For cyclic modules, use CombinedModule.ClassName.t *)
+             combined_module_name ^ "." ^ simple_module_name ^ ".t"
+           else
+             (* Single module *)
+             module_type
+       | None -> module_type)
+  | _ -> module_type
 
 let generate_signal_bindings ~output_mode:_ ~module_name:_ ~has_widget_parent:_ _signals =
   ""  (* Signals are only generated in high-level g*.ml wrappers *)
 
-let generate_ml_interface
-    ~ctx
-    ~output_mode
-    ~class_name
-    ~class_doc
-    ~c_type
-    ~parent_chain
-    ~constructors
-    ~methods
-    ~properties
-    ~signals:_
-    ?c_symbol_prefix
-    ?record_base_type
-    ?(is_record = false)
-    () =
-  let buf = Buffer.create 1024 in
-  let is_impl = match output_mode with Implementation -> true | Interface -> false in
+let detect_class_hierarchy_names ~ctx ~class_name ~parent_chain ?record_base_type ?(is_record = false) () =
+  let normalized_class = Utils.normalize_class_name class_name in
+      let parent_chain =
+    if is_record then []
+    else
+      (* parent_chain is ordered immediate parent -> root *)
+      List.map ~f:Utils.normalize_class_name parent_chain
+  in
+  if is_record then
+      ("Record", Option.value record_base_type ~default:"Obj.t")
+    else
+      (* Use hierarchy detection to determine type *)
+      match Hierarchy_detection.get_hierarchy_info ctx class_name with
+      | Some hier_info when hier_info.hierarchy <> MonomorphicType ->
+          (* This class is in a known hierarchy *)
+          let self_variant = "`" ^ (Utils.to_snake_case normalized_class |> Utils.sanitize_identifier) in
+          let parent_variants =
+            if String.lowercase_ascii normalized_class = String.lowercase_ascii hier_info.gir_root then
+              (* This is the root of the hierarchy *)
+              []
+            else
+              (* Build parent chain variants up to hierarchy root *)
+              List.fold_left parent_chain ~init:[] ~f:(fun acc parent ->
+                let tag = "`" ^ (Utils.to_snake_case parent |> Utils.sanitize_identifier) in
+                (* Stop at hierarchy root *)
+                if String.lowercase_ascii parent = String.lowercase_ascii hier_info.gir_root then
+                  acc @ [tag]
+                else
+                  acc @ [tag]
+              )
+          in
+          let variants = String.concat ~sep:" | " (self_variant :: parent_variants) in
+          let type_name = match hier_info.hierarchy with
+            | WidgetHierarchy -> "Widget"
+            | EventControllerHierarchy -> "Event controller"
+            | CellRendererHierarchy -> "Cell renderer"
+            | LayoutManagerHierarchy -> "Layout manager"
+            | ExpressionHierarchy -> "Expression"
+            | MonomorphicType -> class_name
+          in
+          (type_name, sprintf "[%s] Gobject.obj" variants)
+      | _ ->
+          (* Monomorphic type or unknown - still use polymorphic variant since all GTK classes inherit from GObject *)
+          let self_variant = "`" ^ (Utils.to_snake_case normalized_class |> Utils.sanitize_identifier) in
+          (* Add parent chain variants *)
+          let parent_variants = List.map parent_chain ~f:(fun p -> "`" ^ (Utils.to_snake_case p |> Utils.sanitize_identifier)) in
+          let all_variants = self_variant :: parent_variants in
+          let variants = String.concat ~sep:" | " all_variants in
+          (class_name, sprintf "[%s] Gobject.obj" variants)
+
   let is_copy_or_free (meth : gir_method) =
     let lower_name = String.lowercase_ascii meth.method_name in
     let lower_cid = String.lowercase_ascii meth.c_identifier in
@@ -39,83 +101,75 @@ let generate_ml_interface
     in
     lower_name = "copy" || lower_name = "free" ||
     ends_with "_copy" lower_cid || ends_with "_free" lower_cid
-  in
-
-  (* Determine if this is a controller or widget *)
-  let is_controller =
-    (not is_record) &&
-    (class_name = "EventController" ||
-     (String.length class_name > 15 && String.sub ~pos:0 ~len:15 class_name = "EventController") ||
-     (String.length class_name > 7 && String.sub ~pos:0 ~len:7 class_name = "Gesture"))
-  in
-
-  let normalized_class = Utils.normalize_class_name class_name in
-  let parent_chain =
-    if is_record then []
+  
+let print_indent contents buf =
+  let lines = String.split_on_char ~sep:'\n' contents in
+  (* Indent the content *)
+  List.iter ~f:(fun line ->
+    if String.trim line <> "" then
+      bprintf buf "  %s\n" line
     else
-      (* parent_chain is ordered immediate parent -> root; stop at Widget for variant generation *)
-      let rec take_until_widget acc = function
-        | [] -> List.rev acc
-        | p :: rest ->
-          let normalized_parent = Utils.normalize_class_name p in
-          let acc' = normalized_parent :: acc in
-          if String.lowercase_ascii normalized_parent = "widget" then
-            List.rev acc'
-          else
-            take_until_widget acc' rest
-      in
-      take_until_widget [] parent_chain
-  in
-  let has_widget_parent =
-    (not is_record) &&
-    (String.lowercase_ascii normalized_class = "widget" ||
-     List.exists parent_chain ~f:(fun p -> String.lowercase_ascii p = "widget"))
-  in
+      bprintf buf "\n"
+  ) lines
 
-  let class_type_name, base_type =
-    if is_record then
-      ("Record", Option.value record_base_type ~default:"Obj.t")
-    else if is_controller then
-      ("Event controller", "EventController.t")
-    else if has_widget_parent then
-      let self_variant = "`" ^ Utils.to_snake_case normalized_class in
-      let parent_variants =
-        if String.lowercase_ascii normalized_class = "widget" then
-          []
-        else
-          List.fold_left parent_chain ~init:[] ~f:(fun acc parent ->
-            let tag = "`" ^ Utils.to_snake_case parent in
-            (* Stop adding parents once we hit widget to avoid pulling in GObject ancestry *)
-            if String.lowercase_ascii parent = "widget" then
-              acc @ [tag]
-            else
-              acc @ [tag]
-          )
-      in
-      let variants = String.concat ~sep:" | " (self_variant :: parent_variants) in
-      ("Widget", sprintf "[%s] Gobject.obj" variants)
-    else
-      ("Widget", "Gtk.widget")
-  in
+let generate_ml_interface_internal
+    ~ctx
+    ~output_mode
+    ~class_name
+    
+    ~c_type
+    
+    ~constructors
+    ~methods
+    ~properties
+    ~signals:_
+    ~base_type
+    ?c_symbol_prefix
+    ?(is_record = false)
+    buf
+     =
 
-  bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
-  bprintf buf "(* %s: %s *)\n\n" class_type_name class_name;
-
-  (match class_doc with
-  | Some doc -> bprintf buf "(** %s *)\n" (sanitize_doc doc)
-  | None -> ());
-
-  if is_record && not is_impl then
+  match (is_record, output_mode) with
+  | true, Interface -> 
+  
     bprintf buf "type t\n\n"
-  else
+  | _ -> 
     bprintf buf "type t = %s\n\n" base_type;
 
-  if has_widget_parent then begin
-    if is_impl then
-      bprintf buf "let as_widget (obj : t) : Gtk.widget = Obj.magic obj\n\n"
-    else
-      bprintf buf "val as_widget : t -> Gtk.widget\n\n"
-  end;
+  (* Generate accessor method for hierarchy types *)
+  (match Hierarchy_detection.get_hierarchy_info ctx class_name with
+   | Some hier_info when hier_info.hierarchy <> MonomorphicType ->
+       (* Only generate accessor if this is NOT the hierarchy root itself *)
+       (* (e.g., Button should have as_widget, but Widget should not have as_widget : t -> Widget.t) *)
+       if class_name <> hier_info.gir_root then begin
+         let accessor = hier_info.accessor_method in
+         (* Build the base type reference using the GIR root name *)
+         let gir_root_class = hier_info.gir_root in
+         (* Check if the root class is in a cyclic group *)
+         let base_type =
+           match Hashtbl.find_opt ctx.module_groups gir_root_class with
+           | Some combined_module_name ->
+               let simple_module_name = Utils.module_name_of_class gir_root_class in
+               (* Check if this is actually a cyclic module (combined != simple) *)
+               if combined_module_name <> simple_module_name then
+                 (* For cyclic modules, use CombinedModule.ClassName.t *)
+                 combined_module_name ^ "." ^ simple_module_name ^ ".t"
+               else
+                 (* Single-class module, just use ClassName.t *)
+                 simple_module_name ^ ".t"
+           | None ->
+               (* Not in module_groups table at all, use simple ClassName.t *)
+               Utils.module_name_of_class gir_root_class ^ ".t"
+         in
+         (* Simplify self-references (though this should never happen for accessors) *)
+         let base_type = simplify_self_reference ~class_name base_type in
+         match output_mode with
+         | Implementation ->
+           bprintf buf "let %s (obj : t) : %s = Obj.magic obj\n\n" accessor base_type
+         | Interface ->
+           bprintf buf "val %s : t -> %s\n\n" accessor base_type
+       end
+   | _ -> ());
 
   (* Constructors - generate unique names and proper signatures, skip those that throw *)
   List.iter ~f:(fun (ctor : gir_constructor) ->
@@ -132,7 +186,7 @@ let generate_ml_interface
 
       (* Generate OCaml constructor name from C identifier *)
       let ocaml_ctor_name =
-        let base = Filtering.ocaml_function_name ~class_name ~c_type ?c_symbol_prefix c_name in
+        let base = Utils.ocaml_function_name ~class_name ~c_type ?c_symbol_prefix c_name in
         let snake = Utils.to_snake_case base in
         if snake = "new" then "new_" else snake
       in
@@ -230,7 +284,7 @@ let generate_ml_interface
         "ml_" ^ c_name
     in
     let ocaml_name =
-      Filtering.ocaml_function_name ~class_name ~c_type ?c_symbol_prefix c_name
+      Utils.ocaml_function_name ~class_name ~c_type ?c_symbol_prefix c_name
     in
 
     (* Skip if: variadic function, duplicates property, or unmapped return type *)
@@ -261,6 +315,8 @@ let generate_ml_interface
           Some (match Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type with
           | Some mapping ->
             let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some p.param_type.name) mapping.ocaml_type in
+            (* Simplify self-references (e.g., Tree_model.t -> t in tree_model.ml) *)
+            let base_type = simplify_self_reference ~class_name base_type in
             if p.nullable then
               sprintf "%s option" base_type
             else
@@ -278,6 +334,8 @@ let generate_ml_interface
           match Type_mappings.find_type_mapping_for_gir_type ~ctx meth.return_type with
           | Some mapping ->
             let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some meth.return_type.name) mapping.ocaml_type in
+            (* Simplify self-references (e.g., Tree_model.t -> t in tree_model.ml) *)
+            let base_type = simplify_self_reference ~class_name base_type in
             if meth.return_type.nullable then
               sprintf "%s option" base_type
             else
@@ -302,6 +360,8 @@ let generate_ml_interface
             (match Type_mappings.find_type_mapping_for_gir_type ~ctx base_param_type with
             | Some mapping ->
               let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some base_param_type.name) mapping.ocaml_type in
+              (* Simplify self-references (e.g., Tree_model.t -> t in tree_model.ml) *)
+              let base_type = simplify_self_reference ~class_name base_type in
               if base_param_type.nullable || p.nullable then
                 Some (sprintf "%s option" base_type)
               else Some base_type
@@ -335,6 +395,120 @@ let generate_ml_interface
         bprintf buf "external %s : %s = \"%s\"\n\n"
           ocaml_name full_type ml_name;
     end
-  ) (List.rev methods);
+  ) (List.rev methods)
+  
+
+let generate_ml_interface
+    ~ctx
+    ~output_mode
+    ~class_name
+    ~class_doc
+    ~c_type
+    ~parent_chain
+    ~constructors
+    ~methods
+    ~properties
+    ~signals
+    ?c_symbol_prefix
+    ?record_base_type
+    ?(is_record = false)
+    ()
+    = 
+  let buf = Buffer.create 1024 in
+
+  let class_type_name, base_type = detect_class_hierarchy_names ~ctx ~class_name ~parent_chain ?record_base_type ~is_record ()
+    
+  in
+
+  bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
+  bprintf buf "(* %s: %s *)\n\n" class_type_name class_name;
+
+  (match class_doc with
+  | Some doc -> bprintf buf "(** %s *)\n" (sanitize_doc doc)
+  | None -> ());
+  generate_ml_interface_internal 
+  ~ctx ~output_mode ~class_name ~c_type ~constructors ~methods ~properties ~signals ?c_symbol_prefix ~base_type  ~is_record buf;
+  Buffer.contents buf
+
+(* Generate combined modules for cyclic dependencies *)
+let generate_combined_ml_modules
+    ~ctx
+    ~output_mode
+    ~entities
+    ~parent_chain_for_entity
+    () =
+  let buf = Buffer.create 4096 in
+  let is_impl = match output_mode with Implementation -> true | Interface -> false in
+
+  bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
+  bprintf buf "(* Combined modules for cyclic dependencies *)\n\n";
+
+  (* Sort entities by name for consistent output *)
+  let sorted_entities = List.sort ~cmp:(fun e1 e2 -> String.compare e1.name e2.name) entities in
+
+  (* Generate each module *)
+  List.iteri ~f:(fun i entity ->
+    let parent_chain = parent_chain_for_entity entity.name in
+    let class_name = entity.name in
+    let _, base_type = detect_class_hierarchy_names ~ctx ~class_name ~parent_chain () in
+    let module_name = Utils.module_name_of_class class_name in
+
+    (* Module declaration *)
+    let start = i = 0 in
+    if start then
+    
+      bprintf buf "module rec %s" module_name
+    else 
+      bprintf buf "\nand %s\n" module_name;
+
+    if is_impl then begin
+      bprintf buf " : sig\n";
+      let singature_contents = 
+        let buf = Buffer.create 1024 in   
+        generate_ml_interface_internal
+        ~ctx
+        ~output_mode:Interface
+        ~class_name:entity.name
+        
+        ~c_type:entity.c_type
+        
+        ~constructors:(if List.length entity.constructors > 0 then Some entity.constructors else None)
+        ~methods:entity.methods
+        ~properties:entity.properties
+        ~signals:entity.signals
+        ~base_type
+        buf;
+        Buffer.contents buf 
+      in
+      print_indent singature_contents buf;
+      bprintf buf "end = struct\n"
+    end
+    else 
+      bprintf buf " : sig\n"
+    ;
+ 
+    (* Generate module content using existing single-file generator *)
+    (* We need to adapt the output to fit inside a module *)
+    let single_content = 
+      let buf = Buffer.create 1024 in
+      generate_ml_interface_internal
+      ~ctx
+      ~output_mode
+      ~class_name:entity.name
+   
+      ~c_type:entity.c_type
+      ~base_type
+      ~constructors:(if List.length entity.constructors > 0 then Some entity.constructors else None)
+      ~methods:entity.methods
+      ~properties:entity.properties
+      ~signals:entity.signals
+      buf;
+      Buffer.contents buf 
+    in
+
+    print_indent single_content buf;
+
+    bprintf buf "end\n";
+  ) sorted_entities;
 
   Buffer.contents buf

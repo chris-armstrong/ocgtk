@@ -141,8 +141,8 @@ CAMLprim value fname##_bc(value *argv, int argn) \
 /* GTK4/GDK4 Type Conversions */
 /* ==================================================================== */
 
-value val_of_ext(const void *ext);
-void* ext_of_val(const value val);
+CAMLexport value val_of_ext(const void *ext);
+CAMLexport void* ext_of_val(const value val);
 
 /* GdkSurface (was GdkWindow in GTK3) - GObject, use direct cast */
 #define GdkSurface_val(val) ((GdkSurface*)(ext_of_val(val)))
@@ -212,6 +212,18 @@ CAMLexport value Val_GtkWidget_option(GtkWidget *obj);
 /* GtkWindow - GObject, use direct cast */
 #define GtkWindow_val(val) ((GtkWindow*)(ext_of_val(val)))
 #define Val_GtkWindow(obj) (val_of_ext(obj))
+
+/* GtkRoot - Interface, use direct cast */
+#define GtkRoot_val(val) ((GtkRoot*)(ext_of_val(val)))
+#define Val_GtkRoot(obj) (val_of_ext(obj))
+
+/* GtkNative - Interface, use direct cast */
+#define GtkNative_val(val) ((GtkNative*)(ext_of_val(val)))
+#define Val_GtkNative(obj) (val_of_ext(obj))
+
+/* GtkStyleProvider - Interface, use direct cast */
+#define GtkStyleProvider_val(val) ((GtkStyleProvider*)(ext_of_val(val)))
+#define Val_GtkStyleProvider(obj) (val_of_ext(obj))
 
 /* GtkScrolledWindow - GObject, use direct cast */
 #define GtkScrolledWindow_val(val) ((GtkScrolledWindow*)(ext_of_val(val)))

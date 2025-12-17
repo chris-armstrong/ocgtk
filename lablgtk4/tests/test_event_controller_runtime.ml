@@ -13,9 +13,10 @@ open Alcotest
 (** {2 API Verification Tests} *)
 
 let test_modules_exist () =
-  let _ = EventControllerKey.new_ in
-  let _ = EventControllerMotion.new_ in
-  let _ = GestureClick.new_ in
+  let _ = Event_controller_key.new_ in
+  let _ = Event_controller_motion.new_ in
+  let _ = Gesture_click.new_ in
+  let _ = GMain.init () in
   check bool "Modules accessible" true true
 
 let test_callback_types_compile () =

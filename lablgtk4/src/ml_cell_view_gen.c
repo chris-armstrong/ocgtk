@@ -61,7 +61,7 @@ CAMLexport CAMLprim value ml_gtk_cell_view_set_model(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_cell_view_set_model(GtkCellView_val(self), Option_val(arg1, GtkWidget_val, NULL));
+gtk_cell_view_set_model(GtkCellView_val(self), Option_val(arg1, GtkTreeModel_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -94,7 +94,7 @@ CAMLexport CAMLprim value ml_gtk_cell_view_get_model(value self)
 CAMLparam1(self);
 
 GtkTreeModel* result = gtk_cell_view_get_model(GtkCellView_val(self));
-CAMLreturn(Val_GtkWidget_option(result));
+CAMLreturn(Val_option(result, Val_GtkTreeModel));
 }
 
 CAMLexport CAMLprim value ml_gtk_cell_view_get_fit_model(value self)

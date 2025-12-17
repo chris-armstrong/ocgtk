@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: CellEditable *)
+(* CellEditable: CellEditable *)
 
-type t = Gtk.widget
+type t = [`cell_editable] Gobject.obj
 
 (* Properties *)
 
@@ -15,7 +15,7 @@ editing a cell, e.g. making the Esc key emit `GtkCellEditable::editing-done`.
 
 Note that the @cell_editable is created on-demand for the current edit; its
 lifetime is temporary and does not persist across other edits and/or cells. *)
-external start_editing : t -> _ Gdk.event option -> unit = "ml_gtk_cell_editable_start_editing"
+external start_editing : t -> 'a Gdk.event option -> unit = "ml_gtk_cell_editable_start_editing"
 
 (** Emits the `GtkCellEditable::remove-widget` signal. *)
 external remove_widget : t -> unit = "ml_gtk_cell_editable_remove_widget"

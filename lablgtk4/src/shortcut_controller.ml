@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: ShortcutController *)
+(* Event controller: ShortcutController *)
 
-type t = Gtk.widget
+type t = [`shortcut_controller | `event_controller | `object_] Gobject.obj
+
+let as_event_controller (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t = Obj.magic obj
 
 (** Create a new ShortcutController *)
 external new_ : unit -> t = "ml_gtk_shortcut_controller_new"
@@ -41,7 +43,7 @@ external set_mnemonics_modifiers : t -> Gdk.modifiertype -> unit = "ml_gtk_short
 
 If @shortcut had not been added to @controller or this controller
 uses an external shortcut list, this function does nothing. *)
-external remove_shortcut : t -> Gtk.widget -> unit = "ml_gtk_shortcut_controller_remove_shortcut"
+external remove_shortcut : t -> Shortcut.t -> unit = "ml_gtk_shortcut_controller_remove_shortcut"
 
 (** Gets the scope for when this controller activates its shortcuts.
 
@@ -55,5 +57,5 @@ external get_mnemonics_modifiers : t -> Gdk.modifiertype = "ml_gtk_shortcut_cont
 
 If this controller uses an external shortcut list, this
 function does nothing. *)
-external add_shortcut : t -> Gtk.widget -> unit = "ml_gtk_shortcut_controller_add_shortcut"
+external add_shortcut : t -> Shortcut.t -> unit = "ml_gtk_shortcut_controller_add_shortcut"
 

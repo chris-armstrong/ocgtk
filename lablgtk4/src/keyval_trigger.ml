@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: KeyvalTrigger *)
+(* KeyvalTrigger: KeyvalTrigger *)
 
-type t = Gtk.widget
+type t = [`keyval_trigger | `shortcut_trigger | `object_] Gobject.obj
 
 (** Create a new KeyvalTrigger *)
 external new_ : int -> Gdk.modifiertype -> t = "ml_gtk_keyval_trigger_new"

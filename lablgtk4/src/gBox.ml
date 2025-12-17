@@ -1,109 +1,51 @@
-(**************************************************************************)
-(*                Lablgtk4                                                *)
-(*                                                                        *)
-(*    This program is free software; you can redistribute it              *)
-(*    and/or modify it under the terms of the GNU Library General         *)
-(*    Public License as published by the Free Software Foundation         *)
-(*    version 2, with the exception described in file COPYING which       *)
-(*    comes with the library.                                             *)
-(*                                                                        *)
-(**************************************************************************)
+(* High-level class for Box *)
+class box (obj : Box.t) = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Box.as_widget obj)
 
-(** High-level GtkBox wrapper for GTK4 *)
+  method append : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> unit =
+    fun child ->
+      let child = child#as_widget in
+      (Box.append obj child)
 
-(** {1 GtkBox Container} *)
+  method get_baseline_child : unit -> int = fun () -> (Box.get_baseline_child obj )
 
-class box_skel (obj : Box.t) = object (self)
-  inherit GObj.widget_impl (Box.as_widget obj)
+  method get_baseline_position : unit -> Gtk_enums.baselineposition = fun () -> (Box.get_baseline_position obj )
 
-  method append (child : GObj.widget) =
-    Box.append obj child#as_widget
+  method get_homogeneous : unit -> bool = fun () -> (Box.get_homogeneous obj )
 
-  method prepend (child : GObj.widget) =
-    Box.prepend obj child#as_widget
+  method get_spacing : unit -> int = fun () -> (Box.get_spacing obj )
 
-  method insert_child_after ~(child : GObj.widget) ~(sibling : GObj.widget option) =
-    let sibling_widget = match sibling with
-      | None -> None
-      | Some w -> Some w#as_widget
-    in
-    Box.insert_child_after obj ~child:child#as_widget ~sibling:sibling_widget
+  method insert_child_after : 'p1 'p2. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p2) option -> unit =
+    fun child sibling ->
+      let child = child#as_widget in
+      let sibling = Option.map (fun (c) -> c#as_widget) sibling in
+      (Box.insert_child_after obj child sibling)
 
-  method remove (child : GObj.widget) =
-    Box.remove obj child#as_widget
+  method prepend : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> unit =
+    fun child ->
+      let child = child#as_widget in
+      (Box.prepend obj child)
 
-  method reorder_child_after ~(child : GObj.widget) ~(sibling : GObj.widget option) =
-    let sibling_widget = match sibling with
-      | None -> None
-      | Some w -> Some w#as_widget
-    in
-    Box.reorder_child_after obj ~child:child#as_widget ~sibling:sibling_widget
+  method remove : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> unit =
+    fun child ->
+      let child = child#as_widget in
+      (Box.remove obj child)
 
-  method spacing = Box.get_spacing obj
-  method set_spacing spacing = Box.set_spacing obj spacing
+  method reorder_child_after : 'p1 'p2. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p2) option -> unit =
+    fun child sibling ->
+      let child = child#as_widget in
+      let sibling = Option.map (fun (c) -> c#as_widget) sibling in
+      (Box.reorder_child_after obj child sibling)
 
-  method homogeneous = Box.get_homogeneous obj
-  method set_homogeneous h = Box.set_homogeneous obj h
+  method set_baseline_child : int -> unit = fun child -> (Box.set_baseline_child obj child)
 
-  method baseline_position = Box.get_baseline_position obj
-  method set_baseline_position pos = Box.set_baseline_position obj pos
+  method set_baseline_position : Gtk_enums.baselineposition -> unit = fun position -> (Box.set_baseline_position obj position)
+
+  method set_homogeneous : bool -> unit = fun homogeneous -> (Box.set_homogeneous obj homogeneous)
+
+  method set_spacing : int -> unit = fun spacing -> (Box.set_spacing obj spacing)
+
+  method as_widget = (Box.as_widget obj)
+    method as_box = obj
 end
 
-class box obj = object
-  inherit box_skel obj
-end
-
-(** Create a horizontal box *)
-let hbox ?(spacing=0) ?(homogeneous=false) () =
-  let box = Box.create ~orientation:`HORIZONTAL ~spacing in
-  Box.set_homogeneous box homogeneous;
-  new box box
-
-(** Create a vertical box *)
-let vbox ?(spacing=0) ?(homogeneous=false) () =
-  let box = Box.create ~orientation:`VERTICAL ~spacing in
-  Box.set_homogeneous box homogeneous;
-  new box box
-
-(** {2 Migration Helpers} *)
-
-(** Box with GTK3-compatible pack methods for easier migration *)
-class box_pack obj = object (self)
-  inherit box obj as super
-
-  method pack ?(expand=true) ?(fill=true) ?(padding=0) child =
-    (* In GTK4, these are widget properties, not packing parameters *)
-    if expand then begin
-      child#set_hexpand true;
-      child#set_vexpand true;
-    end;
-    if fill then begin
-      child#set_halign `FILL;
-      child#set_valign `FILL;
-    end;
-    if padding > 0 then begin
-      child#set_margin_start padding;
-      child#set_margin_end padding;
-    end;
-    super#append child
-
-  method pack_start ?expand ?fill ?padding child =
-    self#pack ?expand ?fill ?padding child
-
-  method pack_end ?expand ?fill ?padding child =
-    self#pack ?expand ?fill ?padding child
-    (* Note: In GTK4, there's no pack_end. Widgets are added in order.
-       For true end-packing behavior, you might need to use reorder_child_after *)
-end
-
-let hbox_pack ?spacing ?homogeneous () =
-  let box = Box.create ~orientation:`HORIZONTAL
-              ~spacing:(match spacing with None -> 0 | Some s -> s) in
-  (match homogeneous with None -> () | Some h -> Box.set_homogeneous box h);
-  new box_pack box
-
-let vbox_pack ?spacing ?homogeneous () =
-  let box = Box.create ~orientation:`VERTICAL
-              ~spacing:(match spacing with None -> 0 | Some s -> s) in
-  (match homogeneous with None -> () | Some h -> Box.set_homogeneous box h);
-  new box_pack box

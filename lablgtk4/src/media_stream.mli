@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: MediaStream *)
+(* MediaStream: MediaStream *)
 
-type t = Gtk.widget
+type t = [`media_stream | `object_] Gobject.obj
 
 (* Properties *)
 

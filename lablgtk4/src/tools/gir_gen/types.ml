@@ -123,8 +123,8 @@ type gir_interface = {
   interface_doc: string option;
 }
 
-(* Unified entity type for classes and interfaces *)
-type entity_kind = Class | Interface
+(* Unified entity type for classes, interfaces, and records *)
+type entity_kind = Class | Interface | Record
 
 type entity = {
   kind: entity_kind;
@@ -165,11 +165,51 @@ let entity_of_interface (intf: gir_interface) : entity = {
   signals = intf.signals;
 }
 
+let entity_of_record (rec_: gir_record) : entity = {
+  kind = Record;
+  name = rec_.record_name;
+  c_type = rec_.c_type;
+  doc = rec_.record_doc;
+  parent = None;
+  implements = [];
+  constructors = rec_.constructors;
+  methods = rec_.methods;
+  properties = [];
+  signals = [];
+}
+
+(* A generated OCaml class for a GIR Class or Interface *)
+type ocaml_class = {
+  class_module : string;
+  class_type : string;
+  class_layer1_accessor : string;
+}
+
 type type_mapping = {
-  ocaml_type : string;
+  ocaml_type : string; (* classes: Application_window.t *)
+  layer2_class : ocaml_class option; (* when this is a class or interface, the OCaml module *)
   c_to_ml : string;
   ml_to_c : string;
   needs_copy : bool;
+}
+
+(* Hierarchy classification *)
+type hierarchy_kind =
+  | WidgetHierarchy
+  | EventControllerHierarchy
+  | CellRendererHierarchy
+  | LayoutManagerHierarchy
+  | ExpressionHierarchy
+  | MonomorphicType
+
+type hierarchy_info = {
+  hierarchy: hierarchy_kind;
+  gir_root: string;           (* "Widget", "EventController", etc. *)
+  layer2_module: string;       (* "GWidget", "GController", etc. *)
+  class_type_name: string;     (* "widget_skel", "controller_skel", etc. *)
+  accessor_method: string;     (* "as_widget", "as_controller", etc. *)
+  layer1_base_type: string;    (* "Widget.t", "EventController.t", etc. *)
+  base_conversion_method: string; (* Widget.as_widget *)
 }
 
 type generation_context = {
@@ -180,4 +220,7 @@ type generation_context = {
   records: gir_record list;
   external_enums: (string * gir_enum) list;
   external_bitfields: (string * gir_bitfield) list;
+  hierarchy_map: (string, hierarchy_info) Hashtbl.t;
+  module_groups: (string, string) Hashtbl.t;  (* class_name -> combined_module_name *)
+  current_cycle_classes: string list;  (* Class names in the current cyclic module being generated *)
 }

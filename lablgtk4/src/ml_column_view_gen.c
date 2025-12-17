@@ -25,7 +25,7 @@
 CAMLexport CAMLprim value ml_gtk_column_view_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkColumnView *obj = gtk_column_view_new(Option_val(arg1, GtkWidget_val, NULL));
+GtkColumnView *obj = gtk_column_view_new(Option_val(arg1, GtkSelectionModel_val, NULL));
 CAMLreturn(Val_GtkColumnView(obj));
 }
 
@@ -89,7 +89,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_set_model(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_column_view_set_model(GtkColumnView_val(self), Option_val(arg1, GtkWidget_val, NULL));
+gtk_column_view_set_model(GtkColumnView_val(self), Option_val(arg1, GtkSelectionModel_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -194,7 +194,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_get_model(value self)
 CAMLparam1(self);
 
 GtkSelectionModel* result = gtk_column_view_get_model(GtkColumnView_val(self));
-CAMLreturn(Val_GtkWidget_option(result));
+CAMLreturn(Val_option(result, Val_GtkSelectionModel));
 }
 
 CAMLexport CAMLprim value ml_gtk_column_view_get_header_factory(value self)

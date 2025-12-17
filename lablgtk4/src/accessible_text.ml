@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: AccessibleText *)
+(* AccessibleText: AccessibleText *)
 
-type t = Gtk.widget
+type t = [`accessible_text] Gobject.obj
 
 (** Updates the boundary of the selection.
 

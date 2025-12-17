@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Gesture *)
+(* Event controller: Gesture *)
 
-type t = Gtk.widget
+type t = [`gesture | `event_controller | `object_] Gobject.obj
+
+let as_event_controller (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t = Obj.magic obj
 
 (* Properties *)
 
@@ -60,7 +62,7 @@ touch sequences as required by @gesture. *)
 external is_recognized : t -> bool = "ml_gtk_gesture_is_recognized"
 
 (** Returns %TRUE if both gestures pertain to the same group. *)
-external is_grouped_with : t -> Gtk.widget -> bool = "ml_gtk_gesture_is_grouped_with"
+external is_grouped_with : t -> t -> bool = "ml_gtk_gesture_is_grouped_with"
 
 (** Returns %TRUE if the gesture is currently active.
 
@@ -85,5 +87,5 @@ Groups also perform an "implicit grabbing" of sequences, if a
 on one group, every other gesture group attached to the same
 `GtkWidget` will switch the state for that sequence to
 %GTK_EVENT_SEQUENCE_DENIED. *)
-external group : t -> Gtk.widget -> unit = "ml_gtk_gesture_group"
+external group : t -> t -> unit = "ml_gtk_gesture_group"
 

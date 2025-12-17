@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: FontChooser *)
+(* FontChooser: FontChooser *)
 
-type t = Gtk.widget
+type t = [`font_chooser] Gobject.obj
 
 (* Properties *)
 

@@ -20,7 +20,7 @@ let sanitize_signal_name name =
     |> String.map ~f:(function '-' -> '_' | c -> c)
     |> Utils.to_snake_case
   in
-  if List.exists ocaml_keywords ~f:(String.equal base) then base ^ "_" else base
+  "on_" ^ if List.exists ocaml_keywords ~f:(String.equal base) then base ^ "_" else base
 
 let has_widget_parent class_name parent_chain =
   let normalized_class = Utils.normalize_class_name class_name |> String.lowercase_ascii in
@@ -28,9 +28,10 @@ let has_widget_parent class_name parent_chain =
   List.exists parent_chain ~f:(fun p ->
     String.lowercase_ascii (Utils.normalize_class_name p) = "widget")
 
-let connect_target_expr module_name ~has_widget_parent =
+let connect_target_expr ~has_widget_parent =
   if has_widget_parent then
-    sprintf "(%s.as_widget obj :> [`widget] Gobject.obj)" module_name
+    (* Use Obj.magic to coerce widget subtypes to base widget type for signal connection *)
+    "(Obj.magic (obj :> _ Gobject.obj) : [`widget] Gobject.obj)"
   else
     "(Obj.magic obj :> _ Gobject.obj)"
 
@@ -39,13 +40,32 @@ let is_void_signal (signal : gir_signal) =
   let name = String.lowercase_ascii signal.return_type.name in
   c_type = "void" || name = "none"
 
-let generate_signal_class ~ctx:_ ~class_name ~signals ~parent_chain =
+(* Get the properly qualified module name for a class, accounting for cyclic modules *)
+let get_qualified_module_name ~ctx class_name =
+  (* Check if this class is in the current cycle being generated *)
+  if List.mem class_name ~set:ctx.current_cycle_classes then
+    (* Within the same cycle, use just the submodule name *)
+    Utils.module_name_of_class class_name
+  else
+    match Hashtbl.find_opt ctx.module_groups class_name with
+    | Some combined_module_name ->
+        let simple_module_name = Utils.module_name_of_class class_name in
+        (* Check if this is a cyclic module by comparing names *)
+        if combined_module_name <> simple_module_name then
+          (* For cyclic modules, we need CombinedModule.ClassName *)
+          combined_module_name ^ "." ^ simple_module_name
+        else
+          (* Single module *)
+          combined_module_name
+    | None -> Utils.module_name_of_class class_name
+
+let generate_signal_class ~ctx ~class_name ~signals ~parent_chain =
   let buf = Buffer.create 512 in
-  let module_name = Utils.module_name_of_class class_name in
+  let module_name = get_qualified_module_name ~ctx class_name in
   let class_snake = Utils.to_snake_case class_name in
   let signal_class_name = sprintf "%s_signals" class_snake in
   let widget_parent = has_widget_parent class_name parent_chain in
-  let target_expr = connect_target_expr module_name ~has_widget_parent:widget_parent in
+  let target_expr = connect_target_expr ~has_widget_parent:widget_parent in
 
   bprintf buf "(* Signal handlers for %s *)\n" class_name;
   bprintf buf "class %s (obj : %s.t) = object\n" signal_class_name module_name;

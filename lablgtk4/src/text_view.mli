@@ -1,15 +1,15 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: TextView *)
 
-type t = [`text_view | `widget] Gobject.obj
+type t = [`text_view | `widget | `initially_unowned] Gobject.obj
 
-val as_widget : t -> Gtk.widget
+val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new TextView *)
 external new_ : unit -> t = "ml_gtk_text_view_new"
 
 (** Create a new TextView *)
-external new_with_buffer : Gtk.widget -> t = "ml_gtk_text_view_new_with_buffer"
+external new_with_buffer : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t -> t = "ml_gtk_text_view_new_with_buffer"
 
 (* Properties *)
 
@@ -17,7 +17,7 @@ external new_with_buffer : Gtk.widget -> t = "ml_gtk_text_view_new_with_buffer"
 
 See [method@Gtk.TextView.forward_display_line] for an
 explanation of display lines vs. paragraphs. *)
-external starts_display_line : t -> Obj.t -> bool = "ml_gtk_text_view_starts_display_line"
+external starts_display_line : t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool = "ml_gtk_text_view_starts_display_line"
 
 (** Sets the line wrapping for the view. *)
 external set_wrap_mode : t -> Gtk_enums.wrapmode -> unit = "ml_gtk_text_view_set_wrap_mode"
@@ -94,7 +94,7 @@ external set_indent : t -> int -> unit = "ml_gtk_text_view_set_indent"
 
 @win must be one of %GTK_TEXT_WINDOW_LEFT, %GTK_TEXT_WINDOW_RIGHT,
 %GTK_TEXT_WINDOW_TOP, or %GTK_TEXT_WINDOW_BOTTOM. *)
-external set_gutter : t -> Gtk_enums.textwindowtype -> Gtk.widget option -> unit = "ml_gtk_text_view_set_gutter"
+external set_gutter : t -> Gtk_enums.textwindowtype -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_text_view_set_gutter"
 
 (** Sets the default editability of the `GtkTextView`.
 
@@ -117,7 +117,7 @@ The previous buffer displayed by the text view is unreferenced, and
 a reference is added to @buffer. If you owned a reference to @buffer
 before passing it to this function, you must remove that reference
 yourself; `GtkTextView` will not “adopt” it. *)
-external set_buffer : t -> Gtk.widget option -> unit = "ml_gtk_text_view_set_buffer"
+external set_buffer : t -> Text_buffer_and__text_iter_and__text_mark.Text_buffer.t option -> unit = "ml_gtk_text_view_set_buffer"
 
 (** Sets the bottom margin for text in @text_view.
 
@@ -142,7 +142,7 @@ bottom, 0.5 means center. If @use_align is %FALSE, the text scrolls
 the minimal distance to get the mark onscreen, possibly not scrolling
 at all. The effective screen for purposes of this function is reduced
 by a margin of size @within_margin. *)
-external scroll_to_mark : t -> Gtk.widget -> float -> bool -> float -> float -> unit = "ml_gtk_text_view_scroll_to_mark_bytecode" "ml_gtk_text_view_scroll_to_mark_native"
+external scroll_to_mark : t -> Text_buffer_and__text_iter_and__text_mark.Text_mark.t -> float -> bool -> float -> float -> unit = "ml_gtk_text_view_scroll_to_mark_bytecode" "ml_gtk_text_view_scroll_to_mark_native"
 
 (** Scrolls @text_view so that @iter is on the screen in the position
 indicated by @xalign and @yalign.
@@ -159,11 +159,11 @@ handler; so this function may not have the desired effect if it’s
 called before the height computations. To avoid oddness, consider
 using [method@Gtk.TextView.scroll_to_mark] which saves a point to be
 scrolled to after line validation. *)
-external scroll_to_iter : t -> Obj.t -> float -> bool -> float -> float -> bool = "ml_gtk_text_view_scroll_to_iter_bytecode" "ml_gtk_text_view_scroll_to_iter_native"
+external scroll_to_iter : t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> float -> bool -> float -> float -> bool = "ml_gtk_text_view_scroll_to_iter_bytecode" "ml_gtk_text_view_scroll_to_iter_native"
 
 (** Scrolls @text_view the minimum distance such that @mark is contained
 within the visible area of the widget. *)
-external scroll_mark_onscreen : t -> Gtk.widget -> unit = "ml_gtk_text_view_scroll_mark_onscreen"
+external scroll_mark_onscreen : t -> Text_buffer_and__text_iter_and__text_mark.Text_mark.t -> unit = "ml_gtk_text_view_scroll_mark_onscreen"
 
 (** Reset the input method context of the text view if needed.
 
@@ -182,7 +182,7 @@ event handlers). *)
 external reset_cursor_blink : t -> unit = "ml_gtk_text_view_reset_cursor_blink"
 
 (** Removes a child widget from @text_view. *)
-external remove : t -> Gtk.widget -> unit = "ml_gtk_text_view_remove"
+external remove : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_text_view_remove"
 
 (** Moves the cursor to the currently visible region of the
 buffer. *)
@@ -200,16 +200,16 @@ In the presence of bi-directional text, the correspondence
 between logical and visual order will depend on the direction
 of the current run, and there may be jumps when the cursor
 is moved off of the end of a run. *)
-external move_visually : t -> Obj.t -> int -> bool = "ml_gtk_text_view_move_visually"
+external move_visually : t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> int -> bool = "ml_gtk_text_view_move_visually"
 
 (** Updates the position of a child.
 
 See [method@Gtk.TextView.add_overlay]. *)
-external move_overlay : t -> Gtk.widget -> int -> int -> unit = "ml_gtk_text_view_move_overlay"
+external move_overlay : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int -> int -> unit = "ml_gtk_text_view_move_overlay"
 
 (** Moves a mark within the buffer so that it's
 located within the currently-visible text area. *)
-external move_mark_onscreen : t -> Gtk.widget -> bool = "ml_gtk_text_view_move_mark_onscreen"
+external move_mark_onscreen : t -> Text_buffer_and__text_iter_and__text_mark.Text_mark.t -> bool = "ml_gtk_text_view_move_mark_onscreen"
 
 (** Allow the `GtkTextView` input method to internally handle key press
 and release events.
@@ -242,7 +242,7 @@ gtk_foo_bar_key_press_event (GtkWidget *widget,
   return GTK_WIDGET_CLASS (gtk_foo_bar_parent_class)->key_press_event (widget, event);
 }
 ``` *)
-external im_context_filter_keypress : t -> _ Gdk.event -> bool = "ml_gtk_text_view_im_context_filter_keypress"
+external im_context_filter_keypress : t -> 'a Gdk.event -> bool = "ml_gtk_text_view_im_context_filter_keypress"
 
 (** Gets the line wrapping for the view. *)
 external get_wrap_mode : t -> Gtk_enums.wrapmode = "ml_gtk_text_view_get_wrap_mode"
@@ -293,7 +293,7 @@ Buffer coordinates are coordinates for the entire buffer, not just
 the currently-displayed portion. If you have coordinates from an
 event, you have to convert those to buffer coordinates with
 [method@Gtk.TextView.window_to_buffer_coords]. *)
-external get_iter_at_location : t -> int -> int -> bool * Obj.t = "ml_gtk_text_view_get_iter_at_location"
+external get_iter_at_location : t -> int -> int -> bool * Text_buffer_and__text_iter_and__text_mark.Text_iter.t = "ml_gtk_text_view_get_iter_at_location"
 
 (** Gets the `input-purpose` of the `GtkTextView`. *)
 external get_input_purpose : t -> Gtk_enums.inputpurpose = "ml_gtk_text_view_get_input_purpose"
@@ -313,7 +313,7 @@ See [method@Gtk.TextView.set_gutter].
 
 @win must be one of %GTK_TEXT_WINDOW_LEFT, %GTK_TEXT_WINDOW_RIGHT,
 %GTK_TEXT_WINDOW_TOP, or %GTK_TEXT_WINDOW_BOTTOM. *)
-external get_gutter : t -> Gtk_enums.textwindowtype -> Gtk.widget option = "ml_gtk_text_view_get_gutter"
+external get_gutter : t -> Gtk_enums.textwindowtype -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_text_view_get_gutter"
 
 (** Returns the default editability of the `GtkTextView`.
 
@@ -327,7 +327,7 @@ external get_cursor_visible : t -> bool = "ml_gtk_text_view_get_cursor_visible"
 
 The reference count on the buffer is not incremented; the caller
 of this function won’t own a new reference. *)
-external get_buffer : t -> Gtk.widget = "ml_gtk_text_view_get_buffer"
+external get_buffer : t -> Text_buffer_and__text_iter_and__text_mark.Text_buffer.t = "ml_gtk_text_view_get_buffer"
 
 (** Gets the bottom margin for text in the @text_view. *)
 external get_bottom_margin : t -> int = "ml_gtk_text_view_get_bottom_margin"
@@ -346,7 +346,7 @@ wrapping is turned off, display lines and paragraphs will be the
 same. Display lines are divided differently for each view, since
 they depend on the view’s width; paragraphs are the same in all
 views, since they depend on the contents of the `GtkTextBuffer`. *)
-external forward_display_line_end : t -> Obj.t -> bool = "ml_gtk_text_view_forward_display_line_end"
+external forward_display_line_end : t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool = "ml_gtk_text_view_forward_display_line_end"
 
 (** Moves the given @iter forward by one display (wrapped) line.
 
@@ -357,7 +357,7 @@ wrapping is turned off, display lines and paragraphs will be the
 same. Display lines are divided differently for each view, since
 they depend on the view’s width; paragraphs are the same in all
 views, since they depend on the contents of the `GtkTextBuffer`. *)
-external forward_display_line : t -> Obj.t -> bool = "ml_gtk_text_view_forward_display_line"
+external forward_display_line : t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool = "ml_gtk_text_view_forward_display_line"
 
 (** Moves the given @iter backward to the next display line start.
 
@@ -368,7 +368,7 @@ wrapping is turned off, display lines and paragraphs will be the
 same. Display lines are divided differently for each view, since
 they depend on the view’s width; paragraphs are the same in all
 views, since they depend on the contents of the `GtkTextBuffer`. *)
-external backward_display_line_start : t -> Obj.t -> bool = "ml_gtk_text_view_backward_display_line_start"
+external backward_display_line_start : t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool = "ml_gtk_text_view_backward_display_line_start"
 
 (** Moves the given @iter backward by one display (wrapped) line.
 
@@ -379,7 +379,7 @@ wrapping is turned off, display lines and paragraphs will be the
 same. Display lines are divided differently for each view, since
 they depend on the view’s width; paragraphs are the same in all
 views, since they depend on the contents of the `GtkTextBuffer`. *)
-external backward_display_line : t -> Obj.t -> bool = "ml_gtk_text_view_backward_display_line"
+external backward_display_line : t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool = "ml_gtk_text_view_backward_display_line"
 
 (** Adds @child at a fixed coordinate in the `GtkTextView`'s text window.
 
@@ -391,8 +391,8 @@ buffer coordinates).
 
 If instead you want a widget that will not move with the
 `GtkTextView` contents see `GtkOverlay`. *)
-external add_overlay : t -> Gtk.widget -> int -> int -> unit = "ml_gtk_text_view_add_overlay"
+external add_overlay : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int -> int -> unit = "ml_gtk_text_view_add_overlay"
 
 (** Adds a child widget in the text buffer, at the given @anchor. *)
-external add_child_at_anchor : t -> Gtk.widget -> Gtk.widget -> unit = "ml_gtk_text_view_add_child_at_anchor"
+external add_child_at_anchor : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Text_child_anchor.t -> unit = "ml_gtk_text_view_add_child_at_anchor"
 

@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: PadController *)
+(* Event controller: PadController *)
 
-type t = Gtk.widget
+type t = [`pad_controller | `event_controller | `object_] Gobject.obj
+
+let as_event_controller (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t = Obj.magic obj
 
 (** Create a new PadController *)
 external new_ : unit -> unit -> t = "ml_gtk_pad_controller_new"

@@ -1,112 +1,94 @@
 (* Signal class defined in glabel_signals.ml *)
 
 (* High-level class for Label *)
-class label_skel (obj : Label.t) = object (self)
-  inherit GObj.widget_impl (Label.as_widget obj)
+class label (obj : Label.t) = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Label.as_widget obj)
+  inherit Glabel_signals.label_signals obj
 
-  method connect = new Glabel_signals.label_signals obj
+  method get_current_uri : unit -> string option = fun () -> (Label.get_current_uri obj )
 
-  method get_current_uri () = Label.get_current_uri obj
-  method current_uri () = Label.get_current_uri obj
+  method get_ellipsize : unit -> Pango.ellipsizemode = fun () -> (Label.get_ellipsize obj )
 
-  method get_ellipsize () = Label.get_ellipsize obj
-  method ellipsize () = Label.get_ellipsize obj
+  method get_justify : unit -> Gtk_enums.justification = fun () -> (Label.get_justify obj )
 
-  method get_justify () = Label.get_justify obj
-  method justify () = Label.get_justify obj
+  method get_label : unit -> string = fun () -> (Label.get_label obj )
 
-  method get_label () = Label.get_label obj
-  method label () = Label.get_label obj
+  method get_lines : unit -> int = fun () -> (Label.get_lines obj )
 
-  method get_lines () = Label.get_lines obj
-  method lines () = Label.get_lines obj
+  method get_max_width_chars : unit -> int = fun () -> (Label.get_max_width_chars obj )
 
-  method get_max_width_chars () = Label.get_max_width_chars obj
-  method max_width_chars () = Label.get_max_width_chars obj
+  method get_mnemonic_keyval : unit -> int = fun () -> (Label.get_mnemonic_keyval obj )
 
-  method get_mnemonic_keyval () = Label.get_mnemonic_keyval obj
-  method mnemonic_keyval () = Label.get_mnemonic_keyval obj
+  method get_mnemonic_widget : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option = fun () -> Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Label.get_mnemonic_widget obj )
 
-  method get_mnemonic_widget () = Label.get_mnemonic_widget obj
-  method mnemonic_widget () = Label.get_mnemonic_widget obj
+  method get_natural_wrap_mode : unit -> Gtk_enums.naturalwrapmode = fun () -> (Label.get_natural_wrap_mode obj )
 
-  method get_natural_wrap_mode () = Label.get_natural_wrap_mode obj
-  method natural_wrap_mode () = Label.get_natural_wrap_mode obj
+  method get_selectable : unit -> bool = fun () -> (Label.get_selectable obj )
 
-  method get_selectable () = Label.get_selectable obj
-  method selectable () = Label.get_selectable obj
+  method get_single_line_mode : unit -> bool = fun () -> (Label.get_single_line_mode obj )
 
-  method get_single_line_mode () = Label.get_single_line_mode obj
-  method single_line_mode () = Label.get_single_line_mode obj
+  method get_text : unit -> string = fun () -> (Label.get_text obj )
 
-  method get_text () = Label.get_text obj
-  method text () = Label.get_text obj
+  method get_use_markup : unit -> bool = fun () -> (Label.get_use_markup obj )
 
-  method get_use_markup () = Label.get_use_markup obj
-  method use_markup () = Label.get_use_markup obj
+  method get_use_underline : unit -> bool = fun () -> (Label.get_use_underline obj )
 
-  method get_use_underline () = Label.get_use_underline obj
-  method use_underline () = Label.get_use_underline obj
+  method get_width_chars : unit -> int = fun () -> (Label.get_width_chars obj )
 
-  method get_width_chars () = Label.get_width_chars obj
-  method width_chars () = Label.get_width_chars obj
+  method get_wrap : unit -> bool = fun () -> (Label.get_wrap obj )
 
-  method get_wrap () = Label.get_wrap obj
-  method wrap () = Label.get_wrap obj
+  method get_wrap_mode : unit -> Pango.wrapmode = fun () -> (Label.get_wrap_mode obj )
 
-  method get_wrap_mode () = Label.get_wrap_mode obj
-  method wrap_mode () = Label.get_wrap_mode obj
+  method get_xalign : unit -> float = fun () -> (Label.get_xalign obj )
 
-  method get_xalign () = Label.get_xalign obj
-  method xalign () = Label.get_xalign obj
+  method get_yalign : unit -> float = fun () -> (Label.get_yalign obj )
 
-  method get_yalign () = Label.get_yalign obj
-  method yalign () = Label.get_yalign obj
+  method select_region : int -> int -> unit = fun start_offset end_offset -> (Label.select_region obj start_offset end_offset)
 
-  method select_region start_offset end_offset = Label.select_region obj start_offset end_offset
+  method set_ellipsize : Pango.ellipsizemode -> unit = fun mode -> (Label.set_ellipsize obj mode)
 
-  method set_ellipsize mode = Label.set_ellipsize obj mode
+  method set_justify : Gtk_enums.justification -> unit = fun jtype -> (Label.set_justify obj jtype)
 
-  method set_justify jtype = Label.set_justify obj jtype
+  method set_label : string -> unit = fun str -> (Label.set_label obj str)
 
-  method set_label str = Label.set_label obj str
+  method set_lines : int -> unit = fun lines -> (Label.set_lines obj lines)
 
-  method set_lines lines = Label.set_lines obj lines
+  method set_markup : string -> unit = fun str -> (Label.set_markup obj str)
 
-  method set_markup str = Label.set_markup obj str
+  method set_markup_with_mnemonic : string -> unit = fun str -> (Label.set_markup_with_mnemonic obj str)
 
-  method set_markup_with_mnemonic str = Label.set_markup_with_mnemonic obj str
+  method set_max_width_chars : int -> unit = fun n_chars -> (Label.set_max_width_chars obj n_chars)
 
-  method set_max_width_chars n_chars = Label.set_max_width_chars obj n_chars
+  method set_mnemonic_widget : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
+    fun widget ->
+      let widget = Option.map (fun (c) -> c#as_widget) widget in
+      (Label.set_mnemonic_widget obj widget)
 
-  method set_mnemonic_widget widget = Label.set_mnemonic_widget obj widget
+  method set_natural_wrap_mode : Gtk_enums.naturalwrapmode -> unit = fun wrap_mode -> (Label.set_natural_wrap_mode obj wrap_mode)
 
-  method set_natural_wrap_mode wrap_mode = Label.set_natural_wrap_mode obj wrap_mode
+  method set_selectable : bool -> unit = fun setting -> (Label.set_selectable obj setting)
 
-  method set_selectable setting = Label.set_selectable obj setting
+  method set_single_line_mode : bool -> unit = fun single_line_mode -> (Label.set_single_line_mode obj single_line_mode)
 
-  method set_single_line_mode single_line_mode = Label.set_single_line_mode obj single_line_mode
+  method set_text : string -> unit = fun str -> (Label.set_text obj str)
 
-  method set_text str = Label.set_text obj str
+  method set_text_with_mnemonic : string -> unit = fun str -> (Label.set_text_with_mnemonic obj str)
 
-  method set_text_with_mnemonic str = Label.set_text_with_mnemonic obj str
+  method set_use_markup : bool -> unit = fun setting -> (Label.set_use_markup obj setting)
 
-  method set_use_markup setting = Label.set_use_markup obj setting
+  method set_use_underline : bool -> unit = fun setting -> (Label.set_use_underline obj setting)
 
-  method set_use_underline setting = Label.set_use_underline obj setting
+  method set_width_chars : int -> unit = fun n_chars -> (Label.set_width_chars obj n_chars)
 
-  method set_width_chars n_chars = Label.set_width_chars obj n_chars
+  method set_wrap : bool -> unit = fun wrap -> (Label.set_wrap obj wrap)
 
-  method set_wrap wrap = Label.set_wrap obj wrap
+  method set_wrap_mode : Pango.wrapmode -> unit = fun wrap_mode -> (Label.set_wrap_mode obj wrap_mode)
 
-  method set_wrap_mode wrap_mode = Label.set_wrap_mode obj wrap_mode
+  method set_xalign : float -> unit = fun xalign -> (Label.set_xalign obj xalign)
 
-  method set_xalign xalign = Label.set_xalign obj xalign
+  method set_yalign : float -> unit = fun yalign -> (Label.set_yalign obj yalign)
 
-  method set_yalign yalign = Label.set_yalign obj yalign
-
+  method as_widget = (Label.as_widget obj)
+    method as_label = obj
 end
 
-class label obj = object
-  inherit label_skel obj
-end

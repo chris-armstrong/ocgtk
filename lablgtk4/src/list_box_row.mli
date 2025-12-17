@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: ListBoxRow *)
 
-type t = [`list_box_row | `widget] Gobject.obj
+type t = [`list_box_row | `widget | `initially_unowned] Gobject.obj
 
-val as_widget : t -> Gtk.widget
+val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new ListBoxRow *)
 external new_ : unit -> t = "ml_gtk_list_box_row_new"
@@ -19,10 +19,10 @@ This is only allowed to be called
 from a [callback@Gtk.ListBoxUpdateHeaderFunc].
 It will replace any existing header in the row,
 and be shown in front of the row in the listbox. *)
-external set_header : t -> Gtk.widget option -> unit = "ml_gtk_list_box_row_set_header"
+external set_header : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_list_box_row_set_header"
 
 (** Sets the child widget of @self. *)
-external set_child : t -> Gtk.widget option -> unit = "ml_gtk_list_box_row_set_child"
+external set_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_list_box_row_set_child"
 
 (** Set whether the row is activatable. *)
 external set_activatable : t -> bool -> unit = "ml_gtk_list_box_row_set_activatable"
@@ -43,10 +43,10 @@ This can be used
 in a [callback@Gtk.ListBoxUpdateHeaderFunc] to see if
 there is a header set already, and if so to update
 the state of it. *)
-external get_header : t -> Gtk.widget option = "ml_gtk_list_box_row_get_header"
+external get_header : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_list_box_row_get_header"
 
 (** Gets the child widget of @row. *)
-external get_child : t -> Gtk.widget option = "ml_gtk_list_box_row_get_child"
+external get_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_list_box_row_get_child"
 
 (** Gets whether the row is activatable. *)
 external get_activatable : t -> bool = "ml_gtk_list_box_row_get_activatable"

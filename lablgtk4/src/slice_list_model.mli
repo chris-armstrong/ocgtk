@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: SliceListModel *)
+(* SliceListModel: SliceListModel *)
 
-type t = Gtk.widget
+type t = [`slice_list_model | `object_] Gobject.obj
 
 (** Create a new SliceListModel *)
 external new_ : unit -> int -> int -> t = "ml_gtk_slice_list_model_new"

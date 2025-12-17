@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Expander *)
 
-type t = [`expander | `widget] Gobject.obj
+type t = [`expander | `widget | `initially_unowned] Gobject.obj
 
-let as_widget (obj : t) : Gtk.widget = Obj.magic obj
+let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new Expander *)
 external new_ : string option -> t = "ml_gtk_expander_new"
@@ -27,7 +27,7 @@ external set_resize_toplevel : t -> bool -> unit = "ml_gtk_expander_set_resize_t
 
 This is the widget that will appear embedded alongside
 the expander arrow. *)
-external set_label_widget : t -> Gtk.widget option -> unit = "ml_gtk_expander_set_label_widget"
+external set_label_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_expander_set_label_widget"
 
 (** Sets the text of the label of the expander to @label.
 
@@ -41,7 +41,7 @@ and %FALSE if you want the child widget to be hidden. *)
 external set_expanded : t -> bool -> unit = "ml_gtk_expander_set_expanded"
 
 (** Sets the child widget of @expander. *)
-external set_child : t -> Gtk.widget option -> unit = "ml_gtk_expander_set_child"
+external set_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_expander_set_child"
 
 (** Returns whether an underline in the text indicates a mnemonic. *)
 external get_use_underline : t -> bool = "ml_gtk_expander_get_use_underline"
@@ -54,7 +54,7 @@ containing the expander upon resizing and collapsing. *)
 external get_resize_toplevel : t -> bool = "ml_gtk_expander_get_resize_toplevel"
 
 (** Retrieves the label widget for the frame. *)
-external get_label_widget : t -> Gtk.widget option = "ml_gtk_expander_get_label_widget"
+external get_label_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_expander_get_label_widget"
 
 (** Fetches the text from a label widget.
 
@@ -71,5 +71,5 @@ Returns %TRUE if the child widget is revealed. *)
 external get_expanded : t -> bool = "ml_gtk_expander_get_expanded"
 
 (** Gets the child widget of @expander. *)
-external get_child : t -> Gtk.widget option = "ml_gtk_expander_get_child"
+external get_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_expander_get_child"
 

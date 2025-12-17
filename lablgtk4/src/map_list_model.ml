@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: MapListModel *)
+(* MapListModel: MapListModel *)
 
-type t = Gtk.widget
+type t = [`map_list_model | `object_] Gobject.obj
 
 (** Create a new MapListModel *)
 external new_ : unit -> unit -> unit -> unit -> t = "ml_gtk_map_list_model_new"
