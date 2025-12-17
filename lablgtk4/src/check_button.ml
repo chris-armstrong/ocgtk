@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: CheckButton *)
 
-type t = [`check_button | `widget] Gobject.obj
+type t = [`check_button | `widget | `initially_unowned] Gobject.obj
 
-let as_widget (obj : t) : Gtk.widget = Obj.magic obj
+let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new CheckButton *)
 external new_ : unit -> t = "ml_gtk_check_button_new"
@@ -51,7 +51,7 @@ Note that the same effect can be achieved via the [iface@Gtk.Actionable]
 API, by using the same action with parameter type and state type 's'
 for all buttons in the group, and giving each button its own target
 value. *)
-external set_group : t -> Gtk.widget option -> unit = "ml_gtk_check_button_set_group"
+external set_group : t -> t option -> unit = "ml_gtk_check_button_set_group"
 
 (** Sets the child widget of @button.
 
@@ -60,7 +60,7 @@ up the proper accessibility label and description information for @button.
 Most likely, you'll either set the accessibility label or description
 for @button explicitly, or you'll set a labelled-by or described-by
 relations from @child to @button. *)
-external set_child : t -> Gtk.widget option -> unit = "ml_gtk_check_button_set_child"
+external set_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_check_button_set_child"
 
 (** Changes the check buttons active state. *)
 external set_active : t -> bool -> unit = "ml_gtk_check_button_set_active"
@@ -75,7 +75,7 @@ external get_label : t -> string option = "ml_gtk_check_button_get_label"
 external get_inconsistent : t -> bool = "ml_gtk_check_button_get_inconsistent"
 
 (** Gets the child widget of @button or `NULL` if [property@CheckButton:label] is set. *)
-external get_child : t -> Gtk.widget option = "ml_gtk_check_button_get_child"
+external get_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_check_button_get_child"
 
 (** Returns whether the check button is active. *)
 external get_active : t -> bool = "ml_gtk_check_button_get_active"

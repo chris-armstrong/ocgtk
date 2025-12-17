@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: CssProvider *)
+(* CssProvider: CssProvider *)
 
-type t = Gtk.widget
+type t = [`css_provider | `object_] Gobject.obj
 
 (** Create a new CssProvider *)
 external new_ : unit -> t = "ml_gtk_css_provider_new"

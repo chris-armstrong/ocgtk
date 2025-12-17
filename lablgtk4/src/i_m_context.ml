@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: IMContext *)
+(* IMContext: IMContext *)
 
-type t = Gtk.widget
+type t = [`i_m_context | `object_] Gobject.obj
 
 (* Properties *)
 
@@ -32,7 +32,7 @@ external gtk_im_context_set_surrounding : t -> string -> int -> int -> unit = "m
 This is the `GtkWidget` holding the input focus. This widget is
 used in order to correctly position status windows, and may
 also be used for purposes internal to the input method. *)
-external gtk_im_context_set_client_widget : t -> Gtk.widget option -> unit = "ml_gtk_im_context_set_client_widget"
+external gtk_im_context_set_client_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_im_context_set_client_widget"
 
 (** Notify the input method that a change such as a change in cursor
 position has been made.
@@ -59,7 +59,7 @@ events.
 
 If this function returns %TRUE, then no further processing
 should be done for this key event. *)
-external gtk_im_context_filter_keypress : t -> _ Gdk.event -> bool = "ml_gtk_im_context_filter_keypress"
+external gtk_im_context_filter_keypress : t -> 'a Gdk.event -> bool = "ml_gtk_im_context_filter_keypress"
 
 (** Asks the widget that the input context is attached to delete
 characters around the cursor position by emitting the
@@ -85,5 +85,5 @@ external gtk_im_context_delete_surrounding : t -> int -> int -> bool = "ml_gtk_i
 This method will return %TRUE if this request was actually performed
 to the platform, other environmental factors may result in an on-screen
 keyboard effectively not showing up. *)
-external gtk_im_context_activate_osk : t -> _ Gdk.event option -> bool = "ml_gtk_im_context_activate_osk"
+external gtk_im_context_activate_osk : t -> 'a Gdk.event option -> bool = "ml_gtk_im_context_activate_osk"
 

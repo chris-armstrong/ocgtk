@@ -25,7 +25,7 @@
 CAMLexport CAMLprim value ml_gtk_list_view_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
-GtkListView *obj = gtk_list_view_new(Option_val(arg1, GtkWidget_val, NULL), Option_val(arg2, GtkListItemFactory_val, NULL));
+GtkListView *obj = gtk_list_view_new(Option_val(arg1, GtkSelectionModel_val, NULL), Option_val(arg2, GtkListItemFactory_val, NULL));
 CAMLreturn(Val_GtkListView(obj));
 }
 
@@ -57,7 +57,7 @@ CAMLexport CAMLprim value ml_gtk_list_view_set_model(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_list_view_set_model(GtkListView_val(self), Option_val(arg1, GtkWidget_val, NULL));
+gtk_list_view_set_model(GtkListView_val(self), Option_val(arg1, GtkSelectionModel_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -122,7 +122,7 @@ CAMLexport CAMLprim value ml_gtk_list_view_get_model(value self)
 CAMLparam1(self);
 
 GtkSelectionModel* result = gtk_list_view_get_model(GtkListView_val(self));
-CAMLreturn(Val_GtkWidget_option(result));
+CAMLreturn(Val_option(result, Val_GtkSelectionModel));
 }
 
 CAMLexport CAMLprim value ml_gtk_list_view_get_header_factory(value self)

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: StackPage *)
+(* StackPage: StackPage *)
 
-type t = Gtk.widget
+type t = [`stack_page | `object_] Gobject.obj
 
 (* Properties *)
 
@@ -45,5 +45,5 @@ external get_name : t -> string option = "ml_gtk_stack_page_get_name"
 external get_icon_name : t -> string option = "ml_gtk_stack_page_get_icon_name"
 
 (** Returns the stack child to which @self belongs. *)
-external get_child : t -> Gtk.widget = "ml_gtk_stack_page_get_child"
+external get_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = "ml_gtk_stack_page_get_child"
 

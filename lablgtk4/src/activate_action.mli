@@ -1,5 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: ActivateAction *)
+(* ActivateAction: ActivateAction *)
 
-type t = Gtk.widget
+type t = [`activate_action | `shortcut_action | `object_] Gobject.obj
 

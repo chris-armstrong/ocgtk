@@ -1,15 +1,15 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Entry *)
 
-type t = [`entry | `widget] Gobject.obj
+type t = [`entry | `widget | `initially_unowned] Gobject.obj
 
-let as_widget (obj : t) : Gtk.widget = Obj.magic obj
+let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new Entry *)
 external new_ : unit -> t = "ml_gtk_entry_new"
 
 (** Create a new Entry *)
-external new_with_buffer : Gtk.widget -> t = "ml_gtk_entry_new_with_buffer"
+external new_with_buffer : Entry_buffer.t -> t = "ml_gtk_entry_new_with_buffer"
 
 (* Properties *)
 
@@ -127,11 +127,11 @@ to use with @entry.
 All further configuration of the completion mechanism is
 done on @completion using the `GtkEntryCompletion` API.
 Completion is disabled if @completion is set to %NULL. *)
-external set_completion : t -> Gtk.widget option -> unit = "ml_gtk_entry_set_completion"
+external set_completion : t -> Entry_completion.t option -> unit = "ml_gtk_entry_set_completion"
 
 (** Set the `GtkEntryBuffer` object which holds the text for
 this widget. *)
-external set_buffer : t -> Gtk.widget -> unit = "ml_gtk_entry_set_buffer"
+external set_buffer : t -> Entry_buffer.t -> unit = "ml_gtk_entry_set_buffer"
 
 (** Sets the alignment for the contents of the entry.
 
@@ -240,11 +240,11 @@ external get_current_icon_drag_source : t -> int = "ml_gtk_entry_get_current_ico
 
 (** Returns the auxiliary completion object currently
 in use by @entry. *)
-external get_completion : t -> Gtk.widget option = "ml_gtk_entry_get_completion"
+external get_completion : t -> Entry_completion.t option = "ml_gtk_entry_get_completion"
 
 (** Get the `GtkEntryBuffer` object which holds the text for
 this widget. *)
-external get_buffer : t -> Gtk.widget = "ml_gtk_entry_get_buffer"
+external get_buffer : t -> Entry_buffer.t = "ml_gtk_entry_get_buffer"
 
 (** Gets the value set by gtk_entry_set_alignment().
 

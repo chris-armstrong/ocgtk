@@ -1,12 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: ApplicationWindow *)
 
-type t = [`application_window | `window | `widget] Gobject.obj
+type t = [`application_window | `window | `widget | `initially_unowned] Gobject.obj
 
-val as_widget : t -> Gtk.widget
+val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new ApplicationWindow *)
-external new_ : Gtk.widget -> t = "ml_gtk_application_window_new"
+external new_ : Application_and__window_and__window_group.Application.t -> t = "ml_gtk_application_window_new"
 
 (* Properties *)
 
@@ -20,7 +20,7 @@ Additionally, sets up an action with the name
 `win.show-help-overlay` to present it.
 
 @window takes responsibility for destroying @help_overlay. *)
-external set_help_overlay : t -> Gtk.widget option -> unit = "ml_gtk_application_window_set_help_overlay"
+external set_help_overlay : t -> Shortcuts_window.t option -> unit = "ml_gtk_application_window_set_help_overlay"
 
 (** Returns whether the window will display a menubar for the app menu
 and menubar as needed. *)
@@ -34,5 +34,5 @@ external get_id : t -> int = "ml_gtk_application_window_get_id"
 (** Gets the `GtkShortcutsWindow` that is associated with @window.
 
 See [method@Gtk.ApplicationWindow.set_help_overlay]. *)
-external get_help_overlay : t -> Gtk.widget option = "ml_gtk_application_window_get_help_overlay"
+external get_help_overlay : t -> Shortcuts_window.t option = "ml_gtk_application_window_get_help_overlay"
 

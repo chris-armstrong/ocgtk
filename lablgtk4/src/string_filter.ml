@@ -1,10 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: StringFilter *)
+(* StringFilter: StringFilter *)
 
-type t = Gtk.widget
+type t = [`string_filter | `filter | `object_] Gobject.obj
 
 (** Create a new StringFilter *)
-external new_ : Gtk.widget option -> t = "ml_gtk_string_filter_new"
+external new_ : Expression.t option -> t = "ml_gtk_string_filter_new"
 
 (* Properties *)
 
@@ -21,7 +21,7 @@ external set_ignore_case : t -> bool -> unit = "ml_gtk_string_filter_set_ignore_
 obtain strings from items.
 
 The expression must have a value type of %G_TYPE_STRING. *)
-external set_expression : t -> Gtk.widget option -> unit = "ml_gtk_string_filter_set_expression"
+external set_expression : t -> Expression.t option -> unit = "ml_gtk_string_filter_set_expression"
 
 (** Gets the search term. *)
 external get_search : t -> string option = "ml_gtk_string_filter_get_search"
@@ -34,5 +34,5 @@ external get_ignore_case : t -> bool = "ml_gtk_string_filter_get_ignore_case"
 
 (** Gets the expression that the string filter uses to
 obtain strings from items. *)
-external get_expression : t -> Gtk.widget option = "ml_gtk_string_filter_get_expression"
+external get_expression : t -> Expression.t option = "ml_gtk_string_filter_get_expression"
 

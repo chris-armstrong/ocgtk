@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: FlowBox *)
 
-type t = [`flow_box | `widget] Gobject.obj
+type t = [`flow_box | `widget | `initially_unowned] Gobject.obj
 
-let as_widget (obj : t) : Gtk.widget = Obj.magic obj
+let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new FlowBox *)
 external new_ : unit -> t = "ml_gtk_flow_box_new"
@@ -18,7 +18,7 @@ external set_accept_unpaired_release : t -> bool -> unit = "ml_gtk_flow_box_set_
 
 (** Unselects a single child of @box, if the selection
 mode allows it. *)
-external unselect_child : t -> Gtk.widget -> unit = "ml_gtk_flow_box_unselect_child"
+external unselect_child : t -> Flow_box_child.t -> unit = "ml_gtk_flow_box_unselect_child"
 
 (** Unselect all children of @box, if the selection
 mode allows it. *)
@@ -35,7 +35,7 @@ adjustment.
 The adjustments have to be in pixel units and in the same
 coordinate system as the allocation for immediate children
 of the box. *)
-external set_vadjustment : t -> Gtk.widget -> unit = "ml_gtk_flow_box_set_vadjustment"
+external set_vadjustment : t -> Adjustment.t -> unit = "ml_gtk_flow_box_set_vadjustment"
 
 (** Sets how selection works in @box. *)
 external set_selection_mode : t -> Gtk_enums.selectionmode -> unit = "ml_gtk_flow_box_set_selection_mode"
@@ -70,7 +70,7 @@ adjustment.
 The adjustments have to be in pixel units and in the same
 coordinate system as the allocation for immediate children
 of the box. *)
-external set_hadjustment : t -> Gtk.widget -> unit = "ml_gtk_flow_box_set_hadjustment"
+external set_hadjustment : t -> Adjustment.t -> unit = "ml_gtk_flow_box_set_hadjustment"
 
 (** Sets the horizontal space to add between children. *)
 external set_column_spacing : t -> int -> unit = "ml_gtk_flow_box_set_column_spacing"
@@ -81,7 +81,7 @@ external set_activate_on_single_click : t -> bool -> unit = "ml_gtk_flow_box_set
 
 (** Selects a single child of @box, if the selection
 mode allows it. *)
-external select_child : t -> Gtk.widget -> unit = "ml_gtk_flow_box_select_child"
+external select_child : t -> Flow_box_child.t -> unit = "ml_gtk_flow_box_select_child"
 
 (** Select all children of @box, if the selection
 mode allows it. *)
@@ -93,7 +93,7 @@ This function does nothing if @box is backed by a model. *)
 external remove_all : t -> unit = "ml_gtk_flow_box_remove_all"
 
 (** Removes a child from @box. *)
-external remove : t -> Gtk.widget -> unit = "ml_gtk_flow_box_remove"
+external remove : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_flow_box_remove"
 
 (** Adds @child to the start of @self.
 
@@ -101,7 +101,7 @@ If a sort function is set, the widget will
 actually be inserted at the calculated position.
 
 See also: [method@Gtk.FlowBox.insert]. *)
-external prepend : t -> Gtk.widget -> unit = "ml_gtk_flow_box_prepend"
+external prepend : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_flow_box_prepend"
 
 (** Updates the sorting for all children.
 
@@ -125,7 +125,7 @@ at the calculated position.
 
 If @position is -1, or larger than the total number of children
 in the @box, then the @widget will be appended to the end. *)
-external insert : t -> Gtk.widget -> int -> unit = "ml_gtk_flow_box_insert"
+external insert : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int -> unit = "ml_gtk_flow_box_insert"
 
 (** Gets the selection mode of @box. *)
 external get_selection_mode : t -> Gtk_enums.selectionmode = "ml_gtk_flow_box_get_selection_mode"
@@ -148,10 +148,10 @@ external get_column_spacing : t -> int = "ml_gtk_flow_box_get_column_spacing"
 (** Gets the child in the (@x, @y) position.
 
 Both @x and @y are assumed to be relative to the origin of @box. *)
-external get_child_at_pos : t -> int -> int -> Gtk.widget option = "ml_gtk_flow_box_get_child_at_pos"
+external get_child_at_pos : t -> int -> int -> Flow_box_child.t option = "ml_gtk_flow_box_get_child_at_pos"
 
 (** Gets the nth child in the @box. *)
-external get_child_at_index : t -> int -> Gtk.widget option = "ml_gtk_flow_box_get_child_at_index"
+external get_child_at_index : t -> int -> Flow_box_child.t option = "ml_gtk_flow_box_get_child_at_index"
 
 (** Returns whether children activate on single clicks. *)
 external get_activate_on_single_click : t -> bool = "ml_gtk_flow_box_get_activate_on_single_click"
@@ -162,5 +162,5 @@ If a sort function is set, the widget will
 actually be inserted at the calculated position.
 
 See also: [method@Gtk.FlowBox.insert]. *)
-external append : t -> Gtk.widget -> unit = "ml_gtk_flow_box_append"
+external append : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_flow_box_append"
 

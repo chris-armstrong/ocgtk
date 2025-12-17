@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: SearchEntry *)
 
-type t = [`search_entry | `widget] Gobject.obj
+type t = [`search_entry | `widget | `initially_unowned] Gobject.obj
 
-let as_widget (obj : t) : Gtk.widget = Obj.magic obj
+let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new SearchEntry *)
 external new_ : unit -> t = "ml_gtk_search_entry_new"
@@ -34,7 +34,7 @@ editable child widgets of @widget will receive text input
 before it gets captured. If that is not desired, you can
 capture and forward the events yourself with
 [method@Gtk.EventControllerKey.forward]. *)
-external set_key_capture_widget : t -> Gtk.widget option -> unit = "ml_gtk_search_entry_set_key_capture_widget"
+external set_key_capture_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_search_entry_set_key_capture_widget"
 
 (** Sets the input purpose of @entry. *)
 external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit = "ml_gtk_search_entry_set_input_purpose"
@@ -50,7 +50,7 @@ external get_search_delay : t -> int = "ml_gtk_search_entry_get_search_delay"
 external get_placeholder_text : t -> string option = "ml_gtk_search_entry_get_placeholder_text"
 
 (** Gets the widget that @entry is capturing key events from. *)
-external get_key_capture_widget : t -> Gtk.widget option = "ml_gtk_search_entry_get_key_capture_widget"
+external get_key_capture_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_search_entry_get_key_capture_widget"
 
 (** Gets the input purpose of @entry. *)
 external get_input_purpose : t -> Gtk_enums.inputpurpose = "ml_gtk_search_entry_get_input_purpose"

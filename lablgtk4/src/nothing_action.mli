@@ -1,5 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: NothingAction *)
+(* NothingAction: NothingAction *)
 
-type t = Gtk.widget
+type t = [`nothing_action | `shortcut_action | `object_] Gobject.obj
 

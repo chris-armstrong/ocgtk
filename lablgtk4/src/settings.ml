@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Settings *)
+(* Settings: Settings *)
 
-type t = Gtk.widget
+type t = [`settings | `object_] Gobject.obj
 
 (* Properties *)
 

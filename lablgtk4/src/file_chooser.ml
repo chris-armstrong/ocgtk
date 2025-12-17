@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: FileChooser *)
+(* FileChooser: FileChooser *)
 
-type t = Gtk.widget
+type t = [`file_chooser] Gobject.obj
 
 (* Properties *)
 
@@ -21,7 +21,7 @@ the filter should be one of the filters in that list.
 Setting the current filter when the list of filters is
 empty is useful if you want to restrict the displayed
 set of files without letting the user change it. *)
-external set_filter : t -> Gtk.widget -> unit = "ml_gtk_file_chooser_set_filter"
+external set_filter : t -> File_filter.t -> unit = "ml_gtk_file_chooser_set_filter"
 
 (** Sets the current name in the file selector, as if entered
 by the user.
@@ -60,7 +60,7 @@ action is %GTK_FILE_CHOOSER_ACTION_OPEN. *)
 external set_action : t -> Gtk_enums.filechooseraction -> unit = "ml_gtk_file_chooser_set_action"
 
 (** Removes @filter from the list of filters that the user can select between. *)
-external remove_filter : t -> Gtk.widget -> unit = "ml_gtk_file_chooser_remove_filter"
+external remove_filter : t -> File_filter.t -> unit = "ml_gtk_file_chooser_remove_filter"
 
 (** Removes a 'choice' that has been added with gtk_file_chooser_add_choice(). *)
 external remove_choice : t -> string -> unit = "ml_gtk_file_chooser_remove_choice"
@@ -70,7 +70,7 @@ chooser. *)
 external get_select_multiple : t -> bool = "ml_gtk_file_chooser_get_select_multiple"
 
 (** Gets the current filter. *)
-external get_filter : t -> Gtk.widget option = "ml_gtk_file_chooser_get_filter"
+external get_filter : t -> File_filter.t option = "ml_gtk_file_chooser_get_filter"
 
 (** Gets whether file chooser will offer to create new folders. *)
 external get_create_folders : t -> bool = "ml_gtk_file_chooser_get_create_folders"
@@ -88,5 +88,5 @@ filter are displayed.
 
 Note that the @chooser takes ownership of the filter if it is floating,
 so you have to ref and sink it if you want to keep a reference. *)
-external add_filter : t -> Gtk.widget -> unit = "ml_gtk_file_chooser_add_filter"
+external add_filter : t -> File_filter.t -> unit = "ml_gtk_file_chooser_add_filter"
 

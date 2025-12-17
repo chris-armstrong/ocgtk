@@ -1,24 +1,20 @@
-(* GTK4 Fixed Container - Manually Created *)
+(* GENERATED CODE - DO NOT EDIT *)
+(* Widget: Fixed *)
 
-type t = [`fixed | `widget] Gobject.obj
+type t = [`fixed | `widget | `initially_unowned] Gobject.obj
 
-(** {2 External C bindings} *)
+let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
-external create : unit -> t = "ml_gtk_fixed_new"
-external put_impl : t -> Gtk.widget -> float -> float -> unit = "ml_gtk_fixed_put"
-external remove : t -> Gtk.widget -> unit = "ml_gtk_fixed_remove"
-external move_impl : t -> Gtk.widget -> float -> float -> unit = "ml_gtk_fixed_move"
-external get_child_position_impl : t -> Gtk.widget -> float * float = "ml_gtk_fixed_get_child_position"
+(** Create a new Fixed *)
+external new_ : unit -> t = "ml_gtk_fixed_new"
 
-(** {2 Wrapped functions} *)
+(** Removes a child from @fixed. *)
+external remove : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_fixed_remove"
 
-let put fixed widget ~x ~y =
-  put_impl fixed widget x y
+(** Adds a widget to a `GtkFixed` at the given position. *)
+external put : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> float -> float -> unit = "ml_gtk_fixed_put"
 
-let move fixed widget ~x ~y =
-  move_impl fixed widget x y
+(** Sets a translation transformation to the given @x and @y
+coordinates to the child @widget of the `GtkFixed`. *)
+external move : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> float -> float -> unit = "ml_gtk_fixed_move"
 
-let get_child_position fixed widget =
-  get_child_position_impl fixed widget
-
-let as_widget (fixed : t) : Gtk.widget = Obj.magic fixed

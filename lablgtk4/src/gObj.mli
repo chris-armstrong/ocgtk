@@ -11,51 +11,23 @@
 
 (** High-level widget wrapper classes for GTK4 *)
 
+(* Shorthand for the Widget module in the cyclic dependency group *)
+module Widget = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget
+
 (** {2 Base Classes} *)
 
+(* COMMENTED OUT - controller_ops needs to be rewritten to use new generated API
 (** Controller operations helper - GTK4's event handling system *)
 class controller_ops : [`widget] Gobject.obj ->
   object
-    (** Add a keyboard key-pressed handler *)
-    method on_key_pressed :
-      callback:(keyval:int -> keycode:int -> state:Gdk.Tags.modifier_type list -> bool) ->
-      Gobject.Signal.handler_id
-
-    (** Add a keyboard key-released handler *)
-    method on_key_released :
-      callback:(keyval:int -> keycode:int -> state:Gdk.Tags.modifier_type list -> unit) ->
-      Gobject.Signal.handler_id
-
-    (** Add a click/button press handler
-        @param button 0=all buttons, 1=primary (left), 2=middle, 3=secondary (right) *)
-    method on_click :
-      button:int ->
-      callback:(n_press:int -> x:float -> y:float -> unit) ->
-      Gobject.Signal.handler_id
-
-    (** Add a mouse motion handler *)
-    method on_motion :
-      callback:(x:float -> y:float -> unit) ->
-      Gobject.Signal.handler_id
-
-    (** Add a mouse enter handler *)
-    method on_enter :
-      callback:(x:float -> y:float -> unit) ->
-      Gobject.Signal.handler_id
-
-    (** Add a mouse leave handler *)
-    method on_leave :
-      callback:(unit -> unit) ->
-      Gobject.Signal.handler_id
-
-    (** Get list of all attached controllers *)
-    method controllers : EventController.t list
+    ...
   end
+*)
 
 (** Base widget implementation *)
 class virtual widget_impl : [`widget] Gobject.obj ->
   object
-    method private obj : [`widget] Gobject.obj
+    method private obj : Widget.t
 
     (** {3 Visibility} *)
 
@@ -70,7 +42,7 @@ class virtual widget_impl : [`widget] Gobject.obj ->
     method height : int
     method allocated_width : int
     method allocated_height : int
-    method set_size_request : width:int -> height:int -> unit
+    method set_size_request : int -> int -> unit
     method size_request : int * int
 
     (** {3 Focus} *)
@@ -85,7 +57,7 @@ class virtual widget_impl : [`widget] Gobject.obj ->
     method add_css_class : string -> unit
     method remove_css_class : string -> unit
     method has_css_class : string -> bool
-    method css_classes : string list
+    method css_classes : unit  (** TODO: Should return string list but generated API returns unit *)
 
     (** {3 State} *)
 
@@ -96,8 +68,8 @@ class virtual widget_impl : [`widget] Gobject.obj ->
 
     (** {3 Hierarchy} *)
 
-    method parent : [`widget] Gobject.obj option
-    method root : [`widget] Gobject.obj option
+    method parent : Widget.t option
+    method root : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Root.t option
 
     (** {3 Drawing} *)
 
@@ -106,8 +78,8 @@ class virtual widget_impl : [`widget] Gobject.obj ->
 
     (** {3 Event Controllers (NEW in GTK4)} *)
 
-    method add_controller : EventController.t -> unit
-    method remove_controller : EventController.t -> unit
+    method add_controller : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t -> unit
+    method remove_controller : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t -> unit
 
     (** {3 Packing Properties (NEW in GTK4)} *)
 
@@ -115,10 +87,10 @@ class virtual widget_impl : [`widget] Gobject.obj ->
     method set_hexpand : bool -> unit
     method vexpand : bool
     method set_vexpand : bool -> unit
-    method halign : Gtk.align
-    method set_halign : Gtk.align -> unit
-    method valign : Gtk.align
-    method set_valign : Gtk.align -> unit
+    method halign : Gtk_enums.align
+    method set_halign : Gtk_enums.align -> unit
+    method valign : Gtk_enums.align
+    method set_valign : Gtk_enums.align -> unit
     method margin_start : int
     method set_margin_start : int -> unit
     method margin_end : int
@@ -130,7 +102,7 @@ class virtual widget_impl : [`widget] Gobject.obj ->
 
     (** {3 Conversion} *)
 
-    method as_widget : [`widget] Gobject.obj
+    method as_widget : Widget.t
 
     method widget : widget_impl
   end
@@ -141,19 +113,3 @@ class widget : [`widget] Gobject.obj ->
     inherit widget_impl
   end
 
-(** Widget with controller operations *)
-class virtual widget_full : [`widget] Gobject.obj ->
-  object
-    inherit widget_impl
-
-    (** Access controller operations helper *)
-    method controllers : controller_ops
-
-    (** Connect to any GObject signal *)
-    method connect : string -> callback:(unit -> unit) -> Gobject.Signal.handler_id
-  end
-
-(** {2 Conversion Functions} *)
-
-(** Convert a raw widget object to a widget class instance *)
-val widget_of_obj : [> `widget] Gobject.obj -> widget

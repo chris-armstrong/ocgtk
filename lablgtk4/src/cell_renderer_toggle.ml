@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: CellRendererToggle *)
+(* Cell renderer: CellRendererToggle *)
 
-type t = Gtk.widget
+type t = [`cell_renderer_toggle | `cell_renderer | `initially_unowned] Gobject.obj
+
+let as_cell_renderer (obj : t) : Cell_renderer.t = Obj.magic obj
 
 (** Create a new CellRendererToggle *)
 external new_ : unit -> t = "ml_gtk_cell_renderer_toggle_new"

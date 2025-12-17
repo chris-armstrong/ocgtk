@@ -11,57 +11,18 @@
 
 (** High-level widget wrapper classes for GTK4 *)
 
+(* Shorthand for the Widget module in the cyclic dependency group *)
+module Widget = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget
+
 (** {2 Controller Operations Helper} *)
 
+(* COMMENTED OUT - Needs to be rewritten to use new generated API
 (** Convenient event controller management - GTK4's new event system *)
 class controller_ops (widget : [`widget] Gobject.obj) = object (self)
-  val mutable controllers : EventController.t list = []
-
-  method on_key_pressed ~callback =
-    let ctrl = EventControllerKey.new_ () in
-    let sig_id = EventControllerKey.connect_key_pressed ctrl ~callback in
-    Widget.add_controller widget ctrl;
-    controllers <- ctrl :: controllers;
-    sig_id
-
-  method on_key_released ~callback =
-    let ctrl = EventControllerKey.new_ () in
-    let sig_id = EventControllerKey.connect_key_released ctrl ~callback in
-    Widget.add_controller widget ctrl;
-    controllers <- ctrl :: controllers;
-    sig_id
-
-  method on_click ~button ~callback =
-    let gesture = GestureClick.new_ () in
-    GestureClick.set_button gesture button;
-    let sig_id = GestureClick.connect_pressed gesture ~callback in
-    Widget.add_controller widget gesture;
-    controllers <- gesture :: controllers;
-    sig_id
-
-  method on_motion ~callback =
-    let ctrl = EventControllerMotion.new_ () in
-    let sig_id = EventControllerMotion.connect_motion ctrl ~callback in
-    Widget.add_controller widget ctrl;
-    controllers <- ctrl :: controllers;
-    sig_id
-
-  method on_enter ~callback =
-    let ctrl = EventControllerMotion.new_ () in
-    let sig_id = EventControllerMotion.connect_enter ctrl ~callback in
-    Widget.add_controller widget ctrl;
-    controllers <- ctrl :: controllers;
-    sig_id
-
-  method on_leave ~callback =
-    let ctrl = EventControllerMotion.new_ () in
-    let sig_id = EventControllerMotion.connect_leave ctrl ~callback in
-    Widget.add_controller widget ctrl;
-    controllers <- ctrl :: controllers;
-    sig_id
-
-  method controllers = controllers
+  val mutable controllers : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t list = []
+  ...
 end
+*)
 
 (** {2 Base Widget Implementation} *)
 
@@ -79,9 +40,9 @@ class virtual widget_impl (obj : [`widget] Gobject.obj) = object (self)
   method height = Widget.get_height obj
   method allocated_width = Widget.get_allocated_width obj
   method allocated_height = Widget.get_allocated_height obj
-  method set_size_request ~width ~height =
-    Widget.set_size_request obj ~width ~height
-  method size_request = Widget.get_size_request obj
+  method set_size_request width height =
+    Widget.set_size_request obj width height
+  method size_request = (Widget.get_width obj, Widget.get_height obj)
 
   (* Focus - NOTE: focusable not can_focus in GTK4! *)
   method focusable = Widget.get_focusable obj
@@ -144,16 +105,15 @@ end
 
 (** {2 Widget with Controller Operations} *)
 
+(* COMMENTED OUT - depends on controller_ops which needs to be rewritten
 class virtual widget_full (obj : [`widget] Gobject.obj) = object (self)
   inherit widget_impl obj
-
   val controllers_helper = new controller_ops obj
-
   method controllers = controllers_helper
-
   method connect signal ~callback =
     Gobject.Signal.connect_simple (obj :> _ Gobject.obj) ~name:signal ~callback ~after:false
 end
+*)
 
 (** {2 Conversion Functions} *)
 

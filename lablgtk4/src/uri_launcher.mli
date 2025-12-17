@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: UriLauncher *)
+(* UriLauncher: UriLauncher *)
 
-type t = Gtk.widget
+type t = [`uri_launcher | `object_] Gobject.obj
 
 (** Create a new UriLauncher *)
 external new_ : string option -> t = "ml_gtk_uri_launcher_new"

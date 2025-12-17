@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Orientable *)
+(* Orientable: Orientable *)
 
-type t = Gtk.widget
+type t = [`orientable] Gobject.obj
 
 (* Properties *)
 

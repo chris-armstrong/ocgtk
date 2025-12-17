@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: DirectoryList *)
+(* DirectoryList: DirectoryList *)
 
-type t = Gtk.widget
+type t = [`directory_list | `object_] Gobject.obj
 
 (** Create a new DirectoryList *)
 external new_ : string option -> unit -> t = "ml_gtk_directory_list_new"

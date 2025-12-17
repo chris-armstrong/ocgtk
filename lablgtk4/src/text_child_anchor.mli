@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: TextChildAnchor *)
+(* TextChildAnchor: TextChildAnchor *)
 
-type t = Gtk.widget
+type t = [`text_child_anchor | `object_] Gobject.obj
 
 (** Create a new TextChildAnchor *)
 external new_ : unit -> t = "ml_gtk_text_child_anchor_new"

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: MnemonicTrigger *)
+(* MnemonicTrigger: MnemonicTrigger *)
 
-type t = Gtk.widget
+type t = [`mnemonic_trigger | `shortcut_trigger | `object_] Gobject.obj
 
 (** Create a new MnemonicTrigger *)
 external new_ : int -> t = "ml_gtk_mnemonic_trigger_new"

@@ -1,5 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Record: Bitset *)
+(* Bitset: Bitset *)
 
 (** A `GtkBitset` represents a set of unsigned integers.
 
@@ -16,7 +16,7 @@ The fastest way to iterate values in a bitset is [struct@Gtk.BitsetIter].
 
 The main use case for `GtkBitset` is implementing complex selections for
 [iface@Gtk.SelectionModel]. *)
-type t = Obj.t
+type t = [`bitset] Gobject.obj
 
 (** Create a new Bitset *)
 external new_empty : unit -> t = "ml_gtk_bitset_new_empty"
@@ -36,7 +36,7 @@ That is, add all values from @other into @self that weren't part of it.
 
 It is allowed for @self and @other to be the same bitset. Nothing will
 happen in that case. *)
-external union : t -> Obj.t -> unit = "ml_gtk_bitset_union"
+external union : t -> t -> unit = "ml_gtk_bitset_union"
 
 (** Sets @self to be the subtraction of @other from @self.
 
@@ -44,7 +44,7 @@ In other words, remove all values from @self that are part of @other.
 
 It is allowed for @self and @other to be the same bitset. The bitset
 will be emptied in that case. *)
-external subtract : t -> Obj.t -> unit = "ml_gtk_bitset_subtract"
+external subtract : t -> t -> unit = "ml_gtk_bitset_subtract"
 
 (** This is a support function for `GListModel` handling, by mirroring
 the `GlistModel::items-changed` signal.
@@ -87,7 +87,7 @@ external remove_all : t -> unit = "ml_gtk_bitset_remove_all"
 external remove : t -> int -> bool = "ml_gtk_bitset_remove"
 
 (** Acquires a reference on the given `GtkBitset`. *)
-external ref : t -> Obj.t = "ml_gtk_bitset_ref"
+external ref : t -> t = "ml_gtk_bitset_ref"
 
 (** Check if no value is contained in bitset. *)
 external is_empty : t -> bool = "ml_gtk_bitset_is_empty"
@@ -98,7 +98,7 @@ In other words, remove all values from @self that are not part of @other.
 
 It is allowed for @self and @other to be the same bitset. Nothing will
 happen in that case. *)
-external intersect : t -> Obj.t -> unit = "ml_gtk_bitset_intersect"
+external intersect : t -> t -> unit = "ml_gtk_bitset_intersect"
 
 (** Returns the value of the @nth item in self.
 
@@ -116,7 +116,7 @@ If @self is empty, 0 is returned. *)
 external get_maximum : t -> int = "ml_gtk_bitset_get_maximum"
 
 (** Returns %TRUE if @self and @other contain the same values. *)
-external equals : t -> Obj.t -> bool = "ml_gtk_bitset_equals"
+external equals : t -> t -> bool = "ml_gtk_bitset_equals"
 
 (** Sets @self to be the symmetric difference of @self and @other.
 
@@ -126,7 +126,10 @@ This operation is also called an XOR.
 
 It is allowed for @self and @other to be the same bitset. The bitset
 will be emptied in that case. *)
-external difference : t -> Obj.t -> unit = "ml_gtk_bitset_difference"
+external difference : t -> t -> unit = "ml_gtk_bitset_difference"
+
+(** Creates a copy of @self. *)
+external copy : t -> t = "ml_gtk_bitset_copy"
 
 (** Checks if the given @value has been added to @self *)
 external contains : t -> int -> bool = "ml_gtk_bitset_contains"

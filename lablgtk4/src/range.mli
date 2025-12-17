@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Range *)
 
-type t = [`range | `widget] Gobject.obj
+type t = [`range | `widget | `initially_unowned] Gobject.obj
 
-val as_widget : t -> Gtk.widget
+val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (* Properties *)
 
@@ -96,7 +96,7 @@ and scrolling, and the page size.
 The page size is normally 0 for `GtkScale` and nonzero for `GtkScrollbar`,
 and indicates the size of the visible area of the widget being scrolled.
 The page size affects the size of the scrollbar slider. *)
-external set_adjustment : t -> Gtk.widget -> unit = "ml_gtk_range_set_adjustment"
+external set_adjustment : t -> Adjustment.t -> unit = "ml_gtk_range_set_adjustment"
 
 (** Gets the current value of the range. *)
 external get_value : t -> float = "ml_gtk_range_get_value"
@@ -132,5 +132,5 @@ external get_flippable : t -> bool = "ml_gtk_range_get_flippable"
 external get_fill_level : t -> float = "ml_gtk_range_get_fill_level"
 
 (** Get the adjustment which is the “model” object for `GtkRange`. *)
-external get_adjustment : t -> Gtk.widget = "ml_gtk_range_get_adjustment"
+external get_adjustment : t -> Adjustment.t = "ml_gtk_range_get_adjustment"
 

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: ConstraintGuide *)
+(* ConstraintGuide: ConstraintGuide *)
 
-type t = Gtk.widget
+type t = [`constraint_guide | `object_] Gobject.obj
 
 (** Create a new ConstraintGuide *)
 external new_ : unit -> t = "ml_gtk_constraint_guide_new"

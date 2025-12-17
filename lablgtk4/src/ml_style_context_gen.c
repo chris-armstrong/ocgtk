@@ -58,7 +58,7 @@ CAMLexport CAMLprim value ml_gtk_style_context_remove_provider(value self, value
 {
 CAMLparam2(self, arg1);
 
-gtk_style_context_remove_provider(GtkStyleContext_val(self), GtkWidget_val(arg1));
+gtk_style_context_remove_provider(GtkStyleContext_val(self), GtkStyleProvider_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -125,7 +125,7 @@ CAMLexport CAMLprim value ml_gtk_style_context_add_provider(value self, value ar
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_style_context_add_provider(GtkStyleContext_val(self), GtkWidget_val(arg1), Int_val(arg2));
+gtk_style_context_add_provider(GtkStyleContext_val(self), GtkStyleProvider_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
 

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: MultiSelection *)
+(* MultiSelection: MultiSelection *)
 
-type t = Gtk.widget
+type t = [`multi_selection | `object_] Gobject.obj
 
 (** Create a new MultiSelection *)
 external new_ : unit -> t = "ml_gtk_multi_selection_new"

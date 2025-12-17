@@ -128,7 +128,7 @@ gboolean result = gtk_tree_selection_get_selected(GtkTreeSelection_val(self), &o
 CAMLlocal1(ret);
     ret = caml_alloc(3, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkWidget(out1));
+    Store_field(ret, 1, Val_GtkTreeModel(out1));
     Store_field(ret, 2, Val_GtkTreeIter(out2));
     CAMLreturn(ret);
 }

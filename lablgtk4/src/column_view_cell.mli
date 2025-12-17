@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: ColumnViewCell *)
+(* ColumnViewCell: ColumnViewCell *)
 
-type t = Gtk.widget
+type t = [`column_view_cell | `list_item | `object_] Gobject.obj
 
 (* Properties *)
 
@@ -21,7 +21,7 @@ external set_focusable : t -> bool -> unit = "ml_gtk_column_view_cell_set_focusa
 This function is typically called by applications when
 setting up a listitem so that the widget can be reused when
 binding it multiple times. *)
-external set_child : t -> Gtk.widget option -> unit = "ml_gtk_column_view_cell_set_child"
+external set_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_column_view_cell_set_child"
 
 (** Checks if the item is displayed as selected.
 
@@ -40,5 +40,5 @@ external get_focusable : t -> bool = "ml_gtk_column_view_cell_get_focusable"
 
 (** Gets the child previously set via gtk_column_view_cell_set_child() or
 %NULL if none was set. *)
-external get_child : t -> Gtk.widget option = "ml_gtk_column_view_cell_get_child"
+external get_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_column_view_cell_get_child"
 

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Native *)
+(* Native: Native *)
 
-type t = Gtk.widget
+type t = [`native] Gobject.obj
 
 (** Unrealizes a `GtkNative`.
 

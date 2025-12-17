@@ -1,12 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: FontDialogButton *)
 
-type t = [`font_dialog_button | `widget] Gobject.obj
+type t = [`font_dialog_button | `widget | `initially_unowned] Gobject.obj
 
-val as_widget : t -> Gtk.widget
+val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new FontDialogButton *)
-external new_ : Gtk.widget option -> t = "ml_gtk_font_dialog_button_new"
+external new_ : Font_dialog.t option -> t = "ml_gtk_font_dialog_button_new"
 
 (* Properties *)
 
@@ -28,7 +28,7 @@ external set_font_features : t -> string option -> unit = "ml_gtk_font_dialog_bu
 (** Sets a `GtkFontDialog` object to use for
 creating the font chooser dialog that is
 presented when the user clicks the button. *)
-external set_dialog : t -> Gtk.widget -> unit = "ml_gtk_font_dialog_button_set_dialog"
+external set_dialog : t -> Font_dialog.t -> unit = "ml_gtk_font_dialog_button_set_dialog"
 
 (** Returns whether the selected font size is used in the label. *)
 external get_use_size : t -> bool = "ml_gtk_font_dialog_button_get_use_size"
@@ -52,5 +52,5 @@ if [property@Gtk.FontDialogButton:level] is set to
 external get_font_features : t -> string option = "ml_gtk_font_dialog_button_get_font_features"
 
 (** Returns the `GtkFontDialog` of @self. *)
-external get_dialog : t -> Gtk.widget option = "ml_gtk_font_dialog_button_get_dialog"
+external get_dialog : t -> Font_dialog.t option = "ml_gtk_font_dialog_button_get_dialog"
 

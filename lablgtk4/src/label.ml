@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Label *)
 
-type t = [`label | `widget] Gobject.obj
+type t = [`label | `widget | `initially_unowned] Gobject.obj
 
-let as_widget (obj : t) : Gtk.widget = Obj.magic obj
+let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new Label *)
 external new_ : string option -> t = "ml_gtk_label_new"
@@ -111,7 +111,7 @@ The target widget will be accelerated by emitting the
 [signal@Gtk.Widget::mnemonic-activate] signal on it. The default handler for
 this signal will activate the widget if there are no mnemonic collisions
 and toggle focus between the colliding widgets otherwise. *)
-external set_mnemonic_widget : t -> Gtk.widget option -> unit = "ml_gtk_label_set_mnemonic_widget"
+external set_mnemonic_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_label_set_mnemonic_widget"
 
 (** Sets the desired maximum width in characters of @label to @n_chars. *)
 external set_max_width_chars : t -> int -> unit = "ml_gtk_label_set_max_width_chars"
@@ -250,7 +250,7 @@ external get_natural_wrap_mode : t -> Gtk_enums.naturalwrapmode = "ml_gtk_label_
 label.
 
 See [method@Gtk.Label.set_mnemonic_widget]. *)
-external get_mnemonic_widget : t -> Gtk.widget option = "ml_gtk_label_get_mnemonic_widget"
+external get_mnemonic_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_label_get_mnemonic_widget"
 
 (** Return the mnemonic accelerator.
 

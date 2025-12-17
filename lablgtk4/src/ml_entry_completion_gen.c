@@ -72,7 +72,7 @@ CAMLexport CAMLprim value ml_gtk_entry_completion_set_model(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-gtk_entry_completion_set_model(GtkEntryCompletion_val(self), Option_val(arg1, GtkWidget_val, NULL));
+gtk_entry_completion_set_model(GtkEntryCompletion_val(self), Option_val(arg1, GtkTreeModel_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -145,7 +145,7 @@ CAMLexport CAMLprim value ml_gtk_entry_completion_get_model(value self)
 CAMLparam1(self);
 
 GtkTreeModel* result = gtk_entry_completion_get_model(GtkEntryCompletion_val(self));
-CAMLreturn(Val_GtkWidget_option(result));
+CAMLreturn(Val_option(result, Val_GtkTreeModel));
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_completion_get_minimum_key_length(value self)

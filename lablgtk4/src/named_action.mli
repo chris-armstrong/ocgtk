@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: NamedAction *)
+(* NamedAction: NamedAction *)
 
-type t = Gtk.widget
+type t = [`named_action | `shortcut_action | `object_] Gobject.obj
 
 (** Create a new NamedAction *)
 external new_ : string -> t = "ml_gtk_named_action_new"

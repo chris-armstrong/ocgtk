@@ -1,10 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: TreeListRowSorter *)
+(* TreeListRowSorter: TreeListRowSorter *)
 
-type t = Gtk.widget
+type t = [`tree_list_row_sorter | `sorter | `object_] Gobject.obj
 
 (** Create a new TreeListRowSorter *)
-external new_ : Gtk.widget option -> t = "ml_gtk_tree_list_row_sorter_new"
+external new_ : Sorter.t option -> t = "ml_gtk_tree_list_row_sorter_new"
 
 (* Properties *)
 
@@ -12,8 +12,8 @@ external new_ : Gtk.widget option -> t = "ml_gtk_tree_list_row_sorter_new"
 
 This sorter will be passed the [property@Gtk.TreeListRow:item] of
 the tree list rows passed to @self. *)
-external set_sorter : t -> Gtk.widget option -> unit = "ml_gtk_tree_list_row_sorter_set_sorter"
+external set_sorter : t -> Sorter.t option -> unit = "ml_gtk_tree_list_row_sorter_set_sorter"
 
 (** Returns the sorter used by @self. *)
-external get_sorter : t -> Gtk.widget option = "ml_gtk_tree_list_row_sorter_get_sorter"
+external get_sorter : t -> Sorter.t option = "ml_gtk_tree_list_row_sorter_get_sorter"
 

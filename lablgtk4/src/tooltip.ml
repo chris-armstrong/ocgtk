@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Tooltip *)
+(* Tooltip: Tooltip *)
 
-type t = Gtk.widget
+type t = [`tooltip | `object_] Gobject.obj
 
 (** Sets the text of the tooltip to be @text.
 
@@ -26,5 +26,5 @@ away.
 By default a box with a `GtkImage` and `GtkLabel` is embedded in
 the tooltip, which can be configured using gtk_tooltip_set_markup()
 and gtk_tooltip_set_icon(). *)
-external set_custom : t -> Gtk.widget option -> unit = "ml_gtk_tooltip_set_custom"
+external set_custom : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_tooltip_set_custom"
 

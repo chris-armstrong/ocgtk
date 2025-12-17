@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: ColorDialog *)
+(* ColorDialog: ColorDialog *)
 
-type t = Gtk.widget
+type t = [`color_dialog | `object_] Gobject.obj
 
 (** Create a new ColorDialog *)
 external new_ : unit -> t = "ml_gtk_color_dialog_new"

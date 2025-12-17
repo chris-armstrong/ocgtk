@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: Revealer *)
 
-type t = [`revealer | `widget] Gobject.obj
+type t = [`revealer | `widget | `initially_unowned] Gobject.obj
 
-let as_widget (obj : t) : Gtk.widget = Obj.magic obj
+let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new Revealer *)
 external new_ : unit -> t = "ml_gtk_revealer_new"
@@ -26,7 +26,7 @@ transition type of @revealer. *)
 external set_reveal_child : t -> bool -> unit = "ml_gtk_revealer_set_reveal_child"
 
 (** Sets the child widget of @revealer. *)
-external set_child : t -> Gtk.widget option -> unit = "ml_gtk_revealer_set_child"
+external set_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_revealer_set_child"
 
 (** Gets the type of animation that will be used
 for transitions in @revealer. *)
@@ -51,5 +51,5 @@ to the revealed state is completed. *)
 external get_child_revealed : t -> bool = "ml_gtk_revealer_get_child_revealed"
 
 (** Gets the child widget of @revealer. *)
-external get_child : t -> Gtk.widget option = "ml_gtk_revealer_get_child"
+external get_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_revealer_get_child"
 

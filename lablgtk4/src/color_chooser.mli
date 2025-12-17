@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: ColorChooser *)
+(* ColorChooser: ColorChooser *)
 
-type t = Gtk.widget
+type t = [`color_chooser] Gobject.obj
 
 (* Properties *)
 

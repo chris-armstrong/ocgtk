@@ -1,5 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: SymbolicPaintable *)
+(* SymbolicPaintable: SymbolicPaintable *)
 
-type t = Gtk.widget
+type t = [`symbolic_paintable] Gobject.obj
 

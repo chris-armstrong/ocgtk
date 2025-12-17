@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: FixedLayoutChild *)
+(* FixedLayoutChild: FixedLayoutChild *)
 
-type t = Gtk.widget
+type t = [`fixed_layout_child | `layout_child | `object_] Gobject.obj
 
 (* Properties *)
 

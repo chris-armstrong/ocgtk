@@ -1,12 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: GridView *)
 
-type t = [`grid_view | `list_base | `widget] Gobject.obj
+type t = [`grid_view | `list_base | `widget | `initially_unowned] Gobject.obj
 
-let as_widget (obj : t) : Gtk.widget = Obj.magic obj
+let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new GridView *)
-external new_ : Gtk.widget option -> Gtk.widget option -> t = "ml_gtk_grid_view_new"
+external new_ : Selection_model.t option -> List_item_factory.t option -> t = "ml_gtk_grid_view_new"
 
 (* Properties *)
 
@@ -20,7 +20,7 @@ external set_single_click_activate : t -> bool -> unit = "ml_gtk_grid_view_set_s
 (** Sets the model to use.
 
 This must be a [iface@Gtk.SelectionModel]. *)
-external set_model : t -> Gtk.widget option -> unit = "ml_gtk_grid_view_set_model"
+external set_model : t -> Selection_model.t option -> unit = "ml_gtk_grid_view_set_model"
 
 (** Sets the minimum number of columns to use.
 
@@ -39,7 +39,7 @@ If @max_columns is smaller than the minimum set via
 external set_max_columns : t -> int -> unit = "ml_gtk_grid_view_set_max_columns"
 
 (** Sets the `GtkListItemFactory` to use for populating list items. *)
-external set_factory : t -> Gtk.widget option -> unit = "ml_gtk_grid_view_set_factory"
+external set_factory : t -> List_item_factory.t option -> unit = "ml_gtk_grid_view_set_factory"
 
 (** Sets whether selections can be changed by dragging with the mouse. *)
 external set_enable_rubberband : t -> bool -> unit = "ml_gtk_grid_view_set_enable_rubberband"
@@ -49,7 +49,7 @@ specified in @flags.
 
 This function works no matter if the gridview is shown or focused.
 If it isn't, then the changes will take effect once that happens. *)
-external scroll_to : t -> int -> Gtk_enums.listscrollflags -> Obj.t option -> unit = "ml_gtk_grid_view_scroll_to"
+external scroll_to : t -> int -> Gtk_enums.listscrollflags -> Scroll_info.t option -> unit = "ml_gtk_grid_view_scroll_to"
 
 (** Gets the behavior set for the <kbd>Tab</kbd> key. *)
 external get_tab_behavior : t -> Gtk_enums.listtabbehavior = "ml_gtk_grid_view_get_tab_behavior"
@@ -59,7 +59,7 @@ selected on hover. *)
 external get_single_click_activate : t -> bool = "ml_gtk_grid_view_get_single_click_activate"
 
 (** Gets the model that's currently used to read the items displayed. *)
-external get_model : t -> Gtk.widget option = "ml_gtk_grid_view_get_model"
+external get_model : t -> Selection_model.t option = "ml_gtk_grid_view_get_model"
 
 (** Gets the minimum number of columns that the grid will use. *)
 external get_min_columns : t -> int = "ml_gtk_grid_view_get_min_columns"
@@ -68,7 +68,7 @@ external get_min_columns : t -> int = "ml_gtk_grid_view_get_min_columns"
 external get_max_columns : t -> int = "ml_gtk_grid_view_get_max_columns"
 
 (** Gets the factory that's currently used to populate list items. *)
-external get_factory : t -> Gtk.widget option = "ml_gtk_grid_view_get_factory"
+external get_factory : t -> List_item_factory.t option = "ml_gtk_grid_view_get_factory"
 
 (** Returns whether rows can be selected by dragging with the mouse. *)
 external get_enable_rubberband : t -> bool = "ml_gtk_grid_view_get_enable_rubberband"

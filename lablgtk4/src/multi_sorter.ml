@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: MultiSorter *)
+(* MultiSorter: MultiSorter *)
 
-type t = Gtk.widget
+type t = [`multi_sorter | `sorter | `object_] Gobject.obj
 
 (** Create a new MultiSorter *)
 external new_ : unit -> t = "ml_gtk_multi_sorter_new"
@@ -18,5 +18,5 @@ external remove : t -> int -> unit = "ml_gtk_multi_sorter_remove"
 
 @self will consult all existing sorters before it will
 sort with the given @sorter. *)
-external append : t -> Gtk.widget -> unit = "ml_gtk_multi_sorter_append"
+external append : t -> Sorter.t -> unit = "ml_gtk_multi_sorter_append"
 

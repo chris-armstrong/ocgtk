@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Builder *)
+(* Builder: Builder *)
 
-type t = Gtk.widget
+type t = [`builder | `object_] Gobject.obj
 
 (** Create a new Builder *)
 external new_ : unit -> t = "ml_gtk_builder_new"
@@ -23,13 +23,13 @@ external set_translation_domain : t -> string option -> unit = "ml_gtk_builder_s
 (** Sets the scope the builder should operate in.
 
 If @scope is %NULL, a new [class@Gtk.BuilderCScope] will be created. *)
-external set_scope : t -> Gtk.widget option -> unit = "ml_gtk_builder_set_scope"
+external set_scope : t -> Builder_scope.t option -> unit = "ml_gtk_builder_set_scope"
 
 (** Gets the translation domain of @builder. *)
 external get_translation_domain : t -> string option = "ml_gtk_builder_get_translation_domain"
 
 (** Gets the scope in use that was set via gtk_builder_set_scope(). *)
-external get_scope : t -> Gtk.widget = "ml_gtk_builder_get_scope"
+external get_scope : t -> Builder_scope.t = "ml_gtk_builder_get_scope"
 
 (** Parses a resource file containing a UI definition
 and merges it with the current contents of @builder.

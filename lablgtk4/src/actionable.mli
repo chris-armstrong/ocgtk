@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Actionable *)
+(* Actionable: Actionable *)
 
-type t = Gtk.widget
+type t = [`actionable] Gobject.obj
 
 (* Properties *)
 

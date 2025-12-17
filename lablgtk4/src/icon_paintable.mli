@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: IconPaintable *)
+(* IconPaintable: IconPaintable *)
 
-type t = Gtk.widget
+type t = [`icon_paintable | `object_] Gobject.obj
 
 (** Create a new IconPaintable *)
 external new_for_file : unit -> int -> int -> t = "ml_gtk_icon_paintable_new_for_file"

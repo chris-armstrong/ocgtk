@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Filter *)
+(* Filter: Filter *)
 
-type t = Gtk.widget
+type t = [`filter | `object_] Gobject.obj
 
 (** Gets the known strictness of @filters.
 

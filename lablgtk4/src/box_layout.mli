@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: BoxLayout *)
+(* Layout manager: BoxLayout *)
 
-type t = Gtk.widget
+type t = [`box_layout | `layout_manager | `object_] Gobject.obj
+
+val as_layoutmanager : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Layout_manager.t
 
 (** Create a new BoxLayout *)
 external new_ : Gtk_enums.orientation -> t = "ml_gtk_box_layout_new"

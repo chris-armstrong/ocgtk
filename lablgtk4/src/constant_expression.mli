@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: ConstantExpression *)
+(* Expression: ConstantExpression *)
 
-type t = Gtk.widget
+type t = [`constant_expression | `expression] Gobject.obj
+
+val as_expression : t -> Expression.t
 
 (** Create a new ConstantExpression *)
 external new_ : unit -> unit -> t = "ml_gtk_constant_expression_new"

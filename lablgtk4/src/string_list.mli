@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: StringList *)
+(* StringList: StringList *)
 
-type t = Gtk.widget
+type t = [`string_list | `object_] Gobject.obj
 
 (** Create a new StringList *)
 external new_ : unit -> t = "ml_gtk_string_list_new"

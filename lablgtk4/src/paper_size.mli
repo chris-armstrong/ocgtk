@@ -1,5 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Record: PaperSize *)
+(* PaperSize: PaperSize *)
 
 (** `GtkPaperSize` handles paper sizes.
 
@@ -12,7 +12,7 @@ construct custom paper sizes with arbitrary dimensions.
 The `GtkPaperSize` object stores not only the dimensions (width
 and height) of a paper size and its name, it also provides
 default print margins. *)
-type t
+type t = [`paper_size] Gobject.obj
 
 (** Create a new PaperSize *)
 external new_ : string option -> t = "ml_gtk_paper_size_new"
@@ -36,7 +36,7 @@ external set_size : t -> float -> float -> unit -> unit = "ml_gtk_paper_size_set
 external is_ipp : t -> bool = "ml_gtk_paper_size_is_ipp"
 
 (** Compares two `GtkPaperSize` objects. *)
-external is_equal : t -> Obj.t -> bool = "ml_gtk_paper_size_is_equal"
+external is_equal : t -> t -> bool = "ml_gtk_paper_size_is_equal"
 
 (** Returns %TRUE if @size is not a standard paper size. *)
 external is_custom : t -> bool = "ml_gtk_paper_size_is_custom"
@@ -70,4 +70,10 @@ external get_default_left_margin : t -> unit -> float = "ml_gtk_paper_size_get_d
 
 (** Gets the default bottom margin for the `GtkPaperSize`. *)
 external get_default_bottom_margin : t -> unit -> float = "ml_gtk_paper_size_get_default_bottom_margin"
+
+(** Free the given `GtkPaperSize` object. *)
+external free : t -> unit = "ml_gtk_paper_size_free"
+
+(** Copies an existing `GtkPaperSize`. *)
+external copy : t -> t = "ml_gtk_paper_size_copy"
 

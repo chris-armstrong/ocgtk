@@ -32,7 +32,7 @@ CAMLreturn(Val_GtkTreeView(obj));
 CAMLexport CAMLprim value ml_gtk_tree_view_new_with_model(value arg1)
 {
 CAMLparam1(arg1);
-GtkTreeView *obj = gtk_tree_view_new_with_model(GtkWidget_val(arg1));
+GtkTreeView *obj = gtk_tree_view_new_with_model(GtkTreeModel_val(arg1));
 CAMLreturn(Val_GtkTreeView(obj));
 }
 
@@ -88,7 +88,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_set_search_entry(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-gtk_tree_view_set_search_entry(GtkTreeView_val(self), Option_val(arg1, GtkWidget_val, NULL));
+gtk_tree_view_set_search_entry(GtkTreeView_val(self), Option_val(arg1, GtkEditable_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -120,7 +120,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_set_model(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_tree_view_set_model(GtkTreeView_val(self), Option_val(arg1, GtkWidget_val, NULL));
+gtk_tree_view_set_model(GtkTreeView_val(self), Option_val(arg1, GtkTreeModel_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -332,7 +332,7 @@ gboolean result = gtk_tree_view_get_tooltip_context(GtkTreeView_val(self), Int_v
 CAMLlocal1(ret);
     ret = caml_alloc(4, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkWidget(out4));
+    Store_field(ret, 1, Val_GtkTreeModel(out4));
     Store_field(ret, 2, Val_GtkTreePath(out5));
     Store_field(ret, 3, Val_GtkTreeIter(out6));
     CAMLreturn(ret);
@@ -367,7 +367,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_get_search_entry(value self)
 CAMLparam1(self);
 
 GtkEditable* result = gtk_tree_view_get_search_entry(GtkTreeView_val(self));
-CAMLreturn(Val_GtkWidget_option(result));
+CAMLreturn(Val_option(result, Val_GtkEditable));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_view_get_search_column(value self)
@@ -407,7 +407,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_get_model(value self)
 CAMLparam1(self);
 
 GtkTreeModel* result = gtk_tree_view_get_model(GtkTreeView_val(self));
-CAMLreturn(Val_GtkWidget_option(result));
+CAMLreturn(Val_option(result, Val_GtkTreeModel));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_view_get_level_indentation(value self)

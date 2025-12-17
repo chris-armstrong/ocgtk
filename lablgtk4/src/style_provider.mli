@@ -1,5 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: StyleProvider *)
+(* StyleProvider: StyleProvider *)
 
-type t = Gtk.widget
+type t = [`style_provider] Gobject.obj
 

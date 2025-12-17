@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: PrintOperationPreview *)
+(* PrintOperationPreview: PrintOperationPreview *)
 
-type t = Gtk.widget
+type t = [`print_operation_preview] Gobject.obj
 
 (** Renders a page to the preview.
 

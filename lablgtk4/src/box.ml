@@ -1,62 +1,71 @@
-(* GTK4 Box Container - Manually Created *)
+(* GENERATED CODE - DO NOT EDIT *)
+(* Widget: Box *)
 
-type t = [`box | `widget] Gobject.obj
+type t = [`box | `widget | `initially_unowned] Gobject.obj
 
-(** {2 External C bindings} *)
+let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
-external create_impl : int -> int -> t = "ml_gtk_box_new"
-external append : t -> Gtk.widget -> unit = "ml_gtk_box_append"
-external prepend : t -> Gtk.widget -> unit = "ml_gtk_box_prepend"
-external insert_child_after_impl : t -> Gtk.widget -> Gtk.widget option -> unit = "ml_gtk_box_insert_child_after"
-external remove : t -> Gtk.widget -> unit = "ml_gtk_box_remove"
-external reorder_child_after_impl : t -> Gtk.widget -> Gtk.widget option -> unit = "ml_gtk_box_reorder_child_after"
-external get_spacing : t -> int = "ml_gtk_box_get_spacing"
+(** Create a new Box *)
+external new_ : Gtk_enums.orientation -> int -> t = "ml_gtk_box_new"
+
+(* Properties *)
+
+(** Sets the number of pixels to place between children of @box. *)
 external set_spacing : t -> int -> unit = "ml_gtk_box_set_spacing"
-external get_homogeneous : t -> bool = "ml_gtk_box_get_homogeneous"
+
+(** Sets whether or not all children of @box are given equal space
+in the box. *)
 external set_homogeneous : t -> bool -> unit = "ml_gtk_box_set_homogeneous"
-external get_baseline_position_impl : t -> int = "ml_gtk_box_get_baseline_position"
-external set_baseline_position_impl : t -> int -> unit = "ml_gtk_box_set_baseline_position"
 
-(** {2 Helper functions} *)
+(** Sets the baseline position of a box.
 
-(* Convert orientation to/from int *)
-let orientation_to_int = function
-  | `HORIZONTAL -> 0
-  | `VERTICAL -> 1
+This affects only horizontal boxes with at least one baseline
+aligned child. If there is more vertical space available than
+requested, and the baseline is not allocated by the parent then
+@position is used to allocate the baseline with respect to the
+extra space available. *)
+external set_baseline_position : t -> Gtk_enums.baselineposition -> unit = "ml_gtk_box_set_baseline_position"
 
-let int_to_orientation = function
-  | 0 -> `HORIZONTAL
-  | 1 -> `VERTICAL
-  | _ -> `HORIZONTAL  (* default *)
+(** Sets the baseline child of a box.
 
-(* Convert baseline_position to/from int *)
-let baseline_position_to_int : Gtk.baseline_position -> int = function
-  | `TOP -> 0
-  | `CENTER -> 1
-  | `BOTTOM -> 2
+This affects only vertical boxes. *)
+external set_baseline_child : t -> int -> unit = "ml_gtk_box_set_baseline_child"
 
-let int_to_baseline_position : int -> Gtk.baseline_position = function
-  | 0 -> `TOP
-  | 1 -> `CENTER
-  | 2 -> `BOTTOM
-  | _ -> `CENTER  (* default *)
+(** Moves @child to the position after @sibling in the list
+of @box children.
 
-(** {2 Wrapped functions} *)
+If @sibling is %NULL, move @child to the first position. *)
+external reorder_child_after : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_box_reorder_child_after"
 
-let create ~orientation ~spacing =
-  create_impl (orientation_to_int orientation) spacing
+(** Removes a child widget from @box.
 
-let insert_child_after box ~child ~sibling =
-  insert_child_after_impl box child sibling
+The child must have been added before with
+[method@Gtk.Box.append], [method@Gtk.Box.prepend], or
+[method@Gtk.Box.insert_child_after]. *)
+external remove : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_box_remove"
 
-let reorder_child_after box ~child ~sibling =
-  reorder_child_after_impl box child sibling
+(** Adds @child as the first child to @box. *)
+external prepend : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_box_prepend"
 
-let get_baseline_position box : Gtk.baseline_position =
-  int_to_baseline_position (get_baseline_position_impl box)
+(** Inserts @child in the position after @sibling in the list
+of @box children.
 
-let set_baseline_position box (pos : Gtk.baseline_position) =
-  set_baseline_position_impl box (baseline_position_to_int pos)
+If @sibling is %NULL, insert @child at the first position. *)
+external insert_child_after : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_box_insert_child_after"
 
-(* Convert to widget - uses Obj.magic since [`box | `widget] can't be coerced to [`widget] *)
-let as_widget (box : t) : Gtk.widget = Obj.magic box
+(** Gets the value set by gtk_box_set_spacing(). *)
+external get_spacing : t -> int = "ml_gtk_box_get_spacing"
+
+(** Returns whether the box is homogeneous (all children are the
+same size). *)
+external get_homogeneous : t -> bool = "ml_gtk_box_get_homogeneous"
+
+(** Gets the value set by gtk_box_set_baseline_position(). *)
+external get_baseline_position : t -> Gtk_enums.baselineposition = "ml_gtk_box_get_baseline_position"
+
+(** Gets the value set by gtk_box_set_baseline_child(). *)
+external get_baseline_child : t -> int = "ml_gtk_box_get_baseline_child"
+
+(** Adds @child as the last child to @box. *)
+external append : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_box_append"
+

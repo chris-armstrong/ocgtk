@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: ScrolledWindow *)
 
-type t = [`scrolled_window | `widget] Gobject.obj
+type t = [`scrolled_window | `widget | `initially_unowned] Gobject.obj
 
-val as_widget : t -> Gtk.widget
+val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new ScrolledWindow *)
 external new_ : unit -> t = "ml_gtk_scrolled_window_new"
@@ -17,7 +17,7 @@ it defaults to %GTK_CORNER_TOP_LEFT. *)
 external unset_placement : t -> unit = "ml_gtk_scrolled_window_unset_placement"
 
 (** Sets the `GtkAdjustment` for the vertical scrollbar. *)
-external set_vadjustment : t -> Gtk.widget option -> unit = "ml_gtk_scrolled_window_set_vadjustment"
+external set_vadjustment : t -> Adjustment.t option -> unit = "ml_gtk_scrolled_window_set_vadjustment"
 
 (** Sets whether the natural width of the child should be calculated
 and propagated through the scrolled window’s requested natural width. *)
@@ -98,23 +98,23 @@ external set_kinetic_scrolling : t -> bool -> unit = "ml_gtk_scrolled_window_set
 external set_has_frame : t -> bool -> unit = "ml_gtk_scrolled_window_set_has_frame"
 
 (** Sets the `GtkAdjustment` for the horizontal scrollbar. *)
-external set_hadjustment : t -> Gtk.widget option -> unit = "ml_gtk_scrolled_window_set_hadjustment"
+external set_hadjustment : t -> Adjustment.t option -> unit = "ml_gtk_scrolled_window_set_hadjustment"
 
 (** Sets the child widget of @scrolled_window.
 
 If @child does not implement the [iface@Gtk.Scrollable] interface,
 the scrolled window will add @child to a [class@Gtk.Viewport] instance
 and then add the viewport as its child widget. *)
-external set_child : t -> Gtk.widget option -> unit = "ml_gtk_scrolled_window_set_child"
+external set_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_scrolled_window_set_child"
 
 (** Returns the vertical scrollbar of @scrolled_window. *)
-external get_vscrollbar : t -> Gtk.widget = "ml_gtk_scrolled_window_get_vscrollbar"
+external get_vscrollbar : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = "ml_gtk_scrolled_window_get_vscrollbar"
 
 (** Returns the vertical scrollbar’s adjustment.
 
 This is the adjustment used to connect the vertical
 scrollbar to the child widget’s vertical scroll functionality. *)
-external get_vadjustment : t -> Gtk.widget = "ml_gtk_scrolled_window_get_vadjustment"
+external get_vadjustment : t -> Adjustment.t = "ml_gtk_scrolled_window_get_vadjustment"
 
 (** Reports whether the natural width of the child will be calculated
 and propagated through the scrolled window’s requested natural width. *)
@@ -152,7 +152,7 @@ external get_max_content_height : t -> int = "ml_gtk_scrolled_window_get_max_con
 external get_kinetic_scrolling : t -> bool = "ml_gtk_scrolled_window_get_kinetic_scrolling"
 
 (** Returns the horizontal scrollbar of @scrolled_window. *)
-external get_hscrollbar : t -> Gtk.widget = "ml_gtk_scrolled_window_get_hscrollbar"
+external get_hscrollbar : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = "ml_gtk_scrolled_window_get_hscrollbar"
 
 (** Gets whether the scrolled window draws a frame. *)
 external get_has_frame : t -> bool = "ml_gtk_scrolled_window_get_has_frame"
@@ -161,12 +161,12 @@ external get_has_frame : t -> bool = "ml_gtk_scrolled_window_get_has_frame"
 
 This is the adjustment used to connect the horizontal scrollbar
 to the child widget’s horizontal scroll functionality. *)
-external get_hadjustment : t -> Gtk.widget = "ml_gtk_scrolled_window_get_hadjustment"
+external get_hadjustment : t -> Adjustment.t = "ml_gtk_scrolled_window_get_hadjustment"
 
 (** Gets the child widget of @scrolled_window.
 
 If the scrolled window automatically added a [class@Gtk.Viewport], this
 function will return the viewport widget, and you can retrieve its child
 using [method@Gtk.Viewport.get_child]. *)
-external get_child : t -> Gtk.widget option = "ml_gtk_scrolled_window_get_child"
+external get_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_scrolled_window_get_child"
 

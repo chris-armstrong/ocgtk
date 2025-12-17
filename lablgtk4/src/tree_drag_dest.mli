@@ -1,5 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: TreeDragDest *)
+(* TreeDragDest: TreeDragDest *)
 
-type t = Gtk.widget
+type t = [`tree_drag_dest] Gobject.obj
 

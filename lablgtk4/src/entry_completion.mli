@@ -1,13 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: EntryCompletion *)
+(* EntryCompletion: EntryCompletion *)
 
-type t = Gtk.widget
+type t = [`entry_completion | `object_] Gobject.obj
 
 (** Create a new EntryCompletion *)
 external new_ : unit -> t = "ml_gtk_entry_completion_new"
 
 (** Create a new EntryCompletion *)
-external new_with_area : Gtk.widget -> t = "ml_gtk_entry_completion_new_with_area"
+external new_with_area : Cell_area_and__cell_area_context.Cell_area.t -> t = "ml_gtk_entry_completion_new_with_area"
 
 (* Properties *)
 
@@ -43,7 +43,7 @@ external set_popup_completion : t -> bool -> unit = "ml_gtk_entry_completion_set
 If @completion already has a model set, it will remove it
 before setting the new model. If model is %NULL, then it
 will unset the model. *)
-external set_model : t -> Gtk.widget option -> unit = "ml_gtk_entry_completion_set_model"
+external set_model : t -> Tree_model.t option -> unit = "ml_gtk_entry_completion_set_model"
 
 (** Requires the length of the search key for @completion to be at least
 @length.
@@ -81,7 +81,7 @@ external get_popup_completion : t -> bool = "ml_gtk_entry_completion_get_popup_c
 (** Returns the model the `GtkEntryCompletion` is using as data source.
 
 Returns %NULL if the model is unset. *)
-external get_model : t -> Gtk.widget option = "ml_gtk_entry_completion_get_model"
+external get_model : t -> Tree_model.t option = "ml_gtk_entry_completion_get_model"
 
 (** Returns the minimum key length as set for @completion. *)
 external get_minimum_key_length : t -> int = "ml_gtk_entry_completion_get_minimum_key_length"
@@ -94,7 +94,7 @@ be automatically inserted in the entry. *)
 external get_inline_completion : t -> bool = "ml_gtk_entry_completion_get_inline_completion"
 
 (** Gets the entry @completion has been attached to. *)
-external get_entry : t -> Gtk.widget = "ml_gtk_entry_completion_get_entry"
+external get_entry : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = "ml_gtk_entry_completion_get_entry"
 
 (** Get the original text entered by the user that triggered
 the completion or %NULL if there’s no completion ongoing. *)

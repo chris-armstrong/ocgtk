@@ -97,6 +97,6 @@ CAMLexport CAMLprim value ml_gtk_search_bar_connect_entry(value self, value arg1
 {
 CAMLparam2(self, arg1);
 
-gtk_search_bar_connect_entry(GtkSearchBar_val(self), GtkWidget_val(arg1));
+gtk_search_bar_connect_entry(GtkSearchBar_val(self), GtkEditable_val(arg1));
 CAMLreturn(Val_unit);
 }

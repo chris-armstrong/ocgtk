@@ -1,15 +1,17 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: PropertyExpression *)
+(* Expression: PropertyExpression *)
 
-type t = Gtk.widget
+type t = [`property_expression | `expression] Gobject.obj
+
+let as_expression (obj : t) : Expression.t = Obj.magic obj
 
 (** Create a new PropertyExpression *)
-external new_ : unit -> Gtk.widget option -> string -> t = "ml_gtk_property_expression_new"
+external new_ : unit -> Expression.t option -> string -> t = "ml_gtk_property_expression_new"
 
 (** Create a new PropertyExpression *)
-external new_for_pspec : Gtk.widget option -> unit -> t = "ml_gtk_property_expression_new_for_pspec"
+external new_for_pspec : Expression.t option -> unit -> t = "ml_gtk_property_expression_new_for_pspec"
 
 (** Gets the expression specifying the object of
 a property expression. *)
-external get_expression : t -> Gtk.widget option = "ml_gtk_property_expression_get_expression"
+external get_expression : t -> Expression.t option = "ml_gtk_property_expression_get_expression"
 

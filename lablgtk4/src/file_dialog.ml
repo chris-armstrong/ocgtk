@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: FileDialog *)
+(* FileDialog: FileDialog *)
 
-type t = Gtk.widget
+type t = [`file_dialog | `object_] Gobject.obj
 
 (** Create a new FileDialog *)
 external new_ : unit -> t = "ml_gtk_file_dialog_new"
@@ -30,7 +30,7 @@ in the file chooser dialog.
 If set to %NULL, the first item in [property@Gtk.FileDialog:filters]
 will be used as the default filter. If that list is empty, the dialog
 will be unfiltered. *)
-external set_default_filter : t -> Gtk.widget option -> unit = "ml_gtk_file_dialog_set_default_filter"
+external set_default_filter : t -> File_filter.t option -> unit = "ml_gtk_file_dialog_set_default_filter"
 
 (** Sets the label shown on the file chooser's accept button.
 
@@ -52,7 +52,7 @@ external get_initial_name : t -> string option = "ml_gtk_file_dialog_get_initial
 
 (** Gets the filter that will be selected by default
 in the file chooser dialog. *)
-external get_default_filter : t -> Gtk.widget option = "ml_gtk_file_dialog_get_default_filter"
+external get_default_filter : t -> File_filter.t option = "ml_gtk_file_dialog_get_default_filter"
 
 external get_accept_label : t -> string option = "ml_gtk_file_dialog_get_accept_label"
 

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: FontDialog *)
+(* FontDialog: FontDialog *)
 
-type t = Gtk.widget
+type t = [`font_dialog | `object_] Gobject.obj
 
 (** Create a new FontDialog *)
 external new_ : unit -> t = "ml_gtk_font_dialog_new"
@@ -22,7 +22,7 @@ in the font chooser dialog.
 
 The `GtkFilter` must be able to handle both `PangoFontFamily`
 and `PangoFontFace` objects. *)
-external set_filter : t -> Gtk.widget option -> unit = "ml_gtk_font_dialog_set_filter"
+external set_filter : t -> Filter.t option -> unit = "ml_gtk_font_dialog_set_filter"
 
 (** Returns the title that will be shown on the
 font chooser dialog. *)
@@ -35,5 +35,5 @@ external get_modal : t -> bool = "ml_gtk_font_dialog_get_modal"
 
 (** Returns the filter that decides which fonts to display
 in the font chooser dialog. *)
-external get_filter : t -> Gtk.widget option = "ml_gtk_font_dialog_get_filter"
+external get_filter : t -> Filter.t option = "ml_gtk_font_dialog_get_filter"
 

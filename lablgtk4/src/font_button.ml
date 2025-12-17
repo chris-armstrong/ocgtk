@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: FontButton *)
 
-type t = [`font_button | `widget] Gobject.obj
+type t = [`font_button | `widget | `initially_unowned] Gobject.obj
 
-let as_widget (obj : t) : Gtk.widget = Obj.magic obj
+let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new FontButton *)
 external new_ : unit -> t = "ml_gtk_font_button_new"

@@ -1,10 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: FilterListModel *)
+(* FilterListModel: FilterListModel *)
 
-type t = Gtk.widget
+type t = [`filter_list_model | `object_] Gobject.obj
 
 (** Create a new FilterListModel *)
-external new_ : unit -> Gtk.widget option -> t = "ml_gtk_filter_list_model_new"
+external new_ : unit -> Filter.t option -> t = "ml_gtk_filter_list_model_new"
 
 (* Properties *)
 
@@ -27,7 +27,7 @@ about an ongoing incremental filtering operation. *)
 external set_incremental : t -> bool -> unit = "ml_gtk_filter_list_model_set_incremental"
 
 (** Sets the filter used to filter items. *)
-external set_filter : t -> Gtk.widget option -> unit = "ml_gtk_filter_list_model_set_filter"
+external set_filter : t -> Filter.t option -> unit = "ml_gtk_filter_list_model_set_filter"
 
 (** Returns the number of items that have not been filtered yet.
 
@@ -53,5 +53,5 @@ See [method@Gtk.FilterListModel.set_incremental]. *)
 external get_incremental : t -> bool = "ml_gtk_filter_list_model_get_incremental"
 
 (** Gets the `GtkFilter` currently set on @self. *)
-external get_filter : t -> Gtk.widget option = "ml_gtk_filter_list_model_get_filter"
+external get_filter : t -> Filter.t option = "ml_gtk_filter_list_model_get_filter"
 

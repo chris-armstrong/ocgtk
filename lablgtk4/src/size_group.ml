@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: SizeGroup *)
+(* SizeGroup: SizeGroup *)
 
-type t = Gtk.widget
+type t = [`size_group | `object_] Gobject.obj
 
 (** Create a new SizeGroup *)
 external new_ : Gtk_enums.sizegroupmode -> t = "ml_gtk_size_group_new"
@@ -18,7 +18,7 @@ in both directions (%GTK_SIZE_GROUP_BOTH). *)
 external set_mode : t -> Gtk_enums.sizegroupmode -> unit = "ml_gtk_size_group_set_mode"
 
 (** Removes a widget from a `GtkSizeGroup`. *)
-external remove_widget : t -> Gtk.widget -> unit = "ml_gtk_size_group_remove_widget"
+external remove_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_size_group_remove_widget"
 
 (** Gets the current mode of the size group. *)
 external get_mode : t -> Gtk_enums.sizegroupmode = "ml_gtk_size_group_get_mode"
@@ -34,5 +34,5 @@ See [method@Gtk.SizeGroup.set_mode].
 
 When the widget is destroyed or no longer referenced elsewhere, it
 will be removed from the size group. *)
-external add_widget : t -> Gtk.widget -> unit = "ml_gtk_size_group_add_widget"
+external add_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_size_group_add_widget"
 

@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Widget: SearchBar *)
 
-type t = [`search_bar | `widget] Gobject.obj
+type t = [`search_bar | `widget | `initially_unowned] Gobject.obj
 
-val as_widget : t -> Gtk.widget
+val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new SearchBar *)
 external new_ : unit -> t = "ml_gtk_search_bar_new"
@@ -32,10 +32,10 @@ editable child widgets of @widget will receive text input
 before it gets captured. If that is not desired, you can
 capture and forward the events yourself with
 [method@Gtk.EventControllerKey.forward]. *)
-external set_key_capture_widget : t -> Gtk.widget option -> unit = "ml_gtk_search_bar_set_key_capture_widget"
+external set_key_capture_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_search_bar_set_key_capture_widget"
 
 (** Sets the child widget of @bar. *)
-external set_child : t -> Gtk.widget option -> unit = "ml_gtk_search_bar_set_child"
+external set_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_search_bar_set_child"
 
 (** Returns whether the close button is shown. *)
 external get_show_close_button : t -> bool = "ml_gtk_search_bar_get_show_close_button"
@@ -44,10 +44,10 @@ external get_show_close_button : t -> bool = "ml_gtk_search_bar_get_show_close_b
 external get_search_mode : t -> bool = "ml_gtk_search_bar_get_search_mode"
 
 (** Gets the widget that @bar is capturing key events from. *)
-external get_key_capture_widget : t -> Gtk.widget option = "ml_gtk_search_bar_get_key_capture_widget"
+external get_key_capture_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_search_bar_get_key_capture_widget"
 
 (** Gets the child widget of @bar. *)
-external get_child : t -> Gtk.widget option = "ml_gtk_search_bar_get_child"
+external get_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_search_bar_get_child"
 
 (** Connects the `GtkEditable` widget passed as the one to be used in
 this search bar.
@@ -55,5 +55,5 @@ this search bar.
 The entry should be a descendant of the search bar. Calling this
 function manually is only required if the entry isn’t the direct
 child of the search bar (as in our main example). *)
-external connect_entry : t -> Gtk.widget -> unit = "ml_gtk_search_bar_connect_entry"
+external connect_entry : t -> Editable.t -> unit = "ml_gtk_search_bar_connect_entry"
 

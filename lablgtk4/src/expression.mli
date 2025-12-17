@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Expression *)
+(* Expression: Expression *)
 
-type t = Gtk.widget
+type t = [`expression] Gobject.obj
 
 (** Releases a reference on the given `GtkExpression`.
 
@@ -10,7 +10,7 @@ freed. *)
 external unref : t -> unit = "ml_gtk_expression_unref"
 
 (** Acquires a reference on the given `GtkExpression`. *)
-external ref : t -> Gtk.widget = "ml_gtk_expression_ref"
+external ref : t -> t = "ml_gtk_expression_ref"
 
 (** Checks if the expression is static.
 

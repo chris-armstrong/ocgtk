@@ -1,9 +1,8 @@
 (* High-level class for ColorChooserWidget *)
-class color_chooser_widget_skel (obj : Color_chooser_widget.t) = object (self)
-  inherit GObj.widget_impl (Color_chooser_widget.as_widget obj)
+class color_chooser_widget (obj : Color_chooser_widget.t) = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Color_chooser_widget.as_widget obj)
 
+  method as_widget = (Color_chooser_widget.as_widget obj)
+    method as_color_chooser_widget = obj
 end
 
-class color_chooser_widget obj = object
-  inherit color_chooser_widget_skel obj
-end

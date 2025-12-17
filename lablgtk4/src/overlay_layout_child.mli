@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: OverlayLayoutChild *)
+(* OverlayLayoutChild: OverlayLayoutChild *)
 
-type t = Gtk.widget
+type t = [`overlay_layout_child | `layout_child | `object_] Gobject.obj
 
 (* Properties *)
 

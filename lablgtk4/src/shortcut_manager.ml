@@ -1,5 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: ShortcutManager *)
+(* ShortcutManager: ShortcutManager *)
 
-type t = Gtk.widget
+type t = [`shortcut_manager] Gobject.obj
 

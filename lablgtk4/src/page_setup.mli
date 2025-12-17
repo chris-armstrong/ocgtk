@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: PageSetup *)
+(* PageSetup: PageSetup *)
 
-type t = Gtk.widget
+type t = [`page_setup | `object_] Gobject.obj
 
 (** Create a new PageSetup *)
 external new_ : unit -> t = "ml_gtk_page_setup_new"
@@ -20,13 +20,13 @@ external set_right_margin : t -> float -> unit -> unit = "ml_gtk_page_setup_set_
 
 (** Sets the paper size of the `GtkPageSetup` and modifies
 the margins according to the new paper size. *)
-external set_paper_size_and_default_margins : t -> Obj.t -> unit = "ml_gtk_page_setup_set_paper_size_and_default_margins"
+external set_paper_size_and_default_margins : t -> Paper_size.t -> unit = "ml_gtk_page_setup_set_paper_size_and_default_margins"
 
 (** Sets the paper size of the `GtkPageSetup` without
 changing the margins.
 
 See [method@Gtk.PageSetup.set_paper_size_and_default_margins]. *)
-external set_paper_size : t -> Obj.t -> unit = "ml_gtk_page_setup_set_paper_size"
+external set_paper_size : t -> Paper_size.t -> unit = "ml_gtk_page_setup_set_paper_size"
 
 (** Sets the page orientation of the `GtkPageSetup`. *)
 external set_orientation : t -> Gtk_enums.pageorientation -> unit = "ml_gtk_page_setup_set_orientation"
@@ -56,7 +56,7 @@ See [method@Gtk.PageSetup.get_page_width]. *)
 external get_paper_width : t -> unit -> float = "ml_gtk_page_setup_get_paper_width"
 
 (** Gets the paper size of the `GtkPageSetup`. *)
-external get_paper_size : t -> Obj.t = "ml_gtk_page_setup_get_paper_size"
+external get_paper_size : t -> Paper_size.t = "ml_gtk_page_setup_get_paper_size"
 
 (** Returns the paper height in units of @unit.
 

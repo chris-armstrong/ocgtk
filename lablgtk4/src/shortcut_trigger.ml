@@ -1,13 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: ShortcutTrigger *)
+(* ShortcutTrigger: ShortcutTrigger *)
 
-type t = Gtk.widget
+type t = [`shortcut_trigger | `object_] Gobject.obj
 
 (** Create a new ShortcutTrigger *)
 external parse_string : string -> t = "ml_gtk_shortcut_trigger_parse_string"
 
 (** Checks if the given @event triggers @self. *)
-external trigger : t -> _ Gdk.event -> bool -> Gdk.keymatch = "ml_gtk_shortcut_trigger_trigger"
+external trigger : t -> 'a Gdk.event -> bool -> Gdk.keymatch = "ml_gtk_shortcut_trigger_trigger"
 
 (** Generates a hash value for a `GtkShortcutTrigger`.
 

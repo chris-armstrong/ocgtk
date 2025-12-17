@@ -1,18 +1,20 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: ConstraintLayout *)
+(* Layout manager: ConstraintLayout *)
 
-type t = Gtk.widget
+type t = [`constraint_layout | `layout_manager | `object_] Gobject.obj
+
+val as_layoutmanager : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Layout_manager.t
 
 (** Create a new ConstraintLayout *)
 external new_ : unit -> t = "ml_gtk_constraint_layout_new"
 
 (** Removes `guide` from the layout manager,
 so that it no longer influences the layout. *)
-external remove_guide : t -> Gtk.widget -> unit = "ml_gtk_constraint_layout_remove_guide"
+external remove_guide : t -> Constraint_guide.t -> unit = "ml_gtk_constraint_layout_remove_guide"
 
 (** Removes `constraint` from the layout manager,
 so that it no longer influences the layout. *)
-external remove_constraint : t -> Gtk.widget -> unit = "ml_gtk_constraint_layout_remove_constraint"
+external remove_constraint : t -> Constraint.t -> unit = "ml_gtk_constraint_layout_remove_constraint"
 
 (** Removes all constraints from the layout manager. *)
 external remove_all_constraints : t -> unit = "ml_gtk_constraint_layout_remove_all_constraints"
@@ -24,7 +26,7 @@ like a widget, but it is not visible.
 
 The `layout` acquires the ownership of `guide` after calling
 this function. *)
-external add_guide : t -> Gtk.widget -> unit = "ml_gtk_constraint_layout_add_guide"
+external add_guide : t -> Constraint_guide.t -> unit = "ml_gtk_constraint_layout_add_guide"
 
 (** Adds a constraint to the layout manager.
 
@@ -39,5 +41,5 @@ properties of `constraint` can be:
 
 The @layout acquires the ownership of @constraint after calling
 this function. *)
-external add_constraint : t -> Gtk.widget -> unit = "ml_gtk_constraint_layout_add_constraint"
+external add_constraint : t -> Constraint.t -> unit = "ml_gtk_constraint_layout_add_constraint"
 

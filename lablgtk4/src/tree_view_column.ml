@@ -1,16 +1,16 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: TreeViewColumn *)
+(* TreeViewColumn: TreeViewColumn *)
 
-type t = Gtk.widget
+type t = [`tree_view_column | `initially_unowned] Gobject.obj
 
 (** Create a new TreeViewColumn *)
 external new_ : unit -> t = "ml_gtk_tree_view_column_new"
 
 (** Create a new TreeViewColumn *)
-external new_with_area : Gtk.widget -> t = "ml_gtk_tree_view_column_new_with_area"
+external new_with_area : Cell_area_and__cell_area_context.Cell_area.t -> t = "ml_gtk_tree_view_column_new_with_area"
 
 (** Create a new TreeViewColumn *)
-external new_with_attributes : string -> Gtk.widget -> unit -> t = "ml_gtk_tree_view_column_new_with_attributes"
+external new_with_attributes : string -> Cell_renderer.t -> unit -> t = "ml_gtk_tree_view_column_new_with_attributes"
 
 (* Properties *)
 
@@ -22,7 +22,7 @@ external set_alignment : t -> float -> unit = "ml_gtk_tree_view_column_set_align
 
 (** Sets the widget in the header to be @widget.  If widget is %NULL, then the
 header button is set with a `GtkLabel` set to the title of @tree_column. *)
-external set_widget : t -> Gtk.widget option -> unit = "ml_gtk_tree_view_column_set_widget"
+external set_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_tree_view_column_set_widget"
 
 (** Sets the visibility of @tree_column. *)
 external set_visible : t -> bool -> unit = "ml_gtk_tree_view_column_set_visible"
@@ -116,12 +116,12 @@ external queue_resize : t -> unit = "ml_gtk_tree_view_column_queue_resize"
 (** Packs the @cell into the beginning of the column. If @expand is %FALSE, then
 the @cell is allocated no more space than it needs. Any unused space is divided
 evenly between cells for which @expand is %TRUE. *)
-external pack_start : t -> Gtk.widget -> bool -> unit = "ml_gtk_tree_view_column_pack_start"
+external pack_start : t -> Cell_renderer.t -> bool -> unit = "ml_gtk_tree_view_column_pack_start"
 
 (** Adds the @cell to end of the column. If @expand is %FALSE, then the @cell
 is allocated no more space than it needs. Any unused space is divided
 evenly between cells for which @expand is %TRUE. *)
-external pack_end : t -> Gtk.widget -> bool -> unit = "ml_gtk_tree_view_column_pack_end"
+external pack_end : t -> Cell_renderer.t -> bool -> unit = "ml_gtk_tree_view_column_pack_end"
 
 (** Returns the current X offset of @tree_column in pixels. *)
 external get_x_offset : t -> int = "ml_gtk_tree_view_column_get_x_offset"
@@ -132,7 +132,7 @@ external get_width : t -> int = "ml_gtk_tree_view_column_get_width"
 (** Returns the `GtkWidget` in the button on the column header.
 
 If a custom widget has not been set then %NULL is returned. *)
-external get_widget : t -> Gtk.widget option = "ml_gtk_tree_view_column_get_widget"
+external get_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_tree_view_column_get_widget"
 
 (** Returns %TRUE if @tree_column is visible. *)
 external get_visible : t -> bool = "ml_gtk_tree_view_column_get_visible"
@@ -140,7 +140,7 @@ external get_visible : t -> bool = "ml_gtk_tree_view_column_get_visible"
 (** Returns the `GtkTreeView` wherein @tree_column has been inserted.
 If @column is currently not inserted in any tree view, %NULL is
 returned. *)
-external get_tree_view : t -> Gtk.widget option = "ml_gtk_tree_view_column_get_tree_view"
+external get_tree_view : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_tree_view_column_get_tree_view"
 
 (** Returns the title of the widget. *)
 external get_title : t -> string = "ml_gtk_tree_view_column_get_title"
@@ -188,11 +188,11 @@ external get_expand : t -> bool = "ml_gtk_tree_view_column_get_expand"
 external get_clickable : t -> bool = "ml_gtk_tree_view_column_get_clickable"
 
 (** Returns the button used in the treeview column header *)
-external get_button : t -> Gtk.widget = "ml_gtk_tree_view_column_get_button"
+external get_button : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = "ml_gtk_tree_view_column_get_button"
 
 (** Sets the current keyboard focus to be at @cell, if the column contains
 2 or more editable and activatable cells. *)
-external focus_cell : t -> Gtk.widget -> unit = "ml_gtk_tree_view_column_focus_cell"
+external focus_cell : t -> Cell_renderer.t -> unit = "ml_gtk_tree_view_column_focus_cell"
 
 (** Emits the “clicked” signal on the column.  This function will only work if
 @tree_column is clickable. *)
@@ -200,7 +200,7 @@ external clicked : t -> unit = "ml_gtk_tree_view_column_clicked"
 
 (** Clears all existing attributes previously set with
 gtk_tree_view_column_set_attributes(). *)
-external clear_attributes : t -> Gtk.widget -> unit = "ml_gtk_tree_view_column_clear_attributes"
+external clear_attributes : t -> Cell_renderer.t -> unit = "ml_gtk_tree_view_column_clear_attributes"
 
 (** Unsets all the mappings on all renderers on the @tree_column. *)
 external clear : t -> unit = "ml_gtk_tree_view_column_clear"
@@ -209,7 +209,7 @@ external clear : t -> unit = "ml_gtk_tree_view_column_clear"
 every attribute mapping in @tree_column, it will get a value from the set
 column on the @iter, and use that value to set the attribute on the cell
 renderer.  This is used primarily by the `GtkTreeView`. *)
-external cell_set_cell_data : t -> Gtk.widget -> Obj.t -> bool -> bool -> unit = "ml_gtk_tree_view_column_cell_set_cell_data"
+external cell_set_cell_data : t -> Tree_model.t -> Tree_iter.t -> bool -> bool -> unit = "ml_gtk_tree_view_column_cell_set_cell_data"
 
 (** Returns %TRUE if any of the cells packed into the @tree_column are visible.
 For this to be meaningful, you must first initialize the cells with
@@ -224,5 +224,5 @@ parameter on @cell_renderer to be set from the value. So for example
 if column 2 of the model contains strings, you could have the
 “text” attribute of a `GtkCellRendererText` get its values from
 column 2. *)
-external add_attribute : t -> Gtk.widget -> string -> int -> unit = "ml_gtk_tree_view_column_add_attribute"
+external add_attribute : t -> Cell_renderer.t -> string -> int -> unit = "ml_gtk_tree_view_column_add_attribute"
 

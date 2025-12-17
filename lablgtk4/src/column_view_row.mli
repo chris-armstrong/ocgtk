@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: ColumnViewRow *)
+(* ColumnViewRow: ColumnViewRow *)
 
-type t = Gtk.widget
+type t = [`column_view_row | `object_] Gobject.obj
 
 (* Properties *)
 

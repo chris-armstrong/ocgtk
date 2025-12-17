@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: NativeDialog *)
+(* NativeDialog: NativeDialog *)
 
-type t = Gtk.widget
+type t = [`native_dialog | `object_] Gobject.obj
 
 (* Properties *)
 
@@ -21,7 +21,7 @@ This allows window managers to e.g. keep the dialog on top of the
 main window, or center the dialog over the main window.
 
 Passing %NULL for @parent unsets the current transient window. *)
-external set_transient_for : t -> Gtk.widget option -> unit = "ml_gtk_native_dialog_set_transient_for"
+external set_transient_for : t -> Application_and__window_and__window_group.Window.t option -> unit = "ml_gtk_native_dialog_set_transient_for"
 
 (** Sets the title of the `GtkNativeDialog.` *)
 external set_title : t -> string -> unit = "ml_gtk_native_dialog_set_title"
@@ -48,7 +48,7 @@ external hide : t -> unit = "ml_gtk_native_dialog_hide"
 external get_visible : t -> bool = "ml_gtk_native_dialog_get_visible"
 
 (** Fetches the transient parent for this window. *)
-external get_transient_for : t -> Gtk.widget option = "ml_gtk_native_dialog_get_transient_for"
+external get_transient_for : t -> Application_and__window_and__window_group.Window.t option = "ml_gtk_native_dialog_get_transient_for"
 
 (** Gets the title of the `GtkNativeDialog`. *)
 external get_title : t -> string option = "ml_gtk_native_dialog_get_title"
