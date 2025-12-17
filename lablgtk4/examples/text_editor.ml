@@ -1,6 +1,5 @@
   (* Simple Text Editor
    Demonstrates: TextView, TextBuffer, TextTag, Entry, Button *)
-class layout_manager = GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.layout_manager
 let () =
   (* Initialize GTK *)
   ignore (GMain.init ());
