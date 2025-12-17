@@ -100,11 +100,11 @@ let test_child_attach () =
     let child_box = Box.new_ `HORIZONTAL 0 in
     let child_widget = Box.as_widget child_box in
 
-    (* Test attach *)
-    Grid.attach grid ~child:child_widget ~column:0 ~row:0 ~width:1 ~height:1;
+    (* Test attach - parameters are: grid widget column row width height *)
+    Grid.attach grid child_widget 0 0 1 1;
 
     (* Test get_child_at *)
-    match Grid.get_child_at grid ~column:0 ~row:0 with
+    match Grid.get_child_at grid 0 0 with
     | Some _ -> check bool "child found at position" true true
     | None -> fail "child not found at position (0,0)"
   with

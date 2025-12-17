@@ -1,42 +1,49 @@
 (* Login Form Application
    Demonstrates: Entry, PasswordEntry, Button, Label *)
+class window_class = GApplication_and__window_and__window_group.window
 
+  (* Create main window *)
 let () =
   (* Initialize GTK *)
   ignore (GMain.init ());
 
-  (* Create main window *)
-  let window = GWindow.window ~title:"Login Form" ~width:350 ~height:200 () in
+  let module Window = Application_and__window_and__window_group.Window in
+   
+  let window = new window_class (Window.new_ ()) in
+  window#set_title (Some "Login Form");
+  window#set_default_size 350 200;
 
   (* Create vertical box for layout *)
-  let vbox = GBox.vbox ~spacing:15 () in
-  window#add (vbox :> GObj.widget);
+  let vbox = new GBox.box (Box.new_ Gtk_enums.(`VERTICAL) 15) in
+  window#set_child (Some vbox);
 
   (* Title *)
   let title_label = Label.new_ (Some "Please log in") in
   Label.set_markup title_label "<big><b>Please log in</b></big>";
-  vbox#append (GObj.widget_of_obj (title_label));
+  vbox#append (new GLabel.label (title_label));
 
   (* Username field *)
-  let username_box = GBox.hbox ~spacing:10 () in
-  vbox#append (username_box :> GObj.widget);
+  let username_box = new GBox.box (Box.new_ `HORIZONTAL 10) in
+  vbox#append (username_box );
 
-  let username_label = Label.new_ (Some "Username:") in
-  username_box#append (GObj.widget_of_obj (username_label));
+  let username_label = new GLabel.label (Label.new_ (Some "Username:")) in
+  username_box#append username_label;
 
-  let username_entry = Entry.new_ () in
-  Entry.set_placeholder_text username_entry (Some "Enter username");
-  username_box#append (GObj.widget_of_obj (username_entry));
+  let username_entry = new GEntry.entry (Entry.new_ ()) in
+  username_entry#set_placeholder_text (Some "Enter username");
+  username_box#append username_entry;
 
   (* Password field *)
-  let password_box = GBox.hbox ~spacing:10 () in
-  vbox#append (password_box :> GObj.widget);
+  let password_box = new GBox.box (Box.new_ `HORIZONTAL 10) in
+  
+  vbox#append (password_box );
 
-  let password_label = Label.new_ (Some "Password:") in
-  password_box#append (GObj.widget_of_obj (password_label));
+  let password_label = new GLabel.label (Label.new_ (Some "Password:")) in
+  password_box#append ( (password_label));
 
-  let password_entry = Password_entry.new_ () in
-  Entry.set_placeholder_text (Obj.magic password_entry : Entry.t) (Some "Enter password");
+  let password_entry = new GPassword_entry.password_entry (Password_entry.new_ ()) in
+  password_entry#set_placeholder_text (Some "Enter password")
+  Entry.set_placeholder_text (password_entry) (Some "Enter password");
   Password_entry.set_show_peek_icon password_entry true;
   password_box#append (GObj.widget_of_obj (password_entry));
 
@@ -51,7 +58,7 @@ let () =
   vbox#append (GObj.widget_of_obj (status_label));
 
   (* Button row *)
-  let button_box = GBox.hbox ~spacing:10 () in
+  let button_box = new GBox.box (Box.new_ `HORIZONTAL 10) in
   vbox#append (button_box :> GObj.widget);
 
   (* Login button *)

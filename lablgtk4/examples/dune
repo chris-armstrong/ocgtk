@@ -20,13 +20,13 @@
  (modules settings_panel)
  (libraries lablgtk4))
 
-(executable
- (name text_editor)
- (modules text_editor)
- (libraries lablgtk4))
+; (executable
+;  (name text_editor)
+;  (modules text_editor)
+;  (libraries lablgtk4))
 
 ; DISABLED: Uses GWindow and high-level convenience APIs that need to be rewritten
-(executable
- (name login_form)
- (modules login_form)
- (libraries lablgtk4))
+; (executable
+;  (name login_form)
+;  (modules login_form)
+;  (libraries lablgtk4))
