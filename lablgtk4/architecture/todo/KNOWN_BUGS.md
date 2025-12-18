@@ -41,80 +41,35 @@ Skipping method get_extra_menu: unknown return type GMenuModel*
 
 ---
 
-### 2. Properties Without Explicit Methods Are Not Generated
+### 2. Properties Without Explicit Methods Are Not Generated [FIXED]
 
-**Impact**: GObject properties defined in GIR without corresponding `<method>` elements do not get accessor functions generated.
+**Status**: ✅ **FIXED** - Parser bug fixed on 2025-12-18
 
-**Affected Properties**: Properties that are defined as `<property>` elements but lack explicit `<method name="get_*">` and `<method name="set_*">` elements in the GIR XML.
+**Impact**: GObject properties defined in GIR without corresponding `<method>` elements were not getting accessor functions generated.
 
-**Example - PasswordEntry**:
+**Root Cause**: **Parser Bug** in `src/tools/gir_gen/parse/gir_parser.ml`
 
-From `/usr/share/gir-1.0/Gtk-4.0.gir`:
-```xml
-<class name="PasswordEntry">
-  <!-- This property has NO corresponding <method> elements -->
-  <property name="activates-default" writable="1">
-    <type name="gboolean" c:type="gboolean"/>
-  </property>
+The `parse_property` function's `parse_prop_contents` recursive parser had a bug where it didn't continue parsing after encountering a `<doc>` element. After calling `element_data()` to read the documentation text, it failed to recursively call `parse_prop_contents()` again, causing the parser to exit prematurely and only extract the first property from each class.
 
-  <!-- This property has NO corresponding <method> elements -->
-  <property name="placeholder-text" writable="1">
-    <type name="utf8" c:type="gchar*"/>
-  </property>
-
-  <!-- This property HAS corresponding methods, so it's generated -->
-  <property name="show-peek-icon" writable="1"
-            setter="set_show_peek_icon"
-            getter="get_show_peek_icon">
-    <type name="gboolean"/>
-  </property>
-  <method name="get_show_peek_icon" ...>
-  <method name="set_show_peek_icon" ...>
-</class>
-```
-
-**Current Behavior**:
-- `show-peek-icon` → ✓ Generated (has `<method>` elements)
-- `activates-default` → ✗ NOT generated (no `<method>` elements)
-- `placeholder-text` → ✗ NOT generated (no `<method>` elements)
-
-**Root Cause**: The code generator has infrastructure to generate property accessors from `<property>` elements directly:
-- `src/tools/gir_gen/generate/c_stubs.ml` lines 851-859
-- `src/tools/gir_gen/generate/ml_interface.ml` lines 230-273
-
-However, these code paths are either:
-1. Not being reached, OR
-2. Properties without methods are being filtered out before reaching the generation code
-
-The generator primarily creates bindings from `<method>` elements, not standalone `<property>` elements.
-
-**Comparison - Adjustment Class**:
-The Adjustment class works correctly because it has BOTH property and method definitions:
-```xml
-<class name="Adjustment">
-  <property name="value" .../>
-  <method name="get_value" .../>  <!-- Explicit method -->
-  <method name="set_value" .../>  <!-- Explicit method -->
-</class>
-```
-
-**Impact on PasswordEntry**: Users cannot access the following properties through the OCaml bindings:
+**Fix Applied**:
+Added the missing recursive call in `src/tools/gir_gen/parse/gir_parser.ml`:
 ```ocaml
-(* Missing from password_entry.mli: *)
-(* external get_activates_default : t -> bool *)
-(* external set_activates_default : t -> bool -> unit *)
-(* external get_placeholder_text : t -> string option *)
-(* external set_placeholder_text : t -> string option -> unit *)
+| `El_start ((_, "doc"), _) ->
+  doc := element_data ();
+  parse_prop_contents ()  (* <-- This line was missing *)
 ```
 
-**Workaround**:
-- For PasswordEntry, these properties can be accessed through inherited Entry functionality if using Entry widgets directly
-- Alternatively, use GObject property access functions (g_object_get/set) via FFI if absolutely necessary
+**Verification**:
+After the fix, PasswordEntry now correctly extracts all 4 properties (previously only extracted 1):
+- `activates-default` ✅
+- `extra-menu` ✅ (parsed but not generated due to missing GMenuModel* type mapping)
+- `placeholder-text` ✅
+- `show-peek-icon` ✅
 
-**Fix Required**:
-1. Ensure properties without explicit methods are passed to the property generation code
-2. Generate C stubs using `g_object_get_property` / `g_object_set_property` for properties lacking dedicated getter/setter methods
-3. Update the filtering logic to include properties that have valid type mappings, regardless of whether they have associated methods
+Properties with valid type mappings (`activates-default`, `placeholder-text`, `show-peek-icon`) are now correctly generated using `g_object_get_property` / `g_object_set_property` via the existing property generation infrastructure in `c_stubs.ml` lines 668-818 and `ml_interface.ml` lines 230-273.
+
+**Remaining Issue**:
+Properties using types from other namespaces (like `GMenuModel*` from Gio) still cannot be generated due to missing type mappings (see Issue #1: Missing Type Mapping for GMenuModel*).
 
 ---
 
