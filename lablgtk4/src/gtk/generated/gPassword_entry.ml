@@ -3,7 +3,6 @@
 (* High-level class for PasswordEntry *)
 class password_entry (obj : Password_entry.t) = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Password_entry.as_widget obj)
-
   inherit Gpassword_entry_signals.password_entry_signals obj
 
   method get_show_peek_icon : unit -> bool = fun () -> (Password_entry.get_show_peek_icon obj )

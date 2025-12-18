@@ -1,6 +1,21 @@
 ; Common library for lablgtk4
 ; Hand-written library-agnostic code
 
+; Configure pkg-config for GTK4
+(rule
+ (targets cflag-gtk4.sexp clink-gtk4.sexp)
+ (action (bash "\
+pkg-config --cflags gtk4 > cflag-gtk4.tmp && \
+pkg-config --libs gtk4 > clink-gtk4.tmp && \
+echo \"(\" > cflag-gtk4.sexp && \
+tr ' ' '\\n' < cflag-gtk4.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> cflag-gtk4.sexp && \
+echo \")\" >> cflag-gtk4.sexp && \
+echo \"(\" > clink-gtk4.sexp && \
+tr ' ' '\\n' < clink-gtk4.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> clink-gtk4.sexp && \
+echo \")\" >> clink-gtk4.sexp && \
+rm cflag-gtk4.tmp clink-gtk4.tmp\
+")))
+
 (library
  (name lablgtk4_common)
  (public_name lablgtk4.common)
@@ -8,6 +23,7 @@
  (foreign_stubs
   (language c)
   (names wrappers ml_glib ml_gobject)
-  (flags -fPIC (:include ../cflag-gtk4.sexp) -Wno-deprecated-declarations))
- (c_library_flags (:include ../clink-gtk4.sexp))
+  (flags -fPIC -I../gtk/generated (:include cflag-gtk4.sexp) -Wno-deprecated-declarations))
+ (c_library_flags (:include clink-gtk4.sexp))
+ (install_c_headers wrappers)
  (modules Gaux Gpointer GError Gobject Glib))

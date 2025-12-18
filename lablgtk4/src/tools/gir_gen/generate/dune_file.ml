@@ -27,6 +27,7 @@ let generate_dune_library ~stub_names ~module_names =
   Buffer.add_string buf " (public_name lablgtk4.generated_stubs)\n";
   Buffer.add_string buf " (wrapped false)\n";
   Buffer.add_string buf " (modules)  ; No OCaml modules, only C stubs\n";
+  Buffer.add_string buf " (libraries lablgtk4_common)  ; Depend on common for header files\n";
   Buffer.add_string buf " (foreign_stubs\n";
   Buffer.add_string buf "  (language c)\n";
   Buffer.add_string buf "  (names\n";
@@ -37,7 +38,7 @@ let generate_dune_library ~stub_names ~module_names =
   ) stub_names;
 
   Buffer.add_string buf "  )\n";
-  Buffer.add_string buf "  (flags -fPIC (:include ../../cflag-gtk4.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))\n";
-  Buffer.add_string buf " (c_library_flags (:include ../../clink-gtk4.sexp)))\n";
+  Buffer.add_string buf "  (flags -fPIC -Igenerated -Icore (:include cflag-gtk4.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))\n";
+  Buffer.add_string buf " (c_library_flags (:include clink-gtk4.sexp)))\n";
 
   Buffer.contents buf
