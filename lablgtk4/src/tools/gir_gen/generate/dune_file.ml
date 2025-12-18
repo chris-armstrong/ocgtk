@@ -32,11 +32,12 @@ let generate_dune_library ~stub_names ~module_names =
   Buffer.add_string buf "  (names\n";
 
   List.iter ~f:(fun name ->
+    (* Files are in the same directory as this dune file (generated/) *)
     bprintf buf "   %s\n" name
   ) stub_names;
 
   Buffer.add_string buf "  )\n";
-  Buffer.add_string buf "  (flags -fPIC (:include cflag-gtk4.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))\n";
-  Buffer.add_string buf " (c_library_flags (:include clink-gtk4.sexp)))\n";
+  Buffer.add_string buf "  (flags -fPIC (:include ../../cflag-gtk4.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))\n";
+  Buffer.add_string buf " (c_library_flags (:include ../../clink-gtk4.sexp)))\n";
 
   Buffer.contents buf

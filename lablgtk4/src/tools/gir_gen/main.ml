@@ -13,6 +13,16 @@ let write_file ~path ~content =
   output_string oc content;
   close_out oc
 
+(* Helper function to get the generated output directory *)
+let generated_output_dir output_dir =
+  Filename.concat output_dir "generated"
+
+(* Ensure the generated directory exists *)
+let ensure_generated_dir output_dir =
+  let gen_dir = generated_output_dir output_dir in
+  if not (Sys.file_exists gen_dir) then
+    Unix.mkdir gen_dir 0o755
+
 (* Generate C stub file for a single entity (class or interface) *)
 let generate_c_stub ~ctx ~output_dir ~generated_stubs entity =
   if Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name then begin
@@ -24,7 +34,7 @@ let generate_c_stub ~ctx ~output_dir ~generated_stubs entity =
       (List.length entity.Gir_gen_lib.Types.properties);
 
     let stub_name = sprintf "ml_%s_gen" (Gir_gen_lib.Utils.to_snake_case entity.Gir_gen_lib.Types.name) in
-    let c_file = Filename.concat output_dir (stub_name ^ ".c") in
+    let c_file = Filename.concat (generated_output_dir output_dir) (stub_name ^ ".c") in
 
     let c_code = Gir_gen_lib.Generate.C_stubs.generate_class_c_code
       ~ctx
@@ -55,7 +65,7 @@ type namespace_info = {
 (* Generate a single ML file (interface or implementation) for an entity *)
 let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain entity =
   let ext = match kind with Interface -> ".mli" | Implementation -> ".ml" in
-  let ml_file = Filename.concat output_dir
+  let ml_file = Filename.concat (generated_output_dir output_dir)
     (sprintf "%s%s" (Gir_gen_lib.Utils.to_snake_case entity.Gir_gen_lib.Types.name) ext) in
 
   let output_mode = match kind with
@@ -105,8 +115,8 @@ let generate_high_level_class ~ctx ~output_dir ~generated_modules entity parent_
   else if Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name then ()
   else begin
     let module_name = Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name in
-    let g_file = Filename.concat output_dir (sprintf "g%s.ml" module_name) in
-    let g_sig_file = Filename.concat output_dir (sprintf "g%s.mli" module_name) in
+    let g_file = Filename.concat (generated_output_dir output_dir) (sprintf "g%s.ml" module_name) in
+    let g_sig_file = Filename.concat (generated_output_dir output_dir) (sprintf "g%s.mli" module_name) in
 
     (* Check if we're generating to src directory *)
     let output_under_src =
@@ -161,7 +171,7 @@ let generate_signal_class ~ctx ~output_dir ~parent_chain entity =
       ~signals:entity.Gir_gen_lib.Types.signals
       ~parent_chain in
 
-    let signal_file = Filename.concat output_dir
+    let signal_file = Filename.concat (generated_output_dir output_dir)
       (sprintf "g%s_signals.ml" (Gir_gen_lib.Utils.to_snake_case entity.Gir_gen_lib.Types.name)) in
     write_file ~path:signal_file ~content:signal_code
   end
@@ -180,8 +190,8 @@ let generate_combined_ml_files ~ctx ~output_dir ~generated_modules ~module_group
   let combined_name = Gir_gen_lib.Dependency_analysis.module_name_of_group module_group in
   let combined_snake = Gir_gen_lib.Utils.to_snake_case combined_name in
 
-  let mli_path = Filename.concat output_dir (combined_snake ^ ".mli") in
-  let ml_path = Filename.concat output_dir (combined_snake ^ ".ml") in
+  let mli_path = Filename.concat (generated_output_dir output_dir) (combined_snake ^ ".mli") in
+  let ml_path = Filename.concat (generated_output_dir output_dir) (combined_snake ^ ".ml") in
 
   let parent_chain_for_entity name = parent_chain_for_class name in
 
@@ -202,8 +212,8 @@ let generate_combined_ml_files ~ctx ~output_dir ~generated_modules ~module_group
 let generate_combined_class_files ~ctx ~output_dir ~generated_modules ~module_group ~parent_chain_for_class =
   let entities = Gir_gen_lib.Dependency_analysis.entities_of_group module_group in
   let combined_name = Gir_gen_lib.Dependency_analysis.module_name_of_group module_group in
-  let g_file = Filename.concat output_dir ("g" ^ Gir_gen_lib.Utils.module_name_of_class combined_name ^ ".ml") in
-  let g_sig_file = Filename.concat output_dir ("g" ^ Gir_gen_lib.Utils.module_name_of_class combined_name ^ ".mli") in
+  let g_file = Filename.concat (generated_output_dir output_dir) ("g" ^ Gir_gen_lib.Utils.module_name_of_class combined_name ^ ".ml") in
+  let g_sig_file = Filename.concat (generated_output_dir output_dir) ("g" ^ Gir_gen_lib.Utils.module_name_of_class combined_name ^ ".mli") in
 
   let parent_chain_for_entity name = parent_chain_for_class name in
 
@@ -227,7 +237,7 @@ let generate_enum_files ~output_dir ~generated_stubs ~generated_modules namespac
   if List.length enums = 0 && List.length bitfields = 0 then ()
   else begin
     (* Generate OCaml .mli file with type definitions *)
-    let enum_file = Filename.concat output_dir (sprintf "%s_enums.mli" namespace.prefix) in
+    let enum_file = Filename.concat (generated_output_dir output_dir) (sprintf "%s_enums.mli" namespace.prefix) in
     let ocaml_content_parts = [
       "(* GENERATED CODE - DO NOT EDIT *)\n";
       sprintf "(* %s Enumeration and Bitfield Types *)\n\n" namespace.name;
@@ -237,7 +247,7 @@ let generate_enum_files ~output_dir ~generated_stubs ~generated_modules namespac
 
     (* Generate C converter file *)
     let stub_name = sprintf "ml_%s_enums_gen" namespace.prefix in
-    let c_file = Filename.concat output_dir (stub_name ^ ".c") in
+    let c_file = Filename.concat (generated_output_dir output_dir) (stub_name ^ ".c") in
     let c_content_parts = [
       "/* GENERATED CODE - DO NOT EDIT */\n";
       sprintf "/* %s enum/bitfield converters */\n\n" namespace.name;
@@ -285,7 +295,7 @@ let generate_all_record_bindings ~ctx ~output_dir ~generated_stubs ~generated_mo
 
       (* Generate C stub file *)
       let stub_name = sprintf "ml_%s_record_gen" (Gir_gen_lib.Utils.to_snake_case record.Gir_gen_lib.Types.record_name) in
-      let c_file = Filename.concat output_dir (stub_name ^ ".c") in
+      let c_file = Filename.concat (generated_output_dir output_dir) (stub_name ^ ".c") in
       let c_code = Gir_gen_lib.Generate.C_stubs.generate_record_c_code
         ~ctx
         { record with Gir_gen_lib.Types.constructors = constructors }
@@ -302,7 +312,7 @@ let generate_all_record_bindings ~ctx ~output_dir ~generated_stubs ~generated_mo
         (* Records always use Obj.t as their base type implementation *)
         let base_type = "Obj.t" in
 
-        let ml_file = Filename.concat output_dir
+        let ml_file = Filename.concat (generated_output_dir output_dir)
           (sprintf "%s.mli" (Gir_gen_lib.Utils.to_snake_case record.Gir_gen_lib.Types.record_name)) in
         write_file ~path:ml_file ~content:(Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
           ~ctx
@@ -320,7 +330,7 @@ let generate_all_record_bindings ~ctx ~output_dir ~generated_stubs ~generated_mo
           ~is_record:true
           ());
 
-        let ml_impl_file = Filename.concat output_dir
+        let ml_impl_file = Filename.concat (generated_output_dir output_dir)
           (sprintf "%s.ml" (Gir_gen_lib.Utils.to_snake_case record.Gir_gen_lib.Types.record_name)) in
         write_file ~path:ml_impl_file ~content:(Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
           ~ctx
@@ -348,6 +358,9 @@ let generate_bindings filter_file gir_file output_dir =
   printf "Parsing %s ...\n" gir_file;
 
   (* ==== INITIALIZATION ==== *)
+
+  (* Ensure generated/ directory exists *)
+  ensure_generated_dir output_dir;
 
   (* Track generated C stub files and OCaml modules *)
   let generated_stubs = ref [] in
@@ -477,7 +490,7 @@ let generate_bindings filter_file gir_file output_dir =
   (* ==== GENERATION STAGE ==== *)
 
   (* Generate common header file *)
-  let header_file = Filename.concat output_dir "generated_forward_decls.h" in
+  let header_file = Filename.concat (generated_output_dir output_dir) "generated_forward_decls.h" in
   printf "\n";
   let header_content = Gir_gen_lib.Generate.C_stubs.generate_forward_decls_header
     ~classes:ctx.classes
@@ -561,8 +574,8 @@ let generate_bindings filter_file gir_file output_dir =
 
   (* ==== BUILD CONFIGURATION ==== *)
 
-  (* Generate dune file *)
-  let dune_file = Filename.concat output_dir "dune-generated.inc" in
+  (* Generate dune file in generated/ subdirectory *)
+  let dune_file = Filename.concat (generated_output_dir output_dir) "dune-generated.inc" in
   printf "\n";
   let stub_list = List.rev !generated_stubs |> List.sort ~cmp:String.compare in
   let base_modules = [
