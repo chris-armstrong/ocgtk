@@ -33,13 +33,62 @@ Restructure the lablgtk4 library to support multiple GObject-based libraries (Gt
   - [x] Validate: Run gir_gen and verify generated/ directory structure
   - [x] Validate: Confirm dune-generated.inc has correct relative paths
 
-### In Progress
-- [ ] Phase 5: Create src/gtk/dune
-- [ ] Phase 6: Update Main src/dune
-- [ ] Phase 7: Update Generated dune-generated.inc
-- [ ] Phase 8: Update gir_gen Invocation
-- [ ] Phase 9: Testing and Validation
-- [ ] Phase 10: Future Extensions (Gdk, Gio, Pango)
+### Completed (continued)
+- [x] Phase 5: Create src/gtk/dune (2025-12-18)
+  - [x] Created unified src/gtk/dune with include_subdirs
+  - [x] Includes generated/dune-generated.inc for C stubs
+  - [x] Combines hand-written core and generated code in single library
+  - [x] Added pkg-config rules for cflag-gtk4.sexp and clink-gtk4.sexp
+  - [x] Configured foreign_stubs for hand-written C files
+  - [x] Set library dependencies: lablgtk4_common, lablgtk4_generated_stubs, cairo2, threads
+- [x] Phase 6: Update Main src/dune (2025-12-18)
+  - [x] Converted to wrapper library with no modules
+  - [x] Added dependencies: lablgtk4_common, lablgtk4_gtk, threads, cairo2
+  - [x] Removed invalid references to moved files
+- [x] Phase 7: Update Generated dune-generated.inc (2025-12-18)
+  - [x] Updated dune_file.ml to output to generated/ subdirectory
+  - [x] Fixed include paths (cflag-gtk4.sexp, clink-gtk4.sexp)
+  - [x] Added lablgtk4_common library dependency for header access
+  - [x] Added -Igenerated and -Icore flags for header discovery
+  - [x] Regenerated dune-generated.inc with new structure
+- [x] Phase 8: Update gir_gen Invocation (2025-12-18)
+  - [x] Updated to: dune exec src/tools/gir_gen/main.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+  - [x] Verified generated files go to src/gtk/generated/
+- [x] Phase 9: Testing and Validation (2025-12-18)
+  - [x] Fixed header visibility using install_c_headers in common/dune
+  - [x] Fixed library dependencies for header access
+  - [x] Added -I../gtk/generated to common library for generated_forward_decls.h
+  - [x] Build completes successfully with only warnings
+  - [x] Verified library artifacts created: lablgtk4_common, lablgtk4_generated_stubs, lablgtk4_gtk, lablgtk4
+
+### Remaining Work
+- [ ] Phase 10: Future Extensions (Optional - for multi-library support)
+  - [ ] Split out Gdk library: Move gdk-specific code from gtk/core/ to src/gdk/
+  - [ ] Split out Pango library: Move pango-specific code from gtk/core/ to src/pango/
+  - [ ] Add Gio library: Create src/gio/ for GIO bindings (would solve GMenuModel type issues)
+  - [ ] Update library dependencies after splitting
+
+## Key Achievements
+
+### Architecture Changes
+1. **Separation of Concerns**: Hand-written common code is now in `src/common/`, GTK core code in `src/gtk/core/`, and generated code in `src/gtk/generated/`
+2. **Library Modularity**: Three distinct libraries working together:
+   - `lablgtk4_common`: Common utilities and GObject/GLib bindings
+   - `lablgtk4_generated_stubs`: Generated C stubs (depends on common)
+   - `lablgtk4_gtk`: Main GTK library combining core and generated code
+   - `lablgtk4`: Top-level wrapper exposing everything
+
+### Technical Solutions
+1. **Header Visibility**: Using `install_c_headers` in src/common/dune to expose wrappers.h
+2. **Library Dependencies**: Generated stubs library explicitly depends on lablgtk4_common (not just -I paths)
+3. **Cross-Library Includes**: Common library includes -I../gtk/generated for generated_forward_decls.h
+4. **Unified Build**: Single lablgtk4_gtk library uses include_subdirs to find all modules
+
+### Build System
+- All libraries build successfully
+- Proper dependency chain established
+- Module discovery works automatically via include_subdirs
+- Generated code integrates seamlessly with hand-written code
 
 ## Current Structure
 
