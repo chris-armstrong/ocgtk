@@ -22,14 +22,6 @@
 #endif /* Val_GtkFileChooser */
 
 
-CAMLexport CAMLprim value ml_gtk_file_chooser_set_select_multiple(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_file_chooser_set_select_multiple(GtkFileChooser_val(self), Bool_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_file_chooser_set_filter(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -43,14 +35,6 @@ CAMLexport CAMLprim value ml_gtk_file_chooser_set_current_name(value self, value
 CAMLparam2(self, arg1);
 
 gtk_file_chooser_set_current_name(GtkFileChooser_val(self), String_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_file_chooser_set_create_folders(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_file_chooser_set_create_folders(GtkFileChooser_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -86,28 +70,12 @@ gtk_file_chooser_remove_choice(GtkFileChooser_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_file_chooser_get_select_multiple(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_file_chooser_get_select_multiple(GtkFileChooser_val(self));
-CAMLreturn(Val_bool(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_file_chooser_get_filter(value self)
 {
 CAMLparam1(self);
 
 GtkFileFilter* result = gtk_file_chooser_get_filter(GtkFileChooser_val(self));
 CAMLreturn(Val_option(result, Val_GtkFileFilter));
-}
-
-CAMLexport CAMLprim value ml_gtk_file_chooser_get_create_folders(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_file_chooser_get_create_folders(GtkFileChooser_val(self));
-CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_file_chooser_get_choice(value self, value arg1)
@@ -131,5 +99,71 @@ CAMLexport CAMLprim value ml_gtk_file_chooser_add_filter(value self, value arg1)
 CAMLparam2(self, arg1);
 
 gtk_file_chooser_add_filter(GtkFileChooser_val(self), GtkFileFilter_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_file_chooser_get_create_folders(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkFileChooser *obj = (GtkFileChooser *)GtkFileChooser_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "create-folders");
+if (pspec == NULL) caml_failwith("ml_gtk_file_chooser_get_create_folders: property 'create-folders' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "create-folders", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_file_chooser_set_create_folders(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkFileChooser *obj = (GtkFileChooser *)GtkFileChooser_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "create-folders");
+if (pspec == NULL) caml_failwith("ml_gtk_file_chooser_set_create_folders: property 'create-folders' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "create-folders", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_file_chooser_get_select_multiple(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkFileChooser *obj = (GtkFileChooser *)GtkFileChooser_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "select-multiple");
+if (pspec == NULL) caml_failwith("ml_gtk_file_chooser_get_select_multiple: property 'select-multiple' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "select-multiple", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_file_chooser_set_select_multiple(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkFileChooser *obj = (GtkFileChooser *)GtkFileChooser_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "select-multiple");
+if (pspec == NULL) caml_failwith("ml_gtk_file_chooser_set_select_multiple: property 'select-multiple' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "select-multiple", &prop_gvalue);
+g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }

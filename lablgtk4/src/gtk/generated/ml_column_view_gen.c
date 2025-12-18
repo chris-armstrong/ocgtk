@@ -45,43 +45,11 @@ gtk_column_view_set_tab_behavior(GtkColumnView_val(self), GtkListTabBehavior_val
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_column_view_set_single_click_activate(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_column_view_set_single_click_activate(GtkColumnView_val(self), Bool_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_column_view_set_show_row_separators(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_column_view_set_show_row_separators(GtkColumnView_val(self), Bool_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_column_view_set_show_column_separators(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_column_view_set_show_column_separators(GtkColumnView_val(self), Bool_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_column_view_set_row_factory(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gtk_column_view_set_row_factory(GtkColumnView_val(self), Option_val(arg1, GtkListItemFactory_val, NULL));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_column_view_set_reorderable(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_column_view_set_reorderable(GtkColumnView_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -98,14 +66,6 @@ CAMLexport CAMLprim value ml_gtk_column_view_set_header_factory(value self, valu
 CAMLparam2(self, arg1);
 
 gtk_column_view_set_header_factory(GtkColumnView_val(self), Option_val(arg1, GtkListItemFactory_val, NULL));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_column_view_set_enable_rubberband(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_column_view_set_enable_rubberband(GtkColumnView_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -149,44 +109,12 @@ GtkSorter* result = gtk_column_view_get_sorter(GtkColumnView_val(self));
 CAMLreturn(Val_option(result, Val_GtkSorter));
 }
 
-CAMLexport CAMLprim value ml_gtk_column_view_get_single_click_activate(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_column_view_get_single_click_activate(GtkColumnView_val(self));
-CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_column_view_get_show_row_separators(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_column_view_get_show_row_separators(GtkColumnView_val(self));
-CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_column_view_get_show_column_separators(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_column_view_get_show_column_separators(GtkColumnView_val(self));
-CAMLreturn(Val_bool(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_column_view_get_row_factory(value self)
 {
 CAMLparam1(self);
 
 GtkListItemFactory* result = gtk_column_view_get_row_factory(GtkColumnView_val(self));
 CAMLreturn(Val_option(result, Val_GtkListItemFactory));
-}
-
-CAMLexport CAMLprim value ml_gtk_column_view_get_reorderable(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_column_view_get_reorderable(GtkColumnView_val(self));
-CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_column_view_get_model(value self)
@@ -205,18 +133,175 @@ GtkListItemFactory* result = gtk_column_view_get_header_factory(GtkColumnView_va
 CAMLreturn(Val_option(result, Val_GtkListItemFactory));
 }
 
-CAMLexport CAMLprim value ml_gtk_column_view_get_enable_rubberband(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_column_view_get_enable_rubberband(GtkColumnView_val(self));
-CAMLreturn(Val_bool(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_column_view_append_column(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gtk_column_view_append_column(GtkColumnView_val(self), GtkColumnViewColumn_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_get_enable_rubberband(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkColumnView *obj = (GtkColumnView *)GtkColumnView_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "enable-rubberband");
+if (pspec == NULL) caml_failwith("ml_gtk_column_view_get_enable_rubberband: property 'enable-rubberband' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "enable-rubberband", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_set_enable_rubberband(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkColumnView *obj = (GtkColumnView *)GtkColumnView_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "enable-rubberband");
+if (pspec == NULL) caml_failwith("ml_gtk_column_view_set_enable_rubberband: property 'enable-rubberband' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "enable-rubberband", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_get_reorderable(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkColumnView *obj = (GtkColumnView *)GtkColumnView_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "reorderable");
+if (pspec == NULL) caml_failwith("ml_gtk_column_view_get_reorderable: property 'reorderable' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "reorderable", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_set_reorderable(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkColumnView *obj = (GtkColumnView *)GtkColumnView_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "reorderable");
+if (pspec == NULL) caml_failwith("ml_gtk_column_view_set_reorderable: property 'reorderable' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "reorderable", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_get_show_column_separators(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkColumnView *obj = (GtkColumnView *)GtkColumnView_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "show-column-separators");
+if (pspec == NULL) caml_failwith("ml_gtk_column_view_get_show_column_separators: property 'show-column-separators' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "show-column-separators", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_set_show_column_separators(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkColumnView *obj = (GtkColumnView *)GtkColumnView_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "show-column-separators");
+if (pspec == NULL) caml_failwith("ml_gtk_column_view_set_show_column_separators: property 'show-column-separators' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "show-column-separators", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_get_show_row_separators(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkColumnView *obj = (GtkColumnView *)GtkColumnView_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "show-row-separators");
+if (pspec == NULL) caml_failwith("ml_gtk_column_view_get_show_row_separators: property 'show-row-separators' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "show-row-separators", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_set_show_row_separators(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkColumnView *obj = (GtkColumnView *)GtkColumnView_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "show-row-separators");
+if (pspec == NULL) caml_failwith("ml_gtk_column_view_set_show_row_separators: property 'show-row-separators' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "show-row-separators", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_get_single_click_activate(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkColumnView *obj = (GtkColumnView *)GtkColumnView_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "single-click-activate");
+if (pspec == NULL) caml_failwith("ml_gtk_column_view_get_single_click_activate: property 'single-click-activate' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "single-click-activate", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_set_single_click_activate(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkColumnView *obj = (GtkColumnView *)GtkColumnView_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "single-click-activate");
+if (pspec == NULL) caml_failwith("ml_gtk_column_view_set_single_click_activate: property 'single-click-activate' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "single-click-activate", &prop_gvalue);
+g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }

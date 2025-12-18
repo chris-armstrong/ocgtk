@@ -10,30 +10,41 @@ external new_ : unit -> t = "ml_gtk_grid_new"
 
 (* Properties *)
 
-(** Sets the amount of space between rows of @grid. *)
-external set_row_spacing : t -> int -> unit = "ml_gtk_grid_set_row_spacing"
+(** Get property: baseline-row *)
+external get_baseline_row : t -> int = "ml_gtk_grid_get_baseline_row"
 
-(** Sets whether all rows of @grid will have the same height. *)
+(** Set property: baseline-row *)
+external set_baseline_row : t -> int -> unit = "ml_gtk_grid_set_baseline_row"
+
+(** Get property: column-homogeneous *)
+external get_column_homogeneous : t -> bool = "ml_gtk_grid_get_column_homogeneous"
+
+(** Set property: column-homogeneous *)
+external set_column_homogeneous : t -> bool -> unit = "ml_gtk_grid_set_column_homogeneous"
+
+(** Get property: column-spacing *)
+external get_column_spacing : t -> int = "ml_gtk_grid_get_column_spacing"
+
+(** Set property: column-spacing *)
+external set_column_spacing : t -> int -> unit = "ml_gtk_grid_set_column_spacing"
+
+(** Get property: row-homogeneous *)
+external get_row_homogeneous : t -> bool = "ml_gtk_grid_get_row_homogeneous"
+
+(** Set property: row-homogeneous *)
 external set_row_homogeneous : t -> bool -> unit = "ml_gtk_grid_set_row_homogeneous"
+
+(** Get property: row-spacing *)
+external get_row_spacing : t -> int = "ml_gtk_grid_get_row_spacing"
+
+(** Set property: row-spacing *)
+external set_row_spacing : t -> int -> unit = "ml_gtk_grid_set_row_spacing"
 
 (** Sets how the baseline should be positioned on @row of the
 grid, in case that row is assigned more space than is requested.
 
 The default baseline position is %GTK_BASELINE_POSITION_CENTER. *)
 external set_row_baseline_position : t -> int -> Gtk_enums.baselineposition -> unit = "ml_gtk_grid_set_row_baseline_position"
-
-(** Sets the amount of space between columns of @grid. *)
-external set_column_spacing : t -> int -> unit = "ml_gtk_grid_set_column_spacing"
-
-(** Sets whether all columns of @grid will have the same width. *)
-external set_column_homogeneous : t -> bool -> unit = "ml_gtk_grid_set_column_homogeneous"
-
-(** Sets which row defines the global baseline for the entire grid.
-
-Each row in the grid can have its own local baseline, but only
-one of those is global, meaning it will be the baseline in the
-parent of the @grid. *)
-external set_baseline_row : t -> int -> unit = "ml_gtk_grid_set_baseline_row"
 
 (** Removes a row from the grid.
 
@@ -79,29 +90,14 @@ are moved one column to the right. Children which span across this
 position are grown to span the new column. *)
 external insert_column : t -> int -> unit = "ml_gtk_grid_insert_column"
 
-(** Returns the amount of space between the rows of @grid. *)
-external get_row_spacing : t -> int = "ml_gtk_grid_get_row_spacing"
-
-(** Returns whether all rows of @grid have the same height. *)
-external get_row_homogeneous : t -> bool = "ml_gtk_grid_get_row_homogeneous"
-
 (** Returns the baseline position of @row.
 
 See [method@Gtk.Grid.set_row_baseline_position]. *)
 external get_row_baseline_position : t -> int -> Gtk_enums.baselineposition = "ml_gtk_grid_get_row_baseline_position"
 
-(** Returns the amount of space between the columns of @grid. *)
-external get_column_spacing : t -> int = "ml_gtk_grid_get_column_spacing"
-
-(** Returns whether all columns of @grid have the same width. *)
-external get_column_homogeneous : t -> bool = "ml_gtk_grid_get_column_homogeneous"
-
 (** Gets the child of @grid whose area covers the grid
 cell at @column, @row. *)
 external get_child_at : t -> int -> int -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_grid_get_child_at"
-
-(** Returns which row defines the global baseline of @grid. *)
-external get_baseline_row : t -> int = "ml_gtk_grid_get_baseline_row"
 
 (** Adds a widget to the grid.
 

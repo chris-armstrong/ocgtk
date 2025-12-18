@@ -61,3 +61,39 @@ g_object_set_property(G_OBJECT(obj), "search-mode", &prop_gvalue);
 g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }
+
+CAMLexport CAMLprim value ml_gtk_file_chooser_widget_get_show_time(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkFileChooserWidget *obj = (GtkFileChooserWidget *)GtkFileChooserWidget_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "show-time");
+if (pspec == NULL) caml_failwith("ml_gtk_file_chooser_widget_get_show_time: property 'show-time' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "show-time", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_file_chooser_widget_get_subtitle(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkFileChooserWidget *obj = (GtkFileChooserWidget *)GtkFileChooserWidget_val(self);
+    gchar* *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "subtitle");
+if (pspec == NULL) caml_failwith("ml_gtk_file_chooser_widget_get_subtitle: property 'subtitle' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "subtitle", &prop_gvalue);
+    prop_value = g_value_get_string(&prop_gvalue);
+
+result = caml_copy_string(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}

@@ -7,6 +7,9 @@ let as_event_controller (obj : t) : Event_controller_and__layout_child_and__layo
 
 (* Properties *)
 
+(** Get property: n-points *)
+external get_n_points : t -> int = "ml_gtk_gesture_get_n_points"
+
 (** Separates @gesture into an isolated group. *)
 external ungroup : t -> unit = "ml_gtk_gesture_ungroup"
 

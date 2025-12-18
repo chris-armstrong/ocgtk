@@ -5,6 +5,8 @@ class assistant (obj : Assistant.t) = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Assistant.as_widget obj)
   inherit Gassistant_signals.assistant_signals obj
 
+  method use_header_bar = Assistant.get_use_header_bar obj
+
   method add_action_widget : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> unit =
     fun child ->
       let child = child#as_widget in

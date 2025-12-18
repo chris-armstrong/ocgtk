@@ -1,6 +1,4 @@
 (* Signal handlers for GesturePan *)
 class gesture_pan_signals (obj : Gesture_pan.t) = object
-  method on_pan ~callback =
-    Gobject.Signal.connect_simple (Obj.magic obj :> _ Gobject.obj) ~name:"pan" ~callback ~after:false
-
+  (* No parameterless void signals parsed from GIR *)
 end

@@ -13,6 +13,9 @@ external new_with_buttons : string option -> Application_and__window_and__window
 
 (* Properties *)
 
+(** Get property: use-header-bar *)
+external get_use_header_bar : t -> int = "ml_gtk_dialog_get_use_header_bar"
+
 (** A convenient way to sensitize/desensitize dialog buttons.
 
 Calls `gtk_widget_set_sensitive (widget, @setting)`

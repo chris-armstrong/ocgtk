@@ -11,16 +11,11 @@ external new_from_gvariant : unit -> t = "ml_gtk_file_filter_new_from_gvariant"
 
 (* Properties *)
 
-(** Sets a human-readable name of the filter.
+(** Get property: name *)
+external get_name : t -> string = "ml_gtk_file_filter_get_name"
 
-This is the string that will be displayed in the file chooser
-if there is a selectable list of filters. *)
-external set_name : t -> string option -> unit = "ml_gtk_file_filter_set_name"
-
-(** Gets the human-readable name for the filter.
-
-See [method@Gtk.FileFilter.set_name]. *)
-external get_name : t -> string option = "ml_gtk_file_filter_get_name"
+(** Set property: name *)
+external set_name : t -> string -> unit = "ml_gtk_file_filter_set_name"
 
 (** Gets the attributes that need to be filled in for the `GFileInfo`
 passed to this filter.

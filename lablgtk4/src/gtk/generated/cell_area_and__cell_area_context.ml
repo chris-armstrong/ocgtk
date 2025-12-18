@@ -271,6 +271,18 @@ and Cell_area_context
 
   (* Properties *)
 
+  (** Get property: minimum-height *)
+  external get_minimum_height : t -> int = "ml_gtk_cell_area_context_get_minimum_height"
+
+  (** Get property: minimum-width *)
+  external get_minimum_width : t -> int = "ml_gtk_cell_area_context_get_minimum_width"
+
+  (** Get property: natural-height *)
+  external get_natural_height : t -> int = "ml_gtk_cell_area_context_get_natural_height"
+
+  (** Get property: natural-width *)
+  external get_natural_width : t -> int = "ml_gtk_cell_area_context_get_natural_width"
+
   (** Resets any previously cached request and allocation
   data.
 
@@ -342,6 +354,18 @@ end = struct
   type t = [`cell_area_context | `object_] Gobject.obj
 
   (* Properties *)
+
+  (** Get property: minimum-height *)
+  external get_minimum_height : t -> int = "ml_gtk_cell_area_context_get_minimum_height"
+
+  (** Get property: minimum-width *)
+  external get_minimum_width : t -> int = "ml_gtk_cell_area_context_get_minimum_width"
+
+  (** Get property: natural-height *)
+  external get_natural_height : t -> int = "ml_gtk_cell_area_context_get_natural_height"
+
+  (** Get property: natural-width *)
+  external get_natural_width : t -> int = "ml_gtk_cell_area_context_get_natural_width"
 
   (** Resets any previously cached request and allocation
   data.

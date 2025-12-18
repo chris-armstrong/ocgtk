@@ -6,6 +6,20 @@
 class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t) = object (self)
   inherit Gtext_buffer_signals.text_buffer_signals obj
 
+  method can_redo = Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_can_redo obj
+
+  method can_undo = Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_can_undo obj
+
+  method cursor_position = Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_cursor_position obj
+
+  method enable_undo = Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_enable_undo obj
+  method set_enable_undo v = Text_buffer_and__text_iter_and__text_mark.Text_buffer.set_enable_undo obj v
+
+  method has_selection = Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_has_selection obj
+
+  method text = Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_text obj
+  method set_text v = Text_buffer_and__text_iter_and__text_mark.Text_buffer.set_text obj v
+
   method add_mark : 'p1. (<as_text_mark: Text_buffer_and__text_iter_and__text_mark.Text_mark.t; ..> as 'p1) -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit = fun mark where -> (Text_buffer_and__text_iter_and__text_mark.Text_buffer.add_mark obj ( mark#as_text_mark ) where)
 
   method apply_tag : 'p1. (#GText_tag.text_tag as 'p1) -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit = fun tag start end_ -> (Text_buffer_and__text_iter_and__text_mark.Text_buffer.apply_tag obj ( tag#as_text_tag ) start end_)
@@ -36,15 +50,7 @@ class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
 
   method end_user_action : unit -> unit = fun () -> (Text_buffer_and__text_iter_and__text_mark.Text_buffer.end_user_action obj )
 
-  method get_can_redo : unit -> bool = fun () -> (Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_can_redo obj )
-
-  method get_can_undo : unit -> bool = fun () -> (Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_can_undo obj )
-
   method get_char_count : unit -> int = fun () -> (Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_char_count obj )
-
-  method get_enable_undo : unit -> bool = fun () -> (Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_enable_undo obj )
-
-  method get_has_selection : unit -> bool = fun () -> (Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_has_selection obj )
 
   method get_insert : unit -> text_mark = fun () -> new  text_mark(Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_insert obj )
 
@@ -92,13 +98,9 @@ class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
 
   method select_range : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit = fun ins bound -> (Text_buffer_and__text_iter_and__text_mark.Text_buffer.select_range obj ins bound)
 
-  method set_enable_undo : bool -> unit = fun enable_undo -> (Text_buffer_and__text_iter_and__text_mark.Text_buffer.set_enable_undo obj enable_undo)
-
   method set_max_undo_levels : int -> unit = fun max_undo_levels -> (Text_buffer_and__text_iter_and__text_mark.Text_buffer.set_max_undo_levels obj max_undo_levels)
 
   method set_modified : bool -> unit = fun setting -> (Text_buffer_and__text_iter_and__text_mark.Text_buffer.set_modified obj setting)
-
-  method set_text : string -> int -> unit = fun text len -> (Text_buffer_and__text_iter_and__text_mark.Text_buffer.set_text obj text len)
 
   method undo : unit -> unit = fun () -> (Text_buffer_and__text_iter_and__text_mark.Text_buffer.undo obj )
 
@@ -264,13 +266,13 @@ end
 
 and text_mark (obj : Text_buffer_and__text_iter_and__text_mark.Text_mark.t) = object (self)
 
+  method left_gravity = Text_buffer_and__text_iter_and__text_mark.Text_mark.get_left_gravity obj
+
+  method name = Text_buffer_and__text_iter_and__text_mark.Text_mark.get_name obj
+
   method get_buffer : unit -> text_buffer option = fun () -> Option.map (fun ret -> new text_buffer ret) (Text_buffer_and__text_iter_and__text_mark.Text_mark.get_buffer obj )
 
   method get_deleted : unit -> bool = fun () -> (Text_buffer_and__text_iter_and__text_mark.Text_mark.get_deleted obj )
-
-  method get_left_gravity : unit -> bool = fun () -> (Text_buffer_and__text_iter_and__text_mark.Text_mark.get_left_gravity obj )
-
-  method get_name : unit -> string option = fun () -> (Text_buffer_and__text_iter_and__text_mark.Text_mark.get_name obj )
 
   method get_visible : unit -> bool = fun () -> (Text_buffer_and__text_iter_and__text_mark.Text_mark.get_visible obj )
 

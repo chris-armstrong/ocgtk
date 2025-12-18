@@ -10,15 +10,29 @@ external new_ : unit -> t = "ml_gtk_list_box_new"
 
 (* Properties *)
 
+(** Get property: accept-unpaired-release *)
+external get_accept_unpaired_release : t -> bool = "ml_gtk_list_box_get_accept_unpaired_release"
+
+(** Set property: accept-unpaired-release *)
+external set_accept_unpaired_release : t -> bool -> unit = "ml_gtk_list_box_set_accept_unpaired_release"
+
+(** Get property: activate-on-single-click *)
+external get_activate_on_single_click : t -> bool = "ml_gtk_list_box_get_activate_on_single_click"
+
+(** Set property: activate-on-single-click *)
+external set_activate_on_single_click : t -> bool -> unit = "ml_gtk_list_box_set_activate_on_single_click"
+
+(** Get property: show-separators *)
+external get_show_separators : t -> bool = "ml_gtk_list_box_get_show_separators"
+
+(** Set property: show-separators *)
+external set_show_separators : t -> bool -> unit = "ml_gtk_list_box_set_show_separators"
+
 (** Unselects a single row of @box, if the selection mode allows it. *)
 external unselect_row : t -> List_box_row.t -> unit = "ml_gtk_list_box_unselect_row"
 
 (** Unselect all children of @box, if the selection mode allows it. *)
 external unselect_all : t -> unit = "ml_gtk_list_box_unselect_all"
-
-(** Sets whether the list box should show separators
-between rows. *)
-external set_show_separators : t -> bool -> unit = "ml_gtk_list_box_set_show_separators"
 
 (** Sets how selection works in the listbox. *)
 external set_selection_mode : t -> Gtk_enums.selectionmode -> unit = "ml_gtk_list_box_set_selection_mode"
@@ -38,10 +52,6 @@ a `GtkScrolledWindow` the adjustment from that will
 be picked up automatically, so there is no need
 to manually do that. *)
 external set_adjustment : t -> Adjustment.t option -> unit = "ml_gtk_list_box_set_adjustment"
-
-(** If @single is %TRUE, rows will be activated when you click on them,
-otherwise you need to double-click. *)
-external set_activate_on_single_click : t -> bool -> unit = "ml_gtk_list_box_set_activate_on_single_click"
 
 (** Make @row the currently selected row. *)
 external select_row : t -> List_box_row.t option -> unit = "ml_gtk_list_box_select_row"
@@ -95,10 +105,6 @@ If @position is -1, or larger than the total number of items in the
 @box, then the @child will be appended to the end. *)
 external insert : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int -> unit = "ml_gtk_list_box_insert"
 
-(** Returns whether the list box should show separators
-between rows. *)
-external get_show_separators : t -> bool = "ml_gtk_list_box_get_show_separators"
-
 (** Gets the selection mode of the listbox. *)
 external get_selection_mode : t -> Gtk_enums.selectionmode = "ml_gtk_list_box_get_selection_mode"
 
@@ -121,9 +127,6 @@ external get_row_at_index : t -> int -> List_box_row.t option = "ml_gtk_list_box
 (** Gets the adjustment (if any) that the widget uses to
 for vertical scrolling. *)
 external get_adjustment : t -> Adjustment.t option = "ml_gtk_list_box_get_adjustment"
-
-(** Returns whether rows activate on single clicks. *)
-external get_activate_on_single_click : t -> bool = "ml_gtk_list_box_get_activate_on_single_click"
 
 (** If a row has previously been highlighted via gtk_list_box_drag_highlight_row(),
 it will have the highlight removed. *)

@@ -80,3 +80,39 @@ CAMLparam2(self, arg1);
 gboolean result = gtk_recent_manager_add_item(GtkRecentManager_val(self), String_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+
+CAMLexport CAMLprim value ml_gtk_recent_manager_get_filename(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkRecentManager *obj = (GtkRecentManager *)GtkRecentManager_val(self);
+    gchar* *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "filename");
+if (pspec == NULL) caml_failwith("ml_gtk_recent_manager_get_filename: property 'filename' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "filename", &prop_gvalue);
+    prop_value = g_value_get_string(&prop_gvalue);
+
+result = caml_copy_string(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_recent_manager_get_size(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkRecentManager *obj = (GtkRecentManager *)GtkRecentManager_val(self);
+    gint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "size");
+if (pspec == NULL) caml_failwith("ml_gtk_recent_manager_get_size: property 'size' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "size", &prop_gvalue);
+    prop_value = (gint)g_value_get_int(&prop_gvalue);
+
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}

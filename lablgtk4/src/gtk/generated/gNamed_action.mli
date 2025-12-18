@@ -1,6 +1,6 @@
 class named_action : Named_action.t ->
   object
-    method get_action_name : unit -> string
+    method action_name : string
     method as_named_action : Named_action.t
   end
 

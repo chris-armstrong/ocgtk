@@ -29,34 +29,68 @@ GtkSwitch *obj = gtk_switch_new();
 CAMLreturn(Val_GtkSwitch(obj));
 }
 
-CAMLexport CAMLprim value ml_gtk_switch_set_state(value self, value arg1)
+CAMLexport CAMLprim value ml_gtk_switch_get_active(value self)
 {
-CAMLparam2(self, arg1);
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkSwitch *obj = (GtkSwitch *)GtkSwitch_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "active");
+if (pspec == NULL) caml_failwith("ml_gtk_switch_get_active: property 'active' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "active", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
 
-gtk_switch_set_state(GtkSwitch_val(self), Bool_val(arg1));
-CAMLreturn(Val_unit);
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
 }
 
-CAMLexport CAMLprim value ml_gtk_switch_set_active(value self, value arg1)
+CAMLexport CAMLprim value ml_gtk_switch_set_active(value self, value new_value)
 {
-CAMLparam2(self, arg1);
-
-gtk_switch_set_active(GtkSwitch_val(self), Bool_val(arg1));
+CAMLparam2(self, new_value);
+GtkSwitch *obj = (GtkSwitch *)GtkSwitch_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "active");
+if (pspec == NULL) caml_failwith("ml_gtk_switch_set_active: property 'active' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "active", &prop_gvalue);
+g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_switch_get_state(value self)
 {
 CAMLparam1(self);
+CAMLlocal1(result);
+GtkSwitch *obj = (GtkSwitch *)GtkSwitch_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "state");
+if (pspec == NULL) caml_failwith("ml_gtk_switch_get_state: property 'state' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "state", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
 
-gboolean result = gtk_switch_get_state(GtkSwitch_val(self));
-CAMLreturn(Val_bool(result));
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
 }
 
-CAMLexport CAMLprim value ml_gtk_switch_get_active(value self)
+CAMLexport CAMLprim value ml_gtk_switch_set_state(value self, value new_value)
 {
-CAMLparam1(self);
-
-gboolean result = gtk_switch_get_active(GtkSwitch_val(self));
-CAMLreturn(Val_bool(result));
+CAMLparam2(self, new_value);
+GtkSwitch *obj = (GtkSwitch *)GtkSwitch_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "state");
+if (pspec == NULL) caml_failwith("ml_gtk_switch_set_state: property 'state' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "state", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
 }

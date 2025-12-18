@@ -13,26 +13,32 @@ external new_for_interval : float -> float -> t = "ml_gtk_level_bar_new_for_inte
 
 (* Properties *)
 
-(** Sets the value of the `GtkLevelBar`. *)
+(** Get property: inverted *)
+external get_inverted : t -> bool = "ml_gtk_level_bar_get_inverted"
+
+(** Set property: inverted *)
+external set_inverted : t -> bool -> unit = "ml_gtk_level_bar_set_inverted"
+
+(** Get property: max-value *)
+external get_max_value : t -> float = "ml_gtk_level_bar_get_max_value"
+
+(** Set property: max-value *)
+external set_max_value : t -> float -> unit = "ml_gtk_level_bar_set_max_value"
+
+(** Get property: min-value *)
+external get_min_value : t -> float = "ml_gtk_level_bar_get_min_value"
+
+(** Set property: min-value *)
+external set_min_value : t -> float -> unit = "ml_gtk_level_bar_set_min_value"
+
+(** Get property: value *)
+external get_value : t -> float = "ml_gtk_level_bar_get_value"
+
+(** Set property: value *)
 external set_value : t -> float -> unit = "ml_gtk_level_bar_set_value"
 
 (** Sets the `mode` of the `GtkLevelBar`. *)
 external set_mode : t -> Gtk_enums.levelbarmode -> unit = "ml_gtk_level_bar_set_mode"
-
-(** Sets the `min-value` of the `GtkLevelBar`.
-
-You probably want to update preexisting level offsets after calling
-this function. *)
-external set_min_value : t -> float -> unit = "ml_gtk_level_bar_set_min_value"
-
-(** Sets the `max-value` of the `GtkLevelBar`.
-
-You probably want to update preexisting level offsets after calling
-this function. *)
-external set_max_value : t -> float -> unit = "ml_gtk_level_bar_set_max_value"
-
-(** Sets whether the `GtkLevelBar` is inverted. *)
-external set_inverted : t -> bool -> unit = "ml_gtk_level_bar_set_inverted"
 
 (** Removes an offset marker from a `GtkLevelBar`.
 
@@ -40,20 +46,8 @@ The marker must have been previously added with
 [method@Gtk.LevelBar.add_offset_value]. *)
 external remove_offset_value : t -> string option -> unit = "ml_gtk_level_bar_remove_offset_value"
 
-(** Returns the `value` of the `GtkLevelBar`. *)
-external get_value : t -> float = "ml_gtk_level_bar_get_value"
-
 (** Returns the `mode` of the `GtkLevelBar`. *)
 external get_mode : t -> Gtk_enums.levelbarmode = "ml_gtk_level_bar_get_mode"
-
-(** Returns the `min-value` of the `GtkLevelBar`. *)
-external get_min_value : t -> float = "ml_gtk_level_bar_get_min_value"
-
-(** Returns the `max-value` of the `GtkLevelBar`. *)
-external get_max_value : t -> float = "ml_gtk_level_bar_get_max_value"
-
-(** Returns whether the levelbar is inverted. *)
-external get_inverted : t -> bool = "ml_gtk_level_bar_get_inverted"
 
 (** Adds a new offset marker on @self at the position specified by @value.
 

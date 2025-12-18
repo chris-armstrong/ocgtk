@@ -11,6 +11,15 @@ external new_constant : unit -> Gtk_enums.constraintattribute -> Gtk_enums.const
 
 (* Properties *)
 
+(** Get property: constant *)
+external get_constant : t -> float = "ml_gtk_constraint_get_constant"
+
+(** Get property: multiplier *)
+external get_multiplier : t -> float = "ml_gtk_constraint_get_multiplier"
+
+(** Get property: strength *)
+external get_strength : t -> int = "ml_gtk_constraint_get_strength"
+
 (** Checks whether the constraint is a required relation for solving the
 constraint layout. *)
 external is_required : t -> bool = "ml_gtk_constraint_is_required"
@@ -33,9 +42,6 @@ If the targe is set to `NULL` at creation, the constraint will use
 the widget using the [class@Gtk.ConstraintLayout] as the target. *)
 external get_target : t -> Constraint_target.t option = "ml_gtk_constraint_get_target"
 
-(** Retrieves the strength of the constraint. *)
-external get_strength : t -> int = "ml_gtk_constraint_get_strength"
-
 (** Retrieves the attribute of the source to be read by the constraint. *)
 external get_source_attribute : t -> Gtk_enums.constraintattribute = "ml_gtk_constraint_get_source_attribute"
 
@@ -48,11 +54,4 @@ external get_source : t -> Constraint_target.t option = "ml_gtk_constraint_get_s
 
 (** The order relation between the terms of the constraint. *)
 external get_relation : t -> Gtk_enums.constraintrelation = "ml_gtk_constraint_get_relation"
-
-(** Retrieves the multiplication factor applied to the source
-attribute's value. *)
-external get_multiplier : t -> float = "ml_gtk_constraint_get_multiplier"
-
-(** Retrieves the constant factor added to the source attributes' value. *)
-external get_constant : t -> float = "ml_gtk_constraint_get_constant"
 

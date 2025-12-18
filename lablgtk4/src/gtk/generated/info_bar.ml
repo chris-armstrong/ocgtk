@@ -13,20 +13,17 @@ external new_with_buttons : string option -> unit -> t = "ml_gtk_info_bar_new_wi
 
 (* Properties *)
 
-(** If true, a standard close button is shown.
+(** Get property: revealed *)
+external get_revealed : t -> bool = "ml_gtk_info_bar_get_revealed"
 
-When clicked it emits the response %GTK_RESPONSE_CLOSE. *)
-external set_show_close_button : t -> bool -> unit = "ml_gtk_info_bar_set_show_close_button"
-
-(** Sets whether the `GtkInfoBar` is revealed.
-
-Changing this will make @info_bar reveal or conceal
-itself via a sliding transition.
-
-Note: this does not show or hide @info_bar in the
-[property@Gtk.Widget:visible] sense, so revealing has no effect
-if [property@Gtk.Widget:visible] is %FALSE. *)
+(** Set property: revealed *)
 external set_revealed : t -> bool -> unit = "ml_gtk_info_bar_set_revealed"
+
+(** Get property: show-close-button *)
+external get_show_close_button : t -> bool = "ml_gtk_info_bar_get_show_close_button"
+
+(** Set property: show-close-button *)
+external set_show_close_button : t -> bool -> unit = "ml_gtk_info_bar_set_show_close_button"
 
 (** Sets the sensitivity of action widgets for @response_id.
 
@@ -60,12 +57,6 @@ external remove_child : t -> Event_controller_and__layout_child_and__layout_mana
 The widget must have been put there by a call to
 [method@Gtk.InfoBar.add_action_widget] or [method@Gtk.InfoBar.add_button]. *)
 external remove_action_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_info_bar_remove_action_widget"
-
-(** Returns whether the widget will display a standard close button. *)
-external get_show_close_button : t -> bool = "ml_gtk_info_bar_get_show_close_button"
-
-(** Returns whether the info bar is currently revealed. *)
-external get_revealed : t -> bool = "ml_gtk_info_bar_get_revealed"
 
 (** Returns the message type of the message area. *)
 external get_message_type : t -> Gtk_enums.messagetype = "ml_gtk_info_bar_get_message_type"

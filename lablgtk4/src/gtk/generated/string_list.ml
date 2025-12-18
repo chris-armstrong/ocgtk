@@ -8,6 +8,9 @@ external new_ : unit -> t = "ml_gtk_string_list_new"
 
 (* Properties *)
 
+(** Get property: n-items *)
+external get_n_items : t -> int = "ml_gtk_string_list_get_n_items"
+
 (** Removes the string at @position from @self.
 
 @position must be smaller than the current

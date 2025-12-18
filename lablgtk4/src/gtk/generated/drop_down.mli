@@ -13,11 +13,23 @@ external new_from_strings : unit -> t = "ml_gtk_drop_down_new_from_strings"
 
 (* Properties *)
 
-(** Sets whether an arrow will be displayed within the widget. *)
-external set_show_arrow : t -> bool -> unit = "ml_gtk_drop_down_set_show_arrow"
+(** Get property: enable-search *)
+external get_enable_search : t -> bool = "ml_gtk_drop_down_get_enable_search"
 
-(** Selects the item at the given position. *)
+(** Set property: enable-search *)
+external set_enable_search : t -> bool -> unit = "ml_gtk_drop_down_set_enable_search"
+
+(** Get property: selected *)
+external get_selected : t -> int = "ml_gtk_drop_down_get_selected"
+
+(** Set property: selected *)
 external set_selected : t -> int -> unit = "ml_gtk_drop_down_set_selected"
+
+(** Get property: show-arrow *)
+external get_show_arrow : t -> bool = "ml_gtk_drop_down_get_show_arrow"
+
+(** Set property: show-arrow *)
+external set_show_arrow : t -> bool -> unit = "ml_gtk_drop_down_set_show_arrow"
 
 (** Sets the match mode for the search filter. *)
 external set_search_match_mode : t -> Gtk_enums.stringfiltermatchmode -> unit = "ml_gtk_drop_down_set_search_match_mode"
@@ -36,19 +48,6 @@ external set_factory : t -> List_item_factory.t option -> unit = "ml_gtk_drop_do
 This is used for search in the popup. The expression must have
 a value type of %G_TYPE_STRING. *)
 external set_expression : t -> Expression.t option -> unit = "ml_gtk_drop_down_set_expression"
-
-(** Sets whether a search entry will be shown in the popup that
-allows to search for items in the list.
-
-Note that [property@Gtk.DropDown:expression] must be set for
-search to work. *)
-external set_enable_search : t -> bool -> unit = "ml_gtk_drop_down_set_enable_search"
-
-(** Returns whether to show an arrow within the widget. *)
-external get_show_arrow : t -> bool = "ml_gtk_drop_down_get_show_arrow"
-
-(** Gets the position of the selected item. *)
-external get_selected : t -> int = "ml_gtk_drop_down_get_selected"
 
 (** Returns the match mode that the search filter is using. *)
 external get_search_match_mode : t -> Gtk_enums.stringfiltermatchmode = "ml_gtk_drop_down_get_search_match_mode"
@@ -70,7 +69,4 @@ external get_factory : t -> List_item_factory.t option = "ml_gtk_drop_down_get_f
 
 See [method@Gtk.DropDown.set_expression]. *)
 external get_expression : t -> Expression.t option = "ml_gtk_drop_down_get_expression"
-
-(** Returns whether search is enabled. *)
-external get_enable_search : t -> bool = "ml_gtk_drop_down_get_enable_search"
 

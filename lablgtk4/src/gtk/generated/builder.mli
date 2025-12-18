@@ -17,16 +17,16 @@ external new_from_string : string -> unit -> t = "ml_gtk_builder_new_from_string
 
 (* Properties *)
 
-(** Sets the translation domain of @builder. *)
-external set_translation_domain : t -> string option -> unit = "ml_gtk_builder_set_translation_domain"
+(** Get property: translation-domain *)
+external get_translation_domain : t -> string = "ml_gtk_builder_get_translation_domain"
+
+(** Set property: translation-domain *)
+external set_translation_domain : t -> string -> unit = "ml_gtk_builder_set_translation_domain"
 
 (** Sets the scope the builder should operate in.
 
 If @scope is %NULL, a new [class@Gtk.BuilderCScope] will be created. *)
 external set_scope : t -> Builder_scope.t option -> unit = "ml_gtk_builder_set_scope"
-
-(** Gets the translation domain of @builder. *)
-external get_translation_domain : t -> string option = "ml_gtk_builder_get_translation_domain"
 
 (** Gets the scope in use that was set via gtk_builder_set_scope(). *)
 external get_scope : t -> Builder_scope.t = "ml_gtk_builder_get_scope"

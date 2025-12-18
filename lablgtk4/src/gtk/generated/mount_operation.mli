@@ -8,6 +8,9 @@ external new_ : Application_and__window_and__window_group.Window.t option -> t =
 
 (* Properties *)
 
+(** Get property: is-showing *)
+external get_is_showing : t -> bool = "ml_gtk_mount_operation_get_is_showing"
+
 (** Sets the transient parent for windows shown by the
 `GtkMountOperation`. *)
 external set_parent : t -> Application_and__window_and__window_group.Window.t option -> unit = "ml_gtk_mount_operation_set_parent"

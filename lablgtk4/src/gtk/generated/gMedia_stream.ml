@@ -1,21 +1,30 @@
 (* High-level class for MediaStream *)
 class media_stream (obj : Media_stream.t) = object (self)
 
-  method ended : unit -> unit = fun () -> (Media_stream.ended obj )
+  method ended = Media_stream.get_ended obj
 
-  method get_ended : unit -> bool = fun () -> (Media_stream.get_ended obj )
+  method has_audio = Media_stream.get_has_audio obj
 
-  method get_loop : unit -> bool = fun () -> (Media_stream.get_loop obj )
+  method has_video = Media_stream.get_has_video obj
 
-  method get_muted : unit -> bool = fun () -> (Media_stream.get_muted obj )
+  method loop = Media_stream.get_loop obj
+  method set_loop v = Media_stream.set_loop obj v
 
-  method get_playing : unit -> bool = fun () -> (Media_stream.get_playing obj )
+  method muted = Media_stream.get_muted obj
+  method set_muted v = Media_stream.set_muted obj v
 
-  method get_volume : unit -> float = fun () -> (Media_stream.get_volume obj )
+  method playing = Media_stream.get_playing obj
+  method set_playing v = Media_stream.set_playing obj v
 
-  method has_audio : unit -> bool = fun () -> (Media_stream.has_audio obj )
+  method prepared = Media_stream.get_prepared obj
+  method set_prepared v = Media_stream.set_prepared obj v
 
-  method has_video : unit -> bool = fun () -> (Media_stream.has_video obj )
+  method seekable = Media_stream.get_seekable obj
+
+  method seeking = Media_stream.get_seeking obj
+
+  method volume = Media_stream.get_volume obj
+  method set_volume v = Media_stream.set_volume obj v
 
   method is_prepared : unit -> bool = fun () -> (Media_stream.is_prepared obj )
 
@@ -30,14 +39,6 @@ class media_stream (obj : Media_stream.t) = object (self)
   method seek_failed : unit -> unit = fun () -> (Media_stream.seek_failed obj )
 
   method seek_success : unit -> unit = fun () -> (Media_stream.seek_success obj )
-
-  method set_loop : bool -> unit = fun loop -> (Media_stream.set_loop obj loop)
-
-  method set_muted : bool -> unit = fun muted -> (Media_stream.set_muted obj muted)
-
-  method set_playing : bool -> unit = fun playing -> (Media_stream.set_playing obj playing)
-
-  method set_volume : float -> unit = fun volume -> (Media_stream.set_volume obj volume)
 
   method stream_ended : unit -> unit = fun () -> (Media_stream.stream_ended obj )
 

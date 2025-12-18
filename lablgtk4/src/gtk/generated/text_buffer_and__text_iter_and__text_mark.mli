@@ -9,17 +9,32 @@ module rec Text_buffer : sig
 
   (* Properties *)
 
+  (** Get property: can-redo *)
+  external get_can_redo : t -> bool = "ml_gtk_text_buffer_get_can_redo"
+
+  (** Get property: can-undo *)
+  external get_can_undo : t -> bool = "ml_gtk_text_buffer_get_can_undo"
+
+  (** Get property: cursor-position *)
+  external get_cursor_position : t -> int = "ml_gtk_text_buffer_get_cursor_position"
+
+  (** Get property: enable-undo *)
+  external get_enable_undo : t -> bool = "ml_gtk_text_buffer_get_enable_undo"
+
+  (** Set property: enable-undo *)
+  external set_enable_undo : t -> bool -> unit = "ml_gtk_text_buffer_set_enable_undo"
+
+  (** Get property: has-selection *)
+  external get_has_selection : t -> bool = "ml_gtk_text_buffer_get_has_selection"
+
+  (** Get property: text *)
+  external get_text : t -> string = "ml_gtk_text_buffer_get_text"
+
+  (** Set property: text *)
+  external set_text : t -> string -> unit = "ml_gtk_text_buffer_set_text"
+
   (** Undoes the last undoable action on the buffer, if there is one. *)
   external undo : t -> unit = "ml_gtk_text_buffer_undo"
-
-  (** Deletes current contents of @buffer, and inserts @text instead. This is
-  automatically marked as an irreversible action in the undo stack. If you
-  wish to mark this action as part of a larger undo operation, call
-  [method@TextBuffer.delete] and [method@TextBuffer.insert] directly instead.
-
-  If @len is -1, @text must be nul-terminated.
-  @text must be valid UTF-8. *)
-  external set_text : t -> string -> int -> unit = "ml_gtk_text_buffer_set_text"
 
   (** Used to keep track of whether the buffer has been
   modified since the last time it was saved.
@@ -38,19 +53,6 @@ module rec Text_buffer : sig
   have a memory usage impact as it requires storing an additional
   copy of the inserted or removed text within the text buffer. *)
   external set_max_undo_levels : t -> int -> unit = "ml_gtk_text_buffer_set_max_undo_levels"
-
-  (** Sets whether or not to enable undoable actions in the text buffer.
-
-  Undoable actions in this context are changes to the text content of
-  the buffer. Changes to tags and marks are not tracked.
-
-  If enabled, the user will be able to undo the last number of actions
-  up to [method@Gtk.TextBuffer.get_max_undo_levels].
-
-  See [method@Gtk.TextBuffer.begin_irreversible_action] and
-  [method@Gtk.TextBuffer.end_irreversible_action] to create
-  changes to the buffer that cannot be undone. *)
-  external set_enable_undo : t -> bool -> unit = "ml_gtk_text_buffer_set_enable_undo"
 
   (** This function moves the “insert” and “selection_bound” marks
   simultaneously.
@@ -296,9 +298,6 @@ module rec Text_buffer : sig
   efficient, and involves less typing. *)
   external get_insert : t -> Text_mark.t = "ml_gtk_text_buffer_get_insert"
 
-  (** Indicates whether the buffer has some text currently selected. *)
-  external get_has_selection : t -> bool = "ml_gtk_text_buffer_get_has_selection"
-
   (** Initializes @iter with the “end iterator,” one past the last valid
   character in the text buffer.
 
@@ -309,14 +308,6 @@ module rec Text_buffer : sig
   character position 0) to the end iterator. *)
   external get_end_iter : t -> Text_iter.t = "ml_gtk_text_buffer_get_end_iter"
 
-  (** Gets whether the buffer is saving modifications to the buffer
-  to allow for undo and redo actions.
-
-  See [method@Gtk.TextBuffer.begin_irreversible_action] and
-  [method@Gtk.TextBuffer.end_irreversible_action] to create
-  changes to the buffer that cannot be undone. *)
-  external get_enable_undo : t -> bool = "ml_gtk_text_buffer_get_enable_undo"
-
   (** Gets the number of characters in the buffer.
 
   Note that characters and bytes are not the same, you can’t e.g.
@@ -325,12 +316,6 @@ module rec Text_buffer : sig
 
   The character count is cached, so this function is very fast. *)
   external get_char_count : t -> int = "ml_gtk_text_buffer_get_char_count"
-
-  (** Gets whether there is an undoable action in the history. *)
-  external get_can_undo : t -> bool = "ml_gtk_text_buffer_get_can_undo"
-
-  (** Gets whether there is a redoable action in the history. *)
-  external get_can_redo : t -> bool = "ml_gtk_text_buffer_get_can_redo"
 
   (** Retrieves the first and last iterators in the buffer, i.e. the
   entire buffer lies within the range [@start,@end). *)
@@ -1126,20 +1111,18 @@ and Text_mark
 
   (* Properties *)
 
+  (** Get property: left-gravity *)
+  external get_left_gravity : t -> bool = "ml_gtk_text_mark_get_left_gravity"
+
+  (** Get property: name *)
+  external get_name : t -> string = "ml_gtk_text_mark_get_name"
+
   external set_visible : t -> bool -> unit = "ml_gtk_text_mark_set_visible"
 
   (** Returns %TRUE if the mark is visible.
 
   A cursor is displayed for visible marks. *)
   external get_visible : t -> bool = "ml_gtk_text_mark_get_visible"
-
-  (** Returns the mark name.
-
-  Returns %NULL for anonymous marks. *)
-  external get_name : t -> string option = "ml_gtk_text_mark_get_name"
-
-  (** Determines whether the mark has left gravity. *)
-  external get_left_gravity : t -> bool = "ml_gtk_text_mark_get_left_gravity"
 
   (** Returns %TRUE if the mark has been removed from its buffer.
 

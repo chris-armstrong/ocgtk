@@ -1,6 +1,8 @@
 (* High-level class for MultiSorter *)
 class multi_sorter (obj : Multi_sorter.t) = object (self)
 
+  method n_items = Multi_sorter.get_n_items obj
+
   method append : 'p1. (#GSorter.sorter as 'p1) -> unit = fun sorter -> (Multi_sorter.append obj ( sorter#as_sorter ))
 
   method remove : int -> unit = fun position -> (Multi_sorter.remove obj position)

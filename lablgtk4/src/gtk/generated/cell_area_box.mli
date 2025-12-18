@@ -8,7 +8,10 @@ external new_ : unit -> t = "ml_gtk_cell_area_box_new"
 
 (* Properties *)
 
-(** Sets the spacing to add between cell renderers in @box. *)
+(** Get property: spacing *)
+external get_spacing : t -> int = "ml_gtk_cell_area_box_get_spacing"
+
+(** Set property: spacing *)
 external set_spacing : t -> int -> unit = "ml_gtk_cell_area_box_set_spacing"
 
 (** Adds @renderer to @box, packed with reference to the start of @box.
@@ -22,7 +25,4 @@ external pack_start : t -> Cell_renderer.t -> bool -> bool -> bool -> unit = "ml
 The @renderer is packed after (away from end of) any other
 `GtkCellRenderer` packed with reference to the end of @box. *)
 external pack_end : t -> Cell_renderer.t -> bool -> bool -> bool -> unit = "ml_gtk_cell_area_box_pack_end"
-
-(** Gets the spacing added between cell renderers. *)
-external get_spacing : t -> int = "ml_gtk_cell_area_box_get_spacing"
 

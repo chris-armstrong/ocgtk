@@ -36,66 +36,134 @@ GtkFontButton *obj = gtk_font_button_new_with_font(String_val(arg1));
 CAMLreturn(Val_GtkFontButton(obj));
 }
 
-CAMLexport CAMLprim value ml_gtk_font_button_set_use_size(value self, value arg1)
+CAMLexport CAMLprim value ml_gtk_font_button_get_modal(value self)
 {
-CAMLparam2(self, arg1);
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkFontButton *obj = (GtkFontButton *)GtkFontButton_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "modal");
+if (pspec == NULL) caml_failwith("ml_gtk_font_button_get_modal: property 'modal' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "modal", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
 
-gtk_font_button_set_use_size(GtkFontButton_val(self), Bool_val(arg1));
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_font_button_set_modal(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkFontButton *obj = (GtkFontButton *)GtkFontButton_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "modal");
+if (pspec == NULL) caml_failwith("ml_gtk_font_button_set_modal: property 'modal' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "modal", &prop_gvalue);
+g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_font_button_set_use_font(value self, value arg1)
+CAMLexport CAMLprim value ml_gtk_font_button_get_title(value self)
 {
-CAMLparam2(self, arg1);
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkFontButton *obj = (GtkFontButton *)GtkFontButton_val(self);
+    gchar* *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "title");
+if (pspec == NULL) caml_failwith("ml_gtk_font_button_get_title: property 'title' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "title", &prop_gvalue);
+    prop_value = g_value_get_string(&prop_gvalue);
 
-gtk_font_button_set_use_font(GtkFontButton_val(self), Bool_val(arg1));
+result = caml_copy_string(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_font_button_set_title(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkFontButton *obj = (GtkFontButton *)GtkFontButton_val(self);
+    ML_DECL_CONST_STRING(c_value, String_val(new_value));
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "title");
+if (pspec == NULL) caml_failwith("ml_gtk_font_button_set_title: property 'title' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_string(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "title", &prop_gvalue);
+g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_font_button_set_title(value self, value arg1)
+CAMLexport CAMLprim value ml_gtk_font_button_get_use_font(value self)
 {
-CAMLparam2(self, arg1);
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkFontButton *obj = (GtkFontButton *)GtkFontButton_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "use-font");
+if (pspec == NULL) caml_failwith("ml_gtk_font_button_get_use_font: property 'use-font' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "use-font", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
 
-gtk_font_button_set_title(GtkFontButton_val(self), String_val(arg1));
-CAMLreturn(Val_unit);
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
 }
 
-CAMLexport CAMLprim value ml_gtk_font_button_set_modal(value self, value arg1)
+CAMLexport CAMLprim value ml_gtk_font_button_set_use_font(value self, value new_value)
 {
-CAMLparam2(self, arg1);
-
-gtk_font_button_set_modal(GtkFontButton_val(self), Bool_val(arg1));
+CAMLparam2(self, new_value);
+GtkFontButton *obj = (GtkFontButton *)GtkFontButton_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "use-font");
+if (pspec == NULL) caml_failwith("ml_gtk_font_button_set_use_font: property 'use-font' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "use-font", &prop_gvalue);
+g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_font_button_get_use_size(value self)
 {
 CAMLparam1(self);
+CAMLlocal1(result);
+GtkFontButton *obj = (GtkFontButton *)GtkFontButton_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "use-size");
+if (pspec == NULL) caml_failwith("ml_gtk_font_button_get_use_size: property 'use-size' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "use-size", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
 
-gboolean result = gtk_font_button_get_use_size(GtkFontButton_val(self));
-CAMLreturn(Val_bool(result));
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
 }
 
-CAMLexport CAMLprim value ml_gtk_font_button_get_use_font(value self)
+CAMLexport CAMLprim value ml_gtk_font_button_set_use_size(value self, value new_value)
 {
-CAMLparam1(self);
-
-gboolean result = gtk_font_button_get_use_font(GtkFontButton_val(self));
-CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_font_button_get_title(value self)
-{
-CAMLparam1(self);
-
-const char* result = gtk_font_button_get_title(GtkFontButton_val(self));
-CAMLreturn(caml_copy_string(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_font_button_get_modal(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_font_button_get_modal(GtkFontButton_val(self));
-CAMLreturn(Val_bool(result));
+CAMLparam2(self, new_value);
+GtkFontButton *obj = (GtkFontButton *)GtkFontButton_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "use-size");
+if (pspec == NULL) caml_failwith("ml_gtk_font_button_set_use_size: property 'use-size' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "use-size", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
 }

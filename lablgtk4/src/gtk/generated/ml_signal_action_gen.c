@@ -32,7 +32,17 @@ CAMLreturn(Val_GtkSignalAction(obj));
 CAMLexport CAMLprim value ml_gtk_signal_action_get_signal_name(value self)
 {
 CAMLparam1(self);
+CAMLlocal1(result);
+GtkSignalAction *obj = (GtkSignalAction *)GtkSignalAction_val(self);
+    gchar* *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "signal-name");
+if (pspec == NULL) caml_failwith("ml_gtk_signal_action_get_signal_name: property 'signal-name' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "signal-name", &prop_gvalue);
+    prop_value = g_value_get_string(&prop_gvalue);
 
-const char* result = gtk_signal_action_get_signal_name(GtkSignalAction_val(self));
-CAMLreturn(caml_copy_string(result));
+result = caml_copy_string(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
 }

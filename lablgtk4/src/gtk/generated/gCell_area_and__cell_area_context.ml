@@ -91,6 +91,14 @@ end
 
 and cell_area_context (obj : Cell_area_and__cell_area_context.Cell_area_context.t) = object (self)
 
+  method minimum_height = Cell_area_and__cell_area_context.Cell_area_context.get_minimum_height obj
+
+  method minimum_width = Cell_area_and__cell_area_context.Cell_area_context.get_minimum_width obj
+
+  method natural_height = Cell_area_and__cell_area_context.Cell_area_context.get_natural_height obj
+
+  method natural_width = Cell_area_and__cell_area_context.Cell_area_context.get_natural_width obj
+
   method allocate : int -> int -> unit = fun width height -> (Cell_area_and__cell_area_context.Cell_area_context.allocate obj width height)
 
   method get_area : unit -> cell_area = fun () -> new  cell_area(Cell_area_and__cell_area_context.Cell_area_context.get_area obj )

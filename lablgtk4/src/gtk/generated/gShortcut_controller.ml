@@ -2,6 +2,8 @@
 class shortcut_controller (obj : Shortcut_controller.t) = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller (Shortcut_controller.as_event_controller obj)
 
+  method n_items = Shortcut_controller.get_n_items obj
+
   method add_shortcut : 'p1. (#GShortcut.shortcut as 'p1) -> unit = fun shortcut -> (Shortcut_controller.add_shortcut obj ( shortcut#as_shortcut ))
 
   method get_mnemonics_modifiers : unit -> Gdk.modifiertype = fun () -> (Shortcut_controller.get_mnemonics_modifiers obj )

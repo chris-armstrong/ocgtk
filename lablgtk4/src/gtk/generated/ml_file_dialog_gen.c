@@ -29,68 +29,12 @@ GtkFileDialog *obj = gtk_file_dialog_new();
 CAMLreturn(Val_GtkFileDialog(obj));
 }
 
-CAMLexport CAMLprim value ml_gtk_file_dialog_set_title(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_file_dialog_set_title(GtkFileDialog_val(self), String_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_file_dialog_set_modal(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_file_dialog_set_modal(GtkFileDialog_val(self), Bool_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_file_dialog_set_initial_name(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_file_dialog_set_initial_name(GtkFileDialog_val(self), String_option_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_file_dialog_set_default_filter(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gtk_file_dialog_set_default_filter(GtkFileDialog_val(self), Option_val(arg1, GtkFileFilter_val, NULL));
 CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_file_dialog_set_accept_label(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_file_dialog_set_accept_label(GtkFileDialog_val(self), String_option_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_file_dialog_get_title(value self)
-{
-CAMLparam1(self);
-
-const char* result = gtk_file_dialog_get_title(GtkFileDialog_val(self));
-CAMLreturn(caml_copy_string(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_file_dialog_get_modal(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_file_dialog_get_modal(GtkFileDialog_val(self));
-CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_file_dialog_get_initial_name(value self)
-{
-CAMLparam1(self);
-
-const char* result = gtk_file_dialog_get_initial_name(GtkFileDialog_val(self));
-CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_file_dialog_get_default_filter(value self)
@@ -104,7 +48,131 @@ CAMLreturn(Val_option(result, Val_GtkFileFilter));
 CAMLexport CAMLprim value ml_gtk_file_dialog_get_accept_label(value self)
 {
 CAMLparam1(self);
+CAMLlocal1(result);
+GtkFileDialog *obj = (GtkFileDialog *)GtkFileDialog_val(self);
+    gchar* *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accept-label");
+if (pspec == NULL) caml_failwith("ml_gtk_file_dialog_get_accept_label: property 'accept-label' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "accept-label", &prop_gvalue);
+    prop_value = g_value_get_string(&prop_gvalue);
 
-const char* result = gtk_file_dialog_get_accept_label(GtkFileDialog_val(self));
-CAMLreturn(Val_option_string(result));
+result = caml_copy_string(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_set_accept_label(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkFileDialog *obj = (GtkFileDialog *)GtkFileDialog_val(self);
+    ML_DECL_CONST_STRING(c_value, String_val(new_value));
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accept-label");
+if (pspec == NULL) caml_failwith("ml_gtk_file_dialog_set_accept_label: property 'accept-label' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_string(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "accept-label", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_get_initial_name(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkFileDialog *obj = (GtkFileDialog *)GtkFileDialog_val(self);
+    gchar* *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "initial-name");
+if (pspec == NULL) caml_failwith("ml_gtk_file_dialog_get_initial_name: property 'initial-name' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "initial-name", &prop_gvalue);
+    prop_value = g_value_get_string(&prop_gvalue);
+
+result = caml_copy_string(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_set_initial_name(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkFileDialog *obj = (GtkFileDialog *)GtkFileDialog_val(self);
+    ML_DECL_CONST_STRING(c_value, String_val(new_value));
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "initial-name");
+if (pspec == NULL) caml_failwith("ml_gtk_file_dialog_set_initial_name: property 'initial-name' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_string(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "initial-name", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_get_modal(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkFileDialog *obj = (GtkFileDialog *)GtkFileDialog_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "modal");
+if (pspec == NULL) caml_failwith("ml_gtk_file_dialog_get_modal: property 'modal' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "modal", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_set_modal(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkFileDialog *obj = (GtkFileDialog *)GtkFileDialog_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "modal");
+if (pspec == NULL) caml_failwith("ml_gtk_file_dialog_set_modal: property 'modal' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "modal", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_get_title(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkFileDialog *obj = (GtkFileDialog *)GtkFileDialog_val(self);
+    gchar* *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "title");
+if (pspec == NULL) caml_failwith("ml_gtk_file_dialog_get_title: property 'title' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "title", &prop_gvalue);
+    prop_value = g_value_get_string(&prop_gvalue);
+
+result = caml_copy_string(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_set_title(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkFileDialog *obj = (GtkFileDialog *)GtkFileDialog_val(self);
+    ML_DECL_CONST_STRING(c_value, String_val(new_value));
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "title");
+if (pspec == NULL) caml_failwith("ml_gtk_file_dialog_set_title: property 'title' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_string(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "title", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
 }

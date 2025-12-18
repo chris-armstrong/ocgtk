@@ -8,6 +8,9 @@ external new_ : unit -> t = "ml_gtk_multi_sorter_new"
 
 (* Properties *)
 
+(** Get property: n-items *)
+external get_n_items : t -> int = "ml_gtk_multi_sorter_get_n_items"
+
 (** Removes the sorter at the given @position from the list of sorter
 used by @self.
 

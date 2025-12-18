@@ -29,34 +29,68 @@ GtkFileChooserNative *obj = gtk_file_chooser_native_new(String_option_val(arg1),
 CAMLreturn(Val_GtkFileChooserNative(obj));
 }
 
-CAMLexport CAMLprim value ml_gtk_file_chooser_native_set_cancel_label(value self, value arg1)
+CAMLexport CAMLprim value ml_gtk_file_chooser_native_get_accept_label(value self)
 {
-CAMLparam2(self, arg1);
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkFileChooserNative *obj = (GtkFileChooserNative *)GtkFileChooserNative_val(self);
+    gchar* *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accept-label");
+if (pspec == NULL) caml_failwith("ml_gtk_file_chooser_native_get_accept_label: property 'accept-label' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "accept-label", &prop_gvalue);
+    prop_value = g_value_get_string(&prop_gvalue);
 
-gtk_file_chooser_native_set_cancel_label(GtkFileChooserNative_val(self), String_option_val(arg1));
-CAMLreturn(Val_unit);
+result = caml_copy_string(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
 }
 
-CAMLexport CAMLprim value ml_gtk_file_chooser_native_set_accept_label(value self, value arg1)
+CAMLexport CAMLprim value ml_gtk_file_chooser_native_set_accept_label(value self, value new_value)
 {
-CAMLparam2(self, arg1);
-
-gtk_file_chooser_native_set_accept_label(GtkFileChooserNative_val(self), String_option_val(arg1));
+CAMLparam2(self, new_value);
+GtkFileChooserNative *obj = (GtkFileChooserNative *)GtkFileChooserNative_val(self);
+    ML_DECL_CONST_STRING(c_value, String_val(new_value));
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accept-label");
+if (pspec == NULL) caml_failwith("ml_gtk_file_chooser_native_set_accept_label: property 'accept-label' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_string(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "accept-label", &prop_gvalue);
+g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_file_chooser_native_get_cancel_label(value self)
 {
 CAMLparam1(self);
+CAMLlocal1(result);
+GtkFileChooserNative *obj = (GtkFileChooserNative *)GtkFileChooserNative_val(self);
+    gchar* *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "cancel-label");
+if (pspec == NULL) caml_failwith("ml_gtk_file_chooser_native_get_cancel_label: property 'cancel-label' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "cancel-label", &prop_gvalue);
+    prop_value = g_value_get_string(&prop_gvalue);
 
-const char* result = gtk_file_chooser_native_get_cancel_label(GtkFileChooserNative_val(self));
-CAMLreturn(Val_option_string(result));
+result = caml_copy_string(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
 }
 
-CAMLexport CAMLprim value ml_gtk_file_chooser_native_get_accept_label(value self)
+CAMLexport CAMLprim value ml_gtk_file_chooser_native_set_cancel_label(value self, value new_value)
 {
-CAMLparam1(self);
-
-const char* result = gtk_file_chooser_native_get_accept_label(GtkFileChooserNative_val(self));
-CAMLreturn(Val_option_string(result));
+CAMLparam2(self, new_value);
+GtkFileChooserNative *obj = (GtkFileChooserNative *)GtkFileChooserNative_val(self);
+    ML_DECL_CONST_STRING(c_value, String_val(new_value));
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "cancel-label");
+if (pspec == NULL) caml_failwith("ml_gtk_file_chooser_native_set_cancel_label: property 'cancel-label' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_string(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "cancel-label", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
 }

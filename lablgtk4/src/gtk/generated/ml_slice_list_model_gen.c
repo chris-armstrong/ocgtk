@@ -29,34 +29,86 @@ GtkSliceListModel *obj = gtk_slice_list_model_new(arg1, Int_val(arg2), Int_val(a
 CAMLreturn(Val_GtkSliceListModel(obj));
 }
 
-CAMLexport CAMLprim value ml_gtk_slice_list_model_set_size(value self, value arg1)
+CAMLexport CAMLprim value ml_gtk_slice_list_model_get_n_items(value self)
 {
-CAMLparam2(self, arg1);
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkSliceListModel *obj = (GtkSliceListModel *)GtkSliceListModel_val(self);
+    guint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "n-items");
+if (pspec == NULL) caml_failwith("ml_gtk_slice_list_model_get_n_items: property 'n-items' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "n-items", &prop_gvalue);
+    prop_value = (guint)g_value_get_uint(&prop_gvalue);
 
-gtk_slice_list_model_set_size(GtkSliceListModel_val(self), Int_val(arg1));
-CAMLreturn(Val_unit);
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
 }
 
-CAMLexport CAMLprim value ml_gtk_slice_list_model_set_offset(value self, value arg1)
+CAMLexport CAMLprim value ml_gtk_slice_list_model_get_offset(value self)
 {
-CAMLparam2(self, arg1);
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkSliceListModel *obj = (GtkSliceListModel *)GtkSliceListModel_val(self);
+    guint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "offset");
+if (pspec == NULL) caml_failwith("ml_gtk_slice_list_model_get_offset: property 'offset' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "offset", &prop_gvalue);
+    prop_value = (guint)g_value_get_uint(&prop_gvalue);
 
-gtk_slice_list_model_set_offset(GtkSliceListModel_val(self), Int_val(arg1));
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_slice_list_model_set_offset(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkSliceListModel *obj = (GtkSliceListModel *)GtkSliceListModel_val(self);
+    guint c_value = Int_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "offset");
+if (pspec == NULL) caml_failwith("ml_gtk_slice_list_model_set_offset: property 'offset' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_uint(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "offset", &prop_gvalue);
+g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_slice_list_model_get_size(value self)
 {
 CAMLparam1(self);
+CAMLlocal1(result);
+GtkSliceListModel *obj = (GtkSliceListModel *)GtkSliceListModel_val(self);
+    guint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "size");
+if (pspec == NULL) caml_failwith("ml_gtk_slice_list_model_get_size: property 'size' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "size", &prop_gvalue);
+    prop_value = (guint)g_value_get_uint(&prop_gvalue);
 
-guint result = gtk_slice_list_model_get_size(GtkSliceListModel_val(self));
-CAMLreturn(Val_int(result));
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
 }
 
-CAMLexport CAMLprim value ml_gtk_slice_list_model_get_offset(value self)
+CAMLexport CAMLprim value ml_gtk_slice_list_model_set_size(value self, value new_value)
 {
-CAMLparam1(self);
-
-guint result = gtk_slice_list_model_get_offset(GtkSliceListModel_val(self));
-CAMLreturn(Val_int(result));
+CAMLparam2(self, new_value);
+GtkSliceListModel *obj = (GtkSliceListModel *)GtkSliceListModel_val(self);
+    guint c_value = Int_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "size");
+if (pspec == NULL) caml_failwith("ml_gtk_slice_list_model_set_size: property 'size' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_uint(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "size", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
 }

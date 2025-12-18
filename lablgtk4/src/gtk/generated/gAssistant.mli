@@ -2,6 +2,7 @@ class assistant : Assistant.t ->
   object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
     inherit Gassistant_signals.assistant_signals
+    method use_header_bar : int
     method add_action_widget : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> unit
     method append_page : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> int
     method commit : unit -> unit

@@ -44,3 +44,21 @@ CAMLparam1(self);
 GtkSelectionModel* result = gtk_selection_filter_model_get_model(GtkSelectionFilterModel_val(self));
 CAMLreturn(Val_option(result, Val_GtkSelectionModel));
 }
+
+CAMLexport CAMLprim value ml_gtk_selection_filter_model_get_n_items(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkSelectionFilterModel *obj = (GtkSelectionFilterModel *)GtkSelectionFilterModel_val(self);
+    guint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "n-items");
+if (pspec == NULL) caml_failwith("ml_gtk_selection_filter_model_get_n_items: property 'n-items' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "n-items", &prop_gvalue);
+    prop_value = (guint)g_value_get_uint(&prop_gvalue);
+
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}

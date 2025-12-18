@@ -10,6 +10,12 @@ external new_ : unit -> t = "ml_gtk_event_controller_motion_new"
 
 (* Properties *)
 
+(** Get property: contains-pointer *)
+external get_contains_pointer : t -> bool = "ml_gtk_event_controller_motion_get_contains_pointer"
+
+(** Get property: is-pointer *)
+external get_is_pointer : t -> bool = "ml_gtk_event_controller_motion_get_is_pointer"
+
 (** Returns if a pointer is within @self, but not one of its children. *)
 external is_pointer : t -> bool = "ml_gtk_event_controller_motion_is_pointer"
 

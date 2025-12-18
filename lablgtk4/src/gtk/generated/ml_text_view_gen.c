@@ -52,70 +52,6 @@ gtk_text_view_set_wrap_mode(GtkTextView_val(self), GtkWrapMode_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_text_view_set_top_margin(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_text_view_set_top_margin(GtkTextView_val(self), Int_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_text_view_set_right_margin(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_text_view_set_right_margin(GtkTextView_val(self), Int_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_text_view_set_pixels_inside_wrap(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_text_view_set_pixels_inside_wrap(GtkTextView_val(self), Int_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_text_view_set_pixels_below_lines(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_text_view_set_pixels_below_lines(GtkTextView_val(self), Int_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_text_view_set_pixels_above_lines(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_text_view_set_pixels_above_lines(GtkTextView_val(self), Int_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_text_view_set_overwrite(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_text_view_set_overwrite(GtkTextView_val(self), Bool_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_text_view_set_monospace(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_text_view_set_monospace(GtkTextView_val(self), Bool_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_text_view_set_left_margin(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_text_view_set_left_margin(GtkTextView_val(self), Int_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_text_view_set_justification(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -140,14 +76,6 @@ gtk_text_view_set_input_hints(GtkTextView_val(self), GtkInputHints_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_text_view_set_indent(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_text_view_set_indent(GtkTextView_val(self), Int_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_text_view_set_gutter(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -156,43 +84,11 @@ gtk_text_view_set_gutter(GtkTextView_val(self), GtkTextWindowType_val(arg1), Gtk
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_text_view_set_editable(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_text_view_set_editable(GtkTextView_val(self), Bool_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_text_view_set_cursor_visible(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_text_view_set_cursor_visible(GtkTextView_val(self), Bool_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_text_view_set_buffer(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gtk_text_view_set_buffer(GtkTextView_val(self), Option_val(arg1, GtkTextBuffer_val, NULL));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_text_view_set_bottom_margin(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_text_view_set_bottom_margin(GtkTextView_val(self), Int_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_text_view_set_accepts_tab(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_text_view_set_accepts_tab(GtkTextView_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -304,70 +200,6 @@ GtkWrapMode result = gtk_text_view_get_wrap_mode(GtkTextView_val(self));
 CAMLreturn(Val_GtkWrapMode(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_text_view_get_top_margin(value self)
-{
-CAMLparam1(self);
-
-int result = gtk_text_view_get_top_margin(GtkTextView_val(self));
-CAMLreturn(Val_int(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_text_view_get_right_margin(value self)
-{
-CAMLparam1(self);
-
-int result = gtk_text_view_get_right_margin(GtkTextView_val(self));
-CAMLreturn(Val_int(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_text_view_get_pixels_inside_wrap(value self)
-{
-CAMLparam1(self);
-
-int result = gtk_text_view_get_pixels_inside_wrap(GtkTextView_val(self));
-CAMLreturn(Val_int(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_text_view_get_pixels_below_lines(value self)
-{
-CAMLparam1(self);
-
-int result = gtk_text_view_get_pixels_below_lines(GtkTextView_val(self));
-CAMLreturn(Val_int(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_text_view_get_pixels_above_lines(value self)
-{
-CAMLparam1(self);
-
-int result = gtk_text_view_get_pixels_above_lines(GtkTextView_val(self));
-CAMLreturn(Val_int(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_text_view_get_overwrite(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_text_view_get_overwrite(GtkTextView_val(self));
-CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_text_view_get_monospace(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_text_view_get_monospace(GtkTextView_val(self));
-CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_text_view_get_left_margin(value self)
-{
-CAMLparam1(self);
-
-int result = gtk_text_view_get_left_margin(GtkTextView_val(self));
-CAMLreturn(Val_int(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_text_view_get_justification(value self)
 {
 CAMLparam1(self);
@@ -405,14 +237,6 @@ GtkInputHints result = gtk_text_view_get_input_hints(GtkTextView_val(self));
 CAMLreturn(Val_GtkInputHints(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_text_view_get_indent(value self)
-{
-CAMLparam1(self);
-
-int result = gtk_text_view_get_indent(GtkTextView_val(self));
-CAMLreturn(Val_int(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_text_view_get_gutter(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -421,44 +245,12 @@ GtkWidget* result = gtk_text_view_get_gutter(GtkTextView_val(self), GtkTextWindo
 CAMLreturn(Val_GtkWidget_option(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_text_view_get_editable(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_text_view_get_editable(GtkTextView_val(self));
-CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_text_view_get_cursor_visible(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_text_view_get_cursor_visible(GtkTextView_val(self));
-CAMLreturn(Val_bool(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_text_view_get_buffer(value self)
 {
 CAMLparam1(self);
 
 GtkTextBuffer* result = gtk_text_view_get_buffer(GtkTextView_val(self));
 CAMLreturn(Val_GtkTextBuffer(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_text_view_get_bottom_margin(value self)
-{
-CAMLparam1(self);
-
-int result = gtk_text_view_get_bottom_margin(GtkTextView_val(self));
-CAMLreturn(Val_int(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_text_view_get_accepts_tab(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_text_view_get_accepts_tab(GtkTextView_val(self));
-CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_view_forward_display_line_end(value self, value arg1)
@@ -506,5 +298,467 @@ CAMLexport CAMLprim value ml_gtk_text_view_add_child_at_anchor(value self, value
 CAMLparam3(self, arg1, arg2);
 
 gtk_text_view_add_child_at_anchor(GtkTextView_val(self), GtkWidget_val(arg1), GtkTextChildAnchor_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_accepts_tab(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accepts-tab");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_get_accepts_tab: property 'accepts-tab' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "accepts-tab", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_set_accepts_tab(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accepts-tab");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_set_accepts_tab: property 'accepts-tab' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "accepts-tab", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_bottom_margin(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "bottom-margin");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_get_bottom_margin: property 'bottom-margin' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "bottom-margin", &prop_gvalue);
+    prop_value = (gint)g_value_get_int(&prop_gvalue);
+
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_set_bottom_margin(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gint c_value = Int_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "bottom-margin");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_set_bottom_margin: property 'bottom-margin' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_int(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "bottom-margin", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_cursor_visible(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "cursor-visible");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_get_cursor_visible: property 'cursor-visible' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "cursor-visible", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_set_cursor_visible(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "cursor-visible");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_set_cursor_visible: property 'cursor-visible' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "cursor-visible", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_editable(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "editable");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_get_editable: property 'editable' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "editable", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_set_editable(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "editable");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_set_editable: property 'editable' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "editable", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_im_module(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gchar* *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "im-module");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_get_im_module: property 'im-module' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "im-module", &prop_gvalue);
+    prop_value = g_value_get_string(&prop_gvalue);
+
+result = caml_copy_string(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_set_im_module(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    ML_DECL_CONST_STRING(c_value, String_val(new_value));
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "im-module");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_set_im_module: property 'im-module' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_string(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "im-module", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_indent(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "indent");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_get_indent: property 'indent' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "indent", &prop_gvalue);
+    prop_value = (gint)g_value_get_int(&prop_gvalue);
+
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_set_indent(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gint c_value = Int_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "indent");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_set_indent: property 'indent' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_int(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "indent", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_left_margin(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "left-margin");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_get_left_margin: property 'left-margin' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "left-margin", &prop_gvalue);
+    prop_value = (gint)g_value_get_int(&prop_gvalue);
+
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_set_left_margin(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gint c_value = Int_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "left-margin");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_set_left_margin: property 'left-margin' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_int(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "left-margin", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_monospace(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "monospace");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_get_monospace: property 'monospace' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "monospace", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_set_monospace(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "monospace");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_set_monospace: property 'monospace' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "monospace", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_overwrite(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "overwrite");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_get_overwrite: property 'overwrite' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "overwrite", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_set_overwrite(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "overwrite");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_set_overwrite: property 'overwrite' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "overwrite", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_pixels_above_lines(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "pixels-above-lines");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_get_pixels_above_lines: property 'pixels-above-lines' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "pixels-above-lines", &prop_gvalue);
+    prop_value = (gint)g_value_get_int(&prop_gvalue);
+
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_set_pixels_above_lines(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gint c_value = Int_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "pixels-above-lines");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_set_pixels_above_lines: property 'pixels-above-lines' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_int(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "pixels-above-lines", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_pixels_below_lines(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "pixels-below-lines");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_get_pixels_below_lines: property 'pixels-below-lines' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "pixels-below-lines", &prop_gvalue);
+    prop_value = (gint)g_value_get_int(&prop_gvalue);
+
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_set_pixels_below_lines(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gint c_value = Int_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "pixels-below-lines");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_set_pixels_below_lines: property 'pixels-below-lines' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_int(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "pixels-below-lines", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_pixels_inside_wrap(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "pixels-inside-wrap");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_get_pixels_inside_wrap: property 'pixels-inside-wrap' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "pixels-inside-wrap", &prop_gvalue);
+    prop_value = (gint)g_value_get_int(&prop_gvalue);
+
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_set_pixels_inside_wrap(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gint c_value = Int_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "pixels-inside-wrap");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_set_pixels_inside_wrap: property 'pixels-inside-wrap' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_int(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "pixels-inside-wrap", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_right_margin(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "right-margin");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_get_right_margin: property 'right-margin' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "right-margin", &prop_gvalue);
+    prop_value = (gint)g_value_get_int(&prop_gvalue);
+
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_set_right_margin(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gint c_value = Int_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "right-margin");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_set_right_margin: property 'right-margin' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_int(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "right-margin", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_top_margin(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "top-margin");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_get_top_margin: property 'top-margin' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "top-margin", &prop_gvalue);
+    prop_value = (gint)g_value_get_int(&prop_gvalue);
+
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_set_top_margin(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
+    gint c_value = Int_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "top-margin");
+if (pspec == NULL) caml_failwith("ml_gtk_text_view_set_top_margin: property 'top-margin' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_int(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "top-margin", &prop_gvalue);
+g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }

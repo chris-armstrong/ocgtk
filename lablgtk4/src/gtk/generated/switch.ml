@@ -10,20 +10,15 @@ external new_ : unit -> t = "ml_gtk_switch_new"
 
 (* Properties *)
 
-(** Sets the underlying state of the `GtkSwitch`.
+(** Get property: active *)
+external get_active : t -> bool = "ml_gtk_switch_get_active"
 
-This function is typically called from a [signal@Gtk.Switch::state-set]
-signal handler in order to set up delayed state changes.
-
-See [signal@Gtk.Switch::state-set] for details. *)
-external set_state : t -> bool -> unit = "ml_gtk_switch_set_state"
-
-(** Changes the state of @self to the desired one. *)
+(** Set property: active *)
 external set_active : t -> bool -> unit = "ml_gtk_switch_set_active"
 
-(** Gets the underlying state of the `GtkSwitch`. *)
+(** Get property: state *)
 external get_state : t -> bool = "ml_gtk_switch_get_state"
 
-(** Gets whether the `GtkSwitch` is in its “on” or “off” state. *)
-external get_active : t -> bool = "ml_gtk_switch_get_active"
+(** Set property: state *)
+external set_state : t -> bool -> unit = "ml_gtk_switch_set_state"
 
