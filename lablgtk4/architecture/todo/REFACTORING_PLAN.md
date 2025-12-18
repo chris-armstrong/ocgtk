@@ -6,6 +6,41 @@ Restructure the lablgtk4 library to support multiple GObject-based libraries (Gt
 2. Organizing generated code by library namespace
 3. Creating sub-libraries within the `lablgtk4` package
 
+## TODO List
+
+### Completed
+- [x] Phase 1: Create Directory Structure (2025-12-18)
+  - [x] Create src/common/ directory
+  - [x] Create src/gtk/core/ directory
+  - [x] Create src/gtk/generated/ directory
+- [x] Phase 2: Move Common Hand-Written Code (2025-12-18)
+  - [x] Move C files to src/common/ (wrappers.c, ml_glib.c, ml_gobject.c)
+  - [x] Move OCaml files to src/common/ (gaux.ml, gpointer.ml, gError.ml, gobject.ml, glib.ml)
+  - [x] Create src/common/dune file
+- [x] Phase 3: Move Gtk Hand-Written Core Code (2025-12-18)
+  - [x] Move C files to src/gtk/core/ (ml_gtk.c, ml_gtk_snapshot.c, ml_event_controller.c, ml_pango.c, ml_gdk.c, ml_gdkpixbuf.c, ml_gdk_clipboard.c)
+  - [x] Move C headers to src/gtk/core/ (ml_gdk.h, ml_pango.h)
+  - [x] Move OCaml files to src/gtk/core/ (gtk.ml/mli, gMain.ml/mli, gdk.ml/mli, pango.ml/mli, gdkPixbuf.ml/mli, gdkClipboard.ml/mli)
+  - [x] Move interface files to src/common/ (gError.mli, glib.mli, gobject.mli)
+  - [x] Quick fix: Create temporary src/gtk/core/dune and update src/dune to restore build
+- [x] Phase 4: Update gir_gen to Support Output Directories (2025-12-18)
+  - [x] Add helper function `generated_output_dir` to get generated/ subdirectory
+  - [x] Add `ensure_generated_dir` to create generated/ directory
+  - [x] Update all file generation functions to write to generated/ subdirectory
+  - [x] Update dune_file.ml to reference correct paths (../../cflag-gtk4.sexp)
+  - [x] Move dune-generated.inc generation to generated/ directory
+  - [x] Rebuild gir_gen successfully
+  - [x] Validate: Run gir_gen and verify generated/ directory structure
+  - [x] Validate: Confirm dune-generated.inc has correct relative paths
+
+### In Progress
+- [ ] Phase 5: Create src/gtk/dune
+- [ ] Phase 6: Update Main src/dune
+- [ ] Phase 7: Update Generated dune-generated.inc
+- [ ] Phase 8: Update gir_gen Invocation
+- [ ] Phase 9: Testing and Validation
+- [ ] Phase 10: Future Extensions (Gdk, Gio, Pango)
+
 ## Current Structure
 
 ```
