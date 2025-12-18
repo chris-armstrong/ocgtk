@@ -1,0 +1,13 @@
+; Common library for lablgtk4
+; Hand-written library-agnostic code
+
+(library
+ (name lablgtk4_common)
+ (public_name lablgtk4.common)
+ (wrapped false)
+ (foreign_stubs
+  (language c)
+  (names wrappers ml_glib ml_gobject)
+  (flags -fPIC (:include ../cflag-gtk4.sexp) -Wno-deprecated-declarations))
+ (c_library_flags (:include ../clink-gtk4.sexp))
+ (modules Gaux Gpointer GError Gobject Glib))

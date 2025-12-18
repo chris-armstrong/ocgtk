@@ -29,11 +29,5 @@ rm cflag-gtk4.tmp clink-gtk4.tmp\
  (flags :standard -w -6-7-9-10-27-32-33-34-35-36-50-52 -no-strict-sequence)
  (modules :standard)
  (modules_without_implementation gtk_enums gdkpixbuf_enums gsk_enums graphene_enums page_setup_unix_dialog print_job print_unix_dialog printer)
- (foreign_stubs
-  (language c)
-  ; Hand-written C stubs (legacy generated C files removed):
-  (names wrappers ml_glib ml_gobject ml_gdk ml_gdkpixbuf ml_gdk_clipboard ml_pango ml_gtk ml_gtk_snapshot ml_event_controller)
-  (flags -fPIC (:include cflag-gtk4.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
- (c_library_flags (:include clink-gtk4.sexp))
- (install_c_headers wrappers)
- (libraries threads cairo2 lablgtk4_generated_stubs))
+ ; No foreign_stubs here - they're in the sub-libraries now
+ (libraries threads cairo2 lablgtk4_generated_stubs lablgtk4_common lablgtk4_gtk_core))

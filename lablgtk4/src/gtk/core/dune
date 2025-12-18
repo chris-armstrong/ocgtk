@@ -1,0 +1,14 @@
+; Gtk core library (hand-written code)
+; Temporary dune file for refactoring
+
+(library
+ (name lablgtk4_gtk_core)
+ (public_name lablgtk4.gtk.core)
+ (wrapped false)
+ (foreign_stubs
+  (language c)
+  (names ml_gtk ml_gtk_snapshot ml_event_controller ml_pango ml_gdk ml_gdkpixbuf ml_gdk_clipboard)
+  (flags -fPIC (:include ../../cflag-gtk4.sexp) -Wno-deprecated-declarations))
+ (c_library_flags (:include ../../clink-gtk4.sexp))
+ (modules Gtk GMain Gdk Pango GdkPixbuf GdkClipboard)
+ (libraries lablgtk4_common cairo2))
