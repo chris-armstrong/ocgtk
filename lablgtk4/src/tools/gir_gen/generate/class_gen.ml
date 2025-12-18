@@ -136,7 +136,7 @@ let ocaml_type_of_gir_type ~ctx ~current_layer2_module (gir_type : gir_type) =
 let generate_property_code ~ctx ~seen ~generate_getter ~generate_setter (prop : gir_property) =
   if not (Filtering.should_generate_property ~ctx prop) then ("", seen)
   else
-    let prop_snake = Utils.ocaml_parameter_name prop.prop_name in
+    let prop_snake = Utils.ocaml_property_name prop.prop_name in
     if StringSet.mem prop_snake seen then ("", seen) else
     let seen = StringSet.add prop_snake seen in
     let buf = Buffer.create 128 in
@@ -159,6 +159,7 @@ let generate_property_code ~ctx ~seen ~generate_getter ~generate_setter (prop : 
 
 let generate_property_methods ~ctx ~module_name ~current_layer2_module ~seen ~same_cluster_classes (prop : gir_property) =
   let generate_getter _prop prop_snake =
+    let method_name = prop_snake |> Utils.sanitize_identifier in
     let impl = match resolve_layer2_class ~ctx ~current_layer2_module prop.prop_type with
       | Some class_ref ->
         if prop.prop_type.nullable then
@@ -167,15 +168,16 @@ let generate_property_methods ~ctx ~module_name ~current_layer2_module ~seen ~sa
           sprintf "new %s (%s.get_%s obj)" class_ref module_name prop_snake
       | _ -> sprintf "%s.get_%s obj" module_name prop_snake
     in
-    sprintf "  method %s = %s\n" prop_snake impl
+    sprintf "  method %s = %s\n" method_name impl
   in
   let generate_setter _prop prop_snake =
+    let method_name = "set_"^prop_snake |> Utils.sanitize_identifier in
     let impl = if prop.prop_type.nullable then
       sprintf "match v with | Some v -> %s.set_%s obj v | None -> %s.set_%s obj None" module_name prop_snake module_name prop_snake
     else
       sprintf "%s.set_%s obj v" module_name prop_snake
     in
-    sprintf "  method set_%s v = %s\n" prop_snake impl
+    sprintf "  method %s v = %s\n" method_name impl
   in
   let _ = same_cluster_classes in (* Will be used in type annotations if needed *)
   generate_property_code ~ctx ~seen ~generate_getter ~generate_setter prop
@@ -198,10 +200,12 @@ let generate_property_signatures ~ctx ~seen ~current_layer2_module ~same_cluster
         else ocaml_type
       in
       let generate_getter _prop prop_snake =
-        sprintf "    method %s : %s\n" prop_snake ocaml_type
+        let method_name = prop_snake |> Utils.sanitize_identifier in
+        sprintf "    method %s : %s\n" method_name ocaml_type
       in
       let generate_setter _prop prop_snake =
-        sprintf "    method set_%s : %s -> unit\n" prop_snake ocaml_type
+        let method_name = "set_"^prop_snake |> Utils.sanitize_identifier in
+        sprintf "    method %s : %s -> unit\n" method_name ocaml_type
       in
       generate_property_code ~ctx ~seen ~generate_getter ~generate_setter prop
 

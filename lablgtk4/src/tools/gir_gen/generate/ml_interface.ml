@@ -186,9 +186,7 @@ let generate_ml_interface_internal
 
       (* Generate OCaml constructor name from C identifier *)
       let ocaml_ctor_name =
-        let base = Utils.ocaml_function_name ~class_name ~c_type ?c_symbol_prefix c_name in
-        let snake = Utils.to_snake_case base in
-        if snake = "new" then "new_" else snake
+        Utils.ocaml_function_name ~class_name ~c_type ?c_symbol_prefix c_name
       in
 
     (* Build parameter types for constructor signature *)

@@ -1,7 +1,6 @@
 (* GIR XML Parser using xmlm *)
 
 open StdLabels
-open Printf
 open Types
 
 module StringSet = Set.Make(String)
