@@ -58,13 +58,28 @@ let file_exists path =
 let delete_if_exists path =
   try Unix.unlink path with Unix.Unix_error _ -> ()
 
+let generated_dir output_dir =
+  Filename.concat output_dir "generated"
+
 let stub_c_file output_dir class_name =
-  Filename.concat output_dir
+  Filename.concat (generated_dir output_dir)
     (Printf.sprintf "ml_%s_gen.c" (Gir_gen_lib.Utils.to_snake_case class_name))
 
 let g_wrapper_file output_dir class_name =
-  Filename.concat output_dir
+  Filename.concat (generated_dir output_dir)
     (Printf.sprintf "g%s.ml" (Gir_gen_lib.Utils.module_name_of_class class_name))
+
+let ml_file output_dir module_name =
+  Filename.concat (generated_dir output_dir) (module_name ^ ".ml")
+
+let mli_file output_dir module_name =
+  Filename.concat (generated_dir output_dir) (module_name ^ ".mli")
+
+let enum_file output_dir =
+  Filename.concat (generated_dir output_dir) "gtk_enums.mli"
+
+let enum_c_file output_dir =
+  Filename.concat (generated_dir output_dir) "ml_gtk_enums_gen.c"
 
 let read_file filename =
   let ic = open_in filename in
@@ -208,8 +223,8 @@ let test_widget_generation () =
   create_test_widget_gir test_gir;
   create_test_filter_file test_filter;
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
-  delete_if_exists (Filename.concat output_dir "button.mli");
-  delete_if_exists (Filename.concat output_dir "button.ml");
+  delete_if_exists (mli_file output_dir "button");
+  delete_if_exists (ml_file output_dir "button");
   delete_if_exists (g_wrapper_file output_dir "Button");
 
   let tools_dir = Filename.dirname Sys.argv.(0) in
@@ -219,10 +234,10 @@ let test_widget_generation () =
   let exit_code = Sys.command cmd in
   assert_true "Widget generator should exit successfully" (exit_code = 0);
 
-  let button_file = Filename.concat output_dir "button.mli" in
+  let button_file = mli_file output_dir "button" in
   assert_true "Button.mli should be created" (file_exists button_file);
 
-  let label_file = Filename.concat output_dir "label.mli" in
+  let label_file = mli_file output_dir "label" in
   assert_true "Label.mli should be created" (file_exists label_file);
 
   let button_content = read_file button_file in
@@ -356,7 +371,7 @@ let test_property_generation () =
   let exit_code = Sys.command cmd in
   assert_true "Property generator should exit successfully" (exit_code = 0);
 
-  let widget_file = Filename.concat output_dir "test_widget.mli" in
+  let widget_file = mli_file output_dir "test_widget" in
   assert_true "TestWidget.mli should be created" (file_exists widget_file);
 
   let content = read_file widget_file in
@@ -449,8 +464,8 @@ let test_record_support () =
   assert_contains "Should use record conversion macro" c_content "Val_GtkTestRecord";
   assert_contains "Should convert record pointer in setter" c_content "GtkTestRecord_val";
 
-  let mli_file = Filename.concat output_dir "record_user.mli" in
-  assert_true "record_user.mli should be created" (file_exists mli_file);
+  let mli = mli_file output_dir "record_user" in
+  assert_true "record_user.mli should be created" (file_exists mli);
   (* let mli_content = read_file mli_file in *)
   (* assert_contains "Record param should map to Obj.t" mli_content "set_boxed : t -> Obj.t -> unit"; *)
   (* assert_contains "Nullable record return should be option" mli_content "get_nullable_boxed : t -> Obj.t option"; *)
@@ -557,8 +572,8 @@ let test_all_methods_generated () =
   let exit_code = Sys.command cmd in
   assert_true "Many methods generator should exit successfully" (exit_code = 0);
 
-  let mli_file = Filename.concat output_dir "many_methods.mli" in
-  let content = read_file mli_file in
+  let mli = mli_file output_dir "many_methods" in
+  let content = read_file mli in
 
   (* Check that all 8 methods are generated (not just first 5) *)
   assert_contains "Method 1 should be generated" content "method1";
@@ -603,10 +618,10 @@ let test_enum_generation () =
   let exit_code = Sys.command cmd in
   assert_true "Enum generator should exit successfully" (exit_code = 0);
 
-  let enum_file = Filename.concat output_dir "gtk_enums.mli" in
-  assert_true "gtk_enums.mli should be created" (file_exists enum_file);
+  let enums = enum_file output_dir in
+  assert_true "gtk_enums.mli should be created" (file_exists enums);
 
-  let enum_content = read_file enum_file in
+  let enum_content = read_file enums in
   (* Check enum type definition *)
   assert_contains "Enum type should be defined" enum_content "type wrapmode = [";
   assert_contains "Should have NONE variant" enum_content "`NONE";
@@ -615,7 +630,7 @@ let test_enum_generation () =
   assert_contains "Should have WORD_CHAR variant" enum_content "`WORD_CHAR";
 
   (* Check C converter generation *)
-  let c_file = Filename.concat output_dir "ml_gtk_enums_gen.c" in
+  let c_file = enum_c_file output_dir in
   let c_content = read_file c_file in
   assert_contains "C to OCaml converter" c_content "Val_GtkWrapMode";
   assert_contains "OCaml to C converter" c_content "GtkWrapMode_val";
@@ -658,10 +673,10 @@ let test_bitfield_generation () =
   let exit_code = Sys.command cmd in
   assert_true "Bitfield generator should exit successfully" (exit_code = 0);
 
-  let enum_file = Filename.concat output_dir "gtk_enums.mli" in
-  assert_true "gtk_enums.mli should be created for bitfields" (file_exists enum_file);
+  let enums = enum_file output_dir in
+  assert_true "gtk_enums.mli should be created for bitfields" (file_exists enums);
 
-  let enum_content = read_file enum_file in
+  let enum_content = read_file enums in
   (* Check bitfield type definition *)
   assert_contains "Flag variant type should be defined" enum_content "type stateflags_flag = [";
   assert_contains "Should have NORMAL flag" enum_content "`NORMAL";
@@ -671,7 +686,7 @@ let test_bitfield_generation () =
   assert_contains "Bitfield list type should be defined" enum_content "type stateflags = stateflags_flag list";
 
   (* Check C converter generation *)
-  let c_file = Filename.concat output_dir "ml_gtk_enums_gen.c" in
+  let c_file = enum_c_file output_dir in
   let c_content = read_file c_file in
   assert_contains "C to OCaml flag converter" c_content "Val_GtkStateFlags";
   assert_contains "OCaml to C flag converter" c_content "GtkStateFlags_val";
@@ -728,8 +743,8 @@ let test_nullable_parameters () =
   let exit_code = Sys.command cmd in
   assert_true "Nullable generator should exit successfully" (exit_code = 0);
 
-  let mli_file = Filename.concat output_dir "test_widget.mli" in
-  let content = read_file mli_file in
+  let mli = mli_file output_dir "test_widget" in
+  let content = read_file mli in
 
   (* Check OCaml interface uses option types *)
   assert_contains "Constructor should have string option parameter" content "string option";
@@ -778,10 +793,10 @@ let test_empty_class () =
   let exit_code = Sys.command cmd in
   assert_true "Empty class generator should exit successfully" (exit_code = 0);
 
-  let mli_file = Filename.concat output_dir "empty_widget.mli" in
-  assert_true "Empty widget file should be created" (file_exists mli_file);
+  let mli = mli_file output_dir "empty_widget" in
+  assert_true "Empty widget file should be created" (file_exists mli);
 
-  let content = read_file mli_file in
+  let content = read_file mli in
   (* Should still have type definition *)
   assert_contains "Should define type t" content "type t"
 
@@ -824,8 +839,8 @@ let test_properties_only_class () =
   let exit_code = Sys.command cmd in
   assert_true "Properties-only generator should exit successfully" (exit_code = 0);
 
-  let mli_file = Filename.concat output_dir "properties_only.mli" in
-  let content = read_file mli_file in
+  let mli = mli_file output_dir "properties_only" in
+  let content = read_file mli in
 
   (* Should have property accessors *)
   assert_contains "Should have label getter" content "get_label";
@@ -869,8 +884,8 @@ let test_no_constructor_class () =
   let exit_code = Sys.command cmd in
   assert_true "No-constructor generator should exit successfully" (exit_code = 0);
 
-  let mli_file = Filename.concat output_dir "no_constructor.mli" in
-  let content = read_file mli_file in
+  let mli = mli_file output_dir "no_constructor" in
+  let content = read_file mli in
 
   (* Should have method but no constructor *)
   assert_contains "Should have do_something method" content "do_something";
@@ -921,8 +936,8 @@ let test_multiple_enums () =
   let exit_code = Sys.command cmd in
   assert_true "Multiple enums generator should exit successfully" (exit_code = 0);
 
-  let enum_file = Filename.concat output_dir "gtk_enums.mli" in
-  let content = read_file enum_file in
+  let enums = enum_file output_dir in
+  let content = read_file enums in
 
   (* Check all enum types are defined *)
   assert_contains "Should define Align enum" content "type align = [";
@@ -987,8 +1002,8 @@ let test_camlparam_limitation () =
   let exit_code = Sys.command cmd in
   assert_true "CAMLparam test should exit successfully" (exit_code = 0);
 
-  let mli_file = Filename.concat output_dir "many_params.mli" in
-  let content = read_file mli_file in
+  let mli = mli_file output_dir "many_params" in
+  let content = read_file mli in
 
   (* Method with 3 params should be generated *)
   assert_contains "Method with 3 params should be generated" content "with_three_params";
@@ -1096,8 +1111,8 @@ let test_single_value_enum () =
   let exit_code = Sys.command cmd in
   assert_true "Single value enum should be generated" (exit_code = 0);
 
-  let enum_file = Filename.concat output_dir "gtk_enums.mli" in
-  let content = read_file enum_file in
+  let enums = enum_file output_dir in
+  let content = read_file enums in
 
   (* Should still generate valid enum with single value *)
   assert_contains "Should define single value enum" content "type singlevalue = [";
@@ -1117,8 +1132,8 @@ let test_enum_naming_conventions () =
 
   let _ = Sys.command cmd in
 
-  let enum_file = Filename.concat output_dir "gtk_enums.mli" in
-  let content = read_file enum_file in
+  let enums = enum_file output_dir in
+  let content = read_file enums in
 
   (* Enum types should be lowercase *)
   assert_contains "Enum type should be lowercase" content "type align";

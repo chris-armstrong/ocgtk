@@ -8,7 +8,6 @@ val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and_
 (** Create a new PasswordEntry *)
 external new_ : unit -> t = "ml_gtk_password_entry_new"
 
-
 (* Properties *)
 
 (** Sets whether the entry should have a clickable icon
