@@ -334,5 +334,6 @@ This will also clear any previously set labels. *)
 external set_label : 'a t -> string -> unit = "ml_gtk_button_set_label"
 ````
 
+## Val_x and X_val conversion macros not being added to generated_forward_decls.h for all types
 
-
+Some types like GtkBuilderScope and GtkSelectionModel are not having Val_GtkBuilderScope and GtkBuilderScope_val macros generated in generated_forward_decls.h for use by other ml_*_gen.c files, resulting in `warning: implicit generation of function`.
