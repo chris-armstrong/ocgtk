@@ -8,6 +8,9 @@ external new_ : Selection_model.t option -> t = "ml_gtk_selection_filter_model_n
 
 (* Properties *)
 
+(** Get property: n-items *)
+external get_n_items : t -> int = "ml_gtk_selection_filter_model_get_n_items"
+
 (** Sets the model to be filtered.
 
 Note that GTK makes no effort to ensure that @model conforms to

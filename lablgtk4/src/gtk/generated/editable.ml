@@ -5,18 +5,47 @@ type t = [`editable] Gobject.obj
 
 (* Properties *)
 
-(** Changes the size request of the editable to be about the
-right size for @n_chars characters.
+(** Get property: cursor-position *)
+external get_cursor_position : t -> int = "ml_gtk_editable_get_cursor_position"
 
-Note that it changes the size request, the size can still
-be affected by how you pack the widget into containers.
-If @n_chars is -1, the size reverts to the default size. *)
+(** Get property: editable *)
+external get_editable : t -> bool = "ml_gtk_editable_get_editable"
+
+(** Set property: editable *)
+external set_editable : t -> bool -> unit = "ml_gtk_editable_set_editable"
+
+(** Get property: enable-undo *)
+external get_enable_undo : t -> bool = "ml_gtk_editable_get_enable_undo"
+
+(** Set property: enable-undo *)
+external set_enable_undo : t -> bool -> unit = "ml_gtk_editable_set_enable_undo"
+
+(** Get property: max-width-chars *)
+external get_max_width_chars : t -> int = "ml_gtk_editable_get_max_width_chars"
+
+(** Set property: max-width-chars *)
+external set_max_width_chars : t -> int -> unit = "ml_gtk_editable_set_max_width_chars"
+
+(** Get property: selection-bound *)
+external get_selection_bound : t -> int = "ml_gtk_editable_get_selection_bound"
+
+(** Get property: text *)
+external get_text : t -> string = "ml_gtk_editable_get_text"
+
+(** Set property: text *)
+external set_text : t -> string -> unit = "ml_gtk_editable_set_text"
+
+(** Get property: width-chars *)
+external get_width_chars : t -> int = "ml_gtk_editable_get_width_chars"
+
+(** Set property: width-chars *)
 external set_width_chars : t -> int -> unit = "ml_gtk_editable_set_width_chars"
 
-(** Sets the text in the editable to the given value.
+(** Get property: xalign *)
+external get_xalign : t -> float = "ml_gtk_editable_get_xalign"
 
-This is replacing the current contents. *)
-external set_text : t -> string -> unit = "ml_gtk_editable_set_text"
+(** Set property: xalign *)
+external set_xalign : t -> float -> unit = "ml_gtk_editable_set_xalign"
 
 (** Sets the cursor position in the editable to the given value.
 
@@ -26,20 +55,6 @@ or equal to the number of characters in the editable. A value of -1
 indicates that the position should be set after the last character
 of the editable. Note that @position is in characters, not in bytes. *)
 external set_position : t -> int -> unit = "ml_gtk_editable_set_position"
-
-(** Sets the desired maximum width in characters of @editable. *)
-external set_max_width_chars : t -> int -> unit = "ml_gtk_editable_set_max_width_chars"
-
-(** If enabled, changes to @editable will be saved for undo/redo
-actions.
-
-This results in an additional copy of text changes and are not
-stored in secure memory. As such, undo is forcefully disabled
-when [property@Gtk.Text:visibility] is set to %FALSE. *)
-external set_enable_undo : t -> bool -> unit = "ml_gtk_editable_set_enable_undo"
-
-(** Determines if the user can edit the text in the editable widget. *)
-external set_editable : t -> bool -> unit = "ml_gtk_editable_set_editable"
 
 (** Sets the alignment for the contents of the editable.
 
@@ -66,29 +81,11 @@ This is a helper function that should be called in instance init,
 after creating the delegate object. *)
 external init_delegate : t -> unit = "ml_gtk_editable_init_delegate"
 
-(** Gets the number of characters of space reserved
-for the contents of the editable. *)
-external get_width_chars : t -> int = "ml_gtk_editable_get_width_chars"
-
-(** Retrieves the contents of @editable.
-
-The returned string is owned by GTK and must not be modified or freed. *)
-external get_text : t -> string = "ml_gtk_editable_get_text"
-
 (** Retrieves the current position of the cursor relative
 to the start of the content of the editable.
 
 Note that this position is in characters, not in bytes. *)
 external get_position : t -> int = "ml_gtk_editable_get_position"
-
-(** Retrieves the desired maximum width of @editable, in characters. *)
-external get_max_width_chars : t -> int = "ml_gtk_editable_get_max_width_chars"
-
-(** Gets if undo/redo actions are enabled for @editable *)
-external get_enable_undo : t -> bool = "ml_gtk_editable_get_enable_undo"
-
-(** Retrieves whether @editable is editable. *)
-external get_editable : t -> bool = "ml_gtk_editable_get_editable"
 
 (** Gets the `GtkEditable` that @editable is delegating its
 implementation to.

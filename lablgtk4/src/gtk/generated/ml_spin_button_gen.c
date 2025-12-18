@@ -52,35 +52,11 @@ gtk_spin_button_spin(GtkSpinButton_val(self), GtkSpinType_val(arg1), Double_val(
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_spin_button_set_wrap(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_spin_button_set_wrap(GtkSpinButton_val(self), Bool_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_spin_button_set_value(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_spin_button_set_value(GtkSpinButton_val(self), Double_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_spin_button_set_update_policy(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gtk_spin_button_set_update_policy(GtkSpinButton_val(self), GtkSpinButtonUpdatePolicy_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_spin_button_set_snap_to_ticks(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_spin_button_set_snap_to_ticks(GtkSpinButton_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -92,35 +68,11 @@ gtk_spin_button_set_range(GtkSpinButton_val(self), Double_val(arg1), Double_val(
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_spin_button_set_numeric(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_spin_button_set_numeric(GtkSpinButton_val(self), Bool_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_spin_button_set_increments(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
 
 gtk_spin_button_set_increments(GtkSpinButton_val(self), Double_val(arg1), Double_val(arg2));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_spin_button_set_digits(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_spin_button_set_digits(GtkSpinButton_val(self), Int_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_spin_button_set_climb_rate(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_spin_button_set_climb_rate(GtkSpinButton_val(self), Double_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -132,36 +84,12 @@ gtk_spin_button_set_adjustment(GtkSpinButton_val(self), GtkAdjustment_val(arg1))
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_spin_button_set_activates_default(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_spin_button_set_activates_default(GtkSpinButton_val(self), Bool_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_spin_button_get_wrap(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_spin_button_get_wrap(GtkSpinButton_val(self));
-CAMLreturn(Val_bool(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_spin_button_get_value_as_int(value self)
 {
 CAMLparam1(self);
 
 int result = gtk_spin_button_get_value_as_int(GtkSpinButton_val(self));
 CAMLreturn(Val_int(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_spin_button_get_value(value self)
-{
-CAMLparam1(self);
-
-double result = gtk_spin_button_get_value(GtkSpinButton_val(self));
-CAMLreturn(caml_copy_double(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_spin_button_get_update_policy(value self)
@@ -172,38 +100,6 @@ GtkSpinButtonUpdatePolicy result = gtk_spin_button_get_update_policy(GtkSpinButt
 CAMLreturn(Val_GtkSpinButtonUpdatePolicy(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_spin_button_get_snap_to_ticks(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_spin_button_get_snap_to_ticks(GtkSpinButton_val(self));
-CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_spin_button_get_numeric(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_spin_button_get_numeric(GtkSpinButton_val(self));
-CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_spin_button_get_digits(value self)
-{
-CAMLparam1(self);
-
-guint result = gtk_spin_button_get_digits(GtkSpinButton_val(self));
-CAMLreturn(Val_int(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_spin_button_get_climb_rate(value self)
-{
-CAMLparam1(self);
-
-double result = gtk_spin_button_get_climb_rate(GtkSpinButton_val(self));
-CAMLreturn(caml_copy_double(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_spin_button_get_adjustment(value self)
 {
 CAMLparam1(self);
@@ -212,18 +108,241 @@ GtkAdjustment* result = gtk_spin_button_get_adjustment(GtkSpinButton_val(self));
 CAMLreturn(Val_GtkAdjustment(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_spin_button_get_activates_default(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_spin_button_get_activates_default(GtkSpinButton_val(self));
-CAMLreturn(Val_bool(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_spin_button_configure(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
 gtk_spin_button_configure(GtkSpinButton_val(self), Option_val(arg1, GtkAdjustment_val, NULL), Double_val(arg2), Int_val(arg3));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_spin_button_get_activates_default(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkSpinButton *obj = (GtkSpinButton *)GtkSpinButton_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "activates-default");
+if (pspec == NULL) caml_failwith("ml_gtk_spin_button_get_activates_default: property 'activates-default' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "activates-default", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_spin_button_set_activates_default(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkSpinButton *obj = (GtkSpinButton *)GtkSpinButton_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "activates-default");
+if (pspec == NULL) caml_failwith("ml_gtk_spin_button_set_activates_default: property 'activates-default' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "activates-default", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_spin_button_get_climb_rate(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkSpinButton *obj = (GtkSpinButton *)GtkSpinButton_val(self);
+    gdouble prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "climb-rate");
+if (pspec == NULL) caml_failwith("ml_gtk_spin_button_get_climb_rate: property 'climb-rate' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "climb-rate", &prop_gvalue);
+    prop_value = g_value_get_double(&prop_gvalue);
+
+result = caml_copy_double(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_spin_button_set_climb_rate(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkSpinButton *obj = (GtkSpinButton *)GtkSpinButton_val(self);
+    gdouble c_value = Double_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "climb-rate");
+if (pspec == NULL) caml_failwith("ml_gtk_spin_button_set_climb_rate: property 'climb-rate' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_double(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "climb-rate", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_spin_button_get_digits(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkSpinButton *obj = (GtkSpinButton *)GtkSpinButton_val(self);
+    guint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "digits");
+if (pspec == NULL) caml_failwith("ml_gtk_spin_button_get_digits: property 'digits' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "digits", &prop_gvalue);
+    prop_value = (guint)g_value_get_uint(&prop_gvalue);
+
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_spin_button_set_digits(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkSpinButton *obj = (GtkSpinButton *)GtkSpinButton_val(self);
+    guint c_value = Int_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "digits");
+if (pspec == NULL) caml_failwith("ml_gtk_spin_button_set_digits: property 'digits' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_uint(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "digits", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_spin_button_get_numeric(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkSpinButton *obj = (GtkSpinButton *)GtkSpinButton_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "numeric");
+if (pspec == NULL) caml_failwith("ml_gtk_spin_button_get_numeric: property 'numeric' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "numeric", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_spin_button_set_numeric(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkSpinButton *obj = (GtkSpinButton *)GtkSpinButton_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "numeric");
+if (pspec == NULL) caml_failwith("ml_gtk_spin_button_set_numeric: property 'numeric' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "numeric", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_spin_button_get_snap_to_ticks(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkSpinButton *obj = (GtkSpinButton *)GtkSpinButton_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "snap-to-ticks");
+if (pspec == NULL) caml_failwith("ml_gtk_spin_button_get_snap_to_ticks: property 'snap-to-ticks' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "snap-to-ticks", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_spin_button_set_snap_to_ticks(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkSpinButton *obj = (GtkSpinButton *)GtkSpinButton_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "snap-to-ticks");
+if (pspec == NULL) caml_failwith("ml_gtk_spin_button_set_snap_to_ticks: property 'snap-to-ticks' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "snap-to-ticks", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_spin_button_get_value(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkSpinButton *obj = (GtkSpinButton *)GtkSpinButton_val(self);
+    gdouble prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "value");
+if (pspec == NULL) caml_failwith("ml_gtk_spin_button_get_value: property 'value' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "value", &prop_gvalue);
+    prop_value = g_value_get_double(&prop_gvalue);
+
+result = caml_copy_double(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_spin_button_set_value(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkSpinButton *obj = (GtkSpinButton *)GtkSpinButton_val(self);
+    gdouble c_value = Double_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "value");
+if (pspec == NULL) caml_failwith("ml_gtk_spin_button_set_value: property 'value' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_double(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "value", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_spin_button_get_wrap(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkSpinButton *obj = (GtkSpinButton *)GtkSpinButton_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "wrap");
+if (pspec == NULL) caml_failwith("ml_gtk_spin_button_get_wrap: property 'wrap' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "wrap", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_spin_button_set_wrap(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkSpinButton *obj = (GtkSpinButton *)GtkSpinButton_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "wrap");
+if (pspec == NULL) caml_failwith("ml_gtk_spin_button_set_wrap: property 'wrap' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "wrap", &prop_gvalue);
+g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }

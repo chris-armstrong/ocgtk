@@ -13,6 +13,12 @@ external new_from_model_full : unit -> Gtk_enums.popovermenuflags -> t = "ml_gtk
 
 (* Properties *)
 
+(** Get property: visible-submenu *)
+external get_visible_submenu : t -> string = "ml_gtk_popover_menu_get_visible_submenu"
+
+(** Set property: visible-submenu *)
+external set_visible_submenu : t -> string -> unit = "ml_gtk_popover_menu_set_visible_submenu"
+
 (** Sets the flags that @popover uses to create/display a menu from its model.
 
 If a model is set and the flags change, contents are rebuilt, so if setting

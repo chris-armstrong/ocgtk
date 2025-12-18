@@ -5,6 +5,9 @@ class cell_renderer_spinner (obj : Cell_renderer_spinner.t) = object (self)
   method active = Cell_renderer_spinner.get_active obj
   method set_active v = Cell_renderer_spinner.set_active obj v
 
+  method pulse = Cell_renderer_spinner.get_pulse obj
+  method set_pulse v = Cell_renderer_spinner.set_pulse obj v
+
   method as_cell_renderer = (Cell_renderer_spinner.as_cell_renderer obj)
     method as_cell_renderer_spinner = obj
 end

@@ -100,3 +100,21 @@ CAMLparam3(self, arg1, arg2);
 gtk_dialog_add_action_widget(GtkDialog_val(self), GtkWidget_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
+
+CAMLexport CAMLprim value ml_gtk_dialog_get_use_header_bar(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkDialog *obj = (GtkDialog *)GtkDialog_val(self);
+    gint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "use-header-bar");
+if (pspec == NULL) caml_failwith("ml_gtk_dialog_get_use_header_bar: property 'use-header-bar' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "use-header-bar", &prop_gvalue);
+    prop_value = (gint)g_value_get_int(&prop_gvalue);
+
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}

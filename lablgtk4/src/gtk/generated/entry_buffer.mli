@@ -8,20 +8,20 @@ external new_ : string option -> int -> t = "ml_gtk_entry_buffer_new"
 
 (* Properties *)
 
-(** Sets the text in the buffer.
+(** Get property: length *)
+external get_length : t -> int = "ml_gtk_entry_buffer_get_length"
 
-This is roughly equivalent to calling
-[method@Gtk.EntryBuffer.delete_text] and
-[method@Gtk.EntryBuffer.insert_text].
+(** Get property: max-length *)
+external get_max_length : t -> int = "ml_gtk_entry_buffer_get_max_length"
 
-Note that @n_chars is in characters, not in bytes. *)
-external set_text : t -> string -> int -> unit = "ml_gtk_entry_buffer_set_text"
-
-(** Sets the maximum allowed length of the contents of the buffer.
-
-If the current contents are longer than the given length, then
-they will be truncated to fit. *)
+(** Set property: max-length *)
 external set_max_length : t -> int -> unit = "ml_gtk_entry_buffer_set_max_length"
+
+(** Get property: text *)
+external get_text : t -> string = "ml_gtk_entry_buffer_get_text"
+
+(** Set property: text *)
+external set_text : t -> string -> unit = "ml_gtk_entry_buffer_set_text"
 
 (** Inserts @n_chars characters of @chars into the contents of the
 buffer, at position @position.
@@ -33,18 +33,6 @@ coerced to sane values.
 
 Note that the position and length are in characters, not in bytes. *)
 external insert_text : t -> int -> string -> int -> int = "ml_gtk_entry_buffer_insert_text"
-
-(** Retrieves the contents of the buffer.
-
-The memory pointer returned by this call will not change
-unless this object emits a signal, or is finalized. *)
-external get_text : t -> string = "ml_gtk_entry_buffer_get_text"
-
-(** Retrieves the maximum allowed length of the text in @buffer. *)
-external get_max_length : t -> int = "ml_gtk_entry_buffer_get_max_length"
-
-(** Retrieves the length in characters of the buffer. *)
-external get_length : t -> int = "ml_gtk_entry_buffer_get_length"
 
 (** Used when subclassing `GtkEntryBuffer`. *)
 external emit_inserted_text : t -> int -> string -> int -> unit = "ml_gtk_entry_buffer_emit_inserted_text"

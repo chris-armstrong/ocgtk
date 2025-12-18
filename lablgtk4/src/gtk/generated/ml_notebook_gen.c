@@ -69,30 +69,6 @@ gtk_notebook_set_tab_detachable(GtkNotebook_val(self), GtkWidget_val(arg1), Bool
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_notebook_set_show_tabs(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_notebook_set_show_tabs(GtkNotebook_val(self), Bool_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_notebook_set_show_border(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_notebook_set_show_border(GtkNotebook_val(self), Bool_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_notebook_set_scrollable(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_notebook_set_scrollable(GtkNotebook_val(self), Bool_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_notebook_set_menu_label_text(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -106,14 +82,6 @@ CAMLexport CAMLprim value ml_gtk_notebook_set_menu_label(value self, value arg1,
 CAMLparam3(self, arg1, arg2);
 
 gtk_notebook_set_menu_label(GtkNotebook_val(self), GtkWidget_val(arg1), GtkWidget_option_val(arg2));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_notebook_set_group_name(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_notebook_set_group_name(GtkNotebook_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -261,38 +229,6 @@ gboolean result = gtk_notebook_get_tab_detachable(GtkNotebook_val(self), GtkWidg
 CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_notebook_get_show_tabs(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_notebook_get_show_tabs(GtkNotebook_val(self));
-CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_notebook_get_show_border(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_notebook_get_show_border(GtkNotebook_val(self));
-CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_notebook_get_scrollable(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_notebook_get_scrollable(GtkNotebook_val(self));
-CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_notebook_get_page(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-GtkNotebookPage* result = gtk_notebook_get_page(GtkNotebook_val(self), GtkWidget_val(arg1));
-CAMLreturn(Val_GtkNotebookPage(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_notebook_get_nth_page(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -323,14 +259,6 @@ CAMLparam2(self, arg1);
 
 GtkWidget* result = gtk_notebook_get_menu_label(GtkNotebook_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_GtkWidget_option(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_notebook_get_group_name(value self)
-{
-CAMLparam1(self);
-
-const char* result = gtk_notebook_get_group_name(GtkNotebook_val(self));
-CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_notebook_get_current_page(value self)
@@ -371,4 +299,202 @@ CAMLparam3(self, arg1, arg2);
 
 int result = gtk_notebook_append_page(GtkNotebook_val(self), GtkWidget_val(arg1), GtkWidget_option_val(arg2));
 CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_notebook_get_enable_popup(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkNotebook *obj = (GtkNotebook *)GtkNotebook_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "enable-popup");
+if (pspec == NULL) caml_failwith("ml_gtk_notebook_get_enable_popup: property 'enable-popup' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "enable-popup", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_notebook_set_enable_popup(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkNotebook *obj = (GtkNotebook *)GtkNotebook_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "enable-popup");
+if (pspec == NULL) caml_failwith("ml_gtk_notebook_set_enable_popup: property 'enable-popup' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "enable-popup", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_notebook_get_group_name(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkNotebook *obj = (GtkNotebook *)GtkNotebook_val(self);
+    gchar* *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "group-name");
+if (pspec == NULL) caml_failwith("ml_gtk_notebook_get_group_name: property 'group-name' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "group-name", &prop_gvalue);
+    prop_value = g_value_get_string(&prop_gvalue);
+
+result = caml_copy_string(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_notebook_set_group_name(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkNotebook *obj = (GtkNotebook *)GtkNotebook_val(self);
+    ML_DECL_CONST_STRING(c_value, String_val(new_value));
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "group-name");
+if (pspec == NULL) caml_failwith("ml_gtk_notebook_set_group_name: property 'group-name' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_string(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "group-name", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_notebook_get_page(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkNotebook *obj = (GtkNotebook *)GtkNotebook_val(self);
+    gint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "page");
+if (pspec == NULL) caml_failwith("ml_gtk_notebook_get_page: property 'page' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "page", &prop_gvalue);
+    prop_value = (gint)g_value_get_int(&prop_gvalue);
+
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_notebook_set_page(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkNotebook *obj = (GtkNotebook *)GtkNotebook_val(self);
+    gint c_value = Int_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "page");
+if (pspec == NULL) caml_failwith("ml_gtk_notebook_set_page: property 'page' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_int(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "page", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_notebook_get_scrollable(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkNotebook *obj = (GtkNotebook *)GtkNotebook_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "scrollable");
+if (pspec == NULL) caml_failwith("ml_gtk_notebook_get_scrollable: property 'scrollable' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "scrollable", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_notebook_set_scrollable(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkNotebook *obj = (GtkNotebook *)GtkNotebook_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "scrollable");
+if (pspec == NULL) caml_failwith("ml_gtk_notebook_set_scrollable: property 'scrollable' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "scrollable", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_notebook_get_show_border(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkNotebook *obj = (GtkNotebook *)GtkNotebook_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "show-border");
+if (pspec == NULL) caml_failwith("ml_gtk_notebook_get_show_border: property 'show-border' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "show-border", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_notebook_set_show_border(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkNotebook *obj = (GtkNotebook *)GtkNotebook_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "show-border");
+if (pspec == NULL) caml_failwith("ml_gtk_notebook_set_show_border: property 'show-border' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "show-border", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_notebook_get_show_tabs(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkNotebook *obj = (GtkNotebook *)GtkNotebook_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "show-tabs");
+if (pspec == NULL) caml_failwith("ml_gtk_notebook_get_show_tabs: property 'show-tabs' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "show-tabs", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_notebook_set_show_tabs(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkNotebook *obj = (GtkNotebook *)GtkNotebook_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "show-tabs");
+if (pspec == NULL) caml_failwith("ml_gtk_notebook_set_show_tabs: property 'show-tabs' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "show-tabs", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
 }

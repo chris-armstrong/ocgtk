@@ -11,6 +11,36 @@ module rec Column_view : sig
 
   (* Properties *)
 
+  (** Get property: enable-rubberband *)
+  external get_enable_rubberband : t -> bool = "ml_gtk_column_view_get_enable_rubberband"
+
+  (** Set property: enable-rubberband *)
+  external set_enable_rubberband : t -> bool -> unit = "ml_gtk_column_view_set_enable_rubberband"
+
+  (** Get property: reorderable *)
+  external get_reorderable : t -> bool = "ml_gtk_column_view_get_reorderable"
+
+  (** Set property: reorderable *)
+  external set_reorderable : t -> bool -> unit = "ml_gtk_column_view_set_reorderable"
+
+  (** Get property: show-column-separators *)
+  external get_show_column_separators : t -> bool = "ml_gtk_column_view_get_show_column_separators"
+
+  (** Set property: show-column-separators *)
+  external set_show_column_separators : t -> bool -> unit = "ml_gtk_column_view_set_show_column_separators"
+
+  (** Get property: show-row-separators *)
+  external get_show_row_separators : t -> bool = "ml_gtk_column_view_get_show_row_separators"
+
+  (** Set property: show-row-separators *)
+  external set_show_row_separators : t -> bool -> unit = "ml_gtk_column_view_set_show_row_separators"
+
+  (** Get property: single-click-activate *)
+  external get_single_click_activate : t -> bool = "ml_gtk_column_view_get_single_click_activate"
+
+  (** Set property: single-click-activate *)
+  external set_single_click_activate : t -> bool -> unit = "ml_gtk_column_view_set_single_click_activate"
+
   (** Sets the sorting of the view.
 
   This function should be used to set up the initial sorting.
@@ -28,18 +58,6 @@ module rec Column_view : sig
   (** Sets the behavior of the <kbd>Tab</kbd> and <kbd>Shift</kbd>+<kbd>Tab</kbd> keys. *)
   external set_tab_behavior : t -> Gtk_enums.listtabbehavior -> unit = "ml_gtk_column_view_set_tab_behavior"
 
-  (** Sets whether rows should be activated on single click and
-  selected on hover. *)
-  external set_single_click_activate : t -> bool -> unit = "ml_gtk_column_view_set_single_click_activate"
-
-  (** Sets whether the list should show separators
-  between rows. *)
-  external set_show_row_separators : t -> bool -> unit = "ml_gtk_column_view_set_show_row_separators"
-
-  (** Sets whether the list should show separators
-  between columns. *)
-  external set_show_column_separators : t -> bool -> unit = "ml_gtk_column_view_set_show_column_separators"
-
   (** Sets the factory used for configuring rows. The factory must be for configuring
   [class@Gtk.ColumnViewRow] objects.
 
@@ -48,9 +66,6 @@ module rec Column_view : sig
   This factory is not used to set the widgets displayed in the individual cells. For
   that see [method@GtkColumnViewColumn.set_factory] and [class@GtkColumnViewCell]. *)
   external set_row_factory : t -> List_item_factory.t option -> unit = "ml_gtk_column_view_set_row_factory"
-
-  (** Sets whether columns should be reorderable by dragging. *)
-  external set_reorderable : t -> bool -> unit = "ml_gtk_column_view_set_reorderable"
 
   (** Sets the model to use.
 
@@ -63,9 +78,6 @@ module rec Column_view : sig
   If this factory is set to %NULL, the list will not show
   section headers. *)
   external set_header_factory : t -> List_item_factory.t option -> unit = "ml_gtk_column_view_set_header_factory"
-
-  (** Sets whether selections can be changed by dragging with the mouse. *)
-  external set_enable_rubberband : t -> bool -> unit = "ml_gtk_column_view_set_enable_rubberband"
 
   (** Scroll to the row at the given position - or cell if a column is
   given - and performs the actions specified in @flags.
@@ -106,32 +118,14 @@ module rec Column_view : sig
   ``` *)
   external get_sorter : t -> Sorter.t option = "ml_gtk_column_view_get_sorter"
 
-  (** Returns whether rows will be activated on single click and
-  selected on hover. *)
-  external get_single_click_activate : t -> bool = "ml_gtk_column_view_get_single_click_activate"
-
-  (** Returns whether the list should show separators
-  between rows. *)
-  external get_show_row_separators : t -> bool = "ml_gtk_column_view_get_show_row_separators"
-
-  (** Returns whether the list should show separators
-  between columns. *)
-  external get_show_column_separators : t -> bool = "ml_gtk_column_view_get_show_column_separators"
-
   (** Gets the factory set via [method@Gtk.ColumnView.set_row_factory]. *)
   external get_row_factory : t -> List_item_factory.t option = "ml_gtk_column_view_get_row_factory"
-
-  (** Returns whether columns are reorderable. *)
-  external get_reorderable : t -> bool = "ml_gtk_column_view_get_reorderable"
 
   (** Gets the model that's currently used to read the items displayed. *)
   external get_model : t -> Selection_model.t option = "ml_gtk_column_view_get_model"
 
   (** Gets the factory that's currently used to populate section headers. *)
   external get_header_factory : t -> List_item_factory.t option = "ml_gtk_column_view_get_header_factory"
-
-  (** Returns whether rows can be selected by dragging with the mouse. *)
-  external get_enable_rubberband : t -> bool = "ml_gtk_column_view_get_enable_rubberband"
 
   (** Appends the @column to the end of the columns in @self. *)
   external append_column : t -> Column_view_column.t -> unit = "ml_gtk_column_view_append_column"
@@ -148,15 +142,41 @@ and Column_view_column
 
   (* Properties *)
 
-  (** Sets whether this column should be visible in views. *)
+  (** Get property: expand *)
+  external get_expand : t -> bool = "ml_gtk_column_view_column_get_expand"
+
+  (** Set property: expand *)
+  external set_expand : t -> bool -> unit = "ml_gtk_column_view_column_set_expand"
+
+  (** Get property: fixed-width *)
+  external get_fixed_width : t -> int = "ml_gtk_column_view_column_get_fixed_width"
+
+  (** Set property: fixed-width *)
+  external set_fixed_width : t -> int -> unit = "ml_gtk_column_view_column_set_fixed_width"
+
+  (** Get property: id *)
+  external get_id : t -> string = "ml_gtk_column_view_column_get_id"
+
+  (** Set property: id *)
+  external set_id : t -> string -> unit = "ml_gtk_column_view_column_set_id"
+
+  (** Get property: resizable *)
+  external get_resizable : t -> bool = "ml_gtk_column_view_column_get_resizable"
+
+  (** Set property: resizable *)
+  external set_resizable : t -> bool -> unit = "ml_gtk_column_view_column_set_resizable"
+
+  (** Get property: title *)
+  external get_title : t -> string = "ml_gtk_column_view_column_get_title"
+
+  (** Set property: title *)
+  external set_title : t -> string -> unit = "ml_gtk_column_view_column_set_title"
+
+  (** Get property: visible *)
+  external get_visible : t -> bool = "ml_gtk_column_view_column_get_visible"
+
+  (** Set property: visible *)
   external set_visible : t -> bool -> unit = "ml_gtk_column_view_column_set_visible"
-
-  (** Sets the title of this column.
-
-  The title is displayed in the header of a `GtkColumnView`
-  for this column and is therefore user-facing text that should
-  be translated. *)
-  external set_title : t -> string option -> unit = "ml_gtk_column_view_column_set_title"
 
   (** Associates a sorter with the column.
 
@@ -170,58 +190,16 @@ and Column_view_column
   for setting up customizable sorting for [class@Gtk.ColumnView]. *)
   external set_sorter : t -> Sorter.t option -> unit = "ml_gtk_column_view_column_set_sorter"
 
-  (** Sets whether this column should be resizable by dragging. *)
-  external set_resizable : t -> bool -> unit = "ml_gtk_column_view_column_set_resizable"
-
-  (** Sets the id of this column.
-
-  GTK makes no use of this, but applications can use it when
-  storing column view configuration.
-
-  It is up to callers to ensure uniqueness of IDs. *)
-  external set_id : t -> string option -> unit = "ml_gtk_column_view_column_set_id"
-
-  (** If @fixed_width is not -1, sets the fixed width of @column;
-  otherwise unsets it.
-
-  Setting a fixed width overrides the automatically calculated
-  width. Interactive resizing also sets the “fixed-width” property. *)
-  external set_fixed_width : t -> int -> unit = "ml_gtk_column_view_column_set_fixed_width"
-
   (** Sets the `GtkListItemFactory` to use for populating list items for this
   column. *)
   external set_factory : t -> List_item_factory.t option -> unit = "ml_gtk_column_view_column_set_factory"
 
-  (** Sets the column to take available extra space.
-
-  The extra space is shared equally amongst all columns that
-  have the expand set to %TRUE. *)
-  external set_expand : t -> bool -> unit = "ml_gtk_column_view_column_set_expand"
-
-  (** Returns whether this column is visible. *)
-  external get_visible : t -> bool = "ml_gtk_column_view_column_get_visible"
-
-  (** Returns the title set with gtk_column_view_column_set_title(). *)
-  external get_title : t -> string option = "ml_gtk_column_view_column_get_title"
-
   (** Returns the sorter that is associated with the column. *)
   external get_sorter : t -> Sorter.t option = "ml_gtk_column_view_column_get_sorter"
-
-  (** Returns whether this column is resizable. *)
-  external get_resizable : t -> bool = "ml_gtk_column_view_column_get_resizable"
-
-  (** Returns the ID set with gtk_column_view_column_set_id(). *)
-  external get_id : t -> string option = "ml_gtk_column_view_column_get_id"
-
-  (** Gets the fixed width of the column. *)
-  external get_fixed_width : t -> int = "ml_gtk_column_view_column_get_fixed_width"
 
   (** Gets the factory that's currently used to populate list items for
   this column. *)
   external get_factory : t -> List_item_factory.t option = "ml_gtk_column_view_column_get_factory"
-
-  (** Returns whether this column should expand. *)
-  external get_expand : t -> bool = "ml_gtk_column_view_column_get_expand"
 
   (** Gets the column view that's currently displaying this column.
 

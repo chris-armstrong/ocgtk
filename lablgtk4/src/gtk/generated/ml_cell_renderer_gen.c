@@ -30,43 +30,11 @@ gtk_cell_renderer_stop_editing(GtkCellRenderer_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_cell_renderer_set_visible(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_cell_renderer_set_visible(GtkCellRenderer_val(self), Bool_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_cell_renderer_set_sensitive(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_cell_renderer_set_sensitive(GtkCellRenderer_val(self), Bool_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_cell_renderer_set_padding(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
 
 gtk_cell_renderer_set_padding(GtkCellRenderer_val(self), Int_val(arg1), Int_val(arg2));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_cell_renderer_set_is_expander(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_cell_renderer_set_is_expander(GtkCellRenderer_val(self), Bool_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_cell_renderer_set_is_expanded(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_cell_renderer_set_is_expanded(GtkCellRenderer_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -94,28 +62,12 @@ gboolean result = gtk_cell_renderer_is_activatable(GtkCellRenderer_val(self));
 CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_cell_renderer_get_visible(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_cell_renderer_get_visible(GtkCellRenderer_val(self));
-CAMLreturn(Val_bool(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_cell_renderer_get_state(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
 
 GtkStateFlags result = gtk_cell_renderer_get_state(GtkCellRenderer_val(self), GtkWidget_option_val(arg1), GtkCellRendererState_val(arg2));
 CAMLreturn(Val_GtkStateFlags(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_cell_renderer_get_sensitive(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_cell_renderer_get_sensitive(GtkCellRenderer_val(self));
-CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_cell_renderer_get_request_mode(value self)
@@ -138,22 +90,6 @@ CAMLlocal1(ret);
     Store_field(ret, 0, Val_GtkRequisition(out2));
     Store_field(ret, 1, Val_GtkRequisition(out3));
     CAMLreturn(ret);
-}
-
-CAMLexport CAMLprim value ml_gtk_cell_renderer_get_is_expander(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_cell_renderer_get_is_expander(GtkCellRenderer_val(self));
-CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_cell_renderer_get_is_expanded(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_cell_renderer_get_is_expanded(GtkCellRenderer_val(self));
-CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_cell_renderer_get_cell_background(value self)
@@ -185,6 +121,387 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
     g_value_set_string(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "cell-background", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_cell_background_set(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "cell-background-set");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_get_cell_background_set: property 'cell-background-set' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "cell-background-set", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_set_cell_background_set(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "cell-background-set");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_set_cell_background_set: property 'cell-background-set' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "cell-background-set", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_editing(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "editing");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_get_editing: property 'editing' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "editing", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_height(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    gint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "height");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_get_height: property 'height' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "height", &prop_gvalue);
+    prop_value = (gint)g_value_get_int(&prop_gvalue);
+
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_set_height(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    gint c_value = Int_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "height");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_set_height: property 'height' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_int(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "height", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_is_expanded(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "is-expanded");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_get_is_expanded: property 'is-expanded' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "is-expanded", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_set_is_expanded(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "is-expanded");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_set_is_expanded: property 'is-expanded' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "is-expanded", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_is_expander(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "is-expander");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_get_is_expander: property 'is-expander' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "is-expander", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_set_is_expander(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "is-expander");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_set_is_expander: property 'is-expander' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "is-expander", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_sensitive(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "sensitive");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_get_sensitive: property 'sensitive' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "sensitive", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_set_sensitive(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "sensitive");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_set_sensitive: property 'sensitive' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "sensitive", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_visible(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "visible");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_get_visible: property 'visible' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "visible", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_set_visible(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "visible");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_set_visible: property 'visible' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "visible", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_width(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    gint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "width");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_get_width: property 'width' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "width", &prop_gvalue);
+    prop_value = (gint)g_value_get_int(&prop_gvalue);
+
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_set_width(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    gint c_value = Int_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "width");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_set_width: property 'width' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_int(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "width", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_xalign(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    gfloat prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "xalign");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_get_xalign: property 'xalign' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "xalign", &prop_gvalue);
+    prop_value = g_value_get_float(&prop_gvalue);
+
+result = caml_copy_double(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_set_xalign(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    gfloat c_value = Double_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "xalign");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_set_xalign: property 'xalign' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_float(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "xalign", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_xpad(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    guint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "xpad");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_get_xpad: property 'xpad' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "xpad", &prop_gvalue);
+    prop_value = (guint)g_value_get_uint(&prop_gvalue);
+
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_set_xpad(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    guint c_value = Int_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "xpad");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_set_xpad: property 'xpad' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_uint(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "xpad", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_yalign(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    gfloat prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "yalign");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_get_yalign: property 'yalign' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "yalign", &prop_gvalue);
+    prop_value = g_value_get_float(&prop_gvalue);
+
+result = caml_copy_double(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_set_yalign(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    gfloat c_value = Double_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "yalign");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_set_yalign: property 'yalign' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_float(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "yalign", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_ypad(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    guint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "ypad");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_get_ypad: property 'ypad' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "ypad", &prop_gvalue);
+    prop_value = (guint)g_value_get_uint(&prop_gvalue);
+
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_set_ypad(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    guint c_value = Int_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "ypad");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_set_ypad: property 'ypad' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_uint(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "ypad", &prop_gvalue);
 g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }

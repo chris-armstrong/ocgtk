@@ -16,6 +16,42 @@ external get_accept_unpaired_release : t -> bool = "ml_gtk_flow_box_get_accept_u
 (** Set property: accept-unpaired-release *)
 external set_accept_unpaired_release : t -> bool -> unit = "ml_gtk_flow_box_set_accept_unpaired_release"
 
+(** Get property: activate-on-single-click *)
+external get_activate_on_single_click : t -> bool = "ml_gtk_flow_box_get_activate_on_single_click"
+
+(** Set property: activate-on-single-click *)
+external set_activate_on_single_click : t -> bool -> unit = "ml_gtk_flow_box_set_activate_on_single_click"
+
+(** Get property: column-spacing *)
+external get_column_spacing : t -> int = "ml_gtk_flow_box_get_column_spacing"
+
+(** Set property: column-spacing *)
+external set_column_spacing : t -> int -> unit = "ml_gtk_flow_box_set_column_spacing"
+
+(** Get property: homogeneous *)
+external get_homogeneous : t -> bool = "ml_gtk_flow_box_get_homogeneous"
+
+(** Set property: homogeneous *)
+external set_homogeneous : t -> bool -> unit = "ml_gtk_flow_box_set_homogeneous"
+
+(** Get property: max-children-per-line *)
+external get_max_children_per_line : t -> int = "ml_gtk_flow_box_get_max_children_per_line"
+
+(** Set property: max-children-per-line *)
+external set_max_children_per_line : t -> int -> unit = "ml_gtk_flow_box_set_max_children_per_line"
+
+(** Get property: min-children-per-line *)
+external get_min_children_per_line : t -> int = "ml_gtk_flow_box_get_min_children_per_line"
+
+(** Set property: min-children-per-line *)
+external set_min_children_per_line : t -> int -> unit = "ml_gtk_flow_box_set_min_children_per_line"
+
+(** Get property: row-spacing *)
+external get_row_spacing : t -> int = "ml_gtk_flow_box_get_row_spacing"
+
+(** Set property: row-spacing *)
+external set_row_spacing : t -> int -> unit = "ml_gtk_flow_box_set_row_spacing"
+
 (** Unselects a single child of @box, if the selection
 mode allows it. *)
 external unselect_child : t -> Flow_box_child.t -> unit = "ml_gtk_flow_box_unselect_child"
@@ -40,25 +76,6 @@ external set_vadjustment : t -> Adjustment.t -> unit = "ml_gtk_flow_box_set_vadj
 (** Sets how selection works in @box. *)
 external set_selection_mode : t -> Gtk_enums.selectionmode -> unit = "ml_gtk_flow_box_set_selection_mode"
 
-(** Sets the vertical space to add between children. *)
-external set_row_spacing : t -> int -> unit = "ml_gtk_flow_box_set_row_spacing"
-
-(** Sets the minimum number of children to line up
-in @box’s orientation before flowing. *)
-external set_min_children_per_line : t -> int -> unit = "ml_gtk_flow_box_set_min_children_per_line"
-
-(** Sets the maximum number of children to request and
-allocate space for in @box’s orientation.
-
-Setting the maximum number of children per line
-limits the overall natural size request to be no more
-than @n_children children long in the given orientation. *)
-external set_max_children_per_line : t -> int -> unit = "ml_gtk_flow_box_set_max_children_per_line"
-
-(** Sets whether or not all children of @box are given
-equal space in the box. *)
-external set_homogeneous : t -> bool -> unit = "ml_gtk_flow_box_set_homogeneous"
-
 (** Hooks up an adjustment to focus handling in @box.
 
 The adjustment is also used for autoscrolling during
@@ -71,13 +88,6 @@ The adjustments have to be in pixel units and in the same
 coordinate system as the allocation for immediate children
 of the box. *)
 external set_hadjustment : t -> Adjustment.t -> unit = "ml_gtk_flow_box_set_hadjustment"
-
-(** Sets the horizontal space to add between children. *)
-external set_column_spacing : t -> int -> unit = "ml_gtk_flow_box_set_column_spacing"
-
-(** If @single is %TRUE, children will be activated when you click
-on them, otherwise you need to double-click. *)
-external set_activate_on_single_click : t -> bool -> unit = "ml_gtk_flow_box_set_activate_on_single_click"
 
 (** Selects a single child of @box, if the selection
 mode allows it. *)
@@ -130,21 +140,6 @@ external insert : t -> Event_controller_and__layout_child_and__layout_manager_an
 (** Gets the selection mode of @box. *)
 external get_selection_mode : t -> Gtk_enums.selectionmode = "ml_gtk_flow_box_get_selection_mode"
 
-(** Gets the vertical spacing. *)
-external get_row_spacing : t -> int = "ml_gtk_flow_box_get_row_spacing"
-
-(** Gets the minimum number of children per line. *)
-external get_min_children_per_line : t -> int = "ml_gtk_flow_box_get_min_children_per_line"
-
-(** Gets the maximum number of children per line. *)
-external get_max_children_per_line : t -> int = "ml_gtk_flow_box_get_max_children_per_line"
-
-(** Returns whether the box is homogeneous. *)
-external get_homogeneous : t -> bool = "ml_gtk_flow_box_get_homogeneous"
-
-(** Gets the horizontal spacing. *)
-external get_column_spacing : t -> int = "ml_gtk_flow_box_get_column_spacing"
-
 (** Gets the child in the (@x, @y) position.
 
 Both @x and @y are assumed to be relative to the origin of @box. *)
@@ -152,9 +147,6 @@ external get_child_at_pos : t -> int -> int -> Flow_box_child.t option = "ml_gtk
 
 (** Gets the nth child in the @box. *)
 external get_child_at_index : t -> int -> Flow_box_child.t option = "ml_gtk_flow_box_get_child_at_index"
-
-(** Returns whether children activate on single clicks. *)
-external get_activate_on_single_click : t -> bool = "ml_gtk_flow_box_get_activate_on_single_click"
 
 (** Adds @child to the end of @self.
 

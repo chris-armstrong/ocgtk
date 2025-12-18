@@ -40,7 +40,17 @@ CAMLreturn(Val_GdkModifierType(result));
 CAMLexport CAMLprim value ml_gtk_keyval_trigger_get_keyval(value self)
 {
 CAMLparam1(self);
+CAMLlocal1(result);
+GtkKeyvalTrigger *obj = (GtkKeyvalTrigger *)GtkKeyvalTrigger_val(self);
+    guint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "keyval");
+if (pspec == NULL) caml_failwith("ml_gtk_keyval_trigger_get_keyval: property 'keyval' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "keyval", &prop_gvalue);
+    prop_value = (guint)g_value_get_uint(&prop_gvalue);
 
-guint result = gtk_keyval_trigger_get_keyval(GtkKeyvalTrigger_val(self));
-CAMLreturn(Val_int(result));
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
 }

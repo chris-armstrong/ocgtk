@@ -47,7 +47,17 @@ CAMLreturn(Val_option(result, Val_GtkBuilderScope));
 CAMLexport CAMLprim value ml_gtk_builder_list_item_factory_get_resource(value self)
 {
 CAMLparam1(self);
+CAMLlocal1(result);
+GtkBuilderListItemFactory *obj = (GtkBuilderListItemFactory *)GtkBuilderListItemFactory_val(self);
+    gchar* *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "resource");
+if (pspec == NULL) caml_failwith("ml_gtk_builder_list_item_factory_get_resource: property 'resource' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "resource", &prop_gvalue);
+    prop_value = g_value_get_string(&prop_gvalue);
 
-const char* result = gtk_builder_list_item_factory_get_resource(GtkBuilderListItemFactory_val(self));
-CAMLreturn(Val_option_string(result));
+result = caml_copy_string(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
 }

@@ -16,6 +16,12 @@ external new_with_mnemonic : string -> t = "ml_gtk_toggle_button_new_with_mnemon
 
 (* Properties *)
 
+(** Get property: active *)
+external get_active : t -> bool = "ml_gtk_toggle_button_get_active"
+
+(** Set property: active *)
+external set_active : t -> bool -> unit = "ml_gtk_toggle_button_set_active"
+
 (** Emits the ::toggled signal on the `GtkToggleButton`. *)
 external toggled : t -> unit = "ml_gtk_toggle_button_toggled"
 
@@ -31,19 +37,4 @@ API, by using the same action with parameter type and state type 's'
 for all buttons in the group, and giving each button its own target
 value. *)
 external set_group : t -> t option -> unit = "ml_gtk_toggle_button_set_group"
-
-(** Sets the status of the toggle button.
-
-Set to %TRUE if you want the `GtkToggleButton` to be “pressed in”,
-and %FALSE to raise it.
-
-If the status of the button changes, this action causes the
-[signal@Gtk.ToggleButton::toggled] signal to be emitted. *)
-external set_active : t -> bool -> unit = "ml_gtk_toggle_button_set_active"
-
-(** Queries a `GtkToggleButton` and returns its current state.
-
-Returns %TRUE if the toggle button is pressed in and %FALSE
-if it is raised. *)
-external get_active : t -> bool = "ml_gtk_toggle_button_get_active"
 

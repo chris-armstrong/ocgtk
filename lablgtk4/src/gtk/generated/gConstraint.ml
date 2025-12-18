@@ -1,17 +1,17 @@
 (* High-level class for Constraint *)
 class constraint_ (obj : Constraint.t) = object (self)
 
-  method get_constant : unit -> float = fun () -> (Constraint.get_constant obj )
+  method constant = Constraint.get_constant obj
 
-  method get_multiplier : unit -> float = fun () -> (Constraint.get_multiplier obj )
+  method multiplier = Constraint.get_multiplier obj
+
+  method strength = Constraint.get_strength obj
 
   method get_relation : unit -> Gtk_enums.constraintrelation = fun () -> (Constraint.get_relation obj )
 
   method get_source : unit -> GConstraint_target.constraint_target option = fun () -> Option.map (fun ret -> new GConstraint_target.constraint_target ret) (Constraint.get_source obj )
 
   method get_source_attribute : unit -> Gtk_enums.constraintattribute = fun () -> (Constraint.get_source_attribute obj )
-
-  method get_strength : unit -> int = fun () -> (Constraint.get_strength obj )
 
   method get_target : unit -> GConstraint_target.constraint_target option = fun () -> Option.map (fun ret -> new GConstraint_target.constraint_target ret) (Constraint.get_target obj )
 

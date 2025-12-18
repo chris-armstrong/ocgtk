@@ -5,15 +5,15 @@ type t = [`overlay_layout_child | `layout_child | `object_] Gobject.obj
 
 (* Properties *)
 
-(** Sets whether to measure this child. *)
-external set_measure : t -> bool -> unit = "ml_gtk_overlay_layout_child_set_measure"
+(** Get property: clip-overlay *)
+external get_clip_overlay : t -> bool = "ml_gtk_overlay_layout_child_get_clip_overlay"
 
-(** Sets whether to clip this child. *)
+(** Set property: clip-overlay *)
 external set_clip_overlay : t -> bool -> unit = "ml_gtk_overlay_layout_child_set_clip_overlay"
 
-(** Retrieves whether the child is measured. *)
+(** Get property: measure *)
 external get_measure : t -> bool = "ml_gtk_overlay_layout_child_get_measure"
 
-(** Retrieves whether the child is clipped. *)
-external get_clip_overlay : t -> bool = "ml_gtk_overlay_layout_child_get_clip_overlay"
+(** Set property: measure *)
+external set_measure : t -> bool -> unit = "ml_gtk_overlay_layout_child_set_measure"
 

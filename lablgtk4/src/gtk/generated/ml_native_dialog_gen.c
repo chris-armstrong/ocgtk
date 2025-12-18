@@ -38,36 +38,12 @@ gtk_native_dialog_set_transient_for(GtkNativeDialog_val(self), Option_val(arg1, 
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_native_dialog_set_title(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_native_dialog_set_title(GtkNativeDialog_val(self), String_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_native_dialog_set_modal(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_native_dialog_set_modal(GtkNativeDialog_val(self), Bool_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_native_dialog_hide(value self)
 {
 CAMLparam1(self);
 
 gtk_native_dialog_hide(GtkNativeDialog_val(self));
 CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_native_dialog_get_visible(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_native_dialog_get_visible(GtkNativeDialog_val(self));
-CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_native_dialog_get_transient_for(value self)
@@ -78,26 +54,109 @@ GtkWindow* result = gtk_native_dialog_get_transient_for(GtkNativeDialog_val(self
 CAMLreturn(Val_option(result, Val_GtkWindow));
 }
 
-CAMLexport CAMLprim value ml_gtk_native_dialog_get_title(value self)
-{
-CAMLparam1(self);
-
-const char* result = gtk_native_dialog_get_title(GtkNativeDialog_val(self));
-CAMLreturn(Val_option_string(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_native_dialog_get_modal(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_native_dialog_get_modal(GtkNativeDialog_val(self));
-CAMLreturn(Val_bool(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_native_dialog_destroy(value self)
 {
 CAMLparam1(self);
 
 gtk_native_dialog_destroy(GtkNativeDialog_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_native_dialog_get_modal(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkNativeDialog *obj = (GtkNativeDialog *)GtkNativeDialog_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "modal");
+if (pspec == NULL) caml_failwith("ml_gtk_native_dialog_get_modal: property 'modal' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "modal", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_native_dialog_set_modal(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkNativeDialog *obj = (GtkNativeDialog *)GtkNativeDialog_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "modal");
+if (pspec == NULL) caml_failwith("ml_gtk_native_dialog_set_modal: property 'modal' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "modal", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_native_dialog_get_title(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkNativeDialog *obj = (GtkNativeDialog *)GtkNativeDialog_val(self);
+    gchar* *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "title");
+if (pspec == NULL) caml_failwith("ml_gtk_native_dialog_get_title: property 'title' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "title", &prop_gvalue);
+    prop_value = g_value_get_string(&prop_gvalue);
+
+result = caml_copy_string(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_native_dialog_set_title(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkNativeDialog *obj = (GtkNativeDialog *)GtkNativeDialog_val(self);
+    ML_DECL_CONST_STRING(c_value, String_val(new_value));
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "title");
+if (pspec == NULL) caml_failwith("ml_gtk_native_dialog_set_title: property 'title' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_string(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "title", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_native_dialog_get_visible(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkNativeDialog *obj = (GtkNativeDialog *)GtkNativeDialog_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "visible");
+if (pspec == NULL) caml_failwith("ml_gtk_native_dialog_get_visible: property 'visible' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "visible", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_native_dialog_set_visible(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkNativeDialog *obj = (GtkNativeDialog *)GtkNativeDialog_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "visible");
+if (pspec == NULL) caml_failwith("ml_gtk_native_dialog_set_visible: property 'visible' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "visible", &prop_gvalue);
+g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }

@@ -5,6 +5,12 @@ type t = [`cell_editable] Gobject.obj
 
 (* Properties *)
 
+(** Get property: editing-canceled *)
+external get_editing_canceled : t -> bool = "ml_gtk_cell_editable_get_editing_canceled"
+
+(** Set property: editing-canceled *)
+external set_editing_canceled : t -> bool -> unit = "ml_gtk_cell_editable_set_editing_canceled"
+
 (** Begins editing on a @cell_editable.
 
 The `GtkCellRenderer` for the cell creates and returns a `GtkCellEditable` from

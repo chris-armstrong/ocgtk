@@ -5,6 +5,8 @@ class dialog (obj : Dialog.t) = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Dialog.as_widget obj)
   inherit Gdialog_signals.dialog_signals obj
 
+  method use_header_bar = Dialog.get_use_header_bar obj
+
   method add_action_widget : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> int -> unit =
     fun child response_id ->
       let child = child#as_widget in

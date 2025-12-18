@@ -194,8 +194,13 @@ let ocaml_function_name ~class_name ?c_type ?c_symbol_prefix c_identifier =
 let ocaml_method_name ~class_name ?c_type ?c_symbol_prefix method_identifier =
   ocaml_function_name ~class_name ?c_type ?c_symbol_prefix method_identifier
 
-let ocaml_parameter_name name = 
-   name |> sanitize_identifier |> String.map ~f:(function '-' -> '_' | c -> c) |> to_snake_case
+(** calculate property name, but does not sanitize the identifier (as it will have get_/set_ added to calles). sanitize_identifier will still be
+   needed for getter method names*)
+let ocaml_property_name name = 
+  name  |> String.map ~f:(function '-' -> '_' | c -> c) |> to_snake_case
+
+  let ocaml_parameter_name name = 
+   name  |> String.map ~f:(function '-' -> '_' | c -> c) |> to_snake_case |> sanitize_identifier
 
 let ocaml_class_name cn = cn 
   |>  normalize_class_name 

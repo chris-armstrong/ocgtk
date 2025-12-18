@@ -4,6 +4,10 @@
 class recent_manager (obj : Recent_manager.t) = object (self)
   inherit Grecent_manager_signals.recent_manager_signals obj
 
+  method filename = Recent_manager.get_filename obj
+
+  method size = Recent_manager.get_size obj
+
   method add_item : string -> bool = fun uri -> (Recent_manager.add_item obj uri)
 
   method has_item : string -> bool = fun uri -> (Recent_manager.has_item obj uri)

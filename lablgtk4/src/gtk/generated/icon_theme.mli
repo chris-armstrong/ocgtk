@@ -8,12 +8,11 @@ external new_ : unit -> t = "ml_gtk_icon_theme_new"
 
 (* Properties *)
 
-(** Sets the name of the icon theme that the `GtkIconTheme` object uses
-overriding system configuration.
+(** Get property: theme-name *)
+external get_theme_name : t -> string = "ml_gtk_icon_theme_get_theme_name"
 
-This function cannot be called on the icon theme objects returned
-from [func@Gtk.IconTheme.get_for_display]. *)
-external set_theme_name : t -> string option -> unit = "ml_gtk_icon_theme_set_theme_name"
+(** Set property: theme-name *)
+external set_theme_name : t -> string -> unit = "ml_gtk_icon_theme_set_theme_name"
 
 (** Checks whether an icon theme includes an icon
 for a particular name. *)

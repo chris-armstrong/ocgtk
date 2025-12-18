@@ -1,9 +1,4 @@
 (* Signal handlers for CellRendererAccel *)
 class cell_renderer_accel_signals (obj : Cell_renderer_accel.t) = object
-  method on_accel_cleared ~callback =
-    Gobject.Signal.connect_simple (Obj.magic obj :> _ Gobject.obj) ~name:"accel-cleared" ~callback ~after:false
-
-  method on_accel_edited ~callback =
-    Gobject.Signal.connect_simple (Obj.magic obj :> _ Gobject.obj) ~name:"accel-edited" ~callback ~after:false
-
+  (* No parameterless void signals parsed from GIR *)
 end

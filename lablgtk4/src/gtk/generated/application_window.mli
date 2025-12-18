@@ -10,8 +10,10 @@ external new_ : Application_and__window_and__window_group.Application.t -> t = "
 
 (* Properties *)
 
-(** Sets whether the window will display a menubar for the app menu
-and menubar as needed. *)
+(** Get property: show-menubar *)
+external get_show_menubar : t -> bool = "ml_gtk_application_window_get_show_menubar"
+
+(** Set property: show-menubar *)
 external set_show_menubar : t -> bool -> unit = "ml_gtk_application_window_set_show_menubar"
 
 (** Associates a shortcuts window with the application window.
@@ -21,10 +23,6 @@ Additionally, sets up an action with the name
 
 @window takes responsibility for destroying @help_overlay. *)
 external set_help_overlay : t -> Shortcuts_window.t option -> unit = "ml_gtk_application_window_set_help_overlay"
-
-(** Returns whether the window will display a menubar for the app menu
-and menubar as needed. *)
-external get_show_menubar : t -> bool = "ml_gtk_application_window_get_show_menubar"
 
 (** Returns the unique ID of the window.
 

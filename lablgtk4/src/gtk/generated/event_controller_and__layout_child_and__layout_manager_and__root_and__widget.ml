@@ -6,6 +6,12 @@ module rec Event_controller : sig
 
   (* Properties *)
 
+  (** Get property: name *)
+  external get_name : t -> string = "ml_gtk_event_controller_get_name"
+
+  (** Set property: name *)
+  external set_name : t -> string -> unit = "ml_gtk_event_controller_set_name"
+
   (** Sets a name on the controller that can be used for debugging. *)
   external set_static_name : t -> string option -> unit = "ml_gtk_event_controller_set_static_name"
 
@@ -22,9 +28,6 @@ module rec Event_controller : sig
   surface, such as popovers. *)
   external set_propagation_limit : t -> Gtk_enums.propagationlimit -> unit = "ml_gtk_event_controller_set_propagation_limit"
 
-  (** Sets a name on the controller that can be used for debugging. *)
-  external set_name : t -> string option -> unit = "ml_gtk_event_controller_set_name"
-
   (** Resets the @controller to a clean state. *)
   external reset : t -> unit = "ml_gtk_event_controller_reset"
 
@@ -36,9 +39,6 @@ module rec Event_controller : sig
 
   (** Gets the propagation limit of the event controller. *)
   external get_propagation_limit : t -> Gtk_enums.propagationlimit = "ml_gtk_event_controller_get_propagation_limit"
-
-  (** Gets the name of @controller. *)
-  external get_name : t -> string option = "ml_gtk_event_controller_get_name"
 
   (** Returns the modifier state of the event that is currently being
   handled by the controller.
@@ -57,6 +57,12 @@ end = struct
 
   (* Properties *)
 
+  (** Get property: name *)
+  external get_name : t -> string = "ml_gtk_event_controller_get_name"
+
+  (** Set property: name *)
+  external set_name : t -> string -> unit = "ml_gtk_event_controller_set_name"
+
   (** Sets a name on the controller that can be used for debugging. *)
   external set_static_name : t -> string option -> unit = "ml_gtk_event_controller_set_static_name"
 
@@ -73,9 +79,6 @@ end = struct
   surface, such as popovers. *)
   external set_propagation_limit : t -> Gtk_enums.propagationlimit -> unit = "ml_gtk_event_controller_set_propagation_limit"
 
-  (** Sets a name on the controller that can be used for debugging. *)
-  external set_name : t -> string option -> unit = "ml_gtk_event_controller_set_name"
-
   (** Resets the @controller to a clean state. *)
   external reset : t -> unit = "ml_gtk_event_controller_reset"
 
@@ -87,9 +90,6 @@ end = struct
 
   (** Gets the propagation limit of the event controller. *)
   external get_propagation_limit : t -> Gtk_enums.propagationlimit = "ml_gtk_event_controller_get_propagation_limit"
-
-  (** Gets the name of @controller. *)
-  external get_name : t -> string option = "ml_gtk_event_controller_get_name"
 
   (** Returns the modifier state of the event that is currently being
   handled by the controller.
@@ -252,6 +252,150 @@ and Widget
 
   (* Properties *)
 
+  (** Get property: can-focus *)
+  external get_can_focus : t -> bool = "ml_gtk_widget_get_can_focus"
+
+  (** Set property: can-focus *)
+  external set_can_focus : t -> bool -> unit = "ml_gtk_widget_set_can_focus"
+
+  (** Get property: can-target *)
+  external get_can_target : t -> bool = "ml_gtk_widget_get_can_target"
+
+  (** Set property: can-target *)
+  external set_can_target : t -> bool -> unit = "ml_gtk_widget_set_can_target"
+
+  (** Get property: css-name *)
+  external get_css_name : t -> string = "ml_gtk_widget_get_css_name"
+
+  (** Get property: focus-on-click *)
+  external get_focus_on_click : t -> bool = "ml_gtk_widget_get_focus_on_click"
+
+  (** Set property: focus-on-click *)
+  external set_focus_on_click : t -> bool -> unit = "ml_gtk_widget_set_focus_on_click"
+
+  (** Get property: focusable *)
+  external get_focusable : t -> bool = "ml_gtk_widget_get_focusable"
+
+  (** Set property: focusable *)
+  external set_focusable : t -> bool -> unit = "ml_gtk_widget_set_focusable"
+
+  (** Get property: has-default *)
+  external get_has_default : t -> bool = "ml_gtk_widget_get_has_default"
+
+  (** Get property: has-focus *)
+  external get_has_focus : t -> bool = "ml_gtk_widget_get_has_focus"
+
+  (** Get property: has-tooltip *)
+  external get_has_tooltip : t -> bool = "ml_gtk_widget_get_has_tooltip"
+
+  (** Set property: has-tooltip *)
+  external set_has_tooltip : t -> bool -> unit = "ml_gtk_widget_set_has_tooltip"
+
+  (** Get property: height-request *)
+  external get_height_request : t -> int = "ml_gtk_widget_get_height_request"
+
+  (** Set property: height-request *)
+  external set_height_request : t -> int -> unit = "ml_gtk_widget_set_height_request"
+
+  (** Get property: hexpand *)
+  external get_hexpand : t -> bool = "ml_gtk_widget_get_hexpand"
+
+  (** Set property: hexpand *)
+  external set_hexpand : t -> bool -> unit = "ml_gtk_widget_set_hexpand"
+
+  (** Get property: hexpand-set *)
+  external get_hexpand_set : t -> bool = "ml_gtk_widget_get_hexpand_set"
+
+  (** Set property: hexpand-set *)
+  external set_hexpand_set : t -> bool -> unit = "ml_gtk_widget_set_hexpand_set"
+
+  (** Get property: margin-bottom *)
+  external get_margin_bottom : t -> int = "ml_gtk_widget_get_margin_bottom"
+
+  (** Set property: margin-bottom *)
+  external set_margin_bottom : t -> int -> unit = "ml_gtk_widget_set_margin_bottom"
+
+  (** Get property: margin-end *)
+  external get_margin_end : t -> int = "ml_gtk_widget_get_margin_end"
+
+  (** Set property: margin-end *)
+  external set_margin_end : t -> int -> unit = "ml_gtk_widget_set_margin_end"
+
+  (** Get property: margin-start *)
+  external get_margin_start : t -> int = "ml_gtk_widget_get_margin_start"
+
+  (** Set property: margin-start *)
+  external set_margin_start : t -> int -> unit = "ml_gtk_widget_set_margin_start"
+
+  (** Get property: margin-top *)
+  external get_margin_top : t -> int = "ml_gtk_widget_get_margin_top"
+
+  (** Set property: margin-top *)
+  external set_margin_top : t -> int -> unit = "ml_gtk_widget_set_margin_top"
+
+  (** Get property: name *)
+  external get_name : t -> string = "ml_gtk_widget_get_name"
+
+  (** Set property: name *)
+  external set_name : t -> string -> unit = "ml_gtk_widget_set_name"
+
+  (** Get property: opacity *)
+  external get_opacity : t -> float = "ml_gtk_widget_get_opacity"
+
+  (** Set property: opacity *)
+  external set_opacity : t -> float -> unit = "ml_gtk_widget_set_opacity"
+
+  (** Get property: receives-default *)
+  external get_receives_default : t -> bool = "ml_gtk_widget_get_receives_default"
+
+  (** Set property: receives-default *)
+  external set_receives_default : t -> bool -> unit = "ml_gtk_widget_set_receives_default"
+
+  (** Get property: scale-factor *)
+  external get_scale_factor : t -> int = "ml_gtk_widget_get_scale_factor"
+
+  (** Get property: sensitive *)
+  external get_sensitive : t -> bool = "ml_gtk_widget_get_sensitive"
+
+  (** Set property: sensitive *)
+  external set_sensitive : t -> bool -> unit = "ml_gtk_widget_set_sensitive"
+
+  (** Get property: tooltip-markup *)
+  external get_tooltip_markup : t -> string = "ml_gtk_widget_get_tooltip_markup"
+
+  (** Set property: tooltip-markup *)
+  external set_tooltip_markup : t -> string -> unit = "ml_gtk_widget_set_tooltip_markup"
+
+  (** Get property: tooltip-text *)
+  external get_tooltip_text : t -> string = "ml_gtk_widget_get_tooltip_text"
+
+  (** Set property: tooltip-text *)
+  external set_tooltip_text : t -> string -> unit = "ml_gtk_widget_set_tooltip_text"
+
+  (** Get property: vexpand *)
+  external get_vexpand : t -> bool = "ml_gtk_widget_get_vexpand"
+
+  (** Set property: vexpand *)
+  external set_vexpand : t -> bool -> unit = "ml_gtk_widget_set_vexpand"
+
+  (** Get property: vexpand-set *)
+  external get_vexpand_set : t -> bool = "ml_gtk_widget_get_vexpand_set"
+
+  (** Set property: vexpand-set *)
+  external set_vexpand_set : t -> bool -> unit = "ml_gtk_widget_set_vexpand_set"
+
+  (** Get property: visible *)
+  external get_visible : t -> bool = "ml_gtk_widget_get_visible"
+
+  (** Set property: visible *)
+  external set_visible : t -> bool -> unit = "ml_gtk_widget_set_visible"
+
+  (** Get property: width-request *)
+  external get_width_request : t -> int = "ml_gtk_widget_get_width_request"
+
+  (** Set property: width-request *)
+  external set_width_request : t -> int -> unit = "ml_gtk_widget_set_width_request"
+
   (** Turns off flag values for the current widget state.
 
   See [method@Gtk.Widget.set_state_flags].
@@ -315,47 +459,8 @@ and Widget
   for children that have their own surface. *)
   external should_layout : t -> bool = "ml_gtk_widget_should_layout"
 
-  (** Sets the visibility state of @widget.
-
-  Note that setting this to %TRUE doesn’t mean the widget is
-  actually viewable, see [method@Gtk.Widget.get_visible]. *)
-  external set_visible : t -> bool -> unit = "ml_gtk_widget_set_visible"
-
-  (** Sets whether the vexpand flag will be used.
-
-  See [method@Gtk.Widget.set_hexpand_set] for more detail. *)
-  external set_vexpand_set : t -> bool -> unit = "ml_gtk_widget_set_vexpand_set"
-
-  (** Sets whether the widget would like any available extra vertical
-  space.
-
-  See [method@Gtk.Widget.set_hexpand] for more detail. *)
-  external set_vexpand : t -> bool -> unit = "ml_gtk_widget_set_vexpand"
-
   (** Sets the vertical alignment of @widget. *)
   external set_valign : t -> Gtk_enums.align -> unit = "ml_gtk_widget_set_valign"
-
-  (** Sets @text as the contents of the tooltip.
-
-  If @text contains any markup, it will be escaped.
-
-  This function will take care of setting
-  [property@Gtk.Widget:has-tooltip] as a side effect,
-  and of the default handler for the
-  [signal@Gtk.Widget::query-tooltip] signal.
-
-  See also [method@Gtk.Tooltip.set_text]. *)
-  external set_tooltip_text : t -> string option -> unit = "ml_gtk_widget_set_tooltip_text"
-
-  (** Sets @markup as the contents of the tooltip, which is marked
-  up with Pango markup.
-
-  This function will take care of setting the
-  [property@Gtk.Widget:has-tooltip] as a side effect, and of the
-  default handler for the [signal@Gtk.Widget::query-tooltip] signal.
-
-  See also [method@Gtk.Tooltip.set_markup]. *)
-  external set_tooltip_markup : t -> string option -> unit = "ml_gtk_widget_set_tooltip_markup"
 
   (** Turns on flag values in the current widget state.
 
@@ -405,19 +510,6 @@ and Widget
   of `GtkWidget`. *)
   external set_size_request : t -> int -> int -> unit = "ml_gtk_widget_set_size_request"
 
-  (** Sets the sensitivity of a widget.
-
-  A widget is sensitive if the user can interact with it.
-  Insensitive widgets are “grayed out” and the user can’t
-  interact with them. Insensitive widgets are known as
-  “inactive”, “disabled”, or “ghosted” in some other toolkits. *)
-  external set_sensitive : t -> bool -> unit = "ml_gtk_widget_set_sensitive"
-
-  (** Specifies whether @widget will be treated as the default
-  widget within its toplevel when it has the focus, even if
-  another widget is the default. *)
-  external set_receives_default : t -> bool -> unit = "ml_gtk_widget_set_receives_default"
-
   (** Sets @parent as the parent widget of @widget.
 
   This takes care of details such as updating the state and style
@@ -439,132 +531,12 @@ and Widget
   The default value is %GTK_OVERFLOW_VISIBLE. *)
   external set_overflow : t -> Gtk_enums.overflow -> unit = "ml_gtk_widget_set_overflow"
 
-  (** Request the @widget to be rendered partially transparent.
-
-  An opacity of 0 is fully transparent and an opacity of 1
-  is fully opaque.
-
-  Opacity works on both toplevel widgets and child widgets, although
-  there are some limitations: For toplevel widgets, applying opacity
-  depends on the capabilities of the windowing system. On X11, this
-  has any effect only on X displays with a compositing manager,
-  see gdk_display_is_composited(). On Windows and Wayland it should
-  always work, although setting a window’s opacity after the window
-  has been shown may cause some flicker.
-
-  Note that the opacity is inherited through inclusion — if you set
-  a toplevel to be partially translucent, all of its content will
-  appear translucent, since it is ultimatively rendered on that
-  toplevel. The opacity value itself is not inherited by child
-  widgets (since that would make widgets deeper in the hierarchy
-  progressively more translucent). As a consequence, [class@Gtk.Popover]s
-  and other [iface@Gtk.Native] widgets with their own surface will use their
-  own opacity value, and thus by default appear non-translucent,
-  even if they are attached to a toplevel that is translucent. *)
-  external set_opacity : t -> float -> unit = "ml_gtk_widget_set_opacity"
-
-  (** Sets a widgets name.
-
-  Setting a name allows you to refer to the widget from a
-  CSS file. You can apply a style to widgets with a particular name
-  in the CSS file. See the documentation for the CSS syntax (on the
-  same page as the docs for [class@Gtk.StyleContext].
-
-  Note that the CSS syntax has certain special characters to delimit
-  and represent elements in a selector (period, #, >, *...), so using
-  these will make your widget impossible to match by name. Any combination
-  of alphanumeric symbols, dashes and underscores will suffice. *)
-  external set_name : t -> string -> unit = "ml_gtk_widget_set_name"
-
-  (** Sets the top margin of @widget. *)
-  external set_margin_top : t -> int -> unit = "ml_gtk_widget_set_margin_top"
-
-  (** Sets the start margin of @widget. *)
-  external set_margin_start : t -> int -> unit = "ml_gtk_widget_set_margin_start"
-
-  (** Sets the end margin of @widget. *)
-  external set_margin_end : t -> int -> unit = "ml_gtk_widget_set_margin_end"
-
-  (** Sets the bottom margin of @widget. *)
-  external set_margin_bottom : t -> int -> unit = "ml_gtk_widget_set_margin_bottom"
-
   (** Sets the layout manager delegate instance that provides an
   implementation for measuring and allocating the children of @widget. *)
   external set_layout_manager : t -> Layout_manager.t option -> unit = "ml_gtk_widget_set_layout_manager"
 
-  (** Sets whether the hexpand flag will be used.
-
-  The [property@Gtk.Widget:hexpand-set] property will be set
-  automatically when you call [method@Gtk.Widget.set_hexpand]
-  to set hexpand, so the most likely reason to use this function
-  would be to unset an explicit expand flag.
-
-  If hexpand is set, then it overrides any computed
-  expand value based on child widgets. If hexpand is not
-  set, then the expand value depends on whether any
-  children of the widget would like to expand.
-
-  There are few reasons to use this function, but it’s here
-  for completeness and consistency. *)
-  external set_hexpand_set : t -> bool -> unit = "ml_gtk_widget_set_hexpand_set"
-
-  (** Sets whether the widget would like any available extra horizontal
-  space.
-
-  When a user resizes a `GtkWindow`, widgets with expand=TRUE
-  generally receive the extra space. For example, a list or
-  scrollable area or document in your window would often be set to
-  expand.
-
-  Call this function to set the expand flag if you would like your
-  widget to become larger horizontally when the window has extra
-  room.
-
-  By default, widgets automatically expand if any of their children
-  want to expand. (To see if a widget will automatically expand given
-  its current children and state, call [method@Gtk.Widget.compute_expand].
-  A container can decide how the expandability of children affects the
-  expansion of the container by overriding the compute_expand virtual
-  method on `GtkWidget`.).
-
-  Setting hexpand explicitly with this function will override the
-  automatic expand behavior.
-
-  This function forces the widget to expand or not to expand,
-  regardless of children.  The override occurs because
-  [method@Gtk.Widget.set_hexpand] sets the hexpand-set property (see
-  [method@Gtk.Widget.set_hexpand_set]) which causes the widget’s hexpand
-  value to be used, rather than looking at children and widget state. *)
-  external set_hexpand : t -> bool -> unit = "ml_gtk_widget_set_hexpand"
-
-  (** Sets the `has-tooltip` property on @widget to @has_tooltip. *)
-  external set_has_tooltip : t -> bool -> unit = "ml_gtk_widget_set_has_tooltip"
-
   (** Sets the horizontal alignment of @widget. *)
   external set_halign : t -> Gtk_enums.align -> unit = "ml_gtk_widget_set_halign"
-
-  (** Specifies whether @widget can own the input focus.
-
-  Widget implementations should set @focusable to %TRUE in
-  their init() function if they want to receive keyboard input.
-
-  Note that having @focusable be %TRUE is only one of the
-  necessary conditions for being focusable. A widget must
-  also be sensitive and can-focus and not have an ancestor
-  that is marked as not can-focus in order to receive input
-  focus.
-
-  See [method@Gtk.Widget.grab_focus] for actually setting
-  the input focus on a widget. *)
-  external set_focusable : t -> bool -> unit = "ml_gtk_widget_set_focusable"
-
-  (** Sets whether the widget should grab focus when it is clicked
-  with the mouse.
-
-  Making mouse clicks not grab focus is useful in places like
-  toolbars where you don’t want the keyboard focus removed from
-  the main area of the application. *)
-  external set_focus_on_click : t -> bool -> unit = "ml_gtk_widget_set_focus_on_click"
 
   (** Set @child as the current focus child of @widget.
 
@@ -618,25 +590,6 @@ and Widget
   This function is only useful for container implementations
   and should never be called by an application. *)
   external set_child_visible : t -> bool -> unit = "ml_gtk_widget_set_child_visible"
-
-  (** Sets whether @widget can be the target of pointer events. *)
-  external set_can_target : t -> bool -> unit = "ml_gtk_widget_set_can_target"
-
-  (** Specifies whether the input focus can enter the widget
-  or any of its children.
-
-  Applications should set @can_focus to %FALSE to mark a
-  widget as for pointer/touch use only.
-
-  Note that having @can_focus be %TRUE is only one of the
-  necessary conditions for being focusable. A widget must
-  also be sensitive and focusable and not have an ancestor
-  that is marked as not can-focus in order to receive input
-  focus.
-
-  See [method@Gtk.Widget.grab_focus] for actually setting
-  the input focus on a widget. *)
-  external set_can_focus : t -> bool -> unit = "ml_gtk_widget_set_can_focus"
 
   (** Removes a tick callback previously registered with
   gtk_widget_add_tick_callback(). *)
@@ -915,46 +868,8 @@ and Widget
   system [overview](coordinates.html). *)
   external get_width : t -> int = "ml_gtk_widget_get_width"
 
-  (** Determines whether the widget is visible.
-
-  If you want to take into account whether the widget’s
-  parent is also marked as visible, use
-  [method@Gtk.Widget.is_visible] instead.
-
-  This function does not check if the widget is
-  obscured in any way.
-
-  See [method@Gtk.Widget.set_visible]. *)
-  external get_visible : t -> bool = "ml_gtk_widget_get_visible"
-
-  (** Gets whether gtk_widget_set_vexpand() has been used to
-  explicitly set the expand flag on this widget.
-
-  See [method@Gtk.Widget.get_hexpand_set] for more detail. *)
-  external get_vexpand_set : t -> bool = "ml_gtk_widget_get_vexpand_set"
-
-  (** Gets whether the widget would like any available extra vertical
-  space.
-
-  See [method@Gtk.Widget.get_hexpand] for more detail. *)
-  external get_vexpand : t -> bool = "ml_gtk_widget_get_vexpand"
-
   (** Gets the vertical alignment of @widget. *)
   external get_valign : t -> Gtk_enums.align = "ml_gtk_widget_get_valign"
-
-  (** Gets the contents of the tooltip for @widget.
-
-  If the @widget's tooltip was set using
-  [method@Gtk.Widget.set_tooltip_markup],
-  this function will return the escaped text. *)
-  external get_tooltip_text : t -> string option = "ml_gtk_widget_get_tooltip_text"
-
-  (** Gets the contents of the tooltip for @widget.
-
-  If the tooltip has not been set using
-  [method@Gtk.Widget.set_tooltip_markup], this
-  function returns %NULL. *)
-  external get_tooltip_markup : t -> string option = "ml_gtk_widget_get_tooltip_markup"
 
   (** Returns the style context associated to @widget.
 
@@ -995,25 +910,6 @@ and Widget
   changes in its settings, connect to the `notify::display` signal. *)
   external get_settings : t -> Settings.t = "ml_gtk_widget_get_settings"
 
-  (** Returns the widget’s sensitivity.
-
-  This function returns the value that has been set using
-  [method@Gtk.Widget.set_sensitive]).
-
-  The effective sensitivity of a widget is however determined
-  by both its own and its parent widget’s sensitivity.
-  See [method@Gtk.Widget.is_sensitive]. *)
-  external get_sensitive : t -> bool = "ml_gtk_widget_get_sensitive"
-
-  (** Retrieves the internal scale factor that maps from window
-  coordinates to the actual device pixels.
-
-  On traditional systems this is 1, on high density outputs,
-  it can be a higher value (typically 2).
-
-  See [method@Gdk.Surface.get_scale_factor]. *)
-  external get_scale_factor : t -> int = "ml_gtk_widget_get_scale_factor"
-
   (** Returns the `GtkRoot` widget of @widget.
 
   This function will return %NULL if the widget is not contained
@@ -1030,13 +926,6 @@ and Widget
   either in context of their children or in context of their
   allocation capabilities. *)
   external get_request_mode : t -> Gtk_enums.sizerequestmode = "ml_gtk_widget_get_request_mode"
-
-  (** Determines whether @widget is always treated as the default widget
-  within its toplevel when it has the focus, even if another widget
-  is the default.
-
-  See [method@Gtk.Widget.set_receives_default]. *)
-  external get_receives_default : t -> bool = "ml_gtk_widget_get_receives_default"
 
   (** Determines whether @widget is realized. *)
   external get_realized : t -> bool = "ml_gtk_widget_get_realized"
@@ -1068,11 +957,6 @@ and Widget
   (** Returns the widget’s overflow value. *)
   external get_overflow : t -> Gtk_enums.overflow = "ml_gtk_widget_get_overflow"
 
-  (** #Fetches the requested opacity for this widget.
-
-  See [method@Gtk.Widget.set_opacity]. *)
-  external get_opacity : t -> float = "ml_gtk_widget_get_opacity"
-
   (** Returns the widget’s next sibling.
 
   This API is primarily meant for widget implementations. *)
@@ -1085,23 +969,6 @@ and Widget
 
   `GtkNative` widgets will return themselves here. *)
   external get_native : t -> Native.t option = "ml_gtk_widget_get_native"
-
-  (** Retrieves the name of a widget.
-
-  See [method@Gtk.Widget.set_name] for the significance of widget names. *)
-  external get_name : t -> string = "ml_gtk_widget_get_name"
-
-  (** Gets the top margin of @widget. *)
-  external get_margin_top : t -> int = "ml_gtk_widget_get_margin_top"
-
-  (** Gets the start margin of @widget. *)
-  external get_margin_start : t -> int = "ml_gtk_widget_get_margin_start"
-
-  (** Gets the end margin of @widget. *)
-  external get_margin_end : t -> int = "ml_gtk_widget_get_margin_end"
-
-  (** Gets the bottom margin of @widget. *)
-  external get_margin_bottom : t -> int = "ml_gtk_widget_get_margin_bottom"
 
   (** Whether the widget is mapped. *)
   external get_mapped : t -> bool = "ml_gtk_widget_get_mapped"
@@ -1116,36 +983,6 @@ and Widget
   This API is primarily meant for widget implementations. *)
   external get_last_child : t -> t option = "ml_gtk_widget_get_last_child"
 
-  (** Gets whether gtk_widget_set_hexpand() has been used
-  to explicitly set the expand flag on this widget.
-
-  If [property@Gtk.Widget:hexpand] property is set, then it
-  overrides any computed expand value based on child widgets.
-  If `hexpand` is not set, then the expand value depends on
-  whether any children of the widget would like to expand.
-
-  There are few reasons to use this function, but it’s here
-  for completeness and consistency. *)
-  external get_hexpand_set : t -> bool = "ml_gtk_widget_get_hexpand_set"
-
-  (** Gets whether the widget would like any available extra horizontal
-  space.
-
-  When a user resizes a `GtkWindow`, widgets with expand=TRUE
-  generally receive the extra space. For example, a list or
-  scrollable area or document in your window would often be set to
-  expand.
-
-  Containers should use [method@Gtk.Widget.compute_expand] rather
-  than this function, to see whether a widget, or any of its children,
-  has the expand flag set. If any child of a widget wants to
-  expand, the parent may ask to expand also.
-
-  This function only looks at the widget’s own hexpand flag, rather
-  than computing whether the entire widget tree rooted at this widget
-  wants to expand. *)
-  external get_hexpand : t -> bool = "ml_gtk_widget_get_hexpand"
-
   (** Returns the content height of the widget.
 
   This function returns the height passed to its
@@ -1158,9 +995,6 @@ and Widget
   system [overview](coordinates.html). *)
   external get_height : t -> int = "ml_gtk_widget_get_height"
 
-  (** Returns the current value of the `has-tooltip` property. *)
-  external get_has_tooltip : t -> bool = "ml_gtk_widget_get_has_tooltip"
-
   (** Gets the horizontal alignment of @widget.
 
   For backwards compatibility reasons this method will never return
@@ -1169,17 +1003,6 @@ and Widget
 
   Baselines are not supported for horizontal alignment. *)
   external get_halign : t -> Gtk_enums.align = "ml_gtk_widget_get_halign"
-
-  (** Determines whether @widget can own the input focus.
-
-  See [method@Gtk.Widget.set_focusable]. *)
-  external get_focusable : t -> bool = "ml_gtk_widget_get_focusable"
-
-  (** Returns whether the widget should grab focus when it is clicked
-  with the mouse.
-
-  See [method@Gtk.Widget.set_focus_on_click]. *)
-  external get_focus_on_click : t -> bool = "ml_gtk_widget_get_focus_on_click"
 
   (** Returns the current focus child of @widget. *)
   external get_focus_child : t -> t option = "ml_gtk_widget_get_focus_child"
@@ -1194,9 +1017,6 @@ and Widget
   See [method@Gtk.Widget.set_direction]. *)
   external get_direction : t -> Gtk_enums.textdirection = "ml_gtk_widget_get_direction"
 
-  (** Returns the CSS name that is used for @self. *)
-  external get_css_name : t -> string = "ml_gtk_widget_get_css_name"
-
   (** Returns the list of style classes applied to @widget. *)
   external get_css_classes : t -> unit = "ml_gtk_widget_get_css_classes"
 
@@ -1208,15 +1028,6 @@ and Widget
   This function is only useful for container implementations
   and should never be called by an application. *)
   external get_child_visible : t -> bool = "ml_gtk_widget_get_child_visible"
-
-  (** Queries whether @widget can be the target of pointer events. *)
-  external get_can_target : t -> bool = "ml_gtk_widget_get_can_target"
-
-  (** Determines whether the input focus can enter @widget or any
-  of its children.
-
-  See [method@Gtk.Widget.set_focusable]. *)
-  external get_can_focus : t -> bool = "ml_gtk_widget_get_can_focus"
 
   (** Returns the baseline that has currently been allocated to @widget.
 
@@ -1369,6 +1180,150 @@ end = struct
 
   (* Properties *)
 
+  (** Get property: can-focus *)
+  external get_can_focus : t -> bool = "ml_gtk_widget_get_can_focus"
+
+  (** Set property: can-focus *)
+  external set_can_focus : t -> bool -> unit = "ml_gtk_widget_set_can_focus"
+
+  (** Get property: can-target *)
+  external get_can_target : t -> bool = "ml_gtk_widget_get_can_target"
+
+  (** Set property: can-target *)
+  external set_can_target : t -> bool -> unit = "ml_gtk_widget_set_can_target"
+
+  (** Get property: css-name *)
+  external get_css_name : t -> string = "ml_gtk_widget_get_css_name"
+
+  (** Get property: focus-on-click *)
+  external get_focus_on_click : t -> bool = "ml_gtk_widget_get_focus_on_click"
+
+  (** Set property: focus-on-click *)
+  external set_focus_on_click : t -> bool -> unit = "ml_gtk_widget_set_focus_on_click"
+
+  (** Get property: focusable *)
+  external get_focusable : t -> bool = "ml_gtk_widget_get_focusable"
+
+  (** Set property: focusable *)
+  external set_focusable : t -> bool -> unit = "ml_gtk_widget_set_focusable"
+
+  (** Get property: has-default *)
+  external get_has_default : t -> bool = "ml_gtk_widget_get_has_default"
+
+  (** Get property: has-focus *)
+  external get_has_focus : t -> bool = "ml_gtk_widget_get_has_focus"
+
+  (** Get property: has-tooltip *)
+  external get_has_tooltip : t -> bool = "ml_gtk_widget_get_has_tooltip"
+
+  (** Set property: has-tooltip *)
+  external set_has_tooltip : t -> bool -> unit = "ml_gtk_widget_set_has_tooltip"
+
+  (** Get property: height-request *)
+  external get_height_request : t -> int = "ml_gtk_widget_get_height_request"
+
+  (** Set property: height-request *)
+  external set_height_request : t -> int -> unit = "ml_gtk_widget_set_height_request"
+
+  (** Get property: hexpand *)
+  external get_hexpand : t -> bool = "ml_gtk_widget_get_hexpand"
+
+  (** Set property: hexpand *)
+  external set_hexpand : t -> bool -> unit = "ml_gtk_widget_set_hexpand"
+
+  (** Get property: hexpand-set *)
+  external get_hexpand_set : t -> bool = "ml_gtk_widget_get_hexpand_set"
+
+  (** Set property: hexpand-set *)
+  external set_hexpand_set : t -> bool -> unit = "ml_gtk_widget_set_hexpand_set"
+
+  (** Get property: margin-bottom *)
+  external get_margin_bottom : t -> int = "ml_gtk_widget_get_margin_bottom"
+
+  (** Set property: margin-bottom *)
+  external set_margin_bottom : t -> int -> unit = "ml_gtk_widget_set_margin_bottom"
+
+  (** Get property: margin-end *)
+  external get_margin_end : t -> int = "ml_gtk_widget_get_margin_end"
+
+  (** Set property: margin-end *)
+  external set_margin_end : t -> int -> unit = "ml_gtk_widget_set_margin_end"
+
+  (** Get property: margin-start *)
+  external get_margin_start : t -> int = "ml_gtk_widget_get_margin_start"
+
+  (** Set property: margin-start *)
+  external set_margin_start : t -> int -> unit = "ml_gtk_widget_set_margin_start"
+
+  (** Get property: margin-top *)
+  external get_margin_top : t -> int = "ml_gtk_widget_get_margin_top"
+
+  (** Set property: margin-top *)
+  external set_margin_top : t -> int -> unit = "ml_gtk_widget_set_margin_top"
+
+  (** Get property: name *)
+  external get_name : t -> string = "ml_gtk_widget_get_name"
+
+  (** Set property: name *)
+  external set_name : t -> string -> unit = "ml_gtk_widget_set_name"
+
+  (** Get property: opacity *)
+  external get_opacity : t -> float = "ml_gtk_widget_get_opacity"
+
+  (** Set property: opacity *)
+  external set_opacity : t -> float -> unit = "ml_gtk_widget_set_opacity"
+
+  (** Get property: receives-default *)
+  external get_receives_default : t -> bool = "ml_gtk_widget_get_receives_default"
+
+  (** Set property: receives-default *)
+  external set_receives_default : t -> bool -> unit = "ml_gtk_widget_set_receives_default"
+
+  (** Get property: scale-factor *)
+  external get_scale_factor : t -> int = "ml_gtk_widget_get_scale_factor"
+
+  (** Get property: sensitive *)
+  external get_sensitive : t -> bool = "ml_gtk_widget_get_sensitive"
+
+  (** Set property: sensitive *)
+  external set_sensitive : t -> bool -> unit = "ml_gtk_widget_set_sensitive"
+
+  (** Get property: tooltip-markup *)
+  external get_tooltip_markup : t -> string = "ml_gtk_widget_get_tooltip_markup"
+
+  (** Set property: tooltip-markup *)
+  external set_tooltip_markup : t -> string -> unit = "ml_gtk_widget_set_tooltip_markup"
+
+  (** Get property: tooltip-text *)
+  external get_tooltip_text : t -> string = "ml_gtk_widget_get_tooltip_text"
+
+  (** Set property: tooltip-text *)
+  external set_tooltip_text : t -> string -> unit = "ml_gtk_widget_set_tooltip_text"
+
+  (** Get property: vexpand *)
+  external get_vexpand : t -> bool = "ml_gtk_widget_get_vexpand"
+
+  (** Set property: vexpand *)
+  external set_vexpand : t -> bool -> unit = "ml_gtk_widget_set_vexpand"
+
+  (** Get property: vexpand-set *)
+  external get_vexpand_set : t -> bool = "ml_gtk_widget_get_vexpand_set"
+
+  (** Set property: vexpand-set *)
+  external set_vexpand_set : t -> bool -> unit = "ml_gtk_widget_set_vexpand_set"
+
+  (** Get property: visible *)
+  external get_visible : t -> bool = "ml_gtk_widget_get_visible"
+
+  (** Set property: visible *)
+  external set_visible : t -> bool -> unit = "ml_gtk_widget_set_visible"
+
+  (** Get property: width-request *)
+  external get_width_request : t -> int = "ml_gtk_widget_get_width_request"
+
+  (** Set property: width-request *)
+  external set_width_request : t -> int -> unit = "ml_gtk_widget_set_width_request"
+
   (** Turns off flag values for the current widget state.
 
   See [method@Gtk.Widget.set_state_flags].
@@ -1432,47 +1387,8 @@ end = struct
   for children that have their own surface. *)
   external should_layout : t -> bool = "ml_gtk_widget_should_layout"
 
-  (** Sets the visibility state of @widget.
-
-  Note that setting this to %TRUE doesn’t mean the widget is
-  actually viewable, see [method@Gtk.Widget.get_visible]. *)
-  external set_visible : t -> bool -> unit = "ml_gtk_widget_set_visible"
-
-  (** Sets whether the vexpand flag will be used.
-
-  See [method@Gtk.Widget.set_hexpand_set] for more detail. *)
-  external set_vexpand_set : t -> bool -> unit = "ml_gtk_widget_set_vexpand_set"
-
-  (** Sets whether the widget would like any available extra vertical
-  space.
-
-  See [method@Gtk.Widget.set_hexpand] for more detail. *)
-  external set_vexpand : t -> bool -> unit = "ml_gtk_widget_set_vexpand"
-
   (** Sets the vertical alignment of @widget. *)
   external set_valign : t -> Gtk_enums.align -> unit = "ml_gtk_widget_set_valign"
-
-  (** Sets @text as the contents of the tooltip.
-
-  If @text contains any markup, it will be escaped.
-
-  This function will take care of setting
-  [property@Gtk.Widget:has-tooltip] as a side effect,
-  and of the default handler for the
-  [signal@Gtk.Widget::query-tooltip] signal.
-
-  See also [method@Gtk.Tooltip.set_text]. *)
-  external set_tooltip_text : t -> string option -> unit = "ml_gtk_widget_set_tooltip_text"
-
-  (** Sets @markup as the contents of the tooltip, which is marked
-  up with Pango markup.
-
-  This function will take care of setting the
-  [property@Gtk.Widget:has-tooltip] as a side effect, and of the
-  default handler for the [signal@Gtk.Widget::query-tooltip] signal.
-
-  See also [method@Gtk.Tooltip.set_markup]. *)
-  external set_tooltip_markup : t -> string option -> unit = "ml_gtk_widget_set_tooltip_markup"
 
   (** Turns on flag values in the current widget state.
 
@@ -1522,19 +1438,6 @@ end = struct
   of `GtkWidget`. *)
   external set_size_request : t -> int -> int -> unit = "ml_gtk_widget_set_size_request"
 
-  (** Sets the sensitivity of a widget.
-
-  A widget is sensitive if the user can interact with it.
-  Insensitive widgets are “grayed out” and the user can’t
-  interact with them. Insensitive widgets are known as
-  “inactive”, “disabled”, or “ghosted” in some other toolkits. *)
-  external set_sensitive : t -> bool -> unit = "ml_gtk_widget_set_sensitive"
-
-  (** Specifies whether @widget will be treated as the default
-  widget within its toplevel when it has the focus, even if
-  another widget is the default. *)
-  external set_receives_default : t -> bool -> unit = "ml_gtk_widget_set_receives_default"
-
   (** Sets @parent as the parent widget of @widget.
 
   This takes care of details such as updating the state and style
@@ -1556,132 +1459,12 @@ end = struct
   The default value is %GTK_OVERFLOW_VISIBLE. *)
   external set_overflow : t -> Gtk_enums.overflow -> unit = "ml_gtk_widget_set_overflow"
 
-  (** Request the @widget to be rendered partially transparent.
-
-  An opacity of 0 is fully transparent and an opacity of 1
-  is fully opaque.
-
-  Opacity works on both toplevel widgets and child widgets, although
-  there are some limitations: For toplevel widgets, applying opacity
-  depends on the capabilities of the windowing system. On X11, this
-  has any effect only on X displays with a compositing manager,
-  see gdk_display_is_composited(). On Windows and Wayland it should
-  always work, although setting a window’s opacity after the window
-  has been shown may cause some flicker.
-
-  Note that the opacity is inherited through inclusion — if you set
-  a toplevel to be partially translucent, all of its content will
-  appear translucent, since it is ultimatively rendered on that
-  toplevel. The opacity value itself is not inherited by child
-  widgets (since that would make widgets deeper in the hierarchy
-  progressively more translucent). As a consequence, [class@Gtk.Popover]s
-  and other [iface@Gtk.Native] widgets with their own surface will use their
-  own opacity value, and thus by default appear non-translucent,
-  even if they are attached to a toplevel that is translucent. *)
-  external set_opacity : t -> float -> unit = "ml_gtk_widget_set_opacity"
-
-  (** Sets a widgets name.
-
-  Setting a name allows you to refer to the widget from a
-  CSS file. You can apply a style to widgets with a particular name
-  in the CSS file. See the documentation for the CSS syntax (on the
-  same page as the docs for [class@Gtk.StyleContext].
-
-  Note that the CSS syntax has certain special characters to delimit
-  and represent elements in a selector (period, #, >, *...), so using
-  these will make your widget impossible to match by name. Any combination
-  of alphanumeric symbols, dashes and underscores will suffice. *)
-  external set_name : t -> string -> unit = "ml_gtk_widget_set_name"
-
-  (** Sets the top margin of @widget. *)
-  external set_margin_top : t -> int -> unit = "ml_gtk_widget_set_margin_top"
-
-  (** Sets the start margin of @widget. *)
-  external set_margin_start : t -> int -> unit = "ml_gtk_widget_set_margin_start"
-
-  (** Sets the end margin of @widget. *)
-  external set_margin_end : t -> int -> unit = "ml_gtk_widget_set_margin_end"
-
-  (** Sets the bottom margin of @widget. *)
-  external set_margin_bottom : t -> int -> unit = "ml_gtk_widget_set_margin_bottom"
-
   (** Sets the layout manager delegate instance that provides an
   implementation for measuring and allocating the children of @widget. *)
   external set_layout_manager : t -> Layout_manager.t option -> unit = "ml_gtk_widget_set_layout_manager"
 
-  (** Sets whether the hexpand flag will be used.
-
-  The [property@Gtk.Widget:hexpand-set] property will be set
-  automatically when you call [method@Gtk.Widget.set_hexpand]
-  to set hexpand, so the most likely reason to use this function
-  would be to unset an explicit expand flag.
-
-  If hexpand is set, then it overrides any computed
-  expand value based on child widgets. If hexpand is not
-  set, then the expand value depends on whether any
-  children of the widget would like to expand.
-
-  There are few reasons to use this function, but it’s here
-  for completeness and consistency. *)
-  external set_hexpand_set : t -> bool -> unit = "ml_gtk_widget_set_hexpand_set"
-
-  (** Sets whether the widget would like any available extra horizontal
-  space.
-
-  When a user resizes a `GtkWindow`, widgets with expand=TRUE
-  generally receive the extra space. For example, a list or
-  scrollable area or document in your window would often be set to
-  expand.
-
-  Call this function to set the expand flag if you would like your
-  widget to become larger horizontally when the window has extra
-  room.
-
-  By default, widgets automatically expand if any of their children
-  want to expand. (To see if a widget will automatically expand given
-  its current children and state, call [method@Gtk.Widget.compute_expand].
-  A container can decide how the expandability of children affects the
-  expansion of the container by overriding the compute_expand virtual
-  method on `GtkWidget`.).
-
-  Setting hexpand explicitly with this function will override the
-  automatic expand behavior.
-
-  This function forces the widget to expand or not to expand,
-  regardless of children.  The override occurs because
-  [method@Gtk.Widget.set_hexpand] sets the hexpand-set property (see
-  [method@Gtk.Widget.set_hexpand_set]) which causes the widget’s hexpand
-  value to be used, rather than looking at children and widget state. *)
-  external set_hexpand : t -> bool -> unit = "ml_gtk_widget_set_hexpand"
-
-  (** Sets the `has-tooltip` property on @widget to @has_tooltip. *)
-  external set_has_tooltip : t -> bool -> unit = "ml_gtk_widget_set_has_tooltip"
-
   (** Sets the horizontal alignment of @widget. *)
   external set_halign : t -> Gtk_enums.align -> unit = "ml_gtk_widget_set_halign"
-
-  (** Specifies whether @widget can own the input focus.
-
-  Widget implementations should set @focusable to %TRUE in
-  their init() function if they want to receive keyboard input.
-
-  Note that having @focusable be %TRUE is only one of the
-  necessary conditions for being focusable. A widget must
-  also be sensitive and can-focus and not have an ancestor
-  that is marked as not can-focus in order to receive input
-  focus.
-
-  See [method@Gtk.Widget.grab_focus] for actually setting
-  the input focus on a widget. *)
-  external set_focusable : t -> bool -> unit = "ml_gtk_widget_set_focusable"
-
-  (** Sets whether the widget should grab focus when it is clicked
-  with the mouse.
-
-  Making mouse clicks not grab focus is useful in places like
-  toolbars where you don’t want the keyboard focus removed from
-  the main area of the application. *)
-  external set_focus_on_click : t -> bool -> unit = "ml_gtk_widget_set_focus_on_click"
 
   (** Set @child as the current focus child of @widget.
 
@@ -1735,25 +1518,6 @@ end = struct
   This function is only useful for container implementations
   and should never be called by an application. *)
   external set_child_visible : t -> bool -> unit = "ml_gtk_widget_set_child_visible"
-
-  (** Sets whether @widget can be the target of pointer events. *)
-  external set_can_target : t -> bool -> unit = "ml_gtk_widget_set_can_target"
-
-  (** Specifies whether the input focus can enter the widget
-  or any of its children.
-
-  Applications should set @can_focus to %FALSE to mark a
-  widget as for pointer/touch use only.
-
-  Note that having @can_focus be %TRUE is only one of the
-  necessary conditions for being focusable. A widget must
-  also be sensitive and focusable and not have an ancestor
-  that is marked as not can-focus in order to receive input
-  focus.
-
-  See [method@Gtk.Widget.grab_focus] for actually setting
-  the input focus on a widget. *)
-  external set_can_focus : t -> bool -> unit = "ml_gtk_widget_set_can_focus"
 
   (** Removes a tick callback previously registered with
   gtk_widget_add_tick_callback(). *)
@@ -2032,46 +1796,8 @@ end = struct
   system [overview](coordinates.html). *)
   external get_width : t -> int = "ml_gtk_widget_get_width"
 
-  (** Determines whether the widget is visible.
-
-  If you want to take into account whether the widget’s
-  parent is also marked as visible, use
-  [method@Gtk.Widget.is_visible] instead.
-
-  This function does not check if the widget is
-  obscured in any way.
-
-  See [method@Gtk.Widget.set_visible]. *)
-  external get_visible : t -> bool = "ml_gtk_widget_get_visible"
-
-  (** Gets whether gtk_widget_set_vexpand() has been used to
-  explicitly set the expand flag on this widget.
-
-  See [method@Gtk.Widget.get_hexpand_set] for more detail. *)
-  external get_vexpand_set : t -> bool = "ml_gtk_widget_get_vexpand_set"
-
-  (** Gets whether the widget would like any available extra vertical
-  space.
-
-  See [method@Gtk.Widget.get_hexpand] for more detail. *)
-  external get_vexpand : t -> bool = "ml_gtk_widget_get_vexpand"
-
   (** Gets the vertical alignment of @widget. *)
   external get_valign : t -> Gtk_enums.align = "ml_gtk_widget_get_valign"
-
-  (** Gets the contents of the tooltip for @widget.
-
-  If the @widget's tooltip was set using
-  [method@Gtk.Widget.set_tooltip_markup],
-  this function will return the escaped text. *)
-  external get_tooltip_text : t -> string option = "ml_gtk_widget_get_tooltip_text"
-
-  (** Gets the contents of the tooltip for @widget.
-
-  If the tooltip has not been set using
-  [method@Gtk.Widget.set_tooltip_markup], this
-  function returns %NULL. *)
-  external get_tooltip_markup : t -> string option = "ml_gtk_widget_get_tooltip_markup"
 
   (** Returns the style context associated to @widget.
 
@@ -2112,25 +1838,6 @@ end = struct
   changes in its settings, connect to the `notify::display` signal. *)
   external get_settings : t -> Settings.t = "ml_gtk_widget_get_settings"
 
-  (** Returns the widget’s sensitivity.
-
-  This function returns the value that has been set using
-  [method@Gtk.Widget.set_sensitive]).
-
-  The effective sensitivity of a widget is however determined
-  by both its own and its parent widget’s sensitivity.
-  See [method@Gtk.Widget.is_sensitive]. *)
-  external get_sensitive : t -> bool = "ml_gtk_widget_get_sensitive"
-
-  (** Retrieves the internal scale factor that maps from window
-  coordinates to the actual device pixels.
-
-  On traditional systems this is 1, on high density outputs,
-  it can be a higher value (typically 2).
-
-  See [method@Gdk.Surface.get_scale_factor]. *)
-  external get_scale_factor : t -> int = "ml_gtk_widget_get_scale_factor"
-
   (** Returns the `GtkRoot` widget of @widget.
 
   This function will return %NULL if the widget is not contained
@@ -2147,13 +1854,6 @@ end = struct
   either in context of their children or in context of their
   allocation capabilities. *)
   external get_request_mode : t -> Gtk_enums.sizerequestmode = "ml_gtk_widget_get_request_mode"
-
-  (** Determines whether @widget is always treated as the default widget
-  within its toplevel when it has the focus, even if another widget
-  is the default.
-
-  See [method@Gtk.Widget.set_receives_default]. *)
-  external get_receives_default : t -> bool = "ml_gtk_widget_get_receives_default"
 
   (** Determines whether @widget is realized. *)
   external get_realized : t -> bool = "ml_gtk_widget_get_realized"
@@ -2185,11 +1885,6 @@ end = struct
   (** Returns the widget’s overflow value. *)
   external get_overflow : t -> Gtk_enums.overflow = "ml_gtk_widget_get_overflow"
 
-  (** #Fetches the requested opacity for this widget.
-
-  See [method@Gtk.Widget.set_opacity]. *)
-  external get_opacity : t -> float = "ml_gtk_widget_get_opacity"
-
   (** Returns the widget’s next sibling.
 
   This API is primarily meant for widget implementations. *)
@@ -2202,23 +1897,6 @@ end = struct
 
   `GtkNative` widgets will return themselves here. *)
   external get_native : t -> Native.t option = "ml_gtk_widget_get_native"
-
-  (** Retrieves the name of a widget.
-
-  See [method@Gtk.Widget.set_name] for the significance of widget names. *)
-  external get_name : t -> string = "ml_gtk_widget_get_name"
-
-  (** Gets the top margin of @widget. *)
-  external get_margin_top : t -> int = "ml_gtk_widget_get_margin_top"
-
-  (** Gets the start margin of @widget. *)
-  external get_margin_start : t -> int = "ml_gtk_widget_get_margin_start"
-
-  (** Gets the end margin of @widget. *)
-  external get_margin_end : t -> int = "ml_gtk_widget_get_margin_end"
-
-  (** Gets the bottom margin of @widget. *)
-  external get_margin_bottom : t -> int = "ml_gtk_widget_get_margin_bottom"
 
   (** Whether the widget is mapped. *)
   external get_mapped : t -> bool = "ml_gtk_widget_get_mapped"
@@ -2233,36 +1911,6 @@ end = struct
   This API is primarily meant for widget implementations. *)
   external get_last_child : t -> t option = "ml_gtk_widget_get_last_child"
 
-  (** Gets whether gtk_widget_set_hexpand() has been used
-  to explicitly set the expand flag on this widget.
-
-  If [property@Gtk.Widget:hexpand] property is set, then it
-  overrides any computed expand value based on child widgets.
-  If `hexpand` is not set, then the expand value depends on
-  whether any children of the widget would like to expand.
-
-  There are few reasons to use this function, but it’s here
-  for completeness and consistency. *)
-  external get_hexpand_set : t -> bool = "ml_gtk_widget_get_hexpand_set"
-
-  (** Gets whether the widget would like any available extra horizontal
-  space.
-
-  When a user resizes a `GtkWindow`, widgets with expand=TRUE
-  generally receive the extra space. For example, a list or
-  scrollable area or document in your window would often be set to
-  expand.
-
-  Containers should use [method@Gtk.Widget.compute_expand] rather
-  than this function, to see whether a widget, or any of its children,
-  has the expand flag set. If any child of a widget wants to
-  expand, the parent may ask to expand also.
-
-  This function only looks at the widget’s own hexpand flag, rather
-  than computing whether the entire widget tree rooted at this widget
-  wants to expand. *)
-  external get_hexpand : t -> bool = "ml_gtk_widget_get_hexpand"
-
   (** Returns the content height of the widget.
 
   This function returns the height passed to its
@@ -2275,9 +1923,6 @@ end = struct
   system [overview](coordinates.html). *)
   external get_height : t -> int = "ml_gtk_widget_get_height"
 
-  (** Returns the current value of the `has-tooltip` property. *)
-  external get_has_tooltip : t -> bool = "ml_gtk_widget_get_has_tooltip"
-
   (** Gets the horizontal alignment of @widget.
 
   For backwards compatibility reasons this method will never return
@@ -2286,17 +1931,6 @@ end = struct
 
   Baselines are not supported for horizontal alignment. *)
   external get_halign : t -> Gtk_enums.align = "ml_gtk_widget_get_halign"
-
-  (** Determines whether @widget can own the input focus.
-
-  See [method@Gtk.Widget.set_focusable]. *)
-  external get_focusable : t -> bool = "ml_gtk_widget_get_focusable"
-
-  (** Returns whether the widget should grab focus when it is clicked
-  with the mouse.
-
-  See [method@Gtk.Widget.set_focus_on_click]. *)
-  external get_focus_on_click : t -> bool = "ml_gtk_widget_get_focus_on_click"
 
   (** Returns the current focus child of @widget. *)
   external get_focus_child : t -> t option = "ml_gtk_widget_get_focus_child"
@@ -2311,9 +1945,6 @@ end = struct
   See [method@Gtk.Widget.set_direction]. *)
   external get_direction : t -> Gtk_enums.textdirection = "ml_gtk_widget_get_direction"
 
-  (** Returns the CSS name that is used for @self. *)
-  external get_css_name : t -> string = "ml_gtk_widget_get_css_name"
-
   (** Returns the list of style classes applied to @widget. *)
   external get_css_classes : t -> unit = "ml_gtk_widget_get_css_classes"
 
@@ -2325,15 +1956,6 @@ end = struct
   This function is only useful for container implementations
   and should never be called by an application. *)
   external get_child_visible : t -> bool = "ml_gtk_widget_get_child_visible"
-
-  (** Queries whether @widget can be the target of pointer events. *)
-  external get_can_target : t -> bool = "ml_gtk_widget_get_can_target"
-
-  (** Determines whether the input focus can enter @widget or any
-  of its children.
-
-  See [method@Gtk.Widget.set_focusable]. *)
-  external get_can_focus : t -> bool = "ml_gtk_widget_get_can_focus"
 
   (** Returns the baseline that has currently been allocated to @widget.
 

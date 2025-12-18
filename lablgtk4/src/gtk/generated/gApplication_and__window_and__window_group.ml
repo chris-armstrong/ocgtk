@@ -6,6 +6,11 @@
 class application (obj : Application_and__window_and__window_group.Application.t) = object (self)
   inherit Gapplication_signals.application_signals obj
 
+  method register_session = Application_and__window_and__window_group.Application.get_register_session obj
+  method set_register_session v = Application_and__window_and__window_group.Application.set_register_session obj v
+
+  method screensaver_active = Application_and__window_and__window_group.Application.get_screensaver_active obj
+
   method add_window : 'p1. (<as_window: Application_and__window_and__window_group.Window.t; ..> as 'p1) -> unit =
     fun window ->
       let window = window#as_window in
@@ -42,6 +47,58 @@ and window (obj : Application_and__window_and__window_group.Window.t) = object (
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Application_and__window_and__window_group.Window.as_widget obj)
   inherit Gwindow_signals.window_signals obj
 
+  method decorated = Application_and__window_and__window_group.Window.get_decorated obj
+  method set_decorated v = Application_and__window_and__window_group.Window.set_decorated obj v
+
+  method default_height = Application_and__window_and__window_group.Window.get_default_height obj
+  method set_default_height v = Application_and__window_and__window_group.Window.set_default_height obj v
+
+  method default_width = Application_and__window_and__window_group.Window.get_default_width obj
+  method set_default_width v = Application_and__window_and__window_group.Window.set_default_width obj v
+
+  method deletable = Application_and__window_and__window_group.Window.get_deletable obj
+  method set_deletable v = Application_and__window_and__window_group.Window.set_deletable obj v
+
+  method destroy_with_parent = Application_and__window_and__window_group.Window.get_destroy_with_parent obj
+  method set_destroy_with_parent v = Application_and__window_and__window_group.Window.set_destroy_with_parent obj v
+
+  method focus_visible = Application_and__window_and__window_group.Window.get_focus_visible obj
+  method set_focus_visible v = Application_and__window_and__window_group.Window.set_focus_visible obj v
+
+  method fullscreened = Application_and__window_and__window_group.Window.get_fullscreened obj
+  method set_fullscreened v = Application_and__window_and__window_group.Window.set_fullscreened obj v
+
+  method handle_menubar_accel = Application_and__window_and__window_group.Window.get_handle_menubar_accel obj
+  method set_handle_menubar_accel v = Application_and__window_and__window_group.Window.set_handle_menubar_accel obj v
+
+  method hide_on_close = Application_and__window_and__window_group.Window.get_hide_on_close obj
+  method set_hide_on_close v = Application_and__window_and__window_group.Window.set_hide_on_close obj v
+
+  method icon_name = Application_and__window_and__window_group.Window.get_icon_name obj
+  method set_icon_name v = Application_and__window_and__window_group.Window.set_icon_name obj v
+
+  method is_active = Application_and__window_and__window_group.Window.get_is_active obj
+
+  method maximized = Application_and__window_and__window_group.Window.get_maximized obj
+  method set_maximized v = Application_and__window_and__window_group.Window.set_maximized obj v
+
+  method mnemonics_visible = Application_and__window_and__window_group.Window.get_mnemonics_visible obj
+  method set_mnemonics_visible v = Application_and__window_and__window_group.Window.set_mnemonics_visible obj v
+
+  method modal = Application_and__window_and__window_group.Window.get_modal obj
+  method set_modal v = Application_and__window_and__window_group.Window.set_modal obj v
+
+  method resizable = Application_and__window_and__window_group.Window.get_resizable obj
+  method set_resizable v = Application_and__window_and__window_group.Window.set_resizable obj v
+
+  method startup_id = Application_and__window_and__window_group.Window.get_startup_id obj
+  method set_startup_id v = Application_and__window_and__window_group.Window.set_startup_id obj v
+
+  method suspended = Application_and__window_and__window_group.Window.get_suspended obj
+
+  method title = Application_and__window_and__window_group.Window.get_title obj
+  method set_title v = Application_and__window_and__window_group.Window.set_title obj v
+
   method close : unit -> unit = fun () -> (Application_and__window_and__window_group.Window.close obj )
 
   method destroy : unit -> unit = fun () -> (Application_and__window_and__window_group.Window.destroy obj )
@@ -52,41 +109,17 @@ and window (obj : Application_and__window_and__window_group.Window.t) = object (
 
   method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option = fun () -> Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Application_and__window_and__window_group.Window.get_child obj )
 
-  method get_decorated : unit -> bool = fun () -> (Application_and__window_and__window_group.Window.get_decorated obj )
-
   method get_default_widget : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option = fun () -> Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Application_and__window_and__window_group.Window.get_default_widget obj )
-
-  method get_deletable : unit -> bool = fun () -> (Application_and__window_and__window_group.Window.get_deletable obj )
-
-  method get_destroy_with_parent : unit -> bool = fun () -> (Application_and__window_and__window_group.Window.get_destroy_with_parent obj )
 
   method get_focus : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option = fun () -> Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Application_and__window_and__window_group.Window.get_focus obj )
 
-  method get_focus_visible : unit -> bool = fun () -> (Application_and__window_and__window_group.Window.get_focus_visible obj )
-
   method get_group : unit -> window_group = fun () -> new  window_group(Application_and__window_and__window_group.Window.get_group obj )
-
-  method get_handle_menubar_accel : unit -> bool = fun () -> (Application_and__window_and__window_group.Window.get_handle_menubar_accel obj )
-
-  method get_hide_on_close : unit -> bool = fun () -> (Application_and__window_and__window_group.Window.get_hide_on_close obj )
-
-  method get_icon_name : unit -> string option = fun () -> (Application_and__window_and__window_group.Window.get_icon_name obj )
-
-  method get_mnemonics_visible : unit -> bool = fun () -> (Application_and__window_and__window_group.Window.get_mnemonics_visible obj )
-
-  method get_modal : unit -> bool = fun () -> (Application_and__window_and__window_group.Window.get_modal obj )
-
-  method get_resizable : unit -> bool = fun () -> (Application_and__window_and__window_group.Window.get_resizable obj )
-
-  method get_title : unit -> string option = fun () -> (Application_and__window_and__window_group.Window.get_title obj )
 
   method get_titlebar : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option = fun () -> Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Application_and__window_and__window_group.Window.get_titlebar obj )
 
   method get_transient_for : unit -> window option = fun () -> Option.map (fun ret -> new window ret) (Application_and__window_and__window_group.Window.get_transient_for obj )
 
   method has_group : unit -> bool = fun () -> (Application_and__window_and__window_group.Window.has_group obj )
-
-  method is_active : unit -> bool = fun () -> (Application_and__window_and__window_group.Window.is_active obj )
 
   method is_fullscreen : unit -> bool = fun () -> (Application_and__window_and__window_group.Window.is_fullscreen obj )
 
@@ -107,8 +140,6 @@ and window (obj : Application_and__window_and__window_group.Window.t) = object (
       let child = Option.map (fun (c) -> c#as_widget) child in
       (Application_and__window_and__window_group.Window.set_child obj child)
 
-  method set_decorated : bool -> unit = fun setting -> (Application_and__window_and__window_group.Window.set_decorated obj setting)
-
   method set_default_size : int -> int -> unit = fun width height -> (Application_and__window_and__window_group.Window.set_default_size obj width height)
 
   method set_default_widget : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
@@ -116,32 +147,10 @@ and window (obj : Application_and__window_and__window_group.Window.t) = object (
       let default_widget = Option.map (fun (c) -> c#as_widget) default_widget in
       (Application_and__window_and__window_group.Window.set_default_widget obj default_widget)
 
-  method set_deletable : bool -> unit = fun setting -> (Application_and__window_and__window_group.Window.set_deletable obj setting)
-
-  method set_destroy_with_parent : bool -> unit = fun setting -> (Application_and__window_and__window_group.Window.set_destroy_with_parent obj setting)
-
   method set_focus : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
     fun focus ->
       let focus = Option.map (fun (c) -> c#as_widget) focus in
       (Application_and__window_and__window_group.Window.set_focus obj focus)
-
-  method set_focus_visible : bool -> unit = fun setting -> (Application_and__window_and__window_group.Window.set_focus_visible obj setting)
-
-  method set_handle_menubar_accel : bool -> unit = fun handle_menubar_accel -> (Application_and__window_and__window_group.Window.set_handle_menubar_accel obj handle_menubar_accel)
-
-  method set_hide_on_close : bool -> unit = fun setting -> (Application_and__window_and__window_group.Window.set_hide_on_close obj setting)
-
-  method set_icon_name : string option -> unit = fun name -> (Application_and__window_and__window_group.Window.set_icon_name obj name)
-
-  method set_mnemonics_visible : bool -> unit = fun setting -> (Application_and__window_and__window_group.Window.set_mnemonics_visible obj setting)
-
-  method set_modal : bool -> unit = fun modal -> (Application_and__window_and__window_group.Window.set_modal obj modal)
-
-  method set_resizable : bool -> unit = fun resizable -> (Application_and__window_and__window_group.Window.set_resizable obj resizable)
-
-  method set_startup_id : string -> unit = fun startup_id -> (Application_and__window_and__window_group.Window.set_startup_id obj startup_id)
-
-  method set_title : string option -> unit = fun title -> (Application_and__window_and__window_group.Window.set_title obj title)
 
   method set_titlebar : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
     fun titlebar ->

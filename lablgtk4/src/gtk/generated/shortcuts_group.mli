@@ -7,6 +7,21 @@ val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and_
 
 (* Properties *)
 
+(** Get property: height *)
+external get_height : t -> int = "ml_gtk_shortcuts_group_get_height"
+
+(** Get property: title *)
+external get_title : t -> string = "ml_gtk_shortcuts_group_get_title"
+
+(** Set property: title *)
+external set_title : t -> string -> unit = "ml_gtk_shortcuts_group_set_title"
+
+(** Get property: view *)
+external get_view : t -> string = "ml_gtk_shortcuts_group_get_view"
+
+(** Set property: view *)
+external set_view : t -> string -> unit = "ml_gtk_shortcuts_group_set_view"
+
 (** Adds a shortcut to the shortcuts group.
 
 This is the programmatic equivalent to using [class@Gtk.Builder] and a

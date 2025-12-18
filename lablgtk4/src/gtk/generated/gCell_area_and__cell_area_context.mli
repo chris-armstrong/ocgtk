@@ -28,6 +28,10 @@ class cell_area : Cell_area_and__cell_area_context.Cell_area.t ->
 
 and cell_area_context : Cell_area_and__cell_area_context.Cell_area_context.t ->
   object
+    method minimum_height : int
+    method minimum_width : int
+    method natural_height : int
+    method natural_width : int
     method allocate : int -> int -> unit
     method get_area : unit -> cell_area
     method push_preferred_height : int -> int -> unit

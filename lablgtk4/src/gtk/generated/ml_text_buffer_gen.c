@@ -37,14 +37,6 @@ gtk_text_buffer_undo(GtkTextBuffer_val(self));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_text_buffer_set_text(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-
-gtk_text_buffer_set_text(GtkTextBuffer_val(self), String_val(arg1), Int_val(arg2));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_text_buffer_set_modified(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -58,14 +50,6 @@ CAMLexport CAMLprim value ml_gtk_text_buffer_set_max_undo_levels(value self, val
 CAMLparam2(self, arg1);
 
 gtk_text_buffer_set_max_undo_levels(GtkTextBuffer_val(self), Int_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_text_buffer_set_enable_undo(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_text_buffer_set_enable_undo(GtkTextBuffer_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -343,14 +327,6 @@ GtkTextMark* result = gtk_text_buffer_get_insert(GtkTextBuffer_val(self));
 CAMLreturn(Val_GtkTextMark(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_text_buffer_get_has_selection(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_text_buffer_get_has_selection(GtkTextBuffer_val(self));
-CAMLreturn(Val_bool(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_text_buffer_get_end_iter(value self)
 {
 CAMLparam1(self);
@@ -360,36 +336,12 @@ gtk_text_buffer_get_end_iter(GtkTextBuffer_val(self), &out1);
 CAMLreturn(Val_GtkTextIter(out1));
 }
 
-CAMLexport CAMLprim value ml_gtk_text_buffer_get_enable_undo(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_text_buffer_get_enable_undo(GtkTextBuffer_val(self));
-CAMLreturn(Val_bool(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_text_buffer_get_char_count(value self)
 {
 CAMLparam1(self);
 
 int result = gtk_text_buffer_get_char_count(GtkTextBuffer_val(self));
 CAMLreturn(Val_int(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_text_buffer_get_can_undo(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_text_buffer_get_can_undo(GtkTextBuffer_val(self));
-CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_text_buffer_get_can_redo(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_text_buffer_get_can_redo(GtkTextBuffer_val(self));
-CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_buffer_get_bounds(value self)
@@ -523,5 +475,143 @@ CAMLexport CAMLprim value ml_gtk_text_buffer_add_mark(value self, value arg1, va
 CAMLparam3(self, arg1, arg2);
 
 gtk_text_buffer_add_mark(GtkTextBuffer_val(self), GtkTextMark_val(arg1), GtkTextIter_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_get_can_redo(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextBuffer *obj = (GtkTextBuffer *)GtkTextBuffer_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "can-redo");
+if (pspec == NULL) caml_failwith("ml_gtk_text_buffer_get_can_redo: property 'can-redo' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "can-redo", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_get_can_undo(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextBuffer *obj = (GtkTextBuffer *)GtkTextBuffer_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "can-undo");
+if (pspec == NULL) caml_failwith("ml_gtk_text_buffer_get_can_undo: property 'can-undo' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "can-undo", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_get_cursor_position(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextBuffer *obj = (GtkTextBuffer *)GtkTextBuffer_val(self);
+    gint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "cursor-position");
+if (pspec == NULL) caml_failwith("ml_gtk_text_buffer_get_cursor_position: property 'cursor-position' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "cursor-position", &prop_gvalue);
+    prop_value = (gint)g_value_get_int(&prop_gvalue);
+
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_get_enable_undo(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextBuffer *obj = (GtkTextBuffer *)GtkTextBuffer_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "enable-undo");
+if (pspec == NULL) caml_failwith("ml_gtk_text_buffer_get_enable_undo: property 'enable-undo' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "enable-undo", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_set_enable_undo(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkTextBuffer *obj = (GtkTextBuffer *)GtkTextBuffer_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "enable-undo");
+if (pspec == NULL) caml_failwith("ml_gtk_text_buffer_set_enable_undo: property 'enable-undo' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "enable-undo", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_get_has_selection(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextBuffer *obj = (GtkTextBuffer *)GtkTextBuffer_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "has-selection");
+if (pspec == NULL) caml_failwith("ml_gtk_text_buffer_get_has_selection: property 'has-selection' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "has-selection", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_get_text(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextBuffer *obj = (GtkTextBuffer *)GtkTextBuffer_val(self);
+    gchar* *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "text");
+if (pspec == NULL) caml_failwith("ml_gtk_text_buffer_get_text: property 'text' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "text", &prop_gvalue);
+    prop_value = g_value_get_string(&prop_gvalue);
+
+result = caml_copy_string(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_set_text(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkTextBuffer *obj = (GtkTextBuffer *)GtkTextBuffer_val(self);
+    ML_DECL_CONST_STRING(c_value, String_val(new_value));
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "text");
+if (pspec == NULL) caml_failwith("ml_gtk_text_buffer_set_text: property 'text' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_string(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "text", &prop_gvalue);
+g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }

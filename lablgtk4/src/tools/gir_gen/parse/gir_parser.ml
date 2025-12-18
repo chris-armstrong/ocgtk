@@ -319,7 +319,6 @@ let parse_gir_file filename filter_classes =
               parse_class_contents ())
 
           | "property" ->
-                       
             (match get_attr "name" tag_attrs with
             | Some prop_name ->
               let prop = parse_property prop_name tag_attrs in
@@ -397,6 +396,7 @@ let parse_gir_file filename filter_classes =
         parse_prop_contents ()
       | `El_start ((_, "doc"), _) ->
         doc := element_data ();
+        parse_prop_contents ()
       | `El_start _ ->
         skip_element 1;
         parse_prop_contents ()

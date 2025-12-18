@@ -5,6 +5,9 @@ type t = [`multi_filter | `filter | `object_] Gobject.obj
 
 (* Properties *)
 
+(** Get property: n-items *)
+external get_n_items : t -> int = "ml_gtk_multi_filter_get_n_items"
+
 (** Removes the filter at the given @position from the list of filters used
 by @self.
 

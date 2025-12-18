@@ -13,6 +13,9 @@ external new_for_model : unit -> t = "ml_gtk_shortcut_controller_new_for_model"
 
 (* Properties *)
 
+(** Get property: n-items *)
+external get_n_items : t -> int = "ml_gtk_shortcut_controller_get_n_items"
+
 (** Sets the controller to have the given @scope.
 
 The scope allows shortcuts to be activated outside of the normal

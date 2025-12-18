@@ -13,6 +13,30 @@ external new_with_markup : Application_and__window_and__window_group.Window.t op
 
 (* Properties *)
 
+(** Get property: secondary-text *)
+external get_secondary_text : t -> string = "ml_gtk_message_dialog_get_secondary_text"
+
+(** Set property: secondary-text *)
+external set_secondary_text : t -> string -> unit = "ml_gtk_message_dialog_set_secondary_text"
+
+(** Get property: secondary-use-markup *)
+external get_secondary_use_markup : t -> bool = "ml_gtk_message_dialog_get_secondary_use_markup"
+
+(** Set property: secondary-use-markup *)
+external set_secondary_use_markup : t -> bool -> unit = "ml_gtk_message_dialog_set_secondary_use_markup"
+
+(** Get property: text *)
+external get_text : t -> string = "ml_gtk_message_dialog_get_text"
+
+(** Set property: text *)
+external set_text : t -> string -> unit = "ml_gtk_message_dialog_set_text"
+
+(** Get property: use-markup *)
+external get_use_markup : t -> bool = "ml_gtk_message_dialog_get_use_markup"
+
+(** Set property: use-markup *)
+external set_use_markup : t -> bool -> unit = "ml_gtk_message_dialog_set_use_markup"
+
 (** Sets the text of the message dialog. *)
 external set_markup : t -> string -> unit = "ml_gtk_message_dialog_set_markup"
 

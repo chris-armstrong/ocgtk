@@ -10,11 +10,16 @@ external new_ : unit -> t = "ml_gtk_search_bar_new"
 
 (* Properties *)
 
-(** Shows or hides the close button.
+(** Get property: search-mode-enabled *)
+external get_search_mode_enabled : t -> bool = "ml_gtk_search_bar_get_search_mode_enabled"
 
-Applications that already have a “search” toggle button should not
-show a close button in their search bar, as it duplicates the role
-of the toggle button. *)
+(** Set property: search-mode-enabled *)
+external set_search_mode_enabled : t -> bool -> unit = "ml_gtk_search_bar_set_search_mode_enabled"
+
+(** Get property: show-close-button *)
+external get_show_close_button : t -> bool = "ml_gtk_search_bar_get_show_close_button"
+
+(** Set property: show-close-button *)
 external set_show_close_button : t -> bool -> unit = "ml_gtk_search_bar_set_show_close_button"
 
 (** Switches the search mode on or off. *)
@@ -36,9 +41,6 @@ external set_key_capture_widget : t -> Event_controller_and__layout_child_and__l
 
 (** Sets the child widget of @bar. *)
 external set_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_search_bar_set_child"
-
-(** Returns whether the close button is shown. *)
-external get_show_close_button : t -> bool = "ml_gtk_search_bar_get_show_close_button"
 
 (** Returns whether the search mode is on or off. *)
 external get_search_mode : t -> bool = "ml_gtk_search_bar_get_search_mode"

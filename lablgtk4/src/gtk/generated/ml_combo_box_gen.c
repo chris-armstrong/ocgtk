@@ -50,35 +50,11 @@ GtkComboBox *obj = gtk_combo_box_new_with_model_and_entry(GtkTreeModel_val(arg1)
 CAMLreturn(Val_GtkComboBox(obj));
 }
 
-CAMLexport CAMLprim value ml_gtk_combo_box_set_popup_fixed_width(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_combo_box_set_popup_fixed_width(GtkComboBox_val(self), Bool_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_combo_box_set_model(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gtk_combo_box_set_model(GtkComboBox_val(self), Option_val(arg1, GtkTreeModel_val, NULL));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_combo_box_set_id_column(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_combo_box_set_id_column(GtkComboBox_val(self), Int_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_combo_box_set_entry_text_column(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_combo_box_set_entry_text_column(GtkComboBox_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -106,22 +82,6 @@ gtk_combo_box_set_active_iter(GtkComboBox_val(self), Option_val(arg1, GtkTreeIte
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_combo_box_set_active_id(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gboolean result = gtk_combo_box_set_active_id(GtkComboBox_val(self), String_option_val(arg1));
-CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_combo_box_set_active(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_combo_box_set_active(GtkComboBox_val(self), Int_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_combo_box_popup(value self)
 {
 CAMLparam1(self);
@@ -138,44 +98,12 @@ gtk_combo_box_popdown(GtkComboBox_val(self));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_combo_box_get_popup_fixed_width(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_combo_box_get_popup_fixed_width(GtkComboBox_val(self));
-CAMLreturn(Val_bool(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_combo_box_get_model(value self)
 {
 CAMLparam1(self);
 
 GtkTreeModel* result = gtk_combo_box_get_model(GtkComboBox_val(self));
 CAMLreturn(Val_option(result, Val_GtkTreeModel));
-}
-
-CAMLexport CAMLprim value ml_gtk_combo_box_get_id_column(value self)
-{
-CAMLparam1(self);
-
-int result = gtk_combo_box_get_id_column(GtkComboBox_val(self));
-CAMLreturn(Val_int(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_combo_box_get_has_entry(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_combo_box_get_has_entry(GtkComboBox_val(self));
-CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_combo_box_get_entry_text_column(value self)
-{
-CAMLparam1(self);
-
-int result = gtk_combo_box_get_entry_text_column(GtkComboBox_val(self));
-CAMLreturn(Val_int(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_combo_box_get_child(value self)
@@ -207,18 +135,236 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
-CAMLexport CAMLprim value ml_gtk_combo_box_get_active_id(value self)
-{
-CAMLparam1(self);
-
-const char* result = gtk_combo_box_get_active_id(GtkComboBox_val(self));
-CAMLreturn(Val_option_string(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_combo_box_get_active(value self)
 {
 CAMLparam1(self);
+CAMLlocal1(result);
+GtkComboBox *obj = (GtkComboBox *)GtkComboBox_val(self);
+    gint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "active");
+if (pspec == NULL) caml_failwith("ml_gtk_combo_box_get_active: property 'active' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "active", &prop_gvalue);
+    prop_value = (gint)g_value_get_int(&prop_gvalue);
 
-int result = gtk_combo_box_get_active(GtkComboBox_val(self));
-CAMLreturn(Val_int(result));
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_combo_box_set_active(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkComboBox *obj = (GtkComboBox *)GtkComboBox_val(self);
+    gint c_value = Int_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "active");
+if (pspec == NULL) caml_failwith("ml_gtk_combo_box_set_active: property 'active' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_int(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "active", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_combo_box_get_active_id(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkComboBox *obj = (GtkComboBox *)GtkComboBox_val(self);
+    gchar* *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "active-id");
+if (pspec == NULL) caml_failwith("ml_gtk_combo_box_get_active_id: property 'active-id' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "active-id", &prop_gvalue);
+    prop_value = g_value_get_string(&prop_gvalue);
+
+result = caml_copy_string(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_combo_box_set_active_id(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkComboBox *obj = (GtkComboBox *)GtkComboBox_val(self);
+    ML_DECL_CONST_STRING(c_value, String_val(new_value));
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "active-id");
+if (pspec == NULL) caml_failwith("ml_gtk_combo_box_set_active_id: property 'active-id' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_string(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "active-id", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_combo_box_get_entry_text_column(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkComboBox *obj = (GtkComboBox *)GtkComboBox_val(self);
+    gint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "entry-text-column");
+if (pspec == NULL) caml_failwith("ml_gtk_combo_box_get_entry_text_column: property 'entry-text-column' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "entry-text-column", &prop_gvalue);
+    prop_value = (gint)g_value_get_int(&prop_gvalue);
+
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_combo_box_set_entry_text_column(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkComboBox *obj = (GtkComboBox *)GtkComboBox_val(self);
+    gint c_value = Int_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "entry-text-column");
+if (pspec == NULL) caml_failwith("ml_gtk_combo_box_set_entry_text_column: property 'entry-text-column' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_int(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "entry-text-column", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_combo_box_get_has_entry(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkComboBox *obj = (GtkComboBox *)GtkComboBox_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "has-entry");
+if (pspec == NULL) caml_failwith("ml_gtk_combo_box_get_has_entry: property 'has-entry' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "has-entry", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_combo_box_get_has_frame(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkComboBox *obj = (GtkComboBox *)GtkComboBox_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "has-frame");
+if (pspec == NULL) caml_failwith("ml_gtk_combo_box_get_has_frame: property 'has-frame' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "has-frame", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_combo_box_set_has_frame(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkComboBox *obj = (GtkComboBox *)GtkComboBox_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "has-frame");
+if (pspec == NULL) caml_failwith("ml_gtk_combo_box_set_has_frame: property 'has-frame' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "has-frame", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_combo_box_get_id_column(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkComboBox *obj = (GtkComboBox *)GtkComboBox_val(self);
+    gint prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "id-column");
+if (pspec == NULL) caml_failwith("ml_gtk_combo_box_get_id_column: property 'id-column' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "id-column", &prop_gvalue);
+    prop_value = (gint)g_value_get_int(&prop_gvalue);
+
+result = Val_int(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_combo_box_set_id_column(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkComboBox *obj = (GtkComboBox *)GtkComboBox_val(self);
+    gint c_value = Int_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "id-column");
+if (pspec == NULL) caml_failwith("ml_gtk_combo_box_set_id_column: property 'id-column' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_int(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "id-column", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_combo_box_get_popup_fixed_width(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkComboBox *obj = (GtkComboBox *)GtkComboBox_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "popup-fixed-width");
+if (pspec == NULL) caml_failwith("ml_gtk_combo_box_get_popup_fixed_width: property 'popup-fixed-width' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "popup-fixed-width", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_combo_box_set_popup_fixed_width(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkComboBox *obj = (GtkComboBox *)GtkComboBox_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "popup-fixed-width");
+if (pspec == NULL) caml_failwith("ml_gtk_combo_box_set_popup_fixed_width: property 'popup-fixed-width' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "popup-fixed-width", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_combo_box_get_popup_shown(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkComboBox *obj = (GtkComboBox *)GtkComboBox_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "popup-shown");
+if (pspec == NULL) caml_failwith("ml_gtk_combo_box_get_popup_shown: property 'popup-shown' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "popup-shown", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
 }

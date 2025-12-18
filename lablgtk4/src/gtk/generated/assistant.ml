@@ -10,6 +10,9 @@ external new_ : unit -> t = "ml_gtk_assistant_new"
 
 (* Properties *)
 
+(** Get property: use-header-bar *)
+external get_use_header_bar : t -> int = "ml_gtk_assistant_get_use_header_bar"
+
 (** Forces @assistant to recompute the buttons state.
 
 GTK automatically takes care of this in most situations,

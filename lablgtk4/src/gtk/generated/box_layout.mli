@@ -10,12 +10,23 @@ external new_ : Gtk_enums.orientation -> t = "ml_gtk_box_layout_new"
 
 (* Properties *)
 
-(** Sets how much spacing to put between children. *)
-external set_spacing : t -> int -> unit = "ml_gtk_box_layout_set_spacing"
+(** Get property: baseline-child *)
+external get_baseline_child : t -> int = "ml_gtk_box_layout_get_baseline_child"
 
-(** Sets whether the box layout will allocate the same
-size to all children. *)
+(** Set property: baseline-child *)
+external set_baseline_child : t -> int -> unit = "ml_gtk_box_layout_set_baseline_child"
+
+(** Get property: homogeneous *)
+external get_homogeneous : t -> bool = "ml_gtk_box_layout_get_homogeneous"
+
+(** Set property: homogeneous *)
 external set_homogeneous : t -> bool -> unit = "ml_gtk_box_layout_set_homogeneous"
+
+(** Get property: spacing *)
+external get_spacing : t -> int = "ml_gtk_box_layout_get_spacing"
+
+(** Set property: spacing *)
+external set_spacing : t -> int -> unit = "ml_gtk_box_layout_set_spacing"
 
 (** Sets the baseline position of a box layout.
 
@@ -26,19 +37,6 @@ given @position is used to allocate the baseline within the extra
 space available. *)
 external set_baseline_position : t -> Gtk_enums.baselineposition -> unit = "ml_gtk_box_layout_set_baseline_position"
 
-(** Sets the index of the child that determines the baseline
-in vertical layout. *)
-external set_baseline_child : t -> int -> unit = "ml_gtk_box_layout_set_baseline_child"
-
-(** Returns the space that @box_layout puts between children. *)
-external get_spacing : t -> int = "ml_gtk_box_layout_get_spacing"
-
-(** Returns whether the layout is set to be homogeneous. *)
-external get_homogeneous : t -> bool = "ml_gtk_box_layout_get_homogeneous"
-
 (** Gets the value set by gtk_box_layout_set_baseline_position(). *)
 external get_baseline_position : t -> Gtk_enums.baselineposition = "ml_gtk_box_layout_get_baseline_position"
-
-(** Gets the value set by gtk_box_layout_set_baseline_child(). *)
-external get_baseline_child : t -> int = "ml_gtk_box_layout_get_baseline_child"
 

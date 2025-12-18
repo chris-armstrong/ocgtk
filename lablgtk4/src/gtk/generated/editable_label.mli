@@ -10,6 +10,12 @@ external new_ : string -> t = "ml_gtk_editable_label_new"
 
 (* Properties *)
 
+(** Get property: editing *)
+external get_editing : t -> bool = "ml_gtk_editable_label_get_editing"
+
+(** Set property: editing *)
+external set_editing : t -> bool -> unit = "ml_gtk_editable_label_set_editing"
+
 (** Switches the label out of “editing mode”.
 
 If @commit is %TRUE, the resulting text is kept as the
@@ -20,7 +26,4 @@ external stop_editing : t -> bool -> unit = "ml_gtk_editable_label_stop_editing"
 
 (** Switches the label into “editing mode”. *)
 external start_editing : t -> unit = "ml_gtk_editable_label_start_editing"
-
-(** Returns whether the label is currently in “editing mode”. *)
-external get_editing : t -> bool = "ml_gtk_editable_label_get_editing"
 

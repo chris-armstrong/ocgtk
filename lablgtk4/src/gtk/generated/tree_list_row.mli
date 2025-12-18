@@ -5,14 +5,16 @@ type t = [`tree_list_row | `object_] Gobject.obj
 
 (* Properties *)
 
-(** Expands or collapses a row.
+(** Get property: depth *)
+external get_depth : t -> int = "ml_gtk_tree_list_row_get_depth"
 
-If a row is expanded, the model of calling the
-[callback@Gtk.TreeListModelCreateModelFunc] for the row's
-item will be inserted after this row. If a row is collapsed,
-those items will be removed from the model.
+(** Get property: expandable *)
+external get_expandable : t -> bool = "ml_gtk_tree_list_row_get_expandable"
 
-If the row is not expandable, this function does nothing. *)
+(** Get property: expanded *)
+external get_expanded : t -> bool = "ml_gtk_tree_list_row_get_expanded"
+
+(** Set property: expanded *)
 external set_expanded : t -> bool -> unit = "ml_gtk_tree_list_row_set_expanded"
 
 (** Checks if a row can be expanded.
@@ -40,19 +42,6 @@ The value returned by this function never changes
 until the row is removed from its model at which point
 it will forever return %NULL. *)
 external get_parent : t -> t option = "ml_gtk_tree_list_row_get_parent"
-
-(** Gets if a row is currently expanded. *)
-external get_expanded : t -> bool = "ml_gtk_tree_list_row_get_expanded"
-
-(** Gets the depth of this row.
-
-Rows that correspond to items in the root model have a depth
-of zero, rows corresponding to items of models of direct children
-of the root model have a depth of 1 and so on.
-
-The depth of a row never changes until the row is removed from its model
-at which point it will forever return 0. *)
-external get_depth : t -> int = "ml_gtk_tree_list_row_get_depth"
 
 (** If @self is not expanded or @position is greater than the
 number of children, %NULL is returned. *)

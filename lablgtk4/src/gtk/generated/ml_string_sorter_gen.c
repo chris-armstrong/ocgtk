@@ -29,14 +29,6 @@ GtkStringSorter *obj = gtk_string_sorter_new(Option_val(arg1, GtkExpression_val,
 CAMLreturn(Val_GtkStringSorter(obj));
 }
 
-CAMLexport CAMLprim value ml_gtk_string_sorter_set_ignore_case(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_string_sorter_set_ignore_case(GtkStringSorter_val(self), Bool_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_string_sorter_set_expression(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -53,14 +45,6 @@ gtk_string_sorter_set_collation(GtkStringSorter_val(self), GtkCollation_val(arg1
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_string_sorter_get_ignore_case(value self)
-{
-CAMLparam1(self);
-
-gboolean result = gtk_string_sorter_get_ignore_case(GtkStringSorter_val(self));
-CAMLreturn(Val_bool(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_string_sorter_get_expression(value self)
 {
 CAMLparam1(self);
@@ -75,4 +59,37 @@ CAMLparam1(self);
 
 GtkCollation result = gtk_string_sorter_get_collation(GtkStringSorter_val(self));
 CAMLreturn(Val_GtkCollation(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_string_sorter_get_ignore_case(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkStringSorter *obj = (GtkStringSorter *)GtkStringSorter_val(self);
+    gboolean prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "ignore-case");
+if (pspec == NULL) caml_failwith("ml_gtk_string_sorter_get_ignore_case: property 'ignore-case' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "ignore-case", &prop_gvalue);
+    prop_value = g_value_get_boolean(&prop_gvalue);
+
+result = Val_bool(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_string_sorter_set_ignore_case(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkStringSorter *obj = (GtkStringSorter *)GtkStringSorter_val(self);
+    gboolean c_value = Bool_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "ignore-case");
+if (pspec == NULL) caml_failwith("ml_gtk_string_sorter_set_ignore_case: property 'ignore-case' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_boolean(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "ignore-case", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
 }
