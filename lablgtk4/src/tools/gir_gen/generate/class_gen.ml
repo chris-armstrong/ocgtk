@@ -283,13 +283,21 @@ let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:
       if String.lowercase_ascii meth.return_type.c_type = "void" then Some "unit"
       else ocaml_type_of_gir_type ~ctx ~current_layer2_module meth.return_type
     in
-    let ret_wrapper = match resolve_layer2_class ~ctx ~current_layer2_module meth.return_type with 
+    let ret_wrapper =
+      match resolve_layer2_class ~ctx ~current_layer2_module meth.return_type with
       | Some class_ref ->
-        begin match meth.return_type.nullable with
-        | true -> sprintf "Option.map (fun ret -> new %s ret) " class_ref
-        | false -> sprintf "new  %s" class_ref
-      end
-      | _ -> "" in
+        (* Check if method throws (returns result type) *)
+        if meth.throws then
+          (* Result type with class wrapping: Result.map (fun ret -> new ClassName ret) *)
+          sprintf "Result.map (fun ret -> new %s ret)" class_ref
+        else if meth.return_type.nullable then
+          (* Optional type with class wrapping: Option.map (fun ret -> new ClassName ret) *)
+          sprintf "Option.map (fun ret -> new %s ret) " class_ref
+        else
+          (* Non-optional, non-result type: new ClassName *)
+          sprintf "new  %s" class_ref
+      | _ -> ""
+    in
 
 
     (* Convert #Module.class_type to partial object type for .ml files *)
