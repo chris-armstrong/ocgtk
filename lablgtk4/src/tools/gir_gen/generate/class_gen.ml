@@ -32,9 +32,9 @@ let get_module_names ~ctx class_name =
   let layer1 = Class_utils.get_qualified_module_name ~ctx class_name in
   { layer1; layer2 = "G" ^ layer1 }
 
-let get_property_filters ~ctx ~methods  properties = {
-  method_names = Filtering.property_method_names ~ctx ~methods properties;
-  base_names = Filtering.property_base_names ~ctx ~methods  properties;
+let get_property_filters ~ctx ~class_name ~methods  properties = {
+  method_names = Filtering.property_method_names ~ctx ~class_name ~methods properties;
+  base_names = Filtering.property_base_names ~ctx ~class_name ~methods  properties;
 }
 
 (* Helper to check if a class name is in the same cluster *)
@@ -133,8 +133,8 @@ let ocaml_type_of_gir_type ~ctx ~current_layer2_module (gir_type : gir_type) =
   |> Option.map (fun base -> if gir_type.nullable then base ^ " option" else base)
 
 (* Generic property code generation - refactoring #6 *)
-let generate_property_code ~ctx ~methods  ~seen ~generate_getter ~generate_setter (prop : gir_property) =
-  if not (Filtering.should_generate_property ~ctx ~methods  prop) then ("", seen)
+let generate_property_code ~ctx ~class_name ~methods  ~seen ~generate_getter ~generate_setter (prop : gir_property) =
+  if not (Filtering.should_generate_property ~ctx ~class_name ~methods  prop) then ("", seen)
   else
     let prop_snake = Utils.ocaml_property_name prop.prop_name in
     if StringSet.mem prop_snake seen then ("", seen) else
@@ -188,7 +188,7 @@ let has_type_variable type_str =
   let parts = Str.split (Str.regexp "[ \t]+") type_str in
   List.exists ~f:(fun part -> part = "'a") parts
 
-let generate_property_signatures ~ctx ~methods  ~seen ~current_layer2_module ~same_cluster_classes (prop : gir_property) =
+let generate_property_signatures ~ctx ~class_name ~methods  ~seen ~current_layer2_module ~same_cluster_classes (prop : gir_property) =
   match ocaml_type_of_gir_type ~ctx ~current_layer2_module prop.prop_type with
   | None -> ("", seen)
   | Some ocaml_type ->
@@ -208,7 +208,7 @@ let generate_property_signatures ~ctx ~methods  ~seen ~current_layer2_module ~sa
         let method_name = "set_"^prop_snake |> Utils.sanitize_identifier in
         sprintf "    method %s : %s -> unit\n" method_name ocaml_type
       in
-      generate_property_code ~ctx ~methods  ~seen ~generate_getter ~generate_setter prop
+      generate_property_code ~ctx ~class_name ~methods  ~seen ~generate_getter ~generate_setter prop
 
 let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:_ ~module_name ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes ~conflicting_methods (meth : gir_method) =
   let should_skip =
@@ -547,7 +547,7 @@ let generate_class_converter_method_impl ~class_name buf = bprintf buf "    meth
 (* Shared class module body generation - refactoring #1 *)
 let generate_class_module_body ~ctx ~buf ~layer1_module_name ~current_layer2_module ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info ~same_cluster_classes () =
   let has_any_signals = List.length signals > 0 in
-  let property_filters = get_property_filters ~ctx ~methods  properties in
+  let property_filters = get_property_filters ~ctx ~class_name ~methods  properties in
 
   (* Detect method conflicts with parent classes *)
   let conflicting_methods = detect_method_conflicts ~ctx ~class_name ~c_type ~methods in
@@ -578,7 +578,7 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name ~current_layer2_mod
   (* Properties *)
   let seen, () =
     List.fold_left properties ~init:(seen, ()) ~f:(fun (seen, ()) prop ->
-      let chunk, seen = generate_property_methods ~ctx ~methods  ~module_name:layer1_module_name ~current_layer2_module ~seen ~same_cluster_classes prop in
+      let chunk, seen = generate_property_methods ~ctx ~class_name ~methods  ~module_name:layer1_module_name ~current_layer2_module ~seen ~same_cluster_classes prop in
       Buffer.add_string buf chunk;
       if chunk <> "" then Buffer.add_char buf '\n';
       (seen, ()))
@@ -592,7 +592,7 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name ~current_layer2_mod
 (* Shared signature body generation - refactoring #2 *)
 let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_ ~current_layer2_module ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info ~same_cluster_classes () =
   let has_any_signals = List.length signals > 0 in
-  let property_filters = get_property_filters ~ctx ~methods properties in
+  let property_filters = get_property_filters ~ctx ~class_name ~methods properties in
 
   (* Detect method conflicts with parent classes *)
   let conflicting_methods = detect_method_conflicts ~ctx ~class_name ~c_type ~methods in
@@ -624,8 +624,8 @@ let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_ ~current_layer
   (* Properties *)
   let _, () =
     List.fold_left properties ~init:(seen, ()) ~f:(fun (seen, ()) prop ->
-      if Filtering.should_generate_property ~ctx ~methods prop then begin
-        let chunk, _ = generate_property_signatures ~ctx ~methods  ~seen ~current_layer2_module ~same_cluster_classes prop in
+      if Filtering.should_generate_property ~ctx ~class_name ~methods prop then begin
+        let chunk, _ = generate_property_signatures ~ctx ~methods ~class_name ~seen ~current_layer2_module ~same_cluster_classes prop in
         Buffer.add_string buf chunk;
       end;
       (seen, ()))

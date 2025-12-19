@@ -17,19 +17,27 @@ let has_simple_type ~ctx (gir_type : gir_type) =
   | Some _ -> true
   | None -> false
 
-let should_generate_property ~ctx ~methods (prop : gir_property) =    
-  let matches_method = List.exists ~f:(fun m -> (m.set_property |> Option.map  (String.equal prop.prop_name) |> Option.value ~default:false)
-          || (m.get_property |> Option.map (String.equal prop.prop_name) |> Option.value ~default:false)) methods in
-  Printf.printf "matches method %s=%b\n"prop.prop_name matches_method;
-  (not matches_method) && (has_simple_type ~ctx prop.prop_type)
+let property_exclude_list = [("IconPaintable", "is-symbolic")]
 
-let property_method_names ~ctx ~methods (properties : gir_property list) =
+let should_generate_property ~ctx ~class_name ~methods (prop : gir_property) = 
+  if List.exists ~f:(fun (test_class_name, test_property_name) -> 
+    (String.equal prop.prop_name test_property_name) && 
+      (String.equal class_name test_class_name)) 
+    property_exclude_list
+  then false
+  else   
+    let matches_method = List.exists ~f:(fun m -> (m.set_property |> Option.map  (String.equal prop.prop_name) |> Option.value ~default:false)
+            || (m.get_property |> Option.map (String.equal prop.prop_name) |> Option.value ~default:false)) methods in
+    Printf.printf "matches method %s=%b\n"prop.prop_name matches_method;
+    (not matches_method) && (has_simple_type ~ctx prop.prop_type)
+
+let property_method_names ~ctx ~class_name ~methods (properties : gir_property list) =
 
   let names, _ =
     List.fold_left properties ~init:([], StringSet.empty)
       ~f:(fun (acc, seen) (prop : gir_property) ->
         
-        if not (should_generate_property ~ctx ~methods prop) then
+        if not (should_generate_property ~ctx ~class_name ~methods prop) then
           (acc, seen)
         else
         let prop_snake = Utils.sanitize_property_name prop.prop_name in
@@ -49,9 +57,9 @@ let property_method_names ~ctx ~methods (properties : gir_property list) =
   in
   names
 
-let property_base_names ~ctx ~methods (properties : gir_property list) =
+let property_base_names ~ctx ~class_name ~methods (properties : gir_property list) =
   properties
-  |> List.filter ~f:(fun prop -> should_generate_property ~ctx ~methods prop)
+  |> List.filter ~f:(fun prop -> should_generate_property ~ctx  ~class_name ~methods prop)
   |> List.map ~f:(fun (prop : gir_property) -> Utils.sanitize_property_name prop.prop_name)
 
 let method_has_excluded_type (meth : gir_method) =

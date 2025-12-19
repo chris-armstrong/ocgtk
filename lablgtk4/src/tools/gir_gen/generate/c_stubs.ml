@@ -842,7 +842,7 @@ let generate_class_c_code ~ctx ~c_type class_name constructors methods propertie
 
   (* Generate property getters and setters *)
   List.iter ~f:(fun (prop : gir_property) ->
-    if Filtering.should_generate_property ~ctx ~methods prop then begin
+    if Filtering.should_generate_property ~ctx ~class_name ~methods prop then begin
       if prop.readable then
         Buffer.add_string buf (generate_c_property_getter ~ctx ~c_type prop class_name);
       if prop.writable && not prop.construct_only then
