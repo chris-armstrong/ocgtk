@@ -213,3 +213,12 @@ let ocaml_class_name cn = cn
   |> sanitize_identifier
 
 let ocaml_constructor_name ~class_name:_ (ctor: Types.gir_constructor) = ctor.ctor_name |> kebab_to_snake |> to_snake_case |> sanitize_identifier
+
+let ml_method_name ~class_name:_ ({ c_identifier; _ }: Types.gir_method) =
+  "ml_" ^ c_identifier
+
+let ml_property_name ~class_name (prop: Types.gir_property) =
+    let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
+  let prop_snake = to_snake_case prop_name_cleaned in
+  let class_snake = to_snake_case class_name in
+  sprintf "ml_gtk_%s_get_%s" class_snake prop_snake

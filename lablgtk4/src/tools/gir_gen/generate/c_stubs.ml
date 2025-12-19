@@ -492,14 +492,10 @@ let generate_c_constructor ~ctx ~c_type (ctor : gir_constructor) _class_name =
       val_macro var_name
   end
 
-let generate_c_method ~ctx ~c_type (meth : gir_method) _class_name =
+let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
   let c_name = meth.c_identifier in
-  let ml_name =
-    let prefixed = Str.global_replace (Str.regexp "^gtk_") "ml_gtk_" c_name in
-    if String.length prefixed >= 3 && String.sub prefixed ~pos:0 ~len:3 = "ml_" then
-      prefixed
-    else
-      "ml_" ^ c_name
+  let ml_name = Utils.ml_method_name ~class_name meth
+    
   in
   let in_params = List.filter ~f:(fun p -> p.direction <> Out) meth.parameters in
   let param_count = 1 + List.length in_params in
@@ -666,10 +662,8 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) _class_name =
       ret_conv
 
 let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
-  let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
-  let prop_snake = Utils.to_snake_case prop_name_cleaned in
-  let class_snake = Utils.to_snake_case class_name in
-  let ml_name = sprintf "ml_gtk_%s_get_%s" class_snake prop_snake in
+
+  let ml_name = Utils.ml_property_name ~class_name prop in
 
   (* Determine property type mapping *)
   let type_info = match Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type with

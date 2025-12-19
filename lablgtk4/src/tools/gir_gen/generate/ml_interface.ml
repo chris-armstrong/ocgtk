@@ -228,11 +228,7 @@ let generate_ml_interface_internal
     let c_name = meth.method_name in
     let param_count = 1 + List.length meth.parameters in
     let ml_name =
-      let prefixed = Str.global_replace (Str.regexp "^gtk_") "ml_gtk_" c_name in
-      if String.length prefixed >= 3 && String.sub prefixed ~pos:0 ~len:3 = "ml_" then
-        prefixed
-      else
-        "ml_" ^ c_name
+      Utils.ml_method_name ~class_name meth
     in
     let ocaml_name =
       Utils.ocaml_function_name ~class_name ~c_type ?c_symbol_prefix c_name
