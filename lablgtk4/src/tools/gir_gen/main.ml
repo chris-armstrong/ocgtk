@@ -494,6 +494,7 @@ let generate_bindings filter_file gir_file output_dir =
   let header_file = Filename.concat (generated_output_dir output_dir) "generated_forward_decls.h" in
   printf "\n";
   let header_content = Gir_gen_lib.Generate.C_stubs.generate_forward_decls_header
+    ~ctx
     ~classes:ctx.classes
     ~gtk_enums:gtk_enums
     ~gtk_bitfields:gtk_bitfields

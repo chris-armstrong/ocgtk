@@ -4,6 +4,18 @@ open StdLabels
 open Printf
 open Types
 
+(* Get C include header for a namespace *)
+let include_header_for_namespace namespace_name =
+  let ns_lower = String.lowercase_ascii namespace_name in
+  if ns_lower = "gtk" then "#include <gtk/gtk.h>"
+  else if ns_lower = "gdk" then "#include <gdk/gdk.h>"
+  else if ns_lower = "pango" then "#include <pango/pango.h>"
+  else if ns_lower = "gdkpixbuf" then "#include <gdk-pixbuf/gdk-pixbuf.h>"
+  else if ns_lower = "gsk" then "#include <gsk/gsk.h>"
+  else if ns_lower = "graphene" then "#include <graphene.h>"
+  else if ns_lower = "gio" then "#include <gio/gio.h>"
+  else sprintf "#include <%s/%s.h>" ns_lower ns_lower
+
 let nullable_c_to_ml_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping) =
   if not gir_type.nullable then
     sprintf "%s(%s)" mapping.c_to_ml var
@@ -232,7 +244,7 @@ let is_value_like_record (record : gir_record) =
   List.mem record.c_type ~set:value_record_macros
   || (List.length record.fields > 0 && List.length record.constructors = 0)
 
-let generate_forward_decls_header ~classes ~gtk_enums ~gtk_bitfields ~external_enums ~external_bitfields ~records =
+let generate_forward_decls_header ~ctx ~classes ~gtk_enums ~gtk_bitfields ~external_enums ~external_bitfields ~records =
   let buf = Buffer.create 4096 in
   Buffer.add_string buf "/**************************************************************************/\n";
   Buffer.add_string buf "/*                LablGTK4 - OCaml bindings for GTK4                      */\n";
@@ -248,10 +260,10 @@ let generate_forward_decls_header ~classes ~gtk_enums ~gtk_bitfields ~external_e
   Buffer.add_string buf "/* GENERATED CODE - DO NOT EDIT */\n";
   Buffer.add_string buf "/* Forward declarations for generated enum and bitfield converters */\n";
   Buffer.add_string buf "\n";
-  Buffer.add_string buf "#ifndef _gtk4_generated_forward_decls_\n";
-  Buffer.add_string buf "#define _gtk4_generated_forward_decls_\n";
+  bprintf buf "#ifndef _%s_generated_forward_decls_\n" (String.lowercase_ascii ctx.namespace.namespace_name);
+  bprintf buf "#define _%s_generated_forward_decls_\n" (String.lowercase_ascii ctx.namespace.namespace_name);
   Buffer.add_string buf "\n";
-  Buffer.add_string buf "#include <gtk/gtk.h>\n";
+  bprintf buf "%s\n" (include_header_for_namespace ctx.namespace.namespace_name);
   Buffer.add_string buf "#include <gdk-pixbuf/gdk-pixbuf.h>\n";
   Buffer.add_string buf "#include <graphene.h>\n";
   Buffer.add_string buf "#include <caml/mlvalues.h>\n";
@@ -370,16 +382,16 @@ let generate_forward_decls_header ~classes ~gtk_enums ~gtk_bitfields ~external_e
   Buffer.contents buf
 
 (* Generate C file header with common includes and type conversions *)
-let generate_c_file_header ?(class_name="") ?(c_type="") ?(external_enums=[]) ?(external_bitfields=[]) () =
+let generate_c_file_header ~ctx ?(class_name="") ?(c_type="") ?(external_enums=[]) ?(external_bitfields=[]) () =
   let _ = (external_enums, external_bitfields) in
   let buf = Buffer.create 1024 in
   Buffer.add_string buf "/* GENERATED CODE - DO NOT EDIT */\n";
   if class_name <> "" then
     bprintf buf "/* C bindings for %s */\n" class_name
   else
-    Buffer.add_string buf "/* Generated from Gtk-4.0.gir */\n";
+    bprintf buf "/* Generated from %s.gir */\n" ctx.namespace.namespace_name;
   Buffer.add_string buf "\n";
-  Buffer.add_string buf "#include <gtk/gtk.h>\n";
+  bprintf buf "%s\n" (include_header_for_namespace ctx.namespace.namespace_name);
   Buffer.add_string buf "#include <caml/mlvalues.h>\n";
   Buffer.add_string buf "#include <caml/memory.h>\n";
   Buffer.add_string buf "#include <caml/alloc.h>\n";
@@ -816,7 +828,7 @@ let generate_class_c_code ~ctx ~c_type class_name constructors methods propertie
   let buf = Buffer.create 4096 in
 
   (* Add header *)
-  Buffer.add_string buf (generate_c_file_header ~class_name ~c_type ~external_enums:ctx.external_enums ~external_bitfields:ctx.external_bitfields ());
+  Buffer.add_string buf (generate_c_file_header ~ctx ~class_name ~c_type ~external_enums:ctx.external_enums ~external_bitfields:ctx.external_bitfields ());
 
   (* Constructors - skip those that throw GError or are variadic *)
   List.iter ~f:(fun ctor ->
@@ -849,7 +861,7 @@ let generate_class_c_code ~ctx ~c_type class_name constructors methods propertie
 let generate_record_c_code ~ctx (record : gir_record) =
   let buf = Buffer.create 2048 in
 
-  Buffer.add_string buf (generate_c_file_header ~class_name:record.record_name ~c_type:record.c_type ~external_enums:ctx.external_enums ~external_bitfields:ctx.external_bitfields ());
+  Buffer.add_string buf (generate_c_file_header ~ctx ~class_name:record.record_name ~c_type:record.c_type ~external_enums:ctx.external_enums ~external_bitfields:ctx.external_bitfields ());
 
   let class_snake = Utils.to_snake_case record.record_name in
   let is_copy_or_free (meth : gir_method) =
