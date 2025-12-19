@@ -212,7 +212,12 @@ type hierarchy_info = {
   base_conversion_method: string; (* Widget.as_widget *)
 }
 
+type gir_namespace = {
+  namespace_name: string;
+}
+
 type generation_context = {
+  namespace: gir_namespace;
   classes: gir_class list;
   interfaces: gir_interface list;
   enums: gir_enum list;

@@ -281,13 +281,14 @@ let create_test_signal_gir filename =
 let test_signal_parsing_and_generation () =
   let test_gir = "/tmp/test_signal_gen.gir" in
   create_test_signal_gir test_gir;
-  let (classes, interfaces, gtk_enums, gtk_bitfields, gtk_records) = Gir_gen_lib.Parse.Gir_parser.parse_gir_file test_gir [] in
+  let (namespace,classes, interfaces, gtk_enums, gtk_bitfields, gtk_records) = Gir_gen_lib.Parse.Gir_parser.parse_gir_file test_gir [] in
   let button =
     List.find (fun (c : Gir_gen_lib.Types.gir_class) -> c.class_name = "Button") classes
   in
   assert_true "Button signals should be parsed" (List.length button.signals = 2);
   let parent_chain = match button.parent with Some p -> [p] | None -> [] in
   let ctx_initial : Gir_gen_lib.Types.generation_context = {
+    namespace;
     classes;
     interfaces;
     enums = gtk_enums;
@@ -447,7 +448,7 @@ let test_record_support () =
   close_out fc;
   (try Unix.mkdir output_dir 0o755 with Unix.Unix_error _ -> ());
 
-  let (classes, _, _, _, records) = Gir_gen_lib.Parse.Gir_parser.parse_gir_file test_gir [] in
+  let (_, classes, _, _, _, records) = Gir_gen_lib.Parse.Gir_parser.parse_gir_file test_gir [] in
   assert_true "Should parse two records" (List.length records = 2);
   assert_true "Should parse RecordUser class" (List.exists (fun (c : Gir_gen_lib.Types.gir_class) -> c.class_name = "RecordUser") classes);
 

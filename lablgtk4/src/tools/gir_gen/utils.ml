@@ -155,7 +155,7 @@ let sanitize_identifier id =
 let sanitize_property_name name =
   name |> sanitize_identifier |> String.map ~f:(function '-' -> '_' | c -> c) |> to_snake_case
 
-let strip_function_prefix ~class_name ?c_type ?c_symbol_prefix c_identifier =
+(* let strip_function_prefix ~class_name ?c_type ?c_symbol_prefix c_identifier =
   let snake_identifier = to_snake_case c_identifier in
   let prefixes =
     let base = [
@@ -186,10 +186,14 @@ let strip_function_prefix ~class_name ?c_type ?c_symbol_prefix c_identifier =
       else
         strip name rest
   in
-  sanitize_identifier (strip snake_identifier sorted_prefixes)
+  sanitize_identifier (strip snake_identifier sorted_prefixes) *)
 
-let ocaml_function_name ~class_name ?c_type ?c_symbol_prefix c_identifier =
-  strip_function_prefix ~class_name ?c_type ?c_symbol_prefix c_identifier
+let ocaml_function_name ~class_name:_ ?c_type:_ ?c_symbol_prefix:_ (method_name:string) =
+  method_name |> to_snake_case |> sanitize_identifier
+
+  (* strip_function_prefix ~class_name ?c_type ?c_symbol_prefix c_identifier *)
+
+let kebab_to_snake = String.map ~f:(function '-' -> '_' | c -> c)
 
 let ocaml_method_name ~class_name ?c_type ?c_symbol_prefix method_identifier =
   ocaml_function_name ~class_name ?c_type ?c_symbol_prefix method_identifier
@@ -197,13 +201,15 @@ let ocaml_method_name ~class_name ?c_type ?c_symbol_prefix method_identifier =
 (** calculate property name, but does not sanitize the identifier (as it will have get_/set_ added to calles). sanitize_identifier will still be
    needed for getter method names*)
 let ocaml_property_name name = 
-  name  |> String.map ~f:(function '-' -> '_' | c -> c) |> to_snake_case
+  name  |> kebab_to_snake |> to_snake_case
 
   let ocaml_parameter_name name = 
-   name  |> String.map ~f:(function '-' -> '_' | c -> c) |> to_snake_case |> sanitize_identifier
+   name  |> kebab_to_snake |> to_snake_case |> sanitize_identifier
 
 let ocaml_class_name cn = cn 
   |>  normalize_class_name 
-  |> String.map ~f:(function '-' -> '_' | c -> c) 
+  |> kebab_to_snake  
   |> to_snake_case 
   |> sanitize_identifier
+
+let ocaml_constructor_name ~class_name:_ (ctor: Types.gir_constructor) = ctor.ctor_name |> kebab_to_snake |> to_snake_case |> sanitize_identifier

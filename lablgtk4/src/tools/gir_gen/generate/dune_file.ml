@@ -4,7 +4,7 @@ open StdLabels
 open Printf
 
 (* Generate dune library stanza for generated C stubs *)
-let generate_dune_library ~stub_names ~module_names =
+let generate_dune_library ~lib_name ~stub_names ~module_names =
   let buf = Buffer.create 2048 in
 
   Buffer.add_string buf "; Auto-generated library for generated C bindings\n";
@@ -23,8 +23,8 @@ let generate_dune_library ~stub_names ~module_names =
   Buffer.add_string buf ")\n\n";
 
   Buffer.add_string buf "(library\n";
-  Buffer.add_string buf " (name lablgtk4_generated_stubs)\n";
-  Buffer.add_string buf " (public_name lablgtk4.generated_stubs)\n";
+  Buffer.add_string buf (sprintf " (name lablgtk4_%s_generated_stubs)\n" (lib_name |> Utils.to_snake_case));
+  Buffer.add_string buf (sprintf " (public_name lablgtk4.%s.generated_stubs)\n" (lib_name |> Utils.to_snake_case));
   Buffer.add_string buf " (wrapped false)\n";
   Buffer.add_string buf " (modules)  ; No OCaml modules, only C stubs\n";
   Buffer.add_string buf " (libraries lablgtk4_common)  ; Depend on common for header files\n";

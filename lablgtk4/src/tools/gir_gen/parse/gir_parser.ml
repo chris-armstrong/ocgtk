@@ -25,10 +25,15 @@ let get_attr name attrs =
         List.assoc (glib_ns, glib_name) attrs |> fun x -> Some x
       with Not_found -> None
 
+let ns namespace = match namespace with 
+|"glib" -> Some "http://www.gtk.org/introspection/glib/1.0"
+|"gtk" -> Some "http://www.gtk.org/introspection/c/1.0"
+|_ -> None
+
 (* Parse only enums and bitfields from a GIR file (for external namespaces) *)
 let parse_gir_enums_only filename =
   let ic = open_in filename in
-  let input = Xmlm.make_input ~strip:true (`Channel ic) in
+  let input = Xmlm.make_input ~ns ~strip:true (`Channel ic) in
 
   let local_name tag =
     match String.index_opt tag ':' with
@@ -201,6 +206,7 @@ let parse_gir_file filename filter_classes =
   let records : gir_record list ref = ref [] in
   let signal_table : (string, gir_signal list) Hashtbl.t = Hashtbl.create 256 in
   let iface_signal_table : (string, gir_signal list) Hashtbl.t = Hashtbl.create 128 in
+  let namespace = ref { namespace_name = "<unknown>" } in
 
   let normalized_filters =
     List.fold_left filter_classes ~init:StringSet.empty ~f:(fun acc name ->
@@ -1039,10 +1045,16 @@ let parse_gir_file filename filter_classes =
         | Some record -> records := record :: !records
         | None -> ());
         parse_document ()
+      | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "namespace" ->
+        let namespace_name = Option.get (get_attr "name" attrs) in
+        
+        namespace := { namespace_name };
+        
+        parse_document ()
 
       | `El_start ((_, raw_tag), _) ->
         let tag = local_name raw_tag in
-        if tag = "repository" || tag = "namespace" then
+        if tag = "repository"  then
           parse_document ()
         else begin
         parse_document ()
@@ -1087,4 +1099,4 @@ let parse_gir_file filename filter_classes =
   let controllers = List.rev_map ~f:merge_class_signals !controllers in
   let interfaces = List.rev_map ~f:merge_interface_signals !interfaces in
 
-  (controllers, interfaces, List.rev !enums, List.rev !bitfields, List.rev !records)
+  (!namespace, controllers, interfaces, List.rev !enums, List.rev !bitfields, List.rev !records)

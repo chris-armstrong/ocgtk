@@ -830,19 +830,11 @@ let generate_class_c_code ~ctx ~c_type class_name constructors methods propertie
       Buffer.add_string buf (generate_c_constructor ~ctx ~c_type ctor class_name)
   ) constructors;
 
-  (* Build list of property names to avoid duplicates *)
-  let property_method_names =
-    Filtering.property_method_names ~ctx properties
-  in
-  let property_base_names =
-    Filtering.property_base_names ~ctx properties
-  in
-
   (* Generate methods, skip duplicates *)
   List.iter ~f:(fun (meth : gir_method) ->
     let should_skip =
       Filtering.should_skip_method_binding
-        ~ctx ~property_method_names ~property_base_names ~class_name ~c_type meth
+        ~ctx  meth
     in
     if not should_skip then
       Buffer.add_string buf (generate_c_method ~ctx ~c_type meth class_name)
@@ -850,7 +842,7 @@ let generate_class_c_code ~ctx ~c_type class_name constructors methods propertie
 
   (* Generate property getters and setters *)
   List.iter ~f:(fun (prop : gir_property) ->
-    if Filtering.should_generate_property ~ctx prop then begin
+    if Filtering.should_generate_property ~ctx ~methods prop then begin
       if prop.readable then
         Buffer.add_string buf (generate_c_property_getter ~ctx ~c_type prop class_name);
       if prop.writable && not prop.construct_only then
@@ -931,11 +923,7 @@ let generate_record_c_code ~ctx (record : gir_record) =
     let should_skip =
       Filtering.should_skip_method_binding
         ~ctx
-        ~property_method_names:[]
-        ~property_base_names:[]
-        ~class_name:record.record_name
-        ~c_type:record.c_type
-        ?c_symbol_prefix:record.c_symbol_prefix
+        
         meth
     in
     if (not should_skip) && (not (is_copy_or_free meth)) then

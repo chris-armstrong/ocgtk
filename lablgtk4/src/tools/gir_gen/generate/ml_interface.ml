@@ -186,7 +186,7 @@ let generate_ml_interface_internal
 
       (* Generate OCaml constructor name from C identifier *)
       let ocaml_ctor_name =
-        Utils.ocaml_function_name ~class_name ~c_type ?c_symbol_prefix c_name
+        Utils.ocaml_constructor_name ~class_name ctor
       in
 
     (* Build parameter types for constructor signature *)
@@ -222,57 +222,10 @@ let generate_ml_interface_internal
     end
   ) (constructors |> Option.value ~default:[]);
 
-  (* Properties - generate get/set externals *)
-  let property_names = ref [] in
-
-  if List.length properties > 0 then begin
-    bprintf buf "(* Properties *)\n\n";
-  List.iter ~f:(fun (prop : gir_property) ->
-      let skip_prop =
-        Exclude_list.is_excluded_type_name prop.prop_type.name ||
-        Exclude_list.is_excluded_type_name prop.prop_type.c_type
-      in
-      let type_mapping_opt = if skip_prop then None else Type_mappings.find_type_mapping ~ctx prop.prop_type.c_type in
-      match type_mapping_opt with
-      | Some type_mapping ->
-        let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
-        let prop_snake = Utils.to_snake_case prop_name_cleaned in
-        let class_snake = Utils.to_snake_case class_name in
-        let base_prop_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some prop.prop_type.name) type_mapping.ocaml_type in
-        let prop_ocaml_type =
-          if prop.prop_type.nullable then
-            sprintf "%s option" base_prop_type
-          else
-            base_prop_type
-        in
-
-        (* Generate getter if readable *)
-        if prop.readable then begin
-          let getter_name = sprintf "get_%s" prop_snake in
-          property_names := getter_name :: !property_names;
-          let c_getter = sprintf "ml_gtk_%s_get_%s" class_snake prop_snake in
-          bprintf buf "(** Get property: %s *)\n" prop.prop_name;
-          bprintf buf "external %s : t -> %s = \"%s\"\n\n"
-            getter_name prop_ocaml_type c_getter;
-        end;
-
-        (* Generate setter if writable and not construct-only *)
-        if prop.writable && not prop.construct_only then begin
-          let setter_name = sprintf "set_%s" prop_snake in
-          property_names := setter_name :: !property_names;
-          let c_setter = sprintf "ml_gtk_%s_set_%s" class_snake prop_snake in
-          bprintf buf "(** Set property: %s *)\n" prop.prop_name;
-          bprintf buf "external %s : t -> %s -> unit = \"%s\"\n\n"
-            setter_name prop_ocaml_type c_setter;
-        end;
-      | None ->
-        ()
-    ) properties;
-  end;
-
   (* Methods - skip those that duplicate property getters/setters *)
+  bprintf buf "(* Methods *)\n";
   List.iter ~f:(fun (meth : gir_method) ->
-    let c_name = meth.c_identifier in
+    let c_name = meth.method_name in
     let param_count = 1 + List.length meth.parameters in
     let ml_name =
       let prefixed = Str.global_replace (Str.regexp "^gtk_") "ml_gtk_" c_name in
@@ -288,14 +241,11 @@ let generate_ml_interface_internal
     (* Skip if: variadic function, duplicates property, or unmapped return type *)
     let has_excluded_type =
       Exclude_list.is_excluded_type_name meth.return_type.name ||
-      Exclude_list.is_excluded_type_name meth.return_type.c_type ||
-      List.exists meth.parameters ~f:(fun p ->
-        Exclude_list.is_excluded_type_name p.param_type.name ||
-        Exclude_list.is_excluded_type_name p.param_type.c_type)
+      Exclude_list.is_excluded_type_name meth.return_type.c_type 
     in
     let should_skip_mli =
       Exclude_list.is_variadic_function c_name ||
-      List.mem ocaml_name ~set:!property_names ||
+      
       has_excluded_type ||
       Exclude_list.should_skip_method ~find_type_mapping:(Type_mappings.find_type_mapping ~ctx) ~enums:ctx.enums ~bitfields:ctx.bitfields meth ||
       (is_record && is_copy_or_free meth)
@@ -393,8 +343,58 @@ let generate_ml_interface_internal
         bprintf buf "external %s : %s = \"%s\"\n\n"
           ocaml_name full_type ml_name;
     end
-  ) (List.rev methods)
-  
+  ) (List.rev methods);
+
+  (* Properties - generate get/set externals *)
+  let property_names = ref [] in
+
+  if List.length properties > 0 then begin
+    bprintf buf "(* Properties *)\n\n";
+  List.iter ~f:(fun (prop : gir_property) ->
+      let skip_prop =
+        Exclude_list.is_excluded_type_name prop.prop_type.name ||
+        Exclude_list.is_excluded_type_name prop.prop_type.c_type ||
+        List.exists ~f:(fun m -> (m.set_property |> Option.map  (String.equal prop.prop_name) |> Option.value ~default:false)
+        || (m.get_property |> Option.map (String.equal prop.prop_name) |> Option.value ~default:false)) methods
+      in
+      
+      let type_mapping_opt = if skip_prop then None else Type_mappings.find_type_mapping ~ctx prop.prop_type.c_type in
+      match type_mapping_opt with
+      | Some type_mapping ->
+        let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
+        let prop_snake = Utils.to_snake_case prop_name_cleaned in
+        let class_snake = Utils.to_snake_case class_name in
+        let base_prop_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some prop.prop_type.name) type_mapping.ocaml_type in
+        let prop_ocaml_type =
+          if prop.prop_type.nullable then
+            sprintf "%s option" base_prop_type
+          else
+            base_prop_type
+        in
+
+        (* Generate getter if readable *)
+        if prop.readable then begin
+          let getter_name = sprintf "get_%s" prop_snake in
+          property_names := getter_name :: !property_names;
+          let c_getter = sprintf "ml_gtk_%s_get_%s" class_snake prop_snake in
+          bprintf buf "(** Get property: %s *)\n" prop.prop_name;
+          bprintf buf "external %s : t -> %s = \"%s\"\n\n"
+            getter_name prop_ocaml_type c_getter;
+        end;
+
+        (* Generate setter if writable and not construct-only *)
+        if prop.writable && not prop.construct_only then begin
+          let setter_name = sprintf "set_%s" prop_snake in
+          property_names := setter_name :: !property_names;
+          let c_setter = sprintf "ml_gtk_%s_set_%s" class_snake prop_snake in
+          bprintf buf "(** Set property: %s *)\n" prop.prop_name;
+          bprintf buf "external %s : t -> %s -> unit = \"%s\"\n\n"
+            setter_name prop_ocaml_type c_setter;
+        end;
+      | None ->
+        ()
+    ) properties;
+  end  
 
 let generate_ml_interface
     ~ctx

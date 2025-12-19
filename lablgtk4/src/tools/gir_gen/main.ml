@@ -379,7 +379,7 @@ let generate_bindings filter_file gir_file output_dir =
   (* ==== PARSING STAGE ==== *)
 
   (* Parse GTK GIR file *)
-  let (controllers, interfaces, gtk_enums, gtk_bitfields, gtk_records) = Gir_gen_lib.Parse.Gir_parser.parse_gir_file gir_file filter_classes in
+  let (namespace, controllers, interfaces, gtk_enums, gtk_bitfields, gtk_records) = Gir_gen_lib.Parse.Gir_parser.parse_gir_file gir_file filter_classes in
 
   printf "Found %d classes\n" (List.length controllers);
   printf "Found %d interfaces\n" (List.length interfaces);
@@ -447,6 +447,7 @@ let generate_bindings filter_file gir_file output_dir =
 
   (* Create generation context with all type information *)
   let ctx_initial : Gir_gen_lib.Types.generation_context = {
+    namespace;
     classes = controllers;
     interfaces;
     enums;
@@ -602,6 +603,7 @@ let generate_bindings filter_file gir_file output_dir =
   in
   let dune_content = Gir_gen_lib.Generate.Dune_file.generate_dune_library
     ~stub_names:stub_list
+    ~lib_name:namespace.namespace_name
     ~module_names:module_list in
   write_file ~path:dune_file ~content:dune_content;
 
