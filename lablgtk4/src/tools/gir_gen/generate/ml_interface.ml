@@ -193,14 +193,14 @@ let generate_ml_interface_internal
     let param_types = List.map ~f:(fun p ->
       match Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type with
       | Some mapping ->
-        let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some p.param_type.name) mapping.ocaml_type in
+        (* let base_type = Type_mappings.qualify_ocaml_type ~ctx ~gir_type_name:(Some p.param_type.name) mapping.ocaml_type in *)
         if p.nullable then
-          sprintf "%s option" base_type
+          sprintf "%s option" mapping.ocaml_type
         else
-          base_type
+          mapping.ocaml_type
       | None ->
-        eprintf "Warning: Unknown type for parameter: name=%s c_type=%s\n"
-          p.param_type.name p.param_type.c_type;
+        eprintf "Warning: Unknown type for parameter: name=%s type=%s\n"
+          p.param_type.name p.param_type.name;
         "unit"
     ) ctor.ctor_parameters in
 
@@ -236,14 +236,13 @@ let generate_ml_interface_internal
 
     (* Skip if: variadic function, duplicates property, or unmapped return type *)
     let has_excluded_type =
-      Exclude_list.is_excluded_type_name meth.return_type.name ||
-      Exclude_list.is_excluded_type_name meth.return_type.c_type 
+      Exclude_list.is_excluded_type_name meth.return_type.name 
     in
     let should_skip_mli =
       Exclude_list.is_variadic_function c_name ||
       
       has_excluded_type ||
-      Exclude_list.should_skip_method ~find_type_mapping:(Type_mappings.find_type_mapping ~ctx) ~enums:ctx.enums ~bitfields:ctx.bitfields meth ||
+      Exclude_list.should_skip_method ~find_type_mapping:(Type_mappings.find_type_mapping_for_gir_type ~ctx) ~enums:ctx.enums ~bitfields:ctx.bitfields meth ||
       (is_record && is_copy_or_free meth)
     in
     if not should_skip_mli then begin
@@ -258,35 +257,35 @@ let generate_ml_interface_internal
         | In | InOut ->
           Some (match Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type with
           | Some mapping ->
-            let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some p.param_type.name) mapping.ocaml_type in
+            (* let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some p.param_type.name) mapping.ocaml_type in *)
             (* Simplify self-references (e.g., Tree_model.t -> t in tree_model.ml) *)
-            let base_type = simplify_self_reference ~class_name base_type in
+            let base_type = simplify_self_reference ~class_name mapping.ocaml_type in
             if p.nullable then
               sprintf "%s option" base_type
             else
               base_type
           | None ->
             eprintf "Warning: Unknown type for method '%s' parameter: name=%s c_type=%s\n" meth.method_name
-              p.param_type.name p.param_type.c_type;
+              p.param_type.name p.param_type.name;
             "unit")
       ) meth.parameters in
 
       let ret_type_ocaml =
-        if meth.return_type.c_type = "void" then
+        if meth.return_type.name = "void" then
           "unit"
         else
           match Type_mappings.find_type_mapping_for_gir_type ~ctx meth.return_type with
           | Some mapping ->
-            let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some meth.return_type.name) mapping.ocaml_type in
+            (* let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some meth.return_type.name) mapping.ocaml_type in *)
             (* Simplify self-references (e.g., Tree_model.t -> t in tree_model.ml) *)
-            let base_type = simplify_self_reference ~class_name base_type in
+            let base_type = simplify_self_reference ~class_name mapping.ocaml_type in
             if meth.return_type.nullable then
               sprintf "%s option" base_type
             else
               base_type
           | None ->
-            eprintf "Warning: Unknown return type for method %s: name=%s c_type=%s\n"
-              meth.method_name meth.return_type.name meth.return_type.c_type;
+            eprintf "Warning: Unknown return type for method %s: name=%s type=%s\n"
+              meth.method_name meth.return_type.name meth.return_type.name;
             "unit"
       in
 
@@ -295,23 +294,23 @@ let generate_ml_interface_internal
         |> List.filter_map ~f:(fun p ->
           match p.direction with
           | Out ->
-            let base_param_type =
+            (* let base_param_type =
               if String.length p.param_type.c_type > 0 &&
                  String.sub p.param_type.c_type ~pos:(String.length p.param_type.c_type - 1) ~len:1 = "*"
               then { p.param_type with c_type = String.sub p.param_type.c_type ~pos:0 ~len:(String.length p.param_type.c_type - 1) }
               else p.param_type
-            in
-            (match Type_mappings.find_type_mapping_for_gir_type ~ctx base_param_type with
+            in *)
+            (match Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type with
             | Some mapping ->
-              let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some base_param_type.name) mapping.ocaml_type in
+              (* let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some base_param_type.name) mapping.ocaml_type in *)
               (* Simplify self-references (e.g., Tree_model.t -> t in tree_model.ml) *)
-              let base_type = simplify_self_reference ~class_name base_type in
-              if base_param_type.nullable || p.nullable then
+              let base_type = simplify_self_reference ~class_name mapping.ocaml_type in
+              if (*base_param_type.nullable ||*) p.nullable then
                 Some (sprintf "%s option" base_type)
               else Some base_type
             | None ->
-              eprintf "Warning: Unknown out parameter type for method %s: name=%s c_type=%s\n"
-                meth.method_name p.param_type.name p.param_type.c_type;
+              eprintf "Warning: Unknown out parameter type for method %s: name=%s type=%s\n"
+                meth.method_name p.param_type.name p.param_type.name;
               Some "unit")
           | In | InOut -> None)
       in
@@ -349,23 +348,21 @@ let generate_ml_interface_internal
   List.iter ~f:(fun (prop : gir_property) ->
       let skip_prop =
         Exclude_list.is_excluded_type_name prop.prop_type.name ||
-        Exclude_list.is_excluded_type_name prop.prop_type.c_type ||
         List.exists ~f:(fun m -> (m.set_property |> Option.map  (String.equal prop.prop_name) |> Option.value ~default:false)
         || (m.get_property |> Option.map (String.equal prop.prop_name) |> Option.value ~default:false)) methods
       in
       
-      let type_mapping_opt = if skip_prop then None else Type_mappings.find_type_mapping ~ctx prop.prop_type.c_type in
+      let type_mapping_opt = if skip_prop then None else Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type in
       match type_mapping_opt with
       | Some type_mapping ->
         let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
         let prop_snake = Utils.to_snake_case prop_name_cleaned in
         let class_snake = Utils.to_snake_case class_name in
-        let base_prop_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some prop.prop_type.name) type_mapping.ocaml_type in
         let prop_ocaml_type =
           if prop.prop_type.nullable then
-            sprintf "%s option" base_prop_type
+            sprintf "%s option" type_mapping.ocaml_type
           else
-            base_prop_type
+            type_mapping.ocaml_type
         in
 
         (* Generate getter if readable *)

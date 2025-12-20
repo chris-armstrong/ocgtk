@@ -9,11 +9,10 @@ module StringSet = Set.Make (String)
 let has_simple_type ~ctx (gir_type : gir_type) =
   let is_excluded =
     Exclude_list.is_excluded_type_name gir_type.name
-    || Exclude_list.is_excluded_type_name gir_type.c_type
   in
   not is_excluded
   &&
-  match Type_mappings.find_type_mapping ~ctx gir_type.c_type with
+  match Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type with
   | Some _ -> true
   | None -> false
 
@@ -64,10 +63,10 @@ let property_base_names ~ctx ~class_name ~methods (properties : gir_property lis
 
 let method_has_excluded_type (meth : gir_method) =
   Exclude_list.is_excluded_type_name meth.return_type.name
-  || Exclude_list.is_excluded_type_name meth.return_type.c_type
+  
   || List.exists meth.parameters ~f:(fun p ->
          Exclude_list.is_excluded_type_name p.param_type.name
-         || Exclude_list.is_excluded_type_name p.param_type.c_type)
+         )
 
 let should_skip_method_binding
     ~ctx (meth : gir_method) =
@@ -77,7 +76,7 @@ let should_skip_method_binding
   in
   let has_unknown_type =
     Exclude_list.should_skip_method
-      ~find_type_mapping:(Type_mappings.find_type_mapping ~ctx)
+      ~find_type_mapping:(Type_mappings.find_type_mapping_for_gir_type ~ctx)
       ~enums:ctx.enums ~bitfields:ctx.bitfields meth
   in
   let has_excluded_type = method_has_excluded_type meth in

@@ -4,9 +4,11 @@ open StdLabels
 open Printf
 open Types
 
-(* Get C include header for a namespace *)
-let include_header_for_namespace namespace_name =
-  let ns_lower = String.lowercase_ascii namespace_name in
+(* Get C include header for a namespace. This uses
+hardcoded values for now because the c:include is
+not properly parsed from the GIR file *)
+let include_header_for_namespace  namespace_name =
+  let ns_lower = String.lowercase_ascii namespace_name in 
   if ns_lower = "gtk" then "#include <gtk/gtk.h>"
   else if ns_lower = "gdk" then "#include <gdk/gdk.h>"
   else if ns_lower = "pango" then "#include <pango/pango.h>"
@@ -14,21 +16,20 @@ let include_header_for_namespace namespace_name =
   else if ns_lower = "gsk" then "#include <gsk/gsk.h>"
   else if ns_lower = "graphene" then "#include <graphene.h>"
   else if ns_lower = "gio" then "#include <gio/gio.h>"
-  else sprintf "#include <%s/%s.h>" ns_lower ns_lower
+  else if ns_lower = "gobject" then "#include <glib-object.h>"
+  else 
+      let ns_lower = String.lowercase_ascii namespace_name in
+      sprintf "#include <%s/%s.h>" ns_lower ns_lower
 
 let nullable_c_to_ml_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping) =
   if not gir_type.nullable then
     sprintf "%s(%s)" mapping.c_to_ml var
   else
-    match gir_type.c_type with
-    | "gchararray" | "gchar*" | "utf8" | "const gchar*" | "const char*" ->
+    match gir_type with
+    | { name = "gchararray" | "gchar*" | "utf8" | "const gchar*" | "const char*"; _} ->
       sprintf "Val_option_string(%s)" var
-    | "GtkWidget*" ->
-      sprintf "Val_GtkWidget_option(%s)" var
-    | _ when mapping.c_to_ml = "Val_GtkWidget" ->
-      sprintf "Val_GtkWidget_option(%s)" var
-    | _ when String.length gir_type.c_type > 0 &&
-             String.sub gir_type.c_type ~pos:(String.length gir_type.c_type - 1) ~len:1 = "*" ->
+    | { c_type = Some c_type; _ } when String.length c_type > 0 &&
+             String.sub c_type ~pos:(String.length c_type - 1) ~len:1 = "*" ->
       sprintf "Val_option(%s, %s)" var mapping.c_to_ml
     | _ ->
       sprintf "%s(%s)" mapping.c_to_ml var
@@ -38,14 +39,10 @@ let nullable_ml_to_c_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping) 
     sprintf "%s(%s)" mapping.ml_to_c var
   else
     match gir_type.c_type with
-    | "gchararray" | "gchar*" | "utf8" | "const gchar*" | "const char*" ->
+    | Some ("gchararray" | "gchar*" | "utf8" | "const gchar*" | "const char*") ->
       sprintf "String_option_val(%s)" var
-    | "GtkWidget*" ->
-      sprintf "GtkWidget_option_val(%s)" var
-    | "GtkEventController*" ->
-      sprintf "GtkEventController_option_val(%s)" var
-    | _ when String.length gir_type.c_type > 0 &&
-             String.sub gir_type.c_type ~pos:(String.length gir_type.c_type - 1) ~len:1 = "*" ->
+    | Some c_type when String.length c_type > 0 &&
+             String.sub c_type ~pos:(String.length c_type - 1) ~len:1 = "*" ->
       sprintf "Option_val(%s, %s, NULL)" var mapping.ml_to_c
     | _ ->
       sprintf "%s(%s)" mapping.ml_to_c var
@@ -78,13 +75,40 @@ type property_gvalue_info = {
   class_info : gir_class option;
   is_enum : bool;
   is_bitfield : bool;
+  stack_allocated : bool;
 }
 
 let list_contains ~value list =
   List.exists list ~f:(fun candidate -> candidate = value)
 
+
+let string_base_types = ["gchar"; "char"; "utf8"; "gchararray"]
+let int32_types = ["gint"; "int"; "gint32"; "int32"; "gint16"; "int16"; "gint8"; "int8"]
+let uint32_types = ["guint"; "uint"; "guint32"; "uint32"; "guint16"; "uint16"; "guint8"; "uint8"]
+let int64_types = ["gint64"; "int64"]
+let uint64_types = ["guint64"; "uint64"]
+let long_types = ["glong"; "long"; "goffset"; "off_t"]
+let ulong_types = ["gulong"; "ulong"]
+let ssize_types = ["gssize"; "ssize_t"]
+let size_types = ["gsize"; "size_t"]
+let float_types = ["gfloat"; "float"]
+let double_types = ["gdouble"; "double"]
+let pointer_types = ["gpointer"; "gconstpointer"]
+
+let all_stack_allocated_builtins = string_base_types
+  @ int32_types @ uint32_types @
+int64_types @ uint64_types @ long_types @ ulong_types
+@ssize_types @ float_types @ double_types
+@pointer_types
+
 let analyze_property_type ~ctx (gir_type : gir_type) =
-  let normalized = Type_mappings.normalize_c_pointer_type gir_type.c_type |> String.trim in
+  let c_type = match gir_type.c_type with
+    | Some c_type -> c_type
+    | None -> 
+      Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type 
+      |> Option.map (fun tm -> tm.c_type) |> Option.value ~default:"void"
+  in
+  let normalized = Type_mappings.normalize_c_pointer_type c_type |> String.trim in
   let rec find_last idx =
     if idx < 0 then None
     else
@@ -101,19 +125,23 @@ let analyze_property_type ~ctx (gir_type : gir_type) =
     | None -> (normalized, false)
   in
   let base_lower = String.lowercase_ascii base_type in
-  let record_info = Type_mappings.find_record_mapping ctx.records gir_type.c_type in
-  let class_info = Type_mappings.find_class_mapping ctx.classes gir_type.c_type in
+  let record_info = Type_mappings.find_record_mapping ctx.records c_type in
+  let class_info = Type_mappings.find_class_mapping ctx.classes c_type in
   let is_enum =
     List.exists ctx.enums ~f:(fun e ->
-      e.enum_c_type = base_type || e.enum_c_type = gir_type.c_type)
+      e.enum_c_type = base_type || e.enum_c_type = c_type)
   in
   let is_bitfield =
     List.exists ctx.bitfields ~f:(fun b ->
-      b.bitfield_c_type = base_type || b.bitfield_c_type = gir_type.c_type)
+      b.bitfield_c_type = base_type || b.bitfield_c_type = c_type)
   in
   let pointer_like =
     has_pointer ||
-    List.exists ["gpointer"; "gconstpointer"] ~f:(fun candidate -> candidate = base_lower)
+    List.exists pointer_types ~f:(fun candidate -> candidate = base_lower)
+  in
+  let stack_allocated = is_enum || is_bitfield || List.exists ~f:(String.equal normalized)
+    all_stack_allocated_builtins 
+    
   in
   {
     base_type;
@@ -124,19 +152,9 @@ let analyze_property_type ~ctx (gir_type : gir_type) =
     class_info;
     is_enum;
     is_bitfield;
+    stack_allocated;
   }
 
-let string_base_types = ["gchar"; "char"; "utf8"; "gchararray"]
-let int32_types = ["gint"; "int"; "gint32"; "int32"; "gint16"; "int16"; "gint8"; "int8"]
-let uint32_types = ["guint"; "uint"; "guint32"; "uint32"; "guint16"; "uint16"; "guint8"; "uint8"]
-let int64_types = ["gint64"; "int64"]
-let uint64_types = ["guint64"; "uint64"]
-let long_types = ["glong"; "long"; "goffset"; "off_t"]
-let ulong_types = ["gulong"; "ulong"]
-let ssize_types = ["gssize"; "ssize_t"]
-let size_types = ["gsize"; "size_t"]
-let float_types = ["gfloat"; "float"]
-let double_types = ["gdouble"; "double"]
 
 let generate_gvalue_getter_assignment ~ml_name ~prop ~c_type_name ~prop_info =
   let base_lower = prop_info.base_lower in
@@ -182,7 +200,7 @@ let generate_gvalue_getter_assignment ~ml_name ~prop ~c_type_name ~prop_info =
           sprintf "    prop_value = (%s*)g_value_get_boxed(&prop_gvalue);\n" record.c_type
     | None ->
         if Option.is_some prop_info.class_info then
-          sprintf "    prop_value = (%s)g_value_get_object(&prop_gvalue);\n" c_type_name
+          sprintf "    prop_value = (%s*)g_value_get_object(&prop_gvalue);\n" c_type_name
         else if prop_info.pointer_like then
           sprintf "    prop_value = (%s)g_value_get_pointer(&prop_gvalue);\n" c_type_name
         else
@@ -263,18 +281,21 @@ let generate_forward_decls_header ~ctx ~classes ~gtk_enums ~gtk_bitfields ~exter
   bprintf buf "#ifndef _%s_generated_forward_decls_\n" (String.lowercase_ascii ctx.namespace.namespace_name);
   bprintf buf "#define _%s_generated_forward_decls_\n" (String.lowercase_ascii ctx.namespace.namespace_name);
   Buffer.add_string buf "\n";
-  bprintf buf "%s\n" (include_header_for_namespace ctx.namespace.namespace_name);
-  Buffer.add_string buf "#include <gdk-pixbuf/gdk-pixbuf.h>\n";
-  Buffer.add_string buf "#include <graphene.h>\n";
+  bprintf buf "%s\n" (include_header_for_namespace  ctx.namespace.namespace_name);
+  (* Buffer.add_string buf "#include <gdk-pixbuf/gdk-pixbuf.h>\n";
+  Buffer.add_string buf "#include <graphene.h>\n"; *)
   Buffer.add_string buf "#include <caml/mlvalues.h>\n";
   Buffer.add_string buf "\n";
 
-  (* Add common type conversions used by all generated files *)
-  Buffer.add_string buf "/* Type conversions - use direct cast (GObjects) */\n";
-  Buffer.add_string buf "#define GtkEventController_val(val) ((GtkEventController*)ext_of_val(val))\n";
-  Buffer.add_string buf "#define Val_GtkEventController(obj) ((value)(val_of_ext(obj)))\n";
-  Buffer.add_string buf "/* Note: GtkWidget_val and Val_GtkWidget are defined in wrappers.h */\n";
-  Buffer.add_string buf "\n";
+  (* Add GTK-specific type conversions only when building for Gtk *)
+  let is_gtk = String.lowercase_ascii ctx.namespace.namespace_name = "gtk" in
+  if is_gtk then begin
+    Buffer.add_string buf "/* Type conversions - use direct cast (GObjects) */\n";
+    Buffer.add_string buf "#define GtkEventController_val(val) ((GtkEventController*)ext_of_val(val))\n";
+    Buffer.add_string buf "#define Val_GtkEventController(obj) ((value)(val_of_ext(obj)))\n";
+    Buffer.add_string buf "/* Note: GtkWidget_val and Val_GtkWidget are defined in wrappers.h */\n";
+    Buffer.add_string buf "\n";
+  end;
   Buffer.add_string buf "/* Class-specific conversion macros (shared) */\n";
   let seen = Hashtbl.create 97 in
   List.iter ~f:(fun (cls : gir_class) ->
@@ -310,42 +331,44 @@ let generate_forward_decls_header ~ctx ~classes ~gtk_enums ~gtk_bitfields ~exter
     end
   ) records;
 
-  (* Special-case value structs that are returned via out parameters *)
-  Buffer.add_string buf "/* Value-returning structs copied into OCaml */\n";
-  Buffer.add_string buf "#ifndef Val_GtkTreeIter\n";
-  Buffer.add_string buf "#define GtkTreeIter_val(val) ((GtkTreeIter*)ext_of_val(val))\n";
-  Buffer.add_string buf "#define Val_GtkTreeIter(obj) copy_GtkTreeIter(&(obj))\n";
-  Buffer.add_string buf "#define Val_GtkTreeIter_option(ptr) ((ptr) ? Val_some(copy_GtkTreeIter(ptr)) : Val_none)\n";
-  Buffer.add_string buf "#endif /* Val_GtkTreeIter */\n\n";
+  (* Special-case value structs that are returned via out parameters - GTK only *)
+  if is_gtk then begin
+    Buffer.add_string buf "/* Value-returning structs copied into OCaml */\n";
+    Buffer.add_string buf "#ifndef Val_GtkTreeIter\n";
+    Buffer.add_string buf "#define GtkTreeIter_val(val) ((GtkTreeIter*)ext_of_val(val))\n";
+    Buffer.add_string buf "#define Val_GtkTreeIter(obj) copy_GtkTreeIter(&(obj))\n";
+    Buffer.add_string buf "#define Val_GtkTreeIter_option(ptr) ((ptr) ? Val_some(copy_GtkTreeIter(ptr)) : Val_none)\n";
+    Buffer.add_string buf "#endif /* Val_GtkTreeIter */\n\n";
 
-  Buffer.add_string buf "#ifndef Val_GtkTextIter\n";
-  Buffer.add_string buf "#define GtkTextIter_val(val) ((GtkTextIter*)ext_of_val(val))\n";
-  Buffer.add_string buf "#define Val_GtkTextIter(obj) copy_GtkTextIter(&(obj))\n";
-  Buffer.add_string buf "#define Val_GtkTextIter_option(ptr) ((ptr) ? Val_some(copy_GtkTextIter(ptr)) : Val_none)\n";
-  Buffer.add_string buf "#endif /* Val_GtkTextIter */\n\n";
+    Buffer.add_string buf "#ifndef Val_GtkTextIter\n";
+    Buffer.add_string buf "#define GtkTextIter_val(val) ((GtkTextIter*)ext_of_val(val))\n";
+    Buffer.add_string buf "#define Val_GtkTextIter(obj) copy_GtkTextIter(&(obj))\n";
+    Buffer.add_string buf "#define Val_GtkTextIter_option(ptr) ((ptr) ? Val_some(copy_GtkTextIter(ptr)) : Val_none)\n";
+    Buffer.add_string buf "#endif /* Val_GtkTextIter */\n\n";
 
-  Buffer.add_string buf "#ifndef Val_GtkRequisition\n";
-  Buffer.add_string buf "#define GtkRequisition_val(val) ((GtkRequisition*)ext_of_val(val))\n";
-  Buffer.add_string buf "#define Val_GtkRequisition(obj) copy_GtkRequisition(&(obj))\n";
-  Buffer.add_string buf "#define Val_GtkRequisition_option(ptr) ((ptr) ? Val_some(copy_GtkRequisition(ptr)) : Val_none)\n";
-  Buffer.add_string buf "#endif /* Val_GtkRequisition */\n\n";
+    Buffer.add_string buf "#ifndef Val_GtkRequisition\n";
+    Buffer.add_string buf "#define GtkRequisition_val(val) ((GtkRequisition*)ext_of_val(val))\n";
+    Buffer.add_string buf "#define Val_GtkRequisition(obj) copy_GtkRequisition(&(obj))\n";
+    Buffer.add_string buf "#define Val_GtkRequisition_option(ptr) ((ptr) ? Val_some(copy_GtkRequisition(ptr)) : Val_none)\n";
+    Buffer.add_string buf "#endif /* Val_GtkRequisition */\n\n";
 
-  Buffer.add_string buf "#ifndef Val_GtkBorder\n";
-  Buffer.add_string buf "#define GtkBorder_val(val) ((GtkBorder*)ext_of_val(val))\n";
-  Buffer.add_string buf "#define Val_GtkBorder(obj) copy_GtkBorder(&(obj))\n";
-  Buffer.add_string buf "#define Val_GtkBorder_option(ptr) ((ptr) ? Val_some(copy_GtkBorder(ptr)) : Val_none)\n";
-  Buffer.add_string buf "#endif /* Val_GtkBorder */\n\n";
-  Buffer.add_string buf "\n";
-  Buffer.add_string buf "/* Phase 5.3: Option type conversions for nullable parameters */\n";
-  Buffer.add_string buf "#define GtkWidget_option_val(v) ((v) == Val_none ? NULL : GtkWidget_val(Some_val(v)))\n";
-  Buffer.add_string buf "#define GtkEventController_option_val(v) ((v) == Val_none ? NULL : GtkEventController_val(Some_val(v)))\n";
-  Buffer.add_string buf "\n";
+    Buffer.add_string buf "#ifndef Val_GtkBorder\n";
+    Buffer.add_string buf "#define GtkBorder_val(val) ((GtkBorder*)ext_of_val(val))\n";
+    Buffer.add_string buf "#define Val_GtkBorder(obj) copy_GtkBorder(&(obj))\n";
+    Buffer.add_string buf "#define Val_GtkBorder_option(ptr) ((ptr) ? Val_some(copy_GtkBorder(ptr)) : Val_none)\n";
+    Buffer.add_string buf "#endif /* Val_GtkBorder */\n\n";
+    Buffer.add_string buf "\n";
+    Buffer.add_string buf "/* Phase 5.3: Option type conversions for nullable parameters */\n";
+    Buffer.add_string buf "#define GtkWidget_option_val(v) ((v) == Val_none ? NULL : GtkWidget_val(Some_val(v)))\n";
+    Buffer.add_string buf "#define GtkEventController_option_val(v) ((v) == Val_none ? NULL : GtkEventController_val(Some_val(v)))\n";
+    Buffer.add_string buf "\n";
+    Buffer.add_string buf "/* GdkEvent conversions - from ml_event_controller.c */\n";
+    Buffer.add_string buf "#define GdkEvent_val(val) ((GdkEvent*)ext_of_val(val))\n";
+    Buffer.add_string buf "#define Val_GdkEvent(obj) ((value)(val_of_ext(obj)))\n";
+    Buffer.add_string buf "\n";
+  end;
   Buffer.add_string buf "/* Const-safe string extraction for setters */\n";
   Buffer.add_string buf "#define ML_DECL_CONST_STRING(name, expr) const gchar *name = (const gchar *)(expr)\n";
-  Buffer.add_string buf "\n";
-  Buffer.add_string buf "/* GdkEvent conversions - from ml_event_controller.c */\n";
-  Buffer.add_string buf "#define GdkEvent_val(val) ((GdkEvent*)ext_of_val(val))\n";
-  Buffer.add_string buf "#define Val_GdkEvent(obj) ((value)(val_of_ext(obj)))\n";
   Buffer.add_string buf "\n";
   Buffer.add_string buf "/* Note: Res_Ok, Res_Error, ValUnit, and Val_GError are defined in wrappers.h */\n";
   Buffer.add_string buf "\n";
@@ -400,8 +423,12 @@ let generate_c_file_header ~ctx ?(class_name="") ?(c_type="") ?(external_enums=[
   Buffer.add_string buf "#include <caml/hash.h>\n";
   Buffer.add_string buf "#include <caml/custom.h>\n";
   Buffer.add_string buf "#include \"wrappers.h\"\n";
-  Buffer.add_string buf "#include \"ml_gobject.h\"\n";
+  (* Include converters.h for GTK library - contains GTK/GDK/Pango specific type conversions *)
+  if String.lowercase_ascii ctx.namespace.namespace_name = "gtk" then
+    Buffer.add_string buf "#include \"converters.h\"\n";
   Buffer.add_string buf "\n";
+  List.iter ~f:(fun c_include -> 
+    Buffer.add_string buf (sprintf "#include <%s>\n" c_include)) ctx.repository.repository_c_includes;
 
   (* Include common header for type conversions and forward declarations *)
   Buffer.add_string buf "/* Include common type conversions and forward declarations */\n";
@@ -525,21 +552,26 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
     let out_decl_buf = Buffer.create 128 in
     let args = ref [] in
     List.iteri ~f:(fun i p ->
+      let tm = Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type in
       match p.direction with
       | Out ->
         let var_name = sprintf "out%d" (i + 1) in
+        let c_type = match p.param_type.c_type with
+          | Some c_type -> c_type
+          | None -> tm |> Option.map (fun tm -> tm.c_type) |> Option.value ~default:"void"
+        in
         let base_c_type =
-          if String.length p.param_type.c_type > 0 &&
-             String.sub p.param_type.c_type ~pos:(String.length p.param_type.c_type - 1) ~len:1 = "*"
-          then String.sub p.param_type.c_type ~pos:0 ~len:(String.length p.param_type.c_type - 1)
-          else p.param_type.c_type
+          if String.length c_type > 0 &&
+             String.sub c_type ~pos:(String.length c_type - 1) ~len:1 = "*"
+          then String.sub c_type ~pos:0 ~len:(String.length c_type - 1)
+          else c_type
         in
         bprintf out_decl_buf "%s %s;\n" base_c_type var_name;
         args := !args @ [sprintf "&%s" var_name]
       | In | InOut ->
         incr ocaml_idx;
         let arg_name = sprintf "arg%d" !ocaml_idx in
-        let arg_expr = match Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type with
+        let arg_expr = match tm with
           | Some mapping ->
             let param_type = { p.param_type with nullable = p.nullable || p.param_type.nullable } in
             nullable_ml_to_c_expr ~var:arg_name ~gir_type:param_type ~mapping
@@ -562,11 +594,12 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
     let out_conversions =
       List.filter_map ~f:(fun (p, idx) ->
         if p.direction = Out then
-          let base_gir_type =
-            if String.length p.param_type.c_type > 0 &&
-               String.sub p.param_type.c_type ~pos:(String.length p.param_type.c_type - 1) ~len:1 = "*"
-            then { p.param_type with c_type = String.sub p.param_type.c_type ~pos:0 ~len:(String.length p.param_type.c_type - 1) }
-            else p.param_type
+          let base_gir_type = p.param_type.c_type 
+            |> Option.map (fun c_type ->
+              if String.sub c_type ~pos:(String.length c_type - 1) ~len:1 = "*"
+              then { p.param_type with c_type = Some (String.sub c_type ~pos:0 ~len:(String.length c_type - 1)) }
+              else p.param_type
+          ) |> Option.value ~default:p.param_type
           in
           match Type_mappings.find_type_mapping_for_gir_type ~ctx base_gir_type with
           | Some mapping ->
@@ -611,9 +644,10 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
           String.concat ~sep:"\n    " (["CAMLlocal1(ret);"; alloc] @ stores @ ["CAMLreturn(ret);"])
     in
 
-    if ret_type = "void" then
+    match ret_type with
+    | Some "void" | None ->
       (sprintf "%s(%s);" c_name args, combine_results None)
-    else
+    | Some ret_type ->
       match Type_mappings.find_type_mapping_for_gir_type ~ctx meth.return_type with
       | Some mapping ->
         let ml_result = nullable_c_to_ml_expr ~var:"result" ~gir_type:meth.return_type ~mapping in
@@ -686,61 +720,25 @@ let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
         ml_to_c = "Unit_val";
         needs_copy = false;
         layer2_class = None;
+        c_type = "void";
       }
   in
 
   let ml_prop_value =
     nullable_c_to_ml_expr ~var:"prop_value" ~gir_type:prop.prop_type ~mapping:type_info
   in
-
-  let c_cast = sprintf "%s_val" c_type in
-  let normalized = Utils.normalize_class_name prop.prop_type.c_type in
-  let record_match =
-    List.find_opt ctx.records ~f:(fun r ->
-      let rname = Utils.normalize_class_name r.record_name in
-      let rc = Utils.normalize_class_name r.c_type in
-      rname = normalized || rc = normalized)
-  in
-  let c_type_name =
-    match record_match with
-    | Some record ->
-      let base = record.c_type in
-      if String.contains prop.prop_type.c_type '*' then base ^ "*" else base
-    | None -> prop.prop_type.c_type
-  in
-
-  let record_info = Type_mappings.find_record_mapping ctx.records prop.prop_type.c_type in
   let prop_info = analyze_property_type ~ctx prop.prop_type in
-  let prop_record =
-    match record_info with
-    | Some (record, _, _) -> Some record
-    | None -> None
+  let c_cast = sprintf "%s_val" c_type in
+  let tm = Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type in
+  let c_type_name = match prop.prop_type.c_type with
+    | Some c_type_name -> c_type_name
+    | None -> 
+      tm
+      |> Option.map (fun tm -> tm.c_type) 
+      |> Option.value ~default:"void"
   in
-  let prop_record_is_pointer =
-    match prop_record with
-    | Some record -> not (is_value_like_record record)
-    | None -> false
-  in
-  let record_pointer = Option.is_some record_match && String.contains prop.prop_type.c_type '*' in
-  let prop_decl =
-    match record_info with
-    | Some (record, true, _) ->
-        sprintf "    %s *prop_value;\n" record.c_type
-    | Some (record, _, _) when prop_info.has_pointer ->
-        sprintf "    %s *prop_value;\n" record.c_type
-    | Some (record, _, _) when prop_record_is_pointer ->
-        (* Value-like records should also use pointer since we get the boxed pointer directly *)
-        sprintf "    %s *prop_value;\n" record.c_type
-    | _ when record_pointer ->
-        (match record_match with
-        | Some record -> sprintf "    %s *prop_value;\n" record.c_type
-        | None -> sprintf "    %s *prop_value;\n" c_type_name)
-    | _ ->
-      if String.contains prop.prop_type.c_type '*' then
-        sprintf "    %s *prop_value;\n" c_type_name
-      else
-        sprintf "    %s prop_value;\n" c_type_name
-  in
+  let prop_pointer = match prop_info.stack_allocated with | true -> "" | false -> "*" in
+  let prop_decl = sprintf "    %s %sprop_value;\n" c_type_name prop_pointer in
   let gvalue_assignment = generate_gvalue_getter_assignment ~ml_name ~prop ~c_type_name ~prop_info in
   sprintf "\nCAMLexport CAMLprim value %s(value self)\n\
 {\n\
@@ -773,6 +771,8 @@ let generate_c_property_setter ~ctx ~c_type (prop : gir_property) class_name =
   let class_snake = Utils.to_snake_case class_name in
   let ml_name = sprintf "ml_gtk_%s_set_%s" class_snake prop_snake in
 
+  let prop_info = analyze_property_type ~ctx prop.prop_type in
+
   (* Determine property type mapping *)
   let type_info = match Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type with
     | Some mapping -> mapping
@@ -782,6 +782,7 @@ let generate_c_property_setter ~ctx ~c_type (prop : gir_property) class_name =
         ml_to_c = "Unit_val";
         needs_copy = false;
         layer2_class = None;
+        c_type = "void";
       }
   in
 
@@ -790,11 +791,12 @@ let generate_c_property_setter ~ctx ~c_type (prop : gir_property) class_name =
   in
 
   let value_declaration =
-    match String.lowercase_ascii prop.prop_type.c_type with
-    | "gchar*" | "gchararray" | "utf8" | "const gchar*" | "const char*" ->
+    match prop.prop_type.c_type with
+    | Some ("gchar*" | "gchararray" | "utf8" | "const gchar*" | "const char*") ->
       sprintf "    ML_DECL_CONST_STRING(c_value, %s);\n" c_value_expr
     | _ ->
-      sprintf "    %s c_value = %s;\n" prop.prop_type.c_type c_value_expr
+      let pointer_prefix = if prop_info.stack_allocated then "" else "*" in
+      sprintf "    %s %sc_value = %s;\n" type_info.c_type pointer_prefix c_value_expr
   in
 
   let c_cast = sprintf "%s_val" c_type in
@@ -805,12 +807,12 @@ let generate_c_property_setter ~ctx ~c_type (prop : gir_property) class_name =
 {\n\
     CAMLparam2(self, new_value);\n\
     %s *obj = (%s *)%s(self);\n\
-%s\
+    %s\
     GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), \"%s\");\n\
     if (pspec == NULL) caml_failwith(\"%s: property '%s' not found\");\n\
     GValue prop_gvalue = G_VALUE_INIT;\n\
     g_value_init(&prop_gvalue, pspec->value_type);\n\
-%s\
+    %s\
     g_object_set_property(G_OBJECT(obj), \"%s\", &prop_gvalue);\n\
     g_value_unset(&prop_gvalue);\n\
     CAMLreturn(Val_unit);\n\

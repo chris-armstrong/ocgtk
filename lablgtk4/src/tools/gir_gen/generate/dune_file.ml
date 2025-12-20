@@ -16,11 +16,11 @@ let pkg_config_name_of_namespace namespace_name =
   | ns -> ns  (* Default: use namespace as-is *)
 
 (* Generate dune library stanza for generated C stubs *)
-let generate_dune_library ~lib_name ~stub_names ~module_names =
+let generate_dune_library ~lib_name ~stub_names ~module_names ~package_names =
   let buf = Buffer.create 2048 in
 
   (* Determine pkg-config package name and generate sexp file names *)
-  let pkg_config_name = pkg_config_name_of_namespace lib_name in
+  (* let pkg_config_name = pkg_config_name_of_namespace lib_name in *)
   let cflag_file = sprintf "cflag-%s.sexp" (String.lowercase_ascii lib_name) in
   let clink_file = sprintf "clink-%s.sexp" (String.lowercase_ascii lib_name) in
 
@@ -43,8 +43,13 @@ let generate_dune_library ~lib_name ~stub_names ~module_names =
   bprintf buf "(rule\n";
   bprintf buf " (targets %s %s)\n" cflag_file clink_file;
   bprintf buf " (action (bash \"\\\n";
-  bprintf buf "pkg-config --cflags %s > %s.tmp && \\\\\n" pkg_config_name cflag_file;
-  bprintf buf "pkg-config --libs %s > %s.tmp && \\\\\n" pkg_config_name clink_file;
+  bprintf buf "echo '' > %s.tmp && \\\\\n" cflag_file;
+  bprintf buf "echo '' > %s.tmp && \\\\\n" clink_file;
+
+  List.iter ~f:(fun package_name ->
+    bprintf buf "pkg-config --cflags %s >> %s.tmp && \\\\\n" package_name cflag_file;
+    bprintf buf "pkg-config --libs %s >> %s.tmp && \\\\\n" package_name clink_file;
+  ) package_names;
   bprintf buf "echo \\\"(\\\" > %s && \\\\\n" cflag_file;
   bprintf buf "tr ' ' '\\\\n' < %s.tmp | sed 's/^\\\\(.*\\\\)$/\\\\1/' | tr '\\\\n' ' ' >> %s && \\\\\n" cflag_file cflag_file;
   bprintf buf "echo \\\")\\\" >> %s && \\\\\n" cflag_file;
@@ -70,7 +75,7 @@ let generate_dune_library ~lib_name ~stub_names ~module_names =
   ) stub_names;
 
   Buffer.add_string buf "  )\n";
-  bprintf buf "  (flags -fPIC -Igenerated -Icore (:include %s) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))\n" cflag_file;
+  bprintf buf "  (flags -fPIC -Igenerated -Icore -I../common (:include %s) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))\n" cflag_file;
   bprintf buf " (c_library_flags (:include %s)))\n" clink_file;
 
   Buffer.contents buf

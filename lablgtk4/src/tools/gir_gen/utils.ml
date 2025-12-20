@@ -155,43 +155,8 @@ let sanitize_identifier id =
 let sanitize_property_name name =
   name |> sanitize_identifier |> String.map ~f:(function '-' -> '_' | c -> c) |> to_snake_case
 
-(* let strip_function_prefix ~class_name ?c_type ?c_symbol_prefix c_identifier =
-  let snake_identifier = to_snake_case c_identifier in
-  let prefixes =
-    let base = [
-      to_snake_case class_name;
-    ] in
-    let base =
-      match c_symbol_prefix with
-      | Some prefix when prefix <> "" -> (to_snake_case prefix) :: base
-      | _ -> base
-    in
-    match c_type with
-    | Some ct -> (to_snake_case ct) :: base
-    | None -> base
-  in
-  let sorted_prefixes =
-    prefixes
-    |> List.sort_uniq ~cmp:String.compare
-    |> List.sort ~cmp:(fun a b -> compare (String.length b) (String.length a))
-  in
-  let rec strip name = function
-    | [] -> name
-    | prefix :: rest ->
-      let prefix_with_sep = prefix ^ "_" in
-      if String.length name >= String.length prefix_with_sep &&
-         String.sub name ~pos:0 ~len:(String.length prefix_with_sep) = prefix_with_sep
-      then
-        String.sub name ~pos:(String.length prefix_with_sep) ~len:(String.length name - String.length prefix_with_sep)
-      else
-        strip name rest
-  in
-  sanitize_identifier (strip snake_identifier sorted_prefixes) *)
-
 let ocaml_function_name ~class_name:_ ?c_type:_ ?c_symbol_prefix:_ (method_name:string) =
   method_name |> to_snake_case |> sanitize_identifier
-
-  (* strip_function_prefix ~class_name ?c_type ?c_symbol_prefix c_identifier *)
 
 let kebab_to_snake = String.map ~f:(function '-' -> '_' | c -> c)
 

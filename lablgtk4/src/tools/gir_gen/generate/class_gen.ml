@@ -127,8 +127,8 @@ let ocaml_type_of_gir_type ~ctx ~current_layer2_module (gir_type : gir_type) =
   | Some { layer2_class = Some layer2_class; _ } ->
     Some (if String.equal current_layer2_module layer2_class.class_module then layer2_class.class_type
       else layer2_class.class_module ^ "." ^ layer2_class.class_type)
-  | Some mapping ->
-      Some (Type_mappings.qualify_ocaml_type ~gir_type_name:(Some gir_type.name) mapping.ocaml_type)
+  | Some mapping -> Some mapping.ocaml_type
+      (* Some (Type_mappings.qualify_ocaml_type ~gir_type_name:(Some gir_type.name) mapping.ocaml_type) *)
   | None -> None)
   |> Option.map (fun base -> if gir_type.nullable then base ^ " option" else base)
 
@@ -172,43 +172,79 @@ let generate_property_methods ~ctx ~module_name ~current_layer2_module ~seen ~sa
   in
   let generate_setter _prop prop_snake =
     let method_name = "set_"^prop_snake |> Utils.sanitize_identifier in
-    let impl = if prop.prop_type.nullable then
-      sprintf "match v with | Some v -> %s.set_%s obj v | None -> %s.set_%s obj None" module_name prop_snake module_name prop_snake
-    else
-      sprintf "%s.set_%s obj v" module_name prop_snake
+    
+    let (method_params_expr, value_resolve_expr, impl_wrapper) = 
+      match Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type with
+      | Some { layer2_class = Some class_info ; _} -> 
+          let class_ref = (resolve_layer2_class ~ctx ~current_layer2_module prop.prop_type |> Option.value ~default:(class_info.class_module ^ "." ^ class_info.class_type)) in
+          sprintf ": 'a . (#%s as 'a) -> unit " class_ref, 
+          "v#as_" ^ (Utils.ocaml_class_name class_info.class_type), 
+          "fun v -> "
+      | _ -> ("v", "v", "")
     in
-    sprintf "  method %s v = %s\n" method_name impl
+    let impl = if prop.prop_type.nullable then
+      sprintf "match %s with | Some v -> %s.set_%s obj v | None -> %s.set_%s obj None" value_resolve_expr module_name prop_snake module_name prop_snake
+    else
+      sprintf "%s.set_%s obj %s" module_name prop_snake value_resolve_expr
+    in
+    sprintf "  method %s %s = %s %s\n" method_name method_params_expr impl_wrapper impl
   in
   let _ = same_cluster_classes in (* Will be used in type annotations if needed *)
   generate_property_code ~ctx ~seen ~generate_getter ~generate_setter prop
 
 let has_type_variable type_str =
   (* Check if the type contains an type-variable wildcard (like "_ Gdk.event") *)
-  
   let parts = Str.split (Str.regexp "[ \t]+") type_str in
   List.exists ~f:(fun part -> part = "'a") parts
 
+let map_param_sig ~ctx ~same_cluster_classes ~current_layer2_module p =
+  let hier_opt = get_param_hierarchy_info ~ctx p in
+  match hier_opt with
+    | Some _  ->
+        (* Check if same cluster - use structural type *)
+        if is_same_cluster_class ~same_cluster_classes p.param_type.name then
+          let structural = structural_type_for_class ~ctx p.param_type.name in
+          if p.nullable || p.param_type.nullable then
+              (structural ^ " option")
+          else
+              structural
+        else
+          (* Use # syntax for hierarchy types *)
+          (* let class_type = hierarchy_class_type ~current_layer2_module hier in *)
+          let class_name = (ocaml_type_of_gir_type ~ctx ~current_layer2_module p.param_type) in
+          let class_type = "#"^ (Option.get class_name) in
+          if p.nullable || p.param_type.nullable then
+              (class_type ^ " option")
+          else
+              class_type
+    | _ ->
+        (* Regular type *)
+        let gir_type = { p.param_type with nullable = p.nullable || p.param_type.nullable } in
+        ocaml_type_of_gir_type ~ctx ~current_layer2_module gir_type |> Option.get
+
+
 let generate_property_signatures ~ctx ~class_name ~methods  ~seen ~current_layer2_module ~same_cluster_classes (prop : gir_property) =
-  match ocaml_type_of_gir_type ~ctx ~current_layer2_module prop.prop_type with
-  | None -> ("", seen)
-  | Some ocaml_type ->
+  let generate_getter _prop prop_snake =
+      let ocaml_type = match ocaml_type_of_gir_type ~ctx ~current_layer2_module prop.prop_type with
+        | None -> ""
+        | Some ocaml_type ->
       (* Check if this is a same-cluster class reference and convert to structural type *)
-      let ocaml_type =
-        if is_same_cluster_class ~same_cluster_classes prop.prop_type.name then
-          let structural = structural_type_for_class ~ctx prop.prop_type.name in
-          if prop.prop_type.nullable then structural ^ " option" else structural
-        else 
-          if prop.prop_type.nullable then ocaml_type ^ " option" else ocaml_type
+          
+          if is_same_cluster_class ~same_cluster_classes prop.prop_type.name then
+            let structural = structural_type_for_class ~ctx prop.prop_type.name in
+            if prop.prop_type.nullable then structural ^ " option" else structural
+          else 
+            if prop.prop_type.nullable then ocaml_type ^ " option" else ocaml_type
       in
-      let generate_getter _prop prop_snake =
-        let method_name = prop_snake |> Utils.sanitize_identifier in
-        sprintf "    method %s : %s\n" method_name ocaml_type
-      in
-      let generate_setter _prop prop_snake =
-        let method_name = "set_"^prop_snake |> Utils.sanitize_identifier in
-        sprintf "    method %s : %s -> unit\n" method_name ocaml_type
-      in
-      generate_property_code ~ctx ~class_name ~methods  ~seen ~generate_getter ~generate_setter prop
+      let method_name = prop_snake |> Utils.sanitize_identifier in
+      sprintf "    method %s : %s\n" method_name ocaml_type
+    in    
+  let generate_setter _prop prop_snake =
+    let ocaml_type = map_param_sig ~ctx ~current_layer2_module ~same_cluster_classes {param_name = prop.prop_name; param_type = prop.prop_type; direction = Out; varargs = false; nullable = prop.prop_type.nullable} in
+    let method_name = "set_"^prop_snake |> Utils.sanitize_identifier in
+    sprintf "    method %s : %s -> unit\n" method_name ocaml_type
+  in
+  generate_property_code ~ctx ~class_name ~methods  ~seen ~generate_getter ~generate_setter prop
 
 let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:_ ~module_name ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes ~conflicting_methods (meth : gir_method) =
   let should_skip =
@@ -231,16 +267,6 @@ let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:
     let param_info = List.map meth.parameters ~f:(fun p ->
       (Utils.ocaml_parameter_name p.param_name, p, get_param_hierarchy_info ~ctx p)
     ) in
-    let has_hierarchy_params = List.exists param_info ~f:(fun (_, _, hier_opt) ->
-      match hier_opt with
-      | Some info -> info.hierarchy <> MonomorphicType
-      | None -> false
-    ) in
-
-    (* Build type signature for the method (needed for type annotation) *)
-    let param_hier_info = List.map meth.parameters ~f:(fun p ->
-      (p, get_param_hierarchy_info ~ctx p)
-    ) in
 
     (* Track polymorphic parameter index for unique type variables *)
     let poly_param_counter = ref 0 in
@@ -250,7 +276,7 @@ let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:
     in
 
     let param_types =
-      List.map param_hier_info ~f:(fun (p, hier_opt) ->
+      List.map param_info ~f:(fun (_, p, hier_opt) ->
         match hier_opt with
         | Some _  ->
             (* class or interface type - check if same cluster *)
@@ -280,14 +306,16 @@ let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:
         )
     in
     let return_type =
-      if String.lowercase_ascii meth.return_type.c_type = "void" then Some "unit"
+      if String.lowercase_ascii meth.return_type.name = "void" then Some "unit"
       else ocaml_type_of_gir_type ~ctx ~current_layer2_module meth.return_type
     in
     let ret_wrapper =
       match resolve_layer2_class ~ctx ~current_layer2_module meth.return_type with
       | Some class_ref ->
+        if (meth.throws && meth.return_type.nullable) then
+          sprintf "Result.map (fun ret -> Option.map (fun ret -> new %s ret) ret)" class_ref
         (* Check if method throws (returns result type) *)
-        if meth.throws then
+        else if meth.throws then
           (* Result type with class wrapping: Result.map (fun ret -> new ClassName ret) *)
           sprintf "Result.map (fun ret -> new %s ret)" class_ref
         else if meth.return_type.nullable then
@@ -305,9 +333,9 @@ let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:
       (* Convert #GExpression.expression to (#GExpression.expression as 'p1) for explicit polymorphism *)
       (* For same-cluster classes, structural types are already in correct format *)
       (* We keep the # syntax but add 'as 'pN' to make the type variable explicit *)
-      let _, result = List.fold_left param_hier_info ~init:(0, type_str) ~f:(fun (idx, acc) (p, hier_opt) ->
+      let _, result = List.fold_left param_info ~init:(0, type_str) ~f:(fun (idx, acc) (_, p, hier_opt) ->
         match hier_opt with
-        | Some hier when hier.hierarchy <> MonomorphicType ->
+        | Some _  ->
             let idx = idx + 1 in
             (* Skip if same cluster - structural type already correct *)
             if is_same_cluster_class ~same_cluster_classes p.param_type.name then
@@ -328,52 +356,44 @@ let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:
       result
     in
 
-    let type_annotation_opt =
-      (* if needs_type_annotation then *)
-        match return_type with
-        | Some ret when not (List.exists param_types ~f:(fun x -> x = None)) ->
-            let param_types_clean = List.filter_map param_types ~f:(fun x -> x) in
-            let final_ret =
-              if meth.throws then sprintf "(%s, GError.t) result" ret
-              else ret
-            in
-            let param_types_clean = if param_types_clean = [] then ["unit"] else param_types_clean in
-            (* Check for # object types or < structural types BEFORE conversion *)
-            let has_type_var = List.exists (param_types_clean @ [final_ret]) ~f:has_type_variable in
-            let has_object_type = List.exists (param_types_clean @ [final_ret]) ~f:(fun t -> String.contains t '#' || String.contains t '<') in
-            let signature = String.concat ~sep:" -> " (param_types_clean @ [final_ret]) in
-            (* Convert # syntax to partial object types for .ml files *)
-            let signature = convert_to_partial_object_type signature in
-            (* Add explicit polymorphism if we have type variables OR # object types OR structural types *)
-            if has_type_var || has_object_type then
-              (* Generate type variable list: 'p1 'p2 'p3 ... *)
-              let num_poly_params = !poly_param_counter in
-              let type_vars =
-                if num_poly_params > 0 then
-                  let vars = List.init ~len:num_poly_params ~f:(fun i -> sprintf "'p%d" (i + 1)) in
-                  String.concat ~sep:" " vars ^ ". "
-                else
-                  "'a. "
-              in
-              Some (sprintf "%s%s" type_vars signature)
-            else
-              Some signature
-        | _ -> None
-      (* else None *)
+    let type_annotation =
+      let param_types_clean = List.filter_map param_types ~f:(fun x -> x) in
+      let ret = return_type |> Option.value ~default:"unit" in
+      let final_ret =
+        if meth.throws then sprintf "(%s, GError.t) result" ret
+        else ret
+      in
+      let param_types_clean = if param_types_clean = [] then ["unit"] else param_types_clean in
+      (* Check for # object types or < structural types BEFORE conversion *)
+      let has_type_var = List.exists (param_types_clean @ [final_ret]) ~f:has_type_variable in
+      let has_object_type = List.exists (param_types_clean @ [final_ret]) ~f:(fun t -> String.contains t '#' || String.contains t '<') in
+      let signature = String.concat ~sep:" -> " (param_types_clean @ [final_ret]) in
+      (* Convert # syntax to partial object types for .ml files *)
+      let signature = convert_to_partial_object_type signature in
+      (* Add explicit polymorphism if we have type variables OR # object types OR structural types *)
+      if has_type_var || has_object_type then
+        (* Generate type variable list: 'p1 'p2 'p3 ... *)
+        let num_poly_params = !poly_param_counter in
+        let type_vars =
+          if num_poly_params > 0 then
+            let vars = List.init ~len:num_poly_params ~f:(fun i -> sprintf "'p%d" (i + 1)) in
+            String.concat ~sep:" " vars ^ ". "
+          else
+            "'a. "
+        in
+         (sprintf "%s%s" type_vars signature)
+      else
+         signature
     in
 
     let buf = Buffer.create 256 in
 
     (* Helper to generate method header with optional type annotation *)
     let generate_method_header param_list =
-      match type_annotation_opt with
-      | Some type_ann ->
-          bprintf buf "  method %s : %s =\n    fun %s ->\n" ocaml_name type_ann param_list
-      | None ->
-          bprintf buf "  method %s %s =\n" ocaml_name param_list
+      bprintf buf "  method %s : %s =\n    fun %s ->\n" ocaml_name type_annotation param_list
     in
 
-    if has_hierarchy_params then begin
+    (* if has_hierarchy_params then begin *)
       (* Generate method with hierarchy parameter coercion *)
       let param_names = List.map param_info ~f:(fun (name, _, _) -> name) in
       let param_list = if param_names = [] then "()" else String.concat ~sep:" " param_names in
@@ -381,34 +401,7 @@ let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:
       generate_method_header param_list;
 
       (* For hierarchy params with type annotations, we need let bindings *)
-      let has_hierarchy_with_annotation = type_annotation_opt <> None && has_hierarchy_params in
-
-      if has_hierarchy_with_annotation then begin
-        (* Generate let bindings for all hierarchy parameters *)
-        List.iter param_info ~f:(fun (name, p, hier_opt) ->
-          match hier_opt with
-          | Some _hier ->
-              (* Use class-specific accessor, not hierarchy accessor *)
-              let accessor =
-                match Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type with
-                | Some { layer2_class = Some layer2_class; _ } -> layer2_class.class_layer1_accessor
-                | _ ->
-                    (* Fallback to class-specific accessor based on class name *)
-                    "as_" ^ (Utils.ocaml_class_name p.param_type.name)
-              in
-              if p.nullable || p.param_type.nullable then
-                bprintf buf "      let %s = Option.map (fun (c) -> c#%s) %s in\n"
-                  name accessor name
-              else
-                bprintf buf "      let %s = %s#%s in\n"
-                  name name accessor
-          | _ -> ()
-        );
-        bprintf buf "      %s(%s.%s obj" ret_wrapper module_name ocaml_function_name
-      end else begin
-        bprintf buf "    %s(%s.%s obj" ret_wrapper module_name ocaml_function_name
-      end;
-
+      (* Generate let bindings for all hierarchy parameters *)
       List.iter param_info ~f:(fun (name, p, hier_opt) ->
         match hier_opt with
         | Some _hier ->
@@ -421,46 +414,41 @@ let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:
                   "as_" ^ (Utils.ocaml_class_name p.param_type.name)
             in
             if p.nullable || p.param_type.nullable then
-              if has_hierarchy_with_annotation then
-                bprintf buf " %s" name
-              else
-                bprintf buf " (Option.map (fun c -> (c#%s )) %s)" accessor name
+              bprintf buf "      let %s = Option.map (fun (c) -> c#%s) %s in\n"
+                name accessor name
             else
-              if has_hierarchy_with_annotation then
+              bprintf buf "      let %s = %s#%s in\n"
+                name name accessor
+        | _ -> ()
+      );
+      bprintf buf "      %s(%s.%s obj" ret_wrapper module_name ocaml_function_name;
+
+
+      List.iter param_info ~f:(fun (name, p, hier_opt) ->
+        match hier_opt with
+        | Some _hier ->
+            (* Use class-specific accessor, not hierarchy accessor *)
+            (* let accessor =
+              match Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type with
+              | Some { layer2_class = Some layer2_class; _ } -> layer2_class.class_layer1_accessor
+              | _ ->
+                  (* Fallback to class-specific accessor based on class name *)
+                  "as_" ^ (Utils.ocaml_class_name p.param_type.name)
+            in *)
+            if p.nullable || p.param_type.nullable then
+              
                 bprintf buf " %s" name
-              else
-                bprintf buf " (%s#%s )" name accessor
+              
+            else
+              
+                bprintf buf " %s" name
+              
         | _ ->
             bprintf buf " %s" name
       );
-      bprintf buf ")\n"
-    end else begin
-      (* Regular method without hierarchy parameters *)
-      let method_params = List.map meth.parameters ~f:(fun p -> Utils.ocaml_parameter_name p.param_name) in
-      let layer1_params = List.map meth.parameters ~f:(fun p ->
-        let p_name = Utils.ocaml_parameter_name p.param_name in
-        let tm = Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type in
-        match tm with
-        | Some ({ layer2_class = Some layer2_class; _ } ) ->
-            if p.param_type.nullable || p.nullable then
-              sprintf "( %s |> Option.map (fun x -> x#%s) )" p_name layer2_class.class_layer1_accessor
-            else
-              sprintf "( %s#%s )" p_name layer2_class.class_layer1_accessor
-        | _ -> p_name
-      ) |> String.concat ~sep:" " in
-
-      let param_list = if method_params = [] then "()" else String.concat ~sep:" " method_params in
-
-      match type_annotation_opt with
-      | Some type_ann ->
-          bprintf buf "  method %s : %s = fun %s -> %s(%s.%s obj %s)\n"
-            ocaml_name type_ann param_list ret_wrapper module_name ocaml_function_name layer1_params
-      | None ->
-          bprintf buf "  method %s %s = %s(%s.%s obj %s)\n"
-            ocaml_name param_list ret_wrapper module_name ocaml_function_name layer1_params
-    end;
-
+      bprintf buf ")\n";
     (Buffer.contents buf, seen)
+
 
 let generate_method_signatures ~ctx ~property_method_names:_ ~property_base_names:_ ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes ~conflicting_methods (meth : gir_method) =
   let should_skip =
@@ -476,64 +464,37 @@ let generate_method_signatures ~ctx ~property_method_names:_ ~property_base_name
       let seen = StringSet.add ocaml_name seen in
       (sprintf "    (* method %s : ... *) (* CONFLICT: incompatible signature with parent method *)\n" ocaml_name, seen)
     else
-
-    (* Check for hierarchy parameters *)
-    let param_hier_info = List.map meth.parameters ~f:(fun p ->
-      (p, get_param_hierarchy_info ~ctx p)
-    ) in
-
+  
+        
     let param_types =
-      List.map param_hier_info ~f:(fun (p, hier_opt) ->
-        match hier_opt with
-        | Some _  ->
-            (* Check if same cluster - use structural type *)
-            if is_same_cluster_class ~same_cluster_classes p.param_type.name then
-              let structural = structural_type_for_class ~ctx p.param_type.name in
-              if p.nullable || p.param_type.nullable then
-                Some (structural ^ " option")
-              else
-                Some structural
-            else
-              (* Use # syntax for hierarchy types *)
-              (* let class_type = hierarchy_class_type ~current_layer2_module hier in *)
-              let class_name = (ocaml_type_of_gir_type ~ctx ~current_layer2_module p.param_type) in
-              let class_type = "#"^ (Option.get class_name) in
-              if p.nullable || p.param_type.nullable then
-                Some (class_type ^ " option")
-              else
-                Some class_type
-        | _ ->
-            (* Regular type *)
-            let gir_type = { p.param_type with nullable = p.nullable || p.param_type.nullable } in
-            ocaml_type_of_gir_type ~ctx ~current_layer2_module gir_type)
+      List.map ~f:(fun p ->
+        map_param_sig ~ctx ~same_cluster_classes ~current_layer2_module p) meth.parameters
     in
-    if List.exists param_types ~f:(fun x -> x = None) then ("", seen) else
-    let param_types = List.filter_map param_types ~f:(fun x -> x) in
+    (* if List.exists param_types ~f:(fun x -> x = None) then ("", seen) else *)
+    (* let param_types = List.filter_map param_types ~f:(fun x -> x) in *)
     let return_type =
-      if String.lowercase_ascii meth.return_type.c_type = "void" then Some "unit"
-      else ocaml_type_of_gir_type ~ctx ~current_layer2_module meth.return_type
+      (if String.lowercase_ascii meth.return_type.name = "void" then Some "unit"
+      else ocaml_type_of_gir_type ~ctx ~current_layer2_module meth.return_type)
+      |> Option.value ~default:"unit"
     in
-    match return_type with
-    | None -> ("", seen)
-    | Some return_type ->
-        (* Wrap with result type if method throws *)
-        let final_return_type =
-          if meth.throws then sprintf "(%s, GError.t) result" return_type
-          else return_type
-        in
-        let param_types = if param_types = [] then ["unit"] else param_types in
-        (* Check if any type contains a type variable (like _ Gdk.event) *)
-        (* Note: # syntax for object types is implicitly polymorphic, so we don't need 'a. for those *)
-        let has_type_var = List.exists (param_types @ [final_return_type]) ~f:has_type_variable in
-        let signature = String.concat ~sep:" -> " (param_types @ [final_return_type]) in
-        let seen = StringSet.add ocaml_name seen in
-        let buf = Buffer.create 256 in
-        (* Add explicit polymorphism only for actual type variables (like _), not for # object types *)
-        if has_type_var then
-          bprintf buf "    method %s : 'a. %s\n" ocaml_name signature
-        else
-          bprintf buf "    method %s : %s\n" ocaml_name signature;
-        (Buffer.contents buf, seen)
+    (* Wrap with result type if method throws *)
+    let final_return_type =
+      if meth.throws then sprintf "(%s, GError.t) result" return_type
+      else return_type
+    in
+    let param_types = if param_types = [] then ["unit"] else param_types in
+    (* Check if any type contains a type variable (like _ Gdk.event) *)
+    (* Note: # syntax for object types is implicitly polymorphic, so we don't need 'a. for those *)
+    let has_type_var = List.exists (param_types @ [final_return_type]) ~f:has_type_variable in
+    let signature = String.concat ~sep:" -> " (param_types @ [final_return_type]) in
+    let seen = StringSet.add ocaml_name seen in
+    let buf = Buffer.create 256 in
+    (* Add explicit polymorphism only for actual type variables (like _), not for # object types *)
+    if has_type_var then
+      bprintf buf "    method %s : 'a. %s\n" ocaml_name signature
+    else
+      bprintf buf "    method %s : %s\n" ocaml_name signature;
+    (Buffer.contents buf, seen)
 
 let generate_hierarchy_converter_method_impl ~ctx ~(hierarchy_info : hierarchy_info) ~class_name buf =
   if String.equal class_name (hierarchy_info.gir_root) then
@@ -617,15 +578,14 @@ let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_ ~current_layer
     bprintf buf "    inherit %s.%s\n" signal_module (signal_class_name class_name)
   end;
 
-
   let seen = StringSet.empty in
   (* Methods *)
   let _seen, () =
     List.fold_left methods ~init:(seen, ()) ~f:(fun (seen, ()) meth ->
       if Filtering.should_skip_method_binding ~ctx meth then (seen, ()) 
       else
-      let chunk, seen = generate_method_signatures ~ctx ~property_method_names:property_filters.method_names ~property_base_names:property_filters.base_names ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes ~conflicting_methods meth in
-      Buffer.add_string buf chunk;
+        let chunk, seen = generate_method_signatures ~ctx ~property_method_names:property_filters.method_names ~property_base_names:property_filters.base_names ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes ~conflicting_methods meth in
+        Buffer.add_string buf chunk;
       (seen, ()))
   in
 

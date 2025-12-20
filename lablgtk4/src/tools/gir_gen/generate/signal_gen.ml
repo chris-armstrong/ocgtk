@@ -36,7 +36,7 @@ let connect_target_expr ~has_widget_parent =
     "(Obj.magic obj :> _ Gobject.obj)"
 
 let is_void_signal (signal : gir_signal) =
-  let c_type = String.lowercase_ascii signal.return_type.c_type in
+  let c_type = Option.value ~default:"void"  signal.return_type.c_type |> String.lowercase_ascii in
   let name = String.lowercase_ascii signal.return_type.name in
   c_type = "void" || name = "none"
 

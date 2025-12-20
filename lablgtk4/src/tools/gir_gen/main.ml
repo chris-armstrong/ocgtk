@@ -95,24 +95,9 @@ let generate_ml_interfaces ~ctx ~output_dir ~generated_modules ~parent_chain ent
     generated_modules := (Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name) :: !generated_modules
   end
 
-(* Check if entity should have a high-level wrapper class (g<Widget>.ml) *)
-let should_generate_high_level_class entity parent_chain =
-  true
-  (* Only classes can have high-level wrappers
-  (match (entity.Gir_gen_lib.Types.kind : Gir_gen_lib.Types.entity_kind) with
-   | Class -> true
-   | Interface -> false) &&
-  (* Must have Widget in parent chain *)
-  let has_widget_parent =
-    String.lowercase_ascii (Gir_gen_lib.Utils.normalize_class_name entity.Gir_gen_lib.Types.name) = "widget" ||
-    List.exists parent_chain ~f:(fun p -> String.lowercase_ascii (Gir_gen_lib.Utils.normalize_class_name p) = "widget")
-  in
-  has_widget_parent *)
-
 (* Generate high-level wrapper class (g<Widget>.ml) for a class entity *)
 let generate_high_level_class ~ctx ~output_dir ~generated_modules entity parent_chain =
-  if not (should_generate_high_level_class entity parent_chain) then ()
-  else if Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name then ()
+  if Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name then ()
   else begin
     let module_name = Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name in
     let g_file = Filename.concat (generated_output_dir output_dir) (sprintf "g%s.ml" module_name) in
@@ -379,7 +364,7 @@ let generate_bindings filter_file gir_file output_dir =
   (* ==== PARSING STAGE ==== *)
 
   (* Parse GTK GIR file *)
-  let (namespace, controllers, interfaces, gtk_enums, gtk_bitfields, gtk_records) = Gir_gen_lib.Parse.Gir_parser.parse_gir_file gir_file filter_classes in
+  let (repository, namespace, controllers, interfaces, gtk_enums, gtk_bitfields, gtk_records) = Gir_gen_lib.Parse.Gir_parser.parse_gir_file gir_file filter_classes in
 
   printf "Found %d classes\n" (List.length controllers);
   printf "Found %d interfaces\n" (List.length interfaces);
@@ -414,8 +399,24 @@ let generate_bindings filter_file gir_file output_dir =
     ("GdkPixbuf", "/usr/share/gir-1.0/GdkPixbuf-2.0.gir");
     ("Gsk", "/usr/share/gir-1.0/Gsk-4.0.gir");
     ("Graphene", "/usr/share/gir-1.0/Graphene-1.0.gir");
+    ("GObject", "/usr/share/gir-1.0/GObject-2.0.gir");
+    
   ] in
 
+  let included_namespaces = 
+    let rec find_included includes  =
+      includes
+      |> List.map ~f:(fun incl ->
+        try 
+          let external_file = ListLabels.assoc Gir_gen_lib.Types.(incl.include_name) external_namespaces in
+          let (repository, _, _, _, _, _, _) = Gir_gen_lib.Parse.Gir_parser.parse_gir_file external_file [] in
+          (incl.include_name, external_file) :: (find_included repository.repository_includes)
+        with  Not_found -> []
+      ) |> List.flatten 
+    in
+    find_included repository.repository_includes
+    |> List.sort_uniq ~cmp:(fun (x1, _) (x2, _) -> String.compare x1 x2)
+  in
   let external_enums_bitfields = List.map ~f:(fun (ns_name, gir_path) ->
     if Sys.file_exists gir_path then begin
       printf "Parsing %s for enums/bitfields...\n" gir_path;
@@ -427,7 +428,7 @@ let generate_bindings filter_file gir_file output_dir =
       eprintf "Warning: %s not found, skipping external namespace %s\n" gir_path ns_name;
       None
     end
-  ) external_namespaces |> List.filter_map ~f:(fun x -> x) in
+  ) included_namespaces |> List.filter_map ~f:(fun x -> x) in
 
   (* Combine all enums and bitfields for type mapping lookups *)
   let all_enums = gtk_enums @ (external_enums_bitfields |> List.concat_map ~f:(fun (_, enums, _) -> enums)) in
@@ -448,6 +449,7 @@ let generate_bindings filter_file gir_file output_dir =
   (* Create generation context with all type information *)
   let ctx_initial : Gir_gen_lib.Types.generation_context = {
     namespace;
+    repository;
     classes = controllers;
     interfaces;
     enums;
@@ -503,13 +505,15 @@ let generate_bindings filter_file gir_file output_dir =
     ~external_bitfields:ctx.external_bitfields in
   write_file ~path:header_file ~content:header_content;
 
-  (* Generate GTK enum and bitfield files *)
-  let gtk_namespace = {
-    name = "Gtk";
-    prefix = "gtk";
-    include_header = "#include <gtk/gtk.h>";
+  (* Generate enum and bitfield files for current namespace *)
+  let ns_name = ctx.namespace.namespace_name in
+  let ns_lower = String.lowercase_ascii ns_name in
+  let current_namespace = {
+    name = ns_name;
+    prefix = ns_lower;
+    include_header = Gir_gen_lib.Generate.C_stubs.include_header_for_namespace ns_name;
   } in
-  generate_enum_files ~output_dir ~generated_stubs ~generated_modules gtk_namespace gtk_enums gtk_bitfields;
+  generate_enum_files ~output_dir ~generated_stubs ~generated_modules current_namespace gtk_enums gtk_bitfields;
 
   (* Generate C files for all entities (classes and interfaces) *)
   generate_all_c_stubs ~ctx ~output_dir ~generated_stubs entities;
@@ -556,23 +560,22 @@ let generate_bindings filter_file gir_file output_dir =
   generate_all_record_bindings ~ctx ~output_dir ~generated_stubs ~generated_modules ctx.records;
 
   (* Generate enum files for external namespaces *)
-  List.iter ~f:(fun (ns_name, ns_enums, ns_bitfields) ->
-    let ns_lower = String.lowercase_ascii ns_name in
-    let include_header =
-      if ns_lower = "gdk" then "#include <gdk/gdk.h>"
-      else if ns_lower = "pango" then "#include <pango/pango.h>"
-      else if ns_lower = "gdkpixbuf" then "#include <gdk-pixbuf/gdk-pixbuf.h>"
-      else if ns_lower = "gsk" then "#include <gsk/gsk.h>"
-      else if ns_lower = "graphene" then "#include <graphene.h>"
-      else sprintf "#include <%s/%s.h>" ns_lower ns_lower
-    in
-    let namespace = {
-      name = ns_name;
-      prefix = ns_lower;
-      include_header;
-    } in
-    generate_enum_files ~output_dir ~generated_stubs ~generated_modules namespace ns_enums ns_bitfields
-  ) external_enums_bitfields;
+  (* Only generate these for Gtk - other libraries will use Gtk's converters *)
+  let is_gtk = String.lowercase_ascii ctx.namespace.namespace_name = "gtk" in
+  if is_gtk then begin
+    List.iter ~f:(fun (ns_name, ns_enums, ns_bitfields) ->
+      let ns_lower = String.lowercase_ascii ns_name in
+      let include_header =
+        Gir_gen_lib.Generate.C_stubs.include_header_for_namespace ns_name 
+      in
+      let namespace = {
+        name = ns_name;
+        prefix = ns_lower;
+        include_header;
+      } in
+      generate_enum_files ~output_dir ~generated_stubs ~generated_modules namespace ns_enums ns_bitfields
+    ) external_enums_bitfields;
+  end;
 
   (* ==== BUILD CONFIGURATION ==== *)
 
@@ -605,7 +608,9 @@ let generate_bindings filter_file gir_file output_dir =
   let dune_content = Gir_gen_lib.Generate.Dune_file.generate_dune_library
     ~stub_names:stub_list
     ~lib_name:namespace.namespace_name
-    ~module_names:module_list in
+    ~module_names:module_list 
+    ~package_names:ctx.repository.repository_packages
+  in
   write_file ~path:dune_file ~content:dune_content;
 
   (* ==== SUMMARY ==== *)
@@ -624,15 +629,20 @@ let generate_bindings filter_file gir_file output_dir =
     ((List.length controllers) + (List.length interfaces)) boxed_record_count;
   printf "  Generated: %d OCaml interface files and %d record bindings\n"
     ((List.length controllers) + (List.length interfaces)) record_binding_count;
-  if List.length gtk_enums > 0 || List.length gtk_bitfields > 0 then
-    printf "  Generated: gtk_enums.mli and ml_gtk_enums_gen.c (%d enumerations, %d bitfields)\n"
+  if List.length gtk_enums > 0 || List.length gtk_bitfields > 0 then begin
+    let ns_name = ctx.namespace.namespace_name in
+    printf "  Generated: %s_enums.mli and ml_%s_enums_gen.c (%d enumerations, %d bitfields)\n"
+      (String.lowercase_ascii ns_name) (String.lowercase_ascii ns_name)
       (List.length gtk_enums) (List.length gtk_bitfields);
-  List.iter ~f:(fun (ns_name, ns_enums, ns_bitfields) ->
-    if List.length ns_enums > 0 || List.length ns_bitfields > 0 then
-      printf "  Generated: %s_enums.mli and ml_%s_enums_gen.c (%d enums, %d bitfields)\n"
-        (String.lowercase_ascii ns_name) (String.lowercase_ascii ns_name)
-        (List.length ns_enums) (List.length ns_bitfields);
-  ) external_enums_bitfields;
+  end;
+  if is_gtk then begin
+    List.iter ~f:(fun (ns_name, ns_enums, ns_bitfields) ->
+      if List.length ns_enums > 0 || List.length ns_bitfields > 0 then
+        printf "  Generated: %s_enums.mli and ml_%s_enums_gen.c (%d enums, %d bitfields)\n"
+          (String.lowercase_ascii ns_name) (String.lowercase_ascii ns_name)
+          (List.length ns_enums) (List.length ns_bitfields);
+    ) external_enums_bitfields;
+  end;
   printf "  Generated: dune-generated.inc with %d C stub names\n" (List.length stub_list);
   `Ok ()
 

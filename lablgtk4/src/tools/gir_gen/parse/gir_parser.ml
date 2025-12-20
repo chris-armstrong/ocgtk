@@ -206,7 +206,8 @@ let parse_gir_file filename filter_classes =
   let records : gir_record list ref = ref [] in
   let signal_table : (string, gir_signal list) Hashtbl.t = Hashtbl.create 256 in
   let iface_signal_table : (string, gir_signal list) Hashtbl.t = Hashtbl.create 128 in
-  let namespace = ref { namespace_name = "<unknown>" } in
+  let namespace : gir_namespace option ref = ref None in
+  let repository = ref { repository_c_includes = []; repository_includes = []; repository_packages = []} in
 
   let normalized_filters =
     List.fold_left filter_classes ~init:StringSet.empty ~f:(fun acc name ->
@@ -387,7 +388,7 @@ let parse_gir_file filename filter_classes =
     let property_nullable = get_attr "nullable" attrs |> Utils.parse_bool in
 
     (* Parse property type from child element *)
-    let prop_type = ref { name = "unknown"; c_type = "unknown"; nullable = false } in
+    let prop_type = ref { name = "unknown"; c_type = None; nullable = false } in
 
     let doc : string option ref = ref None in
 
@@ -395,9 +396,9 @@ let parse_gir_file filename filter_classes =
       match Xmlm.input input with
       | `El_start ((_, "type"), type_attrs) ->
         let type_name = match get_attr "name" type_attrs with Some n -> n | None -> "unknown" in
-        let c_type_name = match get_attr "c:type" type_attrs with Some t -> t | None -> type_name in
+        let c_type_name = get_attr "c:type" type_attrs  in
         let nullable = (get_attr "nullable" type_attrs |> Utils.parse_bool) || property_nullable in
-        prop_type := { name = type_name; c_type = c_type_name; nullable };
+        prop_type := { name = type_name; c_type =  c_type_name; nullable };
         skip_element 1;
         parse_prop_contents ()
       | `El_start ((_, "doc"), _) ->
@@ -538,7 +539,7 @@ let parse_gir_file filename filter_classes =
   and parse_method tag_attrs =
     let get_property = get_attr "glib:get-property" tag_attrs in
     let set_property = get_attr "glib:set-property" tag_attrs in
-    let return_type = ref { name = "void"; c_type = "void"; nullable = false } in
+    let return_type = ref { name = "void"; c_type = None; nullable = false } in
     let params = ref [] in
     let doc: string option ref = ref None in
     let rec parse_method_contents () =
@@ -576,7 +577,7 @@ let parse_gir_file filename filter_classes =
   and parse_signal attrs =
     match get_attr "name" attrs with
     | Some signal_name ->
-      let return_type = ref { name = "void"; c_type = "void"; nullable = false } in
+      let return_type = ref { name = "void"; c_type = None; nullable = false } in
       let params = ref [] in
       let doc : string option ref = ref None in
 
@@ -617,13 +618,13 @@ let parse_gir_file filename filter_classes =
   (* Parse return value type *)
   and parse_return_value attrs =
     let nullable_attr = get_attr "nullable" attrs |> Utils.parse_bool in
-    let type_info = ref { name = "void"; c_type = "void"; nullable = nullable_attr } in
+    let type_info = ref { name = "void"; c_type = None; nullable = nullable_attr } in
 
     let rec parse_rv_contents () =
       match Xmlm.input input with
       | `El_start ((_, "type"), attrs) ->
         let type_name = match get_attr "name" attrs with Some n -> n | None -> "void" in
-        let c_type_name = match get_attr "c:type" attrs with Some t -> t | None -> type_name in
+        let c_type_name = get_attr "c:type" attrs  in
         let nullable = (get_attr "nullable" attrs |> Utils.parse_bool) || nullable_attr in
         type_info := ({ name = type_name; c_type = c_type_name ; nullable = nullable}:gir_type);
         skip_element 1;
@@ -662,7 +663,7 @@ let parse_gir_file filename filter_classes =
           | _ -> In
         in
         let varargs = ref false in
-        let type_ = ref { name = "void"; c_type = "void"; nullable = false} in
+        let type_ = ref { name = "void"; c_type = None; nullable = false} in
         let rec parse_param_contents () =
           match Xmlm.input input with
           | `El_start ((_, "varargs"), _attrs) ->
@@ -671,7 +672,7 @@ let parse_gir_file filename filter_classes =
             parse_param_contents ()
           | `El_start ((_, "type"), attrs) ->
             let type_name = match get_attr "name" attrs with Some n -> n | None -> "void" in
-            let c_type_name = match get_attr "c:type" attrs with Some t -> t | None -> type_name in
+            let c_type_name =  get_attr "c:type" attrs in
             let nullable = get_attr "nullable" attrs |> Utils.parse_bool in
             type_ := { name = type_name; c_type = c_type_name; nullable };
             skip_element 1;
@@ -708,6 +709,51 @@ let parse_gir_file filename filter_classes =
     parse_params_contents ();
     !params
 
+  and parse_repository _ =
+    let repository_c_includes = ref [] in
+    let repository_includes = ref [] in
+    let repository_packages = ref [] in
+    let rec parse_repository_contents () =
+      match Xmlm.peek input with
+      | `El_start (("http://www.gtk.org/introspection/c/1.0", "include"), attrs) ->
+        let name = get_attr "name" attrs in
+        
+        (match name with
+          | Some name ->
+            repository_c_includes :=  name:: !repository_c_includes
+          | _ -> ());
+        ignore (Xmlm.input input);
+        skip_element 1;
+        parse_repository_contents ()
+      
+      | `El_start (("http://www.gtk.org/introspection/core/1.0", "include"), attrs) ->
+        let name = get_attr "name" attrs in
+        let version = get_attr "version" attrs in
+        let _ = match name, version with
+          | Some name, Some version ->
+            repository_includes := ({ include_name = name; include_version= version}) :: !repository_includes
+          | _ -> () in
+        ignore (Xmlm.input input);
+        skip_element 1;
+        parse_repository_contents ()
+      | `El_start (("http://www.gtk.org/introspection/core/1.0", "package"), attrs) ->
+        let name = get_attr "name" attrs in
+        
+        let _ = match name with
+          | Some name ->
+            repository_packages := name :: !repository_packages
+          | _ -> () in
+        ignore (Xmlm.input input);
+        skip_element 1;
+        parse_repository_contents ()
+      | `El_start ((_, "namespace"), _) -> ()
+      | _ -> ignore (Xmlm.input input); parse_repository_contents ()
+      
+    in
+    parse_repository_contents();
+    { repository_c_includes = !repository_c_includes; repository_includes = !repository_includes;
+      repository_packages = !repository_packages }
+
   (* Parse a record element *)
   and parse_record attrs =
     match get_attr "name" attrs, get_attr "c:type" attrs with
@@ -741,7 +787,7 @@ let parse_gir_file filename filter_classes =
             match Xmlm.input input with
             | `El_start ((_, "type"), type_attrs) ->
               let type_name = Option.value ~default:"unknown" (get_attr "name" type_attrs) in
-              let c_type_name = Option.value ~default:type_name (get_attr "c:type" type_attrs) in
+              let c_type_name = get_attr "c:type" type_attrs in
               let nullable = get_attr "nullable" type_attrs |> Utils.parse_bool in
               field_type := Some { name = type_name; c_type = c_type_name; nullable };
               skip_element 1;
@@ -964,7 +1010,7 @@ let parse_gir_file filename filter_classes =
         skip_element2 1;
         let signal = {
           signal_name;
-          return_type = { name = "none"; c_type = "void"; nullable = false };
+          return_type = { name = "none"; c_type = None; nullable = false };
           sig_parameters = [];
           doc = None;
         } in
@@ -1047,18 +1093,26 @@ let parse_gir_file filename filter_classes =
         parse_document ()
       | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "namespace" ->
         let namespace_name = Option.get (get_attr "name" attrs) in
-        
-        namespace := { namespace_name };
+        let namespace_version = Option.get (get_attr "version" attrs) in
+        let namespace_shared_library = Option.get (get_attr "shared-library" attrs) in
+        let namespace_c_identifier_prefixes = Option.get (get_attr "c:identifier-prefixes" attrs) in
+        let namespace_c_symbol_prefixes = Option.get (get_attr "c:symbol-prefixes" attrs) in
+        namespace := Some { namespace_name; 
+          namespace_version ;
+          namespace_shared_library;
+          namespace_c_identifier_prefixes;
+          namespace_c_symbol_prefixes;
+        }
+        ;
         
         parse_document ()
-
-      | `El_start ((_, raw_tag), _) ->
-        let tag = local_name raw_tag in
-        if tag = "repository"  then
-          parse_document ()
-        else begin
+      | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "repository" -> 
+        repository := parse_repository attrs;
         parse_document ()
-        end
+      | `El_start ((_, _), _) ->
+        
+        parse_document ()
+        
 
       | `El_end ->
         parse_document ()
@@ -1099,4 +1153,4 @@ let parse_gir_file filename filter_classes =
   let controllers = List.rev_map ~f:merge_class_signals !controllers in
   let interfaces = List.rev_map ~f:merge_interface_signals !interfaces in
 
-  (!namespace, controllers, interfaces, List.rev !enums, List.rev !bitfields, List.rev !records)
+  (!repository, Option.get !namespace, controllers, interfaces, List.rev !enums, List.rev !bitfields, List.rev !records)
