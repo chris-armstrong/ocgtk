@@ -17,7 +17,6 @@
 #include <caml/fail.h>
 
 #include "wrappers.h"
-#include "ml_gobject.h"
 #include "generated_forward_decls.h"
 
 /* ==================================================================== */

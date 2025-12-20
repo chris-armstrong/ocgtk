@@ -257,8 +257,12 @@ external new_from_icon_name : string -> 'a t = "ml_gtk_button_new_from_icon_name
 
 This will also clear any previously set labels. *)
 external set_label : 'a t -> string -> unit = "ml_gtk_button_set_label"
-````
+```
 
 ## Val_x and X_val conversion macros not being added to generated_forward_decls.h for all types
 
 Some types like GtkBuilderScope and GtkSelectionModel are not having Val_GtkBuilderScope and GtkBuilderScope_val macros generated in generated_forward_decls.h for use by other ml_*_gen.c files, resulting in `warning: implicit generation of function`.
+
+## Val_x and X_val macros need to be generated per-library and shared
+
+We are currently generating the Val_x and X_val macros for each library and its dependencies - ideally we'd generate one per library in a header and share it based on recursive library dependencies (which we could figure out from the <repository> and <namespace> tags in the GIR)

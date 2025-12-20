@@ -336,6 +336,16 @@ lablgtk4/
 
 ---
 
+## Recent Fixes (As of 2025-12-19)
+
+The following issues have been resolved:
+
+1. **Dynamic pkg-config references**: The dune-generated.inc now correctly generates pkg-config references for each library (e.g., `cflag-gio.sexp` for GIO instead of hardcoded `cflag-gtk4.sexp`)
+
+2. **Result type wrapping**: Methods that throw errors (return `(type, GError.t) result`) now correctly wrap class return types using `Result.map` instead of direct instantiation
+
+These fixes enable proper support for multiple libraries beyond GTK.
+
 ## Known Limitations
 
 When adding a new library, be aware of these gir_gen limitations:
@@ -368,6 +378,14 @@ let excluded_types = [
 ```
 
 **Cyclic dependencies**: The gir_gen tool handles this automatically with Tarjan's SCC algorithm, creating combined modules.
+
+### Result Type Wrapping Errors
+
+**Symptom**: Type errors like "This expression has type (X, error) result but an expression was expected of type X"
+
+**Cause**: Methods that can throw errors return result types. These need special handling when the success value is a class instance.
+
+**Solution**: This is automatically handled by gir_gen (as of 2025-12-19). Regenerate bindings if you see this error in older generated code.
 
 ### Runtime Errors
 

@@ -17,7 +17,9 @@
 #include <caml/fail.h>
 
 #include "wrappers.h"
-#include "ml_gobject.h"
+
+#define GtkWidget_val(val) ((GtkWidget*)ext_of_val(val))
+#define Val_GtkWidget(obj) ((value)(val_of_ext(obj)))
 
 /* Widget type conversions are defined in wrappers.h */
 
@@ -1248,55 +1250,55 @@ ML_1 (gtk_window_close, GtkWindow_val, Unit)
 
 /* ========== Frame ========== */
 
-CAMLprim value ml_gtk_frame_new(value label)
-{
-  CAMLparam1(label);
-  const char *label_str = NULL;
-  if (Is_some(label)) {
-    label_str = String_val(Some_val(label));
-  }
-  GtkWidget *frame = gtk_frame_new(label_str);
-  CAMLreturn(Val_GtkWidget(frame));
-}
+// CAMLprim value ml_gtk_frame_new(value label)
+// {
+//   CAMLparam1(label);
+//   const char *label_str = NULL;
+//   if (Is_some(label)) {
+//     label_str = String_val(Some_val(label));
+//   }
+//   GtkWidget *frame = gtk_frame_new(label_str);
+//   CAMLreturn(Val_GtkWidget(frame));
+// }
 
-CAMLprim value ml_gtk_frame_set_child(value frame, value child)
-{
-  CAMLparam2(frame, child);
-  GtkWidget *child_widget = NULL;
-  if (Is_some(child)) {
-    child_widget = GtkWidget_val(Some_val(child));
-  }
-  gtk_frame_set_child(GTK_FRAME(GtkWidget_val(frame)), child_widget);
-  CAMLreturn(Val_unit);
-}
+// CAMLprim value ml_gtk_frame_set_child(value frame, value child)
+// {
+//   CAMLparam2(frame, child);
+//   GtkWidget *child_widget = NULL;
+//   if (Is_some(child)) {
+//     child_widget = GtkWidget_val(Some_val(child));
+//   }
+//   gtk_frame_set_child(GTK_FRAME(GtkWidget_val(frame)), child_widget);
+//   CAMLreturn(Val_unit);
+// }
 
-CAMLprim value ml_gtk_frame_get_child(value frame)
-{
-  CAMLparam1(frame);
-  GtkWidget *child = gtk_frame_get_child(GTK_FRAME(GtkWidget_val(frame)));
-  CAMLreturn(Val_option(child, Val_GtkWidget));
-}
+// CAMLprim value ml_gtk_frame_get_child(value frame)
+// {
+//   CAMLparam1(frame);
+//   GtkWidget *child = gtk_frame_get_child(GTK_FRAME(GtkWidget_val(frame)));
+//   CAMLreturn(Val_option(child, Val_GtkWidget));
+// }
 
-CAMLprim value ml_gtk_frame_set_label(value frame, value label)
-{
-  CAMLparam2(frame, label);
-  const char *label_str = NULL;
-  if (Is_some(label)) {
-    label_str = String_val(Some_val(label));
-  }
-  gtk_frame_set_label(GTK_FRAME(GtkWidget_val(frame)), label_str);
-  CAMLreturn(Val_unit);
-}
+// CAMLprim value ml_gtk_frame_set_label(value frame, value label)
+// {
+//   CAMLparam2(frame, label);
+//   const char *label_str = NULL;
+//   if (Is_some(label)) {
+//     label_str = String_val(Some_val(label));
+//   }
+//   gtk_frame_set_label(GTK_FRAME(GtkWidget_val(frame)), label_str);
+//   CAMLreturn(Val_unit);
+// }
 
-CAMLprim value ml_gtk_frame_get_label(value frame)
-{
-  CAMLparam1(frame);
-  const char *label = gtk_frame_get_label(GTK_FRAME(GtkWidget_val(frame)));
-  CAMLreturn(Val_option_string(label));
-}
+// CAMLprim value ml_gtk_frame_get_label(value frame)
+// {
+//   CAMLparam1(frame);
+//   const char *label = gtk_frame_get_label(GTK_FRAME(GtkWidget_val(frame)));
+//   CAMLreturn(Val_option_string(label));
+// }
 
-ML_2 (gtk_frame_set_label_align, GtkFrame_val, Double_val, Unit)
-ML_1 (gtk_frame_get_label_align, GtkFrame_val, caml_copy_double)
+// ML_2 (gtk_frame_set_label_align, GtkFrame_val, Double_val, Unit)
+// ML_1 (gtk_frame_get_label_align, GtkFrame_val, caml_copy_double)
 
 /* ========== Main Loop ========== */
 

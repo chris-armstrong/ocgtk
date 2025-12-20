@@ -182,12 +182,6 @@ void* ext_of_val(const value val) {
     CAMLreturnT(void*, *((void**)Data_abstract_val(val)));
 }
 
-CAMLexport value Val_GtkWidget_option(GtkWidget *widget) {
-    CAMLparam0();
-    if (widget == NULL) CAMLreturn(Val_none);
-    CAMLreturn(Val_some(val_of_ext(widget)));
-}
-
 /* ========================================================================= */
 /* Error Handling - Result type support for GError                          */
 /* ========================================================================= */
@@ -230,25 +224,4 @@ value Val_GError(GError *error) {
     }
 
     CAMLreturn(v);
-}
-
-/* ==================================================================== */
-/* Copies for value-returning GTK structs                              */
-/* ==================================================================== */
-
-
-value copy_GtkTreeIter(const GtkTreeIter *iter) {
-    return ml_gir_record_alloc(iter, sizeof(GtkTreeIter), "GtkTreeIter", (void *(*)(const void *))gtk_tree_iter_copy);
-}
-
-value copy_GtkTextIter(const GtkTextIter *iter) {
-    return ml_gir_record_alloc(iter, sizeof(GtkTextIter), "GtkTextIter", (void *(*)(const void *))gtk_text_iter_copy);
-}
-
-value copy_GtkRequisition(const GtkRequisition *req) {
-    return ml_gir_record_alloc(req, sizeof(GtkRequisition), "GtkRequisition", (void *(*)(const void *))gtk_requisition_copy);
-}
-
-value copy_GtkBorder(const GtkBorder *border) {
-    return ml_gir_record_alloc(border, sizeof(GtkBorder), "GtkBorder", (void *(*)(const void *))gtk_border_copy);
 }
