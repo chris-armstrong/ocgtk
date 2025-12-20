@@ -8,6 +8,16 @@ let as_cell_renderer (obj : t) : Cell_renderer.t = Obj.magic obj
 (** Create a new CellRendererText *)
 external new_ : unit -> t = "ml_gtk_cell_renderer_text_new"
 
+(* Methods *)
+(** Sets the height of a renderer to explicitly be determined by the “font” and
+“y_pad” property set on it.  Further changes in these properties do not
+affect the height, so they must be accompanied by a subsequent call to this
+function.  Using this function is inflexible, and should really only be used
+if calculating the size of a cell is too slow (ie, a massive number of cells
+displayed).  If @number_of_rows is -1, then the fixed height is unset, and
+the height is determined by the properties again. *)
+external set_fixed_height_from_font : t -> int -> unit = "ml_gtk_cell_renderer_text_set_fixed_height_from_font"
+
 (* Properties *)
 
 (** Get property: align-set *)
@@ -219,13 +229,4 @@ external get_wrap_width : t -> int = "ml_gtk_cell_renderer_text_get_wrap_width"
 
 (** Set property: wrap-width *)
 external set_wrap_width : t -> int -> unit = "ml_gtk_cell_renderer_text_set_wrap_width"
-
-(** Sets the height of a renderer to explicitly be determined by the “font” and
-“y_pad” property set on it.  Further changes in these properties do not
-affect the height, so they must be accompanied by a subsequent call to this
-function.  Using this function is inflexible, and should really only be used
-if calculating the size of a cell is too slow (ie, a massive number of cells
-displayed).  If @number_of_rows is -1, then the fixed height is unset, and
-the height is determined by the properties again. *)
-external set_fixed_height_from_font : t -> int -> unit = "ml_gtk_cell_renderer_text_set_fixed_height_from_font"
 

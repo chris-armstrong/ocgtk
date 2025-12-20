@@ -8,28 +8,21 @@ let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager
 (** Create a new Revealer *)
 external new_ : unit -> t = "ml_gtk_revealer_new"
 
-(* Properties *)
-
-(** Get property: child-revealed *)
-external get_child_revealed : t -> bool = "ml_gtk_revealer_get_child_revealed"
-
-(** Get property: reveal-child *)
-external get_reveal_child : t -> bool = "ml_gtk_revealer_get_reveal_child"
-
-(** Set property: reveal-child *)
-external set_reveal_child : t -> bool -> unit = "ml_gtk_revealer_set_reveal_child"
-
-(** Get property: transition-duration *)
-external get_transition_duration : t -> int = "ml_gtk_revealer_get_transition_duration"
-
-(** Set property: transition-duration *)
-external set_transition_duration : t -> int -> unit = "ml_gtk_revealer_set_transition_duration"
-
+(* Methods *)
 (** Sets the type of animation that will be used for
 transitions in @revealer.
 
 Available types include various kinds of fades and slides. *)
 external set_transition_type : t -> Gtk_enums.revealertransitiontype -> unit = "ml_gtk_revealer_set_transition_type"
+
+(** Sets the duration that transitions will take. *)
+external set_transition_duration : t -> int -> unit = "ml_gtk_revealer_set_transition_duration"
+
+(** Tells the `GtkRevealer` to reveal or conceal its child.
+
+The transition will be animated with the current
+transition type of @revealer. *)
+external set_reveal_child : t -> bool -> unit = "ml_gtk_revealer_set_reveal_child"
 
 (** Sets the child widget of @revealer. *)
 external set_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_revealer_set_child"
@@ -38,6 +31,26 @@ external set_child : t -> Event_controller_and__layout_child_and__layout_manager
 for transitions in @revealer. *)
 external get_transition_type : t -> Gtk_enums.revealertransitiontype = "ml_gtk_revealer_get_transition_type"
 
+(** Returns the amount of time (in milliseconds) that
+transitions will take. *)
+external get_transition_duration : t -> int = "ml_gtk_revealer_get_transition_duration"
+
+(** Returns whether the child is currently revealed.
+
+This function returns %TRUE as soon as the transition
+is to the revealed state is started. To learn whether
+the child is fully revealed (ie the transition is completed),
+use [method@Gtk.Revealer.get_child_revealed]. *)
+external get_reveal_child : t -> bool = "ml_gtk_revealer_get_reveal_child"
+
+(** Returns whether the child is fully revealed.
+
+In other words, this returns whether the transition
+to the revealed state is completed. *)
+external get_child_revealed : t -> bool = "ml_gtk_revealer_get_child_revealed"
+
 (** Gets the child widget of @revealer. *)
 external get_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_revealer_get_child"
+
+(* Properties *)
 

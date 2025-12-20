@@ -4,3 +4,4 @@
 (** The interface vtable for accessible objects containing text. *)
 type t = [`accessible_text_interface] Gobject.obj
 
+(* Methods *)

@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -39,7 +39,7 @@ CAMLreturn(Val_GtkMediaFile(obj));
 CAMLexport CAMLprim value ml_gtk_media_file_new_for_filename(value arg1)
 {
 CAMLparam1(arg1);
-GtkMediaFile *obj = gtk_media_file_new_for_filename(String_val(arg1));
+GtkMediaFile *obj = gtk_media_file_new_for_filename(arg1);
 CAMLreturn(Val_GtkMediaFile(obj));
 }
 
@@ -62,14 +62,6 @@ CAMLexport CAMLprim value ml_gtk_media_file_set_resource(value self, value arg1)
 CAMLparam2(self, arg1);
 
 gtk_media_file_set_resource(GtkMediaFile_val(self), String_option_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_media_file_set_filename(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_media_file_set_filename(GtkMediaFile_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 

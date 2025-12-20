@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -21,6 +21,39 @@
 #define Val_GtkShortcutsShortcut(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GtkShortcutsShortcut */
 
+
+CAMLexport CAMLprim value ml_gtk_shortcuts_shortcut_get_accel_size_group(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkShortcutsShortcut *obj = (GtkShortcutsShortcut *)GtkShortcutsShortcut_val(self);
+    GtkSizeGroup *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accel-size-group");
+if (pspec == NULL) caml_failwith("ml_gtk_shortcuts_shortcut_get_accel_size_group: property 'accel-size-group' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "accel-size-group", &prop_gvalue);
+    prop_value = (GtkSizeGroup*)g_value_get_object(&prop_gvalue);
+
+result = Val_GtkSizeGroup(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_shortcuts_shortcut_set_accel_size_group(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkShortcutsShortcut *obj = (GtkShortcutsShortcut *)GtkShortcutsShortcut_val(self);
+    GtkSizeGroup *c_value = GtkSizeGroup_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accel-size-group");
+if (pspec == NULL) caml_failwith("ml_gtk_shortcuts_shortcut_set_accel_size_group: property 'accel-size-group' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_object(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "accel-size-group", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
 
 CAMLexport CAMLprim value ml_gtk_shortcuts_shortcut_get_accelerator(value self)
 {
@@ -88,12 +121,45 @@ g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_shortcuts_shortcut_get_direction(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkShortcutsShortcut *obj = (GtkShortcutsShortcut *)GtkShortcutsShortcut_val(self);
+    GtkTextDirection prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "direction");
+if (pspec == NULL) caml_failwith("ml_gtk_shortcuts_shortcut_get_direction: property 'direction' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "direction", &prop_gvalue);
+    prop_value = (GtkTextDirection)g_value_get_enum(&prop_gvalue);
+
+result = Val_GtkTextDirection(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_shortcuts_shortcut_set_direction(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkShortcutsShortcut *obj = (GtkShortcutsShortcut *)GtkShortcutsShortcut_val(self);
+    GtkTextDirection c_value = GtkTextDirection_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "direction");
+if (pspec == NULL) caml_failwith("ml_gtk_shortcuts_shortcut_set_direction: property 'direction' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "direction", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_shortcuts_shortcut_get_icon_set(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkShortcutsShortcut *obj = (GtkShortcutsShortcut *)GtkShortcutsShortcut_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "icon-set");
 if (pspec == NULL) caml_failwith("ml_gtk_shortcuts_shortcut_get_icon_set: property 'icon-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -110,13 +176,46 @@ CAMLexport CAMLprim value ml_gtk_shortcuts_shortcut_set_icon_set(value self, val
 {
 CAMLparam2(self, new_value);
 GtkShortcutsShortcut *obj = (GtkShortcutsShortcut *)GtkShortcutsShortcut_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "icon-set");
 if (pspec == NULL) caml_failwith("ml_gtk_shortcuts_shortcut_set_icon_set: property 'icon-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
     g_value_set_boolean(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "icon-set", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_shortcuts_shortcut_get_shortcut_type(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkShortcutsShortcut *obj = (GtkShortcutsShortcut *)GtkShortcutsShortcut_val(self);
+    GtkShortcutType prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "shortcut-type");
+if (pspec == NULL) caml_failwith("ml_gtk_shortcuts_shortcut_get_shortcut_type: property 'shortcut-type' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "shortcut-type", &prop_gvalue);
+    prop_value = (GtkShortcutType)g_value_get_enum(&prop_gvalue);
+
+result = Val_GtkShortcutType(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_shortcuts_shortcut_set_shortcut_type(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkShortcutsShortcut *obj = (GtkShortcutsShortcut *)GtkShortcutsShortcut_val(self);
+    GtkShortcutType c_value = GtkShortcutType_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "shortcut-type");
+if (pspec == NULL) caml_failwith("ml_gtk_shortcuts_shortcut_set_shortcut_type: property 'shortcut-type' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "shortcut-type", &prop_gvalue);
 g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }
@@ -159,7 +258,7 @@ CAMLexport CAMLprim value ml_gtk_shortcuts_shortcut_get_subtitle_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkShortcutsShortcut *obj = (GtkShortcutsShortcut *)GtkShortcutsShortcut_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "subtitle-set");
 if (pspec == NULL) caml_failwith("ml_gtk_shortcuts_shortcut_get_subtitle_set: property 'subtitle-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -176,7 +275,7 @@ CAMLexport CAMLprim value ml_gtk_shortcuts_shortcut_set_subtitle_set(value self,
 {
 CAMLparam2(self, new_value);
 GtkShortcutsShortcut *obj = (GtkShortcutsShortcut *)GtkShortcutsShortcut_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "subtitle-set");
 if (pspec == NULL) caml_failwith("ml_gtk_shortcuts_shortcut_set_subtitle_set: property 'subtitle-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -216,6 +315,39 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
     g_value_set_string(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "title", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_shortcuts_shortcut_get_title_size_group(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkShortcutsShortcut *obj = (GtkShortcutsShortcut *)GtkShortcutsShortcut_val(self);
+    GtkSizeGroup *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "title-size-group");
+if (pspec == NULL) caml_failwith("ml_gtk_shortcuts_shortcut_get_title_size_group: property 'title-size-group' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "title-size-group", &prop_gvalue);
+    prop_value = (GtkSizeGroup*)g_value_get_object(&prop_gvalue);
+
+result = Val_GtkSizeGroup(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_shortcuts_shortcut_set_title_size_group(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkShortcutsShortcut *obj = (GtkShortcutsShortcut *)GtkShortcutsShortcut_val(self);
+    GtkSizeGroup *c_value = GtkSizeGroup_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "title-size-group");
+if (pspec == NULL) caml_failwith("ml_gtk_shortcuts_shortcut_set_title_size_group: property 'title-size-group' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_object(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "title-size-group", &prop_gvalue);
 g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }

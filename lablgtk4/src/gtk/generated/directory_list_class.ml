@@ -3,3 +3,4 @@
 
 type t = [`directory_list_class] Gobject.obj
 
+(* Methods *)

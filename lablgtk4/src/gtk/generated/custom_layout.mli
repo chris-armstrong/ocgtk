@@ -8,3 +8,4 @@ val as_layoutmanager : t -> Event_controller_and__layout_child_and__layout_manag
 (** Create a new CustomLayout *)
 external new_ : unit -> unit -> unit -> t = "ml_gtk_custom_layout_new"
 
+(* Methods *)

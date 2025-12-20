@@ -3,3 +3,4 @@
 
 type t = [`string_object_class] Gobject.obj
 
+(* Methods *)

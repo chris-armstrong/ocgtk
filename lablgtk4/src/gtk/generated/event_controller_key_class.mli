@@ -3,3 +3,4 @@
 
 type t = [`event_controller_key_class] Gobject.obj
 
+(* Methods *)

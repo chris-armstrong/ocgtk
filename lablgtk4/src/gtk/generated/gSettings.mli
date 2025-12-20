@@ -1,5 +1,6 @@
 class settings : Settings.t ->
   object
+    method reset_property : string -> unit
     method gtk_alternative_button_order : bool
     method set_gtk_alternative_button_order : bool -> unit
     method gtk_alternative_sort_arrows : bool
@@ -102,7 +103,6 @@ class settings : Settings.t ->
     method set_gtk_xft_hintstyle : string -> unit
     method gtk_xft_rgba : string
     method set_gtk_xft_rgba : string -> unit
-    method reset_property : string -> unit
     method as_settings : Settings.t
   end
 

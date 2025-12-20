@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -34,7 +34,7 @@ CAMLexport CAMLprim value ml_gtk_color_chooser_dialog_get_show_editor(value self
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkColorChooserDialog *obj = (GtkColorChooserDialog *)GtkColorChooserDialog_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "show-editor");
 if (pspec == NULL) caml_failwith("ml_gtk_color_chooser_dialog_get_show_editor: property 'show-editor' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -51,7 +51,7 @@ CAMLexport CAMLprim value ml_gtk_color_chooser_dialog_set_show_editor(value self
 {
 CAMLparam2(self, new_value);
 GtkColorChooserDialog *obj = (GtkColorChooserDialog *)GtkColorChooserDialog_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "show-editor");
 if (pspec == NULL) caml_failwith("ml_gtk_color_chooser_dialog_set_show_editor: property 'show-editor' not found");
 GValue prop_gvalue = G_VALUE_INIT;

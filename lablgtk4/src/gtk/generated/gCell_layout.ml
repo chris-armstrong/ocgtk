@@ -6,14 +6,18 @@ class cell_layout (obj : Cell_layout.t) = object (self)
       let cell = cell#as_cell_renderer in
       (Cell_layout.add_attribute obj cell attribute column)
 
-  method clear : unit -> unit = fun () -> (Cell_layout.clear obj )
+  method clear : unit -> unit =
+    fun () ->
+      (Cell_layout.clear obj)
 
   method clear_attributes : 'p1. (#GCell_renderer.cell_renderer as 'p1) -> unit =
     fun cell ->
       let cell = cell#as_cell_renderer in
       (Cell_layout.clear_attributes obj cell)
 
-  method get_area : unit -> GCell_area_and__cell_area_context.cell_area option = fun () -> Option.map (fun ret -> new GCell_area_and__cell_area_context.cell_area ret) (Cell_layout.get_area obj )
+  method get_area : unit -> GCell_area_and__cell_area_context.cell_area option =
+    fun () ->
+      Option.map (fun ret -> new GCell_area_and__cell_area_context.cell_area ret) (Cell_layout.get_area obj)
 
   method pack_end : 'p1. (#GCell_renderer.cell_renderer as 'p1) -> bool -> unit =
     fun cell expand ->

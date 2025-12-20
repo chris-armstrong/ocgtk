@@ -3,3 +3,4 @@
 
 type t = [`nothing_action_class] Gobject.obj
 
+(* Methods *)

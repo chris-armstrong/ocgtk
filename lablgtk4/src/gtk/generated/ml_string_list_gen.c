@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -27,6 +27,14 @@ CAMLexport CAMLprim value ml_gtk_string_list_new(value arg1)
 CAMLparam1(arg1);
 GtkStringList *obj = gtk_string_list_new(arg1);
 CAMLreturn(Val_GtkStringList(obj));
+}
+
+CAMLexport CAMLprim value ml_gtk_string_list_take(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_string_list_take(GtkStringList_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_string_list_remove(value self, value arg1)

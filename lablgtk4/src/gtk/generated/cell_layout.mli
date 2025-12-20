@@ -3,6 +3,7 @@
 
 type t = [`cell_layout] Gobject.obj
 
+(* Methods *)
 (** Re-inserts @cell at @position.
 
 Note that @cell has already to be packed into @cell_layout

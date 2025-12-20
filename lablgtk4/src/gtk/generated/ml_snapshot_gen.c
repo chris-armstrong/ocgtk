@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -119,14 +119,6 @@ gtk_snapshot_push_opacity(GtkSnapshot_val(self), Double_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_snapshot_push_mask(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_snapshot_push_mask(GtkSnapshot_val(self), GskMaskMode_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_snapshot_push_cross_fade(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -140,14 +132,6 @@ CAMLexport CAMLprim value ml_gtk_snapshot_push_blur(value self, value arg1)
 CAMLparam2(self, arg1);
 
 gtk_snapshot_push_blur(GtkSnapshot_val(self), Double_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_snapshot_push_blend(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_snapshot_push_blend(GtkSnapshot_val(self), GskBlendMode_val(arg1));
 CAMLreturn(Val_unit);
 }
 

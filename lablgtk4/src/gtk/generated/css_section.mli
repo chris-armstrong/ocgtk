@@ -10,9 +10,14 @@ type t = [`css_section] Gobject.obj
 (** Create a new CssSection *)
 external new_ : unit -> unit -> unit -> t = "ml_gtk_css_section_new"
 
+(* Methods *)
 (** Decrements the reference count on `section`, freeing the
 structure if the reference count reaches 0. *)
 external unref : t -> unit = "ml_gtk_css_section_unref"
+
+(** Prints the section into a human-readable text form using
+[method@Gtk.CssSection.print]. *)
+external to_string : t -> string = "ml_gtk_css_section_to_string"
 
 (** Increments the reference count on `section`. *)
 external ref : t -> t = "ml_gtk_css_section_ref"

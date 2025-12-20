@@ -3,3 +3,4 @@
 
 type t = [`drop_down_class] Gobject.obj
 
+(* Methods *)

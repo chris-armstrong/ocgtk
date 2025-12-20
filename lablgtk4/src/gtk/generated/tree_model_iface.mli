@@ -3,3 +3,4 @@
 
 type t = [`tree_model_iface] Gobject.obj
 
+(* Methods *)

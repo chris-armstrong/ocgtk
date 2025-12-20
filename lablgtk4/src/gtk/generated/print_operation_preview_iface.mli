@@ -3,3 +3,4 @@
 
 type t = [`print_operation_preview_iface] Gobject.obj
 
+(* Methods *)

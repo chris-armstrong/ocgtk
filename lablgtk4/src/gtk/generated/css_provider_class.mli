@@ -3,3 +3,4 @@
 
 type t = [`css_provider_class] Gobject.obj
 
+(* Methods *)

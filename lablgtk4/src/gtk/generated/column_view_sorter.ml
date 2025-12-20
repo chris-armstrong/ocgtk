@@ -3,8 +3,7 @@
 
 type t = [`column_view_sorter | `sorter | `object_] Gobject.obj
 
-(* Properties *)
-
+(* Methods *)
 (** Returns the primary sort order.
 
 The primary sort order determines whether the triangle displayed
@@ -36,4 +35,6 @@ break the ties.
 Use the [signal@Gtk.Sorter::changed] signal to get notified
 when the number of sort columns changes. *)
 external get_n_sort_columns : t -> int = "ml_gtk_column_view_sorter_get_n_sort_columns"
+
+(* Properties *)
 

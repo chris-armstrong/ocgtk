@@ -3,53 +3,7 @@
 
 type t = [`media_stream | `object_] Gobject.obj
 
-(* Properties *)
-
-(** Get property: ended *)
-external get_ended : t -> bool = "ml_gtk_media_stream_get_ended"
-
-(** Get property: has-audio *)
-external get_has_audio : t -> bool = "ml_gtk_media_stream_get_has_audio"
-
-(** Get property: has-video *)
-external get_has_video : t -> bool = "ml_gtk_media_stream_get_has_video"
-
-(** Get property: loop *)
-external get_loop : t -> bool = "ml_gtk_media_stream_get_loop"
-
-(** Set property: loop *)
-external set_loop : t -> bool -> unit = "ml_gtk_media_stream_set_loop"
-
-(** Get property: muted *)
-external get_muted : t -> bool = "ml_gtk_media_stream_get_muted"
-
-(** Set property: muted *)
-external set_muted : t -> bool -> unit = "ml_gtk_media_stream_set_muted"
-
-(** Get property: playing *)
-external get_playing : t -> bool = "ml_gtk_media_stream_get_playing"
-
-(** Set property: playing *)
-external set_playing : t -> bool -> unit = "ml_gtk_media_stream_set_playing"
-
-(** Get property: prepared *)
-external get_prepared : t -> bool = "ml_gtk_media_stream_get_prepared"
-
-(** Set property: prepared *)
-external set_prepared : t -> bool -> unit = "ml_gtk_media_stream_set_prepared"
-
-(** Get property: seekable *)
-external get_seekable : t -> bool = "ml_gtk_media_stream_get_seekable"
-
-(** Get property: seeking *)
-external get_seeking : t -> bool = "ml_gtk_media_stream_get_seeking"
-
-(** Get property: volume *)
-external get_volume : t -> float = "ml_gtk_media_stream_get_volume"
-
-(** Set property: volume *)
-external set_volume : t -> float -> unit = "ml_gtk_media_stream_set_volume"
-
+(* Methods *)
 (** Same as gtk_media_stream_stream_unprepared(). *)
 external unprepared : t -> unit = "ml_gtk_media_stream_unprepared"
 
@@ -67,6 +21,42 @@ may still happen.
 
 The media stream must be prepared when this function is called. *)
 external stream_ended : t -> unit = "ml_gtk_media_stream_stream_ended"
+
+(** Sets the volume of the audio stream.
+
+This function call will work even if the stream is muted.
+
+The given @volume should range from 0.0 for silence to 1.0
+for as loud as possible. Values outside of this range will
+be clamped to the nearest value.
+
+If the stream has no audio or is muted, calling this function
+will still work but it will not have an immediate audible effect.
+When the stream is unmuted, the new volume setting will take effect. *)
+external set_volume : t -> float -> unit = "ml_gtk_media_stream_set_volume"
+
+(** Starts or pauses playback of the stream. *)
+external set_playing : t -> bool -> unit = "ml_gtk_media_stream_set_playing"
+
+(** Sets whether the audio stream should be muted.
+
+Muting a stream will cause no audio to be played, but it
+does not modify the volume. This means that muting and
+then unmuting the stream will restore the volume settings.
+
+If the stream has no audio, calling this function will
+still work but it will not have an audible effect. *)
+external set_muted : t -> bool -> unit = "ml_gtk_media_stream_set_muted"
+
+(** Sets whether the stream should loop.
+
+In this case, it will attempt to restart playback
+from the beginning instead of stopping at the end.
+
+Not all streams may support looping, in particular
+non-seekable streams. Those streams will ignore the
+loop setting and just end. *)
+external set_loop : t -> bool -> unit = "ml_gtk_media_stream_set_loop"
 
 (** Ends a seek operation started via GtkMediaStream.seek() successfully.
 
@@ -121,6 +111,27 @@ external has_video : t -> bool = "ml_gtk_media_stream_has_video"
 (** Returns whether the stream has audio. *)
 external has_audio : t -> bool = "ml_gtk_media_stream_has_audio"
 
+(** Returns the volume of the audio for the stream.
+
+See [method@Gtk.MediaStream.set_volume] for details. *)
+external get_volume : t -> float = "ml_gtk_media_stream_get_volume"
+
+(** Return whether the stream is currently playing. *)
+external get_playing : t -> bool = "ml_gtk_media_stream_get_playing"
+
+(** Returns whether the audio for the stream is muted.
+
+See [method@Gtk.MediaStream.set_muted] for details. *)
+external get_muted : t -> bool = "ml_gtk_media_stream_get_muted"
+
+(** Returns whether the stream is set to loop.
+
+See [method@Gtk.MediaStream.set_loop] for details. *)
+external get_loop : t -> bool = "ml_gtk_media_stream_get_loop"
+
+(** Returns whether the streams playback is finished. *)
+external get_ended : t -> bool = "ml_gtk_media_stream_get_ended"
+
 (** Pauses the media stream and marks it as ended.
 
 This is a hint only, calls to [method@Gtk.MediaStream.play]
@@ -128,4 +139,18 @@ may still happen.
 
 The media stream must be prepared when this function is called. *)
 external ended : t -> unit = "ml_gtk_media_stream_ended"
+
+(* Properties *)
+
+(** Get property: prepared *)
+external get_prepared : t -> bool = "ml_gtk_media_stream_get_prepared"
+
+(** Set property: prepared *)
+external set_prepared : t -> bool -> unit = "ml_gtk_media_stream_set_prepared"
+
+(** Get property: seekable *)
+external get_seekable : t -> bool = "ml_gtk_media_stream_get_seekable"
+
+(** Get property: seeking *)
+external get_seeking : t -> bool = "ml_gtk_media_stream_get_seeking"
 

@@ -3,3 +3,4 @@
 
 type t = [`button_class] Gobject.obj
 
+(* Methods *)

@@ -5,11 +5,7 @@ type t = [`gesture | `event_controller | `object_] Gobject.obj
 
 val as_event_controller : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t
 
-(* Properties *)
-
-(** Get property: n-points *)
-external get_n_points : t -> int = "ml_gtk_gesture_get_n_points"
-
+(* Methods *)
 (** Separates @gesture into an isolated group. *)
 external ungroup : t -> unit = "ml_gtk_gesture_ungroup"
 
@@ -91,4 +87,16 @@ on one group, every other gesture group attached to the same
 `GtkWidget` will switch the state for that sequence to
 %GTK_EVENT_SEQUENCE_DENIED. *)
 external group : t -> t -> unit = "ml_gtk_gesture_group"
+
+(** If there are touch sequences being currently handled by @gesture,
+returns %TRUE and fills in @x and @y with the center of the bounding
+box containing all active touches.
+
+Otherwise, %FALSE will be returned. *)
+external get_bounding_box_center : t -> bool * float * float = "ml_gtk_gesture_get_bounding_box_center"
+
+(* Properties *)
+
+(** Get property: n-points *)
+external get_n_points : t -> int = "ml_gtk_gesture_get_n_points"
 

@@ -3,3 +3,4 @@
 
 type t = [`grid_layout_class] Gobject.obj
 
+(* Methods *)

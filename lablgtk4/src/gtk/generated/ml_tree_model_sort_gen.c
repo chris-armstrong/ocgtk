@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -25,7 +25,7 @@
 CAMLexport CAMLprim value ml_gtk_tree_model_sort_new_with_model(value arg1)
 {
 CAMLparam1(arg1);
-GtkTreeModelSort *obj = gtk_tree_model_sort_new_with_model(GtkTreeModel_val(arg1));
+GtkTreeModelSort *obj = gtk_tree_model_sort_new_with_model(arg1);
 CAMLreturn(Val_GtkTreeModelSort(obj));
 }
 
@@ -43,14 +43,6 @@ CAMLparam2(self, arg1);
 
 gboolean result = gtk_tree_model_sort_iter_is_valid(GtkTreeModelSort_val(self), GtkTreeIter_val(arg1));
 CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_model_sort_get_model(value self)
-{
-CAMLparam1(self);
-
-GtkTreeModel* result = gtk_tree_model_sort_get_model(GtkTreeModelSort_val(self));
-CAMLreturn(Val_GtkTreeModel(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_model_sort_convert_path_to_child_path(value self, value arg1)

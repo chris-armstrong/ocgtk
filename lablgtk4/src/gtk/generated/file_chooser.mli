@@ -3,18 +3,12 @@
 
 type t = [`file_chooser] Gobject.obj
 
-(* Properties *)
+(* Methods *)
+(** Sets whether multiple files can be selected in the file chooser.
 
-(** Get property: create-folders *)
-external get_create_folders : t -> bool = "ml_gtk_file_chooser_get_create_folders"
-
-(** Set property: create-folders *)
-external set_create_folders : t -> bool -> unit = "ml_gtk_file_chooser_set_create_folders"
-
-(** Get property: select-multiple *)
-external get_select_multiple : t -> bool = "ml_gtk_file_chooser_get_select_multiple"
-
-(** Set property: select-multiple *)
+This is only relevant if the action is set to be
+%GTK_FILE_CHOOSER_ACTION_OPEN or
+%GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER. *)
 external set_select_multiple : t -> bool -> unit = "ml_gtk_file_chooser_set_select_multiple"
 
 (** Sets the current filter.
@@ -43,6 +37,12 @@ Please see the documentation for those functions for an example
 of using [method@Gtk.FileChooser.set_current_name] as well. *)
 external set_current_name : t -> string -> unit = "ml_gtk_file_chooser_set_current_name"
 
+(** Sets whether file chooser will offer to create new folders.
+
+This is only relevant if the action is not set to be
+%GTK_FILE_CHOOSER_ACTION_OPEN. *)
+external set_create_folders : t -> bool -> unit = "ml_gtk_file_chooser_set_create_folders"
+
 (** Selects an option in a 'choice' that has been added with
 gtk_file_chooser_add_choice().
 
@@ -64,8 +64,21 @@ external remove_filter : t -> File_filter.t -> unit = "ml_gtk_file_chooser_remov
 (** Removes a 'choice' that has been added with gtk_file_chooser_add_choice(). *)
 external remove_choice : t -> string -> unit = "ml_gtk_file_chooser_remove_choice"
 
+(** Gets whether multiple files can be selected in the file
+chooser. *)
+external get_select_multiple : t -> bool = "ml_gtk_file_chooser_get_select_multiple"
+
 (** Gets the current filter. *)
 external get_filter : t -> File_filter.t option = "ml_gtk_file_chooser_get_filter"
+
+(** Gets the current name in the file selector, as entered by the user.
+
+This is meant to be used in save dialogs, to get the currently typed
+filename when the file itself does not exist yet. *)
+external get_current_name : t -> string option = "ml_gtk_file_chooser_get_current_name"
+
+(** Gets whether file chooser will offer to create new folders. *)
+external get_create_folders : t -> bool = "ml_gtk_file_chooser_get_create_folders"
 
 (** Gets the currently selected option in the 'choice' with the given ID. *)
 external get_choice : t -> string -> string option = "ml_gtk_file_chooser_get_choice"
@@ -81,4 +94,6 @@ filter are displayed.
 Note that the @chooser takes ownership of the filter if it is floating,
 so you have to ref and sink it if you want to keep a reference. *)
 external add_filter : t -> File_filter.t -> unit = "ml_gtk_file_chooser_add_filter"
+
+(* Properties *)
 

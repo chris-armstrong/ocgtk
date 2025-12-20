@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -36,6 +36,20 @@ CAMLparam2(self, arg1);
 
 gtk_cell_area_set_focus_cell(GtkCellArea_val(self), Option_val(arg1, GtkCellRenderer_val, NULL));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_area_request_renderer(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+int out5;
+int out6;
+
+gtk_cell_area_request_renderer(GtkCellArea_val(self), GtkCellRenderer_val(arg1), GtkOrientation_val(arg2), GtkWidget_val(arg3), Int_val(arg4), &out5, &out6);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out5));
+    Store_field(ret, 1, Val_int(out6));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_cell_area_remove_focus_sibling(value self, value arg1, value arg2)
@@ -86,6 +100,62 @@ GtkSizeRequestMode result = gtk_cell_area_get_request_mode(GtkCellArea_val(self)
 CAMLreturn(Val_GtkSizeRequestMode(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_cell_area_get_preferred_width_for_height(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+int out4;
+int out5;
+
+gtk_cell_area_get_preferred_width_for_height(GtkCellArea_val(self), GtkCellAreaContext_val(arg1), GtkWidget_val(arg2), Int_val(arg3), &out4, &out5);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out4));
+    Store_field(ret, 1, Val_int(out5));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_area_get_preferred_width(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+int out3;
+int out4;
+
+gtk_cell_area_get_preferred_width(GtkCellArea_val(self), GtkCellAreaContext_val(arg1), GtkWidget_val(arg2), &out3, &out4);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out3));
+    Store_field(ret, 1, Val_int(out4));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_area_get_preferred_height_for_width(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+int out4;
+int out5;
+
+gtk_cell_area_get_preferred_height_for_width(GtkCellArea_val(self), GtkCellAreaContext_val(arg1), GtkWidget_val(arg2), Int_val(arg3), &out4, &out5);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out4));
+    Store_field(ret, 1, Val_int(out5));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_area_get_preferred_height(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+int out3;
+int out4;
+
+gtk_cell_area_get_preferred_height(GtkCellArea_val(self), GtkCellAreaContext_val(arg1), GtkWidget_val(arg2), &out3, &out4);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out3));
+    Store_field(ret, 1, Val_int(out4));
+    CAMLreturn(ret);
+}
+
 CAMLexport CAMLprim value ml_gtk_cell_area_get_focus_from_sibling(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -108,14 +178,6 @@ CAMLparam1(self);
 
 GtkCellRenderer* result = gtk_cell_area_get_edited_cell(GtkCellArea_val(self));
 CAMLreturn(Val_option(result, Val_GtkCellRenderer));
-}
-
-CAMLexport CAMLprim value ml_gtk_cell_area_get_edit_widget(value self)
-{
-CAMLparam1(self);
-
-GtkCellEditable* result = gtk_cell_area_get_edit_widget(GtkCellArea_val(self));
-CAMLreturn(Val_option(result, Val_GtkCellEditable));
 }
 
 CAMLexport CAMLprim value ml_gtk_cell_area_get_current_path_string(value self)
@@ -171,14 +233,6 @@ CAMLexport CAMLprim value ml_gtk_cell_area_attribute_connect(value self, value a
 CAMLparam4(self, arg1, arg2, arg3);
 
 gtk_cell_area_attribute_connect(GtkCellArea_val(self), GtkCellRenderer_val(arg1), String_val(arg2), Int_val(arg3));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_cell_area_apply_attributes(value self, value arg1, value arg2, value arg3, value arg4)
-{
-CAMLparam5(self, arg1, arg2, arg3, arg4);
-
-gtk_cell_area_apply_attributes(GtkCellArea_val(self), GtkTreeModel_val(arg1), GtkTreeIter_val(arg2), Bool_val(arg3), Bool_val(arg4));
 CAMLreturn(Val_unit);
 }
 

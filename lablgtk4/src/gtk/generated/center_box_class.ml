@@ -3,3 +3,4 @@
 
 type t = [`center_box_class] Gobject.obj
 
+(* Methods *)

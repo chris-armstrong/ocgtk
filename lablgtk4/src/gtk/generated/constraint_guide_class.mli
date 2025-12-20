@@ -3,3 +3,4 @@
 
 type t = [`constraint_guide_class] Gobject.obj
 
+(* Methods *)

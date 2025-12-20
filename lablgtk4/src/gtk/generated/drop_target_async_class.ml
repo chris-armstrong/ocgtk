@@ -3,3 +3,4 @@
 
 type t = [`drop_target_async_class] Gobject.obj
 
+(* Methods *)

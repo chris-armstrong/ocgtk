@@ -10,7 +10,6 @@ class widget_class : Widget_class.t ->
     method set_activate_signal_from_name : string -> unit
     method set_css_name : string -> unit
     method set_template_from_resource : string -> unit
-    method set_template_scope : GBuilder_scope.builder_scope -> unit
     method as_widget_class : Widget_class.t
   end
 

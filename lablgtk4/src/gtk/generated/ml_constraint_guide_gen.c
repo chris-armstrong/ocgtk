@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -45,6 +45,14 @@ gtk_constraint_guide_set_nat_size(GtkConstraintGuide_val(self), Int_val(arg1), I
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_constraint_guide_set_name(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_constraint_guide_set_name(GtkConstraintGuide_val(self), String_option_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_constraint_guide_set_min_size(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -67,6 +75,56 @@ CAMLparam1(self);
 
 GtkConstraintStrength result = gtk_constraint_guide_get_strength(GtkConstraintGuide_val(self));
 CAMLreturn(Val_GtkConstraintStrength(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_constraint_guide_get_nat_size(value self)
+{
+CAMLparam1(self);
+int out1;
+int out2;
+
+gtk_constraint_guide_get_nat_size(GtkConstraintGuide_val(self), &out1, &out2);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out1));
+    Store_field(ret, 1, Val_int(out2));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_constraint_guide_get_name(value self)
+{
+CAMLparam1(self);
+
+const char* result = gtk_constraint_guide_get_name(GtkConstraintGuide_val(self));
+CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_constraint_guide_get_min_size(value self)
+{
+CAMLparam1(self);
+int out1;
+int out2;
+
+gtk_constraint_guide_get_min_size(GtkConstraintGuide_val(self), &out1, &out2);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out1));
+    Store_field(ret, 1, Val_int(out2));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_constraint_guide_get_max_size(value self)
+{
+CAMLparam1(self);
+int out1;
+int out2;
+
+gtk_constraint_guide_get_max_size(GtkConstraintGuide_val(self), &out1, &out2);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out1));
+    Store_field(ret, 1, Val_int(out2));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_constraint_guide_get_max_height(value self)
@@ -197,39 +255,6 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
     g_value_set_int(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "min-width", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_constraint_guide_get_name(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkConstraintGuide *obj = (GtkConstraintGuide *)GtkConstraintGuide_val(self);
-    gchar* *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "name");
-if (pspec == NULL) caml_failwith("ml_gtk_constraint_guide_get_name: property 'name' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "name", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
-
-result = caml_copy_string(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_constraint_guide_set_name(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkConstraintGuide *obj = (GtkConstraintGuide *)GtkConstraintGuide_val(self);
-    ML_DECL_CONST_STRING(c_value, String_val(new_value));
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "name");
-if (pspec == NULL) caml_failwith("ml_gtk_constraint_guide_set_name: property 'name' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_string(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "name", &prop_gvalue);
 g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }

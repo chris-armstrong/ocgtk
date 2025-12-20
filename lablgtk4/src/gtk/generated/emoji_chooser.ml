@@ -8,3 +8,4 @@ let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager
 (** Create a new EmojiChooser *)
 external new_ : unit -> t = "ml_gtk_emoji_chooser_new"
 
+(* Methods *)

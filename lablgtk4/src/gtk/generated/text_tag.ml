@@ -6,6 +6,33 @@ type t = [`text_tag | `object_] Gobject.obj
 (** Create a new TextTag *)
 external new_ : string option -> t = "ml_gtk_text_tag_new"
 
+(* Methods *)
+(** Sets the priority of a `GtkTextTag`.
+
+Valid priorities start at 0 and go to one less than
+[method@Gtk.TextTagTable.get_size]. Each tag in a table
+has a unique priority; setting the priority of one tag shifts
+the priorities of all the other tags in the table to maintain
+a unique priority for each tag.
+
+Higher priority tags “win” if two tags both set the same text
+attribute. When adding a tag to a tag table, it will be assigned
+the highest priority in the table by default; so normally the
+precedence of a set of tags is the order in which they were added
+to the table, or created with [method@Gtk.TextBuffer.create_tag],
+which adds the tag to the buffer’s table automatically. *)
+external set_priority : t -> int -> unit = "ml_gtk_text_tag_set_priority"
+
+(** Get the tag priority. *)
+external get_priority : t -> int = "ml_gtk_text_tag_get_priority"
+
+(** Emits the [signal@Gtk.TextTagTable::tag-changed] signal on the
+`GtkTextTagTable` where the tag is included.
+
+The signal is already emitted when setting a `GtkTextTag` property.
+This function is useful for a `GtkTextTag` subclass. *)
+external changed : t -> bool -> unit = "ml_gtk_text_tag_changed"
+
 (* Properties *)
 
 (** Get property: accumulative-margin *)
@@ -49,6 +76,12 @@ external get_background_set : t -> bool = "ml_gtk_text_tag_get_background_set"
 
 (** Set property: background-set *)
 external set_background_set : t -> bool -> unit = "ml_gtk_text_tag_set_background_set"
+
+(** Get property: direction *)
+external get_direction : t -> Gtk_enums.textdirection = "ml_gtk_text_tag_get_direction"
+
+(** Set property: direction *)
+external set_direction : t -> Gtk_enums.textdirection -> unit = "ml_gtk_text_tag_set_direction"
 
 (** Get property: editable *)
 external get_editable : t -> bool = "ml_gtk_text_tag_get_editable"
@@ -151,6 +184,12 @@ external get_invisible_set : t -> bool = "ml_gtk_text_tag_get_invisible_set"
 
 (** Set property: invisible-set *)
 external set_invisible_set : t -> bool -> unit = "ml_gtk_text_tag_set_invisible_set"
+
+(** Get property: justification *)
+external get_justification : t -> Gtk_enums.justification = "ml_gtk_text_tag_get_justification"
+
+(** Set property: justification *)
+external set_justification : t -> Gtk_enums.justification -> unit = "ml_gtk_text_tag_set_justification"
 
 (** Get property: justification-set *)
 external get_justification_set : t -> bool = "ml_gtk_text_tag_get_justification_set"
@@ -425,35 +464,15 @@ external get_word_set : t -> bool = "ml_gtk_text_tag_get_word_set"
 (** Set property: word-set *)
 external set_word_set : t -> bool -> unit = "ml_gtk_text_tag_set_word_set"
 
+(** Get property: wrap-mode *)
+external get_wrap_mode : t -> Gtk_enums.wrapmode = "ml_gtk_text_tag_get_wrap_mode"
+
+(** Set property: wrap-mode *)
+external set_wrap_mode : t -> Gtk_enums.wrapmode -> unit = "ml_gtk_text_tag_set_wrap_mode"
+
 (** Get property: wrap-mode-set *)
 external get_wrap_mode_set : t -> bool = "ml_gtk_text_tag_get_wrap_mode_set"
 
 (** Set property: wrap-mode-set *)
 external set_wrap_mode_set : t -> bool -> unit = "ml_gtk_text_tag_set_wrap_mode_set"
-
-(** Sets the priority of a `GtkTextTag`.
-
-Valid priorities start at 0 and go to one less than
-[method@Gtk.TextTagTable.get_size]. Each tag in a table
-has a unique priority; setting the priority of one tag shifts
-the priorities of all the other tags in the table to maintain
-a unique priority for each tag.
-
-Higher priority tags “win” if two tags both set the same text
-attribute. When adding a tag to a tag table, it will be assigned
-the highest priority in the table by default; so normally the
-precedence of a set of tags is the order in which they were added
-to the table, or created with [method@Gtk.TextBuffer.create_tag],
-which adds the tag to the buffer’s table automatically. *)
-external set_priority : t -> int -> unit = "ml_gtk_text_tag_set_priority"
-
-(** Get the tag priority. *)
-external get_priority : t -> int = "ml_gtk_text_tag_get_priority"
-
-(** Emits the [signal@Gtk.TextTagTable::tag-changed] signal on the
-`GtkTextTagTable` where the tag is included.
-
-The signal is already emitted when setting a `GtkTextTag` property.
-This function is useful for a `GtkTextTag` subclass. *)
-external changed : t -> bool -> unit = "ml_gtk_text_tag_changed"
 

@@ -6,6 +6,7 @@ type t = [`snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot 
 (** Create a new Snapshot *)
 external new_ : unit -> t = "ml_gtk_snapshot_new"
 
+(* Methods *)
 (** Scales @snapshot's coordinate system by the given factors. *)
 external scale_3d : t -> float -> float -> float -> unit = "ml_gtk_snapshot_scale_3d"
 
@@ -61,15 +62,6 @@ external render_background : t -> Style_context.t -> float -> float -> float -> 
 The image is recorded until the next call to [method@Gtk.Snapshot.pop]. *)
 external push_opacity : t -> float -> unit = "ml_gtk_snapshot_push_opacity"
 
-(** Until the first call to [method@Gtk.Snapshot.pop], the
-mask image for the mask operation will be recorded.
-
-After that call, the source image will be recorded until
-the second call to [method@Gtk.Snapshot.pop].
-
-Calling this function requires 2 subsequent calls to gtk_snapshot_pop(). *)
-external push_mask : t -> Gsk_enums.maskmode -> unit = "ml_gtk_snapshot_push_mask"
-
 (** Snapshots a cross-fade operation between two images with the
 given @progress.
 
@@ -85,17 +77,6 @@ external push_cross_fade : t -> float -> unit = "ml_gtk_snapshot_push_cross_fade
 
 The image is recorded until the next call to [method@Gtk.Snapshot.pop]. *)
 external push_blur : t -> float -> unit = "ml_gtk_snapshot_push_blur"
-
-(** Blends together two images with the given blend mode.
-
-Until the first call to [method@Gtk.Snapshot.pop], the
-bottom image for the blend operation will be recorded.
-After that call, the top image to be blended will be
-recorded until the second call to [method@Gtk.Snapshot.pop].
-
-Calling this function requires two subsequent calls
-to [method@Gtk.Snapshot.pop]. *)
-external push_blend : t -> Gsk_enums.blendmode -> unit = "ml_gtk_snapshot_push_blend"
 
 (** Removes the top element from the stack of render nodes,
 and appends it to the node underneath it. *)

@@ -3,8 +3,7 @@
 
 type t = [`scrollable] Gobject.obj
 
-(* Properties *)
-
+(* Methods *)
 (** Sets the `GtkScrollablePolicy`.
 
 The policy determines whether vertical scrolling should start
@@ -42,4 +41,6 @@ An example for this would be treeview headers. GTK can use
 this information to display overlaid graphics, like the
 overshoot indication, at the right position. *)
 external get_border : t -> bool * Border.t = "ml_gtk_scrollable_get_border"
+
+(* Properties *)
 

@@ -3,3 +3,4 @@
 
 type t = [`im_multicontext_class] Gobject.obj
 
+(* Methods *)

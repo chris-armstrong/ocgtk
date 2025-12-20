@@ -8,3 +8,4 @@ signal handlers to %NULL, but must keep @get_text_area_size and
 a custom one. *)
 type t = [`entry_class] Gobject.obj
 
+(* Methods *)

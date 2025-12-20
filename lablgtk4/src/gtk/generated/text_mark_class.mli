@@ -3,3 +3,4 @@
 
 type t = [`text_mark_class] Gobject.obj
 
+(* Methods *)

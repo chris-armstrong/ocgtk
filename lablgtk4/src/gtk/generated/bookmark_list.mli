@@ -4,30 +4,19 @@
 type t = [`bookmark_list | `object_] Gobject.obj
 
 (** Create a new BookmarkList *)
-external new_ : string option -> string option -> t = "ml_gtk_bookmark_list_new"
+external new_ : unit -> string option -> t = "ml_gtk_bookmark_list_new"
 
-(* Properties *)
+(* Methods *)
+(** Sets the IO priority to use while loading files.
 
-(** Get property: attributes *)
-external get_attributes : t -> string = "ml_gtk_bookmark_list_get_attributes"
-
-(** Set property: attributes *)
-external set_attributes : t -> string -> unit = "ml_gtk_bookmark_list_set_attributes"
-
-(** Get property: filename *)
-external get_filename : t -> string = "ml_gtk_bookmark_list_get_filename"
-
-(** Get property: io-priority *)
-external get_io_priority : t -> int = "ml_gtk_bookmark_list_get_io_priority"
-
-(** Set property: io-priority *)
+The default IO priority is %G_PRIORITY_DEFAULT. *)
 external set_io_priority : t -> int -> unit = "ml_gtk_bookmark_list_set_io_priority"
 
-(** Get property: loading *)
-external get_loading : t -> bool = "ml_gtk_bookmark_list_get_loading"
+(** Sets the @attributes to be enumerated and starts the enumeration.
 
-(** Get property: n-items *)
-external get_n_items : t -> int = "ml_gtk_bookmark_list_get_n_items"
+If @attributes is %NULL, no attributes will be queried, but a list
+of `GFileInfo`s will still be created. *)
+external set_attributes : t -> string option -> unit = "ml_gtk_bookmark_list_set_attributes"
 
 (** Returns %TRUE if the files are currently being loaded.
 
@@ -35,4 +24,18 @@ Files will be added to @self from time to time while loading is
 going on. The order in which are added is undefined and may change
 in between runs. *)
 external is_loading : t -> bool = "ml_gtk_bookmark_list_is_loading"
+
+(** Gets the IO priority to use while loading file. *)
+external get_io_priority : t -> int = "ml_gtk_bookmark_list_get_io_priority"
+
+(** Gets the attributes queried on the children. *)
+external get_attributes : t -> string option = "ml_gtk_bookmark_list_get_attributes"
+
+(* Properties *)
+
+(** Get property: loading *)
+external get_loading : t -> bool = "ml_gtk_bookmark_list_get_loading"
+
+(** Get property: n-items *)
+external get_n_items : t -> int = "ml_gtk_bookmark_list_get_n_items"
 

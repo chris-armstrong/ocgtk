@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -21,14 +21,6 @@
 #define Val_GtkCellEditable(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GtkCellEditable */
 
-
-CAMLexport CAMLprim value ml_gtk_cell_editable_start_editing(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_cell_editable_start_editing(GtkCellEditable_val(self), Option_val(arg1, GdkEvent_val, NULL));
-CAMLreturn(Val_unit);
-}
 
 CAMLexport CAMLprim value ml_gtk_cell_editable_remove_widget(value self)
 {
@@ -51,7 +43,7 @@ CAMLexport CAMLprim value ml_gtk_cell_editable_get_editing_canceled(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellEditable *obj = (GtkCellEditable *)GtkCellEditable_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "editing-canceled");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_editable_get_editing_canceled: property 'editing-canceled' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -68,7 +60,7 @@ CAMLexport CAMLprim value ml_gtk_cell_editable_set_editing_canceled(value self, 
 {
 CAMLparam2(self, new_value);
 GtkCellEditable *obj = (GtkCellEditable *)GtkCellEditable_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "editing-canceled");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_editable_set_editing_canceled: property 'editing-canceled' not found");
 GValue prop_gvalue = G_VALUE_INIT;

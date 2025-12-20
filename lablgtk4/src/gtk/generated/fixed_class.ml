@@ -3,3 +3,4 @@
 
 type t = [`fixed_class] Gobject.obj
 
+(* Methods *)

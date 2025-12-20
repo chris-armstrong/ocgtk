@@ -3,6 +3,7 @@
 
 type t = [`tree_model] Gobject.obj
 
+(* Methods *)
 (** Lets the tree unref the node.
 
 This is an optional method for models to implement.
@@ -12,6 +13,14 @@ this means, see gtk_tree_model_ref_node().
 
 Please note that nodes that are deleted are not unreffed. *)
 external unref_node : t -> Tree_iter.t -> unit = "ml_gtk_tree_model_unref_node"
+
+(** Emits the ::rows-reordered signal on @tree_model.
+
+See [signal@Gtk.TreeModel::rows-reordered].
+
+This should be called by models when their rows have been
+reordered. *)
+external rows_reordered : t -> Tree_path.t -> Tree_iter.t -> int -> unit = "ml_gtk_tree_model_rows_reordered"
 
 (** Emits the ::row-inserted signal on @tree_model.
 
@@ -113,6 +122,13 @@ If @parent is %NULL returns the first node, equivalent to
 `gtk_tree_model_get_iter_first (tree_model, iter);` *)
 external iter_children : t -> Tree_iter.t option -> bool * Tree_iter.t = "ml_gtk_tree_model_iter_children"
 
+(** Generates a string representation of the iter.
+
+This string is a “:” separated list of numbers.
+For example, “4:10:0:3” would be an acceptable
+return value for this string. *)
+external get_string_from_iter : t -> Tree_iter.t -> string option = "ml_gtk_tree_model_get_string_from_iter"
+
 (** Returns a newly-created `GtkTreePath` referenced by @iter.
 
 This path should be freed with gtk_tree_path_free(). *)
@@ -138,15 +154,4 @@ external get_iter_first : t -> bool * Tree_iter.t = "ml_gtk_tree_model_get_iter_
 If @path does not exist, @iter is set to an invalid
 iterator and %FALSE is returned. *)
 external get_iter : t -> Tree_path.t -> bool * Tree_iter.t = "ml_gtk_tree_model_get_iter"
-
-(** Returns a set of flags supported by this interface.
-
-The flags are a bitwise combination of `GtkTreeModel`Flags.
-The flags supported should not change during the lifetime
-of the @tree_model. *)
-external get_flags : t -> Gtk_enums.treemodelflags = "ml_gtk_tree_model_get_flags"
-
-(** Creates a new `GtkTreeModel`, with @child_model as the child_model
-and @root as the virtual root. *)
-external filter_new : t -> Tree_path.t option -> t = "ml_gtk_tree_model_filter_new"
 

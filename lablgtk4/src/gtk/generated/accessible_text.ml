@@ -3,12 +3,24 @@
 
 type t = [`accessible_text] Gobject.obj
 
+(* Methods *)
 (** Updates the boundary of the selection.
 
 Implementations of the `GtkAccessibleText` interface should call this
 function every time the selection has moved, in order to notify assistive
 technologies. *)
 external update_selection_bound : t -> unit = "ml_gtk_accessible_text_update_selection_bound"
+
+(** Notifies assistive technologies of a change in contents.
+
+Implementations of the `GtkAccessibleText` interface should call this
+function every time their contents change as the result of an operation,
+like an insertion or a removal.
+
+Note: If the change is a deletion, this function must be called *before*
+removing the contents, if it is an insertion, it must be called *after*
+inserting the new contents. *)
+external update_contents : t -> Gtk_enums.accessibletextcontentchange -> int -> int -> unit = "ml_gtk_accessible_text_update_contents"
 
 (** Updates the position of the caret.
 

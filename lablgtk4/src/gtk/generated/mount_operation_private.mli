@@ -3,3 +3,4 @@
 
 type t = [`mount_operation_private] Gobject.obj
 
+(* Methods *)

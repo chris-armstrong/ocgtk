@@ -6,14 +6,7 @@ type t = [`recent_manager | `object_] Gobject.obj
 (** Create a new RecentManager *)
 external new_ : unit -> t = "ml_gtk_recent_manager_new"
 
-(* Properties *)
-
-(** Get property: filename *)
-external get_filename : t -> string = "ml_gtk_recent_manager_get_filename"
-
-(** Get property: size *)
-external get_size : t -> int = "ml_gtk_recent_manager_get_size"
-
+(* Methods *)
 (** Removes a resource pointed by @uri from the recently used resources
 list handled by a recent manager. *)
 external remove_item : t -> string -> (bool, GError.t) result = "ml_gtk_recent_manager_remove_item"
@@ -46,4 +39,12 @@ it then feeds the data to [method@Gtk.RecentManager.add_full].
 See [method@Gtk.RecentManager.add_full] if you want to explicitly
 define the metadata for the resource pointed by @uri. *)
 external add_item : t -> string -> bool = "ml_gtk_recent_manager_add_item"
+
+(* Properties *)
+
+(** Get property: filename *)
+external get_filename : t -> string = "ml_gtk_recent_manager_get_filename"
+
+(** Get property: size *)
+external get_size : t -> int = "ml_gtk_recent_manager_get_size"
 

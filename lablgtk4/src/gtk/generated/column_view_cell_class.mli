@@ -3,3 +3,4 @@
 
 type t = [`column_view_cell_class] Gobject.obj
 
+(* Methods *)

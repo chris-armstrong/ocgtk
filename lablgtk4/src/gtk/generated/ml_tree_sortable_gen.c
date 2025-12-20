@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -44,4 +44,19 @@ CAMLparam1(self);
 
 gboolean result = gtk_tree_sortable_has_default_sort_func(GtkTreeSortable_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_sortable_get_sort_column_id(value self)
+{
+CAMLparam1(self);
+int out1;
+GtkSortType out2;
+
+gboolean result = gtk_tree_sortable_get_sort_column_id(GtkTreeSortable_val(self), &out1, &out2);
+CAMLlocal1(ret);
+    ret = caml_alloc(3, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_int(out1));
+    Store_field(ret, 2, Val_GtkSortType(out2));
+    CAMLreturn(ret);
 }

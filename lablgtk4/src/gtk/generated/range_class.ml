@@ -3,3 +3,4 @@
 
 type t = [`range_class] Gobject.obj
 
+(* Methods *)

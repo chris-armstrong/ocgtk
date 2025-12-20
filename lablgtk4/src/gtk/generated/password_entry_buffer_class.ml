@@ -3,3 +3,4 @@
 
 type t = [`password_entry_buffer_class] Gobject.obj
 
+(* Methods *)

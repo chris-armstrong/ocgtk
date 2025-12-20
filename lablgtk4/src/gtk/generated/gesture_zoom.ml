@@ -8,6 +8,7 @@ let as_event_controller (obj : t) : Event_controller_and__layout_child_and__layo
 (** Create a new GestureZoom *)
 external new_ : unit -> t = "ml_gtk_gesture_zoom_new"
 
+(* Methods *)
 (** Gets the scale delta.
 
 If @gesture is active, this function returns the zooming

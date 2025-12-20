@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -21,6 +21,24 @@
 #define Val_GtkLayoutManager(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GtkLayoutManager */
 
+
+CAMLexport CAMLprim value ml_gtk_layout_manager_measure(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+int out4;
+int out5;
+int out6;
+int out7;
+
+gtk_layout_manager_measure(GtkLayoutManager_val(self), GtkWidget_val(arg1), GtkOrientation_val(arg2), Int_val(arg3), &out4, &out5, &out6, &out7);
+CAMLlocal1(ret);
+    ret = caml_alloc(4, 0);
+    Store_field(ret, 0, Val_int(out4));
+    Store_field(ret, 1, Val_int(out5));
+    Store_field(ret, 2, Val_int(out6));
+    Store_field(ret, 3, Val_int(out7));
+    CAMLreturn(ret);
+}
 
 CAMLexport CAMLprim value ml_gtk_layout_manager_layout_changed(value self)
 {
@@ -35,7 +53,7 @@ CAMLexport CAMLprim value ml_gtk_layout_manager_get_widget(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_layout_manager_get_widget(GtkLayoutManager_val(self));
-CAMLreturn(Val_GtkWidget_option(result));
+CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
 CAMLexport CAMLprim value ml_gtk_layout_manager_get_request_mode(value self)

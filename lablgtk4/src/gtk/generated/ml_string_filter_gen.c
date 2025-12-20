@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -29,11 +29,27 @@ GtkStringFilter *obj = gtk_string_filter_new(Option_val(arg1, GtkExpression_val,
 CAMLreturn(Val_GtkStringFilter(obj));
 }
 
+CAMLexport CAMLprim value ml_gtk_string_filter_set_search(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_string_filter_set_search(GtkStringFilter_val(self), String_option_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_string_filter_set_match_mode(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gtk_string_filter_set_match_mode(GtkStringFilter_val(self), GtkStringFilterMatchMode_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_string_filter_set_ignore_case(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_string_filter_set_ignore_case(GtkStringFilter_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -45,6 +61,14 @@ gtk_string_filter_set_expression(GtkStringFilter_val(self), Option_val(arg1, Gtk
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_string_filter_get_search(value self)
+{
+CAMLparam1(self);
+
+const char* result = gtk_string_filter_get_search(GtkStringFilter_val(self));
+CAMLreturn(Val_option_string(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_string_filter_get_match_mode(value self)
 {
 CAMLparam1(self);
@@ -53,76 +77,18 @@ GtkStringFilterMatchMode result = gtk_string_filter_get_match_mode(GtkStringFilt
 CAMLreturn(Val_GtkStringFilterMatchMode(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_string_filter_get_ignore_case(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_string_filter_get_ignore_case(GtkStringFilter_val(self));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_string_filter_get_expression(value self)
 {
 CAMLparam1(self);
 
 GtkExpression* result = gtk_string_filter_get_expression(GtkStringFilter_val(self));
 CAMLreturn(Val_option(result, Val_GtkExpression));
-}
-
-CAMLexport CAMLprim value ml_gtk_string_filter_get_ignore_case(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkStringFilter *obj = (GtkStringFilter *)GtkStringFilter_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "ignore-case");
-if (pspec == NULL) caml_failwith("ml_gtk_string_filter_get_ignore_case: property 'ignore-case' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "ignore-case", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_string_filter_set_ignore_case(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkStringFilter *obj = (GtkStringFilter *)GtkStringFilter_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "ignore-case");
-if (pspec == NULL) caml_failwith("ml_gtk_string_filter_set_ignore_case: property 'ignore-case' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "ignore-case", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_string_filter_get_search(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkStringFilter *obj = (GtkStringFilter *)GtkStringFilter_val(self);
-    gchar* *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "search");
-if (pspec == NULL) caml_failwith("ml_gtk_string_filter_get_search: property 'search' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "search", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
-
-result = caml_copy_string(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_string_filter_set_search(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkStringFilter *obj = (GtkStringFilter *)GtkStringFilter_val(self);
-    ML_DECL_CONST_STRING(c_value, String_val(new_value));
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "search");
-if (pspec == NULL) caml_failwith("ml_gtk_string_filter_set_search: property 'search' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_string(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "search", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
 }

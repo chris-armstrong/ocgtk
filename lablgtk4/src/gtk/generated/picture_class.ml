@@ -3,3 +3,4 @@
 
 type t = [`picture_class] Gobject.obj
 
+(* Methods *)

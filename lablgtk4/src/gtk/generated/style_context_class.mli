@@ -3,3 +3,4 @@
 
 type t = [`style_context_class] Gobject.obj
 
+(* Methods *)

@@ -9,16 +9,11 @@ external new_ : unit -> t = "ml_gtk_print_settings_new"
 (** Create a new PrintSettings *)
 external new_from_gvariant : unit -> t = "ml_gtk_print_settings_new_from_gvariant"
 
+(* Methods *)
 (** Removes any value associated with @key.
 
 This has the same effect as setting the value to %NULL. *)
 external unset : t -> string -> unit = "ml_gtk_print_settings_unset"
-
-(** This function saves the print settings from @settings to @file_name.
-
-If the file could not be written then error is set to either a
-`GFileError` or `GKeyFileError`. *)
-external to_file : t -> string -> (bool, GError.t) result = "ml_gtk_print_settings_to_file"
 
 (** Sets the value of %GTK_PRINT_SETTINGS_USE_COLOR. *)
 external set_use_color : t -> bool -> unit = "ml_gtk_print_settings_set_use_color"
@@ -53,7 +48,7 @@ external set_printer : t -> string -> unit = "ml_gtk_print_settings_set_printer"
 external set_print_pages : t -> Gtk_enums.printpages -> unit = "ml_gtk_print_settings_set_print_pages"
 
 (** Sets the value of %GTK_PRINT_SETTINGS_PAPER_WIDTH. *)
-external set_paper_width : t -> float -> unit -> unit = "ml_gtk_print_settings_set_paper_width"
+external set_paper_width : t -> float -> Gtk_enums.unit -> unit = "ml_gtk_print_settings_set_paper_width"
 
 (** Sets the value of %GTK_PRINT_SETTINGS_PAPER_FORMAT,
 %GTK_PRINT_SETTINGS_PAPER_WIDTH and
@@ -61,7 +56,7 @@ external set_paper_width : t -> float -> unit -> unit = "ml_gtk_print_settings_s
 external set_paper_size : t -> Paper_size.t -> unit = "ml_gtk_print_settings_set_paper_size"
 
 (** Sets the value of %GTK_PRINT_SETTINGS_PAPER_HEIGHT. *)
-external set_paper_height : t -> float -> unit -> unit = "ml_gtk_print_settings_set_paper_height"
+external set_paper_height : t -> float -> Gtk_enums.unit -> unit = "ml_gtk_print_settings_set_paper_height"
 
 (** Sets the value of %GTK_PRINT_SETTINGS_PAGE_SET. *)
 external set_page_set : t -> Gtk_enums.pageset -> unit = "ml_gtk_print_settings_set_page_set"
@@ -87,7 +82,7 @@ The set of media types is defined in PWG 5101.1-2002 PWG. *)
 external set_media_type : t -> string -> unit = "ml_gtk_print_settings_set_media_type"
 
 (** Associates a length in units of @unit with @key. *)
-external set_length : t -> string -> float -> unit -> unit = "ml_gtk_print_settings_set_length"
+external set_length : t -> string -> float -> Gtk_enums.unit -> unit = "ml_gtk_print_settings_set_length"
 
 (** Sets @key to an integer value. *)
 external set_int : t -> string -> int -> unit = "ml_gtk_print_settings_set_int"
@@ -115,14 +110,6 @@ external set_bool : t -> string -> bool -> unit = "ml_gtk_print_settings_set_boo
 
 (** Associates @value with @key. *)
 external set : t -> string -> string option -> unit = "ml_gtk_print_settings_set"
-
-(** Reads the print settings from @file_name.
-
-If the file could not be loaded then error is set to either
-a `GFileError` or `GKeyFileError`.
-
-See [method@Gtk.PrintSettings.to_file]. *)
-external load_file : t -> string -> (bool, GError.t) result = "ml_gtk_print_settings_load_file"
 
 (** Returns %TRUE, if a value is associated with @key. *)
 external has_key : t -> string -> bool = "ml_gtk_print_settings_has_key"
@@ -160,7 +147,7 @@ external get_print_pages : t -> Gtk_enums.printpages = "ml_gtk_print_settings_ge
 
 (** Gets the value of %GTK_PRINT_SETTINGS_PAPER_WIDTH,
 converted to @unit. *)
-external get_paper_width : t -> unit -> float = "ml_gtk_print_settings_get_paper_width"
+external get_paper_width : t -> Gtk_enums.unit -> float = "ml_gtk_print_settings_get_paper_width"
 
 (** Gets the value of %GTK_PRINT_SETTINGS_PAPER_FORMAT,
 converted to a `GtkPaperSize`. *)
@@ -168,7 +155,7 @@ external get_paper_size : t -> Paper_size.t option = "ml_gtk_print_settings_get_
 
 (** Gets the value of %GTK_PRINT_SETTINGS_PAPER_HEIGHT,
 converted to @unit. *)
-external get_paper_height : t -> unit -> float = "ml_gtk_print_settings_get_paper_height"
+external get_paper_height : t -> Gtk_enums.unit -> float = "ml_gtk_print_settings_get_paper_height"
 
 (** Gets the value of %GTK_PRINT_SETTINGS_PAGE_SET. *)
 external get_page_set : t -> Gtk_enums.pageset = "ml_gtk_print_settings_get_page_set"
@@ -198,7 +185,7 @@ external get_media_type : t -> string option = "ml_gtk_print_settings_get_media_
 as a length.
 
 The returned value is converted to @units. *)
-external get_length : t -> string -> unit -> float = "ml_gtk_print_settings_get_length"
+external get_length : t -> string -> Gtk_enums.unit -> float = "ml_gtk_print_settings_get_length"
 
 (** Returns the value of @key, interpreted as
 an integer, or the default value. *)

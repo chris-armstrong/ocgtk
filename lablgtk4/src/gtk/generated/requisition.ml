@@ -9,6 +9,7 @@ type t = [`requisition] Gobject.obj
 (** Create a new Requisition *)
 external new_ : unit -> t = "ml_gtk_requisition_new"
 
+(* Methods *)
 (** Frees a `GtkRequisition`. *)
 external free : t -> unit = "ml_gtk_requisition_free"
 

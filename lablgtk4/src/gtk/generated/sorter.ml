@@ -3,6 +3,7 @@
 
 type t = [`sorter | `object_] Gobject.obj
 
+(* Methods *)
 (** Gets the order that @self conforms to.
 
 See [enum@Gtk.SorterOrder] for details

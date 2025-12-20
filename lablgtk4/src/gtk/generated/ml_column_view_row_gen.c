@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -22,203 +22,98 @@
 #endif /* Val_GtkColumnViewRow */
 
 
-CAMLexport CAMLprim value ml_gtk_column_view_row_get_accessible_description(value self)
+CAMLexport CAMLprim value ml_gtk_column_view_row_set_selectable(value self, value arg1)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkColumnViewRow *obj = (GtkColumnViewRow *)GtkColumnViewRow_val(self);
-    gchar* *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accessible-description");
-if (pspec == NULL) caml_failwith("ml_gtk_column_view_row_get_accessible_description: property 'accessible-description' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "accessible-description", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
+CAMLparam2(self, arg1);
 
-result = caml_copy_string(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_column_view_row_set_accessible_description(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkColumnViewRow *obj = (GtkColumnViewRow *)GtkColumnViewRow_val(self);
-    ML_DECL_CONST_STRING(c_value, String_val(new_value));
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accessible-description");
-if (pspec == NULL) caml_failwith("ml_gtk_column_view_row_set_accessible_description: property 'accessible-description' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_string(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "accessible-description", &prop_gvalue);
-g_value_unset(&prop_gvalue);
+gtk_column_view_row_set_selectable(GtkColumnViewRow_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_column_view_row_get_accessible_label(value self)
+CAMLexport CAMLprim value ml_gtk_column_view_row_set_focusable(value self, value arg1)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkColumnViewRow *obj = (GtkColumnViewRow *)GtkColumnViewRow_val(self);
-    gchar* *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accessible-label");
-if (pspec == NULL) caml_failwith("ml_gtk_column_view_row_get_accessible_label: property 'accessible-label' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "accessible-label", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
+CAMLparam2(self, arg1);
 
-result = caml_copy_string(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_column_view_row_set_accessible_label(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkColumnViewRow *obj = (GtkColumnViewRow *)GtkColumnViewRow_val(self);
-    ML_DECL_CONST_STRING(c_value, String_val(new_value));
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accessible-label");
-if (pspec == NULL) caml_failwith("ml_gtk_column_view_row_set_accessible_label: property 'accessible-label' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_string(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "accessible-label", &prop_gvalue);
-g_value_unset(&prop_gvalue);
+gtk_column_view_row_set_focusable(GtkColumnViewRow_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_column_view_row_get_activatable(value self)
+CAMLexport CAMLprim value ml_gtk_column_view_row_set_activatable(value self, value arg1)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkColumnViewRow *obj = (GtkColumnViewRow *)GtkColumnViewRow_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "activatable");
-if (pspec == NULL) caml_failwith("ml_gtk_column_view_row_get_activatable: property 'activatable' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "activatable", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+CAMLparam2(self, arg1);
 
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_column_view_row_set_activatable(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkColumnViewRow *obj = (GtkColumnViewRow *)GtkColumnViewRow_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "activatable");
-if (pspec == NULL) caml_failwith("ml_gtk_column_view_row_set_activatable: property 'activatable' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "activatable", &prop_gvalue);
-g_value_unset(&prop_gvalue);
+gtk_column_view_row_set_activatable(GtkColumnViewRow_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_column_view_row_get_focusable(value self)
+CAMLexport CAMLprim value ml_gtk_column_view_row_set_accessible_label(value self, value arg1)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkColumnViewRow *obj = (GtkColumnViewRow *)GtkColumnViewRow_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "focusable");
-if (pspec == NULL) caml_failwith("ml_gtk_column_view_row_get_focusable: property 'focusable' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "focusable", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+CAMLparam2(self, arg1);
 
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_column_view_row_set_focusable(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkColumnViewRow *obj = (GtkColumnViewRow *)GtkColumnViewRow_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "focusable");
-if (pspec == NULL) caml_failwith("ml_gtk_column_view_row_set_focusable: property 'focusable' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "focusable", &prop_gvalue);
-g_value_unset(&prop_gvalue);
+gtk_column_view_row_set_accessible_label(GtkColumnViewRow_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_column_view_row_get_position(value self)
+CAMLexport CAMLprim value ml_gtk_column_view_row_set_accessible_description(value self, value arg1)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkColumnViewRow *obj = (GtkColumnViewRow *)GtkColumnViewRow_val(self);
-    guint prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "position");
-if (pspec == NULL) caml_failwith("ml_gtk_column_view_row_get_position: property 'position' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "position", &prop_gvalue);
-    prop_value = (guint)g_value_get_uint(&prop_gvalue);
+CAMLparam2(self, arg1);
 
-result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_column_view_row_get_selectable(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkColumnViewRow *obj = (GtkColumnViewRow *)GtkColumnViewRow_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "selectable");
-if (pspec == NULL) caml_failwith("ml_gtk_column_view_row_get_selectable: property 'selectable' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "selectable", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_column_view_row_set_selectable(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkColumnViewRow *obj = (GtkColumnViewRow *)GtkColumnViewRow_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "selectable");
-if (pspec == NULL) caml_failwith("ml_gtk_column_view_row_set_selectable: property 'selectable' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "selectable", &prop_gvalue);
-g_value_unset(&prop_gvalue);
+gtk_column_view_row_set_accessible_description(GtkColumnViewRow_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_column_view_row_get_selected(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkColumnViewRow *obj = (GtkColumnViewRow *)GtkColumnViewRow_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "selected");
-if (pspec == NULL) caml_failwith("ml_gtk_column_view_row_get_selected: property 'selected' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "selected", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
+gboolean result = gtk_column_view_row_get_selected(GtkColumnViewRow_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_row_get_selectable(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_column_view_row_get_selectable(GtkColumnViewRow_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_row_get_position(value self)
+{
+CAMLparam1(self);
+
+guint result = gtk_column_view_row_get_position(GtkColumnViewRow_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_row_get_focusable(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_column_view_row_get_focusable(GtkColumnViewRow_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_row_get_activatable(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_column_view_row_get_activatable(GtkColumnViewRow_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_row_get_accessible_label(value self)
+{
+CAMLparam1(self);
+
+const char* result = gtk_column_view_row_get_accessible_label(GtkColumnViewRow_val(self));
+CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_row_get_accessible_description(value self)
+{
+CAMLparam1(self);
+
+const char* result = gtk_column_view_row_get_accessible_description(GtkColumnViewRow_val(self));
+CAMLreturn(caml_copy_string(result));
 }

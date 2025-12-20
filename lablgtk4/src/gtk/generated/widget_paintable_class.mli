@@ -3,3 +3,4 @@
 
 type t = [`widget_paintable_class] Gobject.obj
 
+(* Methods *)

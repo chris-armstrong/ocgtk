@@ -8,25 +8,13 @@ let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager
 (** Create a new Box *)
 external new_ : Gtk_enums.orientation -> int -> t = "ml_gtk_box_new"
 
-(* Properties *)
-
-(** Get property: baseline-child *)
-external get_baseline_child : t -> int = "ml_gtk_box_get_baseline_child"
-
-(** Set property: baseline-child *)
-external set_baseline_child : t -> int -> unit = "ml_gtk_box_set_baseline_child"
-
-(** Get property: homogeneous *)
-external get_homogeneous : t -> bool = "ml_gtk_box_get_homogeneous"
-
-(** Set property: homogeneous *)
-external set_homogeneous : t -> bool -> unit = "ml_gtk_box_set_homogeneous"
-
-(** Get property: spacing *)
-external get_spacing : t -> int = "ml_gtk_box_get_spacing"
-
-(** Set property: spacing *)
+(* Methods *)
+(** Sets the number of pixels to place between children of @box. *)
 external set_spacing : t -> int -> unit = "ml_gtk_box_set_spacing"
+
+(** Sets whether or not all children of @box are given equal space
+in the box. *)
+external set_homogeneous : t -> bool -> unit = "ml_gtk_box_set_homogeneous"
 
 (** Sets the baseline position of a box.
 
@@ -36,6 +24,11 @@ requested, and the baseline is not allocated by the parent then
 @position is used to allocate the baseline with respect to the
 extra space available. *)
 external set_baseline_position : t -> Gtk_enums.baselineposition -> unit = "ml_gtk_box_set_baseline_position"
+
+(** Sets the baseline child of a box.
+
+This affects only vertical boxes. *)
+external set_baseline_child : t -> int -> unit = "ml_gtk_box_set_baseline_child"
 
 (** Moves @child to the position after @sibling in the list
 of @box children.
@@ -59,9 +52,21 @@ of @box children.
 If @sibling is %NULL, insert @child at the first position. *)
 external insert_child_after : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_box_insert_child_after"
 
+(** Gets the value set by gtk_box_set_spacing(). *)
+external get_spacing : t -> int = "ml_gtk_box_get_spacing"
+
+(** Returns whether the box is homogeneous (all children are the
+same size). *)
+external get_homogeneous : t -> bool = "ml_gtk_box_get_homogeneous"
+
 (** Gets the value set by gtk_box_set_baseline_position(). *)
 external get_baseline_position : t -> Gtk_enums.baselineposition = "ml_gtk_box_get_baseline_position"
 
+(** Gets the value set by gtk_box_set_baseline_child(). *)
+external get_baseline_child : t -> int = "ml_gtk_box_get_baseline_child"
+
 (** Adds @child as the last child to @box. *)
 external append : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_box_append"
+
+(* Properties *)
 

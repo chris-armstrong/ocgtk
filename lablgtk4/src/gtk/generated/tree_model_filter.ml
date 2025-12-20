@@ -3,11 +3,7 @@
 
 type t = [`tree_model_filter | `object_] Gobject.obj
 
-(* Properties *)
-
-(** Get property: virtual-root *)
-external get_virtual_root : t -> Tree_path.t = "ml_gtk_tree_model_filter_get_virtual_root"
-
+(* Methods *)
 (** Sets @column of the child_model to be the column where @filter should
 look for visibility information. @columns should be a column of type
 %G_TYPE_BOOLEAN, where %TRUE means that a row is visible, and %FALSE
@@ -21,9 +17,6 @@ external set_visible_column : t -> int -> unit = "ml_gtk_tree_model_filter_set_v
 (** Emits ::row_changed for each row in the child model, which causes
 the filter to re-evaluate whether a row is visible or not. *)
 external refilter : t -> unit = "ml_gtk_tree_model_filter_refilter"
-
-(** Returns a pointer to the child model of @filter. *)
-external get_model : t -> Tree_model.t = "ml_gtk_tree_model_filter_get_model"
 
 (** Converts @filter_path to a path on the child model of @filter. That is,
 @filter_path points to a location in @filter. The returned path will
@@ -53,4 +46,9 @@ being filtered is static (and doesn’t change often) and there has been
 a lot of unreffed access to nodes. As a side effect of this function,
 all unreffed iters will be invalid. *)
 external clear_cache : t -> unit = "ml_gtk_tree_model_filter_clear_cache"
+
+(* Properties *)
+
+(** Get property: virtual-root *)
+external get_virtual_root : t -> Tree_path.t = "ml_gtk_tree_model_filter_get_virtual_root"
 

@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -116,21 +116,6 @@ CAMLparam1(self);
 
 GtkTreeView* result = gtk_tree_selection_get_tree_view(GtkTreeSelection_val(self));
 CAMLreturn(Val_GtkTreeView(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_selection_get_selected(value self)
-{
-CAMLparam1(self);
-GtkTreeModel* out1;
-GtkTreeIter out2;
-
-gboolean result = gtk_tree_selection_get_selected(GtkTreeSelection_val(self), &out1, &out2);
-CAMLlocal1(ret);
-    ret = caml_alloc(3, 0);
-    Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTreeModel(out1));
-    Store_field(ret, 2, Val_GtkTreeIter(out2));
-    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_selection_get_mode(value self)

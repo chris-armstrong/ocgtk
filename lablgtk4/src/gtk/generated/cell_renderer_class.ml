@@ -3,3 +3,4 @@
 
 type t = [`cell_renderer_class] Gobject.obj
 
+(* Methods *)

@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -58,7 +58,7 @@ CAMLexport CAMLprim value ml_gtk_dialog_get_widget_for_response(value self, valu
 CAMLparam2(self, arg1);
 
 GtkWidget* result = gtk_dialog_get_widget_for_response(GtkDialog_val(self), Int_val(arg1));
-CAMLreturn(Val_GtkWidget_option(result));
+CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
 CAMLexport CAMLprim value ml_gtk_dialog_get_response_for_widget(value self, value arg1)
@@ -74,7 +74,7 @@ CAMLexport CAMLprim value ml_gtk_dialog_get_header_bar(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_dialog_get_header_bar(GtkDialog_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkHeaderBar(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_dialog_get_content_area(value self)
@@ -82,7 +82,7 @@ CAMLexport CAMLprim value ml_gtk_dialog_get_content_area(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_dialog_get_content_area(GtkDialog_val(self));
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkBox(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_dialog_add_button(value self, value arg1, value arg2)

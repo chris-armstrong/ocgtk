@@ -2,10 +2,13 @@
 class viewport (obj : Viewport.t) = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Viewport.as_widget obj)
 
-  method scroll_to_focus = Viewport.get_scroll_to_focus obj
-  method set_scroll_to_focus v = Viewport.set_scroll_to_focus obj v
+  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
+    fun () ->
+      Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Viewport.get_child obj)
 
-  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option = fun () -> Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Viewport.get_child obj )
+  method get_scroll_to_focus : unit -> bool =
+    fun () ->
+      (Viewport.get_scroll_to_focus obj)
 
   method scroll_to : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> Scroll_info.t option -> unit =
     fun descendant scroll ->
@@ -16,6 +19,10 @@ class viewport (obj : Viewport.t) = object (self)
     fun child ->
       let child = Option.map (fun (c) -> c#as_widget) child in
       (Viewport.set_child obj child)
+
+  method set_scroll_to_focus : bool -> unit =
+    fun scroll_to_focus ->
+      (Viewport.set_scroll_to_focus obj scroll_to_focus)
 
   method as_widget = (Viewport.as_widget obj)
     method as_viewport = obj

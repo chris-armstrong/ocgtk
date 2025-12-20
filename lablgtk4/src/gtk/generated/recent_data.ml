@@ -5,3 +5,4 @@
 registering a recently used resource. *)
 type t = [`recent_data] Gobject.obj
 
+(* Methods *)

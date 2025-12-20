@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -35,11 +35,107 @@ CAMLexport CAMLprim value ml_gtk_adjustment_new_bytecode(value * argv, int argn)
 return ml_gtk_adjustment_new_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
 }
 
+CAMLexport CAMLprim value ml_gtk_adjustment_set_value(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_adjustment_set_value(GtkAdjustment_val(self), Double_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_adjustment_set_upper(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_adjustment_set_upper(GtkAdjustment_val(self), Double_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_adjustment_set_step_increment(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_adjustment_set_step_increment(GtkAdjustment_val(self), Double_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_adjustment_set_page_size(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_adjustment_set_page_size(GtkAdjustment_val(self), Double_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_adjustment_set_page_increment(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_adjustment_set_page_increment(GtkAdjustment_val(self), Double_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_adjustment_set_lower(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_adjustment_set_lower(GtkAdjustment_val(self), Double_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_adjustment_get_value(value self)
+{
+CAMLparam1(self);
+
+double result = gtk_adjustment_get_value(GtkAdjustment_val(self));
+CAMLreturn(caml_copy_double(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_adjustment_get_upper(value self)
+{
+CAMLparam1(self);
+
+double result = gtk_adjustment_get_upper(GtkAdjustment_val(self));
+CAMLreturn(caml_copy_double(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_adjustment_get_step_increment(value self)
+{
+CAMLparam1(self);
+
+double result = gtk_adjustment_get_step_increment(GtkAdjustment_val(self));
+CAMLreturn(caml_copy_double(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_adjustment_get_page_size(value self)
+{
+CAMLparam1(self);
+
+double result = gtk_adjustment_get_page_size(GtkAdjustment_val(self));
+CAMLreturn(caml_copy_double(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_adjustment_get_page_increment(value self)
+{
+CAMLparam1(self);
+
+double result = gtk_adjustment_get_page_increment(GtkAdjustment_val(self));
+CAMLreturn(caml_copy_double(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_adjustment_get_minimum_increment(value self)
 {
 CAMLparam1(self);
 
 double result = gtk_adjustment_get_minimum_increment(GtkAdjustment_val(self));
+CAMLreturn(caml_copy_double(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_adjustment_get_lower(value self)
+{
+CAMLparam1(self);
+
+double result = gtk_adjustment_get_lower(GtkAdjustment_val(self));
 CAMLreturn(caml_copy_double(result));
 }
 
@@ -62,203 +158,5 @@ CAMLexport CAMLprim value ml_gtk_adjustment_clamp_page(value self, value arg1, v
 CAMLparam3(self, arg1, arg2);
 
 gtk_adjustment_clamp_page(GtkAdjustment_val(self), Double_val(arg1), Double_val(arg2));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_adjustment_get_lower(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkAdjustment *obj = (GtkAdjustment *)GtkAdjustment_val(self);
-    gdouble prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "lower");
-if (pspec == NULL) caml_failwith("ml_gtk_adjustment_get_lower: property 'lower' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "lower", &prop_gvalue);
-    prop_value = g_value_get_double(&prop_gvalue);
-
-result = caml_copy_double(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_adjustment_set_lower(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkAdjustment *obj = (GtkAdjustment *)GtkAdjustment_val(self);
-    gdouble c_value = Double_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "lower");
-if (pspec == NULL) caml_failwith("ml_gtk_adjustment_set_lower: property 'lower' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_double(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "lower", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_adjustment_get_page_increment(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkAdjustment *obj = (GtkAdjustment *)GtkAdjustment_val(self);
-    gdouble prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "page-increment");
-if (pspec == NULL) caml_failwith("ml_gtk_adjustment_get_page_increment: property 'page-increment' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "page-increment", &prop_gvalue);
-    prop_value = g_value_get_double(&prop_gvalue);
-
-result = caml_copy_double(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_adjustment_set_page_increment(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkAdjustment *obj = (GtkAdjustment *)GtkAdjustment_val(self);
-    gdouble c_value = Double_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "page-increment");
-if (pspec == NULL) caml_failwith("ml_gtk_adjustment_set_page_increment: property 'page-increment' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_double(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "page-increment", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_adjustment_get_page_size(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkAdjustment *obj = (GtkAdjustment *)GtkAdjustment_val(self);
-    gdouble prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "page-size");
-if (pspec == NULL) caml_failwith("ml_gtk_adjustment_get_page_size: property 'page-size' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "page-size", &prop_gvalue);
-    prop_value = g_value_get_double(&prop_gvalue);
-
-result = caml_copy_double(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_adjustment_set_page_size(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkAdjustment *obj = (GtkAdjustment *)GtkAdjustment_val(self);
-    gdouble c_value = Double_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "page-size");
-if (pspec == NULL) caml_failwith("ml_gtk_adjustment_set_page_size: property 'page-size' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_double(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "page-size", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_adjustment_get_step_increment(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkAdjustment *obj = (GtkAdjustment *)GtkAdjustment_val(self);
-    gdouble prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "step-increment");
-if (pspec == NULL) caml_failwith("ml_gtk_adjustment_get_step_increment: property 'step-increment' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "step-increment", &prop_gvalue);
-    prop_value = g_value_get_double(&prop_gvalue);
-
-result = caml_copy_double(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_adjustment_set_step_increment(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkAdjustment *obj = (GtkAdjustment *)GtkAdjustment_val(self);
-    gdouble c_value = Double_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "step-increment");
-if (pspec == NULL) caml_failwith("ml_gtk_adjustment_set_step_increment: property 'step-increment' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_double(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "step-increment", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_adjustment_get_upper(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkAdjustment *obj = (GtkAdjustment *)GtkAdjustment_val(self);
-    gdouble prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "upper");
-if (pspec == NULL) caml_failwith("ml_gtk_adjustment_get_upper: property 'upper' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "upper", &prop_gvalue);
-    prop_value = g_value_get_double(&prop_gvalue);
-
-result = caml_copy_double(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_adjustment_set_upper(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkAdjustment *obj = (GtkAdjustment *)GtkAdjustment_val(self);
-    gdouble c_value = Double_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "upper");
-if (pspec == NULL) caml_failwith("ml_gtk_adjustment_set_upper: property 'upper' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_double(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "upper", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_adjustment_get_value(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkAdjustment *obj = (GtkAdjustment *)GtkAdjustment_val(self);
-    gdouble prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "value");
-if (pspec == NULL) caml_failwith("ml_gtk_adjustment_get_value: property 'value' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "value", &prop_gvalue);
-    prop_value = g_value_get_double(&prop_gvalue);
-
-result = caml_copy_double(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_adjustment_set_value(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkAdjustment *obj = (GtkAdjustment *)GtkAdjustment_val(self);
-    gdouble c_value = Double_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "value");
-if (pspec == NULL) caml_failwith("ml_gtk_adjustment_set_value: property 'value' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_double(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "value", &prop_gvalue);
-g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }

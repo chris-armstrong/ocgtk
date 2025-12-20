@@ -3,3 +3,4 @@
 
 type t = [`editable_interface] Gobject.obj
 
+(* Methods *)

@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -30,11 +30,43 @@ gtk_cell_renderer_stop_editing(GtkCellRenderer_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_cell_renderer_set_visible(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_cell_renderer_set_visible(GtkCellRenderer_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_set_sensitive(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_cell_renderer_set_sensitive(GtkCellRenderer_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_cell_renderer_set_padding(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
 
 gtk_cell_renderer_set_padding(GtkCellRenderer_val(self), Int_val(arg1), Int_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_set_is_expander(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_cell_renderer_set_is_expander(GtkCellRenderer_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_set_is_expanded(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_cell_renderer_set_is_expanded(GtkCellRenderer_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -62,12 +94,20 @@ gboolean result = gtk_cell_renderer_is_activatable(GtkCellRenderer_val(self));
 CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_cell_renderer_get_state(value self, value arg1, value arg2)
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_visible(value self)
 {
-CAMLparam3(self, arg1, arg2);
+CAMLparam1(self);
 
-GtkStateFlags result = gtk_cell_renderer_get_state(GtkCellRenderer_val(self), GtkWidget_option_val(arg1), GtkCellRendererState_val(arg2));
-CAMLreturn(Val_GtkStateFlags(result));
+gboolean result = gtk_cell_renderer_get_visible(GtkCellRenderer_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_sensitive(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_cell_renderer_get_sensitive(GtkCellRenderer_val(self));
+CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_cell_renderer_get_request_mode(value self)
@@ -76,6 +116,34 @@ CAMLparam1(self);
 
 GtkSizeRequestMode result = gtk_cell_renderer_get_request_mode(GtkCellRenderer_val(self));
 CAMLreturn(Val_GtkSizeRequestMode(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_preferred_width_for_height(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+int out3;
+int out4;
+
+gtk_cell_renderer_get_preferred_width_for_height(GtkCellRenderer_val(self), GtkWidget_val(arg1), Int_val(arg2), &out3, &out4);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out3));
+    Store_field(ret, 1, Val_int(out4));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_preferred_width(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+int out2;
+int out3;
+
+gtk_cell_renderer_get_preferred_width(GtkCellRenderer_val(self), GtkWidget_val(arg1), &out2, &out3);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out2));
+    Store_field(ret, 1, Val_int(out3));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_cell_renderer_get_preferred_size(value self, value arg1)
@@ -89,6 +157,92 @@ CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_GtkRequisition(out2));
     Store_field(ret, 1, Val_GtkRequisition(out3));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_preferred_height_for_width(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+int out3;
+int out4;
+
+gtk_cell_renderer_get_preferred_height_for_width(GtkCellRenderer_val(self), GtkWidget_val(arg1), Int_val(arg2), &out3, &out4);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out3));
+    Store_field(ret, 1, Val_int(out4));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_preferred_height(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+int out2;
+int out3;
+
+gtk_cell_renderer_get_preferred_height(GtkCellRenderer_val(self), GtkWidget_val(arg1), &out2, &out3);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out2));
+    Store_field(ret, 1, Val_int(out3));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_padding(value self)
+{
+CAMLparam1(self);
+int out1;
+int out2;
+
+gtk_cell_renderer_get_padding(GtkCellRenderer_val(self), &out1, &out2);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out1));
+    Store_field(ret, 1, Val_int(out2));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_is_expander(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_cell_renderer_get_is_expander(GtkCellRenderer_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_is_expanded(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_cell_renderer_get_is_expanded(GtkCellRenderer_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_fixed_size(value self)
+{
+CAMLparam1(self);
+int out1;
+int out2;
+
+gtk_cell_renderer_get_fixed_size(GtkCellRenderer_val(self), &out1, &out2);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out1));
+    Store_field(ret, 1, Val_int(out2));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_alignment(value self)
+{
+CAMLparam1(self);
+float out1;
+float out2;
+
+gtk_cell_renderer_get_alignment(GtkCellRenderer_val(self), &out1, &out2);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, caml_copy_double(out1));
+    Store_field(ret, 1, caml_copy_double(out2));
     CAMLreturn(ret);
 }
 
@@ -130,7 +284,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_get_cell_background_set(value sel
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "cell-background-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_get_cell_background_set: property 'cell-background-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -147,7 +301,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_set_cell_background_set(value sel
 {
 CAMLparam2(self, new_value);
 GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "cell-background-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_set_cell_background_set: property 'cell-background-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -163,7 +317,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_get_editing(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "editing");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_get_editing: property 'editing' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -209,134 +363,35 @@ g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_cell_renderer_get_is_expanded(value self)
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_mode(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "is-expanded");
-if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_get_is_expanded: property 'is-expanded' not found");
+    GtkCellRendererMode prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "mode");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_get_mode: property 'mode' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "is-expanded", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+g_object_get_property(G_OBJECT(obj), "mode", &prop_gvalue);
+    prop_value = (GtkCellRendererMode)g_value_get_enum(&prop_gvalue);
 
-result = Val_bool(prop_value);
+result = Val_GtkCellRendererMode(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);
 }
 
-CAMLexport CAMLprim value ml_gtk_cell_renderer_set_is_expanded(value self, value new_value)
+CAMLexport CAMLprim value ml_gtk_cell_renderer_set_mode(value self, value new_value)
 {
 CAMLparam2(self, new_value);
 GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "is-expanded");
-if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_set_is_expanded: property 'is-expanded' not found");
+    GtkCellRendererMode c_value = GtkCellRendererMode_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "mode");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_set_mode: property 'mode' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "is-expanded", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_cell_renderer_get_is_expander(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "is-expander");
-if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_get_is_expander: property 'is-expander' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "is-expander", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_cell_renderer_set_is_expander(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "is-expander");
-if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_set_is_expander: property 'is-expander' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "is-expander", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_cell_renderer_get_sensitive(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "sensitive");
-if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_get_sensitive: property 'sensitive' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "sensitive", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_cell_renderer_set_sensitive(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "sensitive");
-if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_set_sensitive: property 'sensitive' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "sensitive", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_cell_renderer_get_visible(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "visible");
-if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_get_visible: property 'visible' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "visible", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_cell_renderer_set_visible(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "visible");
-if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_set_visible: property 'visible' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "visible", &prop_gvalue);
+    g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "mode", &prop_gvalue);
 g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }

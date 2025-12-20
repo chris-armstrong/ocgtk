@@ -3,3 +3,4 @@
 
 type t = [`file_dialog_class] Gobject.obj
 
+(* Methods *)

@@ -9,21 +9,17 @@ external new_ : unit -> t = "ml_gtk_file_filter_new"
 (** Create a new FileFilter *)
 external new_from_gvariant : unit -> t = "ml_gtk_file_filter_new_from_gvariant"
 
-(* Properties *)
+(* Methods *)
+(** Sets a human-readable name of the filter.
 
-(** Get property: name *)
-external get_name : t -> string = "ml_gtk_file_filter_get_name"
+This is the string that will be displayed in the file chooser
+if there is a selectable list of filters. *)
+external set_name : t -> string option -> unit = "ml_gtk_file_filter_set_name"
 
-(** Set property: name *)
-external set_name : t -> string -> unit = "ml_gtk_file_filter_set_name"
+(** Gets the human-readable name for the filter.
 
-(** Gets the attributes that need to be filled in for the `GFileInfo`
-passed to this filter.
-
-This function will not typically be used by applications;
-it is intended principally for use in the implementation
-of `GtkFileChooser`. *)
-external get_attributes : t -> unit = "ml_gtk_file_filter_get_attributes"
+See [method@Gtk.FileFilter.set_name]. *)
+external get_name : t -> string option = "ml_gtk_file_filter_get_name"
 
 (** Adds a suffix match rule to a filter.
 
@@ -50,4 +46,6 @@ external add_pattern : t -> string -> unit = "ml_gtk_file_filter_add_pattern"
 
 (** Adds a rule allowing a given mime type to @filter. *)
 external add_mime_type : t -> string -> unit = "ml_gtk_file_filter_add_mime_type"
+
+(* Properties *)
 

@@ -3,3 +3,4 @@
 
 type t = [`alternative_trigger_class] Gobject.obj
 
+(* Methods *)

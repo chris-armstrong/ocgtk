@@ -3,14 +3,7 @@
 
 type t = [`widget_class] Gobject.obj
 
-(** For use in language bindings, this will override the default
-`GtkBuilderScope` to be used when parsing GtkBuilder XML from
-this class’s template data.
-
-Note that this must be called from a composite widget classes class
-initializer after calling [method@Gtk.WidgetClass.set_template]. *)
-external set_template_scope : t -> Builder_scope.t -> unit = "ml_gtk_widget_class_set_template_scope"
-
+(* Methods *)
 (** A convenience function that calls [method@Gtk.WidgetClass.set_template]
 with the contents of a `GResource`.
 

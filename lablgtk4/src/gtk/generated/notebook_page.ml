@@ -3,6 +3,10 @@
 
 type t = [`notebook_page | `object_] Gobject.obj
 
+(* Methods *)
+(** Returns the notebook child to which @page belongs. *)
+external get_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = "ml_gtk_notebook_page_get_child"
+
 (* Properties *)
 
 (** Get property: detachable *)
@@ -10,6 +14,9 @@ external get_detachable : t -> bool = "ml_gtk_notebook_page_get_detachable"
 
 (** Set property: detachable *)
 external set_detachable : t -> bool -> unit = "ml_gtk_notebook_page_set_detachable"
+
+(** Get property: menu *)
+external get_menu : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = "ml_gtk_notebook_page_get_menu"
 
 (** Get property: menu-label *)
 external get_menu_label : t -> string = "ml_gtk_notebook_page_get_menu_label"
@@ -29,6 +36,9 @@ external get_reorderable : t -> bool = "ml_gtk_notebook_page_get_reorderable"
 (** Set property: reorderable *)
 external set_reorderable : t -> bool -> unit = "ml_gtk_notebook_page_set_reorderable"
 
+(** Get property: tab *)
+external get_tab : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = "ml_gtk_notebook_page_get_tab"
+
 (** Get property: tab-expand *)
 external get_tab_expand : t -> bool = "ml_gtk_notebook_page_get_tab_expand"
 
@@ -46,7 +56,4 @@ external get_tab_label : t -> string = "ml_gtk_notebook_page_get_tab_label"
 
 (** Set property: tab-label *)
 external set_tab_label : t -> string -> unit = "ml_gtk_notebook_page_set_tab_label"
-
-(** Returns the notebook child to which @page belongs. *)
-external get_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = "ml_gtk_notebook_page_get_child"
 

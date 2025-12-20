@@ -10,7 +10,9 @@ class overlay (obj : Overlay.t) = object (self)
       let widget = widget#as_widget in
       (Overlay.add_overlay obj widget)
 
-  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option = fun () -> Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Overlay.get_child obj )
+  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
+    fun () ->
+      Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Overlay.get_child obj)
 
   method get_clip_overlay : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> bool =
     fun widget ->

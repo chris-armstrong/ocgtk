@@ -11,6 +11,7 @@ external new_ : unit -> t = "ml_gtk_combo_box_text_new"
 (** Create a new ComboBoxText *)
 external new_with_entry : unit -> t = "ml_gtk_combo_box_text_new_with_entry"
 
+(* Methods *)
 (** Removes all the text entries from the combo box. *)
 external remove_all : t -> unit = "ml_gtk_combo_box_text_remove_all"
 
@@ -46,6 +47,14 @@ See [property@Gtk.ComboBox:id-column].
 
 If @position is negative then @text is appended. *)
 external insert : t -> int -> string option -> string -> unit = "ml_gtk_combo_box_text_insert"
+
+(** Returns the currently active string in @combo_box.
+
+If no row is currently selected, %NULL is returned.
+If @combo_box contains an entry, this function will
+return its contents (which will not necessarily
+be an item from the list). *)
+external get_active_text : t -> string option = "ml_gtk_combo_box_text_get_active_text"
 
 (** Appends @text to the list of strings stored in @combo_box.
 

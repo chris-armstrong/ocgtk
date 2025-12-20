@@ -4,3 +4,4 @@
 (** A range inside the text of an accessible object. *)
 type t = [`accessible_text_range] Gobject.obj
 
+(* Methods *)

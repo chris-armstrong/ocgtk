@@ -3,3 +3,4 @@
 
 type t = [`tree_drag_source_iface] Gobject.obj
 
+(* Methods *)

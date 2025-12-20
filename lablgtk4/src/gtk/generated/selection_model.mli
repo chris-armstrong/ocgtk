@@ -3,6 +3,7 @@
 
 type t = [`selection_model] Gobject.obj
 
+(* Methods *)
 (** Requests to unselect a range of items in the model. *)
 external unselect_range : t -> int -> int -> bool = "ml_gtk_selection_model_unselect_range"
 

@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -37,6 +37,14 @@ gtk_window_controls_set_side(GtkWindowControls_val(self), GtkPackType_val(arg1))
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_window_controls_set_decoration_layout(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_window_controls_set_decoration_layout(GtkWindowControls_val(self), String_option_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_window_controls_get_side(value self)
 {
 CAMLparam1(self);
@@ -45,53 +53,18 @@ GtkPackType result = gtk_window_controls_get_side(GtkWindowControls_val(self));
 CAMLreturn(Val_GtkPackType(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_window_controls_get_decoration_layout(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWindowControls *obj = (GtkWindowControls *)GtkWindowControls_val(self);
-    gchar* *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "decoration-layout");
-if (pspec == NULL) caml_failwith("ml_gtk_window_controls_get_decoration_layout: property 'decoration-layout' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "decoration-layout", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
-
-result = caml_copy_string(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_window_controls_set_decoration_layout(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkWindowControls *obj = (GtkWindowControls *)GtkWindowControls_val(self);
-    ML_DECL_CONST_STRING(c_value, String_val(new_value));
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "decoration-layout");
-if (pspec == NULL) caml_failwith("ml_gtk_window_controls_set_decoration_layout: property 'decoration-layout' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_string(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "decoration-layout", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_window_controls_get_empty(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkWindowControls *obj = (GtkWindowControls *)GtkWindowControls_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "empty");
-if (pspec == NULL) caml_failwith("ml_gtk_window_controls_get_empty: property 'empty' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "empty", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
+gboolean result = gtk_window_controls_get_empty(GtkWindowControls_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_window_controls_get_decoration_layout(value self)
+{
+CAMLparam1(self);
+
+const char* result = gtk_window_controls_get_decoration_layout(GtkWindowControls_val(self));
+CAMLreturn(Val_option_string(result));
 }

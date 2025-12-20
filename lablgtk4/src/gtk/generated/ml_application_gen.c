@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -45,22 +45,6 @@ gtk_application_remove_window(GtkApplication_val(self), GtkWindow_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_application_list_action_descriptions(value self)
-{
-CAMLparam1(self);
-
-gtk_application_list_action_descriptions(GtkApplication_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_application_inhibit(value self, value arg1, value arg2, value arg3)
-{
-CAMLparam4(self, arg1, arg2, arg3);
-
-guint result = gtk_application_inhibit(GtkApplication_val(self), Option_val(arg1, GtkWindow_val, NULL), GtkApplicationInhibitFlags_val(arg2), String_option_val(arg3));
-CAMLreturn(Val_int(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_application_get_window_by_id(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -77,22 +61,6 @@ GtkWindow* result = gtk_application_get_active_window(GtkApplication_val(self));
 CAMLreturn(Val_option(result, Val_GtkWindow));
 }
 
-CAMLexport CAMLprim value ml_gtk_application_get_actions_for_accel(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_application_get_actions_for_accel(GtkApplication_val(self), String_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_application_get_accels_for_action(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_application_get_accels_for_action(GtkApplication_val(self), String_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_application_add_window(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -106,7 +74,7 @@ CAMLexport CAMLprim value ml_gtk_application_get_register_session(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkApplication *obj = (GtkApplication *)GtkApplication_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "register-session");
 if (pspec == NULL) caml_failwith("ml_gtk_application_get_register_session: property 'register-session' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -123,7 +91,7 @@ CAMLexport CAMLprim value ml_gtk_application_set_register_session(value self, va
 {
 CAMLparam2(self, new_value);
 GtkApplication *obj = (GtkApplication *)GtkApplication_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "register-session");
 if (pspec == NULL) caml_failwith("ml_gtk_application_set_register_session: property 'register-session' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -139,7 +107,7 @@ CAMLexport CAMLprim value ml_gtk_application_get_screensaver_active(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkApplication *obj = (GtkApplication *)GtkApplication_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "screensaver-active");
 if (pspec == NULL) caml_failwith("ml_gtk_application_get_screensaver_active: property 'screensaver-active' not found");
 GValue prop_gvalue = G_VALUE_INIT;

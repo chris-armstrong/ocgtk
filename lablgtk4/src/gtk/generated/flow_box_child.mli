@@ -8,8 +8,7 @@ val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and_
 (** Create a new FlowBoxChild *)
 external new_ : unit -> t = "ml_gtk_flow_box_child_new"
 
-(* Properties *)
-
+(* Methods *)
 (** Sets the child widget of @self. *)
 external set_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_flow_box_child_set_child"
 
@@ -43,4 +42,6 @@ and filtering functions into the widgets themselves.
 Another alternative is to call [method@Gtk.FlowBox.invalidate_sort]
 on any model change, but that is more expensive. *)
 external changed : t -> unit = "ml_gtk_flow_box_child_changed"
+
+(* Properties *)
 

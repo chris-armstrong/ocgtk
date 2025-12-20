@@ -5,6 +5,16 @@ type t = [`shortcuts_section | `box | `widget | `initially_unowned] Gobject.obj
 
 val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
+(* Methods *)
+(** Adds a group to the shortcuts section.
+
+This is the programmatic equivalent to using [class@Gtk.Builder] and a
+`<child>` tag to add the child.
+
+Adding children with the `GtkBox` API is not appropriate, as
+`GtkShortcutsSection` manages its children internally. *)
+external add_group : t -> Shortcuts_group.t -> unit = "ml_gtk_shortcuts_section_add_group"
+
 (* Properties *)
 
 (** Get property: max-height *)
@@ -30,13 +40,4 @@ external get_view_name : t -> string = "ml_gtk_shortcuts_section_get_view_name"
 
 (** Set property: view-name *)
 external set_view_name : t -> string -> unit = "ml_gtk_shortcuts_section_set_view_name"
-
-(** Adds a group to the shortcuts section.
-
-This is the programmatic equivalent to using [class@Gtk.Builder] and a
-`<child>` tag to add the child.
-
-Adding children with the `GtkBox` API is not appropriate, as
-`GtkShortcutsSection` manages its children internally. *)
-external add_group : t -> Shortcuts_group.t -> unit = "ml_gtk_shortcuts_section_add_group"
 

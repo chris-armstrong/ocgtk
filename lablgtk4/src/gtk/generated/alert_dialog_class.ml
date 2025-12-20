@@ -3,3 +3,4 @@
 
 type t = [`alert_dialog_class] Gobject.obj
 
+(* Methods *)

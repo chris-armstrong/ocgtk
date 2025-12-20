@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -45,6 +45,14 @@ gtk_sort_list_model_set_section_sorter(GtkSortListModel_val(self), Option_val(ar
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_sort_list_model_set_incremental(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_sort_list_model_set_incremental(GtkSortListModel_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_sort_list_model_get_sorter(value self)
 {
 CAMLparam1(self);
@@ -61,37 +69,20 @@ GtkSorter* result = gtk_sort_list_model_get_section_sorter(GtkSortListModel_val(
 CAMLreturn(Val_option(result, Val_GtkSorter));
 }
 
+CAMLexport CAMLprim value ml_gtk_sort_list_model_get_pending(value self)
+{
+CAMLparam1(self);
+
+guint result = gtk_sort_list_model_get_pending(GtkSortListModel_val(self));
+CAMLreturn(Val_int(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_sort_list_model_get_incremental(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkSortListModel *obj = (GtkSortListModel *)GtkSortListModel_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "incremental");
-if (pspec == NULL) caml_failwith("ml_gtk_sort_list_model_get_incremental: property 'incremental' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "incremental", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_sort_list_model_set_incremental(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkSortListModel *obj = (GtkSortListModel *)GtkSortListModel_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "incremental");
-if (pspec == NULL) caml_failwith("ml_gtk_sort_list_model_set_incremental: property 'incremental' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "incremental", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+gboolean result = gtk_sort_list_model_get_incremental(GtkSortListModel_val(self));
+CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_sort_list_model_get_n_items(value self)
@@ -105,24 +96,6 @@ if (pspec == NULL) caml_failwith("ml_gtk_sort_list_model_get_n_items: property '
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
 g_object_get_property(G_OBJECT(obj), "n-items", &prop_gvalue);
-    prop_value = (guint)g_value_get_uint(&prop_gvalue);
-
-result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_sort_list_model_get_pending(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkSortListModel *obj = (GtkSortListModel *)GtkSortListModel_val(self);
-    guint prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "pending");
-if (pspec == NULL) caml_failwith("ml_gtk_sort_list_model_get_pending: property 'pending' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "pending", &prop_gvalue);
     prop_value = (guint)g_value_get_uint(&prop_gvalue);
 
 result = Val_int(prop_value);

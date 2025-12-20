@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -22,11 +22,51 @@
 #endif /* Val_GtkEditable */
 
 
+CAMLexport CAMLprim value ml_gtk_editable_set_width_chars(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_editable_set_width_chars(GtkEditable_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_editable_set_text(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_editable_set_text(GtkEditable_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_editable_set_position(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gtk_editable_set_position(GtkEditable_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_editable_set_max_width_chars(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_editable_set_max_width_chars(GtkEditable_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_editable_set_enable_undo(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_editable_set_enable_undo(GtkEditable_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_editable_set_editable(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_editable_set_editable(GtkEditable_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -46,12 +86,51 @@ gtk_editable_select_region(GtkEditable_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_editable_insert_text(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gtk_editable_insert_text(GtkEditable_val(self), String_val(arg1), Int_val(arg2), Int_val(arg3));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_editable_init_delegate(value self)
 {
 CAMLparam1(self);
 
 gtk_editable_init_delegate(GtkEditable_val(self));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_editable_get_width_chars(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_editable_get_width_chars(GtkEditable_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_editable_get_text(value self)
+{
+CAMLparam1(self);
+
+const char* result = gtk_editable_get_text(GtkEditable_val(self));
+CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_editable_get_selection_bounds(value self)
+{
+CAMLparam1(self);
+int out1;
+int out2;
+
+gboolean result = gtk_editable_get_selection_bounds(GtkEditable_val(self), &out1, &out2);
+CAMLlocal1(ret);
+    ret = caml_alloc(3, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_int(out1));
+    Store_field(ret, 2, Val_int(out2));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_editable_get_position(value self)
@@ -62,12 +141,36 @@ int result = gtk_editable_get_position(GtkEditable_val(self));
 CAMLreturn(Val_int(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_editable_get_delegate(value self)
+CAMLexport CAMLprim value ml_gtk_editable_get_max_width_chars(value self)
 {
 CAMLparam1(self);
 
-GtkEditable* result = gtk_editable_get_delegate(GtkEditable_val(self));
-CAMLreturn(Val_option(result, Val_GtkEditable));
+int result = gtk_editable_get_max_width_chars(GtkEditable_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_editable_get_enable_undo(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_editable_get_enable_undo(GtkEditable_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_editable_get_editable(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_editable_get_editable(GtkEditable_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_editable_get_chars(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+char* result = gtk_editable_get_chars(GtkEditable_val(self), Int_val(arg1), Int_val(arg2));
+CAMLreturn(caml_copy_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_editable_get_alignment(value self)
@@ -128,105 +231,6 @@ g_value_unset(&prop_gvalue);
 CAMLreturn(result);
 }
 
-CAMLexport CAMLprim value ml_gtk_editable_get_editable(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkEditable *obj = (GtkEditable *)GtkEditable_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "editable");
-if (pspec == NULL) caml_failwith("ml_gtk_editable_get_editable: property 'editable' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "editable", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_editable_set_editable(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkEditable *obj = (GtkEditable *)GtkEditable_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "editable");
-if (pspec == NULL) caml_failwith("ml_gtk_editable_set_editable: property 'editable' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "editable", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_editable_get_enable_undo(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkEditable *obj = (GtkEditable *)GtkEditable_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "enable-undo");
-if (pspec == NULL) caml_failwith("ml_gtk_editable_get_enable_undo: property 'enable-undo' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "enable-undo", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_editable_set_enable_undo(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkEditable *obj = (GtkEditable *)GtkEditable_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "enable-undo");
-if (pspec == NULL) caml_failwith("ml_gtk_editable_set_enable_undo: property 'enable-undo' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "enable-undo", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_editable_get_max_width_chars(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkEditable *obj = (GtkEditable *)GtkEditable_val(self);
-    gint prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "max-width-chars");
-if (pspec == NULL) caml_failwith("ml_gtk_editable_get_max_width_chars: property 'max-width-chars' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "max-width-chars", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
-
-result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_editable_set_max_width_chars(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkEditable *obj = (GtkEditable *)GtkEditable_val(self);
-    gint c_value = Int_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "max-width-chars");
-if (pspec == NULL) caml_failwith("ml_gtk_editable_set_max_width_chars: property 'max-width-chars' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_int(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "max-width-chars", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_editable_get_selection_bound(value self)
 {
 CAMLparam1(self);
@@ -243,72 +247,6 @@ g_object_get_property(G_OBJECT(obj), "selection-bound", &prop_gvalue);
 result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_editable_get_text(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkEditable *obj = (GtkEditable *)GtkEditable_val(self);
-    gchar* *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "text");
-if (pspec == NULL) caml_failwith("ml_gtk_editable_get_text: property 'text' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "text", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
-
-result = caml_copy_string(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_editable_set_text(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkEditable *obj = (GtkEditable *)GtkEditable_val(self);
-    ML_DECL_CONST_STRING(c_value, String_val(new_value));
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "text");
-if (pspec == NULL) caml_failwith("ml_gtk_editable_set_text: property 'text' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_string(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "text", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_editable_get_width_chars(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkEditable *obj = (GtkEditable *)GtkEditable_val(self);
-    gint prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "width-chars");
-if (pspec == NULL) caml_failwith("ml_gtk_editable_get_width_chars: property 'width-chars' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "width-chars", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
-
-result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_editable_set_width_chars(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkEditable *obj = (GtkEditable *)GtkEditable_val(self);
-    gint c_value = Int_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "width-chars");
-if (pspec == NULL) caml_failwith("ml_gtk_editable_set_width_chars: property 'width-chars' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_int(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "width-chars", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_editable_get_xalign(value self)

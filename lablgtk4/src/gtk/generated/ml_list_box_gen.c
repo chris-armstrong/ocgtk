@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -45,6 +45,14 @@ gtk_list_box_unselect_all(GtkListBox_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_list_box_set_show_separators(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_list_box_set_show_separators(GtkListBox_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_list_box_set_selection_mode(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -57,7 +65,7 @@ CAMLexport CAMLprim value ml_gtk_list_box_set_placeholder(value self, value arg1
 {
 CAMLparam2(self, arg1);
 
-gtk_list_box_set_placeholder(GtkListBox_val(self), GtkWidget_option_val(arg1));
+gtk_list_box_set_placeholder(GtkListBox_val(self), Option_val(arg1, GtkWidget_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -66,6 +74,14 @@ CAMLexport CAMLprim value ml_gtk_list_box_set_adjustment(value self, value arg1)
 CAMLparam2(self, arg1);
 
 gtk_list_box_set_adjustment(GtkListBox_val(self), Option_val(arg1, GtkAdjustment_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_list_box_set_activate_on_single_click(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_list_box_set_activate_on_single_click(GtkListBox_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -141,6 +157,14 @@ gtk_list_box_insert(GtkListBox_val(self), GtkWidget_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_list_box_get_show_separators(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_list_box_get_show_separators(GtkListBox_val(self));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_list_box_get_selection_mode(value self)
 {
 CAMLparam1(self);
@@ -181,6 +205,14 @@ GtkAdjustment* result = gtk_list_box_get_adjustment(GtkListBox_val(self));
 CAMLreturn(Val_option(result, Val_GtkAdjustment));
 }
 
+CAMLexport CAMLprim value ml_gtk_list_box_get_activate_on_single_click(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_list_box_get_activate_on_single_click(GtkListBox_val(self));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_list_box_drag_unhighlight_row(value self)
 {
 CAMLparam1(self);
@@ -210,7 +242,7 @@ CAMLexport CAMLprim value ml_gtk_list_box_get_accept_unpaired_release(value self
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkListBox *obj = (GtkListBox *)GtkListBox_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accept-unpaired-release");
 if (pspec == NULL) caml_failwith("ml_gtk_list_box_get_accept_unpaired_release: property 'accept-unpaired-release' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -227,79 +259,13 @@ CAMLexport CAMLprim value ml_gtk_list_box_set_accept_unpaired_release(value self
 {
 CAMLparam2(self, new_value);
 GtkListBox *obj = (GtkListBox *)GtkListBox_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accept-unpaired-release");
 if (pspec == NULL) caml_failwith("ml_gtk_list_box_set_accept_unpaired_release: property 'accept-unpaired-release' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
     g_value_set_boolean(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "accept-unpaired-release", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_list_box_get_activate_on_single_click(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkListBox *obj = (GtkListBox *)GtkListBox_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "activate-on-single-click");
-if (pspec == NULL) caml_failwith("ml_gtk_list_box_get_activate_on_single_click: property 'activate-on-single-click' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "activate-on-single-click", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_list_box_set_activate_on_single_click(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkListBox *obj = (GtkListBox *)GtkListBox_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "activate-on-single-click");
-if (pspec == NULL) caml_failwith("ml_gtk_list_box_set_activate_on_single_click: property 'activate-on-single-click' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "activate-on-single-click", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_list_box_get_show_separators(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkListBox *obj = (GtkListBox *)GtkListBox_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "show-separators");
-if (pspec == NULL) caml_failwith("ml_gtk_list_box_get_show_separators: property 'show-separators' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "show-separators", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_list_box_set_show_separators(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkListBox *obj = (GtkListBox *)GtkListBox_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "show-separators");
-if (pspec == NULL) caml_failwith("ml_gtk_list_box_set_show_separators: property 'show-separators' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "show-separators", &prop_gvalue);
 g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }

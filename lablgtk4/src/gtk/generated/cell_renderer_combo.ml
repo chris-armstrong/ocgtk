@@ -8,6 +8,7 @@ let as_cell_renderer (obj : t) : Cell_renderer.t = Obj.magic obj
 (** Create a new CellRendererCombo *)
 external new_ : unit -> t = "ml_gtk_cell_renderer_combo_new"
 
+(* Methods *)
 (* Properties *)
 
 (** Get property: has-entry *)

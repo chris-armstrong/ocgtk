@@ -3,3 +3,4 @@
 
 type t = [`message_dialog_class] Gobject.obj
 
+(* Methods *)

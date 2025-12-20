@@ -3,3 +3,4 @@
 
 type t = [`tree_expander_class] Gobject.obj
 
+(* Methods *)

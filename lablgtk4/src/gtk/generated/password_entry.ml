@@ -8,6 +8,17 @@ let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager
 (** Create a new PasswordEntry *)
 external new_ : unit -> t = "ml_gtk_password_entry_new"
 
+(* Methods *)
+(** Sets whether the entry should have a clickable icon
+to reveal the contents.
+
+Setting this to %FALSE also hides the text again. *)
+external set_show_peek_icon : t -> bool -> unit = "ml_gtk_password_entry_set_show_peek_icon"
+
+(** Returns whether the entry is showing an icon to
+reveal the contents. *)
+external get_show_peek_icon : t -> bool = "ml_gtk_password_entry_get_show_peek_icon"
+
 (* Properties *)
 
 (** Get property: activates-default *)
@@ -21,10 +32,4 @@ external get_placeholder_text : t -> string = "ml_gtk_password_entry_get_placeho
 
 (** Set property: placeholder-text *)
 external set_placeholder_text : t -> string -> unit = "ml_gtk_password_entry_set_placeholder_text"
-
-(** Get property: show-peek-icon *)
-external get_show_peek_icon : t -> bool = "ml_gtk_password_entry_get_show_peek_icon"
-
-(** Set property: show-peek-icon *)
-external set_show_peek_icon : t -> bool -> unit = "ml_gtk_password_entry_set_show_peek_icon"
 

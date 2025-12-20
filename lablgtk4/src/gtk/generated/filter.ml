@@ -3,6 +3,7 @@
 
 type t = [`filter | `object_] Gobject.obj
 
+(* Methods *)
 (** Gets the known strictness of @filters.
 
 If the strictness is not known, %GTK_FILTER_MATCH_SOME is returned.

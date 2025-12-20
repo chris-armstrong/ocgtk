@@ -4,3 +4,4 @@
 (** The virtual table for `GtkSorter`. *)
 type t = [`sorter_class] Gobject.obj
 
+(* Methods *)

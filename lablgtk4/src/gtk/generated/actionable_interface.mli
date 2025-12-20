@@ -4,3 +4,4 @@
 (** The interface vtable for `GtkActionable`. *)
 type t = [`actionable_interface] Gobject.obj
 
+(* Methods *)

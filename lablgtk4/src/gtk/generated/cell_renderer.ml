@@ -3,6 +3,83 @@
 
 type t = [`cell_renderer] Gobject.obj
 
+(* Methods *)
+(** Informs the cell renderer that the editing is stopped.
+If @canceled is %TRUE, the cell renderer will emit the
+`GtkCellRenderer`::editing-canceled signal.
+
+This function should be called by cell renderer implementations
+in response to the `GtkCellEditable::editing-done` signal of
+`GtkCellEditable`. *)
+external stop_editing : t -> bool -> unit = "ml_gtk_cell_renderer_stop_editing"
+
+(** Sets the cell renderer’s visibility. *)
+external set_visible : t -> bool -> unit = "ml_gtk_cell_renderer_set_visible"
+
+(** Sets the cell renderer’s sensitivity. *)
+external set_sensitive : t -> bool -> unit = "ml_gtk_cell_renderer_set_sensitive"
+
+(** Sets the renderer’s padding. *)
+external set_padding : t -> int -> int -> unit = "ml_gtk_cell_renderer_set_padding"
+
+(** Sets whether the given `GtkCellRenderer` is an expander. *)
+external set_is_expander : t -> bool -> unit = "ml_gtk_cell_renderer_set_is_expander"
+
+(** Sets whether the given `GtkCellRenderer` is expanded. *)
+external set_is_expanded : t -> bool -> unit = "ml_gtk_cell_renderer_set_is_expanded"
+
+(** Sets the renderer size to be explicit, independent of the properties set. *)
+external set_fixed_size : t -> int -> int -> unit = "ml_gtk_cell_renderer_set_fixed_size"
+
+(** Sets the renderer’s alignment within its available space. *)
+external set_alignment : t -> float -> float -> unit = "ml_gtk_cell_renderer_set_alignment"
+
+(** Checks whether the cell renderer can do something when activated. *)
+external is_activatable : t -> bool = "ml_gtk_cell_renderer_is_activatable"
+
+(** Returns the cell renderer’s visibility. *)
+external get_visible : t -> bool = "ml_gtk_cell_renderer_get_visible"
+
+(** Returns the cell renderer’s sensitivity. *)
+external get_sensitive : t -> bool = "ml_gtk_cell_renderer_get_sensitive"
+
+(** Gets whether the cell renderer prefers a height-for-width layout
+or a width-for-height layout. *)
+external get_request_mode : t -> Gtk_enums.sizerequestmode = "ml_gtk_cell_renderer_get_request_mode"
+
+(** Retrieves a cell renderers’s minimum and natural width if it were rendered to
+@widget with the specified @height. *)
+external get_preferred_width_for_height : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int -> int * int = "ml_gtk_cell_renderer_get_preferred_width_for_height"
+
+(** Retrieves a renderer’s natural size when rendered to @widget. *)
+external get_preferred_width : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int * int = "ml_gtk_cell_renderer_get_preferred_width"
+
+(** Retrieves the minimum and natural size of a cell taking
+into account the widget’s preference for height-for-width management. *)
+external get_preferred_size : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Requisition.t * Requisition.t = "ml_gtk_cell_renderer_get_preferred_size"
+
+(** Retrieves a cell renderers’s minimum and natural height if it were rendered to
+@widget with the specified @width. *)
+external get_preferred_height_for_width : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int -> int * int = "ml_gtk_cell_renderer_get_preferred_height_for_width"
+
+(** Retrieves a renderer’s natural size when rendered to @widget. *)
+external get_preferred_height : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int * int = "ml_gtk_cell_renderer_get_preferred_height"
+
+(** Fills in @xpad and @ypad with the appropriate values of @cell. *)
+external get_padding : t -> int * int = "ml_gtk_cell_renderer_get_padding"
+
+(** Checks whether the given `GtkCellRenderer` is an expander. *)
+external get_is_expander : t -> bool = "ml_gtk_cell_renderer_get_is_expander"
+
+(** Checks whether the given `GtkCellRenderer` is expanded. *)
+external get_is_expanded : t -> bool = "ml_gtk_cell_renderer_get_is_expanded"
+
+(** Fills in @width and @height with the appropriate size of @cell. *)
+external get_fixed_size : t -> int * int = "ml_gtk_cell_renderer_get_fixed_size"
+
+(** Fills in @xalign and @yalign with the appropriate values of @cell. *)
+external get_alignment : t -> float * float = "ml_gtk_cell_renderer_get_alignment"
+
 (* Properties *)
 
 (** Get property: cell-background *)
@@ -26,29 +103,11 @@ external get_height : t -> int = "ml_gtk_cell_renderer_get_height"
 (** Set property: height *)
 external set_height : t -> int -> unit = "ml_gtk_cell_renderer_set_height"
 
-(** Get property: is-expanded *)
-external get_is_expanded : t -> bool = "ml_gtk_cell_renderer_get_is_expanded"
+(** Get property: mode *)
+external get_mode : t -> Gtk_enums.cellrenderermode = "ml_gtk_cell_renderer_get_mode"
 
-(** Set property: is-expanded *)
-external set_is_expanded : t -> bool -> unit = "ml_gtk_cell_renderer_set_is_expanded"
-
-(** Get property: is-expander *)
-external get_is_expander : t -> bool = "ml_gtk_cell_renderer_get_is_expander"
-
-(** Set property: is-expander *)
-external set_is_expander : t -> bool -> unit = "ml_gtk_cell_renderer_set_is_expander"
-
-(** Get property: sensitive *)
-external get_sensitive : t -> bool = "ml_gtk_cell_renderer_get_sensitive"
-
-(** Set property: sensitive *)
-external set_sensitive : t -> bool -> unit = "ml_gtk_cell_renderer_set_sensitive"
-
-(** Get property: visible *)
-external get_visible : t -> bool = "ml_gtk_cell_renderer_get_visible"
-
-(** Set property: visible *)
-external set_visible : t -> bool -> unit = "ml_gtk_cell_renderer_set_visible"
+(** Set property: mode *)
+external set_mode : t -> Gtk_enums.cellrenderermode -> unit = "ml_gtk_cell_renderer_set_mode"
 
 (** Get property: width *)
 external get_width : t -> int = "ml_gtk_cell_renderer_get_width"
@@ -79,38 +138,4 @@ external get_ypad : t -> int = "ml_gtk_cell_renderer_get_ypad"
 
 (** Set property: ypad *)
 external set_ypad : t -> int -> unit = "ml_gtk_cell_renderer_set_ypad"
-
-(** Informs the cell renderer that the editing is stopped.
-If @canceled is %TRUE, the cell renderer will emit the
-`GtkCellRenderer`::editing-canceled signal.
-
-This function should be called by cell renderer implementations
-in response to the `GtkCellEditable::editing-done` signal of
-`GtkCellEditable`. *)
-external stop_editing : t -> bool -> unit = "ml_gtk_cell_renderer_stop_editing"
-
-(** Sets the renderer’s padding. *)
-external set_padding : t -> int -> int -> unit = "ml_gtk_cell_renderer_set_padding"
-
-(** Sets the renderer size to be explicit, independent of the properties set. *)
-external set_fixed_size : t -> int -> int -> unit = "ml_gtk_cell_renderer_set_fixed_size"
-
-(** Sets the renderer’s alignment within its available space. *)
-external set_alignment : t -> float -> float -> unit = "ml_gtk_cell_renderer_set_alignment"
-
-(** Checks whether the cell renderer can do something when activated. *)
-external is_activatable : t -> bool = "ml_gtk_cell_renderer_is_activatable"
-
-(** Translates the cell renderer state to `GtkStateFlags`,
-based on the cell renderer and widget sensitivity, and
-the given `GtkCellRenderer`State. *)
-external get_state : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> Gtk_enums.cellrendererstate -> Gtk_enums.stateflags = "ml_gtk_cell_renderer_get_state"
-
-(** Gets whether the cell renderer prefers a height-for-width layout
-or a width-for-height layout. *)
-external get_request_mode : t -> Gtk_enums.sizerequestmode = "ml_gtk_cell_renderer_get_request_mode"
-
-(** Retrieves the minimum and natural size of a cell taking
-into account the widget’s preference for height-for-width management. *)
-external get_preferred_size : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Requisition.t * Requisition.t = "ml_gtk_cell_renderer_get_preferred_size"
 

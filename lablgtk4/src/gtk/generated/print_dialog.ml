@@ -6,23 +6,38 @@ type t = [`print_dialog | `object_] Gobject.obj
 (** Create a new PrintDialog *)
 external new_ : unit -> t = "ml_gtk_print_dialog_new"
 
-(* Properties *)
+(* Methods *)
+(** Sets the title that will be shown on the print dialog. *)
+external set_title : t -> string -> unit = "ml_gtk_print_dialog_set_title"
 
-(** Get property: accept-label *)
-external get_accept_label : t -> string = "ml_gtk_print_dialog_get_accept_label"
+(** Sets the print settings for the print dialog. *)
+external set_print_settings : t -> Print_settings.t -> unit = "ml_gtk_print_dialog_set_print_settings"
 
-(** Set property: accept-label *)
-external set_accept_label : t -> string -> unit = "ml_gtk_print_dialog_set_accept_label"
+(** Set the page setup for the print dialog. *)
+external set_page_setup : t -> Page_setup.t -> unit = "ml_gtk_print_dialog_set_page_setup"
 
-(** Get property: modal *)
-external get_modal : t -> bool = "ml_gtk_print_dialog_get_modal"
-
-(** Set property: modal *)
+(** Sets whether the print dialog blocks
+interaction with the parent window while
+it is presented. *)
 external set_modal : t -> bool -> unit = "ml_gtk_print_dialog_set_modal"
 
-(** Get property: title *)
+(** Sets the label that will be shown on the
+accept button of the print dialog shown for
+[method@Gtk.PrintDialog.setup]. *)
+external set_accept_label : t -> string -> unit = "ml_gtk_print_dialog_set_accept_label"
+
+(** Returns the title that will be shown on the
+print dialog. *)
 external get_title : t -> string = "ml_gtk_print_dialog_get_title"
 
-(** Set property: title *)
-external set_title : t -> string -> unit = "ml_gtk_print_dialog_set_title"
+(** Returns whether the print dialog blocks
+interaction with the parent window while
+it is presented. *)
+external get_modal : t -> bool = "ml_gtk_print_dialog_get_modal"
+
+(** Returns the label that will be shown on the
+accept button of the print dialog. *)
+external get_accept_label : t -> string = "ml_gtk_print_dialog_get_accept_label"
+
+(* Properties *)
 

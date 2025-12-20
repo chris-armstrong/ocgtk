@@ -3,3 +3,4 @@
 
 type t = [`snapshot_class] Gobject.obj
 
+(* Methods *)

@@ -3,3 +3,4 @@
 
 type t = [`flatten_list_model_class] Gobject.obj
 
+(* Methods *)

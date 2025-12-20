@@ -3,3 +3,4 @@
 
 type t = [`text_tag_class] Gobject.obj
 
+(* Methods *)

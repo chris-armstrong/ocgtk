@@ -8,44 +8,7 @@ let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager
 (** Create a new Notebook *)
 external new_ : unit -> t = "ml_gtk_notebook_new"
 
-(* Properties *)
-
-(** Get property: enable-popup *)
-external get_enable_popup : t -> bool = "ml_gtk_notebook_get_enable_popup"
-
-(** Set property: enable-popup *)
-external set_enable_popup : t -> bool -> unit = "ml_gtk_notebook_set_enable_popup"
-
-(** Get property: group-name *)
-external get_group_name : t -> string = "ml_gtk_notebook_get_group_name"
-
-(** Set property: group-name *)
-external set_group_name : t -> string -> unit = "ml_gtk_notebook_set_group_name"
-
-(** Get property: page *)
-external get_page : t -> int = "ml_gtk_notebook_get_page"
-
-(** Set property: page *)
-external set_page : t -> int -> unit = "ml_gtk_notebook_set_page"
-
-(** Get property: scrollable *)
-external get_scrollable : t -> bool = "ml_gtk_notebook_get_scrollable"
-
-(** Set property: scrollable *)
-external set_scrollable : t -> bool -> unit = "ml_gtk_notebook_set_scrollable"
-
-(** Get property: show-border *)
-external get_show_border : t -> bool = "ml_gtk_notebook_get_show_border"
-
-(** Set property: show-border *)
-external set_show_border : t -> bool -> unit = "ml_gtk_notebook_set_show_border"
-
-(** Get property: show-tabs *)
-external get_show_tabs : t -> bool = "ml_gtk_notebook_get_show_tabs"
-
-(** Set property: show-tabs *)
-external set_show_tabs : t -> bool -> unit = "ml_gtk_notebook_set_show_tabs"
-
+(* Methods *)
 (** Sets whether the notebook tab can be reordered
 via drag and drop or not. *)
 external set_tab_reorderable : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> bool -> unit = "ml_gtk_notebook_set_tab_reorderable"
@@ -110,11 +73,30 @@ If you want a notebook to accept drags from other widgets,
 you will have to set your own DnD code to do it. *)
 external set_tab_detachable : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> bool -> unit = "ml_gtk_notebook_set_tab_detachable"
 
+(** Sets whether to show the tabs for the notebook or not. *)
+external set_show_tabs : t -> bool -> unit = "ml_gtk_notebook_set_show_tabs"
+
+(** Sets whether a bevel will be drawn around the notebook pages.
+
+This only has a visual effect when the tabs are not shown. *)
+external set_show_border : t -> bool -> unit = "ml_gtk_notebook_set_show_border"
+
+(** Sets whether the tab label area will have arrows for
+scrolling if there are too many tabs to fit in the area. *)
+external set_scrollable : t -> bool -> unit = "ml_gtk_notebook_set_scrollable"
+
 (** Creates a new label and sets it as the menu label of @child. *)
 external set_menu_label_text : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> string -> unit = "ml_gtk_notebook_set_menu_label_text"
 
 (** Changes the menu label for the page containing @child. *)
 external set_menu_label : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_notebook_set_menu_label"
+
+(** Sets a group name for @notebook.
+
+Notebooks with the same name will be able to exchange tabs
+via drag and drop. A notebook with a %NULL group name will
+not be able to exchange tabs with any other notebook. *)
+external set_group_name : t -> string option -> unit = "ml_gtk_notebook_set_group_name"
 
 (** Switches to the page number @page_num.
 
@@ -198,6 +180,18 @@ external get_tab_label : t -> Event_controller_and__layout_child_and__layout_man
 (** Returns whether the tab contents can be detached from @notebook. *)
 external get_tab_detachable : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> bool = "ml_gtk_notebook_get_tab_detachable"
 
+(** Returns whether the tabs of the notebook are shown. *)
+external get_show_tabs : t -> bool = "ml_gtk_notebook_get_show_tabs"
+
+(** Returns whether a bevel will be drawn around the notebook pages. *)
+external get_show_border : t -> bool = "ml_gtk_notebook_get_show_border"
+
+(** Returns whether the tab label area has arrows for scrolling. *)
+external get_scrollable : t -> bool = "ml_gtk_notebook_get_scrollable"
+
+(** Returns the `GtkNotebookPage` for @child. *)
+external get_page : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Notebook_page.t = "ml_gtk_notebook_get_page"
+
 (** Returns the child widget contained in page number @page_num. *)
 external get_nth_page : t -> int -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_notebook_get_nth_page"
 
@@ -210,6 +204,9 @@ external get_menu_label_text : t -> Event_controller_and__layout_child_and__layo
 
 (** Retrieves the menu label widget of the page containing @child. *)
 external get_menu_label : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_notebook_get_menu_label"
+
+(** Gets the current group name for @notebook. *)
+external get_group_name : t -> string option = "ml_gtk_notebook_get_group_name"
 
 (** Returns the page number of the current page. *)
 external get_current_page : t -> int = "ml_gtk_notebook_get_current_page"
@@ -233,4 +230,12 @@ external append_page_menu : t -> Event_controller_and__layout_child_and__layout_
 
 (** Appends a page to @notebook. *)
 external append_page : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> int = "ml_gtk_notebook_append_page"
+
+(* Properties *)
+
+(** Get property: enable-popup *)
+external get_enable_popup : t -> bool = "ml_gtk_notebook_get_enable_popup"
+
+(** Set property: enable-popup *)
+external set_enable_popup : t -> bool -> unit = "ml_gtk_notebook_set_enable_popup"
 

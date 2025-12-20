@@ -6,6 +6,7 @@ type t = [`im_multicontext | `im_context | `object_] Gobject.obj
 (** Create a new IMMulticontext *)
 external new_ : unit -> t = "ml_gtk_im_multicontext_new"
 
+(* Methods *)
 (** Sets the context id for @context.
 
 This causes the currently active delegate of @context to be

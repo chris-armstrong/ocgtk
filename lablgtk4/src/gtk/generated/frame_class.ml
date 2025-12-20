@@ -3,3 +3,4 @@
 
 type t = [`frame_class] Gobject.obj
 
+(* Methods *)

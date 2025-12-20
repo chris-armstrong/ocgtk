@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -35,12 +35,28 @@ CAMLexport CAMLprim value ml_gtk_tree_list_model_new_bytecode(value * argv, int 
 return ml_gtk_tree_list_model_new_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
 }
 
+CAMLexport CAMLprim value ml_gtk_tree_list_model_set_autoexpand(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_tree_list_model_set_autoexpand(GtkTreeListModel_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_tree_list_model_get_row(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 GtkTreeListRow* result = gtk_tree_list_model_get_row(GtkTreeListModel_val(self), Int_val(arg1));
 CAMLreturn(Val_option(result, Val_GtkTreeListRow));
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_list_model_get_passthrough(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_tree_list_model_get_passthrough(GtkTreeListModel_val(self));
+CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_list_model_get_child_row(value self, value arg1)
@@ -54,34 +70,9 @@ CAMLreturn(Val_option(result, Val_GtkTreeListRow));
 CAMLexport CAMLprim value ml_gtk_tree_list_model_get_autoexpand(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkTreeListModel *obj = (GtkTreeListModel *)GtkTreeListModel_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "autoexpand");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_list_model_get_autoexpand: property 'autoexpand' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "autoexpand", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_list_model_set_autoexpand(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkTreeListModel *obj = (GtkTreeListModel *)GtkTreeListModel_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "autoexpand");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_list_model_set_autoexpand: property 'autoexpand' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "autoexpand", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+gboolean result = gtk_tree_list_model_get_autoexpand(GtkTreeListModel_val(self));
+CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_list_model_get_n_items(value self)
@@ -98,24 +89,6 @@ g_object_get_property(G_OBJECT(obj), "n-items", &prop_gvalue);
     prop_value = (guint)g_value_get_uint(&prop_gvalue);
 
 result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_list_model_get_passthrough(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkTreeListModel *obj = (GtkTreeListModel *)GtkTreeListModel_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "passthrough");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_list_model_get_passthrough: property 'passthrough' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "passthrough", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);
 }

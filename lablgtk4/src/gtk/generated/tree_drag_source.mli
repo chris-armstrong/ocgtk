@@ -3,6 +3,7 @@
 
 type t = [`tree_drag_source] Gobject.obj
 
+(* Methods *)
 (** Asks the `GtkTreeDragSource` whether a particular row can be used as
 the source of a DND operation. If the source doesn’t implement
 this interface, the row is assumed draggable. *)

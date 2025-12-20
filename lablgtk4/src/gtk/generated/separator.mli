@@ -8,3 +8,4 @@ val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and_
 (** Create a new Separator *)
 external new_ : Gtk_enums.orientation -> t = "ml_gtk_separator_new"
 
+(* Methods *)

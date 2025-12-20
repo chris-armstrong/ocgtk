@@ -9,8 +9,7 @@ external new_ : Shortcut_trigger.t option -> Shortcut_action.t option -> t = "ml
 (** Create a new Shortcut *)
 external new_with_arguments : Shortcut_trigger.t option -> Shortcut_action.t option -> string option -> unit -> t = "ml_gtk_shortcut_new_with_arguments"
 
-(* Properties *)
-
+(* Methods *)
 (** Sets the new trigger for @self to be @trigger. *)
 external set_trigger : t -> Shortcut_trigger.t option -> unit = "ml_gtk_shortcut_set_trigger"
 
@@ -22,4 +21,6 @@ external get_trigger : t -> Shortcut_trigger.t option = "ml_gtk_shortcut_get_tri
 
 (** Gets the action that is activated by this shortcut. *)
 external get_action : t -> Shortcut_action.t option = "ml_gtk_shortcut_get_action"
+
+(* Properties *)
 

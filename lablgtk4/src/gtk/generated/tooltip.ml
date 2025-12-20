@@ -3,6 +3,7 @@
 
 type t = [`tooltip | `object_] Gobject.obj
 
+(* Methods *)
 (** Sets the text of the tooltip to be @text.
 
 If @text is %NULL, the label will be hidden.

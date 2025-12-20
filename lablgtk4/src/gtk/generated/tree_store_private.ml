@@ -3,3 +3,4 @@
 
 type t = [`tree_store_private] Gobject.obj
 
+(* Methods *)

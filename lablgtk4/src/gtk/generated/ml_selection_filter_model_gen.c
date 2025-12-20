@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -25,24 +25,8 @@
 CAMLexport CAMLprim value ml_gtk_selection_filter_model_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkSelectionFilterModel *obj = gtk_selection_filter_model_new(Option_val(arg1, GtkSelectionModel_val, NULL));
+GtkSelectionFilterModel *obj = gtk_selection_filter_model_new(arg1);
 CAMLreturn(Val_GtkSelectionFilterModel(obj));
-}
-
-CAMLexport CAMLprim value ml_gtk_selection_filter_model_set_model(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_selection_filter_model_set_model(GtkSelectionFilterModel_val(self), Option_val(arg1, GtkSelectionModel_val, NULL));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_selection_filter_model_get_model(value self)
-{
-CAMLparam1(self);
-
-GtkSelectionModel* result = gtk_selection_filter_model_get_model(GtkSelectionFilterModel_val(self));
-CAMLreturn(Val_option(result, Val_GtkSelectionModel));
 }
 
 CAMLexport CAMLprim value ml_gtk_selection_filter_model_get_n_items(value self)

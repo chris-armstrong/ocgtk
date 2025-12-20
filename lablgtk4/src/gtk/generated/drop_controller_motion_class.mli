@@ -3,3 +3,4 @@
 
 type t = [`drop_controller_motion_class] Gobject.obj
 
+(* Methods *)

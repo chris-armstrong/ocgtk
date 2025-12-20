@@ -1,9 +1,13 @@
 (* High-level class for MountOperation *)
 class mount_operation (obj : Mount_operation.t) = object (self)
 
-  method is_showing = Mount_operation.get_is_showing obj
+  method get_parent : unit -> GApplication_and__window_and__window_group.window option =
+    fun () ->
+      Option.map (fun ret -> new GApplication_and__window_and__window_group.window ret) (Mount_operation.get_parent obj)
 
-  method get_parent : unit -> GApplication_and__window_and__window_group.window option = fun () -> Option.map (fun ret -> new GApplication_and__window_and__window_group.window ret) (Mount_operation.get_parent obj )
+  method is_showing : unit -> bool =
+    fun () ->
+      (Mount_operation.is_showing obj)
 
   method set_parent : 'p1. (#GApplication_and__window_and__window_group.window as 'p1) option -> unit =
     fun parent ->

@@ -3,3 +3,4 @@
 
 type t = [`drawing_area_class] Gobject.obj
 
+(* Methods *)

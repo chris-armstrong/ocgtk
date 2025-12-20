@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -42,7 +42,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_align_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "align-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_align_set: property 'align-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -59,7 +59,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_align_set(value self, va
 {
 CAMLparam2(self, new_value);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "align-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_align_set: property 'align-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -108,7 +108,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_background_set(value sel
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "background-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_background_set: property 'background-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -125,7 +125,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_background_set(value sel
 {
 CAMLparam2(self, new_value);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "background-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_background_set: property 'background-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -141,7 +141,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_editable(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "editable");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_editable: property 'editable' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -158,7 +158,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_editable(value self, val
 {
 CAMLparam2(self, new_value);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "editable");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_editable: property 'editable' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -174,7 +174,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_editable_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "editable-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_editable_set: property 'editable-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -191,7 +191,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_editable_set(value self,
 {
 CAMLparam2(self, new_value);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "editable-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_editable_set: property 'editable-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -207,7 +207,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_ellipsize_set(value self
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "ellipsize-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_ellipsize_set: property 'ellipsize-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -224,7 +224,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_ellipsize_set(value self
 {
 CAMLparam2(self, new_value);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "ellipsize-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_ellipsize_set: property 'ellipsize-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -273,7 +273,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_family_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "family-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_family_set: property 'family-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -290,7 +290,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_family_set(value self, v
 {
 CAMLparam2(self, new_value);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "family-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_family_set: property 'family-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -372,7 +372,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_foreground_set(value sel
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "foreground-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_foreground_set: property 'foreground-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -389,7 +389,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_foreground_set(value sel
 {
 CAMLparam2(self, new_value);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "foreground-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_foreground_set: property 'foreground-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -438,7 +438,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_language_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "language-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_language_set: property 'language-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -455,7 +455,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_language_set(value self,
 {
 CAMLparam2(self, new_value);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "language-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_language_set: property 'language-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -603,7 +603,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_rise_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "rise-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_rise_set: property 'rise-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -620,7 +620,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_rise_set(value self, val
 {
 CAMLparam2(self, new_value);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "rise-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_rise_set: property 'rise-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -669,7 +669,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_scale_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "scale-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_scale_set: property 'scale-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -686,7 +686,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_scale_set(value self, va
 {
 CAMLparam2(self, new_value);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "scale-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_scale_set: property 'scale-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -702,7 +702,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_single_paragraph_mode(va
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "single-paragraph-mode");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_single_paragraph_mode: property 'single-paragraph-mode' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -719,7 +719,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_single_paragraph_mode(va
 {
 CAMLparam2(self, new_value);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "single-paragraph-mode");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_single_paragraph_mode: property 'single-paragraph-mode' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -801,7 +801,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_size_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "size-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_size_set: property 'size-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -818,7 +818,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_size_set(value self, val
 {
 CAMLparam2(self, new_value);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "size-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_size_set: property 'size-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -834,7 +834,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_stretch_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "stretch-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_stretch_set: property 'stretch-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -851,7 +851,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_stretch_set(value self, 
 {
 CAMLparam2(self, new_value);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "stretch-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_stretch_set: property 'stretch-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -867,7 +867,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_strikethrough(value self
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "strikethrough");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_strikethrough: property 'strikethrough' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -884,7 +884,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_strikethrough(value self
 {
 CAMLparam2(self, new_value);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "strikethrough");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_strikethrough: property 'strikethrough' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -900,7 +900,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_strikethrough_set(value 
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "strikethrough-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_strikethrough_set: property 'strikethrough-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -917,7 +917,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_strikethrough_set(value 
 {
 CAMLparam2(self, new_value);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "strikethrough-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_strikethrough_set: property 'strikethrough-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -933,7 +933,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_style_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "style-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_style_set: property 'style-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -950,7 +950,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_style_set(value self, va
 {
 CAMLparam2(self, new_value);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "style-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_style_set: property 'style-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -999,7 +999,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_underline_set(value self
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "underline-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_underline_set: property 'underline-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1016,7 +1016,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_underline_set(value self
 {
 CAMLparam2(self, new_value);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "underline-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_underline_set: property 'underline-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1032,7 +1032,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_variant_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "variant-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_variant_set: property 'variant-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1049,7 +1049,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_variant_set(value self, 
 {
 CAMLparam2(self, new_value);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "variant-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_variant_set: property 'variant-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1098,7 +1098,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_weight_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "weight-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_weight_set: property 'weight-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1115,7 +1115,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_weight_set(value self, v
 {
 CAMLparam2(self, new_value);
 GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "weight-set");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_weight_set: property 'weight-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;

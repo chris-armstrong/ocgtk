@@ -8,6 +8,7 @@ model-specific data in the three @user_data
 members. *)
 type t = [`tree_iter] Gobject.obj
 
+(* Methods *)
 (** Frees an iterator that has been allocated by gtk_tree_iter_copy().
 
 This function is mainly used for language bindings. *)

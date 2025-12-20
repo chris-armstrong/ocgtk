@@ -3,3 +3,4 @@
 
 type t = [`uri_launcher_class] Gobject.obj
 
+(* Methods *)

@@ -8,14 +8,7 @@ val as_event_controller : t -> Event_controller_and__layout_child_and__layout_ma
 (** Create a new DropControllerMotion *)
 external new_ : unit -> t = "ml_gtk_drop_controller_motion_new"
 
-(* Properties *)
-
-(** Get property: contains-pointer *)
-external get_contains_pointer : t -> bool = "ml_gtk_drop_controller_motion_get_contains_pointer"
-
-(** Get property: is-pointer *)
-external get_is_pointer : t -> bool = "ml_gtk_drop_controller_motion_get_is_pointer"
-
+(* Methods *)
 (** Returns if a Drag-and-Drop operation is within the widget
 @self, not one of its children. *)
 external is_pointer : t -> bool = "ml_gtk_drop_controller_motion_is_pointer"
@@ -23,4 +16,6 @@ external is_pointer : t -> bool = "ml_gtk_drop_controller_motion_is_pointer"
 (** Returns if a Drag-and-Drop operation is within the widget
 @self or one of its children. *)
 external contains_pointer : t -> bool = "ml_gtk_drop_controller_motion_contains_pointer"
+
+(* Properties *)
 

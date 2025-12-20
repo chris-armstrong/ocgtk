@@ -1,0 +1,153 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* FileInfo: FileInfo *)
+
+type t = [`file_info | `object_] Gobject.obj
+
+(** Create a new FileInfo *)
+external new_ : unit -> t = "ml_g_file_info_new"
+
+(* Methods *)
+(** Unsets a mask set by g_file_info_set_attribute_mask(), if one
+is set. *)
+external unset_attribute_mask : t -> unit = "ml_g_file_info_unset_attribute_mask"
+
+(** Sets the "is_symlink" attribute in a #GFileInfo according to @is_symlink.
+See %G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK. *)
+external set_is_symlink : t -> bool -> unit = "ml_g_file_info_set_is_symlink"
+
+(** Sets the "is_hidden" attribute in a #GFileInfo according to @is_hidden.
+See %G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN. *)
+external set_is_hidden : t -> bool -> unit = "ml_g_file_info_set_is_hidden"
+
+(** Sets the file type in a #GFileInfo to @type.
+See %G_FILE_ATTRIBUTE_STANDARD_TYPE. *)
+external set_file_type : t -> Gio_enums.filetype -> unit = "ml_g_file_info_set_file_type"
+
+(** Sets the edit name for the current file.
+See %G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME. *)
+external set_edit_name : t -> string -> unit = "ml_g_file_info_set_edit_name"
+
+(** Sets the display name for the current #GFileInfo.
+See %G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME. *)
+external set_display_name : t -> string -> unit = "ml_g_file_info_set_display_name"
+
+(** Sets the content type attribute for a given #GFileInfo.
+See %G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE. *)
+external set_content_type : t -> string -> unit = "ml_g_file_info_set_content_type"
+
+(** Sets the @attribute to contain the given @attr_value,
+if possible. *)
+external set_attribute_string : t -> string -> string -> unit = "ml_g_file_info_set_attribute_string"
+
+(** Sets the attribute status for an attribute key. This is only
+needed by external code that implement g_file_set_attributes_from_info()
+or similar functions.
+
+The attribute must exist in @info for this to work. Otherwise %FALSE
+is returned and @info is unchanged. *)
+external set_attribute_status : t -> string -> Gio_enums.fileattributestatus -> bool = "ml_g_file_info_set_attribute_status"
+
+(** Sets @mask on @info to match specific attribute types. *)
+external set_attribute_mask : t -> File_attribute_matcher.t -> unit = "ml_g_file_info_set_attribute_mask"
+
+(** Sets the @attribute to contain the given @attr_value,
+if possible. *)
+external set_attribute_byte_string : t -> string -> string -> unit = "ml_g_file_info_set_attribute_byte_string"
+
+(** Sets the @attribute to contain the given @attr_value,
+if possible. *)
+external set_attribute_boolean : t -> string -> bool -> unit = "ml_g_file_info_set_attribute_boolean"
+
+(** Removes all cases of @attribute from @info if it exists. *)
+external remove_attribute : t -> string -> unit = "ml_g_file_info_remove_attribute"
+
+(** Checks if a file info structure has an attribute in the
+specified @name_space. *)
+external has_namespace : t -> string -> bool = "ml_g_file_info_has_namespace"
+
+(** Checks if a file info structure has an attribute named @attribute. *)
+external has_attribute : t -> string -> bool = "ml_g_file_info_has_attribute"
+
+(** Checks if a file is a symlink.
+
+It is an error to call this if the #GFileInfo does not contain
+%G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK. *)
+external get_is_symlink : t -> bool = "ml_g_file_info_get_is_symlink"
+
+(** Checks if a file is hidden.
+
+It is an error to call this if the #GFileInfo does not contain
+%G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN. *)
+external get_is_hidden : t -> bool = "ml_g_file_info_get_is_hidden"
+
+(** Checks if a file is a backup file.
+
+It is an error to call this if the #GFileInfo does not contain
+%G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP. *)
+external get_is_backup : t -> bool = "ml_g_file_info_get_is_backup"
+
+(** Gets a file's type (whether it is a regular file, symlink, etc).
+This is different from the file's content type, see g_file_info_get_content_type().
+
+It is an error to call this if the #GFileInfo does not contain
+%G_FILE_ATTRIBUTE_STANDARD_TYPE. *)
+external get_file_type : t -> Gio_enums.filetype = "ml_g_file_info_get_file_type"
+
+(** Gets the [entity tag](iface.File.html#entity-tags) for a given
+#GFileInfo. See %G_FILE_ATTRIBUTE_ETAG_VALUE.
+
+It is an error to call this if the #GFileInfo does not contain
+%G_FILE_ATTRIBUTE_ETAG_VALUE. *)
+external get_etag : t -> string option = "ml_g_file_info_get_etag"
+
+(** Gets the edit name for a file.
+
+It is an error to call this if the #GFileInfo does not contain
+%G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME. *)
+external get_edit_name : t -> string = "ml_g_file_info_get_edit_name"
+
+(** Gets a display name for a file. This is guaranteed to always be set.
+
+It is an error to call this if the #GFileInfo does not contain
+%G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME. *)
+external get_display_name : t -> string = "ml_g_file_info_get_display_name"
+
+(** Gets the file's content type.
+
+It is an error to call this if the #GFileInfo does not contain
+%G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE. *)
+external get_content_type : t -> string option = "ml_g_file_info_get_content_type"
+
+(** Gets the attribute type for an attribute key. *)
+external get_attribute_type : t -> string -> Gio_enums.fileattributetype = "ml_g_file_info_get_attribute_type"
+
+(** Gets the value of a string attribute. If the attribute does
+not contain a string, %NULL will be returned. *)
+external get_attribute_string : t -> string -> string option = "ml_g_file_info_get_attribute_string"
+
+(** Gets the attribute status for an attribute key. *)
+external get_attribute_status : t -> string -> Gio_enums.fileattributestatus = "ml_g_file_info_get_attribute_status"
+
+(** Gets the value of a byte string attribute. If the attribute does
+not contain a byte string, %NULL will be returned. *)
+external get_attribute_byte_string : t -> string -> string option = "ml_g_file_info_get_attribute_byte_string"
+
+(** Gets the value of a boolean attribute. If the attribute does not
+contain a boolean value, %FALSE will be returned. *)
+external get_attribute_boolean : t -> string -> bool = "ml_g_file_info_get_attribute_boolean"
+
+(** Gets the value of an attribute, formatted as a string.
+This escapes things as needed to make the string valid
+UTF-8. *)
+external get_attribute_as_string : t -> string -> string option = "ml_g_file_info_get_attribute_as_string"
+
+(** Duplicates a file info structure. *)
+external dup : t -> t = "ml_g_file_info_dup"
+
+(** First clears all of the [GFileAttribute][gio-GFileAttribute] of @dest_info,
+and then copies all of the file attributes from @src_info to @dest_info. *)
+external copy_into : t -> t -> unit = "ml_g_file_info_copy_into"
+
+(** Clears the status information from @info. *)
+external clear_status : t -> unit = "ml_g_file_info_clear_status"
+

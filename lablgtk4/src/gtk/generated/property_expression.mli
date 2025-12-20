@@ -11,6 +11,7 @@ external new_ : unit -> Expression.t option -> string -> t = "ml_gtk_property_ex
 (** Create a new PropertyExpression *)
 external new_for_pspec : Expression.t option -> unit -> t = "ml_gtk_property_expression_new_for_pspec"
 
+(* Methods *)
 (** Gets the expression specifying the object of
 a property expression. *)
 external get_expression : t -> Expression.t option = "ml_gtk_property_expression_get_expression"

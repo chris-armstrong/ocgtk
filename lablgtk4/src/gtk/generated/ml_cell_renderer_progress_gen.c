@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -34,7 +34,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_progress_get_inverted(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRendererProgress *obj = (GtkCellRendererProgress *)GtkCellRendererProgress_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "inverted");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_progress_get_inverted: property 'inverted' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -51,7 +51,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_progress_set_inverted(value self,
 {
 CAMLparam2(self, new_value);
 GtkCellRendererProgress *obj = (GtkCellRendererProgress *)GtkCellRendererProgress_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "inverted");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_progress_set_inverted: property 'inverted' not found");
 GValue prop_gvalue = G_VALUE_INIT;

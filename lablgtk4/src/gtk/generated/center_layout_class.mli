@@ -3,3 +3,4 @@
 
 type t = [`center_layout_class] Gobject.obj
 
+(* Methods *)

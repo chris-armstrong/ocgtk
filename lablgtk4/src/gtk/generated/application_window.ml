@@ -8,12 +8,9 @@ let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager
 (** Create a new ApplicationWindow *)
 external new_ : Application_and__window_and__window_group.Application.t -> t = "ml_gtk_application_window_new"
 
-(* Properties *)
-
-(** Get property: show-menubar *)
-external get_show_menubar : t -> bool = "ml_gtk_application_window_get_show_menubar"
-
-(** Set property: show-menubar *)
+(* Methods *)
+(** Sets whether the window will display a menubar for the app menu
+and menubar as needed. *)
 external set_show_menubar : t -> bool -> unit = "ml_gtk_application_window_set_show_menubar"
 
 (** Associates a shortcuts window with the application window.
@@ -24,6 +21,10 @@ Additionally, sets up an action with the name
 @window takes responsibility for destroying @help_overlay. *)
 external set_help_overlay : t -> Shortcuts_window.t option -> unit = "ml_gtk_application_window_set_help_overlay"
 
+(** Returns whether the window will display a menubar for the app menu
+and menubar as needed. *)
+external get_show_menubar : t -> bool = "ml_gtk_application_window_get_show_menubar"
+
 (** Returns the unique ID of the window.
 
  If the window has not yet been added to a `GtkApplication`, returns `0`. *)
@@ -33,4 +34,6 @@ external get_id : t -> int = "ml_gtk_application_window_get_id"
 
 See [method@Gtk.ApplicationWindow.set_help_overlay]. *)
 external get_help_overlay : t -> Shortcuts_window.t option = "ml_gtk_application_window_get_help_overlay"
+
+(* Properties *)
 

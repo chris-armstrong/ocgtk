@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -29,12 +29,12 @@ GtkShortcutTrigger *obj = gtk_shortcut_trigger_parse_string(String_val(arg1));
 CAMLreturn(Val_GtkShortcutTrigger(obj));
 }
 
-CAMLexport CAMLprim value ml_gtk_shortcut_trigger_trigger(value self, value arg1, value arg2)
+CAMLexport CAMLprim value ml_gtk_shortcut_trigger_to_string(value self)
 {
-CAMLparam3(self, arg1, arg2);
+CAMLparam1(self);
 
-GdkKeyMatch result = gtk_shortcut_trigger_trigger(GtkShortcutTrigger_val(self), GdkEvent_val(arg1), Bool_val(arg2));
-CAMLreturn(Val_GdkKeyMatch(result));
+char* result = gtk_shortcut_trigger_to_string(GtkShortcutTrigger_val(self));
+CAMLreturn(caml_copy_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_shortcut_trigger_hash(value self)
@@ -42,5 +42,21 @@ CAMLexport CAMLprim value ml_gtk_shortcut_trigger_hash(value self)
 CAMLparam1(self);
 
 guint result = gtk_shortcut_trigger_hash(GtkShortcutTrigger_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_shortcut_trigger_equal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gboolean result = gtk_shortcut_trigger_equal(GtkShortcutTrigger_val(self), GtkShortcutTrigger_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_shortcut_trigger_compare(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+int result = gtk_shortcut_trigger_compare(GtkShortcutTrigger_val(self), GtkShortcutTrigger_val(arg1));
 CAMLreturn(Val_int(result));
 }

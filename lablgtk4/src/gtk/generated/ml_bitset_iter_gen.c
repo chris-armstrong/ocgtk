@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -21,6 +21,32 @@
 #define Val_GtkBitsetIter(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GtkBitsetIter */
 
+
+CAMLexport CAMLprim value ml_gtk_bitset_iter_previous(value self)
+{
+CAMLparam1(self);
+guint out1;
+
+gboolean result = gtk_bitset_iter_previous(GtkBitsetIter_val(self), &out1);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_int(out1));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_bitset_iter_next(value self)
+{
+CAMLparam1(self);
+guint out1;
+
+gboolean result = gtk_bitset_iter_next(GtkBitsetIter_val(self), &out1);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_int(out1));
+    CAMLreturn(ret);
+}
 
 CAMLexport CAMLprim value ml_gtk_bitset_iter_is_valid(value self)
 {

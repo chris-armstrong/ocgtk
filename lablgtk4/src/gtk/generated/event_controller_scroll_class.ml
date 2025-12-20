@@ -3,3 +3,4 @@
 
 type t = [`event_controller_scroll_class] Gobject.obj
 
+(* Methods *)

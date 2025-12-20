@@ -6,6 +6,49 @@ type t = [`constraint_guide | `object_] Gobject.obj
 (** Create a new ConstraintGuide *)
 external new_ : unit -> t = "ml_gtk_constraint_guide_new"
 
+(* Methods *)
+(** Sets the strength of the constraint on the natural size of the
+given `GtkConstraintGuide`. *)
+external set_strength : t -> Gtk_enums.constraintstrength -> unit = "ml_gtk_constraint_guide_set_strength"
+
+(** Sets the natural size of @guide.
+
+If @guide is attached to a `GtkConstraintLayout`,
+the constraints will be updated to reflect the new size. *)
+external set_nat_size : t -> int -> int -> unit = "ml_gtk_constraint_guide_set_nat_size"
+
+(** Sets a name for the given `GtkConstraintGuide`.
+
+The name is useful for debugging purposes. *)
+external set_name : t -> string option -> unit = "ml_gtk_constraint_guide_set_name"
+
+(** Sets the minimum size of @guide.
+
+If @guide is attached to a `GtkConstraintLayout`,
+the constraints will be updated to reflect the new size. *)
+external set_min_size : t -> int -> int -> unit = "ml_gtk_constraint_guide_set_min_size"
+
+(** Sets the maximum size of @guide.
+
+If @guide is attached to a `GtkConstraintLayout`,
+the constraints will be updated to reflect the new size. *)
+external set_max_size : t -> int -> int -> unit = "ml_gtk_constraint_guide_set_max_size"
+
+(** Retrieves the strength set using gtk_constraint_guide_set_strength(). *)
+external get_strength : t -> Gtk_enums.constraintstrength = "ml_gtk_constraint_guide_get_strength"
+
+(** Gets the natural size of @guide. *)
+external get_nat_size : t -> int * int = "ml_gtk_constraint_guide_get_nat_size"
+
+(** Retrieves the name set using gtk_constraint_guide_set_name(). *)
+external get_name : t -> string option = "ml_gtk_constraint_guide_get_name"
+
+(** Gets the minimum size of @guide. *)
+external get_min_size : t -> int * int = "ml_gtk_constraint_guide_get_min_size"
+
+(** Gets the maximum size of @guide. *)
+external get_max_size : t -> int * int = "ml_gtk_constraint_guide_get_max_size"
+
 (* Properties *)
 
 (** Get property: max-height *)
@@ -32,12 +75,6 @@ external get_min_width : t -> int = "ml_gtk_constraint_guide_get_min_width"
 (** Set property: min-width *)
 external set_min_width : t -> int -> unit = "ml_gtk_constraint_guide_set_min_width"
 
-(** Get property: name *)
-external get_name : t -> string = "ml_gtk_constraint_guide_get_name"
-
-(** Set property: name *)
-external set_name : t -> string -> unit = "ml_gtk_constraint_guide_set_name"
-
 (** Get property: nat-height *)
 external get_nat_height : t -> int = "ml_gtk_constraint_guide_get_nat_height"
 
@@ -49,29 +86,4 @@ external get_nat_width : t -> int = "ml_gtk_constraint_guide_get_nat_width"
 
 (** Set property: nat-width *)
 external set_nat_width : t -> int -> unit = "ml_gtk_constraint_guide_set_nat_width"
-
-(** Sets the strength of the constraint on the natural size of the
-given `GtkConstraintGuide`. *)
-external set_strength : t -> Gtk_enums.constraintstrength -> unit = "ml_gtk_constraint_guide_set_strength"
-
-(** Sets the natural size of @guide.
-
-If @guide is attached to a `GtkConstraintLayout`,
-the constraints will be updated to reflect the new size. *)
-external set_nat_size : t -> int -> int -> unit = "ml_gtk_constraint_guide_set_nat_size"
-
-(** Sets the minimum size of @guide.
-
-If @guide is attached to a `GtkConstraintLayout`,
-the constraints will be updated to reflect the new size. *)
-external set_min_size : t -> int -> int -> unit = "ml_gtk_constraint_guide_set_min_size"
-
-(** Sets the maximum size of @guide.
-
-If @guide is attached to a `GtkConstraintLayout`,
-the constraints will be updated to reflect the new size. *)
-external set_max_size : t -> int -> int -> unit = "ml_gtk_constraint_guide_set_max_size"
-
-(** Retrieves the strength set using gtk_constraint_guide_set_strength(). *)
-external get_strength : t -> Gtk_enums.constraintstrength = "ml_gtk_constraint_guide_get_strength"
 

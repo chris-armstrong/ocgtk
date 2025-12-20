@@ -3,3 +3,4 @@
 
 type t = [`inscription_class] Gobject.obj
 
+(* Methods *)

@@ -3,6 +3,7 @@
 
 type t = [`tree_sortable] Gobject.obj
 
+(* Methods *)
 (** Emits a `GtkTreeSortable::sort-column-changed` signal on @sortable. *)
 external sort_column_changed : t -> unit = "ml_gtk_tree_sortable_sort_column_changed"
 
@@ -21,4 +22,10 @@ external set_sort_column_id : t -> int -> Gtk_enums.sorttype -> unit = "ml_gtk_t
 primarily by GtkTreeViewColumns in order to determine if a model can
 go back to the default state, or not. *)
 external has_default_sort_func : t -> bool = "ml_gtk_tree_sortable_has_default_sort_func"
+
+(** Fills in @sort_column_id and @order with the current sort column and the
+order. It returns %TRUE unless the @sort_column_id is
+%GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or
+%GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID. *)
+external get_sort_column_id : t -> bool * int * Gtk_enums.sorttype = "ml_gtk_tree_sortable_get_sort_column_id"
 

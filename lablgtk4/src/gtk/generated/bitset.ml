@@ -24,6 +24,7 @@ external new_empty : unit -> t = "ml_gtk_bitset_new_empty"
 (** Create a new Bitset *)
 external new_range : int -> int -> t = "ml_gtk_bitset_new_range"
 
+(* Methods *)
 (** Releases a reference on the given `GtkBitset`.
 
 If the reference was the last, the resources associated to the @self are

@@ -6,6 +6,7 @@ type t = [`flatten_list_model | `object_] Gobject.obj
 (** Create a new FlattenListModel *)
 external new_ : unit -> t = "ml_gtk_flatten_list_model_new"
 
+(* Methods *)
 (* Properties *)
 
 (** Get property: n-items *)

@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -27,6 +27,14 @@ CAMLexport CAMLprim value ml_gtk_tree_model_unref_node(value self, value arg1)
 CAMLparam2(self, arg1);
 
 gtk_tree_model_unref_node(GtkTreeModel_val(self), GtkTreeIter_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_model_rows_reordered(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gtk_tree_model_rows_reordered(GtkTreeModel_val(self), GtkTreePath_val(arg1), GtkTreeIter_val(arg2), Int_val(arg3));
 CAMLreturn(Val_unit);
 }
 
@@ -141,6 +149,14 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
+CAMLexport CAMLprim value ml_gtk_tree_model_get_string_from_iter(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+char* result = gtk_tree_model_get_string_from_iter(GtkTreeModel_val(self), GtkTreeIter_val(arg1));
+CAMLreturn(Val_option_string(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_tree_model_get_path(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -194,20 +210,4 @@ CAMLlocal1(ret);
     Store_field(ret, 0, Val_bool(result));
     Store_field(ret, 1, Val_GtkTreeIter(out1));
     CAMLreturn(ret);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_model_get_flags(value self)
-{
-CAMLparam1(self);
-
-GtkTreeModelFlags result = gtk_tree_model_get_flags(GtkTreeModel_val(self));
-CAMLreturn(Val_GtkTreeModelFlags(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_model_filter_new(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-GtkTreeModel* result = gtk_tree_model_filter_new(GtkTreeModel_val(self), Option_val(arg1, GtkTreePath_val, NULL));
-CAMLreturn(Val_GtkTreeModel(result));
 }

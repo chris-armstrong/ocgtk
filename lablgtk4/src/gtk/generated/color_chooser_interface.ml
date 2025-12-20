@@ -3,3 +3,4 @@
 
 type t = [`color_chooser_interface] Gobject.obj
 
+(* Methods *)

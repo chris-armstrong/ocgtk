@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -58,6 +58,39 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
     g_value_set_uint(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "accel-key", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_accel_get_accel_mode(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkCellRendererAccel *obj = (GtkCellRendererAccel *)GtkCellRendererAccel_val(self);
+    GtkCellRendererAccelMode prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accel-mode");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_accel_get_accel_mode: property 'accel-mode' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "accel-mode", &prop_gvalue);
+    prop_value = (GtkCellRendererAccelMode)g_value_get_enum(&prop_gvalue);
+
+result = Val_GtkCellRendererAccelMode(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_accel_set_accel_mode(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkCellRendererAccel *obj = (GtkCellRendererAccel *)GtkCellRendererAccel_val(self);
+    GtkCellRendererAccelMode c_value = GtkCellRendererAccelMode_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accel-mode");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_accel_set_accel_mode: property 'accel-mode' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "accel-mode", &prop_gvalue);
 g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }

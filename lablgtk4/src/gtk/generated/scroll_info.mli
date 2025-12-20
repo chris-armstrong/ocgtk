@@ -11,6 +11,7 @@ type t = [`scroll_info] Gobject.obj
 (** Create a new ScrollInfo *)
 external new_ : unit -> t = "ml_gtk_scroll_info_new"
 
+(* Methods *)
 (** Decreases the reference count of a `GtkScrollInfo` by one.
 
 If the resulting reference count is zero, frees the self. *)

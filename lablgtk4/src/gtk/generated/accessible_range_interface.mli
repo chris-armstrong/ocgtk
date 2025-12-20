@@ -3,3 +3,4 @@
 
 type t = [`accessible_range_interface] Gobject.obj
 
+(* Methods *)

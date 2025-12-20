@@ -6,11 +6,7 @@ type t = [`mount_operation | `mount_operation | `mount_operation | `mount_operat
 (** Create a new MountOperation *)
 external new_ : Application_and__window_and__window_group.Window.t option -> t = "ml_gtk_mount_operation_new"
 
-(* Properties *)
-
-(** Get property: is-showing *)
-external get_is_showing : t -> bool = "ml_gtk_mount_operation_get_is_showing"
-
+(* Methods *)
 (** Sets the transient parent for windows shown by the
 `GtkMountOperation`. *)
 external set_parent : t -> Application_and__window_and__window_group.Window.t option -> unit = "ml_gtk_mount_operation_set_parent"
@@ -21,4 +17,6 @@ external is_showing : t -> bool = "ml_gtk_mount_operation_is_showing"
 
 (** Gets the transient parent used by the `GtkMountOperation`. *)
 external get_parent : t -> Application_and__window_and__window_group.Window.t option = "ml_gtk_mount_operation_get_parent"
+
+(* Properties *)
 

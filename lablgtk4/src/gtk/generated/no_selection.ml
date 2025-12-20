@@ -6,6 +6,7 @@ type t = [`no_selection | `object_] Gobject.obj
 (** Create a new NoSelection *)
 external new_ : unit -> t = "ml_gtk_no_selection_new"
 
+(* Methods *)
 (* Properties *)
 
 (** Get property: n-items *)

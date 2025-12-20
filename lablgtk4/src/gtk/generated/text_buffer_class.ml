@@ -4,3 +4,4 @@
 (** The class structure for `GtkTextBuffer`. *)
 type t = [`text_buffer_class] Gobject.obj
 
+(* Methods *)

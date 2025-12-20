@@ -3,6 +3,7 @@
 
 type t = [`expression] Gobject.obj
 
+(* Methods *)
 (** Releases a reference on the given `GtkExpression`.
 
 If the reference was the last, the resources associated to the `self` are

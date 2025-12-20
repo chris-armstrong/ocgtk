@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -51,4 +51,18 @@ CAMLparam4(self, arg1, arg2, arg3);
 
 gtk_fixed_move(GtkFixed_val(self), GtkWidget_val(arg1), Double_val(arg2), Double_val(arg3));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_fixed_get_child_position(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+double out2;
+double out3;
+
+gtk_fixed_get_child_position(GtkFixed_val(self), GtkWidget_val(arg1), &out2, &out3);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, caml_copy_double(out2));
+    Store_field(ret, 1, caml_copy_double(out3));
+    CAMLreturn(ret);
 }

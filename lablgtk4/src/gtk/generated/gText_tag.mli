@@ -1,5 +1,8 @@
 class text_tag : Text_tag.t ->
   object
+    method changed : bool -> unit
+    method get_priority : unit -> int
+    method set_priority : int -> unit
     method accumulative_margin : bool
     method set_accumulative_margin : bool -> unit
     method allow_breaks : bool
@@ -14,6 +17,8 @@ class text_tag : Text_tag.t ->
     method set_background_full_height_set : bool -> unit
     method background_set : bool
     method set_background_set : bool -> unit
+    method direction : Gtk_enums.textdirection
+    method set_direction : Gtk_enums.textdirection -> unit
     method editable : bool
     method set_editable : bool -> unit
     method editable_set : bool
@@ -48,6 +53,8 @@ class text_tag : Text_tag.t ->
     method set_invisible : bool -> unit
     method invisible_set : bool
     method set_invisible_set : bool -> unit
+    method justification : Gtk_enums.justification
+    method set_justification : Gtk_enums.justification -> unit
     method justification_set : bool
     method set_justification_set : bool -> unit
     method language : string
@@ -139,11 +146,10 @@ class text_tag : Text_tag.t ->
     method set_word : bool -> unit
     method word_set : bool
     method set_word_set : bool -> unit
+    method wrap_mode : Gtk_enums.wrapmode
+    method set_wrap_mode : Gtk_enums.wrapmode -> unit
     method wrap_mode_set : bool
     method set_wrap_mode_set : bool -> unit
-    method changed : bool -> unit
-    method get_priority : unit -> int
-    method set_priority : int -> unit
     method as_text_tag : Text_tag.t
   end
 

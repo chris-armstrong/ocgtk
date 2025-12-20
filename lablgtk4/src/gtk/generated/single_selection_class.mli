@@ -3,3 +3,4 @@
 
 type t = [`single_selection_class] Gobject.obj
 
+(* Methods *)

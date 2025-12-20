@@ -3,3 +3,4 @@
 
 type t = [`tree_sortable_iface] Gobject.obj
 
+(* Methods *)

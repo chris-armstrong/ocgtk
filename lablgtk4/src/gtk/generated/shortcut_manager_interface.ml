@@ -8,3 +8,4 @@ Note that no function is mandatory to implement, the default implementation
 will work fine. *)
 type t = [`shortcut_manager_interface] Gobject.obj
 
+(* Methods *)

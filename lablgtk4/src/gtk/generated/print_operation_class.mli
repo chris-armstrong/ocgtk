@@ -3,3 +3,4 @@
 
 type t = [`print_operation_class] Gobject.obj
 
+(* Methods *)

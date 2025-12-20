@@ -1,14 +1,6 @@
 class text_buffer : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t ->
   object
     inherit Gtext_buffer_signals.text_buffer_signals
-    method can_redo : bool
-    method can_undo : bool
-    method cursor_position : int
-    method enable_undo : bool
-    method set_enable_undo : bool -> unit
-    method has_selection : bool
-    method text : string
-    method set_text : string -> unit
     method add_mark : <as_text_mark: Text_buffer_and__text_iter_and__text_mark.Text_mark.t; ..> -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method apply_tag : #GText_tag.text_tag -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method apply_tag_by_name : string -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
@@ -24,14 +16,20 @@ class text_buffer : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t ->
     method delete_selection : bool -> bool -> bool
     method end_irreversible_action : unit -> unit
     method end_user_action : unit -> unit
+    method get_can_redo : unit -> bool
+    method get_can_undo : unit -> bool
     method get_char_count : unit -> int
+    method get_enable_undo : unit -> bool
+    method get_has_selection : unit -> bool
     method get_insert : unit -> text_mark
     method get_line_count : unit -> int
     method get_mark : string -> text_mark option
     method get_max_undo_levels : unit -> int
     method get_modified : unit -> bool
     method get_selection_bound : unit -> text_mark
+    method get_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> string
     method get_tag_table : unit -> GText_tag_table.text_tag_table
+    method get_text : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> string
     method insert : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string -> int -> unit
     method insert_at_cursor : string -> int -> unit
     method insert_child_anchor : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> #GText_child_anchor.text_child_anchor -> unit
@@ -48,9 +46,12 @@ class text_buffer : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t ->
     method remove_tag : #GText_tag.text_tag -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method remove_tag_by_name : string -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method select_range : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
+    method set_enable_undo : bool -> unit
     method set_max_undo_levels : int -> unit
     method set_modified : bool -> unit
+    method set_text : string -> int -> unit
     method undo : unit -> unit
+    method cursor_position : int
     method as_text_buffer : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
   end
 
@@ -111,8 +112,12 @@ and text_iter : Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
     method get_line_index : unit -> int
     method get_line_offset : unit -> int
     method get_offset : unit -> int
+    method get_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
+    method get_text : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
     method get_visible_line_index : unit -> int
     method get_visible_line_offset : unit -> int
+    method get_visible_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
+    method get_visible_text : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
     method has_tag : #GText_tag.text_tag -> bool
     method in_range : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool
     method inside_sentence : unit -> bool
@@ -137,10 +142,10 @@ and text_iter : Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
 
 and text_mark : Text_buffer_and__text_iter_and__text_mark.Text_mark.t ->
   object
-    method left_gravity : bool
-    method name : string
     method get_buffer : unit -> text_buffer option
     method get_deleted : unit -> bool
+    method get_left_gravity : unit -> bool
+    method get_name : unit -> string option
     method get_visible : unit -> bool
     method set_visible : bool -> unit
     method as_text_mark : Text_buffer_and__text_iter_and__text_mark.Text_mark.t

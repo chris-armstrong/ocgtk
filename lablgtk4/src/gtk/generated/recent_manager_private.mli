@@ -3,3 +3,4 @@
 
 type t = [`recent_manager_private] Gobject.obj
 
+(* Methods *)

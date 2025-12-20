@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -46,6 +46,14 @@ gboolean result = gtk_recent_info_match(GtkRecentInfo_val(self), GtkRecentInfo_v
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_recent_info_last_application(value self)
+{
+CAMLparam1(self);
+
+char* result = gtk_recent_info_last_application(GtkRecentInfo_val(self));
+CAMLreturn(caml_copy_string(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_recent_info_is_local(value self)
 {
 CAMLparam1(self);
@@ -70,11 +78,27 @@ gboolean result = gtk_recent_info_has_application(GtkRecentInfo_val(self), Strin
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_recent_info_get_uri_display(value self)
+{
+CAMLparam1(self);
+
+char* result = gtk_recent_info_get_uri_display(GtkRecentInfo_val(self));
+CAMLreturn(Val_option_string(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_recent_info_get_uri(value self)
 {
 CAMLparam1(self);
 
 const char* result = gtk_recent_info_get_uri(GtkRecentInfo_val(self));
+CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_recent_info_get_short_name(value self)
+{
+CAMLparam1(self);
+
+char* result = gtk_recent_info_get_short_name(GtkRecentInfo_val(self));
 CAMLreturn(caml_copy_string(result));
 }
 

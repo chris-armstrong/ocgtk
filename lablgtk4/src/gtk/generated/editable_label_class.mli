@@ -3,3 +3,4 @@
 
 type t = [`editable_label_class] Gobject.obj
 
+(* Methods *)

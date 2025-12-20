@@ -6,6 +6,16 @@ type t = [`css_provider | `object_] Gobject.obj
 (** Create a new CssProvider *)
 external new_ : unit -> t = "ml_gtk_css_provider_new"
 
+(* Methods *)
+(** Converts the @provider into a string representation in CSS
+format.
+
+Using [method@Gtk.CssProvider.load_from_string] with the return
+value from this function on a new provider created with
+[ctor@Gtk.CssProvider.new] will basically create a duplicate
+of this @provider. *)
+external to_string : t -> string = "ml_gtk_css_provider_to_string"
+
 (** Loads a theme from the usual theme paths.
 
 The actual process of finding the theme might change between
@@ -23,9 +33,4 @@ the @css_provider.
 
 This clears any previously loaded information. *)
 external load_from_resource : t -> string -> unit = "ml_gtk_css_provider_load_from_resource"
-
-(** Loads the data contained in @path into @css_provider.
-
-This clears any previously loaded information. *)
-external load_from_path : t -> string -> unit = "ml_gtk_css_provider_load_from_path"
 

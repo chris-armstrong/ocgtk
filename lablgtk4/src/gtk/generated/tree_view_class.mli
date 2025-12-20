@@ -3,3 +3,4 @@
 
 type t = [`tree_view_class] Gobject.obj
 
+(* Methods *)

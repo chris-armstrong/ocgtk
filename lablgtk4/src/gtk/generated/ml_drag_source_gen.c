@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -27,22 +27,6 @@ CAMLexport CAMLprim value ml_gtk_drag_source_new(value unit)
 CAMLparam1(unit);
 GtkDragSource *obj = gtk_drag_source_new();
 CAMLreturn(Val_GtkDragSource(obj));
-}
-
-CAMLexport CAMLprim value ml_gtk_drag_source_set_actions(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_drag_source_set_actions(GtkDragSource_val(self), GdkDragAction_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_drag_source_get_actions(value self)
-{
-CAMLparam1(self);
-
-GdkDragAction result = gtk_drag_source_get_actions(GtkDragSource_val(self));
-CAMLreturn(Val_GdkDragAction(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_drag_source_drag_cancel(value self)

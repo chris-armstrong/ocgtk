@@ -3,3 +3,4 @@
 
 type t = [`media_file_class] Gobject.obj
 
+(* Methods *)

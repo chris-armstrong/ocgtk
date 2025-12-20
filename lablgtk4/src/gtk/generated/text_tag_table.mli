@@ -6,6 +6,7 @@ type t = [`text_tag_table | `object_] Gobject.obj
 (** Create a new TextTagTable *)
 external new_ : unit -> t = "ml_gtk_text_tag_table_new"
 
+(* Methods *)
 (** Remove a tag from the table.
 
 If a `GtkTextBuffer` has @table as its tag table, the tag is

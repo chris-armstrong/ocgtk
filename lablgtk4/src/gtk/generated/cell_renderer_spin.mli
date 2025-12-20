@@ -8,7 +8,14 @@ val as_cell_renderer : t -> Cell_renderer.t
 (** Create a new CellRendererSpin *)
 external new_ : unit -> t = "ml_gtk_cell_renderer_spin_new"
 
+(* Methods *)
 (* Properties *)
+
+(** Get property: adjustment *)
+external get_adjustment : t -> Adjustment.t = "ml_gtk_cell_renderer_spin_get_adjustment"
+
+(** Set property: adjustment *)
+external set_adjustment : t -> Adjustment.t -> unit = "ml_gtk_cell_renderer_spin_set_adjustment"
 
 (** Get property: climb-rate *)
 external get_climb_rate : t -> float = "ml_gtk_cell_renderer_spin_get_climb_rate"

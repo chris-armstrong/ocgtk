@@ -10,7 +10,7 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
@@ -45,6 +45,22 @@ gtk_scrolled_window_set_vadjustment(GtkScrolledWindow_val(self), Option_val(arg1
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_scrolled_window_set_propagate_natural_width(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_scrolled_window_set_propagate_natural_width(GtkScrolledWindow_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_scrolled_window_set_propagate_natural_height(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_scrolled_window_set_propagate_natural_height(GtkScrolledWindow_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_scrolled_window_set_policy(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -61,6 +77,62 @@ gtk_scrolled_window_set_placement(GtkScrolledWindow_val(self), GtkCornerType_val
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_scrolled_window_set_overlay_scrolling(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_scrolled_window_set_overlay_scrolling(GtkScrolledWindow_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_scrolled_window_set_min_content_width(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_scrolled_window_set_min_content_width(GtkScrolledWindow_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_scrolled_window_set_min_content_height(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_scrolled_window_set_min_content_height(GtkScrolledWindow_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_scrolled_window_set_max_content_width(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_scrolled_window_set_max_content_width(GtkScrolledWindow_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_scrolled_window_set_max_content_height(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_scrolled_window_set_max_content_height(GtkScrolledWindow_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_scrolled_window_set_kinetic_scrolling(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_scrolled_window_set_kinetic_scrolling(GtkScrolledWindow_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_scrolled_window_set_has_frame(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_scrolled_window_set_has_frame(GtkScrolledWindow_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_scrolled_window_set_hadjustment(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -73,7 +145,7 @@ CAMLexport CAMLprim value ml_gtk_scrolled_window_set_child(value self, value arg
 {
 CAMLparam2(self, arg1);
 
-gtk_scrolled_window_set_child(GtkScrolledWindow_val(self), GtkWidget_option_val(arg1));
+gtk_scrolled_window_set_child(GtkScrolledWindow_val(self), Option_val(arg1, GtkWidget_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -91,6 +163,22 @@ CAMLparam1(self);
 
 GtkAdjustment* result = gtk_scrolled_window_get_vadjustment(GtkScrolledWindow_val(self));
 CAMLreturn(Val_GtkAdjustment(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_scrolled_window_get_propagate_natural_width(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_scrolled_window_get_propagate_natural_width(GtkScrolledWindow_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_scrolled_window_get_propagate_natural_height(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_scrolled_window_get_propagate_natural_height(GtkScrolledWindow_val(self));
+CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_scrolled_window_get_policy(value self)
@@ -115,12 +203,68 @@ GtkCornerType result = gtk_scrolled_window_get_placement(GtkScrolledWindow_val(s
 CAMLreturn(Val_GtkCornerType(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_scrolled_window_get_overlay_scrolling(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_scrolled_window_get_overlay_scrolling(GtkScrolledWindow_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_scrolled_window_get_min_content_width(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_scrolled_window_get_min_content_width(GtkScrolledWindow_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_scrolled_window_get_min_content_height(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_scrolled_window_get_min_content_height(GtkScrolledWindow_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_scrolled_window_get_max_content_width(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_scrolled_window_get_max_content_width(GtkScrolledWindow_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_scrolled_window_get_max_content_height(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_scrolled_window_get_max_content_height(GtkScrolledWindow_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_scrolled_window_get_kinetic_scrolling(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_scrolled_window_get_kinetic_scrolling(GtkScrolledWindow_val(self));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_scrolled_window_get_hscrollbar(value self)
 {
 CAMLparam1(self);
 
 GtkWidget* result = gtk_scrolled_window_get_hscrollbar(GtkScrolledWindow_val(self));
 CAMLreturn(Val_GtkWidget(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_scrolled_window_get_has_frame(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_scrolled_window_get_has_frame(GtkScrolledWindow_val(self));
+CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_scrolled_window_get_hadjustment(value self)
@@ -136,302 +280,104 @@ CAMLexport CAMLprim value ml_gtk_scrolled_window_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_scrolled_window_get_child(GtkScrolledWindow_val(self));
-CAMLreturn(Val_GtkWidget_option(result));
+CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
-CAMLexport CAMLprim value ml_gtk_scrolled_window_get_has_frame(value self)
+CAMLexport CAMLprim value ml_gtk_scrolled_window_get_hscrollbar_policy(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkScrolledWindow *obj = (GtkScrolledWindow *)GtkScrolledWindow_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "has-frame");
-if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_get_has_frame: property 'has-frame' not found");
+    GtkPolicyType prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "hscrollbar-policy");
+if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_get_hscrollbar_policy: property 'hscrollbar-policy' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "has-frame", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+g_object_get_property(G_OBJECT(obj), "hscrollbar-policy", &prop_gvalue);
+    prop_value = (GtkPolicyType)g_value_get_enum(&prop_gvalue);
 
-result = Val_bool(prop_value);
+result = Val_GtkPolicyType(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);
 }
 
-CAMLexport CAMLprim value ml_gtk_scrolled_window_set_has_frame(value self, value new_value)
+CAMLexport CAMLprim value ml_gtk_scrolled_window_set_hscrollbar_policy(value self, value new_value)
 {
 CAMLparam2(self, new_value);
 GtkScrolledWindow *obj = (GtkScrolledWindow *)GtkScrolledWindow_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "has-frame");
-if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_set_has_frame: property 'has-frame' not found");
+    GtkPolicyType c_value = GtkPolicyType_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "hscrollbar-policy");
+if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_set_hscrollbar_policy: property 'hscrollbar-policy' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "has-frame", &prop_gvalue);
+    g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "hscrollbar-policy", &prop_gvalue);
 g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_scrolled_window_get_kinetic_scrolling(value self)
+CAMLexport CAMLprim value ml_gtk_scrolled_window_get_vscrollbar_policy(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkScrolledWindow *obj = (GtkScrolledWindow *)GtkScrolledWindow_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "kinetic-scrolling");
-if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_get_kinetic_scrolling: property 'kinetic-scrolling' not found");
+    GtkPolicyType prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "vscrollbar-policy");
+if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_get_vscrollbar_policy: property 'vscrollbar-policy' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "kinetic-scrolling", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+g_object_get_property(G_OBJECT(obj), "vscrollbar-policy", &prop_gvalue);
+    prop_value = (GtkPolicyType)g_value_get_enum(&prop_gvalue);
 
-result = Val_bool(prop_value);
+result = Val_GtkPolicyType(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);
 }
 
-CAMLexport CAMLprim value ml_gtk_scrolled_window_set_kinetic_scrolling(value self, value new_value)
+CAMLexport CAMLprim value ml_gtk_scrolled_window_set_vscrollbar_policy(value self, value new_value)
 {
 CAMLparam2(self, new_value);
 GtkScrolledWindow *obj = (GtkScrolledWindow *)GtkScrolledWindow_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "kinetic-scrolling");
-if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_set_kinetic_scrolling: property 'kinetic-scrolling' not found");
+    GtkPolicyType c_value = GtkPolicyType_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "vscrollbar-policy");
+if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_set_vscrollbar_policy: property 'vscrollbar-policy' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "kinetic-scrolling", &prop_gvalue);
+    g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "vscrollbar-policy", &prop_gvalue);
 g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_scrolled_window_get_max_content_height(value self)
+CAMLexport CAMLprim value ml_gtk_scrolled_window_get_window_placement(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkScrolledWindow *obj = (GtkScrolledWindow *)GtkScrolledWindow_val(self);
-    gint prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "max-content-height");
-if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_get_max_content_height: property 'max-content-height' not found");
+    GtkCornerType prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "window-placement");
+if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_get_window_placement: property 'window-placement' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "max-content-height", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
+g_object_get_property(G_OBJECT(obj), "window-placement", &prop_gvalue);
+    prop_value = (GtkCornerType)g_value_get_enum(&prop_gvalue);
 
-result = Val_int(prop_value);
+result = Val_GtkCornerType(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);
 }
 
-CAMLexport CAMLprim value ml_gtk_scrolled_window_set_max_content_height(value self, value new_value)
+CAMLexport CAMLprim value ml_gtk_scrolled_window_set_window_placement(value self, value new_value)
 {
 CAMLparam2(self, new_value);
 GtkScrolledWindow *obj = (GtkScrolledWindow *)GtkScrolledWindow_val(self);
-    gint c_value = Int_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "max-content-height");
-if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_set_max_content_height: property 'max-content-height' not found");
+    GtkCornerType c_value = GtkCornerType_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "window-placement");
+if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_set_window_placement: property 'window-placement' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_int(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "max-content-height", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_scrolled_window_get_max_content_width(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkScrolledWindow *obj = (GtkScrolledWindow *)GtkScrolledWindow_val(self);
-    gint prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "max-content-width");
-if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_get_max_content_width: property 'max-content-width' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "max-content-width", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
-
-result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_scrolled_window_set_max_content_width(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkScrolledWindow *obj = (GtkScrolledWindow *)GtkScrolledWindow_val(self);
-    gint c_value = Int_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "max-content-width");
-if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_set_max_content_width: property 'max-content-width' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_int(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "max-content-width", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_scrolled_window_get_min_content_height(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkScrolledWindow *obj = (GtkScrolledWindow *)GtkScrolledWindow_val(self);
-    gint prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "min-content-height");
-if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_get_min_content_height: property 'min-content-height' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "min-content-height", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
-
-result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_scrolled_window_set_min_content_height(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkScrolledWindow *obj = (GtkScrolledWindow *)GtkScrolledWindow_val(self);
-    gint c_value = Int_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "min-content-height");
-if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_set_min_content_height: property 'min-content-height' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_int(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "min-content-height", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_scrolled_window_get_min_content_width(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkScrolledWindow *obj = (GtkScrolledWindow *)GtkScrolledWindow_val(self);
-    gint prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "min-content-width");
-if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_get_min_content_width: property 'min-content-width' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "min-content-width", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
-
-result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_scrolled_window_set_min_content_width(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkScrolledWindow *obj = (GtkScrolledWindow *)GtkScrolledWindow_val(self);
-    gint c_value = Int_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "min-content-width");
-if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_set_min_content_width: property 'min-content-width' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_int(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "min-content-width", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_scrolled_window_get_overlay_scrolling(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkScrolledWindow *obj = (GtkScrolledWindow *)GtkScrolledWindow_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "overlay-scrolling");
-if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_get_overlay_scrolling: property 'overlay-scrolling' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "overlay-scrolling", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_scrolled_window_set_overlay_scrolling(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkScrolledWindow *obj = (GtkScrolledWindow *)GtkScrolledWindow_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "overlay-scrolling");
-if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_set_overlay_scrolling: property 'overlay-scrolling' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "overlay-scrolling", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_scrolled_window_get_propagate_natural_height(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkScrolledWindow *obj = (GtkScrolledWindow *)GtkScrolledWindow_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "propagate-natural-height");
-if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_get_propagate_natural_height: property 'propagate-natural-height' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "propagate-natural-height", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_scrolled_window_set_propagate_natural_height(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkScrolledWindow *obj = (GtkScrolledWindow *)GtkScrolledWindow_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "propagate-natural-height");
-if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_set_propagate_natural_height: property 'propagate-natural-height' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "propagate-natural-height", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_scrolled_window_get_propagate_natural_width(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkScrolledWindow *obj = (GtkScrolledWindow *)GtkScrolledWindow_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "propagate-natural-width");
-if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_get_propagate_natural_width: property 'propagate-natural-width' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "propagate-natural-width", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_scrolled_window_set_propagate_natural_width(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkScrolledWindow *obj = (GtkScrolledWindow *)GtkScrolledWindow_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "propagate-natural-width");
-if (pspec == NULL) caml_failwith("ml_gtk_scrolled_window_set_propagate_natural_width: property 'propagate-natural-width' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "propagate-natural-width", &prop_gvalue);
+    g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "window-placement", &prop_gvalue);
 g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }
