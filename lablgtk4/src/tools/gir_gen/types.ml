@@ -2,7 +2,7 @@
 
 type gir_type = {
   name : string;
-  c_type : string;
+  c_type : string option;
   nullable: bool;
 }
 
@@ -185,8 +185,10 @@ type ocaml_class = {
   class_layer1_accessor : string;
 }
 
+(** Type mapping result from a name lookup *)
 type type_mapping = {
   ocaml_type : string; (* classes: Application_window.t *)
+  c_type: string; (* C type (struct name or enum name) *)
   layer2_class : ocaml_class option; (* when this is a class or interface, the OCaml module *)
   c_to_ml : string;
   ml_to_c : string;
@@ -212,7 +214,28 @@ type hierarchy_info = {
   base_conversion_method: string; (* Widget.as_widget *)
 }
 
+type gir_namespace = {
+  namespace_name: string;
+  namespace_version: string;
+  namespace_shared_library: string;
+  namespace_c_identifier_prefixes: string;
+  namespace_c_symbol_prefixes: string;
+}
+
+type gir_include = {
+  include_name: string;
+  include_version: string;
+}
+
+type gir_repository = {
+  repository_includes: gir_include list;
+  repository_c_includes: string list;
+  repository_packages: string list;
+}
+
 type generation_context = {
+  namespace: gir_namespace;
+  repository: gir_repository;
   classes: gir_class list;
   interfaces: gir_interface list;
   enums: gir_enum list;

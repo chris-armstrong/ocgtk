@@ -8,6 +8,7 @@ let as_event_controller (obj : t) : Event_controller_and__layout_child_and__layo
 (** Create a new GestureRotate *)
 external new_ : unit -> t = "ml_gtk_gesture_rotate_new"
 
+(* Methods *)
 (** Gets the angle delta in radians.
 
 If @gesture is active, this function returns the angle difference

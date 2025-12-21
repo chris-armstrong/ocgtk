@@ -3,3 +3,4 @@
 
 type t = [`gesture_drag_class] Gobject.obj
 
+(* Methods *)

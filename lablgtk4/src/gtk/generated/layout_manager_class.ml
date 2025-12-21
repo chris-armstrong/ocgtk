@@ -6,3 +6,4 @@ should only be accessed through the provided API, or when subclassing
 `GtkLayoutManager`. *)
 type t = [`layout_manager_class] Gobject.obj
 
+(* Methods *)

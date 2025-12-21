@@ -8,3 +8,4 @@ let as_layoutmanager (obj : t) : Event_controller_and__layout_child_and__layout_
 (** Create a new CustomLayout *)
 external new_ : unit -> unit -> unit -> t = "ml_gtk_custom_layout_new"
 
+(* Methods *)

@@ -3,3 +3,4 @@
 
 type t = [`mnemonic_action_class] Gobject.obj
 
+(* Methods *)

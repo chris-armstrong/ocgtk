@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -29,11 +30,19 @@ GtkViewport *obj = gtk_viewport_new(Option_val(arg1, GtkAdjustment_val, NULL), O
 CAMLreturn(Val_GtkViewport(obj));
 }
 
+CAMLexport CAMLprim value ml_gtk_viewport_set_scroll_to_focus(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_viewport_set_scroll_to_focus(GtkViewport_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_viewport_set_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_viewport_set_child(GtkViewport_val(self), GtkWidget_option_val(arg1));
+gtk_viewport_set_child(GtkViewport_val(self), Option_val(arg1, GtkWidget_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -45,43 +54,18 @@ gtk_viewport_scroll_to(GtkViewport_val(self), GtkWidget_val(arg1), Option_val(ar
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_viewport_get_scroll_to_focus(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_viewport_get_scroll_to_focus(GtkViewport_val(self));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_viewport_get_child(value self)
 {
 CAMLparam1(self);
 
 GtkWidget* result = gtk_viewport_get_child(GtkViewport_val(self));
-CAMLreturn(Val_GtkWidget_option(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_viewport_get_scroll_to_focus(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkViewport *obj = (GtkViewport *)GtkViewport_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "scroll-to-focus");
-if (pspec == NULL) caml_failwith("ml_gtk_viewport_get_scroll_to_focus: property 'scroll-to-focus' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "scroll-to-focus", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_viewport_set_scroll_to_focus(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkViewport *obj = (GtkViewport *)GtkViewport_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "scroll-to-focus");
-if (pspec == NULL) caml_failwith("ml_gtk_viewport_set_scroll_to_focus: property 'scroll-to-focus' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "scroll-to-focus", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+CAMLreturn(Val_option(result, Val_GtkWidget));
 }

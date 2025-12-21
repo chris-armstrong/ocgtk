@@ -1,0 +1,102 @@
+/* GENERATED CODE - DO NOT EDIT */
+/* C bindings for DBusObjectManagerServer */
+
+#include <gio/gio.h>
+#include <caml/mlvalues.h>
+#include <caml/memory.h>
+#include <caml/alloc.h>
+#include <caml/callback.h>
+#include <caml/fail.h>
+#include <caml/hash.h>
+#include <caml/custom.h>
+#include "wrappers.h"
+
+#include <gio/gunixoutputstream.h>
+#include <gio/gunixmounts.h>
+#include <gio/gunixinputstream.h>
+#include <gio/gunixfdmessage.h>
+#include <gio/gio.h>
+#include <gio/gfiledescriptorbased.h>
+#include <gio/gdesktopappinfo.h>
+/* Include common type conversions and forward declarations */
+#include "generated_forward_decls.h"
+
+/* Type-specific conversion macros for GDBusObjectManagerServer */
+#ifndef Val_GDBusObjectManagerServer
+#define GDBusObjectManagerServer_val(val) ((GDBusObjectManagerServer*)ext_of_val(val))
+#define Val_GDBusObjectManagerServer(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GDBusObjectManagerServer */
+
+
+CAMLexport CAMLprim value ml_g_dbus_object_manager_server_new(value arg1)
+{
+CAMLparam1(arg1);
+GDBusObjectManagerServer *obj = g_dbus_object_manager_server_new(String_val(arg1));
+CAMLreturn(Val_GDBusObjectManagerServer(obj));
+}
+
+CAMLexport CAMLprim value ml_g_dbus_object_manager_server_unexport(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gboolean result = g_dbus_object_manager_server_unexport(GDBusObjectManagerServer_val(self), String_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_g_dbus_object_manager_server_set_connection(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_dbus_object_manager_server_set_connection(GDBusObjectManagerServer_val(self), Option_val(arg1, GDBusConnection_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_dbus_object_manager_server_is_exported(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gboolean result = g_dbus_object_manager_server_is_exported(GDBusObjectManagerServer_val(self), GDBusObjectSkeleton_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_g_dbus_object_manager_server_get_connection(value self)
+{
+CAMLparam1(self);
+
+GDBusConnection* result = g_dbus_object_manager_server_get_connection(GDBusObjectManagerServer_val(self));
+CAMLreturn(Val_option(result, Val_GDBusConnection));
+}
+
+CAMLexport CAMLprim value ml_g_dbus_object_manager_server_export_uniquely(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_dbus_object_manager_server_export_uniquely(GDBusObjectManagerServer_val(self), GDBusObjectSkeleton_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_dbus_object_manager_server_export(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_dbus_object_manager_server_export(GDBusObjectManagerServer_val(self), GDBusObjectSkeleton_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_d_bus_object_manager_server_get_object_path(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GDBusObjectManagerServer *obj = (GDBusObjectManagerServer *)GDBusObjectManagerServer_val(self);
+    gchar* *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "object-path");
+if (pspec == NULL) caml_failwith("ml_gtk_d_bus_object_manager_server_get_object_path: property 'object-path' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "object-path", &prop_gvalue);
+    prop_value = g_value_get_string(&prop_gvalue);
+
+result = caml_copy_string(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}

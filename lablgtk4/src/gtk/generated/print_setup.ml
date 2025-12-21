@@ -13,6 +13,7 @@ Applications may wish to store the page_setup and print_settings from the print 
 and copy them to the PrintDialog if they want to keep using them. *)
 type t = [`print_setup] Gobject.obj
 
+(* Methods *)
 (** Decrease the reference count of @setup.
 
 If the reference count reaches zero,

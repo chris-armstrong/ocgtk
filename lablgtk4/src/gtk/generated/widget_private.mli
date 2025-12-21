@@ -3,3 +3,4 @@
 
 type t = [`widget_private] Gobject.obj
 
+(* Methods *)

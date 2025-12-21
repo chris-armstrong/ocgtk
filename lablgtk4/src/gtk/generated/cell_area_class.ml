@@ -3,3 +3,4 @@
 
 type t = [`cell_area_class] Gobject.obj
 
+(* Methods *)

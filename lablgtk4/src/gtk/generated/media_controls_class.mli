@@ -3,3 +3,4 @@
 
 type t = [`media_controls_class] Gobject.obj
 
+(* Methods *)

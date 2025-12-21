@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -82,6 +83,14 @@ CAMLparam4(self, arg1, arg2, arg3);
 
 gtk_combo_box_text_insert(GtkComboBoxText_val(self), Int_val(arg1), String_option_val(arg2), String_val(arg3));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_combo_box_text_get_active_text(value self)
+{
+CAMLparam1(self);
+
+char* result = gtk_combo_box_text_get_active_text(GtkComboBoxText_val(self));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_combo_box_text_append_text(value self, value arg1)

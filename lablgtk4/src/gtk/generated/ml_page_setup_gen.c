@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -34,15 +35,6 @@ CAMLexport CAMLprim value ml_gtk_page_setup_new_from_gvariant(value arg1)
 CAMLparam1(arg1);
 GtkPageSetup *obj = gtk_page_setup_new_from_gvariant(arg1);
 CAMLreturn(Val_GtkPageSetup(obj));
-}
-
-CAMLexport CAMLprim value ml_gtk_page_setup_to_file(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-GError *error = NULL;
-
-gboolean result = gtk_page_setup_to_file(GtkPageSetup_val(self), String_val(arg1), &error);
-if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_gtk_page_setup_set_top_margin(value self, value arg1, value arg2)
@@ -99,15 +91,6 @@ CAMLparam3(self, arg1, arg2);
 
 gtk_page_setup_set_bottom_margin(GtkPageSetup_val(self), Double_val(arg1), GtkUnit_val(arg2));
 CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_page_setup_load_file(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-GError *error = NULL;
-
-gboolean result = gtk_page_setup_load_file(GtkPageSetup_val(self), String_val(arg1), &error);
-if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_gtk_page_setup_get_top_margin(value self, value arg1)

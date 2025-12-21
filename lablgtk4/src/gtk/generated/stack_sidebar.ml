@@ -8,8 +8,7 @@ let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager
 (** Create a new StackSidebar *)
 external new_ : unit -> t = "ml_gtk_stack_sidebar_new"
 
-(* Properties *)
-
+(* Methods *)
 (** Set the `GtkStack` associated with this `GtkStackSidebar`.
 
 The sidebar widget will automatically update according to
@@ -18,4 +17,6 @@ external set_stack : t -> Stack.t -> unit = "ml_gtk_stack_sidebar_set_stack"
 
 (** Retrieves the stack. *)
 external get_stack : t -> Stack.t option = "ml_gtk_stack_sidebar_get_stack"
+
+(* Properties *)
 

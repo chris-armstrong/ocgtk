@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -29,22 +30,12 @@ GtkMapListModel *obj = gtk_map_list_model_new(arg1, arg2, arg3, arg4);
 CAMLreturn(Val_GtkMapListModel(obj));
 }
 
-CAMLexport CAMLprim value ml_gtk_map_list_model_get_has_map(value self)
+CAMLexport CAMLprim value ml_gtk_map_list_model_has_map(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkMapListModel *obj = (GtkMapListModel *)GtkMapListModel_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "has-map");
-if (pspec == NULL) caml_failwith("ml_gtk_map_list_model_get_has_map: property 'has-map' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "has-map", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
+gboolean result = gtk_map_list_model_has_map(GtkMapListModel_val(self));
+CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_map_list_model_get_n_items(value self)

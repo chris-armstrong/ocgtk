@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -61,11 +62,59 @@ gtk_flow_box_set_selection_mode(GtkFlowBox_val(self), GtkSelectionMode_val(arg1)
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_flow_box_set_row_spacing(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_flow_box_set_row_spacing(GtkFlowBox_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_flow_box_set_min_children_per_line(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_flow_box_set_min_children_per_line(GtkFlowBox_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_flow_box_set_max_children_per_line(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_flow_box_set_max_children_per_line(GtkFlowBox_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_flow_box_set_homogeneous(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_flow_box_set_homogeneous(GtkFlowBox_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_flow_box_set_hadjustment(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gtk_flow_box_set_hadjustment(GtkFlowBox_val(self), GtkAdjustment_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_flow_box_set_column_spacing(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_flow_box_set_column_spacing(GtkFlowBox_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_flow_box_set_activate_on_single_click(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_flow_box_set_activate_on_single_click(GtkFlowBox_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -141,6 +190,46 @@ GtkSelectionMode result = gtk_flow_box_get_selection_mode(GtkFlowBox_val(self));
 CAMLreturn(Val_GtkSelectionMode(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_flow_box_get_row_spacing(value self)
+{
+CAMLparam1(self);
+
+guint result = gtk_flow_box_get_row_spacing(GtkFlowBox_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_flow_box_get_min_children_per_line(value self)
+{
+CAMLparam1(self);
+
+guint result = gtk_flow_box_get_min_children_per_line(GtkFlowBox_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_flow_box_get_max_children_per_line(value self)
+{
+CAMLparam1(self);
+
+guint result = gtk_flow_box_get_max_children_per_line(GtkFlowBox_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_flow_box_get_homogeneous(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_flow_box_get_homogeneous(GtkFlowBox_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_flow_box_get_column_spacing(value self)
+{
+CAMLparam1(self);
+
+guint result = gtk_flow_box_get_column_spacing(GtkFlowBox_val(self));
+CAMLreturn(Val_int(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_flow_box_get_child_at_pos(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -157,6 +246,14 @@ GtkFlowBoxChild* result = gtk_flow_box_get_child_at_index(GtkFlowBox_val(self), 
 CAMLreturn(Val_option(result, Val_GtkFlowBoxChild));
 }
 
+CAMLexport CAMLprim value ml_gtk_flow_box_get_activate_on_single_click(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_flow_box_get_activate_on_single_click(GtkFlowBox_val(self));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_flow_box_append(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -170,7 +267,7 @@ CAMLexport CAMLprim value ml_gtk_flow_box_get_accept_unpaired_release(value self
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkFlowBox *obj = (GtkFlowBox *)GtkFlowBox_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accept-unpaired-release");
 if (pspec == NULL) caml_failwith("ml_gtk_flow_box_get_accept_unpaired_release: property 'accept-unpaired-release' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -187,211 +284,13 @@ CAMLexport CAMLprim value ml_gtk_flow_box_set_accept_unpaired_release(value self
 {
 CAMLparam2(self, new_value);
 GtkFlowBox *obj = (GtkFlowBox *)GtkFlowBox_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accept-unpaired-release");
 if (pspec == NULL) caml_failwith("ml_gtk_flow_box_set_accept_unpaired_release: property 'accept-unpaired-release' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
     g_value_set_boolean(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "accept-unpaired-release", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_flow_box_get_activate_on_single_click(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkFlowBox *obj = (GtkFlowBox *)GtkFlowBox_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "activate-on-single-click");
-if (pspec == NULL) caml_failwith("ml_gtk_flow_box_get_activate_on_single_click: property 'activate-on-single-click' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "activate-on-single-click", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_flow_box_set_activate_on_single_click(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkFlowBox *obj = (GtkFlowBox *)GtkFlowBox_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "activate-on-single-click");
-if (pspec == NULL) caml_failwith("ml_gtk_flow_box_set_activate_on_single_click: property 'activate-on-single-click' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "activate-on-single-click", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_flow_box_get_column_spacing(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkFlowBox *obj = (GtkFlowBox *)GtkFlowBox_val(self);
-    guint prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "column-spacing");
-if (pspec == NULL) caml_failwith("ml_gtk_flow_box_get_column_spacing: property 'column-spacing' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "column-spacing", &prop_gvalue);
-    prop_value = (guint)g_value_get_uint(&prop_gvalue);
-
-result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_flow_box_set_column_spacing(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkFlowBox *obj = (GtkFlowBox *)GtkFlowBox_val(self);
-    guint c_value = Int_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "column-spacing");
-if (pspec == NULL) caml_failwith("ml_gtk_flow_box_set_column_spacing: property 'column-spacing' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_uint(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "column-spacing", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_flow_box_get_homogeneous(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkFlowBox *obj = (GtkFlowBox *)GtkFlowBox_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "homogeneous");
-if (pspec == NULL) caml_failwith("ml_gtk_flow_box_get_homogeneous: property 'homogeneous' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "homogeneous", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_flow_box_set_homogeneous(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkFlowBox *obj = (GtkFlowBox *)GtkFlowBox_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "homogeneous");
-if (pspec == NULL) caml_failwith("ml_gtk_flow_box_set_homogeneous: property 'homogeneous' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "homogeneous", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_flow_box_get_max_children_per_line(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkFlowBox *obj = (GtkFlowBox *)GtkFlowBox_val(self);
-    guint prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "max-children-per-line");
-if (pspec == NULL) caml_failwith("ml_gtk_flow_box_get_max_children_per_line: property 'max-children-per-line' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "max-children-per-line", &prop_gvalue);
-    prop_value = (guint)g_value_get_uint(&prop_gvalue);
-
-result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_flow_box_set_max_children_per_line(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkFlowBox *obj = (GtkFlowBox *)GtkFlowBox_val(self);
-    guint c_value = Int_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "max-children-per-line");
-if (pspec == NULL) caml_failwith("ml_gtk_flow_box_set_max_children_per_line: property 'max-children-per-line' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_uint(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "max-children-per-line", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_flow_box_get_min_children_per_line(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkFlowBox *obj = (GtkFlowBox *)GtkFlowBox_val(self);
-    guint prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "min-children-per-line");
-if (pspec == NULL) caml_failwith("ml_gtk_flow_box_get_min_children_per_line: property 'min-children-per-line' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "min-children-per-line", &prop_gvalue);
-    prop_value = (guint)g_value_get_uint(&prop_gvalue);
-
-result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_flow_box_set_min_children_per_line(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkFlowBox *obj = (GtkFlowBox *)GtkFlowBox_val(self);
-    guint c_value = Int_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "min-children-per-line");
-if (pspec == NULL) caml_failwith("ml_gtk_flow_box_set_min_children_per_line: property 'min-children-per-line' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_uint(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "min-children-per-line", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_flow_box_get_row_spacing(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkFlowBox *obj = (GtkFlowBox *)GtkFlowBox_val(self);
-    guint prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "row-spacing");
-if (pspec == NULL) caml_failwith("ml_gtk_flow_box_get_row_spacing: property 'row-spacing' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "row-spacing", &prop_gvalue);
-    prop_value = (guint)g_value_get_uint(&prop_gvalue);
-
-result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_flow_box_set_row_spacing(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkFlowBox *obj = (GtkFlowBox *)GtkFlowBox_val(self);
-    guint c_value = Int_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "row-spacing");
-if (pspec == NULL) caml_failwith("ml_gtk_flow_box_set_row_spacing: property 'row-spacing' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_uint(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "row-spacing", &prop_gvalue);
 g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }

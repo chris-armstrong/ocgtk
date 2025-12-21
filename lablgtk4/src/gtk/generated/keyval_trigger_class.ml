@@ -3,3 +3,4 @@
 
 type t = [`keyval_trigger_class] Gobject.obj
 
+(* Methods *)

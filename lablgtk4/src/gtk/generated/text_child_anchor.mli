@@ -9,6 +9,7 @@ external new_ : unit -> t = "ml_gtk_text_child_anchor_new"
 (** Create a new TextChildAnchor *)
 external new_with_replacement : string -> t = "ml_gtk_text_child_anchor_new_with_replacement"
 
+(* Methods *)
 (** Determines whether a child anchor has been deleted from
 the buffer.
 

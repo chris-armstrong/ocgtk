@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -58,6 +59,14 @@ gboolean result = gtk_tree_path_up(GtkTreePath_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_tree_path_to_string(value self)
+{
+CAMLparam1(self);
+
+char* result = gtk_tree_path_to_string(GtkTreePath_val(self));
+CAMLreturn(Val_option_string(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_tree_path_prev(value self)
 {
 CAMLparam1(self);
@@ -96,6 +105,14 @@ CAMLparam2(self, arg1);
 
 gboolean result = gtk_tree_path_is_ancestor(GtkTreePath_val(self), GtkTreePath_val(arg1));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_path_get_indices(value self)
+{
+CAMLparam1(self);
+
+int* result = gtk_tree_path_get_indices(GtkTreePath_val(self));
+CAMLreturn(Val_option(result, Val_int));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_path_get_depth(value self)

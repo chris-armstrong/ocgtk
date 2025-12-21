@@ -3,3 +3,4 @@
 
 type t = [`gesture_pan_class] Gobject.obj
 
+(* Methods *)

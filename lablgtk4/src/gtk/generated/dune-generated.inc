@@ -787,6 +787,7 @@
       (echo "Gl_area_class")
       (echo "Glib")
       (echo "Gobject")
+      (echo "Gobject_enums")
       (echo "Gpointer")
       (echo "Graphene")
       (echo "Graphene_enums")
@@ -1083,9 +1084,25 @@
     )))
 )
 
+(rule
+ (targets cflag-gtk.sexp clink-gtk.sexp)
+ (action (bash "\
+echo '' > cflag-gtk.sexp.tmp && \\
+echo '' > clink-gtk.sexp.tmp && \\
+pkg-config --cflags gtk4 >> cflag-gtk.sexp.tmp && \\
+pkg-config --libs gtk4 >> clink-gtk.sexp.tmp && \\
+echo \"(\" > cflag-gtk.sexp && \\
+tr ' ' '\\n' < cflag-gtk.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> cflag-gtk.sexp && \\
+echo \")\" >> cflag-gtk.sexp && \\
+echo \"(\" > clink-gtk.sexp && \\
+tr ' ' '\\n' < clink-gtk.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> clink-gtk.sexp && \\
+echo \")\" >> clink-gtk.sexp && \\
+rm cflag-gtk.sexp.tmp clink-gtk.sexp.tmp\\
+")))
+
 (library
- (name lablgtk4_generated_stubs)
- (public_name lablgtk4.generated_stubs)
+ (name lablgtk4_gtk_generated_stubs)
+ (public_name lablgtk4.gtk.generated_stubs)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
  (libraries lablgtk4_common)  ; Depend on common for header files
@@ -1341,6 +1358,7 @@
    ml_gesture_zoom_gen
    ml_gl_area_class_gen
    ml_gl_area_gen
+   ml_gobject_enums_gen
    ml_graphene_enums_gen
    ml_graphics_offload_class_gen
    ml_graphics_offload_gen
@@ -1635,5 +1653,5 @@
    ml_window_handle_class_gen
    ml_window_handle_gen
   )
-  (flags -fPIC -Igenerated -Icore (:include cflag-gtk4.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
- (c_library_flags (:include clink-gtk4.sexp)))
+  (flags -fPIC -Igenerated -Icore -I../common (:include cflag-gtk.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
+ (c_library_flags (:include clink-gtk.sexp)))

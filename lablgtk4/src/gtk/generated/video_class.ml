@@ -3,3 +3,4 @@
 
 type t = [`video_class] Gobject.obj
 
+(* Methods *)

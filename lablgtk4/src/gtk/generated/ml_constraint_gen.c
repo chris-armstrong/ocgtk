@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -74,12 +75,12 @@ GtkConstraintAttribute result = gtk_constraint_get_target_attribute(GtkConstrain
 CAMLreturn(Val_GtkConstraintAttribute(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_constraint_get_target(value self)
+CAMLexport CAMLprim value ml_gtk_constraint_get_strength(value self)
 {
 CAMLparam1(self);
 
-GtkConstraintTarget* result = gtk_constraint_get_target(GtkConstraint_val(self));
-CAMLreturn(Val_option(result, Val_GtkConstraintTarget));
+int result = gtk_constraint_get_strength(GtkConstraint_val(self));
+CAMLreturn(Val_int(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_constraint_get_source_attribute(value self)
@@ -90,14 +91,6 @@ GtkConstraintAttribute result = gtk_constraint_get_source_attribute(GtkConstrain
 CAMLreturn(Val_GtkConstraintAttribute(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_constraint_get_source(value self)
-{
-CAMLparam1(self);
-
-GtkConstraintTarget* result = gtk_constraint_get_source(GtkConstraint_val(self));
-CAMLreturn(Val_option(result, Val_GtkConstraintTarget));
-}
-
 CAMLexport CAMLprim value ml_gtk_constraint_get_relation(value self)
 {
 CAMLparam1(self);
@@ -106,56 +99,18 @@ GtkConstraintRelation result = gtk_constraint_get_relation(GtkConstraint_val(sel
 CAMLreturn(Val_GtkConstraintRelation(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_constraint_get_constant(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkConstraint *obj = (GtkConstraint *)GtkConstraint_val(self);
-    gdouble prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "constant");
-if (pspec == NULL) caml_failwith("ml_gtk_constraint_get_constant: property 'constant' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "constant", &prop_gvalue);
-    prop_value = g_value_get_double(&prop_gvalue);
-
-result = caml_copy_double(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
 CAMLexport CAMLprim value ml_gtk_constraint_get_multiplier(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkConstraint *obj = (GtkConstraint *)GtkConstraint_val(self);
-    gdouble prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "multiplier");
-if (pspec == NULL) caml_failwith("ml_gtk_constraint_get_multiplier: property 'multiplier' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "multiplier", &prop_gvalue);
-    prop_value = g_value_get_double(&prop_gvalue);
 
-result = caml_copy_double(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
+double result = gtk_constraint_get_multiplier(GtkConstraint_val(self));
+CAMLreturn(caml_copy_double(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_constraint_get_strength(value self)
+CAMLexport CAMLprim value ml_gtk_constraint_get_constant(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkConstraint *obj = (GtkConstraint *)GtkConstraint_val(self);
-    gint prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "strength");
-if (pspec == NULL) caml_failwith("ml_gtk_constraint_get_strength: property 'strength' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "strength", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
 
-result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
+double result = gtk_constraint_get_constant(GtkConstraint_val(self));
+CAMLreturn(caml_copy_double(result));
 }

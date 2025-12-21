@@ -3,3 +3,4 @@
 
 type t = [`text_view_private] Gobject.obj
 
+(* Methods *)

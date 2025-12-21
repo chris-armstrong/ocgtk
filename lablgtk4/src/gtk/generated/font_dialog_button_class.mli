@@ -3,3 +3,4 @@
 
 type t = [`font_dialog_button_class] Gobject.obj
 
+(* Methods *)

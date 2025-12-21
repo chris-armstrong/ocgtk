@@ -12,12 +12,10 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* Forward declarations for generated enum and bitfield converters */
 
-#ifndef _gtk4_generated_forward_decls_
-#define _gtk4_generated_forward_decls_
+#ifndef _gtk_generated_forward_decls_
+#define _gtk_generated_forward_decls_
 
 #include <gtk/gtk.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
-#include <graphene.h>
 #include <caml/mlvalues.h>
 
 /* Type conversions - use direct cast (GObjects) */
@@ -1891,12 +1889,12 @@
 #define GtkWidget_option_val(v) ((v) == Val_none ? NULL : GtkWidget_val(Some_val(v)))
 #define GtkEventController_option_val(v) ((v) == Val_none ? NULL : GtkEventController_val(Some_val(v)))
 
-/* Const-safe string extraction for setters */
-#define ML_DECL_CONST_STRING(name, expr) const gchar *name = (const gchar *)(expr)
-
 /* GdkEvent conversions - from ml_event_controller.c */
 #define GdkEvent_val(val) ((GdkEvent*)ext_of_val(val))
 #define Val_GdkEvent(obj) ((value)(val_of_ext(obj)))
+
+/* Const-safe string extraction for setters */
+#define ML_DECL_CONST_STRING(name, expr) const gchar *name = (const gchar *)(expr)
 
 /* Note: Res_Ok, Res_Error, ValUnit, and Val_GError are defined in wrappers.h */
 
@@ -2193,6 +2191,46 @@ value Val_GdkTouchpadGesturePhase(GdkTouchpadGesturePhase val);
 GdkTouchpadGesturePhase GdkTouchpadGesturePhase_val(value val);
 value Val_GdkVulkanError(GdkVulkanError val);
 GdkVulkanError GdkVulkanError_val(value val);
+value Val_GdkPixbufColorspace(GdkColorspace val);
+GdkColorspace GdkPixbufColorspace_val(value val);
+value Val_GdkPixbufInterpType(GdkInterpType val);
+GdkInterpType GdkPixbufInterpType_val(value val);
+value Val_GdkPixbufPixbufAlphaMode(GdkPixbufAlphaMode val);
+GdkPixbufAlphaMode GdkPixbufPixbufAlphaMode_val(value val);
+value Val_GdkPixbufPixbufError(GdkPixbufError val);
+GdkPixbufError GdkPixbufPixbufError_val(value val);
+value Val_GdkPixbufPixbufRotation(GdkPixbufRotation val);
+GdkPixbufRotation GdkPixbufPixbufRotation_val(value val);
+value Val_GrapheneEulerOrder(graphene_euler_order_t val);
+graphene_euler_order_t GrapheneEulerOrder_val(value val);
+value Val_GrapheneRayIntersectionKind(graphene_ray_intersection_kind_t val);
+graphene_ray_intersection_kind_t GrapheneRayIntersectionKind_val(value val);
+value Val_GskBlendMode(GskBlendMode val);
+GskBlendMode GskBlendMode_val(value val);
+value Val_GskCorner(GskCorner val);
+GskCorner GskCorner_val(value val);
+value Val_GskFillRule(GskFillRule val);
+GskFillRule GskFillRule_val(value val);
+value Val_GskGLUniformType(GskGLUniformType val);
+GskGLUniformType GskGLUniformType_val(value val);
+value Val_GskLineCap(GskLineCap val);
+GskLineCap GskLineCap_val(value val);
+value Val_GskLineJoin(GskLineJoin val);
+GskLineJoin GskLineJoin_val(value val);
+value Val_GskMaskMode(GskMaskMode val);
+GskMaskMode GskMaskMode_val(value val);
+value Val_GskPathDirection(GskPathDirection val);
+GskPathDirection GskPathDirection_val(value val);
+value Val_GskPathOperation(GskPathOperation val);
+GskPathOperation GskPathOperation_val(value val);
+value Val_GskRenderNodeType(GskRenderNodeType val);
+GskRenderNodeType GskRenderNodeType_val(value val);
+value Val_GskScalingFilter(GskScalingFilter val);
+GskScalingFilter GskScalingFilter_val(value val);
+value Val_GskSerializationError(GskSerializationError val);
+GskSerializationError GskSerializationError_val(value val);
+value Val_GskTransformCategory(GskTransformCategory val);
+GskTransformCategory GskTransformCategory_val(value val);
 value Val_PangoAlignment(PangoAlignment val);
 PangoAlignment PangoAlignment_val(value val);
 value Val_PangoAttrType(PangoAttrType val);
@@ -2237,47 +2275,25 @@ value Val_PangoWeight(PangoWeight val);
 PangoWeight PangoWeight_val(value val);
 value Val_PangoWrapMode(PangoWrapMode val);
 PangoWrapMode PangoWrapMode_val(value val);
-value Val_GdkPixbufColorspace(GdkColorspace val);
-GdkColorspace GdkPixbufColorspace_val(value val);
-value Val_GdkPixbufInterpType(GdkInterpType val);
-GdkInterpType GdkPixbufInterpType_val(value val);
-value Val_GdkPixbufPixbufAlphaMode(GdkPixbufAlphaMode val);
-GdkPixbufAlphaMode GdkPixbufPixbufAlphaMode_val(value val);
-value Val_GdkPixbufPixbufError(GdkPixbufError val);
-GdkPixbufError GdkPixbufPixbufError_val(value val);
-value Val_GdkPixbufPixbufRotation(GdkPixbufRotation val);
-GdkPixbufRotation GdkPixbufPixbufRotation_val(value val);
-value Val_GskBlendMode(GskBlendMode val);
-GskBlendMode GskBlendMode_val(value val);
-value Val_GskCorner(GskCorner val);
-GskCorner GskCorner_val(value val);
-value Val_GskFillRule(GskFillRule val);
-GskFillRule GskFillRule_val(value val);
-value Val_GskGLUniformType(GskGLUniformType val);
-GskGLUniformType GskGLUniformType_val(value val);
-value Val_GskLineCap(GskLineCap val);
-GskLineCap GskLineCap_val(value val);
-value Val_GskLineJoin(GskLineJoin val);
-GskLineJoin GskLineJoin_val(value val);
-value Val_GskMaskMode(GskMaskMode val);
-GskMaskMode GskMaskMode_val(value val);
-value Val_GskPathDirection(GskPathDirection val);
-GskPathDirection GskPathDirection_val(value val);
-value Val_GskPathOperation(GskPathOperation val);
-GskPathOperation GskPathOperation_val(value val);
-value Val_GskRenderNodeType(GskRenderNodeType val);
-GskRenderNodeType GskRenderNodeType_val(value val);
-value Val_GskScalingFilter(GskScalingFilter val);
-GskScalingFilter GskScalingFilter_val(value val);
-value Val_GskSerializationError(GskSerializationError val);
-GskSerializationError GskSerializationError_val(value val);
-value Val_GskTransformCategory(GskTransformCategory val);
-GskTransformCategory GskTransformCategory_val(value val);
-value Val_GrapheneEulerOrder(graphene_euler_order_t val);
-graphene_euler_order_t GrapheneEulerOrder_val(value val);
-value Val_GrapheneRayIntersectionKind(graphene_ray_intersection_kind_t val);
-graphene_ray_intersection_kind_t GrapheneRayIntersectionKind_val(value val);
 
+value Val_GObjectBindingFlags(GBindingFlags flags);
+GBindingFlags GObjectBindingFlags_val(value list);
+value Val_GObjectConnectFlags(GConnectFlags flags);
+GConnectFlags GObjectConnectFlags_val(value list);
+value Val_GObjectIOCondition(GIOCondition flags);
+GIOCondition GObjectIOCondition_val(value list);
+value Val_GObjectParamFlags(GParamFlags flags);
+GParamFlags GObjectParamFlags_val(value list);
+value Val_GObjectSignalFlags(GSignalFlags flags);
+GSignalFlags GObjectSignalFlags_val(value list);
+value Val_GObjectSignalMatchType(GSignalMatchType flags);
+GSignalMatchType GObjectSignalMatchType_val(value list);
+value Val_GObjectTypeDebugFlags(GTypeDebugFlags flags);
+GTypeDebugFlags GObjectTypeDebugFlags_val(value list);
+value Val_GObjectTypeFlags(GTypeFlags flags);
+GTypeFlags GObjectTypeFlags_val(value list);
+value Val_GObjectTypeFundamentalFlags(GTypeFundamentalFlags flags);
+GTypeFundamentalFlags GObjectTypeFundamentalFlags_val(value list);
 value Val_GdkAnchorHints(GdkAnchorHints flags);
 GdkAnchorHints GdkAnchorHints_val(value list);
 value Val_GdkAxisFlags(GdkAxisFlags flags);
@@ -2296,16 +2312,6 @@ value Val_GdkSeatCapabilities(GdkSeatCapabilities flags);
 GdkSeatCapabilities GdkSeatCapabilities_val(value list);
 value Val_GdkToplevelState(GdkToplevelState flags);
 GdkToplevelState GdkToplevelState_val(value list);
-value Val_PangoFontMask(PangoFontMask flags);
-PangoFontMask PangoFontMask_val(value list);
-value Val_PangoLayoutDeserializeFlags(PangoLayoutDeserializeFlags flags);
-PangoLayoutDeserializeFlags PangoLayoutDeserializeFlags_val(value list);
-value Val_PangoLayoutSerializeFlags(PangoLayoutSerializeFlags flags);
-PangoLayoutSerializeFlags PangoLayoutSerializeFlags_val(value list);
-value Val_PangoShapeFlags(PangoShapeFlags flags);
-PangoShapeFlags PangoShapeFlags_val(value list);
-value Val_PangoShowFlags(PangoShowFlags flags);
-PangoShowFlags PangoShowFlags_val(value list);
 /* GdkPixbufFormatFlags is in GIR but marked skip in C headers */
 #ifndef GDK_PIXBUF_FORMAT_WRITABLE
 typedef enum {
@@ -2318,5 +2324,15 @@ value Val_GdkPixbufPixbufFormatFlags(GdkPixbufFormatFlags flags);
 GdkPixbufFormatFlags GdkPixbufPixbufFormatFlags_val(value list);
 value Val_GskPathForeachFlags(GskPathForeachFlags flags);
 GskPathForeachFlags GskPathForeachFlags_val(value list);
+value Val_PangoFontMask(PangoFontMask flags);
+PangoFontMask PangoFontMask_val(value list);
+value Val_PangoLayoutDeserializeFlags(PangoLayoutDeserializeFlags flags);
+PangoLayoutDeserializeFlags PangoLayoutDeserializeFlags_val(value list);
+value Val_PangoLayoutSerializeFlags(PangoLayoutSerializeFlags flags);
+PangoLayoutSerializeFlags PangoLayoutSerializeFlags_val(value list);
+value Val_PangoShapeFlags(PangoShapeFlags flags);
+PangoShapeFlags PangoShapeFlags_val(value list);
+value Val_PangoShowFlags(PangoShowFlags flags);
+PangoShowFlags PangoShowFlags_val(value list);
 
 #endif /* _gtk4_generated_forward_decls_ */

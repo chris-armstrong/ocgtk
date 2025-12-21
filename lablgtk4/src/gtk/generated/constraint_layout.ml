@@ -8,6 +8,7 @@ let as_layoutmanager (obj : t) : Event_controller_and__layout_child_and__layout_
 (** Create a new ConstraintLayout *)
 external new_ : unit -> t = "ml_gtk_constraint_layout_new"
 
+(* Methods *)
 (** Removes `guide` from the layout manager,
 so that it no longer influences the layout. *)
 external remove_guide : t -> Constraint_guide.t -> unit = "ml_gtk_constraint_layout_remove_guide"

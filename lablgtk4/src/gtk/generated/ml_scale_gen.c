@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -44,12 +45,74 @@ gtk_scale_set_value_pos(GtkScale_val(self), GtkPositionType_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_scale_set_has_origin(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_scale_set_has_origin(GtkScale_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_scale_set_draw_value(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_scale_set_draw_value(GtkScale_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_scale_set_digits(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_scale_set_digits(GtkScale_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_scale_get_value_pos(value self)
 {
 CAMLparam1(self);
 
 GtkPositionType result = gtk_scale_get_value_pos(GtkScale_val(self));
 CAMLreturn(Val_GtkPositionType(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_scale_get_layout_offsets(value self)
+{
+CAMLparam1(self);
+int out1;
+int out2;
+
+gtk_scale_get_layout_offsets(GtkScale_val(self), &out1, &out2);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out1));
+    Store_field(ret, 1, Val_int(out2));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_scale_get_has_origin(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_scale_get_has_origin(GtkScale_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_scale_get_draw_value(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_scale_get_draw_value(GtkScale_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_scale_get_digits(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_scale_get_digits(GtkScale_val(self));
+CAMLreturn(Val_int(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_scale_clear_marks(value self)
@@ -65,104 +128,5 @@ CAMLexport CAMLprim value ml_gtk_scale_add_mark(value self, value arg1, value ar
 CAMLparam4(self, arg1, arg2, arg3);
 
 gtk_scale_add_mark(GtkScale_val(self), Double_val(arg1), GtkPositionType_val(arg2), String_option_val(arg3));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_scale_get_digits(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkScale *obj = (GtkScale *)GtkScale_val(self);
-    gint prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "digits");
-if (pspec == NULL) caml_failwith("ml_gtk_scale_get_digits: property 'digits' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "digits", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
-
-result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_scale_set_digits(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkScale *obj = (GtkScale *)GtkScale_val(self);
-    gint c_value = Int_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "digits");
-if (pspec == NULL) caml_failwith("ml_gtk_scale_set_digits: property 'digits' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_int(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "digits", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_scale_get_draw_value(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkScale *obj = (GtkScale *)GtkScale_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "draw-value");
-if (pspec == NULL) caml_failwith("ml_gtk_scale_get_draw_value: property 'draw-value' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "draw-value", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_scale_set_draw_value(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkScale *obj = (GtkScale *)GtkScale_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "draw-value");
-if (pspec == NULL) caml_failwith("ml_gtk_scale_set_draw_value: property 'draw-value' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "draw-value", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_scale_get_has_origin(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkScale *obj = (GtkScale *)GtkScale_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "has-origin");
-if (pspec == NULL) caml_failwith("ml_gtk_scale_get_has_origin: property 'has-origin' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "has-origin", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_scale_set_has_origin(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkScale *obj = (GtkScale *)GtkScale_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "has-origin");
-if (pspec == NULL) caml_failwith("ml_gtk_scale_set_has_origin: property 'has-origin' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "has-origin", &prop_gvalue);
-g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }

@@ -1,0 +1,157 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* SocketClient: SocketClient *)
+
+type t = [`socket_client | `object_] Gobject.obj
+
+(** Create a new SocketClient *)
+external new_ : unit -> t = "ml_g_socket_client_new"
+
+(* Methods *)
+(** Sets whether @client creates TLS (aka SSL) connections. If @tls is
+%TRUE, @client will wrap its connections in a #GTlsClientConnection
+and perform a TLS handshake when connecting.
+
+Note that since #GSocketClient must return a #GSocketConnection,
+but #GTlsClientConnection is not a #GSocketConnection, this
+actually wraps the resulting #GTlsClientConnection in a
+#GTcpWrapperConnection when returning it. You can use
+g_tcp_wrapper_connection_get_base_io_stream() on the return value
+to extract the #GTlsClientConnection.
+
+If you need to modify the behavior of the TLS handshake (eg, by
+setting a client-side certificate to use, or connecting to the
+#GTlsConnection::accept-certificate signal), you can connect to
+@client's #GSocketClient::event signal and wait for it to be
+emitted with %G_SOCKET_CLIENT_TLS_HANDSHAKING, which will give you
+a chance to see the #GTlsClientConnection before the handshake
+starts. *)
+external set_tls : t -> bool -> unit = "ml_g_socket_client_set_tls"
+
+(** Sets the I/O timeout for sockets created by @client. @timeout is a
+time in seconds, or 0 for no timeout (the default).
+
+The timeout value affects the initial connection attempt as well,
+so setting this may cause calls to g_socket_client_connect(), etc,
+to fail with %G_IO_ERROR_TIMED_OUT. *)
+external set_timeout : t -> int -> unit = "ml_g_socket_client_set_timeout"
+
+(** Sets the socket type of the socket client.
+The sockets created by this object will be of the specified
+type.
+
+It doesn't make sense to specify a type of %G_SOCKET_TYPE_DATAGRAM,
+as GSocketClient is used for connection oriented services. *)
+external set_socket_type : t -> Gio_enums.sockettype -> unit = "ml_g_socket_client_set_socket_type"
+
+(** Sets the protocol of the socket client.
+The sockets created by this object will use of the specified
+protocol.
+
+If @protocol is %G_SOCKET_PROTOCOL_DEFAULT that means to use the default
+protocol for the socket family and type. *)
+external set_protocol : t -> Gio_enums.socketprotocol -> unit = "ml_g_socket_client_set_protocol"
+
+(** Sets the local address of the socket client.
+The sockets created by this object will bound to the
+specified address (if not %NULL) before connecting.
+
+This is useful if you want to ensure that the local
+side of the connection is on a specific port, or on
+a specific interface. *)
+external set_local_address : t -> Socket_address.t option -> unit = "ml_g_socket_client_set_local_address"
+
+(** Sets the socket family of the socket client.
+If this is set to something other than %G_SOCKET_FAMILY_INVALID
+then the sockets created by this object will be of the specified
+family.
+
+This might be useful for instance if you want to force the local
+connection to be an ipv4 socket, even though the address might
+be an ipv6 mapped to ipv4 address. *)
+external set_family : t -> Gio_enums.socketfamily -> unit = "ml_g_socket_client_set_family"
+
+(** Sets whether or not @client attempts to make connections via a
+proxy server. When enabled (the default), #GSocketClient will use a
+#GProxyResolver to determine if a proxy protocol such as SOCKS is
+needed, and automatically do the necessary proxy negotiation.
+
+See also g_socket_client_set_proxy_resolver(). *)
+external set_enable_proxy : t -> bool -> unit = "ml_g_socket_client_set_enable_proxy"
+
+(** Gets whether @client creates TLS connections. See
+g_socket_client_set_tls() for details. *)
+external get_tls : t -> bool = "ml_g_socket_client_get_tls"
+
+(** Gets the I/O timeout time for sockets created by @client.
+
+See g_socket_client_set_timeout() for details. *)
+external get_timeout : t -> int = "ml_g_socket_client_get_timeout"
+
+(** Gets the socket type of the socket client.
+
+See g_socket_client_set_socket_type() for details. *)
+external get_socket_type : t -> Gio_enums.sockettype = "ml_g_socket_client_get_socket_type"
+
+(** Gets the protocol name type of the socket client.
+
+See g_socket_client_set_protocol() for details. *)
+external get_protocol : t -> Gio_enums.socketprotocol = "ml_g_socket_client_get_protocol"
+
+(** Gets the local address of the socket client.
+
+See g_socket_client_set_local_address() for details. *)
+external get_local_address : t -> Socket_address.t option = "ml_g_socket_client_get_local_address"
+
+(** Gets the socket family of the socket client.
+
+See g_socket_client_set_family() for details. *)
+external get_family : t -> Gio_enums.socketfamily = "ml_g_socket_client_get_family"
+
+(** Gets the proxy enable state; see g_socket_client_set_enable_proxy() *)
+external get_enable_proxy : t -> bool = "ml_g_socket_client_get_enable_proxy"
+
+(** Attempts to create a TCP connection to a service.
+
+This call looks up the SRV record for @service at @domain for the
+"tcp" protocol.  It then attempts to connect, in turn, to each of
+the hosts providing the service until either a connection succeeds
+or there are no hosts remaining.
+
+Upon a successful connection, a new #GSocketConnection is constructed
+and returned.  The caller owns this new object and must drop their
+reference to it when finished with it.
+
+In the event of any failure (DNS error, service not found, no hosts
+connectable) %NULL is returned and @error (if non-%NULL) is set
+accordingly. *)
+external connect_to_service : t -> string -> string -> Cancellable.t option -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_to_service"
+
+(** Enable proxy protocols to be handled by the application. When the
+indicated proxy protocol is returned by the #GProxyResolver,
+#GSocketClient will consider this protocol as supported but will
+not try to find a #GProxy instance to handle handshaking. The
+application must check for this case by calling
+g_socket_connection_get_remote_address() on the returned
+#GSocketConnection, and seeing if it's a #GProxyAddress of the
+appropriate type, to determine whether or not it needs to handle
+the proxy handshaking itself.
+
+This should be used for proxy protocols that are dialects of
+another protocol such as HTTP proxy. It also allows cohabitation of
+proxy protocols that are reused between protocols. A good example
+is HTTP. It can be used to proxy HTTP, FTP and Gopher and can also
+be use as generic socket proxy through the HTTP CONNECT method.
+
+When the proxy is detected as being an application proxy, TLS handshake
+will be skipped. This is required to let the application do the proxy
+specific handshake. *)
+external add_application_proxy : t -> string -> unit = "ml_g_socket_client_add_application_proxy"
+
+(* Properties *)
+
+(** Get property: type *)
+external get_type : t -> Gio_enums.sockettype = "ml_gtk_socket_client_get_type"
+
+(** Set property: type *)
+external set_type : t -> Gio_enums.sockettype -> unit = "ml_gtk_socket_client_set_type"
+

@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -35,6 +36,14 @@ CAMLparam1(self);
 
 gtk_css_section_unref(GtkCssSection_val(self));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_css_section_to_string(value self)
+{
+CAMLparam1(self);
+
+char* result = gtk_css_section_to_string(GtkCssSection_val(self));
+CAMLreturn(caml_copy_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_css_section_ref(value self)

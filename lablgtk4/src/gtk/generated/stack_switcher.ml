@@ -8,11 +8,12 @@ let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager
 (** Create a new StackSwitcher *)
 external new_ : unit -> t = "ml_gtk_stack_switcher_new"
 
-(* Properties *)
-
+(* Methods *)
 (** Sets the stack to control. *)
 external set_stack : t -> Stack.t option -> unit = "ml_gtk_stack_switcher_set_stack"
 
 (** Retrieves the stack. *)
 external get_stack : t -> Stack.t option = "ml_gtk_stack_switcher_get_stack"
+
+(* Properties *)
 

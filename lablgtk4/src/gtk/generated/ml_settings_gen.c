@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -35,7 +36,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_alternative_button_order(value
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-alternative-button-order");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_alternative_button_order: property 'gtk-alternative-button-order' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -52,7 +53,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_alternative_button_order(value
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-alternative-button-order");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_alternative_button_order: property 'gtk-alternative-button-order' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -68,7 +69,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_alternative_sort_arrows(value 
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-alternative-sort-arrows");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_alternative_sort_arrows: property 'gtk-alternative-sort-arrows' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -85,7 +86,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_alternative_sort_arrows(value 
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-alternative-sort-arrows");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_alternative_sort_arrows: property 'gtk-alternative-sort-arrows' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -101,7 +102,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_application_prefer_dark_theme(
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-application-prefer-dark-theme");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_application_prefer_dark_theme: property 'gtk-application-prefer-dark-theme' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -118,7 +119,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_application_prefer_dark_theme(
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-application-prefer-dark-theme");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_application_prefer_dark_theme: property 'gtk-application-prefer-dark-theme' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -167,7 +168,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_cursor_blink(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-cursor-blink");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_cursor_blink: property 'gtk-cursor-blink' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -184,7 +185,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_cursor_blink(value self, value
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-cursor-blink");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_cursor_blink: property 'gtk-cursor-blink' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -365,7 +366,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_dialogs_use_header(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-dialogs-use-header");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_dialogs_use_header: property 'gtk-dialogs-use-header' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -382,7 +383,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_dialogs_use_header(value self,
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-dialogs-use-header");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_dialogs_use_header: property 'gtk-dialogs-use-header' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -497,7 +498,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_enable_accels(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-enable-accels");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_enable_accels: property 'gtk-enable-accels' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -514,7 +515,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_enable_accels(value self, valu
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-enable-accels");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_enable_accels: property 'gtk-enable-accels' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -530,7 +531,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_enable_animations(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-enable-animations");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_enable_animations: property 'gtk-enable-animations' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -547,7 +548,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_enable_animations(value self, 
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-enable-animations");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_enable_animations: property 'gtk-enable-animations' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -563,7 +564,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_enable_event_sounds(value self
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-enable-event-sounds");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_enable_event_sounds: property 'gtk-enable-event-sounds' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -580,7 +581,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_enable_event_sounds(value self
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-enable-event-sounds");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_enable_event_sounds: property 'gtk-enable-event-sounds' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -596,7 +597,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_enable_input_feedback_sounds(v
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-enable-input-feedback-sounds");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_enable_input_feedback_sounds: property 'gtk-enable-input-feedback-sounds' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -613,7 +614,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_enable_input_feedback_sounds(v
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-enable-input-feedback-sounds");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_enable_input_feedback_sounds: property 'gtk-enable-input-feedback-sounds' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -629,7 +630,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_enable_primary_paste(value sel
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-enable-primary-paste");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_enable_primary_paste: property 'gtk-enable-primary-paste' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -646,7 +647,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_enable_primary_paste(value sel
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-enable-primary-paste");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_enable_primary_paste: property 'gtk-enable-primary-paste' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -695,7 +696,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_entry_select_on_focus(value se
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-entry-select-on-focus");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_entry_select_on_focus: property 'gtk-entry-select-on-focus' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -712,7 +713,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_entry_select_on_focus(value se
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-entry-select-on-focus");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_entry_select_on_focus: property 'gtk-entry-select-on-focus' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -728,7 +729,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_error_bell(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-error-bell");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_error_bell: property 'gtk-error-bell' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -745,7 +746,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_error_bell(value self, value n
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-error-bell");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_error_bell: property 'gtk-error-bell' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -827,7 +828,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_hint_font_metrics(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-hint-font-metrics");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_hint_font_metrics: property 'gtk-hint-font-metrics' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -844,7 +845,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_hint_font_metrics(value self, 
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-hint-font-metrics");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_hint_font_metrics: property 'gtk-hint-font-metrics' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -926,7 +927,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_keynav_use_caret(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-keynav-use-caret");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_keynav_use_caret: property 'gtk-keynav-use-caret' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -943,7 +944,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_keynav_use_caret(value self, v
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-keynav-use-caret");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_keynav_use_caret: property 'gtk-keynav-use-caret' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -959,7 +960,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_label_select_on_focus(value se
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-label-select-on-focus");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_label_select_on_focus: property 'gtk-label-select-on-focus' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -976,7 +977,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_label_select_on_focus(value se
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-label-select-on-focus");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_label_select_on_focus: property 'gtk-label-select-on-focus' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1025,7 +1026,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_overlay_scrolling(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-overlay-scrolling");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_overlay_scrolling: property 'gtk-overlay-scrolling' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1042,7 +1043,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_overlay_scrolling(value self, 
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-overlay-scrolling");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_overlay_scrolling: property 'gtk-overlay-scrolling' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1058,7 +1059,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_primary_button_warps_slider(va
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-primary-button-warps-slider");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_primary_button_warps_slider: property 'gtk-primary-button-warps-slider' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1075,7 +1076,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_primary_button_warps_slider(va
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-primary-button-warps-slider");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_primary_button_warps_slider: property 'gtk-primary-button-warps-slider' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1157,7 +1158,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_recent_files_enabled(value sel
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-recent-files-enabled");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_recent_files_enabled: property 'gtk-recent-files-enabled' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1174,7 +1175,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_recent_files_enabled(value sel
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-recent-files-enabled");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_recent_files_enabled: property 'gtk-recent-files-enabled' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1223,7 +1224,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_shell_shows_app_menu(value sel
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-shell-shows-app-menu");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_shell_shows_app_menu: property 'gtk-shell-shows-app-menu' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1240,7 +1241,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_shell_shows_app_menu(value sel
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-shell-shows-app-menu");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_shell_shows_app_menu: property 'gtk-shell-shows-app-menu' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1256,7 +1257,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_shell_shows_desktop(value self
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-shell-shows-desktop");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_shell_shows_desktop: property 'gtk-shell-shows-desktop' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1273,7 +1274,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_shell_shows_desktop(value self
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-shell-shows-desktop");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_shell_shows_desktop: property 'gtk-shell-shows-desktop' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1289,7 +1290,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_shell_shows_menubar(value self
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-shell-shows-menubar");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_shell_shows_menubar: property 'gtk-shell-shows-menubar' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1306,7 +1307,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_shell_shows_menubar(value self
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-shell-shows-menubar");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_shell_shows_menubar: property 'gtk-shell-shows-menubar' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1322,7 +1323,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_show_status_shapes(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-show-status-shapes");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_show_status_shapes: property 'gtk-show-status-shapes' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1339,7 +1340,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_show_status_shapes(value self,
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-show-status-shapes");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_show_status_shapes: property 'gtk-show-status-shapes' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1388,7 +1389,7 @@ CAMLexport CAMLprim value ml_gtk_settings_get_gtk_split_cursor(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-split-cursor");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_split_cursor: property 'gtk-split-cursor' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1405,7 +1406,7 @@ CAMLexport CAMLprim value ml_gtk_settings_set_gtk_split_cursor(value self, value
 {
 CAMLparam2(self, new_value);
 GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-split-cursor");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_split_cursor: property 'gtk-split-cursor' not found");
 GValue prop_gvalue = G_VALUE_INIT;

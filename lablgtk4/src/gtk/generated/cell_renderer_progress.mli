@@ -8,6 +8,7 @@ val as_cell_renderer : t -> Cell_renderer.t
 (** Create a new CellRendererProgress *)
 external new_ : unit -> t = "ml_gtk_cell_renderer_progress_new"
 
+(* Methods *)
 (* Properties *)
 
 (** Get property: inverted *)

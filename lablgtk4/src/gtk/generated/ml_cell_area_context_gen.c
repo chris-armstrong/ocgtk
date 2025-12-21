@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -46,12 +47,82 @@ gtk_cell_area_context_push_preferred_height(GtkCellAreaContext_val(self), Int_va
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_cell_area_context_get_preferred_width_for_height(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+int out2;
+int out3;
+
+gtk_cell_area_context_get_preferred_width_for_height(GtkCellAreaContext_val(self), Int_val(arg1), &out2, &out3);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out2));
+    Store_field(ret, 1, Val_int(out3));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_area_context_get_preferred_width(value self)
+{
+CAMLparam1(self);
+int out1;
+int out2;
+
+gtk_cell_area_context_get_preferred_width(GtkCellAreaContext_val(self), &out1, &out2);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out1));
+    Store_field(ret, 1, Val_int(out2));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_area_context_get_preferred_height_for_width(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+int out2;
+int out3;
+
+gtk_cell_area_context_get_preferred_height_for_width(GtkCellAreaContext_val(self), Int_val(arg1), &out2, &out3);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out2));
+    Store_field(ret, 1, Val_int(out3));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_area_context_get_preferred_height(value self)
+{
+CAMLparam1(self);
+int out1;
+int out2;
+
+gtk_cell_area_context_get_preferred_height(GtkCellAreaContext_val(self), &out1, &out2);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out1));
+    Store_field(ret, 1, Val_int(out2));
+    CAMLreturn(ret);
+}
+
 CAMLexport CAMLprim value ml_gtk_cell_area_context_get_area(value self)
 {
 CAMLparam1(self);
 
 GtkCellArea* result = gtk_cell_area_context_get_area(GtkCellAreaContext_val(self));
 CAMLreturn(Val_GtkCellArea(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_area_context_get_allocation(value self)
+{
+CAMLparam1(self);
+int out1;
+int out2;
+
+gtk_cell_area_context_get_allocation(GtkCellAreaContext_val(self), &out1, &out2);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out1));
+    Store_field(ret, 1, Val_int(out2));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_cell_area_context_allocate(value self, value arg1, value arg2)

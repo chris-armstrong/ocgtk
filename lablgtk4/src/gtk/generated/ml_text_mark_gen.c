@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -45,6 +46,22 @@ gboolean result = gtk_text_mark_get_visible(GtkTextMark_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_text_mark_get_name(value self)
+{
+CAMLparam1(self);
+
+const char* result = gtk_text_mark_get_name(GtkTextMark_val(self));
+CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_mark_get_left_gravity(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_text_mark_get_left_gravity(GtkTextMark_val(self));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_text_mark_get_deleted(value self)
 {
 CAMLparam1(self);
@@ -59,40 +76,4 @@ CAMLparam1(self);
 
 GtkTextBuffer* result = gtk_text_mark_get_buffer(GtkTextMark_val(self));
 CAMLreturn(Val_option(result, Val_GtkTextBuffer));
-}
-
-CAMLexport CAMLprim value ml_gtk_text_mark_get_left_gravity(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkTextMark *obj = (GtkTextMark *)GtkTextMark_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "left-gravity");
-if (pspec == NULL) caml_failwith("ml_gtk_text_mark_get_left_gravity: property 'left-gravity' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "left-gravity", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_text_mark_get_name(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkTextMark *obj = (GtkTextMark *)GtkTextMark_val(self);
-    gchar* *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "name");
-if (pspec == NULL) caml_failwith("ml_gtk_text_mark_get_name: property 'name' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "name", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
-
-result = caml_copy_string(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
 }

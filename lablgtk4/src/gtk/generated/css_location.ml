@@ -3,3 +3,4 @@
 
 type t = [`css_location] Gobject.obj
 
+(* Methods *)

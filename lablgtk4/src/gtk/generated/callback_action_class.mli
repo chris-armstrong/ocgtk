@@ -3,3 +3,4 @@
 
 type t = [`callback_action_class] Gobject.obj
 
+(* Methods *)

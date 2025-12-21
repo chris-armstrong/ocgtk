@@ -4,10 +4,9 @@
 type t = [`tree_model_sort | `object_] Gobject.obj
 
 (** Create a new TreeModelSort *)
-external new_with_model : Tree_model.t -> t = "ml_gtk_tree_model_sort_new_with_model"
+external new_with_model : unit -> t = "ml_gtk_tree_model_sort_new_with_model"
 
-(* Properties *)
-
+(* Methods *)
 (** This resets the default sort function to be in the “unsorted” state.  That
 is, it is in the same order as the child model. It will re-sort the model
 to be in the same order as the child model only if the `GtkTreeModelSort`
@@ -19,9 +18,6 @@ external reset_default_sort_func : t -> unit = "ml_gtk_tree_model_sort_reset_def
 
 Checks if the given iter is a valid iter for this `GtkTreeModelSort`. *)
 external iter_is_valid : t -> Tree_iter.t -> bool = "ml_gtk_tree_model_sort_iter_is_valid"
-
-(** Returns the model the `GtkTreeModelSort` is sorting. *)
-external get_model : t -> Tree_model.t = "ml_gtk_tree_model_sort_get_model"
 
 (** Converts @sorted_path to a path on the child model of @tree_model_sort.
 That is, @sorted_path points to a location in @tree_model_sort.  The
@@ -51,4 +47,6 @@ sorted is static (and doesn’t change often) and there has been a lot of
 unreffed access to nodes.  As a side effect of this function, all unreffed
 iters will be invalid. *)
 external clear_cache : t -> unit = "ml_gtk_tree_model_sort_clear_cache"
+
+(* Properties *)
 

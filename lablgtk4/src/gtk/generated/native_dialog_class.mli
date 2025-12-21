@@ -4,3 +4,4 @@
 (** Class structure for `GtkNativeDialog`. *)
 type t = [`native_dialog_class] Gobject.obj
 
+(* Methods *)

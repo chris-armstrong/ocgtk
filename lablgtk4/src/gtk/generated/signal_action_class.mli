@@ -3,3 +3,4 @@
 
 type t = [`signal_action_class] Gobject.obj
 
+(* Methods *)

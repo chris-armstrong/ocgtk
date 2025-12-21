@@ -18,7 +18,7 @@ See [REFACTORING_PLAN.md](./REFACTORING_PLAN.md).
 ## Class hirearchy
 
 * Generate all classes in a class hierarchy with #as_<type>, not just those in the Widget hierarchy (e.g. Expression)
-* Update methods that take a class value like "#expression_skel" (which means anything polymorphically implementing that interface) to work
+* Update methods that take a class value like "#expression" (which means anything polymorphically implementing that interface) to work
 
 i.e.
 
@@ -28,3 +28,11 @@ i.e.
       let expression = Option.map (fun (c: #GExpression.expression_skel) -> c#as_expression) expression in
       String_filter.set_expression obj expression
 ```
+
+## Non-void signals
+
+We don't handle non-void signals / callbacks at this time.
+
+## Interfac generation
+
+Interfaces are generated as classes, but need to be generated as virtual classes with virtual methods (and then inherited) or class types to be useful.

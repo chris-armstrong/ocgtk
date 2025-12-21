@@ -3,3 +3,4 @@
 
 type t = [`slice_list_model_class] Gobject.obj
 
+(* Methods *)

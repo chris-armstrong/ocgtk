@@ -8,8 +8,7 @@ let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager
 (** Create a new Overlay *)
 external new_ : unit -> t = "ml_gtk_overlay_new"
 
-(* Properties *)
-
+(* Methods *)
 (** Sets whether @widget is included in the measured size of @overlay.
 
 The overlay will request the size of the largest child that has
@@ -45,4 +44,6 @@ The position at which @widget is placed is determined
 from its [property@Gtk.Widget:halign] and
 [property@Gtk.Widget:valign] properties. *)
 external add_overlay : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_overlay_add_overlay"
+
+(* Properties *)
 

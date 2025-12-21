@@ -9,6 +9,7 @@ external new_ : int -> unit -> t = "ml_gtk_tree_store_new"
 (** Create a new TreeStore *)
 external newv : int -> unit -> t = "ml_gtk_tree_store_newv"
 
+(* Methods *)
 (** Swaps @a and @b in the same level of @tree_store.
 
 Note that this function only works with unsorted stores. *)

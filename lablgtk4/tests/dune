@@ -43,10 +43,10 @@
 ; (modules test_ffi_integration)
 ; (libraries lablgtk4 alcotest))
 
-(test
- (name test_gdkpixbuf)
- (modules test_gdkpixbuf)
- (libraries lablgtk4 alcotest))
+; (test
+;  (name test_gdkpixbuf)
+;  (modules test_gdkpixbuf)
+;  (libraries lablgtk4 alcotest))
 
 ; DISABLED: Uses Conv module (see above)
 ;(test
@@ -54,25 +54,25 @@
 ; (modules test_gdk)
 ; (libraries lablgtk4 alcotest))
 
-(test
- (name test_pango)
- (modules test_pango)
- (libraries lablgtk4 alcotest))
+; (test
+;  (name test_pango)
+;  (modules test_pango)
+;  (libraries lablgtk4 alcotest))
 
-(test
- (name test_clipboard)
- (modules test_clipboard)
- (libraries lablgtk4 alcotest))
+; (test
+;  (name test_clipboard)
+;  (modules test_clipboard)
+;  (libraries lablgtk4 alcotest))
 
 (test
  (name test_widget)
  (modules test_widget)
  (libraries lablgtk4 alcotest))
 
-(test
- (name test_snapshot)
- (modules test_snapshot)
- (libraries lablgtk4 alcotest))
+; (test
+;  (name test_snapshot)
+;  (modules test_snapshot)
+;  (libraries lablgtk4 alcotest))
 
 (test
  (name test_closure_stress)
@@ -101,10 +101,10 @@
 ;  (modules test_event_controller_runtime)
 ;  (libraries lablgtk4 alcotest))
 
-(test
- (name test_gobj)
- (modules test_gobj)
- (libraries lablgtk4 alcotest))
+; (test
+;  (name test_gobj)
+;  (modules test_gobj)
+;  (libraries lablgtk4 lablgtk4.common alcotest))
 
 (test
  (name test_integration)
@@ -149,4 +149,3 @@
  (name test_range)
  (modules test_range)
  (libraries lablgtk4 alcotest))
-

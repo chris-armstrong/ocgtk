@@ -3,3 +3,4 @@
 
 type t = [`window_controls_class] Gobject.obj
 
+(* Methods *)

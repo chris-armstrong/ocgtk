@@ -6,3 +6,4 @@ necessary to allow `GtkBuilder` to construct an object from
 a `GtkBuilder` UI definition. *)
 type t = [`buildable_iface] Gobject.obj
 
+(* Methods *)

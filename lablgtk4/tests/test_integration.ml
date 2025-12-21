@@ -7,8 +7,7 @@
     This test file verifies:
     - API patterns compile correctly
     - Callback signatures are correct
-    - GTK4 patterns are different from GTK3
-    *)
+    - GTK4 patterns are different from GTK3 *)
 
 open Alcotest
 
@@ -16,37 +15,44 @@ open Alcotest
 
 let test_keyboard_shortcut_pattern_compiles () =
   (* Verify keyboard shortcut pattern compiles correctly *)
-  let _handler : keyval:int -> keycode:int -> state:Gdk.Tags.modifier_type list -> bool =
-    fun ~keyval ~keycode:_ ~state ->
-      (* Pattern: Ctrl+S shortcut *)
-      let has_ctrl = List.mem `CONTROL_MASK state in
-      if has_ctrl && keyval = 115 then (* 's' key *)
-        true  (* Handle and stop *)
-      else
-        false (* Continue *)
+  let _handler :
+      keyval:int ->
+      keycode:int ->
+      state:Gdk_enums.modifiertype_flag list ->
+      bool =
+   fun ~keyval ~keycode:_ ~state ->
+    (* Pattern: Ctrl+S shortcut *)
+    let has_ctrl = List.mem `CONTROL_MASK state in
+    if has_ctrl && keyval = 115 then (* 's' key *)
+      true (* Handle and stop *)
+    else false (* Continue *)
   in
   check bool "keyboard shortcut pattern compiles" true true
 
 let test_multi_click_pattern_compiles () =
   (* Verify multi-click detection pattern compiles *)
   let _handler : n_press:int -> x:float -> y:float -> unit =
-    fun ~n_press ~x:_ ~y:_ ->
-      match n_press with
-      | 1 -> (* Single click *) ()
-      | 2 -> (* Double click *) ()
-      | 3 -> (* Triple click *) ()
-      | _ -> ()
+   fun ~n_press ~x:_ ~y:_ ->
+    match n_press with
+    | 1 -> (* Single click *) ()
+    | 2 -> (* Double click *) ()
+    | 3 -> (* Triple click *) ()
+    | _ -> ()
   in
   check bool "multi-click pattern compiles" true true
 
 let test_modifier_checking_pattern_compiles () =
   (* Verify modifier key checking pattern compiles *)
-  let _handler : keyval:int -> keycode:int -> state:Gdk.Tags.modifier_type list -> bool =
-    fun ~keyval:_ ~keycode:_ ~state ->
-      let _has_ctrl = List.mem `CONTROL_MASK state in
-      let _has_shift = List.mem `SHIFT_MASK state in
-      let _has_alt = List.mem `ALT_MASK state in
-      false
+  let _handler :
+      keyval:int ->
+      keycode:int ->
+      state:Gdk_enums.modifiertype_flag list ->
+      bool =
+   fun ~keyval:_ ~keycode:_ ~state ->
+    let _has_ctrl = List.mem `CONTROL_MASK state in
+    let _has_shift = List.mem `SHIFT_MASK state in
+    let _has_alt = List.mem `ALT_MASK state in
+    false
   in
   check bool "modifier checking pattern compiles" true true
 
@@ -60,7 +66,7 @@ let test_gtk4_uses_controllers_not_signals () =
 
 let test_gtk4_has_propagation_phases () =
   (* GTK4 has explicit propagation control *)
-  let _phases = [`NONE; `CAPTURE; `BUBBLE; `TARGET] in
+  let _phases = [ `NONE; `CAPTURE; `BUBBLE; `TARGET ] in
   check bool "GTK4 has propagation phases" true true
 
 (** {2 Runtime Integration Tests - SKIPPED (require gtk_init)} *)
@@ -159,28 +165,37 @@ let test_double_click_detection () =
 (** {2 Test Suite} *)
 
 let () =
-  run "Integration Tests (Phase 3.3)" [
-    "api_patterns", [
-      test_case "keyboard shortcuts" `Quick test_keyboard_shortcut_pattern_compiles;
-      test_case "multi-click detection" `Quick test_multi_click_pattern_compiles;
-      test_case "modifier checking" `Quick test_modifier_checking_pattern_compiles;
-    ];
-
-    "gtk4_vs_gtk3", [
-      test_case "controllers not signals" `Quick test_gtk4_uses_controllers_not_signals;
-      test_case "propagation phases" `Quick test_gtk4_has_propagation_phases;
-    ];
-
-    "runtime_workflows", [
-      test_case "keyboard workflow" `Quick test_full_keyboard_workflow;
-      test_case "mouse workflow" `Quick test_full_mouse_workflow;
-      test_case "click workflow" `Quick test_full_click_workflow;
-      test_case "multiple controllers" `Quick test_multiple_controllers_on_widget;
-      test_case "propagation control" `Quick test_propagation_control_workflow;
-      test_case "event stopping" `Quick test_event_stopping_workflow;
-      test_case "controller_ops convenience" `Quick test_controller_ops_convenience;
-      test_case "signal disconnect" `Quick test_signal_handler_disconnect;
-      test_case "keyboard + mouse" `Quick test_keyboard_and_mouse_together;
-      test_case "double-click" `Quick test_double_click_detection;
-    ];
-  ]
+  run "Integration Tests (Phase 3.3)"
+    [
+      ( "api_patterns",
+        [
+          test_case "keyboard shortcuts" `Quick
+            test_keyboard_shortcut_pattern_compiles;
+          test_case "multi-click detection" `Quick
+            test_multi_click_pattern_compiles;
+          test_case "modifier checking" `Quick
+            test_modifier_checking_pattern_compiles;
+        ] );
+      ( "gtk4_vs_gtk3",
+        [
+          test_case "controllers not signals" `Quick
+            test_gtk4_uses_controllers_not_signals;
+          test_case "propagation phases" `Quick test_gtk4_has_propagation_phases;
+        ] );
+      ( "runtime_workflows",
+        [
+          test_case "keyboard workflow" `Quick test_full_keyboard_workflow;
+          test_case "mouse workflow" `Quick test_full_mouse_workflow;
+          test_case "click workflow" `Quick test_full_click_workflow;
+          test_case "multiple controllers" `Quick
+            test_multiple_controllers_on_widget;
+          test_case "propagation control" `Quick
+            test_propagation_control_workflow;
+          test_case "event stopping" `Quick test_event_stopping_workflow;
+          test_case "controller_ops convenience" `Quick
+            test_controller_ops_convenience;
+          test_case "signal disconnect" `Quick test_signal_handler_disconnect;
+          test_case "keyboard + mouse" `Quick test_keyboard_and_mouse_together;
+          test_case "double-click" `Quick test_double_click_detection;
+        ] );
+    ]

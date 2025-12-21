@@ -3,3 +3,4 @@
 
 type t = [`print_backend] Gobject.obj
 
+(* Methods *)

@@ -3,6 +3,7 @@
 
 type t = [`buildable] Gobject.obj
 
+(* Methods *)
 (** Gets the ID of the @buildable object.
 
 `GtkBuilder` sets the name based on the ID attribute

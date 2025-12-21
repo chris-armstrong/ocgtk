@@ -5,6 +5,7 @@
 recently used files list. *)
 type t = [`recent_info] Gobject.obj
 
+(* Methods *)
 (** Decreases the reference count of @info by one.
 
 If the reference count reaches zero, @info is
@@ -17,6 +18,10 @@ external ref : t -> t = "ml_gtk_recent_info_ref"
 (** Checks whether two `GtkRecentInfo` point to the same resource. *)
 external match_ : t -> t -> bool = "ml_gtk_recent_info_match"
 
+(** Gets the name of the last application that have registered the
+recently used resource represented by @info. *)
+external last_application : t -> string = "ml_gtk_recent_info_last_application"
+
 (** Checks whether the resource is local or not by looking at the
 scheme of its URI. *)
 external is_local : t -> bool = "ml_gtk_recent_info_is_local"
@@ -28,8 +33,22 @@ external has_group : t -> string -> bool = "ml_gtk_recent_info_has_group"
 (** Checks whether an application registered this resource using @app_name. *)
 external has_application : t -> string -> bool = "ml_gtk_recent_info_has_application"
 
+(** Gets a displayable version of the resource’s URI.
+
+If the resource is local, it returns a local path; if the
+resource is not local, it returns the UTF-8 encoded content
+of [method@Gtk.RecentInfo.get_uri]. *)
+external get_uri_display : t -> string option = "ml_gtk_recent_info_get_uri_display"
+
 (** Gets the URI of the resource. *)
 external get_uri : t -> string = "ml_gtk_recent_info_get_uri"
+
+(** Computes a valid UTF-8 string that can be used as the
+name of the item in a menu or list.
+
+For example, calling this function on an item that refers
+to “file:///foo/bar.txt” will yield “bar.txt”. *)
+external get_short_name : t -> string = "ml_gtk_recent_info_get_short_name"
 
 (** Gets the value of the “private” flag.
 

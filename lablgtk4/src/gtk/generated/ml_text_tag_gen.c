@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -58,7 +59,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_accumulative_margin(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accumulative-margin");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_accumulative_margin: property 'accumulative-margin' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -75,7 +76,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_accumulative_margin(value self, va
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accumulative-margin");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_accumulative_margin: property 'accumulative-margin' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -91,7 +92,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_allow_breaks(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "allow-breaks");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_allow_breaks: property 'allow-breaks' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -108,7 +109,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_allow_breaks(value self, value new
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "allow-breaks");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_allow_breaks: property 'allow-breaks' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -124,7 +125,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_allow_breaks_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "allow-breaks-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_allow_breaks_set: property 'allow-breaks-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -141,7 +142,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_allow_breaks_set(value self, value
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "allow-breaks-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_allow_breaks_set: property 'allow-breaks-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -190,7 +191,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_background_full_height(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "background-full-height");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_background_full_height: property 'background-full-height' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -207,7 +208,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_background_full_height(value self,
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "background-full-height");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_background_full_height: property 'background-full-height' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -223,7 +224,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_background_full_height_set(value s
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "background-full-height-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_background_full_height_set: property 'background-full-height-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -240,7 +241,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_background_full_height_set(value s
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "background-full-height-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_background_full_height_set: property 'background-full-height-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -256,7 +257,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_background_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "background-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_background_set: property 'background-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -273,7 +274,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_background_set(value self, value n
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "background-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_background_set: property 'background-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -284,12 +285,45 @@ g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_text_tag_get_direction(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    GtkTextDirection prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "direction");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_direction: property 'direction' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "direction", &prop_gvalue);
+    prop_value = (GtkTextDirection)g_value_get_enum(&prop_gvalue);
+
+result = Val_GtkTextDirection(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_direction(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    GtkTextDirection c_value = GtkTextDirection_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "direction");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_direction: property 'direction' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "direction", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_tag_get_editable(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "editable");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_editable: property 'editable' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -306,7 +340,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_editable(value self, value new_val
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "editable");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_editable: property 'editable' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -322,7 +356,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_editable_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "editable-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_editable_set: property 'editable-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -339,7 +373,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_editable_set(value self, value new
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "editable-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_editable_set: property 'editable-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -355,7 +389,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_fallback(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "fallback");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_fallback: property 'fallback' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -372,7 +406,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_fallback(value self, value new_val
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "fallback");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_fallback: property 'fallback' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -388,7 +422,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_fallback_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "fallback-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_fallback_set: property 'fallback-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -405,7 +439,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_fallback_set(value self, value new
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "fallback-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_fallback_set: property 'fallback-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -454,7 +488,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_family_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "family-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_family_set: property 'family-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -471,7 +505,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_family_set(value self, value new_v
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "family-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_family_set: property 'family-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -553,7 +587,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_font_features_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "font-features-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_font_features_set: property 'font-features-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -570,7 +604,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_font_features_set(value self, valu
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "font-features-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_font_features_set: property 'font-features-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -619,7 +653,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_foreground_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "foreground-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_foreground_set: property 'foreground-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -636,7 +670,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_foreground_set(value self, value n
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "foreground-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_foreground_set: property 'foreground-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -685,7 +719,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_indent_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "indent-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_indent_set: property 'indent-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -702,7 +736,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_indent_set(value self, value new_v
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "indent-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_indent_set: property 'indent-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -718,7 +752,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_insert_hyphens(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "insert-hyphens");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_insert_hyphens: property 'insert-hyphens' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -735,7 +769,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_insert_hyphens(value self, value n
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "insert-hyphens");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_insert_hyphens: property 'insert-hyphens' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -751,7 +785,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_insert_hyphens_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "insert-hyphens-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_insert_hyphens_set: property 'insert-hyphens-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -768,7 +802,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_insert_hyphens_set(value self, val
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "insert-hyphens-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_insert_hyphens_set: property 'insert-hyphens-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -784,7 +818,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_invisible(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "invisible");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_invisible: property 'invisible' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -801,7 +835,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_invisible(value self, value new_va
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "invisible");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_invisible: property 'invisible' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -817,7 +851,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_invisible_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "invisible-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_invisible_set: property 'invisible-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -834,7 +868,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_invisible_set(value self, value ne
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "invisible-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_invisible_set: property 'invisible-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -845,12 +879,45 @@ g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_text_tag_get_justification(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    GtkJustification prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "justification");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_justification: property 'justification' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "justification", &prop_gvalue);
+    prop_value = (GtkJustification)g_value_get_enum(&prop_gvalue);
+
+result = Val_GtkJustification(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_justification(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    GtkJustification c_value = GtkJustification_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "justification");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_justification: property 'justification' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "justification", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_tag_get_justification_set(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "justification-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_justification_set: property 'justification-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -867,7 +934,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_justification_set(value self, valu
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "justification-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_justification_set: property 'justification-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -916,7 +983,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_language_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "language-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_language_set: property 'language-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -933,7 +1000,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_language_set(value self, value new
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "language-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_language_set: property 'language-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -982,7 +1049,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_left_margin_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "left-margin-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_left_margin_set: property 'left-margin-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -999,7 +1066,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_left_margin_set(value self, value 
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "left-margin-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_left_margin_set: property 'left-margin-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1048,7 +1115,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_letter_spacing_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "letter-spacing-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_letter_spacing_set: property 'letter-spacing-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1065,7 +1132,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_letter_spacing_set(value self, val
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "letter-spacing-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_letter_spacing_set: property 'letter-spacing-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1114,7 +1181,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_line_height_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "line-height-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_line_height_set: property 'line-height-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1131,7 +1198,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_line_height_set(value self, value 
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "line-height-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_line_height_set: property 'line-height-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1165,7 +1232,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_overline_rgba_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "overline-rgba-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_overline_rgba_set: property 'overline-rgba-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1182,7 +1249,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_overline_rgba_set(value self, valu
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "overline-rgba-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_overline_rgba_set: property 'overline-rgba-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1198,7 +1265,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_overline_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "overline-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_overline_set: property 'overline-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1215,7 +1282,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_overline_set(value self, value new
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "overline-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_overline_set: property 'overline-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1264,7 +1331,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_paragraph_background_set(value sel
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "paragraph-background-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_paragraph_background_set: property 'paragraph-background-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1281,7 +1348,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_paragraph_background_set(value sel
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "paragraph-background-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_paragraph_background_set: property 'paragraph-background-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1330,7 +1397,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_pixels_above_lines_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "pixels-above-lines-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_pixels_above_lines_set: property 'pixels-above-lines-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1347,7 +1414,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_pixels_above_lines_set(value self,
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "pixels-above-lines-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_pixels_above_lines_set: property 'pixels-above-lines-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1396,7 +1463,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_pixels_below_lines_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "pixels-below-lines-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_pixels_below_lines_set: property 'pixels-below-lines-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1413,7 +1480,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_pixels_below_lines_set(value self,
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "pixels-below-lines-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_pixels_below_lines_set: property 'pixels-below-lines-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1462,7 +1529,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_pixels_inside_wrap_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "pixels-inside-wrap-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_pixels_inside_wrap_set: property 'pixels-inside-wrap-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1479,7 +1546,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_pixels_inside_wrap_set(value self,
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "pixels-inside-wrap-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_pixels_inside_wrap_set: property 'pixels-inside-wrap-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1528,7 +1595,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_right_margin_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "right-margin-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_right_margin_set: property 'right-margin-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1545,7 +1612,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_right_margin_set(value self, value
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "right-margin-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_right_margin_set: property 'right-margin-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1594,7 +1661,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_rise_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "rise-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_rise_set: property 'rise-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1611,7 +1678,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_rise_set(value self, value new_val
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "rise-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_rise_set: property 'rise-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1660,7 +1727,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_scale_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "scale-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_scale_set: property 'scale-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1677,7 +1744,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_scale_set(value self, value new_va
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "scale-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_scale_set: property 'scale-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1693,7 +1760,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_sentence(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "sentence");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_sentence: property 'sentence' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1710,7 +1777,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_sentence(value self, value new_val
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "sentence");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_sentence: property 'sentence' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1726,7 +1793,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_sentence_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "sentence-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_sentence_set: property 'sentence-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1743,7 +1810,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_sentence_set(value self, value new
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "sentence-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_sentence_set: property 'sentence-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1759,7 +1826,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_show_spaces_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "show-spaces-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_show_spaces_set: property 'show-spaces-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1776,7 +1843,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_show_spaces_set(value self, value 
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "show-spaces-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_show_spaces_set: property 'show-spaces-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1858,7 +1925,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_size_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "size-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_size_set: property 'size-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1875,7 +1942,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_size_set(value self, value new_val
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "size-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_size_set: property 'size-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1891,7 +1958,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_stretch_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "stretch-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_stretch_set: property 'stretch-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1908,7 +1975,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_stretch_set(value self, value new_
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "stretch-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_stretch_set: property 'stretch-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1924,7 +1991,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_strikethrough(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "strikethrough");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_strikethrough: property 'strikethrough' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1941,7 +2008,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_strikethrough(value self, value ne
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "strikethrough");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_strikethrough: property 'strikethrough' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1957,7 +2024,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_strikethrough_rgba_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "strikethrough-rgba-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_strikethrough_rgba_set: property 'strikethrough-rgba-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1974,7 +2041,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_strikethrough_rgba_set(value self,
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "strikethrough-rgba-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_strikethrough_rgba_set: property 'strikethrough-rgba-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -1990,7 +2057,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_strikethrough_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "strikethrough-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_strikethrough_set: property 'strikethrough-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -2007,7 +2074,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_strikethrough_set(value self, valu
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "strikethrough-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_strikethrough_set: property 'strikethrough-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -2023,7 +2090,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_style_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "style-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_style_set: property 'style-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -2040,7 +2107,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_style_set(value self, value new_va
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "style-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_style_set: property 'style-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -2056,7 +2123,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_tabs_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "tabs-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_tabs_set: property 'tabs-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -2073,7 +2140,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_tabs_set(value self, value new_val
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "tabs-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_tabs_set: property 'tabs-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -2089,7 +2156,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_text_transform_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "text-transform-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_text_transform_set: property 'text-transform-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -2106,7 +2173,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_text_transform_set(value self, val
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "text-transform-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_text_transform_set: property 'text-transform-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -2122,7 +2189,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_underline_rgba_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "underline-rgba-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_underline_rgba_set: property 'underline-rgba-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -2139,7 +2206,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_underline_rgba_set(value self, val
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "underline-rgba-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_underline_rgba_set: property 'underline-rgba-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -2155,7 +2222,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_underline_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "underline-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_underline_set: property 'underline-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -2172,7 +2239,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_underline_set(value self, value ne
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "underline-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_underline_set: property 'underline-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -2188,7 +2255,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_variant_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "variant-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_variant_set: property 'variant-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -2205,7 +2272,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_variant_set(value self, value new_
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "variant-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_variant_set: property 'variant-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -2254,7 +2321,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_weight_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "weight-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_weight_set: property 'weight-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -2271,7 +2338,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_weight_set(value self, value new_v
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "weight-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_weight_set: property 'weight-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -2287,7 +2354,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_word(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "word");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_word: property 'word' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -2304,7 +2371,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_word(value self, value new_value)
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "word");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_word: property 'word' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -2320,7 +2387,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_word_set(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "word-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_word_set: property 'word-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -2337,7 +2404,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_word_set(value self, value new_val
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "word-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_word_set: property 'word-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -2348,12 +2415,45 @@ g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_text_tag_get_wrap_mode(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    GtkWrapMode prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "wrap-mode");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_wrap_mode: property 'wrap-mode' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "wrap-mode", &prop_gvalue);
+    prop_value = (GtkWrapMode)g_value_get_enum(&prop_gvalue);
+
+result = Val_GtkWrapMode(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_wrap_mode(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    GtkWrapMode c_value = GtkWrapMode_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "wrap-mode");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_wrap_mode: property 'wrap-mode' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "wrap-mode", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_tag_get_wrap_mode_set(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "wrap-mode-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_wrap_mode_set: property 'wrap-mode-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -2370,7 +2470,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_wrap_mode_set(value self, value ne
 {
 CAMLparam2(self, new_value);
 GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "wrap-mode-set");
 if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_wrap_mode_set: property 'wrap-mode-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;

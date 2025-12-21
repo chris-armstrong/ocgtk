@@ -4,3 +4,4 @@
 (** A sub-parser for `GtkBuildable` implementations. *)
 type t = [`buildable_parser] Gobject.obj
 
+(* Methods *)

@@ -8,6 +8,7 @@ let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager
 (** Create a new VolumeButton *)
 external new_ : unit -> t = "ml_gtk_volume_button_new"
 
+(* Methods *)
 (* Properties *)
 
 (** Get property: use-symbolic *)

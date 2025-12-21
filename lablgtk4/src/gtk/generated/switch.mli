@@ -8,17 +8,23 @@ val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and_
 (** Create a new Switch *)
 external new_ : unit -> t = "ml_gtk_switch_new"
 
-(* Properties *)
+(* Methods *)
+(** Sets the underlying state of the `GtkSwitch`.
 
-(** Get property: active *)
-external get_active : t -> bool = "ml_gtk_switch_get_active"
+This function is typically called from a [signal@Gtk.Switch::state-set]
+signal handler in order to set up delayed state changes.
 
-(** Set property: active *)
+See [signal@Gtk.Switch::state-set] for details. *)
+external set_state : t -> bool -> unit = "ml_gtk_switch_set_state"
+
+(** Changes the state of @self to the desired one. *)
 external set_active : t -> bool -> unit = "ml_gtk_switch_set_active"
 
-(** Get property: state *)
+(** Gets the underlying state of the `GtkSwitch`. *)
 external get_state : t -> bool = "ml_gtk_switch_get_state"
 
-(** Set property: state *)
-external set_state : t -> bool -> unit = "ml_gtk_switch_set_state"
+(** Gets whether the `GtkSwitch` is in its “on” or “off” state. *)
+external get_active : t -> bool = "ml_gtk_switch_get_active"
+
+(* Properties *)
 

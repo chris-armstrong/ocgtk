@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -68,6 +69,21 @@ CAMLparam2(self, arg1);
 
 gtk_gesture_group(GtkGesture_val(self), GtkGesture_val(arg1));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_gesture_get_bounding_box_center(value self)
+{
+CAMLparam1(self);
+double out1;
+double out2;
+
+gboolean result = gtk_gesture_get_bounding_box_center(GtkGesture_val(self), &out1, &out2);
+CAMLlocal1(ret);
+    ret = caml_alloc(3, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, caml_copy_double(out1));
+    Store_field(ret, 2, caml_copy_double(out2));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_gesture_get_n_points(value self)

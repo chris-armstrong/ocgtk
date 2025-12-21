@@ -3,3 +3,4 @@
 
 type t = [`symbolic_paintable] Gobject.obj
 
+(* Methods *)

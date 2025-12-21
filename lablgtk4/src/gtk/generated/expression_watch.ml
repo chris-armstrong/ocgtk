@@ -7,6 +7,7 @@ The contents of `GtkExpressionWatch` should only be accessed through the
 provided API. *)
 type t = [`expression_watch] Gobject.obj
 
+(* Methods *)
 (** Stops watching an expression.
 
 See [method@Gtk.Expression.watch] for how the watch

@@ -15,3 +15,4 @@ so it is sufficient to implement just that function for full selection
 support. *)
 type t = [`selection_model_interface] Gobject.obj
 
+(* Methods *)

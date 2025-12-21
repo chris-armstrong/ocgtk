@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -27,6 +28,14 @@ CAMLexport CAMLprim value ml_gtk_accessible_text_update_selection_bound(value se
 CAMLparam1(self);
 
 gtk_accessible_text_update_selection_bound(GtkAccessibleText_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_accessible_text_update_contents(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gtk_accessible_text_update_contents(GtkAccessibleText_val(self), GtkAccessibleTextContentChange_val(arg1), Int_val(arg2), Int_val(arg3));
 CAMLreturn(Val_unit);
 }
 

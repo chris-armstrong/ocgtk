@@ -3,3 +3,4 @@
 
 type t = [`button_private] Gobject.obj
 
+(* Methods *)

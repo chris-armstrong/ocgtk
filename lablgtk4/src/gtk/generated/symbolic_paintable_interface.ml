@@ -5,3 +5,4 @@
 No function must be implemented, default implementations exist for each one. *)
 type t = [`symbolic_paintable_interface] Gobject.obj
 
+(* Methods *)

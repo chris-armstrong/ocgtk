@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -154,7 +155,7 @@ CAMLexport CAMLprim value ml_gtk_assistant_get_nth_page(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkWidget* result = gtk_assistant_get_nth_page(GtkAssistant_val(self), Int_val(arg1));
-CAMLreturn(Val_GtkWidget_option(result));
+CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
 CAMLexport CAMLprim value ml_gtk_assistant_get_n_pages(value self)

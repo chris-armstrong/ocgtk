@@ -9,6 +9,7 @@ external new_ : int -> unit -> t = "ml_gtk_list_store_new"
 (** Create a new ListStore *)
 external newv : int -> unit -> t = "ml_gtk_list_store_newv"
 
+(* Methods *)
 (** Swaps @a and @b in @store. Note that this function only works with
 unsorted stores. *)
 external swap : t -> Tree_iter.t -> Tree_iter.t -> unit = "ml_gtk_list_store_swap"

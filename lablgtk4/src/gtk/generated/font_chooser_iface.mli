@@ -3,3 +3,4 @@
 
 type t = [`font_chooser_iface] Gobject.obj
 
+(* Methods *)

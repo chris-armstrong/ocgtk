@@ -3,10 +3,8 @@ class snapshot : Snapshot.t ->
     method gl_shader_pop_texture : unit -> unit
     method perspective : float -> unit
     method pop : unit -> unit
-    method push_blend : Gsk_enums.blendmode -> unit
     method push_blur : float -> unit
     method push_cross_fade : float -> unit
-    method push_mask : Gsk_enums.maskmode -> unit
     method push_opacity : float -> unit
     method render_background : #GStyle_context.style_context -> float -> float -> float -> float -> unit
     method render_focus : #GStyle_context.style_context -> float -> float -> float -> float -> unit

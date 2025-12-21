@@ -6,8 +6,7 @@ type t = [`alternative_trigger | `shortcut_trigger | `object_] Gobject.obj
 (** Create a new AlternativeTrigger *)
 external new_ : Shortcut_trigger.t -> Shortcut_trigger.t -> t = "ml_gtk_alternative_trigger_new"
 
-(* Properties *)
-
+(* Methods *)
 (** Gets the second of the two alternative triggers that may
 trigger @self.
 
@@ -21,4 +20,6 @@ trigger @self.
 [method@Gtk.AlternativeTrigger.get_second] will return
 the other one. *)
 external get_first : t -> Shortcut_trigger.t = "ml_gtk_alternative_trigger_get_first"
+
+(* Properties *)
 

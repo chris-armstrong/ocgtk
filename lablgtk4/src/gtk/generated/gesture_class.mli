@@ -3,3 +3,4 @@
 
 type t = [`gesture_class] Gobject.obj
 
+(* Methods *)

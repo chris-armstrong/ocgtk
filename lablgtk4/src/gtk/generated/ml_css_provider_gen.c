@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -27,6 +28,14 @@ CAMLexport CAMLprim value ml_gtk_css_provider_new(value unit)
 CAMLparam1(unit);
 GtkCssProvider *obj = gtk_css_provider_new();
 CAMLreturn(Val_GtkCssProvider(obj));
+}
+
+CAMLexport CAMLprim value ml_gtk_css_provider_to_string(value self)
+{
+CAMLparam1(self);
+
+char* result = gtk_css_provider_to_string(GtkCssProvider_val(self));
+CAMLreturn(caml_copy_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_css_provider_load_named(value self, value arg1, value arg2)
@@ -50,13 +59,5 @@ CAMLexport CAMLprim value ml_gtk_css_provider_load_from_resource(value self, val
 CAMLparam2(self, arg1);
 
 gtk_css_provider_load_from_resource(GtkCssProvider_val(self), String_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_css_provider_load_from_path(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_css_provider_load_from_path(GtkCssProvider_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }

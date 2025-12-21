@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -44,14 +45,6 @@ gtk_shortcut_controller_set_scope(GtkShortcutController_val(self), GtkShortcutSc
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_shortcut_controller_set_mnemonics_modifiers(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_shortcut_controller_set_mnemonics_modifiers(GtkShortcutController_val(self), GdkModifierType_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_shortcut_controller_remove_shortcut(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -66,14 +59,6 @@ CAMLparam1(self);
 
 GtkShortcutScope result = gtk_shortcut_controller_get_scope(GtkShortcutController_val(self));
 CAMLreturn(Val_GtkShortcutScope(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_shortcut_controller_get_mnemonics_modifiers(value self)
-{
-CAMLparam1(self);
-
-GdkModifierType result = gtk_shortcut_controller_get_mnemonics_modifiers(GtkShortcutController_val(self));
-CAMLreturn(Val_GdkModifierType(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_shortcut_controller_add_shortcut(value self, value arg1)

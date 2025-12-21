@@ -6,90 +6,77 @@ type t = [`print_operation | `object_] Gobject.obj
 (** Create a new PrintOperation *)
 external new_ : unit -> t = "ml_gtk_print_operation_new"
 
-(* Properties *)
+(* Methods *)
+(** If @full_page is %TRUE, the transformation for the cairo context
+obtained from `GtkPrintContext` puts the origin at the top left
+corner of the page.
 
-(** Get property: allow-async *)
-external get_allow_async : t -> bool = "ml_gtk_print_operation_get_allow_async"
-
-(** Set property: allow-async *)
-external set_allow_async : t -> bool -> unit = "ml_gtk_print_operation_set_allow_async"
-
-(** Get property: current-page *)
-external get_current_page : t -> int = "ml_gtk_print_operation_get_current_page"
-
-(** Set property: current-page *)
-external set_current_page : t -> int -> unit = "ml_gtk_print_operation_set_current_page"
-
-(** Get property: custom-tab-label *)
-external get_custom_tab_label : t -> string = "ml_gtk_print_operation_get_custom_tab_label"
-
-(** Set property: custom-tab-label *)
-external set_custom_tab_label : t -> string -> unit = "ml_gtk_print_operation_set_custom_tab_label"
-
-(** Get property: embed-page-setup *)
-external get_embed_page_setup : t -> bool = "ml_gtk_print_operation_get_embed_page_setup"
-
-(** Set property: embed-page-setup *)
-external set_embed_page_setup : t -> bool -> unit = "ml_gtk_print_operation_set_embed_page_setup"
-
-(** Get property: export-filename *)
-external get_export_filename : t -> string = "ml_gtk_print_operation_get_export_filename"
-
-(** Set property: export-filename *)
-external set_export_filename : t -> string -> unit = "ml_gtk_print_operation_set_export_filename"
-
-(** Get property: has-selection *)
-external get_has_selection : t -> bool = "ml_gtk_print_operation_get_has_selection"
-
-(** Set property: has-selection *)
-external set_has_selection : t -> bool -> unit = "ml_gtk_print_operation_set_has_selection"
-
-(** Get property: job-name *)
-external get_job_name : t -> string = "ml_gtk_print_operation_get_job_name"
-
-(** Set property: job-name *)
-external set_job_name : t -> string -> unit = "ml_gtk_print_operation_set_job_name"
-
-(** Get property: n-pages *)
-external get_n_pages : t -> int = "ml_gtk_print_operation_get_n_pages"
-
-(** Set property: n-pages *)
-external set_n_pages : t -> int -> unit = "ml_gtk_print_operation_set_n_pages"
-
-(** Get property: n-pages-to-print *)
-external get_n_pages_to_print : t -> int = "ml_gtk_print_operation_get_n_pages_to_print"
-
-(** Get property: show-progress *)
-external get_show_progress : t -> bool = "ml_gtk_print_operation_get_show_progress"
-
-(** Set property: show-progress *)
-external set_show_progress : t -> bool -> unit = "ml_gtk_print_operation_set_show_progress"
-
-(** Get property: status-string *)
-external get_status_string : t -> string = "ml_gtk_print_operation_get_status_string"
-
-(** Get property: support-selection *)
-external get_support_selection : t -> bool = "ml_gtk_print_operation_get_support_selection"
-
-(** Set property: support-selection *)
-external set_support_selection : t -> bool -> unit = "ml_gtk_print_operation_set_support_selection"
-
-(** Get property: track-print-status *)
-external get_track_print_status : t -> bool = "ml_gtk_print_operation_get_track_print_status"
-
-(** Set property: track-print-status *)
-external set_track_print_status : t -> bool -> unit = "ml_gtk_print_operation_set_track_print_status"
-
-(** Get property: use-full-page *)
-external get_use_full_page : t -> bool = "ml_gtk_print_operation_get_use_full_page"
-
-(** Set property: use-full-page *)
+This may not be the top left corner of the sheet, depending on page
+orientation and the number of pages per sheet). Otherwise, the origin
+is at the top left corner of the imageable area (i.e. inside the margins). *)
 external set_use_full_page : t -> bool -> unit = "ml_gtk_print_operation_set_use_full_page"
 
 (** Sets up the transformation for the cairo context obtained from
 `GtkPrintContext` in such a way that distances are measured in
 units of @unit. *)
-external set_unit : t -> unit -> unit = "ml_gtk_print_operation_set_unit"
+external set_unit : t -> Gtk_enums.unit -> unit = "ml_gtk_print_operation_set_unit"
+
+(** If track_status is %TRUE, the print operation will try to continue
+report on the status of the print job in the printer queues and printer.
+
+This can allow your application to show things like “out of paper”
+issues, and when the print job actually reaches the printer.
+
+This function is often implemented using some form of polling,
+so it should not be enabled unless needed. *)
+external set_track_print_status : t -> bool -> unit = "ml_gtk_print_operation_set_track_print_status"
+
+(** Sets whether selection is supported by `GtkPrintOperation`. *)
+external set_support_selection : t -> bool -> unit = "ml_gtk_print_operation_set_support_selection"
+
+(** If @show_progress is %TRUE, the print operation will show
+a progress dialog during the print operation. *)
+external set_show_progress : t -> bool -> unit = "ml_gtk_print_operation_set_show_progress"
+
+(** Sets the print settings for @op.
+
+This is typically used to re-establish print settings
+from a previous print operation, see [method@Gtk.PrintOperation.run]. *)
+external set_print_settings : t -> Print_settings.t option -> unit = "ml_gtk_print_operation_set_print_settings"
+
+(** Sets the number of pages in the document.
+
+This must be set to a positive number before the rendering
+starts. It may be set in a [signal@Gtk.PrintOperation::begin-print]
+signal handler.
+
+Note that the page numbers passed to the
+[signal@Gtk.PrintOperation::request-page-setup]
+and [signal@Gtk.PrintOperation::draw-page] signals are 0-based, i.e.
+if the user chooses to print all pages, the last ::draw-page signal
+will be for page @n_pages - 1. *)
+external set_n_pages : t -> int -> unit = "ml_gtk_print_operation_set_n_pages"
+
+(** Sets the name of the print job.
+
+The name is used to identify the job (e.g. in monitoring
+applications like eggcups).
+
+If you don’t set a job name, GTK picks a default one by
+numbering successive print jobs. *)
+external set_job_name : t -> string -> unit = "ml_gtk_print_operation_set_job_name"
+
+(** Sets whether there is a selection to print.
+
+Application has to set number of pages to which the selection
+will draw by [method@Gtk.PrintOperation.set_n_pages] in a handler
+for the [signal@Gtk.PrintOperation::begin-print] signal. *)
+external set_has_selection : t -> bool -> unit = "ml_gtk_print_operation_set_has_selection"
+
+(** Embed page size combo box and orientation combo box into page setup page.
+
+Selected page setup is stored as default page setup in `GtkPrintOperation`. *)
+external set_embed_page_setup : t -> bool -> unit = "ml_gtk_print_operation_set_embed_page_setup"
 
 (** Sets up the `GtkPrintOperation` to wait for calling of
 [method@Gtk.PrintOperation.draw_page_finish from application.
@@ -99,6 +86,31 @@ This can be used for drawing page in another thread.
 This function must be called in the callback of the
 [signal@Gtk.PrintOperation::draw-page] signal. *)
 external set_defer_drawing : t -> unit = "ml_gtk_print_operation_set_defer_drawing"
+
+(** Makes @default_page_setup the default page setup for @op.
+
+This page setup will be used by [method@Gtk.PrintOperation.run],
+but it can be overridden on a per-page basis by connecting
+to the [signal@Gtk.PrintOperation::request-page-setup] signal. *)
+external set_default_page_setup : t -> Page_setup.t option -> unit = "ml_gtk_print_operation_set_default_page_setup"
+
+(** Sets the label for the tab holding custom widgets. *)
+external set_custom_tab_label : t -> string option -> unit = "ml_gtk_print_operation_set_custom_tab_label"
+
+(** Sets the current page.
+
+If this is called before [method@Gtk.PrintOperation.run],
+the user will be able to select to print only the current page.
+
+Note that this only makes sense for pre-paginated documents. *)
+external set_current_page : t -> int -> unit = "ml_gtk_print_operation_set_current_page"
+
+(** Sets whether gtk_print_operation_run() may return
+before the print operation is completed.
+
+Note that some platforms may not allow asynchronous
+operation. *)
+external set_allow_async : t -> bool -> unit = "ml_gtk_print_operation_set_allow_async"
 
 (** Runs the print operation.
 
@@ -168,10 +180,38 @@ can be in a non-finished state even after done has been called, as
 the operation status then tracks the print job status on the printer. *)
 external is_finished : t -> bool = "ml_gtk_print_operation_is_finished"
 
+(** Gets whether the application supports print of selection *)
+external get_support_selection : t -> bool = "ml_gtk_print_operation_get_support_selection"
+
+(** Returns a string representation of the status of the
+print operation.
+
+The string is translated and suitable for displaying
+the print status e.g. in a `GtkStatusbar`.
+
+Use [method@Gtk.PrintOperation.get_status] to obtain
+a status value that is suitable for programmatic use. *)
+external get_status_string : t -> string = "ml_gtk_print_operation_get_status_string"
+
 (** Returns the status of the print operation.
 
 Also see [method@Gtk.PrintOperation.get_status_string]. *)
 external get_status : t -> Gtk_enums.printstatus = "ml_gtk_print_operation_get_status"
+
+(** Returns the number of pages that will be printed.
+
+Note that this value is set during print preparation phase
+(%GTK_PRINT_STATUS_PREPARING), so this function should never be
+called before the data generation phase (%GTK_PRINT_STATUS_GENERATING_DATA).
+You can connect to the [signal@Gtk.PrintOperation::status-changed]
+signal and call gtk_print_operation_get_n_pages_to_print() when
+print status is %GTK_PRINT_STATUS_GENERATING_DATA.
+
+This is typically used to track the progress of print operation. *)
+external get_n_pages_to_print : t -> int = "ml_gtk_print_operation_get_n_pages_to_print"
+
+(** Gets whether there is a selection. *)
+external get_has_selection : t -> bool = "ml_gtk_print_operation_get_has_selection"
 
 (** Call this when the result of a print operation is
 %GTK_PRINT_OPERATION_RESULT_ERROR.
@@ -182,6 +222,9 @@ handler.
 
 The returned `GError` will contain more details on what went wrong. *)
 external get_error : t -> (unit, GError.t) result = "ml_gtk_print_operation_get_error"
+
+(** Gets whether page setup selection combos are embedded *)
+external get_embed_page_setup : t -> bool = "ml_gtk_print_operation_get_embed_page_setup"
 
 (** Signal that drawing of particular page is complete.
 
@@ -197,4 +240,6 @@ This function may be called from a [signal@Gtk.PrintOperation::begin-print],
 [signal@Gtk.PrintOperation::paginate] or [signal@Gtk.PrintOperation::draw-page]
 signal handler to stop the currently running print operation. *)
 external cancel : t -> unit = "ml_gtk_print_operation_cancel"
+
+(* Properties *)
 

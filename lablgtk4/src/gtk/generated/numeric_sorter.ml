@@ -6,8 +6,7 @@ type t = [`numeric_sorter | `sorter | `object_] Gobject.obj
 (** Create a new NumericSorter *)
 external new_ : Expression.t option -> t = "ml_gtk_numeric_sorter_new"
 
-(* Properties *)
-
+(* Methods *)
 (** Sets whether to sort smaller numbers before larger ones. *)
 external set_sort_order : t -> Gtk_enums.sorttype -> unit = "ml_gtk_numeric_sorter_set_sort_order"
 
@@ -25,4 +24,6 @@ external get_sort_order : t -> Gtk_enums.sorttype = "ml_gtk_numeric_sorter_get_s
 
 (** Gets the expression that is evaluated to obtain numbers from items. *)
 external get_expression : t -> Expression.t option = "ml_gtk_numeric_sorter_get_expression"
+
+(* Properties *)
 

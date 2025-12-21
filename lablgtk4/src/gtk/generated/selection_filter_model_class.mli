@@ -3,3 +3,4 @@
 
 type t = [`selection_filter_model_class] Gobject.obj
 
+(* Methods *)

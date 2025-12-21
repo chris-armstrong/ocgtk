@@ -8,3 +8,4 @@ let as_layoutmanager (obj : t) : Event_controller_and__layout_child_and__layout_
 (** Create a new BinLayout *)
 external new_ : unit -> t = "ml_gtk_bin_layout_new"
 
+(* Methods *)

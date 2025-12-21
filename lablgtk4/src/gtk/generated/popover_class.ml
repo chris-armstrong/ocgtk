@@ -3,3 +3,4 @@
 
 type t = [`popover_class] Gobject.obj
 
+(* Methods *)

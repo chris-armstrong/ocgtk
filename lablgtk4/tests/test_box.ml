@@ -6,45 +6,43 @@
     - Child management (append, prepend, insert, remove)
     - Box properties (spacing, homogeneous, baseline_position)
     - High-level GBox wrapper functionality
-    - GTK3 compatibility helpers
-    *)
+    - GTK3 compatibility helpers *)
 
 open Alcotest
 
-module Widget = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget
+module Widget =
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  .Widget
 
 (* Try to initialize GTK once for all tests *)
 let gtk_available =
   try
     let _ = GMain.init () in
     true
-  with
-  | GMain.Error _ -> false
+  with GMain.Error _ -> false
 
 (* Helper to skip tests when GTK is not available *)
-let require_gtk f () =
-  if not gtk_available then skip ()
-  else f ()
+let require_gtk f () = if not gtk_available then skip () else f ()
 
 (* Test that Box module is accessible and types compile *)
 let test_module_accessible () =
   (* Test that we can reference the types *)
   let _box_type : Box.t option = None in
-  let _orientation : Gtk.orientation = `HORIZONTAL in
-  let _baseline : Gtk.baseline_position = `CENTER in
+  let _orientation : Gtk_enums.orientation = `HORIZONTAL in
+  let _baseline : Gtk_enums.baselineposition = `CENTER in
 
   check bool "module accessible" true true
 
 (* Test type constructors for orientation and baseline_position *)
 let test_type_constructors () =
   (* Test orientation *)
-  let _horiz : Gtk.orientation = `HORIZONTAL in
-  let _vert : Gtk.orientation = `VERTICAL in
+  let _horiz : Gtk_enums.orientation = `HORIZONTAL in
+  let _vert : Gtk_enums.orientation = `VERTICAL in
 
   (* Test baseline_position *)
-  let _top : Gtk.baseline_position = `TOP in
-  let _center : Gtk.baseline_position = `CENTER in
-  let _bottom : Gtk.baseline_position = `BOTTOM in
+  let _top : Gtk_enums.baselineposition = `TOP in
+  let _center : Gtk_enums.baselineposition = `CENTER in
+  let _bottom : Gtk_enums.baselineposition = `BOTTOM in
 
   check bool "types construct" true true
 
@@ -75,7 +73,8 @@ let test_box_properties () =
   (* Test baseline position *)
   Box.set_baseline_position box `TOP;
   check bool "baseline position set to TOP"
-    (`TOP = Box.get_baseline_position box) true
+    (`TOP = Box.get_baseline_position box)
+    true
 
 (* Test widget packing properties *)
 let test_packing_properties () =
@@ -91,12 +90,10 @@ let test_packing_properties () =
 
   (* Test halign/valign *)
   Widget.set_halign widget `CENTER;
-  check bool "halign set to CENTER"
-    (`CENTER = Widget.get_halign widget) true;
+  check bool "halign set to CENTER" (`CENTER = Widget.get_halign widget) true;
 
   Widget.set_valign widget `FILL;
-  check bool "valign set to FILL"
-    (`FILL = Widget.get_valign widget) true;
+  check bool "valign set to FILL" (`FILL = Widget.get_valign widget) true;
 
   (* Test margins *)
   Widget.set_margin_start widget 10;
@@ -162,25 +159,29 @@ let test_as_widget () =
   check string "converted widget name" "test_box" (Widget.get_name widget)
 
 let () =
-  run "Gtk.Box Tests (Phase 4.1)" [
-    "module", [
-      test_case "module_accessible" `Quick test_module_accessible;
-      test_case "type_constructors" `Quick test_type_constructors;
-    ];
-    "creation", [
-      test_case "box_creation" `Quick (require_gtk test_box_creation);
-    ];
-    "properties", [
-      test_case "box_properties" `Quick (require_gtk test_box_properties);
-      test_case "packing_properties" `Quick (require_gtk test_packing_properties);
-    ];
-    "high_level", [
-      test_case "gbox_wrapper" `Quick (require_gtk test_gbox_wrapper);
-    ];
-    "children", [
-      test_case "child_management" `Quick (require_gtk test_child_management);
-    ];
-    "as_widget", [
-      test_case "as_widget_conversion" `Quick (require_gtk test_as_widget);
-    ];
-  ]
+  run "Gtk.Box Tests (Phase 4.1)"
+    [
+      ( "module",
+        [
+          test_case "module_accessible" `Quick test_module_accessible;
+          test_case "type_constructors" `Quick test_type_constructors;
+        ] );
+      ( "creation",
+        [ test_case "box_creation" `Quick (require_gtk test_box_creation) ] );
+      ( "properties",
+        [
+          test_case "box_properties" `Quick (require_gtk test_box_properties);
+          test_case "packing_properties" `Quick
+            (require_gtk test_packing_properties);
+        ] );
+      ( "high_level",
+        [ test_case "gbox_wrapper" `Quick (require_gtk test_gbox_wrapper) ] );
+      ( "children",
+        [
+          test_case "child_management" `Quick
+            (require_gtk test_child_management);
+        ] );
+      ( "as_widget",
+        [ test_case "as_widget_conversion" `Quick (require_gtk test_as_widget) ]
+      );
+    ]

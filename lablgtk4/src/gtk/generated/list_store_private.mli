@@ -3,3 +3,4 @@
 
 type t = [`list_store_private] Gobject.obj
 
+(* Methods *)

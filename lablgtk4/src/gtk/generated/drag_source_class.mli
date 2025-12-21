@@ -3,3 +3,4 @@
 
 type t = [`drag_source_class] Gobject.obj
 
+(* Methods *)

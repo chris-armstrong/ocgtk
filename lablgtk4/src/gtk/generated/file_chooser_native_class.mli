@@ -3,3 +3,4 @@
 
 type t = [`file_chooser_native_class] Gobject.obj
 
+(* Methods *)

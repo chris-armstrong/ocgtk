@@ -7,34 +7,18 @@ module rec Text_buffer : sig
   (** Create a new TextBuffer *)
   external new_ : Text_tag_table.t option -> t = "ml_gtk_text_buffer_new"
 
-  (* Properties *)
-
-  (** Get property: can-redo *)
-  external get_can_redo : t -> bool = "ml_gtk_text_buffer_get_can_redo"
-
-  (** Get property: can-undo *)
-  external get_can_undo : t -> bool = "ml_gtk_text_buffer_get_can_undo"
-
-  (** Get property: cursor-position *)
-  external get_cursor_position : t -> int = "ml_gtk_text_buffer_get_cursor_position"
-
-  (** Get property: enable-undo *)
-  external get_enable_undo : t -> bool = "ml_gtk_text_buffer_get_enable_undo"
-
-  (** Set property: enable-undo *)
-  external set_enable_undo : t -> bool -> unit = "ml_gtk_text_buffer_set_enable_undo"
-
-  (** Get property: has-selection *)
-  external get_has_selection : t -> bool = "ml_gtk_text_buffer_get_has_selection"
-
-  (** Get property: text *)
-  external get_text : t -> string = "ml_gtk_text_buffer_get_text"
-
-  (** Set property: text *)
-  external set_text : t -> string -> unit = "ml_gtk_text_buffer_set_text"
-
+  (* Methods *)
   (** Undoes the last undoable action on the buffer, if there is one. *)
   external undo : t -> unit = "ml_gtk_text_buffer_undo"
+
+  (** Deletes current contents of @buffer, and inserts @text instead. This is
+  automatically marked as an irreversible action in the undo stack. If you
+  wish to mark this action as part of a larger undo operation, call
+  [method@TextBuffer.delete] and [method@TextBuffer.insert] directly instead.
+
+  If @len is -1, @text must be nul-terminated.
+  @text must be valid UTF-8. *)
+  external set_text : t -> string -> int -> unit = "ml_gtk_text_buffer_set_text"
 
   (** Used to keep track of whether the buffer has been
   modified since the last time it was saved.
@@ -53,6 +37,19 @@ module rec Text_buffer : sig
   have a memory usage impact as it requires storing an additional
   copy of the inserted or removed text within the text buffer. *)
   external set_max_undo_levels : t -> int -> unit = "ml_gtk_text_buffer_set_max_undo_levels"
+
+  (** Sets whether or not to enable undoable actions in the text buffer.
+
+  Undoable actions in this context are changes to the text content of
+  the buffer. Changes to tags and marks are not tracked.
+
+  If enabled, the user will be able to undo the last number of actions
+  up to [method@Gtk.TextBuffer.get_max_undo_levels].
+
+  See [method@Gtk.TextBuffer.begin_irreversible_action] and
+  [method@Gtk.TextBuffer.end_irreversible_action] to create
+  changes to the buffer that cannot be undone. *)
+  external set_enable_undo : t -> bool -> unit = "ml_gtk_text_buffer_set_enable_undo"
 
   (** This function moves the “insert” and “selection_bound” marks
   simultaneously.
@@ -196,6 +193,16 @@ module rec Text_buffer : sig
   inserted text. *)
   external insert : t -> Text_iter.t -> string -> int -> unit = "ml_gtk_text_buffer_insert"
 
+  (** Returns the text in the range [@start,@end).
+
+  Excludes undisplayed text (text marked with tags that set the
+  invisibility attribute) if @include_hidden_chars is %FALSE.
+  Does not include characters representing embedded images, so
+  byte and character indexes into the returned string do not
+  correspond to byte and character indexes into the buffer.
+  Contrast with [method@Gtk.TextBuffer.get_slice]. *)
+  external get_text : t -> Text_iter.t -> Text_iter.t -> bool -> string = "ml_gtk_text_buffer_get_text"
+
   (** Get the `GtkTextTagTable` associated with this buffer. *)
   external get_tag_table : t -> Text_tag_table.t = "ml_gtk_text_buffer_get_tag_table"
 
@@ -204,6 +211,18 @@ module rec Text_buffer : sig
   This is the same as using [method@Gtk.TextBuffer.get_iter_at_offset]
   to get the iter at character offset 0. *)
   external get_start_iter : t -> Text_iter.t = "ml_gtk_text_buffer_get_start_iter"
+
+  (** Returns the text in the range [@start,@end).
+
+  Excludes undisplayed text (text marked with tags that set the
+  invisibility attribute) if @include_hidden_chars is %FALSE.
+  The returned string includes a 0xFFFC character whenever the
+  buffer contains embedded images, so byte and character indexes
+  into the returned string do correspond to byte and character
+  indexes into the buffer. Contrast with [method@Gtk.TextBuffer.get_text].
+  Note that 0xFFFC can occur in normal text as well, so it is not a
+  reliable indicator that a paintable or widget is in the buffer. *)
+  external get_slice : t -> Text_iter.t -> Text_iter.t -> bool -> string = "ml_gtk_text_buffer_get_slice"
 
   (** Returns %TRUE if some text is selected; places the bounds
   of the selection in @start and @end.
@@ -298,6 +317,9 @@ module rec Text_buffer : sig
   efficient, and involves less typing. *)
   external get_insert : t -> Text_mark.t = "ml_gtk_text_buffer_get_insert"
 
+  (** Indicates whether the buffer has some text currently selected. *)
+  external get_has_selection : t -> bool = "ml_gtk_text_buffer_get_has_selection"
+
   (** Initializes @iter with the “end iterator,” one past the last valid
   character in the text buffer.
 
@@ -308,6 +330,14 @@ module rec Text_buffer : sig
   character position 0) to the end iterator. *)
   external get_end_iter : t -> Text_iter.t = "ml_gtk_text_buffer_get_end_iter"
 
+  (** Gets whether the buffer is saving modifications to the buffer
+  to allow for undo and redo actions.
+
+  See [method@Gtk.TextBuffer.begin_irreversible_action] and
+  [method@Gtk.TextBuffer.end_irreversible_action] to create
+  changes to the buffer that cannot be undone. *)
+  external get_enable_undo : t -> bool = "ml_gtk_text_buffer_get_enable_undo"
+
   (** Gets the number of characters in the buffer.
 
   Note that characters and bytes are not the same, you can’t e.g.
@@ -316,6 +346,12 @@ module rec Text_buffer : sig
 
   The character count is cached, so this function is very fast. *)
   external get_char_count : t -> int = "ml_gtk_text_buffer_get_char_count"
+
+  (** Gets whether there is an undoable action in the history. *)
+  external get_can_undo : t -> bool = "ml_gtk_text_buffer_get_can_undo"
+
+  (** Gets whether there is a redoable action in the history. *)
+  external get_can_redo : t -> bool = "ml_gtk_text_buffer_get_can_redo"
 
   (** Retrieves the first and last iterators in the buffer, i.e. the
   entire buffer lies within the range [@start,@end). *)
@@ -487,6 +523,11 @@ module rec Text_buffer : sig
   Emits the [signal@Gtk.TextBuffer::mark-set] signal as notification
   of the mark's initial placement. *)
   external add_mark : t -> Text_mark.t -> Text_iter.t -> unit = "ml_gtk_text_buffer_add_mark"
+
+  (* Properties *)
+
+  (** Get property: cursor-position *)
+  external get_cursor_position : t -> int = "ml_gtk_text_buffer_get_cursor_position"
 
 
 end = struct
@@ -495,34 +536,18 @@ end = struct
   (** Create a new TextBuffer *)
   external new_ : Text_tag_table.t option -> t = "ml_gtk_text_buffer_new"
 
-  (* Properties *)
-
-  (** Get property: can-redo *)
-  external get_can_redo : t -> bool = "ml_gtk_text_buffer_get_can_redo"
-
-  (** Get property: can-undo *)
-  external get_can_undo : t -> bool = "ml_gtk_text_buffer_get_can_undo"
-
-  (** Get property: cursor-position *)
-  external get_cursor_position : t -> int = "ml_gtk_text_buffer_get_cursor_position"
-
-  (** Get property: enable-undo *)
-  external get_enable_undo : t -> bool = "ml_gtk_text_buffer_get_enable_undo"
-
-  (** Set property: enable-undo *)
-  external set_enable_undo : t -> bool -> unit = "ml_gtk_text_buffer_set_enable_undo"
-
-  (** Get property: has-selection *)
-  external get_has_selection : t -> bool = "ml_gtk_text_buffer_get_has_selection"
-
-  (** Get property: text *)
-  external get_text : t -> string = "ml_gtk_text_buffer_get_text"
-
-  (** Set property: text *)
-  external set_text : t -> string -> unit = "ml_gtk_text_buffer_set_text"
-
+  (* Methods *)
   (** Undoes the last undoable action on the buffer, if there is one. *)
   external undo : t -> unit = "ml_gtk_text_buffer_undo"
+
+  (** Deletes current contents of @buffer, and inserts @text instead. This is
+  automatically marked as an irreversible action in the undo stack. If you
+  wish to mark this action as part of a larger undo operation, call
+  [method@TextBuffer.delete] and [method@TextBuffer.insert] directly instead.
+
+  If @len is -1, @text must be nul-terminated.
+  @text must be valid UTF-8. *)
+  external set_text : t -> string -> int -> unit = "ml_gtk_text_buffer_set_text"
 
   (** Used to keep track of whether the buffer has been
   modified since the last time it was saved.
@@ -541,6 +566,19 @@ end = struct
   have a memory usage impact as it requires storing an additional
   copy of the inserted or removed text within the text buffer. *)
   external set_max_undo_levels : t -> int -> unit = "ml_gtk_text_buffer_set_max_undo_levels"
+
+  (** Sets whether or not to enable undoable actions in the text buffer.
+
+  Undoable actions in this context are changes to the text content of
+  the buffer. Changes to tags and marks are not tracked.
+
+  If enabled, the user will be able to undo the last number of actions
+  up to [method@Gtk.TextBuffer.get_max_undo_levels].
+
+  See [method@Gtk.TextBuffer.begin_irreversible_action] and
+  [method@Gtk.TextBuffer.end_irreversible_action] to create
+  changes to the buffer that cannot be undone. *)
+  external set_enable_undo : t -> bool -> unit = "ml_gtk_text_buffer_set_enable_undo"
 
   (** This function moves the “insert” and “selection_bound” marks
   simultaneously.
@@ -684,6 +722,16 @@ end = struct
   inserted text. *)
   external insert : t -> Text_iter.t -> string -> int -> unit = "ml_gtk_text_buffer_insert"
 
+  (** Returns the text in the range [@start,@end).
+
+  Excludes undisplayed text (text marked with tags that set the
+  invisibility attribute) if @include_hidden_chars is %FALSE.
+  Does not include characters representing embedded images, so
+  byte and character indexes into the returned string do not
+  correspond to byte and character indexes into the buffer.
+  Contrast with [method@Gtk.TextBuffer.get_slice]. *)
+  external get_text : t -> Text_iter.t -> Text_iter.t -> bool -> string = "ml_gtk_text_buffer_get_text"
+
   (** Get the `GtkTextTagTable` associated with this buffer. *)
   external get_tag_table : t -> Text_tag_table.t = "ml_gtk_text_buffer_get_tag_table"
 
@@ -692,6 +740,18 @@ end = struct
   This is the same as using [method@Gtk.TextBuffer.get_iter_at_offset]
   to get the iter at character offset 0. *)
   external get_start_iter : t -> Text_iter.t = "ml_gtk_text_buffer_get_start_iter"
+
+  (** Returns the text in the range [@start,@end).
+
+  Excludes undisplayed text (text marked with tags that set the
+  invisibility attribute) if @include_hidden_chars is %FALSE.
+  The returned string includes a 0xFFFC character whenever the
+  buffer contains embedded images, so byte and character indexes
+  into the returned string do correspond to byte and character
+  indexes into the buffer. Contrast with [method@Gtk.TextBuffer.get_text].
+  Note that 0xFFFC can occur in normal text as well, so it is not a
+  reliable indicator that a paintable or widget is in the buffer. *)
+  external get_slice : t -> Text_iter.t -> Text_iter.t -> bool -> string = "ml_gtk_text_buffer_get_slice"
 
   (** Returns %TRUE if some text is selected; places the bounds
   of the selection in @start and @end.
@@ -786,6 +846,9 @@ end = struct
   efficient, and involves less typing. *)
   external get_insert : t -> Text_mark.t = "ml_gtk_text_buffer_get_insert"
 
+  (** Indicates whether the buffer has some text currently selected. *)
+  external get_has_selection : t -> bool = "ml_gtk_text_buffer_get_has_selection"
+
   (** Initializes @iter with the “end iterator,” one past the last valid
   character in the text buffer.
 
@@ -796,6 +859,14 @@ end = struct
   character position 0) to the end iterator. *)
   external get_end_iter : t -> Text_iter.t = "ml_gtk_text_buffer_get_end_iter"
 
+  (** Gets whether the buffer is saving modifications to the buffer
+  to allow for undo and redo actions.
+
+  See [method@Gtk.TextBuffer.begin_irreversible_action] and
+  [method@Gtk.TextBuffer.end_irreversible_action] to create
+  changes to the buffer that cannot be undone. *)
+  external get_enable_undo : t -> bool = "ml_gtk_text_buffer_get_enable_undo"
+
   (** Gets the number of characters in the buffer.
 
   Note that characters and bytes are not the same, you can’t e.g.
@@ -804,6 +875,12 @@ end = struct
 
   The character count is cached, so this function is very fast. *)
   external get_char_count : t -> int = "ml_gtk_text_buffer_get_char_count"
+
+  (** Gets whether there is an undoable action in the history. *)
+  external get_can_undo : t -> bool = "ml_gtk_text_buffer_get_can_undo"
+
+  (** Gets whether there is a redoable action in the history. *)
+  external get_can_redo : t -> bool = "ml_gtk_text_buffer_get_can_redo"
 
   (** Retrieves the first and last iterators in the buffer, i.e. the
   entire buffer lies within the range [@start,@end). *)
@@ -976,6 +1053,11 @@ end = struct
   of the mark's initial placement. *)
   external add_mark : t -> Text_mark.t -> Text_iter.t -> unit = "ml_gtk_text_buffer_add_mark"
 
+  (* Properties *)
+
+  (** Get property: cursor-position *)
+  external get_cursor_position : t -> int = "ml_gtk_text_buffer_get_cursor_position"
+
 
 end
 
@@ -983,6 +1065,7 @@ and Text_iter
  : sig
   type t = [`text_iter] Gobject.obj
 
+  (* Methods *)
   (** Gets whether a range with @tag applied to it begins
   or ends at @iter.
 
@@ -1118,6 +1201,22 @@ and Text_iter
   [method@Gtk.TextIter.ends_tag]. *)
   external has_tag : t -> Text_tag.t -> bool = "ml_gtk_text_iter_has_tag"
 
+  (** Returns visible text in the given range.
+
+  Like [method@Gtk.TextIter.get_text], but invisible text
+  is not included. Invisible text is usually invisible because
+  a `GtkTextTag` with the “invisible” attribute turned on has
+  been applied to it. *)
+  external get_visible_text : t -> t -> string = "ml_gtk_text_iter_get_visible_text"
+
+  (** Returns visible text in the given range.
+
+  Like [method@Gtk.TextIter.get_slice], but invisible text
+  is not included. Invisible text is usually invisible because
+  a `GtkTextTag` with the “invisible” attribute turned on has
+  been applied to it. *)
+  external get_visible_slice : t -> t -> string = "ml_gtk_text_iter_get_visible_slice"
+
   (** Returns the offset in characters from the start of the
   line to the given @iter, not counting characters that
   are invisible due to tags with the “invisible” flag
@@ -1129,6 +1228,27 @@ and Text_iter
   are invisible due to tags with the “invisible” flag
   toggled on. *)
   external get_visible_line_index : t -> int = "ml_gtk_text_iter_get_visible_line_index"
+
+  (** Returns text in the given range.
+
+  If the range
+  contains non-text elements such as images, the character and byte
+  offsets in the returned string will not correspond to character and
+  byte offsets in the buffer. If you want offsets to correspond, see
+  [method@Gtk.TextIter.get_slice]. *)
+  external get_text : t -> t -> string = "ml_gtk_text_iter_get_text"
+
+  (** Returns the text in the given range.
+
+  A “slice” is an array of characters encoded in UTF-8 format,
+  including the Unicode “unknown” character 0xFFFC for iterable
+  non-character elements in the buffer, such as images.
+  Because images are encoded in the slice, byte and
+  character offsets in the returned array will correspond to byte
+  offsets in the text buffer. Note that 0xFFFC can occur in normal
+  text as well, so it is not a reliable indicator that a paintable or
+  widget is in the buffer. *)
+  external get_slice : t -> t -> string = "ml_gtk_text_iter_get_slice"
 
   (** Returns the character offset of an iterator.
 
@@ -1280,18 +1400,6 @@ and Text_iter
   Sentence boundaries are determined by Pango and should
   be correct for nearly any language. *)
   external forward_sentence_end : t -> bool = "ml_gtk_text_iter_forward_sentence_end"
-
-  (** Searches forward for @str.
-
-  Any match is returned by setting @match_start to the first character
-  of the match and @match_end to the first character after the match.
-  The search will not continue past @limit. Note that a search is a
-  linear or O(n) operation, so you may wish to use @limit to avoid
-  locking up your UI on large buffers.
-
-  @match_start will never be set to a `GtkTextIter` located before @iter,
-  even if there is a possible @match_end after or at @iter. *)
-  external forward_search : t -> string -> Gtk_enums.textsearchflags -> t option -> bool * t * t = "ml_gtk_text_iter_forward_search_bytecode" "ml_gtk_text_iter_forward_search_native"
 
   (** Moves @count lines forward, if possible.
 
@@ -1523,12 +1631,6 @@ and Text_iter
   Sentence boundaries are determined by Pango and should
   be correct for nearly any language. *)
   external backward_sentence_start : t -> bool = "ml_gtk_text_iter_backward_sentence_start"
-
-  (** Same as [method@Gtk.TextIter.forward_search], but moves backward.
-
-  @match_end will never be set to a `GtkTextIter` located after @iter,
-  even if there is a possible @match_start before or at @iter. *)
-  external backward_search : t -> string -> Gtk_enums.textsearchflags -> t option -> bool * t * t = "ml_gtk_text_iter_backward_search_bytecode" "ml_gtk_text_iter_backward_search_native"
 
   (** Moves @count lines backward, if possible.
 
@@ -1591,6 +1693,7 @@ and Text_iter
 end = struct
   type t = [`text_iter] Gobject.obj
 
+  (* Methods *)
   (** Gets whether a range with @tag applied to it begins
   or ends at @iter.
 
@@ -1726,6 +1829,22 @@ end = struct
   [method@Gtk.TextIter.ends_tag]. *)
   external has_tag : t -> Text_tag.t -> bool = "ml_gtk_text_iter_has_tag"
 
+  (** Returns visible text in the given range.
+
+  Like [method@Gtk.TextIter.get_text], but invisible text
+  is not included. Invisible text is usually invisible because
+  a `GtkTextTag` with the “invisible” attribute turned on has
+  been applied to it. *)
+  external get_visible_text : t -> t -> string = "ml_gtk_text_iter_get_visible_text"
+
+  (** Returns visible text in the given range.
+
+  Like [method@Gtk.TextIter.get_slice], but invisible text
+  is not included. Invisible text is usually invisible because
+  a `GtkTextTag` with the “invisible” attribute turned on has
+  been applied to it. *)
+  external get_visible_slice : t -> t -> string = "ml_gtk_text_iter_get_visible_slice"
+
   (** Returns the offset in characters from the start of the
   line to the given @iter, not counting characters that
   are invisible due to tags with the “invisible” flag
@@ -1737,6 +1856,27 @@ end = struct
   are invisible due to tags with the “invisible” flag
   toggled on. *)
   external get_visible_line_index : t -> int = "ml_gtk_text_iter_get_visible_line_index"
+
+  (** Returns text in the given range.
+
+  If the range
+  contains non-text elements such as images, the character and byte
+  offsets in the returned string will not correspond to character and
+  byte offsets in the buffer. If you want offsets to correspond, see
+  [method@Gtk.TextIter.get_slice]. *)
+  external get_text : t -> t -> string = "ml_gtk_text_iter_get_text"
+
+  (** Returns the text in the given range.
+
+  A “slice” is an array of characters encoded in UTF-8 format,
+  including the Unicode “unknown” character 0xFFFC for iterable
+  non-character elements in the buffer, such as images.
+  Because images are encoded in the slice, byte and
+  character offsets in the returned array will correspond to byte
+  offsets in the text buffer. Note that 0xFFFC can occur in normal
+  text as well, so it is not a reliable indicator that a paintable or
+  widget is in the buffer. *)
+  external get_slice : t -> t -> string = "ml_gtk_text_iter_get_slice"
 
   (** Returns the character offset of an iterator.
 
@@ -1888,18 +2028,6 @@ end = struct
   Sentence boundaries are determined by Pango and should
   be correct for nearly any language. *)
   external forward_sentence_end : t -> bool = "ml_gtk_text_iter_forward_sentence_end"
-
-  (** Searches forward for @str.
-
-  Any match is returned by setting @match_start to the first character
-  of the match and @match_end to the first character after the match.
-  The search will not continue past @limit. Note that a search is a
-  linear or O(n) operation, so you may wish to use @limit to avoid
-  locking up your UI on large buffers.
-
-  @match_start will never be set to a `GtkTextIter` located before @iter,
-  even if there is a possible @match_end after or at @iter. *)
-  external forward_search : t -> string -> Gtk_enums.textsearchflags -> t option -> bool * t * t = "ml_gtk_text_iter_forward_search_bytecode" "ml_gtk_text_iter_forward_search_native"
 
   (** Moves @count lines forward, if possible.
 
@@ -2131,12 +2259,6 @@ end = struct
   Sentence boundaries are determined by Pango and should
   be correct for nearly any language. *)
   external backward_sentence_start : t -> bool = "ml_gtk_text_iter_backward_sentence_start"
-
-  (** Same as [method@Gtk.TextIter.forward_search], but moves backward.
-
-  @match_end will never be set to a `GtkTextIter` located after @iter,
-  even if there is a possible @match_start before or at @iter. *)
-  external backward_search : t -> string -> Gtk_enums.textsearchflags -> t option -> bool * t * t = "ml_gtk_text_iter_backward_search_bytecode" "ml_gtk_text_iter_backward_search_native"
 
   (** Moves @count lines backward, if possible.
 
@@ -2205,20 +2327,21 @@ and Text_mark
   (** Create a new TextMark *)
   external new_ : string option -> bool -> t = "ml_gtk_text_mark_new"
 
-  (* Properties *)
-
-  (** Get property: left-gravity *)
-  external get_left_gravity : t -> bool = "ml_gtk_text_mark_get_left_gravity"
-
-  (** Get property: name *)
-  external get_name : t -> string = "ml_gtk_text_mark_get_name"
-
+  (* Methods *)
   external set_visible : t -> bool -> unit = "ml_gtk_text_mark_set_visible"
 
   (** Returns %TRUE if the mark is visible.
 
   A cursor is displayed for visible marks. *)
   external get_visible : t -> bool = "ml_gtk_text_mark_get_visible"
+
+  (** Returns the mark name.
+
+  Returns %NULL for anonymous marks. *)
+  external get_name : t -> string option = "ml_gtk_text_mark_get_name"
+
+  (** Determines whether the mark has left gravity. *)
+  external get_left_gravity : t -> bool = "ml_gtk_text_mark_get_left_gravity"
 
   (** Returns %TRUE if the mark has been removed from its buffer.
 
@@ -2230,6 +2353,8 @@ and Text_mark
 
   Returns %NULL if the mark is deleted. *)
   external get_buffer : t -> Text_buffer.t option = "ml_gtk_text_mark_get_buffer"
+
+  (* Properties *)
 
 
 end = struct
@@ -2238,20 +2363,21 @@ end = struct
   (** Create a new TextMark *)
   external new_ : string option -> bool -> t = "ml_gtk_text_mark_new"
 
-  (* Properties *)
-
-  (** Get property: left-gravity *)
-  external get_left_gravity : t -> bool = "ml_gtk_text_mark_get_left_gravity"
-
-  (** Get property: name *)
-  external get_name : t -> string = "ml_gtk_text_mark_get_name"
-
+  (* Methods *)
   external set_visible : t -> bool -> unit = "ml_gtk_text_mark_set_visible"
 
   (** Returns %TRUE if the mark is visible.
 
   A cursor is displayed for visible marks. *)
   external get_visible : t -> bool = "ml_gtk_text_mark_get_visible"
+
+  (** Returns the mark name.
+
+  Returns %NULL for anonymous marks. *)
+  external get_name : t -> string option = "ml_gtk_text_mark_get_name"
+
+  (** Determines whether the mark has left gravity. *)
+  external get_left_gravity : t -> bool = "ml_gtk_text_mark_get_left_gravity"
 
   (** Returns %TRUE if the mark has been removed from its buffer.
 
@@ -2263,6 +2389,8 @@ end = struct
 
   Returns %NULL if the mark is deleted. *)
   external get_buffer : t -> Text_buffer.t option = "ml_gtk_text_mark_get_buffer"
+
+  (* Properties *)
 
 
 end

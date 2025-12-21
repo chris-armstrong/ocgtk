@@ -6,3 +6,4 @@
 See also [method@Gtk.PrintSettings.set_page_ranges]. *)
 type t = [`page_range] Gobject.obj
 
+(* Methods *)

@@ -8,3 +8,4 @@ val as_layoutmanager : t -> Event_controller_and__layout_child_and__layout_manag
 (** Create a new BinLayout *)
 external new_ : unit -> t = "ml_gtk_bin_layout_new"
 
+(* Methods *)

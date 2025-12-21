@@ -6,8 +6,7 @@ type t = [`size_group | `object_] Gobject.obj
 (** Create a new SizeGroup *)
 external new_ : Gtk_enums.sizegroupmode -> t = "ml_gtk_size_group_new"
 
-(* Properties *)
-
+(* Methods *)
 (** Sets the `GtkSizeGroupMode` of the size group.
 
 The mode of the size group determines whether the widgets in the
@@ -35,4 +34,6 @@ See [method@Gtk.SizeGroup.set_mode].
 When the widget is destroyed or no longer referenced elsewhere, it
 will be removed from the size group. *)
 external add_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_size_group_add_widget"
+
+(* Properties *)
 

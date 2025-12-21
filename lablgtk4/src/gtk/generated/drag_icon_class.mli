@@ -3,3 +3,4 @@
 
 type t = [`drag_icon_class] Gobject.obj
 
+(* Methods *)

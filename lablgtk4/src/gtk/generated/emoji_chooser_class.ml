@@ -3,3 +3,4 @@
 
 type t = [`emoji_chooser_class] Gobject.obj
 
+(* Methods *)

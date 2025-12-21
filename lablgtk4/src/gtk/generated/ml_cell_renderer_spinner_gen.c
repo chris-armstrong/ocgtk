@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -34,7 +35,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_spinner_get_active(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRendererSpinner *obj = (GtkCellRendererSpinner *)GtkCellRendererSpinner_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "active");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_spinner_get_active: property 'active' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -51,7 +52,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_spinner_set_active(value self, va
 {
 CAMLparam2(self, new_value);
 GtkCellRendererSpinner *obj = (GtkCellRendererSpinner *)GtkCellRendererSpinner_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "active");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_spinner_set_active: property 'active' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -91,6 +92,39 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
     g_value_set_uint(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "pulse", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_spinner_get_size(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GtkCellRendererSpinner *obj = (GtkCellRendererSpinner *)GtkCellRendererSpinner_val(self);
+    GtkIconSize prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "size");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_spinner_get_size: property 'size' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "size", &prop_gvalue);
+    prop_value = (GtkIconSize)g_value_get_enum(&prop_gvalue);
+
+result = Val_GtkIconSize(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_spinner_set_size(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GtkCellRendererSpinner *obj = (GtkCellRendererSpinner *)GtkCellRendererSpinner_val(self);
+    GtkIconSize c_value = GtkIconSize_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "size");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_spinner_set_size: property 'size' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "size", &prop_gvalue);
 g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }

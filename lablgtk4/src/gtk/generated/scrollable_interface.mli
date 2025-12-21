@@ -3,3 +3,4 @@
 
 type t = [`scrollable_interface] Gobject.obj
 
+(* Methods *)

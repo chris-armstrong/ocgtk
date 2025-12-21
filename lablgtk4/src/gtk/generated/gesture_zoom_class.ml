@@ -3,3 +3,4 @@
 
 type t = [`gesture_zoom_class] Gobject.obj
 
+(* Methods *)

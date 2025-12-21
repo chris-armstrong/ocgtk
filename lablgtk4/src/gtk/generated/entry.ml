@@ -11,169 +11,61 @@ external new_ : unit -> t = "ml_gtk_entry_new"
 (** Create a new Entry *)
 external new_with_buffer : Entry_buffer.t -> t = "ml_gtk_entry_new_with_buffer"
 
-(* Properties *)
-
-(** Get property: activates-default *)
-external get_activates_default : t -> bool = "ml_gtk_entry_get_activates_default"
-
-(** Set property: activates-default *)
-external set_activates_default : t -> bool -> unit = "ml_gtk_entry_set_activates_default"
-
-(** Get property: enable-emoji-completion *)
-external get_enable_emoji_completion : t -> bool = "ml_gtk_entry_get_enable_emoji_completion"
-
-(** Set property: enable-emoji-completion *)
-external set_enable_emoji_completion : t -> bool -> unit = "ml_gtk_entry_set_enable_emoji_completion"
-
-(** Get property: has-frame *)
-external get_has_frame : t -> bool = "ml_gtk_entry_get_has_frame"
-
-(** Set property: has-frame *)
-external set_has_frame : t -> bool -> unit = "ml_gtk_entry_set_has_frame"
-
-(** Get property: im-module *)
-external get_im_module : t -> string = "ml_gtk_entry_get_im_module"
-
-(** Set property: im-module *)
-external set_im_module : t -> string -> unit = "ml_gtk_entry_set_im_module"
-
-(** Get property: invisible-char *)
-external get_invisible_char : t -> int = "ml_gtk_entry_get_invisible_char"
-
-(** Set property: invisible-char *)
-external set_invisible_char : t -> int -> unit = "ml_gtk_entry_set_invisible_char"
-
-(** Get property: invisible-char-set *)
-external get_invisible_char_set : t -> bool = "ml_gtk_entry_get_invisible_char_set"
-
-(** Set property: invisible-char-set *)
-external set_invisible_char_set : t -> bool -> unit = "ml_gtk_entry_set_invisible_char_set"
-
-(** Get property: max-length *)
-external get_max_length : t -> int = "ml_gtk_entry_get_max_length"
-
-(** Set property: max-length *)
-external set_max_length : t -> int -> unit = "ml_gtk_entry_set_max_length"
-
-(** Get property: overwrite-mode *)
-external get_overwrite_mode : t -> bool = "ml_gtk_entry_get_overwrite_mode"
-
-(** Set property: overwrite-mode *)
-external set_overwrite_mode : t -> bool -> unit = "ml_gtk_entry_set_overwrite_mode"
-
-(** Get property: placeholder-text *)
-external get_placeholder_text : t -> string = "ml_gtk_entry_get_placeholder_text"
-
-(** Set property: placeholder-text *)
-external set_placeholder_text : t -> string -> unit = "ml_gtk_entry_set_placeholder_text"
-
-(** Get property: primary-icon-activatable *)
-external get_primary_icon_activatable : t -> bool = "ml_gtk_entry_get_primary_icon_activatable"
-
-(** Set property: primary-icon-activatable *)
-external set_primary_icon_activatable : t -> bool -> unit = "ml_gtk_entry_set_primary_icon_activatable"
-
-(** Get property: primary-icon-name *)
-external get_primary_icon_name : t -> string = "ml_gtk_entry_get_primary_icon_name"
-
-(** Set property: primary-icon-name *)
-external set_primary_icon_name : t -> string -> unit = "ml_gtk_entry_set_primary_icon_name"
-
-(** Get property: primary-icon-sensitive *)
-external get_primary_icon_sensitive : t -> bool = "ml_gtk_entry_get_primary_icon_sensitive"
-
-(** Set property: primary-icon-sensitive *)
-external set_primary_icon_sensitive : t -> bool -> unit = "ml_gtk_entry_set_primary_icon_sensitive"
-
-(** Get property: primary-icon-tooltip-markup *)
-external get_primary_icon_tooltip_markup : t -> string = "ml_gtk_entry_get_primary_icon_tooltip_markup"
-
-(** Set property: primary-icon-tooltip-markup *)
-external set_primary_icon_tooltip_markup : t -> string -> unit = "ml_gtk_entry_set_primary_icon_tooltip_markup"
-
-(** Get property: primary-icon-tooltip-text *)
-external get_primary_icon_tooltip_text : t -> string = "ml_gtk_entry_get_primary_icon_tooltip_text"
-
-(** Set property: primary-icon-tooltip-text *)
-external set_primary_icon_tooltip_text : t -> string -> unit = "ml_gtk_entry_set_primary_icon_tooltip_text"
-
-(** Get property: progress-fraction *)
-external get_progress_fraction : t -> float = "ml_gtk_entry_get_progress_fraction"
-
-(** Set property: progress-fraction *)
-external set_progress_fraction : t -> float -> unit = "ml_gtk_entry_set_progress_fraction"
-
-(** Get property: progress-pulse-step *)
-external get_progress_pulse_step : t -> float = "ml_gtk_entry_get_progress_pulse_step"
-
-(** Set property: progress-pulse-step *)
-external set_progress_pulse_step : t -> float -> unit = "ml_gtk_entry_set_progress_pulse_step"
-
-(** Get property: scroll-offset *)
-external get_scroll_offset : t -> int = "ml_gtk_entry_get_scroll_offset"
-
-(** Get property: secondary-icon-activatable *)
-external get_secondary_icon_activatable : t -> bool = "ml_gtk_entry_get_secondary_icon_activatable"
-
-(** Set property: secondary-icon-activatable *)
-external set_secondary_icon_activatable : t -> bool -> unit = "ml_gtk_entry_set_secondary_icon_activatable"
-
-(** Get property: secondary-icon-name *)
-external get_secondary_icon_name : t -> string = "ml_gtk_entry_get_secondary_icon_name"
-
-(** Set property: secondary-icon-name *)
-external set_secondary_icon_name : t -> string -> unit = "ml_gtk_entry_set_secondary_icon_name"
-
-(** Get property: secondary-icon-sensitive *)
-external get_secondary_icon_sensitive : t -> bool = "ml_gtk_entry_get_secondary_icon_sensitive"
-
-(** Set property: secondary-icon-sensitive *)
-external set_secondary_icon_sensitive : t -> bool -> unit = "ml_gtk_entry_set_secondary_icon_sensitive"
-
-(** Get property: secondary-icon-tooltip-markup *)
-external get_secondary_icon_tooltip_markup : t -> string = "ml_gtk_entry_get_secondary_icon_tooltip_markup"
-
-(** Set property: secondary-icon-tooltip-markup *)
-external set_secondary_icon_tooltip_markup : t -> string -> unit = "ml_gtk_entry_set_secondary_icon_tooltip_markup"
-
-(** Get property: secondary-icon-tooltip-text *)
-external get_secondary_icon_tooltip_text : t -> string = "ml_gtk_entry_get_secondary_icon_tooltip_text"
-
-(** Set property: secondary-icon-tooltip-text *)
-external set_secondary_icon_tooltip_text : t -> string -> unit = "ml_gtk_entry_set_secondary_icon_tooltip_text"
-
-(** Get property: show-emoji-icon *)
-external get_show_emoji_icon : t -> bool = "ml_gtk_entry_get_show_emoji_icon"
-
-(** Set property: show-emoji-icon *)
-external set_show_emoji_icon : t -> bool -> unit = "ml_gtk_entry_set_show_emoji_icon"
-
-(** Get property: text-length *)
-external get_text_length : t -> int = "ml_gtk_entry_get_text_length"
-
-(** Get property: truncate-multiline *)
-external get_truncate_multiline : t -> bool = "ml_gtk_entry_get_truncate_multiline"
-
-(** Set property: truncate-multiline *)
-external set_truncate_multiline : t -> bool -> unit = "ml_gtk_entry_set_truncate_multiline"
-
-(** Get property: visibility *)
-external get_visibility : t -> bool = "ml_gtk_entry_get_visibility"
-
-(** Set property: visibility *)
-external set_visibility : t -> bool -> unit = "ml_gtk_entry_set_visibility"
-
+(* Methods *)
 (** Unsets the invisible char, so that the default invisible char
 is used again. See [method@Gtk.Entry.set_invisible_char]. *)
 external unset_invisible_char : t -> unit = "ml_gtk_entry_unset_invisible_char"
 
+(** Sets whether the contents of the entry are visible or not.
+
+When visibility is set to %FALSE, characters are displayed
+as the invisible char, and will also appear that way when
+the text in the entry widget is copied elsewhere.
+
+By default, GTK picks the best invisible character available
+in the current font, but it can be changed with
+[method@Gtk.Entry.set_invisible_char].
+
+Note that you probably want to set [property@Gtk.Entry:input-purpose]
+to %GTK_INPUT_PURPOSE_PASSWORD or %GTK_INPUT_PURPOSE_PIN to
+inform input methods about the purpose of this entry,
+in addition to setting visibility to %FALSE. *)
+external set_visibility : t -> bool -> unit = "ml_gtk_entry_set_visibility"
+
+(** Sets the fraction of total entry width to move the progress
+bouncing block for each pulse.
+
+Use [method@Gtk.Entry.progress_pulse] to pulse
+the progress. *)
+external set_progress_pulse_step : t -> float -> unit = "ml_gtk_entry_set_progress_pulse_step"
+
+(** Causes the entry’s progress indicator to “fill in” the given
+fraction of the bar.
+
+The fraction should be between 0.0 and 1.0, inclusive. *)
+external set_progress_fraction : t -> float -> unit = "ml_gtk_entry_set_progress_fraction"
+
+(** Sets text to be displayed in @entry when it is empty.
+
+This can be used to give a visual hint of the expected
+contents of the `GtkEntry`. *)
+external set_placeholder_text : t -> string option -> unit = "ml_gtk_entry_set_placeholder_text"
+
+(** Sets whether the text is overwritten when typing in the `GtkEntry`. *)
+external set_overwrite_mode : t -> bool -> unit = "ml_gtk_entry_set_overwrite_mode"
+
+(** Sets the maximum allowed length of the contents of the widget.
+
+If the current contents are longer than the given length, then
+they will be truncated to fit. The length is in characters.
+
+This is equivalent to getting @entry's `GtkEntryBuffer` and
+calling [method@Gtk.EntryBuffer.set_max_length] on it. *)
+external set_max_length : t -> int -> unit = "ml_gtk_entry_set_max_length"
+
 (** Sets the input purpose which can be used by input methods
 to adjust their behavior. *)
 external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit = "ml_gtk_entry_set_input_purpose"
-
-(** Set additional hints which allow input methods to
-fine-tune their behavior. *)
-external set_input_hints : t -> Gtk_enums.inputhints -> unit = "ml_gtk_entry_set_input_hints"
 
 (** Sets @tooltip as the contents of the tooltip for the icon
 at the specified position.
@@ -221,6 +113,9 @@ external set_icon_from_icon_name : t -> Gtk_enums.entryiconposition -> string op
 (** Sets whether the icon is activatable. *)
 external set_icon_activatable : t -> Gtk_enums.entryiconposition -> bool -> unit = "ml_gtk_entry_set_icon_activatable"
 
+(** Sets whether the entry has a beveled frame around it. *)
+external set_has_frame : t -> bool -> unit = "ml_gtk_entry_set_has_frame"
+
 (** Sets @completion to be the auxiliary completion object
 to use with @entry.
 
@@ -240,6 +135,13 @@ the displayed text is shorter than the width of the entry.
 
 See also: [property@Gtk.Editable:xalign] *)
 external set_alignment : t -> float -> unit = "ml_gtk_entry_set_alignment"
+
+(** Sets whether pressing Enter in the @entry will activate the default
+widget for the window containing the entry.
+
+This usually means that the dialog containing the entry will be closed,
+since the default widget is usually one of the dialog buttons. *)
+external set_activates_default : t -> bool -> unit = "ml_gtk_entry_set_activates_default"
 
 (** Reset the input method context of the entry if needed.
 
@@ -265,11 +167,42 @@ special entries which the user usually doesn't want to replace all text
 in, such as search-as-you-type entries. *)
 external grab_focus_without_selecting : t -> bool = "ml_gtk_entry_grab_focus_without_selecting"
 
+(** Retrieves whether the text in @entry is visible.
+
+See [method@Gtk.Entry.set_visibility]. *)
+external get_visibility : t -> bool = "ml_gtk_entry_get_visibility"
+
+(** Retrieves the pulse step set with
+gtk_entry_set_progress_pulse_step(). *)
+external get_progress_pulse_step : t -> float = "ml_gtk_entry_get_progress_pulse_step"
+
+(** Returns the current fraction of the task that’s been completed.
+
+See [method@Gtk.Entry.set_progress_fraction]. *)
+external get_progress_fraction : t -> float = "ml_gtk_entry_get_progress_fraction"
+
+(** Retrieves the text that will be displayed when @entry
+is empty and unfocused *)
+external get_placeholder_text : t -> string option = "ml_gtk_entry_get_placeholder_text"
+
+(** Gets whether the `GtkEntry` is in overwrite mode. *)
+external get_overwrite_mode : t -> bool = "ml_gtk_entry_get_overwrite_mode"
+
+(** Retrieves the maximum allowed length of the text in @entry.
+
+See [method@Gtk.Entry.set_max_length]. *)
+external get_max_length : t -> int = "ml_gtk_entry_get_max_length"
+
 (** Gets the input purpose of the `GtkEntry`. *)
 external get_input_purpose : t -> Gtk_enums.inputpurpose = "ml_gtk_entry_get_input_purpose"
 
-(** Gets the input hints of this `GtkEntry`. *)
-external get_input_hints : t -> Gtk_enums.inputhints = "ml_gtk_entry_get_input_hints"
+(** Gets the contents of the tooltip on the icon at the specified
+position in @entry. *)
+external get_icon_tooltip_text : t -> Gtk_enums.entryiconposition -> string option = "ml_gtk_entry_get_icon_tooltip_text"
+
+(** Gets the contents of the tooltip on the icon at the specified
+position in @entry. *)
+external get_icon_tooltip_markup : t -> Gtk_enums.entryiconposition -> string option = "ml_gtk_entry_get_icon_tooltip_markup"
 
 (** Gets the type of representation being used by the icon
 to store image data.
@@ -298,6 +231,9 @@ external get_icon_at_pos : t -> int -> int -> int = "ml_gtk_entry_get_icon_at_po
 (** Returns whether the icon is activatable. *)
 external get_icon_activatable : t -> Gtk_enums.entryiconposition -> bool = "ml_gtk_entry_get_icon_activatable"
 
+(** Gets the value set by gtk_entry_set_has_frame(). *)
+external get_has_frame : t -> bool = "ml_gtk_entry_get_has_frame"
+
 (** Returns the index of the icon which is the source of the
 current  DND operation, or -1. *)
 external get_current_icon_drag_source : t -> int = "ml_gtk_entry_get_current_icon_drag_source"
@@ -314,4 +250,108 @@ external get_buffer : t -> Entry_buffer.t = "ml_gtk_entry_get_buffer"
 
 See also: [property@Gtk.Editable:xalign] *)
 external get_alignment : t -> float = "ml_gtk_entry_get_alignment"
+
+(** Retrieves the value set by gtk_entry_set_activates_default(). *)
+external get_activates_default : t -> bool = "ml_gtk_entry_get_activates_default"
+
+(* Properties *)
+
+(** Get property: enable-emoji-completion *)
+external get_enable_emoji_completion : t -> bool = "ml_gtk_entry_get_enable_emoji_completion"
+
+(** Set property: enable-emoji-completion *)
+external set_enable_emoji_completion : t -> bool -> unit = "ml_gtk_entry_set_enable_emoji_completion"
+
+(** Get property: im-module *)
+external get_im_module : t -> string = "ml_gtk_entry_get_im_module"
+
+(** Set property: im-module *)
+external set_im_module : t -> string -> unit = "ml_gtk_entry_set_im_module"
+
+(** Get property: invisible-char-set *)
+external get_invisible_char_set : t -> bool = "ml_gtk_entry_get_invisible_char_set"
+
+(** Set property: invisible-char-set *)
+external set_invisible_char_set : t -> bool -> unit = "ml_gtk_entry_set_invisible_char_set"
+
+(** Get property: primary-icon-activatable *)
+external get_primary_icon_activatable : t -> bool = "ml_gtk_entry_get_primary_icon_activatable"
+
+(** Set property: primary-icon-activatable *)
+external set_primary_icon_activatable : t -> bool -> unit = "ml_gtk_entry_set_primary_icon_activatable"
+
+(** Get property: primary-icon-name *)
+external get_primary_icon_name : t -> string = "ml_gtk_entry_get_primary_icon_name"
+
+(** Set property: primary-icon-name *)
+external set_primary_icon_name : t -> string -> unit = "ml_gtk_entry_set_primary_icon_name"
+
+(** Get property: primary-icon-sensitive *)
+external get_primary_icon_sensitive : t -> bool = "ml_gtk_entry_get_primary_icon_sensitive"
+
+(** Set property: primary-icon-sensitive *)
+external set_primary_icon_sensitive : t -> bool -> unit = "ml_gtk_entry_set_primary_icon_sensitive"
+
+(** Get property: primary-icon-storage-type *)
+external get_primary_icon_storage_type : t -> Gtk_enums.imagetype = "ml_gtk_entry_get_primary_icon_storage_type"
+
+(** Get property: primary-icon-tooltip-markup *)
+external get_primary_icon_tooltip_markup : t -> string = "ml_gtk_entry_get_primary_icon_tooltip_markup"
+
+(** Set property: primary-icon-tooltip-markup *)
+external set_primary_icon_tooltip_markup : t -> string -> unit = "ml_gtk_entry_set_primary_icon_tooltip_markup"
+
+(** Get property: primary-icon-tooltip-text *)
+external get_primary_icon_tooltip_text : t -> string = "ml_gtk_entry_get_primary_icon_tooltip_text"
+
+(** Set property: primary-icon-tooltip-text *)
+external set_primary_icon_tooltip_text : t -> string -> unit = "ml_gtk_entry_set_primary_icon_tooltip_text"
+
+(** Get property: scroll-offset *)
+external get_scroll_offset : t -> int = "ml_gtk_entry_get_scroll_offset"
+
+(** Get property: secondary-icon-activatable *)
+external get_secondary_icon_activatable : t -> bool = "ml_gtk_entry_get_secondary_icon_activatable"
+
+(** Set property: secondary-icon-activatable *)
+external set_secondary_icon_activatable : t -> bool -> unit = "ml_gtk_entry_set_secondary_icon_activatable"
+
+(** Get property: secondary-icon-name *)
+external get_secondary_icon_name : t -> string = "ml_gtk_entry_get_secondary_icon_name"
+
+(** Set property: secondary-icon-name *)
+external set_secondary_icon_name : t -> string -> unit = "ml_gtk_entry_set_secondary_icon_name"
+
+(** Get property: secondary-icon-sensitive *)
+external get_secondary_icon_sensitive : t -> bool = "ml_gtk_entry_get_secondary_icon_sensitive"
+
+(** Set property: secondary-icon-sensitive *)
+external set_secondary_icon_sensitive : t -> bool -> unit = "ml_gtk_entry_set_secondary_icon_sensitive"
+
+(** Get property: secondary-icon-storage-type *)
+external get_secondary_icon_storage_type : t -> Gtk_enums.imagetype = "ml_gtk_entry_get_secondary_icon_storage_type"
+
+(** Get property: secondary-icon-tooltip-markup *)
+external get_secondary_icon_tooltip_markup : t -> string = "ml_gtk_entry_get_secondary_icon_tooltip_markup"
+
+(** Set property: secondary-icon-tooltip-markup *)
+external set_secondary_icon_tooltip_markup : t -> string -> unit = "ml_gtk_entry_set_secondary_icon_tooltip_markup"
+
+(** Get property: secondary-icon-tooltip-text *)
+external get_secondary_icon_tooltip_text : t -> string = "ml_gtk_entry_get_secondary_icon_tooltip_text"
+
+(** Set property: secondary-icon-tooltip-text *)
+external set_secondary_icon_tooltip_text : t -> string -> unit = "ml_gtk_entry_set_secondary_icon_tooltip_text"
+
+(** Get property: show-emoji-icon *)
+external get_show_emoji_icon : t -> bool = "ml_gtk_entry_get_show_emoji_icon"
+
+(** Set property: show-emoji-icon *)
+external set_show_emoji_icon : t -> bool -> unit = "ml_gtk_entry_set_show_emoji_icon"
+
+(** Get property: truncate-multiline *)
+external get_truncate_multiline : t -> bool = "ml_gtk_entry_get_truncate_multiline"
+
+(** Set property: truncate-multiline *)
+external set_truncate_multiline : t -> bool -> unit = "ml_gtk_entry_set_truncate_multiline"
 

@@ -3,3 +3,4 @@
 
 type t = [`scale_button_class] Gobject.obj
 
+(* Methods *)

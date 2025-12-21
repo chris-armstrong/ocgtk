@@ -10,19 +10,12 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-
-CAMLexport CAMLprim value ml_gtk_widget_unset_state_flags(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_widget_unset_state_flags(GtkWidget_val(self), GtkStateFlags_val(arg1));
-CAMLreturn(Val_unit);
-}
 
 CAMLexport CAMLprim value ml_gtk_widget_unrealize(value self)
 {
@@ -56,6 +49,21 @@ gtk_widget_trigger_tooltip_query(GtkWidget_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_widget_translate_coordinates(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+double out4;
+double out5;
+
+gboolean result = gtk_widget_translate_coordinates(GtkWidget_val(self), GtkWidget_val(arg1), Double_val(arg2), Double_val(arg3), &out4, &out5);
+CAMLlocal1(ret);
+    ret = caml_alloc(3, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, caml_copy_double(out4));
+    Store_field(ret, 2, caml_copy_double(out5));
+    CAMLreturn(ret);
+}
+
 CAMLexport CAMLprim value ml_gtk_widget_snapshot_child(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -80,6 +88,30 @@ gboolean result = gtk_widget_should_layout(GtkWidget_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_widget_set_visible(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_set_visible(GtkWidget_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_set_vexpand_set(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_set_vexpand_set(GtkWidget_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_set_vexpand(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_set_vexpand(GtkWidget_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_widget_set_valign(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -88,11 +120,19 @@ gtk_widget_set_valign(GtkWidget_val(self), GtkAlign_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_widget_set_state_flags(value self, value arg1, value arg2)
+CAMLexport CAMLprim value ml_gtk_widget_set_tooltip_text(value self, value arg1)
 {
-CAMLparam3(self, arg1, arg2);
+CAMLparam2(self, arg1);
 
-gtk_widget_set_state_flags(GtkWidget_val(self), GtkStateFlags_val(arg1), Bool_val(arg2));
+gtk_widget_set_tooltip_text(GtkWidget_val(self), String_option_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_set_tooltip_markup(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_set_tooltip_markup(GtkWidget_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -101,6 +141,22 @@ CAMLexport CAMLprim value ml_gtk_widget_set_size_request(value self, value arg1,
 CAMLparam3(self, arg1, arg2);
 
 gtk_widget_set_size_request(GtkWidget_val(self), Int_val(arg1), Int_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_set_sensitive(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_set_sensitive(GtkWidget_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_set_receives_default(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_set_receives_default(GtkWidget_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -120,11 +176,83 @@ gtk_widget_set_overflow(GtkWidget_val(self), GtkOverflow_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_widget_set_opacity(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_set_opacity(GtkWidget_val(self), Double_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_set_name(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_set_name(GtkWidget_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_set_margin_top(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_set_margin_top(GtkWidget_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_set_margin_start(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_set_margin_start(GtkWidget_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_set_margin_end(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_set_margin_end(GtkWidget_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_set_margin_bottom(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_set_margin_bottom(GtkWidget_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_widget_set_layout_manager(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gtk_widget_set_layout_manager(GtkWidget_val(self), Option_val(arg1, GtkLayoutManager_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_set_hexpand_set(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_set_hexpand_set(GtkWidget_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_set_hexpand(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_set_hexpand(GtkWidget_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_set_has_tooltip(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_set_has_tooltip(GtkWidget_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -136,11 +264,27 @@ gtk_widget_set_halign(GtkWidget_val(self), GtkAlign_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_widget_set_focusable(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_set_focusable(GtkWidget_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_set_focus_on_click(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_set_focus_on_click(GtkWidget_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_widget_set_focus_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_widget_set_focus_child(GtkWidget_val(self), GtkWidget_option_val(arg1));
+gtk_widget_set_focus_child(GtkWidget_val(self), Option_val(arg1, GtkWidget_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -165,6 +309,22 @@ CAMLexport CAMLprim value ml_gtk_widget_set_child_visible(value self, value arg1
 CAMLparam2(self, arg1);
 
 gtk_widget_set_child_visible(GtkWidget_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_set_can_target(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_set_can_target(GtkWidget_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_set_can_focus(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_set_can_focus(GtkWidget_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -232,20 +392,30 @@ gtk_widget_queue_allocate(GtkWidget_val(self));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_widget_pick(value self, value arg1, value arg2, value arg3)
-{
-CAMLparam4(self, arg1, arg2, arg3);
-
-GtkWidget* result = gtk_widget_pick(GtkWidget_val(self), Double_val(arg1), Double_val(arg2), GtkPickFlags_val(arg3));
-CAMLreturn(Val_GtkWidget_option(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_widget_mnemonic_activate(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gboolean result = gtk_widget_mnemonic_activate(GtkWidget_val(self), Bool_val(arg1));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_measure(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+int out3;
+int out4;
+int out5;
+int out6;
+
+gtk_widget_measure(GtkWidget_val(self), GtkOrientation_val(arg1), Int_val(arg2), &out3, &out4, &out5, &out6);
+CAMLlocal1(ret);
+    ret = caml_alloc(4, 0);
+    Store_field(ret, 0, Val_int(out3));
+    Store_field(ret, 1, Val_int(out4));
+    Store_field(ret, 2, Val_int(out5));
+    Store_field(ret, 3, Val_int(out6));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_widget_map(value self)
@@ -308,7 +478,7 @@ CAMLexport CAMLprim value ml_gtk_widget_insert_before(value self, value arg1, va
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_widget_insert_before(GtkWidget_val(self), GtkWidget_val(arg1), GtkWidget_option_val(arg2));
+gtk_widget_insert_before(GtkWidget_val(self), GtkWidget_val(arg1), Option_val(arg2, GtkWidget_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -316,7 +486,7 @@ CAMLexport CAMLprim value ml_gtk_widget_insert_after(value self, value arg1, val
 {
 CAMLparam3(self, arg1, arg2);
 
-gtk_widget_insert_after(GtkWidget_val(self), GtkWidget_val(arg1), GtkWidget_option_val(arg2));
+gtk_widget_insert_after(GtkWidget_val(self), GtkWidget_val(arg1), Option_val(arg2, GtkWidget_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -352,6 +522,22 @@ gboolean result = gtk_widget_has_visible_focus(GtkWidget_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_widget_has_focus(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_widget_has_focus(GtkWidget_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_has_default(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_widget_has_default(GtkWidget_val(self));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_widget_has_css_class(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -376,12 +562,52 @@ int result = gtk_widget_get_width(GtkWidget_val(self));
 CAMLreturn(Val_int(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_widget_get_visible(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_widget_get_visible(GtkWidget_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_get_vexpand_set(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_widget_get_vexpand_set(GtkWidget_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_get_vexpand(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_widget_get_vexpand(GtkWidget_val(self));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_widget_get_valign(value self)
 {
 CAMLparam1(self);
 
 GtkAlign result = gtk_widget_get_valign(GtkWidget_val(self));
 CAMLreturn(Val_GtkAlign(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_get_tooltip_text(value self)
+{
+CAMLparam1(self);
+
+const char* result = gtk_widget_get_tooltip_text(GtkWidget_val(self));
+CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_get_tooltip_markup(value self)
+{
+CAMLparam1(self);
+
+const char* result = gtk_widget_get_tooltip_markup(GtkWidget_val(self));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_widget_get_style_context(value self)
@@ -392,12 +618,18 @@ GtkStyleContext* result = gtk_widget_get_style_context(GtkWidget_val(self));
 CAMLreturn(Val_GtkStyleContext(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_widget_get_state_flags(value self)
+CAMLexport CAMLprim value ml_gtk_widget_get_size_request(value self)
 {
 CAMLparam1(self);
+int out1;
+int out2;
 
-GtkStateFlags result = gtk_widget_get_state_flags(GtkWidget_val(self));
-CAMLreturn(Val_GtkStateFlags(result));
+gtk_widget_get_size_request(GtkWidget_val(self), &out1, &out2);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out1));
+    Store_field(ret, 1, Val_int(out2));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_widget_get_size(value self, value arg1)
@@ -416,12 +648,20 @@ GtkSettings* result = gtk_widget_get_settings(GtkWidget_val(self));
 CAMLreturn(Val_GtkSettings(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_widget_get_root(value self)
+CAMLexport CAMLprim value ml_gtk_widget_get_sensitive(value self)
 {
 CAMLparam1(self);
 
-GtkRoot* result = gtk_widget_get_root(GtkWidget_val(self));
-CAMLreturn(Val_option(result, Val_GtkRoot));
+gboolean result = gtk_widget_get_sensitive(GtkWidget_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_get_scale_factor(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_widget_get_scale_factor(GtkWidget_val(self));
+CAMLreturn(Val_int(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_widget_get_request_mode(value self)
@@ -430,6 +670,14 @@ CAMLparam1(self);
 
 GtkSizeRequestMode result = gtk_widget_get_request_mode(GtkWidget_val(self));
 CAMLreturn(Val_GtkSizeRequestMode(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_get_receives_default(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_widget_get_receives_default(GtkWidget_val(self));
+CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_widget_get_realized(value self)
@@ -445,7 +693,7 @@ CAMLexport CAMLprim value ml_gtk_widget_get_prev_sibling(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_widget_get_prev_sibling(GtkWidget_val(self));
-CAMLreturn(Val_GtkWidget_option(result));
+CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
 CAMLexport CAMLprim value ml_gtk_widget_get_preferred_size(value self)
@@ -467,7 +715,7 @@ CAMLexport CAMLprim value ml_gtk_widget_get_parent(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_widget_get_parent(GtkWidget_val(self));
-CAMLreturn(Val_GtkWidget_option(result));
+CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
 CAMLexport CAMLprim value ml_gtk_widget_get_overflow(value self)
@@ -478,20 +726,60 @@ GtkOverflow result = gtk_widget_get_overflow(GtkWidget_val(self));
 CAMLreturn(Val_GtkOverflow(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_widget_get_opacity(value self)
+{
+CAMLparam1(self);
+
+double result = gtk_widget_get_opacity(GtkWidget_val(self));
+CAMLreturn(caml_copy_double(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_widget_get_next_sibling(value self)
 {
 CAMLparam1(self);
 
 GtkWidget* result = gtk_widget_get_next_sibling(GtkWidget_val(self));
-CAMLreturn(Val_GtkWidget_option(result));
+CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
-CAMLexport CAMLprim value ml_gtk_widget_get_native(value self)
+CAMLexport CAMLprim value ml_gtk_widget_get_name(value self)
 {
 CAMLparam1(self);
 
-GtkNative* result = gtk_widget_get_native(GtkWidget_val(self));
-CAMLreturn(Val_option(result, Val_GtkNative));
+const char* result = gtk_widget_get_name(GtkWidget_val(self));
+CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_get_margin_top(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_widget_get_margin_top(GtkWidget_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_get_margin_start(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_widget_get_margin_start(GtkWidget_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_get_margin_end(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_widget_get_margin_end(GtkWidget_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_get_margin_bottom(value self)
+{
+CAMLparam1(self);
+
+int result = gtk_widget_get_margin_bottom(GtkWidget_val(self));
+CAMLreturn(Val_int(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_widget_get_mapped(value self)
@@ -515,7 +803,23 @@ CAMLexport CAMLprim value ml_gtk_widget_get_last_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_widget_get_last_child(GtkWidget_val(self));
-CAMLreturn(Val_GtkWidget_option(result));
+CAMLreturn(Val_option(result, Val_GtkWidget));
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_get_hexpand_set(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_widget_get_hexpand_set(GtkWidget_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_get_hexpand(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_widget_get_hexpand(GtkWidget_val(self));
+CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_widget_get_height(value self)
@@ -526,6 +830,14 @@ int result = gtk_widget_get_height(GtkWidget_val(self));
 CAMLreturn(Val_int(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_widget_get_has_tooltip(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_widget_get_has_tooltip(GtkWidget_val(self));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_widget_get_halign(value self)
 {
 CAMLparam1(self);
@@ -534,12 +846,28 @@ GtkAlign result = gtk_widget_get_halign(GtkWidget_val(self));
 CAMLreturn(Val_GtkAlign(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_widget_get_focusable(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_widget_get_focusable(GtkWidget_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_get_focus_on_click(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_widget_get_focus_on_click(GtkWidget_val(self));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_widget_get_focus_child(value self)
 {
 CAMLparam1(self);
 
 GtkWidget* result = gtk_widget_get_focus_child(GtkWidget_val(self));
-CAMLreturn(Val_GtkWidget_option(result));
+CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
 CAMLexport CAMLprim value ml_gtk_widget_get_first_child(value self)
@@ -547,7 +875,7 @@ CAMLexport CAMLprim value ml_gtk_widget_get_first_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_widget_get_first_child(GtkWidget_val(self));
-CAMLreturn(Val_GtkWidget_option(result));
+CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
 CAMLexport CAMLprim value ml_gtk_widget_get_direction(value self)
@@ -558,12 +886,12 @@ GtkTextDirection result = gtk_widget_get_direction(GtkWidget_val(self));
 CAMLreturn(Val_GtkTextDirection(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_widget_get_css_classes(value self)
+CAMLexport CAMLprim value ml_gtk_widget_get_css_name(value self)
 {
 CAMLparam1(self);
 
-gtk_widget_get_css_classes(GtkWidget_val(self));
-CAMLreturn(Val_unit);
+const char* result = gtk_widget_get_css_name(GtkWidget_val(self));
+CAMLreturn(caml_copy_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_widget_get_child_visible(value self)
@@ -574,21 +902,28 @@ gboolean result = gtk_widget_get_child_visible(GtkWidget_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_widget_get_can_target(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_widget_get_can_target(GtkWidget_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_get_can_focus(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_widget_get_can_focus(GtkWidget_val(self));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_widget_get_baseline(value self)
 {
 CAMLparam1(self);
 
 int result = gtk_widget_get_baseline(GtkWidget_val(self));
 CAMLreturn(Val_int(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_allocation(value self)
-{
-CAMLparam1(self);
-GtkAllocation out1;
-
-gtk_widget_get_allocation(GtkWidget_val(self), &out1);
-CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_widget_get_allocated_width(value self)
@@ -703,225 +1038,6 @@ gtk_widget_action_set_enabled(GtkWidget_val(self), String_val(arg1), Bool_val(ar
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_widget_get_can_focus(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "can-focus");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_can_focus: property 'can-focus' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "can-focus", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_set_can_focus(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "can-focus");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_set_can_focus: property 'can-focus' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "can-focus", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_can_target(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "can-target");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_can_target: property 'can-target' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "can-target", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_set_can_target(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "can-target");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_set_can_target: property 'can-target' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "can-target", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_css_name(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gchar* *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "css-name");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_css_name: property 'css-name' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "css-name", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
-
-result = caml_copy_string(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_focus_on_click(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "focus-on-click");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_focus_on_click: property 'focus-on-click' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "focus-on-click", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_set_focus_on_click(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "focus-on-click");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_set_focus_on_click: property 'focus-on-click' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "focus-on-click", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_focusable(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "focusable");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_focusable: property 'focusable' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "focusable", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_set_focusable(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "focusable");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_set_focusable: property 'focusable' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "focusable", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_has_default(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "has-default");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_has_default: property 'has-default' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "has-default", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_has_focus(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "has-focus");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_has_focus: property 'has-focus' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "has-focus", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_has_tooltip(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "has-tooltip");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_has_tooltip: property 'has-tooltip' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "has-tooltip", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_set_has_tooltip(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "has-tooltip");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_set_has_tooltip: property 'has-tooltip' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "has-tooltip", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_widget_get_height_request(value self)
 {
 CAMLparam1(self);
@@ -951,519 +1067,6 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
     g_value_set_int(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "height-request", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_hexpand(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "hexpand");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_hexpand: property 'hexpand' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "hexpand", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_set_hexpand(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "hexpand");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_set_hexpand: property 'hexpand' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "hexpand", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_hexpand_set(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "hexpand-set");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_hexpand_set: property 'hexpand-set' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "hexpand-set", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_set_hexpand_set(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "hexpand-set");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_set_hexpand_set: property 'hexpand-set' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "hexpand-set", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_margin_bottom(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gint prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "margin-bottom");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_margin_bottom: property 'margin-bottom' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "margin-bottom", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
-
-result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_set_margin_bottom(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gint c_value = Int_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "margin-bottom");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_set_margin_bottom: property 'margin-bottom' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_int(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "margin-bottom", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_margin_end(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gint prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "margin-end");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_margin_end: property 'margin-end' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "margin-end", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
-
-result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_set_margin_end(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gint c_value = Int_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "margin-end");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_set_margin_end: property 'margin-end' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_int(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "margin-end", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_margin_start(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gint prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "margin-start");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_margin_start: property 'margin-start' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "margin-start", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
-
-result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_set_margin_start(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gint c_value = Int_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "margin-start");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_set_margin_start: property 'margin-start' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_int(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "margin-start", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_margin_top(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gint prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "margin-top");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_margin_top: property 'margin-top' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "margin-top", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
-
-result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_set_margin_top(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gint c_value = Int_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "margin-top");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_set_margin_top: property 'margin-top' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_int(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "margin-top", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_name(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gchar* *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "name");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_name: property 'name' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "name", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
-
-result = caml_copy_string(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_set_name(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    ML_DECL_CONST_STRING(c_value, String_val(new_value));
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "name");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_set_name: property 'name' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_string(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "name", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_opacity(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gdouble prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "opacity");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_opacity: property 'opacity' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "opacity", &prop_gvalue);
-    prop_value = g_value_get_double(&prop_gvalue);
-
-result = caml_copy_double(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_set_opacity(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gdouble c_value = Double_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "opacity");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_set_opacity: property 'opacity' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_double(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "opacity", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_receives_default(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "receives-default");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_receives_default: property 'receives-default' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "receives-default", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_set_receives_default(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "receives-default");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_set_receives_default: property 'receives-default' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "receives-default", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_scale_factor(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gint prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "scale-factor");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_scale_factor: property 'scale-factor' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "scale-factor", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
-
-result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_sensitive(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "sensitive");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_sensitive: property 'sensitive' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "sensitive", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_set_sensitive(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "sensitive");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_set_sensitive: property 'sensitive' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "sensitive", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_tooltip_markup(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gchar* *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "tooltip-markup");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_tooltip_markup: property 'tooltip-markup' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "tooltip-markup", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
-
-result = caml_copy_string(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_set_tooltip_markup(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    ML_DECL_CONST_STRING(c_value, String_val(new_value));
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "tooltip-markup");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_set_tooltip_markup: property 'tooltip-markup' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_string(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "tooltip-markup", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_tooltip_text(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gchar* *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "tooltip-text");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_tooltip_text: property 'tooltip-text' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "tooltip-text", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
-
-result = caml_copy_string(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_set_tooltip_text(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    ML_DECL_CONST_STRING(c_value, String_val(new_value));
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "tooltip-text");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_set_tooltip_text: property 'tooltip-text' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_string(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "tooltip-text", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_vexpand(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "vexpand");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_vexpand: property 'vexpand' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "vexpand", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_set_vexpand(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "vexpand");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_set_vexpand: property 'vexpand' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "vexpand", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_vexpand_set(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "vexpand-set");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_vexpand_set: property 'vexpand-set' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "vexpand-set", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_set_vexpand_set(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "vexpand-set");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_set_vexpand_set: property 'vexpand-set' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "vexpand-set", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_get_visible(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "visible");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_get_visible: property 'visible' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "visible", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_widget_set_visible(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "visible");
-if (pspec == NULL) caml_failwith("ml_gtk_widget_set_visible: property 'visible' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "visible", &prop_gvalue);
 g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }

@@ -8,20 +8,7 @@ let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager
 (** Create a new HeaderBar *)
 external new_ : unit -> t = "ml_gtk_header_bar_new"
 
-(* Properties *)
-
-(** Get property: decoration-layout *)
-external get_decoration_layout : t -> string = "ml_gtk_header_bar_get_decoration_layout"
-
-(** Set property: decoration-layout *)
-external set_decoration_layout : t -> string -> unit = "ml_gtk_header_bar_set_decoration_layout"
-
-(** Get property: show-title-buttons *)
-external get_show_title_buttons : t -> bool = "ml_gtk_header_bar_get_show_title_buttons"
-
-(** Set property: show-title-buttons *)
-external set_show_title_buttons : t -> bool -> unit = "ml_gtk_header_bar_set_show_title_buttons"
-
+(* Methods *)
 (** Sets the title for the `GtkHeaderBar`.
 
 When set to %NULL, the headerbar will display the title of
@@ -34,6 +21,29 @@ To achieve the same style as the builtin title, use the
 You should set the title widget to %NULL, for the window
 title label to be visible again. *)
 external set_title_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_header_bar_set_title_widget"
+
+(** Sets whether this header bar shows the standard window
+title buttons. *)
+external set_show_title_buttons : t -> bool -> unit = "ml_gtk_header_bar_set_show_title_buttons"
+
+(** Sets the decoration layout for this header bar.
+
+This property overrides the
+[property@Gtk.Settings:gtk-decoration-layout] setting.
+
+There can be valid reasons for overriding the setting, such
+as a header bar design that does not allow for buttons to take
+room on the right, or only offers room for a single close button.
+Split header bars are another example for overriding the setting.
+
+The format of the string is button names, separated by commas.
+A colon separates the buttons that should appear on the left
+from those on the right. Recognized button names are minimize,
+maximize, close and icon (the window icon).
+
+For example, “icon:minimize,maximize,close” specifies an icon
+on the left, and minimize, maximize and close buttons on the right. *)
+external set_decoration_layout : t -> string option -> unit = "ml_gtk_header_bar_set_decoration_layout"
 
 (** Removes a child from the `GtkHeaderBar`.
 
@@ -55,4 +65,13 @@ external pack_end : t -> Event_controller_and__layout_child_and__layout_manager_
 
 See [method@Gtk.HeaderBar.set_title_widget]. *)
 external get_title_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_header_bar_get_title_widget"
+
+(** Returns whether this header bar shows the standard window
+title buttons. *)
+external get_show_title_buttons : t -> bool = "ml_gtk_header_bar_get_show_title_buttons"
+
+(** Gets the decoration layout of the `GtkHeaderBar`. *)
+external get_decoration_layout : t -> string option = "ml_gtk_header_bar_get_decoration_layout"
+
+(* Properties *)
 

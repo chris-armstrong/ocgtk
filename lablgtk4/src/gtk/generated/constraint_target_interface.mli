@@ -3,3 +3,4 @@
 
 type t = [`constraint_target_interface] Gobject.obj
 
+(* Methods *)

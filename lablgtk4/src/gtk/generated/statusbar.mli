@@ -8,6 +8,7 @@ val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and_
 (** Create a new Statusbar *)
 external new_ : unit -> t = "ml_gtk_statusbar_new"
 
+(* Methods *)
 (** Forces the removal of all messages from a statusbar's
 stack with the exact @context_id. *)
 external remove_all : t -> int -> unit = "ml_gtk_statusbar_remove_all"

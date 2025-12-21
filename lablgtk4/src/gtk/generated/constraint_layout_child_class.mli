@@ -3,3 +3,4 @@
 
 type t = [`constraint_layout_child_class] Gobject.obj
 
+(* Methods *)

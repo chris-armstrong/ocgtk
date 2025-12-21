@@ -6,10 +6,17 @@ type t = [`string_list | `object_] Gobject.obj
 (** Create a new StringList *)
 external new_ : unit -> t = "ml_gtk_string_list_new"
 
-(* Properties *)
+(* Methods *)
+(** Adds @string to self at the end, and takes
+ownership of it.
 
-(** Get property: n-items *)
-external get_n_items : t -> int = "ml_gtk_string_list_get_n_items"
+This variant of [method@Gtk.StringList.append]
+is convenient for formatting strings:
+
+```c
+gtk_string_list_take (self, g_strdup_print ("%d dollars", lots));
+``` *)
+external take : t -> string -> unit = "ml_gtk_string_list_take"
 
 (** Removes the string at @position from @self.
 
@@ -30,4 +37,9 @@ external get_string : t -> int -> string option = "ml_gtk_string_list_get_string
 The @string will be copied. See
 [method@Gtk.StringList.take] for a way to avoid that. *)
 external append : t -> string -> unit = "ml_gtk_string_list_append"
+
+(* Properties *)
+
+(** Get property: n-items *)
+external get_n_items : t -> int = "ml_gtk_string_list_get_n_items"
 

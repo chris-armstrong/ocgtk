@@ -8,6 +8,7 @@ let as_event_controller (obj : t) : Event_controller_and__layout_child_and__layo
 (** Create a new EventControllerKey *)
 external new_ : unit -> t = "ml_gtk_event_controller_key_new"
 
+(* Methods *)
 (** Sets the input method context of the key @controller. *)
 external set_im_context : t -> Im_context.t option -> unit = "ml_gtk_event_controller_key_set_im_context"
 

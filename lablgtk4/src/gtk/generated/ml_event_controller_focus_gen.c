@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -29,38 +30,18 @@ GtkEventControllerFocus *obj = gtk_event_controller_focus_new();
 CAMLreturn(Val_GtkEventControllerFocus(obj));
 }
 
-CAMLexport CAMLprim value ml_gtk_event_controller_focus_get_contains_focus(value self)
+CAMLexport CAMLprim value ml_gtk_event_controller_focus_is_focus(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkEventControllerFocus *obj = (GtkEventControllerFocus *)GtkEventControllerFocus_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "contains-focus");
-if (pspec == NULL) caml_failwith("ml_gtk_event_controller_focus_get_contains_focus: property 'contains-focus' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "contains-focus", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
+gboolean result = gtk_event_controller_focus_is_focus(GtkEventControllerFocus_val(self));
+CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_event_controller_focus_get_is_focus(value self)
+CAMLexport CAMLprim value ml_gtk_event_controller_focus_contains_focus(value self)
 {
 CAMLparam1(self);
-CAMLlocal1(result);
-GtkEventControllerFocus *obj = (GtkEventControllerFocus *)GtkEventControllerFocus_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "is-focus");
-if (pspec == NULL) caml_failwith("ml_gtk_event_controller_focus_get_is_focus: property 'is-focus' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "is-focus", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
+gboolean result = gtk_event_controller_focus_contains_focus(GtkEventControllerFocus_val(self));
+CAMLreturn(Val_bool(result));
 }

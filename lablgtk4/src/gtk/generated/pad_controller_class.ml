@@ -3,3 +3,4 @@
 
 type t = [`pad_controller_class] Gobject.obj
 
+(* Methods *)

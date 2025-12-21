@@ -3,3 +3,4 @@
 
 type t = [`custom_sorter_class] Gobject.obj
 
+(* Methods *)

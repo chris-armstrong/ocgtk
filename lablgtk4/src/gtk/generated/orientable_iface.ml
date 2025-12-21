@@ -3,3 +3,4 @@
 
 type t = [`orientable_iface] Gobject.obj
 
+(* Methods *)

@@ -6,6 +6,7 @@
 #include <caml/alloc.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 /* Convert GtkAccessibleAnnouncementPriority to OCaml value */
 value Val_GtkAccessibleAnnouncementPriority(GtkAccessibleAnnouncementPriority val) {

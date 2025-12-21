@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -22,12 +23,18 @@
 #endif /* Val_GtkBuildableParseContext */
 
 
-CAMLexport CAMLprim value ml_gtk_buildable_parse_context_get_element_stack(value self)
+CAMLexport CAMLprim value ml_gtk_buildable_parse_context_get_position(value self)
 {
 CAMLparam1(self);
+int out1;
+int out2;
 
-gtk_buildable_parse_context_get_element_stack(GtkBuildableParseContext_val(self));
-CAMLreturn(Val_unit);
+gtk_buildable_parse_context_get_position(GtkBuildableParseContext_val(self), &out1, &out2);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out1));
+    Store_field(ret, 1, Val_int(out2));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_buildable_parse_context_get_element(value self)

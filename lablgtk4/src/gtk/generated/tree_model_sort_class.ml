@@ -3,3 +3,4 @@
 
 type t = [`tree_model_sort_class] Gobject.obj
 
+(* Methods *)

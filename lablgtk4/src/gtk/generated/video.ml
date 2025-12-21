@@ -12,7 +12,7 @@ external new_ : unit -> t = "ml_gtk_video_new"
 external new_for_file : unit -> t = "ml_gtk_video_new_for_file"
 
 (** Create a new Video *)
-external new_for_filename : string option -> t = "ml_gtk_video_new_for_filename"
+external new_for_filename : unit -> t = "ml_gtk_video_new_for_filename"
 
 (** Create a new Video *)
 external new_for_media_stream : Media_stream.t option -> t = "ml_gtk_video_new_for_media_stream"
@@ -20,20 +20,7 @@ external new_for_media_stream : Media_stream.t option -> t = "ml_gtk_video_new_f
 (** Create a new Video *)
 external new_for_resource : string option -> t = "ml_gtk_video_new_for_resource"
 
-(* Properties *)
-
-(** Get property: autoplay *)
-external get_autoplay : t -> bool = "ml_gtk_video_get_autoplay"
-
-(** Set property: autoplay *)
-external set_autoplay : t -> bool -> unit = "ml_gtk_video_set_autoplay"
-
-(** Get property: loop *)
-external get_loop : t -> bool = "ml_gtk_video_get_loop"
-
-(** Set property: loop *)
-external set_loop : t -> bool -> unit = "ml_gtk_video_set_loop"
-
+(* Methods *)
 (** Makes @self play the resource at the given @resource_path.
 
 This is a utility function that calls [method@Gtk.Video.set_file]. *)
@@ -49,21 +36,31 @@ If you want to display a file, consider using [method@Gtk.Video.set_file]
 instead. *)
 external set_media_stream : t -> Media_stream.t option -> unit = "ml_gtk_video_set_media_stream"
 
+(** Sets whether new files loaded by @self should be set to loop. *)
+external set_loop : t -> bool -> unit = "ml_gtk_video_set_loop"
+
 (** Sets whether to enable graphics offload.
 
 See [class@Gtk.GraphicsOffload] for more information on graphics offload. *)
 external set_graphics_offload : t -> Gtk_enums.graphicsoffloadenabled -> unit = "ml_gtk_video_set_graphics_offload"
 
-(** Makes @self play the given @filename.
-
-This is a utility function that calls gtk_video_set_file(), *)
-external set_filename : t -> string option -> unit = "ml_gtk_video_set_filename"
+(** Sets whether @self automatically starts playback when it
+becomes visible or when a new file gets loaded. *)
+external set_autoplay : t -> bool -> unit = "ml_gtk_video_set_autoplay"
 
 (** Gets the media stream managed by @self or %NULL if none. *)
 external get_media_stream : t -> Media_stream.t option = "ml_gtk_video_get_media_stream"
+
+(** Returns %TRUE if videos have been set to loop. *)
+external get_loop : t -> bool = "ml_gtk_video_get_loop"
 
 (** Returns whether graphics offload is enabled.
 
 See [class@Gtk.GraphicsOffload] for more information on graphics offload. *)
 external get_graphics_offload : t -> Gtk_enums.graphicsoffloadenabled = "ml_gtk_video_get_graphics_offload"
+
+(** Returns %TRUE if videos have been set to loop. *)
+external get_autoplay : t -> bool = "ml_gtk_video_get_autoplay"
+
+(* Properties *)
 

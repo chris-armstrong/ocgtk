@@ -3,3 +3,4 @@
 
 type t = [`string_filter_class] Gobject.obj
 
+(* Methods *)

@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -32,7 +33,7 @@ CAMLreturn(Val_GtkBuilder(obj));
 CAMLexport CAMLprim value ml_gtk_builder_new_from_file(value arg1)
 {
 CAMLparam1(arg1);
-GtkBuilder *obj = gtk_builder_new_from_file(String_val(arg1));
+GtkBuilder *obj = gtk_builder_new_from_file(arg1);
 CAMLreturn(Val_GtkBuilder(obj));
 }
 
@@ -50,20 +51,20 @@ GtkBuilder *obj = gtk_builder_new_from_string(String_val(arg1), arg2);
 CAMLreturn(Val_GtkBuilder(obj));
 }
 
-CAMLexport CAMLprim value ml_gtk_builder_set_scope(value self, value arg1)
+CAMLexport CAMLprim value ml_gtk_builder_set_translation_domain(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_builder_set_scope(GtkBuilder_val(self), Option_val(arg1, GtkBuilderScope_val, NULL));
+gtk_builder_set_translation_domain(GtkBuilder_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_builder_get_scope(value self)
+CAMLexport CAMLprim value ml_gtk_builder_get_translation_domain(value self)
 {
 CAMLparam1(self);
 
-GtkBuilderScope* result = gtk_builder_get_scope(GtkBuilder_val(self));
-CAMLreturn(Val_GtkBuilderScope(result));
+const char* result = gtk_builder_get_translation_domain(GtkBuilder_val(self));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_builder_add_from_resource(value self, value arg1)
@@ -73,46 +74,4 @@ GError *error = NULL;
 
 gboolean result = gtk_builder_add_from_resource(GtkBuilder_val(self), String_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
-}
-
-CAMLexport CAMLprim value ml_gtk_builder_add_from_file(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-GError *error = NULL;
-
-gboolean result = gtk_builder_add_from_file(GtkBuilder_val(self), String_val(arg1), &error);
-if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
-}
-
-CAMLexport CAMLprim value ml_gtk_builder_get_translation_domain(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkBuilder *obj = (GtkBuilder *)GtkBuilder_val(self);
-    gchar* *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "translation-domain");
-if (pspec == NULL) caml_failwith("ml_gtk_builder_get_translation_domain: property 'translation-domain' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "translation-domain", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
-
-result = caml_copy_string(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_builder_set_translation_domain(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkBuilder *obj = (GtkBuilder *)GtkBuilder_val(self);
-    ML_DECL_CONST_STRING(c_value, String_val(new_value));
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "translation-domain");
-if (pspec == NULL) caml_failwith("ml_gtk_builder_set_translation_domain: property 'translation-domain' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_string(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "translation-domain", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
 }

@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -21,14 +22,6 @@
 #define Val_GtkWidgetClass(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GtkWidgetClass */
 
-
-CAMLexport CAMLprim value ml_gtk_widget_class_set_template_scope(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_widget_class_set_template_scope(GtkWidgetClass_val(self), GtkBuilderScope_val(arg1));
-CAMLreturn(Val_unit);
-}
 
 CAMLexport CAMLprim value ml_gtk_widget_class_set_template_from_resource(value self, value arg1)
 {

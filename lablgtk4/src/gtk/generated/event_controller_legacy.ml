@@ -8,3 +8,4 @@ let as_event_controller (obj : t) : Event_controller_and__layout_child_and__layo
 (** Create a new EventControllerLegacy *)
 external new_ : unit -> t = "ml_gtk_event_controller_legacy_new"
 
+(* Methods *)

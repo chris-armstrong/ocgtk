@@ -3,3 +3,4 @@
 
 type t = [`shortcut_class] Gobject.obj
 
+(* Methods *)

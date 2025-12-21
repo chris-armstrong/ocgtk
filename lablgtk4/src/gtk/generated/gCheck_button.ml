@@ -5,19 +5,29 @@ class check_button (obj : Check_button.t) = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Check_button.as_widget obj)
   inherit Gcheck_button_signals.check_button_signals obj
 
-  method active = Check_button.get_active obj
-  method set_active v = Check_button.set_active obj v
+  method get_active : unit -> bool =
+    fun () ->
+      (Check_button.get_active obj)
 
-  method inconsistent = Check_button.get_inconsistent obj
-  method set_inconsistent v = Check_button.set_inconsistent obj v
+  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
+    fun () ->
+      Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Check_button.get_child obj)
 
-  method label = Check_button.get_label obj
-  method set_label v = Check_button.set_label obj v
+  method get_inconsistent : unit -> bool =
+    fun () ->
+      (Check_button.get_inconsistent obj)
 
-  method use_underline = Check_button.get_use_underline obj
-  method set_use_underline v = Check_button.set_use_underline obj v
+  method get_label : unit -> string option =
+    fun () ->
+      (Check_button.get_label obj)
 
-  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option = fun () -> Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Check_button.get_child obj )
+  method get_use_underline : unit -> bool =
+    fun () ->
+      (Check_button.get_use_underline obj)
+
+  method set_active : bool -> unit =
+    fun setting ->
+      (Check_button.set_active obj setting)
 
   method set_child : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
     fun child ->
@@ -28,6 +38,18 @@ class check_button (obj : Check_button.t) = object (self)
     fun group ->
       let group = Option.map (fun (c) -> c#as_check_button) group in
       (Check_button.set_group obj group)
+
+  method set_inconsistent : bool -> unit =
+    fun inconsistent ->
+      (Check_button.set_inconsistent obj inconsistent)
+
+  method set_label : string option -> unit =
+    fun label ->
+      (Check_button.set_label obj label)
+
+  method set_use_underline : bool -> unit =
+    fun setting ->
+      (Check_button.set_use_underline obj setting)
 
   method as_widget = (Check_button.as_widget obj)
     method as_check_button = obj

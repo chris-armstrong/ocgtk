@@ -3,3 +3,4 @@
 
 type t = [`never_trigger_class] Gobject.obj
 
+(* Methods *)

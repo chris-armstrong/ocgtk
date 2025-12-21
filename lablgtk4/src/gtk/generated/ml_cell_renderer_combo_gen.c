@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -34,7 +35,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_combo_get_has_entry(value self)
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkCellRendererCombo *obj = (GtkCellRendererCombo *)GtkCellRendererCombo_val(self);
-    gboolean prop_value;
+    gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "has-entry");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_combo_get_has_entry: property 'has-entry' not found");
 GValue prop_gvalue = G_VALUE_INIT;
@@ -51,7 +52,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_combo_set_has_entry(value self, v
 {
 CAMLparam2(self, new_value);
 GtkCellRendererCombo *obj = (GtkCellRendererCombo *)GtkCellRendererCombo_val(self);
-    gboolean c_value = Bool_val(new_value);
+    gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "has-entry");
 if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_combo_set_has_entry: property 'has-entry' not found");
 GValue prop_gvalue = G_VALUE_INIT;

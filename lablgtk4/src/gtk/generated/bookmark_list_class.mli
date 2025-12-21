@@ -3,3 +3,4 @@
 
 type t = [`bookmark_list_class] Gobject.obj
 
+(* Methods *)

@@ -73,36 +73,6 @@ Properties using types from other namespaces (like `GMenuModel*` from Gio) still
 
 ---
 
-### 3. Parser Status
-
-**The GIR parser (`src/tools/gir_gen/parse/gir_parser.ml`) is working correctly.**
-
-It successfully parses:
-- All `<method>` elements (4 methods for PasswordEntry)
-- All `<property>` elements (4 properties for PasswordEntry)
-- All `<signal>` elements
-- All `<constructor>` elements
-
-The issue is in the **code generation phase**, not the parsing phase.
-
----
-
-## Investigation Summary
-
-**Date**: 2025-12-18
-
-**Investigation Method**:
-1. Examined GTK GIR file at `/usr/share/gir-1.0/Gtk-4.0.gir`
-2. Ran code generator with debug output to identify skip messages
-3. Compared generated code with GIR definitions
-4. Analyzed multiple widget classes (PasswordEntry, Entry, Label, Adjustment) to identify patterns
-
-**Key Findings**:
-- PasswordEntry has 4 methods in GIR, but only 2 are generated (50% loss)
-- PasswordEntry has 4 properties in GIR, but only 1 has accessors generated (75% loss)
-- The same issues affect many other GTK widgets
-- Type mapping gaps and property generation logic are the root causes
-
 ## Non-class/record/interface types and types from other libraries prevent method and property generation
 
 There are a number of types which are skipped by gir_gen in `type_mapping.ml` which prevent property and method generation:
@@ -287,8 +257,12 @@ external new_from_icon_name : string -> 'a t = "ml_gtk_button_new_from_icon_name
 
 This will also clear any previously set labels. *)
 external set_label : 'a t -> string -> unit = "ml_gtk_button_set_label"
-````
+```
 
 ## Val_x and X_val conversion macros not being added to generated_forward_decls.h for all types
 
 Some types like GtkBuilderScope and GtkSelectionModel are not having Val_GtkBuilderScope and GtkBuilderScope_val macros generated in generated_forward_decls.h for use by other ml_*_gen.c files, resulting in `warning: implicit generation of function`.
+
+## Val_x and X_val macros need to be generated per-library and shared
+
+We are currently generating the Val_x and X_val macros for each library and its dependencies - ideally we'd generate one per library in a header and share it based on recursive library dependencies (which we could figure out from the <repository> and <namespace> tags in the GIR)

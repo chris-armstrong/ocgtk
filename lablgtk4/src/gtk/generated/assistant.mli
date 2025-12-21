@@ -8,11 +8,7 @@ val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and_
 (** Create a new Assistant *)
 external new_ : unit -> t = "ml_gtk_assistant_new"
 
-(* Properties *)
-
-(** Get property: use-header-bar *)
-external get_use_header_bar : t -> int = "ml_gtk_assistant_get_use_header_bar"
-
+(* Methods *)
 (** Forces @assistant to recompute the buttons state.
 
 GTK automatically takes care of this in most situations,
@@ -116,4 +112,9 @@ external append_page : t -> Event_controller_and__layout_child_and__layout_manag
 
 (** Adds a widget to the action area of a `GtkAssistant`. *)
 external add_action_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_assistant_add_action_widget"
+
+(* Properties *)
+
+(** Get property: use-header-bar *)
+external get_use_header_bar : t -> int = "ml_gtk_assistant_get_use_header_bar"
 

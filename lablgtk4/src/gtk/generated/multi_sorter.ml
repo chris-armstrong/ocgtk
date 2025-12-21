@@ -6,11 +6,7 @@ type t = [`multi_sorter | `sorter | `object_] Gobject.obj
 (** Create a new MultiSorter *)
 external new_ : unit -> t = "ml_gtk_multi_sorter_new"
 
-(* Properties *)
-
-(** Get property: n-items *)
-external get_n_items : t -> int = "ml_gtk_multi_sorter_get_n_items"
-
+(* Methods *)
 (** Removes the sorter at the given @position from the list of sorter
 used by @self.
 
@@ -22,4 +18,9 @@ external remove : t -> int -> unit = "ml_gtk_multi_sorter_remove"
 @self will consult all existing sorters before it will
 sort with the given @sorter. *)
 external append : t -> Sorter.t -> unit = "ml_gtk_multi_sorter_append"
+
+(* Properties *)
+
+(** Get property: n-items *)
+external get_n_items : t -> int = "ml_gtk_multi_sorter_get_n_items"
 

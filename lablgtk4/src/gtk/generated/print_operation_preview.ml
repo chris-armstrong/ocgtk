@@ -3,6 +3,7 @@
 
 type t = [`print_operation_preview] Gobject.obj
 
+(* Methods *)
 (** Renders a page to the preview.
 
 This is using the print context that was passed to the

@@ -7,17 +7,7 @@ module rec Application : sig
   (** Create a new Application *)
   external new_ : string option -> unit -> t = "ml_gtk_application_new"
 
-  (* Properties *)
-
-  (** Get property: register-session *)
-  external get_register_session : t -> bool = "ml_gtk_application_get_register_session"
-
-  (** Set property: register-session *)
-  external set_register_session : t -> bool -> unit = "ml_gtk_application_set_register_session"
-
-  (** Get property: screensaver-active *)
-  external get_screensaver_active : t -> bool = "ml_gtk_application_get_screensaver_active"
-
+  (* Methods *)
   (** Removes an inhibitor that has been previously established.
 
   See [method@Gtk.Application.inhibit].
@@ -35,36 +25,6 @@ module rec Application : sig
   function, if `window` was the last window of the `application`. *)
   external remove_window : t -> Window.t -> unit = "ml_gtk_application_remove_window"
 
-  (** Lists the detailed action names which have associated accelerators.
-
-  See [method@Gtk.Application.set_accels_for_action]. *)
-  external list_action_descriptions : t -> unit = "ml_gtk_application_list_action_descriptions"
-
-  (** Inform the session manager that certain types of actions should be
-  inhibited.
-
-  This is not guaranteed to work on all platforms and for all types of
-  actions.
-
-  Applications should invoke this method when they begin an operation
-  that should not be interrupted, such as creating a CD or DVD. The
-  types of actions that may be blocked are specified by the `flags`
-  parameter. When the application completes the operation it should
-  call [method@Gtk.Application.uninhibit] to remove the inhibitor. Note
-  that an application can have multiple inhibitors, and all of them must
-  be individually removed. Inhibitors are also cleared when the
-  application exits.
-
-  Applications should not expect that they will always be able to block
-  the action. In most cases, users will be given the option to force
-  the action to take place.
-
-  The `reason` message should be short and to the point.
-
-  If `window` is given, the session manager may point the user to
-  this window to find out more about why the action is inhibited. *)
-  external inhibit : t -> Window.t option -> Gtk_enums.applicationinhibitflags -> string option -> int = "ml_gtk_application_inhibit"
-
   (** Returns the [class@Gtk.ApplicationWindow] with the given ID.
 
   The ID of a `GtkApplicationWindow` can be retrieved with
@@ -78,29 +38,6 @@ module rec Application : sig
   if another application has it — this is just the most
   recently-focused window within this application. *)
   external get_active_window : t -> Window.t option = "ml_gtk_application_get_active_window"
-
-  (** Returns the list of actions (possibly empty) that `accel` maps to.
-
-  Each item in the list is a detailed action name in the usual form.
-
-  This might be useful to discover if an accel already exists in
-  order to prevent installation of a conflicting accelerator (from
-  an accelerator editor or a plugin system, for example). Note that
-  having more than one action per accelerator may not be a bad thing
-  and might make sense in cases where the actions never appear in the
-  same context.
-
-  In case there are no actions for a given accelerator, an empty array
-  is returned. `NULL` is never returned.
-
-  It is a programmer error to pass an invalid accelerator string.
-
-  If you are unsure, check it with [func@Gtk.accelerator_parse] first. *)
-  external get_actions_for_accel : t -> string -> unit = "ml_gtk_application_get_actions_for_accel"
-
-  (** Gets the accelerators that are currently associated with
-  the given action. *)
-  external get_accels_for_action : t -> string -> unit = "ml_gtk_application_get_accels_for_action"
 
   (** Adds a window to `application`.
 
@@ -119,6 +56,17 @@ module rec Application : sig
   any windows. *)
   external add_window : t -> Window.t -> unit = "ml_gtk_application_add_window"
 
+  (* Properties *)
+
+  (** Get property: register-session *)
+  external get_register_session : t -> bool = "ml_gtk_application_get_register_session"
+
+  (** Set property: register-session *)
+  external set_register_session : t -> bool -> unit = "ml_gtk_application_set_register_session"
+
+  (** Get property: screensaver-active *)
+  external get_screensaver_active : t -> bool = "ml_gtk_application_get_screensaver_active"
+
 
 end
 
@@ -131,110 +79,7 @@ and Window
   (** Create a new Window *)
   external new_ : unit -> t = "ml_gtk_window_new"
 
-  (* Properties *)
-
-  (** Get property: decorated *)
-  external get_decorated : t -> bool = "ml_gtk_window_get_decorated"
-
-  (** Set property: decorated *)
-  external set_decorated : t -> bool -> unit = "ml_gtk_window_set_decorated"
-
-  (** Get property: default-height *)
-  external get_default_height : t -> int = "ml_gtk_window_get_default_height"
-
-  (** Set property: default-height *)
-  external set_default_height : t -> int -> unit = "ml_gtk_window_set_default_height"
-
-  (** Get property: default-width *)
-  external get_default_width : t -> int = "ml_gtk_window_get_default_width"
-
-  (** Set property: default-width *)
-  external set_default_width : t -> int -> unit = "ml_gtk_window_set_default_width"
-
-  (** Get property: deletable *)
-  external get_deletable : t -> bool = "ml_gtk_window_get_deletable"
-
-  (** Set property: deletable *)
-  external set_deletable : t -> bool -> unit = "ml_gtk_window_set_deletable"
-
-  (** Get property: destroy-with-parent *)
-  external get_destroy_with_parent : t -> bool = "ml_gtk_window_get_destroy_with_parent"
-
-  (** Set property: destroy-with-parent *)
-  external set_destroy_with_parent : t -> bool -> unit = "ml_gtk_window_set_destroy_with_parent"
-
-  (** Get property: focus-visible *)
-  external get_focus_visible : t -> bool = "ml_gtk_window_get_focus_visible"
-
-  (** Set property: focus-visible *)
-  external set_focus_visible : t -> bool -> unit = "ml_gtk_window_set_focus_visible"
-
-  (** Get property: fullscreened *)
-  external get_fullscreened : t -> bool = "ml_gtk_window_get_fullscreened"
-
-  (** Set property: fullscreened *)
-  external set_fullscreened : t -> bool -> unit = "ml_gtk_window_set_fullscreened"
-
-  (** Get property: handle-menubar-accel *)
-  external get_handle_menubar_accel : t -> bool = "ml_gtk_window_get_handle_menubar_accel"
-
-  (** Set property: handle-menubar-accel *)
-  external set_handle_menubar_accel : t -> bool -> unit = "ml_gtk_window_set_handle_menubar_accel"
-
-  (** Get property: hide-on-close *)
-  external get_hide_on_close : t -> bool = "ml_gtk_window_get_hide_on_close"
-
-  (** Set property: hide-on-close *)
-  external set_hide_on_close : t -> bool -> unit = "ml_gtk_window_set_hide_on_close"
-
-  (** Get property: icon-name *)
-  external get_icon_name : t -> string = "ml_gtk_window_get_icon_name"
-
-  (** Set property: icon-name *)
-  external set_icon_name : t -> string -> unit = "ml_gtk_window_set_icon_name"
-
-  (** Get property: is-active *)
-  external get_is_active : t -> bool = "ml_gtk_window_get_is_active"
-
-  (** Get property: maximized *)
-  external get_maximized : t -> bool = "ml_gtk_window_get_maximized"
-
-  (** Set property: maximized *)
-  external set_maximized : t -> bool -> unit = "ml_gtk_window_set_maximized"
-
-  (** Get property: mnemonics-visible *)
-  external get_mnemonics_visible : t -> bool = "ml_gtk_window_get_mnemonics_visible"
-
-  (** Set property: mnemonics-visible *)
-  external set_mnemonics_visible : t -> bool -> unit = "ml_gtk_window_set_mnemonics_visible"
-
-  (** Get property: modal *)
-  external get_modal : t -> bool = "ml_gtk_window_get_modal"
-
-  (** Set property: modal *)
-  external set_modal : t -> bool -> unit = "ml_gtk_window_set_modal"
-
-  (** Get property: resizable *)
-  external get_resizable : t -> bool = "ml_gtk_window_get_resizable"
-
-  (** Set property: resizable *)
-  external set_resizable : t -> bool -> unit = "ml_gtk_window_set_resizable"
-
-  (** Get property: startup-id *)
-  external get_startup_id : t -> string = "ml_gtk_window_get_startup_id"
-
-  (** Set property: startup-id *)
-  external set_startup_id : t -> string -> unit = "ml_gtk_window_set_startup_id"
-
-  (** Get property: suspended *)
-  external get_suspended : t -> bool = "ml_gtk_window_get_suspended"
-
-  (** Get property: title *)
-  external get_title : t -> string = "ml_gtk_window_get_title"
-
-  (** Set property: title *)
-  external set_title : t -> string -> unit = "ml_gtk_window_set_title"
-
+  (* Methods *)
   (** Asks to unminimize the specified @window.
 
   Note that you shouldn’t assume the window is definitely unminimized
@@ -300,6 +145,77 @@ and Window
   [method@Gtk.Widget.show]. *)
   external set_titlebar : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_window_set_titlebar"
 
+  (** Sets the title of the `GtkWindow`.
+
+  The title of a window will be displayed in its title bar; on the
+  X Window System, the title bar is rendered by the window manager
+  so exactly how the title appears to users may vary according to a
+  user’s exact configuration. The title should help a user distinguish
+  this window from other windows they may have open. A good title might
+  include the application name and current document filename, for example.
+
+  Passing %NULL does the same as setting the title to an empty string. *)
+  external set_title : t -> string option -> unit = "ml_gtk_window_set_title"
+
+  (** Sets the startup notification ID.
+
+  Startup notification identifiers are used by desktop environment
+  to track application startup, to provide user feedback and other
+  features. This function changes the corresponding property on the
+  underlying `GdkSurface`.
+
+  Normally, startup identifier is managed automatically and you should
+  only use this function in special cases like transferring focus from
+  other processes. You should use this function before calling
+  [method@Gtk.Window.present] or any equivalent function generating
+  a window map event.
+
+  This function is only useful on X11, not with other GTK targets. *)
+  external set_startup_id : t -> string -> unit = "ml_gtk_window_set_startup_id"
+
+  (** Sets whether the user can resize a window.
+
+  Windows are user resizable by default. *)
+  external set_resizable : t -> bool -> unit = "ml_gtk_window_set_resizable"
+
+  (** Sets a window modal or non-modal.
+
+  Modal windows prevent interaction with other windows in the same
+  application. To keep modal dialogs on top of main application windows,
+  use [method@Gtk.Window.set_transient_for] to make the dialog transient
+  for the parent; most window managers will then disallow lowering the
+  dialog below the parent. *)
+  external set_modal : t -> bool -> unit = "ml_gtk_window_set_modal"
+
+  (** Sets whether mnemonics are supposed to be visible.
+
+  This property is maintained by GTK based on user input,
+  and should not be set by applications. *)
+  external set_mnemonics_visible : t -> bool -> unit = "ml_gtk_window_set_mnemonics_visible"
+
+  (** Sets the icon for the window from a named themed icon.
+
+  See the docs for [class@Gtk.IconTheme] for more details.
+  On some platforms, the window icon is not used at all.
+
+  Note that this has nothing to do with the WM_ICON_NAME
+  property which is mentioned in the ICCCM. *)
+  external set_icon_name : t -> string option -> unit = "ml_gtk_window_set_icon_name"
+
+  (** If @setting is %TRUE, then clicking the close button on the window
+  will not destroy it, but only hide it. *)
+  external set_hide_on_close : t -> bool -> unit = "ml_gtk_window_set_hide_on_close"
+
+  (** Sets whether this window should react to F10 key presses
+  by activating a menubar it contains. *)
+  external set_handle_menubar_accel : t -> bool -> unit = "ml_gtk_window_set_handle_menubar_accel"
+
+  (** Sets whether “focus rectangles” are supposed to be visible.
+
+  This property is maintained by GTK based on user input,
+  and should not be set by applications. *)
+  external set_focus_visible : t -> bool -> unit = "ml_gtk_window_set_focus_visible"
+
   (** Sets the focus widget.
 
   If @focus is not the current focus widget, and is focusable,
@@ -308,6 +224,27 @@ and Window
   particular widget in the toplevel, it is usually more convenient
   to use [method@Gtk.Widget.grab_focus] instead of this function. *)
   external set_focus : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_window_set_focus"
+
+  (** If @setting is %TRUE, then destroying the transient parent of @window
+  will also destroy @window itself.
+
+  This is useful for dialogs that shouldn’t persist beyond the lifetime
+  of the main window they are associated with, for example. *)
+  external set_destroy_with_parent : t -> bool -> unit = "ml_gtk_window_set_destroy_with_parent"
+
+  (** Sets whether the window should be deletable.
+
+  By default, windows have a close button in the window frame.
+  Some  window managers allow GTK to disable this button. If you
+  set the deletable property to %FALSE using this function, GTK
+  will do its best to convince the window manager not to show a
+  close button. Depending on the system, this function may not
+  have any effect when called on a window that is already visible,
+  so you should call it before calling [method@Gtk.Widget.show].
+
+  On Windows, this function always works, since there’s no window
+  manager policy involved. *)
+  external set_deletable : t -> bool -> unit = "ml_gtk_window_set_deletable"
 
   (** Sets the default widget.
 
@@ -345,6 +282,21 @@ and Window
   directly will not work in all circumstances and can lead to growing
   or shrinking windows. *)
   external set_default_size : t -> int -> int -> unit = "ml_gtk_window_set_default_size"
+
+  (** Sets whether the window should be decorated.
+
+  By default, windows are decorated with a title bar, resize
+  controls, etc. Some window managers allow GTK to disable these
+  decorations, creating a borderless window. If you set the decorated
+  property to %FALSE using this function, GTK will do its best to
+  convince the window manager not to decorate the window. Depending on
+  the system, this function may not have any effect when called on a
+  window that is already visible, so you should call it before calling
+  [method@Gtk.Widget.show].
+
+  On Windows, this function always works, since there’s no window manager
+  policy involved. *)
+  external set_decorated : t -> bool -> unit = "ml_gtk_window_set_decorated"
 
   (** Sets the child widget of @window. *)
   external set_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_window_set_child"
@@ -456,10 +408,35 @@ and Window
   gtk_window_set_titlebar(). *)
   external get_titlebar : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_window_get_titlebar"
 
+  (** Retrieves the title of the window. *)
+  external get_title : t -> string option = "ml_gtk_window_get_title"
+
+  (** Gets the value set by gtk_window_set_resizable(). *)
+  external get_resizable : t -> bool = "ml_gtk_window_get_resizable"
+
+  (** Returns whether the window is modal. *)
+  external get_modal : t -> bool = "ml_gtk_window_get_modal"
+
+  (** Gets whether mnemonics are supposed to be visible. *)
+  external get_mnemonics_visible : t -> bool = "ml_gtk_window_get_mnemonics_visible"
+
+  (** Returns the name of the themed icon for the window. *)
+  external get_icon_name : t -> string option = "ml_gtk_window_get_icon_name"
+
+  (** Returns whether the window will be hidden when the close button is clicked. *)
+  external get_hide_on_close : t -> bool = "ml_gtk_window_get_hide_on_close"
+
+  (** Returns whether this window reacts to F10 key presses by
+  activating a menubar it contains. *)
+  external get_handle_menubar_accel : t -> bool = "ml_gtk_window_get_handle_menubar_accel"
+
   (** Returns the group for @window.
 
   If the window has no group, then the default group is returned. *)
   external get_group : t -> Window_group.t = "ml_gtk_window_get_group"
+
+  (** Gets whether “focus rectangles” are supposed to be visible. *)
+  external get_focus_visible : t -> bool = "ml_gtk_window_get_focus_visible"
 
   (** Retrieves the current focused widget within the window.
 
@@ -469,8 +446,27 @@ and Window
   not be %TRUE for the widget. *)
   external get_focus : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_window_get_focus"
 
+  (** Returns whether the window will be destroyed with its transient parent. *)
+  external get_destroy_with_parent : t -> bool = "ml_gtk_window_get_destroy_with_parent"
+
+  (** Returns whether the window has been set to have a close button. *)
+  external get_deletable : t -> bool = "ml_gtk_window_get_deletable"
+
   (** Returns the default widget for @window. *)
   external get_default_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_window_get_default_widget"
+
+  (** Gets the default size of the window.
+
+  A value of 0 for the width or height indicates that a default
+  size has not been explicitly set for that dimension, so the
+  “natural” size of the window will be used.
+
+  This function is the recommended way for [saving window state
+  across restarts of applications](https://developer.gnome.org/documentation/tutorials/save-state.html). *)
+  external get_default_size : t -> int * int = "ml_gtk_window_get_default_size"
+
+  (** Returns whether the window has been set to have decorations. *)
+  external get_decorated : t -> bool = "ml_gtk_window_get_decorated"
 
   (** Gets the child widget of @window. *)
   external get_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_window_get_child"
@@ -502,6 +498,41 @@ and Window
   titlebars. *)
   external close : t -> unit = "ml_gtk_window_close"
 
+  (* Properties *)
+
+  (** Get property: default-height *)
+  external get_default_height : t -> int = "ml_gtk_window_get_default_height"
+
+  (** Set property: default-height *)
+  external set_default_height : t -> int -> unit = "ml_gtk_window_set_default_height"
+
+  (** Get property: default-width *)
+  external get_default_width : t -> int = "ml_gtk_window_get_default_width"
+
+  (** Set property: default-width *)
+  external set_default_width : t -> int -> unit = "ml_gtk_window_set_default_width"
+
+  (** Get property: focus-widget *)
+  external get_focus_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = "ml_gtk_window_get_focus_widget"
+
+  (** Set property: focus-widget *)
+  external set_focus_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_window_set_focus_widget"
+
+  (** Get property: fullscreened *)
+  external get_fullscreened : t -> bool = "ml_gtk_window_get_fullscreened"
+
+  (** Set property: fullscreened *)
+  external set_fullscreened : t -> bool -> unit = "ml_gtk_window_set_fullscreened"
+
+  (** Get property: maximized *)
+  external get_maximized : t -> bool = "ml_gtk_window_get_maximized"
+
+  (** Set property: maximized *)
+  external set_maximized : t -> bool -> unit = "ml_gtk_window_set_maximized"
+
+  (** Get property: suspended *)
+  external get_suspended : t -> bool = "ml_gtk_window_get_suspended"
+
 
 end
 
@@ -512,6 +543,7 @@ and Window_group
   (** Create a new WindowGroup *)
   external new_ : unit -> t = "ml_gtk_window_group_new"
 
+  (* Methods *)
   (** Removes a window from a `GtkWindowGroup`. *)
   external remove_window : t -> Window.t -> unit = "ml_gtk_window_group_remove_window"
 

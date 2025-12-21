@@ -13,6 +13,7 @@ let type_mappings : (string * Types.type_mapping) list =
          Types.ml_to_c = "Int_val";
          Types.needs_copy = false;
          layer2_class = None;
+         c_type = "guint";
        }
         : Types.type_mapping) );
     ( "gint",
@@ -22,6 +23,7 @@ let type_mappings : (string * Types.type_mapping) list =
         ml_to_c = "Int_val";
         needs_copy = false;
         layer2_class = None;
+        c_type = "gint";
       } );
     ( "gdouble",
       {
@@ -30,6 +32,7 @@ let type_mappings : (string * Types.type_mapping) list =
         ml_to_c = "Double_val";
         needs_copy = true;
         layer2_class = None;
+        c_type = "gdouble";
       } );
     (* Bug fix #2: Add "double" mapping for c:type="double" in GIR *)
     ( "double",
@@ -39,6 +42,7 @@ let type_mappings : (string * Types.type_mapping) list =
         ml_to_c = "Double_val";
         needs_copy = true;
         layer2_class = None;
+        c_type = "double";
       } );
     ( "gboolean",
       {
@@ -47,6 +51,7 @@ let type_mappings : (string * Types.type_mapping) list =
         ml_to_c = "Bool_val";
         needs_copy = false;
         layer2_class = None;
+        c_type = "gboolean";
       } );
     ( "gchararray",
       {
@@ -55,79 +60,9 @@ let type_mappings : (string * Types.type_mapping) list =
         ml_to_c = "String_val";
         needs_copy = true;
         layer2_class = None;
+        c_type = "gchararray";
       } );
     (* GdkModifierType is now generated from Gdk-4.0.gir *)
-    ( "GdkEvent*",
-      {
-        ocaml_type = "'a Gdk.event";
-        c_to_ml = "Val_GdkEvent";
-        ml_to_c = "GdkEvent_val";
-        needs_copy = false;
-        layer2_class = None;
-      } );
-    ( "GtkWidget*",
-      {
-        ocaml_type = "Widget.t";
-        c_to_ml = "Val_GtkWidget";
-        ml_to_c = "GtkWidget_val";
-        needs_copy = false;
-        layer2_class =
-          Some
-            {
-              class_module =
-                "GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget";
-              class_type = "widget";
-              class_layer1_accessor = "as_widget";
-            };
-      } );
-    ( "GtkEventController*",
-      {
-        ocaml_type = "EventController.t";
-        c_to_ml = "Val_GtkEventController";
-        ml_to_c = "GtkEventController_val";
-        needs_copy = false;
-        layer2_class =
-          Some
-            {
-              class_module =
-                "GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget";
-              class_type = "event_controller";
-              class_layer1_accessor = "as_event_controller";
-            };
-      } );
-    (* Phase 5: Widget-specific types *)
-    ( "GtkOrientation",
-      {
-        ocaml_type = "Gtk.orientation";
-        c_to_ml = "Val_orientation";
-        ml_to_c = "Orientation_val";
-        needs_copy = false;
-        layer2_class = None;
-      } );
-    ( "GtkAlign",
-      {
-        ocaml_type = "Gtk.align";
-        c_to_ml = "Val_align";
-        ml_to_c = "Align_val";
-        needs_copy = false;
-        layer2_class = None;
-      } );
-    ( "GtkJustification",
-      {
-        ocaml_type = "int";
-        c_to_ml = "Val_int";
-        ml_to_c = "Int_val";
-        needs_copy = false;
-        layer2_class = None;
-      } );
-    ( "PangoWrapMode",
-      {
-        ocaml_type = "int";
-        c_to_ml = "Val_int";
-        ml_to_c = "Int_val";
-        needs_copy = false;
-        layer2_class = None;
-      } );
     ( "const gchar*",
       {
         ocaml_type = "string";
@@ -135,6 +70,7 @@ let type_mappings : (string * Types.type_mapping) list =
         ml_to_c = "String_val";
         needs_copy = true;
         layer2_class = None;
+        c_type = "const gchar*";
       } );
     (* Bug fix: Add "gchar*" mapping for properties like placeholder-text *)
     ( "gchar*",
@@ -144,6 +80,7 @@ let type_mappings : (string * Types.type_mapping) list =
         ml_to_c = "String_val";
         needs_copy = true;
         layer2_class = None;
+        c_type = "gchar*";
       } );
     (* Bug fix: Add "utf8" mapping for GIR type name *)
     ( "utf8",
@@ -153,6 +90,7 @@ let type_mappings : (string * Types.type_mapping) list =
         ml_to_c = "String_val";
         needs_copy = true;
         layer2_class = None;
+        c_type = "utf8";
       } );
     ( "const char*",
       {
@@ -161,79 +99,7 @@ let type_mappings : (string * Types.type_mapping) list =
         ml_to_c = "String_val";
         needs_copy = true;
         layer2_class = None;
-      } );
-    ( "utf8",
-      {
-        ocaml_type = "string";
-        c_to_ml = "caml_copy_string";
-        ml_to_c = "String_val";
-        needs_copy = true;
-        layer2_class = None;
-      } );
-    (* Enum types - map to int for now *)
-    ( "GtkInputPurpose",
-      {
-        ocaml_type = "int";
-        c_to_ml = "Val_int";
-        ml_to_c = "Int_val";
-        needs_copy = false;
-        layer2_class = None;
-      } );
-    ( "GtkInputHints",
-      {
-        ocaml_type = "int";
-        c_to_ml = "Val_int";
-        ml_to_c = "Int_val";
-        needs_copy = false;
-        layer2_class = None;
-      } );
-    ( "GtkImageType",
-      {
-        ocaml_type = "int";
-        c_to_ml = "Val_int";
-        ml_to_c = "Int_val";
-        needs_copy = false;
-        layer2_class = None;
-      } );
-    ( "GtkArrowType",
-      {
-        ocaml_type = "int";
-        c_to_ml = "Val_int";
-        ml_to_c = "Int_val";
-        needs_copy = false;
-        layer2_class = None;
-      } );
-    ( "GtkSpinButtonUpdatePolicy",
-      {
-        ocaml_type = "int";
-        c_to_ml = "Val_int";
-        ml_to_c = "Int_val";
-        needs_copy = false;
-        layer2_class = None;
-      } );
-    ( "GtkIconSize",
-      {
-        ocaml_type = "int";
-        c_to_ml = "Val_int";
-        ml_to_c = "Int_val";
-        needs_copy = false;
-        layer2_class = None;
-      } );
-    ( "GtkNaturalWrapMode",
-      {
-        ocaml_type = "int";
-        c_to_ml = "Val_int";
-        ml_to_c = "Int_val";
-        needs_copy = false;
-        layer2_class = None;
-      } );
-    ( "PangoEllipsizeMode",
-      {
-        ocaml_type = "int";
-        c_to_ml = "Val_int";
-        ml_to_c = "Int_val";
-        needs_copy = false;
-        layer2_class = None;
+        c_type = "const char*"
       } );
     (* Primitive types *)
     ( "gfloat",
@@ -243,6 +109,7 @@ let type_mappings : (string * Types.type_mapping) list =
         ml_to_c = "Double_val";
         needs_copy = true;
         layer2_class = None;
+        c_type = "gfloat";
       } );
     (* Bug fix #2: Ensure both gfloat and float are mapped *)
     ( "float",
@@ -252,44 +119,7 @@ let type_mappings : (string * Types.type_mapping) list =
         ml_to_c = "Double_val";
         needs_copy = true;
         layer2_class = None;
-      } );
-    (* Bug fix #2: Add int mapping for c:type="int" in GIR *)
-    ( "int",
-      {
-        ocaml_type = "int";
-        c_to_ml = "Val_int";
-        ml_to_c = "Int_val";
-        needs_copy = false;
-        layer2_class = None;
-      } );
-    (* GdkEvent - pointer type *)
-    ( "GdkEvent*",
-      {
-        ocaml_type = "'a Gdk.event";
-        c_to_ml = "Val_GdkEvent";
-        ml_to_c = "GdkEvent_val";
-        needs_copy = false;
-        layer2_class = None;
-      } );
-    (* GtkWrapMode - enum, use int for now *)
-    ( "GtkWrapMode",
-      {
-        ocaml_type = "int";
-        (* TODO: Should be proper enum type *)
-        c_to_ml = "Val_int";
-        ml_to_c = "Int_val";
-        needs_copy = false;
-        layer2_class = None;
-      } );
-    (* GtkTextWindowType - enum, use int for now *)
-    ( "GtkTextWindowType",
-      {
-        ocaml_type = "int";
-        (* TODO: Should be proper enum type *)
-        c_to_ml = "Val_int";
-        ml_to_c = "Int_val";
-        needs_copy = false;
-        layer2_class = None;
+        c_type = "float";
       } );
   ]
 
@@ -323,7 +153,7 @@ let find_class_mapping classes lookup_str =
   List.find_opt
     ~f:(fun (cls : Types.gir_class) ->
       let normalized_name = Utils.normalize_class_name cls.class_name in
-      cls.c_type = normalized_lookup
+      cls.class_name = normalized_lookup
       || cls.c_type ^ "*" = lookup_str
       || "Gtk" ^ normalized_name = normalized_lookup
       || "Gtk" ^ normalized_name ^ "*" = lookup_str)
@@ -379,10 +209,11 @@ let find_record_mapping records lookup_str =
     records
   |> Option.map (fun record -> (record, is_pointer, is_boxed_record record))
 
+let or_else f opt = match opt with Some _ -> opt | None -> f ()
+
 let find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
   let try_lookup lookup_str =
-    (* First, check if this is a known class type (GtkButton*, GtkWidget*, etc.) *)
-    let class_or_interface_mapping =
+    let find_class_mapping () =
       match find_class_mapping ctx.classes lookup_str with
       | Some cls ->
           (* Use proper Layer 1 type based on hierarchy *)
@@ -426,195 +257,164 @@ let find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
                   };
               c_to_ml = sprintf "Val_%s" cls.c_type;
               ml_to_c = sprintf "%s_val" cls.c_type;
+              c_type = cls.c_type;
               needs_copy = false;
             }
-      | None -> (
-          (* Check if this is a known interface type (GtkTreeModel*, etc.) *)
-          match find_interface_mapping ctx.interfaces lookup_str with
-          | Some iface ->
-              let module_name =
-                (* Check if this interface is in the current cycle being generated *)
-                if List.mem iface.interface_name ~set:ctx.current_cycle_classes
-                then
-                  (* Within the same cycle, use just the submodule name *)
-                  Utils.module_name_of_class iface.interface_name
-                else
-                  match
-                    Hashtbl.find_opt ctx.module_groups iface.interface_name
-                  with
-                  | Some combined_module_name ->
-                      let simple_module_name =
-                        Utils.module_name_of_class iface.interface_name
-                      in
-                      (* Check if this is a cyclic module by comparing names *)
-                      if combined_module_name <> simple_module_name then
-                        (* For cyclic modules, we need CombinedModule.InterfaceName.t *)
-                        combined_module_name ^ "." ^ simple_module_name
-                      else
-                        (* Single module *)
-                        combined_module_name
-                  | None -> Utils.module_name_of_class iface.interface_name
-              in
-              let ocaml_type =
-                (* Look up the module name from module_groups table *)
-                module_name ^ ".t"
-              in
-              let ocaml_class_module =
-                match
-                  Hashtbl.find_opt ctx.module_groups iface.interface_name
-                with
-                | Some combined_module_name -> combined_module_name
-                | None -> Utils.module_name_of_class iface.interface_name
-              in
-
-              let ocaml_class_name =
-                Utils.ocaml_class_name iface.interface_name
-              in
-              Some
-                {
-                  ocaml_type;
-                  layer2_class =
-                    Some
-                      {
-                        class_module = "G" ^ ocaml_class_module;
-                        class_type = ocaml_class_name;
-                        class_layer1_accessor = "as_" ^ ocaml_class_name;
-                      };
-                  c_to_ml = sprintf "Val_%s" iface.c_type;
-                  ml_to_c = sprintf "%s_val" iface.c_type;
-                  needs_copy = false;
-                }
-          | None -> (
-              (* Next, check for known records (boxed/disguised) *)
-              match find_record_mapping ctx.records lookup_str with
-              | Some (record, _is_pointer, _) ->
-                  (* Use proper record module type (e.g., Tree_iter.t) instead of Obj.t *)
-                  let ocaml_type =
-                    (* Look up the module name from module_groups table *)
-                    let module_name =
-                      (* Check if this record is in the current cycle being generated *)
-                      if
-                        List.mem record.record_name
-                          ~set:ctx.current_cycle_classes
-                      then
-                        (* Within the same cycle, use just the submodule name *)
-                        Utils.module_name_of_class record.record_name
-                      else
-                        match
-                          Hashtbl.find_opt ctx.module_groups record.record_name
-                        with
-                        | Some combined_module_name ->
-                            let simple_module_name =
-                              Utils.module_name_of_class record.record_name
-                            in
-                            (* Check if this is a cyclic module by comparing names *)
-                            if combined_module_name <> simple_module_name then
-                              (* For cyclic modules, we need CombinedModule.RecordName.t *)
-                              combined_module_name ^ "." ^ simple_module_name
-                            else
-                              (* Single module *)
-                              combined_module_name
-                        | None -> Utils.module_name_of_class record.record_name
-                    in
-                    module_name ^ ".t"
-                  in
-                  Some
-                    {
-                      ocaml_type;
-                      c_to_ml = sprintf "Val_%s" record.c_type;
-                      ml_to_c = sprintf "%s_val" record.c_type;
-                      layer2_class = None;
-                      needs_copy = false;
-                    }
-              | None -> None))
+      | None -> None
+      (* First, check if this is a known class type (GtkButton*, GtkWidget*, etc.) *)
     in
-    match class_or_interface_mapping with
-    | Some mapping -> Some mapping
-    | None -> (
-        (* First, check if this is a known enum *)
-        let enum_mapping =
-          List.find_opt
-            ~f:(fun (e : Types.gir_enum) -> e.enum_c_type = lookup_str)
-            ctx.enums
-        in
-        match enum_mapping with
-        | Some enum ->
-            (* Extract namespace from C type to prefix converter functions *)
-            let namespace =
-              Option.value
-                (Utils.extract_namespace_from_c_type enum.enum_c_type)
-                ~default:""
-            in
-            Some
-              {
-                ocaml_type = String.lowercase_ascii enum.enum_name;
-                c_to_ml = sprintf "Val_%s%s" namespace enum.enum_name;
-                ml_to_c = sprintf "%s%s_val" namespace enum.enum_name;
-                layer2_class = None;
-                needs_copy = false;
-              }
-        | None -> (
-            (* Check if this is a known bitfield *)
-            let bitfield_mapping =
-              List.find_opt
-                ~f:(fun (b : Types.gir_bitfield) ->
-                  b.bitfield_c_type = lookup_str)
-                ctx.bitfields
-            in
-            match bitfield_mapping with
-            | Some bitfield ->
-                (* Extract namespace from C type to prefix converter functions *)
-                let namespace =
-                  Option.value
-                    (Utils.extract_namespace_from_c_type
-                       bitfield.bitfield_c_type)
-                    ~default:""
-                in
+    let find_interface_mapping () =
+      match find_interface_mapping ctx.interfaces lookup_str with
+      | Some iface ->
+          let module_name =
+            (* Check if this interface is in the current cycle being generated *)
+            if List.mem iface.interface_name ~set:ctx.current_cycle_classes then
+              (* Within the same cycle, use just the submodule name *)
+              Utils.module_name_of_class iface.interface_name
+            else
+              match Hashtbl.find_opt ctx.module_groups iface.interface_name with
+              | Some combined_module_name ->
+                  let simple_module_name =
+                    Utils.module_name_of_class iface.interface_name
+                  in
+                  (* Check if this is a cyclic module by comparing names *)
+                  if combined_module_name <> simple_module_name then
+                    (* For cyclic modules, we need CombinedModule.InterfaceName.t *)
+                    combined_module_name ^ "." ^ simple_module_name
+                  else
+                    (* Single module *)
+                    combined_module_name
+              | None -> Utils.module_name_of_class iface.interface_name
+          in
+          let ocaml_type =
+            (* Look up the module name from module_groups table *)
+            module_name ^ ".t"
+          in
+          let ocaml_class_module =
+            match Hashtbl.find_opt ctx.module_groups iface.interface_name with
+            | Some combined_module_name -> combined_module_name
+            | None -> Utils.module_name_of_class iface.interface_name
+          in
+
+          let ocaml_class_name = Utils.ocaml_class_name iface.interface_name in
+          Some
+            {
+              ocaml_type;
+              layer2_class =
                 Some
                   {
-                    ocaml_type = String.lowercase_ascii bitfield.bitfield_name;
-                    c_to_ml =
-                      sprintf "Val_%s%s" namespace bitfield.bitfield_name;
-                    ml_to_c =
-                      sprintf "%s%s_val" namespace bitfield.bitfield_name;
-                    needs_copy = false;
-                    layer2_class = None;
-                  }
-            | None -> (
-                (* Fall back to hardcoded type mappings *)
-                try Some (List.assoc lookup_str type_mappings)
-                with Not_found ->
-                  (* Phase 5.3: Handle any Gtk widget pointer type generically *)
-                  if
-                    String.length lookup_str > 3
-                    && String.sub lookup_str ~pos:0 ~len:3 = "Gtk"
-                    && String.sub lookup_str
-                         ~pos:(String.length lookup_str - 1)
-                         ~len:1
-                       = "*"
-                  then
-                    Some
-                      {
-                        ocaml_type = "Gtk.widget";
-                        c_to_ml = "Val_GtkWidget";
-                        ml_to_c = "GtkWidget_val";
-                        needs_copy = false;
-                        layer2_class = None;
-                      }
-                  else None)))
+                    class_module = "G" ^ ocaml_class_module;
+                    class_type = ocaml_class_name;
+                    class_layer1_accessor = "as_" ^ ocaml_class_name;
+                  };
+              c_to_ml = sprintf "Val_%s" iface.c_type;
+              ml_to_c = sprintf "%s_val" iface.c_type;
+              c_type = iface.c_type;
+              needs_copy = false;
+            }
+          (* Check if this is a known interface type (GtkTreeModel*, etc.) *)
+      | None -> None
+    in
+    let find_record_mapping () =
+      (* Next, check for known records (boxed/disguised) *)
+      match find_record_mapping ctx.records lookup_str with
+      | Some (record, _is_pointer, _) ->
+          (* Use proper record module type (e.g., Tree_iter.t) instead of Obj.t *)
+          let ocaml_type =
+            (* Look up the module name from module_groups table *)
+            let module_name =
+              (* Check if this record is in the current cycle being generated *)
+              if List.mem record.record_name ~set:ctx.current_cycle_classes then
+                (* Within the same cycle, use just the submodule name *)
+                Utils.module_name_of_class record.record_name
+              else
+                match Hashtbl.find_opt ctx.module_groups record.record_name with
+                | Some combined_module_name ->
+                    let simple_module_name =
+                      Utils.module_name_of_class record.record_name
+                    in
+                    (* Check if this is a cyclic module by comparing names *)
+                    if combined_module_name <> simple_module_name then
+                      (* For cyclic modules, we need CombinedModule.RecordName.t *)
+                      combined_module_name ^ "." ^ simple_module_name
+                    else
+                      (* Single module *)
+                      combined_module_name
+                | None -> Utils.module_name_of_class record.record_name
+            in
+            module_name ^ ".t"
+          in
+          Some
+            {
+              ocaml_type;
+              c_to_ml = sprintf "Val_%s" record.c_type;
+              ml_to_c = sprintf "%s_val" record.c_type;
+              layer2_class = None;
+              c_type = record.c_type;
+              needs_copy = false;
+            }
+      | None -> None
+    in
+    let find_enum_mapping () =
+      (* First, check if this is a known enum *)
+      let enum_mapping =
+        List.find_opt
+          ~f:(fun (e : Types.gir_enum) -> e.enum_name = lookup_str)
+          ctx.enums
+      in
+      match enum_mapping with
+      | Some enum ->
+          (* Use the context's namespace for enums from the current library *)
+          let namespace = ctx.namespace.namespace_name in
+          Some
+            {
+              ocaml_type = (namespace ) ^ "_enums." ^ String.lowercase_ascii enum.enum_name;
+              c_type = enum.enum_c_type;
+              c_to_ml = sprintf "Val_%s%s" namespace enum.enum_name;
+              ml_to_c = sprintf "%s%s_val" namespace enum.enum_name;
+              layer2_class = None;
+              needs_copy = false;
+            }
+      | None -> None
+    in
+    let find_bitfield_mapping () =
+      (* Check if this is a known bitfield *)
+      let bitfield_mapping =
+        List.find_opt
+          ~f:(fun (b : Types.gir_bitfield) -> b.bitfield_c_type = lookup_str)
+          ctx.bitfields
+      in
+      match bitfield_mapping with
+      | Some bitfield ->
+          (* Use the context's namespace for bitfields from the current library *)
+          let namespace = ctx.namespace.namespace_name in
+          Some
+            {
+              ocaml_type = String.lowercase_ascii bitfield.bitfield_name;
+              c_to_ml = sprintf "Val_%s%s" namespace bitfield.bitfield_name;
+              ml_to_c = sprintf "%s%s_val" namespace bitfield.bitfield_name;
+              needs_copy = false;
+              layer2_class = None;
+              c_type = bitfield.bitfield_c_type;
+            }
+      | None -> None
+    in
+    let find_hardcoded_mapping () =
+      (* Fall back to hardcoded type mappings *)
+      (List.assoc_opt lookup_str type_mappings)
+    in
+    find_class_mapping ()
+    |> or_else find_interface_mapping
+    |> or_else find_record_mapping
+    |> or_else find_enum_mapping 
+    |> or_else find_bitfield_mapping
+    |> or_else find_hardcoded_mapping
   in
   (* Try c_type first, then GIR name if c_type fails *)
-  match try_lookup gir_type.c_type with
-  | Some mapping -> Some mapping
-  | None -> try_lookup gir_type.name
-
-(* Keep old function signature for compatibility *)
-let find_type_mapping ~ctx c_type =
-  find_type_mapping_for_gir_type ~ctx
-    { name = c_type; c_type; nullable = false }
+  try_lookup gir_type.name
 
 (* Bug fix #3: Add module qualification based on GIR namespace *)
-let qualify_ocaml_type ?(gir_type_name = None) ocaml_type =
+(* let qualify_ocaml_type ?(gir_type_name = None) ocaml_type =
   (* Check if type is already qualified (contains a dot) *)
   if String.contains ocaml_type '.' then ocaml_type
   else
@@ -671,4 +471,4 @@ let qualify_ocaml_type ?(gir_type_name = None) ocaml_type =
           (* Already qualified *)
         else
           sprintf "Gtk_enums.%s"
-            ocaml_type (* Likely a Gtk enum without namespace *)
+            ocaml_type Likely a Gtk enum without namespace *)

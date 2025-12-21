@@ -8,6 +8,7 @@ val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and_
 (** Create a new LockButton *)
 external new_ : unit -> t = "ml_gtk_lock_button_new"
 
+(* Methods *)
 (* Properties *)
 
 (** Get property: text-lock *)

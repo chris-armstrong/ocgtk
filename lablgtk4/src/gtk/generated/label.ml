@@ -11,86 +11,40 @@ external new_ : string option -> t = "ml_gtk_label_new"
 (** Create a new Label *)
 external new_with_mnemonic : string option -> t = "ml_gtk_label_new_with_mnemonic"
 
-(* Properties *)
+(* Methods *)
+(** Sets the `yalign` of the label.
 
-(** Get property: label *)
-external get_label : t -> string = "ml_gtk_label_get_label"
-
-(** Set property: label *)
-external set_label : t -> string -> unit = "ml_gtk_label_set_label"
-
-(** Get property: lines *)
-external get_lines : t -> int = "ml_gtk_label_get_lines"
-
-(** Set property: lines *)
-external set_lines : t -> int -> unit = "ml_gtk_label_set_lines"
-
-(** Get property: max-width-chars *)
-external get_max_width_chars : t -> int = "ml_gtk_label_get_max_width_chars"
-
-(** Set property: max-width-chars *)
-external set_max_width_chars : t -> int -> unit = "ml_gtk_label_set_max_width_chars"
-
-(** Get property: mnemonic-keyval *)
-external get_mnemonic_keyval : t -> int = "ml_gtk_label_get_mnemonic_keyval"
-
-(** Get property: selectable *)
-external get_selectable : t -> bool = "ml_gtk_label_get_selectable"
-
-(** Set property: selectable *)
-external set_selectable : t -> bool -> unit = "ml_gtk_label_set_selectable"
-
-(** Get property: single-line-mode *)
-external get_single_line_mode : t -> bool = "ml_gtk_label_get_single_line_mode"
-
-(** Set property: single-line-mode *)
-external set_single_line_mode : t -> bool -> unit = "ml_gtk_label_set_single_line_mode"
-
-(** Get property: use-markup *)
-external get_use_markup : t -> bool = "ml_gtk_label_get_use_markup"
-
-(** Set property: use-markup *)
-external set_use_markup : t -> bool -> unit = "ml_gtk_label_set_use_markup"
-
-(** Get property: use-underline *)
-external get_use_underline : t -> bool = "ml_gtk_label_get_use_underline"
-
-(** Set property: use-underline *)
-external set_use_underline : t -> bool -> unit = "ml_gtk_label_set_use_underline"
-
-(** Get property: width-chars *)
-external get_width_chars : t -> int = "ml_gtk_label_get_width_chars"
-
-(** Set property: width-chars *)
-external set_width_chars : t -> int -> unit = "ml_gtk_label_set_width_chars"
-
-(** Get property: wrap *)
-external get_wrap : t -> bool = "ml_gtk_label_get_wrap"
-
-(** Set property: wrap *)
-external set_wrap : t -> bool -> unit = "ml_gtk_label_set_wrap"
-
-(** Get property: xalign *)
-external get_xalign : t -> float = "ml_gtk_label_get_xalign"
-
-(** Set property: xalign *)
-external set_xalign : t -> float -> unit = "ml_gtk_label_set_xalign"
-
-(** Get property: yalign *)
-external get_yalign : t -> float = "ml_gtk_label_get_yalign"
-
-(** Set property: yalign *)
+See the [property@Gtk.Label:yalign] property. *)
 external set_yalign : t -> float -> unit = "ml_gtk_label_set_yalign"
 
-(** Controls how line wrapping is done.
+(** Sets the `xalign` of the label.
 
-This only affects the label if line wrapping is on. (See
-[method@Gtk.Label.set_wrap]) The default is %PANGO_WRAP_WORD
-which means wrap on word boundaries.
+See the [property@Gtk.Label:xalign] property. *)
+external set_xalign : t -> float -> unit = "ml_gtk_label_set_xalign"
 
-For sizing behavior, also consider the [property@Gtk.Label:natural-wrap-mode]
-property. *)
-external set_wrap_mode : t -> Pango.wrapmode -> unit = "ml_gtk_label_set_wrap_mode"
+(** Toggles line wrapping within the `GtkLabel` widget.
+
+%TRUE makes it break lines if text exceeds the widget’s size.
+%FALSE lets the text get cut off by the edge of the widget if
+it exceeds the widget size.
+
+Note that setting line wrapping to %TRUE does not make the label
+wrap at its parent container’s width, because GTK widgets
+conceptually can’t make their requisition depend on the parent
+container’s size. For a label that wraps at a specific position,
+set the label’s width using [method@Gtk.Widget.set_size_request]. *)
+external set_wrap : t -> bool -> unit = "ml_gtk_label_set_wrap"
+
+(** Sets the desired width in characters of @label to @n_chars. *)
+external set_width_chars : t -> int -> unit = "ml_gtk_label_set_width_chars"
+
+(** Sets whether underlines in the text indicate mnemonics. *)
+external set_use_underline : t -> bool -> unit = "ml_gtk_label_set_use_underline"
+
+(** Sets whether the text of the label contains markup.
+
+See [method@Gtk.Label.set_markup]. *)
+external set_use_markup : t -> bool -> unit = "ml_gtk_label_set_use_markup"
 
 (** Sets the label’s text from the string @str.
 
@@ -113,6 +67,15 @@ to %FALSE as a side effect.
 
 See also: [method@Gtk.Label.set_markup] *)
 external set_text : t -> string -> unit = "ml_gtk_label_set_text"
+
+(** Sets whether the label is in single line mode. *)
+external set_single_line_mode : t -> bool -> unit = "ml_gtk_label_set_single_line_mode"
+
+(** Makes text in the label selectable.
+
+Selectable labels allow the user to select text from the label,
+for copy-and-paste. *)
+external set_selectable : t -> bool -> unit = "ml_gtk_label_set_selectable"
 
 (** Select the line wrapping for the natural size request.
 
@@ -138,6 +101,9 @@ The target widget will be accelerated by emitting the
 this signal will activate the widget if there are no mnemonic collisions
 and toggle focus between the colliding widgets otherwise. *)
 external set_mnemonic_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_label_set_mnemonic_widget"
+
+(** Sets the desired maximum width in characters of @label to @n_chars. *)
+external set_max_width_chars : t -> int -> unit = "ml_gtk_label_set_max_width_chars"
 
 (** Sets the labels text, attributes and mnemonic from markup.
 
@@ -179,6 +145,20 @@ property you should also ensure that you set the
 See also: [method@Gtk.Label.set_text] *)
 external set_markup : t -> string -> unit = "ml_gtk_label_set_markup"
 
+(** Sets the number of lines to which an ellipsized, wrapping label
+should be limited.
+
+This has no effect if the label is not wrapping or ellipsized.
+Set this to -1 if you don’t want to limit the number of lines. *)
+external set_lines : t -> int -> unit = "ml_gtk_label_set_lines"
+
+(** Sets the text of the label.
+
+The label is interpreted as including embedded underlines and/or Pango
+markup depending on the values of the [property@Gtk.Label:use-underline]
+and [property@Gtk.Label:use-markup] properties. *)
+external set_label : t -> string -> unit = "ml_gtk_label_set_label"
+
 (** Sets the alignment of the lines in the text of the label relative to
 each other.
 
@@ -189,12 +169,6 @@ the label as a whole, use [method@Gtk.Widget.set_halign] instead.
 only a single line. *)
 external set_justify : t -> Gtk_enums.justification -> unit = "ml_gtk_label_set_justify"
 
-(** Sets the mode used to ellipsize the text.
-
-The text will be ellipsized if there is not enough space
-to render the entire string. *)
-external set_ellipsize : t -> Pango.ellipsizemode -> unit = "ml_gtk_label_set_ellipsize"
-
 (** Selects a range of characters in the label, if the label is selectable.
 
 See [method@Gtk.Label.set_selectable]. If the label is not selectable,
@@ -202,10 +176,35 @@ this function has no effect. If @start_offset or
 @end_offset are -1, then the end of the label will be substituted. *)
 external select_region : t -> int -> int -> unit = "ml_gtk_label_select_region"
 
-(** Returns line wrap mode used by the label.
+(** Gets the `yalign` of the label.
 
-See [method@Gtk.Label.set_wrap_mode]. *)
-external get_wrap_mode : t -> Pango.wrapmode = "ml_gtk_label_get_wrap_mode"
+See the [property@Gtk.Label:yalign] property. *)
+external get_yalign : t -> float = "ml_gtk_label_get_yalign"
+
+(** Gets the `xalign` of the label.
+
+See the [property@Gtk.Label:xalign] property. *)
+external get_xalign : t -> float = "ml_gtk_label_get_xalign"
+
+(** Returns whether lines in the label are automatically wrapped.
+
+See [method@Gtk.Label.set_wrap]. *)
+external get_wrap : t -> bool = "ml_gtk_label_get_wrap"
+
+(** Retrieves the desired width of @label, in characters.
+
+See [method@Gtk.Label.set_width_chars]. *)
+external get_width_chars : t -> int = "ml_gtk_label_get_width_chars"
+
+(** Returns whether an embedded underlines in the label indicate mnemonics.
+
+See [method@Gtk.Label.set_use_underline]. *)
+external get_use_underline : t -> bool = "ml_gtk_label_get_use_underline"
+
+(** Returns whether the label’s text is interpreted as Pango markup.
+
+See [method@Gtk.Label.set_use_markup]. *)
+external get_use_markup : t -> bool = "ml_gtk_label_get_use_markup"
 
 (** Fetches the text from a label.
 
@@ -213,6 +212,15 @@ The returned text is as it appears on screen. This does not include
 any embedded underlines indicating mnemonics or Pango markup. (See
 [method@Gtk.Label.get_label]) *)
 external get_text : t -> string = "ml_gtk_label_get_text"
+
+(** Returns whether the label is in single line mode. *)
+external get_single_line_mode : t -> bool = "ml_gtk_label_get_single_line_mode"
+
+(** Gets the selected range of characters in the label. *)
+external get_selection_bounds : t -> bool * int * int = "ml_gtk_label_get_selection_bounds"
+
+(** Returns whether the label is selectable. *)
+external get_selectable : t -> bool = "ml_gtk_label_get_selectable"
 
 (** Returns line wrap mode used by the label.
 
@@ -225,15 +233,43 @@ label.
 See [method@Gtk.Label.set_mnemonic_widget]. *)
 external get_mnemonic_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_label_get_mnemonic_widget"
 
+(** Return the mnemonic accelerator.
+
+If the label has been set so that it has a mnemonic key this function
+returns the keyval used for the mnemonic accelerator. If there is no
+mnemonic set up it returns `GDK_KEY_VoidSymbol`. *)
+external get_mnemonic_keyval : t -> int = "ml_gtk_label_get_mnemonic_keyval"
+
+(** Retrieves the desired maximum width of @label, in characters.
+
+See [method@Gtk.Label.set_width_chars]. *)
+external get_max_width_chars : t -> int = "ml_gtk_label_get_max_width_chars"
+
+(** Gets the number of lines to which an ellipsized, wrapping
+label should be limited.
+
+See [method@Gtk.Label.set_lines]. *)
+external get_lines : t -> int = "ml_gtk_label_get_lines"
+
+(** Obtains the coordinates where the label will draw its `PangoLayout`.
+
+The coordinates are useful to convert mouse events into coordinates
+inside the [class@Pango.Layout], e.g. to take some action if some part
+of the label is clicked. Remember when using the [class@Pango.Layout]
+functions you need to convert to and from pixels using PANGO_PIXELS()
+or [const@Pango.SCALE]. *)
+external get_layout_offsets : t -> int * int = "ml_gtk_label_get_layout_offsets"
+
+(** Fetches the text from a label.
+
+The returned text includes any embedded underlines indicating
+mnemonics and Pango markup. (See [method@Gtk.Label.get_text]). *)
+external get_label : t -> string = "ml_gtk_label_get_label"
+
 (** Returns the justification of the label.
 
 See [method@Gtk.Label.set_justify]. *)
 external get_justify : t -> Gtk_enums.justification = "ml_gtk_label_get_justify"
-
-(** Returns the ellipsizing position of the label.
-
-See [method@Gtk.Label.set_ellipsize]. *)
-external get_ellipsize : t -> Pango.ellipsizemode = "ml_gtk_label_get_ellipsize"
 
 (** Returns the URI for the currently active link in the label.
 
@@ -244,4 +280,6 @@ positioned.
 This function is intended for use in a [signal@Gtk.Label::activate-link]
 handler or for use in a [signal@Gtk.Widget::query-tooltip] handler. *)
 external get_current_uri : t -> string option = "ml_gtk_label_get_current_uri"
+
+(* Properties *)
 

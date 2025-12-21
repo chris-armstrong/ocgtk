@@ -3,11 +3,7 @@
 
 type t = [`multi_filter | `filter | `object_] Gobject.obj
 
-(* Properties *)
-
-(** Get property: n-items *)
-external get_n_items : t -> int = "ml_gtk_multi_filter_get_n_items"
-
+(* Methods *)
 (** Removes the filter at the given @position from the list of filters used
 by @self.
 
@@ -17,4 +13,9 @@ external remove : t -> int -> unit = "ml_gtk_multi_filter_remove"
 
 (** Adds a @filter to @self to use for matching. *)
 external append : t -> Filter.t -> unit = "ml_gtk_multi_filter_append"
+
+(* Properties *)
+
+(** Get property: n-items *)
+external get_n_items : t -> int = "ml_gtk_multi_filter_get_n_items"
 

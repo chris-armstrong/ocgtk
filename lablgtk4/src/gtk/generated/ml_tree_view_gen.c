@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -32,7 +33,7 @@ CAMLreturn(Val_GtkTreeView(obj));
 CAMLexport CAMLprim value ml_gtk_tree_view_new_with_model(value arg1)
 {
 CAMLparam1(arg1);
-GtkTreeView *obj = gtk_tree_view_new_with_model(GtkTreeModel_val(arg1));
+GtkTreeView *obj = gtk_tree_view_new_with_model(arg1);
 CAMLreturn(Val_GtkTreeView(obj));
 }
 
@@ -60,6 +61,14 @@ gtk_tree_view_set_tooltip_row(GtkTreeView_val(self), GtkTooltip_val(arg1), GtkTr
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_tree_view_set_tooltip_column(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_tree_view_set_tooltip_column(GtkTreeView_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_tree_view_set_tooltip_cell(value self, value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
@@ -68,19 +77,75 @@ gtk_tree_view_set_tooltip_cell(GtkTreeView_val(self), GtkTooltip_val(arg1), Opti
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_view_set_search_entry(value self, value arg1)
+CAMLexport CAMLprim value ml_gtk_tree_view_set_show_expanders(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_tree_view_set_search_entry(GtkTreeView_val(self), Option_val(arg1, GtkEditable_val, NULL));
+gtk_tree_view_set_show_expanders(GtkTreeView_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_view_set_model(value self, value arg1)
+CAMLexport CAMLprim value ml_gtk_tree_view_set_search_column(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_tree_view_set_model(GtkTreeView_val(self), Option_val(arg1, GtkTreeModel_val, NULL));
+gtk_tree_view_set_search_column(GtkTreeView_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_set_rubber_banding(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_tree_view_set_rubber_banding(GtkTreeView_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_set_reorderable(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_tree_view_set_reorderable(GtkTreeView_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_set_level_indentation(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_tree_view_set_level_indentation(GtkTreeView_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_set_hover_selection(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_tree_view_set_hover_selection(GtkTreeView_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_set_hover_expand(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_tree_view_set_hover_expand(GtkTreeView_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_set_headers_visible(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_tree_view_set_headers_visible(GtkTreeView_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_set_headers_clickable(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_tree_view_set_headers_clickable(GtkTreeView_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -92,11 +157,35 @@ gtk_tree_view_set_grid_lines(GtkTreeView_val(self), GtkTreeViewGridLines_val(arg
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_tree_view_set_fixed_height_mode(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_tree_view_set_fixed_height_mode(GtkTreeView_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_tree_view_set_expander_column(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gtk_tree_view_set_expander_column(GtkTreeView_val(self), Option_val(arg1, GtkTreeViewColumn_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_set_enable_tree_lines(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_tree_view_set_enable_tree_lines(GtkTreeView_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_set_enable_search(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_tree_view_set_enable_search(GtkTreeView_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -121,6 +210,14 @@ CAMLexport CAMLprim value ml_gtk_tree_view_set_cursor(value self, value arg1, va
 CAMLparam4(self, arg1, arg2, arg3);
 
 gtk_tree_view_set_cursor(GtkTreeView_val(self), GtkTreePath_val(arg1), Option_val(arg2, GtkTreeViewColumn_val, NULL), Bool_val(arg3));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_set_activate_on_single_click(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_tree_view_set_activate_on_single_click(GtkTreeView_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -186,6 +283,25 @@ gboolean result = gtk_tree_view_is_rubber_banding_active(GtkTreeView_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_tree_view_is_blank_at_pos(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GtkTreePath* out3;
+GtkTreeViewColumn* out4;
+int out5;
+int out6;
+
+gboolean result = gtk_tree_view_is_blank_at_pos(GtkTreeView_val(self), Int_val(arg1), Int_val(arg2), &out3, &out4, &out5, &out6);
+CAMLlocal1(ret);
+    ret = caml_alloc(5, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_GtkTreePath(out3));
+    Store_field(ret, 2, Val_GtkTreeViewColumn(out4));
+    Store_field(ret, 3, Val_int(out5));
+    Store_field(ret, 4, Val_int(out6));
+    CAMLreturn(ret);
+}
+
 CAMLexport CAMLprim value ml_gtk_tree_view_insert_column(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -209,21 +325,20 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_view_get_tooltip_context(value self, value arg1, value arg2, value arg3)
+CAMLexport CAMLprim value ml_gtk_tree_view_get_tooltip_column(value self)
 {
-CAMLparam4(self, arg1, arg2, arg3);
-GtkTreeModel* out4;
-GtkTreePath* out5;
-GtkTreeIter out6;
+CAMLparam1(self);
 
-gboolean result = gtk_tree_view_get_tooltip_context(GtkTreeView_val(self), Int_val(arg1), Int_val(arg2), Bool_val(arg3), &out4, &out5, &out6);
-CAMLlocal1(ret);
-    ret = caml_alloc(4, 0);
-    Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTreeModel(out4));
-    Store_field(ret, 2, Val_GtkTreePath(out5));
-    Store_field(ret, 3, Val_GtkTreeIter(out6));
-    CAMLreturn(ret);
+int result = gtk_tree_view_get_tooltip_column(GtkTreeView_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_get_show_expanders(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_tree_view_get_show_expanders(GtkTreeView_val(self));
+CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_view_get_selection(value self)
@@ -234,12 +349,47 @@ GtkTreeSelection* result = gtk_tree_view_get_selection(GtkTreeView_val(self));
 CAMLreturn(Val_GtkTreeSelection(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_view_get_search_entry(value self)
+CAMLexport CAMLprim value ml_gtk_tree_view_get_search_column(value self)
 {
 CAMLparam1(self);
 
-GtkEditable* result = gtk_tree_view_get_search_entry(GtkTreeView_val(self));
-CAMLreturn(Val_option(result, Val_GtkEditable));
+int result = gtk_tree_view_get_search_column(GtkTreeView_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_get_rubber_banding(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_tree_view_get_rubber_banding(GtkTreeView_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_get_reorderable(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_tree_view_get_reorderable(GtkTreeView_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_get_path_at_pos(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GtkTreePath* out3;
+GtkTreeViewColumn* out4;
+int out5;
+int out6;
+
+gboolean result = gtk_tree_view_get_path_at_pos(GtkTreeView_val(self), Int_val(arg1), Int_val(arg2), &out3, &out4, &out5, &out6);
+CAMLlocal1(ret);
+    ret = caml_alloc(5, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_GtkTreePath(out3));
+    Store_field(ret, 2, Val_GtkTreeViewColumn(out4));
+    Store_field(ret, 3, Val_int(out5));
+    Store_field(ret, 4, Val_int(out6));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_view_get_n_columns(value self)
@@ -250,12 +400,44 @@ guint result = gtk_tree_view_get_n_columns(GtkTreeView_val(self));
 CAMLreturn(Val_int(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_view_get_model(value self)
+CAMLexport CAMLprim value ml_gtk_tree_view_get_level_indentation(value self)
 {
 CAMLparam1(self);
 
-GtkTreeModel* result = gtk_tree_view_get_model(GtkTreeView_val(self));
-CAMLreturn(Val_option(result, Val_GtkTreeModel));
+int result = gtk_tree_view_get_level_indentation(GtkTreeView_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_get_hover_selection(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_tree_view_get_hover_selection(GtkTreeView_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_get_hover_expand(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_tree_view_get_hover_expand(GtkTreeView_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_get_headers_visible(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_tree_view_get_headers_visible(GtkTreeView_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_get_headers_clickable(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_tree_view_get_headers_clickable(GtkTreeView_val(self));
+CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_view_get_grid_lines(value self)
@@ -266,12 +448,36 @@ GtkTreeViewGridLines result = gtk_tree_view_get_grid_lines(GtkTreeView_val(self)
 CAMLreturn(Val_GtkTreeViewGridLines(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_tree_view_get_fixed_height_mode(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_tree_view_get_fixed_height_mode(GtkTreeView_val(self));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_tree_view_get_expander_column(value self)
 {
 CAMLparam1(self);
 
 GtkTreeViewColumn* result = gtk_tree_view_get_expander_column(GtkTreeView_val(self));
 CAMLreturn(Val_option(result, Val_GtkTreeViewColumn));
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_get_enable_tree_lines(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_tree_view_get_enable_tree_lines(GtkTreeView_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_get_enable_search(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_tree_view_get_enable_search(GtkTreeView_val(self));
+CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_view_get_drag_dest_row(value self)
@@ -325,6 +531,14 @@ GtkTreeViewColumn* result = gtk_tree_view_get_column(GtkTreeView_val(self), Int_
 CAMLreturn(Val_option(result, Val_GtkTreeViewColumn));
 }
 
+CAMLexport CAMLprim value ml_gtk_tree_view_get_activate_on_single_click(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_tree_view_get_activate_on_single_click(GtkTreeView_val(self));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_tree_view_expand_to_path(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -347,6 +561,90 @@ CAMLparam1(self);
 
 gtk_tree_view_expand_all(GtkTreeView_val(self));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_convert_widget_to_tree_coords(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+int out3;
+int out4;
+
+gtk_tree_view_convert_widget_to_tree_coords(GtkTreeView_val(self), Int_val(arg1), Int_val(arg2), &out3, &out4);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out3));
+    Store_field(ret, 1, Val_int(out4));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_convert_widget_to_bin_window_coords(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+int out3;
+int out4;
+
+gtk_tree_view_convert_widget_to_bin_window_coords(GtkTreeView_val(self), Int_val(arg1), Int_val(arg2), &out3, &out4);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out3));
+    Store_field(ret, 1, Val_int(out4));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_convert_tree_to_widget_coords(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+int out3;
+int out4;
+
+gtk_tree_view_convert_tree_to_widget_coords(GtkTreeView_val(self), Int_val(arg1), Int_val(arg2), &out3, &out4);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out3));
+    Store_field(ret, 1, Val_int(out4));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_convert_tree_to_bin_window_coords(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+int out3;
+int out4;
+
+gtk_tree_view_convert_tree_to_bin_window_coords(GtkTreeView_val(self), Int_val(arg1), Int_val(arg2), &out3, &out4);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out3));
+    Store_field(ret, 1, Val_int(out4));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_convert_bin_window_to_widget_coords(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+int out3;
+int out4;
+
+gtk_tree_view_convert_bin_window_to_widget_coords(GtkTreeView_val(self), Int_val(arg1), Int_val(arg2), &out3, &out4);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out3));
+    Store_field(ret, 1, Val_int(out4));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_convert_bin_window_to_tree_coords(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+int out3;
+int out4;
+
+gtk_tree_view_convert_bin_window_to_tree_coords(GtkTreeView_val(self), Int_val(arg1), Int_val(arg2), &out3, &out4);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_int(out3));
+    Store_field(ret, 1, Val_int(out4));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_view_columns_autosize(value self)
@@ -381,464 +679,35 @@ int result = gtk_tree_view_append_column(GtkTreeView_val(self), GtkTreeViewColum
 CAMLreturn(Val_int(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_view_get_activate_on_single_click(value self)
+CAMLexport CAMLprim value ml_gtk_tree_view_get_enable_grid_lines(value self)
 {
 CAMLparam1(self);
 CAMLlocal1(result);
 GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "activate-on-single-click");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_get_activate_on_single_click: property 'activate-on-single-click' not found");
+    GtkTreeViewGridLines prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "enable-grid-lines");
+if (pspec == NULL) caml_failwith("ml_gtk_tree_view_get_enable_grid_lines: property 'enable-grid-lines' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "activate-on-single-click", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+g_object_get_property(G_OBJECT(obj), "enable-grid-lines", &prop_gvalue);
+    prop_value = (GtkTreeViewGridLines)g_value_get_enum(&prop_gvalue);
 
-result = Val_bool(prop_value);
+result = Val_GtkTreeViewGridLines(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_view_set_activate_on_single_click(value self, value new_value)
+CAMLexport CAMLprim value ml_gtk_tree_view_set_enable_grid_lines(value self, value new_value)
 {
 CAMLparam2(self, new_value);
 GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "activate-on-single-click");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_set_activate_on_single_click: property 'activate-on-single-click' not found");
+    GtkTreeViewGridLines c_value = GtkTreeViewGridLines_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "enable-grid-lines");
+if (pspec == NULL) caml_failwith("ml_gtk_tree_view_set_enable_grid_lines: property 'enable-grid-lines' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "activate-on-single-click", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_get_enable_search(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "enable-search");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_get_enable_search: property 'enable-search' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "enable-search", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_set_enable_search(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "enable-search");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_set_enable_search: property 'enable-search' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "enable-search", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_get_enable_tree_lines(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "enable-tree-lines");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_get_enable_tree_lines: property 'enable-tree-lines' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "enable-tree-lines", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_set_enable_tree_lines(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "enable-tree-lines");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_set_enable_tree_lines: property 'enable-tree-lines' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "enable-tree-lines", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_get_fixed_height_mode(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "fixed-height-mode");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_get_fixed_height_mode: property 'fixed-height-mode' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "fixed-height-mode", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_set_fixed_height_mode(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "fixed-height-mode");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_set_fixed_height_mode: property 'fixed-height-mode' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "fixed-height-mode", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_get_headers_clickable(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "headers-clickable");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_get_headers_clickable: property 'headers-clickable' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "headers-clickable", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_set_headers_clickable(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "headers-clickable");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_set_headers_clickable: property 'headers-clickable' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "headers-clickable", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_get_headers_visible(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "headers-visible");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_get_headers_visible: property 'headers-visible' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "headers-visible", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_set_headers_visible(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "headers-visible");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_set_headers_visible: property 'headers-visible' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "headers-visible", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_get_hover_expand(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "hover-expand");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_get_hover_expand: property 'hover-expand' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "hover-expand", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_set_hover_expand(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "hover-expand");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_set_hover_expand: property 'hover-expand' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "hover-expand", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_get_hover_selection(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "hover-selection");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_get_hover_selection: property 'hover-selection' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "hover-selection", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_set_hover_selection(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "hover-selection");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_set_hover_selection: property 'hover-selection' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "hover-selection", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_get_level_indentation(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gint prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "level-indentation");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_get_level_indentation: property 'level-indentation' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "level-indentation", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
-
-result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_set_level_indentation(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gint c_value = Int_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "level-indentation");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_set_level_indentation: property 'level-indentation' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_int(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "level-indentation", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_get_reorderable(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "reorderable");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_get_reorderable: property 'reorderable' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "reorderable", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_set_reorderable(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "reorderable");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_set_reorderable: property 'reorderable' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "reorderable", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_get_rubber_banding(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "rubber-banding");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_get_rubber_banding: property 'rubber-banding' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "rubber-banding", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_set_rubber_banding(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "rubber-banding");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_set_rubber_banding: property 'rubber-banding' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "rubber-banding", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_get_search_column(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gint prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "search-column");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_get_search_column: property 'search-column' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "search-column", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
-
-result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_set_search_column(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gint c_value = Int_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "search-column");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_set_search_column: property 'search-column' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_int(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "search-column", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_get_show_expanders(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gboolean prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "show-expanders");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_get_show_expanders: property 'show-expanders' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "show-expanders", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
-
-result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_set_show_expanders(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gboolean c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "show-expanders");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_set_show_expanders: property 'show-expanders' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "show-expanders", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_get_tooltip_column(value self)
-{
-CAMLparam1(self);
-CAMLlocal1(result);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gint prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "tooltip-column");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_get_tooltip_column: property 'tooltip-column' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "tooltip-column", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
-
-result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_set_tooltip_column(value self, value new_value)
-{
-CAMLparam2(self, new_value);
-GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
-    gint c_value = Int_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "tooltip-column");
-if (pspec == NULL) caml_failwith("ml_gtk_tree_view_set_tooltip_column: property 'tooltip-column' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_int(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "tooltip-column", &prop_gvalue);
+    g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "enable-grid-lines", &prop_gvalue);
 g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
 }

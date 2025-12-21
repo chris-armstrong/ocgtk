@@ -3,3 +3,4 @@
 
 type t = [`never_trigger | `shortcut_trigger | `object_] Gobject.obj
 
+(* Methods *)

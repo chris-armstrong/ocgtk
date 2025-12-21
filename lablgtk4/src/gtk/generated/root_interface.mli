@@ -3,3 +3,4 @@
 
 type t = [`root_interface] Gobject.obj
 
+(* Methods *)

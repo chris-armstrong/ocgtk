@@ -8,3 +8,4 @@ let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager
 (** Create a new FontChooserDialog *)
 external new_ : string option -> Application_and__window_and__window_group.Window.t option -> t = "ml_gtk_font_chooser_dialog_new"
 
+(* Methods *)

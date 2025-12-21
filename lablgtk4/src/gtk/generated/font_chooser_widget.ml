@@ -8,5 +8,6 @@ let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager
 (** Create a new FontChooserWidget *)
 external new_ : unit -> t = "ml_gtk_font_chooser_widget_new"
 
+(* Methods *)
 (* Properties *)
 

@@ -3,3 +3,4 @@
 
 type t = [`builder_class] Gobject.obj
 
+(* Methods *)

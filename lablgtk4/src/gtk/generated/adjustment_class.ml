@@ -3,3 +3,4 @@
 
 type t = [`adjustment_class] Gobject.obj
 
+(* Methods *)

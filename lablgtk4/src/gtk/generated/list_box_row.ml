@@ -8,18 +8,8 @@ let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager
 (** Create a new ListBoxRow *)
 external new_ : unit -> t = "ml_gtk_list_box_row_new"
 
-(* Properties *)
-
-(** Get property: activatable *)
-external get_activatable : t -> bool = "ml_gtk_list_box_row_get_activatable"
-
-(** Set property: activatable *)
-external set_activatable : t -> bool -> unit = "ml_gtk_list_box_row_set_activatable"
-
-(** Get property: selectable *)
-external get_selectable : t -> bool = "ml_gtk_list_box_row_get_selectable"
-
-(** Set property: selectable *)
+(* Methods *)
+(** Set whether the row can be selected. *)
 external set_selectable : t -> bool -> unit = "ml_gtk_list_box_row_set_selectable"
 
 (** Sets the current header of the @row.
@@ -33,9 +23,15 @@ external set_header : t -> Event_controller_and__layout_child_and__layout_manage
 (** Sets the child widget of @self. *)
 external set_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_list_box_row_set_child"
 
+(** Set whether the row is activatable. *)
+external set_activatable : t -> bool -> unit = "ml_gtk_list_box_row_set_activatable"
+
 (** Returns whether the child is currently selected in its
 `GtkListBox` container. *)
 external is_selected : t -> bool = "ml_gtk_list_box_row_is_selected"
+
+(** Gets whether the row can be selected. *)
+external get_selectable : t -> bool = "ml_gtk_list_box_row_get_selectable"
 
 (** Gets the current index of the @row in its `GtkListBox` container. *)
 external get_index : t -> int = "ml_gtk_list_box_row_get_index"
@@ -50,6 +46,9 @@ external get_header : t -> Event_controller_and__layout_child_and__layout_manage
 
 (** Gets the child widget of @row. *)
 external get_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_list_box_row_get_child"
+
+(** Gets whether the row is activatable. *)
+external get_activatable : t -> bool = "ml_gtk_list_box_row_get_activatable"
 
 (** Marks @row as changed, causing any state that depends on this
 to be updated.
@@ -70,4 +69,6 @@ row functions into the row widgets themselves. Another alternative
 is to call [method@Gtk.ListBox.invalidate_sort] on any model change,
 but that is more expensive. *)
 external changed : t -> unit = "ml_gtk_list_box_row_changed"
+
+(* Properties *)
 

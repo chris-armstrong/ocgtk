@@ -9,7 +9,18 @@ val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and_
 external new_from_model : unit -> t = "ml_gtk_popover_menu_new_from_model"
 
 (** Create a new PopoverMenu *)
-external new_from_model_full : unit -> Gtk_enums.popovermenuflags -> t = "ml_gtk_popover_menu_new_from_model_full"
+external new_from_model_full : unit -> unit -> t = "ml_gtk_popover_menu_new_from_model_full"
+
+(* Methods *)
+(** Removes a widget that has previously been added with
+[method@Gtk.PopoverMenu.add_child()] *)
+external remove_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> bool = "ml_gtk_popover_menu_remove_child"
+
+(** Adds a custom widget to a generated menu.
+
+For this to work, the menu model of @popover must have
+an item with a `custom` attribute that matches @id. *)
+external add_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> string -> bool = "ml_gtk_popover_menu_add_child"
 
 (* Properties *)
 
@@ -18,23 +29,4 @@ external get_visible_submenu : t -> string = "ml_gtk_popover_menu_get_visible_su
 
 (** Set property: visible-submenu *)
 external set_visible_submenu : t -> string -> unit = "ml_gtk_popover_menu_set_visible_submenu"
-
-(** Sets the flags that @popover uses to create/display a menu from its model.
-
-If a model is set and the flags change, contents are rebuilt, so if setting
-properties individually, set flags before model to avoid a redundant rebuild. *)
-external set_flags : t -> Gtk_enums.popovermenuflags -> unit = "ml_gtk_popover_menu_set_flags"
-
-(** Removes a widget that has previously been added with
-[method@Gtk.PopoverMenu.add_child()] *)
-external remove_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> bool = "ml_gtk_popover_menu_remove_child"
-
-(** Returns the flags that @popover uses to create/display a menu from its model. *)
-external get_flags : t -> Gtk_enums.popovermenuflags = "ml_gtk_popover_menu_get_flags"
-
-(** Adds a custom widget to a generated menu.
-
-For this to work, the menu model of @popover must have
-an item with a `custom` attribute that matches @id. *)
-external add_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> string -> bool = "ml_gtk_popover_menu_add_child"
 

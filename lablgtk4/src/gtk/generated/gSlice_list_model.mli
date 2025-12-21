@@ -1,10 +1,10 @@
 class slice_list_model : Slice_list_model.t ->
   object
-    method n_items : int
-    method offset : int
+    method get_offset : unit -> int
+    method get_size : unit -> int
     method set_offset : int -> unit
-    method size : int
     method set_size : int -> unit
+    method n_items : int
     method as_slice_list_model : Slice_list_model.t
   end
 

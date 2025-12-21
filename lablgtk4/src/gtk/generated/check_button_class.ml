@@ -3,3 +3,4 @@
 
 type t = [`check_button_class] Gobject.obj
 
+(* Methods *)

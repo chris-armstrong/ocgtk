@@ -3,3 +3,4 @@
 
 type t = [`text_view_class] Gobject.obj
 
+(* Methods *)

@@ -3,3 +3,4 @@
 
 type t = [`window_handle_class] Gobject.obj
 
+(* Methods *)

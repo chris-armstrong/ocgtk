@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -174,6 +175,22 @@ gboolean result = gtk_text_iter_has_tag(GtkTextIter_val(self), GtkTextTag_val(ar
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_text_iter_get_visible_text(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+char* result = gtk_text_iter_get_visible_text(GtkTextIter_val(self), GtkTextIter_val(arg1));
+CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_iter_get_visible_slice(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+char* result = gtk_text_iter_get_visible_slice(GtkTextIter_val(self), GtkTextIter_val(arg1));
+CAMLreturn(caml_copy_string(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_text_iter_get_visible_line_offset(value self)
 {
 CAMLparam1(self);
@@ -188,6 +205,22 @@ CAMLparam1(self);
 
 int result = gtk_text_iter_get_visible_line_index(GtkTextIter_val(self));
 CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_iter_get_text(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+char* result = gtk_text_iter_get_text(GtkTextIter_val(self), GtkTextIter_val(arg1));
+CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_iter_get_slice(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+char* result = gtk_text_iter_get_slice(GtkTextIter_val(self), GtkTextIter_val(arg1));
+CAMLreturn(caml_copy_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_iter_get_offset(value self)
@@ -364,21 +397,6 @@ CAMLparam1(self);
 
 gboolean result = gtk_text_iter_forward_sentence_end(GtkTextIter_val(self));
 CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_text_iter_forward_search(value self, value arg1, value arg2, value arg3)
-{
-CAMLparam4(self, arg1, arg2, arg3);
-GtkTextIter out3;
-GtkTextIter out4;
-
-gboolean result = gtk_text_iter_forward_search(GtkTextIter_val(self), String_val(arg1), GtkTextSearchFlags_val(arg2), &out3, &out4, Option_val(arg3, GtkTextIter_val, NULL));
-CAMLlocal1(ret);
-    ret = caml_alloc(3, 0);
-    Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTextIter(out3));
-    Store_field(ret, 2, Val_GtkTextIter(out4));
-    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_text_iter_forward_lines(value self, value arg1)
@@ -587,21 +605,6 @@ CAMLparam1(self);
 
 gboolean result = gtk_text_iter_backward_sentence_start(GtkTextIter_val(self));
 CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_text_iter_backward_search(value self, value arg1, value arg2, value arg3)
-{
-CAMLparam4(self, arg1, arg2, arg3);
-GtkTextIter out3;
-GtkTextIter out4;
-
-gboolean result = gtk_text_iter_backward_search(GtkTextIter_val(self), String_val(arg1), GtkTextSearchFlags_val(arg2), &out3, &out4, Option_val(arg3, GtkTextIter_val, NULL));
-CAMLlocal1(ret);
-    ret = caml_alloc(3, 0);
-    Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTextIter(out3));
-    Store_field(ret, 2, Val_GtkTextIter(out4));
-    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_text_iter_backward_lines(value self, value arg1)

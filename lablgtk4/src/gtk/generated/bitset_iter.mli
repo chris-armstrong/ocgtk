@@ -9,6 +9,19 @@ Before a `GtkBitsetIter` can be used, it needs to be initialized with
 or [func@Gtk.BitsetIter.init_at]. *)
 type t = [`bitset_iter] Gobject.obj
 
+(* Methods *)
+(** Moves @iter to the previous value in the set.
+
+If it was already pointing to the first value in the set,
+%FALSE is returned and @iter is invalidated. *)
+external previous : t -> bool * int = "ml_gtk_bitset_iter_previous"
+
+(** Moves @iter to the next value in the set.
+
+If it was already pointing to the last value in the set,
+%FALSE is returned and @iter is invalidated. *)
+external next : t -> bool * int = "ml_gtk_bitset_iter_next"
+
 (** Checks if @iter points to a valid value. *)
 external is_valid : t -> bool = "ml_gtk_bitset_iter_is_valid"
 

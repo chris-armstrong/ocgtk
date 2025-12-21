@@ -8,8 +8,7 @@ let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager
 (** Create a new GraphicsOffload *)
 external new_ : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> t = "ml_gtk_graphics_offload_new"
 
-(* Properties *)
-
+(* Methods *)
 (** Sets whether this GtkGraphicsOffload widget will attempt
 to offload the content of its child widget. *)
 external set_enabled : t -> Gtk_enums.graphicsoffloadenabled -> unit = "ml_gtk_graphics_offload_set_enabled"
@@ -22,4 +21,6 @@ external get_enabled : t -> Gtk_enums.graphicsoffloadenabled = "ml_gtk_graphics_
 
 (** Gets the child of @self. *)
 external get_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_graphics_offload_get_child"
+
+(* Properties *)
 

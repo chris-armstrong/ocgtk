@@ -3,3 +3,4 @@
 
 type t = [`bin_layout_class] Gobject.obj
 
+(* Methods *)

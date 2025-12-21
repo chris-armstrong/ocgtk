@@ -3,3 +3,4 @@
 
 type t = [`list_view_class] Gobject.obj
 
+(* Methods *)

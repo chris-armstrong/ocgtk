@@ -3,6 +3,14 @@
 
 type t = [`settings | `object_] Gobject.obj
 
+(* Methods *)
+(** Undoes the effect of calling g_object_set() to install an
+application-specific value for a setting.
+
+After this call, the setting will again follow the session-wide
+value for this setting. *)
+external reset_property : t -> string -> unit = "ml_gtk_settings_reset_property"
+
 (* Properties *)
 
 (** Get property: gtk-alternative-button-order *)
@@ -310,11 +318,4 @@ external get_gtk_xft_rgba : t -> string = "ml_gtk_settings_get_gtk_xft_rgba"
 
 (** Set property: gtk-xft-rgba *)
 external set_gtk_xft_rgba : t -> string -> unit = "ml_gtk_settings_set_gtk_xft_rgba"
-
-(** Undoes the effect of calling g_object_set() to install an
-application-specific value for a setting.
-
-After this call, the setting will again follow the session-wide
-value for this setting. *)
-external reset_property : t -> string -> unit = "ml_gtk_settings_reset_property"
 

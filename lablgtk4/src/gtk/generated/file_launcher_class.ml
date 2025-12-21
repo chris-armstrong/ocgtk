@@ -3,3 +3,4 @@
 
 type t = [`file_launcher_class] Gobject.obj
 
+(* Methods *)

@@ -8,8 +8,7 @@ let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager
 (** Create a new PopoverMenuBar *)
 external new_from_model : unit -> t = "ml_gtk_popover_menu_bar_new_from_model"
 
-(* Properties *)
-
+(* Methods *)
 (** Removes a widget that has previously been added with
 gtk_popover_menu_bar_add_child(). *)
 external remove_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> bool = "ml_gtk_popover_menu_bar_remove_child"
@@ -19,4 +18,6 @@ external remove_child : t -> Event_controller_and__layout_child_and__layout_mana
 For this to work, the menu model of @bar must have an
 item with a `custom` attribute that matches @id. *)
 external add_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> string -> bool = "ml_gtk_popover_menu_bar_add_child"
+
+(* Properties *)
 

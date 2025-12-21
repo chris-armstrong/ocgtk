@@ -3,3 +3,4 @@
 
 type t = [`css_style_change] Gobject.obj
 
+(* Methods *)

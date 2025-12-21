@@ -10,8 +10,9 @@
 #include <caml/hash.h>
 #include <caml/custom.h>
 #include "wrappers.h"
-#include "ml_gobject.h"
+#include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
@@ -49,7 +50,7 @@ CAMLexport CAMLprim value ml_gtk_overlay_set_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_overlay_set_child(GtkOverlay_val(self), GtkWidget_option_val(arg1));
+gtk_overlay_set_child(GtkOverlay_val(self), Option_val(arg1, GtkWidget_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -82,7 +83,7 @@ CAMLexport CAMLprim value ml_gtk_overlay_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_overlay_get_child(GtkOverlay_val(self));
-CAMLreturn(Val_GtkWidget_option(result));
+CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
 CAMLexport CAMLprim value ml_gtk_overlay_add_overlay(value self, value arg1)
