@@ -57,7 +57,7 @@ The child must have been added with
 external remove : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_grid_remove"
 
 (** Queries the attach points and spans of @child inside the given `GtkGrid`. *)
-external query_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int * int * int * int = "ml_gtk_grid_query_child_bytecode" "ml_gtk_grid_query_child_native"
+external query_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int * int * int * int = "ml_gtk_grid_query_child"
 
 (** Inserts a row at the specified position.
 

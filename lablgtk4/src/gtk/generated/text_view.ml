@@ -14,7 +14,7 @@ external new_with_buffer : Text_buffer_and__text_iter_and__text_mark.Text_buffer
 (* Methods *)
 (** Converts coordinates on the window identified by @win to buffer
 coordinates. *)
-external window_to_buffer_coords : t -> Gtk_enums.textwindowtype -> int -> int -> int * int = "ml_gtk_text_view_window_to_buffer_coords_bytecode" "ml_gtk_text_view_window_to_buffer_coords_native"
+external window_to_buffer_coords : t -> Gtk_enums.textwindowtype -> int -> int -> int * int = "ml_gtk_text_view_window_to_buffer_coords"
 
 (** Determines whether @iter is at the start of a display line.
 
@@ -349,7 +349,7 @@ views, since they depend on the contents of the `GtkTextBuffer`. *)
 external forward_display_line : t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool = "ml_gtk_text_view_forward_display_line"
 
 (** Converts buffer coordinates to window coordinates. *)
-external buffer_to_window_coords : t -> Gtk_enums.textwindowtype -> int -> int -> int * int = "ml_gtk_text_view_buffer_to_window_coords_bytecode" "ml_gtk_text_view_buffer_to_window_coords_native"
+external buffer_to_window_coords : t -> Gtk_enums.textwindowtype -> int -> int -> int * int = "ml_gtk_text_view_buffer_to_window_coords"
 
 (** Moves the given @iter backward to the next display line start.
 

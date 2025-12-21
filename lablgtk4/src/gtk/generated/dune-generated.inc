@@ -1087,8 +1087,10 @@
 (rule
  (targets cflag-gtk.sexp clink-gtk.sexp)
  (action (bash "\
-pkg-config --cflags gtk4 > cflag-gtk.sexp.tmp && \\
-pkg-config --libs gtk4 > clink-gtk.sexp.tmp && \\
+echo '' > cflag-gtk.sexp.tmp && \\
+echo '' > clink-gtk.sexp.tmp && \\
+pkg-config --cflags gtk4 >> cflag-gtk.sexp.tmp && \\
+pkg-config --libs gtk4 >> clink-gtk.sexp.tmp && \\
 echo \"(\" > cflag-gtk.sexp && \\
 tr ' ' '\\n' < cflag-gtk.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> cflag-gtk.sexp && \\
 echo \")\" >> cflag-gtk.sexp && \\

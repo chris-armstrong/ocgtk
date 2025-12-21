@@ -12,6 +12,7 @@
 #include "wrappers.h"
 #include "converters.h"
 
+#include <gtk/gtk.h>
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 

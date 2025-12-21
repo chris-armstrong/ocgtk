@@ -304,7 +304,7 @@ and Tree_view
   The @path, @column, @cell_x and @cell_y arguments will be filled in
   likewise as for gtk_tree_view_get_path_at_pos().  Please see
   gtk_tree_view_get_path_at_pos() for more information. *)
-  external is_blank_at_pos : t -> int -> int -> bool * Tree_path.t option * Tree_view_column.t option * int * int = "ml_gtk_tree_view_is_blank_at_pos_bytecode" "ml_gtk_tree_view_is_blank_at_pos_native"
+  external is_blank_at_pos : t -> int -> int -> bool * Tree_path.t option * Tree_view_column.t option * int * int = "ml_gtk_tree_view_is_blank_at_pos"
 
   (** This inserts the @column into the @tree_view at @position.  If @position is
   -1, then the column is inserted at the end. If @tree_view has
@@ -356,7 +356,7 @@ and Tree_view
   For converting widget coordinates (eg. the ones you get from
   GtkWidget::query-tooltip), please see
   gtk_tree_view_convert_widget_to_bin_window_coords(). *)
-  external get_path_at_pos : t -> int -> int -> bool * Tree_path.t option * Tree_view_column.t option * int * int = "ml_gtk_tree_view_get_path_at_pos_bytecode" "ml_gtk_tree_view_get_path_at_pos_native"
+  external get_path_at_pos : t -> int -> int -> bool * Tree_path.t option * Tree_view_column.t option * int * int = "ml_gtk_tree_view_get_path_at_pos"
 
   (** Queries the number of columns in the given @tree_view. *)
   external get_n_columns : t -> int = "ml_gtk_tree_view_get_n_columns"

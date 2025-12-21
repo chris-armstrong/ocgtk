@@ -126,7 +126,7 @@ and Layout_manager
 
   See the [class@Gtk.Widget] documentation on layout management for
   more details. *)
-  external measure : t -> Widget.t -> Gtk_enums.orientation -> int -> int * int * int * int = "ml_gtk_layout_manager_measure_bytecode" "ml_gtk_layout_manager_measure_native"
+  external measure : t -> Widget.t -> Gtk_enums.orientation -> int -> int * int * int * int = "ml_gtk_layout_manager_measure"
 
   (** Queues a resize on the `GtkWidget` using @manager, if any.
 
@@ -165,7 +165,7 @@ end = struct
 
   See the [class@Gtk.Widget] documentation on layout management for
   more details. *)
-  external measure : t -> Widget.t -> Gtk_enums.orientation -> int -> int * int * int * int = "ml_gtk_layout_manager_measure_bytecode" "ml_gtk_layout_manager_measure_native"
+  external measure : t -> Widget.t -> Gtk_enums.orientation -> int -> int * int * int * int = "ml_gtk_layout_manager_measure"
 
   (** Queues a resize on the `GtkWidget` using @manager, if any.
 
@@ -277,7 +277,7 @@ and Widget
 
   In order to perform this operation, both widget must share
   a common ancestor. *)
-  external translate_coordinates : t -> t -> float -> float -> bool * float * float = "ml_gtk_widget_translate_coordinates_bytecode" "ml_gtk_widget_translate_coordinates_native"
+  external translate_coordinates : t -> t -> float -> float -> bool * float * float = "ml_gtk_widget_translate_coordinates"
 
   (** Snapshot the a child of @widget.
 
@@ -716,7 +716,7 @@ and Widget
 
   See [GtkWidget’s geometry management section](class.Widget.html#height-for-width-geometry-management) for
   a more details on implementing `GtkWidgetClass.measure()`. *)
-  external measure : t -> Gtk_enums.orientation -> int -> int * int * int * int = "ml_gtk_widget_measure_bytecode" "ml_gtk_widget_measure_native"
+  external measure : t -> Gtk_enums.orientation -> int -> int * int * int * int = "ml_gtk_widget_measure"
 
   (** Causes a widget to be mapped if it isn’t already.
 
@@ -1354,7 +1354,7 @@ end = struct
 
   In order to perform this operation, both widget must share
   a common ancestor. *)
-  external translate_coordinates : t -> t -> float -> float -> bool * float * float = "ml_gtk_widget_translate_coordinates_bytecode" "ml_gtk_widget_translate_coordinates_native"
+  external translate_coordinates : t -> t -> float -> float -> bool * float * float = "ml_gtk_widget_translate_coordinates"
 
   (** Snapshot the a child of @widget.
 
@@ -1793,7 +1793,7 @@ end = struct
 
   See [GtkWidget’s geometry management section](class.Widget.html#height-for-width-geometry-management) for
   a more details on implementing `GtkWidgetClass.measure()`. *)
-  external measure : t -> Gtk_enums.orientation -> int -> int * int * int * int = "ml_gtk_widget_measure_bytecode" "ml_gtk_widget_measure_native"
+  external measure : t -> Gtk_enums.orientation -> int -> int * int * int * int = "ml_gtk_widget_measure"
 
   (** Causes a widget to be mapped if it isn’t already.
 

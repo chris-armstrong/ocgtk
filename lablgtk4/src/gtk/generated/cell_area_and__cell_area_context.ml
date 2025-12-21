@@ -28,7 +28,7 @@ module rec Cell_area : sig
   function to request size and then use gtk_cell_area_inner_cell_area()
   at render and event time since this function will add padding
   around the cell for focus painting. *)
-  external request_renderer : t -> Cell_renderer.t -> Gtk_enums.orientation -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int -> int * int = "ml_gtk_cell_area_request_renderer_bytecode" "ml_gtk_cell_area_request_renderer_native"
+  external request_renderer : t -> Cell_renderer.t -> Gtk_enums.orientation -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int -> int * int = "ml_gtk_cell_area_request_renderer"
 
   (** Removes @sibling from @renderer’s focus sibling list
   (see gtk_cell_area_add_focus_sibling()). *)
@@ -66,7 +66,7 @@ module rec Cell_area : sig
   requested with gtk_cell_area_get_preferred_height() again and then
   the full height of the requested rows checked again with
   gtk_cell_area_context_get_preferred_height(). *)
-  external get_preferred_width_for_height : t -> Cell_area_context.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int -> int * int = "ml_gtk_cell_area_get_preferred_width_for_height_bytecode" "ml_gtk_cell_area_get_preferred_width_for_height_native"
+  external get_preferred_width_for_height : t -> Cell_area_context.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int -> int * int = "ml_gtk_cell_area_get_preferred_width_for_height"
 
   (** Retrieves a cell area’s initial minimum and natural width.
 
@@ -91,7 +91,7 @@ module rec Cell_area : sig
   requested with gtk_cell_area_get_preferred_width() again and then
   the full width of the requested rows checked again with
   gtk_cell_area_context_get_preferred_width(). *)
-  external get_preferred_height_for_width : t -> Cell_area_context.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int -> int * int = "ml_gtk_cell_area_get_preferred_height_for_width_bytecode" "ml_gtk_cell_area_get_preferred_height_for_width_native"
+  external get_preferred_height_for_width : t -> Cell_area_context.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int -> int * int = "ml_gtk_cell_area_get_preferred_height_for_width"
 
   (** Retrieves a cell area’s initial minimum and natural height.
 
@@ -209,7 +209,7 @@ end = struct
   function to request size and then use gtk_cell_area_inner_cell_area()
   at render and event time since this function will add padding
   around the cell for focus painting. *)
-  external request_renderer : t -> Cell_renderer.t -> Gtk_enums.orientation -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int -> int * int = "ml_gtk_cell_area_request_renderer_bytecode" "ml_gtk_cell_area_request_renderer_native"
+  external request_renderer : t -> Cell_renderer.t -> Gtk_enums.orientation -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int -> int * int = "ml_gtk_cell_area_request_renderer"
 
   (** Removes @sibling from @renderer’s focus sibling list
   (see gtk_cell_area_add_focus_sibling()). *)
@@ -247,7 +247,7 @@ end = struct
   requested with gtk_cell_area_get_preferred_height() again and then
   the full height of the requested rows checked again with
   gtk_cell_area_context_get_preferred_height(). *)
-  external get_preferred_width_for_height : t -> Cell_area_context.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int -> int * int = "ml_gtk_cell_area_get_preferred_width_for_height_bytecode" "ml_gtk_cell_area_get_preferred_width_for_height_native"
+  external get_preferred_width_for_height : t -> Cell_area_context.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int -> int * int = "ml_gtk_cell_area_get_preferred_width_for_height"
 
   (** Retrieves a cell area’s initial minimum and natural width.
 
@@ -272,7 +272,7 @@ end = struct
   requested with gtk_cell_area_get_preferred_width() again and then
   the full width of the requested rows checked again with
   gtk_cell_area_context_get_preferred_width(). *)
-  external get_preferred_height_for_width : t -> Cell_area_context.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int -> int * int = "ml_gtk_cell_area_get_preferred_height_for_width_bytecode" "ml_gtk_cell_area_get_preferred_height_for_width_native"
+  external get_preferred_height_for_width : t -> Cell_area_context.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int -> int * int = "ml_gtk_cell_area_get_preferred_height_for_width"
 
   (** Retrieves a cell area’s initial minimum and natural height.
 
