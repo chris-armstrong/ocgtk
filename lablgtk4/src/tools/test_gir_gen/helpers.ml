@@ -156,6 +156,52 @@ let get_tools_dir () =
     (* We have a full path, go up one level from the test directory *)
     Filename.dirname test_dir
 
+(* Command execution result with captured output *)
+type command_result = {
+  exit_code: int;
+  stdout: string;
+  stderr: string;
+  log_file: string option;
+}
+
+(* Execute command with captured stdout/stderr *)
+let run_command_with_output ?(log_dir=None) cmd =
+  let tmp_stdout = Filename.temp_file "test_stdout_" ".txt" in
+  let tmp_stderr = Filename.temp_file "test_stderr_" ".txt" in
+
+  (* Redirect stdout and stderr to temp files *)
+  let cmd_with_redirect =
+    sprintf "%s > %s 2> %s" cmd tmp_stdout tmp_stderr
+  in
+
+  let exit_code = Sys.command cmd_with_redirect in
+  let stdout = read_file tmp_stdout in
+  let stderr = read_file tmp_stderr in
+
+  (* Optionally save to permanent log file *)
+  let log_file = match log_dir with
+    | Some dir ->
+        (* Ensure log directory exists *)
+        (try Unix.mkdir dir 0o755 with Unix.Unix_error _ -> ());
+        let timestamp = string_of_float (Unix.time ()) in
+        let prefix = sprintf "test_%s_" timestamp in
+        let log_path = Filename.temp_file ~temp_dir:dir prefix ".log" in
+        let oc = open_out log_path in
+        fprintf oc "Command: %s\n\n" cmd;
+        fprintf oc "Exit code: %d\n\n" exit_code;
+        fprintf oc "=== STDOUT ===\n%s\n\n" stdout;
+        fprintf oc "=== STDERR ===\n%s\n" stderr;
+        close_out oc;
+        Some log_path
+    | None -> None
+  in
+
+  (* Clean up temp files *)
+  Unix.unlink tmp_stdout;
+  Unix.unlink tmp_stderr;
+
+  { exit_code; stdout; stderr; log_file }
+
 let run_gir_gen ?filter_file gir_file output_dir =
   let tools_dir = get_tools_dir () in
   let filter_arg = match filter_file with
@@ -163,10 +209,31 @@ let run_gir_gen ?filter_file gir_file output_dir =
     | None -> ""
   in
   let cmd =
-    sprintf "%s/gir_gen/main.exe %s%s %s > /dev/null 2>&1"
+    sprintf "%s/gir_gen/main.exe %s%s %s"
       tools_dir filter_arg gir_file output_dir
   in
-  Sys.command cmd
+  let result = run_command_with_output ~log_dir:(Some "/tmp/gir_gen_test_logs") cmd in
+
+  if result.exit_code <> 0 then begin
+    (* Show preview of stderr (first 20 lines) in test output *)
+    let stderr_lines = String.split_on_char '\n' result.stderr in
+    let preview_lines =
+      let rec take n lst = match n, lst with
+        | 0, _ | _, [] -> []
+        | n, x :: xs -> x :: take (n - 1) xs
+      in
+      take 20 stderr_lines
+    in
+    let error_preview = String.concat "\n" preview_lines in
+    let log_info = match result.log_file with
+      | Some path -> sprintf "\n\nFull log saved to: %s" path
+      | None -> ""
+    in
+    failwith (sprintf "gir_gen command failed (exit code %d)\n\nStderr preview:\n%s%s"
+      result.exit_code error_preview log_info)
+  end;
+
+  result.exit_code
 
 let ensure_output_dir dir =
   try Unix.mkdir dir 0o755 with Unix.Unix_error _ -> ()
