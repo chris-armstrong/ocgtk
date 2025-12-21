@@ -52,20 +52,20 @@ CAMLprim value ml_gtk_widget_set_size_request(value widget, value width, value h
 }
 */
 
-CAMLprim value ml_gtk_widget_get_size_request(value widget)
-{
-  CAMLparam1(widget);
-  CAMLlocal1(result);
-  int width, height;
-
-  gtk_widget_get_size_request(GtkWidget_val(widget), &width, &height);
-
-  result = caml_alloc_tuple(2);
-  Store_field(result, 0, Val_int(width));
-  Store_field(result, 1, Val_int(height));
-
-  CAMLreturn(result);
-}
+// CAMLprim value ml_gtk_widget_get_size_request(value widget)
+// {
+//   CAMLparam1(widget);
+//   CAMLlocal1(result);
+//   int width, height;
+//
+//   gtk_widget_get_size_request(GtkWidget_val(widget), &width, &height);
+//
+//   result = caml_alloc_tuple(2);
+//   Store_field(result, 0, Val_int(width));
+//   Store_field(result, 1, Val_int(height));
+//
+//   CAMLreturn(result);
+// }
 
 /* ========== Properties ========== */
 /* Commented out - conflicts with generated code in ml_widget_gen.c */

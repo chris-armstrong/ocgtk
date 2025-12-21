@@ -226,7 +226,8 @@ let generate_ml_interface_internal
   bprintf buf "(* Methods *)\n";
   List.iter ~f:(fun (meth : gir_method) ->
     let c_name = meth.method_name in
-    let param_count = 1 + List.length meth.parameters in
+    let in_params = List.filter ~f:(fun p -> p.direction <> Out) meth.parameters in
+    let param_count = 1 + List.length in_params in
     let ml_name =
       Utils.ml_method_name ~class_name meth
     in
