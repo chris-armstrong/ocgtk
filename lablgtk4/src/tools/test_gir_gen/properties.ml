@@ -1,6 +1,5 @@
 (* Property generation tests *)
 
-open Printf
 open Helpers
 
 let properties_gir = wrap_namespace {|
@@ -48,7 +47,7 @@ let test_property_generation () =
   assert_contains "Should generate getter for read-only property" content
     "get_read_only_prop";
   if string_contains content "set_read_only_prop" then
-    failwith "Should not generate setter for read-only property";
+    Alcotest.fail "Should not generate setter for read-only property";
 
   assert_contains "Should generate getter for read-write property" content
     "get_read_write_prop";
@@ -58,7 +57,7 @@ let test_property_generation () =
   assert_contains "Should generate getter for construct-only property" content
     "get_construct_only_prop";
   if string_contains content "set_construct_only_prop" then
-    failwith "Should not generate setter for construct-only property";
+    Alcotest.fail "Should not generate setter for construct-only property";
 
   assert_contains "Bool property should have bool type" content "t -> bool";
   assert_contains "Int property should have int type" content "t -> int"
@@ -93,7 +92,7 @@ let test_c_property_generation () =
   assert_contains "C getter for construct-only property" c_content
     "ml_gtk_test_widget_get_construct_only_prop";
   if string_contains c_content "ml_gtk_test_widget_set_construct_only_prop" then
-    failwith "Should not generate C setter for construct-only property"
+    Alcotest.fail "Should not generate C setter for construct-only property"
 
 let test_properties_only_class () =
   let test_gir = "/tmp/test_properties_only.gir" in
@@ -116,8 +115,9 @@ let test_properties_only_class () =
   assert_contains "Should have active getter" content "get_active";
   assert_contains "Should have active setter" content "set_active"
 
-let run_tests () =
-  printf "\n--- Property Tests ---\n";
-  ignore (test "Property generation" test_property_generation);
-  ignore (test "C property generation (Phase 5.2)" test_c_property_generation);
-  ignore (test "Properties-only class" test_properties_only_class)
+let tests =
+  [
+    Alcotest.test_case "Property generation" `Quick test_property_generation;
+    Alcotest.test_case "C property generation (Phase 5.2)" `Quick test_c_property_generation;
+    Alcotest.test_case "Properties-only class" `Quick test_properties_only_class;
+  ]

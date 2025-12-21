@@ -65,6 +65,7 @@ let test_record_support () =
   let mli = mli_file output_dir "record_user" in
   assert_true "record_user.mli should be created" (file_exists mli)
 
-let run_tests () =
-  Printf.printf "\n--- Record Tests ---\n";
-  ignore (test "Record type support" test_record_support)
+let tests =
+  [
+    Alcotest.test_case "Record type support" `Quick test_record_support;
+  ]

@@ -154,7 +154,6 @@ let test_gir_parsing () =
     "ml_gtk_event_controller_key_new"
 
 let test_c_code_generation () =
-  printf "Verifying generated C code structure\n";
   let test_gir = "/tmp/test_gir_gen.gir" in
   let output_dir = "/tmp/test_gir_output" in
 
@@ -171,7 +170,7 @@ let test_c_code_generation () =
     assert_contains "Should define type converter macros" content
       "GtkEventControllerKey_val"
   end
-  else failwith "C file not generated"
+  else Alcotest.fail "C file not generated"
 
 let test_widget_generation () =
   let test_gir = "/tmp/test_widget_gen.gir" in
@@ -261,10 +260,6 @@ let test_camlparam_limitation () =
     assert_contains "Method with 6 params should use bytecode/native pattern"
       content "ml_gtk_many_params_with_six_params_native"
   end
-  else
-    (* If skipped, that's also acceptable *)
-    printf
-      "Note: Method with 6 params was skipped (acceptable per Phase 5.3 spec)\n"
 
 let test_nullable_parameters () =
   let test_gir = "/tmp/test_nullable_gen.gir" in
@@ -317,7 +312,7 @@ let test_generated_code_quality () =
   (* Verify no obvious memory leaks *)
   if
     string_contains c_content "malloc" && not (string_contains c_content "free")
-  then failwith "Generated code may have memory leaks (malloc without free)"
+  then Alcotest.fail "Generated code may have memory leaks (malloc without free)"
 
 let test_help_output () =
   let tools_dir = get_tools_dir () in
@@ -337,16 +332,17 @@ let test_help_output () =
   assert_contains "Help should show examples" help_text "EXAMPLES"
 
 (* ========================================================================= *)
-(* Test Runner *)
+(* Test Suite *)
 (* ========================================================================= *)
 
-let run_tests () =
-  printf "\n--- Core Functionality Tests ---\n";
-  ignore (test "GIR file parsing" test_gir_parsing);
-  ignore (test "C code generation" test_c_code_generation);
-  ignore (test "Widget generation" test_widget_generation);
-  ignore (test "All methods generated (Phase 5.2)" test_all_methods_generated);
-  ignore (test "CAMLparam limitation (>5 params)" test_camlparam_limitation);
-  ignore (test "Nullable parameters (Phase 5.3)" test_nullable_parameters);
-  ignore (test "Generated code quality" test_generated_code_quality);
-  ignore (test "Help output" test_help_output)
+let tests =
+  [
+    Alcotest.test_case "GIR file parsing" `Quick test_gir_parsing;
+    Alcotest.test_case "C code generation" `Quick test_c_code_generation;
+    Alcotest.test_case "Widget generation" `Quick test_widget_generation;
+    Alcotest.test_case "All methods generated (Phase 5.2)" `Quick test_all_methods_generated;
+    Alcotest.test_case "CAMLparam limitation (>5 params)" `Quick test_camlparam_limitation;
+    Alcotest.test_case "Nullable parameters (Phase 5.3)" `Quick test_nullable_parameters;
+    Alcotest.test_case "Generated code quality" `Quick test_generated_code_quality;
+    Alcotest.test_case "Help output" `Quick test_help_output;
+  ]

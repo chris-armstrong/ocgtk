@@ -3,33 +3,8 @@
 open Printf
 
 (* ========================================================================= *)
-(* Test Framework *)
+(* Alcotest Assertion Helpers *)
 (* ========================================================================= *)
-
-let test_count = ref 0
-let pass_count = ref 0
-let fail_count = ref 0
-
-let test name f =
-  incr test_count;
-  printf "Test %d: %s... " !test_count name;
-  flush stdout;
-  try
-    f ();
-    incr pass_count;
-    printf "✓ PASS\n";
-    true
-  with
-  | Failure msg ->
-      incr fail_count;
-      printf "✗ FAIL: %s\n" msg;
-      false
-  | e ->
-      incr fail_count;
-      printf "✗ ERROR: %s\n" (Printexc.to_string e);
-      false
-
-let assert_true msg cond = if not cond then failwith msg
 
 let string_contains s sub =
   try
@@ -37,30 +12,16 @@ let string_contains s sub =
     true
   with Not_found -> false
 
+let assert_true msg cond =
+  Alcotest.(check bool) msg true cond
+
 let assert_contains msg haystack needle =
   if not (string_contains haystack needle) then
-    failwith (sprintf "%s: expected to find '%s' in output" msg needle)
+    Alcotest.fail (sprintf "%s: expected to find '%s' in output" msg needle)
 
 let assert_not_contains msg haystack needle =
   if string_contains haystack needle then
-    failwith (sprintf "%s: expected NOT to find '%s' in output" msg needle)
-
-let print_summary () =
-  printf "\n====================================\n";
-  printf "Test Summary\n";
-  printf "====================================\n";
-  printf "Total:  %d tests\n" !test_count;
-  printf "Passed: %d tests\n" !pass_count;
-  printf "Failed: %d tests\n" !fail_count;
-
-  if !fail_count = 0 then begin
-    printf "\n✓ All tests passed!\n";
-    0
-  end
-  else begin
-    printf "\n✗ Some tests failed\n";
-    1
-  end
+    Alcotest.fail (sprintf "%s: expected NOT to find '%s' in output" msg needle)
 
 (* ========================================================================= *)
 (* File Utilities *)
@@ -229,7 +190,7 @@ let run_gir_gen ?filter_file gir_file output_dir =
       | Some path -> sprintf "\n\nFull log saved to: %s" path
       | None -> ""
     in
-    failwith (sprintf "gir_gen command failed (exit code %d)\n\nStderr preview:\n%s%s"
+    Alcotest.fail (sprintf "gir_gen command failed (exit code %d)\n\nStderr preview:\n%s%s"
       result.exit_code error_preview log_info)
   end;
 

@@ -1,6 +1,5 @@
 (* Enum and bitfield generation tests *)
 
-open Printf
 open Helpers
 
 let enum_gir = wrap_namespace {|
@@ -178,10 +177,11 @@ let test_enum_naming_conventions () =
   assert_contains "Variants should be uppercase" content "`FILL";
   assert_contains "Variants should be uppercase" content "`HORIZONTAL"
 
-let run_tests () =
-  printf "\n--- Enum and Bitfield Tests ---\n";
-  ignore (test "Enum generation (Phase 5.3)" test_enum_generation);
-  ignore (test "Bitfield generation (Phase 5.3)" test_bitfield_generation);
-  ignore (test "Multiple enums in one file" test_multiple_enums);
-  ignore (test "Single value enum" test_single_value_enum);
-  ignore (test "Enum naming conventions" test_enum_naming_conventions)
+let tests =
+  [
+    Alcotest.test_case "Enum generation (Phase 5.3)" `Quick test_enum_generation;
+    Alcotest.test_case "Bitfield generation (Phase 5.3)" `Quick test_bitfield_generation;
+    Alcotest.test_case "Multiple enums in one file" `Quick test_multiple_enums;
+    Alcotest.test_case "Single value enum" `Quick test_single_value_enum;
+    Alcotest.test_case "Enum naming conventions" `Quick test_enum_naming_conventions;
+  ]

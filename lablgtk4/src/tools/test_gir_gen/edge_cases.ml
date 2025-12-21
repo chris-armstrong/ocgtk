@@ -50,9 +50,10 @@ let test_no_constructor_class () =
 
   assert_contains "Should have do_something method" content "do_something";
   if string_contains content "external new_" then
-    failwith "Should not generate constructor when none defined"
+    Alcotest.fail "Should not generate constructor when none defined"
 
-let run_tests () =
-  Printf.printf "\n--- Edge Case Tests ---\n";
-  ignore (test "Empty class generation" test_empty_class);
-  ignore (test "Class with no constructor" test_no_constructor_class)
+let tests =
+  [
+    Alcotest.test_case "Empty class generation" `Quick test_empty_class;
+    Alcotest.test_case "Class with no constructor" `Quick test_no_constructor_class;
+  ]

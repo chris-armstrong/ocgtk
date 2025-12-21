@@ -65,7 +65,8 @@ let test_signal_parsing_and_generation () =
   assert_contains "Should connect via connect_simple" code
     "Gobject.Signal.connect_simple"
 
-let run_tests () =
-  Printf.printf "\n--- Signal Tests ---\n";
-  ignore (test "Signal parsing and generation (Step 2)"
-            test_signal_parsing_and_generation)
+let tests =
+  [
+    Alcotest.test_case "Signal parsing and generation (Step 2)" `Quick
+      test_signal_parsing_and_generation;
+  ]
