@@ -8,6 +8,7 @@ let () =
   Alcotest.run "GIR Generator"
     [
       ("Core", Core.tests);
+      ("Parser", Parser.tests);
       ("Properties", Properties.tests);
       ("Signals", Signals.tests);
       ("Enums", Enums.tests);
