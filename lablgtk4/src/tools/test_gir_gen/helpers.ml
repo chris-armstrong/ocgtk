@@ -198,3 +198,72 @@ let run_gir_gen ?filter_file gir_file output_dir =
 
 let ensure_output_dir dir =
   try Unix.mkdir dir 0o755 with Unix.Unix_error _ -> ()
+
+(* ========================================================================= *)
+(* Test Context Creation *)
+(* ========================================================================= *)
+
+(* Create a minimal generation context for testing C stub generation *)
+let create_test_context () =
+  let open Gir_gen_lib.Types in
+  let namespace = {
+    namespace_name = "Gtk";
+    namespace_version = "4.0";
+    namespace_shared_library = "libgtk-4.so.1";
+    namespace_c_identifier_prefixes = "Gtk";
+    namespace_c_symbol_prefixes = "gtk";
+  } in
+
+  let repository = {
+    repository_c_includes = [];
+    repository_includes = [];
+    repository_packages = [];
+  } in
+
+  (* Add Widget class to context so type mappings work *)
+  let widget_class = {
+    class_name = "Widget";
+    c_type = "GtkWidget";
+    parent = None;
+    implements = [];
+    constructors = [];
+    methods = [];
+    properties = [];
+    signals = [];
+    class_doc = None;
+  } in
+
+  (* Add TextDirection enum to context *)
+  let text_direction_enum = {
+    enum_name = "TextDirection";
+    enum_c_type = "GtkTextDirection";
+    members = [];
+    enum_doc = None;
+  } in
+
+  {
+    namespace;
+    repository;
+    classes = [widget_class];
+    interfaces = [];
+    enums = [text_direction_enum];
+    bitfields = [];
+    records = [];
+    external_enums = [];
+    external_bitfields = [];
+    hierarchy_map = Hashtbl.create 0;
+    module_groups = Hashtbl.create 0;
+    current_cycle_classes = [];
+  }
+
+(* ========================================================================= *)
+(* C Code Inspection Helpers *)
+(* ========================================================================= *)
+
+(* Log generated C code to test output for debugging *)
+let log_generated_c_code test_name c_code =
+  Printf.printf "\n========================================\n";
+  Printf.printf "Generated C Code for: %s\n" test_name;
+  Printf.printf "========================================\n";
+  Printf.printf "%s\n" c_code;
+  Printf.printf "========================================\n\n"
