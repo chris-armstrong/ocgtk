@@ -411,7 +411,12 @@ let find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
     |> or_else find_hardcoded_mapping
   in
   (* Try c_type first, then GIR name if c_type fails *)
-  try_lookup gir_type.name
+  match gir_type.c_type with
+  | Some c_type_str ->
+      (match try_lookup c_type_str with
+       | Some mapping -> Some mapping
+       | None -> try_lookup gir_type.name)
+  | None -> try_lookup gir_type.name
 
 (* Bug fix #3: Add module qualification based on GIR namespace *)
 (* let qualify_ocaml_type ?(gir_type_name = None) ocaml_type =

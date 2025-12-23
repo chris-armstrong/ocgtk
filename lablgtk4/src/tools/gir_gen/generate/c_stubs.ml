@@ -654,8 +654,11 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
         (sprintf "%s result = %s(%s);" ret_type c_name args,
          combine_results (Some ml_result))
       | None ->
-        (sprintf "void *result = %s(%s);" c_name args,
-         combine_results (Some "(value)result"))
+        (* No type mapping found - fail with a clear error message *)
+        failwith (sprintf "No type mapping found for return type: name='%s' c_type='%s' in method %s. This indicates missing type information in the context or GIR metadata."
+          meth.return_type.name
+          (Option.value meth.return_type.c_type ~default:"<none>")
+          meth.c_identifier)
   in
 
   (* For functions with >5 parameters, generate both bytecode and native variants *)
