@@ -3,20 +3,20 @@
 {
 	"name": "Ubuntu",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "ghcr.io/chris-armstrong/ocaml-devcontainer:5.3-ubuntu",
+	"image": "ghcr.io/chris-armstrong/ocaml-devcontainer:5.4-ubuntu",
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 
+
+	"features": {
+		"ghcr.io/devcontainers-extra/features/claude-code:latest": {}
+	},
+
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
+	"remoteUser": "ocaml",
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sudo apt-get update && sudo ln -fs /usr/share/zoneinfo/Australia/Sydney /etc/localtime && sudo DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y install libgtk-4-dev m4 xdot ripgrep && opam update && pushd conf-gtk4 && opam pin -y . && popd && pushd lablgtk4 && opam install . --deps-only --with-test -y"
-
-	// Configure tool-specific properties.
-	// "customizations": {},
-
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
+	"postCreateCommand": "sudo apt-get update && sudo ln -fs /usr/share/zoneinfo/Australia/Sydney /etc/localtime && sudo DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y install rsync libgtk-4-dev m4 xdot ripgrep neovim && opam update && cd conf-gtk4 && opam pin -y . && cd .. && cd lablgtk4 && opam install . --deps-only --with-test -y"
 }
