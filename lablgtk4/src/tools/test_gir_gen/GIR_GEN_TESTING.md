@@ -350,18 +350,27 @@ See detailed test checklist in [Test Results & Coverage](#test-results--coverage
 
 ## Layer 1: ML File Generation Tests
 
-**Status: ❌ TODO**
+**Status: 🚧 IN PROGRESS**
 
 **Location:** `ml_generation/` (to be created)
 
 ### Testing Approach
 
-ML file generation tests should use **library-based testing** similar to C stub tests:
+ML file generation tests use **library-based testing with OCaml AST** instead of string matching:
 
 1. Create test context and GIR data structures
 2. Call ML generator functions directly
-3. Parse generated .ml and .mli files
-4. Validate module structure, type definitions, and signatures
+3. **Parse generated .ml and .mli files using OCaml's built-in compiler-libs (`Parsetree`, `Parse`)**
+4. **Validate module structure, type definitions, and signatures using AST inspection**
+5. **Perform structural validation that survives formatting changes**
+
+**Why OCaml AST Instead of String Matching:**
+- ✅ **No custom parser needed** - Uses OCaml's built-in `compiler-libs`
+- ✅ **Structural validation** - Validates actual OCaml syntax, not just text patterns
+- ✅ **Type-safe testing** - Leverages OCaml's type system for test assertions
+- ✅ **Refactoring-friendly** - Tests remain valid even if formatting changes
+- ✅ **Precise queries** - Can inspect specific AST nodes (type declarations, externals, etc.)
+- ✅ **Better error messages** - OCaml parser provides syntax error locations
 
 ### Proposed Test Organization
 
@@ -419,11 +428,79 @@ Coverage areas:
 - [ ] Complex nested types
 - [ ] Circular type dependencies
 
-### Testing Infrastructure Needed
+### Testing Infrastructure
 
-- **ml_parser.ml** - Parser for OCaml code
-- **ml_ast.ml** - AST types for OCaml constructs
-- **ml_validation.ml** - High-level validation helpers
+**Status: 🚧 IN PROGRESS**
+
+- **ml_ast_helpers.ml** - ✅ Wrapper around OCaml `compiler-libs` for parsing and inspecting ML/MLI files
+  - Uses `Parsetree`, `Parse`, `Asttypes` from OCaml compiler
+  - Functions for finding type declarations, externals, value declarations
+  - AST node inspection and conversion utilities
+- **ml_validation.ml** - ✅ High-level validation helpers for common patterns
+  - Polymorphic variant validation
+  - External declaration validation
+  - Type compatibility checking
+  - Function signature validation
+
+### Example: Testing with OCaml AST
+
+**Testing a type definition:**
+```ocaml
+let test_widget_hierarchy_type () =
+  let ctx = Helpers.create_test_context () in
+
+  (* Generate ML interface for Button (inherits from Widget) *)
+  let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_type_definition
+    ~ctx ~class_name:"Button" ~parent_chain:["Widget"] () in
+
+  (* Parse using OCaml's built-in parser *)
+  let ast = Ml_ast_helpers.parse_implementation ml_code in
+
+  (* Find the type declaration for 't' *)
+  let type_decl = Ml_ast_helpers.find_type_declaration ast "t" in
+
+  (* Validate it's a polymorphic variant with correct tags *)
+  Ml_validation.assert_polymorphic_variant type_decl;
+  Ml_validation.assert_has_variant_tag type_decl "`button";
+  Ml_validation.assert_has_variant_tag type_decl "`widget";
+
+  (* Validate it wraps Gobject.obj *)
+  Ml_validation.assert_wraps_gobject_obj type_decl
+```
+
+**Testing an external declaration:**
+```ocaml
+let test_external_with_nullable_params () =
+  let ctx = Helpers.create_test_context () in
+  let meth = {
+    method_name = "set_label";
+    c_identifier = "gtk_button_set_label";
+    return_type = { name = "none"; c_type = None; nullable = false };
+    parameters = [
+      { param_name = "label";
+        param_type = { name = "utf8"; c_type = Some "gchar*"; nullable = true };
+        direction = In; (* ... *) }
+    ];
+    (* ... *)
+  } in
+
+  let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_method
+    ~ctx ~class_name:"Button" meth in
+
+  let ast = Ml_ast_helpers.parse_implementation ml_code in
+  let ext_decl = Ml_ast_helpers.find_external ast "set_label" in
+
+  (* Validate external signature: string option -> unit *)
+  Alcotest.(check bool) "First param is string option" true
+    (Ml_validation.is_optional_string_param ext_decl 0);
+
+  Alcotest.(check bool) "Return type is unit" true
+    (Ml_validation.returns_unit ext_decl);
+
+  (* Validate C function name *)
+  Alcotest.(check string) "C identifier" "ml_gtk_button_set_label"
+    (Ml_ast_helpers.get_external_c_name ext_decl)
+```
 
 ---
 

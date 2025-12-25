@@ -14,6 +14,7 @@ let () =
       ("Error Handling", Error_handling_tests.tests);
       ("Out Params", Out_params_tests.tests);
       ("Type Conversion", Type_conversion_tests.tests);
+      ("Type Definitions (ML)", Type_definition_tests.tests);
       ("Properties", Properties.tests);
       ("Signals", Signals.tests);
       ("Enums", Enums.tests);
