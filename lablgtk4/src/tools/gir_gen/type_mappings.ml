@@ -34,7 +34,6 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "gdouble";
       } );
-    (* Bug fix #2: Add "double" mapping for c:type="double" in GIR *)
     ( "double",
       {
         ocaml_type = "float";
@@ -62,7 +61,6 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "gchararray";
       } );
-    (* GdkModifierType is now generated from Gdk-4.0.gir *)
     ( "const gchar*",
       {
         ocaml_type = "string";
@@ -72,7 +70,6 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "const gchar*";
       } );
-    (* Bug fix: Add "gchar*" mapping for properties like placeholder-text *)
     ( "gchar*",
       {
         ocaml_type = "string";
@@ -82,7 +79,6 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "gchar*";
       } );
-    (* Bug fix: Add "utf8" mapping for GIR type name *)
     ( "utf8",
       {
         ocaml_type = "string";
@@ -101,7 +97,6 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "const char*"
       } );
-    (* Primitive types *)
     ( "gfloat",
       {
         ocaml_type = "float";
@@ -111,7 +106,6 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "gfloat";
       } );
-    (* Bug fix #2: Ensure both gfloat and float are mapped *)
     ( "float",
       {
         ocaml_type = "float";
@@ -356,7 +350,7 @@ let find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
       | None -> None
     in
     let find_enum_mapping () =
-      (* First, check if this is a known enum *)
+      (* First, check if this is a known enum in current namespace *)
       let enum_mapping =
         List.find_opt
           ~f:(fun (e : Types.gir_enum) -> e.enum_name = lookup_str)
@@ -375,13 +369,31 @@ let find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
               layer2_class = None;
               needs_copy = false;
             }
-      | None -> None
+      | None ->
+          (* Check external namespaces *)
+          let external_enum_mapping =
+            List.find_opt
+              ~f:(fun (_, e : string * Types.gir_enum) -> e.enum_name = lookup_str)
+              ctx.external_enums
+          in
+          (match external_enum_mapping with
+          | Some (ns, enum) ->
+              Some
+                {
+                  ocaml_type = ns ^ "_enums." ^ String.lowercase_ascii enum.enum_name;
+                  c_type = enum.enum_c_type;
+                  c_to_ml = sprintf "Val_%s%s" ns enum.enum_name;
+                  ml_to_c = sprintf "%s%s_val" ns enum.enum_name;
+                  layer2_class = None;
+                  needs_copy = false;
+                }
+          | None -> None)
     in
     let find_bitfield_mapping () =
-      (* Check if this is a known bitfield *)
+      (* Check if this is a known bitfield in current namespace *)
       let bitfield_mapping =
         List.find_opt
-          ~f:(fun (b : Types.gir_bitfield) -> b.bitfield_c_type = lookup_str)
+          ~f:(fun (b : Types.gir_bitfield) -> b.bitfield_c_type = lookup_str || b.bitfield_name = lookup_str)
           ctx.bitfields
       in
       match bitfield_mapping with
@@ -390,14 +402,32 @@ let find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
           let namespace = ctx.namespace.namespace_name in
           Some
             {
-              ocaml_type = String.lowercase_ascii bitfield.bitfield_name;
+              ocaml_type = (namespace) ^ "_enums." ^ String.lowercase_ascii bitfield.bitfield_name;
               c_to_ml = sprintf "Val_%s%s" namespace bitfield.bitfield_name;
               ml_to_c = sprintf "%s%s_val" namespace bitfield.bitfield_name;
               needs_copy = false;
               layer2_class = None;
               c_type = bitfield.bitfield_c_type;
             }
-      | None -> None
+      | None ->
+          (* Check external namespaces *)
+          let external_bitfield_mapping =
+            List.find_opt
+              ~f:(fun (_, b : string * Types.gir_bitfield) -> b.bitfield_c_type = lookup_str || b.bitfield_name = lookup_str)
+              ctx.external_bitfields
+          in
+          (match external_bitfield_mapping with
+          | Some (ns, bitfield) ->
+              Some
+                {
+                  ocaml_type = ns ^ "_enums." ^ String.lowercase_ascii bitfield.bitfield_name;
+                  c_to_ml = sprintf "Val_%s%s" ns bitfield.bitfield_name;
+                  ml_to_c = sprintf "%s%s_val" ns bitfield.bitfield_name;
+                  needs_copy = false;
+                  layer2_class = None;
+                  c_type = bitfield.bitfield_c_type;
+                }
+          | None -> None)
     in
     let find_hardcoded_mapping () =
       (* Fall back to hardcoded type mappings *)
@@ -418,62 +448,3 @@ let find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
        | None -> try_lookup gir_type.name)
   | None -> try_lookup gir_type.name
 
-(* Bug fix #3: Add module qualification based on GIR namespace *)
-(* let qualify_ocaml_type ?(gir_type_name = None) ocaml_type =
-  (* Check if type is already qualified (contains a dot) *)
-  if String.contains ocaml_type '.' then ocaml_type
-  else
-    (* Extract namespace from GIR type name (e.g., "Pango.EllipsizeMode" -> "Pango") *)
-    let namespace =
-      match gir_type_name with
-      | Some name when String.contains name '.' ->
-          let dot_pos = String.index name '.' in
-          Some (String.sub ~pos:0 ~len:dot_pos name)
-      | _ -> None
-    in
-
-    (* Qualify based on namespace *)
-    match namespace with
-    | Some "Pango" -> sprintf "Pango.%s" ocaml_type
-    | Some "Gdk" -> sprintf "Gdk.%s" ocaml_type
-    | Some "Gsk" ->
-        sprintf "Gsk_enums.%s" ocaml_type (* Gsk enums in Gsk_enums module *)
-    | Some "Gtk" ->
-        (* Check if it's a core Gtk type or an enum *)
-        let gtk_core_types =
-          [
-            "orientation";
-            "align";
-            "baseline_position";
-            "position_type";
-            "size_request_mode";
-            "state_flags";
-          ]
-        in
-        if List.mem ocaml_type ~set:gtk_core_types then
-          sprintf "Gtk.%s" ocaml_type
-        else
-          sprintf "Gtk_enums.%s" ocaml_type (* Gtk enums in Gtk_enums module *)
-    | _ ->
-        (* No namespace - don't qualify built-in OCaml types *)
-        let builtin_types =
-          [
-            "unit";
-            "bool";
-            "int";
-            "float";
-            "string";
-            "char";
-            "list";
-            "array";
-            "option";
-            "result";
-          ]
-        in
-        if List.mem ocaml_type ~set:builtin_types then ocaml_type
-          (* Don't qualify built-in types *)
-        else if String.contains ocaml_type '.' then ocaml_type
-          (* Already qualified *)
-        else
-          sprintf "Gtk_enums.%s"
-            ocaml_type Likely a Gtk enum without namespace *)
