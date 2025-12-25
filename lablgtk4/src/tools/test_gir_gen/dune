@@ -1,3 +1,5 @@
+(include_subdirs unqualified)
+
 (test
  (name test_gir_gen)
  (modules helpers core parser c_ast c_parser c_validation c_stubs_tests nullable_tests error_handling_tests out_params_tests type_conversion_tests properties signals enums records edge_cases test_gir_gen)

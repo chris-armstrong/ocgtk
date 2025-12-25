@@ -339,6 +339,332 @@ let test_bytecode_calls_native () =
     (C_validation.validates_bytecode_native_pair functions "ml_gtk_widget_new_complex")
 
 (* ========================================================================= *)
+(* Record Type Tests *)
+(* ========================================================================= *)
+
+let test_non_opaque_record_return () =
+  let ctx = Helpers.create_test_context () in
+
+  (* Add a non-opaque record to the context *)
+  let test_record = {
+    Gir_gen_lib.Types.record_name = "TestRecord";
+    c_type = "GtkTestRecord";
+    glib_type_name = Some "GtkTestRecord";
+    glib_get_type = Some "gtk_test_record_get_type";
+    fields = [
+      {
+        field_name = "width";
+        field_type = Some { name = "gint"; c_type = Some "gint"; nullable = false };
+        readable = true;
+        writable = false;
+        field_doc = None;
+      }
+    ];
+    constructors = [];
+    methods = [];
+    c_symbol_prefix = None;
+    disguised = false;
+    opaque = false;
+    record_doc = None;
+  } in
+
+  let ctx = { ctx with records = [test_record] } in
+
+  let meth = {
+    method_name = "get_record";
+    c_identifier = "gtk_widget_get_record";
+    return_type = { name = "TestRecord"; c_type = Some "GtkTestRecord*"; nullable = false };
+    parameters = [];
+    doc = None;
+    throws = false;
+    get_property = None;
+    set_property = None;
+  } in
+
+  let c_code = Gir_gen_lib.Generate.C_stubs.generate_c_method
+    ~ctx ~c_type:"GtkWidget" meth "Widget" in
+
+  Helpers.log_generated_c_code "non-opaque record return" c_code;
+
+  let functions = parse_c_string c_code in
+  let func = Option.get (find_function functions "ml_gtk_widget_get_record") in
+
+  (* Should use Val_GtkTestRecord for return conversion *)
+  Alcotest.(check bool) "Uses Val_GtkTestRecord conversion" true
+    (C_validation.validates_gtk_constructor func "GtkTestRecord")
+
+let test_non_opaque_record_parameter () =
+  let ctx = Helpers.create_test_context () in
+
+  let test_record = {
+    Gir_gen_lib.Types.record_name = "TestRecord";
+    c_type = "GtkTestRecord";
+    glib_type_name = Some "GtkTestRecord";
+    glib_get_type = Some "gtk_test_record_get_type";
+    fields = [
+      {
+        field_name = "width";
+        field_type = Some { name = "gint"; c_type = Some "gint"; nullable = false };
+        readable = true;
+        writable = false;
+        field_doc = None;
+      }
+    ];
+    constructors = [];
+    methods = [];
+    c_symbol_prefix = None;
+    disguised = false;
+    opaque = false;
+    record_doc = None;
+  } in
+
+  let ctx = { ctx with records = [test_record] } in
+
+  let meth = {
+    method_name = "set_record";
+    c_identifier = "gtk_widget_set_record";
+    return_type = { name = "none"; c_type = Some "void"; nullable = false };
+    parameters = [
+      {
+        param_name = "record";
+        param_type = { name = "TestRecord"; c_type = Some "GtkTestRecord*"; nullable = false };
+        direction = In;
+        nullable = false;
+        varargs = false;
+      }
+    ];
+    doc = None;
+    throws = false;
+    get_property = None;
+    set_property = None;
+  } in
+
+  let c_code = Gir_gen_lib.Generate.C_stubs.generate_c_method
+    ~ctx ~c_type:"GtkWidget" meth "Widget" in
+
+  Helpers.log_generated_c_code "non-opaque record parameter" c_code;
+
+  let functions = parse_c_string c_code in
+  let func = Option.get (find_function functions "ml_gtk_widget_set_record") in
+
+  (* Should have 2 params: self + record *)
+  Alcotest.(check int) "Has 2 parameters" 2
+    (C_ast.get_param_count func);
+
+  (* Should call the C function *)
+  Alcotest.(check bool) "Calls C function" true
+    (C_validation.calls_c_function func "gtk_widget_set_record")
+
+let test_opaque_record_return () =
+  let ctx = Helpers.create_test_context () in
+
+  (* Add an opaque record to the context *)
+  let opaque_record = {
+    Gir_gen_lib.Types.record_name = "OpaqueRec";
+    c_type = "GtkOpaqueRec";
+    glib_type_name = None;
+    glib_get_type = None;
+    fields = [];
+    constructors = [];
+    methods = [];
+    c_symbol_prefix = None;
+    disguised = true;
+    opaque = true;
+    record_doc = None;
+  } in
+
+  let ctx = { ctx with records = [opaque_record] } in
+
+  let meth = {
+    method_name = "get_opaque";
+    c_identifier = "gtk_widget_get_opaque";
+    return_type = { name = "OpaqueRec"; c_type = Some "GtkOpaqueRec*"; nullable = false };
+    parameters = [];
+    doc = None;
+    throws = false;
+    get_property = None;
+    set_property = None;
+  } in
+
+  let c_code = Gir_gen_lib.Generate.C_stubs.generate_c_method
+    ~ctx ~c_type:"GtkWidget" meth "Widget" in
+
+  Helpers.log_generated_c_code "opaque record return" c_code;
+
+  let functions = parse_c_string c_code in
+  let func = Option.get (find_function functions "ml_gtk_widget_get_opaque") in
+
+  (* Should use Val_GtkOpaqueRec for return conversion *)
+  Alcotest.(check bool) "Uses Val_GtkOpaqueRec conversion" true
+    (C_validation.validates_gtk_constructor func "GtkOpaqueRec")
+
+let test_opaque_record_parameter () =
+  let ctx = Helpers.create_test_context () in
+
+  let opaque_record = {
+    Gir_gen_lib.Types.record_name = "OpaqueRec";
+    c_type = "GtkOpaqueRec";
+    glib_type_name = None;
+    glib_get_type = None;
+    fields = [];
+    constructors = [];
+    methods = [];
+    c_symbol_prefix = None;
+    disguised = true;
+    opaque = true;
+    record_doc = None;
+  } in
+
+  let ctx = { ctx with records = [opaque_record] } in
+
+  let meth = {
+    method_name = "set_opaque";
+    c_identifier = "gtk_widget_set_opaque";
+    return_type = { name = "none"; c_type = Some "void"; nullable = false };
+    parameters = [
+      {
+        param_name = "opaque";
+        param_type = { name = "OpaqueRec"; c_type = Some "GtkOpaqueRec*"; nullable = false };
+        direction = In;
+        nullable = false;
+        varargs = false;
+      }
+    ];
+    doc = None;
+    throws = false;
+    get_property = None;
+    set_property = None;
+  } in
+
+  let c_code = Gir_gen_lib.Generate.C_stubs.generate_c_method
+    ~ctx ~c_type:"GtkWidget" meth "Widget" in
+
+  Helpers.log_generated_c_code "opaque record parameter" c_code;
+
+  let functions = parse_c_string c_code in
+  let func = Option.get (find_function functions "ml_gtk_widget_set_opaque") in
+
+  (* Should have 2 params: self + opaque *)
+  Alcotest.(check int) "Has 2 parameters" 2
+    (C_ast.get_param_count func);
+
+  (* Should call the C function *)
+  Alcotest.(check bool) "Calls C function" true
+    (C_validation.calls_c_function func "gtk_widget_set_opaque")
+
+let test_nullable_record_return () =
+  let ctx = Helpers.create_test_context () in
+
+  let test_record = {
+    Gir_gen_lib.Types.record_name = "TestRecord";
+    c_type = "GtkTestRecord";
+    glib_type_name = Some "GtkTestRecord";
+    glib_get_type = Some "gtk_test_record_get_type";
+    fields = [
+      {
+        field_name = "width";
+        field_type = Some { name = "gint"; c_type = Some "gint"; nullable = false };
+        readable = true;
+        writable = false;
+        field_doc = None;
+      }
+    ];
+    constructors = [];
+    methods = [];
+    c_symbol_prefix = None;
+    disguised = false;
+    opaque = false;
+    record_doc = None;
+  } in
+
+  let ctx = { ctx with records = [test_record] } in
+
+  let meth = {
+    method_name = "get_nullable_record";
+    c_identifier = "gtk_widget_get_nullable_record";
+    return_type = { name = "TestRecord"; c_type = Some "GtkTestRecord*"; nullable = true };
+    parameters = [];
+    doc = None;
+    throws = false;
+    get_property = None;
+    set_property = None;
+  } in
+
+  let c_code = Gir_gen_lib.Generate.C_stubs.generate_c_method
+    ~ctx ~c_type:"GtkWidget" meth "Widget" in
+
+  Helpers.log_generated_c_code "nullable record return" c_code;
+
+  let functions = parse_c_string c_code in
+  let func = Option.get (find_function functions "ml_gtk_widget_get_nullable_record") in
+
+  (* Should have return statement *)
+  Alcotest.(check bool) "Has return statement" true
+    (C_ast.has_return_stmt func.C_ast.body)
+
+let test_nullable_record_parameter () =
+  let ctx = Helpers.create_test_context () in
+
+  let test_record = {
+    Gir_gen_lib.Types.record_name = "TestRecord";
+    c_type = "GtkTestRecord";
+    glib_type_name = Some "GtkTestRecord";
+    glib_get_type = Some "gtk_test_record_get_type";
+    fields = [
+      {
+        field_name = "width";
+        field_type = Some { name = "gint"; c_type = Some "gint"; nullable = false };
+        readable = true;
+        writable = false;
+        field_doc = None;
+      }
+    ];
+    constructors = [];
+    methods = [];
+    c_symbol_prefix = None;
+    disguised = false;
+    opaque = false;
+    record_doc = None;
+  } in
+
+  let ctx = { ctx with records = [test_record] } in
+
+  let meth = {
+    method_name = "set_nullable_record";
+    c_identifier = "gtk_widget_set_nullable_record";
+    return_type = { name = "none"; c_type = Some "void"; nullable = false };
+    parameters = [
+      {
+        param_name = "record";
+        param_type = { name = "TestRecord"; c_type = Some "GtkTestRecord*"; nullable = true };
+        direction = In;
+        nullable = true;
+        varargs = false;
+      }
+    ];
+    doc = None;
+    throws = false;
+    get_property = None;
+    set_property = None;
+  } in
+
+  let c_code = Gir_gen_lib.Generate.C_stubs.generate_c_method
+    ~ctx ~c_type:"GtkWidget" meth "Widget" in
+
+  Helpers.log_generated_c_code "nullable record parameter" c_code;
+
+  let functions = parse_c_string c_code in
+  let func = Option.get (find_function functions "ml_gtk_widget_set_nullable_record") in
+
+  (* Should have 2 params: self + record *)
+  Alcotest.(check int) "Has 2 parameters" 2
+    (C_ast.get_param_count func);
+
+  (* Should call the C function *)
+  Alcotest.(check bool) "Calls C function" true
+    (C_validation.calls_c_function func "gtk_widget_set_nullable_record")
+
+(* ========================================================================= *)
 (* Test Suite *)
 (* ========================================================================= *)
 
@@ -359,4 +685,12 @@ let tests =
     Alcotest.test_case "Variable declarations are parsed" `Quick test_variable_declarations;
     Alcotest.test_case "Parameter flow to return value" `Quick test_parameter_flow_to_return;
     Alcotest.test_case "Bytecode calls native function" `Quick test_bytecode_calls_native;
+
+    (* Record type tests *)
+    Alcotest.test_case "Non-opaque record return type" `Quick test_non_opaque_record_return;
+    Alcotest.test_case "Non-opaque record parameter" `Quick test_non_opaque_record_parameter;
+    Alcotest.test_case "Opaque record return type" `Quick test_opaque_record_return;
+    Alcotest.test_case "Opaque record parameter" `Quick test_opaque_record_parameter;
+    Alcotest.test_case "Nullable record return type" `Quick test_nullable_record_return;
+    Alcotest.test_case "Nullable record parameter" `Quick test_nullable_record_parameter;
   ]
