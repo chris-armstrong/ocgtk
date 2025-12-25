@@ -3,6 +3,8 @@
 open StdLabels
 open Printf
 
+module Log = (val Logs.src_log (Logs.Src.create "gir_gen.exclude_list" ~doc:"Exclusion lists and filtering logic for GIR Code Generator"))
+
 let variadic_function_exclude_list =
   [
     "gtk_text_buffer_insert_with_tags";
@@ -84,7 +86,7 @@ let should_skip_method ~find_type_mapping ~enums:_ ~bitfields:_
       meth.Types.parameters
   in
 
-  Printf.eprintf "Exclude_list.should_skip_method: %s -> %s=%b %b\n"
+  Log.debug (fun m -> m "Exclude_list.should_skip_method: %s -> %s=%b %b\n"
     meth.Types.method_name meth.Types.return_type.name has_unknown_return
-    has_unknown_params;
+    has_unknown_params);
   has_unknown_return || has_unknown_params

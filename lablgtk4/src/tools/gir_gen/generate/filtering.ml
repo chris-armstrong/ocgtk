@@ -4,13 +4,15 @@ open StdLabels
 open Types
 module StringSet = Set.Make (String)
 
+module Log = (val Logs.src_log (Logs.Src.create "gir_gen.filtering" ~doc:"Shared filtering helpers for GIR generators"))
+
 let has_simple_type ~ctx (gir_type : gir_type) =
   let is_excluded = Exclude_list.is_excluded_type_name gir_type.name in
   (not is_excluded)
   &&
   match Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type with
   | Some _ ->
-      Printf.printf "has_simple_type: %s\n" gir_type.name;
+      Logs.debug (fun m -> m "has_simple_type: %s -> true\n" gir_type.name);
       true
   | None -> false
 
@@ -36,7 +38,7 @@ let should_generate_property ~ctx ~class_name ~methods (prop : gir_property) =
              |> Option.value ~default:false)
         methods
     in
-    Printf.printf "matches method %s=%b\n" prop.prop_name matches_method;
+    Log.debug (fun m -> m "matches method %s=%b\n" prop.prop_name matches_method);
     (not matches_method) && has_simple_type ~ctx prop.prop_type
 
 let property_method_names ~ctx ~class_name ~methods
@@ -96,9 +98,9 @@ let should_skip_method_binding ~ctx (meth : gir_method) =
     || Exclude_list.is_variadic_function meth.c_identifier
   in
 
-  Printf.eprintf "should_skip_method_name: %s -> %b %b %b %b\n"
+  Logs.debug (fun m -> m "should_skip_method_name: %s -> %b %b %b %b\n"
     meth.c_identifier is_variadic has_excluded_type has_unknown_type
-    is_excluded_function;
+    is_excluded_function);
 
   is_variadic || has_excluded_type || has_unknown_type || is_excluded_function
 
