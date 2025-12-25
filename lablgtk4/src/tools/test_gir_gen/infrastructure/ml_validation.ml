@@ -158,3 +158,35 @@ let assert_type_exists_sig (ast : signature) (type_name : string) =
   | Some _ -> ()
   | None ->
       Alcotest.fail (sprintf "Type '%s' not found in signature" type_name)
+
+(* Assert parameter type at specific index *)
+let assert_param_type (ext_decl : value_description) (param_idx : int) (expected_type : string) =
+  let params = Ml_ast_helpers.get_param_types ext_decl.pval_type in
+  match List.nth_opt params param_idx with
+  | Some param_type ->
+      let actual_type = Ml_ast_helpers.core_type_to_string param_type in
+      if actual_type <> expected_type then
+        Alcotest.fail (sprintf "Expected parameter %d of '%s' to be '%s', got '%s'"
+          param_idx ext_decl.pval_name.txt expected_type actual_type)
+  | None ->
+      Alcotest.fail (sprintf "Parameter %d not found in '%s' (has %d params)"
+        param_idx ext_decl.pval_name.txt (List.length params))
+
+(* Assert return type *)
+let assert_return_type (ext_decl : value_description) (expected_type : string) =
+  let return_type = Ml_ast_helpers.get_return_type ext_decl.pval_type in
+  let actual_type = Ml_ast_helpers.core_type_to_string return_type in
+  if actual_type <> expected_type then
+    Alcotest.fail (sprintf "Expected '%s' to return '%s', got '%s'"
+      ext_decl.pval_name.txt expected_type actual_type)
+
+(* Assert that a value (let binding or external) exists in implementation *)
+let assert_value_exists (ast : structure) (value_name : string) =
+  match Ml_ast_helpers.find_let_binding ast value_name with
+  | Some _ -> ()
+  | None ->
+      (* Also check externals *)
+      match Ml_ast_helpers.find_external ast value_name with
+      | Some _ -> ()
+      | None ->
+          Alcotest.fail (sprintf "Value '%s' not found in implementation" value_name)

@@ -104,6 +104,19 @@ let get_all_externals (ast : structure) : value_description list =
 (* Value Declaration Helpers *)
 (* ========================================================================= *)
 
+(* Find a let binding by name in an implementation *)
+let find_let_binding (ast : structure) (name : string) : value_binding option =
+  List.find_map (fun item ->
+    match item.pstr_desc with
+    | Pstr_value (_, bindings) ->
+        List.find_opt (fun vb ->
+          match vb.pvb_pat.ppat_desc with
+          | Ppat_var { txt; _ } when txt = name -> true
+          | _ -> false
+        ) bindings
+    | _ -> None
+  ) ast
+
 (* Find a value declaration (let binding) by name in a signature *)
 let find_value_declaration_sig (ast : signature) (name : string) : value_description option =
   List.find_map (fun item ->
@@ -141,9 +154,15 @@ let rec core_type_to_string (ct : core_type) : string =
   | Ptyp_var v -> "'" ^ v
   | Ptyp_constr (lid_loc, []) ->
       longident_loc_to_string lid_loc
+  | Ptyp_constr (lid_loc, [arg]) ->
+      (* Single argument: use postfix notation (e.g., "t option", not "option<t>") *)
+      Printf.sprintf "%s %s"
+        (core_type_to_string arg)
+        (longident_loc_to_string lid_loc)
   | Ptyp_constr (lid_loc, args) ->
+      (* Multiple arguments: use prefix notation with parens *)
       let args_str = String.concat ", " (List.map core_type_to_string args) in
-      Printf.sprintf "%s<%s>" (longident_loc_to_string lid_loc) args_str
+      Printf.sprintf "(%s) %s" args_str (longident_loc_to_string lid_loc)
   | Ptyp_tuple types ->
       (* In OCaml 5.4+, tuple types include optional labels *)
       let types_str = String.concat " * " (List.map (fun (_, ct) -> core_type_to_string ct) types) in

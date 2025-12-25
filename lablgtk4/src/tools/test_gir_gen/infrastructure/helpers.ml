@@ -256,6 +256,67 @@ let create_test_context () =
     current_cycle_classes = [];
   }
 
+(* Create a test context with hierarchy detection configured *)
+let create_test_context_with_hierarchy () =
+  let open Gir_gen_lib.Types in
+  let ctx = create_test_context () in
+
+  (* Add Widget hierarchy info *)
+  Hashtbl.add ctx.hierarchy_map "Widget" {
+    gir_root = "Widget";
+    hierarchy = WidgetHierarchy;
+    layer2_module = "GWidget";
+    class_type_name = "widget_skel";
+    accessor_method = "as_widget";
+    layer1_base_type = "Widget.t";
+    base_conversion_method = "Widget.as_widget";
+  };
+
+  (* Add Button hierarchy info (inherits from Widget) *)
+  Hashtbl.add ctx.hierarchy_map "Button" {
+    gir_root = "Widget";
+    hierarchy = WidgetHierarchy;
+    layer2_module = "GWidget";
+    class_type_name = "widget_skel";
+    accessor_method = "as_widget";
+    layer1_base_type = "Widget.t";
+    base_conversion_method = "Widget.as_widget";
+  };
+
+  (* Add Entry hierarchy info (deep hierarchy) *)
+  Hashtbl.add ctx.hierarchy_map "Entry" {
+    gir_root = "Widget";
+    hierarchy = WidgetHierarchy;
+    layer2_module = "GWidget";
+    class_type_name = "widget_skel";
+    accessor_method = "as_widget";
+    layer1_base_type = "Widget.t";
+    base_conversion_method = "Widget.as_widget";
+  };
+
+  (* Add intermediate classes in Entry hierarchy *)
+  Hashtbl.add ctx.hierarchy_map "InitiallyUnowned" {
+    gir_root = "Object";
+    hierarchy = WidgetHierarchy;
+    layer2_module = "GObject";
+    class_type_name = "object_skel";
+    accessor_method = "as_object";
+    layer1_base_type = "Object.t";
+    base_conversion_method = "Object.as_object";
+  };
+
+  Hashtbl.add ctx.hierarchy_map "Object" {
+    gir_root = "Object";
+    hierarchy = WidgetHierarchy;
+    layer2_module = "GObject";
+    class_type_name = "object_skel";
+    accessor_method = "as_object";
+    layer1_base_type = "Object.t";
+    base_conversion_method = "Object.as_object";
+  };
+
+  ctx
+
 (* ========================================================================= *)
 (* C Code Inspection Helpers *)
 (* ========================================================================= *)
