@@ -63,13 +63,12 @@ let generate_library_interface ~ctx =
     Buffer.add_string buf "(** {1 Classes and Interfaces} *)\n\n";
     List.iter
       (fun name ->
-        if Exclude_list.should_skip_class name then ()
-        else
-          let class_name_lower = Utils.ocaml_class_name name in
-          let module_ref = get_layer2_class_module_reference ~ctx name in
-          let g_module_name = "G" ^ module_ref in
-          Printf.bprintf buf "class %s : %s.%s\n" class_name_lower g_module_name
-            class_name_lower)
+        let class_name_lower = Utils.ocaml_class_name name in
+        let layer1_module = get_layer1_module_reference ~ctx name in
+        let module_ref = get_layer2_class_module_reference ~ctx name in
+        let g_module_name = "G" ^ module_ref in
+        Printf.bprintf buf "class %s : %s.t -> %s.%s\n" class_name_lower
+          layer1_module g_module_name class_name_lower)
       sorted_entities;
     Buffer.add_string buf "\n"
   end;
@@ -156,6 +155,10 @@ let generate_library_implementation ~ctx =
     List.map (fun (c : gir_class) -> c.class_name) ctx.classes
     @ List.map (fun (i : gir_interface) -> i.interface_name) ctx.interfaces
   in
+  let all_entities =
+    ListLabels.filter all_entities ~f:(fun name ->
+        not (Exclude_list.should_skip_class name))
+  in
   let sorted_entities = List.sort String.compare all_entities in
 
   (* Generate class references (layer 2 wrapper classes) *)
@@ -163,13 +166,11 @@ let generate_library_implementation ~ctx =
     Buffer.add_string buf "(** Classes and Interfaces *)\n\n";
     List.iter
       (fun name ->
-        if Exclude_list.should_skip_class name then ()
-        else
-          let class_name_lower = ocaml_class_name name in
-          let module_ref = get_layer2_class_module_reference ~ctx name in
-          let g_module_name = "G" ^ module_ref in
-          Printf.bprintf buf "class %s = %s.%s\n" class_name_lower g_module_name
-            class_name_lower)
+        let class_name_lower = ocaml_class_name name in
+        let module_ref = get_layer2_class_module_reference ~ctx name in
+        let g_module_name = "G" ^ module_ref in
+        Printf.bprintf buf "class %s = %s.%s\n" class_name_lower g_module_name
+          class_name_lower)
       sorted_entities;
     Buffer.add_string buf "\n"
   end;
