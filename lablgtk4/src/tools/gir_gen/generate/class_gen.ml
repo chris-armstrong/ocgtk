@@ -247,9 +247,31 @@ let generate_property_signatures ~ctx ~class_name ~methods  ~seen ~current_layer
   generate_property_code ~ctx ~class_name ~methods  ~seen ~generate_getter ~generate_setter prop
 
 let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:_ ~module_name ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes ~conflicting_methods (meth : gir_method) =
+  (* Check if any parameter is an interface type - we can't handle these yet *)
+  let has_interface_param =
+    List.exists meth.parameters ~f:(fun p ->
+      let check_interface_by_name name =
+        if name = "" then false
+        else
+          match Type_mappings.find_interface_mapping ctx.interfaces name with
+          | Some _ -> true
+          | None -> false
+      in
+      let check_interface_by_c_type c_type_opt =
+        match c_type_opt with
+        | None -> false
+        | Some c_type -> check_interface_by_name c_type
+      in
+      check_interface_by_name p.param_type.name || check_interface_by_c_type p.param_type.c_type
+    )
+  in
+  (* Check if any parameter or return type references cross-namespace enums/bitfields *)
+  let has_cross_namespace_type = Filtering.method_has_cross_namespace_types ~ctx meth in
   let should_skip =
     Filtering.should_skip_method_binding ~ctx  meth ||
-    List.exists meth.parameters ~f:(fun p -> p.direction = Out || p.direction = InOut)
+    List.exists meth.parameters ~f:(fun p -> p.direction = Out || p.direction = InOut) ||
+    has_interface_param ||
+    has_cross_namespace_type
   in
   if should_skip then ("", seen)
   else
@@ -451,9 +473,31 @@ let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:
 
 
 let generate_method_signatures ~ctx ~property_method_names:_ ~property_base_names:_ ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes ~conflicting_methods (meth : gir_method) =
+  (* Check if any parameter is an interface type - we can't handle these yet *)
+  let has_interface_param =
+    List.exists meth.parameters ~f:(fun p ->
+      let check_interface_by_name name =
+        if name = "" then false
+        else
+          match Type_mappings.find_interface_mapping ctx.interfaces name with
+          | Some _ -> true
+          | None -> false
+      in
+      let check_interface_by_c_type c_type_opt =
+        match c_type_opt with
+        | None -> false
+        | Some c_type -> check_interface_by_name c_type
+      in
+      check_interface_by_name p.param_type.name || check_interface_by_c_type p.param_type.c_type
+    )
+  in
+  (* Check if any parameter or return type references cross-namespace enums/bitfields *)
+  let has_cross_namespace_type = Filtering.method_has_cross_namespace_types ~ctx meth in
   let should_skip =
     Filtering.should_skip_method_binding ~ctx  meth ||
-    List.exists meth.parameters ~f:(fun p -> p.direction = Out || p.direction = InOut)
+    List.exists meth.parameters ~f:(fun p -> p.direction = Out || p.direction = InOut) ||
+    has_interface_param ||
+    has_cross_namespace_type
   in
   if should_skip then ("", seen)
   else

@@ -259,6 +259,73 @@ This will also clear any previously set labels. *)
 external set_label : 'a t -> string -> unit = "ml_gtk_button_set_label"
 ```
 
+## Methods and properties with interface parameters are suppressed [INTENTIONAL]
+
+**Status**: ⚠️ **INTENTIONALLY SUPPRESSED** - Fixed on 2025-12-26
+
+**Impact**: Methods that accept interface types as parameters and properties that have interface types are not generated in layer 2 (high-level wrapper) classes.
+
+**Affected**:
+- Methods like `Widget_class.set_template_scope` (takes `BuilderScope` interface)
+- Methods like `Selection_filter_model.set_model` (takes `SelectionModel` interface)
+- Properties with interface types
+
+**Root Cause**: Interface types require special handling because they're implemented by multiple classes. The layer 2 generator was trying to pass high-level object wrappers (e.g., `GBuilder_scope.builder_scope` which is an OCaml object) where the layer 1 API expects a variant type (e.g., `Builder_scope.t = [`builder_scope] Gobject.obj`).
+
+**Workaround**: Use layer 1 (low-level) APIs directly when interface parameters are needed.
+
+**Fix Applied**:
+- Added interface parameter detection in `src/tools/gir_gen/generate/class_gen.ml` (lines 250-278, 479-508)
+- Methods with interface parameters are now skipped during layer 2 generation
+- Added interface type detection in `src/tools/gir_gen/generate/filtering.ml` (lines 30-39)
+- Properties with interface types are now skipped during generation
+
+**Future Work**: Implement proper interface parameter handling by:
+1. Creating proper type coercion from high-level objects to layer 1 interface types
+2. Adding `as_<interface>` accessor methods for interface conversions
+3. Supporting interface-typed properties with proper wrapping
+
+---
+
+## Cross-namespace enum/bitfield types are suppressed [INTENTIONAL]
+
+**Status**: ⚠️ **INTENTIONALLY SUPPRESSED** - Fixed on 2025-12-26
+
+**Impact**: Methods and constructors that use enum or bitfield types from external namespaces are not generated in either layer 1 (low-level FFI) or layer 2 (high-level wrapper) classes.
+
+**Example**:
+- `EventController.get_current_event_state()` returns `Gdk.ModifierType` (from Gdk namespace) but is being generated in Gtk namespace
+- `KeyvalTrigger.new_()` takes `Gdk.ModifierType` as a parameter
+
+**Affected**:
+- Constructors with Gdk, Gio, Pango, GdkPixbuf, Gsk, or Graphene enum/bitfield parameters when generating Gtk bindings
+- Methods with Gdk, Gio, Pango, GdkPixbuf, Gsk, or Graphene enum/bitfield parameters or return types when generating Gtk bindings
+
+**Root Cause**: The type qualification system currently only handles same-namespace types correctly. Cross-namespace enums/bitfields result in incorrect type names like `Gtk_enums.modifiertype` (wrong namespace) instead of `Gdk_enums.modifiertype` (correct namespace).
+
+**Workaround**: None currently available. These methods are completely suppressed from generation.
+
+**Fix Applied**:
+- Added utility functions in `src/tools/gir_gen/generate/filtering.ml`:
+  - `is_cross_namespace_enum_or_bitfield` - Checks if a type name refers to an external namespace enum/bitfield
+  - `method_has_cross_namespace_types` - Checks methods for cross-namespace types
+  - `constructor_has_cross_namespace_types` - Checks constructors for cross-namespace types
+- Layer 1 (low-level FFI) generation in `src/tools/gir_gen/generate/ml_interface.ml`:
+  - Constructors with cross-namespace types are skipped (line 176-177)
+  - Methods with cross-namespace types are skipped (line 242, 249)
+- Layer 2 (high-level wrapper) generation in `src/tools/gir_gen/generate/class_gen.ml`:
+  - Methods with cross-namespace types are skipped using the utility function
+- Uses `ctx.external_enums` and `ctx.external_bitfields` to detect cross-namespace types
+- Handles both "ModifierType" and "Gdk.ModifierType" name formats
+
+**Future Work**: Implement proper cross-namespace type support by:
+1. Enhancing type mapping to correctly qualify external namespace types
+2. Ensuring external namespace enum modules are properly imported/referenced
+3. Adding proper namespace prefix resolution in type generation
+4. Re-enabling cross-namespace type generation once proper qualification is in place
+
+---
+
 ## Val_x and X_val conversion macros not being added to generated_forward_decls.h for all types
 
 Some types like GtkBuilderScope and GtkSelectionModel are not having Val_GtkBuilderScope and GtkBuilderScope_val macros generated in generated_forward_decls.h for use by other ml_*_gen.c files, resulting in `warning: implicit generation of function`.
