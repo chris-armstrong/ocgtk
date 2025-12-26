@@ -17,6 +17,14 @@
 #include "generated_forward_decls.h"
 
 
+CAMLexport CAMLprim value ml_gtk_widget_unset_state_flags(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_unset_state_flags(GtkWidget_val(self), GtkStateFlags_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_widget_unrealize(value self)
 {
 CAMLparam1(self);
@@ -133,6 +141,14 @@ CAMLexport CAMLprim value ml_gtk_widget_set_tooltip_markup(value self, value arg
 CAMLparam2(self, arg1);
 
 gtk_widget_set_tooltip_markup(GtkWidget_val(self), String_option_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_set_state_flags(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_widget_set_state_flags(GtkWidget_val(self), GtkStateFlags_val(arg1), Bool_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -392,6 +408,14 @@ gtk_widget_queue_allocate(GtkWidget_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_widget_pick(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+GtkWidget* result = gtk_widget_pick(GtkWidget_val(self), Double_val(arg1), Double_val(arg2), GtkPickFlags_val(arg3));
+CAMLreturn(Val_option(result, Val_GtkWidget));
+}
+
 CAMLexport CAMLprim value ml_gtk_widget_mnemonic_activate(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -618,6 +642,14 @@ GtkStyleContext* result = gtk_widget_get_style_context(GtkWidget_val(self));
 CAMLreturn(Val_GtkStyleContext(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_widget_get_state_flags(value self)
+{
+CAMLparam1(self);
+
+GtkStateFlags result = gtk_widget_get_state_flags(GtkWidget_val(self));
+CAMLreturn(Val_GtkStateFlags(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_widget_get_size_request(value self)
 {
 CAMLparam1(self);
@@ -662,6 +694,14 @@ CAMLparam1(self);
 
 int result = gtk_widget_get_scale_factor(GtkWidget_val(self));
 CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_get_root(value self)
+{
+CAMLparam1(self);
+
+GtkRoot* result = gtk_widget_get_root(GtkWidget_val(self));
+CAMLreturn(Val_option(result, Val_GtkRoot));
 }
 
 CAMLexport CAMLprim value ml_gtk_widget_get_request_mode(value self)
@@ -740,6 +780,14 @@ CAMLparam1(self);
 
 GtkWidget* result = gtk_widget_get_next_sibling(GtkWidget_val(self));
 CAMLreturn(Val_option(result, Val_GtkWidget));
+}
+
+CAMLexport CAMLprim value ml_gtk_widget_get_native(value self)
+{
+CAMLparam1(self);
+
+GtkNative* result = gtk_widget_get_native(GtkWidget_val(self));
+CAMLreturn(Val_option(result, Val_GtkNative));
 }
 
 CAMLexport CAMLprim value ml_gtk_widget_get_name(value self)

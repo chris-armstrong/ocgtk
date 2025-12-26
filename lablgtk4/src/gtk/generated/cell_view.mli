@@ -21,6 +21,11 @@ external new_with_text : string -> t = "ml_gtk_cell_view_new_with_text"
 external new_with_texture : unit -> t = "ml_gtk_cell_view_new_with_texture"
 
 (* Methods *)
+(** Sets the model for @cell_view.  If @cell_view already has a model
+set, it will remove it before setting the new model.  If @model is
+%NULL, then it will unset the old model. *)
+external set_model : t -> Tree_model.t option -> unit = "ml_gtk_cell_view_set_model"
+
 (** Sets whether @cell_view should request space to fit the entire `GtkTreeModel`.
 
 This is used by `GtkComboBox` to ensure that the cell view displayed on
@@ -41,6 +46,10 @@ this is not normally a desired result, but may be
 a needed intermediate state if say, the model for
 the `GtkCellView` becomes temporarily empty. *)
 external set_displayed_row : t -> Tree_path.t option -> unit = "ml_gtk_cell_view_set_displayed_row"
+
+(** Returns the model for @cell_view. If no model is used %NULL is
+returned. *)
+external get_model : t -> Tree_model.t option = "ml_gtk_cell_view_get_model"
 
 (** Gets whether @cell_view is configured to request space
 to fit the entire `GtkTreeModel`. *)

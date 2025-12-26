@@ -212,3 +212,19 @@ CAMLlocal1(ret);
     Store_field(ret, 1, Val_GtkTreeIter(out1));
     CAMLreturn(ret);
 }
+
+CAMLexport CAMLprim value ml_gtk_tree_model_get_flags(value self)
+{
+CAMLparam1(self);
+
+GtkTreeModelFlags result = gtk_tree_model_get_flags(GtkTreeModel_val(self));
+CAMLreturn(Val_GtkTreeModelFlags(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_model_filter_new(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GtkTreeModel* result = gtk_tree_model_filter_new(GtkTreeModel_val(self), Option_val(arg1, GtkTreePath_val, NULL));
+CAMLreturn(Val_GtkTreeModel(result));
+}

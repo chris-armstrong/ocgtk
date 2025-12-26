@@ -34,3 +34,8 @@ the @css_provider.
 This clears any previously loaded information. *)
 external load_from_resource : t -> string -> unit = "ml_gtk_css_provider_load_from_resource"
 
+(** Loads the data contained in @path into @css_provider.
+
+This clears any previously loaded information. *)
+external load_from_path : t -> string -> unit = "ml_gtk_css_provider_load_from_path"
+

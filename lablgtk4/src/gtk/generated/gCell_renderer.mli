@@ -5,6 +5,7 @@ class cell_renderer : Cell_renderer.t ->
     method get_is_expander : unit -> bool
     method get_request_mode : unit -> Gtk_enums.sizerequestmode
     method get_sensitive : unit -> bool
+    method get_state : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option -> Gtk_enums.cellrendererstate -> Gtk_enums.stateflags
     method get_visible : unit -> bool
     method is_activatable : unit -> bool
     method set_alignment : float -> float -> unit

@@ -26,7 +26,7 @@
 CAMLexport CAMLprim value ml_gtk_bookmark_list_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
-GtkBookmarkList *obj = gtk_bookmark_list_new(arg1, String_option_val(arg2));
+GtkBookmarkList *obj = gtk_bookmark_list_new(String_option_val(arg1), String_option_val(arg2));
 CAMLreturn(Val_GtkBookmarkList(obj));
 }
 
@@ -60,6 +60,14 @@ CAMLparam1(self);
 
 int result = gtk_bookmark_list_get_io_priority(GtkBookmarkList_val(self));
 CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_bookmark_list_get_filename(value self)
+{
+CAMLparam1(self);
+
+const char* result = gtk_bookmark_list_get_filename(GtkBookmarkList_val(self));
+CAMLreturn(caml_copy_string(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_bookmark_list_get_attributes(value self)

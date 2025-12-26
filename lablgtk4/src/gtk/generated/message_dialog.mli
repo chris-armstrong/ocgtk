@@ -6,10 +6,10 @@ type t = [`message_dialog | `dialog | `window | `widget | `initially_unowned] Go
 val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new MessageDialog *)
-external new_ : Application_and__window_and__window_group.Window.t option -> unit -> Gtk_enums.messagetype -> Gtk_enums.buttonstype -> string option -> unit -> t = "ml_gtk_message_dialog_new_bytecode" "ml_gtk_message_dialog_new_native"
+external new_ : Application_and__window_and__window_group.Window.t option -> Gtk_enums.dialogflags -> Gtk_enums.messagetype -> Gtk_enums.buttonstype -> string option -> unit -> t = "ml_gtk_message_dialog_new_bytecode" "ml_gtk_message_dialog_new_native"
 
 (** Create a new MessageDialog *)
-external new_with_markup : Application_and__window_and__window_group.Window.t option -> unit -> Gtk_enums.messagetype -> Gtk_enums.buttonstype -> string option -> unit -> t = "ml_gtk_message_dialog_new_with_markup_bytecode" "ml_gtk_message_dialog_new_with_markup_native"
+external new_with_markup : Application_and__window_and__window_group.Window.t option -> Gtk_enums.dialogflags -> Gtk_enums.messagetype -> Gtk_enums.buttonstype -> string option -> unit -> t = "ml_gtk_message_dialog_new_with_markup_bytecode" "ml_gtk_message_dialog_new_with_markup_native"
 
 (* Methods *)
 (** Sets the text of the message dialog. *)

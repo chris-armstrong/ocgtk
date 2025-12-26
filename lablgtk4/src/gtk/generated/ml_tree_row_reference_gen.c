@@ -26,14 +26,14 @@
 CAMLexport CAMLprim value ml_gtk_tree_row_reference_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
-GtkTreeRowReference *obj = gtk_tree_row_reference_new(arg1, GtkTreePath_val(arg2));
+GtkTreeRowReference *obj = gtk_tree_row_reference_new(GtkTreeModel_val(arg1), GtkTreePath_val(arg2));
 CAMLreturn(Val_GtkTreeRowReference(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_row_reference_new_proxy(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
-GtkTreeRowReference *obj = gtk_tree_row_reference_new_proxy(arg1, arg2, GtkTreePath_val(arg3));
+GtkTreeRowReference *obj = gtk_tree_row_reference_new_proxy(arg1, GtkTreeModel_val(arg2), GtkTreePath_val(arg3));
 CAMLreturn(Val_GtkTreeRowReference(obj));
 }
 
@@ -51,6 +51,14 @@ CAMLparam1(self);
 
 GtkTreePath* result = gtk_tree_row_reference_get_path(GtkTreeRowReference_val(self));
 CAMLreturn(Val_option(result, Val_GtkTreePath));
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_row_reference_get_model(value self)
+{
+CAMLparam1(self);
+
+GtkTreeModel* result = gtk_tree_row_reference_get_model(GtkTreeRowReference_val(self));
+CAMLreturn(Val_GtkTreeModel(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_row_reference_free(value self)

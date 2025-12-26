@@ -76,6 +76,7 @@ and widget : Event_controller_and__layout_child_and__layout_manager_and__root_an
     method get_margin_start : unit -> int
     method get_margin_top : unit -> int
     method get_name : unit -> string
+    method get_native : unit -> GNative.native option
     method get_next_sibling : unit -> widget option
     method get_opacity : unit -> float
     method get_overflow : unit -> Gtk_enums.overflow
@@ -84,10 +85,12 @@ and widget : Event_controller_and__layout_child_and__layout_manager_and__root_an
     method get_realized : unit -> bool
     method get_receives_default : unit -> bool
     method get_request_mode : unit -> Gtk_enums.sizerequestmode
+    method get_root : unit -> root option
     method get_scale_factor : unit -> int
     method get_sensitive : unit -> bool
     method get_settings : unit -> GSettings.settings
     method get_size : Gtk_enums.orientation -> int
+    method get_state_flags : unit -> Gtk_enums.stateflags
     method get_style_context : unit -> GStyle_context.style_context
     method get_tooltip_markup : unit -> string option
     method get_tooltip_text : unit -> string option
@@ -114,6 +117,7 @@ and widget : Event_controller_and__layout_child_and__layout_manager_and__root_an
     method keynav_failed : Gtk_enums.directiontype -> bool
     method map : unit -> unit
     method mnemonic_activate : bool -> bool
+    method pick : float -> float -> Gtk_enums.pickflags -> widget option
     method queue_allocate : unit -> unit
     method queue_draw : unit -> unit
     method queue_resize : unit -> unit
@@ -146,6 +150,7 @@ and widget : Event_controller_and__layout_child_and__layout_manager_and__root_an
     method set_receives_default : bool -> unit
     method set_sensitive : bool -> unit
     method set_size_request : int -> int -> unit
+    method set_state_flags : Gtk_enums.stateflags -> bool -> unit
     method set_tooltip_markup : string option -> unit
     method set_tooltip_text : string option -> unit
     method set_valign : Gtk_enums.align -> unit
@@ -159,6 +164,7 @@ and widget : Event_controller_and__layout_child_and__layout_manager_and__root_an
     method unmap : unit -> unit
     method unparent : unit -> unit
     method unrealize : unit -> unit
+    method unset_state_flags : Gtk_enums.stateflags -> unit
     method height_request : int
     method set_height_request : int -> unit
     method width_request : int

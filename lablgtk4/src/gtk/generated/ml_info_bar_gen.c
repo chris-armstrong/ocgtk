@@ -131,7 +131,7 @@ CAMLexport CAMLprim value ml_gtk_info_bar_add_button(value self, value arg1, val
 CAMLparam3(self, arg1, arg2);
 
 GtkWidget* result = gtk_info_bar_add_button(GtkInfoBar_val(self), String_val(arg1), Int_val(arg2));
-CAMLreturn(Val_GtkButton(result));
+CAMLreturn(Val_GtkWidget(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_info_bar_add_action_widget(value self, value arg1, value arg2)

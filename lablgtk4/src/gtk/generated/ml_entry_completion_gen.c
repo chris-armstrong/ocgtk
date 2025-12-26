@@ -69,6 +69,14 @@ gtk_entry_completion_set_popup_completion(GtkEntryCompletion_val(self), Bool_val
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_entry_completion_set_model(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_entry_completion_set_model(GtkEntryCompletion_val(self), Option_val(arg1, GtkTreeModel_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_entry_completion_set_minimum_key_length(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -131,6 +139,14 @@ CAMLparam1(self);
 
 gboolean result = gtk_entry_completion_get_popup_completion(GtkEntryCompletion_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_completion_get_model(value self)
+{
+CAMLparam1(self);
+
+GtkTreeModel* result = gtk_entry_completion_get_model(GtkEntryCompletion_val(self));
+CAMLreturn(Val_option(result, Val_GtkTreeModel));
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_completion_get_minimum_key_length(value self)

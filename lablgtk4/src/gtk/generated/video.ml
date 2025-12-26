@@ -12,7 +12,7 @@ external new_ : unit -> t = "ml_gtk_video_new"
 external new_for_file : unit -> t = "ml_gtk_video_new_for_file"
 
 (** Create a new Video *)
-external new_for_filename : unit -> t = "ml_gtk_video_new_for_filename"
+external new_for_filename : string option -> t = "ml_gtk_video_new_for_filename"
 
 (** Create a new Video *)
 external new_for_media_stream : Media_stream.t option -> t = "ml_gtk_video_new_for_media_stream"
@@ -43,6 +43,11 @@ external set_loop : t -> bool -> unit = "ml_gtk_video_set_loop"
 
 See [class@Gtk.GraphicsOffload] for more information on graphics offload. *)
 external set_graphics_offload : t -> Gtk_enums.graphicsoffloadenabled -> unit = "ml_gtk_video_set_graphics_offload"
+
+(** Makes @self play the given @filename.
+
+This is a utility function that calls gtk_video_set_file(), *)
+external set_filename : t -> string option -> unit = "ml_gtk_video_set_filename"
 
 (** Sets whether @self automatically starts playback when it
 becomes visible or when a new file gets loaded. *)

@@ -34,6 +34,10 @@ class stack (obj : Stack.t) = object (self)
       let child = child#as_widget in
       new  GStack_page.stack_page(Stack.get_page obj child)
 
+  method get_pages : unit -> GSelection_model.selection_model =
+    fun () ->
+      new  GSelection_model.selection_model(Stack.get_pages obj)
+
   method get_transition_duration : unit -> int =
     fun () ->
       (Stack.get_transition_duration obj)

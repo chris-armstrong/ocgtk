@@ -9,7 +9,7 @@ let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager
 external new_ : unit -> t = "ml_gtk_image_new"
 
 (** Create a new Image *)
-external new_from_file : unit -> t = "ml_gtk_image_new_from_file"
+external new_from_file : string -> t = "ml_gtk_image_new_from_file"
 
 (** Create a new Image *)
 external new_from_gicon : unit -> t = "ml_gtk_image_new_from_gicon"
@@ -45,6 +45,11 @@ external set_from_resource : t -> string option -> unit = "ml_gtk_image_set_from
 
 See [ctor@Gtk.Image.new_from_icon_name] for details. *)
 external set_from_icon_name : t -> string option -> unit = "ml_gtk_image_set_from_icon_name"
+
+(** Sets a `GtkImage` to show a file.
+
+See [ctor@Gtk.Image.new_from_file] for details. *)
+external set_from_file : t -> string option -> unit = "ml_gtk_image_set_from_file"
 
 (** Gets the type of representation being used by the `GtkImage`
 to store image data.

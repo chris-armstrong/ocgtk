@@ -17,6 +17,7 @@ class print_operation : Print_operation.t ->
     method set_custom_tab_label : string option -> unit
     method set_defer_drawing : unit -> unit
     method set_embed_page_setup : bool -> unit
+    method set_export_filename : string -> unit
     method set_has_selection : bool -> unit
     method set_job_name : string -> unit
     method set_n_pages : int -> unit

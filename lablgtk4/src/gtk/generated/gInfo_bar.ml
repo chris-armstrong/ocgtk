@@ -10,9 +10,9 @@ class info_bar (obj : Info_bar.t) = object (self)
       let child = child#as_widget in
       (Info_bar.add_action_widget obj child response_id)
 
-  method add_button : string -> int -> GButton.button =
+  method add_button : string -> int -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget =
     fun button_text response_id ->
-      new  GButton.button(Info_bar.add_button obj button_text response_id)
+      new  GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget(Info_bar.add_button obj button_text response_id)
 
   method add_child : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> unit =
     fun widget ->

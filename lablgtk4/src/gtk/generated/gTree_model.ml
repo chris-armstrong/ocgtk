@@ -4,6 +4,14 @@
 class tree_model (obj : Tree_model.t) = object (self)
   inherit Gtree_model_signals.tree_model_signals obj
 
+  method filter_new : Tree_path.t option -> tree_model =
+    fun root ->
+      new  tree_model(Tree_model.filter_new obj root)
+
+  method get_flags : unit -> Gtk_enums.treemodelflags =
+    fun () ->
+      (Tree_model.get_flags obj)
+
   method get_n_columns : unit -> int =
     fun () ->
       (Tree_model.get_n_columns obj)

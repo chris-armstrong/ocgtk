@@ -33,7 +33,7 @@ CAMLreturn(Val_GtkBuilder(obj));
 CAMLexport CAMLprim value ml_gtk_builder_new_from_file(value arg1)
 {
 CAMLparam1(arg1);
-GtkBuilder *obj = gtk_builder_new_from_file(arg1);
+GtkBuilder *obj = gtk_builder_new_from_file(String_val(arg1));
 CAMLreturn(Val_GtkBuilder(obj));
 }
 
@@ -59,6 +59,14 @@ gtk_builder_set_translation_domain(GtkBuilder_val(self), String_option_val(arg1)
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_builder_set_scope(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_builder_set_scope(GtkBuilder_val(self), Option_val(arg1, GtkBuilderScope_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_builder_get_translation_domain(value self)
 {
 CAMLparam1(self);
@@ -67,11 +75,28 @@ const char* result = gtk_builder_get_translation_domain(GtkBuilder_val(self));
 CAMLreturn(Val_option_string(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_builder_get_scope(value self)
+{
+CAMLparam1(self);
+
+GtkBuilderScope* result = gtk_builder_get_scope(GtkBuilder_val(self));
+CAMLreturn(Val_GtkBuilderScope(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_builder_add_from_resource(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 GError *error = NULL;
 
 gboolean result = gtk_builder_add_from_resource(GtkBuilder_val(self), String_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_gtk_builder_add_from_file(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = gtk_builder_add_from_file(GtkBuilder_val(self), String_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }

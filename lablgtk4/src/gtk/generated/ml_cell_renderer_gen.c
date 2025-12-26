@@ -103,6 +103,14 @@ gboolean result = gtk_cell_renderer_get_visible(GtkCellRenderer_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_state(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+GtkStateFlags result = gtk_cell_renderer_get_state(GtkCellRenderer_val(self), Option_val(arg1, GtkWidget_val, NULL), GtkCellRendererState_val(arg2));
+CAMLreturn(Val_GtkStateFlags(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_cell_renderer_get_sensitive(value self)
 {
 CAMLparam1(self);

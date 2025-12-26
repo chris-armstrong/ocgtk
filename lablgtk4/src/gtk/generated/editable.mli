@@ -106,6 +106,12 @@ external get_enable_undo : t -> bool = "ml_gtk_editable_get_enable_undo"
 (** Retrieves whether @editable is editable. *)
 external get_editable : t -> bool = "ml_gtk_editable_get_editable"
 
+(** Gets the `GtkEditable` that @editable is delegating its
+implementation to.
+
+Typically, the delegate is a [class@Gtk.Text] widget. *)
+external get_delegate : t -> t option = "ml_gtk_editable_get_delegate"
+
 (** Retrieves a sequence of characters.
 
 The characters that are retrieved are those characters at positions

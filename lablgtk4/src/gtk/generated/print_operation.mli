@@ -73,6 +73,18 @@ will draw by [method@Gtk.PrintOperation.set_n_pages] in a handler
 for the [signal@Gtk.PrintOperation::begin-print] signal. *)
 external set_has_selection : t -> bool -> unit = "ml_gtk_print_operation_set_has_selection"
 
+(** Sets up the `GtkPrintOperation` to generate a file instead
+of showing the print dialog.
+
+The intended use of this function is for implementing
+“Export to PDF” actions. Currently, PDF is the only supported
+format.
+
+“Print to PDF” support is independent of this and is done
+by letting the user pick the “Print to PDF” item from the list
+of printers in the print dialog. *)
+external set_export_filename : t -> string -> unit = "ml_gtk_print_operation_set_export_filename"
+
 (** Embed page size combo box and orientation combo box into page setup page.
 
 Selected page setup is stored as default page setup in `GtkPrintOperation`. *)

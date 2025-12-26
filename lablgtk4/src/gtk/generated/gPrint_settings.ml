@@ -133,6 +133,10 @@ class print_settings (obj : Print_settings.t) = object (self)
     fun key ->
       (Print_settings.has_key obj key)
 
+  method load_file : string -> (bool, GError.t) result =
+    fun file_name ->
+      (Print_settings.load_file obj file_name)
+
   method set : string -> string option -> unit =
     fun key value ->
       (Print_settings.set obj key value)
@@ -248,6 +252,10 @@ class print_settings (obj : Print_settings.t) = object (self)
   method set_use_color : bool -> unit =
     fun use_color ->
       (Print_settings.set_use_color obj use_color)
+
+  method to_file : string -> (bool, GError.t) result =
+    fun file_name ->
+      (Print_settings.to_file obj file_name)
 
   method unset : string -> unit =
     fun key ->

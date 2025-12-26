@@ -7,10 +7,18 @@ class popover_menu (obj : Popover_menu.t) = object (self)
       let child = child#as_widget in
       (Popover_menu.add_child obj child id)
 
+  method get_flags : unit -> Gtk_enums.popovermenuflags =
+    fun () ->
+      (Popover_menu.get_flags obj)
+
   method remove_child : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> bool =
     fun child ->
       let child = child#as_widget in
       (Popover_menu.remove_child obj child)
+
+  method set_flags : Gtk_enums.popovermenuflags -> unit =
+    fun flags ->
+      (Popover_menu.set_flags obj flags)
 
   method visible_submenu = Popover_menu.get_visible_submenu obj
   method set_visible_submenu v =  Popover_menu.set_visible_submenu obj v

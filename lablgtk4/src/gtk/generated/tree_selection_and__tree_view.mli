@@ -69,7 +69,7 @@ and Tree_view
   external new_ : unit -> t = "ml_gtk_tree_view_new"
 
   (** Create a new TreeView *)
-  external new_with_model : unit -> t = "ml_gtk_tree_view_new_with_model"
+  external new_with_model : Tree_model.t -> t = "ml_gtk_tree_view_new_with_model"
 
   (* Methods *)
   (** Undoes the effect of
@@ -121,6 +121,13 @@ and Tree_view
   This does not have any visible effects for lists. *)
   external set_show_expanders : t -> bool -> unit = "ml_gtk_tree_view_set_show_expanders"
 
+  (** Sets the entry which the interactive search code will use for this
+  @tree_view.  This is useful when you want to provide a search entry
+  in our interface at all time at a fixed position.  Passing %NULL for
+  @entry will make the interactive search code use the built-in popup
+  entry again. *)
+  external set_search_entry : t -> Editable.t option -> unit = "ml_gtk_tree_view_set_search_entry"
+
   (** Sets @column as the column where the interactive search code should
   search in for the current model.
 
@@ -152,6 +159,11 @@ and Tree_view
   reordering is allowed.  If more control is needed, you should probably
   handle drag and drop manually. *)
   external set_reorderable : t -> bool -> unit = "ml_gtk_tree_view_set_reorderable"
+
+  (** Sets the model for a `GtkTreeView`.  If the @tree_view already has a model
+  set, it will remove it before setting the new model.  If @model is %NULL,
+  then it will unset the old model. *)
+  external set_model : t -> Tree_model.t option -> unit = "ml_gtk_tree_view_set_model"
 
   (** Sets the amount of extra indentation for child levels to use in @tree_view
   in addition to the default indentation.  The value should be specified in
@@ -328,6 +340,11 @@ and Tree_view
   (** Gets the `GtkTreeSelection` associated with @tree_view. *)
   external get_selection : t -> Tree_selection.t = "ml_gtk_tree_view_get_selection"
 
+  (** Returns the `GtkEntry` which is currently in use as interactive search
+  entry for @tree_view.  In case the built-in entry is being used, %NULL
+  will be returned. *)
+  external get_search_entry : t -> Editable.t option = "ml_gtk_tree_view_get_search_entry"
+
   (** Gets the column searched on by the interactive search code. *)
   external get_search_column : t -> int = "ml_gtk_tree_view_get_search_column"
 
@@ -360,6 +377,10 @@ and Tree_view
 
   (** Queries the number of columns in the given @tree_view. *)
   external get_n_columns : t -> int = "ml_gtk_tree_view_get_n_columns"
+
+  (** Returns the model the `GtkTreeView` is based on.  Returns %NULL if the
+  model is unset. *)
+  external get_model : t -> Tree_model.t option = "ml_gtk_tree_view_get_model"
 
   (** Returns the amount, in pixels, of extra indentation for child levels
   in @tree_view. *)

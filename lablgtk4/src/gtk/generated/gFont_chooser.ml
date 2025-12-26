@@ -20,6 +20,10 @@ class font_chooser (obj : Font_chooser.t) = object (self)
     fun () ->
       (Font_chooser.get_language obj)
 
+  method get_level : unit -> Gtk_enums.fontchooserlevel =
+    fun () ->
+      (Font_chooser.get_level obj)
+
   method get_preview_text : unit -> string =
     fun () ->
       (Font_chooser.get_preview_text obj)
@@ -35,6 +39,10 @@ class font_chooser (obj : Font_chooser.t) = object (self)
   method set_language : string -> unit =
     fun language ->
       (Font_chooser.set_language obj language)
+
+  method set_level : Gtk_enums.fontchooserlevel -> unit =
+    fun level ->
+      (Font_chooser.set_level obj level)
 
   method set_preview_text : string -> unit =
     fun text ->

@@ -23,6 +23,14 @@
 #endif /* Val_GtkWidgetClass */
 
 
+CAMLexport CAMLprim value ml_gtk_widget_class_set_template_scope(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_class_set_template_scope(GtkWidgetClass_val(self), GtkBuilderScope_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_widget_class_set_template_from_resource(value self, value arg1)
 {
 CAMLparam2(self, arg1);

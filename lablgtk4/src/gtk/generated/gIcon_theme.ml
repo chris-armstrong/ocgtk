@@ -8,6 +8,10 @@ class icon_theme (obj : Icon_theme.t) = object (self)
     fun path ->
       (Icon_theme.add_resource_path obj path)
 
+  method add_search_path : string -> unit =
+    fun path ->
+      (Icon_theme.add_search_path obj path)
+
   method get_theme_name : unit -> string =
     fun () ->
       (Icon_theme.get_theme_name obj)

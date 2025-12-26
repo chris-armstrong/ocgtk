@@ -19,6 +19,11 @@ class application (obj : Application_and__window_and__window_group.Application.t
     fun id ->
       Option.map (fun ret -> new window ret) (Application_and__window_and__window_group.Application.get_window_by_id obj id)
 
+  method inhibit : 'p1. (<as_window: Application_and__window_and__window_group.Window.t; ..> as 'p1) option -> Gtk_enums.applicationinhibitflags -> string option -> int =
+    fun window flags reason ->
+      let window = Option.map (fun (c) -> c#as_window) window in
+      (Application_and__window_and__window_group.Application.inhibit obj window flags reason)
+
   method remove_window : 'p1. (<as_window: Application_and__window_and__window_group.Window.t; ..> as 'p1) -> unit =
     fun window ->
       let window = window#as_window in

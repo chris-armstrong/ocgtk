@@ -5,9 +5,6 @@ type t = [`drop_target | `event_controller | `object_] Gobject.obj
 
 val as_event_controller : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t
 
-(** Create a new DropTarget *)
-external new_ : unit -> unit -> t = "ml_gtk_drop_target_new"
-
 (* Methods *)
 (** Sets whether data should be preloaded on hover. *)
 external set_preload : t -> bool -> unit = "ml_gtk_drop_target_set_preload"

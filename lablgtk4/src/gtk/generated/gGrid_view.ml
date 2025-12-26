@@ -21,6 +21,10 @@ class grid_view (obj : Grid_view.t) = object (self)
     fun () ->
       (Grid_view.get_min_columns obj)
 
+  method get_model : unit -> GSelection_model.selection_model option =
+    fun () ->
+      Option.map (fun ret -> new GSelection_model.selection_model ret) (Grid_view.get_model obj)
+
   method get_single_click_activate : unit -> bool =
     fun () ->
       (Grid_view.get_single_click_activate obj)
@@ -28,6 +32,10 @@ class grid_view (obj : Grid_view.t) = object (self)
   method get_tab_behavior : unit -> Gtk_enums.listtabbehavior =
     fun () ->
       (Grid_view.get_tab_behavior obj)
+
+  method scroll_to : int -> Gtk_enums.listscrollflags -> Scroll_info.t option -> unit =
+    fun pos flags scroll ->
+      (Grid_view.scroll_to obj pos flags scroll)
 
   method set_enable_rubberband : bool -> unit =
     fun enable_rubberband ->

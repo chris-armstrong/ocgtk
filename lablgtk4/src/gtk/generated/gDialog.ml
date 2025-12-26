@@ -14,13 +14,13 @@ class dialog (obj : Dialog.t) = object (self)
     fun button_text response_id ->
       new  GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget(Dialog.add_button obj button_text response_id)
 
-  method get_content_area : unit -> GBox.box =
+  method get_content_area : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget =
     fun () ->
-      new  GBox.box(Dialog.get_content_area obj)
+      new  GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget(Dialog.get_content_area obj)
 
-  method get_header_bar : unit -> GHeader_bar.header_bar =
+  method get_header_bar : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget =
     fun () ->
-      new  GHeader_bar.header_bar(Dialog.get_header_bar obj)
+      new  GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget(Dialog.get_header_bar obj)
 
   method get_response_for_widget : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> int =
     fun widget ->

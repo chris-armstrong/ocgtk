@@ -399,6 +399,21 @@ gboolean result = gtk_text_iter_forward_sentence_end(GtkTextIter_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_text_iter_forward_search(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+GtkTextIter out3;
+GtkTextIter out4;
+
+gboolean result = gtk_text_iter_forward_search(GtkTextIter_val(self), String_val(arg1), GtkTextSearchFlags_val(arg2), &out3, &out4, Option_val(arg3, GtkTextIter_val, NULL));
+CAMLlocal1(ret);
+    ret = caml_alloc(3, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_GtkTextIter(out3));
+    Store_field(ret, 2, Val_GtkTextIter(out4));
+    CAMLreturn(ret);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_iter_forward_lines(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -605,6 +620,21 @@ CAMLparam1(self);
 
 gboolean result = gtk_text_iter_backward_sentence_start(GtkTextIter_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_iter_backward_search(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+GtkTextIter out3;
+GtkTextIter out4;
+
+gboolean result = gtk_text_iter_backward_search(GtkTextIter_val(self), String_val(arg1), GtkTextSearchFlags_val(arg2), &out3, &out4, Option_val(arg3, GtkTextIter_val, NULL));
+CAMLlocal1(ret);
+    ret = caml_alloc(3, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_GtkTextIter(out3));
+    Store_field(ret, 2, Val_GtkTextIter(out4));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_text_iter_backward_lines(value self, value arg1)

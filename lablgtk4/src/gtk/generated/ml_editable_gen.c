@@ -90,9 +90,10 @@ CAMLreturn(Val_unit);
 CAMLexport CAMLprim value ml_gtk_editable_insert_text(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
+int inout3 = Int_val(arg3);
 
-gtk_editable_insert_text(GtkEditable_val(self), String_val(arg1), Int_val(arg2), Int_val(arg3));
-CAMLreturn(Val_unit);
+gtk_editable_insert_text(GtkEditable_val(self), String_val(arg1), Int_val(arg2), &inout3);
+CAMLreturn(Val_int(inout3));
 }
 
 CAMLexport CAMLprim value ml_gtk_editable_init_delegate(value self)
@@ -164,6 +165,14 @@ CAMLparam1(self);
 
 gboolean result = gtk_editable_get_editable(GtkEditable_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_editable_get_delegate(value self)
+{
+CAMLparam1(self);
+
+GtkEditable* result = gtk_editable_get_delegate(GtkEditable_val(self));
+CAMLreturn(Val_option(result, Val_GtkEditable));
 }
 
 CAMLexport CAMLprim value ml_gtk_editable_get_chars(value self, value arg1, value arg2)

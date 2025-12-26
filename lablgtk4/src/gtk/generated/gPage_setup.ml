@@ -41,6 +41,10 @@ class page_setup (obj : Page_setup.t) = object (self)
     fun unit ->
       (Page_setup.get_top_margin obj unit)
 
+  method load_file : string -> (bool, GError.t) result =
+    fun file_name ->
+      (Page_setup.load_file obj file_name)
+
   method set_bottom_margin : float -> Gtk_enums.unit -> unit =
     fun margin unit ->
       (Page_setup.set_bottom_margin obj margin unit)
@@ -68,6 +72,10 @@ class page_setup (obj : Page_setup.t) = object (self)
   method set_top_margin : float -> Gtk_enums.unit -> unit =
     fun margin unit ->
       (Page_setup.set_top_margin obj margin unit)
+
+  method to_file : string -> (bool, GError.t) result =
+    fun file_name ->
+      (Page_setup.to_file obj file_name)
 
     method as_page_setup = obj
 end

@@ -66,6 +66,10 @@ This can be used by on-screen keyboards and other
 input methods to adjust their behaviour. *)
 external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit = "ml_gtk_text_set_input_purpose"
 
+(** Sets input hints that allow input methods
+to fine-tune their behaviour. *)
+external set_input_hints : t -> Gtk_enums.inputhints -> unit = "ml_gtk_text_set_input_hints"
+
 (** Sets whether Emoji completion is enabled.
 
 If it is, typing ':', followed by a recognized keyword,
@@ -126,6 +130,9 @@ external get_max_length : t -> int = "ml_gtk_text_get_max_length"
 
 (** Gets the input purpose of the `GtkText`. *)
 external get_input_purpose : t -> Gtk_enums.inputpurpose = "ml_gtk_text_get_input_purpose"
+
+(** Gets the input hints of the `GtkText`. *)
+external get_input_hints : t -> Gtk_enums.inputhints = "ml_gtk_text_get_input_hints"
 
 (** Returns whether Emoji completion is enabled for this
 `GtkText` widget. *)

@@ -58,6 +58,14 @@ GtkCellView *obj = gtk_cell_view_new_with_texture(arg1);
 CAMLreturn(Val_GtkCellView(obj));
 }
 
+CAMLexport CAMLprim value ml_gtk_cell_view_set_model(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_cell_view_set_model(GtkCellView_val(self), Option_val(arg1, GtkTreeModel_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_cell_view_set_fit_model(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -80,6 +88,14 @@ CAMLparam2(self, arg1);
 
 gtk_cell_view_set_displayed_row(GtkCellView_val(self), Option_val(arg1, GtkTreePath_val, NULL));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_view_get_model(value self)
+{
+CAMLparam1(self);
+
+GtkTreeModel* result = gtk_cell_view_get_model(GtkCellView_val(self));
+CAMLreturn(Val_option(result, Val_GtkTreeModel));
 }
 
 CAMLexport CAMLprim value ml_gtk_cell_view_get_fit_model(value self)

@@ -75,7 +75,7 @@ CAMLexport CAMLprim value ml_gtk_dialog_get_header_bar(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_dialog_get_header_bar(GtkDialog_val(self));
-CAMLreturn(Val_GtkHeaderBar(result));
+CAMLreturn(Val_GtkWidget(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_dialog_get_content_area(value self)
@@ -83,7 +83,7 @@ CAMLexport CAMLprim value ml_gtk_dialog_get_content_area(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_dialog_get_content_area(GtkDialog_val(self));
-CAMLreturn(Val_GtkBox(result));
+CAMLreturn(Val_GtkWidget(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_dialog_add_button(value self, value arg1, value arg2)

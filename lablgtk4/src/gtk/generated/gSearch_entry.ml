@@ -5,6 +5,10 @@ class search_entry (obj : Search_entry.t) = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Search_entry.as_widget obj)
   inherit Gsearch_entry_signals.search_entry_signals obj
 
+  method get_input_hints : unit -> Gtk_enums.inputhints =
+    fun () ->
+      (Search_entry.get_input_hints obj)
+
   method get_input_purpose : unit -> Gtk_enums.inputpurpose =
     fun () ->
       (Search_entry.get_input_purpose obj)
@@ -20,6 +24,10 @@ class search_entry (obj : Search_entry.t) = object (self)
   method get_search_delay : unit -> int =
     fun () ->
       (Search_entry.get_search_delay obj)
+
+  method set_input_hints : Gtk_enums.inputhints -> unit =
+    fun hints ->
+      (Search_entry.set_input_hints obj hints)
 
   method set_input_purpose : Gtk_enums.inputpurpose -> unit =
     fun purpose ->

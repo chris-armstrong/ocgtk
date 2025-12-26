@@ -8,6 +8,7 @@ class entry_completion : Entry_completion.t ->
     method get_inline_completion : unit -> bool
     method get_inline_selection : unit -> bool
     method get_minimum_key_length : unit -> int
+    method get_model : unit -> GTree_model.tree_model option
     method get_popup_completion : unit -> bool
     method get_popup_set_width : unit -> bool
     method get_popup_single_match : unit -> bool

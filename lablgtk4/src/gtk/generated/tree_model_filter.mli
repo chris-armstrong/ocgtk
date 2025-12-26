@@ -18,6 +18,9 @@ external set_visible_column : t -> int -> unit = "ml_gtk_tree_model_filter_set_v
 the filter to re-evaluate whether a row is visible or not. *)
 external refilter : t -> unit = "ml_gtk_tree_model_filter_refilter"
 
+(** Returns a pointer to the child model of @filter. *)
+external get_model : t -> Tree_model.t = "ml_gtk_tree_model_filter_get_model"
+
 (** Converts @filter_path to a path on the child model of @filter. That is,
 @filter_path points to a location in @filter. The returned path will
 point to the same location in the model not being filtered. If @filter_path

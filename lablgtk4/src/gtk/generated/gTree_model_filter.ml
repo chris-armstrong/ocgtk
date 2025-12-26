@@ -13,6 +13,10 @@ class tree_model_filter (obj : Tree_model_filter.t) = object (self)
     fun filter_path ->
       (Tree_model_filter.convert_path_to_child_path obj filter_path)
 
+  method get_model : unit -> GTree_model.tree_model =
+    fun () ->
+      new  GTree_model.tree_model(Tree_model_filter.get_model obj)
+
   method refilter : unit -> unit =
     fun () ->
       (Tree_model_filter.refilter obj)

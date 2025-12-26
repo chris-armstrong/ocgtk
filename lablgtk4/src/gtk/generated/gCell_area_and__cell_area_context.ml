@@ -49,6 +49,10 @@ class cell_area (obj : Cell_area_and__cell_area_context.Cell_area.t) = object (s
     fun () ->
       (Cell_area_and__cell_area_context.Cell_area.get_current_path_string obj)
 
+  method get_edit_widget : unit -> GCell_editable.cell_editable option =
+    fun () ->
+      Option.map (fun ret -> new GCell_editable.cell_editable ret) (Cell_area_and__cell_area_context.Cell_area.get_edit_widget obj)
+
   method get_edited_cell : unit -> GCell_renderer.cell_renderer option =
     fun () ->
       Option.map (fun ret -> new GCell_renderer.cell_renderer ret) (Cell_area_and__cell_area_context.Cell_area.get_edited_cell obj)

@@ -59,14 +59,6 @@ gboolean result = gtk_text_view_starts_display_line(GtkTextView_val(self), GtkTe
 CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_text_view_set_wrap_mode(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gtk_text_view_set_wrap_mode(GtkTextView_val(self), GtkWrapMode_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_text_view_set_top_margin(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -144,6 +136,14 @@ CAMLexport CAMLprim value ml_gtk_text_view_set_input_purpose(value self, value a
 CAMLparam2(self, arg1);
 
 gtk_text_view_set_input_purpose(GtkTextView_val(self), GtkInputPurpose_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_set_input_hints(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_text_view_set_input_hints(GtkTextView_val(self), GtkInputHints_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -295,14 +295,6 @@ gboolean result = gtk_text_view_move_mark_onscreen(GtkTextView_val(self), GtkTex
 CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_text_view_get_wrap_mode(value self)
-{
-CAMLparam1(self);
-
-GtkWrapMode result = gtk_text_view_get_wrap_mode(GtkTextView_val(self));
-CAMLreturn(Val_GtkWrapMode(result));
-}
-
 CAMLexport CAMLprim value ml_gtk_text_view_get_top_margin(value self)
 {
 CAMLparam1(self);
@@ -437,6 +429,14 @@ CAMLparam1(self);
 
 GtkInputPurpose result = gtk_text_view_get_input_purpose(GtkTextView_val(self));
 CAMLreturn(Val_GtkInputPurpose(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_input_hints(value self)
+{
+CAMLparam1(self);
+
+GtkInputHints result = gtk_text_view_get_input_hints(GtkTextView_val(self));
+CAMLreturn(Val_GtkInputHints(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_view_get_indent(value self)

@@ -21,9 +21,6 @@ external new_ : string option -> t = "ml_gtk_paper_size_new"
 external new_custom : string -> string -> float -> float -> Gtk_enums.unit -> t = "ml_gtk_paper_size_new_custom"
 
 (** Create a new PaperSize *)
-external new_from_gvariant : unit -> t = "ml_gtk_paper_size_new_from_gvariant"
-
-(** Create a new PaperSize *)
 external new_from_ipp : string -> float -> float -> t = "ml_gtk_paper_size_new_from_ipp"
 
 (** Create a new PaperSize *)

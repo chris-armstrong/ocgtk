@@ -62,6 +62,14 @@ gtk_search_entry_set_input_purpose(GtkSearchEntry_val(self), GtkInputPurpose_val
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_search_entry_set_input_hints(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_search_entry_set_input_hints(GtkSearchEntry_val(self), GtkInputHints_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_search_entry_get_search_delay(value self)
 {
 CAMLparam1(self);
@@ -92,6 +100,14 @@ CAMLparam1(self);
 
 GtkInputPurpose result = gtk_search_entry_get_input_purpose(GtkSearchEntry_val(self));
 CAMLreturn(Val_GtkInputPurpose(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_search_entry_get_input_hints(value self)
+{
+CAMLparam1(self);
+
+GtkInputHints result = gtk_search_entry_get_input_hints(GtkSearchEntry_val(self));
+CAMLreturn(Val_GtkInputHints(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_search_entry_get_activates_default(value self)

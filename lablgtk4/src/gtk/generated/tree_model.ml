@@ -155,3 +155,14 @@ If @path does not exist, @iter is set to an invalid
 iterator and %FALSE is returned. *)
 external get_iter : t -> Tree_path.t -> bool * Tree_iter.t = "ml_gtk_tree_model_get_iter"
 
+(** Returns a set of flags supported by this interface.
+
+The flags are a bitwise combination of `GtkTreeModel`Flags.
+The flags supported should not change during the lifetime
+of the @tree_model. *)
+external get_flags : t -> Gtk_enums.treemodelflags = "ml_gtk_tree_model_get_flags"
+
+(** Creates a new `GtkTreeModel`, with @child_model as the child_model
+and @root as the virtual root. *)
+external filter_new : t -> Tree_path.t option -> t = "ml_gtk_tree_model_filter_new"
+

@@ -40,7 +40,7 @@ CAMLreturn(Val_GtkVideo(obj));
 CAMLexport CAMLprim value ml_gtk_video_new_for_filename(value arg1)
 {
 CAMLparam1(arg1);
-GtkVideo *obj = gtk_video_new_for_filename(arg1);
+GtkVideo *obj = gtk_video_new_for_filename(String_option_val(arg1));
 CAMLreturn(Val_GtkVideo(obj));
 }
 
@@ -87,6 +87,14 @@ CAMLexport CAMLprim value ml_gtk_video_set_graphics_offload(value self, value ar
 CAMLparam2(self, arg1);
 
 gtk_video_set_graphics_offload(GtkVideo_val(self), GtkGraphicsOffloadEnabled_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_video_set_filename(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_video_set_filename(GtkVideo_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 

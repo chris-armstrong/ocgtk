@@ -148,6 +148,10 @@ and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) = object (self)
     fun () ->
       (Tree_selection_and__tree_view.Tree_view.get_level_indentation obj)
 
+  method get_model : unit -> GTree_model.tree_model option =
+    fun () ->
+      Option.map (fun ret -> new GTree_model.tree_model ret) (Tree_selection_and__tree_view.Tree_view.get_model obj)
+
   method get_n_columns : unit -> int =
     fun () ->
       (Tree_selection_and__tree_view.Tree_view.get_n_columns obj)
@@ -163,6 +167,10 @@ and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) = object (self)
   method get_search_column : unit -> int =
     fun () ->
       (Tree_selection_and__tree_view.Tree_view.get_search_column obj)
+
+  method get_search_entry : unit -> GEditable.editable option =
+    fun () ->
+      Option.map (fun ret -> new GEditable.editable ret) (Tree_selection_and__tree_view.Tree_view.get_search_entry obj)
 
   method get_selection : unit -> tree_selection =
     fun () ->

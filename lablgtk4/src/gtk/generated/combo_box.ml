@@ -12,10 +12,10 @@ external new_ : unit -> t = "ml_gtk_combo_box_new"
 external new_with_entry : unit -> t = "ml_gtk_combo_box_new_with_entry"
 
 (** Create a new ComboBox *)
-external new_with_model : unit -> t = "ml_gtk_combo_box_new_with_model"
+external new_with_model : Tree_model.t -> t = "ml_gtk_combo_box_new_with_model"
 
 (** Create a new ComboBox *)
-external new_with_model_and_entry : unit -> t = "ml_gtk_combo_box_new_with_model_and_entry"
+external new_with_model_and_entry : Tree_model.t -> t = "ml_gtk_combo_box_new_with_model_and_entry"
 
 (* Methods *)
 (** Specifies whether the popup’s width should be a fixed width.
@@ -23,6 +23,16 @@ external new_with_model_and_entry : unit -> t = "ml_gtk_combo_box_new_with_model
 If @fixed is %TRUE, the popup's width is set to match the
 allocated width of the combo box. *)
 external set_popup_fixed_width : t -> bool -> unit = "ml_gtk_combo_box_set_popup_fixed_width"
+
+(** Sets the model used by @combo_box to be @model.
+
+Will unset a previously set model (if applicable). If model is %NULL,
+then it will unset the model.
+
+Note that this function does not clear the cell renderers, you have to
+call [method@Gtk.CellLayout.clear] yourself if you need to set up different
+cell renderers for the new model. *)
+external set_model : t -> Tree_model.t option -> unit = "ml_gtk_combo_box_set_model"
 
 (** Sets the model column which @combo_box should use to get string IDs
 for values from.
@@ -86,6 +96,9 @@ external popdown : t -> unit = "ml_gtk_combo_box_popdown"
 
 (** Gets whether the popup uses a fixed width. *)
 external get_popup_fixed_width : t -> bool = "ml_gtk_combo_box_get_popup_fixed_width"
+
+(** Returns the `GtkTreeModel` of @combo_box. *)
+external get_model : t -> Tree_model.t option = "ml_gtk_combo_box_get_model"
 
 (** Returns the column which @combo_box is using to get string IDs
 for values from. *)

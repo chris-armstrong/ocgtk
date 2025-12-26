@@ -41,10 +41,12 @@ and tree_view : Tree_selection_and__tree_view.Tree_view.t ->
     method get_hover_expand : unit -> bool
     method get_hover_selection : unit -> bool
     method get_level_indentation : unit -> int
+    method get_model : unit -> GTree_model.tree_model option
     method get_n_columns : unit -> int
     method get_reorderable : unit -> bool
     method get_rubber_banding : unit -> bool
     method get_search_column : unit -> int
+    method get_search_entry : unit -> GEditable.editable option
     method get_selection : unit -> tree_selection
     method get_show_expanders : unit -> bool
     method get_tooltip_column : unit -> int

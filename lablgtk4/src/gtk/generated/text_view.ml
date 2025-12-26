@@ -22,9 +22,6 @@ See [method@Gtk.TextView.forward_display_line] for an
 explanation of display lines vs. paragraphs. *)
 external starts_display_line : t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool = "ml_gtk_text_view_starts_display_line"
 
-(** Sets the line wrapping for the view. *)
-external set_wrap_mode : t -> Gtk_enums.wrapmode -> unit = "ml_gtk_text_view_set_wrap_mode"
-
 (** Sets the top margin for text in @text_view.
 
 Note that this function is confusingly named.
@@ -81,6 +78,12 @@ external set_justification : t -> Gtk_enums.justification -> unit = "ml_gtk_text
 The `input-purpose` can be used by on-screen keyboards
 and other input methods to adjust their behaviour. *)
 external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit = "ml_gtk_text_view_set_input_purpose"
+
+(** Sets the `input-hints` of the `GtkTextView`.
+
+The `input-hints` allow input methods to fine-tune
+their behaviour. *)
+external set_input_hints : t -> Gtk_enums.inputhints -> unit = "ml_gtk_text_view_set_input_hints"
 
 (** Sets the default indentation for paragraphs in @text_view.
 
@@ -208,9 +211,6 @@ external move_overlay : t -> Event_controller_and__layout_child_and__layout_mana
 located within the currently-visible text area. *)
 external move_mark_onscreen : t -> Text_buffer_and__text_iter_and__text_mark.Text_mark.t -> bool = "ml_gtk_text_view_move_mark_onscreen"
 
-(** Gets the line wrapping for the view. *)
-external get_wrap_mode : t -> Gtk_enums.wrapmode = "ml_gtk_text_view_get_wrap_mode"
-
 (** Gets the top margin for text in the @text_view. *)
 external get_top_margin : t -> int = "ml_gtk_text_view_get_top_margin"
 
@@ -289,6 +289,9 @@ external get_iter_at_location : t -> int -> int -> bool * Text_buffer_and__text_
 
 (** Gets the `input-purpose` of the `GtkTextView`. *)
 external get_input_purpose : t -> Gtk_enums.inputpurpose = "ml_gtk_text_view_get_input_purpose"
+
+(** Gets the `input-hints` of the `GtkTextView`. *)
+external get_input_hints : t -> Gtk_enums.inputhints = "ml_gtk_text_view_get_input_hints"
 
 (** Gets the default indentation of paragraphs in @text_view.
 

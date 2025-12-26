@@ -17,13 +17,13 @@ class scale_button (obj : Scale_button.t) = object (self)
     fun () ->
       (Scale_button.get_has_frame obj)
 
-  method get_minus_button : unit -> GButton.button =
+  method get_minus_button : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget =
     fun () ->
-      new  GButton.button(Scale_button.get_minus_button obj)
+      new  GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget(Scale_button.get_minus_button obj)
 
-  method get_plus_button : unit -> GButton.button =
+  method get_plus_button : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget =
     fun () ->
-      new  GButton.button(Scale_button.get_plus_button obj)
+      new  GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget(Scale_button.get_plus_button obj)
 
   method get_popup : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget =
     fun () ->

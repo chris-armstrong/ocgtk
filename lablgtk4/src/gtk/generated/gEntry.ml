@@ -57,6 +57,10 @@ class entry (obj : Entry.t) = object (self)
     fun icon_pos ->
       (Entry.get_icon_tooltip_text obj icon_pos)
 
+  method get_input_hints : unit -> Gtk_enums.inputhints =
+    fun () ->
+      (Entry.get_input_hints obj)
+
   method get_input_purpose : unit -> Gtk_enums.inputpurpose =
     fun () ->
       (Entry.get_input_purpose obj)
@@ -138,6 +142,10 @@ class entry (obj : Entry.t) = object (self)
   method set_icon_tooltip_text : Gtk_enums.entryiconposition -> string option -> unit =
     fun icon_pos tooltip ->
       (Entry.set_icon_tooltip_text obj icon_pos tooltip)
+
+  method set_input_hints : Gtk_enums.inputhints -> unit =
+    fun hints ->
+      (Entry.set_input_hints obj hints)
 
   method set_input_purpose : Gtk_enums.inputpurpose -> unit =
     fun purpose ->

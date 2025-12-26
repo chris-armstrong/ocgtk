@@ -6,6 +6,7 @@
 #include <caml/alloc.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <glib.h>
 #include <pango/pango.h>
 /* Convert PangoAlignment to OCaml value */
 value Val_PangoAlignment(PangoAlignment val) {

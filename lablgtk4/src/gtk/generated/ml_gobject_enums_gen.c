@@ -6,6 +6,7 @@
 #include <caml/alloc.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <glib.h>
 #include <glib-object.h>
 /* Convert GBindingFlags to OCaml flag list */
 value Val_GObjectBindingFlags(GBindingFlags flags) {

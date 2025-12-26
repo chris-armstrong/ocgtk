@@ -26,14 +26,14 @@
 CAMLexport CAMLprim value ml_gtk_app_chooser_dialog_new(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
-GtkAppChooserDialog *obj = gtk_app_chooser_dialog_new(Option_val(arg1, GtkWindow_val, NULL), arg2, arg3);
+GtkAppChooserDialog *obj = gtk_app_chooser_dialog_new(Option_val(arg1, GtkWindow_val, NULL), GtkDialogFlags_val(arg2), arg3);
 CAMLreturn(Val_GtkAppChooserDialog(obj));
 }
 
 CAMLexport CAMLprim value ml_gtk_app_chooser_dialog_new_for_content_type(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
-GtkAppChooserDialog *obj = gtk_app_chooser_dialog_new_for_content_type(Option_val(arg1, GtkWindow_val, NULL), arg2, String_val(arg3));
+GtkAppChooserDialog *obj = gtk_app_chooser_dialog_new_for_content_type(Option_val(arg1, GtkWindow_val, NULL), GtkDialogFlags_val(arg2), String_val(arg3));
 CAMLreturn(Val_GtkAppChooserDialog(obj));
 }
 

@@ -15,6 +15,7 @@ class text_view : Text_view.t ->
     method get_editable : unit -> bool
     method get_gutter : Gtk_enums.textwindowtype -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option
     method get_indent : unit -> int
+    method get_input_hints : unit -> Gtk_enums.inputhints
     method get_input_purpose : unit -> Gtk_enums.inputpurpose
     method get_justification : unit -> Gtk_enums.justification
     method get_left_margin : unit -> int
@@ -25,7 +26,6 @@ class text_view : Text_view.t ->
     method get_pixels_inside_wrap : unit -> int
     method get_right_margin : unit -> int
     method get_top_margin : unit -> int
-    method get_wrap_mode : unit -> Gtk_enums.wrapmode
     method move_mark_onscreen : #GText_buffer_and__text_iter_and__text_mark.text_mark -> bool
     method move_overlay : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> int -> int -> unit
     method move_visually : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> int -> bool
@@ -43,6 +43,7 @@ class text_view : Text_view.t ->
     method set_editable : bool -> unit
     method set_gutter : Gtk_enums.textwindowtype -> #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option -> unit
     method set_indent : int -> unit
+    method set_input_hints : Gtk_enums.inputhints -> unit
     method set_input_purpose : Gtk_enums.inputpurpose -> unit
     method set_justification : Gtk_enums.justification -> unit
     method set_left_margin : int -> unit
@@ -53,7 +54,6 @@ class text_view : Text_view.t ->
     method set_pixels_inside_wrap : int -> unit
     method set_right_margin : int -> unit
     method set_top_margin : int -> unit
-    method set_wrap_mode : Gtk_enums.wrapmode -> unit
     method starts_display_line : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool
     method im_module : string
     method set_im_module : string -> unit

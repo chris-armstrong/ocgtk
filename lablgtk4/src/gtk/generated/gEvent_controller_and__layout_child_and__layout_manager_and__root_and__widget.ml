@@ -251,6 +251,10 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
     fun () ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_name obj)
 
+  method get_native : unit -> GNative.native option =
+    fun () ->
+      Option.map (fun ret -> new GNative.native ret) (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_native obj)
+
   method get_next_sibling : unit -> widget option =
     fun () ->
       Option.map (fun ret -> new widget ret) (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_next_sibling obj)
@@ -283,6 +287,10 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
     fun () ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_request_mode obj)
 
+  method get_root : unit -> root option =
+    fun () ->
+      Option.map (fun ret -> new root ret) (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_root obj)
+
   method get_scale_factor : unit -> int =
     fun () ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_scale_factor obj)
@@ -298,6 +306,10 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
   method get_size : Gtk_enums.orientation -> int =
     fun orientation ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_size obj orientation)
+
+  method get_state_flags : unit -> Gtk_enums.stateflags =
+    fun () ->
+      (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_state_flags obj)
 
   method get_style_context : unit -> GStyle_context.style_context =
     fun () ->
@@ -407,6 +419,10 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
   method mnemonic_activate : bool -> bool =
     fun group_cycling ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.mnemonic_activate obj group_cycling)
+
+  method pick : float -> float -> Gtk_enums.pickflags -> widget option =
+    fun x y flags ->
+      Option.map (fun ret -> new widget ret) (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.pick obj x y flags)
 
   method queue_allocate : unit -> unit =
     fun () ->
@@ -541,6 +557,10 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
     fun width height ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.set_size_request obj width height)
 
+  method set_state_flags : Gtk_enums.stateflags -> bool -> unit =
+    fun flags clear ->
+      (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.set_state_flags obj flags clear)
+
   method set_tooltip_markup : string option -> unit =
     fun markup ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.set_tooltip_markup obj markup)
@@ -594,6 +614,10 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
   method unrealize : unit -> unit =
     fun () ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.unrealize obj)
+
+  method unset_state_flags : Gtk_enums.stateflags -> unit =
+    fun flags ->
+      (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.unset_state_flags obj flags)
 
   method height_request = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_height_request obj
   method set_height_request v =  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.set_height_request obj v

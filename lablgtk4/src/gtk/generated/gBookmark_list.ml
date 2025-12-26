@@ -5,6 +5,10 @@ class bookmark_list (obj : Bookmark_list.t) = object (self)
     fun () ->
       (Bookmark_list.get_attributes obj)
 
+  method get_filename : unit -> string =
+    fun () ->
+      (Bookmark_list.get_filename obj)
+
   method get_io_priority : unit -> int =
     fun () ->
       (Bookmark_list.get_io_priority obj)

@@ -6,9 +6,6 @@ type t = [`file_filter | `filter | `object_] Gobject.obj
 (** Create a new FileFilter *)
 external new_ : unit -> t = "ml_gtk_file_filter_new"
 
-(** Create a new FileFilter *)
-external new_from_gvariant : unit -> t = "ml_gtk_file_filter_new_from_gvariant"
-
 (* Methods *)
 (** Sets a human-readable name of the filter.
 

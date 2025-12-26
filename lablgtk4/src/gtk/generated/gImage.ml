@@ -22,6 +22,10 @@ class image (obj : Image.t) = object (self)
     fun () ->
       (Image.get_storage_type obj)
 
+  method set_from_file : string option -> unit =
+    fun filename ->
+      (Image.set_from_file obj filename)
+
   method set_from_icon_name : string option -> unit =
     fun icon_name ->
       (Image.set_from_icon_name obj icon_name)

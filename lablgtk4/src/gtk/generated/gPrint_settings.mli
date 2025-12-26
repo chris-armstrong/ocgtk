@@ -33,6 +33,7 @@ class print_settings : Print_settings.t ->
     method get_scale : unit -> float
     method get_use_color : unit -> bool
     method has_key : string -> bool
+    method load_file : string -> (bool, GError.t) result
     method set : string -> string option -> unit
     method set_bool : string -> bool -> unit
     method set_collate : bool -> unit
@@ -62,6 +63,7 @@ class print_settings : Print_settings.t ->
     method set_reverse : bool -> unit
     method set_scale : float -> unit
     method set_use_color : bool -> unit
+    method to_file : string -> (bool, GError.t) result
     method unset : string -> unit
     method as_print_settings : Print_settings.t
   end

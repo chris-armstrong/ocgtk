@@ -61,3 +61,11 @@ CAMLparam2(self, arg1);
 gtk_css_provider_load_from_resource(GtkCssProvider_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+CAMLexport CAMLprim value ml_gtk_css_provider_load_from_path(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_css_provider_load_from_path(GtkCssProvider_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
+}

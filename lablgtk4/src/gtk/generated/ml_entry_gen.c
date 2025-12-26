@@ -101,6 +101,14 @@ gtk_entry_set_input_purpose(GtkEntry_val(self), GtkInputPurpose_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_entry_set_input_hints(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_entry_set_input_hints(GtkEntry_val(self), GtkInputHints_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_entry_set_icon_tooltip_text(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -259,6 +267,14 @@ CAMLparam1(self);
 
 GtkInputPurpose result = gtk_entry_get_input_purpose(GtkEntry_val(self));
 CAMLreturn(Val_GtkInputPurpose(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_get_input_hints(value self)
+{
+CAMLparam1(self);
+
+GtkInputHints result = gtk_entry_get_input_hints(GtkEntry_val(self));
+CAMLreturn(Val_GtkInputHints(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_icon_tooltip_text(value self, value arg1)

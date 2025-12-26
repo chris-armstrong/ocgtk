@@ -108,6 +108,12 @@ external delete_surrounding : t -> int -> int -> bool = "ml_gtk_im_context_delet
 
 (* Properties *)
 
+(** Get property: input-hints *)
+external get_input_hints : t -> Gtk_enums.inputhints = "ml_gtk_im_context_get_input_hints"
+
+(** Set property: input-hints *)
+external set_input_hints : t -> Gtk_enums.inputhints -> unit = "ml_gtk_im_context_set_input_hints"
+
 (** Get property: input-purpose *)
 external get_input_purpose : t -> Gtk_enums.inputpurpose = "ml_gtk_im_context_get_input_purpose"
 

@@ -60,6 +60,10 @@ class text_view (obj : Text_view.t) = object (self)
     fun () ->
       (Text_view.get_indent obj)
 
+  method get_input_hints : unit -> Gtk_enums.inputhints =
+    fun () ->
+      (Text_view.get_input_hints obj)
+
   method get_input_purpose : unit -> Gtk_enums.inputpurpose =
     fun () ->
       (Text_view.get_input_purpose obj)
@@ -99,10 +103,6 @@ class text_view (obj : Text_view.t) = object (self)
   method get_top_margin : unit -> int =
     fun () ->
       (Text_view.get_top_margin obj)
-
-  method get_wrap_mode : unit -> Gtk_enums.wrapmode =
-    fun () ->
-      (Text_view.get_wrap_mode obj)
 
   method move_mark_onscreen : 'p1. (#GText_buffer_and__text_iter_and__text_mark.text_mark as 'p1) -> bool =
     fun mark ->
@@ -179,6 +179,10 @@ class text_view (obj : Text_view.t) = object (self)
     fun indent ->
       (Text_view.set_indent obj indent)
 
+  method set_input_hints : Gtk_enums.inputhints -> unit =
+    fun hints ->
+      (Text_view.set_input_hints obj hints)
+
   method set_input_purpose : Gtk_enums.inputpurpose -> unit =
     fun purpose ->
       (Text_view.set_input_purpose obj purpose)
@@ -218,10 +222,6 @@ class text_view (obj : Text_view.t) = object (self)
   method set_top_margin : int -> unit =
     fun top_margin ->
       (Text_view.set_top_margin obj top_margin)
-
-  method set_wrap_mode : Gtk_enums.wrapmode -> unit =
-    fun wrap_mode ->
-      (Text_view.set_wrap_mode obj wrap_mode)
 
   method starts_display_line : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool =
     fun iter ->

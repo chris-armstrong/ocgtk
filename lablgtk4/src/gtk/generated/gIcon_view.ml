@@ -45,6 +45,10 @@ class icon_view (obj : Icon_view.t) = object (self)
     fun () ->
       (Icon_view.get_markup_column obj)
 
+  method get_model : unit -> GTree_model.tree_model option =
+    fun () ->
+      Option.map (fun ret -> new GTree_model.tree_model ret) (Icon_view.get_model obj)
+
   method get_path_at_pos : int -> int -> Tree_path.t option =
     fun x y ->
       (Icon_view.get_path_at_pos obj x y)
