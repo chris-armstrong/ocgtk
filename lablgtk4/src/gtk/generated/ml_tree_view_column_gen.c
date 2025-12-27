@@ -381,6 +381,14 @@ gtk_tree_view_column_clear(GtkTreeViewColumn_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_tree_view_column_cell_set_cell_data(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+
+gtk_tree_view_column_cell_set_cell_data(GtkTreeViewColumn_val(self), GtkTreeModel_val(arg1), GtkTreeIter_val(arg2), Bool_val(arg3), Bool_val(arg4));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_tree_view_column_cell_is_visible(value self)
 {
 CAMLparam1(self);

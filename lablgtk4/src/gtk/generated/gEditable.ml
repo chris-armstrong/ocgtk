@@ -28,6 +28,10 @@ class editable (obj : Editable.t) = object (self)
     fun start_pos end_pos ->
       (Editable.get_chars obj start_pos end_pos)
 
+  method get_delegate : unit -> editable option =
+    fun () ->
+      Option.map (fun ret -> new editable ret) (Editable.get_delegate obj)
+
   method get_editable : unit -> bool =
     fun () ->
       (Editable.get_editable obj)

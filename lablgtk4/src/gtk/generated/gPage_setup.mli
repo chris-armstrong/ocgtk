@@ -10,6 +10,7 @@ class page_setup : Page_setup.t ->
     method get_paper_width : Gtk_enums.unit -> float
     method get_right_margin : Gtk_enums.unit -> float
     method get_top_margin : Gtk_enums.unit -> float
+    method load_file : string -> (bool, GError.t) result
     method set_bottom_margin : float -> Gtk_enums.unit -> unit
     method set_left_margin : float -> Gtk_enums.unit -> unit
     method set_orientation : Gtk_enums.pageorientation -> unit
@@ -17,6 +18,7 @@ class page_setup : Page_setup.t ->
     method set_paper_size_and_default_margins : Paper_size.t -> unit
     method set_right_margin : float -> Gtk_enums.unit -> unit
     method set_top_margin : float -> Gtk_enums.unit -> unit
+    method to_file : string -> (bool, GError.t) result
     method as_page_setup : Page_setup.t
   end
 

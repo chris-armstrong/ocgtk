@@ -25,6 +25,31 @@ module rec Application : sig
   function, if `window` was the last window of the `application`. *)
   external remove_window : t -> Window.t -> unit = "ml_gtk_application_remove_window"
 
+  (** Inform the session manager that certain types of actions should be
+  inhibited.
+
+  This is not guaranteed to work on all platforms and for all types of
+  actions.
+
+  Applications should invoke this method when they begin an operation
+  that should not be interrupted, such as creating a CD or DVD. The
+  types of actions that may be blocked are specified by the `flags`
+  parameter. When the application completes the operation it should
+  call [method@Gtk.Application.uninhibit] to remove the inhibitor. Note
+  that an application can have multiple inhibitors, and all of them must
+  be individually removed. Inhibitors are also cleared when the
+  application exits.
+
+  Applications should not expect that they will always be able to block
+  the action. In most cases, users will be given the option to force
+  the action to take place.
+
+  The `reason` message should be short and to the point.
+
+  If `window` is given, the session manager may point the user to
+  this window to find out more about why the action is inhibited. *)
+  external inhibit : t -> Window.t option -> Gtk_enums.applicationinhibitflags -> string option -> int = "ml_gtk_application_inhibit"
+
   (** Returns the [class@Gtk.ApplicationWindow] with the given ID.
 
   The ID of a `GtkApplicationWindow` can be retrieved with

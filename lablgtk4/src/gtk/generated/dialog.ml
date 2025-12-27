@@ -9,7 +9,7 @@ let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager
 external new_ : unit -> t = "ml_gtk_dialog_new"
 
 (** Create a new Dialog *)
-external new_with_buttons : string option -> Application_and__window_and__window_group.Window.t option -> unit -> string option -> unit -> t = "ml_gtk_dialog_new_with_buttons"
+external new_with_buttons : string option -> Application_and__window_and__window_group.Window.t option -> Gtk_enums.dialogflags -> string option -> unit -> t = "ml_gtk_dialog_new_with_buttons"
 
 (* Methods *)
 (** A convenient way to sensitize/desensitize dialog buttons.
@@ -40,10 +40,10 @@ external get_response_for_widget : t -> Event_controller_and__layout_child_and__
 
 Note that the headerbar is only used by the dialog if the
 [property@Gtk.Dialog:use-header-bar] property is %TRUE. *)
-external get_header_bar : t -> Header_bar.t = "ml_gtk_dialog_get_header_bar"
+external get_header_bar : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = "ml_gtk_dialog_get_header_bar"
 
 (** Returns the content area of @dialog. *)
-external get_content_area : t -> Box.t = "ml_gtk_dialog_get_content_area"
+external get_content_area : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = "ml_gtk_dialog_get_content_area"
 
 (** Adds a button with the given text.
 

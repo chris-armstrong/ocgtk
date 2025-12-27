@@ -32,6 +32,10 @@ class entry_completion (obj : Entry_completion.t) = object (self)
     fun () ->
       (Entry_completion.get_minimum_key_length obj)
 
+  method get_model : unit -> GTree_model.tree_model option =
+    fun () ->
+      Option.map (fun ret -> new GTree_model.tree_model ret) (Entry_completion.get_model obj)
+
   method get_popup_completion : unit -> bool =
     fun () ->
       (Entry_completion.get_popup_completion obj)

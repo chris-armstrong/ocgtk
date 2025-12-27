@@ -485,25 +485,37 @@ let generate_c_constructor ~ctx ~c_type (ctor : gir_constructor) _class_name =
     ) ctor.ctor_parameters
   in
 
+  (* Append error parameter if constructor throws *)
+  let c_call_args = String.concat ~sep:", " (c_args @ (if ctor.throws then ["&error"] else [])) in
+
   (* Handle >5 parameters with bytecode/native variants *)
   if param_count > 5 then begin
     let first_five = List.filteri ~f:(fun i _ -> i < 5) param_names in
     let rest = List.filteri ~f:(fun i _ -> i >= 5) param_names in
 
+    let error_decl = if ctor.throws then "GError *error = NULL;\n    " else "" in
+    let return_stmt =
+      if ctor.throws then
+        sprintf "if (error == NULL) CAMLreturn(Res_Ok(%s(%s))); else CAMLreturn(Res_Error(Val_GError(error)));" val_macro var_name
+      else
+        sprintf "CAMLreturn(%s(%s));" val_macro var_name
+    in
+
     let native_func = sprintf "\nCAMLexport CAMLprim value %s_native(%s)\n\
 {\n\
     CAMLparam5(%s);\n\
     CAMLxparam%d(%s);\n\
-    %s *%s = %s(%s);\n\
-    CAMLreturn(%s(%s));\n\
+    %s%s *%s = %s(%s);\n\
+    %s\n\
 }\n"
       ml_name
       (String.concat ~sep:", " params)
       (String.concat ~sep:", " first_five)
       (param_count - 5)
       (String.concat ~sep:", " rest)
-      c_type var_name c_name (String.concat ~sep:", " c_args)
-      val_macro var_name
+      error_decl
+      c_type var_name c_name c_call_args
+      return_stmt
     in
 
     let bytecode_func = sprintf "\nCAMLexport CAMLprim value %s_bytecode(value * argv, int argn)\n\
@@ -517,18 +529,27 @@ let generate_c_constructor ~ctx ~c_type (ctor : gir_constructor) _class_name =
 
     native_func ^ bytecode_func
   end else begin
+    let error_decl = if ctor.throws then "GError *error = NULL;\n    " else "" in
+    let return_stmt =
+      if ctor.throws then
+        sprintf "if (error == NULL) CAMLreturn(Res_Ok(%s(%s))); else CAMLreturn(Res_Error(Val_GError(error)));" val_macro var_name
+      else
+        sprintf "CAMLreturn(%s(%s));" val_macro var_name
+    in
+
     sprintf "\nCAMLexport CAMLprim value %s(%s)\n\
 {\n\
     CAMLparam%d(%s);\n\
-    %s *%s = %s(%s);\n\
-    CAMLreturn(%s(%s));\n\
+    %s%s *%s = %s(%s);\n\
+    %s\n\
 }\n"
       ml_name
       (String.concat ~sep:", " params)
       param_count
       (String.concat ~sep:", " param_names)
-      c_type var_name c_name (String.concat ~sep:", " c_args)
-      val_macro var_name
+      error_decl
+      c_type var_name c_name c_call_args
+      return_stmt
   end
 
 let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
@@ -568,7 +589,30 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
         in
         bprintf out_decl_buf "%s %s;\n" base_c_type var_name;
         args := !args @ [sprintf "&%s" var_name]
-      | In | InOut ->
+      | InOut ->
+        (* InOut parameters: declare local variable, initialize from input, pass by reference *)
+        incr ocaml_idx;
+        let arg_name = sprintf "arg%d" !ocaml_idx in
+        let var_name = sprintf "inout%d" (i + 1) in
+        let c_type = match p.param_type.c_type with
+          | Some c_type -> c_type
+          | None -> tm |> Option.map (fun tm -> tm.c_type) |> Option.value ~default:"void"
+        in
+        let base_c_type =
+          if String.length c_type > 0 &&
+             String.sub c_type ~pos:(String.length c_type - 1) ~len:1 = "*"
+          then String.sub c_type ~pos:0 ~len:(String.length c_type - 1)
+          else c_type
+        in
+        let init_expr = match tm with
+          | Some mapping ->
+            let param_type = { p.param_type with nullable = p.nullable || p.param_type.nullable } in
+            nullable_ml_to_c_expr ~var:arg_name ~gir_type:param_type ~mapping
+          | None -> arg_name
+        in
+        bprintf out_decl_buf "%s %s = %s;\n" base_c_type var_name init_expr;
+        args := !args @ [sprintf "&%s" var_name]
+      | In ->
         incr ocaml_idx;
         let arg_name = sprintf "arg%d" !ocaml_idx in
         let arg_expr = match tm with
@@ -593,8 +637,8 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
 
     let out_conversions =
       List.filter_map ~f:(fun (p, idx) ->
-        if p.direction = Out then
-          let base_gir_type = p.param_type.c_type 
+        if p.direction = Out || p.direction = InOut then
+          let base_gir_type = p.param_type.c_type
             |> Option.map (fun c_type ->
               if String.sub c_type ~pos:(String.length c_type - 1) ~len:1 = "*"
               then { p.param_type with c_type = Some (String.sub c_type ~pos:0 ~len:(String.length c_type - 1)) }
@@ -603,7 +647,7 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
           in
           match Type_mappings.find_type_mapping_for_gir_type ~ctx base_gir_type with
           | Some mapping ->
-            let var_name = sprintf "out%d" (idx + 1) in
+            let var_name = if p.direction = Out then sprintf "out%d" (idx + 1) else sprintf "inout%d" (idx + 1) in
             Some (nullable_c_to_ml_expr ~var:var_name ~gir_type:base_gir_type ~mapping)
           | None -> None
         else None
@@ -654,8 +698,12 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
         (sprintf "%s result = %s(%s);" ret_type c_name args,
          combine_results (Some ml_result))
       | None ->
-        (sprintf "void *result = %s(%s);" c_name args,
-         combine_results (Some "(value)result"))
+        (* No type mapping found - fail with clear error *)
+        failwith (sprintf "No type mapping found for return type: name='%s' c_type='%s' in method %s. This indicates missing type information in the context or GIR metadata."
+          meth.return_type.name
+          (Option.value meth.return_type.c_type ~default:"<none>")
+          meth.c_identifier)
+        
   in
 
   (* For functions with >5 parameters, generate both bytecode and native variants *)

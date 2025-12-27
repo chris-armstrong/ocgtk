@@ -4,6 +4,10 @@
 class css_provider (obj : Css_provider.t) = object (self)
   inherit Gcss_provider_signals.css_provider_signals obj
 
+  method load_from_path : string -> unit =
+    fun path ->
+      (Css_provider.load_from_path obj path)
+
   method load_from_resource : string -> unit =
     fun resource_path ->
       (Css_provider.load_from_resource obj resource_path)

@@ -69,6 +69,10 @@ class print_operation (obj : Print_operation.t) = object (self)
     fun embed ->
       (Print_operation.set_embed_page_setup obj embed)
 
+  method set_export_filename : string -> unit =
+    fun filename ->
+      (Print_operation.set_export_filename obj filename)
+
   method set_has_selection : bool -> unit =
     fun has_selection ->
       (Print_operation.set_has_selection obj has_selection)

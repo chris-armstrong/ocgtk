@@ -181,6 +181,14 @@ GtkCellRenderer* result = gtk_cell_area_get_edited_cell(GtkCellArea_val(self));
 CAMLreturn(Val_option(result, Val_GtkCellRenderer));
 }
 
+CAMLexport CAMLprim value ml_gtk_cell_area_get_edit_widget(value self)
+{
+CAMLparam1(self);
+
+GtkCellEditable* result = gtk_cell_area_get_edit_widget(GtkCellArea_val(self));
+CAMLreturn(Val_option(result, Val_GtkCellEditable));
+}
+
 CAMLexport CAMLprim value ml_gtk_cell_area_get_current_path_string(value self)
 {
 CAMLparam1(self);
@@ -234,6 +242,14 @@ CAMLexport CAMLprim value ml_gtk_cell_area_attribute_connect(value self, value a
 CAMLparam4(self, arg1, arg2, arg3);
 
 gtk_cell_area_attribute_connect(GtkCellArea_val(self), GtkCellRenderer_val(arg1), String_val(arg2), Int_val(arg3));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_area_apply_attributes(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+
+gtk_cell_area_apply_attributes(GtkCellArea_val(self), GtkTreeModel_val(arg1), GtkTreeIter_val(arg2), Bool_val(arg3), Bool_val(arg4));
 CAMLreturn(Val_unit);
 }
 

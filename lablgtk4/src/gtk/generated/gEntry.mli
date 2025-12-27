@@ -15,6 +15,7 @@ class entry : Entry.t ->
     method get_icon_storage_type : Gtk_enums.entryiconposition -> Gtk_enums.imagetype
     method get_icon_tooltip_markup : Gtk_enums.entryiconposition -> string option
     method get_icon_tooltip_text : Gtk_enums.entryiconposition -> string option
+    method get_input_hints : unit -> Gtk_enums.inputhints
     method get_input_purpose : unit -> Gtk_enums.inputpurpose
     method get_max_length : unit -> int
     method get_overwrite_mode : unit -> bool
@@ -35,6 +36,7 @@ class entry : Entry.t ->
     method set_icon_sensitive : Gtk_enums.entryiconposition -> bool -> unit
     method set_icon_tooltip_markup : Gtk_enums.entryiconposition -> string option -> unit
     method set_icon_tooltip_text : Gtk_enums.entryiconposition -> string option -> unit
+    method set_input_hints : Gtk_enums.inputhints -> unit
     method set_input_purpose : Gtk_enums.inputpurpose -> unit
     method set_max_length : int -> unit
     method set_overwrite_mode : bool -> unit

@@ -6,6 +6,7 @@
 #include <caml/alloc.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <glib.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 /* Convert GdkColorspace to OCaml value */
 value Val_GdkPixbufColorspace(GdkColorspace val) {

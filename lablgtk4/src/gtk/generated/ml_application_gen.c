@@ -46,6 +46,14 @@ gtk_application_remove_window(GtkApplication_val(self), GtkWindow_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_application_inhibit(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+guint result = gtk_application_inhibit(GtkApplication_val(self), Option_val(arg1, GtkWindow_val, NULL), GtkApplicationInhibitFlags_val(arg2), String_option_val(arg3));
+CAMLreturn(Val_int(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_application_get_window_by_id(value self, value arg1)
 {
 CAMLparam2(self, arg1);

@@ -23,6 +23,22 @@
 #endif /* Val_GtkStyleContext */
 
 
+CAMLexport CAMLprim value ml_gtk_style_context_to_string(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+char* result = gtk_style_context_to_string(GtkStyleContext_val(self), GtkStyleContextPrintFlags_val(arg1));
+CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_style_context_set_state(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_style_context_set_state(GtkStyleContext_val(self), GtkStateFlags_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_style_context_set_scale(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -47,6 +63,14 @@ gtk_style_context_restore(GtkStyleContext_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_style_context_remove_provider(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_style_context_remove_provider(GtkStyleContext_val(self), GtkStyleProvider_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_style_context_remove_class(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -61,6 +85,14 @@ CAMLparam2(self, arg1);
 
 gboolean result = gtk_style_context_has_class(GtkStyleContext_val(self), String_val(arg1));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_style_context_get_state(value self)
+{
+CAMLparam1(self);
+
+GtkStateFlags result = gtk_style_context_get_state(GtkStyleContext_val(self));
+CAMLreturn(Val_GtkStateFlags(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_style_context_get_scale(value self)
@@ -96,6 +128,14 @@ GtkBorder out1;
 
 gtk_style_context_get_border(GtkStyleContext_val(self), &out1);
 CAMLreturn(Val_GtkBorder(out1));
+}
+
+CAMLexport CAMLprim value ml_gtk_style_context_add_provider(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_style_context_add_provider(GtkStyleContext_val(self), GtkStyleProvider_val(arg1), Int_val(arg2));
+CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_style_context_add_class(value self, value arg1)

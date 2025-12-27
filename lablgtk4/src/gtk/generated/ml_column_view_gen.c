@@ -26,7 +26,7 @@
 CAMLexport CAMLprim value ml_gtk_column_view_new(value arg1)
 {
 CAMLparam1(arg1);
-GtkColumnView *obj = gtk_column_view_new(arg1);
+GtkColumnView *obj = gtk_column_view_new(Option_val(arg1, GtkSelectionModel_val, NULL));
 CAMLreturn(Val_GtkColumnView(obj));
 }
 
@@ -86,6 +86,14 @@ gtk_column_view_set_reorderable(GtkColumnView_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_column_view_set_model(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_column_view_set_model(GtkColumnView_val(self), Option_val(arg1, GtkSelectionModel_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_column_view_set_header_factory(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -99,6 +107,14 @@ CAMLexport CAMLprim value ml_gtk_column_view_set_enable_rubberband(value self, v
 CAMLparam2(self, arg1);
 
 gtk_column_view_set_enable_rubberband(GtkColumnView_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_scroll_to(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+
+gtk_column_view_scroll_to(GtkColumnView_val(self), Int_val(arg1), Option_val(arg2, GtkColumnViewColumn_val, NULL), GtkListScrollFlags_val(arg3), Option_val(arg4, GtkScrollInfo_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -172,6 +188,14 @@ CAMLparam1(self);
 
 gboolean result = gtk_column_view_get_reorderable(GtkColumnView_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_get_model(value self)
+{
+CAMLparam1(self);
+
+GtkSelectionModel* result = gtk_column_view_get_model(GtkColumnView_val(self));
+CAMLreturn(Val_option(result, Val_GtkSelectionModel));
 }
 
 CAMLexport CAMLprim value ml_gtk_column_view_get_header_factory(value self)

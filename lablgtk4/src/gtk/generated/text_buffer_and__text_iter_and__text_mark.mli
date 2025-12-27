@@ -872,6 +872,18 @@ and Text_iter
   be correct for nearly any language. *)
   external forward_sentence_end : t -> bool = "ml_gtk_text_iter_forward_sentence_end"
 
+  (** Searches forward for @str.
+
+  Any match is returned by setting @match_start to the first character
+  of the match and @match_end to the first character after the match.
+  The search will not continue past @limit. Note that a search is a
+  linear or O(n) operation, so you may wish to use @limit to avoid
+  locking up your UI on large buffers.
+
+  @match_start will never be set to a `GtkTextIter` located before @iter,
+  even if there is a possible @match_end after or at @iter. *)
+  external forward_search : t -> string -> Gtk_enums.textsearchflags -> t option -> bool * t * t = "ml_gtk_text_iter_forward_search"
+
   (** Moves @count lines forward, if possible.
 
   If @count would move past the start or end of the buffer, moves to
@@ -1102,6 +1114,12 @@ and Text_iter
   Sentence boundaries are determined by Pango and should
   be correct for nearly any language. *)
   external backward_sentence_start : t -> bool = "ml_gtk_text_iter_backward_sentence_start"
+
+  (** Same as [method@Gtk.TextIter.forward_search], but moves backward.
+
+  @match_end will never be set to a `GtkTextIter` located after @iter,
+  even if there is a possible @match_start before or at @iter. *)
+  external backward_search : t -> string -> Gtk_enums.textsearchflags -> t option -> bool * t * t = "ml_gtk_text_iter_backward_search"
 
   (** Moves @count lines backward, if possible.
 

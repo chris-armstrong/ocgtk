@@ -20,6 +20,11 @@ class cell_renderer (obj : Cell_renderer.t) = object (self)
     fun () ->
       (Cell_renderer.get_sensitive obj)
 
+  method get_state : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> Gtk_enums.cellrendererstate -> Gtk_enums.stateflags =
+    fun widget cell_state ->
+      let widget = Option.map (fun (c) -> c#as_widget) widget in
+      (Cell_renderer.get_state obj widget cell_state)
+
   method get_visible : unit -> bool =
     fun () ->
       (Cell_renderer.get_visible obj)

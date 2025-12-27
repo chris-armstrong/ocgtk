@@ -12,6 +12,9 @@ external set_show_preview_entry : t -> bool -> unit = "ml_gtk_font_chooser_set_s
 The @text is used to show how the selected font looks. *)
 external set_preview_text : t -> string -> unit = "ml_gtk_font_chooser_set_preview_text"
 
+(** Sets the desired level of granularity for selecting fonts. *)
+external set_level : t -> Gtk_enums.fontchooserlevel -> unit = "ml_gtk_font_chooser_set_level"
+
 (** Sets the language to use for font features. *)
 external set_language : t -> string -> unit = "ml_gtk_font_chooser_set_language"
 
@@ -23,6 +26,9 @@ external get_show_preview_entry : t -> bool = "ml_gtk_font_chooser_get_show_prev
 
 (** Gets the text displayed in the preview area. *)
 external get_preview_text : t -> string = "ml_gtk_font_chooser_get_preview_text"
+
+(** Returns the current level of granularity for selecting fonts. *)
+external get_level : t -> Gtk_enums.fontchooserlevel = "ml_gtk_font_chooser_get_level"
 
 (** Gets the language that is used for font features. *)
 external get_language : t -> string = "ml_gtk_font_chooser_get_language"

@@ -13,6 +13,10 @@ class tree_model_sort (obj : Tree_model_sort.t) = object (self)
     fun sorted_path ->
       (Tree_model_sort.convert_path_to_child_path obj sorted_path)
 
+  method get_model : unit -> GTree_model.tree_model =
+    fun () ->
+      new  GTree_model.tree_model(Tree_model_sort.get_model obj)
+
   method iter_is_valid : Tree_iter.t -> bool =
     fun iter ->
       (Tree_model_sort.iter_is_valid obj iter)

@@ -6,10 +6,10 @@ type t = [`page_setup | `object_] Gobject.obj
 (** Create a new PageSetup *)
 external new_ : unit -> t = "ml_gtk_page_setup_new"
 
-(** Create a new PageSetup *)
-external new_from_gvariant : unit -> t = "ml_gtk_page_setup_new_from_gvariant"
-
 (* Methods *)
+(** This function saves the information from @setup to @file_name. *)
+external to_file : t -> string -> (bool, GError.t) result = "ml_gtk_page_setup_to_file"
+
 (** Sets the top margin of the `GtkPageSetup`. *)
 external set_top_margin : t -> float -> Gtk_enums.unit -> unit = "ml_gtk_page_setup_set_top_margin"
 
@@ -34,6 +34,11 @@ external set_left_margin : t -> float -> Gtk_enums.unit -> unit = "ml_gtk_page_s
 
 (** Sets the bottom margin of the `GtkPageSetup`. *)
 external set_bottom_margin : t -> float -> Gtk_enums.unit -> unit = "ml_gtk_page_setup_set_bottom_margin"
+
+(** Reads the page setup from the file @file_name.
+
+See [method@Gtk.PageSetup.to_file]. *)
+external load_file : t -> string -> (bool, GError.t) result = "ml_gtk_page_setup_load_file"
 
 (** Gets the top margin in units of @unit. *)
 external get_top_margin : t -> Gtk_enums.unit -> float = "ml_gtk_page_setup_get_top_margin"

@@ -12,7 +12,7 @@ external new_ : unit -> t = "ml_gtk_picture_new"
 external new_for_file : unit -> t = "ml_gtk_picture_new_for_file"
 
 (** Create a new Picture *)
-external new_for_filename : unit -> t = "ml_gtk_picture_new_for_filename"
+external new_for_filename : string option -> t = "ml_gtk_picture_new_for_filename"
 
 (** Create a new Picture *)
 external new_for_paintable : unit -> t = "ml_gtk_picture_new_for_paintable"
@@ -39,6 +39,11 @@ left/right of @self.
 If set to %FALSE or if the contents provide no aspect ratio,
 the contents will be stretched over the picture's whole area. *)
 external set_keep_aspect_ratio : t -> bool -> unit = "ml_gtk_picture_set_keep_aspect_ratio"
+
+(** Makes @self load and display the given @filename.
+
+This is a utility function that calls [method@Gtk.Picture.set_file]. *)
+external set_filename : t -> string option -> unit = "ml_gtk_picture_set_filename"
 
 (** Sets how the content should be resized to fit the `GtkPicture`.
 

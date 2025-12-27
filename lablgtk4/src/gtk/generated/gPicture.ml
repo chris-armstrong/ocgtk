@@ -30,6 +30,10 @@ class picture (obj : Picture.t) = object (self)
     fun content_fit ->
       (Picture.set_content_fit obj content_fit)
 
+  method set_filename : string option -> unit =
+    fun filename ->
+      (Picture.set_filename obj filename)
+
   method set_keep_aspect_ratio : bool -> unit =
     fun keep_aspect_ratio ->
       (Picture.set_keep_aspect_ratio obj keep_aspect_ratio)

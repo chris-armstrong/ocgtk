@@ -13,6 +13,10 @@ class constraint_ (obj : Constraint.t) = object (self)
     fun () ->
       (Constraint.get_relation obj)
 
+  method get_source : unit -> GConstraint_target.constraint_target option =
+    fun () ->
+      Option.map (fun ret -> new GConstraint_target.constraint_target ret) (Constraint.get_source obj)
+
   method get_source_attribute : unit -> Gtk_enums.constraintattribute =
     fun () ->
       (Constraint.get_source_attribute obj)
@@ -20,6 +24,10 @@ class constraint_ (obj : Constraint.t) = object (self)
   method get_strength : unit -> int =
     fun () ->
       (Constraint.get_strength obj)
+
+  method get_target : unit -> GConstraint_target.constraint_target option =
+    fun () ->
+      Option.map (fun ret -> new GConstraint_target.constraint_target ret) (Constraint.get_target obj)
 
   method get_target_attribute : unit -> Gtk_enums.constraintattribute =
     fun () ->

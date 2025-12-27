@@ -6,10 +6,10 @@ type t = [`app_chooser_dialog | `dialog | `window | `widget | `initially_unowned
 val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new AppChooserDialog *)
-external new_ : Application_and__window_and__window_group.Window.t option -> unit -> unit -> t = "ml_gtk_app_chooser_dialog_new"
+external new_ : Application_and__window_and__window_group.Window.t option -> Gtk_enums.dialogflags -> unit -> t = "ml_gtk_app_chooser_dialog_new"
 
 (** Create a new AppChooserDialog *)
-external new_for_content_type : Application_and__window_and__window_group.Window.t option -> unit -> string -> t = "ml_gtk_app_chooser_dialog_new_for_content_type"
+external new_for_content_type : Application_and__window_and__window_group.Window.t option -> Gtk_enums.dialogflags -> string -> t = "ml_gtk_app_chooser_dialog_new_for_content_type"
 
 (* Methods *)
 (** Sets the text to display at the top of the dialog.

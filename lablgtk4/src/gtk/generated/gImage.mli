@@ -6,6 +6,7 @@ class image : Image.t ->
     method get_icon_size : unit -> Gtk_enums.iconsize
     method get_pixel_size : unit -> int
     method get_storage_type : unit -> Gtk_enums.imagetype
+    method set_from_file : string option -> unit
     method set_from_icon_name : string option -> unit
     method set_from_resource : string option -> unit
     method set_icon_size : Gtk_enums.iconsize -> unit

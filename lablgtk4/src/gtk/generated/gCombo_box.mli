@@ -9,6 +9,7 @@ class combo_box : Combo_box.t ->
     method get_entry_text_column : unit -> int
     method get_has_entry : unit -> bool
     method get_id_column : unit -> int
+    method get_model : unit -> GTree_model.tree_model option
     method get_popup_fixed_width : unit -> bool
     method popdown : unit -> unit
     method popup : unit -> unit

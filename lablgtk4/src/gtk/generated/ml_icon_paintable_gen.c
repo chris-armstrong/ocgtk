@@ -37,3 +37,11 @@ CAMLparam1(self);
 gboolean result = gtk_icon_paintable_is_symbolic(GtkIconPaintable_val(self));
 CAMLreturn(Val_bool(result));
 }
+
+CAMLexport CAMLprim value ml_gtk_icon_paintable_get_icon_name(value self)
+{
+CAMLparam1(self);
+
+const char* result = gtk_icon_paintable_get_icon_name(GtkIconPaintable_val(self));
+CAMLreturn(Val_option(result, caml_copy_string));
+}

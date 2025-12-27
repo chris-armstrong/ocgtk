@@ -8,6 +8,7 @@ class stack : Stack.t ->
     method get_hhomogeneous : unit -> bool
     method get_interpolate_size : unit -> bool
     method get_page : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> GStack_page.stack_page
+    method get_pages : unit -> GSelection_model.selection_model
     method get_transition_duration : unit -> int
     method get_transition_running : unit -> bool
     method get_transition_type : unit -> Gtk_enums.stacktransitiontype

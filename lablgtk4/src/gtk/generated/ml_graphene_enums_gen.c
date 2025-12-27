@@ -6,6 +6,7 @@
 #include <caml/alloc.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <glib.h>
 #include <graphene.h>
 /* Convert graphene_euler_order_t to OCaml value */
 value Val_GrapheneEulerOrder(graphene_euler_order_t val) {

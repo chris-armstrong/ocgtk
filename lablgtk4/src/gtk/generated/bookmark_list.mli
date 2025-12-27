@@ -4,7 +4,7 @@
 type t = [`bookmark_list | `object_] Gobject.obj
 
 (** Create a new BookmarkList *)
-external new_ : unit -> string option -> t = "ml_gtk_bookmark_list_new"
+external new_ : string option -> string option -> t = "ml_gtk_bookmark_list_new"
 
 (* Methods *)
 (** Sets the IO priority to use while loading files.
@@ -27,6 +27,10 @@ external is_loading : t -> bool = "ml_gtk_bookmark_list_is_loading"
 
 (** Gets the IO priority to use while loading file. *)
 external get_io_priority : t -> int = "ml_gtk_bookmark_list_get_io_priority"
+
+(** Returns the filename of the bookmark file that
+this list is loading. *)
+external get_filename : t -> string = "ml_gtk_bookmark_list_get_filename"
 
 (** Gets the attributes queried on the children. *)
 external get_attributes : t -> string option = "ml_gtk_bookmark_list_get_attributes"

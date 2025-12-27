@@ -5,6 +5,7 @@ class text : Text.t ->
     method get_activates_default : unit -> bool
     method get_buffer : unit -> GEntry_buffer.entry_buffer
     method get_enable_emoji_completion : unit -> bool
+    method get_input_hints : unit -> Gtk_enums.inputhints
     method get_input_purpose : unit -> Gtk_enums.inputpurpose
     method get_max_length : unit -> int
     method get_overwrite_mode : unit -> bool
@@ -16,6 +17,7 @@ class text : Text.t ->
     method set_activates_default : bool -> unit
     method set_buffer : #GEntry_buffer.entry_buffer -> unit
     method set_enable_emoji_completion : bool -> unit
+    method set_input_hints : Gtk_enums.inputhints -> unit
     method set_input_purpose : Gtk_enums.inputpurpose -> unit
     method set_max_length : int -> unit
     method set_overwrite_mode : bool -> unit

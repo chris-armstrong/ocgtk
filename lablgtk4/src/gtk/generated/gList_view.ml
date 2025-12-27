@@ -17,6 +17,10 @@ class list_view (obj : List_view.t) = object (self)
     fun () ->
       Option.map (fun ret -> new GList_item_factory.list_item_factory ret) (List_view.get_header_factory obj)
 
+  method get_model : unit -> GSelection_model.selection_model option =
+    fun () ->
+      Option.map (fun ret -> new GSelection_model.selection_model ret) (List_view.get_model obj)
+
   method get_show_separators : unit -> bool =
     fun () ->
       (List_view.get_show_separators obj)
@@ -28,6 +32,10 @@ class list_view (obj : List_view.t) = object (self)
   method get_tab_behavior : unit -> Gtk_enums.listtabbehavior =
     fun () ->
       (List_view.get_tab_behavior obj)
+
+  method scroll_to : int -> Gtk_enums.listscrollflags -> Scroll_info.t option -> unit =
+    fun pos flags scroll ->
+      (List_view.scroll_to obj pos flags scroll)
 
   method set_enable_rubberband : bool -> unit =
     fun enable_rubberband ->

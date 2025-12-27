@@ -5,8 +5,8 @@ class scale_button : Scale_button.t ->
     method get_active : unit -> bool
     method get_adjustment : unit -> GAdjustment.adjustment
     method get_has_frame : unit -> bool
-    method get_minus_button : unit -> GButton.button
-    method get_plus_button : unit -> GButton.button
+    method get_minus_button : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
+    method get_plus_button : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
     method get_popup : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
     method get_value : unit -> float
     method set_adjustment : #GAdjustment.adjustment -> unit

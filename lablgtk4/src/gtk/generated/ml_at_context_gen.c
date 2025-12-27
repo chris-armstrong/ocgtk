@@ -26,7 +26,7 @@
 CAMLexport CAMLprim value ml_gtk_at_context_create(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
-GtkATContext *obj = gtk_at_context_create(GtkAccessibleRole_val(arg1), arg2, arg3);
+GtkATContext *obj = gtk_at_context_create(GtkAccessibleRole_val(arg1), GtkAccessible_val(arg2), arg3);
 CAMLreturn(Val_GtkATContext(obj));
 }
 
@@ -36,4 +36,12 @@ CAMLparam1(self);
 
 GtkAccessibleRole result = gtk_at_context_get_accessible_role(GtkATContext_val(self));
 CAMLreturn(Val_GtkAccessibleRole(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_at_context_get_accessible(value self)
+{
+CAMLparam1(self);
+
+GtkAccessible* result = gtk_at_context_get_accessible(GtkATContext_val(self));
+CAMLreturn(Val_GtkAccessible(result));
 }

@@ -38,6 +38,9 @@ external set_key_capture_widget : t -> Event_controller_and__layout_child_and__l
 (** Sets the input purpose of @entry. *)
 external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit = "ml_gtk_search_entry_set_input_purpose"
 
+(** Sets the input hints for @entry. *)
+external set_input_hints : t -> Gtk_enums.inputhints -> unit = "ml_gtk_search_entry_set_input_hints"
+
 (** Get the delay to be used between the last keypress and the
 [signal@Gtk.SearchEntry::search-changed] signal being emitted. *)
 external get_search_delay : t -> int = "ml_gtk_search_entry_get_search_delay"
@@ -50,6 +53,9 @@ external get_key_capture_widget : t -> Event_controller_and__layout_child_and__l
 
 (** Gets the input purpose of @entry. *)
 external get_input_purpose : t -> Gtk_enums.inputpurpose = "ml_gtk_search_entry_get_input_purpose"
+
+(** Gets the input purpose for @entry. *)
+external get_input_hints : t -> Gtk_enums.inputhints = "ml_gtk_search_entry_get_input_hints"
 
 (* Properties *)
 

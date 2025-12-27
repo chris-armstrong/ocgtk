@@ -37,6 +37,9 @@ class im_context (obj : Im_context.t) = object (self)
     fun use_preedit ->
       (Im_context.set_use_preedit obj use_preedit)
 
+  method input_hints = Im_context.get_input_hints obj
+  method set_input_hints v =  Im_context.set_input_hints obj v
+
   method input_purpose = Im_context.get_input_purpose obj
   method set_input_purpose v =  Im_context.set_input_purpose obj v
 

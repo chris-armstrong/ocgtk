@@ -94,6 +94,14 @@ gtk_print_operation_set_has_selection(GtkPrintOperation_val(self), Bool_val(arg1
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_print_operation_set_export_filename(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_print_operation_set_export_filename(GtkPrintOperation_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_print_operation_set_embed_page_setup(value self, value arg1)
 {
 CAMLparam2(self, arg1);

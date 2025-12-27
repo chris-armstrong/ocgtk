@@ -9,6 +9,10 @@ class style_context (obj : Style_context.t) = object (self)
     fun () ->
       (Style_context.get_scale obj)
 
+  method get_state : unit -> Gtk_enums.stateflags =
+    fun () ->
+      (Style_context.get_state obj)
+
   method has_class : string -> bool =
     fun class_name ->
       (Style_context.has_class obj class_name)
@@ -28,6 +32,14 @@ class style_context (obj : Style_context.t) = object (self)
   method set_scale : int -> unit =
     fun scale ->
       (Style_context.set_scale obj scale)
+
+  method set_state : Gtk_enums.stateflags -> unit =
+    fun flags ->
+      (Style_context.set_state obj flags)
+
+  method to_string : Gtk_enums.stylecontextprintflags -> string =
+    fun flags ->
+      (Style_context.to_string obj flags)
 
     method as_style_context = obj
 end

@@ -75,6 +75,14 @@ GtkConstraintAttribute result = gtk_constraint_get_target_attribute(GtkConstrain
 CAMLreturn(Val_GtkConstraintAttribute(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_constraint_get_target(value self)
+{
+CAMLparam1(self);
+
+GtkConstraintTarget* result = gtk_constraint_get_target(GtkConstraint_val(self));
+CAMLreturn(Val_option(result, Val_GtkConstraintTarget));
+}
+
 CAMLexport CAMLprim value ml_gtk_constraint_get_strength(value self)
 {
 CAMLparam1(self);
@@ -89,6 +97,14 @@ CAMLparam1(self);
 
 GtkConstraintAttribute result = gtk_constraint_get_source_attribute(GtkConstraint_val(self));
 CAMLreturn(Val_GtkConstraintAttribute(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_constraint_get_source(value self)
+{
+CAMLparam1(self);
+
+GtkConstraintTarget* result = gtk_constraint_get_source(GtkConstraint_val(self));
+CAMLreturn(Val_option(result, Val_GtkConstraintTarget));
 }
 
 CAMLexport CAMLprim value ml_gtk_constraint_get_relation(value self)

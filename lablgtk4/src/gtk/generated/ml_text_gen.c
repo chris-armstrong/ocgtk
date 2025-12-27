@@ -101,6 +101,14 @@ gtk_text_set_input_purpose(GtkText_val(self), GtkInputPurpose_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_text_set_input_hints(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_text_set_input_hints(GtkText_val(self), GtkInputHints_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_set_enable_emoji_completion(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -187,6 +195,14 @@ CAMLparam1(self);
 
 GtkInputPurpose result = gtk_text_get_input_purpose(GtkText_val(self));
 CAMLreturn(Val_GtkInputPurpose(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_get_input_hints(value self)
+{
+CAMLparam1(self);
+
+GtkInputHints result = gtk_text_get_input_hints(GtkText_val(self));
+CAMLreturn(Val_GtkInputHints(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_get_enable_emoji_completion(value self)

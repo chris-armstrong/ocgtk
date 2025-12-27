@@ -3,7 +3,7 @@ class info_bar : Info_bar.t ->
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
     inherit Ginfo_bar_signals.info_bar_signals
     method add_action_widget : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> int -> unit
-    method add_button : string -> int -> GButton.button
+    method add_button : string -> int -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
     method add_child : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> unit
     method get_message_type : unit -> Gtk_enums.messagetype
     method get_revealed : unit -> bool

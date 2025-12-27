@@ -12,7 +12,7 @@ external new_ : unit -> t = "ml_gtk_icon_view_new"
 external new_with_area : Cell_area_and__cell_area_context.Cell_area.t -> t = "ml_gtk_icon_view_new_with_area"
 
 (** Create a new IconView *)
-external new_with_model : unit -> t = "ml_gtk_icon_view_new_with_model"
+external new_with_model : Tree_model.t -> t = "ml_gtk_icon_view_new_with_model"
 
 (* Methods *)
 (** Undoes the effect of gtk_icon_view_enable_model_drag_source(). Calling this
@@ -85,6 +85,12 @@ external set_reorderable : t -> bool -> unit = "ml_gtk_icon_view_set_reorderable
 (** Sets the column with pixbufs for @icon_view to be @column. The pixbuf
 column must be of type `GDK_TYPE_PIXBUF` *)
 external set_pixbuf_column : t -> int -> unit = "ml_gtk_icon_view_set_pixbuf_column"
+
+(** Sets the model for a `GtkIconView`.
+If the @icon_view already has a model set, it will remove
+it before setting the new model.  If @model is %NULL, then
+it will unset the old model. *)
+external set_model : t -> Tree_model.t option -> unit = "ml_gtk_icon_view_set_model"
 
 (** Sets the column with markup information for @icon_view to be
 @column. The markup column must be of type `G_TYPE_STRING`.
@@ -199,6 +205,10 @@ external get_pixbuf_column : t -> int = "ml_gtk_icon_view_get_pixbuf_column"
 
 (** Gets the path for the icon at the given position. *)
 external get_path_at_pos : t -> int -> int -> Tree_path.t option = "ml_gtk_icon_view_get_path_at_pos"
+
+(** Returns the model the `GtkIconView` is based on.  Returns %NULL if the
+model is unset. *)
+external get_model : t -> Tree_model.t option = "ml_gtk_icon_view_get_model"
 
 (** Returns the column with markup text for @icon_view. *)
 external get_markup_column : t -> int = "ml_gtk_icon_view_get_markup_column"

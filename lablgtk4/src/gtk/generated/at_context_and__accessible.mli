@@ -5,11 +5,14 @@ module rec At_context : sig
   type t = [`at_context | `object_] Gobject.obj
 
   (** Create a new ATContext *)
-  external create : Gtk_enums.accessiblerole -> unit -> unit -> t = "ml_gtk_at_context_create"
+  external create : Gtk_enums.accessiblerole -> Accessible.t -> unit -> t = "ml_gtk_at_context_create"
 
   (* Methods *)
   (** Retrieves the accessible role of this context. *)
   external get_accessible_role : t -> Gtk_enums.accessiblerole = "ml_gtk_at_context_get_accessible_role"
+
+  (** Retrieves the `GtkAccessible` using this context. *)
+  external get_accessible : t -> Accessible.t = "ml_gtk_at_context_get_accessible"
 
   (* Properties *)
 
@@ -21,6 +24,23 @@ and Accessible
   type t = [`accessible] Gobject.obj
 
   (* Methods *)
+  (** Updates the next accessible sibling of @self.
+
+  That might be useful when a new child of a custom `GtkAccessible`
+  is created, and it needs to be linked to a previous child. *)
+  external update_next_accessible_sibling : t -> t option -> unit = "ml_gtk_accessible_update_next_accessible_sibling"
+
+  (** Sets the parent and sibling of an accessible object.
+
+  This function is meant to be used by accessible implementations that are
+  not part of the widget hierarchy, and but act as a logical bridge between
+  widgets. For instance, if a widget creates an object that holds metadata
+  for each child, and you want that object to implement the `GtkAccessible`
+  interface, you will use this function to ensure that the parent of each
+  child widget is the metadata object, and the parent of each metadata
+  object is the container widget. *)
+  external set_accessible_parent : t -> t option -> t option -> unit = "ml_gtk_accessible_set_accessible_parent"
+
   (** Resets the accessible @state to its default value. *)
   external reset_state : t -> Gtk_enums.accessiblestate -> unit = "ml_gtk_accessible_reset_state"
 
@@ -39,6 +59,12 @@ and Accessible
   child widget, as is the case for `GtkText` wrappers. *)
   external get_platform_state : t -> Gtk_enums.accessibleplatformstate -> bool = "ml_gtk_accessible_get_platform_state"
 
+  (** Retrieves the next accessible sibling of an accessible object *)
+  external get_next_accessible_sibling : t -> t option = "ml_gtk_accessible_get_next_accessible_sibling"
+
+  (** Retrieves the first accessible child of an accessible object. *)
+  external get_first_accessible_child : t -> t option = "ml_gtk_accessible_get_first_accessible_child"
+
   (** Queries the coordinates and dimensions of this accessible
 
   This functionality can be overridden by `GtkAccessible`
@@ -51,6 +77,11 @@ and Accessible
 
   (** Retrieves the accessible role of an accessible object. *)
   external get_accessible_role : t -> Gtk_enums.accessiblerole = "ml_gtk_accessible_get_accessible_role"
+
+  (** Retrieves the accessible parent for an accessible object.
+
+  This function returns `NULL` for top level widgets. *)
+  external get_accessible_parent : t -> t option = "ml_gtk_accessible_get_accessible_parent"
 
   (** Requests the user's screen reader to announce the given message.
 

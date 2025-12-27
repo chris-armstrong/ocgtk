@@ -4,6 +4,7 @@ class cell_view : Cell_view.t ->
     method get_displayed_row : unit -> Tree_path.t option
     method get_draw_sensitive : unit -> bool
     method get_fit_model : unit -> bool
+    method get_model : unit -> GTree_model.tree_model option
     method set_displayed_row : Tree_path.t option -> unit
     method set_draw_sensitive : bool -> unit
     method set_fit_model : bool -> unit

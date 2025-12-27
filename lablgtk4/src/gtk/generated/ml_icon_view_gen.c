@@ -40,7 +40,7 @@ CAMLreturn(Val_GtkIconView(obj));
 CAMLexport CAMLprim value ml_gtk_icon_view_new_with_model(value arg1)
 {
 CAMLparam1(arg1);
-GtkIconView *obj = gtk_icon_view_new_with_model(arg1);
+GtkIconView *obj = gtk_icon_view_new_with_model(GtkTreeModel_val(arg1));
 CAMLreturn(Val_GtkIconView(obj));
 }
 
@@ -145,6 +145,14 @@ CAMLexport CAMLprim value ml_gtk_icon_view_set_pixbuf_column(value self, value a
 CAMLparam2(self, arg1);
 
 gtk_icon_view_set_pixbuf_column(GtkIconView_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_set_model(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_icon_view_set_model(GtkIconView_val(self), Option_val(arg1, GtkTreeModel_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -345,6 +353,14 @@ CAMLparam3(self, arg1, arg2);
 
 GtkTreePath* result = gtk_icon_view_get_path_at_pos(GtkIconView_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_option(result, Val_GtkTreePath));
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_get_model(value self)
+{
+CAMLparam1(self);
+
+GtkTreeModel* result = gtk_icon_view_get_model(GtkIconView_val(self));
+CAMLreturn(Val_option(result, Val_GtkTreeModel));
 }
 
 CAMLexport CAMLprim value ml_gtk_icon_view_get_markup_column(value self)

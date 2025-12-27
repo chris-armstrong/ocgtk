@@ -45,6 +45,15 @@ gtk_print_settings_unset(GtkPrintSettings_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_print_settings_to_file(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = gtk_print_settings_to_file(GtkPrintSettings_val(self), String_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_gtk_print_settings_set_use_color(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -275,6 +284,15 @@ CAMLparam3(self, arg1, arg2);
 
 gtk_print_settings_set(GtkPrintSettings_val(self), String_val(arg1), String_option_val(arg2));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_print_settings_load_file(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = gtk_print_settings_load_file(GtkPrintSettings_val(self), String_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_gtk_print_settings_has_key(value self, value arg1)

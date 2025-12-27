@@ -94,6 +94,14 @@ GtkWidget* result = gtk_search_bar_get_child(GtkSearchBar_val(self));
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
+CAMLexport CAMLprim value ml_gtk_search_bar_connect_entry(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_search_bar_connect_entry(GtkSearchBar_val(self), GtkEditable_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_search_bar_get_search_mode_enabled(value self)
 {
 CAMLparam1(self);

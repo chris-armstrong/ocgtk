@@ -22,6 +22,10 @@ class video (obj : Video.t) = object (self)
     fun autoplay ->
       (Video.set_autoplay obj autoplay)
 
+  method set_filename : string option -> unit =
+    fun filename ->
+      (Video.set_filename obj filename)
+
   method set_graphics_offload : Gtk_enums.graphicsoffloadenabled -> unit =
     fun enabled ->
       (Video.set_graphics_offload obj enabled)

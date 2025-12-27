@@ -26,7 +26,7 @@
 CAMLexport CAMLprim value ml_gtk_drop_target_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
-GtkDropTarget *obj = gtk_drop_target_new(arg1, arg2);
+GtkDropTarget *obj = gtk_drop_target_new(arg1, GtkDragAction_val(arg2));
 CAMLreturn(Val_GtkDropTarget(obj));
 }
 

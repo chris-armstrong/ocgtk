@@ -20,6 +20,10 @@ class column_view (obj : Column_view_and__column_view_column.Column_view.t) = ob
     fun () ->
       Option.map (fun ret -> new GList_item_factory.list_item_factory ret) (Column_view_and__column_view_column.Column_view.get_header_factory obj)
 
+  method get_model : unit -> GSelection_model.selection_model option =
+    fun () ->
+      Option.map (fun ret -> new GSelection_model.selection_model ret) (Column_view_and__column_view_column.Column_view.get_model obj)
+
   method get_reorderable : unit -> bool =
     fun () ->
       (Column_view_and__column_view_column.Column_view.get_reorderable obj)
@@ -57,6 +61,11 @@ class column_view (obj : Column_view_and__column_view_column.Column_view.t) = ob
     fun column ->
       let column = column#as_column_view_column in
       (Column_view_and__column_view_column.Column_view.remove_column obj column)
+
+  method scroll_to : 'p1. int -> (<as_column_view_column: Column_view_and__column_view_column.Column_view_column.t; ..> as 'p1) option -> Gtk_enums.listscrollflags -> Scroll_info.t option -> unit =
+    fun pos column flags scroll ->
+      let column = Option.map (fun (c) -> c#as_column_view_column) column in
+      (Column_view_and__column_view_column.Column_view.scroll_to obj pos column flags scroll)
 
   method set_enable_rubberband : bool -> unit =
     fun enable_rubberband ->

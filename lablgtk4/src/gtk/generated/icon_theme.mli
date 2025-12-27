@@ -23,6 +23,11 @@ external has_icon : t -> string -> bool = "ml_gtk_icon_theme_has_icon"
 Returns (transfer full): the current icon theme name, *)
 external get_theme_name : t -> string = "ml_gtk_icon_theme_get_theme_name"
 
+(** Appends a directory to the search path.
+
+See [method@Gtk.IconTheme.set_search_path]. *)
+external add_search_path : t -> string -> unit = "ml_gtk_icon_theme_add_search_path"
+
 (** Adds a resource path that will be looked at when looking
 for icons, similar to search paths.
 

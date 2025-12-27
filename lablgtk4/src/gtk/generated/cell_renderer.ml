@@ -40,6 +40,11 @@ external is_activatable : t -> bool = "ml_gtk_cell_renderer_is_activatable"
 (** Returns the cell renderer’s visibility. *)
 external get_visible : t -> bool = "ml_gtk_cell_renderer_get_visible"
 
+(** Translates the cell renderer state to `GtkStateFlags`,
+based on the cell renderer and widget sensitivity, and
+the given `GtkCellRenderer`State. *)
+external get_state : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> Gtk_enums.cellrendererstate -> Gtk_enums.stateflags = "ml_gtk_cell_renderer_get_state"
+
 (** Returns the cell renderer’s sensitivity. *)
 external get_sensitive : t -> bool = "ml_gtk_cell_renderer_get_sensitive"
 

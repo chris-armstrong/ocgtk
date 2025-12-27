@@ -6,6 +6,7 @@ class video : Video.t ->
     method get_loop : unit -> bool
     method get_media_stream : unit -> GMedia_stream.media_stream option
     method set_autoplay : bool -> unit
+    method set_filename : string option -> unit
     method set_graphics_offload : Gtk_enums.graphicsoffloadenabled -> unit
     method set_loop : bool -> unit
     method set_media_stream : #GMedia_stream.media_stream option -> unit

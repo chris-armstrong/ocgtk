@@ -10,6 +10,7 @@ class cell_area : Cell_area_and__cell_area_context.Cell_area.t ->
     method create_context : unit -> cell_area_context
     method focus : Gtk_enums.directiontype -> bool
     method get_current_path_string : unit -> string
+    method get_edit_widget : unit -> GCell_editable.cell_editable option
     method get_edited_cell : unit -> GCell_renderer.cell_renderer option
     method get_focus_cell : unit -> GCell_renderer.cell_renderer option
     method get_focus_from_sibling : #GCell_renderer.cell_renderer -> GCell_renderer.cell_renderer option

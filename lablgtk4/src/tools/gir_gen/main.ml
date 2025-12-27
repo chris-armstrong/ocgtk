@@ -843,6 +843,23 @@ let generate_bindings filter_file gir_file output_dir =
       (* NOTE: "editable", "widget", "window" removed - they are generated as part of recursive modules *)
     ]
   in
+
+  (* ==== LIBRARY TOP-LEVEL MODULE ==== *)
+  printf "Generating library top-level module...\n";
+  let lib_name = String.capitalize_ascii namespace.namespace_name in
+  let lib_ml_file =
+    Filename.concat (generated_output_dir output_dir) (lib_name ^ ".ml")
+  in
+  let lib_mli_file =
+    Filename.concat (generated_output_dir output_dir) (lib_name ^ ".mli")
+  in
+  let lib_ml_content, lib_mli_content =
+    Gir_gen_lib.Generate.Library_module.generate_library_module ~ctx
+  in
+  write_file ~path:lib_ml_file ~content:lib_ml_content;
+  write_file ~path:lib_mli_file ~content:lib_mli_content;
+  generated_modules := lib_name :: !generated_modules;
+
   let module_list =
     base_modules @ !generated_modules
     |> List.map ~f:String.capitalize_ascii
@@ -899,6 +916,7 @@ let generate_bindings filter_file gir_file output_dir =
   end;
   printf "  Generated: dune-generated.inc with %d C stub names\n"
     (List.length stub_list);
+  printf "  Generated: %s.ml/.mli (library top-level module)\n" lib_name;
   `Ok ()
 
 (* Cmdliner argument definitions *)

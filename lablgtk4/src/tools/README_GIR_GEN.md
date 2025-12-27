@@ -13,12 +13,23 @@ The executable is built to `_build/default/src/tools/gir_gen/main.exe`
 
 ## Running
 
-**Always run from the `lablgtk4` directory using `dune exec`:**
+### From the `lablgtk4` directory
+
+**Recommended approach - run from the `lablgtk4` directory:**
 
 ```bash
-# Generate event controllers and widgets (recommended)
-dune exec src/tools/gir_gen/main.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src
+# Generate GTK bindings to src/gtk/generated/
+dune exec src/tools/gir_gen/main.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+```
 
+### From the repository root directory
+
+If running from `/workspaces/lablgtk` (parent of `lablgtk4`):
+
+```bash
+cd lablgtk4
+dune exec src/tools/gir_gen/main.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+```
 
 ### Options
 
@@ -49,17 +60,20 @@ gcc -c output/test/ml_event_controllers_gen.c \
 
 ### Full Rebuild
 ```bash
-# Regenerate all src bindings and rebuild library
-dune exec src/tools/gir_gen/main.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src
+# Regenerate all GTK bindings and rebuild library (run from lablgtk4 directory)
+dune exec src/tools/gir_gen/main.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
 dune build
-dune build src/lablgtk4.cma
 ```
 
 ## Output Files
 
-- `ml_event_controllers_gen.c`: C FFI bindings for all classes
-- `<class_name>.mli`: OCaml interface for each class (snake_case)
-- `gtk_enums.mli`: Generated enum and bitfield types
+Generated files are written to `src/gtk/generated/`:
+
+- **C FFI stubs**: `ml_*_gen.c` - C bindings for classes, interfaces, enums
+- **Layer 1 (low-level)**: `<class_name>.ml/.mli` - External declarations (snake_case)
+- **Layer 2 (high-level)**: `g<Class>.ml/.mli` - OCaml wrapper classes (PascalCase)
+- **Enums**: `gtk_enums.ml/.mli`, `gdk_enums.ml/.mli`, etc. - Enumeration types
+- **Library module**: `Gtk.ml/.mli` - Top-level module with all exports
 
 ## Common Issues
 
@@ -89,7 +103,7 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 ### Layer 2: Low-Level OCaml Interfaces (`<class_name>.ml/.mli`)
 - Polymorphic variant type definitions: `type t = [`widget | ...] Gobject.obj` (see `generate/ml_interface.ml`)
 - External function declarations for constructors, methods, and properties
-- Hierarchy accessor methods (`as_widget`, `as_event_controller`, etc.) for 5 predefined hierarchies (see `hierarchy_detection.ml`)
+- Hierarchy accessor methods (`as_widget`, `as_event_controller`, etc.) 
 - Combined modules for cyclic dependencies using Tarjan's SCC algorithm (see `dependency_analysis.ml`)
 - **Smart type resolution for cyclic modules** - automatically uses simple names within a cycle (`Window.t`) and fully-qualified names for external references (`Application_and__window_and__window_group.Window.t`)
 - Over 600 generated binding files
@@ -150,7 +164,6 @@ The tool produces a **four-layer binding system** from GIR introspection data:
   - Applies to classes, interfaces, and records
 
 **Limitations:**
-- Static mapping list, requires manual addition for new types
 - No variadic argument support (filtered in `exclude_list.ml`)
 - Limited callback type support
 - No union type handling
@@ -203,18 +216,8 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 
 ### Hierarchy Support (hierarchy_detection.ml - 108 lines)
 **Working:**
-- 5 predefined hierarchies with hardcoded roots:
-  1. Widget hierarchy
-  2. EventController hierarchy
-  3. CellRenderer hierarchy
-  4. LayoutManager hierarchy
-  5. Expression hierarchy
 - Parent chain traversal with depth limit (100 iterations)
 - Accessor method generation (`as_widget`, etc.)
-
-**Limitations:**
-- Hierarchies are hardcoded, not dynamically discovered from GIR
-- Only 5 hierarchies supported; other inheritance trees not classified
 
 ### Filtering and Exclusions (filtering.ml - 150+ lines, exclude_list.ml - 85 lines)
 **Working:**

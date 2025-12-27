@@ -40,7 +40,7 @@ CAMLreturn(Val_GtkPicture(obj));
 CAMLexport CAMLprim value ml_gtk_picture_new_for_filename(value arg1)
 {
 CAMLparam1(arg1);
-GtkPicture *obj = gtk_picture_new_for_filename(arg1);
+GtkPicture *obj = gtk_picture_new_for_filename(String_option_val(arg1));
 CAMLreturn(Val_GtkPicture(obj));
 }
 
@@ -78,6 +78,14 @@ CAMLexport CAMLprim value ml_gtk_picture_set_keep_aspect_ratio(value self, value
 CAMLparam2(self, arg1);
 
 gtk_picture_set_keep_aspect_ratio(GtkPicture_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_picture_set_filename(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_picture_set_filename(GtkPicture_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 

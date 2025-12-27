@@ -173,7 +173,8 @@ let generate_ml_interface_internal
 
   (* Constructors - generate unique names and proper signatures, skip those that throw *)
   List.iter ~f:(fun (ctor : gir_constructor) ->
-    if not ctor.throws then begin
+    let has_cross_namespace_type = Filtering.constructor_has_cross_namespace_types ~ctx ctor in
+    if not ctor.throws && not has_cross_namespace_type then begin
       bprintf buf "(** Create a new %s *)\n" class_name;
       let c_name = ctor.c_identifier in
       let ml_name =
@@ -237,14 +238,16 @@ let generate_ml_interface_internal
 
     (* Skip if: variadic function, duplicates property, or unmapped return type *)
     let has_excluded_type =
-      Exclude_list.is_excluded_type_name meth.return_type.name 
+      Exclude_list.is_excluded_type_name meth.return_type.name
     in
+    let has_cross_namespace_type = Filtering.method_has_cross_namespace_types ~ctx meth in
     let should_skip_mli =
       Exclude_list.is_variadic_function c_name ||
-      
+
       has_excluded_type ||
       Exclude_list.should_skip_method ~find_type_mapping:(Type_mappings.find_type_mapping_for_gir_type ~ctx) ~enums:ctx.enums ~bitfields:ctx.bitfields meth ||
-      (is_record && is_copy_or_free meth)
+      (is_record && is_copy_or_free meth) ||
+      has_cross_namespace_type
     in
     if not should_skip_mli then begin
       (match meth.doc with

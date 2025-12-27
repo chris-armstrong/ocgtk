@@ -17,6 +17,10 @@ class text (obj : Text.t) = object (self)
     fun () ->
       (Text.get_enable_emoji_completion obj)
 
+  method get_input_hints : unit -> Gtk_enums.inputhints =
+    fun () ->
+      (Text.get_input_hints obj)
+
   method get_input_purpose : unit -> Gtk_enums.inputpurpose =
     fun () ->
       (Text.get_input_purpose obj)
@@ -61,6 +65,10 @@ class text (obj : Text.t) = object (self)
   method set_enable_emoji_completion : bool -> unit =
     fun enable_emoji_completion ->
       (Text.set_enable_emoji_completion obj enable_emoji_completion)
+
+  method set_input_hints : Gtk_enums.inputhints -> unit =
+    fun hints ->
+      (Text.set_input_hints obj hints)
 
   method set_input_purpose : Gtk_enums.inputpurpose -> unit =
     fun purpose ->

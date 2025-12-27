@@ -207,6 +207,12 @@ external clear_attributes : t -> Cell_renderer.t -> unit = "ml_gtk_tree_view_col
 (** Unsets all the mappings on all renderers on the @tree_column. *)
 external clear : t -> unit = "ml_gtk_tree_view_column_clear"
 
+(** Sets the cell renderer based on the @tree_model and @iter.  That is, for
+every attribute mapping in @tree_column, it will get a value from the set
+column on the @iter, and use that value to set the attribute on the cell
+renderer.  This is used primarily by the `GtkTreeView`. *)
+external cell_set_cell_data : t -> Tree_model.t -> Tree_iter.t -> bool -> bool -> unit = "ml_gtk_tree_view_column_cell_set_cell_data"
+
 (** Returns %TRUE if any of the cells packed into the @tree_column are visible.
 For this to be meaningful, you must first initialize the cells with
 gtk_tree_view_column_cell_set_cell_data() *)

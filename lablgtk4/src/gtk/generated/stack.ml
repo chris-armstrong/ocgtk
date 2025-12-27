@@ -103,6 +103,13 @@ external get_transition_running : t -> bool = "ml_gtk_stack_get_transition_runni
 transitions between pages in @stack will take. *)
 external get_transition_duration : t -> int = "ml_gtk_stack_get_transition_duration"
 
+(** Returns a `GListModel` that contains the pages of the stack.
+
+This can be used to keep an up-to-date view. The model also
+implements [iface@Gtk.SelectionModel] and can be used to track
+and modify the visible page. *)
+external get_pages : t -> Selection_model.t = "ml_gtk_stack_get_pages"
+
 (** Returns the `GtkStackPage` object for @child. *)
 external get_page : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Stack_page.t = "ml_gtk_stack_get_page"
 

@@ -150,6 +150,14 @@ guint result = gtk_stack_get_transition_duration(GtkStack_val(self));
 CAMLreturn(Val_int(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_stack_get_pages(value self)
+{
+CAMLparam1(self);
+
+GtkSelectionModel* result = gtk_stack_get_pages(GtkStack_val(self));
+CAMLreturn(Val_GtkSelectionModel(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_stack_get_page(value self, value arg1)
 {
 CAMLparam2(self, arg1);

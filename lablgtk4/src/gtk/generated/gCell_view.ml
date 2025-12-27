@@ -14,6 +14,10 @@ class cell_view (obj : Cell_view.t) = object (self)
     fun () ->
       (Cell_view.get_fit_model obj)
 
+  method get_model : unit -> GTree_model.tree_model option =
+    fun () ->
+      Option.map (fun ret -> new GTree_model.tree_model ret) (Cell_view.get_model obj)
+
   method set_displayed_row : Tree_path.t option -> unit =
     fun path ->
       (Cell_view.set_displayed_row obj path)

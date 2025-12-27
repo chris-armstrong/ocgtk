@@ -33,7 +33,7 @@ CAMLreturn(Val_GtkImage(obj));
 CAMLexport CAMLprim value ml_gtk_image_new_from_file(value arg1)
 {
 CAMLparam1(arg1);
-GtkImage *obj = gtk_image_new_from_file(arg1);
+GtkImage *obj = gtk_image_new_from_file(String_val(arg1));
 CAMLreturn(Val_GtkImage(obj));
 }
 
@@ -101,6 +101,14 @@ CAMLexport CAMLprim value ml_gtk_image_set_from_icon_name(value self, value arg1
 CAMLparam2(self, arg1);
 
 gtk_image_set_from_icon_name(GtkImage_val(self), String_option_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_image_set_from_file(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_image_set_from_file(GtkImage_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 

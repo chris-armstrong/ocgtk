@@ -67,6 +67,10 @@ external set_max_length : t -> int -> unit = "ml_gtk_entry_set_max_length"
 to adjust their behavior. *)
 external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit = "ml_gtk_entry_set_input_purpose"
 
+(** Set additional hints which allow input methods to
+fine-tune their behavior. *)
+external set_input_hints : t -> Gtk_enums.inputhints -> unit = "ml_gtk_entry_set_input_hints"
+
 (** Sets @tooltip as the contents of the tooltip for the icon
 at the specified position.
 
@@ -195,6 +199,9 @@ external get_max_length : t -> int = "ml_gtk_entry_get_max_length"
 
 (** Gets the input purpose of the `GtkEntry`. *)
 external get_input_purpose : t -> Gtk_enums.inputpurpose = "ml_gtk_entry_get_input_purpose"
+
+(** Gets the input hints of this `GtkEntry`. *)
+external get_input_hints : t -> Gtk_enums.inputhints = "ml_gtk_entry_get_input_hints"
 
 (** Gets the contents of the tooltip on the icon at the specified
 position in @entry. *)

@@ -23,6 +23,22 @@
 #endif /* Val_GtkAccessible */
 
 
+CAMLexport CAMLprim value ml_gtk_accessible_update_next_accessible_sibling(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_accessible_update_next_accessible_sibling(GtkAccessible_val(self), Option_val(arg1, GtkAccessible_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_accessible_set_accessible_parent(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_accessible_set_accessible_parent(GtkAccessible_val(self), Option_val(arg1, GtkAccessible_val, NULL), Option_val(arg2, GtkAccessible_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_accessible_reset_state(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -53,6 +69,22 @@ CAMLparam2(self, arg1);
 
 gboolean result = gtk_accessible_get_platform_state(GtkAccessible_val(self), GtkAccessiblePlatformState_val(arg1));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_accessible_get_next_accessible_sibling(value self)
+{
+CAMLparam1(self);
+
+GtkAccessible* result = gtk_accessible_get_next_accessible_sibling(GtkAccessible_val(self));
+CAMLreturn(Val_option(result, Val_GtkAccessible));
+}
+
+CAMLexport CAMLprim value ml_gtk_accessible_get_first_accessible_child(value self)
+{
+CAMLparam1(self);
+
+GtkAccessible* result = gtk_accessible_get_first_accessible_child(GtkAccessible_val(self));
+CAMLreturn(Val_option(result, Val_GtkAccessible));
 }
 
 CAMLexport CAMLprim value ml_gtk_accessible_get_bounds(value self)
@@ -88,6 +120,14 @@ CAMLparam1(self);
 
 GtkAccessibleRole result = gtk_accessible_get_accessible_role(GtkAccessible_val(self));
 CAMLreturn(Val_GtkAccessibleRole(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_accessible_get_accessible_parent(value self)
+{
+CAMLparam1(self);
+
+GtkAccessible* result = gtk_accessible_get_accessible_parent(GtkAccessible_val(self));
+CAMLreturn(Val_option(result, Val_GtkAccessible));
 }
 
 CAMLexport CAMLprim value ml_gtk_accessible_announce(value self, value arg1, value arg2)

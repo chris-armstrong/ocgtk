@@ -39,6 +39,14 @@ gtk_font_chooser_set_preview_text(GtkFontChooser_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_font_chooser_set_level(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_font_chooser_set_level(GtkFontChooser_val(self), GtkFontChooserLevel_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_font_chooser_set_language(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -69,6 +77,14 @@ CAMLparam1(self);
 
 char* result = gtk_font_chooser_get_preview_text(GtkFontChooser_val(self));
 CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_font_chooser_get_level(value self)
+{
+CAMLparam1(self);
+
+GtkFontChooserLevel result = gtk_font_chooser_get_level(GtkFontChooser_val(self));
+CAMLreturn(Val_GtkFontChooserLevel(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_font_chooser_get_language(value self)

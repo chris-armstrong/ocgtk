@@ -4,6 +4,7 @@ class application : Application_and__window_and__window_group.Application.t ->
     method add_window : <as_window: Application_and__window_and__window_group.Window.t; ..> -> unit
     method get_active_window : unit -> window option
     method get_window_by_id : int -> window option
+    method inhibit : <as_window: Application_and__window_and__window_group.Window.t; ..> option -> Gtk_enums.applicationinhibitflags -> string option -> int
     method remove_window : <as_window: Application_and__window_and__window_group.Window.t; ..> -> unit
     method uninhibit : int -> unit
     method register_session : bool

@@ -6,14 +6,17 @@ type t = [`print_settings | `object_] Gobject.obj
 (** Create a new PrintSettings *)
 external new_ : unit -> t = "ml_gtk_print_settings_new"
 
-(** Create a new PrintSettings *)
-external new_from_gvariant : unit -> t = "ml_gtk_print_settings_new_from_gvariant"
-
 (* Methods *)
 (** Removes any value associated with @key.
 
 This has the same effect as setting the value to %NULL. *)
 external unset : t -> string -> unit = "ml_gtk_print_settings_unset"
+
+(** This function saves the print settings from @settings to @file_name.
+
+If the file could not be written then error is set to either a
+`GFileError` or `GKeyFileError`. *)
+external to_file : t -> string -> (bool, GError.t) result = "ml_gtk_print_settings_to_file"
 
 (** Sets the value of %GTK_PRINT_SETTINGS_USE_COLOR. *)
 external set_use_color : t -> bool -> unit = "ml_gtk_print_settings_set_use_color"
@@ -110,6 +113,14 @@ external set_bool : t -> string -> bool -> unit = "ml_gtk_print_settings_set_boo
 
 (** Associates @value with @key. *)
 external set : t -> string -> string option -> unit = "ml_gtk_print_settings_set"
+
+(** Reads the print settings from @file_name.
+
+If the file could not be loaded then error is set to either
+a `GFileError` or `GKeyFileError`.
+
+See [method@Gtk.PrintSettings.to_file]. *)
+external load_file : t -> string -> (bool, GError.t) result = "ml_gtk_print_settings_load_file"
 
 (** Returns %TRUE, if a value is associated with @key. *)
 external has_key : t -> string -> bool = "ml_gtk_print_settings_has_key"

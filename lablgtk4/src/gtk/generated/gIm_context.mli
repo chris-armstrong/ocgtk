@@ -9,6 +9,8 @@ class im_context : Im_context.t ->
     method set_surrounding : string -> int -> int -> unit
     method set_surrounding_with_selection : string -> int -> int -> int -> unit
     method set_use_preedit : bool -> unit
+    method input_hints : Gtk_enums.inputhints
+    method set_input_hints : Gtk_enums.inputhints -> unit
     method input_purpose : Gtk_enums.inputpurpose
     method set_input_purpose : Gtk_enums.inputpurpose -> unit
     method as_im_context : Im_context.t

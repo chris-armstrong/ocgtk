@@ -134,6 +134,13 @@ and Widget
   type t = [`widget] Gobject.obj
 
   (* Methods *)
+  (** Turns off flag values for the current widget state.
+
+  See [method@Gtk.Widget.set_state_flags].
+
+  This function is for use in widget implementations. *)
+  external unset_state_flags : t -> Gtk_enums.stateflags -> unit = "ml_gtk_widget_unset_state_flags"
+
   (** Causes a widget to be unrealized (frees all GDK resources
   associated with the widget).
 
@@ -238,6 +245,17 @@ and Widget
 
   See also [method@Gtk.Tooltip.set_markup]. *)
   external set_tooltip_markup : t -> string option -> unit = "ml_gtk_widget_set_tooltip_markup"
+
+  (** Turns on flag values in the current widget state.
+
+  Typical widget states are insensitive, prelighted, etc.
+
+  This function accepts the values %GTK_STATE_FLAG_DIR_LTR and
+  %GTK_STATE_FLAG_DIR_RTL but ignores them. If you want to set
+  the widget's direction, use [method@Gtk.Widget.set_direction].
+
+  This function is for use in widget implementations. *)
+  external set_state_flags : t -> Gtk_enums.stateflags -> bool -> unit = "ml_gtk_widget_set_state_flags"
 
   (** Sets the minimum size of a widget.
 
@@ -586,6 +604,22 @@ and Widget
   This function is only for use in widget implementations. *)
   external queue_allocate : t -> unit = "ml_gtk_widget_queue_allocate"
 
+  (** Finds the descendant of @widget closest to the point (@x, @y).
+
+  The point must be given in widget coordinates, so (0, 0) is assumed
+  to be the top left of @widget's content area.
+
+  Usually widgets will return %NULL if the given coordinate is not
+  contained in @widget checked via [method@Gtk.Widget.contains].
+  Otherwise they will recursively try to find a child that does
+  not return %NULL. Widgets are however free to customize their
+  picking algorithm.
+
+  This function is used on the toplevel to determine the widget
+  below the mouse cursor for purposes of hover highlighting and
+  delivering events. *)
+  external pick : t -> float -> float -> Gtk_enums.pickflags -> t option = "ml_gtk_widget_pick"
+
   (** Emits the ::mnemonic-activate signal.
 
   See [signal@Gtk.Widget::mnemonic-activate]. *)
@@ -827,6 +861,17 @@ and Widget
   for the lifetime of @widget. *)
   external get_style_context : t -> Style_context.t = "ml_gtk_widget_get_style_context"
 
+  (** Returns the widget state as a flag set.
+
+  It is worth mentioning that the effective %GTK_STATE_FLAG_INSENSITIVE
+  state will be returned, that is, also based on parent insensitivity,
+  even if @widget itself is sensitive.
+
+  Also note that if you are looking for a way to obtain the
+  [flags@Gtk.StateFlags] to pass to a [class@Gtk.StyleContext]
+  method, you should look at [method@Gtk.StyleContext.get_state]. *)
+  external get_state_flags : t -> Gtk_enums.stateflags = "ml_gtk_widget_get_state_flags"
+
   (** Gets the size request that was explicitly set for the widget using
   gtk_widget_set_size_request().
 
@@ -878,6 +923,14 @@ and Widget
 
   See [method@Gdk.Surface.get_scale_factor]. *)
   external get_scale_factor : t -> int = "ml_gtk_widget_get_scale_factor"
+
+  (** Returns the `GtkRoot` widget of @widget.
+
+  This function will return %NULL if the widget is not contained
+  inside a widget tree with a root widget.
+
+  `GtkRoot` widgets will return themselves here. *)
+  external get_root : t -> Root.t option = "ml_gtk_widget_get_root"
 
   (** Gets whether the widget prefers a height-for-width layout
   or a width-for-height layout.
@@ -934,6 +987,14 @@ and Widget
 
   This API is primarily meant for widget implementations. *)
   external get_next_sibling : t -> t option = "ml_gtk_widget_get_next_sibling"
+
+  (** Returns the nearest `GtkNative` ancestor of @widget.
+
+  This function will return %NULL if the widget is not
+  contained inside a widget tree with a native ancestor.
+
+  `GtkNative` widgets will return themselves here. *)
+  external get_native : t -> Native.t option = "ml_gtk_widget_get_native"
 
   (** Retrieves the name of a widget.
 

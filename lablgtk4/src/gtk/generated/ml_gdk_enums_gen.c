@@ -6,6 +6,7 @@
 #include <caml/alloc.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <glib.h>
 #include <gdk/gdk.h>
 /* Convert GdkAxisUse to OCaml value */
 value Val_GdkAxisUse(GdkAxisUse val) {

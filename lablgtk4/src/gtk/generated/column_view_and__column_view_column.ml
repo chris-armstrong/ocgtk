@@ -7,7 +7,7 @@ module rec Column_view : sig
   val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
   (** Create a new ColumnView *)
-  external new_ : unit -> t = "ml_gtk_column_view_new"
+  external new_ : Selection_model.t option -> t = "ml_gtk_column_view_new"
 
   (* Methods *)
   (** Sets the sorting of the view.
@@ -51,6 +51,11 @@ module rec Column_view : sig
   (** Sets whether columns should be reorderable by dragging. *)
   external set_reorderable : t -> bool -> unit = "ml_gtk_column_view_set_reorderable"
 
+  (** Sets the model to use.
+
+  This must be a [iface@Gtk.SelectionModel]. *)
+  external set_model : t -> Selection_model.t option -> unit = "ml_gtk_column_view_set_model"
+
   (** Sets the `GtkListItemFactory` to use for populating the
   [class@Gtk.ListHeader] objects used in section headers.
 
@@ -60,6 +65,13 @@ module rec Column_view : sig
 
   (** Sets whether selections can be changed by dragging with the mouse. *)
   external set_enable_rubberband : t -> bool -> unit = "ml_gtk_column_view_set_enable_rubberband"
+
+  (** Scroll to the row at the given position - or cell if a column is
+  given - and performs the actions specified in @flags.
+
+  This function works no matter if the listview is shown or focused.
+  If it isn't, then the changes will take effect once that happens. *)
+  external scroll_to : t -> int -> Column_view_column.t option -> Gtk_enums.listscrollflags -> Scroll_info.t option -> unit = "ml_gtk_column_view_scroll_to"
 
   (** Removes the @column from the list of columns of @self. *)
   external remove_column : t -> Column_view_column.t -> unit = "ml_gtk_column_view_remove_column"
@@ -110,6 +122,9 @@ module rec Column_view : sig
 
   (** Returns whether columns are reorderable. *)
   external get_reorderable : t -> bool = "ml_gtk_column_view_get_reorderable"
+
+  (** Gets the model that's currently used to read the items displayed. *)
+  external get_model : t -> Selection_model.t option = "ml_gtk_column_view_get_model"
 
   (** Gets the factory that's currently used to populate section headers. *)
   external get_header_factory : t -> List_item_factory.t option = "ml_gtk_column_view_get_header_factory"
@@ -129,7 +144,7 @@ end = struct
   let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
   (** Create a new ColumnView *)
-  external new_ : unit -> t = "ml_gtk_column_view_new"
+  external new_ : Selection_model.t option -> t = "ml_gtk_column_view_new"
 
   (* Methods *)
   (** Sets the sorting of the view.
@@ -173,6 +188,11 @@ end = struct
   (** Sets whether columns should be reorderable by dragging. *)
   external set_reorderable : t -> bool -> unit = "ml_gtk_column_view_set_reorderable"
 
+  (** Sets the model to use.
+
+  This must be a [iface@Gtk.SelectionModel]. *)
+  external set_model : t -> Selection_model.t option -> unit = "ml_gtk_column_view_set_model"
+
   (** Sets the `GtkListItemFactory` to use for populating the
   [class@Gtk.ListHeader] objects used in section headers.
 
@@ -182,6 +202,13 @@ end = struct
 
   (** Sets whether selections can be changed by dragging with the mouse. *)
   external set_enable_rubberband : t -> bool -> unit = "ml_gtk_column_view_set_enable_rubberband"
+
+  (** Scroll to the row at the given position - or cell if a column is
+  given - and performs the actions specified in @flags.
+
+  This function works no matter if the listview is shown or focused.
+  If it isn't, then the changes will take effect once that happens. *)
+  external scroll_to : t -> int -> Column_view_column.t option -> Gtk_enums.listscrollflags -> Scroll_info.t option -> unit = "ml_gtk_column_view_scroll_to"
 
   (** Removes the @column from the list of columns of @self. *)
   external remove_column : t -> Column_view_column.t -> unit = "ml_gtk_column_view_remove_column"
@@ -232,6 +259,9 @@ end = struct
 
   (** Returns whether columns are reorderable. *)
   external get_reorderable : t -> bool = "ml_gtk_column_view_get_reorderable"
+
+  (** Gets the model that's currently used to read the items displayed. *)
+  external get_model : t -> Selection_model.t option = "ml_gtk_column_view_get_model"
 
   (** Gets the factory that's currently used to populate section headers. *)
   external get_header_factory : t -> List_item_factory.t option = "ml_gtk_column_view_get_header_factory"

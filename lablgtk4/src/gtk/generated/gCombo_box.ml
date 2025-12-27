@@ -33,6 +33,10 @@ class combo_box (obj : Combo_box.t) = object (self)
     fun () ->
       (Combo_box.get_id_column obj)
 
+  method get_model : unit -> GTree_model.tree_model option =
+    fun () ->
+      Option.map (fun ret -> new GTree_model.tree_model ret) (Combo_box.get_model obj)
+
   method get_popup_fixed_width : unit -> bool =
     fun () ->
       (Combo_box.get_popup_fixed_width obj)

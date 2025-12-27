@@ -12,6 +12,7 @@ class icon_view : Icon_view.t ->
     method get_item_width : unit -> int
     method get_margin : unit -> int
     method get_markup_column : unit -> int
+    method get_model : unit -> GTree_model.tree_model option
     method get_path_at_pos : int -> int -> Tree_path.t option
     method get_pixbuf_column : unit -> int
     method get_reorderable : unit -> bool

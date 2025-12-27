@@ -54,6 +54,14 @@ char* result = gtk_icon_theme_get_theme_name(GtkIconTheme_val(self));
 CAMLreturn(caml_copy_string(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_icon_theme_add_search_path(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_icon_theme_add_search_path(GtkIconTheme_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_icon_theme_add_resource_path(value self, value arg1)
 {
 CAMLparam2(self, arg1);

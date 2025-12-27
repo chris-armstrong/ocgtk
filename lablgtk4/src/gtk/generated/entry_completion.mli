@@ -37,6 +37,13 @@ external set_popup_set_width : t -> bool -> unit = "ml_gtk_entry_completion_set_
 (** Sets whether the completions should be presented in a popup window. *)
 external set_popup_completion : t -> bool -> unit = "ml_gtk_entry_completion_set_popup_completion"
 
+(** Sets the model for a `GtkEntryCompletion`.
+
+If @completion already has a model set, it will remove it
+before setting the new model. If model is %NULL, then it
+will unset the model. *)
+external set_model : t -> Tree_model.t option -> unit = "ml_gtk_entry_completion_set_model"
+
 (** Requires the length of the search key for @completion to be at least
 @length.
 
@@ -69,6 +76,11 @@ external get_popup_set_width : t -> bool = "ml_gtk_entry_completion_get_popup_se
 
 (** Returns whether the completions should be presented in a popup window. *)
 external get_popup_completion : t -> bool = "ml_gtk_entry_completion_get_popup_completion"
+
+(** Returns the model the `GtkEntryCompletion` is using as data source.
+
+Returns %NULL if the model is unset. *)
+external get_model : t -> Tree_model.t option = "ml_gtk_entry_completion_get_model"
 
 (** Returns the minimum key length as set for @completion. *)
 external get_minimum_key_length : t -> int = "ml_gtk_entry_completion_get_minimum_key_length"

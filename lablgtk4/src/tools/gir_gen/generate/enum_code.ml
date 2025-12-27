@@ -13,7 +13,7 @@ let generate_ocaml_enum enum =
   | Some doc -> bprintf buf "(** %s *)\n" doc
   | None -> ());
 
-  bprintf buf "type %s = [\n" (String.lowercase_ascii enum.enum_name);
+  bprintf buf "type %s = [\n" (Utils.ocaml_enum_name enum);
 
   List.iteri ~f:(fun i member ->
     let variant_name = String.uppercase_ascii member.member_name in
@@ -46,7 +46,7 @@ let generate_ocaml_bitfield bitfield =
   | Some doc -> bprintf buf "(** %s *)\n" doc
   | None -> ());
 
-  bprintf buf "type %s_flag = [\n" (String.lowercase_ascii bitfield.bitfield_name);
+  bprintf buf "type %s_flag = [\n" (Utils.ocaml_bitfield_name bitfield);
 
   List.iteri ~f:(fun i flag ->
     let variant_name = String.uppercase_ascii flag.flag_name in
@@ -68,8 +68,8 @@ let generate_ocaml_bitfield bitfield =
   ) bitfield.flags;
 
   bprintf buf "type %s = %s_flag list\n\n"
-    (String.lowercase_ascii bitfield.bitfield_name)
-    (String.lowercase_ascii bitfield.bitfield_name);
+    (Utils.ocaml_bitfield_name bitfield)
+    (Utils.ocaml_bitfield_name bitfield);
 
   Buffer.contents buf
 

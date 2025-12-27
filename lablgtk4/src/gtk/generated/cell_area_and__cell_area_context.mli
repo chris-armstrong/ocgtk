@@ -118,6 +118,10 @@ module rec Cell_area : sig
   being edited. *)
   external get_edited_cell : t -> Cell_renderer.t option = "ml_gtk_cell_area_get_edited_cell"
 
+  (** Gets the `GtkCellEditable` widget currently used
+  to edit the currently edited cell. *)
+  external get_edit_widget : t -> Cell_editable.t option = "ml_gtk_cell_area_get_edit_widget"
+
   (** Gets the current `GtkTreePath` string for the currently
   applied `GtkTreeIter`, this is implicitly updated when
   gtk_cell_area_apply_attributes() is called and can be
@@ -167,6 +171,10 @@ module rec Cell_area : sig
   (** Connects an @attribute to apply values from @column for the
   `GtkTreeModel` in use. *)
   external attribute_connect : t -> Cell_renderer.t -> string -> int -> unit = "ml_gtk_cell_area_attribute_connect"
+
+  (** Applies any connected attributes to the renderers in
+  @area by pulling the values from @tree_model. *)
+  external apply_attributes : t -> Tree_model.t -> Tree_iter.t -> bool -> bool -> unit = "ml_gtk_cell_area_apply_attributes"
 
   (** Adds @sibling to @renderer’s focusable area, focus will be drawn
   around @renderer and all of its siblings if @renderer can
