@@ -67,6 +67,7 @@ type gir_record = {
   opaque : bool;
   disguised : bool;
   c_symbol_prefix : string option;
+  is_gtype_struct_for : string option;  (* glib:is-gtype-struct-for attribute - class structs to skip *)
   fields : gir_record_field list;
   constructors : gir_constructor list;
   methods : gir_method list;

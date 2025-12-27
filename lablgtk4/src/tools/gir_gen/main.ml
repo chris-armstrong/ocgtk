@@ -604,7 +604,11 @@ let generate_bindings filter_file gir_file output_dir =
 
   let enums = all_enums in
   let bitfields = all_bitfields in
-  let records = gtk_records in
+  (* Filter out GObject class structs (records with is_gtype_struct_for attribute) *)
+  let records =
+    List.filter gtk_records ~f:(fun record ->
+        record.Gir_gen_lib.Types.is_gtype_struct_for = None)
+  in
 
   (* Prepare external namespace enum/bitfield list with namespace prefixes *)
   let external_enums_with_ns =
