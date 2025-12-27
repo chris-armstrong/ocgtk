@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkBox */
-#ifndef Val_GtkBox
-#define GtkBox_val(val) ((GtkBox*)ext_of_val(val))
-#define Val_GtkBox(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkBox */
-
 
 CAMLexport CAMLprim value ml_gtk_box_new(value arg1, value arg2)
 {

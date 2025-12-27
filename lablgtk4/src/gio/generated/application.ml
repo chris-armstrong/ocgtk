@@ -4,7 +4,7 @@
 type t = [`application | `object_] Gobject.obj
 
 (** Create a new Application *)
-external new_ : string option -> unit -> t = "ml_g_application_new"
+external new_ : string option -> Gio_enums.applicationflags -> t = "ml_g_application_new"
 
 (* Methods *)
 (** Withdraws a notification that was sent with
@@ -101,6 +101,14 @@ used for next time g_application_release() drops the use count to
 zero.  Any timeouts currently in progress are not impacted. *)
 external set_inactivity_timeout : t -> int -> unit = "ml_g_application_set_inactivity_timeout"
 
+(** Sets the flags for @application.
+
+The flags can only be modified if @application has not yet been
+registered.
+
+See #GApplicationFlags. *)
+external set_flags : t -> Gio_enums.applicationflags -> unit = "ml_g_application_set_flags"
+
 (** Sets or unsets the default application for the process, as returned
 by g_application_get_default().
 
@@ -117,6 +125,10 @@ been registered.
 If non-%NULL, the application id must be valid.  See
 g_application_id_is_valid(). *)
 external set_application_id : t -> string option -> unit = "ml_g_application_set_application_id"
+
+(** This used to be how actions were associated with a #GApplication.
+Now there is #GActionMap for that. *)
+external set_action_group : t -> Action_group.t option -> unit = "ml_g_application_set_action_group"
 
 (** Sends a notification on behalf of @application to the desktop shell.
 There is no guarantee that the notification is displayed immediately,
@@ -262,6 +274,11 @@ external get_is_busy : t -> bool = "ml_g_application_get_is_busy"
 This is the amount of time (in milliseconds) after the last call to
 g_application_release() before the application stops running. *)
 external get_inactivity_timeout : t -> int = "ml_g_application_get_inactivity_timeout"
+
+(** Gets the flags for @application.
+
+See #GApplicationFlags. *)
+external get_flags : t -> Gio_enums.applicationflags = "ml_g_application_get_flags"
 
 (** Gets the D-Bus object path being used by the application, or %NULL.
 

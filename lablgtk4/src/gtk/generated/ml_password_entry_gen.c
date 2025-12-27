@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkPasswordEntry */
-#ifndef Val_GtkPasswordEntry
-#define GtkPasswordEntry_val(val) ((GtkPasswordEntry*)ext_of_val(val))
-#define Val_GtkPasswordEntry(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkPasswordEntry */
-
 
 CAMLexport CAMLprim value ml_gtk_password_entry_new(value unit)
 {

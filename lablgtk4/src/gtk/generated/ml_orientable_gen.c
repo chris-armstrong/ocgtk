@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkOrientable */
-#ifndef Val_GtkOrientable
-#define GtkOrientable_val(val) ((GtkOrientable*)ext_of_val(val))
-#define Val_GtkOrientable(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkOrientable */
-
 
 CAMLexport CAMLprim value ml_gtk_orientable_set_orientation(value self, value arg1)
 {

@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDBusServer */
-#ifndef Val_GDBusServer
-#define GDBusServer_val(val) ((GDBusServer*)ext_of_val(val))
-#define Val_GDBusServer(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusServer */
-
 
 CAMLexport CAMLprim value ml_g_dbus_server_stop(value self)
 {
@@ -58,6 +52,14 @@ CAMLparam1(self);
 
 const gchar* result = g_dbus_server_get_guid(GDBusServer_val(self));
 CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_g_dbus_server_get_flags(value self)
+{
+CAMLparam1(self);
+
+GDBusServerFlags result = g_dbus_server_get_flags(GDBusServer_val(self));
+CAMLreturn(Val_GioDBusServerFlags(result));
 }
 
 CAMLexport CAMLprim value ml_g_dbus_server_get_client_address(value self)

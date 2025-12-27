@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkNumericSorter */
-#ifndef Val_GtkNumericSorter
-#define GtkNumericSorter_val(val) ((GtkNumericSorter*)ext_of_val(val))
-#define Val_GtkNumericSorter(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkNumericSorter */
-
 
 CAMLexport CAMLprim value ml_gtk_numeric_sorter_new(value arg1)
 {

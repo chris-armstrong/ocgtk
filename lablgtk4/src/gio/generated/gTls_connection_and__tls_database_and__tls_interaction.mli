@@ -1,12 +1,14 @@
 class tls_connection : Tls_connection_and__tls_database_and__tls_interaction.Tls_connection.t ->
   object
     inherit Gtls_connection_signals.tls_connection_signals
+    method emit_accept_certificate : #GTls_certificate.tls_certificate -> Gio_enums.tlscertificateflags -> bool
     method get_certificate : unit -> GTls_certificate.tls_certificate option
     method get_ciphersuite_name : unit -> string option
     method get_database : unit -> tls_database option
     method get_interaction : unit -> tls_interaction option
     method get_negotiated_protocol : unit -> string option
     method get_peer_certificate : unit -> GTls_certificate.tls_certificate option
+    method get_peer_certificate_errors : unit -> Gio_enums.tlscertificateflags
     method get_protocol_version : unit -> Gio_enums.tlsprotocolversion
     method get_rehandshake_mode : unit -> Gio_enums.tlsrehandshakemode
     method get_require_close_notify : unit -> bool

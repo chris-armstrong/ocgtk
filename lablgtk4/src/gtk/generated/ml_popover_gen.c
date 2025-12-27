@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkPopover */
-#ifndef Val_GtkPopover
-#define GtkPopover_val(val) ((GtkPopover*)ext_of_val(val))
-#define Val_GtkPopover(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkPopover */
-
 
 CAMLexport CAMLprim value ml_gtk_popover_new(value unit)
 {

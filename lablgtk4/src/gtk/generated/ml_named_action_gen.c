@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkNamedAction */
-#ifndef Val_GtkNamedAction
-#define GtkNamedAction_val(val) ((GtkNamedAction*)ext_of_val(val))
-#define Val_GtkNamedAction(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkNamedAction */
-
 
 CAMLexport CAMLprim value ml_gtk_named_action_new(value arg1)
 {

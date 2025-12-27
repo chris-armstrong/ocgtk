@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkWindow */
-#ifndef Val_GtkWindow
-#define GtkWindow_val(val) ((GtkWindow*)ext_of_val(val))
-#define Val_GtkWindow(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkWindow */
-
 
 CAMLexport CAMLprim value ml_gtk_window_new(value unit)
 {

@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GTcpWrapperConnection */
-#ifndef Val_GTcpWrapperConnection
-#define GTcpWrapperConnection_val(val) ((GTcpWrapperConnection*)ext_of_val(val))
-#define Val_GTcpWrapperConnection(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GTcpWrapperConnection */
-
 
 CAMLexport CAMLprim value ml_g_tcp_wrapper_connection_new(value arg1, value arg2)
 {

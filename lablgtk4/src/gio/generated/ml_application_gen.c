@@ -21,17 +21,11 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GApplication */
-#ifndef Val_GApplication
-#define GApplication_val(val) ((GApplication*)ext_of_val(val))
-#define Val_GApplication(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GApplication */
-
 
 CAMLexport CAMLprim value ml_g_application_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
-GApplication *obj = g_application_new(String_option_val(arg1), arg2);
+GApplication *obj = g_application_new(String_option_val(arg1), GioApplicationFlags_val(arg2));
 CAMLreturn(Val_GApplication(obj));
 }
 
@@ -99,6 +93,14 @@ g_application_set_inactivity_timeout(GApplication_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_application_set_flags(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_application_set_flags(GApplication_val(self), GioApplicationFlags_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_g_application_set_default(value self)
 {
 CAMLparam1(self);
@@ -112,6 +114,14 @@ CAMLexport CAMLprim value ml_g_application_set_application_id(value self, value 
 CAMLparam2(self, arg1);
 
 g_application_set_application_id(GApplication_val(self), String_option_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_application_set_action_group(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_application_set_action_group(GApplication_val(self), Option_val(arg1, GActionGroup_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -210,6 +220,14 @@ CAMLparam1(self);
 
 guint result = g_application_get_inactivity_timeout(GApplication_val(self));
 CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_g_application_get_flags(value self)
+{
+CAMLparam1(self);
+
+GApplicationFlags result = g_application_get_flags(GApplication_val(self));
+CAMLreturn(Val_GioApplicationFlags(result));
 }
 
 CAMLexport CAMLprim value ml_g_application_get_dbus_object_path(value self)

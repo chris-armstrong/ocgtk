@@ -21,12 +21,15 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GFileIOStream */
-#ifndef Val_GFileIOStream
-#define GFileIOStream_val(val) ((GFileIOStream*)ext_of_val(val))
-#define Val_GFileIOStream(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GFileIOStream */
 
+CAMLexport CAMLprim value ml_g_file_io_stream_query_info_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GFileInfo* result = g_file_io_stream_query_info_finish(GFileIOStream_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GFileInfo(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 
 CAMLexport CAMLprim value ml_g_file_io_stream_query_info(value self, value arg1, value arg2)
 {

@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkStringList */
-#ifndef Val_GtkStringList
-#define GtkStringList_val(val) ((GtkStringList*)ext_of_val(val))
-#define Val_GtkStringList(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkStringList */
-
 
 CAMLexport CAMLprim value ml_gtk_string_list_new(value arg1)
 {

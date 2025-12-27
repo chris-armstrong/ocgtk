@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkTextView */
-#ifndef Val_GtkTextView
-#define GtkTextView_val(val) ((GtkTextView*)ext_of_val(val))
-#define Val_GtkTextView(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTextView */
-
 
 CAMLexport CAMLprim value ml_gtk_text_view_new(value unit)
 {

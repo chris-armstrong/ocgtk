@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GInitable */
-#ifndef Val_GInitable
-#define GInitable_val(val) ((GInitable*)ext_of_val(val))
-#define Val_GInitable(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GInitable */
-
 
 CAMLexport CAMLprim value ml_g_initable_init(value self, value arg1)
 {

@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GProxy */
-#ifndef Val_GProxy
-#define GProxy_val(val) ((GProxy*)ext_of_val(val))
-#define Val_GProxy(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GProxy */
-
 
 CAMLexport CAMLprim value ml_g_proxy_supports_hostname(value self)
 {
@@ -34,6 +28,15 @@ CAMLparam1(self);
 
 gboolean result = g_proxy_supports_hostname(GProxy_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_g_proxy_connect_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GIOStream* result = g_proxy_connect_finish(GProxy_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GIOStream(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_g_proxy_connect(value self, value arg1, value arg2, value arg3)

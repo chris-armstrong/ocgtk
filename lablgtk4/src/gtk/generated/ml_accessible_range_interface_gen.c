@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkAccessibleRangeInterface */
-#ifndef Val_GtkAccessibleRangeInterface
-#define GtkAccessibleRangeInterface_val(val) ((GtkAccessibleRangeInterface*)ext_of_val(val))
-#define Val_GtkAccessibleRangeInterface(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkAccessibleRangeInterface */
+/* Conversion functions for GtkAccessibleRangeInterface (non-opaque record with fields) */
+GtkAccessibleRangeInterface *GtkAccessibleRangeInterface_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkAccessibleRangeInterface **)Data_custom_val(v);
+  } else {
+    return (GtkAccessibleRangeInterface*)ml_gir_record_ptr_val(v, "GtkAccessibleRangeInterface");
+  }
+}
+
+value Val_GtkAccessibleRangeInterface(GtkAccessibleRangeInterface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkAccessibleRangeInterface), "GtkAccessibleRangeInterface", NULL);
+}
+
+value Val_GtkAccessibleRangeInterface_option(GtkAccessibleRangeInterface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkAccessibleRangeInterface(ptr));
+}
 

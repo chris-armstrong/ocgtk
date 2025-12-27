@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GResolver */
-#ifndef Val_GResolver
-#define GResolver_val(val) ((GResolver*)ext_of_val(val))
-#define Val_GResolver(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GResolver */
-
 
 CAMLexport CAMLprim value ml_g_resolver_set_timeout(value self, value arg1)
 {
@@ -42,6 +36,15 @@ CAMLparam1(self);
 
 g_resolver_set_default(GResolver_val(self));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_resolver_lookup_by_address_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gchar* result = g_resolver_lookup_by_address_finish(GResolver_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(caml_copy_string(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_g_resolver_lookup_by_address(value self, value arg1, value arg2)

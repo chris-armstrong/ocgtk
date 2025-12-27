@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkDropControllerMotion */
-#ifndef Val_GtkDropControllerMotion
-#define GtkDropControllerMotion_val(val) ((GtkDropControllerMotion*)ext_of_val(val))
-#define Val_GtkDropControllerMotion(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkDropControllerMotion */
-
 
 CAMLexport CAMLprim value ml_gtk_drop_controller_motion_new(value unit)
 {

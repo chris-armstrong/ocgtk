@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDBusObjectProxy */
-#ifndef Val_GDBusObjectProxy
-#define GDBusObjectProxy_val(val) ((GDBusObjectProxy*)ext_of_val(val))
-#define Val_GDBusObjectProxy(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusObjectProxy */
-
 
 CAMLexport CAMLprim value ml_g_dbus_object_proxy_new(value arg1, value arg2)
 {

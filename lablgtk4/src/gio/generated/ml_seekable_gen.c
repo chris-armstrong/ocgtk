@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GSeekable */
-#ifndef Val_GSeekable
-#define GSeekable_val(val) ((GSeekable*)ext_of_val(val))
-#define Val_GSeekable(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSeekable */
-
 
 CAMLexport CAMLprim value ml_g_seekable_can_truncate(value self)
 {

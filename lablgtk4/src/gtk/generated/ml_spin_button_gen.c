@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkSpinButton */
-#ifndef Val_GtkSpinButton
-#define GtkSpinButton_val(val) ((GtkSpinButton*)ext_of_val(val))
-#define Val_GtkSpinButton(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkSpinButton */
-
 
 CAMLexport CAMLprim value ml_gtk_spin_button_new(value arg1, value arg2, value arg3)
 {

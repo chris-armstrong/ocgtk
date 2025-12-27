@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkMediaControls */
-#ifndef Val_GtkMediaControls
-#define GtkMediaControls_val(val) ((GtkMediaControls*)ext_of_val(val))
-#define Val_GtkMediaControls(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkMediaControls */
-
 
 CAMLexport CAMLprim value ml_gtk_media_controls_new(value arg1)
 {

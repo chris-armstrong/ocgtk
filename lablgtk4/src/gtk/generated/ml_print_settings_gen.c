@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkPrintSettings */
-#ifndef Val_GtkPrintSettings
-#define GtkPrintSettings_val(val) ((GtkPrintSettings*)ext_of_val(val))
-#define Val_GtkPrintSettings(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkPrintSettings */
-
 
 CAMLexport CAMLprim value ml_gtk_print_settings_new(value unit)
 {

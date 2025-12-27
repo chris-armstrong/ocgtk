@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkListItem */
-#ifndef Val_GtkListItem
-#define GtkListItem_val(val) ((GtkListItem*)ext_of_val(val))
-#define Val_GtkListItem(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkListItem */
-
 
 CAMLexport CAMLprim value ml_gtk_list_item_set_selectable(value self, value arg1)
 {

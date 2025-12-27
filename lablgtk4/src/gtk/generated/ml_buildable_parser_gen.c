@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkBuildableParser */
-#ifndef Val_GtkBuildableParser
-#define GtkBuildableParser_val(val) ((GtkBuildableParser*)ext_of_val(val))
-#define Val_GtkBuildableParser(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkBuildableParser */
+/* Conversion functions for GtkBuildableParser (non-opaque record with fields) */
+GtkBuildableParser *GtkBuildableParser_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkBuildableParser **)Data_custom_val(v);
+  } else {
+    return (GtkBuildableParser*)ml_gir_record_ptr_val(v, "GtkBuildableParser");
+  }
+}
+
+value Val_GtkBuildableParser(GtkBuildableParser *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkBuildableParser), "GtkBuildableParser", NULL);
+}
+
+value Val_GtkBuildableParser_option(GtkBuildableParser *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkBuildableParser(ptr));
+}
 

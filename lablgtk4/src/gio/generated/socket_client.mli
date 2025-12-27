@@ -7,6 +7,14 @@ type t = [`socket_client | `object_] Gobject.obj
 external new_ : unit -> t = "ml_g_socket_client_new"
 
 (* Methods *)
+(** Sets the TLS validation flags used when creating TLS connections
+via @client. The default value is %G_TLS_CERTIFICATE_VALIDATE_ALL.
+
+This function does not work as originally designed and is impossible
+to use correctly. See #GSocketClient:tls-validation-flags for more
+information. *)
+external set_tls_validation_flags : t -> Gio_enums.tlscertificateflags -> unit = "ml_g_socket_client_set_tls_validation_flags"
+
 (** Sets whether @client creates TLS (aka SSL) connections. If @tls is
 %TRUE, @client will wrap its connections in a #GTlsClientConnection
 and perform a TLS handshake when connecting.
@@ -43,6 +51,15 @@ It doesn't make sense to specify a type of %G_SOCKET_TYPE_DATAGRAM,
 as GSocketClient is used for connection oriented services. *)
 external set_socket_type : t -> Gio_enums.sockettype -> unit = "ml_g_socket_client_set_socket_type"
 
+(** Overrides the #GProxyResolver used by @client. You can call this if
+you want to use specific proxies, rather than using the system
+default proxy settings.
+
+Note that whether or not the proxy resolver is actually used
+depends on the setting of #GSocketClient:enable-proxy, which is not
+changed by this function (but which is %TRUE by default) *)
+external set_proxy_resolver : t -> Proxy_resolver.t option -> unit = "ml_g_socket_client_set_proxy_resolver"
+
 (** Sets the protocol of the socket client.
 The sockets created by this object will use of the specified
 protocol.
@@ -78,6 +95,14 @@ needed, and automatically do the necessary proxy negotiation.
 See also g_socket_client_set_proxy_resolver(). *)
 external set_enable_proxy : t -> bool -> unit = "ml_g_socket_client_set_enable_proxy"
 
+(** Gets the TLS validation flags used creating TLS connections via
+@client.
+
+This function does not work as originally designed and is impossible
+to use correctly. See #GSocketClient:tls-validation-flags for more
+information. *)
+external get_tls_validation_flags : t -> Gio_enums.tlscertificateflags = "ml_g_socket_client_get_tls_validation_flags"
+
 (** Gets whether @client creates TLS connections. See
 g_socket_client_set_tls() for details. *)
 external get_tls : t -> bool = "ml_g_socket_client_get_tls"
@@ -91,6 +116,11 @@ external get_timeout : t -> int = "ml_g_socket_client_get_timeout"
 
 See g_socket_client_set_socket_type() for details. *)
 external get_socket_type : t -> Gio_enums.sockettype = "ml_g_socket_client_get_socket_type"
+
+(** Gets the #GProxyResolver being used by @client. Normally, this will
+be the resolver returned by g_proxy_resolver_get_default(), but you
+can override it with g_socket_client_set_proxy_resolver(). *)
+external get_proxy_resolver : t -> Proxy_resolver.t = "ml_g_socket_client_get_proxy_resolver"
 
 (** Gets the protocol name type of the socket client.
 
@@ -110,6 +140,12 @@ external get_family : t -> Gio_enums.socketfamily = "ml_g_socket_client_get_fami
 (** Gets the proxy enable state; see g_socket_client_set_enable_proxy() *)
 external get_enable_proxy : t -> bool = "ml_g_socket_client_get_enable_proxy"
 
+(** Finishes an async connect operation. See g_socket_client_connect_to_uri_async() *)
+external connect_to_uri_finish : t -> Async_result.t -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_to_uri_finish"
+
+(** Finishes an async connect operation. See g_socket_client_connect_to_service_async() *)
+external connect_to_service_finish : t -> Async_result.t -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_to_service_finish"
+
 (** Attempts to create a TCP connection to a service.
 
 This call looks up the SRV record for @service at @domain for the
@@ -125,6 +161,32 @@ In the event of any failure (DNS error, service not found, no hosts
 connectable) %NULL is returned and @error (if non-%NULL) is set
 accordingly. *)
 external connect_to_service : t -> string -> string -> Cancellable.t option -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_to_service"
+
+(** Finishes an async connect operation. See g_socket_client_connect_to_host_async() *)
+external connect_to_host_finish : t -> Async_result.t -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_to_host_finish"
+
+(** Finishes an async connect operation. See g_socket_client_connect_async() *)
+external connect_finish : t -> Async_result.t -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_finish"
+
+(** Tries to resolve the @connectable and make a network connection to it.
+
+Upon a successful connection, a new #GSocketConnection is constructed
+and returned.  The caller owns this new object and must drop their
+reference to it when finished with it.
+
+The type of the #GSocketConnection object returned depends on the type of
+the underlying socket that is used. For instance, for a TCP/IP connection
+it will be a #GTcpConnection.
+
+The socket created will be the same family as the address that the
+@connectable resolves to, unless family is set with g_socket_client_set_family()
+or indirectly via g_socket_client_set_local_address(). The socket type
+defaults to %G_SOCKET_TYPE_STREAM but can be set with
+g_socket_client_set_socket_type().
+
+If a local address is specified with g_socket_client_set_local_address() the
+socket will be bound to this address before connecting. *)
+external connect : t -> Socket_connectable.t -> Cancellable.t option -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect"
 
 (** Enable proxy protocols to be handled by the application. When the
 indicated proxy protocol is returned by the #GProxyResolver,

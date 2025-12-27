@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GUnixInputStream */
-#ifndef Val_GUnixInputStream
-#define GUnixInputStream_val(val) ((GUnixInputStream*)ext_of_val(val))
-#define Val_GUnixInputStream(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GUnixInputStream */
-
 
 CAMLexport CAMLprim value ml_g_unix_input_stream_new(value arg1, value arg2)
 {

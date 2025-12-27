@@ -29,6 +29,10 @@ class socket_client (obj : Socket_client.t) = object (self)
     fun () ->
       (Socket_client.get_protocol obj)
 
+  method get_proxy_resolver : unit -> GProxy_resolver.proxy_resolver =
+    fun () ->
+      new  GProxy_resolver.proxy_resolver(Socket_client.get_proxy_resolver obj)
+
   method get_socket_type : unit -> Gio_enums.sockettype =
     fun () ->
       (Socket_client.get_socket_type obj)
@@ -40,6 +44,10 @@ class socket_client (obj : Socket_client.t) = object (self)
   method get_tls : unit -> bool =
     fun () ->
       (Socket_client.get_tls obj)
+
+  method get_tls_validation_flags : unit -> Gio_enums.tlscertificateflags =
+    fun () ->
+      (Socket_client.get_tls_validation_flags obj)
 
   method set_enable_proxy : bool -> unit =
     fun enable ->
@@ -69,6 +77,10 @@ class socket_client (obj : Socket_client.t) = object (self)
   method set_tls : bool -> unit =
     fun tls ->
       (Socket_client.set_tls obj tls)
+
+  method set_tls_validation_flags : Gio_enums.tlscertificateflags -> unit =
+    fun flags ->
+      (Socket_client.set_tls_validation_flags obj flags)
 
   method type_ = Socket_client.get_type obj
   method set_type v =  Socket_client.set_type obj v

@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GCancellable */
-#ifndef Val_GCancellable
-#define GCancellable_val(val) ((GCancellable*)ext_of_val(val))
-#define Val_GCancellable(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GCancellable */
-
 
 CAMLexport CAMLprim value ml_g_cancellable_new(value unit)
 {

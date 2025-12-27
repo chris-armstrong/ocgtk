@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GNotification */
-#ifndef Val_GNotification
-#define GNotification_val(val) ((GNotification*)ext_of_val(val))
-#define Val_GNotification(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GNotification */
-
 
 CAMLexport CAMLprim value ml_g_notification_new(value arg1)
 {
@@ -56,6 +50,14 @@ CAMLexport CAMLprim value ml_g_notification_set_priority(value self, value arg1)
 CAMLparam2(self, arg1);
 
 g_notification_set_priority(GNotification_val(self), GioNotificationPriority_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_notification_set_icon(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_notification_set_icon(GNotification_val(self), GIcon_val(arg1));
 CAMLreturn(Val_unit);
 }
 

@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GSocketConnection */
-#ifndef Val_GSocketConnection
-#define GSocketConnection_val(val) ((GSocketConnection*)ext_of_val(val))
-#define Val_GSocketConnection(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSocketConnection */
-
 
 CAMLexport CAMLprim value ml_g_socket_connection_is_connected(value self)
 {
@@ -60,6 +54,15 @@ GError *error = NULL;
 
 GSocketAddress* result = g_socket_connection_get_local_address(GSocketConnection_val(self), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GSocketAddress(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_socket_connection_connect_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_socket_connection_connect_finish(GSocketConnection_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_g_socket_connection_connect(value self, value arg1, value arg2)

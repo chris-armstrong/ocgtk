@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkSnapshot */
-#ifndef Val_GtkSnapshot
-#define GtkSnapshot_val(val) ((GtkSnapshot*)ext_of_val(val))
-#define Val_GtkSnapshot(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkSnapshot */
-
 
 CAMLexport CAMLprim value ml_gtk_snapshot_new(value unit)
 {

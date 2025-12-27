@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkFileChooserWidget */
-#ifndef Val_GtkFileChooserWidget
-#define GtkFileChooserWidget_val(val) ((GtkFileChooserWidget*)ext_of_val(val))
-#define Val_GtkFileChooserWidget(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkFileChooserWidget */
-
 
 CAMLexport CAMLprim value ml_gtk_file_chooser_widget_new(value arg1)
 {

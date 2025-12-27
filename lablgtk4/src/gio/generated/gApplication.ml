@@ -20,6 +20,10 @@ class application (obj : Application.t) = object (self)
     fun () ->
       (Application.get_dbus_object_path obj)
 
+  method get_flags : unit -> Gio_enums.applicationflags =
+    fun () ->
+      (Application.get_flags obj)
+
   method get_inactivity_timeout : unit -> int =
     fun () ->
       (Application.get_inactivity_timeout obj)
@@ -77,6 +81,10 @@ class application (obj : Application.t) = object (self)
   method set_default : unit -> unit =
     fun () ->
       (Application.set_default obj)
+
+  method set_flags : Gio_enums.applicationflags -> unit =
+    fun flags ->
+      (Application.set_flags obj flags)
 
   method set_inactivity_timeout : int -> unit =
     fun inactivity_timeout ->

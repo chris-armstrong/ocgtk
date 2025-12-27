@@ -12,6 +12,10 @@ class d_bus_proxy (obj : D_bus_proxy.t) = object (self)
     fun () ->
       (D_bus_proxy.get_default_timeout obj)
 
+  method get_flags : unit -> Gio_enums.dbusproxyflags =
+    fun () ->
+      (D_bus_proxy.get_flags obj)
+
   method get_interface_info : unit -> D_bus_interface_info.t option =
     fun () ->
       (D_bus_proxy.get_interface_info obj)
@@ -46,6 +50,8 @@ class d_bus_proxy (obj : D_bus_proxy.t) = object (self)
 
   method g_default_timeout = D_bus_proxy.get_g_default_timeout obj
   method set_g_default_timeout v =  D_bus_proxy.set_g_default_timeout obj v
+
+  method g_flags = D_bus_proxy.get_g_flags obj
 
   method g_interface_info = D_bus_proxy.get_g_interface_info obj
   method set_g_interface_info v =  D_bus_proxy.set_g_interface_info obj v

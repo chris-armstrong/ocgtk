@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkBuilderListItemFactory */
-#ifndef Val_GtkBuilderListItemFactory
-#define GtkBuilderListItemFactory_val(val) ((GtkBuilderListItemFactory*)ext_of_val(val))
-#define Val_GtkBuilderListItemFactory(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkBuilderListItemFactory */
-
 
 CAMLexport CAMLprim value ml_gtk_builder_list_item_factory_new_from_bytes(value arg1, value arg2)
 {

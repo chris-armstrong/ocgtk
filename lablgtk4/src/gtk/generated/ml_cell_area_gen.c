@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkCellArea */
-#ifndef Val_GtkCellArea
-#define GtkCellArea_val(val) ((GtkCellArea*)ext_of_val(val))
-#define Val_GtkCellArea(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkCellArea */
-
 
 CAMLexport CAMLprim value ml_gtk_cell_area_stop_editing(value self, value arg1)
 {

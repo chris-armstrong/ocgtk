@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GFileDescriptorBased */
-#ifndef Val_GFileDescriptorBased
-#define GFileDescriptorBased_val(val) ((GFileDescriptorBased*)ext_of_val(val))
-#define Val_GFileDescriptorBased(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GFileDescriptorBased */
-
 
 CAMLexport CAMLprim value ml_g_file_descriptor_based_get_fd(value self)
 {

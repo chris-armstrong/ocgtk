@@ -16,9 +16,3 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkCellRendererPrivate */
-#ifndef Val_GtkCellRendererPrivate
-#define GtkCellRendererPrivate_val(val) ((GtkCellRendererPrivate*)ext_of_val(val))
-#define Val_GtkCellRendererPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkCellRendererPrivate */
-

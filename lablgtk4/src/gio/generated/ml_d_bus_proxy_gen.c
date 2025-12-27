@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDBusProxy */
-#ifndef Val_GDBusProxy
-#define GDBusProxy_val(val) ((GDBusProxy*)ext_of_val(val))
-#define Val_GDBusProxy(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusProxy */
-
 
 CAMLexport CAMLprim value ml_g_dbus_proxy_set_interface_info(value self, value arg1)
 {
@@ -82,6 +76,14 @@ CAMLparam1(self);
 
 GDBusInterfaceInfo* result = g_dbus_proxy_get_interface_info(GDBusProxy_val(self));
 CAMLreturn(Val_option(result, Val_GDBusInterfaceInfo));
+}
+
+CAMLexport CAMLprim value ml_g_dbus_proxy_get_flags(value self)
+{
+CAMLparam1(self);
+
+GDBusProxyFlags result = g_dbus_proxy_get_flags(GDBusProxy_val(self));
+CAMLreturn(Val_GioDBusProxyFlags(result));
 }
 
 CAMLexport CAMLprim value ml_g_dbus_proxy_get_default_timeout(value self)
@@ -167,6 +169,24 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_object_set_property(G_OBJECT(obj), "g-default-timeout", &prop_gvalue);
 g_value_unset(&prop_gvalue);
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_d_bus_proxy_get_g_flags(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GDBusProxy *obj = (GDBusProxy *)GDBusProxy_val(self);
+    GDBusProxyFlags prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "g-flags");
+if (pspec == NULL) caml_failwith("ml_gtk_d_bus_proxy_get_g_flags: property 'g-flags' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "g-flags", &prop_gvalue);
+    prop_value = (GDBusProxyFlags)g_value_get_flags(&prop_gvalue);
+
+result = Val_GioDBusProxyFlags(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
 }
 
 CAMLexport CAMLprim value ml_gtk_d_bus_proxy_get_g_interface_info(value self)

@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkBuildableParseContext */
-#ifndef Val_GtkBuildableParseContext
-#define GtkBuildableParseContext_val(val) ((GtkBuildableParseContext*)ext_of_val(val))
-#define Val_GtkBuildableParseContext(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkBuildableParseContext */
-
 
 CAMLexport CAMLprim value ml_gtk_buildable_parse_context_get_position(value self)
 {

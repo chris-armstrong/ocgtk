@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GSocketListener */
-#ifndef Val_GSocketListener
-#define GSocketListener_val(val) ((GSocketListener*)ext_of_val(val))
-#define Val_GSocketListener(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSocketListener */
-
 
 CAMLexport CAMLprim value ml_g_socket_listener_new(value unit)
 {

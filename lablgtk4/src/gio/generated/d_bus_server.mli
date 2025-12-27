@@ -16,6 +16,9 @@ external is_active : t -> bool = "ml_g_dbus_server_is_active"
 (** Gets the GUID for @server, as provided to g_dbus_server_new_sync(). *)
 external get_guid : t -> string = "ml_g_dbus_server_get_guid"
 
+(** Gets the flags for @server. *)
+external get_flags : t -> Gio_enums.dbusserverflags = "ml_g_dbus_server_get_flags"
+
 (** Gets a
 [D-Bus address](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses)
 string that can be used by clients to connect to @server.

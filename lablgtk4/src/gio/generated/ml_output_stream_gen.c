@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GOutputStream */
-#ifndef Val_GOutputStream
-#define GOutputStream_val(val) ((GOutputStream*)ext_of_val(val))
-#define Val_GOutputStream(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GOutputStream */
-
 
 CAMLexport CAMLprim value ml_g_output_stream_set_pending(value self)
 {
@@ -61,12 +55,30 @@ gboolean result = g_output_stream_has_pending(GOutputStream_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_g_output_stream_flush_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_output_stream_flush_finish(GOutputStream_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_g_output_stream_flush(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 GError *error = NULL;
 
 gboolean result = g_output_stream_flush(GOutputStream_val(self), Option_val(arg1, GCancellable_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_output_stream_close_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_output_stream_close_finish(GOutputStream_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 

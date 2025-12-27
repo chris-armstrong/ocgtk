@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkSizeGroup */
-#ifndef Val_GtkSizeGroup
-#define GtkSizeGroup_val(val) ((GtkSizeGroup*)ext_of_val(val))
-#define Val_GtkSizeGroup(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkSizeGroup */
-
 
 CAMLexport CAMLprim value ml_gtk_size_group_new(value arg1)
 {

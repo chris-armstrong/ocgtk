@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkMountOperation */
-#ifndef Val_GtkMountOperation
-#define GtkMountOperation_val(val) ((GtkMountOperation*)ext_of_val(val))
-#define Val_GtkMountOperation(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkMountOperation */
-
 
 CAMLexport CAMLprim value ml_gtk_mount_operation_new(value arg1)
 {

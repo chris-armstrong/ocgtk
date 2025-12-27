@@ -16,9 +16,3 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkButtonPrivate */
-#ifndef Val_GtkButtonPrivate
-#define GtkButtonPrivate_val(val) ((GtkButtonPrivate*)ext_of_val(val))
-#define Val_GtkButtonPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkButtonPrivate */
-

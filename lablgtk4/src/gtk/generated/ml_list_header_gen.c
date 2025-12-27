@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkListHeader */
-#ifndef Val_GtkListHeader
-#define GtkListHeader_val(val) ((GtkListHeader*)ext_of_val(val))
-#define Val_GtkListHeader(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkListHeader */
-
 
 CAMLexport CAMLprim value ml_gtk_list_header_set_child(value self, value arg1)
 {

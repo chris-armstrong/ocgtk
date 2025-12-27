@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkCenterLayout */
-#ifndef Val_GtkCenterLayout
-#define GtkCenterLayout_val(val) ((GtkCenterLayout*)ext_of_val(val))
-#define Val_GtkCenterLayout(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkCenterLayout */
-
 
 CAMLexport CAMLprim value ml_gtk_center_layout_new(value unit)
 {

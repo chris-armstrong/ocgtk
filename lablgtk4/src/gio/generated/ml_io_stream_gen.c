@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GIOStream */
-#ifndef Val_GIOStream
-#define GIOStream_val(val) ((GIOStream*)ext_of_val(val))
-#define Val_GIOStream(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GIOStream */
-
 
 CAMLexport CAMLprim value ml_g_io_stream_set_pending(value self)
 {
@@ -67,6 +61,15 @@ CAMLparam1(self);
 
 GInputStream* result = g_io_stream_get_input_stream(GIOStream_val(self));
 CAMLreturn(Val_GInputStream(result));
+}
+
+CAMLexport CAMLprim value ml_g_io_stream_close_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_io_stream_close_finish(GIOStream_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_g_io_stream_close(value self, value arg1)

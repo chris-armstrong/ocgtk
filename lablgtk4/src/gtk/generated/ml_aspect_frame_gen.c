@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkAspectFrame */
-#ifndef Val_GtkAspectFrame
-#define GtkAspectFrame_val(val) ((GtkAspectFrame*)ext_of_val(val))
-#define Val_GtkAspectFrame(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkAspectFrame */
-
 
 CAMLexport CAMLprim value ml_gtk_aspect_frame_new(value arg1, value arg2, value arg3, value arg4)
 {

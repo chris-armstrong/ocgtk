@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkIMContext */
-#ifndef Val_GtkIMContext
-#define GtkIMContext_val(val) ((GtkIMContext*)ext_of_val(val))
-#define Val_GtkIMContext(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkIMContext */
-
 
 CAMLexport CAMLprim value ml_gtk_im_context_set_use_preedit(value self, value arg1)
 {

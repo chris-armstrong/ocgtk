@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkRecentManager */
-#ifndef Val_GtkRecentManager
-#define GtkRecentManager_val(val) ((GtkRecentManager*)ext_of_val(val))
-#define Val_GtkRecentManager(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkRecentManager */
-
 
 CAMLexport CAMLprim value ml_gtk_recent_manager_new(value unit)
 {

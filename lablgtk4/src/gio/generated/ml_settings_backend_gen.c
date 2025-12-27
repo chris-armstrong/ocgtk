@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GSettingsBackend */
-#ifndef Val_GSettingsBackend
-#define GSettingsBackend_val(val) ((GSettingsBackend*)ext_of_val(val))
-#define Val_GSettingsBackend(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSettingsBackend */
-
 
 CAMLexport CAMLprim value ml_g_settings_backend_writable_changed(value self, value arg1)
 {

@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkGestureSingle */
-#ifndef Val_GtkGestureSingle
-#define GtkGestureSingle_val(val) ((GtkGestureSingle*)ext_of_val(val))
-#define Val_GtkGestureSingle(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkGestureSingle */
-
 
 CAMLexport CAMLprim value ml_gtk_gesture_single_set_touch_only(value self, value arg1)
 {

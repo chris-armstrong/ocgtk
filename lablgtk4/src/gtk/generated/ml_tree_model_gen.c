@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkTreeModel */
-#ifndef Val_GtkTreeModel
-#define GtkTreeModel_val(val) ((GtkTreeModel*)ext_of_val(val))
-#define Val_GtkTreeModel(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTreeModel */
-
 
 CAMLexport CAMLprim value ml_gtk_tree_model_unref_node(value self, value arg1)
 {

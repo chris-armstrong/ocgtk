@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkKeyvalTrigger */
-#ifndef Val_GtkKeyvalTrigger
-#define GtkKeyvalTrigger_val(val) ((GtkKeyvalTrigger*)ext_of_val(val))
-#define Val_GtkKeyvalTrigger(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkKeyvalTrigger */
-
 
 CAMLexport CAMLprim value ml_gtk_keyval_trigger_new(value arg1, value arg2)
 {

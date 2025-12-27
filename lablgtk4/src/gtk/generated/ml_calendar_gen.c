@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkCalendar */
-#ifndef Val_GtkCalendar
-#define GtkCalendar_val(val) ((GtkCalendar*)ext_of_val(val))
-#define Val_GtkCalendar(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkCalendar */
-
 
 CAMLexport CAMLprim value ml_gtk_calendar_new(value unit)
 {

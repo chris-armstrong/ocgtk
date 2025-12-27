@@ -18,6 +18,14 @@ implements its own cache policies on top of that, and then set
 itself as the default resolver for all later code to use. *)
 external set_default : t -> unit = "ml_g_resolver_set_default"
 
+(** Retrieves the result of a previous call to
+g_resolver_lookup_by_address_async().
+
+If the DNS resolution failed, @error (if non-%NULL) will be set to
+a value from #GResolverError. If the operation was cancelled,
+@error will be set to %G_IO_ERROR_CANCELLED. *)
+external lookup_by_address_finish : t -> Async_result.t -> (string, GError.t) result = "ml_g_resolver_lookup_by_address_finish"
+
 (** Synchronously reverse-resolves @address to determine its
 associated hostname.
 

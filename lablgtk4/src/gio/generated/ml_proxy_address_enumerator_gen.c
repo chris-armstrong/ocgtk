@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GProxyAddressEnumerator */
-#ifndef Val_GProxyAddressEnumerator
-#define GProxyAddressEnumerator_val(val) ((GProxyAddressEnumerator*)ext_of_val(val))
-#define Val_GProxyAddressEnumerator(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GProxyAddressEnumerator */
-
 
 CAMLexport CAMLprim value ml_gtk_proxy_address_enumerator_get_default_port(value self)
 {

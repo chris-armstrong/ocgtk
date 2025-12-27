@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GFileInfo */
-#ifndef Val_GFileInfo
-#define GFileInfo_val(val) ((GFileInfo*)ext_of_val(val))
-#define Val_GFileInfo(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GFileInfo */
-
 
 CAMLexport CAMLprim value ml_g_file_info_new(value unit)
 {
@@ -43,6 +37,30 @@ g_file_info_unset_attribute_mask(GFileInfo_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_file_info_set_symlink_target(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_file_info_set_symlink_target(GFileInfo_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_file_info_set_symbolic_icon(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_file_info_set_symbolic_icon(GFileInfo_val(self), GIcon_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_file_info_set_name(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_file_info_set_name(GFileInfo_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_g_file_info_set_is_symlink(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -56,6 +74,14 @@ CAMLexport CAMLprim value ml_g_file_info_set_is_hidden(value self, value arg1)
 CAMLparam2(self, arg1);
 
 g_file_info_set_is_hidden(GFileInfo_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_file_info_set_icon(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_file_info_set_icon(GFileInfo_val(self), GIcon_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -115,6 +141,14 @@ g_file_info_set_attribute_mask(GFileInfo_val(self), GFileAttributeMatcher_val(ar
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_file_info_set_attribute_file_path(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+g_file_info_set_attribute_file_path(GFileInfo_val(self), String_val(arg1), String_val(arg2));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_g_file_info_set_attribute_byte_string(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -155,6 +189,30 @@ gboolean result = g_file_info_has_attribute(GFileInfo_val(self), String_val(arg1
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_g_file_info_get_symlink_target(value self)
+{
+CAMLparam1(self);
+
+const char* result = g_file_info_get_symlink_target(GFileInfo_val(self));
+CAMLreturn(Val_option(result, caml_copy_string));
+}
+
+CAMLexport CAMLprim value ml_g_file_info_get_symbolic_icon(value self)
+{
+CAMLparam1(self);
+
+GIcon* result = g_file_info_get_symbolic_icon(GFileInfo_val(self));
+CAMLreturn(Val_option(result, Val_GIcon));
+}
+
+CAMLexport CAMLprim value ml_g_file_info_get_name(value self)
+{
+CAMLparam1(self);
+
+const char* result = g_file_info_get_name(GFileInfo_val(self));
+CAMLreturn(caml_copy_string(result));
+}
+
 CAMLexport CAMLprim value ml_g_file_info_get_is_symlink(value self)
 {
 CAMLparam1(self);
@@ -177,6 +235,14 @@ CAMLparam1(self);
 
 gboolean result = g_file_info_get_is_backup(GFileInfo_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_g_file_info_get_icon(value self)
+{
+CAMLparam1(self);
+
+GIcon* result = g_file_info_get_icon(GFileInfo_val(self));
+CAMLreturn(Val_option(result, Val_GIcon));
 }
 
 CAMLexport CAMLprim value ml_g_file_info_get_file_type(value self)
@@ -241,6 +307,14 @@ CAMLparam2(self, arg1);
 
 GFileAttributeStatus result = g_file_info_get_attribute_status(GFileInfo_val(self), String_val(arg1));
 CAMLreturn(Val_GioFileAttributeStatus(result));
+}
+
+CAMLexport CAMLprim value ml_g_file_info_get_attribute_file_path(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+const char* result = g_file_info_get_attribute_file_path(GFileInfo_val(self), String_val(arg1));
+CAMLreturn(Val_option(result, caml_copy_string));
 }
 
 CAMLexport CAMLprim value ml_g_file_info_get_attribute_byte_string(value self, value arg1)

@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkWindowControls */
-#ifndef Val_GtkWindowControls
-#define GtkWindowControls_val(val) ((GtkWindowControls*)ext_of_val(val))
-#define Val_GtkWindowControls(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkWindowControls */
-
 
 CAMLexport CAMLprim value ml_gtk_window_controls_new(value arg1)
 {

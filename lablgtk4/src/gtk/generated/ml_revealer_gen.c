@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkRevealer */
-#ifndef Val_GtkRevealer
-#define GtkRevealer_val(val) ((GtkRevealer*)ext_of_val(val))
-#define Val_GtkRevealer(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkRevealer */
-
 
 CAMLexport CAMLprim value ml_gtk_revealer_new(value unit)
 {

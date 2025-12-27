@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GTlsConnection */
-#ifndef Val_GTlsConnection
-#define GTlsConnection_val(val) ((GTlsConnection*)ext_of_val(val))
-#define Val_GTlsConnection(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GTlsConnection */
-
 
 CAMLexport CAMLprim value ml_g_tls_connection_set_use_system_certdb(value self, value arg1)
 {
@@ -76,6 +70,15 @@ g_tls_connection_set_certificate(GTlsConnection_val(self), GTlsCertificate_val(a
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_tls_connection_handshake_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_tls_connection_handshake_finish(GTlsConnection_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_g_tls_connection_handshake(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -115,6 +118,14 @@ CAMLparam1(self);
 
 GTlsProtocolVersion result = g_tls_connection_get_protocol_version(GTlsConnection_val(self));
 CAMLreturn(Val_GioTlsProtocolVersion(result));
+}
+
+CAMLexport CAMLprim value ml_g_tls_connection_get_peer_certificate_errors(value self)
+{
+CAMLparam1(self);
+
+GTlsCertificateFlags result = g_tls_connection_get_peer_certificate_errors(GTlsConnection_val(self));
+CAMLreturn(Val_GioTlsCertificateFlags(result));
 }
 
 CAMLexport CAMLprim value ml_g_tls_connection_get_peer_certificate(value self)
@@ -163,6 +174,14 @@ CAMLparam1(self);
 
 GTlsCertificate* result = g_tls_connection_get_certificate(GTlsConnection_val(self));
 CAMLreturn(Val_option(result, Val_GTlsCertificate));
+}
+
+CAMLexport CAMLprim value ml_g_tls_connection_emit_accept_certificate(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gboolean result = g_tls_connection_emit_accept_certificate(GTlsConnection_val(self), GTlsCertificate_val(arg1), GioTlsCertificateFlags_val(arg2));
+CAMLreturn(Val_bool(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_tls_connection_get_base_io_stream(value self)

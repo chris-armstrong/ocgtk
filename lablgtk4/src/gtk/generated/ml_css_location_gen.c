@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkCssLocation */
-#ifndef Val_GtkCssLocation
-#define GtkCssLocation_val(val) ((GtkCssLocation*)ext_of_val(val))
-#define Val_GtkCssLocation(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkCssLocation */
+/* Conversion functions for GtkCssLocation (non-opaque record with fields) */
+GtkCssLocation *GtkCssLocation_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkCssLocation **)Data_custom_val(v);
+  } else {
+    return (GtkCssLocation*)ml_gir_record_ptr_val(v, "GtkCssLocation");
+  }
+}
+
+value Val_GtkCssLocation(GtkCssLocation *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkCssLocation), "GtkCssLocation", NULL);
+}
+
+value Val_GtkCssLocation_option(GtkCssLocation *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkCssLocation(ptr));
+}
 

@@ -21,9 +21,35 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDtlsClientConnection */
-#ifndef Val_GDtlsClientConnection
-#define GDtlsClientConnection_val(val) ((GDtlsClientConnection*)ext_of_val(val))
-#define Val_GDtlsClientConnection(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDtlsClientConnection */
 
+CAMLexport CAMLprim value ml_g_dtls_client_connection_set_validation_flags(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_dtls_client_connection_set_validation_flags(GDtlsClientConnection_val(self), GioTlsCertificateFlags_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_dtls_client_connection_set_server_identity(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_dtls_client_connection_set_server_identity(GDtlsClientConnection_val(self), GSocketConnectable_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_dtls_client_connection_get_validation_flags(value self)
+{
+CAMLparam1(self);
+
+GTlsCertificateFlags result = g_dtls_client_connection_get_validation_flags(GDtlsClientConnection_val(self));
+CAMLreturn(Val_GioTlsCertificateFlags(result));
+}
+
+CAMLexport CAMLprim value ml_g_dtls_client_connection_get_server_identity(value self)
+{
+CAMLparam1(self);
+
+GSocketConnectable* result = g_dtls_client_connection_get_server_identity(GDtlsClientConnection_val(self));
+CAMLreturn(Val_GSocketConnectable(result));
+}

@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkFlattenListModel */
-#ifndef Val_GtkFlattenListModel
-#define GtkFlattenListModel_val(val) ((GtkFlattenListModel*)ext_of_val(val))
-#define Val_GtkFlattenListModel(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkFlattenListModel */
-
 
 CAMLexport CAMLprim value ml_gtk_flatten_list_model_new(value arg1)
 {

@@ -13,6 +13,10 @@ class test_d_bus (obj : Test_d_bus.t) = object (self)
     fun () ->
       (Test_d_bus.get_bus_address obj)
 
+  method get_flags : unit -> Gio_enums.testdbusflags =
+    fun () ->
+      (Test_d_bus.get_flags obj)
+
   method stop : unit -> unit =
     fun () ->
       (Test_d_bus.stop obj)

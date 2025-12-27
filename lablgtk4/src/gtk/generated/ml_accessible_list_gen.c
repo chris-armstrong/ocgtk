@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkAccessibleList */
-#ifndef Val_GtkAccessibleList
-#define GtkAccessibleList_val(val) ((GtkAccessibleList*)ext_of_val(val))
-#define Val_GtkAccessibleList(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkAccessibleList */
-
 
 CAMLexport CAMLprim value ml_gtk_accessible_list_new_from_array(value arg1, value arg2)
 {

@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkGridView */
-#ifndef Val_GtkGridView
-#define GtkGridView_val(val) ((GtkGridView*)ext_of_val(val))
-#define Val_GtkGridView(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkGridView */
-
 
 CAMLexport CAMLprim value ml_gtk_grid_view_new(value arg1, value arg2)
 {

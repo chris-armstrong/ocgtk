@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GTask */
-#ifndef Val_GTask
-#define GTask_val(val) ((GTask*)ext_of_val(val))
-#define Val_GTask(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GTask */
-
 
 CAMLexport CAMLprim value ml_g_task_new(value arg1, value arg2, value arg3, value arg4)
 {

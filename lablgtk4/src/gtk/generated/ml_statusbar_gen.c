@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkStatusbar */
-#ifndef Val_GtkStatusbar
-#define GtkStatusbar_val(val) ((GtkStatusbar*)ext_of_val(val))
-#define Val_GtkStatusbar(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkStatusbar */
-
 
 CAMLexport CAMLprim value ml_gtk_statusbar_new(value unit)
 {

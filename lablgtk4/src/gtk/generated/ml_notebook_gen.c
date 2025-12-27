@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkNotebook */
-#ifndef Val_GtkNotebook
-#define GtkNotebook_val(val) ((GtkNotebook*)ext_of_val(val))
-#define Val_GtkNotebook(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkNotebook */
-
 
 CAMLexport CAMLprim value ml_gtk_notebook_new(value unit)
 {

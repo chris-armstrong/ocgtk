@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkAdjustment */
-#ifndef Val_GtkAdjustment
-#define GtkAdjustment_val(val) ((GtkAdjustment*)ext_of_val(val))
-#define Val_GtkAdjustment(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkAdjustment */
-
 
 CAMLexport CAMLprim value ml_gtk_adjustment_new_native(value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
 {

@@ -21,9 +21,3 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDBusActionGroup */
-#ifndef Val_GDBusActionGroup
-#define GDBusActionGroup_val(val) ((GDBusActionGroup*)ext_of_val(val))
-#define Val_GDBusActionGroup(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusActionGroup */
-

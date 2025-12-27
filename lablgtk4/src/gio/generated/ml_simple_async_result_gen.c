@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GSimpleAsyncResult */
-#ifndef Val_GSimpleAsyncResult
-#define GSimpleAsyncResult_val(val) ((GSimpleAsyncResult*)ext_of_val(val))
-#define Val_GSimpleAsyncResult(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSimpleAsyncResult */
-
 
 CAMLexport CAMLprim value ml_g_simple_async_result_new(value arg1, value arg2, value arg3, value arg4)
 {

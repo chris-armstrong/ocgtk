@@ -3,6 +3,7 @@ class desktop_app_info : Desktop_app_info.t ->
     method get_action_name : string -> string
     method get_boolean : string -> bool
     method get_categories : unit -> string option
+    method get_filename : unit -> string option
     method get_generic_name : unit -> string option
     method get_is_hidden : unit -> bool
     method get_locale_string : string -> string option

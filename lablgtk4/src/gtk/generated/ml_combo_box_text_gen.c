@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkComboBoxText */
-#ifndef Val_GtkComboBoxText
-#define GtkComboBoxText_val(val) ((GtkComboBoxText*)ext_of_val(val))
-#define Val_GtkComboBoxText(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkComboBoxText */
-
 
 CAMLexport CAMLprim value ml_gtk_combo_box_text_new(value unit)
 {

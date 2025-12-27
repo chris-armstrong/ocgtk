@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkSearchEntry */
-#ifndef Val_GtkSearchEntry
-#define GtkSearchEntry_val(val) ((GtkSearchEntry*)ext_of_val(val))
-#define Val_GtkSearchEntry(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkSearchEntry */
-
 
 CAMLexport CAMLprim value ml_gtk_search_entry_new(value unit)
 {

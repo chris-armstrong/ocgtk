@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkStackPage */
-#ifndef Val_GtkStackPage
-#define GtkStackPage_val(val) ((GtkStackPage*)ext_of_val(val))
-#define Val_GtkStackPage(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkStackPage */
-
 
 CAMLexport CAMLprim value ml_gtk_stack_page_set_visible(value self, value arg1)
 {

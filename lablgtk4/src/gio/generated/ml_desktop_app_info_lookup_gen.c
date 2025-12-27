@@ -21,9 +21,11 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDesktopAppInfoLookup */
-#ifndef Val_GDesktopAppInfoLookup
-#define GDesktopAppInfoLookup_val(val) ((GDesktopAppInfoLookup*)ext_of_val(val))
-#define Val_GDesktopAppInfoLookup(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDesktopAppInfoLookup */
 
+CAMLexport CAMLprim value ml_g_desktop_app_info_lookup_get_default_for_uri_scheme(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GAppInfo* result = g_desktop_app_info_lookup_get_default_for_uri_scheme(GDesktopAppInfoLookup_val(self), String_val(arg1));
+CAMLreturn(Val_option(result, Val_GAppInfo));
+}

@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkNativeDialog */
-#ifndef Val_GtkNativeDialog
-#define GtkNativeDialog_val(val) ((GtkNativeDialog*)ext_of_val(val))
-#define Val_GtkNativeDialog(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkNativeDialog */
-
 
 CAMLexport CAMLprim value ml_gtk_native_dialog_show(value self)
 {

@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GZlibCompressor */
-#ifndef Val_GZlibCompressor
-#define GZlibCompressor_val(val) ((GZlibCompressor*)ext_of_val(val))
-#define Val_GZlibCompressor(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GZlibCompressor */
-
 
 CAMLexport CAMLprim value ml_g_zlib_compressor_new(value arg1, value arg2)
 {

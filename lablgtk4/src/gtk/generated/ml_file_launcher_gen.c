@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkFileLauncher */
-#ifndef Val_GtkFileLauncher
-#define GtkFileLauncher_val(val) ((GtkFileLauncher*)ext_of_val(val))
-#define Val_GtkFileLauncher(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkFileLauncher */
-
 
 CAMLexport CAMLprim value ml_gtk_file_launcher_new(value arg1)
 {

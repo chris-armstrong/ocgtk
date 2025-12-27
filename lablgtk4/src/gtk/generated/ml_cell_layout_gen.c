@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkCellLayout */
-#ifndef Val_GtkCellLayout
-#define GtkCellLayout_val(val) ((GtkCellLayout*)ext_of_val(val))
-#define Val_GtkCellLayout(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkCellLayout */
-
 
 CAMLexport CAMLprim value ml_gtk_cell_layout_reorder(value self, value arg1, value arg2)
 {

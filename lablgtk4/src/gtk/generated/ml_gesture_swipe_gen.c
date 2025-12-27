@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkGestureSwipe */
-#ifndef Val_GtkGestureSwipe
-#define GtkGestureSwipe_val(val) ((GtkGestureSwipe*)ext_of_val(val))
-#define Val_GtkGestureSwipe(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkGestureSwipe */
-
 
 CAMLexport CAMLprim value ml_gtk_gesture_swipe_new(value unit)
 {

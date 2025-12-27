@@ -26,6 +26,10 @@ class file_info (obj : File_info.t) = object (self)
     fun attribute ->
       (File_info.get_attribute_byte_string obj attribute)
 
+  method get_attribute_file_path : string -> string option =
+    fun attribute ->
+      (File_info.get_attribute_file_path obj attribute)
+
   method get_attribute_status : string -> Gio_enums.fileattributestatus =
     fun attribute ->
       (File_info.get_attribute_status obj attribute)
@@ -58,6 +62,10 @@ class file_info (obj : File_info.t) = object (self)
     fun () ->
       (File_info.get_file_type obj)
 
+  method get_icon : unit -> GIcon.icon option =
+    fun () ->
+      Option.map (fun ret -> new GIcon.icon ret) (File_info.get_icon obj)
+
   method get_is_backup : unit -> bool =
     fun () ->
       (File_info.get_is_backup obj)
@@ -69,6 +77,18 @@ class file_info (obj : File_info.t) = object (self)
   method get_is_symlink : unit -> bool =
     fun () ->
       (File_info.get_is_symlink obj)
+
+  method get_name : unit -> string =
+    fun () ->
+      (File_info.get_name obj)
+
+  method get_symbolic_icon : unit -> GIcon.icon option =
+    fun () ->
+      Option.map (fun ret -> new GIcon.icon ret) (File_info.get_symbolic_icon obj)
+
+  method get_symlink_target : unit -> string option =
+    fun () ->
+      (File_info.get_symlink_target obj)
 
   method has_attribute : string -> bool =
     fun attribute ->
@@ -89,6 +109,10 @@ class file_info (obj : File_info.t) = object (self)
   method set_attribute_byte_string : string -> string -> unit =
     fun attribute attr_value ->
       (File_info.set_attribute_byte_string obj attribute attr_value)
+
+  method set_attribute_file_path : string -> string -> unit =
+    fun attribute attr_value ->
+      (File_info.set_attribute_file_path obj attribute attr_value)
 
   method set_attribute_mask : File_attribute_matcher.t -> unit =
     fun mask ->
@@ -125,6 +149,14 @@ class file_info (obj : File_info.t) = object (self)
   method set_is_symlink : bool -> unit =
     fun is_symlink ->
       (File_info.set_is_symlink obj is_symlink)
+
+  method set_name : string -> unit =
+    fun name ->
+      (File_info.set_name obj name)
+
+  method set_symlink_target : string -> unit =
+    fun symlink_target ->
+      (File_info.set_symlink_target obj symlink_target)
 
   method unset_attribute_mask : unit -> unit =
     fun () ->

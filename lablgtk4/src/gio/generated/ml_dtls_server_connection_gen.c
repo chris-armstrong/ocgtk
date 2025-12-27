@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDtlsServerConnection */
-#ifndef Val_GDtlsServerConnection
-#define GDtlsServerConnection_val(val) ((GDtlsServerConnection*)ext_of_val(val))
-#define Val_GDtlsServerConnection(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDtlsServerConnection */
-
 
 CAMLexport CAMLprim value ml_gtk_dtls_server_connection_get_authentication_mode(value self)
 {

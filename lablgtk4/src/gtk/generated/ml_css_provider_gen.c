@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkCssProvider */
-#ifndef Val_GtkCssProvider
-#define GtkCssProvider_val(val) ((GtkCssProvider*)ext_of_val(val))
-#define Val_GtkCssProvider(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkCssProvider */
-
 
 CAMLexport CAMLprim value ml_gtk_css_provider_new(value unit)
 {

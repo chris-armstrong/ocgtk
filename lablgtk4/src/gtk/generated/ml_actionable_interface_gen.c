@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkActionableInterface */
-#ifndef Val_GtkActionableInterface
-#define GtkActionableInterface_val(val) ((GtkActionableInterface*)ext_of_val(val))
-#define Val_GtkActionableInterface(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkActionableInterface */
+/* Conversion functions for GtkActionableInterface (non-opaque record with fields) */
+GtkActionableInterface *GtkActionableInterface_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkActionableInterface **)Data_custom_val(v);
+  } else {
+    return (GtkActionableInterface*)ml_gir_record_ptr_val(v, "GtkActionableInterface");
+  }
+}
+
+value Val_GtkActionableInterface(GtkActionableInterface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkActionableInterface), "GtkActionableInterface", NULL);
+}
+
+value Val_GtkActionableInterface_option(GtkActionableInterface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkActionableInterface(ptr));
+}
 

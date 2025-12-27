@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkStackSidebar */
-#ifndef Val_GtkStackSidebar
-#define GtkStackSidebar_val(val) ((GtkStackSidebar*)ext_of_val(val))
-#define Val_GtkStackSidebar(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkStackSidebar */
-
 
 CAMLexport CAMLprim value ml_gtk_stack_sidebar_new(value unit)
 {

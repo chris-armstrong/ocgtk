@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkInscription */
-#ifndef Val_GtkInscription
-#define GtkInscription_val(val) ((GtkInscription*)ext_of_val(val))
-#define Val_GtkInscription(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkInscription */
-
 
 CAMLexport CAMLprim value ml_gtk_inscription_new(value arg1)
 {

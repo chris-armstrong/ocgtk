@@ -8,6 +8,10 @@ class settings (obj : Settings.t) = object (self)
     fun () ->
       (Settings.apply obj)
 
+  method create_action : string -> GAction.action =
+    fun key ->
+      new  GAction.action(Settings.create_action obj key)
+
   method delay : unit -> unit =
     fun () ->
       (Settings.delay obj)

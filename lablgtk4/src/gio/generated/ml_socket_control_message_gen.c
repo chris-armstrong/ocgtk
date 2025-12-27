@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GSocketControlMessage */
-#ifndef Val_GSocketControlMessage
-#define GSocketControlMessage_val(val) ((GSocketControlMessage*)ext_of_val(val))
-#define Val_GSocketControlMessage(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSocketControlMessage */
-
 
 CAMLexport CAMLprim value ml_g_socket_control_message_get_msg_type(value self)
 {

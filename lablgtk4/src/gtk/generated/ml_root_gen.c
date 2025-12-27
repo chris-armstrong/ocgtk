@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkRoot */
-#ifndef Val_GtkRoot
-#define GtkRoot_val(val) ((GtkRoot*)ext_of_val(val))
-#define Val_GtkRoot(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkRoot */
-
 
 CAMLexport CAMLprim value ml_gtk_root_set_focus(value self, value arg1)
 {

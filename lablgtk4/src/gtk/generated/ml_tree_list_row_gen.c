@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkTreeListRow */
-#ifndef Val_GtkTreeListRow
-#define GtkTreeListRow_val(val) ((GtkTreeListRow*)ext_of_val(val))
-#define Val_GtkTreeListRow(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTreeListRow */
-
 
 CAMLexport CAMLprim value ml_gtk_tree_list_row_set_expanded(value self, value arg1)
 {

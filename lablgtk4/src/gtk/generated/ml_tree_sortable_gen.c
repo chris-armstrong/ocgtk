@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkTreeSortable */
-#ifndef Val_GtkTreeSortable
-#define GtkTreeSortable_val(val) ((GtkTreeSortable*)ext_of_val(val))
-#define Val_GtkTreeSortable(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTreeSortable */
-
 
 CAMLexport CAMLprim value ml_gtk_tree_sortable_sort_column_changed(value self)
 {

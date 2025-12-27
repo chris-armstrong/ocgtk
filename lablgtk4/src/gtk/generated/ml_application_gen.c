@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkApplication */
-#ifndef Val_GtkApplication
-#define GtkApplication_val(val) ((GtkApplication*)ext_of_val(val))
-#define Val_GtkApplication(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkApplication */
-
 
 CAMLexport CAMLprim value ml_gtk_application_new(value arg1, value arg2)
 {

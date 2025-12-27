@@ -19,9 +19,17 @@ class d_bus_connection (obj : D_bus_connection.t) = object (self)
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (D_bus_connection.flush_sync obj cancellable)
 
+  method get_capabilities : unit -> Gio_enums.dbuscapabilityflags =
+    fun () ->
+      (D_bus_connection.get_capabilities obj)
+
   method get_exit_on_close : unit -> bool =
     fun () ->
       (D_bus_connection.get_exit_on_close obj)
+
+  method get_flags : unit -> Gio_enums.dbusconnectionflags =
+    fun () ->
+      (D_bus_connection.get_flags obj)
 
   method get_guid : unit -> string =
     fun () ->

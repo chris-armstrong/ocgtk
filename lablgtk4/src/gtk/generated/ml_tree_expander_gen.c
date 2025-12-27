@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkTreeExpander */
-#ifndef Val_GtkTreeExpander
-#define GtkTreeExpander_val(val) ((GtkTreeExpander*)ext_of_val(val))
-#define Val_GtkTreeExpander(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTreeExpander */
-
 
 CAMLexport CAMLprim value ml_gtk_tree_expander_new(value unit)
 {

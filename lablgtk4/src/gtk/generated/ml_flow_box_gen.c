@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkFlowBox */
-#ifndef Val_GtkFlowBox
-#define GtkFlowBox_val(val) ((GtkFlowBox*)ext_of_val(val))
-#define Val_GtkFlowBox(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkFlowBox */
-
 
 CAMLexport CAMLprim value ml_gtk_flow_box_new(value unit)
 {

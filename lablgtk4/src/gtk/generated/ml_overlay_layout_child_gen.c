@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkOverlayLayoutChild */
-#ifndef Val_GtkOverlayLayoutChild
-#define GtkOverlayLayoutChild_val(val) ((GtkOverlayLayoutChild*)ext_of_val(val))
-#define Val_GtkOverlayLayoutChild(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkOverlayLayoutChild */
-
 
 CAMLexport CAMLprim value ml_gtk_overlay_layout_child_set_measure(value self, value arg1)
 {

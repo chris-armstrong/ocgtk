@@ -4,7 +4,7 @@
 type t = [`test_d_bus | `object_] Gobject.obj
 
 (** Create a new TestDBus *)
-external new_ : unit -> t = "ml_g_test_dbus_new"
+external new_ : Gio_enums.testdbusflags -> t = "ml_g_test_dbus_new"
 
 (* Methods *)
 (** Start a dbus-daemon instance and set DBUS_SESSION_BUS_ADDRESS. After this
@@ -24,6 +24,9 @@ singleton returned by g_bus_get() or g_bus_get_sync() is destroyed. Unit
 tests wanting to verify behaviour after the session bus has been stopped
 can use this function but should still call g_test_dbus_down() when done. *)
 external stop : t -> unit = "ml_g_test_dbus_stop"
+
+(** Get the flags of the #GTestDBus object. *)
+external get_flags : t -> Gio_enums.testdbusflags = "ml_g_test_dbus_get_flags"
 
 (** Get the address on which dbus-daemon is running. If g_test_dbus_up() has not
 been called yet, %NULL is returned. This can be used with

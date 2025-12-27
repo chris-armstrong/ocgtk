@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkAssistant */
-#ifndef Val_GtkAssistant
-#define GtkAssistant_val(val) ((GtkAssistant*)ext_of_val(val))
-#define Val_GtkAssistant(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkAssistant */
-
 
 CAMLexport CAMLprim value ml_gtk_assistant_new(value unit)
 {

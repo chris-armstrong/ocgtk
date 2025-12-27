@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDBusObjectManager */
-#ifndef Val_GDBusObjectManager
-#define GDBusObjectManager_val(val) ((GDBusObjectManager*)ext_of_val(val))
-#define Val_GDBusObjectManager(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusObjectManager */
-
 
 CAMLexport CAMLprim value ml_g_dbus_object_manager_get_object_path(value self)
 {
@@ -34,4 +28,20 @@ CAMLparam1(self);
 
 const gchar* result = g_dbus_object_manager_get_object_path(GDBusObjectManager_val(self));
 CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_g_dbus_object_manager_get_object(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GDBusObject* result = g_dbus_object_manager_get_object(GDBusObjectManager_val(self), String_val(arg1));
+CAMLreturn(Val_option(result, Val_GDBusObject));
+}
+
+CAMLexport CAMLprim value ml_g_dbus_object_manager_get_interface(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+GDBusInterface* result = g_dbus_object_manager_get_interface(GDBusObjectManager_val(self), String_val(arg1), String_val(arg2));
+CAMLreturn(Val_option(result, Val_GDBusInterface));
 }

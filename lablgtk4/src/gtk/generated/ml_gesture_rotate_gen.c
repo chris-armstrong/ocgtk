@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkGestureRotate */
-#ifndef Val_GtkGestureRotate
-#define GtkGestureRotate_val(val) ((GtkGestureRotate*)ext_of_val(val))
-#define Val_GtkGestureRotate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkGestureRotate */
-
 
 CAMLexport CAMLprim value ml_gtk_gesture_rotate_new(value unit)
 {

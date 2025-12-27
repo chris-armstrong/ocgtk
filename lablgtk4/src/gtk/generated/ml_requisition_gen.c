@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkRequisition */
-#ifndef Val_GtkRequisition
-#define GtkRequisition_val(val) ((GtkRequisition*)ext_of_val(val))
-#define Val_GtkRequisition(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkRequisition */
-
 
 CAMLexport CAMLprim value ml_gtk_requisition_new(value unit)
 {

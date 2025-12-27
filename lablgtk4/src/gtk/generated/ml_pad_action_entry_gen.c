@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkPadActionEntry */
-#ifndef Val_GtkPadActionEntry
-#define GtkPadActionEntry_val(val) ((GtkPadActionEntry*)ext_of_val(val))
-#define Val_GtkPadActionEntry(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkPadActionEntry */
+/* Conversion functions for GtkPadActionEntry (non-opaque record with fields) */
+GtkPadActionEntry *GtkPadActionEntry_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkPadActionEntry **)Data_custom_val(v);
+  } else {
+    return (GtkPadActionEntry*)ml_gir_record_ptr_val(v, "GtkPadActionEntry");
+  }
+}
+
+value Val_GtkPadActionEntry(GtkPadActionEntry *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkPadActionEntry), "GtkPadActionEntry", NULL);
+}
+
+value Val_GtkPadActionEntry_option(GtkPadActionEntry *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkPadActionEntry(ptr));
+}
 

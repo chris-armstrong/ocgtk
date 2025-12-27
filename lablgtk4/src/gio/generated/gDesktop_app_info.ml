@@ -13,6 +13,10 @@ class desktop_app_info (obj : Desktop_app_info.t) = object (self)
     fun () ->
       (Desktop_app_info.get_categories obj)
 
+  method get_filename : unit -> string option =
+    fun () ->
+      (Desktop_app_info.get_filename obj)
+
   method get_generic_name : unit -> string option =
     fun () ->
       (Desktop_app_info.get_generic_name obj)

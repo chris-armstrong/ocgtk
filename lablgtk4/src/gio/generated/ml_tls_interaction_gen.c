@@ -21,12 +21,15 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GTlsInteraction */
-#ifndef Val_GTlsInteraction
-#define GTlsInteraction_val(val) ((GTlsInteraction*)ext_of_val(val))
-#define Val_GTlsInteraction(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GTlsInteraction */
 
+CAMLexport CAMLprim value ml_g_tls_interaction_request_certificate_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GTlsInteractionResult result = g_tls_interaction_request_certificate_finish(GTlsInteraction_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GioTlsInteractionResult(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 
 CAMLexport CAMLprim value ml_g_tls_interaction_request_certificate(value self, value arg1, value arg2, value arg3)
 {
@@ -52,6 +55,15 @@ CAMLparam3(self, arg1, arg2);
 GError *error = NULL;
 
 GTlsInteractionResult result = g_tls_interaction_invoke_ask_password(GTlsInteraction_val(self), GTlsPassword_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GioTlsInteractionResult(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_tls_interaction_ask_password_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GTlsInteractionResult result = g_tls_interaction_ask_password_finish(GTlsInteraction_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GioTlsInteractionResult(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 

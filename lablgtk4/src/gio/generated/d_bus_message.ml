@@ -53,6 +53,9 @@ external set_member : t -> string option -> unit = "ml_g_dbus_message_set_member
 (** Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field. *)
 external set_interface : t -> string option -> unit = "ml_g_dbus_message_set_interface"
 
+(** Sets the flags to set on @message. *)
+external set_flags : t -> Gio_enums.dbusmessageflags -> unit = "ml_g_dbus_message_set_flags"
+
 (** Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field. *)
 external set_error_name : t -> string -> unit = "ml_g_dbus_message_set_error_name"
 
@@ -140,6 +143,9 @@ external get_locked : t -> bool = "ml_g_dbus_message_get_locked"
 
 (** Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field. *)
 external get_interface : t -> string option = "ml_g_dbus_message_get_interface"
+
+(** Gets the flags for @message. *)
+external get_flags : t -> Gio_enums.dbusmessageflags = "ml_g_dbus_message_get_flags"
 
 (** Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field. *)
 external get_error_name : t -> string option = "ml_g_dbus_message_get_error_name"

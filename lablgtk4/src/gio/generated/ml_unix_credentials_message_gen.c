@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GUnixCredentialsMessage */
-#ifndef Val_GUnixCredentialsMessage
-#define GUnixCredentialsMessage_val(val) ((GUnixCredentialsMessage*)ext_of_val(val))
-#define Val_GUnixCredentialsMessage(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GUnixCredentialsMessage */
-
 
 CAMLexport CAMLprim value ml_g_unix_credentials_message_new(value unit)
 {

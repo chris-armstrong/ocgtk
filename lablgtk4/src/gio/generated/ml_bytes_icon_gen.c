@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GBytesIcon */
-#ifndef Val_GBytesIcon
-#define GBytesIcon_val(val) ((GBytesIcon*)ext_of_val(val))
-#define Val_GBytesIcon(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GBytesIcon */
-
 
 CAMLexport CAMLprim value ml_g_bytes_icon_new(value arg1)
 {

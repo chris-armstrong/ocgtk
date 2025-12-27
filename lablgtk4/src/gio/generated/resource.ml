@@ -175,6 +175,12 @@ external unref : t -> unit = "ml_g_resource_unref"
 function is MT-safe and may be called from any thread. *)
 external ref : t -> t = "ml_g_resource_ref"
 
+(** Looks for a file at the specified @path in the resource and
+returns a #GInputStream that lets you read the data.
+
+@lookup_flags controls the behaviour of the lookup. *)
+external open_stream : t -> string -> Gio_enums.resourcelookupflags -> (Input_stream.t, GError.t) result = "ml_g_resource_open_stream"
+
 (** Unregisters the resource from the process-global set of resources. *)
 external _unregister : t -> unit = "ml_g_resources_unregister"
 

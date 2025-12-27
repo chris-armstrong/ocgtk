@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkSelectionFilterModel */
-#ifndef Val_GtkSelectionFilterModel
-#define GtkSelectionFilterModel_val(val) ((GtkSelectionFilterModel*)ext_of_val(val))
-#define Val_GtkSelectionFilterModel(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkSelectionFilterModel */
-
 
 CAMLexport CAMLprim value ml_gtk_selection_filter_model_new(value arg1)
 {

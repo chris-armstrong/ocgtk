@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GMemoryInputStream */
-#ifndef Val_GMemoryInputStream
-#define GMemoryInputStream_val(val) ((GMemoryInputStream*)ext_of_val(val))
-#define Val_GMemoryInputStream(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GMemoryInputStream */
-
 
 CAMLexport CAMLprim value ml_g_memory_input_stream_new(value unit)
 {

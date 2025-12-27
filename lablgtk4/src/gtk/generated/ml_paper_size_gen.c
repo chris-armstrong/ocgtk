@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkPaperSize */
-#ifndef Val_GtkPaperSize
-#define GtkPaperSize_val(val) ((GtkPaperSize*)ext_of_val(val))
-#define Val_GtkPaperSize(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkPaperSize */
-
 
 CAMLexport CAMLprim value ml_gtk_paper_size_new(value arg1)
 {

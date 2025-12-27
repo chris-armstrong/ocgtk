@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkTextTag */
-#ifndef Val_GtkTextTag
-#define GtkTextTag_val(val) ((GtkTextTag*)ext_of_val(val))
-#define Val_GtkTextTag(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTextTag */
-
 
 CAMLexport CAMLprim value ml_gtk_text_tag_new(value arg1)
 {

@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkScrollableInterface */
-#ifndef Val_GtkScrollableInterface
-#define GtkScrollableInterface_val(val) ((GtkScrollableInterface*)ext_of_val(val))
-#define Val_GtkScrollableInterface(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkScrollableInterface */
+/* Conversion functions for GtkScrollableInterface (non-opaque record with fields) */
+GtkScrollableInterface *GtkScrollableInterface_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkScrollableInterface **)Data_custom_val(v);
+  } else {
+    return (GtkScrollableInterface*)ml_gir_record_ptr_val(v, "GtkScrollableInterface");
+  }
+}
+
+value Val_GtkScrollableInterface(GtkScrollableInterface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkScrollableInterface), "GtkScrollableInterface", NULL);
+}
+
+value Val_GtkScrollableInterface_option(GtkScrollableInterface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkScrollableInterface(ptr));
+}
 

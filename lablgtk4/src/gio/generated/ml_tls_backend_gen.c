@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GTlsBackend */
-#ifndef Val_GTlsBackend
-#define GTlsBackend_val(val) ((GTlsBackend*)ext_of_val(val))
-#define Val_GTlsBackend(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GTlsBackend */
-
 
 CAMLexport CAMLprim value ml_g_tls_backend_supports_tls(value self)
 {

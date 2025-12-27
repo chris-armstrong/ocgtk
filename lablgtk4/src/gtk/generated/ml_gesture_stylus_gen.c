@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkGestureStylus */
-#ifndef Val_GtkGestureStylus
-#define GtkGestureStylus_val(val) ((GtkGestureStylus*)ext_of_val(val))
-#define Val_GtkGestureStylus(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkGestureStylus */
-
 
 CAMLexport CAMLprim value ml_gtk_gesture_stylus_new(value unit)
 {

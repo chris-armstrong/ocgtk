@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkAlternativeTrigger */
-#ifndef Val_GtkAlternativeTrigger
-#define GtkAlternativeTrigger_val(val) ((GtkAlternativeTrigger*)ext_of_val(val))
-#define Val_GtkAlternativeTrigger(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkAlternativeTrigger */
-
 
 CAMLexport CAMLprim value ml_gtk_alternative_trigger_new(value arg1, value arg2)
 {

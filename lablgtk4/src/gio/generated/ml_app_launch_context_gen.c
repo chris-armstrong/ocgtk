@@ -21,18 +21,28 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GAppLaunchContext */
-#ifndef Val_GAppLaunchContext
-#define GAppLaunchContext_val(val) ((GAppLaunchContext*)ext_of_val(val))
-#define Val_GAppLaunchContext(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GAppLaunchContext */
-
 
 CAMLexport CAMLprim value ml_g_app_launch_context_new(value unit)
 {
 CAMLparam1(unit);
 GAppLaunchContext *obj = g_app_launch_context_new();
 CAMLreturn(Val_GAppLaunchContext(obj));
+}
+
+CAMLexport CAMLprim value ml_g_app_launch_context_unsetenv(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_app_launch_context_unsetenv(GAppLaunchContext_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_app_launch_context_setenv(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+g_app_launch_context_setenv(GAppLaunchContext_val(self), String_val(arg1), String_val(arg2));
+CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_g_app_launch_context_launch_failed(value self, value arg1)

@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GInetAddress */
-#ifndef Val_GInetAddress
-#define GInetAddress_val(val) ((GInetAddress*)ext_of_val(val))
-#define Val_GInetAddress(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GInetAddress */
-
 
 CAMLexport CAMLprim value ml_g_inet_address_new_any(value arg1)
 {

@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkTreeRowReference */
-#ifndef Val_GtkTreeRowReference
-#define GtkTreeRowReference_val(val) ((GtkTreeRowReference*)ext_of_val(val))
-#define Val_GtkTreeRowReference(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTreeRowReference */
-
 
 CAMLexport CAMLprim value ml_gtk_tree_row_reference_new(value arg1, value arg2)
 {

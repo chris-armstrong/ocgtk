@@ -11,6 +11,18 @@ external new_ : unit -> t = "ml_g_file_info_new"
 is set. *)
 external unset_attribute_mask : t -> unit = "ml_g_file_info_unset_attribute_mask"
 
+(** Sets the %G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET attribute in the file info
+to the given symlink target. *)
+external set_symlink_target : t -> string -> unit = "ml_g_file_info_set_symlink_target"
+
+(** Sets the symbolic icon for a given #GFileInfo.
+See %G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON. *)
+external set_symbolic_icon : t -> Icon.t -> unit = "ml_g_file_info_set_symbolic_icon"
+
+(** Sets the name attribute for the current #GFileInfo.
+See %G_FILE_ATTRIBUTE_STANDARD_NAME. *)
+external set_name : t -> string -> unit = "ml_g_file_info_set_name"
+
 (** Sets the "is_symlink" attribute in a #GFileInfo according to @is_symlink.
 See %G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK. *)
 external set_is_symlink : t -> bool -> unit = "ml_g_file_info_set_is_symlink"
@@ -18,6 +30,10 @@ external set_is_symlink : t -> bool -> unit = "ml_g_file_info_set_is_symlink"
 (** Sets the "is_hidden" attribute in a #GFileInfo according to @is_hidden.
 See %G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN. *)
 external set_is_hidden : t -> bool -> unit = "ml_g_file_info_set_is_hidden"
+
+(** Sets the icon for a given #GFileInfo.
+See %G_FILE_ATTRIBUTE_STANDARD_ICON. *)
+external set_icon : t -> Icon.t -> unit = "ml_g_file_info_set_icon"
 
 (** Sets the file type in a #GFileInfo to @type.
 See %G_FILE_ATTRIBUTE_STANDARD_TYPE. *)
@@ -51,6 +67,13 @@ external set_attribute_status : t -> string -> Gio_enums.fileattributestatus -> 
 external set_attribute_mask : t -> File_attribute_matcher.t -> unit = "ml_g_file_info_set_attribute_mask"
 
 (** Sets the @attribute to contain the given @attr_value,
+if possible.
+
+This function is meant to be used by language bindings that have specific
+handling for Unix paths. *)
+external set_attribute_file_path : t -> string -> string -> unit = "ml_g_file_info_set_attribute_file_path"
+
+(** Sets the @attribute to contain the given @attr_value,
 if possible. *)
 external set_attribute_byte_string : t -> string -> string -> unit = "ml_g_file_info_set_attribute_byte_string"
 
@@ -67,6 +90,24 @@ external has_namespace : t -> string -> bool = "ml_g_file_info_has_namespace"
 
 (** Checks if a file info structure has an attribute named @attribute. *)
 external has_attribute : t -> string -> bool = "ml_g_file_info_has_attribute"
+
+(** Gets the symlink target for a given #GFileInfo.
+
+It is an error to call this if the #GFileInfo does not contain
+%G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET. *)
+external get_symlink_target : t -> string option = "ml_g_file_info_get_symlink_target"
+
+(** Gets the symbolic icon for a file.
+
+It is an error to call this if the #GFileInfo does not contain
+%G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON. *)
+external get_symbolic_icon : t -> Icon.t option = "ml_g_file_info_get_symbolic_icon"
+
+(** Gets the name for a file. This is guaranteed to always be set.
+
+It is an error to call this if the #GFileInfo does not contain
+%G_FILE_ATTRIBUTE_STANDARD_NAME. *)
+external get_name : t -> string = "ml_g_file_info_get_name"
 
 (** Checks if a file is a symlink.
 
@@ -85,6 +126,12 @@ external get_is_hidden : t -> bool = "ml_g_file_info_get_is_hidden"
 It is an error to call this if the #GFileInfo does not contain
 %G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP. *)
 external get_is_backup : t -> bool = "ml_g_file_info_get_is_backup"
+
+(** Gets the icon for a file.
+
+It is an error to call this if the #GFileInfo does not contain
+%G_FILE_ATTRIBUTE_STANDARD_ICON. *)
+external get_icon : t -> Icon.t option = "ml_g_file_info_get_icon"
 
 (** Gets a file's type (whether it is a regular file, symlink, etc).
 This is different from the file's content type, see g_file_info_get_content_type().
@@ -127,6 +174,14 @@ external get_attribute_string : t -> string -> string option = "ml_g_file_info_g
 
 (** Gets the attribute status for an attribute key. *)
 external get_attribute_status : t -> string -> Gio_enums.fileattributestatus = "ml_g_file_info_get_attribute_status"
+
+(** Gets the value of a byte string attribute as a file path.
+
+If the attribute does not contain a byte string, `NULL` will be returned.
+
+This function is meant to be used by language bindings that have specific
+handling for Unix paths. *)
+external get_attribute_file_path : t -> string -> string option = "ml_g_file_info_get_attribute_file_path"
 
 (** Gets the value of a byte string attribute. If the attribute does
 not contain a byte string, %NULL will be returned. *)

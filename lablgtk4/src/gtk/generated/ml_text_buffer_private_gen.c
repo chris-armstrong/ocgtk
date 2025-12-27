@@ -16,9 +16,3 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkTextBufferPrivate */
-#ifndef Val_GtkTextBufferPrivate
-#define GtkTextBufferPrivate_val(val) ((GtkTextBufferPrivate*)ext_of_val(val))
-#define Val_GtkTextBufferPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTextBufferPrivate */
-

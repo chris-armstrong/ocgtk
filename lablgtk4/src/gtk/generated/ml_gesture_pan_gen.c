@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkGesturePan */
-#ifndef Val_GtkGesturePan
-#define GtkGesturePan_val(val) ((GtkGesturePan*)ext_of_val(val))
-#define Val_GtkGesturePan(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkGesturePan */
-
 
 CAMLexport CAMLprim value ml_gtk_gesture_pan_new(value arg1)
 {

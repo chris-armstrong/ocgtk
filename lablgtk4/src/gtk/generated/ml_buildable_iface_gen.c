@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkBuildableIface */
-#ifndef Val_GtkBuildableIface
-#define GtkBuildableIface_val(val) ((GtkBuildableIface*)ext_of_val(val))
-#define Val_GtkBuildableIface(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkBuildableIface */
+/* Conversion functions for GtkBuildableIface (non-opaque record with fields) */
+GtkBuildableIface *GtkBuildableIface_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkBuildableIface **)Data_custom_val(v);
+  } else {
+    return (GtkBuildableIface*)ml_gir_record_ptr_val(v, "GtkBuildableIface");
+  }
+}
+
+value Val_GtkBuildableIface(GtkBuildableIface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkBuildableIface), "GtkBuildableIface", NULL);
+}
+
+value Val_GtkBuildableIface_option(GtkBuildableIface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkBuildableIface(ptr));
+}
 

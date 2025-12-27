@@ -58,6 +58,18 @@ bus connection, you should make sure that your application exits
 when the user session ends. *)
 external set_exit_on_close : t -> bool -> unit = "ml_g_dbus_connection_set_exit_on_close"
 
+(** Finishes an operation started with g_dbus_connection_send_message_with_reply().
+
+Note that @error is only set if a local in-process error
+occurred. That is to say that the returned #GDBusMessage object may
+be of type %G_DBUS_MESSAGE_TYPE_ERROR. Use
+g_dbus_message_to_gerror() to transcode this to a #GError.
+
+See this [server][gdbus-server] and [client][gdbus-unix-fd-client]
+for an example of how to use this low-level API to send and receive
+UNIX file descriptors. *)
+external send_message_with_reply_finish : t -> Async_result.t -> (D_bus_message.t, GError.t) result = "ml_g_dbus_connection_send_message_with_reply_finish"
+
 (** Removes a filter.
 
 Note that since filters run in a different thread, there is a race
@@ -98,16 +110,25 @@ external get_peer_credentials : t -> Credentials.t option = "ml_g_dbus_connectio
 authenticating. See #GDBusConnection:guid for more details. *)
 external get_guid : t -> string = "ml_g_dbus_connection_get_guid"
 
+(** Gets the flags used to construct this connection *)
+external get_flags : t -> Gio_enums.dbusconnectionflags = "ml_g_dbus_connection_get_flags"
+
 (** Gets whether the process is terminated when @connection is
 closed by the remote peer. See
 #GDBusConnection:exit-on-close for more details. *)
 external get_exit_on_close : t -> bool = "ml_g_dbus_connection_get_exit_on_close"
+
+(** Gets the capabilities negotiated with the remote peer *)
+external get_capabilities : t -> Gio_enums.dbuscapabilityflags = "ml_g_dbus_connection_get_capabilities"
 
 (** Synchronously flushes @connection. The calling thread is blocked
 until this is done. See g_dbus_connection_flush() for the
 asynchronous version of this method and more details about what it
 does. *)
 external flush_sync : t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_dbus_connection_flush_sync"
+
+(** Finishes an operation started with g_dbus_connection_flush(). *)
+external flush_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_dbus_connection_flush_finish"
 
 (** Exports @menu on @connection at @object_path.
 
@@ -127,11 +148,37 @@ g_dbus_connection_unexport_menu_model() with the return value of
 this function. *)
 external export_menu_model : t -> string -> Menu_link_iter_and__menu_model.Menu_model.t -> (int, GError.t) result = "ml_g_dbus_connection_export_menu_model"
 
+(** Exports @action_group on @connection at @object_path.
+
+The implemented D-Bus API should be considered private.  It is
+subject to change in the future.
+
+A given object path can only have one action group exported on it.
+If this constraint is violated, the export will fail and 0 will be
+returned (with @error set accordingly).
+
+You can unexport the action group using
+g_dbus_connection_unexport_action_group() with the return value of
+this function.
+
+The thread default main context is taken at the time of this call.
+All incoming action activations and state change requests are
+reported from this context.  Any changes on the action group that
+cause it to emit signals must also come from this same context.
+Since incoming action activations and state change requests are
+rather likely to cause changes on the action group, this effectively
+limits a given action group to being exported from only one main
+context. *)
+external export_action_group : t -> string -> Action_group.t -> (int, GError.t) result = "ml_g_dbus_connection_export_action_group"
+
 (** Synchronously closes @connection. The calling thread is blocked
 until this is done. See g_dbus_connection_close() for the
 asynchronous version of this method and more details about what it
 does. *)
 external close_sync : t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_dbus_connection_close_sync"
+
+(** Finishes an operation started with g_dbus_connection_close(). *)
+external close_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_dbus_connection_close_finish"
 
 (* Properties *)
 

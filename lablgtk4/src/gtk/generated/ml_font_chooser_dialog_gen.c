@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkFontChooserDialog */
-#ifndef Val_GtkFontChooserDialog
-#define GtkFontChooserDialog_val(val) ((GtkFontChooserDialog*)ext_of_val(val))
-#define Val_GtkFontChooserDialog(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkFontChooserDialog */
-
 
 CAMLexport CAMLprim value ml_gtk_font_chooser_dialog_new(value arg1, value arg2)
 {

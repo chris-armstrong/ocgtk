@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkMultiSorter */
-#ifndef Val_GtkMultiSorter
-#define GtkMultiSorter_val(val) ((GtkMultiSorter*)ext_of_val(val))
-#define Val_GtkMultiSorter(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkMultiSorter */
-
 
 CAMLexport CAMLprim value ml_gtk_multi_sorter_new(value unit)
 {

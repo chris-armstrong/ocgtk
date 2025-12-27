@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDBusObjectManagerClient */
-#ifndef Val_GDBusObjectManagerClient
-#define GDBusObjectManagerClient_val(val) ((GDBusObjectManagerClient*)ext_of_val(val))
-#define Val_GDBusObjectManagerClient(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusObjectManagerClient */
-
 
 CAMLexport CAMLprim value ml_g_dbus_object_manager_client_get_name_owner(value self)
 {
@@ -42,6 +36,14 @@ CAMLparam1(self);
 
 const gchar* result = g_dbus_object_manager_client_get_name(GDBusObjectManagerClient_val(self));
 CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_g_dbus_object_manager_client_get_flags(value self)
+{
+CAMLparam1(self);
+
+GDBusObjectManagerClientFlags result = g_dbus_object_manager_client_get_flags(GDBusObjectManagerClient_val(self));
+CAMLreturn(Val_GioDBusObjectManagerClientFlags(result));
 }
 
 CAMLexport CAMLprim value ml_g_dbus_object_manager_client_get_connection(value self)

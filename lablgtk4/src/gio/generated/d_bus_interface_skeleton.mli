@@ -16,6 +16,9 @@ To unexport @interface_ from only a single connection, use
 g_dbus_interface_skeleton_unexport_from_connection() *)
 external unexport : t -> unit = "ml_g_dbus_interface_skeleton_unexport"
 
+(** Sets flags describing what the behavior of @skeleton should be. *)
+external set_flags : t -> Gio_enums.dbusinterfaceskeletonflags -> unit = "ml_g_dbus_interface_skeleton_set_flags"
+
 (** Checks if @interface_ is exported on @connection. *)
 external has_connection : t -> D_bus_connection.t -> bool = "ml_g_dbus_interface_skeleton_has_connection"
 
@@ -25,6 +28,10 @@ external get_object_path : t -> string option = "ml_g_dbus_interface_skeleton_ge
 (** Gets D-Bus introspection information for the D-Bus interface
 implemented by @interface_. *)
 external get_info : t -> D_bus_interface_info.t = "ml_g_dbus_interface_skeleton_get_info"
+
+(** Gets the #GDBusInterfaceSkeletonFlags that describes what the behavior
+of @interface_ *)
+external get_flags : t -> Gio_enums.dbusinterfaceskeletonflags = "ml_g_dbus_interface_skeleton_get_flags"
 
 (** Gets the first connection that @interface_ is exported on, if any. *)
 external get_connection : t -> D_bus_connection.t option = "ml_g_dbus_interface_skeleton_get_connection"
@@ -49,4 +56,10 @@ Use g_dbus_interface_skeleton_unexport() to unexport the object. *)
 external export : t -> D_bus_connection.t -> string -> (bool, GError.t) result = "ml_g_dbus_interface_skeleton_export"
 
 (* Properties *)
+
+(** Get property: g-flags *)
+external get_g_flags : t -> Gio_enums.dbusinterfaceskeletonflags = "ml_gtk_d_bus_interface_skeleton_get_g_flags"
+
+(** Set property: g-flags *)
+external set_g_flags : t -> Gio_enums.dbusinterfaceskeletonflags -> unit = "ml_gtk_d_bus_interface_skeleton_set_g_flags"
 

@@ -21,12 +21,24 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GSubprocess */
-#ifndef Val_GSubprocess
-#define GSubprocess_val(val) ((GSubprocess*)ext_of_val(val))
-#define Val_GSubprocess(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSubprocess */
 
+CAMLexport CAMLprim value ml_g_subprocess_wait_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_subprocess_wait_finish(GSubprocess_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_subprocess_wait_check_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_subprocess_wait_check_finish(GSubprocess_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 
 CAMLexport CAMLprim value ml_g_subprocess_wait_check(value self, value arg1)
 {
@@ -142,6 +154,22 @@ g_subprocess_force_exit(GSubprocess_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_subprocess_communicate_utf8_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+char* out2;
+char* out3;
+
+gboolean result = g_subprocess_communicate_utf8_finish(GSubprocess_val(self), GAsyncResult_val(arg1), &out2, &out3, &error);
+CAMLlocal1(ret);
+    ret = caml_alloc(3, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, caml_copy_string(out2));
+    Store_field(ret, 2, caml_copy_string(out3));
+    if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_g_subprocess_communicate_utf8(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -156,4 +184,22 @@ CAMLlocal1(ret);
     Store_field(ret, 1, caml_copy_string(out3));
     Store_field(ret, 2, caml_copy_string(out4));
     if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_gtk_subprocess_get_flags(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GSubprocess *obj = (GSubprocess *)GSubprocess_val(self);
+    GSubprocessFlags prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "flags");
+if (pspec == NULL) caml_failwith("ml_gtk_subprocess_get_flags: property 'flags' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "flags", &prop_gvalue);
+    prop_value = (GSubprocessFlags)g_value_get_flags(&prop_gvalue);
+
+result = Val_GioSubprocessFlags(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
 }

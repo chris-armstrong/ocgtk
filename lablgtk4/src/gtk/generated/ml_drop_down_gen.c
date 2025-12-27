@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkDropDown */
-#ifndef Val_GtkDropDown
-#define GtkDropDown_val(val) ((GtkDropDown*)ext_of_val(val))
-#define Val_GtkDropDown(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkDropDown */
-
 
 CAMLexport CAMLprim value ml_gtk_drop_down_new(value arg1, value arg2)
 {

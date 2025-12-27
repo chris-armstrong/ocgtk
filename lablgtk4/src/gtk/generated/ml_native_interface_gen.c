@@ -16,9 +16,3 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkNativeInterface */
-#ifndef Val_GtkNativeInterface
-#define GtkNativeInterface_val(val) ((GtkNativeInterface*)ext_of_val(val))
-#define Val_GtkNativeInterface(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkNativeInterface */
-

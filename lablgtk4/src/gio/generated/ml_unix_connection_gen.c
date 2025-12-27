@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GUnixConnection */
-#ifndef Val_GUnixConnection
-#define GUnixConnection_val(val) ((GUnixConnection*)ext_of_val(val))
-#define Val_GUnixConnection(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GUnixConnection */
-
 
 CAMLexport CAMLprim value ml_g_unix_connection_send_fd(value self, value arg1, value arg2)
 {
@@ -34,6 +28,15 @@ CAMLparam3(self, arg1, arg2);
 GError *error = NULL;
 
 gboolean result = g_unix_connection_send_fd(GUnixConnection_val(self), Int_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_unix_connection_send_credentials_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_unix_connection_send_credentials_finish(GUnixConnection_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -53,6 +56,15 @@ GError *error = NULL;
 
 gint result = g_unix_connection_receive_fd(GUnixConnection_val(self), Option_val(arg1, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_int(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_unix_connection_receive_credentials_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GCredentials* result = g_unix_connection_receive_credentials_finish(GUnixConnection_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GCredentials(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_g_unix_connection_receive_credentials(value self, value arg1)

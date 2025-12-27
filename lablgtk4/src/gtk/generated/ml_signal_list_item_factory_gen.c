@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkSignalListItemFactory */
-#ifndef Val_GtkSignalListItemFactory
-#define GtkSignalListItemFactory_val(val) ((GtkSignalListItemFactory*)ext_of_val(val))
-#define Val_GtkSignalListItemFactory(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkSignalListItemFactory */
-
 
 CAMLexport CAMLprim value ml_gtk_signal_list_item_factory_new(value unit)
 {

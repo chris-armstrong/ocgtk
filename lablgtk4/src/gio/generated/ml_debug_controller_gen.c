@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDebugController */
-#ifndef Val_GDebugController
-#define GDebugController_val(val) ((GDebugController*)ext_of_val(val))
-#define Val_GDebugController(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDebugController */
-
 
 CAMLexport CAMLprim value ml_g_debug_controller_set_debug_enabled(value self, value arg1)
 {

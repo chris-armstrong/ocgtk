@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkHeaderBar */
-#ifndef Val_GtkHeaderBar
-#define GtkHeaderBar_val(val) ((GtkHeaderBar*)ext_of_val(val))
-#define Val_GtkHeaderBar(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkHeaderBar */
-
 
 CAMLexport CAMLprim value ml_gtk_header_bar_new(value unit)
 {

@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkTreePath */
-#ifndef Val_GtkTreePath
-#define GtkTreePath_val(val) ((GtkTreePath*)ext_of_val(val))
-#define Val_GtkTreePath(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTreePath */
-
 
 CAMLexport CAMLprim value ml_gtk_tree_path_new(value unit)
 {

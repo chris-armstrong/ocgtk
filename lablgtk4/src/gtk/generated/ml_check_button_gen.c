@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkCheckButton */
-#ifndef Val_GtkCheckButton
-#define GtkCheckButton_val(val) ((GtkCheckButton*)ext_of_val(val))
-#define Val_GtkCheckButton(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkCheckButton */
-
 
 CAMLexport CAMLprim value ml_gtk_check_button_new(value unit)
 {

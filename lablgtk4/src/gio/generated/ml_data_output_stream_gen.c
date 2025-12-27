@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDataOutputStream */
-#ifndef Val_GDataOutputStream
-#define GDataOutputStream_val(val) ((GDataOutputStream*)ext_of_val(val))
-#define Val_GDataOutputStream(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDataOutputStream */
-
 
 CAMLexport CAMLprim value ml_g_data_output_stream_new(value arg1)
 {

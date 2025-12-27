@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkBoolFilter */
-#ifndef Val_GtkBoolFilter
-#define GtkBoolFilter_val(val) ((GtkBoolFilter*)ext_of_val(val))
-#define Val_GtkBoolFilter(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkBoolFilter */
-
 
 CAMLexport CAMLprim value ml_gtk_bool_filter_new(value arg1)
 {

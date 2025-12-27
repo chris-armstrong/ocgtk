@@ -90,6 +90,10 @@ module rec Tls_connection : sig
   non-%NULL.) *)
   external set_certificate : t -> Tls_certificate.t -> unit = "ml_g_tls_connection_set_certificate"
 
+  (** Finish an asynchronous TLS handshake operation. See
+  g_tls_connection_handshake() for more information. *)
+  external handshake_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_tls_connection_handshake_finish"
+
   (** Attempts a TLS handshake on @conn.
 
   On the client side, it is never necessary to call this method;
@@ -142,6 +146,13 @@ module rec Tls_connection : sig
   that is not a recognized #GTlsProtocolVersion. *)
   external get_protocol_version : t -> Gio_enums.tlsprotocolversion = "ml_g_tls_connection_get_protocol_version"
 
+  (** Gets the errors associated with validating @conn's peer's
+  certificate, after the handshake has completed or failed. (It is
+  not set during the emission of #GTlsConnection::accept-certificate.)
+
+  See #GTlsConnection:peer-certificate-errors for more information. *)
+  external get_peer_certificate_errors : t -> Gio_enums.tlscertificateflags = "ml_g_tls_connection_get_peer_certificate_errors"
+
   (** Gets @conn's peer's certificate after the handshake has completed
   or failed. (It is not set during the emission of
   #GTlsConnection::accept-certificate.) *)
@@ -179,6 +190,10 @@ module rec Tls_connection : sig
   g_tls_connection_set_certificate(). *)
   external get_certificate : t -> Tls_certificate.t option = "ml_g_tls_connection_get_certificate"
 
+  (** Used by #GTlsConnection implementations to emit the
+  #GTlsConnection::accept-certificate signal. *)
+  external emit_accept_certificate : t -> Tls_certificate.t -> Gio_enums.tlscertificateflags -> bool = "ml_g_tls_connection_emit_accept_certificate"
+
   (* Properties *)
 
   (** Get property: base-io-stream *)
@@ -192,6 +207,85 @@ and Tls_database
   type t = [`tls_database | `object_] Gobject.obj
 
   (* Methods *)
+  (** Finish an asynchronous verify chain operation. See
+  g_tls_database_verify_chain() for more information.
+
+  If @chain is found to be valid, then the return value will be 0. If
+  @chain is found to be invalid, then the return value will indicate
+  the problems found. If the function is unable to determine whether
+  @chain is valid or not (eg, because @cancellable is triggered
+  before it completes) then the return value will be
+  %G_TLS_CERTIFICATE_GENERIC_ERROR and @error will be set
+  accordingly. @error is not set when @chain is successfully analyzed
+  but found to be invalid. *)
+  external verify_chain_finish : t -> Async_result.t -> (Gio_enums.tlscertificateflags, GError.t) result = "ml_g_tls_database_verify_chain_finish"
+
+  (** Determines the validity of a certificate chain, outside the context
+  of a TLS session.
+
+  @chain is a chain of #GTlsCertificate objects each pointing to the next
+  certificate in the chain by its #GTlsCertificate:issuer property.
+
+  @purpose describes the purpose (or usage) for which the certificate
+  is being used. Typically @purpose will be set to %G_TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER
+  which means that the certificate is being used to authenticate a server
+  (and we are acting as the client).
+
+  The @identity is used to ensure the server certificate is valid for
+  the expected peer identity. If the identity does not match the
+  certificate, %G_TLS_CERTIFICATE_BAD_IDENTITY will be set in the
+  return value. If @identity is %NULL, that bit will never be set in
+  the return value. The peer identity may also be used to check for
+  pinned certificates (trust exceptions) in the database. These may
+  override the normal verification process on a host-by-host basis.
+
+  Currently there are no @flags, and %G_TLS_DATABASE_VERIFY_NONE should be
+  used.
+
+  If @chain is found to be valid, then the return value will be 0. If
+  @chain is found to be invalid, then the return value will indicate at
+  least one problem found. If the function is unable to determine
+  whether @chain is valid (for example, because @cancellable is
+  triggered before it completes) then the return value will be
+  %G_TLS_CERTIFICATE_GENERIC_ERROR and @error will be set accordingly.
+  @error is not set when @chain is successfully analyzed but found to
+  be invalid.
+
+  GLib guarantees that if certificate verification fails, at least one
+  error will be set in the return value, but it does not guarantee
+  that all possible errors will be set. Accordingly, you may not safely
+  decide to ignore any particular type of error. For example, it would
+  be incorrect to mask %G_TLS_CERTIFICATE_EXPIRED if you want to allow
+  expired certificates, because this could potentially be the only
+  error flag set even if other problems exist with the certificate.
+
+  Prior to GLib 2.48, GLib's default TLS backend modified @chain to
+  represent the certification path built by #GTlsDatabase during
+  certificate verification by adjusting the #GTlsCertificate:issuer
+  property of each certificate in @chain. Since GLib 2.48, this no
+  longer occurs, so you cannot rely on #GTlsCertificate:issuer to
+  represent the actual certification path used during certificate
+  verification.
+
+  Because TLS session context is not used, #GTlsDatabase may not
+  perform as many checks on the certificates as #GTlsConnection would.
+  For example, certificate constraints may not be honored, and
+  revocation checks may not be performed. The best way to verify TLS
+  certificates used by a TLS connection is to let #GTlsConnection
+  handle the verification.
+
+  The TLS backend may attempt to look up and add missing certificates
+  to the chain. This may involve HTTP requests to download missing
+  certificates.
+
+  This function can block. Use g_tls_database_verify_chain_async() to
+  perform the verification operation asynchronously. *)
+  external verify_chain : t -> Tls_certificate.t -> string -> Socket_connectable.t option -> Tls_interaction.t option -> Gio_enums.tlsdatabaseverifyflags -> Cancellable.t option -> (Gio_enums.tlscertificateflags, GError.t) result = "ml_g_tls_database_verify_chain_bytecode" "ml_g_tls_database_verify_chain_native"
+
+  (** Finish an asynchronous lookup issuer operation. See
+  g_tls_database_lookup_certificate_issuer() for more information. *)
+  external lookup_certificate_issuer_finish : t -> Async_result.t -> (Tls_certificate.t, GError.t) result = "ml_g_tls_database_lookup_certificate_issuer_finish"
+
   (** Look up the issuer of @certificate in the database. The
   #GTlsCertificate:issuer property of @certificate is not modified, and
   the two certificates are not hooked into a chain.
@@ -213,6 +307,13 @@ and Tls_database
   security-related decisions. Only GLib itself should make security
   decisions about TLS certificates. *)
   external lookup_certificate_issuer : t -> Tls_certificate.t -> Tls_interaction.t option -> Gio_enums.tlsdatabaselookupflags -> Cancellable.t option -> (Tls_certificate.t, GError.t) result = "ml_g_tls_database_lookup_certificate_issuer"
+
+  (** Finish an asynchronous lookup of a certificate by its handle. See
+  g_tls_database_lookup_certificate_for_handle() for more information.
+
+  If the handle is no longer valid, or does not point to a certificate in
+  this database, then %NULL will be returned. *)
+  external lookup_certificate_for_handle_finish : t -> Async_result.t -> (Tls_certificate.t, GError.t) result = "ml_g_tls_database_lookup_certificate_for_handle_finish"
 
   (** Look up a certificate by its handle.
 
@@ -246,6 +347,18 @@ and Tls_interaction
   type t = [`tls_interaction | `object_] Gobject.obj
 
   (* Methods *)
+  (** Complete a request certificate user interaction request. This should be once
+  the g_tls_interaction_request_certificate_async() completion callback is called.
+
+  If %G_TLS_INTERACTION_HANDLED is returned, then the #GTlsConnection
+  passed to g_tls_interaction_request_certificate_async() will have had its
+  #GTlsConnection:certificate filled in.
+
+  If the interaction is cancelled by the cancellation object, or by the
+  user then %G_TLS_INTERACTION_FAILED will be returned with an error that
+  contains a %G_IO_ERROR_CANCELLED error code. *)
+  external request_certificate_finish : t -> Async_result.t -> (Gio_enums.tlsinteractionresult, GError.t) result = "ml_g_tls_interaction_request_certificate_finish"
+
   (** Run synchronous interaction to ask the user to choose a certificate to use
   with the connection. In general, g_tls_interaction_invoke_request_certificate()
   should be used instead of this function.
@@ -306,6 +419,17 @@ and Tls_interaction
   contains a %G_IO_ERROR_CANCELLED error code. Certain implementations may
   not support immediate cancellation. *)
   external invoke_ask_password : t -> Tls_password.t -> Cancellable.t option -> (Gio_enums.tlsinteractionresult, GError.t) result = "ml_g_tls_interaction_invoke_ask_password"
+
+  (** Complete an ask password user interaction request. This should be once
+  the g_tls_interaction_ask_password_async() completion callback is called.
+
+  If %G_TLS_INTERACTION_HANDLED is returned, then the #GTlsPassword passed
+  to g_tls_interaction_ask_password() will have its password filled in.
+
+  If the interaction is cancelled by the cancellation object, or by the
+  user then %G_TLS_INTERACTION_FAILED will be returned with an error that
+  contains a %G_IO_ERROR_CANCELLED error code. *)
+  external ask_password_finish : t -> Async_result.t -> (Gio_enums.tlsinteractionresult, GError.t) result = "ml_g_tls_interaction_ask_password_finish"
 
   (** Run synchronous interaction to ask the user for a password. In general,
   g_tls_interaction_invoke_ask_password() should be used instead of this

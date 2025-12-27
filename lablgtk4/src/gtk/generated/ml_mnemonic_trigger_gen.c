@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkMnemonicTrigger */
-#ifndef Val_GtkMnemonicTrigger
-#define GtkMnemonicTrigger_val(val) ((GtkMnemonicTrigger*)ext_of_val(val))
-#define Val_GtkMnemonicTrigger(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkMnemonicTrigger */
-
 
 CAMLexport CAMLprim value ml_gtk_mnemonic_trigger_new(value arg1)
 {

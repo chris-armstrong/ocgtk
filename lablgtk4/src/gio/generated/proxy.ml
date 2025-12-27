@@ -13,6 +13,9 @@ should resolve the destination hostname first, and then pass a
 g_proxy_connect() or g_proxy_connect_async(). *)
 external supports_hostname : t -> bool = "ml_g_proxy_supports_hostname"
 
+(** See g_proxy_connect(). *)
+external connect_finish : t -> Async_result.t -> (Io_stream.t, GError.t) result = "ml_g_proxy_connect_finish"
+
 (** Given @connection to communicate with a proxy (eg, a
 #GSocketConnection that is connected to the proxy server), this
 does the necessary handshake to connect to @proxy_address, and if

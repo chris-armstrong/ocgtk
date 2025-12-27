@@ -40,6 +40,9 @@ that @proxy conforms to. See the #GDBusProxy:g-interface-info
 property for more details. *)
 external get_interface_info : t -> D_bus_interface_info.t option = "ml_g_dbus_proxy_get_interface_info"
 
+(** Gets the flags that @proxy was constructed with. *)
+external get_flags : t -> Gio_enums.dbusproxyflags = "ml_g_dbus_proxy_get_flags"
+
 (** Gets the timeout to use if -1 (specifying default timeout) is
 passed as @timeout_msec in the g_dbus_proxy_call() and
 g_dbus_proxy_call_sync() functions.
@@ -63,6 +66,9 @@ external get_g_default_timeout : t -> int = "ml_gtk_d_bus_proxy_get_g_default_ti
 
 (** Set property: g-default-timeout *)
 external set_g_default_timeout : t -> int -> unit = "ml_gtk_d_bus_proxy_set_g_default_timeout"
+
+(** Get property: g-flags *)
+external get_g_flags : t -> Gio_enums.dbusproxyflags = "ml_gtk_d_bus_proxy_get_g_flags"
 
 (** Get property: g-interface-info *)
 external get_g_interface_info : t -> D_bus_interface_info.t = "ml_gtk_d_bus_proxy_get_g_interface_info"

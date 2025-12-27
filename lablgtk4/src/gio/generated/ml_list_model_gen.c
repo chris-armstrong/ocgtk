@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GListModel */
-#ifndef Val_GListModel
-#define GListModel_val(val) ((GListModel*)ext_of_val(val))
-#define Val_GListModel(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GListModel */
-
 
 CAMLexport CAMLprim value ml_g_list_model_items_changed(value self, value arg1, value arg2, value arg3)
 {

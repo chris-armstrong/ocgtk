@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkStringFilter */
-#ifndef Val_GtkStringFilter
-#define GtkStringFilter_val(val) ((GtkStringFilter*)ext_of_val(val))
-#define Val_GtkStringFilter(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkStringFilter */
-
 
 CAMLexport CAMLprim value ml_gtk_string_filter_new(value arg1)
 {

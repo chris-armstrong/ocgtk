@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDBusMessage */
-#ifndef Val_GDBusMessage
-#define GDBusMessage_val(val) ((GDBusMessage*)ext_of_val(val))
-#define Val_GDBusMessage(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusMessage */
-
 
 CAMLexport CAMLprim value ml_g_dbus_message_new(value unit)
 {
@@ -111,6 +105,14 @@ CAMLexport CAMLprim value ml_g_dbus_message_set_interface(value self, value arg1
 CAMLparam2(self, arg1);
 
 g_dbus_message_set_interface(GDBusMessage_val(self), String_option_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_dbus_message_set_flags(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_dbus_message_set_flags(GDBusMessage_val(self), GioDBusMessageFlags_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -232,6 +234,14 @@ CAMLparam1(self);
 
 const gchar* result = g_dbus_message_get_interface(GDBusMessage_val(self));
 CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_g_dbus_message_get_flags(value self)
+{
+CAMLparam1(self);
+
+GDBusMessageFlags result = g_dbus_message_get_flags(GDBusMessage_val(self));
+CAMLreturn(Val_GioDBusMessageFlags(result));
 }
 
 CAMLexport CAMLprim value ml_g_dbus_message_get_error_name(value self)

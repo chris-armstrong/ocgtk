@@ -17,6 +17,10 @@ class d_bus_interface_skeleton (obj : D_bus_interface_skeleton.t) = object (self
     fun () ->
       Option.map (fun ret -> new GD_bus_connection.d_bus_connection ret) (D_bus_interface_skeleton.get_connection obj)
 
+  method get_flags : unit -> Gio_enums.dbusinterfaceskeletonflags =
+    fun () ->
+      (D_bus_interface_skeleton.get_flags obj)
+
   method get_info : unit -> D_bus_interface_info.t =
     fun () ->
       (D_bus_interface_skeleton.get_info obj)
@@ -30,6 +34,10 @@ class d_bus_interface_skeleton (obj : D_bus_interface_skeleton.t) = object (self
       let connection = connection#as_d_bus_connection in
       (D_bus_interface_skeleton.has_connection obj connection)
 
+  method set_flags : Gio_enums.dbusinterfaceskeletonflags -> unit =
+    fun flags ->
+      (D_bus_interface_skeleton.set_flags obj flags)
+
   method unexport : unit -> unit =
     fun () ->
       (D_bus_interface_skeleton.unexport obj)
@@ -38,6 +46,9 @@ class d_bus_interface_skeleton (obj : D_bus_interface_skeleton.t) = object (self
     fun connection ->
       let connection = connection#as_d_bus_connection in
       (D_bus_interface_skeleton.unexport_from_connection obj connection)
+
+  method g_flags = D_bus_interface_skeleton.get_g_flags obj
+  method set_g_flags v =  D_bus_interface_skeleton.set_g_flags obj v
 
     method as_d_bus_interface_skeleton = obj
 end

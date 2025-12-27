@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GUnixFDList */
-#ifndef Val_GUnixFDList
-#define GUnixFDList_val(val) ((GUnixFDList*)ext_of_val(val))
-#define Val_GUnixFDList(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GUnixFDList */
-
 
 CAMLexport CAMLprim value ml_g_unix_fd_list_new(value unit)
 {

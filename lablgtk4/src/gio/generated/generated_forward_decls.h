@@ -1,14 +1,3 @@
-/**************************************************************************/
-/*                LablGTK4 - OCaml bindings for GTK4                      */
-/*                                                                        */
-/*    This program is free software; you can redistribute it              */
-/*    and/or modify it under the terms of the GNU Library General         */
-/*    Public License as published by the Free Software Foundation         */
-/*    version 2, with the exception described in file COPYING which       */
-/*    comes with the library.                                             */
-/*                                                                        */
-/**************************************************************************/
-
 /* GENERATED CODE - DO NOT EDIT */
 /* Forward declarations for generated enum and bitfield converters */
 
@@ -564,6 +553,207 @@
 #define Val_GZlibDecompressor(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GZlibDecompressor */
 
+/* Interface-specific conversion macros (shared) */
+#ifndef Val_GAction
+#define GAction_val(val) ((GAction*)ext_of_val(val))
+#define Val_GAction(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GAction */
+
+#ifndef Val_GActionGroup
+#define GActionGroup_val(val) ((GActionGroup*)ext_of_val(val))
+#define Val_GActionGroup(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GActionGroup */
+
+#ifndef Val_GActionMap
+#define GActionMap_val(val) ((GActionMap*)ext_of_val(val))
+#define Val_GActionMap(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GActionMap */
+
+#ifndef Val_GAppInfo
+#define GAppInfo_val(val) ((GAppInfo*)ext_of_val(val))
+#define Val_GAppInfo(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GAppInfo */
+
+#ifndef Val_GAsyncInitable
+#define GAsyncInitable_val(val) ((GAsyncInitable*)ext_of_val(val))
+#define Val_GAsyncInitable(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GAsyncInitable */
+
+#ifndef Val_GAsyncResult
+#define GAsyncResult_val(val) ((GAsyncResult*)ext_of_val(val))
+#define Val_GAsyncResult(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GAsyncResult */
+
+#ifndef Val_GConverter
+#define GConverter_val(val) ((GConverter*)ext_of_val(val))
+#define Val_GConverter(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GConverter */
+
+#ifndef Val_GDBusInterface
+#define GDBusInterface_val(val) ((GDBusInterface*)ext_of_val(val))
+#define Val_GDBusInterface(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GDBusInterface */
+
+#ifndef Val_GDBusObject
+#define GDBusObject_val(val) ((GDBusObject*)ext_of_val(val))
+#define Val_GDBusObject(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GDBusObject */
+
+#ifndef Val_GDBusObjectManager
+#define GDBusObjectManager_val(val) ((GDBusObjectManager*)ext_of_val(val))
+#define Val_GDBusObjectManager(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GDBusObjectManager */
+
+#ifndef Val_GDatagramBased
+#define GDatagramBased_val(val) ((GDatagramBased*)ext_of_val(val))
+#define Val_GDatagramBased(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GDatagramBased */
+
+#ifndef Val_GDebugController
+#define GDebugController_val(val) ((GDebugController*)ext_of_val(val))
+#define Val_GDebugController(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GDebugController */
+
+#ifndef Val_GDesktopAppInfoLookup
+#define GDesktopAppInfoLookup_val(val) ((GDesktopAppInfoLookup*)ext_of_val(val))
+#define Val_GDesktopAppInfoLookup(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GDesktopAppInfoLookup */
+
+#ifndef Val_GDrive
+#define GDrive_val(val) ((GDrive*)ext_of_val(val))
+#define Val_GDrive(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GDrive */
+
+#ifndef Val_GDtlsClientConnection
+#define GDtlsClientConnection_val(val) ((GDtlsClientConnection*)ext_of_val(val))
+#define Val_GDtlsClientConnection(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GDtlsClientConnection */
+
+#ifndef Val_GDtlsConnection
+#define GDtlsConnection_val(val) ((GDtlsConnection*)ext_of_val(val))
+#define Val_GDtlsConnection(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GDtlsConnection */
+
+#ifndef Val_GDtlsServerConnection
+#define GDtlsServerConnection_val(val) ((GDtlsServerConnection*)ext_of_val(val))
+#define Val_GDtlsServerConnection(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GDtlsServerConnection */
+
+#ifndef Val_GFile
+#define GFile_val(val) ((GFile*)ext_of_val(val))
+#define Val_GFile(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GFile */
+
+#ifndef Val_GFileDescriptorBased
+#define GFileDescriptorBased_val(val) ((GFileDescriptorBased*)ext_of_val(val))
+#define Val_GFileDescriptorBased(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GFileDescriptorBased */
+
+#ifndef Val_GIcon
+#define GIcon_val(val) ((GIcon*)ext_of_val(val))
+#define Val_GIcon(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GIcon */
+
+#ifndef Val_GInitable
+#define GInitable_val(val) ((GInitable*)ext_of_val(val))
+#define Val_GInitable(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GInitable */
+
+#ifndef Val_GListModel
+#define GListModel_val(val) ((GListModel*)ext_of_val(val))
+#define Val_GListModel(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GListModel */
+
+#ifndef Val_GLoadableIcon
+#define GLoadableIcon_val(val) ((GLoadableIcon*)ext_of_val(val))
+#define Val_GLoadableIcon(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GLoadableIcon */
+
+#ifndef Val_GMemoryMonitor
+#define GMemoryMonitor_val(val) ((GMemoryMonitor*)ext_of_val(val))
+#define Val_GMemoryMonitor(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GMemoryMonitor */
+
+#ifndef Val_GMount
+#define GMount_val(val) ((GMount*)ext_of_val(val))
+#define Val_GMount(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GMount */
+
+#ifndef Val_GNetworkMonitor
+#define GNetworkMonitor_val(val) ((GNetworkMonitor*)ext_of_val(val))
+#define Val_GNetworkMonitor(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GNetworkMonitor */
+
+#ifndef Val_GPollableInputStream
+#define GPollableInputStream_val(val) ((GPollableInputStream*)ext_of_val(val))
+#define Val_GPollableInputStream(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GPollableInputStream */
+
+#ifndef Val_GPollableOutputStream
+#define GPollableOutputStream_val(val) ((GPollableOutputStream*)ext_of_val(val))
+#define Val_GPollableOutputStream(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GPollableOutputStream */
+
+#ifndef Val_GPowerProfileMonitor
+#define GPowerProfileMonitor_val(val) ((GPowerProfileMonitor*)ext_of_val(val))
+#define Val_GPowerProfileMonitor(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GPowerProfileMonitor */
+
+#ifndef Val_GProxy
+#define GProxy_val(val) ((GProxy*)ext_of_val(val))
+#define Val_GProxy(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GProxy */
+
+#ifndef Val_GProxyResolver
+#define GProxyResolver_val(val) ((GProxyResolver*)ext_of_val(val))
+#define Val_GProxyResolver(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GProxyResolver */
+
+#ifndef Val_GRemoteActionGroup
+#define GRemoteActionGroup_val(val) ((GRemoteActionGroup*)ext_of_val(val))
+#define Val_GRemoteActionGroup(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GRemoteActionGroup */
+
+#ifndef Val_GSeekable
+#define GSeekable_val(val) ((GSeekable*)ext_of_val(val))
+#define Val_GSeekable(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GSeekable */
+
+#ifndef Val_GSocketConnectable
+#define GSocketConnectable_val(val) ((GSocketConnectable*)ext_of_val(val))
+#define Val_GSocketConnectable(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GSocketConnectable */
+
+#ifndef Val_GTlsBackend
+#define GTlsBackend_val(val) ((GTlsBackend*)ext_of_val(val))
+#define Val_GTlsBackend(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GTlsBackend */
+
+#ifndef Val_GTlsClientConnection
+#define GTlsClientConnection_val(val) ((GTlsClientConnection*)ext_of_val(val))
+#define Val_GTlsClientConnection(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GTlsClientConnection */
+
+#ifndef Val_GTlsFileDatabase
+#define GTlsFileDatabase_val(val) ((GTlsFileDatabase*)ext_of_val(val))
+#define Val_GTlsFileDatabase(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GTlsFileDatabase */
+
+#ifndef Val_GTlsServerConnection
+#define GTlsServerConnection_val(val) ((GTlsServerConnection*)ext_of_val(val))
+#define Val_GTlsServerConnection(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GTlsServerConnection */
+
+#ifndef Val_GVolume
+#define GVolume_val(val) ((GVolume*)ext_of_val(val))
+#define Val_GVolume(obj) ((value)(val_of_ext(obj)))
+#endif /* Val_GVolume */
+
+/* Forward declarations for GActionEntry converters (non-opaque record with fields) */
+GActionEntry *GActionEntry_val(value val);
+value Val_GActionEntry(GActionEntry *ptr);
+value Val_GActionEntry_option(GActionEntry *ptr);
+
 #ifndef Val_GAppLaunchContextPrivate
 #define GAppLaunchContextPrivate_val(val) ((GAppLaunchContextPrivate*)ext_of_val(val))
 #define Val_GAppLaunchContextPrivate(obj) ((value)(val_of_ext(obj)))
@@ -604,50 +794,45 @@
 #define Val_GConverterOutputStreamPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GConverterOutputStreamPrivate */
 
-#ifndef Val_GCredentialsClass
-#define GCredentialsClass_val(val) ((GCredentialsClass*)ext_of_val(val))
-#define Val_GCredentialsClass(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GCredentialsClass */
+/* Forward declarations for GDBusAnnotationInfo converters (non-opaque record with fields) */
+GDBusAnnotationInfo *GDBusAnnotationInfo_val(value val);
+value Val_GDBusAnnotationInfo(GDBusAnnotationInfo *ptr);
+value Val_GDBusAnnotationInfo_option(GDBusAnnotationInfo *ptr);
 
-#ifndef Val_GDBusAnnotationInfo
-#define GDBusAnnotationInfo_val(val) ((GDBusAnnotationInfo*)ml_gir_record_ptr_val((val), "GDBusAnnotationInfo"))
-#define Val_GDBusAnnotationInfo_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GDBusAnnotationInfo), "GDBusAnnotationInfo", NULL)
-#define Val_GDBusAnnotationInfo(obj) Val_GDBusAnnotationInfo_ptr(obj)
-#define Val_GDBusAnnotationInfo_option(ptr) ((ptr) ? Val_some(Val_GDBusAnnotationInfo_ptr(ptr)) : Val_none)
-#endif /* Val_GDBusAnnotationInfo */
+/* Forward declarations for GDBusArgInfo converters (non-opaque record with fields) */
+GDBusArgInfo *GDBusArgInfo_val(value val);
+value Val_GDBusArgInfo(GDBusArgInfo *ptr);
+value Val_GDBusArgInfo_option(GDBusArgInfo *ptr);
 
-#ifndef Val_GDBusArgInfo
-#define GDBusArgInfo_val(val) ((GDBusArgInfo*)ml_gir_record_ptr_val((val), "GDBusArgInfo"))
-#define Val_GDBusArgInfo_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GDBusArgInfo), "GDBusArgInfo", NULL)
-#define Val_GDBusArgInfo(obj) Val_GDBusArgInfo_ptr(obj)
-#define Val_GDBusArgInfo_option(ptr) ((ptr) ? Val_some(Val_GDBusArgInfo_ptr(ptr)) : Val_none)
-#endif /* Val_GDBusArgInfo */
+/* Forward declarations for GDBusErrorEntry converters (non-opaque record with fields) */
+GDBusErrorEntry *GDBusErrorEntry_val(value val);
+value Val_GDBusErrorEntry(GDBusErrorEntry *ptr);
+value Val_GDBusErrorEntry_option(GDBusErrorEntry *ptr);
 
-#ifndef Val_GDBusInterfaceInfo
-#define GDBusInterfaceInfo_val(val) ((GDBusInterfaceInfo*)ml_gir_record_ptr_val((val), "GDBusInterfaceInfo"))
-#define Val_GDBusInterfaceInfo_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GDBusInterfaceInfo), "GDBusInterfaceInfo", NULL)
-#define Val_GDBusInterfaceInfo(obj) Val_GDBusInterfaceInfo_ptr(obj)
-#define Val_GDBusInterfaceInfo_option(ptr) ((ptr) ? Val_some(Val_GDBusInterfaceInfo_ptr(ptr)) : Val_none)
-#endif /* Val_GDBusInterfaceInfo */
+/* Forward declarations for GDBusInterfaceInfo converters (non-opaque record with fields) */
+GDBusInterfaceInfo *GDBusInterfaceInfo_val(value val);
+value Val_GDBusInterfaceInfo(GDBusInterfaceInfo *ptr);
+value Val_GDBusInterfaceInfo_option(GDBusInterfaceInfo *ptr);
 
 #ifndef Val_GDBusInterfaceSkeletonPrivate
 #define GDBusInterfaceSkeletonPrivate_val(val) ((GDBusInterfaceSkeletonPrivate*)ext_of_val(val))
 #define Val_GDBusInterfaceSkeletonPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GDBusInterfaceSkeletonPrivate */
 
-#ifndef Val_GDBusMethodInfo
-#define GDBusMethodInfo_val(val) ((GDBusMethodInfo*)ml_gir_record_ptr_val((val), "GDBusMethodInfo"))
-#define Val_GDBusMethodInfo_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GDBusMethodInfo), "GDBusMethodInfo", NULL)
-#define Val_GDBusMethodInfo(obj) Val_GDBusMethodInfo_ptr(obj)
-#define Val_GDBusMethodInfo_option(ptr) ((ptr) ? Val_some(Val_GDBusMethodInfo_ptr(ptr)) : Val_none)
-#endif /* Val_GDBusMethodInfo */
+/* Forward declarations for GDBusInterfaceVTable converters (non-opaque record with fields) */
+GDBusInterfaceVTable *GDBusInterfaceVTable_val(value val);
+value Val_GDBusInterfaceVTable(GDBusInterfaceVTable *ptr);
+value Val_GDBusInterfaceVTable_option(GDBusInterfaceVTable *ptr);
 
-#ifndef Val_GDBusNodeInfo
-#define GDBusNodeInfo_val(val) ((GDBusNodeInfo*)ml_gir_record_ptr_val((val), "GDBusNodeInfo"))
-#define Val_GDBusNodeInfo_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GDBusNodeInfo), "GDBusNodeInfo", NULL)
-#define Val_GDBusNodeInfo(obj) Val_GDBusNodeInfo_ptr(obj)
-#define Val_GDBusNodeInfo_option(ptr) ((ptr) ? Val_some(Val_GDBusNodeInfo_ptr(ptr)) : Val_none)
-#endif /* Val_GDBusNodeInfo */
+/* Forward declarations for GDBusMethodInfo converters (non-opaque record with fields) */
+GDBusMethodInfo *GDBusMethodInfo_val(value val);
+value Val_GDBusMethodInfo(GDBusMethodInfo *ptr);
+value Val_GDBusMethodInfo_option(GDBusMethodInfo *ptr);
+
+/* Forward declarations for GDBusNodeInfo converters (non-opaque record with fields) */
+GDBusNodeInfo *GDBusNodeInfo_val(value val);
+value Val_GDBusNodeInfo(GDBusNodeInfo *ptr);
+value Val_GDBusNodeInfo_option(GDBusNodeInfo *ptr);
 
 #ifndef Val_GDBusObjectManagerClientPrivate
 #define GDBusObjectManagerClientPrivate_val(val) ((GDBusObjectManagerClientPrivate*)ext_of_val(val))
@@ -669,24 +854,25 @@
 #define Val_GDBusObjectSkeletonPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GDBusObjectSkeletonPrivate */
 
-#ifndef Val_GDBusPropertyInfo
-#define GDBusPropertyInfo_val(val) ((GDBusPropertyInfo*)ml_gir_record_ptr_val((val), "GDBusPropertyInfo"))
-#define Val_GDBusPropertyInfo_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GDBusPropertyInfo), "GDBusPropertyInfo", NULL)
-#define Val_GDBusPropertyInfo(obj) Val_GDBusPropertyInfo_ptr(obj)
-#define Val_GDBusPropertyInfo_option(ptr) ((ptr) ? Val_some(Val_GDBusPropertyInfo_ptr(ptr)) : Val_none)
-#endif /* Val_GDBusPropertyInfo */
+/* Forward declarations for GDBusPropertyInfo converters (non-opaque record with fields) */
+GDBusPropertyInfo *GDBusPropertyInfo_val(value val);
+value Val_GDBusPropertyInfo(GDBusPropertyInfo *ptr);
+value Val_GDBusPropertyInfo_option(GDBusPropertyInfo *ptr);
 
 #ifndef Val_GDBusProxyPrivate
 #define GDBusProxyPrivate_val(val) ((GDBusProxyPrivate*)ext_of_val(val))
 #define Val_GDBusProxyPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GDBusProxyPrivate */
 
-#ifndef Val_GDBusSignalInfo
-#define GDBusSignalInfo_val(val) ((GDBusSignalInfo*)ml_gir_record_ptr_val((val), "GDBusSignalInfo"))
-#define Val_GDBusSignalInfo_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GDBusSignalInfo), "GDBusSignalInfo", NULL)
-#define Val_GDBusSignalInfo(obj) Val_GDBusSignalInfo_ptr(obj)
-#define Val_GDBusSignalInfo_option(ptr) ((ptr) ? Val_some(Val_GDBusSignalInfo_ptr(ptr)) : Val_none)
-#endif /* Val_GDBusSignalInfo */
+/* Forward declarations for GDBusSignalInfo converters (non-opaque record with fields) */
+GDBusSignalInfo *GDBusSignalInfo_val(value val);
+value Val_GDBusSignalInfo(GDBusSignalInfo *ptr);
+value Val_GDBusSignalInfo_option(GDBusSignalInfo *ptr);
+
+/* Forward declarations for GDBusSubtreeVTable converters (non-opaque record with fields) */
+GDBusSubtreeVTable *GDBusSubtreeVTable_val(value val);
+value Val_GDBusSubtreeVTable(GDBusSubtreeVTable *ptr);
+value Val_GDBusSubtreeVTable_option(GDBusSubtreeVTable *ptr);
 
 #ifndef Val_GDataInputStreamPrivate
 #define GDataInputStreamPrivate_val(val) ((GDataInputStreamPrivate*)ext_of_val(val))
@@ -698,22 +884,20 @@
 #define Val_GDataOutputStreamPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GDataOutputStreamPrivate */
 
-#ifndef Val_GEmblemClass
-#define GEmblemClass_val(val) ((GEmblemClass*)ext_of_val(val))
-#define Val_GEmblemClass(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GEmblemClass */
-
 #ifndef Val_GEmblemedIconPrivate
 #define GEmblemedIconPrivate_val(val) ((GEmblemedIconPrivate*)ext_of_val(val))
 #define Val_GEmblemedIconPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GEmblemedIconPrivate */
 
-#ifndef Val_GFileAttributeInfoList
-#define GFileAttributeInfoList_val(val) ((GFileAttributeInfoList*)ml_gir_record_ptr_val((val), "GFileAttributeInfoList"))
-#define Val_GFileAttributeInfoList_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GFileAttributeInfoList), "GFileAttributeInfoList", NULL)
-#define Val_GFileAttributeInfoList(obj) Val_GFileAttributeInfoList_ptr(obj)
-#define Val_GFileAttributeInfoList_option(ptr) ((ptr) ? Val_some(Val_GFileAttributeInfoList_ptr(ptr)) : Val_none)
-#endif /* Val_GFileAttributeInfoList */
+/* Forward declarations for GFileAttributeInfo converters (non-opaque record with fields) */
+GFileAttributeInfo *GFileAttributeInfo_val(value val);
+value Val_GFileAttributeInfo(GFileAttributeInfo *ptr);
+value Val_GFileAttributeInfo_option(GFileAttributeInfo *ptr);
+
+/* Forward declarations for GFileAttributeInfoList converters (non-opaque record with fields) */
+GFileAttributeInfoList *GFileAttributeInfoList_val(value val);
+value Val_GFileAttributeInfoList(GFileAttributeInfoList *ptr);
+value Val_GFileAttributeInfoList_option(GFileAttributeInfoList *ptr);
 
 #ifndef Val_GFileAttributeMatcher
 #define GFileAttributeMatcher_val(val) ((GFileAttributeMatcher*)ext_of_val(val))
@@ -729,16 +913,6 @@
 #define GFileIOStreamPrivate_val(val) ((GFileIOStreamPrivate*)ext_of_val(val))
 #define Val_GFileIOStreamPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GFileIOStreamPrivate */
-
-#ifndef Val_GFileIconClass
-#define GFileIconClass_val(val) ((GFileIconClass*)ext_of_val(val))
-#define Val_GFileIconClass(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GFileIconClass */
-
-#ifndef Val_GFileInfoClass
-#define GFileInfoClass_val(val) ((GFileInfoClass*)ext_of_val(val))
-#define Val_GFileInfoClass(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GFileInfoClass */
 
 #ifndef Val_GFileInputStreamPrivate
 #define GFileInputStreamPrivate_val(val) ((GFileInputStreamPrivate*)ext_of_val(val))
@@ -764,11 +938,6 @@
 #define GIOExtensionPoint_val(val) ((GIOExtensionPoint*)ext_of_val(val))
 #define Val_GIOExtensionPoint(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GIOExtensionPoint */
-
-#ifndef Val_GIOModuleClass
-#define GIOModuleClass_val(val) ((GIOModuleClass*)ext_of_val(val))
-#define Val_GIOModuleClass(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GIOModuleClass */
 
 #ifndef Val_GIOModuleScope
 #define GIOModuleScope_val(val) ((GIOModuleScope*)ext_of_val(val))
@@ -805,10 +974,20 @@
 #define Val_GInetSocketAddressPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GInetSocketAddressPrivate */
 
+/* Forward declarations for GInputMessage converters (non-opaque record with fields) */
+GInputMessage *GInputMessage_val(value val);
+value Val_GInputMessage(GInputMessage *ptr);
+value Val_GInputMessage_option(GInputMessage *ptr);
+
 #ifndef Val_GInputStreamPrivate
 #define GInputStreamPrivate_val(val) ((GInputStreamPrivate*)ext_of_val(val))
 #define Val_GInputStreamPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GInputStreamPrivate */
+
+/* Forward declarations for GInputVector converters (non-opaque record with fields) */
+GInputVector *GInputVector_val(value val);
+value Val_GInputVector(GInputVector *ptr);
+value Val_GInputVector_option(GInputVector *ptr);
 
 #ifndef Val_GMemoryInputStreamPrivate
 #define GMemoryInputStreamPrivate_val(val) ((GMemoryInputStreamPrivate*)ext_of_val(val))
@@ -855,10 +1034,20 @@
 #define Val_GNetworkServicePrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GNetworkServicePrivate */
 
+/* Forward declarations for GOutputMessage converters (non-opaque record with fields) */
+GOutputMessage *GOutputMessage_val(value val);
+value Val_GOutputMessage(GOutputMessage *ptr);
+value Val_GOutputMessage_option(GOutputMessage *ptr);
+
 #ifndef Val_GOutputStreamPrivate
 #define GOutputStreamPrivate_val(val) ((GOutputStreamPrivate*)ext_of_val(val))
 #define Val_GOutputStreamPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GOutputStreamPrivate */
+
+/* Forward declarations for GOutputVector converters (non-opaque record with fields) */
+GOutputVector *GOutputVector_val(value val);
+value Val_GOutputVector(GOutputVector *ptr);
+value Val_GOutputVector_option(GOutputVector *ptr);
 
 #ifndef Val_GPermissionPrivate
 #define GPermissionPrivate_val(val) ((GPermissionPrivate*)ext_of_val(val))
@@ -915,11 +1104,6 @@
 #define Val_GSimpleActionGroupPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GSimpleActionGroupPrivate */
 
-#ifndef Val_GSimpleAsyncResultClass
-#define GSimpleAsyncResultClass_val(val) ((GSimpleAsyncResultClass*)ext_of_val(val))
-#define Val_GSimpleAsyncResultClass(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSimpleAsyncResultClass */
-
 #ifndef Val_GSimpleProxyResolverPrivate
 #define GSimpleProxyResolverPrivate_val(val) ((GSimpleProxyResolverPrivate*)ext_of_val(val))
 #define Val_GSimpleProxyResolverPrivate(obj) ((value)(val_of_ext(obj)))
@@ -960,10 +1144,10 @@
 #define Val_GSrvTarget(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GSrvTarget */
 
-#ifndef Val_GTaskClass
-#define GTaskClass_val(val) ((GTaskClass*)ext_of_val(val))
-#define Val_GTaskClass(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GTaskClass */
+/* Forward declarations for GStaticResource converters (non-opaque record with fields) */
+GStaticResource *GStaticResource_val(value val);
+value Val_GStaticResource(GStaticResource *ptr);
+value Val_GStaticResource_option(GStaticResource *ptr);
 
 #ifndef Val_GTcpConnectionPrivate
 #define GTcpConnectionPrivate_val(val) ((GTcpConnectionPrivate*)ext_of_val(val))
@@ -974,11 +1158,6 @@
 #define GTcpWrapperConnectionPrivate_val(val) ((GTcpWrapperConnectionPrivate*)ext_of_val(val))
 #define Val_GTcpWrapperConnectionPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GTcpWrapperConnectionPrivate */
-
-#ifndef Val_GThemedIconClass
-#define GThemedIconClass_val(val) ((GThemedIconClass*)ext_of_val(val))
-#define Val_GThemedIconClass(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GThemedIconClass */
 
 #ifndef Val_GThreadedSocketServicePrivate
 #define GThreadedSocketServicePrivate_val(val) ((GThreadedSocketServicePrivate*)ext_of_val(val))
@@ -1040,11 +1219,6 @@
 #define Val_GUnixMountEntry(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GUnixMountEntry */
 
-#ifndef Val_GUnixMountMonitorClass
-#define GUnixMountMonitorClass_val(val) ((GUnixMountMonitorClass*)ext_of_val(val))
-#define Val_GUnixMountMonitorClass(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GUnixMountMonitorClass */
-
 #ifndef Val_GUnixMountPoint
 #define GUnixMountPoint_val(val) ((GUnixMountPoint*)ext_of_val(val))
 #define Val_GUnixMountPoint(obj) ((value)(val_of_ext(obj)))
@@ -1065,172 +1239,172 @@
 
 /* Note: Res_Ok, Res_Error, ValUnit, and Val_GError are defined in wrappers.h */
 
-/* Forward declarations for Gtk enum/bitfield converters */
-value Val_GtkBusType(GBusType val);
-GBusType GtkBusType_val(value val);
-value Val_GtkConverterResult(GConverterResult val);
-GConverterResult GtkConverterResult_val(value val);
-value Val_GtkCredentialsType(GCredentialsType val);
-GCredentialsType GtkCredentialsType_val(value val);
-value Val_GtkDBusError(GDBusError val);
-GDBusError GtkDBusError_val(value val);
-value Val_GtkDBusMessageByteOrder(GDBusMessageByteOrder val);
-GDBusMessageByteOrder GtkDBusMessageByteOrder_val(value val);
-value Val_GtkDBusMessageHeaderField(GDBusMessageHeaderField val);
-GDBusMessageHeaderField GtkDBusMessageHeaderField_val(value val);
-value Val_GtkDBusMessageType(GDBusMessageType val);
-GDBusMessageType GtkDBusMessageType_val(value val);
-value Val_GtkDataStreamByteOrder(GDataStreamByteOrder val);
-GDataStreamByteOrder GtkDataStreamByteOrder_val(value val);
-value Val_GtkDataStreamNewlineType(GDataStreamNewlineType val);
-GDataStreamNewlineType GtkDataStreamNewlineType_val(value val);
-value Val_GtkDriveStartStopType(GDriveStartStopType val);
-GDriveStartStopType GtkDriveStartStopType_val(value val);
-value Val_GtkEmblemOrigin(GEmblemOrigin val);
-GEmblemOrigin GtkEmblemOrigin_val(value val);
-value Val_GtkFileAttributeStatus(GFileAttributeStatus val);
-GFileAttributeStatus GtkFileAttributeStatus_val(value val);
-value Val_GtkFileAttributeType(GFileAttributeType val);
-GFileAttributeType GtkFileAttributeType_val(value val);
-value Val_GtkFileMonitorEvent(GFileMonitorEvent val);
-GFileMonitorEvent GtkFileMonitorEvent_val(value val);
-value Val_GtkFileType(GFileType val);
-GFileType GtkFileType_val(value val);
-value Val_GtkFilesystemPreviewType(GFilesystemPreviewType val);
-GFilesystemPreviewType GtkFilesystemPreviewType_val(value val);
-value Val_GtkIOErrorEnum(GIOErrorEnum val);
-GIOErrorEnum GtkIOErrorEnum_val(value val);
-value Val_GtkIOModuleScopeFlags(GIOModuleScopeFlags val);
-GIOModuleScopeFlags GtkIOModuleScopeFlags_val(value val);
-value Val_GtkMemoryMonitorWarningLevel(GMemoryMonitorWarningLevel val);
-GMemoryMonitorWarningLevel GtkMemoryMonitorWarningLevel_val(value val);
-value Val_GtkMountOperationResult(GMountOperationResult val);
-GMountOperationResult GtkMountOperationResult_val(value val);
-value Val_GtkNetworkConnectivity(GNetworkConnectivity val);
-GNetworkConnectivity GtkNetworkConnectivity_val(value val);
-value Val_GtkNotificationPriority(GNotificationPriority val);
-GNotificationPriority GtkNotificationPriority_val(value val);
-value Val_GtkPasswordSave(GPasswordSave val);
-GPasswordSave GtkPasswordSave_val(value val);
-value Val_GtkPollableReturn(GPollableReturn val);
-GPollableReturn GtkPollableReturn_val(value val);
-value Val_GtkResolverError(GResolverError val);
-GResolverError GtkResolverError_val(value val);
-value Val_GtkResolverRecordType(GResolverRecordType val);
-GResolverRecordType GtkResolverRecordType_val(value val);
-value Val_GtkResourceError(GResourceError val);
-GResourceError GtkResourceError_val(value val);
-value Val_GtkSocketClientEvent(GSocketClientEvent val);
-GSocketClientEvent GtkSocketClientEvent_val(value val);
-value Val_GtkSocketFamily(GSocketFamily val);
-GSocketFamily GtkSocketFamily_val(value val);
-value Val_GtkSocketListenerEvent(GSocketListenerEvent val);
-GSocketListenerEvent GtkSocketListenerEvent_val(value val);
-value Val_GtkSocketProtocol(GSocketProtocol val);
-GSocketProtocol GtkSocketProtocol_val(value val);
-value Val_GtkSocketType(GSocketType val);
-GSocketType GtkSocketType_val(value val);
-value Val_GtkTlsAuthenticationMode(GTlsAuthenticationMode val);
-GTlsAuthenticationMode GtkTlsAuthenticationMode_val(value val);
-value Val_GtkTlsCertificateRequestFlags(GTlsCertificateRequestFlags val);
-GTlsCertificateRequestFlags GtkTlsCertificateRequestFlags_val(value val);
-value Val_GtkTlsChannelBindingError(GTlsChannelBindingError val);
-GTlsChannelBindingError GtkTlsChannelBindingError_val(value val);
-value Val_GtkTlsChannelBindingType(GTlsChannelBindingType val);
-GTlsChannelBindingType GtkTlsChannelBindingType_val(value val);
-value Val_GtkTlsDatabaseLookupFlags(GTlsDatabaseLookupFlags val);
-GTlsDatabaseLookupFlags GtkTlsDatabaseLookupFlags_val(value val);
-value Val_GtkTlsError(GTlsError val);
-GTlsError GtkTlsError_val(value val);
-value Val_GtkTlsInteractionResult(GTlsInteractionResult val);
-GTlsInteractionResult GtkTlsInteractionResult_val(value val);
-value Val_GtkTlsProtocolVersion(GTlsProtocolVersion val);
-GTlsProtocolVersion GtkTlsProtocolVersion_val(value val);
-value Val_GtkTlsRehandshakeMode(GTlsRehandshakeMode val);
-GTlsRehandshakeMode GtkTlsRehandshakeMode_val(value val);
-value Val_GtkUnixSocketAddressType(GUnixSocketAddressType val);
-GUnixSocketAddressType GtkUnixSocketAddressType_val(value val);
-value Val_GtkZlibCompressorFormat(GZlibCompressorFormat val);
-GZlibCompressorFormat GtkZlibCompressorFormat_val(value val);
+/* Forward declarations for enum/bitfield converters */
+value Val_GioBusType(GBusType val);
+GBusType GioBusType_val(value val);
+value Val_GioConverterResult(GConverterResult val);
+GConverterResult GioConverterResult_val(value val);
+value Val_GioCredentialsType(GCredentialsType val);
+GCredentialsType GioCredentialsType_val(value val);
+value Val_GioDBusError(GDBusError val);
+GDBusError GioDBusError_val(value val);
+value Val_GioDBusMessageByteOrder(GDBusMessageByteOrder val);
+GDBusMessageByteOrder GioDBusMessageByteOrder_val(value val);
+value Val_GioDBusMessageHeaderField(GDBusMessageHeaderField val);
+GDBusMessageHeaderField GioDBusMessageHeaderField_val(value val);
+value Val_GioDBusMessageType(GDBusMessageType val);
+GDBusMessageType GioDBusMessageType_val(value val);
+value Val_GioDataStreamByteOrder(GDataStreamByteOrder val);
+GDataStreamByteOrder GioDataStreamByteOrder_val(value val);
+value Val_GioDataStreamNewlineType(GDataStreamNewlineType val);
+GDataStreamNewlineType GioDataStreamNewlineType_val(value val);
+value Val_GioDriveStartStopType(GDriveStartStopType val);
+GDriveStartStopType GioDriveStartStopType_val(value val);
+value Val_GioEmblemOrigin(GEmblemOrigin val);
+GEmblemOrigin GioEmblemOrigin_val(value val);
+value Val_GioFileAttributeStatus(GFileAttributeStatus val);
+GFileAttributeStatus GioFileAttributeStatus_val(value val);
+value Val_GioFileAttributeType(GFileAttributeType val);
+GFileAttributeType GioFileAttributeType_val(value val);
+value Val_GioFileMonitorEvent(GFileMonitorEvent val);
+GFileMonitorEvent GioFileMonitorEvent_val(value val);
+value Val_GioFileType(GFileType val);
+GFileType GioFileType_val(value val);
+value Val_GioFilesystemPreviewType(GFilesystemPreviewType val);
+GFilesystemPreviewType GioFilesystemPreviewType_val(value val);
+value Val_GioIOErrorEnum(GIOErrorEnum val);
+GIOErrorEnum GioIOErrorEnum_val(value val);
+value Val_GioIOModuleScopeFlags(GIOModuleScopeFlags val);
+GIOModuleScopeFlags GioIOModuleScopeFlags_val(value val);
+value Val_GioMemoryMonitorWarningLevel(GMemoryMonitorWarningLevel val);
+GMemoryMonitorWarningLevel GioMemoryMonitorWarningLevel_val(value val);
+value Val_GioMountOperationResult(GMountOperationResult val);
+GMountOperationResult GioMountOperationResult_val(value val);
+value Val_GioNetworkConnectivity(GNetworkConnectivity val);
+GNetworkConnectivity GioNetworkConnectivity_val(value val);
+value Val_GioNotificationPriority(GNotificationPriority val);
+GNotificationPriority GioNotificationPriority_val(value val);
+value Val_GioPasswordSave(GPasswordSave val);
+GPasswordSave GioPasswordSave_val(value val);
+value Val_GioPollableReturn(GPollableReturn val);
+GPollableReturn GioPollableReturn_val(value val);
+value Val_GioResolverError(GResolverError val);
+GResolverError GioResolverError_val(value val);
+value Val_GioResolverRecordType(GResolverRecordType val);
+GResolverRecordType GioResolverRecordType_val(value val);
+value Val_GioResourceError(GResourceError val);
+GResourceError GioResourceError_val(value val);
+value Val_GioSocketClientEvent(GSocketClientEvent val);
+GSocketClientEvent GioSocketClientEvent_val(value val);
+value Val_GioSocketFamily(GSocketFamily val);
+GSocketFamily GioSocketFamily_val(value val);
+value Val_GioSocketListenerEvent(GSocketListenerEvent val);
+GSocketListenerEvent GioSocketListenerEvent_val(value val);
+value Val_GioSocketProtocol(GSocketProtocol val);
+GSocketProtocol GioSocketProtocol_val(value val);
+value Val_GioSocketType(GSocketType val);
+GSocketType GioSocketType_val(value val);
+value Val_GioTlsAuthenticationMode(GTlsAuthenticationMode val);
+GTlsAuthenticationMode GioTlsAuthenticationMode_val(value val);
+value Val_GioTlsCertificateRequestFlags(GTlsCertificateRequestFlags val);
+GTlsCertificateRequestFlags GioTlsCertificateRequestFlags_val(value val);
+value Val_GioTlsChannelBindingError(GTlsChannelBindingError val);
+GTlsChannelBindingError GioTlsChannelBindingError_val(value val);
+value Val_GioTlsChannelBindingType(GTlsChannelBindingType val);
+GTlsChannelBindingType GioTlsChannelBindingType_val(value val);
+value Val_GioTlsDatabaseLookupFlags(GTlsDatabaseLookupFlags val);
+GTlsDatabaseLookupFlags GioTlsDatabaseLookupFlags_val(value val);
+value Val_GioTlsError(GTlsError val);
+GTlsError GioTlsError_val(value val);
+value Val_GioTlsInteractionResult(GTlsInteractionResult val);
+GTlsInteractionResult GioTlsInteractionResult_val(value val);
+value Val_GioTlsProtocolVersion(GTlsProtocolVersion val);
+GTlsProtocolVersion GioTlsProtocolVersion_val(value val);
+value Val_GioTlsRehandshakeMode(GTlsRehandshakeMode val);
+GTlsRehandshakeMode GioTlsRehandshakeMode_val(value val);
+value Val_GioUnixSocketAddressType(GUnixSocketAddressType val);
+GUnixSocketAddressType GioUnixSocketAddressType_val(value val);
+value Val_GioZlibCompressorFormat(GZlibCompressorFormat val);
+GZlibCompressorFormat GioZlibCompressorFormat_val(value val);
 
-value Val_GtkAppInfoCreateFlags(GAppInfoCreateFlags flags);
-GAppInfoCreateFlags GtkAppInfoCreateFlags_val(value list);
-value Val_GtkApplicationFlags(GApplicationFlags flags);
-GApplicationFlags GtkApplicationFlags_val(value list);
-value Val_GtkAskPasswordFlags(GAskPasswordFlags flags);
-GAskPasswordFlags GtkAskPasswordFlags_val(value list);
-value Val_GtkBusNameOwnerFlags(GBusNameOwnerFlags flags);
-GBusNameOwnerFlags GtkBusNameOwnerFlags_val(value list);
-value Val_GtkBusNameWatcherFlags(GBusNameWatcherFlags flags);
-GBusNameWatcherFlags GtkBusNameWatcherFlags_val(value list);
-value Val_GtkConverterFlags(GConverterFlags flags);
-GConverterFlags GtkConverterFlags_val(value list);
-value Val_GtkDBusCallFlags(GDBusCallFlags flags);
-GDBusCallFlags GtkDBusCallFlags_val(value list);
-value Val_GtkDBusCapabilityFlags(GDBusCapabilityFlags flags);
-GDBusCapabilityFlags GtkDBusCapabilityFlags_val(value list);
-value Val_GtkDBusConnectionFlags(GDBusConnectionFlags flags);
-GDBusConnectionFlags GtkDBusConnectionFlags_val(value list);
-value Val_GtkDBusInterfaceSkeletonFlags(GDBusInterfaceSkeletonFlags flags);
-GDBusInterfaceSkeletonFlags GtkDBusInterfaceSkeletonFlags_val(value list);
-value Val_GtkDBusMessageFlags(GDBusMessageFlags flags);
-GDBusMessageFlags GtkDBusMessageFlags_val(value list);
-value Val_GtkDBusObjectManagerClientFlags(GDBusObjectManagerClientFlags flags);
-GDBusObjectManagerClientFlags GtkDBusObjectManagerClientFlags_val(value list);
-value Val_GtkDBusPropertyInfoFlags(GDBusPropertyInfoFlags flags);
-GDBusPropertyInfoFlags GtkDBusPropertyInfoFlags_val(value list);
-value Val_GtkDBusProxyFlags(GDBusProxyFlags flags);
-GDBusProxyFlags GtkDBusProxyFlags_val(value list);
-value Val_GtkDBusSendMessageFlags(GDBusSendMessageFlags flags);
-GDBusSendMessageFlags GtkDBusSendMessageFlags_val(value list);
-value Val_GtkDBusServerFlags(GDBusServerFlags flags);
-GDBusServerFlags GtkDBusServerFlags_val(value list);
-value Val_GtkDBusSignalFlags(GDBusSignalFlags flags);
-GDBusSignalFlags GtkDBusSignalFlags_val(value list);
-value Val_GtkDBusSubtreeFlags(GDBusSubtreeFlags flags);
-GDBusSubtreeFlags GtkDBusSubtreeFlags_val(value list);
-value Val_GtkDriveStartFlags(GDriveStartFlags flags);
-GDriveStartFlags GtkDriveStartFlags_val(value list);
-value Val_GtkFileAttributeInfoFlags(GFileAttributeInfoFlags flags);
-GFileAttributeInfoFlags GtkFileAttributeInfoFlags_val(value list);
-value Val_GtkFileCopyFlags(GFileCopyFlags flags);
-GFileCopyFlags GtkFileCopyFlags_val(value list);
-value Val_GtkFileCreateFlags(GFileCreateFlags flags);
-GFileCreateFlags GtkFileCreateFlags_val(value list);
-value Val_GtkFileMeasureFlags(GFileMeasureFlags flags);
-GFileMeasureFlags GtkFileMeasureFlags_val(value list);
-value Val_GtkFileMonitorFlags(GFileMonitorFlags flags);
-GFileMonitorFlags GtkFileMonitorFlags_val(value list);
-value Val_GtkFileQueryInfoFlags(GFileQueryInfoFlags flags);
-GFileQueryInfoFlags GtkFileQueryInfoFlags_val(value list);
-value Val_GtkIOStreamSpliceFlags(GIOStreamSpliceFlags flags);
-GIOStreamSpliceFlags GtkIOStreamSpliceFlags_val(value list);
-value Val_GtkMountMountFlags(GMountMountFlags flags);
-GMountMountFlags GtkMountMountFlags_val(value list);
-value Val_GtkMountUnmountFlags(GMountUnmountFlags flags);
-GMountUnmountFlags GtkMountUnmountFlags_val(value list);
-value Val_GtkOutputStreamSpliceFlags(GOutputStreamSpliceFlags flags);
-GOutputStreamSpliceFlags GtkOutputStreamSpliceFlags_val(value list);
-value Val_GtkResolverNameLookupFlags(GResolverNameLookupFlags flags);
-GResolverNameLookupFlags GtkResolverNameLookupFlags_val(value list);
-value Val_GtkResourceFlags(GResourceFlags flags);
-GResourceFlags GtkResourceFlags_val(value list);
-value Val_GtkResourceLookupFlags(GResourceLookupFlags flags);
-GResourceLookupFlags GtkResourceLookupFlags_val(value list);
-value Val_GtkSettingsBindFlags(GSettingsBindFlags flags);
-GSettingsBindFlags GtkSettingsBindFlags_val(value list);
-value Val_GtkSocketMsgFlags(GSocketMsgFlags flags);
-GSocketMsgFlags GtkSocketMsgFlags_val(value list);
-value Val_GtkSubprocessFlags(GSubprocessFlags flags);
-GSubprocessFlags GtkSubprocessFlags_val(value list);
-value Val_GtkTestDBusFlags(GTestDBusFlags flags);
-GTestDBusFlags GtkTestDBusFlags_val(value list);
-value Val_GtkTlsCertificateFlags(GTlsCertificateFlags flags);
-GTlsCertificateFlags GtkTlsCertificateFlags_val(value list);
-value Val_GtkTlsDatabaseVerifyFlags(GTlsDatabaseVerifyFlags flags);
-GTlsDatabaseVerifyFlags GtkTlsDatabaseVerifyFlags_val(value list);
-value Val_GtkTlsPasswordFlags(GTlsPasswordFlags flags);
-GTlsPasswordFlags GtkTlsPasswordFlags_val(value list);
+value Val_GioAppInfoCreateFlags(GAppInfoCreateFlags flags);
+GAppInfoCreateFlags GioAppInfoCreateFlags_val(value list);
+value Val_GioApplicationFlags(GApplicationFlags flags);
+GApplicationFlags GioApplicationFlags_val(value list);
+value Val_GioAskPasswordFlags(GAskPasswordFlags flags);
+GAskPasswordFlags GioAskPasswordFlags_val(value list);
+value Val_GioBusNameOwnerFlags(GBusNameOwnerFlags flags);
+GBusNameOwnerFlags GioBusNameOwnerFlags_val(value list);
+value Val_GioBusNameWatcherFlags(GBusNameWatcherFlags flags);
+GBusNameWatcherFlags GioBusNameWatcherFlags_val(value list);
+value Val_GioConverterFlags(GConverterFlags flags);
+GConverterFlags GioConverterFlags_val(value list);
+value Val_GioDBusCallFlags(GDBusCallFlags flags);
+GDBusCallFlags GioDBusCallFlags_val(value list);
+value Val_GioDBusCapabilityFlags(GDBusCapabilityFlags flags);
+GDBusCapabilityFlags GioDBusCapabilityFlags_val(value list);
+value Val_GioDBusConnectionFlags(GDBusConnectionFlags flags);
+GDBusConnectionFlags GioDBusConnectionFlags_val(value list);
+value Val_GioDBusInterfaceSkeletonFlags(GDBusInterfaceSkeletonFlags flags);
+GDBusInterfaceSkeletonFlags GioDBusInterfaceSkeletonFlags_val(value list);
+value Val_GioDBusMessageFlags(GDBusMessageFlags flags);
+GDBusMessageFlags GioDBusMessageFlags_val(value list);
+value Val_GioDBusObjectManagerClientFlags(GDBusObjectManagerClientFlags flags);
+GDBusObjectManagerClientFlags GioDBusObjectManagerClientFlags_val(value list);
+value Val_GioDBusPropertyInfoFlags(GDBusPropertyInfoFlags flags);
+GDBusPropertyInfoFlags GioDBusPropertyInfoFlags_val(value list);
+value Val_GioDBusProxyFlags(GDBusProxyFlags flags);
+GDBusProxyFlags GioDBusProxyFlags_val(value list);
+value Val_GioDBusSendMessageFlags(GDBusSendMessageFlags flags);
+GDBusSendMessageFlags GioDBusSendMessageFlags_val(value list);
+value Val_GioDBusServerFlags(GDBusServerFlags flags);
+GDBusServerFlags GioDBusServerFlags_val(value list);
+value Val_GioDBusSignalFlags(GDBusSignalFlags flags);
+GDBusSignalFlags GioDBusSignalFlags_val(value list);
+value Val_GioDBusSubtreeFlags(GDBusSubtreeFlags flags);
+GDBusSubtreeFlags GioDBusSubtreeFlags_val(value list);
+value Val_GioDriveStartFlags(GDriveStartFlags flags);
+GDriveStartFlags GioDriveStartFlags_val(value list);
+value Val_GioFileAttributeInfoFlags(GFileAttributeInfoFlags flags);
+GFileAttributeInfoFlags GioFileAttributeInfoFlags_val(value list);
+value Val_GioFileCopyFlags(GFileCopyFlags flags);
+GFileCopyFlags GioFileCopyFlags_val(value list);
+value Val_GioFileCreateFlags(GFileCreateFlags flags);
+GFileCreateFlags GioFileCreateFlags_val(value list);
+value Val_GioFileMeasureFlags(GFileMeasureFlags flags);
+GFileMeasureFlags GioFileMeasureFlags_val(value list);
+value Val_GioFileMonitorFlags(GFileMonitorFlags flags);
+GFileMonitorFlags GioFileMonitorFlags_val(value list);
+value Val_GioFileQueryInfoFlags(GFileQueryInfoFlags flags);
+GFileQueryInfoFlags GioFileQueryInfoFlags_val(value list);
+value Val_GioIOStreamSpliceFlags(GIOStreamSpliceFlags flags);
+GIOStreamSpliceFlags GioIOStreamSpliceFlags_val(value list);
+value Val_GioMountMountFlags(GMountMountFlags flags);
+GMountMountFlags GioMountMountFlags_val(value list);
+value Val_GioMountUnmountFlags(GMountUnmountFlags flags);
+GMountUnmountFlags GioMountUnmountFlags_val(value list);
+value Val_GioOutputStreamSpliceFlags(GOutputStreamSpliceFlags flags);
+GOutputStreamSpliceFlags GioOutputStreamSpliceFlags_val(value list);
+value Val_GioResolverNameLookupFlags(GResolverNameLookupFlags flags);
+GResolverNameLookupFlags GioResolverNameLookupFlags_val(value list);
+value Val_GioResourceFlags(GResourceFlags flags);
+GResourceFlags GioResourceFlags_val(value list);
+value Val_GioResourceLookupFlags(GResourceLookupFlags flags);
+GResourceLookupFlags GioResourceLookupFlags_val(value list);
+value Val_GioSettingsBindFlags(GSettingsBindFlags flags);
+GSettingsBindFlags GioSettingsBindFlags_val(value list);
+value Val_GioSocketMsgFlags(GSocketMsgFlags flags);
+GSocketMsgFlags GioSocketMsgFlags_val(value list);
+value Val_GioSubprocessFlags(GSubprocessFlags flags);
+GSubprocessFlags GioSubprocessFlags_val(value list);
+value Val_GioTestDBusFlags(GTestDBusFlags flags);
+GTestDBusFlags GioTestDBusFlags_val(value list);
+value Val_GioTlsCertificateFlags(GTlsCertificateFlags flags);
+GTlsCertificateFlags GioTlsCertificateFlags_val(value list);
+value Val_GioTlsDatabaseVerifyFlags(GTlsDatabaseVerifyFlags flags);
+GTlsDatabaseVerifyFlags GioTlsDatabaseVerifyFlags_val(value list);
+value Val_GioTlsPasswordFlags(GTlsPasswordFlags flags);
+GTlsPasswordFlags GioTlsPasswordFlags_val(value list);
 
 
 /* Forward declarations for external namespace enum/bitfield converters */

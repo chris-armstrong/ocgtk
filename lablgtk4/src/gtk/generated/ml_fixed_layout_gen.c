@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkFixedLayout */
-#ifndef Val_GtkFixedLayout
-#define GtkFixedLayout_val(val) ((GtkFixedLayout*)ext_of_val(val))
-#define Val_GtkFixedLayout(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkFixedLayout */
-
 
 CAMLexport CAMLprim value ml_gtk_fixed_layout_new(value unit)
 {

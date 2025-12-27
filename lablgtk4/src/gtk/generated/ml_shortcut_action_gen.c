@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkShortcutAction */
-#ifndef Val_GtkShortcutAction
-#define GtkShortcutAction_val(val) ((GtkShortcutAction*)ext_of_val(val))
-#define Val_GtkShortcutAction(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkShortcutAction */
-
 
 CAMLexport CAMLprim value ml_gtk_shortcut_action_parse_string(value arg1)
 {

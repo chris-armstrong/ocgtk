@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GSocket */
-#ifndef Val_GSocket
-#define GSocket_val(val) ((GSocket*)ext_of_val(val))
-#define Val_GSocket(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSocket */
-
 
 CAMLexport CAMLprim value ml_g_socket_speaks_ipv4(value self)
 {

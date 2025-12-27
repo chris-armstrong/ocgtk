@@ -4,9 +4,17 @@
 type t = [`subprocess | `object_] Gobject.obj
 
 (** Create a new Subprocess *)
-external new_ : unit -> unit -> string -> unit -> t = "ml_g_subprocess_new"
+external new_ : Gio_enums.subprocessflags -> unit -> string -> unit -> t = "ml_g_subprocess_new"
 
 (* Methods *)
+(** Collects the result of a previous call to
+g_subprocess_wait_async(). *)
+external wait_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_subprocess_wait_finish"
+
+(** Collects the result of a previous call to
+g_subprocess_wait_check_async(). *)
+external wait_check_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_subprocess_wait_check_finish"
+
 (** Combines g_subprocess_wait() with g_spawn_check_wait_status(). *)
 external wait_check : t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_subprocess_wait_check"
 
@@ -124,6 +132,9 @@ the process after calling this function.
 On Unix, this function sends %SIGKILL. *)
 external force_exit : t -> unit = "ml_g_subprocess_force_exit"
 
+(** Complete an invocation of g_subprocess_communicate_utf8_async(). *)
+external communicate_utf8_finish : t -> Async_result.t -> (bool * string option * string option, GError.t) result = "ml_g_subprocess_communicate_utf8_finish"
+
 (** Like g_subprocess_communicate(), but validates the output of the
 process as UTF-8, and returns it as a regular NUL terminated string.
 
@@ -132,4 +143,7 @@ should not be used. *)
 external communicate_utf8 : t -> string option -> Cancellable.t option -> (bool * string option * string option, GError.t) result = "ml_g_subprocess_communicate_utf8"
 
 (* Properties *)
+
+(** Get property: flags *)
+external get_flags : t -> Gio_enums.subprocessflags = "ml_gtk_subprocess_get_flags"
 

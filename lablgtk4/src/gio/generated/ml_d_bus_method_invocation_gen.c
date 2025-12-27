@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDBusMethodInvocation */
-#ifndef Val_GDBusMethodInvocation
-#define GDBusMethodInvocation_val(val) ((GDBusMethodInvocation*)ext_of_val(val))
-#define Val_GDBusMethodInvocation(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusMethodInvocation */
-
 
 CAMLexport CAMLprim value ml_g_dbus_method_invocation_return_dbus_error(value self, value arg1, value arg2)
 {

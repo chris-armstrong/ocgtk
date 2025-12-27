@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkRecentInfo */
-#ifndef Val_GtkRecentInfo
-#define GtkRecentInfo_val(val) ((GtkRecentInfo*)ext_of_val(val))
-#define Val_GtkRecentInfo(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkRecentInfo */
-
 
 CAMLexport CAMLprim value ml_gtk_recent_info_unref(value self)
 {

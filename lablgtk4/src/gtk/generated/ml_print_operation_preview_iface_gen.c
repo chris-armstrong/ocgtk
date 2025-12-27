@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkPrintOperationPreviewIface */
-#ifndef Val_GtkPrintOperationPreviewIface
-#define GtkPrintOperationPreviewIface_val(val) ((GtkPrintOperationPreviewIface*)ext_of_val(val))
-#define Val_GtkPrintOperationPreviewIface(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkPrintOperationPreviewIface */
+/* Conversion functions for GtkPrintOperationPreviewIface (non-opaque record with fields) */
+GtkPrintOperationPreviewIface *GtkPrintOperationPreviewIface_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkPrintOperationPreviewIface **)Data_custom_val(v);
+  } else {
+    return (GtkPrintOperationPreviewIface*)ml_gir_record_ptr_val(v, "GtkPrintOperationPreviewIface");
+  }
+}
+
+value Val_GtkPrintOperationPreviewIface(GtkPrintOperationPreviewIface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkPrintOperationPreviewIface), "GtkPrintOperationPreviewIface", NULL);
+}
+
+value Val_GtkPrintOperationPreviewIface_option(GtkPrintOperationPreviewIface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkPrintOperationPreviewIface(ptr));
+}
 

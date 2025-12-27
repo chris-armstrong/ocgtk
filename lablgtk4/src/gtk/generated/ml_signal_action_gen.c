@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkSignalAction */
-#ifndef Val_GtkSignalAction
-#define GtkSignalAction_val(val) ((GtkSignalAction*)ext_of_val(val))
-#define Val_GtkSignalAction(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkSignalAction */
-
 
 CAMLexport CAMLprim value ml_gtk_signal_action_new(value arg1)
 {

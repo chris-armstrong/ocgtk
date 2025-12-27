@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkAssistantPage */
-#ifndef Val_GtkAssistantPage
-#define GtkAssistantPage_val(val) ((GtkAssistantPage*)ext_of_val(val))
-#define Val_GtkAssistantPage(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkAssistantPage */
-
 
 CAMLexport CAMLprim value ml_gtk_assistant_page_get_child(value self)
 {

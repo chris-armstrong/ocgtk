@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkColumnViewRow */
-#ifndef Val_GtkColumnViewRow
-#define GtkColumnViewRow_val(val) ((GtkColumnViewRow*)ext_of_val(val))
-#define Val_GtkColumnViewRow(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkColumnViewRow */
-
 
 CAMLexport CAMLprim value ml_gtk_column_view_row_set_selectable(value self, value arg1)
 {

@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GFilterInputStream */
-#ifndef Val_GFilterInputStream
-#define GFilterInputStream_val(val) ((GFilterInputStream*)ext_of_val(val))
-#define Val_GFilterInputStream(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GFilterInputStream */
-
 
 CAMLexport CAMLprim value ml_g_filter_input_stream_set_close_base_stream(value self, value arg1)
 {

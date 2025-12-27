@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkShortcut */
-#ifndef Val_GtkShortcut
-#define GtkShortcut_val(val) ((GtkShortcut*)ext_of_val(val))
-#define Val_GtkShortcut(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkShortcut */
-
 
 CAMLexport CAMLprim value ml_gtk_shortcut_new(value arg1, value arg2)
 {

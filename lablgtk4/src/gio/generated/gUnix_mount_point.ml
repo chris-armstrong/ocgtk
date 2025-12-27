@@ -13,9 +13,17 @@ class unix_mount_point (obj : Unix_mount_point.t) = object (self)
     fun () ->
       (Unix_mount_point.free obj)
 
+  method get_device_path : unit -> string =
+    fun () ->
+      (Unix_mount_point.get_device_path obj)
+
   method get_fs_type : unit -> string =
     fun () ->
       (Unix_mount_point.get_fs_type obj)
+
+  method get_mount_path : unit -> string =
+    fun () ->
+      (Unix_mount_point.get_mount_path obj)
 
   method get_options : unit -> string option =
     fun () ->
@@ -25,9 +33,17 @@ class unix_mount_point (obj : Unix_mount_point.t) = object (self)
     fun () ->
       (Unix_mount_point.guess_can_eject obj)
 
+  method guess_icon : unit -> GIcon.icon =
+    fun () ->
+      new  GIcon.icon(Unix_mount_point.guess_icon obj)
+
   method guess_name : unit -> string =
     fun () ->
       (Unix_mount_point.guess_name obj)
+
+  method guess_symbolic_icon : unit -> GIcon.icon =
+    fun () ->
+      new  GIcon.icon(Unix_mount_point.guess_symbolic_icon obj)
 
   method is_loopback : unit -> bool =
     fun () ->

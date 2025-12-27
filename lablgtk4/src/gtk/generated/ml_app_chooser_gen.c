@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkAppChooser */
-#ifndef Val_GtkAppChooser
-#define GtkAppChooser_val(val) ((GtkAppChooser*)ext_of_val(val))
-#define Val_GtkAppChooser(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkAppChooser */
-
 
 CAMLexport CAMLprim value ml_gtk_app_chooser_refresh(value self)
 {

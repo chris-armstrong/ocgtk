@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkSettings */
-#ifndef Val_GtkSettings
-#define GtkSettings_val(val) ((GtkSettings*)ext_of_val(val))
-#define Val_GtkSettings(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkSettings */
-
 
 CAMLexport CAMLprim value ml_gtk_settings_reset_property(value self, value arg1)
 {

@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GMenuAttributeIter */
-#ifndef Val_GMenuAttributeIter
-#define GMenuAttributeIter_val(val) ((GMenuAttributeIter*)ext_of_val(val))
-#define Val_GMenuAttributeIter(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GMenuAttributeIter */
-
 
 CAMLexport CAMLprim value ml_g_menu_attribute_iter_next(value self)
 {

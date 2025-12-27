@@ -2,6 +2,7 @@ class settings : Settings.t ->
   object
     inherit Gsettings_signals.settings_signals
     method apply : unit -> unit
+    method create_action : string -> GAction.action
     method delay : unit -> unit
     method get_boolean : string -> bool
     method get_child : string -> settings

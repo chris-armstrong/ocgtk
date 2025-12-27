@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GNativeSocketAddress */
-#ifndef Val_GNativeSocketAddress
-#define GNativeSocketAddress_val(val) ((GNativeSocketAddress*)ext_of_val(val))
-#define Val_GNativeSocketAddress(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GNativeSocketAddress */
-
 
 CAMLexport CAMLprim value ml_g_native_socket_address_new(value arg1, value arg2)
 {

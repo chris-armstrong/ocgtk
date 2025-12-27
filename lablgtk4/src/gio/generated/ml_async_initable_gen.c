@@ -21,9 +21,12 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GAsyncInitable */
-#ifndef Val_GAsyncInitable
-#define GAsyncInitable_val(val) ((GAsyncInitable*)ext_of_val(val))
-#define Val_GAsyncInitable(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GAsyncInitable */
 
+CAMLexport CAMLprim value ml_g_async_initable_init_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_async_initable_init_finish(GAsyncInitable_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}

@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkEventControllerFocus */
-#ifndef Val_GtkEventControllerFocus
-#define GtkEventControllerFocus_val(val) ((GtkEventControllerFocus*)ext_of_val(val))
-#define Val_GtkEventControllerFocus(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkEventControllerFocus */
-
 
 CAMLexport CAMLprim value ml_gtk_event_controller_focus_new(value unit)
 {

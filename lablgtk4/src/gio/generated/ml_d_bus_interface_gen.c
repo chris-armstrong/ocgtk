@@ -21,12 +21,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDBusInterface */
-#ifndef Val_GDBusInterface
-#define GDBusInterface_val(val) ((GDBusInterface*)ext_of_val(val))
-#define Val_GDBusInterface(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusInterface */
 
+CAMLexport CAMLprim value ml_g_dbus_interface_set_object(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_dbus_interface_set_object(GDBusInterface_val(self), Option_val(arg1, GDBusObject_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_dbus_interface_get_object(value self)
+{
+CAMLparam1(self);
+
+GDBusObject* result = g_dbus_interface_get_object(GDBusInterface_val(self));
+CAMLreturn(Val_option(result, Val_GDBusObject));
+}
 
 CAMLexport CAMLprim value ml_g_dbus_interface_get_info(value self)
 {
@@ -34,4 +44,12 @@ CAMLparam1(self);
 
 GDBusInterfaceInfo* result = g_dbus_interface_get_info(GDBusInterface_val(self));
 CAMLreturn(Val_GDBusInterfaceInfo(result));
+}
+
+CAMLexport CAMLprim value ml_g_dbus_interface_dup_object(value self)
+{
+CAMLparam1(self);
+
+GDBusObject* result = g_dbus_interface_dup_object(GDBusInterface_val(self));
+CAMLreturn(Val_option(result, Val_GDBusObject));
 }

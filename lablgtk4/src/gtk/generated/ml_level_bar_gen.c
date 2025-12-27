@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkLevelBar */
-#ifndef Val_GtkLevelBar
-#define GtkLevelBar_val(val) ((GtkLevelBar*)ext_of_val(val))
-#define Val_GtkLevelBar(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkLevelBar */
-
 
 CAMLexport CAMLprim value ml_gtk_level_bar_new(value unit)
 {

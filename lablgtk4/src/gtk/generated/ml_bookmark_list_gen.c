@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkBookmarkList */
-#ifndef Val_GtkBookmarkList
-#define GtkBookmarkList_val(val) ((GtkBookmarkList*)ext_of_val(val))
-#define Val_GtkBookmarkList(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkBookmarkList */
-
 
 CAMLexport CAMLprim value ml_gtk_bookmark_list_new(value arg1, value arg2)
 {

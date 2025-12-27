@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkFontChooserWidget */
-#ifndef Val_GtkFontChooserWidget
-#define GtkFontChooserWidget_val(val) ((GtkFontChooserWidget*)ext_of_val(val))
-#define Val_GtkFontChooserWidget(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkFontChooserWidget */
-
 
 CAMLexport CAMLprim value ml_gtk_font_chooser_widget_new(value unit)
 {

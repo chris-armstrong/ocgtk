@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkShortcutManagerInterface */
-#ifndef Val_GtkShortcutManagerInterface
-#define GtkShortcutManagerInterface_val(val) ((GtkShortcutManagerInterface*)ext_of_val(val))
-#define Val_GtkShortcutManagerInterface(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkShortcutManagerInterface */
+/* Conversion functions for GtkShortcutManagerInterface (non-opaque record with fields) */
+GtkShortcutManagerInterface *GtkShortcutManagerInterface_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkShortcutManagerInterface **)Data_custom_val(v);
+  } else {
+    return (GtkShortcutManagerInterface*)ml_gir_record_ptr_val(v, "GtkShortcutManagerInterface");
+  }
+}
+
+value Val_GtkShortcutManagerInterface(GtkShortcutManagerInterface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkShortcutManagerInterface), "GtkShortcutManagerInterface", NULL);
+}
+
+value Val_GtkShortcutManagerInterface_option(GtkShortcutManagerInterface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkShortcutManagerInterface(ptr));
+}
 

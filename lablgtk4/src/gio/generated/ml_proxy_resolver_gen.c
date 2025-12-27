@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GProxyResolver */
-#ifndef Val_GProxyResolver
-#define GProxyResolver_val(val) ((GProxyResolver*)ext_of_val(val))
-#define Val_GProxyResolver(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GProxyResolver */
-
 
 CAMLexport CAMLprim value ml_g_proxy_resolver_is_supported(value self)
 {

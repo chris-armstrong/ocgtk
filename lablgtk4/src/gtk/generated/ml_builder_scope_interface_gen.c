@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkBuilderScopeInterface */
-#ifndef Val_GtkBuilderScopeInterface
-#define GtkBuilderScopeInterface_val(val) ((GtkBuilderScopeInterface*)ext_of_val(val))
-#define Val_GtkBuilderScopeInterface(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkBuilderScopeInterface */
+/* Conversion functions for GtkBuilderScopeInterface (non-opaque record with fields) */
+GtkBuilderScopeInterface *GtkBuilderScopeInterface_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkBuilderScopeInterface **)Data_custom_val(v);
+  } else {
+    return (GtkBuilderScopeInterface*)ml_gir_record_ptr_val(v, "GtkBuilderScopeInterface");
+  }
+}
+
+value Val_GtkBuilderScopeInterface(GtkBuilderScopeInterface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkBuilderScopeInterface), "GtkBuilderScopeInterface", NULL);
+}
+
+value Val_GtkBuilderScopeInterface_option(GtkBuilderScopeInterface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkBuilderScopeInterface(ptr));
+}
 

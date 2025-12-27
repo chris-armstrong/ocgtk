@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GSocketAddress */
-#ifndef Val_GSocketAddress
-#define GSocketAddress_val(val) ((GSocketAddress*)ext_of_val(val))
-#define Val_GSocketAddress(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSocketAddress */
-
 
 CAMLexport CAMLprim value ml_g_socket_address_new_from_native(value arg1, value arg2)
 {

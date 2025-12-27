@@ -16,9 +16,3 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkWidgetPrivate */
-#ifndef Val_GtkWidgetPrivate
-#define GtkWidgetPrivate_val(val) ((GtkWidgetPrivate*)ext_of_val(val))
-#define Val_GtkWidgetPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkWidgetPrivate */
-

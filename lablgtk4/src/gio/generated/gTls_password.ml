@@ -5,6 +5,10 @@ class tls_password (obj : Tls_password.t) = object (self)
     fun () ->
       (Tls_password.get_description obj)
 
+  method get_flags : unit -> Gio_enums.tlspasswordflags =
+    fun () ->
+      (Tls_password.get_flags obj)
+
   method get_warning : unit -> string =
     fun () ->
       (Tls_password.get_warning obj)
@@ -12,6 +16,10 @@ class tls_password (obj : Tls_password.t) = object (self)
   method set_description : string -> unit =
     fun description ->
       (Tls_password.set_description obj description)
+
+  method set_flags : Gio_enums.tlspasswordflags -> unit =
+    fun flags ->
+      (Tls_password.set_flags obj flags)
 
   method set_warning : string -> unit =
     fun warning ->

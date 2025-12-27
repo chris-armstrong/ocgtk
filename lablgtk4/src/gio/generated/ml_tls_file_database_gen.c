@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GTlsFileDatabase */
-#ifndef Val_GTlsFileDatabase
-#define GTlsFileDatabase_val(val) ((GTlsFileDatabase*)ext_of_val(val))
-#define Val_GTlsFileDatabase(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GTlsFileDatabase */
-
 
 CAMLexport CAMLprim value ml_gtk_tls_file_database_get_anchors(value self)
 {

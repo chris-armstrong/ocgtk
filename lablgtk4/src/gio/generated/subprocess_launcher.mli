@@ -4,9 +4,16 @@
 type t = [`subprocess_launcher | `object_] Gobject.obj
 
 (** Create a new SubprocessLauncher *)
-external new_ : unit -> t = "ml_g_subprocess_launcher_new"
+external new_ : Gio_enums.subprocessflags -> t = "ml_g_subprocess_launcher_new"
 
 (* Methods *)
+(** Removes the environment variable @variable from the environment of
+processes launched from this launcher.
+
+On UNIX, the variable's name can be an arbitrary byte string not
+containing '='. On Windows, it should be in UTF-8. *)
+external unsetenv : t -> string -> unit = "ml_g_subprocess_launcher_unsetenv"
+
 (** Sets the file descriptor to use as the stdout for spawned processes.
 
 If @fd is -1 then any previously given fd is unset.
@@ -78,6 +85,83 @@ An example use case is GNUPG, which has a command line argument
 the passphrase to be written. *)
 external take_fd : t -> int -> int -> unit = "ml_g_subprocess_launcher_take_fd"
 
+(** Sets the environment variable @variable in the environment of
+processes launched from this launcher.
+
+On UNIX, both the variable's name and value can be arbitrary byte
+strings, except that the variable's name cannot contain '='.
+On Windows, they should be in UTF-8. *)
+external setenv : t -> string -> string -> bool -> unit = "ml_g_subprocess_launcher_setenv"
+
+(** Sets the file path to use as the stdout for spawned processes.
+
+If @path is %NULL then any previously given path is unset.
+
+The file will be created or truncated when the process is spawned, as
+would be the case if using '>' at the shell.
+
+You may not set a stdout file path if a stdout fd is already set or
+if the launcher flags contain any flags directing stdout elsewhere.
+
+This feature is only available on UNIX. *)
+external set_stdout_file_path : t -> string option -> unit = "ml_g_subprocess_launcher_set_stdout_file_path"
+
+(** Sets the file path to use as the stdin for spawned processes.
+
+If @path is %NULL then any previously given path is unset.
+
+The file must exist or spawning the process will fail.
+
+You may not set a stdin file path if a stdin fd is already set or if
+the launcher flags contain any flags directing stdin elsewhere.
+
+This feature is only available on UNIX. *)
+external set_stdin_file_path : t -> string option -> unit = "ml_g_subprocess_launcher_set_stdin_file_path"
+
+(** Sets the file path to use as the stderr for spawned processes.
+
+If @path is %NULL then any previously given path is unset.
+
+The file will be created or truncated when the process is spawned, as
+would be the case if using '2>' at the shell.
+
+If you want to send both stdout and stderr to the same file then use
+%G_SUBPROCESS_FLAGS_STDERR_MERGE.
+
+You may not set a stderr file path if a stderr fd is already set or
+if the launcher flags contain any flags directing stderr elsewhere.
+
+This feature is only available on UNIX. *)
+external set_stderr_file_path : t -> string option -> unit = "ml_g_subprocess_launcher_set_stderr_file_path"
+
+(** Sets the flags on the launcher.
+
+The default flags are %G_SUBPROCESS_FLAGS_NONE.
+
+You may not set flags that specify conflicting options for how to
+handle a particular stdio stream (eg: specifying both
+%G_SUBPROCESS_FLAGS_STDIN_PIPE and
+%G_SUBPROCESS_FLAGS_STDIN_INHERIT).
+
+You may also not set a flag that conflicts with a previous call to a
+function like g_subprocess_launcher_set_stdin_file_path() or
+g_subprocess_launcher_take_stdout_fd(). *)
+external set_flags : t -> Gio_enums.subprocessflags -> unit = "ml_g_subprocess_launcher_set_flags"
+
+(** Sets the current working directory that processes will be launched
+with.
+
+By default processes are launched with the current working directory
+of the launching process at the time of launch. *)
+external set_cwd : t -> string -> unit = "ml_g_subprocess_launcher_set_cwd"
+
+(** Returns the value of the environment variable @variable in the
+environment of processes launched from this launcher.
+
+On UNIX, the returned string can be an arbitrary byte string.
+On Windows, it will be UTF-8. *)
+external getenv : t -> string -> string option = "ml_g_subprocess_launcher_getenv"
+
 (** Closes all the file descriptors previously passed to the object with
 g_subprocess_launcher_take_fd(), g_subprocess_launcher_take_stderr_fd(), etc.
 
@@ -91,4 +175,7 @@ language bindings can call it earlier to guarantee when FDs are closed. *)
 external close : t -> unit = "ml_g_subprocess_launcher_close"
 
 (* Properties *)
+
+(** Get property: flags *)
+external get_flags : t -> Gio_enums.subprocessflags = "ml_gtk_subprocess_launcher_get_flags"
 

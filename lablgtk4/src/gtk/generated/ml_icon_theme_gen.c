@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkIconTheme */
-#ifndef Val_GtkIconTheme
-#define GtkIconTheme_val(val) ((GtkIconTheme*)ext_of_val(val))
-#define Val_GtkIconTheme(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkIconTheme */
-
 
 CAMLexport CAMLprim value ml_gtk_icon_theme_new(value unit)
 {

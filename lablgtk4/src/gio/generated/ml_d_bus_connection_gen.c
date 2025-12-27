@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDBusConnection */
-#ifndef Val_GDBusConnection
-#define GDBusConnection_val(val) ((GDBusConnection*)ext_of_val(val))
-#define Val_GDBusConnection(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusConnection */
-
 
 CAMLexport CAMLprim value ml_g_dbus_connection_unregister_subtree(value self, value arg1)
 {
@@ -84,6 +78,15 @@ g_dbus_connection_set_exit_on_close(GDBusConnection_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_dbus_connection_send_message_with_reply_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GDBusMessage* result = g_dbus_connection_send_message_with_reply_finish(GDBusConnection_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GDBusMessage(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_g_dbus_connection_remove_filter(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -132,6 +135,14 @@ const gchar* result = g_dbus_connection_get_guid(GDBusConnection_val(self));
 CAMLreturn(caml_copy_string(result));
 }
 
+CAMLexport CAMLprim value ml_g_dbus_connection_get_flags(value self)
+{
+CAMLparam1(self);
+
+GDBusConnectionFlags result = g_dbus_connection_get_flags(GDBusConnection_val(self));
+CAMLreturn(Val_GioDBusConnectionFlags(result));
+}
+
 CAMLexport CAMLprim value ml_g_dbus_connection_get_exit_on_close(value self)
 {
 CAMLparam1(self);
@@ -140,12 +151,29 @@ gboolean result = g_dbus_connection_get_exit_on_close(GDBusConnection_val(self))
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_g_dbus_connection_get_capabilities(value self)
+{
+CAMLparam1(self);
+
+GDBusCapabilityFlags result = g_dbus_connection_get_capabilities(GDBusConnection_val(self));
+CAMLreturn(Val_GioDBusCapabilityFlags(result));
+}
+
 CAMLexport CAMLprim value ml_g_dbus_connection_flush_sync(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 GError *error = NULL;
 
 gboolean result = g_dbus_connection_flush_sync(GDBusConnection_val(self), Option_val(arg1, GCancellable_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_dbus_connection_flush_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_dbus_connection_flush_finish(GDBusConnection_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -158,12 +186,30 @@ guint result = g_dbus_connection_export_menu_model(GDBusConnection_val(self), St
 if (error == NULL) CAMLreturn(Res_Ok(Val_int(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+CAMLexport CAMLprim value ml_g_dbus_connection_export_action_group(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GError *error = NULL;
+
+guint result = g_dbus_connection_export_action_group(GDBusConnection_val(self), String_val(arg1), GActionGroup_val(arg2), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_int(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_g_dbus_connection_close_sync(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 GError *error = NULL;
 
 gboolean result = g_dbus_connection_close_sync(GDBusConnection_val(self), Option_val(arg1, GCancellable_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_dbus_connection_close_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_dbus_connection_close_finish(GDBusConnection_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 

@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GActionGroup */
-#ifndef Val_GActionGroup
-#define GActionGroup_val(val) ((GActionGroup*)ext_of_val(val))
-#define Val_GActionGroup(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GActionGroup */
-
 
 CAMLexport CAMLprim value ml_g_action_group_has_action(value self, value arg1)
 {

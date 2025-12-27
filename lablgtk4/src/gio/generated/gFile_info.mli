@@ -6,6 +6,7 @@ class file_info : File_info.t ->
     method get_attribute_as_string : string -> string option
     method get_attribute_boolean : string -> bool
     method get_attribute_byte_string : string -> string option
+    method get_attribute_file_path : string -> string option
     method get_attribute_status : string -> Gio_enums.fileattributestatus
     method get_attribute_string : string -> string option
     method get_attribute_type : string -> Gio_enums.fileattributetype
@@ -14,14 +15,19 @@ class file_info : File_info.t ->
     method get_edit_name : unit -> string
     method get_etag : unit -> string option
     method get_file_type : unit -> Gio_enums.filetype
+    method get_icon : unit -> GIcon.icon option
     method get_is_backup : unit -> bool
     method get_is_hidden : unit -> bool
     method get_is_symlink : unit -> bool
+    method get_name : unit -> string
+    method get_symbolic_icon : unit -> GIcon.icon option
+    method get_symlink_target : unit -> string option
     method has_attribute : string -> bool
     method has_namespace : string -> bool
     method remove_attribute : string -> unit
     method set_attribute_boolean : string -> bool -> unit
     method set_attribute_byte_string : string -> string -> unit
+    method set_attribute_file_path : string -> string -> unit
     method set_attribute_mask : File_attribute_matcher.t -> unit
     method set_attribute_status : string -> Gio_enums.fileattributestatus -> bool
     method set_attribute_string : string -> string -> unit
@@ -31,6 +37,8 @@ class file_info : File_info.t ->
     method set_file_type : Gio_enums.filetype -> unit
     method set_is_hidden : bool -> unit
     method set_is_symlink : bool -> unit
+    method set_name : string -> unit
+    method set_symlink_target : string -> unit
     method unset_attribute_mask : unit -> unit
     method as_file_info : File_info.t
   end

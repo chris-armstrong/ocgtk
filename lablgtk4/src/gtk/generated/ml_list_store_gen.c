@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkListStore */
-#ifndef Val_GtkListStore
-#define GtkListStore_val(val) ((GtkListStore*)ext_of_val(val))
-#define Val_GtkListStore(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkListStore */
-
 
 CAMLexport CAMLprim value ml_gtk_list_store_newv(value arg1, value arg2)
 {
