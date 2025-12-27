@@ -45,77 +45,6 @@
 #define Val_GdkCursor(obj) (val_of_ext(obj))
 
 /* ==================================================================== */
-/* Non-opaque GTK record conversions (heap copies with g_free finalizer) */
-/* ==================================================================== */
-
-#define GtkTreeIter_val(v) ((GtkTreeIter*)ml_gir_record_ptr_val((v), "GtkTreeIter"))
-#define Val_GtkTreeIter_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GtkTreeIter), "GtkTreeIter", (void *(*)(const void *))gtk_tree_iter_copy)
-#define Val_GtkTreeIter(obj) Val_GtkTreeIter_ptr(&(obj))
-#define Val_GtkTreeIter_option(ptr) ((ptr) ? Val_some(Val_GtkTreeIter_ptr(ptr)) : Val_none)
-
-#define GtkTextIter_val(v) ((GtkTextIter*)ml_gir_record_ptr_val((v), "GtkTextIter"))
-#define Val_GtkTextIter_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GtkTextIter), "GtkTextIter", (void *(*)(const void *))gtk_text_iter_copy)
-#define Val_GtkTextIter(obj) Val_GtkTextIter_ptr(&(obj))
-#define Val_GtkTextIter_option(ptr) ((ptr) ? Val_some(Val_GtkTextIter_ptr(ptr)) : Val_none)
-
-#define GtkRequisition_val(v) ((GtkRequisition*)ml_gir_record_ptr_val((v), "GtkRequisition"))
-#define Val_GtkRequisition_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GtkRequisition), "GtkRequisition", (void *(*)(const void *))gtk_requisition_copy)
-#define Val_GtkRequisition(obj) Val_GtkRequisition_ptr(&(obj))
-#define Val_GtkRequisition_option(ptr) ((ptr) ? Val_some(Val_GtkRequisition_ptr(ptr)) : Val_none)
-
-#define GtkBorder_val(v) ((GtkBorder*)ml_gir_record_ptr_val((v), "GtkBorder"))
-#define Val_GtkBorder_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GtkBorder), "GtkBorder", (void *(*)(const void *))gtk_border_copy)
-#define Val_GtkBorder(obj) Val_GtkBorder_ptr(&(obj))
-#define Val_GtkBorder_option(ptr) ((ptr) ? Val_some(Val_GtkBorder_ptr(ptr)) : Val_none)
-
-#define GtkBitsetIter_val(v) ((GtkBitsetIter*)ml_gir_record_ptr_val((v), "GtkBitsetIter"))
-#define Val_GtkBitsetIter_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(GtkBitsetIter), "GtkBitsetIter", NULL)
-#define Val_GtkBitsetIter(obj) Val_GtkBitsetIter_ptr(&(obj))
-
-/* GdkClipboard (new in GTK4) - GObject, use direct cast */
-#define GdkClipboard_val(val) ((GdkClipboard*)(ext_of_val(val)))
-#define Val_GdkClipboard(obj) (val_of_ext(obj))
-
-/* GdkContentProvider (new in GTK4) - GObject, use direct cast */
-#define GdkContentProvider_val(val) ((GdkContentProvider*)(ext_of_val(val)))
-#define Val_GdkContentProvider(obj) (val_of_ext(obj))
-
-/* GtkWidget - GObject, use direct cast */
-#define GtkWidget_val(val) ((GtkWidget*)(ext_of_val(val)))
-#define Val_GtkWidget(obj) (val_of_ext(obj))
-CAMLexport value Val_GtkWidget_option(GtkWidget *obj);
-
-/* GtkWindow - GObject, use direct cast */
-#define GtkWindow_val(val) ((GtkWindow*)(ext_of_val(val)))
-#define Val_GtkWindow(obj) (val_of_ext(obj))
-
-/* GtkRoot - Interface, use direct cast */
-#define GtkRoot_val(val) ((GtkRoot*)(ext_of_val(val)))
-#define Val_GtkRoot(obj) (val_of_ext(obj))
-
-/* GtkNative - Interface, use direct cast */
-#define GtkNative_val(val) ((GtkNative*)(ext_of_val(val)))
-#define Val_GtkNative(obj) (val_of_ext(obj))
-
-/* GtkStyleProvider - Interface, use direct cast */
-#define GtkStyleProvider_val(val) ((GtkStyleProvider*)(ext_of_val(val)))
-#define Val_GtkStyleProvider(obj) (val_of_ext(obj))
-
-/* GtkScrolledWindow - GObject, use direct cast */
-#define GtkScrolledWindow_val(val) ((GtkScrolledWindow*)(ext_of_val(val)))
-#define Val_GtkScrolledWindow(obj) (val_of_ext(obj))
-
-/* GtkFrame - GObject, use direct cast */
-#define GtkFrame_val(val) ((GtkFrame*)(ext_of_val(val)))
-#define Val_GtkFrame(obj) (val_of_ext(obj))
-
-/* GdkPixbuf */
-#define GdkPixbuf_val(val) (*(GdkPixbuf**)Data_custom_val(val))
-value Val_GdkPixbuf_(GdkPixbuf *pb, gboolean ref);
-#define Val_GdkPixbuf(pb) (Val_GdkPixbuf_((pb), TRUE))
-#define Val_GdkPixbuf_new(pb) (Val_GdkPixbuf_((pb), FALSE))
-
-/* ==================================================================== */
 /* Pango Type Conversions */
 /* ==================================================================== */
 
@@ -149,9 +78,6 @@ value Val_PangoFontMetrics_new(PangoFontMetrics *fm);
 /* ==================================================================== */
 
 /* Copies of value-returning GTK structs (stack-safe) */
-value copy_GtkTreeIter(const GtkTreeIter *iter);
-value copy_GtkTextIter(const GtkTextIter *iter);
-value copy_GtkRequisition(const GtkRequisition *req);
-value copy_GtkBorder(const GtkBorder *border);
+/* These are now declared in generated_forward_decls.h and implemented in ml_*_record_gen.c */
 
 #endif /* _gtk4_converters_ */

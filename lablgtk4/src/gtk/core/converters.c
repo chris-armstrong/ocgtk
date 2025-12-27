@@ -31,18 +31,4 @@ CAMLexport value Val_GtkWidget_option(GtkWidget *widget) {
 /* Copies for value-returning GTK structs                              */
 /* ==================================================================== */
 
-value copy_GtkTreeIter(const GtkTreeIter *iter) {
-    return ml_gir_record_alloc(iter, sizeof(GtkTreeIter), "GtkTreeIter", (void *(*)(const void *))gtk_tree_iter_copy);
-}
-
-value copy_GtkTextIter(const GtkTextIter *iter) {
-    return ml_gir_record_alloc(iter, sizeof(GtkTextIter), "GtkTextIter", (void *(*)(const void *))gtk_text_iter_copy);
-}
-
-value copy_GtkRequisition(const GtkRequisition *req) {
-    return ml_gir_record_alloc(req, sizeof(GtkRequisition), "GtkRequisition", (void *(*)(const void *))gtk_requisition_copy);
-}
-
-value copy_GtkBorder(const GtkBorder *border) {
-    return ml_gir_record_alloc(border, sizeof(GtkBorder), "GtkBorder", (void *(*)(const void *))gtk_border_copy);
-}
+/* Value-like record copy functions are now generated in ml_*_record_gen.c files */
