@@ -1,7 +1,8 @@
 (* ML AST Helpers - Wrapper around OCaml compiler-libs for parsing and inspecting ML/MLI files *)
 
-open Parsetree
-open Asttypes
+open Ppxlib
+open Ppxlib.Parsetree
+open Ppxlib.Asttypes
 
 (* ========================================================================= *)
 (* Parsing Functions *)
@@ -11,9 +12,9 @@ open Asttypes
 let parse_implementation code =
   let lexbuf = Lexing.from_string code in
   try
-    Parse.implementation lexbuf
+    Ppxlib.Parse.implementation lexbuf
   with
-  | Syntaxerr.Error _ as e ->
+  | Ppxlib.Location.Error _ as e ->
       Printf.eprintf "Syntax error while parsing implementation:\n%s\n" code;
       raise e
   | e ->
@@ -24,9 +25,9 @@ let parse_implementation code =
 let parse_interface code =
   let lexbuf = Lexing.from_string code in
   try
-    Parse.interface lexbuf
+    Ppxlib.Parse.interface lexbuf
   with
-  | Syntaxerr.Error _ as e ->
+  | Ppxlib.Location.Error _ as e ->
       Printf.eprintf "Syntax error while parsing interface:\n%s\n" code;
       raise e
   | e ->
@@ -142,7 +143,7 @@ let longident_loc_to_string (lid_loc : Longident.t Asttypes.loc) : string =
   let rec to_str lid =
     match lid with
     | Longident.Lident s -> s
-    | Longident.Ldot (parent_loc, s_loc) -> to_str parent_loc.txt ^ "." ^ s_loc.txt
+    | Longident.Ldot (parent, s) -> to_str parent ^ "." ^ s
     | Longident.Lapply _ -> "<apply>"
   in
   to_str lid_loc.txt
@@ -164,8 +165,8 @@ let rec core_type_to_string (ct : core_type) : string =
       let args_str = String.concat ", " (List.map core_type_to_string args) in
       Printf.sprintf "(%s) %s" args_str (longident_loc_to_string lid_loc)
   | Ptyp_tuple types ->
-      (* In OCaml 5.4+, tuple types include optional labels *)
-      let types_str = String.concat " * " (List.map (fun (_, ct) -> core_type_to_string ct) types) in
+      (* ppxlib uses version-independent tuple representation without labels *)
+      let types_str = String.concat " * " (List.map core_type_to_string types) in
       Printf.sprintf "(%s)" types_str
   | Ptyp_arrow (_, param_type, return_type) ->
       Printf.sprintf "%s -> %s"
@@ -252,8 +253,8 @@ let wraps_gobject_obj (type_decl : type_declaration) : bool =
   match type_decl.ptype_manifest with
   | Some { ptyp_desc = Ptyp_constr (lid_loc, [_]); _ } ->
       (match lid_loc.txt with
-       | Longident.Ldot (parent_loc, s_loc) ->
-           (match parent_loc.txt, s_loc.txt with
+       | Longident.Ldot (parent, s) ->
+           (match parent, s with
             | Longident.Lident "Gobject", "obj" -> true
             | _ -> false)
        | _ -> false)

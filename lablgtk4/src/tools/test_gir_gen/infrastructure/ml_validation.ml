@@ -1,6 +1,7 @@
 (* ML Validation Helpers - High-level validation functions for ML AST testing *)
 
-open Parsetree
+open Ppxlib
+open Ppxlib.Parsetree
 open Printf
 
 (* ========================================================================= *)

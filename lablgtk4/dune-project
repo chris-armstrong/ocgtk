@@ -21,4 +21,5 @@
   (camlp5 :build)
   (camlp-streams :build)
   (xmlm :build)
-  (alcotest :with-test)))
+  (alcotest :with-test)
+  (ppxlib :with-test)))

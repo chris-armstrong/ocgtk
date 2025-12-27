@@ -18,6 +18,7 @@ depends: [
   "camlp-streams" {build}
   "xmlm" {build}
   "alcotest" {with-test}
+  "ppxlib" {with-test}
   "odoc" {with-doc}
 ]
 build: [

@@ -1,6 +1,7 @@
 (* Signature Tests - Validates .mli and .ml consistency and method specifications *)
 
 open Gir_gen_lib.Types
+open Ppxlib.Parsetree
 
 let create_test_context = Helpers.create_test_context
 

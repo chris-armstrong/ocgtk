@@ -5,6 +5,8 @@
  * classes registered. These tests validate that generated code contains the expected
  * structure even without the full hierarchy system configured. *)
 
+open Ppxlib.Parsetree
+
 let create_test_context_with_hierarchy = Helpers.create_test_context_with_hierarchy
 
 (* Helper to check if AST has a value declaration (for .mli) *)
