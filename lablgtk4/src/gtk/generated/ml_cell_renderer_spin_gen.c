@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkCellRendererSpin */
-#ifndef Val_GtkCellRendererSpin
-#define GtkCellRendererSpin_val(val) ((GtkCellRendererSpin*)ext_of_val(val))
-#define Val_GtkCellRendererSpin(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkCellRendererSpin */
-
 
 CAMLexport CAMLprim value ml_gtk_cell_renderer_spin_new(value unit)
 {

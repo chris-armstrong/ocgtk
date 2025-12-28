@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkPrintDialog */
-#ifndef Val_GtkPrintDialog
-#define GtkPrintDialog_val(val) ((GtkPrintDialog*)ext_of_val(val))
-#define Val_GtkPrintDialog(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkPrintDialog */
-
 
 CAMLexport CAMLprim value ml_gtk_print_dialog_new(value unit)
 {

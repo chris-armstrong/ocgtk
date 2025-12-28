@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDBusAuthObserver */
-#ifndef Val_GDBusAuthObserver
-#define GDBusAuthObserver_val(val) ((GDBusAuthObserver*)ext_of_val(val))
-#define Val_GDBusAuthObserver(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusAuthObserver */
-
 
 CAMLexport CAMLprim value ml_g_dbus_auth_observer_new(value unit)
 {

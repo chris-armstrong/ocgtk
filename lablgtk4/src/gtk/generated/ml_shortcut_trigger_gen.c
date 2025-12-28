@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkShortcutTrigger */
-#ifndef Val_GtkShortcutTrigger
-#define GtkShortcutTrigger_val(val) ((GtkShortcutTrigger*)ext_of_val(val))
-#define Val_GtkShortcutTrigger(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkShortcutTrigger */
-
 
 CAMLexport CAMLprim value ml_gtk_shortcut_trigger_parse_string(value arg1)
 {

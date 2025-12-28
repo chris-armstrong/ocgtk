@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkTreeSelection */
-#ifndef Val_GtkTreeSelection
-#define GtkTreeSelection_val(val) ((GtkTreeSelection*)ext_of_val(val))
-#define Val_GtkTreeSelection(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTreeSelection */
-
 
 CAMLexport CAMLprim value ml_gtk_tree_selection_unselect_range(value self, value arg1, value arg2)
 {

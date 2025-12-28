@@ -4,6 +4,13 @@
 type t = [`permission | `object_] Gobject.obj
 
 (* Methods *)
+(** Collects the result of attempting to release the permission
+represented by @permission.
+
+This is the second half of the asynchronous version of
+g_permission_release(). *)
+external release_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_permission_release_finish"
+
 (** Attempts to release the permission represented by @permission.
 
 The precise method by which this happens depends on the permission
@@ -42,6 +49,13 @@ external get_can_acquire : t -> bool = "ml_g_permission_get_can_acquire"
 the caller currently has permission to perform the action that
 @permission represents the permission to perform. *)
 external get_allowed : t -> bool = "ml_g_permission_get_allowed"
+
+(** Collects the result of attempting to acquire the permission
+represented by @permission.
+
+This is the second half of the asynchronous version of
+g_permission_acquire(). *)
+external acquire_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_permission_acquire_finish"
 
 (** Attempts to acquire the permission represented by @permission.
 

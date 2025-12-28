@@ -25,6 +25,10 @@ class d_bus_message (obj : D_bus_message.t) = object (self)
     fun () ->
       (D_bus_message.get_error_name obj)
 
+  method get_flags : unit -> Gio_enums.dbusmessageflags =
+    fun () ->
+      (D_bus_message.get_flags obj)
+
   method get_interface : unit -> string option =
     fun () ->
       (D_bus_message.get_interface obj)
@@ -84,6 +88,10 @@ class d_bus_message (obj : D_bus_message.t) = object (self)
   method set_error_name : string -> unit =
     fun value ->
       (D_bus_message.set_error_name obj value)
+
+  method set_flags : Gio_enums.dbusmessageflags -> unit =
+    fun flags ->
+      (D_bus_message.set_flags obj flags)
 
   method set_interface : string option -> unit =
     fun value ->

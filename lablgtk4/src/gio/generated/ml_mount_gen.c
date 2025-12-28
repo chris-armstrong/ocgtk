@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GMount */
-#ifndef Val_GMount
-#define GMount_val(val) ((GMount*)ext_of_val(val))
-#define Val_GMount(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GMount */
-
 
 CAMLexport CAMLprim value ml_g_mount_unshadow(value self)
 {
@@ -34,6 +28,24 @@ CAMLparam1(self);
 
 g_mount_unshadow(GMount_val(self));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_mount_unmount_with_operation_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_mount_unmount_with_operation_finish(GMount_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_mount_unmount_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_mount_unmount_finish(GMount_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_g_mount_shadow(value self)
@@ -44,12 +56,29 @@ g_mount_shadow(GMount_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_mount_remount_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_mount_remount_finish(GMount_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_g_mount_is_shadowed(value self)
 {
 CAMLparam1(self);
 
 gboolean result = g_mount_is_shadowed(GMount_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_g_mount_get_volume(value self)
+{
+CAMLparam1(self);
+
+GVolume* result = g_mount_get_volume(GMount_val(self));
+CAMLreturn(Val_option(result, Val_GVolume));
 }
 
 CAMLexport CAMLprim value ml_g_mount_get_uuid(value self)
@@ -60,6 +89,14 @@ char* result = g_mount_get_uuid(GMount_val(self));
 CAMLreturn(Val_option_string(result));
 }
 
+CAMLexport CAMLprim value ml_g_mount_get_symbolic_icon(value self)
+{
+CAMLparam1(self);
+
+GIcon* result = g_mount_get_symbolic_icon(GMount_val(self));
+CAMLreturn(Val_GIcon(result));
+}
+
 CAMLexport CAMLprim value ml_g_mount_get_sort_key(value self)
 {
 CAMLparam1(self);
@@ -68,12 +105,62 @@ const gchar* result = g_mount_get_sort_key(GMount_val(self));
 CAMLreturn(Val_option_string(result));
 }
 
+CAMLexport CAMLprim value ml_g_mount_get_root(value self)
+{
+CAMLparam1(self);
+
+GFile* result = g_mount_get_root(GMount_val(self));
+CAMLreturn(Val_GFile(result));
+}
+
 CAMLexport CAMLprim value ml_g_mount_get_name(value self)
 {
 CAMLparam1(self);
 
 char* result = g_mount_get_name(GMount_val(self));
 CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_g_mount_get_icon(value self)
+{
+CAMLparam1(self);
+
+GIcon* result = g_mount_get_icon(GMount_val(self));
+CAMLreturn(Val_GIcon(result));
+}
+
+CAMLexport CAMLprim value ml_g_mount_get_drive(value self)
+{
+CAMLparam1(self);
+
+GDrive* result = g_mount_get_drive(GMount_val(self));
+CAMLreturn(Val_option(result, Val_GDrive));
+}
+
+CAMLexport CAMLprim value ml_g_mount_get_default_location(value self)
+{
+CAMLparam1(self);
+
+GFile* result = g_mount_get_default_location(GMount_val(self));
+CAMLreturn(Val_GFile(result));
+}
+
+CAMLexport CAMLprim value ml_g_mount_eject_with_operation_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_mount_eject_with_operation_finish(GMount_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_mount_eject_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_mount_eject_finish(GMount_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_g_mount_can_unmount(value self)

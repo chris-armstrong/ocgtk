@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GNetworkAddress */
-#ifndef Val_GNetworkAddress
-#define GNetworkAddress_val(val) ((GNetworkAddress*)ext_of_val(val))
-#define Val_GNetworkAddress(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GNetworkAddress */
-
 
 CAMLexport CAMLprim value ml_g_network_address_new(value arg1, value arg2)
 {

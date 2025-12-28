@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GSimpleAction */
-#ifndef Val_GSimpleAction
-#define GSimpleAction_val(val) ((GSimpleAction*)ext_of_val(val))
-#define Val_GSimpleAction(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSimpleAction */
-
 
 CAMLexport CAMLprim value ml_g_simple_action_new(value arg1, value arg2)
 {

@@ -23,6 +23,9 @@ external get_output_stream : t -> Output_stream.t = "ml_g_io_stream_get_output_s
 for reading. *)
 external get_input_stream : t -> Input_stream.t = "ml_g_io_stream_get_input_stream"
 
+(** Closes a stream. *)
+external close_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_io_stream_close_finish"
+
 (** Closes the stream, releasing resources related to it. This will also
 close the individual input and output streams, if they are not already
 closed.

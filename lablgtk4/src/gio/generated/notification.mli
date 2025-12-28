@@ -17,6 +17,9 @@ external set_title : t -> string -> unit = "ml_g_notification_set_title"
 #GNotificationPriority for possible values. *)
 external set_priority : t -> Gio_enums.notificationpriority -> unit = "ml_g_notification_set_priority"
 
+(** Sets the icon of @notification to @icon. *)
+external set_icon : t -> Icon.t -> unit = "ml_g_notification_set_icon"
+
 (** Sets the default action of @notification to @detailed_action. This
 action is activated when the notification is clicked on.
 

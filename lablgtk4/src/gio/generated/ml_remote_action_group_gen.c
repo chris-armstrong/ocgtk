@@ -21,9 +21,3 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GRemoteActionGroup */
-#ifndef Val_GRemoteActionGroup
-#define GRemoteActionGroup_val(val) ((GRemoteActionGroup*)ext_of_val(val))
-#define Val_GRemoteActionGroup(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GRemoteActionGroup */
-

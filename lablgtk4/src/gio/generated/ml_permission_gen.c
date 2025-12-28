@@ -21,12 +21,15 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GPermission */
-#ifndef Val_GPermission
-#define GPermission_val(val) ((GPermission*)ext_of_val(val))
-#define Val_GPermission(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GPermission */
 
+CAMLexport CAMLprim value ml_g_permission_release_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_permission_release_finish(GPermission_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 
 CAMLexport CAMLprim value ml_g_permission_release(value self, value arg1)
 {
@@ -67,6 +70,15 @@ CAMLparam1(self);
 
 gboolean result = g_permission_get_allowed(GPermission_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_g_permission_acquire_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_permission_acquire_finish(GPermission_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_g_permission_acquire(value self, value arg1)

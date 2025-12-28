@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkEventControllerMotion */
-#ifndef Val_GtkEventControllerMotion
-#define GtkEventControllerMotion_val(val) ((GtkEventControllerMotion*)ext_of_val(val))
-#define Val_GtkEventControllerMotion(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkEventControllerMotion */
-
 
 CAMLexport CAMLprim value ml_gtk_event_controller_motion_new(value unit)
 {

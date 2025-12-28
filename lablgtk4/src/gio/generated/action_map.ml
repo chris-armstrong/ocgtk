@@ -9,3 +9,16 @@ type t = [`action_map] Gobject.obj
 If no action of this name is in the map then nothing happens. *)
 external remove_action : t -> string -> unit = "ml_g_action_map_remove_action"
 
+(** Looks up the action with the name @action_name in @action_map.
+
+If no such action exists, returns %NULL. *)
+external lookup_action : t -> string -> Action.t option = "ml_g_action_map_lookup_action"
+
+(** Adds an action to the @action_map.
+
+If the action map already contains an action with the same name
+as @action then the old action is dropped from the action map.
+
+The action map takes its own reference on @action. *)
+external add_action : t -> Action.t -> unit = "ml_g_action_map_add_action"
+

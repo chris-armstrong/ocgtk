@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkColumnViewCell */
-#ifndef Val_GtkColumnViewCell
-#define GtkColumnViewCell_val(val) ((GtkColumnViewCell*)ext_of_val(val))
-#define Val_GtkColumnViewCell(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkColumnViewCell */
-
 
 CAMLexport CAMLprim value ml_gtk_column_view_cell_set_focusable(value self, value arg1)
 {

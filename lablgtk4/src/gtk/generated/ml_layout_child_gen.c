@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkLayoutChild */
-#ifndef Val_GtkLayoutChild
-#define GtkLayoutChild_val(val) ((GtkLayoutChild*)ext_of_val(val))
-#define Val_GtkLayoutChild(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkLayoutChild */
-
 
 CAMLexport CAMLprim value ml_gtk_layout_child_get_layout_manager(value self)
 {

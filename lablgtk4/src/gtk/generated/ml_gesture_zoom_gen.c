@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkGestureZoom */
-#ifndef Val_GtkGestureZoom
-#define GtkGestureZoom_val(val) ((GtkGestureZoom*)ext_of_val(val))
-#define Val_GtkGestureZoom(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkGestureZoom */
-
 
 CAMLexport CAMLprim value ml_gtk_gesture_zoom_new(value unit)
 {

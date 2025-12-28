@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkScrollable */
-#ifndef Val_GtkScrollable
-#define GtkScrollable_val(val) ((GtkScrollable*)ext_of_val(val))
-#define Val_GtkScrollable(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkScrollable */
-
 
 CAMLexport CAMLprim value ml_gtk_scrollable_set_vscroll_policy(value self, value arg1)
 {

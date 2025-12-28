@@ -24,6 +24,10 @@ class drive (obj : Drive.t) = object (self)
     fun () ->
       (Drive.can_stop obj)
 
+  method get_icon : unit -> GIcon.icon =
+    fun () ->
+      new  GIcon.icon(Drive.get_icon obj)
+
   method get_identifier : string -> string option =
     fun kind ->
       (Drive.get_identifier obj kind)
@@ -39,6 +43,10 @@ class drive (obj : Drive.t) = object (self)
   method get_start_stop_type : unit -> Gio_enums.drivestartstoptype =
     fun () ->
       (Drive.get_start_stop_type obj)
+
+  method get_symbolic_icon : unit -> GIcon.icon =
+    fun () ->
+      new  GIcon.icon(Drive.get_symbolic_icon obj)
 
   method has_media : unit -> bool =
     fun () ->

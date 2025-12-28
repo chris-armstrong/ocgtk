@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GPollableInputStream */
-#ifndef Val_GPollableInputStream
-#define GPollableInputStream_val(val) ((GPollableInputStream*)ext_of_val(val))
-#define Val_GPollableInputStream(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GPollableInputStream */
-
 
 CAMLexport CAMLprim value ml_g_pollable_input_stream_is_readable(value self)
 {

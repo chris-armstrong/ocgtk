@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GInputStream */
-#ifndef Val_GInputStream
-#define GInputStream_val(val) ((GInputStream*)ext_of_val(val))
-#define Val_GInputStream(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GInputStream */
-
 
 CAMLexport CAMLprim value ml_g_input_stream_set_pending(value self)
 {
@@ -51,6 +45,15 @@ CAMLparam1(self);
 
 gboolean result = g_input_stream_has_pending(GInputStream_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_g_input_stream_close_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_input_stream_close_finish(GInputStream_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_g_input_stream_close(value self, value arg1)

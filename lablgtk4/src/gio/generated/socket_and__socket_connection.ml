@@ -812,6 +812,9 @@ and Socket_connection
   (** Try to get the local address of a socket connection. *)
   external get_local_address : t -> (Socket_address.t, GError.t) result = "ml_g_socket_connection_get_local_address"
 
+  (** Gets the result of a g_socket_connection_connect_async() call. *)
+  external connect_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_socket_connection_connect_finish"
+
   (** Connect @connection to the specified remote address. *)
   external connect : t -> Socket_address.t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_socket_connection_connect"
 
@@ -843,6 +846,9 @@ end = struct
 
   (** Try to get the local address of a socket connection. *)
   external get_local_address : t -> (Socket_address.t, GError.t) result = "ml_g_socket_connection_get_local_address"
+
+  (** Gets the result of a g_socket_connection_connect_async() call. *)
+  external connect_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_socket_connection_connect_finish"
 
   (** Connect @connection to the specified remote address. *)
   external connect : t -> Socket_address.t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_socket_connection_connect"

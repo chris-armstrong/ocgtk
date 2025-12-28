@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GPropertyAction */
-#ifndef Val_GPropertyAction
-#define GPropertyAction_val(val) ((GPropertyAction*)ext_of_val(val))
-#define Val_GPropertyAction(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GPropertyAction */
-
 
 CAMLexport CAMLprim value ml_g_property_action_new(value arg1, value arg2, value arg3)
 {

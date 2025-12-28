@@ -21,16 +21,18 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GFileIcon */
-#ifndef Val_GFileIcon
-#define GFileIcon_val(val) ((GFileIcon*)ext_of_val(val))
-#define Val_GFileIcon(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GFileIcon */
-
 
 CAMLexport CAMLprim value ml_g_file_icon_new(value arg1)
 {
 CAMLparam1(arg1);
-GFileIcon *obj = g_file_icon_new(arg1);
+GFileIcon *obj = g_file_icon_new(GFile_val(arg1));
 CAMLreturn(Val_GFileIcon(obj));
+}
+
+CAMLexport CAMLprim value ml_g_file_icon_get_file(value self)
+{
+CAMLparam1(self);
+
+GFile* result = g_file_icon_get_file(GFileIcon_val(self));
+CAMLreturn(Val_GFile(result));
 }

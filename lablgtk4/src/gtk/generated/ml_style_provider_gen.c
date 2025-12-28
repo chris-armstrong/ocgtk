@@ -16,9 +16,3 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkStyleProvider */
-#ifndef Val_GtkStyleProvider
-#define GtkStyleProvider_val(val) ((GtkStyleProvider*)ext_of_val(val))
-#define Val_GtkStyleProvider(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkStyleProvider */
-

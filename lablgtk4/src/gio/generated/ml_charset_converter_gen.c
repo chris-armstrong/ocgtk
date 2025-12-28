@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GCharsetConverter */
-#ifndef Val_GCharsetConverter
-#define GCharsetConverter_val(val) ((GCharsetConverter*)ext_of_val(val))
-#define Val_GCharsetConverter(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GCharsetConverter */
-
 
 CAMLexport CAMLprim value ml_g_charset_converter_set_use_fallback(value self, value arg1)
 {

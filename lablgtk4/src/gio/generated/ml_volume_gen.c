@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GVolume */
-#ifndef Val_GVolume
-#define GVolume_val(val) ((GVolume*)ext_of_val(val))
-#define Val_GVolume(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GVolume */
-
 
 CAMLexport CAMLprim value ml_g_volume_should_automount(value self)
 {
@@ -36,12 +30,29 @@ gboolean result = g_volume_should_automount(GVolume_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_g_volume_mount_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_volume_mount_finish(GVolume_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_g_volume_get_uuid(value self)
 {
 CAMLparam1(self);
 
 char* result = g_volume_get_uuid(GVolume_val(self));
 CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_g_volume_get_symbolic_icon(value self)
+{
+CAMLparam1(self);
+
+GIcon* result = g_volume_get_symbolic_icon(GVolume_val(self));
+CAMLreturn(Val_GIcon(result));
 }
 
 CAMLexport CAMLprim value ml_g_volume_get_sort_key(value self)
@@ -60,12 +71,62 @@ char* result = g_volume_get_name(GVolume_val(self));
 CAMLreturn(caml_copy_string(result));
 }
 
+CAMLexport CAMLprim value ml_g_volume_get_mount(value self)
+{
+CAMLparam1(self);
+
+GMount* result = g_volume_get_mount(GVolume_val(self));
+CAMLreturn(Val_option(result, Val_GMount));
+}
+
 CAMLexport CAMLprim value ml_g_volume_get_identifier(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 char* result = g_volume_get_identifier(GVolume_val(self), String_val(arg1));
 CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_g_volume_get_icon(value self)
+{
+CAMLparam1(self);
+
+GIcon* result = g_volume_get_icon(GVolume_val(self));
+CAMLreturn(Val_GIcon(result));
+}
+
+CAMLexport CAMLprim value ml_g_volume_get_drive(value self)
+{
+CAMLparam1(self);
+
+GDrive* result = g_volume_get_drive(GVolume_val(self));
+CAMLreturn(Val_option(result, Val_GDrive));
+}
+
+CAMLexport CAMLprim value ml_g_volume_get_activation_root(value self)
+{
+CAMLparam1(self);
+
+GFile* result = g_volume_get_activation_root(GVolume_val(self));
+CAMLreturn(Val_option(result, Val_GFile));
+}
+
+CAMLexport CAMLprim value ml_g_volume_eject_with_operation_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_volume_eject_with_operation_finish(GVolume_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_volume_eject_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_volume_eject_finish(GVolume_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_g_volume_can_mount(value self)

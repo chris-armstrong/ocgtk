@@ -4,7 +4,7 @@
 type t = [`io_module | `type_module] Gobject.obj
 
 (** Create a new IOModule *)
-external new_ : unit -> t = "ml_g_io_module_new"
+external new_ : string -> t = "ml_g_io_module_new"
 
 (* Methods *)
 (** Required API for GIO modules to implement.

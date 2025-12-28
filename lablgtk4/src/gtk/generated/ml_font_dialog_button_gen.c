@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkFontDialogButton */
-#ifndef Val_GtkFontDialogButton
-#define GtkFontDialogButton_val(val) ((GtkFontDialogButton*)ext_of_val(val))
-#define Val_GtkFontDialogButton(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkFontDialogButton */
-
 
 CAMLexport CAMLprim value ml_gtk_font_dialog_button_new(value arg1)
 {

@@ -8,6 +8,10 @@ class d_bus_object_manager_client (obj : D_bus_object_manager_client.t) = object
     fun () ->
       new  GD_bus_connection.d_bus_connection(D_bus_object_manager_client.get_connection obj)
 
+  method get_flags : unit -> Gio_enums.dbusobjectmanagerclientflags =
+    fun () ->
+      (D_bus_object_manager_client.get_flags obj)
+
   method get_name : unit -> string =
     fun () ->
       (D_bus_object_manager_client.get_name obj)

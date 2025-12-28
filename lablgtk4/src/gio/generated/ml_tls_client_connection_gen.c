@@ -21,12 +21,14 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GTlsClientConnection */
-#ifndef Val_GTlsClientConnection
-#define GTlsClientConnection_val(val) ((GTlsClientConnection*)ext_of_val(val))
-#define Val_GTlsClientConnection(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GTlsClientConnection */
 
+CAMLexport CAMLprim value ml_g_tls_client_connection_set_validation_flags(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_tls_client_connection_set_validation_flags(GTlsClientConnection_val(self), GioTlsCertificateFlags_val(arg1));
+CAMLreturn(Val_unit);
+}
 
 CAMLexport CAMLprim value ml_g_tls_client_connection_set_use_ssl3(value self, value arg1)
 {
@@ -36,10 +38,42 @@ g_tls_client_connection_set_use_ssl3(GTlsClientConnection_val(self), Bool_val(ar
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_tls_client_connection_set_server_identity(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_tls_client_connection_set_server_identity(GTlsClientConnection_val(self), GSocketConnectable_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_tls_client_connection_get_validation_flags(value self)
+{
+CAMLparam1(self);
+
+GTlsCertificateFlags result = g_tls_client_connection_get_validation_flags(GTlsClientConnection_val(self));
+CAMLreturn(Val_GioTlsCertificateFlags(result));
+}
+
 CAMLexport CAMLprim value ml_g_tls_client_connection_get_use_ssl3(value self)
 {
 CAMLparam1(self);
 
 gboolean result = g_tls_client_connection_get_use_ssl3(GTlsClientConnection_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_g_tls_client_connection_get_server_identity(value self)
+{
+CAMLparam1(self);
+
+GSocketConnectable* result = g_tls_client_connection_get_server_identity(GTlsClientConnection_val(self));
+CAMLreturn(Val_option(result, Val_GSocketConnectable));
+}
+
+CAMLexport CAMLprim value ml_g_tls_client_connection_copy_session_state(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_tls_client_connection_copy_session_state(GTlsClientConnection_val(self), GTlsClientConnection_val(arg1));
+CAMLreturn(Val_unit);
 }

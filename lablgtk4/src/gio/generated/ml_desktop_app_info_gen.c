@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDesktopAppInfo */
-#ifndef Val_GDesktopAppInfo
-#define GDesktopAppInfo_val(val) ((GDesktopAppInfo*)ext_of_val(val))
-#define Val_GDesktopAppInfo(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDesktopAppInfo */
-
 
 CAMLexport CAMLprim value ml_g_desktop_app_info_new(value arg1)
 {
@@ -38,7 +32,7 @@ CAMLreturn(Val_GDesktopAppInfo(obj));
 CAMLexport CAMLprim value ml_g_desktop_app_info_new_from_filename(value arg1)
 {
 CAMLparam1(arg1);
-GDesktopAppInfo *obj = g_desktop_app_info_new_from_filename(arg1);
+GDesktopAppInfo *obj = g_desktop_app_info_new_from_filename(String_val(arg1));
 CAMLreturn(Val_GDesktopAppInfo(obj));
 }
 
@@ -119,6 +113,14 @@ CAMLparam1(self);
 
 const char* result = g_desktop_app_info_get_generic_name(GDesktopAppInfo_val(self));
 CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_get_filename(value self)
+{
+CAMLparam1(self);
+
+const char* result = g_desktop_app_info_get_filename(GDesktopAppInfo_val(self));
+CAMLreturn(Val_option(result, caml_copy_string));
 }
 
 CAMLexport CAMLprim value ml_g_desktop_app_info_get_categories(value self)

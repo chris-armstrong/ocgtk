@@ -21,17 +21,27 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GActionMap */
-#ifndef Val_GActionMap
-#define GActionMap_val(val) ((GActionMap*)ext_of_val(val))
-#define Val_GActionMap(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GActionMap */
-
 
 CAMLexport CAMLprim value ml_g_action_map_remove_action(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 g_action_map_remove_action(GActionMap_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_action_map_lookup_action(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GAction* result = g_action_map_lookup_action(GActionMap_val(self), String_val(arg1));
+CAMLreturn(Val_option(result, Val_GAction));
+}
+
+CAMLexport CAMLprim value ml_g_action_map_add_action(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_action_map_add_action(GActionMap_val(self), GAction_val(arg1));
 CAMLreturn(Val_unit);
 }

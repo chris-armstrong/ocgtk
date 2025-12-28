@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkScale */
-#ifndef Val_GtkScale
-#define GtkScale_val(val) ((GtkScale*)ext_of_val(val))
-#define Val_GtkScale(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkScale */
-
 
 CAMLexport CAMLprim value ml_gtk_scale_new(value arg1, value arg2)
 {

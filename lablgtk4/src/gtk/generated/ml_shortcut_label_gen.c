@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkShortcutLabel */
-#ifndef Val_GtkShortcutLabel
-#define GtkShortcutLabel_val(val) ((GtkShortcutLabel*)ext_of_val(val))
-#define Val_GtkShortcutLabel(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkShortcutLabel */
-
 
 CAMLexport CAMLprim value ml_gtk_shortcut_label_new(value arg1)
 {

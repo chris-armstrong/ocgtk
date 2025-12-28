@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkTextMark */
-#ifndef Val_GtkTextMark
-#define GtkTextMark_val(val) ((GtkTextMark*)ext_of_val(val))
-#define Val_GtkTextMark(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTextMark */
-
 
 CAMLexport CAMLprim value ml_gtk_text_mark_new(value arg1, value arg2)
 {

@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkBorder */
-#ifndef Val_GtkBorder
-#define GtkBorder_val(val) ((GtkBorder*)ext_of_val(val))
-#define Val_GtkBorder(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkBorder */
-
 
 CAMLexport CAMLprim value ml_gtk_border_new(value unit)
 {

@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkConstraint */
-#ifndef Val_GtkConstraint
-#define GtkConstraint_val(val) ((GtkConstraint*)ext_of_val(val))
-#define Val_GtkConstraint(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkConstraint */
-
 
 CAMLexport CAMLprim value ml_gtk_constraint_new_native(value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7, value arg8)
 {

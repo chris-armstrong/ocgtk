@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkCellRendererAccel */
-#ifndef Val_GtkCellRendererAccel
-#define GtkCellRendererAccel_val(val) ((GtkCellRendererAccel*)ext_of_val(val))
-#define Val_GtkCellRendererAccel(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkCellRendererAccel */
-
 
 CAMLexport CAMLprim value ml_gtk_cell_renderer_accel_new(value unit)
 {

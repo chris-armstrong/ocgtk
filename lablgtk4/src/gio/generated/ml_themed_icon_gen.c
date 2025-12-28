@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GThemedIcon */
-#ifndef Val_GThemedIcon
-#define GThemedIcon_val(val) ((GThemedIcon*)ext_of_val(val))
-#define Val_GThemedIcon(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GThemedIcon */
-
 
 CAMLexport CAMLprim value ml_g_themed_icon_new(value arg1)
 {

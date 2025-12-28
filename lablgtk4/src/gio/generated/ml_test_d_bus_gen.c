@@ -21,17 +21,11 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GTestDBus */
-#ifndef Val_GTestDBus
-#define GTestDBus_val(val) ((GTestDBus*)ext_of_val(val))
-#define Val_GTestDBus(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GTestDBus */
-
 
 CAMLexport CAMLprim value ml_g_test_dbus_new(value arg1)
 {
 CAMLparam1(arg1);
-GTestDBus *obj = g_test_dbus_new(arg1);
+GTestDBus *obj = g_test_dbus_new(GioTestDBusFlags_val(arg1));
 CAMLreturn(Val_GTestDBus(obj));
 }
 
@@ -49,6 +43,14 @@ CAMLparam1(self);
 
 g_test_dbus_stop(GTestDBus_val(self));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_test_dbus_get_flags(value self)
+{
+CAMLparam1(self);
+
+GTestDBusFlags result = g_test_dbus_get_flags(GTestDBus_val(self));
+CAMLreturn(Val_GioTestDBusFlags(result));
 }
 
 CAMLexport CAMLprim value ml_g_test_dbus_get_bus_address(value self)

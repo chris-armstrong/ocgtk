@@ -7,7 +7,7 @@ type t = [`desktop_app_info | `object_] Gobject.obj
 external new_ : string -> t = "ml_g_desktop_app_info_new"
 
 (** Create a new DesktopAppInfo *)
-external new_from_filename : unit -> t = "ml_g_desktop_app_info_new_from_filename"
+external new_from_filename : string -> t = "ml_g_desktop_app_info_new_from_filename"
 
 (** Create a new DesktopAppInfo *)
 external new_from_keyfile : unit -> t = "ml_g_desktop_app_info_new_from_keyfile"
@@ -74,6 +74,11 @@ external get_is_hidden : t -> bool = "ml_g_desktop_app_info_get_is_hidden"
 
 (** Gets the generic name from the desktop file. *)
 external get_generic_name : t -> string option = "ml_g_desktop_app_info_get_generic_name"
+
+(** When @info was created from a known filename, return it.  In some
+situations such as the #GDesktopAppInfo returned from
+g_desktop_app_info_new_from_keyfile(), this function will return %NULL. *)
+external get_filename : t -> string option = "ml_g_desktop_app_info_get_filename"
 
 (** Gets the categories from the desktop file. *)
 external get_categories : t -> string option = "ml_g_desktop_app_info_get_categories"

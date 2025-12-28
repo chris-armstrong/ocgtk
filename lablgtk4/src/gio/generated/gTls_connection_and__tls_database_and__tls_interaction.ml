@@ -6,6 +6,11 @@
 class tls_connection (obj : Tls_connection_and__tls_database_and__tls_interaction.Tls_connection.t) = object (self)
   inherit Gtls_connection_signals.tls_connection_signals obj
 
+  method emit_accept_certificate : 'p1. (#GTls_certificate.tls_certificate as 'p1) -> Gio_enums.tlscertificateflags -> bool =
+    fun peer_cert errors ->
+      let peer_cert = peer_cert#as_tls_certificate in
+      (Tls_connection_and__tls_database_and__tls_interaction.Tls_connection.emit_accept_certificate obj peer_cert errors)
+
   method get_certificate : unit -> GTls_certificate.tls_certificate option =
     fun () ->
       Option.map (fun ret -> new GTls_certificate.tls_certificate ret) (Tls_connection_and__tls_database_and__tls_interaction.Tls_connection.get_certificate obj)
@@ -29,6 +34,10 @@ class tls_connection (obj : Tls_connection_and__tls_database_and__tls_interactio
   method get_peer_certificate : unit -> GTls_certificate.tls_certificate option =
     fun () ->
       Option.map (fun ret -> new GTls_certificate.tls_certificate ret) (Tls_connection_and__tls_database_and__tls_interaction.Tls_connection.get_peer_certificate obj)
+
+  method get_peer_certificate_errors : unit -> Gio_enums.tlscertificateflags =
+    fun () ->
+      (Tls_connection_and__tls_database_and__tls_interaction.Tls_connection.get_peer_certificate_errors obj)
 
   method get_protocol_version : unit -> Gio_enums.tlsprotocolversion =
     fun () ->

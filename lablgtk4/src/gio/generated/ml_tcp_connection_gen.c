@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GTcpConnection */
-#ifndef Val_GTcpConnection
-#define GTcpConnection_val(val) ((GTcpConnection*)ext_of_val(val))
-#define Val_GTcpConnection(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GTcpConnection */
-
 
 CAMLexport CAMLprim value ml_g_tcp_connection_set_graceful_disconnect(value self, value arg1)
 {

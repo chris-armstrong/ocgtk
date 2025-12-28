@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkPageRange */
-#ifndef Val_GtkPageRange
-#define GtkPageRange_val(val) ((GtkPageRange*)ext_of_val(val))
-#define Val_GtkPageRange(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkPageRange */
+/* Conversion functions for GtkPageRange (non-opaque record with fields) */
+GtkPageRange *GtkPageRange_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkPageRange **)Data_custom_val(v);
+  } else {
+    return (GtkPageRange*)ml_gir_record_ptr_val(v, "GtkPageRange");
+  }
+}
+
+value Val_GtkPageRange(GtkPageRange *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkPageRange), "GtkPageRange", NULL);
+}
+
+value Val_GtkPageRange_option(GtkPageRange *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkPageRange(ptr));
+}
 

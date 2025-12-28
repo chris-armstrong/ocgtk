@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkTreeModelSort */
-#ifndef Val_GtkTreeModelSort
-#define GtkTreeModelSort_val(val) ((GtkTreeModelSort*)ext_of_val(val))
-#define Val_GtkTreeModelSort(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTreeModelSort */
-
 
 CAMLexport CAMLprim value ml_gtk_tree_model_sort_new_with_model(value arg1)
 {

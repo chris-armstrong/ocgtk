@@ -16,9 +16,3 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkIMMulticontextPrivate */
-#ifndef Val_GtkIMMulticontextPrivate
-#define GtkIMMulticontextPrivate_val(val) ((GtkIMMulticontextPrivate*)ext_of_val(val))
-#define Val_GtkIMMulticontextPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkIMMulticontextPrivate */
-

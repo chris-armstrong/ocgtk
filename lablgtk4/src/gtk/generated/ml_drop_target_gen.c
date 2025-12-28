@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkDropTarget */
-#ifndef Val_GtkDropTarget
-#define GtkDropTarget_val(val) ((GtkDropTarget*)ext_of_val(val))
-#define Val_GtkDropTarget(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkDropTarget */
-
 
 CAMLexport CAMLprim value ml_gtk_drop_target_new(value arg1, value arg2)
 {

@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDebugControllerDBus */
-#ifndef Val_GDebugControllerDBus
-#define GDebugControllerDBus_val(val) ((GDebugControllerDBus*)ext_of_val(val))
-#define Val_GDebugControllerDBus(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDebugControllerDBus */
-
 
 CAMLexport CAMLprim value ml_g_debug_controller_dbus_stop(value self)
 {

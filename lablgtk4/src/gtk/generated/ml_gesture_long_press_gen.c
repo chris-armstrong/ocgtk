@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkGestureLongPress */
-#ifndef Val_GtkGestureLongPress
-#define GtkGestureLongPress_val(val) ((GtkGestureLongPress*)ext_of_val(val))
-#define Val_GtkGestureLongPress(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkGestureLongPress */
-
 
 CAMLexport CAMLprim value ml_gtk_gesture_long_press_new(value unit)
 {

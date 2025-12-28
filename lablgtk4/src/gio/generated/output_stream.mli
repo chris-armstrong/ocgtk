@@ -21,6 +21,9 @@ external is_closed : t -> bool = "ml_g_output_stream_is_closed"
 (** Checks if an output stream has pending actions. *)
 external has_pending : t -> bool = "ml_g_output_stream_has_pending"
 
+(** Finishes flushing an output stream. *)
+external flush_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_output_stream_flush_finish"
+
 (** Forces a write of all user-space buffered data for the given
 @stream. Will block during the operation. Closing the stream will
 implicitly cause a flush.
@@ -31,6 +34,9 @@ If @cancellable is not %NULL, then the operation can be cancelled by
 triggering the cancellable object from another thread. If the operation
 was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
 external flush : t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_output_stream_flush"
+
+(** Closes an output stream. *)
+external close_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_output_stream_close_finish"
 
 (** Closes the stream, releasing resources related to it.
 

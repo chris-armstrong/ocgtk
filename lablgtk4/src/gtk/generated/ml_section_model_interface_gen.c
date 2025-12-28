@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkSectionModelInterface */
-#ifndef Val_GtkSectionModelInterface
-#define GtkSectionModelInterface_val(val) ((GtkSectionModelInterface*)ext_of_val(val))
-#define Val_GtkSectionModelInterface(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkSectionModelInterface */
+/* Conversion functions for GtkSectionModelInterface (non-opaque record with fields) */
+GtkSectionModelInterface *GtkSectionModelInterface_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkSectionModelInterface **)Data_custom_val(v);
+  } else {
+    return (GtkSectionModelInterface*)ml_gir_record_ptr_val(v, "GtkSectionModelInterface");
+  }
+}
+
+value Val_GtkSectionModelInterface(GtkSectionModelInterface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkSectionModelInterface), "GtkSectionModelInterface", NULL);
+}
+
+value Val_GtkSectionModelInterface_option(GtkSectionModelInterface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkSectionModelInterface(ptr));
+}
 

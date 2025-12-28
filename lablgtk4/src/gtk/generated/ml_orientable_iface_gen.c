@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkOrientableIface */
-#ifndef Val_GtkOrientableIface
-#define GtkOrientableIface_val(val) ((GtkOrientableIface*)ext_of_val(val))
-#define Val_GtkOrientableIface(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkOrientableIface */
+/* Conversion functions for GtkOrientableIface (non-opaque record with fields) */
+GtkOrientableIface *GtkOrientableIface_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkOrientableIface **)Data_custom_val(v);
+  } else {
+    return (GtkOrientableIface*)ml_gir_record_ptr_val(v, "GtkOrientableIface");
+  }
+}
+
+value Val_GtkOrientableIface(GtkOrientableIface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkOrientableIface), "GtkOrientableIface", NULL);
+}
+
+value Val_GtkOrientableIface_option(GtkOrientableIface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkOrientableIface(ptr));
+}
 

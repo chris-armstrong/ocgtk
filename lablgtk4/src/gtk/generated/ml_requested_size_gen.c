@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkRequestedSize */
-#ifndef Val_GtkRequestedSize
-#define GtkRequestedSize_val(val) ((GtkRequestedSize*)ext_of_val(val))
-#define Val_GtkRequestedSize(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkRequestedSize */
+/* Conversion functions for GtkRequestedSize (non-opaque record with fields) */
+GtkRequestedSize *GtkRequestedSize_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkRequestedSize **)Data_custom_val(v);
+  } else {
+    return (GtkRequestedSize*)ml_gir_record_ptr_val(v, "GtkRequestedSize");
+  }
+}
+
+value Val_GtkRequestedSize(GtkRequestedSize *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkRequestedSize), "GtkRequestedSize", NULL);
+}
+
+value Val_GtkRequestedSize_option(GtkRequestedSize *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkRequestedSize(ptr));
+}
 

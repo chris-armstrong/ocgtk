@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkConstraintGuide */
-#ifndef Val_GtkConstraintGuide
-#define GtkConstraintGuide_val(val) ((GtkConstraintGuide*)ext_of_val(val))
-#define Val_GtkConstraintGuide(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkConstraintGuide */
-
 
 CAMLexport CAMLprim value ml_gtk_constraint_guide_new(value unit)
 {

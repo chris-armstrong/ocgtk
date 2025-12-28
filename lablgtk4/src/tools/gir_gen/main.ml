@@ -353,11 +353,16 @@ let generate_all_record_bindings ~ctx ~output_dir ~generated_stubs
     ~generated_modules records =
   List.iter
     ~f:(fun record ->
-      (* Skip records that are part of cyclic modules - they're already generated in combined modules *)
+      (* Generate bindings for boxed records *)
+      (* Value-like records (with copy methods) need C stubs even if in a cycle, for the copy function *)
+      (* ML interface generation is skipped for records in cycles since they're in combined modules *)
       let open Gir_gen_lib.Types in
       let is_in_cycle = Hashtbl.mem ctx.module_groups record.record_name in
-      if Gir_gen_lib.Type_mappings.is_boxed_record record && not is_in_cycle
-      then begin
+      let is_boxed = Gir_gen_lib.Type_mappings.is_boxed_record record in
+      let is_value_like =
+        Gir_gen_lib.Generate.C_stubs.is_value_like_record record
+      in
+      if is_boxed && ((not is_in_cycle) || is_value_like) then begin
         let is_value_record = not record.opaque in
         let constructors =
           if
@@ -388,7 +393,7 @@ let generate_all_record_bindings ~ctx ~output_dir ~generated_stubs
           record.Gir_gen_lib.Types.record_name (List.length constructors)
           (List.length record.Gir_gen_lib.Types.methods);
 
-        (* Generate C stub file *)
+        (* Generate C stub file (always generated, including for value-like records) *)
         let stub_name =
           sprintf "ml_%s_record_gen"
             (Gir_gen_lib.Utils.to_snake_case
@@ -404,12 +409,17 @@ let generate_all_record_bindings ~ctx ~output_dir ~generated_stubs
         write_file ~path:c_file ~content:c_code;
         generated_stubs := stub_name :: !generated_stubs;
 
-        (* Generate OCaml interface files if the record has bindings *)
+        (* Generate OCaml interface files if the record has non-copy/free method bindings *)
+        (* Skip ML interface generation for records in cycles - they're already in combined modules *)
         let has_bindings =
           List.length constructors > 0
-          || List.length record.Gir_gen_lib.Types.methods > 0
+          || List.exists record.Gir_gen_lib.Types.methods ~f:(fun meth ->
+              let lower_name =
+                String.lowercase_ascii meth.Gir_gen_lib.Types.method_name
+              in
+              lower_name <> "copy" && lower_name <> "free")
         in
-        if has_bindings then begin
+        if has_bindings && not is_in_cycle then begin
           (* Records always use Obj.t as their base type implementation *)
           let base_type = "Obj.t" in
 
@@ -594,7 +604,11 @@ let generate_bindings filter_file gir_file output_dir =
 
   let enums = all_enums in
   let bitfields = all_bitfields in
-  let records = gtk_records in
+  (* Filter out GObject class structs (records with is_gtype_struct_for attribute) *)
+  let records =
+    List.filter gtk_records ~f:(fun record ->
+        record.Gir_gen_lib.Types.is_gtype_struct_for = None)
+  in
 
   (* Prepare external namespace enum/bitfield list with namespace prefixes *)
   let external_enums_with_ns =
@@ -630,10 +644,25 @@ let generate_bindings filter_file gir_file output_dir =
   in
 
   (* Create unified entity list combining classes, interfaces, and records *)
+  (* Filter out value-like records (with only copy/free methods) from entity list *)
+  (* They don't participate in dependency resolution and are generated separately *)
+  let records_with_bindings : Gir_gen_lib.Types.gir_record list =
+    List.filter
+      ~f:(fun (record : Gir_gen_lib.Types.gir_record) ->
+        List.exists
+          ~f:(fun meth ->
+            let lower =
+              String.lowercase_ascii meth.Gir_gen_lib.Types.method_name
+            in
+            lower <> "copy" && lower <> "free")
+          record.Gir_gen_lib.Types.methods
+        || List.length record.Gir_gen_lib.Types.constructors > 0)
+      records
+  in
   let entities_temp : Gir_gen_lib.Types.entity list =
     List.map ~f:Gir_gen_lib.Types.entity_of_class controllers
     @ List.map ~f:Gir_gen_lib.Types.entity_of_interface interfaces
-    @ List.map ~f:Gir_gen_lib.Types.entity_of_record records
+    @ List.map ~f:Gir_gen_lib.Types.entity_of_record records_with_bindings
   in
 
   (* Compute module groups using SCC algorithm to populate module_groups *)
@@ -677,7 +706,7 @@ let generate_bindings filter_file gir_file output_dir =
     Gir_gen_lib.Generate.C_stubs.generate_forward_decls_header ~ctx
       ~classes:ctx.classes ~gtk_enums ~gtk_bitfields
       ~external_enums:ctx.external_enums ~records:ctx.records
-      ~external_bitfields:ctx.external_bitfields
+      ~interfaces:ctx.interfaces ~external_bitfields:ctx.external_bitfields
   in
   write_file ~path:header_file ~content:header_content;
 
@@ -695,8 +724,13 @@ let generate_bindings filter_file gir_file output_dir =
   generate_enum_files ~output_dir ~generated_stubs ~generated_modules
     current_namespace gtk_enums gtk_bitfields;
 
-  (* Generate C files for all entities (classes and interfaces) *)
-  generate_all_c_stubs ~ctx ~output_dir ~generated_stubs entities;
+  (* Generate C files for all entities (classes and interfaces only, NOT records) *)
+  (* Records are generated separately via generate_all_record_bindings *)
+  let non_record_entities =
+    List.filter entities ~f:(fun e ->
+        e.Gir_gen_lib.Types.kind <> Gir_gen_lib.Types.Record)
+  in
+  generate_all_c_stubs ~ctx ~output_dir ~generated_stubs non_record_entities;
 
   (* ==== SCC-BASED GENERATION ==== *)
 

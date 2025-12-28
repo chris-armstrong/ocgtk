@@ -21,9 +21,3 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GNativeVolumeMonitor */
-#ifndef Val_GNativeVolumeMonitor
-#define GNativeVolumeMonitor_val(val) ((GNativeVolumeMonitor*)ext_of_val(val))
-#define Val_GNativeVolumeMonitor(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GNativeVolumeMonitor */
-

@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkColorChooserInterface */
-#ifndef Val_GtkColorChooserInterface
-#define GtkColorChooserInterface_val(val) ((GtkColorChooserInterface*)ext_of_val(val))
-#define Val_GtkColorChooserInterface(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkColorChooserInterface */
+/* Conversion functions for GtkColorChooserInterface (non-opaque record with fields) */
+GtkColorChooserInterface *GtkColorChooserInterface_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkColorChooserInterface **)Data_custom_val(v);
+  } else {
+    return (GtkColorChooserInterface*)ml_gir_record_ptr_val(v, "GtkColorChooserInterface");
+  }
+}
+
+value Val_GtkColorChooserInterface(GtkColorChooserInterface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkColorChooserInterface), "GtkColorChooserInterface", NULL);
+}
+
+value Val_GtkColorChooserInterface_option(GtkColorChooserInterface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkColorChooserInterface(ptr));
+}
 

@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkATContext */
-#ifndef Val_GtkATContext
-#define GtkATContext_val(val) ((GtkATContext*)ext_of_val(val))
-#define Val_GtkATContext(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkATContext */
-
 
 CAMLexport CAMLprim value ml_gtk_at_context_create(value arg1, value arg2, value arg3)
 {

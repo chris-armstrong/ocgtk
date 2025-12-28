@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GSimplePermission */
-#ifndef Val_GSimplePermission
-#define GSimplePermission_val(val) ((GSimplePermission*)ext_of_val(val))
-#define Val_GSimplePermission(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSimplePermission */
-
 
 CAMLexport CAMLprim value ml_g_simple_permission_new(value arg1)
 {

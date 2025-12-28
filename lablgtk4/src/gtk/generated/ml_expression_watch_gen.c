@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkExpressionWatch */
-#ifndef Val_GtkExpressionWatch
-#define GtkExpressionWatch_val(val) ((GtkExpressionWatch*)ext_of_val(val))
-#define Val_GtkExpressionWatch(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkExpressionWatch */
-
 
 CAMLexport CAMLprim value ml_gtk_expression_watch_unwatch(value self)
 {

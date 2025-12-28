@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkTreeViewColumn */
-#ifndef Val_GtkTreeViewColumn
-#define GtkTreeViewColumn_val(val) ((GtkTreeViewColumn*)ext_of_val(val))
-#define Val_GtkTreeViewColumn(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTreeViewColumn */
-
 
 CAMLexport CAMLprim value ml_gtk_tree_view_column_new(value unit)
 {

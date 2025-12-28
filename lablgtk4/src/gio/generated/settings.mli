@@ -192,6 +192,22 @@ mode, changes to @settings are not immediately propagated to the
 backend, but kept locally until g_settings_apply() is called. *)
 external delay : t -> unit = "ml_g_settings_delay"
 
+(** Creates a #GAction corresponding to a given #GSettings key.
+
+The action has the same name as the key.
+
+The value of the key becomes the state of the action and the action
+is enabled when the key is writable.  Changing the state of the
+action results in the key being written to.  Changes to the value or
+writability of the key cause appropriate change notifications to be
+emitted for the action.
+
+For boolean-valued keys, action activations take no parameter and
+result in the toggling of the value.  For all other types,
+activations take the new value for the key (which must have the
+correct type). *)
+external create_action : t -> string -> Action.t = "ml_g_settings_create_action"
+
 (** Applies any changes that have been made to the settings.  This
 function does nothing unless @settings is in 'delay-apply' mode;
 see g_settings_delay().  In the normal case settings are always

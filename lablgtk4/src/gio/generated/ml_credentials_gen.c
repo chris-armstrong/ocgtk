@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GCredentials */
-#ifndef Val_GCredentials
-#define GCredentials_val(val) ((GCredentials*)ext_of_val(val))
-#define Val_GCredentials(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GCredentials */
-
 
 CAMLexport CAMLprim value ml_g_credentials_new(value unit)
 {

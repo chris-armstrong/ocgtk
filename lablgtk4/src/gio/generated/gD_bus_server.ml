@@ -8,6 +8,10 @@ class d_bus_server (obj : D_bus_server.t) = object (self)
     fun () ->
       (D_bus_server.get_client_address obj)
 
+  method get_flags : unit -> Gio_enums.dbusserverflags =
+    fun () ->
+      (D_bus_server.get_flags obj)
+
   method get_guid : unit -> string =
     fun () ->
       (D_bus_server.get_guid obj)

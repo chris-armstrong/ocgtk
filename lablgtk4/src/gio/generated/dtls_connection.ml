@@ -4,6 +4,10 @@
 type t = [`dtls_connection] Gobject.obj
 
 (* Methods *)
+(** Finish an asynchronous TLS shutdown operation. See
+g_dtls_connection_shutdown() for more information. *)
+external shutdown_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_dtls_connection_shutdown_finish"
+
 (** Shut down part or all of a DTLS connection.
 
 If @shutdown_read is %TRUE then the receiving side of the connection is shut
@@ -96,6 +100,10 @@ that g_dtls_client_connection_get_accepted_cas() will return
 non-%NULL.) *)
 external set_certificate : t -> Tls_certificate.t -> unit = "ml_g_dtls_connection_set_certificate"
 
+(** Finish an asynchronous TLS handshake operation. See
+g_dtls_connection_handshake() for more information. *)
+external handshake_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_dtls_connection_handshake_finish"
+
 (** Attempts a TLS handshake on @conn.
 
 On the client side, it is never necessary to call this method;
@@ -139,6 +147,11 @@ has been closed, or if the TLS backend has implemented a protocol version
 that is not a recognized #GTlsProtocolVersion. *)
 external get_protocol_version : t -> Gio_enums.tlsprotocolversion = "ml_g_dtls_connection_get_protocol_version"
 
+(** Gets the errors associated with validating @conn's peer's
+certificate, after the handshake has completed or failed. (It is
+not set during the emission of #GDtlsConnection::accept-certificate.) *)
+external get_peer_certificate_errors : t -> Gio_enums.tlscertificateflags = "ml_g_dtls_connection_get_peer_certificate_errors"
+
 (** Gets @conn's peer's certificate after the handshake has completed
 or failed. (It is not set during the emission of
 #GDtlsConnection::accept-certificate.) *)
@@ -175,6 +188,14 @@ external get_ciphersuite_name : t -> string option = "ml_g_dtls_connection_get_c
 (** Gets @conn's certificate, as set by
 g_dtls_connection_set_certificate(). *)
 external get_certificate : t -> Tls_certificate.t option = "ml_g_dtls_connection_get_certificate"
+
+(** Used by #GDtlsConnection implementations to emit the
+#GDtlsConnection::accept-certificate signal. *)
+external emit_accept_certificate : t -> Tls_certificate.t -> Gio_enums.tlscertificateflags -> bool = "ml_g_dtls_connection_emit_accept_certificate"
+
+(** Finish an asynchronous TLS close operation. See g_dtls_connection_close()
+for more information. *)
+external close_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_dtls_connection_close_finish"
 
 (** Close the DTLS connection. This is equivalent to calling
 g_dtls_connection_shutdown() to shut down both sides of the connection.

@@ -7,9 +7,11 @@ class socket_client : Socket_client.t ->
     method get_family : unit -> Gio_enums.socketfamily
     method get_local_address : unit -> GSocket_address.socket_address option
     method get_protocol : unit -> Gio_enums.socketprotocol
+    method get_proxy_resolver : unit -> GProxy_resolver.proxy_resolver
     method get_socket_type : unit -> Gio_enums.sockettype
     method get_timeout : unit -> int
     method get_tls : unit -> bool
+    method get_tls_validation_flags : unit -> Gio_enums.tlscertificateflags
     method set_enable_proxy : bool -> unit
     method set_family : Gio_enums.socketfamily -> unit
     method set_local_address : #GSocket_address.socket_address option -> unit
@@ -17,6 +19,7 @@ class socket_client : Socket_client.t ->
     method set_socket_type : Gio_enums.sockettype -> unit
     method set_timeout : int -> unit
     method set_tls : bool -> unit
+    method set_tls_validation_flags : Gio_enums.tlscertificateflags -> unit
     method type_ : Gio_enums.sockettype
     method set_type : Gio_enums.sockettype -> unit
     method as_socket_client : Socket_client.t

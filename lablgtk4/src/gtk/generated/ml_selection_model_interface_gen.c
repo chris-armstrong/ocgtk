@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkSelectionModelInterface */
-#ifndef Val_GtkSelectionModelInterface
-#define GtkSelectionModelInterface_val(val) ((GtkSelectionModelInterface*)ext_of_val(val))
-#define Val_GtkSelectionModelInterface(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkSelectionModelInterface */
+/* Conversion functions for GtkSelectionModelInterface (non-opaque record with fields) */
+GtkSelectionModelInterface *GtkSelectionModelInterface_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkSelectionModelInterface **)Data_custom_val(v);
+  } else {
+    return (GtkSelectionModelInterface*)ml_gir_record_ptr_val(v, "GtkSelectionModelInterface");
+  }
+}
+
+value Val_GtkSelectionModelInterface(GtkSelectionModelInterface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkSelectionModelInterface), "GtkSelectionModelInterface", NULL);
+}
+
+value Val_GtkSelectionModelInterface_option(GtkSelectionModelInterface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkSelectionModelInterface(ptr));
+}
 

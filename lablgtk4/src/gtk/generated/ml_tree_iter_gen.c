@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkTreeIter */
-#ifndef Val_GtkTreeIter
-#define GtkTreeIter_val(val) ((GtkTreeIter*)ext_of_val(val))
-#define Val_GtkTreeIter(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTreeIter */
-
 
 CAMLexport CAMLprim value ml_gtk_tree_iter_free(value self)
 {

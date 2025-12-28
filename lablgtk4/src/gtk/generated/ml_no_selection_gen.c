@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkNoSelection */
-#ifndef Val_GtkNoSelection
-#define GtkNoSelection_val(val) ((GtkNoSelection*)ext_of_val(val))
-#define Val_GtkNoSelection(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkNoSelection */
-
 
 CAMLexport CAMLprim value ml_gtk_no_selection_new(value arg1)
 {

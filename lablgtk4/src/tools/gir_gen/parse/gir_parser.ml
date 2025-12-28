@@ -811,6 +811,11 @@ let parse_gir_file filename filter_classes =
           | Some v -> Some v
           | None -> get_attr "glib:get-type" attrs
         in
+        let is_gtype_struct_for =
+          match get_attr "is-gtype-struct-for" attrs with
+          | Some v -> Some v
+          | None -> get_attr "glib:is-gtype-struct-for" attrs
+        in
         let opaque = get_attr "opaque" attrs |> Utils.parse_bool in
         let disguised = get_attr "disguised" attrs |> Utils.parse_bool in
         let c_symbol_prefix = get_attr "c:symbol-prefix" attrs in
@@ -941,6 +946,7 @@ let parse_gir_file filename filter_classes =
             opaque;
             disguised;
             c_symbol_prefix;
+            is_gtype_struct_for;
             fields = List.rev !fields;
             constructors = List.rev !constructors;
             methods = List.rev !methods;

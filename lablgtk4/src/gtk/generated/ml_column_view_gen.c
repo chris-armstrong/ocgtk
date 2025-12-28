@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkColumnView */
-#ifndef Val_GtkColumnView
-#define GtkColumnView_val(val) ((GtkColumnView*)ext_of_val(val))
-#define Val_GtkColumnView(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkColumnView */
-
 
 CAMLexport CAMLprim value ml_gtk_column_view_new(value arg1)
 {

@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkAboutDialog */
-#ifndef Val_GtkAboutDialog
-#define GtkAboutDialog_val(val) ((GtkAboutDialog*)ext_of_val(val))
-#define Val_GtkAboutDialog(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkAboutDialog */
-
 
 CAMLexport CAMLprim value ml_gtk_about_dialog_new(value unit)
 {

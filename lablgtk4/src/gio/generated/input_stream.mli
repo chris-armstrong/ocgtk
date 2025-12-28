@@ -15,6 +15,9 @@ external is_closed : t -> bool = "ml_g_input_stream_is_closed"
 (** Checks if an input stream has pending actions. *)
 external has_pending : t -> bool = "ml_g_input_stream_has_pending"
 
+(** Finishes closing a stream asynchronously, started from g_input_stream_close_async(). *)
+external close_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_input_stream_close_finish"
+
 (** Closes the stream, releasing resources related to it.
 
 Once the stream is closed, all other operations will return %G_IO_ERROR_CLOSED.

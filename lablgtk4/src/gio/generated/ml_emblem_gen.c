@@ -21,24 +21,18 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GEmblem */
-#ifndef Val_GEmblem
-#define GEmblem_val(val) ((GEmblem*)ext_of_val(val))
-#define Val_GEmblem(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GEmblem */
-
 
 CAMLexport CAMLprim value ml_g_emblem_new(value arg1)
 {
 CAMLparam1(arg1);
-GEmblem *obj = g_emblem_new(arg1);
+GEmblem *obj = g_emblem_new(GIcon_val(arg1));
 CAMLreturn(Val_GEmblem(obj));
 }
 
 CAMLexport CAMLprim value ml_g_emblem_new_with_origin(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
-GEmblem *obj = g_emblem_new_with_origin(arg1, GioEmblemOrigin_val(arg2));
+GEmblem *obj = g_emblem_new_with_origin(GIcon_val(arg1), GioEmblemOrigin_val(arg2));
 CAMLreturn(Val_GEmblem(obj));
 }
 
@@ -48,4 +42,12 @@ CAMLparam1(self);
 
 GEmblemOrigin result = g_emblem_get_origin(GEmblem_val(self));
 CAMLreturn(Val_GioEmblemOrigin(result));
+}
+
+CAMLexport CAMLprim value ml_g_emblem_get_icon(value self)
+{
+CAMLparam1(self);
+
+GIcon* result = g_emblem_get_icon(GEmblem_val(self));
+CAMLreturn(Val_GIcon(result));
 }

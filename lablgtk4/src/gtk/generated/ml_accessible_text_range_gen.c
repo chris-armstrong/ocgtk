@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkAccessibleTextRange */
-#ifndef Val_GtkAccessibleTextRange
-#define GtkAccessibleTextRange_val(val) ((GtkAccessibleTextRange*)ext_of_val(val))
-#define Val_GtkAccessibleTextRange(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkAccessibleTextRange */
+/* Conversion functions for GtkAccessibleTextRange (non-opaque record with fields) */
+GtkAccessibleTextRange *GtkAccessibleTextRange_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkAccessibleTextRange **)Data_custom_val(v);
+  } else {
+    return (GtkAccessibleTextRange*)ml_gir_record_ptr_val(v, "GtkAccessibleTextRange");
+  }
+}
+
+value Val_GtkAccessibleTextRange(GtkAccessibleTextRange *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkAccessibleTextRange), "GtkAccessibleTextRange", NULL);
+}
+
+value Val_GtkAccessibleTextRange_option(GtkAccessibleTextRange *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkAccessibleTextRange(ptr));
+}
 

@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GNetworkService */
-#ifndef Val_GNetworkService
-#define GNetworkService_val(val) ((GNetworkService*)ext_of_val(val))
-#define Val_GNetworkService(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GNetworkService */
-
 
 CAMLexport CAMLprim value ml_g_network_service_new(value arg1, value arg2, value arg3)
 {

@@ -21,9 +21,3 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GMemoryMonitor */
-#ifndef Val_GMemoryMonitor
-#define GMemoryMonitor_val(val) ((GMemoryMonitor*)ext_of_val(val))
-#define Val_GMemoryMonitor(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GMemoryMonitor */
-

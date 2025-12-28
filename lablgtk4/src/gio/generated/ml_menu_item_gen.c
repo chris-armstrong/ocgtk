@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GMenuItem */
-#ifndef Val_GMenuItem
-#define GMenuItem_val(val) ((GMenuItem*)ext_of_val(val))
-#define Val_GMenuItem(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GMenuItem */
-
 
 CAMLexport CAMLprim value ml_g_menu_item_new(value arg1, value arg2)
 {
@@ -85,6 +79,14 @@ CAMLexport CAMLprim value ml_g_menu_item_set_label(value self, value arg1)
 CAMLparam2(self, arg1);
 
 g_menu_item_set_label(GMenuItem_val(self), String_option_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_menu_item_set_icon(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_menu_item_set_icon(GMenuItem_val(self), GIcon_val(arg1));
 CAMLreturn(Val_unit);
 }
 

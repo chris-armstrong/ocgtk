@@ -14,6 +14,9 @@ external get_name_owner : t -> string option = "ml_g_dbus_object_manager_client_
 connection. *)
 external get_name : t -> string = "ml_g_dbus_object_manager_client_get_name"
 
+(** Gets the flags that @manager was constructed with. *)
+external get_flags : t -> Gio_enums.dbusobjectmanagerclientflags = "ml_g_dbus_object_manager_client_get_flags"
+
 (** Gets the #GDBusConnection used by @manager. *)
 external get_connection : t -> D_bus_connection.t = "ml_g_dbus_object_manager_client_get_connection"
 

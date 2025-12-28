@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GSimpleIOStream */
-#ifndef Val_GSimpleIOStream
-#define GSimpleIOStream_val(val) ((GSimpleIOStream*)ext_of_val(val))
-#define Val_GSimpleIOStream(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSimpleIOStream */
-
 
 CAMLexport CAMLprim value ml_g_simple_io_stream_new(value arg1, value arg2)
 {

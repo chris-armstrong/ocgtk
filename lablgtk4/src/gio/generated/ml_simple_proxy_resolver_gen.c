@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GSimpleProxyResolver */
-#ifndef Val_GSimpleProxyResolver
-#define GSimpleProxyResolver_val(val) ((GSimpleProxyResolver*)ext_of_val(val))
-#define Val_GSimpleProxyResolver(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSimpleProxyResolver */
-
 
 CAMLexport CAMLprim value ml_g_simple_proxy_resolver_set_uri_proxy(value self, value arg1, value arg2)
 {

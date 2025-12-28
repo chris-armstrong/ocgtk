@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkCellRendererPixbuf */
-#ifndef Val_GtkCellRendererPixbuf
-#define GtkCellRendererPixbuf_val(val) ((GtkCellRendererPixbuf*)ext_of_val(val))
-#define Val_GtkCellRendererPixbuf(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkCellRendererPixbuf */
-
 
 CAMLexport CAMLprim value ml_gtk_cell_renderer_pixbuf_new(value unit)
 {

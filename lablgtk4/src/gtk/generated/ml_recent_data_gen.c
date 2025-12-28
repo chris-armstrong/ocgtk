@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkRecentData */
-#ifndef Val_GtkRecentData
-#define GtkRecentData_val(val) ((GtkRecentData*)ext_of_val(val))
-#define Val_GtkRecentData(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkRecentData */
+/* Conversion functions for GtkRecentData (non-opaque record with fields) */
+GtkRecentData *GtkRecentData_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkRecentData **)Data_custom_val(v);
+  } else {
+    return (GtkRecentData*)ml_gir_record_ptr_val(v, "GtkRecentData");
+  }
+}
+
+value Val_GtkRecentData(GtkRecentData *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkRecentData), "GtkRecentData", NULL);
+}
+
+value Val_GtkRecentData_option(GtkRecentData *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkRecentData(ptr));
+}
 

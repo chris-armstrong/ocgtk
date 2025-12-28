@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkCellRendererText */
-#ifndef Val_GtkCellRendererText
-#define GtkCellRendererText_val(val) ((GtkCellRendererText*)ext_of_val(val))
-#define Val_GtkCellRendererText(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkCellRendererText */
-
 
 CAMLexport CAMLprim value ml_gtk_cell_renderer_text_new(value unit)
 {

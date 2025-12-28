@@ -24,8 +24,14 @@ module rec App_info : sig
   (** Sets the application as the default handler for a given type. *)
   external set_as_default_for_type : t -> string -> (bool, GError.t) result = "ml_g_app_info_set_as_default_for_type"
 
+  (** Sets the application as the default handler for the given file extension. *)
+  external set_as_default_for_extension : t -> string -> (bool, GError.t) result = "ml_g_app_info_set_as_default_for_extension"
+
   (** Removes a supported type from an application, if possible. *)
   external remove_supports_type : t -> string -> (bool, GError.t) result = "ml_g_app_info_remove_supports_type"
+
+  (** Finishes a g_app_info_launch_uris_async() operation. *)
+  external launch_uris_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_app_info_launch_uris_finish"
 
   (** Gets the installed name of the application. *)
   external get_name : t -> string = "ml_g_app_info_get_name"
@@ -39,12 +45,36 @@ module rec App_info : sig
   the @appinfo has been constructed. *)
   external get_id : t -> string option = "ml_g_app_info_get_id"
 
+  (** Gets the icon for the application. *)
+  external get_icon : t -> Icon.t option = "ml_g_app_info_get_icon"
+
+  (** Gets the executable's name for the installed application.
+
+  This is intended to be used for debugging or labelling what program is going
+  to be run. To launch the executable, use g_app_info_launch() and related
+  functions, rather than spawning the return value from this function. *)
+  external get_executable : t -> string = "ml_g_app_info_get_executable"
+
   (** Gets the display name of the application. The display name is often more
   descriptive to the user than the name itself. *)
   external get_display_name : t -> string = "ml_g_app_info_get_display_name"
 
   (** Gets a human-readable description of an installed application. *)
   external get_description : t -> string option = "ml_g_app_info_get_description"
+
+  (** Gets the commandline with which the application will be
+  started. *)
+  external get_commandline : t -> string option = "ml_g_app_info_get_commandline"
+
+  (** Checks if two #GAppInfos are equal.
+
+  Note that the check *may not* compare each individual
+  field, and only does an identity check. In case detecting changes in the
+  contents is needed, program code must additionally compare relevant fields. *)
+  external equal : t -> t -> bool = "ml_g_app_info_equal"
+
+  (** Creates a duplicate of a #GAppInfo. *)
+  external dup : t -> t = "ml_g_app_info_dup"
 
   (** Tries to delete a #GAppInfo.
 
@@ -88,8 +118,14 @@ end = struct
   (** Sets the application as the default handler for a given type. *)
   external set_as_default_for_type : t -> string -> (bool, GError.t) result = "ml_g_app_info_set_as_default_for_type"
 
+  (** Sets the application as the default handler for the given file extension. *)
+  external set_as_default_for_extension : t -> string -> (bool, GError.t) result = "ml_g_app_info_set_as_default_for_extension"
+
   (** Removes a supported type from an application, if possible. *)
   external remove_supports_type : t -> string -> (bool, GError.t) result = "ml_g_app_info_remove_supports_type"
+
+  (** Finishes a g_app_info_launch_uris_async() operation. *)
+  external launch_uris_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_app_info_launch_uris_finish"
 
   (** Gets the installed name of the application. *)
   external get_name : t -> string = "ml_g_app_info_get_name"
@@ -103,12 +139,36 @@ end = struct
   the @appinfo has been constructed. *)
   external get_id : t -> string option = "ml_g_app_info_get_id"
 
+  (** Gets the icon for the application. *)
+  external get_icon : t -> Icon.t option = "ml_g_app_info_get_icon"
+
+  (** Gets the executable's name for the installed application.
+
+  This is intended to be used for debugging or labelling what program is going
+  to be run. To launch the executable, use g_app_info_launch() and related
+  functions, rather than spawning the return value from this function. *)
+  external get_executable : t -> string = "ml_g_app_info_get_executable"
+
   (** Gets the display name of the application. The display name is often more
   descriptive to the user than the name itself. *)
   external get_display_name : t -> string = "ml_g_app_info_get_display_name"
 
   (** Gets a human-readable description of an installed application. *)
   external get_description : t -> string option = "ml_g_app_info_get_description"
+
+  (** Gets the commandline with which the application will be
+  started. *)
+  external get_commandline : t -> string option = "ml_g_app_info_get_commandline"
+
+  (** Checks if two #GAppInfos are equal.
+
+  Note that the check *may not* compare each individual
+  field, and only does an identity check. In case detecting changes in the
+  contents is needed, program code must additionally compare relevant fields. *)
+  external equal : t -> t -> bool = "ml_g_app_info_equal"
+
+  (** Creates a duplicate of a #GAppInfo. *)
+  external dup : t -> t = "ml_g_app_info_dup"
 
   (** Tries to delete a #GAppInfo.
 
@@ -139,6 +199,14 @@ and App_launch_context
   external new_ : unit -> t = "ml_g_app_launch_context_new"
 
   (* Methods *)
+  (** Arranges for @variable to be unset in the child's environment
+  when @context is used to launch an application. *)
+  external unsetenv : t -> string -> unit = "ml_g_app_launch_context_unsetenv"
+
+  (** Arranges for @variable to be set to @value in the child's
+  environment when @context is used to launch an application. *)
+  external setenv : t -> string -> string -> unit = "ml_g_app_launch_context_setenv"
+
   (** Called when an application has failed to launch, so that it can cancel
   the application startup notification started in g_app_launch_context_get_startup_notify_id(). *)
   external launch_failed : t -> string -> unit = "ml_g_app_launch_context_launch_failed"
@@ -151,6 +219,14 @@ end = struct
   external new_ : unit -> t = "ml_g_app_launch_context_new"
 
   (* Methods *)
+  (** Arranges for @variable to be unset in the child's environment
+  when @context is used to launch an application. *)
+  external unsetenv : t -> string -> unit = "ml_g_app_launch_context_unsetenv"
+
+  (** Arranges for @variable to be set to @value in the child's
+  environment when @context is used to launch an application. *)
+  external setenv : t -> string -> string -> unit = "ml_g_app_launch_context_setenv"
+
   (** Called when an application has failed to launch, so that it can cancel
   the application startup notification started in g_app_launch_context_get_startup_notify_id(). *)
   external launch_failed : t -> string -> unit = "ml_g_app_launch_context_launch_failed"

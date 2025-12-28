@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkSearchBar */
-#ifndef Val_GtkSearchBar
-#define GtkSearchBar_val(val) ((GtkSearchBar*)ext_of_val(val))
-#define Val_GtkSearchBar(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkSearchBar */
-
 
 CAMLexport CAMLprim value ml_gtk_search_bar_new(value unit)
 {

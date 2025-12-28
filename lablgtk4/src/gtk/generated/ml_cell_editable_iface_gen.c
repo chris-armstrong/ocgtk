@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkCellEditableIface */
-#ifndef Val_GtkCellEditableIface
-#define GtkCellEditableIface_val(val) ((GtkCellEditableIface*)ext_of_val(val))
-#define Val_GtkCellEditableIface(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkCellEditableIface */
+/* Conversion functions for GtkCellEditableIface (non-opaque record with fields) */
+GtkCellEditableIface *GtkCellEditableIface_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkCellEditableIface **)Data_custom_val(v);
+  } else {
+    return (GtkCellEditableIface*)ml_gir_record_ptr_val(v, "GtkCellEditableIface");
+  }
+}
+
+value Val_GtkCellEditableIface(GtkCellEditableIface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkCellEditableIface), "GtkCellEditableIface", NULL);
+}
+
+value Val_GtkCellEditableIface_option(GtkCellEditableIface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkCellEditableIface(ptr));
+}
 

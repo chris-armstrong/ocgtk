@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GUnixFDMessage */
-#ifndef Val_GUnixFDMessage
-#define GUnixFDMessage_val(val) ((GUnixFDMessage*)ext_of_val(val))
-#define Val_GUnixFDMessage(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GUnixFDMessage */
-
 
 CAMLexport CAMLprim value ml_g_unix_fd_message_new(value unit)
 {

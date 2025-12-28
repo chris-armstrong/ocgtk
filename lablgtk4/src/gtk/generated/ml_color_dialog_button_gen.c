@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkColorDialogButton */
-#ifndef Val_GtkColorDialogButton
-#define GtkColorDialogButton_val(val) ((GtkColorDialogButton*)ext_of_val(val))
-#define Val_GtkColorDialogButton(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkColorDialogButton */
-
 
 CAMLexport CAMLprim value ml_gtk_color_dialog_button_new(value arg1)
 {

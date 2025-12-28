@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GNetworkMonitor */
-#ifndef Val_GNetworkMonitor
-#define GNetworkMonitor_val(val) ((GNetworkMonitor*)ext_of_val(val))
-#define Val_GNetworkMonitor(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GNetworkMonitor */
-
 
 CAMLexport CAMLprim value ml_g_network_monitor_get_network_metered(value self)
 {
@@ -50,4 +44,22 @@ CAMLparam1(self);
 
 GNetworkConnectivity result = g_network_monitor_get_connectivity(GNetworkMonitor_val(self));
 CAMLreturn(Val_GioNetworkConnectivity(result));
+}
+
+CAMLexport CAMLprim value ml_g_network_monitor_can_reach_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_network_monitor_can_reach_finish(GNetworkMonitor_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_network_monitor_can_reach(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GError *error = NULL;
+
+gboolean result = g_network_monitor_can_reach(GNetworkMonitor_val(self), GSocketConnectable_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }

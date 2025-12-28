@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkVolumeButton */
-#ifndef Val_GtkVolumeButton
-#define GtkVolumeButton_val(val) ((GtkVolumeButton*)ext_of_val(val))
-#define Val_GtkVolumeButton(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkVolumeButton */
-
 
 CAMLexport CAMLprim value ml_gtk_volume_button_new(value unit)
 {

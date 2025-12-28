@@ -52,6 +52,20 @@ If @label is non-%NULL it is used as the label for the menu item.  If
 it is %NULL then the label attribute is unset. *)
 external set_label : t -> string option -> unit = "ml_g_menu_item_set_label"
 
+(** Sets (or unsets) the icon on @menu_item.
+
+This call is the same as calling g_icon_serialize() and using the
+result as the value to g_menu_item_set_attribute_value() for
+%G_MENU_ATTRIBUTE_ICON.
+
+This API is only intended for use with "noun" menu items; things like
+bookmarks or applications in an "Open With" menu.  Don't use it on
+menu items corresponding to verbs (eg: stock icons for 'Save' or
+'Quit').
+
+If @icon is %NULL then the icon is unset. *)
+external set_icon : t -> Icon.t -> unit = "ml_g_menu_item_set_icon"
+
 (** Sets the "action" and possibly the "target" attribute of @menu_item.
 
 The format of @detailed_action is the same format parsed by

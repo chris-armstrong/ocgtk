@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkCellRenderer */
-#ifndef Val_GtkCellRenderer
-#define GtkCellRenderer_val(val) ((GtkCellRenderer*)ext_of_val(val))
-#define Val_GtkCellRenderer(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkCellRenderer */
-
 
 CAMLexport CAMLprim value ml_gtk_cell_renderer_stop_editing(value self, value arg1)
 {

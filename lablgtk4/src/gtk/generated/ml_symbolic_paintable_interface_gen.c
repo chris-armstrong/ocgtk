@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkSymbolicPaintableInterface */
-#ifndef Val_GtkSymbolicPaintableInterface
-#define GtkSymbolicPaintableInterface_val(val) ((GtkSymbolicPaintableInterface*)ext_of_val(val))
-#define Val_GtkSymbolicPaintableInterface(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkSymbolicPaintableInterface */
+/* Conversion functions for GtkSymbolicPaintableInterface (non-opaque record with fields) */
+GtkSymbolicPaintableInterface *GtkSymbolicPaintableInterface_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkSymbolicPaintableInterface **)Data_custom_val(v);
+  } else {
+    return (GtkSymbolicPaintableInterface*)ml_gir_record_ptr_val(v, "GtkSymbolicPaintableInterface");
+  }
+}
+
+value Val_GtkSymbolicPaintableInterface(GtkSymbolicPaintableInterface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkSymbolicPaintableInterface), "GtkSymbolicPaintableInterface", NULL);
+}
+
+value Val_GtkSymbolicPaintableInterface_option(GtkSymbolicPaintableInterface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkSymbolicPaintableInterface(ptr));
+}
 

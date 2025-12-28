@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkMediaStream */
-#ifndef Val_GtkMediaStream
-#define GtkMediaStream_val(val) ((GtkMediaStream*)ext_of_val(val))
-#define Val_GtkMediaStream(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkMediaStream */
-
 
 CAMLexport CAMLprim value ml_gtk_media_stream_unprepared(value self)
 {

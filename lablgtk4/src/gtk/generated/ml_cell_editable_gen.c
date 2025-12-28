@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkCellEditable */
-#ifndef Val_GtkCellEditable
-#define GtkCellEditable_val(val) ((GtkCellEditable*)ext_of_val(val))
-#define Val_GtkCellEditable(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkCellEditable */
-
 
 CAMLexport CAMLprim value ml_gtk_cell_editable_remove_widget(value self)
 {

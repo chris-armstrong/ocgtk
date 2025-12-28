@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkFontButton */
-#ifndef Val_GtkFontButton
-#define GtkFontButton_val(val) ((GtkFontButton*)ext_of_val(val))
-#define Val_GtkFontButton(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkFontButton */
-
 
 CAMLexport CAMLprim value ml_gtk_font_button_new(value unit)
 {

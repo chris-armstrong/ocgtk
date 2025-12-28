@@ -6,6 +6,7 @@
 #include <caml/alloc.h>
 #include <caml/fail.h>
 #include <caml/hash.h>
+#include <glib.h>
 #include <gio/gio.h>
 /* Convert GBusType to OCaml value */
 value Val_GioBusType(GBusType val) {

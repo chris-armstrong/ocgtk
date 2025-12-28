@@ -4,6 +4,15 @@
 type t = [`drive] Gobject.obj
 
 (* Methods *)
+(** Finishes stopping a drive. *)
+external stop_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_drive_stop_finish"
+
+(** Finishes starting a drive. *)
+external start_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_drive_start_finish"
+
+(** Finishes an operation started with g_drive_poll_for_media() on a drive. *)
+external poll_for_media_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_drive_poll_for_media_finish"
+
 (** Checks if the #GDrive and/or its media is considered removable by the user.
 See g_drive_is_media_removable(). *)
 external is_removable : t -> bool = "ml_g_drive_is_removable"
@@ -22,6 +31,9 @@ the drive for media changes; see g_drive_is_media_check_automatic()
 for more details. *)
 external has_media : t -> bool = "ml_g_drive_has_media"
 
+(** Gets the icon for @drive. *)
+external get_symbolic_icon : t -> Icon.t = "ml_g_drive_get_symbolic_icon"
+
 (** Gets a hint about how a drive can be started/stopped. *)
 external get_start_stop_type : t -> Gio_enums.drivestartstoptype = "ml_g_drive_get_start_stop_type"
 
@@ -35,6 +47,16 @@ external get_name : t -> string = "ml_g_drive_get_name"
 identifier currently available is
 %G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE. *)
 external get_identifier : t -> string -> string option = "ml_g_drive_get_identifier"
+
+(** Gets the icon for @drive. *)
+external get_icon : t -> Icon.t = "ml_g_drive_get_icon"
+
+(** Finishes ejecting a drive. If any errors occurred during the operation,
+@error will be set to contain the errors and %FALSE will be returned. *)
+external eject_with_operation_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_drive_eject_with_operation_finish"
+
+(** Finishes ejecting a drive. *)
+external eject_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_drive_eject_finish"
 
 (** Checks if a drive can be stopped. *)
 external can_stop : t -> bool = "ml_g_drive_can_stop"

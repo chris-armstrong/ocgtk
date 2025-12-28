@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkIconPaintable */
-#ifndef Val_GtkIconPaintable
-#define GtkIconPaintable_val(val) ((GtkIconPaintable*)ext_of_val(val))
-#define Val_GtkIconPaintable(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkIconPaintable */
-
 
 CAMLexport CAMLprim value ml_gtk_icon_paintable_new_for_file(value arg1, value arg2, value arg3)
 {

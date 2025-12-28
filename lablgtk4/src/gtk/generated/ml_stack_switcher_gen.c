@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkStackSwitcher */
-#ifndef Val_GtkStackSwitcher
-#define GtkStackSwitcher_val(val) ((GtkStackSwitcher*)ext_of_val(val))
-#define Val_GtkStackSwitcher(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkStackSwitcher */
-
 
 CAMLexport CAMLprim value ml_gtk_stack_switcher_new(value unit)
 {

@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkGridLayoutChild */
-#ifndef Val_GtkGridLayoutChild
-#define GtkGridLayoutChild_val(val) ((GtkGridLayoutChild*)ext_of_val(val))
-#define Val_GtkGridLayoutChild(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkGridLayoutChild */
-
 
 CAMLexport CAMLprim value ml_gtk_grid_layout_child_set_row_span(value self, value arg1)
 {

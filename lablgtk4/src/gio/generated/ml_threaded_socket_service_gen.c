@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GThreadedSocketService */
-#ifndef Val_GThreadedSocketService
-#define GThreadedSocketService_val(val) ((GThreadedSocketService*)ext_of_val(val))
-#define Val_GThreadedSocketService(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GThreadedSocketService */
-
 
 CAMLexport CAMLprim value ml_g_threaded_socket_service_new(value arg1)
 {

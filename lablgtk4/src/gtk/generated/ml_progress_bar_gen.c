@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkProgressBar */
-#ifndef Val_GtkProgressBar
-#define GtkProgressBar_val(val) ((GtkProgressBar*)ext_of_val(val))
-#define Val_GtkProgressBar(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkProgressBar */
-
 
 CAMLexport CAMLprim value ml_gtk_progress_bar_new(value unit)
 {

@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkFileChooserNative */
-#ifndef Val_GtkFileChooserNative
-#define GtkFileChooserNative_val(val) ((GtkFileChooserNative*)ext_of_val(val))
-#define Val_GtkFileChooserNative(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkFileChooserNative */
-
 
 CAMLexport CAMLprim value ml_gtk_file_chooser_native_new(value arg1, value arg2, value arg3, value arg4, value arg5)
 {

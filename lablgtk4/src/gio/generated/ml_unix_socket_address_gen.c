@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GUnixSocketAddress */
-#ifndef Val_GUnixSocketAddress
-#define GUnixSocketAddress_val(val) ((GUnixSocketAddress*)ext_of_val(val))
-#define Val_GUnixSocketAddress(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GUnixSocketAddress */
-
 
 CAMLexport CAMLprim value ml_g_unix_socket_address_new(value arg1)
 {

@@ -10,6 +10,10 @@ class emblemed_icon (obj : Emblemed_icon.t) = object (self)
     fun () ->
       (Emblemed_icon.clear_emblems obj)
 
+  method get_icon : unit -> GIcon.icon =
+    fun () ->
+      new  GIcon.icon(Emblemed_icon.get_icon obj)
+
     method as_emblemed_icon = obj
 end
 

@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GSettings */
-#ifndef Val_GSettings
-#define GSettings_val(val) ((GSettings*)ext_of_val(val))
-#define Val_GSettings(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSettings */
-
 
 CAMLexport CAMLprim value ml_g_settings_new(value arg1)
 {
@@ -221,6 +215,14 @@ CAMLparam1(self);
 
 g_settings_delay(GSettings_val(self));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_settings_create_action(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GAction* result = g_settings_create_action(GSettings_val(self), String_val(arg1));
+CAMLreturn(Val_GAction(result));
 }
 
 CAMLexport CAMLprim value ml_g_settings_apply(value self)

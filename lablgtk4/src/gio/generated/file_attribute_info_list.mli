@@ -19,3 +19,7 @@ external ref : t -> t = "ml_g_file_attribute_info_list_ref"
 (** Makes a duplicate of a file attribute info list. *)
 external dup : t -> t = "ml_g_file_attribute_info_list_dup"
 
+(** Adds a new attribute with @name to the @list, setting
+its @type and @flags. *)
+external add : t -> string -> Gio_enums.fileattributetype -> Gio_enums.fileattributeinfoflags -> unit = "ml_g_file_attribute_info_list_add"
+

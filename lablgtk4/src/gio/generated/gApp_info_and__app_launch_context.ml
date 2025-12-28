@@ -19,6 +19,14 @@ class app_info (obj : App_info_and__app_launch_context.App_info.t) = object (sel
     fun () ->
       (App_info_and__app_launch_context.App_info.delete obj)
 
+  method dup : unit -> app_info =
+    fun () ->
+      new  app_info(App_info_and__app_launch_context.App_info.dup obj)
+
+  method get_commandline : unit -> string option =
+    fun () ->
+      (App_info_and__app_launch_context.App_info.get_commandline obj)
+
   method get_description : unit -> string option =
     fun () ->
       (App_info_and__app_launch_context.App_info.get_description obj)
@@ -26,6 +34,14 @@ class app_info (obj : App_info_and__app_launch_context.App_info.t) = object (sel
   method get_display_name : unit -> string =
     fun () ->
       (App_info_and__app_launch_context.App_info.get_display_name obj)
+
+  method get_executable : unit -> string =
+    fun () ->
+      (App_info_and__app_launch_context.App_info.get_executable obj)
+
+  method get_icon : unit -> GIcon.icon option =
+    fun () ->
+      Option.map (fun ret -> new GIcon.icon ret) (App_info_and__app_launch_context.App_info.get_icon obj)
 
   method get_id : unit -> string option =
     fun () ->
@@ -38,6 +54,10 @@ class app_info (obj : App_info_and__app_launch_context.App_info.t) = object (sel
   method remove_supports_type : string -> (bool, GError.t) result =
     fun content_type ->
       (App_info_and__app_launch_context.App_info.remove_supports_type obj content_type)
+
+  method set_as_default_for_extension : string -> (bool, GError.t) result =
+    fun extension ->
+      (App_info_and__app_launch_context.App_info.set_as_default_for_extension obj extension)
 
   method set_as_default_for_type : string -> (bool, GError.t) result =
     fun content_type ->
@@ -70,6 +90,14 @@ and app_launch_context (obj : App_info_and__app_launch_context.App_launch_contex
   method launch_failed : string -> unit =
     fun startup_notify_id ->
       (App_info_and__app_launch_context.App_launch_context.launch_failed obj startup_notify_id)
+
+  method setenv : string -> string -> unit =
+    fun variable value ->
+      (App_info_and__app_launch_context.App_launch_context.setenv obj variable value)
+
+  method unsetenv : string -> unit =
+    fun variable ->
+      (App_info_and__app_launch_context.App_launch_context.unsetenv obj variable)
 
     method as_app_launch_context = obj
 end

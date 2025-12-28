@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkVideo */
-#ifndef Val_GtkVideo
-#define GtkVideo_val(val) ((GtkVideo*)ext_of_val(val))
-#define Val_GtkVideo(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkVideo */
-
 
 CAMLexport CAMLprim value ml_gtk_video_new(value unit)
 {

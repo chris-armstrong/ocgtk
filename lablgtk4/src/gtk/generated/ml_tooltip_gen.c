@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkTooltip */
-#ifndef Val_GtkTooltip
-#define GtkTooltip_val(val) ((GtkTooltip*)ext_of_val(val))
-#define Val_GtkTooltip(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTooltip */
-
 
 CAMLexport CAMLprim value ml_gtk_tooltip_set_text(value self, value arg1)
 {

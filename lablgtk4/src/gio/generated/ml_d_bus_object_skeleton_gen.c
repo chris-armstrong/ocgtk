@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDBusObjectSkeleton */
-#ifndef Val_GDBusObjectSkeleton
-#define GDBusObjectSkeleton_val(val) ((GDBusObjectSkeleton*)ext_of_val(val))
-#define Val_GDBusObjectSkeleton(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusObjectSkeleton */
-
 
 CAMLexport CAMLprim value ml_g_dbus_object_skeleton_new(value arg1)
 {

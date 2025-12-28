@@ -21,12 +21,15 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDtlsConnection */
-#ifndef Val_GDtlsConnection
-#define GDtlsConnection_val(val) ((GDtlsConnection*)ext_of_val(val))
-#define Val_GDtlsConnection(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDtlsConnection */
 
+CAMLexport CAMLprim value ml_g_dtls_connection_shutdown_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_dtls_connection_shutdown_finish(GDtlsConnection_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 
 CAMLexport CAMLprim value ml_g_dtls_connection_shutdown(value self, value arg1, value arg2, value arg3)
 {
@@ -77,6 +80,15 @@ g_dtls_connection_set_certificate(GDtlsConnection_val(self), GTlsCertificate_val
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_dtls_connection_handshake_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_dtls_connection_handshake_finish(GDtlsConnection_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_g_dtls_connection_handshake(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -108,6 +120,14 @@ CAMLparam1(self);
 
 GTlsProtocolVersion result = g_dtls_connection_get_protocol_version(GDtlsConnection_val(self));
 CAMLreturn(Val_GioTlsProtocolVersion(result));
+}
+
+CAMLexport CAMLprim value ml_g_dtls_connection_get_peer_certificate_errors(value self)
+{
+CAMLparam1(self);
+
+GTlsCertificateFlags result = g_dtls_connection_get_peer_certificate_errors(GDtlsConnection_val(self));
+CAMLreturn(Val_GioTlsCertificateFlags(result));
 }
 
 CAMLexport CAMLprim value ml_g_dtls_connection_get_peer_certificate(value self)
@@ -156,6 +176,23 @@ CAMLparam1(self);
 
 GTlsCertificate* result = g_dtls_connection_get_certificate(GDtlsConnection_val(self));
 CAMLreturn(Val_option(result, Val_GTlsCertificate));
+}
+
+CAMLexport CAMLprim value ml_g_dtls_connection_emit_accept_certificate(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gboolean result = g_dtls_connection_emit_accept_certificate(GDtlsConnection_val(self), GTlsCertificate_val(arg1), GioTlsCertificateFlags_val(arg2));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_g_dtls_connection_close_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_dtls_connection_close_finish(GDtlsConnection_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_g_dtls_connection_close(value self, value arg1)

@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkTreeDragDestIface */
-#ifndef Val_GtkTreeDragDestIface
-#define GtkTreeDragDestIface_val(val) ((GtkTreeDragDestIface*)ext_of_val(val))
-#define Val_GtkTreeDragDestIface(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTreeDragDestIface */
+/* Conversion functions for GtkTreeDragDestIface (non-opaque record with fields) */
+GtkTreeDragDestIface *GtkTreeDragDestIface_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkTreeDragDestIface **)Data_custom_val(v);
+  } else {
+    return (GtkTreeDragDestIface*)ml_gir_record_ptr_val(v, "GtkTreeDragDestIface");
+  }
+}
+
+value Val_GtkTreeDragDestIface(GtkTreeDragDestIface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkTreeDragDestIface), "GtkTreeDragDestIface", NULL);
+}
+
+value Val_GtkTreeDragDestIface_option(GtkTreeDragDestIface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkTreeDragDestIface(ptr));
+}
 

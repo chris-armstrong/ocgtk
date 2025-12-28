@@ -4,7 +4,9 @@ class d_bus_connection : D_bus_connection.t ->
     method close_sync : #GCancellable.cancellable option -> (bool, GError.t) result
     method export_menu_model : string -> #GMenu_link_iter_and__menu_model.menu_model -> (int, GError.t) result
     method flush_sync : #GCancellable.cancellable option -> (bool, GError.t) result
+    method get_capabilities : unit -> Gio_enums.dbuscapabilityflags
     method get_exit_on_close : unit -> bool
+    method get_flags : unit -> Gio_enums.dbusconnectionflags
     method get_guid : unit -> string
     method get_peer_credentials : unit -> GCredentials.credentials option
     method get_stream : unit -> GIo_stream.io_stream

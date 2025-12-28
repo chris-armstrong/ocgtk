@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkGLArea */
-#ifndef Val_GtkGLArea
-#define GtkGLArea_val(val) ((GtkGLArea*)ext_of_val(val))
-#define Val_GtkGLArea(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkGLArea */
-
 
 CAMLexport CAMLprim value ml_gtk_gl_area_new(value unit)
 {

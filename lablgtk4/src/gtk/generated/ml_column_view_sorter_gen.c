@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkColumnViewSorter */
-#ifndef Val_GtkColumnViewSorter
-#define GtkColumnViewSorter_val(val) ((GtkColumnViewSorter*)ext_of_val(val))
-#define Val_GtkColumnViewSorter(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkColumnViewSorter */
-
 
 CAMLexport CAMLprim value ml_gtk_column_view_sorter_get_primary_sort_order(value self)
 {

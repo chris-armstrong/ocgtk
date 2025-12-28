@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkScaleButton */
-#ifndef Val_GtkScaleButton
-#define GtkScaleButton_val(val) ((GtkScaleButton*)ext_of_val(val))
-#define Val_GtkScaleButton(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkScaleButton */
-
 
 CAMLexport CAMLprim value ml_gtk_scale_button_new(value arg1, value arg2, value arg3, value arg4)
 {

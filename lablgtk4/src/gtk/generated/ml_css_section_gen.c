@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkCssSection */
-#ifndef Val_GtkCssSection
-#define GtkCssSection_val(val) ((GtkCssSection*)ext_of_val(val))
-#define Val_GtkCssSection(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkCssSection */
-
 
 CAMLexport CAMLprim value ml_gtk_css_section_new(value arg1, value arg2, value arg3)
 {

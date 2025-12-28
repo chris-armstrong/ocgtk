@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GIcon */
-#ifndef Val_GIcon
-#define GIcon_val(val) ((GIcon*)ext_of_val(val))
-#define Val_GIcon(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GIcon */
-
 
 CAMLexport CAMLprim value ml_g_icon_to_string(value self)
 {
@@ -42,4 +36,12 @@ CAMLparam1(self);
 
 guint result = g_icon_hash(GIcon_val(self));
 CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_g_icon_equal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gboolean result = g_icon_equal(GIcon_val(self), Option_val(arg1, GIcon_val, NULL));
+CAMLreturn(Val_bool(result));
 }

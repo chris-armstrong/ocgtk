@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkOverlay */
-#ifndef Val_GtkOverlay
-#define GtkOverlay_val(val) ((GtkOverlay*)ext_of_val(val))
-#define Val_GtkOverlay(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkOverlay */
-
 
 CAMLexport CAMLprim value ml_gtk_overlay_new(value unit)
 {

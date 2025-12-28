@@ -44,6 +44,19 @@ format string. Use this function if @message contains text you don't have
 control over, that could include `printf()` escape sequences. *)
 external print_literal : t -> string -> unit = "ml_g_application_command_line_print_literal"
 
+(** Gets the value of a particular environment variable of the command
+line invocation, as would be returned by g_getenv().  The strings may
+contain non-utf8 data.
+
+The remote application usually does not send an environment.  Use
+%G_APPLICATION_SEND_ENVIRONMENT to affect that.  Even with this flag
+set it is possible that the environment is still not available (due
+to invocation messages from other applications).
+
+The return value should not be modified or freed and is valid for as
+long as @cmdline exists. *)
+external getenv : t -> string -> string option = "ml_g_application_command_line_getenv"
+
 (** Gets the stdin of the invoking process.
 
 The #GInputStream can be used to read data passed to the standard
@@ -63,6 +76,16 @@ external get_is_remote : t -> bool = "ml_g_application_command_line_get_is_remot
 g_application_command_line_set_exit_status() for more information. *)
 external get_exit_status : t -> int = "ml_g_application_command_line_get_exit_status"
 
+(** Gets the working directory of the command line invocation.
+The string may contain non-utf8 data.
+
+It is possible that the remote application did not send a working
+directory, so this may be %NULL.
+
+The return value should not be modified or freed and is valid for as
+long as @cmdline exists. *)
+external get_cwd : t -> string option = "ml_g_application_command_line_get_cwd"
+
 (** Signals that command line processing is completed.
 
 For remote invocation, it causes the invoking process to terminate.
@@ -79,6 +102,14 @@ This method is automatically called when the #GApplicationCommandLine
 object is disposed — so you can omit the call in non-garbage collected
 languages. *)
 external done_ : t -> unit = "ml_g_application_command_line_done"
+
+(** Creates a #GFile corresponding to a filename that was given as part
+of the invocation of @cmdline.
+
+This differs from g_file_new_for_commandline_arg() in that it
+resolves relative pathnames using the current working directory of
+the invoking process rather than the local process. *)
+external create_file_for_arg : t -> string -> File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t = "ml_g_application_command_line_create_file_for_arg"
 
 (* Properties *)
 

@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GInetAddressMask */
-#ifndef Val_GInetAddressMask
-#define GInetAddressMask_val(val) ((GInetAddressMask*)ext_of_val(val))
-#define Val_GInetAddressMask(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GInetAddressMask */
-
 
 CAMLexport CAMLprim value ml_g_inet_address_mask_to_string(value self)
 {

@@ -55,3 +55,6 @@ g_io_extension_point_implement ("my-extension-point",
 type t = [`io_extension_point] Gobject.obj
 
 (* Methods *)
+(** Finds a #GIOExtension for an extension point by name. *)
+external get_extension_by_name : t -> string -> Io_extension.t = "ml_g_io_extension_point_get_extension_by_name"
+

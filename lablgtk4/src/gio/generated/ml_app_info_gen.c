@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GAppInfo */
-#ifndef Val_GAppInfo
-#define GAppInfo_val(val) ((GAppInfo*)ext_of_val(val))
-#define Val_GAppInfo(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GAppInfo */
-
 
 CAMLexport CAMLprim value ml_g_app_info_supports_uris(value self)
 {
@@ -70,12 +64,30 @@ gboolean result = g_app_info_set_as_default_for_type(GAppInfo_val(self), String_
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+CAMLexport CAMLprim value ml_g_app_info_set_as_default_for_extension(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_app_info_set_as_default_for_extension(GAppInfo_val(self), String_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_g_app_info_remove_supports_type(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 GError *error = NULL;
 
 gboolean result = g_app_info_remove_supports_type(GAppInfo_val(self), String_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_app_info_launch_uris_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = g_app_info_launch_uris_finish(GAppInfo_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -95,6 +107,22 @@ const char* result = g_app_info_get_id(GAppInfo_val(self));
 CAMLreturn(Val_option_string(result));
 }
 
+CAMLexport CAMLprim value ml_g_app_info_get_icon(value self)
+{
+CAMLparam1(self);
+
+GIcon* result = g_app_info_get_icon(GAppInfo_val(self));
+CAMLreturn(Val_option(result, Val_GIcon));
+}
+
+CAMLexport CAMLprim value ml_g_app_info_get_executable(value self)
+{
+CAMLparam1(self);
+
+const char* result = g_app_info_get_executable(GAppInfo_val(self));
+CAMLreturn(caml_copy_string(result));
+}
+
 CAMLexport CAMLprim value ml_g_app_info_get_display_name(value self)
 {
 CAMLparam1(self);
@@ -109,6 +137,30 @@ CAMLparam1(self);
 
 const char* result = g_app_info_get_description(GAppInfo_val(self));
 CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_g_app_info_get_commandline(value self)
+{
+CAMLparam1(self);
+
+const char* result = g_app_info_get_commandline(GAppInfo_val(self));
+CAMLreturn(Val_option(result, caml_copy_string));
+}
+
+CAMLexport CAMLprim value ml_g_app_info_equal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gboolean result = g_app_info_equal(GAppInfo_val(self), GAppInfo_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_g_app_info_dup(value self)
+{
+CAMLparam1(self);
+
+GAppInfo* result = g_app_info_dup(GAppInfo_val(self));
+CAMLreturn(Val_GAppInfo(result));
 }
 
 CAMLexport CAMLprim value ml_g_app_info_delete(value self)

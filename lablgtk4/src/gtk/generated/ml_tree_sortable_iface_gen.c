@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkTreeSortableIface */
-#ifndef Val_GtkTreeSortableIface
-#define GtkTreeSortableIface_val(val) ((GtkTreeSortableIface*)ext_of_val(val))
-#define Val_GtkTreeSortableIface(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTreeSortableIface */
+/* Conversion functions for GtkTreeSortableIface (non-opaque record with fields) */
+GtkTreeSortableIface *GtkTreeSortableIface_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkTreeSortableIface **)Data_custom_val(v);
+  } else {
+    return (GtkTreeSortableIface*)ml_gir_record_ptr_val(v, "GtkTreeSortableIface");
+  }
+}
+
+value Val_GtkTreeSortableIface(GtkTreeSortableIface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkTreeSortableIface), "GtkTreeSortableIface", NULL);
+}
+
+value Val_GtkTreeSortableIface_option(GtkTreeSortableIface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkTreeSortableIface(ptr));
+}
 

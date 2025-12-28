@@ -4,6 +4,12 @@
 type t = [`socket_address_enumerator | `object_] Gobject.obj
 
 (* Methods *)
+(** Retrieves the result of a completed call to
+g_socket_address_enumerator_next_async(). See
+g_socket_address_enumerator_next() for more information about
+error handling. *)
+external next_finish : t -> Async_result.t -> (Socket_address.t option, GError.t) result = "ml_g_socket_address_enumerator_next_finish"
+
 (** Retrieves the next #GSocketAddress from @enumerator. Note that this
 may block for some amount of time. (Eg, a #GNetworkAddress may need
 to do a DNS lookup before it can return an address.) Use

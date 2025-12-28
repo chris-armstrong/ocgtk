@@ -16,9 +16,3 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkListItemFactory */
-#ifndef Val_GtkListItemFactory
-#define GtkListItemFactory_val(val) ((GtkListItemFactory*)ext_of_val(val))
-#define Val_GtkListItemFactory(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkListItemFactory */
-

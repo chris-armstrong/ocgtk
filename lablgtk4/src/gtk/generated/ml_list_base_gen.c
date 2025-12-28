@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkListBase */
-#ifndef Val_GtkListBase
-#define GtkListBase_val(val) ((GtkListBase*)ext_of_val(val))
-#define Val_GtkListBase(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkListBase */
-
 
 CAMLexport CAMLprim value ml_gtk_list_base_get_orientation(value self)
 {

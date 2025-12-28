@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkBuilder */
-#ifndef Val_GtkBuilder
-#define GtkBuilder_val(val) ((GtkBuilder*)ext_of_val(val))
-#define Val_GtkBuilder(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkBuilder */
-
 
 CAMLexport CAMLprim value ml_gtk_builder_new(value unit)
 {

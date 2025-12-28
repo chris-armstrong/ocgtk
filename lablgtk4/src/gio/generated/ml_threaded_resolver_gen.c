@@ -21,9 +21,3 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GThreadedResolver */
-#ifndef Val_GThreadedResolver
-#define GThreadedResolver_val(val) ((GThreadedResolver*)ext_of_val(val))
-#define Val_GThreadedResolver(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GThreadedResolver */
-

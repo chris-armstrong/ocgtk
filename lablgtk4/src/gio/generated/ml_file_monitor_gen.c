@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GFileMonitor */
-#ifndef Val_GFileMonitor
-#define GFileMonitor_val(val) ((GFileMonitor*)ext_of_val(val))
-#define Val_GFileMonitor(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GFileMonitor */
-
 
 CAMLexport CAMLprim value ml_g_file_monitor_set_rate_limit(value self, value arg1)
 {
@@ -42,6 +36,14 @@ CAMLparam1(self);
 
 gboolean result = g_file_monitor_is_cancelled(GFileMonitor_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_g_file_monitor_emit_event(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+g_file_monitor_emit_event(GFileMonitor_val(self), GFile_val(arg1), GFile_val(arg2), GioFileMonitorEvent_val(arg3));
+CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_g_file_monitor_cancel(value self)

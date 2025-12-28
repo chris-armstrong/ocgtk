@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkLabel */
-#ifndef Val_GtkLabel
-#define GtkLabel_val(val) ((GtkLabel*)ext_of_val(val))
-#define Val_GtkLabel(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkLabel */
-
 
 CAMLexport CAMLprim value ml_gtk_label_new(value arg1)
 {

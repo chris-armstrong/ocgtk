@@ -21,9 +21,19 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GVolumeMonitor */
-#ifndef Val_GVolumeMonitor
-#define GVolumeMonitor_val(val) ((GVolumeMonitor*)ext_of_val(val))
-#define Val_GVolumeMonitor(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GVolumeMonitor */
 
+CAMLexport CAMLprim value ml_g_volume_monitor_get_volume_for_uuid(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GVolume* result = g_volume_monitor_get_volume_for_uuid(GVolumeMonitor_val(self), String_val(arg1));
+CAMLreturn(Val_option(result, Val_GVolume));
+}
+
+CAMLexport CAMLprim value ml_g_volume_monitor_get_mount_for_uuid(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GMount* result = g_volume_monitor_get_mount_for_uuid(GVolumeMonitor_val(self), String_val(arg1));
+CAMLreturn(Val_option(result, Val_GMount));
+}

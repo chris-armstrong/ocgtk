@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkNotebookPage */
-#ifndef Val_GtkNotebookPage
-#define GtkNotebookPage_val(val) ((GtkNotebookPage*)ext_of_val(val))
-#define Val_GtkNotebookPage(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkNotebookPage */
-
 
 CAMLexport CAMLprim value ml_gtk_notebook_page_get_child(value self)
 {

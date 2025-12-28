@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GConverter */
-#ifndef Val_GConverter
-#define GConverter_val(val) ((GConverter*)ext_of_val(val))
-#define Val_GConverter(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GConverter */
-
 
 CAMLexport CAMLprim value ml_g_converter_reset(value self)
 {

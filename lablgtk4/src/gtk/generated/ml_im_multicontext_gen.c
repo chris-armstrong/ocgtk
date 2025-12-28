@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkIMMulticontext */
-#ifndef Val_GtkIMMulticontext
-#define GtkIMMulticontext_val(val) ((GtkIMMulticontext*)ext_of_val(val))
-#define Val_GtkIMMulticontext(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkIMMulticontext */
-
 
 CAMLexport CAMLprim value ml_gtk_im_multicontext_new(value unit)
 {

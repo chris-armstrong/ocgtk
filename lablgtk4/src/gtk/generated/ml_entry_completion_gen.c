@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkEntryCompletion */
-#ifndef Val_GtkEntryCompletion
-#define GtkEntryCompletion_val(val) ((GtkEntryCompletion*)ext_of_val(val))
-#define Val_GtkEntryCompletion(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkEntryCompletion */
-
 
 CAMLexport CAMLprim value ml_gtk_entry_completion_new(value unit)
 {

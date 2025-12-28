@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkAppChooserDialog */
-#ifndef Val_GtkAppChooserDialog
-#define GtkAppChooserDialog_val(val) ((GtkAppChooserDialog*)ext_of_val(val))
-#define Val_GtkAppChooserDialog(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkAppChooserDialog */
-
 
 CAMLexport CAMLprim value ml_gtk_app_chooser_dialog_new(value arg1, value arg2, value arg3)
 {

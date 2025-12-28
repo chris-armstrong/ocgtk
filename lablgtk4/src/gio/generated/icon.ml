@@ -25,3 +25,6 @@ external to_string : t -> string option = "ml_g_icon_to_string"
 (** Gets a hash for an icon. *)
 external hash : t -> int = "ml_g_icon_hash"
 
+(** Checks if two icons are equal. *)
+external equal : t -> t option -> bool = "ml_g_icon_equal"
+

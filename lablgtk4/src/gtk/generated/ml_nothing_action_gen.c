@@ -16,9 +16,3 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkNothingAction */
-#ifndef Val_GtkNothingAction
-#define GtkNothingAction_val(val) ((GtkNothingAction*)ext_of_val(val))
-#define Val_GtkNothingAction(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkNothingAction */
-

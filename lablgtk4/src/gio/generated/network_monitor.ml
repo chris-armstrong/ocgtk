@@ -35,5 +35,28 @@ attempt to connect to remote servers, but should gracefully fall
 back to their "offline" behavior if the connection attempt fails. *)
 external get_connectivity : t -> Gio_enums.networkconnectivity = "ml_g_network_monitor_get_connectivity"
 
+(** Finishes an async network connectivity test.
+See g_network_monitor_can_reach_async(). *)
+external can_reach_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_network_monitor_can_reach_finish"
+
+(** Attempts to determine whether or not the host pointed to by
+@connectable can be reached, without actually trying to connect to
+it.
+
+This may return %TRUE even when #GNetworkMonitor:network-available
+is %FALSE, if, for example, @monitor can determine that
+@connectable refers to a host on a local network.
+
+If @monitor believes that an attempt to connect to @connectable
+will succeed, it will return %TRUE. Otherwise, it will return
+%FALSE and set @error to an appropriate error (such as
+%G_IO_ERROR_HOST_UNREACHABLE).
+
+Note that although this does not attempt to connect to
+@connectable, it may still block for a brief period of time (eg,
+trying to do multicast DNS on the local network), so if you do not
+want to block, you should use g_network_monitor_can_reach_async(). *)
+external can_reach : t -> Socket_connectable.t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_network_monitor_can_reach"
+
 (* Properties *)
 

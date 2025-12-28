@@ -5,6 +5,7 @@ class application : Application.t ->
     method get_application_id : unit -> string option
     method get_dbus_connection : unit -> GD_bus_connection.d_bus_connection option
     method get_dbus_object_path : unit -> string option
+    method get_flags : unit -> Gio_enums.applicationflags
     method get_inactivity_timeout : unit -> int
     method get_is_busy : unit -> bool
     method get_is_registered : unit -> bool
@@ -19,6 +20,7 @@ class application : Application.t ->
     method send_notification : string option -> #GNotification.notification -> unit
     method set_application_id : string option -> unit
     method set_default : unit -> unit
+    method set_flags : Gio_enums.applicationflags -> unit
     method set_inactivity_timeout : int -> unit
     method set_option_context_description : string option -> unit
     method set_option_context_parameter_string : string option -> unit

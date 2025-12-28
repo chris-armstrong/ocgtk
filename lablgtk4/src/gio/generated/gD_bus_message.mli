@@ -6,6 +6,7 @@ class d_bus_message : D_bus_message.t ->
     method get_byte_order : unit -> Gio_enums.dbusmessagebyteorder
     method get_destination : unit -> string option
     method get_error_name : unit -> string option
+    method get_flags : unit -> Gio_enums.dbusmessageflags
     method get_interface : unit -> string option
     method get_locked : unit -> bool
     method get_member : unit -> string option
@@ -21,6 +22,7 @@ class d_bus_message : D_bus_message.t ->
     method set_byte_order : Gio_enums.dbusmessagebyteorder -> unit
     method set_destination : string option -> unit
     method set_error_name : string -> unit
+    method set_flags : Gio_enums.dbusmessageflags -> unit
     method set_interface : string option -> unit
     method set_member : string option -> unit
     method set_message_type : Gio_enums.dbusmessagetype -> unit

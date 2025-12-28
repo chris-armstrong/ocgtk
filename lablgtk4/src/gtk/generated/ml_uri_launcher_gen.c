@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkUriLauncher */
-#ifndef Val_GtkUriLauncher
-#define GtkUriLauncher_val(val) ((GtkUriLauncher*)ext_of_val(val))
-#define Val_GtkUriLauncher(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkUriLauncher */
-
 
 CAMLexport CAMLprim value ml_gtk_uri_launcher_new(value arg1)
 {

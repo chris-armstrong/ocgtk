@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDBusObjectManagerServer */
-#ifndef Val_GDBusObjectManagerServer
-#define GDBusObjectManagerServer_val(val) ((GDBusObjectManagerServer*)ext_of_val(val))
-#define Val_GDBusObjectManagerServer(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusObjectManagerServer */
-
 
 CAMLexport CAMLprim value ml_g_dbus_object_manager_server_new(value arg1)
 {

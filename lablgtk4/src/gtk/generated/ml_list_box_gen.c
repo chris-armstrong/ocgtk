@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkListBox */
-#ifndef Val_GtkListBox
-#define GtkListBox_val(val) ((GtkListBox*)ext_of_val(val))
-#define Val_GtkListBox(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkListBox */
-
 
 CAMLexport CAMLprim value ml_gtk_list_box_new(value unit)
 {

@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GMenu */
-#ifndef Val_GMenu
-#define GMenu_val(val) ((GMenu*)ext_of_val(val))
-#define Val_GMenu(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GMenu */
-
 
 CAMLexport CAMLprim value ml_g_menu_new(value unit)
 {

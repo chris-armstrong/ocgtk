@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkBitset */
-#ifndef Val_GtkBitset
-#define GtkBitset_val(val) ((GtkBitset*)ext_of_val(val))
-#define Val_GtkBitset(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkBitset */
-
 
 CAMLexport CAMLprim value ml_gtk_bitset_new_empty(value unit)
 {

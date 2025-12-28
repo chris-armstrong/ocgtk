@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GSocketConnectable */
-#ifndef Val_GSocketConnectable
-#define GSocketConnectable_val(val) ((GSocketConnectable*)ext_of_val(val))
-#define Val_GSocketConnectable(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSocketConnectable */
-
 
 CAMLexport CAMLprim value ml_g_socket_connectable_to_string(value self)
 {

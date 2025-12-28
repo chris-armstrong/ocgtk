@@ -13,6 +13,10 @@ stream, as this is required for fd passing to work on some
 implementations. *)
 external send_fd : t -> int -> Cancellable.t option -> (bool, GError.t) result = "ml_g_unix_connection_send_fd"
 
+(** Finishes an asynchronous send credentials operation started with
+g_unix_connection_send_credentials_async(). *)
+external send_credentials_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_unix_connection_send_credentials_finish"
+
 (** Passes the credentials of the current user the receiving side
 of the connection. The receiving end has to call
 g_unix_connection_receive_credentials() (or similar) to accept the
@@ -42,6 +46,10 @@ As well as reading the fd this also reads a single byte from the
 stream, as this is required for fd passing to work on some
 implementations. *)
 external receive_fd : t -> Cancellable.t option -> (int, GError.t) result = "ml_g_unix_connection_receive_fd"
+
+(** Finishes an asynchronous receive credentials operation started with
+g_unix_connection_receive_credentials_async(). *)
+external receive_credentials_finish : t -> Async_result.t -> (Credentials.t, GError.t) result = "ml_g_unix_connection_receive_credentials_finish"
 
 (** Receives credentials from the sending end of the connection.  The
 sending end has to call g_unix_connection_send_credentials() (or

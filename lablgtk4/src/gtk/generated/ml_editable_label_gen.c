@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkEditableLabel */
-#ifndef Val_GtkEditableLabel
-#define GtkEditableLabel_val(val) ((GtkEditableLabel*)ext_of_val(val))
-#define Val_GtkEditableLabel(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkEditableLabel */
-
 
 CAMLexport CAMLprim value ml_gtk_editable_label_new(value arg1)
 {

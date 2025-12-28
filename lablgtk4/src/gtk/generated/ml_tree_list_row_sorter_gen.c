@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkTreeListRowSorter */
-#ifndef Val_GtkTreeListRowSorter
-#define GtkTreeListRowSorter_val(val) ((GtkTreeListRowSorter*)ext_of_val(val))
-#define Val_GtkTreeListRowSorter(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTreeListRowSorter */
-
 
 CAMLexport CAMLprim value ml_gtk_tree_list_row_sorter_new(value arg1)
 {

@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GListStore */
-#ifndef Val_GListStore
-#define GListStore_val(val) ((GListStore*)ext_of_val(val))
-#define Val_GListStore(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GListStore */
-
 
 CAMLexport CAMLprim value ml_g_list_store_new(value arg1)
 {

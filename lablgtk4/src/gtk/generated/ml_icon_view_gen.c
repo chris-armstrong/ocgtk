@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkIconView */
-#ifndef Val_GtkIconView
-#define GtkIconView_val(val) ((GtkIconView*)ext_of_val(val))
-#define Val_GtkIconView(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkIconView */
-
 
 CAMLexport CAMLprim value ml_gtk_icon_view_new(value unit)
 {

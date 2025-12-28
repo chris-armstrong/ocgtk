@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GMenuLinkIter */
-#ifndef Val_GMenuLinkIter
-#define GMenuLinkIter_val(val) ((GMenuLinkIter*)ext_of_val(val))
-#define Val_GMenuLinkIter(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GMenuLinkIter */
-
 
 CAMLexport CAMLprim value ml_g_menu_link_iter_next(value self)
 {

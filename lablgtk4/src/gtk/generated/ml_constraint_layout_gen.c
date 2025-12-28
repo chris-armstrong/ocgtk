@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkConstraintLayout */
-#ifndef Val_GtkConstraintLayout
-#define GtkConstraintLayout_val(val) ((GtkConstraintLayout*)ext_of_val(val))
-#define Val_GtkConstraintLayout(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkConstraintLayout */
-
 
 CAMLexport CAMLprim value ml_gtk_constraint_layout_new(value unit)
 {

@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkPaned */
-#ifndef Val_GtkPaned
-#define GtkPaned_val(val) ((GtkPaned*)ext_of_val(val))
-#define Val_GtkPaned(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkPaned */
-
 
 CAMLexport CAMLprim value ml_gtk_paned_new(value arg1)
 {

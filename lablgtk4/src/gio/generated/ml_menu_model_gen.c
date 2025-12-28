@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GMenuModel */
-#ifndef Val_GMenuModel
-#define GMenuModel_val(val) ((GMenuModel*)ext_of_val(val))
-#define Val_GMenuModel(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GMenuModel */
-
 
 CAMLexport CAMLprim value ml_g_menu_model_iterate_item_links(value self, value arg1)
 {

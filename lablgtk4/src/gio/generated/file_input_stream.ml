@@ -4,6 +4,9 @@
 type t = [`file_input_stream | `input_stream | `object_] Gobject.obj
 
 (* Methods *)
+(** Finishes an asynchronous info query operation. *)
+external query_info_finish : t -> Async_result.t -> (File_info.t, GError.t) result = "ml_g_file_input_stream_query_info_finish"
+
 (** Queries a file input stream the given @attributes. This function blocks
 while querying the stream. For the asynchronous (non-blocking) version
 of this function, see g_file_input_stream_query_info_async(). While the

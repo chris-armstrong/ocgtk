@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkStack */
-#ifndef Val_GtkStack
-#define GtkStack_val(val) ((GtkStack*)ext_of_val(val))
-#define Val_GtkStack(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkStack */
-
 
 CAMLexport CAMLprim value ml_gtk_stack_new(value unit)
 {

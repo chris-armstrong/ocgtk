@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkFrame */
-#ifndef Val_GtkFrame
-#define GtkFrame_val(val) ((GtkFrame*)ext_of_val(val))
-#define Val_GtkFrame(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkFrame */
-
 
 CAMLexport CAMLprim value ml_gtk_frame_new(value arg1)
 {

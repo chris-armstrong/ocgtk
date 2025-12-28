@@ -59,6 +59,8 @@ class subprocess (obj : Subprocess.t) = object (self)
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (Subprocess.wait_check obj cancellable)
 
+  method flags = Subprocess.get_flags obj
+
     method as_subprocess = obj
 end
 

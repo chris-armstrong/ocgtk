@@ -21,16 +21,18 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GConverterOutputStream */
-#ifndef Val_GConverterOutputStream
-#define GConverterOutputStream_val(val) ((GConverterOutputStream*)ext_of_val(val))
-#define Val_GConverterOutputStream(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GConverterOutputStream */
-
 
 CAMLexport CAMLprim value ml_g_converter_output_stream_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
-GConverterOutputStream *obj = g_converter_output_stream_new(GOutputStream_val(arg1), arg2);
+GConverterOutputStream *obj = g_converter_output_stream_new(GOutputStream_val(arg1), GConverter_val(arg2));
 CAMLreturn(Val_GConverterOutputStream(obj));
+}
+
+CAMLexport CAMLprim value ml_g_converter_output_stream_get_converter(value self)
+{
+CAMLparam1(self);
+
+GConverter* result = g_converter_output_stream_get_converter(GConverterOutputStream_val(self));
+CAMLreturn(Val_GConverter(result));
 }

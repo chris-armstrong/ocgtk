@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GApplicationCommandLine */
-#ifndef Val_GApplicationCommandLine
-#define GApplicationCommandLine_val(val) ((GApplicationCommandLine*)ext_of_val(val))
-#define Val_GApplicationCommandLine(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GApplicationCommandLine */
-
 
 CAMLexport CAMLprim value ml_g_application_command_line_set_exit_status(value self, value arg1)
 {
@@ -50,6 +44,14 @@ CAMLparam2(self, arg1);
 
 g_application_command_line_print_literal(GApplicationCommandLine_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_application_command_line_getenv(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+const gchar* result = g_application_command_line_getenv(GApplicationCommandLine_val(self), String_val(arg1));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_g_application_command_line_get_stdin(value self)
@@ -76,10 +78,26 @@ int result = g_application_command_line_get_exit_status(GApplicationCommandLine_
 CAMLreturn(Val_int(result));
 }
 
+CAMLexport CAMLprim value ml_g_application_command_line_get_cwd(value self)
+{
+CAMLparam1(self);
+
+const gchar* result = g_application_command_line_get_cwd(GApplicationCommandLine_val(self));
+CAMLreturn(Val_option(result, caml_copy_string));
+}
+
 CAMLexport CAMLprim value ml_g_application_command_line_done(value self)
 {
 CAMLparam1(self);
 
 g_application_command_line_done(GApplicationCommandLine_val(self));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_application_command_line_create_file_for_arg(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GFile* result = g_application_command_line_create_file_for_arg(GApplicationCommandLine_val(self), String_val(arg1));
+CAMLreturn(Val_GFile(result));
 }

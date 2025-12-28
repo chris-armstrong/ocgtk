@@ -14,6 +14,7 @@ class subprocess : Subprocess.t ->
     method send_signal : int -> unit
     method wait : #GCancellable.cancellable option -> (bool, GError.t) result
     method wait_check : #GCancellable.cancellable option -> (bool, GError.t) result
+    method flags : Gio_enums.subprocessflags
     method as_subprocess : Subprocess.t
   end
 

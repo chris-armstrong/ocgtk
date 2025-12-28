@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GUnixMountMonitor */
-#ifndef Val_GUnixMountMonitor
-#define GUnixMountMonitor_val(val) ((GUnixMountMonitor*)ext_of_val(val))
-#define Val_GUnixMountMonitor(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GUnixMountMonitor */
-
 
 CAMLexport CAMLprim value ml_g_unix_mount_monitor_new(value unit)
 {

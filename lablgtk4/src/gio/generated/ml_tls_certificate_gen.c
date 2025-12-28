@@ -21,12 +21,14 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GTlsCertificate */
-#ifndef Val_GTlsCertificate
-#define GTlsCertificate_val(val) ((GTlsCertificate*)ext_of_val(val))
-#define Val_GTlsCertificate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GTlsCertificate */
 
+CAMLexport CAMLprim value ml_g_tls_certificate_verify(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+GTlsCertificateFlags result = g_tls_certificate_verify(GTlsCertificate_val(self), Option_val(arg1, GSocketConnectable_val, NULL), Option_val(arg2, GTlsCertificate_val, NULL));
+CAMLreturn(Val_GioTlsCertificateFlags(result));
+}
 
 CAMLexport CAMLprim value ml_g_tls_certificate_is_same(value self, value arg1)
 {

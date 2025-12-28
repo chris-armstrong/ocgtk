@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkDrawingArea */
-#ifndef Val_GtkDrawingArea
-#define GtkDrawingArea_val(val) ((GtkDrawingArea*)ext_of_val(val))
-#define Val_GtkDrawingArea(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkDrawingArea */
-
 
 CAMLexport CAMLprim value ml_gtk_drawing_area_new(value unit)
 {

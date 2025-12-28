@@ -9,6 +9,11 @@ class dtls_connection (obj : Dtls_connection.t) = object (self)
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (Dtls_connection.close obj cancellable)
 
+  method emit_accept_certificate : 'p1. (#GTls_certificate.tls_certificate as 'p1) -> Gio_enums.tlscertificateflags -> bool =
+    fun peer_cert errors ->
+      let peer_cert = peer_cert#as_tls_certificate in
+      (Dtls_connection.emit_accept_certificate obj peer_cert errors)
+
   method get_certificate : unit -> GTls_certificate.tls_certificate option =
     fun () ->
       Option.map (fun ret -> new GTls_certificate.tls_certificate ret) (Dtls_connection.get_certificate obj)
@@ -32,6 +37,10 @@ class dtls_connection (obj : Dtls_connection.t) = object (self)
   method get_peer_certificate : unit -> GTls_certificate.tls_certificate option =
     fun () ->
       Option.map (fun ret -> new GTls_certificate.tls_certificate ret) (Dtls_connection.get_peer_certificate obj)
+
+  method get_peer_certificate_errors : unit -> Gio_enums.tlscertificateflags =
+    fun () ->
+      (Dtls_connection.get_peer_certificate_errors obj)
 
   method get_protocol_version : unit -> Gio_enums.tlsprotocolversion =
     fun () ->

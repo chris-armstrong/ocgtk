@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkStringSorter */
-#ifndef Val_GtkStringSorter
-#define GtkStringSorter_val(val) ((GtkStringSorter*)ext_of_val(val))
-#define Val_GtkStringSorter(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkStringSorter */
-
 
 CAMLexport CAMLprim value ml_gtk_string_sorter_new(value arg1)
 {

@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkEntry */
-#ifndef Val_GtkEntry
-#define GtkEntry_val(val) ((GtkEntry*)ext_of_val(val))
-#define Val_GtkEntry(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkEntry */
-
 
 CAMLexport CAMLprim value ml_gtk_entry_new(value unit)
 {

@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkGesture */
-#ifndef Val_GtkGesture
-#define GtkGesture_val(val) ((GtkGesture*)ext_of_val(val))
-#define Val_GtkGesture(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkGesture */
-
 
 CAMLexport CAMLprim value ml_gtk_gesture_ungroup(value self)
 {

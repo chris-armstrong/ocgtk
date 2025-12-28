@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkMultiFilter */
-#ifndef Val_GtkMultiFilter
-#define GtkMultiFilter_val(val) ((GtkMultiFilter*)ext_of_val(val))
-#define Val_GtkMultiFilter(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkMultiFilter */
-
 
 CAMLexport CAMLprim value ml_gtk_multi_filter_remove(value self, value arg1)
 {

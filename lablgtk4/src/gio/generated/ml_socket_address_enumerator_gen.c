@@ -21,12 +21,15 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GSocketAddressEnumerator */
-#ifndef Val_GSocketAddressEnumerator
-#define GSocketAddressEnumerator_val(val) ((GSocketAddressEnumerator*)ext_of_val(val))
-#define Val_GSocketAddressEnumerator(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSocketAddressEnumerator */
 
+CAMLexport CAMLprim value ml_g_socket_address_enumerator_next_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GSocketAddress* result = g_socket_address_enumerator_next_finish(GSocketAddressEnumerator_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_GSocketAddress))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 
 CAMLexport CAMLprim value ml_g_socket_address_enumerator_next(value self, value arg1)
 {

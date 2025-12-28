@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkTextIter */
-#ifndef Val_GtkTextIter
-#define GtkTextIter_val(val) ((GtkTextIter*)ext_of_val(val))
-#define Val_GtkTextIter(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTextIter */
-
 
 CAMLexport CAMLprim value ml_gtk_text_iter_toggles_tag(value self, value arg1)
 {

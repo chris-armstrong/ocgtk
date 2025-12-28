@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkDirectoryList */
-#ifndef Val_GtkDirectoryList
-#define GtkDirectoryList_val(val) ((GtkDirectoryList*)ext_of_val(val))
-#define Val_GtkDirectoryList(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkDirectoryList */
-
 
 CAMLexport CAMLprim value ml_gtk_directory_list_new(value arg1, value arg2)
 {

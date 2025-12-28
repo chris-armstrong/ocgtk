@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkRange */
-#ifndef Val_GtkRange
-#define GtkRange_val(val) ((GtkRange*)ext_of_val(val))
-#define Val_GtkRange(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkRange */
-
 
 CAMLexport CAMLprim value ml_gtk_range_set_value(value self, value arg1)
 {

@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkShortcutsSection */
-#ifndef Val_GtkShortcutsSection
-#define GtkShortcutsSection_val(val) ((GtkShortcutsSection*)ext_of_val(val))
-#define Val_GtkShortcutsSection(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkShortcutsSection */
-
 
 CAMLexport CAMLprim value ml_gtk_shortcuts_section_add_group(value self, value arg1)
 {

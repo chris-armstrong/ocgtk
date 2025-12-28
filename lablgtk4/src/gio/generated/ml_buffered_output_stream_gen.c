@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GBufferedOutputStream */
-#ifndef Val_GBufferedOutputStream
-#define GBufferedOutputStream_val(val) ((GBufferedOutputStream*)ext_of_val(val))
-#define Val_GBufferedOutputStream(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GBufferedOutputStream */
-
 
 CAMLexport CAMLprim value ml_g_buffered_output_stream_new(value arg1)
 {

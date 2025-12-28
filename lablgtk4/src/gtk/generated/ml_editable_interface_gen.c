@@ -16,9 +16,22 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkEditableInterface */
-#ifndef Val_GtkEditableInterface
-#define GtkEditableInterface_val(val) ((GtkEditableInterface*)ext_of_val(val))
-#define Val_GtkEditableInterface(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkEditableInterface */
+/* Conversion functions for GtkEditableInterface (non-opaque record with fields) */
+GtkEditableInterface *GtkEditableInterface_val(value v) {
+  if (Tag_val(v) == Custom_tag) {
+    return *(GtkEditableInterface **)Data_custom_val(v);
+  } else {
+    return (GtkEditableInterface*)ml_gir_record_ptr_val(v, "GtkEditableInterface");
+  }
+}
+
+value Val_GtkEditableInterface(GtkEditableInterface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_alloc((ptr), sizeof(GtkEditableInterface), "GtkEditableInterface", NULL);
+}
+
+value Val_GtkEditableInterface_option(GtkEditableInterface *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkEditableInterface(ptr));
+}
 

@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkMapListModel */
-#ifndef Val_GtkMapListModel
-#define GtkMapListModel_val(val) ((GtkMapListModel*)ext_of_val(val))
-#define Val_GtkMapListModel(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkMapListModel */
-
 
 CAMLexport CAMLprim value ml_gtk_map_list_model_new(value arg1, value arg2, value arg3, value arg4)
 {

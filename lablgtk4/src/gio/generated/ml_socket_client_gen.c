@@ -21,18 +21,20 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GSocketClient */
-#ifndef Val_GSocketClient
-#define GSocketClient_val(val) ((GSocketClient*)ext_of_val(val))
-#define Val_GSocketClient(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSocketClient */
-
 
 CAMLexport CAMLprim value ml_g_socket_client_new(value unit)
 {
 CAMLparam1(unit);
 GSocketClient *obj = g_socket_client_new();
 CAMLreturn(Val_GSocketClient(obj));
+}
+
+CAMLexport CAMLprim value ml_g_socket_client_set_tls_validation_flags(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_socket_client_set_tls_validation_flags(GSocketClient_val(self), GioTlsCertificateFlags_val(arg1));
+CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_g_socket_client_set_tls(value self, value arg1)
@@ -56,6 +58,14 @@ CAMLexport CAMLprim value ml_g_socket_client_set_socket_type(value self, value a
 CAMLparam2(self, arg1);
 
 g_socket_client_set_socket_type(GSocketClient_val(self), GioSocketType_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_socket_client_set_proxy_resolver(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_socket_client_set_proxy_resolver(GSocketClient_val(self), Option_val(arg1, GProxyResolver_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -91,6 +101,14 @@ g_socket_client_set_enable_proxy(GSocketClient_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_socket_client_get_tls_validation_flags(value self)
+{
+CAMLparam1(self);
+
+GTlsCertificateFlags result = g_socket_client_get_tls_validation_flags(GSocketClient_val(self));
+CAMLreturn(Val_GioTlsCertificateFlags(result));
+}
+
 CAMLexport CAMLprim value ml_g_socket_client_get_tls(value self)
 {
 CAMLparam1(self);
@@ -113,6 +131,14 @@ CAMLparam1(self);
 
 GSocketType result = g_socket_client_get_socket_type(GSocketClient_val(self));
 CAMLreturn(Val_GioSocketType(result));
+}
+
+CAMLexport CAMLprim value ml_g_socket_client_get_proxy_resolver(value self)
+{
+CAMLparam1(self);
+
+GProxyResolver* result = g_socket_client_get_proxy_resolver(GSocketClient_val(self));
+CAMLreturn(Val_GProxyResolver(result));
 }
 
 CAMLexport CAMLprim value ml_g_socket_client_get_protocol(value self)
@@ -147,12 +173,57 @@ gboolean result = g_socket_client_get_enable_proxy(GSocketClient_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_g_socket_client_connect_to_uri_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GSocketConnection* result = g_socket_client_connect_to_uri_finish(GSocketClient_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GSocketConnection(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_socket_client_connect_to_service_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GSocketConnection* result = g_socket_client_connect_to_service_finish(GSocketClient_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GSocketConnection(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_g_socket_client_connect_to_service(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
 GError *error = NULL;
 
 GSocketConnection* result = g_socket_client_connect_to_service(GSocketClient_val(self), String_val(arg1), String_val(arg2), Option_val(arg3, GCancellable_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GSocketConnection(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_socket_client_connect_to_host_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GSocketConnection* result = g_socket_client_connect_to_host_finish(GSocketClient_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GSocketConnection(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_socket_client_connect_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GSocketConnection* result = g_socket_client_connect_finish(GSocketClient_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GSocketConnection(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_socket_client_connect(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GError *error = NULL;
+
+GSocketConnection* result = g_socket_client_connect(GSocketClient_val(self), GSocketConnectable_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GSocketConnection(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 

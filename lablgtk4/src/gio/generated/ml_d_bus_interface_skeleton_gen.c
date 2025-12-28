@@ -21,12 +21,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDBusInterfaceSkeleton */
-#ifndef Val_GDBusInterfaceSkeleton
-#define GDBusInterfaceSkeleton_val(val) ((GDBusInterfaceSkeleton*)ext_of_val(val))
-#define Val_GDBusInterfaceSkeleton(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusInterfaceSkeleton */
-
 
 CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_unexport_from_connection(value self, value arg1)
 {
@@ -41,6 +35,14 @@ CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_unexport(value self)
 CAMLparam1(self);
 
 g_dbus_interface_skeleton_unexport(GDBusInterfaceSkeleton_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_set_flags(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_dbus_interface_skeleton_set_flags(GDBusInterfaceSkeleton_val(self), GioDBusInterfaceSkeletonFlags_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -68,6 +70,14 @@ GDBusInterfaceInfo* result = g_dbus_interface_skeleton_get_info(GDBusInterfaceSk
 CAMLreturn(Val_GDBusInterfaceInfo(result));
 }
 
+CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_get_flags(value self)
+{
+CAMLparam1(self);
+
+GDBusInterfaceSkeletonFlags result = g_dbus_interface_skeleton_get_flags(GDBusInterfaceSkeleton_val(self));
+CAMLreturn(Val_GioDBusInterfaceSkeletonFlags(result));
+}
+
 CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_get_connection(value self)
 {
 CAMLparam1(self);
@@ -91,4 +101,37 @@ GError *error = NULL;
 
 gboolean result = g_dbus_interface_skeleton_export(GDBusInterfaceSkeleton_val(self), GDBusConnection_val(arg1), String_val(arg2), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_gtk_d_bus_interface_skeleton_get_g_flags(value self)
+{
+CAMLparam1(self);
+CAMLlocal1(result);
+GDBusInterfaceSkeleton *obj = (GDBusInterfaceSkeleton *)GDBusInterfaceSkeleton_val(self);
+    GDBusInterfaceSkeletonFlags prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "g-flags");
+if (pspec == NULL) caml_failwith("ml_gtk_d_bus_interface_skeleton_get_g_flags: property 'g-flags' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "g-flags", &prop_gvalue);
+    prop_value = (GDBusInterfaceSkeletonFlags)g_value_get_flags(&prop_gvalue);
+
+result = Val_GioDBusInterfaceSkeletonFlags(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_gtk_d_bus_interface_skeleton_set_g_flags(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+GDBusInterfaceSkeleton *obj = (GDBusInterfaceSkeleton *)GDBusInterfaceSkeleton_val(self);
+    GDBusInterfaceSkeletonFlags c_value = GioDBusInterfaceSkeletonFlags_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "g-flags");
+if (pspec == NULL) caml_failwith("ml_gtk_d_bus_interface_skeleton_set_g_flags: property 'g-flags' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+    g_value_set_flags(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "g-flags", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+CAMLreturn(Val_unit);
 }

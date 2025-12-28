@@ -16,12 +16,6 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GtkMediaFile */
-#ifndef Val_GtkMediaFile
-#define GtkMediaFile_val(val) ((GtkMediaFile*)ext_of_val(val))
-#define Val_GtkMediaFile(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkMediaFile */
-
 
 CAMLexport CAMLprim value ml_gtk_media_file_new(value unit)
 {
