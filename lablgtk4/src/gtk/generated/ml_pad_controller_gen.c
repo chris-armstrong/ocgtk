@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_pad_controller_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 GtkPadController *obj = gtk_pad_controller_new(arg1, arg2);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkPadController(obj));
 }
 

@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_overlay_new(value unit)
 {
 CAMLparam1(unit);
 GtkOverlay *obj = gtk_overlay_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkOverlay(obj));
 }
 
@@ -77,6 +78,7 @@ CAMLexport CAMLprim value ml_gtk_overlay_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_overlay_get_child(GtkOverlay_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 

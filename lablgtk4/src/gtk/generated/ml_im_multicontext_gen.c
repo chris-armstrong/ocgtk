@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_im_multicontext_new(value unit)
 {
 CAMLparam1(unit);
 GtkIMMulticontext *obj = gtk_im_multicontext_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkIMMulticontext(obj));
 }
 

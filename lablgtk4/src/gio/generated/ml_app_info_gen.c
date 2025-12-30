@@ -112,6 +112,7 @@ CAMLexport CAMLprim value ml_g_app_info_get_icon(value self)
 CAMLparam1(self);
 
 GIcon* result = g_app_info_get_icon(GAppInfo_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GIcon));
 }
 

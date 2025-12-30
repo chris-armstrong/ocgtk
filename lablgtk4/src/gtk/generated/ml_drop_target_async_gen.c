@@ -21,5 +21,6 @@ CAMLexport CAMLprim value ml_gtk_drop_target_async_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 GtkDropTargetAsync *obj = gtk_drop_target_async_new(arg1, GtkDragAction_val(arg2));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkDropTargetAsync(obj));
 }

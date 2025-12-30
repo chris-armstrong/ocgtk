@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_tcp_wrapper_connection_new(value arg1, value arg2
 {
 CAMLparam2(arg1, arg2);
 GTcpWrapperConnection *obj = g_tcp_wrapper_connection_new(GIOStream_val(arg1), GSocket_val(arg2));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GTcpWrapperConnection(obj));
 }
 
@@ -34,5 +35,6 @@ CAMLexport CAMLprim value ml_g_tcp_wrapper_connection_get_base_io_stream(value s
 CAMLparam1(self);
 
 GIOStream* result = g_tcp_wrapper_connection_get_base_io_stream(GTcpWrapperConnection_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GIOStream(result));
 }

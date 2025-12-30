@@ -22,6 +22,7 @@ CAMLexport CAMLprim value ml_gtk_tree_list_model_new_native(value arg1, value ar
 CAMLparam5(arg1, arg2, arg3, arg4, arg5);
 CAMLxparam1(arg6);
 GtkTreeListModel *obj = gtk_tree_list_model_new(arg1, Bool_val(arg2), Bool_val(arg3), arg4, arg5, arg6);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkTreeListModel(obj));
 }
 

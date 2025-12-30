@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_new(value unit)
 {
 CAMLparam1(unit);
 GtkTreeView *obj = gtk_tree_view_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkTreeView(obj));
 }
 
@@ -28,6 +29,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_new_with_model(value arg1)
 {
 CAMLparam1(arg1);
 GtkTreeView *obj = gtk_tree_view_new_with_model(GtkTreeModel_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkTreeView(obj));
 }
 
@@ -356,6 +358,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_get_selection(value self)
 CAMLparam1(self);
 
 GtkTreeSelection* result = gtk_tree_view_get_selection(GtkTreeView_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkTreeSelection(result));
 }
 
@@ -364,6 +367,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_get_search_entry(value self)
 CAMLparam1(self);
 
 GtkEditable* result = gtk_tree_view_get_search_entry(GtkTreeView_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkEditable));
 }
 
@@ -423,6 +427,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_get_model(value self)
 CAMLparam1(self);
 
 GtkTreeModel* result = gtk_tree_view_get_model(GtkTreeView_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkTreeModel));
 }
 
@@ -487,6 +492,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_get_expander_column(value self)
 CAMLparam1(self);
 
 GtkTreeViewColumn* result = gtk_tree_view_get_expander_column(GtkTreeView_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkTreeViewColumn));
 }
 
@@ -554,6 +560,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_get_column(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkTreeViewColumn* result = gtk_tree_view_get_column(GtkTreeView_val(self), Int_val(arg1));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkTreeViewColumn));
 }
 

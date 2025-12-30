@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_color_button_new(value unit)
 {
 CAMLparam1(unit);
 GtkColorButton *obj = gtk_color_button_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkColorButton(obj));
 }
 
@@ -28,6 +29,7 @@ CAMLexport CAMLprim value ml_gtk_color_button_new_with_rgba(value arg1)
 {
 CAMLparam1(arg1);
 GtkColorButton *obj = gtk_color_button_new_with_rgba(arg1);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkColorButton(obj));
 }
 

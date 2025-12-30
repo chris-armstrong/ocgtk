@@ -70,6 +70,7 @@ CAMLexport CAMLprim value ml_gtk_native_dialog_get_transient_for(value self)
 CAMLparam1(self);
 
 GtkWindow* result = gtk_native_dialog_get_transient_for(GtkNativeDialog_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWindow));
 }
 

@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_window_new(value unit)
 {
 CAMLparam1(unit);
 GtkWindow *obj = gtk_window_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkWindow(obj));
 }
 
@@ -269,6 +270,7 @@ CAMLexport CAMLprim value ml_gtk_window_get_transient_for(value self)
 CAMLparam1(self);
 
 GtkWindow* result = gtk_window_get_transient_for(GtkWindow_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWindow));
 }
 
@@ -277,6 +279,7 @@ CAMLexport CAMLprim value ml_gtk_window_get_titlebar(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_window_get_titlebar(GtkWindow_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -341,6 +344,7 @@ CAMLexport CAMLprim value ml_gtk_window_get_group(value self)
 CAMLparam1(self);
 
 GtkWindowGroup* result = gtk_window_get_group(GtkWindow_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkWindowGroup(result));
 }
 
@@ -357,6 +361,7 @@ CAMLexport CAMLprim value ml_gtk_window_get_focus(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_window_get_focus(GtkWindow_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -381,6 +386,7 @@ CAMLexport CAMLprim value ml_gtk_window_get_default_widget(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_window_get_default_widget(GtkWindow_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -411,6 +417,7 @@ CAMLexport CAMLprim value ml_gtk_window_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_window_get_child(GtkWindow_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -419,6 +426,7 @@ CAMLexport CAMLprim value ml_gtk_window_get_application(value self)
 CAMLparam1(self);
 
 GtkApplication* result = gtk_window_get_application(GtkWindow_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkApplication));
 }
 

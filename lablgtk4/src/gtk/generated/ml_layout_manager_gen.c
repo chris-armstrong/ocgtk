@@ -48,6 +48,7 @@ CAMLexport CAMLprim value ml_gtk_layout_manager_get_widget(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_layout_manager_get_widget(GtkLayoutManager_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -64,6 +65,7 @@ CAMLexport CAMLprim value ml_gtk_layout_manager_get_layout_child(value self, val
 CAMLparam2(self, arg1);
 
 GtkLayoutChild* result = gtk_layout_manager_get_layout_child(GtkLayoutManager_val(self), GtkWidget_val(arg1));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkLayoutChild(result));
 }
 

@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_file_info_new(value unit)
 {
 CAMLparam1(unit);
 GFileInfo *obj = g_file_info_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GFileInfo(obj));
 }
 
@@ -202,6 +203,7 @@ CAMLexport CAMLprim value ml_g_file_info_get_symbolic_icon(value self)
 CAMLparam1(self);
 
 GIcon* result = g_file_info_get_symbolic_icon(GFileInfo_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GIcon));
 }
 
@@ -242,6 +244,7 @@ CAMLexport CAMLprim value ml_g_file_info_get_icon(value self)
 CAMLparam1(self);
 
 GIcon* result = g_file_info_get_icon(GFileInfo_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GIcon));
 }
 

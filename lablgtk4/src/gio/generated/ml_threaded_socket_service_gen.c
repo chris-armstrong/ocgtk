@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_threaded_socket_service_new(value arg1)
 {
 CAMLparam1(arg1);
 GThreadedSocketService *obj = g_threaded_socket_service_new(Int_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GThreadedSocketService(obj));
 }
 

@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_zlib_decompressor_new(value arg1)
 {
 CAMLparam1(arg1);
 GZlibDecompressor *obj = g_zlib_decompressor_new(GioZlibCompressorFormat_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GZlibDecompressor(obj));
 }
 
@@ -34,6 +35,7 @@ CAMLexport CAMLprim value ml_g_zlib_decompressor_get_file_info(value self)
 CAMLparam1(self);
 
 GFileInfo* result = g_zlib_decompressor_get_file_info(GZlibDecompressor_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GFileInfo));
 }
 

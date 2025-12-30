@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_video_new(value unit)
 {
 CAMLparam1(unit);
 GtkVideo *obj = gtk_video_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkVideo(obj));
 }
 
@@ -28,6 +29,7 @@ CAMLexport CAMLprim value ml_gtk_video_new_for_file(value arg1)
 {
 CAMLparam1(arg1);
 GtkVideo *obj = gtk_video_new_for_file(arg1);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkVideo(obj));
 }
 
@@ -35,6 +37,7 @@ CAMLexport CAMLprim value ml_gtk_video_new_for_filename(value arg1)
 {
 CAMLparam1(arg1);
 GtkVideo *obj = gtk_video_new_for_filename(String_option_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkVideo(obj));
 }
 
@@ -42,6 +45,7 @@ CAMLexport CAMLprim value ml_gtk_video_new_for_media_stream(value arg1)
 {
 CAMLparam1(arg1);
 GtkVideo *obj = gtk_video_new_for_media_stream(Option_val(arg1, GtkMediaStream_val, NULL));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkVideo(obj));
 }
 
@@ -49,6 +53,7 @@ CAMLexport CAMLprim value ml_gtk_video_new_for_resource(value arg1)
 {
 CAMLparam1(arg1);
 GtkVideo *obj = gtk_video_new_for_resource(String_option_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkVideo(obj));
 }
 
@@ -105,6 +110,7 @@ CAMLexport CAMLprim value ml_gtk_video_get_media_stream(value self)
 CAMLparam1(self);
 
 GtkMediaStream* result = gtk_video_get_media_stream(GtkVideo_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkMediaStream));
 }
 

@@ -52,6 +52,7 @@ CAMLexport CAMLprim value ml_g_io_stream_get_output_stream(value self)
 CAMLparam1(self);
 
 GOutputStream* result = g_io_stream_get_output_stream(GIOStream_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GOutputStream(result));
 }
 
@@ -60,6 +61,7 @@ CAMLexport CAMLprim value ml_g_io_stream_get_input_stream(value self)
 CAMLparam1(self);
 
 GInputStream* result = g_io_stream_get_input_stream(GIOStream_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GInputStream(result));
 }
 

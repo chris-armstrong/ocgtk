@@ -21,5 +21,6 @@ CAMLexport CAMLprim value ml_gtk_constant_expression_new_for_value(value arg1)
 {
 CAMLparam1(arg1);
 GtkConstantExpression *obj = gtk_constant_expression_new_for_value(arg1);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkConstantExpression(obj));
 }

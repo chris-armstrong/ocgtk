@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_list_store_newv(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 GtkListStore *obj = gtk_list_store_newv(Int_val(arg1), arg2);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkListStore(obj));
 }
 

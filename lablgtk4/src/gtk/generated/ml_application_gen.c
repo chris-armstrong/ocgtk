@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_application_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 GtkApplication *obj = gtk_application_new(String_option_val(arg1), arg2);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkApplication(obj));
 }
 
@@ -53,6 +54,7 @@ CAMLexport CAMLprim value ml_gtk_application_get_window_by_id(value self, value 
 CAMLparam2(self, arg1);
 
 GtkWindow* result = gtk_application_get_window_by_id(GtkApplication_val(self), Int_val(arg1));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWindow));
 }
 
@@ -61,6 +63,7 @@ CAMLexport CAMLprim value ml_gtk_application_get_active_window(value self)
 CAMLparam1(self);
 
 GtkWindow* result = gtk_application_get_active_window(GtkApplication_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWindow));
 }
 

@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_editable_label_new(value arg1)
 {
 CAMLparam1(arg1);
 GtkEditableLabel *obj = gtk_editable_label_new(String_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkEditableLabel(obj));
 }
 

@@ -429,7 +429,7 @@ let parse_gir_file filename filter_classes =
     let property_nullable = get_attr "nullable" attrs |> Utils.parse_bool in
 
     (* Parse property type from child element *)
-    let prop_type = ref { name = "unknown"; c_type = None; nullable = false } in
+    let prop_type = ref { name = "unknown"; c_type = None; nullable = false; transfer_ownership = Types.TransferNone } in
 
     let doc : string option ref = ref None in
 
@@ -446,7 +446,7 @@ let parse_gir_file filename filter_classes =
             get_attr "nullable" type_attrs |> Utils.parse_bool
             || property_nullable
           in
-          prop_type := { name = type_name; c_type = c_type_name; nullable };
+          prop_type := { name = type_name; c_type = c_type_name; nullable; transfer_ownership = Types.TransferNone };
           skip_element 1;
           parse_prop_contents ()
       | `El_start ((_, "doc"), _) ->
@@ -581,7 +581,7 @@ let parse_gir_file filename filter_classes =
   and parse_method tag_attrs =
     let get_property = get_attr "glib:get-property" tag_attrs in
     let set_property = get_attr "glib:set-property" tag_attrs in
-    let return_type = ref { name = "void"; c_type = None; nullable = false } in
+    let return_type = ref { name = "void"; c_type = None; nullable = false; transfer_ownership = Types.TransferNone } in
     let params = ref [] in
     let doc : string option ref = ref None in
     let rec parse_method_contents () =
@@ -612,7 +612,7 @@ let parse_gir_file filename filter_classes =
     match get_attr "name" attrs with
     | Some signal_name ->
         let return_type =
-          ref { name = "void"; c_type = None; nullable = false }
+          ref { name = "void"; c_type = None; nullable = false; transfer_ownership = Types.TransferNone }
         in
         let params = ref [] in
         let doc : string option ref = ref None in
@@ -653,8 +653,16 @@ let parse_gir_file filename filter_classes =
   (* Parse return value type *)
   and parse_return_value attrs =
     let nullable_attr = get_attr "nullable" attrs |> Utils.parse_bool in
+    let transfer_ownership_attr =
+      match get_attr "transfer-ownership" attrs with
+      | Some "none" -> Types.TransferNone
+      | Some "full" -> Types.TransferFull
+      | Some "container" -> Types.TransferContainer
+      | Some "floating" -> Types.TransferFloating
+      | _ -> Types.TransferNone (* default to none if not specified *)
+    in
     let type_info =
-      ref { name = "void"; c_type = None; nullable = nullable_attr }
+      ref { name = "void"; c_type = None; nullable = nullable_attr; transfer_ownership = transfer_ownership_attr }
     in
 
     let rec parse_rv_contents () =
@@ -668,7 +676,7 @@ let parse_gir_file filename filter_classes =
             get_attr "nullable" attrs |> Utils.parse_bool || nullable_attr
           in
           type_info :=
-            ({ name = type_name; c_type = c_type_name; nullable } : gir_type);
+            ({ name = type_name; c_type = c_type_name; nullable; transfer_ownership = transfer_ownership_attr } : gir_type);
           skip_element 1;
           parse_rv_contents ()
       | `El_start _ ->
@@ -701,7 +709,7 @@ let parse_gir_file filename filter_classes =
             | _ -> In
           in
           let varargs = ref false in
-          let type_ = ref { name = "void"; c_type = None; nullable = false } in
+          let type_ = ref { name = "void"; c_type = None; nullable = false; transfer_ownership = Types.TransferNone } in
           let rec parse_param_contents () =
             match Xmlm.input input with
             | `El_start ((_, "varargs"), _attrs) ->
@@ -716,7 +724,7 @@ let parse_gir_file filename filter_classes =
                 in
                 let c_type_name = get_attr "c:type" attrs in
                 let nullable = get_attr "nullable" attrs |> Utils.parse_bool in
-                type_ := { name = type_name; c_type = c_type_name; nullable };
+                type_ := { name = type_name; c_type = c_type_name; nullable; transfer_ownership = Types.TransferNone };
                 skip_element 1;
                 parse_param_contents ()
             | `El_start _ ->
@@ -849,7 +857,7 @@ let parse_gir_file filename filter_classes =
                       get_attr "nullable" type_attrs |> Utils.parse_bool
                     in
                     field_type :=
-                      Some { name = type_name; c_type = c_type_name; nullable };
+                      Some { name = type_name; c_type = c_type_name; nullable; transfer_ownership = Types.TransferNone };
                     skip_element 1;
                     parse_field_contents ()
                 | `El_start _ ->
@@ -1097,7 +1105,7 @@ let parse_gir_file filename filter_classes =
           let signal =
             {
               signal_name;
-              return_type = { name = "none"; c_type = None; nullable = false };
+              return_type = { name = "none"; c_type = None; nullable = false; transfer_ownership = Types.TransferNone };
               sig_parameters = [];
               doc = None;
             }

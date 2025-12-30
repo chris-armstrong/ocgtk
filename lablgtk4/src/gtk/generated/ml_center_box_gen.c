@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_center_box_new(value unit)
 {
 CAMLparam1(unit);
 GtkCenterBox *obj = gtk_center_box_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkCenterBox(obj));
 }
 
@@ -69,6 +70,7 @@ CAMLexport CAMLprim value ml_gtk_center_box_get_start_widget(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_center_box_get_start_widget(GtkCenterBox_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -85,6 +87,7 @@ CAMLexport CAMLprim value ml_gtk_center_box_get_end_widget(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_center_box_get_end_widget(GtkCenterBox_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -93,6 +96,7 @@ CAMLexport CAMLprim value ml_gtk_center_box_get_center_widget(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_center_box_get_center_widget(GtkCenterBox_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 

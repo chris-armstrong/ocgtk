@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_unix_fd_message_new(value unit)
 {
 CAMLparam1(unit);
 GUnixFDMessage *obj = g_unix_fd_message_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GUnixFDMessage(obj));
 }
 
@@ -33,6 +34,7 @@ CAMLexport CAMLprim value ml_g_unix_fd_message_new_with_fd_list(value arg1)
 {
 CAMLparam1(arg1);
 GUnixFDMessage *obj = g_unix_fd_message_new_with_fd_list(GUnixFDList_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GUnixFDMessage(obj));
 }
 
@@ -41,6 +43,7 @@ CAMLexport CAMLprim value ml_g_unix_fd_message_get_fd_list(value self)
 CAMLparam1(self);
 
 GUnixFDList* result = g_unix_fd_message_get_fd_list(GUnixFDMessage_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GUnixFDList(result));
 }
 

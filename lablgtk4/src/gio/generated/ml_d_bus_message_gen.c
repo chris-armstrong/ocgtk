@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_dbus_message_new(value unit)
 {
 CAMLparam1(unit);
 GDBusMessage *obj = g_dbus_message_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GDBusMessage(obj));
 }
 
@@ -33,6 +34,7 @@ CAMLexport CAMLprim value ml_g_dbus_message_new_method_call(value arg1, value ar
 {
 CAMLparam4(arg1, arg2, arg3, arg4);
 GDBusMessage *obj = g_dbus_message_new_method_call(String_option_val(arg1), String_val(arg2), String_option_val(arg3), String_val(arg4));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GDBusMessage(obj));
 }
 
@@ -40,6 +42,7 @@ CAMLexport CAMLprim value ml_g_dbus_message_new_signal(value arg1, value arg2, v
 {
 CAMLparam3(arg1, arg2, arg3);
 GDBusMessage *obj = g_dbus_message_new_signal(String_val(arg1), String_val(arg2), String_val(arg3));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GDBusMessage(obj));
 }
 
@@ -177,6 +180,7 @@ CAMLexport CAMLprim value ml_g_dbus_message_get_unix_fd_list(value self)
 CAMLparam1(self);
 
 GUnixFDList* result = g_dbus_message_get_unix_fd_list(GDBusMessage_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GUnixFDList));
 }
 

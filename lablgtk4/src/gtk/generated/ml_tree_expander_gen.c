@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_tree_expander_new(value unit)
 {
 CAMLparam1(unit);
 GtkTreeExpander *obj = gtk_tree_expander_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkTreeExpander(obj));
 }
 
@@ -69,6 +70,7 @@ CAMLexport CAMLprim value ml_gtk_tree_expander_get_list_row(value self)
 CAMLparam1(self);
 
 GtkTreeListRow* result = gtk_tree_expander_get_list_row(GtkTreeExpander_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkTreeListRow));
 }
 
@@ -101,5 +103,6 @@ CAMLexport CAMLprim value ml_gtk_tree_expander_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_tree_expander_get_child(GtkTreeExpander_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }

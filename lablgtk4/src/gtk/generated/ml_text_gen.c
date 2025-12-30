@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_text_new(value unit)
 {
 CAMLparam1(unit);
 GtkText *obj = gtk_text_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkText(obj));
 }
 
@@ -28,6 +29,7 @@ CAMLexport CAMLprim value ml_gtk_text_new_with_buffer(value arg1)
 {
 CAMLparam1(arg1);
 GtkText *obj = gtk_text_new_with_buffer(GtkEntryBuffer_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkText(obj));
 }
 
@@ -212,6 +214,7 @@ CAMLexport CAMLprim value ml_gtk_text_get_buffer(value self)
 CAMLparam1(self);
 
 GtkEntryBuffer* result = gtk_text_get_buffer(GtkText_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkEntryBuffer(result));
 }
 

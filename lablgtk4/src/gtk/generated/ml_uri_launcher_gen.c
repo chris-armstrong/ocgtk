@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_uri_launcher_new(value arg1)
 {
 CAMLparam1(arg1);
 GtkUriLauncher *obj = gtk_uri_launcher_new(String_option_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkUriLauncher(obj));
 }
 

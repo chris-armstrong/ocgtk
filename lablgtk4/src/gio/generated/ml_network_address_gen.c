@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_network_address_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 GNetworkAddress *obj = g_network_address_new(String_val(arg1), arg2);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GNetworkAddress(obj));
 }
 
@@ -33,6 +34,7 @@ CAMLexport CAMLprim value ml_g_network_address_new_loopback(value arg1)
 {
 CAMLparam1(arg1);
 GNetworkAddress *obj = g_network_address_new_loopback(arg1);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GNetworkAddress(obj));
 }
 

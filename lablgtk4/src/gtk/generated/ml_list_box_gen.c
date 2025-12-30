@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_list_box_new(value unit)
 {
 CAMLparam1(unit);
 GtkListBox *obj = gtk_list_box_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkListBox(obj));
 }
 
@@ -173,6 +174,7 @@ CAMLexport CAMLprim value ml_gtk_list_box_get_selected_row(value self)
 CAMLparam1(self);
 
 GtkListBoxRow* result = gtk_list_box_get_selected_row(GtkListBox_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkListBoxRow));
 }
 
@@ -181,6 +183,7 @@ CAMLexport CAMLprim value ml_gtk_list_box_get_row_at_y(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkListBoxRow* result = gtk_list_box_get_row_at_y(GtkListBox_val(self), Int_val(arg1));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkListBoxRow));
 }
 
@@ -189,6 +192,7 @@ CAMLexport CAMLprim value ml_gtk_list_box_get_row_at_index(value self, value arg
 CAMLparam2(self, arg1);
 
 GtkListBoxRow* result = gtk_list_box_get_row_at_index(GtkListBox_val(self), Int_val(arg1));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkListBoxRow));
 }
 
@@ -197,6 +201,7 @@ CAMLexport CAMLprim value ml_gtk_list_box_get_adjustment(value self)
 CAMLparam1(self);
 
 GtkAdjustment* result = gtk_list_box_get_adjustment(GtkListBox_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkAdjustment));
 }
 

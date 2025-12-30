@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_no_selection_new(value arg1)
 {
 CAMLparam1(arg1);
 GtkNoSelection *obj = gtk_no_selection_new(arg1);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkNoSelection(obj));
 }
 

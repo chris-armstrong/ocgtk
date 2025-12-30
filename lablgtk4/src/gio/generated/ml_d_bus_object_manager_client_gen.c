@@ -51,6 +51,7 @@ CAMLexport CAMLprim value ml_g_dbus_object_manager_client_get_connection(value s
 CAMLparam1(self);
 
 GDBusConnection* result = g_dbus_object_manager_client_get_connection(GDBusObjectManagerClient_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GDBusConnection(result));
 }
 

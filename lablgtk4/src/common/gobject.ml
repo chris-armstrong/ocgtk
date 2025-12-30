@@ -40,6 +40,11 @@ external unsafe_cast : 'a obj -> 'b obj = "%identity"
 external coerce : 'a obj -> unit obj = "%identity"
 external get_ref_count : 'a obj -> int = "ml_g_object_get_ref_count"
 
+(** {2 Test Helpers} *)
+
+external is_custom_block : 'a obj -> bool = "ml_g_object_is_custom_block"
+external is_gobject : 'a obj -> bool = "ml_g_object_is_gobject"
+
 (** {2 Type System} *)
 
 module Type = struct

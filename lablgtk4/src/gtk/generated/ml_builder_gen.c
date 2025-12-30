@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_builder_new(value unit)
 {
 CAMLparam1(unit);
 GtkBuilder *obj = gtk_builder_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkBuilder(obj));
 }
 
@@ -28,6 +29,7 @@ CAMLexport CAMLprim value ml_gtk_builder_new_from_file(value arg1)
 {
 CAMLparam1(arg1);
 GtkBuilder *obj = gtk_builder_new_from_file(String_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkBuilder(obj));
 }
 
@@ -35,6 +37,7 @@ CAMLexport CAMLprim value ml_gtk_builder_new_from_resource(value arg1)
 {
 CAMLparam1(arg1);
 GtkBuilder *obj = gtk_builder_new_from_resource(String_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkBuilder(obj));
 }
 
@@ -42,6 +45,7 @@ CAMLexport CAMLprim value ml_gtk_builder_new_from_string(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 GtkBuilder *obj = gtk_builder_new_from_string(String_val(arg1), arg2);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkBuilder(obj));
 }
 
@@ -74,6 +78,7 @@ CAMLexport CAMLprim value ml_gtk_builder_get_scope(value self)
 CAMLparam1(self);
 
 GtkBuilderScope* result = gtk_builder_get_scope(GtkBuilder_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkBuilderScope(result));
 }
 

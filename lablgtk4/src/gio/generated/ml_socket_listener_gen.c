@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_socket_listener_new(value unit)
 {
 CAMLparam1(unit);
 GSocketListener *obj = g_socket_listener_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GSocketListener(obj));
 }
 

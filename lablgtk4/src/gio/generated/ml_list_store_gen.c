@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_list_store_new(value arg1)
 {
 CAMLparam1(arg1);
 GListStore *obj = g_list_store_new(arg1);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GListStore(obj));
 }
 

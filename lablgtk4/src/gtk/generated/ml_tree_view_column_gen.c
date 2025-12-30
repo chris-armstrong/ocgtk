@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_new(value unit)
 {
 CAMLparam1(unit);
 GtkTreeViewColumn *obj = gtk_tree_view_column_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkTreeViewColumn(obj));
 }
 
@@ -28,6 +29,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_new_with_area(value arg1)
 {
 CAMLparam1(arg1);
 GtkTreeViewColumn *obj = gtk_tree_view_column_new_with_area(GtkCellArea_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkTreeViewColumn(obj));
 }
 
@@ -204,6 +206,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_get_widget(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_tree_view_column_get_widget(GtkTreeViewColumn_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -220,6 +223,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_get_tree_view(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_tree_view_column_get_tree_view(GtkTreeViewColumn_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -332,6 +336,7 @@ CAMLexport CAMLprim value ml_gtk_tree_view_column_get_button(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_tree_view_column_get_button(GtkTreeViewColumn_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkWidget(result));
 }
 

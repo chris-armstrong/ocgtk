@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_simple_async_result_new(value arg1, value arg2, v
 {
 CAMLparam4(arg1, arg2, arg3, arg4);
 GSimpleAsyncResult *obj = g_simple_async_result_new(arg1, arg2, arg3, arg4);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GSimpleAsyncResult(obj));
 }
 
@@ -33,6 +34,7 @@ CAMLexport CAMLprim value ml_g_simple_async_result_new_from_error(value arg1, va
 {
 CAMLparam4(arg1, arg2, arg3, arg4);
 GSimpleAsyncResult *obj = g_simple_async_result_new_from_error(arg1, arg2, arg3, arg4);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GSimpleAsyncResult(obj));
 }
 
@@ -40,6 +42,7 @@ CAMLexport CAMLprim value ml_g_simple_async_result_new_take_error(value arg1, va
 {
 CAMLparam4(arg1, arg2, arg3, arg4);
 GSimpleAsyncResult *obj = g_simple_async_result_new_take_error(arg1, arg2, arg3, arg4);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GSimpleAsyncResult(obj));
 }
 

@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_themed_icon_new(value arg1)
 {
 CAMLparam1(arg1);
 GThemedIcon *obj = g_themed_icon_new(String_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GThemedIcon(obj));
 }
 
@@ -33,6 +34,7 @@ CAMLexport CAMLprim value ml_g_themed_icon_new_from_names(value arg1, value arg2
 {
 CAMLparam2(arg1, arg2);
 GThemedIcon *obj = g_themed_icon_new_from_names(arg1, Int_val(arg2));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GThemedIcon(obj));
 }
 
@@ -40,6 +42,7 @@ CAMLexport CAMLprim value ml_g_themed_icon_new_with_default_fallbacks(value arg1
 {
 CAMLparam1(arg1);
 GThemedIcon *obj = g_themed_icon_new_with_default_fallbacks(String_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GThemedIcon(obj));
 }
 

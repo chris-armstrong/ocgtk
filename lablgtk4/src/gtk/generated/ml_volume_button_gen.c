@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_volume_button_new(value unit)
 {
 CAMLparam1(unit);
 GtkVolumeButton *obj = gtk_volume_button_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkVolumeButton(obj));
 }
 

@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_window_controls_new(value arg1)
 {
 CAMLparam1(arg1);
 GtkWindowControls *obj = gtk_window_controls_new(GtkPackType_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkWindowControls(obj));
 }
 

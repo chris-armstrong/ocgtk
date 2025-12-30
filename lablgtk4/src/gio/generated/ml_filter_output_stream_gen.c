@@ -43,5 +43,6 @@ CAMLexport CAMLprim value ml_g_filter_output_stream_get_base_stream(value self)
 CAMLparam1(self);
 
 GOutputStream* result = g_filter_output_stream_get_base_stream(GFilterOutputStream_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GOutputStream(result));
 }

@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_text_buffer_new(value arg1)
 {
 CAMLparam1(arg1);
 GtkTextBuffer *obj = gtk_text_buffer_new(Option_val(arg1, GtkTextTagTable_val, NULL));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkTextBuffer(obj));
 }
 
@@ -205,6 +206,7 @@ CAMLexport CAMLprim value ml_gtk_text_buffer_get_tag_table(value self)
 CAMLparam1(self);
 
 GtkTextTagTable* result = gtk_text_buffer_get_tag_table(GtkTextBuffer_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkTextTagTable(result));
 }
 
@@ -245,6 +247,7 @@ CAMLexport CAMLprim value ml_gtk_text_buffer_get_selection_bound(value self)
 CAMLparam1(self);
 
 GtkTextMark* result = gtk_text_buffer_get_selection_bound(GtkTextBuffer_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkTextMark(result));
 }
 
@@ -269,6 +272,7 @@ CAMLexport CAMLprim value ml_gtk_text_buffer_get_mark(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkTextMark* result = gtk_text_buffer_get_mark(GtkTextBuffer_val(self), String_val(arg1));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkTextMark));
 }
 
@@ -351,6 +355,7 @@ CAMLexport CAMLprim value ml_gtk_text_buffer_get_insert(value self)
 CAMLparam1(self);
 
 GtkTextMark* result = gtk_text_buffer_get_insert(GtkTextBuffer_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkTextMark(result));
 }
 
@@ -478,6 +483,7 @@ CAMLexport CAMLprim value ml_gtk_text_buffer_create_mark(value self, value arg1,
 CAMLparam4(self, arg1, arg2, arg3);
 
 GtkTextMark* result = gtk_text_buffer_create_mark(GtkTextBuffer_val(self), String_option_val(arg1), GtkTextIter_val(arg2), Bool_val(arg3));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkTextMark(result));
 }
 
@@ -486,6 +492,7 @@ CAMLexport CAMLprim value ml_gtk_text_buffer_create_child_anchor(value self, val
 CAMLparam2(self, arg1);
 
 GtkTextChildAnchor* result = gtk_text_buffer_create_child_anchor(GtkTextBuffer_val(self), GtkTextIter_val(arg1));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkTextChildAnchor(result));
 }
 

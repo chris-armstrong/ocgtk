@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_gesture_swipe_new(value unit)
 {
 CAMLparam1(unit);
 GtkGestureSwipe *obj = gtk_gesture_swipe_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkGestureSwipe(obj));
 }
 

@@ -9,744 +9,744 @@
 
 /* Class-specific conversion macros (shared) */
 #ifndef Val_GAppInfoMonitor
-#define GAppInfoMonitor_val(val) ((GAppInfoMonitor*)ext_of_val(val))
-#define Val_GAppInfoMonitor(obj) ((value)(val_of_ext(obj)))
+#define GAppInfoMonitor_val(val) ((GAppInfoMonitor*)ml_gobject_ext_of_val(val))
+#define Val_GAppInfoMonitor(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GAppInfoMonitor */
 
 #ifndef Val_GAppLaunchContext
-#define GAppLaunchContext_val(val) ((GAppLaunchContext*)ext_of_val(val))
-#define Val_GAppLaunchContext(obj) ((value)(val_of_ext(obj)))
+#define GAppLaunchContext_val(val) ((GAppLaunchContext*)ml_gobject_ext_of_val(val))
+#define Val_GAppLaunchContext(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GAppLaunchContext */
 
 #ifndef Val_GApplication
-#define GApplication_val(val) ((GApplication*)ext_of_val(val))
-#define Val_GApplication(obj) ((value)(val_of_ext(obj)))
+#define GApplication_val(val) ((GApplication*)ml_gobject_ext_of_val(val))
+#define Val_GApplication(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GApplication */
 
 #ifndef Val_GApplicationCommandLine
-#define GApplicationCommandLine_val(val) ((GApplicationCommandLine*)ext_of_val(val))
-#define Val_GApplicationCommandLine(obj) ((value)(val_of_ext(obj)))
+#define GApplicationCommandLine_val(val) ((GApplicationCommandLine*)ml_gobject_ext_of_val(val))
+#define Val_GApplicationCommandLine(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GApplicationCommandLine */
 
 #ifndef Val_GBufferedInputStream
-#define GBufferedInputStream_val(val) ((GBufferedInputStream*)ext_of_val(val))
-#define Val_GBufferedInputStream(obj) ((value)(val_of_ext(obj)))
+#define GBufferedInputStream_val(val) ((GBufferedInputStream*)ml_gobject_ext_of_val(val))
+#define Val_GBufferedInputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GBufferedInputStream */
 
 #ifndef Val_GBufferedOutputStream
-#define GBufferedOutputStream_val(val) ((GBufferedOutputStream*)ext_of_val(val))
-#define Val_GBufferedOutputStream(obj) ((value)(val_of_ext(obj)))
+#define GBufferedOutputStream_val(val) ((GBufferedOutputStream*)ml_gobject_ext_of_val(val))
+#define Val_GBufferedOutputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GBufferedOutputStream */
 
 #ifndef Val_GBytesIcon
-#define GBytesIcon_val(val) ((GBytesIcon*)ext_of_val(val))
-#define Val_GBytesIcon(obj) ((value)(val_of_ext(obj)))
+#define GBytesIcon_val(val) ((GBytesIcon*)ml_gobject_ext_of_val(val))
+#define Val_GBytesIcon(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GBytesIcon */
 
 #ifndef Val_GCancellable
-#define GCancellable_val(val) ((GCancellable*)ext_of_val(val))
-#define Val_GCancellable(obj) ((value)(val_of_ext(obj)))
+#define GCancellable_val(val) ((GCancellable*)ml_gobject_ext_of_val(val))
+#define Val_GCancellable(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GCancellable */
 
 #ifndef Val_GCharsetConverter
-#define GCharsetConverter_val(val) ((GCharsetConverter*)ext_of_val(val))
-#define Val_GCharsetConverter(obj) ((value)(val_of_ext(obj)))
+#define GCharsetConverter_val(val) ((GCharsetConverter*)ml_gobject_ext_of_val(val))
+#define Val_GCharsetConverter(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GCharsetConverter */
 
 #ifndef Val_GConverterInputStream
-#define GConverterInputStream_val(val) ((GConverterInputStream*)ext_of_val(val))
-#define Val_GConverterInputStream(obj) ((value)(val_of_ext(obj)))
+#define GConverterInputStream_val(val) ((GConverterInputStream*)ml_gobject_ext_of_val(val))
+#define Val_GConverterInputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GConverterInputStream */
 
 #ifndef Val_GConverterOutputStream
-#define GConverterOutputStream_val(val) ((GConverterOutputStream*)ext_of_val(val))
-#define Val_GConverterOutputStream(obj) ((value)(val_of_ext(obj)))
+#define GConverterOutputStream_val(val) ((GConverterOutputStream*)ml_gobject_ext_of_val(val))
+#define Val_GConverterOutputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GConverterOutputStream */
 
 #ifndef Val_GCredentials
-#define GCredentials_val(val) ((GCredentials*)ext_of_val(val))
-#define Val_GCredentials(obj) ((value)(val_of_ext(obj)))
+#define GCredentials_val(val) ((GCredentials*)ml_gobject_ext_of_val(val))
+#define Val_GCredentials(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GCredentials */
 
 #ifndef Val_GDBusActionGroup
-#define GDBusActionGroup_val(val) ((GDBusActionGroup*)ext_of_val(val))
-#define Val_GDBusActionGroup(obj) ((value)(val_of_ext(obj)))
+#define GDBusActionGroup_val(val) ((GDBusActionGroup*)ml_gobject_ext_of_val(val))
+#define Val_GDBusActionGroup(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusActionGroup */
 
 #ifndef Val_GDBusAuthObserver
-#define GDBusAuthObserver_val(val) ((GDBusAuthObserver*)ext_of_val(val))
-#define Val_GDBusAuthObserver(obj) ((value)(val_of_ext(obj)))
+#define GDBusAuthObserver_val(val) ((GDBusAuthObserver*)ml_gobject_ext_of_val(val))
+#define Val_GDBusAuthObserver(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusAuthObserver */
 
 #ifndef Val_GDBusConnection
-#define GDBusConnection_val(val) ((GDBusConnection*)ext_of_val(val))
-#define Val_GDBusConnection(obj) ((value)(val_of_ext(obj)))
+#define GDBusConnection_val(val) ((GDBusConnection*)ml_gobject_ext_of_val(val))
+#define Val_GDBusConnection(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusConnection */
 
 #ifndef Val_GDBusInterfaceSkeleton
-#define GDBusInterfaceSkeleton_val(val) ((GDBusInterfaceSkeleton*)ext_of_val(val))
-#define Val_GDBusInterfaceSkeleton(obj) ((value)(val_of_ext(obj)))
+#define GDBusInterfaceSkeleton_val(val) ((GDBusInterfaceSkeleton*)ml_gobject_ext_of_val(val))
+#define Val_GDBusInterfaceSkeleton(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusInterfaceSkeleton */
 
 #ifndef Val_GDBusMenuModel
-#define GDBusMenuModel_val(val) ((GDBusMenuModel*)ext_of_val(val))
-#define Val_GDBusMenuModel(obj) ((value)(val_of_ext(obj)))
+#define GDBusMenuModel_val(val) ((GDBusMenuModel*)ml_gobject_ext_of_val(val))
+#define Val_GDBusMenuModel(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusMenuModel */
 
 #ifndef Val_GDBusMessage
-#define GDBusMessage_val(val) ((GDBusMessage*)ext_of_val(val))
-#define Val_GDBusMessage(obj) ((value)(val_of_ext(obj)))
+#define GDBusMessage_val(val) ((GDBusMessage*)ml_gobject_ext_of_val(val))
+#define Val_GDBusMessage(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusMessage */
 
 #ifndef Val_GDBusMethodInvocation
-#define GDBusMethodInvocation_val(val) ((GDBusMethodInvocation*)ext_of_val(val))
-#define Val_GDBusMethodInvocation(obj) ((value)(val_of_ext(obj)))
+#define GDBusMethodInvocation_val(val) ((GDBusMethodInvocation*)ml_gobject_ext_of_val(val))
+#define Val_GDBusMethodInvocation(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusMethodInvocation */
 
 #ifndef Val_GDBusObjectManagerClient
-#define GDBusObjectManagerClient_val(val) ((GDBusObjectManagerClient*)ext_of_val(val))
-#define Val_GDBusObjectManagerClient(obj) ((value)(val_of_ext(obj)))
+#define GDBusObjectManagerClient_val(val) ((GDBusObjectManagerClient*)ml_gobject_ext_of_val(val))
+#define Val_GDBusObjectManagerClient(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusObjectManagerClient */
 
 #ifndef Val_GDBusObjectManagerServer
-#define GDBusObjectManagerServer_val(val) ((GDBusObjectManagerServer*)ext_of_val(val))
-#define Val_GDBusObjectManagerServer(obj) ((value)(val_of_ext(obj)))
+#define GDBusObjectManagerServer_val(val) ((GDBusObjectManagerServer*)ml_gobject_ext_of_val(val))
+#define Val_GDBusObjectManagerServer(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusObjectManagerServer */
 
 #ifndef Val_GDBusObjectProxy
-#define GDBusObjectProxy_val(val) ((GDBusObjectProxy*)ext_of_val(val))
-#define Val_GDBusObjectProxy(obj) ((value)(val_of_ext(obj)))
+#define GDBusObjectProxy_val(val) ((GDBusObjectProxy*)ml_gobject_ext_of_val(val))
+#define Val_GDBusObjectProxy(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusObjectProxy */
 
 #ifndef Val_GDBusObjectSkeleton
-#define GDBusObjectSkeleton_val(val) ((GDBusObjectSkeleton*)ext_of_val(val))
-#define Val_GDBusObjectSkeleton(obj) ((value)(val_of_ext(obj)))
+#define GDBusObjectSkeleton_val(val) ((GDBusObjectSkeleton*)ml_gobject_ext_of_val(val))
+#define Val_GDBusObjectSkeleton(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusObjectSkeleton */
 
 #ifndef Val_GDBusProxy
-#define GDBusProxy_val(val) ((GDBusProxy*)ext_of_val(val))
-#define Val_GDBusProxy(obj) ((value)(val_of_ext(obj)))
+#define GDBusProxy_val(val) ((GDBusProxy*)ml_gobject_ext_of_val(val))
+#define Val_GDBusProxy(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusProxy */
 
 #ifndef Val_GDBusServer
-#define GDBusServer_val(val) ((GDBusServer*)ext_of_val(val))
-#define Val_GDBusServer(obj) ((value)(val_of_ext(obj)))
+#define GDBusServer_val(val) ((GDBusServer*)ml_gobject_ext_of_val(val))
+#define Val_GDBusServer(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusServer */
 
 #ifndef Val_GDataInputStream
-#define GDataInputStream_val(val) ((GDataInputStream*)ext_of_val(val))
-#define Val_GDataInputStream(obj) ((value)(val_of_ext(obj)))
+#define GDataInputStream_val(val) ((GDataInputStream*)ml_gobject_ext_of_val(val))
+#define Val_GDataInputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDataInputStream */
 
 #ifndef Val_GDataOutputStream
-#define GDataOutputStream_val(val) ((GDataOutputStream*)ext_of_val(val))
-#define Val_GDataOutputStream(obj) ((value)(val_of_ext(obj)))
+#define GDataOutputStream_val(val) ((GDataOutputStream*)ml_gobject_ext_of_val(val))
+#define Val_GDataOutputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDataOutputStream */
 
 #ifndef Val_GDebugControllerDBus
-#define GDebugControllerDBus_val(val) ((GDebugControllerDBus*)ext_of_val(val))
-#define Val_GDebugControllerDBus(obj) ((value)(val_of_ext(obj)))
+#define GDebugControllerDBus_val(val) ((GDebugControllerDBus*)ml_gobject_ext_of_val(val))
+#define Val_GDebugControllerDBus(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDebugControllerDBus */
 
 #ifndef Val_GDesktopAppInfo
-#define GDesktopAppInfo_val(val) ((GDesktopAppInfo*)ext_of_val(val))
-#define Val_GDesktopAppInfo(obj) ((value)(val_of_ext(obj)))
+#define GDesktopAppInfo_val(val) ((GDesktopAppInfo*)ml_gobject_ext_of_val(val))
+#define Val_GDesktopAppInfo(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDesktopAppInfo */
 
 #ifndef Val_GEmblem
-#define GEmblem_val(val) ((GEmblem*)ext_of_val(val))
-#define Val_GEmblem(obj) ((value)(val_of_ext(obj)))
+#define GEmblem_val(val) ((GEmblem*)ml_gobject_ext_of_val(val))
+#define Val_GEmblem(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GEmblem */
 
 #ifndef Val_GEmblemedIcon
-#define GEmblemedIcon_val(val) ((GEmblemedIcon*)ext_of_val(val))
-#define Val_GEmblemedIcon(obj) ((value)(val_of_ext(obj)))
+#define GEmblemedIcon_val(val) ((GEmblemedIcon*)ml_gobject_ext_of_val(val))
+#define Val_GEmblemedIcon(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GEmblemedIcon */
 
 #ifndef Val_GFileEnumerator
-#define GFileEnumerator_val(val) ((GFileEnumerator*)ext_of_val(val))
-#define Val_GFileEnumerator(obj) ((value)(val_of_ext(obj)))
+#define GFileEnumerator_val(val) ((GFileEnumerator*)ml_gobject_ext_of_val(val))
+#define Val_GFileEnumerator(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GFileEnumerator */
 
 #ifndef Val_GFileIOStream
-#define GFileIOStream_val(val) ((GFileIOStream*)ext_of_val(val))
-#define Val_GFileIOStream(obj) ((value)(val_of_ext(obj)))
+#define GFileIOStream_val(val) ((GFileIOStream*)ml_gobject_ext_of_val(val))
+#define Val_GFileIOStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GFileIOStream */
 
 #ifndef Val_GFileIcon
-#define GFileIcon_val(val) ((GFileIcon*)ext_of_val(val))
-#define Val_GFileIcon(obj) ((value)(val_of_ext(obj)))
+#define GFileIcon_val(val) ((GFileIcon*)ml_gobject_ext_of_val(val))
+#define Val_GFileIcon(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GFileIcon */
 
 #ifndef Val_GFileInfo
-#define GFileInfo_val(val) ((GFileInfo*)ext_of_val(val))
-#define Val_GFileInfo(obj) ((value)(val_of_ext(obj)))
+#define GFileInfo_val(val) ((GFileInfo*)ml_gobject_ext_of_val(val))
+#define Val_GFileInfo(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GFileInfo */
 
 #ifndef Val_GFileInputStream
-#define GFileInputStream_val(val) ((GFileInputStream*)ext_of_val(val))
-#define Val_GFileInputStream(obj) ((value)(val_of_ext(obj)))
+#define GFileInputStream_val(val) ((GFileInputStream*)ml_gobject_ext_of_val(val))
+#define Val_GFileInputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GFileInputStream */
 
 #ifndef Val_GFileMonitor
-#define GFileMonitor_val(val) ((GFileMonitor*)ext_of_val(val))
-#define Val_GFileMonitor(obj) ((value)(val_of_ext(obj)))
+#define GFileMonitor_val(val) ((GFileMonitor*)ml_gobject_ext_of_val(val))
+#define Val_GFileMonitor(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GFileMonitor */
 
 #ifndef Val_GFileOutputStream
-#define GFileOutputStream_val(val) ((GFileOutputStream*)ext_of_val(val))
-#define Val_GFileOutputStream(obj) ((value)(val_of_ext(obj)))
+#define GFileOutputStream_val(val) ((GFileOutputStream*)ml_gobject_ext_of_val(val))
+#define Val_GFileOutputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GFileOutputStream */
 
 #ifndef Val_GFilenameCompleter
-#define GFilenameCompleter_val(val) ((GFilenameCompleter*)ext_of_val(val))
-#define Val_GFilenameCompleter(obj) ((value)(val_of_ext(obj)))
+#define GFilenameCompleter_val(val) ((GFilenameCompleter*)ml_gobject_ext_of_val(val))
+#define Val_GFilenameCompleter(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GFilenameCompleter */
 
 #ifndef Val_GFilterInputStream
-#define GFilterInputStream_val(val) ((GFilterInputStream*)ext_of_val(val))
-#define Val_GFilterInputStream(obj) ((value)(val_of_ext(obj)))
+#define GFilterInputStream_val(val) ((GFilterInputStream*)ml_gobject_ext_of_val(val))
+#define Val_GFilterInputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GFilterInputStream */
 
 #ifndef Val_GFilterOutputStream
-#define GFilterOutputStream_val(val) ((GFilterOutputStream*)ext_of_val(val))
-#define Val_GFilterOutputStream(obj) ((value)(val_of_ext(obj)))
+#define GFilterOutputStream_val(val) ((GFilterOutputStream*)ml_gobject_ext_of_val(val))
+#define Val_GFilterOutputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GFilterOutputStream */
 
 #ifndef Val_GIOModule
-#define GIOModule_val(val) ((GIOModule*)ext_of_val(val))
-#define Val_GIOModule(obj) ((value)(val_of_ext(obj)))
+#define GIOModule_val(val) ((GIOModule*)ml_gobject_ext_of_val(val))
+#define Val_GIOModule(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GIOModule */
 
 #ifndef Val_GIOStream
-#define GIOStream_val(val) ((GIOStream*)ext_of_val(val))
-#define Val_GIOStream(obj) ((value)(val_of_ext(obj)))
+#define GIOStream_val(val) ((GIOStream*)ml_gobject_ext_of_val(val))
+#define Val_GIOStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GIOStream */
 
 #ifndef Val_GInetAddress
-#define GInetAddress_val(val) ((GInetAddress*)ext_of_val(val))
-#define Val_GInetAddress(obj) ((value)(val_of_ext(obj)))
+#define GInetAddress_val(val) ((GInetAddress*)ml_gobject_ext_of_val(val))
+#define Val_GInetAddress(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GInetAddress */
 
 #ifndef Val_GInetAddressMask
-#define GInetAddressMask_val(val) ((GInetAddressMask*)ext_of_val(val))
-#define Val_GInetAddressMask(obj) ((value)(val_of_ext(obj)))
+#define GInetAddressMask_val(val) ((GInetAddressMask*)ml_gobject_ext_of_val(val))
+#define Val_GInetAddressMask(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GInetAddressMask */
 
 #ifndef Val_GInetSocketAddress
-#define GInetSocketAddress_val(val) ((GInetSocketAddress*)ext_of_val(val))
-#define Val_GInetSocketAddress(obj) ((value)(val_of_ext(obj)))
+#define GInetSocketAddress_val(val) ((GInetSocketAddress*)ml_gobject_ext_of_val(val))
+#define Val_GInetSocketAddress(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GInetSocketAddress */
 
 #ifndef Val_GInputStream
-#define GInputStream_val(val) ((GInputStream*)ext_of_val(val))
-#define Val_GInputStream(obj) ((value)(val_of_ext(obj)))
+#define GInputStream_val(val) ((GInputStream*)ml_gobject_ext_of_val(val))
+#define Val_GInputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GInputStream */
 
 #ifndef Val_GListStore
-#define GListStore_val(val) ((GListStore*)ext_of_val(val))
-#define Val_GListStore(obj) ((value)(val_of_ext(obj)))
+#define GListStore_val(val) ((GListStore*)ml_gobject_ext_of_val(val))
+#define Val_GListStore(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GListStore */
 
 #ifndef Val_GMemoryInputStream
-#define GMemoryInputStream_val(val) ((GMemoryInputStream*)ext_of_val(val))
-#define Val_GMemoryInputStream(obj) ((value)(val_of_ext(obj)))
+#define GMemoryInputStream_val(val) ((GMemoryInputStream*)ml_gobject_ext_of_val(val))
+#define Val_GMemoryInputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GMemoryInputStream */
 
 #ifndef Val_GMemoryOutputStream
-#define GMemoryOutputStream_val(val) ((GMemoryOutputStream*)ext_of_val(val))
-#define Val_GMemoryOutputStream(obj) ((value)(val_of_ext(obj)))
+#define GMemoryOutputStream_val(val) ((GMemoryOutputStream*)ml_gobject_ext_of_val(val))
+#define Val_GMemoryOutputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GMemoryOutputStream */
 
 #ifndef Val_GMenu
-#define GMenu_val(val) ((GMenu*)ext_of_val(val))
-#define Val_GMenu(obj) ((value)(val_of_ext(obj)))
+#define GMenu_val(val) ((GMenu*)ml_gobject_ext_of_val(val))
+#define Val_GMenu(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GMenu */
 
 #ifndef Val_GMenuAttributeIter
-#define GMenuAttributeIter_val(val) ((GMenuAttributeIter*)ext_of_val(val))
-#define Val_GMenuAttributeIter(obj) ((value)(val_of_ext(obj)))
+#define GMenuAttributeIter_val(val) ((GMenuAttributeIter*)ml_gobject_ext_of_val(val))
+#define Val_GMenuAttributeIter(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GMenuAttributeIter */
 
 #ifndef Val_GMenuItem
-#define GMenuItem_val(val) ((GMenuItem*)ext_of_val(val))
-#define Val_GMenuItem(obj) ((value)(val_of_ext(obj)))
+#define GMenuItem_val(val) ((GMenuItem*)ml_gobject_ext_of_val(val))
+#define Val_GMenuItem(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GMenuItem */
 
 #ifndef Val_GMenuLinkIter
-#define GMenuLinkIter_val(val) ((GMenuLinkIter*)ext_of_val(val))
-#define Val_GMenuLinkIter(obj) ((value)(val_of_ext(obj)))
+#define GMenuLinkIter_val(val) ((GMenuLinkIter*)ml_gobject_ext_of_val(val))
+#define Val_GMenuLinkIter(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GMenuLinkIter */
 
 #ifndef Val_GMenuModel
-#define GMenuModel_val(val) ((GMenuModel*)ext_of_val(val))
-#define Val_GMenuModel(obj) ((value)(val_of_ext(obj)))
+#define GMenuModel_val(val) ((GMenuModel*)ml_gobject_ext_of_val(val))
+#define Val_GMenuModel(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GMenuModel */
 
 #ifndef Val_GMountOperation
-#define GMountOperation_val(val) ((GMountOperation*)ext_of_val(val))
-#define Val_GMountOperation(obj) ((value)(val_of_ext(obj)))
+#define GMountOperation_val(val) ((GMountOperation*)ml_gobject_ext_of_val(val))
+#define Val_GMountOperation(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GMountOperation */
 
 #ifndef Val_GNativeSocketAddress
-#define GNativeSocketAddress_val(val) ((GNativeSocketAddress*)ext_of_val(val))
-#define Val_GNativeSocketAddress(obj) ((value)(val_of_ext(obj)))
+#define GNativeSocketAddress_val(val) ((GNativeSocketAddress*)ml_gobject_ext_of_val(val))
+#define Val_GNativeSocketAddress(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GNativeSocketAddress */
 
 #ifndef Val_GNativeVolumeMonitor
-#define GNativeVolumeMonitor_val(val) ((GNativeVolumeMonitor*)ext_of_val(val))
-#define Val_GNativeVolumeMonitor(obj) ((value)(val_of_ext(obj)))
+#define GNativeVolumeMonitor_val(val) ((GNativeVolumeMonitor*)ml_gobject_ext_of_val(val))
+#define Val_GNativeVolumeMonitor(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GNativeVolumeMonitor */
 
 #ifndef Val_GNetworkAddress
-#define GNetworkAddress_val(val) ((GNetworkAddress*)ext_of_val(val))
-#define Val_GNetworkAddress(obj) ((value)(val_of_ext(obj)))
+#define GNetworkAddress_val(val) ((GNetworkAddress*)ml_gobject_ext_of_val(val))
+#define Val_GNetworkAddress(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GNetworkAddress */
 
 #ifndef Val_GNetworkService
-#define GNetworkService_val(val) ((GNetworkService*)ext_of_val(val))
-#define Val_GNetworkService(obj) ((value)(val_of_ext(obj)))
+#define GNetworkService_val(val) ((GNetworkService*)ml_gobject_ext_of_val(val))
+#define Val_GNetworkService(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GNetworkService */
 
 #ifndef Val_GNotification
-#define GNotification_val(val) ((GNotification*)ext_of_val(val))
-#define Val_GNotification(obj) ((value)(val_of_ext(obj)))
+#define GNotification_val(val) ((GNotification*)ml_gobject_ext_of_val(val))
+#define Val_GNotification(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GNotification */
 
 #ifndef Val_GOutputStream
-#define GOutputStream_val(val) ((GOutputStream*)ext_of_val(val))
-#define Val_GOutputStream(obj) ((value)(val_of_ext(obj)))
+#define GOutputStream_val(val) ((GOutputStream*)ml_gobject_ext_of_val(val))
+#define Val_GOutputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GOutputStream */
 
 #ifndef Val_GPermission
-#define GPermission_val(val) ((GPermission*)ext_of_val(val))
-#define Val_GPermission(obj) ((value)(val_of_ext(obj)))
+#define GPermission_val(val) ((GPermission*)ml_gobject_ext_of_val(val))
+#define Val_GPermission(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GPermission */
 
 #ifndef Val_GPropertyAction
-#define GPropertyAction_val(val) ((GPropertyAction*)ext_of_val(val))
-#define Val_GPropertyAction(obj) ((value)(val_of_ext(obj)))
+#define GPropertyAction_val(val) ((GPropertyAction*)ml_gobject_ext_of_val(val))
+#define Val_GPropertyAction(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GPropertyAction */
 
 #ifndef Val_GProxyAddress
-#define GProxyAddress_val(val) ((GProxyAddress*)ext_of_val(val))
-#define Val_GProxyAddress(obj) ((value)(val_of_ext(obj)))
+#define GProxyAddress_val(val) ((GProxyAddress*)ml_gobject_ext_of_val(val))
+#define Val_GProxyAddress(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GProxyAddress */
 
 #ifndef Val_GProxyAddressEnumerator
-#define GProxyAddressEnumerator_val(val) ((GProxyAddressEnumerator*)ext_of_val(val))
-#define Val_GProxyAddressEnumerator(obj) ((value)(val_of_ext(obj)))
+#define GProxyAddressEnumerator_val(val) ((GProxyAddressEnumerator*)ml_gobject_ext_of_val(val))
+#define Val_GProxyAddressEnumerator(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GProxyAddressEnumerator */
 
 #ifndef Val_GResolver
-#define GResolver_val(val) ((GResolver*)ext_of_val(val))
-#define Val_GResolver(obj) ((value)(val_of_ext(obj)))
+#define GResolver_val(val) ((GResolver*)ml_gobject_ext_of_val(val))
+#define Val_GResolver(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GResolver */
 
 #ifndef Val_GSettings
-#define GSettings_val(val) ((GSettings*)ext_of_val(val))
-#define Val_GSettings(obj) ((value)(val_of_ext(obj)))
+#define GSettings_val(val) ((GSettings*)ml_gobject_ext_of_val(val))
+#define Val_GSettings(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSettings */
 
 #ifndef Val_GSettingsBackend
-#define GSettingsBackend_val(val) ((GSettingsBackend*)ext_of_val(val))
-#define Val_GSettingsBackend(obj) ((value)(val_of_ext(obj)))
+#define GSettingsBackend_val(val) ((GSettingsBackend*)ml_gobject_ext_of_val(val))
+#define Val_GSettingsBackend(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSettingsBackend */
 
 #ifndef Val_GSimpleAction
-#define GSimpleAction_val(val) ((GSimpleAction*)ext_of_val(val))
-#define Val_GSimpleAction(obj) ((value)(val_of_ext(obj)))
+#define GSimpleAction_val(val) ((GSimpleAction*)ml_gobject_ext_of_val(val))
+#define Val_GSimpleAction(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSimpleAction */
 
 #ifndef Val_GSimpleActionGroup
-#define GSimpleActionGroup_val(val) ((GSimpleActionGroup*)ext_of_val(val))
-#define Val_GSimpleActionGroup(obj) ((value)(val_of_ext(obj)))
+#define GSimpleActionGroup_val(val) ((GSimpleActionGroup*)ml_gobject_ext_of_val(val))
+#define Val_GSimpleActionGroup(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSimpleActionGroup */
 
 #ifndef Val_GSimpleAsyncResult
-#define GSimpleAsyncResult_val(val) ((GSimpleAsyncResult*)ext_of_val(val))
-#define Val_GSimpleAsyncResult(obj) ((value)(val_of_ext(obj)))
+#define GSimpleAsyncResult_val(val) ((GSimpleAsyncResult*)ml_gobject_ext_of_val(val))
+#define Val_GSimpleAsyncResult(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSimpleAsyncResult */
 
 #ifndef Val_GSimpleIOStream
-#define GSimpleIOStream_val(val) ((GSimpleIOStream*)ext_of_val(val))
-#define Val_GSimpleIOStream(obj) ((value)(val_of_ext(obj)))
+#define GSimpleIOStream_val(val) ((GSimpleIOStream*)ml_gobject_ext_of_val(val))
+#define Val_GSimpleIOStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSimpleIOStream */
 
 #ifndef Val_GSimplePermission
-#define GSimplePermission_val(val) ((GSimplePermission*)ext_of_val(val))
-#define Val_GSimplePermission(obj) ((value)(val_of_ext(obj)))
+#define GSimplePermission_val(val) ((GSimplePermission*)ml_gobject_ext_of_val(val))
+#define Val_GSimplePermission(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSimplePermission */
 
 #ifndef Val_GSimpleProxyResolver
-#define GSimpleProxyResolver_val(val) ((GSimpleProxyResolver*)ext_of_val(val))
-#define Val_GSimpleProxyResolver(obj) ((value)(val_of_ext(obj)))
+#define GSimpleProxyResolver_val(val) ((GSimpleProxyResolver*)ml_gobject_ext_of_val(val))
+#define Val_GSimpleProxyResolver(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSimpleProxyResolver */
 
 #ifndef Val_GSocket
-#define GSocket_val(val) ((GSocket*)ext_of_val(val))
-#define Val_GSocket(obj) ((value)(val_of_ext(obj)))
+#define GSocket_val(val) ((GSocket*)ml_gobject_ext_of_val(val))
+#define Val_GSocket(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSocket */
 
 #ifndef Val_GSocketAddress
-#define GSocketAddress_val(val) ((GSocketAddress*)ext_of_val(val))
-#define Val_GSocketAddress(obj) ((value)(val_of_ext(obj)))
+#define GSocketAddress_val(val) ((GSocketAddress*)ml_gobject_ext_of_val(val))
+#define Val_GSocketAddress(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSocketAddress */
 
 #ifndef Val_GSocketAddressEnumerator
-#define GSocketAddressEnumerator_val(val) ((GSocketAddressEnumerator*)ext_of_val(val))
-#define Val_GSocketAddressEnumerator(obj) ((value)(val_of_ext(obj)))
+#define GSocketAddressEnumerator_val(val) ((GSocketAddressEnumerator*)ml_gobject_ext_of_val(val))
+#define Val_GSocketAddressEnumerator(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSocketAddressEnumerator */
 
 #ifndef Val_GSocketClient
-#define GSocketClient_val(val) ((GSocketClient*)ext_of_val(val))
-#define Val_GSocketClient(obj) ((value)(val_of_ext(obj)))
+#define GSocketClient_val(val) ((GSocketClient*)ml_gobject_ext_of_val(val))
+#define Val_GSocketClient(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSocketClient */
 
 #ifndef Val_GSocketConnection
-#define GSocketConnection_val(val) ((GSocketConnection*)ext_of_val(val))
-#define Val_GSocketConnection(obj) ((value)(val_of_ext(obj)))
+#define GSocketConnection_val(val) ((GSocketConnection*)ml_gobject_ext_of_val(val))
+#define Val_GSocketConnection(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSocketConnection */
 
 #ifndef Val_GSocketControlMessage
-#define GSocketControlMessage_val(val) ((GSocketControlMessage*)ext_of_val(val))
-#define Val_GSocketControlMessage(obj) ((value)(val_of_ext(obj)))
+#define GSocketControlMessage_val(val) ((GSocketControlMessage*)ml_gobject_ext_of_val(val))
+#define Val_GSocketControlMessage(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSocketControlMessage */
 
 #ifndef Val_GSocketListener
-#define GSocketListener_val(val) ((GSocketListener*)ext_of_val(val))
-#define Val_GSocketListener(obj) ((value)(val_of_ext(obj)))
+#define GSocketListener_val(val) ((GSocketListener*)ml_gobject_ext_of_val(val))
+#define Val_GSocketListener(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSocketListener */
 
 #ifndef Val_GSocketService
-#define GSocketService_val(val) ((GSocketService*)ext_of_val(val))
-#define Val_GSocketService(obj) ((value)(val_of_ext(obj)))
+#define GSocketService_val(val) ((GSocketService*)ml_gobject_ext_of_val(val))
+#define Val_GSocketService(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSocketService */
 
 #ifndef Val_GSubprocess
-#define GSubprocess_val(val) ((GSubprocess*)ext_of_val(val))
-#define Val_GSubprocess(obj) ((value)(val_of_ext(obj)))
+#define GSubprocess_val(val) ((GSubprocess*)ml_gobject_ext_of_val(val))
+#define Val_GSubprocess(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSubprocess */
 
 #ifndef Val_GSubprocessLauncher
-#define GSubprocessLauncher_val(val) ((GSubprocessLauncher*)ext_of_val(val))
-#define Val_GSubprocessLauncher(obj) ((value)(val_of_ext(obj)))
+#define GSubprocessLauncher_val(val) ((GSubprocessLauncher*)ml_gobject_ext_of_val(val))
+#define Val_GSubprocessLauncher(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSubprocessLauncher */
 
 #ifndef Val_GTask
-#define GTask_val(val) ((GTask*)ext_of_val(val))
-#define Val_GTask(obj) ((value)(val_of_ext(obj)))
+#define GTask_val(val) ((GTask*)ml_gobject_ext_of_val(val))
+#define Val_GTask(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTask */
 
 #ifndef Val_GTcpConnection
-#define GTcpConnection_val(val) ((GTcpConnection*)ext_of_val(val))
-#define Val_GTcpConnection(obj) ((value)(val_of_ext(obj)))
+#define GTcpConnection_val(val) ((GTcpConnection*)ml_gobject_ext_of_val(val))
+#define Val_GTcpConnection(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTcpConnection */
 
 #ifndef Val_GTcpWrapperConnection
-#define GTcpWrapperConnection_val(val) ((GTcpWrapperConnection*)ext_of_val(val))
-#define Val_GTcpWrapperConnection(obj) ((value)(val_of_ext(obj)))
+#define GTcpWrapperConnection_val(val) ((GTcpWrapperConnection*)ml_gobject_ext_of_val(val))
+#define Val_GTcpWrapperConnection(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTcpWrapperConnection */
 
 #ifndef Val_GTestDBus
-#define GTestDBus_val(val) ((GTestDBus*)ext_of_val(val))
-#define Val_GTestDBus(obj) ((value)(val_of_ext(obj)))
+#define GTestDBus_val(val) ((GTestDBus*)ml_gobject_ext_of_val(val))
+#define Val_GTestDBus(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTestDBus */
 
 #ifndef Val_GThemedIcon
-#define GThemedIcon_val(val) ((GThemedIcon*)ext_of_val(val))
-#define Val_GThemedIcon(obj) ((value)(val_of_ext(obj)))
+#define GThemedIcon_val(val) ((GThemedIcon*)ml_gobject_ext_of_val(val))
+#define Val_GThemedIcon(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GThemedIcon */
 
 #ifndef Val_GThreadedResolver
-#define GThreadedResolver_val(val) ((GThreadedResolver*)ext_of_val(val))
-#define Val_GThreadedResolver(obj) ((value)(val_of_ext(obj)))
+#define GThreadedResolver_val(val) ((GThreadedResolver*)ml_gobject_ext_of_val(val))
+#define Val_GThreadedResolver(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GThreadedResolver */
 
 #ifndef Val_GThreadedSocketService
-#define GThreadedSocketService_val(val) ((GThreadedSocketService*)ext_of_val(val))
-#define Val_GThreadedSocketService(obj) ((value)(val_of_ext(obj)))
+#define GThreadedSocketService_val(val) ((GThreadedSocketService*)ml_gobject_ext_of_val(val))
+#define Val_GThreadedSocketService(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GThreadedSocketService */
 
 #ifndef Val_GTlsCertificate
-#define GTlsCertificate_val(val) ((GTlsCertificate*)ext_of_val(val))
-#define Val_GTlsCertificate(obj) ((value)(val_of_ext(obj)))
+#define GTlsCertificate_val(val) ((GTlsCertificate*)ml_gobject_ext_of_val(val))
+#define Val_GTlsCertificate(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTlsCertificate */
 
 #ifndef Val_GTlsConnection
-#define GTlsConnection_val(val) ((GTlsConnection*)ext_of_val(val))
-#define Val_GTlsConnection(obj) ((value)(val_of_ext(obj)))
+#define GTlsConnection_val(val) ((GTlsConnection*)ml_gobject_ext_of_val(val))
+#define Val_GTlsConnection(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTlsConnection */
 
 #ifndef Val_GTlsDatabase
-#define GTlsDatabase_val(val) ((GTlsDatabase*)ext_of_val(val))
-#define Val_GTlsDatabase(obj) ((value)(val_of_ext(obj)))
+#define GTlsDatabase_val(val) ((GTlsDatabase*)ml_gobject_ext_of_val(val))
+#define Val_GTlsDatabase(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTlsDatabase */
 
 #ifndef Val_GTlsInteraction
-#define GTlsInteraction_val(val) ((GTlsInteraction*)ext_of_val(val))
-#define Val_GTlsInteraction(obj) ((value)(val_of_ext(obj)))
+#define GTlsInteraction_val(val) ((GTlsInteraction*)ml_gobject_ext_of_val(val))
+#define Val_GTlsInteraction(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTlsInteraction */
 
 #ifndef Val_GTlsPassword
-#define GTlsPassword_val(val) ((GTlsPassword*)ext_of_val(val))
-#define Val_GTlsPassword(obj) ((value)(val_of_ext(obj)))
+#define GTlsPassword_val(val) ((GTlsPassword*)ml_gobject_ext_of_val(val))
+#define Val_GTlsPassword(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTlsPassword */
 
 #ifndef Val_GUnixConnection
-#define GUnixConnection_val(val) ((GUnixConnection*)ext_of_val(val))
-#define Val_GUnixConnection(obj) ((value)(val_of_ext(obj)))
+#define GUnixConnection_val(val) ((GUnixConnection*)ml_gobject_ext_of_val(val))
+#define Val_GUnixConnection(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GUnixConnection */
 
 #ifndef Val_GUnixCredentialsMessage
-#define GUnixCredentialsMessage_val(val) ((GUnixCredentialsMessage*)ext_of_val(val))
-#define Val_GUnixCredentialsMessage(obj) ((value)(val_of_ext(obj)))
+#define GUnixCredentialsMessage_val(val) ((GUnixCredentialsMessage*)ml_gobject_ext_of_val(val))
+#define Val_GUnixCredentialsMessage(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GUnixCredentialsMessage */
 
 #ifndef Val_GUnixFDList
-#define GUnixFDList_val(val) ((GUnixFDList*)ext_of_val(val))
-#define Val_GUnixFDList(obj) ((value)(val_of_ext(obj)))
+#define GUnixFDList_val(val) ((GUnixFDList*)ml_gobject_ext_of_val(val))
+#define Val_GUnixFDList(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GUnixFDList */
 
 #ifndef Val_GUnixFDMessage
-#define GUnixFDMessage_val(val) ((GUnixFDMessage*)ext_of_val(val))
-#define Val_GUnixFDMessage(obj) ((value)(val_of_ext(obj)))
+#define GUnixFDMessage_val(val) ((GUnixFDMessage*)ml_gobject_ext_of_val(val))
+#define Val_GUnixFDMessage(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GUnixFDMessage */
 
 #ifndef Val_GUnixInputStream
-#define GUnixInputStream_val(val) ((GUnixInputStream*)ext_of_val(val))
-#define Val_GUnixInputStream(obj) ((value)(val_of_ext(obj)))
+#define GUnixInputStream_val(val) ((GUnixInputStream*)ml_gobject_ext_of_val(val))
+#define Val_GUnixInputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GUnixInputStream */
 
 #ifndef Val_GUnixMountMonitor
-#define GUnixMountMonitor_val(val) ((GUnixMountMonitor*)ext_of_val(val))
-#define Val_GUnixMountMonitor(obj) ((value)(val_of_ext(obj)))
+#define GUnixMountMonitor_val(val) ((GUnixMountMonitor*)ml_gobject_ext_of_val(val))
+#define Val_GUnixMountMonitor(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GUnixMountMonitor */
 
 #ifndef Val_GUnixOutputStream
-#define GUnixOutputStream_val(val) ((GUnixOutputStream*)ext_of_val(val))
-#define Val_GUnixOutputStream(obj) ((value)(val_of_ext(obj)))
+#define GUnixOutputStream_val(val) ((GUnixOutputStream*)ml_gobject_ext_of_val(val))
+#define Val_GUnixOutputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GUnixOutputStream */
 
 #ifndef Val_GUnixSocketAddress
-#define GUnixSocketAddress_val(val) ((GUnixSocketAddress*)ext_of_val(val))
-#define Val_GUnixSocketAddress(obj) ((value)(val_of_ext(obj)))
+#define GUnixSocketAddress_val(val) ((GUnixSocketAddress*)ml_gobject_ext_of_val(val))
+#define Val_GUnixSocketAddress(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GUnixSocketAddress */
 
 #ifndef Val_GVfs
-#define GVfs_val(val) ((GVfs*)ext_of_val(val))
-#define Val_GVfs(obj) ((value)(val_of_ext(obj)))
+#define GVfs_val(val) ((GVfs*)ml_gobject_ext_of_val(val))
+#define Val_GVfs(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GVfs */
 
 #ifndef Val_GVolumeMonitor
-#define GVolumeMonitor_val(val) ((GVolumeMonitor*)ext_of_val(val))
-#define Val_GVolumeMonitor(obj) ((value)(val_of_ext(obj)))
+#define GVolumeMonitor_val(val) ((GVolumeMonitor*)ml_gobject_ext_of_val(val))
+#define Val_GVolumeMonitor(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GVolumeMonitor */
 
 #ifndef Val_GZlibCompressor
-#define GZlibCompressor_val(val) ((GZlibCompressor*)ext_of_val(val))
-#define Val_GZlibCompressor(obj) ((value)(val_of_ext(obj)))
+#define GZlibCompressor_val(val) ((GZlibCompressor*)ml_gobject_ext_of_val(val))
+#define Val_GZlibCompressor(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GZlibCompressor */
 
 #ifndef Val_GZlibDecompressor
-#define GZlibDecompressor_val(val) ((GZlibDecompressor*)ext_of_val(val))
-#define Val_GZlibDecompressor(obj) ((value)(val_of_ext(obj)))
+#define GZlibDecompressor_val(val) ((GZlibDecompressor*)ml_gobject_ext_of_val(val))
+#define Val_GZlibDecompressor(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GZlibDecompressor */
 
 /* Interface-specific conversion macros (shared) */
 #ifndef Val_GAction
-#define GAction_val(val) ((GAction*)ext_of_val(val))
-#define Val_GAction(obj) ((value)(val_of_ext(obj)))
+#define GAction_val(val) ((GAction*)ml_gobject_ext_of_val(val))
+#define Val_GAction(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GAction */
 
 #ifndef Val_GActionGroup
-#define GActionGroup_val(val) ((GActionGroup*)ext_of_val(val))
-#define Val_GActionGroup(obj) ((value)(val_of_ext(obj)))
+#define GActionGroup_val(val) ((GActionGroup*)ml_gobject_ext_of_val(val))
+#define Val_GActionGroup(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GActionGroup */
 
 #ifndef Val_GActionMap
-#define GActionMap_val(val) ((GActionMap*)ext_of_val(val))
-#define Val_GActionMap(obj) ((value)(val_of_ext(obj)))
+#define GActionMap_val(val) ((GActionMap*)ml_gobject_ext_of_val(val))
+#define Val_GActionMap(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GActionMap */
 
 #ifndef Val_GAppInfo
-#define GAppInfo_val(val) ((GAppInfo*)ext_of_val(val))
-#define Val_GAppInfo(obj) ((value)(val_of_ext(obj)))
+#define GAppInfo_val(val) ((GAppInfo*)ml_gobject_ext_of_val(val))
+#define Val_GAppInfo(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GAppInfo */
 
 #ifndef Val_GAsyncInitable
-#define GAsyncInitable_val(val) ((GAsyncInitable*)ext_of_val(val))
-#define Val_GAsyncInitable(obj) ((value)(val_of_ext(obj)))
+#define GAsyncInitable_val(val) ((GAsyncInitable*)ml_gobject_ext_of_val(val))
+#define Val_GAsyncInitable(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GAsyncInitable */
 
 #ifndef Val_GAsyncResult
-#define GAsyncResult_val(val) ((GAsyncResult*)ext_of_val(val))
-#define Val_GAsyncResult(obj) ((value)(val_of_ext(obj)))
+#define GAsyncResult_val(val) ((GAsyncResult*)ml_gobject_ext_of_val(val))
+#define Val_GAsyncResult(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GAsyncResult */
 
 #ifndef Val_GConverter
-#define GConverter_val(val) ((GConverter*)ext_of_val(val))
-#define Val_GConverter(obj) ((value)(val_of_ext(obj)))
+#define GConverter_val(val) ((GConverter*)ml_gobject_ext_of_val(val))
+#define Val_GConverter(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GConverter */
 
 #ifndef Val_GDBusInterface
-#define GDBusInterface_val(val) ((GDBusInterface*)ext_of_val(val))
-#define Val_GDBusInterface(obj) ((value)(val_of_ext(obj)))
+#define GDBusInterface_val(val) ((GDBusInterface*)ml_gobject_ext_of_val(val))
+#define Val_GDBusInterface(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusInterface */
 
 #ifndef Val_GDBusObject
-#define GDBusObject_val(val) ((GDBusObject*)ext_of_val(val))
-#define Val_GDBusObject(obj) ((value)(val_of_ext(obj)))
+#define GDBusObject_val(val) ((GDBusObject*)ml_gobject_ext_of_val(val))
+#define Val_GDBusObject(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusObject */
 
 #ifndef Val_GDBusObjectManager
-#define GDBusObjectManager_val(val) ((GDBusObjectManager*)ext_of_val(val))
-#define Val_GDBusObjectManager(obj) ((value)(val_of_ext(obj)))
+#define GDBusObjectManager_val(val) ((GDBusObjectManager*)ml_gobject_ext_of_val(val))
+#define Val_GDBusObjectManager(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusObjectManager */
 
 #ifndef Val_GDatagramBased
-#define GDatagramBased_val(val) ((GDatagramBased*)ext_of_val(val))
-#define Val_GDatagramBased(obj) ((value)(val_of_ext(obj)))
+#define GDatagramBased_val(val) ((GDatagramBased*)ml_gobject_ext_of_val(val))
+#define Val_GDatagramBased(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDatagramBased */
 
 #ifndef Val_GDebugController
-#define GDebugController_val(val) ((GDebugController*)ext_of_val(val))
-#define Val_GDebugController(obj) ((value)(val_of_ext(obj)))
+#define GDebugController_val(val) ((GDebugController*)ml_gobject_ext_of_val(val))
+#define Val_GDebugController(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDebugController */
 
 #ifndef Val_GDesktopAppInfoLookup
-#define GDesktopAppInfoLookup_val(val) ((GDesktopAppInfoLookup*)ext_of_val(val))
-#define Val_GDesktopAppInfoLookup(obj) ((value)(val_of_ext(obj)))
+#define GDesktopAppInfoLookup_val(val) ((GDesktopAppInfoLookup*)ml_gobject_ext_of_val(val))
+#define Val_GDesktopAppInfoLookup(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDesktopAppInfoLookup */
 
 #ifndef Val_GDrive
-#define GDrive_val(val) ((GDrive*)ext_of_val(val))
-#define Val_GDrive(obj) ((value)(val_of_ext(obj)))
+#define GDrive_val(val) ((GDrive*)ml_gobject_ext_of_val(val))
+#define Val_GDrive(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDrive */
 
 #ifndef Val_GDtlsClientConnection
-#define GDtlsClientConnection_val(val) ((GDtlsClientConnection*)ext_of_val(val))
-#define Val_GDtlsClientConnection(obj) ((value)(val_of_ext(obj)))
+#define GDtlsClientConnection_val(val) ((GDtlsClientConnection*)ml_gobject_ext_of_val(val))
+#define Val_GDtlsClientConnection(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDtlsClientConnection */
 
 #ifndef Val_GDtlsConnection
-#define GDtlsConnection_val(val) ((GDtlsConnection*)ext_of_val(val))
-#define Val_GDtlsConnection(obj) ((value)(val_of_ext(obj)))
+#define GDtlsConnection_val(val) ((GDtlsConnection*)ml_gobject_ext_of_val(val))
+#define Val_GDtlsConnection(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDtlsConnection */
 
 #ifndef Val_GDtlsServerConnection
-#define GDtlsServerConnection_val(val) ((GDtlsServerConnection*)ext_of_val(val))
-#define Val_GDtlsServerConnection(obj) ((value)(val_of_ext(obj)))
+#define GDtlsServerConnection_val(val) ((GDtlsServerConnection*)ml_gobject_ext_of_val(val))
+#define Val_GDtlsServerConnection(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDtlsServerConnection */
 
 #ifndef Val_GFile
-#define GFile_val(val) ((GFile*)ext_of_val(val))
-#define Val_GFile(obj) ((value)(val_of_ext(obj)))
+#define GFile_val(val) ((GFile*)ml_gobject_ext_of_val(val))
+#define Val_GFile(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GFile */
 
 #ifndef Val_GFileDescriptorBased
-#define GFileDescriptorBased_val(val) ((GFileDescriptorBased*)ext_of_val(val))
-#define Val_GFileDescriptorBased(obj) ((value)(val_of_ext(obj)))
+#define GFileDescriptorBased_val(val) ((GFileDescriptorBased*)ml_gobject_ext_of_val(val))
+#define Val_GFileDescriptorBased(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GFileDescriptorBased */
 
 #ifndef Val_GIcon
-#define GIcon_val(val) ((GIcon*)ext_of_val(val))
-#define Val_GIcon(obj) ((value)(val_of_ext(obj)))
+#define GIcon_val(val) ((GIcon*)ml_gobject_ext_of_val(val))
+#define Val_GIcon(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GIcon */
 
 #ifndef Val_GInitable
-#define GInitable_val(val) ((GInitable*)ext_of_val(val))
-#define Val_GInitable(obj) ((value)(val_of_ext(obj)))
+#define GInitable_val(val) ((GInitable*)ml_gobject_ext_of_val(val))
+#define Val_GInitable(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GInitable */
 
 #ifndef Val_GListModel
-#define GListModel_val(val) ((GListModel*)ext_of_val(val))
-#define Val_GListModel(obj) ((value)(val_of_ext(obj)))
+#define GListModel_val(val) ((GListModel*)ml_gobject_ext_of_val(val))
+#define Val_GListModel(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GListModel */
 
 #ifndef Val_GLoadableIcon
-#define GLoadableIcon_val(val) ((GLoadableIcon*)ext_of_val(val))
-#define Val_GLoadableIcon(obj) ((value)(val_of_ext(obj)))
+#define GLoadableIcon_val(val) ((GLoadableIcon*)ml_gobject_ext_of_val(val))
+#define Val_GLoadableIcon(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GLoadableIcon */
 
 #ifndef Val_GMemoryMonitor
-#define GMemoryMonitor_val(val) ((GMemoryMonitor*)ext_of_val(val))
-#define Val_GMemoryMonitor(obj) ((value)(val_of_ext(obj)))
+#define GMemoryMonitor_val(val) ((GMemoryMonitor*)ml_gobject_ext_of_val(val))
+#define Val_GMemoryMonitor(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GMemoryMonitor */
 
 #ifndef Val_GMount
-#define GMount_val(val) ((GMount*)ext_of_val(val))
-#define Val_GMount(obj) ((value)(val_of_ext(obj)))
+#define GMount_val(val) ((GMount*)ml_gobject_ext_of_val(val))
+#define Val_GMount(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GMount */
 
 #ifndef Val_GNetworkMonitor
-#define GNetworkMonitor_val(val) ((GNetworkMonitor*)ext_of_val(val))
-#define Val_GNetworkMonitor(obj) ((value)(val_of_ext(obj)))
+#define GNetworkMonitor_val(val) ((GNetworkMonitor*)ml_gobject_ext_of_val(val))
+#define Val_GNetworkMonitor(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GNetworkMonitor */
 
 #ifndef Val_GPollableInputStream
-#define GPollableInputStream_val(val) ((GPollableInputStream*)ext_of_val(val))
-#define Val_GPollableInputStream(obj) ((value)(val_of_ext(obj)))
+#define GPollableInputStream_val(val) ((GPollableInputStream*)ml_gobject_ext_of_val(val))
+#define Val_GPollableInputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GPollableInputStream */
 
 #ifndef Val_GPollableOutputStream
-#define GPollableOutputStream_val(val) ((GPollableOutputStream*)ext_of_val(val))
-#define Val_GPollableOutputStream(obj) ((value)(val_of_ext(obj)))
+#define GPollableOutputStream_val(val) ((GPollableOutputStream*)ml_gobject_ext_of_val(val))
+#define Val_GPollableOutputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GPollableOutputStream */
 
 #ifndef Val_GPowerProfileMonitor
-#define GPowerProfileMonitor_val(val) ((GPowerProfileMonitor*)ext_of_val(val))
-#define Val_GPowerProfileMonitor(obj) ((value)(val_of_ext(obj)))
+#define GPowerProfileMonitor_val(val) ((GPowerProfileMonitor*)ml_gobject_ext_of_val(val))
+#define Val_GPowerProfileMonitor(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GPowerProfileMonitor */
 
 #ifndef Val_GProxy
-#define GProxy_val(val) ((GProxy*)ext_of_val(val))
-#define Val_GProxy(obj) ((value)(val_of_ext(obj)))
+#define GProxy_val(val) ((GProxy*)ml_gobject_ext_of_val(val))
+#define Val_GProxy(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GProxy */
 
 #ifndef Val_GProxyResolver
-#define GProxyResolver_val(val) ((GProxyResolver*)ext_of_val(val))
-#define Val_GProxyResolver(obj) ((value)(val_of_ext(obj)))
+#define GProxyResolver_val(val) ((GProxyResolver*)ml_gobject_ext_of_val(val))
+#define Val_GProxyResolver(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GProxyResolver */
 
 #ifndef Val_GRemoteActionGroup
-#define GRemoteActionGroup_val(val) ((GRemoteActionGroup*)ext_of_val(val))
-#define Val_GRemoteActionGroup(obj) ((value)(val_of_ext(obj)))
+#define GRemoteActionGroup_val(val) ((GRemoteActionGroup*)ml_gobject_ext_of_val(val))
+#define Val_GRemoteActionGroup(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GRemoteActionGroup */
 
 #ifndef Val_GSeekable
-#define GSeekable_val(val) ((GSeekable*)ext_of_val(val))
-#define Val_GSeekable(obj) ((value)(val_of_ext(obj)))
+#define GSeekable_val(val) ((GSeekable*)ml_gobject_ext_of_val(val))
+#define Val_GSeekable(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSeekable */
 
 #ifndef Val_GSocketConnectable
-#define GSocketConnectable_val(val) ((GSocketConnectable*)ext_of_val(val))
-#define Val_GSocketConnectable(obj) ((value)(val_of_ext(obj)))
+#define GSocketConnectable_val(val) ((GSocketConnectable*)ml_gobject_ext_of_val(val))
+#define Val_GSocketConnectable(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSocketConnectable */
 
 #ifndef Val_GTlsBackend
-#define GTlsBackend_val(val) ((GTlsBackend*)ext_of_val(val))
-#define Val_GTlsBackend(obj) ((value)(val_of_ext(obj)))
+#define GTlsBackend_val(val) ((GTlsBackend*)ml_gobject_ext_of_val(val))
+#define Val_GTlsBackend(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTlsBackend */
 
 #ifndef Val_GTlsClientConnection
-#define GTlsClientConnection_val(val) ((GTlsClientConnection*)ext_of_val(val))
-#define Val_GTlsClientConnection(obj) ((value)(val_of_ext(obj)))
+#define GTlsClientConnection_val(val) ((GTlsClientConnection*)ml_gobject_ext_of_val(val))
+#define Val_GTlsClientConnection(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTlsClientConnection */
 
 #ifndef Val_GTlsFileDatabase
-#define GTlsFileDatabase_val(val) ((GTlsFileDatabase*)ext_of_val(val))
-#define Val_GTlsFileDatabase(obj) ((value)(val_of_ext(obj)))
+#define GTlsFileDatabase_val(val) ((GTlsFileDatabase*)ml_gobject_ext_of_val(val))
+#define Val_GTlsFileDatabase(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTlsFileDatabase */
 
 #ifndef Val_GTlsServerConnection
-#define GTlsServerConnection_val(val) ((GTlsServerConnection*)ext_of_val(val))
-#define Val_GTlsServerConnection(obj) ((value)(val_of_ext(obj)))
+#define GTlsServerConnection_val(val) ((GTlsServerConnection*)ml_gobject_ext_of_val(val))
+#define Val_GTlsServerConnection(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTlsServerConnection */
 
 #ifndef Val_GVolume
-#define GVolume_val(val) ((GVolume*)ext_of_val(val))
-#define Val_GVolume(obj) ((value)(val_of_ext(obj)))
+#define GVolume_val(val) ((GVolume*)ml_gobject_ext_of_val(val))
+#define Val_GVolume(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GVolume */
 
 /* Forward declarations for GActionEntry converters (non-opaque record with fields) */

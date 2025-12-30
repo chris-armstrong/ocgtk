@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_drawing_area_new(value unit)
 {
 CAMLparam1(unit);
 GtkDrawingArea *obj = gtk_drawing_area_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkDrawingArea(obj));
 }
 

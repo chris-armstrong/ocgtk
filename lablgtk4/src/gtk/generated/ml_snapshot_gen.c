@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_snapshot_new(value unit)
 {
 CAMLparam1(unit);
 GtkSnapshot *obj = gtk_snapshot_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkSnapshot(obj));
 }
 

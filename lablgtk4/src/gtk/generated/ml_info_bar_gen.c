@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_info_bar_new(value unit)
 {
 CAMLparam1(unit);
 GtkInfoBar *obj = gtk_info_bar_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkInfoBar(obj));
 }
 
@@ -125,6 +126,7 @@ CAMLexport CAMLprim value ml_gtk_info_bar_add_button(value self, value arg1, val
 CAMLparam3(self, arg1, arg2);
 
 GtkWidget* result = gtk_info_bar_add_button(GtkInfoBar_val(self), String_val(arg1), Int_val(arg2));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkWidget(result));
 }
 

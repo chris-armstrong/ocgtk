@@ -322,9 +322,9 @@ let generate_forward_decls_header ~ctx ~classes ~interfaces ~gtk_enums
       if not (Hashtbl.mem seen cls.c_type) then begin
         Hashtbl.add seen cls.c_type ();
         bprintf buf "#ifndef Val_%s\n" cls.c_type;
-        bprintf buf "#define %s_val(val) ((%s*)ext_of_val(val))\n" cls.c_type
+        bprintf buf "#define %s_val(val) ((%s*)ml_gobject_ext_of_val(val))\n" cls.c_type
           cls.c_type;
-        bprintf buf "#define Val_%s(obj) ((value)(val_of_ext(obj)))\n"
+        bprintf buf "#define Val_%s(obj) ((value)(ml_gobject_val_of_ext(obj)))\n"
           cls.c_type;
         bprintf buf "#endif /* Val_%s */\n\n" cls.c_type
       end)
@@ -336,9 +336,9 @@ let generate_forward_decls_header ~ctx ~classes ~interfaces ~gtk_enums
       if not (Hashtbl.mem seen intf.c_type) then begin
         Hashtbl.add seen intf.c_type ();
         bprintf buf "#ifndef Val_%s\n" intf.c_type;
-        bprintf buf "#define %s_val(val) ((%s*)ext_of_val(val))\n" intf.c_type
+        bprintf buf "#define %s_val(val) ((%s*)ml_gobject_ext_of_val(val))\n" intf.c_type
           intf.c_type;
-        bprintf buf "#define Val_%s(obj) ((value)(val_of_ext(obj)))\n"
+        bprintf buf "#define Val_%s(obj) ((value)(ml_gobject_val_of_ext(obj)))\n"
           intf.c_type;
         bprintf buf "#endif /* Val_%s */\n\n" intf.c_type
       end)
@@ -541,6 +541,17 @@ let generate_c_constructor ~ctx ~c_type (ctor : gir_constructor) _class_name =
   let val_macro = sprintf "Val_%s" c_type in
   let var_name = "obj" in
 
+  (* Check if this is a GObject constructor - for GObjects, always ref_sink *)
+  let ref_sink_stmt =
+    (* Try to look up the type mapping for the constructor's return type *)
+    let dummy_gir_type = { name = c_type; c_type = Some (c_type ^ "*"); nullable = false; transfer_ownership = Types.TransferNone } in
+    match Type_mappings.find_type_mapping_for_gir_type ~ctx dummy_gir_type with
+    | Some mapping when Option.is_some mapping.layer2_class ->
+        (* This is a GObject type (class or interface) - always need ref_sink for constructors *)
+        sprintf "\nif (%s) g_object_ref_sink(%s);" var_name var_name
+    | _ -> ""
+  in
+
   (* Generate parameters *)
   let param_count =
     if List.length ctor.ctor_parameters = 0 then 1
@@ -608,7 +619,7 @@ let generate_c_constructor ~ctx ~c_type (ctor : gir_constructor) _class_name =
          {\n\
          CAMLparam5(%s);\n\
          CAMLxparam%d(%s);\n\
-         %s%s *%s = %s(%s);\n\
+         %s%s *%s = %s(%s);%s\n\
          %s\n\
          }\n"
         ml_name
@@ -616,7 +627,7 @@ let generate_c_constructor ~ctx ~c_type (ctor : gir_constructor) _class_name =
         (String.concat ~sep:", " first_five)
         (param_count - 5)
         (String.concat ~sep:", " rest)
-        error_decl c_type var_name c_name c_call_args return_stmt
+        error_decl c_type var_name c_name c_call_args ref_sink_stmt return_stmt
     in
 
     let bytecode_func =
@@ -651,14 +662,14 @@ let generate_c_constructor ~ctx ~c_type (ctor : gir_constructor) _class_name =
        CAMLexport CAMLprim value %s(%s)\n\
        {\n\
        CAMLparam%d(%s);\n\
-       %s%s *%s = %s(%s);\n\
+       %s%s *%s = %s(%s);%s\n\
        %s\n\
        }\n"
       ml_name
       (String.concat ~sep:", " params)
       param_count
       (String.concat ~sep:", " param_names)
-      error_decl c_type var_name c_name c_call_args return_stmt
+      error_decl c_type var_name c_name c_call_args ref_sink_stmt return_stmt
   end
 
 let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
@@ -886,7 +897,17 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
               nullable_c_to_ml_expr ~var:"result" ~gir_type:meth.return_type
                 ~mapping
             in
-            ( sprintf "%s result = %s(%s);" ret_type c_name args,
+            (* Generate ref_sink statement for GObject types based on transfer-ownership *)
+            let ref_sink_stmt =
+              match mapping.layer2_class with
+              | Some _ -> (
+                  match meth.return_type.transfer_ownership with
+                  | Types.TransferNone | Types.TransferFloating ->
+                      "\nif (result) g_object_ref_sink(result);"
+                  | Types.TransferFull | Types.TransferContainer -> "")
+              | None -> ""
+            in
+            ( sprintf "%s result = %s(%s);%s" ret_type c_name args ref_sink_stmt,
               combine_results (Some ml_result) )
         | None ->
             (* No type mapping found - fail with clear error *)

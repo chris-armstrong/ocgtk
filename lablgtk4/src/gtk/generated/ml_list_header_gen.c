@@ -54,5 +54,6 @@ CAMLexport CAMLprim value ml_gtk_list_header_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_list_header_get_child(GtkListHeader_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }

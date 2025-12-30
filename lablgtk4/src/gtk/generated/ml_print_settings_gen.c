@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_print_settings_new(value unit)
 {
 CAMLparam1(unit);
 GtkPrintSettings *obj = gtk_print_settings_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkPrintSettings(obj));
 }
 
@@ -28,6 +29,7 @@ CAMLexport CAMLprim value ml_gtk_print_settings_new_from_gvariant(value arg1)
 {
 CAMLparam1(arg1);
 GtkPrintSettings *obj = gtk_print_settings_new_from_gvariant(arg1);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkPrintSettings(obj));
 }
 

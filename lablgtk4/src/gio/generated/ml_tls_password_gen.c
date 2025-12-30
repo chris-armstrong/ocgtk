@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_tls_password_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 GTlsPassword *obj = g_tls_password_new(GioTlsPasswordFlags_val(arg1), String_val(arg2));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GTlsPassword(obj));
 }
 

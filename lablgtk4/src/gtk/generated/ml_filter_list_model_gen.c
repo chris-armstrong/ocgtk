@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_filter_list_model_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 GtkFilterListModel *obj = gtk_filter_list_model_new(arg1, Option_val(arg2, GtkFilter_val, NULL));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkFilterListModel(obj));
 }
 
@@ -61,6 +62,7 @@ CAMLexport CAMLprim value ml_gtk_filter_list_model_get_filter(value self)
 CAMLparam1(self);
 
 GtkFilter* result = gtk_filter_list_model_get_filter(GtkFilterListModel_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkFilter));
 }
 

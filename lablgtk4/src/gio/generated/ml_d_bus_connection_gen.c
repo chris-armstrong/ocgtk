@@ -116,6 +116,7 @@ CAMLexport CAMLprim value ml_g_dbus_connection_get_stream(value self)
 CAMLparam1(self);
 
 GIOStream* result = g_dbus_connection_get_stream(GDBusConnection_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GIOStream(result));
 }
 
@@ -124,6 +125,7 @@ CAMLexport CAMLprim value ml_g_dbus_connection_get_peer_credentials(value self)
 CAMLparam1(self);
 
 GCredentials* result = g_dbus_connection_get_peer_credentials(GDBusConnection_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GCredentials));
 }
 

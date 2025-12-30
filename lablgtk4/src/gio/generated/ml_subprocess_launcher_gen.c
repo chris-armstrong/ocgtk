@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_subprocess_launcher_new(value arg1)
 {
 CAMLparam1(arg1);
 GSubprocessLauncher *obj = g_subprocess_launcher_new(GioSubprocessFlags_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GSubprocessLauncher(obj));
 }
 

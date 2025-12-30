@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_text_view_new(value unit)
 {
 CAMLparam1(unit);
 GtkTextView *obj = gtk_text_view_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkTextView(obj));
 }
 
@@ -28,6 +29,7 @@ CAMLexport CAMLprim value ml_gtk_text_view_new_with_buffer(value arg1)
 {
 CAMLparam1(arg1);
 GtkTextView *obj = gtk_text_view_new_with_buffer(GtkTextBuffer_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkTextView(obj));
 }
 
@@ -446,6 +448,7 @@ CAMLexport CAMLprim value ml_gtk_text_view_get_gutter(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkWidget* result = gtk_text_view_get_gutter(GtkTextView_val(self), GtkTextWindowType_val(arg1));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -470,6 +473,7 @@ CAMLexport CAMLprim value ml_gtk_text_view_get_buffer(value self)
 CAMLparam1(self);
 
 GtkTextBuffer* result = gtk_text_view_get_buffer(GtkTextView_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkTextBuffer(result));
 }
 

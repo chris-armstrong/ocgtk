@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_application_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 GApplication *obj = g_application_new(String_option_val(arg1), GioApplicationFlags_val(arg2));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GApplication(obj));
 }
 
@@ -243,6 +244,7 @@ CAMLexport CAMLprim value ml_g_application_get_dbus_connection(value self)
 CAMLparam1(self);
 
 GDBusConnection* result = g_application_get_dbus_connection(GApplication_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GDBusConnection));
 }
 

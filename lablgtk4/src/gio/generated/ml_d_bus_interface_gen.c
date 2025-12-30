@@ -35,6 +35,7 @@ CAMLexport CAMLprim value ml_g_dbus_interface_get_object(value self)
 CAMLparam1(self);
 
 GDBusObject* result = g_dbus_interface_get_object(GDBusInterface_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GDBusObject));
 }
 

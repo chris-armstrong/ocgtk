@@ -21,5 +21,6 @@ CAMLexport CAMLprim value ml_gtk_signal_list_item_factory_new(value unit)
 {
 CAMLparam1(unit);
 GtkSignalListItemFactory *obj = gtk_signal_list_item_factory_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkSignalListItemFactory(obj));
 }

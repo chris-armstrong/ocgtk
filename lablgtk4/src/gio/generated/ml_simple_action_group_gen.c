@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_simple_action_group_new(value unit)
 {
 CAMLparam1(unit);
 GSimpleActionGroup *obj = g_simple_action_group_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GSimpleActionGroup(obj));
 }
 
@@ -42,6 +43,7 @@ CAMLexport CAMLprim value ml_g_simple_action_group_lookup(value self, value arg1
 CAMLparam2(self, arg1);
 
 GAction* result = g_simple_action_group_lookup(GSimpleActionGroup_val(self), String_val(arg1));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GAction(result));
 }
 

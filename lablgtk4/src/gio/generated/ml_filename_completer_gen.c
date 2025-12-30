@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_filename_completer_new(value unit)
 {
 CAMLparam1(unit);
 GFilenameCompleter *obj = g_filename_completer_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GFilenameCompleter(obj));
 }
 

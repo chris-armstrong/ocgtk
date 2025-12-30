@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_keyval_trigger_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 GtkKeyvalTrigger *obj = gtk_keyval_trigger_new(Int_val(arg1), GtkModifierType_val(arg2));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkKeyvalTrigger(obj));
 }
 

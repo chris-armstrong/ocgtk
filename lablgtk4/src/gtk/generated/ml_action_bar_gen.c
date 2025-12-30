@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_action_bar_new(value unit)
 {
 CAMLparam1(unit);
 GtkActionBar *obj = gtk_action_bar_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkActionBar(obj));
 }
 
@@ -77,5 +78,6 @@ CAMLexport CAMLprim value ml_gtk_action_bar_get_center_widget(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_action_bar_get_center_widget(GtkActionBar_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }

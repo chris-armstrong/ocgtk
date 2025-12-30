@@ -21,18 +21,18 @@ let test_simple_out_param_declaration () =
   let meth = {
     method_name = "get_size";
     c_identifier = "gtk_widget_get_size";
-    return_type = { name = "none"; c_type = Some "void"; nullable = false };
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone };
     parameters = [
       {
         param_name = "width";
-        param_type = { name = "gint"; c_type = Some "gint"; nullable = false };
+        param_type = { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone };
         direction = Out;
         nullable = false;
         varargs = false;
       };
       {
         param_name = "height";
-        param_type = { name = "gint"; c_type = Some "gint"; nullable = false };
+        param_type = { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone };
         direction = Out;
         nullable = false;
         varargs = false;
@@ -63,18 +63,18 @@ let test_out_param_passed_by_reference () =
   let meth = {
     method_name = "get_position";
     c_identifier = "gtk_widget_get_position";
-    return_type = { name = "none"; c_type = Some "void"; nullable = false };
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone };
     parameters = [
       {
         param_name = "x";
-        param_type = { name = "gint"; c_type = Some "gint"; nullable = false };
+        param_type = { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone };
         direction = Out;
         nullable = false;
         varargs = false;
       };
       {
         param_name = "y";
-        param_type = { name = "gint"; c_type = Some "gint"; nullable = false };
+        param_type = { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone };
         direction = Out;
         nullable = false;
         varargs = false;
@@ -105,11 +105,11 @@ let test_out_param_with_return_value () =
   let meth = {
     method_name = "query_size";
     c_identifier = "gtk_widget_query_size";
-    return_type = { name = "gboolean"; c_type = Some "gboolean"; nullable = false };
+    return_type = { name = "gboolean"; c_type = Some "gboolean"; nullable = false; transfer_ownership = TransferNone };
     parameters = [
       {
         param_name = "width";
-        param_type = { name = "gint"; c_type = Some "gint"; nullable = false };
+        param_type = { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone };
         direction = Out;
         nullable = false;
         varargs = false;
@@ -140,11 +140,11 @@ let test_inout_parameter () =
   let meth = {
     method_name = "transform";
     c_identifier = "gtk_widget_transform";
-    return_type = { name = "none"; c_type = Some "void"; nullable = false };
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone };
     parameters = [
       {
         param_name = "value";
-        param_type = { name = "gint"; c_type = Some "gint"; nullable = false };
+        param_type = { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone };
         direction = InOut;  (* InOut parameter *)
         nullable = false;
         varargs = false;
@@ -173,32 +173,32 @@ let test_multiple_out_params () =
   let meth = {
     method_name = "get_bounds";
     c_identifier = "gtk_widget_get_bounds";
-    return_type = { name = "none"; c_type = Some "void"; nullable = false };
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone };
     parameters = [
       {
         param_name = "x";
-        param_type = { name = "gint"; c_type = Some "gint"; nullable = false };
+        param_type = { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone };
         direction = Out;
         nullable = false;
         varargs = false;
       };
       {
         param_name = "y";
-        param_type = { name = "gint"; c_type = Some "gint"; nullable = false };
+        param_type = { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone };
         direction = Out;
         nullable = false;
         varargs = false;
       };
       {
         param_name = "width";
-        param_type = { name = "gint"; c_type = Some "gint"; nullable = false };
+        param_type = { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone };
         direction = Out;
         nullable = false;
         varargs = false;
       };
       {
         param_name = "height";
-        param_type = { name = "gint"; c_type = Some "gint"; nullable = false };
+        param_type = { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone };
         direction = Out;
         nullable = false;
         varargs = false;
@@ -229,11 +229,11 @@ let test_out_param_no_ocaml_input () =
   let meth = {
     method_name = "get_width";
     c_identifier = "gtk_widget_get_width";
-    return_type = { name = "none"; c_type = Some "void"; nullable = false };
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone };
     parameters = [
       {
         param_name = "width";
-        param_type = { name = "gint"; c_type = Some "gint"; nullable = false };
+        param_type = { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone };
         direction = Out;
         nullable = false;
         varargs = false;

@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_string_list_new(value arg1)
 {
 CAMLparam1(arg1);
 GtkStringList *obj = gtk_string_list_new(arg1);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkStringList(obj));
 }
 

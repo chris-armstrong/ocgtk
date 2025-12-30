@@ -60,6 +60,14 @@ external coerce : 'a obj -> unit obj = "%identity"
 val get_ref_count : 'a obj -> int
 (** Get reference count (for debugging) *)
 
+(** {2 Test Helpers} *)
+
+val is_custom_block : 'a obj -> bool
+(** Test helper: check if value is custom block (for testing GObject finalizers) *)
+
+val is_gobject : 'a obj -> bool
+(** Test helper: check if pointer is a valid GObject *)
+
 (** {2 Type System} *)
 
 module Type : sig

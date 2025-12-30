@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_unix_fd_list_new(value unit)
 {
 CAMLparam1(unit);
 GUnixFDList *obj = g_unix_fd_list_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GUnixFDList(obj));
 }
 
@@ -33,6 +34,7 @@ CAMLexport CAMLprim value ml_g_unix_fd_list_new_from_array(value arg1, value arg
 {
 CAMLparam2(arg1, arg2);
 GUnixFDList *obj = g_unix_fd_list_new_from_array(arg1, Int_val(arg2));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GUnixFDList(obj));
 }
 

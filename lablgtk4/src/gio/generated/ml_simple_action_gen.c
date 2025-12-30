@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_simple_action_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 GSimpleAction *obj = g_simple_action_new(String_val(arg1), arg2);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GSimpleAction(obj));
 }
 
@@ -33,6 +34,7 @@ CAMLexport CAMLprim value ml_g_simple_action_new_stateful(value arg1, value arg2
 {
 CAMLparam3(arg1, arg2, arg3);
 GSimpleAction *obj = g_simple_action_new_stateful(String_val(arg1), arg2, arg3);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GSimpleAction(obj));
 }
 

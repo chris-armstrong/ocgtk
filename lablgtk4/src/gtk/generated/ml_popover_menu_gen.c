@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_popover_menu_new_from_model(value arg1)
 {
 CAMLparam1(arg1);
 GtkPopoverMenu *obj = gtk_popover_menu_new_from_model(arg1);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkPopoverMenu(obj));
 }
 
@@ -28,6 +29,7 @@ CAMLexport CAMLprim value ml_gtk_popover_menu_new_from_model_full(value arg1, va
 {
 CAMLparam2(arg1, arg2);
 GtkPopoverMenu *obj = gtk_popover_menu_new_from_model_full(arg1, GtkPopoverMenuFlags_val(arg2));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkPopoverMenu(obj));
 }
 

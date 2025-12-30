@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_frame_new(value arg1)
 {
 CAMLparam1(arg1);
 GtkFrame *obj = gtk_frame_new(String_option_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkFrame(obj));
 }
 
@@ -61,6 +62,7 @@ CAMLexport CAMLprim value ml_gtk_frame_get_label_widget(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_frame_get_label_widget(GtkFrame_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -85,6 +87,7 @@ CAMLexport CAMLprim value ml_gtk_frame_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_frame_get_child(GtkFrame_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 

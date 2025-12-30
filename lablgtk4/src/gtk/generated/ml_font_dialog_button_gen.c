@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_font_dialog_button_new(value arg1)
 {
 CAMLparam1(arg1);
 GtkFontDialogButton *obj = gtk_font_dialog_button_new(Option_val(arg1, GtkFontDialog_val, NULL));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkFontDialogButton(obj));
 }
 
@@ -101,5 +102,6 @@ CAMLexport CAMLprim value ml_gtk_font_dialog_button_get_dialog(value self)
 CAMLparam1(self);
 
 GtkFontDialog* result = gtk_font_dialog_button_get_dialog(GtkFontDialogButton_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkFontDialog));
 }

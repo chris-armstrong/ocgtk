@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_table_new(value unit)
 {
 CAMLparam1(unit);
 GtkTextTagTable *obj = gtk_text_tag_table_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkTextTagTable(obj));
 }
 
@@ -37,6 +38,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_table_lookup(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkTextTag* result = gtk_text_tag_table_lookup(GtkTextTagTable_val(self), String_val(arg1));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkTextTag));
 }
 

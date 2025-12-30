@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_multi_sorter_new(value unit)
 {
 CAMLparam1(unit);
 GtkMultiSorter *obj = gtk_multi_sorter_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkMultiSorter(obj));
 }
 

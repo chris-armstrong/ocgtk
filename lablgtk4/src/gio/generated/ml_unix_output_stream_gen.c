@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_unix_output_stream_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 GUnixOutputStream *obj = g_unix_output_stream_new(Int_val(arg1), Bool_val(arg2));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GUnixOutputStream(obj));
 }
 

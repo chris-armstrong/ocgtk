@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_socket_service_new(value unit)
 {
 CAMLparam1(unit);
 GSocketService *obj = g_socket_service_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GSocketService(obj));
 }
 

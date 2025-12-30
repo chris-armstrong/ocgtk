@@ -188,5 +188,6 @@ CAMLexport CAMLprim value ml_gtk_range_get_adjustment(value self)
 CAMLparam1(self);
 
 GtkAdjustment* result = gtk_range_get_adjustment(GtkRange_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkAdjustment(result));
 }

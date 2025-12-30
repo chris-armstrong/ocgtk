@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_stack_new(value unit)
 {
 CAMLparam1(unit);
 GtkStack *obj = gtk_stack_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkStack(obj));
 }
 
@@ -109,6 +110,7 @@ CAMLexport CAMLprim value ml_gtk_stack_get_visible_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_stack_get_visible_child(GtkStack_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -157,6 +159,7 @@ CAMLexport CAMLprim value ml_gtk_stack_get_page(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkStackPage* result = gtk_stack_get_page(GtkStack_val(self), GtkWidget_val(arg1));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkStackPage(result));
 }
 
@@ -181,6 +184,7 @@ CAMLexport CAMLprim value ml_gtk_stack_get_child_by_name(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkWidget* result = gtk_stack_get_child_by_name(GtkStack_val(self), String_val(arg1));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -189,6 +193,7 @@ CAMLexport CAMLprim value ml_gtk_stack_add_titled(value self, value arg1, value 
 CAMLparam4(self, arg1, arg2, arg3);
 
 GtkStackPage* result = gtk_stack_add_titled(GtkStack_val(self), GtkWidget_val(arg1), String_option_val(arg2), String_val(arg3));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkStackPage(result));
 }
 
@@ -197,6 +202,7 @@ CAMLexport CAMLprim value ml_gtk_stack_add_named(value self, value arg1, value a
 CAMLparam3(self, arg1, arg2);
 
 GtkStackPage* result = gtk_stack_add_named(GtkStack_val(self), GtkWidget_val(arg1), String_option_val(arg2));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkStackPage(result));
 }
 
@@ -205,5 +211,6 @@ CAMLexport CAMLprim value ml_gtk_stack_add_child(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkStackPage* result = gtk_stack_add_child(GtkStack_val(self), GtkWidget_val(arg1));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkStackPage(result));
 }

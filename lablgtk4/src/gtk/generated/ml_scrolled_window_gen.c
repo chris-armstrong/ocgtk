@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_scrolled_window_new(value unit)
 {
 CAMLparam1(unit);
 GtkScrolledWindow *obj = gtk_scrolled_window_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkScrolledWindow(obj));
 }
 
@@ -149,6 +150,7 @@ CAMLexport CAMLprim value ml_gtk_scrolled_window_get_vscrollbar(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_scrolled_window_get_vscrollbar(GtkScrolledWindow_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -157,6 +159,7 @@ CAMLexport CAMLprim value ml_gtk_scrolled_window_get_vadjustment(value self)
 CAMLparam1(self);
 
 GtkAdjustment* result = gtk_scrolled_window_get_vadjustment(GtkScrolledWindow_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkAdjustment(result));
 }
 
@@ -251,6 +254,7 @@ CAMLexport CAMLprim value ml_gtk_scrolled_window_get_hscrollbar(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_scrolled_window_get_hscrollbar(GtkScrolledWindow_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -267,6 +271,7 @@ CAMLexport CAMLprim value ml_gtk_scrolled_window_get_hadjustment(value self)
 CAMLparam1(self);
 
 GtkAdjustment* result = gtk_scrolled_window_get_hadjustment(GtkScrolledWindow_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkAdjustment(result));
 }
 
@@ -275,6 +280,7 @@ CAMLexport CAMLprim value ml_gtk_scrolled_window_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_scrolled_window_get_child(GtkScrolledWindow_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
