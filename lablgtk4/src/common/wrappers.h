@@ -45,6 +45,25 @@ CAMLexport value ml_gir_record_alloc(const void *src, size_t size, const char *t
 CAMLexport void *ml_gir_record_ptr_val(value v, const char *type_name);
 
 /* ==================================================================== */
+/* GObject helpers with automatic reference counting                   */
+/* ==================================================================== */
+
+/* Wrap a GObject in a custom block with automatic g_object_unref finalizer.
+ * IMPORTANT: This function does NOT modify refcount - caller must handle
+ * refcounting based on transfer-ownership attribute:
+ *   - transfer-ownership="none": call g_object_ref_sink() before wrapping
+ *   - transfer-ownership="floating": call g_object_ref_sink() before wrapping
+ *   - transfer-ownership="full": pass directly (we already own the reference)
+ */
+CAMLexport value ml_gobject_val_of_ext(const void *gobject);
+
+/* Extract GObject pointer from custom block */
+CAMLexport void* ml_gobject_ext_of_val(const value val);
+
+/* Nullable GObject variant - returns Val_none for NULL */
+CAMLexport value ml_gobject_val_of_ext_option(const void *gobject);
+
+/* ==================================================================== */
 /* Pointer Wrapping (OCaml 5.0+ compatible) */
 /* ==================================================================== */
 

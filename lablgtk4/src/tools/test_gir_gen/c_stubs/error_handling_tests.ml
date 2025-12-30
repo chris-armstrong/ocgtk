@@ -21,11 +21,11 @@ let test_method_with_throws_declares_error () =
   let meth = {
     method_name = "save_to_file";
     c_identifier = "gtk_widget_save_to_file";
-    return_type = { name = "gboolean"; c_type = Some "gboolean"; nullable = false };
+    return_type = { name = "gboolean"; c_type = Some "gboolean"; nullable = false; transfer_ownership = TransferNone };
     parameters = [
       {
         param_name = "filename";
-        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false };
+        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone };
         direction = In;
         nullable = false;
         varargs = false;
@@ -54,11 +54,11 @@ let test_error_handling_uses_res_ok () =
   let meth = {
     method_name = "load_file";
     c_identifier = "gtk_widget_load_file";
-    return_type = { name = "gboolean"; c_type = Some "gboolean"; nullable = false };
+    return_type = { name = "gboolean"; c_type = Some "gboolean"; nullable = false; transfer_ownership = TransferNone };
     parameters = [
       {
         param_name = "filename";
-        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false };
+        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone };
         direction = In;
         nullable = false;
         varargs = false;
@@ -87,7 +87,7 @@ let test_error_passed_by_reference () =
   let meth = {
     method_name = "save";
     c_identifier = "gtk_widget_save";
-    return_type = { name = "gboolean"; c_type = Some "gboolean"; nullable = false };
+    return_type = { name = "gboolean"; c_type = Some "gboolean"; nullable = false; transfer_ownership = TransferNone };
     parameters = [];
     doc = None;
     throws = true;
@@ -112,7 +112,7 @@ let test_error_initialized_to_null () =
   let meth = {
     method_name = "open";
     c_identifier = "gtk_widget_open";
-    return_type = { name = "gboolean"; c_type = Some "gboolean"; nullable = false };
+    return_type = { name = "gboolean"; c_type = Some "gboolean"; nullable = false; transfer_ownership = TransferNone };
     parameters = [];
     doc = None;
     throws = true;
@@ -141,7 +141,7 @@ let test_has_complete_error_handling () =
   let meth = {
     method_name = "process";
     c_identifier = "gtk_widget_process";
-    return_type = { name = "gboolean"; c_type = Some "gboolean"; nullable = false };
+    return_type = { name = "gboolean"; c_type = Some "gboolean"; nullable = false; transfer_ownership = TransferNone };
     parameters = [];
     doc = None;
     throws = true;
@@ -169,7 +169,7 @@ let test_constructor_with_throws () =
     ctor_parameters = [
       {
         param_name = "filename";
-        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false };
+        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone };
         direction = In;
         nullable = false;
         varargs = false;

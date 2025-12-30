@@ -79,7 +79,7 @@ let test_constructor_with_params () =
     ctor_parameters = [
       {
         param_name = "label";
-        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false };
+        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone };
         direction = In;
         nullable = false;
         varargs = false;
@@ -109,7 +109,7 @@ let test_constructor_many_params () =
   let params = List.init 6 (fun i ->
     {
       param_name = sprintf "arg%d" (i + 1);
-      param_type = { name = "gint"; c_type = Some "gint"; nullable = false };
+      param_type = { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone };
       direction = In;
       nullable = false;
       varargs = false;
@@ -145,11 +145,11 @@ let test_simple_method () =
   let meth = {
     method_name = "set_label";
     c_identifier = "gtk_button_set_label";
-    return_type = { name = "none"; c_type = Some "void"; nullable = false };
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone };
     parameters = [
       {
         param_name = "label";
-        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false };
+        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone };
         direction = In;
         nullable = false;
         varargs = false;
@@ -181,7 +181,7 @@ let test_method_with_return_value () =
   let meth = {
     method_name = "get_label";
     c_identifier = "gtk_button_get_label";
-    return_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false };
+    return_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone };
     parameters = [];
     doc = None;
     throws = false;
@@ -231,11 +231,11 @@ let test_method_calls_c_function () =
   let meth = {
     method_name = "set_label";
     c_identifier = "gtk_button_set_label";
-    return_type = { name = "none"; c_type = Some "void"; nullable = false };
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone };
     parameters = [
       {
         param_name = "label";
-        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false };
+        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone };
         direction = In;
         nullable = false;
         varargs = false;
@@ -314,7 +314,7 @@ let test_bytecode_calls_native () =
   let params = List.init 6 (fun i ->
     {
       param_name = sprintf "arg%d" (i + 1);
-      param_type = { name = "gint"; c_type = Some "gint"; nullable = false };
+      param_type = { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone };
       direction = In;
       nullable = false;
       varargs = false;
@@ -354,7 +354,7 @@ let test_non_opaque_record_return () =
     fields = [
       {
         field_name = "width";
-        field_type = Some { name = "gint"; c_type = Some "gint"; nullable = false };
+        field_type = Some { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone };
         readable = true;
         writable = false;
         field_doc = None;
@@ -374,7 +374,7 @@ let test_non_opaque_record_return () =
   let meth = {
     method_name = "get_record";
     c_identifier = "gtk_widget_get_record";
-    return_type = { name = "TestRecord"; c_type = Some "GtkTestRecord*"; nullable = false };
+    return_type = { name = "TestRecord"; c_type = Some "GtkTestRecord*"; nullable = false; transfer_ownership = TransferNone };
     parameters = [];
     doc = None;
     throws = false;
@@ -405,7 +405,7 @@ let test_non_opaque_record_parameter () =
     fields = [
       {
         field_name = "width";
-        field_type = Some { name = "gint"; c_type = Some "gint"; nullable = false };
+        field_type = Some { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone };
         readable = true;
         writable = false;
         field_doc = None;
@@ -425,11 +425,11 @@ let test_non_opaque_record_parameter () =
   let meth = {
     method_name = "set_record";
     c_identifier = "gtk_widget_set_record";
-    return_type = { name = "none"; c_type = Some "void"; nullable = false };
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone };
     parameters = [
       {
         param_name = "record";
-        param_type = { name = "TestRecord"; c_type = Some "GtkTestRecord*"; nullable = false };
+        param_type = { name = "TestRecord"; c_type = Some "GtkTestRecord*"; nullable = false; transfer_ownership = TransferNone };
         direction = In;
         nullable = false;
         varargs = false;
@@ -481,7 +481,7 @@ let test_opaque_record_return () =
   let meth = {
     method_name = "get_opaque";
     c_identifier = "gtk_widget_get_opaque";
-    return_type = { name = "OpaqueRec"; c_type = Some "GtkOpaqueRec*"; nullable = false };
+    return_type = { name = "OpaqueRec"; c_type = Some "GtkOpaqueRec*"; nullable = false; transfer_ownership = TransferNone };
     parameters = [];
     doc = None;
     throws = false;
@@ -524,11 +524,11 @@ let test_opaque_record_parameter () =
   let meth = {
     method_name = "set_opaque";
     c_identifier = "gtk_widget_set_opaque";
-    return_type = { name = "none"; c_type = Some "void"; nullable = false };
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone };
     parameters = [
       {
         param_name = "opaque";
-        param_type = { name = "OpaqueRec"; c_type = Some "GtkOpaqueRec*"; nullable = false };
+        param_type = { name = "OpaqueRec"; c_type = Some "GtkOpaqueRec*"; nullable = false; transfer_ownership = TransferNone };
         direction = In;
         nullable = false;
         varargs = false;
@@ -567,7 +567,7 @@ let test_nullable_record_return () =
     fields = [
       {
         field_name = "width";
-        field_type = Some { name = "gint"; c_type = Some "gint"; nullable = false };
+        field_type = Some { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone };
         readable = true;
         writable = false;
         field_doc = None;
@@ -587,7 +587,7 @@ let test_nullable_record_return () =
   let meth = {
     method_name = "get_nullable_record";
     c_identifier = "gtk_widget_get_nullable_record";
-    return_type = { name = "TestRecord"; c_type = Some "GtkTestRecord*"; nullable = true };
+    return_type = { name = "TestRecord"; c_type = Some "GtkTestRecord*"; nullable = true; transfer_ownership = TransferNone };
     parameters = [];
     doc = None;
     throws = false;
@@ -618,7 +618,7 @@ let test_nullable_record_parameter () =
     fields = [
       {
         field_name = "width";
-        field_type = Some { name = "gint"; c_type = Some "gint"; nullable = false };
+        field_type = Some { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone };
         readable = true;
         writable = false;
         field_doc = None;
@@ -638,11 +638,11 @@ let test_nullable_record_parameter () =
   let meth = {
     method_name = "set_nullable_record";
     c_identifier = "gtk_widget_set_nullable_record";
-    return_type = { name = "none"; c_type = Some "void"; nullable = false };
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone };
     parameters = [
       {
         param_name = "record";
-        param_type = { name = "TestRecord"; c_type = Some "GtkTestRecord*"; nullable = true };
+        param_type = { name = "TestRecord"; c_type = Some "GtkTestRecord*"; nullable = true; transfer_ownership = TransferNone };
         direction = In;
         nullable = true;
         varargs = false;

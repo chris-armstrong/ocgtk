@@ -1,9 +1,12 @@
 (* Type Definitions for GIR Code Generator *)
 
+type transfer_ownership = TransferNone | TransferFull | TransferContainer | TransferFloating
+
 type gir_type = {
   name : string;
   c_type : string option;
   nullable: bool;
+  transfer_ownership: transfer_ownership;
 }
 
 type gir_direction = In | Out | InOut

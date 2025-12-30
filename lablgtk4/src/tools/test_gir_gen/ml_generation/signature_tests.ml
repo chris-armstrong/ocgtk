@@ -67,7 +67,7 @@ let test_constructor_signature_matches () =
     ctor_parameters = [
       {
         param_name = "label";
-        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false };
+        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone };
         direction = In;
         nullable = false;
         varargs = false;
@@ -131,11 +131,11 @@ let test_method_signature_matches () =
   let meth = {
     method_name = "set_label";
     c_identifier = "gtk_button_set_label";
-    return_type = { name = "none"; c_type = Some "void"; nullable = false };
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone };
     parameters = [
       {
         param_name = "label";
-        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false };
+        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone };
         direction = In;
         nullable = false;
         varargs = false;
@@ -202,11 +202,11 @@ let test_multiple_methods_match () =
     {
       method_name = "set_label";
       c_identifier = "gtk_button_set_label";
-      return_type = { name = "none"; c_type = Some "void"; nullable = false };
+      return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone };
       parameters = [
         {
           param_name = "label";
-          param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false };
+          param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone };
           direction = In;
           nullable = false;
           varargs = false;
@@ -220,7 +220,7 @@ let test_multiple_methods_match () =
     {
       method_name = "get_label";
       c_identifier = "gtk_button_get_label";
-      return_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false };
+      return_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone };
       parameters = [];
       doc = None;
       throws = false;

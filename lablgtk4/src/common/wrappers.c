@@ -154,6 +154,65 @@ CAMLexport void *ml_gir_record_ptr_val(value v, const char *type_name) {
     CAMLreturnT(void*, ptr);
 }
 
+/* ==================================================================== */
+/* GObject helpers with automatic reference counting                    */
+/* ==================================================================== */
+
+static void finalize_gobject(value v) {
+    void *ptr = *((void**)Data_custom_val(v));
+    if (ptr != NULL) {
+        GObject* gobj = G_OBJECT(ptr);
+        GType type = G_OBJECT_TYPE(gobj);
+        g_object_unref(gobj);
+        printf("[f][obj]  %s %p\n", g_type_name(type), ptr);
+    }
+}
+
+static struct custom_operations gobject_custom_ops = {
+    "lablgtk4.gobject",
+    finalize_gobject,
+    custom_compare_default,
+    custom_hash_default,
+    custom_serialize_default,
+    custom_deserialize_default,
+    custom_compare_ext_default,
+    custom_fixed_length_default
+};
+
+CAMLexport value ml_gobject_val_of_ext(const void *gobject) {
+    CAMLparam0();
+    CAMLlocal1(v);
+
+    if (gobject == NULL) {
+        caml_failwith("ml_gobject_val_of_ext: NULL GObject");
+    }
+
+    /* Just wrap the pointer in a custom block with finalizer.
+       Caller is responsible for managing refcount based on transfer-ownership. */
+    v = caml_alloc_custom(&gobject_custom_ops, sizeof(void*), 0, 1);
+    *((void**)Data_custom_val(v)) = (void*)gobject;
+
+    CAMLreturn(v);
+}
+
+CAMLexport void* ml_gobject_ext_of_val(const value val) {
+    CAMLparam1(val);
+    CAMLreturnT(void*, *((void**)Data_custom_val(val)));
+}
+
+CAMLexport value ml_gobject_val_of_ext_option(const void *gobject) {
+    CAMLparam0();
+    CAMLlocal1(some);
+
+    if (gobject == NULL) {
+        CAMLreturn(Val_none);
+    }
+
+    some = caml_alloc(1, 0);
+    Store_field(some, 0, ml_gobject_val_of_ext(gobject));
+    CAMLreturn(some);
+}
+
 /* Wrap a C pointer in an Abstract block for OCaml 5.0+ compatibility.
  * This prevents the GC from scanning C pointers as if they were heap values.
  * Layout: [header | unused | pointer]
