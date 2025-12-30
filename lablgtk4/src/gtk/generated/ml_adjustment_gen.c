@@ -22,6 +22,7 @@ CAMLexport CAMLprim value ml_gtk_adjustment_new_native(value arg1, value arg2, v
 CAMLparam5(arg1, arg2, arg3, arg4, arg5);
 CAMLxparam1(arg6);
 GtkAdjustment *obj = gtk_adjustment_new(Double_val(arg1), Double_val(arg2), Double_val(arg3), Double_val(arg4), Double_val(arg5), Double_val(arg6));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkAdjustment(obj));
 }
 

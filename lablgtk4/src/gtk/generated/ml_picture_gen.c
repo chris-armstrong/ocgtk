@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_picture_new(value unit)
 {
 CAMLparam1(unit);
 GtkPicture *obj = gtk_picture_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkPicture(obj));
 }
 
@@ -28,6 +29,7 @@ CAMLexport CAMLprim value ml_gtk_picture_new_for_file(value arg1)
 {
 CAMLparam1(arg1);
 GtkPicture *obj = gtk_picture_new_for_file(arg1);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkPicture(obj));
 }
 
@@ -35,6 +37,7 @@ CAMLexport CAMLprim value ml_gtk_picture_new_for_filename(value arg1)
 {
 CAMLparam1(arg1);
 GtkPicture *obj = gtk_picture_new_for_filename(String_option_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkPicture(obj));
 }
 
@@ -42,6 +45,7 @@ CAMLexport CAMLprim value ml_gtk_picture_new_for_paintable(value arg1)
 {
 CAMLparam1(arg1);
 GtkPicture *obj = gtk_picture_new_for_paintable(arg1);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkPicture(obj));
 }
 
@@ -49,6 +53,7 @@ CAMLexport CAMLprim value ml_gtk_picture_new_for_pixbuf(value arg1)
 {
 CAMLparam1(arg1);
 GtkPicture *obj = gtk_picture_new_for_pixbuf(arg1);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkPicture(obj));
 }
 
@@ -56,6 +61,7 @@ CAMLexport CAMLprim value ml_gtk_picture_new_for_resource(value arg1)
 {
 CAMLparam1(arg1);
 GtkPicture *obj = gtk_picture_new_for_resource(String_option_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkPicture(obj));
 }
 

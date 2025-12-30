@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_drag_source_new(value unit)
 {
 CAMLparam1(unit);
 GtkDragSource *obj = gtk_drag_source_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkDragSource(obj));
 }
 

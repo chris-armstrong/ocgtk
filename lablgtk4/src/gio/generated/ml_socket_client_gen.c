@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_socket_client_new(value unit)
 {
 CAMLparam1(unit);
 GSocketClient *obj = g_socket_client_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GSocketClient(obj));
 }
 
@@ -138,6 +139,7 @@ CAMLexport CAMLprim value ml_g_socket_client_get_proxy_resolver(value self)
 CAMLparam1(self);
 
 GProxyResolver* result = g_socket_client_get_proxy_resolver(GSocketClient_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GProxyResolver(result));
 }
 
@@ -154,6 +156,7 @@ CAMLexport CAMLprim value ml_g_socket_client_get_local_address(value self)
 CAMLparam1(self);
 
 GSocketAddress* result = g_socket_client_get_local_address(GSocketClient_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GSocketAddress));
 }
 

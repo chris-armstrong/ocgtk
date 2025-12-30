@@ -59,6 +59,7 @@ CAMLexport CAMLprim value ml_g_tls_certificate_get_issuer(value self)
 CAMLparam1(self);
 
 GTlsCertificate* result = g_tls_certificate_get_issuer(GTlsCertificate_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GTlsCertificate));
 }
 

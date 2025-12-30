@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_io_module_new(value arg1)
 {
 CAMLparam1(arg1);
 GIOModule *obj = g_io_module_new(String_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GIOModule(obj));
 }
 

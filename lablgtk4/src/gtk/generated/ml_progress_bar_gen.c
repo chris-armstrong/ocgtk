@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_progress_bar_new(value unit)
 {
 CAMLparam1(unit);
 GtkProgressBar *obj = gtk_progress_bar_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkProgressBar(obj));
 }
 

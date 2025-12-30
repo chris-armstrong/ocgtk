@@ -62,5 +62,6 @@ CAMLexport CAMLprim value ml_gtk_column_view_cell_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_column_view_cell_get_child(GtkColumnViewCell_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }

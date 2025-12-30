@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_tree_list_row_sorter_new(value arg1)
 {
 CAMLparam1(arg1);
 GtkTreeListRowSorter *obj = gtk_tree_list_row_sorter_new(Option_val(arg1, GtkSorter_val, NULL));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkTreeListRowSorter(obj));
 }
 
@@ -37,5 +38,6 @@ CAMLexport CAMLprim value ml_gtk_tree_list_row_sorter_get_sorter(value self)
 CAMLparam1(self);
 
 GtkSorter* result = gtk_tree_list_row_sorter_get_sorter(GtkTreeListRowSorter_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkSorter));
 }

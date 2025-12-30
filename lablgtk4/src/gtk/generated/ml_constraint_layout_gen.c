@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_constraint_layout_new(value unit)
 {
 CAMLparam1(unit);
 GtkConstraintLayout *obj = gtk_constraint_layout_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkConstraintLayout(obj));
 }
 

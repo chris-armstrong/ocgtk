@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_notebook_new(value unit)
 {
 CAMLparam1(unit);
 GtkNotebook *obj = gtk_notebook_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkNotebook(obj));
 }
 
@@ -245,6 +246,7 @@ CAMLexport CAMLprim value ml_gtk_notebook_get_tab_label(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkWidget* result = gtk_notebook_get_tab_label(GtkNotebook_val(self), GtkWidget_val(arg1));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -285,6 +287,7 @@ CAMLexport CAMLprim value ml_gtk_notebook_get_page(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkNotebookPage* result = gtk_notebook_get_page(GtkNotebook_val(self), GtkWidget_val(arg1));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkNotebookPage(result));
 }
 
@@ -293,6 +296,7 @@ CAMLexport CAMLprim value ml_gtk_notebook_get_nth_page(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkWidget* result = gtk_notebook_get_nth_page(GtkNotebook_val(self), Int_val(arg1));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -317,6 +321,7 @@ CAMLexport CAMLprim value ml_gtk_notebook_get_menu_label(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkWidget* result = gtk_notebook_get_menu_label(GtkNotebook_val(self), GtkWidget_val(arg1));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -341,6 +346,7 @@ CAMLexport CAMLprim value ml_gtk_notebook_get_action_widget(value self, value ar
 CAMLparam2(self, arg1);
 
 GtkWidget* result = gtk_notebook_get_action_widget(GtkNotebook_val(self), GtkPackType_val(arg1));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 

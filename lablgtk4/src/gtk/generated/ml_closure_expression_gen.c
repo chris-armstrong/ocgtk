@@ -21,5 +21,6 @@ CAMLexport CAMLprim value ml_gtk_closure_expression_new(value arg1, value arg2, 
 {
 CAMLparam4(arg1, arg2, arg3, arg4);
 GtkClosureExpression *obj = gtk_closure_expression_new(arg1, arg2, Int_val(arg3), arg4);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkClosureExpression(obj));
 }

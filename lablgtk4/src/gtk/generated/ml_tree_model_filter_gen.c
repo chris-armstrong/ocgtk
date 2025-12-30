@@ -38,6 +38,7 @@ CAMLexport CAMLprim value ml_gtk_tree_model_filter_get_model(value self)
 CAMLparam1(self);
 
 GtkTreeModel* result = gtk_tree_model_filter_get_model(GtkTreeModelFilter_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkTreeModel(result));
 }
 

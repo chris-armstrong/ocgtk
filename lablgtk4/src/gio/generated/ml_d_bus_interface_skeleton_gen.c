@@ -83,6 +83,7 @@ CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_get_connection(value self
 CAMLparam1(self);
 
 GDBusConnection* result = g_dbus_interface_skeleton_get_connection(GDBusInterfaceSkeleton_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GDBusConnection));
 }
 

@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_text_child_anchor_new(value unit)
 {
 CAMLparam1(unit);
 GtkTextChildAnchor *obj = gtk_text_child_anchor_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkTextChildAnchor(obj));
 }
 
@@ -28,6 +29,7 @@ CAMLexport CAMLprim value ml_gtk_text_child_anchor_new_with_replacement(value ar
 {
 CAMLparam1(arg1);
 GtkTextChildAnchor *obj = gtk_text_child_anchor_new_with_replacement(String_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkTextChildAnchor(obj));
 }
 

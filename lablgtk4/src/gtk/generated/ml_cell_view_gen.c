@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_cell_view_new(value unit)
 {
 CAMLparam1(unit);
 GtkCellView *obj = gtk_cell_view_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkCellView(obj));
 }
 
@@ -28,6 +29,7 @@ CAMLexport CAMLprim value ml_gtk_cell_view_new_with_context(value arg1, value ar
 {
 CAMLparam2(arg1, arg2);
 GtkCellView *obj = gtk_cell_view_new_with_context(GtkCellArea_val(arg1), GtkCellAreaContext_val(arg2));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkCellView(obj));
 }
 
@@ -35,6 +37,7 @@ CAMLexport CAMLprim value ml_gtk_cell_view_new_with_markup(value arg1)
 {
 CAMLparam1(arg1);
 GtkCellView *obj = gtk_cell_view_new_with_markup(String_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkCellView(obj));
 }
 
@@ -42,6 +45,7 @@ CAMLexport CAMLprim value ml_gtk_cell_view_new_with_text(value arg1)
 {
 CAMLparam1(arg1);
 GtkCellView *obj = gtk_cell_view_new_with_text(String_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkCellView(obj));
 }
 
@@ -49,6 +53,7 @@ CAMLexport CAMLprim value ml_gtk_cell_view_new_with_texture(value arg1)
 {
 CAMLparam1(arg1);
 GtkCellView *obj = gtk_cell_view_new_with_texture(arg1);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkCellView(obj));
 }
 
@@ -89,6 +94,7 @@ CAMLexport CAMLprim value ml_gtk_cell_view_get_model(value self)
 CAMLparam1(self);
 
 GtkTreeModel* result = gtk_cell_view_get_model(GtkCellView_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkTreeModel));
 }
 

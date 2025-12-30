@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_icon_paintable_new_for_file(value arg1, value a
 {
 CAMLparam3(arg1, arg2, arg3);
 GtkIconPaintable *obj = gtk_icon_paintable_new_for_file(arg1, Int_val(arg2), Int_val(arg3));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkIconPaintable(obj));
 }
 

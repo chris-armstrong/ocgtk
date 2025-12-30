@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_selection_filter_model_new(value arg1)
 {
 CAMLparam1(arg1);
 GtkSelectionFilterModel *obj = gtk_selection_filter_model_new(Option_val(arg1, GtkSelectionModel_val, NULL));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkSelectionFilterModel(obj));
 }
 
@@ -37,6 +38,7 @@ CAMLexport CAMLprim value ml_gtk_selection_filter_model_get_model(value self)
 CAMLparam1(self);
 
 GtkSelectionModel* result = gtk_selection_filter_model_get_model(GtkSelectionFilterModel_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkSelectionModel));
 }
 

@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_simple_io_stream_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 GSimpleIOStream *obj = g_simple_io_stream_new(GInputStream_val(arg1), GOutputStream_val(arg2));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GSimpleIOStream(obj));
 }
 

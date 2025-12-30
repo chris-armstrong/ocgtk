@@ -135,6 +135,7 @@ CAMLexport CAMLprim value ml_g_dtls_connection_get_peer_certificate(value self)
 CAMLparam1(self);
 
 GTlsCertificate* result = g_dtls_connection_get_peer_certificate(GDtlsConnection_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GTlsCertificate));
 }
 
@@ -151,6 +152,7 @@ CAMLexport CAMLprim value ml_g_dtls_connection_get_interaction(value self)
 CAMLparam1(self);
 
 GTlsInteraction* result = g_dtls_connection_get_interaction(GDtlsConnection_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GTlsInteraction));
 }
 
@@ -159,6 +161,7 @@ CAMLexport CAMLprim value ml_g_dtls_connection_get_database(value self)
 CAMLparam1(self);
 
 GTlsDatabase* result = g_dtls_connection_get_database(GDtlsConnection_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GTlsDatabase));
 }
 
@@ -175,6 +178,7 @@ CAMLexport CAMLprim value ml_g_dtls_connection_get_certificate(value self)
 CAMLparam1(self);
 
 GTlsCertificate* result = g_dtls_connection_get_certificate(GDtlsConnection_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GTlsCertificate));
 }
 

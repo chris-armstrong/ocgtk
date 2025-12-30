@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_grid_view_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 GtkGridView *obj = gtk_grid_view_new(Option_val(arg1, GtkSelectionModel_val, NULL), Option_val(arg2, GtkListItemFactory_val, NULL));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkGridView(obj));
 }
 
@@ -109,6 +110,7 @@ CAMLexport CAMLprim value ml_gtk_grid_view_get_model(value self)
 CAMLparam1(self);
 
 GtkSelectionModel* result = gtk_grid_view_get_model(GtkGridView_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkSelectionModel));
 }
 
@@ -133,6 +135,7 @@ CAMLexport CAMLprim value ml_gtk_grid_view_get_factory(value self)
 CAMLparam1(self);
 
 GtkListItemFactory* result = gtk_grid_view_get_factory(GtkGridView_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkListItemFactory));
 }
 

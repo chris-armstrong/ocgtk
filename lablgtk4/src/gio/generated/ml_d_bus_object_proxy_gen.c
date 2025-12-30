@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_dbus_object_proxy_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 GDBusObjectProxy *obj = g_dbus_object_proxy_new(GDBusConnection_val(arg1), String_val(arg2));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GDBusObjectProxy(obj));
 }
 
@@ -34,6 +35,7 @@ CAMLexport CAMLprim value ml_g_dbus_object_proxy_get_connection(value self)
 CAMLparam1(self);
 
 GDBusConnection* result = g_dbus_object_proxy_get_connection(GDBusObjectProxy_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GDBusConnection(result));
 }
 

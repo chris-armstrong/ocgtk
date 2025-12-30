@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_new(value unit)
 {
 CAMLparam1(unit);
 GtkComboBox *obj = gtk_combo_box_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkComboBox(obj));
 }
 
@@ -28,6 +29,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_new_with_entry(value unit)
 {
 CAMLparam1(unit);
 GtkComboBox *obj = gtk_combo_box_new_with_entry();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkComboBox(obj));
 }
 
@@ -35,6 +37,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_new_with_model(value arg1)
 {
 CAMLparam1(arg1);
 GtkComboBox *obj = gtk_combo_box_new_with_model(GtkTreeModel_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkComboBox(obj));
 }
 
@@ -42,6 +45,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_new_with_model_and_entry(value arg1)
 {
 CAMLparam1(arg1);
 GtkComboBox *obj = gtk_combo_box_new_with_model_and_entry(GtkTreeModel_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkComboBox(obj));
 }
 
@@ -146,6 +150,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_get_model(value self)
 CAMLparam1(self);
 
 GtkTreeModel* result = gtk_combo_box_get_model(GtkComboBox_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkTreeModel));
 }
 
@@ -178,6 +183,7 @@ CAMLexport CAMLprim value ml_gtk_combo_box_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_combo_box_get_child(GtkComboBox_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 

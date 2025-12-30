@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_dbus_object_manager_server_new(value arg1)
 {
 CAMLparam1(arg1);
 GDBusObjectManagerServer *obj = g_dbus_object_manager_server_new(String_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GDBusObjectManagerServer(obj));
 }
 

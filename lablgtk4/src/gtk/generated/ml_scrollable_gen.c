@@ -62,6 +62,7 @@ CAMLexport CAMLprim value ml_gtk_scrollable_get_vadjustment(value self)
 CAMLparam1(self);
 
 GtkAdjustment* result = gtk_scrollable_get_vadjustment(GtkScrollable_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkAdjustment));
 }
 
@@ -78,6 +79,7 @@ CAMLexport CAMLprim value ml_gtk_scrollable_get_hadjustment(value self)
 CAMLparam1(self);
 
 GtkAdjustment* result = gtk_scrollable_get_hadjustment(GtkScrollable_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkAdjustment));
 }
 

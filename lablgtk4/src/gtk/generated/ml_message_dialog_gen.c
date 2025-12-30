@@ -30,6 +30,7 @@ CAMLexport CAMLprim value ml_gtk_message_dialog_get_message_area(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_message_dialog_get_message_area(GtkMessageDialog_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkWidget(result));
 }
 

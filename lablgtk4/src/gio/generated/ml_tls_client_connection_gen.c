@@ -67,6 +67,7 @@ CAMLexport CAMLprim value ml_g_tls_client_connection_get_server_identity(value s
 CAMLparam1(self);
 
 GSocketConnectable* result = g_tls_client_connection_get_server_identity(GTlsClientConnection_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GSocketConnectable));
 }
 

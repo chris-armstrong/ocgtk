@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_cell_renderer_accel_new(value unit)
 {
 CAMLparam1(unit);
 GtkCellRendererAccel *obj = gtk_cell_renderer_accel_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkCellRendererAccel(obj));
 }
 

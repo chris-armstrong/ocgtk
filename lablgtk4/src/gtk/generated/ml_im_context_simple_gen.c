@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_im_context_simple_new(value unit)
 {
 CAMLparam1(unit);
 GtkIMContextSimple *obj = gtk_im_context_simple_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkIMContextSimple(obj));
 }
 

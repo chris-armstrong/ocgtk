@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_unix_socket_address_new(value arg1)
 {
 CAMLparam1(arg1);
 GUnixSocketAddress *obj = g_unix_socket_address_new(String_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GUnixSocketAddress(obj));
 }
 
@@ -33,6 +34,7 @@ CAMLexport CAMLprim value ml_g_unix_socket_address_new_abstract(value arg1, valu
 {
 CAMLparam2(arg1, arg2);
 GUnixSocketAddress *obj = g_unix_socket_address_new_abstract(arg1, Int_val(arg2));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GUnixSocketAddress(obj));
 }
 
@@ -40,6 +42,7 @@ CAMLexport CAMLprim value ml_g_unix_socket_address_new_with_type(value arg1, val
 {
 CAMLparam3(arg1, arg2, arg3);
 GUnixSocketAddress *obj = g_unix_socket_address_new_with_type(arg1, Int_val(arg2), GioUnixSocketAddressType_val(arg3));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GUnixSocketAddress(obj));
 }
 

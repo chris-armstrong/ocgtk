@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_buffered_output_stream_new(value arg1)
 {
 CAMLparam1(arg1);
 GBufferedOutputStream *obj = g_buffered_output_stream_new(GOutputStream_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GBufferedOutputStream(obj));
 }
 
@@ -33,6 +34,7 @@ CAMLexport CAMLprim value ml_g_buffered_output_stream_new_sized(value arg1, valu
 {
 CAMLparam2(arg1, arg2);
 GBufferedOutputStream *obj = g_buffered_output_stream_new_sized(GOutputStream_val(arg1), arg2);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GBufferedOutputStream(obj));
 }
 

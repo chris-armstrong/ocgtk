@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_mnemonic_trigger_new(value arg1)
 {
 CAMLparam1(arg1);
 GtkMnemonicTrigger *obj = gtk_mnemonic_trigger_new(Int_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkMnemonicTrigger(obj));
 }
 

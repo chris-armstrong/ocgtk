@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_application_window_new(value arg1)
 {
 CAMLparam1(arg1);
 GtkApplicationWindow *obj = gtk_application_window_new(GtkApplication_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkApplicationWindow(obj));
 }
 
@@ -61,5 +62,6 @@ CAMLexport CAMLprim value ml_gtk_application_window_get_help_overlay(value self)
 CAMLparam1(self);
 
 GtkShortcutsWindow* result = gtk_application_window_get_help_overlay(GtkApplicationWindow_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkShortcutsWindow));
 }

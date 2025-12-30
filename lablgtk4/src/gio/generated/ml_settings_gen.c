@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_settings_new(value arg1)
 {
 CAMLparam1(arg1);
 GSettings *obj = g_settings_new(String_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GSettings(obj));
 }
 
@@ -33,6 +34,7 @@ CAMLexport CAMLprim value ml_g_settings_new_full(value arg1, value arg2, value a
 {
 CAMLparam3(arg1, arg2, arg3);
 GSettings *obj = g_settings_new_full(GSettingsSchema_val(arg1), Option_val(arg2, GSettingsBackend_val, NULL), String_option_val(arg3));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GSettings(obj));
 }
 
@@ -40,6 +42,7 @@ CAMLexport CAMLprim value ml_g_settings_new_with_backend(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 GSettings *obj = g_settings_new_with_backend(String_val(arg1), GSettingsBackend_val(arg2));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GSettings(obj));
 }
 
@@ -47,6 +50,7 @@ CAMLexport CAMLprim value ml_g_settings_new_with_backend_and_path(value arg1, va
 {
 CAMLparam3(arg1, arg2, arg3);
 GSettings *obj = g_settings_new_with_backend_and_path(String_val(arg1), GSettingsBackend_val(arg2), String_val(arg3));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GSettings(obj));
 }
 
@@ -54,6 +58,7 @@ CAMLexport CAMLprim value ml_g_settings_new_with_path(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 GSettings *obj = g_settings_new_with_path(String_val(arg1), String_val(arg2));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GSettings(obj));
 }
 

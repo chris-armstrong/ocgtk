@@ -27,6 +27,7 @@ CAMLexport CAMLprim value ml_g_proxy_address_new_native(value arg1, value arg2, 
 CAMLparam5(arg1, arg2, arg3, arg4, arg5);
 CAMLxparam2(arg6, arg7);
 GProxyAddress *obj = g_proxy_address_new(GInetAddress_val(arg1), arg2, String_val(arg3), String_val(arg4), arg5, String_option_val(arg6), String_option_val(arg7));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GProxyAddress(obj));
 }
 

@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_aspect_frame_new(value arg1, value arg2, value 
 {
 CAMLparam4(arg1, arg2, arg3, arg4);
 GtkAspectFrame *obj = gtk_aspect_frame_new(Double_val(arg1), Double_val(arg2), Double_val(arg3), Bool_val(arg4));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkAspectFrame(obj));
 }
 
@@ -101,5 +102,6 @@ CAMLexport CAMLprim value ml_gtk_aspect_frame_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_aspect_frame_get_child(GtkAspectFrame_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }

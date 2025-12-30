@@ -87,6 +87,7 @@ CAMLexport CAMLprim value ml_g_subprocess_get_stdout_pipe(value self)
 CAMLparam1(self);
 
 GInputStream* result = g_subprocess_get_stdout_pipe(GSubprocess_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GInputStream));
 }
 
@@ -95,6 +96,7 @@ CAMLexport CAMLprim value ml_g_subprocess_get_stdin_pipe(value self)
 CAMLparam1(self);
 
 GOutputStream* result = g_subprocess_get_stdin_pipe(GSubprocess_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GOutputStream));
 }
 
@@ -103,6 +105,7 @@ CAMLexport CAMLprim value ml_g_subprocess_get_stderr_pipe(value self)
 CAMLparam1(self);
 
 GInputStream* result = g_subprocess_get_stderr_pipe(GSubprocess_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GInputStream));
 }
 

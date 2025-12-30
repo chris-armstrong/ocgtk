@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_network_service_new(value arg1, value arg2, value
 {
 CAMLparam3(arg1, arg2, arg3);
 GNetworkService *obj = g_network_service_new(String_val(arg1), String_val(arg2), String_val(arg3));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GNetworkService(obj));
 }
 

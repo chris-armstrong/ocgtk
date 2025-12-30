@@ -60,6 +60,7 @@ CAMLexport CAMLprim value ml_g_file_enumerator_get_container(value self)
 CAMLparam1(self);
 
 GFile* result = g_file_enumerator_get_container(GFileEnumerator_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GFile(result));
 }
 

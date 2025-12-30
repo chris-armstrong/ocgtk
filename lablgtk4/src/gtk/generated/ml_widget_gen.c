@@ -413,6 +413,7 @@ CAMLexport CAMLprim value ml_gtk_widget_pick(value self, value arg1, value arg2,
 CAMLparam4(self, arg1, arg2, arg3);
 
 GtkWidget* result = gtk_widget_pick(GtkWidget_val(self), Double_val(arg1), Double_val(arg2), GtkPickFlags_val(arg3));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -639,6 +640,7 @@ CAMLexport CAMLprim value ml_gtk_widget_get_style_context(value self)
 CAMLparam1(self);
 
 GtkStyleContext* result = gtk_widget_get_style_context(GtkWidget_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkStyleContext(result));
 }
 
@@ -677,6 +679,7 @@ CAMLexport CAMLprim value ml_gtk_widget_get_settings(value self)
 CAMLparam1(self);
 
 GtkSettings* result = gtk_widget_get_settings(GtkWidget_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkSettings(result));
 }
 
@@ -701,6 +704,7 @@ CAMLexport CAMLprim value ml_gtk_widget_get_root(value self)
 CAMLparam1(self);
 
 GtkRoot* result = gtk_widget_get_root(GtkWidget_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkRoot));
 }
 
@@ -733,6 +737,7 @@ CAMLexport CAMLprim value ml_gtk_widget_get_prev_sibling(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_widget_get_prev_sibling(GtkWidget_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -755,6 +760,7 @@ CAMLexport CAMLprim value ml_gtk_widget_get_parent(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_widget_get_parent(GtkWidget_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -779,6 +785,7 @@ CAMLexport CAMLprim value ml_gtk_widget_get_next_sibling(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_widget_get_next_sibling(GtkWidget_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -787,6 +794,7 @@ CAMLexport CAMLprim value ml_gtk_widget_get_native(value self)
 CAMLparam1(self);
 
 GtkNative* result = gtk_widget_get_native(GtkWidget_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkNative));
 }
 
@@ -843,6 +851,7 @@ CAMLexport CAMLprim value ml_gtk_widget_get_layout_manager(value self)
 CAMLparam1(self);
 
 GtkLayoutManager* result = gtk_widget_get_layout_manager(GtkWidget_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkLayoutManager));
 }
 
@@ -851,6 +860,7 @@ CAMLexport CAMLprim value ml_gtk_widget_get_last_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_widget_get_last_child(GtkWidget_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -915,6 +925,7 @@ CAMLexport CAMLprim value ml_gtk_widget_get_focus_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_widget_get_focus_child(GtkWidget_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -923,6 +934,7 @@ CAMLexport CAMLprim value ml_gtk_widget_get_first_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_widget_get_first_child(GtkWidget_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 

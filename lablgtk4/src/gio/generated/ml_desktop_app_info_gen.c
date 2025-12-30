@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_desktop_app_info_new(value arg1)
 {
 CAMLparam1(arg1);
 GDesktopAppInfo *obj = g_desktop_app_info_new(String_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GDesktopAppInfo(obj));
 }
 
@@ -33,6 +34,7 @@ CAMLexport CAMLprim value ml_g_desktop_app_info_new_from_filename(value arg1)
 {
 CAMLparam1(arg1);
 GDesktopAppInfo *obj = g_desktop_app_info_new_from_filename(String_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GDesktopAppInfo(obj));
 }
 
@@ -40,6 +42,7 @@ CAMLexport CAMLprim value ml_g_desktop_app_info_new_from_keyfile(value arg1)
 {
 CAMLparam1(arg1);
 GDesktopAppInfo *obj = g_desktop_app_info_new_from_keyfile(arg1);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GDesktopAppInfo(obj));
 }
 

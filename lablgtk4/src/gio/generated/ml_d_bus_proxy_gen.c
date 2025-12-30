@@ -99,6 +99,7 @@ CAMLexport CAMLprim value ml_g_dbus_proxy_get_connection(value self)
 CAMLparam1(self);
 
 GDBusConnection* result = g_dbus_proxy_get_connection(GDBusProxy_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GDBusConnection(result));
 }
 

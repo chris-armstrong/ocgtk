@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_window_group_new(value unit)
 {
 CAMLparam1(unit);
 GtkWindowGroup *obj = gtk_window_group_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkWindowGroup(obj));
 }
 

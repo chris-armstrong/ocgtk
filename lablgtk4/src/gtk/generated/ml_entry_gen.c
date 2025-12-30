@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_entry_new(value unit)
 {
 CAMLparam1(unit);
 GtkEntry *obj = gtk_entry_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkEntry(obj));
 }
 
@@ -28,6 +29,7 @@ CAMLexport CAMLprim value ml_gtk_entry_new_with_buffer(value arg1)
 {
 CAMLparam1(arg1);
 GtkEntry *obj = gtk_entry_new_with_buffer(GtkEntryBuffer_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkEntry(obj));
 }
 
@@ -348,6 +350,7 @@ CAMLexport CAMLprim value ml_gtk_entry_get_completion(value self)
 CAMLparam1(self);
 
 GtkEntryCompletion* result = gtk_entry_get_completion(GtkEntry_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkEntryCompletion));
 }
 
@@ -356,6 +359,7 @@ CAMLexport CAMLprim value ml_gtk_entry_get_buffer(value self)
 CAMLparam1(self);
 
 GtkEntryBuffer* result = gtk_entry_get_buffer(GtkEntry_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkEntryBuffer(result));
 }
 

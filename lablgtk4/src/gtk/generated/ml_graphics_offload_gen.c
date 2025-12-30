@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_graphics_offload_new(value arg1)
 {
 CAMLparam1(arg1);
 GtkGraphicsOffload *obj = gtk_graphics_offload_new(Option_val(arg1, GtkWidget_val, NULL));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkGraphicsOffload(obj));
 }
 
@@ -53,5 +54,6 @@ CAMLexport CAMLprim value ml_gtk_graphics_offload_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_graphics_offload_get_child(GtkGraphicsOffload_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }

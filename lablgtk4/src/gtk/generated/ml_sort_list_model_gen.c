@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_sort_list_model_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 GtkSortListModel *obj = gtk_sort_list_model_new(arg1, Option_val(arg2, GtkSorter_val, NULL));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkSortListModel(obj));
 }
 
@@ -53,6 +54,7 @@ CAMLexport CAMLprim value ml_gtk_sort_list_model_get_sorter(value self)
 CAMLparam1(self);
 
 GtkSorter* result = gtk_sort_list_model_get_sorter(GtkSortListModel_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkSorter));
 }
 
@@ -61,6 +63,7 @@ CAMLexport CAMLprim value ml_gtk_sort_list_model_get_section_sorter(value self)
 CAMLparam1(self);
 
 GtkSorter* result = gtk_sort_list_model_get_section_sorter(GtkSortListModel_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkSorter));
 }
 

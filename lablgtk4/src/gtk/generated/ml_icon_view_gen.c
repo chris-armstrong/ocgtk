@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_icon_view_new(value unit)
 {
 CAMLparam1(unit);
 GtkIconView *obj = gtk_icon_view_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkIconView(obj));
 }
 
@@ -28,6 +29,7 @@ CAMLexport CAMLprim value ml_gtk_icon_view_new_with_area(value arg1)
 {
 CAMLparam1(arg1);
 GtkIconView *obj = gtk_icon_view_new_with_area(GtkCellArea_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkIconView(obj));
 }
 
@@ -35,6 +37,7 @@ CAMLexport CAMLprim value ml_gtk_icon_view_new_with_model(value arg1)
 {
 CAMLparam1(arg1);
 GtkIconView *obj = gtk_icon_view_new_with_model(GtkTreeModel_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkIconView(obj));
 }
 
@@ -354,6 +357,7 @@ CAMLexport CAMLprim value ml_gtk_icon_view_get_model(value self)
 CAMLparam1(self);
 
 GtkTreeModel* result = gtk_icon_view_get_model(GtkIconView_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkTreeModel));
 }
 

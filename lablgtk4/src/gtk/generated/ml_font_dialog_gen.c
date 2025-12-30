@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_font_dialog_new(value unit)
 {
 CAMLparam1(unit);
 GtkFontDialog *obj = gtk_font_dialog_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkFontDialog(obj));
 }
 
@@ -69,5 +70,6 @@ CAMLexport CAMLprim value ml_gtk_font_dialog_get_filter(value self)
 CAMLparam1(self);
 
 GtkFilter* result = gtk_font_dialog_get_filter(GtkFontDialog_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkFilter));
 }

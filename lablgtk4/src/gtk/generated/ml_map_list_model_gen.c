@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_map_list_model_new(value arg1, value arg2, valu
 {
 CAMLparam4(arg1, arg2, arg3, arg4);
 GtkMapListModel *obj = gtk_map_list_model_new(arg1, arg2, arg3, arg4);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkMapListModel(obj));
 }
 

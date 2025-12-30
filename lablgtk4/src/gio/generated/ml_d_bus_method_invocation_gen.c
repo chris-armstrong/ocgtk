@@ -75,6 +75,7 @@ CAMLexport CAMLprim value ml_g_dbus_method_invocation_get_message(value self)
 CAMLparam1(self);
 
 GDBusMessage* result = g_dbus_method_invocation_get_message(GDBusMethodInvocation_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GDBusMessage(result));
 }
 
@@ -91,5 +92,6 @@ CAMLexport CAMLprim value ml_g_dbus_method_invocation_get_connection(value self)
 CAMLparam1(self);
 
 GDBusConnection* result = g_dbus_method_invocation_get_connection(GDBusMethodInvocation_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GDBusConnection(result));
 }

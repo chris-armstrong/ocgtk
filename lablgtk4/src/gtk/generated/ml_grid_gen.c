@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_grid_new(value unit)
 {
 CAMLparam1(unit);
 GtkGrid *obj = gtk_grid_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkGrid(obj));
 }
 
@@ -183,6 +184,7 @@ CAMLexport CAMLprim value ml_gtk_grid_get_child_at(value self, value arg1, value
 CAMLparam3(self, arg1, arg2);
 
 GtkWidget* result = gtk_grid_get_child_at(GtkGrid_val(self), Int_val(arg1), Int_val(arg2));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 

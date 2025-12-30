@@ -94,6 +94,7 @@ CAMLexport CAMLprim value ml_gtk_file_chooser_get_filter(value self)
 CAMLparam1(self);
 
 GtkFileFilter* result = gtk_file_chooser_get_filter(GtkFileChooser_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkFileFilter));
 }
 

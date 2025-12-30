@@ -21,5 +21,6 @@ CAMLexport CAMLprim value ml_gtk_every_filter_new(value unit)
 {
 CAMLparam1(unit);
 GtkEveryFilter *obj = gtk_every_filter_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkEveryFilter(obj));
 }

@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_new(value arg1)
 {
 CAMLparam1(arg1);
 GtkColumnView *obj = gtk_column_view_new(Option_val(arg1, GtkSelectionModel_val, NULL));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkColumnView(obj));
 }
 
@@ -141,6 +142,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_get_sorter(value self)
 CAMLparam1(self);
 
 GtkSorter* result = gtk_column_view_get_sorter(GtkColumnView_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkSorter));
 }
 
@@ -173,6 +175,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_get_row_factory(value self)
 CAMLparam1(self);
 
 GtkListItemFactory* result = gtk_column_view_get_row_factory(GtkColumnView_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkListItemFactory));
 }
 
@@ -189,6 +192,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_get_model(value self)
 CAMLparam1(self);
 
 GtkSelectionModel* result = gtk_column_view_get_model(GtkColumnView_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkSelectionModel));
 }
 
@@ -197,6 +201,7 @@ CAMLexport CAMLprim value ml_gtk_column_view_get_header_factory(value self)
 CAMLparam1(self);
 
 GtkListItemFactory* result = gtk_column_view_get_header_factory(GtkColumnView_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkListItemFactory));
 }
 

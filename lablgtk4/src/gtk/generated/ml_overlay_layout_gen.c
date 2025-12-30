@@ -21,5 +21,6 @@ CAMLexport CAMLprim value ml_gtk_overlay_layout_new(value unit)
 {
 CAMLparam1(unit);
 GtkOverlayLayout *obj = gtk_overlay_layout_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkOverlayLayout(obj));
 }

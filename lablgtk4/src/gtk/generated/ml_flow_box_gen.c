@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_flow_box_new(value unit)
 {
 CAMLparam1(unit);
 GtkFlowBox *obj = gtk_flow_box_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkFlowBox(obj));
 }
 
@@ -229,6 +230,7 @@ CAMLexport CAMLprim value ml_gtk_flow_box_get_child_at_pos(value self, value arg
 CAMLparam3(self, arg1, arg2);
 
 GtkFlowBoxChild* result = gtk_flow_box_get_child_at_pos(GtkFlowBox_val(self), Int_val(arg1), Int_val(arg2));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkFlowBoxChild));
 }
 
@@ -237,6 +239,7 @@ CAMLexport CAMLprim value ml_gtk_flow_box_get_child_at_index(value self, value a
 CAMLparam2(self, arg1);
 
 GtkFlowBoxChild* result = gtk_flow_box_get_child_at_index(GtkFlowBox_val(self), Int_val(arg1));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkFlowBoxChild));
 }
 

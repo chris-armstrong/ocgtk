@@ -110,6 +110,7 @@ CAMLexport CAMLprim value ml_gtk_tree_selection_get_tree_view(value self)
 CAMLparam1(self);
 
 GtkTreeView* result = gtk_tree_selection_get_tree_view(GtkTreeSelection_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkTreeView(result));
 }
 

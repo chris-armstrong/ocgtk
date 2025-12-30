@@ -59,6 +59,7 @@ CAMLexport CAMLprim value ml_g_inet_address_mask_get_address(value self)
 CAMLparam1(self);
 
 GInetAddress* result = g_inet_address_mask_get_address(GInetAddressMask_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GInetAddress(result));
 }
 

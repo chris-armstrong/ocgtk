@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_dialog_new(value unit)
 {
 CAMLparam1(unit);
 GtkDialog *obj = gtk_dialog_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkDialog(obj));
 }
 
@@ -53,6 +54,7 @@ CAMLexport CAMLprim value ml_gtk_dialog_get_widget_for_response(value self, valu
 CAMLparam2(self, arg1);
 
 GtkWidget* result = gtk_dialog_get_widget_for_response(GtkDialog_val(self), Int_val(arg1));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -69,6 +71,7 @@ CAMLexport CAMLprim value ml_gtk_dialog_get_header_bar(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_dialog_get_header_bar(GtkDialog_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -77,6 +80,7 @@ CAMLexport CAMLprim value ml_gtk_dialog_get_content_area(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_dialog_get_content_area(GtkDialog_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkWidget(result));
 }
 
@@ -85,6 +89,7 @@ CAMLexport CAMLprim value ml_gtk_dialog_add_button(value self, value arg1, value
 CAMLparam3(self, arg1, arg2);
 
 GtkWidget* result = gtk_dialog_add_button(GtkDialog_val(self), String_val(arg1), Int_val(arg2));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkWidget(result));
 }
 

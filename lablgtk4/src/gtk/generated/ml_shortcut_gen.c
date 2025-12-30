@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_shortcut_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 GtkShortcut *obj = gtk_shortcut_new(Option_val(arg1, GtkShortcutTrigger_val, NULL), Option_val(arg2, GtkShortcutAction_val, NULL));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkShortcut(obj));
 }
 
@@ -45,6 +46,7 @@ CAMLexport CAMLprim value ml_gtk_shortcut_get_trigger(value self)
 CAMLparam1(self);
 
 GtkShortcutTrigger* result = gtk_shortcut_get_trigger(GtkShortcut_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkShortcutTrigger));
 }
 
@@ -53,5 +55,6 @@ CAMLexport CAMLprim value ml_gtk_shortcut_get_action(value self)
 CAMLparam1(self);
 
 GtkShortcutAction* result = gtk_shortcut_get_action(GtkShortcut_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkShortcutAction));
 }

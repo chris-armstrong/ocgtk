@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_gesture_drag_new(value unit)
 {
 CAMLparam1(unit);
 GtkGestureDrag *obj = gtk_gesture_drag_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkGestureDrag(obj));
 }
 

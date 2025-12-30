@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_credentials_new(value unit)
 {
 CAMLparam1(unit);
 GCredentials *obj = g_credentials_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GCredentials(obj));
 }
 

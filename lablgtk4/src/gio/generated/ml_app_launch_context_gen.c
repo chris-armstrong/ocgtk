@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_app_launch_context_new(value unit)
 {
 CAMLparam1(unit);
 GAppLaunchContext *obj = g_app_launch_context_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GAppLaunchContext(obj));
 }
 

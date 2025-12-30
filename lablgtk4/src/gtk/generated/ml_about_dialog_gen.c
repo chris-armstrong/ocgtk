@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_new(value unit)
 {
 CAMLparam1(unit);
 GtkAboutDialog *obj = gtk_about_dialog_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkAboutDialog(obj));
 }
 

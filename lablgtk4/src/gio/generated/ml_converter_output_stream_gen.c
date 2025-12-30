@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_converter_output_stream_new(value arg1, value arg
 {
 CAMLparam2(arg1, arg2);
 GConverterOutputStream *obj = g_converter_output_stream_new(GOutputStream_val(arg1), GConverter_val(arg2));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GConverterOutputStream(obj));
 }
 
@@ -34,5 +35,6 @@ CAMLexport CAMLprim value ml_g_converter_output_stream_get_converter(value self)
 CAMLparam1(self);
 
 GConverter* result = g_converter_output_stream_get_converter(GConverterOutputStream_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GConverter(result));
 }

@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_page_setup_new(value unit)
 {
 CAMLparam1(unit);
 GtkPageSetup *obj = gtk_page_setup_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkPageSetup(obj));
 }
 
@@ -28,6 +29,7 @@ CAMLexport CAMLprim value ml_gtk_page_setup_new_from_gvariant(value arg1)
 {
 CAMLparam1(arg1);
 GtkPageSetup *obj = gtk_page_setup_new_from_gvariant(arg1);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkPageSetup(obj));
 }
 

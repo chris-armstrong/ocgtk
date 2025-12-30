@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_slice_list_model_new(value arg1, value arg2, va
 {
 CAMLparam3(arg1, arg2, arg3);
 GtkSliceListModel *obj = gtk_slice_list_model_new(arg1, Int_val(arg2), Int_val(arg3));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkSliceListModel(obj));
 }
 

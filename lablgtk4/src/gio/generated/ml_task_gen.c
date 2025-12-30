@@ -26,6 +26,7 @@ CAMLexport CAMLprim value ml_g_task_new(value arg1, value arg2, value arg3, valu
 {
 CAMLparam4(arg1, arg2, arg3, arg4);
 GTask *obj = g_task_new(arg1, Option_val(arg2, GCancellable_val, NULL), arg3, arg4);
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GTask(obj));
 }
 
@@ -147,5 +148,6 @@ CAMLexport CAMLprim value ml_g_task_get_cancellable(value self)
 CAMLparam1(self);
 
 GCancellable* result = g_task_get_cancellable(GTask_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GCancellable));
 }

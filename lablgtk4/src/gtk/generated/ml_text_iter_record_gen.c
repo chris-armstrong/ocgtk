@@ -261,6 +261,7 @@ CAMLexport CAMLprim value ml_gtk_text_iter_get_child_anchor(value self)
 CAMLparam1(self);
 
 GtkTextChildAnchor* result = gtk_text_iter_get_child_anchor(GtkTextIter_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkTextChildAnchor));
 }
 
@@ -285,6 +286,7 @@ CAMLexport CAMLprim value ml_gtk_text_iter_get_buffer(value self)
 CAMLparam1(self);
 
 GtkTextBuffer* result = gtk_text_iter_get_buffer(GtkTextIter_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkTextBuffer(result));
 }
 

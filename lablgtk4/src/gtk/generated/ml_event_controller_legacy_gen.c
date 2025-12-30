@@ -21,5 +21,6 @@ CAMLexport CAMLprim value ml_gtk_event_controller_legacy_new(value unit)
 {
 CAMLparam1(unit);
 GtkEventControllerLegacy *obj = gtk_event_controller_legacy_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkEventControllerLegacy(obj));
 }

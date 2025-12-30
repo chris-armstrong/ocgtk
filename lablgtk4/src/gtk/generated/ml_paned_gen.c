@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_paned_new(value arg1)
 {
 CAMLparam1(arg1);
 GtkPaned *obj = gtk_paned_new(GtkOrientation_val(arg1));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkPaned(obj));
 }
 
@@ -101,6 +102,7 @@ CAMLexport CAMLprim value ml_gtk_paned_get_start_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_paned_get_start_child(GtkPaned_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
@@ -149,6 +151,7 @@ CAMLexport CAMLprim value ml_gtk_paned_get_end_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_paned_get_end_child(GtkPaned_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 

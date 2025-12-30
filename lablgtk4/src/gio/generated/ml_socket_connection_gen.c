@@ -35,6 +35,7 @@ CAMLexport CAMLprim value ml_g_socket_connection_get_socket(value self)
 CAMLparam1(self);
 
 GSocket* result = g_socket_connection_get_socket(GSocketConnection_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GSocket(result));
 }
 

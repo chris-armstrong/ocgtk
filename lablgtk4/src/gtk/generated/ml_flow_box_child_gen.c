@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_flow_box_child_new(value unit)
 {
 CAMLparam1(unit);
 GtkFlowBoxChild *obj = gtk_flow_box_child_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkFlowBoxChild(obj));
 }
 
@@ -53,6 +54,7 @@ CAMLexport CAMLprim value ml_gtk_flow_box_child_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_flow_box_child_get_child(GtkFlowBoxChild_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 

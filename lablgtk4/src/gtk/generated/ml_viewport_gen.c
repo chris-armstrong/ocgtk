@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_viewport_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 GtkViewport *obj = gtk_viewport_new(Option_val(arg1, GtkAdjustment_val, NULL), Option_val(arg2, GtkAdjustment_val, NULL));
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkViewport(obj));
 }
 
@@ -61,5 +62,6 @@ CAMLexport CAMLprim value ml_gtk_viewport_get_child(value self)
 CAMLparam1(self);
 
 GtkWidget* result = gtk_viewport_get_child(GtkViewport_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }

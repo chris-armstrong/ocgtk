@@ -21,6 +21,7 @@ CAMLexport CAMLprim value ml_gtk_assistant_new(value unit)
 {
 CAMLparam1(unit);
 GtkAssistant *obj = gtk_assistant_new();
+if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkAssistant(obj));
 }
 
@@ -141,6 +142,7 @@ CAMLexport CAMLprim value ml_gtk_assistant_get_page(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkAssistantPage* result = gtk_assistant_get_page(GtkAssistant_val(self), GtkWidget_val(arg1));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkAssistantPage(result));
 }
 
@@ -149,6 +151,7 @@ CAMLexport CAMLprim value ml_gtk_assistant_get_nth_page(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GtkWidget* result = gtk_assistant_get_nth_page(GtkAssistant_val(self), Int_val(arg1));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
