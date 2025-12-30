@@ -1,72 +1,15 @@
 name: CI
 on:
   push:
-    branches: [lablgtk4]
+    branches: [main]
   pull_request:
 # CI Notes:
-# - Repository now contains both lablgtk3/ (GTK 3) and lablgtk4/ (GTK 4)
-# - lablgtk3: depext for goocanvas2 is broken on windows and osx
-# - lablgtk3: depext for gtkspell is broken on windows
-# - lablgtk4: GTK 4 support is under development, failures expected
+# - octk: GTK 4 support is under development, failures expected
 
 jobs:
-# build-lablgtk3:
-# name: Build LablGTK3 (GTK 3)
-# runs-on: ${{ matrix.os }}
 
-# strategy:
-#   fail-fast: false
-#   matrix:
-#     os: [ubuntu-latest]
-#     ocaml-compiler: [4.14.x, 5.3.x]
-#     test-packages: [lablgtk3 lablgtk3-sourceview3 lablgtk3-gtkspell3 lablgtk3-goocanvas2]
-#     test-target: [opam, dev-all]
-#     include:
-#     - os: ubuntu-latest
-      
-#       test-packages: lablgtk3 lablgtk3-sourceview3 lablgtk3-gtkspell3 lablgtk3-goocanvas2
-#       test-target: dev
-#     - os: macos-latest
-      
-#       test-packages: lablgtk3 lablgtk3-sourceview3 lablgtk3-gtkspell3
-#       test-target: dev-ci-osx
-#     - os: windows-latest
-      
-#       test-packages: lablgtk3 lablgtk3-sourceview3
-#       test-target: dev-ci-windows
-
-# env:
-#   OPAMJOBS: "2"
-#   OPAMROOTISOK: "true"
-#   OPAMYES: "true"
-#   NJOBS: "2"
-
-# steps:
-#   - name: Checkout code
-#     uses: actions/checkout@v4
-
-#   - name: Set up OCaml ${{ matrix.ocaml-compiler }}
-#     uses: ocaml/setup-ocaml@v3
-#     with:
-#       ocaml-compiler: ${{ matrix.ocaml-compiler }}
-#       dune-cache: true
-#       opam-depext: true
-
-#   - name: Install deps
-#     working-directory: lablgtk3
-#     run: |
-#          opam install camlp5 -y
-#          opam install ${{ matrix.test-packages }} --deps-only --with-test
-
-#   - name: Display OPAM Setup
-#     run: opam exec -- opam list
-
-#   - name: Test LablGTK3
-#     working-directory: lablgtk3
-#     run: opam exec -- make ${{ matrix.test-target }}
-
-  build-lablgtk4:
-    name: Build LablGTK4 (GTK 4)
+  build-ocgtk:
+    name: Build ocgtk (GTK 4)
     runs-on: ubuntu-latest
 
     strategy:
@@ -93,15 +36,15 @@ jobs:
         run: opam pin add -n conf-gtk4 conf-gtk4
 
       - name: Install OCaml dependencies
-        working-directory: lablgtk4
+        working-directory: ocgtk
         run: opam install . --deps-only --with-test
 
-      - name: Build lablgtk4 library
-        working-directory: lablgtk4
+      - name: Build octk library
+        working-directory: octk
         run: opam exec -- dune build
 
       - name: Run all tests
-        working-directory: lablgtk4
+        working-directory: octk
         run: |
           # Use xvfb-run to provide virtual display for GTK runtime tests
           opam exec -- xvfb-run -a dune test
