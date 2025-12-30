@@ -1,0 +1,25 @@
+(lang dune 3.13)
+(name ocgtk)
+(version 4.0.0~dev)
+
+(generate_opam_files true)
+
+(source (github chris-armstrong/ocgtk))
+(license LGPL-2.1-or-later WITH OCaml-LGPL-linking-exception)
+(authors "Chris Armstrong")
+(maintainers "hello@chrisarmstrong.dev")
+
+(package
+ (name ocgtk)
+ (synopsis "OCaml bindings for GTK 4")
+ (description "ocgtk provides OCaml bindings for GTK 4")
+ (depends
+  (ocaml (>= 4.09))
+  (dune (>= 3.13))
+  conf-gtk4
+  cairo2
+  (camlp5 :build)
+  (camlp-streams :build)
+  (xmlm :build)
+  (alcotest :with-test)
+  (ppxlib :with-test)))

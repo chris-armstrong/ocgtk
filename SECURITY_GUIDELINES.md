@@ -2,9 +2,9 @@
 
 **Version**: 1.0
 **Date**: November 2025
-**Author**: LablGTK Security Review
+**Author**: ocgtk Security Review
 
-This document provides comprehensive guidelines for writing secure, memory-safe C bindings for OCaml, with a focus on GLib/GTK integration. These guidelines are based on security analysis of the LablGTK codebase.
+This document provides comprehensive guidelines for writing secure, memory-safe C bindings for OCaml, with a focus on GLib/GTK integration. These guidelines are based on security analysis of the ocgtk codebase.
 
 ---
 
@@ -996,7 +996,7 @@ void store_value(value arg) {
 
 ## Version History
 
-- **1.0** (November 2025): Initial version based on LablGTK security review
+- **1.0** (November 2025): Initial version based on ocgtk security review
   - 21 security issues identified and documented
   - Comprehensive guidelines for secure OCaml/C FFI
   - Focus on GLib/GTK integration patterns
@@ -1004,4 +1004,4 @@ void store_value(value arg) {
 
 ---
 
-**License**: This document is released under the same license as LablGTK (LGPL 2.1 with linking exception).
+**License**: This document is released under the same license as ocgtk (LGPL 2.1 with linking exception).

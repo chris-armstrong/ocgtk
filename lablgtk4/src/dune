@@ -1,9 +1,0 @@
-; Dune build file for lablgtk4
-; Main library that depends on all sub-libraries
-
-(library
- (name lablgtk4)
- (public_name lablgtk4)
- (wrapped false)
- (modules)  ; No modules at this level - modules are in sub-libraries
- (libraries lablgtk4_common lablgtk4_gtk threads cairo2))

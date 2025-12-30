@@ -1,7 +1,0 @@
-(**************************************************************************)
-(*    Lablgtk - Examples                                                  *)
-(*                                                                        *)
-(*    This code is in the public domain.                                  *)
-(*    You may freely copy parts of it in your application.                *)
-(*                                                                        *)
-(**************************************************************************)

@@ -3,11 +3,11 @@ version: "1"
 synopsis: "Virtual package relying on GTK4 system installation"
 description:
   "This package can only be installed if GTK 4 is installed on the system."
-maintainer: "lablgtk@math.nagoya-u.ac.jp"
-authors: ["The LablGTK team"]
+maintainer: "hello@chrisarmstrong.dev"
+authors: ["Chris Armstrong"]
 license: "LGPL-2.1-or-later WITH OCaml-LGPL-linking-exception"
-homepage: "https://github.com/chris-armstrong/lablgtk"
-bug-reports: "https://github.com/chris-armstrong/lablgtk/issues"
+homepage: "https://github.com/chris-armstrong/ocgtk"
+bug-reports: "https://github.com/chris-armstrong/ocgtk/issues"
 
 # System package dependencies for GTK4
 depexts: [

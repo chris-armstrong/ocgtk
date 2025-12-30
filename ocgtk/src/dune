@@ -1,0 +1,9 @@
+; Dune build file for ocgtk
+; Main library that depends on all sub-libraries
+
+(library
+ (name ocgtk)
+ (public_name ocgtk)
+ (wrapped false)
+ (modules)  ; No modules at this level - modules are in sub-libraries
+ (libraries ocgtk_common ocgtk_gtk ocgtk_gio threads cairo2))

@@ -1,6 +1,6 @@
-# LablGTK Development Environment Setup
+# ocgtk Development Environment Setup
 
-Quick setup instructions for getting the lablgtk development environment running.
+Quick setup instructions for getting the ocgtk development environment running.
 
 ## Prerequisites
 
@@ -44,22 +44,7 @@ eval $(opam env)
 ```
 
 ### 3. Install System Dependencies
-
-#### For LablGTK3 (GTK 3):
-```bash
-sudo apt-get update
-sudo apt-get install -y \
-    libgtk-3-dev \
-    libcairo2-dev \
-    libpango1.0-dev \
-    libgdk-pixbuf2.0-dev \
-    libgtksourceview-3.0-dev \
-    libgtkspell3-3-dev \
-    librsvg2-dev \
-    libgoocanvas-2.0-dev
-```
-
-#### For LablGTK4 (GTK 4):
+#### For ocgtk (GTK 4):
 ```bash
 sudo apt-get update
 sudo apt-get install -y \
@@ -71,38 +56,24 @@ sudo apt-get install -y \
 
 ### 4. Install OCaml Dependencies
 
-#### For LablGTK3:
-```bash
-cd lablgtk3
-opam install . --deps-only --with-test -y
 
-# Install camlp5 (required for code generation)
-opam install camlp5 -y
-```
-
-#### For LablGTK4:
+#### For ocgtk:
 ```bash
 # Install local conf-gtk4 package (verifies GTK 4 system installation)
-cd /home/user/lablgtk
+cd /home/user/ocgtk
 opam install ./conf-gtk4 -y
 
 # Install other dependencies
-cd lablgtk4
+cd ocgtk
 opam install cairo2 dune alcotest camlp-streams -y
 ```
 
 ### 5. Verify Builds
 
-#### Build LablGTK3:
-```bash
-cd ~/lablgtk/lablgtk3
-eval $(opam env)
-dune build
-```
 
-#### Build LablGTK4:
+#### Build ocgtk:
 ```bash
-cd ~/lablgtk/lablgtk4
+cd ~/ocgtk/ocgtk
 eval $(opam env)
 dune build
 ```
@@ -115,7 +86,7 @@ For a brand new environment, you can run all commands at once:
 
 ```bash
 # Navigate to project directory
-cd /home/user/lablgtk
+cd /home/user/ocgtk
 
 # Download and install opam
 cd ~
@@ -142,27 +113,23 @@ sudo apt-get install -y \
     librsvg2-dev \
     libgoocanvas-2.0-dev
 
-# Install OCaml dependencies for lablgtk3
-cd /home/user/lablgtk/lablgtk3
+# Install OCaml dependencies for ocgtk
+cd /home/user/ocgtk/ocgtk
 opam install . --deps-only --with-test -y
 opam install camlp5 -y
 
-# Install OCaml dependencies for lablgtk4
-cd /home/user/lablgtk
+# Install OCaml dependencies for ocgtk
+cd /home/user/ocgtk
 opam install ./conf-gtk4 -y
-cd lablgtk4
+cd ocgtk
 opam install cairo2 dune alcotest camlp-streams -y
 
 # Verify builds
-cd /home/user/lablgtk/lablgtk3
+cd /home/user/ocgtk/ocgtk
 eval $(opam env)
 dune build
 
-cd /home/user/lablgtk/lablgtk4
-eval $(opam env)
-dune build
-
-echo "Setup complete! Both lablgtk3 and lablgtk4 should build successfully."
+echo "Setup complete!"
 ```
 
 ### Container/Root Environment (without sudo)
@@ -204,27 +171,19 @@ apt-get install -y \
     bash \
     which
 
-# Install OCaml dependencies for lablgtk3
-cd /home/user/lablgtk/lablgtk3
-opam install . --deps-only --with-test -y
-opam install camlp5 -y
 
-# Install OCaml dependencies for lablgtk4
-cd /home/user/lablgtk
+# Install OCaml dependencies for ocgtk
+cd /home/user/ocgtk
 opam install ./conf-gtk4 -y
-cd lablgtk4
-opam install cairo2 dune alcotest camlp-streams -y
+cd ocgtk
+opam install . --deps-only --with-test -y
 
 # Verify builds
-cd /home/user/lablgtk/lablgtk3
+cd /home/user/ocgtk/ocgtk
 eval $(opam env)
 dune build
 
-cd /home/user/lablgtk/lablgtk4
-eval $(opam env)
-dune build
-
-echo "Setup complete! Both lablgtk3 and lablgtk4 should build successfully."
+echo "Setup complete! "
 ```
 
 ## Running as Root (Docker/Container Environments)
@@ -299,17 +258,8 @@ chmod 1777 /tmp
 ### Permission errors with opam
 If running as root, use `--disable-sandboxing` flag with opam commands.
 
-### Build warnings
-The lablgtk3 build may show deprecation warnings from GTK 3 - these are expected and non-fatal.
-
-### Missing camlp5
-If lablgtk3 build fails with "camlp5o: command not found":
-```bash
-opam install camlp5 -y
-```
-
 ### Missing alcotest
-If lablgtk4 tests fail to build:
+If ocgtk tests fail to build:
 ```bash
 opam install alcotest -y
 ```

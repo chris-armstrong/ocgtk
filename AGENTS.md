@@ -1,36 +1,15 @@
-# Development Notes for lablgtk4 Port
+# Development Notes for ocgtk 
 
 ## MANDATORY: Development Essentials
 
-1. ALWAYS build the project after making changes with `cd lablgtk4 && dune build`. Always use its output in full - DO NOT FILTER its output with `head`/`grep`/`tail` because you will miss critical context.
-2. ALWAYS run tests with `cd lablgtk4 && dune runtest`
+1. ALWAYS build the project after making changes with `cd ocgtk && dune build`. Always use its output in full - DO NOT FILTER its output with `head`/`grep`/`tail` because you will miss critical context.
+2. ALWAYS run tests with `cd ocgtk && xvfb-run dune runtest`
 3. ALWAYS write scripts and supporting code in OCaml
 
 ## Setting up the project
 
 If you are running in a clean container (e.g. Claude Code Web), you will need to follow the instructions in [SETUP.md](./SETUP.md) for instructions.
 
-## Essential: Always Check lablgtk3 First
-
-**CRITICAL RULE**: When working on lablgtk4, ALWAYS check the lablgtk3 implementation first before writing new code.
-
-### Why This Matters:
-- lablgtk3 has battle-tested patterns that work correctly
-- Saves hours of debugging subtle FFI issues
-- Avoids reinventing solutions that already exist
-- Provides correct reference for memory management
-
-### How to Check lablgtk3:
-```bash
-# Find relevant files
-find lablgtk3/src -name "*<module>*"
-
-# Check implementation patterns
-grep -A 20 "<function_name>" lablgtk3/src/*.c
-
-# Compare approach
-diff lablgtk3/src/<file>.c lablgtk4/src/<file>.c
-```
 
 ## Refactoring Code or Rewriting Documentation
 
@@ -45,11 +24,11 @@ diff lablgtk3/src/<file>.c lablgtk4/src/<file>.c
 This project uses `dune` to compile code and run tests. NEVER compile code directly with `ocamlc/ocamlc.opt`.
 
 * Use `dune build` to compile the code. IMPORTANT: Always check the return code grep for "error|warning|undefined reference". DO NOT filter its output with `grep`/`head`/`tail` etc. otherwise you will miss critical error context.
-* Use `dune test` to run all the unit and integration tests. ALWAYS check the return code to determine success - do not rely on the console output.
+* Use `xvfb-run dune runtest` to run all the unit and integration tests. ALWAYS check the return code to determine success - do not rely on the console output.
 
 ## OCaml / C FFI Guidelines
 
-For instructions and best practices for writing and updating OCaml / C FFI, see [FFI Guidelines](./FFI_GUIDELINES.md).
+For instructions and best practices for writing and updating OCaml / C FFI, see [FFI Guidelines](./ocgtk/architecture/FFI_GUIDELINES.md).
 
 ## Testing Strategy
 
@@ -62,9 +41,8 @@ For instructions and best practices for writing and updating OCaml / C FFI, see 
 
 ### Runtime Testing with GTK
 For tests requiring GTK initialization:
-- Use `GMain.init()` for testing purposes (see [TESTING_WITH_GMAIN.md](TESTING_WITH_GMAIN.md))
 - Use `skip()` in Alcotest for tests that need display server or widgets
-- CI/CD uses `xvfb-run` to provide virtual display (see [CI_UPDATE_SUMMARY.md](CI_UPDATE_SUMMARY.md))
+- CI/CD uses `xvfb-run` to provide virtual display.
 
 ### Use Test Helpers
 Create C test helpers for direct invocation:
@@ -85,7 +63,7 @@ end
 
 ### GIR Code Generator
 For generating GTK bindings from GObject Introspection (GIR) files:
-- See [lablgtk4/src/tools/README_GIR_GEN.md](lablgtk4/src/tools/README_GIR_GEN.md) for complete usage instructions
+- See [ocgtk/src/tools/README_GIR_GEN.md](ocgtk/src/tools/README_GIR_GEN.md) for complete usage instructions
 - Generates C FFI bindings and OCaml interfaces from Gtk-4.0.gir
 - Supports error handling with result types for throwing functions
 

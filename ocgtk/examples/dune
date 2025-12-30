@@ -1,0 +1,32 @@
+; Example applications demonstrating ocgtk
+
+(executable
+ (name counter_simple)
+ (modules counter_simple)
+ (libraries ocgtk))
+
+(executable
+ (name demo_all)
+ (modules demo_all)
+ (libraries ocgtk))
+
+(executable
+ (name counter)
+ (modules counter)
+ (libraries ocgtk))
+
+(executable
+ (name settings_panel)
+ (modules settings_panel)
+ (libraries ocgtk))
+
+; (executable
+;  (name text_editor)
+;  (modules text_editor)
+;  (libraries ocgtk))
+
+; DISABLED: Uses GWindow and high-level convenience APIs that need to be rewritten
+; (executable
+;  (name login_form)
+;  (modules login_form)
+;  (libraries ocgtk))

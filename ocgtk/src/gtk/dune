@@ -1,0 +1,50 @@
+; Dune build file for Gtk sub-library
+; Combines hand-written core code and generated bindings
+
+; Include subdirectories to find modules in core/ and generated/
+
+(include_subdirs unqualified)
+
+; Include generated C stubs library definition
+
+(include generated/dune-generated.inc)
+
+; Configure pkg-config for GTK4
+
+(rule
+ (targets cflag-gtk4.sexp clink-gtk4.sexp)
+ (action
+  (bash
+   "pkg-config --cflags gtk4 > cflag-gtk4.tmp && pkg-config --libs gtk4 > clink-gtk4.tmp && echo \"(\" > cflag-gtk4.sexp && tr ' ' '\\n' < cflag-gtk4.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> cflag-gtk4.sexp && echo \")\" >> cflag-gtk4.sexp && echo \"(\" > clink-gtk4.sexp && tr ' ' '\\n' < clink-gtk4.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> clink-gtk4.sexp && echo \")\" >> clink-gtk4.sexp && rm cflag-gtk4.tmp clink-gtk4.tmp")))
+
+; Main Gtk library combining core and generated code
+
+(library
+ (name ocgtk_gtk)
+ (public_name ocgtk.gtk)
+ (wrapped false)
+ (flags :standard -w -6-7-9-10-27-32-33-34-35-36-50-52 -no-strict-sequence)
+ (modules :standard)
+ (modules_without_implementation
+  gtk_enums
+  gdkpixbuf_enums
+  gsk_enums
+  graphene_enums
+  gdk_enums
+  gobject_enums
+  pango_enums)
+ (foreign_stubs
+  (language c)
+  ; Hand-written core C stubs (include_subdirs finds them automatically)
+  (names converters ml_gtk)
+  (flags
+   -fPIC
+   -Igenerated
+   -Icore
+   (:include cflag-gtk4.sexp)
+   -Wno-deprecated-declarations
+   -Wno-incompatible-pointer-types
+   -Wno-int-conversion))
+ (c_library_flags
+  (:include clink-gtk4.sexp))
+ (libraries ocgtk_common ocgtk_gtk_generated_stubs cairo2 threads))
