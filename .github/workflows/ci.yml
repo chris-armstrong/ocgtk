@@ -40,11 +40,11 @@ jobs:
         run: opam install . --deps-only --with-test
 
       - name: Build octk library
-        working-directory: octk
+        working-directory: ocgtk
         run: opam exec -- dune build
 
       - name: Run all tests
-        working-directory: octk
+        working-directory: ocgtk
         run: |
           # Use xvfb-run to provide virtual display for GTK runtime tests
           opam exec -- xvfb-run -a dune test
