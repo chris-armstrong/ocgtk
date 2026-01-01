@@ -1,3 +1,4 @@
+open Ocgtk_gtk
 (* Settings Panel Application
    Demonstrates: CheckButton (including radio grouping), ToggleButton, SpinButton, Switch *)
 

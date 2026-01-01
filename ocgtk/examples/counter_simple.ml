@@ -1,3 +1,4 @@
+open Ocgtk_gtk
 (* Simple Counter - using only gtkButton and minimal dependencies
    Demonstrates: gtkButton module directly *)
 

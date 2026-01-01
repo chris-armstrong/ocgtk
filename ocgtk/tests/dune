@@ -114,7 +114,7 @@
 (test
  (name test_box)
  (modules test_box)
- (libraries ocgtk.gtk alcotest))
+ (libraries ocgtk alcotest))
 
 ; Some APIs missing / need to be generated
 ; (test

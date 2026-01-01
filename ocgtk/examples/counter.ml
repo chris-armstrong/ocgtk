@@ -1,3 +1,4 @@
+open Ocgtk_gtk
 (* Simple Counter Application
    Demonstrates: Button, Label, event handling *)
 

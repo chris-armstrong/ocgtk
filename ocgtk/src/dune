@@ -5,5 +5,5 @@
  (name ocgtk)
  (public_name ocgtk)
  (wrapped false)
- (modules)  ; No modules at this level - modules are in sub-libraries
+ (modules Gtk Gio GMain)  ; Wrapper modules to re-export from sub-libraries
  (libraries ocgtk_common ocgtk_gtk ocgtk_gio threads cairo2))

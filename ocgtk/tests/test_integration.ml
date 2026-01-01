@@ -10,6 +10,7 @@
     - GTK4 patterns are different from GTK3 *)
 
 open Alcotest
+open Ocgtk_gtk
 
 (** {2 API Pattern Compilation Tests} *)
 

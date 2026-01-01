@@ -10,6 +10,7 @@
    future work with more sophisticated GC handling. *)
 
 open Alcotest
+open Ocgtk_gtk
 
 (* Try to initialize GTK once for all tests *)
 let gtk_available =
