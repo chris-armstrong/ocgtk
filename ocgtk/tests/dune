@@ -114,7 +114,7 @@
 (test
  (name test_box)
  (modules test_box)
- (libraries ocgtk alcotest))
+ (libraries ocgtk.gtk alcotest))
 
 ; Some APIs missing / need to be generated
 ; (test
@@ -143,9 +143,9 @@
 (test
  (name test_button)
  (modules test_button)
- (libraries ocgtk alcotest))
+ (libraries ocgtk.gtk alcotest))
 
 (test
  (name test_range)
  (modules test_range)
- (libraries ocgtk alcotest))
+ (libraries ocgtk.gtk alcotest))
