@@ -5,6 +5,7 @@
 1. ALWAYS build the project after making changes with `cd ocgtk && dune build`. Always use its output in full - DO NOT FILTER its output with `head`/`grep`/`tail` because you will miss critical context.
 2. ALWAYS run tests with `cd ocgtk && xvfb-run dune runtest`
 3. ALWAYS write scripts and supporting code in OCaml
+4. ALWAYS refer to [STYLE_GUIDLINES.md](./STYLE_GUIDELINES.md) for how to structure and write OCaml code
 
 ## Setting up the project
 
