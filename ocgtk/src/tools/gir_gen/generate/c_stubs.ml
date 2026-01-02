@@ -21,81 +21,7 @@ let include_header_for_namespace namespace_name =
     let ns_lower = String.lowercase_ascii namespace_name in
     sprintf "#include <%s/%s.h>" ns_lower ns_lower
 
-let nullable_c_to_ml_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping) ?(is_out_param=false) ()
-    =
-  (* For out parameters that are structs (not pointers), we need to pass the address.
-     We detect struct types by checking if the conversion function starts with Val_Gdk
-     but NOT Val_GdkModifierType or other enum/bitfield types.
-     Enum/bitfield functions follow the pattern Val_GdkXxxType or Val_GdkXxxFlags *)
-  let var_expr =
-    if is_out_param then
-      match (gir_type.c_type, mapping.c_to_ml) with
-      (* Bitfields and enums (have Type or Flags suffix) - pass by value *)
-      | _, conv_fn when String.ends_with ~suffix:"Type" conv_fn || String.ends_with ~suffix:"Flags" conv_fn ->
-          var
-      (* If conversion function starts with Val_Gdk and type doesn't have *, it's a struct *)
-      | Some c_type, conv_fn
-        when (String.length conv_fn >= 7 &&
-              String.sub conv_fn ~pos:0 ~len:7 = "Val_Gdk") &&
-             not (String.contains c_type '*') ->
-          "&" ^ var
-      (* All other cases - pass by value *)
-      | _ -> var
-    else var
-  in
-  if not gir_type.nullable then sprintf "%s(%s)" mapping.c_to_ml var_expr
-  else
-    match gir_type with
-    | {
-     name = "gchararray" | "gchar*" | "utf8" | "const gchar*" | "const char*";
-     _;
-    } ->
-        sprintf "Val_option_string(%s)" var_expr
-    | { c_type = Some c_type; _ }
-      when String.length c_type > 0
-           && String.sub c_type ~pos:(String.length c_type - 1) ~len:1 = "*" ->
-        sprintf "Val_option(%s, %s)" var_expr mapping.c_to_ml
-    | _ -> sprintf "%s(%s)" mapping.c_to_ml var_expr
-
-let nullable_ml_to_c_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping)
-    =
-  if not gir_type.nullable then sprintf "%s(%s)" mapping.ml_to_c var
-  else
-    match gir_type.c_type with
-    | Some ("gchararray" | "gchar*" | "utf8" | "const gchar*" | "const char*")
-      ->
-        sprintf "String_option_val(%s)" var
-    | Some c_type
-      when String.length c_type > 0
-           && String.sub c_type ~pos:(String.length c_type - 1) ~len:1 = "*" ->
-        sprintf "Option_val(%s, %s, NULL)" var mapping.ml_to_c
-    | _ -> sprintf "%s(%s)" mapping.ml_to_c var
-
-let emit_enum_proto buf ~namespace (enum : gir_enum) =
-  bprintf buf "value Val_%s%s(%s val);\n" namespace enum.enum_name
-    enum.enum_c_type;
-  bprintf buf "%s %s%s_val(value val);\n" enum.enum_c_type namespace
-    enum.enum_name
-
-let emit_bitfield_proto buf ~namespace (bitfield : gir_bitfield) =
-  (* Special case: GdkPixbufFormatFlags is in GIR but marked skip in C headers *)
-  if bitfield.bitfield_c_type = "GdkPixbufFormatFlags" then begin
-    bprintf buf
-      "/* GdkPixbufFormatFlags is in GIR but marked skip in C headers */\n";
-    bprintf buf "#ifndef GDK_PIXBUF_FORMAT_WRITABLE\n";
-    bprintf buf "typedef enum {\n";
-    List.iter
-      ~f:(fun flag ->
-        bprintf buf "  %s = %d,\n" flag.flag_c_identifier flag.flag_value)
-      bitfield.flags;
-    bprintf buf "} GdkPixbufFormatFlags;\n";
-    bprintf buf "#endif\n"
-  end;
-  bprintf buf "value Val_%s%s(%s flags);\n" namespace bitfield.bitfield_name
-    bitfield.bitfield_c_type;
-  bprintf buf "%s %s%s_val(value list);\n" bitfield.bitfield_c_type namespace
-    bitfield.bitfield_name
-
+(* Type analysis helpers for property type introspection *)
 type property_gvalue_info = {
   base_type : string;
   base_lower : string;
@@ -193,6 +119,72 @@ let analyze_property_type ~ctx (gir_type : gir_type) =
     is_bitfield;
     stack_allocated;
   }
+
+let nullable_c_to_ml_expr ~ctx ~var ~(gir_type : gir_type) ~(mapping : type_mapping) ?(is_out_param=false) ()
+    =
+  (* For out parameters that are structs (not pointers), we need to pass the address.
+     We use analyze_property_type to determine if the type is stack-allocated. *)
+  let var_expr =
+    if is_out_param then
+      let type_info = analyze_property_type ~ctx gir_type in
+      (* Stack-allocated types (enums, bitfields, primitives) are passed by value.
+         Non-stack-allocated types (structs, records) need & to get their address. *)
+      if type_info.stack_allocated || type_info.has_pointer then var
+      else "&" ^ var
+    else var
+  in
+  if not gir_type.nullable then sprintf "%s(%s)" mapping.c_to_ml var_expr
+  else
+    match gir_type with
+    | {
+     name = "gchararray" | "gchar*" | "utf8" | "const gchar*" | "const char*";
+     _;
+    } ->
+        sprintf "Val_option_string(%s)" var_expr
+    | { c_type = Some c_type; _ }
+      when String.length c_type > 0
+           && String.sub c_type ~pos:(String.length c_type - 1) ~len:1 = "*" ->
+        sprintf "Val_option(%s, %s)" var_expr mapping.c_to_ml
+    | _ -> sprintf "%s(%s)" mapping.c_to_ml var_expr
+
+let nullable_ml_to_c_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping)
+    =
+  if not gir_type.nullable then sprintf "%s(%s)" mapping.ml_to_c var
+  else
+    match gir_type.c_type with
+    | Some ("gchararray" | "gchar*" | "utf8" | "const gchar*" | "const char*")
+      ->
+        sprintf "String_option_val(%s)" var
+    | Some c_type
+      when String.length c_type > 0
+           && String.sub c_type ~pos:(String.length c_type - 1) ~len:1 = "*" ->
+        sprintf "Option_val(%s, %s, NULL)" var mapping.ml_to_c
+    | _ -> sprintf "%s(%s)" mapping.ml_to_c var
+
+let emit_enum_proto buf ~namespace (enum : gir_enum) =
+  bprintf buf "value Val_%s%s(%s val);\n" namespace enum.enum_name
+    enum.enum_c_type;
+  bprintf buf "%s %s%s_val(value val);\n" enum.enum_c_type namespace
+    enum.enum_name
+
+let emit_bitfield_proto buf ~namespace (bitfield : gir_bitfield) =
+  (* Special case: GdkPixbufFormatFlags is in GIR but marked skip in C headers *)
+  if bitfield.bitfield_c_type = "GdkPixbufFormatFlags" then begin
+    bprintf buf
+      "/* GdkPixbufFormatFlags is in GIR but marked skip in C headers */\n";
+    bprintf buf "#ifndef GDK_PIXBUF_FORMAT_WRITABLE\n";
+    bprintf buf "typedef enum {\n";
+    List.iter
+      ~f:(fun flag ->
+        bprintf buf "  %s = %d,\n" flag.flag_c_identifier flag.flag_value)
+      bitfield.flags;
+    bprintf buf "} GdkPixbufFormatFlags;\n";
+    bprintf buf "#endif\n"
+  end;
+  bprintf buf "value Val_%s%s(%s flags);\n" namespace bitfield.bitfield_name
+    bitfield.bitfield_c_type;
+  bprintf buf "%s %s%s_val(value list);\n" bitfield.bitfield_c_type namespace
+    bitfield.bitfield_name
 
 let generate_gvalue_getter_assignment ~ml_name ~prop ~c_type_name ~prop_info =
   let base_lower = prop_info.base_lower in
@@ -839,7 +831,7 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
                   else sprintf "inout%d" (idx + 1)
                 in
                 Some
-                  (nullable_c_to_ml_expr ~var:var_name ~gir_type:base_gir_type
+                  (nullable_c_to_ml_expr ~ctx ~var:var_name ~gir_type:base_gir_type
                      ~mapping ~is_out_param:true ())
             | None -> None
           else None)
@@ -914,7 +906,7 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
         with
         | Some mapping ->
             let ml_result =
-              nullable_c_to_ml_expr ~var:"result" ~gir_type:meth.return_type
+              nullable_c_to_ml_expr ~ctx ~var:"result" ~gir_type:meth.return_type
                 ~mapping ()
             in
             (* Generate ref_sink statement for GObject types based on transfer-ownership *)
@@ -1006,7 +998,7 @@ let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
   in
 
   let ml_prop_value =
-    nullable_c_to_ml_expr ~var:"prop_value" ~gir_type:prop.prop_type
+    nullable_c_to_ml_expr ~ctx ~var:"prop_value" ~gir_type:prop.prop_type
       ~mapping:type_info ()
   in
   let prop_info = analyze_property_type ~ctx prop.prop_type in
