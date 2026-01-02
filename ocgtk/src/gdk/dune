@@ -1,0 +1,28 @@
+; Include subdirectories to find modules in core/ and generated/
+(include_subdirs unqualified)
+
+; Include generated C stubs library definition
+(include generated/dune-generated.inc)
+
+; Configure pkg-config for GDK (using gtk4 as GDK is bundled with it)
+(rule
+ (targets c_flags.sexp)
+ (action
+  (with-stdout-to %{targets}
+   (bash "echo '(' && pkg-config --cflags gtk4 && echo ')'"))))
+
+; Main GDK library combining core and generated code
+(library
+ (name ocgtk_gdk)
+ (public_name ocgtk.gdk)
+ (synopsis "OCaml bindings for GDK")
+ (wrapped true)
+ (flags :standard -w -3-6-9-27-32-33-34-50)
+ (modules :standard)
+ (modules_without_implementation gdk_enums)
+ (foreign_stubs
+  (language c)
+  (names ml_gdk)
+  (flags :standard -Igenerated -Icore (:include c_flags.sexp)))
+
+ (libraries ocgtk.common ocgtk_gdk_generated_stubs))

@@ -1,0 +1,138 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* Top-level library module with direct references to all classes and enumerations *)
+
+(** {1 Classes and Interfaces} *)
+
+class app_launch_context : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.App_launch_context.t -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.app_launch_context
+class button_event : Button_event.t -> GButton_event.button_event
+class cairo_context : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Cairo_context.t -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.cairo_context
+class clipboard : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Clipboard.t -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.clipboard
+class content_deserializer : Content_deserializer.t -> GContent_deserializer.content_deserializer
+class content_provider : Content_provider.t -> GContent_provider.content_provider
+class content_serializer : Content_serializer.t -> GContent_serializer.content_serializer
+class crossing_event : Crossing_event.t -> GCrossing_event.crossing_event
+class cursor : Cursor.t -> GCursor.cursor
+class dnd_event : Dnd_event.t -> GDnd_event.dnd_event
+class delete_event : Delete_event.t -> GDelete_event.delete_event
+class device : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Device.t -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.device
+class device_pad : Device_pad.t -> GDevice_pad.device_pad
+class device_tool : Device_tool.t -> GDevice_tool.device_tool
+class display : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Display.t -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.display
+class display_manager : Display_manager.t -> GDisplay_manager.display_manager
+class dmabuf_texture : Dmabuf_texture.t -> GDmabuf_texture.dmabuf_texture
+class dmabuf_texture_builder : Dmabuf_texture_builder.t -> GDmabuf_texture_builder.dmabuf_texture_builder
+class drag : Drag.t -> GDrag.drag
+class drag_surface : Drag_surface.t -> GDrag_surface.drag_surface
+class draw_context : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Draw_context.t -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.draw_context
+class drop : Drop.t -> GDrop.drop
+class event : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Event.t -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.event
+class focus_event : Focus_event.t -> GFocus_event.focus_event
+class frame_clock : Frame_clock.t -> GFrame_clock.frame_clock
+class gl_context : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Gl_context.t -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.gl_context
+class gl_texture : Gl_texture.t -> GGl_texture.gl_texture
+class gl_texture_builder : Gl_texture_builder.t -> GGl_texture_builder.gl_texture_builder
+class grab_broken_event : Grab_broken_event.t -> GGrab_broken_event.grab_broken_event
+class key_event : Key_event.t -> GKey_event.key_event
+class memory_texture : Memory_texture.t -> GMemory_texture.memory_texture
+class monitor : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Monitor.t -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.monitor
+class motion_event : Motion_event.t -> GMotion_event.motion_event
+class pad_event : Pad_event.t -> GPad_event.pad_event
+class paintable : Paintable.t -> GPaintable.paintable
+class popup : Popup.t -> GPopup.popup
+class proximity_event : Proximity_event.t -> GProximity_event.proximity_event
+class scroll_event : Scroll_event.t -> GScroll_event.scroll_event
+class seat : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Seat.t -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.seat
+class snapshot : Snapshot.t -> GSnapshot.snapshot
+class surface : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Surface.t -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.surface
+class texture : Texture.t -> GTexture.texture
+class toplevel : Toplevel.t -> GToplevel.toplevel
+class touch_event : Touch_event.t -> GTouch_event.touch_event
+class touchpad_event : Touchpad_event.t -> GTouchpad_event.touchpad_event
+class vulkan_context : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Vulkan_context.t -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.vulkan_context
+
+(** {1 Layer 1 Module Wrappers}
+    
+    This submodule provides aliases to the layer 1 (low-level) modules.
+    These are the modules containing external declarations and basic bindings.
+ *)
+module Wrappers : sig
+  module App_launch_context = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.App_launch_context
+  module Button_event = Button_event
+  module Cairo_context = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Cairo_context
+  module Clipboard = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Clipboard
+  module Content_deserializer = Content_deserializer
+  module Content_provider = Content_provider
+  module Content_serializer = Content_serializer
+  module Crossing_event = Crossing_event
+  module Cursor = Cursor
+  module Dnd_event = Dnd_event
+  module Delete_event = Delete_event
+  module Device = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Device
+  module Device_pad = Device_pad
+  module Device_tool = Device_tool
+  module Display = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Display
+  module Display_manager = Display_manager
+  module Dmabuf_texture = Dmabuf_texture
+  module Dmabuf_texture_builder = Dmabuf_texture_builder
+  module Drag = Drag
+  module Drag_surface = Drag_surface
+  module Draw_context = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Draw_context
+  module Drop = Drop
+  module Event = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Event
+  module Focus_event = Focus_event
+  module Frame_clock = Frame_clock
+  module Gl_context = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Gl_context
+  module Gl_texture = Gl_texture
+  module Gl_texture_builder = Gl_texture_builder
+  module Grab_broken_event = Grab_broken_event
+  module Key_event = Key_event
+  module Memory_texture = Memory_texture
+  module Monitor = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Monitor
+  module Motion_event = Motion_event
+  module Pad_event = Pad_event
+  module Paintable = Paintable
+  module Popup = Popup
+  module Proximity_event = Proximity_event
+  module Scroll_event = Scroll_event
+  module Seat = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Seat
+  module Snapshot = Snapshot
+  module Surface = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Surface
+  module Texture = Texture
+  module Toplevel = Toplevel
+  module Touch_event = Touch_event
+  module Touchpad_event = Touchpad_event
+  module Vulkan_context = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Vulkan_context
+end
+
+(** {1 Enumerations and Bitfields} *)
+
+type axisuse = Gdk_enums.axisuse
+type crossingmode = Gdk_enums.crossingmode
+type devicepadfeature = Gdk_enums.devicepadfeature
+type devicetooltype = Gdk_enums.devicetooltype
+type dmabuferror = Gdk_enums.dmabuferror
+type dragcancelreason = Gdk_enums.dragcancelreason
+type eventtype = Gdk_enums.eventtype
+type fullscreenmode = Gdk_enums.fullscreenmode
+type glerror = Gdk_enums.glerror
+type inputsource = Gdk_enums.inputsource
+type keymatch = Gdk_enums.keymatch
+type memoryformat = Gdk_enums.memoryformat
+type notifytype = Gdk_enums.notifytype
+type scrolldirection = Gdk_enums.scrolldirection
+type scrollunit = Gdk_enums.scrollunit
+type subpixellayout = Gdk_enums.subpixellayout
+type surfaceedge = Gdk_enums.surfaceedge
+type textureerror = Gdk_enums.textureerror
+type titlebargesture = Gdk_enums.titlebargesture
+type touchpadgesturephase = Gdk_enums.touchpadgesturephase
+type vulkanerror = Gdk_enums.vulkanerror
+type anchorhints = Gdk_enums.anchorhints
+type axisflags = Gdk_enums.axisflags
+type dragaction = Gdk_enums.dragaction
+type frameclockphase = Gdk_enums.frameclockphase
+type glapi = Gdk_enums.glapi
+type modifiertype = Gdk_enums.modifiertype
+type paintableflags = Gdk_enums.paintableflags
+type seatcapabilities = Gdk_enums.seatcapabilities
+type toplevelstate = Gdk_enums.toplevelstate
