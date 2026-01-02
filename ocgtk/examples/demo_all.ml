@@ -1,3 +1,4 @@
+open Ocgtk_gtk
 (* Comprehensive Demo of ocgtk Bindings *)
 
 let section title =

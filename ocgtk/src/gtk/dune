@@ -22,7 +22,7 @@
 (library
  (name ocgtk_gtk)
  (public_name ocgtk.gtk)
- (wrapped false)
+ (wrapped true)
  (flags :standard -w -6-7-9-10-27-32-33-34-35-36-50-52 -no-strict-sequence)
  (modules :standard)
  (modules_without_implementation

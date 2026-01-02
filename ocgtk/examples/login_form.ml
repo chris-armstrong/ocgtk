@@ -1,3 +1,4 @@
+open Ocgtk_gtk
 (* Login Form Application
    Demonstrates: Entry, PasswordEntry, Button, Label *)
 class window_class = GApplication_and__window_and__window_group.window

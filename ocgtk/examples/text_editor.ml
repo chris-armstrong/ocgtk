@@ -1,3 +1,4 @@
+open Ocgtk_gtk
   (* Simple Text Editor
    Demonstrates: TextView, TextBuffer, TextTag, Entry, Button *)
 let () =

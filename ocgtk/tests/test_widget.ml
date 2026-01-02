@@ -8,6 +8,7 @@
     - Basic type definitions are correct *)
 
 open Alcotest
+open Ocgtk_gtk
 
 module Widget =
   Event_controller_and__layout_child_and__layout_manager_and__root_and__widget

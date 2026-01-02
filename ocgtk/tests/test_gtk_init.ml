@@ -1,6 +1,7 @@
 (** GTK initialization tests *)
 
 open Alcotest
+open Ocgtk_gtk
 
 let test_gmain_module_exists () =
   (* Test that GMain module is accessible *)

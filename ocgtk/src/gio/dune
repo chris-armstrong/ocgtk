@@ -16,7 +16,7 @@
  (name ocgtk_gio)
  (public_name ocgtk.gio)
  (synopsis "OCaml bindings for GIO")
- (wrapped false)
+ (wrapped true)
  (flags :standard -w -3-6-9-27-32-33-34-50)
  (modules :standard)
  (modules_without_implementation   gio_enums)

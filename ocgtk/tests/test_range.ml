@@ -1,6 +1,7 @@
 (* Phase 5.4 Range Widget Tests *)
 
 open Alcotest
+open Ocgtk_gtk
 
 (* Try to initialize GTK once for all tests *)
 let gtk_available =
