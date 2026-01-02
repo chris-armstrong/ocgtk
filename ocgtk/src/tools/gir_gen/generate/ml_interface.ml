@@ -195,10 +195,11 @@ let generate_ml_interface_internal
       match Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type with
       | Some mapping ->
         (* let base_type = Type_mappings.qualify_ocaml_type ~ctx ~gir_type_name:(Some p.param_type.name) mapping.ocaml_type in *)
+        let simplified_type = simplify_self_reference ~class_name mapping.ocaml_type in
         if p.nullable then
-          sprintf "%s option" mapping.ocaml_type
+          sprintf "%s option" simplified_type
         else
-          mapping.ocaml_type
+          simplified_type
       | None ->
         eprintf "Warning: Unknown type for parameter: name=%s type=%s\n"
           p.param_type.name p.param_type.name;

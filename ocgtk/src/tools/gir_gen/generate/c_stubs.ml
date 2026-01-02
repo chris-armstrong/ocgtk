@@ -21,21 +21,41 @@ let include_header_for_namespace namespace_name =
     let ns_lower = String.lowercase_ascii namespace_name in
     sprintf "#include <%s/%s.h>" ns_lower ns_lower
 
-let nullable_c_to_ml_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping)
+let nullable_c_to_ml_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping) ?(is_out_param=false) ()
     =
-  if not gir_type.nullable then sprintf "%s(%s)" mapping.c_to_ml var
+  (* For out parameters that are structs (not pointers), we need to pass the address.
+     We detect struct types by checking if the conversion function starts with Val_Gdk
+     but NOT Val_GdkModifierType or other enum/bitfield types.
+     Enum/bitfield functions follow the pattern Val_GdkXxxType or Val_GdkXxxFlags *)
+  let var_expr =
+    if is_out_param then
+      match (gir_type.c_type, mapping.c_to_ml) with
+      (* Bitfields and enums (have Type or Flags suffix) - pass by value *)
+      | _, conv_fn when String.ends_with ~suffix:"Type" conv_fn || String.ends_with ~suffix:"Flags" conv_fn ->
+          var
+      (* If conversion function starts with Val_Gdk and type doesn't have *, it's a struct *)
+      | Some c_type, conv_fn
+        when (String.length conv_fn >= 7 &&
+              String.sub conv_fn ~pos:0 ~len:7 = "Val_Gdk") &&
+             not (String.contains c_type '*') ->
+          "&" ^ var
+      (* All other cases - pass by value *)
+      | _ -> var
+    else var
+  in
+  if not gir_type.nullable then sprintf "%s(%s)" mapping.c_to_ml var_expr
   else
     match gir_type with
     | {
      name = "gchararray" | "gchar*" | "utf8" | "const gchar*" | "const char*";
      _;
     } ->
-        sprintf "Val_option_string(%s)" var
+        sprintf "Val_option_string(%s)" var_expr
     | { c_type = Some c_type; _ }
       when String.length c_type > 0
            && String.sub c_type ~pos:(String.length c_type - 1) ~len:1 = "*" ->
-        sprintf "Val_option(%s, %s)" var mapping.c_to_ml
-    | _ -> sprintf "%s(%s)" mapping.c_to_ml var
+        sprintf "Val_option(%s, %s)" var_expr mapping.c_to_ml
+    | _ -> sprintf "%s(%s)" mapping.c_to_ml var_expr
 
 let nullable_ml_to_c_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping)
     =
@@ -820,7 +840,7 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
                 in
                 Some
                   (nullable_c_to_ml_expr ~var:var_name ~gir_type:base_gir_type
-                     ~mapping)
+                     ~mapping ~is_out_param:true ())
             | None -> None
           else None)
         (List.mapi ~f:(fun i p -> (p, i)) meth.parameters)
@@ -895,7 +915,7 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
         | Some mapping ->
             let ml_result =
               nullable_c_to_ml_expr ~var:"result" ~gir_type:meth.return_type
-                ~mapping
+                ~mapping ()
             in
             (* Generate ref_sink statement for GObject types based on transfer-ownership *)
             let ref_sink_stmt =
@@ -987,7 +1007,7 @@ let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
 
   let ml_prop_value =
     nullable_c_to_ml_expr ~var:"prop_value" ~gir_type:prop.prop_type
-      ~mapping:type_info
+      ~mapping:type_info ()
   in
   let prop_info = analyze_property_type ~ctx prop.prop_type in
   let c_cast = sprintf "%s_val" c_type in
