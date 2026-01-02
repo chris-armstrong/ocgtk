@@ -336,9 +336,25 @@ ocgtk/
 
 ---
 
-## Recent Fixes (As of 2025-12-19)
+## Recent Fixes
 
-The following issues have been resolved:
+### 2026-01-02: Constructor Self-Reference and Out Parameter Fixes
+
+Three critical code generation bugs were discovered and fixed while adding GDK support:
+
+1. **Constructor self-reference bug**: Constructor parameters that reference the same type being defined (e.g., `Cursor.new_from_name` taking `Cursor.t option` as fallback) were generating `Cursor.t` instead of `t`, causing "module is an alias for itself" errors.
+   - **Fix**: Modified `ml_interface.ml` to apply `simplify_self_reference` to constructor parameter types (line 198)
+   - **File**: `src/tools/gir_gen/generate/ml_interface.ml`
+
+2. **Out parameter struct pointer bug**: Out parameters for struct types (like `GdkRectangle`) were being passed by value instead of by pointer to their conversion functions, causing type mismatches like "incompatible type for argument 1 of 'Val_GdkRectangle'".
+   - **Fix**: Modified `nullable_c_to_ml_expr` in `c_stubs.ml` to detect struct types (conversion functions starting with `Val_Gdk` but not ending in `Type` or `Flags`) and pass their address using `&var` for out parameters
+   - **File**: `src/tools/gir_gen/generate/c_stubs.ml` (lines 24-45)
+
+3. **Opaque record types**: Records with no public methods/constructors (like `EventSequence`) need minimal module definitions when referenced by other types.
+   - **Workaround**: Manually create minimal `.ml/.mli` files with `type t = Obj.t`
+   - **Future fix needed**: Code generator should auto-generate these minimal modules
+
+### 2025-12-19: Previous Fixes
 
 1. **Dynamic pkg-config references**: The dune-generated.inc now correctly generates pkg-config references for each library (e.g., `cflag-gio.sexp` for GIO instead of hardcoded `cflag-gtk4.sexp`)
 
@@ -394,6 +410,37 @@ let excluded_types = [
 
 ---
 
-## Example: Adding GIO
+## Examples
 
-See the execution below for a concrete example of adding Gio-2.0 following this plan.
+### Example 1: Adding GIO
+
+See the initial implementation for a concrete example of adding Gio-2.0 following Plan B.
+
+### Example 2: Adding GDK (2026-01-02)
+
+GDK was added as the third library after GTK and GIO. Key learnings:
+
+**Setup differences:**
+- GDK doesn't have a separate pkg-config package - it's bundled with GTK4
+- Solution: Use `pkg-config --cflags gtk4` in the dune file
+
+**Issues encountered and fixed:**
+1. **Self-reference in constructors**: `Cursor.new_from_name` takes a `Cursor.t option` fallback parameter
+   - Required fix to code generator to use `t` instead of `Cursor.t` in same-module references
+
+2. **Struct out parameters**: Methods like `Monitor.get_geometry` return `GdkRectangle` via out parameter
+   - Required fix to pass `&out_var` instead of `out_var` for struct types
+   - Had to distinguish between structs and enums/bitfields by checking conversion function naming patterns
+
+3. **Opaque record types**: `EventSequence` has no public API but is referenced by other types
+   - Manually created minimal module: `type t = Obj.t`
+
+**Files created:**
+- `src/gdk/dune` - Library definition using `gtk4` for pkg-config
+- `src/gdk/core/ml_gdk.c` - Placeholder for hand-written stubs
+- `src/gdk/generated/*` - Auto-generated bindings (47 classes, 5 interfaces, 32 records)
+- `src/Gdk.ml` - Wrapper module re-exporting from ocgtk_gdk
+
+**Result**:
+- Full GDK bindings successfully generated and compiled
+- Discovered and fixed 3 code generator bugs that will benefit future library additions
