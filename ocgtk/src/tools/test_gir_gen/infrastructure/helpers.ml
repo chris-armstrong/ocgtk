@@ -12,8 +12,7 @@ let string_contains s sub =
     true
   with Not_found -> false
 
-let assert_true msg cond =
-  Alcotest.(check bool) msg true cond
+let assert_true msg cond = Alcotest.(check bool) msg true cond
 
 let assert_contains msg haystack needle =
   if not (string_contains haystack needle) then
@@ -71,11 +70,11 @@ let enum_c_file output_dir =
 (* ========================================================================= *)
 
 (* Wrap namespace content in standard GIR repository/namespace XML boilerplate *)
-let wrap_namespace ?(namespace_name="Gtk") ?(version="1.0")
-                   ?(shared_library="libgtk-4.so.1")
-                   ?(c_prefix="Gtk") ?(symbol_prefix="gtk")
-                   content =
-  sprintf {|<?xml version="1.0"?>
+let wrap_namespace ?(namespace_name = "Gtk") ?(version = "1.0")
+    ?(shared_library = "libgtk-4.so.1") ?(c_prefix = "Gtk")
+    ?(symbol_prefix = "gtk") content =
+  sprintf
+    {|<?xml version="1.0"?>
 <repository version="1.2"
             xmlns="http://www.gtk.org/introspection/core/1.0"
             xmlns:c="http://www.gtk.org/introspection/c/1.0"
@@ -84,7 +83,8 @@ let wrap_namespace ?(namespace_name="Gtk") ?(version="1.0")
 %s
   </namespace>
 </repository>
-|} namespace_name version shared_library c_prefix symbol_prefix content
+|}
+    namespace_name version shared_library c_prefix symbol_prefix content
 
 (* Create a GIR file from content (will be wrapped with repository/namespace) *)
 let create_gir_file filename content =
@@ -119,28 +119,27 @@ let get_tools_dir () =
 
 (* Command execution result with captured output *)
 type command_result = {
-  exit_code: int;
-  stdout: string;
-  stderr: string;
-  log_file: string option;
+  exit_code : int;
+  stdout : string;
+  stderr : string;
+  log_file : string option;
 }
 
 (* Execute command with captured stdout/stderr *)
-let run_command_with_output ?(log_dir=None) cmd =
+let run_command_with_output ?(log_dir = None) cmd =
   let tmp_stdout = Filename.temp_file "test_stdout_" ".txt" in
   let tmp_stderr = Filename.temp_file "test_stderr_" ".txt" in
 
   (* Redirect stdout and stderr to temp files *)
-  let cmd_with_redirect =
-    sprintf "%s > %s 2> %s" cmd tmp_stdout tmp_stderr
-  in
+  let cmd_with_redirect = sprintf "%s > %s 2> %s" cmd tmp_stdout tmp_stderr in
 
   let exit_code = Sys.command cmd_with_redirect in
   let stdout = read_file tmp_stdout in
   let stderr = read_file tmp_stderr in
 
   (* Optionally save to permanent log file *)
-  let log_file = match log_dir with
+  let log_file =
+    match log_dir with
     | Some dir ->
         (* Ensure log directory exists *)
         (try Unix.mkdir dir 0o755 with Unix.Unix_error _ -> ());
@@ -165,33 +164,37 @@ let run_command_with_output ?(log_dir=None) cmd =
 
 let run_gir_gen ?filter_file gir_file output_dir =
   let tools_dir = get_tools_dir () in
-  let filter_arg = match filter_file with
-    | Some f -> sprintf "-f %s " f
-    | None -> ""
+  let filter_arg =
+    match filter_file with Some f -> sprintf "-f %s " f | None -> ""
   in
   let cmd =
-    sprintf "%s/gir_gen/main.exe %s%s %s"
-      tools_dir filter_arg gir_file output_dir
+    sprintf "%s/gir_gen/main.exe %s%s %s" tools_dir filter_arg gir_file
+      output_dir
   in
-  let result = run_command_with_output ~log_dir:(Some "/tmp/gir_gen_test_logs") cmd in
+  let result =
+    run_command_with_output ~log_dir:(Some "/tmp/gir_gen_test_logs") cmd
+  in
 
   if result.exit_code <> 0 then begin
     (* Show preview of stderr (first 20 lines) in test output *)
     let stderr_lines = String.split_on_char '\n' result.stderr in
     let preview_lines =
-      let rec take n lst = match n, lst with
+      let rec take n lst =
+        match (n, lst) with
         | 0, _ | _, [] -> []
         | n, x :: xs -> x :: take (n - 1) xs
       in
       take 20 stderr_lines
     in
     let error_preview = String.concat "\n" preview_lines in
-    let log_info = match result.log_file with
+    let log_info =
+      match result.log_file with
       | Some path -> sprintf "\n\nFull log saved to: %s" path
       | None -> ""
     in
-    Alcotest.fail (sprintf "gir_gen command failed (exit code %d)\n\nStderr preview:\n%s%s"
-      result.exit_code error_preview log_info)
+    Alcotest.fail
+      (sprintf "gir_gen command failed (exit code %d)\n\nStderr preview:\n%s%s"
+         result.exit_code error_preview log_info)
   end;
 
   result.exit_code
@@ -206,47 +209,56 @@ let ensure_output_dir dir =
 (* Create a minimal generation context for testing C stub generation *)
 let create_test_context () =
   let open Gir_gen_lib.Types in
-  let namespace = {
-    namespace_name = "Gtk";
-    namespace_version = "4.0";
-    namespace_shared_library = "libgtk-4.so.1";
-    namespace_c_identifier_prefixes = "Gtk";
-    namespace_c_symbol_prefixes = "gtk";
-  } in
+  let namespace =
+    {
+      namespace_name = "Gtk";
+      namespace_version = "4.0";
+      namespace_shared_library = "libgtk-4.so.1";
+      namespace_c_identifier_prefixes = "Gtk";
+      namespace_c_symbol_prefixes = "gtk";
+    }
+  in
 
-  let repository = {
-    repository_c_includes = [];
-    repository_includes = [];
-    repository_packages = [];
-  } in
+  let repository =
+    {
+      repository_c_includes = [];
+      repository_includes = [];
+      repository_packages = [];
+    }
+  in
 
   (* Add Widget class to context so type mappings work *)
-  let widget_class = {
-    class_name = "Widget";
-    c_type = "GtkWidget";
-    parent = None;
-    implements = [];
-    constructors = [];
-    methods = [];
-    properties = [];
-    signals = [];
-    class_doc = None;
-  } in
+  let widget_class =
+    {
+      class_name = "Widget";
+      c_type = "GtkWidget";
+      parent = None;
+      implements = [];
+      constructors = [];
+      methods = [];
+      properties = [];
+      signals = [];
+      class_doc = None;
+    }
+  in
 
   (* Add TextDirection enum to context *)
-  let text_direction_enum = {
-    enum_name = "TextDirection";
-    enum_c_type = "GtkTextDirection";
-    members = [];
-    enum_doc = None;
-  } in
+  let text_direction_enum =
+    {
+      enum_name = "TextDirection";
+      enum_c_type = "GtkTextDirection";
+      members = [];
+      enum_doc = None;
+      functions = [];
+    }
+  in
 
   {
     namespace;
     repository;
-    classes = [widget_class];
+    classes = [ widget_class ];
     interfaces = [];
-    enums = [text_direction_enum];
+    enums = [ text_direction_enum ];
     bitfields = [];
     records = [];
     external_enums = [];
@@ -262,58 +274,63 @@ let create_test_context_with_hierarchy () =
   let ctx = create_test_context () in
 
   (* Add Widget hierarchy info *)
-  Hashtbl.add ctx.hierarchy_map "Widget" {
-    gir_root = "Widget";
-    hierarchy = WidgetHierarchy;
-    layer2_module = "GWidget";
-    class_type_name = "widget_skel";
-    accessor_method = "as_widget";
-    layer1_base_type = "Widget.t";
-    base_conversion_method = "Widget.as_widget";
-  };
+  Hashtbl.add ctx.hierarchy_map "Widget"
+    {
+      gir_root = "Widget";
+      hierarchy = WidgetHierarchy;
+      layer2_module = "GWidget";
+      class_type_name = "widget_skel";
+      accessor_method = "as_widget";
+      layer1_base_type = "Widget.t";
+      base_conversion_method = "Widget.as_widget";
+    };
 
   (* Add Button hierarchy info (inherits from Widget) *)
-  Hashtbl.add ctx.hierarchy_map "Button" {
-    gir_root = "Widget";
-    hierarchy = WidgetHierarchy;
-    layer2_module = "GWidget";
-    class_type_name = "widget_skel";
-    accessor_method = "as_widget";
-    layer1_base_type = "Widget.t";
-    base_conversion_method = "Widget.as_widget";
-  };
+  Hashtbl.add ctx.hierarchy_map "Button"
+    {
+      gir_root = "Widget";
+      hierarchy = WidgetHierarchy;
+      layer2_module = "GWidget";
+      class_type_name = "widget_skel";
+      accessor_method = "as_widget";
+      layer1_base_type = "Widget.t";
+      base_conversion_method = "Widget.as_widget";
+    };
 
   (* Add Entry hierarchy info (deep hierarchy) *)
-  Hashtbl.add ctx.hierarchy_map "Entry" {
-    gir_root = "Widget";
-    hierarchy = WidgetHierarchy;
-    layer2_module = "GWidget";
-    class_type_name = "widget_skel";
-    accessor_method = "as_widget";
-    layer1_base_type = "Widget.t";
-    base_conversion_method = "Widget.as_widget";
-  };
+  Hashtbl.add ctx.hierarchy_map "Entry"
+    {
+      gir_root = "Widget";
+      hierarchy = WidgetHierarchy;
+      layer2_module = "GWidget";
+      class_type_name = "widget_skel";
+      accessor_method = "as_widget";
+      layer1_base_type = "Widget.t";
+      base_conversion_method = "Widget.as_widget";
+    };
 
   (* Add intermediate classes in Entry hierarchy *)
-  Hashtbl.add ctx.hierarchy_map "InitiallyUnowned" {
-    gir_root = "Object";
-    hierarchy = WidgetHierarchy;
-    layer2_module = "GObject";
-    class_type_name = "object_skel";
-    accessor_method = "as_object";
-    layer1_base_type = "Object.t";
-    base_conversion_method = "Object.as_object";
-  };
+  Hashtbl.add ctx.hierarchy_map "InitiallyUnowned"
+    {
+      gir_root = "Object";
+      hierarchy = WidgetHierarchy;
+      layer2_module = "GObject";
+      class_type_name = "object_skel";
+      accessor_method = "as_object";
+      layer1_base_type = "Object.t";
+      base_conversion_method = "Object.as_object";
+    };
 
-  Hashtbl.add ctx.hierarchy_map "Object" {
-    gir_root = "Object";
-    hierarchy = WidgetHierarchy;
-    layer2_module = "GObject";
-    class_type_name = "object_skel";
-    accessor_method = "as_object";
-    layer1_base_type = "Object.t";
-    base_conversion_method = "Object.as_object";
-  };
+  Hashtbl.add ctx.hierarchy_map "Object"
+    {
+      gir_root = "Object";
+      hierarchy = WidgetHierarchy;
+      layer2_module = "GObject";
+      class_type_name = "object_skel";
+      accessor_method = "as_object";
+      layer1_base_type = "Object.t";
+      base_conversion_method = "Object.as_object";
+    };
 
   ctx
 

@@ -95,7 +95,7 @@ let type_mappings : (string * Types.type_mapping) list =
         ml_to_c = "String_val";
         needs_copy = true;
         layer2_class = None;
-        c_type = "const char*"
+        c_type = "const char*";
       } );
     ( "gfloat",
       {
@@ -172,8 +172,8 @@ let find_interface_mapping interfaces lookup_str =
 
 let is_boxed_record (record : Types.gir_record) =
   (match (record.glib_get_type, record.glib_type_name) with
-  | Some _, _ | _, Some _ -> true
-  | _ -> false)
+    | Some _, _ | _, Some _ -> true
+    | _ -> false)
   && not record.disguised
 
 let find_record_mapping records lookup_str =
@@ -182,25 +182,7 @@ let find_record_mapping records lookup_str =
     String.length normalized_lookup > 0
     && Char.equal normalized_lookup.[String.length normalized_lookup - 1] '*'
   in
-  let base_lookup =
-    if is_pointer then
-      String.sub normalized_lookup ~pos:0
-        ~len:(String.length normalized_lookup - 1)
-    else normalized_lookup
-  in
-  List.find_opt
-    ~f:(fun (record : Types.gir_record) ->
-      let is_supported =
-        is_boxed_record record || (record.disguised && is_pointer)
-      in
-      is_supported
-      &&
-      let normalized_name = Utils.normalize_class_name record.record_name in
-      record.c_type = base_lookup
-      || record.record_name = base_lookup
-      || normalized_name = base_lookup
-      || "Gtk" ^ normalized_name = base_lookup)
-    records
+  List.find_opt records ~f:(fun record -> record.record_name = lookup_str)
   |> Option.map (fun record -> (record, is_pointer, is_boxed_record record))
 
 let or_else f opt = match opt with Some _ -> opt | None -> f ()
@@ -362,25 +344,28 @@ let find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
           let namespace = ctx.namespace.namespace_name in
           Some
             {
-              ocaml_type = (namespace ) ^ "_enums." ^ String.lowercase_ascii enum.enum_name;
+              ocaml_type =
+                namespace ^ "_enums." ^ String.lowercase_ascii enum.enum_name;
               c_type = enum.enum_c_type;
               c_to_ml = sprintf "Val_%s%s" namespace enum.enum_name;
               ml_to_c = sprintf "%s%s_val" namespace enum.enum_name;
               layer2_class = None;
               needs_copy = false;
             }
-      | None ->
+      | None -> (
           (* Check external namespaces *)
           let external_enum_mapping =
             List.find_opt
-              ~f:(fun (_, e : string * Types.gir_enum) -> e.enum_name = lookup_str)
+              ~f:(fun ((_, e) : string * Types.gir_enum) ->
+                e.enum_name = lookup_str)
               ctx.external_enums
           in
-          (match external_enum_mapping with
+          match external_enum_mapping with
           | Some (ns, enum) ->
               Some
                 {
-                  ocaml_type = ns ^ "_enums." ^ String.lowercase_ascii enum.enum_name;
+                  ocaml_type =
+                    ns ^ "_enums." ^ String.lowercase_ascii enum.enum_name;
                   c_type = enum.enum_c_type;
                   c_to_ml = sprintf "Val_%s%s" ns enum.enum_name;
                   ml_to_c = sprintf "%s%s_val" ns enum.enum_name;
@@ -393,7 +378,8 @@ let find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
       (* Check if this is a known bitfield in current namespace *)
       let bitfield_mapping =
         List.find_opt
-          ~f:(fun (b : Types.gir_bitfield) -> b.bitfield_c_type = lookup_str || b.bitfield_name = lookup_str)
+          ~f:(fun (b : Types.gir_bitfield) ->
+            b.bitfield_c_type = lookup_str || b.bitfield_name = lookup_str)
           ctx.bitfields
       in
       match bitfield_mapping with
@@ -402,25 +388,30 @@ let find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
           let namespace = ctx.namespace.namespace_name in
           Some
             {
-              ocaml_type = (namespace) ^ "_enums." ^ String.lowercase_ascii bitfield.bitfield_name;
+              ocaml_type =
+                namespace ^ "_enums."
+                ^ String.lowercase_ascii bitfield.bitfield_name;
               c_to_ml = sprintf "Val_%s%s" namespace bitfield.bitfield_name;
               ml_to_c = sprintf "%s%s_val" namespace bitfield.bitfield_name;
               needs_copy = false;
               layer2_class = None;
               c_type = bitfield.bitfield_c_type;
             }
-      | None ->
+      | None -> (
           (* Check external namespaces *)
           let external_bitfield_mapping =
             List.find_opt
-              ~f:(fun (_, b : string * Types.gir_bitfield) -> b.bitfield_c_type = lookup_str || b.bitfield_name = lookup_str)
+              ~f:(fun ((_, b) : string * Types.gir_bitfield) ->
+                b.bitfield_c_type = lookup_str || b.bitfield_name = lookup_str)
               ctx.external_bitfields
           in
-          (match external_bitfield_mapping with
+          match external_bitfield_mapping with
           | Some (ns, bitfield) ->
               Some
                 {
-                  ocaml_type = ns ^ "_enums." ^ String.lowercase_ascii bitfield.bitfield_name;
+                  ocaml_type =
+                    ns ^ "_enums."
+                    ^ String.lowercase_ascii bitfield.bitfield_name;
                   c_to_ml = sprintf "Val_%s%s" ns bitfield.bitfield_name;
                   ml_to_c = sprintf "%s%s_val" ns bitfield.bitfield_name;
                   needs_copy = false;
@@ -431,20 +422,19 @@ let find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
     in
     let find_hardcoded_mapping () =
       (* Fall back to hardcoded type mappings *)
-      (List.assoc_opt lookup_str type_mappings)
+      List.assoc_opt lookup_str type_mappings
     in
     find_class_mapping ()
     |> or_else find_interface_mapping
     |> or_else find_record_mapping
-    |> or_else find_enum_mapping 
+    |> or_else find_enum_mapping
     |> or_else find_bitfield_mapping
     |> or_else find_hardcoded_mapping
   in
   (* Try c_type first, then GIR name if c_type fails *)
   match gir_type.c_type with
-  | Some c_type_str ->
-      (match try_lookup c_type_str with
-       | Some mapping -> Some mapping
-       | None -> try_lookup gir_type.name)
+  | Some c_type_str -> (
+      match try_lookup c_type_str with
+      | Some mapping -> Some mapping
+      | None -> try_lookup gir_type.name)
   | None -> try_lookup gir_type.name
-

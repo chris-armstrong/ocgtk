@@ -89,16 +89,16 @@ let analyze_property_type ~ctx (gir_type : gir_type) =
         (stripped, true)
     | None -> (normalized, false)
   in
-  let base_lower = String.lowercase_ascii base_type in
-  let record_info = Type_mappings.find_record_mapping ctx.records c_type in
-  let class_info = Type_mappings.find_class_mapping ctx.classes c_type in
+  let base_lower = String.lowercase_ascii gir_type.name in
+  let record_info =
+    Type_mappings.find_record_mapping ctx.records gir_type.name
+  in
+  let class_info = Type_mappings.find_class_mapping ctx.classes gir_type.name in
   let is_enum =
-    List.exists ctx.enums ~f:(fun e ->
-        e.enum_c_type = base_type || e.enum_c_type = c_type)
+    List.exists ctx.enums ~f:(fun e -> e.enum_name = gir_type.name)
   in
   let is_bitfield =
-    List.exists ctx.bitfields ~f:(fun b ->
-        b.bitfield_c_type = base_type || b.bitfield_c_type = c_type)
+    List.exists ctx.bitfields ~f:(fun b -> b.bitfield_name = gir_type.name)
   in
   let pointer_like =
     has_pointer
@@ -120,14 +120,16 @@ let analyze_property_type ~ctx (gir_type : gir_type) =
     stack_allocated;
   }
 
-let nullable_c_to_ml_expr ~ctx:_ ~var ~(gir_type : gir_type)
-    ~(mapping : type_mapping) () =
+let nullable_c_to_ml_expr ~ctx ~var ~(gir_type : gir_type)
+    ~(mapping : type_mapping) ?(direction : Types.gir_direction = In) () =
+  (* out parameters that are record types are stack allocated, so we need to pass by reference
+     to their Val_x function, which will copy them into the OCaml heap *)
   let var_expr =
-    (* matchg.record_info with *)
-    (* | Some ({ opaque = false; _ }, false, false) -> "&" ^ var *)
-    (* | _ -> var *)
-    (* in *)
-    var
+    match (direction, analyze_property_type ~ctx gir_type) with
+    | Out, { record_info = Some ({ opaque = false; _ }, _, _); _ }
+    | InOut, { record_info = Some ({ opaque = false; _ }, _, _); _ } ->
+        sprintf "&%s" var
+    | _ -> var
   in
   if not gir_type.nullable then sprintf "%s(%s)" mapping.c_to_ml var_expr
   else
@@ -318,8 +320,6 @@ let generate_forward_decls_header ~ctx ~classes ~interfaces ~gtk_enums
     (String.lowercase_ascii ctx.namespace.namespace_name);
   Buffer.add_string buf "\n";
   bprintf buf "%s\n" (include_header_for_namespace ctx.namespace.namespace_name);
-  (* Buffer.add_string buf "#include <gdk-pixbuf/gdk-pixbuf.h>\n";
-  Buffer.add_string buf "#include <graphene.h>\n"; *)
   Buffer.add_string buf "#include <caml/mlvalues.h>\n";
   Buffer.add_string buf "\n";
 
@@ -387,7 +387,7 @@ let generate_forward_decls_header ~ctx ~classes ~interfaces ~gtk_enums
               bprintf buf "#ifndef Val_%s\n" record.c_type;
               bprintf buf "#define %s_val(val) ((%s*)ext_of_val(val))\n"
                 record.c_type record.c_type;
-              bprintf buf "#define Val_%s(obj) copy_%s(&(obj))\n" record.c_type
+              bprintf buf "#define Val_%s(obj) copy_%s((obj))\n" record.c_type
                 record.c_type;
               bprintf buf
                 "#define Val_%s_option(ptr) ((ptr) ? Val_some(copy_%s(ptr)) : \
@@ -406,7 +406,7 @@ let generate_forward_decls_header ~ctx ~classes ~interfaces ~gtk_enums
         bprintf buf "#ifndef Val_%s\n" record.c_type;
         bprintf buf "#define %s_val(val) ((%s*)ext_of_val(val))\n" record.c_type
           record.c_type;
-        bprintf buf "#define Val_%s(obj) ((value)val_of_ext(obj))\n"
+        bprintf buf "#define Val_%s(obj) ((value)(val_of_ext(obj)))\n"
           record.c_type;
         bprintf buf "#endif /* Val_%s */\n\n" record.c_type
       end
@@ -422,56 +422,6 @@ let generate_forward_decls_header ~ctx ~classes ~interfaces ~gtk_enums
           record.c_type
       end)
     non_value_like_records;
-  (* List.iter *)
-  (*   ~f:(fun (record : gir_record) -> *)
-  (*     let should_generate = *)
-  (*       Type_mappings.is_boxed_record record *)
-  (*       || record.disguised || not record.opaque *)
-  (*     in *)
-  (*     if should_generate && not (Hashtbl.mem seen record.c_type) then begin *)
-  (*       Hashtbl.add seen record.c_type (); *)
-  (*       (* Non-opaque records get functions instead of macros, but value-like records use macros *) *)
-  (*       let is_value_record = is_value_like_record record in *)
-  (*       if (not record.opaque) && (not record.disguised) && not is_value_record *)
-  (*       then begin *)
-  (*         (* Forward declarations for functions *) *)
-  (*         bprintf buf *)
-  (*           "/* Forward declarations for %s converters (non-opaque record with \ *)
-  (*            fields) */\n" *)
-  (*           record.c_type; *)
-  (*         bprintf buf "%s *%s_val(value val);\n" record.c_type record.c_type; *)
-  (*         bprintf buf "value Val_%s(%s *ptr);\n" record.c_type record.c_type; *)
-  (*         bprintf buf "value Val_%s_option(%s *ptr);\n\n" record.c_type *)
-  (*           record.c_type *)
-  (*       end *)
-  (*       else begin *)
-  (*         bprintf buf "#ifndef Val_%s\n" record.c_type; *)
-  (*         if not record.opaque then begin *)
-  (*           (* Non-value-like, non-opaque records use standard macros *) *)
-  (*           bprintf buf *)
-  (*             "#define %s_val(val) ((%s*)ml_gir_record_ptr_val((val), \"%s\"))\n" *)
-  (*             record.c_type record.c_type record.c_type; *)
-  (*           bprintf buf *)
-  (*             "#define Val_%s_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(%s), \ *)
-  (*              \"%s\", NULL)\n" *)
-  (*             record.c_type record.c_type record.c_type; *)
-  (*           bprintf buf "#define Val_%s(obj) Val_%s_ptr(obj)\n" record.c_type *)
-  (*             record.c_type; *)
-  (*           bprintf buf *)
-  (*             "#define Val_%s_option(ptr) ((ptr) ? Val_some(Val_%s_ptr(ptr)) : \ *)
-  (*              Val_none)\n" *)
-  (*             record.c_type record.c_type *)
-  (*         end *)
-  (*         else begin *)
-  (*           bprintf buf "#define %s_val(val) ((%s*)ext_of_val(val))\n" *)
-  (*             record.c_type record.c_type; *)
-  (*           bprintf buf "#define Val_%s(obj) ((value)(val_of_ext(obj)))\n" *)
-  (*             record.c_type *)
-  (*         end; *)
-  (*         bprintf buf "#endif /* Val_%s */\n\n" record.c_type *)
-  (*       end *)
-  (*     end) *)
-  (*   records; *)
   Buffer.add_string buf "/* Const-safe string extraction for setters */\n";
   Buffer.add_string buf
     "#define ML_DECL_CONST_STRING(name, expr) const gchar *name = (const gchar \
@@ -860,7 +810,7 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
                 in
                 Some
                   (nullable_c_to_ml_expr ~ctx ~var:var_name
-                     ~gir_type:base_gir_type ~mapping ())
+                     ~gir_type:base_gir_type ~mapping ~direction:p.direction ())
             | None -> None
           else None)
         (List.mapi ~f:(fun i p -> (p, i)) meth.parameters)
