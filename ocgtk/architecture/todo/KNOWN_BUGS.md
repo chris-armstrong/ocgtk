@@ -337,3 +337,14 @@ We are currently generating the Val_x and X_val macros for each library and its 
 ## Static methods (i.e.  <function> declarations) wrappers are not generated
 
 These are static function wrappers which operate similar to methods, but don't have an implicit self parameter. We should add support to c_stubs.ml and ml_interface.ml for them. 
+
+## Interfaces are not generated, nor are virtual methods
+
+<interface> elements are not being parsed and generated. They should be generated as virtual classes in OCaml.
+
+<virtual-method> elements are not being parsed and generated either. They must be virtual methods (as they are handled by their subclasses) and make their owning class virtual.
+
+## No support for GObject signals
+
+<signal> elements are not being parsed and generated.
+
