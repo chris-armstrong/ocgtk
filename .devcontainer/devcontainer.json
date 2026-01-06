@@ -18,5 +18,5 @@
 	"remoteUser": "ocaml",
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sudo apt-get update && sudo ln -fs /usr/share/zoneinfo/Australia/Sydney /etc/localtime && sudo DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y install rsync libgtk-4-dev m4 xdot ripgrep neovim && opam update && cd conf-gtk4 && opam pin -y . && cd .. && cd lablgtk4 && opam install . --deps-only --with-test -y"
+	"postCreateCommand": "sudo apt-get update && sudo ln -fs /usr/share/zoneinfo/Australia/Sydney /etc/localtime && sudo DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y install rsync libgtk-4-dev m4 xdot ripgrep neovim && opam update && cd conf-gtk4 && opam pin -y . && cd .. && cd ocgtk && opam install . --deps-only --with-test -y"
 }
