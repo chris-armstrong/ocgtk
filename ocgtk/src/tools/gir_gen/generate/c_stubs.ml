@@ -402,7 +402,7 @@ let generate_forward_decls_header ~ctx ~classes ~interfaces ~gtk_enums
 
   List.iter
     ~f:(fun (record : gir_record) ->
-      if record.opaque then begin
+      if record.opaque || record.disguised then begin
         bprintf buf "#ifndef Val_%s\n" record.c_type;
         bprintf buf "#define %s_val(val) ((%s*)ext_of_val(val))\n" record.c_type
           record.c_type;
