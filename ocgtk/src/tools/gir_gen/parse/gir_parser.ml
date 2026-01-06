@@ -70,6 +70,7 @@ let parse_gir_enums_only filename =
         end
         else begin
           let members = ref [] in
+          let functions = ref [] in
 
           let rec parse_enum_contents () =
             match Xmlm.input input with
@@ -95,6 +96,11 @@ let parse_gir_enums_only filename =
                 | _ ->
                     skip_element 1;
                     parse_enum_contents ())
+            (* | `El_start ((_, raw_tag), attrs) *)
+            (*   when local_name raw_tag = "function" -> *)
+            (*     let function_ = parse_function attrs in *)
+            (*     functions := function_ :: !functions; *)
+            (*     parse_enum_contents () *)
             | `El_start _ ->
                 skip_element 1;
                 parse_enum_contents ()
@@ -110,6 +116,7 @@ let parse_gir_enums_only filename =
               enum_c_type = c_type;
               members = List.rev !members;
               enum_doc = None;
+              functions = !functions;
             }
         end
     | _ ->
@@ -429,7 +436,15 @@ let parse_gir_file filename filter_classes =
     let property_nullable = get_attr "nullable" attrs |> Utils.parse_bool in
 
     (* Parse property type from child element *)
-    let prop_type = ref { name = "unknown"; c_type = None; nullable = false; transfer_ownership = Types.TransferNone } in
+    let prop_type =
+      ref
+        {
+          name = "unknown";
+          c_type = None;
+          nullable = false;
+          transfer_ownership = Types.TransferNone;
+        }
+    in
 
     let doc : string option ref = ref None in
 
@@ -446,7 +461,13 @@ let parse_gir_file filename filter_classes =
             get_attr "nullable" type_attrs |> Utils.parse_bool
             || property_nullable
           in
-          prop_type := { name = type_name; c_type = c_type_name; nullable; transfer_ownership = Types.TransferNone };
+          prop_type :=
+            {
+              name = type_name;
+              c_type = c_type_name;
+              nullable;
+              transfer_ownership = Types.TransferNone;
+            };
           skip_element 1;
           parse_prop_contents ()
       | `El_start ((_, "doc"), _) ->
@@ -479,6 +500,7 @@ let parse_gir_file filename filter_classes =
         end
         else begin
           let members = ref [] in
+          let functions = ref [] in
 
           let rec parse_enum_contents () =
             match Xmlm.input input with
@@ -503,6 +525,11 @@ let parse_gir_file filename filter_classes =
                 | _ ->
                     skip_element 1;
                     parse_enum_contents ())
+            | `El_start ((_, raw_tag), attrs)
+              when local_name raw_tag = "function" ->
+                let function_ = parse_function attrs in
+                functions := function_ :: !functions;
+                parse_enum_contents ()
             | `El_start _ ->
                 skip_element 1;
                 parse_enum_contents ()
@@ -518,6 +545,7 @@ let parse_gir_file filename filter_classes =
               enum_c_type = c_type;
               members = List.rev !members;
               enum_doc = None;
+              functions = !functions;
             }
         end
     | _ ->
@@ -581,7 +609,15 @@ let parse_gir_file filename filter_classes =
   and parse_method tag_attrs =
     let get_property = get_attr "glib:get-property" tag_attrs in
     let set_property = get_attr "glib:set-property" tag_attrs in
-    let return_type = ref { name = "void"; c_type = None; nullable = false; transfer_ownership = Types.TransferNone } in
+    let return_type =
+      ref
+        {
+          name = "void";
+          c_type = None;
+          nullable = false;
+          transfer_ownership = Types.TransferNone;
+        }
+    in
     let params = ref [] in
     let doc : string option ref = ref None in
     let rec parse_method_contents () =
@@ -612,7 +648,13 @@ let parse_gir_file filename filter_classes =
     match get_attr "name" attrs with
     | Some signal_name ->
         let return_type =
-          ref { name = "void"; c_type = None; nullable = false; transfer_ownership = Types.TransferNone }
+          ref
+            {
+              name = "void";
+              c_type = None;
+              nullable = false;
+              transfer_ownership = Types.TransferNone;
+            }
         in
         let params = ref [] in
         let doc : string option ref = ref None in
@@ -662,7 +704,13 @@ let parse_gir_file filename filter_classes =
       | _ -> Types.TransferNone (* default to none if not specified *)
     in
     let type_info =
-      ref { name = "void"; c_type = None; nullable = nullable_attr; transfer_ownership = transfer_ownership_attr }
+      ref
+        {
+          name = "void";
+          c_type = None;
+          nullable = nullable_attr;
+          transfer_ownership = transfer_ownership_attr;
+        }
     in
 
     let rec parse_rv_contents () =
@@ -676,7 +724,13 @@ let parse_gir_file filename filter_classes =
             get_attr "nullable" attrs |> Utils.parse_bool || nullable_attr
           in
           type_info :=
-            ({ name = type_name; c_type = c_type_name; nullable; transfer_ownership = transfer_ownership_attr } : gir_type);
+            ({
+               name = type_name;
+               c_type = c_type_name;
+               nullable;
+               transfer_ownership = transfer_ownership_attr;
+             }
+              : gir_type);
           skip_element 1;
           parse_rv_contents ()
       | `El_start _ ->
@@ -689,6 +743,60 @@ let parse_gir_file filename filter_classes =
 
     parse_rv_contents ();
     !type_info
+  and parse_function attrs =
+    let function_name = get_attr "name" attrs in
+    let c_identifier = get_attr "c:identifier" attrs in
+    let return_type = ref None in
+    let params = ref [] in
+    let doc : string option ref = ref None in
+    let throws = get_attr "throws" attrs |> Utils.parse_bool in
+
+    let rec parse_function_contents () =
+      match Xmlm.input input with
+      | `El_start ((_, "return-value"), attrs) ->
+          let type_name =
+            match get_attr "name" attrs with Some n -> n | None -> "void"
+          in
+          let c_type_name = get_attr "c:type" attrs in
+          let nullable =
+            get_attr "nullable" attrs |> Utils.parse_bool ~default:false
+          in
+          return_type :=
+            Some
+              {
+                name = type_name;
+                c_type = c_type_name;
+                nullable;
+                transfer_ownership = Types.TransferNone;
+              };
+          skip_element 1;
+          parse_function_contents ()
+      | `El_start ((_, "parameters"), _) ->
+          params := parse_parameters ();
+          parse_function_contents ()
+      | `El_start ((_, "doc"), _) ->
+          doc := element_data ();
+          parse_function_contents ()
+      | `El_start _ ->
+          skip_element 1;
+          parse_function_contents ()
+      | `El_end -> ()
+      | `Data _ -> parse_function_contents ()
+      | `Dtd _ -> parse_function_contents ()
+    in
+
+    parse_function_contents ();
+    match (function_name, c_identifier, !return_type) with
+    | Some function_name, Some c_identifier, Some return_type ->
+        {
+          function_name;
+          c_identifier;
+          return_type;
+          parameters = List.rev !params;
+          doc = !doc;
+          throws;
+        }
+    | _, _, _ -> failwith "Unable to parse function correctly"
   (* Parse parameters list *)
   and parse_parameters () =
     let params = ref [] in
@@ -709,7 +817,15 @@ let parse_gir_file filename filter_classes =
             | _ -> In
           in
           let varargs = ref false in
-          let type_ = ref { name = "void"; c_type = None; nullable = false; transfer_ownership = Types.TransferNone } in
+          let type_ =
+            ref
+              {
+                name = "void";
+                c_type = None;
+                nullable = false;
+                transfer_ownership = Types.TransferNone;
+              }
+          in
           let rec parse_param_contents () =
             match Xmlm.input input with
             | `El_start ((_, "varargs"), _attrs) ->
@@ -724,7 +840,13 @@ let parse_gir_file filename filter_classes =
                 in
                 let c_type_name = get_attr "c:type" attrs in
                 let nullable = get_attr "nullable" attrs |> Utils.parse_bool in
-                type_ := { name = type_name; c_type = c_type_name; nullable; transfer_ownership = Types.TransferNone };
+                type_ :=
+                  {
+                    name = type_name;
+                    c_type = c_type_name;
+                    nullable;
+                    transfer_ownership = Types.TransferNone;
+                  };
                 skip_element 1;
                 parse_param_contents ()
             | `El_start _ ->
@@ -830,6 +952,7 @@ let parse_gir_file filename filter_classes =
         let fields = ref [] in
         let constructors = ref [] in
         let methods = ref [] in
+        let functions = ref [] in
         let record_doc : string option ref = ref None in
 
         let rec parse_record_contents () =
@@ -857,7 +980,13 @@ let parse_gir_file filename filter_classes =
                       get_attr "nullable" type_attrs |> Utils.parse_bool
                     in
                     field_type :=
-                      Some { name = type_name; c_type = c_type_name; nullable; transfer_ownership = Types.TransferNone };
+                      Some
+                        {
+                          name = type_name;
+                          c_type = c_type_name;
+                          nullable;
+                          transfer_ownership = Types.TransferNone;
+                        };
                     skip_element 1;
                     parse_field_contents ()
                 | `El_start _ ->
@@ -936,6 +1065,10 @@ let parse_gir_file filename filter_classes =
             ->
               record_doc := element_data ();
               parse_record_contents ()
+          | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "function"
+            ->
+              let function_ = parse_function attrs in
+              functions := function_ :: !functions
           | `El_start _ ->
               skip_element 1;
               parse_record_contents ()
@@ -959,6 +1092,7 @@ let parse_gir_file filename filter_classes =
             constructors = List.rev !constructors;
             methods = List.rev !methods;
             record_doc = !record_doc;
+            functions = !functions;
           }
     | _ ->
         skip_element 1;
@@ -1105,7 +1239,13 @@ let parse_gir_file filename filter_classes =
           let signal =
             {
               signal_name;
-              return_type = { name = "none"; c_type = None; nullable = false; transfer_ownership = Types.TransferNone };
+              return_type =
+                {
+                  name = "none";
+                  c_type = None;
+                  nullable = false;
+                  transfer_ownership = Types.TransferNone;
+                };
               sig_parameters = [];
               doc = None;
             }
