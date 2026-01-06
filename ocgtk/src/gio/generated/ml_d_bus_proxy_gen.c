@@ -132,7 +132,7 @@ if (pspec == NULL) caml_failwith("ml_gtk_d_bus_proxy_get_g_connection: property 
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
 g_object_get_property(G_OBJECT(obj), "g-connection", &prop_gvalue);
-    caml_failwith("ml_gtk_d_bus_proxy_get_g_connection: unsupported property type 'g-connection'");
+    prop_value = (GDBusConnection*)g_value_get_object(&prop_gvalue);
 
 result = Val_GDBusConnection(prop_value);
 g_value_unset(&prop_gvalue);

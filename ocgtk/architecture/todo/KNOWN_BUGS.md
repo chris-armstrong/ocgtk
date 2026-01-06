@@ -333,3 +333,18 @@ Some types like GtkBuilderScope and GtkSelectionModel are not having Val_GtkBuil
 ## Val_x and X_val macros need to be generated per-library and shared
 
 We are currently generating the Val_x and X_val macros for each library and its dependencies - ideally we'd generate one per library in a header and share it based on recursive library dependencies (which we could figure out from the <repository> and <namespace> tags in the GIR)
+
+## Static methods (i.e.  <function> declarations) wrappers are not generated
+
+These are static function wrappers which operate similar to methods, but don't have an implicit self parameter. We should add support to c_stubs.ml and ml_interface.ml for them. 
+
+## Interfaces are not generated, nor are virtual methods
+
+<interface> elements are not being parsed and generated. They should be generated as virtual classes in OCaml.
+
+<virtual-method> elements are not being parsed and generated either. They must be virtual methods (as they are handled by their subclasses) and make their owning class virtual.
+
+## No support for GObject signals
+
+<signal> elements are not being parsed and generated.
+

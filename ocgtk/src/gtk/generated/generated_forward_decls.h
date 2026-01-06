@@ -1482,25 +1482,25 @@ value copy_GtkTreeIter(const GtkTreeIter *ptr);
 
 #ifndef Val_GtkBorder
 #define GtkBorder_val(val) ((GtkBorder*)ext_of_val(val))
-#define Val_GtkBorder(obj) copy_GtkBorder(&(obj))
+#define Val_GtkBorder(obj) copy_GtkBorder((obj))
 #define Val_GtkBorder_option(ptr) ((ptr) ? Val_some(copy_GtkBorder(ptr)) : Val_none)
 #endif /* Val_GtkBorder */
 
 #ifndef Val_GtkRequisition
 #define GtkRequisition_val(val) ((GtkRequisition*)ext_of_val(val))
-#define Val_GtkRequisition(obj) copy_GtkRequisition(&(obj))
+#define Val_GtkRequisition(obj) copy_GtkRequisition((obj))
 #define Val_GtkRequisition_option(ptr) ((ptr) ? Val_some(copy_GtkRequisition(ptr)) : Val_none)
 #endif /* Val_GtkRequisition */
 
 #ifndef Val_GtkTextIter
 #define GtkTextIter_val(val) ((GtkTextIter*)ext_of_val(val))
-#define Val_GtkTextIter(obj) copy_GtkTextIter(&(obj))
+#define Val_GtkTextIter(obj) copy_GtkTextIter((obj))
 #define Val_GtkTextIter_option(ptr) ((ptr) ? Val_some(copy_GtkTextIter(ptr)) : Val_none)
 #endif /* Val_GtkTextIter */
 
 #ifndef Val_GtkTreeIter
 #define GtkTreeIter_val(val) ((GtkTreeIter*)ext_of_val(val))
-#define Val_GtkTreeIter(obj) copy_GtkTreeIter(&(obj))
+#define Val_GtkTreeIter(obj) copy_GtkTreeIter((obj))
 #define Val_GtkTreeIter_option(ptr) ((ptr) ? Val_some(copy_GtkTreeIter(ptr)) : Val_none)
 #endif /* Val_GtkTreeIter */
 
@@ -1510,7 +1510,8 @@ value copy_GtkTreeIter(const GtkTreeIter *ptr);
 #define Val_GtkAccessibleList(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GtkAccessibleList */
 
-/* Forward declarations for GtkAccessibleTextRange converters (non-opaque record with fields) */
+/* Forward declarations for GtkAccessibleTextRange converters (non-opaque record with  *)
+              fields) */
 GtkAccessibleTextRange *GtkAccessibleTextRange_val(value val);
 value Val_GtkAccessibleTextRange(GtkAccessibleTextRange *ptr);
 value Val_GtkAccessibleTextRange_option(GtkAccessibleTextRange *ptr);
@@ -1520,7 +1521,8 @@ value Val_GtkAccessibleTextRange_option(GtkAccessibleTextRange *ptr);
 #define Val_GtkBitset(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GtkBitset */
 
-/* Forward declarations for GtkBitsetIter converters (non-opaque record with fields) */
+/* Forward declarations for GtkBitsetIter converters (non-opaque record with  *)
+              fields) */
 GtkBitsetIter *GtkBitsetIter_val(value val);
 value Val_GtkBitsetIter(GtkBitsetIter *ptr);
 value Val_GtkBitsetIter_option(GtkBitsetIter *ptr);
@@ -1530,7 +1532,8 @@ value Val_GtkBitsetIter_option(GtkBitsetIter *ptr);
 #define Val_GtkBuildableParseContext(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GtkBuildableParseContext */
 
-/* Forward declarations for GtkBuildableParser converters (non-opaque record with fields) */
+/* Forward declarations for GtkBuildableParser converters (non-opaque record with  *)
+              fields) */
 GtkBuildableParser *GtkBuildableParser_val(value val);
 value Val_GtkBuildableParser(GtkBuildableParser *ptr);
 value Val_GtkBuildableParser_option(GtkBuildableParser *ptr);
@@ -1555,7 +1558,8 @@ value Val_GtkBuildableParser_option(GtkBuildableParser *ptr);
 #define Val_GtkCellRendererPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GtkCellRendererPrivate */
 
-/* Forward declarations for GtkCssLocation converters (non-opaque record with fields) */
+/* Forward declarations for GtkCssLocation converters (non-opaque record with  *)
+              fields) */
 GtkCssLocation *GtkCssLocation_val(value val);
 value Val_GtkCssLocation(GtkCssLocation *ptr);
 value Val_GtkCssLocation_option(GtkCssLocation *ptr);
@@ -1600,12 +1604,14 @@ value Val_GtkCssLocation_option(GtkCssLocation *ptr);
 #define Val_GtkMountOperationPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GtkMountOperationPrivate */
 
-/* Forward declarations for GtkPadActionEntry converters (non-opaque record with fields) */
+/* Forward declarations for GtkPadActionEntry converters (non-opaque record with  *)
+              fields) */
 GtkPadActionEntry *GtkPadActionEntry_val(value val);
 value Val_GtkPadActionEntry(GtkPadActionEntry *ptr);
 value Val_GtkPadActionEntry_option(GtkPadActionEntry *ptr);
 
-/* Forward declarations for GtkPageRange converters (non-opaque record with fields) */
+/* Forward declarations for GtkPageRange converters (non-opaque record with  *)
+              fields) */
 GtkPageRange *GtkPageRange_val(value val);
 value Val_GtkPageRange(GtkPageRange *ptr);
 value Val_GtkPageRange_option(GtkPageRange *ptr);
@@ -1630,7 +1636,8 @@ value Val_GtkPageRange_option(GtkPageRange *ptr);
 #define Val_GtkPrintSetup(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GtkPrintSetup */
 
-/* Forward declarations for GtkRecentData converters (non-opaque record with fields) */
+/* Forward declarations for GtkRecentData converters (non-opaque record with  *)
+              fields) */
 GtkRecentData *GtkRecentData_val(value val);
 value Val_GtkRecentData(GtkRecentData *ptr);
 value Val_GtkRecentData_option(GtkRecentData *ptr);
@@ -1645,7 +1652,8 @@ value Val_GtkRecentData_option(GtkRecentData *ptr);
 #define Val_GtkRecentManagerPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GtkRecentManagerPrivate */
 
-/* Forward declarations for GtkRequestedSize converters (non-opaque record with fields) */
+/* Forward declarations for GtkRequestedSize converters (non-opaque record with  *)
+              fields) */
 GtkRequestedSize *GtkRequestedSize_val(value val);
 value Val_GtkRequestedSize(GtkRequestedSize *ptr);
 value Val_GtkRequestedSize_option(GtkRequestedSize *ptr);

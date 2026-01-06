@@ -1,0 +1,9 @@
+class display_manager : Display_manager.t ->
+  object
+    inherit Gdisplay_manager_signals.display_manager_signals
+    method get_default_display : unit -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.display option
+    method open_display : string option -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.display option
+    method set_default_display : #GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.display -> unit
+    method as_display_manager : Display_manager.t
+  end
+

@@ -204,7 +204,7 @@ gboolean result = gtk_combo_box_get_active_iter(GtkComboBox_val(self), &out1);
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTreeIter(out1));
+    Store_field(ret, 1, Val_GtkTreeIter(&out1));
     CAMLreturn(ret);
 }
 

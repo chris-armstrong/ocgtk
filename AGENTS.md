@@ -5,10 +5,15 @@
 1. ALWAYS build the project after making changes with `cd ocgtk && dune build`. Always use its output in full - DO NOT FILTER its output with `head`/`grep`/`tail` because you will miss critical context.
 2. ALWAYS run tests with `cd ocgtk && xvfb-run dune runtest`
 3. ALWAYS write scripts and supporting code in OCaml
+4. ALWAYS refer to [STYLE_GUIDELINES.md](./STYLE_GUIDELINES.md) for OCaml code style and structure guidelines
 
 ## Setting up the project
 
 If you are running in a clean container (e.g. Claude Code Web), you will need to follow the instructions in [SETUP.md](./SETUP.md) for instructions.
+
+## Code Layout
+
+`ocgtk` lives in the `ocgkt` sub-directory - remember to `cd ocgtk` before running tools like `dune` or `ocamlformat`.
 
 
 ## Refactoring Code or Rewriting Documentation
@@ -23,6 +28,7 @@ If you are running in a clean container (e.g. Claude Code Web), you will need to
 
 This project uses `dune` to compile code and run tests. NEVER compile code directly with `ocamlc/ocamlc.opt`.
 
+* `cd ocgtk && dune build` is the basic build command
 * Use `dune build` to compile the code. IMPORTANT: Always check the return code grep for "error|warning|undefined reference". DO NOT filter its output with `grep`/`head`/`tail` etc. otherwise you will miss critical error context.
 * Use `xvfb-run dune runtest` to run all the unit and integration tests. ALWAYS check the return code to determine success - do not rely on the console output.
 

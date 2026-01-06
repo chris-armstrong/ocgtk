@@ -54,6 +54,14 @@ gboolean result = g_dbus_interface_skeleton_has_connection(GDBusInterfaceSkeleto
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_get_vtable(value self)
+{
+CAMLparam1(self);
+
+GDBusInterfaceVTable* result = g_dbus_interface_skeleton_get_vtable(GDBusInterfaceSkeleton_val(self));
+CAMLreturn(Val_GDBusInterfaceVTable(result));
+}
+
 CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_get_object_path(value self)
 {
 CAMLparam1(self);

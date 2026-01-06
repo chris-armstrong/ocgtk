@@ -1,6 +1,7 @@
 class recent_manager : Recent_manager.t ->
   object
     inherit Grecent_manager_signals.recent_manager_signals
+    method add_full : string -> Recent_data.t -> bool
     method add_item : string -> bool
     method has_item : string -> bool
     method lookup_item : string -> (Recent_info.t option, GError.t) result

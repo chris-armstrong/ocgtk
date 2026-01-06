@@ -8,7 +8,7 @@ Because sections are nested into one another, you can use
 type t = [`css_section] Gobject.obj
 
 (** Create a new CssSection *)
-external new_ : unit -> unit -> unit -> t = "ml_gtk_css_section_new"
+external new_ : unit -> Css_location.t -> Css_location.t -> t = "ml_gtk_css_section_new"
 
 (* Methods *)
 (** Decrements the reference count on `section`, freeing the
@@ -22,6 +22,9 @@ external to_string : t -> string = "ml_gtk_css_section_to_string"
 (** Increments the reference count on `section`. *)
 external ref : t -> t = "ml_gtk_css_section_ref"
 
+(** Returns the location in the CSS document where this section starts. *)
+external get_start_location : t -> Css_location.t = "ml_gtk_css_section_get_start_location"
+
 (** Gets the parent section for the given `section`.
 
 The parent section is the section that contains this `section`. A special
@@ -31,4 +34,7 @@ either be `NULL` if they are the original CSS document that was loaded by
 `GTK_CSS_SECTION_IMPORT` if it was loaded with an `@import` rule from
 a different file. *)
 external get_parent : t -> t option = "ml_gtk_css_section_get_parent"
+
+(** Returns the location in the CSS document where this section ends. *)
+external get_end_location : t -> Css_location.t = "ml_gtk_css_section_get_end_location"
 

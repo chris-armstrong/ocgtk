@@ -9,6 +9,10 @@ class file_attribute_info_list (obj : File_attribute_info_list.t) = object (self
     fun () ->
       (File_attribute_info_list.dup obj)
 
+  method lookup : string -> File_attribute_info.t =
+    fun name ->
+      (File_attribute_info_list.lookup obj name)
+
   method ref : unit -> File_attribute_info_list.t =
     fun () ->
       (File_attribute_info_list.ref obj)

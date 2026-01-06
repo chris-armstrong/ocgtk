@@ -92,6 +92,6 @@ gboolean result = gtk_scrollable_get_border(GtkScrollable_val(self), &out1);
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkBorder(out1));
+    Store_field(ret, 1, Val_GtkBorder(&out1));
     CAMLreturn(ret);
 }

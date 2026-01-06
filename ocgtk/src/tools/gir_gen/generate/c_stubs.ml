@@ -21,61 +21,7 @@ let include_header_for_namespace namespace_name =
     let ns_lower = String.lowercase_ascii namespace_name in
     sprintf "#include <%s/%s.h>" ns_lower ns_lower
 
-let nullable_c_to_ml_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping)
-    =
-  if not gir_type.nullable then sprintf "%s(%s)" mapping.c_to_ml var
-  else
-    match gir_type with
-    | {
-     name = "gchararray" | "gchar*" | "utf8" | "const gchar*" | "const char*";
-     _;
-    } ->
-        sprintf "Val_option_string(%s)" var
-    | { c_type = Some c_type; _ }
-      when String.length c_type > 0
-           && String.sub c_type ~pos:(String.length c_type - 1) ~len:1 = "*" ->
-        sprintf "Val_option(%s, %s)" var mapping.c_to_ml
-    | _ -> sprintf "%s(%s)" mapping.c_to_ml var
-
-let nullable_ml_to_c_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping)
-    =
-  if not gir_type.nullable then sprintf "%s(%s)" mapping.ml_to_c var
-  else
-    match gir_type.c_type with
-    | Some ("gchararray" | "gchar*" | "utf8" | "const gchar*" | "const char*")
-      ->
-        sprintf "String_option_val(%s)" var
-    | Some c_type
-      when String.length c_type > 0
-           && String.sub c_type ~pos:(String.length c_type - 1) ~len:1 = "*" ->
-        sprintf "Option_val(%s, %s, NULL)" var mapping.ml_to_c
-    | _ -> sprintf "%s(%s)" mapping.ml_to_c var
-
-let emit_enum_proto buf ~namespace (enum : gir_enum) =
-  bprintf buf "value Val_%s%s(%s val);\n" namespace enum.enum_name
-    enum.enum_c_type;
-  bprintf buf "%s %s%s_val(value val);\n" enum.enum_c_type namespace
-    enum.enum_name
-
-let emit_bitfield_proto buf ~namespace (bitfield : gir_bitfield) =
-  (* Special case: GdkPixbufFormatFlags is in GIR but marked skip in C headers *)
-  if bitfield.bitfield_c_type = "GdkPixbufFormatFlags" then begin
-    bprintf buf
-      "/* GdkPixbufFormatFlags is in GIR but marked skip in C headers */\n";
-    bprintf buf "#ifndef GDK_PIXBUF_FORMAT_WRITABLE\n";
-    bprintf buf "typedef enum {\n";
-    List.iter
-      ~f:(fun flag ->
-        bprintf buf "  %s = %d,\n" flag.flag_c_identifier flag.flag_value)
-      bitfield.flags;
-    bprintf buf "} GdkPixbufFormatFlags;\n";
-    bprintf buf "#endif\n"
-  end;
-  bprintf buf "value Val_%s%s(%s flags);\n" namespace bitfield.bitfield_name
-    bitfield.bitfield_c_type;
-  bprintf buf "%s %s%s_val(value list);\n" bitfield.bitfield_c_type namespace
-    bitfield.bitfield_name
-
+(* Type analysis helpers for property type introspection *)
 type property_gvalue_info = {
   base_type : string;
   base_lower : string;
@@ -143,16 +89,16 @@ let analyze_property_type ~ctx (gir_type : gir_type) =
         (stripped, true)
     | None -> (normalized, false)
   in
-  let base_lower = String.lowercase_ascii base_type in
-  let record_info = Type_mappings.find_record_mapping ctx.records c_type in
-  let class_info = Type_mappings.find_class_mapping ctx.classes c_type in
+  let base_lower = String.lowercase_ascii gir_type.name in
+  let record_info =
+    Type_mappings.find_record_mapping ctx.records gir_type.name
+  in
+  let class_info = Type_mappings.find_class_mapping ctx.classes gir_type.name in
   let is_enum =
-    List.exists ctx.enums ~f:(fun e ->
-        e.enum_c_type = base_type || e.enum_c_type = c_type)
+    List.exists ctx.enums ~f:(fun e -> e.enum_name = gir_type.name)
   in
   let is_bitfield =
-    List.exists ctx.bitfields ~f:(fun b ->
-        b.bitfield_c_type = base_type || b.bitfield_c_type = c_type)
+    List.exists ctx.bitfields ~f:(fun b -> b.bitfield_name = gir_type.name)
   in
   let pointer_like =
     has_pointer
@@ -173,6 +119,70 @@ let analyze_property_type ~ctx (gir_type : gir_type) =
     is_bitfield;
     stack_allocated;
   }
+
+let nullable_c_to_ml_expr ~ctx ~var ~(gir_type : gir_type)
+    ~(mapping : type_mapping) ?(direction : Types.gir_direction = In) () =
+  (* out parameters that are record types are stack allocated, so we need to pass by reference
+     to their Val_x function, which will copy them into the OCaml heap *)
+  let var_expr =
+    match (direction, analyze_property_type ~ctx gir_type) with
+    | Out, { record_info = Some ({ opaque = false; _ }, _, _); _ }
+    | InOut, { record_info = Some ({ opaque = false; _ }, _, _); _ } ->
+        sprintf "&%s" var
+    | _ -> var
+  in
+  if not gir_type.nullable then sprintf "%s(%s)" mapping.c_to_ml var_expr
+  else
+    match gir_type with
+    | {
+     name = "gchararray" | "gchar*" | "utf8" | "const gchar*" | "const char*";
+     _;
+    } ->
+        sprintf "Val_option_string(%s)" var_expr
+    | { c_type = Some c_type; _ }
+      when String.length c_type > 0
+           && String.sub c_type ~pos:(String.length c_type - 1) ~len:1 = "*" ->
+        sprintf "Val_option(%s, %s)" var_expr mapping.c_to_ml
+    | _ -> sprintf "%s(%s)" mapping.c_to_ml var_expr
+
+let nullable_ml_to_c_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping)
+    =
+  if not gir_type.nullable then sprintf "%s(%s)" mapping.ml_to_c var
+  else
+    match gir_type.c_type with
+    | Some ("gchararray" | "gchar*" | "utf8" | "const gchar*" | "const char*")
+      ->
+        sprintf "String_option_val(%s)" var
+    | Some c_type
+      when String.length c_type > 0
+           && String.sub c_type ~pos:(String.length c_type - 1) ~len:1 = "*" ->
+        sprintf "Option_val(%s, %s, NULL)" var mapping.ml_to_c
+    | _ -> sprintf "%s(%s)" mapping.ml_to_c var
+
+let emit_enum_proto buf ~namespace (enum : gir_enum) =
+  bprintf buf "value Val_%s%s(%s val);\n" namespace enum.enum_name
+    enum.enum_c_type;
+  bprintf buf "%s %s%s_val(value val);\n" enum.enum_c_type namespace
+    enum.enum_name
+
+let emit_bitfield_proto buf ~namespace (bitfield : gir_bitfield) =
+  (* Special case: GdkPixbufFormatFlags is in GIR but marked skip in C headers *)
+  if bitfield.bitfield_c_type = "GdkPixbufFormatFlags" then begin
+    bprintf buf
+      "/* GdkPixbufFormatFlags is in GIR but marked skip in C headers */\n";
+    bprintf buf "#ifndef GDK_PIXBUF_FORMAT_WRITABLE\n";
+    bprintf buf "typedef enum {\n";
+    List.iter
+      ~f:(fun flag ->
+        bprintf buf "  %s = %d,\n" flag.flag_c_identifier flag.flag_value)
+      bitfield.flags;
+    bprintf buf "} GdkPixbufFormatFlags;\n";
+    bprintf buf "#endif\n"
+  end;
+  bprintf buf "value Val_%s%s(%s flags);\n" namespace bitfield.bitfield_name
+    bitfield.bitfield_c_type;
+  bprintf buf "%s %s%s_val(value list);\n" bitfield.bitfield_c_type namespace
+    bitfield.bitfield_name
 
 let generate_gvalue_getter_assignment ~ml_name ~prop ~c_type_name ~prop_info =
   let base_lower = prop_info.base_lower in
@@ -310,8 +320,6 @@ let generate_forward_decls_header ~ctx ~classes ~interfaces ~gtk_enums
     (String.lowercase_ascii ctx.namespace.namespace_name);
   Buffer.add_string buf "\n";
   bprintf buf "%s\n" (include_header_for_namespace ctx.namespace.namespace_name);
-  (* Buffer.add_string buf "#include <gdk-pixbuf/gdk-pixbuf.h>\n";
-  Buffer.add_string buf "#include <graphene.h>\n"; *)
   Buffer.add_string buf "#include <caml/mlvalues.h>\n";
   Buffer.add_string buf "\n";
 
@@ -322,9 +330,10 @@ let generate_forward_decls_header ~ctx ~classes ~interfaces ~gtk_enums
       if not (Hashtbl.mem seen cls.c_type) then begin
         Hashtbl.add seen cls.c_type ();
         bprintf buf "#ifndef Val_%s\n" cls.c_type;
-        bprintf buf "#define %s_val(val) ((%s*)ml_gobject_ext_of_val(val))\n" cls.c_type
-          cls.c_type;
-        bprintf buf "#define Val_%s(obj) ((value)(ml_gobject_val_of_ext(obj)))\n"
+        bprintf buf "#define %s_val(val) ((%s*)ml_gobject_ext_of_val(val))\n"
+          cls.c_type cls.c_type;
+        bprintf buf
+          "#define Val_%s(obj) ((value)(ml_gobject_val_of_ext(obj)))\n"
           cls.c_type;
         bprintf buf "#endif /* Val_%s */\n\n" cls.c_type
       end)
@@ -336,16 +345,19 @@ let generate_forward_decls_header ~ctx ~classes ~interfaces ~gtk_enums
       if not (Hashtbl.mem seen intf.c_type) then begin
         Hashtbl.add seen intf.c_type ();
         bprintf buf "#ifndef Val_%s\n" intf.c_type;
-        bprintf buf "#define %s_val(val) ((%s*)ml_gobject_ext_of_val(val))\n" intf.c_type
-          intf.c_type;
-        bprintf buf "#define Val_%s(obj) ((value)(ml_gobject_val_of_ext(obj)))\n"
+        bprintf buf "#define %s_val(val) ((%s*)ml_gobject_ext_of_val(val))\n"
+          intf.c_type intf.c_type;
+        bprintf buf
+          "#define Val_%s(obj) ((value)(ml_gobject_val_of_ext(obj)))\n"
           intf.c_type;
         bprintf buf "#endif /* Val_%s */\n\n" intf.c_type
       end)
     interfaces;
 
   (* Generate macros for value-like records that have copy methods *)
-  let value_like_records = List.filter ~f:is_value_like_record records in
+  let value_like_records, non_value_like_records =
+    List.partition ~f:is_value_like_record records
+  in
   if List.length value_like_records > 0 then begin
     Buffer.add_string buf "/* Value-returning structs copied into OCaml */\n";
 
@@ -375,7 +387,7 @@ let generate_forward_decls_header ~ctx ~classes ~interfaces ~gtk_enums
               bprintf buf "#ifndef Val_%s\n" record.c_type;
               bprintf buf "#define %s_val(val) ((%s*)ext_of_val(val))\n"
                 record.c_type record.c_type;
-              bprintf buf "#define Val_%s(obj) copy_%s(&(obj))\n" record.c_type
+              bprintf buf "#define Val_%s(obj) copy_%s((obj))\n" record.c_type
                 record.c_type;
               bprintf buf
                 "#define Val_%s_option(ptr) ((ptr) ? Val_some(copy_%s(ptr)) : \
@@ -390,55 +402,26 @@ let generate_forward_decls_header ~ctx ~classes ~interfaces ~gtk_enums
 
   List.iter
     ~f:(fun (record : gir_record) ->
-      let should_generate =
-        Type_mappings.is_boxed_record record
-        || record.disguised || not record.opaque
-      in
-      if should_generate && not (Hashtbl.mem seen record.c_type) then begin
-        Hashtbl.add seen record.c_type ();
-        (* Non-opaque records get functions instead of macros, but value-like records use macros *)
-        let is_value_record = is_value_like_record record in
-        if (not record.opaque) && (not record.disguised) && not is_value_record
-        then begin
-          (* Forward declarations for functions *)
-          bprintf buf
-            "/* Forward declarations for %s converters (non-opaque record with \
-             fields) */\n"
-            record.c_type;
-          bprintf buf "%s *%s_val(value val);\n" record.c_type record.c_type;
-          bprintf buf "value Val_%s(%s *ptr);\n" record.c_type record.c_type;
-          bprintf buf "value Val_%s_option(%s *ptr);\n\n" record.c_type
-            record.c_type
-        end
-        else begin
-          bprintf buf "#ifndef Val_%s\n" record.c_type;
-          if not record.opaque then begin
-            (* Non-value-like, non-opaque records use standard macros *)
-            bprintf buf
-              "#define %s_val(val) ((%s*)ml_gir_record_ptr_val((val), \"%s\"))\n"
-              record.c_type record.c_type record.c_type;
-            bprintf buf
-              "#define Val_%s_ptr(ptr) ml_gir_record_alloc((ptr), sizeof(%s), \
-               \"%s\", NULL)\n"
-              record.c_type record.c_type record.c_type;
-            bprintf buf "#define Val_%s(obj) Val_%s_ptr(obj)\n" record.c_type
-              record.c_type;
-            bprintf buf
-              "#define Val_%s_option(ptr) ((ptr) ? Val_some(Val_%s_ptr(ptr)) : \
-               Val_none)\n"
-              record.c_type record.c_type
-          end
-          else begin
-            bprintf buf "#define %s_val(val) ((%s*)ext_of_val(val))\n"
-              record.c_type record.c_type;
-            bprintf buf "#define Val_%s(obj) ((value)(val_of_ext(obj)))\n"
-              record.c_type
-          end;
-          bprintf buf "#endif /* Val_%s */\n\n" record.c_type
-        end
+      if record.opaque || record.disguised then begin
+        bprintf buf "#ifndef Val_%s\n" record.c_type;
+        bprintf buf "#define %s_val(val) ((%s*)ext_of_val(val))\n" record.c_type
+          record.c_type;
+        bprintf buf "#define Val_%s(obj) ((value)(val_of_ext(obj)))\n"
+          record.c_type;
+        bprintf buf "#endif /* Val_%s */\n\n" record.c_type
+      end
+      else begin
+        (* Forward declarations for functions *)
+        bprintf buf
+          "/* Forward declarations for %s converters (non-opaque record with  *)\n\
+          \              fields) */\n"
+          record.c_type;
+        bprintf buf "%s *%s_val(value val);\n" record.c_type record.c_type;
+        bprintf buf "value Val_%s(%s *ptr);\n" record.c_type record.c_type;
+        bprintf buf "value Val_%s_option(%s *ptr);\n\n" record.c_type
+          record.c_type
       end)
-    records;
-
+    non_value_like_records;
   Buffer.add_string buf "/* Const-safe string extraction for setters */\n";
   Buffer.add_string buf
     "#define ML_DECL_CONST_STRING(name, expr) const gchar *name = (const gchar \
@@ -544,7 +527,14 @@ let generate_c_constructor ~ctx ~c_type (ctor : gir_constructor) _class_name =
   (* Check if this is a GObject constructor - for GObjects, always ref_sink *)
   let ref_sink_stmt =
     (* Try to look up the type mapping for the constructor's return type *)
-    let dummy_gir_type = { name = c_type; c_type = Some (c_type ^ "*"); nullable = false; transfer_ownership = Types.TransferNone } in
+    let dummy_gir_type =
+      {
+        name = c_type;
+        c_type = Some (c_type ^ "*");
+        nullable = false;
+        transfer_ownership = Types.TransferNone;
+      }
+    in
     match Type_mappings.find_type_mapping_for_gir_type ~ctx dummy_gir_type with
     | Some mapping when Option.is_some mapping.layer2_class ->
         (* This is a GObject type (class or interface) - always need ref_sink for constructors *)
@@ -819,8 +809,8 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
                   else sprintf "inout%d" (idx + 1)
                 in
                 Some
-                  (nullable_c_to_ml_expr ~var:var_name ~gir_type:base_gir_type
-                     ~mapping)
+                  (nullable_c_to_ml_expr ~ctx ~var:var_name
+                     ~gir_type:base_gir_type ~mapping ~direction:p.direction ())
             | None -> None
           else None)
         (List.mapi ~f:(fun i p -> (p, i)) meth.parameters)
@@ -894,8 +884,8 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
         with
         | Some mapping ->
             let ml_result =
-              nullable_c_to_ml_expr ~var:"result" ~gir_type:meth.return_type
-                ~mapping
+              nullable_c_to_ml_expr ~ctx ~var:"result"
+                ~gir_type:meth.return_type ~mapping ()
             in
             (* Generate ref_sink statement for GObject types based on transfer-ownership *)
             let ref_sink_stmt =
@@ -986,8 +976,8 @@ let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
   in
 
   let ml_prop_value =
-    nullable_c_to_ml_expr ~var:"prop_value" ~gir_type:prop.prop_type
-      ~mapping:type_info
+    nullable_c_to_ml_expr ~ctx ~var:"prop_value" ~gir_type:prop.prop_type
+      ~mapping:type_info ()
   in
   let prop_info = analyze_property_type ~ctx prop.prop_type in
   let c_cast = sprintf "%s_val" c_type in

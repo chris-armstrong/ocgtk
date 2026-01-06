@@ -749,7 +749,8 @@
 #define Val_GVolume(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GVolume */
 
-/* Forward declarations for GActionEntry converters (non-opaque record with fields) */
+/* Forward declarations for GActionEntry converters (non-opaque record with  *)
+              fields) */
 GActionEntry *GActionEntry_val(value val);
 value Val_GActionEntry(GActionEntry *ptr);
 value Val_GActionEntry_option(GActionEntry *ptr);
@@ -794,22 +795,26 @@ value Val_GActionEntry_option(GActionEntry *ptr);
 #define Val_GConverterOutputStreamPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GConverterOutputStreamPrivate */
 
-/* Forward declarations for GDBusAnnotationInfo converters (non-opaque record with fields) */
+/* Forward declarations for GDBusAnnotationInfo converters (non-opaque record with  *)
+              fields) */
 GDBusAnnotationInfo *GDBusAnnotationInfo_val(value val);
 value Val_GDBusAnnotationInfo(GDBusAnnotationInfo *ptr);
 value Val_GDBusAnnotationInfo_option(GDBusAnnotationInfo *ptr);
 
-/* Forward declarations for GDBusArgInfo converters (non-opaque record with fields) */
+/* Forward declarations for GDBusArgInfo converters (non-opaque record with  *)
+              fields) */
 GDBusArgInfo *GDBusArgInfo_val(value val);
 value Val_GDBusArgInfo(GDBusArgInfo *ptr);
 value Val_GDBusArgInfo_option(GDBusArgInfo *ptr);
 
-/* Forward declarations for GDBusErrorEntry converters (non-opaque record with fields) */
+/* Forward declarations for GDBusErrorEntry converters (non-opaque record with  *)
+              fields) */
 GDBusErrorEntry *GDBusErrorEntry_val(value val);
 value Val_GDBusErrorEntry(GDBusErrorEntry *ptr);
 value Val_GDBusErrorEntry_option(GDBusErrorEntry *ptr);
 
-/* Forward declarations for GDBusInterfaceInfo converters (non-opaque record with fields) */
+/* Forward declarations for GDBusInterfaceInfo converters (non-opaque record with  *)
+              fields) */
 GDBusInterfaceInfo *GDBusInterfaceInfo_val(value val);
 value Val_GDBusInterfaceInfo(GDBusInterfaceInfo *ptr);
 value Val_GDBusInterfaceInfo_option(GDBusInterfaceInfo *ptr);
@@ -819,17 +824,20 @@ value Val_GDBusInterfaceInfo_option(GDBusInterfaceInfo *ptr);
 #define Val_GDBusInterfaceSkeletonPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GDBusInterfaceSkeletonPrivate */
 
-/* Forward declarations for GDBusInterfaceVTable converters (non-opaque record with fields) */
+/* Forward declarations for GDBusInterfaceVTable converters (non-opaque record with  *)
+              fields) */
 GDBusInterfaceVTable *GDBusInterfaceVTable_val(value val);
 value Val_GDBusInterfaceVTable(GDBusInterfaceVTable *ptr);
 value Val_GDBusInterfaceVTable_option(GDBusInterfaceVTable *ptr);
 
-/* Forward declarations for GDBusMethodInfo converters (non-opaque record with fields) */
+/* Forward declarations for GDBusMethodInfo converters (non-opaque record with  *)
+              fields) */
 GDBusMethodInfo *GDBusMethodInfo_val(value val);
 value Val_GDBusMethodInfo(GDBusMethodInfo *ptr);
 value Val_GDBusMethodInfo_option(GDBusMethodInfo *ptr);
 
-/* Forward declarations for GDBusNodeInfo converters (non-opaque record with fields) */
+/* Forward declarations for GDBusNodeInfo converters (non-opaque record with  *)
+              fields) */
 GDBusNodeInfo *GDBusNodeInfo_val(value val);
 value Val_GDBusNodeInfo(GDBusNodeInfo *ptr);
 value Val_GDBusNodeInfo_option(GDBusNodeInfo *ptr);
@@ -854,7 +862,8 @@ value Val_GDBusNodeInfo_option(GDBusNodeInfo *ptr);
 #define Val_GDBusObjectSkeletonPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GDBusObjectSkeletonPrivate */
 
-/* Forward declarations for GDBusPropertyInfo converters (non-opaque record with fields) */
+/* Forward declarations for GDBusPropertyInfo converters (non-opaque record with  *)
+              fields) */
 GDBusPropertyInfo *GDBusPropertyInfo_val(value val);
 value Val_GDBusPropertyInfo(GDBusPropertyInfo *ptr);
 value Val_GDBusPropertyInfo_option(GDBusPropertyInfo *ptr);
@@ -864,12 +873,14 @@ value Val_GDBusPropertyInfo_option(GDBusPropertyInfo *ptr);
 #define Val_GDBusProxyPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GDBusProxyPrivate */
 
-/* Forward declarations for GDBusSignalInfo converters (non-opaque record with fields) */
+/* Forward declarations for GDBusSignalInfo converters (non-opaque record with  *)
+              fields) */
 GDBusSignalInfo *GDBusSignalInfo_val(value val);
 value Val_GDBusSignalInfo(GDBusSignalInfo *ptr);
 value Val_GDBusSignalInfo_option(GDBusSignalInfo *ptr);
 
-/* Forward declarations for GDBusSubtreeVTable converters (non-opaque record with fields) */
+/* Forward declarations for GDBusSubtreeVTable converters (non-opaque record with  *)
+              fields) */
 GDBusSubtreeVTable *GDBusSubtreeVTable_val(value val);
 value Val_GDBusSubtreeVTable(GDBusSubtreeVTable *ptr);
 value Val_GDBusSubtreeVTable_option(GDBusSubtreeVTable *ptr);
@@ -889,12 +900,14 @@ value Val_GDBusSubtreeVTable_option(GDBusSubtreeVTable *ptr);
 #define Val_GEmblemedIconPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GEmblemedIconPrivate */
 
-/* Forward declarations for GFileAttributeInfo converters (non-opaque record with fields) */
+/* Forward declarations for GFileAttributeInfo converters (non-opaque record with  *)
+              fields) */
 GFileAttributeInfo *GFileAttributeInfo_val(value val);
 value Val_GFileAttributeInfo(GFileAttributeInfo *ptr);
 value Val_GFileAttributeInfo_option(GFileAttributeInfo *ptr);
 
-/* Forward declarations for GFileAttributeInfoList converters (non-opaque record with fields) */
+/* Forward declarations for GFileAttributeInfoList converters (non-opaque record with  *)
+              fields) */
 GFileAttributeInfoList *GFileAttributeInfoList_val(value val);
 value Val_GFileAttributeInfoList(GFileAttributeInfoList *ptr);
 value Val_GFileAttributeInfoList_option(GFileAttributeInfoList *ptr);
@@ -974,7 +987,8 @@ value Val_GFileAttributeInfoList_option(GFileAttributeInfoList *ptr);
 #define Val_GInetSocketAddressPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GInetSocketAddressPrivate */
 
-/* Forward declarations for GInputMessage converters (non-opaque record with fields) */
+/* Forward declarations for GInputMessage converters (non-opaque record with  *)
+              fields) */
 GInputMessage *GInputMessage_val(value val);
 value Val_GInputMessage(GInputMessage *ptr);
 value Val_GInputMessage_option(GInputMessage *ptr);
@@ -984,7 +998,8 @@ value Val_GInputMessage_option(GInputMessage *ptr);
 #define Val_GInputStreamPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GInputStreamPrivate */
 
-/* Forward declarations for GInputVector converters (non-opaque record with fields) */
+/* Forward declarations for GInputVector converters (non-opaque record with  *)
+              fields) */
 GInputVector *GInputVector_val(value val);
 value Val_GInputVector(GInputVector *ptr);
 value Val_GInputVector_option(GInputVector *ptr);
@@ -1034,7 +1049,8 @@ value Val_GInputVector_option(GInputVector *ptr);
 #define Val_GNetworkServicePrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GNetworkServicePrivate */
 
-/* Forward declarations for GOutputMessage converters (non-opaque record with fields) */
+/* Forward declarations for GOutputMessage converters (non-opaque record with  *)
+              fields) */
 GOutputMessage *GOutputMessage_val(value val);
 value Val_GOutputMessage(GOutputMessage *ptr);
 value Val_GOutputMessage_option(GOutputMessage *ptr);
@@ -1044,7 +1060,8 @@ value Val_GOutputMessage_option(GOutputMessage *ptr);
 #define Val_GOutputStreamPrivate(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GOutputStreamPrivate */
 
-/* Forward declarations for GOutputVector converters (non-opaque record with fields) */
+/* Forward declarations for GOutputVector converters (non-opaque record with  *)
+              fields) */
 GOutputVector *GOutputVector_val(value val);
 value Val_GOutputVector(GOutputVector *ptr);
 value Val_GOutputVector_option(GOutputVector *ptr);
@@ -1144,7 +1161,8 @@ value Val_GOutputVector_option(GOutputVector *ptr);
 #define Val_GSrvTarget(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GSrvTarget */
 
-/* Forward declarations for GStaticResource converters (non-opaque record with fields) */
+/* Forward declarations for GStaticResource converters (non-opaque record with  *)
+              fields) */
 GStaticResource *GStaticResource_val(value val);
 value Val_GStaticResource(GStaticResource *ptr);
 value Val_GStaticResource_option(GStaticResource *ptr);

@@ -41,7 +41,7 @@ if (pspec == NULL) caml_failwith("ml_gtk_simple_io_stream_get_input_stream: prop
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
 g_object_get_property(G_OBJECT(obj), "input-stream", &prop_gvalue);
-    caml_failwith("ml_gtk_simple_io_stream_get_input_stream: unsupported property type 'input-stream'");
+    prop_value = (GInputStream*)g_value_get_object(&prop_gvalue);
 
 result = Val_GInputStream(prop_value);
 g_value_unset(&prop_gvalue);
@@ -59,7 +59,7 @@ if (pspec == NULL) caml_failwith("ml_gtk_simple_io_stream_get_output_stream: pro
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
 g_object_get_property(G_OBJECT(obj), "output-stream", &prop_gvalue);
-    caml_failwith("ml_gtk_simple_io_stream_get_output_stream: unsupported property type 'output-stream'");
+    prop_value = (GOutputStream*)g_value_get_object(&prop_gvalue);
 
 result = Val_GOutputStream(prop_value);
 g_value_unset(&prop_gvalue);

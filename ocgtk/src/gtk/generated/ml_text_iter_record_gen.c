@@ -404,8 +404,8 @@ gboolean result = gtk_text_iter_forward_search(GtkTextIter_val(self), String_val
 CAMLlocal1(ret);
     ret = caml_alloc(3, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTextIter(out3));
-    Store_field(ret, 2, Val_GtkTextIter(out4));
+    Store_field(ret, 1, Val_GtkTextIter(&out3));
+    Store_field(ret, 2, Val_GtkTextIter(&out4));
     CAMLreturn(ret);
 }
 
@@ -619,8 +619,8 @@ gboolean result = gtk_text_iter_backward_search(GtkTextIter_val(self), String_va
 CAMLlocal1(ret);
     ret = caml_alloc(3, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTextIter(out3));
-    Store_field(ret, 2, Val_GtkTextIter(out4));
+    Store_field(ret, 1, Val_GtkTextIter(&out3));
+    Store_field(ret, 2, Val_GtkTextIter(&out4));
     CAMLreturn(ret);
 }
 
