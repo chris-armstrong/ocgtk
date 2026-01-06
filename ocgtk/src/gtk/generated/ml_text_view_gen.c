@@ -370,7 +370,7 @@ int out3;
 gtk_text_view_get_line_at_y(GtkTextView_val(self), &out1, Int_val(arg1), &out3);
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
-    Store_field(ret, 0, Val_GtkTextIter(out1));
+    Store_field(ret, 0, Val_GtkTextIter(&out1));
     Store_field(ret, 1, Val_int(out3));
     CAMLreturn(ret);
 }
@@ -401,7 +401,7 @@ gboolean result = gtk_text_view_get_iter_at_position(GtkTextView_val(self), &out
 CAMLlocal1(ret);
     ret = caml_alloc(3, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTextIter(out1));
+    Store_field(ret, 1, Val_GtkTextIter(&out1));
     Store_field(ret, 2, Val_int(out2));
     CAMLreturn(ret);
 }
@@ -415,7 +415,7 @@ gboolean result = gtk_text_view_get_iter_at_location(GtkTextView_val(self), &out
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTextIter(out1));
+    Store_field(ret, 1, Val_GtkTextIter(&out1));
     CAMLreturn(ret);
 }
 

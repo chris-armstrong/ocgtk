@@ -176,7 +176,7 @@ if (pspec == NULL) caml_failwith("ml_gtk_device_get_tool: property 'tool' not fo
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
 g_object_get_property(G_OBJECT(obj), "tool", &prop_gvalue);
-    caml_failwith("ml_gtk_device_get_tool: unsupported property type 'tool'");
+    prop_value = (GdkDeviceTool*)g_value_get_object(&prop_gvalue);
 
 result = Val_GdkDeviceTool(prop_value);
 g_value_unset(&prop_gvalue);

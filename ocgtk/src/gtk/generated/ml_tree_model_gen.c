@@ -90,7 +90,7 @@ gboolean result = gtk_tree_model_iter_parent(GtkTreeModel_val(self), &out1, GtkT
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTreeIter(out1));
+    Store_field(ret, 1, Val_GtkTreeIter(&out1));
     CAMLreturn(ret);
 }
 
@@ -103,7 +103,7 @@ gboolean result = gtk_tree_model_iter_nth_child(GtkTreeModel_val(self), &out1, O
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTreeIter(out1));
+    Store_field(ret, 1, Val_GtkTreeIter(&out1));
     CAMLreturn(ret);
 }
 
@@ -140,7 +140,7 @@ gboolean result = gtk_tree_model_iter_children(GtkTreeModel_val(self), &out1, Op
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTreeIter(out1));
+    Store_field(ret, 1, Val_GtkTreeIter(&out1));
     CAMLreturn(ret);
 }
 
@@ -177,7 +177,7 @@ gboolean result = gtk_tree_model_get_iter_from_string(GtkTreeModel_val(self), &o
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTreeIter(out1));
+    Store_field(ret, 1, Val_GtkTreeIter(&out1));
     CAMLreturn(ret);
 }
 
@@ -190,7 +190,7 @@ gboolean result = gtk_tree_model_get_iter_first(GtkTreeModel_val(self), &out1);
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTreeIter(out1));
+    Store_field(ret, 1, Val_GtkTreeIter(&out1));
     CAMLreturn(ret);
 }
 
@@ -203,7 +203,7 @@ gboolean result = gtk_tree_model_get_iter(GtkTreeModel_val(self), &out1, GtkTree
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTreeIter(out1));
+    Store_field(ret, 1, Val_GtkTreeIter(&out1));
     CAMLreturn(ret);
 }
 

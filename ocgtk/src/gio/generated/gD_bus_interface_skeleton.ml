@@ -29,6 +29,10 @@ class d_bus_interface_skeleton (obj : D_bus_interface_skeleton.t) = object (self
     fun () ->
       (D_bus_interface_skeleton.get_object_path obj)
 
+  method get_vtable : unit -> D_bus_interface_v_table.t =
+    fun () ->
+      (D_bus_interface_skeleton.get_vtable obj)
+
   method has_connection : 'p1. (#GD_bus_connection.d_bus_connection as 'p1) -> bool =
     fun connection ->
       let connection = connection#as_d_bus_connection in

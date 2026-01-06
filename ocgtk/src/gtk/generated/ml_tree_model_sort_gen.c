@@ -64,7 +64,7 @@ CAMLparam2(self, arg1);
 GtkTreeIter out1;
 
 gtk_tree_model_sort_convert_iter_to_child_iter(GtkTreeModelSort_val(self), &out1, GtkTreeIter_val(arg1));
-CAMLreturn(Val_GtkTreeIter(out1));
+CAMLreturn(Val_GtkTreeIter(&out1));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_model_sort_convert_child_path_to_path(value self, value arg1)
@@ -84,7 +84,7 @@ gboolean result = gtk_tree_model_sort_convert_child_iter_to_iter(GtkTreeModelSor
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTreeIter(out1));
+    Store_field(ret, 1, Val_GtkTreeIter(&out1));
     CAMLreturn(ret);
 }
 

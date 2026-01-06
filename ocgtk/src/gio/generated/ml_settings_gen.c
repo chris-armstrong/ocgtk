@@ -249,7 +249,7 @@ if (pspec == NULL) caml_failwith("ml_gtk_settings_get_backend: property 'backend
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
 g_object_get_property(G_OBJECT(obj), "backend", &prop_gvalue);
-    caml_failwith("ml_gtk_settings_get_backend: unsupported property type 'backend'");
+    prop_value = (GSettingsBackend*)g_value_get_object(&prop_gvalue);
 
 result = Val_GSettingsBackend(prop_value);
 g_value_unset(&prop_gvalue);

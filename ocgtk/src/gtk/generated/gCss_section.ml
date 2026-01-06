@@ -1,9 +1,17 @@
 (* High-level class for CssSection *)
 class css_section (obj : Css_section.t) = object (self)
 
+  method get_end_location : unit -> Css_location.t =
+    fun () ->
+      (Css_section.get_end_location obj)
+
   method get_parent : unit -> Css_section.t option =
     fun () ->
       (Css_section.get_parent obj)
+
+  method get_start_location : unit -> Css_location.t =
+    fun () ->
+      (Css_section.get_start_location obj)
 
   method ref : unit -> Css_section.t =
     fun () ->

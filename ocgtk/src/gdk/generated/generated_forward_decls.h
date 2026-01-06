@@ -244,7 +244,7 @@ value copy_GdkRGBA(const GdkRGBA *ptr);
 
 #ifndef Val_GdkRGBA
 #define GdkRGBA_val(val) ((GdkRGBA*)ext_of_val(val))
-#define Val_GdkRGBA(obj) copy_GdkRGBA(&(obj))
+#define Val_GdkRGBA(obj) copy_GdkRGBA((obj))
 #define Val_GdkRGBA_option(ptr) ((ptr) ? Val_some(copy_GdkRGBA(ptr)) : Val_none)
 #endif /* Val_GdkRGBA */
 
@@ -289,7 +289,8 @@ value copy_GdkRGBA(const GdkRGBA *ptr);
 #define Val_GdkFrameTimings(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GdkFrameTimings */
 
-/* Forward declarations for GdkKeymapKey converters (non-opaque record with fields) */
+/* Forward declarations for GdkKeymapKey converters (non-opaque record with  *)
+              fields) */
 GdkKeymapKey *GdkKeymapKey_val(value val);
 value Val_GdkKeymapKey(GdkKeymapKey *ptr);
 value Val_GdkKeymapKey_option(GdkKeymapKey *ptr);
@@ -299,7 +300,8 @@ value Val_GdkKeymapKey_option(GdkKeymapKey *ptr);
 #define Val_GdkPopupLayout(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GdkPopupLayout */
 
-/* Forward declarations for GdkRectangle converters (non-opaque record with fields) */
+/* Forward declarations for GdkRectangle converters (non-opaque record with  *)
+              fields) */
 GdkRectangle *GdkRectangle_val(value val);
 value Val_GdkRectangle(GdkRectangle *ptr);
 value Val_GdkRectangle_option(GdkRectangle *ptr);
@@ -309,7 +311,8 @@ value Val_GdkRectangle_option(GdkRectangle *ptr);
 #define Val_GdkTextureDownloader(obj) ((value)(val_of_ext(obj)))
 #endif /* Val_GdkTextureDownloader */
 
-/* Forward declarations for GdkTimeCoord converters (non-opaque record with fields) */
+/* Forward declarations for GdkTimeCoord converters (non-opaque record with  *)
+              fields) */
 GdkTimeCoord *GdkTimeCoord_val(value val);
 value Val_GdkTimeCoord(GdkTimeCoord *ptr);
 value Val_GdkTimeCoord_option(GdkTimeCoord *ptr);

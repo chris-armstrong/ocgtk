@@ -22,6 +22,11 @@ external set_flags : t -> Gio_enums.dbusinterfaceskeletonflags -> unit = "ml_g_d
 (** Checks if @interface_ is exported on @connection. *)
 external has_connection : t -> D_bus_connection.t -> bool = "ml_g_dbus_interface_skeleton_has_connection"
 
+(** Gets the interface vtable for the D-Bus interface implemented by
+@interface_. The returned function pointers should expect @interface_
+itself to be passed as @user_data. *)
+external get_vtable : t -> D_bus_interface_v_table.t = "ml_g_dbus_interface_skeleton_get_vtable"
+
 (** Gets the object path that @interface_ is exported on, if any. *)
 external get_object_path : t -> string option = "ml_g_dbus_interface_skeleton_get_object_path"
 

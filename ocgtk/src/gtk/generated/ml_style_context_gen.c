@@ -103,7 +103,7 @@ CAMLparam1(self);
 GtkBorder out1;
 
 gtk_style_context_get_padding(GtkStyleContext_val(self), &out1);
-CAMLreturn(Val_GtkBorder(out1));
+CAMLreturn(Val_GtkBorder(&out1));
 }
 
 CAMLexport CAMLprim value ml_gtk_style_context_get_margin(value self)
@@ -112,7 +112,7 @@ CAMLparam1(self);
 GtkBorder out1;
 
 gtk_style_context_get_margin(GtkStyleContext_val(self), &out1);
-CAMLreturn(Val_GtkBorder(out1));
+CAMLreturn(Val_GtkBorder(&out1));
 }
 
 CAMLexport CAMLprim value ml_gtk_style_context_get_border(value self)
@@ -121,7 +121,7 @@ CAMLparam1(self);
 GtkBorder out1;
 
 gtk_style_context_get_border(GtkStyleContext_val(self), &out1);
-CAMLreturn(Val_GtkBorder(out1));
+CAMLreturn(Val_GtkBorder(&out1));
 }
 
 CAMLexport CAMLprim value ml_gtk_style_context_add_provider(value self, value arg1, value arg2)

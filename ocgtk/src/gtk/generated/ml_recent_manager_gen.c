@@ -77,6 +77,14 @@ gboolean result = gtk_recent_manager_add_item(GtkRecentManager_val(self), String
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_recent_manager_add_full(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gboolean result = gtk_recent_manager_add_full(GtkRecentManager_val(self), String_val(arg1), GtkRecentData_val(arg2));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_recent_manager_get_filename(value self)
 {
 CAMLparam1(self);

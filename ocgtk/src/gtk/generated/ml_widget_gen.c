@@ -750,8 +750,8 @@ GtkRequisition out2;
 gtk_widget_get_preferred_size(GtkWidget_val(self), &out1, &out2);
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
-    Store_field(ret, 0, Val_GtkRequisition(out1));
-    Store_field(ret, 1, Val_GtkRequisition(out2));
+    Store_field(ret, 0, Val_GtkRequisition(&out1));
+    Store_field(ret, 1, Val_GtkRequisition(&out2));
     CAMLreturn(ret);
 }
 
