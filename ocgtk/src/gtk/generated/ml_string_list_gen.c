@@ -29,7 +29,7 @@ CAMLexport CAMLprim value ml_gtk_string_list_take(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_string_list_take(GtkStringList_val(self), String_val(arg1));
+gtk_string_list_take(GtkStringList_val(self), String_copy(arg1));
 CAMLreturn(Val_unit);
 }
 

@@ -20,7 +20,7 @@
 value copy_GtkBorder(const GtkBorder *ptr) {
   if (ptr == NULL) return Val_none;
   GtkBorder *copy = gtk_border_copy((GtkBorder*)ptr);
-  return ml_gir_record_alloc(copy, sizeof(GtkBorder), "GtkBorder", (void(*)(void*))g_free);
+  return ml_gir_record_val_ptr(g_new0(GtkBorder, 1));
 }
 
 

@@ -19,9 +19,18 @@
 value copy_GdkRGBA(const GdkRGBA *ptr) {
   if (ptr == NULL) return Val_none;
   GdkRGBA *copy = gdk_rgba_copy((GdkRGBA*)ptr);
-  return ml_gir_record_alloc(copy, sizeof(GdkRGBA), "GdkRGBA", (void(*)(void*))g_free);
+  return ml_gir_record_val_ptr(g_new0(GdkRGBA, 1));
 }
 
+
+/* Synthetic allocator for non-opaque record RGBA */
+CAMLexport CAMLprim value ml_gdk_rgb_a_new(value unit)
+{
+    CAMLparam1(unit);
+    GdkRGBA *obj = g_new0(GdkRGBA, 1);
+    if (obj == NULL) caml_failwith("GdkRGBA allocation failed");
+    CAMLreturn(Val_GdkRGBA(obj));
+}
 
 CAMLexport CAMLprim value ml_gdk_rgba_to_string(value self)
 {

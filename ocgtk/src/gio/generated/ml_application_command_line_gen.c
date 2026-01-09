@@ -83,7 +83,7 @@ CAMLexport CAMLprim value ml_g_application_command_line_get_cwd(value self)
 CAMLparam1(self);
 
 const gchar* result = g_application_command_line_get_cwd(GApplicationCommandLine_val(self));
-CAMLreturn(Val_option(result, caml_copy_string));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_g_application_command_line_done(value self)

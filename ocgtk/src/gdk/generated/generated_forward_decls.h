@@ -249,83 +249,89 @@ value copy_GdkRGBA(const GdkRGBA *ptr);
 #endif /* Val_GdkRGBA */
 
 
-#ifndef Val_GdkContentFormats
-#define GdkContentFormats_val(val) ((GdkContentFormats*)ext_of_val(val))
-#define Val_GdkContentFormats(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GdkContentFormats */
+/* Forward declarations for GdkContentFormats converters (non-opaque record with  *)
+              fields) */
+GdkContentFormats *GdkContentFormats_val(value val);
+value Val_GdkContentFormats(const GdkContentFormats *ptr);
+value Val_GdkContentFormats_option(const GdkContentFormats *ptr);
 
-#ifndef Val_GdkContentFormatsBuilder
-#define GdkContentFormatsBuilder_val(val) ((GdkContentFormatsBuilder*)ext_of_val(val))
-#define Val_GdkContentFormatsBuilder(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GdkContentFormatsBuilder */
+/* Forward declarations for GdkContentFormatsBuilder converters (non-opaque record with  *)
+              fields) */
+GdkContentFormatsBuilder *GdkContentFormatsBuilder_val(value val);
+value Val_GdkContentFormatsBuilder(const GdkContentFormatsBuilder *ptr);
+value Val_GdkContentFormatsBuilder_option(const GdkContentFormatsBuilder *ptr);
 
-#ifndef Val_GdkDmabufFormats
-#define GdkDmabufFormats_val(val) ((GdkDmabufFormats*)ext_of_val(val))
-#define Val_GdkDmabufFormats(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GdkDmabufFormats */
+/* Forward declarations for GdkDmabufFormats converters (non-opaque record with  *)
+              fields) */
+GdkDmabufFormats *GdkDmabufFormats_val(value val);
+value Val_GdkDmabufFormats(const GdkDmabufFormats *ptr);
+value Val_GdkDmabufFormats_option(const GdkDmabufFormats *ptr);
 
-#ifndef Val_GdkDragSurfaceSize
-#define GdkDragSurfaceSize_val(val) ((GdkDragSurfaceSize*)ext_of_val(val))
-#define Val_GdkDragSurfaceSize(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GdkDragSurfaceSize */
+/* Forward declarations for GdkDragSurfaceSize converters (non-opaque record with  *)
+              fields) */
+GdkDragSurfaceSize *GdkDragSurfaceSize_val(value val);
+value Val_GdkDragSurfaceSize(const GdkDragSurfaceSize *ptr);
+value Val_GdkDragSurfaceSize_option(const GdkDragSurfaceSize *ptr);
 
-#ifndef Val_GdkEventSequence
-#define GdkEventSequence_val(val) ((GdkEventSequence*)ext_of_val(val))
-#define Val_GdkEventSequence(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GdkEventSequence */
+/* Forward declarations for GdkEventSequence converters (non-opaque record with  *)
+              fields) */
+GdkEventSequence *GdkEventSequence_val(value val);
+value Val_GdkEventSequence(const GdkEventSequence *ptr);
+value Val_GdkEventSequence_option(const GdkEventSequence *ptr);
 
-#ifndef Val_GdkFileList
-#define GdkFileList_val(val) ((GdkFileList*)ext_of_val(val))
-#define Val_GdkFileList(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GdkFileList */
+/* Forward declarations for GdkFileList converters (non-opaque record with  *)
+              fields) */
+GdkFileList *GdkFileList_val(value val);
+value Val_GdkFileList(const GdkFileList *ptr);
+value Val_GdkFileList_option(const GdkFileList *ptr);
 
-#ifndef Val_GdkFrameClockPrivate
-#define GdkFrameClockPrivate_val(val) ((GdkFrameClockPrivate*)ext_of_val(val))
-#define Val_GdkFrameClockPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GdkFrameClockPrivate */
-
-#ifndef Val_GdkFrameTimings
-#define GdkFrameTimings_val(val) ((GdkFrameTimings*)ext_of_val(val))
-#define Val_GdkFrameTimings(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GdkFrameTimings */
+/* Forward declarations for GdkFrameTimings converters (non-opaque record with  *)
+              fields) */
+GdkFrameTimings *GdkFrameTimings_val(value val);
+value Val_GdkFrameTimings(const GdkFrameTimings *ptr);
+value Val_GdkFrameTimings_option(const GdkFrameTimings *ptr);
 
 /* Forward declarations for GdkKeymapKey converters (non-opaque record with  *)
               fields) */
 GdkKeymapKey *GdkKeymapKey_val(value val);
-value Val_GdkKeymapKey(GdkKeymapKey *ptr);
-value Val_GdkKeymapKey_option(GdkKeymapKey *ptr);
+value Val_GdkKeymapKey(const GdkKeymapKey *ptr);
+value Val_GdkKeymapKey_option(const GdkKeymapKey *ptr);
 
-#ifndef Val_GdkPopupLayout
-#define GdkPopupLayout_val(val) ((GdkPopupLayout*)ext_of_val(val))
-#define Val_GdkPopupLayout(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GdkPopupLayout */
+/* Forward declarations for GdkPopupLayout converters (non-opaque record with  *)
+              fields) */
+GdkPopupLayout *GdkPopupLayout_val(value val);
+value Val_GdkPopupLayout(const GdkPopupLayout *ptr);
+value Val_GdkPopupLayout_option(const GdkPopupLayout *ptr);
 
 /* Forward declarations for GdkRectangle converters (non-opaque record with  *)
               fields) */
 GdkRectangle *GdkRectangle_val(value val);
-value Val_GdkRectangle(GdkRectangle *ptr);
-value Val_GdkRectangle_option(GdkRectangle *ptr);
+value Val_GdkRectangle(const GdkRectangle *ptr);
+value Val_GdkRectangle_option(const GdkRectangle *ptr);
 
-#ifndef Val_GdkTextureDownloader
-#define GdkTextureDownloader_val(val) ((GdkTextureDownloader*)ext_of_val(val))
-#define Val_GdkTextureDownloader(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GdkTextureDownloader */
+/* Forward declarations for GdkTextureDownloader converters (non-opaque record with  *)
+              fields) */
+GdkTextureDownloader *GdkTextureDownloader_val(value val);
+value Val_GdkTextureDownloader(const GdkTextureDownloader *ptr);
+value Val_GdkTextureDownloader_option(const GdkTextureDownloader *ptr);
 
 /* Forward declarations for GdkTimeCoord converters (non-opaque record with  *)
               fields) */
 GdkTimeCoord *GdkTimeCoord_val(value val);
-value Val_GdkTimeCoord(GdkTimeCoord *ptr);
-value Val_GdkTimeCoord_option(GdkTimeCoord *ptr);
+value Val_GdkTimeCoord(const GdkTimeCoord *ptr);
+value Val_GdkTimeCoord_option(const GdkTimeCoord *ptr);
 
-#ifndef Val_GdkToplevelLayout
-#define GdkToplevelLayout_val(val) ((GdkToplevelLayout*)ext_of_val(val))
-#define Val_GdkToplevelLayout(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GdkToplevelLayout */
+/* Forward declarations for GdkToplevelLayout converters (non-opaque record with  *)
+              fields) */
+GdkToplevelLayout *GdkToplevelLayout_val(value val);
+value Val_GdkToplevelLayout(const GdkToplevelLayout *ptr);
+value Val_GdkToplevelLayout_option(const GdkToplevelLayout *ptr);
 
-#ifndef Val_GdkToplevelSize
-#define GdkToplevelSize_val(val) ((GdkToplevelSize*)ext_of_val(val))
-#define Val_GdkToplevelSize(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GdkToplevelSize */
+/* Forward declarations for GdkToplevelSize converters (non-opaque record with  *)
+              fields) */
+GdkToplevelSize *GdkToplevelSize_val(value val);
+value Val_GdkToplevelSize(const GdkToplevelSize *ptr);
+value Val_GdkToplevelSize_option(const GdkToplevelSize *ptr);
 
 /* Const-safe string extraction for setters */
 #define ML_DECL_CONST_STRING(name, expr) const gchar *name = (const gchar *)(expr)

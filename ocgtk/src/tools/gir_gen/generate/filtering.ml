@@ -4,7 +4,10 @@ open StdLabels
 open Types
 module StringSet = Set.Make (String)
 
-module Log = (val Logs.src_log (Logs.Src.create "gir_gen.filtering" ~doc:"Shared filtering helpers for GIR generators"))
+module Log =
+  (val Logs.src_log
+         (Logs.Src.create "gir_gen.filtering"
+            ~doc:"Shared filtering helpers for GIR generators"))
 
 (* Check if a type name refers to a cross-namespace enum or bitfield *)
 let is_cross_namespace_enum_or_bitfield ~ctx type_name =
@@ -13,21 +16,27 @@ let is_cross_namespace_enum_or_bitfield ~ctx type_name =
     (* Type name might be "ModifierType" or "Gdk.ModifierType" *)
     let base_name =
       match Str.split (Str.regexp_string ".") type_name with
-      | [_ns; name] -> name  (* Extract "ModifierType" from "Gdk.ModifierType" *)
-      | _ -> type_name  (* Already just "ModifierType" *)
+      | [ _ns; name ] ->
+          name (* Extract "ModifierType" from "Gdk.ModifierType" *)
+      | _ -> type_name (* Already just "ModifierType" *)
     in
     (* Check if this type is from an external namespace *)
-    List.exists ctx.external_enums ~f:(fun (_, e : string * Types.gir_enum) -> e.enum_name = base_name) ||
-    List.exists ctx.external_bitfields ~f:(fun (_, b : string * Types.gir_bitfield) -> b.bitfield_name = base_name)
+    List.exists ctx.external_enums ~f:(fun ((_, e) : string * Types.gir_enum) ->
+        e.enum_name = base_name)
+    || List.exists ctx.external_bitfields
+         ~f:(fun ((_, b) : string * Types.gir_bitfield) ->
+           b.bitfield_name = base_name)
 
 (* Check if a method has cross-namespace enum/bitfield parameters or return type *)
 let method_has_cross_namespace_types ~ctx (meth : gir_method) =
-  List.exists meth.parameters ~f:(fun p -> is_cross_namespace_enum_or_bitfield ~ctx p.param_type.name) ||
-  is_cross_namespace_enum_or_bitfield ~ctx meth.return_type.name
+  List.exists meth.parameters ~f:(fun p ->
+      is_cross_namespace_enum_or_bitfield ~ctx p.param_type.name)
+  || is_cross_namespace_enum_or_bitfield ~ctx meth.return_type.name
 
 (* Check if a constructor has cross-namespace enum/bitfield parameters *)
 let constructor_has_cross_namespace_types ~ctx (ctor : gir_constructor) =
-  List.exists ctor.ctor_parameters ~f:(fun p -> is_cross_namespace_enum_or_bitfield ~ctx p.param_type.name)
+  List.exists ctor.ctor_parameters ~f:(fun p ->
+      is_cross_namespace_enum_or_bitfield ~ctx p.param_type.name)
 
 let has_simple_type ~ctx (gir_type : gir_type) =
   let is_excluded = Exclude_list.is_excluded_type_name gir_type.name in
@@ -64,23 +73,25 @@ let should_generate_property ~ctx ~class_name ~methods (prop : gir_property) =
         | None -> false
         | Some c_type -> check_interface_by_name c_type
       in
-      check_interface_by_name prop.prop_type.name || check_interface_by_c_type prop.prop_type.c_type
+      check_interface_by_name prop.prop_type.name
+      || check_interface_by_c_type prop.prop_type.c_type
     in
     if is_interface_type then false
     else
-    let matches_method =
-      List.exists
-        ~f:(fun m ->
-          m.set_property
-          |> Option.map (String.equal prop.prop_name)
-          |> Option.value ~default:false
-          || m.get_property
-             |> Option.map (String.equal prop.prop_name)
-             |> Option.value ~default:false)
-        methods
-    in
-    Log.debug (fun m -> m "matches method %s=%b\n" prop.prop_name matches_method);
-    (not matches_method) && has_simple_type ~ctx prop.prop_type
+      let matches_method =
+        List.exists
+          ~f:(fun m ->
+            m.set_property
+            |> Option.map (String.equal prop.prop_name)
+            |> Option.value ~default:false
+            || m.get_property
+               |> Option.map (String.equal prop.prop_name)
+               |> Option.value ~default:false)
+          methods
+      in
+      Log.debug (fun m ->
+          m "matches method %s=%b\n" prop.prop_name matches_method);
+      (not matches_method) && has_simple_type ~ctx prop.prop_type
 
 let property_method_names ~ctx ~class_name ~methods
     (properties : gir_property list) =
@@ -141,11 +152,24 @@ let should_skip_method_binding ~ctx (meth : gir_method) =
   (* Check if any parameter or return type references cross-namespace enums/bitfields *)
   let has_cross_namespace_type = method_has_cross_namespace_types ~ctx meth in
 
-  Logs.debug (fun m -> m "should_skip_method_name: %s -> %b %b %b %b %b\n"
-    meth.c_identifier is_variadic has_excluded_type has_unknown_type
-    is_excluded_function has_cross_namespace_type);
+  Logs.debug (fun m ->
+      m "should_skip_method_name: %s -> %b %b %b %b %b\n" meth.c_identifier
+        is_variadic has_excluded_type has_unknown_type is_excluded_function
+        has_cross_namespace_type);
 
-  is_variadic || has_excluded_type || has_unknown_type || is_excluded_function || has_cross_namespace_type
+  is_variadic || has_excluded_type || has_unknown_type || is_excluded_function
+  || has_cross_namespace_type
 
 let constructor_has_varargs (ctor : gir_constructor) =
   List.exists ctor.ctor_parameters ~f:(fun p -> p.varargs)
+
+let banned_records = [ "PrintBackend" ]
+
+(* Check if a record name ends with "Private" - these are typically internal
+   GObject private data structures that don't appear in public headers *)
+let should_skip_private_record (record : gir_record) =
+  let name = record.record_name in
+
+  let len = String.length name in
+  List.exists banned_records ~f:(fun banned -> String.equal banned name)
+  || (len > 7 && String.equal (String.sub name ~pos:(len - 7) ~len:7) "Private")

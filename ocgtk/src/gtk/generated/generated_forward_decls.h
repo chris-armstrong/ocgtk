@@ -1505,218 +1505,125 @@ value copy_GtkTreeIter(const GtkTreeIter *ptr);
 #endif /* Val_GtkTreeIter */
 
 
-#ifndef Val_GtkAccessibleList
-#define GtkAccessibleList_val(val) ((GtkAccessibleList*)ext_of_val(val))
-#define Val_GtkAccessibleList(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkAccessibleList */
+/* Forward declarations for GtkAccessibleList converters (non-opaque record with  *)
+              fields) */
+GtkAccessibleList *GtkAccessibleList_val(value val);
+value Val_GtkAccessibleList(const GtkAccessibleList *ptr);
+value Val_GtkAccessibleList_option(const GtkAccessibleList *ptr);
 
 /* Forward declarations for GtkAccessibleTextRange converters (non-opaque record with  *)
               fields) */
 GtkAccessibleTextRange *GtkAccessibleTextRange_val(value val);
-value Val_GtkAccessibleTextRange(GtkAccessibleTextRange *ptr);
-value Val_GtkAccessibleTextRange_option(GtkAccessibleTextRange *ptr);
+value Val_GtkAccessibleTextRange(const GtkAccessibleTextRange *ptr);
+value Val_GtkAccessibleTextRange_option(const GtkAccessibleTextRange *ptr);
 
-#ifndef Val_GtkBitset
-#define GtkBitset_val(val) ((GtkBitset*)ext_of_val(val))
-#define Val_GtkBitset(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkBitset */
+/* Forward declarations for GtkBitset converters (non-opaque record with  *)
+              fields) */
+GtkBitset *GtkBitset_val(value val);
+value Val_GtkBitset(const GtkBitset *ptr);
+value Val_GtkBitset_option(const GtkBitset *ptr);
 
 /* Forward declarations for GtkBitsetIter converters (non-opaque record with  *)
               fields) */
 GtkBitsetIter *GtkBitsetIter_val(value val);
-value Val_GtkBitsetIter(GtkBitsetIter *ptr);
-value Val_GtkBitsetIter_option(GtkBitsetIter *ptr);
+value Val_GtkBitsetIter(const GtkBitsetIter *ptr);
+value Val_GtkBitsetIter_option(const GtkBitsetIter *ptr);
 
-#ifndef Val_GtkBuildableParseContext
-#define GtkBuildableParseContext_val(val) ((GtkBuildableParseContext*)ext_of_val(val))
-#define Val_GtkBuildableParseContext(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkBuildableParseContext */
+/* Forward declarations for GtkBuildableParseContext converters (non-opaque record with  *)
+              fields) */
+GtkBuildableParseContext *GtkBuildableParseContext_val(value val);
+value Val_GtkBuildableParseContext(const GtkBuildableParseContext *ptr);
+value Val_GtkBuildableParseContext_option(const GtkBuildableParseContext *ptr);
 
 /* Forward declarations for GtkBuildableParser converters (non-opaque record with  *)
               fields) */
 GtkBuildableParser *GtkBuildableParser_val(value val);
-value Val_GtkBuildableParser(GtkBuildableParser *ptr);
-value Val_GtkBuildableParser_option(GtkBuildableParser *ptr);
-
-#ifndef Val_GtkButtonPrivate
-#define GtkButtonPrivate_val(val) ((GtkButtonPrivate*)ext_of_val(val))
-#define Val_GtkButtonPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkButtonPrivate */
-
-#ifndef Val_GtkCellAreaContextPrivate
-#define GtkCellAreaContextPrivate_val(val) ((GtkCellAreaContextPrivate*)ext_of_val(val))
-#define Val_GtkCellAreaContextPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkCellAreaContextPrivate */
-
-#ifndef Val_GtkCellRendererClassPrivate
-#define GtkCellRendererClassPrivate_val(val) ((GtkCellRendererClassPrivate*)ext_of_val(val))
-#define Val_GtkCellRendererClassPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkCellRendererClassPrivate */
-
-#ifndef Val_GtkCellRendererPrivate
-#define GtkCellRendererPrivate_val(val) ((GtkCellRendererPrivate*)ext_of_val(val))
-#define Val_GtkCellRendererPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkCellRendererPrivate */
+value Val_GtkBuildableParser(const GtkBuildableParser *ptr);
+value Val_GtkBuildableParser_option(const GtkBuildableParser *ptr);
 
 /* Forward declarations for GtkCssLocation converters (non-opaque record with  *)
               fields) */
 GtkCssLocation *GtkCssLocation_val(value val);
-value Val_GtkCssLocation(GtkCssLocation *ptr);
-value Val_GtkCssLocation_option(GtkCssLocation *ptr);
+value Val_GtkCssLocation(const GtkCssLocation *ptr);
+value Val_GtkCssLocation_option(const GtkCssLocation *ptr);
 
-#ifndef Val_GtkCssProviderPrivate
-#define GtkCssProviderPrivate_val(val) ((GtkCssProviderPrivate*)ext_of_val(val))
-#define Val_GtkCssProviderPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkCssProviderPrivate */
+/* Forward declarations for GtkCssSection converters (non-opaque record with  *)
+              fields) */
+GtkCssSection *GtkCssSection_val(value val);
+value Val_GtkCssSection(const GtkCssSection *ptr);
+value Val_GtkCssSection_option(const GtkCssSection *ptr);
 
-#ifndef Val_GtkCssSection
-#define GtkCssSection_val(val) ((GtkCssSection*)ext_of_val(val))
-#define Val_GtkCssSection(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkCssSection */
+/* Forward declarations for GtkCssStyleChange converters (non-opaque record with  *)
+              fields) */
+GtkCssStyleChange *GtkCssStyleChange_val(value val);
+value Val_GtkCssStyleChange(const GtkCssStyleChange *ptr);
+value Val_GtkCssStyleChange_option(const GtkCssStyleChange *ptr);
 
-#ifndef Val_GtkCssStyleChange
-#define GtkCssStyleChange_val(val) ((GtkCssStyleChange*)ext_of_val(val))
-#define Val_GtkCssStyleChange(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkCssStyleChange */
-
-#ifndef Val_GtkExpressionWatch
-#define GtkExpressionWatch_val(val) ((GtkExpressionWatch*)ext_of_val(val))
-#define Val_GtkExpressionWatch(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkExpressionWatch */
-
-#ifndef Val_GtkIMContextSimplePrivate
-#define GtkIMContextSimplePrivate_val(val) ((GtkIMContextSimplePrivate*)ext_of_val(val))
-#define Val_GtkIMContextSimplePrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkIMContextSimplePrivate */
-
-#ifndef Val_GtkIMMulticontextPrivate
-#define GtkIMMulticontextPrivate_val(val) ((GtkIMMulticontextPrivate*)ext_of_val(val))
-#define Val_GtkIMMulticontextPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkIMMulticontextPrivate */
-
-#ifndef Val_GtkListStorePrivate
-#define GtkListStorePrivate_val(val) ((GtkListStorePrivate*)ext_of_val(val))
-#define Val_GtkListStorePrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkListStorePrivate */
-
-#ifndef Val_GtkMountOperationPrivate
-#define GtkMountOperationPrivate_val(val) ((GtkMountOperationPrivate*)ext_of_val(val))
-#define Val_GtkMountOperationPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkMountOperationPrivate */
+/* Forward declarations for GtkExpressionWatch converters (non-opaque record with  *)
+              fields) */
+GtkExpressionWatch *GtkExpressionWatch_val(value val);
+value Val_GtkExpressionWatch(const GtkExpressionWatch *ptr);
+value Val_GtkExpressionWatch_option(const GtkExpressionWatch *ptr);
 
 /* Forward declarations for GtkPadActionEntry converters (non-opaque record with  *)
               fields) */
 GtkPadActionEntry *GtkPadActionEntry_val(value val);
-value Val_GtkPadActionEntry(GtkPadActionEntry *ptr);
-value Val_GtkPadActionEntry_option(GtkPadActionEntry *ptr);
+value Val_GtkPadActionEntry(const GtkPadActionEntry *ptr);
+value Val_GtkPadActionEntry_option(const GtkPadActionEntry *ptr);
 
 /* Forward declarations for GtkPageRange converters (non-opaque record with  *)
               fields) */
 GtkPageRange *GtkPageRange_val(value val);
-value Val_GtkPageRange(GtkPageRange *ptr);
-value Val_GtkPageRange_option(GtkPageRange *ptr);
+value Val_GtkPageRange(const GtkPageRange *ptr);
+value Val_GtkPageRange_option(const GtkPageRange *ptr);
 
-#ifndef Val_GtkPaperSize
-#define GtkPaperSize_val(val) ((GtkPaperSize*)ext_of_val(val))
-#define Val_GtkPaperSize(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkPaperSize */
+/* Forward declarations for GtkPaperSize converters (non-opaque record with  *)
+              fields) */
+GtkPaperSize *GtkPaperSize_val(value val);
+value Val_GtkPaperSize(const GtkPaperSize *ptr);
+value Val_GtkPaperSize_option(const GtkPaperSize *ptr);
 
-#ifndef Val_GtkPrintBackend
-#define GtkPrintBackend_val(val) ((GtkPrintBackend*)ext_of_val(val))
-#define Val_GtkPrintBackend(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkPrintBackend */
-
-#ifndef Val_GtkPrintOperationPrivate
-#define GtkPrintOperationPrivate_val(val) ((GtkPrintOperationPrivate*)ext_of_val(val))
-#define Val_GtkPrintOperationPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkPrintOperationPrivate */
-
-#ifndef Val_GtkPrintSetup
-#define GtkPrintSetup_val(val) ((GtkPrintSetup*)ext_of_val(val))
-#define Val_GtkPrintSetup(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkPrintSetup */
+/* Forward declarations for GtkPrintSetup converters (non-opaque record with  *)
+              fields) */
+GtkPrintSetup *GtkPrintSetup_val(value val);
+value Val_GtkPrintSetup(const GtkPrintSetup *ptr);
+value Val_GtkPrintSetup_option(const GtkPrintSetup *ptr);
 
 /* Forward declarations for GtkRecentData converters (non-opaque record with  *)
               fields) */
 GtkRecentData *GtkRecentData_val(value val);
-value Val_GtkRecentData(GtkRecentData *ptr);
-value Val_GtkRecentData_option(GtkRecentData *ptr);
+value Val_GtkRecentData(const GtkRecentData *ptr);
+value Val_GtkRecentData_option(const GtkRecentData *ptr);
 
-#ifndef Val_GtkRecentInfo
-#define GtkRecentInfo_val(val) ((GtkRecentInfo*)ext_of_val(val))
-#define Val_GtkRecentInfo(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkRecentInfo */
-
-#ifndef Val_GtkRecentManagerPrivate
-#define GtkRecentManagerPrivate_val(val) ((GtkRecentManagerPrivate*)ext_of_val(val))
-#define Val_GtkRecentManagerPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkRecentManagerPrivate */
+/* Forward declarations for GtkRecentInfo converters (non-opaque record with  *)
+              fields) */
+GtkRecentInfo *GtkRecentInfo_val(value val);
+value Val_GtkRecentInfo(const GtkRecentInfo *ptr);
+value Val_GtkRecentInfo_option(const GtkRecentInfo *ptr);
 
 /* Forward declarations for GtkRequestedSize converters (non-opaque record with  *)
               fields) */
 GtkRequestedSize *GtkRequestedSize_val(value val);
-value Val_GtkRequestedSize(GtkRequestedSize *ptr);
-value Val_GtkRequestedSize_option(GtkRequestedSize *ptr);
+value Val_GtkRequestedSize(const GtkRequestedSize *ptr);
+value Val_GtkRequestedSize_option(const GtkRequestedSize *ptr);
 
-#ifndef Val_GtkScrollInfo
-#define GtkScrollInfo_val(val) ((GtkScrollInfo*)ext_of_val(val))
-#define Val_GtkScrollInfo(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkScrollInfo */
+/* Forward declarations for GtkScrollInfo converters (non-opaque record with  *)
+              fields) */
+GtkScrollInfo *GtkScrollInfo_val(value val);
+value Val_GtkScrollInfo(const GtkScrollInfo *ptr);
+value Val_GtkScrollInfo_option(const GtkScrollInfo *ptr);
 
-#ifndef Val_GtkTextBufferPrivate
-#define GtkTextBufferPrivate_val(val) ((GtkTextBufferPrivate*)ext_of_val(val))
-#define Val_GtkTextBufferPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTextBufferPrivate */
+/* Forward declarations for GtkTreePath converters (non-opaque record with  *)
+              fields) */
+GtkTreePath *GtkTreePath_val(value val);
+value Val_GtkTreePath(const GtkTreePath *ptr);
+value Val_GtkTreePath_option(const GtkTreePath *ptr);
 
-#ifndef Val_GtkTextTagPrivate
-#define GtkTextTagPrivate_val(val) ((GtkTextTagPrivate*)ext_of_val(val))
-#define Val_GtkTextTagPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTextTagPrivate */
-
-#ifndef Val_GtkTextViewPrivate
-#define GtkTextViewPrivate_val(val) ((GtkTextViewPrivate*)ext_of_val(val))
-#define Val_GtkTextViewPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTextViewPrivate */
-
-#ifndef Val_GtkTreeModelFilterPrivate
-#define GtkTreeModelFilterPrivate_val(val) ((GtkTreeModelFilterPrivate*)ext_of_val(val))
-#define Val_GtkTreeModelFilterPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTreeModelFilterPrivate */
-
-#ifndef Val_GtkTreeModelSortPrivate
-#define GtkTreeModelSortPrivate_val(val) ((GtkTreeModelSortPrivate*)ext_of_val(val))
-#define Val_GtkTreeModelSortPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTreeModelSortPrivate */
-
-#ifndef Val_GtkTreePath
-#define GtkTreePath_val(val) ((GtkTreePath*)ext_of_val(val))
-#define Val_GtkTreePath(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTreePath */
-
-#ifndef Val_GtkTreeRowReference
-#define GtkTreeRowReference_val(val) ((GtkTreeRowReference*)ext_of_val(val))
-#define Val_GtkTreeRowReference(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTreeRowReference */
-
-#ifndef Val_GtkTreeStorePrivate
-#define GtkTreeStorePrivate_val(val) ((GtkTreeStorePrivate*)ext_of_val(val))
-#define Val_GtkTreeStorePrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkTreeStorePrivate */
-
-#ifndef Val_GtkWidgetClassPrivate
-#define GtkWidgetClassPrivate_val(val) ((GtkWidgetClassPrivate*)ext_of_val(val))
-#define Val_GtkWidgetClassPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkWidgetClassPrivate */
-
-#ifndef Val_GtkWidgetPrivate
-#define GtkWidgetPrivate_val(val) ((GtkWidgetPrivate*)ext_of_val(val))
-#define Val_GtkWidgetPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkWidgetPrivate */
-
-#ifndef Val_GtkWindowGroupPrivate
-#define GtkWindowGroupPrivate_val(val) ((GtkWindowGroupPrivate*)ext_of_val(val))
-#define Val_GtkWindowGroupPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GtkWindowGroupPrivate */
+/* Forward declarations for GtkTreeRowReference converters (non-opaque record with  *)
+              fields) */
+GtkTreeRowReference *GtkTreeRowReference_val(value val);
+value Val_GtkTreeRowReference(const GtkTreeRowReference *ptr);
+value Val_GtkTreeRowReference_option(const GtkTreeRowReference *ptr);
 
 /* Const-safe string extraction for setters */
 #define ML_DECL_CONST_STRING(name, expr) const gchar *name = (const gchar *)(expr)

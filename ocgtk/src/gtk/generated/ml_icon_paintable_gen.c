@@ -38,5 +38,5 @@ CAMLexport CAMLprim value ml_gtk_icon_paintable_get_icon_name(value self)
 CAMLparam1(self);
 
 const char* result = gtk_icon_paintable_get_icon_name(GtkIconPaintable_val(self));
-CAMLreturn(Val_option(result, caml_copy_string));
+CAMLreturn(Val_option_string(result));
 }

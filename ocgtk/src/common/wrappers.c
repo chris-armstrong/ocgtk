@@ -117,43 +117,33 @@ static struct custom_operations gir_record_custom_ops = {
     custom_compare_ext_default
 };
 
-CAMLexport value ml_gir_record_alloc(const void *src, size_t size, const char *type_name, void *(*copy_fn)(const void *)) {
+CAMLexport value ml_gir_record_val_ptr(const void *src) {
     CAMLparam0();
     CAMLlocal1(v);
 
-    (void)type_name;
     if (src == NULL) caml_failwith("ml_gir_record_alloc: NULL source");
     
-    void *copy = NULL;
-    if (copy_fn != NULL) {
-        copy = copy_fn(src);
-    } else {
-        copy = g_memdup2(src, size);
-    }
-    if (copy == NULL) caml_failwith("ml_gir_record_alloc: allocation failed");
-    
     v = caml_alloc_custom(&gir_record_custom_ops, sizeof(void*), 0, 1);
-    *((void**)Data_custom_val(v)) = copy;
+    *((const void**)Data_custom_val(v)) = src;
     
-    printf("[a]  %s %p\n", type_name, copy);
     CAMLreturn(v);
 }
 
-CAMLexport void *ml_gir_record_ptr_val(value v, const char *type_name) {
+CAMLexport const void *ml_gir_record_ptr_val(value v, const char *type_name) {
     CAMLparam1(v);
-    void *ptr;
+    const void *ptr;
 
     (void)type_name;
 
     if (Tag_val(v) == Custom_tag)
-        ptr = *((void**)Data_custom_val(v));
+        ptr = *((const void**)Data_custom_val(v));
     else
         ptr = ext_of_val(v);
 
     if (ptr == NULL)
         caml_failwith("ml_gir_record_ptr_val: NULL record pointer");
 
-    CAMLreturnT(void*, ptr);
+    CAMLreturnT(const void*, ptr);
 }
 
 /* ==================================================================== */
@@ -197,9 +187,9 @@ CAMLexport value ml_gobject_val_of_ext(const void *gobject) {
     CAMLreturn(v);
 }
 
-CAMLexport void* ml_gobject_ext_of_val(const value val) {
+CAMLexport const void* ml_gobject_ext_of_val(const value val) {
     CAMLparam1(val);
-    CAMLreturnT(void*, *((void**)Data_custom_val(val)));
+    CAMLreturnT(const void*, *((const void**)Data_custom_val(val)));
 }
 
 CAMLexport value ml_gobject_val_of_ext_option(const void *gobject) {
@@ -234,13 +224,14 @@ value val_of_ext(const void *widget) {
     CAMLparam0();
     CAMLlocal1(v);
     v = caml_alloc(1, Abstract_tag);
-    *((void**)Data_abstract_val(v)) = widget;
+    /* Cast away const - safe because we only read via ext_of_val which preserves const */
+    *((void**)Data_abstract_val(v)) = (void*)widget;
     CAMLreturn(v);
 }
 
-void* ext_of_val(const value val) {
+const void* ext_of_val(const value val) {
     CAMLparam1(val);
-    CAMLreturnT(void*, *((void**)Data_abstract_val(val)));
+    CAMLreturnT(const void*, *((const void**)Data_abstract_val(val)));
 }
 
 /* ========================================================================= */

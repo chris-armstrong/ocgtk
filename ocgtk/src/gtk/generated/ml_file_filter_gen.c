@@ -25,14 +25,6 @@ if (obj) g_object_ref_sink(obj);
 CAMLreturn(Val_GtkFileFilter(obj));
 }
 
-CAMLexport CAMLprim value ml_gtk_file_filter_new_from_gvariant(value arg1)
-{
-CAMLparam1(arg1);
-GtkFileFilter *obj = gtk_file_filter_new_from_gvariant(arg1);
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GtkFileFilter(obj));
-}
-
 CAMLexport CAMLprim value ml_gtk_file_filter_set_name(value self, value arg1)
 {
 CAMLparam2(self, arg1);

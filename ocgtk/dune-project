@@ -18,6 +18,7 @@
   (dune (>= 3.13))
   conf-gtk4
   cairo2
+  (containers :build)
   (camlp5 :build)
   (camlp-streams :build)
   (xmlm :build)
