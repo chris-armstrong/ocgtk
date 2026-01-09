@@ -816,6 +816,14 @@ let parse_gir_file filename filter_classes =
             | Some "inout" -> InOut
             | _ -> In
           in
+          let transfer_ownership =
+            match get_attr "transfer-ownership" attrs with
+            | Some "none" -> Types.TransferNone
+            | Some "full" -> Types.TransferFull
+            | Some "container" -> Types.TransferContainer
+            | Some "floating" -> Types.TransferFloating
+            | _ -> Types.TransferNone
+          in
           let varargs = ref false in
           let type_ =
             ref
@@ -823,7 +831,7 @@ let parse_gir_file filename filter_classes =
                 name = "void";
                 c_type = None;
                 nullable = false;
-                transfer_ownership = Types.TransferNone;
+                transfer_ownership;
               }
           in
           let rec parse_param_contents () =
@@ -845,7 +853,7 @@ let parse_gir_file filename filter_classes =
                     name = type_name;
                     c_type = c_type_name;
                     nullable;
-                    transfer_ownership = Types.TransferNone;
+                    transfer_ownership;
                   };
                 skip_element 1;
                 parse_param_contents ()

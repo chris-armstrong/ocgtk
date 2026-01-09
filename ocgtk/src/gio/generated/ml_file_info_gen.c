@@ -195,7 +195,7 @@ CAMLexport CAMLprim value ml_g_file_info_get_symlink_target(value self)
 CAMLparam1(self);
 
 const char* result = g_file_info_get_symlink_target(GFileInfo_val(self));
-CAMLreturn(Val_option(result, caml_copy_string));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_g_file_info_get_symbolic_icon(value self)
@@ -317,7 +317,7 @@ CAMLexport CAMLprim value ml_g_file_info_get_attribute_file_path(value self, val
 CAMLparam2(self, arg1);
 
 const char* result = g_file_info_get_attribute_file_path(GFileInfo_val(self), String_val(arg1));
-CAMLreturn(Val_option(result, caml_copy_string));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_g_file_info_get_attribute_byte_string(value self, value arg1)

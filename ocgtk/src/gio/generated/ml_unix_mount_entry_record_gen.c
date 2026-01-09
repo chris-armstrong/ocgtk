@@ -26,12 +26,12 @@ GUnixMountEntry *GUnixMountEntry_val(value v) {
   return *(GUnixMountEntry **)Data_custom_val(v);
 }
 
-value Val_GUnixMountEntry(GUnixMountEntry *ptr) {
+value Val_GUnixMountEntry(const GUnixMountEntry *ptr) {
   if (ptr == NULL) return Val_none;
   return ml_gir_record_val_ptr(ptr);
 }
 
-value Val_GUnixMountEntry_option(GUnixMountEntry *ptr) {
+value Val_GUnixMountEntry_option(const GUnixMountEntry *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GUnixMountEntry(ptr));
 }

@@ -321,7 +321,7 @@ CAMLexport CAMLprim value ml_g_file_peek_path(value self)
 CAMLparam1(self);
 
 const char* result = g_file_peek_path(GFile_val(self));
-CAMLreturn(Val_option(result, caml_copy_string));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_g_file_open_readwrite_finish(value self, value arg1)

@@ -123,7 +123,7 @@ CAMLexport CAMLprim value ml_g_subprocess_launcher_getenv(value self, value arg1
 CAMLparam2(self, arg1);
 
 const gchar* result = g_subprocess_launcher_getenv(GSubprocessLauncher_val(self), String_val(arg1));
-CAMLreturn(Val_option(result, caml_copy_string));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_g_subprocess_launcher_close(value self)

@@ -129,21 +129,21 @@ CAMLexport value ml_gir_record_val_ptr(const void *src) {
     CAMLreturn(v);
 }
 
-CAMLexport void *ml_gir_record_ptr_val(value v, const char *type_name) {
+CAMLexport const void *ml_gir_record_ptr_val(value v, const char *type_name) {
     CAMLparam1(v);
-    void *ptr;
+    const void *ptr;
 
     (void)type_name;
 
     if (Tag_val(v) == Custom_tag)
-        ptr = *((void**)Data_custom_val(v));
+        ptr = *((const void**)Data_custom_val(v));
     else
         ptr = ext_of_val(v);
 
     if (ptr == NULL)
         caml_failwith("ml_gir_record_ptr_val: NULL record pointer");
 
-    CAMLreturnT(void*, ptr);
+    CAMLreturnT(const void*, ptr);
 }
 
 /* ==================================================================== */
@@ -187,9 +187,9 @@ CAMLexport value ml_gobject_val_of_ext(const void *gobject) {
     CAMLreturn(v);
 }
 
-CAMLexport void* ml_gobject_ext_of_val(const value val) {
+CAMLexport const void* ml_gobject_ext_of_val(const value val) {
     CAMLparam1(val);
-    CAMLreturnT(void*, *((void**)Data_custom_val(val)));
+    CAMLreturnT(const void*, *((const void**)Data_custom_val(val)));
 }
 
 CAMLexport value ml_gobject_val_of_ext_option(const void *gobject) {
@@ -224,13 +224,14 @@ value val_of_ext(const void *widget) {
     CAMLparam0();
     CAMLlocal1(v);
     v = caml_alloc(1, Abstract_tag);
-    *((void**)Data_abstract_val(v)) = widget;
+    /* Cast away const - safe because we only read via ext_of_val which preserves const */
+    *((void**)Data_abstract_val(v)) = (void*)widget;
     CAMLreturn(v);
 }
 
-void* ext_of_val(const value val) {
+const void* ext_of_val(const value val) {
     CAMLparam1(val);
-    CAMLreturnT(void*, *((void**)Data_abstract_val(val)));
+    CAMLreturnT(const void*, *((const void**)Data_abstract_val(val)));
 }
 
 /* ========================================================================= */

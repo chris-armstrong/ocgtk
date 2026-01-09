@@ -145,7 +145,7 @@ CAMLexport CAMLprim value ml_g_app_info_get_commandline(value self)
 CAMLparam1(self);
 
 const char* result = g_app_info_get_commandline(GAppInfo_val(self));
-CAMLreturn(Val_option(result, caml_copy_string));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_g_app_info_equal(value self, value arg1)

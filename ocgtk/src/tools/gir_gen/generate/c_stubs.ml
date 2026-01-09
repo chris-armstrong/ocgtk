@@ -133,6 +133,14 @@ let analyze_property_type ~ctx (gir_type : gir_type) =
     stack_allocated;
   }
 
+let is_string_type ctype =
+  match ctype with
+  | Some
+      ( "char*" | "gchararray" | "gchar*" | "utf8" | "const gchar*"
+      | "const char*" ) ->
+      true
+  | _ -> false
+
 let nullable_c_to_ml_expr ~ctx ~var ~(gir_type : gir_type)
     ~(mapping : type_mapping) ?(direction : Types.gir_direction = In) () =
   (* out parameters that are record types are stack allocated, so we need to pass by reference
@@ -147,10 +155,7 @@ let nullable_c_to_ml_expr ~ctx ~var ~(gir_type : gir_type)
   if not gir_type.nullable then sprintf "%s(%s)" mapping.c_to_ml var_expr
   else
     match gir_type with
-    | {
-     name = "gchararray" | "gchar*" | "utf8" | "const gchar*" | "const char*";
-     _;
-    } ->
+    | { c_type; _ } when is_string_type c_type ->
         sprintf "Val_option_string(%s)" var_expr
     | { c_type = Some c_type; _ }
       when String.length c_type > 0
@@ -162,19 +167,28 @@ let nullable_c_to_ml_expr ~ctx ~var ~(gir_type : gir_type)
 
 let nullable_ml_to_c_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping)
     =
-  if not gir_type.nullable then sprintf "%s(%s)" mapping.ml_to_c var
-  else
-    match gir_type.c_type with
-    | Some ("gchararray" | "gchar*" | "utf8" | "const gchar*" | "const char*")
-      ->
-        sprintf "String_option_val(%s)" var
-    | Some c_type
-      when String.length c_type > 0
-           && String.equal
-                (String.sub c_type ~pos:(String.length c_type - 1) ~len:1)
-                "*" ->
-        sprintf "Option_val(%s, %s, NULL)" var mapping.ml_to_c
-    | _ -> sprintf "%s(%s)" mapping.ml_to_c var
+  (* Check for string types with transfer-ownership="full" - need to copy to mutable buffer *)
+  match gir_type.transfer_ownership with
+  | TransferFull when is_string_type gir_type.c_type ->
+      (* String with transfer-full: copy to mutable buffer before passing *)
+      if not gir_type.nullable then sprintf "String_copy(%s)" var
+      else sprintf "String_option_val(String_copy(%s))" var
+  | _ -> (
+      if
+        (* Normal case - no copy needed *)
+        not gir_type.nullable
+      then sprintf "%s(%s)" mapping.ml_to_c var
+      else
+        match gir_type with
+        | { c_type; _ } when is_string_type c_type ->
+            sprintf "String_option_val(%s)" var
+        | { c_type = Some c_type; _ }
+          when String.length c_type > 0
+               && String.equal
+                    (String.sub c_type ~pos:(String.length c_type - 1) ~len:1)
+                    "*" ->
+            sprintf "Option_val(%s, %s, NULL)" var mapping.ml_to_c
+        | _ -> sprintf "%s(%s)" mapping.ml_to_c var)
 
 let emit_enum_proto buf ~namespace (enum : gir_enum) =
   bprintf buf "value Val_%s%s(%s val);\n" namespace enum.enum_name
@@ -436,8 +450,8 @@ let generate_forward_decls_header ~ctx ~classes ~interfaces ~gtk_enums
         \              fields) */\n"
         record.c_type;
       bprintf buf "%s *%s_val(value val);\n" record.c_type record.c_type;
-      bprintf buf "value Val_%s(%s *ptr);\n" record.c_type record.c_type;
-      bprintf buf "value Val_%s_option(%s *ptr);\n\n" record.c_type
+      bprintf buf "value Val_%s(const %s *ptr);\n" record.c_type record.c_type;
+      bprintf buf "value Val_%s_option(const %s *ptr);\n\n" record.c_type
         record.c_type
       (* end *))
     non_value_like_records;
@@ -1124,8 +1138,11 @@ let generate_class_c_code ~ctx ~c_type class_name constructors methods
   (* Constructors - skip those that throw GError, are variadic, or have cross-namespace types *)
   List.iter
     ~f:(fun ctor ->
-      if (not ctor.throws) && not (Filtering.constructor_has_varargs ctor)
-         && not (Filtering.constructor_has_cross_namespace_types ~ctx ctor) then
+      if
+        (not ctor.throws)
+        && (not (Filtering.constructor_has_varargs ctor))
+        && not (Filtering.constructor_has_cross_namespace_types ~ctx ctor)
+      then
         Buffer.add_string buf
           (generate_c_constructor ~ctx ~c_type ctor class_name))
     constructors;
@@ -1191,13 +1208,14 @@ let generate_record_c_code ~ctx (record : gir_record) =
     bprintf buf "}\n\n";
 
     (* Val_X function *)
-    bprintf buf "value Val_%s(%s *ptr) {\n" record.c_type record.c_type;
+    bprintf buf "value Val_%s(const %s *ptr) {\n" record.c_type record.c_type;
     bprintf buf "  if (ptr == NULL) return Val_none;\n";
     bprintf buf "  return ml_gir_record_val_ptr(ptr);\n";
     bprintf buf "}\n\n";
 
     (* Val_X_option function *)
-    bprintf buf "value Val_%s_option(%s *ptr) {\n" record.c_type record.c_type;
+    bprintf buf "value Val_%s_option(const %s *ptr) {\n" record.c_type
+      record.c_type;
     bprintf buf "  if (ptr == NULL) return Val_none;\n";
     bprintf buf "  return Val_some(Val_%s(ptr));\n" record.c_type;
     bprintf buf "}\n\n"
@@ -1240,8 +1258,11 @@ let generate_record_c_code ~ctx (record : gir_record) =
 
   List.iter
     ~f:(fun ctor ->
-      if (not ctor.throws) && not (Filtering.constructor_has_varargs ctor)
-         && not (Filtering.constructor_has_cross_namespace_types ~ctx ctor) then
+      if
+        (not ctor.throws)
+        && (not (Filtering.constructor_has_varargs ctor))
+        && not (Filtering.constructor_has_cross_namespace_types ~ctx ctor)
+      then
         Buffer.add_string buf
           (generate_c_constructor ~ctx ~c_type:record.c_type ctor
              record.record_name))

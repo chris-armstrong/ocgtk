@@ -123,7 +123,7 @@ CAMLexport CAMLprim value ml_g_desktop_app_info_get_filename(value self)
 CAMLparam1(self);
 
 const char* result = g_desktop_app_info_get_filename(GDesktopAppInfo_val(self));
-CAMLreturn(Val_option(result, caml_copy_string));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_g_desktop_app_info_get_categories(value self)

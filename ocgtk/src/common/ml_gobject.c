@@ -48,7 +48,7 @@ CAMLprim value ml_g_object_ref(value obj)
     if (obj == Val_unit || ml_gobject_ext_of_val(obj) == NULL)
         caml_invalid_argument("g_object_ref: NULL object");
 
-    g_object_ref(ml_gobject_ext_of_val(obj));
+    g_object_ref(GObject_ext_of_val(obj));
     CAMLreturn(Val_unit);
 }
 
@@ -59,7 +59,7 @@ CAMLprim value ml_g_object_unref(value obj)
     if (obj == Val_unit || ml_gobject_ext_of_val(obj) == NULL)
         CAMLreturn(Val_unit);
 
-    g_object_unref(ml_gobject_ext_of_val(obj));
+    g_object_unref(GObject_ext_of_val(obj));
     CAMLreturn(Val_unit);
 }
 
@@ -70,7 +70,7 @@ CAMLprim value ml_g_object_get_ref_count(value obj)
     if (obj == Val_unit || ml_gobject_ext_of_val(obj) == NULL)
         caml_invalid_argument("g_object_get_ref_count: NULL object");
 
-    GObject *gobj = G_OBJECT(ml_gobject_ext_of_val(obj));
+    GObject *gobj = GObject_ext_of_val(obj);
     CAMLreturn(Val_int(gobj->ref_count));
 }
 
@@ -93,7 +93,7 @@ CAMLprim value ml_g_object_is_gobject(value obj)
     if (obj == Val_unit)
         CAMLreturn(Val_false);
 
-    void *ptr = ml_gobject_ext_of_val(obj);
+    const void *ptr = ml_gobject_ext_of_val(obj);
     if (ptr == NULL)
         CAMLreturn(Val_false);
 

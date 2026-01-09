@@ -44,10 +44,10 @@ CAMLexport value copy_memblock_indirected(void *src, asize_t size);
  */
 CAMLexport value ml_gir_record_val_ptr(const void *src);
 
-/* Extract a C pointer from a custom block 
+/* Extract a C pointer from a custom block
  * with a fallback to ext_of_val for older representations.
  */
-CAMLexport void *ml_gir_record_ptr_val(value v, const char *type_name);
+CAMLexport const void *ml_gir_record_ptr_val(value v, const char *type_name);
 
 /* ==================================================================== */
 /* GObject helpers with automatic reference counting                   */
@@ -62,8 +62,11 @@ CAMLexport void *ml_gir_record_ptr_val(value v, const char *type_name);
  */
 CAMLexport value ml_gobject_val_of_ext(const void *gobject);
 
-/* Extract GObject pointer from custom block */
-CAMLexport void* ml_gobject_ext_of_val(const value val);
+/* Extract GObject pointer from custom block (const version - preferred) */
+CAMLexport const void* ml_gobject_ext_of_val(const value val);
+
+/* Non-const version for use with functions requiring mutable pointers */
+#define GObject_ext_of_val(val) ((GObject*)ml_gobject_ext_of_val(val))
 
 /* Nullable GObject variant - returns Val_none for NULL */
 CAMLexport value ml_gobject_val_of_ext_option(const void *gobject);
@@ -167,7 +170,7 @@ CAMLprim value fname##_bc(value *argv, int argn) \
 /* ==================================================================== */
 
 CAMLexport value val_of_ext(const void *ext);
-CAMLexport void* ext_of_val(const value val);
+CAMLexport const void* ext_of_val(const value val);
 
 /* ==================================================================== */
 /* GObject/GLib Type Conversions (common for all libraries) */
@@ -191,6 +194,10 @@ CAMLexport void* ext_of_val(const value val);
 value copy_string_check(const char *str);
 value copy_string_g_free(char *str);
 value copy_string_v(const gchar * const *v);
+
+/* Copy an OCaml string to a newly allocated mutable C string.
+   The returned string must be freed with g_free(). */
+#define String_copy(val) (g_strdup(String_val(val)))
 
 /* ==================================================================== */
 /* List Conversions */

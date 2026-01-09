@@ -20,12 +20,12 @@ GdkEventSequence *GdkEventSequence_val(value v) {
   return *(GdkEventSequence **)Data_custom_val(v);
 }
 
-value Val_GdkEventSequence(GdkEventSequence *ptr) {
+value Val_GdkEventSequence(const GdkEventSequence *ptr) {
   if (ptr == NULL) return Val_none;
   return ml_gir_record_val_ptr(ptr);
 }
 
-value Val_GdkEventSequence_option(GdkEventSequence *ptr) {
+value Val_GdkEventSequence_option(const GdkEventSequence *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GdkEventSequence(ptr));
 }

@@ -1508,122 +1508,122 @@ value copy_GtkTreeIter(const GtkTreeIter *ptr);
 /* Forward declarations for GtkAccessibleList converters (non-opaque record with  *)
               fields) */
 GtkAccessibleList *GtkAccessibleList_val(value val);
-value Val_GtkAccessibleList(GtkAccessibleList *ptr);
-value Val_GtkAccessibleList_option(GtkAccessibleList *ptr);
+value Val_GtkAccessibleList(const GtkAccessibleList *ptr);
+value Val_GtkAccessibleList_option(const GtkAccessibleList *ptr);
 
 /* Forward declarations for GtkAccessibleTextRange converters (non-opaque record with  *)
               fields) */
 GtkAccessibleTextRange *GtkAccessibleTextRange_val(value val);
-value Val_GtkAccessibleTextRange(GtkAccessibleTextRange *ptr);
-value Val_GtkAccessibleTextRange_option(GtkAccessibleTextRange *ptr);
+value Val_GtkAccessibleTextRange(const GtkAccessibleTextRange *ptr);
+value Val_GtkAccessibleTextRange_option(const GtkAccessibleTextRange *ptr);
 
 /* Forward declarations for GtkBitset converters (non-opaque record with  *)
               fields) */
 GtkBitset *GtkBitset_val(value val);
-value Val_GtkBitset(GtkBitset *ptr);
-value Val_GtkBitset_option(GtkBitset *ptr);
+value Val_GtkBitset(const GtkBitset *ptr);
+value Val_GtkBitset_option(const GtkBitset *ptr);
 
 /* Forward declarations for GtkBitsetIter converters (non-opaque record with  *)
               fields) */
 GtkBitsetIter *GtkBitsetIter_val(value val);
-value Val_GtkBitsetIter(GtkBitsetIter *ptr);
-value Val_GtkBitsetIter_option(GtkBitsetIter *ptr);
+value Val_GtkBitsetIter(const GtkBitsetIter *ptr);
+value Val_GtkBitsetIter_option(const GtkBitsetIter *ptr);
 
 /* Forward declarations for GtkBuildableParseContext converters (non-opaque record with  *)
               fields) */
 GtkBuildableParseContext *GtkBuildableParseContext_val(value val);
-value Val_GtkBuildableParseContext(GtkBuildableParseContext *ptr);
-value Val_GtkBuildableParseContext_option(GtkBuildableParseContext *ptr);
+value Val_GtkBuildableParseContext(const GtkBuildableParseContext *ptr);
+value Val_GtkBuildableParseContext_option(const GtkBuildableParseContext *ptr);
 
 /* Forward declarations for GtkBuildableParser converters (non-opaque record with  *)
               fields) */
 GtkBuildableParser *GtkBuildableParser_val(value val);
-value Val_GtkBuildableParser(GtkBuildableParser *ptr);
-value Val_GtkBuildableParser_option(GtkBuildableParser *ptr);
+value Val_GtkBuildableParser(const GtkBuildableParser *ptr);
+value Val_GtkBuildableParser_option(const GtkBuildableParser *ptr);
 
 /* Forward declarations for GtkCssLocation converters (non-opaque record with  *)
               fields) */
 GtkCssLocation *GtkCssLocation_val(value val);
-value Val_GtkCssLocation(GtkCssLocation *ptr);
-value Val_GtkCssLocation_option(GtkCssLocation *ptr);
+value Val_GtkCssLocation(const GtkCssLocation *ptr);
+value Val_GtkCssLocation_option(const GtkCssLocation *ptr);
 
 /* Forward declarations for GtkCssSection converters (non-opaque record with  *)
               fields) */
 GtkCssSection *GtkCssSection_val(value val);
-value Val_GtkCssSection(GtkCssSection *ptr);
-value Val_GtkCssSection_option(GtkCssSection *ptr);
+value Val_GtkCssSection(const GtkCssSection *ptr);
+value Val_GtkCssSection_option(const GtkCssSection *ptr);
 
 /* Forward declarations for GtkCssStyleChange converters (non-opaque record with  *)
               fields) */
 GtkCssStyleChange *GtkCssStyleChange_val(value val);
-value Val_GtkCssStyleChange(GtkCssStyleChange *ptr);
-value Val_GtkCssStyleChange_option(GtkCssStyleChange *ptr);
+value Val_GtkCssStyleChange(const GtkCssStyleChange *ptr);
+value Val_GtkCssStyleChange_option(const GtkCssStyleChange *ptr);
 
 /* Forward declarations for GtkExpressionWatch converters (non-opaque record with  *)
               fields) */
 GtkExpressionWatch *GtkExpressionWatch_val(value val);
-value Val_GtkExpressionWatch(GtkExpressionWatch *ptr);
-value Val_GtkExpressionWatch_option(GtkExpressionWatch *ptr);
+value Val_GtkExpressionWatch(const GtkExpressionWatch *ptr);
+value Val_GtkExpressionWatch_option(const GtkExpressionWatch *ptr);
 
 /* Forward declarations for GtkPadActionEntry converters (non-opaque record with  *)
               fields) */
 GtkPadActionEntry *GtkPadActionEntry_val(value val);
-value Val_GtkPadActionEntry(GtkPadActionEntry *ptr);
-value Val_GtkPadActionEntry_option(GtkPadActionEntry *ptr);
+value Val_GtkPadActionEntry(const GtkPadActionEntry *ptr);
+value Val_GtkPadActionEntry_option(const GtkPadActionEntry *ptr);
 
 /* Forward declarations for GtkPageRange converters (non-opaque record with  *)
               fields) */
 GtkPageRange *GtkPageRange_val(value val);
-value Val_GtkPageRange(GtkPageRange *ptr);
-value Val_GtkPageRange_option(GtkPageRange *ptr);
+value Val_GtkPageRange(const GtkPageRange *ptr);
+value Val_GtkPageRange_option(const GtkPageRange *ptr);
 
 /* Forward declarations for GtkPaperSize converters (non-opaque record with  *)
               fields) */
 GtkPaperSize *GtkPaperSize_val(value val);
-value Val_GtkPaperSize(GtkPaperSize *ptr);
-value Val_GtkPaperSize_option(GtkPaperSize *ptr);
+value Val_GtkPaperSize(const GtkPaperSize *ptr);
+value Val_GtkPaperSize_option(const GtkPaperSize *ptr);
 
 /* Forward declarations for GtkPrintSetup converters (non-opaque record with  *)
               fields) */
 GtkPrintSetup *GtkPrintSetup_val(value val);
-value Val_GtkPrintSetup(GtkPrintSetup *ptr);
-value Val_GtkPrintSetup_option(GtkPrintSetup *ptr);
+value Val_GtkPrintSetup(const GtkPrintSetup *ptr);
+value Val_GtkPrintSetup_option(const GtkPrintSetup *ptr);
 
 /* Forward declarations for GtkRecentData converters (non-opaque record with  *)
               fields) */
 GtkRecentData *GtkRecentData_val(value val);
-value Val_GtkRecentData(GtkRecentData *ptr);
-value Val_GtkRecentData_option(GtkRecentData *ptr);
+value Val_GtkRecentData(const GtkRecentData *ptr);
+value Val_GtkRecentData_option(const GtkRecentData *ptr);
 
 /* Forward declarations for GtkRecentInfo converters (non-opaque record with  *)
               fields) */
 GtkRecentInfo *GtkRecentInfo_val(value val);
-value Val_GtkRecentInfo(GtkRecentInfo *ptr);
-value Val_GtkRecentInfo_option(GtkRecentInfo *ptr);
+value Val_GtkRecentInfo(const GtkRecentInfo *ptr);
+value Val_GtkRecentInfo_option(const GtkRecentInfo *ptr);
 
 /* Forward declarations for GtkRequestedSize converters (non-opaque record with  *)
               fields) */
 GtkRequestedSize *GtkRequestedSize_val(value val);
-value Val_GtkRequestedSize(GtkRequestedSize *ptr);
-value Val_GtkRequestedSize_option(GtkRequestedSize *ptr);
+value Val_GtkRequestedSize(const GtkRequestedSize *ptr);
+value Val_GtkRequestedSize_option(const GtkRequestedSize *ptr);
 
 /* Forward declarations for GtkScrollInfo converters (non-opaque record with  *)
               fields) */
 GtkScrollInfo *GtkScrollInfo_val(value val);
-value Val_GtkScrollInfo(GtkScrollInfo *ptr);
-value Val_GtkScrollInfo_option(GtkScrollInfo *ptr);
+value Val_GtkScrollInfo(const GtkScrollInfo *ptr);
+value Val_GtkScrollInfo_option(const GtkScrollInfo *ptr);
 
 /* Forward declarations for GtkTreePath converters (non-opaque record with  *)
               fields) */
 GtkTreePath *GtkTreePath_val(value val);
-value Val_GtkTreePath(GtkTreePath *ptr);
-value Val_GtkTreePath_option(GtkTreePath *ptr);
+value Val_GtkTreePath(const GtkTreePath *ptr);
+value Val_GtkTreePath_option(const GtkTreePath *ptr);
 
 /* Forward declarations for GtkTreeRowReference converters (non-opaque record with  *)
               fields) */
 GtkTreeRowReference *GtkTreeRowReference_val(value val);
-value Val_GtkTreeRowReference(GtkTreeRowReference *ptr);
-value Val_GtkTreeRowReference_option(GtkTreeRowReference *ptr);
+value Val_GtkTreeRowReference(const GtkTreeRowReference *ptr);
+value Val_GtkTreeRowReference_option(const GtkTreeRowReference *ptr);
 
 /* Const-safe string extraction for setters */
 #define ML_DECL_CONST_STRING(name, expr) const gchar *name = (const gchar *)(expr)
