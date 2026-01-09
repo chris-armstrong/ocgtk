@@ -133,11 +133,11 @@ let test_method_with_nullable_param () =
   let meth = {
     method_name = "set_label";
     c_identifier = "gtk_button_set_label";
-    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone };
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
     parameters = [
       {
         param_name = "label";
-        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = true; transfer_ownership = TransferNone };
+        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = true; transfer_ownership = TransferNone; array = None };
         direction = In;
         nullable = true;
         varargs = false;
@@ -189,7 +189,7 @@ let test_method_with_return_value () =
   let meth = {
     method_name = "get_label";
     c_identifier = "gtk_button_get_label";
-    return_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone };
+    return_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone; array = None };
     parameters = [];
     doc = None;
     throws = false;
@@ -233,7 +233,7 @@ let test_nullable_return_value () =
   let meth = {
     method_name = "get_label";
     c_identifier = "gtk_button_get_label";
-    return_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = true; transfer_ownership = TransferNone };
+    return_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = true; transfer_ownership = TransferNone; array = None };
     parameters = [];
     doc = None;
     throws = false;

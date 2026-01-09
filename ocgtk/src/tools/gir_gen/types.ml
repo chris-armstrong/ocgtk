@@ -6,11 +6,19 @@ type transfer_ownership =
   | TransferContainer
   | TransferFloating
 
-type gir_type = {
+type gir_array = {
+  length : int option; (* Parameter index containing array length, if applicable *)
+  zero_terminated : bool; (* Whether the array is null/zero-terminated *)
+  fixed_size : int option; (* Fixed size of array, if known at compile time *)
+  element_type : gir_type; (* Type of array elements *)
+}
+
+and gir_type = {
   name : string;
   c_type : string option;
   nullable : bool;
   transfer_ownership : transfer_ownership;
+  array : gir_array option; (* Present if this type represents an array *)
 }
 
 type gir_direction = In | Out | InOut

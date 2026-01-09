@@ -91,6 +91,7 @@ let test_constructor_with_params () =
                 c_type = Some "const gchar*";
                 nullable = false;
                 transfer_ownership = TransferNone;
+                array = None;
               };
             direction = In;
             nullable = false;
@@ -133,6 +134,7 @@ let test_constructor_many_params () =
               c_type = Some "gint";
               nullable = false;
               transfer_ownership = TransferNone;
+            array = None;
             };
           direction = In;
           nullable = false;
@@ -180,6 +182,7 @@ let test_simple_method () =
           c_type = Some "void";
           nullable = false;
           transfer_ownership = TransferNone;
+        array = None;
         };
       parameters =
         [
@@ -191,6 +194,7 @@ let test_simple_method () =
                 c_type = Some "const gchar*";
                 nullable = false;
                 transfer_ownership = TransferNone;
+                array = None;
               };
             direction = In;
             nullable = false;
@@ -233,6 +237,7 @@ let test_method_with_return_value () =
           c_type = Some "const gchar*";
           nullable = false;
           transfer_ownership = TransferNone;
+        array = None;
         };
       parameters = [];
       doc = None;
@@ -299,6 +304,7 @@ let test_method_calls_c_function () =
           c_type = Some "void";
           nullable = false;
           transfer_ownership = TransferNone;
+        array = None;
         };
       parameters =
         [
@@ -310,6 +316,7 @@ let test_method_calls_c_function () =
                 c_type = Some "const gchar*";
                 nullable = false;
                 transfer_ownership = TransferNone;
+                array = None;
               };
             direction = In;
             nullable = false;
@@ -410,6 +417,7 @@ let test_bytecode_calls_native () =
               c_type = Some "gint";
               nullable = false;
               transfer_ownership = TransferNone;
+            array = None;
             };
           direction = In;
           nullable = false;
@@ -465,6 +473,7 @@ let test_non_opaque_record_return () =
                   c_type = Some "gint";
                   nullable = false;
                   transfer_ownership = TransferNone;
+                array = None;
                 };
             readable = true;
             writable = false;
@@ -494,6 +503,7 @@ let test_non_opaque_record_return () =
           c_type = Some "GtkTestRecord*";
           nullable = false;
           transfer_ownership = TransferNone;
+        array = None;
         };
       parameters = [];
       doc = None;
@@ -538,6 +548,7 @@ let test_non_opaque_record_parameter () =
                   c_type = Some "gint";
                   nullable = false;
                   transfer_ownership = TransferNone;
+                array = None;
                 };
             readable = true;
             writable = false;
@@ -567,6 +578,7 @@ let test_non_opaque_record_parameter () =
           c_type = Some "void";
           nullable = false;
           transfer_ownership = TransferNone;
+        array = None;
         };
       parameters =
         [
@@ -578,6 +590,7 @@ let test_non_opaque_record_parameter () =
                 c_type = Some "GtkTestRecord*";
                 nullable = false;
                 transfer_ownership = TransferNone;
+                array = None;
               };
             direction = In;
             nullable = false;
@@ -643,6 +656,7 @@ let test_opaque_record_return () =
           c_type = Some "GtkOpaqueRec*";
           nullable = false;
           transfer_ownership = TransferNone;
+        array = None;
         };
       parameters = [];
       doc = None;
@@ -700,6 +714,7 @@ let test_opaque_record_parameter () =
           c_type = Some "void";
           nullable = false;
           transfer_ownership = TransferNone;
+        array = None;
         };
       parameters =
         [
@@ -711,6 +726,7 @@ let test_opaque_record_parameter () =
                 c_type = Some "GtkOpaqueRec*";
                 nullable = false;
                 transfer_ownership = TransferNone;
+                array = None;
               };
             direction = In;
             nullable = false;
@@ -762,6 +778,7 @@ let test_nullable_record_return () =
                   c_type = Some "gint";
                   nullable = false;
                   transfer_ownership = TransferNone;
+                array = None;
                 };
             readable = true;
             writable = false;
@@ -791,6 +808,7 @@ let test_nullable_record_return () =
           c_type = Some "GtkTestRecord*";
           nullable = true;
           transfer_ownership = TransferNone;
+        array = None;
         };
       parameters = [];
       doc = None;
@@ -837,6 +855,7 @@ let test_nullable_record_parameter () =
                   c_type = Some "gint";
                   nullable = false;
                   transfer_ownership = TransferNone;
+                array = None;
                 };
             readable = true;
             writable = false;
@@ -866,6 +885,7 @@ let test_nullable_record_parameter () =
           c_type = Some "void";
           nullable = false;
           transfer_ownership = TransferNone;
+        array = None;
         };
       parameters =
         [
@@ -877,6 +897,7 @@ let test_nullable_record_parameter () =
                 c_type = Some "GtkTestRecord*";
                 nullable = true;
                 transfer_ownership = TransferNone;
+                array = None;
               };
             direction = In;
             nullable = true;

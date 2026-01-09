@@ -21,7 +21,7 @@ let test_gboolean_conversion () =
   let meth = {
     method_name = "get_visible";
     c_identifier = "gtk_widget_get_visible";
-    return_type = { name = "gboolean"; c_type = Some "gboolean"; nullable = false; transfer_ownership = TransferNone };
+    return_type = { name = "gboolean"; c_type = Some "gboolean"; nullable = false; transfer_ownership = TransferNone; array = None };
     parameters = [];
     doc = None;
     throws = false;
@@ -46,7 +46,7 @@ let test_gint_conversion () =
   let meth = {
     method_name = "get_width";
     c_identifier = "gtk_widget_get_width";
-    return_type = { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone };
+    return_type = { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone; array = None };
     parameters = [];
     doc = None;
     throws = false;
@@ -71,7 +71,7 @@ let test_gdouble_conversion () =
   let meth = {
     method_name = "get_opacity";
     c_identifier = "gtk_widget_get_opacity";
-    return_type = { name = "gdouble"; c_type = Some "gdouble"; nullable = false; transfer_ownership = TransferNone };
+    return_type = { name = "gdouble"; c_type = Some "gdouble"; nullable = false; transfer_ownership = TransferNone; array = None };
     parameters = [];
     doc = None;
     throws = false;
@@ -96,7 +96,7 @@ let test_utf8_string_conversion () =
   let meth = {
     method_name = "get_name";
     c_identifier = "gtk_widget_get_name";
-    return_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone };
+    return_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone; array = None };
     parameters = [];
     doc = None;
     throws = false;
@@ -121,11 +121,11 @@ let test_utf8_string_parameter () =
   let meth = {
     method_name = "set_name";
     c_identifier = "gtk_widget_set_name";
-    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone };
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
     parameters = [
       {
         param_name = "name";
-        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone };
+        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone; array = None };
         direction = In;
         nullable = false;
         varargs = false;
@@ -154,7 +154,7 @@ let test_object_type_conversion () =
   let meth = {
     method_name = "get_parent";
     c_identifier = "gtk_widget_get_parent";
-    return_type = { name = "Widget"; c_type = Some "GtkWidget*"; nullable = false; transfer_ownership = TransferNone };
+    return_type = { name = "Widget"; c_type = Some "GtkWidget*"; nullable = false; transfer_ownership = TransferNone; array = None };
     parameters = [];
     doc = None;
     throws = false;
@@ -179,7 +179,7 @@ let test_enum_type_conversion () =
   let meth = {
     method_name = "get_direction";
     c_identifier = "gtk_widget_get_direction";
-    return_type = { name = "TextDirection"; c_type = Some "GtkTextDirection"; nullable = false; transfer_ownership = TransferNone };
+    return_type = { name = "TextDirection"; c_type = Some "GtkTextDirection"; nullable = false; transfer_ownership = TransferNone; array = None };
     parameters = [];
     doc = None;
     throws = false;
@@ -204,11 +204,11 @@ let test_gboolean_parameter () =
   let meth = {
     method_name = "set_visible";
     c_identifier = "gtk_widget_set_visible";
-    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone };
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
     parameters = [
       {
         param_name = "visible";
-        param_type = { name = "gboolean"; c_type = Some "gboolean"; nullable = false; transfer_ownership = TransferNone };
+        param_type = { name = "gboolean"; c_type = Some "gboolean"; nullable = false; transfer_ownership = TransferNone; array = None };
         direction = In;
         nullable = false;
         varargs = false;
@@ -237,18 +237,18 @@ let test_multiple_type_conversions () =
   let meth = {
     method_name = "set_size_request";
     c_identifier = "gtk_widget_set_size_request";
-    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone };
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
     parameters = [
       {
         param_name = "width";
-        param_type = { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone };
+        param_type = { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone; array = None };
         direction = In;
         nullable = false;
         varargs = false;
       };
       {
         param_name = "height";
-        param_type = { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone };
+        param_type = { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone; array = None };
         direction = In;
         nullable = false;
         varargs = false;

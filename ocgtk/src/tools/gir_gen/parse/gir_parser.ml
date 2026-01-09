@@ -443,6 +443,7 @@ let parse_gir_file filename filter_classes =
           c_type = None;
           nullable = false;
           transfer_ownership = Types.TransferNone;
+          array = None;
         }
     in
 
@@ -467,8 +468,19 @@ let parse_gir_file filename filter_classes =
               c_type = c_type_name;
               nullable;
               transfer_ownership = Types.TransferNone;
+              array = None;
             };
           skip_element 1;
+          parse_prop_contents ()
+      | `El_start ((_, "array"), array_attrs) ->
+          let array_info = parse_array_type array_attrs Types.TransferNone property_nullable in
+          prop_type := {
+            name = "array";
+            c_type = get_attr "c:type" array_attrs;
+            nullable = property_nullable;
+            transfer_ownership = Types.TransferNone;
+            array = array_info;
+          };
           parse_prop_contents ()
       | `El_start ((_, "doc"), _) ->
           doc := element_data ();
@@ -616,6 +628,7 @@ let parse_gir_file filename filter_classes =
           c_type = None;
           nullable = false;
           transfer_ownership = Types.TransferNone;
+          array = None;
         }
     in
     let params = ref [] in
@@ -654,6 +667,7 @@ let parse_gir_file filename filter_classes =
               c_type = None;
               nullable = false;
               transfer_ownership = Types.TransferNone;
+              array = None;
             }
         in
         let params = ref [] in
@@ -692,6 +706,64 @@ let parse_gir_file filename filter_classes =
     | None ->
         skip_element 1;
         None
+  (* Parse array element *)
+  and parse_array_type attrs transfer_ownership_attr nullable_attr =
+    let length =
+      match get_attr "length" attrs with
+      | Some s -> (try Some (int_of_string s) with _ -> None)
+      | None -> None
+    in
+    let zero_terminated =
+      get_attr "zero-terminated" attrs |> Utils.parse_bool
+    in
+    let fixed_size =
+      match get_attr "fixed-size" attrs with
+      | Some s -> (try Some (int_of_string s) with _ -> None)
+      | None -> None
+    in
+
+    (* Parse the element type from nested <type> element *)
+    let element_type = ref {
+      name = "unknown";
+      c_type = None;
+      nullable = false;
+      transfer_ownership = transfer_ownership_attr;
+      array = None;
+    } in
+
+    let rec parse_array_contents () =
+      match Xmlm.input input with
+      | `El_start ((_, "type"), type_attrs) ->
+          let type_name =
+            match get_attr "name" type_attrs with Some n -> n | None -> "unknown"
+          in
+          let c_type_name = get_attr "c:type" type_attrs in
+          let nullable =
+            get_attr "nullable" type_attrs |> Utils.parse_bool || nullable_attr
+          in
+          element_type := {
+            name = type_name;
+            c_type = c_type_name;
+            nullable;
+            transfer_ownership = transfer_ownership_attr;
+            array = None;
+          };
+          skip_element 1;
+          parse_array_contents ()
+      | `El_start _ ->
+          skip_element 1;
+          parse_array_contents ()
+      | `El_end -> ()
+      | `Data _ | `Dtd _ -> parse_array_contents ()
+    in
+
+    parse_array_contents ();
+    Some {
+      Types.length;
+      zero_terminated;
+      fixed_size;
+      element_type = !element_type;
+    }
   (* Parse return value type *)
   and parse_return_value attrs =
     let nullable_attr = get_attr "nullable" attrs |> Utils.parse_bool in
@@ -710,6 +782,7 @@ let parse_gir_file filename filter_classes =
           c_type = None;
           nullable = nullable_attr;
           transfer_ownership = transfer_ownership_attr;
+          array = None;
         }
     in
 
@@ -729,9 +802,20 @@ let parse_gir_file filename filter_classes =
                c_type = c_type_name;
                nullable;
                transfer_ownership = transfer_ownership_attr;
+               array = None;
              }
               : gir_type);
           skip_element 1;
+          parse_rv_contents ()
+      | `El_start ((_, "array"), array_attrs) ->
+          let array_info = parse_array_type array_attrs transfer_ownership_attr nullable_attr in
+          type_info := {
+            name = "array";
+            c_type = get_attr "c:type" array_attrs;
+            nullable = nullable_attr;
+            transfer_ownership = transfer_ownership_attr;
+            array = array_info;
+          };
           parse_rv_contents ()
       | `El_start _ ->
           skip_element 1;
@@ -768,6 +852,7 @@ let parse_gir_file filename filter_classes =
                 c_type = c_type_name;
                 nullable;
                 transfer_ownership = Types.TransferNone;
+                array = None;
               };
           skip_element 1;
           parse_function_contents ()
@@ -832,6 +917,7 @@ let parse_gir_file filename filter_classes =
                 c_type = None;
                 nullable = false;
                 transfer_ownership;
+                array = None;
               }
           in
           let rec parse_param_contents () =
@@ -854,8 +940,20 @@ let parse_gir_file filename filter_classes =
                     c_type = c_type_name;
                     nullable;
                     transfer_ownership;
+                    array = None;
                   };
                 skip_element 1;
+                parse_param_contents ()
+            | `El_start ((_, "array"), array_attrs) ->
+                let nullable_param = get_attr "nullable" attrs |> Utils.parse_bool in
+                let array_info = parse_array_type array_attrs transfer_ownership nullable_param in
+                type_ := {
+                  name = "array";
+                  c_type = get_attr "c:type" array_attrs;
+                  nullable = nullable_param;
+                  transfer_ownership;
+                  array = array_info;
+                };
                 parse_param_contents ()
             | `El_start _ ->
                 skip_element 1;
@@ -994,8 +1092,19 @@ let parse_gir_file filename filter_classes =
                           c_type = c_type_name;
                           nullable;
                           transfer_ownership = Types.TransferNone;
+                          array = None;
                         };
                     skip_element 1;
+                    parse_field_contents ()
+                | `El_start ((_, "array"), array_attrs) ->
+                    let array_info = parse_array_type array_attrs Types.TransferNone false in
+                    field_type := Some {
+                      name = "array";
+                      c_type = get_attr "c:type" array_attrs;
+                      nullable = false;
+                      transfer_ownership = Types.TransferNone;
+                      array = array_info;
+                    };
                     parse_field_contents ()
                 | `El_start _ ->
                     skip_element 1;
@@ -1253,6 +1362,7 @@ let parse_gir_file filename filter_classes =
                   c_type = None;
                   nullable = false;
                   transfer_ownership = Types.TransferNone;
+                  array = None;
                 };
               sig_parameters = [];
               doc = None;

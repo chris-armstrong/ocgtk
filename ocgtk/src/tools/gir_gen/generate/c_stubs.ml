@@ -569,6 +569,7 @@ let generate_c_constructor ~ctx ~c_type (ctor : gir_constructor) _class_name =
         c_type = Some (c_type ^ "*");
         nullable = false;
         transfer_ownership = Types.TransferNone;
+        array = None;
       }
     in
     match Type_mappings.find_type_mapping_for_gir_type ~ctx dummy_gir_type with
