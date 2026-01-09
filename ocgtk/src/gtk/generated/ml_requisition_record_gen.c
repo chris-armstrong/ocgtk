@@ -20,7 +20,7 @@
 value copy_GtkRequisition(const GtkRequisition *ptr) {
   if (ptr == NULL) return Val_none;
   GtkRequisition *copy = gtk_requisition_copy((GtkRequisition*)ptr);
-  return ml_gir_record_alloc(copy, sizeof(GtkRequisition), "GtkRequisition", (void(*)(void*))g_free);
+  return ml_gir_record_val_ptr(g_new0(GtkRequisition, 1));
 }
 
 

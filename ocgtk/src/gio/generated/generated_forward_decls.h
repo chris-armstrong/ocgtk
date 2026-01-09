@@ -755,46 +755,6 @@ GActionEntry *GActionEntry_val(value val);
 value Val_GActionEntry(GActionEntry *ptr);
 value Val_GActionEntry_option(GActionEntry *ptr);
 
-#ifndef Val_GAppLaunchContextPrivate
-#define GAppLaunchContextPrivate_val(val) ((GAppLaunchContextPrivate*)ext_of_val(val))
-#define Val_GAppLaunchContextPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GAppLaunchContextPrivate */
-
-#ifndef Val_GApplicationCommandLinePrivate
-#define GApplicationCommandLinePrivate_val(val) ((GApplicationCommandLinePrivate*)ext_of_val(val))
-#define Val_GApplicationCommandLinePrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GApplicationCommandLinePrivate */
-
-#ifndef Val_GApplicationPrivate
-#define GApplicationPrivate_val(val) ((GApplicationPrivate*)ext_of_val(val))
-#define Val_GApplicationPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GApplicationPrivate */
-
-#ifndef Val_GBufferedInputStreamPrivate
-#define GBufferedInputStreamPrivate_val(val) ((GBufferedInputStreamPrivate*)ext_of_val(val))
-#define Val_GBufferedInputStreamPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GBufferedInputStreamPrivate */
-
-#ifndef Val_GBufferedOutputStreamPrivate
-#define GBufferedOutputStreamPrivate_val(val) ((GBufferedOutputStreamPrivate*)ext_of_val(val))
-#define Val_GBufferedOutputStreamPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GBufferedOutputStreamPrivate */
-
-#ifndef Val_GCancellablePrivate
-#define GCancellablePrivate_val(val) ((GCancellablePrivate*)ext_of_val(val))
-#define Val_GCancellablePrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GCancellablePrivate */
-
-#ifndef Val_GConverterInputStreamPrivate
-#define GConverterInputStreamPrivate_val(val) ((GConverterInputStreamPrivate*)ext_of_val(val))
-#define Val_GConverterInputStreamPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GConverterInputStreamPrivate */
-
-#ifndef Val_GConverterOutputStreamPrivate
-#define GConverterOutputStreamPrivate_val(val) ((GConverterOutputStreamPrivate*)ext_of_val(val))
-#define Val_GConverterOutputStreamPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GConverterOutputStreamPrivate */
-
 /* Forward declarations for GDBusAnnotationInfo converters (non-opaque record with  *)
               fields) */
 GDBusAnnotationInfo *GDBusAnnotationInfo_val(value val);
@@ -819,11 +779,6 @@ GDBusInterfaceInfo *GDBusInterfaceInfo_val(value val);
 value Val_GDBusInterfaceInfo(GDBusInterfaceInfo *ptr);
 value Val_GDBusInterfaceInfo_option(GDBusInterfaceInfo *ptr);
 
-#ifndef Val_GDBusInterfaceSkeletonPrivate
-#define GDBusInterfaceSkeletonPrivate_val(val) ((GDBusInterfaceSkeletonPrivate*)ext_of_val(val))
-#define Val_GDBusInterfaceSkeletonPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusInterfaceSkeletonPrivate */
-
 /* Forward declarations for GDBusInterfaceVTable converters (non-opaque record with  *)
               fields) */
 GDBusInterfaceVTable *GDBusInterfaceVTable_val(value val);
@@ -842,36 +797,11 @@ GDBusNodeInfo *GDBusNodeInfo_val(value val);
 value Val_GDBusNodeInfo(GDBusNodeInfo *ptr);
 value Val_GDBusNodeInfo_option(GDBusNodeInfo *ptr);
 
-#ifndef Val_GDBusObjectManagerClientPrivate
-#define GDBusObjectManagerClientPrivate_val(val) ((GDBusObjectManagerClientPrivate*)ext_of_val(val))
-#define Val_GDBusObjectManagerClientPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusObjectManagerClientPrivate */
-
-#ifndef Val_GDBusObjectManagerServerPrivate
-#define GDBusObjectManagerServerPrivate_val(val) ((GDBusObjectManagerServerPrivate*)ext_of_val(val))
-#define Val_GDBusObjectManagerServerPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusObjectManagerServerPrivate */
-
-#ifndef Val_GDBusObjectProxyPrivate
-#define GDBusObjectProxyPrivate_val(val) ((GDBusObjectProxyPrivate*)ext_of_val(val))
-#define Val_GDBusObjectProxyPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusObjectProxyPrivate */
-
-#ifndef Val_GDBusObjectSkeletonPrivate
-#define GDBusObjectSkeletonPrivate_val(val) ((GDBusObjectSkeletonPrivate*)ext_of_val(val))
-#define Val_GDBusObjectSkeletonPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusObjectSkeletonPrivate */
-
 /* Forward declarations for GDBusPropertyInfo converters (non-opaque record with  *)
               fields) */
 GDBusPropertyInfo *GDBusPropertyInfo_val(value val);
 value Val_GDBusPropertyInfo(GDBusPropertyInfo *ptr);
 value Val_GDBusPropertyInfo_option(GDBusPropertyInfo *ptr);
-
-#ifndef Val_GDBusProxyPrivate
-#define GDBusProxyPrivate_val(val) ((GDBusProxyPrivate*)ext_of_val(val))
-#define Val_GDBusProxyPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusProxyPrivate */
 
 /* Forward declarations for GDBusSignalInfo converters (non-opaque record with  *)
               fields) */
@@ -885,21 +815,6 @@ GDBusSubtreeVTable *GDBusSubtreeVTable_val(value val);
 value Val_GDBusSubtreeVTable(GDBusSubtreeVTable *ptr);
 value Val_GDBusSubtreeVTable_option(GDBusSubtreeVTable *ptr);
 
-#ifndef Val_GDataInputStreamPrivate
-#define GDataInputStreamPrivate_val(val) ((GDataInputStreamPrivate*)ext_of_val(val))
-#define Val_GDataInputStreamPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDataInputStreamPrivate */
-
-#ifndef Val_GDataOutputStreamPrivate
-#define GDataOutputStreamPrivate_val(val) ((GDataOutputStreamPrivate*)ext_of_val(val))
-#define Val_GDataOutputStreamPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDataOutputStreamPrivate */
-
-#ifndef Val_GEmblemedIconPrivate
-#define GEmblemedIconPrivate_val(val) ((GEmblemedIconPrivate*)ext_of_val(val))
-#define Val_GEmblemedIconPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GEmblemedIconPrivate */
-
 /* Forward declarations for GFileAttributeInfo converters (non-opaque record with  *)
               fields) */
 GFileAttributeInfo *GFileAttributeInfo_val(value val);
@@ -912,80 +827,41 @@ GFileAttributeInfoList *GFileAttributeInfoList_val(value val);
 value Val_GFileAttributeInfoList(GFileAttributeInfoList *ptr);
 value Val_GFileAttributeInfoList_option(GFileAttributeInfoList *ptr);
 
-#ifndef Val_GFileAttributeMatcher
-#define GFileAttributeMatcher_val(val) ((GFileAttributeMatcher*)ext_of_val(val))
-#define Val_GFileAttributeMatcher(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GFileAttributeMatcher */
+/* Forward declarations for GFileAttributeMatcher converters (non-opaque record with  *)
+              fields) */
+GFileAttributeMatcher *GFileAttributeMatcher_val(value val);
+value Val_GFileAttributeMatcher(GFileAttributeMatcher *ptr);
+value Val_GFileAttributeMatcher_option(GFileAttributeMatcher *ptr);
 
-#ifndef Val_GFileEnumeratorPrivate
-#define GFileEnumeratorPrivate_val(val) ((GFileEnumeratorPrivate*)ext_of_val(val))
-#define Val_GFileEnumeratorPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GFileEnumeratorPrivate */
+/* Forward declarations for GIOExtension converters (non-opaque record with  *)
+              fields) */
+GIOExtension *GIOExtension_val(value val);
+value Val_GIOExtension(GIOExtension *ptr);
+value Val_GIOExtension_option(GIOExtension *ptr);
 
-#ifndef Val_GFileIOStreamPrivate
-#define GFileIOStreamPrivate_val(val) ((GFileIOStreamPrivate*)ext_of_val(val))
-#define Val_GFileIOStreamPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GFileIOStreamPrivate */
+/* Forward declarations for GIOExtensionPoint converters (non-opaque record with  *)
+              fields) */
+GIOExtensionPoint *GIOExtensionPoint_val(value val);
+value Val_GIOExtensionPoint(GIOExtensionPoint *ptr);
+value Val_GIOExtensionPoint_option(GIOExtensionPoint *ptr);
 
-#ifndef Val_GFileInputStreamPrivate
-#define GFileInputStreamPrivate_val(val) ((GFileInputStreamPrivate*)ext_of_val(val))
-#define Val_GFileInputStreamPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GFileInputStreamPrivate */
+/* Forward declarations for GIOModuleScope converters (non-opaque record with  *)
+              fields) */
+GIOModuleScope *GIOModuleScope_val(value val);
+value Val_GIOModuleScope(GIOModuleScope *ptr);
+value Val_GIOModuleScope_option(GIOModuleScope *ptr);
 
-#ifndef Val_GFileMonitorPrivate
-#define GFileMonitorPrivate_val(val) ((GFileMonitorPrivate*)ext_of_val(val))
-#define Val_GFileMonitorPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GFileMonitorPrivate */
+/* Forward declarations for GIOSchedulerJob converters (non-opaque record with  *)
+              fields) */
+GIOSchedulerJob *GIOSchedulerJob_val(value val);
+value Val_GIOSchedulerJob(GIOSchedulerJob *ptr);
+value Val_GIOSchedulerJob_option(GIOSchedulerJob *ptr);
 
-#ifndef Val_GFileOutputStreamPrivate
-#define GFileOutputStreamPrivate_val(val) ((GFileOutputStreamPrivate*)ext_of_val(val))
-#define Val_GFileOutputStreamPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GFileOutputStreamPrivate */
-
-#ifndef Val_GIOExtension
-#define GIOExtension_val(val) ((GIOExtension*)ext_of_val(val))
-#define Val_GIOExtension(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GIOExtension */
-
-#ifndef Val_GIOExtensionPoint
-#define GIOExtensionPoint_val(val) ((GIOExtensionPoint*)ext_of_val(val))
-#define Val_GIOExtensionPoint(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GIOExtensionPoint */
-
-#ifndef Val_GIOModuleScope
-#define GIOModuleScope_val(val) ((GIOModuleScope*)ext_of_val(val))
-#define Val_GIOModuleScope(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GIOModuleScope */
-
-#ifndef Val_GIOSchedulerJob
-#define GIOSchedulerJob_val(val) ((GIOSchedulerJob*)ext_of_val(val))
-#define Val_GIOSchedulerJob(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GIOSchedulerJob */
-
-#ifndef Val_GIOStreamAdapter
-#define GIOStreamAdapter_val(val) ((GIOStreamAdapter*)ext_of_val(val))
-#define Val_GIOStreamAdapter(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GIOStreamAdapter */
-
-#ifndef Val_GIOStreamPrivate
-#define GIOStreamPrivate_val(val) ((GIOStreamPrivate*)ext_of_val(val))
-#define Val_GIOStreamPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GIOStreamPrivate */
-
-#ifndef Val_GInetAddressMaskPrivate
-#define GInetAddressMaskPrivate_val(val) ((GInetAddressMaskPrivate*)ext_of_val(val))
-#define Val_GInetAddressMaskPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GInetAddressMaskPrivate */
-
-#ifndef Val_GInetAddressPrivate
-#define GInetAddressPrivate_val(val) ((GInetAddressPrivate*)ext_of_val(val))
-#define Val_GInetAddressPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GInetAddressPrivate */
-
-#ifndef Val_GInetSocketAddressPrivate
-#define GInetSocketAddressPrivate_val(val) ((GInetSocketAddressPrivate*)ext_of_val(val))
-#define Val_GInetSocketAddressPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GInetSocketAddressPrivate */
+/* Forward declarations for GIOStreamAdapter converters (non-opaque record with  *)
+              fields) */
+GIOStreamAdapter *GIOStreamAdapter_val(value val);
+value Val_GIOStreamAdapter(GIOStreamAdapter *ptr);
+value Val_GIOStreamAdapter_option(GIOStreamAdapter *ptr);
 
 /* Forward declarations for GInputMessage converters (non-opaque record with  *)
               fields) */
@@ -993,61 +869,11 @@ GInputMessage *GInputMessage_val(value val);
 value Val_GInputMessage(GInputMessage *ptr);
 value Val_GInputMessage_option(GInputMessage *ptr);
 
-#ifndef Val_GInputStreamPrivate
-#define GInputStreamPrivate_val(val) ((GInputStreamPrivate*)ext_of_val(val))
-#define Val_GInputStreamPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GInputStreamPrivate */
-
 /* Forward declarations for GInputVector converters (non-opaque record with  *)
               fields) */
 GInputVector *GInputVector_val(value val);
 value Val_GInputVector(GInputVector *ptr);
 value Val_GInputVector_option(GInputVector *ptr);
-
-#ifndef Val_GMemoryInputStreamPrivate
-#define GMemoryInputStreamPrivate_val(val) ((GMemoryInputStreamPrivate*)ext_of_val(val))
-#define Val_GMemoryInputStreamPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GMemoryInputStreamPrivate */
-
-#ifndef Val_GMemoryOutputStreamPrivate
-#define GMemoryOutputStreamPrivate_val(val) ((GMemoryOutputStreamPrivate*)ext_of_val(val))
-#define Val_GMemoryOutputStreamPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GMemoryOutputStreamPrivate */
-
-#ifndef Val_GMenuAttributeIterPrivate
-#define GMenuAttributeIterPrivate_val(val) ((GMenuAttributeIterPrivate*)ext_of_val(val))
-#define Val_GMenuAttributeIterPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GMenuAttributeIterPrivate */
-
-#ifndef Val_GMenuLinkIterPrivate
-#define GMenuLinkIterPrivate_val(val) ((GMenuLinkIterPrivate*)ext_of_val(val))
-#define Val_GMenuLinkIterPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GMenuLinkIterPrivate */
-
-#ifndef Val_GMenuModelPrivate
-#define GMenuModelPrivate_val(val) ((GMenuModelPrivate*)ext_of_val(val))
-#define Val_GMenuModelPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GMenuModelPrivate */
-
-#ifndef Val_GMountOperationPrivate
-#define GMountOperationPrivate_val(val) ((GMountOperationPrivate*)ext_of_val(val))
-#define Val_GMountOperationPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GMountOperationPrivate */
-
-#ifndef Val_GNativeSocketAddressPrivate
-#define GNativeSocketAddressPrivate_val(val) ((GNativeSocketAddressPrivate*)ext_of_val(val))
-#define Val_GNativeSocketAddressPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GNativeSocketAddressPrivate */
-
-#ifndef Val_GNetworkAddressPrivate
-#define GNetworkAddressPrivate_val(val) ((GNetworkAddressPrivate*)ext_of_val(val))
-#define Val_GNetworkAddressPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GNetworkAddressPrivate */
-
-#ifndef Val_GNetworkServicePrivate
-#define GNetworkServicePrivate_val(val) ((GNetworkServicePrivate*)ext_of_val(val))
-#define Val_GNetworkServicePrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GNetworkServicePrivate */
 
 /* Forward declarations for GOutputMessage converters (non-opaque record with  *)
               fields) */
@@ -1055,111 +881,41 @@ GOutputMessage *GOutputMessage_val(value val);
 value Val_GOutputMessage(GOutputMessage *ptr);
 value Val_GOutputMessage_option(GOutputMessage *ptr);
 
-#ifndef Val_GOutputStreamPrivate
-#define GOutputStreamPrivate_val(val) ((GOutputStreamPrivate*)ext_of_val(val))
-#define Val_GOutputStreamPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GOutputStreamPrivate */
-
 /* Forward declarations for GOutputVector converters (non-opaque record with  *)
               fields) */
 GOutputVector *GOutputVector_val(value val);
 value Val_GOutputVector(GOutputVector *ptr);
 value Val_GOutputVector_option(GOutputVector *ptr);
 
-#ifndef Val_GPermissionPrivate
-#define GPermissionPrivate_val(val) ((GPermissionPrivate*)ext_of_val(val))
-#define Val_GPermissionPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GPermissionPrivate */
+/* Forward declarations for GResource converters (non-opaque record with  *)
+              fields) */
+GResource *GResource_val(value val);
+value Val_GResource(GResource *ptr);
+value Val_GResource_option(GResource *ptr);
 
-#ifndef Val_GProxyAddressEnumeratorPrivate
-#define GProxyAddressEnumeratorPrivate_val(val) ((GProxyAddressEnumeratorPrivate*)ext_of_val(val))
-#define Val_GProxyAddressEnumeratorPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GProxyAddressEnumeratorPrivate */
+/* Forward declarations for GSettingsSchema converters (non-opaque record with  *)
+              fields) */
+GSettingsSchema *GSettingsSchema_val(value val);
+value Val_GSettingsSchema(GSettingsSchema *ptr);
+value Val_GSettingsSchema_option(GSettingsSchema *ptr);
 
-#ifndef Val_GProxyAddressPrivate
-#define GProxyAddressPrivate_val(val) ((GProxyAddressPrivate*)ext_of_val(val))
-#define Val_GProxyAddressPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GProxyAddressPrivate */
+/* Forward declarations for GSettingsSchemaKey converters (non-opaque record with  *)
+              fields) */
+GSettingsSchemaKey *GSettingsSchemaKey_val(value val);
+value Val_GSettingsSchemaKey(GSettingsSchemaKey *ptr);
+value Val_GSettingsSchemaKey_option(GSettingsSchemaKey *ptr);
 
-#ifndef Val_GResolverPrivate
-#define GResolverPrivate_val(val) ((GResolverPrivate*)ext_of_val(val))
-#define Val_GResolverPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GResolverPrivate */
+/* Forward declarations for GSettingsSchemaSource converters (non-opaque record with  *)
+              fields) */
+GSettingsSchemaSource *GSettingsSchemaSource_val(value val);
+value Val_GSettingsSchemaSource(GSettingsSchemaSource *ptr);
+value Val_GSettingsSchemaSource_option(GSettingsSchemaSource *ptr);
 
-#ifndef Val_GResource
-#define GResource_val(val) ((GResource*)ext_of_val(val))
-#define Val_GResource(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GResource */
-
-#ifndef Val_GSettingsBackendPrivate
-#define GSettingsBackendPrivate_val(val) ((GSettingsBackendPrivate*)ext_of_val(val))
-#define Val_GSettingsBackendPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSettingsBackendPrivate */
-
-#ifndef Val_GSettingsPrivate
-#define GSettingsPrivate_val(val) ((GSettingsPrivate*)ext_of_val(val))
-#define Val_GSettingsPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSettingsPrivate */
-
-#ifndef Val_GSettingsSchema
-#define GSettingsSchema_val(val) ((GSettingsSchema*)ext_of_val(val))
-#define Val_GSettingsSchema(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSettingsSchema */
-
-#ifndef Val_GSettingsSchemaKey
-#define GSettingsSchemaKey_val(val) ((GSettingsSchemaKey*)ext_of_val(val))
-#define Val_GSettingsSchemaKey(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSettingsSchemaKey */
-
-#ifndef Val_GSettingsSchemaSource
-#define GSettingsSchemaSource_val(val) ((GSettingsSchemaSource*)ext_of_val(val))
-#define Val_GSettingsSchemaSource(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSettingsSchemaSource */
-
-#ifndef Val_GSimpleActionGroupPrivate
-#define GSimpleActionGroupPrivate_val(val) ((GSimpleActionGroupPrivate*)ext_of_val(val))
-#define Val_GSimpleActionGroupPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSimpleActionGroupPrivate */
-
-#ifndef Val_GSimpleProxyResolverPrivate
-#define GSimpleProxyResolverPrivate_val(val) ((GSimpleProxyResolverPrivate*)ext_of_val(val))
-#define Val_GSimpleProxyResolverPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSimpleProxyResolverPrivate */
-
-#ifndef Val_GSocketClientPrivate
-#define GSocketClientPrivate_val(val) ((GSocketClientPrivate*)ext_of_val(val))
-#define Val_GSocketClientPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSocketClientPrivate */
-
-#ifndef Val_GSocketConnectionPrivate
-#define GSocketConnectionPrivate_val(val) ((GSocketConnectionPrivate*)ext_of_val(val))
-#define Val_GSocketConnectionPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSocketConnectionPrivate */
-
-#ifndef Val_GSocketControlMessagePrivate
-#define GSocketControlMessagePrivate_val(val) ((GSocketControlMessagePrivate*)ext_of_val(val))
-#define Val_GSocketControlMessagePrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSocketControlMessagePrivate */
-
-#ifndef Val_GSocketListenerPrivate
-#define GSocketListenerPrivate_val(val) ((GSocketListenerPrivate*)ext_of_val(val))
-#define Val_GSocketListenerPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSocketListenerPrivate */
-
-#ifndef Val_GSocketPrivate
-#define GSocketPrivate_val(val) ((GSocketPrivate*)ext_of_val(val))
-#define Val_GSocketPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSocketPrivate */
-
-#ifndef Val_GSocketServicePrivate
-#define GSocketServicePrivate_val(val) ((GSocketServicePrivate*)ext_of_val(val))
-#define Val_GSocketServicePrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSocketServicePrivate */
-
-#ifndef Val_GSrvTarget
-#define GSrvTarget_val(val) ((GSrvTarget*)ext_of_val(val))
-#define Val_GSrvTarget(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSrvTarget */
+/* Forward declarations for GSrvTarget converters (non-opaque record with  *)
+              fields) */
+GSrvTarget *GSrvTarget_val(value val);
+value Val_GSrvTarget(GSrvTarget *ptr);
+value Val_GSrvTarget_option(GSrvTarget *ptr);
 
 /* Forward declarations for GStaticResource converters (non-opaque record with  *)
               fields) */
@@ -1167,90 +923,17 @@ GStaticResource *GStaticResource_val(value val);
 value Val_GStaticResource(GStaticResource *ptr);
 value Val_GStaticResource_option(GStaticResource *ptr);
 
-#ifndef Val_GTcpConnectionPrivate
-#define GTcpConnectionPrivate_val(val) ((GTcpConnectionPrivate*)ext_of_val(val))
-#define Val_GTcpConnectionPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GTcpConnectionPrivate */
+/* Forward declarations for GUnixMountEntry converters (non-opaque record with  *)
+              fields) */
+GUnixMountEntry *GUnixMountEntry_val(value val);
+value Val_GUnixMountEntry(GUnixMountEntry *ptr);
+value Val_GUnixMountEntry_option(GUnixMountEntry *ptr);
 
-#ifndef Val_GTcpWrapperConnectionPrivate
-#define GTcpWrapperConnectionPrivate_val(val) ((GTcpWrapperConnectionPrivate*)ext_of_val(val))
-#define Val_GTcpWrapperConnectionPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GTcpWrapperConnectionPrivate */
-
-#ifndef Val_GThreadedSocketServicePrivate
-#define GThreadedSocketServicePrivate_val(val) ((GThreadedSocketServicePrivate*)ext_of_val(val))
-#define Val_GThreadedSocketServicePrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GThreadedSocketServicePrivate */
-
-#ifndef Val_GTlsCertificatePrivate
-#define GTlsCertificatePrivate_val(val) ((GTlsCertificatePrivate*)ext_of_val(val))
-#define Val_GTlsCertificatePrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GTlsCertificatePrivate */
-
-#ifndef Val_GTlsConnectionPrivate
-#define GTlsConnectionPrivate_val(val) ((GTlsConnectionPrivate*)ext_of_val(val))
-#define Val_GTlsConnectionPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GTlsConnectionPrivate */
-
-#ifndef Val_GTlsDatabasePrivate
-#define GTlsDatabasePrivate_val(val) ((GTlsDatabasePrivate*)ext_of_val(val))
-#define Val_GTlsDatabasePrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GTlsDatabasePrivate */
-
-#ifndef Val_GTlsInteractionPrivate
-#define GTlsInteractionPrivate_val(val) ((GTlsInteractionPrivate*)ext_of_val(val))
-#define Val_GTlsInteractionPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GTlsInteractionPrivate */
-
-#ifndef Val_GTlsPasswordPrivate
-#define GTlsPasswordPrivate_val(val) ((GTlsPasswordPrivate*)ext_of_val(val))
-#define Val_GTlsPasswordPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GTlsPasswordPrivate */
-
-#ifndef Val_GUnixConnectionPrivate
-#define GUnixConnectionPrivate_val(val) ((GUnixConnectionPrivate*)ext_of_val(val))
-#define Val_GUnixConnectionPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GUnixConnectionPrivate */
-
-#ifndef Val_GUnixCredentialsMessagePrivate
-#define GUnixCredentialsMessagePrivate_val(val) ((GUnixCredentialsMessagePrivate*)ext_of_val(val))
-#define Val_GUnixCredentialsMessagePrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GUnixCredentialsMessagePrivate */
-
-#ifndef Val_GUnixFDListPrivate
-#define GUnixFDListPrivate_val(val) ((GUnixFDListPrivate*)ext_of_val(val))
-#define Val_GUnixFDListPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GUnixFDListPrivate */
-
-#ifndef Val_GUnixFDMessagePrivate
-#define GUnixFDMessagePrivate_val(val) ((GUnixFDMessagePrivate*)ext_of_val(val))
-#define Val_GUnixFDMessagePrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GUnixFDMessagePrivate */
-
-#ifndef Val_GUnixInputStreamPrivate
-#define GUnixInputStreamPrivate_val(val) ((GUnixInputStreamPrivate*)ext_of_val(val))
-#define Val_GUnixInputStreamPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GUnixInputStreamPrivate */
-
-#ifndef Val_GUnixMountEntry
-#define GUnixMountEntry_val(val) ((GUnixMountEntry*)ext_of_val(val))
-#define Val_GUnixMountEntry(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GUnixMountEntry */
-
-#ifndef Val_GUnixMountPoint
-#define GUnixMountPoint_val(val) ((GUnixMountPoint*)ext_of_val(val))
-#define Val_GUnixMountPoint(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GUnixMountPoint */
-
-#ifndef Val_GUnixOutputStreamPrivate
-#define GUnixOutputStreamPrivate_val(val) ((GUnixOutputStreamPrivate*)ext_of_val(val))
-#define Val_GUnixOutputStreamPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GUnixOutputStreamPrivate */
-
-#ifndef Val_GUnixSocketAddressPrivate
-#define GUnixSocketAddressPrivate_val(val) ((GUnixSocketAddressPrivate*)ext_of_val(val))
-#define Val_GUnixSocketAddressPrivate(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GUnixSocketAddressPrivate */
+/* Forward declarations for GUnixMountPoint converters (non-opaque record with  *)
+              fields) */
+GUnixMountPoint *GUnixMountPoint_val(value val);
+value Val_GUnixMountPoint(GUnixMountPoint *ptr);
+value Val_GUnixMountPoint_option(GUnixMountPoint *ptr);
 
 /* Const-safe string extraction for setters */
 #define ML_DECL_CONST_STRING(name, expr) const gchar *name = (const gchar *)(expr)

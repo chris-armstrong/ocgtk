@@ -1,7 +1,8 @@
 (* C Stub Code Generation *)
 
-open StdLabels
 open Printf
+open Containers
+open StdLabels
 open Types
 
 (* Get C include header for a namespace. This uses
@@ -9,17 +10,16 @@ hardcoded values for now because the c:include is
 not properly parsed from the GIR file *)
 let include_header_for_namespace namespace_name =
   let ns_lower = String.lowercase_ascii namespace_name in
-  if ns_lower = "gtk" then "#include <gtk/gtk.h>"
-  else if ns_lower = "gdk" then "#include <gdk/gdk.h>"
-  else if ns_lower = "pango" then "#include <pango/pango.h>"
-  else if ns_lower = "gdkpixbuf" then "#include <gdk-pixbuf/gdk-pixbuf.h>"
-  else if ns_lower = "gsk" then "#include <gsk/gsk.h>"
-  else if ns_lower = "graphene" then "#include <graphene.h>"
-  else if ns_lower = "gio" then "#include <gio/gio.h>"
-  else if ns_lower = "gobject" then "#include <glib-object.h>"
-  else
-    let ns_lower = String.lowercase_ascii namespace_name in
-    sprintf "#include <%s/%s.h>" ns_lower ns_lower
+  match ns_lower with
+  | "gtk" -> "#include <gtk/gtk.h>"
+  | "gdk" -> "#include <gdk/gdk.h>"
+  | "pango" -> "#include <pango/pango.h>"
+  | "gdkpixbuf" -> "#include <gdk-pixbuf/gdk-pixbuf.h>"
+  | "gsk" -> "#include <gsk/gsk.h>"
+  | "graphene" -> "#include <graphene.h>"
+  | "gio" -> "#include <gio/gio.h>"
+  | "gobject" -> "#include <glib-object.h>"
+  | _ -> sprintf "#include <%s/%s.h>" ns_lower ns_lower
 
 (* Type analysis helpers for property type introspection *)
 type property_gvalue_info = {
@@ -35,7 +35,18 @@ type property_gvalue_info = {
 }
 
 let list_contains ~value list =
-  List.exists list ~f:(fun candidate -> candidate = value)
+  List.exists list ~f:(fun candidate -> String.equal candidate value)
+
+(* Fold with map and index - combines fold_left_map with index tracking *)
+let fold_mapi ~f ~init list =
+  let rec aux idx acc = function
+    | [] -> (acc, [])
+    | x :: xs ->
+        let acc', y = f idx acc x in
+        let final_acc, ys = aux (idx + 1) acc' xs in
+        (final_acc, y :: ys)
+  in
+  aux 0 init list
 
 let string_base_types = [ "gchar"; "char"; "utf8"; "gchararray" ]
 
@@ -95,14 +106,16 @@ let analyze_property_type ~ctx (gir_type : gir_type) =
   in
   let class_info = Type_mappings.find_class_mapping ctx.classes gir_type.name in
   let is_enum =
-    List.exists ctx.enums ~f:(fun e -> e.enum_name = gir_type.name)
+    List.exists ctx.enums ~f:(fun e -> String.equal e.enum_name gir_type.name)
   in
   let is_bitfield =
-    List.exists ctx.bitfields ~f:(fun b -> b.bitfield_name = gir_type.name)
+    List.exists ctx.bitfields ~f:(fun b ->
+        String.equal b.bitfield_name gir_type.name)
   in
   let pointer_like =
     has_pointer
-    || List.exists pointer_types ~f:(fun candidate -> candidate = base_lower)
+    || List.exists pointer_types ~f:(fun candidate ->
+        String.equal candidate base_lower)
   in
   let stack_allocated =
     is_enum || is_bitfield
@@ -141,7 +154,9 @@ let nullable_c_to_ml_expr ~ctx ~var ~(gir_type : gir_type)
         sprintf "Val_option_string(%s)" var_expr
     | { c_type = Some c_type; _ }
       when String.length c_type > 0
-           && String.sub c_type ~pos:(String.length c_type - 1) ~len:1 = "*" ->
+           && String.equal
+                (String.sub c_type ~pos:(String.length c_type - 1) ~len:1)
+                "*" ->
         sprintf "Val_option(%s, %s)" var_expr mapping.c_to_ml
     | _ -> sprintf "%s(%s)" mapping.c_to_ml var_expr
 
@@ -155,7 +170,9 @@ let nullable_ml_to_c_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping)
         sprintf "String_option_val(%s)" var
     | Some c_type
       when String.length c_type > 0
-           && String.sub c_type ~pos:(String.length c_type - 1) ~len:1 = "*" ->
+           && String.equal
+                (String.sub c_type ~pos:(String.length c_type - 1) ~len:1)
+                "*" ->
         sprintf "Option_val(%s, %s, NULL)" var mapping.ml_to_c
     | _ -> sprintf "%s(%s)" mapping.ml_to_c var
 
@@ -167,7 +184,7 @@ let emit_enum_proto buf ~namespace (enum : gir_enum) =
 
 let emit_bitfield_proto buf ~namespace (bitfield : gir_bitfield) =
   (* Special case: GdkPixbufFormatFlags is in GIR but marked skip in C headers *)
-  if bitfield.bitfield_c_type = "GdkPixbufFormatFlags" then begin
+  if String.equal bitfield.bitfield_c_type "GdkPixbufFormatFlags" then begin
     bprintf buf
       "/* GdkPixbufFormatFlags is in GIR but marked skip in C headers */\n";
     bprintf buf "#ifndef GDK_PIXBUF_FORMAT_WRITABLE\n";
@@ -195,7 +212,7 @@ let generate_gvalue_getter_assignment ~ml_name ~prop ~c_type_name ~prop_info =
   else if prop_info.is_bitfield then
     sprintf "    prop_value = (%s)g_value_get_flags(&prop_gvalue);\n"
       c_type_name
-  else if base_lower = "gboolean" then
+  else if String.equal base_lower "gboolean" then
     "    prop_value = g_value_get_boolean(&prop_gvalue);\n"
   else if list_contains ~value:base_lower int32_types then
     sprintf "    prop_value = (%s)g_value_get_int(&prop_gvalue);\n" c_type_name
@@ -252,7 +269,7 @@ let generate_gvalue_setter_assignment ~ml_name ~prop ~prop_info =
   if prop_info.is_enum then "    g_value_set_enum(&prop_gvalue, c_value);\n"
   else if prop_info.is_bitfield then
     "    g_value_set_flags(&prop_gvalue, c_value);\n"
-  else if base_lower = "gboolean" then
+  else if String.equal base_lower "gboolean" then
     "    g_value_set_boolean(&prop_gvalue, c_value);\n"
   else if list_contains ~value:base_lower int32_types then
     "    g_value_set_int(&prop_gvalue, c_value);\n"
@@ -300,9 +317,11 @@ let has_copy_method (record : gir_record) =
       let ends_with suffix str =
         let len_s = String.length suffix and len_str = String.length str in
         len_str >= len_s
-        && String.sub str ~pos:(len_str - len_s) ~len:len_s = suffix
+        && String.equal
+             (String.sub str ~pos:(len_str - len_s) ~len:len_s)
+             suffix
       in
-      lower_name = "copy" || ends_with "_copy" lower_cid)
+      String.equal lower_name "copy" || ends_with "_copy" lower_cid)
 
 let is_value_like_record (record : gir_record) =
   (not record.opaque) && (not record.disguised) && has_copy_method record
@@ -380,7 +399,7 @@ let generate_forward_decls_header ~ctx ~classes ~interfaces ~gtk_enums
           let copy_func =
             List.find_opt record.methods ~f:(fun (meth : gir_method) ->
                 let lower_name = String.lowercase_ascii meth.method_name in
-                lower_name = "copy")
+                String.equal lower_name "copy")
           in
           match copy_func with
           | Some _ ->
@@ -402,25 +421,25 @@ let generate_forward_decls_header ~ctx ~classes ~interfaces ~gtk_enums
 
   List.iter
     ~f:(fun (record : gir_record) ->
-      if record.opaque || record.disguised then begin
-        bprintf buf "#ifndef Val_%s\n" record.c_type;
-        bprintf buf "#define %s_val(val) ((%s*)ext_of_val(val))\n" record.c_type
-          record.c_type;
-        bprintf buf "#define Val_%s(obj) ((value)(val_of_ext(obj)))\n"
-          record.c_type;
-        bprintf buf "#endif /* Val_%s */\n\n" record.c_type
-      end
-      else begin
-        (* Forward declarations for functions *)
-        bprintf buf
-          "/* Forward declarations for %s converters (non-opaque record with  *)\n\
-          \              fields) */\n"
-          record.c_type;
-        bprintf buf "%s *%s_val(value val);\n" record.c_type record.c_type;
-        bprintf buf "value Val_%s(%s *ptr);\n" record.c_type record.c_type;
-        bprintf buf "value Val_%s_option(%s *ptr);\n\n" record.c_type
-          record.c_type
-      end)
+      (* if record.opaque || record.disguised then begin *)
+      (*   bprintf buf "#ifndef Val_%s\n" record.c_type; *)
+      (*   bprintf buf "#define %s_val(val) ((%s*)ext_of_val(val))\n" record.c_type *)
+      (*     record.c_type; *)
+      (*   bprintf buf "#define Val_%s(obj) ((value)(val_of_ext(obj)))\n" *)
+      (*     record.c_type; *)
+      (*   bprintf buf "#endif /* Val_%s */\n\n" record.c_type *)
+      (* end *)
+      (* else begin *)
+      (* Forward declarations for functions *)
+      bprintf buf
+        "/* Forward declarations for %s converters (non-opaque record with  *)\n\
+        \              fields) */\n"
+        record.c_type;
+      bprintf buf "%s *%s_val(value val);\n" record.c_type record.c_type;
+      bprintf buf "value Val_%s(%s *ptr);\n" record.c_type record.c_type;
+      bprintf buf "value Val_%s_option(%s *ptr);\n\n" record.c_type
+        record.c_type
+      (* end *))
     non_value_like_records;
   Buffer.add_string buf "/* Const-safe string extraction for setters */\n";
   Buffer.add_string buf
@@ -482,7 +501,8 @@ let generate_c_file_header ~ctx ?(class_name = "") ?(external_enums = [])
   let _ = (external_enums, external_bitfields) in
   let buf = Buffer.create 1024 in
   Buffer.add_string buf "/* GENERATED CODE - DO NOT EDIT */\n";
-  if class_name <> "" then bprintf buf "/* C bindings for %s */\n" class_name
+  if not (String.equal class_name "") then
+    bprintf buf "/* C bindings for %s */\n" class_name
   else bprintf buf "/* Generated from %s.gir */\n" ctx.namespace.namespace_name;
   Buffer.add_string buf "\n";
   bprintf buf "%s\n" (include_header_for_namespace ctx.namespace.namespace_name);
@@ -495,8 +515,8 @@ let generate_c_file_header ~ctx ?(class_name = "") ?(external_enums = [])
   Buffer.add_string buf "#include <caml/custom.h>\n";
   Buffer.add_string buf "#include \"wrappers.h\"\n";
   (* Include converters.h for GTK library - contains GTK/GDK/Pango specific type conversions *)
-  if String.lowercase_ascii ctx.namespace.namespace_name = "gtk" then
-    Buffer.add_string buf "#include \"converters.h\"\n";
+  if String.equal (String.lowercase_ascii ctx.namespace.namespace_name) "gtk"
+  then Buffer.add_string buf "#include \"converters.h\"\n";
   Buffer.add_string buf "\n";
   List.iter
     ~f:(fun c_include ->
@@ -516,7 +536,9 @@ let generate_c_constructor ~ctx ~c_type (ctor : gir_constructor) _class_name =
   let c_name = ctor.c_identifier in
   let ml_name =
     let prefixed = Str.global_replace (Str.regexp "^gtk_") "ml_gtk_" c_name in
-    if String.length prefixed >= 3 && String.sub prefixed ~pos:0 ~len:3 = "ml_"
+    if
+      String.length prefixed >= 3
+      && String.equal (String.sub prefixed ~pos:0 ~len:3) "ml_"
     then prefixed
     else "ml_" ^ c_name
   in
@@ -662,11 +684,86 @@ let generate_c_constructor ~ctx ~c_type (ctor : gir_constructor) _class_name =
       error_decl c_type var_name c_name c_call_args ref_sink_stmt return_stmt
   end
 
+(* Helper: extract base C type by removing trailing pointer *)
+let base_c_type_of c_type =
+  if
+    String.length c_type > 0
+    && String.equal
+         (String.sub c_type ~pos:(String.length c_type - 1) ~len:1)
+         "*"
+  then String.sub c_type ~pos:0 ~len:(String.length c_type - 1)
+  else c_type
+
+(** Build return statement code based on return type and out parameters. Handles
+    both throwing and non-throwing methods. *)
+let build_return_statement ~throws ml_primary out_conversions =
+  match (ml_primary, out_conversions) with
+  | None, [] ->
+      if throws then
+        "if (error == NULL) CAMLreturn(Res_Ok(ValUnit)); else \
+         CAMLreturn(Res_Error(Val_GError(error)));"
+      else "CAMLreturn(Val_unit);"
+  | Some v, [] ->
+      if throws then
+        sprintf
+          "if (error == NULL) CAMLreturn(Res_Ok(%s)); else \
+           CAMLreturn(Res_Error(Val_GError(error)));"
+          v
+      else sprintf "CAMLreturn(%s);" v
+  | None, [ single ] ->
+      if throws then
+        "CAMLlocal1(ret);\n    ret = " ^ single
+        ^ ";\n\
+          \    if (error == NULL) CAMLreturn(Res_Ok(ret)); else \
+           CAMLreturn(Res_Error(Val_GError(error)));"
+      else sprintf "CAMLreturn(%s);" single
+  | Some v, outs ->
+      let all = v :: outs in
+      let stores =
+        List.mapi
+          ~f:(fun i expr -> sprintf "Store_field(ret, %d, %s);" i expr)
+          all
+      in
+      let alloc = sprintf "ret = caml_alloc(%d, 0);" (List.length all) in
+      if throws then
+        String.concat ~sep:"\n    "
+          ([ "CAMLlocal1(ret);"; alloc ]
+          @ stores
+          @ [
+              "if (error == NULL) CAMLreturn(Res_Ok(ret)); else \
+               CAMLreturn(Res_Error(Val_GError(error)));";
+            ])
+      else
+        String.concat ~sep:"\n    "
+          ([ "CAMLlocal1(ret);"; alloc ] @ stores @ [ "CAMLreturn(ret);" ])
+  | None, outs ->
+      let stores =
+        List.mapi
+          ~f:(fun i expr -> sprintf "Store_field(ret, %d, %s);" i expr)
+          outs
+      in
+      let alloc = sprintf "ret = caml_alloc(%d, 0);" (List.length outs) in
+      if throws then
+        String.concat ~sep:"\n    "
+          ([ "CAMLlocal1(ret);"; alloc ]
+          @ stores
+          @ [
+              "if (error == NULL) CAMLreturn(Res_Ok(ret)); else \
+               CAMLreturn(Res_Error(Val_GError(error)));";
+            ])
+      else
+        String.concat ~sep:"\n    "
+          ([ "CAMLlocal1(ret);"; alloc ] @ stores @ [ "CAMLreturn(ret);" ])
+
+type param_acc = { ocaml_idx : int; decls : Buffer.t; args : string list }
+
 let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
   let c_name = meth.c_identifier in
   let ml_name = Utils.ml_method_name ~class_name meth in
   let in_params =
-    List.filter ~f:(fun p -> p.direction <> Out) meth.parameters
+    List.filter
+      ~f:(fun p -> match p.direction with Out -> false | _ -> true)
+      meth.parameters
   in
   let param_count = 1 + List.length in_params in
   let params =
@@ -682,90 +779,72 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
 
   (* Build C call - handle nullable parameters *)
   let out_decls, c_args =
-    let ocaml_idx = ref 0 in
-    let out_decl_buf = Buffer.create 128 in
-    let args = ref [] in
-    List.iteri
-      ~f:(fun i p ->
-        let tm =
-          Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type
-        in
-        match p.direction with
-        | Out ->
-            let var_name = sprintf "out%d" (i + 1) in
-            let c_type =
-              match p.param_type.c_type with
-              | Some c_type -> c_type
-              | None ->
-                  tm
-                  |> Option.map (fun tm -> tm.c_type)
-                  |> Option.value ~default:"void"
-            in
-            let base_c_type =
-              if
-                String.length c_type > 0
-                && String.sub c_type ~pos:(String.length c_type - 1) ~len:1
-                   = "*"
-              then String.sub c_type ~pos:0 ~len:(String.length c_type - 1)
-              else c_type
-            in
-            bprintf out_decl_buf "%s %s;\n" base_c_type var_name;
-            args := !args @ [ sprintf "&%s" var_name ]
-        | InOut ->
-            (* InOut parameters: declare local variable, initialize from input, pass by reference *)
-            incr ocaml_idx;
-            let arg_name = sprintf "arg%d" !ocaml_idx in
-            let var_name = sprintf "inout%d" (i + 1) in
-            let c_type =
-              match p.param_type.c_type with
-              | Some c_type -> c_type
-              | None ->
-                  tm
-                  |> Option.map (fun tm -> tm.c_type)
-                  |> Option.value ~default:"void"
-            in
-            let base_c_type =
-              if
-                String.length c_type > 0
-                && String.sub c_type ~pos:(String.length c_type - 1) ~len:1
-                   = "*"
-              then String.sub c_type ~pos:0 ~len:(String.length c_type - 1)
-              else c_type
-            in
-            let init_expr =
-              match tm with
-              | Some mapping ->
-                  let param_type =
-                    {
-                      p.param_type with
-                      nullable = p.nullable || p.param_type.nullable;
-                    }
-                  in
-                  nullable_ml_to_c_expr ~var:arg_name ~gir_type:param_type
-                    ~mapping
-              | None -> arg_name
-            in
-            bprintf out_decl_buf "%s %s = %s;\n" base_c_type var_name init_expr;
-            args := !args @ [ sprintf "&%s" var_name ]
-        | In ->
-            incr ocaml_idx;
-            let arg_name = sprintf "arg%d" !ocaml_idx in
-            let arg_expr =
-              match tm with
-              | Some mapping ->
-                  let param_type =
-                    {
-                      p.param_type with
-                      nullable = p.nullable || p.param_type.nullable;
-                    }
-                  in
-                  nullable_ml_to_c_expr ~var:arg_name ~gir_type:param_type
-                    ~mapping
-              | None -> arg_name
-            in
-            args := !args @ [ arg_expr ])
-      meth.parameters;
-    (Buffer.contents out_decl_buf, self_cast :: !args)
+    let open Buffer in
+    let init_acc = { ocaml_idx = 0; decls = create 128; args = [] } in
+    let final_acc, _ =
+      fold_mapi meth.parameters ~init:init_acc
+        ~f:(fun param_index acc (p : gir_param) ->
+          let tm =
+            Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type
+          in
+          let c_type_str =
+            match p.param_type.c_type with
+            | Some c_type -> c_type
+            | None ->
+                tm
+                |> Option.map (fun tm -> tm.c_type)
+                |> Option.value ~default:"void"
+          in
+          let base_type = base_c_type_of c_type_str in
+          match p.direction with
+          | Out ->
+              let var_name = sprintf "out%d" (param_index + 1) in
+              bprintf acc.decls "%s %s;\n" base_type var_name;
+              ({ acc with args = acc.args @ [ sprintf "&%s" var_name ] }, ())
+          | InOut ->
+              let ocaml_idx = acc.ocaml_idx + 1 in
+              let arg_name = sprintf "arg%d" ocaml_idx in
+              let var_name = sprintf "inout%d" (param_index + 1) in
+              let init_expr =
+                match tm with
+                | Some mapping ->
+                    let param_type =
+                      {
+                        p.param_type with
+                        nullable = p.nullable || p.param_type.nullable;
+                      }
+                    in
+                    nullable_ml_to_c_expr ~var:arg_name ~gir_type:param_type
+                      ~mapping
+                | None -> arg_name
+              in
+              bprintf acc.decls "%s %s = %s;\n" base_type var_name init_expr;
+              ( {
+                  ocaml_idx;
+                  decls = acc.decls;
+                  args = acc.args @ [ sprintf "&%s" var_name ];
+                },
+                () )
+          | In ->
+              let ocaml_idx = acc.ocaml_idx + 1 in
+              let arg_name = sprintf "arg%d" ocaml_idx in
+              let arg_expr =
+                match tm with
+                | Some mapping ->
+                    let param_type =
+                      {
+                        p.param_type with
+                        nullable = p.nullable || p.param_type.nullable;
+                      }
+                    in
+                    nullable_ml_to_c_expr ~var:arg_name ~gir_type:param_type
+                      ~mapping
+                | None -> arg_name
+              in
+              ( { ocaml_idx; decls = acc.decls; args = acc.args @ [ arg_expr ] },
+                () ))
+    in
+    (Buffer.contents final_acc.decls, self_cast :: final_acc.args)
   in
 
   (* Build return conversion *)
@@ -782,102 +861,51 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
     let out_conversions =
       List.filter_map
         ~f:(fun (p, idx) ->
-          if p.direction = Out || p.direction = InOut then
-            let base_gir_type =
-              p.param_type.c_type
-              |> Option.map (fun c_type ->
-                  if
-                    String.sub c_type ~pos:(String.length c_type - 1) ~len:1
-                    = "*"
-                  then
-                    {
-                      p.param_type with
-                      c_type =
-                        Some
-                          (String.sub c_type ~pos:0
-                             ~len:(String.length c_type - 1));
-                    }
-                  else p.param_type)
-              |> Option.value ~default:p.param_type
-            in
-            match
-              Type_mappings.find_type_mapping_for_gir_type ~ctx base_gir_type
-            with
-            | Some mapping ->
-                let var_name =
-                  if p.direction = Out then sprintf "out%d" (idx + 1)
-                  else sprintf "inout%d" (idx + 1)
-                in
-                Some
-                  (nullable_c_to_ml_expr ~ctx ~var:var_name
-                     ~gir_type:base_gir_type ~mapping ~direction:p.direction ())
-            | None -> None
-          else None)
+          match p.direction with
+          | Out | InOut -> (
+              let base_gir_type =
+                p.param_type.c_type
+                |> Option.map (fun c_type ->
+                    if
+                      String.equal
+                        (String.sub c_type
+                           ~pos:(String.length c_type - 1)
+                           ~len:1)
+                        "*"
+                    then
+                      {
+                        p.param_type with
+                        c_type =
+                          Some
+                            (String.sub c_type ~pos:0
+                               ~len:(String.length c_type - 1));
+                      }
+                    else p.param_type)
+                |> Option.value ~default:p.param_type
+              in
+              match
+                Type_mappings.find_type_mapping_for_gir_type ~ctx base_gir_type
+              with
+              | Some mapping ->
+                  let var_name =
+                    match p.direction with
+                    | Out -> sprintf "out%d" (idx + 1)
+                    | InOut -> sprintf "inout%d" (idx + 1)
+                    | In -> "" (* This case won't occur due to outer match *)
+                  in
+                  Some
+                    (nullable_c_to_ml_expr ~ctx ~var:var_name
+                       ~gir_type:base_gir_type ~mapping ~direction:p.direction
+                       ())
+              | None -> None)
+          | In -> None)
         (List.mapi ~f:(fun i p -> (p, i)) meth.parameters)
     in
 
-    let combine_results ml_primary =
-      match (ml_primary, out_conversions) with
-      | None, [] ->
-          if meth.throws then
-            "if (error == NULL) CAMLreturn(Res_Ok(ValUnit)); else \
-             CAMLreturn(Res_Error(Val_GError(error)));"
-          else "CAMLreturn(Val_unit);"
-      | Some v, [] ->
-          if meth.throws then
-            sprintf
-              "if (error == NULL) CAMLreturn(Res_Ok(%s)); else \
-               CAMLreturn(Res_Error(Val_GError(error)));"
-              v
-          else sprintf "CAMLreturn(%s);" v
-      | None, [ single ] ->
-          if meth.throws then
-            "CAMLlocal1(ret);\n    ret = " ^ single
-            ^ ";\n\
-              \    if (error == NULL) CAMLreturn(Res_Ok(ret)); else \
-               CAMLreturn(Res_Error(Val_GError(error)));"
-          else sprintf "CAMLreturn(%s);" single
-      | Some v, outs ->
-          let all = v :: outs in
-          let stores =
-            List.mapi
-              ~f:(fun i expr -> sprintf "Store_field(ret, %d, %s);" i expr)
-              all
-          in
-          let alloc = sprintf "ret = caml_alloc(%d, 0);" (List.length all) in
-          if meth.throws then
-            String.concat ~sep:"\n    "
-              ([ "CAMLlocal1(ret);"; alloc ]
-              @ stores
-              @ [
-                  "if (error == NULL) CAMLreturn(Res_Ok(ret)); else \
-                   CAMLreturn(Res_Error(Val_GError(error)));";
-                ])
-          else
-            String.concat ~sep:"\n    "
-              ([ "CAMLlocal1(ret);"; alloc ] @ stores @ [ "CAMLreturn(ret);" ])
-      | None, outs ->
-          let stores =
-            List.mapi
-              ~f:(fun i expr -> sprintf "Store_field(ret, %d, %s);" i expr)
-              outs
-          in
-          let alloc = sprintf "ret = caml_alloc(%d, 0);" (List.length outs) in
-          if meth.throws then
-            String.concat ~sep:"\n    "
-              ([ "CAMLlocal1(ret);"; alloc ]
-              @ stores
-              @ [
-                  "if (error == NULL) CAMLreturn(Res_Ok(ret)); else \
-                   CAMLreturn(Res_Error(Val_GError(error)));";
-                ])
-          else
-            String.concat ~sep:"\n    "
-              ([ "CAMLlocal1(ret);"; alloc ] @ stores @ [ "CAMLreturn(ret);" ])
-    in
-
     match ret_type with
-    | Some "void" | None -> (sprintf "%s(%s);" c_name args, combine_results None)
+    | Some "void" | None ->
+        ( sprintf "%s(%s);" c_name args,
+          build_return_statement ~throws:meth.throws None out_conversions )
     | Some ret_type -> (
         match
           Type_mappings.find_type_mapping_for_gir_type ~ctx meth.return_type
@@ -898,7 +926,8 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
               | None -> ""
             in
             ( sprintf "%s result = %s(%s);%s" ret_type c_name args ref_sink_stmt,
-              combine_results (Some ml_result) )
+              build_return_statement ~throws:meth.throws (Some ml_result)
+                out_conversions )
         | None ->
             (* No type mapping found - fail with clear error *)
             failwith
@@ -1058,7 +1087,6 @@ let generate_c_property_setter ~ctx ~c_type (prop : gir_property) class_name =
   in
 
   let c_cast = sprintf "%s_val" c_type in
-  let prop_info = analyze_property_type ~ctx prop.prop_type in
   let setter_assignment =
     generate_gvalue_setter_assignment ~ml_name ~prop ~prop_info
   in
@@ -1093,10 +1121,11 @@ let generate_class_c_code ~ctx ~c_type class_name constructors methods
 
   (* Note: Record-specific conversions are generated in generate_record_c_code, not here *)
 
-  (* Constructors - skip those that throw GError or are variadic *)
+  (* Constructors - skip those that throw GError, are variadic, or have cross-namespace types *)
   List.iter
     ~f:(fun ctor ->
-      if (not ctor.throws) && not (Filtering.constructor_has_varargs ctor) then
+      if (not ctor.throws) && not (Filtering.constructor_has_varargs ctor)
+         && not (Filtering.constructor_has_cross_namespace_types ~ctx ctor) then
         Buffer.add_string buf
           (generate_c_constructor ~ctx ~c_type ctor class_name))
     constructors;
@@ -1139,9 +1168,10 @@ let generate_record_c_code ~ctx (record : gir_record) =
     let ends_with suffix str =
       let len_s = String.length suffix and len_str = String.length str in
       len_str >= len_s
-      && String.sub str ~pos:(len_str - len_s) ~len:len_s = suffix
+      && String.equal (String.sub str ~pos:(len_str - len_s) ~len:len_s) suffix
     in
-    lower_name = "copy" || lower_name = "free"
+    String.equal lower_name "copy"
+    || String.equal lower_name "free"
     || ends_with "_copy" lower_cid
     || ends_with "_free" lower_cid
   in
@@ -1149,28 +1179,21 @@ let generate_record_c_code ~ctx (record : gir_record) =
   (* Generate conversion functions for non-opaque records *)
   let is_value_record = is_value_like_record record in
 
-  if (not record.opaque) && (not record.disguised) && not is_value_record then begin
-    (* Generate public conversion functions for non-opaque records *)
+  if not is_value_record then begin
+    (* Generate public conversion functions opaque records *)
     bprintf buf
-      "/* Conversion functions for %s (non-opaque record with fields) */\n"
+      "/* Conversion functions for %s (opaque record with hidden fields) */\n"
       record.c_type;
 
     (* X_val function *)
     bprintf buf "%s *%s_val(value v) {\n" record.c_type record.c_type;
-    bprintf buf "  if (Tag_val(v) == Custom_tag) {\n";
-    bprintf buf "    return *(%s **)Data_custom_val(v);\n" record.c_type;
-    bprintf buf "  } else {\n";
-    bprintf buf "    return (%s*)ml_gir_record_ptr_val(v, \"%s\");\n"
-      record.c_type record.c_type;
-    bprintf buf "  }\n";
+    bprintf buf "  return *(%s **)Data_custom_val(v);\n" record.c_type;
     bprintf buf "}\n\n";
 
     (* Val_X function *)
     bprintf buf "value Val_%s(%s *ptr) {\n" record.c_type record.c_type;
     bprintf buf "  if (ptr == NULL) return Val_none;\n";
-    bprintf buf
-      "  return ml_gir_record_alloc((ptr), sizeof(%s), \"%s\", NULL);\n"
-      record.c_type record.c_type;
+    bprintf buf "  return ml_gir_record_val_ptr(ptr);\n";
     bprintf buf "}\n\n";
 
     (* Val_X_option function *)
@@ -1179,17 +1202,17 @@ let generate_record_c_code ~ctx (record : gir_record) =
     bprintf buf "  return Val_some(Val_%s(ptr));\n" record.c_type;
     bprintf buf "}\n\n"
   end
-  else if is_value_record then begin
+  else begin
     (* Generate copy function for value-like records *)
     bprintf buf
       "/* Copy function for %s (value-like record with copy method) */\n"
       record.c_type;
 
-    (* Find the GTK copy function from the methods *)
+    (* Find the copy function from the methods *)
     let copy_method =
       List.find_opt record.methods ~f:(fun (meth : gir_method) ->
           let lower_name = String.lowercase_ascii meth.method_name in
-          lower_name = "copy")
+          String.equal lower_name "copy")
     in
 
     match copy_method with
@@ -1200,10 +1223,8 @@ let generate_record_c_code ~ctx (record : gir_record) =
         bprintf buf "  if (ptr == NULL) return Val_none;\n";
         bprintf buf "  %s *copy = %s((%s*)ptr);\n" record.c_type
           copy_meth.c_identifier record.c_type;
-        bprintf buf
-          "  return ml_gir_record_alloc(copy, sizeof(%s), \"%s\", \
-           (void(*)(void*))g_free);\n"
-          record.c_type record.c_type;
+        bprintf buf "  return ml_gir_record_val_ptr(g_new0(%s, 1));\n"
+          record.c_type;
         bprintf buf "}\n\n"
     | None ->
         (* Fallback: generate a simple memcpy-based copy *)
@@ -1213,63 +1234,24 @@ let generate_record_c_code ~ctx (record : gir_record) =
         bprintf buf "  %s *copy = g_malloc(sizeof(%s));\n" record.c_type
           record.c_type;
         bprintf buf "  memcpy(copy, ptr, sizeof(%s));\n" record.c_type;
-        bprintf buf
-          "  return ml_gir_record_alloc(copy, sizeof(%s), \"%s\", \
-           (void(*)(void*))g_free);\n"
-          record.c_type record.c_type;
+        bprintf buf "  return ml_gir_record_val_ptr(copy));\n";
         bprintf buf "}\n\n"
-  end
-  else if (not record.opaque) && not is_value_record then begin
-    (* Original code for non-opaque records without fields *)
-    bprintf buf "/* Custom ownership helpers for %s */\n" record.c_type;
-    bprintf buf "static inline %s *%s_ptr_val(value v) {\n" record.c_type
-      record.c_type;
-    bprintf buf
-      "  if (Tag_val(v) == Custom_tag) return *(%s **)Data_custom_val(v);\n"
-      record.c_type;
-    bprintf buf "  else return (%s*)ext_of_val(v);\n" record.c_type;
-    bprintf buf "}\n";
-    bprintf buf "static void finalize_%s(value v) {\n" record.c_type;
-    bprintf buf "  %s *ptr = (%s*)%s_ptr_val(v);\n" record.c_type record.c_type
-      record.c_type;
-    bprintf buf "  if (ptr != NULL) g_free(ptr);\n";
-    bprintf buf "}\n";
-    bprintf buf "static struct custom_operations %s_custom_ops = {\n"
-      record.c_type;
-    bprintf buf "  \"%s_custom\",\n" record.c_type;
-    bprintf buf "  finalize_%s,\n" record.c_type;
-    bprintf buf "  custom_compare_default,\n";
-    bprintf buf "  custom_hash_default,\n";
-    bprintf buf "  custom_serialize_default,\n";
-    bprintf buf "  custom_deserialize_default,\n";
-    bprintf buf "  custom_compare_ext_default\n";
-    bprintf buf "};\n";
-    bprintf buf "static value Val_owned_%s(%s *ptr) {\n" record.c_type
-      record.c_type;
-    bprintf buf "  CAMLparam0();\n";
-    bprintf buf "  CAMLlocal1(v);\n";
-    bprintf buf "  v = caml_alloc_custom(&%s_custom_ops, sizeof(%s*), 0, 1);\n"
-      record.c_type record.c_type;
-    bprintf buf "  *(%s**)Data_custom_val(v) = ptr;\n" record.c_type;
-    bprintf buf "  CAMLreturn(v);\n";
-    bprintf buf "}\n";
-    bprintf buf "#undef %s_val\n" record.c_type;
-    bprintf buf "#define %s_val(v) (%s_ptr_val(v))\n\n" record.c_type
-      record.c_type
   end;
 
   List.iter
     ~f:(fun ctor ->
-      if (not ctor.throws) && not (Filtering.constructor_has_varargs ctor) then
+      if (not ctor.throws) && not (Filtering.constructor_has_varargs ctor)
+         && not (Filtering.constructor_has_cross_namespace_types ~ctx ctor) then
         Buffer.add_string buf
           (generate_c_constructor ~ctx ~c_type:record.c_type ctor
              record.record_name))
     record.constructors;
 
+  let namespace_snake = Utils.to_snake_case ctx.namespace.namespace_name in
+
   (* Synthetic allocator for non-opaque records without constructors *)
-  if (not record.opaque) && (not is_value_record) && record.constructors = []
-  then begin
-    let ml_name = sprintf "ml_gtk_%s_new" class_snake in
+  if is_value_record && List.length record.constructors = 0 then begin
+    let ml_name = sprintf "ml_%s_%s_new" namespace_snake class_snake in
     bprintf buf "\n/* Synthetic allocator for non-opaque record %s */\n"
       record.record_name;
     bprintf buf "CAMLexport CAMLprim value %s(value unit)\n{\n" ml_name;
@@ -1278,7 +1260,7 @@ let generate_record_c_code ~ctx (record : gir_record) =
     bprintf buf
       "    if (obj == NULL) caml_failwith(\"%s allocation failed\");\n"
       record.c_type;
-    bprintf buf "    CAMLreturn(Val_owned_%s(obj));\n" record.c_type;
+    bprintf buf "    CAMLreturn(Val_%s(obj));\n" record.c_type;
     bprintf buf "}\n"
   end;
 

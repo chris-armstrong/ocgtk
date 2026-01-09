@@ -21,3 +21,18 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Conversion functions for GUnixMountEntry (opaque record with hidden fields) */
+GUnixMountEntry *GUnixMountEntry_val(value v) {
+  return *(GUnixMountEntry **)Data_custom_val(v);
+}
+
+value Val_GUnixMountEntry(GUnixMountEntry *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GUnixMountEntry_option(GUnixMountEntry *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GUnixMountEntry(ptr));
+}
+

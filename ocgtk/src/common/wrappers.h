@@ -36,12 +36,15 @@ CAMLexport value copy_memblock_indirected(void *src, asize_t size);
 /* GIR record helpers                                                   */
 /* ==================================================================== */
 
-/* Allocate a heap copy of a C record and wrap it in a custom block
+/* Store a GObject allocated pointed in a custom block
  * that frees the copy with g_free when collected.
+ *
+ * This should only be used when you are assuming ownership of the pointer
+ * for OCaml.
  */
-CAMLexport value ml_gir_record_alloc(const void *src, size_t size, const char *type_name, void *(*copy_fn)(const void *));
+CAMLexport value ml_gir_record_val_ptr(const void *src);
 
-/* Extract a C pointer from a custom block created by ml_gir_record_alloc,
+/* Extract a C pointer from a custom block 
  * with a fallback to ext_of_val for older representations.
  */
 CAMLexport void *ml_gir_record_ptr_val(value v, const char *type_name);

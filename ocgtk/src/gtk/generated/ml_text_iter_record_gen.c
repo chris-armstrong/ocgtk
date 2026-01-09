@@ -20,9 +20,18 @@
 value copy_GtkTextIter(const GtkTextIter *ptr) {
   if (ptr == NULL) return Val_none;
   GtkTextIter *copy = gtk_text_iter_copy((GtkTextIter*)ptr);
-  return ml_gir_record_alloc(copy, sizeof(GtkTextIter), "GtkTextIter", (void(*)(void*))g_free);
+  return ml_gir_record_val_ptr(g_new0(GtkTextIter, 1));
 }
 
+
+/* Synthetic allocator for non-opaque record TextIter */
+CAMLexport CAMLprim value ml_gtk_text_iter_new(value unit)
+{
+    CAMLparam1(unit);
+    GtkTextIter *obj = g_new0(GtkTextIter, 1);
+    if (obj == NULL) caml_failwith("GtkTextIter allocation failed");
+    CAMLreturn(Val_GtkTextIter(obj));
+}
 
 CAMLexport CAMLprim value ml_gtk_text_iter_toggles_tag(value self, value arg1)
 {

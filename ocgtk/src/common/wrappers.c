@@ -117,25 +117,15 @@ static struct custom_operations gir_record_custom_ops = {
     custom_compare_ext_default
 };
 
-CAMLexport value ml_gir_record_alloc(const void *src, size_t size, const char *type_name, void *(*copy_fn)(const void *)) {
+CAMLexport value ml_gir_record_val_ptr(const void *src) {
     CAMLparam0();
     CAMLlocal1(v);
 
-    (void)type_name;
     if (src == NULL) caml_failwith("ml_gir_record_alloc: NULL source");
     
-    void *copy = NULL;
-    if (copy_fn != NULL) {
-        copy = copy_fn(src);
-    } else {
-        copy = g_memdup2(src, size);
-    }
-    if (copy == NULL) caml_failwith("ml_gir_record_alloc: allocation failed");
-    
     v = caml_alloc_custom(&gir_record_custom_ops, sizeof(void*), 0, 1);
-    *((void**)Data_custom_val(v)) = copy;
+    *((const void**)Data_custom_val(v)) = src;
     
-    printf("[a]  %s %p\n", type_name, copy);
     CAMLreturn(v);
 }
 
