@@ -187,7 +187,37 @@ let find_record_mapping records lookup_str =
 
 let or_else f opt = match opt with Some _ -> opt | None -> f ()
 
-let find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
+let rec find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
+  (* Handle arrays first *)
+  match gir_type.array with
+  | Some array_info -> (
+      (* Recursively resolve the element type *)
+      match find_type_mapping_for_gir_type ~ctx array_info.element_type with
+      | Some element_mapping ->
+          (* Create array type mapping *)
+          let ocaml_type = element_mapping.ocaml_type ^ " array" in
+          let c_type =
+            match gir_type.c_type with
+            | Some ct -> ct
+            | None -> element_mapping.c_type ^ "*"
+          in
+          Some {
+            ocaml_type;
+            c_type;
+            c_to_ml = "array_c_to_ml";  (* Special marker for array conversion *)
+            ml_to_c = "array_ml_to_c";  (* Special marker for array conversion *)
+            needs_copy = true;
+            layer2_class = None;
+          }
+      | None ->
+          (* Element type not supported - skip array *)
+          None
+    )
+  | None ->
+      (* Not an array - proceed with normal type lookup *)
+      normal_type_lookup ~ctx gir_type
+
+and normal_type_lookup ~ctx (gir_type : Types.gir_type) =
   let try_lookup lookup_str =
     let find_class_mapping () =
       match find_class_mapping ctx.classes lookup_str with

@@ -34,151 +34,170 @@ let ns namespace =
   | "gtk" -> Some "http://www.gtk.org/introspection/c/1.0"
   | _ -> None
 
+(* Common helper: extract local name from potentially namespaced tag *)
+let local_name tag =
+  match String.index_opt tag ':' with
+  | Some idx ->
+      String.sub ~pos:(idx + 1) ~len:(String.length tag - idx - 1) tag
+  | None -> tag
+
+(* Common helper: skip to end of current element *)
+let rec skip_element input depth =
+  if depth = 0 then ()
+  else
+    match Xmlm.input input with
+    | `El_start _ -> skip_element input (depth + 1)
+    | `El_end -> skip_element input (depth - 1)
+    | `Data _ -> skip_element input depth
+    | `Dtd _ -> skip_element input depth
+
+(* Common helper: extract text data from element *)
+let rec element_data input ?(str = None) () =
+  match Xmlm.input input with
+  | `Data s -> element_data input ~str:(Some (Option.value str ~default:"" ^ s)) ()
+  | `El_end -> str
+  | `El_start _ | `Dtd _ -> failwith "unwanted element inside data element"
+
+(* Shared: Parse enumeration element *)
+let parse_enumeration input ?parse_functions attrs =
+  match (get_attr "name" attrs, get_attr "c:type" attrs) with
+  | Some name, Some c_type ->
+      if Exclude_list.is_platform_specific_type name then begin
+        skip_element input 1;
+        None
+      end
+      else begin
+        let members = ref [] in
+        let functions = ref [] in
+
+        let rec parse_enum_contents () =
+          match Xmlm.input input with
+          | `El_start ((_, tag), member_attrs) when local_name tag = "member"
+            -> (
+              match
+                ( get_attr "name" member_attrs,
+                  get_attr "value" member_attrs,
+                  get_attr "c:identifier" member_attrs )
+              with
+              | Some member_name, Some value_str, Some c_id ->
+                  let value = try int_of_string value_str with _ -> 0 in
+                  members :=
+                    {
+                      member_name;
+                      member_value = value;
+                      c_identifier = c_id;
+                      member_doc = None;
+                    }
+                    :: !members;
+                  skip_element input 1;
+                  parse_enum_contents ()
+              | _ ->
+                  skip_element input 1;
+                  parse_enum_contents ())
+          | `El_start ((_, raw_tag), attrs)
+            when local_name raw_tag = "function" -> (
+              match parse_functions with
+              | Some parse_fn ->
+                  let function_ = parse_fn input attrs in
+                  functions := function_ :: !functions;
+                  parse_enum_contents ()
+              | None ->
+                  skip_element input 1;
+                  parse_enum_contents ())
+          | `El_start _ ->
+              skip_element input 1;
+              parse_enum_contents ()
+          | `El_end -> ()
+          | `Data _ -> parse_enum_contents ()
+          | `Dtd _ -> parse_enum_contents ()
+        in
+
+        parse_enum_contents ();
+        Some
+          {
+            enum_name = name;
+            enum_c_type = c_type;
+            members = List.rev !members;
+            enum_doc = None;
+            functions = !functions;
+          }
+      end
+  | _ ->
+      skip_element input 1;
+      None
+
+(* Shared: Merge concrete and virtual methods, removing duplicates *)
+let merge_methods concrete virtuals =
+  let is_dup m =
+    List.exists
+      ~f:(fun (c : gir_method) ->
+        c.method_name = m.method_name || c.c_identifier = m.c_identifier)
+      concrete
+  in
+  concrete @ List.filter ~f:(fun m -> not (is_dup m)) virtuals
+
+(* Shared: Parse bitfield element *)
+let parse_bitfield input attrs =
+  match (get_attr "name" attrs, get_attr "c:type" attrs) with
+  | Some name, Some c_type ->
+      if Exclude_list.is_platform_specific_type name then begin
+        skip_element input 1;
+        None
+      end
+      else begin
+        let flags = ref [] in
+
+        let rec parse_bitfield_contents () =
+          match Xmlm.input input with
+          | `El_start ((_, "member"), member_attrs) -> (
+              match
+                ( get_attr "name" member_attrs,
+                  get_attr "value" member_attrs,
+                  get_attr "c:identifier" member_attrs )
+              with
+              | Some flag_name, Some value_str, Some c_id ->
+                  let value = try int_of_string value_str with _ -> 0 in
+                  flags :=
+                    {
+                      flag_name;
+                      flag_value = value;
+                      flag_c_identifier = c_id;
+                      flag_doc = None;
+                    }
+                    :: !flags;
+                  skip_element input 1;
+                  parse_bitfield_contents ()
+              | _ ->
+                  skip_element input 1;
+                  parse_bitfield_contents ())
+          | `El_start _ ->
+              skip_element input 1;
+              parse_bitfield_contents ()
+          | `El_end -> ()
+          | `Data _ -> parse_bitfield_contents ()
+          | `Dtd _ -> parse_bitfield_contents ()
+        in
+
+        parse_bitfield_contents ();
+        Some
+          {
+            bitfield_name = name;
+            bitfield_c_type = c_type;
+            flags = List.rev !flags;
+            bitfield_doc = None;
+          }
+      end
+  | _ ->
+      skip_element input 1;
+      None
+
 (* Parse only enums and bitfields from a GIR file (for external namespaces) *)
 let parse_gir_enums_only filename =
   let ic = open_in filename in
   let input = Xmlm.make_input ~ns ~strip:true (`Channel ic) in
 
-  let local_name tag =
-    match String.index_opt tag ':' with
-    | Some idx ->
-        String.sub ~pos:(idx + 1) ~len:(String.length tag - idx - 1) tag
-    | None -> tag
-  in
-
   let enums = ref [] in
   let bitfields = ref [] in
-
-  (* Skip to end of current element *)
-  let rec skip_element depth =
-    if depth = 0 then ()
-    else
-      match Xmlm.input input with
-      | `El_start _ -> skip_element (depth + 1)
-      | `El_end -> skip_element (depth - 1)
-      | `Data _ -> skip_element depth
-      | `Dtd _ -> skip_element depth
-  in
-
-  (* Parse enumeration element *)
-  let parse_enumeration attrs =
-    match (get_attr "name" attrs, get_attr "c:type" attrs) with
-    | Some name, Some c_type ->
-        if Exclude_list.is_platform_specific_type name then begin
-          skip_element 1;
-          None
-        end
-        else begin
-          let members = ref [] in
-          let functions = ref [] in
-
-          let rec parse_enum_contents () =
-            match Xmlm.input input with
-            | `El_start ((_, tag), member_attrs) when local_name tag = "member"
-              -> (
-                match
-                  ( get_attr "name" member_attrs,
-                    get_attr "value" member_attrs,
-                    get_attr "c:identifier" member_attrs )
-                with
-                | Some member_name, Some value_str, Some c_id ->
-                    let value = try int_of_string value_str with _ -> 0 in
-                    members :=
-                      {
-                        member_name;
-                        member_value = value;
-                        c_identifier = c_id;
-                        member_doc = None;
-                      }
-                      :: !members;
-                    skip_element 1;
-                    parse_enum_contents ()
-                | _ ->
-                    skip_element 1;
-                    parse_enum_contents ())
-            (* | `El_start ((_, raw_tag), attrs) *)
-            (*   when local_name raw_tag = "function" -> *)
-            (*     let function_ = parse_function attrs in *)
-            (*     functions := function_ :: !functions; *)
-            (*     parse_enum_contents () *)
-            | `El_start _ ->
-                skip_element 1;
-                parse_enum_contents ()
-            | `El_end -> ()
-            | `Data _ -> parse_enum_contents ()
-            | `Dtd _ -> parse_enum_contents ()
-          in
-
-          parse_enum_contents ();
-          Some
-            {
-              enum_name = name;
-              enum_c_type = c_type;
-              members = List.rev !members;
-              enum_doc = None;
-              functions = !functions;
-            }
-        end
-    | _ ->
-        skip_element 1;
-        None
-  in
-
-  (* Parse bitfield element *)
-  let parse_bitfield attrs =
-    match (get_attr "name" attrs, get_attr "c:type" attrs) with
-    | Some name, Some c_type ->
-        if Exclude_list.is_platform_specific_type name then begin
-          skip_element 1;
-          None
-        end
-        else begin
-          let flags = ref [] in
-
-          let rec parse_bitfield_contents () =
-            match Xmlm.input input with
-            | `El_start ((_, "member"), member_attrs) -> (
-                match
-                  ( get_attr "name" member_attrs,
-                    get_attr "value" member_attrs,
-                    get_attr "c:identifier" member_attrs )
-                with
-                | Some flag_name, Some value_str, Some c_id ->
-                    let value = try int_of_string value_str with _ -> 0 in
-                    flags :=
-                      {
-                        flag_name;
-                        flag_value = value;
-                        flag_c_identifier = c_id;
-                        flag_doc = None;
-                      }
-                      :: !flags;
-                    skip_element 1;
-                    parse_bitfield_contents ()
-                | _ ->
-                    skip_element 1;
-                    parse_bitfield_contents ())
-            | `El_start _ ->
-                skip_element 1;
-                parse_bitfield_contents ()
-            | `El_end -> ()
-            | `Data _ -> parse_bitfield_contents ()
-            | `Dtd _ -> parse_bitfield_contents ()
-          in
-
-          parse_bitfield_contents ();
-          Some
-            {
-              bitfield_name = name;
-              bitfield_c_type = c_type;
-              flags = List.rev !flags;
-              bitfield_doc = None;
-            }
-        end
-    | _ ->
-        skip_element 1;
-        None
-  in
 
   (* Main parsing loop - only look for enums and bitfields *)
   let rec parse_document () =
@@ -186,19 +205,19 @@ let parse_gir_enums_only filename =
     else
       match Xmlm.input input with
       | `El_start ((_, tag), attrs) when local_name tag = "enumeration" ->
-          (match parse_enumeration attrs with
+          (match parse_enumeration input attrs with
           | Some enum -> enums := enum :: !enums
           | None -> ());
           parse_document ()
       | `El_start ((_, tag), attrs) when local_name tag = "bitfield" ->
-          (match parse_bitfield attrs with
+          (match parse_bitfield input attrs with
           | Some bitfield -> bitfields := bitfield :: !bitfields
           | None -> ());
           parse_document ()
       | `El_start ((_, tag), _) when tag = "repository" || tag = "namespace" ->
           parse_document ()
       | `El_start _ ->
-          skip_element 1;
+          skip_element input 1;
           parse_document ()
       | `El_end -> parse_document ()
       | `Data _ -> parse_document ()
@@ -214,22 +233,11 @@ let parse_gir_file filename filter_classes =
   let ic = open_in filename in
   let input = Xmlm.make_input ~strip:true (`Channel ic) in
 
-  let local_name tag =
-    match String.index_opt tag ':' with
-    | Some idx ->
-        String.sub ~pos:(idx + 1) ~len:(String.length tag - idx - 1) tag
-    | None -> tag
-  in
-
   let controllers = ref [] in
   let interfaces : gir_interface list ref = ref [] in
   let enums = ref [] in
   let bitfields = ref [] in
   let records : gir_record list ref = ref [] in
-  let signal_table : (string, gir_signal list) Hashtbl.t = Hashtbl.create 256 in
-  let iface_signal_table : (string, gir_signal list) Hashtbl.t =
-    Hashtbl.create 128
-  in
   let namespace : gir_namespace option ref = ref None in
   let repository =
     ref
@@ -253,24 +261,6 @@ let parse_gir_file filename filter_classes =
         Utils.normalize_class_name name |> String.lowercase_ascii
       in
       StringSet.mem normalized normalized_filters
-  in
-
-  (* Skip to end of current element *)
-  let rec skip_element depth =
-    if depth = 0 then ()
-    else
-      match Xmlm.input input with
-      | `El_start _ -> skip_element (depth + 1)
-      | `El_end -> skip_element (depth - 1)
-      | `Data _ -> skip_element depth
-      | `Dtd _ -> skip_element depth
-  in
-
-  let rec element_data ?(str = None) () =
-    match Xmlm.input input with
-    | `Data s -> element_data ~str:(Some (Option.value str ~default:"" ^ s)) ()
-    | `El_end -> str
-    | `El_start _ | `Dtd _ -> failwith "unwanted element inside data element"
   in
 
   (* Parse a class element *)
@@ -315,7 +305,7 @@ let parse_gir_file filename filter_classes =
                         :: !constructors;
                       parse_class_contents ()
                   | _ ->
-                      skip_element 1;
+                      skip_element input 1;
                       parse_class_contents ())
               | "signal" -> (
                   match parse_signal tag_attrs with
@@ -323,7 +313,7 @@ let parse_gir_file filename filter_classes =
                       signals := signal :: !signals;
                       parse_class_contents ()
                   | None ->
-                      skip_element 1;
+                      skip_element input 1;
                       parse_class_contents ())
               | "method" -> (
                   match
@@ -351,7 +341,7 @@ let parse_gir_file filename filter_classes =
                         :: !methods;
                       parse_class_contents ()
                   | _ ->
-                      skip_element 1;
+                      skip_element input 1;
                       parse_class_contents ())
               | "virtual-method" -> (
                   match
@@ -379,7 +369,7 @@ let parse_gir_file filename filter_classes =
                         :: !virtual_methods;
                       parse_class_contents ()
                   | _ ->
-                      skip_element 1;
+                      skip_element input 1;
                       parse_class_contents ())
               | "property" -> (
                   match get_attr "name" tag_attrs with
@@ -388,10 +378,10 @@ let parse_gir_file filename filter_classes =
                       properties := prop :: !properties;
                       parse_class_contents ()
                   | None ->
-                      skip_element 1;
+                      skip_element input 1;
                       parse_class_contents ())
               | _ ->
-                  skip_element 1;
+                  skip_element input 1;
                   parse_class_contents ())
           | `El_end -> () (* End of class *)
           | `Data _ -> parse_class_contents ()
@@ -400,15 +390,7 @@ let parse_gir_file filename filter_classes =
 
         parse_class_contents ();
         let methods =
-          let concrete = List.rev !methods in
-          let virtuals = List.rev !virtual_methods in
-          let is_dup m =
-            List.exists
-              ~f:(fun (c : gir_method) ->
-                c.method_name = m.method_name || c.c_identifier = m.c_identifier)
-              concrete
-          in
-          concrete @ List.filter ~f:(fun m -> not (is_dup m)) virtuals
+          merge_methods (List.rev !methods) (List.rev !virtual_methods)
         in
         Some
           {
@@ -423,7 +405,7 @@ let parse_gir_file filename filter_classes =
             class_doc = None;
           }
     | _ ->
-        skip_element 1;
+        skip_element input 1;
         None
   (* Parse property element *)
   and parse_property prop_name attrs =
@@ -470,7 +452,7 @@ let parse_gir_file filename filter_classes =
               transfer_ownership = Types.TransferNone;
               array = None;
             };
-          skip_element 1;
+          skip_element input 1;
           parse_prop_contents ()
       | `El_start ((_, "array"), array_attrs) ->
           let array_info = parse_array_type array_attrs Types.TransferNone property_nullable in
@@ -483,10 +465,10 @@ let parse_gir_file filename filter_classes =
           };
           parse_prop_contents ()
       | `El_start ((_, "doc"), _) ->
-          doc := element_data ();
+          doc := element_data input ();
           parse_prop_contents ()
       | `El_start _ ->
-          skip_element 1;
+          skip_element input 1;
           parse_prop_contents ()
       | `El_end -> ()
       | `Data _ -> parse_prop_contents ()
@@ -502,121 +484,6 @@ let parse_gir_file filename filter_classes =
       construct_only;
       prop_doc = None;
     }
-  (* Parse enumeration element *)
-  and parse_enumeration attrs =
-    match (get_attr "name" attrs, get_attr "c:type" attrs) with
-    | Some name, Some c_type ->
-        if Exclude_list.is_platform_specific_type name then begin
-          skip_element 1;
-          None
-        end
-        else begin
-          let members = ref [] in
-          let functions = ref [] in
-
-          let rec parse_enum_contents () =
-            match Xmlm.input input with
-            | `El_start ((_, "member"), member_attrs) -> (
-                match
-                  ( get_attr "name" member_attrs,
-                    get_attr "value" member_attrs,
-                    get_attr "c:identifier" member_attrs )
-                with
-                | Some member_name, Some value_str, Some c_id ->
-                    let value = try int_of_string value_str with _ -> 0 in
-                    members :=
-                      {
-                        member_name;
-                        member_value = value;
-                        c_identifier = c_id;
-                        member_doc = None;
-                      }
-                      :: !members;
-                    skip_element 1;
-                    parse_enum_contents ()
-                | _ ->
-                    skip_element 1;
-                    parse_enum_contents ())
-            | `El_start ((_, raw_tag), attrs)
-              when local_name raw_tag = "function" ->
-                let function_ = parse_function attrs in
-                functions := function_ :: !functions;
-                parse_enum_contents ()
-            | `El_start _ ->
-                skip_element 1;
-                parse_enum_contents ()
-            | `El_end -> ()
-            | `Data _ -> parse_enum_contents ()
-            | `Dtd _ -> parse_enum_contents ()
-          in
-
-          parse_enum_contents ();
-          Some
-            {
-              enum_name = name;
-              enum_c_type = c_type;
-              members = List.rev !members;
-              enum_doc = None;
-              functions = !functions;
-            }
-        end
-    | _ ->
-        skip_element 1;
-        None
-  (* Parse bitfield element *)
-  and parse_bitfield attrs =
-    match (get_attr "name" attrs, get_attr "c:type" attrs) with
-    | Some name, Some c_type ->
-        if Exclude_list.is_platform_specific_type name then begin
-          skip_element 1;
-          None
-        end
-        else begin
-          let flags = ref [] in
-
-          let rec parse_bitfield_contents () =
-            match Xmlm.input input with
-            | `El_start ((_, "member"), member_attrs) -> (
-                match
-                  ( get_attr "name" member_attrs,
-                    get_attr "value" member_attrs,
-                    get_attr "c:identifier" member_attrs )
-                with
-                | Some flag_name, Some value_str, Some c_id ->
-                    let value = try int_of_string value_str with _ -> 0 in
-                    flags :=
-                      {
-                        flag_name;
-                        flag_value = value;
-                        flag_c_identifier = c_id;
-                        flag_doc = None;
-                      }
-                      :: !flags;
-                    skip_element 1;
-                    parse_bitfield_contents ()
-                | _ ->
-                    skip_element 1;
-                    parse_bitfield_contents ())
-            | `El_start _ ->
-                skip_element 1;
-                parse_bitfield_contents ()
-            | `El_end -> ()
-            | `Data _ -> parse_bitfield_contents ()
-            | `Dtd _ -> parse_bitfield_contents ()
-          in
-
-          parse_bitfield_contents ();
-          Some
-            {
-              bitfield_name = name;
-              bitfield_c_type = c_type;
-              flags = List.rev !flags;
-              bitfield_doc = None;
-            }
-        end
-    | _ ->
-        skip_element 1;
-        None
   (* Parse method contents to extract return type and parameters *)
   and parse_method tag_attrs =
     let get_property = get_attr "glib:get-property" tag_attrs in
@@ -644,10 +511,10 @@ let parse_gir_file filename filter_classes =
               params := parse_parameters ();
               parse_method_contents ()
           | "doc" ->
-              doc := element_data ();
+              doc := element_data input ();
               parse_method_contents ()
           | _ ->
-              skip_element 1;
+              skip_element input 1;
               parse_method_contents ())
       | `El_end -> ()
       | `Data _ -> parse_method_contents ()
@@ -685,10 +552,10 @@ let parse_gir_file filename filter_classes =
                   params := parse_parameters ();
                   parse_signal_contents ()
               | "doc" ->
-                  doc := element_data ();
+                  doc := element_data input ();
                   parse_signal_contents ()
               | _ ->
-                  skip_element 1;
+                  skip_element input 1;
                   parse_signal_contents ())
           | `El_end -> ()
           | `Data _ -> parse_signal_contents ()
@@ -704,7 +571,7 @@ let parse_gir_file filename filter_classes =
             doc = !doc;
           }
     | None ->
-        skip_element 1;
+        skip_element input 1;
         None
   (* Parse array element *)
   and parse_array_type attrs transfer_ownership_attr nullable_attr =
@@ -748,10 +615,10 @@ let parse_gir_file filename filter_classes =
             transfer_ownership = transfer_ownership_attr;
             array = None;
           };
-          skip_element 1;
+          skip_element input 1;
           parse_array_contents ()
       | `El_start _ ->
-          skip_element 1;
+          skip_element input 1;
           parse_array_contents ()
       | `El_end -> ()
       | `Data _ | `Dtd _ -> parse_array_contents ()
@@ -805,7 +672,7 @@ let parse_gir_file filename filter_classes =
                array = None;
              }
               : gir_type);
-          skip_element 1;
+          skip_element input 1;
           parse_rv_contents ()
       | `El_start ((_, "array"), array_attrs) ->
           let array_info = parse_array_type array_attrs transfer_ownership_attr nullable_attr in
@@ -818,7 +685,7 @@ let parse_gir_file filename filter_classes =
           };
           parse_rv_contents ()
       | `El_start _ ->
-          skip_element 1;
+          skip_element input 1;
           parse_rv_contents ()
       | `El_end -> ()
       | `Data _ -> parse_rv_contents ()
@@ -854,16 +721,16 @@ let parse_gir_file filename filter_classes =
                 transfer_ownership = Types.TransferNone;
                 array = None;
               };
-          skip_element 1;
+          skip_element input 1;
           parse_function_contents ()
       | `El_start ((_, "parameters"), _) ->
           params := parse_parameters ();
           parse_function_contents ()
       | `El_start ((_, "doc"), _) ->
-          doc := element_data ();
+          doc := element_data input ();
           parse_function_contents ()
       | `El_start _ ->
-          skip_element 1;
+          skip_element input 1;
           parse_function_contents ()
       | `El_end -> ()
       | `Data _ -> parse_function_contents ()
@@ -924,7 +791,7 @@ let parse_gir_file filename filter_classes =
             match Xmlm.input input with
             | `El_start ((_, "varargs"), _attrs) ->
                 varargs := true;
-                skip_element 1;
+                skip_element input 1;
                 parse_param_contents ()
             | `El_start ((_, "type"), attrs) ->
                 let type_name =
@@ -942,7 +809,7 @@ let parse_gir_file filename filter_classes =
                     transfer_ownership;
                     array = None;
                   };
-                skip_element 1;
+                skip_element input 1;
                 parse_param_contents ()
             | `El_start ((_, "array"), array_attrs) ->
                 let nullable_param = get_attr "nullable" attrs |> Utils.parse_bool in
@@ -956,7 +823,7 @@ let parse_gir_file filename filter_classes =
                 };
                 parse_param_contents ()
             | `El_start _ ->
-                skip_element 1;
+                skip_element input 1;
                 parse_param_contents ()
             | `El_end -> (!type_, !varargs)
             | `Data _ | `Dtd _ -> parse_param_contents ()
@@ -966,10 +833,10 @@ let parse_gir_file filename filter_classes =
             { param_name; param_type; direction; nullable; varargs } :: !params;
           parse_params_contents ()
       | `El_start ((_, "instance-parameter"), _) ->
-          skip_element 1;
+          skip_element input 1;
           parse_params_contents ()
       | `El_start _ ->
-          skip_element 1;
+          skip_element input 1;
           parse_params_contents ()
       | `El_end -> ()
       | `Data _ -> parse_params_contents ()
@@ -992,7 +859,7 @@ let parse_gir_file filename filter_classes =
           | Some name -> repository_c_includes := name :: !repository_c_includes
           | _ -> ());
           ignore (Xmlm.input input);
-          skip_element 1;
+          skip_element input 1;
           parse_repository_contents ()
       | `El_start
           (("http://www.gtk.org/introspection/core/1.0", "include"), attrs) ->
@@ -1007,7 +874,7 @@ let parse_gir_file filename filter_classes =
             | _ -> ()
           in
           ignore (Xmlm.input input);
-          skip_element 1;
+          skip_element input 1;
           parse_repository_contents ()
       | `El_start
           (("http://www.gtk.org/introspection/core/1.0", "package"), attrs) ->
@@ -1019,7 +886,7 @@ let parse_gir_file filename filter_classes =
             | _ -> ()
           in
           ignore (Xmlm.input input);
-          skip_element 1;
+          skip_element input 1;
           parse_repository_contents ()
       | `El_start ((_, "namespace"), _) -> ()
       | _ ->
@@ -1094,7 +961,7 @@ let parse_gir_file filename filter_classes =
                           transfer_ownership = Types.TransferNone;
                           array = None;
                         };
-                    skip_element 1;
+                    skip_element input 1;
                     parse_field_contents ()
                 | `El_start ((_, "array"), array_attrs) ->
                     let array_info = parse_array_type array_attrs Types.TransferNone false in
@@ -1107,7 +974,7 @@ let parse_gir_file filename filter_classes =
                     };
                     parse_field_contents ()
                 | `El_start _ ->
-                    skip_element 1;
+                    skip_element input 1;
                     parse_field_contents ()
                 | `El_end -> ()
                 | `Data _ | `Dtd _ -> parse_field_contents ()
@@ -1148,7 +1015,7 @@ let parse_gir_file filename filter_classes =
                     :: !constructors;
                   parse_record_contents ()
               | _ ->
-                  skip_element 1;
+                  skip_element input 1;
                   parse_record_contents ())
           | `El_start ((_, raw_tag), tag_attrs)
             when local_name raw_tag = "method" -> (
@@ -1176,18 +1043,18 @@ let parse_gir_file filename filter_classes =
                     :: !methods;
                   parse_record_contents ()
               | _ ->
-                  skip_element 1;
+                  skip_element input 1;
                   parse_record_contents ())
           | `El_start ((_, raw_tag), _tag_attrs) when local_name raw_tag = "doc"
             ->
-              record_doc := element_data ();
+              record_doc := element_data input ();
               parse_record_contents ()
           | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "function"
             ->
               let function_ = parse_function attrs in
               functions := function_ :: !functions
           | `El_start _ ->
-              skip_element 1;
+              skip_element input 1;
               parse_record_contents ()
           | `El_end -> ()
           | `Data _ -> parse_record_contents ()
@@ -1212,7 +1079,7 @@ let parse_gir_file filename filter_classes =
             functions = !functions;
           }
     | _ ->
-        skip_element 1;
+        skip_element input 1;
         None
   and parse_interface attrs () =
     let name = get_attr "name" attrs |> Option.get in
@@ -1234,7 +1101,7 @@ let parse_gir_file filename filter_classes =
                   signals := signal :: !signals;
                   parse_class_contents ()
               | None ->
-                  skip_element 1;
+                  skip_element input 1;
                   parse_class_contents ())
           | "method" -> (
               match
@@ -1261,7 +1128,7 @@ let parse_gir_file filename filter_classes =
                     :: !methods;
                   parse_class_contents ()
               | _ ->
-                  skip_element 1;
+                  skip_element input 1;
                   parse_class_contents ())
           | "virtual-method" -> (
               match
@@ -1288,7 +1155,7 @@ let parse_gir_file filename filter_classes =
                     :: !virtual_methods;
                   parse_class_contents ()
               | _ ->
-                  skip_element 1;
+                  skip_element input 1;
                   parse_class_contents ())
           | "property" -> (
               match get_attr "name" tag_attrs with
@@ -1297,10 +1164,10 @@ let parse_gir_file filename filter_classes =
                   properties := prop :: !properties;
                   parse_class_contents ()
               | None ->
-                  skip_element 1;
+                  skip_element input 1;
                   parse_class_contents ())
           | _ ->
-              skip_element 1;
+              skip_element input 1;
               parse_class_contents ())
       | `El_end -> ()
       | `Data _ -> parse_class_contents ()
@@ -1309,15 +1176,7 @@ let parse_gir_file filename filter_classes =
 
     parse_class_contents ();
     let methods =
-      let concrete = List.rev !methods in
-      let virtuals = List.rev !virtual_methods in
-      let is_dup m =
-        List.exists
-          ~f:(fun (c : gir_method) ->
-            c.method_name = m.method_name || c.c_identifier = m.c_identifier)
-          concrete
-      in
-      concrete @ List.filter ~f:(fun m -> not (is_dup m)) virtuals
+      merge_methods (List.rev !methods) (List.rev !virtual_methods)
     in
     Some
       {
@@ -1329,90 +1188,6 @@ let parse_gir_file filename filter_classes =
         signals = List.rev !signals;
         interface_doc = None;
       }
-  in
-
-  (* Second pass: collect signals reliably across classes/interfaces *)
-  let collect_signals () =
-    let ic2 = open_in filename in
-    let input2 = Xmlm.make_input ~strip:true (`Channel ic2) in
-    let current = ref None in
-    let current_is_interface = ref false in
-    let depth = ref 0 in
-
-    let rec skip_element2 d =
-      if d = 0 then ()
-      else
-        match Xmlm.input input2 with
-        | `El_start _ -> skip_element2 (d + 1)
-        | `El_end -> skip_element2 (d - 1)
-        | `Data _ | `Dtd _ -> skip_element2 d
-    in
-
-    let record_signal attrs =
-      match (!current, get_attr "name" attrs) with
-      | Some cls_name, Some signal_name ->
-          (* Consume nested children to keep the stream in sync *)
-          skip_element2 1;
-          let signal =
-            {
-              signal_name;
-              return_type =
-                {
-                  name = "none";
-                  c_type = None;
-                  nullable = false;
-                  transfer_ownership = Types.TransferNone;
-                  array = None;
-                };
-              sig_parameters = [];
-              doc = None;
-            }
-          in
-          let tbl =
-            if !current_is_interface then iface_signal_table else signal_table
-          in
-          let existing =
-            Hashtbl.find_opt tbl cls_name |> Option.value ~default:[]
-          in
-          Hashtbl.replace tbl cls_name (signal :: existing)
-      | _ -> skip_element2 1
-    in
-
-    let rec loop () =
-      if Xmlm.eoi input2 then ()
-      else
-        match Xmlm.input input2 with
-        | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "class" ->
-            current := get_attr "name" attrs;
-            current_is_interface := false;
-            depth := 1;
-            loop ()
-        | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "interface"
-          ->
-            current := get_attr "name" attrs;
-            current_is_interface := true;
-            depth := 1;
-            loop ()
-        | `El_start ((_, raw_tag), attrs)
-          when !current <> None && local_name raw_tag = "signal" ->
-            incr depth;
-            record_signal attrs;
-            decr depth;
-            loop ()
-        | `El_start _ ->
-            if !current <> None then incr depth;
-            loop ()
-        | `El_end ->
-            if !current <> None then begin
-              decr depth;
-              if !depth = 0 then current := None
-            end;
-            loop ()
-        | `Data _ | `Dtd _ -> loop ()
-    in
-
-    loop ();
-    close_in ic2
   in
 
   (* Main parsing loop *)
@@ -1432,12 +1207,12 @@ let parse_gir_file filename filter_classes =
           parse_document ()
       | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "enumeration"
         ->
-          (match parse_enumeration attrs with
+          (match parse_enumeration input ~parse_functions:(fun _ -> parse_function) attrs with
           | Some enum -> enums := enum :: !enums
           | None -> ());
           parse_document ()
       | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "bitfield" ->
-          (match parse_bitfield attrs with
+          (match parse_bitfield input attrs with
           | Some bitfield -> bitfields := bitfield :: !bitfields
           | None -> ());
           parse_document ()
@@ -1481,49 +1256,12 @@ let parse_gir_file filename filter_classes =
 
   parse_document ();
   close_in ic;
-  collect_signals ();
-
-  let merge_class_signals cls =
-    let extras =
-      Hashtbl.find_opt signal_table cls.class_name
-      |> Option.value ~default:[] |> List.rev
-    in
-    let base = cls.signals in
-    let deduped_extras =
-      List.filter extras ~f:(fun (s : gir_signal) ->
-          not
-            (List.exists base ~f:(fun existing ->
-                 existing.signal_name = s.signal_name)))
-    in
-    let combined = base @ deduped_extras in
-    if combined == cls.signals then cls else { cls with signals = combined }
-  in
-
-  let merge_interface_signals iface =
-    let extras =
-      Hashtbl.find_opt iface_signal_table iface.interface_name
-      |> Option.value ~default:[] |> List.rev
-    in
-    let base = iface.signals in
-    let deduped_extras =
-      List.filter extras ~f:(fun (s : gir_signal) ->
-          not
-            (List.exists base ~f:(fun existing ->
-                 existing.signal_name = s.signal_name)))
-    in
-    let combined = base @ deduped_extras in
-    if combined == iface.signals then iface
-    else { iface with signals = combined }
-  in
-
-  let controllers = List.rev_map ~f:merge_class_signals !controllers in
-  let interfaces = List.rev_map ~f:merge_interface_signals !interfaces in
 
   ( !repository,
     (try Option.get !namespace
      with _ -> failwith "Unable to parse namespace correctly"),
-    controllers,
-    interfaces,
+    List.rev !controllers,
+    List.rev !interfaces,
     List.rev !enums,
     List.rev !bitfields,
     List.rev !records )

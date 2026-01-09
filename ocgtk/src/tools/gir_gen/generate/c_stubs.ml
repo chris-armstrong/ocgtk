@@ -141,6 +141,114 @@ let is_string_type ctype =
       true
   | _ -> false
 
+(* Generate inline code for converting OCaml array to C array *)
+let generate_array_ml_to_c ~ctx ~var ~(array_info : gir_array) ~element_mapping:_ ~element_c_type ~transfer_ownership =
+  (* Get element type mapping for conversion *)
+  match Type_mappings.find_type_mapping_for_gir_type ~ctx array_info.element_type with
+  | None ->
+      failwith (sprintf "Array element type '%s' not supported" array_info.element_type.name)
+  | Some element_tm ->
+      let length_var = var ^ "_length" in
+      let c_array_var = "c_" ^ var in
+      let is_pointer_array = String.contains element_c_type '*' in
+
+      (* Generate conversion code based on array type *)
+      let conversion_code =
+        if array_info.zero_terminated then
+          (* Zero-terminated array - use g_malloc for GTK compatibility *)
+          if is_pointer_array then
+            sprintf
+              "int %s = Wosize_val(%s);\n\
+              \    %s* %s = (%s*)g_malloc(sizeof(%s) * (%s + 1));\n\
+              \    for (int i = 0; i < %s; i++) {\n\
+              \      %s[i] = %s(Field(%s, i));\n\
+              \    }\n\
+              \    %s[%s] = NULL;"
+              length_var var
+              element_c_type c_array_var element_c_type element_c_type length_var
+              length_var
+              c_array_var element_tm.ml_to_c var
+              c_array_var length_var
+          else
+            sprintf
+              "int %s = Wosize_val(%s);\n\
+              \    %s* %s = (%s*)g_malloc(sizeof(%s) * (%s + 1));\n\
+              \    for (int i = 0; i < %s; i++) {\n\
+              \      %s[i] = %s(Field(%s, i));\n\
+              \    }\n\
+              \    %s[%s] = (%s)0;"
+              length_var var
+              element_c_type c_array_var element_c_type element_c_type length_var
+              length_var
+              c_array_var element_tm.ml_to_c var
+              c_array_var length_var element_c_type
+        else
+          (* Non-zero-terminated array - use g_malloc for GTK compatibility *)
+          sprintf
+            "int %s = Wosize_val(%s);\n\
+            \    %s* %s = (%s*)g_malloc(sizeof(%s) * %s);\n\
+            \    for (int i = 0; i < %s; i++) {\n\
+            \      %s[i] = %s(Field(%s, i));\n\
+            \    }"
+            length_var var
+            element_c_type c_array_var element_c_type element_c_type length_var
+            length_var
+            c_array_var element_tm.ml_to_c var
+      in
+
+      (* Generate cleanup code if needed (TransferNone means we still own the memory) *)
+      let cleanup_code = match transfer_ownership with
+        | Types.TransferNone ->
+            (* GTK won't free it, we must clean up after the call *)
+            sprintf "g_free(%s);" c_array_var
+        | Types.TransferFull | Types.TransferContainer | Types.TransferFloating ->
+            (* GTK takes ownership, no cleanup needed *)
+            ""
+      in
+
+      (conversion_code, c_array_var, length_var, cleanup_code)
+
+(* Generate inline code for converting C array to OCaml array *)
+let generate_array_c_to_ml ~ctx ~var ~(array_info : gir_array) ~length_expr ~element_c_type =
+  match Type_mappings.find_type_mapping_for_gir_type ~ctx array_info.element_type with
+  | None ->
+      failwith (sprintf "Array element type '%s' not supported" array_info.element_type.name)
+  | Some element_tm ->
+      let ml_array_var = "ml_" ^ var in
+      let length_var = var ^ "_length" in
+      let is_pointer_array = String.contains element_c_type '*' in
+
+      (* Generate code to compute length *)
+      let length_code =
+        match length_expr with
+        | Some expr -> sprintf "int %s = %s;" length_var expr
+        | None ->
+            if array_info.zero_terminated then
+              if is_pointer_array then
+                sprintf "int %s = 0;\n    while (%s[%s] != NULL) %s++;"
+                  length_var var length_var length_var
+              else
+                sprintf "int %s = 0;\n    while (%s[%s] != (%s)0) %s++;"
+                  length_var var length_var element_c_type length_var
+            else
+              failwith "Array has no length information"
+      in
+
+      (* Generate conversion loop *)
+      let conversion_code =
+        sprintf
+          "%s\n\
+          \    value %s = caml_alloc(%s, 0);\n\
+          \    for (int i = 0; i < %s; i++) {\n\
+          \      Store_field(%s, i, %s(%s[i]));\n\
+          \    }"
+          length_code
+          ml_array_var length_var
+          length_var
+          ml_array_var element_tm.c_to_ml var
+      in
+      (conversion_code, ml_array_var)
+
 let nullable_c_to_ml_expr ~ctx ~var ~(gir_type : gir_type)
     ~(mapping : type_mapping) ?(direction : Types.gir_direction = In) () =
   (* out parameters that are record types are stack allocated, so we need to pass by reference
@@ -770,7 +878,7 @@ let build_return_statement ~throws ml_primary out_conversions =
         String.concat ~sep:"\n    "
           ([ "CAMLlocal1(ret);"; alloc ] @ stores @ [ "CAMLreturn(ret);" ])
 
-type param_acc = { ocaml_idx : int; decls : Buffer.t; args : string list }
+type param_acc = { ocaml_idx : int; decls : Buffer.t; args : string list; cleanups : string list }
 
 let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
   let c_name = meth.c_identifier in
@@ -793,9 +901,9 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
   let self_cast = sprintf "%s(self)" type_val_macro in
 
   (* Build C call - handle nullable parameters *)
-  let out_decls, c_args =
+  let out_decls, c_args, param_cleanups =
     let open Buffer in
-    let init_acc = { ocaml_idx = 0; decls = create 128; args = [] } in
+    let init_acc = { ocaml_idx = 0; decls = create 128; args = []; cleanups = [] } in
     let final_acc, _ =
       fold_mapi meth.parameters ~init:init_acc
         ~f:(fun param_index acc (p : gir_param) ->
@@ -815,7 +923,7 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
           | Out ->
               let var_name = sprintf "out%d" (param_index + 1) in
               bprintf acc.decls "%s %s;\n" base_type var_name;
-              ({ acc with args = acc.args @ [ sprintf "&%s" var_name ] }, ())
+              ({ acc with args = acc.args @ [ sprintf "&%s" var_name ]; cleanups = acc.cleanups }, ())
           | InOut ->
               let ocaml_idx = acc.ocaml_idx + 1 in
               let arg_name = sprintf "arg%d" ocaml_idx in
@@ -838,28 +946,73 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
                   ocaml_idx;
                   decls = acc.decls;
                   args = acc.args @ [ sprintf "&%s" var_name ];
+                  cleanups = acc.cleanups;
                 },
                 () )
-          | In ->
+          | In -> (
               let ocaml_idx = acc.ocaml_idx + 1 in
               let arg_name = sprintf "arg%d" ocaml_idx in
-              let arg_expr =
-                match tm with
-                | Some mapping ->
-                    let param_type =
-                      {
-                        p.param_type with
-                        nullable = p.nullable || p.param_type.nullable;
-                      }
-                    in
-                    nullable_ml_to_c_expr ~var:arg_name ~gir_type:param_type
-                      ~mapping
-                | None -> arg_name
-              in
-              ( { ocaml_idx; decls = acc.decls; args = acc.args @ [ arg_expr ] },
-                () ))
+
+              (* Check if this is an array parameter *)
+              match p.param_type.array with
+              | Some array_info -> (
+                  (* Array parameter - generate conversion code *)
+                  match tm with
+                  | Some mapping ->
+                      let element_c_type = match array_info.element_type.c_type with
+                        | Some ct -> ct
+                        | None -> base_type
+                      in
+                      let conv_code, c_array_var, _length_var, cleanup_code =
+                        generate_array_ml_to_c ~ctx ~var:arg_name ~array_info
+                          ~element_mapping:mapping ~element_c_type
+                          ~transfer_ownership:p.param_type.transfer_ownership
+                      in
+                      bprintf acc.decls "    %s\n" conv_code;
+
+                      (* Store cleanup code to be emitted after the function call *)
+                      let new_cleanups = if String.length cleanup_code > 0 then
+                        acc.cleanups @ [cleanup_code]
+                      else
+                        acc.cleanups
+                      in
+
+                      (* Determine which variable to pass as argument *)
+                      let arg_expr = match array_info.length with
+                        | Some _length_idx ->
+                            (* Length parameter exists - pass just the array *)
+                            c_array_var
+                        | None ->
+                            (* No length parameter - zero-terminated array *)
+                            c_array_var
+                      in
+
+                      ({ ocaml_idx; decls = acc.decls; args = acc.args @ [ arg_expr ]; cleanups = new_cleanups }, ())
+                  | None ->
+                      (* No type mapping - skip *)
+                      ({ ocaml_idx; decls = acc.decls; args = acc.args @ [ arg_name ]; cleanups = acc.cleanups }, ())
+                )
+              | None -> (
+                  (* Not an array - normal parameter handling *)
+                  let arg_expr =
+                    match tm with
+                    | Some mapping ->
+                        let param_type =
+                          {
+                            p.param_type with
+                            nullable = p.nullable || p.param_type.nullable;
+                          }
+                        in
+                        nullable_ml_to_c_expr ~var:arg_name ~gir_type:param_type
+                          ~mapping
+                    | None -> arg_name
+                  in
+                  ( { ocaml_idx; decls = acc.decls; args = acc.args @ [ arg_expr ]; cleanups = acc.cleanups },
+                    () )
+                )
+            ))
     in
-    (Buffer.contents final_acc.decls, self_cast :: final_acc.args)
+    (Buffer.contents final_acc.decls, self_cast :: final_acc.args, final_acc.cleanups)
   in
 
   (* Build return conversion *)
@@ -925,24 +1078,51 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
         match
           Type_mappings.find_type_mapping_for_gir_type ~ctx meth.return_type
         with
-        | Some mapping ->
-            let ml_result =
-              nullable_c_to_ml_expr ~ctx ~var:"result"
-                ~gir_type:meth.return_type ~mapping ()
-            in
-            (* Generate ref_sink statement for GObject types based on transfer-ownership *)
-            let ref_sink_stmt =
-              match mapping.layer2_class with
-              | Some _ -> (
-                  match meth.return_type.transfer_ownership with
-                  | Types.TransferNone | Types.TransferFloating ->
-                      "\nif (result) g_object_ref_sink(result);"
-                  | Types.TransferFull | Types.TransferContainer -> "")
-              | None -> ""
-            in
-            ( sprintf "%s result = %s(%s);%s" ret_type c_name args ref_sink_stmt,
-              build_return_statement ~throws:meth.throws (Some ml_result)
-                out_conversions )
+        | Some mapping -> (
+            (* Check if return type is an array *)
+            match meth.return_type.array with
+            | Some array_info ->
+                (* Array return type - generate conversion code *)
+                let element_c_type = match array_info.element_type.c_type with
+                  | Some ct -> ct
+                  | None -> ret_type
+                in
+                let length_expr =
+                  (* TODO: Handle length from out parameters *)
+                  None
+                in
+                let conv_code, ml_array_var =
+                  generate_array_c_to_ml ~ctx ~var:"result" ~array_info
+                    ~length_expr ~element_c_type
+                in
+                (* Call function and convert array *)
+                let c_call = sprintf "%s result = %s(%s);\n    %s"
+                  ret_type c_name args conv_code
+                in
+                let ret_conv = build_return_statement ~throws:meth.throws
+                  (Some ml_array_var) out_conversions
+                in
+                (c_call, ret_conv)
+            | None ->
+                (* Not an array - normal return handling *)
+                let ml_result =
+                  nullable_c_to_ml_expr ~ctx ~var:"result"
+                    ~gir_type:meth.return_type ~mapping ()
+                in
+                (* Generate ref_sink statement for GObject types based on transfer-ownership *)
+                let ref_sink_stmt =
+                  match mapping.layer2_class with
+                  | Some _ -> (
+                      match meth.return_type.transfer_ownership with
+                      | Types.TransferNone | Types.TransferFloating ->
+                          "\nif (result) g_object_ref_sink(result);"
+                      | Types.TransferFull | Types.TransferContainer -> "")
+                  | None -> ""
+                in
+                ( sprintf "%s result = %s(%s);%s" ret_type c_name args ref_sink_stmt,
+                  build_return_statement ~throws:meth.throws (Some ml_result)
+                    out_conversions )
+          )
         | None ->
             (* No type mapping found - fail with clear error *)
             failwith
@@ -953,6 +1133,13 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
                  meth.return_type.name
                  (Option.value meth.return_type.c_type ~default:"<none>")
                  meth.c_identifier))
+  in
+
+  (* Emit cleanup code for arrays *)
+  let cleanup_section = if List.length param_cleanups > 0 then
+    "\n    " ^ String.concat ~sep:"\n    " param_cleanups
+  else
+    ""
   in
 
   (* For functions with >5 parameters, generate both bytecode and native variants *)
@@ -968,7 +1155,7 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
          CAMLparam5(%s);\n\
          CAMLxparam%d(%s);\n\
          %s\n\
-         %s\n\
+         %s%s\n\
          %s\n\
          }\n"
         ml_name
@@ -976,7 +1163,7 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
         (String.concat ~sep:", " first_five)
         (param_count - 5)
         (String.concat ~sep:", " rest)
-        locals c_call ret_conv
+        locals c_call cleanup_section ret_conv
     in
 
     let bytecode_func =
@@ -994,12 +1181,12 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
     native_func ^ bytecode_func
   else
     sprintf
-      "\nCAMLexport CAMLprim value %s(%s)\n{\nCAMLparam%d(%s);\n%s\n%s\n%s\n}\n"
+      "\nCAMLexport CAMLprim value %s(%s)\n{\nCAMLparam%d(%s);\n%s\n%s%s\n%s\n}\n"
       ml_name
       (String.concat ~sep:", " params)
       param_count
       (String.concat ~sep:", " param_names)
-      locals c_call ret_conv
+      locals c_call cleanup_section ret_conv
 
 let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
   let ml_name = Utils.ml_property_name ~class_name prop in
