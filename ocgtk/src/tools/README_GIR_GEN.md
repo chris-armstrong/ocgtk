@@ -2,6 +2,54 @@
 
 GTK introspection-based code generator for ocgtk bindings.
 
+## Architecture Overview
+
+The generator processes GIR XML files through a 4-stage pipeline:
+
+```
+GIR XML (e.g., Gtk-4.0.gir)
+    │
+    ├─► parse/gir_parser.ml     ──► types.ml (AST)
+    │                              │
+    │                              ▼
+    │                       type_mappings.ml (type resolution)
+    │                              │
+    │         ┌────────────────────┼────────────────────┐
+    │         ▼                    ▼                    ▼
+    │   generate/            generate/            generate/
+    │   c_stubs.ml           ml_interface.ml      class_gen.ml
+    │   (Layer 0 C)          (Layer 1 ML)         (Layer 2 ML)
+    │         │                    │                    │
+    │         ▼                    ▼                    ▼
+    │   ml_*_gen.c          widget.mli             gWidget.ml
+    │   C FFI stubs         Low-level bindings     High-level wrappers
+```
+
+### Key Files
+
+| File | Purpose |
+|------|---------|
+| `types.ml` | AST for GIR elements (classes, methods, types) |
+| `parse/gir_parser.ml` | XML parsing → AST |
+| `type_mappings.ml` | Maps C types to OCaml types (`gint` → `int`, etc.) |
+| `generate/c_stubs.ml` | C FFI code generation (Layer 0) |
+| `generate/ml_interface.ml` | OCaml interface generation (Layer 1) |
+| `generate/class_gen.ml` | High-level wrapper generation (Layer 2) |
+
+### Type Resolution Flow
+
+```
+gir_type.name + gir_type.c_type
+        │
+        ▼
+Type_mappings.find_type_mapping_for_gir_type()
+        │
+        ├─► Found → use mapping.ocaml_type in ML output
+        │
+        └─► Not found → method is SKIPPED (exclude_list.ml)
+                       or falls back to "unit" in some cases
+```
+
 ## Building
 
 ```bash
