@@ -48,6 +48,11 @@ let has_simple_type ~ctx (gir_type : gir_type) =
       true
   | None -> false
 
+(* Check if a type is an array type - arrays require inline code generation
+   and can't be handled by simple type mapping macros *)
+let is_array_type (gir_type : gir_type) =
+  Option.is_some gir_type.array
+
 let property_exclude_list = [ ("IconPaintable", "is-symbolic") ]
 
 let should_generate_property ~ctx ~class_name ~methods (prop : gir_property) =
@@ -58,6 +63,9 @@ let should_generate_property ~ctx ~class_name ~methods (prop : gir_property) =
         && String.equal class_name test_class_name)
       property_exclude_list
   then false
+  else if is_array_type prop.prop_type then
+    (* Array properties require inline code generation - skip for now *)
+    false
   else
     (* Check if property type is an interface - we can't handle these yet *)
     let is_interface_type =
@@ -162,6 +170,10 @@ let should_skip_method_binding ~ctx (meth : gir_method) =
 
 let constructor_has_varargs (ctor : gir_constructor) =
   List.exists ctor.ctor_parameters ~f:(fun p -> p.varargs)
+
+(* Check if a constructor has any array parameters *)
+let constructor_has_array_params (ctor : gir_constructor) =
+  List.exists ctor.ctor_parameters ~f:(fun p -> is_array_type p.param_type)
 
 let banned_records = [ "PrintBackend" ]
 

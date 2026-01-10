@@ -57,7 +57,7 @@ let test_simple_constructor () =
 
   let c_code =
     Gir_gen_lib.Generate.C_stubs.generate_c_constructor ~ctx ~c_type:"GtkButton"
-      ctor "Button"
+      ~class_name:"Button" ctor
   in
 
   (* Parse the generated C code *)
@@ -105,7 +105,7 @@ let test_constructor_with_params () =
 
   let c_code =
     Gir_gen_lib.Generate.C_stubs.generate_c_constructor ~ctx ~c_type:"GtkButton"
-      ctor "Button"
+      ~class_name:"Button" ctor
   in
 
   let functions = parse_c_string c_code in
@@ -134,7 +134,7 @@ let test_constructor_many_params () =
               c_type = Some "gint";
               nullable = false;
               transfer_ownership = TransferNone;
-            array = None;
+              array = None;
             };
           direction = In;
           nullable = false;
@@ -154,7 +154,7 @@ let test_constructor_many_params () =
 
   let c_code =
     Gir_gen_lib.Generate.C_stubs.generate_c_constructor ~ctx ~c_type:"GtkWidget"
-      ctor "Widget"
+      ~class_name:"Widget" ctor
   in
 
   let functions = parse_c_string c_code in
@@ -182,7 +182,7 @@ let test_simple_method () =
           c_type = Some "void";
           nullable = false;
           transfer_ownership = TransferNone;
-        array = None;
+          array = None;
         };
       parameters =
         [
@@ -237,7 +237,7 @@ let test_method_with_return_value () =
           c_type = Some "const gchar*";
           nullable = false;
           transfer_ownership = TransferNone;
-        array = None;
+          array = None;
         };
       parameters = [];
       doc = None;
@@ -281,7 +281,7 @@ let test_constructor_type_conversion () =
 
   let c_code =
     Gir_gen_lib.Generate.C_stubs.generate_c_constructor ~ctx ~c_type:"GtkButton"
-      ctor "Button"
+      ~class_name:"Button" ctor
   in
 
   let functions = parse_c_string c_code in
@@ -304,7 +304,7 @@ let test_method_calls_c_function () =
           c_type = Some "void";
           nullable = false;
           transfer_ownership = TransferNone;
-        array = None;
+          array = None;
         };
       parameters =
         [
@@ -357,7 +357,7 @@ let test_variable_declarations () =
 
   let c_code =
     Gir_gen_lib.Generate.C_stubs.generate_c_constructor ~ctx ~c_type:"GtkButton"
-      ctor "Button"
+      ~class_name:"Button" ctor
   in
 
   let functions = parse_c_string c_code in
@@ -388,7 +388,7 @@ let test_parameter_flow_to_return () =
 
   let c_code =
     Gir_gen_lib.Generate.C_stubs.generate_c_constructor ~ctx ~c_type:"GtkButton"
-      ctor "Button"
+      ~class_name:"Button" ctor
   in
 
   let functions = parse_c_string c_code in
@@ -417,7 +417,7 @@ let test_bytecode_calls_native () =
               c_type = Some "gint";
               nullable = false;
               transfer_ownership = TransferNone;
-            array = None;
+              array = None;
             };
           direction = In;
           nullable = false;
@@ -437,7 +437,7 @@ let test_bytecode_calls_native () =
 
   let c_code =
     Gir_gen_lib.Generate.C_stubs.generate_c_constructor ~ctx ~c_type:"GtkWidget"
-      ctor "Widget"
+      ~class_name:"Widget" ctor
   in
 
   let functions = parse_c_string c_code in
@@ -473,7 +473,7 @@ let test_non_opaque_record_return () =
                   c_type = Some "gint";
                   nullable = false;
                   transfer_ownership = TransferNone;
-                array = None;
+                  array = None;
                 };
             readable = true;
             writable = false;
@@ -503,7 +503,7 @@ let test_non_opaque_record_return () =
           c_type = Some "GtkTestRecord*";
           nullable = false;
           transfer_ownership = TransferNone;
-        array = None;
+          array = None;
         };
       parameters = [];
       doc = None;
@@ -548,7 +548,7 @@ let test_non_opaque_record_parameter () =
                   c_type = Some "gint";
                   nullable = false;
                   transfer_ownership = TransferNone;
-                array = None;
+                  array = None;
                 };
             readable = true;
             writable = false;
@@ -578,7 +578,7 @@ let test_non_opaque_record_parameter () =
           c_type = Some "void";
           nullable = false;
           transfer_ownership = TransferNone;
-        array = None;
+          array = None;
         };
       parameters =
         [
@@ -656,7 +656,7 @@ let test_opaque_record_return () =
           c_type = Some "GtkOpaqueRec*";
           nullable = false;
           transfer_ownership = TransferNone;
-        array = None;
+          array = None;
         };
       parameters = [];
       doc = None;
@@ -714,7 +714,7 @@ let test_opaque_record_parameter () =
           c_type = Some "void";
           nullable = false;
           transfer_ownership = TransferNone;
-        array = None;
+          array = None;
         };
       parameters =
         [
@@ -778,7 +778,7 @@ let test_nullable_record_return () =
                   c_type = Some "gint";
                   nullable = false;
                   transfer_ownership = TransferNone;
-                array = None;
+                  array = None;
                 };
             readable = true;
             writable = false;
@@ -808,7 +808,7 @@ let test_nullable_record_return () =
           c_type = Some "GtkTestRecord*";
           nullable = true;
           transfer_ownership = TransferNone;
-        array = None;
+          array = None;
         };
       parameters = [];
       doc = None;
@@ -855,7 +855,7 @@ let test_nullable_record_parameter () =
                   c_type = Some "gint";
                   nullable = false;
                   transfer_ownership = TransferNone;
-                array = None;
+                  array = None;
                 };
             readable = true;
             writable = false;
@@ -885,7 +885,7 @@ let test_nullable_record_parameter () =
           c_type = Some "void";
           nullable = false;
           transfer_ownership = TransferNone;
-        array = None;
+          array = None;
         };
       parameters =
         [

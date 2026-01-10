@@ -141,6 +141,13 @@ let is_string_type ctype =
       true
   | _ -> false
 
+(* Check if an array contains string elements *)
+let is_string_array (array_info : gir_array) =
+  let elem_name = String.lowercase_ascii array_info.element_type.name in
+  let elem_ctype = array_info.element_type.c_type in
+  String.equal elem_name "utf8" || String.equal elem_name "gchararray" ||
+  is_string_type elem_ctype
+
 (* Generate inline code for converting OCaml array to C array *)
 let generate_array_ml_to_c ~ctx ~var ~(array_info : gir_array) ~element_mapping:_ ~element_c_type ~transfer_ownership =
   (* Get element type mapping for conversion *)
@@ -152,9 +159,20 @@ let generate_array_ml_to_c ~ctx ~var ~(array_info : gir_array) ~element_mapping:
       let c_array_var = "c_" ^ var in
       let is_pointer_array = String.contains element_c_type '*' in
 
+      (* Determine if this array should be zero-terminated *)
+      let should_zero_terminate =
+        array_info.zero_terminated ||
+        (* Default: string arrays without explicit length are typically zero-terminated in GTK *)
+        (is_string_array array_info && Option.is_none array_info.length)
+      in
+
+      (* For struct arrays (non-pointer elements), we need to dereference the
+         conversion result since _val macros return pointers *)
+      let deref_prefix = if is_pointer_array then "" else "*" in
+
       (* Generate conversion code based on array type *)
       let conversion_code =
-        if array_info.zero_terminated then
+        if should_zero_terminate then
           (* Zero-terminated array - use g_malloc for GTK compatibility *)
           if is_pointer_array then
             sprintf
@@ -174,13 +192,13 @@ let generate_array_ml_to_c ~ctx ~var ~(array_info : gir_array) ~element_mapping:
               "int %s = Wosize_val(%s);\n\
               \    %s* %s = (%s*)g_malloc(sizeof(%s) * (%s + 1));\n\
               \    for (int i = 0; i < %s; i++) {\n\
-              \      %s[i] = %s(Field(%s, i));\n\
+              \      %s[i] = %s%s(Field(%s, i));\n\
               \    }\n\
-              \    %s[%s] = (%s)0;"
+              \    %s[%s] = (%s){0};"
               length_var var
               element_c_type c_array_var element_c_type element_c_type length_var
               length_var
-              c_array_var element_tm.ml_to_c var
+              c_array_var deref_prefix element_tm.ml_to_c var
               c_array_var length_var element_c_type
         else
           (* Non-zero-terminated array - use g_malloc for GTK compatibility *)
@@ -188,12 +206,12 @@ let generate_array_ml_to_c ~ctx ~var ~(array_info : gir_array) ~element_mapping:
             "int %s = Wosize_val(%s);\n\
             \    %s* %s = (%s*)g_malloc(sizeof(%s) * %s);\n\
             \    for (int i = 0; i < %s; i++) {\n\
-            \      %s[i] = %s(Field(%s, i));\n\
+            \      %s[i] = %s%s(Field(%s, i));\n\
             \    }"
             length_var var
             element_c_type c_array_var element_c_type element_c_type length_var
             length_var
-            c_array_var element_tm.ml_to_c var
+            c_array_var deref_prefix element_tm.ml_to_c var
       in
 
       (* Generate cleanup code if needed (TransferNone means we still own the memory) *)
@@ -209,7 +227,7 @@ let generate_array_ml_to_c ~ctx ~var ~(array_info : gir_array) ~element_mapping:
       (conversion_code, c_array_var, length_var, cleanup_code)
 
 (* Generate inline code for converting C array to OCaml array *)
-let generate_array_c_to_ml ~ctx ~var ~(array_info : gir_array) ~length_expr ~element_c_type =
+let generate_array_c_to_ml ~ctx ~var ~(array_info : gir_array) ~length_expr ~element_c_type ~transfer_ownership =
   match Type_mappings.find_type_mapping_for_gir_type ~ctx array_info.element_type with
   | None ->
       failwith (sprintf "Array element type '%s' not supported" array_info.element_type.name)
@@ -223,15 +241,24 @@ let generate_array_c_to_ml ~ctx ~var ~(array_info : gir_array) ~length_expr ~ele
         match length_expr with
         | Some expr -> sprintf "int %s = %s;" length_var expr
         | None ->
+            (* No explicit length - check if zero-terminated or can be inferred *)
             if array_info.zero_terminated then
+              (* Explicitly zero-terminated *)
               if is_pointer_array then
                 sprintf "int %s = 0;\n    while (%s[%s] != NULL) %s++;"
                   length_var var length_var length_var
               else
                 sprintf "int %s = 0;\n    while (%s[%s] != (%s)0) %s++;"
                   length_var var length_var element_c_type length_var
+            else if is_string_array array_info then
+              (* String arrays are typically zero-terminated even if not explicitly marked *)
+              sprintf "int %s = 0;\n    while (%s[%s] != NULL) %s++;"
+                length_var var length_var length_var
             else
-              failwith "Array has no length information"
+              (* No length information and not a string array - cannot safely convert *)
+              failwith (sprintf "Array has no length information for %s (element type: %s). \
+                                 Either zero-terminated, length, or fixed-size attribute required."
+                         var array_info.element_type.name)
       in
 
       (* Generate conversion loop *)
@@ -247,7 +274,36 @@ let generate_array_c_to_ml ~ctx ~var ~(array_info : gir_array) ~length_expr ~ele
           length_var
           ml_array_var element_tm.c_to_ml var
       in
-      (conversion_code, ml_array_var)
+
+      (* Generate cleanup code if we own the array (TransferFull or TransferContainer) *)
+      let cleanup_code = match transfer_ownership with
+        | Types.TransferNone | Types.TransferFloating ->
+            (* GTK owns the array - don't free it *)
+            ""
+        | Types.TransferContainer ->
+            (* We own the container but not the elements - just free the container *)
+            sprintf "g_free(%s);" var
+        | Types.TransferFull ->
+            (* We own everything - free elements (if pointers) then container *)
+            if is_string_array array_info then
+              (* String array: free each string then the container *)
+              sprintf
+                "for (int i = 0; i < %s; i++) {\n\
+                \      g_free((gpointer)%s[i]);\n\
+                \    }\n\
+                \    g_free(%s);"
+                length_var var var
+            else if is_pointer_array then
+              (* Generic pointer array: might need element-wise freeing, but we can't know the type *)
+              (* For now, just free the container - this may leak if elements need freeing *)
+              (* TODO: Add heuristics or metadata to determine if elements need freeing *)
+              sprintf "g_free(%s);" var
+            else
+              (* Primitive array: just free the container *)
+              sprintf "g_free(%s);" var
+      in
+
+      (conversion_code, ml_array_var, cleanup_code)
 
 let nullable_c_to_ml_expr ~ctx ~var ~(gir_type : gir_type)
     ~(mapping : type_mapping) ?(direction : Types.gir_direction = In) () =

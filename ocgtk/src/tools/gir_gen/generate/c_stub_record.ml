@@ -182,11 +182,12 @@ let generate_record_c_code ~ctx (record : gir_record) =
       if
         (not ctor.throws)
         && (not (Filtering.constructor_has_varargs ctor))
-        && not (Filtering.constructor_has_cross_namespace_types ~ctx ctor)
+        && (not (Filtering.constructor_has_cross_namespace_types ~ctx ctor))
+        && not (Filtering.constructor_has_array_params ctor)
       then
         Buffer.add_string buf
-          (C_stub_class.generate_c_constructor ~ctx ~c_type:record.c_type ctor
-             record.record_name))
+          (C_stub_class.generate_c_constructor ~ctx ~c_type:record.c_type
+             ~class_name:record.record_name ctor))
     record.constructors;
 
   let namespace_snake = Utils.to_snake_case ctx.namespace.namespace_name in

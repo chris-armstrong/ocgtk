@@ -194,7 +194,6 @@ let rec find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
       (* Recursively resolve the element type *)
       match find_type_mapping_for_gir_type ~ctx array_info.element_type with
       | Some element_mapping ->
-          (* Create array type mapping *)
           let ocaml_type = element_mapping.ocaml_type ^ " array" in
           let c_type =
             match gir_type.c_type with
@@ -204,14 +203,12 @@ let rec find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
           Some {
             ocaml_type;
             c_type;
-            c_to_ml = "array_c_to_ml";  (* Special marker for array conversion *)
-            ml_to_c = "array_ml_to_c";  (* Special marker for array conversion *)
+            c_to_ml = "ARRAY_INLINE";  (* Marker: use inline code generation *)
+            ml_to_c = "ARRAY_INLINE";  (* Marker: use inline code generation *)
             needs_copy = true;
             layer2_class = None;
           }
-      | None ->
-          (* Element type not supported - skip array *)
-          None
+      | None -> None
     )
   | None ->
       (* Not an array - proceed with normal type lookup *)
