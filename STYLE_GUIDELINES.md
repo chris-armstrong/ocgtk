@@ -38,6 +38,80 @@ module Option = struct
 end
 ```
 
+## Binding Operators vs Pipeline Operators
+
+When dealing with nested `Option` or `Result` operations, you have two main approaches:
+
+### Binding Operators (`let*`, `let+`)
+
+Use binding operators when:
+- You have **2-3 nested operations** that build on each other
+- Each operation **depends on the result** of the previous one
+- You want to **avoid deeply nested parentheses**
+- The operations are **closely related** and part of the same logical flow
+
+**Good example:**
+```ocaml
+let get_user_email config =
+  let* user = find_user config in
+  let* profile = get_profile user in
+  let* email = profile.email in
+  Some email
+```
+
+### Pipeline Operators (`|>`)
+
+Use pipeline operators when:
+- You have **simple transformations** in a sequence
+- Each step is **independent** or only needs the previous value directly
+- You want to keep the **data flow** visible
+- The operations are **well-suited** for linear transformation
+
+**Good example:**
+```ocaml
+let process_user user ->
+  user
+  |> sanitize_input
+  |> validate_length
+  |> encode_special_chars
+  |> Database.save
+```
+
+### When to Use Which
+
+**Prefer binding operators when:**
+- Operations are **conditionally dependent** (each step might fail or be skipped)
+- You have **nested Option/Result** types
+- The code becomes **hard to read** with pipelines due to nesting
+
+**Prefer pipeline operators when:**
+- You have a **clear data transformation pipeline**
+- Operations are **deterministic** and always applied
+- The flow is **primarily linear** without branching
+
+**Example comparing both approaches:**
+
+*Using binding operators (preferred for nested Options):*
+```ocaml
+let find_config_value config key =
+  let* section = Hashtbl.find_opt config.sections key in
+  let* value = Hashtbl.find_opt section.values "target" in
+  Some value
+```
+
+*Using pipelines (acceptable for simple cases):*
+```ocaml
+let find_config_value config key =
+  config
+  |> Hashtbl.find_opt key
+  |> Option.map (fun s -> s.values)
+  |> Option.bind (Hashtbl.find_opt "target")
+```
+
+### Key Principle
+
+**Readability matters most.** If binding operators make the code clearer, use them. If pipelines flow better for your specific case, use those. The goal is to make complex logic easy to understand at a glance.
+
 ## Function Design
 
 **Avoid partial application confusion**: When defining functions, order parameters from most to least general
