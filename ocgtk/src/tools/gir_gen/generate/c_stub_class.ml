@@ -5,7 +5,9 @@ open Containers
 open StdLabels
 open Types
 
-(* Helper to get C type string from a gir_type, falling back to type mapping *)
+(* [get_c_type_str ~ctx gir_type] retrieves the C type string representation for a GIR type.
+   Returns the c_type directly if present, otherwise consults the type mapping context.
+   Falls back to "void" if no mapping is found. *)
 let get_c_type_str ~ctx (gir_type : gir_type) =
   match gir_type.c_type with
   | Some c_type -> c_type
@@ -14,18 +16,25 @@ let get_c_type_str ~ctx (gir_type : gir_type) =
         (fun tm -> Some tm.c_type)
       |> Option.value ~default:"void"
 
-(* Helper to get element C type from array info *)
+(* [get_element_c_type ~fallback array_info] extracts the C type of array elements.
+   Returns the element_type's c_type if present, otherwise uses the fallback value.
+   This is used to determine the base type for array element conversions. *)
 let get_element_c_type ~fallback (array_info : gir_array) =
   array_info.element_type.c_type |> Option.value ~default:fallback
 
-(* Generate variable name based on parameter direction and index *)
+(* [var_name_for_direction direction idx] generates a unique variable name based on parameter direction.
+   Out parameters use "out<N>", InOut use "inout<N>", and In use "arg<N>".
+   The index is 0-based but incremented by 1 in the name for human readability. *)
 let var_name_for_direction direction idx =
   match direction with
   | Out -> sprintf "out%d" (idx + 1)
   | InOut -> sprintf "inout%d" (idx + 1)
   | In -> sprintf "arg%d" (idx + 1)
 
-(* Handle Out parameter - generates declaration and returns updated accumulator *)
+(* [handle_out_param ~param_index ~base_type ~acc p] processes an out-direction parameter.
+   Generates a C variable declaration (as pointer for arrays, as value otherwise) and
+   adds the variable's address to the C function arguments list.
+   Returns the updated accumulator with new declarations and arguments. *)
 let handle_out_param ~param_index ~base_type ~acc (p : gir_param) =
   let var_name = sprintf "out%d" (param_index + 1) in
   let is_array = Option.is_some p.param_type.array in
@@ -35,7 +44,10 @@ let handle_out_param ~param_index ~base_type ~acc (p : gir_param) =
   else bprintf acc.C_stub_helpers.decls "%s %s;\n" base_type var_name;
   { acc with C_stub_helpers.args = acc.C_stub_helpers.args @ [ sprintf "&%s" var_name ] }
 
-(* Handle InOut parameter - generates declaration with init and returns updated accumulator *)
+(* [handle_inout_param ~_ctx ~param_index ~base_type ~acc ~tm p] processes an inout-direction parameter.
+   Generates a C variable declaration initialized from the OCaml argument using type-specific
+   conversion. The variable is added as a pointer reference in the C function arguments.
+   Returns the updated accumulator with declarations, arguments, and updated OCaml index. *)
 let handle_inout_param ~_ctx ~param_index ~base_type ~acc ~tm (p : gir_param) =
   let ocaml_idx = acc.C_stub_helpers.ocaml_idx + 1 in
   let arg_name = sprintf "arg%d" ocaml_idx in
@@ -58,7 +70,10 @@ let handle_inout_param ~_ctx ~param_index ~base_type ~acc ~tm (p : gir_param) =
     cleanups = acc.cleanups;
   }
 
-(* Handle In parameter with array type *)
+(* [handle_in_array_param ~ctx ~acc ~arg_name ~base_type ~tm p array_info] processes
+   an in-direction array parameter. Generates conversion code from OCaml array to C array,
+   producing the C variable name and any required cleanup code. Returns a tuple of
+   (c_array_var_name, updated_cleanup_code_list) to be used as function arguments. *)
 let handle_in_array_param ~ctx ~acc ~arg_name ~base_type ~tm (p : gir_param)
     (array_info : gir_array) =
   match tm with
@@ -78,7 +93,10 @@ let handle_in_array_param ~ctx ~acc ~arg_name ~base_type ~tm (p : gir_param)
       (c_array_var, new_cleanups)
   | None -> (arg_name, acc.cleanups)
 
-(* Handle In parameter (scalar or array) *)
+(* [handle_in_param ~ctx ~acc ~length_param_map ~base_type ~tm p] processes an in-direction parameter.
+   Handles both array and scalar types. For arrays, generates conversion code. For scalars,
+   uses type mapping or substitutes length variable from length_param_map. Returns updated
+   accumulator with arguments, declarations, and cleanup code. *)
 let handle_in_param ~ctx ~acc ~length_param_map ~base_type ~tm (p : gir_param) =
   let ocaml_idx = acc.C_stub_helpers.ocaml_idx + 1 in
   let arg_name = sprintf "arg%d" ocaml_idx in
@@ -119,7 +137,9 @@ let handle_in_param ~ctx ~acc ~length_param_map ~base_type ~tm (p : gir_param) =
         cleanups = acc.cleanups;
       }
 
-(* Strip pointer suffix from C type string if present *)
+(* [strip_pointer_suffix c_type] removes a trailing "*" from a C type string if present.
+   Used to convert pointer types to their base types (e.g., "GObject*" -> "GObject").
+   If no trailing pointer suffix exists, returns the c_type unchanged. *)
 let strip_pointer_suffix c_type =
   if
     String.length c_type > 0
@@ -129,7 +149,13 @@ let strip_pointer_suffix c_type =
   then String.sub c_type ~pos:0 ~len:(String.length c_type - 1)
   else c_type
 
-(* Convert out-parameter array to ML value *)
+(* [convert_out_array ~ctx ~out_array_length_map ~out_array_conversions_buf
+              ~out_array_cleanups ~parameters ~idx ~var_name p array_info] converts
+   an out-direction array parameter from C to OCaml. Looks up the array length from
+   out_array_length_map (which maps parameter indices to length parameter indices) and
+   uses type mapping for conversion. Appends conversion code to the buffer, updates
+   cleanup list with any required post-return cleanup code. Returns an optional OCaml
+   array variable name (Some ml_array_var or None if type mapping not found). *)
 let convert_out_array ~ctx ~out_array_length_map ~out_array_conversions_buf
     ~out_array_cleanups ~parameters ~idx ~var_name (p : gir_param)
     (array_info : gir_array) =
@@ -162,7 +188,10 @@ let convert_out_array ~ctx ~out_array_length_map ~out_array_conversions_buf
         out_array_cleanups := !out_array_cleanups @ [ cleanup_code ];
       Some ml_array_var)
 
-(* Convert scalar out-parameter to ML value *)
+(* [convert_out_scalar ~ctx ~_idx ~var_name p] converts a scalar out-parameter from C to OCaml.
+   Strips pointer suffix from the type (e.g., "GObject*" -> "GObject") and uses type mapping
+   for conversion via nullable_c_to_ml_expr. Returns an optional OCaml value expression,
+   or None if no type mapping is found for the parameter type. *)
 let convert_out_scalar ~ctx ~_idx ~var_name (p : gir_param) =
   let base_gir_type =
     Option.bind p.param_type.c_type (fun c_type ->
@@ -177,7 +206,11 @@ let convert_out_scalar ~ctx ~_idx ~var_name (p : gir_param) =
         (C_stub_helpers.nullable_c_to_ml_expr ~ctx ~var:var_name
            ~gir_type:base_gir_type ~mapping ~direction:p.direction ()))
 
-(* Process a single out/inout parameter for return conversion *)
+(* [process_out_param_conversion ~ctx ~out_array_length_map ~out_array_conversions_buf
+                              ~out_array_cleanups ~parameters (p, idx)] processes a single out or inout
+   parameter for conversion to OCaml. In-direction parameters return None without processing.
+   Out and InOut parameters generate conversion code and return the OCaml value expression.
+   For arrays, uses array conversion logic; for scalars, uses scalar conversion. *)
 let process_out_param_conversion ~ctx ~out_array_length_map
     ~out_array_conversions_buf ~out_array_cleanups ~parameters (p, idx) =
   match p.direction with
@@ -191,7 +224,10 @@ let process_out_param_conversion ~ctx ~out_array_length_map
             ~var_name p array_info
       | None -> convert_out_scalar ~ctx ~_idx:idx ~var_name p)
 
-(* Generate ref_sink statement for GObject types based on transfer-ownership *)
+(* [generate_ref_sink_stmt ~transfer_ownership mapping] generates a ref_sink statement
+   for GObject types. Returns a newline + g_object_ref_sink call for TransferNone/Floating
+   transfer modes (to ensure proper reference counting). Returns empty string for
+   TransferFull/TransferContainer (already owned) or if not a GObject type. *)
 let generate_ref_sink_stmt ~transfer_ownership mapping =
   mapping.layer2_class
   |> Option.map (fun _ ->
@@ -201,7 +237,10 @@ let generate_ref_sink_stmt ~transfer_ownership mapping =
          | Types.TransferFull | Types.TransferContainer -> "")
   |> Option.value ~default:""
 
-(* Handle void return type *)
+(* [handle_void_return ~c_name ~args ~out_array_conv_code ~out_array_cleanup_list]
+   generates the C call, return statement, and cleanup list for void return functions.
+   If out_array_conv_code is non-empty, inserts it after the C call. Returns a tuple of
+   (c_call_code, return_statement, cleanup_list). *)
 let handle_void_return ~c_name ~args ~out_array_conv_code ~out_array_cleanup_list =
   let c_call_with_conv =
     if String.length out_array_conv_code > 0 then
@@ -210,7 +249,12 @@ let handle_void_return ~c_name ~args ~out_array_conv_code ~out_array_cleanup_lis
   in
   (c_call_with_conv, C_stub_helpers.build_return_statement ~throws:false None [], out_array_cleanup_list)
 
-(* Handle array return type *)
+(* [handle_array_return ~ctx ~meth ~c_name ~args ~out_array_conv_code ~ret_type
+                      ~out_conversions ~out_array_cleanup_list] handles array return types.
+   Generates C call with result variable, extracts element C type from array info, converts
+   C array to OCaml using generate_array_c_to_ml, and builds return statement with out-parameter
+   conversions. Collects all cleanup code (both out-array and return-array cleanup).
+   Returns tuple of (c_call_code, return_conversion_statement, cleanup_list). *)
 let handle_array_return ~ctx ~(meth : gir_method) ~c_name ~args ~out_array_conv_code ~ret_type
     ~out_conversions ~out_array_cleanup_list =
   let array_info =
@@ -241,7 +285,12 @@ let handle_array_return ~ctx ~(meth : gir_method) ~c_name ~args ~out_array_conv_
   in
   (c_call, ret_conv, additional_cleanups)
 
-(* Handle scalar return type *)
+(* [handle_scalar_return ~ctx ~meth ~c_name ~args ~out_array_conv_code ~ret_type
+                       ~mapping ~out_conversions ~out_array_cleanup_list] handles scalar return types.
+   Generates C call with result variable, converts result from C to OCaml via nullable_c_to_ml_expr,
+   adds ref_sink statement if return type is a GObject (to handle Floating transfer semantics),
+   and builds return statement with out-parameter conversions. Appends out-array conversion code
+   after C call if present. Returns tuple of (c_call_code, return_conversion_statement, cleanup_list). *)
 let handle_scalar_return ~ctx ~(meth : gir_method) ~c_name ~args ~out_array_conv_code ~ret_type
     ~mapping ~out_conversions ~out_array_cleanup_list =
   let ml_result =
@@ -265,7 +314,11 @@ let handle_scalar_return ~ctx ~(meth : gir_method) ~c_name ~args ~out_array_conv
      (Some ml_result) out_conversions,
    out_array_cleanup_list)
 
-(* Build return conversion for a method *)
+(* [build_return_conversion ~ctx ~meth ~c_name ~args ~ret_type ~out_array_conv_code
+                          ~out_conversions ~out_array_cleanup_list] builds the complete return
+   conversion for a method. Dispatches to void, array, or scalar handlers based on return type.
+   If no type mapping found for non-void return, raises failwith with diagnostic error message.
+   Returns tuple of (c_call_code, return_conversion_statement, cleanup_list). *)
 let build_return_conversion ~ctx ~(meth : gir_method) ~c_name ~args ~ret_type
     ~out_array_conv_code ~out_conversions ~out_array_cleanup_list =
   match ret_type with
@@ -293,8 +346,12 @@ let build_return_conversion ~ctx ~(meth : gir_method) ~c_name ~args ~ret_type
                (Option.value meth.return_type.c_type ~default:"<none>")
                meth.c_identifier))
 
-(* Build a map from OCaml arg index to length variable name for array parameters.
-   This is used to substitute length parameters with computed array lengths. *)
+(* [build_length_param_map ~meth] builds a map from OCaml argument index to length variable name
+   for array parameters. For each array parameter with a length parameter index, computes the
+   corresponding OCaml argument index and maps it to a length variable name. This allows length
+   parameters to be substituted with computed array lengths instead of passed as separate arguments.
+   Only processes non-Out parameters (those visible in OCaml signature).
+   Returns a list of (ocaml_idx, length_var_name) pairs. *)
 let build_length_param_map ~(meth : gir_method) =
   (* Count non-Out parameters to get OCaml indices *)
   let in_param_indices =
@@ -326,7 +383,11 @@ let build_length_param_map ~(meth : gir_method) =
             Some (len_idx, arg_name ^ "_length"))))
     in_param_indices
 
-(* Build a map from array parameter index to its length parameter index *)
+(* [build_out_array_length_map parameters] builds a map from array parameter index to its length
+   parameter index for out/inout direction parameters. For each Out or InOut parameter with array type,
+   extracts the length parameter index from array_info and creates a mapping. Used to look up which
+   parameter holds the array length when converting out-parameter arrays from C to OCaml.
+   Returns a list of (array_param_idx, length_param_idx) pairs. *)
 let build_out_array_length_map parameters =
   List.fold_left
     ~f:(fun acc (p, idx) ->
@@ -339,6 +400,12 @@ let build_out_array_length_map parameters =
     ~init:[]
     (List.mapi ~f:(fun i p -> (p, i)) parameters)
 
+(* [generate_c_constructor ~ctx ~c_type ~class_name ctor] generates a C wrapper function
+   for a GIR constructor. Handles parameter conversion from OCaml to C types, C constructor
+   invocation, ref_sink for GObject types (to handle Floating transfer semantics), and
+   conversion of result to OCaml. Supports error handling if constructor throws. Generates
+   both native and bytecode (multi-arg) variants when parameter count exceeds 5. Returns
+   the complete C function code as a string. *)
 let generate_c_constructor ~ctx ~c_type ~class_name (ctor : gir_constructor) =
   let c_name = ctor.c_identifier in
   let ml_name = Utils.ml_constructor_name ~class_name ~constructor:ctor in
@@ -482,6 +549,12 @@ let generate_c_constructor ~ctx ~c_type ~class_name (ctor : gir_constructor) =
       error_decl c_type var_name c_name c_call_args ref_sink_stmt return_stmt
   end
 
+(* [generate_c_method ~ctx ~c_type meth class_name] generates a C wrapper function for a GIR method.
+   Takes self parameter (instance) and processes in/out/inout parameter conversions to/from OCaml.
+   Handles C method invocation with proper argument passing, return value conversion (void/array/scalar),
+   and post-call cleanup code. Uses length parameter maps for array parameter handling. Supports
+   error handling if method throws GError. Generates both native and bytecode (multi-arg) variants
+   when parameter count exceeds 5. Returns the complete C function code as a string. *)
 let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
   let c_name = meth.c_identifier in
   let ml_name = Utils.ml_method_name ~class_name meth in
@@ -644,6 +717,11 @@ let default_type_mapping =
     c_type = "void";
   }
 
+(* [generate_c_property_getter ~ctx ~c_type prop class_name] generates a C wrapper function
+   to read a GObject property via g_object_get_property. Initializes GValue for the property,
+   reads the property value via g_object_get_property, converts from C GValue to OCaml value
+   using type mapping, and unsets the GValue. Properly declares property variable as stack or
+   heap allocated based on property type analysis. Returns the complete C function code. *)
 let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
   let ml_name = Utils.ml_property_name ~class_name prop in
 
@@ -687,6 +765,11 @@ let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
     ml_name c_type c_type c_cast prop_decl prop.prop_name ml_name prop.prop_name
     prop.prop_name gvalue_assignment ml_prop_value
 
+(* [generate_c_property_setter ~ctx ~c_type prop class_name] generates a C wrapper function
+   to write a GObject property via g_object_set_property. Converts OCaml value to C value,
+   initializes GValue for the property, stores converted value in GValue, calls g_object_set_property,
+   and unsets the GValue. Optimizes string types using const string declarations. Returns the
+   complete C function code. *)
 let generate_c_property_setter ~ctx ~c_type (prop : gir_property) class_name =
   let prop_name_cleaned =
     String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name
@@ -747,7 +830,12 @@ let generate_c_property_setter ~ctx ~c_type (prop : gir_property) class_name =
     ml_name c_type c_type c_cast value_declaration prop.prop_name ml_name
     prop.prop_name setter_assignment prop.prop_name
 
-(* Generate complete C file for a single class/interface *)
+(* [generate_class_c_code ~ctx ~c_type class_name constructors methods properties]
+   generates the complete C stub code for a class or interface. Produces C header,
+   C wrapper functions for constructors, methods, and properties. Skips constructors with
+   unsupported features (throws, varargs, cross-namespace types, array params). Generates
+   property getters and setters only if configured to be generated. Returns the full C file
+   content including header and all wrapper functions as a single string. *)
 let generate_class_c_code ~ctx ~c_type class_name constructors methods
     properties =
   let buf = Buffer.create 4096 in
@@ -796,6 +884,12 @@ let generate_class_c_code ~ctx ~c_type class_name constructors methods
 
   Buffer.contents buf
 
+(* [generate_forward_decls ~classes ~interfaces] generates forward declaration macros for
+   class and interface conversion functions. Creates #define macros for Val_<type> and <type>_val
+   conversions that map between OCaml values and C pointers using helper functions. The Val_<type>
+   macro wraps ml_gobject_val_of_ext, while <type>_val extracts via ml_gobject_ext_of_val.
+   Avoids duplicate declarations using a hashtable of seen types to handle shared inheritance.
+   Returns the complete C macro declarations as a string. *)
 let generate_forward_decls ~classes ~interfaces =
   let buf = Buffer.create 2048 in
   let seen = Hashtbl.create 97 in
