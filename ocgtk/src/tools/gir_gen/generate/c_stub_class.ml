@@ -5,6 +5,340 @@ open Containers
 open StdLabels
 open Types
 
+(* Helper to get C type string from a gir_type, falling back to type mapping *)
+let get_c_type_str ~ctx (gir_type : gir_type) =
+  match gir_type.c_type with
+  | Some c_type -> c_type
+  | None ->
+      Option.bind (Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type)
+        (fun tm -> Some tm.c_type)
+      |> Option.value ~default:"void"
+
+(* Helper to get element C type from array info *)
+let get_element_c_type ~fallback (array_info : gir_array) =
+  array_info.element_type.c_type |> Option.value ~default:fallback
+
+(* Generate variable name based on parameter direction and index *)
+let var_name_for_direction direction idx =
+  match direction with
+  | Out -> sprintf "out%d" (idx + 1)
+  | InOut -> sprintf "inout%d" (idx + 1)
+  | In -> sprintf "arg%d" (idx + 1)
+
+(* Handle Out parameter - generates declaration and returns updated accumulator *)
+let handle_out_param ~param_index ~base_type ~acc (p : gir_param) =
+  let var_name = sprintf "out%d" (param_index + 1) in
+  let is_array = Option.is_some p.param_type.array in
+  (* Out-parameter array: declare as pointer; regular: declare as value *)
+  if is_array then
+    bprintf acc.C_stub_helpers.decls "%s* %s = NULL;\n" base_type var_name
+  else bprintf acc.C_stub_helpers.decls "%s %s;\n" base_type var_name;
+  { acc with C_stub_helpers.args = acc.C_stub_helpers.args @ [ sprintf "&%s" var_name ] }
+
+(* Handle InOut parameter - generates declaration with init and returns updated accumulator *)
+let handle_inout_param ~_ctx ~param_index ~base_type ~acc ~tm (p : gir_param) =
+  let ocaml_idx = acc.C_stub_helpers.ocaml_idx + 1 in
+  let arg_name = sprintf "arg%d" ocaml_idx in
+  let var_name = sprintf "inout%d" (param_index + 1) in
+  let init_expr =
+    match tm with
+    | Some mapping ->
+        let param_type =
+          { p.param_type with nullable = p.nullable || p.param_type.nullable }
+        in
+        C_stub_helpers.nullable_ml_to_c_expr ~var:arg_name ~gir_type:param_type
+          ~mapping
+    | None -> arg_name
+  in
+  bprintf acc.decls "%s %s = %s;\n" base_type var_name init_expr;
+  {
+    C_stub_helpers.ocaml_idx = ocaml_idx;
+    decls = acc.decls;
+    args = acc.args @ [ sprintf "&%s" var_name ];
+    cleanups = acc.cleanups;
+  }
+
+(* Handle In parameter with array type *)
+let handle_in_array_param ~ctx ~acc ~arg_name ~base_type ~tm (p : gir_param)
+    (array_info : gir_array) =
+  match tm with
+  | Some mapping ->
+      (* Use element's c:type directly for modifiable local array *)
+      let element_c_type = get_element_c_type ~fallback:base_type array_info in
+      let conv_code, c_array_var, _length_var, cleanup_code =
+        C_stub_helpers.generate_array_ml_to_c ~ctx ~var:arg_name ~array_info
+          ~element_mapping:mapping ~element_c_type
+          ~transfer_ownership:p.param_type.transfer_ownership
+      in
+      bprintf acc.C_stub_helpers.decls "    %s\n" conv_code;
+      let new_cleanups =
+        if String.length cleanup_code > 0 then acc.cleanups @ [ cleanup_code ]
+        else acc.cleanups
+      in
+      (c_array_var, new_cleanups)
+  | None -> (arg_name, acc.cleanups)
+
+(* Handle In parameter (scalar or array) *)
+let handle_in_param ~ctx ~acc ~length_param_map ~base_type ~tm (p : gir_param) =
+  let ocaml_idx = acc.C_stub_helpers.ocaml_idx + 1 in
+  let arg_name = sprintf "arg%d" ocaml_idx in
+  match p.param_type.array with
+  | Some array_info ->
+      let arg_expr, new_cleanups =
+        handle_in_array_param ~ctx ~acc ~arg_name ~base_type ~tm p array_info
+      in
+      {
+        C_stub_helpers.ocaml_idx;
+        decls = acc.decls;
+        args = acc.args @ [ arg_expr ];
+        cleanups = new_cleanups;
+      }
+  | None ->
+      (* Check if this is a length parameter for another array *)
+      let arg_expr =
+        match List.assoc_opt ocaml_idx length_param_map with
+        | Some length_var -> length_var
+        | None ->
+            (* Normal parameter handling *)
+            match tm with
+            | Some mapping ->
+                let param_type =
+                  {
+                    p.param_type with
+                    nullable = p.nullable || p.param_type.nullable;
+                  }
+                in
+                C_stub_helpers.nullable_ml_to_c_expr ~var:arg_name
+                  ~gir_type:param_type ~mapping
+            | None -> arg_name
+      in
+      {
+        C_stub_helpers.ocaml_idx;
+        decls = acc.decls;
+        args = acc.args @ [ arg_expr ];
+        cleanups = acc.cleanups;
+      }
+
+(* Strip pointer suffix from C type string if present *)
+let strip_pointer_suffix c_type =
+  if
+    String.length c_type > 0
+    && String.equal
+         (String.sub c_type ~pos:(String.length c_type - 1) ~len:1)
+         "*"
+  then String.sub c_type ~pos:0 ~len:(String.length c_type - 1)
+  else c_type
+
+(* Convert out-parameter array to ML value *)
+let convert_out_array ~ctx ~out_array_length_map ~out_array_conversions_buf
+    ~out_array_cleanups ~parameters ~idx ~var_name (p : gir_param)
+    (array_info : gir_array) =
+  let element_c_type =
+    match array_info.element_type.c_type with
+    | Some ct -> ct
+    | None ->
+        Option.bind
+          (Type_mappings.find_type_mapping_for_gir_type ~ctx
+             array_info.element_type)
+          (fun tm -> Some tm.c_type)
+        |> Option.value ~default:"void"
+  in
+  let length_expr =
+    Option.bind (List.assoc_opt idx out_array_length_map)
+      (fun length_idx ->
+        Option.bind (List.nth_opt parameters length_idx)
+          (fun param -> Some (var_name_for_direction param.direction length_idx)))
+  in
+  Option.bind
+    (Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type)
+    (fun _mapping ->
+      let conv_code, ml_array_var, cleanup_code =
+        C_stub_helpers.generate_array_c_to_ml ~ctx ~var:var_name ~array_info
+          ~length_expr ~element_c_type
+          ~transfer_ownership:p.param_type.transfer_ownership
+      in
+      bprintf out_array_conversions_buf "    %s\n" conv_code;
+      if String.length cleanup_code > 0 then
+        out_array_cleanups := !out_array_cleanups @ [ cleanup_code ];
+      Some ml_array_var)
+
+(* Convert scalar out-parameter to ML value *)
+let convert_out_scalar ~ctx ~_idx ~var_name (p : gir_param) =
+  let base_gir_type =
+    Option.bind p.param_type.c_type (fun c_type ->
+      let stripped = strip_pointer_suffix c_type in
+      if String.equal stripped c_type then Some p.param_type
+      else Some { p.param_type with c_type = Some stripped })
+    |> Option.value ~default:p.param_type
+  in
+  Option.bind (Type_mappings.find_type_mapping_for_gir_type ~ctx base_gir_type)
+    (fun mapping ->
+      Some
+        (C_stub_helpers.nullable_c_to_ml_expr ~ctx ~var:var_name
+           ~gir_type:base_gir_type ~mapping ~direction:p.direction ()))
+
+(* Process a single out/inout parameter for return conversion *)
+let process_out_param_conversion ~ctx ~out_array_length_map
+    ~out_array_conversions_buf ~out_array_cleanups ~parameters (p, idx) =
+  match p.direction with
+  | In -> None
+  | Out | InOut -> (
+      let var_name = var_name_for_direction p.direction idx in
+      match p.param_type.array with
+      | Some array_info ->
+          convert_out_array ~ctx ~out_array_length_map
+            ~out_array_conversions_buf ~out_array_cleanups ~parameters ~idx
+            ~var_name p array_info
+      | None -> convert_out_scalar ~ctx ~_idx:idx ~var_name p)
+
+(* Generate ref_sink statement for GObject types based on transfer-ownership *)
+let generate_ref_sink_stmt ~transfer_ownership mapping =
+  mapping.layer2_class
+  |> Option.map (fun _ ->
+         match transfer_ownership with
+         | Types.TransferNone | Types.TransferFloating ->
+             "\nif (result) g_object_ref_sink(result);"
+         | Types.TransferFull | Types.TransferContainer -> "")
+  |> Option.value ~default:""
+
+(* Handle void return type *)
+let handle_void_return ~c_name ~args ~out_array_conv_code ~out_array_cleanup_list =
+  let c_call_with_conv =
+    if String.length out_array_conv_code > 0 then
+      sprintf "%s(%s);\n%s" c_name args out_array_conv_code
+    else sprintf "%s(%s);" c_name args
+  in
+  (c_call_with_conv, C_stub_helpers.build_return_statement ~throws:false None [], out_array_cleanup_list)
+
+(* Handle array return type *)
+let handle_array_return ~ctx ~(meth : gir_method) ~c_name ~args ~out_array_conv_code ~ret_type
+    ~out_conversions ~out_array_cleanup_list =
+  let array_info =
+    match meth.return_type.array with
+    | Some ai -> ai
+    | None -> failwith "Array return type without array info"
+  in
+  let element_c_type = get_element_c_type ~fallback:ret_type array_info in
+  let length_expr = None in
+  let conv_code, ml_array_var, array_cleanup =
+    C_stub_helpers.generate_array_c_to_ml ~ctx ~var:"result" ~array_info
+      ~length_expr ~element_c_type
+      ~transfer_ownership:meth.return_type.transfer_ownership
+  in
+  let c_call_base = sprintf "%s result = %s(%s);" ret_type c_name args in
+  let c_call =
+    if String.length out_array_conv_code > 0 then
+      sprintf "%s\n%s    %s" c_call_base out_array_conv_code conv_code
+    else sprintf "%s\n    %s" c_call_base conv_code
+  in
+  let ret_conv =
+    C_stub_helpers.build_return_statement ~throws:meth.throws
+      (Some ml_array_var) out_conversions
+  in
+  let additional_cleanups =
+    out_array_cleanup_list
+    @ (if String.length array_cleanup > 0 then [ array_cleanup ] else [])
+  in
+  (c_call, ret_conv, additional_cleanups)
+
+(* Handle scalar return type *)
+let handle_scalar_return ~ctx ~(meth : gir_method) ~c_name ~args ~out_array_conv_code ~ret_type
+    ~mapping ~out_conversions ~out_array_cleanup_list =
+  let ml_result =
+    C_stub_helpers.nullable_c_to_ml_expr ~ctx ~var:"result"
+      ~gir_type:meth.return_type ~mapping ()
+  in
+  let ref_sink_stmt =
+    generate_ref_sink_stmt ~transfer_ownership:meth.return_type.transfer_ownership
+      mapping
+  in
+  let c_call_base =
+    sprintf "%s result = %s(%s);%s" ret_type c_name args ref_sink_stmt
+  in
+  let c_call =
+    if String.length out_array_conv_code > 0 then
+      sprintf "%s\n%s" c_call_base out_array_conv_code
+    else c_call_base
+  in
+  (c_call,
+   C_stub_helpers.build_return_statement ~throws:meth.throws
+     (Some ml_result) out_conversions,
+   out_array_cleanup_list)
+
+(* Build return conversion for a method *)
+let build_return_conversion ~ctx ~(meth : gir_method) ~c_name ~args ~ret_type
+    ~out_array_conv_code ~out_conversions ~out_array_cleanup_list =
+  match ret_type with
+  | Some "void" | None -> handle_void_return ~c_name ~args ~out_array_conv_code ~out_array_cleanup_list
+  | Some ret_type -> (
+      match
+        Type_mappings.find_type_mapping_for_gir_type ~ctx meth.return_type
+      with
+      | Some mapping -> (
+          match meth.return_type.array with
+          | Some _array_info ->
+              handle_array_return ~ctx ~meth ~c_name ~args ~out_array_conv_code
+                ~ret_type ~out_conversions ~out_array_cleanup_list
+          | None ->
+              handle_scalar_return ~ctx ~meth ~c_name ~args ~out_array_conv_code
+                ~ret_type ~mapping ~out_conversions ~out_array_cleanup_list)
+      | None ->
+          (* No type mapping found - fail with clear error *)
+          failwith
+            (sprintf
+               "No type mapping found for return type: name='%s' c_type='%s' \
+                in method %s. This indicates missing type information in the \
+                context or GIR metadata."
+               meth.return_type.name
+               (Option.value meth.return_type.c_type ~default:"<none>")
+               meth.c_identifier))
+
+(* Build a map from OCaml arg index to length variable name for array parameters.
+   This is used to substitute length parameters with computed array lengths. *)
+let build_length_param_map ~(meth : gir_method) =
+  (* Count non-Out parameters to get OCaml indices *)
+  let in_param_indices =
+    List.fold_left
+      ~f:(fun (idx, acc) (p : gir_param) ->
+        match p.direction with
+        | Out -> (idx, acc)
+        | _ -> (idx + 1, (p, idx) :: acc))
+      ~init:(0, []) meth.parameters
+    |> snd |> List.rev
+  in
+  (* For each array param with a length index, map the length param's OCaml idx to the length var *)
+  List.filter_map
+    ~f:(fun (p, ocaml_idx) ->
+      Option.bind (Option.bind p.param_type.array (fun ai -> ai.length))
+        (fun length_idx ->
+          (* Find which OCaml arg index corresponds to the length parameter *)
+          let length_ocaml_idx = ref None in
+          let current_idx = ref 0 in
+          List.iteri meth.parameters ~f:(fun param_idx param ->
+              match param.direction with
+              | Out -> ()
+              | _ ->
+                  if param_idx = length_idx then
+                    length_ocaml_idx := Some !current_idx;
+                  current_idx := !current_idx + 1);
+          Option.bind !length_ocaml_idx (fun len_idx ->
+            let arg_name = sprintf "arg%d" (ocaml_idx + 1) in
+            Some (len_idx, arg_name ^ "_length"))))
+    in_param_indices
+
+(* Build a map from array parameter index to its length parameter index *)
+let build_out_array_length_map parameters =
+  List.fold_left
+    ~f:(fun acc (p, idx) ->
+      match (p.direction, p.param_type.array) with
+      | (Out | InOut), Some array_info ->
+          array_info.length
+          |> Option.map (fun length_idx -> (idx, length_idx) :: acc)
+          |> Option.value ~default:acc
+      | _ -> acc)
+    ~init:[]
+    (List.mapi ~f:(fun i p -> (p, i)) parameters)
+
 let generate_c_constructor ~ctx ~c_type ~class_name (ctor : gir_constructor) =
   let c_name = ctor.c_identifier in
   let ml_name = Utils.ml_constructor_name ~class_name ~constructor:ctor in
@@ -51,9 +385,7 @@ let generate_c_constructor ~ctx ~c_type ~class_name (ctor : gir_constructor) =
   let c_args =
     List.mapi
       ~f:(fun i p ->
-        match
-          Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type
-        with
+        match Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type with
         | Some mapping ->
             let param_type =
               {
@@ -150,6 +482,47 @@ let generate_c_constructor ~ctx ~c_type ~class_name (ctor : gir_constructor) =
       error_decl c_type var_name c_name c_call_args ref_sink_stmt return_stmt
   end
 
+(* Helper: Build mapping of array parameter indices to their length parameter variables *)
+let build_length_param_map ~(meth : gir_method) =
+  let find_in_param_index target_idx =
+    let count = ref (-1) in
+    List.iteri meth.parameters ~f:(fun idx param ->
+        match param.direction with
+        | Out -> ()
+        | _ ->
+            count := !count + 1;
+            if idx = target_idx then ());
+    if !count >= 0 then Some !count else None
+  in
+  let array_ocaml_idx p =
+    let count = ref (-1) in
+    List.iter meth.parameters ~f:(fun param ->
+        match param.direction with
+        | Out -> ()
+        | _ ->
+            count := !count + 1;
+            if Stdlib.( == ) param p then ());
+    if !count >= 0 then Some !count else None
+  in
+  List.fold_left
+    ~f:(fun acc (p : gir_param) ->
+      match p.param_type.array with
+      | Some array_info -> (
+          match array_info.length with
+          | Some length_idx -> (
+              match find_in_param_index length_idx with
+              | Some in_param_idx -> (
+                  match array_ocaml_idx p with
+                  | Some idx ->
+                      let arg_name = sprintf "arg%d" (idx + 1) in
+                      let length_var = arg_name ^ "_length" in
+                      (in_param_idx, length_var) :: acc
+                  | None -> acc)
+              | None -> acc)
+          | None -> acc)
+      | None -> acc)
+    ~init:[] meth.parameters
+
 let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
   let c_name = meth.c_identifier in
   let ml_name = Utils.ml_method_name ~class_name meth in
@@ -172,43 +545,8 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
 
   (* Build C call - handle nullable parameters *)
   let out_decls, c_args, param_cleanups =
-    (* First pass: identify which parameters are array length parameters *)
-    let length_param_map =
-      List.fold_left
-        ~f:(fun acc (p : gir_param) ->
-          let array_info = p.param_type.array in
-          Option.bind array_info (fun array_info ->
-              let ( let* ) fn a = Option.map a fn in
-              let* length_idx = array_info.length in
-              (* This array's length is specified by parameter at index length_idx *)
-              (* Find the corresponding parameter name based on In parameter count *)
-              let in_param_idx = ref (-1) in
-              let target_param_idx = ref 0 in
-              List.iteri meth.parameters ~f:(fun idx param ->
-                  match param.direction with
-                  | Out -> ()
-                  | _ ->
-                      if idx = length_idx then in_param_idx := !target_param_idx;
-                      target_param_idx := !target_param_idx + 1);
-              if !in_param_idx >= 0 then (
-                (* Map: OCaml arg index -> (C array variable name, length variable name) *)
-                let array_ocaml_idx = ref (-1) in
-                let count = ref 0 in
-                List.iter meth.parameters ~f:(fun param ->
-                    match param.direction with
-                    | Out -> ()
-                    | _ ->
-                        if Stdlib.( == ) param p then array_ocaml_idx := !count;
-                        count := !count + 1);
-                if !array_ocaml_idx >= 0 then
-                  let arg_name = sprintf "arg%d" (!array_ocaml_idx + 1) in
-                  let length_var = arg_name ^ "_length" in
-                  (!in_param_idx, length_var) :: acc
-                else acc)
-              else acc)
-          |> Option.value ~default:acc)
-        ~init:[] meth.parameters
-    in
+    (* Build map: OCaml arg index -> length variable name for array length params *)
+    let length_param_map = build_length_param_map ~meth in
 
     let init_acc =
       {
@@ -224,149 +562,16 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
           let tm =
             Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type
           in
-          let c_type_str =
-            match p.param_type.c_type with
-            | Some c_type -> c_type
-            | None ->
-                tm
-                |> Option.map (fun tm -> tm.c_type)
-                |> Option.value ~default:"void"
-          in
+          let c_type_str = get_c_type_str ~ctx p.param_type in
           let base_type = C_stub_helpers.base_c_type_of c_type_str in
-          match p.direction with
-          | Out -> (
-              let var_name = sprintf "out%d" (param_index + 1) in
-              match p.param_type.array with
-              | Some _array_info ->
-                  (* Out-parameter array - declare as pointer (will be set by the function) *)
-                  bprintf acc.decls "%s* %s = NULL;\n" base_type var_name;
-                  ( {
-                      acc with
-                      args = acc.args @ [ sprintf "&%s" var_name ];
-                      cleanups = acc.cleanups;
-                    },
-                    () )
-              | None ->
-                  (* Regular out parameter - declare as value *)
-                  bprintf acc.decls "%s %s;\n" base_type var_name;
-                  ( {
-                      acc with
-                      args = acc.args @ [ sprintf "&%s" var_name ];
-                      cleanups = acc.cleanups;
-                    },
-                    () ))
-          | InOut ->
-              let ocaml_idx = acc.ocaml_idx + 1 in
-              let arg_name = sprintf "arg%d" ocaml_idx in
-              let var_name = sprintf "inout%d" (param_index + 1) in
-              let init_expr =
-                match tm with
-                | Some mapping ->
-                    let param_type =
-                      {
-                        p.param_type with
-                        nullable = p.nullable || p.param_type.nullable;
-                      }
-                    in
-                    C_stub_helpers.nullable_ml_to_c_expr ~var:arg_name
-                      ~gir_type:param_type ~mapping
-                | None -> arg_name
-              in
-              bprintf acc.decls "%s %s = %s;\n" base_type var_name init_expr;
-              ( {
-                  ocaml_idx;
-                  decls = acc.decls;
-                  args = acc.args @ [ sprintf "&%s" var_name ];
-                  cleanups = acc.cleanups;
-                },
-                () )
-          | In -> (
-              let ocaml_idx = acc.ocaml_idx + 1 in
-              let arg_name = sprintf "arg%d" ocaml_idx in
-
-              (* Check if this is an array parameter *)
-              match p.param_type.array with
-              | Some array_info -> (
-                  (* Array parameter - generate conversion code *)
-                  match tm with
-                  | Some mapping ->
-                      (* Use the element's c:type directly - this gives us a modifiable
-                         local array type. The array's c:type may have extra const qualifiers
-                         that are too strict for local allocation. *)
-                      let element_c_type =
-                        match array_info.element_type.c_type with
-                        | Some ct -> ct
-                        | None -> base_type
-                      in
-                      let conv_code, c_array_var, _length_var, cleanup_code =
-                        C_stub_helpers.generate_array_ml_to_c ~ctx ~var:arg_name
-                          ~array_info ~element_mapping:mapping ~element_c_type
-                          ~transfer_ownership:p.param_type.transfer_ownership
-                      in
-                      bprintf acc.decls "    %s\n" conv_code;
-
-                      (* Store cleanup code to be emitted after the function call *)
-                      let new_cleanups =
-                        if String.length cleanup_code > 0 then
-                          acc.cleanups @ [ cleanup_code ]
-                        else acc.cleanups
-                      in
-
-                      (* Determine which variable to pass as argument *)
-                      let arg_expr =
-                        match array_info.length with
-                        | Some _length_idx ->
-                            (* Length parameter exists - pass just the array *)
-                            c_array_var
-                        | None ->
-                            (* No length parameter - zero-terminated array *)
-                            c_array_var
-                      in
-
-                      ( {
-                          ocaml_idx;
-                          decls = acc.decls;
-                          args = acc.args @ [ arg_expr ];
-                          cleanups = new_cleanups;
-                        },
-                        () )
-                  | None ->
-                      (* No type mapping - skip *)
-                      ( {
-                          ocaml_idx;
-                          decls = acc.decls;
-                          args = acc.args @ [ arg_name ];
-                          cleanups = acc.cleanups;
-                        },
-                        () ))
-              | None ->
-                  (* Not an array - check if this is a length parameter for another array *)
-                  let arg_expr =
-                    match List.assoc_opt acc.ocaml_idx length_param_map with
-                    | Some length_var ->
-                        (* This parameter is the length for an array - use the computed length variable *)
-                        length_var
-                    | None -> (
-                        (* Normal parameter handling *)
-                        match tm with
-                        | Some mapping ->
-                            let param_type =
-                              {
-                                p.param_type with
-                                nullable = p.nullable || p.param_type.nullable;
-                              }
-                            in
-                            C_stub_helpers.nullable_ml_to_c_expr ~var:arg_name
-                              ~gir_type:param_type ~mapping
-                        | None -> arg_name)
-                  in
-                  ( {
-                      ocaml_idx;
-                      decls = acc.decls;
-                      args = acc.args @ [ arg_expr ];
-                      cleanups = acc.cleanups;
-                    },
-                    () )))
+          let new_acc =
+            match p.direction with
+            | Out -> handle_out_param ~param_index ~base_type ~acc p
+            | InOut ->
+                handle_inout_param ~_ctx:ctx ~param_index ~base_type ~acc ~tm p
+            | In -> handle_in_param ~ctx ~acc ~length_param_map ~base_type ~tm p
+          in
+          (new_acc, ()))
     in
     ( Buffer.contents final_acc.decls,
       self_cast :: final_acc.args,
@@ -385,21 +590,7 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
     in
 
     (* Build map of out-parameter array lengths *)
-    let out_array_length_map =
-      List.fold_left
-        ~f:(fun acc (p, idx) ->
-          match (p.direction, p.param_type.array) with
-          | (Out | InOut), Some array_info -> (
-              match array_info.length with
-              | Some length_idx ->
-                  (* This out-array's length comes from parameter at length_idx *)
-                  (* Map: array parameter index -> length parameter index *)
-                  (idx, length_idx) :: acc
-              | None -> acc)
-          | _ -> acc)
-        ~init:[]
-        (List.mapi ~f:(fun i p -> (p, i)) meth.parameters)
-    in
+    let out_array_length_map = build_out_array_length_map meth.parameters in
 
     (* Generate conversion code and cleanup for out-parameter arrays *)
     let out_array_conversions_buf = Buffer.create 256 in
@@ -407,110 +598,10 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
 
     let out_conversions =
       List.filter_map
-        ~f:(fun (p, idx) ->
-          match p.direction with
-          | Out | InOut -> (
-              (* Check if this is an array out parameter *)
-              match p.param_type.array with
-              | Some array_info -> (
-                  (* Out-parameter array - need to convert from C array *)
-                  let var_name =
-                    match p.direction with
-                    | Out -> sprintf "out%d" (idx + 1)
-                    | InOut -> sprintf "inout%d" (idx + 1)
-                    | In -> "" (* Won't occur *)
-                  in
-
-                  (* Find the element C type *)
-                  let element_c_type =
-                    match array_info.element_type.c_type with
-                    | Some ct -> ct
-                    | None -> (
-                        match
-                          Type_mappings.find_type_mapping_for_gir_type ~ctx
-                            array_info.element_type
-                        with
-                        | Some tm -> tm.c_type
-                        | None -> "void")
-                  in
-
-                  (* Determine length expression *)
-                  let length_expr =
-                    match List.assoc_opt idx out_array_length_map with
-                    | Some length_idx ->
-                        let length_var_name =
-                          match List.nth_opt meth.parameters length_idx with
-                          | Some param -> (
-                              match param.direction with
-                              | Out -> sprintf "out%d" (length_idx + 1)
-                              | InOut -> sprintf "inout%d" (length_idx + 1)
-                              | In -> sprintf "arg%d" (length_idx + 1))
-                          | None -> "unknown_length"
-                        in
-                        Some length_var_name
-                    | None -> None
-                  in
-
-                  (* Generate array conversion code *)
-                  match
-                    Type_mappings.find_type_mapping_for_gir_type ~ctx
-                      p.param_type
-                  with
-                  | Some _mapping ->
-                      let conv_code, ml_array_var, cleanup_code =
-                        C_stub_helpers.generate_array_c_to_ml ~ctx ~var:var_name
-                          ~array_info ~length_expr ~element_c_type
-                          ~transfer_ownership:p.param_type.transfer_ownership
-                      in
-                      (* Add conversion code to buffer *)
-                      bprintf out_array_conversions_buf "    %s\n" conv_code;
-                      (* Add cleanup code if present *)
-                      if String.length cleanup_code > 0 then
-                        out_array_cleanups :=
-                          !out_array_cleanups @ [ cleanup_code ];
-                      (* Return just the ML variable name for the return statement *)
-                      Some ml_array_var
-                  | None -> None)
-              | None -> (
-                  (* Regular scalar out parameter *)
-                  let base_gir_type =
-                    p.param_type.c_type
-                    |> Option.map (fun c_type ->
-                        if
-                          String.equal
-                            (String.sub c_type
-                               ~pos:(String.length c_type - 1)
-                               ~len:1)
-                            "*"
-                        then
-                          {
-                            p.param_type with
-                            c_type =
-                              Some
-                                (String.sub c_type ~pos:0
-                                   ~len:(String.length c_type - 1));
-                          }
-                        else p.param_type)
-                    |> Option.value ~default:p.param_type
-                  in
-                  match
-                    Type_mappings.find_type_mapping_for_gir_type ~ctx
-                      base_gir_type
-                  with
-                  | Some mapping ->
-                      let var_name =
-                        match p.direction with
-                        | Out -> sprintf "out%d" (idx + 1)
-                        | InOut -> sprintf "inout%d" (idx + 1)
-                        | In ->
-                            "" (* This case won't occur due to outer match *)
-                      in
-                      Some
-                        (C_stub_helpers.nullable_c_to_ml_expr ~ctx ~var:var_name
-                           ~gir_type:base_gir_type ~mapping
-                           ~direction:p.direction ())
-                  | None -> None))
-          | In -> None)
+        ~f:
+          (process_out_param_conversion ~ctx ~out_array_length_map
+             ~out_array_conversions_buf ~out_array_cleanups
+             ~parameters:meth.parameters)
         (List.mapi ~f:(fun i p -> (p, i)) meth.parameters)
     in
 
@@ -518,101 +609,8 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
     let out_array_conv_code = Buffer.contents out_array_conversions_buf in
     let out_array_cleanup_list = !out_array_cleanups in
 
-    match ret_type with
-    | Some "void" | None ->
-        let c_call_with_conv =
-          if String.length out_array_conv_code > 0 then
-            sprintf "%s(%s);\n%s" c_name args out_array_conv_code
-          else sprintf "%s(%s);" c_name args
-        in
-        ( c_call_with_conv,
-          C_stub_helpers.build_return_statement ~throws:meth.throws None
-            out_conversions,
-          out_array_cleanup_list )
-    | Some ret_type -> (
-        match
-          Type_mappings.find_type_mapping_for_gir_type ~ctx meth.return_type
-        with
-        | Some mapping -> (
-            (* Check if return type is an array *)
-            match meth.return_type.array with
-            | Some array_info ->
-                (* Array return type - generate conversion code *)
-                let element_c_type =
-                  match array_info.element_type.c_type with
-                  | Some ct -> ct
-                  | None -> ret_type
-                in
-                let length_expr =
-                  (* TODO: Handle length from out parameters *)
-                  None
-                in
-                let conv_code, ml_array_var, array_cleanup =
-                  C_stub_helpers.generate_array_c_to_ml ~ctx ~var:"result"
-                    ~array_info ~length_expr ~element_c_type
-                    ~transfer_ownership:meth.return_type.transfer_ownership
-                in
-                (* Call function and convert array *)
-                let c_call_base =
-                  sprintf "%s result = %s(%s);" ret_type c_name args
-                in
-                let c_call =
-                  if String.length out_array_conv_code > 0 then
-                    sprintf "%s\n%s    %s" c_call_base out_array_conv_code
-                      conv_code
-                  else sprintf "%s\n    %s" c_call_base conv_code
-                in
-                let ret_conv =
-                  C_stub_helpers.build_return_statement ~throws:meth.throws
-                    (Some ml_array_var) out_conversions
-                in
-                (* Return cleanup code to be added to param_cleanups *)
-                let additional_cleanups =
-                  out_array_cleanup_list
-                  @
-                  if String.length array_cleanup > 0 then [ array_cleanup ]
-                  else []
-                in
-                (c_call, ret_conv, additional_cleanups)
-            | None ->
-                (* Not an array - normal return handling *)
-                let ml_result =
-                  C_stub_helpers.nullable_c_to_ml_expr ~ctx ~var:"result"
-                    ~gir_type:meth.return_type ~mapping ()
-                in
-                (* Generate ref_sink statement for GObject types based on transfer-ownership *)
-                let ref_sink_stmt =
-                  match mapping.layer2_class with
-                  | Some _ -> (
-                      match meth.return_type.transfer_ownership with
-                      | Types.TransferNone | Types.TransferFloating ->
-                          "\nif (result) g_object_ref_sink(result);"
-                      | Types.TransferFull | Types.TransferContainer -> "")
-                  | None -> ""
-                in
-                let c_call_base =
-                  sprintf "%s result = %s(%s);%s" ret_type c_name args
-                    ref_sink_stmt
-                in
-                let c_call =
-                  if String.length out_array_conv_code > 0 then
-                    sprintf "%s\n%s" c_call_base out_array_conv_code
-                  else c_call_base
-                in
-                ( c_call,
-                  C_stub_helpers.build_return_statement ~throws:meth.throws
-                    (Some ml_result) out_conversions,
-                  out_array_cleanup_list ))
-        | None ->
-            (* No type mapping found - fail with clear error *)
-            failwith
-              (sprintf
-                 "No type mapping found for return type: name='%s' c_type='%s' \
-                  in method %s. This indicates missing type information in the \
-                  context or GIR metadata."
-                 meth.return_type.name
-                 (Option.value meth.return_type.c_type ~default:"<none>")
-                 meth.c_identifier))
+    build_return_conversion ~ctx ~meth ~c_name ~args ~ret_type
+      ~out_array_conv_code ~out_conversions ~out_array_cleanup_list
   in
 
   (* Emit cleanup code for arrays (both parameter and return cleanups) *)
@@ -676,22 +674,24 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
       (String.concat ~sep:", " param_names)
       locals c_call cleanup_section ret_conv
 
+(* Default type mapping for when no mapping is found *)
+let default_type_mapping =
+  {
+    ocaml_type = "unit";
+    c_to_ml = "Val_unit";
+    ml_to_c = "Unit_val";
+    needs_copy = false;
+    layer2_class = None;
+    c_type = "void";
+  }
+
 let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
   let ml_name = Utils.ml_property_name ~class_name prop in
 
   (* Determine property type mapping *)
   let type_info =
-    match Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type with
-    | Some mapping -> mapping
-    | None ->
-        {
-          ocaml_type = "unit";
-          c_to_ml = "Val_unit";
-          ml_to_c = "Unit_val";
-          needs_copy = false;
-          layer2_class = None;
-          c_type = "void";
-        }
+    Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type
+    |> Option.value ~default:default_type_mapping
   in
 
   let ml_prop_value =
@@ -700,16 +700,8 @@ let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
   in
   let prop_info = C_stub_helpers.analyze_property_type ~ctx prop.prop_type in
   let c_cast = sprintf "%s_val" c_type in
-  let tm = Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type in
-  let c_type_name =
-    match prop.prop_type.c_type with
-    | Some c_type_name -> c_type_name
-    | None ->
-        tm |> Option.map (fun tm -> tm.c_type) |> Option.value ~default:"void"
-  in
-  let prop_pointer =
-    match prop_info.stack_allocated with true -> "" | false -> "*"
-  in
+  let c_type_name = get_c_type_str ~ctx prop.prop_type in
+  let prop_pointer = if prop_info.stack_allocated then "" else "*" in
   let prop_decl = sprintf "    %s %sprop_value;\n" c_type_name prop_pointer in
   let gvalue_assignment =
     C_stub_helpers.generate_gvalue_getter_assignment ~ml_name ~prop ~c_type_name
@@ -748,17 +740,8 @@ let generate_c_property_setter ~ctx ~c_type (prop : gir_property) class_name =
 
   (* Determine property type mapping *)
   let type_info =
-    match Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type with
-    | Some mapping -> mapping
-    | None ->
-        {
-          ocaml_type = "unit";
-          c_to_ml = "Val_unit";
-          ml_to_c = "Unit_val";
-          needs_copy = false;
-          layer2_class = None;
-          c_type = "void";
-        }
+    Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type
+    |> Option.value ~default:default_type_mapping
   in
 
   let c_value_expr =
@@ -766,15 +749,20 @@ let generate_c_property_setter ~ctx ~c_type (prop : gir_property) class_name =
       ~gir_type:prop.prop_type ~mapping:type_info
   in
 
+  (* Check if prop is a string type for const string declaration *)
+  let is_string_type =
+    Option.bind prop.prop_type.c_type (fun ct ->
+      Some (List.exists ~f:(fun s -> String.equal s ct)
+        [ "gchar*"; "gchararray"; "utf8"; "const gchar*"; "const char*" ]))
+    |> Option.value ~default:false
+  in
   let value_declaration =
-    match prop.prop_type.c_type with
-    | Some ("gchar*" | "gchararray" | "utf8" | "const gchar*" | "const char*")
-      ->
-        sprintf "    ML_DECL_CONST_STRING(c_value, %s);\n" c_value_expr
-    | _ ->
-        let pointer_prefix = if prop_info.stack_allocated then "" else "*" in
-        sprintf "    %s %sc_value = %s;\n" type_info.c_type pointer_prefix
-          c_value_expr
+    if is_string_type then
+      sprintf "    ML_DECL_CONST_STRING(c_value, %s);\n" c_value_expr
+    else
+      let pointer_prefix = if prop_info.stack_allocated then "" else "*" in
+      sprintf "    %s %sc_value = %s;\n" type_info.c_type pointer_prefix
+        c_value_expr
   in
 
   let c_cast = sprintf "%s_val" c_type in
