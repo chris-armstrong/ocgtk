@@ -5,6 +5,9 @@ open Containers
 open StdLabels
 open Types
 
+(* Option binding operator for flattening nested Option.bind chains *)
+let ( let* ) = Option.bind
+
 (* [get_c_type_str ~ctx gir_type] retrieves the C type string representation for a GIR type.
    Returns the c_type directly if present, otherwise consults the type mapping context.
    Falls back to "void" if no mapping is found. *)
@@ -169,23 +172,20 @@ let convert_out_array ~ctx ~out_array_length_map ~out_array_conversions_buf
         |> Option.value ~default:"void"
   in
   let length_expr =
-    Option.bind (List.assoc_opt idx out_array_length_map)
-      (fun length_idx ->
-        List.nth_opt parameters length_idx
-        |> Option.map (fun param -> var_name_for_direction param.direction length_idx))
+    let* length_idx = List.assoc_opt idx out_array_length_map in
+    let* param = List.nth_opt parameters length_idx in
+    Some (var_name_for_direction param.direction length_idx)
   in
-  Option.bind
-    (Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type)
-    (fun _mapping ->
-      let conv_code, ml_array_var, cleanup_code =
-        C_stub_helpers.generate_array_c_to_ml ~ctx ~var:var_name ~array_info
-          ~length_expr ~element_c_type
-          ~transfer_ownership:p.param_type.transfer_ownership
-      in
-      bprintf out_array_conversions_buf "    %s\n" conv_code;
-      if String.length cleanup_code > 0 then
-        out_array_cleanups := !out_array_cleanups @ [ cleanup_code ];
-      Some ml_array_var)
+  let* _mapping = Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type in
+  let conv_code, ml_array_var, cleanup_code =
+    C_stub_helpers.generate_array_c_to_ml ~ctx ~var:var_name ~array_info
+      ~length_expr ~element_c_type
+      ~transfer_ownership:p.param_type.transfer_ownership
+  in
+  bprintf out_array_conversions_buf "    %s\n" conv_code;
+  if String.length cleanup_code > 0 then
+    out_array_cleanups := !out_array_cleanups @ [ cleanup_code ];
+  Some ml_array_var
 
 (* [convert_out_scalar ~ctx ~_idx ~var_name p] converts a scalar out-parameter from C to OCaml.
    Strips pointer suffix from the type (e.g., "GObject*" -> "GObject") and uses type mapping
@@ -365,24 +365,21 @@ let build_length_param_map ~(meth : gir_method) =
   (* For each array param with a length index, map the length param's OCaml idx to the length var *)
   List.filter_map
     ~f:(fun (p, ocaml_idx) ->
-      Option.bind (p.param_type.array)
-        (fun ai ->
-          Option.bind ai.length
-            (fun length_idx ->
-              (* Find which OCaml arg index corresponds to the length parameter *)
-              let length_ocaml_idx = ref None in
-              let current_idx = ref 0 in
-              List.iteri meth.parameters ~f:(fun param_idx param ->
-                  match param.direction with
-                  | Out -> ()
-                  | _ ->
-                      if param_idx = length_idx then
-                        length_ocaml_idx := Some !current_idx;
-                      current_idx := !current_idx + 1);
-              !length_ocaml_idx
-              |> Option.map (fun len_idx ->
-                let arg_name = sprintf "arg%d" (ocaml_idx + 1) in
-                (len_idx, arg_name ^ "_length")))))
+      let* ai = p.param_type.array in
+      let* length_idx = ai.length in
+      (* Find which OCaml arg index corresponds to the length parameter *)
+      let length_ocaml_idx = ref None in
+      let current_idx = ref 0 in
+      List.iteri meth.parameters ~f:(fun param_idx param ->
+          match param.direction with
+          | Out -> ()
+          | _ ->
+              if param_idx = length_idx then
+                length_ocaml_idx := Some !current_idx;
+              current_idx := !current_idx + 1);
+      let* len_idx = !length_ocaml_idx in
+      let arg_name = sprintf "arg%d" (ocaml_idx + 1) in
+      Some (len_idx, arg_name ^ "_length"))
     in_param_indices
 
 (* [build_out_array_length_map parameters] builds a map from array parameter index to its length
