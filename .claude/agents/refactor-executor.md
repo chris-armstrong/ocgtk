@@ -2,7 +2,7 @@
 name: refactor-executor  
 description: Executes a single step of an OCaml refactoring plan
 tools: Read, Edit, Bash
-model: inherit
+model: haiku
 ---
 You will be given:
 - A file and line range

@@ -2,7 +2,7 @@
 name: refactor-reviewer
 description: Independently validates refactoring against original goal
 tools: Read, Grep, Glob, Bash
-model: inherit
+model: sonnet
 ---
 You are an INDEPENDENT reviewer. You validate whether a refactoring achieved its stated goal.
 
