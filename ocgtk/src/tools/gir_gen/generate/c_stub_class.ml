@@ -96,6 +96,27 @@ let handle_in_array_param ~ctx ~acc ~arg_name ~base_type ~tm (p : gir_param)
       (c_array_var, new_cleanups)
   | None -> (arg_name, acc.cleanups)
 
+(* [handle_scalar_param ~arg_name ~ocaml_idx ~length_param_map ~p ~tm] processes
+   a scalar (non-array) in-direction parameter. Checks if this is a length parameter
+   for another array (via length_param_map), and if so substitutes the length variable.
+   Otherwise uses type mapping or returns the argument name. *)
+let handle_scalar_param ~arg_name ~ocaml_idx ~length_param_map ~p ~tm =
+  match List.assoc_opt ocaml_idx length_param_map with
+  | Some length_var -> length_var
+  | None ->
+      (* Normal parameter handling *)
+      match tm with
+      | Some mapping ->
+          let param_type =
+            {
+              p.param_type with
+              nullable = p.nullable || p.param_type.nullable;
+            }
+          in
+          C_stub_helpers.nullable_ml_to_c_expr ~var:arg_name
+            ~gir_type:param_type ~mapping
+      | None -> arg_name
+
 (* [handle_in_param ~ctx ~acc ~length_param_map ~base_type ~tm p] processes an in-direction parameter.
    Handles both array and scalar types. For arrays, generates conversion code. For scalars,
    uses type mapping or substitutes length variable from length_param_map. Returns updated
@@ -115,23 +136,8 @@ let handle_in_param ~ctx ~acc ~length_param_map ~base_type ~tm (p : gir_param) =
         cleanups = new_cleanups;
       }
   | None ->
-      (* Check if this is a length parameter for another array *)
       let arg_expr =
-        match List.assoc_opt ocaml_idx length_param_map with
-        | Some length_var -> length_var
-        | None ->
-            (* Normal parameter handling *)
-            match tm with
-            | Some mapping ->
-                let param_type =
-                  {
-                    p.param_type with
-                    nullable = p.nullable || p.param_type.nullable;
-                  }
-                in
-                C_stub_helpers.nullable_ml_to_c_expr ~var:arg_name
-                  ~gir_type:param_type ~mapping
-            | None -> arg_name
+        handle_scalar_param ~arg_name ~ocaml_idx ~length_param_map ~p ~tm
       in
       {
         C_stub_helpers.ocaml_idx;
@@ -313,6 +319,32 @@ let handle_scalar_return ~ctx ~(meth : gir_method) ~c_name ~args ~out_array_conv
      (Some ml_result) out_conversions,
    out_array_cleanup_list)
 
+(* [handle_non_void_return ~ctx ~meth ~c_name ~args ~ret_type ~out_array_conv_code
+                            ~out_conversions ~out_array_cleanup_list] handles non-void return types.
+   Dispatches to array or scalar handlers based on whether return type has array info.
+   Raises failwith if no type mapping found for the return type. *)
+let handle_non_void_return ~ctx ~(meth : gir_method) ~c_name ~args ~ret_type
+    ~out_array_conv_code ~out_conversions ~out_array_cleanup_list =
+  match Type_mappings.find_type_mapping_for_gir_type ~ctx meth.return_type with
+  | Some mapping -> (
+      match meth.return_type.array with
+      | Some _array_info ->
+          handle_array_return ~ctx ~meth ~c_name ~args ~out_array_conv_code
+            ~ret_type ~out_conversions ~out_array_cleanup_list
+      | None ->
+          handle_scalar_return ~ctx ~meth ~c_name ~args ~out_array_conv_code
+            ~ret_type ~mapping ~out_conversions ~out_array_cleanup_list)
+  | None ->
+      (* No type mapping found - fail with clear error *)
+      failwith
+        (sprintf
+           "No type mapping found for return type: name='%s' c_type='%s' \
+            in method %s. This indicates missing type information in the \
+            context or GIR metadata."
+           meth.return_type.name
+           (Option.value meth.return_type.c_type ~default:"<none>")
+           meth.c_identifier)
+
 (* [build_return_conversion ~ctx ~meth ~c_name ~args ~ret_type ~out_array_conv_code
                           ~out_conversions ~out_array_cleanup_list] builds the complete return
    conversion for a method. Dispatches to void, array, or scalar handlers based on return type.
@@ -322,28 +354,9 @@ let build_return_conversion ~ctx ~(meth : gir_method) ~c_name ~args ~ret_type
     ~out_array_conv_code ~out_conversions ~out_array_cleanup_list =
   match ret_type with
   | Some "void" | None -> handle_void_return ~c_name ~args ~out_array_conv_code ~out_array_cleanup_list
-  | Some ret_type -> (
-      match
-        Type_mappings.find_type_mapping_for_gir_type ~ctx meth.return_type
-      with
-      | Some mapping -> (
-          match meth.return_type.array with
-          | Some _array_info ->
-              handle_array_return ~ctx ~meth ~c_name ~args ~out_array_conv_code
-                ~ret_type ~out_conversions ~out_array_cleanup_list
-          | None ->
-              handle_scalar_return ~ctx ~meth ~c_name ~args ~out_array_conv_code
-                ~ret_type ~mapping ~out_conversions ~out_array_cleanup_list)
-      | None ->
-          (* No type mapping found - fail with clear error *)
-          failwith
-            (sprintf
-               "No type mapping found for return type: name='%s' c_type='%s' \
-                in method %s. This indicates missing type information in the \
-                context or GIR metadata."
-               meth.return_type.name
-               (Option.value meth.return_type.c_type ~default:"<none>")
-               meth.c_identifier))
+  | Some ret_type ->
+      handle_non_void_return ~ctx ~meth ~c_name ~args ~ret_type
+        ~out_array_conv_code ~out_conversions ~out_array_cleanup_list
 
 (* [build_length_param_map ~meth] builds a map from OCaml argument index to length variable name
    for array parameters. For each array parameter with a length parameter index, computes the
