@@ -12,8 +12,8 @@ let get_c_type_str ~ctx (gir_type : gir_type) =
   match gir_type.c_type with
   | Some c_type -> c_type
   | None ->
-      Option.bind (Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type)
-        (fun tm -> Some tm.c_type)
+      Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type
+      |> Option.map (fun tm -> tm.c_type)
       |> Option.value ~default:"void"
 
 (* [get_element_c_type ~fallback array_info] extracts the C type of array elements.
@@ -163,17 +163,16 @@ let convert_out_array ~ctx ~out_array_length_map ~out_array_conversions_buf
     match array_info.element_type.c_type with
     | Some ct -> ct
     | None ->
-        Option.bind
-          (Type_mappings.find_type_mapping_for_gir_type ~ctx
-             array_info.element_type)
-          (fun tm -> Some tm.c_type)
+        Type_mappings.find_type_mapping_for_gir_type ~ctx
+          array_info.element_type
+        |> Option.map (fun tm -> tm.c_type)
         |> Option.value ~default:"void"
   in
   let length_expr =
     Option.bind (List.assoc_opt idx out_array_length_map)
       (fun length_idx ->
-        Option.bind (List.nth_opt parameters length_idx)
-          (fun param -> Some (var_name_for_direction param.direction length_idx)))
+        List.nth_opt parameters length_idx
+        |> Option.map (fun param -> var_name_for_direction param.direction length_idx))
   in
   Option.bind
     (Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type)
@@ -194,17 +193,17 @@ let convert_out_array ~ctx ~out_array_length_map ~out_array_conversions_buf
    or None if no type mapping is found for the parameter type. *)
 let convert_out_scalar ~ctx ~_idx ~var_name (p : gir_param) =
   let base_gir_type =
-    Option.bind p.param_type.c_type (fun c_type ->
+    p.param_type.c_type
+    |> Option.map (fun c_type ->
       let stripped = strip_pointer_suffix c_type in
-      if String.equal stripped c_type then Some p.param_type
-      else Some { p.param_type with c_type = Some stripped })
+      if String.equal stripped c_type then p.param_type
+      else { p.param_type with c_type = Some stripped })
     |> Option.value ~default:p.param_type
   in
-  Option.bind (Type_mappings.find_type_mapping_for_gir_type ~ctx base_gir_type)
-    (fun mapping ->
-      Some
-        (C_stub_helpers.nullable_c_to_ml_expr ~ctx ~var:var_name
-           ~gir_type:base_gir_type ~mapping ~direction:p.direction ()))
+  Type_mappings.find_type_mapping_for_gir_type ~ctx base_gir_type
+  |> Option.map (fun mapping ->
+    C_stub_helpers.nullable_c_to_ml_expr ~ctx ~var:var_name
+      ~gir_type:base_gir_type ~mapping ~direction:p.direction ())
 
 (* [process_out_param_conversion ~ctx ~out_array_length_map ~out_array_conversions_buf
                               ~out_array_cleanups ~parameters (p, idx)] processes a single out or inout
@@ -366,21 +365,24 @@ let build_length_param_map ~(meth : gir_method) =
   (* For each array param with a length index, map the length param's OCaml idx to the length var *)
   List.filter_map
     ~f:(fun (p, ocaml_idx) ->
-      Option.bind (Option.bind p.param_type.array (fun ai -> ai.length))
-        (fun length_idx ->
-          (* Find which OCaml arg index corresponds to the length parameter *)
-          let length_ocaml_idx = ref None in
-          let current_idx = ref 0 in
-          List.iteri meth.parameters ~f:(fun param_idx param ->
-              match param.direction with
-              | Out -> ()
-              | _ ->
-                  if param_idx = length_idx then
-                    length_ocaml_idx := Some !current_idx;
-                  current_idx := !current_idx + 1);
-          Option.bind !length_ocaml_idx (fun len_idx ->
-            let arg_name = sprintf "arg%d" (ocaml_idx + 1) in
-            Some (len_idx, arg_name ^ "_length"))))
+      Option.bind (p.param_type.array)
+        (fun ai ->
+          Option.bind ai.length
+            (fun length_idx ->
+              (* Find which OCaml arg index corresponds to the length parameter *)
+              let length_ocaml_idx = ref None in
+              let current_idx = ref 0 in
+              List.iteri meth.parameters ~f:(fun param_idx param ->
+                  match param.direction with
+                  | Out -> ()
+                  | _ ->
+                      if param_idx = length_idx then
+                        length_ocaml_idx := Some !current_idx;
+                      current_idx := !current_idx + 1);
+              !length_ocaml_idx
+              |> Option.map (fun len_idx ->
+                let arg_name = sprintf "arg%d" (ocaml_idx + 1) in
+                (len_idx, arg_name ^ "_length")))))
     in_param_indices
 
 (* [build_out_array_length_map parameters] builds a map from array parameter index to its length
@@ -793,9 +795,10 @@ let generate_c_property_setter ~ctx ~c_type (prop : gir_property) class_name =
 
   (* Check if prop is a string type for const string declaration *)
   let is_string_type =
-    Option.bind prop.prop_type.c_type (fun ct ->
-      Some (List.exists ~f:(fun s -> String.equal s ct)
-        [ "gchar*"; "gchararray"; "utf8"; "const gchar*"; "const char*" ]))
+    prop.prop_type.c_type
+    |> Option.map (fun ct ->
+      List.exists ~f:(fun s -> String.equal s ct)
+        [ "gchar*"; "gchararray"; "utf8"; "const gchar*"; "const char*" ])
     |> Option.value ~default:false
   in
   let value_declaration =
