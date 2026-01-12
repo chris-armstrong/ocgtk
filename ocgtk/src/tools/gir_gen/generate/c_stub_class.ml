@@ -412,6 +412,42 @@ let build_out_array_length_map parameters =
     ~init:[]
     (List.mapi ~f:(fun i p -> (p, i)) parameters)
 
+(* [generate_constructor_error_decl ~throws] generates error declaration if constructor throws.
+   Returns "GError *error = NULL;\n    " if throws=true, otherwise returns empty string. *)
+let generate_constructor_error_decl ~throws =
+  if throws then "GError *error = NULL;\n    " else ""
+
+(* [generate_constructor_return_stmt ~throws ~val_macro ~var_name] generates return statement
+   based on throws flag. If throws=true, generates conditional return handling error.
+   Otherwise generates simple CAMLreturn with converted value. *)
+let generate_constructor_return_stmt ~throws ~val_macro ~var_name =
+  if throws then
+    sprintf
+      "if (error == NULL) CAMLreturn(Res_Ok(%s(%s))); else \
+       CAMLreturn(Res_Error(Val_GError(error)));"
+      val_macro var_name
+  else sprintf "CAMLreturn(%s(%s));" val_macro var_name
+
+(* [generate_constructor_c_call_args ~ctx ~ctor_parameters] builds C call arguments
+   with nullable handling. For each parameter, looks up type mapping and generates
+   appropriate conversion expression. Returns list of C argument expressions. *)
+let generate_constructor_c_call_args ~ctx ~ctor_parameters =
+  List.mapi
+    ~f:(fun i p ->
+      match Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type with
+      | Some mapping ->
+          let param_type =
+            {
+              p.param_type with
+              nullable = p.nullable || p.param_type.nullable;
+            }
+          in
+          C_stub_helpers.nullable_ml_to_c_expr
+            ~var:(sprintf "arg%d" (i + 1))
+            ~gir_type:param_type ~mapping
+      | None -> sprintf "arg%d" (i + 1))
+    ctor_parameters
+
 (* [generate_c_constructor ~ctx ~c_type ~class_name ctor] generates a C wrapper function
    for a GIR constructor. Handles parameter conversion from OCaml to C types, C constructor
    invocation, ref_sink for GObject types (to handle Floating transfer semantics), and
@@ -461,45 +497,21 @@ let generate_c_constructor ~ctx ~c_type ~class_name (ctor : gir_constructor) =
   in
 
   (* Build C call arguments - handle nullable parameters *)
-  let c_args =
-    List.mapi
-      ~f:(fun i p ->
-        match Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type with
-        | Some mapping ->
-            let param_type =
-              {
-                p.param_type with
-                nullable = p.nullable || p.param_type.nullable;
-              }
-            in
-            C_stub_helpers.nullable_ml_to_c_expr
-              ~var:(sprintf "arg%d" (i + 1))
-              ~gir_type:param_type ~mapping
-        | None -> sprintf "arg%d" (i + 1))
-      ctor.ctor_parameters
-  in
+  let c_args = generate_constructor_c_call_args ~ctx ~ctor_parameters:ctor.ctor_parameters in
 
   (* Append error parameter if constructor throws *)
   let c_call_args =
     String.concat ~sep:", " (c_args @ if ctor.throws then [ "&error" ] else [])
   in
 
+  (* Generate error declaration and return statement *)
+  let error_decl = generate_constructor_error_decl ~throws:ctor.throws in
+  let return_stmt = generate_constructor_return_stmt ~throws:ctor.throws ~val_macro ~var_name in
+
   (* Handle >5 parameters with bytecode/native variants *)
   if param_count > 5 then begin
     let first_five = List.filteri ~f:(fun i _ -> i < 5) param_names in
     let rest = List.filteri ~f:(fun i _ -> i >= 5) param_names in
-
-    let error_decl =
-      if ctor.throws then "GError *error = NULL;\n    " else ""
-    in
-    let return_stmt =
-      if ctor.throws then
-        sprintf
-          "if (error == NULL) CAMLreturn(Res_Ok(%s(%s))); else \
-           CAMLreturn(Res_Error(Val_GError(error)));"
-          val_macro var_name
-      else sprintf "CAMLreturn(%s(%s));" val_macro var_name
-    in
 
     let native_func =
       sprintf
@@ -533,19 +545,7 @@ let generate_c_constructor ~ctx ~c_type ~class_name (ctor : gir_constructor) =
 
     native_func ^ bytecode_func
   end
-  else begin
-    let error_decl =
-      if ctor.throws then "GError *error = NULL;\n    " else ""
-    in
-    let return_stmt =
-      if ctor.throws then
-        sprintf
-          "if (error == NULL) CAMLreturn(Res_Ok(%s(%s))); else \
-           CAMLreturn(Res_Error(Val_GError(error)));"
-          val_macro var_name
-      else sprintf "CAMLreturn(%s(%s));" val_macro var_name
-    in
-
+  else
     sprintf
       "\n\
        CAMLexport CAMLprim value %s(%s)\n\
@@ -559,7 +559,6 @@ let generate_c_constructor ~ctx ~c_type ~class_name (ctor : gir_constructor) =
       param_count
       (String.concat ~sep:", " param_names)
       error_decl c_type var_name c_name c_call_args ref_sink_stmt return_stmt
-  end
 
 (* [generate_c_method ~ctx ~c_type meth class_name] generates a C wrapper function for a GIR method.
    Takes self parameter (instance) and processes in/out/inout parameter conversions to/from OCaml.
