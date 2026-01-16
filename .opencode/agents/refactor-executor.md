@@ -8,7 +8,6 @@ tools:
   glob: true
   bash: true
   lsp: true
-model: opencode/glm-4.7
 temperature: 0.5
 ---
 You will be given:
