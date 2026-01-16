@@ -482,47 +482,6 @@ let generate_c_constructor ~ctx ~c_type ~class_name (ctor : gir_constructor) =
       error_decl c_type var_name c_name c_call_args ref_sink_stmt return_stmt
   end
 
-(* Helper: Build mapping of array parameter indices to their length parameter variables *)
-let build_length_param_map ~(meth : gir_method) =
-  let find_in_param_index target_idx =
-    let count = ref (-1) in
-    List.iteri meth.parameters ~f:(fun idx param ->
-        match param.direction with
-        | Out -> ()
-        | _ ->
-            count := !count + 1;
-            if idx = target_idx then ());
-    if !count >= 0 then Some !count else None
-  in
-  let array_ocaml_idx p =
-    let count = ref (-1) in
-    List.iter meth.parameters ~f:(fun param ->
-        match param.direction with
-        | Out -> ()
-        | _ ->
-            count := !count + 1;
-            if Stdlib.( == ) param p then ());
-    if !count >= 0 then Some !count else None
-  in
-  List.fold_left
-    ~f:(fun acc (p : gir_param) ->
-      match p.param_type.array with
-      | Some array_info -> (
-          match array_info.length with
-          | Some length_idx -> (
-              match find_in_param_index length_idx with
-              | Some in_param_idx -> (
-                  match array_ocaml_idx p with
-                  | Some idx ->
-                      let arg_name = sprintf "arg%d" (idx + 1) in
-                      let length_var = arg_name ^ "_length" in
-                      (in_param_idx, length_var) :: acc
-                  | None -> acc)
-              | None -> acc)
-          | None -> acc)
-      | None -> acc)
-    ~init:[] meth.parameters
-
 let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
   let c_name = meth.c_identifier in
   let ml_name = Utils.ml_method_name ~class_name meth in
