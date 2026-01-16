@@ -1,22 +1,22 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
 {
-	"name": "Ubuntu",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "ghcr.io/chris-armstrong/ocaml-devcontainer:5.4-ubuntu",
+  "name": "Ubuntu",
+  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  "image": "ghcr.io/chris-armstrong/ocaml-devcontainer:5.4-ubuntu",
 
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  // "features": {},
 
+  "features": {
+    "ghcr.io/devcontainers-extra/features/claude-code:latest": {},
+    "ghcr.io/danzilberdan/devcontainers/opencode:0": {}
+  },
 
-	"features": {
-		"ghcr.io/devcontainers-extra/features/claude-code:latest": {}
-	},
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // "forwardPorts": [],
+  "remoteUser": "ocaml",
 
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
-	"remoteUser": "ocaml",
-
-	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sudo apt-get update && sudo ln -fs /usr/share/zoneinfo/Australia/Sydney /etc/localtime && sudo DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y install rsync libgtk-4-dev m4 xdot ripgrep neovim && opam update && cd conf-gtk4 && opam pin -y . && cd .. && cd ocgtk && opam install . --deps-only --with-test -y"
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": "sudo apt-get update && sudo ln -fs /usr/share/zoneinfo/Australia/Sydney /etc/localtime && sudo DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y install rsync libgtk-4-dev m4 xdot ripgrep neovim && opam update && cd conf-gtk4 && opam pin -y . && cd .. && cd ocgtk && opam install . --deps-only --with-test -y"
 }
