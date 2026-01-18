@@ -8,6 +8,11 @@ open Types
 (* Option binding operator for flattening nested Option.bind chains *)
 let ( let* ) = Option.bind
 
+module Log =
+  (val Logs.src_log
+         (Logs.Src.create "gir_gen.c_stub_class"
+            ~doc:"C stub code generation for class/interface support"))
+
 (* [get_c_type_str ~ctx gir_type] retrieves the C type string representation for a GIR type.
    Returns the c_type directly if present, otherwise consults the type mapping context.
    Falls back to "void" if no mapping is found. *)
@@ -33,6 +38,17 @@ let var_name_for_direction direction idx =
   | Out -> sprintf "out%d" (idx + 1)
   | InOut -> sprintf "inout%d" (idx + 1)
   | In -> sprintf "arg%d" (idx + 1)
+
+(* [safe_nth_opt parameters idx] safely accesses list element with bounds checking.
+   Returns Some element if index is valid, None otherwise with a warning log.
+   Used for GIR data validation to detect malformed/inconsistent index references. *)
+let safe_nth_opt parameters idx =
+  if idx >= 0 && idx < List.length parameters then
+    Some (List.nth parameters idx)
+  else (
+    Log.warn (fun m -> m "Invalid length param index %d (parameters length: %d)" idx (List.length parameters));
+    None
+  )
 
 (* [handle_out_param ~param_index ~base_type ~acc p] processes an out-direction parameter.
    Generates a C variable declaration (as pointer for arrays, as value otherwise) and
@@ -177,11 +193,11 @@ let convert_out_array ~ctx ~out_array_length_map ~out_array_conversions_buf
         |> Option.map (fun tm -> tm.c_type)
         |> Option.value ~default:"void"
   in
-  let length_expr =
-    let* length_idx = List.assoc_opt idx out_array_length_map in
-    let* param = List.nth_opt parameters length_idx in
-    Some (var_name_for_direction param.direction length_idx)
-  in
+   let length_expr =
+     let* length_idx = List.assoc_opt idx out_array_length_map in
+     let* param = safe_nth_opt parameters length_idx in
+     Some (var_name_for_direction param.direction length_idx)
+   in
   let* _mapping = Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type in
   let conv_code, ml_array_var, cleanup_code =
     C_stub_helpers.generate_array_c_to_ml ~ctx ~var:var_name ~array_info
