@@ -37,6 +37,11 @@ type property_gvalue_info = {
 let list_contains ~value list =
   List.exists list ~f:(fun candidate -> String.equal candidate value)
 
+let ends_with ~suffix str =
+  let len_s = String.length suffix and len_str = String.length str in
+  len_str >= len_s
+  && String.equal (String.sub str ~pos:(len_str - len_s) ~len:len_s) suffix
+
 (* Fold with map and index - combines fold_left_map with index tracking *)
 let fold_mapi ~f ~init list =
   let rec aux idx acc = function
