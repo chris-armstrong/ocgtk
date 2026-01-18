@@ -175,6 +175,17 @@ let constructor_has_varargs (ctor : gir_constructor) =
 let constructor_has_array_params (ctor : gir_constructor) =
   List.exists ctor.ctor_parameters ~f:(fun p -> is_array_type p.param_type)
 
+(* Check if a constructor should be generated based on multiple criteria:
+   - Not throwing GError
+   - No varargs
+   - No cross-namespace enum/bitfield parameters
+   - No array parameters (arrays require inline code generation) *)
+let should_generate_constructor ~ctx (ctor : gir_constructor) =
+  not ctor.throws
+  && not (constructor_has_varargs ctor)
+  && not (constructor_has_cross_namespace_types ~ctx ctor)
+  && not (constructor_has_array_params ctor)
+
 let banned_records = [ "PrintBackend" ]
 
 (* Check if a record name ends with "Private" - these are typically internal
