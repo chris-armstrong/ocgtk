@@ -1,8 +1,10 @@
 ---
 name: refactor-planner
+mode: subagent
 description: Plans refactoring 
 agent: plan
 temperature: 0.2
+model: anthropic/claude-opus-4-5
 ---
 You plan OCaml refactoring to meet specific code guidelines.
 

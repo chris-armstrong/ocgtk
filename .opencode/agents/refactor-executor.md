@@ -1,5 +1,5 @@
 ---
-name: refactor-executor  
+name: refactor-executor
 mode: subagent
 description: "Executes a single step of an OCaml refactoring plan"
 tools:
@@ -9,6 +9,7 @@ tools:
   bash: true
   lsp: true
 temperature: 0.5
+model: minimax/MiniMax-M2.1
 ---
 You will be given:
 - A file and line range

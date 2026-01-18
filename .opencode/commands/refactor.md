@@ -1,6 +1,9 @@
 ---
 description: Refactor code to meet a specific guideline with independent review
+template: Carry out a complex refactoring task based on the user's suggestion and following the guidelines using a multi-stage plan, execute and review loop
+agent: plan
 argument-hint: "<guideline> in <files or module>"
+model: anthropic/claude-opus-4-5
 ---
 
 ## Refactoring Goal: $ARGUMENTS
@@ -22,7 +25,7 @@ mkdir -p .opencode/scratchpad
 echo '$ARGUMENTS' > .opencode/scratchpad/current-goal.txt
 ```
 
-Use `guideline-refactor-planner` to analyze target files against goal: "$ARGUMENTS"
+Use @refactor-planner agent to analyze target files against goal: "$ARGUMENTS"
 
 The planner will output to `.opencode/scratchpad/refactor-plan.json`
 
@@ -30,9 +33,16 @@ Show me the plan summary and wait for approval before proceeding.
 
 ### Phase 2: Execution Loop
 
+You have three agents available to you:
+- @refactor-executor
+- @refactor-reviewer
+- @refactor-planner
+
+DO NOT execute any of these steps yourself - always use the agents. STOP if you are unable to invoke them. NEVER proceed with the changes yourself.
+
 For each violation in the plan:
 
-1. **Execute**: Use `refactor-executor` with:
+1. **Execute**: Use @refactor-executor agent with:
    - The specific violation details
    - Reference to guidelines file or inline patterns
 
@@ -42,7 +52,7 @@ For each violation in the plan:
 ```
    If build fails, executor must fix before proceeding.
 
-3. **Independent Review**: Use `refactor-reviewer` with:
+3. **Independent Review**: Use @refactor-reviewer agent with:
    - Original goal from: `cat .opencode/scratchpad/current-goal.txt`
    - Modified file paths only (reviewer reads current state)
    
@@ -72,7 +82,7 @@ After all violations addressed:
 ```
 
 2. Final review of ALL modified files:
-   Use `refactor-reviewer` with original goal on complete changeset
+   Use @refactor-reviewer with original goal on complete changeset
 
 3. Generate summary:
 ```
