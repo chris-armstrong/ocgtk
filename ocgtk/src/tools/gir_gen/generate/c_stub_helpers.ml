@@ -42,6 +42,15 @@ let ends_with ~suffix str =
   len_str >= len_s
   && String.equal (String.sub str ~pos:(len_str - len_s) ~len:len_s) suffix
 
+(* Check if a method is a copy or free method that should be skipped in bindings *)
+let is_copy_or_free (meth : gir_method) =
+  let lower_name = String.lowercase_ascii meth.method_name in
+  let lower_cid = String.lowercase_ascii meth.c_identifier in
+  String.equal lower_name "copy"
+  || String.equal lower_name "free"
+  || ends_with ~suffix:"_copy" lower_cid
+  || ends_with ~suffix:"_free" lower_cid
+
 (* Fold with map and index - combines fold_left_map with index tracking *)
 let fold_mapi ~f ~init list =
   let rec aux idx acc = function

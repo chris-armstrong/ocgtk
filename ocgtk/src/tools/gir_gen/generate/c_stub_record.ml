@@ -94,14 +94,6 @@ let generate_record_c_code ~ctx (record : gir_record) =
        ~external_bitfields:ctx.external_bitfields ());
 
   let class_snake = Utils.to_snake_case record.record_name in
-  let is_copy_or_free (meth : gir_method) =
-    let lower_name = String.lowercase_ascii meth.method_name in
-    let lower_cid = String.lowercase_ascii meth.c_identifier in
-    String.equal lower_name "copy"
-    || String.equal lower_name "free"
-    || C_stub_helpers.ends_with ~suffix:"_copy" lower_cid
-    || C_stub_helpers.ends_with ~suffix:"_free" lower_cid
-  in
 
   (* Generate conversion functions for non-opaque records *)
   let is_value_record = is_value_like_record record in
@@ -199,7 +191,7 @@ let generate_record_c_code ~ctx (record : gir_record) =
   List.iter
     ~f:(fun (meth : gir_method) ->
       let should_skip = Filtering.should_skip_method_binding ~ctx meth in
-      if (not should_skip) && not (is_copy_or_free meth) then
+      if (not should_skip) && not (C_stub_helpers.is_copy_or_free meth) then
         Buffer.add_string buf
           (C_stub_class.generate_c_method ~ctx ~c_type:record.c_type meth
              record.record_name))

@@ -92,12 +92,6 @@ let detect_class_hierarchy_names ~ctx ~class_name ~parent_chain ?record_base_typ
           let all_variants = self_variant :: parent_variants in
           let variants = String.concat ~sep:" | " all_variants in
           (class_name, sprintf "[%s] Gobject.obj" variants)
-
-  let is_copy_or_free (meth : gir_method) =
-    let lower_name = String.lowercase_ascii meth.method_name in
-    let lower_cid = String.lowercase_ascii meth.c_identifier in
-    String.equal lower_name "copy" || String.equal lower_name "free"
-    || ends_with ~suffix:"_copy" lower_cid || ends_with ~suffix:"_free" lower_cid
   
 let print_indent contents buf =
   let lines = String.split_on_char ~sep:'\n' contents in
