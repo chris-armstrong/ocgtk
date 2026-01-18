@@ -464,7 +464,48 @@ let generate_constructor_c_call_args ~ctx ~ctor_parameters =
             ~var:(sprintf "arg%d" (i + 1))
             ~gir_type:param_type ~mapping
       | None -> sprintf "arg%d" (i + 1))
-    ctor_parameters
+           ctor_parameters
+
+(* [generate_multi_param_function ~ml_name ~params ~param_names body_code]
+   generates both native and bytecode C wrapper variants for functions with >5 parameters.
+   This eliminates code duplication between generate_c_constructor and generate_c_method.
+   Takes the function name, C parameter declarations, parameter names, and body code.
+   Returns the combined native + bytecode function code as a string. *)
+let generate_multi_param_function ~ml_name ~params ~param_names body_code =
+  let param_count = List.length param_names in
+  let first_five = List.filteri ~f:(fun i _ -> i < 5) param_names in
+  let rest = List.filteri ~f:(fun i _ -> i >= 5) param_names in
+
+  let native_func =
+    sprintf
+      "\n\
+       CAMLexport CAMLprim value %s_native(%s)\n\
+       {\n\
+       CAMLparam5(%s);\n\
+       CAMLxparam%d(%s);\n\
+       %s\
+       }\n"
+      ml_name
+      (String.concat ~sep:", " params)
+      (String.concat ~sep:", " first_five)
+      (param_count - 5)
+      (String.concat ~sep:", " rest)
+      body_code
+  in
+
+  let bytecode_func =
+    sprintf
+      "\n\
+       CAMLexport CAMLprim value %s_bytecode(value * argv, int argn)\n\
+       {\n\
+       return %s_native(%s);\n\
+       }\n"
+      ml_name ml_name
+      (String.concat ~sep:", "
+         (List.mapi ~f:(fun i _ -> sprintf "argv[%d]" i) param_names))
+  in
+
+  native_func ^ bytecode_func
 
 (* [generate_c_constructor ~ctx ~c_type ~class_name ctor] generates a C wrapper function
    for a GIR constructor. Handles parameter conversion from OCaml to C types, C constructor
@@ -527,42 +568,12 @@ let generate_c_constructor ~ctx ~c_type ~class_name (ctor : gir_constructor) =
   let return_stmt = generate_constructor_return_stmt ~throws:ctor.throws ~val_macro ~var_name in
 
   (* Handle >5 parameters with bytecode/native variants *)
-  if param_count > 5 then begin
-    let first_five = List.filteri ~f:(fun i _ -> i < 5) param_names in
-    let rest = List.filteri ~f:(fun i _ -> i >= 5) param_names in
-
-    let native_func =
-      sprintf
-        "\n\
-         CAMLexport CAMLprim value %s_native(%s)\n\
-         {\n\
-         CAMLparam5(%s);\n\
-         CAMLxparam%d(%s);\n\
-         %s%s *%s = %s(%s);%s\n\
-         %s\n\
-         }\n"
-        ml_name
-        (String.concat ~sep:", " params)
-        (String.concat ~sep:", " first_five)
-        (param_count - 5)
-        (String.concat ~sep:", " rest)
+  if param_count > 5 then
+    let body_code =
+      sprintf "%s%s *%s = %s(%s);%s\n%s"
         error_decl c_type var_name c_name c_call_args ref_sink_stmt return_stmt
     in
-
-    let bytecode_func =
-      sprintf
-        "\n\
-         CAMLexport CAMLprim value %s_bytecode(value * argv, int argn)\n\
-         {\n\
-         return %s_native(%s);\n\
-         }\n"
-        ml_name ml_name
-        (String.concat ~sep:", "
-           (List.mapi ~f:(fun i _ -> sprintf "argv[%d]" i) param_names))
-    in
-
-    native_func ^ bytecode_func
-  end
+    generate_multi_param_function ~ml_name ~params ~param_names body_code
   else
     sprintf
       "\n\
@@ -684,41 +695,11 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
 
   (* For functions with >5 parameters, generate both bytecode and native variants *)
   if param_count > 5 then
-    let first_five = List.filteri ~f:(fun i _ -> i < 5) param_names in
-    let rest = List.filteri ~f:(fun i _ -> i >= 5) param_names in
-
-    let native_func =
-      sprintf
-        "\n\
-         CAMLexport CAMLprim value %s_native(%s)\n\
-         {\n\
-         CAMLparam5(%s);\n\
-         CAMLxparam%d(%s);\n\
-         %s\n\
-         %s%s\n\
-         %s\n\
-         }\n"
-        ml_name
-        (String.concat ~sep:", " params)
-        (String.concat ~sep:", " first_five)
-        (param_count - 5)
-        (String.concat ~sep:", " rest)
+    let body_code =
+      sprintf "%s\n%s%s\n%s"
         locals c_call cleanup_section ret_conv
     in
-
-    let bytecode_func =
-      sprintf
-        "\n\
-         CAMLexport CAMLprim value %s_bytecode(value * argv, int argn)\n\
-         {\n\
-         return %s_native(%s);\n\
-         }\n"
-        ml_name ml_name
-        (String.concat ~sep:", "
-           (List.mapi ~f:(fun i _ -> sprintf "argv[%d]" i) param_names))
-    in
-
-    native_func ^ bytecode_func
+    generate_multi_param_function ~ml_name ~params ~param_names body_code
   else
     sprintf
       "\n\

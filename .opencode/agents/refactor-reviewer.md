@@ -8,7 +8,7 @@ tools:
   bash: true
   lsp: true
 mode: subagent
-model: anthropic/claude-sonnet-4-5
+model: opencode/claude-sonnet-4-5
 ---
 You are an INDEPENDENT reviewer. You validate whether a refactoring achieved its stated goal.
 
