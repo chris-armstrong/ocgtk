@@ -6,13 +6,9 @@ open StdLabels
 open Types
 
 (* Check if a record has a copy method, indicating it's a value-like record
-   that should be stack-allocated in C but heap-allocated in OCaml *)
+    that should be stack-allocated in C but heap-allocated in OCaml *)
 let has_copy_method (record : gir_record) =
-  List.exists record.methods ~f:(fun (meth : gir_method) ->
-      let lower_name = String.lowercase_ascii meth.method_name in
-      let lower_cid = String.lowercase_ascii meth.c_identifier in
-      String.equal lower_name "copy"
-      || C_stub_helpers.ends_with ~suffix:"_copy" lower_cid)
+  List.exists record.methods ~f:C_stub_helpers.is_copy_method
 
 let is_non_opaque_record (record : gir_record) =
   (not record.opaque) && not record.disguised
