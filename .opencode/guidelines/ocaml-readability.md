@@ -342,3 +342,33 @@ let make_request ~method_ ~path =
   | Put -> ...
   | Delete -> ...
 ```
+
+## 10. Code Reuse
+
+Reuse existing functions and code blocks to reduce duplication. Code shared between modules should be located in a file in the same directory named after its purpose. Similar functions should be grouped together.
+
+### Bad: Duplicated code
+
+```ocaml
+let is_active user =
+  match user.status with
+  | Active -> true
+  | Pending | Suspended | Deleted -> false
+
+  (* or *)
+  
+  let is_active user = 
+    match user.status with
+    | Active -> true
+    | Pending | Suspended | Deleted -> false
+
+  (* or *)
+  
+  let is_active user = 
+    if user.status = Active then true
+    else if user.status = Pending || user.status = Suspended || user.status = Deleted then false
+    else failwith "Unknown status"
+
+### Good: Reuse existing functions
+
+
