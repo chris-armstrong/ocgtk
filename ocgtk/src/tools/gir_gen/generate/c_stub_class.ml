@@ -8,6 +8,9 @@ open Types
 (* Option binding operator for flattening nested Option.bind chains *)
 let ( let* ) = Option.bind
 
+(* Assertion-style option extraction for "impossible" None cases *)
+let value_exn ~message o = match o with Some v -> v | None -> failwith message
+
 module Log =
   (val Logs.src_log
          (Logs.Src.create "gir_gen.c_stub_class"
@@ -279,9 +282,8 @@ let handle_void_return ~c_name ~args ~out_array_conv_code ~out_array_cleanup_lis
 let handle_array_return ~ctx ~(meth : gir_method) ~c_name ~args ~out_array_conv_code ~ret_type
     ~out_conversions ~out_array_cleanup_list =
   let array_info =
-    match meth.return_type.array with
-    | Some ai -> ai
-    | None -> failwith "Array return type without array info"
+    meth.return_type.array
+    |> value_exn ~message:"handle_array_return: meth.return_type.array is None - this is a bug in GIR metadata"
   in
   let element_c_type = get_element_c_type ~fallback:ret_type array_info in
   let length_expr = None in
