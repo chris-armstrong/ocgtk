@@ -14,7 +14,7 @@
  (synopsis "OCaml bindings for GTK 4")
  (description "ocgtk provides OCaml bindings for GTK 4")
  (depends
-  (ocaml (>= 4.09))
+  (ocaml (>= 5.0))
   (dune (>= 3.13))
   conf-gtk4
   cairo2
