@@ -11,14 +11,8 @@ let has_copy_method (record : gir_record) =
   List.exists record.methods ~f:(fun (meth : gir_method) ->
       let lower_name = String.lowercase_ascii meth.method_name in
       let lower_cid = String.lowercase_ascii meth.c_identifier in
-      let ends_with suffix str =
-        let len_s = String.length suffix and len_str = String.length str in
-        len_str >= len_s
-        && String.equal
-             (String.sub str ~pos:(len_str - len_s) ~len:len_s)
-             suffix
-      in
-      String.equal lower_name "copy" || ends_with "_copy" lower_cid)
+      String.equal lower_name "copy"
+      || C_stub_helpers.ends_with ~suffix:"_copy" lower_cid)
 
 let is_non_opaque_record (record : gir_record) =
   (not record.opaque) && not record.disguised
@@ -103,15 +97,10 @@ let generate_record_c_code ~ctx (record : gir_record) =
   let is_copy_or_free (meth : gir_method) =
     let lower_name = String.lowercase_ascii meth.method_name in
     let lower_cid = String.lowercase_ascii meth.c_identifier in
-    let ends_with suffix str =
-      let len_s = String.length suffix and len_str = String.length str in
-      len_str >= len_s
-      && String.equal (String.sub str ~pos:(len_str - len_s) ~len:len_s) suffix
-    in
     String.equal lower_name "copy"
     || String.equal lower_name "free"
-    || ends_with "_copy" lower_cid
-    || ends_with "_free" lower_cid
+    || C_stub_helpers.ends_with ~suffix:"_copy" lower_cid
+    || C_stub_helpers.ends_with ~suffix:"_free" lower_cid
   in
 
   (* Generate conversion functions for non-opaque records *)
