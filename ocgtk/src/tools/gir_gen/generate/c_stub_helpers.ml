@@ -582,3 +582,13 @@ let build_return_statement ~throws ml_primary out_conversions =
           ([ "CAMLlocal1(ret);"; alloc ] @ stores @ [ "CAMLreturn(ret);" ])
 
 type param_acc = { ocaml_idx : int; decls : Buffer.t; args : string list; cleanups : string list }
+
+(** Generate C code for constructors by iterating and filtering.
+    Applies [Filtering.should_generate_constructor] filter and appends
+    generated code to the buffer. *)
+let generate_constructors ~ctx ~c_type ~class_name ~buf ~generator constructors =
+  List.iter
+    ~f:(fun ctor ->
+      if Filtering.should_generate_constructor ~ctx ctor then
+        Buffer.add_string buf (generator ~ctx ~c_type ~class_name ctor))
+    constructors

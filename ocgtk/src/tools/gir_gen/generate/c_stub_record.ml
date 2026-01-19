@@ -154,13 +154,9 @@ let generate_record_c_code ~ctx (record : gir_record) =
         bprintf buf "}\n\n"
   end;
 
-   List.iter
-     ~f:(fun ctor ->
-       if Filtering.should_generate_constructor ~ctx ctor then
-         Buffer.add_string buf
-           (C_stub_class.generate_c_constructor ~ctx ~c_type:record.c_type
-              ~class_name:record.record_name ctor))
-     record.constructors;
+   C_stub_helpers.generate_constructors ~ctx ~c_type:record.c_type
+     ~class_name:record.record_name ~buf
+     ~generator:C_stub_class.generate_c_constructor record.constructors;
 
   let namespace_snake = Utils.to_snake_case ctx.namespace.namespace_name in
 

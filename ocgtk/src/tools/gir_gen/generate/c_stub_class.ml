@@ -851,12 +851,8 @@ let generate_class_c_code ~ctx ~c_type class_name constructors methods
   (* Note: Record-specific conversions are generated in generate_record_c_code, not here *)
 
    (* Constructors - skip those that throw GError, are variadic, have cross-namespace types, or have array params *)
-   List.iter
-     ~f:(fun ctor ->
-       if Filtering.should_generate_constructor ~ctx ctor then
-         Buffer.add_string buf
-           (generate_c_constructor ~ctx ~c_type ~class_name ctor))
-     constructors;
+   C_stub_helpers.generate_constructors ~ctx ~c_type ~class_name ~buf
+     ~generator:generate_c_constructor constructors;
 
   (* Generate methods, skip duplicates *)
   List.iter
