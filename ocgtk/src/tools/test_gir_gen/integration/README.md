@@ -19,7 +19,7 @@ End-to-end tests that validate the full pipeline from GIR XML to complete genera
 Integration tests validate the **full pipeline**:
 
 1. Generate complete GIR XML files
-2. Run main.exe to produce complete output
+2. Run gir_gen.exe to produce complete output
 3. Validate all generated files (.ml, .mli, .c)
 4. Slower but tests full integration across all layers
 

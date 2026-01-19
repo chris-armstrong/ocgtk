@@ -57,7 +57,7 @@ Type_mappings.find_type_mapping_for_gir_type()
 dune build
 ```
 
-The executable is built to `_build/default/src/tools/gir_gen/main.exe`
+The executable is built to `_build/default/src/tools/gir_gen/gir_gen.exe`
 
 ## Running
 
@@ -67,7 +67,7 @@ The executable is built to `_build/default/src/tools/gir_gen/main.exe`
 
 ```bash
 # Generate GTK bindings to src/gtk/generated/
-dune exec src/tools/gir_gen/main.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+dune exec src/tools/gir_gen/gir_gen.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
 ```
 
 ### From the repository root directory
@@ -76,7 +76,7 @@ If running from `/workspaces/ocgtk` (parent of `ocgtk`):
 
 ```bash
 cd ocgtk
-dune exec src/tools/gir_gen/main.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+dune exec src/tools/gir_gen/gir_gen.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
 ```
 
 ### Options
@@ -91,7 +91,7 @@ dune exec src/tools/gir_gen/main.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
 # Generate test output
 mkdir -p output/test
 echo "Label" > output/test/filter.txt
-dune exec src/tools/gir_gen/main.exe -- -f output/test/filter.txt \
+dune exec src/tools/gir_gen/gir_gen.exe -- -f output/test/filter.txt \
   /usr/share/gir-1.0/Gtk-4.0.gir output/test
 
 # Verify files generated
@@ -109,7 +109,7 @@ gcc -c output/test/ml_event_controllers_gen.c \
 ### Full Rebuild
 ```bash
 # Regenerate all GTK bindings and rebuild library (run from ocgtk directory)
-dune exec src/tools/gir_gen/main.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+dune exec src/tools/gir_gen/gir_gen.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
 dune build
 ```
 
@@ -125,12 +125,12 @@ Generated files are written to `src/gtk/generated/`:
 
 ## Common Issues
 
-**Error: "Program 'src/tools/gir_gen/main.exe' not found"**
+**Error: "Program 'src/tools/gir_gen/gir_gen.exe' not found"**
 - Ensure you're in the `ocgtk` directory
 - Run `dune build` first
 
-**Error: "Don't know how to build src/tools/gir_gen/main.exe"**
-- Use `dune exec src/tools/gir_gen/main.exe` instead of `dune build src/tools/gir_gen/main.exe`
+**Error: "Don't know how to build src/tools/gir_gen/gir_gen.exe"**
+- Use `dune exec src/tools/gir_gen/gir_gen.exe` instead of `dune build src/tools/gir_gen/gir_gen.exe`
 
 ---
 

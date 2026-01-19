@@ -723,7 +723,7 @@ No `zero-terminated`, `length`, or `fixed-size` attributes.
 ## Testing Status
 
 ### What Was Tested
-- ✅ Code compiles: `dune build src/tools/gir_gen/main.exe`
+- ✅ Code compiles: `dune build src/tools/gir_gen/gir_gen.exe`
 - ✅ Type mapping recognizes arrays
 - ✅ C code generation produces syntactically valid output
 
@@ -741,7 +741,7 @@ No `zero-terminated`, `length`, or `fixed-size` attributes.
 # Test with AboutDialog (has array methods)
 mkdir -p /tmp/array_test
 echo "AboutDialog" > /tmp/array_test/filter.txt
-dune exec src/tools/gir_gen/main.exe -- \
+dune exec src/tools/gir_gen/gir_gen.exe -- \
     -f /tmp/array_test/filter.txt \
     /usr/share/gir-1.0/Gtk-4.0.gir \
     /tmp/array_test
@@ -952,7 +952,7 @@ Array handling will be considered complete when:
 git status
 
 # 2. Build generator
-dune build src/tools/gir_gen/main.exe
+dune build src/tools/gir_gen/gir_gen.exe
 
 # 3. Test with simple array method
 # Find a method with clear zero-terminated attribute first:
@@ -961,7 +961,7 @@ grep -A 5 'zero-terminated="1"' /usr/share/gir-1.0/Gtk-4.0.gir | head -50
 # 4. Generate and test
 mkdir -p /tmp/array_test
 echo "StringList" > /tmp/array_test/filter.txt  # Or another simple class
-dune exec src/tools/gir_gen/main.exe -- \
+dune exec src/tools/gir_gen/gir_gen.exe -- \
     -f /tmp/array_test/filter.txt \
     /usr/share/gir-1.0/Gtk-4.0.gir \
     /tmp/array_test 2>&1 | tee /tmp/array_test/generation.log
