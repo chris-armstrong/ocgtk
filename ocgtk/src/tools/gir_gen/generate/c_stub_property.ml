@@ -10,6 +10,19 @@ module Log =
           (Logs.Src.create "gir_gen.c_stub_property"
              ~doc:"C stub code generation for property support"))
 
+(* Template record for property wrapper sections *)
+type property_wrapper_template = {
+  header : string;
+  locals : string;
+  obj_decl : string;
+  pspec_find : string;
+  pspec_check : string;
+  gvalue_init : string;
+  operation : string;
+  gvalue_unset : string;
+  footer : string;
+}
+
 (* [get_c_type_str ~ctx gir_type] retrieves the C type string representation for a GIR type.
    Returns the c_type directly if present, otherwise consults the type mapping context.
    Falls back to "void" if no mapping is found. *)
@@ -21,10 +34,10 @@ let get_c_type_str ~ctx (gir_type : gir_type) =
       |> Option.map (fun tm -> tm.c_type)
       |> Option.value ~default:"void"
 
-(* [generate_property_wrapper ~ctx ~c_type prop class_name ~is_getter ~c_to_ml_expr
-    ~ml_to_c_expr ~gvalue_assignment ~result_expr ~caml_params ~caml_locals] generates a C wrapper
-    function for both property getters and setters. Takes common parameters and specific logic
-    for conversion and GValue assignment based on whether it's a getter or setter. *)
+(* [generate_property_wrapper ~ctx ~c_type prop class_name ~is_getter
+    ~c_to_ml_expr ~ml_to_c_expr ~gvalue_assignment ~result_expr ~caml_params ~caml_locals] generates a C wrapper
+    function for both property getters and setters. Uses a template-based approach with named sections
+    for clearer code structure. *)
 let generate_property_wrapper ~ctx ~c_type (prop : gir_property) class_name ~is_getter
     ~c_to_ml_expr ~ml_to_c_expr ~gvalue_assignment ~result_expr ~caml_params ~caml_locals =
   let prop_info = C_stub_helpers.analyze_property_type ~ctx prop.prop_type in
@@ -74,18 +87,31 @@ let generate_property_wrapper ~ctx ~c_type (prop : gir_property) class_name ~is_
         gvalue_assignment prop.prop_name
   in
 
-  (* Build the C code using separate strings and concatenate *)
-  let header = sprintf "\nCAMLexport CAMLprim value %s(%s)\n{\n" prop_name caml_params in
-  let locals = caml_locals in
-  let obj_decl = sprintf "%s *obj = (%s *)%s(self);\n" c_type c_type c_cast in
-  let pspec_find = sprintf "%sGParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), \"%s\");\n" value_declaration prop.prop_name in
-  let pspec_check = sprintf "if (pspec == NULL) caml_failwith(\"%s: property '%s' not found\");\n" prop_name prop.prop_name in
-  let gvalue_init = "GValue prop_gvalue = G_VALUE_INIT;\ng_value_init(&prop_gvalue, pspec->value_type);\n" in
-  let operation = property_operation in
-  let gvalue_unset = "g_value_unset(&prop_gvalue);\n" in
-  let footer = sprintf "%s}\n" result_expr in
+  (* Template-based code generation with named sections *)
+  let template = {
+    header = sprintf "\nCAMLexport CAMLprim value %s(%s)\n{\n" prop_name caml_params;
+    locals = caml_locals;
+    obj_decl = sprintf "%s *obj = (%s *)%s(self);\n" c_type c_type c_cast;
+    pspec_find = sprintf "%sGParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), \"%s\");\n" value_declaration prop.prop_name;
+    pspec_check = sprintf "if (pspec == NULL) caml_failwith(\"%s: property '%s' not found\");\n" prop_name prop.prop_name;
+    gvalue_init = "GValue prop_gvalue = G_VALUE_INIT;\ng_value_init(&prop_gvalue, pspec->value_type);\n";
+    operation = property_operation;
+    gvalue_unset = "g_value_unset(&prop_gvalue);\n";
+    footer = sprintf "%s}\n" result_expr;
+  } in
 
-  String.concat ~sep:"" [ header; locals; obj_decl; pspec_find; pspec_check; gvalue_init; operation; gvalue_unset; footer ]
+  (* Render template sections in order *)
+  let buf = Buffer.create 256 in
+  Buffer.add_string buf template.header;
+  Buffer.add_string buf template.locals;
+  Buffer.add_string buf template.obj_decl;
+  Buffer.add_string buf template.pspec_find;
+  Buffer.add_string buf template.pspec_check;
+  Buffer.add_string buf template.gvalue_init;
+  Buffer.add_string buf template.operation;
+  Buffer.add_string buf template.gvalue_unset;
+  Buffer.add_string buf template.footer;
+  Buffer.contents buf
 
 (* [generate_c_property_getter ~ctx ~c_type prop class_name] generates a C wrapper function
    to read a GObject property via g_object_get_property. Initializes GValue for the property,
