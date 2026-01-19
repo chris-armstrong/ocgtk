@@ -17,6 +17,12 @@ depends: [
   "camlp5" {build}
   "camlp-streams" {build}
   "xmlm" {build}
+  "re" {build}
+  "uutf" {build}
+  "uuseg" {build}
+  "fmt" {build}
+  "fpath" {build}
+  "yojson" {build}
   "alcotest" {with-test}
   "ppxlib" {with-test}
   "odoc" {with-doc}

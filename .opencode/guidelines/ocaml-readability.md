@@ -1,5 +1,19 @@
 # OCaml Readability & Maintainability Guidelines
 
+## 0. Available Libraries
+
+Use the following libraries. Only `containers` should be opened at global scope (i.e. `open Containers`).
+
+- containers
+- re
+- uutf
+- uri
+- uuseg
+- yojson
+- fmt
+- xmlm
+- fpath
+
 ## 1. Reduce Nesting (max 2 levels)
 
 ### Bad: Deep nesting
@@ -347,28 +361,7 @@ let make_request ~method_ ~path =
 
 Reuse existing functions and code blocks to reduce duplication. Code shared between modules should be located in a file in the same directory named after its purpose. Similar functions should be grouped together.
 
-### Bad: Duplicated code
 
-```ocaml
-let is_active user =
-  match user.status with
-  | Active -> true
-  | Pending | Suspended | Deleted -> false
+## 11. Prefer labelled variants of standard library functions
 
-  (* or *)
-  
-  let is_active user = 
-    match user.status with
-    | Active -> true
-    | Pending | Suspended | Deleted -> false
-
-  (* or *)
-  
-  let is_active user = 
-    if user.status = Active then true
-    else if user.status = Pending || user.status = Suspended || user.status = Deleted then false
-    else failwith "Unknown status"
-
-### Good: Reuse existing functions
-
-
+Use `StdLabels` module to use labelled variants of standard library functions.

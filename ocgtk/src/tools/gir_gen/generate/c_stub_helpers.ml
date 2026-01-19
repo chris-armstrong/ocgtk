@@ -518,13 +518,7 @@ let generate_c_file_header ~ctx ?(class_name = "") ?(external_enums = [])
 
 (* Helper: extract base C type by removing trailing pointer *)
 let base_c_type_of c_type =
-  if
-    String.length c_type > 0
-    && String.equal
-         (String.sub c_type ~pos:(String.length c_type - 1) ~len:1)
-         "*"
-  then String.sub c_type ~pos:0 ~len:(String.length c_type - 1)
-  else c_type
+  CCString.chop_suffix ~suf:"*" c_type |> Option.value ~default:c_type
 
 (** Build return statement code based on return type and out parameters. Handles
     both throwing and non-throwing methods. *)
