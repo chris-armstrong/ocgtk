@@ -175,13 +175,10 @@ let generate_record_c_code ~ctx (record : gir_record) =
     bprintf buf "}\n"
   end;
 
-  List.iter
-    ~f:(fun (meth : gir_method) ->
-      let should_skip = Filtering.should_skip_method_binding ~ctx meth in
-      if (not should_skip) && not (C_stub_helpers.is_copy_or_free meth) then
-        Buffer.add_string buf
-          (C_stub_class.generate_c_method ~ctx ~c_type:record.c_type meth
-             record.record_name))
-    (List.rev record.methods);
+  C_stub_helpers.generate_methods ~ctx ~c_type:record.c_type
+    ~class_name:record.record_name ~buf
+    ~generator:C_stub_class.generate_c_method
+    ~extra_filter:(fun meth -> not (C_stub_helpers.is_copy_or_free meth))
+    record.methods;
 
   Buffer.contents buf

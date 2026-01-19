@@ -592,3 +592,19 @@ let generate_constructors ~ctx ~c_type ~class_name ~buf ~generator constructors 
       if Filtering.should_generate_constructor ~ctx ctor then
         Buffer.add_string buf (generator ~ctx ~c_type ~class_name ctor))
     constructors
+
+(** Generate C code for methods by iterating and filtering.
+    Applies [Filtering.should_skip_method_binding] filter plus an optional
+    extra filter predicate, then appends generated code to the buffer.
+    Methods are processed in reverse order (List.rev). *)
+let generate_methods ~ctx ~c_type ~class_name ~buf ~generator ?extra_filter
+    methods =
+  List.iter
+    ~f:(fun (meth : gir_method) ->
+      let should_skip = Filtering.should_skip_method_binding ~ctx meth in
+      let passes_extra_filter =
+        match extra_filter with None -> true | Some f -> f meth
+      in
+      if (not should_skip) && passes_extra_filter then
+        Buffer.add_string buf (generator ~ctx ~c_type meth class_name))
+    (List.rev methods)
