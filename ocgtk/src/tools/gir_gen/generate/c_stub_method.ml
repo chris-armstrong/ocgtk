@@ -371,43 +371,52 @@ let build_return_conversion ~ctx ~(meth : gir_method) ~c_name ~args ~ret_type
       handle_non_void_return ~ctx ~meth ~c_name ~args ~ret_type
         ~out_array_conv_code ~out_conversions ~out_array_cleanup_list
 
-(* [build_length_param_map ~meth] builds a map from OCaml argument index to length variable name
-   for array parameters. For each array parameter with a length parameter index, computes the
-   corresponding OCaml argument index and maps it to a length variable name. This allows length
-   parameters to be substituted with computed array lengths instead of passed as separate arguments.
-   Only processes non-Out parameters (those visible in OCaml signature).
-   Returns a list of (ocaml_idx, length_var_name) pairs. *)
-let build_length_param_map ~(meth : gir_method) =
-  (* Count non-Out parameters to get OCaml indices *)
-  let in_param_indices =
-    List.fold_left
-      ~f:(fun (idx, acc) (p : gir_param) ->
-        match p.direction with
-        | Out -> (idx, acc)
-        | _ -> (idx + 1, (p, idx) :: acc))
-      ~init:(0, []) meth.parameters
-    |> snd |> List.rev
-  in
-  (* Build a map from parameter index to OCaml index for non-Out parameters *)
-  let param_idx_to_ocaml_idx =
-    List.fold_left
-      ~f:(fun (param_idx, ocaml_idx, acc) param ->
-        match param.direction with
-        | Out -> (param_idx + 1, ocaml_idx, acc)
-        | _ -> (param_idx + 1, ocaml_idx + 1, (param_idx, ocaml_idx) :: acc))
-      ~init:(0, 0, []) meth.parameters
-    |> fun (_, _, acc) -> List.rev acc
-  in
-  (* For each array param with a length index, map the length param's OCaml idx to the length var *)
+(* [compute_in_param_indices parameters] counts non-Out parameters to get OCaml indices.
+    Returns a list of (param, original_index) pairs for all In and InOut parameters. *)
+let compute_in_param_indices (parameters : gir_param list) =
+  List.fold_left
+    ~f:(fun (idx, acc) (p : gir_param) ->
+      match p.direction with
+      | Out -> (idx, acc)
+      | _ -> (idx + 1, (p, idx) :: acc))
+    ~init:(0, []) parameters
+  |> snd |> List.rev
+
+(* [build_param_to_ocaml_map parameters] builds a map from parameter index to OCaml index
+    for non-Out parameters. Returns a list of (param_idx, ocaml_idx) pairs. *)
+let build_param_to_ocaml_map (parameters : gir_param list) =
+  List.fold_left
+    ~f:(fun (param_idx, ocaml_idx, acc) param ->
+      match param.direction with
+      | Out -> (param_idx + 1, ocaml_idx, acc)
+      | _ -> (param_idx + 1, ocaml_idx + 1, (param_idx, ocaml_idx) :: acc))
+    ~init:(0, 0, []) parameters
+  |> fun (_, _, acc) -> List.rev acc
+
+(* [extract_length_mappings in_param_indices param_to_ocaml_map]
+    For each array param with a length index, maps the length param's OCaml idx to the length var.
+    Returns a list of (length_ocaml_idx, length_var_name) pairs. *)
+let extract_length_mappings in_param_indices param_to_ocaml_map =
   List.filter_map
     ~f:(fun (p, ocaml_idx) ->
       let* ai = p.param_type.array in
       let* length_idx = ai.length in
       (* Find the OCaml arg index for the length parameter by lookup *)
-      let _, length_ocaml_idx = List.find ~f:(fun (idx, _) -> idx = length_idx) param_idx_to_ocaml_idx in
+      let _, length_ocaml_idx = List.find ~f:(fun (idx, _) -> idx = length_idx) param_to_ocaml_map in
       let arg_name = sprintf "arg%d" (ocaml_idx + 1) in
       Some (length_ocaml_idx, arg_name ^ "_length"))
     in_param_indices
+
+(* [build_length_param_map ~meth] builds a map from OCaml argument index to length variable name
+    for array parameters. For each array parameter with a length parameter index, computes the
+    corresponding OCaml argument index and maps it to a length variable name. This allows length
+    parameters to be substituted with computed array lengths instead of passed as separate arguments.
+    Only processes non-Out parameters (those visible in OCaml signature).
+    Returns a list of (ocaml_idx, length_var_name) pairs. *)
+let build_length_param_map ~(meth : gir_method) =
+  let in_param_indices = compute_in_param_indices meth.parameters in
+  let param_to_ocaml_map = build_param_to_ocaml_map meth.parameters in
+  extract_length_mappings in_param_indices param_to_ocaml_map
 
 (* [build_out_array_length_map parameters] builds a map from array parameter index to its length
    parameter index for out/inout direction parameters. For each Out or InOut parameter with array type,
