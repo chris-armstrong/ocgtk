@@ -165,17 +165,6 @@ let handle_in_param ~ctx ~acc ~length_param_map ~base_type ~tm (p : gir_param) =
         cleanups = acc.cleanups;
       }
 
-(* [strip_pointer_suffix c_type] removes a trailing "*" from a C type string if present.
-   Used to convert pointer types to their base types (e.g., "GObject*" -> "GObject").
-   If no trailing pointer suffix exists, returns the c_type unchanged. *)
-let strip_pointer_suffix c_type =
-  if
-    String.length c_type > 0
-    && String.equal
-         (String.sub c_type ~pos:(String.length c_type - 1) ~len:1)
-         "*"
-  then String.sub c_type ~pos:0 ~len:(String.length c_type - 1)
-  else c_type
 
 (* [convert_out_array ~ctx ~out_array_length_map ~out_array_conversions_buf
               ~out_array_cleanups ~parameters ~idx ~var_name p array_info] converts
@@ -220,7 +209,7 @@ let convert_out_scalar ~ctx ~_idx ~var_name (p : gir_param) =
   let base_gir_type =
     p.param_type.c_type
     |> Option.map (fun c_type ->
-      let stripped = strip_pointer_suffix c_type in
+      let stripped = C_stub_helpers.base_c_type_of c_type in
       if String.equal stripped c_type then p.param_type
       else { p.param_type with c_type = Some stripped })
     |> Option.value ~default:p.param_type
