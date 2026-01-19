@@ -1,7 +1,7 @@
 ---
 description: Refactor code to meet a specific guideline with independent review
 template: Carry out a complex refactoring task based on the user's suggestion and following the guidelines using a multi-stage plan, execute and review loop
-agent: plan
+mode: primary
 argument-hint: "<guideline> in <files or module>"
 model: minimax/MiniMax-M2.1
 ---
