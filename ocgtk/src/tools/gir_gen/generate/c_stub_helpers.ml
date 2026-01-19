@@ -502,14 +502,18 @@ module GValue = struct
       ~gen_pointer:(fun ct -> sprintf "    prop_value = (%s)g_value_get_pointer(&prop_gvalue);\n" ct)
       category
 
+  (** Convert getter name to setter name (e.g., "get_int" -> "set_int") *)
+  let getter_to_setter getter =
+    CCString.replace ~sub:"get_" ~by:"set_" getter
+
   (** Generate setter code based on type category *)
   let generate_setter_for_category ~ml_name:_ ~c_type_name category =
     gvalue_type_dispatch ~c_type_name
       ~gen_enum:(fun () -> "    g_value_set_enum(&prop_gvalue, c_value);\n")
       ~gen_bitfield:(fun () -> "    g_value_set_flags(&prop_gvalue, c_value);\n")
       ~gen_boolean:(fun () -> "    g_value_set_boolean(&prop_gvalue, c_value);\n")
-      ~gen_integer:(fun getter -> sprintf "    g_value_%s(&prop_gvalue, c_value);\n" getter)
-      ~gen_float:(fun getter -> sprintf "    g_value_%s(&prop_gvalue, c_value);\n" getter)
+      ~gen_integer:(fun getter -> sprintf "    g_value_%s(&prop_gvalue, c_value);\n" (getter_to_setter getter))
+      ~gen_float:(fun getter -> sprintf "    g_value_%s(&prop_gvalue, c_value);\n" (getter_to_setter getter))
       ~gen_string:(fun () -> "    g_value_set_string(&prop_gvalue, c_value);\n")
       ~gen_boxed:(fun _ -> "    g_value_set_boxed(&prop_gvalue, c_value);\n")
       ~gen_boxed_no_ptr:(fun _ -> "    g_value_set_boxed(&prop_gvalue, &c_value);\n")

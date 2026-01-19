@@ -70,7 +70,8 @@ let handle_out_param ~param_index ~base_type ~acc (p : gir_param) =
    Generates a C variable declaration initialized from the OCaml argument using type-specific
    conversion. The variable is added as a pointer reference in the C function arguments.
    Returns the updated accumulator with declarations, arguments, and updated OCaml index. *)
-let handle_inout_param ~_ctx ~param_index ~base_type ~acc ~tm (p : gir_param) =
+ let handle_inout_param ~ctx ~param_index ~base_type ~acc ~tm (p : gir_param) =
+  let (_ : generation_context) = ctx in
   let ocaml_idx = acc.C_stub_helpers.ocaml_idx + 1 in
   let arg_name = sprintf "arg%d" ocaml_idx in
   let var_name = sprintf "inout%d" (param_index + 1) in
@@ -501,7 +502,7 @@ let build_method_params ~ctx ~(meth : gir_method) =
       match p.direction with
       | Out -> handle_out_param ~param_index ~base_type ~acc p
       | InOut ->
-          handle_inout_param ~_ctx:ctx ~param_index ~base_type ~acc ~tm p
+          handle_inout_param ~ctx ~param_index ~base_type ~acc ~tm p
       | In -> handle_in_param ~ctx ~acc ~length_param_map ~base_type ~tm p
     in
     (new_acc, ())
