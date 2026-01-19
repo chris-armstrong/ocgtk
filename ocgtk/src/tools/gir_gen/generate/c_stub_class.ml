@@ -617,22 +617,24 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
         cleanups = [];
       }
     in
+    let process_method_param ~ctx ~length_param_map param_index acc p =
+      let tm =
+        Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type
+      in
+      let c_type_str = get_c_type_str ~ctx p.param_type in
+      let base_type = C_stub_helpers.base_c_type_of c_type_str in
+      let new_acc =
+        match p.direction with
+        | Out -> handle_out_param ~param_index ~base_type ~acc p
+        | InOut ->
+            handle_inout_param ~_ctx:ctx ~param_index ~base_type ~acc ~tm p
+        | In -> handle_in_param ~ctx ~acc ~length_param_map ~base_type ~tm p
+      in
+      (new_acc, ())
+    in
     let final_acc, _ =
       C_stub_helpers.fold_mapi meth.parameters ~init:init_acc
-        ~f:(fun param_index (acc : C_stub_helpers.param_acc) (p : gir_param) ->
-          let tm =
-            Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type
-          in
-          let c_type_str = get_c_type_str ~ctx p.param_type in
-          let base_type = C_stub_helpers.base_c_type_of c_type_str in
-          let new_acc =
-            match p.direction with
-            | Out -> handle_out_param ~param_index ~base_type ~acc p
-            | InOut ->
-                handle_inout_param ~_ctx:ctx ~param_index ~base_type ~acc ~tm p
-            | In -> handle_in_param ~ctx ~acc ~length_param_map ~base_type ~tm p
-          in
-          (new_acc, ()))
+        ~f:(process_method_param ~ctx ~length_param_map)
     in
     ( Buffer.contents final_acc.decls,
       self_cast :: final_acc.args,
