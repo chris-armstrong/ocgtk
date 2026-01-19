@@ -179,12 +179,19 @@ let constructor_has_array_params (ctor : gir_constructor) =
    - Not throwing GError
    - No varargs
    - No cross-namespace enum/bitfield parameters
-   - No array parameters (arrays require inline code generation) *)
+   - No array parameters (arrays require inline code generation)
+   - No unknown parameter types *)
 let should_generate_constructor ~ctx (ctor : gir_constructor) =
+  let has_unknown_type =
+    Exclude_list.should_skip_constructor
+      ~find_type_mapping:(Type_mappings.find_type_mapping_for_gir_type ~ctx)
+      ~enums:ctx.enums ~bitfields:ctx.bitfields ctor
+  in
   not ctor.throws
   && not (constructor_has_varargs ctor)
   && not (constructor_has_cross_namespace_types ~ctx ctor)
   && not (constructor_has_array_params ctor)
+  && not has_unknown_type
 
 let banned_records = [ "PrintBackend" ]
 
