@@ -527,21 +527,23 @@ let build_method_return ~ctx ~(meth : gir_method) ~c_name ~c_args =
   let out_array_length_map = build_out_array_length_map meth.parameters in
   let out_array_conversions_buf = Buffer.create 256 in
 
-  let out_conversions, out_array_cleanup_list =
-    let params_with_idx = List.mapi ~f:(fun i p -> (p, i)) meth.parameters in
+  (* Collect out parameter conversions using rev_map for results and concat for cleanups *)
+  let params_with_idx = List.mapi ~f:(fun i p -> (p, i)) meth.parameters in
+  let results_rev, cleanups_rev =
     List.fold_left
-      ~f:(fun (results, cleanups) param_idx ->
+      ~f:(fun (results_rev, cleanups_rev) (p, idx) ->
         let result, new_cleanups =
           process_out_param_conversion ~ctx ~out_array_length_map
-            ~out_array_conversions_buf ~parameters:meth.parameters param_idx
+            ~out_array_conversions_buf ~parameters:meth.parameters (p, idx)
         in
         match result with
-        | Some r -> (r :: results, new_cleanups @ cleanups)
-        | None -> (results, new_cleanups @ cleanups))
+        | Some r -> (r :: results_rev, List.rev_append new_cleanups cleanups_rev)
+        | None -> (results_rev, List.rev_append new_cleanups cleanups_rev))
       ~init:([], [])
       params_with_idx
   in
-  let out_conversions = List.rev out_conversions in
+  let out_conversions = List.rev results_rev in
+  let out_array_cleanup_list = List.rev cleanups_rev in
    let out_array_conv_code = Buffer.contents out_array_conversions_buf in
 
    let c_call_code, ret_conv, return_cleanups =
