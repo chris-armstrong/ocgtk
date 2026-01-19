@@ -426,17 +426,6 @@ let build_out_array_length_map parameters =
     ~init:[]
     (List.mapi ~f:(fun i p -> (p, i)) parameters)
 
-(* Default type mapping for when no mapping is found *)
-let default_type_mapping =
-  {
-    ocaml_type = "unit";
-    c_to_ml = "Val_unit";
-    ml_to_c = "Unit_val";
-    needs_copy = false;
-    layer2_class = None;
-    c_type = "void";
-  }
-
 (* [generate_multi_param_function ~ml_name ~params ~param_names body_code]
    generates both native and bytecode C wrapper variants for functions with >5 parameters.
    This eliminates code duplication between generate_c_constructor and generate_c_method.
