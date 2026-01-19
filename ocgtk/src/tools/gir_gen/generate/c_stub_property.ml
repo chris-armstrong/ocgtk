@@ -7,19 +7,8 @@ open Types
 
 module Log =
   (val Logs.src_log
-         (Logs.Src.create "gir_gen.c_stub_property"
-            ~doc:"C stub code generation for property support"))
-
-(* Default type mapping for when no mapping is found *)
-let default_type_mapping =
-  {
-    ocaml_type = "unit";
-    c_to_ml = "Val_unit";
-    ml_to_c = "Unit_val";
-    needs_copy = false;
-    layer2_class = None;
-    c_type = "void";
-  }
+          (Logs.Src.create "gir_gen.c_stub_property"
+             ~doc:"C stub code generation for property support"))
 
 (* [get_c_type_str ~ctx gir_type] retrieves the C type string representation for a GIR type.
    Returns the c_type directly if present, otherwise consults the type mapping context.
@@ -60,7 +49,7 @@ let generate_property_wrapper ~ctx ~c_type (prop : gir_property) class_name ~is_
     else
       let type_info =
         Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type
-        |> Option.value ~default:default_type_mapping
+        |> Option.value ~default:C_stub_helpers.default_type_mapping
       in
       let is_string_type =
         prop.prop_type.c_type
@@ -106,7 +95,7 @@ let generate_property_wrapper ~ctx ~c_type (prop : gir_property) class_name ~is_
 let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
   let type_info =
     Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type
-    |> Option.value ~default:default_type_mapping
+    |> Option.value ~default:C_stub_helpers.default_type_mapping
   in
 
   let c_to_ml_expr =
@@ -134,7 +123,7 @@ let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
 let generate_c_property_setter ~ctx ~c_type (prop : gir_property) class_name =
   let type_info =
     Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type
-    |> Option.value ~default:default_type_mapping
+    |> Option.value ~default:C_stub_helpers.default_type_mapping
   in
 
   let ml_to_c_expr =

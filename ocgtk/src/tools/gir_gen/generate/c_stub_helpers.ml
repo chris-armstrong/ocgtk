@@ -532,6 +532,17 @@ end
 
 (** Code generation utilities *)
 module Code_gen = struct
+  (* Default type mapping for when no mapping is found *)
+  let default_type_mapping =
+    {
+      ocaml_type = "unit";
+      c_to_ml = "Val_unit";
+      ml_to_c = "Unit_val";
+      needs_copy = false;
+      layer2_class = None;
+      c_type = "void";
+    }
+
   (* Generate C file header with common includes and type conversions *)
   let generate_c_file_header ~ctx ?(class_name = "") ?(external_enums = [])
       ?(external_bitfields = []) () =
@@ -684,6 +695,7 @@ let base_c_type_of = Code_gen.base_c_type_of
 let build_return_statement = Code_gen.build_return_statement
 let generate_constructors = Code_gen.generate_constructors
 let generate_methods = Code_gen.generate_methods
+let default_type_mapping = Code_gen.default_type_mapping
 
 (* Nullable conversion expressions - these depend on Type_analysis.analyze_property_type *)
 let nullable_c_to_ml_expr ~ctx ~var ~(gir_type : gir_type)
