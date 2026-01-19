@@ -167,14 +167,13 @@ let handle_in_param ~ctx ~acc ~length_param_map ~base_type ~tm (p : gir_param) =
 
 
 (* [convert_out_array ~ctx ~out_array_length_map ~out_array_conversions_buf
-              ~out_array_cleanups ~parameters ~idx ~var_name p array_info] converts
-   an out-direction array parameter from C to OCaml. Looks up the array length from
-   out_array_length_map (which maps parameter indices to length parameter indices) and
-   uses type mapping for conversion. Appends conversion code to the buffer, updates
-   cleanup list with any required post-return cleanup code. Returns an optional OCaml
-   array variable name (Some ml_array_var or None if type mapping not found). *)
+               ~parameters ~idx ~var_name p array_info] converts
+    an out-direction array parameter from C to OCaml. Looks up the array length from
+    out_array_length_map (which maps parameter indices to length parameter indices) and
+    uses type mapping for conversion. Appends conversion code to the buffer.
+    Returns a tuple of (optional OCaml array variable name, cleanup code list). *)
 let convert_out_array ~ctx ~out_array_length_map ~out_array_conversions_buf
-    ~out_array_cleanups ~parameters ~idx ~var_name (p : gir_param)
+    ~parameters ~idx ~var_name (p : gir_param)
     (array_info : gir_array) =
   let element_c_type =
     match array_info.element_type.c_type with
@@ -190,16 +189,15 @@ let convert_out_array ~ctx ~out_array_length_map ~out_array_conversions_buf
      let* param = safe_nth_opt parameters length_idx in
      Some (var_name_for_direction param.direction length_idx)
    in
-  let* _mapping = Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type in
-  let conv_code, ml_array_var, cleanup_code =
-    C_stub_helpers.generate_array_c_to_ml ~ctx ~var:var_name ~array_info
-      ~length_expr ~element_c_type
-      ~transfer_ownership:p.param_type.transfer_ownership
-  in
-  bprintf out_array_conversions_buf "    %s\n" conv_code;
-  if String.length cleanup_code > 0 then
-    out_array_cleanups := !out_array_cleanups @ [ cleanup_code ];
-  Some ml_array_var
+   let* _mapping = Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type in
+   let conv_code, ml_array_var, cleanup_code =
+     C_stub_helpers.generate_array_c_to_ml ~ctx ~var:var_name ~array_info
+       ~length_expr ~element_c_type
+       ~transfer_ownership:p.param_type.transfer_ownership
+   in
+    bprintf out_array_conversions_buf "    %s\n" conv_code;
+    let cleanups = if String.length cleanup_code > 0 then [ cleanup_code ] else [] in
+    Some (Some ml_array_var, cleanups)
 
 (* [convert_out_scalar ~ctx ~_idx ~var_name p] converts a scalar out-parameter from C to OCaml.
    Strips pointer suffix from the type (e.g., "GObject*" -> "GObject") and uses type mapping
@@ -220,22 +218,29 @@ let convert_out_scalar ~ctx ~_idx ~var_name (p : gir_param) =
       ~gir_type:base_gir_type ~mapping ~direction:p.direction ())
 
 (* [process_out_param_conversion ~ctx ~out_array_length_map ~out_array_conversions_buf
-                              ~out_array_cleanups ~parameters (p, idx)] processes a single out or inout
-   parameter for conversion to OCaml. In-direction parameters return None without processing.
-   Out and InOut parameters generate conversion code and return the OCaml value expression.
-   For arrays, uses array conversion logic; for scalars, uses scalar conversion. *)
+                               ~parameters (p, idx)] processes a single out or inout
+    parameter for conversion to OCaml. In-direction parameters return None without processing.
+    Out and InOut parameters generate conversion code and return the OCaml value expression.
+    For arrays, uses array conversion logic; for scalars, uses scalar conversion.
+    Returns a tuple of (optional OCaml value expression, cleanup code list). *)
 let process_out_param_conversion ~ctx ~out_array_length_map
-    ~out_array_conversions_buf ~out_array_cleanups ~parameters (p, idx) =
+    ~out_array_conversions_buf ~parameters (p, idx) =
   match p.direction with
-  | In -> None
+  | In -> (None, [])
   | Out | InOut -> (
       let var_name = var_name_for_direction p.direction idx in
       match p.param_type.array with
       | Some array_info ->
-          convert_out_array ~ctx ~out_array_length_map
-            ~out_array_conversions_buf ~out_array_cleanups ~parameters ~idx
-            ~var_name p array_info
-      | None -> convert_out_scalar ~ctx ~_idx:idx ~var_name p)
+          let result, cleanups =
+            convert_out_array ~ctx ~out_array_length_map
+              ~out_array_conversions_buf ~parameters ~idx
+              ~var_name p array_info
+            |> Option.value ~default:(None, [])
+          in
+          (result, cleanups)
+      | None ->
+          let result = convert_out_scalar ~ctx ~_idx:idx ~var_name p in
+          (result, []))
 
 (* [generate_ref_sink_stmt ~transfer_ownership mapping] generates a ref_sink statement
    for GObject types. Returns a newline + g_object_ref_sink call for TransferNone/Floating
@@ -254,13 +259,13 @@ let generate_ref_sink_stmt ~transfer_ownership mapping =
    generates the C call, return statement, and cleanup list for void return functions.
    If out_array_conv_code is non-empty, inserts it after the C call. Returns a tuple of
    (c_call_code, return_statement, cleanup_list). *)
-let handle_void_return ~c_name ~args ~out_array_conv_code ~out_array_cleanup_list =
+let handle_void_return ~c_name ~args ~out_array_conv_code ~out_conversions ~out_array_cleanup_list =
   let c_call_with_conv =
     if String.length out_array_conv_code > 0 then
       sprintf "%s(%s);\n%s" c_name args out_array_conv_code
     else sprintf "%s(%s);" c_name args
   in
-  (c_call_with_conv, C_stub_helpers.build_return_statement ~throws:false None [], out_array_cleanup_list)
+  (c_call_with_conv, C_stub_helpers.build_return_statement ~throws:false None out_conversions, out_array_cleanup_list)
 
 (* [handle_array_return ~ctx ~meth ~c_name ~args ~out_array_conv_code ~ret_type
                       ~out_conversions ~out_array_cleanup_list] handles array return types.
@@ -360,7 +365,7 @@ let handle_non_void_return ~ctx ~(meth : gir_method) ~c_name ~args ~ret_type
 let build_return_conversion ~ctx ~(meth : gir_method) ~c_name ~args ~ret_type
     ~out_array_conv_code ~out_conversions ~out_array_cleanup_list =
   match ret_type with
-  | Some "void" | None -> handle_void_return ~c_name ~args ~out_array_conv_code ~out_array_cleanup_list
+  | Some "void" | None -> handle_void_return ~c_name ~args ~out_array_conv_code ~out_conversions ~out_array_cleanup_list
   | Some ret_type ->
       handle_non_void_return ~ctx ~meth ~c_name ~args ~ret_type
         ~out_array_conv_code ~out_conversions ~out_array_cleanup_list
@@ -382,24 +387,25 @@ let build_length_param_map ~(meth : gir_method) =
       ~init:(0, []) meth.parameters
     |> snd |> List.rev
   in
+  (* Build a map from parameter index to OCaml index for non-Out parameters *)
+  let param_idx_to_ocaml_idx =
+    List.fold_left
+      ~f:(fun (param_idx, ocaml_idx, acc) param ->
+        match param.direction with
+        | Out -> (param_idx + 1, ocaml_idx, acc)
+        | _ -> (param_idx + 1, ocaml_idx + 1, (param_idx, ocaml_idx) :: acc))
+      ~init:(0, 0, []) meth.parameters
+    |> fun (_, _, acc) -> List.rev acc
+  in
   (* For each array param with a length index, map the length param's OCaml idx to the length var *)
   List.filter_map
     ~f:(fun (p, ocaml_idx) ->
       let* ai = p.param_type.array in
       let* length_idx = ai.length in
-      (* Find which OCaml arg index corresponds to the length parameter *)
-      let length_ocaml_idx = ref None in
-      let current_idx = ref 0 in
-      List.iteri meth.parameters ~f:(fun param_idx param ->
-          match param.direction with
-          | Out -> ()
-          | _ ->
-              if param_idx = length_idx then
-                length_ocaml_idx := Some !current_idx;
-              current_idx := !current_idx + 1);
-      let* len_idx = !length_ocaml_idx in
+      (* Find the OCaml arg index for the length parameter by lookup *)
+      let _, length_ocaml_idx = List.find ~f:(fun (idx, _) -> idx = length_idx) param_idx_to_ocaml_idx in
       let arg_name = sprintf "arg%d" (ocaml_idx + 1) in
-      Some (len_idx, arg_name ^ "_length"))
+      Some (length_ocaml_idx, arg_name ^ "_length"))
     in_param_indices
 
 (* [build_out_array_length_map parameters] builds a map from array parameter index to its length
@@ -655,22 +661,27 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
     (* Build map of out-parameter array lengths *)
     let out_array_length_map = build_out_array_length_map meth.parameters in
 
-    (* Generate conversion code and cleanup for out-parameter arrays *)
+    (* Generate conversion code and cleanup for out-parameter arrays using functional approach *)
     let out_array_conversions_buf = Buffer.create 256 in
-    let out_array_cleanups = ref [] in
 
-    let out_conversions =
-      List.filter_map
-        ~f:
-          (process_out_param_conversion ~ctx ~out_array_length_map
-             ~out_array_conversions_buf ~out_array_cleanups
-             ~parameters:meth.parameters)
-        (List.mapi ~f:(fun i p -> (p, i)) meth.parameters)
+    let out_conversions, out_array_cleanup_list =
+      let params_with_idx = List.mapi ~f:(fun i p -> (p, i)) meth.parameters in
+      List.fold_left
+        ~f:(fun (results, cleanups) param_idx ->
+          let result, new_cleanups =
+            process_out_param_conversion ~ctx ~out_array_length_map
+              ~out_array_conversions_buf ~parameters:meth.parameters param_idx
+          in
+          match result with
+          | Some r -> (r :: results, new_cleanups @ cleanups)
+          | None -> (results, new_cleanups @ cleanups))
+        ~init:([], [])
+        params_with_idx
     in
+    let out_conversions = List.rev out_conversions in
 
-    (* Get out-array conversion code and cleanups *)
+    (* Get out-array conversion code *)
     let out_array_conv_code = Buffer.contents out_array_conversions_buf in
-    let out_array_cleanup_list = !out_array_cleanups in
 
     build_return_conversion ~ctx ~meth ~c_name ~args ~ret_type
       ~out_array_conv_code ~out_conversions ~out_array_cleanup_list
