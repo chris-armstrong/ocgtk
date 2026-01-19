@@ -81,6 +81,65 @@ let generate_forward_decls ~records =
 
   Buffer.contents buf
 
+let generate_opaque_record_conversions ~buf (record : gir_record) =
+  (* Generate public conversion functions for opaque records *)
+  bprintf buf
+    "/* Conversion functions for %s (opaque record with hidden fields) */\n"
+    record.c_type;
+
+  (* X_val function *)
+  bprintf buf "%s *%s_val(value v) {\n" record.c_type record.c_type;
+  bprintf buf "  return *(%s **)Data_custom_val(v);\n" record.c_type;
+  bprintf buf "}\n\n";
+
+  (* Val_X function *)
+  bprintf buf "value Val_%s(const %s *ptr) {\n" record.c_type record.c_type;
+  bprintf buf "  if (ptr == NULL) return Val_none;\n";
+  bprintf buf "  return ml_gir_record_val_ptr(ptr);\n";
+  bprintf buf "}\n\n";
+
+  (* Val_X_option function *)
+  bprintf buf "value Val_%s_option(const %s *ptr) {\n" record.c_type
+    record.c_type;
+  bprintf buf "  if (ptr == NULL) return Val_none;\n";
+  bprintf buf "  return Val_some(Val_%s(ptr));\n" record.c_type;
+  bprintf buf "}\n\n"
+
+let generate_value_record_conversions ~buf (record : gir_record) =
+  (* Generate copy function for value-like records *)
+  bprintf buf
+    "/* Copy function for %s (value-like record with copy method) */\n"
+    record.c_type;
+
+  (* Find the copy function from the methods *)
+  let copy_method =
+    List.find_opt record.methods ~f:(fun (meth : gir_method) ->
+        let lower_name = String.lowercase_ascii meth.method_name in
+        String.equal lower_name "copy")
+  in
+
+  match copy_method with
+  | Some copy_meth ->
+      (* Generate the copy_TypeName function that wraps the GTK copy function *)
+      bprintf buf "value copy_%s(const %s *ptr) {\n" record.c_type
+        record.c_type;
+      bprintf buf "  if (ptr == NULL) return Val_none;\n";
+      bprintf buf "  %s *copy = %s((%s*)ptr);\n" record.c_type
+        copy_meth.c_identifier record.c_type;
+      bprintf buf "  return ml_gir_record_val_ptr(g_new0(%s, 1));\n"
+        record.c_type;
+      bprintf buf "}\n\n"
+  | None ->
+      (* Fallback: generate a simple memcpy-based copy *)
+      bprintf buf "value copy_%s(const %s *ptr) {\n" record.c_type
+        record.c_type;
+      bprintf buf "  if (ptr == NULL) return Val_none;\n";
+      bprintf buf "  %s *copy = g_malloc(sizeof(%s));\n" record.c_type
+        record.c_type;
+      bprintf buf "  memcpy(copy, ptr, sizeof(%s));\n" record.c_type;
+      bprintf buf "  return ml_gir_record_val_ptr(copy));\n";
+      bprintf buf "}\n\n"
+
 let generate_record_c_code ~ctx (record : gir_record) =
   let buf = Buffer.create 2048 in
 
@@ -94,67 +153,12 @@ let generate_record_c_code ~ctx (record : gir_record) =
   (* Generate conversion functions for non-opaque records *)
   let is_value_record = is_value_like_record record in
 
-  if not is_value_record then begin
-    (* Generate public conversion functions opaque records *)
-    bprintf buf
-      "/* Conversion functions for %s (opaque record with hidden fields) */\n"
-      record.c_type;
+  if not is_value_record then
+    generate_opaque_record_conversions ~buf record
+  else
+    generate_value_record_conversions ~buf record;
 
-    (* X_val function *)
-    bprintf buf "%s *%s_val(value v) {\n" record.c_type record.c_type;
-    bprintf buf "  return *(%s **)Data_custom_val(v);\n" record.c_type;
-    bprintf buf "}\n\n";
-
-    (* Val_X function *)
-    bprintf buf "value Val_%s(const %s *ptr) {\n" record.c_type record.c_type;
-    bprintf buf "  if (ptr == NULL) return Val_none;\n";
-    bprintf buf "  return ml_gir_record_val_ptr(ptr);\n";
-    bprintf buf "}\n\n";
-
-    (* Val_X_option function *)
-    bprintf buf "value Val_%s_option(const %s *ptr) {\n" record.c_type
-      record.c_type;
-    bprintf buf "  if (ptr == NULL) return Val_none;\n";
-    bprintf buf "  return Val_some(Val_%s(ptr));\n" record.c_type;
-    bprintf buf "}\n\n"
-  end
-  else begin
-    (* Generate copy function for value-like records *)
-    bprintf buf
-      "/* Copy function for %s (value-like record with copy method) */\n"
-      record.c_type;
-
-    (* Find the copy function from the methods *)
-    let copy_method =
-      List.find_opt record.methods ~f:(fun (meth : gir_method) ->
-          let lower_name = String.lowercase_ascii meth.method_name in
-          String.equal lower_name "copy")
-    in
-
-    match copy_method with
-    | Some copy_meth ->
-        (* Generate the copy_TypeName function that wraps the GTK copy function *)
-        bprintf buf "value copy_%s(const %s *ptr) {\n" record.c_type
-          record.c_type;
-        bprintf buf "  if (ptr == NULL) return Val_none;\n";
-        bprintf buf "  %s *copy = %s((%s*)ptr);\n" record.c_type
-          copy_meth.c_identifier record.c_type;
-        bprintf buf "  return ml_gir_record_val_ptr(g_new0(%s, 1));\n"
-          record.c_type;
-        bprintf buf "}\n\n"
-    | None ->
-        (* Fallback: generate a simple memcpy-based copy *)
-        bprintf buf "value copy_%s(const %s *ptr) {\n" record.c_type
-          record.c_type;
-        bprintf buf "  if (ptr == NULL) return Val_none;\n";
-        bprintf buf "  %s *copy = g_malloc(sizeof(%s));\n" record.c_type
-          record.c_type;
-        bprintf buf "  memcpy(copy, ptr, sizeof(%s));\n" record.c_type;
-        bprintf buf "  return ml_gir_record_val_ptr(copy));\n";
-        bprintf buf "}\n\n"
-  end;
-
-   C_stub_helpers.generate_constructors ~ctx ~c_type:record.c_type
+  C_stub_helpers.generate_constructors ~ctx ~c_type:record.c_type
      ~class_name:record.record_name ~buf
      ~generator:C_stub_class.generate_c_constructor record.constructors;
 
