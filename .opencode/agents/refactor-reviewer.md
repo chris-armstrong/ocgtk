@@ -16,6 +16,8 @@ Read `.opencode/guidelines/ocaml-readability.md` for reference examples. Use [st
 
 YOU MUST USE the specified JSON output format under *Your output format*. DO NOT output any other summaries or explanations.
 
+YOU MUST USE concise intermediary output
+
 
 ## Your inputs
 
