@@ -3,10 +3,18 @@ description: Refactor code to meet a specific guideline with independent review
 template: Carry out a complex refactoring task based on the user's suggestion and following the guidelines using a multi-stage plan, execute and review loop
 agent: plan
 argument-hint: "<guideline> in <files or module>"
-model: opencode/claude-sonnet-4-5
+model: minimax/MiniMax-M2.1
 ---
 
 ## Refactoring Goal: $ARGUMENTS
+You have three agents available to you:
+- @refactor-executor
+- @refactor-reviewer
+- @refactor-planner
+
+DO NOT execute any of these steps yourself - always use the agents. STOP if you are unable to invoke them. NEVER proceed with the changes yourself.
+
+Minimise your output to just the relevant parts. 
 
 ### Setup: Load or Define Guidelines
 
@@ -16,6 +24,8 @@ test -f .opencode/guidelines/ocaml-readability.md && echo "EXISTS" || echo "MISS
 ```
 
 If MISSING, create it with the standard OCaml guidelines (use the full content from the guidelines document).
+
+You do not need to load the guidelines file yourself, the subagents will do that for themselves.
 
 ### Phase 1: Planning
 
@@ -33,12 +43,6 @@ Show me the plan summary and wait for approval before proceeding.
 
 ### Phase 2: Execution Loop
 
-You have three agents available to you:
-- @refactor-executor
-- @refactor-reviewer
-- @refactor-planner
-
-DO NOT execute any of these steps yourself - always use the agents. STOP if you are unable to invoke them. NEVER proceed with the changes yourself.
 
 For each violation in the plan:
 
