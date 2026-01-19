@@ -26,10 +26,10 @@ let generate_constructor_return_stmt ~throws ~val_macro ~var_name =
       val_macro var_name
   else sprintf "CAMLreturn(%s(%s));" val_macro var_name
 
-(* [generate_constructor_c_call_args ~ctx ~ctor_parameters] builds C call arguments
+(* [generate_constructor_c_call_args ~ctx ~class_name ~constructor ctor_parameters] builds C call arguments
    with nullable handling. For each parameter, looks up type mapping and generates
    appropriate conversion expression. Returns list of C argument expressions. *)
-let generate_constructor_c_call_args ~ctx ~ctor_parameters =
+let generate_constructor_c_call_args ~ctx ~class_name ~constructor:(constructor : gir_constructor) ctor_parameters =
   List.mapi
     ~f:(fun i p ->
       match Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type with
@@ -43,8 +43,19 @@ let generate_constructor_c_call_args ~ctx ~ctor_parameters =
           C_stub_helpers.nullable_ml_to_c_expr
             ~var:(sprintf "arg%d" (i + 1))
             ~gir_type:param_type ~mapping
-      | None -> sprintf "arg%d" (i + 1))
-         ctor_parameters
+      | None ->
+          (* No type mapping found - fail with clear error at compile time *)
+          failwith
+            (sprintf
+               "No type mapping found for constructor parameter %d: name='%s' c_type='%s' \
+                in constructor %s of class %s. This indicates missing type information in the \
+                context or GIR metadata."
+               (i + 1)
+               p.param_type.name
+               (Option.value p.param_type.c_type ~default:"<none>")
+               constructor.c_identifier
+               class_name))
+     ctor_parameters
 
 (* [generate_multi_param_function ~ml_name ~params ~param_names body_code]
    generates both native and bytecode C wrapper variants for functions with >5 parameters.
@@ -174,7 +185,7 @@ let generate_c_constructor ~ctx ~c_type ~class_name (ctor : gir_constructor) =
   let param_count, params, param_names = build_constructor_params ctor.ctor_parameters in
 
   (* Build C call arguments - handle nullable parameters *)
-  let c_args = generate_constructor_c_call_args ~ctx ~ctor_parameters:ctor.ctor_parameters in
+  let c_args = generate_constructor_c_call_args ~ctx ~class_name ~constructor:ctor ctor.ctor_parameters in
 
   (* Build constructor call string with error parameter if needed *)
   let c_call_args = build_constructor_call c_args ctor.throws in
