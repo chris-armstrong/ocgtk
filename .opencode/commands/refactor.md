@@ -56,11 +56,12 @@ For each violation in the plan:
 ```
    If build fails, executor must fix before proceeding.
 
-3. **Independent Review**: Use @refactor-reviewer agent with:
+1. **Independent Review**: Use @refactor-reviewer agent with:
    - Original goal from: `cat .opencode/scratchpad/current-goal.txt`
    - Modified file paths only (reviewer reads current state)
+   - The reviewer agent already knows what to do and what output format to use. Simply provide the context; DO NOT prompt it with an output format NOR provide review criteria.
    
-4. **Handle Review Result**:
+2. **Handle Review Result**:
    - PASS → commit and continue to next violation
    - PARTIAL → show feedback, attempt fix (max 2 retries)
    - FAIL → show feedback, attempt fix (max 3 retries)

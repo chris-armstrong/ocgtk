@@ -855,12 +855,8 @@ let generate_class_c_code ~ctx ~c_type class_name constructors methods
      ~generator:generate_c_constructor constructors;
 
   (* Generate methods, skip duplicates *)
-  List.iter
-    ~f:(fun (meth : gir_method) ->
-      let should_skip = Filtering.should_skip_method_binding ~ctx meth in
-      if not should_skip then
-        Buffer.add_string buf (generate_c_method ~ctx ~c_type meth class_name))
-    (List.rev methods);
+  C_stub_helpers.generate_methods ~ctx ~c_type ~class_name ~buf
+    ~generator:generate_c_method methods;
 
   (* Generate property getters and setters *)
   List.iter
