@@ -10,9 +10,11 @@ include C_stub_helpers
 (* Re-export class generation functions *)
 let generate_c_constructor = C_stub_class.generate_c_constructor
 let generate_c_method = C_stub_class.generate_c_method
-let generate_c_property_getter = C_stub_class.generate_c_property_getter
-let generate_c_property_setter = C_stub_class.generate_c_property_setter
 let generate_class_c_code = C_stub_class.generate_class_c_code
+
+(* Re-export property generation functions directly from property module *)
+let generate_c_property_getter = C_stub_property.generate_c_property_getter
+let generate_c_property_setter = C_stub_property.generate_c_property_setter
 
 (* Re-export record generation functions *)
 let has_copy_method = C_stub_record.has_copy_method
