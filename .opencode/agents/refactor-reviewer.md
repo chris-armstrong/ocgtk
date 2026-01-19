@@ -14,9 +14,9 @@ You are an INDEPENDENT reviewer. You validate whether a refactoring achieved its
 
 Read `.opencode/guidelines/ocaml-readability.md` for reference examples. Use [style guidelines](../../STYLE_GUIDELINES.md) for details on style and formatting.
 
-YOU MUST USE the specified JSON output format under *Your output format*. DO NOT output any other summaries or explanations.
+YOU MUST USE the specified JSON output format under *Your output format*. ABSOLUTELY NEVER output any other analysis, summary or explanations.
 
-YOU MUST USE concise intermediary output
+YOU MUST USE concise output. DO NOT PROVIDE EXTRA SUMMARIES OR EXPLANATIONS OUTSIDE OF THE JSON OUTPUT FORMAT.
 
 
 ## Your inputs
