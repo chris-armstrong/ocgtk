@@ -66,12 +66,12 @@ let generate_forward_decls ~records =
     Buffer.add_string buf "\n"
   end;
 
+  (* Add forward declarations for non-value-like records *)
+  Buffer.add_string buf
+    "/* Forward declarations for record converters (non-opaque records) */\n";
   List.iter
     ~f:(fun (record : gir_record) ->
-      (* Forward declarations for functions *)
-      bprintf buf
-        "/* Forward declarations for %s converters (non-opaque record with  *)\n\
-        \              fields) */\n"
+      bprintf buf "/* Forward declarations for %s converters */\n"
         record.c_type;
       bprintf buf "%s *%s_val(value val);\n" record.c_type record.c_type;
       bprintf buf "value Val_%s(const %s *ptr);\n" record.c_type record.c_type;

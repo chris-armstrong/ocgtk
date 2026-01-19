@@ -61,15 +61,16 @@ let generate_class_c_code ~ctx ~c_type class_name constructors methods
    Buffer.contents buf
 
 (* [generate_forward_decls ~classes ~interfaces] generates forward declaration macros for
-   class and interface conversion functions. Creates #define macros for Val_<type> and <type>_val
-   conversions that map between OCaml values and C pointers using helper functions. The Val_<type>
-   macro wraps ml_gobject_val_of_ext, while <type>_val extracts via ml_gobject_ext_of_val.
-   Avoids duplicate declarations using a hashtable of seen types to handle shared inheritance.
-   Returns the complete C macro declarations as a string. *)
+    class and interface conversion functions. Creates #define macros for Val_<type> and <type>_val
+    conversions that map between OCaml values and C pointers using helper functions. The Val_<type>
+    macro wraps ml_gobject_val_of_ext, while <type>_val extracts via ml_gobject_ext_of_val.
+    Avoids duplicate declarations using a hashtable of seen types to handle shared inheritance.
+    Returns the complete C macro declarations as a string. *)
 let generate_forward_decls ~classes ~interfaces =
   let buf = Buffer.create 2048 in
   let seen = Hashtbl.create 97 in
 
+  (* Generate class conversion macros *)
   Buffer.add_string buf "/* Class-specific conversion macros (shared) */\n";
   List.iter
     ~f:(fun (cls : gir_class) ->
@@ -84,6 +85,7 @@ let generate_forward_decls ~classes ~interfaces =
         bprintf buf "#endif /* Val_%s */\n\n" cls.c_type
       end)
     classes;
+
   (* Add interface conversion macros *)
   Buffer.add_string buf "/* Interface-specific conversion macros (shared) */\n";
   List.iter

@@ -672,6 +672,39 @@ module Code_gen = struct
       (List.rev methods)
 end
 
+(** Forward declaration generation helpers - shared across record, class, enum, and bitfield modules *)
+module Forward_decl = struct
+  (** Generate a section of forward declarations.
+      Common pattern across record, class, enum, and bitfield modules.
+      
+      Parameters:
+      - buf: Buffer to append declarations to
+      - items: List of items to generate declarations for  
+      - section_comment: Comment header for this section
+      - generate_one: Function to generate declarations for a single item
+      - deduplicate: Whether to track seen types with Hashtbl (default: true) *)
+  let generate_section
+      ~(buf : Buffer.t)
+      ~(items : 'a list)
+      ~(section_comment : string)
+      ~(generate_one : 'a -> unit)
+      ?(deduplicate : bool = true)
+      () =
+    if List.length items > 0 then (
+      Buffer.add_string buf section_comment;
+      let seen = if deduplicate then Some (Hashtbl.create 97) else None in
+      List.iter
+        ~f:(fun item ->
+          match seen with
+          | Some tbl when Hashtbl.mem tbl item -> ()
+          | Some tbl ->
+              Hashtbl.add tbl item ();
+              generate_one item
+          | None -> generate_one item)
+        items;
+      Buffer.add_string buf "\n")
+end
+
 (* Re-export commonly used functions at top level for backward compatibility *)
 type property_gvalue_info = Type_analysis.property_gvalue_info
 
@@ -746,3 +779,6 @@ let nullable_ml_to_c_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping)
                     "*" ->
             sprintf "Option_val(%s, %s, NULL)" var mapping.ml_to_c
         | _ -> sprintf "%s(%s)" mapping.ml_to_c var)
+
+(* Re-export forward declaration helper *)
+let generate_forward_decl_section = Forward_decl.generate_section
