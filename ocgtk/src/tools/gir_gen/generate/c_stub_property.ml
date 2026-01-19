@@ -159,7 +159,7 @@ let generate_c_property_setter ~ctx ~c_type (prop : gir_property) class_name =
 
   let prop_info = C_stub_helpers.analyze_property_type ~ctx prop.prop_type in
   let setter_assignment =
-    C_stub_helpers.generate_gvalue_setter_assignment ~ml_name:"setter" ~prop ~prop_info
+    C_stub_helpers.generate_gvalue_setter_assignment ~ml_name:"setter" ~prop_info
   in
 
   generate_property_wrapper ~ctx ~c_type prop class_name ~is_getter:false
