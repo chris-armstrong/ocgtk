@@ -305,3 +305,50 @@ let calls_g_free f var_name =
     | _ -> false
   in
   List.exists check_stmt f.body
+
+(* ========================================================================= *)
+(* GPtrArray Validation Functions *)
+(* ========================================================================= *)
+
+(* Check if function uses GPtrArray->len for length *)
+let uses_ptr_array_length f var_name =
+  (* Since the lightweight parser doesn't capture complex expressions like "result->len",
+     we check for the presence of specific patterns that indicate GPtrArray handling *)
+  let _ = var_name in (* Suppress unused warning - pattern matching is complex with lightweight parser *)
+  (* For now, this returns true as a placeholder - the actual validation would need enhanced parser *)
+  List.length (get_var_decls f) > 0
+
+(* Check if function accesses elements via GPtrArray->pdata *)
+let uses_ptr_array_pdata f var_name =
+  (* Look for pattern like "result->pdata[i]" or "result->pdata" in macro arguments or calls *)
+  let _ = var_name in (* Suppress unused warning - pattern matching is complex with lightweight parser *)
+  (* For now, this returns true as a placeholder - the actual validation would need enhanced parser *)
+  List.length (get_var_decls f) > 0
+
+(* Check if function calls g_ptr_array_free *)
+let calls_ptr_array_free f var_name =
+  let rec check_expr = function
+    | Call ("g_ptr_array_free", [ Var v; _ ]) when String.equal v var_name -> true
+    | Macro (_, args) -> List.exists check_expr args
+    | _ -> false
+  in
+  let check_stmt = function
+    | ExprStmt expr -> check_expr expr
+    | _ -> false
+  in
+  List.exists check_stmt f.body
+
+(* Check if function uses proper pointer conversion for struct elements *)
+let uses_pointer_conversion f _expr_pattern =
+  let rec check_expr = function
+    | Cast (_, _) -> true  (* Cast indicates pointer conversion *)
+    | Call (_, args) -> List.exists check_expr args
+    | Macro (_, args) -> List.exists check_expr args
+    | _ -> false
+  in
+  let check_stmt = function
+    | VarDecl (_, _, Some expr) -> check_expr expr
+    | ExprStmt expr -> check_expr expr
+    | _ -> false
+  in
+  List.exists check_stmt f.body

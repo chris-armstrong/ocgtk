@@ -599,6 +599,247 @@ let test_array_cleanup_transfer_full () =
     (C_validation.calls_g_free func "c_arg1")
 
 (* =================================================================== *)
+(* GPtrArray Handling Tests *)
+(* =================================================================== *)
+
+let test_gptr_array_return () =
+  let ctx = create_test_context () in
+  let meth =
+    {
+      method_name = "get_element_stack";
+      c_identifier = "gtk_buildable_parse_context_get_element_stack";
+      return_type =
+        {
+          name = "utf8";
+          c_type = Some "GPtrArray*";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array =
+            Some
+              {
+                length = None;
+                zero_terminated = false;
+                fixed_size = None;
+                element_type =
+                  {
+                    name = "utf8";
+                    c_type = Some "char*";
+                    nullable = false;
+                    transfer_ownership = TransferNone;
+                    array = None;
+                  };
+              };
+        };
+      parameters =
+        [
+          {
+            param_name = "context";
+            param_type =
+              {
+                name = "BuildableParseContext";
+                c_type = Some "GtkBuildableParseContext*";
+                nullable = false;
+                transfer_ownership = TransferNone;
+                array = None;
+              };
+            direction = In;
+            nullable = false;
+            varargs = false;
+          };
+        ];
+      doc = None;
+      throws = false;
+      get_property = None;
+      set_property = None;
+    }
+  in
+
+  let c_code =
+    generate_c_method ~ctx ~c_type:"GtkBuildableParseContext" meth
+      "BuildableParseContext"
+  in
+
+  Helpers.log_generated_c_code "GPtrArray return" c_code;
+
+  let functions = parse_c_string c_code in
+  let func =
+    Option.get
+      (find_function functions "ml_gtk_buildable_parse_context_get_element_stack")
+  in
+
+  (* Should have variable declarations (indicates GPtrArray processing) *)
+  Alcotest.(check bool)
+    "Has variable declarations for GPtrArray handling" true
+    (List.length (C_ast.get_var_decls func) > 0);
+
+  (* Should allocate OCaml array *)
+  Alcotest.(check bool)
+    "Allocates OCaml array" true
+    (C_validation.calls_caml_alloc func);
+
+  (* Should convert elements in loop *)
+  Alcotest.(check bool)
+    "Converts elements in loop" true
+    (C_validation.has_conversion_loop func)
+
+let test_gptr_array_transfer_full () =
+  let ctx = create_test_context () in
+  let meth =
+    {
+      method_name = "get_ip_addresses";
+      c_identifier = "g_tls_certificate_get_ip_addresses";
+      return_type =
+        {
+          name = "GInetAddress";
+          c_type = Some "GPtrArray*";
+          nullable = false;
+          transfer_ownership = TransferFull;
+          (* GTK transfers ownership of the array to us *)
+          array =
+            Some
+              {
+                length = None;
+                zero_terminated = false;
+                fixed_size = None;
+                element_type =
+                  {
+                    name = "GInetAddress";
+                    c_type = Some "GInetAddress*";
+                    nullable = false;
+                    transfer_ownership = TransferNone;
+                    array = None;
+                  };
+              };
+        };
+      parameters =
+        [
+          {
+            param_name = "cert";
+            param_type =
+              {
+                name = "GTlsCertificate";
+                c_type = Some "GTlsCertificate*";
+                nullable = false;
+                transfer_ownership = TransferNone;
+                array = None;
+              };
+            direction = In;
+            nullable = false;
+            varargs = false;
+          };
+        ];
+      doc = None;
+      throws = false;
+      get_property = None;
+      set_property = None;
+    }
+  in
+
+  let c_code =
+    generate_c_method ~ctx ~c_type:"GTlsCertificate" meth "TlsCertificate"
+  in
+
+  Helpers.log_generated_c_code "GPtrArray return with transfer-full" c_code;
+
+  let functions = parse_c_string c_code in
+  let func =
+    Option.get (find_function functions "ml_g_tls_certificate_get_ip_addresses")
+  in
+
+  (* Should have variable declarations (indicates GPtrArray processing) *)
+  Alcotest.(check bool)
+    "Has variable declarations for GPtrArray handling" true
+    (List.length (C_ast.get_var_decls func) > 0);
+
+  (* Should allocate OCaml array *)
+  Alcotest.(check bool)
+    "Allocates OCaml array" true
+    (C_validation.calls_caml_alloc func);
+
+  (* Should convert elements in loop *)
+  Alcotest.(check bool)
+    "Converts elements in loop" true
+    (C_validation.has_conversion_loop func)
+
+let test_gptr_array_with_incompatible_element_type () =
+  let ctx = create_test_context () in
+  let meth =
+    {
+      method_name = "get_time_coords";
+      c_identifier = "gdk_event_get_history";
+      return_type =
+        {
+          name = "GdkTimeCoord";
+          c_type = Some "GPtrArray*";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array =
+            Some
+              {
+                length = None;
+                zero_terminated = false;
+                fixed_size = None;
+                element_type =
+                  {
+                    name = "GdkTimeCoord";
+                    c_type = Some "GdkTimeCoord*";
+                    nullable = false;
+                    transfer_ownership = TransferNone;
+                    array = None;
+                  };
+              };
+        };
+      parameters =
+        [
+          {
+            param_name = "event";
+            param_type =
+              {
+                name = "GdkEvent";
+                c_type = Some "GdkEvent*";
+                nullable = false;
+                transfer_ownership = TransferNone;
+                array = None;
+              };
+            direction = In;
+            nullable = false;
+            varargs = false;
+          };
+        ];
+      doc = None;
+      throws = false;
+      get_property = None;
+      set_property = None;
+    }
+  in
+
+  let c_code =
+    generate_c_method ~ctx ~c_type:"GdkEvent" meth "Event"
+  in
+
+  Helpers.log_generated_c_code "GPtrArray with struct elements" c_code;
+
+  let functions = parse_c_string c_code in
+  let func =
+    Option.get (find_function functions "ml_gdk_event_get_history")
+  in
+
+  (* Should have variable declarations (indicates GPtrArray processing) *)
+  Alcotest.(check bool)
+    "Has variable declarations for GPtrArray handling" true
+    (List.length (C_ast.get_var_decls func) > 0);
+
+  (* Should allocate OCaml array *)
+  Alcotest.(check bool)
+    "Allocates OCaml array" true
+    (C_validation.calls_caml_alloc func);
+
+  (* Should convert elements in loop *)
+  Alcotest.(check bool)
+    "Converts elements in loop" true
+    (C_validation.has_conversion_loop func)
+
+(* =================================================================== *)
 (* Test Suite *)
 (* =================================================================== *)
 
@@ -623,4 +864,11 @@ let tests =
       test_array_cleanup_transfer_none;
     Alcotest.test_case "Array cleanup with transfer-full" `Quick
       test_array_cleanup_transfer_full;
+    (* GPtrArray tests *)
+    Alcotest.test_case "GPtrArray return (transfer-none)" `Quick
+      test_gptr_array_return;
+    Alcotest.test_case "GPtrArray return (transfer-full)" `Quick
+      test_gptr_array_transfer_full;
+    Alcotest.test_case "GPtrArray with struct elements" `Quick
+      test_gptr_array_with_incompatible_element_type;
   ]
