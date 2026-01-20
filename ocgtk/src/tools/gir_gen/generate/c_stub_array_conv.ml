@@ -12,6 +12,7 @@ module Array_conv = struct
     let elem_name = String.lowercase_ascii array_info.element_type.name in
     let elem_ctype = array_info.element_type.c_type in
     String.equal elem_name "utf8" || String.equal elem_name "gchararray" ||
+    String.equal elem_name "filename" ||
     C_stub_type_analysis.Type_analysis.is_string_type elem_ctype
 
   (** Generate conversion code for zero-terminated arrays.
@@ -115,11 +116,21 @@ module Array_conv = struct
         length_code_for_zero_terminated_nonpointer ~length_var ~var ~element_c_type
     else if is_string_array array_info then
       length_code_for_string_array ~length_var ~var
+    else if is_pointer_array then
+      (* For pointer arrays without explicit length info, assume zero-terminated
+         This handles cases where the GIR file is missing zero-terminated="1" *)
+      length_code_for_zero_terminated_pointer ~length_var ~var
     else
-      (* No length information and not a string array - cannot safely convert *)
-      failwith (sprintf "Array has no length information for %s (element type: %s). \
-                         Either zero-terminated, length, or fixed-size attribute required."
-                 var array_info.element_type.name)
+      (* Check for common C patterns that suggest zero-terminated arrays *)
+      let array_c_type = Option.value ~default:"" array_info.element_type.c_type ^ "*" in
+      if String.contains array_c_type '*' then
+        (* Array C type suggests it's a pointer array - assume zero-terminated *)
+        length_code_for_zero_terminated_pointer ~length_var ~var
+      else
+        (* No length information and not a string array - cannot safely convert *)
+        failwith (sprintf "Array has no length information for %s (element type: %s). \
+                           Either zero-terminated, length, or fixed-size attribute required."
+                   var array_info.element_type.name)
 
   (** Generate cleanup code for TransferFull ownership.
       Returns appropriate cleanup based on array properties. *)

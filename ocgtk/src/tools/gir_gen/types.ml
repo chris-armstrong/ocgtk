@@ -7,7 +7,8 @@ type transfer_ownership =
   | TransferFloating
 
 type gir_array = {
-  length : int option; (* Parameter index containing array length, if applicable *)
+  length : int option;
+      (* Parameter index containing array length, if applicable *)
   zero_terminated : bool; (* Whether the array is null/zero-terminated *)
   fixed_size : int option; (* Fixed size of array, if known at compile time *)
   element_type : gir_type; (* Type of array elements *)
@@ -152,7 +153,10 @@ type gir_interface = {
 }
 
 (* Unified entity type for classes, interfaces, and records *)
-type entity_kind = Class | Interface | Record
+type entity_kind =
+  | Class of gir_class
+  | Interface of gir_interface
+  | Record of gir_record
 
 type entity = {
   kind : entity_kind;
@@ -169,7 +173,7 @@ type entity = {
 
 let entity_of_class (cls : gir_class) : entity =
   {
-    kind = Class;
+    kind = Class cls;
     name = cls.class_name;
     c_type = cls.c_type;
     doc = cls.class_doc;
@@ -183,7 +187,7 @@ let entity_of_class (cls : gir_class) : entity =
 
 let entity_of_interface (intf : gir_interface) : entity =
   {
-    kind = Interface;
+    kind = Interface intf;
     name = intf.interface_name;
     c_type = intf.c_type;
     doc = intf.interface_doc;
@@ -197,7 +201,7 @@ let entity_of_interface (intf : gir_interface) : entity =
 
 let entity_of_record (rec_ : gir_record) : entity =
   {
-    kind = Record;
+    kind = Record rec_;
     name = rec_.record_name;
     c_type = rec_.c_type;
     doc = rec_.record_doc;

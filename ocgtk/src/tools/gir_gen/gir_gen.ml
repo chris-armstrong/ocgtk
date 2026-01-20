@@ -5,6 +5,7 @@
 open Printf
 open StdLabels
 open Cmdliner
+open Gir_gen_lib.Types
 
 (* Helper function to write content to a file *)
 let write_file ~path ~content =
@@ -21,12 +22,105 @@ let ensure_generated_dir output_dir =
   let gen_dir = generated_output_dir output_dir in
   if not (Sys.file_exists gen_dir) then Unix.mkdir gen_dir 0o755
 
-(* Generate C stub file for a single entity (class or interface) *)
-let generate_c_stub ~ctx ~output_dir ~generated_stubs entity =
+type entity_generators = {
+  generate_c_stub_headers :
+    ctx:generation_context -> entity:entity -> Buffer.t -> unit;
+  generate_c_stub_converters :
+    ctx:generation_context -> entity:entity -> Buffer.t -> unit;
+  generate_c_stub_constructors :
+    ctx:generation_context -> entity:entity -> Buffer.t -> unit;
+  generate_c_stub_methods :
+    ctx:generation_context -> entity:entity -> Buffer.t -> unit;
+  generate_c_stub_properties :
+    ctx:generation_context -> entity:entity -> Buffer.t -> unit;
+}
+
+let entity_generator_by_entity_type =
+  let open Gir_gen_lib.Generate in
+  fun entity_type ->
+    let generate_c_stub_headers =
+     fun ~ctx ~entity buf ->
+      (* Add header *)
+      Buffer.add_string buf
+        (C_stub_helpers.generate_c_file_header ~ctx ~class_name:entity.name
+           ~external_enums:ctx.external_enums
+           ~external_bitfields:ctx.external_bitfields ())
+    in
+    let generate_c_stub_constructors =
+     fun ~ctx ~(entity : entity) buf ->
+      (* Constructors - skip those that throw GError, are variadic, have cross-namespace types, or have array params *)
+      C_stub_helpers.generate_constructors ~ctx ~c_type:entity.c_type
+        ~class_name:entity.name ~buf
+        ~generator:C_stub_constructor.generate_c_constructor entity.constructors
+    in
+    let generate_c_stub_methods =
+     fun ~ctx ~(entity : entity) buf ->
+      (* Generate methods, skip duplicates *)
+      C_stub_helpers.generate_methods ~ctx ~c_type:entity.c_type
+        ~class_name:entity.name ~buf ~generator:C_stub_method.generate_c_method
+        entity.methods
+    in
+    let generate_c_stub_properties =
+     fun ~ctx ~(entity : entity) buf ->
+      let class_name = entity.name in
+      let methods = entity.methods in
+      let c_type = entity.c_type in
+      let properties = entity.properties in
+      (* Generate property getters and setters *)
+      List.iter
+        ~f:(fun (prop : gir_property) ->
+          if Filtering.should_generate_property ~ctx ~class_name ~methods prop
+          then begin
+            if prop.readable then
+              Buffer.add_string buf
+                (C_stub_property.generate_c_property_getter ~ctx ~c_type prop
+                   class_name);
+            if prop.writable && not prop.construct_only then
+              Buffer.add_string buf
+                (C_stub_property.generate_c_property_setter ~ctx ~c_type prop
+                   class_name)
+          end)
+        properties
+    in
+    let generate_c_stub_converters ~ctx ~entity buf =
+      match entity.kind with
+      | Class _ | Interface _ -> ()
+      | Record record -> C_stub_record.generate_record_converters ~buf record
+    in
+
+    match entity_type with
+    | Class _ ->
+        {
+          generate_c_stub_headers;
+          generate_c_stub_converters;
+          generate_c_stub_constructors;
+          generate_c_stub_methods;
+          generate_c_stub_properties;
+        }
+    | Interface _ ->
+        {
+          generate_c_stub_headers;
+          generate_c_stub_converters;
+          generate_c_stub_constructors;
+          generate_c_stub_methods;
+          generate_c_stub_properties;
+        }
+    | Record _ ->
+        {
+          generate_c_stub_headers;
+          generate_c_stub_converters;
+          generate_c_stub_constructors;
+          generate_c_stub_methods;
+          generate_c_stub_properties;
+        }
+
+(* Generate C stub file for a single entity (class or interface or record) *)
+let generate_c_stub ~ctx ~output_dir entity =
   if Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name
   then begin
     printf "  - %s (SKIPPED - incomplete support)\n"
-      entity.Gir_gen_lib.Types.name
+      entity.Gir_gen_lib.Types.name;
+    None
   end
   else begin
     printf "  - %s (%d methods, %d properties)\n" entity.Gir_gen_lib.Types.name
@@ -40,21 +134,36 @@ let generate_c_stub ~ctx ~output_dir ~generated_stubs entity =
     let c_file =
       Filename.concat (generated_output_dir output_dir) (stub_name ^ ".c")
     in
+    let buf = Buffer.create 4096 in
 
-    let c_code =
-      Gir_gen_lib.Generate.C_stubs.generate_class_c_code ~ctx
-        ~c_type:entity.Gir_gen_lib.Types.c_type entity.Gir_gen_lib.Types.name
-        entity.Gir_gen_lib.Types.constructors entity.Gir_gen_lib.Types.methods
-        entity.Gir_gen_lib.Types.properties
+    (* Note: Record-specific conversions are generated in generate_record_c_code, not here *)
+    let {
+      generate_c_stub_headers;
+      generate_c_stub_converters;
+      generate_c_stub_constructors;
+      generate_c_stub_methods;
+      generate_c_stub_properties;
+      _;
+    } =
+      entity_generator_by_entity_type entity.kind
     in
-
-    write_file ~path:c_file ~content:c_code;
-    generated_stubs := stub_name :: !generated_stubs
+    generate_c_stub_headers ~ctx ~entity buf;
+    generate_c_stub_converters ~ctx ~entity buf;
+    generate_c_stub_constructors ~ctx ~entity buf;
+    generate_c_stub_methods ~ctx ~entity buf;
+    generate_c_stub_properties ~ctx ~entity buf;
+    write_file ~path:c_file ~content:(Buffer.contents buf);
+    Some stub_name
   end
 
 (* Generate C stub files for all entities *)
 let generate_all_c_stubs ~ctx ~output_dir ~generated_stubs entities =
-  List.iter ~f:(generate_c_stub ~ctx ~output_dir ~generated_stubs) entities
+  List.iter
+    ~f:(fun entity ->
+      generate_c_stub ~ctx ~output_dir entity
+      |> Option.iter (fun c_file ->
+          generated_stubs := c_file :: !generated_stubs))
+    entities
 
 (* Output file kind for ML generation *)
 type output_file_kind = Interface | Implementation
@@ -348,129 +457,6 @@ let generate_enum_files ~output_dir ~generated_stubs ~generated_modules
       :: !generated_modules
   end
 
-(* Generate C files and OCaml bindings for boxed records *)
-let generate_all_record_bindings ~ctx ~output_dir ~generated_stubs
-    ~generated_modules records =
-  List.iter
-    ~f:(fun record ->
-      (* Generate bindings for boxed records *)
-      (* Value-like records (with copy methods) need C stubs even if in a cycle, for the copy function *)
-      (* ML interface generation is skipped for records in cycles since they're in combined modules *)
-      let open Gir_gen_lib.Types in
-      let is_in_cycle = Hashtbl.mem ctx.module_groups record.record_name in
-      let is_boxed = Gir_gen_lib.Type_mappings.is_boxed_record record in
-      let is_value_like =
-        Gir_gen_lib.Generate.C_stubs.is_value_like_record record
-      in
-      if is_boxed && ((not is_in_cycle) || is_value_like) then begin
-        let is_value_record = not record.opaque in
-        let constructors =
-          if
-            (not record.Gir_gen_lib.Types.opaque)
-            && (not is_value_record)
-            && record.Gir_gen_lib.Types.constructors = []
-          then
-            let class_snake =
-              Gir_gen_lib.Utils.to_snake_case
-                record.Gir_gen_lib.Types.record_name
-            in
-            let c_id = "gtk_" ^ class_snake ^ "_new" in
-            [
-              {
-                Gir_gen_lib.Types.ctor_name = "new";
-                c_identifier = c_id;
-                ctor_parameters = [];
-                ctor_doc =
-                  Some
-                    ("Allocate a new " ^ record.Gir_gen_lib.Types.record_name
-                   ^ " using g_new0");
-                throws = false;
-              };
-            ]
-          else record.Gir_gen_lib.Types.constructors
-        in
-        printf "  - %s (record: %d constructors, %d methods)\n"
-          record.Gir_gen_lib.Types.record_name (List.length constructors)
-          (List.length record.Gir_gen_lib.Types.methods);
-
-        (* Generate C stub file (always generated, including for value-like records) *)
-        let stub_name =
-          sprintf "ml_%s_record_gen"
-            (Gir_gen_lib.Utils.to_snake_case
-               record.Gir_gen_lib.Types.record_name)
-        in
-        let c_file =
-          Filename.concat (generated_output_dir output_dir) (stub_name ^ ".c")
-        in
-        let c_code =
-          Gir_gen_lib.Generate.C_stubs.generate_record_c_code ~ctx
-            { record with Gir_gen_lib.Types.constructors }
-        in
-        write_file ~path:c_file ~content:c_code;
-        generated_stubs := stub_name :: !generated_stubs;
-
-        (* Generate OCaml interface files if the record has non-copy/free method bindings *)
-        (* Skip ML interface generation for records in cycles - they're already in combined modules *)
-        let has_bindings =
-          List.length constructors > 0
-          || List.exists record.Gir_gen_lib.Types.methods ~f:(fun meth ->
-              let lower_name =
-                String.lowercase_ascii meth.Gir_gen_lib.Types.method_name
-              in
-              lower_name <> "copy" && lower_name <> "free")
-        in
-        if has_bindings && not is_in_cycle then begin
-          (* Records always use Obj.t as their base type implementation *)
-          let base_type = "Obj.t" in
-
-          let ml_file =
-            Filename.concat
-              (generated_output_dir output_dir)
-              (sprintf "%s.mli"
-                 (Gir_gen_lib.Utils.to_snake_case
-                    record.Gir_gen_lib.Types.record_name))
-          in
-          write_file ~path:ml_file
-            ~content:
-              (Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx
-                 ~output_mode:Gir_gen_lib.Generate.Ml_interface.Interface
-                 ~class_name:record.Gir_gen_lib.Types.record_name
-                 ~class_doc:record.Gir_gen_lib.Types.record_doc
-                 ~c_type:record.Gir_gen_lib.Types.c_type ~parent_chain:[]
-                 ~constructors:(Some constructors)
-                 ~methods:record.Gir_gen_lib.Types.methods ~properties:[]
-                 ~signals:[]
-                 ?c_symbol_prefix:record.Gir_gen_lib.Types.c_symbol_prefix
-                 ~record_base_type:base_type ~is_record:true ());
-
-          let ml_impl_file =
-            Filename.concat
-              (generated_output_dir output_dir)
-              (sprintf "%s.ml"
-                 (Gir_gen_lib.Utils.to_snake_case
-                    record.Gir_gen_lib.Types.record_name))
-          in
-          write_file ~path:ml_impl_file
-            ~content:
-              (Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx
-                 ~output_mode:Gir_gen_lib.Generate.Ml_interface.Implementation
-                 ~class_name:record.Gir_gen_lib.Types.record_name
-                 ~class_doc:record.Gir_gen_lib.Types.record_doc
-                 ~c_type:record.Gir_gen_lib.Types.c_type ~parent_chain:[]
-                 ~constructors:(Some constructors)
-                 ~methods:record.Gir_gen_lib.Types.methods ~properties:[]
-                 ~signals:[]
-                 ?c_symbol_prefix:record.Gir_gen_lib.Types.c_symbol_prefix
-                 ~record_base_type:base_type ~is_record:true ());
-
-          generated_modules :=
-            Gir_gen_lib.Utils.module_name_of_class
-              record.Gir_gen_lib.Types.record_name
-            :: !generated_modules
-        end
-      end)
-    records
-
 (* Main generation function *)
 let generate_bindings filter_file gir_file output_dir =
   printf "Parsing %s ...\n" gir_file;
@@ -647,31 +633,15 @@ let generate_bindings filter_file gir_file output_dir =
   in
 
   (* Create unified entity list combining classes, interfaces, and records *)
-  (* Filter out value-like records (with only copy/free methods) from entity list *)
-  (* They don't participate in dependency resolution and are generated separately *)
-  let records_with_bindings : Gir_gen_lib.Types.gir_record list =
-    List.filter
-      ~f:(fun (record : Gir_gen_lib.Types.gir_record) ->
-        List.exists
-          ~f:(fun meth ->
-            let lower =
-              String.lowercase_ascii meth.Gir_gen_lib.Types.method_name
-            in
-            lower <> "copy" && lower <> "free")
-          record.Gir_gen_lib.Types.methods
-        || List.length record.Gir_gen_lib.Types.constructors > 0)
-      records
-  in
-  let entities_temp : Gir_gen_lib.Types.entity list =
+  let entities : Gir_gen_lib.Types.entity list =
     List.map ~f:Gir_gen_lib.Types.entity_of_class controllers
     @ List.map ~f:Gir_gen_lib.Types.entity_of_interface interfaces
-    @ List.map ~f:Gir_gen_lib.Types.entity_of_record records_with_bindings
+    @ List.map ~f:Gir_gen_lib.Types.entity_of_record records
   in
 
   (* Compute module groups using SCC algorithm to populate module_groups *)
   let module_groups_list =
-    Gir_gen_lib.Dependency_analysis.compute_module_groups ctx_initial
-      entities_temp
+    Gir_gen_lib.Dependency_analysis.compute_module_groups ctx_initial entities
   in
   let module_groups =
     Gir_gen_lib.Dependency_analysis.create_module_groups_table
@@ -692,9 +662,6 @@ let generate_bindings filter_file gir_file output_dir =
   let ctx : Gir_gen_lib.Types.generation_context =
     { ctx_with_modules with hierarchy_map }
   in
-
-  (* Use the already created entity list *)
-  let entities = entities_temp in
 
   (* ==== GENERATION STAGE ==== *)
 
@@ -727,13 +694,8 @@ let generate_bindings filter_file gir_file output_dir =
   generate_enum_files ~output_dir ~generated_stubs ~generated_modules
     current_namespace gtk_enums gtk_bitfields;
 
-  (* Generate C files for all entities (classes and interfaces only, NOT records) *)
-  (* Records are generated separately via generate_all_record_bindings *)
-  let non_record_entities =
-    List.filter entities ~f:(fun e ->
-        e.Gir_gen_lib.Types.kind <> Gir_gen_lib.Types.Record)
-  in
-  generate_all_c_stubs ~ctx ~output_dir ~generated_stubs non_record_entities;
+  (* Generate C files for all entities (classes and interfaces and records only) *)
+  generate_all_c_stubs ~ctx ~output_dir ~generated_stubs entities;
 
   (* ==== SCC-BASED GENERATION ==== *)
 
@@ -792,10 +754,6 @@ let generate_bindings filter_file gir_file output_dir =
 
   (* Generate signal classes for all entities (classes and interfaces) *)
   generate_all_signal_classes ~ctx ~output_dir ~parent_chain_for_class entities;
-
-  (* Generate C files and OCaml bindings for boxed records *)
-  generate_all_record_bindings ~ctx ~output_dir ~generated_stubs
-    ~generated_modules ctx.records;
 
   (* Generate enum files for external namespaces *)
   (* Only generate these for Gtk - other libraries will use Gtk's converters *)

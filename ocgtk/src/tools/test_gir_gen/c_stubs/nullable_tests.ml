@@ -2,6 +2,12 @@
 
 open Gir_gen_lib.Types
 
+(* =================================================================== *)
+(* Methods under test *)
+(* =================================================================== *)
+
+let generate_c_method = Gir_gen_lib.Generate.C_stub_method.generate_c_method
+
 (* ========================================================================= *)
 (* Test Helpers *)
 (* ========================================================================= *)
@@ -22,13 +28,26 @@ let test_nullable_string_param () =
     {
       method_name = "set_title";
       c_identifier = "gtk_window_set_title";
-      return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
+      return_type =
+        {
+          name = "none";
+          c_type = Some "void";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array = None;
+        };
       parameters =
         [
           {
             param_name = "title";
             param_type =
-              { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone; array = None };
+              {
+                name = "utf8";
+                c_type = Some "const gchar*";
+                nullable = false;
+                transfer_ownership = TransferNone;
+                array = None;
+              };
             direction = In;
             nullable = true;
             (* Nullable string parameter *)
@@ -42,10 +61,7 @@ let test_nullable_string_param () =
     }
   in
 
-  let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkWindow" meth
-      "Window"
-  in
+  let c_code = generate_c_method ~ctx ~c_type:"GtkWindow" meth "Window" in
 
   Helpers.log_generated_c_code "nullable string parameter" c_code;
 
@@ -63,13 +79,26 @@ let test_nullable_object_param () =
     {
       method_name = "set_parent";
       c_identifier = "gtk_widget_set_parent";
-      return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
+      return_type =
+        {
+          name = "none";
+          c_type = Some "void";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array = None;
+        };
       parameters =
         [
           {
             param_name = "parent";
             param_type =
-              { name = "Widget"; c_type = Some "GtkWidget*"; nullable = false; transfer_ownership = TransferNone; array = None };
+              {
+                name = "Widget";
+                c_type = Some "GtkWidget*";
+                nullable = false;
+                transfer_ownership = TransferNone;
+                array = None;
+              };
             direction = In;
             nullable = true;
             (* Nullable object parameter *)
@@ -83,10 +112,7 @@ let test_nullable_object_param () =
     }
   in
 
-  let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkWidget" meth
-      "Widget"
-  in
+  let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
 
   Helpers.log_generated_c_code "nullable object parameter" c_code;
 
@@ -107,13 +133,26 @@ let test_non_nullable_string () =
     {
       method_name = "set_label";
       c_identifier = "gtk_button_set_label";
-      return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
+      return_type =
+        {
+          name = "none";
+          c_type = Some "void";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array = None;
+        };
       parameters =
         [
           {
             param_name = "label";
             param_type =
-              { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone; array = None };
+              {
+                name = "utf8";
+                c_type = Some "const gchar*";
+                nullable = false;
+                transfer_ownership = TransferNone;
+                array = None;
+              };
             direction = In;
             nullable = false;
             (* Non-nullable *)
@@ -127,10 +166,7 @@ let test_non_nullable_string () =
     }
   in
 
-  let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkButton" meth
-      "Button"
-  in
+  let c_code = generate_c_method ~ctx ~c_type:"GtkButton" meth "Button" in
 
   Helpers.log_generated_c_code "non nullable string" c_code;
 
@@ -149,7 +185,13 @@ let test_nullable_return_value () =
       method_name = "get_parent";
       c_identifier = "gtk_widget_get_parent";
       return_type =
-        { name = "Widget"; c_type = Some "GtkWidget*"; nullable = true; transfer_ownership = TransferNone; array = None };
+        {
+          name = "Widget";
+          c_type = Some "GtkWidget*";
+          nullable = true;
+          transfer_ownership = TransferNone;
+          array = None;
+        };
       parameters = [];
       doc = None;
       throws = false;
@@ -158,10 +200,7 @@ let test_nullable_return_value () =
     }
   in
 
-  let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkWidget" meth
-      "Widget"
-  in
+  let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
 
   Helpers.log_generated_c_code "nullable return value" c_code;
 
@@ -185,13 +224,26 @@ let test_multiple_nullable_params () =
     {
       method_name = "set_data";
       c_identifier = "gtk_widget_set_data";
-      return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
+      return_type =
+        {
+          name = "none";
+          c_type = Some "void";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array = None;
+        };
       parameters =
         [
           {
             param_name = "key";
             param_type =
-              { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone; array = None };
+              {
+                name = "utf8";
+                c_type = Some "const gchar*";
+                nullable = false;
+                transfer_ownership = TransferNone;
+                array = None;
+              };
             direction = In;
             nullable = true;
             varargs = false;
@@ -199,7 +251,13 @@ let test_multiple_nullable_params () =
           {
             param_name = "value";
             param_type =
-              { name = "Widget"; c_type = Some "GtkWidget*"; nullable = false; transfer_ownership = TransferNone; array = None };
+              {
+                name = "Widget";
+                c_type = Some "GtkWidget*";
+                nullable = false;
+                transfer_ownership = TransferNone;
+                array = None;
+              };
             direction = In;
             nullable = true;
             varargs = false;
@@ -212,10 +270,7 @@ let test_multiple_nullable_params () =
     }
   in
 
-  let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkWidget" meth
-      "Widget"
-  in
+  let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
 
   Helpers.log_generated_c_code "multiple nullable params" c_code;
 
@@ -235,13 +290,26 @@ let test_nullable_param_count () =
     {
       method_name = "set_title";
       c_identifier = "gtk_window_set_title";
-      return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
+      return_type =
+        {
+          name = "none";
+          c_type = Some "void";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array = None;
+        };
       parameters =
         [
           {
             param_name = "title";
             param_type =
-              { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone; array = None };
+              {
+                name = "utf8";
+                c_type = Some "const gchar*";
+                nullable = false;
+                transfer_ownership = TransferNone;
+                array = None;
+              };
             direction = In;
             nullable = true;
             varargs = false;
@@ -254,10 +322,7 @@ let test_nullable_param_count () =
     }
   in
 
-  let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkWindow" meth
-      "Window"
-  in
+  let c_code = generate_c_method ~ctx ~c_type:"GtkWindow" meth "Window" in
 
   Helpers.log_generated_c_code "nullable param count" c_code;
 

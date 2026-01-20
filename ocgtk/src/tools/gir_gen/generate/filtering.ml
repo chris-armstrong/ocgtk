@@ -63,9 +63,6 @@ let should_generate_property ~ctx ~class_name ~methods (prop : gir_property) =
         && String.equal class_name test_class_name)
       property_exclude_list
   then false
-  else if is_array_type prop.prop_type then
-    (* Array properties require inline code generation - skip for now *)
-    false
   else
     (* Check if property type is an interface - we can't handle these yet *)
     let is_interface_type =
@@ -171,15 +168,10 @@ let should_skip_method_binding ~ctx (meth : gir_method) =
 let constructor_has_varargs (ctor : gir_constructor) =
   List.exists ctor.ctor_parameters ~f:(fun p -> p.varargs)
 
-(* Check if a constructor has any array parameters *)
-let constructor_has_array_params (ctor : gir_constructor) =
-  List.exists ctor.ctor_parameters ~f:(fun p -> is_array_type p.param_type)
-
 (* Check if a constructor should be generated based on multiple criteria:
    - Not throwing GError
    - No varargs
    - No cross-namespace enum/bitfield parameters
-   - No array parameters (arrays require inline code generation)
    - No unknown parameter types *)
 let should_generate_constructor ~ctx (ctor : gir_constructor) =
   let has_unknown_type =
@@ -190,7 +182,6 @@ let should_generate_constructor ~ctx (ctor : gir_constructor) =
   not ctor.throws
   && not (constructor_has_varargs ctor)
   && not (constructor_has_cross_namespace_types ~ctx ctor)
-  && not (constructor_has_array_params ctor)
   && not has_unknown_type
 
 let banned_records = [ "PrintBackend" ]

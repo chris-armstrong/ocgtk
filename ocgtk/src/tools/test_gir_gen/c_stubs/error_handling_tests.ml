@@ -2,6 +2,15 @@
 
 open Gir_gen_lib.Types
 
+(* =================================================================== *)
+(* Methods under test *)
+(* =================================================================== *)
+
+let generate_c_method = Gir_gen_lib.Generate.C_stub_method.generate_c_method
+
+let generate_c_constructor =
+  Gir_gen_lib.Generate.C_stub_constructor.generate_c_constructor
+
 (* ========================================================================= *)
 (* Test Helpers *)
 (* ========================================================================= *)
@@ -52,10 +61,7 @@ let test_method_with_throws_declares_error () =
     }
   in
 
-  let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkWidget" meth
-      "Widget"
-  in
+  let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
 
   Helpers.log_generated_c_code "method with throws declares error" c_code;
 
@@ -107,10 +113,7 @@ let test_error_handling_uses_res_ok () =
     }
   in
 
-  let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkWidget" meth
-      "Widget"
-  in
+  let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
 
   Helpers.log_generated_c_code "error handling uses res ok" c_code;
 
@@ -144,10 +147,7 @@ let test_error_passed_by_reference () =
     }
   in
 
-  let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkWidget" meth
-      "Widget"
-  in
+  let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
 
   Helpers.log_generated_c_code "error passed by reference" c_code;
 
@@ -181,10 +181,7 @@ let test_error_initialized_to_null () =
     }
   in
 
-  let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkWidget" meth
-      "Widget"
-  in
+  let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
 
   Helpers.log_generated_c_code "error initialized to null" c_code;
 
@@ -223,10 +220,7 @@ let test_has_complete_error_handling () =
     }
   in
 
-  let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkWidget" meth
-      "Widget"
-  in
+  let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
 
   Helpers.log_generated_c_code "has complete error handling" c_code;
 
@@ -268,8 +262,7 @@ let test_constructor_with_throws () =
   in
 
   let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_constructor ~ctx ~c_type:"GtkWidget"
-      ~class_name:"Widget" ctor
+    generate_c_constructor ~ctx ~c_type:"GtkWidget" ~class_name:"Widget" ctor
   in
 
   Helpers.log_generated_c_code "constructor with throws" c_code;

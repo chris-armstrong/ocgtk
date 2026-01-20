@@ -6,6 +6,7 @@ open Gir_gen_lib.Types
 let create_test_context = Helpers.create_test_context
 let parse_c_string = C_parser.parse_c_code
 let find_function = C_ast.find_function
+let generate_c_method = Gir_gen_lib.Generate.C_stub_method.generate_c_method
 
 (* =================================================================== *)
 (* Array Input Parameter Tests *)
@@ -39,7 +40,8 @@ let test_zero_terminated_string_array_input () =
                   Some
                     {
                       length = None;
-                      zero_terminated = false; (* Will be inferred *)
+                      zero_terminated = false;
+                      (* Will be inferred *)
                       fixed_size = None;
                       element_type =
                         {
@@ -64,8 +66,7 @@ let test_zero_terminated_string_array_input () =
   in
 
   let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx
-      ~c_type:"GtkAboutDialog" meth "AboutDialog"
+    generate_c_method ~ctx ~c_type:"GtkAboutDialog" meth "AboutDialog"
   in
 
   Helpers.log_generated_c_code "zero-terminated string array input" c_code;
@@ -76,9 +77,7 @@ let test_zero_terminated_string_array_input () =
   in
 
   (* Should have 2 parameters: self + authors *)
-  Alcotest.(check int)
-    "Has 2 parameters" 2
-    (C_ast.get_param_count func);
+  Alcotest.(check int) "Has 2 parameters" 2 (C_ast.get_param_count func);
 
   (* Verify function has variable declarations (simplified parser limitation) *)
   let var_decls = C_ast.get_var_decls func in
@@ -118,7 +117,8 @@ let test_zero_terminated_string_array_return () =
             Some
               {
                 length = None;
-                zero_terminated = false; (* Will be inferred *)
+                zero_terminated = false;
+                (* Will be inferred *)
                 fixed_size = None;
                 element_type =
                   {
@@ -139,8 +139,7 @@ let test_zero_terminated_string_array_return () =
   in
 
   let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx
-      ~c_type:"GtkAboutDialog" meth "AboutDialog"
+    generate_c_method ~ctx ~c_type:"GtkAboutDialog" meth "AboutDialog"
   in
 
   Helpers.log_generated_c_code "zero-terminated string array return" c_code;
@@ -196,7 +195,8 @@ let test_array_with_length_parameter () =
                 array =
                   Some
                     {
-                      length = Some 1; (* Length is parameter index 1 *)
+                      length = Some 1;
+                      (* Length is parameter index 1 *)
                       zero_terminated = false;
                       fixed_size = None;
                       element_type =
@@ -235,10 +235,7 @@ let test_array_with_length_parameter () =
     }
   in
 
-  let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkList" meth
-      "List"
-  in
+  let c_code = generate_c_method ~ctx ~c_type:"GtkList" meth "List" in
 
   Helpers.log_generated_c_code "array with length parameter" c_code;
 
@@ -248,7 +245,9 @@ let test_array_with_length_parameter () =
   (* C function signature has self + items parameters *)
   (* Note: The C signature will show the actual parameter count,
      which includes the length parameter even though it's computed *)
-  Alcotest.(check bool) "Has multiple parameters" true (C_ast.get_param_count func >= 2);
+  Alcotest.(check bool)
+    "Has multiple parameters" true
+    (C_ast.get_param_count func >= 2);
 
   (* Verify function structure - detailed validation limited by simple parser *)
   let var_decls = C_ast.get_var_decls func in
@@ -294,11 +293,13 @@ let test_out_parameter_array_with_length () =
                 name = "gint";
                 c_type = Some "gint*";
                 nullable = false;
-                transfer_ownership = TransferFull; (* We own the array *)
+                transfer_ownership = TransferFull;
+                (* We own the array *)
                 array =
                   Some
                     {
-                      length = Some 1; (* Length is parameter index 1 *)
+                      length = Some 1;
+                      (* Length is parameter index 1 *)
                       zero_terminated = false;
                       fixed_size = None;
                       element_type =
@@ -337,10 +338,7 @@ let test_out_parameter_array_with_length () =
     }
   in
 
-  let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkList" meth
-      "List"
-  in
+  let c_code = generate_c_method ~ctx ~c_type:"GtkList" meth "List" in
 
   Helpers.log_generated_c_code "out-parameter array with length" c_code;
 
@@ -436,10 +434,7 @@ let test_out_parameter_string_array () =
     }
   in
 
-  let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkWidget"
-      meth "Widget"
-  in
+  let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
 
   Helpers.log_generated_c_code "out-parameter string array" c_code;
 
@@ -461,8 +456,7 @@ let test_out_parameter_string_array () =
   let has_cleanup =
     List.exists
       (function
-        | C_ast.ExprStmt (C_ast.Call ("g_free", _)) -> true
-        | _ -> false)
+        | C_ast.ExprStmt (C_ast.Call ("g_free", _)) -> true | _ -> false)
       func.C_ast.body
   in
   Alcotest.(check bool)
@@ -495,7 +489,8 @@ let test_array_cleanup_transfer_none () =
                 name = "utf8";
                 c_type = Some "const char**";
                 nullable = false;
-                transfer_ownership = TransferNone; (* We free after call *)
+                transfer_ownership = TransferNone;
+                (* We free after call *)
                 array =
                   Some
                     {
@@ -524,17 +519,12 @@ let test_array_cleanup_transfer_none () =
     }
   in
 
-  let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkWidget"
-      meth "Widget"
-  in
+  let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
 
   Helpers.log_generated_c_code "array cleanup transfer-none" c_code;
 
   let functions = parse_c_string c_code in
-  let func =
-    Option.get (find_function functions "ml_gtk_widget_set_values")
-  in
+  let func = Option.get (find_function functions "ml_gtk_widget_set_values") in
 
   (* Should free array after call *)
   Alcotest.(check bool)
@@ -564,7 +554,8 @@ let test_array_cleanup_transfer_full () =
                 name = "utf8";
                 c_type = Some "char**";
                 nullable = false;
-                transfer_ownership = TransferFull; (* GTK owns, we don't free *)
+                transfer_ownership = TransferFull;
+                (* GTK owns, we don't free *)
                 array =
                   Some
                     {
@@ -593,10 +584,7 @@ let test_array_cleanup_transfer_full () =
     }
   in
 
-  let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkWidget"
-      meth "Widget"
-  in
+  let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
 
   Helpers.log_generated_c_code "array cleanup transfer-full" c_code;
 

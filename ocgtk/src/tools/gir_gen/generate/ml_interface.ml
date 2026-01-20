@@ -162,11 +162,10 @@ let generate_ml_interface_internal
        end
    | _ -> ());
 
-  (* Constructors - generate unique names and proper signatures, skip those that throw or have array params *)
+  (* Constructors - generate unique names and proper signatures, skip those that throw or have cross-namespace types *)
   List.iter ~f:(fun (ctor : gir_constructor) ->
     let has_cross_namespace_type = Filtering.constructor_has_cross_namespace_types ~ctx ctor in
-    let has_array_params = Filtering.constructor_has_array_params ctor in
-    if not ctor.throws && not has_cross_namespace_type && not has_array_params then begin
+    if not ctor.throws && not has_cross_namespace_type then begin
       bprintf buf "(** Create a new %s *)\n" class_name;
       let c_name = ctor.c_identifier in
       let ml_name =
