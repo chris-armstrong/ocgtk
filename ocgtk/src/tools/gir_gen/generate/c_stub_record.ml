@@ -71,8 +71,7 @@ let generate_forward_decls ~records =
     "/* Forward declarations for record converters (non-opaque records) */\n";
   List.iter
     ~f:(fun (record : gir_record) ->
-      bprintf buf "/* Forward declarations for %s converters */\n"
-        record.c_type;
+      bprintf buf "/* Forward declarations for %s converters */\n" record.c_type;
       bprintf buf "%s *%s_val(value val);\n" record.c_type record.c_type;
       bprintf buf "value Val_%s(const %s *ptr);\n" record.c_type record.c_type;
       bprintf buf "value Val_%s_option(const %s *ptr);\n\n" record.c_type
@@ -121,8 +120,7 @@ let generate_value_record_conversions ~buf (record : gir_record) =
   match copy_method with
   | Some copy_meth ->
       (* Generate the copy_TypeName function that wraps the GTK copy function *)
-      bprintf buf "value copy_%s(const %s *ptr) {\n" record.c_type
-        record.c_type;
+      bprintf buf "value copy_%s(const %s *ptr) {\n" record.c_type record.c_type;
       bprintf buf "  if (ptr == NULL) return Val_none;\n";
       bprintf buf "  %s *copy = %s((%s*)ptr);\n" record.c_type
         copy_meth.c_identifier record.c_type;
@@ -131,14 +129,20 @@ let generate_value_record_conversions ~buf (record : gir_record) =
       bprintf buf "}\n\n"
   | None ->
       (* Fallback: generate a simple memcpy-based copy *)
-      bprintf buf "value copy_%s(const %s *ptr) {\n" record.c_type
-        record.c_type;
+      bprintf buf "value copy_%s(const %s *ptr) {\n" record.c_type record.c_type;
       bprintf buf "  if (ptr == NULL) return Val_none;\n";
       bprintf buf "  %s *copy = g_malloc(sizeof(%s));\n" record.c_type
         record.c_type;
       bprintf buf "  memcpy(copy, ptr, sizeof(%s));\n" record.c_type;
       bprintf buf "  return ml_gir_record_val_ptr(copy));\n";
       bprintf buf "}\n\n"
+
+let generate_record_converters ~buf (record : gir_record) =
+  (* Generate conversion functions for non-opaque records *)
+  let is_value_record = is_value_like_record record in
+
+  if not is_value_record then generate_opaque_record_conversions ~buf record
+  else generate_value_record_conversions ~buf record
 
 let generate_record_c_code ~ctx (record : gir_record) =
   let buf = Buffer.create 2048 in
@@ -151,16 +155,11 @@ let generate_record_c_code ~ctx (record : gir_record) =
   let class_snake = Utils.to_snake_case record.record_name in
 
   (* Generate conversion functions for non-opaque records *)
-  let is_value_record = is_value_like_record record in
-
-  if not is_value_record then
-    generate_opaque_record_conversions ~buf record
-  else
-    generate_value_record_conversions ~buf record;
+  generate_record_converters ~buf record;
 
   C_stub_helpers.generate_constructors ~ctx ~c_type:record.c_type
-     ~class_name:record.record_name ~buf
-     ~generator:C_stub_class.generate_c_constructor record.constructors;
+    ~class_name:record.record_name ~buf
+    ~generator:C_stub_constructor.generate_c_constructor record.constructors;
 
   let namespace_snake = Utils.to_snake_case ctx.namespace.namespace_name in
 
@@ -181,7 +180,7 @@ let generate_record_c_code ~ctx (record : gir_record) =
 
   C_stub_helpers.generate_methods ~ctx ~c_type:record.c_type
     ~class_name:record.record_name ~buf
-    ~generator:C_stub_class.generate_c_method
+    ~generator:C_stub_method.generate_c_method
     ~extra_filter:(fun meth -> not (C_stub_helpers.is_copy_or_free meth))
     record.methods;
 

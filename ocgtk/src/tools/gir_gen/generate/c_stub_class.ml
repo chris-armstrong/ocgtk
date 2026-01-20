@@ -5,60 +5,10 @@ open Containers
 open StdLabels
 open Types
 
-(* Re-export from method module *)
-module C_stub_method = C_stub_method
-
-(* Re-export from constructor module *)
-module C_stub_constructor = C_stub_constructor
-
-(* Re-export from property module *)
-module C_stub_property = C_stub_property
-
 module Log =
   (val Logs.src_log
          (Logs.Src.create "gir_gen.c_stub_class"
             ~doc:"C stub code generation for class/interface support"))
-
-(* [generate_class_c_code ~ctx ~c_type class_name constructors methods properties]
-   generates the complete C stub code for a class or interface. Produces C header,
-   C wrapper functions for constructors, methods, and properties. Skips constructors with
-   unsupported features (throws, varargs, cross-namespace types, array params). Generates
-   property getters and setters only if configured to be generated. Returns the full C file
-   content including header and all wrapper functions as a single string. *)
-let generate_class_c_code ~ctx ~c_type class_name constructors methods
-    properties =
-  let buf = Buffer.create 4096 in
-
-  (* Add header *)
-  Buffer.add_string buf
-    (C_stub_helpers.generate_c_file_header ~ctx ~class_name
-       ~external_enums:ctx.external_enums
-       ~external_bitfields:ctx.external_bitfields ());
-
-  (* Note: Record-specific conversions are generated in generate_record_c_code, not here *)
-
-   (* Constructors - skip those that throw GError, are variadic, have cross-namespace types, or have array params *)
-   C_stub_helpers.generate_constructors ~ctx ~c_type ~class_name ~buf
-     ~generator:C_stub_constructor.generate_c_constructor constructors;
-
-   (* Generate methods, skip duplicates *)
-   C_stub_helpers.generate_methods ~ctx ~c_type ~class_name ~buf
-     ~generator:C_stub_method.generate_c_method methods;
-
-   (* Generate property getters and setters *)
-   List.iter
-     ~f:(fun (prop : gir_property) ->
-       if Filtering.should_generate_property ~ctx ~class_name ~methods prop then begin
-         if prop.readable then
-           Buffer.add_string buf
-             (C_stub_property.generate_c_property_getter ~ctx ~c_type prop class_name);
-         if prop.writable && not prop.construct_only then
-           Buffer.add_string buf
-             (C_stub_property.generate_c_property_setter ~ctx ~c_type prop class_name)
-       end)
-     properties;
-
-   Buffer.contents buf
 
 (* [generate_forward_decls ~classes ~interfaces] generates forward declaration macros for
     class and interface conversion functions. Creates #define macros for Val_<type> and <type>_val
@@ -103,15 +53,3 @@ let generate_forward_decls ~classes ~interfaces =
     interfaces;
 
   Buffer.contents buf
-
-(* Re-export generate_c_constructor for backward compatibility *)
-let generate_c_constructor = C_stub_constructor.generate_c_constructor
-
-(* Re-export generate_c_method for backward compatibility *)
-let generate_c_method = C_stub_method.generate_c_method
-
-(* Re-export generate_c_property_getter for backward compatibility *)
-let generate_c_property_getter = C_stub_property.generate_c_property_getter
-
-(* Re-export generate_c_property_setter for backward compatibility *)
-let generate_c_property_setter = C_stub_property.generate_c_property_setter

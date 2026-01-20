@@ -28,25 +28,68 @@ let generate_constructor_return_stmt ~throws ~val_macro ~var_name =
 
 (* [generate_constructor_c_call_args ~ctx ~ctor_parameters] builds C call arguments
    with nullable handling. For each parameter, looks up type mapping and generates
-   appropriate conversion expression. Returns list of C argument expressions. *)
+   appropriate conversion expression. Handles arrays with inline conversion code.
+   Returns tuple of (argument_expressions, cleanup_code_list, declarations_buffer). *)
 let generate_constructor_c_call_args ~ctx ~ctor_parameters =
-  List.mapi
-    ~f:(fun i p ->
-      match Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type with
-      | Some mapping ->
-          let param_type =
-            {
-              p.param_type with
-              nullable = p.nullable || p.param_type.nullable;
-            }
-          in
-          C_stub_helpers.nullable_ml_to_c_expr
-            ~var:(sprintf "arg%d" (i + 1))
-            ~gir_type:param_type ~mapping
-      | None ->
-          (* This should never happen now that we filter constructors with unknown types *)
-          sprintf "arg%d" (i + 1))
-     ctor_parameters
+  let decls = Buffer.create 1024 in
+  let cleanups = ref [] in
+  let arg_exprs, _ =
+    List.fold_left ctor_parameters ~init:([], 0)
+      ~f:(fun (args, idx) (p : gir_param) ->
+        let next_idx = idx + 1 in
+        (* Check if this is an array parameter first *)
+        match p.param_type.array with
+        | Some array_info -> (
+            (* Handle array parameter with inline conversion *)
+            let arg_name = sprintf "arg%d" next_idx in
+            match
+              Type_mappings.find_type_mapping_for_gir_type ~ctx
+                array_info.element_type
+            with
+            | Some element_mapping ->
+                (* Use element's c:type directly for modifiable local array *)
+                let element_c_type =
+                  match array_info.element_type.c_type with
+                  | Some ct -> ct
+                  | None -> element_mapping.c_type
+                in
+                let conv_code, c_array_var, _length_var, cleanup_code =
+                  C_stub_helpers.generate_array_ml_to_c ~ctx ~var:arg_name
+                    ~array_info ~element_mapping ~element_c_type
+                    ~transfer_ownership:p.param_type.transfer_ownership
+                in
+                Buffer.add_string decls (sprintf "    %s\n" conv_code);
+                if String.length cleanup_code > 0 then
+                  cleanups := cleanup_code :: !cleanups;
+                (args @ [ c_array_var ], next_idx)
+            | None ->
+                failwith
+                  (sprintf
+                     "Array element type '%s' not supported in constructor"
+                     array_info.element_type.name))
+        | None -> (
+            (* Regular parameter - use existing type mapping *)
+            let arg_name = sprintf "arg%d" next_idx in
+            match
+              Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type
+            with
+            | Some mapping ->
+                let param_type =
+                  {
+                    p.param_type with
+                    nullable = p.nullable || p.param_type.nullable;
+                  }
+                in
+                let arg_expr =
+                  C_stub_helpers.nullable_ml_to_c_expr ~var:arg_name
+                    ~gir_type:param_type ~mapping
+                in
+                (args @ [ arg_expr ], next_idx)
+            | None ->
+                (* This should never happen now that we filter constructors with unknown types *)
+                (args @ [ sprintf "arg%d" next_idx ], next_idx)))
+  in
+  (arg_exprs, List.rev !cleanups, decls)
 
 (* [generate_multi_param_function ~ml_name ~params ~param_names body_code]
    generates both native and bytecode C wrapper variants for functions with >5 parameters.
@@ -65,8 +108,7 @@ let generate_multi_param_function ~ml_name ~params ~param_names body_code =
        {\n\
        CAMLparam5(%s);\n\
        CAMLxparam%d(%s);\n\
-       %s\
-       }\n"
+       %s}\n"
       ml_name
       (String.concat ~sep:", " params)
       (String.concat ~sep:", " first_five)
@@ -115,18 +157,30 @@ let build_constructor_call c_args throws =
     generates the complete C constructor function including error handling and return logic.
     Handles both the >5 parameter case (using generate_multi_param_function) and the normal case.
     Returns the complete C function code as a string. *)
-let build_constructor_return ~c_type ~class_name (ctor : gir_constructor) param_count params param_names c_call_args ref_sink_stmt val_macro var_name =
+let build_constructor_return ~c_type ~class_name (ctor : gir_constructor)
+    param_count params param_names c_call_args ref_sink_stmt val_macro var_name
+    ~array_decls ~cleanup_code =
   let c_name = ctor.c_identifier in
   let throws = ctor.throws in
   let error_decl = generate_constructor_error_decl ~throws in
-  let return_stmt = generate_constructor_return_stmt ~throws ~val_macro ~var_name in
+  let return_stmt =
+    generate_constructor_return_stmt ~throws ~val_macro ~var_name
+  in
+  let array_decls_str = Buffer.contents array_decls in
+  let cleanup_section =
+    if List.length cleanup_code > 0 then
+      sprintf "\n    %s" (String.concat ~sep:"\n    " cleanup_code)
+    else ""
+  in
 
   if param_count > 5 then
     let body_code =
-      sprintf "%s%s *%s = %s(%s);%s\n%s"
-        error_decl c_type var_name c_name c_call_args ref_sink_stmt return_stmt
+      sprintf "%s%s *%s = %s(%s);%s\n%s\n%s\n%s" error_decl c_type var_name
+        array_decls_str c_name c_call_args ref_sink_stmt cleanup_section
+        return_stmt
     in
-    generate_multi_param_function ~ml_name:(Utils.ml_constructor_name ~class_name ~constructor:ctor)
+    generate_multi_param_function
+      ~ml_name:(Utils.ml_constructor_name ~class_name ~constructor:ctor)
       ~params ~param_names body_code
   else
     sprintf
@@ -134,14 +188,17 @@ let build_constructor_return ~c_type ~class_name (ctor : gir_constructor) param_
        CAMLexport CAMLprim value %s(%s)\n\
        {\n\
        CAMLparam%d(%s);\n\
+       %s\n\
        %s%s *%s = %s(%s);%s\n\
        %s\n\
-       }\n"
+       %s\n\
+       }"
       (Utils.ml_constructor_name ~class_name ~constructor:ctor)
       (String.concat ~sep:", " params)
       param_count
       (String.concat ~sep:", " param_names)
-      error_decl c_type var_name c_name c_call_args ref_sink_stmt return_stmt
+      array_decls_str error_decl c_type var_name c_name c_call_args
+      ref_sink_stmt cleanup_section return_stmt
 
 (* [generate_c_constructor ~ctx ~c_type ~class_name ctor] generates a C wrapper function
    for a GIR constructor. Handles parameter conversion from OCaml to C types, C constructor
@@ -173,14 +230,19 @@ let generate_c_constructor ~ctx ~c_type ~class_name (ctor : gir_constructor) =
   in
 
   (* Build C parameter declarations and names *)
-  let param_count, params, param_names = build_constructor_params ctor.ctor_parameters in
+  let param_count, params, param_names =
+    build_constructor_params ctor.ctor_parameters
+  in
 
-  (* Build C call arguments - handle nullable parameters *)
-  let c_args = generate_constructor_c_call_args ~ctx ~ctor_parameters:ctor.ctor_parameters in
+  (* Build C call arguments - handle nullable parameters and arrays *)
+  let c_args, cleanup_code, array_decls =
+    generate_constructor_c_call_args ~ctx ~ctor_parameters:ctor.ctor_parameters
+  in
 
   (* Build constructor call string with error parameter if needed *)
   let c_call_args = build_constructor_call c_args ctor.throws in
 
   (* Build the complete constructor function with return handling *)
-  build_constructor_return ~c_type ~class_name ctor param_count params param_names
-    c_call_args ref_sink_stmt val_macro var_name
+  build_constructor_return ~c_type ~class_name ctor param_count params
+    param_names c_call_args ref_sink_stmt val_macro var_name ~array_decls
+    ~cleanup_code
