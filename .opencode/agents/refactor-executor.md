@@ -9,7 +9,7 @@ tools:
   bash: true
   lsp: true
 temperature: 0.5
-model: minimax/MiniMax-M2.1
+model: anthropic/claude-haiku-4-5
 ---
 You will be given:
 - A file and line range

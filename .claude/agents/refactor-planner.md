@@ -2,7 +2,7 @@
 name: refactor-planner
 description: Plans refactoring 
 tools: Read, Grep, Glob, Bash
-model: inherit
+model: anthropic/claude-opus-4-5
 ---
 You plan OCaml refactoring to meet specific code guidelines.
 

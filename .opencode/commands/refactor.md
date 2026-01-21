@@ -3,7 +3,7 @@ description: Refactor code to meet a specific guideline with independent review
 template: Carry out a complex refactoring task based on the user's suggestion and following the guidelines using a multi-stage plan, execute and review loop
 mode: primary
 argument-hint: "<guideline> in <files or module>"
-model: minimax/MiniMax-M2.1
+model: anthropic/claude-sonnet-4-5
 ---
 
 ## Refactoring Goal: $ARGUMENTS
@@ -49,37 +49,33 @@ For each violation in the plan:
 1. **Execute**: Use @refactor-executor agent with:
    - The specific violation details
    - Reference to guidelines file or inline patterns
+   - Run a build check i.e. `dune build 2>&1` to ensure the code compiles. MUST return 0 exit code. If build fails, executor must fix before proceeding.
 
-2. **Build Check**: 
-```bash
-   dune build 2>&1
-```
-   If build fails, executor must fix before proceeding.
-
-1. **Independent Review**: Use @refactor-reviewer agent with:
+2. **Independent Review**: Use @refactor-reviewer agent with:
    - Original goal from: `cat .opencode/scratchpad/current-goal.txt`
    - Modified file paths only (reviewer reads current state)
    - The reviewer agent already knows what to do and what output format to use. Simply provide the context; DO NOT prompt it with an output format NOR provide review criteria.
    
-2. **Handle Review Result**:
+3. **Handle Review Result**:
    - PASS → commit and continue to next violation
    - PARTIAL → show feedback, attempt fix (max 2 retries)
    - FAIL → show feedback, attempt fix (max 3 retries)
    - Still failing → pause and consult me
 
-5. **Checkpoint**:
+1. **Checkpoint**:
 ```bash
    git add -A
-   git commit -m "refactor(): 
+   git commit -m "refactor: <specific changes>
    
-   Guideline: $ARGUMENTS
-   Violation: 
-   Reviewer: PASS"
+   Guideline: <summary of goal>
+   Changes: <detailed description of changes made>
+   Analysis: <only use if required if there is some specific notes from the change>
+"
 ```
 
 ### Phase 3: Final Validation
 
-After all violations addressed:
+After all changes addressed:
 
 1. Full test suite:
 ```bash
@@ -92,7 +88,7 @@ After all violations addressed:
 3. Generate summary:
 ```
    ## Refactoring Summary
-   - Goal: $ARGUMENTS
+   - Goal: <summary of goal>
    - Files modified: <count>
    - Violations fixed: <count>
    - Final verdict: <PASS/PARTIAL>
@@ -108,6 +104,6 @@ After all violations addressed:
 If context is exhausted mid-refactor:
 1. Progress is saved in `.opencode/scratchpad/refactor-plan.json` 
 2. Completed violations are committed
-3. Resume with: `/refactor continue`
+3. Resume with: `/refactor continue`. DO NOT RUN THE PLANNER AGENT AGAIN.
 
 To abort: `git reset --hard HEAD~<N>` to undo commits
