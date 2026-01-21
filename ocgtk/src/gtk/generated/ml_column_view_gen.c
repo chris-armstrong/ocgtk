@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_column_view_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkColumnView *obj = gtk_column_view_new(Option_val(arg1, GtkSelectionModel_val, NULL));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkColumnView(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_column_view_sort_by_column(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);

@@ -20,19 +20,21 @@
 CAMLexport CAMLprim value ml_gtk_spin_button_new(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
+
 GtkSpinButton *obj = gtk_spin_button_new(Option_val(arg1, GtkAdjustment_val, NULL), Double_val(arg2), Int_val(arg3));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkSpinButton(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_spin_button_new_with_range(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
+
 GtkSpinButton *obj = gtk_spin_button_new_with_range(Double_val(arg1), Double_val(arg2), Double_val(arg3));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkSpinButton(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_spin_button_update(value self)
 {
 CAMLparam1(self);

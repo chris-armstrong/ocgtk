@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_print_operation_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkPrintOperation *obj = gtk_print_operation_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkPrintOperation(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_print_operation_set_use_full_page(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -200,7 +201,7 @@ CAMLparam1(self);
 GError *error = NULL;
 
 gtk_print_operation_get_error(GtkPrintOperation_val(self), &error);
-if (error == NULL) CAMLreturn(Res_Ok(ValUnit)); else CAMLreturn(Res_Error(Val_GError(error)));
+CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_print_operation_get_embed_page_setup(value self)

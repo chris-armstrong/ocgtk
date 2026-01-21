@@ -19,11 +19,12 @@
 CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_new(value unit)
 {
 CAMLparam1(unit);
+
 GdkDmabufTextureBuilder *obj = gdk_dmabuf_texture_builder_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GdkDmabufTextureBuilder(obj));
 }
-
 CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_set_width(value self, value arg1)
 {
 CAMLparam2(self, arg1);

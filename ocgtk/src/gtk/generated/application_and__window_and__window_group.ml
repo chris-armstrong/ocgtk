@@ -15,6 +15,19 @@ module rec Application : sig
   Inhibitors are also cleared when the application exits. *)
   external uninhibit : t -> int -> unit = "ml_gtk_application_uninhibit"
 
+  (** Sets zero or more keyboard accelerators that will trigger the
+  given action.
+
+  The first item in `accels` will be the primary accelerator, which may be
+  displayed in the UI.
+
+  To remove all accelerators for an action, use an empty, zero-terminated
+  array for `accels`.
+
+  For the `detailed_action_name`, see `g_action_parse_detailed_name()` and
+  `g_action_print_detailed_name()`. *)
+  external set_accels_for_action : t -> string -> string array -> unit = "ml_gtk_application_set_accels_for_action"
+
   (** Remove a window from `application`.
 
   If `window` belongs to `application` then this call is equivalent to
@@ -24,6 +37,11 @@ module rec Application : sig
   The application may stop running as a result of a call to this
   function, if `window` was the last window of the `application`. *)
   external remove_window : t -> Window.t -> unit = "ml_gtk_application_remove_window"
+
+  (** Lists the detailed action names which have associated accelerators.
+
+  See [method@Gtk.Application.set_accels_for_action]. *)
+  external list_action_descriptions : t -> string array = "ml_gtk_application_list_action_descriptions"
 
   (** Inform the session manager that certain types of actions should be
   inhibited.
@@ -63,6 +81,29 @@ module rec Application : sig
   if another application has it — this is just the most
   recently-focused window within this application. *)
   external get_active_window : t -> Window.t option = "ml_gtk_application_get_active_window"
+
+  (** Returns the list of actions (possibly empty) that `accel` maps to.
+
+  Each item in the list is a detailed action name in the usual form.
+
+  This might be useful to discover if an accel already exists in
+  order to prevent installation of a conflicting accelerator (from
+  an accelerator editor or a plugin system, for example). Note that
+  having more than one action per accelerator may not be a bad thing
+  and might make sense in cases where the actions never appear in the
+  same context.
+
+  In case there are no actions for a given accelerator, an empty array
+  is returned. `NULL` is never returned.
+
+  It is a programmer error to pass an invalid accelerator string.
+
+  If you are unsure, check it with [func@Gtk.accelerator_parse] first. *)
+  external get_actions_for_accel : t -> string -> string array = "ml_gtk_application_get_actions_for_accel"
+
+  (** Gets the accelerators that are currently associated with
+  the given action. *)
+  external get_accels_for_action : t -> string -> string array = "ml_gtk_application_get_accels_for_action"
 
   (** Adds a window to `application`.
 
@@ -107,6 +148,19 @@ end = struct
   Inhibitors are also cleared when the application exits. *)
   external uninhibit : t -> int -> unit = "ml_gtk_application_uninhibit"
 
+  (** Sets zero or more keyboard accelerators that will trigger the
+  given action.
+
+  The first item in `accels` will be the primary accelerator, which may be
+  displayed in the UI.
+
+  To remove all accelerators for an action, use an empty, zero-terminated
+  array for `accels`.
+
+  For the `detailed_action_name`, see `g_action_parse_detailed_name()` and
+  `g_action_print_detailed_name()`. *)
+  external set_accels_for_action : t -> string -> string array -> unit = "ml_gtk_application_set_accels_for_action"
+
   (** Remove a window from `application`.
 
   If `window` belongs to `application` then this call is equivalent to
@@ -116,6 +170,11 @@ end = struct
   The application may stop running as a result of a call to this
   function, if `window` was the last window of the `application`. *)
   external remove_window : t -> Window.t -> unit = "ml_gtk_application_remove_window"
+
+  (** Lists the detailed action names which have associated accelerators.
+
+  See [method@Gtk.Application.set_accels_for_action]. *)
+  external list_action_descriptions : t -> string array = "ml_gtk_application_list_action_descriptions"
 
   (** Inform the session manager that certain types of actions should be
   inhibited.
@@ -155,6 +214,29 @@ end = struct
   if another application has it — this is just the most
   recently-focused window within this application. *)
   external get_active_window : t -> Window.t option = "ml_gtk_application_get_active_window"
+
+  (** Returns the list of actions (possibly empty) that `accel` maps to.
+
+  Each item in the list is a detailed action name in the usual form.
+
+  This might be useful to discover if an accel already exists in
+  order to prevent installation of a conflicting accelerator (from
+  an accelerator editor or a plugin system, for example). Note that
+  having more than one action per accelerator may not be a bad thing
+  and might make sense in cases where the actions never appear in the
+  same context.
+
+  In case there are no actions for a given accelerator, an empty array
+  is returned. `NULL` is never returned.
+
+  It is a programmer error to pass an invalid accelerator string.
+
+  If you are unsure, check it with [func@Gtk.accelerator_parse] first. *)
+  external get_actions_for_accel : t -> string -> string array = "ml_gtk_application_get_actions_for_accel"
+
+  (** Gets the accelerators that are currently associated with
+  the given action. *)
+  external get_accels_for_action : t -> string -> string array = "ml_gtk_application_get_accels_for_action"
 
   (** Adds a window to `application`.
 

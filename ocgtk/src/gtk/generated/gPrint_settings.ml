@@ -201,6 +201,10 @@ class print_settings (obj : Print_settings.t) = object (self)
     fun output_bin ->
       (Print_settings.set_output_bin obj output_bin)
 
+  method set_page_ranges : Page_range.t array -> int -> unit =
+    fun page_ranges num_ranges ->
+      (Print_settings.set_page_ranges obj page_ranges num_ranges)
+
   method set_page_set : Gtk_enums.pageset -> unit =
     fun page_set ->
       (Print_settings.set_page_set obj page_set)

@@ -25,11 +25,12 @@
 CAMLexport CAMLprim value ml_g_dbus_object_manager_server_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GDBusObjectManagerServer *obj = g_dbus_object_manager_server_new(String_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GDBusObjectManagerServer(obj));
 }
-
 CAMLexport CAMLprim value ml_g_dbus_object_manager_server_unexport(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -80,18 +81,17 @@ CAMLreturn(Val_unit);
 
 CAMLexport CAMLprim value ml_gtk_d_bus_object_manager_server_get_object_path(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GDBusObjectManagerServer *obj = (GDBusObjectManagerServer *)GDBusObjectManagerServer_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "object-path");
 if (pspec == NULL) caml_failwith("ml_gtk_d_bus_object_manager_server_get_object_path: property 'object-path' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "object-path", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "object-path", &prop_gvalue);
+          prop_value = g_value_get_string(&prop_gvalue);
 
-result = caml_copy_string(prop_value);
+      result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}

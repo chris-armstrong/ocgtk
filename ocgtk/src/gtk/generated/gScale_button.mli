@@ -11,6 +11,7 @@ class scale_button : Scale_button.t ->
     method get_value : unit -> float
     method set_adjustment : #GAdjustment.adjustment -> unit
     method set_has_frame : bool -> unit
+    method set_icons : string array -> unit
     method set_value : float -> unit
   method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
     method as_scale_button : Scale_button.t

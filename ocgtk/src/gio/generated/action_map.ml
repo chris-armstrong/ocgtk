@@ -4,6 +4,30 @@
 type t = [`action_map] Gobject.obj
 
 (* Methods *)
+(** Remove actions from a #GActionMap. This is meant as the reverse of
+g_action_map_add_action_entries().
+
+
+|[<!-- language="C" -->
+static const GActionEntry entries[] = {
+    { "quit",         activate_quit              },
+    { "print-string", activate_print_string, "s" }
+};
+
+void
+add_actions (GActionMap *map)
+{
+  g_action_map_add_action_entries (map, entries, G_N_ELEMENTS (entries), NULL);
+}
+
+void
+remove_actions (GActionMap *map)
+{
+  g_action_map_remove_action_entries (map, entries, G_N_ELEMENTS (entries));
+}
+]| *)
+external remove_action_entries : t -> Action_entry.t array -> int -> unit = "ml_g_action_map_remove_action_entries"
+
 (** Removes the named action from the action map.
 
 If no action of this name is in the map then nothing happens. *)

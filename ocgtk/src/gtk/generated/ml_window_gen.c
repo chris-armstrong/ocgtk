@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_window_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkWindow *obj = gtk_window_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkWindow(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_window_unminimize(value self)
 {
 CAMLparam1(self);
@@ -456,183 +457,177 @@ CAMLreturn(Val_unit);
 
 CAMLexport CAMLprim value ml_gtk_window_get_default_height(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkWindow *obj = (GtkWindow *)GtkWindow_val(self);
     gint prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "default-height");
 if (pspec == NULL) caml_failwith("ml_gtk_window_get_default_height: property 'default-height' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "default-height", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "default-height", &prop_gvalue);
+          prop_value = g_value_get_int(&prop_gvalue);
 
-result = Val_int(prop_value);
+      result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_window_set_default_height(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkWindow *obj = (GtkWindow *)GtkWindow_val(self);
     gint c_value = Int_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "default-height");
 if (pspec == NULL) caml_failwith("ml_gtk_window_set_default_height: property 'default-height' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_int(&prop_gvalue, c_value);
+          g_value_set_int(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "default-height", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_window_get_default_width(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkWindow *obj = (GtkWindow *)GtkWindow_val(self);
     gint prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "default-width");
 if (pspec == NULL) caml_failwith("ml_gtk_window_get_default_width: property 'default-width' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "default-width", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "default-width", &prop_gvalue);
+          prop_value = g_value_get_int(&prop_gvalue);
 
-result = Val_int(prop_value);
+      result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_window_set_default_width(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkWindow *obj = (GtkWindow *)GtkWindow_val(self);
     gint c_value = Int_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "default-width");
 if (pspec == NULL) caml_failwith("ml_gtk_window_set_default_width: property 'default-width' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_int(&prop_gvalue, c_value);
+          g_value_set_int(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "default-width", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_window_get_focus_widget(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkWindow *obj = (GtkWindow *)GtkWindow_val(self);
     GtkWidget *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "focus-widget");
 if (pspec == NULL) caml_failwith("ml_gtk_window_get_focus_widget: property 'focus-widget' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "focus-widget", &prop_gvalue);
-    prop_value = (GtkWidget*)g_value_get_object(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "focus-widget", &prop_gvalue);
+          prop_value = (GtkWidget*)g_value_get_object(&prop_gvalue);
 
-result = Val_GtkWidget(prop_value);
+      result = Val_GtkWidget(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_window_set_focus_widget(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkWindow *obj = (GtkWindow *)GtkWindow_val(self);
     GtkWidget *c_value = GtkWidget_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "focus-widget");
 if (pspec == NULL) caml_failwith("ml_gtk_window_set_focus_widget: property 'focus-widget' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_object(&prop_gvalue, c_value);
+          g_value_set_object(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "focus-widget", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_window_get_fullscreened(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkWindow *obj = (GtkWindow *)GtkWindow_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "fullscreened");
 if (pspec == NULL) caml_failwith("ml_gtk_window_get_fullscreened: property 'fullscreened' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "fullscreened", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "fullscreened", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_window_set_fullscreened(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkWindow *obj = (GtkWindow *)GtkWindow_val(self);
     gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "fullscreened");
 if (pspec == NULL) caml_failwith("ml_gtk_window_set_fullscreened: property 'fullscreened' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
+          g_value_set_boolean(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "fullscreened", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_window_get_maximized(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkWindow *obj = (GtkWindow *)GtkWindow_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "maximized");
 if (pspec == NULL) caml_failwith("ml_gtk_window_get_maximized: property 'maximized' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "maximized", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "maximized", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_window_set_maximized(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkWindow *obj = (GtkWindow *)GtkWindow_val(self);
     gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "maximized");
 if (pspec == NULL) caml_failwith("ml_gtk_window_set_maximized: property 'maximized' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
+          g_value_set_boolean(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "maximized", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_window_get_suspended(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkWindow *obj = (GtkWindow *)GtkWindow_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "suspended");
 if (pspec == NULL) caml_failwith("ml_gtk_window_get_suspended: property 'suspended' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "suspended", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "suspended", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}

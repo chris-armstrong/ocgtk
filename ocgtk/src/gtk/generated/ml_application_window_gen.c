@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_application_window_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkApplicationWindow *obj = gtk_application_window_new(GtkApplication_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkApplicationWindow(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_application_window_set_show_menubar(value self, value arg1)
 {
 CAMLparam2(self, arg1);

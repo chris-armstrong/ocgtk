@@ -21,9 +21,18 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GActionEntry */
-#ifndef Val_GActionEntry
-#define GActionEntry_val(val) ((GActionEntry*)ext_of_val(val))
-#define Val_GActionEntry(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GActionEntry */
+/* Conversion functions for GActionEntry (opaque record with hidden fields) */
+GActionEntry *GActionEntry_val(value v) {
+  return *(GActionEntry **)Data_custom_val(v);
+}
+
+value Val_GActionEntry(const GActionEntry *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GActionEntry_option(const GActionEntry *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GActionEntry(ptr));
+}
 

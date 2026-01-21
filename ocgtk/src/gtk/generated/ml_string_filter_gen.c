@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_string_filter_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkStringFilter *obj = gtk_string_filter_new(Option_val(arg1, GtkExpression_val, NULL));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkStringFilter(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_string_filter_set_search(value self, value arg1)
 {
 CAMLparam2(self, arg1);

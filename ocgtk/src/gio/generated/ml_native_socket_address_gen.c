@@ -21,11 +21,3 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-
-CAMLexport CAMLprim value ml_g_native_socket_address_new(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-GNativeSocketAddress *obj = g_native_socket_address_new(arg1, arg2);
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GNativeSocketAddress(obj));
-}

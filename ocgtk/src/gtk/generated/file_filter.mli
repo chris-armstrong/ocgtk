@@ -18,6 +18,14 @@ external set_name : t -> string option -> unit = "ml_gtk_file_filter_set_name"
 See [method@Gtk.FileFilter.set_name]. *)
 external get_name : t -> string option = "ml_gtk_file_filter_get_name"
 
+(** Gets the attributes that need to be filled in for the `GFileInfo`
+passed to this filter.
+
+This function will not typically be used by applications;
+it is intended principally for use in the implementation
+of `GtkFileChooser`. *)
+external get_attributes : t -> string array = "ml_gtk_file_filter_get_attributes"
+
 (** Adds a suffix match rule to a filter.
 
 This is similar to adding a match for the pattern
@@ -45,4 +53,13 @@ external add_pattern : t -> string -> unit = "ml_gtk_file_filter_add_pattern"
 external add_mime_type : t -> string -> unit = "ml_gtk_file_filter_add_mime_type"
 
 (* Properties *)
+
+(** Get property: mime-types *)
+external get_mime_types : t -> string array = "ml_gtk_file_filter_get_mime_types"
+
+(** Get property: patterns *)
+external get_patterns : t -> string array = "ml_gtk_file_filter_get_patterns"
+
+(** Get property: suffixes *)
+external get_suffixes : t -> string array = "ml_gtk_file_filter_get_suffixes"
 

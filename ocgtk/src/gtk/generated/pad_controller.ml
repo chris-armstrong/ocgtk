@@ -9,6 +9,12 @@ let as_event_controller (obj : t) : Event_controller_and__layout_child_and__layo
 external new_ : unit -> unit -> t = "ml_gtk_pad_controller_new"
 
 (* Methods *)
+(** A convenience function to add a group of action entries on
+@controller.
+
+See [struct@Gtk.PadActionEntry] and [method@Gtk.PadController.set_action]. *)
+external set_action_entries : t -> Pad_action_entry.t array -> int -> unit = "ml_gtk_pad_controller_set_action_entries"
+
 (** Adds an individual action to @controller.
 
 This action will only be activated if the given button/ring/strip number

@@ -16,22 +16,15 @@
 #include "generated_forward_decls.h"
 
 
-CAMLexport CAMLprim value ml_gdk_texture_new_for_pixbuf(value arg1)
-{
-CAMLparam1(arg1);
-GdkTexture *obj = gdk_texture_new_for_pixbuf(arg1);
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GdkTexture(obj));
-}
-
 CAMLexport CAMLprim value ml_gdk_texture_new_from_resource(value arg1)
 {
 CAMLparam1(arg1);
+
 GdkTexture *obj = gdk_texture_new_from_resource(String_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GdkTexture(obj));
 }
-
 CAMLexport CAMLprim value ml_gdk_texture_save_to_tiff(value self, value arg1)
 {
 CAMLparam2(self, arg1);

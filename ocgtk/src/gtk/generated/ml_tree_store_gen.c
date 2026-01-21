@@ -17,19 +17,25 @@
 #include "generated_forward_decls.h"
 
 
-CAMLexport CAMLprim value ml_gtk_tree_store_newv(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-GtkTreeStore *obj = gtk_tree_store_newv(Int_val(arg1), arg2);
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GtkTreeStore(obj));
-}
-
 CAMLexport CAMLprim value ml_gtk_tree_store_swap(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
 
 gtk_tree_store_swap(GtkTreeStore_val(self), GtkTreeIter_val(arg1), GtkTreeIter_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_store_reorder(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+    int arg2_length = Wosize_val(arg2);
+    int* c_arg2 = (int*)g_malloc(sizeof(int) * arg2_length);
+    for (int i = 0; i < arg2_length; i++) {
+      c_arg2[i] = Int_val(Field(arg2, i));
+    }
+
+gtk_tree_store_reorder(GtkTreeStore_val(self), Option_val(arg1, GtkTreeIter_val, NULL), c_arg2);
+    g_free(c_arg2);
 CAMLreturn(Val_unit);
 }
 

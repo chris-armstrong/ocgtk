@@ -21,9 +21,18 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDBusErrorEntry */
-#ifndef Val_GDBusErrorEntry
-#define GDBusErrorEntry_val(val) ((GDBusErrorEntry*)ext_of_val(val))
-#define Val_GDBusErrorEntry(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusErrorEntry */
+/* Conversion functions for GDBusErrorEntry (opaque record with hidden fields) */
+GDBusErrorEntry *GDBusErrorEntry_val(value v) {
+  return *(GDBusErrorEntry **)Data_custom_val(v);
+}
+
+value Val_GDBusErrorEntry(const GDBusErrorEntry *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GDBusErrorEntry_option(const GDBusErrorEntry *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GDBusErrorEntry(ptr));
+}
 

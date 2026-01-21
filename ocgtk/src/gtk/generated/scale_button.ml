@@ -6,7 +6,7 @@ type t = [`scale_button | `widget | `initially_unowned] Gobject.obj
 let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new ScaleButton *)
-external new_ : float -> float -> float -> unit -> t = "ml_gtk_scale_button_new"
+external new_ : float -> float -> float -> string array option -> t = "ml_gtk_scale_button_new"
 
 (* Methods *)
 (** Sets the current value of the scale.
@@ -17,6 +17,9 @@ it will be clamped to fit inside them.
 The scale button emits the [signal@Gtk.ScaleButton::value-changed]
 signal if the value changes. *)
 external set_value : t -> float -> unit = "ml_gtk_scale_button_set_value"
+
+(** Sets the icons to be used by the scale button. *)
+external set_icons : t -> string array -> unit = "ml_gtk_scale_button_set_icons"
 
 (** Sets the style of the button. *)
 external set_has_frame : t -> bool -> unit = "ml_gtk_scale_button_set_has_frame"

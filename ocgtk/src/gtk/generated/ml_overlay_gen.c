@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_overlay_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkOverlay *obj = gtk_overlay_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkOverlay(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_overlay_set_measure_overlay(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);

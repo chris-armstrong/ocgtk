@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_event_controller_key_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkEventControllerKey *obj = gtk_event_controller_key_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkEventControllerKey(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_event_controller_key_set_im_context(value self, value arg1)
 {
 CAMLparam2(self, arg1);

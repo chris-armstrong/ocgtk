@@ -20,19 +20,21 @@
 CAMLexport CAMLprim value ml_gtk_combo_box_text_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkComboBoxText *obj = gtk_combo_box_text_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkComboBoxText(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_combo_box_text_new_with_entry(value unit)
 {
 CAMLparam1(unit);
+
 GtkComboBoxText *obj = gtk_combo_box_text_new_with_entry();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkComboBoxText(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_combo_box_text_remove_all(value self)
 {
 CAMLparam1(self);

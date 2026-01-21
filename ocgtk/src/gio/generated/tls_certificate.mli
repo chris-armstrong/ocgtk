@@ -55,6 +55,9 @@ external get_issuer_name : t -> string option = "ml_g_tls_certificate_get_issuer
 (** Gets the #GTlsCertificate representing @cert's issuer, if known *)
 external get_issuer : t -> t option = "ml_g_tls_certificate_get_issuer"
 
+(** Gets the value of #GTlsCertificate:ip-addresses. *)
+external get_ip_addresses : t -> Inet_address.t array option = "ml_g_tls_certificate_get_ip_addresses"
+
 (* Properties *)
 
 (** Get property: certificate-pem *)

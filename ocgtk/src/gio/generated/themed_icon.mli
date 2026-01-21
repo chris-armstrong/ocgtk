@@ -7,7 +7,7 @@ type t = [`themed_icon | `object_] Gobject.obj
 external new_ : string -> t = "ml_g_themed_icon_new"
 
 (** Create a new ThemedIcon *)
-external new_from_names : unit -> int -> t = "ml_g_themed_icon_new_from_names"
+external new_from_names : string array -> int -> t = "ml_g_themed_icon_new_from_names"
 
 (** Create a new ThemedIcon *)
 external new_with_default_fallbacks : string -> t = "ml_g_themed_icon_new_with_default_fallbacks"
@@ -18,6 +18,9 @@ external new_with_default_fallbacks : string -> t = "ml_g_themed_icon_new_with_d
 Note that doing so invalidates the hash computed by prior calls
 to g_icon_hash(). *)
 external prepend_name : t -> string -> unit = "ml_g_themed_icon_prepend_name"
+
+(** Gets the names of icons from within @icon. *)
+external get_names : t -> string array = "ml_g_themed_icon_get_names"
 
 (** Append a name to the list of icons from within @icon.
 

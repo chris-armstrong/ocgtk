@@ -11,6 +11,14 @@ class application (obj : Application_and__window_and__window_group.Application.t
       let window = window#as_window in
       (Application_and__window_and__window_group.Application.add_window obj window)
 
+  method get_accels_for_action : string -> string array =
+    fun detailed_action_name ->
+      (Application_and__window_and__window_group.Application.get_accels_for_action obj detailed_action_name)
+
+  method get_actions_for_accel : string -> string array =
+    fun accel ->
+      (Application_and__window_and__window_group.Application.get_actions_for_accel obj accel)
+
   method get_active_window : unit -> window option =
     fun () ->
       Option.map (fun ret -> new window ret) (Application_and__window_and__window_group.Application.get_active_window obj)
@@ -24,10 +32,18 @@ class application (obj : Application_and__window_and__window_group.Application.t
       let window = Option.map (fun (c) -> c#as_window) window in
       (Application_and__window_and__window_group.Application.inhibit obj window flags reason)
 
+  method list_action_descriptions : unit -> string array =
+    fun () ->
+      (Application_and__window_and__window_group.Application.list_action_descriptions obj)
+
   method remove_window : 'p1. (<as_window: Application_and__window_and__window_group.Window.t; ..> as 'p1) -> unit =
     fun window ->
       let window = window#as_window in
       (Application_and__window_and__window_group.Application.remove_window obj window)
+
+  method set_accels_for_action : string -> string array -> unit =
+    fun detailed_action_name accels ->
+      (Application_and__window_and__window_group.Application.set_accels_for_action obj detailed_action_name accels)
 
   method uninhibit : int -> unit =
     fun cookie ->

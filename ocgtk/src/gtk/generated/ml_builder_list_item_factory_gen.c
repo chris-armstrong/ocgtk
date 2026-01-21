@@ -17,22 +17,15 @@
 #include "generated_forward_decls.h"
 
 
-CAMLexport CAMLprim value ml_gtk_builder_list_item_factory_new_from_bytes(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-GtkBuilderListItemFactory *obj = gtk_builder_list_item_factory_new_from_bytes(Option_val(arg1, GtkBuilderScope_val, NULL), arg2);
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GtkBuilderListItemFactory(obj));
-}
-
 CAMLexport CAMLprim value ml_gtk_builder_list_item_factory_new_from_resource(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
+
 GtkBuilderListItemFactory *obj = gtk_builder_list_item_factory_new_from_resource(Option_val(arg1, GtkBuilderScope_val, NULL), String_val(arg2));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkBuilderListItemFactory(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_builder_list_item_factory_get_scope(value self)
 {
 CAMLparam1(self);

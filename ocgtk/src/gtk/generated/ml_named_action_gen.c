@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_named_action_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkNamedAction *obj = gtk_named_action_new(String_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkNamedAction(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_named_action_get_action_name(value self)
 {
 CAMLparam1(self);

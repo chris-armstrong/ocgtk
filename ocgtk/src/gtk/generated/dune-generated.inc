@@ -10,6 +10,7 @@
       (echo "Accessible_list")
       (echo "Accessible_range")
       (echo "Accessible_text")
+      (echo "Accessible_text_range")
       (echo "Action_bar")
       (echo "Actionable")
       (echo "Activate_action")
@@ -37,6 +38,7 @@
       (echo "Box_layout")
       (echo "Buildable")
       (echo "Buildable_parse_context")
+      (echo "Buildable_parser")
       (echo "Builder")
       (echo "Builder_c_scope")
       (echo "Builder_list_item_factory")
@@ -81,8 +83,10 @@
       (echo "Constraint_layout")
       (echo "Constraint_layout_child")
       (echo "Constraint_target")
+      (echo "Css_location")
       (echo "Css_provider")
       (echo "Css_section")
+      (echo "Css_style_change")
       (echo "Custom_filter")
       (echo "Custom_layout")
       (echo "Custom_sorter")
@@ -140,6 +144,7 @@
       (echo "GAccessible_list")
       (echo "GAccessible_range")
       (echo "GAccessible_text")
+      (echo "GAccessible_text_range")
       (echo "GAction_bar")
       (echo "GActionable")
       (echo "GActivate_action")
@@ -167,6 +172,7 @@
       (echo "GBox_layout")
       (echo "GBuildable")
       (echo "GBuildable_parse_context")
+      (echo "GBuildable_parser")
       (echo "GBuilder")
       (echo "GBuilder_c_scope")
       (echo "GBuilder_list_item_factory")
@@ -211,8 +217,10 @@
       (echo "GConstraint_layout")
       (echo "GConstraint_layout_child")
       (echo "GConstraint_target")
+      (echo "GCss_location")
       (echo "GCss_provider")
       (echo "GCss_section")
+      (echo "GCss_style_change")
       (echo "GCustom_filter")
       (echo "GCustom_layout")
       (echo "GCustom_sorter")
@@ -329,7 +337,9 @@
       (echo "GOverlay")
       (echo "GOverlay_layout")
       (echo "GOverlay_layout_child")
+      (echo "GPad_action_entry")
       (echo "GPad_controller")
+      (echo "GPage_range")
       (echo "GPage_setup")
       (echo "GPaned")
       (echo "GPaper_size")
@@ -349,8 +359,10 @@
       (echo "GProgress_bar")
       (echo "GProperty_expression")
       (echo "GRange")
+      (echo "GRecent_data")
       (echo "GRecent_info")
       (echo "GRecent_manager")
+      (echo "GRequested_size")
       (echo "GRequisition")
       (echo "GRevealer")
       (echo "GScale")
@@ -410,6 +422,7 @@
       (echo "GTree_drag_dest")
       (echo "GTree_drag_source")
       (echo "GTree_expander")
+      (echo "GTree_iter")
       (echo "GTree_list_model")
       (echo "GTree_list_row")
       (echo "GTree_list_row_sorter")
@@ -514,7 +527,9 @@
       (echo "Overlay")
       (echo "Overlay_layout")
       (echo "Overlay_layout_child")
+      (echo "Pad_action_entry")
       (echo "Pad_controller")
+      (echo "Page_range")
       (echo "Page_setup")
       (echo "Paned")
       (echo "Pango")
@@ -536,8 +551,10 @@
       (echo "Progress_bar")
       (echo "Property_expression")
       (echo "Range")
+      (echo "Recent_data")
       (echo "Recent_info")
       (echo "Recent_manager")
+      (echo "Requested_size")
       (echo "Requisition")
       (echo "Revealer")
       (echo "Scale")
@@ -598,6 +615,7 @@
       (echo "Tree_drag_dest")
       (echo "Tree_drag_source")
       (echo "Tree_expander")
+      (echo "Tree_iter")
       (echo "Tree_list_model")
       (echo "Tree_list_row")
       (echo "Tree_list_row_sorter")
@@ -647,8 +665,10 @@ rm cflag-gtk.sexp.tmp clink-gtk.sexp.tmp\\
   (names
    ml_about_dialog_gen
    ml_accessible_gen
+   ml_accessible_list_gen
    ml_accessible_range_gen
    ml_accessible_text_gen
+   ml_accessible_text_range_gen
    ml_action_bar_gen
    ml_actionable_gen
    ml_activate_action_gen
@@ -667,12 +687,16 @@ rm cflag-gtk.sexp.tmp clink-gtk.sexp.tmp\\
    ml_assistant_page_gen
    ml_at_context_gen
    ml_bin_layout_gen
+   ml_bitset_gen
+   ml_bitset_iter_gen
    ml_bookmark_list_gen
    ml_bool_filter_gen
-   ml_border_record_gen
+   ml_border_gen
    ml_box_gen
    ml_box_layout_gen
    ml_buildable_gen
+   ml_buildable_parse_context_gen
+   ml_buildable_parser_gen
    ml_builder_c_scope_gen
    ml_builder_gen
    ml_builder_list_item_factory_gen
@@ -719,7 +743,10 @@ rm cflag-gtk.sexp.tmp clink-gtk.sexp.tmp\\
    ml_constraint_layout_child_gen
    ml_constraint_layout_gen
    ml_constraint_target_gen
+   ml_css_location_gen
    ml_css_provider_gen
+   ml_css_section_gen
+   ml_css_style_change_gen
    ml_custom_filter_gen
    ml_custom_layout_gen
    ml_custom_sorter_gen
@@ -747,6 +774,7 @@ rm cflag-gtk.sexp.tmp clink-gtk.sexp.tmp\\
    ml_every_filter_gen
    ml_expander_gen
    ml_expression_gen
+   ml_expression_watch_gen
    ml_file_chooser_dialog_gen
    ml_file_chooser_gen
    ml_file_chooser_native_gen
@@ -842,10 +870,13 @@ rm cflag-gtk.sexp.tmp clink-gtk.sexp.tmp\\
    ml_overlay_gen
    ml_overlay_layout_child_gen
    ml_overlay_layout_gen
+   ml_pad_action_entry_gen
    ml_pad_controller_gen
+   ml_page_range_gen
    ml_page_setup_gen
    ml_paned_gen
    ml_pango_enums_gen
+   ml_paper_size_gen
    ml_param_spec_expression_gen
    ml_password_entry_buffer_gen
    ml_password_entry_gen
@@ -858,15 +889,20 @@ rm cflag-gtk.sexp.tmp clink-gtk.sexp.tmp\\
    ml_print_operation_gen
    ml_print_operation_preview_gen
    ml_print_settings_gen
+   ml_print_setup_gen
    ml_progress_bar_gen
    ml_property_expression_gen
    ml_range_gen
+   ml_recent_data_gen
+   ml_recent_info_gen
    ml_recent_manager_gen
-   ml_requisition_record_gen
+   ml_requested_size_gen
+   ml_requisition_gen
    ml_revealer_gen
    ml_root_gen
    ml_scale_button_gen
    ml_scale_gen
+   ml_scroll_info_gen
    ml_scrollable_gen
    ml_scrollbar_gen
    ml_scrolled_window_gen
@@ -913,7 +949,7 @@ rm cflag-gtk.sexp.tmp clink-gtk.sexp.tmp\\
    ml_text_buffer_gen
    ml_text_child_anchor_gen
    ml_text_gen
-   ml_text_iter_record_gen
+   ml_text_iter_gen
    ml_text_mark_gen
    ml_text_tag_gen
    ml_text_tag_table_gen
@@ -923,13 +959,15 @@ rm cflag-gtk.sexp.tmp clink-gtk.sexp.tmp\\
    ml_tree_drag_dest_gen
    ml_tree_drag_source_gen
    ml_tree_expander_gen
-   ml_tree_iter_record_gen
+   ml_tree_iter_gen
    ml_tree_list_model_gen
    ml_tree_list_row_gen
    ml_tree_list_row_sorter_gen
    ml_tree_model_filter_gen
    ml_tree_model_gen
    ml_tree_model_sort_gen
+   ml_tree_path_gen
+   ml_tree_row_reference_gen
    ml_tree_selection_gen
    ml_tree_sortable_gen
    ml_tree_store_gen

@@ -1,10 +1,12 @@
 class alert_dialog : Alert_dialog.t ->
   object
+    method get_buttons : unit -> string array option
     method get_cancel_button : unit -> int
     method get_default_button : unit -> int
     method get_detail : unit -> string
     method get_message : unit -> string
     method get_modal : unit -> bool
+    method set_buttons : string array -> unit
     method set_cancel_button : int -> unit
     method set_default_button : int -> unit
     method set_detail : string -> unit

@@ -16,21 +16,17 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Conversion functions for GtkAccessibleTextRange (non-opaque record with fields) */
+/* Conversion functions for GtkAccessibleTextRange (opaque record with hidden fields) */
 GtkAccessibleTextRange *GtkAccessibleTextRange_val(value v) {
-  if (Tag_val(v) == Custom_tag) {
-    return *(GtkAccessibleTextRange **)Data_custom_val(v);
-  } else {
-    return (GtkAccessibleTextRange*)ml_gir_record_ptr_val(v, "GtkAccessibleTextRange");
-  }
+  return *(GtkAccessibleTextRange **)Data_custom_val(v);
 }
 
-value Val_GtkAccessibleTextRange(GtkAccessibleTextRange *ptr) {
+value Val_GtkAccessibleTextRange(const GtkAccessibleTextRange *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_alloc((ptr), sizeof(GtkAccessibleTextRange), "GtkAccessibleTextRange", NULL);
+  return ml_gir_record_val_ptr(ptr);
 }
 
-value Val_GtkAccessibleTextRange_option(GtkAccessibleTextRange *ptr) {
+value Val_GtkAccessibleTextRange_option(const GtkAccessibleTextRange *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GtkAccessibleTextRange(ptr));
 }

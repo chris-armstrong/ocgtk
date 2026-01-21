@@ -56,6 +56,10 @@ class application (obj : Application.t) = object (self)
     fun () ->
       (Application.mark_busy obj)
 
+  method open_ : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t array -> int -> string -> unit =
+    fun files n_files hint ->
+      (Application.open_ obj files n_files hint)
+
   method quit : unit -> unit =
     fun () ->
       (Application.quit obj)
