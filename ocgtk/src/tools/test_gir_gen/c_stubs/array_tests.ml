@@ -43,6 +43,7 @@ let test_zero_terminated_string_array_input () =
                       zero_terminated = false;
                       (* Will be inferred *)
                       fixed_size = None;
+                      array_name = None;
                       element_type =
                         {
                           name = "utf8";
@@ -120,6 +121,7 @@ let test_zero_terminated_string_array_return () =
                 zero_terminated = false;
                 (* Will be inferred *)
                 fixed_size = None;
+                array_name = None;
                 element_type =
                   {
                     name = "utf8";
@@ -199,6 +201,7 @@ let test_array_with_length_parameter () =
                       (* Length is parameter index 1 *)
                       zero_terminated = false;
                       fixed_size = None;
+                      array_name = None;
                       element_type =
                         {
                           name = "gint";
@@ -302,6 +305,7 @@ let test_out_parameter_array_with_length () =
                       (* Length is parameter index 1 *)
                       zero_terminated = false;
                       fixed_size = None;
+                      array_name = None;
                       element_type =
                         {
                           name = "gint";
@@ -398,6 +402,7 @@ let test_out_parameter_string_array () =
                       length = Some 1;
                       zero_terminated = false;
                       fixed_size = None;
+                      array_name = None;
                       element_type =
                         {
                           name = "utf8";
@@ -497,6 +502,7 @@ let test_array_cleanup_transfer_none () =
                       length = None;
                       zero_terminated = true;
                       fixed_size = None;
+                      array_name = None;
                       element_type =
                         {
                           name = "utf8";
@@ -562,6 +568,7 @@ let test_array_cleanup_transfer_full () =
                       length = None;
                       zero_terminated = true;
                       fixed_size = None;
+                      array_name = None;
                       element_type =
                         {
                           name = "utf8";
@@ -620,6 +627,7 @@ let test_gptr_array_return () =
                 length = None;
                 zero_terminated = false;
                 fixed_size = None;
+                array_name = None;
                 element_type =
                   {
                     name = "utf8";
@@ -701,6 +709,7 @@ let test_gptr_array_transfer_full () =
                 length = None;
                 zero_terminated = false;
                 fixed_size = None;
+                array_name = None;
                 element_type =
                   {
                     name = "GInetAddress";
@@ -779,6 +788,7 @@ let test_gptr_array_with_incompatible_element_type () =
                 length = None;
                 zero_terminated = false;
                 fixed_size = None;
+                array_name = None;
                 element_type =
                   {
                     name = "GdkTimeCoord";
