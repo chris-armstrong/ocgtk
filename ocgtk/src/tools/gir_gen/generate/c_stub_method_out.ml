@@ -55,7 +55,7 @@ let var_name_for_direction direction idx =
 let convert_out_array ~ctx ~out_array_length_map ~out_array_conversions_buf
     ~parameters ~idx ~var_name (p : gir_param)
     (array_info : gir_array) =
-  let element_c_type =
+  let element_c_type_from_gir =
     match array_info.element_type.c_type with
     | Some ct -> ct
     | None ->
@@ -64,6 +64,10 @@ let convert_out_array ~ctx ~out_array_length_map ~out_array_conversions_buf
         |> Option.map (fun tm -> tm.c_type)
         |> Option.value ~default:"void"
   in
+   (* For out parameters, we declare the variable as T* (not T** ), so the actual
+      array element type is T (not T* ). Strip one level of pointer from the GIR type. *)
+   let element_c_type = C_stub_helpers.base_c_type_of element_c_type_from_gir in
+   
    let length_expr =
      let* length_idx = List.assoc_opt idx out_array_length_map in
      let* param = safe_nth_opt parameters length_idx in

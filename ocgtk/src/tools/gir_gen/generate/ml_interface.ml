@@ -19,7 +19,9 @@ let simplify_self_reference ~class_name ocaml_type =
   if ocaml_type = self_type then
     "t"
   else
-    ocaml_type
+    (* Handle patterns like "Module.t array" or "Module.t option" or "Module.t array option" *)
+    let pattern = Str.regexp (Str.quote self_type) in
+    Str.global_replace pattern "t" ocaml_type
 
 (* Qualify module references for cyclic dependencies *)
 let qualify_module_reference ~ctx module_type =

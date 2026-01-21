@@ -137,24 +137,25 @@ let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
 
       let prop_name = Utils.ml_property_name ~class_name prop in
       let c_cast = sprintf "%s_val" c_type in
-      let length_var = "result_length" in
       let c_array_var = "c_result" in
 
-      (* Generate array conversion code *)
+      (* Generate array conversion code. 
+         Don't pass length_expr - let generate_array_c_to_ml figure it out
+         from the array type (zero-terminated, etc.) *)
       let conv_code, ml_array_var_name, _cleanup_code =
         C_stub_helpers.generate_array_c_to_ml ~ctx ~var:c_array_var ~array_info
-          ~length_expr:(Some length_var) ~element_c_type
+          ~length_expr:None ~element_c_type
           ~transfer_ownership:prop.prop_type.transfer_ownership
       in
 
-      (* Generate property getter with array handling *)
+      (* Generate property getter with array handling.
+         Note: conv_code includes its own CAMLlocal1 declaration, so don't add another. *)
       sprintf
         "\n\
          CAMLexport CAMLprim value %s(value self)\n\
          {\n\
          %s *obj = (%s *)%s(self);\n\
          CAMLparam1(self);\n\
-         CAMLlocal1(%s);\n\
          GValue prop_gvalue = G_VALUE_INIT;\n\
          GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), \"%s\");\n\
          if (pspec == NULL) caml_failwith(\"%s: property '%s' not found\");\n\
@@ -165,7 +166,7 @@ let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
          g_value_unset(&prop_gvalue);\n\
          CAMLreturn(%s);\n\
          }"
-        prop_name c_type c_type c_cast ml_array_var_name prop.prop_name prop_name prop.prop_name
+        prop_name c_type c_type c_cast prop.prop_name prop_name prop.prop_name
         prop.prop_name element_c_type c_array_var element_c_type
         conv_code ml_array_var_name
   | None ->

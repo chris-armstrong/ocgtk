@@ -7,6 +7,16 @@ open Types
 
 (** Array conversion helpers *)
 module Array_conv = struct
+  (* Strip const qualifier from C type for array allocation.
+     When allocating arrays for input parameters, we need non-const arrays
+     even if the parameter type is const. *)
+  let strip_const c_type =
+    c_type
+    |> String.trim
+    |> CCString.replace ~sub:"const " ~by:""
+    |> CCString.replace ~sub:" const" ~by:""
+    |> String.trim
+
   (* Check if an array contains string elements *)
   let is_string_array (array_info : gir_array) =
     let elem_name = String.lowercase_ascii array_info.element_type.name in
@@ -20,6 +30,8 @@ module Array_conv = struct
       arrays (NULL-terminated) and non-pointer arrays (structs). *)
   let zero_terminated_conversion ~length_var ~c_array_var ~var ~element_c_type
       ~element_tm ~is_pointer_array ~deref_prefix =
+    (* Strip const for array allocation - we need mutable arrays to fill in *)
+    let elem_type_nonconst = strip_const element_c_type in
     if is_pointer_array then
       sprintf
         "int %s = Wosize_val(%s);\n\
@@ -28,7 +40,7 @@ module Array_conv = struct
         \      %s[i] = %s(Field(%s, i));\n\
         \    }\n\
         \    %s[%s] = NULL;"
-        length_var var element_c_type c_array_var element_c_type element_c_type
+        length_var var elem_type_nonconst c_array_var elem_type_nonconst elem_type_nonconst
         length_var length_var c_array_var element_tm.ml_to_c var c_array_var
         length_var
     else
@@ -39,21 +51,23 @@ module Array_conv = struct
         \      %s[i] = %s%s(Field(%s, i));\n\
         \    }\n\
         \    %s[%s] = (%s){0};"
-        length_var var element_c_type c_array_var element_c_type element_c_type
+        length_var var elem_type_nonconst c_array_var elem_type_nonconst elem_type_nonconst
         length_var length_var c_array_var deref_prefix element_tm.ml_to_c var
-        c_array_var length_var element_c_type
+        c_array_var length_var elem_type_nonconst
 
   (** Generate conversion code for non-zero-terminated arrays. Allocates memory
       without extra slot for NULL terminator. *)
   let non_zero_terminated_conversion ~length_var ~c_array_var ~var
       ~element_c_type ~element_tm ~deref_prefix =
+    (* Strip const for array allocation *)
+    let elem_type_nonconst = strip_const element_c_type in
     sprintf
       "int %s = Wosize_val(%s);\n\
       \    %s* %s = (%s*)g_malloc(sizeof(%s) * %s);\n\
       \    for (int i = 0; i < %s; i++) {\n\
       \      %s[i] = %s%s(Field(%s, i));\n\
       \    }"
-      length_var var element_c_type c_array_var element_c_type element_c_type
+      length_var var elem_type_nonconst c_array_var elem_type_nonconst elem_type_nonconst
       length_var length_var c_array_var deref_prefix element_tm.ml_to_c var
 
   (** Generate length code when length is explicitly provided. *)
@@ -161,8 +175,18 @@ module Array_conv = struct
         in
 
         (* For struct arrays (non-pointer elements), we need to dereference the
-           conversion result since _val macros return pointers *)
-        let deref_prefix = if is_pointer_array then "" else "*" in
+           conversion result only if the converter returns a pointer.
+           Primitive converters (Int_val, Double_val, Bool_val, String_val) 
+           return values directly, not pointers. *)
+        let is_primitive_converter =
+          String.equal element_tm.ml_to_c "Int_val"
+          || String.equal element_tm.ml_to_c "Double_val"
+          || String.equal element_tm.ml_to_c "Bool_val"
+          || String.equal element_tm.ml_to_c "String_val"
+        in
+        let deref_prefix =
+          if is_pointer_array || is_primitive_converter then "" else "*"
+        in
 
         (* Generate conversion code based on array type *)
         let conversion_code =
@@ -232,6 +256,19 @@ module Array_conv = struct
         in
 
         (* Generate conversion loop *)
+        (* For struct arrays (non-pointer elements stored by value in C array),
+           we need to take the address when passing to conversion functions that expect pointers.
+           Primitive converters (caml_copy_double, Val_int, etc.) work with values directly. *)
+        let is_primitive_converter =
+          String.equal element_tm.c_to_ml "Val_int"
+          || String.equal element_tm.c_to_ml "Val_bool"
+          || String.equal element_tm.c_to_ml "caml_copy_double"
+          || String.equal element_tm.c_to_ml "caml_copy_string"
+        in
+        let addr_prefix =
+          if is_pointer_array || is_primitive_converter then "" else "&"
+        in
+        
         let conversion_code =
           if is_gptr_array then
             (* GPtrArray: cast pdata elements to correct type *)
@@ -250,10 +287,10 @@ module Array_conv = struct
               \    CAMLlocal1(%s);\n\
               \    %s = caml_alloc(%s, 0);\n\
               \    for (int i = 0; i < %s; i++) {\n\
-              \      Store_field(%s, i, %s(%s[i]));\n\
+              \      Store_field(%s, i, %s(%s%s[i]));\n\
               \    }"
               length_code ml_array_var ml_array_var length_var length_var
-              ml_array_var element_tm.c_to_ml data_var
+              ml_array_var element_tm.c_to_ml addr_prefix data_var
         in
 
         (* Generate cleanup code if we own the array (TransferFull or TransferContainer) *)
