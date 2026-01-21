@@ -12,6 +12,8 @@ type gir_array = {
   zero_terminated : bool; (* Whether the array is null/zero-terminated *)
   fixed_size : int option; (* Fixed size of array, if known at compile time *)
   element_type : gir_type; (* Type of array elements *)
+  array_name : string option;
+      (* Array type name (e.g., "GLib.PtrArray" for GPtrArray) *)
 }
 
 and gir_type = {
