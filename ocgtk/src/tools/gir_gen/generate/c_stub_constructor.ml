@@ -175,8 +175,8 @@ let build_constructor_return ~c_type ~class_name (ctor : gir_constructor)
 
   if param_count > 5 then
     let body_code =
-      sprintf "%s%s *%s = %s(%s);%s\n%s\n%s\n%s" error_decl c_type var_name
-        array_decls_str c_name c_call_args ref_sink_stmt cleanup_section
+      sprintf "%s%s\n%s *%s = %s(%s);%s\n%s\n%s" array_decls_str error_decl 
+        c_type var_name c_name c_call_args ref_sink_stmt cleanup_section
         return_stmt
     in
     generate_multi_param_function
@@ -188,8 +188,8 @@ let build_constructor_return ~c_type ~class_name (ctor : gir_constructor)
        CAMLexport CAMLprim value %s(%s)\n\
        {\n\
        CAMLparam%d(%s);\n\
-       %s\n\
-       %s%s *%s = %s(%s);%s\n\
+       %s%s\n\
+       %s *%s = %s(%s);%s\n\
        %s\n\
        %s\n\
        }"

@@ -1,6 +1,6 @@
 # GIR Generator Array Handling Reference
 
-**Status**: Implemented for methods, workaround filters for constructors/properties  
+**Status**: Implemented for methods, properties; constructors supported  
 **Last Updated**: 2026-01-21  
 
 ## Overview
@@ -9,8 +9,8 @@ The GIR code generator supports automatic conversion between OCaml arrays and C 
 
 **Current Implementation Status**:
 - ✅ **Methods**: Full array support (parameters, returns, out-params)
-- ⚠️ **Constructors**: Filtered out if they have array parameters (TODO)
-- ⚠️ **Properties**: Filtered out if they have array types (TODO)
+- ✅ **Constructors**: Array parameter support implemented
+- ✅ **Properties**: Array getter/setter support implemented
 
 ## Architecture
 
@@ -126,16 +126,29 @@ g_free(c_arg1);  // Cleanup (TransferNone only)
 - Computes length with `Wosize_val`
 - Adds NULL terminator for zero-terminated arrays
 - Returns cleanup code based on transfer ownership
+- Strips `const` qualifiers for mutable array allocation
 
 **Struct array handling**:
 
 For non-pointer element types (structs), the `_val` macro returns a pointer, so we dereference:
 
 ```c
-/* Array of structs (GOutputMessage[]) */
-GOutputMessage* c_arg1 = (GOutputMessage*)g_malloc(sizeof(GOutputMessage) * arg1_length);
+/* Array of structs (GActionEntry[]) */
+GActionEntry* c_arg1 = (GActionEntry*)g_malloc(sizeof(GActionEntry) * arg1_length);
 for (int i = 0; i < arg1_length; i++) {
-    c_arg1[i] = *GOutputMessage_val(Field(arg1, i));  // Dereference
+    c_arg1[i] = *GActionEntry_val(Field(arg1, i));  // Dereference
+}
+```
+
+**Primitive array handling**:
+
+Primitive converters (`Int_val`, `Double_val`, `Bool_val`, `String_val`) return values directly:
+
+```c
+/* Array of ints */
+int* c_arg1 = (int*)g_malloc(sizeof(int) * arg1_length);
+for (int i = 0; i < arg1_length; i++) {
+    c_arg1[i] = Int_val(Field(arg1, i));  // No dereference
 }
 ```
 
@@ -183,7 +196,7 @@ Out-parameter arrays are returned from C functions via pointer:
 CAMLexport CAMLprim value ml_gtk_list_get_selection(value self) {
     CAMLparam1(self);
     
-    gint* out1 = NULL;   /* Array pointer - set by C function */
+    gint* out1 = NULL;   /* Single pointer - C function allocates array */
     gint out2;           /* Length - set by C function */
     
     gtk_list_get_selection(GtkList_val(self), &out1, &out2);
@@ -203,12 +216,33 @@ CAMLexport CAMLprim value ml_gtk_list_get_selection(value self) {
 ```
 
 **Key features**:
-- Out-parameter array declared as pointer initialized to NULL
-- C function sets pointer and length via `&out1`, `&out2`
+- Out-parameter array declared as **single pointer** `T*` (not `T**`)
+- Passed as `&out1` to C function (which expects `T**`)
+- C function allocates array and sets `*out1` to point to it
 - Conversion uses companion out-parameter as length
 - Proper cleanup based on transfer ownership
 
-**Implementation**: `c_stub_class.ml` (out-parameter handling in `generate_c_method`)
+**Struct element handling**:
+
+For struct arrays from out parameters, elements are accessed by-value and need address-of:
+
+```c
+GdkKeymapKey* out2 = NULL;  /* Single pointer */
+guint out3;
+
+gdk_display_map_keyval(display, keyval, &out2, &out3);  /* Function expects GdkKeymapKey** */
+
+CAMLlocal1(ml_out2);
+ml_out2 = caml_alloc(out3, 0);
+for (int i = 0; i < out3; i++) {
+    Store_field(ml_out2, i, Val_GdkKeymapKey(&out2[i]));  /* &out2[i] for struct */
+}
+```
+
+**Implementation**: 
+- Variable declaration: `c_stub_method.ml:handle_out_param`
+- Element type adjustment: `c_stub_method_out.ml:convert_out_array`
+- Conversion code: `c_stub_array_conv.ml:generate_array_c_to_ml`
 
 ### Array Length Parameters
 
@@ -281,6 +315,108 @@ CAMLreturn(ml_result);
 - `TransferNone`: No cleanup
 - `TransferContainer`: `g_ptr_array_unref(result)`
 - `TransferFull`: `g_ptr_array_free(result, TRUE)` (frees elements too)
+
+## Critical Fixes (2026-01-21)
+
+### 1. Out Parameter Pointer Levels
+
+**Issue**: Out parameters for arrays were incorrectly declared as double pointers (`T**`) when they should be single pointers (`T*`).
+
+**Example (Before)**:
+```c
+double** out1 = NULL;  /* WRONG */
+gdk_event_get_axes(event, &out1, &out2);  /* &out1 is double*** */
+out1[i]  /* Returns double*, not double */
+```
+
+**Example (After)**:
+```c
+double* out1 = NULL;  /* CORRECT */
+gdk_event_get_axes(event, &out1, &out2);  /* &out1 is double** */
+out1[i]  /* Returns double */
+```
+
+**Fix**: Modified `c_stub_method.ml:handle_out_param` to not add extra `*` for arrays. The `&variable` in the function call provides the required pointer-to-pointer.
+
+**Related**: Element type for out parameter arrays is stripped by one pointer level in `c_stub_method_out.ml:convert_out_array` to match the actual array element type.
+
+### 2. Primitive vs Struct Converter Dereferencing
+
+**Issue**: Code generator applied `*` dereference to all non-pointer converters, but primitive converters (`Int_val`, `Double_val`, etc.) return values directly, not pointers.
+
+**Example (Before)**:
+```c
+c_arg1[i] = *Int_val(Field(arg1, i));  /* WRONG - Int_val returns int */
+```
+
+**Example (After)**:
+```c
+c_arg1[i] = Int_val(Field(arg1, i));   /* CORRECT */
+c_arg2[i] = *GActionEntry_val(Field(arg2, i));  /* CORRECT for structs */
+```
+
+**Fix**: Added primitive converter detection in `c_stub_array_conv.ml` for both ML→C and C→ML conversions:
+- Primitive converters: `Int_val`, `Double_val`, `Bool_val`, `String_val`, `Val_int`, `Val_bool`, `caml_copy_double`, `caml_copy_string`
+- Struct converters get `*` prefix for ML→C, `&` prefix for C→ML
+
+### 3. Const Qualifier Stripping
+
+**Issue**: Arrays allocated with `const` qualifier cannot be assigned to.
+
+**Example (Before)**:
+```c
+const GActionEntry* c_arg1 = (const GActionEntry*)g_malloc(...);
+c_arg1[i] = *GActionEntry_val(...);  /* ERROR: assignment to const */
+```
+
+**Example (After)**:
+```c
+GActionEntry* c_arg1 = (GActionEntry*)g_malloc(...);  /* const stripped */
+c_arg1[i] = *GActionEntry_val(...);  /* OK */
+```
+
+**Fix**: Added `strip_const` function in `c_stub_array_conv.ml` to remove `const` qualifiers when allocating mutable arrays for input parameters.
+
+### 4. Property Getter Array Handling
+
+**Issue**: Property getters with array types had duplicate `CAMLlocal1` declarations and referenced undefined `result_length` variable.
+
+**Example (Before)**:
+```c
+CAMLlocal1(ml_c_result);  /* First declaration */
+utf8* c_result = g_value_get_boxed(...);
+int c_result_length = result_length;  /* ERROR: result_length undefined */
+CAMLlocal1(ml_c_result);  /* ERROR: redefinition */
+```
+
+**Example (After)**:
+```c
+utf8* c_result = g_value_get_boxed(...);
+int c_result_length = 0;
+while (c_result[c_result_length] != NULL) c_result_length++;  /* Compute length */
+CAMLlocal1(ml_c_result);  /* Single declaration from conversion code */
+ml_c_result = caml_alloc(c_result_length, 0);
+```
+
+**Fix**: Modified `c_stub_property.ml:generate_c_property_getter` to:
+- Remove duplicate `CAMLlocal1` (conversion code includes it)
+- Pass `None` for length_expr to let array conversion compute length from array type
+
+### 5. Constructor Array Declaration Placement
+
+**Issue**: Constructor code placed array declarations inside the object allocation statement, creating syntax errors.
+
+**Example (Before)**:
+```c
+GtkAdjustment *obj = (gtk_adjustment_new);Double_val(arg1), ...  /* Malformed */
+```
+
+**Example (After)**:
+```c
+GtkAdjustment *obj = gtk_adjustment_new(Double_val(arg1), ...);  /* Correct */
+```
+
+**Fix**: Fixed format string in `c_stub_constructor.ml:build_constructor_return` to place array declarations on separate line before constructor call.
 
 ## Memory Management
 
@@ -437,73 +573,13 @@ Core conversion logic extracted to reusable functions:
 
 ## Current Limitations
 
-### 1. Constructors with Array Parameters (HIGH PRIORITY)
-
-**Status**: Filtered out via `Filtering.constructor_has_array_params`
-
-**Example filtered constructor**:
-```xml
-<constructor name="new_from_names">
-  <parameters>
-    <parameter name="iconnames">
-      <array length="1"><type name="utf8"/></array>
-    </parameter>
-    <parameter name="len"><type name="gint"/></parameter>
-  </parameters>
-</constructor>
-```
-
-**What's needed**:
-- Apply same array conversion logic used for methods
-- Handle array length parameters
-- Generate cleanup code
-- Remove filter from `filtering.ml`
-
-**Files to modify**:
-- `c_stub_class.ml`: Add array handling to `generate_c_constructor`
-- `c_stub_record.ml`: Add array handling to record constructors
-- `filtering.ml`: Remove `constructor_has_array_params` filter
-- `ml_interface.ml`: Remove array filter for constructors
-
-### 2. Property Getters with Array Types (HIGH PRIORITY)
-
-**Status**: Filtered out via `is_array_type` check in `should_generate_property`
-
-**Example filtered property**:
-```xml
-<property name="argv" readable="1">
-  <array><type name="utf8"/></array>
-</property>
-```
-
-**What's needed**:
-- Detect array return type in property getters
-- Generate inline conversion using `generate_array_c_to_ml`
-- Handle cleanup based on transfer ownership
-- Remove filter from `filtering.ml`
-
-**Files to modify**:
-- `c_stub_class.ml`: Add array handling to `generate_c_property_getter`
-- `filtering.ml`: Remove array check from `should_generate_property`
-
-### 3. Property Setters with Array Parameters (HIGH PRIORITY)
-
-**What's needed**:
-- Detect array parameter type in property setters
-- Generate inline conversion using `generate_array_ml_to_c`
-- Handle cleanup code
-- Remove filter from `filtering.ml`
-
-**Files to modify**:
-- `c_stub_class.ml`: Add array handling to `generate_c_property_setter`
-
-### 4. ARRAY_INLINE Marker (MEDIUM PRIORITY)
+### 1. ARRAY_INLINE Marker (MEDIUM PRIORITY)
 
 **Location**: `type_mappings.ml` line 206-207
 
 The `"ARRAY_INLINE"` marker is used to signal inline code generation. Consider whether a more explicit mechanism would be clearer (e.g., a variant type or dedicated flag).
 
-### 5. Fixed-Size Arrays (LOW PRIORITY)
+### 2. Fixed-Size Arrays (LOW PRIORITY)
 
 **Status**: Not implemented
 
@@ -518,7 +594,7 @@ GIR can specify `fixed-size="N"` for stack-allocated arrays. Currently these are
 
 **What's needed**: Detect `array_info.fixed_size`, use stack allocation instead of `g_malloc`.
 
-### 6. Generic Pointer Array Cleanup (LOW PRIORITY)
+### 3. Generic Pointer Array Cleanup (LOW PRIORITY)
 
 For `TransferFull` pointer arrays (non-string), we currently only free the container. Some element types may require per-element freeing (GObject, boxed types).
 
@@ -764,11 +840,14 @@ The GIR generator's array handling provides:
 ✅ Proper memory management based on transfer ownership  
 ✅ Support for zero-terminated, length-based, and GPtrArray types  
 ✅ Correct handling of string arrays with per-element cleanup  
-✅ Out-parameter array support with length coordination  
+✅ Out-parameter array support with correct pointer levels  
+✅ Primitive vs struct converter detection (no spurious dereferences)  
+✅ Const qualifier stripping for mutable array allocation  
+✅ Constructor array parameter support  
+✅ Property getter/setter array support  
 ✅ Comprehensive test coverage with validation helpers  
 
-⚠️ Constructors and properties with arrays are currently filtered (TODO)  
 ⚠️ Fixed-size arrays not yet implemented (low priority)  
 ⚠️ Generic pointer cleanup conservative (may leak in rare cases)  
 
-The implementation is production-ready for methods, with clear paths forward for completing constructor and property support.
+The implementation is production-ready for methods, constructors, and properties.

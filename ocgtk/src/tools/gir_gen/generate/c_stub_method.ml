@@ -43,13 +43,20 @@ let var_name_for_direction direction idx =
 (* [handle_out_param ~param_index ~base_type ~acc p] processes an out-direction parameter.
    Generates a C variable declaration (as pointer for arrays, as value otherwise) and
    adds the variable's address to the C function arguments list.
+   
+   For array out parameters: C functions use T** for out parameters (e.g., double** axes in signature).
+   We declare T* locally and pass &variable. This way variable[i] accesses T elements directly.
+   Since base_type already had one * stripped, we don't add another * for arrays.
+   
    Returns the updated accumulator with new declarations and arguments. *)
 let handle_out_param ~param_index ~base_type ~acc (p : gir_param) =
-  let var_name = sprintf "out%d" (param_index + 1) in
+  let var_name = var_name_for_direction Out param_index in
   let is_array = Option.is_some p.param_type.array in
-  (* Out-parameter array: declare as pointer; regular: declare as value *)
+  (* For array out params: base_type already stripped one *, so just use it (it's T*, not T** ).
+     For non-array out params: declare as value type. *)
   if is_array then
-    bprintf acc.C_stub_helpers.decls "%s* %s = NULL;\n" base_type var_name
+    (* base_type is T* (had one * stripped from T** ), so declare as "T* var" *)
+    bprintf acc.C_stub_helpers.decls "%s %s = NULL;\n" base_type var_name
   else bprintf acc.C_stub_helpers.decls "%s %s;\n" base_type var_name;
   {
     acc with
@@ -412,6 +419,9 @@ let build_method_params ~ctx ~(meth : gir_method) =
   let process_method_param ~ctx ~length_param_map param_index acc p =
     let tm = Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type in
     let c_type_str = get_c_type_str ~ctx p.param_type in
+    (* For array out parameters, c_type_str is the ARRAY type (e.g., "double*").
+       For non-array out parameters, c_type_str is the parameter type (e.g., "int").
+       We need the element/base type for declarations. *)
     let base_type = C_stub_helpers.base_c_type_of c_type_str in
     let new_acc =
       match p.direction with
