@@ -57,6 +57,7 @@ and widget : Event_controller_and__layout_child_and__layout_manager_and__root_an
     method get_can_focus : unit -> bool
     method get_can_target : unit -> bool
     method get_child_visible : unit -> bool
+    method get_css_classes : unit -> string array
     method get_css_name : unit -> string
     method get_direction : unit -> Gtk_enums.textdirection
     method get_first_child : unit -> widget option
@@ -129,6 +130,7 @@ and widget : Event_controller_and__layout_child_and__layout_manager_and__root_an
     method set_can_focus : bool -> unit
     method set_can_target : bool -> unit
     method set_child_visible : bool -> unit
+    method set_css_classes : string array -> unit
     method set_cursor_from_name : string option -> unit
     method set_direction : Gtk_enums.textdirection -> unit
     method set_focus_child : <as_widget: Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t; ..> option -> unit

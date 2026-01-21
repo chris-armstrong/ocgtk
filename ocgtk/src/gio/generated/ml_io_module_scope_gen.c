@@ -21,11 +21,20 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GIOModuleScope */
-#ifndef Val_GIOModuleScope
-#define GIOModuleScope_val(val) ((GIOModuleScope*)ext_of_val(val))
-#define Val_GIOModuleScope(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GIOModuleScope */
+/* Conversion functions for GIOModuleScope (opaque record with hidden fields) */
+GIOModuleScope *GIOModuleScope_val(value v) {
+  return *(GIOModuleScope **)Data_custom_val(v);
+}
+
+value Val_GIOModuleScope(const GIOModuleScope *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GIOModuleScope_option(const GIOModuleScope *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GIOModuleScope(ptr));
+}
 
 
 CAMLexport CAMLprim value ml_g_io_module_scope_free(value self)

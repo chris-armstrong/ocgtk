@@ -16,21 +16,30 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Conversion functions for GtkTreeRowReference (opaque record with hidden fields) */
+GtkTreeRowReference *GtkTreeRowReference_val(value v) {
+  return *(GtkTreeRowReference **)Data_custom_val(v);
+}
+
+value Val_GtkTreeRowReference(const GtkTreeRowReference *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GtkTreeRowReference_option(const GtkTreeRowReference *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkTreeRowReference(ptr));
+}
+
 
 CAMLexport CAMLprim value ml_gtk_tree_row_reference_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
+
 GtkTreeRowReference *obj = gtk_tree_row_reference_new(GtkTreeModel_val(arg1), GtkTreePath_val(arg2));
+
 CAMLreturn(Val_GtkTreeRowReference(obj));
 }
-
-CAMLexport CAMLprim value ml_gtk_tree_row_reference_new_proxy(value arg1, value arg2, value arg3)
-{
-CAMLparam3(arg1, arg2, arg3);
-GtkTreeRowReference *obj = gtk_tree_row_reference_new_proxy(arg1, GtkTreeModel_val(arg2), GtkTreePath_val(arg3));
-CAMLreturn(Val_GtkTreeRowReference(obj));
-}
-
 CAMLexport CAMLprim value ml_gtk_tree_row_reference_valid(value self)
 {
 CAMLparam1(self);
@@ -52,6 +61,7 @@ CAMLexport CAMLprim value ml_gtk_tree_row_reference_get_model(value self)
 CAMLparam1(self);
 
 GtkTreeModel* result = gtk_tree_row_reference_get_model(GtkTreeRowReference_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkTreeModel(result));
 }
 

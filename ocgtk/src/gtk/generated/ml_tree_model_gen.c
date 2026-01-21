@@ -25,6 +25,20 @@ gtk_tree_model_unref_node(GtkTreeModel_val(self), GtkTreeIter_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_tree_model_rows_reordered_with_length(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+    int arg3_length = Wosize_val(arg3);
+    int* c_arg3 = (int*)g_malloc(sizeof(int) * arg3_length);
+    for (int i = 0; i < arg3_length; i++) {
+      c_arg3[i] = Int_val(Field(arg3, i));
+    }
+
+gtk_tree_model_rows_reordered_with_length(GtkTreeModel_val(self), GtkTreePath_val(arg1), Option_val(arg2, GtkTreeIter_val, NULL), c_arg3, Int_val(arg4));
+    g_free(c_arg3);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_tree_model_rows_reordered(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);

@@ -22,82 +22,70 @@
 #include "generated_forward_decls.h"
 
 
-CAMLexport CAMLprim value ml_g_property_action_new(value arg1, value arg2, value arg3)
-{
-CAMLparam3(arg1, arg2, arg3);
-GPropertyAction *obj = g_property_action_new(String_val(arg1), arg2, String_val(arg3));
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GPropertyAction(obj));
-}
-
 CAMLexport CAMLprim value ml_gtk_property_action_get_enabled(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GPropertyAction *obj = (GPropertyAction *)GPropertyAction_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "enabled");
 if (pspec == NULL) caml_failwith("ml_gtk_property_action_get_enabled: property 'enabled' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "enabled", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "enabled", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_property_action_get_invert_boolean(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GPropertyAction *obj = (GPropertyAction *)GPropertyAction_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "invert-boolean");
 if (pspec == NULL) caml_failwith("ml_gtk_property_action_get_invert_boolean: property 'invert-boolean' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "invert-boolean", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "invert-boolean", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_property_action_get_name(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GPropertyAction *obj = (GPropertyAction *)GPropertyAction_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "name");
 if (pspec == NULL) caml_failwith("ml_gtk_property_action_get_name: property 'name' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "name", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "name", &prop_gvalue);
+          prop_value = g_value_get_string(&prop_gvalue);
 
-result = caml_copy_string(prop_value);
+      result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_property_action_get_property_name(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GPropertyAction *obj = (GPropertyAction *)GPropertyAction_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "property-name");
 if (pspec == NULL) caml_failwith("ml_gtk_property_action_get_property_name: property 'property-name' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "property-name", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "property-name", &prop_gvalue);
+          prop_value = g_value_get_string(&prop_gvalue);
 
-result = caml_copy_string(prop_value);
+      result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}

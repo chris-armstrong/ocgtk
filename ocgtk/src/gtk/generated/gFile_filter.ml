@@ -17,6 +17,10 @@ class file_filter (obj : File_filter.t) = object (self)
     fun suffix ->
       (File_filter.add_suffix obj suffix)
 
+  method get_attributes : unit -> string array =
+    fun () ->
+      (File_filter.get_attributes obj)
+
   method get_name : unit -> string option =
     fun () ->
       (File_filter.get_name obj)
@@ -24,6 +28,12 @@ class file_filter (obj : File_filter.t) = object (self)
   method set_name : string option -> unit =
     fun name ->
       (File_filter.set_name obj name)
+
+  method mime_types = File_filter.get_mime_types obj
+
+  method patterns = File_filter.get_patterns obj
+
+  method suffixes = File_filter.get_suffixes obj
 
     method as_file_filter = obj
 end

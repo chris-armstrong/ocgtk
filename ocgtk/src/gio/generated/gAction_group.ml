@@ -24,6 +24,10 @@ class action_group (obj : Action_group.t) = object (self)
     fun action_name ->
       (Action_group.has_action obj action_name)
 
+  method list_actions : unit -> string array =
+    fun () ->
+      (Action_group.list_actions obj)
+
     method as_action_group = obj
 end
 

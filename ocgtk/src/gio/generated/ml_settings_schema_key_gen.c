@@ -21,11 +21,20 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GSettingsSchemaKey */
-#ifndef Val_GSettingsSchemaKey
-#define GSettingsSchemaKey_val(val) ((GSettingsSchemaKey*)ext_of_val(val))
-#define Val_GSettingsSchemaKey(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSettingsSchemaKey */
+/* Conversion functions for GSettingsSchemaKey (opaque record with hidden fields) */
+GSettingsSchemaKey *GSettingsSchemaKey_val(value v) {
+  return *(GSettingsSchemaKey **)Data_custom_val(v);
+}
+
+value Val_GSettingsSchemaKey(const GSettingsSchemaKey *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GSettingsSchemaKey_option(const GSettingsSchemaKey *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GSettingsSchemaKey(ptr));
+}
 
 
 CAMLexport CAMLprim value ml_g_settings_schema_key_unref(value self)

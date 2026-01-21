@@ -53,6 +53,9 @@ external get_default_timeout : t -> int = "ml_g_dbus_proxy_get_default_timeout"
 (** Gets the connection @proxy is for. *)
 external get_connection : t -> D_bus_connection.t = "ml_g_dbus_proxy_get_connection"
 
+(** Gets the names of all cached properties on @proxy. *)
+external get_cached_property_names : t -> string array option = "ml_g_dbus_proxy_get_cached_property_names"
+
 (* Properties *)
 
 (** Get property: g-bus-type *)

@@ -25,11 +25,12 @@
 CAMLexport CAMLprim value ml_g_data_input_stream_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GDataInputStream *obj = g_data_input_stream_new(GInputStream_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GDataInputStream(obj));
 }
-
 CAMLexport CAMLprim value ml_g_data_input_stream_set_newline_type(value self, value arg1)
 {
 CAMLparam2(self, arg1);

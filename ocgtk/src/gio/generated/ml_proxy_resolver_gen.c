@@ -22,6 +22,46 @@
 #include "generated_forward_decls.h"
 
 
+CAMLexport CAMLprim value ml_g_proxy_resolver_lookup_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gchar** result = g_proxy_resolver_lookup_finish(GProxyResolver_val(self), GAsyncResult_val(arg1), &error);
+    int result_length = 0;
+    while (result[result_length] != NULL) result_length++;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+    for (int i = 0; i < result_length; i++) {
+      g_free((gpointer)result[i]);
+    }
+    g_free(result);
+if (error == NULL) CAMLreturn(Res_Ok(ml_result)); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_proxy_resolver_lookup(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GError *error = NULL;
+
+gchar** result = g_proxy_resolver_lookup(GProxyResolver_val(self), String_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
+    int result_length = 0;
+    while (result[result_length] != NULL) result_length++;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+    for (int i = 0; i < result_length; i++) {
+      g_free((gpointer)result[i]);
+    }
+    g_free(result);
+if (error == NULL) CAMLreturn(Res_Ok(ml_result)); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_g_proxy_resolver_is_supported(value self)
 {
 CAMLparam1(self);

@@ -16,21 +16,17 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Conversion functions for GtkBitsetIter (non-opaque record with fields) */
+/* Conversion functions for GtkBitsetIter (opaque record with hidden fields) */
 GtkBitsetIter *GtkBitsetIter_val(value v) {
-  if (Tag_val(v) == Custom_tag) {
-    return *(GtkBitsetIter **)Data_custom_val(v);
-  } else {
-    return (GtkBitsetIter*)ml_gir_record_ptr_val(v, "GtkBitsetIter");
-  }
+  return *(GtkBitsetIter **)Data_custom_val(v);
 }
 
-value Val_GtkBitsetIter(GtkBitsetIter *ptr) {
+value Val_GtkBitsetIter(const GtkBitsetIter *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_alloc((ptr), sizeof(GtkBitsetIter), "GtkBitsetIter", NULL);
+  return ml_gir_record_val_ptr(ptr);
 }
 
-value Val_GtkBitsetIter_option(GtkBitsetIter *ptr) {
+value Val_GtkBitsetIter_option(const GtkBitsetIter *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GtkBitsetIter(ptr));
 }

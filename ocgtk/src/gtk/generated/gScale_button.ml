@@ -42,6 +42,10 @@ class scale_button (obj : Scale_button.t) = object (self)
     fun has_frame ->
       (Scale_button.set_has_frame obj has_frame)
 
+  method set_icons : string array -> unit =
+    fun icons ->
+      (Scale_button.set_icons obj icons)
+
   method set_value : float -> unit =
     fun value ->
       (Scale_button.set_value obj value)

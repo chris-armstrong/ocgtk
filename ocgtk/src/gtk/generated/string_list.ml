@@ -4,7 +4,7 @@
 type t = [`string_list | `object_] Gobject.obj
 
 (** Create a new StringList *)
-external new_ : unit -> t = "ml_gtk_string_list_new"
+external new_ : string array option -> t = "ml_gtk_string_list_new"
 
 (* Methods *)
 (** Adds @string to self at the end, and takes
@@ -17,6 +17,20 @@ is convenient for formatting strings:
 gtk_string_list_take (self, g_strdup_print ("%d dollars", lots));
 ``` *)
 external take : t -> string -> unit = "ml_gtk_string_list_take"
+
+(** Changes @self by removing @n_removals strings and adding @additions
+to it.
+
+This function is more efficient than [method@Gtk.StringList.append]
+and [method@Gtk.StringList.remove], because it only emits the
+::items-changed signal once for the change.
+
+This function copies the strings in @additions.
+
+The parameters @position and @n_removals must be correct (ie:
+@position + @n_removals must be less than or equal to the length
+of the list at the time this function is called). *)
+external splice : t -> int -> int -> string array option -> unit = "ml_gtk_string_list_splice"
 
 (** Removes the string at @position from @self.
 
@@ -42,4 +56,7 @@ external append : t -> string -> unit = "ml_gtk_string_list_append"
 
 (** Get property: n-items *)
 external get_n_items : t -> int = "ml_gtk_string_list_get_n_items"
+
+(** Get property: strings *)
+external get_strings : t -> string array = "ml_gtk_string_list_get_strings"
 

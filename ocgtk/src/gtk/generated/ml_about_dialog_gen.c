@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_about_dialog_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkAboutDialog *obj = gtk_about_dialog_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkAboutDialog(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_about_dialog_set_wrap_license(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -97,6 +98,21 @@ gtk_about_dialog_set_license(GtkAboutDialog_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_about_dialog_set_documenters(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+    int arg1_length = Wosize_val(arg1);
+    char** c_arg1 = (char**)g_malloc(sizeof(char*) * (arg1_length + 1));
+    for (int i = 0; i < arg1_length; i++) {
+      c_arg1[i] = String_val(Field(arg1, i));
+    }
+    c_arg1[arg1_length] = NULL;
+
+gtk_about_dialog_set_documenters(GtkAboutDialog_val(self), c_arg1);
+    g_free(c_arg1);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_about_dialog_set_copyright(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -110,6 +126,36 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_set_comments(value self, value arg
 CAMLparam2(self, arg1);
 
 gtk_about_dialog_set_comments(GtkAboutDialog_val(self), String_option_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_about_dialog_set_authors(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+    int arg1_length = Wosize_val(arg1);
+    char** c_arg1 = (char**)g_malloc(sizeof(char*) * (arg1_length + 1));
+    for (int i = 0; i < arg1_length; i++) {
+      c_arg1[i] = String_val(Field(arg1, i));
+    }
+    c_arg1[arg1_length] = NULL;
+
+gtk_about_dialog_set_authors(GtkAboutDialog_val(self), c_arg1);
+    g_free(c_arg1);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_about_dialog_set_artists(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+    int arg1_length = Wosize_val(arg1);
+    char** c_arg1 = (char**)g_malloc(sizeof(char*) * (arg1_length + 1));
+    for (int i = 0; i < arg1_length; i++) {
+      c_arg1[i] = String_val(Field(arg1, i));
+    }
+    c_arg1[arg1_length] = NULL;
+
+gtk_about_dialog_set_artists(GtkAboutDialog_val(self), c_arg1);
+    g_free(c_arg1);
 CAMLreturn(Val_unit);
 }
 
@@ -185,6 +231,21 @@ const char* result = gtk_about_dialog_get_license(GtkAboutDialog_val(self));
 CAMLreturn(Val_option_string(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_about_dialog_get_documenters(value self)
+{
+CAMLparam1(self);
+
+const char* const* result = gtk_about_dialog_get_documenters(GtkAboutDialog_val(self));
+    int result_length = 0;
+    while (result[result_length] != NULL) result_length++;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+CAMLreturn(ml_result);
+}
+
 CAMLexport CAMLprim value ml_gtk_about_dialog_get_copyright(value self)
 {
 CAMLparam1(self);
@@ -199,4 +260,49 @@ CAMLparam1(self);
 
 const char* result = gtk_about_dialog_get_comments(GtkAboutDialog_val(self));
 CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_about_dialog_get_authors(value self)
+{
+CAMLparam1(self);
+
+const char* const* result = gtk_about_dialog_get_authors(GtkAboutDialog_val(self));
+    int result_length = 0;
+    while (result[result_length] != NULL) result_length++;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+CAMLreturn(ml_result);
+}
+
+CAMLexport CAMLprim value ml_gtk_about_dialog_get_artists(value self)
+{
+CAMLparam1(self);
+
+const char* const* result = gtk_about_dialog_get_artists(GtkAboutDialog_val(self));
+    int result_length = 0;
+    while (result[result_length] != NULL) result_length++;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+CAMLreturn(ml_result);
+}
+
+CAMLexport CAMLprim value ml_gtk_about_dialog_add_credit_section(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+    int arg2_length = Wosize_val(arg2);
+    char** c_arg2 = (char**)g_malloc(sizeof(char*) * (arg2_length + 1));
+    for (int i = 0; i < arg2_length; i++) {
+      c_arg2[i] = String_val(Field(arg2, i));
+    }
+    c_arg2[arg2_length] = NULL;
+
+gtk_about_dialog_add_credit_section(GtkAboutDialog_val(self), String_val(arg1), c_arg2);
+    g_free(c_arg2);
+CAMLreturn(Val_unit);
 }

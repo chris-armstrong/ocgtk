@@ -84,6 +84,61 @@ gdk_display_notify_startup_complete(GdkDisplay_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gdk_display_map_keyval(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GdkKeymapKey* out2 = NULL;
+int out3;
+
+gboolean result = gdk_display_map_keyval(GdkDisplay_val(self), Int_val(arg1), &out2, &out3);
+    int out2_length = out3;
+    CAMLlocal1(ml_out2);
+    ml_out2 = caml_alloc(out2_length, 0);
+    for (int i = 0; i < out2_length; i++) {
+      Store_field(ml_out2, i, Val_GdkKeymapKey(&out2[i]));
+    }
+
+    g_free(out2);
+CAMLlocal1(ret);
+    ret = caml_alloc(3, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, ml_out2);
+    Store_field(ret, 2, Val_int(out3));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gdk_display_map_keycode(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GdkKeymapKey* out2 = NULL;
+guint* out3 = NULL;
+int out4;
+
+gboolean result = gdk_display_map_keycode(GdkDisplay_val(self), Int_val(arg1), &out2, &out3, &out4);
+    int out2_length = out4;
+    CAMLlocal1(ml_out2);
+    ml_out2 = caml_alloc(out2_length, 0);
+    for (int i = 0; i < out2_length; i++) {
+      Store_field(ml_out2, i, Val_GdkKeymapKey(&out2[i]));
+    }
+    int out3_length = out4;
+    CAMLlocal1(ml_out3);
+    ml_out3 = caml_alloc(out3_length, 0);
+    for (int i = 0; i < out3_length; i++) {
+      Store_field(ml_out3, i, Val_int(out3[i]));
+    }
+
+    g_free(out2);
+    g_free(out3);
+CAMLlocal1(ret);
+    ret = caml_alloc(4, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, ml_out2);
+    Store_field(ret, 2, ml_out3);
+    Store_field(ret, 3, Val_int(out4));
+    CAMLreturn(ret);
+}
+
 CAMLexport CAMLprim value ml_gdk_display_is_rgba(value self)
 {
 CAMLparam1(self);
@@ -219,72 +274,68 @@ CAMLreturn(Val_unit);
 
 CAMLexport CAMLprim value ml_gtk_display_get_composited(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GdkDisplay *obj = (GdkDisplay *)GdkDisplay_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "composited");
 if (pspec == NULL) caml_failwith("ml_gtk_display_get_composited: property 'composited' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "composited", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "composited", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_display_get_input_shapes(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GdkDisplay *obj = (GdkDisplay *)GdkDisplay_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "input-shapes");
 if (pspec == NULL) caml_failwith("ml_gtk_display_get_input_shapes: property 'input-shapes' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "input-shapes", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "input-shapes", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_display_get_rgba(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GdkDisplay *obj = (GdkDisplay *)GdkDisplay_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "rgba");
 if (pspec == NULL) caml_failwith("ml_gtk_display_get_rgba: property 'rgba' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "rgba", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "rgba", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_display_get_shadow_width(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GdkDisplay *obj = (GdkDisplay *)GdkDisplay_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "shadow-width");
 if (pspec == NULL) caml_failwith("ml_gtk_display_get_shadow_width: property 'shadow-width' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "shadow-width", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "shadow-width", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}

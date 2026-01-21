@@ -175,6 +175,10 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
     fun () ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_child_visible obj)
 
+  method get_css_classes : unit -> string array =
+    fun () ->
+      (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_css_classes obj)
+
   method get_css_name : unit -> string =
     fun () ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_css_name obj)
@@ -469,6 +473,10 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
   method set_child_visible : bool -> unit =
     fun child_visible ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.set_child_visible obj child_visible)
+
+  method set_css_classes : string array -> unit =
+    fun classes ->
+      (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.set_css_classes obj classes)
 
   method set_cursor_from_name : string option -> unit =
     fun name ->

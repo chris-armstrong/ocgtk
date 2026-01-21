@@ -95,5 +95,15 @@ Note that the @chooser takes ownership of the filter if it is floating,
 so you have to ref and sink it if you want to keep a reference. *)
 external add_filter : t -> File_filter.t -> unit = "ml_gtk_file_chooser_add_filter"
 
+(** Adds a 'choice' to the file chooser.
+
+This is typically implemented as a combobox or, for boolean choices,
+as a checkbutton. You can select a value using
+[method@Gtk.FileChooser.set_choice] before the dialog is shown,
+and you can obtain the user-selected value in the
+[signal@Gtk.Dialog::response] signal handler using
+[method@Gtk.FileChooser.get_choice]. *)
+external add_choice : t -> string -> string -> string array option -> string array option -> unit = "ml_gtk_file_chooser_add_choice"
+
 (* Properties *)
 

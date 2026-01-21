@@ -64,6 +64,9 @@ external set_paper_height : t -> float -> Gtk_enums.unit -> unit = "ml_gtk_print
 (** Sets the value of %GTK_PRINT_SETTINGS_PAGE_SET. *)
 external set_page_set : t -> Gtk_enums.pageset -> unit = "ml_gtk_print_settings_set_page_set"
 
+(** Sets the value of %GTK_PRINT_SETTINGS_PAGE_RANGES. *)
+external set_page_ranges : t -> Page_range.t array -> int -> unit = "ml_gtk_print_settings_set_page_ranges"
+
 (** Sets the value of %GTK_PRINT_SETTINGS_OUTPUT_BIN. *)
 external set_output_bin : t -> string -> unit = "ml_gtk_print_settings_set_output_bin"
 
@@ -170,6 +173,9 @@ external get_paper_height : t -> Gtk_enums.unit -> float = "ml_gtk_print_setting
 
 (** Gets the value of %GTK_PRINT_SETTINGS_PAGE_SET. *)
 external get_page_set : t -> Gtk_enums.pageset = "ml_gtk_print_settings_get_page_set"
+
+(** Gets the value of %GTK_PRINT_SETTINGS_PAGE_RANGES. *)
+external get_page_ranges : t -> Page_range.t array * int = "ml_gtk_print_settings_get_page_ranges"
 
 (** Gets the value of %GTK_PRINT_SETTINGS_OUTPUT_BIN. *)
 external get_output_bin : t -> string option = "ml_gtk_print_settings_get_output_bin"

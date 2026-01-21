@@ -24,6 +24,10 @@ class drive (obj : Drive.t) = object (self)
     fun () ->
       (Drive.can_stop obj)
 
+  method enumerate_identifiers : unit -> string array =
+    fun () ->
+      (Drive.enumerate_identifiers obj)
+
   method get_icon : unit -> GIcon.icon =
     fun () ->
       new  GIcon.icon(Drive.get_icon obj)

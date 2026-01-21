@@ -25,35 +25,39 @@
 CAMLexport CAMLprim value ml_g_menu_item_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
+
 GMenuItem *obj = g_menu_item_new(String_option_val(arg1), String_option_val(arg2));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GMenuItem(obj));
 }
-
 CAMLexport CAMLprim value ml_g_menu_item_new_from_model(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
+
 GMenuItem *obj = g_menu_item_new_from_model(GMenuModel_val(arg1), Int_val(arg2));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GMenuItem(obj));
 }
-
 CAMLexport CAMLprim value ml_g_menu_item_new_section(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
+
 GMenuItem *obj = g_menu_item_new_section(String_option_val(arg1), GMenuModel_val(arg2));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GMenuItem(obj));
 }
-
 CAMLexport CAMLprim value ml_g_menu_item_new_submenu(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
+
 GMenuItem *obj = g_menu_item_new_submenu(String_option_val(arg1), GMenuModel_val(arg2));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GMenuItem(obj));
 }
-
 CAMLexport CAMLprim value ml_g_menu_item_set_submenu(value self, value arg1)
 {
 CAMLparam2(self, arg1);

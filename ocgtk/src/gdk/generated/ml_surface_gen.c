@@ -19,19 +19,21 @@
 CAMLexport CAMLprim value ml_gdk_surface_new_popup(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
+
 GdkSurface *obj = gdk_surface_new_popup(GdkSurface_val(arg1), Bool_val(arg2));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GdkSurface(obj));
 }
-
 CAMLexport CAMLprim value ml_gdk_surface_new_toplevel(value arg1)
 {
 CAMLparam1(arg1);
+
 GdkSurface *obj = gdk_surface_new_toplevel(GdkDisplay_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GdkSurface(obj));
 }
-
 CAMLexport CAMLprim value ml_gdk_surface_translate_coordinates(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);

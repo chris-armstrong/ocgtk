@@ -20,7 +20,9 @@
 CAMLexport CAMLprim value ml_gtk_emoji_chooser_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkEmojiChooser *obj = gtk_emoji_chooser_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkEmojiChooser(obj));
 }

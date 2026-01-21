@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_mount_operation_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkMountOperation *obj = gtk_mount_operation_new(Option_val(arg1, GtkWindow_val, NULL));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkMountOperation(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_mount_operation_set_parent(value self, value arg1)
 {
 CAMLparam2(self, arg1);

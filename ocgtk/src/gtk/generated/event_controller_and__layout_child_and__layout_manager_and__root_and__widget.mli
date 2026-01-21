@@ -490,6 +490,10 @@ and Widget
   with a %NULL cursor. *)
   external set_cursor_from_name : t -> string option -> unit = "ml_gtk_widget_set_cursor_from_name"
 
+  (** Clear all style classes applied to @widget
+  and replace them with @classes. *)
+  external set_css_classes : t -> string array -> unit = "ml_gtk_widget_set_css_classes"
+
   (** Sets whether @widget should be mapped along with its parent.
 
   The child visibility can be set for widget before it is added
@@ -1106,6 +1110,9 @@ and Widget
 
   (** Returns the CSS name that is used for @self. *)
   external get_css_name : t -> string = "ml_gtk_widget_get_css_name"
+
+  (** Returns the list of style classes applied to @widget. *)
+  external get_css_classes : t -> string array = "ml_gtk_widget_get_css_classes"
 
   (** Gets the value set with gtk_widget_set_child_visible().
 

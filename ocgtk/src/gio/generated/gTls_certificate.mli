@@ -1,5 +1,6 @@
 class tls_certificate : Tls_certificate.t ->
   object
+    method get_ip_addresses : unit -> Inet_address.t array option
     method get_issuer : unit -> tls_certificate option
     method get_issuer_name : unit -> string option
     method get_subject_name : unit -> string option

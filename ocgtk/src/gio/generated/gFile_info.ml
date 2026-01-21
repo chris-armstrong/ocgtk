@@ -38,6 +38,10 @@ class file_info (obj : File_info.t) = object (self)
     fun attribute ->
       (File_info.get_attribute_string obj attribute)
 
+  method get_attribute_stringv : string -> string array option =
+    fun attribute ->
+      (File_info.get_attribute_stringv obj attribute)
+
   method get_attribute_type : string -> Gio_enums.fileattributetype =
     fun attribute ->
       (File_info.get_attribute_type obj attribute)
@@ -98,6 +102,10 @@ class file_info (obj : File_info.t) = object (self)
     fun name_space ->
       (File_info.has_namespace obj name_space)
 
+  method list_attributes : string option -> string array option =
+    fun name_space ->
+      (File_info.list_attributes obj name_space)
+
   method remove_attribute : string -> unit =
     fun attribute ->
       (File_info.remove_attribute obj attribute)
@@ -125,6 +133,10 @@ class file_info (obj : File_info.t) = object (self)
   method set_attribute_string : string -> string -> unit =
     fun attribute attr_value ->
       (File_info.set_attribute_string obj attribute attr_value)
+
+  method set_attribute_stringv : string -> string array -> unit =
+    fun attribute attr_value ->
+      (File_info.set_attribute_stringv obj attribute attr_value)
 
   method set_content_type : string -> unit =
     fun content_type ->

@@ -20,7 +20,9 @@
 CAMLexport CAMLprim value ml_gtk_bin_layout_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkBinLayout *obj = gtk_bin_layout_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkBinLayout(obj));
 }

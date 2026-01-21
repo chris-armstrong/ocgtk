@@ -33,6 +33,14 @@ module rec App_info : sig
   (** Finishes a g_app_info_launch_uris_async() operation. *)
   external launch_uris_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_app_info_launch_uris_finish"
 
+  (** Retrieves the list of content types that @app_info claims to support.
+  If this information is not provided by the environment, this function
+  will return %NULL.
+  This function does not take in consideration associations added with
+  g_app_info_add_supports_type(), but only those exported directly by
+  the application. *)
+  external get_supported_types : t -> string array = "ml_g_app_info_get_supported_types"
+
   (** Gets the installed name of the application. *)
   external get_name : t -> string = "ml_g_app_info_get_name"
 

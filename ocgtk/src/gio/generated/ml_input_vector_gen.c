@@ -21,9 +21,18 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GInputVector */
-#ifndef Val_GInputVector
-#define GInputVector_val(val) ((GInputVector*)ext_of_val(val))
-#define Val_GInputVector(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GInputVector */
+/* Conversion functions for GInputVector (opaque record with hidden fields) */
+GInputVector *GInputVector_val(value v) {
+  return *(GInputVector **)Data_custom_val(v);
+}
+
+value Val_GInputVector(const GInputVector *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GInputVector_option(const GInputVector *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GInputVector(ptr));
+}
 

@@ -14,7 +14,7 @@ external new_first : unit -> t = "ml_gtk_tree_path_new_first"
 external new_from_indices : int -> unit -> t = "ml_gtk_tree_path_new_from_indices"
 
 (** Create a new TreePath *)
-external new_from_indicesv : unit -> unit -> t = "ml_gtk_tree_path_new_from_indicesv"
+external new_from_indicesv : int array -> unit -> t = "ml_gtk_tree_path_new_from_indicesv"
 
 (** Create a new TreePath *)
 external new_from_string : string -> t = "ml_gtk_tree_path_new_from_string"
@@ -48,6 +48,13 @@ external is_descendant : t -> t -> bool = "ml_gtk_tree_path_is_descendant"
 
 (** Returns %TRUE if @descendant is a descendant of @path. *)
 external is_ancestor : t -> t -> bool = "ml_gtk_tree_path_is_ancestor"
+
+(** Returns the current indices of @path.
+
+This is an array of integers, each representing a node in a tree.
+It also returns the number of elements in the array.
+The array should not be freed. *)
+external get_indices_with_depth : t -> int array option * int = "ml_gtk_tree_path_get_indices_with_depth"
 
 (** Returns the current indices of @path.
 
