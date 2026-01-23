@@ -20,17 +20,22 @@
 CAMLexport CAMLprim value ml_gtk_scale_button_new(value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam4(arg1, arg2, arg3, arg4);
-    int arg4_length = Wosize_val(arg4);
-    char** c_arg4 = (char**)g_malloc(sizeof(char*) * (arg4_length + 1));
-    for (int i = 0; i < arg4_length; i++) {
-      c_arg4[i] = String_val(Field(arg4, i));
+    char** c_arg4 = NULL;
+    
+    if (Is_some(arg4)) {
+        value array = Some_val(arg4);
+        int arg4_length = Wosize_val(array);
+        c_arg4 = (char**)g_malloc(sizeof(char*) * (arg4_length + 1));
+        for (int i = 0; i < arg4_length; i++) {
+          c_arg4[i] = String_val(Field(array, i));
+        }
+        c_arg4[arg4_length] = NULL;
     }
-    c_arg4[arg4_length] = NULL;
 
 GtkScaleButton *obj = gtk_scale_button_new(Double_val(arg1), Double_val(arg2), Double_val(arg3), c_arg4);
 if (obj) g_object_ref_sink(obj);
 
-    g_free(c_arg4);
+    if (c_arg4) g_free(c_arg4);
 CAMLreturn(Val_GtkScaleButton(obj));
 }
 CAMLexport CAMLprim value ml_gtk_scale_button_set_value(value self, value arg1)

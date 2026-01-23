@@ -102,10 +102,12 @@ let handle_in_array_param ~ctx ~acc ~arg_name ~base_type ~tm (p : gir_param)
       let element_c_type =
         Out_conv.get_element_c_type ~fallback:base_type array_info
       in
+      let nullable = p.nullable || p.param_type.nullable in
       let conv_code, c_array_var, _length_var, cleanup_code =
         C_stub_helpers.generate_array_ml_to_c ~ctx ~var:arg_name ~array_info
           ~element_mapping:mapping ~element_c_type
           ~transfer_ownership:p.param_type.transfer_ownership
+          ~nullable
       in
       bprintf acc.C_stub_helpers.decls "    %s\n" conv_code;
       let new_cleanups =

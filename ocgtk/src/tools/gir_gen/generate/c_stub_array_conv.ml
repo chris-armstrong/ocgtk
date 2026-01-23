@@ -152,7 +152,7 @@ module Array_conv = struct
 
   (* Generate inline code for converting OCaml array to C array *)
   let generate_array_ml_to_c ~ctx ~var ~(array_info : gir_array)
-      ~element_mapping:_ ~element_c_type ~transfer_ownership =
+      ~element_mapping:_ ~element_c_type ~transfer_ownership ~nullable =
     (* Get element type mapping for conversion *)
     match
       Type_mappings.find_type_mapping_for_gir_type ~ctx array_info.element_type
@@ -188,14 +188,52 @@ module Array_conv = struct
           if is_pointer_array || is_primitive_converter then "" else "*"
         in
 
-        (* Generate conversion code based on array type *)
+        (* Generate conversion code based on array type and nullable *)
         let conversion_code =
-          if should_zero_terminate then
-            zero_terminated_conversion ~length_var ~c_array_var ~var
-              ~element_c_type ~element_tm ~is_pointer_array ~deref_prefix
+          if nullable then
+            (* For nullable arrays, wrap in option check *)
+            let elem_type_nonconst = strip_const element_c_type in
+            let inner_conversion =
+              if should_zero_terminate then
+                sprintf
+                  "value array = Some_val(%s);\n\
+                  \        int %s = Wosize_val(array);\n\
+                  \        %s = (%s*)g_malloc(sizeof(%s) * (%s + 1));\n\
+                  \        for (int i = 0; i < %s; i++) {\n\
+                  \          %s[i] = %s%s(Field(array, i));\n\
+                  \        }\n\
+                  \        %s[%s] = %s;"
+                  var length_var c_array_var elem_type_nonconst elem_type_nonconst
+                  length_var length_var c_array_var deref_prefix element_tm.ml_to_c
+                  c_array_var length_var
+                  (if is_pointer_array then "NULL" else sprintf "(%s){0}" elem_type_nonconst)
+              else
+                sprintf
+                  "value array = Some_val(%s);\n\
+                  \        int %s = Wosize_val(array);\n\
+                  \        %s = (%s*)g_malloc(sizeof(%s) * %s);\n\
+                  \        for (int i = 0; i < %s; i++) {\n\
+                  \          %s[i] = %s%s(Field(array, i));\n\
+                  \        }"
+                  var length_var c_array_var elem_type_nonconst elem_type_nonconst
+                  length_var length_var c_array_var deref_prefix element_tm.ml_to_c
+            in
+            let elem_type_nonconst = strip_const element_c_type in
+            sprintf
+              "%s* %s = NULL;\n\
+              \    \n\
+              \    if (Is_some(%s)) {\n\
+              \        %s\n\
+              \    }"
+              elem_type_nonconst c_array_var var inner_conversion
           else
-            non_zero_terminated_conversion ~length_var ~c_array_var ~var
-              ~element_c_type ~element_tm ~deref_prefix
+            (* Non-nullable: direct conversion *)
+            if should_zero_terminate then
+              zero_terminated_conversion ~length_var ~c_array_var ~var
+                ~element_c_type ~element_tm ~is_pointer_array ~deref_prefix
+            else
+              non_zero_terminated_conversion ~length_var ~c_array_var ~var
+                ~element_c_type ~element_tm ~deref_prefix
         in
 
         (* Generate cleanup code if needed (TransferNone means we still own the memory) *)
@@ -203,7 +241,10 @@ module Array_conv = struct
           match transfer_ownership with
           | Types.TransferNone ->
               (* GTK won't free it, we must clean up after the call *)
-              sprintf "g_free(%s);" c_array_var
+              let cleanup_expr = sprintf "g_free(%s);" c_array_var in
+              if nullable then
+                sprintf "if (%s) %s" c_array_var cleanup_expr
+              else cleanup_expr
           | Types.TransferFull | Types.TransferContainer
           | Types.TransferFloating ->
               (* GTK takes ownership, no cleanup needed *)

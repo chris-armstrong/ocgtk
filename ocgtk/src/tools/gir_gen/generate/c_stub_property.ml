@@ -223,10 +223,12 @@ let generate_c_property_setter ~ctx ~c_type (prop : gir_property) class_name =
       let c_cast = sprintf "%s_val" c_type in
 
       (* Generate array conversion code *)
+      let nullable = prop.prop_type.nullable in
       let conv_code, c_array_var, _length_var, cleanup_code =
         C_stub_helpers.generate_array_ml_to_c ~ctx ~var:"new_value" ~array_info
           ~element_mapping:element_mapping ~element_c_type
           ~transfer_ownership:prop.prop_type.transfer_ownership
+          ~nullable
       in
 
       (* Generate property setter with array handling *)

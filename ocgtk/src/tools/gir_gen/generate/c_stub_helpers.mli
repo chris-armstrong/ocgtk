@@ -49,6 +49,7 @@ val generate_array_ml_to_c
   -> element_mapping:Types.type_mapping
   -> element_c_type:string
   -> transfer_ownership:Types.transfer_ownership
+  -> nullable:bool
   -> string * string * string * string
 
 (** Array conversion - generate conversion code for C array to OCaml array.

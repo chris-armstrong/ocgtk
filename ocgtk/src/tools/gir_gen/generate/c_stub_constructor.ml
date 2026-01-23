@@ -53,10 +53,12 @@ let generate_constructor_c_call_args ~ctx ~ctor_parameters =
                   | Some ct -> ct
                   | None -> element_mapping.c_type
                 in
+                let nullable = p.nullable || p.param_type.nullable in
                 let conv_code, c_array_var, _length_var, cleanup_code =
                   C_stub_helpers.generate_array_ml_to_c ~ctx ~var:arg_name
                     ~array_info ~element_mapping ~element_c_type
                     ~transfer_ownership:p.param_type.transfer_ownership
+                    ~nullable
                 in
                 Buffer.add_string decls (sprintf "    %s\n" conv_code);
                 if String.length cleanup_code > 0 then
