@@ -24,4 +24,5 @@ let () =
       ("Enums", Enums.tests);
       ("Records", Records.tests);
       ("Edge Cases", Edge_cases.tests);
+      ("Layer2 Method Wrappers", Method_wrapper_tests.tests);
     ]
