@@ -241,4 +241,7 @@ value Val_GError(GError *error);
 
 CAMLprim GValue *GValue_val(value val);
 
+
+typedef gchar utf8;
+
 #endif /* _gtk4_wrappers_ */

@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_switch_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkSwitch *obj = gtk_switch_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkSwitch(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_switch_set_state(value self, value arg1)
 {
 CAMLparam2(self, arg1);

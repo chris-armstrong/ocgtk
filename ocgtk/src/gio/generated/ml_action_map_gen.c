@@ -22,6 +22,20 @@
 #include "generated_forward_decls.h"
 
 
+CAMLexport CAMLprim value ml_g_action_map_remove_action_entries(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+    int arg1_length = Wosize_val(arg1);
+    GActionEntry* c_arg1 = (GActionEntry*)g_malloc(sizeof(GActionEntry) * arg1_length);
+    for (int i = 0; i < arg1_length; i++) {
+      c_arg1[i] = *GActionEntry_val(Field(arg1, i));
+    }
+
+g_action_map_remove_action_entries(GActionMap_val(self), c_arg1, Int_val(arg2));
+    g_free(c_arg1);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_g_action_map_remove_action(value self, value arg1)
 {
 CAMLparam2(self, arg1);

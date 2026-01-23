@@ -14,6 +14,7 @@ class application : Application.t ->
     method get_version : unit -> string option
     method hold : unit -> unit
     method mark_busy : unit -> unit
+    method open_ : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t array -> int -> string -> unit
     method quit : unit -> unit
     method register : #GCancellable.cancellable option -> (bool, GError.t) result
     method release : unit -> unit

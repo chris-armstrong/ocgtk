@@ -25,11 +25,12 @@
 CAMLexport CAMLprim value ml_g_simple_action_group_new(value unit)
 {
 CAMLparam1(unit);
+
 GSimpleActionGroup *obj = g_simple_action_group_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GSimpleActionGroup(obj));
 }
-
 CAMLexport CAMLprim value ml_g_simple_action_group_remove(value self, value arg1)
 {
 CAMLparam2(self, arg1);

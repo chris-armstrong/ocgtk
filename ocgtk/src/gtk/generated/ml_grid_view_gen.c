@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_grid_view_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
+
 GtkGridView *obj = gtk_grid_view_new(Option_val(arg1, GtkSelectionModel_val, NULL), Option_val(arg2, GtkListItemFactory_val, NULL));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkGridView(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_grid_view_set_tab_behavior(value self, value arg1)
 {
 CAMLparam2(self, arg1);

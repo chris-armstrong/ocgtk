@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_text_buffer_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkTextBuffer *obj = gtk_text_buffer_new(Option_val(arg1, GtkTextTagTable_val, NULL));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkTextBuffer(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_text_buffer_undo(value self)
 {
 CAMLparam1(self);
@@ -546,18 +547,17 @@ CAMLreturn(Val_unit);
 
 CAMLexport CAMLprim value ml_gtk_text_buffer_get_cursor_position(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkTextBuffer *obj = (GtkTextBuffer *)GtkTextBuffer_val(self);
     gint prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "cursor-position");
 if (pspec == NULL) caml_failwith("ml_gtk_text_buffer_get_cursor_position: property 'cursor-position' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "cursor-position", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "cursor-position", &prop_gvalue);
+          prop_value = g_value_get_int(&prop_gvalue);
 
-result = Val_int(prop_value);
+      result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}

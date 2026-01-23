@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_header_bar_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkHeaderBar *obj = gtk_header_bar_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkHeaderBar(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_header_bar_set_title_widget(value self, value arg1)
 {
 CAMLparam2(self, arg1);

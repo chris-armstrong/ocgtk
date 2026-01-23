@@ -6,14 +6,14 @@
 ; Common modules library (excludes main)
 (library
  (name gir_gen_lib)
- (modules :standard \ main)
+ (modules :standard \ gir_gen)
  (libraries str unix xmlm logs logs.fmt containers)
  (flags (:standard -w -32)))
 
 ; Main executable
 (executable
- (name main)
+ (name gir_gen)
  (public_name gir_gen)
- (modules main)
+ (modules gir_gen)
  (libraries gir_gen_lib cmdliner)
  (flags (:standard -w -27)))

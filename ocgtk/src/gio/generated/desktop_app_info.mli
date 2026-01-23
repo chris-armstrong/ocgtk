@@ -13,6 +13,13 @@ external new_from_filename : string -> t = "ml_g_desktop_app_info_new_from_filen
 external new_from_keyfile : unit -> t = "ml_g_desktop_app_info_new_from_keyfile"
 
 (* Methods *)
+(** Returns the list of "additional application actions" supported on the
+desktop file, as per the desktop file specification.
+
+As per the specification, this is the list of actions that are
+explicitly listed in the "Actions" key of the [Desktop Entry] group. *)
+external list_actions : t -> string array = "ml_g_desktop_app_info_list_actions"
+
 (** Activates the named application action.
 
 You may only call this function on action names that were
@@ -67,6 +74,9 @@ translated to the current locale.
 
 The @key is looked up in the "Desktop Entry" group. *)
 external get_locale_string : t -> string -> string option = "ml_g_desktop_app_info_get_locale_string"
+
+(** Gets the keywords from the desktop file. *)
+external get_keywords : t -> string array = "ml_g_desktop_app_info_get_keywords"
 
 (** A desktop file is hidden if the Hidden key in it is
 set to True. *)

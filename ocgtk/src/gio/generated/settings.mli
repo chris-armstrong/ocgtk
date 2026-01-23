@@ -30,6 +30,15 @@ external set_uint : t -> string -> int -> bool = "ml_g_settings_set_uint"
 
 (** Sets @key in @settings to @value.
 
+A convenience variant of g_settings_set() for string arrays.  If
+@value is %NULL, then @key is set to be the empty array.
+
+It is a programmer error to give a @key that isn't specified as
+having an array of strings type in the schema for @settings. *)
+external set_strv : t -> string -> string array option -> bool = "ml_g_settings_set_strv"
+
+(** Sets @key in @settings to @value.
+
 A convenience variant of g_settings_set() for strings.
 
 It is a programmer error to give a @key that isn't specified as
@@ -100,6 +109,29 @@ That might be the value specified in the schema or the one set by the
 administrator. *)
 external reset : t -> string -> unit = "ml_g_settings_reset"
 
+(** Introspects the list of keys on @settings.
+
+You should probably not be calling this function from "normal" code
+(since you should already know what keys are in your schema).  This
+function is intended for introspection reasons.
+
+You should free the return value with g_strfreev() when you are done
+with it. *)
+external list_keys : t -> string array = "ml_g_settings_list_keys"
+
+(** Gets the list of children on @settings.
+
+The list is exactly the list of strings for which it is not an error
+to call g_settings_get_child().
+
+There is little reason to call this function from "normal" code, since
+you should already know what children are in your schema. This function
+may still be useful there for introspection reasons, however.
+
+You should free the return value with g_strfreev() when you are done
+with it. *)
+external list_children : t -> string array = "ml_g_settings_list_children"
+
 (** Finds out if a key can be written or not *)
 external is_writable : t -> string -> bool = "ml_g_settings_is_writable"
 
@@ -111,6 +143,12 @@ integers.
 It is a programmer error to give a @key that isn't specified as
 having a uint32 type in the schema for @settings. *)
 external get_uint : t -> string -> int = "ml_g_settings_get_uint"
+
+(** A convenience variant of g_settings_get() for string arrays.
+
+It is a programmer error to give a @key that isn't specified as
+having an array of strings type in the schema for @settings. *)
+external get_strv : t -> string -> string array = "ml_g_settings_get_strv"
 
 (** Gets the value that is stored at @key in @settings.
 

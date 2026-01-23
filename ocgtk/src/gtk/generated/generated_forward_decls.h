@@ -1,5 +1,5 @@
 /* GENERATED CODE - DO NOT EDIT */
-/* Forward declarations for generated enum and bitfield converters */
+/* Forward declarations for generated enum, bitfield, class and record converters */
 
 #ifndef _gtk_generated_forward_decls_
 #define _gtk_generated_forward_decls_
@@ -1505,122 +1505,103 @@ value copy_GtkTreeIter(const GtkTreeIter *ptr);
 #endif /* Val_GtkTreeIter */
 
 
-/* Forward declarations for GtkAccessibleList converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for record converters (non-opaque records) */
+/* Forward declarations for GtkAccessibleList converters */
 GtkAccessibleList *GtkAccessibleList_val(value val);
 value Val_GtkAccessibleList(const GtkAccessibleList *ptr);
 value Val_GtkAccessibleList_option(const GtkAccessibleList *ptr);
 
-/* Forward declarations for GtkAccessibleTextRange converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GtkAccessibleTextRange converters */
 GtkAccessibleTextRange *GtkAccessibleTextRange_val(value val);
 value Val_GtkAccessibleTextRange(const GtkAccessibleTextRange *ptr);
 value Val_GtkAccessibleTextRange_option(const GtkAccessibleTextRange *ptr);
 
-/* Forward declarations for GtkBitset converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GtkBitset converters */
 GtkBitset *GtkBitset_val(value val);
 value Val_GtkBitset(const GtkBitset *ptr);
 value Val_GtkBitset_option(const GtkBitset *ptr);
 
-/* Forward declarations for GtkBitsetIter converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GtkBitsetIter converters */
 GtkBitsetIter *GtkBitsetIter_val(value val);
 value Val_GtkBitsetIter(const GtkBitsetIter *ptr);
 value Val_GtkBitsetIter_option(const GtkBitsetIter *ptr);
 
-/* Forward declarations for GtkBuildableParseContext converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GtkBuildableParseContext converters */
 GtkBuildableParseContext *GtkBuildableParseContext_val(value val);
 value Val_GtkBuildableParseContext(const GtkBuildableParseContext *ptr);
 value Val_GtkBuildableParseContext_option(const GtkBuildableParseContext *ptr);
 
-/* Forward declarations for GtkBuildableParser converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GtkBuildableParser converters */
 GtkBuildableParser *GtkBuildableParser_val(value val);
 value Val_GtkBuildableParser(const GtkBuildableParser *ptr);
 value Val_GtkBuildableParser_option(const GtkBuildableParser *ptr);
 
-/* Forward declarations for GtkCssLocation converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GtkCssLocation converters */
 GtkCssLocation *GtkCssLocation_val(value val);
 value Val_GtkCssLocation(const GtkCssLocation *ptr);
 value Val_GtkCssLocation_option(const GtkCssLocation *ptr);
 
-/* Forward declarations for GtkCssSection converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GtkCssSection converters */
 GtkCssSection *GtkCssSection_val(value val);
 value Val_GtkCssSection(const GtkCssSection *ptr);
 value Val_GtkCssSection_option(const GtkCssSection *ptr);
 
-/* Forward declarations for GtkCssStyleChange converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GtkCssStyleChange converters */
 GtkCssStyleChange *GtkCssStyleChange_val(value val);
 value Val_GtkCssStyleChange(const GtkCssStyleChange *ptr);
 value Val_GtkCssStyleChange_option(const GtkCssStyleChange *ptr);
 
-/* Forward declarations for GtkExpressionWatch converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GtkExpressionWatch converters */
 GtkExpressionWatch *GtkExpressionWatch_val(value val);
 value Val_GtkExpressionWatch(const GtkExpressionWatch *ptr);
 value Val_GtkExpressionWatch_option(const GtkExpressionWatch *ptr);
 
-/* Forward declarations for GtkPadActionEntry converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GtkPadActionEntry converters */
 GtkPadActionEntry *GtkPadActionEntry_val(value val);
 value Val_GtkPadActionEntry(const GtkPadActionEntry *ptr);
 value Val_GtkPadActionEntry_option(const GtkPadActionEntry *ptr);
 
-/* Forward declarations for GtkPageRange converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GtkPageRange converters */
 GtkPageRange *GtkPageRange_val(value val);
 value Val_GtkPageRange(const GtkPageRange *ptr);
 value Val_GtkPageRange_option(const GtkPageRange *ptr);
 
-/* Forward declarations for GtkPaperSize converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GtkPaperSize converters */
 GtkPaperSize *GtkPaperSize_val(value val);
 value Val_GtkPaperSize(const GtkPaperSize *ptr);
 value Val_GtkPaperSize_option(const GtkPaperSize *ptr);
 
-/* Forward declarations for GtkPrintSetup converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GtkPrintSetup converters */
 GtkPrintSetup *GtkPrintSetup_val(value val);
 value Val_GtkPrintSetup(const GtkPrintSetup *ptr);
 value Val_GtkPrintSetup_option(const GtkPrintSetup *ptr);
 
-/* Forward declarations for GtkRecentData converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GtkRecentData converters */
 GtkRecentData *GtkRecentData_val(value val);
 value Val_GtkRecentData(const GtkRecentData *ptr);
 value Val_GtkRecentData_option(const GtkRecentData *ptr);
 
-/* Forward declarations for GtkRecentInfo converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GtkRecentInfo converters */
 GtkRecentInfo *GtkRecentInfo_val(value val);
 value Val_GtkRecentInfo(const GtkRecentInfo *ptr);
 value Val_GtkRecentInfo_option(const GtkRecentInfo *ptr);
 
-/* Forward declarations for GtkRequestedSize converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GtkRequestedSize converters */
 GtkRequestedSize *GtkRequestedSize_val(value val);
 value Val_GtkRequestedSize(const GtkRequestedSize *ptr);
 value Val_GtkRequestedSize_option(const GtkRequestedSize *ptr);
 
-/* Forward declarations for GtkScrollInfo converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GtkScrollInfo converters */
 GtkScrollInfo *GtkScrollInfo_val(value val);
 value Val_GtkScrollInfo(const GtkScrollInfo *ptr);
 value Val_GtkScrollInfo_option(const GtkScrollInfo *ptr);
 
-/* Forward declarations for GtkTreePath converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GtkTreePath converters */
 GtkTreePath *GtkTreePath_val(value val);
 value Val_GtkTreePath(const GtkTreePath *ptr);
 value Val_GtkTreePath_option(const GtkTreePath *ptr);
 
-/* Forward declarations for GtkTreeRowReference converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GtkTreeRowReference converters */
 GtkTreeRowReference *GtkTreeRowReference_val(value val);
 value Val_GtkTreeRowReference(const GtkTreeRowReference *ptr);
 value Val_GtkTreeRowReference_option(const GtkTreeRowReference *ptr);
@@ -1630,7 +1611,7 @@ value Val_GtkTreeRowReference_option(const GtkTreeRowReference *ptr);
 
 /* Note: Res_Ok, Res_Error, ValUnit, and Val_GError are defined in wrappers.h */
 
-/* Forward declarations for enum/bitfield converters */
+/* Forward declarations for enum converters */
 value Val_GtkAccessibleAnnouncementPriority(GtkAccessibleAnnouncementPriority val);
 GtkAccessibleAnnouncementPriority GtkAccessibleAnnouncementPriority_val(value val);
 value Val_GtkAccessibleAutocomplete(GtkAccessibleAutocomplete val);
@@ -1842,43 +1823,8 @@ GtkUnit GtkUnit_val(value val);
 value Val_GtkWrapMode(GtkWrapMode val);
 GtkWrapMode GtkWrapMode_val(value val);
 
-value Val_GtkApplicationInhibitFlags(GtkApplicationInhibitFlags flags);
-GtkApplicationInhibitFlags GtkApplicationInhibitFlags_val(value list);
-value Val_GtkBuilderClosureFlags(GtkBuilderClosureFlags flags);
-GtkBuilderClosureFlags GtkBuilderClosureFlags_val(value list);
-value Val_GtkCellRendererState(GtkCellRendererState flags);
-GtkCellRendererState GtkCellRendererState_val(value list);
-value Val_GtkDebugFlags(GtkDebugFlags flags);
-GtkDebugFlags GtkDebugFlags_val(value list);
-value Val_GtkDialogFlags(GtkDialogFlags flags);
-GtkDialogFlags GtkDialogFlags_val(value list);
-value Val_GtkEventControllerScrollFlags(GtkEventControllerScrollFlags flags);
-GtkEventControllerScrollFlags GtkEventControllerScrollFlags_val(value list);
-value Val_GtkFontChooserLevel(GtkFontChooserLevel flags);
-GtkFontChooserLevel GtkFontChooserLevel_val(value list);
-value Val_GtkIconLookupFlags(GtkIconLookupFlags flags);
-GtkIconLookupFlags GtkIconLookupFlags_val(value list);
-value Val_GtkInputHints(GtkInputHints flags);
-GtkInputHints GtkInputHints_val(value list);
-value Val_GtkListScrollFlags(GtkListScrollFlags flags);
-GtkListScrollFlags GtkListScrollFlags_val(value list);
-value Val_GtkPickFlags(GtkPickFlags flags);
-GtkPickFlags GtkPickFlags_val(value list);
-value Val_GtkPopoverMenuFlags(GtkPopoverMenuFlags flags);
-GtkPopoverMenuFlags GtkPopoverMenuFlags_val(value list);
-value Val_GtkShortcutActionFlags(GtkShortcutActionFlags flags);
-GtkShortcutActionFlags GtkShortcutActionFlags_val(value list);
-value Val_GtkStateFlags(GtkStateFlags flags);
-GtkStateFlags GtkStateFlags_val(value list);
-value Val_GtkStyleContextPrintFlags(GtkStyleContextPrintFlags flags);
-GtkStyleContextPrintFlags GtkStyleContextPrintFlags_val(value list);
-value Val_GtkTextSearchFlags(GtkTextSearchFlags flags);
-GtkTextSearchFlags GtkTextSearchFlags_val(value list);
-value Val_GtkTreeModelFlags(GtkTreeModelFlags flags);
-GtkTreeModelFlags GtkTreeModelFlags_val(value list);
 
-
-/* Forward declarations for external namespace enum/bitfield converters */
+/* Forward declarations for external namespace enum converters */
 value Val_GdkAxisUse(GdkAxisUse val);
 GdkAxisUse GdkAxisUse_val(value val);
 value Val_GdkCrossingMode(GdkCrossingMode val);
@@ -2007,7 +1953,44 @@ value Val_PangoWeight(PangoWeight val);
 PangoWeight PangoWeight_val(value val);
 value Val_PangoWrapMode(PangoWrapMode val);
 PangoWrapMode PangoWrapMode_val(value val);
+/* Forward declarations for bitfield converters */
+value Val_GtkApplicationInhibitFlags(GtkApplicationInhibitFlags flags);
+GtkApplicationInhibitFlags GtkApplicationInhibitFlags_val(value list);
+value Val_GtkBuilderClosureFlags(GtkBuilderClosureFlags flags);
+GtkBuilderClosureFlags GtkBuilderClosureFlags_val(value list);
+value Val_GtkCellRendererState(GtkCellRendererState flags);
+GtkCellRendererState GtkCellRendererState_val(value list);
+value Val_GtkDebugFlags(GtkDebugFlags flags);
+GtkDebugFlags GtkDebugFlags_val(value list);
+value Val_GtkDialogFlags(GtkDialogFlags flags);
+GtkDialogFlags GtkDialogFlags_val(value list);
+value Val_GtkEventControllerScrollFlags(GtkEventControllerScrollFlags flags);
+GtkEventControllerScrollFlags GtkEventControllerScrollFlags_val(value list);
+value Val_GtkFontChooserLevel(GtkFontChooserLevel flags);
+GtkFontChooserLevel GtkFontChooserLevel_val(value list);
+value Val_GtkIconLookupFlags(GtkIconLookupFlags flags);
+GtkIconLookupFlags GtkIconLookupFlags_val(value list);
+value Val_GtkInputHints(GtkInputHints flags);
+GtkInputHints GtkInputHints_val(value list);
+value Val_GtkListScrollFlags(GtkListScrollFlags flags);
+GtkListScrollFlags GtkListScrollFlags_val(value list);
+value Val_GtkPickFlags(GtkPickFlags flags);
+GtkPickFlags GtkPickFlags_val(value list);
+value Val_GtkPopoverMenuFlags(GtkPopoverMenuFlags flags);
+GtkPopoverMenuFlags GtkPopoverMenuFlags_val(value list);
+value Val_GtkShortcutActionFlags(GtkShortcutActionFlags flags);
+GtkShortcutActionFlags GtkShortcutActionFlags_val(value list);
+value Val_GtkStateFlags(GtkStateFlags flags);
+GtkStateFlags GtkStateFlags_val(value list);
+value Val_GtkStyleContextPrintFlags(GtkStyleContextPrintFlags flags);
+GtkStyleContextPrintFlags GtkStyleContextPrintFlags_val(value list);
+value Val_GtkTextSearchFlags(GtkTextSearchFlags flags);
+GtkTextSearchFlags GtkTextSearchFlags_val(value list);
+value Val_GtkTreeModelFlags(GtkTreeModelFlags flags);
+GtkTreeModelFlags GtkTreeModelFlags_val(value list);
 
+
+/* Forward declarations for external namespace bitfield converters */
 value Val_GObjectBindingFlags(GBindingFlags flags);
 GBindingFlags GObjectBindingFlags_val(value list);
 value Val_GObjectConnectFlags(GConnectFlags flags);

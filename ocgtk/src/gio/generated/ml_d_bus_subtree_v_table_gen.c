@@ -21,9 +21,18 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDBusSubtreeVTable */
-#ifndef Val_GDBusSubtreeVTable
-#define GDBusSubtreeVTable_val(val) ((GDBusSubtreeVTable*)ext_of_val(val))
-#define Val_GDBusSubtreeVTable(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusSubtreeVTable */
+/* Conversion functions for GDBusSubtreeVTable (opaque record with hidden fields) */
+GDBusSubtreeVTable *GDBusSubtreeVTable_val(value v) {
+  return *(GDBusSubtreeVTable **)Data_custom_val(v);
+}
+
+value Val_GDBusSubtreeVTable(const GDBusSubtreeVTable *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GDBusSubtreeVTable_option(const GDBusSubtreeVTable *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GDBusSubtreeVTable(ptr));
+}
 

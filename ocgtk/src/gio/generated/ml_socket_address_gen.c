@@ -22,14 +22,6 @@
 #include "generated_forward_decls.h"
 
 
-CAMLexport CAMLprim value ml_g_socket_address_new_from_native(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-GSocketAddress *obj = g_socket_address_new_from_native(arg1, arg2);
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GSocketAddress(obj));
-}
-
 CAMLexport CAMLprim value ml_g_socket_address_get_family(value self)
 {
 CAMLparam1(self);

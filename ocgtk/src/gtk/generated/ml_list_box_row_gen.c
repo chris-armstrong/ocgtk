@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_list_box_row_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkListBoxRow *obj = gtk_list_box_row_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkListBoxRow(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_list_box_row_set_selectable(value self, value arg1)
 {
 CAMLparam2(self, arg1);

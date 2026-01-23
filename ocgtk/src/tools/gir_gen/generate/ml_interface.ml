@@ -3,6 +3,7 @@
 open StdLabels
 open Printf
 open Types
+open C_stub_helpers
 
 type output_mode = Interface | Implementation
 
@@ -18,7 +19,9 @@ let simplify_self_reference ~class_name ocaml_type =
   if ocaml_type = self_type then
     "t"
   else
-    ocaml_type
+    (* Handle patterns like "Module.t array" or "Module.t option" or "Module.t array option" *)
+    let pattern = Str.regexp (Str.quote self_type) in
+    Str.global_replace pattern "t" ocaml_type
 
 (* Qualify module references for cyclic dependencies *)
 let qualify_module_reference ~ctx module_type =
@@ -91,16 +94,6 @@ let detect_class_hierarchy_names ~ctx ~class_name ~parent_chain ?record_base_typ
           let all_variants = self_variant :: parent_variants in
           let variants = String.concat ~sep:" | " all_variants in
           (class_name, sprintf "[%s] Gobject.obj" variants)
-
-  let is_copy_or_free (meth : gir_method) =
-    let lower_name = String.lowercase_ascii meth.method_name in
-    let lower_cid = String.lowercase_ascii meth.c_identifier in
-    let ends_with suffix str =
-      let len_s = String.length suffix and len_str = String.length str in
-      len_str >= len_s && String.sub str ~pos:(len_str - len_s) ~len:len_s = suffix
-    in
-    lower_name = "copy" || lower_name = "free" ||
-    ends_with "_copy" lower_cid || ends_with "_free" lower_cid
   
 let print_indent contents buf =
   let lines = String.split_on_char ~sep:'\n' contents in
@@ -171,7 +164,7 @@ let generate_ml_interface_internal
        end
    | _ -> ());
 
-  (* Constructors - generate unique names and proper signatures, skip those that throw *)
+  (* Constructors - generate unique names and proper signatures, skip those that throw or have cross-namespace types *)
   List.iter ~f:(fun (ctor : gir_constructor) ->
     let has_cross_namespace_type = Filtering.constructor_has_cross_namespace_types ~ctx ctor in
     if not ctor.throws && not has_cross_namespace_type then begin

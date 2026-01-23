@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_tree_model_sort_new_with_model(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkTreeModelSort *obj = gtk_tree_model_sort_new_with_model(GtkTreeModel_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkTreeModelSort(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_tree_model_sort_reset_default_sort_func(value self)
 {
 CAMLparam1(self);

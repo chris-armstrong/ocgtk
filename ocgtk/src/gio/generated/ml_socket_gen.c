@@ -112,6 +112,36 @@ g_socket_set_blocking(GSocket_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_socket_send_messages(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+GError *error = NULL;
+    int arg1_length = Wosize_val(arg1);
+    GOutputMessage* c_arg1 = (GOutputMessage*)g_malloc(sizeof(GOutputMessage) * arg1_length);
+    for (int i = 0; i < arg1_length; i++) {
+      c_arg1[i] = *GOutputMessage_val(Field(arg1, i));
+    }
+
+gint result = g_socket_send_messages(GSocket_val(self), c_arg1, Int_val(arg2), Int_val(arg3), Option_val(arg4, GCancellable_val, NULL), &error);
+    g_free(c_arg1);
+if (error == NULL) CAMLreturn(Res_Ok(Val_int(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_socket_receive_messages(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+GError *error = NULL;
+    int arg1_length = Wosize_val(arg1);
+    GInputMessage* c_arg1 = (GInputMessage*)g_malloc(sizeof(GInputMessage) * arg1_length);
+    for (int i = 0; i < arg1_length; i++) {
+      c_arg1[i] = *GInputMessage_val(Field(arg1, i));
+    }
+
+gint result = g_socket_receive_messages(GSocket_val(self), c_arg1, Int_val(arg2), Int_val(arg3), Option_val(arg4, GCancellable_val, NULL), &error);
+    g_free(c_arg1);
+if (error == NULL) CAMLreturn(Res_Ok(Val_int(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_g_socket_listen(value self)
 {
 CAMLparam1(self);
@@ -365,18 +395,17 @@ if (error == NULL) CAMLreturn(Res_Ok(Val_GSocket(result))); else CAMLreturn(Res_
 
 CAMLexport CAMLprim value ml_gtk_socket_get_type(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GSocket *obj = (GSocket *)GSocket_val(self);
     GSocketType prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "type");
 if (pspec == NULL) caml_failwith("ml_gtk_socket_get_type: property 'type' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "type", &prop_gvalue);
-    prop_value = (GSocketType)g_value_get_enum(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "type", &prop_gvalue);
+          prop_value = (GSocketType)g_value_get_enum(&prop_gvalue);
 
-result = Val_GioSocketType(prop_value);
+      result = Val_GioSocketType(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}

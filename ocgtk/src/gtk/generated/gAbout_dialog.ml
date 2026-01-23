@@ -5,6 +5,18 @@ class about_dialog (obj : About_dialog.t) = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (About_dialog.as_widget obj)
   inherit Gabout_dialog_signals.about_dialog_signals obj
 
+  method add_credit_section : string -> string array -> unit =
+    fun section_name people ->
+      (About_dialog.add_credit_section obj section_name people)
+
+  method get_artists : unit -> string array =
+    fun () ->
+      (About_dialog.get_artists obj)
+
+  method get_authors : unit -> string array =
+    fun () ->
+      (About_dialog.get_authors obj)
+
   method get_comments : unit -> string option =
     fun () ->
       (About_dialog.get_comments obj)
@@ -12,6 +24,10 @@ class about_dialog (obj : About_dialog.t) = object (self)
   method get_copyright : unit -> string option =
     fun () ->
       (About_dialog.get_copyright obj)
+
+  method get_documenters : unit -> string array =
+    fun () ->
+      (About_dialog.get_documenters obj)
 
   method get_license : unit -> string option =
     fun () ->
@@ -49,6 +65,14 @@ class about_dialog (obj : About_dialog.t) = object (self)
     fun () ->
       (About_dialog.get_wrap_license obj)
 
+  method set_artists : string array -> unit =
+    fun artists ->
+      (About_dialog.set_artists obj artists)
+
+  method set_authors : string array -> unit =
+    fun authors ->
+      (About_dialog.set_authors obj authors)
+
   method set_comments : string option -> unit =
     fun comments ->
       (About_dialog.set_comments obj comments)
@@ -56,6 +80,10 @@ class about_dialog (obj : About_dialog.t) = object (self)
   method set_copyright : string option -> unit =
     fun copyright ->
       (About_dialog.set_copyright obj copyright)
+
+  method set_documenters : string array -> unit =
+    fun documenters ->
+      (About_dialog.set_documenters obj documenters)
 
   method set_license : string option -> unit =
     fun license ->

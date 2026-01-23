@@ -21,19 +21,21 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GSrvTarget */
-#ifndef Val_GSrvTarget
-#define GSrvTarget_val(val) ((GSrvTarget*)ext_of_val(val))
-#define Val_GSrvTarget(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GSrvTarget */
-
-
-CAMLexport CAMLprim value ml_g_srv_target_new(value arg1, value arg2, value arg3, value arg4)
-{
-CAMLparam4(arg1, arg2, arg3, arg4);
-GSrvTarget *obj = g_srv_target_new(String_val(arg1), arg2, arg3, arg4);
-CAMLreturn(Val_GSrvTarget(obj));
+/* Conversion functions for GSrvTarget (opaque record with hidden fields) */
+GSrvTarget *GSrvTarget_val(value v) {
+  return *(GSrvTarget **)Data_custom_val(v);
 }
+
+value Val_GSrvTarget(const GSrvTarget *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GSrvTarget_option(const GSrvTarget *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GSrvTarget(ptr));
+}
+
 
 CAMLexport CAMLprim value ml_g_srv_target_get_hostname(value self)
 {

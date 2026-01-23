@@ -17,14 +17,6 @@
 #include "generated_forward_decls.h"
 
 
-CAMLexport CAMLprim value ml_gtk_directory_list_new(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-GtkDirectoryList *obj = gtk_directory_list_new(String_option_val(arg1), arg2);
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GtkDirectoryList(obj));
-}
-
 CAMLexport CAMLprim value ml_gtk_directory_list_set_monitored(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -83,36 +75,34 @@ CAMLreturn(Val_option_string(result));
 
 CAMLexport CAMLprim value ml_gtk_directory_list_get_loading(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkDirectoryList *obj = (GtkDirectoryList *)GtkDirectoryList_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "loading");
 if (pspec == NULL) caml_failwith("ml_gtk_directory_list_get_loading: property 'loading' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "loading", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "loading", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_directory_list_get_n_items(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkDirectoryList *obj = (GtkDirectoryList *)GtkDirectoryList_val(self);
     guint prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "n-items");
 if (pspec == NULL) caml_failwith("ml_gtk_directory_list_get_n_items: property 'n-items' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "n-items", &prop_gvalue);
-    prop_value = (guint)g_value_get_uint(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "n-items", &prop_gvalue);
+          prop_value = g_value_get_uint(&prop_gvalue);
 
-result = Val_int(prop_value);
+      result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}

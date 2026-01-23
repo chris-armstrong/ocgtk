@@ -20,19 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_shortcut_controller_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkShortcutController *obj = gtk_shortcut_controller_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkShortcutController(obj));
 }
-
-CAMLexport CAMLprim value ml_gtk_shortcut_controller_new_for_model(value arg1)
-{
-CAMLparam1(arg1);
-GtkShortcutController *obj = gtk_shortcut_controller_new_for_model(arg1);
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GtkShortcutController(obj));
-}
-
 CAMLexport CAMLprim value ml_gtk_shortcut_controller_set_scope(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -67,18 +60,17 @@ CAMLreturn(Val_unit);
 
 CAMLexport CAMLprim value ml_gtk_shortcut_controller_get_n_items(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkShortcutController *obj = (GtkShortcutController *)GtkShortcutController_val(self);
     guint prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "n-items");
 if (pspec == NULL) caml_failwith("ml_gtk_shortcut_controller_get_n_items: property 'n-items' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "n-items", &prop_gvalue);
-    prop_value = (guint)g_value_get_uint(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "n-items", &prop_gvalue);
+          prop_value = g_value_get_uint(&prop_gvalue);
 
-result = Val_int(prop_value);
+      result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}

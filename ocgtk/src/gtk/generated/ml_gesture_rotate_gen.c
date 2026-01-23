@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_gesture_rotate_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkGestureRotate *obj = gtk_gesture_rotate_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkGestureRotate(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_gesture_rotate_get_angle_delta(value self)
 {
 CAMLparam1(self);

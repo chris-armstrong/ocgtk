@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_print_settings_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkPrintSettings *obj = gtk_print_settings_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkPrintSettings(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_print_settings_unset(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -143,6 +144,20 @@ CAMLexport CAMLprim value ml_gtk_print_settings_set_page_set(value self, value a
 CAMLparam2(self, arg1);
 
 gtk_print_settings_set_page_set(GtkPrintSettings_val(self), GtkPageSet_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_print_settings_set_page_ranges(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+    int arg1_length = Wosize_val(arg1);
+    GtkPageRange* c_arg1 = (GtkPageRange*)g_malloc(sizeof(GtkPageRange) * arg1_length);
+    for (int i = 0; i < arg1_length; i++) {
+      c_arg1[i] = *GtkPageRange_val(Field(arg1, i));
+    }
+
+gtk_print_settings_set_page_ranges(GtkPrintSettings_val(self), c_arg1, Int_val(arg2));
+    g_free(c_arg1);
 CAMLreturn(Val_unit);
 }
 
@@ -401,6 +416,26 @@ CAMLparam1(self);
 
 GtkPageSet result = gtk_print_settings_get_page_set(GtkPrintSettings_val(self));
 CAMLreturn(Val_GtkPageSet(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_print_settings_get_page_ranges(value self)
+{
+CAMLparam1(self);
+int out1;
+
+GtkPageRange* result = gtk_print_settings_get_page_ranges(GtkPrintSettings_val(self), &out1);
+    int result_length = out1;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, Val_GtkPageRange(&result[i]));
+    }
+    g_free(result);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, ml_result);
+    Store_field(ret, 1, Val_int(out1));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_print_settings_get_output_bin(value self)

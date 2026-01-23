@@ -20,19 +20,21 @@
 CAMLexport CAMLprim value ml_gtk_level_bar_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkLevelBar *obj = gtk_level_bar_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkLevelBar(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_level_bar_new_for_interval(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
+
 GtkLevelBar *obj = gtk_level_bar_new_for_interval(Double_val(arg1), Double_val(arg2));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkLevelBar(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_level_bar_set_value(value self, value arg1)
 {
 CAMLparam2(self, arg1);

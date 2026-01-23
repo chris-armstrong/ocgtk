@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_app_chooser_widget_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkAppChooserWidget *obj = gtk_app_chooser_widget_new(String_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkAppChooserWidget(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_app_chooser_widget_set_show_recommended(value self, value arg1)
 {
 CAMLparam2(self, arg1);

@@ -12,6 +12,7 @@ class app_info : App_info_and__app_launch_context.App_info.t ->
     method get_icon : unit -> GIcon.icon option
     method get_id : unit -> string option
     method get_name : unit -> string
+    method get_supported_types : unit -> string array
     method remove_supports_type : string -> (bool, GError.t) result
     method set_as_default_for_extension : string -> (bool, GError.t) result
     method set_as_default_for_type : string -> (bool, GError.t) result

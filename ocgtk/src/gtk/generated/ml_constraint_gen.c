@@ -17,28 +17,6 @@
 #include "generated_forward_decls.h"
 
 
-CAMLexport CAMLprim value ml_gtk_constraint_new_native(value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7, value arg8)
-{
-CAMLparam5(arg1, arg2, arg3, arg4, arg5);
-CAMLxparam3(arg6, arg7, arg8);
-GtkConstraint *obj = gtk_constraint_new(arg1, GtkConstraintAttribute_val(arg2), GtkConstraintRelation_val(arg3), arg4, GtkConstraintAttribute_val(arg5), Double_val(arg6), Double_val(arg7), Int_val(arg8));
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GtkConstraint(obj));
-}
-
-CAMLexport CAMLprim value ml_gtk_constraint_new_bytecode(value * argv, int argn)
-{
-return ml_gtk_constraint_new_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6], argv[7]);
-}
-
-CAMLexport CAMLprim value ml_gtk_constraint_new_constant(value arg1, value arg2, value arg3, value arg4, value arg5)
-{
-CAMLparam5(arg1, arg2, arg3, arg4, arg5);
-GtkConstraint *obj = gtk_constraint_new_constant(arg1, GtkConstraintAttribute_val(arg2), GtkConstraintRelation_val(arg3), Double_val(arg4), Int_val(arg5));
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GtkConstraint(obj));
-}
-
 CAMLexport CAMLprim value ml_gtk_constraint_is_required(value self)
 {
 CAMLparam1(self);

@@ -29,6 +29,10 @@ class tree_store (obj : Tree_store.t) = object (self)
     fun iter ->
       (Tree_store.remove obj iter)
 
+  method reorder : Tree_iter.t option -> int array -> unit =
+    fun parent new_order ->
+      (Tree_store.reorder obj parent new_order)
+
   method swap : Tree_iter.t -> Tree_iter.t -> unit =
     fun a b ->
       (Tree_store.swap obj a b)

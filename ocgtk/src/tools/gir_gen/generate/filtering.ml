@@ -48,6 +48,11 @@ let has_simple_type ~ctx (gir_type : gir_type) =
       true
   | None -> false
 
+(* Check if a type is an array type - arrays require inline code generation
+   and can't be handled by simple type mapping macros *)
+let is_array_type (gir_type : gir_type) =
+  Option.is_some gir_type.array
+
 let property_exclude_list = [ ("IconPaintable", "is-symbolic") ]
 
 let should_generate_property ~ctx ~class_name ~methods (prop : gir_property) =
@@ -162,6 +167,22 @@ let should_skip_method_binding ~ctx (meth : gir_method) =
 
 let constructor_has_varargs (ctor : gir_constructor) =
   List.exists ctor.ctor_parameters ~f:(fun p -> p.varargs)
+
+(* Check if a constructor should be generated based on multiple criteria:
+   - Not throwing GError
+   - No varargs
+   - No cross-namespace enum/bitfield parameters
+   - No unknown parameter types *)
+let should_generate_constructor ~ctx (ctor : gir_constructor) =
+  let has_unknown_type =
+    Exclude_list.should_skip_constructor
+      ~find_type_mapping:(Type_mappings.find_type_mapping_for_gir_type ~ctx)
+      ~enums:ctx.enums ~bitfields:ctx.bitfields ctor
+  in
+  not ctor.throws
+  && not (constructor_has_varargs ctor)
+  && not (constructor_has_cross_namespace_types ~ctx ctor)
+  && not has_unknown_type
 
 let banned_records = [ "PrintBackend" ]
 

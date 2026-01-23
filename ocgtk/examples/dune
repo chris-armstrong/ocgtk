@@ -10,15 +10,15 @@
  (modules demo_all)
  (libraries ocgtk))
 
-(executable
- (name counter)
- (modules counter)
- (libraries ocgtk))
+; (executable
+;  (name counter)
+;  (modules counter)
+;  (libraries ocgtk))
 
-(executable
- (name settings_panel)
- (modules settings_panel)
- (libraries ocgtk))
+; (executable
+;  (name settings_panel)
+;  (modules settings_panel)
+;  (libraries ocgtk))
 
 ; (executable
 ;  (name text_editor)

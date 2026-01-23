@@ -168,7 +168,7 @@ let run_gir_gen ?filter_file gir_file output_dir =
     match filter_file with Some f -> sprintf "-f %s " f | None -> ""
   in
   let cmd =
-    sprintf "%s/gir_gen/main.exe %s%s %s" tools_dir filter_arg gir_file
+    sprintf "%s/gir_gen/gir_gen.exe %s%s %s" tools_dir filter_arg gir_file
       output_dir
   in
   let result =
@@ -242,6 +242,51 @@ let create_test_context () =
     }
   in
 
+  (* Add GInetAddress class for GPtrArray tests *)
+  let inet_address_class =
+    {
+      class_name = "InetAddress";
+      c_type = "GInetAddress";
+      parent = None;
+      implements = [];
+      constructors = [];
+      methods = [];
+      properties = [];
+      signals = [];
+      class_doc = None;
+    }
+  in
+
+  (* Add GTlsCertificate class for GPtrArray tests *)
+  let tls_certificate_class =
+    {
+      class_name = "TlsCertificate";
+      c_type = "GTlsCertificate";
+      parent = None;
+      implements = [];
+      constructors = [];
+      methods = [];
+      properties = [];
+      signals = [];
+      class_doc = None;
+    }
+  in
+
+  (* Add GdkEvent class for GPtrArray tests *)
+  let gdk_event_class =
+    {
+      class_name = "Event";
+      c_type = "GdkEvent";
+      parent = None;
+      implements = [];
+      constructors = [];
+      methods = [];
+      properties = [];
+      signals = [];
+      class_doc = None;
+    }
+  in
+
   (* Add TextDirection enum to context *)
   let text_direction_enum =
     {
@@ -253,14 +298,52 @@ let create_test_context () =
     }
   in
 
+  (* Add GdkTimeCoord record for GPtrArray tests *)
+  let gdk_time_coord_record =
+    {
+      record_name = "GdkTimeCoord";
+      c_type = "GdkTimeCoord";
+      glib_type_name = None;
+      glib_get_type = None;
+      opaque = false;
+      disguised = false;
+      c_symbol_prefix = None;
+      is_gtype_struct_for = None;
+      fields = [];
+      constructors = [];
+      methods = [];
+      functions = [];
+      record_doc = None;
+    }
+  in
+
+  (* Add GtkBuildableParseContext record for GPtrArray tests *)
+  let buildable_parse_context_record =
+    {
+      record_name = "GtkBuildableParseContext";
+      c_type = "GtkBuildableParseContext";
+      glib_type_name = None;
+      glib_get_type = None;
+      opaque = true;
+      disguised = false;
+      c_symbol_prefix = None;
+      is_gtype_struct_for = None;
+      fields = [];
+      constructors = [];
+      methods = [];
+      functions = [];
+      record_doc = None;
+    }
+  in
+
   {
     namespace;
     repository;
-    classes = [ widget_class ];
+    classes = [ widget_class; inet_address_class; tls_certificate_class; gdk_event_class ];
     interfaces = [];
     enums = [ text_direction_enum ];
     bitfields = [];
-    records = [];
+    records = [ gdk_time_coord_record; buildable_parse_context_record ];
     external_enums = [];
     external_bitfields = [];
     hierarchy_map = Hashtbl.create 0;

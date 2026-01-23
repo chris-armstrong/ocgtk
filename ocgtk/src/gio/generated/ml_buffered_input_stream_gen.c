@@ -25,19 +25,12 @@
 CAMLexport CAMLprim value ml_g_buffered_input_stream_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GBufferedInputStream *obj = g_buffered_input_stream_new(GInputStream_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GBufferedInputStream(obj));
 }
-
-CAMLexport CAMLprim value ml_g_buffered_input_stream_new_sized(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-GBufferedInputStream *obj = g_buffered_input_stream_new_sized(GInputStream_val(arg1), arg2);
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GBufferedInputStream(obj));
-}
-
 CAMLexport CAMLprim value ml_g_buffered_input_stream_read_byte(value self, value arg1)
 {
 CAMLparam2(self, arg1);

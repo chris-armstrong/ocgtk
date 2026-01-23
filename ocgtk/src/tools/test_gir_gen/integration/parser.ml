@@ -638,6 +638,241 @@ let test_parse_method_with_many_parameters () =
   done
 
 (* ========================================================================= *)
+(* Array Parsing Tests *)
+(* ========================================================================= *)
+
+let test_parse_array_return_type () =
+  let gir_xml = wrap_namespace {|
+    <class name="Container" c:type="GtkContainer">
+      <method name="get_children" c:identifier="gtk_container_get_children">
+        <return-value transfer-ownership="container">
+          <array c:type="GList*" zero-terminated="0">
+            <type name="Widget" c:type="GtkWidget*"/>
+          </array>
+        </return-value>
+      </method>
+    </class>
+  |}
+  in
+
+  let (_, _, classes, _, _, _, _) = parse_gir_string gir_xml in
+  let container = List.hd classes in
+  let method_ = List.hd container.methods in
+
+  Alcotest.(check string) "Return type name is array" "array" method_.return_type.name;
+  Alcotest.(check bool) "Return type has array info"
+    (Option.is_some method_.return_type.array) true;
+
+  match method_.return_type.array with
+  | Some array_info ->
+      Alcotest.(check bool) "Array is not zero-terminated" false array_info.zero_terminated;
+      Alcotest.(check string) "Array element type" "Widget" array_info.element_type.name;
+      Alcotest.(check (option string)) "Array element c:type"
+        (Some "GtkWidget*") array_info.element_type.c_type;
+      Alcotest.(check (option int)) "Array has no length parameter" None array_info.length;
+      Alcotest.(check (option int)) "Array has no fixed size" None array_info.fixed_size
+  | None -> Alcotest.fail "Array info should be present"
+
+let test_parse_array_with_length () =
+  let gir_xml = wrap_namespace {|
+    <class name="List" c:type="GtkList">
+      <method name="get_items" c:identifier="gtk_list_get_items">
+        <return-value transfer-ownership="full">
+          <array length="0" c:type="gchar**">
+            <type name="utf8" c:type="gchar*"/>
+          </array>
+        </return-value>
+        <parameters>
+          <parameter name="n_items" direction="out">
+            <type name="gint" c:type="gint*"/>
+          </parameter>
+        </parameters>
+      </method>
+    </class>
+  |}
+  in
+
+  let (_, _, classes, _, _, _, _) = parse_gir_string gir_xml in
+  let list_class = List.hd classes in
+  let method_ = List.hd list_class.methods in
+
+  match method_.return_type.array with
+  | Some array_info ->
+      Alcotest.(check (option int)) "Array length points to parameter 0" (Some 0) array_info.length;
+      Alcotest.(check string) "Element type is utf8" "utf8" array_info.element_type.name
+  | None -> Alcotest.fail "Array info should be present"
+
+let test_parse_array_zero_terminated () =
+  let gir_xml = wrap_namespace {|
+    <class name="StringArray" c:type="GtkStringArray">
+      <method name="get_strings" c:identifier="gtk_string_array_get_strings">
+        <return-value transfer-ownership="none">
+          <array zero-terminated="1" c:type="gchar**">
+            <type name="utf8" c:type="gchar*"/>
+          </array>
+        </return-value>
+      </method>
+    </class>
+  |}
+  in
+
+  let (_, _, classes, _, _, _, _) = parse_gir_string gir_xml in
+  let string_array = List.hd classes in
+  let method_ = List.hd string_array.methods in
+
+  match method_.return_type.array with
+  | Some array_info ->
+      Alcotest.(check bool) "Array is zero-terminated" true array_info.zero_terminated;
+      Alcotest.(check (option int)) "No explicit length parameter" None array_info.length
+  | None -> Alcotest.fail "Array info should be present"
+
+let test_parse_array_fixed_size () =
+  let gir_xml = wrap_namespace {|
+    <record name="Point3D" c:type="GtkPoint3D">
+      <field name="coordinates" readable="1" writable="1">
+        <array fixed-size="3" c:type="gdouble[3]">
+          <type name="gdouble" c:type="gdouble"/>
+        </array>
+      </field>
+    </record>
+  |}
+  in
+
+  let (_, _, _, _, _, _, records) = parse_gir_string gir_xml in
+  let point = List.hd records in
+  let field = List.hd point.fields in
+
+  match field.field_type with
+  | Some field_type ->
+      (match field_type.array with
+      | Some array_info ->
+          Alcotest.(check (option int)) "Array has fixed size 3" (Some 3) array_info.fixed_size;
+          Alcotest.(check string) "Element type is gdouble" "gdouble" array_info.element_type.name;
+          Alcotest.(check (option string)) "Element c:type is gdouble"
+            (Some "gdouble") array_info.element_type.c_type
+      | None -> Alcotest.fail "Array info should be present")
+  | None -> Alcotest.fail "Field type should be present"
+
+let test_parse_array_parameter () =
+  let gir_xml = wrap_namespace {|
+    <class name="List" c:type="GtkList">
+      <method name="set_items" c:identifier="gtk_list_set_items">
+        <return-value>
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="items">
+            <array length="1" zero-terminated="0" c:type="gchar**">
+              <type name="utf8" c:type="gchar*"/>
+            </array>
+          </parameter>
+          <parameter name="n_items">
+            <type name="gint" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
+    </class>
+  |}
+  in
+
+  let (_, _, classes, _, _, _, _) = parse_gir_string gir_xml in
+  let list_class = List.hd classes in
+  let method_ = List.hd list_class.methods in
+  let items_param = List.find (fun p -> p.param_name = "items") method_.parameters in
+
+  Alcotest.(check string) "Parameter type name is array" "array" items_param.param_type.name;
+
+  match items_param.param_type.array with
+  | Some array_info ->
+      Alcotest.(check (option int)) "Array length is parameter 1" (Some 1) array_info.length;
+      Alcotest.(check bool) "Array is not zero-terminated" false array_info.zero_terminated;
+      Alcotest.(check string) "Element type is utf8" "utf8" array_info.element_type.name
+  | None -> Alcotest.fail "Array info should be present in parameter"
+
+let test_parse_array_property () =
+  let gir_xml = wrap_namespace {|
+    <class name="Model" c:type="GtkModel">
+      <property name="items" readable="1" writable="1">
+        <array zero-terminated="1">
+          <type name="utf8" c:type="gchar*"/>
+        </array>
+      </property>
+    </class>
+  |}
+  in
+
+  let (_, _, classes, _, _, _, _) = parse_gir_string gir_xml in
+  let model = List.hd classes in
+  let prop = List.hd model.properties in
+
+  Alcotest.(check string) "Property type name is array" "array" prop.prop_type.name;
+
+  match prop.prop_type.array with
+  | Some array_info ->
+      Alcotest.(check bool) "Array is zero-terminated" true array_info.zero_terminated;
+      Alcotest.(check string) "Element type is utf8" "utf8" array_info.element_type.name
+  | None -> Alcotest.fail "Array info should be present in property"
+
+let test_parse_array_without_attributes () =
+  let gir_xml = wrap_namespace {|
+    <class name="SimpleArray" c:type="GtkSimpleArray">
+      <method name="get_values" c:identifier="gtk_simple_array_get_values">
+        <return-value>
+          <array>
+            <type name="gint" c:type="gint"/>
+          </array>
+        </return-value>
+      </method>
+    </class>
+  |}
+  in
+
+  let (_, _, classes, _, _, _, _) = parse_gir_string gir_xml in
+  let simple_array = List.hd classes in
+  let method_ = List.hd simple_array.methods in
+
+  match method_.return_type.array with
+  | Some array_info ->
+      Alcotest.(check bool) "Array is not zero-terminated by default" false array_info.zero_terminated;
+      Alcotest.(check (option int)) "No length parameter" None array_info.length;
+      Alcotest.(check (option int)) "No fixed size" None array_info.fixed_size;
+      Alcotest.(check string) "Element type is gint" "gint" array_info.element_type.name
+  | None -> Alcotest.fail "Array info should be present"
+
+let test_parse_nested_array_type () =
+  let gir_xml = wrap_namespace {|
+    <class name="Matrix" c:type="GtkMatrix">
+      <method name="get_data" c:identifier="gtk_matrix_get_data">
+        <return-value transfer-ownership="none">
+          <array length="0" c:type="gint*">
+            <type name="gint" c:type="gint"/>
+          </array>
+        </return-value>
+        <parameters>
+          <parameter name="length" direction="out">
+            <type name="gint" c:type="gint*"/>
+          </parameter>
+        </parameters>
+      </method>
+    </class>
+  |}
+  in
+
+  let (_, _, classes, _, _, _, _) = parse_gir_string gir_xml in
+  let matrix = List.hd classes in
+  let method_ = List.hd matrix.methods in
+
+  Alcotest.(check string) "Return type is array" "array" method_.return_type.name;
+  Alcotest.(check (option string)) "Array c:type" (Some "gint*") method_.return_type.c_type;
+
+  match method_.return_type.array with
+  | Some array_info ->
+      Alcotest.(check (option int)) "Length parameter is 0" (Some 0) array_info.length;
+      Alcotest.(check string) "Element type name" "gint" array_info.element_type.name;
+      Alcotest.(check (option string)) "Element c:type" (Some "gint") array_info.element_type.c_type
+  | None -> Alcotest.fail "Array info should be present"
+
+(* ========================================================================= *)
 (* Test Suite *)
 (* ========================================================================= *)
 
@@ -683,4 +918,14 @@ let tests =
     Alcotest.test_case "Parse multiple classes" `Quick test_parse_multiple_classes;
     Alcotest.test_case "Parse mixed types" `Quick test_parse_mixed_types;
     Alcotest.test_case "Parse method with many parameters" `Quick test_parse_method_with_many_parameters;
+
+    (* Array parsing tests *)
+    Alcotest.test_case "Parse array return type" `Quick test_parse_array_return_type;
+    Alcotest.test_case "Parse array with length parameter" `Quick test_parse_array_with_length;
+    Alcotest.test_case "Parse zero-terminated array" `Quick test_parse_array_zero_terminated;
+    Alcotest.test_case "Parse fixed-size array" `Quick test_parse_array_fixed_size;
+    Alcotest.test_case "Parse array parameter" `Quick test_parse_array_parameter;
+    Alcotest.test_case "Parse array property" `Quick test_parse_array_property;
+    Alcotest.test_case "Parse array without attributes" `Quick test_parse_array_without_attributes;
+    Alcotest.test_case "Parse nested array type" `Quick test_parse_nested_array_type;
   ]

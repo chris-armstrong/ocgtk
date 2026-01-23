@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_widget_paintable_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkWidgetPaintable *obj = gtk_widget_paintable_new(Option_val(arg1, GtkWidget_val, NULL));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkWidgetPaintable(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_widget_paintable_set_widget(value self, value arg1)
 {
 CAMLparam2(self, arg1);

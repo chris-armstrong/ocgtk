@@ -15,6 +15,12 @@ external newv : int -> unit -> t = "ml_gtk_tree_store_newv"
 Note that this function only works with unsorted stores. *)
 external swap : t -> Tree_iter.t -> Tree_iter.t -> unit = "ml_gtk_tree_store_swap"
 
+(** Reorders the children of @parent in @tree_store to follow the order
+indicated by @new_order.
+
+Note that this function only works with unsorted stores. *)
+external reorder : t -> Tree_iter.t option -> int array -> unit = "ml_gtk_tree_store_reorder"
+
 (** Removes @iter from @tree_store.
 
 After being removed, @iter is set to the next valid row at that level, or

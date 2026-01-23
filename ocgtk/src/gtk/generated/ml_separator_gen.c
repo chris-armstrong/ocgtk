@@ -20,7 +20,9 @@
 CAMLexport CAMLprim value ml_gtk_separator_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkSeparator *obj = gtk_separator_new(GtkOrientation_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkSeparator(obj));
 }

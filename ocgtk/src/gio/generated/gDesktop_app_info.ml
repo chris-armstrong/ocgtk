@@ -25,6 +25,10 @@ class desktop_app_info (obj : Desktop_app_info.t) = object (self)
     fun () ->
       (Desktop_app_info.get_is_hidden obj)
 
+  method get_keywords : unit -> string array =
+    fun () ->
+      (Desktop_app_info.get_keywords obj)
+
   method get_locale_string : string -> string option =
     fun key ->
       (Desktop_app_info.get_locale_string obj key)
@@ -53,6 +57,10 @@ class desktop_app_info (obj : Desktop_app_info.t) = object (self)
     fun action_name launch_context ->
       let launch_context = Option.map (fun (c) -> c#as_app_launch_context) launch_context in
       (Desktop_app_info.launch_action obj action_name launch_context)
+
+  method list_actions : unit -> string array =
+    fun () ->
+      (Desktop_app_info.list_actions obj)
 
     method as_desktop_app_info = obj
 end

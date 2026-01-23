@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_fixed_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkFixed *obj = gtk_fixed_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkFixed(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_fixed_remove(value self, value arg1)
 {
 CAMLparam2(self, arg1);

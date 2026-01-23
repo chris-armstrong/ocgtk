@@ -25,11 +25,12 @@
 CAMLexport CAMLprim value ml_g_unix_input_stream_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
+
 GUnixInputStream *obj = g_unix_input_stream_new(Int_val(arg1), Bool_val(arg2));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GUnixInputStream(obj));
 }
-
 CAMLexport CAMLprim value ml_g_unix_input_stream_set_close_fd(value self, value arg1)
 {
 CAMLparam2(self, arg1);

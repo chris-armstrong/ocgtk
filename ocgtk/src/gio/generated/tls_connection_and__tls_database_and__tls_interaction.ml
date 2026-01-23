@@ -90,6 +90,18 @@ module rec Tls_connection : sig
   non-%NULL.) *)
   external set_certificate : t -> Tls_certificate.t -> unit = "ml_g_tls_connection_set_certificate"
 
+  (** Sets the list of application-layer protocols to advertise that the
+  caller is willing to speak on this connection. The
+  Application-Layer Protocol Negotiation (ALPN) extension will be
+  used to negotiate a compatible protocol with the peer; use
+  g_tls_connection_get_negotiated_protocol() to find the negotiated
+  protocol after the handshake.  Specifying %NULL for the the value
+  of @protocols will disable ALPN negotiation.
+
+  See [IANA TLS ALPN Protocol IDs](https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
+  for a list of registered protocol IDs. *)
+  external set_advertised_protocols : t -> string array option -> unit = "ml_g_tls_connection_set_advertised_protocols"
+
   (** Finish an asynchronous TLS handshake operation. See
   g_tls_connection_handshake() for more information. *)
   external handshake_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_tls_connection_handshake_finish"
@@ -288,6 +300,18 @@ end = struct
   that g_tls_client_connection_get_accepted_cas() will return
   non-%NULL.) *)
   external set_certificate : t -> Tls_certificate.t -> unit = "ml_g_tls_connection_set_certificate"
+
+  (** Sets the list of application-layer protocols to advertise that the
+  caller is willing to speak on this connection. The
+  Application-Layer Protocol Negotiation (ALPN) extension will be
+  used to negotiate a compatible protocol with the peer; use
+  g_tls_connection_get_negotiated_protocol() to find the negotiated
+  protocol after the handshake.  Specifying %NULL for the the value
+  of @protocols will disable ALPN negotiation.
+
+  See [IANA TLS ALPN Protocol IDs](https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
+  for a list of registered protocol IDs. *)
+  external set_advertised_protocols : t -> string array option -> unit = "ml_g_tls_connection_set_advertised_protocols"
 
   (** Finish an asynchronous TLS handshake operation. See
   g_tls_connection_handshake() for more information. *)

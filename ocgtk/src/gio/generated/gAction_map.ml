@@ -9,6 +9,10 @@ class action_map (obj : Action_map.t) = object (self)
     fun action_name ->
       (Action_map.remove_action obj action_name)
 
+  method remove_action_entries : Action_entry.t array -> int -> unit =
+    fun entries n_entries ->
+      (Action_map.remove_action_entries obj entries n_entries)
+
     method as_action_map = obj
 end
 

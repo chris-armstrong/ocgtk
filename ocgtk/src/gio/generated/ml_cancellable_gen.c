@@ -25,11 +25,12 @@
 CAMLexport CAMLprim value ml_g_cancellable_new(value unit)
 {
 CAMLparam1(unit);
+
 GCancellable *obj = g_cancellable_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GCancellable(obj));
 }
-
 CAMLexport CAMLprim value ml_g_cancellable_set_error_if_cancelled(value self)
 {
 CAMLparam1(self);

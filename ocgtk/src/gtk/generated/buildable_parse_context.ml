@@ -11,6 +11,19 @@ semantics for what constitutes the "current" line number other than
 "the best number we could come up with for error messages." *)
 external get_position : t -> int * int = "ml_gtk_buildable_parse_context_get_position"
 
+(** Retrieves the element stack from the internal state of the parser.
+
+The returned `GPtrArray` is an array of strings where the last item is
+the currently open tag (as would be returned by
+gtk_buildable_parse_context_get_element()) and the previous item is its
+immediate parent.
+
+This function is intended to be used in the start_element and
+end_element handlers where gtk_buildable_parse_context_get_element()
+would merely return the name of the element that is being
+processed. *)
+external get_element_stack : t -> string array = "ml_gtk_buildable_parse_context_get_element_stack"
+
 (** Retrieves the name of the currently open element.
 
 If called from the start_element or end_element handlers this will

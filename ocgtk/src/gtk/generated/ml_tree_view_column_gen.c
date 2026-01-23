@@ -20,19 +20,21 @@
 CAMLexport CAMLprim value ml_gtk_tree_view_column_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkTreeViewColumn *obj = gtk_tree_view_column_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkTreeViewColumn(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_tree_view_column_new_with_area(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkTreeViewColumn *obj = gtk_tree_view_column_new_with_area(GtkCellArea_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkTreeViewColumn(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_tree_view_column_set_widget(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -439,18 +441,17 @@ CAMLreturn(Val_unit);
 
 CAMLexport CAMLprim value ml_gtk_tree_view_column_get_cell_area(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkTreeViewColumn *obj = (GtkTreeViewColumn *)GtkTreeViewColumn_val(self);
     GtkCellArea *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "cell-area");
 if (pspec == NULL) caml_failwith("ml_gtk_tree_view_column_get_cell_area: property 'cell-area' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "cell-area", &prop_gvalue);
-    prop_value = (GtkCellArea*)g_value_get_object(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "cell-area", &prop_gvalue);
+          prop_value = (GtkCellArea*)g_value_get_object(&prop_gvalue);
 
-result = Val_GtkCellArea(prop_value);
+      result = Val_GtkCellArea(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}

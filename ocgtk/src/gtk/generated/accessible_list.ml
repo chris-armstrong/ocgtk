@@ -5,7 +5,7 @@
 type t = [`accessible_list] Gobject.obj
 
 (** Create a new AccessibleList *)
-external new_from_array : unit -> unit -> t = "ml_gtk_accessible_list_new_from_array"
+external new_from_array : At_context_and__accessible.Accessible.t array -> unit -> t = "ml_gtk_accessible_list_new_from_array"
 
 (** Create a new AccessibleList *)
 external new_from_list : unit -> t = "ml_gtk_accessible_list_new_from_list"

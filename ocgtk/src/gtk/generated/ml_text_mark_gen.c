@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_text_mark_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
+
 GtkTextMark *obj = gtk_text_mark_new(String_option_val(arg1), Bool_val(arg2));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkTextMark(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_text_mark_set_visible(value self, value arg1)
 {
 CAMLparam2(self, arg1);

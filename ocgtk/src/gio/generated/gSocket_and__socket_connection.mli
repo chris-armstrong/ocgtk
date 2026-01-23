@@ -28,6 +28,8 @@ class socket : Socket_and__socket_connection.Socket.t ->
     method leave_multicast_group : #GInet_address.inet_address -> bool -> string option -> (bool, GError.t) result
     method leave_multicast_group_ssm : #GInet_address.inet_address -> #GInet_address.inet_address option -> string option -> (bool, GError.t) result
     method listen : unit -> (bool, GError.t) result
+    method receive_messages : Input_message.t array -> int -> int -> #GCancellable.cancellable option -> (int, GError.t) result
+    method send_messages : Output_message.t array -> int -> int -> #GCancellable.cancellable option -> (int, GError.t) result
     method set_blocking : bool -> unit
     method set_broadcast : bool -> unit
     method set_keepalive : bool -> unit

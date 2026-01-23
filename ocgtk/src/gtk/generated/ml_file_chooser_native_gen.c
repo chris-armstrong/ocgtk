@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_file_chooser_native_new(value arg1, value arg2, value arg3, value arg4, value arg5)
 {
 CAMLparam5(arg1, arg2, arg3, arg4, arg5);
+
 GtkFileChooserNative *obj = gtk_file_chooser_native_new(String_option_val(arg1), Option_val(arg2, GtkWindow_val, NULL), GtkFileChooserAction_val(arg3), String_option_val(arg4), String_option_val(arg5));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkFileChooserNative(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_file_chooser_native_set_cancel_label(value self, value arg1)
 {
 CAMLparam2(self, arg1);

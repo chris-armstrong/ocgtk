@@ -21,11 +21,20 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GStaticResource */
-#ifndef Val_GStaticResource
-#define GStaticResource_val(val) ((GStaticResource*)ext_of_val(val))
-#define Val_GStaticResource(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GStaticResource */
+/* Conversion functions for GStaticResource (opaque record with hidden fields) */
+GStaticResource *GStaticResource_val(value v) {
+  return *(GStaticResource **)Data_custom_val(v);
+}
+
+value Val_GStaticResource(const GStaticResource *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GStaticResource_option(const GStaticResource *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GStaticResource(ptr));
+}
 
 
 CAMLexport CAMLprim value ml_g_static_resource_init(value self)

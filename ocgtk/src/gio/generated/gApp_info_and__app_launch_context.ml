@@ -51,6 +51,10 @@ class app_info (obj : App_info_and__app_launch_context.App_info.t) = object (sel
     fun () ->
       (App_info_and__app_launch_context.App_info.get_name obj)
 
+  method get_supported_types : unit -> string array =
+    fun () ->
+      (App_info_and__app_launch_context.App_info.get_supported_types obj)
+
   method remove_supports_type : string -> (bool, GError.t) result =
     fun content_type ->
       (App_info_and__app_launch_context.App_info.remove_supports_type obj content_type)

@@ -1,5 +1,6 @@
 class file_chooser : File_chooser.t ->
   object
+    method add_choice : string -> string -> string array option -> string array option -> unit
     method add_filter : #GFile_filter.file_filter -> unit
     method get_action : unit -> Gtk_enums.filechooseraction
     method get_choice : string -> string option

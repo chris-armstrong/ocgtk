@@ -19,19 +19,21 @@
 CAMLexport CAMLprim value ml_gdk_cursor_new_from_name(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
+
 GdkCursor *obj = gdk_cursor_new_from_name(String_val(arg1), Option_val(arg2, GdkCursor_val, NULL));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GdkCursor(obj));
 }
-
 CAMLexport CAMLprim value ml_gdk_cursor_new_from_texture(value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam4(arg1, arg2, arg3, arg4);
+
 GdkCursor *obj = gdk_cursor_new_from_texture(GdkTexture_val(arg1), Int_val(arg2), Int_val(arg3), Option_val(arg4, GdkCursor_val, NULL));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GdkCursor(obj));
 }
-
 CAMLexport CAMLprim value ml_gdk_cursor_get_texture(value self)
 {
 CAMLparam1(self);

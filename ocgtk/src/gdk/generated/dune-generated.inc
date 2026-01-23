@@ -35,6 +35,7 @@
       (echo "EventController")
       (echo "EventControllerKey")
       (echo "EventControllerMotion")
+      (echo "Event_sequence")
       (echo "File_list")
       (echo "Fixed")
       (echo "Focus_event")
@@ -63,6 +64,7 @@
       (echo "GDrag_surface_size")
       (echo "GDrop")
       (echo "GError")
+      (echo "GEvent_sequence")
       (echo "GFile_list")
       (echo "GFocus_event")
       (echo "GFrame_clock")
@@ -71,6 +73,7 @@
       (echo "GGl_texture_builder")
       (echo "GGrab_broken_event")
       (echo "GKey_event")
+      (echo "GKeymap_key")
       (echo "GMemory_texture")
       (echo "GMotion_event")
       (echo "GPad_event")
@@ -84,6 +87,7 @@
       (echo "GSnapshot")
       (echo "GTexture")
       (echo "GTexture_downloader")
+      (echo "GTime_coord")
       (echo "GToplevel")
       (echo "GToplevel_layout")
       (echo "GToplevel_size")
@@ -111,6 +115,7 @@
       (echo "Gtk_enums")
       (echo "Image")
       (echo "Key_event")
+      (echo "Keymap_key")
       (echo "Label")
       (echo "Level_bar")
       (echo "Link_button")
@@ -145,6 +150,7 @@
       (echo "Text_view")
       (echo "Texture")
       (echo "Texture_downloader")
+      (echo "Time_coord")
       (echo "Toggle_button")
       (echo "Toplevel")
       (echo "Toplevel_layout")
@@ -184,6 +190,8 @@ rm cflag-gdk.sexp.tmp clink-gdk.sexp.tmp\\
    ml_cairo_context_gen
    ml_clipboard_gen
    ml_content_deserializer_gen
+   ml_content_formats_builder_gen
+   ml_content_formats_gen
    ml_content_provider_gen
    ml_content_serializer_gen
    ml_crossing_event_gen
@@ -194,37 +202,48 @@ rm cflag-gdk.sexp.tmp clink-gdk.sexp.tmp\\
    ml_device_tool_gen
    ml_display_gen
    ml_display_manager_gen
+   ml_dmabuf_formats_gen
    ml_dmabuf_texture_builder_gen
    ml_dmabuf_texture_gen
    ml_dnd_event_gen
    ml_drag_gen
    ml_drag_surface_gen
+   ml_drag_surface_size_gen
    ml_draw_context_gen
    ml_drop_gen
    ml_event_gen
-   ml_event_sequence_record_gen
+   ml_event_sequence_gen
+   ml_file_list_gen
    ml_focus_event_gen
    ml_frame_clock_gen
+   ml_frame_timings_gen
    ml_gdk_enums_gen
    ml_gl_context_gen
    ml_gl_texture_builder_gen
    ml_gl_texture_gen
    ml_grab_broken_event_gen
    ml_key_event_gen
+   ml_keymap_key_gen
    ml_memory_texture_gen
    ml_monitor_gen
    ml_motion_event_gen
    ml_pad_event_gen
    ml_paintable_gen
    ml_popup_gen
+   ml_popup_layout_gen
    ml_proximity_event_gen
-   ml_rgb_a_record_gen
+   ml_rectangle_gen
+   ml_rgb_a_gen
    ml_scroll_event_gen
    ml_seat_gen
    ml_snapshot_gen
    ml_surface_gen
+   ml_texture_downloader_gen
    ml_texture_gen
+   ml_time_coord_gen
    ml_toplevel_gen
+   ml_toplevel_layout_gen
+   ml_toplevel_size_gen
    ml_touch_event_gen
    ml_touchpad_event_gen
    ml_vulkan_context_gen

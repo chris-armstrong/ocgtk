@@ -6,6 +6,7 @@ class action_group : Action_group.t ->
     method action_removed : string -> unit
     method get_action_enabled : string -> bool
     method has_action : string -> bool
+    method list_actions : unit -> string array
     method as_action_group : Action_group.t
   end
 

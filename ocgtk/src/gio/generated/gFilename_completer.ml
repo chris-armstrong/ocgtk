@@ -8,6 +8,10 @@ class filename_completer (obj : Filename_completer.t) = object (self)
     fun initial_text ->
       (Filename_completer.get_completion_suffix obj initial_text)
 
+  method get_completions : string -> string array =
+    fun initial_text ->
+      (Filename_completer.get_completions obj initial_text)
+
   method set_dirs_only : bool -> unit =
     fun dirs_only ->
       (Filename_completer.set_dirs_only obj dirs_only)

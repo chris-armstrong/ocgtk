@@ -91,6 +91,21 @@ gboolean result = g_app_info_launch_uris_finish(GAppInfo_val(self), GAsyncResult
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+CAMLexport CAMLprim value ml_g_app_info_get_supported_types(value self)
+{
+CAMLparam1(self);
+
+const char** result = g_app_info_get_supported_types(GAppInfo_val(self));
+    int result_length = 0;
+    while (result[result_length] != NULL) result_length++;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+CAMLreturn(ml_result);
+}
+
 CAMLexport CAMLprim value ml_g_app_info_get_name(value self)
 {
 CAMLparam1(self);

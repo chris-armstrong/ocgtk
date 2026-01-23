@@ -486,6 +486,34 @@ and Display
   is called to disable that feature. *)
   external notify_startup_complete : t -> string -> unit = "ml_gdk_display_notify_startup_complete"
 
+  (** Obtains a list of keycode/group/level combinations that will
+  generate @keyval.
+
+  Groups and levels are two kinds of keyboard mode; in general, the level
+  determines whether the top or bottom symbol on a key is used, and the
+  group determines whether the left or right symbol is used.
+
+  On US keyboards, the shift key changes the keyboard level, and there
+  are no groups. A group switch key might convert a keyboard between
+  Hebrew to English modes, for example.
+
+  `GdkEventKey` contains a %group field that indicates the active
+  keyboard group. The level is computed from the modifier mask.
+
+  The returned array should be freed with g_free(). *)
+  external map_keyval : t -> int -> bool * Keymap_key.t array * int = "ml_gdk_display_map_keyval"
+
+  (** Returns the keyvals bound to @keycode.
+
+  The Nth `GdkKeymapKey` in @keys is bound to the Nth keyval in @keyvals.
+
+  When a keycode is pressed by the user, the keyval from
+  this list of entries is selected by considering the effective
+  keyboard group and level.
+
+  Free the returned arrays with g_free(). *)
+  external map_keycode : t -> int -> bool * Keymap_key.t array * int array * int = "ml_gdk_display_map_keycode"
+
   (** Returns whether surfaces on this @display are created with an
   alpha channel.
 
@@ -682,6 +710,34 @@ end = struct
   [gtk_window_set_auto_startup_notification()](../gtk4/method.Window.set_auto_startup_notification.html)
   is called to disable that feature. *)
   external notify_startup_complete : t -> string -> unit = "ml_gdk_display_notify_startup_complete"
+
+  (** Obtains a list of keycode/group/level combinations that will
+  generate @keyval.
+
+  Groups and levels are two kinds of keyboard mode; in general, the level
+  determines whether the top or bottom symbol on a key is used, and the
+  group determines whether the left or right symbol is used.
+
+  On US keyboards, the shift key changes the keyboard level, and there
+  are no groups. A group switch key might convert a keyboard between
+  Hebrew to English modes, for example.
+
+  `GdkEventKey` contains a %group field that indicates the active
+  keyboard group. The level is computed from the modifier mask.
+
+  The returned array should be freed with g_free(). *)
+  external map_keyval : t -> int -> bool * Keymap_key.t array * int = "ml_gdk_display_map_keyval"
+
+  (** Returns the keyvals bound to @keycode.
+
+  The Nth `GdkKeymapKey` in @keys is bound to the Nth keyval in @keyvals.
+
+  When a keycode is pressed by the user, the keyval from
+  this list of entries is selected by considering the effective
+  keyboard group and level.
+
+  Free the returned arrays with g_free(). *)
+  external map_keycode : t -> int -> bool * Keymap_key.t array * int array * int = "ml_gdk_display_map_keycode"
 
   (** Returns whether surfaces on this @display are created with an
   alpha channel.
@@ -907,6 +963,17 @@ and Event
   (** Returns the modifier state field of an event. *)
   external get_modifier_state : t -> Gdk_enums.modifiertype = "ml_gdk_event_get_modifier_state"
 
+  (** Retrieves the history of the device that @event is for, as a list of
+  time and coordinates.
+
+  The history includes positions that are not delivered as separate events
+  to the application because they occurred in the same frame as @event.
+
+  Note that only motion and scroll events record history, and motion
+  events do it only if one of the mouse buttons is down, or the device
+  has a tool. *)
+  external get_history : t -> Time_coord.t array option * int = "ml_gdk_event_get_history"
+
   (** Retrieves the type of the event. *)
   external get_event_type : t -> Gdk_enums.eventtype = "ml_gdk_event_get_event_type"
 
@@ -940,6 +1007,12 @@ and Event
   To find out which axes are used, use [method@Gdk.DeviceTool.get_axes]
   on the device tool returned by [method@Gdk.Event.get_device_tool]. *)
   external get_axis : t -> Gdk_enums.axisuse -> bool * float = "ml_gdk_event_get_axis"
+
+  (** Extracts all axis values from an event.
+
+  To find out which axes are used, use [method@Gdk.DeviceTool.get_axes]
+  on the device tool returned by [method@Gdk.Event.get_device_tool]. *)
+  external get_axes : t -> bool * float array * int = "ml_gdk_event_get_axes"
 
   (** Returns the distance between the event locations.
 
@@ -1004,6 +1077,17 @@ end = struct
   (** Returns the modifier state field of an event. *)
   external get_modifier_state : t -> Gdk_enums.modifiertype = "ml_gdk_event_get_modifier_state"
 
+  (** Retrieves the history of the device that @event is for, as a list of
+  time and coordinates.
+
+  The history includes positions that are not delivered as separate events
+  to the application because they occurred in the same frame as @event.
+
+  Note that only motion and scroll events record history, and motion
+  events do it only if one of the mouse buttons is down, or the device
+  has a tool. *)
+  external get_history : t -> Time_coord.t array option * int = "ml_gdk_event_get_history"
+
   (** Retrieves the type of the event. *)
   external get_event_type : t -> Gdk_enums.eventtype = "ml_gdk_event_get_event_type"
 
@@ -1037,6 +1121,12 @@ end = struct
   To find out which axes are used, use [method@Gdk.DeviceTool.get_axes]
   on the device tool returned by [method@Gdk.Event.get_device_tool]. *)
   external get_axis : t -> Gdk_enums.axisuse -> bool * float = "ml_gdk_event_get_axis"
+
+  (** Extracts all axis values from an event.
+
+  To find out which axes are used, use [method@Gdk.DeviceTool.get_axes]
+  on the device tool returned by [method@Gdk.Event.get_device_tool]. *)
+  external get_axes : t -> bool * float array * int = "ml_gdk_event_get_axes"
 
   (** Returns the distance between the event locations.
 

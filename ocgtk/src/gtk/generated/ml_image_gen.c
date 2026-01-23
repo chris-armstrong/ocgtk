@@ -20,59 +20,39 @@
 CAMLexport CAMLprim value ml_gtk_image_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkImage *obj = gtk_image_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkImage(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_image_new_from_file(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkImage *obj = gtk_image_new_from_file(String_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkImage(obj));
 }
-
-CAMLexport CAMLprim value ml_gtk_image_new_from_gicon(value arg1)
-{
-CAMLparam1(arg1);
-GtkImage *obj = gtk_image_new_from_gicon(arg1);
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GtkImage(obj));
-}
-
 CAMLexport CAMLprim value ml_gtk_image_new_from_icon_name(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkImage *obj = gtk_image_new_from_icon_name(String_option_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkImage(obj));
 }
-
-CAMLexport CAMLprim value ml_gtk_image_new_from_paintable(value arg1)
-{
-CAMLparam1(arg1);
-GtkImage *obj = gtk_image_new_from_paintable(arg1);
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GtkImage(obj));
-}
-
-CAMLexport CAMLprim value ml_gtk_image_new_from_pixbuf(value arg1)
-{
-CAMLparam1(arg1);
-GtkImage *obj = gtk_image_new_from_pixbuf(arg1);
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GtkImage(obj));
-}
-
 CAMLexport CAMLprim value ml_gtk_image_new_from_resource(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkImage *obj = gtk_image_new_from_resource(String_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkImage(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_image_set_pixel_size(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -155,99 +135,96 @@ CAMLreturn(Val_unit);
 
 CAMLexport CAMLprim value ml_gtk_image_get_file(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkImage *obj = (GtkImage *)GtkImage_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "file");
 if (pspec == NULL) caml_failwith("ml_gtk_image_get_file: property 'file' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "file", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "file", &prop_gvalue);
+          prop_value = g_value_get_string(&prop_gvalue);
 
-result = caml_copy_string(prop_value);
+      result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_image_set_file(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkImage *obj = (GtkImage *)GtkImage_val(self);
     ML_DECL_CONST_STRING(c_value, String_val(new_value));
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "file");
 if (pspec == NULL) caml_failwith("ml_gtk_image_set_file: property 'file' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_string(&prop_gvalue, c_value);
+          g_value_set_string(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "file", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_image_get_resource(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkImage *obj = (GtkImage *)GtkImage_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "resource");
 if (pspec == NULL) caml_failwith("ml_gtk_image_get_resource: property 'resource' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "resource", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "resource", &prop_gvalue);
+          prop_value = g_value_get_string(&prop_gvalue);
 
-result = caml_copy_string(prop_value);
+      result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_image_set_resource(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkImage *obj = (GtkImage *)GtkImage_val(self);
     ML_DECL_CONST_STRING(c_value, String_val(new_value));
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "resource");
 if (pspec == NULL) caml_failwith("ml_gtk_image_set_resource: property 'resource' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_string(&prop_gvalue, c_value);
+          g_value_set_string(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "resource", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_image_get_use_fallback(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkImage *obj = (GtkImage *)GtkImage_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "use-fallback");
 if (pspec == NULL) caml_failwith("ml_gtk_image_get_use_fallback: property 'use-fallback' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "use-fallback", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "use-fallback", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_image_set_use_fallback(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkImage *obj = (GtkImage *)GtkImage_val(self);
     gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "use-fallback");
 if (pspec == NULL) caml_failwith("ml_gtk_image_set_use_fallback: property 'use-fallback' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
+          g_value_set_boolean(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "use-fallback", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }

@@ -7,6 +7,7 @@ class tree_store : Tree_store.t ->
     method move_after : Tree_iter.t -> Tree_iter.t option -> unit
     method move_before : Tree_iter.t -> Tree_iter.t option -> unit
     method remove : Tree_iter.t -> bool
+    method reorder : Tree_iter.t option -> int array -> unit
     method swap : Tree_iter.t -> Tree_iter.t -> unit
     method as_tree_store : Tree_store.t
   end

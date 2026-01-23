@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_aspect_frame_new(value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam4(arg1, arg2, arg3, arg4);
+
 GtkAspectFrame *obj = gtk_aspect_frame_new(Double_val(arg1), Double_val(arg2), Double_val(arg3), Bool_val(arg4));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkAspectFrame(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_aspect_frame_set_yalign(value self, value arg1)
 {
 CAMLparam2(self, arg1);

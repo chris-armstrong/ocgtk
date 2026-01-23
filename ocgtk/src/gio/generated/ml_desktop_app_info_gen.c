@@ -25,25 +25,34 @@
 CAMLexport CAMLprim value ml_g_desktop_app_info_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GDesktopAppInfo *obj = g_desktop_app_info_new(String_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GDesktopAppInfo(obj));
 }
-
 CAMLexport CAMLprim value ml_g_desktop_app_info_new_from_filename(value arg1)
 {
 CAMLparam1(arg1);
+
 GDesktopAppInfo *obj = g_desktop_app_info_new_from_filename(String_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GDesktopAppInfo(obj));
 }
-
-CAMLexport CAMLprim value ml_g_desktop_app_info_new_from_keyfile(value arg1)
+CAMLexport CAMLprim value ml_g_desktop_app_info_list_actions(value self)
 {
-CAMLparam1(arg1);
-GDesktopAppInfo *obj = g_desktop_app_info_new_from_keyfile(arg1);
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GDesktopAppInfo(obj));
+CAMLparam1(self);
+
+const gchar* const* result = g_desktop_app_info_list_actions(GDesktopAppInfo_val(self));
+    int result_length = 0;
+    while (result[result_length] != NULL) result_length++;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+CAMLreturn(ml_result);
 }
 
 CAMLexport CAMLprim value ml_g_desktop_app_info_launch_action(value self, value arg1, value arg2)
@@ -100,6 +109,21 @@ CAMLparam2(self, arg1);
 
 char* result = g_desktop_app_info_get_locale_string(GDesktopAppInfo_val(self), String_val(arg1));
 CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_get_keywords(value self)
+{
+CAMLparam1(self);
+
+const char* const* result = g_desktop_app_info_get_keywords(GDesktopAppInfo_val(self));
+    int result_length = 0;
+    while (result[result_length] != NULL) result_length++;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+CAMLreturn(ml_result);
 }
 
 CAMLexport CAMLprim value ml_g_desktop_app_info_get_is_hidden(value self)

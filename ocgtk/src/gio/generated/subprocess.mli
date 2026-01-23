@@ -144,6 +144,9 @@ external communicate_utf8 : t -> string option -> Cancellable.t option -> (bool 
 
 (* Properties *)
 
+(** Get property: argv *)
+external get_argv : t -> string array = "ml_gtk_subprocess_get_argv"
+
 (** Get property: flags *)
 external get_flags : t -> Gio_enums.subprocessflags = "ml_gtk_subprocess_get_flags"
 

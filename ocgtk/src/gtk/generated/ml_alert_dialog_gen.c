@@ -65,6 +65,21 @@ gtk_alert_dialog_set_cancel_button(GtkAlertDialog_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_alert_dialog_set_buttons(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+    int arg1_length = Wosize_val(arg1);
+    char** c_arg1 = (char**)g_malloc(sizeof(char*) * (arg1_length + 1));
+    for (int i = 0; i < arg1_length; i++) {
+      c_arg1[i] = String_val(Field(arg1, i));
+    }
+    c_arg1[arg1_length] = NULL;
+
+gtk_alert_dialog_set_buttons(GtkAlertDialog_val(self), c_arg1);
+    g_free(c_arg1);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_alert_dialog_get_modal(value self)
 {
 CAMLparam1(self);
@@ -103,4 +118,19 @@ CAMLparam1(self);
 
 int result = gtk_alert_dialog_get_cancel_button(GtkAlertDialog_val(self));
 CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_alert_dialog_get_buttons(value self)
+{
+CAMLparam1(self);
+
+const char* const* result = gtk_alert_dialog_get_buttons(GtkAlertDialog_val(self));
+    int result_length = 0;
+    while (result[result_length] != NULL) result_length++;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+CAMLreturn(ml_result);
 }

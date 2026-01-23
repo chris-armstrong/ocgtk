@@ -25,11 +25,12 @@
 CAMLexport CAMLprim value ml_g_subprocess_launcher_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GSubprocessLauncher *obj = g_subprocess_launcher_new(GioSubprocessFlags_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GSubprocessLauncher(obj));
 }
-
 CAMLexport CAMLprim value ml_g_subprocess_launcher_unsetenv(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -136,18 +137,17 @@ CAMLreturn(Val_unit);
 
 CAMLexport CAMLprim value ml_gtk_subprocess_launcher_get_flags(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GSubprocessLauncher *obj = (GSubprocessLauncher *)GSubprocessLauncher_val(self);
     GSubprocessFlags prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "flags");
 if (pspec == NULL) caml_failwith("ml_gtk_subprocess_launcher_get_flags: property 'flags' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "flags", &prop_gvalue);
-    prop_value = (GSubprocessFlags)g_value_get_flags(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "flags", &prop_gvalue);
+          prop_value = (GSubprocessFlags)g_value_get_flags(&prop_gvalue);
 
-result = Val_GioSubprocessFlags(prop_value);
+      result = Val_GioSubprocessFlags(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}

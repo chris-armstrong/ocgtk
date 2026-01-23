@@ -20,19 +20,21 @@
 CAMLexport CAMLprim value ml_gtk_text_view_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkTextView *obj = gtk_text_view_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkTextView(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_text_view_new_with_buffer(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkTextView *obj = gtk_text_view_new_with_buffer(GtkTextBuffer_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkTextView(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_text_view_window_to_buffer_coords(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
@@ -205,8 +207,7 @@ CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam1(arg5);
 
 gtk_text_view_scroll_to_mark(GtkTextView_val(self), GtkTextMark_val(arg1), Double_val(arg2), Bool_val(arg3), Double_val(arg4), Double_val(arg5));
-CAMLreturn(Val_unit);
-}
+CAMLreturn(Val_unit);}
 
 CAMLexport CAMLprim value ml_gtk_text_view_scroll_to_mark_bytecode(value * argv, int argn)
 {
@@ -219,8 +220,7 @@ CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam1(arg5);
 
 gboolean result = gtk_text_view_scroll_to_iter(GtkTextView_val(self), GtkTextIter_val(arg1), Double_val(arg2), Bool_val(arg3), Double_val(arg4), Double_val(arg5));
-CAMLreturn(Val_bool(result));
-}
+CAMLreturn(Val_bool(result));}
 
 CAMLexport CAMLprim value ml_gtk_text_view_scroll_to_iter_bytecode(value * argv, int argn)
 {
@@ -557,33 +557,32 @@ CAMLreturn(Val_unit);
 
 CAMLexport CAMLprim value ml_gtk_text_view_get_im_module(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "im-module");
 if (pspec == NULL) caml_failwith("ml_gtk_text_view_get_im_module: property 'im-module' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "im-module", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "im-module", &prop_gvalue);
+          prop_value = g_value_get_string(&prop_gvalue);
 
-result = caml_copy_string(prop_value);
+      result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_text_view_set_im_module(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkTextView *obj = (GtkTextView *)GtkTextView_val(self);
     ML_DECL_CONST_STRING(c_value, String_val(new_value));
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "im-module");
 if (pspec == NULL) caml_failwith("ml_gtk_text_view_set_im_module: property 'im-module' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_string(&prop_gvalue, c_value);
+          g_value_set_string(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "im-module", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }

@@ -9,7 +9,7 @@ license: ["LGPL-2.1-or-later" "WITH" "OCaml-LGPL-linking-exception"]
 homepage: "https://github.com/chris-armstrong/ocgtk"
 bug-reports: "https://github.com/chris-armstrong/ocgtk/issues"
 depends: [
-  "ocaml" {>= "4.09"}
+  "ocaml" {>= "5.0"}
   "dune" {>= "3.13" & >= "3.13"}
   "conf-gtk4"
   "cairo2"
@@ -17,6 +17,12 @@ depends: [
   "camlp5" {build}
   "camlp-streams" {build}
   "xmlm" {build}
+  "re" {build}
+  "uutf" {build}
+  "uuseg" {build}
+  "fmt" {build}
+  "fpath" {build}
+  "yojson" {build}
   "alcotest" {with-test}
   "ppxlib" {with-test}
   "odoc" {with-doc}

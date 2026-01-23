@@ -21,9 +21,18 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GIOSchedulerJob */
-#ifndef Val_GIOSchedulerJob
-#define GIOSchedulerJob_val(val) ((GIOSchedulerJob*)ext_of_val(val))
-#define Val_GIOSchedulerJob(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GIOSchedulerJob */
+/* Conversion functions for GIOSchedulerJob (opaque record with hidden fields) */
+GIOSchedulerJob *GIOSchedulerJob_val(value v) {
+  return *(GIOSchedulerJob **)Data_custom_val(v);
+}
+
+value Val_GIOSchedulerJob(const GIOSchedulerJob *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GIOSchedulerJob_option(const GIOSchedulerJob *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GIOSchedulerJob(ptr));
+}
 

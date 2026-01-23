@@ -25,11 +25,12 @@
 CAMLexport CAMLprim value ml_g_file_icon_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GFileIcon *obj = g_file_icon_new(GFile_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GFileIcon(obj));
 }
-
 CAMLexport CAMLprim value ml_g_file_icon_get_file(value self)
 {
 CAMLparam1(self);

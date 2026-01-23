@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_event_controller_focus_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkEventControllerFocus *obj = gtk_event_controller_focus_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkEventControllerFocus(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_event_controller_focus_is_focus(value self)
 {
 CAMLparam1(self);

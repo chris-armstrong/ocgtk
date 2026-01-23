@@ -16,6 +16,13 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Copy function for GtkTextIter (value-like record with copy method) */
+value copy_GtkTextIter(const GtkTextIter *ptr) {
+  if (ptr == NULL) return Val_none;
+  GtkTextIter *copy = gtk_text_iter_copy((GtkTextIter*)ptr);
+  return ml_gir_record_val_ptr(g_new0(GtkTextIter, 1));
+}
+
 
 CAMLexport CAMLprim value ml_gtk_text_iter_toggles_tag(value self, value arg1)
 {
@@ -254,6 +261,7 @@ CAMLexport CAMLprim value ml_gtk_text_iter_get_child_anchor(value self)
 CAMLparam1(self);
 
 GtkTextChildAnchor* result = gtk_text_iter_get_child_anchor(GtkTextIter_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkTextChildAnchor));
 }
 
@@ -278,6 +286,7 @@ CAMLexport CAMLprim value ml_gtk_text_iter_get_buffer(value self)
 CAMLparam1(self);
 
 GtkTextBuffer* result = gtk_text_iter_get_buffer(GtkTextIter_val(self));
+if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkTextBuffer(result));
 }
 
@@ -403,8 +412,8 @@ gboolean result = gtk_text_iter_forward_search(GtkTextIter_val(self), String_val
 CAMLlocal1(ret);
     ret = caml_alloc(3, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTextIter(out3));
-    Store_field(ret, 2, Val_GtkTextIter(out4));
+    Store_field(ret, 1, Val_GtkTextIter(&out3));
+    Store_field(ret, 2, Val_GtkTextIter(&out4));
     CAMLreturn(ret);
 }
 
@@ -626,8 +635,8 @@ gboolean result = gtk_text_iter_backward_search(GtkTextIter_val(self), String_va
 CAMLlocal1(ret);
     ret = caml_alloc(3, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTextIter(out3));
-    Store_field(ret, 2, Val_GtkTextIter(out4));
+    Store_field(ret, 1, Val_GtkTextIter(&out3));
+    Store_field(ret, 2, Val_GtkTextIter(&out4));
     CAMLreturn(ret);
 }
 

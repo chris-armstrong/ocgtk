@@ -20,19 +20,21 @@
 CAMLexport CAMLprim value ml_gtk_label_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkLabel *obj = gtk_label_new(String_option_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkLabel(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_label_new_with_mnemonic(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkLabel *obj = gtk_label_new_with_mnemonic(String_option_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkLabel(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_label_set_yalign(value self, value arg1)
 {
 CAMLparam2(self, arg1);

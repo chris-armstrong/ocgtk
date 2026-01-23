@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_menu_button_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkMenuButton *obj = gtk_menu_button_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkMenuButton(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_menu_button_set_use_underline(value self, value arg1)
 {
 CAMLparam2(self, arg1);

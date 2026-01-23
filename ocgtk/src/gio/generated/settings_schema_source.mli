@@ -23,3 +23,17 @@ then the parent sources will also be checked.
 If the schema isn't found, %NULL is returned. *)
 external lookup : t -> string -> bool -> Settings_schema.t option = "ml_g_settings_schema_source_lookup"
 
+(** Lists the schemas in a given source.
+
+If @recursive is %TRUE then include parent sources.  If %FALSE then
+only include the schemas from one source (ie: one directory).  You
+probably want %TRUE.
+
+Non-relocatable schemas are those for which you can call
+g_settings_new().  Relocatable schemas are those for which you must
+use g_settings_new_with_path().
+
+Do not call this function from normal programs.  This is designed for
+use by database editors, commandline tools, etc. *)
+external list_schemas : t -> bool -> string array * string array = "ml_g_settings_schema_source_list_schemas"
+

@@ -17,14 +17,6 @@
 #include "generated_forward_decls.h"
 
 
-CAMLexport CAMLprim value ml_gtk_popover_menu_bar_new_from_model(value arg1)
-{
-CAMLparam1(arg1);
-GtkPopoverMenuBar *obj = gtk_popover_menu_bar_new_from_model(arg1);
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GtkPopoverMenuBar(obj));
-}
-
 CAMLexport CAMLprim value ml_gtk_popover_menu_bar_remove_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);

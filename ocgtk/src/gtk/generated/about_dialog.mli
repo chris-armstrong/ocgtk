@@ -66,6 +66,10 @@ about dialog.
 If `license` is `NULL`, the license page is hidden. *)
 external set_license : t -> string option -> unit = "ml_gtk_about_dialog_set_license"
 
+(** Sets the names of the documenters which are displayed
+in the "Credits" page. *)
+external set_documenters : t -> string array -> unit = "ml_gtk_about_dialog_set_documenters"
+
 (** Sets the copyright string to display in the about dialog.
 
 This should be a short string of one or two lines. *)
@@ -75,6 +79,14 @@ external set_copyright : t -> string option -> unit = "ml_gtk_about_dialog_set_c
 
 This should be a short string of one or two lines. *)
 external set_comments : t -> string option -> unit = "ml_gtk_about_dialog_set_comments"
+
+(** Sets the names of the authors which are displayed
+in the "Credits" page of the about dialog. *)
+external set_authors : t -> string array -> unit = "ml_gtk_about_dialog_set_authors"
+
+(** Sets the names of the artists to be displayed
+in the "Credits" page. *)
+external set_artists : t -> string array -> unit = "ml_gtk_about_dialog_set_artists"
 
 (** Returns whether the license text in the about dialog is
 automatically wrapped. *)
@@ -105,11 +117,26 @@ external get_logo_icon_name : t -> string option = "ml_gtk_about_dialog_get_logo
 (** Returns the license information. *)
 external get_license : t -> string option = "ml_gtk_about_dialog_get_license"
 
+(** Returns the name of the documenters which are displayed
+in the credits page. *)
+external get_documenters : t -> string array = "ml_gtk_about_dialog_get_documenters"
+
 (** Returns the copyright string. *)
 external get_copyright : t -> string option = "ml_gtk_about_dialog_get_copyright"
 
 (** Returns the comments string. *)
 external get_comments : t -> string option = "ml_gtk_about_dialog_get_comments"
+
+(** Returns the names of the authors which are displayed
+in the credits page. *)
+external get_authors : t -> string array = "ml_gtk_about_dialog_get_authors"
+
+(** Returns the names of the artists which are displayed
+in the credits page. *)
+external get_artists : t -> string array = "ml_gtk_about_dialog_get_artists"
+
+(** Creates a new section in the "Credits" page. *)
+external add_credit_section : t -> string -> string array -> unit = "ml_gtk_about_dialog_add_credit_section"
 
 (* Properties *)
 

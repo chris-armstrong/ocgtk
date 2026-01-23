@@ -20,19 +20,21 @@
 CAMLexport CAMLprim value ml_gtk_tree_view_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkTreeView *obj = gtk_tree_view_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkTreeView(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_tree_view_new_with_model(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkTreeView *obj = gtk_tree_view_new_with_model(GtkTreeModel_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkTreeView(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_tree_view_unset_rows_drag_source(value self)
 {
 CAMLparam1(self);
@@ -247,8 +249,7 @@ CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam1(arg5);
 
 gtk_tree_view_scroll_to_cell(GtkTreeView_val(self), Option_val(arg1, GtkTreePath_val, NULL), Option_val(arg2, GtkTreeViewColumn_val, NULL), Bool_val(arg3), Double_val(arg4), Double_val(arg5));
-CAMLreturn(Val_unit);
-}
+CAMLreturn(Val_unit);}
 
 CAMLexport CAMLprim value ml_gtk_tree_view_scroll_to_cell_bytecode(value * argv, int argn)
 {
@@ -714,33 +715,32 @@ CAMLreturn(Val_int(result));
 
 CAMLexport CAMLprim value ml_gtk_tree_view_get_enable_grid_lines(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
     GtkTreeViewGridLines prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "enable-grid-lines");
 if (pspec == NULL) caml_failwith("ml_gtk_tree_view_get_enable_grid_lines: property 'enable-grid-lines' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "enable-grid-lines", &prop_gvalue);
-    prop_value = (GtkTreeViewGridLines)g_value_get_enum(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "enable-grid-lines", &prop_gvalue);
+          prop_value = (GtkTreeViewGridLines)g_value_get_enum(&prop_gvalue);
 
-result = Val_GtkTreeViewGridLines(prop_value);
+      result = Val_GtkTreeViewGridLines(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_tree_view_set_enable_grid_lines(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkTreeView *obj = (GtkTreeView *)GtkTreeView_val(self);
     GtkTreeViewGridLines c_value = GtkTreeViewGridLines_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "enable-grid-lines");
 if (pspec == NULL) caml_failwith("ml_gtk_tree_view_set_enable_grid_lines: property 'enable-grid-lines' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_enum(&prop_gvalue, c_value);
+          g_value_set_enum(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "enable-grid-lines", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }

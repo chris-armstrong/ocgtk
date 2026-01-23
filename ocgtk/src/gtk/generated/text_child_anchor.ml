@@ -10,6 +10,11 @@ external new_ : unit -> t = "ml_gtk_text_child_anchor_new"
 external new_with_replacement : string -> t = "ml_gtk_text_child_anchor_new_with_replacement"
 
 (* Methods *)
+(** Gets a list of all widgets anchored at this child anchor.
+
+The order in which the widgets are returned is not defined. *)
+external get_widgets : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t array * int = "ml_gtk_text_child_anchor_get_widgets"
+
 (** Determines whether a child anchor has been deleted from
 the buffer.
 

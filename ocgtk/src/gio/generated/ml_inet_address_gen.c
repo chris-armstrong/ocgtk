@@ -25,35 +25,30 @@
 CAMLexport CAMLprim value ml_g_inet_address_new_any(value arg1)
 {
 CAMLparam1(arg1);
+
 GInetAddress *obj = g_inet_address_new_any(GioSocketFamily_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GInetAddress(obj));
 }
-
-CAMLexport CAMLprim value ml_g_inet_address_new_from_bytes(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-GInetAddress *obj = g_inet_address_new_from_bytes(arg1, GioSocketFamily_val(arg2));
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GInetAddress(obj));
-}
-
 CAMLexport CAMLprim value ml_g_inet_address_new_from_string(value arg1)
 {
 CAMLparam1(arg1);
+
 GInetAddress *obj = g_inet_address_new_from_string(String_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GInetAddress(obj));
 }
-
 CAMLexport CAMLprim value ml_g_inet_address_new_loopback(value arg1)
 {
 CAMLparam1(arg1);
+
 GInetAddress *obj = g_inet_address_new_loopback(GioSocketFamily_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GInetAddress(obj));
 }
-
 CAMLexport CAMLprim value ml_g_inet_address_to_string(value self)
 {
 CAMLparam1(self);

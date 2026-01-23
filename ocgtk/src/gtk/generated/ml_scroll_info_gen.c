@@ -16,14 +16,30 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Conversion functions for GtkScrollInfo (opaque record with hidden fields) */
+GtkScrollInfo *GtkScrollInfo_val(value v) {
+  return *(GtkScrollInfo **)Data_custom_val(v);
+}
+
+value Val_GtkScrollInfo(const GtkScrollInfo *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GtkScrollInfo_option(const GtkScrollInfo *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkScrollInfo(ptr));
+}
+
 
 CAMLexport CAMLprim value ml_gtk_scroll_info_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkScrollInfo *obj = gtk_scroll_info_new();
+
 CAMLreturn(Val_GtkScrollInfo(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_scroll_info_unref(value self)
 {
 CAMLparam1(self);

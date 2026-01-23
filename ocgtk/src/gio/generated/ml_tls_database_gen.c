@@ -38,8 +38,7 @@ CAMLxparam2(arg5, arg6);
 GError *error = NULL;
 
 GTlsCertificateFlags result = g_tls_database_verify_chain(GTlsDatabase_val(self), GTlsCertificate_val(arg1), String_val(arg2), Option_val(arg3, GSocketConnectable_val, NULL), Option_val(arg4, GTlsInteraction_val, NULL), GioTlsDatabaseVerifyFlags_val(arg5), Option_val(arg6, GCancellable_val, NULL), &error);
-if (error == NULL) CAMLreturn(Res_Ok(Val_GioTlsCertificateFlags(result))); else CAMLreturn(Res_Error(Val_GError(error)));
-}
+if (error == NULL) CAMLreturn(Res_Ok(Val_GioTlsCertificateFlags(result))); else CAMLreturn(Res_Error(Val_GError(error)));}
 
 CAMLexport CAMLprim value ml_g_tls_database_verify_chain_bytecode(value * argv, int argn)
 {

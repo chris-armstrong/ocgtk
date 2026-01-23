@@ -25,11 +25,12 @@
 CAMLexport CAMLprim value ml_g_unix_mount_monitor_new(value unit)
 {
 CAMLparam1(unit);
+
 GUnixMountMonitor *obj = g_unix_mount_monitor_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GUnixMountMonitor(obj));
 }
-
 CAMLexport CAMLprim value ml_g_unix_mount_monitor_set_rate_limit(value self, value arg1)
 {
 CAMLparam2(self, arg1);

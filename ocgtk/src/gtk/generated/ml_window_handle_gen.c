@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_window_handle_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkWindowHandle *obj = gtk_window_handle_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkWindowHandle(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_window_handle_set_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);

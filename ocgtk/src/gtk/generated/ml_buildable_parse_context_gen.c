@@ -16,6 +16,21 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Conversion functions for GtkBuildableParseContext (opaque record with hidden fields) */
+GtkBuildableParseContext *GtkBuildableParseContext_val(value v) {
+  return *(GtkBuildableParseContext **)Data_custom_val(v);
+}
+
+value Val_GtkBuildableParseContext(const GtkBuildableParseContext *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GtkBuildableParseContext_option(const GtkBuildableParseContext *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkBuildableParseContext(ptr));
+}
+
 
 CAMLexport CAMLprim value ml_gtk_buildable_parse_context_get_position(value self)
 {
@@ -29,6 +44,21 @@ CAMLlocal1(ret);
     Store_field(ret, 0, Val_int(out1));
     Store_field(ret, 1, Val_int(out2));
     CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_buildable_parse_context_get_element_stack(value self)
+{
+CAMLparam1(self);
+
+GPtrArray* result = gtk_buildable_parse_context_get_element_stack(GtkBuildableParseContext_val(self));
+    guint result_length = result->len;
+    gpointer* result_pdata = result->pdata;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string((GPtrArray*)result_pdata[i]));
+    }
+CAMLreturn(ml_result);
 }
 
 CAMLexport CAMLprim value ml_gtk_buildable_parse_context_get_element(value self)

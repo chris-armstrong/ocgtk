@@ -21,9 +21,18 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GInputMessage */
-#ifndef Val_GInputMessage
-#define GInputMessage_val(val) ((GInputMessage*)ext_of_val(val))
-#define Val_GInputMessage(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GInputMessage */
+/* Conversion functions for GInputMessage (opaque record with hidden fields) */
+GInputMessage *GInputMessage_val(value v) {
+  return *(GInputMessage **)Data_custom_val(v);
+}
+
+value Val_GInputMessage(const GInputMessage *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GInputMessage_option(const GInputMessage *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GInputMessage(ptr));
+}
 

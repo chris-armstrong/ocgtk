@@ -25,11 +25,12 @@
 CAMLexport CAMLprim value ml_g_dbus_auth_observer_new(value unit)
 {
 CAMLparam1(unit);
+
 GDBusAuthObserver *obj = g_dbus_auth_observer_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GDBusAuthObserver(obj));
 }
-
 CAMLexport CAMLprim value ml_g_dbus_auth_observer_authorize_authenticated_peer(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);

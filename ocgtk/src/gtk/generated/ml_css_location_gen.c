@@ -16,21 +16,17 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Conversion functions for GtkCssLocation (non-opaque record with fields) */
+/* Conversion functions for GtkCssLocation (opaque record with hidden fields) */
 GtkCssLocation *GtkCssLocation_val(value v) {
-  if (Tag_val(v) == Custom_tag) {
-    return *(GtkCssLocation **)Data_custom_val(v);
-  } else {
-    return (GtkCssLocation*)ml_gir_record_ptr_val(v, "GtkCssLocation");
-  }
+  return *(GtkCssLocation **)Data_custom_val(v);
 }
 
-value Val_GtkCssLocation(GtkCssLocation *ptr) {
+value Val_GtkCssLocation(const GtkCssLocation *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_alloc((ptr), sizeof(GtkCssLocation), "GtkCssLocation", NULL);
+  return ml_gir_record_val_ptr(ptr);
 }
 
-value Val_GtkCssLocation_option(GtkCssLocation *ptr) {
+value Val_GtkCssLocation_option(const GtkCssLocation *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GtkCssLocation(ptr));
 }

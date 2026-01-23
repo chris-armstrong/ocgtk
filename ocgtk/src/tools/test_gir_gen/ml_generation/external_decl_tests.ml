@@ -14,18 +14,18 @@ let test_method_multiple_params () =
   let meth = {
     method_name = "set_range";
     c_identifier = "gtk_adjustment_set_range";
-    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone };
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
     parameters = [
       {
         param_name = "lower";
-        param_type = { name = "gdouble"; c_type = Some "gdouble"; nullable = false; transfer_ownership = TransferNone };
+        param_type = { name = "gdouble"; c_type = Some "gdouble"; nullable = false; transfer_ownership = TransferNone; array = None };
         direction = In;
         nullable = false;
         varargs = false;
       };
       {
         param_name = "upper";
-        param_type = { name = "gdouble"; c_type = Some "gdouble"; nullable = false; transfer_ownership = TransferNone };
+        param_type = { name = "gdouble"; c_type = Some "gdouble"; nullable = false; transfer_ownership = TransferNone; array = None };
         direction = In;
         nullable = false;
         varargs = false;
@@ -76,11 +76,11 @@ let test_method_with_object_param () =
   let meth = {
     method_name = "set_child";
     c_identifier = "gtk_window_set_child";
-    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone };
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
     parameters = [
       {
         param_name = "child";
-        param_type = { name = "Widget"; c_type = Some "GtkWidget*"; nullable = false; transfer_ownership = TransferNone };
+        param_type = { name = "Widget"; c_type = Some "GtkWidget*"; nullable = false; transfer_ownership = TransferNone; array = None };
         direction = In;
         nullable = false;
         varargs = false;
@@ -130,11 +130,11 @@ let test_method_with_bool_param () =
   let meth = {
     method_name = "set_visible";
     c_identifier = "gtk_widget_set_visible";
-    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone };
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
     parameters = [
       {
         param_name = "visible";
-        param_type = { name = "gboolean"; c_type = Some "gboolean"; nullable = false; transfer_ownership = TransferNone };
+        param_type = { name = "gboolean"; c_type = Some "gboolean"; nullable = false; transfer_ownership = TransferNone; array = None };
         direction = In;
         nullable = false;
         varargs = false;
@@ -184,7 +184,7 @@ let test_method_with_int_return () =
   let meth = {
     method_name = "get_width";
     c_identifier = "gtk_widget_get_width";
-    return_type = { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone };
+    return_type = { name = "gint"; c_type = Some "gint"; nullable = false; transfer_ownership = TransferNone; array = None };
     parameters = [];
     doc = None;
     throws = false;
@@ -232,14 +232,14 @@ let test_constructor_with_multiple_params () =
     ctor_parameters = [
       {
         param_name = "label";
-        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone };
+        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone; array = None };
         direction = In;
         nullable = false;
         varargs = false;
       };
       {
         param_name = "use_mnemonic";
-        param_type = { name = "gboolean"; c_type = Some "gboolean"; nullable = false; transfer_ownership = TransferNone };
+        param_type = { name = "gboolean"; c_type = Some "gboolean"; nullable = false; transfer_ownership = TransferNone; array = None };
         direction = In;
         nullable = false;
         varargs = false;
@@ -287,11 +287,11 @@ let test_method_with_nullable_object () =
   let meth = {
     method_name = "set_parent";
     c_identifier = "gtk_widget_set_parent";
-    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone };
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
     parameters = [
       {
         param_name = "parent";
-        param_type = { name = "Widget"; c_type = Some "GtkWidget*"; nullable = true; transfer_ownership = TransferNone };
+        param_type = { name = "Widget"; c_type = Some "GtkWidget*"; nullable = true; transfer_ownership = TransferNone; array = None };
         direction = In;
         nullable = true;
         varargs = false;
@@ -340,7 +340,7 @@ let test_property_getter () =
   let meth = {
     method_name = "get_label";
     c_identifier = "gtk_button_get_label";
-    return_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone };
+    return_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone; array = None };
     parameters = [];
     doc = None;
     throws = false;
@@ -383,11 +383,11 @@ let test_property_setter () =
   let meth = {
     method_name = "set_label";
     c_identifier = "gtk_button_set_label";
-    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone };
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
     parameters = [
       {
         param_name = "label";
-        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone };
+        param_type = { name = "utf8"; c_type = Some "const gchar*"; nullable = false; transfer_ownership = TransferNone; array = None };
         direction = In;
         nullable = false;
         varargs = false;
@@ -435,7 +435,7 @@ let test_property_getter_nullable () =
   let meth = {
     method_name = "get_tooltip_text";
     c_identifier = "gtk_widget_get_tooltip_text";
-    return_type = { name = "utf8"; c_type = Some "gchar*"; nullable = true; transfer_ownership = TransferNone };
+    return_type = { name = "utf8"; c_type = Some "gchar*"; nullable = true; transfer_ownership = TransferNone; array = None };
     parameters = [];
     doc = None;
     throws = false;

@@ -82,18 +82,17 @@ CAMLlocal1(ret);
 
 CAMLexport CAMLprim value ml_gtk_gesture_get_n_points(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkGesture *obj = (GtkGesture *)GtkGesture_val(self);
     guint prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "n-points");
 if (pspec == NULL) caml_failwith("ml_gtk_gesture_get_n_points: property 'n-points' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "n-points", &prop_gvalue);
-    prop_value = (guint)g_value_get_uint(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "n-points", &prop_gvalue);
+          prop_value = g_value_get_uint(&prop_gvalue);
 
-result = Val_int(prop_value);
+      result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}

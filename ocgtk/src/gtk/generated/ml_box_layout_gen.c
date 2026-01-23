@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_box_layout_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkBoxLayout *obj = gtk_box_layout_new(GtkOrientation_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkBoxLayout(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_box_layout_set_spacing(value self, value arg1)
 {
 CAMLparam2(self, arg1);

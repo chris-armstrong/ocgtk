@@ -320,6 +320,21 @@ gtk_widget_set_cursor_from_name(GtkWidget_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_widget_set_css_classes(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+    int arg1_length = Wosize_val(arg1);
+    char** c_arg1 = (char**)g_malloc(sizeof(char*) * (arg1_length + 1));
+    for (int i = 0; i < arg1_length; i++) {
+      c_arg1[i] = String_val(Field(arg1, i));
+    }
+    c_arg1[arg1_length] = NULL;
+
+gtk_widget_set_css_classes(GtkWidget_val(self), c_arg1);
+    g_free(c_arg1);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_widget_set_child_visible(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -954,6 +969,25 @@ const char* result = gtk_widget_get_css_name(GtkWidget_val(self));
 CAMLreturn(caml_copy_string(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_widget_get_css_classes(value self)
+{
+CAMLparam1(self);
+
+char** result = gtk_widget_get_css_classes(GtkWidget_val(self));
+    int result_length = 0;
+    while (result[result_length] != NULL) result_length++;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+    for (int i = 0; i < result_length; i++) {
+      g_free((gpointer)result[i]);
+    }
+    g_free(result);
+CAMLreturn(ml_result);
+}
+
 CAMLexport CAMLprim value ml_gtk_widget_get_child_visible(value self)
 {
 CAMLparam1(self);
@@ -1100,66 +1134,64 @@ CAMLreturn(Val_unit);
 
 CAMLexport CAMLprim value ml_gtk_widget_get_height_request(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
     gint prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "height-request");
 if (pspec == NULL) caml_failwith("ml_gtk_widget_get_height_request: property 'height-request' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "height-request", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "height-request", &prop_gvalue);
+          prop_value = g_value_get_int(&prop_gvalue);
 
-result = Val_int(prop_value);
+      result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_widget_set_height_request(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
     gint c_value = Int_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "height-request");
 if (pspec == NULL) caml_failwith("ml_gtk_widget_set_height_request: property 'height-request' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_int(&prop_gvalue, c_value);
+          g_value_set_int(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "height-request", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_widget_get_width_request(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
     gint prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "width-request");
 if (pspec == NULL) caml_failwith("ml_gtk_widget_get_width_request: property 'width-request' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "width-request", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "width-request", &prop_gvalue);
+          prop_value = g_value_get_int(&prop_gvalue);
 
-result = Val_int(prop_value);
+      result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_widget_set_width_request(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkWidget *obj = (GtkWidget *)GtkWidget_val(self);
     gint c_value = Int_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "width-request");
 if (pspec == NULL) caml_failwith("ml_gtk_widget_set_width_request: property 'width-request' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_int(&prop_gvalue, c_value);
+          g_value_set_int(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "width-request", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }

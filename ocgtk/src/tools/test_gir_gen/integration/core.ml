@@ -7,7 +7,9 @@ open Helpers
 (* Test GIR Content *)
 (* ========================================================================= *)
 
-let simple_class_gir = wrap_namespace {|
+let simple_class_gir =
+  wrap_namespace
+    {|
     <class name="EventControllerKey"
            c:type="GtkEventControllerKey"
            parent="EventController">
@@ -24,7 +26,9 @@ let simple_class_gir = wrap_namespace {|
     </class>
 |}
 
-let widget_with_methods_gir = wrap_namespace {|
+let widget_with_methods_gir =
+  wrap_namespace
+    {|
     <class name="Button" c:type="GtkButton" parent="Widget">
       <constructor name="new" c:identifier="gtk_button_new"/>
       <method name="set_label" c:identifier="gtk_button_set_label">
@@ -56,7 +60,9 @@ let widget_with_methods_gir = wrap_namespace {|
     </class>
 |}
 
-let many_methods_gir = wrap_namespace {|
+let many_methods_gir =
+  wrap_namespace
+    {|
     <class name="ManyMethods" c:type="GtkManyMethods" parent="Widget">
       <constructor name="new" c:identifier="gtk_many_methods_new"/>
       <method name="method1" c:identifier="gtk_many_methods_method1">
@@ -86,7 +92,9 @@ let many_methods_gir = wrap_namespace {|
     </class>
 |}
 
-let many_params_gir = wrap_namespace {|
+let many_params_gir =
+  wrap_namespace
+    {|
     <class name="ManyParams" c:type="GtkManyParams" parent="Widget">
       <constructor name="new" c:identifier="gtk_many_params_new"/>
       <method name="with_six_params" c:identifier="gtk_many_params_with_six_params">
@@ -111,7 +119,9 @@ let many_params_gir = wrap_namespace {|
     </class>
 |}
 
-let nullable_params_gir = wrap_namespace {|
+let nullable_params_gir =
+  wrap_namespace
+    {|
     <class name="TestWidget" c:type="GtkTestWidget" parent="Widget">
       <constructor name="new" c:identifier="gtk_test_widget_new">
         <parameters>
@@ -178,7 +188,7 @@ let test_widget_generation () =
   let output_dir = "/tmp/test_widget_output" in
 
   create_gir_file test_gir widget_with_methods_gir;
-  create_filter_file test_filter ["Button"; "Label"];
+  create_filter_file test_filter [ "Button"; "Label" ];
   ensure_output_dir output_dir;
   delete_if_exists (mli_file output_dir "button");
   delete_if_exists (ml_file output_dir "button");
@@ -218,7 +228,7 @@ let test_all_methods_generated () =
   let output_dir = "/tmp/test_many_methods_output" in
 
   create_gir_file test_gir many_methods_gir;
-  create_filter_file test_filter ["ManyMethods"];
+  create_filter_file test_filter [ "ManyMethods" ];
   ensure_output_dir output_dir;
 
   let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
@@ -267,7 +277,7 @@ let test_nullable_parameters () =
   let output_dir = "/tmp/test_nullable_output" in
 
   create_gir_file test_gir nullable_params_gir;
-  create_filter_file test_filter ["TestWidget"];
+  create_filter_file test_filter [ "TestWidget" ];
   ensure_output_dir output_dir;
 
   let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
@@ -292,7 +302,7 @@ let test_generated_code_quality () =
   let output_dir = "/tmp/test_quality_output" in
 
   create_gir_file test_gir widget_with_methods_gir;
-  create_filter_file test_filter ["Button"; "Label"];
+  create_filter_file test_filter [ "Button"; "Label" ];
   ensure_output_dir output_dir;
 
   let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
@@ -312,11 +322,12 @@ let test_generated_code_quality () =
   (* Verify no obvious memory leaks *)
   if
     string_contains c_content "malloc" && not (string_contains c_content "free")
-  then Alcotest.fail "Generated code may have memory leaks (malloc without free)"
+  then
+    Alcotest.fail "Generated code may have memory leaks (malloc without free)"
 
 let test_help_output () =
   let tools_dir = get_tools_dir () in
-  let cmd = sprintf "%s/gir_gen/main.exe --help 2>&1" tools_dir in
+  let cmd = sprintf "%s/gir_gen/gir_gen.exe --help 2>&1" tools_dir in
   let ic = Unix.open_process_in cmd in
   let output = Buffer.create 1024 in
   (try
@@ -340,9 +351,13 @@ let tests =
     Alcotest.test_case "GIR file parsing" `Quick test_gir_parsing;
     Alcotest.test_case "C code generation" `Quick test_c_code_generation;
     Alcotest.test_case "Widget generation" `Quick test_widget_generation;
-    Alcotest.test_case "All methods generated (Phase 5.2)" `Quick test_all_methods_generated;
-    Alcotest.test_case "CAMLparam limitation (>5 params)" `Quick test_camlparam_limitation;
-    Alcotest.test_case "Nullable parameters (Phase 5.3)" `Quick test_nullable_parameters;
-    Alcotest.test_case "Generated code quality" `Quick test_generated_code_quality;
+    Alcotest.test_case "All methods generated (Phase 5.2)" `Quick
+      test_all_methods_generated;
+    Alcotest.test_case "CAMLparam limitation (>5 params)" `Quick
+      test_camlparam_limitation;
+    Alcotest.test_case "Nullable parameters (Phase 5.3)" `Quick
+      test_nullable_parameters;
+    Alcotest.test_case "Generated code quality" `Quick
+      test_generated_code_quality;
     Alcotest.test_case "Help output" `Quick test_help_output;
   ]

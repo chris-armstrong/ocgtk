@@ -311,6 +311,11 @@ and mount (obj : File_and__file_enumerator_and__file_monitor_and__mount_and__vol
     fun () ->
       Option.map (fun ret -> new volume ret) (File_and__file_enumerator_and__file_monitor_and__mount_and__volume.Mount.get_volume obj)
 
+  method guess_content_type_sync : 'p1. bool -> (#GCancellable.cancellable as 'p1) option -> (string array, GError.t) result =
+    fun force_rescan cancellable ->
+      let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
+      (File_and__file_enumerator_and__file_monitor_and__mount_and__volume.Mount.guess_content_type_sync obj force_rescan cancellable)
+
   method is_shadowed : unit -> bool =
     fun () ->
       (File_and__file_enumerator_and__file_monitor_and__mount_and__volume.Mount.is_shadowed obj)
@@ -338,6 +343,10 @@ and volume (obj : File_and__file_enumerator_and__file_monitor_and__mount_and__vo
   method can_mount : unit -> bool =
     fun () ->
       (File_and__file_enumerator_and__file_monitor_and__mount_and__volume.Volume.can_mount obj)
+
+  method enumerate_identifiers : unit -> string array =
+    fun () ->
+      (File_and__file_enumerator_and__file_monitor_and__mount_and__volume.Volume.enumerate_identifiers obj)
 
   method get_activation_root : unit -> file option =
     fun () ->

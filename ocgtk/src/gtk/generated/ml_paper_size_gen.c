@@ -16,42 +16,54 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Conversion functions for GtkPaperSize (opaque record with hidden fields) */
+GtkPaperSize *GtkPaperSize_val(value v) {
+  return *(GtkPaperSize **)Data_custom_val(v);
+}
+
+value Val_GtkPaperSize(const GtkPaperSize *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GtkPaperSize_option(const GtkPaperSize *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkPaperSize(ptr));
+}
+
 
 CAMLexport CAMLprim value ml_gtk_paper_size_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkPaperSize *obj = gtk_paper_size_new(String_option_val(arg1));
+
 CAMLreturn(Val_GtkPaperSize(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_paper_size_new_custom(value arg1, value arg2, value arg3, value arg4, value arg5)
 {
 CAMLparam5(arg1, arg2, arg3, arg4, arg5);
+
 GtkPaperSize *obj = gtk_paper_size_new_custom(String_val(arg1), String_val(arg2), Double_val(arg3), Double_val(arg4), GtkUnit_val(arg5));
+
 CAMLreturn(Val_GtkPaperSize(obj));
 }
-
-CAMLexport CAMLprim value ml_gtk_paper_size_new_from_gvariant(value arg1)
-{
-CAMLparam1(arg1);
-GtkPaperSize *obj = gtk_paper_size_new_from_gvariant(arg1);
-CAMLreturn(Val_GtkPaperSize(obj));
-}
-
 CAMLexport CAMLprim value ml_gtk_paper_size_new_from_ipp(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
+
 GtkPaperSize *obj = gtk_paper_size_new_from_ipp(String_val(arg1), Double_val(arg2), Double_val(arg3));
+
 CAMLreturn(Val_GtkPaperSize(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_paper_size_new_from_ppd(value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam4(arg1, arg2, arg3, arg4);
+
 GtkPaperSize *obj = gtk_paper_size_new_from_ppd(String_val(arg1), String_val(arg2), Double_val(arg3), Double_val(arg4));
+
 CAMLreturn(Val_GtkPaperSize(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_paper_size_set_size(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);

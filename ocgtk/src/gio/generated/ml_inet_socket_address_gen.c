@@ -22,22 +22,15 @@
 #include "generated_forward_decls.h"
 
 
-CAMLexport CAMLprim value ml_g_inet_socket_address_new(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-GInetSocketAddress *obj = g_inet_socket_address_new(GInetAddress_val(arg1), arg2);
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GInetSocketAddress(obj));
-}
-
 CAMLexport CAMLprim value ml_g_inet_socket_address_new_from_string(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
+
 GInetSocketAddress *obj = g_inet_socket_address_new_from_string(String_val(arg1), Int_val(arg2));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GInetSocketAddress(obj));
 }
-
 CAMLexport CAMLprim value ml_g_inet_socket_address_get_address(value self)
 {
 CAMLparam1(self);

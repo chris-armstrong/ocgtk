@@ -16,21 +16,17 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Conversion functions for GtkPadActionEntry (non-opaque record with fields) */
+/* Conversion functions for GtkPadActionEntry (opaque record with hidden fields) */
 GtkPadActionEntry *GtkPadActionEntry_val(value v) {
-  if (Tag_val(v) == Custom_tag) {
-    return *(GtkPadActionEntry **)Data_custom_val(v);
-  } else {
-    return (GtkPadActionEntry*)ml_gir_record_ptr_val(v, "GtkPadActionEntry");
-  }
+  return *(GtkPadActionEntry **)Data_custom_val(v);
 }
 
-value Val_GtkPadActionEntry(GtkPadActionEntry *ptr) {
+value Val_GtkPadActionEntry(const GtkPadActionEntry *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_alloc((ptr), sizeof(GtkPadActionEntry), "GtkPadActionEntry", NULL);
+  return ml_gir_record_val_ptr(ptr);
 }
 
-value Val_GtkPadActionEntry_option(GtkPadActionEntry *ptr) {
+value Val_GtkPadActionEntry_option(const GtkPadActionEntry *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GtkPadActionEntry(ptr));
 }

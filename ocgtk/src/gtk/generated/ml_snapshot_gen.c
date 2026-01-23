@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_snapshot_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkSnapshot *obj = gtk_snapshot_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkSnapshot(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_snapshot_scale_3d(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
@@ -71,8 +72,7 @@ CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam1(arg5);
 
 gtk_snapshot_render_frame(GtkSnapshot_val(self), GtkStyleContext_val(arg1), Double_val(arg2), Double_val(arg3), Double_val(arg4), Double_val(arg5));
-CAMLreturn(Val_unit);
-}
+CAMLreturn(Val_unit);}
 
 CAMLexport CAMLprim value ml_gtk_snapshot_render_frame_bytecode(value * argv, int argn)
 {
@@ -85,8 +85,7 @@ CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam1(arg5);
 
 gtk_snapshot_render_focus(GtkSnapshot_val(self), GtkStyleContext_val(arg1), Double_val(arg2), Double_val(arg3), Double_val(arg4), Double_val(arg5));
-CAMLreturn(Val_unit);
-}
+CAMLreturn(Val_unit);}
 
 CAMLexport CAMLprim value ml_gtk_snapshot_render_focus_bytecode(value * argv, int argn)
 {
@@ -99,8 +98,7 @@ CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam1(arg5);
 
 gtk_snapshot_render_background(GtkSnapshot_val(self), GtkStyleContext_val(arg1), Double_val(arg2), Double_val(arg3), Double_val(arg4), Double_val(arg5));
-CAMLreturn(Val_unit);
-}
+CAMLreturn(Val_unit);}
 
 CAMLexport CAMLprim value ml_gtk_snapshot_render_background_bytecode(value * argv, int argn)
 {

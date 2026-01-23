@@ -48,6 +48,10 @@ class settings (obj : Settings.t) = object (self)
     fun key ->
       (Settings.get_string obj key)
 
+  method get_strv : string -> string array =
+    fun key ->
+      (Settings.get_strv obj key)
+
   method get_uint : string -> int =
     fun key ->
       (Settings.get_uint obj key)
@@ -55,6 +59,14 @@ class settings (obj : Settings.t) = object (self)
   method is_writable : string -> bool =
     fun name ->
       (Settings.is_writable obj name)
+
+  method list_children : unit -> string array =
+    fun () ->
+      (Settings.list_children obj)
+
+  method list_keys : unit -> string array =
+    fun () ->
+      (Settings.list_keys obj)
 
   method reset : string -> unit =
     fun key ->
@@ -87,6 +99,10 @@ class settings (obj : Settings.t) = object (self)
   method set_string : string -> string -> bool =
     fun key value ->
       (Settings.set_string obj key value)
+
+  method set_strv : string -> string array option -> bool =
+    fun key value ->
+      (Settings.set_strv obj key value)
 
   method set_uint : string -> int -> bool =
     fun key value ->

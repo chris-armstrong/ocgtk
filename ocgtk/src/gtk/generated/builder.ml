@@ -30,6 +30,32 @@ external get_translation_domain : t -> string option = "ml_gtk_builder_get_trans
 (** Gets the scope in use that was set via gtk_builder_set_scope(). *)
 external get_scope : t -> Builder_scope.t = "ml_gtk_builder_get_scope"
 
+(** Parses a resource file containing a UI definition, building
+only the requested objects and merges them with the current
+contents of @builder.
+
+Upon errors, 0 will be returned and @error will be assigned a
+`GError` from the %GTK_BUILDER_ERROR, %G_MARKUP_ERROR or %G_RESOURCE_ERROR
+domain.
+
+If you are adding an object that depends on an object that is not
+its child (for instance a `GtkTreeView` that depends on its
+`GtkTreeModel`), you have to explicitly list all of them in @object_ids. *)
+external add_objects_from_resource : t -> string -> string array -> (bool, GError.t) result = "ml_gtk_builder_add_objects_from_resource"
+
+(** Parses a file containing a UI definition building only the
+requested objects and merges them with the current contents
+of @builder.
+
+Upon errors, 0 will be returned and @error will be assigned a
+`GError` from the %GTK_BUILDER_ERROR, %G_MARKUP_ERROR or %G_FILE_ERROR
+domain.
+
+If you are adding an object that depends on an object that is not
+its child (for instance a `GtkTreeView` that depends on its
+`GtkTreeModel`), you have to explicitly list all of them in @object_ids. *)
+external add_objects_from_file : t -> string -> string array -> (bool, GError.t) result = "ml_gtk_builder_add_objects_from_file"
+
 (** Parses a resource file containing a UI definition
 and merges it with the current contents of @builder.
 

@@ -17,6 +17,14 @@ class settings_schema (obj : Settings_schema.t) = object (self)
     fun name ->
       (Settings_schema.has_key obj name)
 
+  method list_children : unit -> string array =
+    fun () ->
+      (Settings_schema.list_children obj)
+
+  method list_keys : unit -> string array =
+    fun () ->
+      (Settings_schema.list_keys obj)
+
   method ref : unit -> Settings_schema.t =
     fun () ->
       (Settings_schema.ref obj)

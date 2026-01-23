@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_numeric_sorter_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkNumericSorter *obj = gtk_numeric_sorter_new(Option_val(arg1, GtkExpression_val, NULL));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkNumericSorter(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_numeric_sorter_set_sort_order(value self, value arg1)
 {
 CAMLparam2(self, arg1);

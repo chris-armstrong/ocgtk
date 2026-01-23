@@ -21,9 +21,18 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GIOStreamAdapter */
-#ifndef Val_GIOStreamAdapter
-#define GIOStreamAdapter_val(val) ((GIOStreamAdapter*)ext_of_val(val))
-#define Val_GIOStreamAdapter(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GIOStreamAdapter */
+/* Conversion functions for GIOStreamAdapter (opaque record with hidden fields) */
+GIOStreamAdapter *GIOStreamAdapter_val(value v) {
+  return *(GIOStreamAdapter **)Data_custom_val(v);
+}
+
+value Val_GIOStreamAdapter(const GIOStreamAdapter *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GIOStreamAdapter_option(const GIOStreamAdapter *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GIOStreamAdapter(ptr));
+}
 

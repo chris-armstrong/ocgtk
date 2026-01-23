@@ -16,35 +16,46 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Conversion functions for GtkTreePath (opaque record with hidden fields) */
+GtkTreePath *GtkTreePath_val(value v) {
+  return *(GtkTreePath **)Data_custom_val(v);
+}
+
+value Val_GtkTreePath(const GtkTreePath *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GtkTreePath_option(const GtkTreePath *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkTreePath(ptr));
+}
+
 
 CAMLexport CAMLprim value ml_gtk_tree_path_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkTreePath *obj = gtk_tree_path_new();
+
 CAMLreturn(Val_GtkTreePath(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_tree_path_new_first(value unit)
 {
 CAMLparam1(unit);
+
 GtkTreePath *obj = gtk_tree_path_new_first();
+
 CAMLreturn(Val_GtkTreePath(obj));
 }
-
-CAMLexport CAMLprim value ml_gtk_tree_path_new_from_indicesv(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-GtkTreePath *obj = gtk_tree_path_new_from_indicesv(arg1, arg2);
-CAMLreturn(Val_GtkTreePath(obj));
-}
-
 CAMLexport CAMLprim value ml_gtk_tree_path_new_from_string(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkTreePath *obj = gtk_tree_path_new_from_string(String_val(arg1));
+
 CAMLreturn(Val_GtkTreePath(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_tree_path_up(value self)
 {
 CAMLparam1(self);
@@ -99,6 +110,25 @@ CAMLparam2(self, arg1);
 
 gboolean result = gtk_tree_path_is_ancestor(GtkTreePath_val(self), GtkTreePath_val(arg1));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_path_get_indices_with_depth(value self)
+{
+CAMLparam1(self);
+int out1;
+
+int* result = gtk_tree_path_get_indices_with_depth(GtkTreePath_val(self), &out1);
+    int result_length = out1;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, Val_int(result[i]));
+    }
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, ml_result);
+    Store_field(ret, 1, Val_int(out1));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_path_get_indices(value self)

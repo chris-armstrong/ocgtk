@@ -16,6 +16,7 @@ class tree_model : Tree_model.t ->
     method row_has_child_toggled : Tree_path.t -> Tree_iter.t -> unit
     method row_inserted : Tree_path.t -> Tree_iter.t -> unit
     method rows_reordered : Tree_path.t -> Tree_iter.t -> int -> unit
+    method rows_reordered_with_length : Tree_path.t -> Tree_iter.t option -> int array -> int -> unit
     method unref_node : Tree_iter.t -> unit
     method as_tree_model : Tree_model.t
   end

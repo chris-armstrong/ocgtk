@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_inscription_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkInscription *obj = gtk_inscription_new(String_option_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkInscription(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_inscription_set_yalign(value self, value arg1)
 {
 CAMLparam2(self, arg1);

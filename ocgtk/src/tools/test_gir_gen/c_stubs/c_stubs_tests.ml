@@ -56,8 +56,8 @@ let test_simple_constructor () =
   in
 
   let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_constructor ~ctx ~c_type:"GtkButton"
-      ctor "Button"
+    Gir_gen_lib.Generate.C_stub_constructor.generate_c_constructor ~ctx
+      ~c_type:"GtkButton" ~class_name:"Button" ctor
   in
 
   (* Parse the generated C code *)
@@ -91,6 +91,7 @@ let test_constructor_with_params () =
                 c_type = Some "const gchar*";
                 nullable = false;
                 transfer_ownership = TransferNone;
+                array = None;
               };
             direction = In;
             nullable = false;
@@ -103,8 +104,8 @@ let test_constructor_with_params () =
   in
 
   let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_constructor ~ctx ~c_type:"GtkButton"
-      ctor "Button"
+    Gir_gen_lib.Generate.C_stub_constructor.generate_c_constructor ~ctx
+      ~c_type:"GtkButton" ~class_name:"Button" ctor
   in
 
   let functions = parse_c_string c_code in
@@ -133,6 +134,7 @@ let test_constructor_many_params () =
               c_type = Some "gint";
               nullable = false;
               transfer_ownership = TransferNone;
+              array = None;
             };
           direction = In;
           nullable = false;
@@ -151,8 +153,8 @@ let test_constructor_many_params () =
   in
 
   let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_constructor ~ctx ~c_type:"GtkWidget"
-      ctor "Widget"
+    Gir_gen_lib.Generate.C_stub_constructor.generate_c_constructor ~ctx
+      ~c_type:"GtkWidget" ~class_name:"Widget" ctor
   in
 
   let functions = parse_c_string c_code in
@@ -180,6 +182,7 @@ let test_simple_method () =
           c_type = Some "void";
           nullable = false;
           transfer_ownership = TransferNone;
+          array = None;
         };
       parameters =
         [
@@ -191,6 +194,7 @@ let test_simple_method () =
                 c_type = Some "const gchar*";
                 nullable = false;
                 transfer_ownership = TransferNone;
+                array = None;
               };
             direction = In;
             nullable = false;
@@ -205,8 +209,8 @@ let test_simple_method () =
   in
 
   let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkButton" meth
-      "Button"
+    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
+      ~c_type:"GtkButton" meth "Button"
   in
 
   let functions = parse_c_string c_code in
@@ -233,6 +237,7 @@ let test_method_with_return_value () =
           c_type = Some "const gchar*";
           nullable = false;
           transfer_ownership = TransferNone;
+          array = None;
         };
       parameters = [];
       doc = None;
@@ -243,8 +248,8 @@ let test_method_with_return_value () =
   in
 
   let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkButton" meth
-      "Button"
+    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
+      ~c_type:"GtkButton" meth "Button"
   in
 
   let functions = parse_c_string c_code in
@@ -275,8 +280,8 @@ let test_constructor_type_conversion () =
   in
 
   let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_constructor ~ctx ~c_type:"GtkButton"
-      ctor "Button"
+    Gir_gen_lib.Generate.C_stub_constructor.generate_c_constructor ~ctx
+      ~c_type:"GtkButton" ~class_name:"Button" ctor
   in
 
   let functions = parse_c_string c_code in
@@ -299,6 +304,7 @@ let test_method_calls_c_function () =
           c_type = Some "void";
           nullable = false;
           transfer_ownership = TransferNone;
+          array = None;
         };
       parameters =
         [
@@ -310,6 +316,7 @@ let test_method_calls_c_function () =
                 c_type = Some "const gchar*";
                 nullable = false;
                 transfer_ownership = TransferNone;
+                array = None;
               };
             direction = In;
             nullable = false;
@@ -324,8 +331,8 @@ let test_method_calls_c_function () =
   in
 
   let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkButton" meth
-      "Button"
+    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
+      ~c_type:"GtkButton" meth "Button"
   in
 
   let functions = parse_c_string c_code in
@@ -349,8 +356,8 @@ let test_variable_declarations () =
   in
 
   let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_constructor ~ctx ~c_type:"GtkButton"
-      ctor "Button"
+    Gir_gen_lib.Generate.C_stub_constructor.generate_c_constructor ~ctx
+      ~c_type:"GtkButton" ~class_name:"Button" ctor
   in
 
   let functions = parse_c_string c_code in
@@ -380,8 +387,8 @@ let test_parameter_flow_to_return () =
   in
 
   let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_constructor ~ctx ~c_type:"GtkButton"
-      ctor "Button"
+    Gir_gen_lib.Generate.C_stub_constructor.generate_c_constructor ~ctx
+      ~c_type:"GtkButton" ~class_name:"Button" ctor
   in
 
   let functions = parse_c_string c_code in
@@ -410,6 +417,7 @@ let test_bytecode_calls_native () =
               c_type = Some "gint";
               nullable = false;
               transfer_ownership = TransferNone;
+              array = None;
             };
           direction = In;
           nullable = false;
@@ -428,8 +436,8 @@ let test_bytecode_calls_native () =
   in
 
   let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_constructor ~ctx ~c_type:"GtkWidget"
-      ctor "Widget"
+    Gir_gen_lib.Generate.C_stub_constructor.generate_c_constructor ~ctx
+      ~c_type:"GtkWidget" ~class_name:"Widget" ctor
   in
 
   let functions = parse_c_string c_code in
@@ -465,6 +473,7 @@ let test_non_opaque_record_return () =
                   c_type = Some "gint";
                   nullable = false;
                   transfer_ownership = TransferNone;
+                  array = None;
                 };
             readable = true;
             writable = false;
@@ -494,6 +503,7 @@ let test_non_opaque_record_return () =
           c_type = Some "GtkTestRecord*";
           nullable = false;
           transfer_ownership = TransferNone;
+          array = None;
         };
       parameters = [];
       doc = None;
@@ -504,8 +514,8 @@ let test_non_opaque_record_return () =
   in
 
   let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkWidget" meth
-      "Widget"
+    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
+      ~c_type:"GtkWidget" meth "Widget"
   in
 
   Helpers.log_generated_c_code "non-opaque record return" c_code;
@@ -538,6 +548,7 @@ let test_non_opaque_record_parameter () =
                   c_type = Some "gint";
                   nullable = false;
                   transfer_ownership = TransferNone;
+                  array = None;
                 };
             readable = true;
             writable = false;
@@ -567,6 +578,7 @@ let test_non_opaque_record_parameter () =
           c_type = Some "void";
           nullable = false;
           transfer_ownership = TransferNone;
+          array = None;
         };
       parameters =
         [
@@ -578,6 +590,7 @@ let test_non_opaque_record_parameter () =
                 c_type = Some "GtkTestRecord*";
                 nullable = false;
                 transfer_ownership = TransferNone;
+                array = None;
               };
             direction = In;
             nullable = false;
@@ -592,8 +605,8 @@ let test_non_opaque_record_parameter () =
   in
 
   let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkWidget" meth
-      "Widget"
+    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
+      ~c_type:"GtkWidget" meth "Widget"
   in
 
   Helpers.log_generated_c_code "non-opaque record parameter" c_code;
@@ -643,6 +656,7 @@ let test_opaque_record_return () =
           c_type = Some "GtkOpaqueRec*";
           nullable = false;
           transfer_ownership = TransferNone;
+          array = None;
         };
       parameters = [];
       doc = None;
@@ -653,8 +667,8 @@ let test_opaque_record_return () =
   in
 
   let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkWidget" meth
-      "Widget"
+    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
+      ~c_type:"GtkWidget" meth "Widget"
   in
 
   Helpers.log_generated_c_code "opaque record return" c_code;
@@ -700,6 +714,7 @@ let test_opaque_record_parameter () =
           c_type = Some "void";
           nullable = false;
           transfer_ownership = TransferNone;
+          array = None;
         };
       parameters =
         [
@@ -711,6 +726,7 @@ let test_opaque_record_parameter () =
                 c_type = Some "GtkOpaqueRec*";
                 nullable = false;
                 transfer_ownership = TransferNone;
+                array = None;
               };
             direction = In;
             nullable = false;
@@ -725,8 +741,8 @@ let test_opaque_record_parameter () =
   in
 
   let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkWidget" meth
-      "Widget"
+    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
+      ~c_type:"GtkWidget" meth "Widget"
   in
 
   Helpers.log_generated_c_code "opaque record parameter" c_code;
@@ -762,6 +778,7 @@ let test_nullable_record_return () =
                   c_type = Some "gint";
                   nullable = false;
                   transfer_ownership = TransferNone;
+                  array = None;
                 };
             readable = true;
             writable = false;
@@ -791,6 +808,7 @@ let test_nullable_record_return () =
           c_type = Some "GtkTestRecord*";
           nullable = true;
           transfer_ownership = TransferNone;
+          array = None;
         };
       parameters = [];
       doc = None;
@@ -801,8 +819,8 @@ let test_nullable_record_return () =
   in
 
   let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkWidget" meth
-      "Widget"
+    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
+      ~c_type:"GtkWidget" meth "Widget"
   in
 
   Helpers.log_generated_c_code "nullable record return" c_code;
@@ -837,6 +855,7 @@ let test_nullable_record_parameter () =
                   c_type = Some "gint";
                   nullable = false;
                   transfer_ownership = TransferNone;
+                  array = None;
                 };
             readable = true;
             writable = false;
@@ -866,6 +885,7 @@ let test_nullable_record_parameter () =
           c_type = Some "void";
           nullable = false;
           transfer_ownership = TransferNone;
+          array = None;
         };
       parameters =
         [
@@ -877,6 +897,7 @@ let test_nullable_record_parameter () =
                 c_type = Some "GtkTestRecord*";
                 nullable = true;
                 transfer_ownership = TransferNone;
+                array = None;
               };
             direction = In;
             nullable = true;
@@ -891,8 +912,8 @@ let test_nullable_record_parameter () =
   in
 
   let c_code =
-    Gir_gen_lib.Generate.C_stubs.generate_c_method ~ctx ~c_type:"GtkWidget" meth
-      "Widget"
+    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
+      ~c_type:"GtkWidget" meth "Widget"
   in
 
   Helpers.log_generated_c_code "nullable record parameter" c_code;

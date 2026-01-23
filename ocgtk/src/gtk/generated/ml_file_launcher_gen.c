@@ -17,14 +17,6 @@
 #include "generated_forward_decls.h"
 
 
-CAMLexport CAMLprim value ml_gtk_file_launcher_new(value arg1)
-{
-CAMLparam1(arg1);
-GtkFileLauncher *obj = gtk_file_launcher_new(arg1);
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GtkFileLauncher(obj));
-}
-
 CAMLexport CAMLprim value ml_gtk_file_launcher_set_writable(value self, value arg1)
 {
 CAMLparam2(self, arg1);

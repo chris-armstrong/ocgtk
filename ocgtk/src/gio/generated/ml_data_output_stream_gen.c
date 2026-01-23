@@ -25,11 +25,12 @@
 CAMLexport CAMLprim value ml_g_data_output_stream_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GDataOutputStream *obj = g_data_output_stream_new(GOutputStream_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GDataOutputStream(obj));
 }
-
 CAMLexport CAMLprim value ml_g_data_output_stream_set_byte_order(value self, value arg1)
 {
 CAMLparam2(self, arg1);

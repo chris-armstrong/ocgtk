@@ -120,6 +120,92 @@ module rec Socket : sig
   is a GSocket level feature. *)
   external set_blocking : t -> bool -> unit = "ml_g_socket_set_blocking"
 
+  (** Send multiple data messages from @socket in one go.  This is the most
+  complicated and fully-featured version of this call. For easier use, see
+  g_socket_send(), g_socket_send_to(), and g_socket_send_message().
+
+  @messages must point to an array of #GOutputMessage structs and
+  @num_messages must be the length of this array. Each #GOutputMessage
+  contains an address to send the data to, and a pointer to an array of
+  #GOutputVector structs to describe the buffers that the data to be sent
+  for each message will be gathered from. Using multiple #GOutputVectors is
+  more memory-efficient than manually copying data from multiple sources
+  into a single buffer, and more network-efficient than making multiple
+  calls to g_socket_send(). Sending multiple messages in one go avoids the
+  overhead of making a lot of syscalls in scenarios where a lot of data
+  packets need to be sent (e.g. high-bandwidth video streaming over RTP/UDP),
+  or where the same data needs to be sent to multiple recipients.
+
+  @flags modify how the message is sent. The commonly available arguments
+  for this are available in the #GSocketMsgFlags enum, but the
+  values there are the same as the system values, and the flags
+  are passed in as-is, so you can pass in system-specific flags too.
+
+  If the socket is in blocking mode the call will block until there is
+  space for all the data in the socket queue. If there is no space available
+  and the socket is in non-blocking mode a %G_IO_ERROR_WOULD_BLOCK error
+  will be returned if no data was written at all, otherwise the number of
+  messages sent will be returned. To be notified when space is available,
+  wait for the %G_IO_OUT condition. Note though that you may still receive
+  %G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you were previously
+  notified of a %G_IO_OUT condition. (On Windows in particular, this is
+  very common due to the way the underlying APIs work.)
+
+  On error -1 is returned and @error is set accordingly. An error will only
+  be returned if zero messages could be sent; otherwise the number of messages
+  successfully sent before the error will be returned. *)
+  external send_messages : t -> Output_message.t array -> int -> int -> Cancellable.t option -> (int, GError.t) result = "ml_g_socket_send_messages"
+
+  (** Receive multiple data messages from @socket in one go.  This is the most
+  complicated and fully-featured version of this call. For easier use, see
+  g_socket_receive(), g_socket_receive_from(), and g_socket_receive_message().
+
+  @messages must point to an array of #GInputMessage structs and
+  @num_messages must be the length of this array. Each #GInputMessage
+  contains a pointer to an array of #GInputVector structs describing the
+  buffers that the data received in each message will be written to. Using
+  multiple #GInputVectors is more memory-efficient than manually copying data
+  out of a single buffer to multiple sources, and more system-call-efficient
+  than making multiple calls to g_socket_receive(), such as in scenarios where
+  a lot of data packets need to be received (e.g. high-bandwidth video
+  streaming over RTP/UDP).
+
+  @flags modify how all messages are received. The commonly available
+  arguments for this are available in the #GSocketMsgFlags enum, but the
+  values there are the same as the system values, and the flags
+  are passed in as-is, so you can pass in system-specific flags too. These
+  flags affect the overall receive operation. Flags affecting individual
+  messages are returned in #GInputMessage.flags.
+
+  The other members of #GInputMessage are treated as described in its
+  documentation.
+
+  If #GSocket:blocking is %TRUE the call will block until @num_messages have
+  been received, or the end of the stream is reached.
+
+  If #GSocket:blocking is %FALSE the call will return up to @num_messages
+  without blocking, or %G_IO_ERROR_WOULD_BLOCK if no messages are queued in the
+  operating system to be received.
+
+  In blocking mode, if #GSocket:timeout is positive and is reached before any
+  messages are received, %G_IO_ERROR_TIMED_OUT is returned, otherwise up to
+  @num_messages are returned. (Note: This is effectively the
+  behaviour of `MSG_WAITFORONE` with recvmmsg().)
+
+  To be notified when messages are available, wait for the
+  %G_IO_IN condition. Note though that you may still receive
+  %G_IO_ERROR_WOULD_BLOCK from g_socket_receive_messages() even if you were
+  previously notified of a %G_IO_IN condition.
+
+  If the remote peer closes the connection, any messages queued in the
+  operating system will be returned, and subsequent calls to
+  g_socket_receive_messages() will return 0 (with no error set).
+
+  On error -1 is returned and @error is set accordingly. An error will only
+  be returned if zero messages could be received; otherwise the number of
+  messages successfully received before the error will be returned. *)
+  external receive_messages : t -> Input_message.t array -> int -> int -> Cancellable.t option -> (int, GError.t) result = "ml_g_socket_receive_messages"
+
   (** Marks the socket as a server socket, i.e. a socket that is used
   to accept incoming requests using g_socket_accept().
 
@@ -510,6 +596,92 @@ end = struct
   platform level socket is always non-blocking, and blocking mode
   is a GSocket level feature. *)
   external set_blocking : t -> bool -> unit = "ml_g_socket_set_blocking"
+
+  (** Send multiple data messages from @socket in one go.  This is the most
+  complicated and fully-featured version of this call. For easier use, see
+  g_socket_send(), g_socket_send_to(), and g_socket_send_message().
+
+  @messages must point to an array of #GOutputMessage structs and
+  @num_messages must be the length of this array. Each #GOutputMessage
+  contains an address to send the data to, and a pointer to an array of
+  #GOutputVector structs to describe the buffers that the data to be sent
+  for each message will be gathered from. Using multiple #GOutputVectors is
+  more memory-efficient than manually copying data from multiple sources
+  into a single buffer, and more network-efficient than making multiple
+  calls to g_socket_send(). Sending multiple messages in one go avoids the
+  overhead of making a lot of syscalls in scenarios where a lot of data
+  packets need to be sent (e.g. high-bandwidth video streaming over RTP/UDP),
+  or where the same data needs to be sent to multiple recipients.
+
+  @flags modify how the message is sent. The commonly available arguments
+  for this are available in the #GSocketMsgFlags enum, but the
+  values there are the same as the system values, and the flags
+  are passed in as-is, so you can pass in system-specific flags too.
+
+  If the socket is in blocking mode the call will block until there is
+  space for all the data in the socket queue. If there is no space available
+  and the socket is in non-blocking mode a %G_IO_ERROR_WOULD_BLOCK error
+  will be returned if no data was written at all, otherwise the number of
+  messages sent will be returned. To be notified when space is available,
+  wait for the %G_IO_OUT condition. Note though that you may still receive
+  %G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you were previously
+  notified of a %G_IO_OUT condition. (On Windows in particular, this is
+  very common due to the way the underlying APIs work.)
+
+  On error -1 is returned and @error is set accordingly. An error will only
+  be returned if zero messages could be sent; otherwise the number of messages
+  successfully sent before the error will be returned. *)
+  external send_messages : t -> Output_message.t array -> int -> int -> Cancellable.t option -> (int, GError.t) result = "ml_g_socket_send_messages"
+
+  (** Receive multiple data messages from @socket in one go.  This is the most
+  complicated and fully-featured version of this call. For easier use, see
+  g_socket_receive(), g_socket_receive_from(), and g_socket_receive_message().
+
+  @messages must point to an array of #GInputMessage structs and
+  @num_messages must be the length of this array. Each #GInputMessage
+  contains a pointer to an array of #GInputVector structs describing the
+  buffers that the data received in each message will be written to. Using
+  multiple #GInputVectors is more memory-efficient than manually copying data
+  out of a single buffer to multiple sources, and more system-call-efficient
+  than making multiple calls to g_socket_receive(), such as in scenarios where
+  a lot of data packets need to be received (e.g. high-bandwidth video
+  streaming over RTP/UDP).
+
+  @flags modify how all messages are received. The commonly available
+  arguments for this are available in the #GSocketMsgFlags enum, but the
+  values there are the same as the system values, and the flags
+  are passed in as-is, so you can pass in system-specific flags too. These
+  flags affect the overall receive operation. Flags affecting individual
+  messages are returned in #GInputMessage.flags.
+
+  The other members of #GInputMessage are treated as described in its
+  documentation.
+
+  If #GSocket:blocking is %TRUE the call will block until @num_messages have
+  been received, or the end of the stream is reached.
+
+  If #GSocket:blocking is %FALSE the call will return up to @num_messages
+  without blocking, or %G_IO_ERROR_WOULD_BLOCK if no messages are queued in the
+  operating system to be received.
+
+  In blocking mode, if #GSocket:timeout is positive and is reached before any
+  messages are received, %G_IO_ERROR_TIMED_OUT is returned, otherwise up to
+  @num_messages are returned. (Note: This is effectively the
+  behaviour of `MSG_WAITFORONE` with recvmmsg().)
+
+  To be notified when messages are available, wait for the
+  %G_IO_IN condition. Note though that you may still receive
+  %G_IO_ERROR_WOULD_BLOCK from g_socket_receive_messages() even if you were
+  previously notified of a %G_IO_IN condition.
+
+  If the remote peer closes the connection, any messages queued in the
+  operating system will be returned, and subsequent calls to
+  g_socket_receive_messages() will return 0 (with no error set).
+
+  On error -1 is returned and @error is set accordingly. An error will only
+  be returned if zero messages could be received; otherwise the number of
+  messages successfully received before the error will be returned. *)
+  external receive_messages : t -> Input_message.t array -> int -> int -> Cancellable.t option -> (int, GError.t) result = "ml_g_socket_receive_messages"
 
   (** Marks the socket as a server socket, i.e. a socket that is used
   to accept incoming requests using g_socket_accept().

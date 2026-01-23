@@ -4,8 +4,12 @@ class file_filter : File_filter.t ->
     method add_pattern : string -> unit
     method add_pixbuf_formats : unit -> unit
     method add_suffix : string -> unit
+    method get_attributes : unit -> string array
     method get_name : unit -> string option
     method set_name : string option -> unit
+    method mime_types : string array
+    method patterns : string array
+    method suffixes : string array
     method as_file_filter : File_filter.t
   end
 

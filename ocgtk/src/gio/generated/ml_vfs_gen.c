@@ -46,6 +46,21 @@ gboolean result = g_vfs_is_active(GVfs_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_g_vfs_get_supported_uri_schemes(value self)
+{
+CAMLparam1(self);
+
+const gchar* const* result = g_vfs_get_supported_uri_schemes(GVfs_val(self));
+    int result_length = 0;
+    while (result[result_length] != NULL) result_length++;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+CAMLreturn(ml_result);
+}
+
 CAMLexport CAMLprim value ml_g_vfs_get_file_for_uri(value self, value arg1)
 {
 CAMLparam2(self, arg1);

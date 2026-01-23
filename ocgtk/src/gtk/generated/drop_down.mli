@@ -9,7 +9,7 @@ val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and_
 external new_ : unit -> Expression.t option -> t = "ml_gtk_drop_down_new"
 
 (** Create a new DropDown *)
-external new_from_strings : unit -> t = "ml_gtk_drop_down_new_from_strings"
+external new_from_strings : string array -> t = "ml_gtk_drop_down_new_from_strings"
 
 (* Methods *)
 (** Sets whether an arrow will be displayed within the widget. *)

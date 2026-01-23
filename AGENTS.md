@@ -73,6 +73,14 @@ For generating GTK bindings from GObject Introspection (GIR) files:
 - Generates C FFI bindings and OCaml interfaces from Gtk-4.0.gir
 - Supports error handling with result types for throwing functions
 
+**To regenerate GTK bindings:**
+```bash
+cd ocgtk
+dune exec gir_gen -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+```
+
+**⚠️ IMPORTANT:** Use `src/gtk` NOT `src/gtk/generated` as the output directory. The generator automatically creates the `generated/` subdirectory. Using `src/gtk/generated` will create a nested `src/gtk/generated/generated/` directory.
+
 ## Memory Safety
 
 ### GC Interaction

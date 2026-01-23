@@ -1,4 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* EventSequence: Opaque record type with no public methods *)
+(* EventSequence: EventSequence *)
 
-type t = Obj.t
+(** `GdkEventSequence` is an opaque type representing a sequence
+of related touch events. *)
+type t = [`event_sequence] Gobject.obj
+
+(* Methods *)

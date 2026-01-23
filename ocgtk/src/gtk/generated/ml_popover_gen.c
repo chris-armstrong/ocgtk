@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_popover_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkPopover *obj = gtk_popover_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkPopover(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_popover_set_position(value self, value arg1)
 {
 CAMLparam2(self, arg1);

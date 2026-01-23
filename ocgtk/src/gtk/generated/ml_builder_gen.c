@@ -20,35 +20,30 @@
 CAMLexport CAMLprim value ml_gtk_builder_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkBuilder *obj = gtk_builder_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkBuilder(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_builder_new_from_file(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkBuilder *obj = gtk_builder_new_from_file(String_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkBuilder(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_builder_new_from_resource(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkBuilder *obj = gtk_builder_new_from_resource(String_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkBuilder(obj));
 }
-
-CAMLexport CAMLprim value ml_gtk_builder_new_from_string(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-GtkBuilder *obj = gtk_builder_new_from_string(String_val(arg1), arg2);
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GtkBuilder(obj));
-}
-
 CAMLexport CAMLprim value ml_gtk_builder_set_translation_domain(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -80,6 +75,38 @@ CAMLparam1(self);
 GtkBuilderScope* result = gtk_builder_get_scope(GtkBuilder_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkBuilderScope(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_builder_add_objects_from_resource(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GError *error = NULL;
+    int arg2_length = Wosize_val(arg2);
+    char** c_arg2 = (char**)g_malloc(sizeof(char*) * (arg2_length + 1));
+    for (int i = 0; i < arg2_length; i++) {
+      c_arg2[i] = String_val(Field(arg2, i));
+    }
+    c_arg2[arg2_length] = NULL;
+
+gboolean result = gtk_builder_add_objects_from_resource(GtkBuilder_val(self), String_val(arg1), c_arg2, &error);
+    g_free(c_arg2);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_gtk_builder_add_objects_from_file(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GError *error = NULL;
+    int arg2_length = Wosize_val(arg2);
+    char** c_arg2 = (char**)g_malloc(sizeof(char*) * (arg2_length + 1));
+    for (int i = 0; i < arg2_length; i++) {
+      c_arg2[i] = String_val(Field(arg2, i));
+    }
+    c_arg2[arg2_length] = NULL;
+
+gboolean result = gtk_builder_add_objects_from_file(GtkBuilder_val(self), String_val(arg1), c_arg2, &error);
+    g_free(c_arg2);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_gtk_builder_add_from_resource(value self, value arg1)

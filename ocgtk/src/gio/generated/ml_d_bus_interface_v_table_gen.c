@@ -21,9 +21,18 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDBusInterfaceVTable */
-#ifndef Val_GDBusInterfaceVTable
-#define GDBusInterfaceVTable_val(val) ((GDBusInterfaceVTable*)ext_of_val(val))
-#define Val_GDBusInterfaceVTable(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusInterfaceVTable */
+/* Conversion functions for GDBusInterfaceVTable (opaque record with hidden fields) */
+GDBusInterfaceVTable *GDBusInterfaceVTable_val(value v) {
+  return *(GDBusInterfaceVTable **)Data_custom_val(v);
+}
+
+value Val_GDBusInterfaceVTable(const GDBusInterfaceVTable *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GDBusInterfaceVTable_option(const GDBusInterfaceVTable *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GDBusInterfaceVTable(ptr));
+}
 

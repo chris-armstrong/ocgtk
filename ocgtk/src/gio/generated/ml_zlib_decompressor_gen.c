@@ -25,11 +25,12 @@
 CAMLexport CAMLprim value ml_g_zlib_decompressor_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GZlibDecompressor *obj = g_zlib_decompressor_new(GioZlibCompressorFormat_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GZlibDecompressor(obj));
 }
-
 CAMLexport CAMLprim value ml_g_zlib_decompressor_get_file_info(value self)
 {
 CAMLparam1(self);
@@ -41,18 +42,17 @@ CAMLreturn(Val_option(result, Val_GFileInfo));
 
 CAMLexport CAMLprim value ml_gtk_zlib_decompressor_get_format(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GZlibDecompressor *obj = (GZlibDecompressor *)GZlibDecompressor_val(self);
     GZlibCompressorFormat prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "format");
 if (pspec == NULL) caml_failwith("ml_gtk_zlib_decompressor_get_format: property 'format' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "format", &prop_gvalue);
-    prop_value = (GZlibCompressorFormat)g_value_get_enum(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "format", &prop_gvalue);
+          prop_value = (GZlibCompressorFormat)g_value_get_enum(&prop_gvalue);
 
-result = Val_GioZlibCompressorFormat(prop_value);
+      result = Val_GioZlibCompressorFormat(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}

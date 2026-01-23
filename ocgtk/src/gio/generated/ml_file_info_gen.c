@@ -25,11 +25,12 @@
 CAMLexport CAMLprim value ml_g_file_info_new(value unit)
 {
 CAMLparam1(unit);
+
 GFileInfo *obj = g_file_info_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GFileInfo(obj));
 }
-
 CAMLexport CAMLprim value ml_g_file_info_unset_attribute_mask(value self)
 {
 CAMLparam1(self);
@@ -118,6 +119,21 @@ g_file_info_set_content_type(GFileInfo_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_file_info_set_attribute_stringv(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+    int arg2_length = Wosize_val(arg2);
+    char** c_arg2 = (char**)g_malloc(sizeof(char*) * (arg2_length + 1));
+    for (int i = 0; i < arg2_length; i++) {
+      c_arg2[i] = String_val(Field(arg2, i));
+    }
+    c_arg2[arg2_length] = NULL;
+
+g_file_info_set_attribute_stringv(GFileInfo_val(self), String_val(arg1), c_arg2);
+    g_free(c_arg2);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_g_file_info_set_attribute_string(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -172,6 +188,25 @@ CAMLparam2(self, arg1);
 
 g_file_info_remove_attribute(GFileInfo_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_file_info_list_attributes(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+char** result = g_file_info_list_attributes(GFileInfo_val(self), String_option_val(arg1));
+    int result_length = 0;
+    while (result[result_length] != NULL) result_length++;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+    for (int i = 0; i < result_length; i++) {
+      g_free((gpointer)result[i]);
+    }
+    g_free(result);
+CAMLreturn(ml_result);
 }
 
 CAMLexport CAMLprim value ml_g_file_info_has_namespace(value self, value arg1)
@@ -294,6 +329,21 @@ CAMLparam2(self, arg1);
 
 GFileAttributeType result = g_file_info_get_attribute_type(GFileInfo_val(self), String_val(arg1));
 CAMLreturn(Val_GioFileAttributeType(result));
+}
+
+CAMLexport CAMLprim value ml_g_file_info_get_attribute_stringv(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+char** result = g_file_info_get_attribute_stringv(GFileInfo_val(self), String_val(arg1));
+    int result_length = 0;
+    while (result[result_length] != NULL) result_length++;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+CAMLreturn(ml_result);
 }
 
 CAMLexport CAMLprim value ml_g_file_info_get_attribute_string(value self, value arg1)

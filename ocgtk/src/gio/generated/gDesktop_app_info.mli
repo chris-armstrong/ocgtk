@@ -6,6 +6,7 @@ class desktop_app_info : Desktop_app_info.t ->
     method get_filename : unit -> string option
     method get_generic_name : unit -> string option
     method get_is_hidden : unit -> bool
+    method get_keywords : unit -> string array
     method get_locale_string : string -> string option
     method get_nodisplay : unit -> bool
     method get_show_in : string option -> bool
@@ -13,6 +14,7 @@ class desktop_app_info : Desktop_app_info.t ->
     method get_string : string -> string option
     method has_key : string -> bool
     method launch_action : string -> #GApp_info_and__app_launch_context.app_launch_context option -> unit
+    method list_actions : unit -> string array
     method as_desktop_app_info : Desktop_app_info.t
   end
 

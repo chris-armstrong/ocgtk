@@ -14,6 +14,7 @@ class tls_connection : Tls_connection_and__tls_database_and__tls_interaction.Tls
     method get_require_close_notify : unit -> bool
     method get_use_system_certdb : unit -> bool
     method handshake : #GCancellable.cancellable option -> (bool, GError.t) result
+    method set_advertised_protocols : string array option -> unit
     method set_certificate : #GTls_certificate.tls_certificate -> unit
     method set_database : <as_tls_database: Tls_connection_and__tls_database_and__tls_interaction.Tls_database.t; ..> option -> unit
     method set_interaction : <as_tls_interaction: Tls_connection_and__tls_database_and__tls_interaction.Tls_interaction.t; ..> option -> unit

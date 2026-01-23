@@ -75,18 +75,17 @@ CAMLreturn(Val_option(result, Val_GtkTreeListRow));
 
 CAMLexport CAMLprim value ml_gtk_tree_list_row_get_expandable(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkTreeListRow *obj = (GtkTreeListRow *)GtkTreeListRow_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "expandable");
 if (pspec == NULL) caml_failwith("ml_gtk_tree_list_row_get_expandable: property 'expandable' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "expandable", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "expandable", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}

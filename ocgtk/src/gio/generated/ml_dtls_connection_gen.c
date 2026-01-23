@@ -80,6 +80,21 @@ g_dtls_connection_set_certificate(GDtlsConnection_val(self), GTlsCertificate_val
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_dtls_connection_set_advertised_protocols(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+    int arg1_length = Wosize_val(arg1);
+    gchar** c_arg1 = (gchar**)g_malloc(sizeof(gchar*) * (arg1_length + 1));
+    for (int i = 0; i < arg1_length; i++) {
+      c_arg1[i] = String_val(Field(arg1, i));
+    }
+    c_arg1[arg1_length] = NULL;
+
+g_dtls_connection_set_advertised_protocols(GDtlsConnection_val(self), c_arg1);
+    g_free(c_arg1);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_g_dtls_connection_handshake_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);

@@ -20,19 +20,21 @@
 CAMLexport CAMLprim value ml_gtk_font_button_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkFontButton *obj = gtk_font_button_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkFontButton(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_font_button_new_with_font(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkFontButton *obj = gtk_font_button_new_with_font(String_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkFontButton(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_font_button_set_use_size(value self, value arg1)
 {
 CAMLparam2(self, arg1);

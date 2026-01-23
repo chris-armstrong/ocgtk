@@ -152,6 +152,22 @@ let get_var_decls f =
     (function VarDecl (t, name, init) -> Some (name, t, init) | _ -> None)
     f.body
 
+(* Get CAMLlocal declarations - these are parsed as ExprStmt macros *)
+let get_caml_local_decls f =
+  List.filter_map
+    (function
+      | ExprStmt (Macro (name, _))
+        when String.starts_with ~prefix:"CAMLlocal" name ->
+          Some name
+      | _ -> None)
+    f.body
+
+(* Get all local value declarations (VarDecl + CAMLlocal) - count both styles *)
+let get_all_local_value_decls f =
+  let var_decls = List.length (get_var_decls f) in
+  let caml_locals = List.length (get_caml_local_decls f) in
+  var_decls + caml_locals
+
 (* Check if function returns a specific type *)
 let returns_type f expected_type = f.return_type = expected_type
 

@@ -16,6 +16,9 @@ external parse_name : t -> string -> File_and__file_enumerator_and__file_monitor
 (** Checks if the VFS is active. *)
 external is_active : t -> bool = "ml_g_vfs_is_active"
 
+(** Gets a list of URI schemes supported by @vfs. *)
+external get_supported_uri_schemes : t -> string array = "ml_g_vfs_get_supported_uri_schemes"
+
 (** Gets a #GFile for @uri.
 
 This operation never fails, but the returned object

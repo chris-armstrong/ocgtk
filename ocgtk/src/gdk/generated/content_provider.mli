@@ -13,7 +13,7 @@ external new_for_value : unit -> t = "ml_gdk_content_provider_new_for_value"
 external new_typed : unit -> unit -> t = "ml_gdk_content_provider_new_typed"
 
 (** Create a new ContentProvider *)
-external new_union : unit -> unit -> t = "ml_gdk_content_provider_new_union"
+external new_union : t array option -> unit -> t = "ml_gdk_content_provider_new_union"
 
 (* Methods *)
 (** Gets the formats that the provider suggests other applications to store

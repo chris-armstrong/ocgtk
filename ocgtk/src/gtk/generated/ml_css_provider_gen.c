@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_css_provider_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkCssProvider *obj = gtk_css_provider_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkCssProvider(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_css_provider_to_string(value self)
 {
 CAMLparam1(self);

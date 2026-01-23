@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_grid_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkGrid *obj = gtk_grid_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkGrid(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_grid_set_row_spacing(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -202,8 +203,7 @@ CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam1(arg5);
 
 gtk_grid_attach_next_to(GtkGrid_val(self), GtkWidget_val(arg1), Option_val(arg2, GtkWidget_val, NULL), GtkPositionType_val(arg3), Int_val(arg4), Int_val(arg5));
-CAMLreturn(Val_unit);
-}
+CAMLreturn(Val_unit);}
 
 CAMLexport CAMLprim value ml_gtk_grid_attach_next_to_bytecode(value * argv, int argn)
 {
@@ -216,8 +216,7 @@ CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam1(arg5);
 
 gtk_grid_attach(GtkGrid_val(self), GtkWidget_val(arg1), Int_val(arg2), Int_val(arg3), Int_val(arg4), Int_val(arg5));
-CAMLreturn(Val_unit);
-}
+CAMLreturn(Val_unit);}
 
 CAMLexport CAMLprim value ml_gtk_grid_attach_bytecode(value * argv, int argn)
 {

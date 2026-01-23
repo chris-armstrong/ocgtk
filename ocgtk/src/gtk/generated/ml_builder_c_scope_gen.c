@@ -20,7 +20,9 @@
 CAMLexport CAMLprim value ml_gtk_builder_cscope_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkBuilderCScope *obj = gtk_builder_cscope_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkBuilderCScope(obj));
 }

@@ -9,6 +9,10 @@ class resource (obj : Resource.t) = object (self)
     fun () ->
       (Resource._unregister obj)
 
+  method enumerate_children : string -> Gio_enums.resourcelookupflags -> (string array, GError.t) result =
+    fun path lookup_flags ->
+      (Resource.enumerate_children obj path lookup_flags)
+
   method open_stream : string -> Gio_enums.resourcelookupflags -> (GInput_stream.input_stream, GError.t) result =
     fun path lookup_flags ->
       Result.map (fun ret -> new GInput_stream.input_stream ret)(Resource.open_stream obj path lookup_flags)

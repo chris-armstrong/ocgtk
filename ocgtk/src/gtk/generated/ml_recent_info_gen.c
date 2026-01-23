@@ -16,6 +16,21 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Conversion functions for GtkRecentInfo (opaque record with hidden fields) */
+GtkRecentInfo *GtkRecentInfo_val(value v) {
+  return *(GtkRecentInfo **)Data_custom_val(v);
+}
+
+value Val_GtkRecentInfo(const GtkRecentInfo *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GtkRecentInfo_option(const GtkRecentInfo *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkRecentInfo(ptr));
+}
+
 
 CAMLexport CAMLprim value ml_gtk_recent_info_unref(value self)
 {

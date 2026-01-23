@@ -60,6 +60,10 @@ class tls_connection (obj : Tls_connection_and__tls_database_and__tls_interactio
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (Tls_connection_and__tls_database_and__tls_interaction.Tls_connection.handshake obj cancellable)
 
+  method set_advertised_protocols : string array option -> unit =
+    fun protocols ->
+      (Tls_connection_and__tls_database_and__tls_interaction.Tls_connection.set_advertised_protocols obj protocols)
+
   method set_certificate : 'p1. (#GTls_certificate.tls_certificate as 'p1) -> unit =
     fun certificate ->
       let certificate = certificate#as_tls_certificate in

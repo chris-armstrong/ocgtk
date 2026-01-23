@@ -1,6 +1,7 @@
 class d_bus_proxy : D_bus_proxy.t ->
   object
     inherit Gd_bus_proxy_signals.d_bus_proxy_signals
+    method get_cached_property_names : unit -> string array option
     method get_connection : unit -> GD_bus_connection.d_bus_connection
     method get_default_timeout : unit -> int
     method get_flags : unit -> Gio_enums.dbusproxyflags

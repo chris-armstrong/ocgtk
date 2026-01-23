@@ -4,6 +4,10 @@
 class d_bus_proxy (obj : D_bus_proxy.t) = object (self)
   inherit Gd_bus_proxy_signals.d_bus_proxy_signals obj
 
+  method get_cached_property_names : unit -> string array option =
+    fun () ->
+      (D_bus_proxy.get_cached_property_names obj)
+
   method get_connection : unit -> GD_bus_connection.d_bus_connection =
     fun () ->
       new  GD_bus_connection.d_bus_connection(D_bus_proxy.get_connection obj)

@@ -16,11 +16,3 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-
-CAMLexport CAMLprim value ml_gtk_custom_sorter_new(value arg1, value arg2, value arg3)
-{
-CAMLparam3(arg1, arg2, arg3);
-GtkCustomSorter *obj = gtk_custom_sorter_new(arg1, arg2, arg3);
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GtkCustomSorter(obj));
-}

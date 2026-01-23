@@ -1,5 +1,5 @@
 /* GENERATED CODE - DO NOT EDIT */
-/* Forward declarations for generated enum and bitfield converters */
+/* Forward declarations for generated enum, bitfield, class and record converters */
 
 #ifndef _gio_generated_forward_decls_
 #define _gio_generated_forward_decls_
@@ -749,188 +749,158 @@
 #define Val_GVolume(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GVolume */
 
-/* Forward declarations for GActionEntry converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for record converters (non-opaque records) */
+/* Forward declarations for GActionEntry converters */
 GActionEntry *GActionEntry_val(value val);
 value Val_GActionEntry(const GActionEntry *ptr);
 value Val_GActionEntry_option(const GActionEntry *ptr);
 
-/* Forward declarations for GDBusAnnotationInfo converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GDBusAnnotationInfo converters */
 GDBusAnnotationInfo *GDBusAnnotationInfo_val(value val);
 value Val_GDBusAnnotationInfo(const GDBusAnnotationInfo *ptr);
 value Val_GDBusAnnotationInfo_option(const GDBusAnnotationInfo *ptr);
 
-/* Forward declarations for GDBusArgInfo converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GDBusArgInfo converters */
 GDBusArgInfo *GDBusArgInfo_val(value val);
 value Val_GDBusArgInfo(const GDBusArgInfo *ptr);
 value Val_GDBusArgInfo_option(const GDBusArgInfo *ptr);
 
-/* Forward declarations for GDBusErrorEntry converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GDBusErrorEntry converters */
 GDBusErrorEntry *GDBusErrorEntry_val(value val);
 value Val_GDBusErrorEntry(const GDBusErrorEntry *ptr);
 value Val_GDBusErrorEntry_option(const GDBusErrorEntry *ptr);
 
-/* Forward declarations for GDBusInterfaceInfo converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GDBusInterfaceInfo converters */
 GDBusInterfaceInfo *GDBusInterfaceInfo_val(value val);
 value Val_GDBusInterfaceInfo(const GDBusInterfaceInfo *ptr);
 value Val_GDBusInterfaceInfo_option(const GDBusInterfaceInfo *ptr);
 
-/* Forward declarations for GDBusInterfaceVTable converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GDBusInterfaceVTable converters */
 GDBusInterfaceVTable *GDBusInterfaceVTable_val(value val);
 value Val_GDBusInterfaceVTable(const GDBusInterfaceVTable *ptr);
 value Val_GDBusInterfaceVTable_option(const GDBusInterfaceVTable *ptr);
 
-/* Forward declarations for GDBusMethodInfo converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GDBusMethodInfo converters */
 GDBusMethodInfo *GDBusMethodInfo_val(value val);
 value Val_GDBusMethodInfo(const GDBusMethodInfo *ptr);
 value Val_GDBusMethodInfo_option(const GDBusMethodInfo *ptr);
 
-/* Forward declarations for GDBusNodeInfo converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GDBusNodeInfo converters */
 GDBusNodeInfo *GDBusNodeInfo_val(value val);
 value Val_GDBusNodeInfo(const GDBusNodeInfo *ptr);
 value Val_GDBusNodeInfo_option(const GDBusNodeInfo *ptr);
 
-/* Forward declarations for GDBusPropertyInfo converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GDBusPropertyInfo converters */
 GDBusPropertyInfo *GDBusPropertyInfo_val(value val);
 value Val_GDBusPropertyInfo(const GDBusPropertyInfo *ptr);
 value Val_GDBusPropertyInfo_option(const GDBusPropertyInfo *ptr);
 
-/* Forward declarations for GDBusSignalInfo converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GDBusSignalInfo converters */
 GDBusSignalInfo *GDBusSignalInfo_val(value val);
 value Val_GDBusSignalInfo(const GDBusSignalInfo *ptr);
 value Val_GDBusSignalInfo_option(const GDBusSignalInfo *ptr);
 
-/* Forward declarations for GDBusSubtreeVTable converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GDBusSubtreeVTable converters */
 GDBusSubtreeVTable *GDBusSubtreeVTable_val(value val);
 value Val_GDBusSubtreeVTable(const GDBusSubtreeVTable *ptr);
 value Val_GDBusSubtreeVTable_option(const GDBusSubtreeVTable *ptr);
 
-/* Forward declarations for GFileAttributeInfo converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GFileAttributeInfo converters */
 GFileAttributeInfo *GFileAttributeInfo_val(value val);
 value Val_GFileAttributeInfo(const GFileAttributeInfo *ptr);
 value Val_GFileAttributeInfo_option(const GFileAttributeInfo *ptr);
 
-/* Forward declarations for GFileAttributeInfoList converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GFileAttributeInfoList converters */
 GFileAttributeInfoList *GFileAttributeInfoList_val(value val);
 value Val_GFileAttributeInfoList(const GFileAttributeInfoList *ptr);
 value Val_GFileAttributeInfoList_option(const GFileAttributeInfoList *ptr);
 
-/* Forward declarations for GFileAttributeMatcher converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GFileAttributeMatcher converters */
 GFileAttributeMatcher *GFileAttributeMatcher_val(value val);
 value Val_GFileAttributeMatcher(const GFileAttributeMatcher *ptr);
 value Val_GFileAttributeMatcher_option(const GFileAttributeMatcher *ptr);
 
-/* Forward declarations for GIOExtension converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GIOExtension converters */
 GIOExtension *GIOExtension_val(value val);
 value Val_GIOExtension(const GIOExtension *ptr);
 value Val_GIOExtension_option(const GIOExtension *ptr);
 
-/* Forward declarations for GIOExtensionPoint converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GIOExtensionPoint converters */
 GIOExtensionPoint *GIOExtensionPoint_val(value val);
 value Val_GIOExtensionPoint(const GIOExtensionPoint *ptr);
 value Val_GIOExtensionPoint_option(const GIOExtensionPoint *ptr);
 
-/* Forward declarations for GIOModuleScope converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GIOModuleScope converters */
 GIOModuleScope *GIOModuleScope_val(value val);
 value Val_GIOModuleScope(const GIOModuleScope *ptr);
 value Val_GIOModuleScope_option(const GIOModuleScope *ptr);
 
-/* Forward declarations for GIOSchedulerJob converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GIOSchedulerJob converters */
 GIOSchedulerJob *GIOSchedulerJob_val(value val);
 value Val_GIOSchedulerJob(const GIOSchedulerJob *ptr);
 value Val_GIOSchedulerJob_option(const GIOSchedulerJob *ptr);
 
-/* Forward declarations for GIOStreamAdapter converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GIOStreamAdapter converters */
 GIOStreamAdapter *GIOStreamAdapter_val(value val);
 value Val_GIOStreamAdapter(const GIOStreamAdapter *ptr);
 value Val_GIOStreamAdapter_option(const GIOStreamAdapter *ptr);
 
-/* Forward declarations for GInputMessage converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GInputMessage converters */
 GInputMessage *GInputMessage_val(value val);
 value Val_GInputMessage(const GInputMessage *ptr);
 value Val_GInputMessage_option(const GInputMessage *ptr);
 
-/* Forward declarations for GInputVector converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GInputVector converters */
 GInputVector *GInputVector_val(value val);
 value Val_GInputVector(const GInputVector *ptr);
 value Val_GInputVector_option(const GInputVector *ptr);
 
-/* Forward declarations for GOutputMessage converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GOutputMessage converters */
 GOutputMessage *GOutputMessage_val(value val);
 value Val_GOutputMessage(const GOutputMessage *ptr);
 value Val_GOutputMessage_option(const GOutputMessage *ptr);
 
-/* Forward declarations for GOutputVector converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GOutputVector converters */
 GOutputVector *GOutputVector_val(value val);
 value Val_GOutputVector(const GOutputVector *ptr);
 value Val_GOutputVector_option(const GOutputVector *ptr);
 
-/* Forward declarations for GResource converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GResource converters */
 GResource *GResource_val(value val);
 value Val_GResource(const GResource *ptr);
 value Val_GResource_option(const GResource *ptr);
 
-/* Forward declarations for GSettingsSchema converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GSettingsSchema converters */
 GSettingsSchema *GSettingsSchema_val(value val);
 value Val_GSettingsSchema(const GSettingsSchema *ptr);
 value Val_GSettingsSchema_option(const GSettingsSchema *ptr);
 
-/* Forward declarations for GSettingsSchemaKey converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GSettingsSchemaKey converters */
 GSettingsSchemaKey *GSettingsSchemaKey_val(value val);
 value Val_GSettingsSchemaKey(const GSettingsSchemaKey *ptr);
 value Val_GSettingsSchemaKey_option(const GSettingsSchemaKey *ptr);
 
-/* Forward declarations for GSettingsSchemaSource converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GSettingsSchemaSource converters */
 GSettingsSchemaSource *GSettingsSchemaSource_val(value val);
 value Val_GSettingsSchemaSource(const GSettingsSchemaSource *ptr);
 value Val_GSettingsSchemaSource_option(const GSettingsSchemaSource *ptr);
 
-/* Forward declarations for GSrvTarget converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GSrvTarget converters */
 GSrvTarget *GSrvTarget_val(value val);
 value Val_GSrvTarget(const GSrvTarget *ptr);
 value Val_GSrvTarget_option(const GSrvTarget *ptr);
 
-/* Forward declarations for GStaticResource converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GStaticResource converters */
 GStaticResource *GStaticResource_val(value val);
 value Val_GStaticResource(const GStaticResource *ptr);
 value Val_GStaticResource_option(const GStaticResource *ptr);
 
-/* Forward declarations for GUnixMountEntry converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GUnixMountEntry converters */
 GUnixMountEntry *GUnixMountEntry_val(value val);
 value Val_GUnixMountEntry(const GUnixMountEntry *ptr);
 value Val_GUnixMountEntry_option(const GUnixMountEntry *ptr);
 
-/* Forward declarations for GUnixMountPoint converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GUnixMountPoint converters */
 GUnixMountPoint *GUnixMountPoint_val(value val);
 value Val_GUnixMountPoint(const GUnixMountPoint *ptr);
 value Val_GUnixMountPoint_option(const GUnixMountPoint *ptr);
@@ -940,7 +910,7 @@ value Val_GUnixMountPoint_option(const GUnixMountPoint *ptr);
 
 /* Note: Res_Ok, Res_Error, ValUnit, and Val_GError are defined in wrappers.h */
 
-/* Forward declarations for enum/bitfield converters */
+/* Forward declarations for enum converters */
 value Val_GioBusType(GBusType val);
 GBusType GioBusType_val(value val);
 value Val_GioConverterResult(GConverterResult val);
@@ -1028,6 +998,7 @@ GUnixSocketAddressType GioUnixSocketAddressType_val(value val);
 value Val_GioZlibCompressorFormat(GZlibCompressorFormat val);
 GZlibCompressorFormat GioZlibCompressorFormat_val(value val);
 
+/* Forward declarations for bitfield converters */
 value Val_GioAppInfoCreateFlags(GAppInfoCreateFlags flags);
 GAppInfoCreateFlags GioAppInfoCreateFlags_val(value list);
 value Val_GioApplicationFlags(GApplicationFlags flags);
@@ -1108,8 +1079,7 @@ value Val_GioTlsPasswordFlags(GTlsPasswordFlags flags);
 GTlsPasswordFlags GioTlsPasswordFlags_val(value list);
 
 
-/* Forward declarations for external namespace enum/bitfield converters */
-
+/* Forward declarations for external namespace bitfield converters */
 value Val_GObjectBindingFlags(GBindingFlags flags);
 GBindingFlags GObjectBindingFlags_val(value list);
 value Val_GObjectConnectFlags(GConnectFlags flags);

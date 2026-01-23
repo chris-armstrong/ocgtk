@@ -89,6 +89,26 @@ GdkModifierType result = gdk_event_get_modifier_state(GdkEvent_val(self));
 CAMLreturn(Val_GdkModifierType(result));
 }
 
+CAMLexport CAMLprim value ml_gdk_event_get_history(value self)
+{
+CAMLparam1(self);
+guint out1;
+
+GdkTimeCoord* result = gdk_event_get_history(GdkEvent_val(self), &out1);
+    int result_length = out1;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, Val_GdkTimeCoord(&result[i]));
+    }
+    g_free(result);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, ml_result);
+    Store_field(ret, 1, Val_int(out1));
+    CAMLreturn(ret);
+}
+
 CAMLexport CAMLprim value ml_gdk_event_get_event_type(value self)
 {
 CAMLparam1(self);
@@ -142,6 +162,28 @@ CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
     Store_field(ret, 1, caml_copy_double(out2));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gdk_event_get_axes(value self)
+{
+CAMLparam1(self);
+double* out1 = NULL;
+guint out2;
+
+gboolean result = gdk_event_get_axes(GdkEvent_val(self), &out1, &out2);
+    int out1_length = out2;
+    CAMLlocal1(ml_out1);
+    ml_out1 = caml_alloc(out1_length, 0);
+    for (int i = 0; i < out1_length; i++) {
+      Store_field(ml_out1, i, caml_copy_double(out1[i]));
+    }
+
+CAMLlocal1(ret);
+    ret = caml_alloc(3, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, ml_out1);
+    Store_field(ret, 2, Val_int(out2));
     CAMLreturn(ret);
 }
 

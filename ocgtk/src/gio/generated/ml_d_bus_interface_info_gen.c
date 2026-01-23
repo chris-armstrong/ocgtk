@@ -21,11 +21,20 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GDBusInterfaceInfo */
-#ifndef Val_GDBusInterfaceInfo
-#define GDBusInterfaceInfo_val(val) ((GDBusInterfaceInfo*)ext_of_val(val))
-#define Val_GDBusInterfaceInfo(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GDBusInterfaceInfo */
+/* Conversion functions for GDBusInterfaceInfo (opaque record with hidden fields) */
+GDBusInterfaceInfo *GDBusInterfaceInfo_val(value v) {
+  return *(GDBusInterfaceInfo **)Data_custom_val(v);
+}
+
+value Val_GDBusInterfaceInfo(const GDBusInterfaceInfo *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GDBusInterfaceInfo_option(const GDBusInterfaceInfo *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GDBusInterfaceInfo(ptr));
+}
 
 
 CAMLexport CAMLprim value ml_g_dbus_interface_info_unref(value self)

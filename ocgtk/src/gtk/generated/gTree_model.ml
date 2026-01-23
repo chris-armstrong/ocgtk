@@ -64,6 +64,10 @@ class tree_model (obj : Tree_model.t) = object (self)
     fun path iter new_order ->
       (Tree_model.rows_reordered obj path iter new_order)
 
+  method rows_reordered_with_length : Tree_path.t -> Tree_iter.t option -> int array -> int -> unit =
+    fun path iter new_order length ->
+      (Tree_model.rows_reordered_with_length obj path iter new_order length)
+
   method unref_node : Tree_iter.t -> unit =
     fun iter ->
       (Tree_model.unref_node obj iter)

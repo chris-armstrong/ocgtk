@@ -49,7 +49,7 @@ let external_namespaces = [
 
 ```bash
 cd /workspaces/ocgtk/ocgtk
-dune exec src/tools/gir_gen/main.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+dune exec src/tools/gir_gen/gir_gen.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
 ```
 
 This will generate `src/gtk/generated/gio_enums.mli` with all Gio enums and bitfields.
@@ -232,14 +232,14 @@ let external_namespaces = [
 Execute the gir_gen tool:
 
 ```bash
-dune exec src/tools/gir_gen/main.exe -- \
+dune exec src/tools/gir_gen/gir_gen.exe -- \
   /usr/share/gir-1.0/<Library>-<Version>.gir \
   src/<library-name>
 ```
 
 Example for Gio:
 ```bash
-dune exec src/tools/gir_gen/main.exe -- \
+dune exec src/tools/gir_gen/gir_gen.exe -- \
   /usr/share/gir-1.0/Gio-2.0.gir \
   src/gio
 ```

@@ -90,3 +90,24 @@ let should_skip_method ~find_type_mapping ~enums:_ ~bitfields:_
     meth.Types.method_name meth.Types.return_type.name has_unknown_return
     has_unknown_params);
   has_unknown_return || has_unknown_params
+
+let should_skip_constructor ~find_type_mapping ~enums:_ ~bitfields:_
+    (ctor : Types.gir_constructor) =
+  (* Skip if any parameter has an unknown type *)
+  let has_unknown_params =
+    List.exists
+      ~f:(fun (p : Types.gir_param) ->
+        match find_type_mapping p.Types.param_type with
+        | None ->
+            eprintf
+              "Skipping constructor %s: unknown parameter type %s for parameter %s\n"
+              ctor.Types.ctor_name p.Types.param_type.Types.name
+              p.Types.param_name;
+            true
+        | Some _ -> false)
+      ctor.Types.ctor_parameters
+  in
+
+  Log.debug (fun m -> m "Exclude_list.should_skip_constructor: %s -> %b\n"
+    ctor.Types.ctor_name has_unknown_params);
+  has_unknown_params

@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_gl_area_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkGLArea *obj = gtk_gl_area_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkGLArea(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_gl_area_set_use_es(value self, value arg1)
 {
 CAMLparam2(self, arg1);

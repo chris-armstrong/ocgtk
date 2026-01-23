@@ -181,6 +181,16 @@ returns a #GInputStream that lets you read the data.
 @lookup_flags controls the behaviour of the lookup. *)
 external open_stream : t -> string -> Gio_enums.resourcelookupflags -> (Input_stream.t, GError.t) result = "ml_g_resource_open_stream"
 
+(** Returns all the names of children at the specified @path in the resource.
+The return result is a %NULL terminated list of strings which should
+be released with g_strfreev().
+
+If @path is invalid or does not exist in the #GResource,
+%G_RESOURCE_ERROR_NOT_FOUND will be returned.
+
+@lookup_flags controls the behaviour of the lookup. *)
+external enumerate_children : t -> string -> Gio_enums.resourcelookupflags -> (string array, GError.t) result = "ml_g_resource_enumerate_children"
+
 (** Unregisters the resource from the process-global set of resources. *)
 external _unregister : t -> unit = "ml_g_resources_unregister"
 

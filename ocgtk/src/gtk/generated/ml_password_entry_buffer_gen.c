@@ -20,7 +20,9 @@
 CAMLexport CAMLprim value ml_gtk_password_entry_buffer_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkPasswordEntryBuffer *obj = gtk_password_entry_buffer_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkPasswordEntryBuffer(obj));
 }
