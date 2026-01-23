@@ -9,6 +9,10 @@ class vfs (obj : Vfs.t) = object (self)
     fun uri ->
       new  GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume.file(Vfs.get_file_for_uri obj uri)
 
+  method get_supported_uri_schemes : unit -> string array =
+    fun () ->
+      (Vfs.get_supported_uri_schemes obj)
+
   method is_active : unit -> bool =
     fun () ->
       (Vfs.is_active obj)

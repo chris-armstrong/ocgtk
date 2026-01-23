@@ -24,33 +24,32 @@
 
 CAMLexport CAMLprim value ml_gtk_dtls_server_connection_get_authentication_mode(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GDtlsServerConnection *obj = (GDtlsServerConnection *)GDtlsServerConnection_val(self);
     GTlsAuthenticationMode prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "authentication-mode");
 if (pspec == NULL) caml_failwith("ml_gtk_dtls_server_connection_get_authentication_mode: property 'authentication-mode' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "authentication-mode", &prop_gvalue);
-    prop_value = (GTlsAuthenticationMode)g_value_get_enum(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "authentication-mode", &prop_gvalue);
+          prop_value = (GTlsAuthenticationMode)g_value_get_enum(&prop_gvalue);
 
-result = Val_GioTlsAuthenticationMode(prop_value);
+      result = Val_GioTlsAuthenticationMode(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_dtls_server_connection_set_authentication_mode(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GDtlsServerConnection *obj = (GDtlsServerConnection *)GDtlsServerConnection_val(self);
     GTlsAuthenticationMode c_value = GioTlsAuthenticationMode_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "authentication-mode");
 if (pspec == NULL) caml_failwith("ml_gtk_dtls_server_connection_set_authentication_mode: property 'authentication-mode' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_enum(&prop_gvalue, c_value);
+          g_value_set_enum(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "authentication-mode", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }

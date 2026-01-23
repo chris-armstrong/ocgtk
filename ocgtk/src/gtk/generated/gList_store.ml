@@ -21,6 +21,10 @@ class list_store (obj : List_store.t) = object (self)
     fun iter ->
       (List_store.remove obj iter)
 
+  method reorder : int array -> unit =
+    fun new_order ->
+      (List_store.reorder obj new_order)
+
   method swap : Tree_iter.t -> Tree_iter.t -> unit =
     fun a b ->
       (List_store.swap obj a b)

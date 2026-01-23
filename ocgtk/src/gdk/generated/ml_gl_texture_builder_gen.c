@@ -19,11 +19,12 @@
 CAMLexport CAMLprim value ml_gdk_gl_texture_builder_new(value unit)
 {
 CAMLparam1(unit);
+
 GdkGLTextureBuilder *obj = gdk_gl_texture_builder_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GdkGLTextureBuilder(obj));
 }
-
 CAMLexport CAMLprim value ml_gdk_gl_texture_builder_set_width(value self, value arg1)
 {
 CAMLparam2(self, arg1);

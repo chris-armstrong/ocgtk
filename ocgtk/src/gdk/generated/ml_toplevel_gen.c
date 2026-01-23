@@ -138,51 +138,49 @@ CAMLreturn(Val_GdkToplevelState(result));
 
 CAMLexport CAMLprim value ml_gtk_toplevel_get_fullscreen_mode(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GdkToplevel *obj = (GdkToplevel *)GdkToplevel_val(self);
     GdkFullscreenMode prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "fullscreen-mode");
 if (pspec == NULL) caml_failwith("ml_gtk_toplevel_get_fullscreen_mode: property 'fullscreen-mode' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "fullscreen-mode", &prop_gvalue);
-    prop_value = (GdkFullscreenMode)g_value_get_enum(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "fullscreen-mode", &prop_gvalue);
+          prop_value = (GdkFullscreenMode)g_value_get_enum(&prop_gvalue);
 
-result = Val_GdkFullscreenMode(prop_value);
+      result = Val_GdkFullscreenMode(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_toplevel_set_fullscreen_mode(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GdkToplevel *obj = (GdkToplevel *)GdkToplevel_val(self);
     GdkFullscreenMode c_value = GdkFullscreenMode_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "fullscreen-mode");
 if (pspec == NULL) caml_failwith("ml_gtk_toplevel_set_fullscreen_mode: property 'fullscreen-mode' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_enum(&prop_gvalue, c_value);
+          g_value_set_enum(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "fullscreen-mode", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_toplevel_get_shortcuts_inhibited(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GdkToplevel *obj = (GdkToplevel *)GdkToplevel_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "shortcuts-inhibited");
 if (pspec == NULL) caml_failwith("ml_gtk_toplevel_get_shortcuts_inhibited: property 'shortcuts-inhibited' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "shortcuts-inhibited", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "shortcuts-inhibited", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}

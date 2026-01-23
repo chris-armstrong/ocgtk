@@ -13,6 +13,7 @@ let () =
       ("Nullable", Nullable_tests.tests);
       ("Error Handling", Error_handling_tests.tests);
       ("Out Params", Out_params_tests.tests);
+      ("Arrays", Array_tests.tests);
       ("Type Conversion", Type_conversion_tests.tests);
       ("Type Definitions (ML)", Type_definition_tests.tests);
       ("External Declarations (ML)", External_decl_tests.tests);

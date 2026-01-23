@@ -21,9 +21,26 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GIOExtensionPoint */
-#ifndef Val_GIOExtensionPoint
-#define GIOExtensionPoint_val(val) ((GIOExtensionPoint*)ext_of_val(val))
-#define Val_GIOExtensionPoint(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GIOExtensionPoint */
+/* Conversion functions for GIOExtensionPoint (opaque record with hidden fields) */
+GIOExtensionPoint *GIOExtensionPoint_val(value v) {
+  return *(GIOExtensionPoint **)Data_custom_val(v);
+}
 
+value Val_GIOExtensionPoint(const GIOExtensionPoint *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GIOExtensionPoint_option(const GIOExtensionPoint *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GIOExtensionPoint(ptr));
+}
+
+
+CAMLexport CAMLprim value ml_g_io_extension_point_get_extension_by_name(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GIOExtension* result = g_io_extension_point_get_extension_by_name(GIOExtensionPoint_val(self), String_val(arg1));
+CAMLreturn(Val_GIOExtension(result));
+}

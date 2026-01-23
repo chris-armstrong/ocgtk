@@ -25,48 +25,68 @@
 CAMLexport CAMLprim value ml_g_settings_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GSettings *obj = g_settings_new(String_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GSettings(obj));
 }
-
 CAMLexport CAMLprim value ml_g_settings_new_full(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
+
 GSettings *obj = g_settings_new_full(GSettingsSchema_val(arg1), Option_val(arg2, GSettingsBackend_val, NULL), String_option_val(arg3));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GSettings(obj));
 }
-
 CAMLexport CAMLprim value ml_g_settings_new_with_backend(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
+
 GSettings *obj = g_settings_new_with_backend(String_val(arg1), GSettingsBackend_val(arg2));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GSettings(obj));
 }
-
 CAMLexport CAMLprim value ml_g_settings_new_with_backend_and_path(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
+
 GSettings *obj = g_settings_new_with_backend_and_path(String_val(arg1), GSettingsBackend_val(arg2), String_val(arg3));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GSettings(obj));
 }
-
 CAMLexport CAMLprim value ml_g_settings_new_with_path(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
+
 GSettings *obj = g_settings_new_with_path(String_val(arg1), String_val(arg2));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GSettings(obj));
 }
-
 CAMLexport CAMLprim value ml_g_settings_set_uint(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
 
 gboolean result = g_settings_set_uint(GSettings_val(self), String_val(arg1), Int_val(arg2));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_g_settings_set_strv(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+    int arg2_length = Wosize_val(arg2);
+    gchar** c_arg2 = (gchar**)g_malloc(sizeof(gchar*) * (arg2_length + 1));
+    for (int i = 0; i < arg2_length; i++) {
+      c_arg2[i] = String_val(Field(arg2, i));
+    }
+    c_arg2[arg2_length] = NULL;
+
+gboolean result = g_settings_set_strv(GSettings_val(self), String_val(arg1), c_arg2);
+    g_free(c_arg2);
 CAMLreturn(Val_bool(result));
 }
 
@@ -134,6 +154,44 @@ g_settings_reset(GSettings_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_settings_list_keys(value self)
+{
+CAMLparam1(self);
+
+gchar** result = g_settings_list_keys(GSettings_val(self));
+    int result_length = 0;
+    while (result[result_length] != NULL) result_length++;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+    for (int i = 0; i < result_length; i++) {
+      g_free((gpointer)result[i]);
+    }
+    g_free(result);
+CAMLreturn(ml_result);
+}
+
+CAMLexport CAMLprim value ml_g_settings_list_children(value self)
+{
+CAMLparam1(self);
+
+gchar** result = g_settings_list_children(GSettings_val(self));
+    int result_length = 0;
+    while (result[result_length] != NULL) result_length++;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+    for (int i = 0; i < result_length; i++) {
+      g_free((gpointer)result[i]);
+    }
+    g_free(result);
+CAMLreturn(ml_result);
+}
+
 CAMLexport CAMLprim value ml_g_settings_is_writable(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -148,6 +206,25 @@ CAMLparam2(self, arg1);
 
 guint result = g_settings_get_uint(GSettings_val(self), String_val(arg1));
 CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_g_settings_get_strv(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gchar** result = g_settings_get_strv(GSettings_val(self), String_val(arg1));
+    int result_length = 0;
+    while (result[result_length] != NULL) result_length++;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+    for (int i = 0; i < result_length; i++) {
+      g_free((gpointer)result[i]);
+    }
+    g_free(result);
+CAMLreturn(ml_result);
 }
 
 CAMLexport CAMLprim value ml_g_settings_get_string(value self, value arg1)
@@ -240,108 +317,102 @@ CAMLreturn(Val_unit);
 
 CAMLexport CAMLprim value ml_gtk_settings_get_backend(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GSettings *obj = (GSettings *)GSettings_val(self);
     GSettingsBackend *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "backend");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_backend: property 'backend' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "backend", &prop_gvalue);
-    prop_value = (GSettingsBackend*)g_value_get_object(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "backend", &prop_gvalue);
+          prop_value = (GSettingsBackend*)g_value_get_object(&prop_gvalue);
 
-result = Val_GSettingsBackend(prop_value);
+      result = Val_GSettingsBackend(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_settings_get_delay_apply(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GSettings *obj = (GSettings *)GSettings_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "delay-apply");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_delay_apply: property 'delay-apply' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "delay-apply", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "delay-apply", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_settings_get_path(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GSettings *obj = (GSettings *)GSettings_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "path");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_path: property 'path' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "path", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "path", &prop_gvalue);
+          prop_value = g_value_get_string(&prop_gvalue);
 
-result = caml_copy_string(prop_value);
+      result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_settings_get_schema(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GSettings *obj = (GSettings *)GSettings_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "schema");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_schema: property 'schema' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "schema", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "schema", &prop_gvalue);
+          prop_value = g_value_get_string(&prop_gvalue);
 
-result = caml_copy_string(prop_value);
+      result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_settings_get_schema_id(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GSettings *obj = (GSettings *)GSettings_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "schema-id");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_schema_id: property 'schema-id' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "schema-id", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "schema-id", &prop_gvalue);
+          prop_value = g_value_get_string(&prop_gvalue);
 
-result = caml_copy_string(prop_value);
+      result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_settings_get_settings_schema(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GSettings *obj = (GSettings *)GSettings_val(self);
     GSettingsSchema *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "settings-schema");
 if (pspec == NULL) caml_failwith("ml_gtk_settings_get_settings_schema: property 'settings-schema' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "settings-schema", &prop_gvalue);
-    prop_value = (GSettingsSchema*)g_value_get_boxed(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "settings-schema", &prop_gvalue);
+          prop_value = (GSettingsSchema*)g_value_get_boxed(&prop_gvalue);
 
-result = Val_GSettingsSchema(prop_value);
+      result = Val_GSettingsSchema(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}

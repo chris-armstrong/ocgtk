@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_file_dialog_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkFileDialog *obj = gtk_file_dialog_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkFileDialog(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_file_dialog_set_title(value self, value arg1)
 {
 CAMLparam2(self, arg1);

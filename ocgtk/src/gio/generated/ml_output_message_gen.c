@@ -21,9 +21,18 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GOutputMessage */
-#ifndef Val_GOutputMessage
-#define GOutputMessage_val(val) ((GOutputMessage*)ext_of_val(val))
-#define Val_GOutputMessage(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GOutputMessage */
+/* Conversion functions for GOutputMessage (opaque record with hidden fields) */
+GOutputMessage *GOutputMessage_val(value v) {
+  return *(GOutputMessage **)Data_custom_val(v);
+}
+
+value Val_GOutputMessage(const GOutputMessage *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GOutputMessage_option(const GOutputMessage *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GOutputMessage(ptr));
+}
 

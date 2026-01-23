@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_string_sorter_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkStringSorter *obj = gtk_string_sorter_new(Option_val(arg1, GtkExpression_val, NULL));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkStringSorter(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_string_sorter_set_ignore_case(value self, value arg1)
 {
 CAMLparam2(self, arg1);

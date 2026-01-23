@@ -4,6 +4,12 @@
 type t = [`action_group] Gobject.obj
 
 (* Methods *)
+(** Lists the actions contained within @action_group.
+
+The caller is responsible for freeing the list with g_strfreev() when
+it is no longer required. *)
+external list_actions : t -> string array = "ml_g_action_group_list_actions"
+
 (** Checks if the named action exists within @action_group. *)
 external has_action : t -> string -> bool = "ml_g_action_group_has_action"
 

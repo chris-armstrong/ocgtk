@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_stack_switcher_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkStackSwitcher *obj = gtk_stack_switcher_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkStackSwitcher(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_stack_switcher_set_stack(value self, value arg1)
 {
 CAMLparam2(self, arg1);

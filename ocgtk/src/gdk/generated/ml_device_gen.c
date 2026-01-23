@@ -149,36 +149,34 @@ CAMLreturn(Val_bool(result));
 
 CAMLexport CAMLprim value ml_gtk_device_get_n_axes(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GdkDevice *obj = (GdkDevice *)GdkDevice_val(self);
     guint prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "n-axes");
 if (pspec == NULL) caml_failwith("ml_gtk_device_get_n_axes: property 'n-axes' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "n-axes", &prop_gvalue);
-    prop_value = (guint)g_value_get_uint(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "n-axes", &prop_gvalue);
+          prop_value = g_value_get_uint(&prop_gvalue);
 
-result = Val_int(prop_value);
+      result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_device_get_tool(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GdkDevice *obj = (GdkDevice *)GdkDevice_val(self);
     GdkDeviceTool *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "tool");
 if (pspec == NULL) caml_failwith("ml_gtk_device_get_tool: property 'tool' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "tool", &prop_gvalue);
-    prop_value = (GdkDeviceTool*)g_value_get_object(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "tool", &prop_gvalue);
+          prop_value = (GdkDeviceTool*)g_value_get_object(&prop_gvalue);
 
-result = Val_GdkDeviceTool(prop_value);
+      result = Val_GdkDeviceTool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}

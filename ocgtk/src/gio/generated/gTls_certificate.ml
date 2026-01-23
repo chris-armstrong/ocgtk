@@ -1,6 +1,10 @@
 (* High-level class for TlsCertificate *)
 class tls_certificate (obj : Tls_certificate.t) = object (self)
 
+  method get_ip_addresses : unit -> Inet_address.t array option =
+    fun () ->
+      (Tls_certificate.get_ip_addresses obj)
+
   method get_issuer : unit -> tls_certificate option =
     fun () ->
       Option.map (fun ret -> new tls_certificate ret) (Tls_certificate.get_issuer obj)

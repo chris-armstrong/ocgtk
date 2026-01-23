@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_stack_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkStack *obj = gtk_stack_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkStack(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_stack_set_visible_child_name(value self, value arg1)
 {
 CAMLparam2(self, arg1);

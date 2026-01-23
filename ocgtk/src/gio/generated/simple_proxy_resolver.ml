@@ -14,6 +14,12 @@ as referring to all three of the socks5, socks4a, and socks4 proxy
 types. *)
 external set_uri_proxy : t -> string -> string -> unit = "ml_g_simple_proxy_resolver_set_uri_proxy"
 
+(** Sets the list of ignored hosts.
+
+See #GSimpleProxyResolver:ignore-hosts for more details on how the
+@ignore_hosts argument is interpreted. *)
+external set_ignore_hosts : t -> string array -> unit = "ml_g_simple_proxy_resolver_set_ignore_hosts"
+
 (** Sets the default proxy on @resolver, to be used for any URIs that
 don't match #GSimpleProxyResolver:ignore-hosts or a proxy set
 via g_simple_proxy_resolver_set_uri_proxy().

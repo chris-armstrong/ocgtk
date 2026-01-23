@@ -217,54 +217,51 @@ if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Err
 
 CAMLexport CAMLprim value ml_gtk_d_bus_connection_get_address(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GDBusConnection *obj = (GDBusConnection *)GDBusConnection_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "address");
 if (pspec == NULL) caml_failwith("ml_gtk_d_bus_connection_get_address: property 'address' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "address", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "address", &prop_gvalue);
+          prop_value = g_value_get_string(&prop_gvalue);
 
-result = caml_copy_string(prop_value);
+      result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_d_bus_connection_get_authentication_observer(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GDBusConnection *obj = (GDBusConnection *)GDBusConnection_val(self);
     GDBusAuthObserver *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "authentication-observer");
 if (pspec == NULL) caml_failwith("ml_gtk_d_bus_connection_get_authentication_observer: property 'authentication-observer' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "authentication-observer", &prop_gvalue);
-    prop_value = (GDBusAuthObserver*)g_value_get_object(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "authentication-observer", &prop_gvalue);
+          prop_value = (GDBusAuthObserver*)g_value_get_object(&prop_gvalue);
 
-result = Val_GDBusAuthObserver(prop_value);
+      result = Val_GDBusAuthObserver(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_d_bus_connection_get_closed(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GDBusConnection *obj = (GDBusConnection *)GDBusConnection_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "closed");
 if (pspec == NULL) caml_failwith("ml_gtk_d_bus_connection_get_closed: property 'closed' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "closed", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "closed", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}

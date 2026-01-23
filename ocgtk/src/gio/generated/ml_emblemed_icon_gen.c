@@ -25,11 +25,12 @@
 CAMLexport CAMLprim value ml_g_emblemed_icon_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
+
 GEmblemedIcon *obj = g_emblemed_icon_new(GIcon_val(arg1), Option_val(arg2, GEmblem_val, NULL));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GEmblemedIcon(obj));
 }
-
 CAMLexport CAMLprim value ml_g_emblemed_icon_get_icon(value self)
 {
 CAMLparam1(self);

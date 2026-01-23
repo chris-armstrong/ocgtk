@@ -220,69 +220,66 @@ CAMLreturn(Val_bool(result));
 
 CAMLexport CAMLprim value ml_gtk_editable_get_cursor_position(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkEditable *obj = (GtkEditable *)GtkEditable_val(self);
     gint prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "cursor-position");
 if (pspec == NULL) caml_failwith("ml_gtk_editable_get_cursor_position: property 'cursor-position' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "cursor-position", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "cursor-position", &prop_gvalue);
+          prop_value = g_value_get_int(&prop_gvalue);
 
-result = Val_int(prop_value);
+      result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_editable_get_selection_bound(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkEditable *obj = (GtkEditable *)GtkEditable_val(self);
     gint prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "selection-bound");
 if (pspec == NULL) caml_failwith("ml_gtk_editable_get_selection_bound: property 'selection-bound' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "selection-bound", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "selection-bound", &prop_gvalue);
+          prop_value = g_value_get_int(&prop_gvalue);
 
-result = Val_int(prop_value);
+      result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_editable_get_xalign(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkEditable *obj = (GtkEditable *)GtkEditable_val(self);
     gfloat prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "xalign");
 if (pspec == NULL) caml_failwith("ml_gtk_editable_get_xalign: property 'xalign' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "xalign", &prop_gvalue);
-    prop_value = g_value_get_float(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "xalign", &prop_gvalue);
+          prop_value = g_value_get_float(&prop_gvalue);
 
-result = caml_copy_double(prop_value);
+      result = caml_copy_double(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_editable_set_xalign(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkEditable *obj = (GtkEditable *)GtkEditable_val(self);
     gfloat c_value = Double_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "xalign");
 if (pspec == NULL) caml_failwith("ml_gtk_editable_set_xalign: property 'xalign' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_float(&prop_gvalue, c_value);
+          g_value_set_float(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "xalign", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }

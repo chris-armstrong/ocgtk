@@ -1,6 +1,10 @@
 (* High-level class for FileChooser *)
 class file_chooser (obj : File_chooser.t) = object (self)
 
+  method add_choice : string -> string -> string array option -> string array option -> unit =
+    fun id label options option_labels ->
+      (File_chooser.add_choice obj id label options option_labels)
+
   method add_filter : 'p1. (#GFile_filter.file_filter as 'p1) -> unit =
     fun filter ->
       let filter = filter#as_file_filter in

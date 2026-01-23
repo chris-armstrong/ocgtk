@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_string_object_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkStringObject *obj = gtk_string_object_new(String_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkStringObject(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_string_object_get_string(value self)
 {
 CAMLparam1(self);

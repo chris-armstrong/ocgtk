@@ -25,11 +25,12 @@
 CAMLexport CAMLprim value ml_g_test_dbus_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GTestDBus *obj = g_test_dbus_new(GioTestDBusFlags_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GTestDBus(obj));
 }
-
 CAMLexport CAMLprim value ml_g_test_dbus_up(value self)
 {
 CAMLparam1(self);

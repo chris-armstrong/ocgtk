@@ -17,22 +17,22 @@
 #include "generated_forward_decls.h"
 
 
-CAMLexport CAMLprim value ml_gtk_drop_down_new(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-GtkDropDown *obj = gtk_drop_down_new(arg1, Option_val(arg2, GtkExpression_val, NULL));
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GtkDropDown(obj));
-}
-
 CAMLexport CAMLprim value ml_gtk_drop_down_new_from_strings(value arg1)
 {
 CAMLparam1(arg1);
-GtkDropDown *obj = gtk_drop_down_new_from_strings(arg1);
+    int arg1_length = Wosize_val(arg1);
+    char** c_arg1 = (char**)g_malloc(sizeof(char*) * (arg1_length + 1));
+    for (int i = 0; i < arg1_length; i++) {
+      c_arg1[i] = String_val(Field(arg1, i));
+    }
+    c_arg1[arg1_length] = NULL;
+
+GtkDropDown *obj = gtk_drop_down_new_from_strings(c_arg1);
 if (obj) g_object_ref_sink(obj);
+
+    g_free(c_arg1);
 CAMLreturn(Val_GtkDropDown(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_drop_down_set_show_arrow(value self, value arg1)
 {
 CAMLparam2(self, arg1);

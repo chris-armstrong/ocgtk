@@ -25,19 +25,21 @@
 CAMLexport CAMLprim value ml_g_emblem_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GEmblem *obj = g_emblem_new(GIcon_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GEmblem(obj));
 }
-
 CAMLexport CAMLprim value ml_g_emblem_new_with_origin(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
+
 GEmblem *obj = g_emblem_new_with_origin(GIcon_val(arg1), GioEmblemOrigin_val(arg2));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GEmblem(obj));
 }
-
 CAMLexport CAMLprim value ml_g_emblem_get_origin(value self)
 {
 CAMLparam1(self);

@@ -51,6 +51,11 @@ external get_identifier : t -> string -> string option = "ml_g_drive_get_identif
 (** Gets the icon for @drive. *)
 external get_icon : t -> Icon.t = "ml_g_drive_get_icon"
 
+(** Gets the kinds of identifiers that @drive has.
+Use g_drive_get_identifier() to obtain the identifiers
+themselves. *)
+external enumerate_identifiers : t -> string array = "ml_g_drive_enumerate_identifiers"
+
 (** Finishes ejecting a drive. If any errors occurred during the operation,
 @error will be set to contain the errors and %FALSE will be returned. *)
 external eject_with_operation_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_drive_eject_with_operation_finish"

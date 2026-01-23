@@ -81,6 +81,7 @@ and mount : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.M
     method get_symbolic_icon : unit -> GIcon.icon
     method get_uuid : unit -> string option
     method get_volume : unit -> volume option
+    method guess_content_type_sync : bool -> #GCancellable.cancellable option -> (string array, GError.t) result
     method is_shadowed : unit -> bool
     method shadow : unit -> unit
     method unshadow : unit -> unit
@@ -92,6 +93,7 @@ and volume : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.
     inherit Gvolume_signals.volume_signals
     method can_eject : unit -> bool
     method can_mount : unit -> bool
+    method enumerate_identifiers : unit -> string array
     method get_activation_root : unit -> file option
     method get_drive : unit -> GDrive.drive option
     method get_icon : unit -> GIcon.icon

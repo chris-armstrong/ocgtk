@@ -21,11 +21,20 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GIOExtension */
-#ifndef Val_GIOExtension
-#define GIOExtension_val(val) ((GIOExtension*)ext_of_val(val))
-#define Val_GIOExtension(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GIOExtension */
+/* Conversion functions for GIOExtension (opaque record with hidden fields) */
+GIOExtension *GIOExtension_val(value v) {
+  return *(GIOExtension **)Data_custom_val(v);
+}
+
+value Val_GIOExtension(const GIOExtension *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GIOExtension_option(const GIOExtension *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GIOExtension(ptr));
+}
 
 
 CAMLexport CAMLprim value ml_g_io_extension_get_priority(value self)

@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_media_controls_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkMediaControls *obj = gtk_media_controls_new(Option_val(arg1, GtkMediaStream_val, NULL));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkMediaControls(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_media_controls_set_media_stream(value self, value arg1)
 {
 CAMLparam2(self, arg1);

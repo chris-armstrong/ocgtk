@@ -16,21 +16,17 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Conversion functions for GtkBuildableParser (non-opaque record with fields) */
+/* Conversion functions for GtkBuildableParser (opaque record with hidden fields) */
 GtkBuildableParser *GtkBuildableParser_val(value v) {
-  if (Tag_val(v) == Custom_tag) {
-    return *(GtkBuildableParser **)Data_custom_val(v);
-  } else {
-    return (GtkBuildableParser*)ml_gir_record_ptr_val(v, "GtkBuildableParser");
-  }
+  return *(GtkBuildableParser **)Data_custom_val(v);
 }
 
-value Val_GtkBuildableParser(GtkBuildableParser *ptr) {
+value Val_GtkBuildableParser(const GtkBuildableParser *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_alloc((ptr), sizeof(GtkBuildableParser), "GtkBuildableParser", NULL);
+  return ml_gir_record_val_ptr(ptr);
 }
 
-value Val_GtkBuildableParser_option(GtkBuildableParser *ptr) {
+value Val_GtkBuildableParser_option(const GtkBuildableParser *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GtkBuildableParser(ptr));
 }

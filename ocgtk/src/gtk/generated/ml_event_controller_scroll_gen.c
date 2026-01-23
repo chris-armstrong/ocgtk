@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_event_controller_scroll_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkEventControllerScroll *obj = gtk_event_controller_scroll_new(GtkEventControllerScrollFlags_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkEventControllerScroll(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_event_controller_scroll_set_flags(value self, value arg1)
 {
 CAMLparam2(self, arg1);

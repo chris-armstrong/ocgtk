@@ -25,11 +25,12 @@
 CAMLexport CAMLprim value ml_g_application_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
+
 GApplication *obj = g_application_new(String_option_val(arg1), GioApplicationFlags_val(arg2));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GApplication(obj));
 }
-
 CAMLexport CAMLprim value ml_g_application_withdraw_notification(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -156,6 +157,20 @@ CAMLexport CAMLprim value ml_g_application_quit(value self)
 CAMLparam1(self);
 
 g_application_quit(GApplication_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_application_open(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+    int arg1_length = Wosize_val(arg1);
+    GFile** c_arg1 = (GFile**)g_malloc(sizeof(GFile*) * arg1_length);
+    for (int i = 0; i < arg1_length; i++) {
+      c_arg1[i] = GFile_val(Field(arg1, i));
+    }
+
+g_application_open(GApplication_val(self), c_arg1, Int_val(arg2), String_val(arg3));
+    g_free(c_arg1);
 CAMLreturn(Val_unit);
 }
 

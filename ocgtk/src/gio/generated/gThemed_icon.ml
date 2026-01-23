@@ -5,6 +5,10 @@ class themed_icon (obj : Themed_icon.t) = object (self)
     fun iconname ->
       (Themed_icon.append_name obj iconname)
 
+  method get_names : unit -> string array =
+    fun () ->
+      (Themed_icon.get_names obj)
+
   method prepend_name : string -> unit =
     fun iconname ->
       (Themed_icon.prepend_name obj iconname)

@@ -100,6 +100,19 @@ external unref : t -> unit = "ml_g_settings_schema_unref"
 (** Increase the reference count of @schema, returning a new reference. *)
 external ref : t -> t = "ml_g_settings_schema_ref"
 
+(** Introspects the list of keys on @schema.
+
+You should probably not be calling this function from "normal" code
+(since you should already know what keys are in your schema).  This
+function is intended for introspection reasons. *)
+external list_keys : t -> string array = "ml_g_settings_schema_list_keys"
+
+(** Gets the list of children in @schema.
+
+You should free the return value with g_strfreev() when you are done
+with it. *)
+external list_children : t -> string array = "ml_g_settings_schema_list_children"
+
 (** Checks if @schema has a key named @name. *)
 external has_key : t -> string -> bool = "ml_g_settings_schema_has_key"
 

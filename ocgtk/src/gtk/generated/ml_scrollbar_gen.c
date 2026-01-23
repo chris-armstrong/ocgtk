@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_scrollbar_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
+
 GtkScrollbar *obj = gtk_scrollbar_new(GtkOrientation_val(arg1), Option_val(arg2, GtkAdjustment_val, NULL));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkScrollbar(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_scrollbar_set_adjustment(value self, value arg1)
 {
 CAMLparam2(self, arg1);

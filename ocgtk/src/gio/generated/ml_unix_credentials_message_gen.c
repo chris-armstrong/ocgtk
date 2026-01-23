@@ -25,19 +25,21 @@
 CAMLexport CAMLprim value ml_g_unix_credentials_message_new(value unit)
 {
 CAMLparam1(unit);
+
 GUnixCredentialsMessage *obj = g_unix_credentials_message_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GUnixCredentialsMessage(obj));
 }
-
 CAMLexport CAMLprim value ml_g_unix_credentials_message_new_with_credentials(value arg1)
 {
 CAMLparam1(arg1);
+
 GUnixCredentialsMessage *obj = g_unix_credentials_message_new_with_credentials(GCredentials_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GUnixCredentialsMessage(obj));
 }
-
 CAMLexport CAMLprim value ml_g_unix_credentials_message_get_credentials(value self)
 {
 CAMLparam1(self);

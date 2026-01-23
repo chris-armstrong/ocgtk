@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_color_dialog_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkColorDialog *obj = gtk_color_dialog_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkColorDialog(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_color_dialog_set_with_alpha(value self, value arg1)
 {
 CAMLparam2(self, arg1);
