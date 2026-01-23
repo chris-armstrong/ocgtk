@@ -269,3 +269,72 @@ let is_polymorphic_variant (type_decl : type_declaration) : bool =
 (* Check if a type is abstract (no manifest) *)
 let is_abstract_type (type_decl : type_declaration) : bool =
   type_decl.ptype_manifest = None
+
+(* ========================================================================= *)
+(* Class Declaration Helpers *)
+(* ========================================================================= *)
+
+(* Find a class declaration by name in a structure *)
+let find_class_declaration (ast : structure) (name : string) : class_declaration option =
+  List.find_map (fun item ->
+    match item.pstr_desc with
+    | Pstr_class class_decls ->
+        List.find_opt (fun cd -> cd.pci_name.txt = name) class_decls
+    | _ -> None
+  ) ast
+
+(* Get inherit clauses from a class expression *)
+let rec get_class_inherit_clauses (class_expr : class_expr) : string list =
+  match class_expr.pcl_desc with
+  | Pcl_constr ({ txt = Longident.Lident name; _ }, []) -> [name]
+  | Pcl_constr ({ txt = Longident.Ldot (parent, name); _ }, []) ->
+      [longident_loc_to_string { txt = Longident.Ldot (parent, name); loc = Location.none }]
+  | Pcl_apply (cexp, _) ->
+      get_class_inherit_clauses cexp
+  | _ -> []
+
+(* Find a method by name in a class expression *)
+let find_method_in_class (class_expr : class_expr) (method_name : string) : class_field option =
+  match class_expr.pcl_desc with
+  | Pcl_structure { pcstr_fields; _ } ->
+      List.find_opt (fun cf ->
+        match cf.pcf_desc with
+        | Pcf_method ({ txt; _ }, _, _) when txt = method_name -> true
+        | _ -> false
+      ) pcstr_fields
+  | _ -> None
+
+(* Get the type annotation of a method *)
+let get_method_type (class_field : class_field) : core_type option =
+  match class_field.pcf_desc with
+  | Pcf_method (_, _, Cfk_virtual virtual_type) ->
+      (* virtual_type is already a core_type, return it directly *)
+      Some virtual_type
+  | Pcf_method (_, _, Cfk_concrete (_, { pexp_desc = Pexp_poly (_, Some poly_type); _ })) ->
+      Some poly_type
+  | Pcf_method (_, _, Cfk_concrete (_, { pexp_desc = Pexp_poly (_, None); _ })) ->
+      (* Poly type with no explicit type - infer from body (not implemented) *)
+      None
+  | _ -> None
+
+(* Convert class expression to string for debugging *)
+let rec class_expr_to_string (class_expr : class_expr) : string =
+  match class_expr.pcl_desc with
+  | Pcl_constr ({ txt = Longident.Lident name; _ }, []) -> "class " ^ name
+  | Pcl_constr ({ txt = Longident.Ldot (parent, name); _ }, []) ->
+      "class " ^ longident_loc_to_string { txt = Longident.Ldot (parent, name); loc = Location.none }
+  | Pcl_structure { pcstr_self; pcstr_fields } ->
+      let self_str = match pcstr_self with
+        | { ppat_desc = Ppat_var { txt; _ }; _ } -> txt
+        | _ -> "<self>"
+      in
+      let field_strs = List.map (fun cf ->
+        match cf.pcf_desc with
+        | Pcf_method ({ txt; _ }, _, _) -> "method " ^ txt
+        | Pcf_val ({ txt; _ }, _, _) -> "val " ^ txt
+        | Pcf_inherit _ -> "inherit ..."
+        | _ -> "..."
+      ) pcstr_fields in
+      Printf.sprintf "class %s = { %s }" self_str (String.concat "; " field_strs)
+  | Pcl_apply (cexp, _) -> class_expr_to_string cexp
+  | _ -> "<class expression>"
