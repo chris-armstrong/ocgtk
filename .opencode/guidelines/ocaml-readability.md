@@ -412,6 +412,9 @@ From `ml_ast_helpers.ml`:
 
 ### When Creating New Test Helpers
 
+
+**IMPORTANT**: Review [OCaml AST Reference Guide](../../ocgtk/docs/ocaml_ast/AST_REFERENCE_GUIDE.md) for common OCaml syntax to AST translations.
+
 **MANDATORY Study Phase** (before writing ANY code):
 
 1. **Read these files COMPLETELY**:
