@@ -16,17 +16,18 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-
-CAMLexport CAMLprim value ml_gtk_accessible_list_new_from_array(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-GtkAccessibleList *obj = gtk_accessible_list_new_from_array(arg1, arg2);
-CAMLreturn(Val_GtkAccessibleList(obj));
+/* Conversion functions for GtkAccessibleList (opaque record with hidden fields) */
+GtkAccessibleList *GtkAccessibleList_val(value v) {
+  return *(GtkAccessibleList **)Data_custom_val(v);
 }
 
-CAMLexport CAMLprim value ml_gtk_accessible_list_new_from_list(value arg1)
-{
-CAMLparam1(arg1);
-GtkAccessibleList *obj = gtk_accessible_list_new_from_list(arg1);
-CAMLreturn(Val_GtkAccessibleList(obj));
+value Val_GtkAccessibleList(const GtkAccessibleList *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
 }
+
+value Val_GtkAccessibleList_option(const GtkAccessibleList *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkAccessibleList(ptr));
+}
+

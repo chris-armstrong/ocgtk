@@ -59,6 +59,10 @@ class dtls_connection (obj : Dtls_connection.t) = object (self)
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (Dtls_connection.handshake obj cancellable)
 
+  method set_advertised_protocols : string array option -> unit =
+    fun protocols ->
+      (Dtls_connection.set_advertised_protocols obj protocols)
+
   method set_certificate : 'p1. (#GTls_certificate.tls_certificate as 'p1) -> unit =
     fun certificate ->
       let certificate = certificate#as_tls_certificate in

@@ -1801,6 +1801,24 @@ and Mount
   activation root on a #GVolume is set. *)
   external is_shadowed : t -> bool = "ml_g_mount_is_shadowed"
 
+  (** Tries to guess the type of content stored on @mount. Returns one or
+  more textual identifiers of well-known content types (typically
+  prefixed with "x-content/"), e.g. x-content/image-dcf for camera
+  memory cards. See the
+  [shared-mime-info](http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
+  specification for more on x-content types.
+
+  This is a synchronous operation and as such may block doing IO;
+  see g_mount_guess_content_type() for the asynchronous version. *)
+  external guess_content_type_sync : t -> bool -> Cancellable.t option -> (string array, GError.t) result = "ml_g_mount_guess_content_type_sync"
+
+  (** Finishes guessing content types of @mount. If any errors occurred
+  during the operation, @error will be set to contain the errors and
+  %FALSE will be returned. In particular, you may get an
+  %G_IO_ERROR_NOT_SUPPORTED if the mount does not support content
+  guessing. *)
+  external guess_content_type_finish : t -> Async_result.t -> (string array, GError.t) result = "ml_g_mount_guess_content_type_finish"
+
   (** Gets the volume for the @mount. *)
   external get_volume : t -> Volume.t option = "ml_g_mount_get_volume"
 
@@ -1903,6 +1921,24 @@ end = struct
   manage shadow mounts (and shadows the underlying mount) if the
   activation root on a #GVolume is set. *)
   external is_shadowed : t -> bool = "ml_g_mount_is_shadowed"
+
+  (** Tries to guess the type of content stored on @mount. Returns one or
+  more textual identifiers of well-known content types (typically
+  prefixed with "x-content/"), e.g. x-content/image-dcf for camera
+  memory cards. See the
+  [shared-mime-info](http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
+  specification for more on x-content types.
+
+  This is a synchronous operation and as such may block doing IO;
+  see g_mount_guess_content_type() for the asynchronous version. *)
+  external guess_content_type_sync : t -> bool -> Cancellable.t option -> (string array, GError.t) result = "ml_g_mount_guess_content_type_sync"
+
+  (** Finishes guessing content types of @mount. If any errors occurred
+  during the operation, @error will be set to contain the errors and
+  %FALSE will be returned. In particular, you may get an
+  %G_IO_ERROR_NOT_SUPPORTED if the mount does not support content
+  guessing. *)
+  external guess_content_type_finish : t -> Async_result.t -> (string array, GError.t) result = "ml_g_mount_guess_content_type_finish"
 
   (** Gets the volume for the @mount. *)
   external get_volume : t -> Volume.t option = "ml_g_mount_get_volume"
@@ -2030,6 +2066,10 @@ and Volume
   g_mount_is_shadowed() for more details. *)
   external get_activation_root : t -> File.t option = "ml_g_volume_get_activation_root"
 
+  (** Gets the kinds of [identifiers](#volume-identifiers) that @volume has.
+  Use g_volume_get_identifier() to obtain the identifiers themselves. *)
+  external enumerate_identifiers : t -> string array = "ml_g_volume_enumerate_identifiers"
+
   (** Finishes ejecting a volume. If any errors occurred during the operation,
   @error will be set to contain the errors and %FALSE will be returned. *)
   external eject_with_operation_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_volume_eject_with_operation_finish"
@@ -2117,6 +2157,10 @@ end = struct
   implementations to find the underlying mount to shadow, see
   g_mount_is_shadowed() for more details. *)
   external get_activation_root : t -> File.t option = "ml_g_volume_get_activation_root"
+
+  (** Gets the kinds of [identifiers](#volume-identifiers) that @volume has.
+  Use g_volume_get_identifier() to obtain the identifiers themselves. *)
+  external enumerate_identifiers : t -> string array = "ml_g_volume_enumerate_identifiers"
 
   (** Finishes ejecting a volume. If any errors occurred during the operation,
   @error will be set to contain the errors and %FALSE will be returned. *)

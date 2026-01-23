@@ -50,6 +50,7 @@ class print_settings : Print_settings.t ->
     method set_number_up_layout : Gtk_enums.numberuplayout -> unit
     method set_orientation : Gtk_enums.pageorientation -> unit
     method set_output_bin : string -> unit
+    method set_page_ranges : Page_range.t array -> int -> unit
     method set_page_set : Gtk_enums.pageset -> unit
     method set_paper_height : float -> Gtk_enums.unit -> unit
     method set_paper_size : Paper_size.t -> unit

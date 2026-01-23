@@ -25,7 +25,9 @@
 CAMLexport CAMLprim value ml_g_simple_permission_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GSimplePermission *obj = g_simple_permission_new(Bool_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GSimplePermission(obj));
 }

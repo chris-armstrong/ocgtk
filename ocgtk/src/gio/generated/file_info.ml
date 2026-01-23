@@ -52,6 +52,12 @@ See %G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE. *)
 external set_content_type : t -> string -> unit = "ml_g_file_info_set_content_type"
 
 (** Sets the @attribute to contain the given @attr_value,
+if possible.
+
+Sinze: 2.22 *)
+external set_attribute_stringv : t -> string -> string array -> unit = "ml_g_file_info_set_attribute_stringv"
+
+(** Sets the @attribute to contain the given @attr_value,
 if possible. *)
 external set_attribute_string : t -> string -> string -> unit = "ml_g_file_info_set_attribute_string"
 
@@ -83,6 +89,9 @@ external set_attribute_boolean : t -> string -> bool -> unit = "ml_g_file_info_s
 
 (** Removes all cases of @attribute from @info if it exists. *)
 external remove_attribute : t -> string -> unit = "ml_g_file_info_remove_attribute"
+
+(** Lists the file info structure's attributes. *)
+external list_attributes : t -> string option -> string array option = "ml_g_file_info_list_attributes"
 
 (** Checks if a file info structure has an attribute in the
 specified @name_space. *)
@@ -167,6 +176,10 @@ external get_content_type : t -> string option = "ml_g_file_info_get_content_typ
 
 (** Gets the attribute type for an attribute key. *)
 external get_attribute_type : t -> string -> Gio_enums.fileattributetype = "ml_g_file_info_get_attribute_type"
+
+(** Gets the value of a stringv attribute. If the attribute does
+not contain a stringv, %NULL will be returned. *)
+external get_attribute_stringv : t -> string -> string array option = "ml_g_file_info_get_attribute_stringv"
 
 (** Gets the value of a string attribute. If the attribute does
 not contain a string, %NULL will be returned. *)

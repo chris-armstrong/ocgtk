@@ -16,6 +16,21 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Conversion functions for GtkPrintSetup (opaque record with hidden fields) */
+GtkPrintSetup *GtkPrintSetup_val(value v) {
+  return *(GtkPrintSetup **)Data_custom_val(v);
+}
+
+value Val_GtkPrintSetup(const GtkPrintSetup *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GtkPrintSetup_option(const GtkPrintSetup *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkPrintSetup(ptr));
+}
+
 
 CAMLexport CAMLprim value ml_gtk_print_setup_unref(value self)
 {

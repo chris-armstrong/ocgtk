@@ -9,6 +9,14 @@ class builder (obj : Builder.t) = object (self)
     fun resource_path ->
       (Builder.add_from_resource obj resource_path)
 
+  method add_objects_from_file : string -> string array -> (bool, GError.t) result =
+    fun filename object_ids ->
+      (Builder.add_objects_from_file obj filename object_ids)
+
+  method add_objects_from_resource : string -> string array -> (bool, GError.t) result =
+    fun resource_path object_ids ->
+      (Builder.add_objects_from_resource obj resource_path object_ids)
+
   method get_scope : unit -> GBuilder_scope.builder_scope =
     fun () ->
       new  GBuilder_scope.builder_scope(Builder.get_scope obj)

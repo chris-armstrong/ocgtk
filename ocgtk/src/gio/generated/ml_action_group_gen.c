@@ -22,6 +22,25 @@
 #include "generated_forward_decls.h"
 
 
+CAMLexport CAMLprim value ml_g_action_group_list_actions(value self)
+{
+CAMLparam1(self);
+
+gchar** result = g_action_group_list_actions(GActionGroup_val(self));
+    int result_length = 0;
+    while (result[result_length] != NULL) result_length++;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+    for (int i = 0; i < result_length; i++) {
+      g_free((gpointer)result[i]);
+    }
+    g_free(result);
+CAMLreturn(ml_result);
+}
+
 CAMLexport CAMLprim value ml_g_action_group_has_action(value self, value arg1)
 {
 CAMLparam2(self, arg1);

@@ -2,6 +2,54 @@
 
 GTK introspection-based code generator for ocgtk bindings.
 
+## Architecture Overview
+
+The generator processes GIR XML files through a 4-stage pipeline:
+
+```
+GIR XML (e.g., Gtk-4.0.gir)
+    │
+    ├─► parse/gir_parser.ml     ──► types.ml (AST)
+    │                              │
+    │                              ▼
+    │                       type_mappings.ml (type resolution)
+    │                              │
+    │         ┌────────────────────┼────────────────────┐
+    │         ▼                    ▼                    ▼
+    │   generate/            generate/            generate/
+    │   c_stubs.ml           ml_interface.ml      class_gen.ml
+    │   (Layer 0 C)          (Layer 1 ML)         (Layer 2 ML)
+    │         │                    │                    │
+    │         ▼                    ▼                    ▼
+    │   ml_*_gen.c          widget.mli             gWidget.ml
+    │   C FFI stubs         Low-level bindings     High-level wrappers
+```
+
+### Key Files
+
+| File | Purpose |
+|------|---------|
+| `types.ml` | AST for GIR elements (classes, methods, types) |
+| `parse/gir_parser.ml` | XML parsing → AST |
+| `type_mappings.ml` | Maps C types to OCaml types (`gint` → `int`, etc.) |
+| `generate/c_stubs.ml` | C FFI code generation (Layer 0) |
+| `generate/ml_interface.ml` | OCaml interface generation (Layer 1) |
+| `generate/class_gen.ml` | High-level wrapper generation (Layer 2) |
+
+### Type Resolution Flow
+
+```
+gir_type.name + gir_type.c_type
+        │
+        ▼
+Type_mappings.find_type_mapping_for_gir_type()
+        │
+        ├─► Found → use mapping.ocaml_type in ML output
+        │
+        └─► Not found → method is SKIPPED (exclude_list.ml)
+                       or falls back to "unit" in some cases
+```
+
 ## Building
 
 ```bash
@@ -9,7 +57,7 @@ GTK introspection-based code generator for ocgtk bindings.
 dune build
 ```
 
-The executable is built to `_build/default/src/tools/gir_gen/main.exe`
+The executable is built to `_build/default/src/tools/gir_gen/gir_gen.exe`
 
 ## Running
 
@@ -19,7 +67,7 @@ The executable is built to `_build/default/src/tools/gir_gen/main.exe`
 
 ```bash
 # Generate GTK bindings to src/gtk/generated/
-dune exec src/tools/gir_gen/main.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+dune exec src/tools/gir_gen/gir_gen.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
 ```
 
 ### From the repository root directory
@@ -28,13 +76,36 @@ If running from `/workspaces/ocgtk` (parent of `ocgtk`):
 
 ```bash
 cd ocgtk
-dune exec src/tools/gir_gen/main.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+dune exec src/tools/gir_gen/gir_gen.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
 ```
 
 ### Options
 
 - `GIR_FILE`: Path to GTK GIR file (usually `/usr/share/gir-1.0/Gtk-4.0.gir`)
 - `OUTPUT_DIR`: Where to write generated files
+
+### ⚠️ IMPORTANT: Output Directory Convention
+
+**The output directory should be the PARENT of the `generated/` directory, NOT the `generated/` directory itself.**
+
+The generator automatically creates a `generated/` subdirectory inside the output directory you specify.
+
+✅ **Correct:**
+```bash
+dune exec gir_gen -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+```
+This creates files in `src/gtk/generated/`
+
+❌ **Wrong:**
+```bash
+dune exec gir_gen -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk/generated
+```
+This creates files in `src/gtk/generated/generated/` (nested directory problem)
+
+**Examples:**
+- For GTK: Use `src/gtk` → generates to `src/gtk/generated/`
+- For GDK: Use `src/gdk` → generates to `src/gdk/generated/`
+- For GIO: Use `src/gio` → generates to `src/gio/generated/`
 
 ## Testing
 
@@ -43,7 +114,7 @@ dune exec src/tools/gir_gen/main.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
 # Generate test output
 mkdir -p output/test
 echo "Label" > output/test/filter.txt
-dune exec src/tools/gir_gen/main.exe -- -f output/test/filter.txt \
+dune exec src/tools/gir_gen/gir_gen.exe -- -f output/test/filter.txt \
   /usr/share/gir-1.0/Gtk-4.0.gir output/test
 
 # Verify files generated
@@ -61,7 +132,7 @@ gcc -c output/test/ml_event_controllers_gen.c \
 ### Full Rebuild
 ```bash
 # Regenerate all GTK bindings and rebuild library (run from ocgtk directory)
-dune exec src/tools/gir_gen/main.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+dune exec src/tools/gir_gen/gir_gen.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
 dune build
 ```
 
@@ -77,12 +148,12 @@ Generated files are written to `src/gtk/generated/`:
 
 ## Common Issues
 
-**Error: "Program 'src/tools/gir_gen/main.exe' not found"**
+**Error: "Program 'src/tools/gir_gen/gir_gen.exe' not found"**
 - Ensure you're in the `ocgtk` directory
 - Run `dune build` first
 
-**Error: "Don't know how to build src/tools/gir_gen/main.exe"**
-- Use `dune exec src/tools/gir_gen/main.exe` instead of `dune build src/tools/gir_gen/main.exe`
+**Error: "Don't know how to build src/tools/gir_gen/gir_gen.exe"**
+- Use `dune exec src/tools/gir_gen/gir_gen.exe` instead of `dune build src/tools/gir_gen/gir_gen.exe`
 
 ---
 

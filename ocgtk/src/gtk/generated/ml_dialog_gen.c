@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_dialog_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkDialog *obj = gtk_dialog_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkDialog(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_dialog_set_response_sensitive(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -103,18 +104,17 @@ CAMLreturn(Val_unit);
 
 CAMLexport CAMLprim value ml_gtk_dialog_get_use_header_bar(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkDialog *obj = (GtkDialog *)GtkDialog_val(self);
     gint prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "use-header-bar");
 if (pspec == NULL) caml_failwith("ml_gtk_dialog_get_use_header_bar: property 'use-header-bar' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "use-header-bar", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "use-header-bar", &prop_gvalue);
+          prop_value = g_value_get_int(&prop_gvalue);
 
-result = Val_int(prop_value);
+      result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}

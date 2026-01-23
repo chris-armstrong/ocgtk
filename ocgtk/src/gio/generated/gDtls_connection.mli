@@ -14,6 +14,7 @@ class dtls_connection : Dtls_connection.t ->
     method get_rehandshake_mode : unit -> Gio_enums.tlsrehandshakemode
     method get_require_close_notify : unit -> bool
     method handshake : #GCancellable.cancellable option -> (bool, GError.t) result
+    method set_advertised_protocols : string array option -> unit
     method set_certificate : #GTls_certificate.tls_certificate -> unit
     method set_database : #GTls_connection_and__tls_database_and__tls_interaction.tls_database option -> unit
     method set_interaction : #GTls_connection_and__tls_database_and__tls_interaction.tls_interaction option -> unit

@@ -20,6 +20,14 @@ See [signal@Gtk.TreeModel::rows-reordered].
 
 This should be called by models when their rows have been
 reordered. *)
+external rows_reordered_with_length : t -> Tree_path.t -> Tree_iter.t option -> int array -> int -> unit = "ml_gtk_tree_model_rows_reordered_with_length"
+
+(** Emits the ::rows-reordered signal on @tree_model.
+
+See [signal@Gtk.TreeModel::rows-reordered].
+
+This should be called by models when their rows have been
+reordered. *)
 external rows_reordered : t -> Tree_path.t -> Tree_iter.t -> int -> unit = "ml_gtk_tree_model_rows_reordered"
 
 (** Emits the ::row-inserted signal on @tree_model.

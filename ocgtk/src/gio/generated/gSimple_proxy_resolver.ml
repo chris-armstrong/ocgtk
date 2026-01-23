@@ -5,6 +5,10 @@ class simple_proxy_resolver (obj : Simple_proxy_resolver.t) = object (self)
     fun default_proxy ->
       (Simple_proxy_resolver.set_default_proxy obj default_proxy)
 
+  method set_ignore_hosts : string array -> unit =
+    fun ignore_hosts ->
+      (Simple_proxy_resolver.set_ignore_hosts obj ignore_hosts)
+
   method set_uri_proxy : string -> string -> unit =
     fun uri_scheme proxy ->
       (Simple_proxy_resolver.set_uri_proxy obj uri_scheme proxy)

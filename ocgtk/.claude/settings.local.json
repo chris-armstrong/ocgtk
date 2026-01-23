@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dune runtest:*)",
+      "Bash(_build/default/src/tools/gir_gen/main.exe:*)",
+      "Bash(dune exec:*)",
+      "Bash(dune build:*)",
+      "Bash(timeout 120 dune runtest:*)",
+      "Bash(tee:*)",
+      "Bash(pkill:*)",
+      "Bash(_build/default/src/tools/test_gir_gen/test_gir_gen.exe)",
+      "Bash(cat:*)",
+      "Bash(xargs cat:*)",
+      "Bash(find:*)",
+      "WebSearch",
+      "Bash(opam install:*)",
+      "Bash(ocamlfind query:*)",
+      "Bash(xargs ls:*)",
+      "Bash(dune clean:*)",
+      "Bash(ls:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_tree_expander_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkTreeExpander *obj = gtk_tree_expander_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkTreeExpander(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_tree_expander_set_list_row(value self, value arg1)
 {
 CAMLparam2(self, arg1);

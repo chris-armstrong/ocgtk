@@ -21,9 +21,18 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GOutputVector */
-#ifndef Val_GOutputVector
-#define GOutputVector_val(val) ((GOutputVector*)ext_of_val(val))
-#define Val_GOutputVector(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GOutputVector */
+/* Conversion functions for GOutputVector (opaque record with hidden fields) */
+GOutputVector *GOutputVector_val(value v) {
+  return *(GOutputVector **)Data_custom_val(v);
+}
+
+value Val_GOutputVector(const GOutputVector *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GOutputVector_option(const GOutputVector *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GOutputVector(ptr));
+}
 

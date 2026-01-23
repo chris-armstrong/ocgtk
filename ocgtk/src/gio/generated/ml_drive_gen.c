@@ -137,6 +137,25 @@ GIcon* result = g_drive_get_icon(GDrive_val(self));
 CAMLreturn(Val_GIcon(result));
 }
 
+CAMLexport CAMLprim value ml_g_drive_enumerate_identifiers(value self)
+{
+CAMLparam1(self);
+
+char** result = g_drive_enumerate_identifiers(GDrive_val(self));
+    int result_length = 0;
+    while (result[result_length] != NULL) result_length++;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+    for (int i = 0; i < result_length; i++) {
+      g_free((gpointer)result[i]);
+    }
+    g_free(result);
+CAMLreturn(ml_result);
+}
+
 CAMLexport CAMLprim value ml_g_drive_eject_with_operation_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);

@@ -125,6 +125,16 @@ class socket (obj : Socket_and__socket_connection.Socket.t) = object (self)
     fun () ->
       (Socket_and__socket_connection.Socket.listen obj)
 
+  method receive_messages : 'p1. Input_message.t array -> int -> int -> (#GCancellable.cancellable as 'p1) option -> (int, GError.t) result =
+    fun messages num_messages flags cancellable ->
+      let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
+      (Socket_and__socket_connection.Socket.receive_messages obj messages num_messages flags cancellable)
+
+  method send_messages : 'p1. Output_message.t array -> int -> int -> (#GCancellable.cancellable as 'p1) option -> (int, GError.t) result =
+    fun messages num_messages flags cancellable ->
+      let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
+      (Socket_and__socket_connection.Socket.send_messages obj messages num_messages flags cancellable)
+
   method set_blocking : bool -> unit =
     fun blocking ->
       (Socket_and__socket_connection.Socket.set_blocking obj blocking)

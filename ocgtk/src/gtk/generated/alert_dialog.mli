@@ -38,6 +38,9 @@ See [property@Gtk.AlertDialog:cancel-button] for
 details of how this value is used. *)
 external set_cancel_button : t -> int -> unit = "ml_gtk_alert_dialog_set_cancel_button"
 
+(** Sets the button labels for the alert. *)
+external set_buttons : t -> string array -> unit = "ml_gtk_alert_dialog_set_buttons"
+
 (** Returns whether the alert blocks interaction
 with the parent window while it is presented. *)
 external get_modal : t -> bool = "ml_gtk_alert_dialog_get_modal"
@@ -53,6 +56,9 @@ external get_default_button : t -> int = "ml_gtk_alert_dialog_get_default_button
 
 (** Returns the index of the cancel button. *)
 external get_cancel_button : t -> int = "ml_gtk_alert_dialog_get_cancel_button"
+
+(** Returns the button labels for the alert. *)
+external get_buttons : t -> string array option = "ml_gtk_alert_dialog_get_buttons"
 
 (* Properties *)
 

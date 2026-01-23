@@ -16,21 +16,38 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
+/* Conversion functions for GtkBitset (opaque record with hidden fields) */
+GtkBitset *GtkBitset_val(value v) {
+  return *(GtkBitset **)Data_custom_val(v);
+}
+
+value Val_GtkBitset(const GtkBitset *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GtkBitset_option(const GtkBitset *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GtkBitset(ptr));
+}
+
 
 CAMLexport CAMLprim value ml_gtk_bitset_new_empty(value unit)
 {
 CAMLparam1(unit);
+
 GtkBitset *obj = gtk_bitset_new_empty();
+
 CAMLreturn(Val_GtkBitset(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_bitset_new_range(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
+
 GtkBitset *obj = gtk_bitset_new_range(Int_val(arg1), Int_val(arg2));
+
 CAMLreturn(Val_GtkBitset(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_bitset_unref(value self)
 {
 CAMLparam1(self);

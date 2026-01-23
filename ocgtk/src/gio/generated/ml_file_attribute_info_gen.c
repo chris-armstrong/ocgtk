@@ -21,9 +21,18 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GFileAttributeInfo */
-#ifndef Val_GFileAttributeInfo
-#define GFileAttributeInfo_val(val) ((GFileAttributeInfo*)ext_of_val(val))
-#define Val_GFileAttributeInfo(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GFileAttributeInfo */
+/* Conversion functions for GFileAttributeInfo (opaque record with hidden fields) */
+GFileAttributeInfo *GFileAttributeInfo_val(value v) {
+  return *(GFileAttributeInfo **)Data_custom_val(v);
+}
+
+value Val_GFileAttributeInfo(const GFileAttributeInfo *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GFileAttributeInfo_option(const GFileAttributeInfo *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GFileAttributeInfo(ptr));
+}
 

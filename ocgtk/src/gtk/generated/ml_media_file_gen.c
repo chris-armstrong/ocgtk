@@ -20,43 +20,30 @@
 CAMLexport CAMLprim value ml_gtk_media_file_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkMediaFile *obj = gtk_media_file_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkMediaFile(obj));
 }
-
-CAMLexport CAMLprim value ml_gtk_media_file_new_for_file(value arg1)
-{
-CAMLparam1(arg1);
-GtkMediaFile *obj = gtk_media_file_new_for_file(arg1);
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GtkMediaFile(obj));
-}
-
 CAMLexport CAMLprim value ml_gtk_media_file_new_for_filename(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkMediaFile *obj = gtk_media_file_new_for_filename(String_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkMediaFile(obj));
 }
-
-CAMLexport CAMLprim value ml_gtk_media_file_new_for_input_stream(value arg1)
-{
-CAMLparam1(arg1);
-GtkMediaFile *obj = gtk_media_file_new_for_input_stream(arg1);
-if (obj) g_object_ref_sink(obj);
-CAMLreturn(Val_GtkMediaFile(obj));
-}
-
 CAMLexport CAMLprim value ml_gtk_media_file_new_for_resource(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkMediaFile *obj = gtk_media_file_new_for_resource(String_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkMediaFile(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_media_file_set_resource(value self, value arg1)
 {
 CAMLparam2(self, arg1);

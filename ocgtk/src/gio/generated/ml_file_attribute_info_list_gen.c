@@ -21,20 +21,30 @@
 /* Include common type conversions and forward declarations */
 #include "generated_forward_decls.h"
 
-/* Type-specific conversion macros for GFileAttributeInfoList */
-#ifndef Val_GFileAttributeInfoList
-#define GFileAttributeInfoList_val(val) ((GFileAttributeInfoList*)ext_of_val(val))
-#define Val_GFileAttributeInfoList(obj) ((value)(val_of_ext(obj)))
-#endif /* Val_GFileAttributeInfoList */
+/* Conversion functions for GFileAttributeInfoList (opaque record with hidden fields) */
+GFileAttributeInfoList *GFileAttributeInfoList_val(value v) {
+  return *(GFileAttributeInfoList **)Data_custom_val(v);
+}
+
+value Val_GFileAttributeInfoList(const GFileAttributeInfoList *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GFileAttributeInfoList_option(const GFileAttributeInfoList *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GFileAttributeInfoList(ptr));
+}
 
 
 CAMLexport CAMLprim value ml_g_file_attribute_info_list_new(value unit)
 {
 CAMLparam1(unit);
+
 GFileAttributeInfoList *obj = g_file_attribute_info_list_new();
+
 CAMLreturn(Val_GFileAttributeInfoList(obj));
 }
-
 CAMLexport CAMLprim value ml_g_file_attribute_info_list_unref(value self)
 {
 CAMLparam1(self);
@@ -51,10 +61,26 @@ GFileAttributeInfoList* result = g_file_attribute_info_list_ref(GFileAttributeIn
 CAMLreturn(Val_GFileAttributeInfoList(result));
 }
 
+CAMLexport CAMLprim value ml_g_file_attribute_info_list_lookup(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+const GFileAttributeInfo* result = g_file_attribute_info_list_lookup(GFileAttributeInfoList_val(self), String_val(arg1));
+CAMLreturn(Val_GFileAttributeInfo(result));
+}
+
 CAMLexport CAMLprim value ml_g_file_attribute_info_list_dup(value self)
 {
 CAMLparam1(self);
 
 GFileAttributeInfoList* result = g_file_attribute_info_list_dup(GFileAttributeInfoList_val(self));
 CAMLreturn(Val_GFileAttributeInfoList(result));
+}
+
+CAMLexport CAMLprim value ml_g_file_attribute_info_list_add(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+g_file_attribute_info_list_add(GFileAttributeInfoList_val(self), String_val(arg1), GioFileAttributeType_val(arg2), GioFileAttributeInfoFlags_val(arg3));
+CAMLreturn(Val_unit);
 }

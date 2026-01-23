@@ -20,19 +20,21 @@
 CAMLexport CAMLprim value ml_gtk_entry_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkEntry *obj = gtk_entry_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkEntry(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_entry_new_with_buffer(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkEntry *obj = gtk_entry_new_with_buffer(GtkEntryBuffer_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkEntry(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_entry_unset_invisible_char(value self)
 {
 CAMLparam1(self);
@@ -381,549 +383,531 @@ CAMLreturn(Val_bool(result));
 
 CAMLexport CAMLprim value ml_gtk_entry_get_enable_emoji_completion(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "enable-emoji-completion");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_get_enable_emoji_completion: property 'enable-emoji-completion' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "enable-emoji-completion", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "enable-emoji-completion", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_entry_set_enable_emoji_completion(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "enable-emoji-completion");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_set_enable_emoji_completion: property 'enable-emoji-completion' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
+          g_value_set_boolean(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "enable-emoji-completion", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_im_module(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "im-module");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_get_im_module: property 'im-module' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "im-module", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "im-module", &prop_gvalue);
+          prop_value = g_value_get_string(&prop_gvalue);
 
-result = caml_copy_string(prop_value);
+      result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_entry_set_im_module(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     ML_DECL_CONST_STRING(c_value, String_val(new_value));
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "im-module");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_set_im_module: property 'im-module' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_string(&prop_gvalue, c_value);
+          g_value_set_string(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "im-module", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_invisible_char_set(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "invisible-char-set");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_get_invisible_char_set: property 'invisible-char-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "invisible-char-set", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "invisible-char-set", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_entry_set_invisible_char_set(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "invisible-char-set");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_set_invisible_char_set: property 'invisible-char-set' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
+          g_value_set_boolean(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "invisible-char-set", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_primary_icon_activatable(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "primary-icon-activatable");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_get_primary_icon_activatable: property 'primary-icon-activatable' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "primary-icon-activatable", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "primary-icon-activatable", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_entry_set_primary_icon_activatable(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "primary-icon-activatable");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_set_primary_icon_activatable: property 'primary-icon-activatable' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
+          g_value_set_boolean(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "primary-icon-activatable", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_primary_icon_name(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "primary-icon-name");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_get_primary_icon_name: property 'primary-icon-name' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "primary-icon-name", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "primary-icon-name", &prop_gvalue);
+          prop_value = g_value_get_string(&prop_gvalue);
 
-result = caml_copy_string(prop_value);
+      result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_entry_set_primary_icon_name(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     ML_DECL_CONST_STRING(c_value, String_val(new_value));
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "primary-icon-name");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_set_primary_icon_name: property 'primary-icon-name' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_string(&prop_gvalue, c_value);
+          g_value_set_string(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "primary-icon-name", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_primary_icon_sensitive(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "primary-icon-sensitive");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_get_primary_icon_sensitive: property 'primary-icon-sensitive' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "primary-icon-sensitive", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "primary-icon-sensitive", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_entry_set_primary_icon_sensitive(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "primary-icon-sensitive");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_set_primary_icon_sensitive: property 'primary-icon-sensitive' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
+          g_value_set_boolean(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "primary-icon-sensitive", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_primary_icon_storage_type(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     GtkImageType prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "primary-icon-storage-type");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_get_primary_icon_storage_type: property 'primary-icon-storage-type' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "primary-icon-storage-type", &prop_gvalue);
-    prop_value = (GtkImageType)g_value_get_enum(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "primary-icon-storage-type", &prop_gvalue);
+          prop_value = (GtkImageType)g_value_get_enum(&prop_gvalue);
 
-result = Val_GtkImageType(prop_value);
+      result = Val_GtkImageType(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_entry_get_primary_icon_tooltip_markup(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "primary-icon-tooltip-markup");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_get_primary_icon_tooltip_markup: property 'primary-icon-tooltip-markup' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "primary-icon-tooltip-markup", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "primary-icon-tooltip-markup", &prop_gvalue);
+          prop_value = g_value_get_string(&prop_gvalue);
 
-result = caml_copy_string(prop_value);
+      result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_entry_set_primary_icon_tooltip_markup(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     ML_DECL_CONST_STRING(c_value, String_val(new_value));
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "primary-icon-tooltip-markup");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_set_primary_icon_tooltip_markup: property 'primary-icon-tooltip-markup' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_string(&prop_gvalue, c_value);
+          g_value_set_string(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "primary-icon-tooltip-markup", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_primary_icon_tooltip_text(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "primary-icon-tooltip-text");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_get_primary_icon_tooltip_text: property 'primary-icon-tooltip-text' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "primary-icon-tooltip-text", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "primary-icon-tooltip-text", &prop_gvalue);
+          prop_value = g_value_get_string(&prop_gvalue);
 
-result = caml_copy_string(prop_value);
+      result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_entry_set_primary_icon_tooltip_text(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     ML_DECL_CONST_STRING(c_value, String_val(new_value));
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "primary-icon-tooltip-text");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_set_primary_icon_tooltip_text: property 'primary-icon-tooltip-text' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_string(&prop_gvalue, c_value);
+          g_value_set_string(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "primary-icon-tooltip-text", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_scroll_offset(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gint prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "scroll-offset");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_get_scroll_offset: property 'scroll-offset' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "scroll-offset", &prop_gvalue);
-    prop_value = (gint)g_value_get_int(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "scroll-offset", &prop_gvalue);
+          prop_value = g_value_get_int(&prop_gvalue);
 
-result = Val_int(prop_value);
+      result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_entry_get_secondary_icon_activatable(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "secondary-icon-activatable");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_get_secondary_icon_activatable: property 'secondary-icon-activatable' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "secondary-icon-activatable", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "secondary-icon-activatable", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_entry_set_secondary_icon_activatable(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "secondary-icon-activatable");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_set_secondary_icon_activatable: property 'secondary-icon-activatable' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
+          g_value_set_boolean(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "secondary-icon-activatable", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_secondary_icon_name(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "secondary-icon-name");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_get_secondary_icon_name: property 'secondary-icon-name' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "secondary-icon-name", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "secondary-icon-name", &prop_gvalue);
+          prop_value = g_value_get_string(&prop_gvalue);
 
-result = caml_copy_string(prop_value);
+      result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_entry_set_secondary_icon_name(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     ML_DECL_CONST_STRING(c_value, String_val(new_value));
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "secondary-icon-name");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_set_secondary_icon_name: property 'secondary-icon-name' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_string(&prop_gvalue, c_value);
+          g_value_set_string(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "secondary-icon-name", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_secondary_icon_sensitive(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "secondary-icon-sensitive");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_get_secondary_icon_sensitive: property 'secondary-icon-sensitive' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "secondary-icon-sensitive", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "secondary-icon-sensitive", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_entry_set_secondary_icon_sensitive(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "secondary-icon-sensitive");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_set_secondary_icon_sensitive: property 'secondary-icon-sensitive' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
+          g_value_set_boolean(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "secondary-icon-sensitive", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_secondary_icon_storage_type(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     GtkImageType prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "secondary-icon-storage-type");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_get_secondary_icon_storage_type: property 'secondary-icon-storage-type' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "secondary-icon-storage-type", &prop_gvalue);
-    prop_value = (GtkImageType)g_value_get_enum(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "secondary-icon-storage-type", &prop_gvalue);
+          prop_value = (GtkImageType)g_value_get_enum(&prop_gvalue);
 
-result = Val_GtkImageType(prop_value);
+      result = Val_GtkImageType(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_entry_get_secondary_icon_tooltip_markup(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "secondary-icon-tooltip-markup");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_get_secondary_icon_tooltip_markup: property 'secondary-icon-tooltip-markup' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "secondary-icon-tooltip-markup", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "secondary-icon-tooltip-markup", &prop_gvalue);
+          prop_value = g_value_get_string(&prop_gvalue);
 
-result = caml_copy_string(prop_value);
+      result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_entry_set_secondary_icon_tooltip_markup(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     ML_DECL_CONST_STRING(c_value, String_val(new_value));
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "secondary-icon-tooltip-markup");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_set_secondary_icon_tooltip_markup: property 'secondary-icon-tooltip-markup' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_string(&prop_gvalue, c_value);
+          g_value_set_string(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "secondary-icon-tooltip-markup", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_secondary_icon_tooltip_text(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "secondary-icon-tooltip-text");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_get_secondary_icon_tooltip_text: property 'secondary-icon-tooltip-text' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "secondary-icon-tooltip-text", &prop_gvalue);
-    prop_value = g_value_get_string(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "secondary-icon-tooltip-text", &prop_gvalue);
+          prop_value = g_value_get_string(&prop_gvalue);
 
-result = caml_copy_string(prop_value);
+      result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_entry_set_secondary_icon_tooltip_text(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     ML_DECL_CONST_STRING(c_value, String_val(new_value));
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "secondary-icon-tooltip-text");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_set_secondary_icon_tooltip_text: property 'secondary-icon-tooltip-text' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_string(&prop_gvalue, c_value);
+          g_value_set_string(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "secondary-icon-tooltip-text", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_show_emoji_icon(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "show-emoji-icon");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_get_show_emoji_icon: property 'show-emoji-icon' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "show-emoji-icon", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "show-emoji-icon", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_entry_set_show_emoji_icon(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "show-emoji-icon");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_set_show_emoji_icon: property 'show-emoji-icon' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
+          g_value_set_boolean(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "show-emoji-icon", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_truncate_multiline(value self)
 {
-CAMLparam1(self);
-CAMLlocal1(result);
+    CAMLparam1(self);
+    CAMLlocal1(result);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "truncate-multiline");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_get_truncate_multiline: property 'truncate-multiline' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "truncate-multiline", &prop_gvalue);
-    prop_value = g_value_get_boolean(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "truncate-multiline", &prop_gvalue);
+          prop_value = g_value_get_boolean(&prop_gvalue);
 
-result = Val_bool(prop_value);
+      result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
-CAMLreturn(result);
-}
+CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_entry_set_truncate_multiline(value self, value new_value)
 {
-CAMLparam2(self, new_value);
+    CAMLparam2(self, new_value);
 GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
     gboolean *c_value = Bool_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "truncate-multiline");
 if (pspec == NULL) caml_failwith("ml_gtk_entry_set_truncate_multiline: property 'truncate-multiline' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-    g_value_set_boolean(&prop_gvalue, c_value);
+          g_value_set_boolean(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "truncate-multiline", &prop_gvalue);
 g_value_unset(&prop_gvalue);
-CAMLreturn(Val_unit);
+    CAMLreturn(Val_unit);
 }

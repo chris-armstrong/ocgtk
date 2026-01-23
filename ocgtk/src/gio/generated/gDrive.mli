@@ -6,6 +6,7 @@ class drive : Drive.t ->
     method can_start : unit -> bool
     method can_start_degraded : unit -> bool
     method can_stop : unit -> bool
+    method enumerate_identifiers : unit -> string array
     method get_icon : unit -> GIcon.icon
     method get_identifier : string -> string option
     method get_name : unit -> string

@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_viewport_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
+
 GtkViewport *obj = gtk_viewport_new(Option_val(arg1, GtkAdjustment_val, NULL), Option_val(arg2, GtkAdjustment_val, NULL));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkViewport(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_viewport_set_scroll_to_focus(value self, value arg1)
 {
 CAMLparam2(self, arg1);

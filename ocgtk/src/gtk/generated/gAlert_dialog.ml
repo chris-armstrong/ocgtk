@@ -1,6 +1,10 @@
 (* High-level class for AlertDialog *)
 class alert_dialog (obj : Alert_dialog.t) = object (self)
 
+  method get_buttons : unit -> string array option =
+    fun () ->
+      (Alert_dialog.get_buttons obj)
+
   method get_cancel_button : unit -> int =
     fun () ->
       (Alert_dialog.get_cancel_button obj)
@@ -20,6 +24,10 @@ class alert_dialog (obj : Alert_dialog.t) = object (self)
   method get_modal : unit -> bool =
     fun () ->
       (Alert_dialog.get_modal obj)
+
+  method set_buttons : string array -> unit =
+    fun labels ->
+      (Alert_dialog.set_buttons obj labels)
 
   method set_cancel_button : int -> unit =
     fun button ->

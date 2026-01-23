@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_revealer_new(value unit)
 {
 CAMLparam1(unit);
+
 GtkRevealer *obj = gtk_revealer_new();
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkRevealer(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_revealer_set_transition_type(value self, value arg1)
 {
 CAMLparam2(self, arg1);

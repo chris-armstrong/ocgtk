@@ -20,11 +20,12 @@
 CAMLexport CAMLprim value ml_gtk_size_group_new(value arg1)
 {
 CAMLparam1(arg1);
+
 GtkSizeGroup *obj = gtk_size_group_new(GtkSizeGroupMode_val(arg1));
 if (obj) g_object_ref_sink(obj);
+
 CAMLreturn(Val_GtkSizeGroup(obj));
 }
-
 CAMLexport CAMLprim value ml_gtk_size_group_set_mode(value self, value arg1)
 {
 CAMLparam2(self, arg1);

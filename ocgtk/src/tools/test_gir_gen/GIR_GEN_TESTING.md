@@ -173,7 +173,7 @@ Provides:
 - `create_test_context()` - Creates minimal generation context
 - `wrap_namespace()` - Wraps XML content in GIR boilerplate
 - `create_gir_file()` - Writes GIR XML to file
-- `run_gir_gen()` - Executes main.exe with logging
+- `run_gir_gen()` - Executes gir_gen.exe with logging
 - File path utilities (`stub_c_file`, `mli_file`, etc.)
 - Assertion helpers (`assert_true`, `assert_contains`, etc.)
 
@@ -272,7 +272,7 @@ Unit tests for class generation:
 #### integration/
 End-to-end tests that validate the full pipeline:
 - Generate complete GIR XML files
-- Run main.exe to produce complete output
+- Run gir_gen.exe to produce complete output
 - Validate all generated files (.ml, .mli, .c)
 - Slower but tests full integration
 
@@ -598,7 +598,7 @@ Coverage areas:
 Integration tests validate the **full pipeline** from GIR XML to complete generated code:
 
 1. Generate full GIR XML files
-2. Run main.exe to produce complete output
+2. Run gir_gen.exe to produce complete output
 3. Validate all generated files (.ml, .mli, .c)
 4. Slower but tests full integration
 

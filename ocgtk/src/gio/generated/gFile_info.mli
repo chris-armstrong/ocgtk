@@ -9,6 +9,7 @@ class file_info : File_info.t ->
     method get_attribute_file_path : string -> string option
     method get_attribute_status : string -> Gio_enums.fileattributestatus
     method get_attribute_string : string -> string option
+    method get_attribute_stringv : string -> string array option
     method get_attribute_type : string -> Gio_enums.fileattributetype
     method get_content_type : unit -> string option
     method get_display_name : unit -> string
@@ -24,6 +25,7 @@ class file_info : File_info.t ->
     method get_symlink_target : unit -> string option
     method has_attribute : string -> bool
     method has_namespace : string -> bool
+    method list_attributes : string option -> string array option
     method remove_attribute : string -> unit
     method set_attribute_boolean : string -> bool -> unit
     method set_attribute_byte_string : string -> string -> unit
@@ -31,6 +33,7 @@ class file_info : File_info.t ->
     method set_attribute_mask : File_attribute_matcher.t -> unit
     method set_attribute_status : string -> Gio_enums.fileattributestatus -> bool
     method set_attribute_string : string -> string -> unit
+    method set_attribute_stringv : string -> string array -> unit
     method set_content_type : string -> unit
     method set_display_name : string -> unit
     method set_edit_name : string -> unit

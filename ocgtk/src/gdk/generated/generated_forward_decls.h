@@ -1,5 +1,5 @@
 /* GENERATED CODE - DO NOT EDIT */
-/* Forward declarations for generated enum and bitfield converters */
+/* Forward declarations for generated enum, bitfield, class and record converters */
 
 #ifndef _gdk_generated_forward_decls_
 #define _gdk_generated_forward_decls_
@@ -249,86 +249,73 @@ value copy_GdkRGBA(const GdkRGBA *ptr);
 #endif /* Val_GdkRGBA */
 
 
-/* Forward declarations for GdkContentFormats converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for record converters (non-opaque records) */
+/* Forward declarations for GdkContentFormats converters */
 GdkContentFormats *GdkContentFormats_val(value val);
 value Val_GdkContentFormats(const GdkContentFormats *ptr);
 value Val_GdkContentFormats_option(const GdkContentFormats *ptr);
 
-/* Forward declarations for GdkContentFormatsBuilder converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GdkContentFormatsBuilder converters */
 GdkContentFormatsBuilder *GdkContentFormatsBuilder_val(value val);
 value Val_GdkContentFormatsBuilder(const GdkContentFormatsBuilder *ptr);
 value Val_GdkContentFormatsBuilder_option(const GdkContentFormatsBuilder *ptr);
 
-/* Forward declarations for GdkDmabufFormats converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GdkDmabufFormats converters */
 GdkDmabufFormats *GdkDmabufFormats_val(value val);
 value Val_GdkDmabufFormats(const GdkDmabufFormats *ptr);
 value Val_GdkDmabufFormats_option(const GdkDmabufFormats *ptr);
 
-/* Forward declarations for GdkDragSurfaceSize converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GdkDragSurfaceSize converters */
 GdkDragSurfaceSize *GdkDragSurfaceSize_val(value val);
 value Val_GdkDragSurfaceSize(const GdkDragSurfaceSize *ptr);
 value Val_GdkDragSurfaceSize_option(const GdkDragSurfaceSize *ptr);
 
-/* Forward declarations for GdkEventSequence converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GdkEventSequence converters */
 GdkEventSequence *GdkEventSequence_val(value val);
 value Val_GdkEventSequence(const GdkEventSequence *ptr);
 value Val_GdkEventSequence_option(const GdkEventSequence *ptr);
 
-/* Forward declarations for GdkFileList converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GdkFileList converters */
 GdkFileList *GdkFileList_val(value val);
 value Val_GdkFileList(const GdkFileList *ptr);
 value Val_GdkFileList_option(const GdkFileList *ptr);
 
-/* Forward declarations for GdkFrameTimings converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GdkFrameTimings converters */
 GdkFrameTimings *GdkFrameTimings_val(value val);
 value Val_GdkFrameTimings(const GdkFrameTimings *ptr);
 value Val_GdkFrameTimings_option(const GdkFrameTimings *ptr);
 
-/* Forward declarations for GdkKeymapKey converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GdkKeymapKey converters */
 GdkKeymapKey *GdkKeymapKey_val(value val);
 value Val_GdkKeymapKey(const GdkKeymapKey *ptr);
 value Val_GdkKeymapKey_option(const GdkKeymapKey *ptr);
 
-/* Forward declarations for GdkPopupLayout converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GdkPopupLayout converters */
 GdkPopupLayout *GdkPopupLayout_val(value val);
 value Val_GdkPopupLayout(const GdkPopupLayout *ptr);
 value Val_GdkPopupLayout_option(const GdkPopupLayout *ptr);
 
-/* Forward declarations for GdkRectangle converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GdkRectangle converters */
 GdkRectangle *GdkRectangle_val(value val);
 value Val_GdkRectangle(const GdkRectangle *ptr);
 value Val_GdkRectangle_option(const GdkRectangle *ptr);
 
-/* Forward declarations for GdkTextureDownloader converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GdkTextureDownloader converters */
 GdkTextureDownloader *GdkTextureDownloader_val(value val);
 value Val_GdkTextureDownloader(const GdkTextureDownloader *ptr);
 value Val_GdkTextureDownloader_option(const GdkTextureDownloader *ptr);
 
-/* Forward declarations for GdkTimeCoord converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GdkTimeCoord converters */
 GdkTimeCoord *GdkTimeCoord_val(value val);
 value Val_GdkTimeCoord(const GdkTimeCoord *ptr);
 value Val_GdkTimeCoord_option(const GdkTimeCoord *ptr);
 
-/* Forward declarations for GdkToplevelLayout converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GdkToplevelLayout converters */
 GdkToplevelLayout *GdkToplevelLayout_val(value val);
 value Val_GdkToplevelLayout(const GdkToplevelLayout *ptr);
 value Val_GdkToplevelLayout_option(const GdkToplevelLayout *ptr);
 
-/* Forward declarations for GdkToplevelSize converters (non-opaque record with  *)
-              fields) */
+/* Forward declarations for GdkToplevelSize converters */
 GdkToplevelSize *GdkToplevelSize_val(value val);
 value Val_GdkToplevelSize(const GdkToplevelSize *ptr);
 value Val_GdkToplevelSize_option(const GdkToplevelSize *ptr);
@@ -338,7 +325,7 @@ value Val_GdkToplevelSize_option(const GdkToplevelSize *ptr);
 
 /* Note: Res_Ok, Res_Error, ValUnit, and Val_GError are defined in wrappers.h */
 
-/* Forward declarations for enum/bitfield converters */
+/* Forward declarations for enum converters */
 value Val_GdkAxisUse(GdkAxisUse val);
 GdkAxisUse GdkAxisUse_val(value val);
 value Val_GdkCrossingMode(GdkCrossingMode val);
@@ -384,27 +371,8 @@ GdkTouchpadGesturePhase GdkTouchpadGesturePhase_val(value val);
 value Val_GdkVulkanError(GdkVulkanError val);
 GdkVulkanError GdkVulkanError_val(value val);
 
-value Val_GdkAnchorHints(GdkAnchorHints flags);
-GdkAnchorHints GdkAnchorHints_val(value list);
-value Val_GdkAxisFlags(GdkAxisFlags flags);
-GdkAxisFlags GdkAxisFlags_val(value list);
-value Val_GdkDragAction(GdkDragAction flags);
-GdkDragAction GdkDragAction_val(value list);
-value Val_GdkFrameClockPhase(GdkFrameClockPhase flags);
-GdkFrameClockPhase GdkFrameClockPhase_val(value list);
-value Val_GdkGLAPI(GdkGLAPI flags);
-GdkGLAPI GdkGLAPI_val(value list);
-value Val_GdkModifierType(GdkModifierType flags);
-GdkModifierType GdkModifierType_val(value list);
-value Val_GdkPaintableFlags(GdkPaintableFlags flags);
-GdkPaintableFlags GdkPaintableFlags_val(value list);
-value Val_GdkSeatCapabilities(GdkSeatCapabilities flags);
-GdkSeatCapabilities GdkSeatCapabilities_val(value list);
-value Val_GdkToplevelState(GdkToplevelState flags);
-GdkToplevelState GdkToplevelState_val(value list);
 
-
-/* Forward declarations for external namespace enum/bitfield converters */
+/* Forward declarations for external namespace enum converters */
 value Val_GdkPixbufColorspace(GdkColorspace val);
 GdkColorspace GdkPixbufColorspace_val(value val);
 value Val_GdkPixbufInterpType(GdkInterpType val);
@@ -459,7 +427,28 @@ value Val_PangoWeight(PangoWeight val);
 PangoWeight PangoWeight_val(value val);
 value Val_PangoWrapMode(PangoWrapMode val);
 PangoWrapMode PangoWrapMode_val(value val);
+/* Forward declarations for bitfield converters */
+value Val_GdkAnchorHints(GdkAnchorHints flags);
+GdkAnchorHints GdkAnchorHints_val(value list);
+value Val_GdkAxisFlags(GdkAxisFlags flags);
+GdkAxisFlags GdkAxisFlags_val(value list);
+value Val_GdkDragAction(GdkDragAction flags);
+GdkDragAction GdkDragAction_val(value list);
+value Val_GdkFrameClockPhase(GdkFrameClockPhase flags);
+GdkFrameClockPhase GdkFrameClockPhase_val(value list);
+value Val_GdkGLAPI(GdkGLAPI flags);
+GdkGLAPI GdkGLAPI_val(value list);
+value Val_GdkModifierType(GdkModifierType flags);
+GdkModifierType GdkModifierType_val(value list);
+value Val_GdkPaintableFlags(GdkPaintableFlags flags);
+GdkPaintableFlags GdkPaintableFlags_val(value list);
+value Val_GdkSeatCapabilities(GdkSeatCapabilities flags);
+GdkSeatCapabilities GdkSeatCapabilities_val(value list);
+value Val_GdkToplevelState(GdkToplevelState flags);
+GdkToplevelState GdkToplevelState_val(value list);
 
+
+/* Forward declarations for external namespace bitfield converters */
 value Val_GObjectBindingFlags(GBindingFlags flags);
 GBindingFlags GObjectBindingFlags_val(value list);
 value Val_GObjectConnectFlags(GConnectFlags flags);
