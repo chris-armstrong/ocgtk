@@ -20,17 +20,22 @@
 CAMLexport CAMLprim value ml_gtk_string_list_new(value arg1)
 {
 CAMLparam1(arg1);
-    int arg1_length = Wosize_val(arg1);
-    char** c_arg1 = (char**)g_malloc(sizeof(char*) * (arg1_length + 1));
-    for (int i = 0; i < arg1_length; i++) {
-      c_arg1[i] = String_val(Field(arg1, i));
+    char** c_arg1 = NULL;
+    
+    if (Is_some(arg1)) {
+        value array = Some_val(arg1);
+        int arg1_length = Wosize_val(array);
+        c_arg1 = (char**)g_malloc(sizeof(char*) * (arg1_length + 1));
+        for (int i = 0; i < arg1_length; i++) {
+          c_arg1[i] = String_val(Field(array, i));
+        }
+        c_arg1[arg1_length] = NULL;
     }
-    c_arg1[arg1_length] = NULL;
 
 GtkStringList *obj = gtk_string_list_new(c_arg1);
 if (obj) g_object_ref_sink(obj);
 
-    g_free(c_arg1);
+    if (c_arg1) g_free(c_arg1);
 CAMLreturn(Val_GtkStringList(obj));
 }
 CAMLexport CAMLprim value ml_gtk_string_list_take(value self, value arg1)
@@ -44,15 +49,20 @@ CAMLreturn(Val_unit);
 CAMLexport CAMLprim value ml_gtk_string_list_splice(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
-    int arg3_length = Wosize_val(arg3);
-    char** c_arg3 = (char**)g_malloc(sizeof(char*) * (arg3_length + 1));
-    for (int i = 0; i < arg3_length; i++) {
-      c_arg3[i] = String_val(Field(arg3, i));
+    char** c_arg3 = NULL;
+    
+    if (Is_some(arg3)) {
+        value array = Some_val(arg3);
+        int arg3_length = Wosize_val(array);
+        c_arg3 = (char**)g_malloc(sizeof(char*) * (arg3_length + 1));
+        for (int i = 0; i < arg3_length; i++) {
+          c_arg3[i] = String_val(Field(array, i));
+        }
+        c_arg3[arg3_length] = NULL;
     }
-    c_arg3[arg3_length] = NULL;
 
 gtk_string_list_splice(GtkStringList_val(self), Int_val(arg1), Int_val(arg2), c_arg3);
-    g_free(c_arg3);
+    if (c_arg3) g_free(c_arg3);
 CAMLreturn(Val_unit);
 }
 

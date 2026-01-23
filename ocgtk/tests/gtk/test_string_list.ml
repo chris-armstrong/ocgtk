@@ -95,8 +95,9 @@ let test_take_copies_ownership () =
 
 let test_take_special_chars () =
   let list = String_list.new_ (Some [||]) in
-  let special = "Hello\x00World\t\n\r\"\\" in
-  (* Null, tab, newline, quotes, backslash *)
+  (* Note: Embedded null bytes (\x00) are not supported in GTK strings (C null-terminated strings).
+     Test other special characters: tab, newline, carriage return, quotes, backslash *)
+  let special = "Hello\tWorld\n\r\"\\!" in
   String_list.take list special;
 
   match String_list.get_string list 0 with

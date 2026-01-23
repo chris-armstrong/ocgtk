@@ -141,21 +141,31 @@ CAMLreturn(Val_unit);
 CAMLexport CAMLprim value ml_gtk_file_chooser_add_choice(value self, value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
-    int arg3_length = Wosize_val(arg3);
-    char** c_arg3 = (char**)g_malloc(sizeof(char*) * (arg3_length + 1));
-    for (int i = 0; i < arg3_length; i++) {
-      c_arg3[i] = String_val(Field(arg3, i));
+    char** c_arg3 = NULL;
+    
+    if (Is_some(arg3)) {
+        value array = Some_val(arg3);
+        int arg3_length = Wosize_val(array);
+        c_arg3 = (char**)g_malloc(sizeof(char*) * (arg3_length + 1));
+        for (int i = 0; i < arg3_length; i++) {
+          c_arg3[i] = String_val(Field(array, i));
+        }
+        c_arg3[arg3_length] = NULL;
     }
-    c_arg3[arg3_length] = NULL;
-    int arg4_length = Wosize_val(arg4);
-    char** c_arg4 = (char**)g_malloc(sizeof(char*) * (arg4_length + 1));
-    for (int i = 0; i < arg4_length; i++) {
-      c_arg4[i] = String_val(Field(arg4, i));
+    char** c_arg4 = NULL;
+    
+    if (Is_some(arg4)) {
+        value array = Some_val(arg4);
+        int arg4_length = Wosize_val(array);
+        c_arg4 = (char**)g_malloc(sizeof(char*) * (arg4_length + 1));
+        for (int i = 0; i < arg4_length; i++) {
+          c_arg4[i] = String_val(Field(array, i));
+        }
+        c_arg4[arg4_length] = NULL;
     }
-    c_arg4[arg4_length] = NULL;
 
 gtk_file_chooser_add_choice(GtkFileChooser_val(self), String_val(arg1), String_val(arg2), c_arg3, c_arg4);
-    g_free(c_arg3);
-    g_free(c_arg4);
+    if (c_arg3) g_free(c_arg3);
+    if (c_arg4) g_free(c_arg4);
 CAMLreturn(Val_unit);
 }

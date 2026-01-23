@@ -84,6 +84,29 @@ dune exec src/tools/gir_gen/gir_gen.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gt
 - `GIR_FILE`: Path to GTK GIR file (usually `/usr/share/gir-1.0/Gtk-4.0.gir`)
 - `OUTPUT_DIR`: Where to write generated files
 
+### ⚠️ IMPORTANT: Output Directory Convention
+
+**The output directory should be the PARENT of the `generated/` directory, NOT the `generated/` directory itself.**
+
+The generator automatically creates a `generated/` subdirectory inside the output directory you specify.
+
+✅ **Correct:**
+```bash
+dune exec gir_gen -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+```
+This creates files in `src/gtk/generated/`
+
+❌ **Wrong:**
+```bash
+dune exec gir_gen -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk/generated
+```
+This creates files in `src/gtk/generated/generated/` (nested directory problem)
+
+**Examples:**
+- For GTK: Use `src/gtk` → generates to `src/gtk/generated/`
+- For GDK: Use `src/gdk` → generates to `src/gdk/generated/`
+- For GIO: Use `src/gio` → generates to `src/gio/generated/`
+
 ## Testing
 
 ### Quick Test
