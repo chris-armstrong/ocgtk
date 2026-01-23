@@ -324,6 +324,90 @@ let validate_signal_handler_inheritance ~mli_ast ~signal_handler_name ~parent_si
         signal_handler_name)
 
 (* ========================================================================= *)
+(* Signal Creation Helpers *)
+(* ========================================================================= *)
+
+(* Create a test GIR signal with minimal fields *)
+let create_test_signal ~name =
+  {
+    signal_name = name;
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
+    sig_parameters = [];
+    doc = None;
+  }
+
+(* Create a test GIR signal with return type *)
+let create_test_signal_with_return ~name ~return_type =
+  {
+    signal_name = name;
+    return_type;
+    sig_parameters = [];
+    doc = None;
+  }
+
+(* Create a test GIR signal with parameters *)
+let create_test_signal_with_params ~name ~return_type ~params =
+  {
+    signal_name = name;
+    return_type;
+    sig_parameters = params;
+    doc = None;
+  }
+
+(* Create a test class with signals *)
+let create_test_class_with_signals ~name ~c_type ~signals () =
+  {
+    class_name = name;
+    c_type;
+    parent = None;
+    implements = [];
+    constructors = [];
+    methods = [];
+    properties = [];
+    signals;
+    class_doc = None;
+  }
+
+(* ========================================================================= *)
+(* Class Inheritance Validation Helpers *)
+(* ========================================================================= *)
+
+(* Validate that a class inherits from a specific parent using AST *)
+let validate_class_inherits ~structure ~class_name ~parent_class =
+  match Ml_ast_helpers.find_class_declaration structure class_name with
+  | Some class_decl ->
+      let inherit_clauses = Ml_ast_helpers.get_class_inherit_clauses class_decl.pci_expr in
+      if not (List.mem parent_class inherit_clauses) then
+        Alcotest.fail (sprintf "Class '%s' does not inherit from '%s'. Inherits from: [%s]"
+          class_name parent_class (String.concat "; " inherit_clauses))
+  | None ->
+      Alcotest.fail (sprintf "Class '%s' not found in structure" class_name)
+
+(* ========================================================================= *)
+(* Method Type Annotation Validation Helpers *)
+(* ========================================================================= *)
+
+(* Validate that a method has a specific type annotation *)
+let validate_method_type_annotation ~structure ~class_name ~method_name ~expected_type =
+  match Ml_ast_helpers.find_class_declaration structure class_name with
+  | Some class_decl ->
+      (match Ml_ast_helpers.find_method_in_class class_decl.pci_expr method_name with
+       | Some method_field ->
+           (match Ml_ast_helpers.get_method_type method_field with
+            | Some actual_type ->
+                let actual_type_str = Ml_ast_helpers.core_type_to_string actual_type in
+                if not (String.equal actual_type_str expected_type) then
+                  Alcotest.fail (sprintf "Method '%s.%s' has type annotation '%s', expected '%s'"
+                    class_name method_name actual_type_str expected_type)
+            | None ->
+                Alcotest.fail (sprintf "Could not extract type annotation for method '%s.%s'"
+                  class_name method_name))
+       | None ->
+           Alcotest.fail (sprintf "Method '%s' not found in class '%s'" method_name class_name))
+  | None ->
+      Alcotest.fail (sprintf "Class '%s' not found in structure" class_name)
+
+(* ========================================================================= *)
 (* Code Generation Helpers *)
 (* ========================================================================= *)
 
