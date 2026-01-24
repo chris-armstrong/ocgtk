@@ -8,11 +8,11 @@ open Gir_gen_lib.Types
 (* ========================================================================= *)
 
 (* Create a test class with optional parent for inheritance testing *)
-let create_test_class_with_parent ~name ~c_type ?parent () =
+let create_test_class_with_parent ~name ~c_type ?parent:(parent_val=None) () =
   {
     class_name = name;
     c_type;
-    parent;
+    parent = parent_val;
     implements = [];
     constructors = [];
     methods = [];
@@ -48,68 +48,77 @@ let create_test_class_with_methods ~name ~c_type ~methods () =
 (* ========================================================================= *)
 
 (* Create a simple test method with no parameters *)
-let create_test_method ~name ~c_name () =
+let create_test_method ~name ~c_identifier () =
   {
     method_name = name;
-    c_name;
-    method_params = [];
-    method_return = None;
-    method_throws = false;
-    method_doc = None;
+    c_identifier;
+    parameters = [];
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
+    doc = None;
+    throws = false;
+    get_property = None;
+    set_property = None;
   }
 
 (* Create a test method with a single parameter *)
-let create_test_method_with_param ~name ~c_name ~param_name ~param_type () =
+let create_test_method_with_param ~name ~c_identifier ~param_name ~param_type () =
   let param =
     {
       param_name;
       param_type;
-      param_direction = In;
-      param_nullable = false;
-      param_optional = false;
-      param_doc = None;
+      direction = In;
+      nullable = false;
+      varargs = false;
     }
   in
   {
     method_name = name;
-    c_name;
-    method_params = [ param ];
-    method_return = None;
-    method_throws = false;
-    method_doc = None;
+    c_identifier;
+    parameters = [ param ];
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
+    doc = None;
+    throws = false;
+    get_property = None;
+    set_property = None;
   }
 
 (* Create a test method with multiple parameters *)
-let create_test_method_with_params ~name ~c_name ~params () =
+let create_test_method_with_params ~name ~c_identifier ~params () =
   {
     method_name = name;
-    c_name;
-    method_params = params;
-    method_return = None;
-    method_throws = false;
-    method_doc = None;
+    c_identifier;
+    parameters = params;
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
+    doc = None;
+    throws = false;
+    get_property = None;
+    set_property = None;
   }
 
 (* Create a test method with a return type *)
-let create_test_method_with_return ~name ~c_name ~return_type () =
+let create_test_method_with_return ~name ~c_identifier ~return_type () =
   {
     method_name = name;
-    c_name;
-    method_params = [];
-    method_return = Some return_type;
-    method_throws = false;
-    method_doc = None;
+    c_identifier;
+    parameters = [];
+    return_type;
+    doc = None;
+    throws = false;
+    get_property = None;
+    set_property = None;
   }
 
 (* Create a test method that throws errors *)
-let create_test_method_throwing ~name ~c_name () =
+let create_test_method_throwing ~name ~c_identifier () =
   {
     method_name = name;
-    c_name;
-    method_params = [];
-    method_return = None;
-    method_throws = true;
-    method_doc = None;
+    c_identifier;
+    parameters = [];
+    return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
+    doc = None;
+    throws = true;
+    get_property = None;
+    set_property = None;
   }
 
 (* ========================================================================= *)
@@ -188,7 +197,7 @@ let check_externals_consistency ~mli_ast ~ml_ast ~external_name =
 let validate_function_signature_consistency ~mli_ast ~ml_ast ~func_name =
   (* Extract function signature from .mli *)
   match Ml_ast_helpers.find_value_declaration_sig mli_ast func_name with
-  | Some mli_func ->
+  | Some _mli_func ->
       (match Ml_ast_helpers.find_let_binding ml_ast func_name with
        | Some _ ->
            (* Signatures match if both exist *)
@@ -203,12 +212,12 @@ let validate_function_signature_consistency ~mli_ast ~ml_ast ~func_name =
 (* ========================================================================= *)
 
 (* Validate that conversion methods are properly generated *)
-let validate_conversion_methods ~ml_ast ~from_type ~to_type =
+let validate_conversion_methods ~ml_ast ~from_type:_ ~to_type =
   let conversion_method = "as_" ^ String.lowercase_ascii to_type in
   Ml_validation.assert_value_exists ml_ast conversion_method
 
 (* Check that a class properly implements conversion to its base type *)
-let validate_base_type_conversion ~ml_ast ~class_name ~base_type =
+let validate_base_type_conversion ~ml_ast ~class_name:_ ~base_type =
   let conversion_method = "as_" ^ String.lowercase_ascii base_type in
   Ml_validation.assert_value_exists ml_ast conversion_method
 

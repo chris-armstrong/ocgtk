@@ -338,3 +338,51 @@ let rec class_expr_to_string (class_expr : class_expr) : string =
       Printf.sprintf "class %s = { %s }" self_str (String.concat "; " field_strs)
   | Pcl_apply (cexp, _) -> class_expr_to_string cexp
   | _ -> "<class expression>"
+
+(* ========================================================================= *)
+(* Hierarchy Type Helpers *)
+(* ========================================================================= *)
+
+(* Recursively check if a core_type contains a Ptyp_class (hierarchy type) *)
+let rec contains_hierarchy_type (ct : core_type) : bool =
+  match ct.ptyp_desc with
+  | Ptyp_class _ -> true  (* This is a hierarchy type! *)
+  | Ptyp_constr (_, args) -> List.exists contains_hierarchy_type args
+  | Ptyp_arrow (_, arg_type, return_type) ->
+      contains_hierarchy_type arg_type || contains_hierarchy_type return_type
+  | Ptyp_tuple types -> List.exists contains_hierarchy_type types
+  | Ptyp_variant (row_fields, _, _) ->
+      List.exists (fun rf ->
+        match rf.prf_desc with
+        | Rtag (_, _, types) -> List.exists contains_hierarchy_type types
+        | Rinherit ct -> contains_hierarchy_type ct
+      ) row_fields
+  | Ptyp_object (fields, _) ->
+      List.exists (fun field ->
+        match field.pof_desc with
+        | Otag (_, ct) -> contains_hierarchy_type ct
+        | Oinherit ct -> contains_hierarchy_type ct
+      ) fields
+  | Ptyp_poly (_, ct) -> contains_hierarchy_type ct
+  | _ -> false
+
+(* Check if a method parameter has a hierarchy type (#widget syntax) *)
+(* Hierarchy types use Ptyp_class in the AST, NOT Ptyp_constr *)
+let has_hierarchy_parameter (class_field : class_field) : bool =
+  match class_field.pcf_desc with
+  | Pcf_method (_, _, Cfk_concrete (_, { pexp_desc = Pexp_poly (_, poly_type); _ })) ->
+      (match poly_type with
+       | Some ct -> contains_hierarchy_type ct
+       | None -> false)
+  | _ -> false
+
+(* Assert that a method in a class has a hierarchy parameter *)
+let assert_method_has_hierarchy_param ast class_name method_name =
+  match find_class_declaration ast class_name with
+  | None -> Alcotest.fail (Printf.sprintf "Class %s not found" class_name)
+  | Some cd ->
+      match find_method_in_class cd.pci_expr method_name with
+      | None -> Alcotest.fail (Printf.sprintf "Method %s not found" method_name)
+      | Some cf ->
+          if not (has_hierarchy_parameter cf) then
+            Alcotest.fail (Printf.sprintf "Method %s does not have hierarchy parameter" method_name)

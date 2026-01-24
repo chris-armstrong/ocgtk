@@ -42,7 +42,7 @@ let test_hierarchy_parameter_coercion () =
     ~properties:[]
     ~signals:[] in
   
-  let mli_code = Gir_gen_lib.Generate.Class_gen.generate_class_signature
+  let _mli_code = Gir_gen_lib.Generate.Class_gen.generate_class_signature
     ~ctx
     ~class_name:"Button"
     ~c_type:"GtkButton"
@@ -50,13 +50,15 @@ let test_hierarchy_parameter_coercion () =
     ~methods:[meth]
     ~properties:[]
     ~signals:[] in
-  
-  (* Verify the method is mentioned in the generated code *)
-  if not (Helpers.string_contains ml_code "set_focus") then
-    Alcotest.fail "set_focus method not found in generated class";
-  
-  if not (Helpers.string_contains mli_code "set_focus") then
-    Alcotest.fail "set_focus method not found in generated signature"
+
+  (* Parse the generated code into AST *)
+  let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
+
+  (* Debug: Print the class name and method to understand the structure *)
+  Printf.eprintf "Generated ML code:\n%s\n" ml_code;
+
+  (* Verify the method has a hierarchy parameter using AST inspection *)
+  Ml_ast_helpers.assert_method_has_hierarchy_param ml_ast "button" "set_focus"
 
 (* ========================================================================= *)
 (* Test 2: Nullable Parameter Handling *)
