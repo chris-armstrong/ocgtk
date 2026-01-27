@@ -416,6 +416,26 @@ let validate_method_type_annotation ~structure ~class_name ~method_name ~expecte
   | None ->
       Alcotest.fail (sprintf "Class '%s' not found in structure" class_name)
 
+(* Validate that a method in a signature has a specific type annotation *)
+let validate_method_type_annotation_sig ~(signature : Ppxlib.Parsetree.signature) ~class_name ~method_name ~expected_type =
+  match Ml_ast_helpers.find_class_type_declaration signature class_name with
+  | Some class_decl ->
+      (match Ml_ast_helpers.find_method_in_class_type class_decl.pci_expr method_name with
+       | Some method_field ->
+           (match method_field.pctf_desc with
+            | Pctf_method (_, _, _, actual_type) ->
+                let actual_type_str = Ml_ast_helpers.core_type_to_string actual_type in
+                if not (String.equal actual_type_str expected_type) then
+                  Alcotest.fail (sprintf "Method '%s.%s' has type annotation '%s', expected '%s'"
+                    class_name method_name actual_type_str expected_type)
+            | _ ->
+                Alcotest.fail (sprintf "Method '%s' in class '%s' is not a method field"
+                  method_name class_name))
+       | None ->
+           Alcotest.fail (sprintf "Method '%s' not found in class '%s'" method_name class_name))
+  | None ->
+      Alcotest.fail (sprintf "Class '%s' not found in signature" class_name)
+
 (* ========================================================================= *)
 (* Code Generation Helpers *)
 (* ========================================================================= *)
