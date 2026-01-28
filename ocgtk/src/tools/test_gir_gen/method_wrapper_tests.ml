@@ -6,6 +6,105 @@ open Ppxlib.Parsetree
 let create_test_context = Helpers.create_test_context_with_hierarchy
 
 (* ========================================================================= *)
+(* Helper Functions - Reduce nesting and verbosity                          *)
+(* ========================================================================= *)
+
+let hierarchy_entry gir_root layer2_module class_type_name =
+  {
+    gir_root;
+    hierarchy = WidgetHierarchy;
+    layer2_module;
+    class_type_name;
+    accessor_method = "as_widget";
+    layer1_base_type = gir_root ^ ".t";
+    base_conversion_method = gir_root ^ ".as_widget";
+  }
+
+let simple_class class_name c_type =
+  {
+    class_name;
+    c_type;
+    parent = None;
+    implements = [];
+    constructors = [];
+    methods = [];
+    properties = [];
+    signals = [];
+    class_doc = None;
+  }
+
+let find_class ast class_name =
+  match Ml_ast_helpers.find_class_declaration ast class_name with
+  | None -> Alcotest.fail (Printf.sprintf "Class '%s' not found" class_name)
+  | Some decl -> decl
+
+let find_class_type ast class_name =
+  match Ml_ast_helpers.find_class_type_declaration ast class_name with
+  | None -> Alcotest.fail (Printf.sprintf "Class type '%s' not found" class_name)
+  | Some decl -> decl
+
+let find_method class_decl method_name =
+  match Ml_ast_helpers.find_method_in_class class_decl.pci_expr method_name with
+  | None -> Alcotest.fail (Printf.sprintf "Method '%s' not found" method_name)
+  | Some mf -> mf
+
+let extract_method_type class_decl method_name =
+  let method_field = find_method class_decl method_name in
+  match Ml_ast_helpers.get_method_type method_field with
+  | None -> Alcotest.fail "Could not extract method type"
+  | Some t -> t
+
+let validate_method_type ast class_name method_name ~expected =
+  let method_type = extract_method_type (find_class ast class_name) method_name in
+  let type_str = Ml_ast_helpers.core_type_to_string method_type in
+  if not (String.equal type_str expected) then
+    Alcotest.fail
+      (Printf.sprintf "Method '%s.%s' has type '%s', expected '%s'"
+         class_name method_name type_str expected)
+
+let get_method_body method_field =
+  match Ml_ast_helpers.get_method_body method_field with
+  | None -> Alcotest.fail "Could not extract method body"
+  | Some body -> body
+
+let assert_method_body_calls method_body module_name method_name =
+  if not (Ml_ast_helpers.method_body_calls_function method_body module_name method_name) then
+    Alcotest.fail
+      (Printf.sprintf "Method body does not call %s.%s" module_name method_name)
+
+let assert_method_body_is_obj method_body =
+  match method_body.pexp_desc with
+  | Pexp_ident { txt = Astlib.Longident.Lident "obj"; _ } -> ()
+  | _ -> Alcotest.fail "Method body should be a simple 'obj' reference"
+
+let validate_signature_consistency ml_class mli_class method_name =
+  let ml_method_type =
+    Option.bind
+      (Ml_ast_helpers.find_method_in_class ml_class.pci_expr method_name)
+      Ml_ast_helpers.get_method_type
+  in
+  let mli_method_type =
+    Option.bind
+      (Ml_ast_helpers.find_method_in_class_type mli_class.pci_expr method_name)
+      Ml_ast_helpers.get_method_type_from_class_type_field
+  in
+  match (ml_method_type, mli_method_type) with
+  | (Some ml_type, Some mli_type) ->
+      let ml_type_str = Ml_ast_helpers.core_type_to_string ml_type in
+      let mli_type_str = Ml_ast_helpers.core_type_to_string mli_type in
+      let ml_has_hierarchy = Ml_ast_helpers.contains_hierarchy_type ml_type in
+      let mli_has_hierarchy = Ml_ast_helpers.contains_hierarchy_type mli_type in
+      if (ml_has_hierarchy && not mli_has_hierarchy) || (not ml_has_hierarchy && mli_has_hierarchy) then
+        Alcotest.fail (Printf.sprintf "Method '%s' hierarchy mismatch" method_name)
+      else if (not ml_has_hierarchy) && ml_type_str <> mli_type_str then
+        Alcotest.fail
+          (Printf.sprintf "Method '%s' signature mismatch: .ml='%s', .mli='%s'"
+             method_name ml_type_str mli_type_str)
+  | (None, Some _) -> Alcotest.fail (Printf.sprintf "Method '%s' not found in .ml" method_name)
+  | (Some _, None) -> Alcotest.fail (Printf.sprintf "Method '%s' not found in .mli" method_name)
+  | (None, None) -> Alcotest.fail (Printf.sprintf "Method '%s' not found" method_name)
+
+(* ========================================================================= *)
 (* Test 1: Hierarchy Parameter Coercion *)
 (* ========================================================================= *)
 
@@ -188,30 +287,19 @@ let test_void_method () =
      ~properties:[]
      ~signals:[] in
    
-   (* Parse the generated code into ASTs *)
-   let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
-   let mli_ast = Ml_ast_helpers.parse_interface mli_code in
-   
-   (* Validate the show method exists and has correct type using AST parsing *)
-   (match Ml_ast_helpers.find_class_declaration ml_ast "widget" with
-    | None -> Alcotest.fail "Class 'widget' not found in generated class AST"
-    | Some class_decl ->
-        (match Ml_ast_helpers.find_method_in_class class_decl.pci_expr "show" with
-         | None -> Alcotest.fail "Method 'show' not found in generated class AST"
-         | Some method_field ->
-             (match Ml_ast_helpers.get_method_type method_field with
-              | Some method_type ->
-                  let type_str = Ml_ast_helpers.core_type_to_string method_type in
-                  if not (String.equal type_str "unit -> unit") then
-                    Alcotest.fail (Printf.sprintf "Method 'show' has type '%s', expected 'unit -> unit'" type_str)
-              | None -> Alcotest.fail "Could not extract type for 'show' method")));
-   
-   (* Validate method signature in .mli using AST parsing *)
-   Layer2_helpers.validate_method_type_annotation_sig
-     ~signature:mli_ast
-     ~class_name:"widget"
-     ~method_name:"show"
-     ~expected_type:"unit -> unit"
+    (* Parse the generated code into ASTs *)
+    let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
+    let mli_ast = Ml_ast_helpers.parse_interface mli_code in
+
+    (* Validate the show method exists and has correct type using helper *)
+    validate_method_type ml_ast "widget" "show" ~expected:"unit -> unit";
+
+    (* Validate method signature in .mli using AST parsing *)
+    Layer2_helpers.validate_method_type_annotation_sig
+      ~signature:mli_ast
+      ~class_name:"widget"
+      ~method_name:"show"
+      ~expected_type:"unit -> unit"
 
 (* ========================================================================= *)
 (* Test 5: Multiple Parameters *)
@@ -267,30 +355,19 @@ let test_multiple_parameters () =
      ~properties:[]
      ~signals:[] in
    
-   (* Parse the generated code into ASTs *)
-   let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
-   let mli_ast = Ml_ast_helpers.parse_interface mli_code in
-   
-   (* Validate the set_size_request method exists and has correct type using AST parsing *)
-   (match Ml_ast_helpers.find_class_declaration ml_ast "widget" with
-    | None -> Alcotest.fail "Class 'widget' not found in generated class AST"
-    | Some class_decl ->
-        (match Ml_ast_helpers.find_method_in_class class_decl.pci_expr "set_size_request" with
-         | None -> Alcotest.fail "Method 'set_size_request' not found in generated class AST"
-         | Some method_field ->
-             (match Ml_ast_helpers.get_method_type method_field with
-              | Some method_type ->
-                  let type_str = Ml_ast_helpers.core_type_to_string method_type in
-                  if not (String.equal type_str "int -> int -> unit") then
-                    Alcotest.fail (Printf.sprintf "Method 'set_size_request' has type '%s', expected 'int -> int -> unit'" type_str)
-              | None -> Alcotest.fail "Could not extract type for 'set_size_request' method")));
-   
-   (* Validate method signature in .mli using AST parsing *)
-   Layer2_helpers.validate_method_type_annotation_sig
-     ~signature:mli_ast
-     ~class_name:"widget"
-     ~method_name:"set_size_request"
-     ~expected_type:"int -> int -> unit"
+    (* Parse the generated code into ASTs *)
+    let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
+    let mli_ast = Ml_ast_helpers.parse_interface mli_code in
+
+    (* Validate the set_size_request method using helper *)
+    validate_method_type ml_ast "widget" "set_size_request" ~expected:"int -> int -> unit";
+
+    (* Validate method signature in .mli using AST parsing *)
+    Layer2_helpers.validate_method_type_annotation_sig
+      ~signature:mli_ast
+      ~class_name:"widget"
+      ~method_name:"set_size_request"
+      ~expected_type:"int -> int -> unit"
 
 (* ========================================================================= *)
 (* Test 6: Method with Object Parameter *)
@@ -332,17 +409,13 @@ let test_method_with_object_parameter () =
    
    (* Parse the generated code into AST *)
     let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
-    
-    (* Validate the set_child method exists and has hierarchy parameter using AST parsing *)
-   (match Ml_ast_helpers.find_class_declaration ml_ast "button" with
-    | None -> Alcotest.fail "Class 'button' not found in generated class AST"
-    | Some class_decl ->
-        (match Ml_ast_helpers.find_method_in_class class_decl.pci_expr "set_child" with
-         | None -> Alcotest.fail "Method 'set_child' not found in generated class AST"
-         | Some _ -> ()));
-   
-   (* Verify the method has a hierarchy parameter using AST inspection *)
-   Ml_ast_helpers.assert_method_has_hierarchy_param ml_ast "button" "set_child"
+
+    (* Validate the set_child method exists using helper *)
+    let class_decl = find_class ml_ast "button" in
+    let _ = find_method class_decl "set_child" in
+
+    (* Verify the method has a hierarchy parameter using AST inspection *)
+    Ml_ast_helpers.assert_method_has_hierarchy_param ml_ast "button" "set_child"
 
 (* ========================================================================= *)
 (* Test 7: Same-Cluster Structural Type Parameters *)
@@ -352,30 +425,11 @@ let test_method_with_object_parameter () =
 let test_same_cluster_structural_type () =
   let open Gir_gen_lib.Types in
   let ctx = create_test_context () in
-  
-  (* Add hierarchy info for Widget and Button to make them same-cluster *)
-  Hashtbl.add ctx.hierarchy_map "Widget"
-    {
-      gir_root = "Widget";
-      hierarchy = WidgetHierarchy;
-      layer2_module = "GWidget";
-      class_type_name = "widget_skel";
-      accessor_method = "as_widget";
-      layer1_base_type = "Widget.t";
-      base_conversion_method = "Widget.as_widget";
-    };
 
-  Hashtbl.add ctx.hierarchy_map "Button"
-    {
-      gir_root = "Widget";
-      hierarchy = WidgetHierarchy;
-      layer2_module = "GWidget";
-      class_type_name = "widget_skel";
-      accessor_method = "as_widget";
-      layer1_base_type = "Widget.t";
-      base_conversion_method = "Widget.as_widget";
-    };
-  
+  (* Add hierarchy info for Widget and Button to make them same-cluster *)
+  Hashtbl.add ctx.hierarchy_map "Widget" (hierarchy_entry "Widget" "GWidget" "widget_skel");
+  Hashtbl.add ctx.hierarchy_map "Button" (hierarchy_entry "Widget" "GWidget" "widget_skel");
+
   (* Create a method on Button that takes a Widget parameter (same cluster) *)
   let set_child_method = {
     method_name = "set_child";
@@ -420,11 +474,11 @@ let test_same_cluster_structural_type () =
     signals = [];
     class_doc = None;
   } in
-  
+
   (* Convert classes to entities *)
   let widget_entity = Gir_gen_lib.Types.entity_of_class widget_class in
   let button_entity = Gir_gen_lib.Types.entity_of_class button_class in
-  
+
   (* Generate combined class module for cyclic dependency scenario *)
   let combined_code = Gir_gen_lib.Generate.Class_gen.generate_combined_class_module
     ~ctx
@@ -436,45 +490,17 @@ let test_same_cluster_structural_type () =
       | "Button" -> ["Widget"]
       | _ -> []
     ) in
-  
-  Printf.eprintf "Generated combined module:\n%s\n" combined_code;
-  
+
   (* Parse the generated combined module into AST *)
   let combined_ast = Ml_ast_helpers.parse_implementation combined_code in
-  
-  (* Debug: check if button class exists *)
-  (match Ml_ast_helpers.find_class_declaration combined_ast "button" with
-   | None -> Alcotest.fail "Class 'button' not found in combined module"
-   | Some cd ->
-       Printf.eprintf "Found class 'button'\n";
-       Printf.eprintf "Class expr type: %s\n" (Ml_ast_helpers.class_expr_to_string cd.pci_expr);
-       (* Debug: check if set_child method exists *)
-       match Ml_ast_helpers.find_method_in_class cd.pci_expr "set_child" with
-        | None ->
-            (* List all methods for debugging by checking common names *)
-            let test_names = ["set_child"; "as_widget"; "as_button"] in
-            List.iter (fun name ->
-              match Ml_ast_helpers.find_method_in_class cd.pci_expr name with
-              | Some _ -> Printf.eprintf "  Found method: '%s'\n" name
-              | None -> Printf.eprintf "  Not found: '%s'\n" name
-            ) test_names;
-            Alcotest.fail "Method 'set_child' not found in class 'button'"
-        | Some _ -> Printf.eprintf "Found method 'set_child'\n");
-  
-  (* Verify the generated code contains structural type pattern using AST validation *)
-  (* This validates that the code generator produces structural types for same-cluster classes *)
-  Ml_ast_helpers.assert_method_has_structural_type_param combined_ast "button" "set_child";
 
-  Printf.eprintf "Generated combined module:\n%s\n" combined_code;
-  
-  (* Validate that Button class has set_child method using class-based AST validation *)
-   (match Ml_ast_helpers.find_class_declaration combined_ast "button" with
-     | None -> Alcotest.fail "Class 'button' not found in combined module"
-     | Some cd ->
-          (match Ml_ast_helpers.find_method_in_class cd.pci_expr "set_child" with
-          | None -> Alcotest.fail "Method 'set_child' not found in class 'button'"
-          | _ -> (* Method found, now validate it has structural type using AST *)
-              Ml_ast_helpers.assert_method_has_structural_field combined_ast "button" "set_child" "as_widget"))
+  (* Validate the button class and method exist *)
+  let class_decl = find_class combined_ast "button" in
+  let _ = find_method class_decl "set_child" in
+
+  (* Verify the generated code contains structural type pattern using AST validation *)
+  Ml_ast_helpers.assert_method_has_structural_type_param combined_ast "button" "set_child";
+  Ml_ast_helpers.assert_method_has_structural_field combined_ast "button" "set_child" "as_widget"
 
 (* ========================================================================= *)
 (* Test 8: Property Getter Wrapper *)
@@ -565,60 +591,31 @@ let test_property_setter_wrapper () =
     set_property = Some "child";
   } in
   
-  (* Generate Layer 2 class module *)
-  let ml_code = Gir_gen_lib.Generate.Class_gen.generate_class_module
-    ~ctx
-    ~class_name:"Button"
-    ~c_type:"GtkButton"
-    ~parent_chain:["Widget"]
-    ~methods:[set_child_method]
-    ~properties:[child_property]
-    ~signals:[] in
-  
-  (* Parse the generated code into AST *)
-  let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
-  
-   (* Debug: Print the generated code *)
-   Printf.eprintf "Generated class module for property setter test:\n%s\n" ml_code;
-   
+   (* Generate Layer 2 class module *)
+   let ml_code = Gir_gen_lib.Generate.Class_gen.generate_class_module
+     ~ctx
+     ~class_name:"Button"
+     ~c_type:"GtkButton"
+     ~parent_chain:["Widget"]
+     ~methods:[set_child_method]
+     ~properties:[child_property]
+     ~signals:[] in
+
+   (* Parse the generated code into AST *)
+   let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
+
    (* Find the class declaration to check the method body *)
-   match Ml_ast_helpers.find_class_declaration ml_ast "button" with
-    | None -> Alcotest.fail "Class 'button' not found in generated class AST"
-    | Some class_decl ->
-        (* Verify the setter method exists using AST parsing *)
-        match Ml_ast_helpers.find_method_in_class class_decl.pci_expr "set_child" with
-         | None -> Alcotest.fail "set_child method not found in generated class AST"
-         | Some method_field ->
-             (* Debug: print the method field description *)
-             (match method_field.pcf_desc with
-              | Pcf_method (_, _, Cfk_virtual _) ->
-                  Printf.eprintf "Method set_child is virtual\n"
-              | Pcf_method (_, _, Cfk_concrete (_, { pexp_desc = desc; _ })) ->
-                  (match desc with
-                   | Pexp_poly (_, Some poly_type) ->
-                       Printf.eprintf "Method set_child is concrete with poly_type: %s\n"
-                         (Ml_ast_helpers.core_type_to_string poly_type);
-                       Printf.eprintf "Contains hierarchy: %b\n"
-                         (Ml_ast_helpers.contains_hierarchy_type poly_type)
-                   | Pexp_poly (_, None) ->
-                       Printf.eprintf "Method set_child is concrete with poly_type: None\n"
-                   | _ -> Printf.eprintf "Method set_child is concrete with unexpected desc: %s\n"
-                         (match desc with Pexp_ident _ -> "Pexp_ident" | Pexp_apply _ -> "Pexp_apply" | _ -> "other"))
-              | _ -> Printf.eprintf "Unexpected method field type\n");
-             
-             (* Check if method has hierarchy parameter by examining the type *)
-             (match Ml_ast_helpers.get_method_type method_field with
-              | Some method_type ->
-                  Printf.eprintf "Extracted method type: %s\n" (Ml_ast_helpers.core_type_to_string method_type);
-                  Printf.eprintf "Contains hierarchy type: %b\n" (Ml_ast_helpers.contains_hierarchy_type method_type);
-                  if not (Ml_ast_helpers.contains_hierarchy_type method_type) then
-                    Alcotest.fail "set_child method does not have hierarchy parameter"
-              | None -> Alcotest.fail "Could not extract type for set_child method");
-             
-              (* Hierarchy parameter check already passed.
-                 Note: We can't safely check inside Pexp_function (lambda) without unsafe Obj.magic,
-                 so we skip the body traversal. The type annotation validation is sufficient. *)
-              Printf.eprintf "Method set_child has correct hierarchy parameter type.\n"
+   let class_decl = find_class ml_ast "button" in
+   let method_field = find_method class_decl "set_child" in
+
+   (* Check if method has hierarchy parameter by examining the type *)
+   Ml_ast_helpers.get_method_type method_field
+   |> Option.iter (fun method_type ->
+       if not (Ml_ast_helpers.contains_hierarchy_type method_type) then
+         Alcotest.fail "set_child method does not have hierarchy parameter");
+   
+   if Option.is_none (Ml_ast_helpers.get_method_type method_field) then
+     Alcotest.fail "Could not extract type for set_child method"
 
 (* ========================================================================= *)
 (* Test 10: Inheritance Generation *)
@@ -682,16 +679,16 @@ let test_signal_handler_inheritance () =
     ~properties:[]
     ~signals:[clicked_signal] in
 
-  Printf.eprintf "Generated class module for signal inheritance test:\n%s\n" ml_code;
+   Printf.eprintf "Generated class module for signal inheritance test:\n%s\n" ml_code;
 
-  (* Parse the generated code into AST *)
-  let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
+   (* Parse the generated code into AST *)
+   let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
 
-  (* Validate that the generated class inherits from Gbutton_signals.button_signals using AST parsing *)
-  Layer2_helpers.validate_class_inherits
-    ~structure:ml_ast
-    ~class_name:"button"
-    ~parent_class:"Gbutton_signals.button_signals"
+   (* Validate that the generated class inherits from Gbutton_signals.button_signals using AST parsing *)
+   Layer2_helpers.validate_class_inherits
+     ~structure:ml_ast
+     ~class_name:"button"
+     ~parent_class:"Gbutton_signals.button_signals"
 
 (* ========================================================================= *)
 (* Test 12: Hierarchy Accessor Method *)
@@ -711,45 +708,16 @@ let test_hierarchy_accessor_method () =
     ~properties:[]
     ~signals:[] in
 
-  Printf.eprintf "Generated class module for hierarchy accessor test:\n%s\n" ml_code;
-
   (* Parse the generated code into AST *)
   let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
 
-  (* Find the button class declaration in the AST *)
-  match Ml_ast_helpers.find_class_declaration ml_ast "button" with
-  | None -> Alcotest.fail "Class 'button' not found in generated class AST"
-  | Some class_decl ->
-      (* Find the as_widget method in the class *)
-      match Ml_ast_helpers.find_method_in_class class_decl.pci_expr "as_widget" with
-      | None -> Alcotest.fail "Method 'as_widget' not found in generated class AST"
-      | Some method_field ->
-          (* Extract the method body *)
-          (match Ml_ast_helpers.get_method_body method_field with
-           | None -> Alcotest.fail "Could not extract body for as_widget method"
-           | Some method_body ->
-               (* Debug: Print method body structure using Pprintast *)
-               let buf = Buffer.create 256 in
-               let fmt = Format.formatter_of_buffer buf in
-               Ppxlib.Pprintast.expression fmt method_body;
-               Format.pp_print_flush fmt ();
-               let body_str = Buffer.contents buf in
-               Printf.eprintf "Method body: %s\n" body_str;
+  (* Find the button class declaration and as_widget method in the AST *)
+  let class_decl = find_class ml_ast "button" in
+  let method_field = find_method class_decl "as_widget" in
+  let method_body = get_method_body method_field in
 
-               (* Validate that the method body calls Button.as_widget *)
-               (* The expected pattern is: (Button.as_widget obj) *)
-               if not (Ml_ast_helpers.method_body_calls_function method_body "Button" "as_widget") then
-                 Alcotest.fail "as_widget method body does not call Button.as_widget function";
-
-                (* Additional validation: verify the method structure is correct *)
-                (match method_body.pexp_desc with
-                 | Pexp_apply _ ->
-                     (* The method should be a function call, which is correct *)
-                     Printf.eprintf "as_widget method body is Pexp_apply (function call) - correct structure\n"
-                 | Pexp_ident _ ->
-                     Printf.eprintf "as_widget method body is Pexp_ident - simple reference\n"
-                 | _ ->
-                     Printf.eprintf "Warning: as_widget method body has unexpected structure\n"))
+  (* Validate that the method body calls Button.as_widget *)
+  assert_method_body_calls method_body "Button" "as_widget"
 
 (* ========================================================================= *)
 (* Test 13: Class Accessor Method *)
@@ -769,38 +737,16 @@ let test_class_accessor_method () =
     ~properties:[]
     ~signals:[] in
 
-  Printf.eprintf "Generated class module for class accessor test:\n%s\n" ml_code;
-
   (* Parse the generated code into AST *)
   let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
 
-  (* Find the button class declaration in the AST *)
-  match Ml_ast_helpers.find_class_declaration ml_ast "button" with
-  | None -> Alcotest.fail "Class 'button' not found in generated class AST"
-  | Some class_decl ->
-      (* Find the as_button method in the class *)
-      match Ml_ast_helpers.find_method_in_class class_decl.pci_expr "as_button" with
-      | None -> Alcotest.fail "Method 'as_button' not found in generated class AST"
-      | Some method_field ->
-          (* Extract the method body *)
-          (match Ml_ast_helpers.get_method_body method_field with
-           | None -> Alcotest.fail "Could not extract body for as_button method"
-           | Some method_body ->
-               (* Debug: Print method body structure using Pprintast *)
-               let buf = Buffer.create 256 in
-               let fmt = Format.formatter_of_buffer buf in
-               Ppxlib.Pprintast.expression fmt method_body;
-               Format.pp_print_flush fmt ();
-               let body_str = Buffer.contents buf in
-               Printf.eprintf "Method body: %s\n" body_str;
+  (* Find the button class declaration and as_button method in the AST *)
+  let class_decl = find_class ml_ast "button" in
+  let method_field = find_method class_decl "as_button" in
+  let method_body = get_method_body method_field in
 
-               (* Validate that the method body is a simple 'obj' reference *)
-               (* The expected pattern is: obj *)
-               (match method_body.pexp_desc with
-                | Pexp_ident { txt = Astlib.Longident.Lident "obj"; _ } ->
-                    Printf.eprintf "as_button method body is Pexp_ident(obj) - correct structure\n"
-                | _ ->
-                    Alcotest.fail "as_button method body should be a simple 'obj' reference"))
+  (* Validate that the method body is a simple 'obj' reference *)
+  assert_method_body_is_obj method_body
 
 (* ========================================================================= *)
 (* Test 15: Method Conflict Detection *)
@@ -810,29 +756,10 @@ let test_class_accessor_method () =
 let test_method_conflict_detection () =
   let open Gir_gen_lib.Types in
   let ctx = create_test_context () in
-  
-  (* Add hierarchy info for both Widget and Button to make them same-cluster *)
-  Hashtbl.add ctx.hierarchy_map "Widget"
-    {
-      gir_root = "Widget";
-      hierarchy = WidgetHierarchy;
-      layer2_module = "GWidget";
-      class_type_name = "widget_skel";
-      accessor_method = "as_widget";
-      layer1_base_type = "Widget.t";
-      base_conversion_method = "Widget.as_widget";
-    };
 
-  Hashtbl.add ctx.hierarchy_map "Button"
-    {
-      gir_root = "Widget";
-      hierarchy = WidgetHierarchy;
-      layer2_module = "GWidget";
-      class_type_name = "widget_skel";
-      accessor_method = "as_widget";
-      layer1_base_type = "Widget.t";
-      base_conversion_method = "Widget.as_widget";
-    };
+  (* Add hierarchy info for both Widget and Button to make them same-cluster *)
+  Hashtbl.add ctx.hierarchy_map "Widget" (hierarchy_entry "Widget" "GWidget" "widget_skel");
+  Hashtbl.add ctx.hierarchy_map "Button" (hierarchy_entry "Widget" "GWidget" "widget_skel");
 
   (* Create a parent Widget class with a 'show' method that takes no parameters *)
   let widget_show_method = {
@@ -921,55 +848,59 @@ let test_method_conflict_detection () =
     let mli_ast = Ml_ast_helpers.parse_interface mli_code in
 
    (* Find the button class in the implementation AST *)
-  (match Ml_ast_helpers.find_class_declaration ml_ast "button" with
-   | None -> Alcotest.fail "Class 'button' not found in generated .ml AST"
-   | Some button_class_decl ->
-       Printf.eprintf "Found class 'button' in .ml\n";
+  let button_class_decl =
+    match Ml_ast_helpers.find_class_declaration ml_ast "button" with
+    | Some decl -> decl
+    | None -> Alcotest.fail "Class 'button' not found in generated .ml AST"
+  in
+  Printf.eprintf "Found class 'button' in .ml\n";
 
-       (* Check that the 'show' method is NOT present as an actual definition in the AST *)
-       (* (it should be commented out due to the conflict) *)
-       let show_method_exists = Ml_ast_helpers.method_exists_as_definition button_class_decl.pci_expr "show" in
-       Printf.eprintf "Method 'show' exists as definition in .ml: %b\n" show_method_exists;
-       
-       if show_method_exists then
-         Alcotest.fail "Method 'show' should be commented out due to conflict with parent method but is present as a definition";
+  (* Check that the 'show' method is NOT present as an actual definition in the AST *)
+  (* (it should be commented out due to the conflict) *)
+  let show_method_exists = Ml_ast_helpers.method_exists_as_definition button_class_decl.pci_expr "show" in
+  Printf.eprintf "Method 'show' exists as definition in .ml: %b\n" show_method_exists;
+  
+  if show_method_exists then
+    Alcotest.fail "Method 'show' should be commented out due to conflict with parent method but is present as a definition";
 
-       (* Check that the 'show' method IS mentioned in a comment in the generated code *)
-       let show_mentioned_in_comment = Ml_ast_helpers.method_mentioned_in_comment ml_code "show" in
-       Printf.eprintf "Method 'show' mentioned in comment in .ml: %b\n" show_mentioned_in_comment;
+  (* Check that the 'show' method IS mentioned in a comment in the generated code *)
+  let show_mentioned_in_comment = Ml_ast_helpers.method_mentioned_in_comment ml_code "show" in
+  Printf.eprintf "Method 'show' mentioned in comment in .ml: %b\n" show_mentioned_in_comment;
 
-       if not show_mentioned_in_comment then
-         Alcotest.fail "Method 'show' should be mentioned in a comment but is not";
+  if not show_mentioned_in_comment then
+    Alcotest.fail "Method 'show' should be mentioned in a comment but is not";
 
-       (* Validate using the helper function *)
-       Ml_ast_helpers.validate_method_is_commented_out
-         ~class_expr:button_class_decl.pci_expr
-         ~class_code:ml_code
-         ~method_name:"show";
+  (* Validate using the helper function *)
+  Ml_ast_helpers.validate_method_is_commented_out
+    ~class_expr:button_class_decl.pci_expr
+    ~class_code:ml_code
+    ~method_name:"show";
 
-       Printf.eprintf "Validated that 'show' method is properly commented out in .ml\n");
+  Printf.eprintf "Validated that 'show' method is properly commented out in .ml\n";
 
   (* Also check the signature (.mli) *)
-  (match Ml_ast_helpers.find_class_type_declaration mli_ast "button" with
-   | None -> Alcotest.fail "Class type 'button' not found in generated .mli AST"
-   | Some button_class_type_decl ->
-       Printf.eprintf "Found class type 'button' in .mli\n";
+  let button_class_type_decl =
+    match Ml_ast_helpers.find_class_type_declaration mli_ast "button" with
+    | Some decl -> decl
+    | None -> Alcotest.fail "Class type 'button' not found in generated .mli AST"
+  in
+  Printf.eprintf "Found class type 'button' in .mli\n";
 
-       (* Check that the 'show' method is NOT present as a signature in the class type *)
-       let show_signature_exists = Ml_ast_helpers.method_signature_exists button_class_type_decl.pci_expr "show" in
-       Printf.eprintf "Method 'show' signature exists in .mli: %b\n" show_signature_exists;
+  (* Check that the 'show' method is NOT present as a signature in the class type *)
+  let show_signature_exists = Ml_ast_helpers.method_signature_exists button_class_type_decl.pci_expr "show" in
+  Printf.eprintf "Method 'show' signature exists in .mli: %b\n" show_signature_exists;
 
-       if show_signature_exists then
-         Alcotest.fail "Method 'show' should be commented out due to conflict with parent method but signature exists";
+  if show_signature_exists then
+    Alcotest.fail "Method 'show' should be commented out due to conflict with parent method but signature exists";
 
-       (* Check that the 'show' method IS mentioned in a comment in the generated signature *)
-       let show_mentioned_in_comment = Ml_ast_helpers.method_mentioned_in_comment mli_code "show" in
-       Printf.eprintf "Method 'show' mentioned in comment in .mli: %b\n" show_mentioned_in_comment;
+  (* Check that the 'show' method IS mentioned in a comment in the generated signature *)
+  let show_mentioned_in_comment = Ml_ast_helpers.method_mentioned_in_comment mli_code "show" in
+  Printf.eprintf "Method 'show' mentioned in comment in .mli: %b\n" show_mentioned_in_comment;
 
-       if not show_mentioned_in_comment then
-         Alcotest.fail "Method 'show' should be mentioned in a comment in .mli but is not";
+  if not show_mentioned_in_comment then
+    Alcotest.fail "Method 'show' should be mentioned in a comment in .mli but is not";
 
-       Printf.eprintf "Validated that 'show' method is properly commented out in .mli\n");
+  Printf.eprintf "Validated that 'show' method is properly commented out in .mli\n";
 
   Printf.eprintf "Method conflict detection test passed.\n"
 
@@ -1071,13 +1002,15 @@ let test_layer2_signature_consistency () =
   let ml_class_opt = Ml_ast_helpers.find_class_declaration ml_ast "button" in
   let mli_class_type_opt = Ml_ast_helpers.find_class_type_declaration mli_ast "button" in
 
-  (match ml_class_opt with
-   | None -> Alcotest.fail "Class 'button' not found in .ml AST"
-   | Some _ -> Printf.eprintf "Found class 'button' in .ml\n");
-
-  (match mli_class_type_opt with
-   | None -> Alcotest.fail "Class type 'button' not found in .mli AST"
-   | Some _ -> Printf.eprintf "Found class type 'button' in .mli\n");
+  let () = match ml_class_opt with
+    | Some _ -> Printf.eprintf "Found class 'button' in .ml\n"
+    | None -> Alcotest.fail "Class 'button' not found in .ml AST"
+  in
+  
+  let () = match mli_class_type_opt with
+    | Some _ -> Printf.eprintf "Found class type 'button' in .mli\n"
+    | None -> Alcotest.fail "Class type 'button' not found in .mli AST"
+  in
 
   (* Validate that method signatures in .mli match method signatures in .ml using AST parsing *)
   List.iter (fun meth ->
@@ -1086,54 +1019,52 @@ let test_layer2_signature_consistency () =
 
     (* Extract method type from .ml implementation *)
     let ml_method_type_opt =
-      match ml_class_opt with
-      | None -> None
-      | Some ml_class ->
-          (match Ml_ast_helpers.find_method_in_class ml_class.pci_expr method_name with
-           | None -> None
-           | Some ml_method -> Ml_ast_helpers.get_method_type ml_method)
+      Option.bind ml_class_opt (fun ml_class ->
+          Option.bind
+            (Ml_ast_helpers.find_method_in_class ml_class.pci_expr method_name)
+            Ml_ast_helpers.get_method_type)
     in
 
     (* Extract method type from .mli signature *)
     let mli_method_type_opt =
-      match mli_class_type_opt with
-      | None -> None
-      | Some mli_class_type ->
-          (match Ml_ast_helpers.find_method_in_class_type mli_class_type.pci_expr method_name with
-           | None -> None
-           | Some mli_method_field -> Ml_ast_helpers.get_method_type_from_class_type_field mli_method_field)
+      Option.bind mli_class_type_opt (fun mli_class_type ->
+          Option.bind
+            (Ml_ast_helpers.find_method_in_class_type mli_class_type.pci_expr method_name)
+            Ml_ast_helpers.get_method_type_from_class_type_field)
     in
 
     (* Validate that both types were found *)
-    (match ml_method_type_opt with
-     | None -> Alcotest.fail (Printf.sprintf "Method '%s' not found or has no type in .ml" method_name)
-     | Some ml_method_type ->
-         Printf.eprintf "  .ml method type: %s\n" (Ml_ast_helpers.core_type_to_string ml_method_type);
+    let ml_method_type = match ml_method_type_opt with
+      | Some t -> t
+      | None -> Alcotest.fail (Printf.sprintf "Method '%s' not found or has no type in .ml" method_name)
+    in
+    Printf.eprintf "  .ml method type: %s\n" (Ml_ast_helpers.core_type_to_string ml_method_type);
 
-         (match mli_method_type_opt with
-          | None -> Alcotest.fail (Printf.sprintf "Method '%s' not found or has no type in .mli" method_name)
-          | Some mli_method_type ->
-              Printf.eprintf "  .mli method type: %s\n" (Ml_ast_helpers.core_type_to_string mli_method_type);
+    let mli_method_type = match mli_method_type_opt with
+      | Some t -> t
+      | None -> Alcotest.fail (Printf.sprintf "Method '%s' not found or has no type in .mli" method_name)
+    in
+    Printf.eprintf "  .mli method type: %s\n" (Ml_ast_helpers.core_type_to_string mli_method_type);
 
-              (* Compare types for semantic equivalence *)
-              let ml_type_str = Ml_ast_helpers.core_type_to_string ml_method_type in
-              let mli_type_str = Ml_ast_helpers.core_type_to_string mli_method_type in
+    (* Compare types for semantic equivalence *)
+    let ml_type_str = Ml_ast_helpers.core_type_to_string ml_method_type in
+    let mli_type_str = Ml_ast_helpers.core_type_to_string mli_method_type in
 
-              (* Check for semantic equivalence - polymorphic types may have different representation
-                 between .ml and .mli (e.g., 'p1. (#G.widget as 'p1) -> unit vs #G.widget -> unit).
-                 We normalize by checking that both contain hierarchy types with compatible structure. *)
-              let ml_has_hierarchy = Ml_ast_helpers.contains_hierarchy_type ml_method_type in
-              let mli_has_hierarchy = Ml_ast_helpers.contains_hierarchy_type mli_method_type in
+    (* Check for semantic equivalence - polymorphic types may have different representation
+       between .ml and .mli (e.g., 'p1. (#G.widget as 'p1) -> unit vs #G.widget -> unit).
+       We normalize by checking that both contain hierarchy types with compatible structure. *)
+    let ml_has_hierarchy = Ml_ast_helpers.contains_hierarchy_type ml_method_type in
+    let mli_has_hierarchy = Ml_ast_helpers.contains_hierarchy_type mli_method_type in
 
-              if ml_has_hierarchy && mli_has_hierarchy then
-                (* Both have hierarchy types - they're semantically equivalent even if string differs *)
-                Printf.eprintf "  Signature match (hierarchy types): .ml='%s', .mli='%s'\n" ml_type_str mli_type_str
-              else if ml_type_str <> mli_type_str then
-                Alcotest.fail (Printf.sprintf
-                  "Method '%s' signature mismatch: .ml has '%s', .mli has '%s'"
-                  method_name ml_type_str mli_type_str)
-              else
-                Printf.eprintf "  Signature match: %s\n" ml_type_str));
+    if ml_has_hierarchy && mli_has_hierarchy then
+      (* Both have hierarchy types - they're semantically equivalent even if string differs *)
+      Printf.eprintf "  Signature match (hierarchy types): .ml='%s', .mli='%s'\n" ml_type_str mli_type_str
+    else if ml_type_str <> mli_type_str then
+      Alcotest.fail (Printf.sprintf
+        "Method '%s' signature mismatch: .ml has '%s', .mli has '%s'"
+        method_name ml_type_str mli_type_str)
+    else
+      Printf.eprintf "  Signature match: %s\n" ml_type_str;
 
     Printf.eprintf "Method '%s' signature consistency validated.\n\n" method_name
   ) methods;
@@ -1326,56 +1257,56 @@ let test_combined_class_signature_consistency () =
     (* Find class type in .mli AST *)
     let mli_class_type_opt = Ml_ast_helpers.find_class_type_declaration combined_mli_ast class_name in
 
-    (match ml_class_opt with
-     | None -> Alcotest.fail (Printf.sprintf "Class '%s' not found in combined .ml AST" class_name)
-     | Some _ -> Printf.eprintf "  Found class '%s' in .ml\n" class_name);
+    let () = match ml_class_opt with
+      | Some _ -> Printf.eprintf "  Found class '%s' in .ml\n" class_name
+      | None -> Alcotest.fail (Printf.sprintf "Class '%s' not found in combined .ml AST" class_name)
+    in
 
-    (match mli_class_type_opt with
-     | None -> Alcotest.fail (Printf.sprintf "Class type '%s' not found in combined .mli AST" class_name)
-     | Some _ -> Printf.eprintf "  Found class type '%s' in .mli\n" class_name);
+    let () = match mli_class_type_opt with
+      | Some _ -> Printf.eprintf "  Found class type '%s' in .mli\n" class_name
+      | None -> Alcotest.fail (Printf.sprintf "Class type '%s' not found in combined .mli AST" class_name)
+    in
 
     (* Extract method type from .ml implementation *)
     let ml_method_type_opt =
-      match ml_class_opt with
-      | None -> None
-      | Some ml_class ->
-          (match Ml_ast_helpers.find_method_in_class ml_class.pci_expr method_name with
-           | None -> None
-           | Some ml_method -> Ml_ast_helpers.get_method_type ml_method)
+      Option.bind ml_class_opt (fun ml_class ->
+          Option.bind
+            (Ml_ast_helpers.find_method_in_class ml_class.pci_expr method_name)
+            Ml_ast_helpers.get_method_type)
     in
 
     (* Extract method type from .mli signature *)
     let mli_method_type_opt =
-      match mli_class_type_opt with
-      | None -> None
-      | Some mli_class_type ->
-          (match Ml_ast_helpers.find_method_in_class_type mli_class_type.pci_expr method_name with
-           | None -> None
-           | Some mli_method_field -> Ml_ast_helpers.get_method_type_from_class_type_field mli_method_field)
+      Option.bind mli_class_type_opt (fun mli_class_type ->
+          Option.bind
+            (Ml_ast_helpers.find_method_in_class_type mli_class_type.pci_expr method_name)
+            Ml_ast_helpers.get_method_type_from_class_type_field)
     in
 
     (* Validate that both types were found and match *)
-    (match ml_method_type_opt with
-     | None -> Alcotest.fail (Printf.sprintf "Method '%s' not found or has no type in combined .ml" method_name)
-     | Some ml_method_type ->
-         Printf.eprintf "  .ml method type: %s\n" (Ml_ast_helpers.core_type_to_string ml_method_type);
+    let ml_method_type = match ml_method_type_opt with
+      | Some t -> t
+      | None -> Alcotest.fail (Printf.sprintf "Method '%s' not found or has no type in combined .ml" method_name)
+    in
+    Printf.eprintf "  .ml method type: %s\n" (Ml_ast_helpers.core_type_to_string ml_method_type);
 
-         (match mli_method_type_opt with
-          | None -> Alcotest.fail (Printf.sprintf "Method '%s' not found or has no type in combined .mli" method_name)
-          | Some mli_method_type ->
-              Printf.eprintf "  .mli method type: %s\n" (Ml_ast_helpers.core_type_to_string mli_method_type);
+    let mli_method_type = match mli_method_type_opt with
+      | Some t -> t
+      | None -> Alcotest.fail (Printf.sprintf "Method '%s' not found or has no type in combined .mli" method_name)
+    in
+    Printf.eprintf "  .mli method type: %s\n" (Ml_ast_helpers.core_type_to_string mli_method_type);
 
-              (* Compare types using AST-based comparison (NOT string_contains) *)
-              let ml_type_str = Ml_ast_helpers.core_type_to_string ml_method_type in
-              let mli_type_str = Ml_ast_helpers.core_type_to_string mli_method_type in
+    (* Compare types using AST-based comparison (NOT string_contains) *)
+    let ml_type_str = Ml_ast_helpers.core_type_to_string ml_method_type in
+    let mli_type_str = Ml_ast_helpers.core_type_to_string mli_method_type in
 
-              (* Check for semantic equivalence *)
-              if ml_type_str <> mli_type_str then
-                Alcotest.fail (Printf.sprintf
-                  "Method '%s.%s' signature mismatch: .ml has '%s', .mli has '%s'"
-                  class_name method_name ml_type_str mli_type_str)
-              else
-                Printf.eprintf "  Signature match: %s\n" ml_type_str));
+    (* Check for semantic equivalence *)
+    if ml_type_str <> mli_type_str then
+      Alcotest.fail (Printf.sprintf
+        "Method '%s.%s' signature mismatch: .ml has '%s', .mli has '%s'"
+        class_name method_name ml_type_str mli_type_str)
+    else
+      Printf.eprintf "  Signature match: %s\n" ml_type_str;
 
     Printf.eprintf "Method '%s.%s' signature consistency validated.\n\n" class_name method_name
   ) test_cases;
@@ -1419,32 +1350,37 @@ let test_throws_method_result_wrapping () =
   let mli_ast = Ml_ast_helpers.parse_interface mli_code in
 
   (* Find the class type declaration *)
-  (match Ml_ast_helpers.find_class_type_declaration mli_ast "file_chooser" with
-   | None -> Alcotest.fail "Class type 'file_chooser' not found in generated .mli AST"
-   | Some class_type_decl ->
-       (* Find the load_file method in the class type *)
-       (match Ml_ast_helpers.find_method_in_class_type class_type_decl.pci_expr "load_file" with
-        | None -> Alcotest.fail "Method 'load_file' not found in class type"
-        | Some method_field ->
-             (* Extract the method type *)
-            (match Ml_ast_helpers.get_method_type_from_class_type_field method_field with
-             | None -> Alcotest.fail "Could not extract type for load_file method"
-             | Some method_type ->
-                 let method_type_str = Ml_ast_helpers.core_type_to_string method_type in
-                 Printf.eprintf "Method type: %s\n" method_type_str;
+  let class_type_decl = match Ml_ast_helpers.find_class_type_declaration mli_ast "file_chooser" with
+    | Some decl -> decl
+    | None -> Alcotest.fail "Class type 'file_chooser' not found in generated .mli AST"
+  in
+  
+  (* Find the load_file method in the class type *)
+  let method_field = match Ml_ast_helpers.find_method_in_class_type class_type_decl.pci_expr "load_file" with
+    | Some field -> field
+    | None -> Alcotest.fail "Method 'load_file' not found in class type"
+  in
+  
+  (* Extract the method type *)
+  let method_type = match Ml_ast_helpers.get_method_type_from_class_type_field method_field with
+    | Some t -> t
+    | None -> Alcotest.fail "Could not extract type for load_file method"
+  in
+  let method_type_str = Ml_ast_helpers.core_type_to_string method_type in
+  Printf.eprintf "Method type: %s\n" method_type_str;
 
-                 (* Extract the return type from the function type *)
-                 let return_type = Ml_ast_helpers.get_return_type method_type in
-                 let return_type_str = Ml_ast_helpers.core_type_to_string return_type in
-                 Printf.eprintf "Return type: %s\n" return_type_str;
+  (* Extract the return type from the function type *)
+  let return_type = Ml_ast_helpers.get_return_type method_type in
+  let return_type_str = Ml_ast_helpers.core_type_to_string return_type in
+  Printf.eprintf "Return type: %s\n" return_type_str;
 
-                 (* Validate that the return type is a result type with GError.t *)
-                 if not (Ml_ast_helpers.is_result_type_with_ginfo_error return_type) then
-                   Alcotest.fail (Printf.sprintf
-                     "Method 'load_file' should have (T, GError.t) result return type, got '%s'"
-                     return_type_str);
+  (* Validate that the return type is a result type with GError.t *)
+  if not (Ml_ast_helpers.is_result_type_with_ginfo_error return_type) then
+    Alcotest.fail (Printf.sprintf
+      "Method 'load_file' should have (T, GError.t) result return type, got '%s'"
+      return_type_str);
 
-                 Printf.eprintf "Throws method result wrapping validated: %s\n" return_type_str)));
+  Printf.eprintf "Throws method result wrapping validated: %s\n" return_type_str;
 
   (* Also test with a method that returns void *)
   let create_directory_method = {
@@ -1471,30 +1407,35 @@ let test_throws_method_result_wrapping () =
   let mli_ast_with_void = Ml_ast_helpers.parse_interface mli_code_with_void in
 
   (* Validate the void-returning throws method *)
-  (match Ml_ast_helpers.find_class_type_declaration mli_ast_with_void "file_chooser" with
-   | None -> Alcotest.fail "Class type 'file_chooser' not found in generated .mli AST"
-   | Some class_type_decl ->
-       (match Ml_ast_helpers.find_method_in_class_type class_type_decl.pci_expr "create_directory" with
-        | None -> Alcotest.fail "Method 'create_directory' not found in class type"
-        | Some method_field ->
-             (match Ml_ast_helpers.get_method_type_from_class_type_field method_field with
-              | None -> Alcotest.fail "Could not extract type for create_directory method"
-              | Some method_type ->
-                  let method_type_str = Ml_ast_helpers.core_type_to_string method_type in
-                  Printf.eprintf "Void method type: %s\n" method_type_str;
+  let class_type_decl_void = match Ml_ast_helpers.find_class_type_declaration mli_ast_with_void "file_chooser" with
+    | Some decl -> decl
+    | None -> Alcotest.fail "Class type 'file_chooser' not found in generated .mli AST"
+  in
+  
+  let method_field_void = match Ml_ast_helpers.find_method_in_class_type class_type_decl_void.pci_expr "create_directory" with
+    | Some field -> field
+    | None -> Alcotest.fail "Method 'create_directory' not found in class type"
+  in
+  
+  let method_type_void = match Ml_ast_helpers.get_method_type_from_class_type_field method_field_void with
+    | Some t -> t
+    | None -> Alcotest.fail "Could not extract type for create_directory method"
+  in
+  let method_type_str_void = Ml_ast_helpers.core_type_to_string method_type_void in
+  Printf.eprintf "Void method type: %s\n" method_type_str_void;
 
-                  (* Extract the return type from the function type *)
-                  let return_type = Ml_ast_helpers.get_return_type method_type in
-                  let return_type_str = Ml_ast_helpers.core_type_to_string return_type in
-                  Printf.eprintf "Void return type: %s\n" return_type_str;
+  (* Extract the return type from the function type *)
+  let return_type_void = Ml_ast_helpers.get_return_type method_type_void in
+  let return_type_str_void = Ml_ast_helpers.core_type_to_string return_type_void in
+  Printf.eprintf "Void return type: %s\n" return_type_str_void;
 
-                  (* For void-returning throws method, should be (unit, GError.t) result *)
-                  if not (Ml_ast_helpers.is_result_type_with_ginfo_error return_type) then
-                    Alcotest.fail (Printf.sprintf
-                      "Method 'create_directory' should have (unit, GError.t) result return type, got '%s'"
-                      return_type_str);
+  (* For void-returning throws method, should be (unit, GError.t) result *)
+  if not (Ml_ast_helpers.is_result_type_with_ginfo_error return_type_void) then
+    Alcotest.fail (Printf.sprintf
+      "Method 'create_directory' should have (unit, GError.t) result return type, got '%s'"
+      return_type_str_void);
 
-                  Printf.eprintf "Void throws method result wrapping validated: %s\n" return_type_str)));
+  Printf.eprintf "Void throws method result wrapping validated: %s\n" return_type_str_void;
 
   Printf.eprintf "Throws method result wrapping test passed.\n"
 
