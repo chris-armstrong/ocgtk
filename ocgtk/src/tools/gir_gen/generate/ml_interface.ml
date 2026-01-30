@@ -5,7 +5,10 @@ open Printf
 open Types
 open C_stub_helpers
 
-type output_mode = Interface | Implementation
+(** Mode for generating code output *)
+type output_mode =
+  | Interface  (** Generate .mli interface file *)
+  | Implementation  (** Generate .ml implementation file *)
 
 let sanitize_doc s =
   (* Prevent premature comment termination when GIR doc contains "*)" *)
@@ -22,24 +25,26 @@ let simplify_self_reference ~class_name ocaml_type =
     (* Handle patterns like "Module.t array" or "Module.t option" or "Module.t array option" *)
     Re.replace (Re.compile (Re.str self_type)) ~all:true ~f:(fun _ -> "t") ocaml_type
 
+(* Build the fully qualified type for a combined module *)
+let build_combined_module_type module_name combined_module_name =
+  if combined_module_name <> module_name then
+    combined_module_name ^ "." ^ module_name ^ ".t"
+  else
+    module_name ^ ".t"
+
 (* Qualify module references for cyclic dependencies *)
 let qualify_module_reference ~ctx module_type =
   (* Extract module name from types like "Layout_manager.t" or "Widget.t" *)
-  match String.split_on_char ~sep:'.' module_type with
-  | [module_name; "t"] ->
-      (* Check if this module is part of a cyclic group *)
-      (match Hashtbl.find_opt ctx.module_groups module_name with
+  Option.bind
+    (match String.split_on_char ~sep:'.' module_type with
+     | [module_name; "t"] -> Some module_name
+     | _ -> None)
+    (fun module_name ->
+       match Hashtbl.find_opt ctx.module_groups module_name with
+       | None -> None
        | Some combined_module_name ->
-           let simple_module_name = module_name in
-           (* Check if this is a cyclic module by comparing names *)
-           if combined_module_name <> simple_module_name then
-             (* For cyclic modules, use CombinedModule.ClassName.t *)
-             combined_module_name ^ "." ^ simple_module_name ^ ".t"
-           else
-             (* Single module *)
-             module_type
-       | None -> module_type)
-  | _ -> module_type
+           Some (build_combined_module_type module_name combined_module_name))
+  |> Option.value ~default:module_type
 
 let generate_signal_bindings ~output_mode:_ ~module_name:_ ~has_widget_parent:_ _signals =
   ""  (* Signals are only generated in high-level g*.ml wrappers *)
@@ -94,6 +99,7 @@ let detect_class_hierarchy_names ~ctx ~class_name ~parent_chain ?record_base_typ
           let variants = String.concat ~sep:" | " all_variants in
           (class_name, sprintf "[%s] Gobject.obj" variants)
   
+(** Indent content with 2 spaces, preserving empty lines *)
 let print_indent contents buf =
   let lines = String.split_on_char ~sep:'\n' contents in
   (* Indent the content *)
@@ -103,6 +109,22 @@ let print_indent contents buf =
     else
       bprintf buf "\n"
   ) lines
+
+(** Combine return type and output parameters into final type *)
+let combine_return_and_out_types ret_type out_types =
+  match ret_type, out_types with
+  | "unit", [] -> "unit"
+  | "unit", [single] -> single
+  | "unit", lst -> String.concat ~sep:" * " lst
+  | ret, [] -> ret
+  | ret, lst -> String.concat ~sep:" * " (ret :: lst)
+
+(** Check if any method handles the given property *)
+let method_handles_property prop_name methods =
+  List.exists ~f:(fun m ->
+    (m.set_property |> Option.map (String.equal prop_name) |> Option.value ~default:false)
+    || (m.get_property |> Option.map (String.equal prop_name) |> Option.value ~default:false)
+  ) methods
 
 let generate_ml_interface_internal
     ~ctx
@@ -312,14 +334,7 @@ let generate_ml_interface_internal
           | In | InOut -> None)
       in
 
-      let final_ret_type =
-        match ret_type_ocaml, out_types with
-        | "unit", [] -> "unit"
-        | "unit", [single] -> single
-        | "unit", lst -> String.concat ~sep:" * " lst
-        | ret, [] -> ret
-        | ret, lst -> String.concat ~sep:" * " (ret :: lst)
-      in
+      let final_ret_type = combine_return_and_out_types ret_type_ocaml out_types in
 
       let final_ret_type = if meth.throws then sprintf "(%s, GError.t) result" final_ret_type else final_ret_type in
 
@@ -345,8 +360,7 @@ let generate_ml_interface_internal
   List.iter ~f:(fun (prop : gir_property) ->
       let skip_prop =
         Exclude_list.is_excluded_type_name prop.prop_type.name ||
-        List.exists ~f:(fun m -> (m.set_property |> Option.map  (String.equal prop.prop_name) |> Option.value ~default:false)
-        || (m.get_property |> Option.map (String.equal prop.prop_name) |> Option.value ~default:false)) methods
+        method_handles_property prop.prop_name methods
       in
       
       let type_mapping_opt = if skip_prop then None else Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type in
