@@ -2,7 +2,6 @@
 
 open StdLabels
 open Printf
-open Re
 open Types
 open C_stub_helpers
 
@@ -21,8 +20,7 @@ let simplify_self_reference ~class_name ocaml_type =
     "t"
   else
     (* Handle patterns like "Module.t array" or "Module.t option" or "Module.t array option" *)
-    let pattern = Str.regexp (Str.quote self_type) in
-    Str.global_replace pattern "t" ocaml_type
+    Re.replace (Re.compile (Re.str self_type)) ~all:true ~f:(fun _ -> "t") ocaml_type
 
 (* Qualify module references for cyclic dependencies *)
 let qualify_module_reference ~ctx module_type =
@@ -172,7 +170,7 @@ let generate_ml_interface_internal
       bprintf buf "(** Create a new %s *)\n" class_name;
       let c_name = ctor.c_identifier in
       let ml_name =
-        let prefixed = Str.global_replace (Str.regexp "^gtk_") "ml_gtk_" c_name in
+        let prefixed = Re.replace (Re.compile (Re.str "^gtk_")) ~all:true ~f:(fun _ -> "ml_gtk_") c_name in
         if String.length prefixed >= 3 && String.sub prefixed ~pos:0 ~len:3 = "ml_" then
           prefixed
         else
