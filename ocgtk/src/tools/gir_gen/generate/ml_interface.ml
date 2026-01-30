@@ -204,6 +204,149 @@ let format_constructor_external ~ocaml_ctor_name ~signature ~ml_name ctor =
   else
     sprintf "external %s : %s = \"%s\"\n\n" ocaml_ctor_name signature ml_name
 
+(** Check if a constructor should be generated in the interface *)
+let should_generate_constructor ~ctx (ctor : gir_constructor) =
+  let has_cross_namespace_type = Filtering.constructor_has_cross_namespace_types ~ctx ctor in
+  not ctor.throws && not has_cross_namespace_type
+
+(** Generate a single constructor declaration and write it to the buffer *)
+let generate_constructor_decl ~ctx ~class_name ~buf (ctor : gir_constructor) =
+  bprintf buf "(** Create a new %s *)\n" class_name;
+  let c_name = ctor.c_identifier in
+  let ml_name =
+    let prefixed = Re.replace (Re.compile (Re.str "^gtk_")) ~all:true ~f:(fun _ -> "ml_gtk_") c_name in
+    if String.length prefixed >= 3 && String.sub prefixed ~pos:0 ~len:3 = "ml_" then
+      prefixed
+    else
+      "ml_" ^ c_name
+  in
+
+  let ocaml_ctor_name =
+    Utils.ocaml_constructor_name ~class_name ctor
+  in
+
+  let signature = build_constructor_signature ~ctx ~class_name ctor in
+  let decl = format_constructor_external ~ocaml_ctor_name ~signature ~ml_name ctor in
+  bprintf buf "%s" decl
+
+(** Check if a method should be generated in the interface *)
+let should_generate_method ~ctx ~is_record (meth : gir_method) =
+  let has_excluded_type =
+    Exclude_list.is_excluded_type_name meth.return_type.name
+  in
+  let has_cross_namespace_type = Filtering.method_has_cross_namespace_types ~ctx meth in
+  not (Exclude_list.is_variadic_function meth.method_name
+       || has_excluded_type
+       || Exclude_list.should_skip_method ~find_type_mapping:(Type_mappings.find_type_mapping_for_gir_type ~ctx) ~enums:ctx.enums ~bitfields:ctx.bitfields meth
+       || (is_record && is_copy_or_free meth)
+       || has_cross_namespace_type)
+
+(** Build the OCaml method signature type string *)
+let build_method_signature ~ctx ~class_name (meth : gir_method) =
+  let param_types = List.filter_map ~f:(convert_method_param_to_ocaml_type ~ctx ~class_name) meth.parameters in
+
+  let ret_type_ocaml =
+    if meth.return_type.name = "void" then
+      "unit"
+    else
+      map_gir_type_to_ocaml ~ctx ~class_name meth.return_type ~is_nullable:meth.return_type.nullable
+  in
+
+  let out_types =
+    List.filter_map ~f:(convert_out_param_to_ocaml_type ~ctx ~class_name) meth.parameters
+  in
+
+  let final_ret_type = combine_return_and_out_types ret_type_ocaml out_types in
+  let final_ret_type = if meth.throws then sprintf "(%s, GError.t) result" final_ret_type else final_ret_type in
+  String.concat ~sep:" -> " (["t"] @ param_types @ [final_ret_type])
+
+(** Format an external method declaration with bytecode/native support for >5 parameters *)
+let format_method_external ~buf ~ocaml_name ~ml_name ~param_count ~full_type =
+  if param_count > 5 then
+    bprintf buf "external %s : %s = \"%s_bytecode\" \"%s_native\"\n\n"
+      ocaml_name full_type ml_name ml_name
+  else
+    bprintf buf "external %s : %s = \"%s\"\n\n"
+      ocaml_name full_type ml_name
+
+(** Generate a single method declaration and write it to the buffer *)
+let generate_method_decl ~ctx ~class_name ~c_type ~c_symbol_prefix ~is_record ~buf (meth : gir_method) =
+  let ml_name = Utils.ml_method_name ~class_name meth in
+  let ocaml_name = Utils.ocaml_function_name ~class_name ~c_type ?c_symbol_prefix meth.method_name in
+  let in_params = List.filter ~f:(fun p -> p.direction <> Out) meth.parameters in
+  let param_count = 1 + List.length in_params in
+
+  if should_generate_method ~ctx ~is_record meth then begin
+    (match meth.doc with
+    | Some doc -> bprintf buf "(** %s *)\n" (sanitize_doc doc)
+    | None -> ());
+
+    let full_type = build_method_signature ~ctx ~class_name meth in
+    format_method_external ~buf ~ocaml_name ~ml_name ~param_count ~full_type
+  end
+
+(** Check if the type mapping exists for this property *)
+let has_property_type_mapping ~ctx (prop : gir_property) =
+  not (Exclude_list.is_excluded_type_name prop.prop_type.name) &&
+  Option.is_some (Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type)
+
+(** Check if a property getter should be generated *)
+let should_generate_property_getter (prop : gir_property) =
+  prop.readable
+
+(** Check if a property setter should be generated *)
+let should_generate_property_setter (prop : gir_property) =
+  prop.writable && not prop.construct_only
+
+(** Generate a property getter external declaration *)
+let generate_property_getter ~class_name ~buf (prop : gir_property) type_mapping =
+  let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
+  let prop_snake = Utils.to_snake_case prop_name_cleaned in
+  let class_snake = Utils.to_snake_case class_name in
+  let prop_ocaml_type =
+    if prop.prop_type.nullable then
+      sprintf "%s option" type_mapping.ocaml_type
+    else
+      type_mapping.ocaml_type
+  in
+  let getter_name = sprintf "get_%s" prop_snake in
+  let c_getter = sprintf "ml_gtk_%s_get_%s" class_snake prop_snake in
+  bprintf buf "(** Get property: %s *)\n" prop.prop_name;
+  bprintf buf "external %s : t -> %s = \"%s\"\n\n"
+    getter_name prop_ocaml_type c_getter
+
+(** Generate a property setter external declaration *)
+let generate_property_setter ~class_name ~buf (prop : gir_property) type_mapping =
+  let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
+  let prop_snake = Utils.to_snake_case prop_name_cleaned in
+  let class_snake = Utils.to_snake_case class_name in
+  let prop_ocaml_type =
+    if prop.prop_type.nullable then
+      sprintf "%s option" type_mapping.ocaml_type
+    else
+      type_mapping.ocaml_type
+  in
+  let setter_name = sprintf "set_%s" prop_snake in
+  let c_setter = sprintf "ml_gtk_%s_set_%s" class_snake prop_snake in
+  bprintf buf "(** Set property: %s *)\n" prop.prop_name;
+  bprintf buf "external %s : t -> %s -> unit = \"%s\"\n\n"
+    setter_name prop_ocaml_type c_setter
+
+(** Generate a single property's getter and/or setter declarations *)
+let generate_property_decl ~ctx ~class_name ~buf ~methods (prop : gir_property) =
+  let skip_prop =
+    Exclude_list.is_excluded_type_name prop.prop_type.name ||
+    method_handles_property prop.prop_name methods
+  in
+  if not skip_prop && has_property_type_mapping ~ctx prop then
+    match Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type with
+    | Some type_mapping ->
+      if should_generate_property_getter prop then
+        generate_property_getter ~class_name ~buf prop type_mapping;
+      if should_generate_property_setter prop then
+        generate_property_setter ~class_name ~buf prop type_mapping
+    | None -> ()
+
 let generate_ml_interface_internal
     ~ctx
     ~output_mode
@@ -243,137 +386,21 @@ let generate_ml_interface_internal
 
   (* Constructors - generate unique names and proper signatures, skip those that throw or have cross-namespace types *)
   List.iter ~f:(fun (ctor : gir_constructor) ->
-    let has_cross_namespace_type = Filtering.constructor_has_cross_namespace_types ~ctx ctor in
-    if not ctor.throws && not has_cross_namespace_type then begin
-      bprintf buf "(** Create a new %s *)\n" class_name;
-      let c_name = ctor.c_identifier in
-      let ml_name =
-        let prefixed = Re.replace (Re.compile (Re.str "^gtk_")) ~all:true ~f:(fun _ -> "ml_gtk_") c_name in
-        if String.length prefixed >= 3 && String.sub prefixed ~pos:0 ~len:3 = "ml_" then
-          prefixed
-        else
-          "ml_" ^ c_name
-      in
-
-      (* Generate OCaml constructor name from C identifier *)
-      let ocaml_ctor_name =
-        Utils.ocaml_constructor_name ~class_name ctor
-      in
-
-      let signature = build_constructor_signature ~ctx ~class_name ctor in
-      let decl = format_constructor_external ~ocaml_ctor_name ~signature ~ml_name ctor in
-      bprintf buf "%s" decl
-    end
+    if should_generate_constructor ~ctx ctor then
+      generate_constructor_decl ~ctx ~class_name ~buf ctor
   ) (constructors |> Option.value ~default:[]);
 
   (* Methods - skip those that duplicate property getters/setters *)
   bprintf buf "(* Methods *)\n";
   List.iter ~f:(fun (meth : gir_method) ->
-    let c_name = meth.method_name in
-    let in_params = List.filter ~f:(fun p -> p.direction <> Out) meth.parameters in
-    let param_count = 1 + List.length in_params in
-    let ml_name =
-      Utils.ml_method_name ~class_name meth
-    in
-    let ocaml_name =
-      Utils.ocaml_function_name ~class_name ~c_type ?c_symbol_prefix c_name
-    in
-
-    (* Skip if: variadic function, duplicates property, or unmapped return type *)
-    let has_excluded_type =
-      Exclude_list.is_excluded_type_name meth.return_type.name
-    in
-    let has_cross_namespace_type = Filtering.method_has_cross_namespace_types ~ctx meth in
-    let should_skip_mli =
-      Exclude_list.is_variadic_function c_name ||
-
-      has_excluded_type ||
-      Exclude_list.should_skip_method ~find_type_mapping:(Type_mappings.find_type_mapping_for_gir_type ~ctx) ~enums:ctx.enums ~bitfields:ctx.bitfields meth ||
-      (is_record && is_copy_or_free meth) ||
-      has_cross_namespace_type
-    in
-    if not should_skip_mli then begin
-      (match meth.doc with
-      | Some doc -> bprintf buf "(** %s *)\n" (sanitize_doc doc)
-      | None -> ());
-
-      (* Build OCaml type signature - handle nullable parameters *)
-      let param_types = List.filter_map ~f:(convert_method_param_to_ocaml_type ~ctx ~class_name) meth.parameters in
-
-      let ret_type_ocaml =
-        if meth.return_type.name = "void" then
-          "unit"
-        else
-          map_gir_type_to_ocaml ~ctx ~class_name meth.return_type ~is_nullable:meth.return_type.nullable
-      in
-
-      let out_types =
-        List.filter_map ~f:(convert_out_param_to_ocaml_type ~ctx ~class_name) meth.parameters
-      in
-
-      let final_ret_type = combine_return_and_out_types ret_type_ocaml out_types in
-
-      let final_ret_type = if meth.throws then sprintf "(%s, GError.t) result" final_ret_type else final_ret_type in
-
-      let full_type =
-        String.concat ~sep:" -> " (["t"] @ param_types @ [final_ret_type])
-      in
-
-      (* For methods with >5 parameters, use bytecode/native variant syntax *)
-      if param_count > 5 then
-        bprintf buf "external %s : %s = \"%s_bytecode\" \"%s_native\"\n\n"
-          ocaml_name full_type ml_name ml_name
-      else
-        bprintf buf "external %s : %s = \"%s\"\n\n"
-          ocaml_name full_type ml_name;
-    end
+    generate_method_decl ~ctx ~class_name ~c_type ~c_symbol_prefix ~is_record ~buf meth
   ) (List.rev methods);
 
   (* Properties - generate get/set externals *)
-  let property_names = ref [] in
-
   if List.length properties > 0 then begin
     bprintf buf "(* Properties *)\n\n";
-  List.iter ~f:(fun (prop : gir_property) ->
-      let skip_prop =
-        Exclude_list.is_excluded_type_name prop.prop_type.name ||
-        method_handles_property prop.prop_name methods
-      in
-      
-      let type_mapping_opt = if skip_prop then None else Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type in
-      match type_mapping_opt with
-      | Some type_mapping ->
-        let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
-        let prop_snake = Utils.to_snake_case prop_name_cleaned in
-        let class_snake = Utils.to_snake_case class_name in
-        let prop_ocaml_type =
-          if prop.prop_type.nullable then
-            sprintf "%s option" type_mapping.ocaml_type
-          else
-            type_mapping.ocaml_type
-        in
-
-        (* Generate getter if readable *)
-        if prop.readable then begin
-          let getter_name = sprintf "get_%s" prop_snake in
-          property_names := getter_name :: !property_names;
-          let c_getter = sprintf "ml_gtk_%s_get_%s" class_snake prop_snake in
-          bprintf buf "(** Get property: %s *)\n" prop.prop_name;
-          bprintf buf "external %s : t -> %s = \"%s\"\n\n"
-            getter_name prop_ocaml_type c_getter;
-        end;
-
-        (* Generate setter if writable and not construct-only *)
-        if prop.writable && not prop.construct_only then begin
-          let setter_name = sprintf "set_%s" prop_snake in
-          property_names := setter_name :: !property_names;
-          let c_setter = sprintf "ml_gtk_%s_set_%s" class_snake prop_snake in
-          bprintf buf "(** Set property: %s *)\n" prop.prop_name;
-          bprintf buf "external %s : t -> %s -> unit = \"%s\"\n\n"
-            setter_name prop_ocaml_type c_setter;
-        end;
-      | None ->
-        ()
+    List.iter ~f:(fun (prop : gir_property) ->
+      generate_property_decl ~ctx ~class_name ~buf ~methods prop
     ) properties;
   end  
 
