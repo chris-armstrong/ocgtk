@@ -347,6 +347,50 @@ let generate_property_decl ~ctx ~class_name ~buf ~methods (prop : gir_property) 
         generate_property_setter ~class_name ~buf prop type_mapping
     | None -> ()
 
+(** Generate type declaration for the module *)
+let generate_type_declaration ~output_mode ~is_record ~base_type buf =
+  match (is_record, output_mode) with
+  | true, Interface ->
+      bprintf buf "type t\n\n"
+  | _ ->
+      bprintf buf "type t = %s\n\n" base_type
+
+(** Generate hierarchy accessor method if needed *)
+let generate_hierarchy_accessor_section ~ctx ~output_mode ~class_name buf =
+  match Hierarchy_detection.get_hierarchy_info ctx class_name with
+  | Some hier_info when hier_info.hierarchy <> MonomorphicType ->
+      if should_generate_accessor ~class_name hier_info then begin
+        let accessor = hier_info.accessor_method in
+        let base_type = build_accessor_base_type ~ctx ~hier_info in
+        let base_type = simplify_self_reference ~class_name base_type in
+        let declaration = format_accessor_declaration ~output_mode ~accessor ~base_type in
+        bprintf buf "%s" declaration
+      end
+  | _ -> ()
+
+(** Generate constructors section *)
+let generate_constructors_section ~ctx ~class_name ~constructors buf =
+  List.iter ~f:(fun (ctor : gir_constructor) ->
+    if should_generate_constructor ~ctx ctor then
+      generate_constructor_decl ~ctx ~class_name ~buf ctor
+  ) (constructors |> Option.value ~default:[])
+
+(** Generate methods section *)
+let generate_methods_section ~ctx ~class_name ~c_type ~c_symbol_prefix ~is_record ~methods buf =
+  bprintf buf "(* Methods *)\n";
+  List.iter ~f:(fun (meth : gir_method) ->
+    generate_method_decl ~ctx ~class_name ~c_type ~c_symbol_prefix ~is_record ~buf meth
+  ) (List.rev methods)
+
+(** Generate properties section *)
+let generate_properties_section ~ctx ~class_name ~methods ~properties buf =
+  if List.length properties > 0 then begin
+    bprintf buf "(* Properties *)\n\n";
+    List.iter ~f:(fun (prop : gir_property) ->
+      generate_property_decl ~ctx ~class_name ~buf ~methods prop
+    ) properties;
+  end
+
 let generate_ml_interface_internal
     ~ctx
     ~output_mode
@@ -363,46 +407,11 @@ let generate_ml_interface_internal
     ?(is_record = false)
     buf
      =
-
-  match (is_record, output_mode) with
-  | true, Interface -> 
-  
-    bprintf buf "type t\n\n"
-  | _ -> 
-    bprintf buf "type t = %s\n\n" base_type;
-
-(* Generate accessor method for hierarchy types *)
-  (match Hierarchy_detection.get_hierarchy_info ctx class_name with
-    | Some hier_info when hier_info.hierarchy <> MonomorphicType ->
-        if should_generate_accessor ~class_name hier_info then begin
-          let accessor = hier_info.accessor_method in
-          let base_type = build_accessor_base_type ~ctx ~hier_info in
-          (* Simplify self-references (though this should never happen for accessors) *)
-          let base_type = simplify_self_reference ~class_name base_type in
-          let declaration = format_accessor_declaration ~output_mode ~accessor ~base_type in
-          bprintf buf "%s" declaration
-        end
-    | _ -> ());
-
-  (* Constructors - generate unique names and proper signatures, skip those that throw or have cross-namespace types *)
-  List.iter ~f:(fun (ctor : gir_constructor) ->
-    if should_generate_constructor ~ctx ctor then
-      generate_constructor_decl ~ctx ~class_name ~buf ctor
-  ) (constructors |> Option.value ~default:[]);
-
-  (* Methods - skip those that duplicate property getters/setters *)
-  bprintf buf "(* Methods *)\n";
-  List.iter ~f:(fun (meth : gir_method) ->
-    generate_method_decl ~ctx ~class_name ~c_type ~c_symbol_prefix ~is_record ~buf meth
-  ) (List.rev methods);
-
-  (* Properties - generate get/set externals *)
-  if List.length properties > 0 then begin
-    bprintf buf "(* Properties *)\n\n";
-    List.iter ~f:(fun (prop : gir_property) ->
-      generate_property_decl ~ctx ~class_name ~buf ~methods prop
-    ) properties;
-  end  
+  generate_type_declaration ~output_mode ~is_record ~base_type buf;
+  generate_hierarchy_accessor_section ~ctx ~output_mode ~class_name buf;
+  generate_constructors_section ~ctx ~class_name ~constructors buf;
+  generate_methods_section ~ctx ~class_name ~c_type ~c_symbol_prefix ~is_record ~methods buf;
+  generate_properties_section ~ctx ~class_name ~methods ~properties buf  
 
 let generate_ml_interface
     ~ctx
@@ -436,6 +445,73 @@ let generate_ml_interface
   ~ctx ~output_mode ~class_name ~c_type ~constructors ~methods ~properties ~signals ?c_symbol_prefix ~base_type  ~is_record buf;
   Buffer.contents buf
 
+(** Format module declaration (module rec X | and X) *)
+let format_module_declaration buf module_name is_start =
+  if is_start then
+    bprintf buf "module rec %s" module_name
+  else
+    bprintf buf "\nand %s\n" module_name
+
+(** Generate module signature for a single entity *)
+let generate_module_signature ~ctx ~entity ~base_type buf =
+  let signature_contents =
+    let inner_buf = Buffer.create 1024 in
+    generate_ml_interface_internal
+      ~ctx
+      ~output_mode:Interface
+      ~class_name:entity.name
+      ~c_type:entity.c_type
+      ~constructors:(if List.length entity.constructors > 0 then Some entity.constructors else None)
+      ~methods:entity.methods
+      ~properties:entity.properties
+      ~signals:entity.signals
+      ~base_type
+      inner_buf;
+    Buffer.contents inner_buf
+  in
+  print_indent signature_contents buf
+
+(** Generate module implementation for a single entity *)
+let generate_module_implementation ~ctx ~output_mode ~entity ~base_type buf =
+  let single_content =
+    let inner_buf = Buffer.create 1024 in
+    generate_ml_interface_internal
+      ~ctx
+      ~output_mode
+      ~class_name:entity.name
+      ~c_type:entity.c_type
+      ~base_type
+      ~constructors:(if List.length entity.constructors > 0 then Some entity.constructors else None)
+      ~methods:entity.methods
+      ~properties:entity.properties
+      ~signals:entity.signals
+      inner_buf;
+    Buffer.contents inner_buf
+  in
+  print_indent single_content buf
+
+(** Generate a single combined module entity *)
+let generate_combined_module_entity ~ctx ~output_mode ~entity ~parent_chain_for_entity ~index buf =
+  let parent_chain = parent_chain_for_entity entity.name in
+  let class_name = entity.name in
+  let _, base_type = detect_class_hierarchy_names ~ctx ~class_name ~parent_chain () in
+  let module_name = Utils.module_name_of_class class_name in
+  let is_impl = match output_mode with Implementation -> true | Interface -> false in
+  let is_start = index = 0 in
+
+  format_module_declaration buf module_name is_start;
+
+  if is_impl then begin
+    bprintf buf " : sig\n";
+    generate_module_signature ~ctx ~entity ~base_type buf;
+    bprintf buf "end = struct\n";
+  end else begin
+    bprintf buf " : sig\n";
+  end;
+
+  generate_module_implementation ~ctx ~output_mode ~entity ~base_type buf;
+  bprintf buf "end\n"
+
 (* Generate combined modules for cyclic dependencies *)
 let generate_combined_ml_modules
     ~ctx
@@ -444,77 +520,14 @@ let generate_combined_ml_modules
     ~parent_chain_for_entity
     () =
   let buf = Buffer.create 4096 in
-  let is_impl = match output_mode with Implementation -> true | Interface -> false in
 
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
   bprintf buf "(* Combined modules for cyclic dependencies *)\n\n";
 
-  (* Sort entities by name for consistent output *)
   let sorted_entities = List.sort ~cmp:(fun e1 e2 -> String.compare e1.name e2.name) entities in
 
-  (* Generate each module *)
   List.iteri ~f:(fun i entity ->
-    let parent_chain = parent_chain_for_entity entity.name in
-    let class_name = entity.name in
-    let _, base_type = detect_class_hierarchy_names ~ctx ~class_name ~parent_chain () in
-    let module_name = Utils.module_name_of_class class_name in
-
-    (* Module declaration *)
-    let start = i = 0 in
-    if start then
-    
-      bprintf buf "module rec %s" module_name
-    else 
-      bprintf buf "\nand %s\n" module_name;
-
-    if is_impl then begin
-      bprintf buf " : sig\n";
-      let singature_contents = 
-        let buf = Buffer.create 1024 in   
-        generate_ml_interface_internal
-        ~ctx
-        ~output_mode:Interface
-        ~class_name:entity.name
-        
-        ~c_type:entity.c_type
-        
-        ~constructors:(if List.length entity.constructors > 0 then Some entity.constructors else None)
-        ~methods:entity.methods
-        ~properties:entity.properties
-        ~signals:entity.signals
-        ~base_type
-        buf;
-        Buffer.contents buf 
-      in
-      print_indent singature_contents buf;
-      bprintf buf "end = struct\n"
-    end
-    else 
-      bprintf buf " : sig\n"
-    ;
- 
-    (* Generate module content using existing single-file generator *)
-    (* We need to adapt the output to fit inside a module *)
-    let single_content = 
-      let buf = Buffer.create 1024 in
-      generate_ml_interface_internal
-      ~ctx
-      ~output_mode
-      ~class_name:entity.name
-   
-      ~c_type:entity.c_type
-      ~base_type
-      ~constructors:(if List.length entity.constructors > 0 then Some entity.constructors else None)
-      ~methods:entity.methods
-      ~properties:entity.properties
-      ~signals:entity.signals
-      buf;
-      Buffer.contents buf 
-    in
-
-    print_indent single_content buf;
-
-    bprintf buf "end\n";
+    generate_combined_module_entity ~ctx ~output_mode ~entity ~parent_chain_for_entity ~index:i buf
   ) sorted_entities;
 
   Buffer.contents buf
