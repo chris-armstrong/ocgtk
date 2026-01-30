@@ -25,6 +25,7 @@ depends: [
   "yojson" {build}
   "alcotest" {with-test}
   "ppxlib" {with-test}
+  "str" {build}
   "odoc" {with-doc}
 ]
 build: [

@@ -2,6 +2,7 @@
 
 open StdLabels
 open Printf
+open Re
 open Types
 open C_stub_helpers
 
@@ -9,8 +10,8 @@ type output_mode = Interface | Implementation
 
 let sanitize_doc s =
   (* Prevent premature comment termination when GIR doc contains "*)" *)
-  s |> Str.global_replace (Str.regexp_string "*)") "\"*)\"" |>
-  Str.global_replace (Str.regexp_string "(*") "\"(*\""
+  Re.replace (Re.compile (Re.str "*)")) ~all:true ~f:(fun g -> "\\" ^ Re.Group.get g 0) s
+  |> Re.replace (Re.compile (Re.str "*(")) ~all:true ~f:(fun g -> "\\" ^ Re.Group.get g 0)
 
 (* Simplify type references when they refer to the current module's type *)
 let simplify_self_reference ~class_name ocaml_type =
