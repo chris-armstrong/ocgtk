@@ -126,53 +126,36 @@ let method_handles_property prop_name methods =
     || (m.get_property |> Option.map (String.equal prop_name) |> Option.value ~default:false)
   ) methods
 
-(** Convert a constructor parameter to its OCaml type representation *)
-let map_constructor_param ~ctx ~class_name p =
-  match Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type with
+(** Map a GIR type to its OCaml representation with nullable handling *)
+let map_gir_type_to_ocaml ~ctx ~class_name gir_type ~is_nullable =
+  match Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type with
   | Some mapping ->
     let simplified_type = simplify_self_reference ~class_name mapping.ocaml_type in
-    if p.nullable then
+    if is_nullable then
       sprintf "%s option" simplified_type
     else
       simplified_type
   | None ->
-    eprintf "Warning: Unknown type for parameter: name=%s type=%s\n"
-      p.param_type.name p.param_type.name;
+    eprintf "Warning: Unknown type: name=%s type=%s\n"
+      gir_type.name gir_type.name;
     "unit"
+
+(** Convert a constructor parameter to its OCaml type representation *)
+let map_constructor_param ~ctx ~class_name p =
+  map_gir_type_to_ocaml ~ctx ~class_name p.param_type ~is_nullable:p.nullable
 
 (** Convert a method parameter to its OCaml type representation *)
 let convert_method_param_to_ocaml_type ~ctx ~class_name p =
   match p.direction with
   | Out -> None
   | In | InOut ->
-    Some (match Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type with
-    | Some mapping ->
-      (* Simplify self-references (e.g., Tree_model.t -> t in tree_model.ml) *)
-      let base_type = simplify_self_reference ~class_name mapping.ocaml_type in
-      if p.nullable then
-        sprintf "%s option" base_type
-      else
-        base_type
-    | None ->
-      eprintf "Warning: Unknown type for method parameter: name=%s c_type=%s\n"
-        p.param_type.name p.param_type.name;
-      "unit")
+    Some (map_gir_type_to_ocaml ~ctx ~class_name p.param_type ~is_nullable:p.nullable)
 
 (** Convert an out parameter to its OCaml type representation *)
 let convert_out_param_to_ocaml_type ~ctx ~class_name p =
   match p.direction with
   | Out ->
-    (match Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type with
-    | Some mapping ->
-      (* Simplify self-references (e.g., Tree_model.t -> t in tree_model.ml) *)
-      let base_type = simplify_self_reference ~class_name mapping.ocaml_type in
-      if p.nullable then
-        Some (sprintf "%s option" base_type)
-      else Some base_type
-    | None ->
-      eprintf "Warning: Unknown out parameter type: name=%s type=%s\n"
-        p.param_type.name p.param_type.name;
-      Some "unit")
+    Some (map_gir_type_to_ocaml ~ctx ~class_name p.param_type ~is_nullable:p.nullable)
   | In | InOut -> None
 
 let generate_ml_interface_internal
@@ -312,19 +295,7 @@ let generate_ml_interface_internal
         if meth.return_type.name = "void" then
           "unit"
         else
-          match Type_mappings.find_type_mapping_for_gir_type ~ctx meth.return_type with
-          | Some mapping ->
-            (* let base_type = Type_mappings.qualify_ocaml_type ~gir_type_name:(Some meth.return_type.name) mapping.ocaml_type in *)
-            (* Simplify self-references (e.g., Tree_model.t -> t in tree_model.ml) *)
-            let base_type = simplify_self_reference ~class_name mapping.ocaml_type in
-            if meth.return_type.nullable then
-              sprintf "%s option" base_type
-            else
-              base_type
-          | None ->
-            eprintf "Warning: Unknown return type for method %s: name=%s type=%s\n"
-              meth.method_name meth.return_type.name meth.return_type.name;
-            "unit"
+          map_gir_type_to_ocaml ~ctx ~class_name meth.return_type ~is_nullable:meth.return_type.nullable
       in
 
       let out_types =
