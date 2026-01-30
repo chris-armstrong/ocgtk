@@ -44,14 +44,8 @@ let generate_property_wrapper ~ctx ~c_type (prop : gir_property) class_name ~is_
   let c_cast = sprintf "%s_val" c_type in
 
   let prop_name =
-    if is_getter then Utils.ml_property_name ~class_name prop
-    else
-      let prop_name_cleaned =
-        String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name
-      in
-      let prop_snake = Utils.to_snake_case prop_name_cleaned in
-      let class_snake = Utils.to_snake_case class_name in
-      sprintf "ml_gtk_%s_set_%s" class_snake prop_snake
+    if is_getter then Utils.ml_property_name ~ctx ~class_name prop
+    else Utils.ml_property_setter_name ~ctx ~class_name prop
   in
 
   let value_declaration =
@@ -135,7 +129,7 @@ let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
         | None -> element_mapping.c_type
       in
 
-      let prop_name = Utils.ml_property_name ~class_name prop in
+      let prop_name = Utils.ml_property_name ~ctx ~class_name prop in
       let c_cast = sprintf "%s_val" c_type in
       let c_array_var = "c_result" in
 
@@ -214,12 +208,7 @@ let generate_c_property_setter ~ctx ~c_type (prop : gir_property) class_name =
         | None -> element_mapping.c_type
       in
 
-      let prop_name_cleaned =
-        String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name
-      in
-      let prop_snake = Utils.to_snake_case prop_name_cleaned in
-      let class_snake = Utils.to_snake_case class_name in
-      let prop_name = sprintf "ml_gtk_%s_set_%s" class_snake prop_snake in
+      let prop_name = Utils.ml_property_setter_name ~ctx ~class_name prop in
       let c_cast = sprintf "%s_val" c_type in
 
       (* Generate array conversion code *)
