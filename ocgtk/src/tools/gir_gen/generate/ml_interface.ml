@@ -212,15 +212,7 @@ let should_generate_constructor ~ctx (ctor : gir_constructor) =
 (** Generate a single constructor declaration and write it to the buffer *)
 let generate_constructor_decl ~ctx ~class_name ~buf (ctor : gir_constructor) =
   bprintf buf "(** Create a new %s *)\n" class_name;
-  let c_name = ctor.c_identifier in
-  let ml_name =
-    let prefixed = Re.replace (Re.compile (Re.str "^gtk_")) ~all:true ~f:(fun _ -> "ml_gtk_") c_name in
-    if String.length prefixed >= 3 && String.sub prefixed ~pos:0 ~len:3 = "ml_" then
-      prefixed
-    else
-      "ml_" ^ c_name
-  in
-
+  let ml_name = Utils.ml_constructor_name ~class_name ~constructor:ctor in
   let ocaml_ctor_name =
     Utils.ocaml_constructor_name ~class_name ctor
   in
@@ -299,10 +291,9 @@ let should_generate_property_setter (prop : gir_property) =
   prop.writable && not prop.construct_only
 
 (** Generate a property getter external declaration *)
-let generate_property_getter ~class_name ~buf (prop : gir_property) type_mapping =
+let generate_property_getter ~ctx ~class_name ~buf (prop : gir_property) type_mapping =
   let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
   let prop_snake = Utils.to_snake_case prop_name_cleaned in
-  let class_snake = Utils.to_snake_case class_name in
   let prop_ocaml_type =
     if prop.prop_type.nullable then
       sprintf "%s option" type_mapping.ocaml_type
@@ -310,16 +301,15 @@ let generate_property_getter ~class_name ~buf (prop : gir_property) type_mapping
       type_mapping.ocaml_type
   in
   let getter_name = sprintf "get_%s" prop_snake in
-  let c_getter = sprintf "ml_gtk_%s_get_%s" class_snake prop_snake in
+  let c_getter = Utils.ml_property_name ~ctx ~class_name prop in
   bprintf buf "(** Get property: %s *)\n" prop.prop_name;
   bprintf buf "external %s : t -> %s = \"%s\"\n\n"
     getter_name prop_ocaml_type c_getter
 
 (** Generate a property setter external declaration *)
-let generate_property_setter ~class_name ~buf (prop : gir_property) type_mapping =
+let generate_property_setter ~ctx ~class_name ~buf (prop : gir_property) type_mapping =
   let prop_name_cleaned = String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name in
   let prop_snake = Utils.to_snake_case prop_name_cleaned in
-  let class_snake = Utils.to_snake_case class_name in
   let prop_ocaml_type =
     if prop.prop_type.nullable then
       sprintf "%s option" type_mapping.ocaml_type
@@ -327,7 +317,7 @@ let generate_property_setter ~class_name ~buf (prop : gir_property) type_mapping
       type_mapping.ocaml_type
   in
   let setter_name = sprintf "set_%s" prop_snake in
-  let c_setter = sprintf "ml_gtk_%s_set_%s" class_snake prop_snake in
+  let c_setter = Utils.ml_property_setter_name ~ctx ~class_name prop in
   bprintf buf "(** Set property: %s *)\n" prop.prop_name;
   bprintf buf "external %s : t -> %s -> unit = \"%s\"\n\n"
     setter_name prop_ocaml_type c_setter
@@ -342,9 +332,9 @@ let generate_property_decl ~ctx ~class_name ~buf ~methods (prop : gir_property) 
     match Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type with
     | Some type_mapping ->
       if should_generate_property_getter prop then
-        generate_property_getter ~class_name ~buf prop type_mapping;
+        generate_property_getter ~ctx ~class_name ~buf prop type_mapping;
       if should_generate_property_setter prop then
-        generate_property_setter ~class_name ~buf prop type_mapping
+        generate_property_setter ~ctx ~class_name ~buf prop type_mapping
     | None -> ()
 
 (** Generate type declaration for the module *)
