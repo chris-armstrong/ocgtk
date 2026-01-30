@@ -278,3 +278,8 @@ let ocaml_bitfield_name (bitfield : Types.gir_bitfield) =
 
 let ocaml_enum_name (enum : Types.gir_enum) =
   String.lowercase_ascii enum.enum_name
+
+(** Extract ML prefix from generation context namespace *)
+let extract_ml_prefix (ctx : Types.generation_context) : string =
+  let namespace_prefix = ctx.namespace.namespace_c_identifier_prefixes in
+  "ml_" ^ String.lowercase_ascii namespace_prefix ^ "_"
