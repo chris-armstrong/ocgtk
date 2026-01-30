@@ -47,7 +47,7 @@ let test_method_multiple_params () =
     ~constructors:None
     ~methods:[meth]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   let ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -102,7 +102,7 @@ let test_method_with_object_param () =
     ~constructors:None
     ~methods:[meth]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   let ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -156,7 +156,7 @@ let test_method_with_bool_param () =
     ~constructors:None
     ~methods:[meth]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   let ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -202,7 +202,7 @@ let test_method_with_int_return () =
     ~constructors:None
     ~methods:[meth]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   let ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -259,7 +259,7 @@ let test_constructor_with_multiple_params () =
     ~constructors:(Some [ctor])
     ~methods:[]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   let ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -313,7 +313,7 @@ let test_method_with_nullable_object () =
     ~constructors:None
     ~methods:[meth]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   let ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -358,7 +358,7 @@ let test_property_getter () =
     ~constructors:None
     ~methods:[meth]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   let ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -409,7 +409,7 @@ let test_property_setter () =
     ~constructors:None
     ~methods:[meth]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   let ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -453,7 +453,7 @@ let test_property_getter_nullable () =
     ~constructors:None
     ~methods:[meth]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   let ast = Ml_ast_helpers.parse_implementation ml_code in

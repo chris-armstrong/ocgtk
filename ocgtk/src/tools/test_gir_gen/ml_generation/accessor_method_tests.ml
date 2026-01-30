@@ -56,7 +56,7 @@ let test_child_class_impl_valid () =
     ~constructors:None
     ~methods:[]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   (* Should parse successfully and have type t *)
@@ -84,7 +84,7 @@ let test_child_class_iface_valid () =
     ~constructors:None
     ~methods:[]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   (* Should parse successfully and have type t *)
@@ -119,7 +119,7 @@ let test_root_class_valid () =
     ~constructors:None
     ~methods:[]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   (* Should parse successfully *)
@@ -150,7 +150,7 @@ let test_child_has_parent_accessors () =
     ~constructors:None
     ~methods:[]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   let ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -176,7 +176,7 @@ let test_deep_hierarchy_valid () =
     ~constructors:None
     ~methods:[]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   (* Should parse successfully *)

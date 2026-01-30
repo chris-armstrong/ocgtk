@@ -395,13 +395,12 @@ let generate_ml_interface_internal
     ~ctx
     ~output_mode
     ~class_name
-    
+
     ~c_type
-    
+
     ~constructors
     ~methods
     ~properties
-    ~signals:_
     ~base_type
     ?c_symbol_prefix
     ?(is_record = false)
@@ -423,12 +422,10 @@ let generate_ml_interface
     ~constructors
     ~methods
     ~properties
-    ~signals
     ?c_symbol_prefix
     ?record_base_type
     ?(is_record = false)
-    ()
-    = 
+    () = 
   let buf = Buffer.create 1024 in
 
   let class_type_name, base_type = detect_class_hierarchy_names ~ctx ~class_name ~parent_chain ?record_base_type ~is_record ()
@@ -441,8 +438,8 @@ let generate_ml_interface
   (match class_doc with
   | Some doc -> bprintf buf "(** %s *)\n" (sanitize_doc doc)
   | None -> ());
-  generate_ml_interface_internal 
-  ~ctx ~output_mode ~class_name ~c_type ~constructors ~methods ~properties ~signals ?c_symbol_prefix ~base_type  ~is_record buf;
+  generate_ml_interface_internal
+  ~ctx ~output_mode ~class_name ~c_type ~constructors ~methods ~properties ?c_symbol_prefix ~base_type ~is_record buf;
   Buffer.contents buf
 
 (** Format module declaration (module rec X | and X) *)
@@ -464,7 +461,6 @@ let generate_module_signature ~ctx ~entity ~base_type buf =
       ~constructors:(if List.length entity.constructors > 0 then Some entity.constructors else None)
       ~methods:entity.methods
       ~properties:entity.properties
-      ~signals:entity.signals
       ~base_type
       inner_buf;
     Buffer.contents inner_buf
@@ -484,7 +480,6 @@ let generate_module_implementation ~ctx ~output_mode ~entity ~base_type buf =
       ~constructors:(if List.length entity.constructors > 0 then Some entity.constructors else None)
       ~methods:entity.methods
       ~properties:entity.properties
-      ~signals:entity.signals
       inner_buf;
     Buffer.contents inner_buf
   in
