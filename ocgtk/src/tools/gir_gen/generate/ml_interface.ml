@@ -10,21 +10,6 @@ type output_mode =
   | Interface  (** Generate .mli interface file *)
   | Implementation  (** Generate .ml implementation file *)
 
-let sanitize_doc s =
-  (* Prevent premature comment termination when GIR doc contains "*)" *)
-  Re.replace (Re.compile (Re.str "*)")) ~all:true ~f:(fun g -> "\\" ^ Re.Group.get g 0) s
-  |> Re.replace (Re.compile (Re.str "*(")) ~all:true ~f:(fun g -> "\\" ^ Re.Group.get g 0)
-
-(* Simplify type references when they refer to the current module's type *)
-let simplify_self_reference ~class_name ocaml_type =
-  let current_module = Utils.module_name_of_class class_name in
-  let self_type = current_module ^ ".t" in
-  if ocaml_type = self_type then
-    "t"
-  else
-    (* Handle patterns like "Module.t array" or "Module.t option" or "Module.t array option" *)
-    Re.replace (Re.compile (Re.str self_type)) ~all:true ~f:(fun _ -> "t") ocaml_type
-
 (* Build the fully qualified type for a combined module *)
 let build_combined_module_type module_name combined_module_name =
   if combined_module_name <> module_name then
@@ -122,36 +107,22 @@ let method_handles_property prop_name methods =
     || (m.get_property |> Option.map (String.equal prop_name) |> Option.value ~default:false)
   ) methods
 
-(** Map a GIR type to its OCaml representation with nullable handling *)
-let map_gir_type_to_ocaml ~ctx ~class_name gir_type ~is_nullable =
-  match Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type with
-  | Some mapping ->
-    let simplified_type = simplify_self_reference ~class_name mapping.ocaml_type in
-    if is_nullable then
-      sprintf "%s option" simplified_type
-    else
-      simplified_type
-  | None ->
-    eprintf "Warning: Unknown type: name=%s type=%s\n"
-      gir_type.name gir_type.name;
-    "unit"
-
 (** Convert a constructor parameter to its OCaml type representation *)
 let map_constructor_param ~ctx ~class_name p =
-  map_gir_type_to_ocaml ~ctx ~class_name p.param_type ~is_nullable:p.nullable
+  Type_resolution.map_gir_type_to_ocaml ~ctx ~class_name ~gir_type:p.param_type ~is_nullable:p.nullable
 
 (** Convert a method parameter to its OCaml type representation *)
 let convert_method_param_to_ocaml_type ~ctx ~class_name p =
   match p.direction with
   | Out -> None
   | In | InOut ->
-    Some (map_gir_type_to_ocaml ~ctx ~class_name p.param_type ~is_nullable:p.nullable)
+    Some (Type_resolution.map_gir_type_to_ocaml ~ctx ~class_name ~gir_type:p.param_type ~is_nullable:p.nullable)
 
 (** Convert an out parameter to its OCaml type representation *)
 let convert_out_param_to_ocaml_type ~ctx ~class_name p =
   match p.direction with
   | Out ->
-    Some (map_gir_type_to_ocaml ~ctx ~class_name p.param_type ~is_nullable:p.nullable)
+    Some (Type_resolution.map_gir_type_to_ocaml ~ctx ~class_name ~gir_type:p.param_type ~is_nullable:p.nullable)
   | In | InOut -> None
 
 (** Check if we should generate an accessor method for this class *)
@@ -241,7 +212,7 @@ let build_method_signature ~ctx ~class_name (meth : gir_method) =
     if meth.return_type.name = "void" then
       "unit"
     else
-      map_gir_type_to_ocaml ~ctx ~class_name meth.return_type ~is_nullable:meth.return_type.nullable
+      Type_resolution.map_gir_type_to_ocaml ~ctx ~class_name ~gir_type:meth.return_type ~is_nullable:meth.return_type.nullable
   in
 
   let out_types =
@@ -269,8 +240,8 @@ let generate_method_decl ~ctx ~class_name ~c_type ~c_symbol_prefix ~is_record ~b
   let param_count = 1 + List.length in_params in
 
   if should_generate_method ~ctx ~is_record meth then begin
-    (match meth.doc with
-    | Some doc -> bprintf buf "(** %s *)\n" (sanitize_doc doc)
+(match meth.doc with
+    | Some doc -> bprintf buf "(** %s *)\n" (Utils.sanitize_doc doc)
     | None -> ());
 
     let full_type = build_method_signature ~ctx ~class_name meth in
@@ -352,7 +323,7 @@ let generate_hierarchy_accessor_section ~ctx ~output_mode ~class_name buf =
       if should_generate_accessor ~class_name hier_info then begin
         let accessor = hier_info.accessor_method in
         let base_type = build_accessor_base_type ~ctx ~hier_info in
-        let base_type = simplify_self_reference ~class_name base_type in
+        let base_type = Type_resolution.simplify_self_reference ~class_name ~ocaml_type:base_type in
         let declaration = format_accessor_declaration ~output_mode ~accessor ~base_type in
         bprintf buf "%s" declaration
       end
@@ -426,7 +397,7 @@ let generate_ml_interface
   bprintf buf "(* %s: %s *)\n\n" class_type_name class_name;
 
   (match class_doc with
-  | Some doc -> bprintf buf "(** %s *)\n" (sanitize_doc doc)
+  | Some doc -> bprintf buf "(** %s *)\n" (Utils.sanitize_doc doc)
   | None -> ());
   generate_ml_interface_internal
   ~ctx ~output_mode ~class_name ~c_type ~constructors ~methods ~properties ?c_symbol_prefix ~base_type ~is_record buf;
