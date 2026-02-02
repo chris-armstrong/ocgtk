@@ -52,6 +52,12 @@ let to_snake_case name =
       start_pos := name_len + 1
   done;
   !components |> List.rev |> String.concat ~sep:"_" |> stripLeadingNumbers
+
+let sanitize_doc s =
+  (* Prevent premature comment termination when GIR doc contains "*)" *)
+  Re.replace (Re.compile (Re.str "*)")) ~all:true ~f:(fun g -> "\\" ^ Re.Group.get g 0) s
+  |> Re.replace (Re.compile (Re.str "*(")) ~all:true ~f:(fun g -> "\\" ^ Re.Group.get g 0)
+
 (* let b = Buffer.create (String.length s + 10) in
   for i = 0 to String.length s - 1 do
     let c = String.get s i in
