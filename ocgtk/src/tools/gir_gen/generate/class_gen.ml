@@ -115,23 +115,6 @@ let detect_method_conflicts ~ctx ~class_name ~c_type ~methods : StringSet.t =
 let get_param_hierarchy_info ~ctx (param : gir_param) : hierarchy_info option =
   Hierarchy_detection.get_hierarchy_info ctx param.param_type.name
 
-let resolve_layer2_class ~ctx ~current_layer2_module (gir_type:gir_type) =
-  match Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type with
-  | Some { layer2_class = Some layer2_class; _ } ->
-    Some (if String.equal current_layer2_module layer2_class.class_module then layer2_class.class_type 
-      else layer2_class.class_module ^ "." ^ layer2_class.class_type) 
-  | _ -> None
-
-let ocaml_type_of_gir_type ~ctx ~current_layer2_module (gir_type : gir_type) =
-  (match Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type with
-  | Some { layer2_class = Some layer2_class; _ } ->
-    Some (if String.equal current_layer2_module layer2_class.class_module then layer2_class.class_type
-      else layer2_class.class_module ^ "." ^ layer2_class.class_type)
-  | Some mapping -> Some mapping.ocaml_type
-      (* Some (Type_mappings.qualify_ocaml_type ~gir_type_name:(Some gir_type.name) mapping.ocaml_type) *)
-  | None -> None)
-  |> Option.map (fun base -> if gir_type.nullable then base ^ " option" else base)
-
 (* Generic property code generation - refactoring #6 *)
 let generate_property_code ~ctx ~class_name ~methods  ~seen ~generate_getter ~generate_setter (prop : gir_property) =
   if not (Filtering.should_generate_property ~ctx ~class_name ~methods  prop) then ("", seen)
@@ -160,7 +143,7 @@ let generate_property_code ~ctx ~class_name ~methods  ~seen ~generate_getter ~ge
 let generate_property_methods ~ctx ~module_name ~current_layer2_module ~seen ~same_cluster_classes (prop : gir_property) =
   let generate_getter _prop prop_snake =
     let method_name = prop_snake |> Utils.sanitize_identifier in
-    let impl = match resolve_layer2_class ~ctx ~current_layer2_module prop.prop_type with
+    let impl = match Type_resolution.resolve_layer2_class_ref ~ctx ~current_layer2_module ~gir_type:prop.prop_type with
       | Some class_ref ->
         if prop.prop_type.nullable then
           sprintf "(%s.get_%s obj) |> Option.map (fun x -> new %s x)" module_name prop_snake class_ref
@@ -172,13 +155,13 @@ let generate_property_methods ~ctx ~module_name ~current_layer2_module ~seen ~sa
   in
   let generate_setter _prop prop_snake =
     let method_name = "set_"^prop_snake |> Utils.sanitize_identifier in
-    
-    let (method_params_expr, value_resolve_expr, impl_wrapper) = 
+
+    let (method_params_expr, value_resolve_expr, impl_wrapper) =
       match Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type with
-      | Some { layer2_class = Some class_info ; _} -> 
-          let class_ref = (resolve_layer2_class ~ctx ~current_layer2_module prop.prop_type |> Option.value ~default:(class_info.class_module ^ "." ^ class_info.class_type)) in
-          sprintf ": 'a . (#%s as 'a) -> unit " class_ref, 
-          "v#as_" ^ (Utils.ocaml_class_name class_info.class_type), 
+      | Some { layer2_class = Some class_info ; _} ->
+          let class_ref = (Type_resolution.resolve_layer2_class_ref ~ctx ~current_layer2_module ~gir_type:prop.prop_type |> Option.value ~default:(class_info.class_module ^ "." ^ class_info.class_type)) in
+          sprintf ": 'a . (#%s as 'a) -> unit " class_ref,
+          "v#as_" ^ (Utils.ocaml_class_name class_info.class_type),
           "fun v -> "
       | _ -> ("v", "v", "")
     in
@@ -211,7 +194,7 @@ let map_param_sig ~ctx ~same_cluster_classes ~current_layer2_module p =
         else
           (* Use # syntax for hierarchy types *)
           (* let class_type = hierarchy_class_type ~current_layer2_module hier in *)
-          let class_name = (ocaml_type_of_gir_type ~ctx ~current_layer2_module p.param_type) in
+          let class_name = (Type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:p.param_type) in
           let class_type = "#"^ (Option.get class_name) in
           if p.nullable || p.param_type.nullable then
               (class_type ^ " option")
@@ -220,20 +203,20 @@ let map_param_sig ~ctx ~same_cluster_classes ~current_layer2_module p =
     | _ ->
         (* Regular type *)
         let gir_type = { p.param_type with nullable = p.nullable || p.param_type.nullable } in
-        ocaml_type_of_gir_type ~ctx ~current_layer2_module gir_type |> Option.get
+        Type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:gir_type |> Option.get
 
 
 let generate_property_signatures ~ctx ~class_name ~methods  ~seen ~current_layer2_module ~same_cluster_classes (prop : gir_property) =
   let generate_getter _prop prop_snake =
-      let ocaml_type = match ocaml_type_of_gir_type ~ctx ~current_layer2_module prop.prop_type with
+      let ocaml_type = match Type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:prop.prop_type with
         | None -> ""
         | Some ocaml_type ->
       (* Check if this is a same-cluster class reference and convert to structural type *)
-          
+
           if is_same_cluster_class ~same_cluster_classes prop.prop_type.name then
             let structural = structural_type_for_class ~ctx prop.prop_type.name in
             if prop.prop_type.nullable then structural ^ " option" else structural
-          else 
+          else
             if prop.prop_type.nullable then ocaml_type ^ " option" else ocaml_type
       in
       let method_name = prop_snake |> Utils.sanitize_identifier in
@@ -248,23 +231,7 @@ let generate_property_signatures ~ctx ~class_name ~methods  ~seen ~current_layer
 
 let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:_ ~module_name ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes ~conflicting_methods (meth : gir_method) =
   (* Check if any parameter is an interface type - we can't handle these yet *)
-  let has_interface_param =
-    List.exists meth.parameters ~f:(fun p ->
-      let check_interface_by_name name =
-        if name = "" then false
-        else
-          match Type_mappings.find_interface_mapping ctx.interfaces name with
-          | Some _ -> true
-          | None -> false
-      in
-      let check_interface_by_c_type c_type_opt =
-        match c_type_opt with
-        | None -> false
-        | Some c_type -> check_interface_by_name c_type
-      in
-      check_interface_by_name p.param_type.name || check_interface_by_c_type p.param_type.c_type
-    )
-  in
+  let has_interface_param = Filtering.method_has_interface_param ~ctx meth in
   (* Check if any parameter or return type references cross-namespace enums/bitfields *)
   let has_cross_namespace_type = Filtering.method_has_cross_namespace_types ~ctx meth in
   let should_skip =
@@ -313,7 +280,7 @@ let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:
                 Some class_type
             else
               (* Use class type for different-cluster classes *)
-              let class_name = (ocaml_type_of_gir_type ~ctx ~current_layer2_module p.param_type) in
+              let class_name = (Type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:p.param_type) in
               let type_var = get_next_type_var () in
               let class_type = sprintf "(#%s as %s)" (Option.get class_name) type_var in
               if p.nullable || p.param_type.nullable then
@@ -324,15 +291,15 @@ let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:
             (* Regular type *)
 
             let gir_type = { p.param_type with nullable = p.nullable || p.param_type.nullable } in
-            let type_mapping = (ocaml_type_of_gir_type ~ctx ~current_layer2_module gir_type) in type_mapping
+            let type_mapping = (Type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:gir_type) in type_mapping
         )
     in
     let return_type =
       if String.lowercase_ascii meth.return_type.name = "void" then Some "unit"
-      else ocaml_type_of_gir_type ~ctx ~current_layer2_module meth.return_type
+      else Type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:meth.return_type
     in
     let ret_wrapper =
-      match resolve_layer2_class ~ctx ~current_layer2_module meth.return_type with
+      match Type_resolution.resolve_layer2_class_ref ~ctx ~current_layer2_module ~gir_type:meth.return_type with
       | Some class_ref ->
         if (meth.throws && meth.return_type.nullable) then
           sprintf "Result.map (fun ret -> Option.map (fun ret -> new %s ret) ret)" class_ref
@@ -364,7 +331,7 @@ let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:
               (idx, acc)
             else
               (* let class_type = hierarchy_class_type ~current_layer2_module hier in *)
-              let class_name = (ocaml_type_of_gir_type ~ctx ~current_layer2_module p.param_type) in
+              let class_name = (Type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:p.param_type) in
               let class_type = "#"^ (Option.get class_name) in
               let class_type_pattern = class_type in
               let pattern_option = class_type_pattern ^ " option" in
@@ -474,23 +441,7 @@ let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:
 
 let generate_method_signatures ~ctx ~property_method_names:_ ~property_base_names:_ ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes ~conflicting_methods (meth : gir_method) =
   (* Check if any parameter is an interface type - we can't handle these yet *)
-  let has_interface_param =
-    List.exists meth.parameters ~f:(fun p ->
-      let check_interface_by_name name =
-        if name = "" then false
-        else
-          match Type_mappings.find_interface_mapping ctx.interfaces name with
-          | Some _ -> true
-          | None -> false
-      in
-      let check_interface_by_c_type c_type_opt =
-        match c_type_opt with
-        | None -> false
-        | Some c_type -> check_interface_by_name c_type
-      in
-      check_interface_by_name p.param_type.name || check_interface_by_c_type p.param_type.c_type
-    )
-  in
+  let has_interface_param = Filtering.method_has_interface_param ~ctx meth in
   (* Check if any parameter or return type references cross-namespace enums/bitfields *)
   let has_cross_namespace_type = Filtering.method_has_cross_namespace_types ~ctx meth in
   let should_skip =
@@ -518,7 +469,7 @@ let generate_method_signatures ~ctx ~property_method_names:_ ~property_base_name
     (* let param_types = List.filter_map param_types ~f:(fun x -> x) in *)
     let return_type =
       (if String.lowercase_ascii meth.return_type.name = "void" then Some "unit"
-      else ocaml_type_of_gir_type ~ctx ~current_layer2_module meth.return_type)
+      else Type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:meth.return_type)
       |> Option.value ~default:"unit"
     in
     (* Wrap with result type if method throws *)
