@@ -43,12 +43,14 @@ let rec build_parent_chain ~ctx class_name : string list =
   | None -> []
   | Some parent -> parent :: build_parent_chain ~ctx parent
 
+(* Helper: Map a parent class to its method pairs *)
+let map_parent_methods_to_pairs ~ctx parent_name =
+  let methods = get_class_methods ~ctx parent_name in
+  List.map methods ~f:(fun meth -> (parent_name, meth))
+
 (* Get all methods from parent chain *)
 let get_parent_methods ~ctx ~parent_chain : (string * gir_method) list =
-  List.concat_map parent_chain ~f:(fun parent_name ->
-    let methods = get_class_methods ~ctx parent_name in
-    List.map methods ~f:(fun meth -> (parent_name, meth))
-  )
+  List.concat_map parent_chain ~f:(map_parent_methods_to_pairs ~ctx)
 
 (* Check if two methods have conflicting signatures *)
 let methods_have_signature_conflict ~ctx:_ ~class_name ~c_type meth1 meth2 =
