@@ -123,16 +123,8 @@ let generate_hierarchy_param_binding buf name p accessor =
 
 
 let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:_ ~module_name ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes ~conflicting_methods (meth : gir_method) =
-  (* Check if any parameter is an interface type - we can't handle these yet *)
-  let has_interface_param = Filtering.method_has_interface_param ~ctx meth in
-  (* Check if any parameter or return type references cross-namespace enums/bitfields *)
-  let has_cross_namespace_type = Filtering.method_has_cross_namespace_types ~ctx meth in
-  let should_skip =
-    Filtering.should_skip_method_binding ~ctx  meth ||
-    List.exists meth.parameters ~f:(fun p -> p.direction = Out || p.direction = InOut) ||
-    has_interface_param ||
-    has_cross_namespace_type
-  in
+  (* Determine if method should be skipped *)
+  let should_skip = should_skip_method ~ctx meth in
   if should_skip then ("", seen)
   else
     let ocaml_name = ocaml_method_name ~class_name ~c_type meth in
@@ -294,11 +286,8 @@ let generate_signature_content ~ctx ~same_cluster_classes ~current_layer2_module
   (has_type_var, signature)
 
 let generate_method_signatures ~ctx ~property_method_names:_ ~property_base_names:_ ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes ~conflicting_methods (meth : gir_method) =
-  let has_interface_param = Filtering.method_has_interface_param ~ctx meth in
-  let has_cross_namespace_type = Filtering.method_has_cross_namespace_types ~ctx meth in
-  let has_out_param = List.exists meth.parameters ~f:(fun p -> p.direction = Out || p.direction = InOut) in
-  let should_skip_binding = Filtering.should_skip_method_binding ~ctx meth in
-  let should_skip = should_skip_binding || has_out_param || has_interface_param || has_cross_namespace_type in
+  (* Determine if method should be skipped *)
+  let should_skip = should_skip_method ~ctx meth in
   let ocaml_name = ocaml_method_name ~class_name ~c_type meth in
   let is_duplicate = StringSet.mem ocaml_name seen in
   let is_conflict = StringSet.mem ocaml_name conflicting_methods in

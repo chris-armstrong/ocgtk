@@ -13,6 +13,17 @@ module StringSet = Common.StringSet
 let get_signal_module_name = Class_gen_helpers.get_signal_module_name
 let signal_class_name = Class_gen_helpers.signal_class_name
 
+(** Generate a class section (methods or properties) by applying generator to each item *)
+let generate_section ~buf ~items_seen ~items ~generator_fn ~add_newline =
+  let items_seen, () =
+    List.fold_left items ~init:(items_seen, ()) ~f:(fun (items_seen, ()) item ->
+      let chunk, items_seen = generator_fn items_seen item in
+      Buffer.add_string buf chunk;
+      if add_newline && chunk <> "" then Buffer.add_char buf '\n';
+      (items_seen, ()))
+  in
+  items_seen
+
 (** Generate the body of a class module (implementation) *)
 let generate_class_module_body ~ctx ~buf ~layer1_module_name ~current_layer2_module ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info ~same_cluster_classes () =
   let has_any_signals = List.length signals > 0 in
@@ -37,20 +48,18 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name ~current_layer2_mod
 
   let seen = StringSet.empty in
   (* Methods *)
-  let seen, () =
-    List.fold_left methods ~init:(seen, ()) ~f:(fun (seen, ()) m ->
-      let chunk, seen = Class_gen_method.generate_method_wrappers ~ctx ~property_method_names:property_filters.method_names ~property_base_names:property_filters.base_names ~module_name:layer1_module_name ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes ~conflicting_methods m in
-      Buffer.add_string buf chunk;
-      if chunk <> "" then Buffer.add_char buf '\n';
-      (seen, ()))
+  let seen =
+    let generate seen m =
+      Class_gen_method.generate_method_wrappers ~ctx ~property_method_names:property_filters.method_names ~property_base_names:property_filters.base_names ~module_name:layer1_module_name ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes ~conflicting_methods m
+    in
+    generate_section ~buf ~items_seen:seen ~items:methods ~generator_fn:generate ~add_newline:true
   in
   (* Properties *)
-  let seen, () =
-    List.fold_left properties ~init:(seen, ()) ~f:(fun (seen, ()) prop ->
-      let chunk, seen = Class_gen_property.generate_property_methods ~ctx ~class_name ~methods ~module_name:layer1_module_name ~current_layer2_module ~seen ~same_cluster_classes prop in
-      Buffer.add_string buf chunk;
-      if chunk <> "" then Buffer.add_char buf '\n';
-      (seen, ()))
+  let seen =
+    let generate seen prop =
+      Class_gen_property.generate_property_methods ~ctx ~class_name ~methods ~module_name:layer1_module_name ~current_layer2_module ~seen ~same_cluster_classes prop
+    in
+    generate_section ~buf ~items_seen:seen ~items:properties ~generator_fn:generate ~add_newline:true
   in
   ignore seen;
 
@@ -80,23 +89,26 @@ let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_ ~current_layer
 
   let seen = StringSet.empty in
   (* Methods *)
-  let _seen, () =
-    List.fold_left methods ~init:(seen, ()) ~f:(fun (seen, ()) meth ->
-      if Filtering.should_skip_method_binding ~ctx meth then (seen, ())
+  let _seen =
+    let generate seen meth =
+      if Filtering.should_skip_method_binding ~ctx meth then ("", seen)
       else
         let chunk, seen = Class_gen_method.generate_method_signatures ~ctx ~property_method_names:property_filters.method_names ~property_base_names:property_filters.base_names ~class_name ~c_type ~seen ~current_layer2_module ~same_cluster_classes ~conflicting_methods meth in
-        Buffer.add_string buf chunk;
-      (seen, ()))
+        (chunk, seen)
+    in
+    generate_section ~buf ~items_seen:seen ~items:methods ~generator_fn:generate ~add_newline:false
   in
 
   (* Properties *)
-  let _, () =
-    List.fold_left properties ~init:(seen, ()) ~f:(fun (seen, ()) prop ->
-      if Filtering.should_generate_property ~ctx ~class_name ~methods prop then begin
-        let chunk, _ = Class_gen_property.generate_property_signatures ~ctx ~methods ~class_name ~seen ~current_layer2_module ~same_cluster_classes prop in
-        Buffer.add_string buf chunk;
-      end;
-      (seen, ()))
+  let _ =
+    let generate seen prop =
+      if Filtering.should_generate_property ~ctx ~class_name ~methods prop then
+        let chunk, seen = Class_gen_property.generate_property_signatures ~ctx ~methods ~class_name ~seen ~current_layer2_module ~same_cluster_classes prop in
+        (chunk, seen)
+      else
+        ("", seen)
+    in
+    generate_section ~buf ~items_seen:seen ~items:properties ~generator_fn:generate ~add_newline:false
   in
 
   (* Converter methods *)
