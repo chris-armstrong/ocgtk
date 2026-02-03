@@ -31,14 +31,17 @@ let get_class_methods ~ctx class_name : gir_method list =
   | Some cls -> cls.methods
   | None -> []
 
+(* Helper: Get parent name from class if it exists *)
+let get_parent_name_opt ~ctx class_name : string option =
+  match List.find_opt ~f:(fun cls -> cls.class_name = class_name) ctx.classes with
+  | None -> None
+  | Some cls -> cls.parent
+
 (* Build parent chain for a class *)
 let rec build_parent_chain ~ctx class_name : string list =
-  match List.find_opt ~f:(fun cls -> cls.class_name = class_name) ctx.classes with
+  match get_parent_name_opt ~ctx class_name with
   | None -> []
-  | Some cls ->
-      match cls.parent with
-      | None -> []
-      | Some parent -> parent :: build_parent_chain ~ctx parent
+  | Some parent -> parent :: build_parent_chain ~ctx parent
 
 (* Get all methods from parent chain *)
 let get_parent_methods ~ctx ~parent_chain : (string * gir_method) list =
@@ -60,19 +63,20 @@ let methods_have_signature_conflict ~ctx:_ ~class_name ~c_type meth1 meth2 =
   else
     false
 
+(* Helper: Check a single parent method for conflict *)
+let check_parent_conflict ~ctx ~class_name ~c_type child_meth acc (_parent_name, parent_meth) =
+  if methods_have_signature_conflict ~ctx ~class_name ~c_type child_meth parent_meth then
+    let ocaml_name = ocaml_method_name ~class_name ~c_type child_meth in
+    StringSet.add ocaml_name acc
+  else
+    acc
+
+(* Helper: Process all parent methods for one child method *)
+let process_child_against_parents ~ctx ~class_name ~c_type parent_methods acc child_meth =
+  List.fold_left parent_methods ~init:acc ~f:(check_parent_conflict ~ctx ~class_name ~c_type child_meth)
+
 (* Detect which methods conflict with parent methods *)
 let detect_method_conflicts ~ctx ~class_name ~c_type ~methods : StringSet.t =
   let parent_chain = build_parent_chain ~ctx class_name in
   let parent_methods = get_parent_methods ~ctx ~parent_chain in
-
-  let conflicts = ref StringSet.empty in
-
-  List.iter methods ~f:(fun child_meth ->
-    List.iter parent_methods ~f:(fun (_parent_name, parent_meth) ->
-      if methods_have_signature_conflict ~ctx ~class_name ~c_type child_meth parent_meth then
-        let ocaml_name = ocaml_method_name ~class_name ~c_type child_meth in
-        conflicts := StringSet.add ocaml_name !conflicts
-    )
-  );
-
-  !conflicts
+  List.fold_left ~init:StringSet.empty ~f:(process_child_against_parents ~ctx ~class_name ~c_type parent_methods) methods
