@@ -13,10 +13,12 @@ If you are running in a clean container (e.g. Claude Code Web), you will need to
 
 ## Code Layout
 
-`ocgtk` lives in the `ocgkt` sub-directory - remember to `cd ocgtk` before running tools like `dune` or `ocamlformat`.
+`ocgtk` lives in the `ocgtk` sub-directory i.e. ocgtk/ocgtk - remember to `cd ocgtk` before running tools like `dune` or `ocamlformat`.
 
 
-## Refactoring Code or Rewriting Documentation
+## Writing or refactoring Code or Rewriting Documentation
+
+**Always consult [ocaml readability guidelines](./.opencode/guidelines/ocaml-readability.md) for how to structure or restructure code.
 
 **When moving code or documentation**: ALWAYS use tools to copy the code to a temporary file and write it to the destination file. DO NOT REGENERATE the code yourself - this will save your token usage. ALWAYS remove the old code files and update the `dune` file accordingly.
 
@@ -36,36 +38,8 @@ This project uses `dune` to compile code and run tests. NEVER compile code direc
 
 For instructions and best practices for writing and updating OCaml / C FFI, see [FFI Guidelines](./ocgtk/architecture/FFI_GUIDELINES.md).
 
-## Testing Strategy
 
-### Test Incrementally
-1. Test pointer creation (non-null check)
-2. Test void invocation (no parameters)
-3. Test with simple parameter (int)
-4. Test with complex parameter (string)
-5. Test multiple invocations
-
-### Runtime Testing with GTK
-For tests requiring GTK initialization:
-- Use `skip()` in Alcotest for tests that need display server or widgets
-- CI/CD uses `xvfb-run` to provide virtual display.
-
-### Use Test Helpers
-Create C test helpers for direct invocation:
-```c
-CAMLprim value ml_test_invoke_closure_void(value closure_val);
-CAMLprim value ml_test_invoke_closure_int(value closure_val, value arg);
-```
-
-Expose via test-only module:
-```ocaml
-module Test : sig
-  val invoke_closure_void : g_closure -> unit
-  val invoke_closure_int : g_closure -> int -> unit
-end
-```
-
-## Development Tools
+## ocgtk Development Tools
 
 ### GIR Code Generator
 For generating GTK bindings from GObject Introspection (GIR) files:
@@ -81,21 +55,6 @@ dune exec gir_gen -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
 
 **⚠️ IMPORTANT:** Use `src/gtk` NOT `src/gtk/generated` as the output directory. The generator automatically creates the `generated/` subdirectory. Using `src/gtk/generated` will create a nested `src/gtk/generated/generated/` directory.
 
-## Memory Safety
-
-### GC Interaction
-- Custom blocks with finalizers need careful initialization tracking
-- Don't call g_value_unset on uninitialized GValues
-- Check `initialized` flag before cleanup
-
-### Global Roots
-```c
-/* Register to prevent GC */
-caml_register_global_root((value*)&ptr);
-
-/* Always unregister in cleanup */
-caml_remove_global_root((value*)&ptr);
-```
 
 ## Security Guidelines
 
@@ -103,23 +62,12 @@ caml_remove_global_root((value*)&ptr);
 
 📘 **[SECURITY_GUIDELINES.md](SECURITY_GUIDELINES.md)** - Comprehensive security guidelines for OCaml C bindings
 
-Key security requirements:
-- **Always check allocation results** (malloc, g_new) for NULL
-- **Validate integer overflow** before size calculations
-- **Use CAMLparam/CAMLlocal** for all functions with OCaml values
-- **Protect OCaml values in C** with caml_register_global_root
-- **Deep copy GValues** with g_value_init + g_value_copy (never memcpy)
-- **Validate buffer bounds** before memcpy/strcpy
-- **Check callback exceptions** with caml_callback_exn
-- **Validate list structures** when converting to GList/GSList
 
-
-## When You Get Stuck
+## When You Get Stuck on Solving problems
 
 1. **Check lablgtk3** - probably already solved
 2. **Check security guidelines** - ensure code follows best practices
 3. **Add debug output to file** - stderr may not work
 4. **Check pointer values** - catch wrapping issues early
-5. **Test incrementally** - isolate the failing case
-6. **Verify GValue copying** - use g_value_copy, not memcpy
+5. **Test first and incrementally** - write a test case first and/or isolate the failing case
 
