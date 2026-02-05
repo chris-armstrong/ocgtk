@@ -147,7 +147,8 @@ let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:
       List.fold_left param_info ~init:([], 0) ~f:(build_param_type ~ctx ~same_cluster_classes ~current_layer2_module)
     in
     let return_type =
-      if String.lowercase_ascii meth.return_type.name = "void" then Some "unit"
+      let name = String.lowercase_ascii meth.return_type.name in
+      if name = "void" || name = "none" then Some "unit"
       else Type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:meth.return_type
     in
     let ret_wrapper =
@@ -249,15 +250,10 @@ let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:
                 name name accessor
         | _ -> ()
       );
-bprintf buf "      %s(%s.%s obj" ret_wrapper module_name ocaml_function_name;
+      bprintf buf "      %s(%s.%s obj" ret_wrapper module_name ocaml_function_name;
 
-
-      List.iter param_info ~f:(fun (name, p, hier_opt) ->
-        match hier_opt with
-        | Some _hier ->
-            let accessor = find_accessor_name ~ctx p in
-            generate_hierarchy_param_binding buf name p accessor
-        | None -> ()
+      List.iter param_info ~f:(fun (name, _, _) ->
+        bprintf buf " %s" name
       );
       bprintf buf ")\n";
     (Buffer.contents buf, seen)
@@ -270,7 +266,8 @@ let generate_signature_content ~ctx ~same_cluster_classes ~current_layer2_module
       map_param_sig ~ctx ~same_cluster_classes ~current_layer2_module p) meth.parameters
   in
   let return_type =
-    let result = if String.lowercase_ascii meth.return_type.name = "void" then Some "unit"
+    let name = String.lowercase_ascii meth.return_type.name in
+    let result = if name = "void" || name = "none" then Some "unit"
     else Type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:meth.return_type in
     match result with
     | Some t -> t
