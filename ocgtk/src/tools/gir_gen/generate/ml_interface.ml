@@ -209,7 +209,7 @@ let build_method_signature ~ctx ~class_name (meth : gir_method) =
   let param_types = List.filter_map ~f:(convert_method_param_to_ocaml_type ~ctx ~class_name) meth.parameters in
 
   let ret_type_ocaml =
-    if meth.return_type.name = "void" then
+    if Utils.is_void_return_type meth.return_type then
       "unit"
     else
       Type_resolution.map_gir_type_to_ocaml ~ctx ~class_name ~gir_type:meth.return_type ~is_nullable:meth.return_type.nullable

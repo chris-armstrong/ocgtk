@@ -92,6 +92,17 @@ let parse_bool ?(default = false) attr =
   | Some x -> failwith (sprintf "Invalid boolean attribute value: %s" x)
   | None -> default
 
+(* Check if a GIR type represents a void/unit return type.
+   In GIR XML, void returns can be represented as:
+   - name="void" (synthesized by parser in some cases)
+   - name="none" (actual GIR data for void returns)
+   - c:type="void"
+   This helper centralizes the check to ensure consistency across the codebase. *)
+let is_void_return_type (gir_type : Types.gir_type) : bool =
+  let name = String.lowercase_ascii gir_type.name in
+  let c_type = Option.value ~default:"" gir_type.c_type |> String.lowercase_ascii in
+  name = "void" || name = "none" || c_type = "void"
+
 (* Extract namespace from C type name (e.g., "GtkAlign" -> "Gtk", "GdkGravity" -> "Gdk") *)
 let extract_namespace_from_c_type c_type =
   let prefixes =

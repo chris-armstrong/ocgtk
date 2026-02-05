@@ -147,8 +147,7 @@ let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:
       List.fold_left param_info ~init:([], 0) ~f:(build_param_type ~ctx ~same_cluster_classes ~current_layer2_module)
     in
     let return_type =
-      let name = String.lowercase_ascii meth.return_type.name in
-      if name = "void" || name = "none" then Some "unit"
+      if Utils.is_void_return_type meth.return_type then Some "unit"
       else Type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:meth.return_type
     in
     let ret_wrapper =
@@ -266,8 +265,7 @@ let generate_signature_content ~ctx ~same_cluster_classes ~current_layer2_module
       map_param_sig ~ctx ~same_cluster_classes ~current_layer2_module p) meth.parameters
   in
   let return_type =
-    let name = String.lowercase_ascii meth.return_type.name in
-    let result = if name = "void" || name = "none" then Some "unit"
+    let result = if Utils.is_void_return_type meth.return_type then Some "unit"
     else Type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:meth.return_type in
     match result with
     | Some t -> t
