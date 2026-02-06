@@ -74,14 +74,14 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GdkContentProvider));
 }
 
-CAMLexport CAMLprim value ml_gtk_clipboard_get_local(value self)
+CAMLexport CAMLprim value ml_gdk_clipboard_get_local(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GdkClipboard *obj = (GdkClipboard *)GdkClipboard_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "local");
-if (pspec == NULL) caml_failwith("ml_gtk_clipboard_get_local: property 'local' not found");
+if (pspec == NULL) caml_failwith("ml_gdk_clipboard_get_local: property 'local' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "local", &prop_gvalue);

@@ -34,15 +34,20 @@ value Val_GdkContentFormats_option(const GdkContentFormats *ptr) {
 CAMLexport CAMLprim value ml_gdk_content_formats_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
-    int arg1_length = Wosize_val(arg1);
-    char** c_arg1 = (char**)g_malloc(sizeof(char*) * arg1_length);
-    for (int i = 0; i < arg1_length; i++) {
-      c_arg1[i] = String_val(Field(arg1, i));
+    char** c_arg1 = NULL;
+    
+    if (Is_some(arg1)) {
+        value array = Some_val(arg1);
+        int arg1_length = Wosize_val(array);
+        c_arg1 = (char**)g_malloc(sizeof(char*) * arg1_length);
+        for (int i = 0; i < arg1_length; i++) {
+          c_arg1[i] = String_val(Field(array, i));
+        }
     }
 
 GdkContentFormats *obj = gdk_content_formats_new(c_arg1, Int_val(arg2));
 
-    g_free(c_arg1);
+    if (c_arg1) g_free(c_arg1);
 CAMLreturn(Val_GdkContentFormats(obj));
 }
 CAMLexport CAMLprim value ml_gdk_content_formats_unref(value self)

@@ -26,7 +26,7 @@ let test_abstract_type_in_interface () =
     ~constructors:None
     ~methods:[]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   (* Parse using OCaml's built-in parser *)
@@ -60,7 +60,7 @@ let test_polymorphic_variant_type () =
     ~constructors:None
     ~methods:[]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   (* Parse the generated code *)
@@ -103,7 +103,7 @@ let test_constructor_external_declaration () =
     ~constructors:(Some [ctor])
     ~methods:[]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   (* Parse the code *)
@@ -160,7 +160,7 @@ let test_method_with_nullable_param () =
     ~constructors:None
     ~methods:[meth]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   (* Parse the code *)
@@ -208,7 +208,7 @@ let test_method_with_return_value () =
     ~constructors:None
     ~methods:[meth]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   (* Parse the code *)
@@ -252,7 +252,7 @@ let test_nullable_return_value () =
     ~constructors:None
     ~methods:[meth]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   (* Parse the code *)

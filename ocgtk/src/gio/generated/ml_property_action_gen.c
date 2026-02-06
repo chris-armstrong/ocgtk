@@ -22,14 +22,14 @@
 #include "generated_forward_decls.h"
 
 
-CAMLexport CAMLprim value ml_gtk_property_action_get_enabled(value self)
+CAMLexport CAMLprim value ml_g_property_action_get_enabled(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GPropertyAction *obj = (GPropertyAction *)GPropertyAction_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "enabled");
-if (pspec == NULL) caml_failwith("ml_gtk_property_action_get_enabled: property 'enabled' not found");
+if (pspec == NULL) caml_failwith("ml_g_property_action_get_enabled: property 'enabled' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "enabled", &prop_gvalue);
@@ -39,14 +39,14 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-CAMLexport CAMLprim value ml_gtk_property_action_get_invert_boolean(value self)
+CAMLexport CAMLprim value ml_g_property_action_get_invert_boolean(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GPropertyAction *obj = (GPropertyAction *)GPropertyAction_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "invert-boolean");
-if (pspec == NULL) caml_failwith("ml_gtk_property_action_get_invert_boolean: property 'invert-boolean' not found");
+if (pspec == NULL) caml_failwith("ml_g_property_action_get_invert_boolean: property 'invert-boolean' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "invert-boolean", &prop_gvalue);
@@ -56,14 +56,14 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-CAMLexport CAMLprim value ml_gtk_property_action_get_name(value self)
+CAMLexport CAMLprim value ml_g_property_action_get_name(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GPropertyAction *obj = (GPropertyAction *)GPropertyAction_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "name");
-if (pspec == NULL) caml_failwith("ml_gtk_property_action_get_name: property 'name' not found");
+if (pspec == NULL) caml_failwith("ml_g_property_action_get_name: property 'name' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "name", &prop_gvalue);
@@ -73,14 +73,14 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-CAMLexport CAMLprim value ml_gtk_property_action_get_property_name(value self)
+CAMLexport CAMLprim value ml_g_property_action_get_property_name(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GPropertyAction *obj = (GPropertyAction *)GPropertyAction_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "property-name");
-if (pspec == NULL) caml_failwith("ml_gtk_property_action_get_property_name: property 'property-name' not found");
+if (pspec == NULL) caml_failwith("ml_g_property_action_get_property_name: property 'property-name' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "property-name", &prop_gvalue);

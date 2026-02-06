@@ -33,8 +33,8 @@ external content_changed : t -> unit = "ml_gdk_content_provider_content_changed"
 (* Properties *)
 
 (** Get property: formats *)
-external get_formats : t -> Content_formats.t = "ml_gtk_content_provider_get_formats"
+external get_formats : t -> Content_formats.t = "ml_gdk_content_provider_get_formats"
 
 (** Get property: storable-formats *)
-external get_storable_formats : t -> Content_formats.t = "ml_gtk_content_provider_get_storable_formats"
+external get_storable_formats : t -> Content_formats.t = "ml_gdk_content_provider_get_storable_formats"
 

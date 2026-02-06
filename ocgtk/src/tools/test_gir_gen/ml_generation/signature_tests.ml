@@ -31,7 +31,7 @@ let test_type_declaration_consistency () =
     ~constructors:None
     ~methods:[]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -44,7 +44,7 @@ let test_type_declaration_consistency () =
     ~constructors:None
     ~methods:[]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   let mli_ast = Ml_ast_helpers.parse_interface mli_code in
@@ -87,7 +87,7 @@ let test_constructor_signature_matches () =
     ~constructors:(Some [ctor])
     ~methods:[]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -100,7 +100,7 @@ let test_constructor_signature_matches () =
     ~constructors:(Some [ctor])
     ~methods:[]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   let mli_ast = Ml_ast_helpers.parse_interface mli_code in
@@ -157,7 +157,7 @@ let test_method_signature_matches () =
     ~constructors:None
     ~methods:[meth]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -170,7 +170,7 @@ let test_method_signature_matches () =
     ~constructors:None
     ~methods:[meth]
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   let mli_ast = Ml_ast_helpers.parse_interface mli_code in
@@ -239,7 +239,7 @@ let test_multiple_methods_match () =
     ~constructors:None
     ~methods
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -252,7 +252,7 @@ let test_multiple_methods_match () =
     ~constructors:None
     ~methods
     ~properties:[]
-    ~signals:[]
+    
     () in
 
   let mli_ast = Ml_ast_helpers.parse_interface mli_code in

@@ -27,6 +27,14 @@ If MISSING, create it with the standard OCaml guidelines (use the full content f
 
 You do not need to load the guidelines file yourself, the subagents will do that for themselves.
 
+## Phase 0: Check for existing plan
+
+**IMPORTANT**: There may already be an existing goal at `.opencode/scratchpad/current-goal.txt` and/or plan at `.opencode/scratchpad/refactor-plan.json`.
+**REQUIRED**: ALWAYS check for an existing plan. 
+
+IF ONE EXISTS, ask the user if they want to resume with it or start over. When the user wants to resume, you MUST NOT run the planner again (i.e. skip Phase 1), but instead, show the user what the next steps would be and refine them with them. 
+
+
 ### Phase 1: Planning
 
 Save the original goal for the reviewer:

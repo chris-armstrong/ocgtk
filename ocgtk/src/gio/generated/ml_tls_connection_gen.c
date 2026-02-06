@@ -73,15 +73,20 @@ CAMLreturn(Val_unit);
 CAMLexport CAMLprim value ml_g_tls_connection_set_advertised_protocols(value self, value arg1)
 {
 CAMLparam2(self, arg1);
-    int arg1_length = Wosize_val(arg1);
-    gchar** c_arg1 = (gchar**)g_malloc(sizeof(gchar*) * (arg1_length + 1));
-    for (int i = 0; i < arg1_length; i++) {
-      c_arg1[i] = String_val(Field(arg1, i));
+    gchar** c_arg1 = NULL;
+    
+    if (Is_some(arg1)) {
+        value array = Some_val(arg1);
+        int arg1_length = Wosize_val(array);
+        c_arg1 = (gchar**)g_malloc(sizeof(gchar*) * (arg1_length + 1));
+        for (int i = 0; i < arg1_length; i++) {
+          c_arg1[i] = String_val(Field(array, i));
+        }
+        c_arg1[arg1_length] = NULL;
     }
-    c_arg1[arg1_length] = NULL;
 
 g_tls_connection_set_advertised_protocols(GTlsConnection_val(self), c_arg1);
-    g_free(c_arg1);
+    if (c_arg1) g_free(c_arg1);
 CAMLreturn(Val_unit);
 }
 
@@ -203,14 +208,14 @@ gboolean result = g_tls_connection_emit_accept_certificate(GTlsConnection_val(se
 CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_tls_connection_get_base_io_stream(value self)
+CAMLexport CAMLprim value ml_g_tls_connection_get_base_io_stream(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GTlsConnection *obj = (GTlsConnection *)GTlsConnection_val(self);
     GIOStream *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "base-io-stream");
-if (pspec == NULL) caml_failwith("ml_gtk_tls_connection_get_base_io_stream: property 'base-io-stream' not found");
+if (pspec == NULL) caml_failwith("ml_g_tls_connection_get_base_io_stream: property 'base-io-stream' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "base-io-stream", &prop_gvalue);

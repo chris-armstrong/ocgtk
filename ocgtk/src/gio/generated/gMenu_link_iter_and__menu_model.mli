@@ -1,3 +1,4 @@
+
 class menu_link_iter : Menu_link_iter_and__menu_model.Menu_link_iter.t ->
   object
     method get_name : unit -> string

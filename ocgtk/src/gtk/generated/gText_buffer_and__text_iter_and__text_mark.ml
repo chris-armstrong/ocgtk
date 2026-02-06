@@ -1,6 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined classes for cyclic dependencies *)
-
 (* Signal class defined in gtext_buffer_signals.ml *)
 
 class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t) = object (self)

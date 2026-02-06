@@ -59,7 +59,14 @@ module Type_analysis = struct
 
   let uint32_types =
     [
-      "guint"; "uint"; "guint32"; "uint32"; "guint16"; "uint16"; "guint8"; "uint8";
+      "guint";
+      "uint";
+      "guint32";
+      "uint32";
+      "guint16";
+      "uint16";
+      "guint8";
+      "uint8";
     ]
 
   let int64_types = [ "gint64"; "int64" ]
@@ -92,7 +99,7 @@ module Type_analysis = struct
       | Some c_type -> c_type
       | None ->
           Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type
-          |> Option.map (fun tm -> tm.c_type)
+          |> Option.map (fun (tm : type_mapping) -> tm.c_type)
           |> Option.value ~default:"void"
     in
     let normalized =
@@ -117,7 +124,9 @@ module Type_analysis = struct
     let record_info =
       Type_mappings.find_record_mapping ctx.records gir_type.name
     in
-    let class_info = Type_mappings.find_class_mapping ctx.classes gir_type.name in
+    let class_info =
+      Type_mappings.find_class_mapping ctx.classes gir_type.name
+    in
     let is_enum =
       List.exists ctx.enums ~f:(fun e -> String.equal e.enum_name gir_type.name)
     in

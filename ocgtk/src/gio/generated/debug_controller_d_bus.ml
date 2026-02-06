@@ -25,5 +25,5 @@ external stop : t -> unit = "ml_g_debug_controller_dbus_stop"
 (* Properties *)
 
 (** Get property: connection *)
-external get_connection : t -> D_bus_connection.t = "ml_gtk_debug_controller_d_bus_get_connection"
+external get_connection : t -> D_bus_connection.t = "ml_g_debug_controller_d_bus_get_connection"
 

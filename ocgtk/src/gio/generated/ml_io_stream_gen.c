@@ -91,14 +91,14 @@ g_io_stream_clear_pending(GIOStream_val(self));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_io_stream_get_closed(value self)
+CAMLexport CAMLprim value ml_g_io_stream_get_closed(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GIOStream *obj = (GIOStream *)GIOStream_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "closed");
-if (pspec == NULL) caml_failwith("ml_gtk_io_stream_get_closed: property 'closed' not found");
+if (pspec == NULL) caml_failwith("ml_g_io_stream_get_closed: property 'closed' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "closed", &prop_gvalue);

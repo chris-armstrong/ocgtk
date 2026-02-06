@@ -20,5 +20,5 @@ external remove : t -> int -> unit = "ml_g_list_store_remove"
 (* Properties *)
 
 (** Get property: n-items *)
-external get_n_items : t -> int = "ml_gtk_list_store_get_n_items"
+external get_n_items : t -> int = "ml_g_list_store_get_n_items"
 

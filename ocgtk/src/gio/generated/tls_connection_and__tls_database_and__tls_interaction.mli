@@ -209,7 +209,7 @@ module rec Tls_connection : sig
   (* Properties *)
 
   (** Get property: base-io-stream *)
-  external get_base_io_stream : t -> Io_stream.t = "ml_gtk_tls_connection_get_base_io_stream"
+  external get_base_io_stream : t -> Io_stream.t = "ml_g_tls_connection_get_base_io_stream"
 
 
 end

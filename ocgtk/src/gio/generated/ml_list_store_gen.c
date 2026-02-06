@@ -38,14 +38,14 @@ g_list_store_remove(GListStore_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_list_store_get_n_items(value self)
+CAMLexport CAMLprim value ml_g_list_store_get_n_items(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GListStore *obj = (GListStore *)GListStore_val(self);
     guint prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "n-items");
-if (pspec == NULL) caml_failwith("ml_gtk_list_store_get_n_items: property 'n-items' not found");
+if (pspec == NULL) caml_failwith("ml_g_list_store_get_n_items: property 'n-items' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "n-items", &prop_gvalue);

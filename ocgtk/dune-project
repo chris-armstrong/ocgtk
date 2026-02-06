@@ -13,20 +13,21 @@
  (name ocgtk)
  (synopsis "OCaml bindings for GTK 4")
  (description "ocgtk provides OCaml bindings for GTK 4")
- (depends
-  (ocaml (>= 5.0))
-  (dune (>= 3.13))
-  conf-gtk4
-  cairo2
-  (containers :build)
-  (camlp5 :build)
-  (camlp-streams :build)
-  (xmlm :build)
-  (re :build)
-  (uutf :build)
-  (uuseg :build)
-  (fmt :build)
-  (fpath :build)
-  (yojson :build)
-  (alcotest :with-test)
-  (ppxlib :with-test)))
+(depends
+   (ocaml (>= 5.0))
+   (dune (>= 3.13))
+   conf-gtk4
+   cairo2
+   (containers :build)
+   (camlp5 :build)
+   (camlp-streams :build)
+   (xmlm :build)
+   (re :build)
+   (uutf :build)
+   (uuseg :build)
+   (fmt :build)
+   (fpath :build)
+   (yojson :build)
+   (alcotest :with-test)
+   (ppxlib :with-test)
+   ))

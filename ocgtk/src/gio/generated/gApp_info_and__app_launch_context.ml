@@ -1,6 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined classes for cyclic dependencies *)
-
 class app_info (obj : App_info_and__app_launch_context.App_info.t) = object (self)
 
   method add_supports_type : string -> (bool, GError.t) result =

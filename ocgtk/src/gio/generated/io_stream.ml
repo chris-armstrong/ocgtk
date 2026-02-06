@@ -67,5 +67,5 @@ external clear_pending : t -> unit = "ml_g_io_stream_clear_pending"
 (* Properties *)
 
 (** Get property: closed *)
-external get_closed : t -> bool = "ml_gtk_io_stream_get_closed"
+external get_closed : t -> bool = "ml_g_io_stream_get_closed"
 

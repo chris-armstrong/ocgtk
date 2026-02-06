@@ -30,5 +30,5 @@ external get_address_type : t -> Gio_enums.unixsocketaddresstype = "ml_g_unix_so
 (* Properties *)
 
 (** Get property: abstract *)
-external get_abstract : t -> bool = "ml_gtk_unix_socket_address_get_abstract"
+external get_abstract : t -> bool = "ml_g_unix_socket_address_get_abstract"
 

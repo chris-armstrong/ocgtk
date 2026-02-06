@@ -1,6 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined classes for cyclic dependencies *)
-
 (* Signal class defined in gtls_connection_signals.ml *)
 
 class tls_connection (obj : Tls_connection_and__tls_database_and__tls_interaction.Tls_connection.t) = object (self)

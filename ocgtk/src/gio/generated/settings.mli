@@ -255,20 +255,20 @@ external apply : t -> unit = "ml_g_settings_apply"
 (* Properties *)
 
 (** Get property: backend *)
-external get_backend : t -> Settings_backend.t = "ml_gtk_settings_get_backend"
+external get_backend : t -> Settings_backend.t = "ml_g_settings_get_backend"
 
 (** Get property: delay-apply *)
-external get_delay_apply : t -> bool = "ml_gtk_settings_get_delay_apply"
+external get_delay_apply : t -> bool = "ml_g_settings_get_delay_apply"
 
 (** Get property: path *)
-external get_path : t -> string = "ml_gtk_settings_get_path"
+external get_path : t -> string = "ml_g_settings_get_path"
 
 (** Get property: schema *)
-external get_schema : t -> string = "ml_gtk_settings_get_schema"
+external get_schema : t -> string = "ml_g_settings_get_schema"
 
 (** Get property: schema-id *)
-external get_schema_id : t -> string = "ml_gtk_settings_get_schema_id"
+external get_schema_id : t -> string = "ml_g_settings_get_schema_id"
 
 (** Get property: settings-schema *)
-external get_settings_schema : t -> Settings_schema.t = "ml_gtk_settings_get_settings_schema"
+external get_settings_schema : t -> Settings_schema.t = "ml_g_settings_get_settings_schema"
 

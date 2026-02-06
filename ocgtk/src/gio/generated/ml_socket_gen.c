@@ -393,14 +393,14 @@ GSocket* result = g_socket_accept(GSocket_val(self), Option_val(arg1, GCancellab
 if (error == NULL) CAMLreturn(Res_Ok(Val_GSocket(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-CAMLexport CAMLprim value ml_gtk_socket_get_type(value self)
+CAMLexport CAMLprim value ml_g_socket_get_type(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GSocket *obj = (GSocket *)GSocket_val(self);
     GSocketType prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "type");
-if (pspec == NULL) caml_failwith("ml_gtk_socket_get_type: property 'type' not found");
+if (pspec == NULL) caml_failwith("ml_g_socket_get_type: property 'type' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "type", &prop_gvalue);

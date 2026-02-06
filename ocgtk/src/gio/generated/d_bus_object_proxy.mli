@@ -13,8 +13,8 @@ external get_connection : t -> D_bus_connection.t = "ml_g_dbus_object_proxy_get_
 (* Properties *)
 
 (** Get property: g-connection *)
-external get_g_connection : t -> D_bus_connection.t = "ml_gtk_d_bus_object_proxy_get_g_connection"
+external get_g_connection : t -> D_bus_connection.t = "ml_g_d_bus_object_proxy_get_g_connection"
 
 (** Get property: g-object-path *)
-external get_g_object_path : t -> string = "ml_gtk_d_bus_object_proxy_get_g_object_path"
+external get_g_object_path : t -> string = "ml_g_d_bus_object_proxy_get_g_object_path"
 

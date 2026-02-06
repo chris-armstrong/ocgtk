@@ -52,6 +52,13 @@ let to_snake_case name =
       start_pos := name_len + 1
   done;
   !components |> List.rev |> String.concat ~sep:"_" |> stripLeadingNumbers
+
+let sanitize_doc s =
+  (* Prevent premature comment termination when GIR doc contains "*\)" or "(\*" *)
+  (* Insert backslash BETWEEN the characters to break the sequence: *\) becomes *\\) and (\* becomes (\\* *)
+  Re.replace (Re.compile (Re.str "*)")) ~all:true ~f:(fun _ -> "*\\)") s
+  |> Re.replace (Re.compile (Re.str "(*")) ~all:true ~f:(fun _ -> "(\\*")
+
 (* let b = Buffer.create (String.length s + 10) in
   for i = 0 to String.length s - 1 do
     let c = String.get s i in
@@ -85,6 +92,17 @@ let parse_bool ?(default = false) attr =
   | Some "" -> default
   | Some x -> failwith (sprintf "Invalid boolean attribute value: %s" x)
   | None -> default
+
+(* Check if a GIR type represents a void/unit return type.
+   In GIR XML, void returns can be represented as:
+   - name="void" (synthesized by parser in some cases)
+   - name="none" (actual GIR data for void returns)
+   - c:type="void"
+   This helper centralizes the check to ensure consistency across the codebase. *)
+let is_void_return_type (gir_type : Types.gir_type) : bool =
+  let name = String.lowercase_ascii gir_type.name in
+  let c_type = Option.value ~default:"" gir_type.c_type |> String.lowercase_ascii in
+  name = "void" || name = "none" || c_type = "void"
 
 (* Extract namespace from C type name (e.g., "GtkAlign" -> "Gtk", "GdkGravity" -> "Gdk") *)
 let extract_namespace_from_c_type c_type =
@@ -255,23 +273,40 @@ let ocaml_class_name cn =
   cn |> normalize_class_name |> kebab_to_snake |> to_snake_case
   |> sanitize_identifier
 
+(** Extract ML prefix from generation context namespace *)
+let extract_ml_prefix (ctx : Types.generation_context) : string =
+  let namespace_prefix = ctx.namespace.namespace_c_identifier_prefixes in
+  "ml_" ^ String.lowercase_ascii namespace_prefix ^ "_"
+
 let ocaml_constructor_name ~class_name:_ (ctor : Types.gir_constructor) =
   ctor.ctor_name |> kebab_to_snake |> to_snake_case |> sanitize_identifier
 
+(* The c_identifier already contains the library prefix (e.g., "gtk_widget_new"),
+   so we just prepend "ml_" to create the C binding name *)
 let ml_constructor_name ~class_name:_
     ~constructor:({ c_identifier; _ } : Types.gir_constructor) =
   "ml_" ^ c_identifier
 
+(* The c_identifier already contains the library prefix (e.g., "gtk_widget_show"),
+   so we just prepend "ml_" to create the C binding name *)
 let ml_method_name ~class_name:_ ({ c_identifier; _ } : Types.gir_method) =
   "ml_" ^ c_identifier
 
-let ml_property_name ~class_name (prop : Types.gir_property) =
+let ml_property_name ~ctx ~class_name (prop : Types.gir_property) =
   let prop_name_cleaned =
     String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name
   in
   let prop_snake = to_snake_case prop_name_cleaned in
   let class_snake = to_snake_case class_name in
-  sprintf "ml_gtk_%s_get_%s" class_snake prop_snake
+  sprintf "%s%s_get_%s" (extract_ml_prefix ctx) class_snake prop_snake
+
+let ml_property_setter_name ~ctx ~class_name (prop : Types.gir_property) =
+  let prop_name_cleaned =
+    String.map ~f:(function '-' -> '_' | c -> c) prop.prop_name
+  in
+  let prop_snake = to_snake_case prop_name_cleaned in
+  let class_snake = to_snake_case class_name in
+  sprintf "%s%s_set_%s" (extract_ml_prefix ctx) class_snake prop_snake
 
 let ocaml_bitfield_name (bitfield : Types.gir_bitfield) =
   String.lowercase_ascii bitfield.bitfield_name

@@ -1,6 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined classes for cyclic dependencies *)
-
 class menu_link_iter (obj : Menu_link_iter_and__menu_model.Menu_link_iter.t) = object (self)
 
   method get_name : unit -> string =

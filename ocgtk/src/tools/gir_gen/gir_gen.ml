@@ -204,7 +204,7 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain entity =
          else None)
       ~methods:entity.Gir_gen_lib.Types.methods
       ~properties:entity.Gir_gen_lib.Types.properties
-      ~signals:entity.Gir_gen_lib.Types.signals ()
+      ()
   in
 
   write_file ~path:ml_file ~content

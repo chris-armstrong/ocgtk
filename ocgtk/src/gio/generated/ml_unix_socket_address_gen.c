@@ -55,14 +55,14 @@ GUnixSocketAddressType result = g_unix_socket_address_get_address_type(GUnixSock
 CAMLreturn(Val_GioUnixSocketAddressType(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_unix_socket_address_get_abstract(value self)
+CAMLexport CAMLprim value ml_g_unix_socket_address_get_abstract(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GUnixSocketAddress *obj = (GUnixSocketAddress *)GUnixSocketAddress_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "abstract");
-if (pspec == NULL) caml_failwith("ml_gtk_unix_socket_address_get_abstract: property 'abstract' not found");
+if (pspec == NULL) caml_failwith("ml_g_unix_socket_address_get_abstract: property 'abstract' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "abstract", &prop_gvalue);

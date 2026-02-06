@@ -30,14 +30,14 @@ g_simple_action_set_enabled(GSimpleAction_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_simple_action_get_name(value self)
+CAMLexport CAMLprim value ml_g_simple_action_get_name(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GSimpleAction *obj = (GSimpleAction *)GSimpleAction_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "name");
-if (pspec == NULL) caml_failwith("ml_gtk_simple_action_get_name: property 'name' not found");
+if (pspec == NULL) caml_failwith("ml_g_simple_action_get_name: property 'name' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "name", &prop_gvalue);

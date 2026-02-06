@@ -2,5 +2,5 @@
 
 (test
  (name test_gir_gen)
- (modules helpers core parser c_ast c_parser c_validation ml_ast_helpers ml_validation c_stubs_tests nullable_tests error_handling_tests out_params_tests array_tests type_conversion_tests type_definition_tests external_decl_tests accessor_method_tests signature_tests properties signals enums records edge_cases test_gir_gen)
+ (modules helpers core parser c_ast c_parser c_validation ml_ast_helpers ml_validation layer2_helpers c_stubs_tests nullable_tests error_handling_tests out_params_tests array_tests type_conversion_tests type_definition_tests external_decl_tests accessor_method_tests signature_tests properties signals enums records edge_cases method_wrapper_tests test_gir_gen)
  (libraries str unix gir_gen_lib alcotest ppxlib))

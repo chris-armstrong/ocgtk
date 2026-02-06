@@ -36,9 +36,7 @@ let connect_target_expr ~has_widget_parent =
     "(Obj.magic obj :> _ Gobject.obj)"
 
 let is_void_signal (signal : gir_signal) =
-  let c_type = Option.value ~default:"void"  signal.return_type.c_type |> String.lowercase_ascii in
-  let name = String.lowercase_ascii signal.return_type.name in
-  c_type = "void" || name = "none"
+  Utils.is_void_return_type signal.return_type
 
 (* Get the properly qualified module name for a class, accounting for cyclic modules *)
 let get_qualified_module_name ~ctx class_name =
@@ -85,7 +83,7 @@ let generate_signal_class ~ctx ~class_name ~signals ~parent_chain =
     List.iter supported ~f:(fun (signal : gir_signal) ->
       let method_name = sanitize_signal_name signal.signal_name in
       (match signal.doc with
-      | Some doc -> bprintf buf "  (** %s *)\n" (String.trim doc)
+      | Some doc -> bprintf buf "  (** %s *)\n" (Utils.sanitize_doc (String.trim doc))
       | None -> ());
       bprintf buf "  method %s ~callback =\n" method_name;
       bprintf buf "    Gobject.Signal.connect_simple %s ~name:\"%s\" ~callback ~after:false\n\n"

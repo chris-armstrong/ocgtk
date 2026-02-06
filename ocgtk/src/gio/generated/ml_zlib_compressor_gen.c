@@ -48,14 +48,14 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GFileInfo));
 }
 
-CAMLexport CAMLprim value ml_gtk_zlib_compressor_get_format(value self)
+CAMLexport CAMLprim value ml_g_zlib_compressor_get_format(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GZlibCompressor *obj = (GZlibCompressor *)GZlibCompressor_val(self);
     GZlibCompressorFormat prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "format");
-if (pspec == NULL) caml_failwith("ml_gtk_zlib_compressor_get_format: property 'format' not found");
+if (pspec == NULL) caml_failwith("ml_g_zlib_compressor_get_format: property 'format' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "format", &prop_gvalue);
@@ -65,14 +65,14 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-CAMLexport CAMLprim value ml_gtk_zlib_compressor_get_level(value self)
+CAMLexport CAMLprim value ml_g_zlib_compressor_get_level(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GZlibCompressor *obj = (GZlibCompressor *)GZlibCompressor_val(self);
     gint prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "level");
-if (pspec == NULL) caml_failwith("ml_gtk_zlib_compressor_get_level: property 'level' not found");
+if (pspec == NULL) caml_failwith("ml_g_zlib_compressor_get_level: property 'level' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "level", &prop_gvalue);

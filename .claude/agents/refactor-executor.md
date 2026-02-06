@@ -9,7 +9,7 @@ You will be given:
 - A specific violation to fix
 - The proposed transformation
 
-Refer to `.claude/guidelines/ocaml-readability.md` for reference guidelines on code readability.
+Refer to the guidelines in `ocgtk/docs/code_guidelines/` - see the [index](../../ocgtk/docs/code_guidelines/index.md) for all guidelines.
 Use the [style guidelines](.../../STYLE_GUIDELINES.md) for code style and formatting.
 
 Rules:

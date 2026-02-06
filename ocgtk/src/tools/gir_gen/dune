@@ -4,11 +4,11 @@
 (include_subdirs qualified)
 
 ; Common modules library (excludes main)
-(library
- (name gir_gen_lib)
- (modules :standard \ gir_gen)
- (libraries str unix xmlm logs logs.fmt containers)
- (flags (:standard -w -32)))
+ (library
+  (name gir_gen_lib)
+  (modules :standard \ gir_gen)
+  (libraries str unix xmlm logs logs.fmt containers re)
+  (flags (:standard -w -32)))
 
 ; Main executable
 (executable

@@ -365,3 +365,124 @@ Reuse existing functions and code blocks to reduce duplication. Code shared betw
 ## 11. Prefer labelled variants of standard library functions
 
 Use `StdLabels` module to use labelled variants of standard library functions.
+
+---
+
+## 12. Test Code Patterns
+
+### AST-Based Validation (REQUIRED)
+
+✅ **ALWAYS** use AST parsing for validation in test code:
+```ocaml
+(* CORRECT: Parse then validate *)
+let ml_ast = Ml_ast_helpers.parse_implementation ml_content in
+Ml_validation.assert_value_exists ml_ast "my_function"
+
+let mli_ast = Ml_ast_helpers.parse_interface mli_content in
+Ml_validation.assert_type_exists_sig mli_ast "my_type"
+```
+
+❌ **NEVER** use string search for code validation:
+```ocaml
+(* WRONG: Brittle, fails on whitespace/formatting changes *)
+if Helpers.string_contains ml_content "my_function" then ...
+if String.contains ml_content "my_function" then ...
+```
+
+### Why AST-Based Validation?
+- **Robust**: Handles formatting variations, comments, whitespace
+- **Precise**: Validates actual structure, not text patterns
+- **Maintainable**: Survives code reformatting with ocamlformat
+- **Type-safe**: Catches errors at compile time
+
+### Available Validation Functions
+
+From `ml_validation.ml`:
+- `assert_value_exists ast name` - Check function/value exists
+- `assert_type_exists ast name` - Check type exists in .ml
+- `assert_type_exists_sig mli_ast name` - Check type exists in .mli
+- `find_value_declaration_sig mli_ast name` - Get value signature
+- `find_external_sig mli_ast name` - Get external declaration
+
+From `ml_ast_helpers.ml`:
+- `parse_implementation content` - Parse .ml file to AST
+- `parse_interface content` - Parse .mli file to AST
+- `find_let_binding ast name` - Find let binding
+- `find_external ast name` - Find external binding
+
+### When Creating New Test Helpers
+
+
+**IMPORTANT**: Review [OCaml AST Reference Guide](../../ocgtk/docs/ocaml_ast/AST_REFERENCE_GUIDE.md) for common OCaml syntax to AST translations.
+
+**MANDATORY Study Phase** (before writing ANY code):
+
+1. **Read these files COMPLETELY**:
+   - `test_gir_gen/infrastructure/ml_validation.ml` - All validation patterns
+   - `test_gir_gen/infrastructure/ml_ast_helpers.ml` - All AST parsing
+   - `test_gir_gen/infrastructure/helpers.ml` - Test context creation
+
+2. **Document the patterns** you found:
+   ```ocaml
+   (* Pattern Analysis:
+    * - All validation uses: parse -> assert_value_exists
+    * - Never uses: string_contains for code validation
+    * - Helper modules: Ml_validation, Ml_ast_helpers
+    * - Template function: ml_validation.ml:45-60
+    *)
+   ```
+
+3. **Use established patterns** - Don't reinvent:
+   - If `assert_value_exists` exists, use it
+   - If `Ml_ast_helpers.parse_implementation` exists, use it
+   - Don't create duplicate validation functions
+
+4. **Template function approach**:
+   ```ocaml
+   (* Find ONE similar function as template *)
+   (* Example: Validating a method exists *)
+   let validate_method_exists ~ml_content ~method_name =
+     (* Template: ml_validation.ml:assert_value_exists *)
+     let ml_ast = Ml_ast_helpers.parse_implementation ml_content in
+     Ml_validation.assert_value_exists ml_ast method_name
+   ```
+
+### Anti-Pattern Checklist
+
+Before submitting test code, verify:
+- [ ] No `Helpers.string_contains` for code validation
+- [ ] No `String.contains` for checking if code exists
+- [ ] All validation uses AST parsing first
+- [ ] Reusing `Ml_validation` functions, not duplicating
+- [ ] Reusing `Ml_ast_helpers` functions, not duplicating
+
+### Example: Creating a Test Helper
+
+```ocaml
+(* BAD: String-based validation *)
+let validate_conversion_methods ~ml_content ~from_type ~to_type =
+  let conversion_pattern = sprintf "as_%s" to_type in
+  if Helpers.string_contains ml_content conversion_pattern then
+    Ok ()
+  else
+    Error "Conversion method not found"
+
+(* GOOD: AST-based validation *)
+let validate_conversion_methods ~ml_ast ~from_type ~to_type =
+  let conversion_method = sprintf "as_%s" to_type in
+  (* Reuse existing validation function *)
+  Ml_validation.assert_value_exists ml_ast conversion_method
+```
+
+### Mandatory Study Checklist
+
+When asked to create test helpers:
+
+1. ✅ Read `ml_validation.ml` completely first
+2. ✅ Read `ml_ast_helpers.ml` completely first  
+3. ✅ List all available validation functions
+4. ✅ Identify the template function to follow
+5. ✅ Document the pattern before coding
+6. ✅ Only then write code using those patterns
+
+**Remember**: 10 minutes studying existing code saves 2 hours rewriting.

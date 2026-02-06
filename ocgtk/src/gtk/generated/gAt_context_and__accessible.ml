@@ -1,6 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined classes for cyclic dependencies *)
-
 (* Signal class defined in gat_context_signals.ml *)
 
 class at_context (obj : At_context_and__accessible.At_context.t) = object (self)

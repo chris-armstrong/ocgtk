@@ -1,3 +1,4 @@
+
 class app_info : App_info_and__app_launch_context.App_info.t ->
   object
     method add_supports_type : string -> (bool, GError.t) result

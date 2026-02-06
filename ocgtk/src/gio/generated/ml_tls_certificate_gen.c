@@ -79,14 +79,14 @@ GPtrArray* result = g_tls_certificate_get_ip_addresses(GTlsCertificate_val(self)
 CAMLreturn(ml_result);
 }
 
-CAMLexport CAMLprim value ml_gtk_tls_certificate_get_certificate_pem(value self)
+CAMLexport CAMLprim value ml_g_tls_certificate_get_certificate_pem(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GTlsCertificate *obj = (GTlsCertificate *)GTlsCertificate_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "certificate-pem");
-if (pspec == NULL) caml_failwith("ml_gtk_tls_certificate_get_certificate_pem: property 'certificate-pem' not found");
+if (pspec == NULL) caml_failwith("ml_g_tls_certificate_get_certificate_pem: property 'certificate-pem' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "certificate-pem", &prop_gvalue);
@@ -96,14 +96,14 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-CAMLexport CAMLprim value ml_gtk_tls_certificate_get_password(value self)
+CAMLexport CAMLprim value ml_g_tls_certificate_get_password(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GTlsCertificate *obj = (GTlsCertificate *)GTlsCertificate_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "password");
-if (pspec == NULL) caml_failwith("ml_gtk_tls_certificate_get_password: property 'password' not found");
+if (pspec == NULL) caml_failwith("ml_g_tls_certificate_get_password: property 'password' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "password", &prop_gvalue);
@@ -113,14 +113,14 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-CAMLexport CAMLprim value ml_gtk_tls_certificate_get_pkcs11_uri(value self)
+CAMLexport CAMLprim value ml_g_tls_certificate_get_pkcs11_uri(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GTlsCertificate *obj = (GTlsCertificate *)GTlsCertificate_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "pkcs11-uri");
-if (pspec == NULL) caml_failwith("ml_gtk_tls_certificate_get_pkcs11_uri: property 'pkcs11-uri' not found");
+if (pspec == NULL) caml_failwith("ml_g_tls_certificate_get_pkcs11_uri: property 'pkcs11-uri' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "pkcs11-uri", &prop_gvalue);
@@ -130,14 +130,14 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-CAMLexport CAMLprim value ml_gtk_tls_certificate_get_private_key_pem(value self)
+CAMLexport CAMLprim value ml_g_tls_certificate_get_private_key_pem(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GTlsCertificate *obj = (GTlsCertificate *)GTlsCertificate_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "private-key-pem");
-if (pspec == NULL) caml_failwith("ml_gtk_tls_certificate_get_private_key_pem: property 'private-key-pem' not found");
+if (pspec == NULL) caml_failwith("ml_g_tls_certificate_get_private_key_pem: property 'private-key-pem' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "private-key-pem", &prop_gvalue);
@@ -147,14 +147,14 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-CAMLexport CAMLprim value ml_gtk_tls_certificate_get_private_key_pkcs11_uri(value self)
+CAMLexport CAMLprim value ml_g_tls_certificate_get_private_key_pkcs11_uri(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GTlsCertificate *obj = (GTlsCertificate *)GTlsCertificate_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "private-key-pkcs11-uri");
-if (pspec == NULL) caml_failwith("ml_gtk_tls_certificate_get_private_key_pkcs11_uri: property 'private-key-pkcs11-uri' not found");
+if (pspec == NULL) caml_failwith("ml_g_tls_certificate_get_private_key_pkcs11_uri: property 'private-key-pkcs11-uri' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "private-key-pkcs11-uri", &prop_gvalue);

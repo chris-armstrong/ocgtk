@@ -1,3 +1,4 @@
+
 class socket : Socket_and__socket_connection.Socket.t ->
   object
     method accept : #GCancellable.cancellable option -> (socket, GError.t) result

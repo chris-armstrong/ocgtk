@@ -1713,7 +1713,7 @@ and File_monitor
   (* Properties *)
 
   (** Get property: cancelled *)
-  external get_cancelled : t -> bool = "ml_gtk_file_monitor_get_cancelled"
+  external get_cancelled : t -> bool = "ml_g_file_monitor_get_cancelled"
 
 
 end = struct
@@ -1742,7 +1742,7 @@ end = struct
   (* Properties *)
 
   (** Get property: cancelled *)
-  external get_cancelled : t -> bool = "ml_gtk_file_monitor_get_cancelled"
+  external get_cancelled : t -> bool = "ml_g_file_monitor_get_cancelled"
 
 
 end

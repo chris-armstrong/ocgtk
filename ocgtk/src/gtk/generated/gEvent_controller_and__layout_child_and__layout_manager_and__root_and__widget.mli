@@ -1,3 +1,4 @@
+
 class event_controller : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t ->
   object
     method get_name : unit -> string option

@@ -45,5 +45,5 @@ external export : t -> D_bus_object_skeleton.t -> unit = "ml_g_dbus_object_manag
 (* Properties *)
 
 (** Get property: object-path *)
-external get_object_path : t -> string = "ml_gtk_d_bus_object_manager_server_get_object_path"
+external get_object_path : t -> string = "ml_g_d_bus_object_manager_server_get_object_path"
 

@@ -1,6 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined classes for cyclic dependencies *)
-
 (* Signal class defined in gcolumn_view_signals.ml *)
 
 class column_view (obj : Column_view_and__column_view_column.Column_view.t) = object (self)

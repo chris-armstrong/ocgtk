@@ -1,3 +1,4 @@
+
 class column_view : Column_view_and__column_view_column.Column_view.t ->
   object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
