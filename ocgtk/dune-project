@@ -30,4 +30,4 @@
    (yojson :build)
    (alcotest :with-test)
    (ppxlib :with-test)
-   (str :build)))
+   ))
