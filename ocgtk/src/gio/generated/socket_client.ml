@@ -212,8 +212,8 @@ external add_application_proxy : t -> string -> unit = "ml_g_socket_client_add_a
 (* Properties *)
 
 (** Get property: type *)
-external get_type : t -> Gio_enums.sockettype = "ml_gtk_socket_client_get_type"
+external get_type : t -> Gio_enums.sockettype = "ml_g_socket_client_get_type"
 
 (** Set property: type *)
-external set_type : t -> Gio_enums.sockettype -> unit = "ml_gtk_socket_client_set_type"
+external set_type : t -> Gio_enums.sockettype -> unit = "ml_g_socket_client_set_type"
 

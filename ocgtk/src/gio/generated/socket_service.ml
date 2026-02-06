@@ -42,8 +42,8 @@ external is_active : t -> bool = "ml_g_socket_service_is_active"
 (* Properties *)
 
 (** Get property: active *)
-external get_active : t -> bool = "ml_gtk_socket_service_get_active"
+external get_active : t -> bool = "ml_g_socket_service_get_active"
 
 (** Set property: active *)
-external set_active : t -> bool -> unit = "ml_gtk_socket_service_set_active"
+external set_active : t -> bool -> unit = "ml_g_socket_service_set_active"
 

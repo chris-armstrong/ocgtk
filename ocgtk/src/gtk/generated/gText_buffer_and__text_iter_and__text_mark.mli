@@ -1,3 +1,4 @@
+
 class text_buffer : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t ->
   object
     inherit Gtext_buffer_signals.text_buffer_signals

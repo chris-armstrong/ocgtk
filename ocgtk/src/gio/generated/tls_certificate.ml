@@ -61,17 +61,17 @@ external get_ip_addresses : t -> Inet_address.t array option = "ml_g_tls_certifi
 (* Properties *)
 
 (** Get property: certificate-pem *)
-external get_certificate_pem : t -> string = "ml_gtk_tls_certificate_get_certificate_pem"
+external get_certificate_pem : t -> string = "ml_g_tls_certificate_get_certificate_pem"
 
 (** Get property: password *)
-external get_password : t -> string = "ml_gtk_tls_certificate_get_password"
+external get_password : t -> string = "ml_g_tls_certificate_get_password"
 
 (** Get property: pkcs11-uri *)
-external get_pkcs11_uri : t -> string = "ml_gtk_tls_certificate_get_pkcs11_uri"
+external get_pkcs11_uri : t -> string = "ml_g_tls_certificate_get_pkcs11_uri"
 
 (** Get property: private-key-pem *)
-external get_private_key_pem : t -> string = "ml_gtk_tls_certificate_get_private_key_pem"
+external get_private_key_pem : t -> string = "ml_g_tls_certificate_get_private_key_pem"
 
 (** Get property: private-key-pkcs11-uri *)
-external get_private_key_pkcs11_uri : t -> string = "ml_gtk_tls_certificate_get_private_key_pkcs11_uri"
+external get_private_key_pkcs11_uri : t -> string = "ml_g_tls_certificate_get_private_key_pkcs11_uri"
 

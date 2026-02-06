@@ -61,9 +61,9 @@ on_drag_data_received (GtkWidget        *widget,
 
   drag = gtk_drop_get_drag (drop);
   notebook = g_object_get_data (drag, "gtk-notebook-drag-origin");
-  child = (void"*)" gtk_selection_data_get_data (data);
+  child = (void\*) gtk_selection_data_get_data (data);
 
-  // process_widget "(*"child);
+  // process_widget (*child);
 
   gtk_notebook_detach_tab (GTK_NOTEBOOK (notebook), *child);
 }

@@ -1,3 +1,4 @@
+
 class cell_area : Cell_area_and__cell_area_context.Cell_area.t ->
   object
     inherit Gcell_area_signals.cell_area_signals

@@ -122,14 +122,14 @@ const char* result = gdk_monitor_get_connector(GdkMonitor_val(self));
 CAMLreturn(Val_option_string(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_monitor_get_valid(value self)
+CAMLexport CAMLprim value ml_gdk_monitor_get_valid(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GdkMonitor *obj = (GdkMonitor *)GdkMonitor_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "valid");
-if (pspec == NULL) caml_failwith("ml_gtk_monitor_get_valid: property 'valid' not found");
+if (pspec == NULL) caml_failwith("ml_gdk_monitor_get_valid: property 'valid' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "valid", &prop_gvalue);

@@ -16,8 +16,8 @@ external get_num_fallbacks : t -> int = "ml_g_charset_converter_get_num_fallback
 (* Properties *)
 
 (** Get property: from-charset *)
-external get_from_charset : t -> string = "ml_gtk_charset_converter_get_from_charset"
+external get_from_charset : t -> string = "ml_g_charset_converter_get_from_charset"
 
 (** Get property: to-charset *)
-external get_to_charset : t -> string = "ml_gtk_charset_converter_get_to_charset"
+external get_to_charset : t -> string = "ml_g_charset_converter_get_to_charset"
 

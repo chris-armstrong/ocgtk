@@ -22,5 +22,5 @@ external set_enabled : t -> bool -> unit = "ml_g_simple_action_set_enabled"
 (* Properties *)
 
 (** Get property: name *)
-external get_name : t -> string = "ml_gtk_simple_action_get_name"
+external get_name : t -> string = "ml_g_simple_action_get_name"
 

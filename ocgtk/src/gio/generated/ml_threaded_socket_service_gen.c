@@ -31,14 +31,14 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GThreadedSocketService(obj));
 }
-CAMLexport CAMLprim value ml_gtk_threaded_socket_service_get_max_threads(value self)
+CAMLexport CAMLprim value ml_g_threaded_socket_service_get_max_threads(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GThreadedSocketService *obj = (GThreadedSocketService *)GThreadedSocketService_val(self);
     gint prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "max-threads");
-if (pspec == NULL) caml_failwith("ml_gtk_threaded_socket_service_get_max_threads: property 'max-threads' not found");
+if (pspec == NULL) caml_failwith("ml_g_threaded_socket_service_get_max_threads: property 'max-threads' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "max-threads", &prop_gvalue);

@@ -125,11 +125,11 @@ external get_state : t -> Gdk_enums.toplevelstate = "ml_gdk_toplevel_get_state"
 (* Properties *)
 
 (** Get property: fullscreen-mode *)
-external get_fullscreen_mode : t -> Gdk_enums.fullscreenmode = "ml_gtk_toplevel_get_fullscreen_mode"
+external get_fullscreen_mode : t -> Gdk_enums.fullscreenmode = "ml_gdk_toplevel_get_fullscreen_mode"
 
 (** Set property: fullscreen-mode *)
-external set_fullscreen_mode : t -> Gdk_enums.fullscreenmode -> unit = "ml_gtk_toplevel_set_fullscreen_mode"
+external set_fullscreen_mode : t -> Gdk_enums.fullscreenmode -> unit = "ml_gdk_toplevel_set_fullscreen_mode"
 
 (** Get property: shortcuts-inhibited *)
-external get_shortcuts_inhibited : t -> bool = "ml_gtk_toplevel_get_shortcuts_inhibited"
+external get_shortcuts_inhibited : t -> bool = "ml_gdk_toplevel_get_shortcuts_inhibited"
 

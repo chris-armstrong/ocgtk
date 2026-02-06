@@ -23,8 +23,8 @@ external get_file_info : t -> File_info.t option = "ml_g_zlib_compressor_get_fil
 (* Properties *)
 
 (** Get property: format *)
-external get_format : t -> Gio_enums.zlibcompressorformat = "ml_gtk_zlib_compressor_get_format"
+external get_format : t -> Gio_enums.zlibcompressorformat = "ml_g_zlib_compressor_get_format"
 
 (** Get property: level *)
-external get_level : t -> int = "ml_gtk_zlib_compressor_get_level"
+external get_level : t -> int = "ml_g_zlib_compressor_get_level"
 

@@ -20,8 +20,8 @@ external close : t -> unit = "ml_g_socket_listener_close"
 (* Properties *)
 
 (** Get property: listen-backlog *)
-external get_listen_backlog : t -> int = "ml_gtk_socket_listener_get_listen_backlog"
+external get_listen_backlog : t -> int = "ml_g_socket_listener_get_listen_backlog"
 
 (** Set property: listen-backlog *)
-external set_listen_backlog : t -> int -> unit = "ml_gtk_socket_listener_set_listen_backlog"
+external set_listen_backlog : t -> int -> unit = "ml_g_socket_listener_set_listen_backlog"
 

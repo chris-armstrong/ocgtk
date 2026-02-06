@@ -63,8 +63,8 @@ external export : t -> D_bus_connection.t -> string -> (bool, GError.t) result =
 (* Properties *)
 
 (** Get property: g-flags *)
-external get_g_flags : t -> Gio_enums.dbusinterfaceskeletonflags = "ml_gtk_d_bus_interface_skeleton_get_g_flags"
+external get_g_flags : t -> Gio_enums.dbusinterfaceskeletonflags = "ml_g_d_bus_interface_skeleton_get_g_flags"
 
 (** Set property: g-flags *)
-external set_g_flags : t -> Gio_enums.dbusinterfaceskeletonflags -> unit = "ml_gtk_d_bus_interface_skeleton_set_g_flags"
+external set_g_flags : t -> Gio_enums.dbusinterfaceskeletonflags -> unit = "ml_g_d_bus_interface_skeleton_set_g_flags"
 

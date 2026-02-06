@@ -1,6 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined classes for cyclic dependencies *)
-
 class d_bus_interface (obj : D_bus_interface_and__d_bus_object.D_bus_interface.t) = object (self)
 
   method dup_object : unit -> d_bus_object option =

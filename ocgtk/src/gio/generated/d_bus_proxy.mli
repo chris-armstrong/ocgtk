@@ -59,35 +59,35 @@ external get_cached_property_names : t -> string array option = "ml_g_dbus_proxy
 (* Properties *)
 
 (** Get property: g-bus-type *)
-external get_g_bus_type : t -> Gio_enums.bustype = "ml_gtk_d_bus_proxy_get_g_bus_type"
+external get_g_bus_type : t -> Gio_enums.bustype = "ml_g_d_bus_proxy_get_g_bus_type"
 
 (** Get property: g-connection *)
-external get_g_connection : t -> D_bus_connection.t = "ml_gtk_d_bus_proxy_get_g_connection"
+external get_g_connection : t -> D_bus_connection.t = "ml_g_d_bus_proxy_get_g_connection"
 
 (** Get property: g-default-timeout *)
-external get_g_default_timeout : t -> int = "ml_gtk_d_bus_proxy_get_g_default_timeout"
+external get_g_default_timeout : t -> int = "ml_g_d_bus_proxy_get_g_default_timeout"
 
 (** Set property: g-default-timeout *)
-external set_g_default_timeout : t -> int -> unit = "ml_gtk_d_bus_proxy_set_g_default_timeout"
+external set_g_default_timeout : t -> int -> unit = "ml_g_d_bus_proxy_set_g_default_timeout"
 
 (** Get property: g-flags *)
-external get_g_flags : t -> Gio_enums.dbusproxyflags = "ml_gtk_d_bus_proxy_get_g_flags"
+external get_g_flags : t -> Gio_enums.dbusproxyflags = "ml_g_d_bus_proxy_get_g_flags"
 
 (** Get property: g-interface-info *)
-external get_g_interface_info : t -> D_bus_interface_info.t = "ml_gtk_d_bus_proxy_get_g_interface_info"
+external get_g_interface_info : t -> D_bus_interface_info.t = "ml_g_d_bus_proxy_get_g_interface_info"
 
 (** Set property: g-interface-info *)
-external set_g_interface_info : t -> D_bus_interface_info.t -> unit = "ml_gtk_d_bus_proxy_set_g_interface_info"
+external set_g_interface_info : t -> D_bus_interface_info.t -> unit = "ml_g_d_bus_proxy_set_g_interface_info"
 
 (** Get property: g-interface-name *)
-external get_g_interface_name : t -> string = "ml_gtk_d_bus_proxy_get_g_interface_name"
+external get_g_interface_name : t -> string = "ml_g_d_bus_proxy_get_g_interface_name"
 
 (** Get property: g-name *)
-external get_g_name : t -> string = "ml_gtk_d_bus_proxy_get_g_name"
+external get_g_name : t -> string = "ml_g_d_bus_proxy_get_g_name"
 
 (** Get property: g-name-owner *)
-external get_g_name_owner : t -> string = "ml_gtk_d_bus_proxy_get_g_name_owner"
+external get_g_name_owner : t -> string = "ml_g_d_bus_proxy_get_g_name_owner"
 
 (** Get property: g-object-path *)
-external get_g_object_path : t -> string = "ml_gtk_d_bus_proxy_get_g_object_path"
+external get_g_object_path : t -> string = "ml_g_d_bus_proxy_get_g_object_path"
 

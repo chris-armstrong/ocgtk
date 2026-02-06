@@ -36,8 +36,8 @@ external add_interface : t -> D_bus_interface_skeleton.t -> unit = "ml_g_dbus_ob
 (* Properties *)
 
 (** Get property: g-object-path *)
-external get_g_object_path : t -> string = "ml_gtk_d_bus_object_skeleton_get_g_object_path"
+external get_g_object_path : t -> string = "ml_g_d_bus_object_skeleton_get_g_object_path"
 
 (** Set property: g-object-path *)
-external set_g_object_path : t -> string -> unit = "ml_gtk_d_bus_object_skeleton_set_g_object_path"
+external set_g_object_path : t -> string -> unit = "ml_g_d_bus_object_skeleton_set_g_object_path"
 

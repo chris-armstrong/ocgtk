@@ -137,7 +137,7 @@ and Clipboard
   (* Properties *)
 
   (** Get property: local *)
-  external get_local : t -> bool = "ml_gtk_clipboard_get_local"
+  external get_local : t -> bool = "ml_gdk_clipboard_get_local"
 
 
 end = struct
@@ -188,7 +188,7 @@ end = struct
   (* Properties *)
 
   (** Get property: local *)
-  external get_local : t -> bool = "ml_gtk_clipboard_get_local"
+  external get_local : t -> bool = "ml_gdk_clipboard_get_local"
 
 
 end
@@ -293,10 +293,10 @@ and Device
   (* Properties *)
 
   (** Get property: n-axes *)
-  external get_n_axes : t -> int = "ml_gtk_device_get_n_axes"
+  external get_n_axes : t -> int = "ml_gdk_device_get_n_axes"
 
   (** Get property: tool *)
-  external get_tool : t -> Device_tool.t = "ml_gtk_device_get_tool"
+  external get_tool : t -> Device_tool.t = "ml_gdk_device_get_tool"
 
 
 end = struct
@@ -398,10 +398,10 @@ end = struct
   (* Properties *)
 
   (** Get property: n-axes *)
-  external get_n_axes : t -> int = "ml_gtk_device_get_n_axes"
+  external get_n_axes : t -> int = "ml_gdk_device_get_n_axes"
 
   (** Get property: tool *)
-  external get_tool : t -> Device_tool.t = "ml_gtk_device_get_tool"
+  external get_tool : t -> Device_tool.t = "ml_gdk_device_get_tool"
 
 
 end
@@ -620,16 +620,16 @@ and Display
   (* Properties *)
 
   (** Get property: composited *)
-  external get_composited : t -> bool = "ml_gtk_display_get_composited"
+  external get_composited : t -> bool = "ml_gdk_display_get_composited"
 
   (** Get property: input-shapes *)
-  external get_input_shapes : t -> bool = "ml_gtk_display_get_input_shapes"
+  external get_input_shapes : t -> bool = "ml_gdk_display_get_input_shapes"
 
   (** Get property: rgba *)
-  external get_rgba : t -> bool = "ml_gtk_display_get_rgba"
+  external get_rgba : t -> bool = "ml_gdk_display_get_rgba"
 
   (** Get property: shadow-width *)
-  external get_shadow_width : t -> bool = "ml_gtk_display_get_shadow_width"
+  external get_shadow_width : t -> bool = "ml_gdk_display_get_shadow_width"
 
 
 end = struct
@@ -845,16 +845,16 @@ end = struct
   (* Properties *)
 
   (** Get property: composited *)
-  external get_composited : t -> bool = "ml_gtk_display_get_composited"
+  external get_composited : t -> bool = "ml_gdk_display_get_composited"
 
   (** Get property: input-shapes *)
-  external get_input_shapes : t -> bool = "ml_gtk_display_get_input_shapes"
+  external get_input_shapes : t -> bool = "ml_gdk_display_get_input_shapes"
 
   (** Get property: rgba *)
-  external get_rgba : t -> bool = "ml_gtk_display_get_rgba"
+  external get_rgba : t -> bool = "ml_gdk_display_get_rgba"
 
   (** Get property: shadow-width *)
-  external get_shadow_width : t -> bool = "ml_gtk_display_get_shadow_width"
+  external get_shadow_width : t -> bool = "ml_gdk_display_get_shadow_width"
 
 
 end
@@ -1536,7 +1536,7 @@ and Monitor
   (* Properties *)
 
   (** Get property: valid *)
-  external get_valid : t -> bool = "ml_gtk_monitor_get_valid"
+  external get_valid : t -> bool = "ml_gdk_monitor_get_valid"
 
 
 end = struct
@@ -1622,7 +1622,7 @@ end = struct
   (* Properties *)
 
   (** Get property: valid *)
-  external get_valid : t -> bool = "ml_gtk_monitor_get_valid"
+  external get_valid : t -> bool = "ml_gdk_monitor_get_valid"
 
 
 end

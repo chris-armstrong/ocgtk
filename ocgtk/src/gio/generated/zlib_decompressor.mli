@@ -17,5 +17,5 @@ external get_file_info : t -> File_info.t option = "ml_g_zlib_decompressor_get_f
 (* Properties *)
 
 (** Get property: format *)
-external get_format : t -> Gio_enums.zlibcompressorformat = "ml_gtk_zlib_decompressor_get_format"
+external get_format : t -> Gio_enums.zlibcompressorformat = "ml_g_zlib_decompressor_get_format"
 

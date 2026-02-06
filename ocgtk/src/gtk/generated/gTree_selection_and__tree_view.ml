@@ -1,6 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined classes for cyclic dependencies *)
-
 (* Signal class defined in gtree_selection_signals.ml *)
 
 class tree_selection (obj : Tree_selection_and__tree_view.Tree_selection.t) = object (self)

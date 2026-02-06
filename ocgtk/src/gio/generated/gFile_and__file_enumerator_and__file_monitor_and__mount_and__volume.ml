@@ -1,6 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined classes for cyclic dependencies *)
-
 class file (obj : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t) = object (self)
 
   method append_to : 'p1. Gio_enums.filecreateflags -> (#GCancellable.cancellable as 'p1) option -> (GFile_output_stream.file_output_stream, GError.t) result =

@@ -475,7 +475,7 @@ module rec Socket : sig
   (* Properties *)
 
   (** Get property: type *)
-  external get_type : t -> Gio_enums.sockettype = "ml_gtk_socket_get_type"
+  external get_type : t -> Gio_enums.sockettype = "ml_g_socket_get_type"
 
 
 end = struct
@@ -952,7 +952,7 @@ end = struct
   (* Properties *)
 
   (** Get property: type *)
-  external get_type : t -> Gio_enums.sockettype = "ml_gtk_socket_get_type"
+  external get_type : t -> Gio_enums.sockettype = "ml_g_socket_get_type"
 
 
 end

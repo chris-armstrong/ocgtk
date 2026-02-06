@@ -1,6 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined classes for cyclic dependencies *)
-
 (* Signal class defined in gcell_area_signals.ml *)
 
 class cell_area (obj : Cell_area_and__cell_area_context.Cell_area.t) = object (self)

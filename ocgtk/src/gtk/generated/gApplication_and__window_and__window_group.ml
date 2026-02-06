@@ -1,6 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined classes for cyclic dependencies *)
-
 (* Signal class defined in gapplication_signals.ml *)
 
 class application (obj : Application_and__window_and__window_group.Application.t) = object (self)

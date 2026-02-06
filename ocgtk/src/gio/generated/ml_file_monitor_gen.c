@@ -54,14 +54,14 @@ gboolean result = g_file_monitor_cancel(GFileMonitor_val(self));
 CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_file_monitor_get_cancelled(value self)
+CAMLexport CAMLprim value ml_g_file_monitor_get_cancelled(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GFileMonitor *obj = (GFileMonitor *)GFileMonitor_val(self);
     gboolean *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "cancelled");
-if (pspec == NULL) caml_failwith("ml_gtk_file_monitor_get_cancelled: property 'cancelled' not found");
+if (pspec == NULL) caml_failwith("ml_g_file_monitor_get_cancelled: property 'cancelled' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "cancelled", &prop_gvalue);

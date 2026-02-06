@@ -189,13 +189,13 @@ CAMLlocal1(ret);
     if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-CAMLexport CAMLprim value ml_gtk_subprocess_get_argv(value self)
+CAMLexport CAMLprim value ml_g_subprocess_get_argv(value self)
 {
 GSubprocess *obj = (GSubprocess *)GSubprocess_val(self);
 CAMLparam1(self);
 GValue prop_gvalue = G_VALUE_INIT;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "argv");
-if (pspec == NULL) caml_failwith("ml_gtk_subprocess_get_argv: property 'argv' not found");
+if (pspec == NULL) caml_failwith("ml_g_subprocess_get_argv: property 'argv' not found");
 g_value_init(&prop_gvalue, pspec->value_type);
 g_object_get_property(G_OBJECT(obj), "argv", &prop_gvalue);
 utf8* c_result = (utf8*)g_value_get_boxed(&prop_gvalue);
@@ -209,14 +209,14 @@ int c_result_length = 0;
 g_value_unset(&prop_gvalue);
 CAMLreturn(ml_c_result);
 }
-CAMLexport CAMLprim value ml_gtk_subprocess_get_flags(value self)
+CAMLexport CAMLprim value ml_g_subprocess_get_flags(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GSubprocess *obj = (GSubprocess *)GSubprocess_val(self);
     GSubprocessFlags prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "flags");
-if (pspec == NULL) caml_failwith("ml_gtk_subprocess_get_flags: property 'flags' not found");
+if (pspec == NULL) caml_failwith("ml_g_subprocess_get_flags: property 'flags' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "flags", &prop_gvalue);

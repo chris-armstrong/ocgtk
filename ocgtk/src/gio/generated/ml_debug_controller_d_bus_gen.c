@@ -30,14 +30,14 @@ g_debug_controller_dbus_stop(GDebugControllerDBus_val(self));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_debug_controller_d_bus_get_connection(value self)
+CAMLexport CAMLprim value ml_g_debug_controller_d_bus_get_connection(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GDebugControllerDBus *obj = (GDebugControllerDBus *)GDebugControllerDBus_val(self);
     GDBusConnection *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "connection");
-if (pspec == NULL) caml_failwith("ml_gtk_debug_controller_d_bus_get_connection: property 'connection' not found");
+if (pspec == NULL) caml_failwith("ml_g_debug_controller_d_bus_get_connection: property 'connection' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "connection", &prop_gvalue);

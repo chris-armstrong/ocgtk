@@ -1,6 +1,5 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined classes for cyclic dependencies *)
-
 class socket (obj : Socket_and__socket_connection.Socket.t) = object (self)
 
   method accept : 'p1. (#GCancellable.cancellable as 'p1) option -> (socket, GError.t) result =

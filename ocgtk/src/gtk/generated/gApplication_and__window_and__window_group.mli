@@ -1,3 +1,4 @@
+
 class application : Application_and__window_and__window_group.Application.t ->
   object
     inherit Gapplication_signals.application_signals

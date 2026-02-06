@@ -47,14 +47,14 @@ g_socket_listener_close(GSocketListener_val(self));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_socket_listener_get_listen_backlog(value self)
+CAMLexport CAMLprim value ml_g_socket_listener_get_listen_backlog(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GSocketListener *obj = (GSocketListener *)GSocketListener_val(self);
     gint prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "listen-backlog");
-if (pspec == NULL) caml_failwith("ml_gtk_socket_listener_get_listen_backlog: property 'listen-backlog' not found");
+if (pspec == NULL) caml_failwith("ml_g_socket_listener_get_listen_backlog: property 'listen-backlog' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "listen-backlog", &prop_gvalue);
@@ -64,13 +64,13 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-CAMLexport CAMLprim value ml_gtk_socket_listener_set_listen_backlog(value self, value new_value)
+CAMLexport CAMLprim value ml_g_socket_listener_set_listen_backlog(value self, value new_value)
 {
     CAMLparam2(self, new_value);
 GSocketListener *obj = (GSocketListener *)GSocketListener_val(self);
     gint c_value = Int_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "listen-backlog");
-if (pspec == NULL) caml_failwith("ml_gtk_socket_listener_set_listen_backlog: property 'listen-backlog' not found");
+if (pspec == NULL) caml_failwith("ml_g_socket_listener_set_listen_backlog: property 'listen-backlog' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
           g_value_set_int(&prop_gvalue, c_value);

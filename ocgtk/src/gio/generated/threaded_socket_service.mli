@@ -10,5 +10,5 @@ external new_ : int -> t = "ml_g_threaded_socket_service_new"
 (* Properties *)
 
 (** Get property: max-threads *)
-external get_max_threads : t -> int = "ml_gtk_threaded_socket_service_get_max_threads"
+external get_max_threads : t -> int = "ml_g_threaded_socket_service_get_max_threads"
 

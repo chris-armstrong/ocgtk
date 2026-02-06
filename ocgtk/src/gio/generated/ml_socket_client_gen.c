@@ -239,14 +239,14 @@ g_socket_client_add_application_proxy(GSocketClient_val(self), String_val(arg1))
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_socket_client_get_type(value self)
+CAMLexport CAMLprim value ml_g_socket_client_get_type(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GSocketClient *obj = (GSocketClient *)GSocketClient_val(self);
     GSocketType prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "type");
-if (pspec == NULL) caml_failwith("ml_gtk_socket_client_get_type: property 'type' not found");
+if (pspec == NULL) caml_failwith("ml_g_socket_client_get_type: property 'type' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "type", &prop_gvalue);
@@ -256,13 +256,13 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-CAMLexport CAMLprim value ml_gtk_socket_client_set_type(value self, value new_value)
+CAMLexport CAMLprim value ml_g_socket_client_set_type(value self, value new_value)
 {
     CAMLparam2(self, new_value);
 GSocketClient *obj = (GSocketClient *)GSocketClient_val(self);
     GSocketType c_value = GioSocketType_val(new_value);
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "type");
-if (pspec == NULL) caml_failwith("ml_gtk_socket_client_set_type: property 'type' not found");
+if (pspec == NULL) caml_failwith("ml_g_socket_client_set_type: property 'type' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
           g_value_set_enum(&prop_gvalue, c_value);

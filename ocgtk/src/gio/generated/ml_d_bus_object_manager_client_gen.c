@@ -55,14 +55,14 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GDBusConnection(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_d_bus_object_manager_client_get_bus_type(value self)
+CAMLexport CAMLprim value ml_g_d_bus_object_manager_client_get_bus_type(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GDBusObjectManagerClient *obj = (GDBusObjectManagerClient *)GDBusObjectManagerClient_val(self);
     GBusType prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "bus-type");
-if (pspec == NULL) caml_failwith("ml_gtk_d_bus_object_manager_client_get_bus_type: property 'bus-type' not found");
+if (pspec == NULL) caml_failwith("ml_g_d_bus_object_manager_client_get_bus_type: property 'bus-type' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "bus-type", &prop_gvalue);
@@ -72,14 +72,14 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-CAMLexport CAMLprim value ml_gtk_d_bus_object_manager_client_get_object_path(value self)
+CAMLexport CAMLprim value ml_g_d_bus_object_manager_client_get_object_path(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GDBusObjectManagerClient *obj = (GDBusObjectManagerClient *)GDBusObjectManagerClient_val(self);
     gchar* *prop_value;
 GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "object-path");
-if (pspec == NULL) caml_failwith("ml_gtk_d_bus_object_manager_client_get_object_path: property 'object-path' not found");
+if (pspec == NULL) caml_failwith("ml_g_d_bus_object_manager_client_get_object_path: property 'object-path' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "object-path", &prop_gvalue);
