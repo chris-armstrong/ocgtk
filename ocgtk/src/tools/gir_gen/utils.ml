@@ -54,9 +54,10 @@ let to_snake_case name =
   !components |> List.rev |> String.concat ~sep:"_" |> stripLeadingNumbers
 
 let sanitize_doc s =
-  (* Prevent premature comment termination when GIR doc contains "*)" *)
-  Re.replace (Re.compile (Re.str "*)")) ~all:true ~f:(fun g -> "\\" ^ Re.Group.get g 0) s
-  |> Re.replace (Re.compile (Re.str "*(")) ~all:true ~f:(fun g -> "\\" ^ Re.Group.get g 0)
+  (* Prevent premature comment termination when GIR doc contains "*\)" or "(\*" *)
+  (* Insert backslash BETWEEN the characters to break the sequence: *\) becomes *\\) and (\* becomes (\\* *)
+  Re.replace (Re.compile (Re.str "*)")) ~all:true ~f:(fun _ -> "*\\)") s
+  |> Re.replace (Re.compile (Re.str "(*")) ~all:true ~f:(fun _ -> "(\\*")
 
 (* let b = Buffer.create (String.length s + 10) in
   for i = 0 to String.length s - 1 do

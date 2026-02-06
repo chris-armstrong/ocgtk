@@ -7,8 +7,8 @@ open Types
 
 module Log =
   (val Logs.src_log
-          (Logs.Src.create "gir_gen.c_stub_property"
-             ~doc:"C stub code generation for property support"))
+         (Logs.Src.create "gir_gen.c_stub_property"
+            ~doc:"C stub code generation for property support"))
 
 (* Template record for property wrapper sections *)
 type property_wrapper_template = {
@@ -31,15 +31,16 @@ let get_c_type_str ~ctx (gir_type : gir_type) =
   | Some c_type -> c_type
   | None ->
       Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type
-      |> Option.map (fun tm -> tm.c_type)
+      |> Option.map (fun (tm : type_mapping) -> tm.c_type)
       |> Option.value ~default:"void"
 
 (* [generate_property_wrapper ~ctx ~c_type prop class_name ~is_getter
     ~c_to_ml_expr ~ml_to_c_expr ~gvalue_assignment ~result_expr ~caml_params ~caml_locals] generates a C wrapper
     function for both property getters and setters. Uses a template-based approach with named sections
     for clearer code structure. *)
-let generate_property_wrapper ~ctx ~c_type (prop : gir_property) class_name ~is_getter
-    ~c_to_ml_expr ~ml_to_c_expr ~gvalue_assignment ~result_expr ~caml_params ~caml_locals =
+let generate_property_wrapper ~ctx ~c_type (prop : gir_property) class_name
+    ~is_getter ~c_to_ml_expr ~ml_to_c_expr ~gvalue_assignment ~result_expr
+    ~caml_params ~caml_locals =
   let prop_info = C_stub_helpers.analyze_property_type ~ctx prop.prop_type in
   let c_cast = sprintf "%s_val" c_type in
 
@@ -61,7 +62,8 @@ let generate_property_wrapper ~ctx ~c_type (prop : gir_property) class_name ~is_
       let is_string_type =
         prop.prop_type.c_type
         |> Option.map (fun ct ->
-            List.exists ~f:(fun s -> String.equal s ct)
+            List.exists
+              ~f:(fun s -> String.equal s ct)
               [ "gchar*"; "gchararray"; "utf8"; "const gchar*"; "const char*" ])
         |> Option.value ~default:false
       in
@@ -69,30 +71,47 @@ let generate_property_wrapper ~ctx ~c_type (prop : gir_property) class_name ~is_
         sprintf "    ML_DECL_CONST_STRING(c_value, %s);\n" ml_to_c_expr
       else
         let pointer_prefix = if prop_info.stack_allocated then "" else "*" in
-        sprintf "    %s %sc_value = %s;\n" type_info.c_type pointer_prefix ml_to_c_expr
+        sprintf "    %s %sc_value = %s;\n" type_info.c_type pointer_prefix
+          ml_to_c_expr
   in
 
   let property_operation =
     if is_getter then
-      sprintf "      g_object_get_property(G_OBJECT(obj), \"%s\", &prop_gvalue);\n      %s\n      result = %s;\n"
+      sprintf
+        "      g_object_get_property(G_OBJECT(obj), \"%s\", &prop_gvalue);\n\
+        \      %s\n\
+        \      result = %s;\n"
         prop.prop_name gvalue_assignment c_to_ml_expr
     else
-      sprintf "      %sg_object_set_property(G_OBJECT(obj), \"%s\", &prop_gvalue);\n"
+      sprintf
+        "      %sg_object_set_property(G_OBJECT(obj), \"%s\", &prop_gvalue);\n"
         gvalue_assignment prop.prop_name
   in
 
   (* Template-based code generation with named sections *)
-  let template = {
-    header = sprintf "\nCAMLexport CAMLprim value %s(%s)\n{\n" prop_name caml_params;
-    locals = caml_locals;
-    obj_decl = sprintf "%s *obj = (%s *)%s(self);\n" c_type c_type c_cast;
-    pspec_find = sprintf "%sGParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), \"%s\");\n" value_declaration prop.prop_name;
-    pspec_check = sprintf "if (pspec == NULL) caml_failwith(\"%s: property '%s' not found\");\n" prop_name prop.prop_name;
-    gvalue_init = "GValue prop_gvalue = G_VALUE_INIT;\ng_value_init(&prop_gvalue, pspec->value_type);\n";
-    operation = property_operation;
-    gvalue_unset = "g_value_unset(&prop_gvalue);\n";
-    footer = sprintf "%s}\n" result_expr;
-  } in
+  let template =
+    {
+      header =
+        sprintf "\nCAMLexport CAMLprim value %s(%s)\n{\n" prop_name caml_params;
+      locals = caml_locals;
+      obj_decl = sprintf "%s *obj = (%s *)%s(self);\n" c_type c_type c_cast;
+      pspec_find =
+        sprintf
+          "%sGParamSpec *pspec = \
+           g_object_class_find_property(G_OBJECT_GET_CLASS(obj), \"%s\");\n"
+          value_declaration prop.prop_name;
+      pspec_check =
+        sprintf
+          "if (pspec == NULL) caml_failwith(\"%s: property '%s' not found\");\n"
+          prop_name prop.prop_name;
+      gvalue_init =
+        "GValue prop_gvalue = G_VALUE_INIT;\n\
+         g_value_init(&prop_gvalue, pspec->value_type);\n";
+      operation = property_operation;
+      gvalue_unset = "g_value_unset(&prop_gvalue);\n";
+      footer = sprintf "%s}\n" result_expr;
+    }
+  in
 
   (* Render template sections in order *)
   let buf = Buffer.create 256 in
@@ -118,10 +137,16 @@ let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
   | Some array_info ->
       (* Handle array property with inline conversion *)
       let element_mapping =
-        match Type_mappings.find_type_mapping_for_gir_type ~ctx array_info.element_type with
+        match
+          Type_mappings.find_type_mapping_for_gir_type ~ctx
+            array_info.element_type
+        with
         | Some mapping -> mapping
-        | None -> failwith (sprintf "Array element type '%s' not supported in property getter"
-                                    array_info.element_type.name)
+        | None ->
+            failwith
+              (sprintf
+                 "Array element type '%s' not supported in property getter"
+                 array_info.element_type.name)
       in
       let element_c_type =
         match array_info.element_type.c_type with
@@ -151,7 +176,8 @@ let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
          %s *obj = (%s *)%s(self);\n\
          CAMLparam1(self);\n\
          GValue prop_gvalue = G_VALUE_INIT;\n\
-         GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), \"%s\");\n\
+         GParamSpec *pspec = \
+         g_object_class_find_property(G_OBJECT_GET_CLASS(obj), \"%s\");\n\
          if (pspec == NULL) caml_failwith(\"%s: property '%s' not found\");\n\
          g_value_init(&prop_gvalue, pspec->value_type);\n\
          g_object_get_property(G_OBJECT(obj), \"%s\", &prop_gvalue);\n\
@@ -161,8 +187,8 @@ let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
          CAMLreturn(%s);\n\
          }"
         prop_name c_type c_type c_cast prop.prop_name prop_name prop.prop_name
-        prop.prop_name element_c_type c_array_var element_c_type
-        conv_code ml_array_var_name
+        prop.prop_name element_c_type c_array_var element_c_type conv_code
+        ml_array_var_name
   | None ->
       (* Regular property - use existing type mapping *)
       let type_info =
@@ -177,14 +203,14 @@ let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
 
       let c_type_name = get_c_type_str ~ctx prop.prop_type in
       let gvalue_assignment =
-        C_stub_helpers.generate_gvalue_getter_assignment ~ml_name:"getter" ~prop ~c_type_name
+        C_stub_helpers.generate_gvalue_getter_assignment ~ml_name:"getter" ~prop
+          ~c_type_name
           ~prop_info:(C_stub_helpers.analyze_property_type ~ctx prop.prop_type)
       in
 
       generate_property_wrapper ~ctx ~c_type prop class_name ~is_getter:true
-        ~c_to_ml_expr:c_to_ml_expr ~ml_to_c_expr:"" ~gvalue_assignment:gvalue_assignment
-        ~result_expr:"CAMLreturn(result);"
-        ~caml_params:"value self"
+        ~c_to_ml_expr ~ml_to_c_expr:"" ~gvalue_assignment
+        ~result_expr:"CAMLreturn(result);" ~caml_params:"value self"
         ~caml_locals:"    CAMLparam1(self);\n    CAMLlocal1(result);\n"
 
 (* [generate_c_property_setter ~ctx ~c_type prop class_name] generates a C wrapper function
@@ -197,10 +223,16 @@ let generate_c_property_setter ~ctx ~c_type (prop : gir_property) class_name =
   | Some array_info ->
       (* Handle array property with inline conversion *)
       let element_mapping =
-        match Type_mappings.find_type_mapping_for_gir_type ~ctx array_info.element_type with
+        match
+          Type_mappings.find_type_mapping_for_gir_type ~ctx
+            array_info.element_type
+        with
         | Some mapping -> mapping
-        | None -> failwith (sprintf "Array element type '%s' not supported in property setter"
-                                    array_info.element_type.name)
+        | None ->
+            failwith
+              (sprintf
+                 "Array element type '%s' not supported in property setter"
+                 array_info.element_type.name)
       in
       let element_c_type =
         match array_info.element_type.c_type with
@@ -215,9 +247,8 @@ let generate_c_property_setter ~ctx ~c_type (prop : gir_property) class_name =
       let nullable = prop.prop_type.nullable in
       let conv_code, c_array_var, _length_var, cleanup_code =
         C_stub_helpers.generate_array_ml_to_c ~ctx ~var:"new_value" ~array_info
-          ~element_mapping:element_mapping ~element_c_type
-          ~transfer_ownership:prop.prop_type.transfer_ownership
-          ~nullable
+          ~element_mapping ~element_c_type
+          ~transfer_ownership:prop.prop_type.transfer_ownership ~nullable
       in
 
       (* Generate property setter with array handling *)
@@ -229,7 +260,8 @@ let generate_c_property_setter ~ctx ~c_type (prop : gir_property) class_name =
          CAMLparam2(self, new_value);\n\
          %s\n\
          GValue prop_gvalue = G_VALUE_INIT;\n\
-         GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), \"%s\");\n\
+         GParamSpec *pspec = \
+         g_object_class_find_property(G_OBJECT_GET_CLASS(obj), \"%s\");\n\
          if (pspec == NULL) caml_failwith(\"%s: property '%s' not found\");\n\
          g_value_init(&prop_gvalue, pspec->value_type);\n\
          g_value_set_boxed(&prop_gvalue, %s);\n\
@@ -238,8 +270,8 @@ let generate_c_property_setter ~ctx ~c_type (prop : gir_property) class_name =
          %s\n\
          CAMLreturn(Val_unit);\n\
          }"
-        prop_name c_type c_type c_cast conv_code prop.prop_name prop_name prop.prop_name
-        c_array_var prop.prop_name cleanup_code
+        prop_name c_type c_type c_cast conv_code prop.prop_name prop_name
+        prop.prop_name c_array_var prop.prop_name cleanup_code
   | None ->
       (* Regular property - use existing type mapping *)
       let type_info =
@@ -252,13 +284,16 @@ let generate_c_property_setter ~ctx ~c_type (prop : gir_property) class_name =
           ~gir_type:prop.prop_type ~mapping:type_info
       in
 
-      let prop_info = C_stub_helpers.analyze_property_type ~ctx prop.prop_type in
+      let prop_info =
+        C_stub_helpers.analyze_property_type ~ctx prop.prop_type
+      in
       let setter_assignment =
-        C_stub_helpers.generate_gvalue_setter_assignment ~ml_name:"setter" ~prop_info
+        C_stub_helpers.generate_gvalue_setter_assignment ~ml_name:"setter"
+          ~prop_info
       in
 
       generate_property_wrapper ~ctx ~c_type prop class_name ~is_getter:false
-        ~c_to_ml_expr:"" ~ml_to_c_expr:ml_to_c_expr ~gvalue_assignment:setter_assignment
+        ~c_to_ml_expr:"" ~ml_to_c_expr ~gvalue_assignment:setter_assignment
         ~result_expr:"    CAMLreturn(Val_unit);\n"
         ~caml_params:"value self, value new_value"
         ~caml_locals:"    CAMLparam2(self, new_value);\n"

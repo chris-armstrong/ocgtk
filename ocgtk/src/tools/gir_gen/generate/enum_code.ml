@@ -10,7 +10,7 @@ let generate_ocaml_enum enum =
 
   bprintf buf "(* %s - enumeration *)\n" enum.enum_name;
   (match enum.enum_doc with
-  | Some doc -> bprintf buf "(** %s *)\n" doc
+  | Some doc -> bprintf buf "(** %s *)\n" (Utils.sanitize_doc doc)
   | None -> ());
 
   bprintf buf "type %s = [\n" (Utils.ocaml_enum_name enum);
@@ -25,7 +25,7 @@ let generate_ocaml_enum enum =
         variant_name
     in
     (match member.member_doc with
-    | Some doc -> bprintf buf "  (** %s *)\n" doc
+    | Some doc -> bprintf buf "  (** %s *)\n" (Utils.sanitize_doc doc)
     | None -> ());
     bprintf buf "  | `%s" variant_name;
     if i < List.length enum.members - 1 then
@@ -43,7 +43,7 @@ let generate_ocaml_bitfield bitfield =
 
   bprintf buf "(* %s - bitfield/flags *)\n" bitfield.bitfield_name;
   (match bitfield.bitfield_doc with
-  | Some doc -> bprintf buf "(** %s *)\n" doc
+  | Some doc -> bprintf buf "(** %s *)\n" (Utils.sanitize_doc doc)
   | None -> ());
 
   bprintf buf "type %s_flag = [\n" (Utils.ocaml_bitfield_name bitfield);
@@ -58,7 +58,7 @@ let generate_ocaml_bitfield bitfield =
         variant_name
     in
     (match flag.flag_doc with
-    | Some doc -> bprintf buf "  (** %s *)\n" doc
+    | Some doc -> bprintf buf "  (** %s *)\n" (Utils.sanitize_doc doc)
     | None -> ());
     bprintf buf "  | `%s" variant_name;
     if i < List.length bitfield.flags - 1 then
