@@ -18,7 +18,7 @@ If you are running in a clean container (e.g. Claude Code Web), you will need to
 
 ## Writing or refactoring Code or Rewriting Documentation
 
-**Always consult [ocaml readability guidelines](./.opencode/guidelines/ocaml-readability.md) for how to structure or restructure code.
+**Always consult the [code guidelines](./ocgtk/docs/code_guidelines/index.md) for how to structure or restructure code.
 
 **When moving code or documentation**: ALWAYS use tools to copy the code to a temporary file and write it to the destination file. DO NOT REGENERATE the code yourself - this will save your token usage. ALWAYS remove the old code files and update the `dune` file accordingly.
 

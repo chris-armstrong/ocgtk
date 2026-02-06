@@ -18,7 +18,7 @@ You will be given:
 
 ## MANDATORY GUIDELINES ADHERENCE
 
-You MUST follow `.opencode/guidelines/ocaml-readability.md` **exactly**. These are not suggestions - violations will cause review FAIL.
+You MUST follow the guidelines in `ocgtk/docs/code_guidelines/` **exactly**. See the [index](../../ocgtk/docs/code_guidelines/index.md) for all guidelines. These are not suggestions - violations will cause review FAIL.
 
 
 
