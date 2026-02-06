@@ -203,8 +203,7 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain entity =
            Some entity.Gir_gen_lib.Types.constructors
          else None)
       ~methods:entity.Gir_gen_lib.Types.methods
-      ~properties:entity.Gir_gen_lib.Types.properties
-      ()
+      ~properties:entity.Gir_gen_lib.Types.properties ()
   in
 
   write_file ~path:ml_file ~content
@@ -458,8 +457,14 @@ let generate_enum_files ~output_dir ~generated_stubs ~generated_modules
   end
 
 (* Main generation function *)
-let generate_bindings filter_file gir_file output_dir =
+let generate_bindings filter_file gir_file output_dir reference_files =
   printf "Parsing %s ...\n" gir_file;
+
+  (* Log reference files if provided *)
+  if List.length reference_files > 0 then begin
+    printf "Using %d reference file(s) for cross-namespace validation:\n" (List.length reference_files);
+    List.iter ~f:(fun path -> printf "  - %s\n" path) reference_files
+  end;
 
   (* ==== INITIALIZATION ==== *)
 
@@ -629,6 +634,8 @@ let generate_bindings filter_file gir_file output_dir =
       (* Temporary empty map *)
       current_cycle_classes = [];
       (* No cycle context initially *)
+      cross_references = StringMap.empty;
+      (* cross references initialised to empty *)
     }
   in
 
@@ -914,6 +921,18 @@ let generate_bindings filter_file gir_file output_dir =
   printf "  Generated: %s.ml/.mli (library top-level module)\n" lib_name;
   `Ok ()
 
+(* References generation function *)
+let generate_references gir_file output_file =
+  printf "Parsing %s for references...\n" gir_file;
+
+  (* TODO: Placeholder for reference generation code *)
+  (* This will parse the GIR file and extract reference information *)
+  (* to be written to output_file *)
+
+  printf "References will be written to: %s\n" output_file;
+  printf "ERROR: Reference generation not yet implemented\n";
+  `Error (false, "Reference generation code needs to be implemented")
+
 (* Cmdliner argument definitions *)
 let filter_arg =
   let doc = "Filter file specifying which classes to generate" in
@@ -927,7 +946,63 @@ let output_dir_arg =
   let doc = "Output directory for generated files" in
   Arg.(required & pos 1 (some dir) None & info [] ~docv:"OUTPUT_DIR" ~doc)
 
-(* Command definition *)
+let reference_files_arg =
+  let doc = "Path to reference file for cross-namespace type validation (can be specified multiple times)" in
+  Arg.(value & opt_all file [] & info [ "r"; "reference" ] ~docv:"FILE" ~doc)
+
+(* Arguments for references command *)
+let gir_file_arg_refs =
+  let doc = "Path to GIR file to parse for references" in
+  Arg.(required & pos 0 (some file) None & info [] ~docv:"GIR_FILE" ~doc)
+
+let output_file_arg_refs =
+  let doc = "Output file path for generated references" in
+  Arg.(required & pos 1 (some string) None & info [] ~docv:"OUTPUT_FILE" ~doc)
+
+(* Command definitions *)
+
+(* Generate subcommand *)
+let generate_cmd =
+  let doc = "Generate C FFI bindings and OCaml modules from GTK GIR files" in
+  let man =
+    [
+      `S Manpage.s_description;
+      `P
+        "The generate command parses GTK GObject Introspection (GIR) files and \
+         generates C FFI bindings and OCaml module interfaces for GTK4 event \
+         controllers and widgets.";
+      `S Manpage.s_examples;
+      `P "Generate event controller bindings:";
+      `Pre "  gir_gen generate /usr/share/gir-1.0/Gtk-4.0.gir ./output";
+      `P "Generate with cross-namespace references:";
+      `Pre "  gir_gen generate -r gtk_refs.txt -r gdk_refs.txt /usr/share/gir-1.0/Gtk-4.0.gir ./output";
+    ]
+  in
+  let info = Cmd.info "generate" ~doc ~man in
+  Cmd.v info
+    Term.(
+      ret (const generate_bindings $ filter_arg $ gir_file_arg $ output_dir_arg $ reference_files_arg))
+
+(* References subcommand *)
+let references_cmd =
+  let doc = "Generate cross-namespace reference list from a GIR file" in
+  let man =
+    [
+      `S Manpage.s_description;
+      `P
+        "The references command parses a GIR file and generates a reference list \
+         that can be used for cross-namespace type validation during code generation.";
+      `S Manpage.s_examples;
+      `P "Generate reference list:";
+      `Pre "  gir_gen references /usr/share/gir-1.0/Gtk-4.0.gir gtk_refs.txt";
+    ]
+  in
+  let info = Cmd.info "references" ~doc ~man in
+  Cmd.v info
+    Term.(
+      ret (const generate_references $ gir_file_arg_refs $ output_file_arg_refs))
+
+(* Main command *)
 let gir_gen_cmd =
   let doc = "Generate C FFI bindings and OCaml modules from GTK GIR files" in
   let man =
@@ -937,17 +1012,17 @@ let gir_gen_cmd =
         "gir_gen parses GTK GObject Introspection (GIR) files and generates C \
          FFI bindings and OCaml module interfaces for GTK4 event controllers \
          and widgets.";
-      `S Manpage.s_examples;
-      `P "Generate event controller bindings:";
-      `Pre "  gir_gen /usr/share/gir-1.0/Gtk-4.0.gir ./output";
+      `S Manpage.s_commands;
+      `P "Available commands:";
+      `I ("generate", "Generate C FFI bindings and OCaml modules");
+      `I ("references", "Generate cross-namespace reference list");
       `S Manpage.s_bugs;
       `P "Report bugs to https://github.com/chris-armstrong/ocgtk/issues";
     ]
   in
   let info = Cmd.info "gir_gen" ~version:"5.0.0" ~doc ~man in
-  Cmd.v info
-    Term.(
-      ret (const generate_bindings $ filter_arg $ gir_file_arg $ output_dir_arg))
+  let default = Term.(ret (const (`Help (`Pager, None)))) in
+  Cmd.group info ~default [generate_cmd; references_cmd]
 
 (* Main entry point *)
 let () = exit (Cmd.eval gir_gen_cmd)

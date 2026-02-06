@@ -268,6 +268,21 @@ type gir_repository = {
   repository_packages : string list;
 }
 
+type entity_reference_descriptor =
+  | RefClass
+  | RefInterface
+  | RefRecord of { opaque : bool }
+  | RefEnum
+  | RefBitfield
+
+type cross_reference = {
+  cr_name : string;
+  cr_descriptor : entity_reference_descriptor;
+  cr_c_type : string;
+}
+
+module StringMap = Map.Make (String)
+
 type generation_context = {
   namespace : gir_namespace;
   repository : gir_repository;
@@ -283,4 +298,5 @@ type generation_context = {
       (* class_name -> combined_module_name *)
   current_cycle_classes : string list;
       (* Class names in the current cyclic module being generated *)
+  cross_references : cross_reference StringMap.t;
 }

@@ -339,7 +339,10 @@ let create_test_context () =
   {
     namespace;
     repository;
-    classes = [ widget_class; inet_address_class; tls_certificate_class; gdk_event_class ];
+    classes =
+      [
+        widget_class; inet_address_class; tls_certificate_class; gdk_event_class;
+      ];
     interfaces = [];
     enums = [ text_direction_enum ];
     bitfields = [];
@@ -349,6 +352,7 @@ let create_test_context () =
     hierarchy_map = Hashtbl.create 0;
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
+    cross_references = StringMap.empty;
   }
 
 (* Create a test context with hierarchy detection configured *)
