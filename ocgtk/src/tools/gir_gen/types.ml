@@ -1,5 +1,7 @@
 (* Type Definitions for GIR Code Generator *)
 
+open Sexplib.Std
+
 type transfer_ownership =
   | TransferNone
   | TransferFull
@@ -268,18 +270,20 @@ type gir_repository = {
   repository_packages : string list;
 }
 
-type entity_reference_descriptor =
-  | RefClass
-  | RefInterface
-  | RefRecord of { opaque : bool }
-  | RefEnum
-  | RefBitfield
+type cross_reference_type =
+  | Crt_Class
+  | Crt_Interface
+  | Crt_Record of { opaque : bool }
+  | Crt_Enum
+  | Crt_Bitfield
+[@@deriving sexp]
 
 type cross_reference = {
   cr_name : string;
-  cr_descriptor : entity_reference_descriptor;
+  cr_type : cross_reference_type;
   cr_c_type : string;
 }
+[@@deriving sexp]
 
 module StringMap = Map.Make (String)
 

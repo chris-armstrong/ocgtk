@@ -7,7 +7,8 @@ val is_cross_namespace_enum_or_bitfield :
   ctx:generation_context -> string -> bool
 
 (* Check if a method has cross-namespace enum/bitfield parameters or return type *)
-val method_has_cross_namespace_types : ctx:generation_context -> gir_method -> bool
+val method_has_cross_namespace_types :
+  ctx:generation_context -> gir_method -> bool
 
 (* Check if a constructor has cross-namespace enum/bitfield parameters *)
 val constructor_has_cross_namespace_types :
@@ -47,8 +48,7 @@ val property_base_names :
 val method_has_excluded_type : gir_method -> bool
 
 (* Check if a method should be skipped *)
-val should_skip_method_binding :
-  ctx:generation_context -> gir_method -> bool
+val should_skip_method_binding : ctx:generation_context -> gir_method -> bool
 
 (* Check if a constructor has varargs *)
 val constructor_has_varargs : gir_constructor -> bool
@@ -57,9 +57,9 @@ val constructor_has_varargs : gir_constructor -> bool
 val should_generate_constructor :
   ctx:generation_context -> gir_constructor -> bool
 
-(* Check if a record name ends with "Private" *)
-val should_skip_private_record : gir_record -> bool
+(* Check if a record should be generated. For example, private records are excluded from generation *)
+val should_generate_record : gir_record -> bool
+val should_generate_class : gir_class -> bool
 
 (* Check if a method has a parameter with interface type *)
-val method_has_interface_param :
-  ctx:generation_context -> gir_method -> bool
+val method_has_interface_param : ctx:generation_context -> gir_method -> bool

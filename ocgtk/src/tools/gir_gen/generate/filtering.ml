@@ -50,9 +50,7 @@ let has_simple_type ~ctx (gir_type : gir_type) =
 
 (* Check if a type is an array type - arrays require inline code generation
    and can't be handled by simple type mapping macros *)
-let is_array_type (gir_type : gir_type) =
-  Option.is_some gir_type.array
-
+let is_array_type (gir_type : gir_type) = Option.is_some gir_type.array
 let property_exclude_list = [ ("IconPaintable", "is-symbolic") ]
 
 let should_generate_property ~ctx ~class_name ~methods (prop : gir_property) =
@@ -179,9 +177,9 @@ let should_generate_constructor ~ctx (ctor : gir_constructor) =
       ~find_type_mapping:(Type_mappings.find_type_mapping_for_gir_type ~ctx)
       ~enums:ctx.enums ~bitfields:ctx.bitfields ctor
   in
-  not ctor.throws
-  && not (constructor_has_varargs ctor)
-  && not (constructor_has_cross_namespace_types ~ctx ctor)
+  (not ctor.throws)
+  && (not (constructor_has_varargs ctor))
+  && (not (constructor_has_cross_namespace_types ~ctx ctor))
   && not has_unknown_type
 
 let banned_records = [ "PrintBackend" ]
@@ -190,25 +188,34 @@ let banned_records = [ "PrintBackend" ]
    GObject private data structures that don't appear in public headers *)
 let should_skip_private_record (record : gir_record) =
   let name = record.record_name in
-
   let len = String.length name in
   List.exists banned_records ~f:(fun banned -> String.equal banned name)
   || (len > 7 && String.equal (String.sub name ~pos:(len - 7) ~len:7) "Private")
 
+(* Check if a record should be generated *)
+let should_generate_record (record : gir_record) =
+  (* Filter out GObject class structs (records with is_gtype_struct_for attribute) *)
+  Option.is_none record.Types.is_gtype_struct_for
+  (* Also filter out *Private records - internal structures not in public headers *)
+  && not (should_skip_private_record record)
+
 (* Check if a method has a parameter with interface type *)
 let method_has_interface_param ~ctx (meth : gir_method) =
   List.exists meth.parameters ~f:(fun p ->
-    let check_interface_by_name name =
-      if name = "" then false
-      else
-        match Type_mappings.find_interface_mapping ctx.interfaces name with
-        | Some _ -> true
+      let check_interface_by_name name =
+        if name = "" then false
+        else
+          match Type_mappings.find_interface_mapping ctx.interfaces name with
+          | Some _ -> true
+          | None -> false
+      in
+      let check_interface_by_c_type c_type_opt =
+        match c_type_opt with
         | None -> false
-    in
-    let check_interface_by_c_type c_type_opt =
-      match c_type_opt with
-      | None -> false
-      | Some c_type -> check_interface_by_name c_type
-    in
-    check_interface_by_name p.param_type.name || check_interface_by_c_type p.param_type.c_type
-  )
+        | Some c_type -> check_interface_by_name c_type
+      in
+      check_interface_by_name p.param_type.name
+      || check_interface_by_c_type p.param_type.c_type)
+
+let should_generate_class (cls : gir_class) =
+  not (Exclude_list.should_skip_class cls.class_name)

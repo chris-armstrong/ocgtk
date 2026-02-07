@@ -7,7 +7,8 @@
  (library
   (name gir_gen_lib)
   (modules :standard \ gir_gen)
-  (libraries str unix xmlm logs logs.fmt containers re)
+  (libraries str unix xmlm logs logs.fmt containers re sexplib)
+  (preprocess (pps ppx_sexp_conv))
   (flags (:standard -w -32)))
 
 ; Main executable
