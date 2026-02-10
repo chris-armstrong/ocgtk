@@ -452,6 +452,7 @@ let generate_enum_files ~output_dir ~generated_stubs ~generated_modules
 
 (* Main generation function *)
 let generate_bindings filter_file gir_file output_dir reference_files =
+  printf "Current directory: %s\n" (Sys.getcwd ());
   printf "Parsing %s ...\n" gir_file;
 
   (* Log reference files if provided *)

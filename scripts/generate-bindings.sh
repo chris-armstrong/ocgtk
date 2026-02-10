@@ -1,0 +1,91 @@
+#!/bin/bash
+# Generate OCaml bindings from GIR files using gir_gen
+# Usage: ./scripts/generate-bindings.sh [GIR_PATH]
+#
+# Set GIR_PATH to override the default location of GIR files
+# Default: /usr/share/gir-1.0
+
+set -e
+
+# Configuration
+GIR_PATH="${1:-${GIR_PATH:-/usr/share/gir-1.0}}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+# The dune workspace is in the ocgtk subdirectory, NOT the repository root
+WORKSPACE_ROOT="$REPO_ROOT/ocgtk"
+BUILD_DIR="$WORKSPACE_ROOT/_build/references"
+GIR_GEN="$WORKSPACE_ROOT/_build/default/src/tools/gir_gen/gir_gen.exe"
+
+echo "==================================="
+echo "OCaml GTK Bindings Generator"
+echo "==================================="
+echo "GIR files: $GIR_PATH"
+echo "Repository root: $REPO_ROOT"
+echo "Workspace root: $WORKSPACE_ROOT"
+echo ""
+
+# Change to workspace root (where dune-project is)
+cd "$WORKSPACE_ROOT"
+
+# Step 0: Build gir_gen tool
+echo "Step 0: Building gir_gen tool..."
+echo "-----------------------------------"
+dune build src/tools/gir_gen/gir_gen.exe
+
+if [ ! -f "$GIR_GEN" ]; then
+    echo "Error: gir_gen not found at $GIR_GEN"
+    exit 1
+fi
+
+echo "✓ gir_gen built successfully"
+echo ""
+
+# Ensure build directory exists for reference files
+mkdir -p "$BUILD_DIR"
+
+# Step 1: Generate reference files
+echo "Step 1: Generating cross-namespace reference files..."
+echo "-----------------------------------"
+
+echo "  [1/3] Generating GIO references..."
+"$GIR_GEN" references "$GIR_PATH/Gio-2.0.gir" "$BUILD_DIR/gio-references.sexp"
+
+echo "  [2/3] Generating GDK references..."
+"$GIR_GEN" references "$GIR_PATH/Gdk-4.0.gir" "$BUILD_DIR/gdk-references.sexp"
+
+echo "  [3/3] Generating GTK references..."
+"$GIR_GEN" references "$GIR_PATH/Gtk-4.0.gir" "$BUILD_DIR/gtk-references.sexp"
+
+echo ""
+echo "Step 2: Generating OCaml bindings..."
+echo "-----------------------------------"
+
+echo "  [1/3] Generating GIO bindings..."
+"$GIR_GEN" generate "$GIR_PATH/Gio-2.0.gir" src/gio
+
+echo ""
+echo "  [2/3] Generating GDK bindings (with GIO references)..."
+"$GIR_GEN" generate \
+    -r "$BUILD_DIR/gio-references.sexp" \
+    "$GIR_PATH/Gdk-4.0.gir" \
+    src/gdk
+
+echo ""
+echo "  [3/3] Generating GTK bindings (with GIO and GDK references)..."
+"$GIR_GEN" generate \
+    -r "$BUILD_DIR/gio-references.sexp" \
+    -r "$BUILD_DIR/gdk-references.sexp" \
+    "$GIR_PATH/Gtk-4.0.gir" \
+    src/gtk
+
+echo ""
+echo "==================================="
+echo "✓ Code generation complete!"
+echo "==================================="
+echo ""
+echo "Generated files are in:"
+echo "  - src/gio/generated/"
+echo "  - src/gdk/generated/"
+echo "  - src/gtk/generated/"
+echo ""
+echo "You can now run: dune build"

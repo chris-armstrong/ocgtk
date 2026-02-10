@@ -11,6 +11,11 @@
   (with-stdout-to %{targets}
    (bash "echo '(' && pkg-config --cflags gtk4 && echo ')'"))))
 
+; Code generation for GDK bindings
+; To regenerate bindings from GIR files, run:
+;   ./scripts/generate-bindings.sh
+; This writes to src/gdk/generated/ in the source tree
+
 ; Main GDK library combining core and generated code
 (library
  (name ocgtk_gdk)
