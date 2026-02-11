@@ -1,0 +1,28 @@
+; Include subdirectories to find modules in core/ and generated/
+(include_subdirs unqualified)
+
+; Include generated C stubs library definition
+(include generated/dune-generated.inc)
+
+; Configure pkg-config for Pango
+(rule
+ (targets c_flags.sexp)
+ (action
+  (with-stdout-to %{targets}
+   (bash "echo '(' && pkg-config --cflags pango && echo ')'"))))
+
+; Main Pango library combining core and generated code
+(library
+ (name ocgtk_pango)
+ (public_name ocgtk.pango)
+ (synopsis "OCaml bindings for Pango")
+ (wrapped true)
+ (flags :standard -w -3-6-9-27-32-33-34-50)
+ (modules :standard)
+ (modules_without_implementation pango_enums)
+ (foreign_stubs
+  (language c)
+  (names ml_pango)
+  (flags :standard -Igenerated -Icore (:include c_flags.sexp)))
+
+ (libraries ocgtk.common ocgtk_pango_generated_stubs))

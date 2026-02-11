@@ -1,0 +1,54 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* RoundedRect: RoundedRect *)
+
+(** A rectangular region with rounded corners.
+
+Application code should normalize rectangles using
+[method@Gsk.RoundedRect.normalize]; this function will ensure that
+the bounds of the rectangle are normalized and ensure that the corner
+values are positive and the corners do not overlap.
+
+All functions taking a `GskRoundedRect` as an argument will internally
+operate on a normalized copy; all functions returning a `GskRoundedRect`
+will always return a normalized one.
+
+The algorithm used for normalizing corner sizes is described in
+[the CSS specification](https://drafts.csswg.org/css-backgrounds-3/#border-radius). *)
+type t = [`rounded_rect] Gobject.obj
+
+(* Methods *)
+(** Shrinks (or grows) the given rectangle by moving the 4 sides
+according to the offsets given.
+
+The corner radii will be changed in a way that tries to keep
+the center of the corner circle intact. This emulates CSS behavior.
+
+This function also works for growing rectangles if you pass
+negative values for the @top, @right, @bottom or @left. *)
+external shrink : t -> float -> float -> float -> float -> t = "ml_gsk_rounded_rect_shrink"
+
+(** Offsets the bound's origin by @dx and @dy.
+
+The size and corners of the rectangle are unchanged. *)
+external offset : t -> float -> float -> t = "ml_gsk_rounded_rect_offset"
+
+(** Normalizes the passed rectangle.
+
+This function will ensure that the bounds of the rectangle
+are normalized and ensure that the corner values are positive
+and the corners do not overlap. *)
+external normalize : t -> t = "ml_gsk_rounded_rect_normalize"
+
+(** Checks if all corners of @self are right angles and the
+rectangle covers all of its bounds.
+
+This information can be used to decide if [ctor@Gsk.ClipNode.new]
+or [ctor@Gsk.RoundedClipNode.new] should be called. *)
+external is_rectilinear : t -> bool = "ml_gsk_rounded_rect_is_rectilinear"
+
+(** Initializes @self using the given @src rectangle.
+
+This function will not normalize the `GskRoundedRect`,
+so make sure the source is normalized. *)
+external init_copy : t -> t -> t = "ml_gsk_rounded_rect_init_copy"
+

@@ -1,0 +1,103 @@
+/* GENERATED CODE - DO NOT EDIT */
+/* C bindings for Quad */
+
+#include <graphene.h>
+#include <caml/mlvalues.h>
+#include <caml/memory.h>
+#include <caml/alloc.h>
+#include <caml/callback.h>
+#include <caml/fail.h>
+#include <caml/hash.h>
+#include <caml/custom.h>
+#include "wrappers.h"
+
+#include <graphene-gobject.h>
+/* Include common type conversions and forward declarations */
+#include "generated_forward_decls.h"
+
+/* Conversion functions for graphene_quad_t (opaque record with hidden fields) */
+graphene_quad_t *graphene_quad_t_val(value v) {
+  return *(graphene_quad_t **)Data_custom_val(v);
+}
+
+value Val_graphene_quad_t(const graphene_quad_t *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_graphene_quad_t_option(const graphene_quad_t *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_graphene_quad_t(ptr));
+}
+
+
+CAMLexport CAMLprim value ml_graphene_quad_alloc(value unit)
+{
+CAMLparam1(unit);
+
+graphene_quad_t *obj = graphene_quad_alloc();
+
+CAMLreturn(Val_graphene_quad_t(obj));
+}
+CAMLexport CAMLprim value ml_graphene_quad_init_from_rect(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+graphene_quad_t* result = graphene_quad_init_from_rect(graphene_quad_t_val(self), graphene_rect_t_val(arg1));
+CAMLreturn(Val_graphene_quad_t(result));
+}
+
+CAMLexport CAMLprim value ml_graphene_quad_init_from_points(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+    int arg1_length = Wosize_val(arg1);
+    graphene_point_t* c_arg1 = (graphene_point_t*)g_malloc(sizeof(graphene_point_t) * arg1_length);
+    for (int i = 0; i < arg1_length; i++) {
+      c_arg1[i] = *graphene_point_t_val(Field(arg1, i));
+    }
+
+graphene_quad_t* result = graphene_quad_init_from_points(graphene_quad_t_val(self), c_arg1);
+    g_free(c_arg1);
+CAMLreturn(Val_graphene_quad_t(result));
+}
+
+CAMLexport CAMLprim value ml_graphene_quad_init(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+
+graphene_quad_t* result = graphene_quad_init(graphene_quad_t_val(self), graphene_point_t_val(arg1), graphene_point_t_val(arg2), graphene_point_t_val(arg3), graphene_point_t_val(arg4));
+CAMLreturn(Val_graphene_quad_t(result));
+}
+
+CAMLexport CAMLprim value ml_graphene_quad_get_point(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+const graphene_point_t* result = graphene_quad_get_point(graphene_quad_t_val(self), Int_val(arg1));
+CAMLreturn(Val_graphene_point_t(result));
+}
+
+CAMLexport CAMLprim value ml_graphene_quad_free(value self)
+{
+CAMLparam1(self);
+
+graphene_quad_free(graphene_quad_t_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_graphene_quad_contains(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+_Bool result = graphene_quad_contains(graphene_quad_t_val(self), graphene_point_t_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_graphene_quad_bounds(value self)
+{
+CAMLparam1(self);
+graphene_rect_t out1;
+
+graphene_quad_bounds(graphene_quad_t_val(self), &out1);
+CAMLreturn(Val_graphene_rect_t(&out1));
+}

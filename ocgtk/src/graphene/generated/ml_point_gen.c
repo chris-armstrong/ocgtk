@@ -1,0 +1,121 @@
+/* GENERATED CODE - DO NOT EDIT */
+/* C bindings for Point */
+
+#include <graphene.h>
+#include <caml/mlvalues.h>
+#include <caml/memory.h>
+#include <caml/alloc.h>
+#include <caml/callback.h>
+#include <caml/fail.h>
+#include <caml/hash.h>
+#include <caml/custom.h>
+#include "wrappers.h"
+
+#include <graphene-gobject.h>
+/* Include common type conversions and forward declarations */
+#include "generated_forward_decls.h"
+
+/* Conversion functions for graphene_point_t (opaque record with hidden fields) */
+graphene_point_t *graphene_point_t_val(value v) {
+  return *(graphene_point_t **)Data_custom_val(v);
+}
+
+value Val_graphene_point_t(const graphene_point_t *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_graphene_point_t_option(const graphene_point_t *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_graphene_point_t(ptr));
+}
+
+
+CAMLexport CAMLprim value ml_graphene_point_alloc(value unit)
+{
+CAMLparam1(unit);
+
+graphene_point_t *obj = graphene_point_alloc();
+
+CAMLreturn(Val_graphene_point_t(obj));
+}
+CAMLexport CAMLprim value ml_graphene_point_to_vec2(value self)
+{
+CAMLparam1(self);
+graphene_vec2_t out1;
+
+graphene_point_to_vec2(graphene_point_t_val(self), &out1);
+CAMLreturn(Val_graphene_vec2_t(&out1));
+}
+
+CAMLexport CAMLprim value ml_graphene_point_near(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+_Bool result = graphene_point_near(graphene_point_t_val(self), graphene_point_t_val(arg1), Double_val(arg2));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_graphene_point_interpolate(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+graphene_point_t out3;
+
+graphene_point_interpolate(graphene_point_t_val(self), graphene_point_t_val(arg1), Double_val(arg2), &out3);
+CAMLreturn(Val_graphene_point_t(&out3));
+}
+
+CAMLexport CAMLprim value ml_graphene_point_init_from_vec2(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+graphene_point_t* result = graphene_point_init_from_vec2(graphene_point_t_val(self), graphene_vec2_t_val(arg1));
+CAMLreturn(Val_graphene_point_t(result));
+}
+
+CAMLexport CAMLprim value ml_graphene_point_init_from_point(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+graphene_point_t* result = graphene_point_init_from_point(graphene_point_t_val(self), graphene_point_t_val(arg1));
+CAMLreturn(Val_graphene_point_t(result));
+}
+
+CAMLexport CAMLprim value ml_graphene_point_init(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+graphene_point_t* result = graphene_point_init(graphene_point_t_val(self), Double_val(arg1), Double_val(arg2));
+CAMLreturn(Val_graphene_point_t(result));
+}
+
+CAMLexport CAMLprim value ml_graphene_point_free(value self)
+{
+CAMLparam1(self);
+
+graphene_point_free(graphene_point_t_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_graphene_point_equal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+_Bool result = graphene_point_equal(graphene_point_t_val(self), graphene_point_t_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_graphene_point_distance(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+float out2;
+float out3;
+
+float result = graphene_point_distance(graphene_point_t_val(self), graphene_point_t_val(arg1), &out2, &out3);
+CAMLlocal1(ret);
+    ret = caml_alloc(3, 0);
+    Store_field(ret, 0, caml_copy_double(result));
+    Store_field(ret, 1, caml_copy_double(out2));
+    Store_field(ret, 2, caml_copy_double(out3));
+    CAMLreturn(ret);
+}

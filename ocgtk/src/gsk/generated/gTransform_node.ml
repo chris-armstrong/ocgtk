@@ -1,0 +1,14 @@
+(* High-level class for TransformNode *)
+class transform_node (obj : Transform_node.t) = object (self)
+
+  method get_child : unit -> GRender_node.render_node =
+    fun () ->
+      new  GRender_node.render_node(Transform_node.get_child obj)
+
+  method get_transform : unit -> Transform.t =
+    fun () ->
+      (Transform_node.get_transform obj)
+
+    method as_transform_node = obj
+end
+

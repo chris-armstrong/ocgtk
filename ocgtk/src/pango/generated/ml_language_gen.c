@@ -1,0 +1,83 @@
+/* GENERATED CODE - DO NOT EDIT */
+/* C bindings for Language */
+
+#include <pango/pango.h>
+#include <caml/mlvalues.h>
+#include <caml/memory.h>
+#include <caml/alloc.h>
+#include <caml/callback.h>
+#include <caml/fail.h>
+#include <caml/hash.h>
+#include <caml/custom.h>
+#include "wrappers.h"
+
+#include <pango/pango.h>
+/* Include common type conversions and forward declarations */
+#include "generated_forward_decls.h"
+
+/* Conversion functions for PangoLanguage (opaque record with hidden fields) */
+PangoLanguage *PangoLanguage_val(value v) {
+  return *(PangoLanguage **)Data_custom_val(v);
+}
+
+value Val_PangoLanguage(const PangoLanguage *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_PangoLanguage_option(const PangoLanguage *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_PangoLanguage(ptr));
+}
+
+
+CAMLexport CAMLprim value ml_pango_language_to_string(value self)
+{
+CAMLparam1(self);
+
+const char* result = pango_language_to_string(PangoLanguage_val(self));
+CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_pango_language_matches(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gboolean result = pango_language_matches(PangoLanguage_val(self), String_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_pango_language_includes_script(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gboolean result = pango_language_includes_script(PangoLanguage_val(self), PangoScript_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_pango_language_get_scripts(value self)
+{
+CAMLparam1(self);
+int out1;
+
+const PangoScript* result = pango_language_get_scripts(PangoLanguage_val(self), &out1);
+    int result_length = out1;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, Val_PangoScript(&result[i]));
+    }
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, ml_result);
+    Store_field(ret, 1, Val_int(out1));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_pango_language_get_sample_string(value self)
+{
+CAMLparam1(self);
+
+const char* result = pango_language_get_sample_string(PangoLanguage_val(self));
+CAMLreturn(caml_copy_string(result));
+}
