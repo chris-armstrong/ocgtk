@@ -257,6 +257,7 @@ let test_constructor_with_throws () =
         ];
       ctor_doc = None;
       throws = true;
+      ctor_introspectable = true;
       (* Constructor that can throw *)
     }
   in

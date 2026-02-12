@@ -25,4 +25,5 @@ let () =
       ("Records", Records.tests);
       ("Edge Cases", Edge_cases.tests);
       ("Layer2 Method Wrappers", Method_wrapper_tests.tests);
+      ("Cross-Namespace", Cross_namespace_tests.tests);
     ]

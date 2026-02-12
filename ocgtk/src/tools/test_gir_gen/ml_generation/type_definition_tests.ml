@@ -90,6 +90,7 @@ let test_constructor_external_declaration () =
     ctor_parameters = [];
     ctor_doc = None;
     throws = false;
+    ctor_introspectable = true;
   } in
 
   (* Generate .ml with constructor *)

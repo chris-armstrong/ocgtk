@@ -177,12 +177,14 @@ let should_generate_constructor ~ctx (ctor : gir_constructor) =
       ~find_type_mapping:(Type_mappings.find_type_mapping_for_gir_type ~ctx)
       ~enums:ctx.enums ~bitfields:ctx.bitfields ctor
   in
-  (not ctor.throws)
+  ctor.ctor_introspectable
+  && (not ctor.throws)
   && (not (constructor_has_varargs ctor))
   && (not (constructor_has_cross_namespace_types ~ctx ctor))
   && not has_unknown_type
 
-let banned_records = [ "PrintBackend" ]
+let banned_records =
+  [ "PrintBackend"; "PixbufModule"; "PixbufModulePattern" ]
 
 (* Check if a record name ends with "Private" - these are typically internal
    GObject private data structures that don't appear in public headers *)
@@ -194,8 +196,9 @@ let should_skip_private_record (record : gir_record) =
 
 (* Check if a record should be generated *)
 let should_generate_record (record : gir_record) =
+  record.Types.introspectable
   (* Filter out GObject class structs (records with is_gtype_struct_for attribute) *)
-  Option.is_none record.Types.is_gtype_struct_for
+  && Option.is_none record.Types.is_gtype_struct_for
   (* Also filter out *Private records - internal structures not in public headers *)
   && not (should_skip_private_record record)
 
@@ -218,4 +221,4 @@ let method_has_interface_param ~ctx (meth : gir_method) =
       || check_interface_by_c_type p.param_type.c_type)
 
 let should_generate_class (cls : gir_class) =
-  not (Exclude_list.should_skip_class cls.class_name)
+  cls.introspectable && not (Exclude_list.should_skip_class cls.class_name)

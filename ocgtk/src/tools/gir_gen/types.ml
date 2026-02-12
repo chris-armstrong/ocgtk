@@ -69,6 +69,7 @@ type gir_constructor = {
   ctor_parameters : gir_param list;
   ctor_doc : string option;
   throws : bool;
+  ctor_introspectable : bool;
 }
 
 type gir_property = {
@@ -95,6 +96,7 @@ type gir_record = {
   glib_get_type : string option;
   opaque : bool;
   disguised : bool;
+  introspectable : bool;
   c_symbol_prefix : string option;
   is_gtype_struct_for : string option;
       (* glib:is-gtype-struct-for attribute - class structs to skip *)
@@ -139,6 +141,7 @@ type gir_class = {
   c_type : string;
   parent : string option;
   implements : string list;
+  introspectable : bool;
   constructors : gir_constructor list;
   methods : gir_method list;
   properties : gir_property list;

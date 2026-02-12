@@ -75,6 +75,7 @@ let test_constructor_signature_matches () =
     ];
     ctor_doc = None;
     throws = false;
+    ctor_introspectable = true;
   } in
 
   let mli_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface

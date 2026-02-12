@@ -1,0 +1,148 @@
+(* Cross-namespace tests for bugs surfaced by new library namespaces *)
+
+open Helpers
+
+let test_gir = "/tmp/test_cross_ns.gir"
+let output_dir = "/tmp/test_cross_ns_output"
+
+(* Bug 2: Records with introspectable="0" should be parsed but not generated *)
+let test_non_introspectable_record_filtered () =
+  let gir =
+    wrap_namespace ~namespace_name:"TestNs" ~c_prefix:"TestNs"
+      ~symbol_prefix:"test_ns"
+      {|
+      <record name="PrivateRecord" c:type="TestNsPrivateRecord" introspectable="0">
+        <field name="data"><type name="gint" c:type="int"/></field>
+      </record>
+      <record name="PublicRecord" c:type="TestNsPublicRecord">
+        <field name="value" writable="1"><type name="gint" c:type="int"/></field>
+      </record>
+  |}
+  in
+  create_gir_file test_gir gir;
+
+  (* Parse — both records should be in the AST *)
+  let _, _, _, _, _, _, records =
+    Gir_gen_lib.Parse.Gir_parser.parse_gir_file test_gir []
+  in
+  let record_names =
+    List.map
+      (fun (r : Gir_gen_lib.Types.gir_record) -> r.record_name)
+      records
+  in
+  Alcotest.(check bool)
+    "PublicRecord IS parsed" true
+    (List.mem "PublicRecord" record_names);
+  Alcotest.(check bool)
+    "PrivateRecord IS parsed (introspectable stored, not filtered)"
+    true
+    (List.mem "PrivateRecord" record_names);
+
+  (* Verify introspectable attribute is stored correctly *)
+  let private_rec =
+    List.find
+      (fun (r : Gir_gen_lib.Types.gir_record) ->
+        String.equal r.record_name "PrivateRecord")
+      records
+  in
+  Alcotest.(check bool)
+    "PrivateRecord has introspectable=false" false
+    private_rec.introspectable;
+
+  let public_rec =
+    List.find
+      (fun (r : Gir_gen_lib.Types.gir_record) ->
+        String.equal r.record_name "PublicRecord")
+      records
+  in
+  Alcotest.(check bool)
+    "PublicRecord has introspectable=true (default)" true
+    public_rec.introspectable;
+
+  (* Verify generation-level filtering *)
+  Alcotest.(check bool)
+    "PublicRecord should be generated"
+    true
+    (Gir_gen_lib.Generate.Filtering.should_generate_record public_rec);
+  Alcotest.(check bool)
+    "PrivateRecord should NOT be generated"
+    false
+    (Gir_gen_lib.Generate.Filtering.should_generate_record private_rec)
+
+(* Bug 9: Constructors with introspectable="0" should be parsed but filtered
+   at generation *)
+let test_non_introspectable_constructor_filtered () =
+  let gir =
+    wrap_namespace ~namespace_name:"TestNs" ~c_prefix:"TestNs"
+      ~symbol_prefix:"test_ns"
+      {|
+      <class name="Widget" c:type="TestNsWidget" parent="GObject.Object"
+             glib:type-name="TestNsWidget" glib:get-type="test_ns_widget_get_type">
+        <constructor name="new" c:identifier="test_ns_widget_new">
+          <return-value transfer-ownership="full">
+            <type name="Widget" c:type="TestNsWidget*"/>
+          </return-value>
+        </constructor>
+        <constructor name="new_internal" c:identifier="test_ns_widget_new_internal" introspectable="0">
+          <return-value transfer-ownership="full">
+            <type name="Widget" c:type="TestNsWidget*"/>
+          </return-value>
+        </constructor>
+      </class>
+  |}
+  in
+  create_gir_file test_gir gir;
+
+  (* Parse — both constructors should be in the AST *)
+  let _, _, classes, _, _, _, _ =
+    Gir_gen_lib.Parse.Gir_parser.parse_gir_file test_gir []
+  in
+  let cls =
+    List.find
+      (fun (c : Gir_gen_lib.Types.gir_class) ->
+        String.equal c.class_name "Widget")
+      classes
+  in
+  Alcotest.(check int)
+    "Both constructors are parsed" 2
+    (List.length cls.constructors);
+
+  (* Verify introspectable attribute is stored correctly *)
+  let good_ctor =
+    List.find
+      (fun (c : Gir_gen_lib.Types.gir_constructor) ->
+        String.equal c.ctor_name "new")
+      cls.constructors
+  in
+  Alcotest.(check bool)
+    "Good constructor has introspectable=true" true
+    good_ctor.ctor_introspectable;
+
+  let bad_ctor =
+    List.find
+      (fun (c : Gir_gen_lib.Types.gir_constructor) ->
+        String.equal c.ctor_name "new_internal")
+      cls.constructors
+  in
+  Alcotest.(check bool)
+    "Bad constructor has introspectable=false" false
+    bad_ctor.ctor_introspectable;
+
+  (* Verify generation-level filtering *)
+  let ctx = create_test_context () in
+  Alcotest.(check bool)
+    "Good constructor should be generated"
+    true
+    (Gir_gen_lib.Generate.Filtering.should_generate_constructor ~ctx good_ctor);
+  Alcotest.(check bool)
+    "Bad constructor should NOT be generated"
+    false
+    (Gir_gen_lib.Generate.Filtering.should_generate_constructor ~ctx bad_ctor)
+
+let tests =
+  [
+    Alcotest.test_case "Non-introspectable record filtered at generation"
+      `Quick test_non_introspectable_record_filtered;
+    Alcotest.test_case "Non-introspectable constructor filtered at generation"
+      `Quick test_non_introspectable_constructor_filtered;
+  ]

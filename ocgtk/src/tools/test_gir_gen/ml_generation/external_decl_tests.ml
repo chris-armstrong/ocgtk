@@ -247,6 +247,7 @@ let test_constructor_with_multiple_params () =
     ];
     ctor_doc = None;
     throws = false;
+    ctor_introspectable = true;
   } in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface

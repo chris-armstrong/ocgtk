@@ -52,6 +52,7 @@ let test_simple_constructor () =
       ctor_parameters = [];
       ctor_doc = None;
       throws = false;
+      ctor_introspectable = true;
     }
   in
 
@@ -100,6 +101,7 @@ let test_constructor_with_params () =
         ];
       ctor_doc = None;
       throws = false;
+      ctor_introspectable = true;
     }
   in
 
@@ -149,6 +151,7 @@ let test_constructor_many_params () =
       ctor_parameters = params;
       ctor_doc = None;
       throws = false;
+      ctor_introspectable = true;
     }
   in
 
@@ -276,6 +279,7 @@ let test_constructor_type_conversion () =
       ctor_parameters = [];
       ctor_doc = None;
       throws = false;
+      ctor_introspectable = true;
     }
   in
 
@@ -352,6 +356,7 @@ let test_variable_declarations () =
       ctor_parameters = [];
       ctor_doc = None;
       throws = false;
+      ctor_introspectable = true;
     }
   in
 
@@ -383,6 +388,7 @@ let test_parameter_flow_to_return () =
       ctor_parameters = [];
       ctor_doc = None;
       throws = false;
+      ctor_introspectable = true;
     }
   in
 
@@ -432,6 +438,7 @@ let test_bytecode_calls_native () =
       ctor_parameters = params;
       ctor_doc = None;
       throws = false;
+      ctor_introspectable = true;
     }
   in
 
@@ -485,6 +492,7 @@ let test_non_opaque_record_return () =
       c_symbol_prefix = None;
       is_gtype_struct_for = None;
       disguised = false;
+      introspectable = true;
       opaque = false;
       record_doc = None;
       functions = [];
@@ -560,6 +568,7 @@ let test_non_opaque_record_parameter () =
       c_symbol_prefix = None;
       is_gtype_struct_for = None;
       disguised = false;
+      introspectable = true;
       opaque = false;
       record_doc = None;
       functions = [];
@@ -638,6 +647,7 @@ let test_opaque_record_return () =
       c_symbol_prefix = None;
       is_gtype_struct_for = None;
       disguised = true;
+      introspectable = true;
       opaque = true;
       record_doc = None;
       functions = [];
@@ -696,6 +706,7 @@ let test_opaque_record_parameter () =
       c_symbol_prefix = None;
       is_gtype_struct_for = None;
       disguised = true;
+      introspectable = true;
       opaque = true;
       record_doc = None;
       functions = [];
@@ -790,6 +801,7 @@ let test_nullable_record_return () =
       c_symbol_prefix = None;
       is_gtype_struct_for = None;
       disguised = false;
+      introspectable = true;
       opaque = false;
       record_doc = None;
       functions = [];
@@ -867,6 +879,7 @@ let test_nullable_record_parameter () =
       c_symbol_prefix = None;
       is_gtype_struct_for = None;
       disguised = false;
+      introspectable = true;
       opaque = false;
       record_doc = None;
       functions = [];
