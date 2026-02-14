@@ -168,8 +168,8 @@ let run_gir_gen ?filter_file gir_file output_dir =
     match filter_file with Some f -> sprintf "-f %s " f | None -> ""
   in
   let cmd =
-    sprintf "%s/gir_gen/gir_gen.exe %s%s %s" tools_dir filter_arg gir_file
-      output_dir
+    sprintf "%s/gir_gen/gir_gen.exe generate %s%s %s" tools_dir filter_arg
+      gir_file output_dir
   in
   let result =
     run_command_with_output ~log_dir:(Some "/tmp/gir_gen_test_logs") cmd
