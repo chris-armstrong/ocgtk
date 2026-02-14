@@ -18,7 +18,7 @@ Minimise your output to just the relevant parts.
 
 ### Setup: Load or Define Guidelines
 
-Load `.opencode/guidelines/ocaml-readability.md`. If MISSING, STOP and ask user for further instructions
+Load `ocgtk/docs/code_guidelines/index.md` into your agents. STOP if you are unable to find it and ask for instructions.
 
 You do not need to load the guidelines file yourself, the subagents will do that for themselves. DO NOT summarise it for them, ALWAYS reference it.
 
