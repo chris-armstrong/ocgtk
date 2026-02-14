@@ -3,7 +3,7 @@ name: glm-planner
 mode: subagent
 description: Plans complex changes to meet a specific guideline
 agent: plan
-model: opencode/claude-opus-4.6
+model: opencode/claude-opus-4-5
 ---
 You plan OCaml a refactor, implementaiton or complex multistage plan to meet specific code guidelines.
 
