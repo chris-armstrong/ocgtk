@@ -8,8 +8,7 @@ tools:
   glob: true
   bash: true
   lsp: true
-# model: anthropic/claude-haiku-4-5
-model: opencode/glm-4.7
+model: opencode/kimi-k2.5-free
 ---
 You will be given:
 - A file and line range
