@@ -154,14 +154,16 @@ let should_skip_method_binding ~ctx (meth : gir_method) =
   in
   (* Check if any parameter or return type references cross-namespace enums/bitfields *)
   let has_cross_namespace_type = method_has_cross_namespace_types ~ctx meth in
+  (* Check if method is marked as non-introspectable *)
+  let is_not_introspectable = not meth.introspectable in
 
   Logs.debug (fun m ->
-      m "should_skip_method_name: %s -> %b %b %b %b %b\n" meth.c_identifier
+      m "should_skip_method_name: %s -> %b %b %b %b %b %b\n" meth.c_identifier
         is_variadic has_excluded_type has_unknown_type is_excluded_function
-        has_cross_namespace_type);
+        has_cross_namespace_type is_not_introspectable);
 
   is_variadic || has_excluded_type || has_unknown_type || is_excluded_function
-  || has_cross_namespace_type
+  || has_cross_namespace_type || is_not_introspectable
 
 let constructor_has_varargs (ctor : gir_constructor) =
   List.exists ctor.ctor_parameters ~f:(fun p -> p.varargs)
@@ -222,3 +224,6 @@ let method_has_interface_param ~ctx (meth : gir_method) =
 
 let should_generate_class (cls : gir_class) =
   cls.introspectable && not (Exclude_list.should_skip_class cls.class_name)
+
+(* Check if a standalone function should be generated *)
+let should_generate_function (func : gir_function) = func.introspectable

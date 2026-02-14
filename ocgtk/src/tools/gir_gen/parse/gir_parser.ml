@@ -332,6 +332,10 @@ let parse_gir_file filename filter_classes =
                       let throws =
                         get_attr "throws" tag_attrs |> Utils.parse_bool
                       in
+                      let introspectable =
+                        get_attr "introspectable" tag_attrs
+                        |> Utils.parse_bool ~default:true
+                      in
                       let return_type, params, doc, get_property, set_property =
                         parse_method tag_attrs
                       in
@@ -345,6 +349,7 @@ let parse_gir_file filename filter_classes =
                           throws;
                           get_property;
                           set_property;
+                          introspectable;
                         }
                         :: !methods;
                       parse_class_contents ()
@@ -360,6 +365,10 @@ let parse_gir_file filename filter_classes =
                       let throws =
                         get_attr "throws" tag_attrs |> Utils.parse_bool
                       in
+                      let introspectable =
+                        get_attr "introspectable" tag_attrs
+                        |> Utils.parse_bool ~default:true
+                      in
                       let return_type, params, doc, get_property, set_property =
                         parse_method tag_attrs
                       in
@@ -373,6 +382,7 @@ let parse_gir_file filename filter_classes =
                           throws;
                           get_property;
                           set_property;
+                          introspectable;
                         }
                         :: !virtual_methods;
                       parse_class_contents ()
@@ -725,6 +735,9 @@ let parse_gir_file filename filter_classes =
     let params = ref [] in
     let doc : string option ref = ref None in
     let throws = get_attr "throws" attrs |> Utils.parse_bool in
+    let introspectable =
+      get_attr "introspectable" attrs |> Utils.parse_bool ~default:true
+    in
 
     let rec parse_function_contents () =
       match Xmlm.input input with
@@ -771,6 +784,7 @@ let parse_gir_file filename filter_classes =
           parameters = List.rev !params;
           doc = !doc;
           throws;
+          introspectable;
         }
     | _, _, _ -> failwith "Unable to parse function correctly"
   (* Parse parameters list *)
@@ -1058,34 +1072,39 @@ let parse_gir_file filename filter_classes =
               | _ ->
                   skip_element input 1;
                   parse_record_contents ())
-          | `El_start ((_, raw_tag), tag_attrs)
-            when local_name raw_tag = "method" -> (
-              match
-                (get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs)
-              with
-              | Some method_name, Some c_id ->
-                  let throws =
-                    get_attr "throws" tag_attrs |> Utils.parse_bool
-                  in
-                  let return_type, params, doc, get_property, set_property =
-                    parse_method tag_attrs
-                  in
-                  methods :=
-                    {
-                      method_name;
-                      c_identifier = c_id;
-                      return_type;
-                      parameters = params;
-                      doc;
-                      throws;
-                      get_property;
-                      set_property;
-                    }
-                    :: !methods;
-                  parse_record_contents ()
-              | _ ->
-                  skip_element input 1;
-                  parse_record_contents ())
+           | `El_start ((_, raw_tag), tag_attrs)
+             when local_name raw_tag = "method" -> (
+               match
+                 (get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs)
+               with
+               | Some method_name, Some c_id ->
+                   let throws =
+                     get_attr "throws" tag_attrs |> Utils.parse_bool
+                   in
+                   let introspectable =
+                     get_attr "introspectable" tag_attrs
+                     |> Utils.parse_bool ~default:true
+                   in
+                   let return_type, params, doc, get_property, set_property =
+                     parse_method tag_attrs
+                   in
+                   methods :=
+                     {
+                       method_name;
+                       c_identifier = c_id;
+                       return_type;
+                       parameters = params;
+                       doc;
+                       throws;
+                       get_property;
+                       set_property;
+                       introspectable;
+                     }
+                     :: !methods;
+                   parse_record_contents ()
+               | _ ->
+                   skip_element input 1;
+                   parse_record_contents ())
           | `El_start ((_, raw_tag), _tag_attrs) when local_name raw_tag = "doc"
             ->
               record_doc := element_data input ();
@@ -1153,6 +1172,10 @@ let parse_gir_file filename filter_classes =
                   let throws =
                     get_attr "throws" tag_attrs |> Utils.parse_bool
                   in
+                  let introspectable =
+                    get_attr "introspectable" tag_attrs
+                    |> Utils.parse_bool ~default:true
+                  in
                   let return_type, params, doc, get_property, set_property =
                     parse_method tag_attrs
                   in
@@ -1166,6 +1189,7 @@ let parse_gir_file filename filter_classes =
                       throws;
                       get_property;
                       set_property;
+                      introspectable;
                     }
                     :: !methods;
                   parse_class_contents ()
@@ -1180,6 +1204,10 @@ let parse_gir_file filename filter_classes =
                   let throws =
                     get_attr "throws" tag_attrs |> Utils.parse_bool
                   in
+                  let introspectable =
+                    get_attr "introspectable" tag_attrs
+                    |> Utils.parse_bool ~default:true
+                  in
                   let return_type, params, doc, get_property, set_property =
                     parse_method tag_attrs
                   in
@@ -1193,6 +1221,7 @@ let parse_gir_file filename filter_classes =
                       throws;
                       get_property;
                       set_property;
+                      introspectable;
                     }
                     :: !virtual_methods;
                   parse_class_contents ()

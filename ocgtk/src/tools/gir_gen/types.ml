@@ -45,6 +45,7 @@ type gir_method = {
   throws : bool;
   get_property : string option;
   set_property : string option;
+  introspectable : bool;
 }
 
 type gir_function = {
@@ -54,6 +55,7 @@ type gir_function = {
   parameters : gir_param list;
   doc : string option;
   throws : bool;
+  introspectable : bool;
 }
 
 type gir_signal = {

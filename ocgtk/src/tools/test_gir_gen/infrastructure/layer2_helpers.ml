@@ -60,6 +60,7 @@ let create_test_method ~name ~c_identifier () =
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   }
 
 (* Create a test method with a single parameter *)
@@ -82,6 +83,7 @@ let create_test_method_with_param ~name ~c_identifier ~param_name ~param_type ()
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   }
 
 (* Create a test method with multiple parameters *)
@@ -95,6 +97,7 @@ let create_test_method_with_params ~name ~c_identifier ~params () =
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   }
 
 (* Create a test method with a return type *)
@@ -108,6 +111,7 @@ let create_test_method_with_return ~name ~c_identifier ~return_type () =
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   }
 
 (* Create a test method that throws errors *)
@@ -121,6 +125,7 @@ let create_test_method_throwing ~name ~c_identifier () =
     throws = true;
     get_property = None;
     set_property = None;
+    introspectable = true;
   }
 
 (* ========================================================================= *)

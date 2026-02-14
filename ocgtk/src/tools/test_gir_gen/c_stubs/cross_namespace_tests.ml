@@ -139,10 +139,78 @@ let test_non_introspectable_constructor_filtered () =
     false
     (Gir_gen_lib.Generate.Filtering.should_generate_constructor ~ctx bad_ctor)
 
+(* Bug 12: Methods with introspectable="0" should be parsed but filtered
+   at generation *)
+let test_non_introspectable_method_skipped () =
+  let gir =
+    wrap_namespace ~namespace_name:"TestNs" ~c_prefix:"TestNs"
+      ~symbol_prefix:"test_ns"
+      {|
+      <class name="Widget" c:type="TestNsWidget" parent="GObject.Object"
+             glib:type-name="TestNsWidget" glib:get-type="test_ns_widget_get_type">
+        <method name="public_method" c:identifier="test_ns_widget_public_method">
+          <return-value transfer-ownership="none">
+            <type name="none" c:type="void"/>
+          </return-value>
+        </method>
+        <method name="internal_method" c:identifier="test_ns_widget_internal_method" introspectable="0">
+          <return-value transfer-ownership="none">
+            <type name="none" c:type="void"/>
+          </return-value>
+        </method>
+      </class>
+  |}
+  in
+  create_gir_file test_gir gir;
+
+  (* Parse - both methods should be in the AST *)
+  let _, _, classes, _, _, _, _ =
+    Gir_gen_lib.Parse.Gir_parser.parse_gir_file test_gir []
+  in
+  let cls =
+    List.find
+      (fun (c : Gir_gen_lib.Types.gir_class) ->
+        String.equal c.class_name "Widget")
+      classes
+  in
+  Alcotest.(check int) "Both methods are parsed" 2 (List.length cls.methods);
+
+  (* Verify introspectable attribute is stored correctly *)
+  let good_method =
+    List.find
+      (fun (m : Gir_gen_lib.Types.gir_method) ->
+        String.equal m.method_name "public_method")
+      cls.methods
+  in
+  Alcotest.(check bool)
+    "Good method has introspectable=true (default)" true
+    good_method.introspectable;
+
+  let bad_method =
+    List.find
+      (fun (m : Gir_gen_lib.Types.gir_method) ->
+        String.equal m.method_name "internal_method")
+      cls.methods
+  in
+  Alcotest.(check bool)
+    "Bad method has introspectable=false" false
+    bad_method.introspectable;
+
+  (* Verify generation-level filtering *)
+  let ctx = create_test_context () in
+  Alcotest.(check bool)
+    "Good method should be generated" false
+    (Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx good_method);
+  Alcotest.(check bool)
+    "Bad method should NOT be generated" true
+    (Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx bad_method)
+
 let tests =
   [
     Alcotest.test_case "Non-introspectable record filtered at generation"
       `Quick test_non_introspectable_record_filtered;
     Alcotest.test_case "Non-introspectable constructor filtered at generation"
       `Quick test_non_introspectable_constructor_filtered;
+    Alcotest.test_case "Non-introspectable method skipped at generation"
+      `Quick test_non_introspectable_method_skipped;
   ]

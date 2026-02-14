@@ -66,6 +66,7 @@ let test_simple_out_param_declaration () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -133,6 +134,7 @@ let test_out_param_passed_by_reference () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -188,6 +190,7 @@ let test_out_param_with_return_value () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -242,6 +245,7 @@ let test_inout_parameter () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -334,6 +338,7 @@ let test_multiple_out_params () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -386,6 +391,7 @@ let test_out_param_no_ocaml_input () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }

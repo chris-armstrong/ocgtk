@@ -61,6 +61,7 @@ let test_zero_terminated_string_array_input () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -135,6 +136,7 @@ let test_zero_terminated_string_array_return () =
       parameters = [];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -233,6 +235,7 @@ let test_array_with_length_parameter () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -337,6 +340,7 @@ let test_out_parameter_array_with_length () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -434,6 +438,7 @@ let test_out_parameter_string_array () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -520,6 +525,7 @@ let test_array_cleanup_transfer_none () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -586,6 +592,7 @@ let test_array_cleanup_transfer_full () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -657,6 +664,7 @@ let test_gptr_array_return () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -739,6 +747,7 @@ let test_gptr_array_transfer_full () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -818,6 +827,7 @@ let test_gptr_array_with_incompatible_element_type () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }

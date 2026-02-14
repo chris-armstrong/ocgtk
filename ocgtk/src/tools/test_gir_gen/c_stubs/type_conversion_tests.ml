@@ -32,6 +32,7 @@ let test_gboolean_conversion () =
       parameters = [];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -66,6 +67,7 @@ let test_gint_conversion () =
       parameters = [];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -100,6 +102,7 @@ let test_gdouble_conversion () =
       parameters = [];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -134,6 +137,7 @@ let test_utf8_string_conversion () =
       parameters = [];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -184,6 +188,7 @@ let test_utf8_string_parameter () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -216,6 +221,7 @@ let test_object_type_conversion () =
       parameters = [];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -250,6 +256,7 @@ let test_enum_type_conversion () =
       parameters = [];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -302,6 +309,7 @@ let test_gboolean_parameter () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -364,6 +372,7 @@ let test_multiple_type_conversions () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }

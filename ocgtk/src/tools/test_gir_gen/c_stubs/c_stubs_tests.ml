@@ -206,6 +206,7 @@ let test_simple_method () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -245,6 +246,7 @@ let test_method_with_return_value () =
       parameters = [];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -329,6 +331,7 @@ let test_method_calls_c_function () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -492,8 +495,8 @@ let test_non_opaque_record_return () =
       c_symbol_prefix = None;
       is_gtype_struct_for = None;
       disguised = false;
-      introspectable = true;
       opaque = false;
+      introspectable = true;
       record_doc = None;
       functions = [];
     }
@@ -516,6 +519,7 @@ let test_non_opaque_record_return () =
       parameters = [];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -568,8 +572,8 @@ let test_non_opaque_record_parameter () =
       c_symbol_prefix = None;
       is_gtype_struct_for = None;
       disguised = false;
-      introspectable = true;
       opaque = false;
+      introspectable = true;
       record_doc = None;
       functions = [];
     }
@@ -608,6 +612,7 @@ let test_non_opaque_record_parameter () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -647,8 +652,8 @@ let test_opaque_record_return () =
       c_symbol_prefix = None;
       is_gtype_struct_for = None;
       disguised = true;
-      introspectable = true;
       opaque = true;
+      introspectable = true;
       record_doc = None;
       functions = [];
     }
@@ -671,6 +676,7 @@ let test_opaque_record_return () =
       parameters = [];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -706,8 +712,8 @@ let test_opaque_record_parameter () =
       c_symbol_prefix = None;
       is_gtype_struct_for = None;
       disguised = true;
-      introspectable = true;
       opaque = true;
+      introspectable = true;
       record_doc = None;
       functions = [];
     }
@@ -746,6 +752,7 @@ let test_opaque_record_parameter () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -801,8 +808,8 @@ let test_nullable_record_return () =
       c_symbol_prefix = None;
       is_gtype_struct_for = None;
       disguised = false;
-      introspectable = true;
       opaque = false;
+      introspectable = true;
       record_doc = None;
       functions = [];
     }
@@ -825,6 +832,7 @@ let test_nullable_record_return () =
       parameters = [];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -879,8 +887,8 @@ let test_nullable_record_parameter () =
       c_symbol_prefix = None;
       is_gtype_struct_for = None;
       disguised = false;
-      introspectable = true;
       opaque = false;
+      introspectable = true;
       record_doc = None;
       functions = [];
     }
@@ -919,6 +927,7 @@ let test_nullable_record_parameter () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }

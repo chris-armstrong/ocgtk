@@ -56,6 +56,7 @@ let test_nullable_string_param () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -107,6 +108,7 @@ let test_nullable_object_param () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -161,6 +163,7 @@ let test_non_nullable_string () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -195,6 +198,7 @@ let test_nullable_return_value () =
       parameters = [];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -265,6 +269,7 @@ let test_multiple_nullable_params () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -317,6 +322,7 @@ let test_nullable_param_count () =
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }

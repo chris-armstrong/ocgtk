@@ -55,6 +55,7 @@ let test_method_with_throws_declares_error () =
         ];
       doc = None;
       throws = true;
+      introspectable = true;
       (* This method can throw errors *)
       get_property = None;
       set_property = None;
@@ -108,6 +109,7 @@ let test_error_handling_uses_res_ok () =
         ];
       doc = None;
       throws = true;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -142,6 +144,7 @@ let test_error_passed_by_reference () =
       parameters = [];
       doc = None;
       throws = true;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -176,6 +179,7 @@ let test_error_initialized_to_null () =
       parameters = [];
       doc = None;
       throws = true;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -215,6 +219,7 @@ let test_has_complete_error_handling () =
       parameters = [];
       doc = None;
       throws = true;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }

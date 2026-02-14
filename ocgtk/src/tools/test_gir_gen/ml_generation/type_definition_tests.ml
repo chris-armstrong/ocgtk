@@ -148,6 +148,7 @@ let test_method_with_nullable_param () =
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
 
   (* Generate .ml with method *)
@@ -196,6 +197,7 @@ let test_method_with_return_value () =
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
 
   (* Generate .ml with method *)
@@ -240,6 +242,7 @@ let test_nullable_return_value () =
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
 
   (* Generate .ml with method *)
