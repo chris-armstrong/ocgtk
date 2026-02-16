@@ -274,6 +274,92 @@ let test_copy_function_returns_copy_result () =
         (List.exists (fun s -> String.equal s "g_new0") calls)
   | None -> Alcotest.fail "Copy function has no return statement"
 
+(* Bug 7: Record copy function should have balanced parentheses in generated C code
+   See ocgtk/docs/plans/fix_codegen_bugs.md lines 743-768 *)
+let test_record_copy_parses_successfully () =
+  let open Gir_gen_lib.Types in
+  let _ctx = Helpers.create_test_context () in
+
+  (* Create a record with a copy method where c_identifier ends with _copy
+     but method_name is NOT "copy". This triggers the fallback copy function.
+     The fallback generates: return ml_gir_record_val_ptr(copy));
+     which has an extra parenthesis causing a syntax error. *)
+  let copy_method =
+    {
+      method_name = "clone";  (* Not "copy" - triggers fallback *)
+      c_identifier = "test_record_copy";  (* Ends with _copy *)
+      return_type =
+        { name = "TestRecord"; c_type = Some "TestRecord*"; nullable = false; transfer_ownership = TransferFull; array = None };
+      parameters = [];
+      doc = None;
+      throws = false;
+      get_property = None;
+      set_property = None;
+      introspectable = true;
+    }
+  in
+  let record =
+    {
+      record_name = "TestRecord";
+      c_type = "TestRecord";
+      glib_type_name = None;
+      glib_get_type = None;
+      opaque = false;
+      disguised = false;
+      c_symbol_prefix = Some "test_record";
+      is_gtype_struct_for = None;
+      fields =
+        [
+          {
+            field_name = "data";
+            field_type =
+              Some
+                {
+                  name = "gint";
+                  c_type = Some "int";
+                  nullable = false;
+                  transfer_ownership = TransferNone;
+                  array = None;
+                };
+            readable = true;
+            writable = true;
+            field_doc = None;
+          };
+        ];
+      constructors = [];
+      methods = [ copy_method ];  (* Has copy method via c_identifier *)
+      functions = [];
+      record_doc = None;
+      introspectable = true;
+    }
+  in
+
+  (* Generate the copy function C code *)
+  let buf = Buffer.create 1024 in
+  Gir_gen_lib.Generate.C_stub_record.generate_record_converters ~buf record;
+  let c_code = Buffer.contents buf in
+  Helpers.log_generated_c_code "record_copy_syntax" c_code;
+
+  (* Positive: code parses without error - this catches unbalanced parens *)
+  let functions = C_parser.parse_c_code c_code in
+  let copy_func = C_ast.find_function functions "copy_TestRecord" in
+  Alcotest.(check bool) "copy function parses to valid AST" true
+    (Option.is_some copy_func);
+
+  (* Positive: the parsed copy function has a return statement *)
+  let func = Option.get copy_func in
+  Alcotest.(check bool) "Has return statement" true
+    (Option.is_some (C_ast.return_expr func));
+
+  (* Positive: return expression wraps copy in ml_gir_record_val_ptr *)
+  let ret = C_ast.return_expr func in
+  match ret with
+  | Some expr ->
+      let calls = C_ast.get_function_calls expr in
+      Alcotest.(check bool) "Return wraps in ml_gir_record_val_ptr" true
+        (List.mem "ml_gir_record_val_ptr" calls)
+  | None -> Alcotest.fail "Copy function missing return expression"
+
 let tests =
   [
     Alcotest.test_case "Non-introspectable record filtered at generation"
@@ -284,4 +370,6 @@ let tests =
       `Quick test_non_introspectable_method_skipped;
     Alcotest.test_case "Copy function returns copy result not g_new0"
       `Quick test_copy_function_returns_copy_result;
+    Alcotest.test_case "Record copy function has balanced parentheses"
+      `Quick test_record_copy_parses_successfully;
   ]

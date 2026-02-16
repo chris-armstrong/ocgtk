@@ -20,7 +20,7 @@ value copy_GskRoundedRect(const GskRoundedRect *ptr) {
   if (ptr == NULL) return Val_none;
   GskRoundedRect *copy = g_malloc(sizeof(GskRoundedRect));
   memcpy(copy, ptr, sizeof(GskRoundedRect));
-  return ml_gir_record_val_ptr(copy));
+  return ml_gir_record_val_ptr(copy);
 }
 
 

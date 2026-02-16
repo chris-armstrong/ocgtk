@@ -135,7 +135,7 @@ let generate_value_record_conversions ~buf (record : gir_record) =
       bprintf buf "  %s *copy = g_malloc(sizeof(%s));\n" record.c_type
         record.c_type;
       bprintf buf "  memcpy(copy, ptr, sizeof(%s));\n" record.c_type;
-      bprintf buf "  return ml_gir_record_val_ptr(copy));\n";
+      bprintf buf "  return ml_gir_record_val_ptr(copy);\n";
       bprintf buf "}\n\n"
 
 let generate_record_converters ~buf (record : gir_record) =
