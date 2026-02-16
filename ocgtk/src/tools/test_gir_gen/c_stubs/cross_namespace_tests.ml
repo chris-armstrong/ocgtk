@@ -205,6 +205,75 @@ let test_non_introspectable_method_skipped () =
     "Bad method should NOT be generated" true
     (Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx bad_method)
 
+(* Bug 3: Copy function should return the copy result, not g_new0
+   See ocgtk/docs/plans/fix_codegen_bugs.md lines 553-592 *)
+let test_copy_function_returns_copy_result () =
+  let open Gir_gen_lib.Types in
+  let _ctx = Helpers.create_test_context () in
+
+  (* Create a record with a copy method - simulates GdkPixbufFormat-like record *)
+  let copy_method =
+    {
+      method_name = "copy";
+      c_identifier = "test_format_copy";
+      return_type = { name = "Format"; c_type = Some "TestFormat*"; nullable = false; transfer_ownership = TransferFull; array = None };
+      parameters = [];
+      doc = None;
+      throws = false;
+      get_property = None;
+      set_property = None;
+      introspectable = true;
+    }
+  in
+  let record =
+    {
+      record_name = "Format";
+      c_type = "TestFormat";
+      glib_type_name = Some "TestFormat";
+      glib_get_type = Some "test_format_get_type";
+      opaque = false;
+      disguised = false;
+      c_symbol_prefix = Some "test_format";
+      is_gtype_struct_for = None;
+      fields = [];
+      constructors = [];
+      methods = [ copy_method ];
+      functions = [];
+      record_doc = None;
+      introspectable = true;
+    }
+  in
+
+  (* Generate the copy function C code *)
+  let buf = Buffer.create 1024 in
+  Gir_gen_lib.Generate.C_stub_record.generate_record_converters ~buf record;
+  let c_code = Buffer.contents buf in
+  Helpers.log_generated_c_code "copy_function" c_code;
+
+  (* Parse the generated C code *)
+  let functions = C_parser.parse_c_code c_code in
+  let copy_func = Option.get (C_ast.find_function functions "copy_TestFormat") in
+
+  (* Positive: copy function calls the record's copy method *)
+  Alcotest.(check bool)
+    "Calls test_format_copy" true
+    (C_validation.calls_c_function copy_func "test_format_copy");
+
+  (* Positive: return expression wraps the copy variable, not g_new0 *)
+  let ret = C_ast.return_expr copy_func in
+  match ret with
+  | Some expr ->
+      (* The return should reference 'copy' variable *)
+      Alcotest.(check bool)
+        "Return uses copy variable" true
+        (C_ast.expr_uses_var expr "copy");
+      (* The return should NOT call g_new0 *)
+      let calls = C_ast.get_function_calls expr in
+      Alcotest.(check bool)
+        "Return does not call g_new0" false
+        (List.exists (fun s -> String.equal s "g_new0") calls)
+  | None -> Alcotest.fail "Copy function has no return statement"
+
 let tests =
   [
     Alcotest.test_case "Non-introspectable record filtered at generation"
@@ -213,4 +282,6 @@ let tests =
       `Quick test_non_introspectable_constructor_filtered;
     Alcotest.test_case "Non-introspectable method skipped at generation"
       `Quick test_non_introspectable_method_skipped;
+    Alcotest.test_case "Copy function returns copy result not g_new0"
+      `Quick test_copy_function_returns_copy_result;
   ]

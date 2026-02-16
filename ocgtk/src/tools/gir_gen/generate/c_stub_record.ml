@@ -120,16 +120,17 @@ let generate_value_record_conversions ~buf (record : gir_record) =
   match copy_method with
   | Some copy_meth ->
       (* Generate the copy_TypeName function that wraps the GTK copy function *)
-      bprintf buf "value copy_%s(const %s *ptr) {\n" record.c_type record.c_type;
+      bprintf buf "value copy_%s(const %s *ptr)\n" record.c_type record.c_type;
+      bprintf buf "{\n";
       bprintf buf "  if (ptr == NULL) return Val_none;\n";
       bprintf buf "  %s *copy = %s((%s*)ptr);\n" record.c_type
         copy_meth.c_identifier record.c_type;
-      bprintf buf "  return ml_gir_record_val_ptr(g_new0(%s, 1));\n"
-        record.c_type;
+      bprintf buf "  return ml_gir_record_val_ptr(copy);\n";
       bprintf buf "}\n\n"
   | None ->
       (* Fallback: generate a simple memcpy-based copy *)
-      bprintf buf "value copy_%s(const %s *ptr) {\n" record.c_type record.c_type;
+      bprintf buf "value copy_%s(const %s *ptr)\n" record.c_type record.c_type;
+      bprintf buf "{\n";
       bprintf buf "  if (ptr == NULL) return Val_none;\n";
       bprintf buf "  %s *copy = g_malloc(sizeof(%s));\n" record.c_type
         record.c_type;
