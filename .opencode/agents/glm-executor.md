@@ -8,6 +8,8 @@ tools:
   glob: true
   bash: true
   lsp: true
+  webfetch: true
+  websearch: true
 model: opencode/glm-5
 ---
 You will be given:

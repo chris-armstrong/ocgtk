@@ -7,6 +7,8 @@ tools:
   glob: true
   bash: true
   lsp: true
+  webfetch: true
+  websearch: true
 mode: subagent
 model: opencode/minimax-m2.5
 ---
