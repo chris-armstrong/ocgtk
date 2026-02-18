@@ -270,7 +270,14 @@ let parse_gir_file filename filter_classes =
         let c_type =
           match get_attr "c:type" attrs with
           | Some t -> t
-          | None -> "Gtk" ^ name
+          | None ->
+              (* Use namespace c:identifier-prefixes, fallback to "Gtk" if not available *)
+              let prefix =
+                match !namespace with
+                | Some ns -> ns.namespace_c_identifier_prefixes
+                | None -> "Gtk"
+              in
+              prefix ^ name
         in
         let parent = get_attr "parent" attrs in
         let introspectable =
@@ -1145,7 +1152,16 @@ let parse_gir_file filename filter_classes =
   and parse_interface attrs () =
     let name = get_attr "name" attrs |> Option.get in
     let c_type =
-      match get_attr "c:type" attrs with Some t -> t | None -> "Gtk" ^ name
+      match get_attr "c:type" attrs with
+      | Some t -> t
+      | None ->
+          (* Use namespace c:identifier-prefixes, fallback to "Gtk" if not available *)
+          let prefix =
+            match !namespace with
+            | Some ns -> ns.namespace_c_identifier_prefixes
+            | None -> "Gtk"
+          in
+          prefix ^ name
     in
     let methods = ref [] in
     let virtual_methods = ref [] in

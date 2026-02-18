@@ -425,6 +425,55 @@ let test_enum_module_name_matches_dune_convention () =
     "Gdkpixbuf_enums"
     bitfield_module_name
 
+(* Bug 8: Class with no c:type attribute should use namespace c:identifier-prefixes,
+   not hardcoded "Gtk" prefix. E.g., GdkPixbufNonAnim not GtkNonAnim. *)
+let test_non_gtk_namespace_c_type_prefix () =
+  (* Create GIR with GdkPixbuf namespace, class with no c:type attribute *)
+  let gir =
+    wrap_namespace ~namespace_name:"GdkPixbuf" ~c_prefix:"Gdk"
+      ~symbol_prefix:"gdk_pixbuf"
+      {|
+      <class name="NonAnim" parent="GObject.Object"
+             glib:type-name="GdkPixbufNonAnim" glib:get-type="gdk_pixbuf_non_anim_get_type">
+        <!-- No c:type attribute! Should infer from namespace prefix -->
+      </class>
+      <interface name="Anim"
+                 glib:type-name="GdkPixbufAnim" glib:get-type="gdk_pixbuf_anim_get_type">
+        <!-- No c:type attribute! Should infer from namespace prefix -->
+      </interface>
+  |}
+  in
+  create_gir_file test_gir gir;
+
+  (* Parse it *)
+  let _, _, classes, interfaces, _, _, _ =
+    Gir_gen_lib.Parse.Gir_parser.parse_gir_file test_gir []
+  in
+
+  (* Verify the inferred c_type for class uses Gdk prefix, not Gtk *)
+  let cls =
+    List.find
+      (fun (c : Gir_gen_lib.Types.gir_class) ->
+        String.equal c.class_name "NonAnim")
+      classes
+  in
+  Alcotest.(check string)
+    "Class c_type uses namespace prefix (Gdk), not hardcoded Gtk"
+    "GdkNonAnim"
+    cls.c_type;
+
+  (* Verify the inferred c_type for interface uses Gdk prefix, not Gtk *)
+  let intf =
+    List.find
+      (fun (i : Gir_gen_lib.Types.gir_interface) ->
+        String.equal i.interface_name "Anim")
+      interfaces
+  in
+  Alcotest.(check string)
+    "Interface c_type uses namespace prefix (Gdk), not hardcoded Gtk"
+    "GdkAnim"
+    intf.c_type
+
 let tests =
   [
     Alcotest.test_case "Non-introspectable record filtered at generation"
@@ -439,4 +488,6 @@ let tests =
       `Quick test_record_copy_parses_successfully;
     Alcotest.test_case "Enum module name matches dune convention"
       `Quick test_enum_module_name_matches_dune_convention;
+    Alcotest.test_case "Non-Gtk namespace c:type prefix inferred correctly"
+      `Quick test_non_gtk_namespace_c_type_prefix;
   ]
