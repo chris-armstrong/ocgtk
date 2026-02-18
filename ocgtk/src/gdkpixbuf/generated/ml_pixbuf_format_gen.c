@@ -16,10 +16,11 @@
 #include "generated_forward_decls.h"
 
 /* Copy function for GdkPixbufFormat (value-like record with copy method) */
-value copy_GdkPixbufFormat(const GdkPixbufFormat *ptr) {
+value copy_GdkPixbufFormat(const GdkPixbufFormat *ptr)
+{
   if (ptr == NULL) return Val_none;
   GdkPixbufFormat *copy = gdk_pixbuf_format_copy((GdkPixbufFormat*)ptr);
-  return ml_gir_record_val_ptr(g_new0(GdkPixbufFormat, 1));
+  return ml_gir_record_val_ptr(copy);
 }
 
 

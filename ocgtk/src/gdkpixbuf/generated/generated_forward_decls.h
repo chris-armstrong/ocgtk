@@ -55,16 +55,6 @@ value copy_GdkPixbufFormat(const GdkPixbufFormat *ptr);
 
 
 /* Forward declarations for record converters (non-opaque records) */
-/* Forward declarations for GdkPixbufModule converters */
-GdkPixbufModule *GdkPixbufModule_val(value val);
-value Val_GdkPixbufModule(const GdkPixbufModule *ptr);
-value Val_GdkPixbufModule_option(const GdkPixbufModule *ptr);
-
-/* Forward declarations for GdkPixbufModulePattern converters */
-GdkPixbufModulePattern *GdkPixbufModulePattern_val(value val);
-value Val_GdkPixbufModulePattern(const GdkPixbufModulePattern *ptr);
-value Val_GdkPixbufModulePattern_option(const GdkPixbufModulePattern *ptr);
-
 /* Const-safe string extraction for setters */
 #define ML_DECL_CONST_STRING(name, expr) const gchar *name = (const gchar *)(expr)
 

@@ -149,14 +149,27 @@ let normalize_class_name name =
 let module_name_of_class class_name =
   class_name |> to_snake_case |> String.capitalize_ascii
 
+(** Convert a namespace name to a dune-compliant module name.
+    Dune lowercases all characters after the first, so "GdkPixbuf" becomes "Gdkpixbuf".
+    This is needed because dune automatically derives module names from filenames,
+    and the build system enforces this capitalization convention. *)
+let namespace_to_module_name (namespace : string) : string =
+  if String.length namespace = 0 then namespace
+  else
+    let first = String.capitalize_ascii (String.sub namespace ~pos:0 ~len:1) in
+    let rest =
+      String.lowercase_ascii (String.sub namespace ~pos:1 ~len:(String.length namespace - 1))
+    in
+    first ^ rest
+
 (* Get the name of the enums module (FIXME: doesn't handle cross-namespace enums) *)
 let enums_module_name (ctx : Types.generation_context) (_ : Types.gir_enum) =
-  ctx.namespace.namespace_name ^ "_enums"
+  namespace_to_module_name ctx.namespace.namespace_name ^ "_enums"
 
 (* Get the name of the bitfields module (FIXME: doesn't handle cross-namespace enums) *)
 let bitfields_module_name (ctx : Types.generation_context)
     (_ : Types.gir_bitfield) =
-  ctx.namespace.namespace_name ^ "_enums"
+  namespace_to_module_name ctx.namespace.namespace_name ^ "_enums"
 
 (* Read filter file and return set of class names to generate *)
 let read_filter_file filename =

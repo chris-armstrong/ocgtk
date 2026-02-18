@@ -20,7 +20,7 @@ CAMLexport CAMLprim value ml_gdk_pixbuf_new(value arg1, value arg2, value arg3, 
 {
 CAMLparam5(arg1, arg2, arg3, arg4, arg5);
 
-GdkPixbuf *obj = gdk_pixbuf_new(GdkPixbufColorspace_val(arg1), Bool_val(arg2), Int_val(arg3), Int_val(arg4), Int_val(arg5));
+GdkPixbuf *obj = gdk_pixbuf_new(GdkpixbufColorspace_val(arg1), Bool_val(arg2), Int_val(arg3), Int_val(arg4), Int_val(arg5));
 if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GdkPixbuf(obj));
@@ -41,14 +41,6 @@ if (obj) g_object_ref_sink(obj);
     g_free(c_arg1);
 CAMLreturn(Val_GdkPixbuf(obj));
 }
-CAMLexport CAMLprim value ml_gdk_pixbuf_unref(value self)
-{
-CAMLparam1(self);
-
-gdk_pixbuf_unref(GdkPixbuf_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gdk_pixbuf_set_option(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -61,7 +53,7 @@ CAMLexport CAMLprim value ml_gdk_pixbuf_scale_simple(value self, value arg1, val
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
-GdkPixbuf* result = gdk_pixbuf_scale_simple(GdkPixbuf_val(self), Int_val(arg1), Int_val(arg2), GdkPixbufInterpType_val(arg3));
+GdkPixbuf* result = gdk_pixbuf_scale_simple(GdkPixbuf_val(self), Int_val(arg1), Int_val(arg2), GdkpixbufInterpType_val(arg3));
 CAMLreturn(Val_option(result, Val_GdkPixbuf));
 }
 
@@ -70,7 +62,7 @@ CAMLexport CAMLprim value ml_gdk_pixbuf_scale_native(value self, value arg1, val
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam6(arg5, arg6, arg7, arg8, arg9, arg10);
 
-gdk_pixbuf_scale(GdkPixbuf_val(self), GdkPixbuf_val(arg1), Int_val(arg2), Int_val(arg3), Int_val(arg4), Int_val(arg5), Double_val(arg6), Double_val(arg7), Double_val(arg8), Double_val(arg9), GdkPixbufInterpType_val(arg10));
+gdk_pixbuf_scale(GdkPixbuf_val(self), GdkPixbuf_val(arg1), Int_val(arg2), Int_val(arg3), Int_val(arg4), Int_val(arg5), Double_val(arg6), Double_val(arg7), Double_val(arg8), Double_val(arg9), GdkpixbufInterpType_val(arg10));
 CAMLreturn(Val_unit);}
 
 CAMLexport CAMLprim value ml_gdk_pixbuf_scale_bytecode(value * argv, int argn)
@@ -123,7 +115,7 @@ CAMLexport CAMLprim value ml_gdk_pixbuf_rotate_simple(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-GdkPixbuf* result = gdk_pixbuf_rotate_simple(GdkPixbuf_val(self), GdkPixbufPixbufRotation_val(arg1));
+GdkPixbuf* result = gdk_pixbuf_rotate_simple(GdkPixbuf_val(self), GdkpixbufPixbufRotation_val(arg1));
 CAMLreturn(Val_option(result, Val_GdkPixbuf));
 }
 
@@ -133,15 +125,6 @@ CAMLparam2(self, arg1);
 
 gboolean result = gdk_pixbuf_remove_option(GdkPixbuf_val(self), String_val(arg1));
 CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gdk_pixbuf_ref(value self)
-{
-CAMLparam1(self);
-
-GdkPixbuf* result = gdk_pixbuf_ref(GdkPixbuf_val(self));
-if (result) g_object_ref_sink(result);
-CAMLreturn(Val_GdkPixbuf(result));
 }
 
 CAMLexport CAMLprim value ml_gdk_pixbuf_new_subpixbuf(value self, value arg1, value arg2, value arg3, value arg4)
@@ -205,7 +188,7 @@ CAMLexport CAMLprim value ml_gdk_pixbuf_get_colorspace(value self)
 CAMLparam1(self);
 
 GdkColorspace result = gdk_pixbuf_get_colorspace(GdkPixbuf_val(self));
-CAMLreturn(Val_GdkPixbufColorspace(result));
+CAMLreturn(Val_GdkpixbufColorspace(result));
 }
 
 CAMLexport CAMLprim value ml_gdk_pixbuf_get_bits_per_sample(value self)
@@ -258,7 +241,7 @@ CAMLexport CAMLprim value ml_gdk_pixbuf_composite_native(value self, value arg1,
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam7(arg5, arg6, arg7, arg8, arg9, arg10, arg11);
 
-gdk_pixbuf_composite(GdkPixbuf_val(self), GdkPixbuf_val(arg1), Int_val(arg2), Int_val(arg3), Int_val(arg4), Int_val(arg5), Double_val(arg6), Double_val(arg7), Double_val(arg8), Double_val(arg9), GdkPixbufInterpType_val(arg10), Int_val(arg11));
+gdk_pixbuf_composite(GdkPixbuf_val(self), GdkPixbuf_val(arg1), Int_val(arg2), Int_val(arg3), Int_val(arg4), Int_val(arg5), Double_val(arg6), Double_val(arg7), Double_val(arg8), Double_val(arg9), GdkpixbufInterpType_val(arg10), Int_val(arg11));
 CAMLreturn(Val_unit);}
 
 CAMLexport CAMLprim value ml_gdk_pixbuf_composite_bytecode(value * argv, int argn)

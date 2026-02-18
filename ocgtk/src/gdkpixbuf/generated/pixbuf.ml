@@ -4,13 +4,13 @@
 type t = [`pixbuf | `object_] Gobject.obj
 
 (** Create a new Pixbuf *)
-external new_ : GdkPixbuf_enums.colorspace -> bool -> int -> int -> int -> t = "ml_gdk_pixbuf_new"
+external new_ : Gdkpixbuf_enums.colorspace -> bool -> int -> int -> int -> t = "ml_gdk_pixbuf_new"
 
 (** Create a new Pixbuf *)
-external new_from_bytes : unit -> GdkPixbuf_enums.colorspace -> bool -> int -> int -> int -> int -> t = "ml_gdk_pixbuf_new_from_bytes_bytecode" "ml_gdk_pixbuf_new_from_bytes_native"
+external new_from_bytes : unit -> Gdkpixbuf_enums.colorspace -> bool -> int -> int -> int -> int -> t = "ml_gdk_pixbuf_new_from_bytes_bytecode" "ml_gdk_pixbuf_new_from_bytes_native"
 
 (** Create a new Pixbuf *)
-external new_from_data : unit -> GdkPixbuf_enums.colorspace -> bool -> int -> int -> int -> int -> unit -> unit -> t = "ml_gdk_pixbuf_new_from_data_bytecode" "ml_gdk_pixbuf_new_from_data_native"
+external new_from_data : unit -> Gdkpixbuf_enums.colorspace -> bool -> int -> int -> int -> int -> unit -> unit -> t = "ml_gdk_pixbuf_new_from_data_bytecode" "ml_gdk_pixbuf_new_from_data_native"
 
 (** Create a new Pixbuf *)
 external new_from_xpm_data : string array -> t = "ml_gdk_pixbuf_new_from_xpm_data"
@@ -43,7 +43,7 @@ If `dest_width` and `dest_height` are equal to the width and height of
 
 For more complicated scaling/alpha blending see [method@GdkPixbuf.Pixbuf.scale]
 and [method@GdkPixbuf.Pixbuf.composite]. *)
-external scale_simple : t -> int -> int -> GdkPixbuf_enums.interptype -> t option = "ml_gdk_pixbuf_scale_simple"
+external scale_simple : t -> int -> int -> Gdkpixbuf_enums.interptype -> t option = "ml_gdk_pixbuf_scale_simple"
 
 (** Creates a transformation of the source image @src by scaling by
 @scale_x and @scale_y then translating by @offset_x and @offset_y,
@@ -58,7 +58,7 @@ gdk_pixbuf_scale_simple() isn't powerful enough.
 If the source rectangle overlaps the destination rectangle on the
 same pixbuf, it will be overwritten during the scaling which
 results in rendering artifacts. *)
-external scale : t -> t -> int -> int -> int -> int -> float -> float -> float -> float -> GdkPixbuf_enums.interptype -> unit = "ml_gdk_pixbuf_scale_bytecode" "ml_gdk_pixbuf_scale_native"
+external scale : t -> t -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> unit = "ml_gdk_pixbuf_scale_bytecode" "ml_gdk_pixbuf_scale_native"
 
 (** Vector version of `gdk_pixbuf_save()`.
 
@@ -89,7 +89,7 @@ external saturate_and_pixelate : t -> t -> float -> bool -> unit = "ml_gdk_pixbu
 result in a new pixbuf.
 
 If `angle` is 0, this function will return a copy of `src`. *)
-external rotate_simple : t -> GdkPixbuf_enums.pixbufrotation -> t option = "ml_gdk_pixbuf_rotate_simple"
+external rotate_simple : t -> Gdkpixbuf_enums.pixbufrotation -> t option = "ml_gdk_pixbuf_rotate_simple"
 
 (** Removes the key/value pair option attached to a `GdkPixbuf`. *)
 external remove_option : t -> string -> bool = "ml_gdk_pixbuf_remove_option"
@@ -142,7 +142,7 @@ external get_height : t -> int = "ml_gdk_pixbuf_get_height"
 external get_has_alpha : t -> bool = "ml_gdk_pixbuf_get_has_alpha"
 
 (** Queries the color space of a pixbuf. *)
-external get_colorspace : t -> GdkPixbuf_enums.colorspace = "ml_gdk_pixbuf_get_colorspace"
+external get_colorspace : t -> Gdkpixbuf_enums.colorspace = "ml_gdk_pixbuf_get_colorspace"
 
 (** Queries the number of bits per color sample in a pixbuf. *)
 external get_bits_per_sample : t -> int = "ml_gdk_pixbuf_get_bits_per_sample"
@@ -188,7 +188,7 @@ image, the data at the edges of the source image is replicated
 to infinity.
 
 ![](composite.png) *)
-external composite : t -> t -> int -> int -> int -> int -> float -> float -> float -> float -> GdkPixbuf_enums.interptype -> int -> unit = "ml_gdk_pixbuf_composite_bytecode" "ml_gdk_pixbuf_composite_native"
+external composite : t -> t -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> int -> unit = "ml_gdk_pixbuf_composite_bytecode" "ml_gdk_pixbuf_composite_native"
 
 (** Takes an existing pixbuf and checks for the presence of an
 associated "orientation" option.

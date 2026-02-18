@@ -22,9 +22,6 @@
       (echo "GPixbuf_animation_iter")
       (echo "GPixbuf_format")
       (echo "GPixbuf_loader")
-      (echo "GPixbuf_module")
-      (echo "GPixbuf_module_pattern")
-      (echo "GPixbuf_non_anim")
       (echo "GPixbuf_simple_anim")
       (echo "GPixbuf_simple_anim_iter")
       (echo "Gaux")
@@ -60,9 +57,6 @@
       (echo "Pixbuf_animation_iter")
       (echo "Pixbuf_format")
       (echo "Pixbuf_loader")
-      (echo "Pixbuf_module")
-      (echo "Pixbuf_module_pattern")
-      (echo "Pixbuf_non_anim")
       (echo "Pixbuf_simple_anim")
       (echo "Pixbuf_simple_anim_iter")
       (echo "Progress_bar")
@@ -112,9 +106,6 @@ rm cflag-gdkpixbuf.sexp.tmp clink-gdkpixbuf.sexp.tmp\\
    ml_pixbuf_format_gen
    ml_pixbuf_gen
    ml_pixbuf_loader_gen
-   ml_pixbuf_module_gen
-   ml_pixbuf_module_pattern_gen
-   ml_pixbuf_non_anim_gen
    ml_pixbuf_simple_anim_gen
    ml_pixbuf_simple_anim_iter_gen
   )

@@ -360,6 +360,71 @@ let test_record_copy_parses_successfully () =
         (List.mem "ml_gir_record_val_ptr" calls)
   | None -> Alcotest.fail "Copy function missing return expression"
 
+(* Bug 10: Module name capitalization must match dune convention
+   Dune lowercases all characters after the first in module names.
+   So "GdkPixbuf" becomes "Gdkpixbuf" in the module name.
+   Therefore, enums_module_name must return "Gdkpixbuf_enums" not "GdkPixbuf_enums". *)
+let test_enum_module_name_matches_dune_convention () =
+  let open Gir_gen_lib.Types in
+  (* Create a context with a multi-word namespace like GdkPixbuf *)
+  let namespace =
+    {
+      namespace_name = "GdkPixbuf";
+      namespace_version = "2.0";
+      namespace_shared_library = "libgdk_pixbuf-2.0.so.0";
+      namespace_c_identifier_prefixes = "Gdk";
+      namespace_c_symbol_prefixes = "gdk_pixbuf";
+    }
+  in
+  let ctx =
+    {
+      namespace;
+      repository = { repository_c_includes = []; repository_includes = []; repository_packages = [] };
+      classes = [];
+      interfaces = [];
+      enums = [];
+      bitfields = [];
+      records = [];
+      external_enums = [];
+      external_bitfields = [];
+      hierarchy_map = Hashtbl.create 0;
+      module_groups = Hashtbl.create 0;
+      current_cycle_classes = [];
+      cross_references = Gir_gen_lib.Types.StringMap.empty;
+    }
+  in
+  (* Create a dummy enum for the test *)
+  let dummy_enum =
+    {
+      enum_name = "Colorspace";
+      enum_c_type = "GdkColorspace";
+      members = [];
+      functions = [];
+      enum_doc = None;
+    }
+  in
+  (* Check that the module name follows dune convention *)
+  let module_name = Gir_gen_lib.Utils.enums_module_name ctx dummy_enum in
+  Alcotest.(check string)
+    "Enums module name follows dune convention (first char uppercase, rest lowercase)"
+    "Gdkpixbuf_enums"
+    module_name;
+
+  (* Also test bitfields_module_name *)
+  let dummy_bitfield =
+    {
+      bitfield_name = "PixbufRotation";
+      bitfield_c_type = "GdkPixbufRotation";
+      flags = [];
+      bitfield_doc = None;
+    }
+  in
+  let bitfield_module_name = Gir_gen_lib.Utils.bitfields_module_name ctx dummy_bitfield in
+  Alcotest.(check string)
+    "Bitfields module name follows dune convention"
+    "Gdkpixbuf_enums"
+    bitfield_module_name
+
 let tests =
   [
     Alcotest.test_case "Non-introspectable record filtered at generation"
@@ -372,4 +437,6 @@ let tests =
       `Quick test_copy_function_returns_copy_result;
     Alcotest.test_case "Record copy function has balanced parentheses"
       `Quick test_record_copy_parses_successfully;
+    Alcotest.test_case "Enum module name matches dune convention"
+      `Quick test_enum_module_name_matches_dune_convention;
   ]

@@ -5,7 +5,7 @@ class pixbuf (obj : Pixbuf.t) = object (self)
     fun () ->
       Option.map (fun ret -> new pixbuf ret) (Pixbuf.apply_embedded_orientation obj)
 
-  method composite : 'p1. (<as_pixbuf: Pixbuf.t; ..> as 'p1) -> int -> int -> int -> int -> float -> float -> float -> float -> GdkPixbuf_enums.interptype -> int -> unit =
+  method composite : 'p1. (<as_pixbuf: Pixbuf.t; ..> as 'p1) -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> int -> unit =
     fun dest dest_x dest_y dest_width dest_height offset_x offset_y scale_x scale_y interp_type overall_alpha ->
       let dest = dest#as_pixbuf in
       (Pixbuf.composite obj dest dest_x dest_y dest_width dest_height offset_x offset_y scale_x scale_y interp_type overall_alpha)
@@ -32,7 +32,7 @@ class pixbuf (obj : Pixbuf.t) = object (self)
     fun () ->
       (Pixbuf.get_bits_per_sample obj)
 
-  method get_colorspace : unit -> GdkPixbuf_enums.colorspace =
+  method get_colorspace : unit -> Gdkpixbuf_enums.colorspace =
     fun () ->
       (Pixbuf.get_colorspace obj)
 
@@ -64,15 +64,11 @@ class pixbuf (obj : Pixbuf.t) = object (self)
     fun src_x src_y width height ->
       new  pixbuf(Pixbuf.new_subpixbuf obj src_x src_y width height)
 
-  method ref : unit -> pixbuf =
-    fun () ->
-      new  pixbuf(Pixbuf.ref obj)
-
   method remove_option : string -> bool =
     fun key ->
       (Pixbuf.remove_option obj key)
 
-  method rotate_simple : GdkPixbuf_enums.pixbufrotation -> pixbuf option =
+  method rotate_simple : Gdkpixbuf_enums.pixbufrotation -> pixbuf option =
     fun angle ->
       Option.map (fun ret -> new pixbuf ret) (Pixbuf.rotate_simple obj angle)
 
@@ -85,22 +81,18 @@ class pixbuf (obj : Pixbuf.t) = object (self)
     fun filename type_ option_keys option_values ->
       (Pixbuf.savev obj filename type_ option_keys option_values)
 
-  method scale : 'p1. (<as_pixbuf: Pixbuf.t; ..> as 'p1) -> int -> int -> int -> int -> float -> float -> float -> float -> GdkPixbuf_enums.interptype -> unit =
+  method scale : 'p1. (<as_pixbuf: Pixbuf.t; ..> as 'p1) -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> unit =
     fun dest dest_x dest_y dest_width dest_height offset_x offset_y scale_x scale_y interp_type ->
       let dest = dest#as_pixbuf in
       (Pixbuf.scale obj dest dest_x dest_y dest_width dest_height offset_x offset_y scale_x scale_y interp_type)
 
-  method scale_simple : int -> int -> GdkPixbuf_enums.interptype -> pixbuf option =
+  method scale_simple : int -> int -> Gdkpixbuf_enums.interptype -> pixbuf option =
     fun dest_width dest_height interp_type ->
       Option.map (fun ret -> new pixbuf ret) (Pixbuf.scale_simple obj dest_width dest_height interp_type)
 
   method set_option : string -> string -> bool =
     fun key value ->
       (Pixbuf.set_option obj key value)
-
-  method unref : unit -> unit =
-    fun () ->
-      (Pixbuf.unref obj)
 
     method as_pixbuf = obj
 end

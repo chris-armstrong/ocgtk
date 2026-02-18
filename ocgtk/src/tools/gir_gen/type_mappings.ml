@@ -368,7 +368,9 @@ and normal_type_lookup ~ctx (gir_type : Types.gir_type) =
       match enum_mapping with
       | Some enum ->
           (* Use the context's namespace for enums from the current library *)
-          let namespace = ctx.namespace.namespace_name in
+          let namespace =
+            Utils.namespace_to_module_name ctx.namespace.namespace_name
+          in
           Some
             {
               ocaml_type =
@@ -389,13 +391,14 @@ and normal_type_lookup ~ctx (gir_type : Types.gir_type) =
           in
           match external_enum_mapping with
           | Some (ns, enum) ->
+              let namespace = Utils.namespace_to_module_name ns in
               Some
                 {
                   ocaml_type =
-                    ns ^ "_enums." ^ String.lowercase_ascii enum.enum_name;
+                    namespace ^ "_enums." ^ String.lowercase_ascii enum.enum_name;
                   c_type = enum.enum_c_type;
-                  c_to_ml = sprintf "Val_%s%s" ns enum.enum_name;
-                  ml_to_c = sprintf "%s%s_val" ns enum.enum_name;
+                  c_to_ml = sprintf "Val_%s%s" namespace enum.enum_name;
+                  ml_to_c = sprintf "%s%s_val" namespace enum.enum_name;
                   layer2_class = None;
                   needs_copy = false;
                 }
@@ -412,7 +415,9 @@ and normal_type_lookup ~ctx (gir_type : Types.gir_type) =
       match bitfield_mapping with
       | Some bitfield ->
           (* Use the context's namespace for bitfields from the current library *)
-          let namespace = ctx.namespace.namespace_name in
+          let namespace =
+            Utils.namespace_to_module_name ctx.namespace.namespace_name
+          in
           Some
             {
               ocaml_type =
@@ -434,13 +439,14 @@ and normal_type_lookup ~ctx (gir_type : Types.gir_type) =
           in
           match external_bitfield_mapping with
           | Some (ns, bitfield) ->
+              let namespace = Utils.namespace_to_module_name ns in
               Some
                 {
                   ocaml_type =
-                    ns ^ "_enums."
+                    namespace ^ "_enums."
                     ^ String.lowercase_ascii bitfield.bitfield_name;
-                  c_to_ml = sprintf "Val_%s%s" ns bitfield.bitfield_name;
-                  ml_to_c = sprintf "%s%s_val" ns bitfield.bitfield_name;
+                  c_to_ml = sprintf "Val_%s%s" namespace bitfield.bitfield_name;
+                  ml_to_c = sprintf "%s%s_val" namespace bitfield.bitfield_name;
                   needs_copy = false;
                   layer2_class = None;
                   c_type = bitfield.bitfield_c_type;

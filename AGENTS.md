@@ -30,9 +30,9 @@ If you are running in a clean container (e.g. Claude Code Web), you will need to
 
 This project uses `dune` to compile code and run tests. NEVER compile code directly with `ocamlc/ocamlc.opt`.
 
-* `cd ocgtk && dune build` is the basic build command
-* Use `dune build` to compile the code. IMPORTANT: Always check the return code grep for "error|warning|undefined reference". DO NOT filter its output with `grep`/`head`/`tail` etc. otherwise you will miss critical error context.
-* Use `xvfb-run dune runtest` to run all the unit and integration tests. ALWAYS check the return code to determine success - do not rely on the console output.
+* Use `cd ocgtk && dune build` to compile the code. IMPORTANT: Always check the return code grep for "error|warning|undefined reference". 
+    DO NOT filter its output with `grep`/`head`/`tail` etc. unless you know what you are looking for AND have already checked the return code.
+* Use `cd ocgtk && xvfb-run dune runtest` to run all the unit and integration tests. ALWAYS check the return code to determine success - do not rely on the console output.
 
 ## OCaml / C FFI Guidelines
 
@@ -50,8 +50,10 @@ For generating GTK bindings from GObject Introspection (GIR) files:
 **To regenerate GTK bindings:**
 ```bash
 cd ocgtk
-dune exec gir_gen -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+dune exec gir_gen -- /usr/share/gir-1.0/Gtk-4.0.gir generate src/gtk
 ```
+
+NOTE: For other libraries, use `src/<short_name>`. For example, src/pango for Pango, src/gsk for GSK, src/gdk for GDK, etc.
 
 **⚠️ IMPORTANT:** Use `src/gtk` NOT `src/gtk/generated` as the output directory. The generator automatically creates the `generated/` subdirectory. Using `src/gtk/generated` will create a nested `src/gtk/generated/generated/` directory.
 
@@ -61,6 +63,17 @@ dune exec gir_gen -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
 **IMPORTANT**: All C bindings must follow security best practices documented in:
 
 📘 **[SECURITY_GUIDELINES.md](SECURITY_GUIDELINES.md)** - Comprehensive security guidelines for OCaml C bindings
+
+## Tools for LLMs
+
+### ast-grep
+You are operating in an environment where ast-grep is installed. For any code search that requires understanding of syntax or code structure, you should default to using `ast-grep --lang [language] -p '<pattern>'`. Adjust the --lang flag as needed for the specific programming language. Avoid using text-only search tools unless a plain-text search is explicitly requested.
+
+If you are not familiar with ast-grep, load [ast-grep LLMs guide](https://ast-grep.github.io/llms-full.txt) for full its full reference.
+
+### shellcheck
+
+shellcheck is available to lint & check shell scripts.
 
 
 ## When You Get Stuck on Solving problems

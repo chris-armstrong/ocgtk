@@ -4,8 +4,6 @@ class pixbuf_animation : Pixbuf_animation.t ->
     method get_static_image : unit -> GPixbuf.pixbuf
     method get_width : unit -> int
     method is_static_image : unit -> bool
-    method ref : unit -> pixbuf_animation
-    method unref : unit -> unit
     method as_pixbuf_animation : Pixbuf_animation.t
   end
 

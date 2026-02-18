@@ -8,7 +8,7 @@ tools:
   glob: true
   bash: true
   lsp: true
-model: opencode/kimi-k2.5-free
+model: opencode/glm-5
 ---
 You will be given:
 - A file and line range
