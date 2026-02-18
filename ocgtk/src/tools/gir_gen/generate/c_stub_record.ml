@@ -42,11 +42,9 @@ let generate_forward_decls ~records =
       ~f:(fun (record : gir_record) ->
         if not (Hashtbl.mem seen record.c_type) then begin
           Hashtbl.add seen record.c_type ();
-          (* Find the copy method to get its C identifier *)
+          (* Find the copy method - use is_copy_method for consistent detection *)
           let copy_func =
-            List.find_opt record.methods ~f:(fun (meth : gir_method) ->
-                let lower_name = String.lowercase_ascii meth.method_name in
-                String.equal lower_name "copy")
+            List.find_opt record.methods ~f:C_stub_helpers.is_copy_method
           in
           match copy_func with
           | Some _ ->

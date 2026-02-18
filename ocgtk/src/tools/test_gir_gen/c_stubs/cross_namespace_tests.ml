@@ -922,6 +922,63 @@ let test_inout_record_param_pointer_type () =
   | None ->
       Alcotest.fail "Pointer declaration not found"
 
+(* Bug 6: Value-like records must have complete forward declarations.
+    The copy function declaration AND the Val_/val_ macros must both be emitted.
+    Bug: generate_forward_decls uses inconsistent copy method detection -
+    is_value_like_record uses is_copy_method (method_name OR c_identifier ends with _copy),
+    but the macro generation only checks method_name = "copy". *)
+let test_value_record_has_complete_forward_decls () =
+  (* Create a GIR with a value-like record where the copy method's method_name
+     is NOT "copy" but c_identifier ends with "_copy". This simulates GskRoundedRect. *)
+  let gir =
+    wrap_namespace ~namespace_name:"TestNs" ~c_prefix:"TestNs"
+      ~symbol_prefix:"test_ns"
+      {|
+      <record name="TestRect" c:type="TestNsRect"
+              glib:type-name="TestNsRect" glib:get-type="test_ns_rect_get_type">
+        <field name="x" writable="1"><type name="gint" c:type="int"/></field>
+        <field name="y" writable="1"><type name="gint" c:type="int"/></field>
+        <!-- Copy method with method_name != "copy" but c_identifier ends with _copy -->
+        <method name="duplicate" c:identifier="test_ns_rect_copy">
+          <return-value transfer-ownership="full">
+            <type name="TestNsRect" c:type="TestNsRect*"/>
+          </return-value>
+        </method>
+      </record>
+  |}
+  in
+  create_gir_file test_gir gir;
+  ensure_output_dir output_dir;
+  let exit_code = run_gir_gen test_gir output_dir in
+  Alcotest.(check int) "Generation succeeds" 0 exit_code;
+
+  (* Read the forward declarations header *)
+  let header_path = Filename.concat (generated_dir output_dir) "generated_forward_decls.h" in
+  let header = read_file header_path in
+
+  (* Positive: copy function is declared *)
+  assert_contains "copy_ function declared" header
+    "value copy_TestNsRect(const TestNsRect *ptr)";
+
+  (* Critical: Val_ macro MUST be defined using copy function.
+     This is the bug - the macro was missing when method_name != "copy". *)
+  assert_contains "Val_TestNsRect macro defined" header
+    "#define Val_TestNsRect";
+
+  (* Positive: _val macro is defined *)
+  assert_contains "TestNsRect_val macro defined" header
+    "#define TestNsRect_val";
+
+  (* Also verify the C stub file has the copy function *)
+  let c_file_path = stub_c_file output_dir "TestRect" in
+  if file_exists c_file_path then begin
+    let c_file = read_file c_file_path in
+    let functions = C_parser.parse_c_code c_file in
+    let copy_func = C_ast.find_function functions "copy_TestNsRect" in
+    Alcotest.(check bool) "copy_TestNsRect function exists in C stub" true
+      (Option.is_some copy_func)
+  end
+
 let tests =
   [
     Alcotest.test_case "Non-introspectable record filtered at generation"
@@ -946,4 +1003,7 @@ let tests =
     (* Bug 4 test *)
     Alcotest.test_case "Inout record param uses value + pointer (Bug 4)"
       `Quick test_inout_record_param_pointer_type;
+    (* Bug 6 test *)
+    Alcotest.test_case "Value record has complete forward decls (Bug 6)"
+      `Quick test_value_record_has_complete_forward_decls;
   ]
