@@ -872,6 +872,103 @@ let test_gptr_array_with_incompatible_element_type () =
     (C_validation.has_conversion_loop func)
 
 (* =================================================================== *)
+(* Non-Pointer Array Without Length Tests (c_stub_array_conv.ml fix) *)
+(* =================================================================== *)
+
+let test_nonpointer_array_without_length_raises () =
+  let ctx = create_test_context () in
+  let meth =
+    {
+      method_name = "get_values";
+      c_identifier = "gtk_widget_get_values";
+      return_type =
+        {
+          name = "gint";
+          c_type = Some "gint*";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array =
+            Some
+              {
+                length = None;
+                zero_terminated = false;
+                fixed_size = None;
+                array_name = None;
+                element_type =
+                  {
+                    name = "gint";
+                    c_type = Some "gint";
+                    nullable = false;
+                    transfer_ownership = TransferNone;
+                    array = None;
+                  };
+              };
+        };
+      parameters = [];
+      doc = None;
+      throws = false;
+      introspectable = true;
+      get_property = None;
+      set_property = None;
+    }
+  in
+
+  Alcotest.check_raises "Fails for non-pointer array without length"
+    (Failure "Array has no length information for result (element type: gint). Either zero-terminated, length, or fixed-size attribute required.")
+    (fun () -> ignore (generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget"))
+
+let test_pointer_array_without_length_uses_null_termination () =
+  let ctx = create_test_context () in
+  let meth =
+    {
+      method_name = "get_tags";
+      c_identifier = "gtk_widget_get_tags";
+      return_type =
+        {
+          name = "utf8";
+          c_type = Some "const char**";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array =
+            Some
+              {
+                length = None;
+                zero_terminated = false;
+                fixed_size = None;
+                array_name = None;
+                element_type =
+                  {
+                    name = "utf8";
+                    c_type = Some "char*";
+                    nullable = false;
+                    transfer_ownership = TransferNone;
+                    array = None;
+                  };
+              };
+        };
+      parameters = [];
+      doc = None;
+      throws = false;
+      introspectable = true;
+      get_property = None;
+      set_property = None;
+    }
+  in
+
+  (* Pointer arrays without length should use NULL-termination, not raise *)
+  let c_code =
+    generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget"
+  in
+
+  Helpers.log_generated_c_code "pointer array without length" c_code;
+
+  (* Should NOT raise - pointer arrays can use NULL-termination *)
+  (* Should contain NULL-termination check in generated code *)
+  Alcotest.(check bool)
+    "Uses NULL-termination for pointer array" true
+    (Helpers.string_contains c_code "!= NULL")
+
+(* =================================================================== *)
 (* Test Suite *)
 (* =================================================================== *)
 
@@ -903,4 +1000,9 @@ let tests =
       test_gptr_array_transfer_full;
     Alcotest.test_case "GPtrArray with struct elements" `Quick
       test_gptr_array_with_incompatible_element_type;
+    (* Non-pointer array without length tests (c_stub_array_conv.ml fix) *)
+    Alcotest.test_case "Non-pointer array without length raises" `Quick
+      test_nonpointer_array_without_length_raises;
+    Alcotest.test_case "Pointer array without length uses NULL-termination" `Quick
+      test_pointer_array_without_length_uses_null_termination;
   ]
