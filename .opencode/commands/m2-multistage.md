@@ -3,7 +3,7 @@ description: Carry out a multi-stage implementation plan, execute and review loo
 template: Carry out a complex refactoring or implementation task based on the user's suggestion and following the guidelines using a multi-stage plan, execute and review loop
 mode: primary
 argument-hint: "<guideline> in <files or module>"
-model: minimax/MiniMax-M2.1
+model: opencode/glm-4.7
 ---
 
 ## Refactoring Goal: $ARGUMENTS
