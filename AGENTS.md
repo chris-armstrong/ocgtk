@@ -6,6 +6,14 @@
 2. ALWAYS run tests with `cd ocgtk && xvfb-run dune runtest`
 3. ALWAYS write scripts and supporting code in OCaml
 4. ALWAYS refer to [STYLE_GUIDELINES.md](./STYLE_GUIDELINES.md) for OCaml code style and structure guidelines
+### ast-grep
+You are operating in an environment where ast-grep is installed. For any code search that requires understanding of syntax or code structure, you should default to using `ast-grep --lang [language] -p '<pattern>'`. Adjust the --lang flag as needed for the specific programming language. Avoid using text-only search tools unless a plain-text search is explicitly requested.
+
+If you are not familiar with ast-grep, load [ast-grep LLMs guide](https://ast-grep.github.io/llms-full.txt) for full its full reference.
+
+### shellcheck
+
+shellcheck is available to lint & check shell scripts.
 
 ## Setting up the project
 
@@ -63,17 +71,6 @@ NOTE: For other libraries, use `src/<short_name>`. For example, src/pango for Pa
 **IMPORTANT**: All C bindings must follow security best practices documented in:
 
 📘 **[SECURITY_GUIDELINES.md](SECURITY_GUIDELINES.md)** - Comprehensive security guidelines for OCaml C bindings
-
-## Tools for LLMs
-
-### ast-grep
-You are operating in an environment where ast-grep is installed. For any code search that requires understanding of syntax or code structure, you should default to using `ast-grep --lang [language] -p '<pattern>'`. Adjust the --lang flag as needed for the specific programming language. Avoid using text-only search tools unless a plain-text search is explicitly requested.
-
-If you are not familiar with ast-grep, load [ast-grep LLMs guide](https://ast-grep.github.io/llms-full.txt) for full its full reference.
-
-### shellcheck
-
-shellcheck is available to lint & check shell scripts.
 
 
 ## When You Get Stuck on Solving problems
