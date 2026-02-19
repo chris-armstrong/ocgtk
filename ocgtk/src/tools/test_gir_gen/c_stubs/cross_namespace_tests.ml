@@ -474,6 +474,301 @@ let test_non_gtk_namespace_c_type_prefix () =
     "GdkAnim"
     intf.c_type
 
+(* Bug 5: Enum array element conversion should not use address-of operator.
+   Enum converters like Val_PangoScript take values by value, not by pointer.
+   The generator was incorrectly generating Val_PangoScript(&result[i]) instead
+   of Val_PangoScript(result[i]). *)
+let test_enum_array_element_conversion () =
+  let open Gir_gen_lib.Types in
+  (* Create a context with a Script enum (simulating PangoScript) *)
+  let script_enum =
+    {
+      enum_name = "Script";
+      enum_c_type = "PangoScript";
+      members =
+        [
+          {
+            member_name = "INVALID";
+            member_value = 0;
+            c_identifier = "PANGO_SCRIPT_INVALID";
+            member_doc = None;
+          };
+        ];
+      functions = [];
+      enum_doc = None;
+    }
+  in
+  let ctx =
+    { (Helpers.create_test_context ()) with
+      enums = [ script_enum ];
+    }
+  in
+
+  (* Create a method returning an array of Script enum with length param *)
+  let meth =
+    {
+      method_name = "get_scripts";
+      c_identifier = "pango_language_get_scripts";
+      return_type =
+        {
+          name = "Script";
+          c_type = Some "const PangoScript*";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array =
+            Some
+              {
+                length = Some 0;
+                (* Length is parameter index 0 *)
+                zero_terminated = false;
+                fixed_size = None;
+                array_name = None;
+                element_type =
+                  {
+                    name = "Script";
+                    c_type = Some "PangoScript";
+                    nullable = false;
+                    transfer_ownership = TransferNone;
+                    array = None;
+                  };
+              };
+        };
+      parameters =
+        [
+          {
+            param_name = "num_scripts";
+            param_type =
+              {
+                name = "gint";
+                c_type = Some "int*";
+                nullable = false;
+                transfer_ownership = TransferFull;
+                array = None;
+              };
+            direction = Out;
+            nullable = false;
+            varargs = false;
+          };
+        ];
+      doc = None;
+      throws = false;
+      introspectable = true;
+      get_property = None;
+      set_property = None;
+    }
+  in
+
+  let c_code =
+    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
+      ~c_type:"PangoLanguage" meth "Language"
+  in
+  Helpers.log_generated_c_code "enum_array" c_code;
+
+  let functions = C_parser.parse_c_code c_code in
+  let func =
+    Option.get (C_ast.find_function functions "ml_pango_language_get_scripts")
+  in
+
+  (* Positive: calls the C function *)
+  Alcotest.(check bool)
+    "Calls pango_language_get_scripts" true
+    (C_validation.calls_c_function func "pango_language_get_scripts");
+
+  (* Positive: allocates OCaml array *)
+  Alcotest.(check bool)
+    "Allocates OCaml array" true
+    (C_validation.calls_caml_alloc func);
+
+  (* Positive: has element conversion loop *)
+  Alcotest.(check bool)
+    "Has Store_field conversion loop" true
+    (C_validation.has_conversion_loop func);
+
+  (* Positive: uses the enum converter macro Val_GtkScript (namespace from context) *)
+  let has_enum_converter =
+    let rec check_expr = function
+      | C_ast.Macro ("Val_GtkScript", _) -> true
+      | C_ast.Call (_, args) -> List.exists check_expr args
+      | C_ast.Macro (_, args) -> List.exists check_expr args
+      | _ -> false
+    in
+    let check_stmt = function
+      | C_ast.ExprStmt e -> check_expr e
+      | C_ast.VarDecl (_, _, Some e) -> check_expr e
+      | _ -> false
+    in
+    List.exists check_stmt func.C_ast.body
+  in
+  Alcotest.(check bool)
+    "Uses Val_GtkScript converter" true
+    has_enum_converter;
+
+  (* Critical: verify no AddrOf nodes wrap the enum conversion.
+     The generated code should be Val_GtkScript(result[i]), NOT
+     Val_GtkScript(&result[i]). *)
+  let has_addr_of_in_enum_call =
+    let rec check_stmts stmts =
+      List.exists (fun stmt -> check_stmt stmt) stmts
+    and check_stmt = function
+      | C_ast.ExprStmt e -> check_expr e
+      | C_ast.Return e -> check_expr e
+      | C_ast.VarDecl (_, _, Some e) -> check_expr e
+      | C_ast.IfStmt (_, then_stmts, else_stmts) ->
+          check_stmts then_stmts || check_stmts else_stmts
+      | _ -> false
+    and check_expr = function
+      | C_ast.Call ("Val_GtkScript", args)
+      | C_ast.Macro ("Val_GtkScript", args) ->
+          List.exists (function
+            | C_ast.AddrOf _ -> true
+            | _ -> false) args
+      | C_ast.Call (_, args) | C_ast.Macro (_, args) ->
+          List.exists check_expr args
+      | C_ast.Cast (_, e) -> check_expr e
+      | _ -> false
+    in
+    check_stmts func.C_ast.body
+  in
+  Alcotest.(check bool)
+    "No AddrOf wrapping enum converter (Bug 5 fix)" false
+    has_addr_of_in_enum_call
+
+(* Bug 5: Bitfield array element conversion should not use address-of operator.
+   Bitfield converters like Val_GtkApplicationInhibitFlags take values by value,
+   not by pointer. *)
+let test_bitfield_array_element_conversion () =
+  let open Gir_gen_lib.Types in
+  (* Create a context with an InhibitFlags bitfield *)
+  let inhibit_flags_bitfield =
+    {
+      bitfield_name = "InhibitFlags";
+      bitfield_c_type = "GtkApplicationInhibitFlags";
+      flags =
+        [
+          {
+            flag_name = "LOGOUT";
+            flag_value = 1;
+            flag_c_identifier = "GTK_APPLICATION_INHIBIT_LOGOUT";
+            flag_doc = None;
+          };
+        ];
+      bitfield_doc = None;
+    }
+  in
+  let ctx =
+    { (Helpers.create_test_context ()) with
+      bitfields = [ inhibit_flags_bitfield ];
+    }
+  in
+
+  (* Create a method returning an array of InhibitFlags bitfield *)
+  let meth =
+    {
+      method_name = "get_inhibit_flags";
+      c_identifier = "gtk_application_get_inhibit_flags";
+      return_type =
+        {
+          name = "InhibitFlags";
+          c_type = Some "const GtkApplicationInhibitFlags*";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array =
+            Some
+              {
+                length = Some 0;
+                zero_terminated = false;
+                fixed_size = None;
+                array_name = None;
+                element_type =
+                  {
+                    name = "InhibitFlags";
+                    c_type = Some "GtkApplicationInhibitFlags";
+                    nullable = false;
+                    transfer_ownership = TransferNone;
+                    array = None;
+                  };
+              };
+        };
+      parameters =
+        [
+          {
+            param_name = "n_flags";
+            param_type =
+              {
+                name = "gint";
+                c_type = Some "int*";
+                nullable = false;
+                transfer_ownership = TransferFull;
+                array = None;
+              };
+            direction = Out;
+            nullable = false;
+            varargs = false;
+          };
+        ];
+      doc = None;
+      throws = false;
+      introspectable = true;
+      get_property = None;
+      set_property = None;
+    }
+  in
+
+  let c_code =
+    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
+      ~c_type:"GtkApplication" meth "Application"
+  in
+  Helpers.log_generated_c_code "bitfield_array" c_code;
+
+  let functions = C_parser.parse_c_code c_code in
+  let func =
+    Option.get
+      (C_ast.find_function functions "ml_gtk_application_get_inhibit_flags")
+  in
+
+  (* Positive: calls the C function *)
+  Alcotest.(check bool)
+    "Calls gtk_application_get_inhibit_flags" true
+    (C_validation.calls_c_function func "gtk_application_get_inhibit_flags");
+
+  (* Positive: allocates OCaml array *)
+  Alcotest.(check bool)
+    "Allocates OCaml array" true
+    (C_validation.calls_caml_alloc func);
+
+  (* Positive: has element conversion loop *)
+  Alcotest.(check bool)
+    "Has Store_field conversion loop" true
+    (C_validation.has_conversion_loop func);
+
+  (* Critical: verify no AddrOf nodes wrap the bitfield conversion *)
+  let has_addr_of_in_bitfield_call =
+    let rec check_stmts stmts =
+      List.exists (fun stmt -> check_stmt stmt) stmts
+    and check_stmt = function
+      | C_ast.ExprStmt e -> check_expr e
+      | C_ast.Return e -> check_expr e
+      | C_ast.VarDecl (_, _, Some e) -> check_expr e
+      | C_ast.IfStmt (_, then_stmts, else_stmts) ->
+          check_stmts then_stmts || check_stmts else_stmts
+      | _ -> false
+    and check_expr = function
+      | C_ast.Call ("Val_GtkInhibitFlags", args)
+      | C_ast.Macro ("Val_GtkInhibitFlags", args) ->
+          List.exists (function
+            | C_ast.AddrOf _ -> true
+            | _ -> false) args
+      | C_ast.Call (_, args) | C_ast.Macro (_, args) ->
+          List.exists check_expr args
+      | C_ast.Cast (_, e) -> check_expr e
+      | _ -> false
+    in
+    check_stmts func.C_ast.body
+  in
+  Alcotest.(check bool)
+    "No AddrOf wrapping bitfield converter (Bug 5 fix)" false
+    has_addr_of_in_bitfield_call
+
 let tests =
   [
     Alcotest.test_case "Non-introspectable record filtered at generation"
@@ -490,4 +785,9 @@ let tests =
       `Quick test_enum_module_name_matches_dune_convention;
     Alcotest.test_case "Non-Gtk namespace c:type prefix inferred correctly"
       `Quick test_non_gtk_namespace_c_type_prefix;
+    (* Bug 5 tests *)
+    Alcotest.test_case "Enum array element conversion (no address-of)"
+      `Quick test_enum_array_element_conversion;
+    Alcotest.test_case "Bitfield array element conversion (no address-of)"
+      `Quick test_bitfield_array_element_conversion;
   ]
