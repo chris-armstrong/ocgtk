@@ -1268,6 +1268,189 @@ let test_fixed_size_float_array_return () =
     "Has CAMLreturn" true
     (C_validation.has_caml_return func)
 
+(* Bug 16: Out-param array filtering (filtering.ml fix)
+   See ocgtk/docs/plans/fix_codegen_bugs_tests.md *)
+
+(* Test 1: Out-param arrays with zero_terminated=false, no length/fixed_size should be skipped *)
+let test_out_param_array_without_length_skipped () =
+  let open Gir_gen_lib.Types in
+  let ctx = Helpers.create_test_context () in
+
+  (* Create a method with an Out-direction parameter that is an array
+     with zero_terminated=false and no length/fixed_size.
+     This simulates problematic cases like PangoTabArray* out params. *)
+  let meth =
+    {
+      method_name = "get_tabs";
+      c_identifier = "pango_tab_array_get_tabs";
+      return_type =
+        { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
+      parameters =
+        [
+          {
+            param_name = "tabs";
+            param_type =
+              {
+                name = "TabArray";
+                c_type = Some "PangoTabArray**";
+                nullable = false;
+                transfer_ownership = TransferNone;
+                array =
+                  Some
+                    {
+                      length = None;
+                      zero_terminated = false;
+                      fixed_size = None;
+                      array_name = None;
+                      element_type =
+                        {
+                          name = "TabArray";
+                          c_type = Some "PangoTabArray*";
+                          nullable = false;
+                          transfer_ownership = TransferNone;
+                          array = None;
+                        };
+                    };
+              };
+            direction = Out;
+            nullable = false;
+            varargs = false;
+            caller_allocates = false;
+          };
+        ];
+      doc = None;
+      throws = false;
+      introspectable = true;
+      get_property = None;
+      set_property = None;
+    }
+  in
+
+  (* Critical: should_skip_method_binding should return true for this case *)
+  let skipped = Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx meth in
+  Alcotest.(check bool)
+    "Out-param array without length should be skipped" true skipped
+
+(* Test 2: Double-pointer out params like PangoTabArray** should be skipped *)
+let test_double_pointer_out_param_skipped () =
+  let open Gir_gen_lib.Types in
+  let ctx = Helpers.create_test_context () in
+
+  (* Create a method with an Out-direction parameter with c_type = "SomeType**"
+     and array = None (not marked as an array in GIR, like pango_tab_array_get_tabs).
+     This is the case where the GIR doesn't specify array info but the c_type
+     indicates it's a double pointer that needs special handling. *)
+  let meth =
+    {
+      method_name = "get_tabs";
+      c_identifier = "pango_tab_array_get_tabs";
+      return_type =
+        { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
+      parameters =
+        [
+          {
+            param_name = "tabs";
+            param_type =
+              {
+                name = "TabArray";
+                c_type = Some "PangoTabArray**";
+                nullable = false;
+                transfer_ownership = TransferNone;
+                array = None;  (* Not marked as array in GIR *)
+              };
+            direction = Out;
+            nullable = false;
+            varargs = false;
+            caller_allocates = false;
+          };
+        ];
+      doc = None;
+      throws = false;
+      introspectable = true;
+      get_property = None;
+      set_property = None;
+    }
+  in
+
+  (* Critical: should_skip_method_binding should return true for double-pointer out params *)
+  let skipped = Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx meth in
+  Alcotest.(check bool)
+    "Double-pointer out param should be skipped" true skipped
+
+(* Test 3: Out-param arrays WITH length should NOT be skipped (negative control) *)
+let test_normal_out_param_not_skipped () =
+  let open Gir_gen_lib.Types in
+  let ctx = Helpers.create_test_context () in
+
+  (* Create a method with an Out-direction array parameter that HAS a length parameter.
+     This should NOT be skipped because we have the length info needed to process it. *)
+  let meth =
+    {
+      method_name = "get_items";
+      c_identifier = "gtk_container_get_children";
+      return_type =
+        { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
+      parameters =
+        [
+          {
+            param_name = "children";
+            param_type =
+              {
+                name = "Widget";
+                c_type = Some "GList**";
+                nullable = false;
+                transfer_ownership = TransferNone;
+                array =
+                  Some
+                    {
+                      length = Some 1;  (* Length is parameter index 1 *)
+                      zero_terminated = false;
+                      fixed_size = None;
+                      array_name = None;
+                      element_type =
+                        {
+                          name = "Widget";
+                          c_type = Some "GtkWidget*";
+                          nullable = false;
+                          transfer_ownership = TransferNone;
+                          array = None;
+                        };
+                    };
+              };
+            direction = Out;
+            nullable = false;
+            varargs = false;
+            caller_allocates = false;
+          };
+          {
+            param_name = "n_children";
+            param_type =
+              {
+                name = "guint";
+                c_type = Some "guint*";
+                nullable = false;
+                transfer_ownership = TransferFull;
+                array = None;
+              };
+            direction = Out;
+            nullable = false;
+            varargs = false;
+            caller_allocates = false;
+          };
+        ];
+      doc = None;
+      throws = false;
+      introspectable = true;
+      get_property = None;
+      set_property = None;
+    }
+  in
+
+  (* Critical: should_skip_method_binding should return false for out-param with length *)
+  let skipped = Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx meth in
+  Alcotest.(check bool)
+    "Out-param array WITH length should NOT be skipped" false skipped
+
 let tests =
   [
     Alcotest.test_case "Non-introspectable record filtered at generation"
@@ -1300,4 +1483,11 @@ let tests =
       `Quick test_fixed_size_array_out_param;
     Alcotest.test_case "Fixed-size float array return (Bug 1)"
       `Quick test_fixed_size_float_array_return;
+    (* Bug 16 tests - Out-param array filtering *)
+    Alcotest.test_case "Out-param array without length skipped (Bug 16)"
+      `Quick test_out_param_array_without_length_skipped;
+    Alcotest.test_case "Double-pointer out param skipped (Bug 16)"
+      `Quick test_double_pointer_out_param_skipped;
+    Alcotest.test_case "Normal out-param with length not skipped (Bug 16)"
+      `Quick test_normal_out_param_not_skipped;
   ]
