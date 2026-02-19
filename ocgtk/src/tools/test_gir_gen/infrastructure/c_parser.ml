@@ -341,12 +341,34 @@ and parse_statement line =
 
   else if String.contains line_stripped '=' then
     (* Could be var decl or assignment *)
-    (* Check if it starts with a type keyword *)
+    (* Use heuristics to detect variable declarations:
+       - Type name followed by variable name followed by '='
+       - Type names typically start with uppercase or are common types
+       - But exclude known function/macro names that start with uppercase *)
     let words = String.split_on_char ' ' line_stripped |> List.filter ((<>) "") in
+    let known_uppercase_functions = ["Store_field"; "CAMLlocal"; "CAMLparam"; "CAMLreturn"; "CAMLxparam"] in
+    let looks_like_type_name s =
+      (* Type names often start with uppercase (PangoRectangle, GtkWidget)
+         or are common C types (int, char, void, etc.)
+         But not known function names like Store_field
+         Note: s might include trailing ( from function calls, so check prefix *)
+      String.length s > 0 &&
+      (let base_name = 
+         try String.sub s 0 (String.index s '(')
+         with Not_found -> s
+       in
+       not (List.mem base_name known_uppercase_functions) &&
+       ((s.[0] >= 'A' && s.[0] <= 'Z') ||  (* Starts with uppercase *)
+        List.mem s ["value"; "int"; "char"; "void"; "GError"; "gboolean"; "gint"; "const"; "guint"; "float"; "double"]))
+    in
     match words with
-    | first :: _ when List.mem first ["value"; "int"; "char"; "void"; "GError"; "gboolean"; "gint"; "const"; "GtkButton"; "GtkWidget"; "GtkLabel"] ->
+    | first :: _ when looks_like_type_name first ->
         parse_var_decl line_stripped
-    | _ :: second :: _ when List.mem second ["*"; "const"] ->
+    | _ :: second :: _ when String.equal second "*" ->
+        (* Pointer type: "Type *name = ..." *)
+        parse_var_decl line_stripped
+    | _ :: "const" :: _ :: _ when String.contains line_stripped '=' ->
+        (* const type: "const Type name = ..." *)
         parse_var_decl line_stripped
     | _ ->
         parse_assignment line_stripped
@@ -354,8 +376,19 @@ and parse_statement line =
   else if String.contains line_stripped ' ' then
     (* Might be a variable declaration without initialization *)
     let words = String.split_on_char ' ' line_stripped |> List.filter ((<>) "") in
+    let known_uppercase_functions = ["Store_field"; "CAMLlocal"; "CAMLparam"; "CAMLreturn"; "CAMLxparam"] in
+    let looks_like_type_name s =
+      String.length s > 0 &&
+      (let base_name = 
+         try String.sub s 0 (String.index s '(')
+         with Not_found -> s
+       in
+       not (List.mem base_name known_uppercase_functions) &&
+       ((s.[0] >= 'A' && s.[0] <= 'Z') ||
+        List.mem s ["value"; "int"; "char"; "void"; "GError"; "gboolean"; "gint"; "const"; "guint"; "float"; "double"]))
+    in
     match words with
-    | first :: _ :: _ when List.mem first ["value"; "int"; "char"; "void"; "GError"; "gboolean"; "gint"; "const"; "GtkButton"; "GtkWidget"; "GtkLabel"] ->
+    | first :: _ :: _ when looks_like_type_name first ->
         parse_var_decl line_stripped
     | _ ->
         (* Expression statement *)

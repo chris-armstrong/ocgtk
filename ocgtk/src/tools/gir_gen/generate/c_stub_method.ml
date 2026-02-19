@@ -64,31 +64,80 @@ let handle_out_param ~param_index ~base_type ~acc (p : gir_param) =
   }
 
 (* [handle_inout_param ~_ctx ~param_index ~base_type ~acc ~tm p] processes an inout-direction parameter.
-   Generates a C variable declaration initialized from the OCaml argument using type-specific
-   conversion. The variable is added as a pointer reference in the C function arguments.
-   Returns the updated accumulator with declarations, arguments, and updated OCaml index. *)
+    Generates a C variable declaration initialized from the OCaml argument using type-specific
+    conversion. The variable is added as a pointer reference in the C function arguments.
+    
+    For record types (non-opaque structs passed as pointers like PangoRectangle ptr):
+    - Creates a local stack value: PangoRectangle inout1_val = (dereference PangoRectangle_val(arg))
+    - Creates a pointer to it: PangoRectangle ptr inout1 = &inout1_val
+    - Passes the pointer (not address-of) to the C function
+    
+    For primitive types:
+    - Declares the value directly: int inout1 = Int_val(arg)
+    - Passes address-of to the C function: &inout1
+    
+    Returns the updated accumulator with declarations, arguments, and updated OCaml index. *)
 let handle_inout_param ~ctx ~param_index ~base_type ~acc ~tm (p : gir_param) =
-  let (_ : generation_context) = ctx in
   let ocaml_idx = acc.C_stub_helpers.ocaml_idx + 1 in
   let arg_name = sprintf "arg%d" ocaml_idx in
   let var_name = sprintf "inout%d" (param_index + 1) in
-  let init_expr =
-    match tm with
-    | Some mapping ->
-        let param_type =
-          { p.param_type with nullable = p.nullable || p.param_type.nullable }
-        in
-        C_stub_helpers.nullable_ml_to_c_expr ~var:arg_name ~gir_type:param_type
-          ~mapping
-    | None -> arg_name
+  
+  (* Check if this is a record type that needs special pointer handling *)
+  let prop_info = C_stub_helpers.analyze_property_type ~ctx p.param_type in
+  let is_record_with_pointer =
+    match prop_info.record_info with
+    | Some (record, _, _) when not record.opaque ->
+        (* Non-opaque record types need value + pointer pattern *)
+        true
+    | _ -> false
   in
-  bprintf acc.decls "%s %s = %s;\n" base_type var_name init_expr;
-  {
-    C_stub_helpers.ocaml_idx;
-    decls = acc.decls;
-    args = acc.args @ [ sprintf "&%s" var_name ];
-    cleanups = acc.cleanups;
-  }
+  
+  if is_record_with_pointer then begin
+    (* For record types: generate value + pointer pattern
+       PangoRectangle inout1_val = *PangoRectangle_val(arg1);
+       PangoRectangle *inout1 = &inout1_val;
+       Pass inout1 (not &inout1) to the C function *)
+    let init_expr =
+      match tm with
+      | Some mapping ->
+          let param_type =
+            { p.param_type with nullable = p.nullable || p.param_type.nullable }
+          in
+          C_stub_helpers.nullable_ml_to_c_expr ~var:arg_name ~gir_type:param_type
+            ~mapping
+      | None -> arg_name
+    in
+    let val_name = var_name ^ "_val" in
+    (* Declare value: dereference the pointer returned by the conversion macro *)
+    bprintf acc.decls "%s %s = *%s;\n" base_type val_name init_expr;
+    (* Declare pointer to the value *)
+    bprintf acc.decls "%s *%s = &%s;\n" base_type var_name val_name;
+    {
+      C_stub_helpers.ocaml_idx;
+      decls = acc.decls;
+      args = acc.args @ [ var_name ];  (* Pass the pointer, not &pointer *)
+      cleanups = acc.cleanups;
+    }
+  end else begin
+    (* For primitive types: existing behavior *)
+    let init_expr =
+      match tm with
+      | Some mapping ->
+          let param_type =
+            { p.param_type with nullable = p.nullable || p.param_type.nullable }
+          in
+          C_stub_helpers.nullable_ml_to_c_expr ~var:arg_name ~gir_type:param_type
+            ~mapping
+      | None -> arg_name
+    in
+    bprintf acc.decls "%s %s = %s;\n" base_type var_name init_expr;
+    {
+      C_stub_helpers.ocaml_idx;
+      decls = acc.decls;
+      args = acc.args @ [ sprintf "&%s" var_name ];
+      cleanups = acc.cleanups;
+    }
+  end
 
 (* [handle_in_array_param ~ctx ~acc ~arg_name ~base_type ~tm p array_info] processes
     an in-direction array parameter. Generates conversion code from OCaml array to C array,

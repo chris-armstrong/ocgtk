@@ -769,6 +769,159 @@ let test_bitfield_array_element_conversion () =
     "No AddrOf wrapping bitfield converter (Bug 5 fix)" false
     has_addr_of_in_bitfield_call
 
+(* Bug 4: Inout record parameters should be initialized as stack values with pointers,
+    not as direct value types. For PangoRectangle* inout params, the generator should:
+    - Declare a local stack value: PangoRectangle inout1_val = ...;
+    - Create a pointer to it: PangoRectangle *inout1 = &inout1_val;
+    - Pass the pointer to the C function: pango_matrix_transform_rectangle(..., inout1) *)
+let test_inout_record_param_pointer_type () =
+  let open Gir_gen_lib.Types in
+  (* Create a record type simulating PangoRectangle *)
+  let rectangle_record =
+    {
+      record_name = "Rectangle";
+      c_type = "PangoRectangle";
+      glib_type_name = Some "PangoRectangle";
+      glib_get_type = Some "pango_rectangle_get_type";
+      opaque = false;
+      disguised = false;
+      c_symbol_prefix = Some "pango_rectangle";
+      is_gtype_struct_for = None;
+      fields =
+        [
+          {
+            field_name = "x";
+            field_type = Some { name = "gint"; c_type = Some "int"; nullable = false; transfer_ownership = TransferNone; array = None };
+            readable = true;
+            writable = true;
+            field_doc = None;
+          };
+        ];
+      constructors = [];
+      methods = [];
+      functions = [];
+      record_doc = None;
+      introspectable = true;
+    }
+  in
+  let ctx =
+    { (Helpers.create_test_context ()) with
+      records = [ rectangle_record ];
+    }
+  in
+
+  (* Create a method with inout Rectangle* parameter - simulates pango_matrix_transform_rectangle *)
+  let meth =
+    {
+      method_name = "transform_rectangle";
+      c_identifier = "pango_matrix_transform_rectangle";
+      return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
+      parameters =
+        [
+          (* self parameter - PangoMatrix* *)
+          {
+            param_name = "matrix";
+            param_type = { name = "Matrix"; c_type = Some "PangoMatrix*"; nullable = false; transfer_ownership = TransferNone; array = None };
+            direction = In;
+            nullable = false;
+            varargs = false;
+          };
+          (* inout Rectangle* parameter *)
+          {
+            param_name = "rect";
+            param_type = { name = "Rectangle"; c_type = Some "PangoRectangle*"; nullable = false; transfer_ownership = TransferNone; array = None };
+            direction = InOut;
+            nullable = false;
+            varargs = false;
+          };
+        ];
+      doc = None;
+      throws = false;
+      introspectable = true;
+      get_property = None;
+      set_property = None;
+    }
+  in
+
+  let c_code =
+    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
+      ~c_type:"PangoMatrix" meth "Matrix"
+  in
+  Helpers.log_generated_c_code "inout_record" c_code;
+
+  let functions = C_parser.parse_c_code c_code in
+  let func =
+    Option.get (C_ast.find_function functions "ml_pango_matrix_transform_rectangle")
+  in
+
+  (* Positive: function parses to valid AST *)
+  Alcotest.(check bool)
+    "Function parses to valid AST" true
+    (Option.is_some (C_ast.find_function functions "ml_pango_matrix_transform_rectangle"));
+
+  (* Critical: check that we have TWO variable declarations for the inout param:
+     1. PangoRectangle inout1_val = PangoRectangle_val(arg1);  (the stack value)
+     2. PangoRectangle *inout1 = &inout1_val;  (the pointer to pass to C)
+
+     Bug 4 fix: for record types, inout params need value + pointer declarations *)
+  let var_decls = C_ast.get_var_decls func in
+  let inout_decls =
+    List.filter
+      (fun (name, _type, _init) ->
+        String.length name >= 5 && String.sub name 0 5 = "inout")
+      var_decls
+  in
+
+  (* We expect at least two declarations: inout_val and inout (or similar pattern) *)
+  Alcotest.(check bool)
+    "At least two inout-related variable declarations" true
+    (List.length inout_decls >= 2);
+
+  (* Verify one is a value type and one is a pointer type *)
+  let has_value_decl =
+    List.exists
+      (fun (_name, typ, _init) ->
+        (* Value type: starts with "PangoRectangle" but NOT "PangoRectangle*" *)
+        String.length typ >= 14 &&
+        String.sub typ 0 14 = "PangoRectangle" &&
+        not (String.contains typ '*'))
+      inout_decls
+  in
+  Alcotest.(check bool)
+    "Has value declaration (PangoRectangle inout_val)" true
+    has_value_decl;
+
+  let has_pointer_decl =
+    List.exists
+      (fun (_name, typ, _init) ->
+        (* Pointer type: "PangoRectangle*" *)
+        String.length typ >= 15 &&
+        String.sub typ 0 15 = "PangoRectangle*")
+      inout_decls
+  in
+  Alcotest.(check bool)
+    "Has pointer declaration (PangoRectangle* inout)" true
+    has_pointer_decl;
+
+  (* Verify the pointer is initialized with address-of the value *)
+  let pointer_decl =
+    List.find_opt
+      (fun (_, typ, _) ->
+        String.length typ >= 15 && String.sub typ 0 15 = "PangoRectangle*")
+      inout_decls
+  in
+  match pointer_decl with
+  | Some (_, _, Some (C_ast.AddrOf (C_ast.Var var_name))) ->
+      Alcotest.(check bool)
+        "Pointer initialized with &inout_val" true
+        (String.length var_name >= 5 && String.sub var_name 0 5 = "inout")
+  | Some (_, _, Some _) ->
+      Alcotest.fail "Pointer should be initialized with AddrOf (address-of) expression"
+  | Some (_, _, None) ->
+      Alcotest.fail "Pointer should have initialization"
+  | None ->
+      Alcotest.fail "Pointer declaration not found"
+
 let tests =
   [
     Alcotest.test_case "Non-introspectable record filtered at generation"
@@ -790,4 +943,7 @@ let tests =
       `Quick test_enum_array_element_conversion;
     Alcotest.test_case "Bitfield array element conversion (no address-of)"
       `Quick test_bitfield_array_element_conversion;
+    (* Bug 4 test *)
+    Alcotest.test_case "Inout record param uses value + pointer (Bug 4)"
+      `Quick test_inout_record_param_pointer_type;
   ]
