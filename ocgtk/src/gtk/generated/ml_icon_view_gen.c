@@ -276,21 +276,6 @@ gtk_icon_view_item_activated(GtkIconView_val(self), GtkTreePath_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_icon_view_get_visible_range(value self)
-{
-CAMLparam1(self);
-GtkTreePath* out1;
-GtkTreePath* out2;
-
-gboolean result = gtk_icon_view_get_visible_range(GtkIconView_val(self), &out1, &out2);
-CAMLlocal1(ret);
-    ret = caml_alloc(3, 0);
-    Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTreePath(out1));
-    Store_field(ret, 2, Val_GtkTreePath(out2));
-    CAMLreturn(ret);
-}
-
 CAMLexport CAMLprim value ml_gtk_icon_view_get_tooltip_column(value self)
 {
 CAMLparam1(self);
@@ -418,65 +403,6 @@ CAMLparam2(self, arg1);
 
 int result = gtk_icon_view_get_item_column(GtkIconView_val(self), GtkTreePath_val(arg1));
 CAMLreturn(Val_int(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_get_item_at_pos(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-GtkTreePath* out3;
-GtkCellRenderer* out4;
-
-gboolean result = gtk_icon_view_get_item_at_pos(GtkIconView_val(self), Int_val(arg1), Int_val(arg2), &out3, &out4);
-CAMLlocal1(ret);
-    ret = caml_alloc(3, 0);
-    Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTreePath(out3));
-    Store_field(ret, 2, Val_GtkCellRenderer(out4));
-    CAMLreturn(ret);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_get_drag_dest_item(value self)
-{
-CAMLparam1(self);
-GtkTreePath* out1;
-GtkIconViewDropPosition out2;
-
-gtk_icon_view_get_drag_dest_item(GtkIconView_val(self), &out1, &out2);
-CAMLlocal1(ret);
-    ret = caml_alloc(2, 0);
-    Store_field(ret, 0, Val_GtkTreePath(out1));
-    Store_field(ret, 1, Val_GtkIconViewDropPosition(out2));
-    CAMLreturn(ret);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_get_dest_item_at_pos(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-GtkTreePath* out3;
-GtkIconViewDropPosition out4;
-
-gboolean result = gtk_icon_view_get_dest_item_at_pos(GtkIconView_val(self), Int_val(arg1), Int_val(arg2), &out3, &out4);
-CAMLlocal1(ret);
-    ret = caml_alloc(3, 0);
-    Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTreePath(out3));
-    Store_field(ret, 2, Val_GtkIconViewDropPosition(out4));
-    CAMLreturn(ret);
-}
-
-CAMLexport CAMLprim value ml_gtk_icon_view_get_cursor(value self)
-{
-CAMLparam1(self);
-GtkTreePath* out1;
-GtkCellRenderer* out2;
-
-gboolean result = gtk_icon_view_get_cursor(GtkIconView_val(self), &out1, &out2);
-CAMLlocal1(ret);
-    ret = caml_alloc(3, 0);
-    Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTreePath(out1));
-    Store_field(ret, 2, Val_GtkCellRenderer(out2));
-    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_icon_view_get_columns(value self)

@@ -79,29 +79,6 @@ pango_tab_array_resize(PangoTabArray_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_pango_tab_array_get_tabs(value self)
-{
-CAMLparam1(self);
-PangoTabAlign* out1;
-gint* out2 = NULL;
-
-pango_tab_array_get_tabs(PangoTabArray_val(self), &out1, &out2);
-    int out2_length = 0;
-    while (out2[out2_length] != NULL) out2_length++;
-    CAMLlocal1(ml_out2);
-    ml_out2 = caml_alloc(out2_length, 0);
-    for (int i = 0; i < out2_length; i++) {
-      Store_field(ml_out2, i, Val_int(out2[i]));
-    }
-
-    g_free(out2);
-CAMLlocal1(ret);
-    ret = caml_alloc(2, 0);
-    Store_field(ret, 0, Val_PangoTabAlign(out1));
-    Store_field(ret, 1, ml_out2);
-    CAMLreturn(ret);
-}
-
 CAMLexport CAMLprim value ml_pango_tab_array_get_tab(value self, value arg1)
 {
 CAMLparam2(self, arg1);

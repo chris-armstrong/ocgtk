@@ -47,22 +47,6 @@ gboolean result = pango_script_iter_next(PangoScriptIter_val(self));
 CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_pango_script_iter_get_range(value self)
-{
-CAMLparam1(self);
-const char* out1;
-const char* out2;
-PangoScript out3;
-
-pango_script_iter_get_range(PangoScriptIter_val(self), &out1, &out2, &out3);
-CAMLlocal1(ret);
-    ret = caml_alloc(3, 0);
-    Store_field(ret, 0, caml_copy_string(out1));
-    Store_field(ret, 1, caml_copy_string(out2));
-    Store_field(ret, 2, Val_PangoScript(out3));
-    CAMLreturn(ret);
-}
-
 CAMLexport CAMLprim value ml_pango_script_iter_free(value self)
 {
 CAMLparam1(self);

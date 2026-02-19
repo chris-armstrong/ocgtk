@@ -157,38 +157,6 @@ g_subprocess_force_exit(GSubprocess_val(self));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_g_subprocess_communicate_utf8_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-GError *error = NULL;
-char* out2;
-char* out3;
-
-gboolean result = g_subprocess_communicate_utf8_finish(GSubprocess_val(self), GAsyncResult_val(arg1), &out2, &out3, &error);
-CAMLlocal1(ret);
-    ret = caml_alloc(3, 0);
-    Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, caml_copy_string(out2));
-    Store_field(ret, 2, caml_copy_string(out3));
-    if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
-}
-
-CAMLexport CAMLprim value ml_g_subprocess_communicate_utf8(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-GError *error = NULL;
-char* out3;
-char* out4;
-
-gboolean result = g_subprocess_communicate_utf8(GSubprocess_val(self), String_option_val(arg1), Option_val(arg2, GCancellable_val, NULL), &out3, &out4, &error);
-CAMLlocal1(ret);
-    ret = caml_alloc(3, 0);
-    Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, caml_copy_string(out3));
-    Store_field(ret, 2, caml_copy_string(out4));
-    if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
-}
-
 CAMLexport CAMLprim value ml_g_subprocess_get_argv(value self)
 {
 GSubprocess *obj = (GSubprocess *)GSubprocess_val(self);
