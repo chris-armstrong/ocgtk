@@ -42,11 +42,10 @@ CAMLreturn(Val_graphene_vec4_t(obj));
 CAMLexport CAMLprim value ml_graphene_vec4_to_float(value self)
 {
 CAMLparam1(self);
-float out1 = NULL;
+float out1[4];
 
-graphene_vec4_to_float(graphene_vec4_t_val(self), &out1);
-    int out1_length = 0;
-    while (out1[out1_length] != NULL) out1_length++;
+graphene_vec4_to_float(graphene_vec4_t_val(self), out1);
+    int out1_length = 4;
     CAMLlocal1(ml_out1);
     ml_out1 = caml_alloc(out1_length, 0);
     for (int i = 0; i < out1_length; i++) {

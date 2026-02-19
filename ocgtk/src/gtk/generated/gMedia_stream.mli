@@ -1,6 +1,5 @@
 class media_stream : Media_stream.t ->
   object
-    method ended : unit -> unit
     method get_ended : unit -> bool
     method get_loop : unit -> bool
     method get_muted : unit -> bool
@@ -21,7 +20,6 @@ class media_stream : Media_stream.t ->
     method set_volume : float -> unit
     method stream_ended : unit -> unit
     method stream_unprepared : unit -> unit
-    method unprepared : unit -> unit
     method prepared : bool
     method set_prepared : bool -> unit
     method seekable : bool

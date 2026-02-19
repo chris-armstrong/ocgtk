@@ -16,10 +16,11 @@
 #include "generated_forward_decls.h"
 
 /* Copy function for PangoColor (value-like record with copy method) */
-value copy_PangoColor(const PangoColor *ptr) {
+value copy_PangoColor(const PangoColor *ptr)
+{
   if (ptr == NULL) return Val_none;
   PangoColor *copy = pango_color_copy((PangoColor*)ptr);
-  return ml_gir_record_val_ptr(g_new0(PangoColor, 1));
+  return ml_gir_record_val_ptr(copy);
 }
 
 

@@ -9,10 +9,6 @@ class content_formats_builder (obj : Content_formats_builder.t) = object (self)
     fun mime_type ->
       (Content_formats_builder.add_mime_type obj mime_type)
 
-  method free_to_formats : unit -> Content_formats.t =
-    fun () ->
-      (Content_formats_builder.free_to_formats obj)
-
   method ref : unit -> Content_formats_builder.t =
     fun () ->
       (Content_formats_builder.ref obj)

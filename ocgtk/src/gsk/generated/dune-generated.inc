@@ -11,7 +11,6 @@
       (echo "Blur_node")
       (echo "Border_node")
       (echo "Box")
-      (echo "Broadway_renderer")
       (echo "Button")
       (echo "Cairo_node")
       (echo "Cairo_renderer")
@@ -34,7 +33,6 @@
       (echo "GBlend_node")
       (echo "GBlur_node")
       (echo "GBorder_node")
-      (echo "GBroadway_renderer")
       (echo "GCairo_node")
       (echo "GCairo_renderer")
       (echo "GClip_node")
@@ -53,7 +51,6 @@
       (echo "GInset_shadow_node")
       (echo "GLinear_gradient_node")
       (echo "GMask_node")
-      (echo "GNgl_renderer")
       (echo "GOpacity_node")
       (echo "GOutset_shadow_node")
       (echo "GParse_location")
@@ -109,7 +106,6 @@
       (echo "Link_button")
       (echo "Mask_node")
       (echo "Menu_button")
-      (echo "Ngl_renderer")
       (echo "Notebook")
       (echo "Opacity_node")
       (echo "Outset_shadow_node")
@@ -184,7 +180,6 @@ rm cflag-gsk.sexp.tmp clink-gsk.sexp.tmp\\
    ml_blend_node_gen
    ml_blur_node_gen
    ml_border_node_gen
-   ml_broadway_renderer_gen
    ml_cairo_node_gen
    ml_cairo_renderer_gen
    ml_clip_node_gen
@@ -203,7 +198,6 @@ rm cflag-gsk.sexp.tmp clink-gsk.sexp.tmp\\
    ml_inset_shadow_node_gen
    ml_linear_gradient_node_gen
    ml_mask_node_gen
-   ml_ngl_renderer_gen
    ml_opacity_node_gen
    ml_outset_shadow_node_gen
    ml_parse_location_gen

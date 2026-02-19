@@ -31,18 +31,3 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GIOModule(obj));
 }
-CAMLexport CAMLprim value ml_g_io_module_unload(value self)
-{
-CAMLparam1(self);
-
-g_io_module_unload(GIOModule_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_g_io_module_load(value self)
-{
-CAMLparam1(self);
-
-g_io_module_load(GIOModule_val(self));
-CAMLreturn(Val_unit);
-}

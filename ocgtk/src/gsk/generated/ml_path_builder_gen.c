@@ -197,14 +197,6 @@ CAMLexport CAMLprim value ml_gsk_path_builder_html_arc_to_bytecode(value * argv,
 return ml_gsk_path_builder_html_arc_to_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
 }
 
-CAMLexport CAMLprim value ml_gsk_path_builder_free_to_path(value self)
-{
-CAMLparam1(self);
-
-GskPath* result = gsk_path_builder_free_to_path(GskPathBuilder_val(self));
-CAMLreturn(Val_GskPath(result));
-}
-
 CAMLexport CAMLprim value ml_gsk_path_builder_cubic_to_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);

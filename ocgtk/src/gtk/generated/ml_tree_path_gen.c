@@ -131,14 +131,6 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_path_get_indices(value self)
-{
-CAMLparam1(self);
-
-int* result = gtk_tree_path_get_indices(GtkTreePath_val(self));
-CAMLreturn(Val_option(result, Val_int));
-}
-
 CAMLexport CAMLprim value ml_gtk_tree_path_get_depth(value self)
 {
 CAMLparam1(self);

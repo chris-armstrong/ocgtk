@@ -6,7 +6,6 @@
 class blend_node : Blend_node.t -> GBlend_node.blend_node
 class blur_node : Blur_node.t -> GBlur_node.blur_node
 class border_node : Border_node.t -> GBorder_node.border_node
-class broadway_renderer : Broadway_renderer.t -> GBroadway_renderer.broadway_renderer
 class cairo_node : Cairo_node.t -> GCairo_node.cairo_node
 class cairo_renderer : Cairo_renderer.t -> GCairo_renderer.cairo_renderer
 class clip_node : Clip_node.t -> GClip_node.clip_node
@@ -23,7 +22,6 @@ class gl_shader_node : Gl_shader_node.t -> GGl_shader_node.gl_shader_node
 class inset_shadow_node : Inset_shadow_node.t -> GInset_shadow_node.inset_shadow_node
 class linear_gradient_node : Linear_gradient_node.t -> GLinear_gradient_node.linear_gradient_node
 class mask_node : Mask_node.t -> GMask_node.mask_node
-class ngl_renderer : Ngl_renderer.t -> GNgl_renderer.ngl_renderer
 class opacity_node : Opacity_node.t -> GOpacity_node.opacity_node
 class outset_shadow_node : Outset_shadow_node.t -> GOutset_shadow_node.outset_shadow_node
 class radial_gradient_node : Radial_gradient_node.t -> GRadial_gradient_node.radial_gradient_node
@@ -51,7 +49,6 @@ module Wrappers : sig
   module Blend_node = Blend_node
   module Blur_node = Blur_node
   module Border_node = Border_node
-  module Broadway_renderer = Broadway_renderer
   module Cairo_node = Cairo_node
   module Cairo_renderer = Cairo_renderer
   module Clip_node = Clip_node
@@ -68,7 +65,6 @@ module Wrappers : sig
   module Inset_shadow_node = Inset_shadow_node
   module Linear_gradient_node = Linear_gradient_node
   module Mask_node = Mask_node
-  module Ngl_renderer = Ngl_renderer
   module Opacity_node = Opacity_node
   module Outset_shadow_node = Outset_shadow_node
   module Radial_gradient_node = Radial_gradient_node

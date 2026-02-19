@@ -20,8 +20,6 @@ and clipboard : App_launch_context_and__cairo_context_and__clipboard_and__device
     method get_formats : unit -> Content_formats.t
     method is_local : unit -> bool
     method set_content : #GContent_provider.content_provider option -> bool
-    method set_text : string -> unit
-    method set_texture : #GTexture.texture -> unit
     method local : bool
     method as_clipboard : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Clipboard.t
   end

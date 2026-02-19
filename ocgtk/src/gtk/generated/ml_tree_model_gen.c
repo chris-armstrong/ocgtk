@@ -39,14 +39,6 @@ gtk_tree_model_rows_reordered_with_length(GtkTreeModel_val(self), GtkTreePath_va
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_model_rows_reordered(value self, value arg1, value arg2, value arg3)
-{
-CAMLparam4(self, arg1, arg2, arg3);
-
-gtk_tree_model_rows_reordered(GtkTreeModel_val(self), GtkTreePath_val(arg1), GtkTreeIter_val(arg2), Int_val(arg3));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_tree_model_row_inserted(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);

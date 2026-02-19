@@ -17,10 +17,11 @@
 #include "generated_forward_decls.h"
 
 /* Copy function for GtkTreeIter (value-like record with copy method) */
-value copy_GtkTreeIter(const GtkTreeIter *ptr) {
+value copy_GtkTreeIter(const GtkTreeIter *ptr)
+{
   if (ptr == NULL) return Val_none;
   GtkTreeIter *copy = gtk_tree_iter_copy((GtkTreeIter*)ptr);
-  return ml_gir_record_val_ptr(g_new0(GtkTreeIter, 1));
+  return ml_gir_record_val_ptr(copy);
 }
 
 

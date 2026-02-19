@@ -87,11 +87,10 @@ return ml_graphene_frustum_init_native(argv[0], argv[1], argv[2], argv[3], argv[
 CAMLexport CAMLprim value ml_graphene_frustum_get_planes(value self)
 {
 CAMLparam1(self);
-graphene_plane_t out1 = NULL;
+graphene_plane_t out1[6];
 
-graphene_frustum_get_planes(graphene_frustum_t_val(self), &out1);
-    int out1_length = 0;
-    while (out1[out1_length] != NULL) out1_length++;
+graphene_frustum_get_planes(graphene_frustum_t_val(self), out1);
+    int out1_length = 6;
     CAMLlocal1(ml_out1);
     ml_out1 = caml_alloc(out1_length, 0);
     for (int i = 0; i < out1_length; i++) {

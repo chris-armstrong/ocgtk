@@ -108,10 +108,10 @@
 #define Val_GskMaskNode(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GskMaskNode */
 
-#ifndef Val_GtkNglRenderer
-#define GtkNglRenderer_val(val) ((GtkNglRenderer*)ml_gobject_ext_of_val(val))
-#define Val_GtkNglRenderer(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#endif /* Val_GtkNglRenderer */
+#ifndef Val_GskNglRenderer
+#define GskNglRenderer_val(val) ((GskNglRenderer*)ml_gobject_ext_of_val(val))
+#define Val_GskNglRenderer(obj) ((value)(ml_gobject_val_of_ext(obj)))
+#endif /* Val_GskNglRenderer */
 
 #ifndef Val_GskOpacityNode
 #define GskOpacityNode_val(val) ((GskOpacityNode*)ml_gobject_ext_of_val(val))
@@ -208,6 +208,12 @@ value copy_GskRoundedRect(const GskRoundedRect *ptr);
 #define Val_GskPathPoint(obj) copy_GskPathPoint((obj))
 #define Val_GskPathPoint_option(ptr) ((ptr) ? Val_some(copy_GskPathPoint(ptr)) : Val_none)
 #endif /* Val_GskPathPoint */
+
+#ifndef Val_GskRoundedRect
+#define GskRoundedRect_val(val) ((GskRoundedRect*)ext_of_val(val))
+#define Val_GskRoundedRect(obj) copy_GskRoundedRect((obj))
+#define Val_GskRoundedRect_option(ptr) ((ptr) ? Val_some(copy_GskRoundedRect(ptr)) : Val_none)
+#endif /* Val_GskRoundedRect */
 
 
 /* Forward declarations for record converters (non-opaque records) */

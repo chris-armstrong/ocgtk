@@ -21,8 +21,7 @@ CAMLexport CAMLprim value ml_gsk_border_node_get_widths(value self)
 CAMLparam1(self);
 
 const float* result = gsk_border_node_get_widths(GskBorderNode_val(self));
-    int result_length = 0;
-    while (result[result_length] != NULL) result_length++;
+    int result_length = 4;
     CAMLlocal1(ml_result);
     ml_result = caml_alloc(result_length, 0);
     for (int i = 0; i < result_length; i++) {

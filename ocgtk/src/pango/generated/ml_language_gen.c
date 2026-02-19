@@ -65,7 +65,7 @@ const PangoScript* result = pango_language_get_scripts(PangoLanguage_val(self), 
     CAMLlocal1(ml_result);
     ml_result = caml_alloc(result_length, 0);
     for (int i = 0; i < result_length; i++) {
-      Store_field(ml_result, i, Val_PangoScript(&result[i]));
+      Store_field(ml_result, i, Val_PangoScript(result[i]));
     }
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);

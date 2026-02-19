@@ -16,10 +16,11 @@
 #include "generated_forward_decls.h"
 
 /* Copy function for PangoGlyphString (value-like record with copy method) */
-value copy_PangoGlyphString(const PangoGlyphString *ptr) {
+value copy_PangoGlyphString(const PangoGlyphString *ptr)
+{
   if (ptr == NULL) return Val_none;
   PangoGlyphString *copy = pango_glyph_string_copy((PangoGlyphString*)ptr);
-  return ml_gir_record_val_ptr(g_new0(PangoGlyphString, 1));
+  return ml_gir_record_val_ptr(copy);
 }
 
 

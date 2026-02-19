@@ -16,10 +16,11 @@
 #include "generated_forward_decls.h"
 
 /* Copy function for PangoMatrix (value-like record with copy method) */
-value copy_PangoMatrix(const PangoMatrix *ptr) {
+value copy_PangoMatrix(const PangoMatrix *ptr)
+{
   if (ptr == NULL) return Val_none;
   PangoMatrix *copy = pango_matrix_copy((PangoMatrix*)ptr);
-  return ml_gir_record_val_ptr(g_new0(PangoMatrix, 1));
+  return ml_gir_record_val_ptr(copy);
 }
 
 
@@ -34,9 +35,10 @@ CAMLreturn(Val_unit);
 CAMLexport CAMLprim value ml_pango_matrix_transform_rectangle(value self, value arg1)
 {
 CAMLparam2(self, arg1);
-PangoRectangle inout1 = PangoRectangle_val(arg1);
+PangoRectangle inout1_val = *PangoRectangle_val(arg1);
+PangoRectangle *inout1 = &inout1_val;
 
-pango_matrix_transform_rectangle(PangoMatrix_val(self), &inout1);
+pango_matrix_transform_rectangle(PangoMatrix_val(self), inout1);
 CAMLreturn(Val_PangoRectangle(&inout1));
 }
 
@@ -57,9 +59,10 @@ CAMLlocal1(ret);
 CAMLexport CAMLprim value ml_pango_matrix_transform_pixel_rectangle(value self, value arg1)
 {
 CAMLparam2(self, arg1);
-PangoRectangle inout1 = PangoRectangle_val(arg1);
+PangoRectangle inout1_val = *PangoRectangle_val(arg1);
+PangoRectangle *inout1 = &inout1_val;
 
-pango_matrix_transform_pixel_rectangle(PangoMatrix_val(self), &inout1);
+pango_matrix_transform_pixel_rectangle(PangoMatrix_val(self), inout1);
 CAMLreturn(Val_PangoRectangle(&inout1));
 }
 

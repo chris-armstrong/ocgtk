@@ -16,10 +16,11 @@
 #include "generated_forward_decls.h"
 
 /* Copy function for PangoAttribute (value-like record with copy method) */
-value copy_PangoAttribute(const PangoAttribute *ptr) {
+value copy_PangoAttribute(const PangoAttribute *ptr)
+{
   if (ptr == NULL) return Val_none;
   PangoAttribute *copy = pango_attribute_copy((PangoAttribute*)ptr);
-  return ml_gir_record_val_ptr(g_new0(PangoAttribute, 1));
+  return ml_gir_record_val_ptr(copy);
 }
 
 

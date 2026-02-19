@@ -48,15 +48,6 @@ and clipboard (obj : App_launch_context_and__cairo_context_and__clipboard_and__d
       let provider = Option.map (fun (c) -> c#as_content_provider) provider in
       (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Clipboard.set_content obj provider)
 
-  method set_text : string -> unit =
-    fun text ->
-      (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Clipboard.set_text obj text)
-
-  method set_texture : 'p1. (#GTexture.texture as 'p1) -> unit =
-    fun texture ->
-      let texture = texture#as_texture in
-      (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Clipboard.set_texture obj texture)
-
   method local = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Clipboard.get_local obj
 
     method as_clipboard = obj

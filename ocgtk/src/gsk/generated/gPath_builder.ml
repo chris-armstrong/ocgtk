@@ -33,10 +33,6 @@ class path_builder (obj : Path_builder.t) = object (self)
     fun x1 y1 x2 y2 x3 y3 ->
       (Path_builder.cubic_to obj x1 y1 x2 y2 x3 y3)
 
-  method free_to_path : unit -> Path_and__path_measure_and__path_point.Path.t =
-    fun () ->
-      (Path_builder.free_to_path obj)
-
   method html_arc_to : float -> float -> float -> float -> float -> unit =
     fun x1 y1 x2 y2 radius ->
       (Path_builder.html_arc_to obj x1 y1 x2 y2 radius)

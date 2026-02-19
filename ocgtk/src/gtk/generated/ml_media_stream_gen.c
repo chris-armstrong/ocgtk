@@ -17,14 +17,6 @@
 #include "generated_forward_decls.h"
 
 
-CAMLexport CAMLprim value ml_gtk_media_stream_unprepared(value self)
-{
-CAMLparam1(self);
-
-gtk_media_stream_unprepared(GtkMediaStream_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_media_stream_stream_unprepared(value self)
 {
 CAMLparam1(self);
@@ -183,14 +175,6 @@ CAMLparam1(self);
 
 gboolean result = gtk_media_stream_get_ended(GtkMediaStream_val(self));
 CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_media_stream_ended(value self)
-{
-CAMLparam1(self);
-
-gtk_media_stream_ended(GtkMediaStream_val(self));
-CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_media_stream_get_prepared(value self)

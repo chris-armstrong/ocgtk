@@ -28,20 +28,20 @@
 #define Val_GdkPixbufLoader(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GdkPixbufLoader */
 
-#ifndef Val_GtkPixbufNonAnim
-#define GtkPixbufNonAnim_val(val) ((GtkPixbufNonAnim*)ml_gobject_ext_of_val(val))
-#define Val_GtkPixbufNonAnim(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#endif /* Val_GtkPixbufNonAnim */
+#ifndef Val_GdkPixbufNonAnim
+#define GdkPixbufNonAnim_val(val) ((GdkPixbufNonAnim*)ml_gobject_ext_of_val(val))
+#define Val_GdkPixbufNonAnim(obj) ((value)(ml_gobject_val_of_ext(obj)))
+#endif /* Val_GdkPixbufNonAnim */
 
 #ifndef Val_GdkPixbufSimpleAnim
 #define GdkPixbufSimpleAnim_val(val) ((GdkPixbufSimpleAnim*)ml_gobject_ext_of_val(val))
 #define Val_GdkPixbufSimpleAnim(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GdkPixbufSimpleAnim */
 
-#ifndef Val_GtkPixbufSimpleAnimIter
-#define GtkPixbufSimpleAnimIter_val(val) ((GtkPixbufSimpleAnimIter*)ml_gobject_ext_of_val(val))
-#define Val_GtkPixbufSimpleAnimIter(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#endif /* Val_GtkPixbufSimpleAnimIter */
+#ifndef Val_GdkPixbufSimpleAnimIter
+#define GdkPixbufSimpleAnimIter_val(val) ((GdkPixbufSimpleAnimIter*)ml_gobject_ext_of_val(val))
+#define Val_GdkPixbufSimpleAnimIter(obj) ((value)(ml_gobject_val_of_ext(obj)))
+#endif /* Val_GdkPixbufSimpleAnimIter */
 
 /* Interface-specific conversion macros (shared) */
 /* Value-returning structs copied into OCaml */

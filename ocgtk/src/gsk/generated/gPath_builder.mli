@@ -8,7 +8,6 @@ class path_builder : Path_builder.t ->
     method close : unit -> unit
     method conic_to : float -> float -> float -> float -> float -> unit
     method cubic_to : float -> float -> float -> float -> float -> float -> unit
-    method free_to_path : unit -> Path_and__path_measure_and__path_point.Path.t
     method html_arc_to : float -> float -> float -> float -> float -> unit
     method line_to : float -> float -> unit
     method move_to : float -> float -> unit

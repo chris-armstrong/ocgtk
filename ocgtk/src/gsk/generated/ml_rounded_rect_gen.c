@@ -16,7 +16,8 @@
 #include "generated_forward_decls.h"
 
 /* Copy function for GskRoundedRect (value-like record with copy method) */
-value copy_GskRoundedRect(const GskRoundedRect *ptr) {
+value copy_GskRoundedRect(const GskRoundedRect *ptr)
+{
   if (ptr == NULL) return Val_none;
   GskRoundedRect *copy = g_malloc(sizeof(GskRoundedRect));
   memcpy(copy, ptr, sizeof(GskRoundedRect));

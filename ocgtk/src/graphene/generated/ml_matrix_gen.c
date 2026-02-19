@@ -171,11 +171,10 @@ CAMLreturn(Val_graphene_rect_t(&out2));
 CAMLexport CAMLprim value ml_graphene_matrix_to_float(value self)
 {
 CAMLparam1(self);
-float out1 = NULL;
+float out1[16];
 
-graphene_matrix_to_float(graphene_matrix_t_val(self), &out1);
-    int out1_length = 0;
-    while (out1[out1_length] != NULL) out1_length++;
+graphene_matrix_to_float(graphene_matrix_t_val(self), out1);
+    int out1_length = 16;
     CAMLlocal1(ml_out1);
     ml_out1 = caml_alloc(out1_length, 0);
     for (int i = 0; i < out1_length; i++) {

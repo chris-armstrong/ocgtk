@@ -16,10 +16,11 @@
 #include "generated_forward_decls.h"
 
 /* Copy function for GskPathPoint (value-like record with copy method) */
-value copy_GskPathPoint(const GskPathPoint *ptr) {
+value copy_GskPathPoint(const GskPathPoint *ptr)
+{
   if (ptr == NULL) return Val_none;
   GskPathPoint *copy = gsk_path_point_copy((GskPathPoint*)ptr);
-  return ml_gir_record_val_ptr(g_new0(GskPathPoint, 1));
+  return ml_gir_record_val_ptr(copy);
 }
 
 

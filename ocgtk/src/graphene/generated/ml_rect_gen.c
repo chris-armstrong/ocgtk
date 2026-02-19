@@ -191,11 +191,10 @@ CAMLreturn(caml_copy_double(result));
 CAMLexport CAMLprim value ml_graphene_rect_get_vertices(value self)
 {
 CAMLparam1(self);
-graphene_vec2_t out1 = NULL;
+graphene_vec2_t out1[4];
 
-graphene_rect_get_vertices(graphene_rect_t_val(self), &out1);
-    int out1_length = 0;
-    while (out1[out1_length] != NULL) out1_length++;
+graphene_rect_get_vertices(graphene_rect_t_val(self), out1);
+    int out1_length = 4;
     CAMLlocal1(ml_out1);
     ml_out1 = caml_alloc(out1_length, 0);
     for (int i = 0; i < out1_length; i++) {
