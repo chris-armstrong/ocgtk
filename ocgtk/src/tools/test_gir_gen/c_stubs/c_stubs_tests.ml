@@ -97,6 +97,7 @@ let test_constructor_with_params () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       ctor_doc = None;
@@ -141,6 +142,7 @@ let test_constructor_many_params () =
           direction = In;
           nullable = false;
           varargs = false;
+            caller_allocates = false;
         })
   in
 
@@ -202,6 +204,7 @@ let test_simple_method () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -327,6 +330,7 @@ let test_method_calls_c_function () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -431,6 +435,7 @@ let test_bytecode_calls_native () =
           direction = In;
           nullable = false;
           varargs = false;
+            caller_allocates = false;
         })
   in
 
@@ -608,6 +613,7 @@ let test_non_opaque_record_parameter () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -748,6 +754,7 @@ let test_opaque_record_parameter () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -923,6 +930,7 @@ let test_nullable_record_parameter () =
             direction = In;
             nullable = true;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;

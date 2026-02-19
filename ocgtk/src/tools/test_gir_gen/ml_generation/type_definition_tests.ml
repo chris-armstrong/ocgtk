@@ -142,6 +142,7 @@ let test_method_with_nullable_param () =
         direction = In;
         nullable = true;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;

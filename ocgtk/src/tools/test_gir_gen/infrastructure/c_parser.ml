@@ -153,7 +153,18 @@ let separate_pointer_from_name name =
   else
     ("", name)
 
-(* Parse a variable declaration: "Type name = value;" or "Type name;" *)
+(* Helper to separate array dimension from variable name.
+   "out1[8]" -> ("out1", "[8]") *)
+let separate_array_from_name name =
+  try
+    let bracket_idx = String.index name '[' in
+    let actual_name = String.sub name 0 bracket_idx in
+    let array_dim = String.sub name bracket_idx (String.length name - bracket_idx) in
+    (actual_name, Some array_dim)
+  with Not_found ->
+    (name, None)
+
+(* Parse a variable declaration: "Type name = value;" or "Type name[N];" or "Type name;" *)
 let parse_var_decl line =
   let line = strip line in
 
@@ -173,18 +184,28 @@ let parse_var_decl line =
         let words = String.split_on_char ' ' left |> List.filter ((<>) "") in
         (match List.rev words with
         | name :: rest_rev ->
-            let (stars, actual_name) = separate_pointer_from_name name in
-            let var_type = String.concat " " (List.rev rest_rev) ^ stars in
+            let (stars, actual_name_with_array) = separate_pointer_from_name name in
+            let (actual_name, array_dim) = separate_array_from_name actual_name_with_array in
+            (* Include array dimension in type if present *)
+            let var_type = 
+              String.concat " " (List.rev rest_rev) ^ stars ^
+              (match array_dim with Some d -> d | None -> "")
+            in
             Some (VarDecl (var_type, actual_name, Some (parse_expr right)))
         | [] -> None)
     | _ -> None
   else
-    (* No assignment *)
+    (* No assignment - could be simple decl or array decl *)
     let words = String.split_on_char ' ' line |> List.filter ((<>) "") in
     match List.rev words with
     | name :: rest_rev ->
-        let (stars, actual_name) = separate_pointer_from_name name in
-        let var_type = String.concat " " (List.rev rest_rev) ^ stars in
+        let (stars, actual_name_with_array) = separate_pointer_from_name name in
+        let (actual_name, array_dim) = separate_array_from_name actual_name_with_array in
+        (* Include array dimension in type if present *)
+        let var_type = 
+          String.concat " " (List.rev rest_rev) ^ stars ^
+          (match array_dim with Some d -> d | None -> "")
+        in
         Some (VarDecl (var_type, actual_name, None))
     | [] -> None
 
@@ -385,6 +406,7 @@ and parse_statement line =
        in
        not (List.mem base_name known_uppercase_functions) &&
        ((s.[0] >= 'A' && s.[0] <= 'Z') ||
+        String.ends_with ~suffix:"_t" s ||  (* C typedef convention: graphene_vec3_t, etc. *)
         List.mem s ["value"; "int"; "char"; "void"; "GError"; "gboolean"; "gint"; "const"; "guint"; "float"; "double"]))
     in
     match words with

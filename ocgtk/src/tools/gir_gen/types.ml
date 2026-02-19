@@ -34,6 +34,7 @@ type gir_param = {
   direction : gir_direction;
   nullable : bool;
   varargs : bool;
+  caller_allocates : bool;  (* True if caller allocates the buffer for out params *)
 }
 
 type gir_method = {

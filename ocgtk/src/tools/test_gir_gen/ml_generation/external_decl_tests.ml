@@ -22,6 +22,7 @@ let test_method_multiple_params () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       };
       {
         param_name = "upper";
@@ -29,6 +30,7 @@ let test_method_multiple_params () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
@@ -85,6 +87,7 @@ let test_method_with_object_param () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
@@ -140,6 +143,7 @@ let test_method_with_bool_param () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
@@ -240,6 +244,7 @@ let test_constructor_with_multiple_params () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       };
       {
         param_name = "use_mnemonic";
@@ -247,6 +252,7 @@ let test_constructor_with_multiple_params () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     ctor_doc = None;
@@ -300,6 +306,7 @@ let test_method_with_nullable_object () =
         direction = In;
         nullable = true;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
@@ -398,6 +405,7 @@ let test_property_setter () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;

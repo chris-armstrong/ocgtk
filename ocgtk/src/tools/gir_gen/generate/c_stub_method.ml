@@ -40,28 +40,50 @@ let var_name_for_direction direction idx =
   | InOut -> sprintf "inout%d" (idx + 1)
   | In -> sprintf "arg%d" (idx + 1)
 
+(* [declare_fixed_array ~base_type ~var_name ~fixed_size ~acc] generates stack allocation
+    for a fixed-size caller-allocated array. Returns updated accumulator with the declaration
+    and the array name as argument (array decays to pointer). *)
+let declare_fixed_array ~base_type ~var_name ~fixed_size ~acc =
+  bprintf acc.C_stub_helpers.decls "%s %s[%d];\n" base_type var_name fixed_size;
+  { acc with C_stub_helpers.args = acc.C_stub_helpers.args @ [ var_name ] }
+
+(* [declare_array_out_param ~base_type ~var_name ~acc] generates heap allocation for a regular
+    array out parameter. Returns updated accumulator with declaration and address-of argument. *)
+let declare_array_out_param ~base_type ~var_name ~acc =
+  bprintf acc.C_stub_helpers.decls "%s %s = NULL;\n" base_type var_name;
+  { acc with C_stub_helpers.args = acc.C_stub_helpers.args @ [ sprintf "&%s" var_name ] }
+
 (* [handle_out_param ~param_index ~base_type ~acc p] processes an out-direction parameter.
-   Generates a C variable declaration (as pointer for arrays, as value otherwise) and
-   adds the variable's address to the C function arguments list.
-   
-   For array out parameters: C functions use T** for out parameters (e.g., double** axes in signature).
-   We declare T* locally and pass &variable. This way variable[i] accesses T elements directly.
-   Since base_type already had one * stripped, we don't add another * for arrays.
-   
-   Returns the updated accumulator with new declarations and arguments. *)
+    Generates a C variable declaration (as pointer for arrays, as value otherwise) and
+    adds the variable's address to the C function arguments list.
+    
+    For array out parameters: C functions use T** for out parameters (e.g., double** axes in signature).
+    We declare T* locally and pass &variable. This way variable[i] accesses T elements directly.
+    Since base_type already had one * stripped, we don't add another * for arrays.
+    
+    For fixed-size caller-allocated arrays: Generate stack allocation `Type var[N];` instead of
+    heap allocation, and pass `var` directly (not `&var`) since the array decays to a pointer.
+    
+    Returns the updated accumulator with new declarations and arguments. *)
 let handle_out_param ~param_index ~base_type ~acc (p : gir_param) =
   let var_name = var_name_for_direction Out param_index in
-  let is_array = Option.is_some p.param_type.array in
   (* For array out params: base_type already stripped one *, so just use it (it's T*, not T** ).
      For non-array out params: declare as value type. *)
-  if is_array then
-    (* base_type is T* (had one * stripped from T** ), so declare as "T* var" *)
-    bprintf acc.C_stub_helpers.decls "%s %s = NULL;\n" base_type var_name
-  else bprintf acc.C_stub_helpers.decls "%s %s;\n" base_type var_name;
-  {
-    acc with
-    C_stub_helpers.args = acc.C_stub_helpers.args @ [ sprintf "&%s" var_name ];
-  }
+  match p.param_type.array with
+  | Some array_info when p.caller_allocates -> (
+      (* Caller-allocated array: check for fixed-size stack allocation *)
+      match array_info.fixed_size with
+      | Some fixed_size ->
+          declare_fixed_array ~base_type ~var_name ~fixed_size ~acc
+      | None ->
+          declare_array_out_param ~base_type ~var_name ~acc)
+  | Some _array_info ->
+      (* Regular array out param: declare as "T* var = NULL" and pass &var *)
+      declare_array_out_param ~base_type ~var_name ~acc
+  | None ->
+      (* Non-array out param: declare as value type *)
+      bprintf acc.C_stub_helpers.decls "%s %s;\n" base_type var_name;
+      { acc with C_stub_helpers.args = acc.C_stub_helpers.args @ [ sprintf "&%s" var_name ] }
 
 (* [handle_inout_param ~_ctx ~param_index ~base_type ~acc ~tm p] processes an inout-direction parameter.
     Generates a C variable declaration initialized from the OCaml argument using type-specific

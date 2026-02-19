@@ -184,6 +184,7 @@ let test_utf8_string_parameter () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -305,6 +306,7 @@ let test_gboolean_parameter () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -354,6 +356,7 @@ let test_multiple_type_conversions () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
           {
             param_name = "height";
@@ -368,6 +371,7 @@ let test_multiple_type_conversions () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;

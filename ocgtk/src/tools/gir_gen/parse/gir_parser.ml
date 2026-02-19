@@ -813,6 +813,9 @@ let parse_gir_file filename filter_classes =
             | Some "inout" -> InOut
             | _ -> In
           in
+          let caller_allocates =
+            get_attr "caller-allocates" attrs |> Utils.parse_bool
+          in
           let transfer_ownership =
             match get_attr "transfer-ownership" attrs with
             | Some "none" -> Types.TransferNone
@@ -880,7 +883,7 @@ let parse_gir_file filename filter_classes =
           in
           let param_type, varargs = parse_param_contents () in
           params :=
-            { param_name; param_type; direction; nullable; varargs } :: !params;
+            { param_name; param_type; direction; nullable; varargs; caller_allocates } :: !params;
           parse_params_contents ()
       | `El_start ((_, "instance-parameter"), _) ->
           skip_element input 1;

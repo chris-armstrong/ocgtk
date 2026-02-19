@@ -125,6 +125,7 @@ let test_hierarchy_parameter_coercion () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
@@ -182,6 +183,7 @@ let test_nullable_parameter_handling () =
         direction = In;
         nullable = true;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
@@ -326,6 +328,7 @@ let test_multiple_parameters () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       };
       {
         param_name = "height";
@@ -333,6 +336,7 @@ let test_multiple_parameters () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
@@ -395,6 +399,7 @@ let test_method_with_object_parameter () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
@@ -449,6 +454,7 @@ let test_same_cluster_structural_type () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
@@ -594,6 +600,7 @@ let test_property_setter_wrapper () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
@@ -813,6 +820,7 @@ let test_method_conflict_detection () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
@@ -941,6 +949,7 @@ let test_layer2_signature_consistency () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       };
       {
         param_name = "height";
@@ -948,6 +957,7 @@ let test_layer2_signature_consistency () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
@@ -980,6 +990,7 @@ let test_layer2_signature_consistency () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
@@ -1172,6 +1183,7 @@ let test_combined_class_signature_consistency () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;

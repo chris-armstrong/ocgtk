@@ -71,6 +71,7 @@ let test_constructor_signature_matches () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     ctor_doc = None;
@@ -140,6 +141,7 @@ let test_method_signature_matches () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
@@ -212,6 +214,7 @@ let test_multiple_methods_match () =
           direction = In;
           nullable = false;
           varargs = false;
+            caller_allocates = false;
         }
       ];
       doc = None;

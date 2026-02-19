@@ -48,6 +48,7 @@ let test_simple_out_param_declaration () =
             direction = Out;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
           {
             param_name = "height";
@@ -62,6 +63,7 @@ let test_simple_out_param_declaration () =
             direction = Out;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -116,6 +118,7 @@ let test_out_param_passed_by_reference () =
             direction = Out;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
           {
             param_name = "y";
@@ -130,6 +133,7 @@ let test_out_param_passed_by_reference () =
             direction = Out;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -186,6 +190,7 @@ let test_out_param_with_return_value () =
             direction = Out;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -241,6 +246,7 @@ let test_inout_parameter () =
             (* InOut parameter *)
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -292,6 +298,7 @@ let test_multiple_out_params () =
             direction = Out;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
           {
             param_name = "y";
@@ -306,6 +313,7 @@ let test_multiple_out_params () =
             direction = Out;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
           {
             param_name = "width";
@@ -320,6 +328,7 @@ let test_multiple_out_params () =
             direction = Out;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
           {
             param_name = "height";
@@ -334,6 +343,7 @@ let test_multiple_out_params () =
             direction = Out;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -387,6 +397,7 @@ let test_out_param_no_ocaml_input () =
             direction = Out;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;

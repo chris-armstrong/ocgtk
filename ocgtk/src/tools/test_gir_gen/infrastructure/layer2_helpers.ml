@@ -72,6 +72,7 @@ let create_test_method_with_param ~name ~c_identifier ~param_name ~param_type ()
       direction = In;
       nullable = false;
       varargs = false;
+            caller_allocates = false;
     }
   in
   {

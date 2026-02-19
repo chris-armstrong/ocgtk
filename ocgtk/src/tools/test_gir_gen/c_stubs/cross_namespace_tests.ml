@@ -548,6 +548,7 @@ let test_enum_array_element_conversion () =
             direction = Out;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -704,6 +705,7 @@ let test_bitfield_array_element_conversion () =
             direction = Out;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -825,6 +827,7 @@ let test_inout_record_param_pointer_type () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
           (* inout Rectangle* parameter *)
           {
@@ -833,6 +836,7 @@ let test_inout_record_param_pointer_type () =
             direction = InOut;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -979,6 +983,291 @@ let test_value_record_has_complete_forward_decls () =
       (Option.is_some copy_func)
   end
 
+(* Bug 1: Fixed-size array out parameters should use stack allocation, not NULL init.
+    For caller-allocated fixed-size arrays like graphene_box_get_vertices(8 vec3),
+    the generator should produce:
+      graphene_vec3_t out1[8];  // stack array, NOT "graphene_vec3_t out1 = NULL;"
+      graphene_box_get_vertices(self, out1);
+      // then convert each element to OCaml
+*)
+let test_fixed_size_array_out_param () =
+  let open Gir_gen_lib.Types in
+  (* Create a Vec3 record type simulating graphene_vec3_t *)
+  let vec3_record =
+    {
+      record_name = "Vec3";
+      c_type = "graphene_vec3_t";
+      glib_type_name = Some "GrapheneVec3";
+      glib_get_type = Some "graphene_vec3_get_type";
+      opaque = false;
+      disguised = false;
+      c_symbol_prefix = Some "graphene_vec3";
+      is_gtype_struct_for = None;
+      fields = [];
+      constructors = [];
+      methods = [];
+      functions = [];
+      record_doc = None;
+      introspectable = true;
+    }
+  in
+  let ctx =
+    { (Helpers.create_test_context ()) with
+      records = [ vec3_record ];
+    }
+  in
+
+  (* Create a method with caller-allocated fixed-size array out param.
+     This simulates graphene_box_get_vertices which has:
+       <parameter name="vertices" direction="out" caller-allocates="1">
+         <array zero-terminated="0" fixed-size="8">
+           <type name="Graphene.Vec3" c:type="graphene_vec3_t"/>
+         </array>
+       </parameter>
+     Note: The self parameter (box) is handled separately as the instance, not as a regular In parameter. *)
+  let meth =
+    {
+      method_name = "get_vertices";
+      c_identifier = "graphene_box_get_vertices";
+      return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
+      parameters =
+        [
+          (* fixed-size array out param - caller-allocated *)
+          {
+            param_name = "vertices";
+            param_type =
+              {
+                name = "Vec3";
+                c_type = Some "graphene_vec3_t*";
+                nullable = false;
+                transfer_ownership = TransferNone;
+                array =
+                  Some
+                    {
+                      length = None;
+                      zero_terminated = false;
+                      fixed_size = Some 8;  (* KEY: fixed-size=8 *)
+                      array_name = None;
+                      element_type =
+                        {
+                          name = "Vec3";
+                          c_type = Some "graphene_vec3_t";
+                          nullable = false;
+                          transfer_ownership = TransferNone;
+                          array = None;
+                        };
+                    };
+              };
+            direction = Out;
+            nullable = false;
+            varargs = false;
+            caller_allocates = true;  (* KEY: caller-allocates=true *)
+          };
+        ];
+      doc = None;
+      throws = false;
+      introspectable = true;
+      get_property = None;
+      set_property = None;
+    }
+  in
+
+  let c_code =
+    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
+      ~c_type:"GrapheneBox" meth "Box"
+  in
+  Helpers.log_generated_c_code "fixed_size_array_out" c_code;
+
+  let functions = C_parser.parse_c_code c_code in
+  let func =
+    Option.get (C_ast.find_function functions "ml_graphene_box_get_vertices")
+  in
+
+  (* Positive: only self parameter (out array not an OCaml param) *)
+  Alcotest.(check int)
+    "Only self parameter (out array not an OCaml param)" 1
+    (C_ast.get_param_count func);
+
+  (* Positive: calls the underlying C function *)
+  Alcotest.(check bool)
+    "Calls graphene_box_get_vertices" true
+    (C_validation.calls_c_function func "graphene_box_get_vertices");
+
+  (* Positive: allocates an OCaml array for the result *)
+  Alcotest.(check bool)
+    "Allocates OCaml array with caml_alloc" true
+    (C_validation.calls_caml_alloc func);
+
+  (* Positive: converts elements via Store_field loop *)
+  Alcotest.(check bool)
+    "Converts elements in Store_field loop" true
+    (C_validation.has_conversion_loop func);
+
+  (* Critical: verify the out variable is declared as a fixed-size array, NOT as "= NULL"
+     The bug was: graphene_vec3_t out1 = NULL;
+     The fix should be: graphene_vec3_t out1[8];
+     
+     Note: The lightweight C parser extracts the array dimension as part of the type,
+     so we check for the type containing "[N]" and the name being the clean variable name. *)
+  let var_decls = C_ast.get_var_decls func in
+  let has_fixed_size_array_decl =
+    List.exists
+      (fun (name, c_type, _init) ->
+         (* The parser extracts "graphene_vec3_t[8]" as type and "out1" as name
+            So we check for: type contains "[" (array syntax) and name starts with "out" *)
+         String.contains c_type '['
+         && String.length name >= 3 && String.sub name 0 3 = "out")
+      var_decls
+  in
+  Alcotest.(check bool)
+    "Has stack array declaration for C output buffer (type var[N])" true
+    has_fixed_size_array_decl;
+
+  (* Negative: verify NO NULL initialization for the fixed-size array
+     The bug was initializing with "= NULL" which doesn't work for fixed-size arrays *)
+  let has_null_init =
+    List.exists
+      (fun (name, _c_type, init) ->
+         String.length name >= 3 && String.sub name 0 3 = "out" &&
+         match init with
+         | Some (C_ast.Var "NULL") -> true
+         | Some (C_ast.IntLiteral 0) -> true
+         | _ -> false)
+      var_decls
+  in
+  Alcotest.(check bool)
+    "NO NULL initialization for fixed-size array (Bug 1 fix)" false
+    has_null_init;
+
+  (* Positive: has CAMLparam/CAMLreturn structure *)
+  Alcotest.(check bool)
+    "Has CAMLparam" true
+    (C_validation.has_caml_param_macro func);
+  Alcotest.(check bool)
+    "Has CAMLreturn" true
+    (C_validation.has_caml_return func)
+
+(* Bug 1 Variant B: Fixed-size float array return value.
+    For fixed-size return arrays like gsk_border_node_get_widths(4 floats),
+    the generator should properly handle the fixed size without NULL-termination checks. *)
+let test_fixed_size_float_array_return () =
+  let open Gir_gen_lib.Types in
+  let ctx = Helpers.create_test_context () in
+
+  (* Create a method returning a fixed-size float array.
+     This simulates gsk_border_node_get_widths which has:
+       <return-value transfer-ownership="none">
+         <array zero-terminated="0" fixed-size="4" c:type="const float*">
+           <type name="gfloat" c:type="float"/>
+         </array>
+       </return-value> *)
+  let meth =
+    {
+      method_name = "get_widths";
+      c_identifier = "gsk_border_node_get_widths";
+      return_type =
+        {
+          name = "gfloat";
+          c_type = Some "const float*";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array =
+            Some
+              {
+                length = None;
+                zero_terminated = false;
+                fixed_size = Some 4;  (* KEY: fixed-size=4 *)
+                array_name = None;
+                element_type =
+                  {
+                    name = "gfloat";
+                    c_type = Some "float";
+                    nullable = false;
+                    transfer_ownership = TransferNone;
+                    array = None;
+                  };
+              };
+        };
+      parameters = [];  (* Only self, handled separately *)
+      doc = None;
+      throws = false;
+      introspectable = true;
+      get_property = None;
+      set_property = None;
+    }
+  in
+
+  let c_code =
+    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
+      ~c_type:"GskBorderNode" meth "BorderNode"
+  in
+  Helpers.log_generated_c_code "fixed_size_float_array_return" c_code;
+
+  let functions = C_parser.parse_c_code c_code in
+  let func =
+    Option.get (C_ast.find_function functions "ml_gsk_border_node_get_widths")
+  in
+
+  (* Positive: calls the underlying C function *)
+  Alcotest.(check bool)
+    "Calls gsk_border_node_get_widths" true
+    (C_validation.calls_c_function func "gsk_border_node_get_widths");
+
+  (* Positive: allocates an OCaml array for the result *)
+  Alcotest.(check bool)
+    "Allocates OCaml array with caml_alloc" true
+    (C_validation.calls_caml_alloc func);
+
+  (* Positive: has element conversion loop *)
+  Alcotest.(check bool)
+    "Has Store_field conversion loop" true
+    (C_validation.has_conversion_loop func);
+
+  (* Positive: uses caml_copy_double for float conversion *)
+  let uses_float_conversion =
+    let rec check_expr = function
+      | C_ast.Call ("caml_copy_double", _) -> true
+      | C_ast.Call (_, args) -> List.exists check_expr args
+      | C_ast.Macro (_, args) -> List.exists check_expr args
+      | _ -> false
+    in
+    let check_stmt = function
+      | C_ast.ExprStmt e -> check_expr e
+      | C_ast.VarDecl (_, _, Some e) -> check_expr e
+      | _ -> false
+    in
+    List.exists check_stmt func.C_ast.body
+  in
+  Alcotest.(check bool)
+    "Uses caml_copy_double for float elements" true
+    uses_float_conversion;
+
+  (* Critical: verify NO NULL-termination counting loop
+     The bug was generating: "while (result[result_length] != NULL) result_length++;"
+     For fixed-size arrays, we should use the constant size directly.
+     Check that there's no "while" keyword in the generated code. *)
+  let has_null_termination_loop =
+    (* Check for the presence of "while" keyword which indicates a counting loop *)
+    String.contains c_code 'w' && 
+    String.length c_code > 5 &&
+    (let lower_code = String.lowercase_ascii c_code in
+     try 
+       let idx = String.index lower_code 'w' in
+       String.sub lower_code idx 5 = "while"
+     with Not_found -> false)
+  in
+  Alcotest.(check bool)
+    "NO NULL-termination counting loop (Bug 1 fix)" false
+    has_null_termination_loop;
+
+  (* Positive: has CAMLparam/CAMLreturn structure *)
+  Alcotest.(check bool)
+    "Has CAMLparam" true
+    (C_validation.has_caml_param_macro func);
+  Alcotest.(check bool)
+    "Has CAMLreturn" true
+    (C_validation.has_caml_return func)
+
 let tests =
   [
     Alcotest.test_case "Non-introspectable record filtered at generation"
@@ -1006,4 +1295,9 @@ let tests =
     (* Bug 6 test *)
     Alcotest.test_case "Value record has complete forward decls (Bug 6)"
       `Quick test_value_record_has_complete_forward_decls;
+    (* Bug 1 tests *)
+    Alcotest.test_case "Fixed-size array out param uses stack allocation (Bug 1)"
+      `Quick test_fixed_size_array_out_param;
+    Alcotest.test_case "Fixed-size float array return (Bug 1)"
+      `Quick test_fixed_size_float_array_return;
   ]

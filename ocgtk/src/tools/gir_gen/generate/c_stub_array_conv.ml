@@ -107,34 +107,40 @@ module Array_conv = struct
       Returns the appropriate length code based on array properties. *)
   let length_code_for_array ~var ~length_var ~array_info ~is_pointer_array
       ~element_c_type =
-    if array_info.zero_terminated then
-      if is_pointer_array then
-        length_code_for_zero_terminated_pointer ~length_var ~var
-      else
-        length_code_for_zero_terminated_nonpointer ~length_var ~var
-          ~element_c_type
-    else if is_string_array array_info then
-      length_code_for_string_array ~length_var ~var
-    else if is_pointer_array then
-      (* For pointer arrays without explicit length info, assume zero-terminated
-         This handles cases where the GIR file is missing zero-terminated="1" *)
-      length_code_for_zero_terminated_pointer ~length_var ~var
-    else
-      (* Check for common C patterns that suggest zero-terminated arrays *)
-      let array_c_type =
-        Option.value ~default:"" array_info.element_type.c_type ^ "*"
-      in
-      if String.contains array_c_type '*' then
-        (* Array C type suggests it's a pointer array - assume zero-terminated *)
-        length_code_for_zero_terminated_pointer ~length_var ~var
-      else
-        (* No length information and not a string array - cannot safely convert *)
-        failwith
-          (sprintf
-             "Array has no length information for %s (element type: %s). \
-              Either zero-terminated, length, or fixed-size attribute \
-              required."
-             var array_info.element_type.name)
+    (* First, check for fixed-size arrays - the length is known at compile time *)
+    match array_info.fixed_size with
+    | Some size ->
+        (* Fixed-size array: use the constant size directly *)
+        sprintf "int %s = %d;" length_var size
+    | None ->
+        if array_info.zero_terminated then
+          if is_pointer_array then
+            length_code_for_zero_terminated_pointer ~length_var ~var
+          else
+            length_code_for_zero_terminated_nonpointer ~length_var ~var
+              ~element_c_type
+        else if is_string_array array_info then
+          length_code_for_string_array ~length_var ~var
+        else if is_pointer_array then
+          (* For pointer arrays without explicit length info, assume zero-terminated
+             This handles cases where the GIR file is missing zero-terminated="1" *)
+          length_code_for_zero_terminated_pointer ~length_var ~var
+        else
+          (* Check for common C patterns that suggest zero-terminated arrays *)
+          let array_c_type =
+            Option.value ~default:"" array_info.element_type.c_type ^ "*"
+          in
+          if String.contains array_c_type '*' then
+            (* Array C type suggests it's a pointer array - assume zero-terminated *)
+            length_code_for_zero_terminated_pointer ~length_var ~var
+          else
+            (* No length information and not a string array - cannot safely convert *)
+            failwith
+              (sprintf
+                 "Array has no length information for %s (element type: %s). \
+                  Either zero-terminated, length, or fixed-size attribute \
+                  required."
+                 var array_info.element_type.name)
 
   (** Generate cleanup code for TransferFull ownership. Returns appropriate
       cleanup based on array properties. *)

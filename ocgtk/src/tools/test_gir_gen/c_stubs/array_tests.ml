@@ -57,6 +57,7 @@ let test_zero_terminated_string_array_input () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -217,6 +218,7 @@ let test_array_with_length_parameter () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
           {
             param_name = "n_items";
@@ -231,6 +233,7 @@ let test_array_with_length_parameter () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -322,6 +325,7 @@ let test_out_parameter_array_with_length () =
             direction = Out;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
           {
             param_name = "n_indices";
@@ -336,6 +340,7 @@ let test_out_parameter_array_with_length () =
             direction = Out;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -420,6 +425,7 @@ let test_out_parameter_string_array () =
             direction = Out;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
           {
             param_name = "n_names";
@@ -434,6 +440,7 @@ let test_out_parameter_string_array () =
             direction = Out;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -521,6 +528,7 @@ let test_array_cleanup_transfer_none () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -588,6 +596,7 @@ let test_array_cleanup_transfer_full () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -660,6 +669,7 @@ let test_gptr_array_return () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -743,6 +753,7 @@ let test_gptr_array_transfer_full () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -823,6 +834,7 @@ let test_gptr_array_with_incompatible_element_type () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;

@@ -51,6 +51,7 @@ let test_method_with_throws_declares_error () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -105,6 +106,7 @@ let test_error_handling_uses_res_ok () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
@@ -258,6 +260,7 @@ let test_constructor_with_throws () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       ctor_doc = None;
