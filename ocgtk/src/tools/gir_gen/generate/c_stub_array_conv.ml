@@ -127,11 +127,11 @@ module Array_conv = struct
           length_code_for_zero_terminated_pointer ~length_var ~var
         else
           (* Check for common C patterns that suggest zero-terminated arrays *)
-          let array_c_type =
-            Option.value ~default:"" array_info.element_type.c_type ^ "*"
+          let elem_c_type =
+            Option.value ~default:"" array_info.element_type.c_type
           in
-          if String.contains array_c_type '*' then
-            (* Array C type suggests it's a pointer array - assume zero-terminated *)
+          if String.contains elem_c_type '*' then
+            (* Element type is a pointer - assume zero-terminated pointer array *)
             length_code_for_zero_terminated_pointer ~length_var ~var
           else
             (* No length information and not a string array - cannot safely convert *)

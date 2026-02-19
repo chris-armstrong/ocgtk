@@ -138,6 +138,28 @@ let method_has_excluded_type (meth : gir_method) =
   || List.exists meth.parameters ~f:(fun p ->
       Exclude_list.is_excluded_type_name p.param_type.name)
 
+(** Check if a method has out-parameter arrays that cannot be safely converted.
+    This covers two cases:
+    1. Arrays with zero_terminated=false and no length or fixed_size info
+    2. Double-pointer out-params not marked as arrays in GIR *)
+let method_has_unsupported_out_arrays (meth : gir_method) =
+  List.exists meth.parameters ~f:(fun (p : gir_param) ->
+    match p.direction with
+    | Out | InOut -> (
+        match p.param_type.array with
+        | Some arr ->
+            not arr.zero_terminated
+            && Option.is_none arr.length
+            && Option.is_none arr.fixed_size
+        | None ->
+            (* Double-pointer out-param not marked as array - likely a hidden array *)
+            (match p.param_type.c_type with
+            | Some ct ->
+                let len = String.length ct in
+                len >= 2 && ct.[len - 1] = '*' && ct.[len - 2] = '*'
+            | None -> false))
+    | In -> false)
+
 let should_skip_method_binding ~ctx (meth : gir_method) =
   let is_excluded_function =
     Exclude_list.is_excluded_function meth.c_identifier
@@ -156,14 +178,18 @@ let should_skip_method_binding ~ctx (meth : gir_method) =
   let has_cross_namespace_type = method_has_cross_namespace_types ~ctx meth in
   (* Check if method is marked as non-introspectable *)
   let is_not_introspectable = not meth.introspectable in
+  (* Check for out-param arrays that can't be safely converted *)
+  let has_unsupported_out_arrays = method_has_unsupported_out_arrays meth in
 
   Logs.debug (fun m ->
-      m "should_skip_method_name: %s -> %b %b %b %b %b %b\n" meth.c_identifier
-        is_variadic has_excluded_type has_unknown_type is_excluded_function
-        has_cross_namespace_type is_not_introspectable);
+      m "should_skip_method_name: %s -> %b %b %b %b %b %b %b\n"
+        meth.c_identifier is_variadic has_excluded_type has_unknown_type
+        is_excluded_function has_cross_namespace_type is_not_introspectable
+        has_unsupported_out_arrays);
 
   is_variadic || has_excluded_type || has_unknown_type || is_excluded_function
   || has_cross_namespace_type || is_not_introspectable
+  || has_unsupported_out_arrays
 
 let constructor_has_varargs (ctor : gir_constructor) =
   List.exists ctor.ctor_parameters ~f:(fun p -> p.varargs)

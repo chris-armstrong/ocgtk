@@ -99,9 +99,24 @@ let generate_constructor_c_call_args ~ctx ~ctor_parameters =
    Takes the function name, C parameter declarations, parameter names, and body code.
    Returns the combined native + bytecode function code as a string. *)
 let generate_multi_param_function ~ml_name ~params ~param_names body_code =
-  let param_count = List.length param_names in
   let first_five = List.filteri ~f:(fun i _ -> i < 5) param_names in
   let rest = List.filteri ~f:(fun i _ -> i >= 5) param_names in
+
+  (* Split remaining params into chunks of at most 5 for CAMLxparam *)
+  let rec chunk_params params =
+    match params with
+    | [] -> []
+    | _ ->
+        let chunk = List.filteri ~f:(fun i _ -> i < 5) params in
+        let remaining = List.filteri ~f:(fun i _ -> i >= 5) params in
+        chunk :: chunk_params remaining
+  in
+  let xparam_chunks = chunk_params rest in
+  let xparam_lines = String.concat ~sep:"\n"
+    (List.map ~f:(fun chunk ->
+      sprintf "CAMLxparam%d(%s);" (List.length chunk) (String.concat ~sep:", " chunk))
+    xparam_chunks)
+  in
 
   let native_func =
     sprintf
@@ -109,13 +124,12 @@ let generate_multi_param_function ~ml_name ~params ~param_names body_code =
        CAMLexport CAMLprim value %s_native(%s)\n\
        {\n\
        CAMLparam5(%s);\n\
-       CAMLxparam%d(%s);\n\
+       %s\n\
        %s}\n"
       ml_name
       (String.concat ~sep:", " params)
       (String.concat ~sep:", " first_five)
-      (param_count - 5)
-      (String.concat ~sep:", " rest)
+      xparam_lines
       body_code
   in
 
