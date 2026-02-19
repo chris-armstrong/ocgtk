@@ -1451,6 +1451,117 @@ let test_normal_out_param_not_skipped () =
   Alcotest.(check bool)
     "Out-param array WITH length should NOT be skipped" false skipped
 
+(* Bug 13: GdkPixbufFormatFlags forward declaration guard (c_stub_bitfield.ml fix)
+   See ocgtk/docs/plans/fix_codegen_bugs_tests.md *)
+
+(* Test 1: GdkPixbufFormatFlags bitfield should have #ifndef GDK_PIXBUF_FORMAT_WRITABLE guard *)
+let test_gdkpixbuf_format_flags_guarded () =
+  let open Gir_gen_lib.Types in
+  (* Create a GdkPixbufFormatFlags bitfield *)
+  let pixbuf_format_flags_bitfield =
+    {
+      bitfield_name = "FormatFlags";
+      bitfield_c_type = "GdkPixbufFormatFlags";
+      flags =
+        [
+          {
+            flag_name = "WRITABLE";
+            flag_value = 1;
+            flag_c_identifier = "GDK_PIXBUF_FORMAT_WRITABLE";
+            flag_doc = None;
+          };
+          {
+            flag_name = "SCALABLE";
+            flag_value = 2;
+            flag_c_identifier = "GDK_PIXBUF_FORMAT_SCALABLE";
+            flag_doc = None;
+          };
+        ];
+      bitfield_doc = None;
+    }
+  in
+
+  (* Generate forward declarations *)
+  let c_code =
+    Gir_gen_lib.Generate.C_stub_bitfield.generate_forward_decls
+      ~namespace_prefix:"GdkPixbuf"
+      ~gtk_bitfields:[ pixbuf_format_flags_bitfield ]
+      ~external_bitfields:[]
+  in
+  Helpers.log_generated_c_code "gdkpixbuf_format_flags_guard" c_code;
+
+  (* Positive: contains guard start *)
+  Alcotest.(check bool)
+    "Contains #ifndef GDK_PIXBUF_FORMAT_WRITABLE guard start" true
+    (string_contains c_code "#ifndef GDK_PIXBUF_FORMAT_WRITABLE");
+
+  (* Positive: contains guard end *)
+  Alcotest.(check bool)
+    "Contains #endif guard end" true
+    (string_contains c_code "#endif");
+
+  (* Positive: contains converter prototypes *)
+  Alcotest.(check bool)
+    "Contains Val_GdkPixbufFormatFlags prototype" true
+    (string_contains c_code "Val_GdkPixbufFormatFlags");
+  Alcotest.(check bool)
+    "Contains GdkPixbufFormatFlags_val prototype" true
+    (string_contains c_code "GdkPixbufFormatFlags_val");
+
+  (* Critical: verify ordering - prototypes appear BETWEEN guard start and guard end *)
+  let guard_start = Str.search_forward (Str.regexp_string "#ifndef GDK_PIXBUF_FORMAT_WRITABLE") c_code 0 in
+  let prototype_pos = Str.search_forward (Str.regexp_string "Val_GdkPixbufFormatFlags") c_code 0 in
+  let guard_end = Str.search_forward (Str.regexp_string "#endif") c_code 0 in
+  Alcotest.(check bool)
+    "Guard start < prototype position" true
+    (guard_start < prototype_pos);
+  Alcotest.(check bool)
+    "Prototype position < guard end" true
+    (prototype_pos < guard_end)
+
+(* Test 2: Normal bitfield should NOT have the guard (negative control) *)
+let test_normal_bitfield_no_guard () =
+  let open Gir_gen_lib.Types in
+  (* Create a normal bitfield (not GdkPixbufFormatFlags) *)
+  let normal_bitfield =
+    {
+      bitfield_name = "InhibitFlags";
+      bitfield_c_type = "GtkApplicationInhibitFlags";
+      flags =
+        [
+          {
+            flag_name = "LOGOUT";
+            flag_value = 1;
+            flag_c_identifier = "GTK_APPLICATION_INHIBIT_LOGOUT";
+            flag_doc = None;
+          };
+        ];
+      bitfield_doc = None;
+    }
+  in
+
+  (* Generate forward declarations *)
+  let c_code =
+    Gir_gen_lib.Generate.C_stub_bitfield.generate_forward_decls
+      ~namespace_prefix:"Gtk"
+      ~gtk_bitfields:[ normal_bitfield ]
+      ~external_bitfields:[]
+  in
+  Helpers.log_generated_c_code "normal_bitfield_no_guard" c_code;
+
+  (* Negative: should NOT contain the GdkPixbufFormatFlags guard *)
+  Alcotest.(check bool)
+    "Does NOT contain GDK_PIXBUF_FORMAT_WRITABLE guard" false
+    (string_contains c_code "#ifndef GDK_PIXBUF_FORMAT_WRITABLE");
+
+  (* Positive: should still contain the converter prototypes *)
+  Alcotest.(check bool)
+    "Contains Val_GtkInhibitFlags prototype" true
+    (string_contains c_code "Val_GtkInhibitFlags");
+  Alcotest.(check bool)
+    "Contains GtkInhibitFlags_val prototype" true
+    (string_contains c_code "GtkInhibitFlags_val")
+
 let tests =
   [
     Alcotest.test_case "Non-introspectable record filtered at generation"
@@ -1490,4 +1601,9 @@ let tests =
       `Quick test_double_pointer_out_param_skipped;
     Alcotest.test_case "Normal out-param with length not skipped (Bug 16)"
       `Quick test_normal_out_param_not_skipped;
+    (* Bug 13 test - GdkPixbufFormatFlags guard *)
+    Alcotest.test_case "GdkPixbufFormatFlags has guard (Bug 13)"
+      `Quick test_gdkpixbuf_format_flags_guarded;
+    Alcotest.test_case "Normal bitfield has no guard (Bug 13 negative)"
+      `Quick test_normal_bitfield_no_guard;
   ]
