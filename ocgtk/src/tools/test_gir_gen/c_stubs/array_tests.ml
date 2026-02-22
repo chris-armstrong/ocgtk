@@ -969,6 +969,96 @@ let test_pointer_array_without_length_uses_null_termination () =
     (Helpers.string_contains c_code "!= NULL")
 
 (* =================================================================== *)
+(* generate_methods Skips Failing Method Tests (c_stub_helpers.ml fix) *)
+(* =================================================================== *)
+
+let test_generate_methods_skips_failing_method () =
+  let ctx = create_test_context () in
+  let buf = Buffer.create 4096 in
+
+  (* Valid method - simple void return *)
+  let valid_method =
+    {
+      method_name = "do_something";
+      c_identifier = "gtk_widget_do_something";
+      return_type =
+        {
+          name = "none";
+          c_type = Some "void";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array = None;
+        };
+      parameters = [];
+      doc = None;
+      throws = false;
+      introspectable = true;
+      get_property = None;
+      set_property = None;
+    }
+  in
+
+  (* Failing method - returns gint array without length info (will raise Failure) *)
+  let failing_method =
+    {
+      method_name = "get_values";
+      c_identifier = "gtk_widget_get_values";
+      return_type =
+        {
+          name = "gint";
+          c_type = Some "gint*";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array =
+            Some
+              {
+                length = None;
+                zero_terminated = false;
+                fixed_size = None;
+                array_name = None;
+                element_type =
+                  {
+                    name = "gint";
+                    c_type = Some "gint";
+                    nullable = false;
+                    transfer_ownership = TransferNone;
+                    array = None;
+                  };
+              };
+        };
+      parameters = [];
+      doc = None;
+      throws = false;
+      introspectable = true;
+      get_property = None;
+      set_property = None;
+    }
+  in
+
+  (* Generate methods - should NOT raise, should skip failing method *)
+  Gir_gen_lib.Generate.C_stub_helpers.generate_methods
+    ~ctx
+    ~c_type:"GtkWidget"
+    ~class_name:"Widget"
+    ~buf
+    ~generator:generate_c_method
+    [valid_method; failing_method];
+
+  let output = Buffer.contents buf in
+
+  (* Verify: No exception propagated (test would have failed if it did) *)
+
+  (* Verify: Valid method IS in the output *)
+  Alcotest.(check bool)
+    "Valid method is in output" true
+    (Helpers.string_contains output "ml_gtk_widget_do_something");
+
+  (* Verify: Failing method is NOT in the output *)
+  Alcotest.(check bool)
+    "Failing method is NOT in output" false
+    (Helpers.string_contains output "ml_gtk_widget_get_values")
+
+(* =================================================================== *)
 (* Test Suite *)
 (* =================================================================== *)
 
