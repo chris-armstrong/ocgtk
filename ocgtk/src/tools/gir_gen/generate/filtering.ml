@@ -139,26 +139,24 @@ let method_has_excluded_type (meth : gir_method) =
       Exclude_list.is_excluded_type_name p.param_type.name)
 
 (** Check if a method has out-parameter arrays that cannot be safely converted.
-    This covers two cases:
-    1. Arrays with zero_terminated=false and no length or fixed_size info
-    2. Double-pointer out-params not marked as arrays in GIR *)
+    This covers two cases: 1. Arrays with zero_terminated=false and no length or
+    fixed_size info 2. Double-pointer out-params not marked as arrays in GIR *)
 let method_has_unsupported_out_arrays (meth : gir_method) =
   List.exists meth.parameters ~f:(fun (p : gir_param) ->
-    match p.direction with
-    | Out | InOut -> (
-        match p.param_type.array with
-        | Some arr ->
-            not arr.zero_terminated
-            && Option.is_none arr.length
-            && Option.is_none arr.fixed_size
-        | None ->
-            (* Double-pointer out-param not marked as array - likely a hidden array *)
-            (match p.param_type.c_type with
-            | Some ct ->
-                let len = String.length ct in
-                len >= 2 && ct.[len - 1] = '*' && ct.[len - 2] = '*'
-            | None -> false))
-    | In -> false)
+      match p.direction with
+      | Out | InOut -> (
+          match p.param_type.array with
+          | Some arr ->
+              (not arr.zero_terminated) && Option.is_none arr.length
+              && Option.is_none arr.fixed_size
+          | None -> (
+              (* Double-pointer out-param not marked as array - likely a hidden array *)
+              match p.param_type.c_type with
+              | Some ct ->
+                  let len = String.length ct in
+                  len >= 2 && ct.[len - 1] = '*' && ct.[len - 2] = '*'
+              | None -> false))
+      | In -> false)
 
 let should_skip_method_binding ~ctx (meth : gir_method) =
   let is_excluded_function =
@@ -205,14 +203,12 @@ let should_generate_constructor ~ctx (ctor : gir_constructor) =
       ~find_type_mapping:(Type_mappings.find_type_mapping_for_gir_type ~ctx)
       ~enums:ctx.enums ~bitfields:ctx.bitfields ctor
   in
-  ctor.ctor_introspectable
-  && (not ctor.throws)
+  ctor.ctor_introspectable && (not ctor.throws)
   && (not (constructor_has_varargs ctor))
   && (not (constructor_has_cross_namespace_types ~ctx ctor))
   && not has_unknown_type
 
-let banned_records =
-  [ "PrintBackend"; "PixbufModule"; "PixbufModulePattern" ]
+let banned_records = [ "PrintBackend"; "PixbufModule"; "PixbufModulePattern" ]
 
 (* Check if a record name ends with "Private" - these are typically internal
    GObject private data structures that don't appear in public headers *)
@@ -250,6 +246,9 @@ let method_has_interface_param ~ctx (meth : gir_method) =
 
 let should_generate_class (cls : gir_class) =
   cls.introspectable && not (Exclude_list.should_skip_class cls.class_name)
+
+let should_generate_interface (intf : gir_interface) =
+  not (Exclude_list.should_skip_class intf.interface_name)
 
 (* Check if a standalone function should be generated *)
 let should_generate_function (func : gir_function) = func.introspectable

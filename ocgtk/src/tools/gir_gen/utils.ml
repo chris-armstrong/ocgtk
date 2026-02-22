@@ -101,7 +101,9 @@ let parse_bool ?(default = false) attr =
    This helper centralizes the check to ensure consistency across the codebase. *)
 let is_void_return_type (gir_type : Types.gir_type) : bool =
   let name = String.lowercase_ascii gir_type.name in
-  let c_type = Option.value ~default:"" gir_type.c_type |> String.lowercase_ascii in
+  let c_type =
+    Option.value ~default:"" gir_type.c_type |> String.lowercase_ascii
+  in
   name = "void" || name = "none" || c_type = "void"
 
 (* Extract namespace from C type name (e.g., "GtkAlign" -> "Gtk", "GdkGravity" -> "Gdk") *)
@@ -149,16 +151,17 @@ let normalize_class_name name =
 let module_name_of_class class_name =
   class_name |> to_snake_case |> String.capitalize_ascii
 
-(** Convert a namespace name to a dune-compliant module name.
-    Dune lowercases all characters after the first, so "GdkPixbuf" becomes "Gdkpixbuf".
-    This is needed because dune automatically derives module names from filenames,
-    and the build system enforces this capitalization convention. *)
+(** Convert a namespace name to a dune-compliant module name. Dune lowercases
+    all characters after the first, so "GdkPixbuf" becomes "Gdkpixbuf". This is
+    needed because dune automatically derives module names from filenames, and
+    the build system enforces this capitalization convention. *)
 let namespace_to_module_name (namespace : string) : string =
   if String.length namespace = 0 then namespace
   else
     let first = String.capitalize_ascii (String.sub namespace ~pos:0 ~len:1) in
     let rest =
-      String.lowercase_ascii (String.sub namespace ~pos:1 ~len:(String.length namespace - 1))
+      String.lowercase_ascii
+        (String.sub namespace ~pos:1 ~len:(String.length namespace - 1))
     in
     first ^ rest
 
@@ -326,3 +329,9 @@ let ocaml_bitfield_name (bitfield : Types.gir_bitfield) =
 
 let ocaml_enum_name (enum : Types.gir_enum) =
   String.lowercase_ascii enum.enum_name
+
+let name_to_parts ~(ctx : Types.generation_context) name =
+  match Re.Str.split (Re.Str.regexp_string ".") name with
+  | [ ns; name ] -> (ns, name)
+  | [ name ] -> (ctx.namespace.namespace_name, name)
+  | _ -> failwith "Unable to parse name correctly"

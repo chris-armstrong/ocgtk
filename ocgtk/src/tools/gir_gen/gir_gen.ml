@@ -215,6 +215,15 @@ let generate_ml_interfaces ~ctx ~output_dir ~generated_modules ~parent_chain
           Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name
           :: !generated_modules
       end
+  | Gir_gen_lib.Types.Interface intf ->
+      if Gir_gen_lib.Generate.Filtering.should_generate_interface intf then begin
+        generate_ml_file ~ctx ~output_dir ~kind:Interface ~parent_chain entity;
+        generate_ml_file ~ctx ~output_dir ~kind:Implementation ~parent_chain
+          entity;
+        generated_modules :=
+          Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name
+          :: !generated_modules
+      end
   | Gir_gen_lib.Types.Record record ->
       if Gir_gen_lib.Generate.Filtering.should_generate_record record then begin
         generate_ml_file ~ctx ~output_dir ~kind:Interface ~parent_chain entity;
@@ -224,7 +233,6 @@ let generate_ml_interfaces ~ctx ~output_dir ~generated_modules ~parent_chain
           Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name
           :: !generated_modules
       end
-  | _ -> ()
 
 (* Generate high-level wrapper class (g<Widget>.ml) for a class entity *)
 let generate_high_level_class ~ctx ~output_dir ~generated_modules entity
@@ -286,10 +294,12 @@ let generate_high_level_class ~ctx ~output_dir ~generated_modules entity
   | Gir_gen_lib.Types.Class clazz ->
       if Gir_gen_lib.Generate.Filtering.should_generate_class clazz then
         generate_ ()
+  | Gir_gen_lib.Types.Interface intf ->
+      if Gir_gen_lib.Generate.Filtering.should_generate_interface intf then
+        generate_ ()
   | Gir_gen_lib.Types.Record record ->
       if Gir_gen_lib.Generate.Filtering.should_generate_record record then
         generate_ ()
-  | _ -> ()
 
 (* Generate signal class file for a single entity *)
 let generate_signal_class ~ctx ~output_dir ~parent_chain entity =
@@ -314,10 +324,12 @@ let generate_signal_class ~ctx ~output_dir ~parent_chain entity =
     | Gir_gen_lib.Types.Class clazz ->
         if Gir_gen_lib.Generate.Filtering.should_generate_class clazz then
           generate_ ()
+    | Gir_gen_lib.Types.Interface intf ->
+        if Gir_gen_lib.Generate.Filtering.should_generate_interface intf then
+          generate_ ()
     | Gir_gen_lib.Types.Record record ->
         if Gir_gen_lib.Generate.Filtering.should_generate_record record then
           generate_ ()
-    | _ -> ()
 
 (* Generate signal classes for all entities *)
 let generate_all_signal_classes ~ctx ~output_dir ~parent_chain_for_class
@@ -606,6 +618,11 @@ let generate_bindings filter_file gir_file output_dir reference_files =
     |> List.filter ~f:(fun (cls : Gir_gen_lib.Types.gir_class) ->
         Gir_gen_lib.Generate.Filtering.should_generate_class cls)
   in
+  let all_interfaces =
+    interfaces
+    |> List.filter ~f:(fun (intf : Gir_gen_lib.Types.gir_interface) ->
+        Gir_gen_lib.Generate.Filtering.should_generate_interface intf)
+  in
   let all_enums =
     gtk_enums
     @ (external_enums_bitfields
@@ -623,8 +640,6 @@ let generate_bindings filter_file gir_file output_dir reference_files =
       ~f:(fun record -> Filtering.should_generate_record record)
       gtk_records
   in
-  let all_interfaces = interfaces in
-
   (* Prepare external namespace enum/bitfield list with namespace prefixes *)
   let external_enums_with_ns =
     external_enums_bitfields
