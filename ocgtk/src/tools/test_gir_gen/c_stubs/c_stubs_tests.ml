@@ -271,6 +271,152 @@ let test_method_with_return_value () =
     "Should have return statement" true
     (has_return_statement func)
 
+let test_method_many_params () =
+  let ctx = create_test_context () in
+
+  (* Create method with 6 parameters to trigger bytecode/native split *)
+  (* Note: methods have implicit 'self' parameter, so 6 in-parameters = 7 total *)
+  let params =
+    List.init 6 (fun i ->
+        {
+          param_name = sprintf "arg%d" (i + 1);
+          param_type =
+            {
+              name = "gint";
+              c_type = Some "gint";
+              nullable = false;
+              transfer_ownership = TransferNone;
+              array = None;
+            };
+          direction = In;
+          nullable = false;
+          varargs = false;
+          caller_allocates = false;
+        })
+  in
+
+  let meth =
+    {
+      method_name = "process_many";
+      c_identifier = "gtk_widget_process_many";
+      return_type =
+        {
+          name = "none";
+          c_type = Some "void";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array = None;
+        };
+      parameters = params;
+      doc = None;
+      throws = false;
+      introspectable = true;
+      get_property = None;
+      set_property = None;
+    }
+  in
+
+  let c_code =
+    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
+      ~c_type:"GtkWidget" meth "Widget"
+  in
+
+  let functions = parse_c_string c_code in
+
+  (* Should generate 2 functions: _native and _bytecode *)
+  Alcotest.(check int)
+    "Should generate 2 functions (native + bytecode)" 2 (List.length functions);
+
+  assert_function_exists functions "ml_gtk_widget_process_many_native";
+  assert_function_exists functions "ml_gtk_widget_process_many_bytecode"
+
+let test_method_camlxparam_chunking () =
+  let ctx = create_test_context () in
+
+  (* Create method with 11 parameters to test CAMLxparam chunking *)
+  (* OCaml runtime only has CAMLparam0-5 and CAMLxparam0-5, so 11 params need chunking *)
+  (* With self, that's 12 total params: CAMLparam5 + CAMLxparam5 + CAMLxparam2 *)
+  let params =
+    List.init 11 (fun i ->
+        {
+          param_name = sprintf "arg%d" (i + 1);
+          param_type =
+            {
+              name = "gint";
+              c_type = Some "gint";
+              nullable = false;
+              transfer_ownership = TransferNone;
+              array = None;
+            };
+          direction = In;
+          nullable = false;
+          varargs = false;
+          caller_allocates = false;
+        })
+  in
+
+  let meth =
+    {
+      method_name = "process_eleven";
+      c_identifier = "gtk_widget_process_eleven";
+      return_type =
+        {
+          name = "none";
+          c_type = Some "void";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array = None;
+        };
+      parameters = params;
+      doc = None;
+      throws = false;
+      introspectable = true;
+      get_property = None;
+      set_property = None;
+    }
+  in
+
+  let c_code =
+    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
+      ~c_type:"GtkWidget" meth "Widget"
+  in
+
+  let functions = parse_c_string c_code in
+
+  (* Should generate 2 functions: _native and _bytecode *)
+  Alcotest.(check int)
+    "Should generate 2 functions (native + bytecode)" 2 (List.length functions);
+
+  assert_function_exists functions "ml_gtk_widget_process_eleven_native";
+  assert_function_exists functions "ml_gtk_widget_process_eleven_bytecode";
+
+  (* Verify CAMLxparam chunking - should NOT contain CAMLxparam6 or higher *)
+  let has_high_camlxparam =
+    try 
+      ignore (Str.search_forward (Str.regexp "CAMLxparam[6-9]") c_code 0);
+      true
+    with Not_found ->
+      try
+        ignore (Str.search_forward (Str.regexp "CAMLxparam1[0-9]") c_code 0);
+        true
+      with Not_found -> false
+  in
+  Alcotest.(check bool)
+    "Should NOT contain CAMLxparam6 or higher" false has_high_camlxparam;
+
+  (* Verify correct chunking: CAMLparam5 + CAMLxparam5 + CAMLxparam2 *)
+  (* For 12 params (self + 11): first 5 go in CAMLparam5, next 5 in CAMLxparam5, last 2 in CAMLxparam2 *)
+  (* Note: Use word boundary to avoid matching CAMLxparam10, CAMLxparam11, etc. *)
+  Alcotest.(check bool)
+    "Contains CAMLparam5" true
+    (try ignore (Str.search_forward (Str.regexp "CAMLparam5(") c_code 0); true with Not_found -> false);
+  Alcotest.(check bool)
+    "Contains CAMLxparam5" true
+    (try ignore (Str.search_forward (Str.regexp "CAMLxparam5(") c_code 0); true with Not_found -> false);
+  Alcotest.(check bool)
+    "Contains CAMLxparam2" true
+    (try ignore (Str.search_forward (Str.regexp "CAMLxparam2(") c_code 0); true with Not_found -> false)
+
 (* ========================================================================= *)
 (* Type Validation Tests *)
 (* ========================================================================= *)
@@ -978,6 +1124,10 @@ let tests =
     Alcotest.test_case "Simple method (void return)" `Quick test_simple_method;
     Alcotest.test_case "Method with return value" `Quick
       test_method_with_return_value;
+    Alcotest.test_case "Method with 6+ params (bytecode/native split)" `Quick
+      test_method_many_params;
+    Alcotest.test_case "Method with 11 params (CAMLxparam chunking)" `Quick
+      test_method_camlxparam_chunking;
     (* Type validation tests *)
     Alcotest.test_case "Constructor uses correct type conversion" `Quick
       test_constructor_type_conversion;

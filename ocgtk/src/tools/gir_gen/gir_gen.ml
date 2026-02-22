@@ -205,23 +205,31 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain entity =
 (* Generate both .mli and .ml files for an entity *)
 let generate_ml_interfaces ~ctx ~output_dir ~generated_modules ~parent_chain
     entity =
-  if
-    not
-      (Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name)
-  then begin
-    generate_ml_file ~ctx ~output_dir ~kind:Interface ~parent_chain entity;
-    generate_ml_file ~ctx ~output_dir ~kind:Implementation ~parent_chain entity;
-    generated_modules :=
-      Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name
-      :: !generated_modules
-  end
+  match entity.kind with
+  | Gir_gen_lib.Types.Class clazz ->
+      if Gir_gen_lib.Generate.Filtering.should_generate_class clazz then begin
+        generate_ml_file ~ctx ~output_dir ~kind:Interface ~parent_chain entity;
+        generate_ml_file ~ctx ~output_dir ~kind:Implementation ~parent_chain
+          entity;
+        generated_modules :=
+          Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name
+          :: !generated_modules
+      end
+  | Gir_gen_lib.Types.Record record ->
+      if Gir_gen_lib.Generate.Filtering.should_generate_record record then begin
+        generate_ml_file ~ctx ~output_dir ~kind:Interface ~parent_chain entity;
+        generate_ml_file ~ctx ~output_dir ~kind:Implementation ~parent_chain
+          entity;
+        generated_modules :=
+          Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name
+          :: !generated_modules
+      end
+  | _ -> ()
 
 (* Generate high-level wrapper class (g<Widget>.ml) for a class entity *)
 let generate_high_level_class ~ctx ~output_dir ~generated_modules entity
     parent_chain =
-  if Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name
-  then ()
-  else begin
+  let generate_ () =
     let module_name =
       Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name
     in
@@ -273,7 +281,15 @@ let generate_high_level_class ~ctx ~output_dir ~generated_modules entity
            ~methods:entity.Gir_gen_lib.Types.methods
            ~properties:entity.Gir_gen_lib.Types.properties
            ~signals:entity.Gir_gen_lib.Types.signals)
-  end
+  in
+  match entity.kind with
+  | Gir_gen_lib.Types.Class clazz ->
+      if Gir_gen_lib.Generate.Filtering.should_generate_class clazz then
+        generate_ ()
+  | Gir_gen_lib.Types.Record record ->
+      if Gir_gen_lib.Generate.Filtering.should_generate_record record then
+        generate_ ()
+  | _ -> ()
 
 (* Generate signal class file for a single entity *)
 let generate_signal_class ~ctx ~output_dir ~parent_chain entity =
