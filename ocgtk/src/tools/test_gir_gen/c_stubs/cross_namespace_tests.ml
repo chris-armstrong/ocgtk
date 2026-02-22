@@ -1562,6 +1562,124 @@ let test_normal_bitfield_no_guard () =
     "Contains GtkInhibitFlags_val prototype" true
     (string_contains c_code "GtkInhibitFlags_val")
 
+(* Bug 11: C converter name casing for cross-namespace enums
+   See ocgtk/docs/plans/fix_codegen_bugs_tests.md
+
+   The bug: type_mappings.ml was generating GdkpixbufColorspace_val (dune-lowercased)
+   instead of GdkPixbufColorspace_val (proper namespace capitalization).
+
+   This test verifies the fix by:
+   1. Creating a context with GdkPixbuf namespace and an external enum (Colorspace)
+   2. Generating a C method that uses this enum as a parameter
+   3. Verifying the generated code contains GdkPixbufColorspace_val (correct) *)
+let test_cross_namespace_c_converter_names () =
+  let open Gir_gen_lib.Types in
+  (* Create a context with GdkPixbuf namespace and an external enum from that namespace *)
+  let namespace =
+    {
+      namespace_name = "GdkPixbuf";
+      namespace_version = "2.0";
+      namespace_shared_library = "libgdk_pixbuf-2.0.so.0";
+      namespace_c_identifier_prefixes = "Gdk";
+      namespace_c_symbol_prefixes = "gdk_pixbuf";
+    }
+  in
+
+  (* Create the external enum - this simulates GdkPixbuf.Colorspace with c_type "GdkColorspace" *)
+  let colorspace_enum =
+    {
+      enum_name = "Colorspace";
+      enum_c_type = "GdkColorspace";
+      members =
+        [
+          {
+            member_name = "RGB";
+            member_value = 0;
+            c_identifier = "GDK_COLORSPACE_RGB";
+            member_doc = None;
+          };
+        ];
+      functions = [];
+      enum_doc = None;
+    }
+  in
+
+  let ctx =
+    {
+      namespace;
+      repository = { repository_c_includes = []; repository_includes = []; repository_packages = [] };
+      classes = [];
+      interfaces = [];
+      enums = [];
+      bitfields = [];
+      records = [];
+      external_enums = [ ("GdkPixbuf", colorspace_enum) ];  (* KEY: external enum from GdkPixbuf namespace *)
+      external_bitfields = [];
+      hierarchy_map = Hashtbl.create 0;
+      module_groups = Hashtbl.create 0;
+      current_cycle_classes = [];
+      cross_references = Gir_gen_lib.Types.StringMap.empty;
+    }
+  in
+
+  (* Create a method that uses the Colorspace enum as a parameter.
+     This simulates a method like gdk_pixbuf_set_colorspace that takes Colorspace as input,
+     which generates the Colorspace_val converter (CAML value to C enum). *)
+  let meth =
+    {
+      method_name = "set_colorspace";
+      c_identifier = "gdk_pixbuf_set_colorspace";
+      return_type =
+        {
+          name = "none";
+          c_type = Some "void";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array = None;
+        };
+      parameters =
+        [
+          {
+            param_name = "colorspace";
+            param_type =
+              {
+                name = "Colorspace";
+                c_type = Some "GdkColorspace";
+                nullable = false;
+                transfer_ownership = TransferNone;
+                array = None;
+              };
+            direction = In;
+            nullable = false;
+            varargs = false;
+            caller_allocates = false;
+          };
+        ];
+      doc = None;
+      throws = false;
+      introspectable = true;
+      get_property = None;
+      set_property = None;
+    }
+  in
+
+  let c_code =
+    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
+      ~c_type:"GdkPixbuf" meth "Pixbuf"
+  in
+  Helpers.log_generated_c_code "cross_namespace_c_converter" c_code;
+
+  (* Critical: verify the generated code uses GdkPixbufColorspace_val (proper capitalization)
+     NOT GdkpixbufColorspace_val (dune-lowercased, which is the bug) *)
+  Alcotest.(check bool)
+    "Contains GdkPixbufColorspace_val (correct capitalization)" true
+    (string_contains c_code "GdkPixbufColorspace_val");
+
+  (* Negative: verify it does NOT contain the wrong lowercase version *)
+  Alcotest.(check bool)
+    "Does NOT contain GdkpixbufColorspace_val (wrong lowercase)" false
+    (string_contains c_code "GdkpixbufColorspace_val")
+
 let tests =
   [
     Alcotest.test_case "Non-introspectable record filtered at generation"
@@ -1606,4 +1724,7 @@ let tests =
       `Quick test_gdkpixbuf_format_flags_guarded;
     Alcotest.test_case "Normal bitfield has no guard (Bug 13 negative)"
       `Quick test_normal_bitfield_no_guard;
+    (* Bug 11 test - C converter name casing for cross-namespace enums *)
+    Alcotest.test_case "Cross-namespace C converter names (Bug 11)"
+      `Quick test_cross_namespace_c_converter_names;
   ]

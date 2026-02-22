@@ -293,10 +293,7 @@ let generate_high_level_class ~ctx ~output_dir ~generated_modules entity
 
 (* Generate signal class file for a single entity *)
 let generate_signal_class ~ctx ~output_dir ~parent_chain entity =
-  if Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name
-  then ()
-  else if List.length entity.Gir_gen_lib.Types.signals = 0 then ()
-  else begin
+  let generate_ () =
     let signal_code =
       Gir_gen_lib.Generate.Signal_gen.generate_signal_class ~ctx
         ~class_name:entity.Gir_gen_lib.Types.name
@@ -310,7 +307,17 @@ let generate_signal_class ~ctx ~output_dir ~parent_chain entity =
            (Gir_gen_lib.Utils.to_snake_case entity.Gir_gen_lib.Types.name))
     in
     write_file ~path:signal_file ~content:signal_code
-  end
+  in
+  if List.length entity.Gir_gen_lib.Types.signals = 0 then ()
+  else
+    match entity.kind with
+    | Gir_gen_lib.Types.Class clazz ->
+        if Gir_gen_lib.Generate.Filtering.should_generate_class clazz then
+          generate_ ()
+    | Gir_gen_lib.Types.Record record ->
+        if Gir_gen_lib.Generate.Filtering.should_generate_record record then
+          generate_ ()
+    | _ -> ()
 
 (* Generate signal classes for all entities *)
 let generate_all_signal_classes ~ctx ~output_dir ~parent_chain_for_class

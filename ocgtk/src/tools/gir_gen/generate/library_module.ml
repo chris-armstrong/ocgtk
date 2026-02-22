@@ -48,12 +48,13 @@ let generate_library_interface ~ctx =
 
   (* Collect all class/interface names *)
   let all_entities =
-    List.map (fun (c : gir_class) -> c.class_name) ctx.classes
+    List.filter_map
+      (fun (c : gir_class) ->
+        match Filtering.should_generate_class c with
+        | true -> Some c.class_name
+        | false -> None)
+      ctx.classes
     @ List.map (fun (i : gir_interface) -> i.interface_name) ctx.interfaces
-  in
-  let all_entities =
-    ListLabels.filter all_entities ~f:(fun name ->
-        not (Exclude_list.should_skip_class name))
   in
   let sorted_entities = List.sort String.compare all_entities in
 
