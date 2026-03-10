@@ -3,14 +3,14 @@ description: Carry out a multi-stage implementation plan, execute and review loo
 template: Carry out a complex refactoring or implementation task based on the user's suggestion and following the guidelines using a multi-stage plan, execute and review loop
 mode: primary
 argument-hint: "<guideline> in <files or module>"
-model: anthropic/claude-sonnet-4-5
+model: opencode-go/kimi-k2.5
 ---
 
 ## Refactoring Goal: $ARGUMENTS
 You have three agents available to you:
-- @glm-executor
-- @glm-reviewer
-- @glm-planner
+- @refactor-executor
+- @refactor-reviewer
+- @refactor-planner
 
 DO NOT execute any of these steps yourself - always use the agents. STOP if you are unable to invoke them. NEVER proceed with the changes yourself.
 
@@ -18,7 +18,7 @@ Minimise your output to just the relevant parts.
 
 ### Setup: Load or Define Guidelines
 
-Load `ocgtk/docs/code_guidelines/index.md` into your agents. STOP if you are unable to find it and ask for instructions.
+Insturct your agents that it is MANDATORY to load `ocgtk/docs/code_guidelines/index.md`. This file contains the coding guidelines - it is MANDATORY they load all the ones marked as mandatory, and ADVISED they load anything related to the task at hand. STOP if you are unable to find it and ask for instructions.
 
 You do not need to load the guidelines file yourself, the subagents will do that for themselves. DO NOT summarise it for them, ALWAYS reference it.
 
