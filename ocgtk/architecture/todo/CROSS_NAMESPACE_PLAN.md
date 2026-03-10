@@ -2,7 +2,7 @@
 
 **Status**: Planning  
 **Created**: 2026-01-23  
-**Last Updated**: 2026-03-10 (added Layer 0 C marshalling requirements, updated current state)
+**Last Updated**: 2026-03-10 (added Layer 0 C marshalling requirements, updated current state, updated Section 1.2 with current ml_interface.ml structure)
 
 ## Executive Summary
 
@@ -234,29 +234,57 @@ val resolve_type : ctx:generation_context -> gir_type -> type_mapping option
 
 ### 1.2 Refactor `ml_interface.ml` (Layer 1)
 
-**Current issues:**
-- `generate_ml_interface_internal` is 280 lines doing constructors, methods, properties
-- Signature vs implementation generation interleaved
-- Hard to trace what generates what
+**Current State:** The file is now ~507 lines with better separation but still mixes concerns. It has four clear functional areas: helpers/type detection, constructors, methods, and properties.
 
 **New file structure:**
 
 ```
-generate/
-├── layer1_helpers.ml       # Shared utilities
-├── layer1_constructor.ml   # Constructor generation
-├── layer1_method.ml        # Method generation
-├── layer1_property.ml      # Property getter/setter generation
-└── ml_interface.ml         # Orchestration only
+generate/layer1/
+├── layer1_helpers.ml       # Lines 1-166: Type detection, hierarchy, utilities
+├── layer1_constructor.ml   # Lines 168-205: Constructor generation
+├── layer1_method.ml        # Lines 207-280: Method generation
+├── layer1_property.ml      # Lines 282-343: Property getter/setter generation
+└── layer1_main.ml          # Lines 345-507: Section orchestration + combined modules
 ```
 
-**Concrete steps:**
-1. Create `layer1_helpers.ml` with extracted helpers (simplify_self_reference, qualify_module_reference, sanitize_doc)
-2. Create `layer1_constructor.ml` extracting lines 168-218
-3. Create `layer1_method.ml` extracting lines 220-339
-4. Create `layer1_property.ml` extracting lines 341-388
-5. Refactor `ml_interface.ml` to orchestrate via module calls
-6. Each module follows docstring pattern from `c_stub_method.ml`
+**Functions to Move:**
+
+**`layer1_helpers.ml`** (shared utilities):
+- `build_parent_chain_variants` (lines 17-28)
+- `build_hierarchy_variants` (lines 31-40)
+- `detect_class_hierarchy_names` (lines 42-81)
+- `print_indent` (lines 83-91)
+- `combine_return_and_out_types` (lines 93-100)
+- `method_handles_property` (lines 102-112)
+- Type conversion helpers: `map_constructor_param`, `convert_method_param_to_ocaml_type`, `convert_out_param_to_ocaml_type`
+- `should_generate_accessor`, `build_accessor_base_type`, `format_accessor_declaration`
+
+**`layer1_constructor.ml`**:
+- `build_constructor_signature` (lines 169-175)
+- `format_constructor_external` (lines 177-186)
+- `should_generate_constructor` (lines 188-193)
+- `generate_constructor_decl` (lines 195-205)
+
+**`layer1_method.ml`**:
+- `should_generate_method` (lines 208-222)
+- `build_method_signature` (lines 224-250)
+- `format_method_external` (lines 252-258)
+- `generate_method_decl` (lines 260-280)
+
+**`layer1_property.ml`**:
+- `has_property_type_mapping` (lines 283-286)
+- `should_generate_property_getter` (line 289)
+- `should_generate_property_setter` (lines 292-293)
+- `generate_property_getter` (lines 296-310)
+- `generate_property_setter` (lines 313-327)
+- `generate_property_decl` (lines 330-343)
+
+**`layer1_main.ml`** (orchestration):
+- Section generators: `generate_type_declaration`, `generate_hierarchy_accessor_section`, `generate_constructors_section`, `generate_methods_section`, `generate_properties_section`
+- Main entry: `generate_ml_interface_internal`, `generate_ml_interface`
+- Combined module support: `format_module_declaration`, `generate_module_signature`, `generate_module_implementation`, `generate_combined_module_entity`, `generate_combined_ml_modules`
+
+This structure isolates each binding type (constructors, methods, properties) into testable units while keeping the orchestration logic centralized.
 
 ### 1.3 Refactor `class_gen.ml` (Layer 2)
 
