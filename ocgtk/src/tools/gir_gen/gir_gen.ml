@@ -485,6 +485,21 @@ let generate_enum_files ~output_dir ~generated_stubs ~generated_modules
       :: !generated_modules
   end
 
+let load_reference_files reference_files =
+  let converter =
+    Sexplib.Conv.(
+      pair_of_sexp string_of_sexp
+        (list_of_sexp Gir_gen_lib.Types.cross_reference_of_sexp))
+  in
+  List.fold_left reference_files ~init:StringMap.empty ~f:(fun acc file ->
+      (* NOTE: this loads everything at once into memory so it is slower than a progressive load, but we're embedding something valuable at the start so we don't have a homogenous list to play with *)
+      let namespace, cr_list = Sexplib.Sexp.load_sexp_conv_exn file converter in
+      let sm =
+        List.fold_left cr_list ~init:StringMap.empty ~f:(fun sm cr ->
+            StringMap.add cr.cr_name cr sm)
+      in
+      StringMap.add namespace sm acc)
+
 (* Main generation function *)
 let generate_bindings filter_file gir_file output_dir reference_files =
   printf "Current directory: %s\n" (Sys.getcwd ());
@@ -670,7 +685,7 @@ let generate_bindings filter_file gir_file output_dir reference_files =
       (* Temporary empty map *)
       current_cycle_classes = [];
       (* No cycle context initially *)
-      cross_references = StringMap.empty;
+      cross_references = load_reference_files reference_files;
       (* cross references initialised to empty *)
     }
   in
@@ -1001,8 +1016,13 @@ let generate_references gir_file output_file =
             cr_c_type = rec_.c_type;
           }))
   in
-  Sexplib.Sexp.save_hum output_file
-    (Sexplib.Std.sexp_of_list Gir_gen_lib.Types.sexp_of_cross_reference entities);
+  let converter =
+    Sexplib.Conv.(
+      sexp_of_pair sexp_of_string
+        (sexp_of_list Gir_gen_lib.Types.sexp_of_cross_reference))
+  in
+  Sexplib.Sexp.(
+    save_hum output_file (converter (namespace.namespace_name, entities)));
   `Ok ()
 
 (* Cmdliner argument definitions *)

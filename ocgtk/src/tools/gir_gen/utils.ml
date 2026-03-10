@@ -289,6 +289,14 @@ let ocaml_class_name cn =
   cn |> normalize_class_name |> kebab_to_snake |> to_snake_case
   |> sanitize_identifier
 
+let ocaml_interface_name cn =
+  (* this is the same as classes *)
+  ocaml_class_name cn
+
+let ocaml_record_name cn =
+  (* this is the same as classes *)
+  ocaml_class_name cn
+
 (** Extract ML prefix from generation context namespace *)
 let extract_ml_prefix (ctx : Types.generation_context) : string =
   let namespace_prefix = ctx.namespace.namespace_c_identifier_prefixes in

@@ -121,12 +121,8 @@ module Type_analysis = struct
       | None -> (normalized, false)
     in
     let base_lower = String.lowercase_ascii gir_type.name in
-    let record_info =
-      Type_mappings.find_record_mapping ctx.records gir_type.name
-    in
-    let class_info =
-      Type_mappings.find_class_mapping ctx.classes gir_type.name
-    in
+    let record_info = Type_mappings.lookup_record ctx.records gir_type.name in
+    let class_info = Type_mappings.lookup_class ctx.classes gir_type.name in
     let is_enum =
       List.exists ctx.enums ~f:(fun e -> String.equal e.enum_name gir_type.name)
     in

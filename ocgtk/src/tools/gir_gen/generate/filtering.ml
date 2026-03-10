@@ -67,7 +67,7 @@ let should_generate_property ~ctx ~class_name ~methods (prop : gir_property) =
       let check_interface_by_name name =
         if name = "" then false
         else
-          match Type_mappings.find_interface_mapping ctx.interfaces name with
+          match Type_mappings.lookup_interface ctx.interfaces name with
           | Some _ -> true
           | None -> false
       in
@@ -232,7 +232,7 @@ let method_has_interface_param ~ctx (meth : gir_method) =
       let check_interface_by_name name =
         if name = "" then false
         else
-          match Type_mappings.find_interface_mapping ctx.interfaces name with
+          match Type_mappings.lookup_interface ctx.interfaces name with
           | Some _ -> true
           | None -> false
       in

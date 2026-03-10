@@ -34,7 +34,8 @@ type gir_param = {
   direction : gir_direction;
   nullable : bool;
   varargs : bool;
-  caller_allocates : bool;  (* True if caller allocates the buffer for out params *)
+  caller_allocates : bool;
+      (* True if caller allocates the buffer for out params *)
 }
 
 type gir_method = {
@@ -308,5 +309,5 @@ type generation_context = {
       (* class_name -> combined_module_name *)
   current_cycle_classes : string list;
       (* Class names in the current cyclic module being generated *)
-  cross_references : cross_reference StringMap.t;
+  cross_references : cross_reference StringMap.t StringMap.t;
 }
