@@ -27,14 +27,14 @@ You do not need to load the guidelines file yourself, the subagents will do that
 
 It's important to get this right, so pay attention to the following:
 
-**IMPORTANT**: There may already be an existing goal at `.opencode/scratchpad/current-goal.txt` and/or plan at `.opencode/scratchpad/glm-plan.json`.
+**IMPORTANT**: There may already be an existing goal at `.opencode/scratchpad/current-goal.txt` and/or plan at `.opencode/scratchpad/plan.json`.
 **REQUIRED**: ALWAYS check for an existing plan. 
 
-1. **User specifies an existing plan**: The user may provide a reference to an existing plan in their message or they refer to a previous plan, which would be at `.opencode/scratchpad/glm-plan.json`.
+1. **User specifies an existing plan**: The user may provide a reference to an existing plan in their message or they refer to a previous plan, which would be at `.opencode/scratchpad/plan.json`.
 
       IF ONE EXISTS, ask the user if they want to resume with it or start over. When the user wants to resume, you MUST NOT run the planner again (i.e. skip Phase 1), but instead, show the user what the next steps would be and refine them with them. 
 
-2. **User specifices a new goal**: if there is no existing plan and no existing file at `.opencode/scratchpad/glm-plan.json`, then the user must provide details for a new plan. Continue to Phase 1.
+2. **User specifices a new goal**: if there is no existing plan and no existing file at `.opencode/scratchpad/plan.json`, then the user must provide details for a new plan. Continue to Phase 1.
 
 
 ### Phase 1: Planning
@@ -45,28 +45,30 @@ mkdir -p .opencode/scratchpad
 echo '$ARGUMENTS' > .opencode/scratchpad/current-goal.txt
 ```
 
-Use @glm-planner agent to analyze target files against goal: "$ARGUMENTS"
+Use @refactor-planner agent to analyze target files against goal: "$ARGUMENTS"
 
-The planner will output to `.opencode/scratchpad/glm-plan.json`
+The planner will output to `.opencode/scratchpad/plan.json`
 
 Show me the plan summary and wait for approval before proceeding.
 
 ### Phase 2: Execution Loop
 
 
-For each violation in the plan:
+For each step in the plan, you MUST execute the following steps using the specified agents (do not skip any steps for any part, and NEVER execute them yourself):
 
-1. **Execute**: Use @glm-executor agent with:
-   - The specific violation details
-   - Reference to guidelines file or inline patterns
+1. **Execute**: Use @refactor-executor agent with:
+   - The specific step implementation details from the plan
+   - A link to the coding guidelines ( docs/code_guidelines/index.md )
    - Run a build check i.e. `dune build 2>&1` to ensure the code compiles. MUST return 0 exit code. If build fails, executor must fix before proceeding.
+   - Run a test check i.e. `xvfb-run dune runtest 2>&1` to ensure the tests pass
 
-2. **Independent Review**: Use @glm-reviewer agent with:
+1. **Independent Review**: Use @refactor-reviewer agent with:
    - Original goal from: `cat .opencode/scratchpad/current-goal.txt`
    - Modified file paths only (reviewer reads current state)
+   - The goal of this particular step
    - The reviewer agent already knows what to do and what output format to use. Simply provide the context; DO NOT prompt it with an output format NOR provide review criteria.
    
-3. **Handle Review Result**:
+2. **Handle Review Result**:
    - PASS → commit and continue to next violation
    - PARTIAL → show feedback, attempt fix (max 2 retries)
    - FAIL → show feedback, attempt fix (max 3 retries)
@@ -75,7 +77,7 @@ For each violation in the plan:
 1. **Checkpoint**:
 ```bash
    git add -A
-   git commit -m "refactor: <specific changes>
+   git commit -m "(feat|refactor|fix|build): <specific changes>
    
    Guideline: <summary of goal>
    Changes: <detailed description of changes made>
@@ -112,7 +114,7 @@ After all changes addressed:
 ### Failure Recovery
 
 If context is exhausted mid-refactor:
-1. Progress is saved in `.opencode/scratchpad/glm-plan.json` 
+1. Progress is saved in `.opencode/scratchpad/plan.json` 
 2. Completed violations are committed
 3. Resume with: `/glm-multistage continue`. DO NOT RUN THE PLANNER AGENT AGAIN.
 
