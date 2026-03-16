@@ -19,7 +19,7 @@
         {
           "stage": 1,
           "title": "Create C_validation AST-based header validation functions",
-          "status": "pending",
+          "status": "committed",
           "replanned": false,
           "description": "Addassert_forward_decl_exists, assert_forward_decl_not_exists, andassert_header_guard_format functions to C_validation.ml using the existing C_parser and C_ast infrastructure",
           "files_to_modify": [

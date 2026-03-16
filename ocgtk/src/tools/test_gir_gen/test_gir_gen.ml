@@ -11,6 +11,7 @@ let () =
       ("Parser", Parser.tests);
       ("C Validation", C_validation_tests.tests);
       ("C Stubs", C_stubs_tests.tests);
+      ("Header Naming", Header_naming_tests.tests);
       ("Nullable", Nullable_tests.tests);
       ("Error Handling", Error_handling_tests.tests);
       ("Out Params", Out_params_tests.tests);
