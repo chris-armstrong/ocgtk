@@ -484,19 +484,22 @@ let generate_enum_files ~output_dir ~generated_stubs ~generated_modules
   end
 
 let load_reference_files reference_files =
-  let converter =
-    Sexplib.Conv.(
-      pair_of_sexp string_of_sexp
-        (list_of_sexp Gir_gen_lib.Types.cross_reference_of_sexp))
-  in
+  let open Gir_gen_lib.Types in
+  let converter = cross_reference_namespace_of_sexp in
   List.fold_left reference_files ~init:StringMap.empty ~f:(fun acc file ->
       (* NOTE: this loads everything at once into memory so it is slower than a progressive load, but we're embedding something valuable at the start so we don't have a homogenous list to play with *)
-      let namespace, cr_list = Sexplib.Sexp.load_sexp_conv_exn file converter in
-      let sm =
-        List.fold_left cr_list ~init:StringMap.empty ~f:(fun sm cr ->
-            StringMap.add cr.cr_name cr sm)
+      let cr_namespace = Sexplib.Sexp.load_sexp_conv_exn file converter in
+      let ncr_namespace =
+        {
+          ncr_namespace_name = cr_namespace.cr_namespace_name;
+          ncr_namespace_packages = cr_namespace.cr_namespace_packages;
+          ncr_namespace_c_includes = cr_namespace.cr_namespace_c_includes;
+          ncr_entities =
+            List.fold_left cr_namespace.cr_entities ~init:StringMap.empty
+              ~f:(fun sm cr -> StringMap.add cr.cr_name cr sm);
+        }
       in
-      StringMap.add namespace sm acc)
+      StringMap.add cr_namespace.cr_namespace_name ncr_namespace acc)
 
 (* Main generation function *)
 let generate_bindings filter_file gir_file output_dir reference_files =
@@ -1019,13 +1022,17 @@ let generate_references gir_file output_file =
             cr_c_type = rec_.c_type;
           }))
   in
-  let converter =
-    Sexplib.Conv.(
-      sexp_of_pair sexp_of_string
-        (sexp_of_list Gir_gen_lib.Types.sexp_of_cross_reference))
+  let crns =
+    Gir_gen_lib.Types.
+      {
+        cr_namespace_name = namespace.namespace_name;
+        cr_namespace_packages = repository.repository_packages;
+        cr_namespace_c_includes = repository.repository_c_includes;
+        cr_entities = entities;
+      }
   in
-  Sexplib.Sexp.(
-    save_hum output_file (converter (namespace.namespace_name, entities)));
+  let converter = Gir_gen_lib.Types.sexp_of_cross_reference_namespace in
+  Sexplib.Sexp.(save_hum output_file (converter crns));
   `Ok ()
 
 (* Cmdliner argument definitions *)

@@ -15,8 +15,8 @@ let calculate_layer2_class ~class_module ~class_name =
 
 (** Map a cross-namespace type reference to a type mapping. This function is
     used to convert a cross-reference to a type mapping.*)
-let map_cross_reference_to_type_mapping ~ctx:_ ~namespace (cr : cross_reference)
-    : type_mapping =
+let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
+    (cr : cross_reference_entity) : type_mapping =
   {
     ocaml_type =
       (match cr.cr_type with
@@ -483,8 +483,10 @@ and normal_type_lookup ~ctx (gir_type : Types.gir_type) =
     in
     let find_cross_namespace_type_mapping ~ctx ~namespace ~name =
       let open Option in
-      let* namespace_map = StringMap.find_opt namespace ctx.cross_references in
-      let* cross_reference = StringMap.find_opt name namespace_map in
+      let* ncr_namespace = StringMap.find_opt namespace ctx.cross_references in
+      let* cross_reference =
+        StringMap.find_opt name ncr_namespace.ncr_entities
+      in
       Some (map_cross_reference_to_type_mapping ~ctx ~namespace cross_reference)
     in
     let namespace, name = Utils.name_to_parts ~ctx lookup_str in

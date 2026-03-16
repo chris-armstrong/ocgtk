@@ -285,14 +285,29 @@ type cross_reference_type =
   | Crt_Bitfield
 [@@deriving sexp]
 
-type cross_reference = {
+type cross_reference_entity = {
   cr_name : string;
   cr_type : cross_reference_type;
   cr_c_type : string;
 }
 [@@deriving sexp]
 
+type cross_reference_namespace = {
+  cr_namespace_name : string;
+  cr_namespace_packages : string list;
+  cr_namespace_c_includes : string list;
+  cr_entities : cross_reference_entity list;
+}
+[@@deriving sexp]
+
 module StringMap = Map.Make (String)
+
+type generation_context_namespace_cross_references = {
+  ncr_namespace_name : string;
+  ncr_namespace_packages : string list;
+  ncr_namespace_c_includes : string list;
+  ncr_entities : cross_reference_entity StringMap.t;
+}
 
 type generation_context = {
   namespace : gir_namespace;
@@ -309,5 +324,5 @@ type generation_context = {
       (* class_name -> combined_module_name *)
   current_cycle_classes : string list;
       (* Class names in the current cyclic module being generated *)
-  cross_references : cross_reference StringMap.t StringMap.t;
+  cross_references : generation_context_namespace_cross_references StringMap.t;
 }
