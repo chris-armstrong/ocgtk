@@ -147,9 +147,7 @@ let generate_record_c_code ~ctx (record : gir_record) =
   let buf = Buffer.create 2048 in
 
   Buffer.add_string buf
-    (C_stub_helpers.generate_c_file_header ~ctx ~class_name:record.record_name
-       ~external_enums:ctx.external_enums
-       ~external_bitfields:ctx.external_bitfields ());
+    (C_stub_helpers.generate_c_file_header ~ctx ~class_name:record.record_name ());
 
   let class_snake = Utils.to_snake_case record.record_name in
 

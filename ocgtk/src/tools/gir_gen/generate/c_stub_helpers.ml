@@ -45,9 +45,7 @@ module Code_gen = struct
     }
 
   (* Generate C file header with common includes and type conversions *)
-  let generate_c_file_header ~ctx ?(class_name = "") ?(external_enums = [])
-      ?(external_bitfields = []) () =
-    let _ = (external_enums, external_bitfields) in
+  let generate_c_file_header ~ctx ?(class_name = "") () =
     let buf = Buffer.create 1024 in
     Buffer.add_string buf "/* GENERATED CODE - DO NOT EDIT */\n";
     if not (String.equal class_name "") then

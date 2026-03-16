@@ -1486,7 +1486,6 @@ let test_gdkpixbuf_format_flags_guarded () =
     Gir_gen_lib.Generate.C_stub_bitfield.generate_forward_decls
       ~namespace_prefix:"GdkPixbuf"
       ~gtk_bitfields:[ pixbuf_format_flags_bitfield ]
-      ~external_bitfields:[]
   in
   Helpers.log_generated_c_code "gdkpixbuf_format_flags_guard" c_code;
 
@@ -1545,7 +1544,6 @@ let test_normal_bitfield_no_guard () =
     Gir_gen_lib.Generate.C_stub_bitfield.generate_forward_decls
       ~namespace_prefix:"Gtk"
       ~gtk_bitfields:[ normal_bitfield ]
-      ~external_bitfields:[]
   in
   Helpers.log_generated_c_code "normal_bitfield_no_guard" c_code;
 

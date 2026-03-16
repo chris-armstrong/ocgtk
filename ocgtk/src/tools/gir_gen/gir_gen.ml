@@ -42,9 +42,7 @@ let entity_generator_by_entity_type =
      fun ~ctx ~entity buf ->
       (* Add header *)
       Buffer.add_string buf
-        (C_stub_helpers.generate_c_file_header ~ctx ~class_name:entity.name
-           ~external_enums:ctx.external_enums
-           ~external_bitfields:ctx.external_bitfields ())
+        (C_stub_helpers.generate_c_file_header ~ctx ~class_name:entity.name ())
     in
     let generate_c_stub_constructors =
      fun ~ctx ~(entity : entity) buf ->
@@ -723,24 +721,32 @@ let generate_bindings filter_file gir_file output_dir reference_files =
 
   (* ==== GENERATION STAGE ==== *)
 
+  (* Generate enum and bitfield files for current namespace *)
+  let ns_name = ctx.namespace.namespace_name in
+  let ns_lower = String.lowercase_ascii ns_name in
+
+  (* Helper function to extract dependency namespaces from cross_references *)
+  let _get_dependency_namespaces cross_references =
+    StringMap.fold
+      (fun ns _ acc -> ns :: acc)
+      cross_references []
+    |> List.sort_uniq ~cmp:String.compare
+  in
+
   (* Generate common header file *)
   let header_file =
     Filename.concat
       (generated_output_dir output_dir)
-      "generated_forward_decls.h"
+      (sprintf "%s_decls.h" ns_lower)
   in
   printf "\n";
   let header_content =
-    Gir_gen_lib.Generate.C_stubs.generate_forward_decls_header ~ctx
+    Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx
       ~classes:ctx.classes ~gtk_enums ~gtk_bitfields
-      ~external_enums:ctx.external_enums ~records:ctx.records
-      ~interfaces:ctx.interfaces ~external_bitfields:ctx.external_bitfields
+      ~records:ctx.records ~interfaces:ctx.interfaces
   in
   write_file ~path:header_file ~content:header_content;
 
-  (* Generate enum and bitfield files for current namespace *)
-  let ns_name = ctx.namespace.namespace_name in
-  let ns_lower = String.lowercase_ascii ns_name in
   let current_namespace =
     {
       name = ns_name;

@@ -10,6 +10,69 @@ open Gir_gen_lib.Types
 (* Parse C code string and return our AST *)
 let parse_c_string c_code = C_parser.parse_c_code c_code
 
+(* ========================================================================= *)
+(* Header Guard Parsing for AST-Based Validation *)
+(* ========================================================================= *)
+
+type header_guard = {
+  guard_name : string;
+  has_ifndef : bool;
+  has_define : bool;
+  has_endif : bool;
+}
+
+(* Extract header guard directives from header content using line-by-line parsing *)
+let parse_header_guards header_content =
+  let lines = String.split_on_char '\n' header_content in
+  let rec extract_directives acc = function
+    | [] -> acc
+    | line :: rest ->
+        let stripped = String.trim line in
+        (* Match #ifndef _<name>_ *)
+        if String.starts_with ~prefix:"#ifndef " stripped then
+          let name = String.sub stripped 8 (String.length stripped - 8) |> String.trim in
+          extract_directives ({ guard_name = name; has_ifndef = true; has_define = false; has_endif = false } :: acc) rest
+        (* Match #define _<name>_ *)
+        else if String.starts_with ~prefix:"#define " stripped then
+          let name = String.sub stripped 8 (String.length stripped - 8) |> String.trim in
+          (* Find and update matching guard *)
+          let updated = List.map (fun g -> if g.guard_name = name then { g with has_define = true } else g) acc in
+          extract_directives updated rest
+        (* Match #endif with comment *)
+        else if String.starts_with ~prefix:"#endif" stripped then
+          (* Extract guard name from comment if present: #endif /* _name_ */ *)
+          let guard_name = 
+            try
+              let comment_start = String.index stripped '/' in
+              let start = comment_start + 3 in
+              let finish = String.index_from stripped start '*' - 1 in
+              String.sub stripped start (finish - start) |> String.trim
+            with Not_found -> ""
+          in
+          if guard_name <> "" then
+            let updated = List.map (fun g -> if g.guard_name = guard_name then { g with has_endif = true } else g) acc in
+            extract_directives updated rest
+          else
+            extract_directives acc rest
+        else
+          extract_directives acc rest
+  in
+  extract_directives [] lines
+
+(* Find a header guard by name pattern *)
+let find_header_guard guards suffix =
+  List.find_opt (fun g -> String.ends_with ~suffix g.guard_name) guards
+
+(* Check if header contains old naming pattern *)
+let contains_old_naming header_content =
+  let guards = parse_header_guards header_content in
+  List.exists (fun g ->
+    try
+      ignore (Str.search_forward (Str.regexp_string "generated_forward_decls") g.guard_name 0);
+      true
+    with Not_found -> false
+  ) guards
+
 (* Find a function by name *)
 let find_function functions name = C_ast.find_function functions name
 
@@ -1108,6 +1171,70 @@ let test_nullable_record_parameter () =
     (C_validation.calls_c_function func "gtk_widget_set_nullable_record")
 
 (* ========================================================================= *)
+(* Header File Naming Tests (Stage 1: Phase 2) *)
+(* ========================================================================= *)
+
+let test_header_file_naming () =
+  let ctx = create_test_context () in
+  let ns_name = String.lowercase_ascii ctx.Gir_gen_lib.Types.namespace.namespace_name in
+  let header_content =
+    Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx
+      ~classes:ctx.classes ~gtk_enums:[] ~gtk_bitfields:[]
+      ~records:[] ~interfaces:[]
+  in
+  
+  (* Parse header guards using AST-based validation *)
+  let guards = parse_header_guards header_content in
+  let expected_suffix = "_decls_h_" in
+  
+  (* Find the guard for this namespace *)
+  let guard_opt = find_header_guard guards expected_suffix in
+  
+  (* Verify header guard exists with correct structure *)
+  (match guard_opt with
+  | None -> Alcotest.fail (sprintf "Header guard with suffix '%s' not found" expected_suffix)
+  | Some guard ->
+      (* Verify guard name format: _<ns>_decls_h_ *)
+      let expected_guard_name = sprintf "_%s_decls_h_" ns_name in
+      Alcotest.(check string) "Header guard name uses _ns_decls_h_ format" 
+        expected_guard_name guard.guard_name;
+      
+      (* Verify guard has all required directives *)
+      Alcotest.(check bool) "Header has #ifndef" true guard.has_ifndef;
+      Alcotest.(check bool) "Header has #define" true guard.has_define;
+      Alcotest.(check bool) "Header has #endif" true guard.has_endif);
+  
+  (* Verify old naming pattern is NOT used *)
+  Alcotest.(check bool) "Old header guard naming not used" false
+    (contains_old_naming header_content)
+
+let test_header_guard_format () =
+  let ctx = create_test_context () in
+  let ns_name = ctx.Gir_gen_lib.Types.namespace.namespace_name in
+  let ns_lower = String.lowercase_ascii ns_name in
+  
+  let header_content =
+    Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx
+      ~classes:ctx.classes ~gtk_enums:[] ~gtk_bitfields:[]
+      ~records:[] ~interfaces:[]
+  in
+  
+  (* Parse header guards using AST-based validation *)
+  let guards = parse_header_guards header_content in
+  let expected_guard_name = sprintf "_%s_decls_h_" ns_lower in
+  
+  (* Find the guard matching expected pattern *)
+  let guard_opt = List.find_opt (fun g -> g.guard_name = expected_guard_name) guards in
+  
+  (match guard_opt with
+  | None -> Alcotest.fail (sprintf "Header guard '%s' not found" expected_guard_name)
+  | Some guard ->
+      (* Verify guard has complete structure *)
+      Alcotest.(check bool) "Header guard has #ifndef" true guard.has_ifndef;
+      Alcotest.(check bool) "Header guard has #define" true guard.has_define;
+      Alcotest.(check bool) "Header guard has #endif" true guard.has_endif)
+
+(* ========================================================================= *)
 (* Test Suite *)
 (* ========================================================================= *)
 
@@ -1152,4 +1279,9 @@ let tests =
       test_nullable_record_return;
     Alcotest.test_case "Nullable record parameter" `Quick
       test_nullable_record_parameter;
+    (* Header file naming tests (Stage 1: Phase 2) *)
+    Alcotest.test_case "Header file uses <ns>_decls.h naming" `Quick
+      test_header_file_naming;
+    Alcotest.test_case "Header guard uses _<ns>_decls_h_ format" `Quick
+      test_header_guard_format;
   ]

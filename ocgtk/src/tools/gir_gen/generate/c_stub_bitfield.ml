@@ -26,7 +26,7 @@ let emit_bitfield_proto buf ~namespace (bitfield : gir_bitfield) =
   if is_pixbuf_format_flags then
     bprintf buf "#endif\n"
 
-let generate_forward_decls ~namespace_prefix ~gtk_bitfields ~external_bitfields =
+let generate_forward_decls ~namespace_prefix ~gtk_bitfields =
   let buf = Buffer.create 1024 in
 
   if List.length gtk_bitfields > 0 then begin
@@ -55,16 +55,6 @@ let generate_forward_decls ~namespace_prefix ~gtk_bitfields ~external_bitfields 
           bprintf buf "#endif\n")
       gtk_bitfields;
     Buffer.add_string buf "\n"
-  end;
-
-  (* Add forward declarations for external namespace bitfield converters *)
-  if List.length external_bitfields > 0 then begin
-    Buffer.add_string buf
-      "\n/* Forward declarations for external namespace bitfield converters */\n";
-    List.iter
-      ~f:(fun ((ns, bitfield) : string * gir_bitfield) ->
-        emit_bitfield_proto buf ~namespace:ns bitfield)
-      external_bitfields
   end;
 
   Buffer.contents buf

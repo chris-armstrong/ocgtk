@@ -21,18 +21,17 @@ let emit_enum_proto = C_stub_enum.emit_enum_proto
 let emit_bitfield_proto = C_stub_bitfield.emit_bitfield_proto
 
 (* Generate common header file with forward declarations for enum/bitfield converters *)
-let generate_forward_decls_header ~ctx ~classes ~interfaces ~gtk_enums
-    ~gtk_bitfields ~external_enums ~external_bitfields ~records =
+let generate_decls_header ~ctx ~classes ~interfaces ~gtk_enums
+    ~gtk_bitfields ~records =
   let buf = Buffer.create 4096 in
+  let ns_lower = String.lowercase_ascii ctx.namespace.namespace_name in
   Buffer.add_string buf "/* GENERATED CODE - DO NOT EDIT */\n";
   Buffer.add_string buf
     "/* Forward declarations for generated enum, bitfield, class and record \
      converters */\n";
   Buffer.add_string buf "\n";
-  bprintf buf "#ifndef _%s_generated_forward_decls_\n"
-    (String.lowercase_ascii ctx.namespace.namespace_name);
-  bprintf buf "#define _%s_generated_forward_decls_\n"
-    (String.lowercase_ascii ctx.namespace.namespace_name);
+  bprintf buf "#ifndef _%s_decls_h_\n" ns_lower;
+  bprintf buf "#define _%s_decls_h_\n" ns_lower;
   Buffer.add_string buf "\n";
   bprintf buf "%s\n" (include_header_for_namespace ctx.namespace.namespace_name);
   Buffer.add_string buf "#include <caml/mlvalues.h>\n";
@@ -57,19 +56,19 @@ let generate_forward_decls_header ~ctx ~classes ~interfaces ~gtk_enums
 
   (* Generate enum forward declarations *)
   let namespace_prefix = ctx.namespace.namespace_name in
-  if List.length gtk_enums > 0 || List.length gtk_bitfields > 0 then begin
+  if List.length gtk_enums > 0 then
+  begin
     Buffer.add_string buf
-      (C_stub_enum.generate_forward_decls ~namespace_prefix ~gtk_enums
-         ~external_enums)
+      (C_stub_enum.generate_forward_decls ~namespace_prefix ~gtk_enums)
   end;
 
   (* Generate bitfield forward declarations *)
-  if List.length gtk_bitfields > 0 || List.length external_bitfields > 0 then begin
+  if List.length gtk_bitfields > 0 then
+  begin
     Buffer.add_string buf
-      (C_stub_bitfield.generate_forward_decls ~namespace_prefix ~gtk_bitfields
-         ~external_bitfields)
+      (C_stub_bitfield.generate_forward_decls ~namespace_prefix ~gtk_bitfields)
   end;
 
   Buffer.add_string buf "\n";
-  Buffer.add_string buf "#endif /* _gtk4_generated_forward_decls_ */\n";
+  bprintf buf "#endif /* _%s_decls_h_ */\n" ns_lower;
   Buffer.contents buf
