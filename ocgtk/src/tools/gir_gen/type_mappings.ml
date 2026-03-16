@@ -441,28 +441,24 @@ let find_bitfield_mapping ~ctx lookup_str =
 let rec find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
   (* Handle arrays first *)
   match gir_type.array with
-  | Some array_info -> (
+  | Some array_info ->
       (* Recursively resolve the element type *)
-      match find_type_mapping_for_gir_type ~ctx array_info.element_type with
-      | Some element_mapping ->
+      find_type_mapping_for_gir_type ~ctx array_info.element_type
+      |> Option.map (fun element_mapping ->
           let ocaml_type = element_mapping.ocaml_type ^ " array" in
           let c_type =
-            match gir_type.c_type with
-            | Some ct -> ct
-            | None -> element_mapping.c_type ^ "*"
+            Option.value gir_type.c_type ~default:element_mapping.c_type ^ "*"
           in
-          Some
-            {
-              ocaml_type;
-              c_type;
-              c_to_ml = "ARRAY_INLINE";
-              (* Marker: use inline code generation *)
-              ml_to_c = "ARRAY_INLINE";
-              (* Marker: use inline code generation *)
-              needs_copy = true;
-              layer2_class = None;
-            }
-      | None -> None)
+          {
+            ocaml_type;
+            c_type;
+            c_to_ml = "ARRAY_INLINE";
+            (* Marker: use inline code generation *)
+            ml_to_c = "ARRAY_INLINE";
+            (* Marker: use inline code generation *)
+            needs_copy = true;
+            layer2_class = None;
+          })
   | None ->
       (* Not an array - proceed with normal type lookup *)
       normal_type_lookup ~ctx gir_type
