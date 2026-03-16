@@ -37,4 +37,6 @@ let () =
       ("C Stub Header Include (Stage 5)", C_stub_include_tests.tests);
       ("Dune Include Paths (Stage 6)", Dune_include_paths_tests.tests);
       ("Dune Relative Paths (Stage 6)", Dune_relative_path_tests.tests);
+      ("Dune Library Dependencies (Stage 7)", Dune_library_deps_tests.tests);
+      ("Dune Dependency Order (Stage 7)", Dune_dependency_order_tests.tests);
     ]

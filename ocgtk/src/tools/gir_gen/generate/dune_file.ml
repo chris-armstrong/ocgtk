@@ -89,8 +89,25 @@ let generate_dune_library ~lib_name ~stub_names ~module_names ~package_names
        (lib_name |> Utils.to_snake_case));
   Buffer.add_string buf " (wrapped false)\n";
   Buffer.add_string buf " (modules)  ; No OCaml modules, only C stubs\n";
-  Buffer.add_string buf
-    " (libraries ocgtk_common)  ; Depend on common for header files\n";
+
+  (* Generate library dependencies for dependency namespaces *)
+  let dep_libraries =
+    dependency_namespaces
+    |> List.map ~f:library_name_of_namespace
+    |> String.concat ~sep:" "
+  in
+
+  (* Build libraries clause - dependencies first, then common *)
+  let libraries_clause =
+    if String.equal dep_libraries "" then
+      " (libraries ocgtk_common)  ; Depend on common for header files\n"
+    else
+      sprintf
+        " (libraries %s ocgtk_common)  ; Dependencies and common for header \
+         files\n"
+        dep_libraries
+  in
+  Buffer.add_string buf libraries_clause;
   Buffer.add_string buf " (foreign_stubs\n";
   Buffer.add_string buf "  (language c)\n";
   Buffer.add_string buf "  (names\n";

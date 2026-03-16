@@ -286,7 +286,7 @@
         ]
       },
       "dependencies": [4],
-      "status": "pending"
+      "status": "committed"
     },
     {
       "stage_number": 7,
