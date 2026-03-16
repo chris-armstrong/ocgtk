@@ -32,4 +32,6 @@ let () =
       ("No External Enum Decls (Stage 2)", No_external_enum_decls_tests.tests);
       ( "No External Bitfield Decls (Stage 3)",
         No_external_bitfield_decls_tests.tests );
+      ("Dependency Includes (Stage 4)", Dependency_includes_tests.tests);
+      ("Dependency Exclusion (Stage 4)", Dependency_exclusion_tests.tests);
     ]

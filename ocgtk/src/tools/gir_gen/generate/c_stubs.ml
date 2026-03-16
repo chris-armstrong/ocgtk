@@ -16,6 +16,28 @@ let has_copy_method = C_stub_record.has_copy_method
 let is_value_like_record = C_stub_record.is_value_like_record
 let generate_record_c_code = C_stub_record.generate_record_c_code
 
+(* Base namespaces that should not be included as dependencies *)
+let base_namespaces = [ "GLib"; "GModule"; "GObject" ]
+
+(* Extract dependency namespaces from cross_references map.
+   Returns sorted list of namespace names (excluding base namespaces like GLib, GObject, GModule) *)
+let get_dependency_namespaces cross_references =
+  StringMap.fold (fun ns _ acc -> ns :: acc) cross_references []
+  |> List.filter ~f:(fun ns -> not (List.mem ~set:base_namespaces ns))
+  |> List.sort_uniq ~cmp:String.compare
+
+(* Generate #include directives for dependency namespaces *)
+let generate_dependency_includes dependency_namespaces =
+  match dependency_namespaces with
+  | [] -> ""
+  | deps ->
+      deps
+      |> List.map ~f:(fun ns ->
+          let ns_lower = String.lowercase_ascii ns in
+          sprintf "#include \"%s_decls.h\"" ns_lower)
+      |> String.concat ~sep:"\n"
+      |> fun s -> s ^ "\n"
+
 (* Generate common header file with forward declarations for enum/bitfield converters *)
 let generate_decls_header ~ctx ~classes ~interfaces ~gtk_enums ~gtk_bitfields
     ~records =
@@ -32,6 +54,17 @@ let generate_decls_header ~ctx ~classes ~interfaces ~gtk_enums ~gtk_bitfields
   bprintf buf "%s\n" (include_header_for_namespace ctx.namespace.namespace_name);
   Buffer.add_string buf "#include <caml/mlvalues.h>\n";
   Buffer.add_string buf "\n";
+
+  (* Generate dependency header includes *)
+  let dependency_namespaces = get_dependency_namespaces ctx.cross_references in
+  let dependency_includes =
+    generate_dependency_includes dependency_namespaces
+  in
+  if dependency_includes <> "" then begin
+    Buffer.add_string buf "/* Dependency headers for cross-namespace types */\n";
+    Buffer.add_string buf dependency_includes;
+    Buffer.add_string buf "\n"
+  end;
 
   (* Generate class/interface forward declarations *)
   Buffer.add_string buf

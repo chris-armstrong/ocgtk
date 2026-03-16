@@ -1,0 +1,183 @@
+(* Cross-namespace tests - Stage 4: Generate Dependency Header Includes
+   Part 2: Exclusion of base namespaces
+
+   Tests that GLib, GModule, and GObject are NOT included as dependencies
+   in generated header files. These are base libraries that don't need
+   explicit header inclusion. *)
+
+(* Helper: Create a context with cross-references to base namespaces *)
+let create_context_with_base_namespace_refs () =
+  let open Gir_gen_lib.Types in
+  (* Create cross_references map including base namespaces *)
+  let glib_cr =
+    { cr_name = "Object"; cr_type = Crt_Class; cr_c_type = "GObject" }
+  in
+  let gobject_cr =
+    { cr_name = "Object"; cr_type = Crt_Class; cr_c_type = "GObject" }
+  in
+  let gmodule_cr =
+    { cr_name = "Module"; cr_type = Crt_Class; cr_c_type = "GModule" }
+  in
+  let gdk_cr =
+    { cr_name = "Texture"; cr_type = Crt_Class; cr_c_type = "GdkTexture" }
+  in
+
+  let glib_map = StringMap.add "Object" glib_cr StringMap.empty in
+  let gobject_map = StringMap.add "Object" gobject_cr StringMap.empty in
+  let gmodule_map = StringMap.add "Module" gmodule_cr StringMap.empty in
+  let gdk_map = StringMap.add "Texture" gdk_cr StringMap.empty in
+
+  let cross_references =
+    StringMap.empty
+    |> StringMap.add "GLib" glib_map
+    |> StringMap.add "GObject" gobject_map
+    |> StringMap.add "GModule" gmodule_map
+    |> StringMap.add "Gdk" gdk_map
+  in
+
+  let ns =
+    {
+      namespace_name = "Gtk";
+      namespace_version = "4.0";
+      namespace_shared_library = "libgtk-4.so.1";
+      namespace_c_identifier_prefixes = "Gtk";
+      namespace_c_symbol_prefixes = "gtk";
+    }
+  in
+
+  {
+    namespace = ns;
+    repository =
+      {
+        repository_c_includes = [];
+        repository_includes = [];
+        repository_packages = [];
+      };
+    classes = [];
+    interfaces = [];
+    enums = [];
+    bitfields = [];
+    records = [];
+    external_enums = [];
+    external_bitfields = [];
+    hierarchy_map = Hashtbl.create 0;
+    module_groups = Hashtbl.create 0;
+    current_cycle_classes = [];
+    cross_references;
+  }
+
+(* Stage 4 Test: GLib is NOT included as a dependency.
+   GLib is a base library that doesn't need explicit header inclusion. *)
+let test_glib_not_included_as_dependency () =
+  let ctx = create_context_with_base_namespace_refs () in
+
+  (* Generate the header file *)
+  let header_content =
+    Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
+      ~gtk_enums:ctx.enums ~gtk_bitfields:ctx.bitfields ~records:[]
+      ~interfaces:[]
+  in
+
+  Helpers.log_generated_c_code "gtk_decls.h (Stage 4 exclusion test)"
+    header_content;
+
+  (* Verify GLib header is NOT included *)
+  Helpers.assert_not_contains "Header should NOT include glib_decls.h"
+    header_content {|#include "glib_decls.h"|}
+
+(* Stage 4 Test: GModule is NOT included as a dependency.
+   GModule is a base library that doesn't need explicit header inclusion. *)
+let test_gmodule_not_included_as_dependency () =
+  let ctx = create_context_with_base_namespace_refs () in
+
+  (* Generate the header file *)
+  let header_content =
+    Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
+      ~gtk_enums:ctx.enums ~gtk_bitfields:ctx.bitfields ~records:[]
+      ~interfaces:[]
+  in
+
+  (* Verify GModule header is NOT included *)
+  Helpers.assert_not_contains "Header should NOT include gmodule_decls.h"
+    header_content {|#include "gmodule_decls.h"|}
+
+(* Stage 4 Test: GObject is NOT included as a dependency.
+   GObject is a base library that doesn't need explicit header inclusion. *)
+let test_gobject_not_included_as_dependency () =
+  let ctx = create_context_with_base_namespace_refs () in
+
+  (* Generate the header file *)
+  let header_content =
+    Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
+      ~gtk_enums:ctx.enums ~gtk_bitfields:ctx.bitfields ~records:[]
+      ~interfaces:[]
+  in
+
+  (* Verify GObject header is NOT included *)
+  Helpers.assert_not_contains "Header should NOT include gobject_decls.h"
+    header_content {|#include "gobject_decls.h"|}
+
+(* Stage 4 Test: Non-base namespaces ARE included.
+   Gdk should be included even though GLib/GObject/GModule are excluded. *)
+let test_non_base_namespaces_are_included () =
+  let ctx = create_context_with_base_namespace_refs () in
+
+  (* Generate the header file *)
+  let header_content =
+    Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
+      ~gtk_enums:ctx.enums ~gtk_bitfields:ctx.bitfields ~records:[]
+      ~interfaces:[]
+  in
+
+  (* Verify Gdk header IS included *)
+  Helpers.assert_contains "Header should include gdk_decls.h" header_content
+    {|#include "gdk_decls.h"|}
+
+(* Stage 4 Test: Helper function filters base namespaces correctly.
+   get_dependency_namespaces should exclude GLib, GModule, GObject. *)
+let test_get_dependency_namespaces_filters_base_namespaces () =
+  let open Gir_gen_lib.Types in
+  (* Create cross_references with base and non-base namespaces *)
+  let dummy_cr =
+    { cr_name = "Test"; cr_type = Crt_Class; cr_c_type = "Test" }
+  in
+  let dummy_map = StringMap.add "Test" dummy_cr StringMap.empty in
+
+  let cross_refs =
+    StringMap.empty
+    |> StringMap.add "GLib" dummy_map
+    |> StringMap.add "GObject" dummy_map
+    |> StringMap.add "GModule" dummy_map
+    |> StringMap.add "Gdk" dummy_map
+    |> StringMap.add "Gio" dummy_map
+  in
+
+  (* Get dependency namespaces *)
+  let deps =
+    Gir_gen_lib.Generate.C_stubs.get_dependency_namespaces cross_refs
+  in
+
+  (* Should contain Gdk and Gio but NOT GLib, GObject, GModule *)
+  Alcotest.(check int) "Should have exactly 2 dependencies" 2 (List.length deps);
+  Alcotest.(check bool) "Should contain Gdk" true (List.mem "Gdk" deps);
+  Alcotest.(check bool) "Should contain Gio" true (List.mem "Gio" deps);
+  Alcotest.(check bool) "Should NOT contain GLib" false (List.mem "GLib" deps);
+  Alcotest.(check bool)
+    "Should NOT contain GObject" false (List.mem "GObject" deps);
+  Alcotest.(check bool)
+    "Should NOT contain GModule" false (List.mem "GModule" deps)
+
+let tests =
+  [
+    Alcotest.test_case "GLib not included as dependency (Stage 4)" `Quick
+      test_glib_not_included_as_dependency;
+    Alcotest.test_case "GModule not included as dependency (Stage 4)" `Quick
+      test_gmodule_not_included_as_dependency;
+    Alcotest.test_case "GObject not included as dependency (Stage 4)" `Quick
+      test_gobject_not_included_as_dependency;
+    Alcotest.test_case "Non-base namespaces are included (Stage 4)" `Quick
+      test_non_base_namespaces_are_included;
+    Alcotest.test_case
+      "get_dependency_namespaces filters base namespaces (Stage 4)" `Quick
+      test_get_dependency_namespaces_filters_base_namespaces;
+  ]

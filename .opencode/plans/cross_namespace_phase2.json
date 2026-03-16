@@ -141,6 +141,19 @@
       "stage_number": 4,
       "title": "Generate Dependency Header Includes",
       "description": "Add `#include` directives for each dependency namespace's header file in the generated `<ns>_decls.h`. This allows dependent libraries to access type converters from their dependencies.",
+      "mandatory_guidelines": [
+        "ocgtk/docs/code_guidelines/index.md",
+        "ocgtk/docs/code_guidelines/nesting-and-control-flow.md",
+        "ocgtk/docs/code_guidelines/error-handling.md",
+        "ocgtk/docs/code_guidelines/naming-and-intermediates.md",
+        "ocgtk/docs/code_guidelines/module-boundaries.md",
+        "ocgtk/docs/code_guidelines/pattern-matching.md",
+        "ocgtk/docs/code_guidelines/partial-functions.md",
+        "ocgtk/docs/code_guidelines/type-safety.md",
+        "ocgtk/docs/code_guidelines/code-reuse.md",
+        "ocgtk/docs/code_guidelines/test-patterns.md",
+        "ocgtk/docs/code_guidelines/abstractions.md"
+      ],
       "files_to_modify": [
         {
           "path": "ocgtk/src/tools/gir_gen/generate/c_stubs.ml",
@@ -176,12 +189,25 @@
         ]
       },
       "dependencies": [2, 3],
-      "status": "pending"
+      "status": "committed"
     },
     {
       "stage_number": 5,
       "title": "Update C Stub File Header Include",
       "description": "Update the C stub file generation to include the library-specific header instead of the generic `generated_forward_decls.h`.",
+      "mandatory_guidelines": [
+        "ocgtk/docs/code_guidelines/index.md",
+        "ocgtk/docs/code_guidelines/nesting-and-control-flow.md",
+        "ocgtk/docs/code_guidelines/error-handling.md",
+        "ocgtk/docs/code_guidelines/naming-and-intermediates.md",
+        "ocgtk/docs/code_guidelines/module-boundaries.md",
+        "ocgtk/docs/code_guidelines/pattern-matching.md",
+        "ocgtk/docs/code_guidelines/partial-functions.md",
+        "ocgtk/docs/code_guidelines/type-safety.md",
+        "ocgtk/docs/code_guidelines/code-reuse.md",
+        "ocgtk/docs/code_guidelines/test-patterns.md",
+        "ocgtk/docs/code_guidelines/abstractions.md"
+      ],
       "files_to_modify": [
         {
           "path": "ocgtk/src/tools/gir_gen/generate/c_stub_helpers.ml",
@@ -211,6 +237,19 @@
       "stage_number": 6,
       "title": "Update Dune File Generation - Include Paths",
       "description": "Modify dune file generation to add `-I../../<dep>/generated` flags for each dependency namespace. This allows the C compiler to find dependency headers during compilation.",
+      "mandatory_guidelines": [
+        "ocgtk/docs/code_guidelines/index.md",
+        "ocgtk/docs/code_guidelines/nesting-and-control-flow.md",
+        "ocgtk/docs/code_guidelines/error-handling.md",
+        "ocgtk/docs/code_guidelines/naming-and-intermediates.md",
+        "ocgtk/docs/code_guidelines/module-boundaries.md",
+        "ocgtk/docs/code_guidelines/pattern-matching.md",
+        "ocgtk/docs/code_guidelines/partial-functions.md",
+        "ocgtk/docs/code_guidelines/type-safety.md",
+        "ocgtk/docs/code_guidelines/code-reuse.md",
+        "ocgtk/docs/code_guidelines/test-patterns.md",
+        "ocgtk/docs/code_guidelines/abstractions.md"
+      ],
       "files_to_modify": [
         {
           "path": "ocgtk/src/tools/gir_gen/generate/dune_file.ml",
@@ -253,6 +292,19 @@
       "stage_number": 7,
       "title": "Update Dune File Generation - Library Dependencies",
       "description": "Modify dune file generation to add `ocgtk.<dep>.generated` entries in the `(libraries ...)` clause for OCaml-level dependencies.",
+      "mandatory_guidelines": [
+        "ocgtk/docs/code_guidelines/index.md",
+        "ocgtk/docs/code_guidelines/nesting-and-control-flow.md",
+        "ocgtk/docs/code_guidelines/error-handling.md",
+        "ocgtk/docs/code_guidelines/naming-and-intermediates.md",
+        "ocgtk/docs/code_guidelines/module-boundaries.md",
+        "ocgtk/docs/code_guidelines/pattern-matching.md",
+        "ocgtk/docs/code_guidelines/partial-functions.md",
+        "ocgtk/docs/code_guidelines/type-safety.md",
+        "ocgtk/docs/code_guidelines/code-reuse.md",
+        "ocgtk/docs/code_guidelines/test-patterns.md",
+        "ocgtk/docs/code_guidelines/abstractions.md"
+      ],
       "files_to_modify": [
         {
           "path": "ocgtk/src/tools/gir_gen/generate/dune_file.ml",
@@ -287,6 +339,19 @@
       "stage_number": 8,
       "title": "Integration Testing - Multi-Library Header Compilation",
       "description": "Create integration tests that verify the complete cross-namespace header system works correctly when multiple libraries are generated.",
+      "mandatory_guidelines": [
+        "ocgtk/docs/code_guidelines/index.md",
+        "ocgtk/docs/code_guidelines/nesting-and-control-flow.md",
+        "ocgtk/docs/code_guidelines/error-handling.md",
+        "ocgtk/docs/code_guidelines/naming-and-intermediates.md",
+        "ocgtk/docs/code_guidelines/module-boundaries.md",
+        "ocgtk/docs/code_guidelines/pattern-matching.md",
+        "ocgtk/docs/code_guidelines/partial-functions.md",
+        "ocgtk/docs/code_guidelines/type-safety.md",
+        "ocgtk/docs/code_guidelines/code-reuse.md",
+        "ocgtk/docs/code_guidelines/test-patterns.md",
+        "ocgtk/docs/code_guidelines/abstractions.md"
+      ],
       "files_to_modify": [
         {
           "path": "ocgtk/src/tools/test_gir_gen/cross_namespace/integration_tests.ml",
@@ -320,6 +385,19 @@
       "stage_number": 9,
       "title": "Cleanup and Documentation",
       "description": "Clean up any remaining references to old naming, update documentation, and add deprecation notices where appropriate.",
+      "mandatory_guidelines": [
+        "ocgtk/docs/code_guidelines/index.md",
+        "ocgtk/docs/code_guidelines/nesting-and-control-flow.md",
+        "ocgtk/docs/code_guidelines/error-handling.md",
+        "ocgtk/docs/code_guidelines/naming-and-intermediates.md",
+        "ocgtk/docs/code_guidelines/module-boundaries.md",
+        "ocgtk/docs/code_guidelines/pattern-matching.md",
+        "ocgtk/docs/code_guidelines/partial-functions.md",
+        "ocgtk/docs/code_guidelines/type-safety.md",
+        "ocgtk/docs/code_guidelines/code-reuse.md",
+        "ocgtk/docs/code_guidelines/test-patterns.md",
+        "ocgtk/docs/code_guidelines/abstractions.md"
+      ],
       "files_to_modify": [
         {
           "path": "ocgtk/src/tools/gir_gen/generate/c_stub_enum.ml",
@@ -380,6 +458,19 @@
     "How should we handle version mismatches between generated headers from different library versions?",
     "Should dependency namespaces be sorted alphabetically in includes or follow dependency order?",
     "Do we need to generate empty `<ns>_decls.h` files for libraries with no types (edge case)?"
+  ],
+  "mandatory_coding_guidelines": [
+    "ocgtk/docs/code_guidelines/index.md",
+    "ocgtk/docs/code_guidelines/nesting-and-control-flow.md",
+    "ocgtk/docs/code_guidelines/error-handling.md",
+    "ocgtk/docs/code_guidelines/naming-and-intermediates.md",
+    "ocgtk/docs/code_guidelines/module-boundaries.md",
+    "ocgtk/docs/code_guidelines/pattern-matching.md",
+    "ocgtk/docs/code_guidelines/partial-functions.md",
+    "ocgtk/docs/code_guidelines/type-safety.md",
+    "ocgtk/docs/code_guidelines/code-reuse.md",
+    "ocgtk/docs/code_guidelines/test-patterns.md",
+    "ocgtk/docs/code_guidelines/abstractions.md"
   ],
   "coding_guidelines_compliance": {
     "nesting_max_2_levels": "All new functions must follow max 2-level nesting rule",
