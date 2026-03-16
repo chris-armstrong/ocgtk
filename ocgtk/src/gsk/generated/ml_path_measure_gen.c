@@ -1,0 +1,101 @@
+/* GENERATED CODE - DO NOT EDIT */
+/* C bindings for PathMeasure */
+
+#include <gsk/gsk.h>
+#include <caml/mlvalues.h>
+#include <caml/memory.h>
+#include <caml/alloc.h>
+#include <caml/callback.h>
+#include <caml/fail.h>
+#include <caml/hash.h>
+#include <caml/custom.h>
+#include "wrappers.h"
+
+#include <gsk/gsk.h>
+/* Include common type conversions and forward declarations */
+#include "generated_forward_decls.h"
+
+/* Conversion functions for GskPathMeasure (opaque record with hidden fields) */
+GskPathMeasure *GskPathMeasure_val(value v) {
+  return *(GskPathMeasure **)Data_custom_val(v);
+}
+
+value Val_GskPathMeasure(const GskPathMeasure *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_GskPathMeasure_option(const GskPathMeasure *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_GskPathMeasure(ptr));
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_measure_new(value arg1)
+{
+CAMLparam1(arg1);
+
+GskPathMeasure *obj = gsk_path_measure_new(GskPath_val(arg1));
+
+CAMLreturn(Val_GskPathMeasure(obj));
+}
+CAMLexport CAMLprim value ml_gsk_path_measure_new_with_tolerance(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+
+GskPathMeasure *obj = gsk_path_measure_new_with_tolerance(GskPath_val(arg1), Double_val(arg2));
+
+CAMLreturn(Val_GskPathMeasure(obj));
+}
+CAMLexport CAMLprim value ml_gsk_path_measure_unref(value self)
+{
+CAMLparam1(self);
+
+gsk_path_measure_unref(GskPathMeasure_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gsk_path_measure_ref(value self)
+{
+CAMLparam1(self);
+
+GskPathMeasure* result = gsk_path_measure_ref(GskPathMeasure_val(self));
+CAMLreturn(Val_GskPathMeasure(result));
+}
+
+CAMLexport CAMLprim value ml_gsk_path_measure_get_tolerance(value self)
+{
+CAMLparam1(self);
+
+float result = gsk_path_measure_get_tolerance(GskPathMeasure_val(self));
+CAMLreturn(caml_copy_double(result));
+}
+
+CAMLexport CAMLprim value ml_gsk_path_measure_get_point(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GskPathPoint out2;
+
+gboolean result = gsk_path_measure_get_point(GskPathMeasure_val(self), Double_val(arg1), &out2);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_GskPathPoint(&out2));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gsk_path_measure_get_path(value self)
+{
+CAMLparam1(self);
+
+GskPath* result = gsk_path_measure_get_path(GskPathMeasure_val(self));
+CAMLreturn(Val_GskPath(result));
+}
+
+CAMLexport CAMLprim value ml_gsk_path_measure_get_length(value self)
+{
+CAMLparam1(self);
+
+float result = gsk_path_measure_get_length(GskPathMeasure_val(self));
+CAMLreturn(caml_copy_double(result));
+}

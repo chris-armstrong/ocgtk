@@ -42,11 +42,9 @@ let generate_forward_decls ~records =
       ~f:(fun (record : gir_record) ->
         if not (Hashtbl.mem seen record.c_type) then begin
           Hashtbl.add seen record.c_type ();
-          (* Find the copy method to get its C identifier *)
+          (* Find the copy method - use is_copy_method for consistent detection *)
           let copy_func =
-            List.find_opt record.methods ~f:(fun (meth : gir_method) ->
-                let lower_name = String.lowercase_ascii meth.method_name in
-                String.equal lower_name "copy")
+            List.find_opt record.methods ~f:C_stub_helpers.is_copy_method
           in
           match copy_func with
           | Some _ ->
@@ -120,21 +118,22 @@ let generate_value_record_conversions ~buf (record : gir_record) =
   match copy_method with
   | Some copy_meth ->
       (* Generate the copy_TypeName function that wraps the GTK copy function *)
-      bprintf buf "value copy_%s(const %s *ptr) {\n" record.c_type record.c_type;
+      bprintf buf "value copy_%s(const %s *ptr)\n" record.c_type record.c_type;
+      bprintf buf "{\n";
       bprintf buf "  if (ptr == NULL) return Val_none;\n";
       bprintf buf "  %s *copy = %s((%s*)ptr);\n" record.c_type
         copy_meth.c_identifier record.c_type;
-      bprintf buf "  return ml_gir_record_val_ptr(g_new0(%s, 1));\n"
-        record.c_type;
+      bprintf buf "  return ml_gir_record_val_ptr(copy);\n";
       bprintf buf "}\n\n"
   | None ->
       (* Fallback: generate a simple memcpy-based copy *)
-      bprintf buf "value copy_%s(const %s *ptr) {\n" record.c_type record.c_type;
+      bprintf buf "value copy_%s(const %s *ptr)\n" record.c_type record.c_type;
+      bprintf buf "{\n";
       bprintf buf "  if (ptr == NULL) return Val_none;\n";
       bprintf buf "  %s *copy = g_malloc(sizeof(%s));\n" record.c_type
         record.c_type;
       bprintf buf "  memcpy(copy, ptr, sizeof(%s));\n" record.c_type;
-      bprintf buf "  return ml_gir_record_val_ptr(copy));\n";
+      bprintf buf "  return ml_gir_record_val_ptr(copy);\n";
       bprintf buf "}\n\n"
 
 let generate_record_converters ~buf (record : gir_record) =

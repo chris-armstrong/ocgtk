@@ -112,7 +112,7 @@ let generate_property_signatures ~ctx ~class_name ~methods  ~seen ~current_layer
       sprintf "    method %s : %s\n" method_name ocaml_type
     in
   let generate_setter _prop prop_snake =
-    let ocaml_type = map_param_sig ~ctx ~current_layer2_module ~same_cluster_classes {param_name = prop.prop_name; param_type = prop.prop_type; direction = Out; varargs = false; nullable = prop.prop_type.nullable} in
+    let ocaml_type = map_param_sig ~ctx ~current_layer2_module ~same_cluster_classes {param_name = prop.prop_name; param_type = prop.prop_type; direction = Out; varargs = false; nullable = prop.prop_type.nullable; caller_allocates = false} in
     let method_name = "set_"^prop_snake |> Utils.sanitize_identifier in
     sprintf "    method %s : %s -> unit\n" method_name ocaml_type
   in

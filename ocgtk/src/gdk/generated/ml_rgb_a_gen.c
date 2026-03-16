@@ -16,10 +16,11 @@
 #include "generated_forward_decls.h"
 
 /* Copy function for GdkRGBA (value-like record with copy method) */
-value copy_GdkRGBA(const GdkRGBA *ptr) {
+value copy_GdkRGBA(const GdkRGBA *ptr)
+{
   if (ptr == NULL) return Val_none;
   GdkRGBA *copy = gdk_rgba_copy((GdkRGBA*)ptr);
-  return ml_gir_record_val_ptr(g_new0(GdkRGBA, 1));
+  return ml_gir_record_val_ptr(copy);
 }
 
 

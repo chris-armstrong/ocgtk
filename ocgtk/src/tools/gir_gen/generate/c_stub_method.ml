@@ -40,55 +40,126 @@ let var_name_for_direction direction idx =
   | InOut -> sprintf "inout%d" (idx + 1)
   | In -> sprintf "arg%d" (idx + 1)
 
+(* [declare_fixed_array ~base_type ~var_name ~fixed_size ~acc] generates stack allocation
+    for a fixed-size caller-allocated array. Returns updated accumulator with the declaration
+    and the array name as argument (array decays to pointer). *)
+let declare_fixed_array ~base_type ~var_name ~fixed_size ~acc =
+  bprintf acc.C_stub_helpers.decls "%s %s[%d];\n" base_type var_name fixed_size;
+  { acc with C_stub_helpers.args = acc.C_stub_helpers.args @ [ var_name ] }
+
+(* [declare_array_out_param ~base_type ~var_name ~acc] generates heap allocation for a regular
+    array out parameter. Returns updated accumulator with declaration and address-of argument. *)
+let declare_array_out_param ~base_type ~var_name ~acc =
+  bprintf acc.C_stub_helpers.decls "%s %s = NULL;\n" base_type var_name;
+  { acc with C_stub_helpers.args = acc.C_stub_helpers.args @ [ sprintf "&%s" var_name ] }
+
 (* [handle_out_param ~param_index ~base_type ~acc p] processes an out-direction parameter.
-   Generates a C variable declaration (as pointer for arrays, as value otherwise) and
-   adds the variable's address to the C function arguments list.
-   
-   For array out parameters: C functions use T** for out parameters (e.g., double** axes in signature).
-   We declare T* locally and pass &variable. This way variable[i] accesses T elements directly.
-   Since base_type already had one * stripped, we don't add another * for arrays.
-   
-   Returns the updated accumulator with new declarations and arguments. *)
+    Generates a C variable declaration (as pointer for arrays, as value otherwise) and
+    adds the variable's address to the C function arguments list.
+    
+    For array out parameters: C functions use T** for out parameters (e.g., double** axes in signature).
+    We declare T* locally and pass &variable. This way variable[i] accesses T elements directly.
+    Since base_type already had one * stripped, we don't add another * for arrays.
+    
+    For fixed-size caller-allocated arrays: Generate stack allocation `Type var[N];` instead of
+    heap allocation, and pass `var` directly (not `&var`) since the array decays to a pointer.
+    
+    Returns the updated accumulator with new declarations and arguments. *)
 let handle_out_param ~param_index ~base_type ~acc (p : gir_param) =
   let var_name = var_name_for_direction Out param_index in
-  let is_array = Option.is_some p.param_type.array in
   (* For array out params: base_type already stripped one *, so just use it (it's T*, not T** ).
      For non-array out params: declare as value type. *)
-  if is_array then
-    (* base_type is T* (had one * stripped from T** ), so declare as "T* var" *)
-    bprintf acc.C_stub_helpers.decls "%s %s = NULL;\n" base_type var_name
-  else bprintf acc.C_stub_helpers.decls "%s %s;\n" base_type var_name;
-  {
-    acc with
-    C_stub_helpers.args = acc.C_stub_helpers.args @ [ sprintf "&%s" var_name ];
-  }
+  match p.param_type.array with
+  | Some array_info when p.caller_allocates -> (
+      (* Caller-allocated array: check for fixed-size stack allocation *)
+      match array_info.fixed_size with
+      | Some fixed_size ->
+          declare_fixed_array ~base_type ~var_name ~fixed_size ~acc
+      | None ->
+          declare_array_out_param ~base_type ~var_name ~acc)
+  | Some _array_info ->
+      (* Regular array out param: declare as "T* var = NULL" and pass &var *)
+      declare_array_out_param ~base_type ~var_name ~acc
+  | None ->
+      (* Non-array out param: declare as value type *)
+      bprintf acc.C_stub_helpers.decls "%s %s;\n" base_type var_name;
+      { acc with C_stub_helpers.args = acc.C_stub_helpers.args @ [ sprintf "&%s" var_name ] }
 
 (* [handle_inout_param ~_ctx ~param_index ~base_type ~acc ~tm p] processes an inout-direction parameter.
-   Generates a C variable declaration initialized from the OCaml argument using type-specific
-   conversion. The variable is added as a pointer reference in the C function arguments.
-   Returns the updated accumulator with declarations, arguments, and updated OCaml index. *)
+    Generates a C variable declaration initialized from the OCaml argument using type-specific
+    conversion. The variable is added as a pointer reference in the C function arguments.
+    
+    For record types (non-opaque structs passed as pointers like PangoRectangle ptr):
+    - Creates a local stack value: PangoRectangle inout1_val = (dereference PangoRectangle_val(arg))
+    - Creates a pointer to it: PangoRectangle ptr inout1 = &inout1_val
+    - Passes the pointer (not address-of) to the C function
+    
+    For primitive types:
+    - Declares the value directly: int inout1 = Int_val(arg)
+    - Passes address-of to the C function: &inout1
+    
+    Returns the updated accumulator with declarations, arguments, and updated OCaml index. *)
 let handle_inout_param ~ctx ~param_index ~base_type ~acc ~tm (p : gir_param) =
-  let (_ : generation_context) = ctx in
   let ocaml_idx = acc.C_stub_helpers.ocaml_idx + 1 in
   let arg_name = sprintf "arg%d" ocaml_idx in
   let var_name = sprintf "inout%d" (param_index + 1) in
-  let init_expr =
-    match tm with
-    | Some mapping ->
-        let param_type =
-          { p.param_type with nullable = p.nullable || p.param_type.nullable }
-        in
-        C_stub_helpers.nullable_ml_to_c_expr ~var:arg_name ~gir_type:param_type
-          ~mapping
-    | None -> arg_name
+  
+  (* Check if this is a record type that needs special pointer handling *)
+  let prop_info = C_stub_helpers.analyze_property_type ~ctx p.param_type in
+  let is_record_with_pointer =
+    match prop_info.record_info with
+    | Some (record, _, _) when not record.opaque ->
+        (* Non-opaque record types need value + pointer pattern *)
+        true
+    | _ -> false
   in
-  bprintf acc.decls "%s %s = %s;\n" base_type var_name init_expr;
-  {
-    C_stub_helpers.ocaml_idx;
-    decls = acc.decls;
-    args = acc.args @ [ sprintf "&%s" var_name ];
-    cleanups = acc.cleanups;
-  }
+  
+  if is_record_with_pointer then begin
+    (* For record types: generate value + pointer pattern
+       PangoRectangle inout1_val = *PangoRectangle_val(arg1);
+       PangoRectangle *inout1 = &inout1_val;
+       Pass inout1 (not &inout1) to the C function *)
+    let init_expr =
+      match tm with
+      | Some mapping ->
+          let param_type =
+            { p.param_type with nullable = p.nullable || p.param_type.nullable }
+          in
+          C_stub_helpers.nullable_ml_to_c_expr ~var:arg_name ~gir_type:param_type
+            ~mapping
+      | None -> arg_name
+    in
+    let val_name = var_name ^ "_val" in
+    (* Declare value: dereference the pointer returned by the conversion macro *)
+    bprintf acc.decls "%s %s = *%s;\n" base_type val_name init_expr;
+    (* Declare pointer to the value *)
+    bprintf acc.decls "%s *%s = &%s;\n" base_type var_name val_name;
+    {
+      C_stub_helpers.ocaml_idx;
+      decls = acc.decls;
+      args = acc.args @ [ var_name ];  (* Pass the pointer, not &pointer *)
+      cleanups = acc.cleanups;
+    }
+  end else begin
+    (* For primitive types: existing behavior *)
+    let init_expr =
+      match tm with
+      | Some mapping ->
+          let param_type =
+            { p.param_type with nullable = p.nullable || p.param_type.nullable }
+          in
+          C_stub_helpers.nullable_ml_to_c_expr ~var:arg_name ~gir_type:param_type
+            ~mapping
+      | None -> arg_name
+    in
+    bprintf acc.decls "%s %s = %s;\n" base_type var_name init_expr;
+    {
+      C_stub_helpers.ocaml_idx;
+      decls = acc.decls;
+      args = acc.args @ [ sprintf "&%s" var_name ];
+      cleanups = acc.cleanups;
+    }
+  end
 
 (* [handle_in_array_param ~ctx ~acc ~arg_name ~base_type ~tm p array_info] processes
     an in-direction array parameter. Generates conversion code from OCaml array to C array,
@@ -370,9 +441,24 @@ let build_length_param_map ~(meth : gir_method) =
    Takes the function name, C parameter declarations, parameter names, and body code.
    Returns the combined native + bytecode function code as a string. *)
 let generate_multi_param_function ~ml_name ~params ~param_names body_code =
-  let param_count = List.length param_names in
   let first_five = List.filteri ~f:(fun i _ -> i < 5) param_names in
   let rest = List.filteri ~f:(fun i _ -> i >= 5) param_names in
+
+  (* Split remaining params into chunks of at most 5 for CAMLxparam *)
+  let rec chunk_params params =
+    match params with
+    | [] -> []
+    | _ ->
+        let chunk = List.filteri ~f:(fun i _ -> i < 5) params in
+        let remaining = List.filteri ~f:(fun i _ -> i >= 5) params in
+        chunk :: chunk_params remaining
+  in
+  let xparam_chunks = chunk_params rest in
+  let xparam_lines = String.concat ~sep:"\n"
+    (List.map ~f:(fun chunk ->
+      sprintf "CAMLxparam%d(%s);" (List.length chunk) (String.concat ~sep:", " chunk))
+    xparam_chunks)
+  in
 
   let native_func =
     sprintf
@@ -380,13 +466,12 @@ let generate_multi_param_function ~ml_name ~params ~param_names body_code =
        CAMLexport CAMLprim value %s_native(%s)\n\
        {\n\
        CAMLparam5(%s);\n\
-       CAMLxparam%d(%s);\n\
+       %s\n\
        %s}\n"
       ml_name
       (String.concat ~sep:", " params)
       (String.concat ~sep:", " first_five)
-      (param_count - 5)
-      (String.concat ~sep:", " rest)
+      xparam_lines
       body_code
   in
 

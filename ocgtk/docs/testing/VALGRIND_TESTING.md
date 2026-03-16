@@ -11,7 +11,7 @@ cat > /tmp/valgrind_test/filter.txt << EOF
 AboutDialog
 EOF
 
-dune exec src/tools/gir_gen/main.exe -- \
+dune exec src/tools/gir_gen/gir_gen.exe -- generate \
     -f /tmp/valgrind_test/filter.txt \
     /usr/share/gir-1.0/Gtk-4.0.gir \
     /tmp/valgrind_test
@@ -290,8 +290,8 @@ jobs:
 
       - name: Generate test bindings
         run: |
-          dune exec src/tools/gir_gen/main.exe -- \
-            -c AboutDialog \
+          dune exec src/tools/gir_gen/gir_gen.exe -- generate \
+            -f filter.txt \
             /usr/share/gir-1.0/Gtk-4.0.gir \
             _test_bindings
 

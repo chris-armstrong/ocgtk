@@ -1,0 +1,69 @@
+/* GENERATED CODE - DO NOT EDIT */
+/* C bindings for PixbufLoader */
+
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <caml/mlvalues.h>
+#include <caml/memory.h>
+#include <caml/alloc.h>
+#include <caml/callback.h>
+#include <caml/fail.h>
+#include <caml/hash.h>
+#include <caml/custom.h>
+#include "wrappers.h"
+
+#include <gdk-pixbuf/gdk-pixbuf.h>
+/* Include common type conversions and forward declarations */
+#include "generated_forward_decls.h"
+
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_loader_new(value unit)
+{
+CAMLparam1(unit);
+
+GdkPixbufLoader *obj = gdk_pixbuf_loader_new();
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GdkPixbufLoader(obj));
+}
+CAMLexport CAMLprim value ml_gdk_pixbuf_loader_set_size(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gdk_pixbuf_loader_set_size(GdkPixbufLoader_val(self), Int_val(arg1), Int_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_loader_get_pixbuf(value self)
+{
+CAMLparam1(self);
+
+GdkPixbuf* result = gdk_pixbuf_loader_get_pixbuf(GdkPixbufLoader_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GdkPixbuf));
+}
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_loader_get_format(value self)
+{
+CAMLparam1(self);
+
+GdkPixbufFormat* result = gdk_pixbuf_loader_get_format(GdkPixbufLoader_val(self));
+CAMLreturn(Val_option(result, Val_GdkPixbufFormat));
+}
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_loader_get_animation(value self)
+{
+CAMLparam1(self);
+
+GdkPixbufAnimation* result = gdk_pixbuf_loader_get_animation(GdkPixbufLoader_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GdkPixbufAnimation));
+}
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_loader_close(value self)
+{
+CAMLparam1(self);
+GError *error = NULL;
+
+gboolean result = gdk_pixbuf_loader_close(GdkPixbufLoader_val(self), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}

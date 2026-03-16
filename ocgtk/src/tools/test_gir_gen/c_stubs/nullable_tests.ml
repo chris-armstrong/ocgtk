@@ -52,10 +52,12 @@ let test_nullable_string_param () =
             nullable = true;
             (* Nullable string parameter *)
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -103,10 +105,12 @@ let test_nullable_object_param () =
             nullable = true;
             (* Nullable object parameter *)
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -157,10 +161,12 @@ let test_non_nullable_string () =
             nullable = false;
             (* Non-nullable *)
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -195,6 +201,7 @@ let test_nullable_return_value () =
       parameters = [];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -247,6 +254,7 @@ let test_multiple_nullable_params () =
             direction = In;
             nullable = true;
             varargs = false;
+            caller_allocates = false;
           };
           {
             param_name = "value";
@@ -261,10 +269,12 @@ let test_multiple_nullable_params () =
             direction = In;
             nullable = true;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -313,10 +323,12 @@ let test_nullable_param_count () =
             direction = In;
             nullable = true;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }

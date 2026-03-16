@@ -111,20 +111,6 @@ gboolean result = g_file_set_attributes_from_info(GFile_val(self), GFileInfo_val
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-CAMLexport CAMLprim value ml_g_file_set_attributes_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-GError *error = NULL;
-GFileInfo* out2;
-
-gboolean result = g_file_set_attributes_finish(GFile_val(self), GAsyncResult_val(arg1), &out2, &error);
-CAMLlocal1(ret);
-    ret = caml_alloc(2, 0);
-    Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GFileInfo(out2));
-    if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
-}
-
 CAMLexport CAMLprim value ml_g_file_set_attribute_string(value self, value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
@@ -176,20 +162,6 @@ GError *error = NULL;
 
 GFileOutputStream* result = g_file_replace_finish(GFile_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GFileOutputStream(result))); else CAMLreturn(Res_Error(Val_GError(error)));
-}
-
-CAMLexport CAMLprim value ml_g_file_replace_contents_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-GError *error = NULL;
-char* out2;
-
-gboolean result = g_file_replace_contents_finish(GFile_val(self), GAsyncResult_val(arg1), &out2, &error);
-CAMLlocal1(ret);
-    ret = caml_alloc(2, 0);
-    Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, caml_copy_string(out2));
-    if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_g_file_replace(value self, value arg1, value arg2, value arg3, value arg4)

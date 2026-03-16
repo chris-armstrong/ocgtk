@@ -1,10 +1,6 @@
 (* High-level class for MediaStream *)
 class media_stream (obj : Media_stream.t) = object (self)
 
-  method ended : unit -> unit =
-    fun () ->
-      (Media_stream.ended obj)
-
   method get_ended : unit -> bool =
     fun () ->
       (Media_stream.get_ended obj)
@@ -84,10 +80,6 @@ class media_stream (obj : Media_stream.t) = object (self)
   method stream_unprepared : unit -> unit =
     fun () ->
       (Media_stream.stream_unprepared obj)
-
-  method unprepared : unit -> unit =
-    fun () ->
-      (Media_stream.unprepared obj)
 
   method prepared = Media_stream.get_prepared obj
   method set_prepared v =  Media_stream.set_prepared obj v

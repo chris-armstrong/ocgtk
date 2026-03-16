@@ -57,38 +57,6 @@ gtk_im_context_reset(GtkIMContext_val(self));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_im_context_get_surrounding_with_selection(value self)
-{
-CAMLparam1(self);
-char* out1;
-int out2;
-int out3;
-
-gboolean result = gtk_im_context_get_surrounding_with_selection(GtkIMContext_val(self), &out1, &out2, &out3);
-CAMLlocal1(ret);
-    ret = caml_alloc(4, 0);
-    Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, caml_copy_string(out1));
-    Store_field(ret, 2, Val_int(out2));
-    Store_field(ret, 3, Val_int(out3));
-    CAMLreturn(ret);
-}
-
-CAMLexport CAMLprim value ml_gtk_im_context_get_surrounding(value self)
-{
-CAMLparam1(self);
-char* out1;
-int out2;
-
-gboolean result = gtk_im_context_get_surrounding(GtkIMContext_val(self), &out1, &out2);
-CAMLlocal1(ret);
-    ret = caml_alloc(3, 0);
-    Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, caml_copy_string(out1));
-    Store_field(ret, 2, Val_int(out2));
-    CAMLreturn(ret);
-}
-
 CAMLexport CAMLprim value ml_gtk_im_context_focus_out(value self)
 {
 CAMLparam1(self);

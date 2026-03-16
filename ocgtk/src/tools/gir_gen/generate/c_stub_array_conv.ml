@@ -107,34 +107,40 @@ module Array_conv = struct
       Returns the appropriate length code based on array properties. *)
   let length_code_for_array ~var ~length_var ~array_info ~is_pointer_array
       ~element_c_type =
-    if array_info.zero_terminated then
-      if is_pointer_array then
-        length_code_for_zero_terminated_pointer ~length_var ~var
-      else
-        length_code_for_zero_terminated_nonpointer ~length_var ~var
-          ~element_c_type
-    else if is_string_array array_info then
-      length_code_for_string_array ~length_var ~var
-    else if is_pointer_array then
-      (* For pointer arrays without explicit length info, assume zero-terminated
-         This handles cases where the GIR file is missing zero-terminated="1" *)
-      length_code_for_zero_terminated_pointer ~length_var ~var
-    else
-      (* Check for common C patterns that suggest zero-terminated arrays *)
-      let array_c_type =
-        Option.value ~default:"" array_info.element_type.c_type ^ "*"
-      in
-      if String.contains array_c_type '*' then
-        (* Array C type suggests it's a pointer array - assume zero-terminated *)
-        length_code_for_zero_terminated_pointer ~length_var ~var
-      else
-        (* No length information and not a string array - cannot safely convert *)
-        failwith
-          (sprintf
-             "Array has no length information for %s (element type: %s). \
-              Either zero-terminated, length, or fixed-size attribute \
-              required."
-             var array_info.element_type.name)
+    (* First, check for fixed-size arrays - the length is known at compile time *)
+    match array_info.fixed_size with
+    | Some size ->
+        (* Fixed-size array: use the constant size directly *)
+        sprintf "int %s = %d;" length_var size
+    | None ->
+        if array_info.zero_terminated then
+          if is_pointer_array then
+            length_code_for_zero_terminated_pointer ~length_var ~var
+          else
+            length_code_for_zero_terminated_nonpointer ~length_var ~var
+              ~element_c_type
+        else if is_string_array array_info then
+          length_code_for_string_array ~length_var ~var
+        else if is_pointer_array then
+          (* For pointer arrays without explicit length info, assume zero-terminated
+             This handles cases where the GIR file is missing zero-terminated="1" *)
+          length_code_for_zero_terminated_pointer ~length_var ~var
+        else
+          (* Check for common C patterns that suggest zero-terminated arrays *)
+          let elem_c_type =
+            Option.value ~default:"" array_info.element_type.c_type
+          in
+          if String.contains elem_c_type '*' then
+            (* Element type is a pointer - assume zero-terminated pointer array *)
+            length_code_for_zero_terminated_pointer ~length_var ~var
+          else
+            (* No length information and not a string array - cannot safely convert *)
+            failwith
+              (sprintf
+                 "Array has no length information for %s (element type: %s). \
+                  Either zero-terminated, length, or fixed-size attribute \
+                  required."
+                 var array_info.element_type.name)
 
   (** Generate cleanup code for TransferFull ownership. Returns appropriate
       cleanup based on array properties. *)
@@ -299,15 +305,28 @@ module Array_conv = struct
         (* Generate conversion loop *)
         (* For struct arrays (non-pointer elements stored by value in C array),
            we need to take the address when passing to conversion functions that expect pointers.
-           Primitive converters (caml_copy_double, Val_int, etc.) work with values directly. *)
+           Primitive converters (caml_copy_double, Val_int, etc.) work with values directly.
+           Enum and bitfield converters also take values directly (not pointers). *)
         let is_primitive_converter =
           String.equal element_tm.c_to_ml "Val_int"
           || String.equal element_tm.c_to_ml "Val_bool"
           || String.equal element_tm.c_to_ml "caml_copy_double"
           || String.equal element_tm.c_to_ml "caml_copy_string"
         in
+        (* Check if element type is an enum or bitfield - these take values, not pointers *)
+        let element_type_name = array_info.element_type.name in
+        let is_enum_type =
+          List.exists ctx.enums ~f:(fun (e : Types.gir_enum) ->
+              String.equal e.enum_name element_type_name)
+        in
+        let is_bitfield_type =
+          List.exists ctx.bitfields ~f:(fun (b : Types.gir_bitfield) ->
+              String.equal b.bitfield_name element_type_name
+              || String.equal b.bitfield_c_type element_type_name)
+        in
+        let is_value_type = is_primitive_converter || is_enum_type || is_bitfield_type in
         let addr_prefix =
-          if is_pointer_array || is_primitive_converter then "" else "&"
+          if is_pointer_array || is_value_type then "" else "&"
         in
         
         let conversion_code =

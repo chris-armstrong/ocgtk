@@ -16,22 +16,6 @@
 #include "generated_forward_decls.h"
 
 
-CAMLexport CAMLprim value ml_gdk_clipboard_set_texture(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gdk_clipboard_set_texture(GdkClipboard_val(self), GdkTexture_val(arg1));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gdk_clipboard_set_text(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-gdk_clipboard_set_text(GdkClipboard_val(self), String_val(arg1));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gdk_clipboard_set_content(value self, value arg1)
 {
 CAMLparam2(self, arg1);

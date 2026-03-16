@@ -116,13 +116,7 @@ let entity_generator_by_entity_type =
 
 (* Generate C stub file for a single entity (class or interface or record) *)
 let generate_c_stub ~ctx ~output_dir entity =
-  if Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name
-  then begin
-    printf "  - %s (SKIPPED - incomplete support)\n"
-      entity.Gir_gen_lib.Types.name;
-    None
-  end
-  else begin
+  begin
     printf "  - %s (%d methods, %d properties)\n" entity.Gir_gen_lib.Types.name
       (List.length entity.Gir_gen_lib.Types.methods)
       (List.length entity.Gir_gen_lib.Types.properties);
@@ -203,8 +197,7 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain entity =
            Some entity.Gir_gen_lib.Types.constructors
          else None)
       ~methods:entity.Gir_gen_lib.Types.methods
-      ~properties:entity.Gir_gen_lib.Types.properties
-      ()
+      ~properties:entity.Gir_gen_lib.Types.properties ()
   in
 
   write_file ~path:ml_file ~content
@@ -212,23 +205,39 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain entity =
 (* Generate both .mli and .ml files for an entity *)
 let generate_ml_interfaces ~ctx ~output_dir ~generated_modules ~parent_chain
     entity =
-  if
-    not
-      (Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name)
-  then begin
-    generate_ml_file ~ctx ~output_dir ~kind:Interface ~parent_chain entity;
-    generate_ml_file ~ctx ~output_dir ~kind:Implementation ~parent_chain entity;
-    generated_modules :=
-      Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name
-      :: !generated_modules
-  end
+  match entity.kind with
+  | Gir_gen_lib.Types.Class clazz ->
+      if Gir_gen_lib.Generate.Filtering.should_generate_class clazz then begin
+        generate_ml_file ~ctx ~output_dir ~kind:Interface ~parent_chain entity;
+        generate_ml_file ~ctx ~output_dir ~kind:Implementation ~parent_chain
+          entity;
+        generated_modules :=
+          Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name
+          :: !generated_modules
+      end
+  | Gir_gen_lib.Types.Interface intf ->
+      if Gir_gen_lib.Generate.Filtering.should_generate_interface intf then begin
+        generate_ml_file ~ctx ~output_dir ~kind:Interface ~parent_chain entity;
+        generate_ml_file ~ctx ~output_dir ~kind:Implementation ~parent_chain
+          entity;
+        generated_modules :=
+          Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name
+          :: !generated_modules
+      end
+  | Gir_gen_lib.Types.Record record ->
+      if Gir_gen_lib.Generate.Filtering.should_generate_record record then begin
+        generate_ml_file ~ctx ~output_dir ~kind:Interface ~parent_chain entity;
+        generate_ml_file ~ctx ~output_dir ~kind:Implementation ~parent_chain
+          entity;
+        generated_modules :=
+          Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name
+          :: !generated_modules
+      end
 
 (* Generate high-level wrapper class (g<Widget>.ml) for a class entity *)
 let generate_high_level_class ~ctx ~output_dir ~generated_modules entity
     parent_chain =
-  if Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name
-  then ()
-  else begin
+  let generate_ () =
     let module_name =
       Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name
     in
@@ -280,14 +289,21 @@ let generate_high_level_class ~ctx ~output_dir ~generated_modules entity
            ~methods:entity.Gir_gen_lib.Types.methods
            ~properties:entity.Gir_gen_lib.Types.properties
            ~signals:entity.Gir_gen_lib.Types.signals)
-  end
+  in
+  match entity.kind with
+  | Gir_gen_lib.Types.Class clazz ->
+      if Gir_gen_lib.Generate.Filtering.should_generate_class clazz then
+        generate_ ()
+  | Gir_gen_lib.Types.Interface intf ->
+      if Gir_gen_lib.Generate.Filtering.should_generate_interface intf then
+        generate_ ()
+  | Gir_gen_lib.Types.Record record ->
+      if Gir_gen_lib.Generate.Filtering.should_generate_record record then
+        generate_ ()
 
 (* Generate signal class file for a single entity *)
 let generate_signal_class ~ctx ~output_dir ~parent_chain entity =
-  if Gir_gen_lib.Exclude_list.should_skip_class entity.Gir_gen_lib.Types.name
-  then ()
-  else if List.length entity.Gir_gen_lib.Types.signals = 0 then ()
-  else begin
+  let generate_ () =
     let signal_code =
       Gir_gen_lib.Generate.Signal_gen.generate_signal_class ~ctx
         ~class_name:entity.Gir_gen_lib.Types.name
@@ -301,7 +317,19 @@ let generate_signal_class ~ctx ~output_dir ~parent_chain entity =
            (Gir_gen_lib.Utils.to_snake_case entity.Gir_gen_lib.Types.name))
     in
     write_file ~path:signal_file ~content:signal_code
-  end
+  in
+  if List.length entity.Gir_gen_lib.Types.signals = 0 then ()
+  else
+    match entity.kind with
+    | Gir_gen_lib.Types.Class clazz ->
+        if Gir_gen_lib.Generate.Filtering.should_generate_class clazz then
+          generate_ ()
+    | Gir_gen_lib.Types.Interface intf ->
+        if Gir_gen_lib.Generate.Filtering.should_generate_interface intf then
+          generate_ ()
+    | Gir_gen_lib.Types.Record record ->
+        if Gir_gen_lib.Generate.Filtering.should_generate_record record then
+          generate_ ()
 
 (* Generate signal classes for all entities *)
 let generate_all_signal_classes ~ctx ~output_dir ~parent_chain_for_class
@@ -457,9 +485,32 @@ let generate_enum_files ~output_dir ~generated_stubs ~generated_modules
       :: !generated_modules
   end
 
+let load_reference_files reference_files =
+  let converter =
+    Sexplib.Conv.(
+      pair_of_sexp string_of_sexp
+        (list_of_sexp Gir_gen_lib.Types.cross_reference_of_sexp))
+  in
+  List.fold_left reference_files ~init:StringMap.empty ~f:(fun acc file ->
+      (* NOTE: this loads everything at once into memory so it is slower than a progressive load, but we're embedding something valuable at the start so we don't have a homogenous list to play with *)
+      let namespace, cr_list = Sexplib.Sexp.load_sexp_conv_exn file converter in
+      let sm =
+        List.fold_left cr_list ~init:StringMap.empty ~f:(fun sm cr ->
+            StringMap.add cr.cr_name cr sm)
+      in
+      StringMap.add namespace sm acc)
+
 (* Main generation function *)
-let generate_bindings filter_file gir_file output_dir =
+let generate_bindings filter_file gir_file output_dir reference_files =
+  printf "Current directory: %s\n" (Sys.getcwd ());
   printf "Parsing %s ...\n" gir_file;
+
+  (* Log reference files if provided *)
+  if List.length reference_files > 0 then begin
+    printf "Using %d reference file(s) for cross-namespace validation:\n"
+      (List.length reference_files);
+    List.iter ~f:(fun path -> printf "  - %s\n" path) reference_files
+  end;
 
   (* ==== INITIALIZATION ==== *)
 
@@ -486,7 +537,7 @@ let generate_bindings filter_file gir_file output_dir =
   (* Parse GTK GIR file *)
   let ( repository,
         namespace,
-        controllers,
+        classes,
         interfaces,
         gtk_enums,
         gtk_bitfields,
@@ -494,7 +545,7 @@ let generate_bindings filter_file gir_file output_dir =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file gir_file filter_classes
   in
 
-  printf "Found %d classes\n" (List.length controllers);
+  printf "Found %d classes\n" (List.length classes);
   printf "Found %d interfaces\n" (List.length interfaces);
   printf "Found %d Gtk enumerations\n" (List.length gtk_enums);
   printf "Found %d Gtk bitfields\n" (List.length gtk_bitfields);
@@ -503,13 +554,13 @@ let generate_bindings filter_file gir_file output_dir =
   (* ==== PREPROCESSING STAGE ==== *)
 
   (* Build parent lookup table for inheritance chains *)
-  let parent_table = Hashtbl.create (List.length controllers + 10) in
+  let parent_table = Hashtbl.create (List.length classes + 10) in
   List.iter
     ~f:(fun (cls : Gir_gen_lib.Types.gir_class) ->
       Hashtbl.replace parent_table
         (Gir_gen_lib.Utils.normalize_class_name cls.class_name)
         (Option.map Gir_gen_lib.Utils.normalize_class_name cls.parent))
-    controllers;
+    classes;
 
   let parent_chain_for_class name =
     let rec aux current depth =
@@ -577,6 +628,16 @@ let generate_bindings filter_file gir_file output_dir =
   in
 
   (* Combine all enums and bitfields for type mapping lookups *)
+  let all_classes =
+    classes
+    |> List.filter ~f:(fun (cls : Gir_gen_lib.Types.gir_class) ->
+        Gir_gen_lib.Generate.Filtering.should_generate_class cls)
+  in
+  let all_interfaces =
+    interfaces
+    |> List.filter ~f:(fun (intf : Gir_gen_lib.Types.gir_interface) ->
+        Gir_gen_lib.Generate.Filtering.should_generate_interface intf)
+  in
   let all_enums =
     gtk_enums
     @ (external_enums_bitfields
@@ -588,17 +649,12 @@ let generate_bindings filter_file gir_file output_dir =
       |> List.concat_map ~f:(fun (_, _, bitfields) -> bitfields))
   in
 
-  let enums = all_enums in
-  let bitfields = all_bitfields in
-  (* Filter out GObject class structs (records with is_gtype_struct_for attribute) *)
-  (* Also filter out *Private records - internal structures not in public headers *)
-  let records =
-    List.filter gtk_records ~f:(fun record ->
-        record.Gir_gen_lib.Types.is_gtype_struct_for = None
-        && not
-             (Gir_gen_lib.Generate.Filtering.should_skip_private_record record))
+  let all_records =
+    let open Gir_gen_lib.Generate in
+    List.filter
+      ~f:(fun record -> Filtering.should_generate_record record)
+      gtk_records
   in
-
   (* Prepare external namespace enum/bitfield list with namespace prefixes *)
   let external_enums_with_ns =
     external_enums_bitfields
@@ -616,11 +672,11 @@ let generate_bindings filter_file gir_file output_dir =
     {
       namespace;
       repository;
-      classes = controllers;
+      classes;
       interfaces;
-      enums;
-      bitfields;
-      records;
+      enums = all_enums;
+      bitfields = all_bitfields;
+      records = all_records;
       external_enums = external_enums_with_ns;
       external_bitfields = external_bitfields_with_ns;
       hierarchy_map = Hashtbl.create 0;
@@ -629,14 +685,16 @@ let generate_bindings filter_file gir_file output_dir =
       (* Temporary empty map *)
       current_cycle_classes = [];
       (* No cycle context initially *)
+      cross_references = load_reference_files reference_files;
+      (* cross references initialised to empty *)
     }
   in
 
   (* Create unified entity list combining classes, interfaces, and records *)
   let entities : Gir_gen_lib.Types.entity list =
-    List.map ~f:Gir_gen_lib.Types.entity_of_class controllers
-    @ List.map ~f:Gir_gen_lib.Types.entity_of_interface interfaces
-    @ List.map ~f:Gir_gen_lib.Types.entity_of_record records
+    List.map ~f:Gir_gen_lib.Types.entity_of_class all_classes
+    @ List.map ~f:Gir_gen_lib.Types.entity_of_interface all_interfaces
+    @ List.map ~f:Gir_gen_lib.Types.entity_of_record all_records
   in
 
   (* Compute module groups using SCC algorithm to populate module_groups *)
@@ -870,11 +928,11 @@ let generate_bindings filter_file gir_file output_dir =
   (* ==== SUMMARY ==== *)
   let boxed_record_count =
     List.length
-      (List.filter records ~f:Gir_gen_lib.Type_mappings.is_boxed_record)
+      (List.filter all_records ~f:Gir_gen_lib.Type_mappings.is_boxed_record)
   in
   let record_binding_count =
     List.length
-      (List.filter records ~f:(fun r ->
+      (List.filter all_records ~f:(fun r ->
            Gir_gen_lib.Type_mappings.is_boxed_record r
            && (List.length r.Gir_gen_lib.Types.constructors > 0
               || List.length r.Gir_gen_lib.Types.methods > 0)))
@@ -882,10 +940,10 @@ let generate_bindings filter_file gir_file output_dir =
 
   printf "\n✓ Code generation complete!\n";
   printf "  Generated: %d C files (classes/interfaces) and %d record stubs\n"
-    (List.length controllers + List.length interfaces)
+    (List.length all_classes + List.length interfaces)
     boxed_record_count;
   printf "  Generated: %d OCaml interface files and %d record bindings\n"
-    (List.length controllers + List.length interfaces)
+    (List.length all_classes + List.length interfaces)
     record_binding_count;
   if List.length gtk_enums > 0 || List.length gtk_bitfields > 0 then begin
     let ns_name = ctx.namespace.namespace_name in
@@ -914,6 +972,59 @@ let generate_bindings filter_file gir_file output_dir =
   printf "  Generated: %s.ml/.mli (library top-level module)\n" lib_name;
   `Ok ()
 
+(* References generation function *)
+let generate_references gir_file output_file =
+  printf "Parsing %s for references...\n" gir_file;
+
+  let filter_classes = [] in
+
+  let repository, namespace, classes, interfaces, enums, bitfields, records =
+    Gir_gen_lib.Parse.Gir_parser.parse_gir_file gir_file filter_classes
+  in
+  printf "References will be written to: %s\n" output_file;
+  let entities =
+    (classes
+    |> List.filter ~f:Gir_gen_lib.Generate.Filtering.should_generate_class
+    |> List.map ~f:(fun cls ->
+        {
+          cr_name = cls.class_name;
+          cr_type = Crt_Class;
+          cr_c_type = cls.c_type;
+        }))
+    @ List.map
+        ~f:(fun enms ->
+          {
+            cr_name = enms.enum_name;
+            cr_type = Crt_Enum;
+            cr_c_type = enms.enum_c_type;
+          })
+        enums
+    @ List.map
+        ~f:(fun bitfield ->
+          {
+            cr_name = bitfield.bitfield_name;
+            cr_type = Crt_Bitfield;
+            cr_c_type = bitfield.bitfield_c_type;
+          })
+        bitfields
+    @ (records
+      |> List.filter ~f:Gir_gen_lib.Generate.Filtering.should_generate_record
+      |> List.map ~f:(fun rec_ ->
+          {
+            cr_name = rec_.record_name;
+            cr_type = Crt_Record { opaque = rec_.opaque };
+            cr_c_type = rec_.c_type;
+          }))
+  in
+  let converter =
+    Sexplib.Conv.(
+      sexp_of_pair sexp_of_string
+        (sexp_of_list Gir_gen_lib.Types.sexp_of_cross_reference))
+  in
+  Sexplib.Sexp.(
+    save_hum output_file (converter (namespace.namespace_name, entities)));
+  `Ok ()
+
 (* Cmdliner argument definitions *)
 let filter_arg =
   let doc = "Filter file specifying which classes to generate" in
@@ -927,7 +1038,71 @@ let output_dir_arg =
   let doc = "Output directory for generated files" in
   Arg.(required & pos 1 (some dir) None & info [] ~docv:"OUTPUT_DIR" ~doc)
 
-(* Command definition *)
+let reference_files_arg =
+  let doc =
+    "Path to reference file for cross-namespace type validation (can be \
+     specified multiple times)"
+  in
+  Arg.(value & opt_all file [] & info [ "r"; "reference" ] ~docv:"FILE" ~doc)
+
+(* Arguments for references command *)
+let gir_file_arg_refs =
+  let doc = "Path to GIR file to parse for references" in
+  Arg.(required & pos 0 (some file) None & info [] ~docv:"GIR_FILE" ~doc)
+
+let output_file_arg_refs =
+  let doc = "Output file path for generated references" in
+  Arg.(required & pos 1 (some string) None & info [] ~docv:"OUTPUT_FILE" ~doc)
+
+(* Command definitions *)
+
+(* Generate subcommand *)
+let generate_cmd =
+  let doc = "Generate C FFI bindings and OCaml modules from GTK GIR files" in
+  let man =
+    [
+      `S Manpage.s_description;
+      `P
+        "The generate command parses GTK GObject Introspection (GIR) files and \
+         generates C FFI bindings and OCaml module interfaces for GTK4 event \
+         controllers and widgets.";
+      `S Manpage.s_examples;
+      `P "Generate event controller bindings:";
+      `Pre "  gir_gen generate /usr/share/gir-1.0/Gtk-4.0.gir ./output";
+      `P "Generate with cross-namespace references:";
+      `Pre
+        "  gir_gen generate -r gtk_refs.txt -r gdk_refs.txt \
+         /usr/share/gir-1.0/Gtk-4.0.gir ./output";
+    ]
+  in
+  let info = Cmd.info "generate" ~doc ~man in
+  Cmd.v info
+    Term.(
+      ret
+        (const generate_bindings $ filter_arg $ gir_file_arg $ output_dir_arg
+       $ reference_files_arg))
+
+(* References subcommand *)
+let references_cmd =
+  let doc = "Generate cross-namespace reference list from a GIR file" in
+  let man =
+    [
+      `S Manpage.s_description;
+      `P
+        "The references command parses a GIR file and generates a reference \
+         list that can be used for cross-namespace type validation during code \
+         generation.";
+      `S Manpage.s_examples;
+      `P "Generate reference list:";
+      `Pre "  gir_gen references /usr/share/gir-1.0/Gtk-4.0.gir gtk_refs.txt";
+    ]
+  in
+  let info = Cmd.info "references" ~doc ~man in
+  Cmd.v info
+    Term.(
+      ret (const generate_references $ gir_file_arg_refs $ output_file_arg_refs))
+
+(* Main command *)
 let gir_gen_cmd =
   let doc = "Generate C FFI bindings and OCaml modules from GTK GIR files" in
   let man =
@@ -937,17 +1112,17 @@ let gir_gen_cmd =
         "gir_gen parses GTK GObject Introspection (GIR) files and generates C \
          FFI bindings and OCaml module interfaces for GTK4 event controllers \
          and widgets.";
-      `S Manpage.s_examples;
-      `P "Generate event controller bindings:";
-      `Pre "  gir_gen /usr/share/gir-1.0/Gtk-4.0.gir ./output";
+      `S Manpage.s_commands;
+      `P "Available commands:";
+      `I ("generate", "Generate C FFI bindings and OCaml modules");
+      `I ("references", "Generate cross-namespace reference list");
       `S Manpage.s_bugs;
       `P "Report bugs to https://github.com/chris-armstrong/ocgtk/issues";
     ]
   in
   let info = Cmd.info "gir_gen" ~version:"5.0.0" ~doc ~man in
-  Cmd.v info
-    Term.(
-      ret (const generate_bindings $ filter_arg $ gir_file_arg $ output_dir_arg))
+  let default = Term.(ret (const (`Help (`Pager, None)))) in
+  Cmd.group info ~default [ generate_cmd; references_cmd ]
 
 (* Main entry point *)
 let () = exit (Cmd.eval gir_gen_cmd)

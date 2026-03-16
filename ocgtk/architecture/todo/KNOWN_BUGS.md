@@ -348,3 +348,7 @@ These are static function wrappers which operate similar to methods, but don't h
 
 <signal> elements are not being parsed and generated.
 
+## When a parameter type is `<varargs>`, we are not handling it correctly
+
+`<varargs>` is not parsed, and we default it to `void`. The method is correctly suppressed, but we should be handhling this more gracefully and not defaulting types
+

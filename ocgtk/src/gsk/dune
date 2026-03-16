@@ -1,0 +1,28 @@
+; Include subdirectories to find modules in core/ and generated/
+(include_subdirs unqualified)
+
+; Include generated C stubs library definition
+(include generated/dune-generated.inc)
+
+; Configure pkg-config for GSK (bundled with gtk4)
+(rule
+ (targets c_flags.sexp)
+ (action
+  (with-stdout-to %{targets}
+   (bash "echo '(' && pkg-config --cflags gtk4 && echo ')'"))))
+
+; Main GSK library combining core and generated code
+(library
+ (name ocgtk_gsk)
+ (public_name ocgtk.gsk)
+ (synopsis "OCaml bindings for GSK")
+ (wrapped true)
+ (flags :standard -w -3-6-9-27-32-33-34-50)
+ (modules :standard)
+ (modules_without_implementation gsk_enums)
+ (foreign_stubs
+  (language c)
+  (names ml_gsk)
+  (flags :standard -Igenerated -Icore (:include c_flags.sexp)))
+
+ (libraries ocgtk.common ocgtk_gdk ocgtk_graphene ocgtk_gsk_generated_stubs))

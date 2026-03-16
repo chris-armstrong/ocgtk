@@ -2,7 +2,9 @@
 
 open Helpers
 
-let signals_gir = wrap_namespace {|
+let signals_gir =
+  wrap_namespace
+    {|
     <class name="Button" c:type="GtkButton" parent="Widget">
       <constructor name="new" c:identifier="gtk_button_new"/>
       <glib:signal name="clicked" when="first">
@@ -49,6 +51,7 @@ let test_signal_parsing_and_generation () =
       hierarchy_map = Hashtbl.create 0;
       module_groups = Hashtbl.create 0;
       current_cycle_classes = [];
+      cross_references = Gir_gen_lib.Types.StringMap.empty;
     }
   in
   let hierarchy_map =

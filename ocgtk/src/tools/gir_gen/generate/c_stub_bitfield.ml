@@ -5,23 +5,26 @@ open StdLabels
 open Types
 
 let emit_bitfield_proto buf ~namespace (bitfield : gir_bitfield) =
-  (* Special case: GdkPixbufFormatFlags is in GIR but marked skip in C headers *)
-  if String.equal bitfield.bitfield_c_type "GdkPixbufFormatFlags" then begin
+  let is_pixbuf_format_flags = String.equal bitfield.bitfield_c_type "GdkPixbufFormatFlags" in
+  if is_pixbuf_format_flags then begin
     bprintf buf
       "/* GdkPixbufFormatFlags is in GIR but marked skip in C headers */\n";
-    bprintf buf "#ifndef GDK_PIXBUF_FORMAT_WRITABLE\n";
+    bprintf buf "#ifndef GDK_PIXBUF_FORMAT_WRITABLE\n"
+  end;
+  if is_pixbuf_format_flags then begin
     bprintf buf "typedef enum {\n";
     List.iter
       ~f:(fun flag ->
         bprintf buf "  %s = %d,\n" flag.flag_c_identifier flag.flag_value)
       bitfield.flags;
-    bprintf buf "} GdkPixbufFormatFlags;\n";
-    bprintf buf "#endif\n"
+    bprintf buf "} GdkPixbufFormatFlags;\n"
   end;
   bprintf buf "value Val_%s%s(%s flags);\n" namespace bitfield.bitfield_name
     bitfield.bitfield_c_type;
   bprintf buf "%s %s%s_val(value list);\n" bitfield.bitfield_c_type namespace
-    bitfield.bitfield_name
+    bitfield.bitfield_name;
+  if is_pixbuf_format_flags then
+    bprintf buf "#endif\n"
 
 let generate_forward_decls ~namespace_prefix ~gtk_bitfields ~external_bitfields =
   let buf = Buffer.create 1024 in
@@ -31,10 +34,25 @@ let generate_forward_decls ~namespace_prefix ~gtk_bitfields ~external_bitfields 
       "/* Forward declarations for bitfield converters */\n";
     List.iter
       ~f:(fun (bitfield : gir_bitfield) ->
+        let is_pixbuf_format_flags =
+          String.equal bitfield.bitfield_c_type "GdkPixbufFormatFlags"
+        in
+        if is_pixbuf_format_flags then
+          bprintf buf "#ifndef GDK_PIXBUF_FORMAT_WRITABLE\n\
+                       typedef enum {\n";
+        if is_pixbuf_format_flags then begin
+          List.iter
+            ~f:(fun flag ->
+              bprintf buf "  %s = %d,\n" flag.flag_c_identifier flag.flag_value)
+            bitfield.flags;
+          bprintf buf "} GdkPixbufFormatFlags;\n"
+        end;
         bprintf buf "value Val_%s%s(%s flags);\n" namespace_prefix
           bitfield.bitfield_name bitfield.bitfield_c_type;
         bprintf buf "%s %s%s_val(value list);\n" bitfield.bitfield_c_type
-          namespace_prefix bitfield.bitfield_name)
+          namespace_prefix bitfield.bitfield_name;
+        if is_pixbuf_format_flags then
+          bprintf buf "#endif\n")
       gtk_bitfields;
     Buffer.add_string buf "\n"
   end;

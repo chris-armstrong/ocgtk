@@ -52,7 +52,10 @@ let should_skip_class class_name =
       "PrintUnixDialog";
       "PageSetupUnixDialog";
       "Printer";
-      (* All other classes now allowed for generation *)
+      (* Internal/platform-specific classes not in public headers *)
+      "PixbufNonAnim";
+      "BroadwayRenderer";
+      "NglRenderer";
     ]
   in
   List.mem class_name ~set:skip_list

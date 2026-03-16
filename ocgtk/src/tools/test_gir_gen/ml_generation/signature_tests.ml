@@ -71,10 +71,12 @@ let test_constructor_signature_matches () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     ctor_doc = None;
     throws = false;
+    ctor_introspectable = true;
   } in
 
   let mli_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -139,12 +141,14 @@ let test_method_signature_matches () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
 
   let mli_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -210,12 +214,14 @@ let test_multiple_methods_match () =
           direction = In;
           nullable = false;
           varargs = false;
+            caller_allocates = false;
         }
       ];
       doc = None;
       throws = false;
       get_property = None;
       set_property = None;
+    introspectable = true;
     };
     {
       method_name = "get_label";
@@ -226,6 +232,7 @@ let test_multiple_methods_match () =
       throws = false;
       get_property = None;
       set_property = None;
+    introspectable = true;
     };
   ] in
 

@@ -63,14 +63,6 @@ GdkContentFormatsBuilder* result = gdk_content_formats_builder_ref(GdkContentFor
 CAMLreturn(Val_GdkContentFormatsBuilder(result));
 }
 
-CAMLexport CAMLprim value ml_gdk_content_formats_builder_free_to_formats(value self)
-{
-CAMLparam1(self);
-
-GdkContentFormats* result = gdk_content_formats_builder_free_to_formats(GdkContentFormatsBuilder_val(self));
-CAMLreturn(Val_GdkContentFormats(result));
-}
-
 CAMLexport CAMLprim value ml_gdk_content_formats_builder_add_mime_type(value self, value arg1)
 {
 CAMLparam2(self, arg1);

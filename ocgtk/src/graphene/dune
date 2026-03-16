@@ -1,0 +1,28 @@
+; Include subdirectories to find modules in core/ and generated/
+(include_subdirs unqualified)
+
+; Include generated C stubs library definition
+(include generated/dune-generated.inc)
+
+; Configure pkg-config for Graphene
+(rule
+ (targets c_flags.sexp)
+ (action
+  (with-stdout-to %{targets}
+   (bash "echo '(' && pkg-config --cflags graphene-1.0 && echo ')'"))))
+
+; Main Graphene library combining core and generated code
+(library
+ (name ocgtk_graphene)
+ (public_name ocgtk.graphene)
+ (synopsis "OCaml bindings for Graphene")
+ (wrapped true)
+ (flags :standard -w -3-6-9-27-32-33-34-50)
+ (modules :standard)
+ (modules_without_implementation graphene_enums)
+ (foreign_stubs
+  (language c)
+  (names ml_graphene)
+  (flags :standard -Igenerated -Icore (:include c_flags.sexp)))
+
+ (libraries ocgtk.common ocgtk_graphene_generated_stubs))

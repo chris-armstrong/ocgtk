@@ -1,0 +1,120 @@
+/* GENERATED CODE - DO NOT EDIT */
+/* C bindings for FontMetrics */
+
+#include <pango/pango.h>
+#include <caml/mlvalues.h>
+#include <caml/memory.h>
+#include <caml/alloc.h>
+#include <caml/callback.h>
+#include <caml/fail.h>
+#include <caml/hash.h>
+#include <caml/custom.h>
+#include "wrappers.h"
+
+#include <pango/pango.h>
+/* Include common type conversions and forward declarations */
+#include "generated_forward_decls.h"
+
+/* Conversion functions for PangoFontMetrics (opaque record with hidden fields) */
+PangoFontMetrics *PangoFontMetrics_val(value v) {
+  return *(PangoFontMetrics **)Data_custom_val(v);
+}
+
+value Val_PangoFontMetrics(const PangoFontMetrics *ptr) {
+  if (ptr == NULL) return Val_none;
+  return ml_gir_record_val_ptr(ptr);
+}
+
+value Val_PangoFontMetrics_option(const PangoFontMetrics *ptr) {
+  if (ptr == NULL) return Val_none;
+  return Val_some(Val_PangoFontMetrics(ptr));
+}
+
+
+CAMLexport CAMLprim value ml_pango_font_metrics_unref(value self)
+{
+CAMLparam1(self);
+
+pango_font_metrics_unref(PangoFontMetrics_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_pango_font_metrics_ref(value self)
+{
+CAMLparam1(self);
+
+PangoFontMetrics* result = pango_font_metrics_ref(PangoFontMetrics_val(self));
+CAMLreturn(Val_option(result, Val_PangoFontMetrics));
+}
+
+CAMLexport CAMLprim value ml_pango_font_metrics_get_underline_thickness(value self)
+{
+CAMLparam1(self);
+
+int result = pango_font_metrics_get_underline_thickness(PangoFontMetrics_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_pango_font_metrics_get_underline_position(value self)
+{
+CAMLparam1(self);
+
+int result = pango_font_metrics_get_underline_position(PangoFontMetrics_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_pango_font_metrics_get_strikethrough_thickness(value self)
+{
+CAMLparam1(self);
+
+int result = pango_font_metrics_get_strikethrough_thickness(PangoFontMetrics_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_pango_font_metrics_get_strikethrough_position(value self)
+{
+CAMLparam1(self);
+
+int result = pango_font_metrics_get_strikethrough_position(PangoFontMetrics_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_pango_font_metrics_get_height(value self)
+{
+CAMLparam1(self);
+
+int result = pango_font_metrics_get_height(PangoFontMetrics_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_pango_font_metrics_get_descent(value self)
+{
+CAMLparam1(self);
+
+int result = pango_font_metrics_get_descent(PangoFontMetrics_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_pango_font_metrics_get_ascent(value self)
+{
+CAMLparam1(self);
+
+int result = pango_font_metrics_get_ascent(PangoFontMetrics_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_pango_font_metrics_get_approximate_digit_width(value self)
+{
+CAMLparam1(self);
+
+int result = pango_font_metrics_get_approximate_digit_width(PangoFontMetrics_val(self));
+CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_pango_font_metrics_get_approximate_char_width(value self)
+{
+CAMLparam1(self);
+
+int result = pango_font_metrics_get_approximate_char_width(PangoFontMetrics_val(self));
+CAMLreturn(Val_int(result));
+}

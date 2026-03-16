@@ -17,10 +17,11 @@
 #include "generated_forward_decls.h"
 
 /* Copy function for GtkBorder (value-like record with copy method) */
-value copy_GtkBorder(const GtkBorder *ptr) {
+value copy_GtkBorder(const GtkBorder *ptr)
+{
   if (ptr == NULL) return Val_none;
   GtkBorder *copy = gtk_border_copy((GtkBorder*)ptr);
-  return ml_gir_record_val_ptr(g_new0(GtkBorder, 1));
+  return ml_gir_record_val_ptr(copy);
 }
 
 

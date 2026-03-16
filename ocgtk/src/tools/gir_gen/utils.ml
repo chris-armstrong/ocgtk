@@ -101,7 +101,9 @@ let parse_bool ?(default = false) attr =
    This helper centralizes the check to ensure consistency across the codebase. *)
 let is_void_return_type (gir_type : Types.gir_type) : bool =
   let name = String.lowercase_ascii gir_type.name in
-  let c_type = Option.value ~default:"" gir_type.c_type |> String.lowercase_ascii in
+  let c_type =
+    Option.value ~default:"" gir_type.c_type |> String.lowercase_ascii
+  in
   name = "void" || name = "none" || c_type = "void"
 
 (* Extract namespace from C type name (e.g., "GtkAlign" -> "Gtk", "GdkGravity" -> "Gdk") *)
@@ -149,14 +151,28 @@ let normalize_class_name name =
 let module_name_of_class class_name =
   class_name |> to_snake_case |> String.capitalize_ascii
 
+(** Convert a namespace name to a dune-compliant module name. Dune lowercases
+    all characters after the first, so "GdkPixbuf" becomes "Gdkpixbuf". This is
+    needed because dune automatically derives module names from filenames, and
+    the build system enforces this capitalization convention. *)
+let namespace_to_module_name (namespace : string) : string =
+  if String.length namespace = 0 then namespace
+  else
+    let first = String.capitalize_ascii (String.sub namespace ~pos:0 ~len:1) in
+    let rest =
+      String.lowercase_ascii
+        (String.sub namespace ~pos:1 ~len:(String.length namespace - 1))
+    in
+    first ^ rest
+
 (* Get the name of the enums module (FIXME: doesn't handle cross-namespace enums) *)
 let enums_module_name (ctx : Types.generation_context) (_ : Types.gir_enum) =
-  ctx.namespace.namespace_name ^ "_enums"
+  namespace_to_module_name ctx.namespace.namespace_name ^ "_enums"
 
 (* Get the name of the bitfields module (FIXME: doesn't handle cross-namespace enums) *)
 let bitfields_module_name (ctx : Types.generation_context)
     (_ : Types.gir_bitfield) =
-  ctx.namespace.namespace_name ^ "_enums"
+  namespace_to_module_name ctx.namespace.namespace_name ^ "_enums"
 
 (* Read filter file and return set of class names to generate *)
 let read_filter_file filename =
@@ -273,6 +289,14 @@ let ocaml_class_name cn =
   cn |> normalize_class_name |> kebab_to_snake |> to_snake_case
   |> sanitize_identifier
 
+let ocaml_interface_name cn =
+  (* this is the same as classes *)
+  ocaml_class_name cn
+
+let ocaml_record_name cn =
+  (* this is the same as classes *)
+  ocaml_class_name cn
+
 (** Extract ML prefix from generation context namespace *)
 let extract_ml_prefix (ctx : Types.generation_context) : string =
   let namespace_prefix = ctx.namespace.namespace_c_identifier_prefixes in
@@ -313,3 +337,9 @@ let ocaml_bitfield_name (bitfield : Types.gir_bitfield) =
 
 let ocaml_enum_name (enum : Types.gir_enum) =
   String.lowercase_ascii enum.enum_name
+
+let name_to_parts ~(ctx : Types.generation_context) name =
+  match Re.Str.split (Re.Str.regexp_string ".") name with
+  | [ ns; name ] -> (ns, name)
+  | [ name ] -> (ctx.namespace.namespace_name, name)
+  | _ -> failwith "Unable to parse name correctly"

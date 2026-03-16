@@ -11,6 +11,11 @@
   (with-stdout-to %{targets}
    (bash "echo '(' && pkg-config --cflags gio-2.0 && echo '\n' && pkg-config --cflags gio-unix-2.0 && echo ')'"))))
 
+; Code generation for GIO bindings
+; To regenerate bindings from GIR files, run:
+;   ./scripts/generate-bindings.sh
+; This writes to src/gio/generated/ in the source tree
+
 ; Main GIO library combining core and generated code
 (library
  (name ocgtk_gio)

@@ -296,46 +296,12 @@ gboolean result = gtk_tree_view_is_rubber_banding_active(GtkTreeView_val(self));
 CAMLreturn(Val_bool(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_view_is_blank_at_pos(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-GtkTreePath* out3;
-GtkTreeViewColumn* out4;
-int out5;
-int out6;
-
-gboolean result = gtk_tree_view_is_blank_at_pos(GtkTreeView_val(self), Int_val(arg1), Int_val(arg2), &out3, &out4, &out5, &out6);
-CAMLlocal1(ret);
-    ret = caml_alloc(5, 0);
-    Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTreePath(out3));
-    Store_field(ret, 2, Val_GtkTreeViewColumn(out4));
-    Store_field(ret, 3, Val_int(out5));
-    Store_field(ret, 4, Val_int(out6));
-    CAMLreturn(ret);
-}
-
 CAMLexport CAMLprim value ml_gtk_tree_view_insert_column(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
 
 int result = gtk_tree_view_insert_column(GtkTreeView_val(self), GtkTreeViewColumn_val(arg1), Int_val(arg2));
 CAMLreturn(Val_int(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_get_visible_range(value self)
-{
-CAMLparam1(self);
-GtkTreePath* out1;
-GtkTreePath* out2;
-
-gboolean result = gtk_tree_view_get_visible_range(GtkTreeView_val(self), &out1, &out2);
-CAMLlocal1(ret);
-    ret = caml_alloc(3, 0);
-    Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTreePath(out1));
-    Store_field(ret, 2, Val_GtkTreePath(out2));
-    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_view_get_tooltip_column(value self)
@@ -394,25 +360,6 @@ CAMLparam1(self);
 
 gboolean result = gtk_tree_view_get_reorderable(GtkTreeView_val(self));
 CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_get_path_at_pos(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-GtkTreePath* out3;
-GtkTreeViewColumn* out4;
-int out5;
-int out6;
-
-gboolean result = gtk_tree_view_get_path_at_pos(GtkTreeView_val(self), Int_val(arg1), Int_val(arg2), &out3, &out4, &out5, &out6);
-CAMLlocal1(ret);
-    ret = caml_alloc(5, 0);
-    Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTreePath(out3));
-    Store_field(ret, 2, Val_GtkTreeViewColumn(out4));
-    Store_field(ret, 3, Val_int(out5));
-    Store_field(ret, 4, Val_int(out6));
-    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_view_get_n_columns(value self)
@@ -511,49 +458,6 @@ CAMLparam1(self);
 
 gboolean result = gtk_tree_view_get_enable_search(GtkTreeView_val(self));
 CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_get_drag_dest_row(value self)
-{
-CAMLparam1(self);
-GtkTreePath* out1;
-GtkTreeViewDropPosition out2;
-
-gtk_tree_view_get_drag_dest_row(GtkTreeView_val(self), &out1, &out2);
-CAMLlocal1(ret);
-    ret = caml_alloc(2, 0);
-    Store_field(ret, 0, Val_GtkTreePath(out1));
-    Store_field(ret, 1, Val_GtkTreeViewDropPosition(out2));
-    CAMLreturn(ret);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_get_dest_row_at_pos(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-GtkTreePath* out3;
-GtkTreeViewDropPosition out4;
-
-gboolean result = gtk_tree_view_get_dest_row_at_pos(GtkTreeView_val(self), Int_val(arg1), Int_val(arg2), &out3, &out4);
-CAMLlocal1(ret);
-    ret = caml_alloc(3, 0);
-    Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_GtkTreePath(out3));
-    Store_field(ret, 2, Val_GtkTreeViewDropPosition(out4));
-    CAMLreturn(ret);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_view_get_cursor(value self)
-{
-CAMLparam1(self);
-GtkTreePath* out1;
-GtkTreeViewColumn* out2;
-
-gtk_tree_view_get_cursor(GtkTreeView_val(self), &out1, &out2);
-CAMLlocal1(ret);
-    ret = caml_alloc(2, 0);
-    Store_field(ret, 0, Val_GtkTreePath(out1));
-    Store_field(ret, 1, Val_GtkTreeViewColumn(out2));
-    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_view_get_column(value self, value arg1)

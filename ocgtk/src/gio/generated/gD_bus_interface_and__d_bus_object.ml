@@ -10,10 +10,6 @@ class d_bus_interface (obj : D_bus_interface_and__d_bus_object.D_bus_interface.t
     fun () ->
       (D_bus_interface_and__d_bus_object.D_bus_interface.get_info obj)
 
-  method get_object : unit -> d_bus_object option =
-    fun () ->
-      Option.map (fun ret -> new d_bus_object ret) (D_bus_interface_and__d_bus_object.D_bus_interface.get_object obj)
-
     method as_d_bus_interface = obj
 end
 (* Signal class defined in gd_bus_object_signals.ml *)

@@ -14,6 +14,7 @@ let create_test_class_with_parent ~name ~c_type ?parent:(parent_val=None) () =
     c_type;
     parent = parent_val;
     implements = [];
+    introspectable = true;
     constructors = [];
     methods = [];
     properties = [];
@@ -36,6 +37,7 @@ let create_test_class_with_methods ~name ~c_type ~methods () =
     c_type;
     parent = None;
     implements = [];
+    introspectable = true;
     constructors = [];
     methods;
     properties = [];
@@ -58,6 +60,7 @@ let create_test_method ~name ~c_identifier () =
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   }
 
 (* Create a test method with a single parameter *)
@@ -69,6 +72,7 @@ let create_test_method_with_param ~name ~c_identifier ~param_name ~param_type ()
       direction = In;
       nullable = false;
       varargs = false;
+            caller_allocates = false;
     }
   in
   {
@@ -80,6 +84,7 @@ let create_test_method_with_param ~name ~c_identifier ~param_name ~param_type ()
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   }
 
 (* Create a test method with multiple parameters *)
@@ -93,6 +98,7 @@ let create_test_method_with_params ~name ~c_identifier ~params () =
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   }
 
 (* Create a test method with a return type *)
@@ -106,6 +112,7 @@ let create_test_method_with_return ~name ~c_identifier ~return_type () =
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   }
 
 (* Create a test method that throws errors *)
@@ -119,6 +126,7 @@ let create_test_method_throwing ~name ~c_identifier () =
     throws = true;
     get_property = None;
     set_property = None;
+    introspectable = true;
   }
 
 (* ========================================================================= *)
@@ -370,6 +378,7 @@ let create_test_class_with_signals ~name ~c_type ~signals () =
     c_type;
     parent = None;
     implements = [];
+    introspectable = true;
     constructors = [];
     methods = [];
     properties = [];

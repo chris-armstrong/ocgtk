@@ -114,22 +114,6 @@ char** result = gtk_icon_theme_get_resource_path(GtkIconTheme_val(self));
 CAMLreturn(ml_result);
 }
 
-CAMLexport CAMLprim value ml_gtk_icon_theme_get_icon_sizes(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-int* result = gtk_icon_theme_get_icon_sizes(GtkIconTheme_val(self), String_val(arg1));
-    int result_length = 0;
-    while (result[result_length] != NULL) result_length++;
-    CAMLlocal1(ml_result);
-    ml_result = caml_alloc(result_length, 0);
-    for (int i = 0; i < result_length; i++) {
-      Store_field(ml_result, i, Val_int(result[i]));
-    }
-    g_free(result);
-CAMLreturn(ml_result);
-}
-
 CAMLexport CAMLprim value ml_gtk_icon_theme_get_icon_names(value self)
 {
 CAMLparam1(self);

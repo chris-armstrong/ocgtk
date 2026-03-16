@@ -1,5 +1,7 @@
 (* Type Definitions for GIR Code Generator *)
 
+open Sexplib.Std
+
 type transfer_ownership =
   | TransferNone
   | TransferFull
@@ -32,6 +34,8 @@ type gir_param = {
   direction : gir_direction;
   nullable : bool;
   varargs : bool;
+  caller_allocates : bool;
+      (* True if caller allocates the buffer for out params *)
 }
 
 type gir_method = {
@@ -43,6 +47,7 @@ type gir_method = {
   throws : bool;
   get_property : string option;
   set_property : string option;
+  introspectable : bool;
 }
 
 type gir_function = {
@@ -52,6 +57,7 @@ type gir_function = {
   parameters : gir_param list;
   doc : string option;
   throws : bool;
+  introspectable : bool;
 }
 
 type gir_signal = {
@@ -67,6 +73,7 @@ type gir_constructor = {
   ctor_parameters : gir_param list;
   ctor_doc : string option;
   throws : bool;
+  ctor_introspectable : bool;
 }
 
 type gir_property = {
@@ -93,6 +100,7 @@ type gir_record = {
   glib_get_type : string option;
   opaque : bool;
   disguised : bool;
+  introspectable : bool;
   c_symbol_prefix : string option;
   is_gtype_struct_for : string option;
       (* glib:is-gtype-struct-for attribute - class structs to skip *)
@@ -137,6 +145,7 @@ type gir_class = {
   c_type : string;
   parent : string option;
   implements : string list;
+  introspectable : bool;
   constructors : gir_constructor list;
   methods : gir_method list;
   properties : gir_property list;
@@ -268,6 +277,23 @@ type gir_repository = {
   repository_packages : string list;
 }
 
+type cross_reference_type =
+  | Crt_Class
+  | Crt_Interface
+  | Crt_Record of { opaque : bool }
+  | Crt_Enum
+  | Crt_Bitfield
+[@@deriving sexp]
+
+type cross_reference = {
+  cr_name : string;
+  cr_type : cross_reference_type;
+  cr_c_type : string;
+}
+[@@deriving sexp]
+
+module StringMap = Map.Make (String)
+
 type generation_context = {
   namespace : gir_namespace;
   repository : gir_repository;
@@ -283,4 +309,5 @@ type generation_context = {
       (* class_name -> combined_module_name *)
   current_cycle_classes : string list;
       (* Class names in the current cyclic module being generated *)
+  cross_references : cross_reference StringMap.t StringMap.t;
 }

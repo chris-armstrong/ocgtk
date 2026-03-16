@@ -168,8 +168,8 @@ let run_gir_gen ?filter_file gir_file output_dir =
     match filter_file with Some f -> sprintf "-f %s " f | None -> ""
   in
   let cmd =
-    sprintf "%s/gir_gen/gir_gen.exe %s%s %s" tools_dir filter_arg gir_file
-      output_dir
+    sprintf "%s/gir_gen/gir_gen.exe generate %s%s %s" tools_dir filter_arg
+      gir_file output_dir
   in
   let result =
     run_command_with_output ~log_dir:(Some "/tmp/gir_gen_test_logs") cmd
@@ -234,6 +234,7 @@ let create_test_context () =
       c_type = "GtkWidget";
       parent = None;
       implements = [];
+      introspectable = true;
       constructors = [];
       methods = [];
       properties = [];
@@ -249,6 +250,7 @@ let create_test_context () =
       c_type = "GInetAddress";
       parent = None;
       implements = [];
+      introspectable = true;
       constructors = [];
       methods = [];
       properties = [];
@@ -264,6 +266,7 @@ let create_test_context () =
       c_type = "GTlsCertificate";
       parent = None;
       implements = [];
+      introspectable = true;
       constructors = [];
       methods = [];
       properties = [];
@@ -279,6 +282,7 @@ let create_test_context () =
       c_type = "GdkEvent";
       parent = None;
       implements = [];
+      introspectable = true;
       constructors = [];
       methods = [];
       properties = [];
@@ -305,6 +309,7 @@ let create_test_context () =
       c_type = "GdkTimeCoord";
       glib_type_name = None;
       glib_get_type = None;
+      introspectable = true;
       opaque = false;
       disguised = false;
       c_symbol_prefix = None;
@@ -324,6 +329,7 @@ let create_test_context () =
       c_type = "GtkBuildableParseContext";
       glib_type_name = None;
       glib_get_type = None;
+      introspectable = true;
       opaque = true;
       disguised = false;
       c_symbol_prefix = None;
@@ -339,7 +345,10 @@ let create_test_context () =
   {
     namespace;
     repository;
-    classes = [ widget_class; inet_address_class; tls_certificate_class; gdk_event_class ];
+    classes =
+      [
+        widget_class; inet_address_class; tls_certificate_class; gdk_event_class;
+      ];
     interfaces = [];
     enums = [ text_direction_enum ];
     bitfields = [];
@@ -349,6 +358,7 @@ let create_test_context () =
     hierarchy_map = Hashtbl.create 0;
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
+    cross_references = StringMap.empty;
   }
 
 (* Create a test context with hierarchy detection configured *)

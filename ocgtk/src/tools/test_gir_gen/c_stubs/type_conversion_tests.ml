@@ -32,6 +32,7 @@ let test_gboolean_conversion () =
       parameters = [];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -66,6 +67,7 @@ let test_gint_conversion () =
       parameters = [];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -100,6 +102,7 @@ let test_gdouble_conversion () =
       parameters = [];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -134,6 +137,7 @@ let test_utf8_string_conversion () =
       parameters = [];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -180,10 +184,12 @@ let test_utf8_string_parameter () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -216,6 +222,7 @@ let test_object_type_conversion () =
       parameters = [];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -250,6 +257,7 @@ let test_enum_type_conversion () =
       parameters = [];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -298,10 +306,12 @@ let test_gboolean_parameter () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }
@@ -346,6 +356,7 @@ let test_multiple_type_conversions () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
           {
             param_name = "height";
@@ -360,10 +371,12 @@ let test_multiple_type_conversions () =
             direction = In;
             nullable = false;
             varargs = false;
+            caller_allocates = false;
           };
         ];
       doc = None;
       throws = false;
+      introspectable = true;
       get_property = None;
       set_property = None;
     }

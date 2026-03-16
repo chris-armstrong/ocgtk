@@ -1,0 +1,20 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* ConicGradientNode: ConicGradientNode *)
+
+type t = [`conic_gradient_node | `render_node] Gobject.obj
+
+(** Create a new ConicGradientNode *)
+external new_ : unit -> unit -> float -> Color_stop.t array -> unit -> t = "ml_gsk_conic_gradient_node_new"
+
+(* Methods *)
+(** Retrieves the rotation for the gradient in degrees. *)
+external get_rotation : t -> float = "ml_gsk_conic_gradient_node_get_rotation"
+
+(** Retrieves the angle for the gradient in radians, normalized in [0, 2 * PI].
+
+The angle is starting at the top and going clockwise, as expressed
+in the css specification:
+
+    angle = 90 - gsk_conic_gradient_node_get_rotation() *)
+external get_angle : t -> float = "ml_gsk_conic_gradient_node_get_angle"
+

@@ -153,7 +153,9 @@ module Code_gen = struct
     List.iter
       ~f:(fun ctor ->
         if Filtering.should_generate_constructor ~ctx ctor then
-          Buffer.add_string buf (generator ~ctx ~c_type ~class_name ctor))
+          try Buffer.add_string buf (generator ~ctx ~c_type ~class_name ctor)
+          with Failure msg ->
+            eprintf "  Warning: skipping constructor %s: %s\n" ctor.ctor_name msg)
       constructors
 
   (** Generate C code for methods by iterating and filtering.
@@ -169,7 +171,9 @@ module Code_gen = struct
           match extra_filter with None -> true | Some f -> f meth
         in
         if (not should_skip) && passes_extra_filter then
-          Buffer.add_string buf (generator ~ctx ~c_type meth class_name))
+          try Buffer.add_string buf (generator ~ctx ~c_type meth class_name)
+          with Failure msg ->
+            eprintf "  Warning: skipping method %s: %s\n" meth.method_name msg)
       (List.rev methods)
 end
 

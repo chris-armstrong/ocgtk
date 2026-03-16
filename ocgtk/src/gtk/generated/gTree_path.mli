@@ -6,7 +6,6 @@ class tree_path : Tree_path.t ->
     method down : unit -> unit
     method free : unit -> unit
     method get_depth : unit -> int
-    method get_indices : unit -> int option
     method is_ancestor : Tree_path.t -> bool
     method is_descendant : Tree_path.t -> bool
     method next : unit -> unit

@@ -26,6 +26,7 @@ let simple_class class_name c_type =
     c_type;
     parent = None;
     implements = [];
+    introspectable = true;
     constructors = [];
     methods = [];
     properties = [];
@@ -124,12 +125,14 @@ let test_hierarchy_parameter_coercion () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
   
   (* Generate Layer 2 class module and signature *)
@@ -180,12 +183,14 @@ let test_nullable_parameter_handling () =
         direction = In;
         nullable = true;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
   
    (* Generate Layer 2 class signature *)
@@ -226,6 +231,7 @@ let test_return_value_wrapping () =
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
   
   (* Generate Layer 2 class signature *)
@@ -266,6 +272,7 @@ let test_void_method () =
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
   
   (* Generate Layer 2 class module and signature *)
@@ -321,6 +328,7 @@ let test_multiple_parameters () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       };
       {
         param_name = "height";
@@ -328,12 +336,14 @@ let test_multiple_parameters () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
   
   (* Generate Layer 2 class module and signature *)
@@ -389,12 +399,14 @@ let test_method_with_object_parameter () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
   
   (* Generate Layer 2 class module and signature *)
@@ -442,12 +454,14 @@ let test_same_cluster_structural_type () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
   
   (* Create classes for combined module generation *)
@@ -456,6 +470,7 @@ let test_same_cluster_structural_type () =
     c_type = "GtkWidget";
     parent = None;
     implements = [];
+    introspectable = true;
     constructors = [];
     methods = [];
     properties = [];
@@ -468,6 +483,7 @@ let test_same_cluster_structural_type () =
     c_type = "GtkButton";
     parent = Some "Widget";
     implements = [];
+    introspectable = true;
     constructors = [];
     methods = [set_child_method];
     properties = [];
@@ -530,6 +546,7 @@ let test_property_getter_wrapper () =
     throws = false;
     get_property = Some "label";
     set_property = None;
+    introspectable = true;
   } in
   
   (* Generate Layer 2 class signature *)
@@ -583,12 +600,14 @@ let test_property_setter_wrapper () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
     throws = false;
     get_property = None;
     set_property = Some "child";
+    introspectable = true;
   } in
   
    (* Generate Layer 2 class module *)
@@ -635,6 +654,7 @@ let test_inheritance_generation () =
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
   
   (* Generate Layer 2 class module with Widget as parent *)
@@ -771,6 +791,7 @@ let test_method_conflict_detection () =
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
 
   let widget_class = {
@@ -778,6 +799,7 @@ let test_method_conflict_detection () =
     c_type = "GtkWidget";
     parent = None;
     implements = [];
+    introspectable = true;
     constructors = [];
     methods = [widget_show_method];
     properties = [];
@@ -798,12 +820,14 @@ let test_method_conflict_detection () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
 
   let button_class = {
@@ -811,6 +835,7 @@ let test_method_conflict_detection () =
     c_type = "GtkButton";
     parent = Some "Widget";
     implements = [];
+    introspectable = true;
     constructors = [];
     methods = [button_show_method];
     properties = [];
@@ -924,6 +949,7 @@ let test_layer2_signature_consistency () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       };
       {
         param_name = "height";
@@ -931,12 +957,14 @@ let test_layer2_signature_consistency () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
 
   let get_label_method = {
@@ -948,6 +976,7 @@ let test_layer2_signature_consistency () =
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
 
   let set_child_method = {
@@ -961,12 +990,14 @@ let test_layer2_signature_consistency () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
 
   let methods = [set_size_method; get_label_method; set_child_method] in
@@ -1113,6 +1144,7 @@ let test_combined_class_signature_consistency () =
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
 
   let widget_hide_method = {
@@ -1124,6 +1156,7 @@ let test_combined_class_signature_consistency () =
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
 
   (* Create method for Button class *)
@@ -1136,6 +1169,7 @@ let test_combined_class_signature_consistency () =
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
 
   let button_set_label_method = {
@@ -1149,12 +1183,14 @@ let test_combined_class_signature_consistency () =
         direction = In;
         nullable = false;
         varargs = false;
+            caller_allocates = false;
       }
     ];
     doc = None;
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
 
   let button_get_label_method = {
@@ -1166,6 +1202,7 @@ let test_combined_class_signature_consistency () =
     throws = false;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
 
   (* Create classes for combined module generation *)
@@ -1174,6 +1211,7 @@ let test_combined_class_signature_consistency () =
     c_type = "GtkWidget";
     parent = None;
     implements = [];
+    introspectable = true;
     constructors = [];
     methods = [widget_show_method; widget_hide_method];
     properties = [];
@@ -1186,6 +1224,7 @@ let test_combined_class_signature_consistency () =
     c_type = "GtkButton";
     parent = Some "Widget";
     implements = [];
+    introspectable = true;
     constructors = [];
     methods = [button_clicked_method; button_set_label_method; button_get_label_method];
     properties = [];
@@ -1331,6 +1370,7 @@ let test_throws_method_result_wrapping () =
     throws = true;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
 
   (* Generate Layer 2 class signature *)
@@ -1392,6 +1432,7 @@ let test_throws_method_result_wrapping () =
     throws = true;
     get_property = None;
     set_property = None;
+    introspectable = true;
   } in
 
   (* Generate Layer 2 class signature with both methods *)

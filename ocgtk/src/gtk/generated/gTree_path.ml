@@ -25,10 +25,6 @@ class tree_path (obj : Tree_path.t) = object (self)
     fun () ->
       (Tree_path.get_depth obj)
 
-  method get_indices : unit -> int option =
-    fun () ->
-      (Tree_path.get_indices obj)
-
   method is_ancestor : Tree_path.t -> bool =
     fun descendant ->
       (Tree_path.is_ancestor obj descendant)

@@ -61,13 +61,20 @@ The executable is built to `_build/default/src/tools/gir_gen/gir_gen.exe`
 
 ## Running
 
+### Commands
+
+gir_gen has two main commands:
+
+- **`generate`** - Generate C FFI bindings and OCaml modules from GIR files
+- **`references`** - Generate cross-namespace reference list for type validation
+
 ### From the `ocgtk` directory
 
 **Recommended approach - run from the `ocgtk` directory:**
 
 ```bash
 # Generate GTK bindings to src/gtk/generated/
-dune exec src/tools/gir_gen/gir_gen.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+dune exec src/tools/gir_gen/gir_gen.exe -- generate /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
 ```
 
 ### From the repository root directory
@@ -76,13 +83,15 @@ If running from `/workspaces/ocgtk` (parent of `ocgtk`):
 
 ```bash
 cd ocgtk
-dune exec src/tools/gir_gen/gir_gen.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+dune exec src/tools/gir_gen/gir_gen.exe -- generate /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
 ```
 
-### Options
+### Generate Command Options
 
 - `GIR_FILE`: Path to GTK GIR file (usually `/usr/share/gir-1.0/Gtk-4.0.gir`)
 - `OUTPUT_DIR`: Where to write generated files
+- `-f, --filter FILE`: Optional filter file specifying which classes to generate
+- `-r, --reference FILE`: Optional reference file(s) for cross-namespace type validation (can be specified multiple times)
 
 ### ⚠️ IMPORTANT: Output Directory Convention
 
@@ -92,13 +101,13 @@ The generator automatically creates a `generated/` subdirectory inside the outpu
 
 ✅ **Correct:**
 ```bash
-dune exec gir_gen -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+dune exec gir_gen -- generate /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
 ```
 This creates files in `src/gtk/generated/`
 
 ❌ **Wrong:**
 ```bash
-dune exec gir_gen -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk/generated
+dune exec gir_gen -- generate /usr/share/gir-1.0/Gtk-4.0.gir src/gtk/generated
 ```
 This creates files in `src/gtk/generated/generated/` (nested directory problem)
 
@@ -114,17 +123,17 @@ This creates files in `src/gtk/generated/generated/` (nested directory problem)
 # Generate test output
 mkdir -p output/test
 echo "Label" > output/test/filter.txt
-dune exec src/tools/gir_gen/gir_gen.exe -- -f output/test/filter.txt \
+dune exec src/tools/gir_gen/gir_gen.exe -- generate -f output/test/filter.txt \
   /usr/share/gir-1.0/Gtk-4.0.gir output/test
 
 # Verify files generated
-ls output/test/label.mli output/test/ml_event_controllers_gen.c
+ls output/test/generated/label.mli output/test/generated/ml_label_gen.c
 ```
 
 ### Verify C Compilation
 ```bash
 # Check generated C compiles (headers only)
-gcc -c output/test/ml_event_controllers_gen.c \
+gcc -c output/test/generated/ml_label_gen.c \
   -I$(ocamlc -where) $(pkg-config --cflags gtk4) \
   -fsyntax-only
 ```
@@ -132,8 +141,20 @@ gcc -c output/test/ml_event_controllers_gen.c \
 ### Full Rebuild
 ```bash
 # Regenerate all GTK bindings and rebuild library (run from ocgtk directory)
-dune exec src/tools/gir_gen/gir_gen.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+dune exec src/tools/gir_gen/gir_gen.exe -- generate /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
 dune build
+```
+
+### Generate Cross-Namespace References
+```bash
+# Generate reference list for type validation
+dune exec src/tools/gir_gen/gir_gen.exe -- references \
+  /usr/share/gir-1.0/Gtk-4.0.gir gtk_refs.txt
+
+# Use references when generating bindings
+dune exec src/tools/gir_gen/gir_gen.exe -- generate \
+  -r gtk_refs.txt -r gdk_refs.txt \
+  /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
 ```
 
 ## Output Files

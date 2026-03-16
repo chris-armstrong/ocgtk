@@ -2,7 +2,7 @@
 
 This directory contains coding guidelines for the ocgtk project, organized by concern.
 
-## Guidelines Index
+## MANDATORY GUIDELINES INDEX
 
 | Document | Concerns Covered | Original Sections |
 |----------|-----------------|-------------------|
@@ -19,23 +19,8 @@ This directory contains coding guidelines for the ocgtk project, organized by co
 
 ## Usage
 
-### For Manual Development
+MANDATORY: Load ALL the MANDATORY GUIDELINES from the index above.
 
-Reference the relevant guideline when writing new code or reviewing changes.
-
-### For Review Agents
-
-Agents should:
-1. Read the specific guideline file for the concern being reviewed
-2. Check code against each rule in that guideline
-3. Reference the specific rule when logging issues
-
-### For Execution Agents
-
-Agents should:
-1. Read the guideline relevant to the issue being fixed
-2. Ensure the fix follows all rules in that guideline
-3. Not introduce new violations while fixing
 
 ## Available Libraries
 

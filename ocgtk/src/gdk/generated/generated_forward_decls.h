@@ -474,9 +474,9 @@ typedef enum {
   GDK_PIXBUF_FORMAT_SCALABLE = 2,
   GDK_PIXBUF_FORMAT_THREADSAFE = 4,
 } GdkPixbufFormatFlags;
-#endif
 value Val_GdkPixbufPixbufFormatFlags(GdkPixbufFormatFlags flags);
 GdkPixbufFormatFlags GdkPixbufPixbufFormatFlags_val(value list);
+#endif
 value Val_PangoFontMask(PangoFontMask flags);
 PangoFontMask PangoFontMask_val(value list);
 value Val_PangoLayoutDeserializeFlags(PangoLayoutDeserializeFlags flags);
