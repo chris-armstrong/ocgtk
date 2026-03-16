@@ -353,3 +353,188 @@ let uses_pointer_conversion f _expr_pattern =
     | _ -> false
   in
   List.exists check_stmt f.body
+
+(* ========================================================================= *)
+(* Header Guard Types and Parsing *)
+(* ========================================================================= *)
+
+type header_guard = {
+  guard_name : string;
+  has_ifndef : bool;
+  has_define : bool;
+  has_endif : bool;
+}
+
+(* Extract header guard directives from header content using line-by-line parsing *)
+let parse_header_guards header_content =
+  let lines = String.split_on_char '\n' header_content in
+  let rec extract_directives acc = function
+    | [] -> acc
+    | line :: rest ->
+        let stripped = String.trim line in
+        (* Match #ifndef _<name>_ *)
+        if String.starts_with ~prefix:"#ifndef " stripped then
+          let name =
+            String.sub stripped 8 (String.length stripped - 8) |> String.trim
+          in
+          extract_directives
+            ({
+               guard_name = name;
+               has_ifndef = true;
+               has_define = false;
+               has_endif = false;
+             }
+            :: acc)
+            rest (* Match #define _<name>_ *)
+        else if String.starts_with ~prefix:"#define " stripped then
+          let name =
+            String.sub stripped 8 (String.length stripped - 8) |> String.trim
+          in
+          (* Find and update matching guard *)
+          let updated =
+            List.map
+              (fun g ->
+                if g.guard_name = name then { g with has_define = true } else g)
+              acc
+          in
+          extract_directives updated rest (* Match #endif with comment *)
+        else if String.starts_with ~prefix:"#endif" stripped then
+          (* Extract guard name from comment if present: #endif /* _name_ */ *)
+          let guard_name =
+            try
+              let comment_start = String.index stripped '/' in
+              let start = comment_start + 3 in
+              let finish = String.index_from stripped start '*' - 1 in
+              String.sub stripped start (finish - start) |> String.trim
+            with Not_found -> ""
+          in
+          if guard_name <> "" then
+            let updated =
+              List.map
+                (fun g ->
+                  if g.guard_name = guard_name then { g with has_endif = true }
+                  else g)
+                acc
+            in
+            extract_directives updated rest
+          else extract_directives acc rest
+        else extract_directives acc rest
+  in
+  extract_directives [] lines
+
+(* ========================================================================= *)
+(* Forward Declaration Validation *)
+(* ========================================================================= *)
+
+(* Parse header content and extract forward declaration macro names.
+   Looks for patterns like:
+   - #define Val_<Type>(...)
+   - #define <Type>_val(...)
+   
+   Returns just the macro name (e.g., "Val_GtkWrapMode") without parameters. *)
+let extract_forward_decls header_content =
+  let lines = String.split_on_char '\n' header_content in
+  List.filter_map
+    (fun line ->
+      let stripped = String.trim line in
+      (* Match #define Val_<Type> or #define <Type>_val *)
+      if String.starts_with ~prefix:"#define " stripped then
+        let rest =
+          String.sub stripped 8 (String.length stripped - 8) |> String.trim
+        in
+        (* Extract macro name - it should be the first token after #define.
+         The name may be followed by parameters like "(v)", so we need to 
+         extract just the identifier part. *)
+        let extract_macro_name s =
+          (* Find the first non-identifier character (not letter, digit, or underscore) *)
+          let rec find_end idx =
+            if idx >= String.length s then idx
+            else
+              let c = s.[idx] in
+              if
+                (c >= 'a' && c <= 'z')
+                || (c >= 'A' && c <= 'Z')
+                || (c >= '0' && c <= '9')
+                || c = '_'
+              then find_end (idx + 1)
+              else idx
+          in
+          let end_idx = find_end 0 in
+          if end_idx > 0 then Some (String.sub s 0 end_idx) else None
+        in
+        match extract_macro_name rest with
+        | Some name ->
+            (* Check if it's a forward declaration pattern *)
+            if
+              String.starts_with ~prefix:"Val_" name
+              || String.ends_with ~suffix:"_val" name
+            then Some name
+            else None
+        | None -> None
+      else None)
+    lines
+
+(* Assert that a forward declaration exists in the header.
+   [assert_forward_decl_exists header_content c_type prefix] checks for declarations
+   like [prefix<c_type>] (e.g., Val_GtkWrapMode when prefix="Val_").
+   Fails with a descriptive message if the declaration is not found. *)
+let assert_forward_decl_exists header_content c_type prefix =
+  let decls = extract_forward_decls header_content in
+  let expected_decl = prefix ^ c_type in
+  if not (List.mem expected_decl decls) then
+    Alcotest.fail
+      (Printf.sprintf
+         "Expected forward declaration '%s' not found in header. Found \
+          declarations: [%s]"
+         expected_decl (String.concat ", " decls))
+
+(* Assert that a forward declaration does NOT exist in the header.
+   [assert_forward_decl_not_exists header_content c_type prefix] checks that declarations
+   like [prefix<c_type>] are NOT present.
+   Fails with a descriptive message if the declaration is found. *)
+let assert_forward_decl_not_exists header_content c_type prefix =
+  let decls = extract_forward_decls header_content in
+  let expected_decl = prefix ^ c_type in
+  if List.mem expected_decl decls then
+    Alcotest.fail
+      (Printf.sprintf
+         "Forward declaration '%s' should NOT exist in header, but was found"
+         expected_decl)
+
+(* Assert that a header guard exists with the expected pattern.
+   [assert_header_guard_format header_content expected_pattern] validates that
+   the header contains a complete guard (ifndef/define/endif) matching the pattern.
+   The pattern is matched against the guard name using String.ends_with.
+   Fails with a descriptive message if no matching guard is found or if it's incomplete. *)
+let assert_header_guard_format header_content expected_pattern =
+  let guards = parse_header_guards header_content in
+  (* Find guards matching the expected pattern *)
+  let matching_guards =
+    List.filter
+      (fun g -> String.ends_with ~suffix:expected_pattern g.guard_name)
+      guards
+  in
+  match matching_guards with
+  | [] ->
+      (* No matching guard found *)
+      let available_guards =
+        List.map (fun g -> g.guard_name) guards |> String.concat ", "
+      in
+      Alcotest.fail
+        (Printf.sprintf
+           "No header guard with pattern '%s' found. Available guards: [%s]"
+           expected_pattern available_guards)
+  | guard :: _ ->
+      (* Found a matching guard, verify it has complete structure *)
+      if not guard.has_ifndef then
+        Alcotest.fail
+          (Printf.sprintf "Header guard '%s' is missing #ifndef directive"
+             guard.guard_name);
+      if not guard.has_define then
+        Alcotest.fail
+          (Printf.sprintf "Header guard '%s' is missing #define directive"
+             guard.guard_name);
+      if not guard.has_endif then
+        Alcotest.fail
+          (Printf.sprintf "Header guard '%s' is missing #endif directive"
+             guard.guard_name)
