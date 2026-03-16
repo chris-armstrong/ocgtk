@@ -2,27 +2,29 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
 {
   "name": "Ubuntu",
+  "build": { "dockerfile": "Dockerfile" },
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  "image": "ghcr.io/chris-armstrong/ocaml-devcontainer:5.4-ubuntu",
+  //  "image": "ghcr.io/chris-armstrong/ocaml-devcontainer:5.4-ubuntu",
 
   // Features to add to the dev container. More info: https://containers.dev/features.
   // "features": {},
 
-  "features": {
-    "ghcr.io/devcontainers-extra/features/claude-code:latest": {},
-    "ghcr.io/stu-bell/devcontainer-features/open-code:0": {}
-  },
+  // "features": {
+  //   "ghcr.io/devcontainers-extra/features/claude-code:latest": {},
+  //   "ghcr.io/stu-bell/devcontainer-features/open-code:0": {}
+  // },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
   "remoteUser": "ocaml",
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "sudo apt-get update && sudo ln -fs /usr/share/zoneinfo/Australia/Sydney /etc/localtime && sudo DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y install rsync libgtk-4-dev m4 xdot ripgrep neovim && opam update && cd conf-gtk4 && opam pin -y . && cd .. && cd ocgtk && opam install . --deps-only --with-test -y",
+  "postCreateCommand": "cd conf-gtk4 && opam pin -y . && cd .. && cd ocgtk && opam install . --deps-only --with-test -y && curl -LO https://github.com/ActiveMemory/ctx/releases/download/v0.6.0/ctx-0.6.0-linux-amd64 && chmod +x ctx-0.6.0-linux-amd64 && sudo mv ctx-0.6.0-linux-amd64 /usr/local/bin/ctx",
   "mounts": [
-    "source=${localEnv:OPENCODE_CONFIG_PATH},target=/opencode-config,type=bind"
+    "source=${localEnv:OPENCODE_CONFIG_PATH},target=/opencode-config,type=bind",
+    "source=${localEnv:CONTEXT_PATH},target=/context,type=bind"
   ],
   "containerEnv": {
-    "OPENCODE_CONFIG_PATH": "/opencode-config"
+    "OPENCODE_CONFIG_DIR": "/opencode-config"
   }
 }

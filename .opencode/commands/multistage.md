@@ -16,6 +16,15 @@ DO NOT execute any of these steps yourself - always use the agents. STOP if you 
 
 Minimise your output to just the relevant parts. 
 
+## Setup: Load Context
+Read these files in order:
+
+1. `.context/CONSTITUTION.md` — NEVER violate these rules
+2. `.context/TASKS.md` — Find work to do
+3. `.context/CONVENTIONS.md` — Follow these patterns
+4. `.context/DECISIONS.md` — Understand past choices
+5. `.context/LEARNINGS.md` — Avoid known pitfalls
+
 ### Setup: Load or Define Guidelines
 
 Insturct your agents that it is MANDATORY to load `ocgtk/docs/code_guidelines/index.md`. This file contains the coding guidelines - it is MANDATORY they load all the ones marked as mandatory, and ADVISED they load anything related to the task at hand. STOP if you are unable to find it and ask for instructions.
@@ -97,7 +106,7 @@ After all changes addressed:
 2. Final review of ALL modified files:
    Use @glm-reviewer with original goal on complete changeset
 
-3. Generate summary:
+1. Generate summary:
 ```
    ## Refactoring Summary
    - Goal: <summary of goal>
@@ -110,6 +119,13 @@ After all changes addressed:
    - Partial functions: <N> → <M>
    - Exception sites: <N> → <M>
 ```
+
+## Phase 4: Update Context
+After completing work:
+
+- Mark task complete: `ctx complete "<task>"`
+- Add learnings: `ctx add learning "..."`
+- Add decisions: `ctx add decision "..."`
 
 ### Failure Recovery
 

@@ -3,3 +3,12 @@ _build
 *.install
 .claude/scratchpad/
 .opencode/scratchpad/
+
+# ctx managed entries
+.context/sessions/
+.context/journal/
+.context/journal-site/
+.context/journal-obsidian/
+.context/logs/
+.context/.scratchpad.key
+.claude/settings.local.json
