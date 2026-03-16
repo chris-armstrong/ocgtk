@@ -82,7 +82,8 @@ module Code_gen = struct
     bprintf buf "#include \"%s_decls.h\"\n" ns_lower;
     Buffer.add_string buf "\n";
 
-    (* No longer generate type-specific macros here - all macros are in generated_forward_decls.h *)
+    (* Type-specific macros are defined in the library-specific <ns>_decls.h header
+       which is included above. No need to generate them here. *)
     Buffer.contents buf
 
   (* Helper: extract base C type by removing trailing pointer *)

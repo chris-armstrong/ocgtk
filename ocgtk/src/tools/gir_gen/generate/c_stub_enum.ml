@@ -4,11 +4,30 @@ open Printf
 open StdLabels
 open Types
 
+(** DEPRECATION NOTICE: External enum forward declarations removed
+
+    As of Phase 2 (cross_namespace_phase2 plan), external enum forward
+    declarations are no longer generated in this file. External enum
+    declarations now come from included dependency headers (e.g., #include
+    "gdk_decls.h").
+
+    See: .opencode/plans/cross_namespace_phase2.json - Stage 2 See:
+    architecture/todo/CROSS_NAMESPACE_PLAN.md - Section 2.2
+
+    This function now only generates declarations for enums in the current
+    namespace. *)
+
 (** Generate forward declarations for enum converters.
 
-    Note: This function now only generates declarations for enums in the current
-    namespace. External enum declarations come from included headers as part of
-    Phase 2 cross-namespace header refactoring. *)
+    This function generates declarations only for enums in the current
+    namespace. External enum declarations come from included headers via the
+    library-specific <ns>_decls.h files as part of Phase 2 cross-namespace
+    header refactoring.
+
+    @param namespace_prefix
+      The namespace prefix for the current library (e.g., "gtk_")
+    @param gtk_enums List of local enums to generate declarations for
+    @return String containing forward declarations for enum converters *)
 let generate_forward_decls ~namespace_prefix ~gtk_enums =
   let buf = Buffer.create 1024 in
 

@@ -4,6 +4,19 @@ open Printf
 open StdLabels
 open Types
 
+(** DEPRECATION NOTICE: External bitfield forward declarations removed
+
+    As of Phase 2 (cross_namespace_phase2 plan), external bitfield forward
+    declarations are no longer generated in this file. External bitfield
+    declarations now come from included dependency headers (e.g., #include
+    "gdk_decls.h").
+
+    See: .opencode/plans/cross_namespace_phase2.json - Stage 3 See:
+    architecture/todo/CROSS_NAMESPACE_PLAN.md - Section 2.2
+
+    This file now only generates declarations for bitfields in the current
+    namespace. *)
+
 let emit_bitfield_proto buf ~namespace (bitfield : gir_bitfield) =
   let is_pixbuf_format_flags =
     String.equal bitfield.bitfield_c_type "GdkPixbufFormatFlags"

@@ -316,7 +316,23 @@ generate/
 
 ## Phase 2: Library-Specific Declaration Headers
 
+**Status**: ✅ COMPLETED (all stages implemented)
+
 **Goal**: Each library generates its own `<ns>_decls.h` that dependent libraries include.
+
+**Implementation Summary**:
+- All 9 stages of Phase 2 have been completed
+- Header file generation now uses `<ns>_decls.h` naming pattern
+- Dependency headers are automatically included via `#include "<dep>_decls.h"`
+- Dune files include proper `-I../../<dep>/generated` paths
+- External enum/bitfield forward declarations removed in favor of header inclusion
+
+**Key Implementation Details Discovered**:
+1. **Header naming consistency**: All headers use lowercase namespace (e.g., `gtk_decls.h`, `gdk_decls.h`)
+2. **Dependency exclusion**: GLib, GModule, GObject are explicitly filtered from dependency includes
+3. **Include order**: Main library header (e.g., `#include <gtk/gtk.h>`) comes before dependency includes
+4. **Dune path calculation**: Relative paths computed as `../../<dep>/generated` from `src/<ns>/generated/`
+5. **Library dependency naming**: Uses `ocgtk.<ns>.generated` pattern (e.g., `ocgtk.gdk.generated`)
 
 ### 2.1 Library-Specific Declaration Headers
 
