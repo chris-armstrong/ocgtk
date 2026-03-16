@@ -4,9 +4,11 @@
    namespaces' header files. This allows dependent libraries to access type
    converters from their dependencies. *)
 
+open C_validation
+
 (* Helper: Create a context with cross-references to verify that dependency
-    headers are included *)
-let create_context_with_cross_references ~namespace deps =
+     headers are included *)
+let create_context_with_cross_references ~namespace ~deps =
   let open Gir_gen_lib.Types in
   let cross_references_final =
     List.fold_left
@@ -61,7 +63,7 @@ let create_context_with_cross_references ~namespace deps =
 let test_header_includes_dependency_headers () =
   (* Create context simulating Gtk with Gdk and Gio dependencies *)
   let ctx =
-    create_context_with_cross_references ~namespace:"Gtk" [ "Gdk"; "Gio" ]
+    create_context_with_cross_references ~namespace:"Gtk" ~deps:[ "Gdk"; "Gio" ]
   in
 
   (* Generate the header file *)
@@ -73,11 +75,9 @@ let test_header_includes_dependency_headers () =
   Helpers.log_generated_c_code "gtk_decls.h (Stage 4 dependency includes test)"
     header_content;
 
-  (* Verify dependency headers are included *)
-  Helpers.assert_contains "Header should include gdk_decls.h" header_content
-    "#include \"gdk_decls.h\"";
-  Helpers.assert_contains "Header should include gio_decls.h" header_content
-    "#include \"gio_decls.h\""
+  (* Verify dependency headers are included using AST-based validation *)
+  C_validation.assert_local_include_exists header_content "gdk_decls.h";
+  C_validation.assert_local_include_exists header_content "gio_decls.h"
 
 (* Stage 4 Test: Dependency headers are sorted alphabetically.
     This ensures consistent output across runs. *)
@@ -85,7 +85,7 @@ let test_dependency_headers_sorted_alphabetically () =
   (* Create context with dependencies in non-alphabetical order *)
   let ctx =
     create_context_with_cross_references ~namespace:"Gtk"
-      [ "Gsk"; "Gdk"; "Gio" ]
+      ~deps:[ "Gsk"; "Gdk"; "Gio" ]
   in
 
   (* Generate the header file *)
@@ -94,7 +94,7 @@ let test_dependency_headers_sorted_alphabetically () =
       ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[]
   in
 
-  (* Find positions of includes in the output *)
+  (* Find positions of includes in the output using AST-based validation *)
   let gdk_pos =
     try
       Str.search_forward
@@ -123,10 +123,12 @@ let test_dependency_headers_sorted_alphabetically () =
       "Dependency headers should be sorted alphabetically (Gdk < Gio < Gsk)"
 
 (* Stage 4 Test: Header uses lowercase namespace in include filename.
-    The include directive should be #include "gdk_decls.h" not #include "Gdk_decls.h". *)
+     The include directive should be #include "gdk_decls.h" not #include "Gdk_decls.h". *)
 let test_include_uses_lowercase_namespace () =
   (* Create context with mixed-case namespace *)
-  let ctx = create_context_with_cross_references ~namespace:"Gtk" [ "Gdk" ] in
+  let ctx =
+    create_context_with_cross_references ~namespace:"Gtk" ~deps:[ "Gdk" ]
+  in
 
   (* Generate the header file *)
   let header_content =
@@ -134,13 +136,11 @@ let test_include_uses_lowercase_namespace () =
       ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[]
   in
 
-  (* Verify lowercase is used *)
-  Helpers.assert_contains "Header should use lowercase namespace" header_content
-    {|#include "gdk_decls.h"|};
+  (* Verify lowercase is used using AST-based validation *)
+  assert_local_include_exists header_content "gdk_decls.h";
 
-  (* Verify uppercase is NOT used *)
-  Helpers.assert_not_contains "Header should NOT use uppercase namespace"
-    header_content {|#include "Gdk_decls.h"|}
+  (* Verify uppercase is NOT used using AST-based validation *)
+  assert_local_include_not_exists header_content "Gdk_decls.h"
 
 (* Stage 4 Test: Helper function get_dependency_namespaces works correctly.
     Extracts unique namespace names from cross_references map. *)
@@ -165,13 +165,15 @@ let test_get_dependency_namespaces_extracts_unique_namespaces () =
 
   (* Should contain Gdk exactly once *)
   Alcotest.(check int) "Should have exactly 1 dependency" 1 (List.length deps);
-  Alcotest.(check string) "Dependency should be Gdk" "Gdk" (List.hd deps)
+  match deps with
+  | [] -> Alcotest.fail "Expected at least one dependency"
+  | first :: _ -> Alcotest.(check string) "Dependency should be Gdk" "Gdk" first
 
 (* Stage 4 Test: No dependency headers when cross_references is empty.
-    When there are no cross-namespace types, no #include directives should be generated. *)
+     When there are no cross-namespace types, no #include directives should be generated. *)
 let test_no_includes_when_no_dependencies () =
   (* Create context with no cross-references *)
-  let ctx = create_context_with_cross_references ~namespace:"Gtk" [] in
+  let ctx = create_context_with_cross_references ~namespace:"Gtk" ~deps:[] in
 
   (* Generate the header file *)
   let header_content =
@@ -179,9 +181,12 @@ let test_no_includes_when_no_dependencies () =
       ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[]
   in
 
-  (* Verify no dependency section is present *)
-  Helpers.assert_not_contains "Header should not have dependency section"
-    header_content "/* Dependency headers"
+  (* Verify no dependency includes are present using AST-based validation *)
+  let includes = extract_includes header_content in
+  let local_includes = List.filter (fun inc -> not inc.is_system) includes in
+  Alcotest.(check int)
+    "Should have no local includes when no dependencies" 0
+    (List.length local_includes)
 
 let tests =
   [

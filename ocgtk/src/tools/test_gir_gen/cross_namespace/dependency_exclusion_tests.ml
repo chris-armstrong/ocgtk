@@ -5,6 +5,8 @@
    in generated header files. These are base libraries that don't need
    explicit header inclusion. *)
 
+open C_validation
+
 (* Helper: Create a context with cross-references to base namespaces *)
 let create_context_with_base_namespace_refs () =
   let open Gir_gen_lib.Types in
@@ -81,9 +83,8 @@ let test_glib_not_included_as_dependency () =
   Helpers.log_generated_c_code "gtk_decls.h (Stage 4 exclusion test)"
     header_content;
 
-  (* Verify GLib header is NOT included *)
-  Helpers.assert_not_contains "Header should NOT include glib_decls.h"
-    header_content {|#include "glib_decls.h"|}
+  (* Verify GLib header is NOT included using AST-based validation *)
+  assert_local_include_not_exists header_content "glib_decls.h"
 
 (* Stage 4 Test: GModule is NOT included as a dependency.
    GModule is a base library that doesn't need explicit header inclusion. *)
@@ -97,9 +98,8 @@ let test_gmodule_not_included_as_dependency () =
       ~interfaces:[]
   in
 
-  (* Verify GModule header is NOT included *)
-  Helpers.assert_not_contains "Header should NOT include gmodule_decls.h"
-    header_content {|#include "gmodule_decls.h"|}
+  (* Verify GModule header is NOT included using AST-based validation *)
+  assert_local_include_not_exists header_content "gmodule_decls.h"
 
 (* Stage 4 Test: GObject is NOT included as a dependency.
    GObject is a base library that doesn't need explicit header inclusion. *)
@@ -113,9 +113,8 @@ let test_gobject_not_included_as_dependency () =
       ~interfaces:[]
   in
 
-  (* Verify GObject header is NOT included *)
-  Helpers.assert_not_contains "Header should NOT include gobject_decls.h"
-    header_content {|#include "gobject_decls.h"|}
+  (* Verify GObject header is NOT included using AST-based validation *)
+  assert_local_include_not_exists header_content "gobject_decls.h"
 
 (* Stage 4 Test: Non-base namespaces ARE included.
    Gdk should be included even though GLib/GObject/GModule are excluded. *)
@@ -129,9 +128,8 @@ let test_non_base_namespaces_are_included () =
       ~interfaces:[]
   in
 
-  (* Verify Gdk header IS included *)
-  Helpers.assert_contains "Header should include gdk_decls.h" header_content
-    {|#include "gdk_decls.h"|}
+  (* Verify Gdk header IS included using AST-based validation *)
+  assert_local_include_exists header_content "gdk_decls.h"
 
 (* Stage 4 Test: Helper function filters base namespaces correctly.
    get_dependency_namespaces should exclude GLib, GModule, GObject. *)

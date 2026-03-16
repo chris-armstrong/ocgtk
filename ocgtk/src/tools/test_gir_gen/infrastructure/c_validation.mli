@@ -9,6 +9,36 @@ type header_guard = {
   has_endif : bool;  (** Whether the #endif directive is present *)
 }
 
+(** {1 Include Directive Types} *)
+
+type include_directive = {
+  include_path : string;  (** The path in the include (e.g., "gdk_decls.h") *)
+  is_system : bool;  (** true for <path>, false for "path" *)
+}
+
+(** {1 Include Directive Validation} *)
+
+val extract_includes : string -> include_directive list
+(** Extract all #include directives from header content. Returns a list of
+    [include_directive] records for both system (<...>) and local ("...")
+    includes. *)
+
+val assert_local_include_exists : string -> string -> unit
+(** Assert that a local include directive exists in the header.
+
+    [assert_local_include_exists header_content expected_path] checks for an
+    include directive like [#include "path"].
+
+    @raise Alcotest.Test_error if the include is not found *)
+
+val assert_local_include_not_exists : string -> string -> unit
+(** Assert that a local include directive does NOT exist in the header.
+
+    [assert_local_include_not_exists header_content unexpected_path] checks that
+    an include directive like [#include "path"] is NOT present.
+
+    @raise Alcotest.Test_error if the include is found *)
+
 (** {1 Header Guard Parsing} *)
 
 val parse_header_guards : string -> header_guard list

@@ -588,11 +588,91 @@ let c_code_has_caml_param c_code param_name =
       String.starts_with ~prefix:(param_name ^ "(") stripped)
     lines
 
+(* ========================================================================= *)
+(* Include Directive Validation *)
+(* ========================================================================= *)
+
+type include_directive = {
+  include_path : string;
+  is_system : bool; (* true for <path>, false for "path" *)
+}
+
+(* Extract #include directives from header content using line-by-line parsing.
+   Returns a list of include_directive records for both system (<...>) and
+   local ("...") includes. *)
+let extract_includes header_content =
+  let lines = String.split_on_char '\n' header_content in
+  List.filter_map
+    (fun line ->
+      let stripped = String.trim line in
+      if String.starts_with ~prefix:"#include " stripped then
+        let rest =
+          String.sub stripped 9 (String.length stripped - 9) |> String.trim
+        in
+        (* Check for system include: <path> *)
+        if
+          String.starts_with ~prefix:"<" rest
+          && String.ends_with ~suffix:">" rest
+        then
+          let path_len = String.length rest - 2 in
+          if path_len > 0 then
+            let path = String.sub rest 1 path_len in
+            Some { include_path = path; is_system = true }
+          else None (* Check for local include: "path" *)
+        else if
+          String.starts_with ~prefix:{|"|} rest
+          && String.ends_with ~suffix:{|"|} rest
+        then
+          let path_len = String.length rest - 2 in
+          if path_len > 0 then
+            let path = String.sub rest 1 path_len in
+            Some { include_path = path; is_system = false }
+          else None
+        else None
+      else None)
+    lines
+
+(* Assert that a local include directive exists in the header.
+   [assert_local_include_exists header_content expected_path] checks for an
+   include directive like [#include "path"].
+   Fails with a descriptive message if the include is not found. *)
+let assert_local_include_exists header_content expected_path =
+  let includes = extract_includes header_content in
+  let local_includes =
+    List.filter_map
+      (fun inc -> if not inc.is_system then Some inc.include_path else None)
+      includes
+  in
+  if not (List.mem expected_path local_includes) then
+    Alcotest.fail
+      (Printf.sprintf
+         "Expected local include '%s' not found in header. Found local \
+          includes: [%s]"
+         expected_path
+         (String.concat ", " local_includes))
+
+(* Assert that a local include directive does NOT exist in the header.
+   [assert_local_include_not_exists header_content unexpected_path] checks that
+   an include directive like [#include "path"] is NOT present.
+   Fails with a descriptive message if the include is found. *)
+let assert_local_include_not_exists header_content unexpected_path =
+  let includes = extract_includes header_content in
+  let local_includes =
+    List.filter_map
+      (fun inc -> if not inc.is_system then Some inc.include_path else None)
+      includes
+  in
+  if List.mem unexpected_path local_includes then
+    Alcotest.fail
+      (Printf.sprintf
+         "Local include '%s' should NOT exist in header, but was found"
+         unexpected_path)
+
 (* Assert that a header guard exists with the expected pattern.
-    [assert_header_guard_format header_content expected_pattern] validates that
-    the header contains a complete guard (ifndef/define/endif) matching the pattern.
-    The pattern is matched against the guard name using String.ends_with.
-    Fails with a descriptive message if no matching guard is found or if it's incomplete. *)
+     [assert_header_guard_format header_content expected_pattern] validates that
+     the header contains a complete guard (ifndef/define/endif) matching the pattern.
+     The pattern is matched against the guard name using String.ends_with.
+     Fails with a descriptive message if no matching guard is found or if it's incomplete. *)
 let assert_header_guard_format header_content expected_pattern =
   let guards = parse_header_guards header_content in
   (* Find guards matching the expected pattern *)
