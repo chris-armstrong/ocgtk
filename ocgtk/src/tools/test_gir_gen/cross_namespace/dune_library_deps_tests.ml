@@ -31,7 +31,7 @@ let assert_not_contains ~msg haystack needle =
 
 (* Stage 7 Test: Dune file includes library dependency for single namespace.
    When generating for GSK with Gdk as a dependency,
-   the dune file should include ocgtk.gdk.generated in libraries. *)
+   the dune file should include ocgtk.gdk in libraries. *)
 let test_dune_includes_single_library_dependency () =
   (* Generate dune file with Gdk as a dependency *)
   let dune_content =
@@ -41,8 +41,8 @@ let test_dune_includes_single_library_dependency () =
   in
 
   (* Verify the library dependency for Gdk is present *)
-  assert_contains ~msg:"Dune file should include ocgtk.gdk.generated library"
-    dune_content "ocgtk.gdk.generated"
+  assert_contains ~msg:"Dune file should include ocgtk.gdk library"
+    dune_content "ocgtk.gdk"
 
 (* Stage 7 Test: Dune file includes library dependencies for multiple namespaces.
    When generating for Gtk with Gdk and Gio as dependencies,
@@ -56,10 +56,10 @@ let test_dune_includes_multiple_library_dependencies () =
   in
 
   (* Verify both library dependencies are present *)
-  assert_contains ~msg:"Dune file should include ocgtk.gdk.generated"
-    dune_content "ocgtk.gdk.generated";
-  assert_contains ~msg:"Dune file should include ocgtk.gio.generated"
-    dune_content "ocgtk.gio.generated"
+  assert_contains ~msg:"Dune file should include ocgtk.gdk"
+    dune_content "ocgtk.gdk";
+  assert_contains ~msg:"Dune file should include ocgtk.gio"
+    dune_content "ocgtk.gio"
 
 (* Stage 7 Test: No library dependencies when there are no dependencies.
    When generating for a namespace with no dependencies,
@@ -90,15 +90,15 @@ let test_library_deps_in_libraries_section () =
   in
 
   (* Verify the library is in the output *)
-  assert_contains ~msg:"Libraries section should contain ocgtk.gdk.generated"
-    dune_content "ocgtk.gdk.generated";
+  assert_contains ~msg:"Libraries section should contain ocgtk.gdk"
+    dune_content "ocgtk.gdk";
 
   (* Verify ocgtk_common is still present *)
   assert_contains ~msg:"Libraries section should still contain ocgtk_common"
     dune_content "ocgtk_common"
 
 (* Stage 7 Test: Library name format is correct.
-   Library names should follow the pattern ocgtk.<ns>.generated *)
+   Library names should follow the pattern ocgtk.<ns> (public library, not .generated stubs) *)
 let test_library_name_format () =
   (* Generate dune file with mixed case namespace *)
   let dune_content =
@@ -109,11 +109,11 @@ let test_library_name_format () =
       ()
   in
 
-  (* Verify lowercase namespace in library name *)
+  (* Verify lowercase namespace in library name - using public library, not .generated stubs *)
   assert_contains ~msg:"Library name should use lowercase namespace"
-    dune_content "ocgtk.gdkpixbuf.generated";
+    dune_content "ocgtk.gdkpixbuf";
   assert_contains ~msg:"Library name should use lowercase namespace"
-    dune_content "ocgtk.graphene.generated"
+    dune_content "ocgtk.graphene"
 
 let tests =
   [

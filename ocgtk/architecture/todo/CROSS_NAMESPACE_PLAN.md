@@ -324,15 +324,15 @@ generate/
 - All 9 stages of Phase 2 have been completed
 - Header file generation now uses `<ns>_decls.h` naming pattern
 - Dependency headers are automatically included via `#include "<dep>_decls.h"`
-- Dune files include proper `-I../../<dep>/generated` paths
+- Dune files include proper library dependencies (`ocgtk.<dep>`)
 - External enum/bitfield forward declarations removed in favor of header inclusion
 
 **Key Implementation Details Discovered**:
 1. **Header naming consistency**: All headers use lowercase namespace (e.g., `gtk_decls.h`, `gdk_decls.h`)
 2. **Dependency exclusion**: GLib, GModule, GObject are explicitly filtered from dependency includes
 3. **Include order**: Main library header (e.g., `#include <gtk/gtk.h>`) comes before dependency includes
-4. **Dune path calculation**: Relative paths computed as `../../<dep>/generated` from `src/<ns>/generated/`
-5. **Library dependency naming**: Uses `ocgtk.<ns>.generated` pattern (e.g., `ocgtk.gdk.generated`)
+4. **Library dependency naming**: Uses `ocgtk.<ns>` pattern (e.g., `ocgtk.gdk`) - depends on public library, not internal .generated stubs. The `<ns>_decls.h` headers are made available through the library dependency mechanism.
+5. **No manual include paths needed**: The dune build system handles header availability through library dependencies, so no `-I../../<dep>/generated` flags are required
 
 ### 2.1 Library-Specific Declaration Headers
 
@@ -481,21 +481,6 @@ let get_dependency_namespaces cross_references current_ns =
 
 ### 2.3 Update dune File Generation
 
-**Include Paths for Dependency Headers:**
-
-Generated dune files must specify include paths for dependency headers:
-
-```scheme
-(foreign_stubs
-  (language c)
-  (names ml_button_gen ...)
-  (flags -fPIC 
-         (:include cflag-gtk4.sexp) 
-         -I../../gdk/generated    ; For gdk_decls.h
-         -I../../gio/generated    ; For gio_decls.h
-         -Wno-deprecated-declarations))
-```
-
 **Library Dependencies in dune Files:**
 
 Each generated library must declare its cross-namespace dependencies in the `(libraries)` clause:
@@ -506,9 +491,9 @@ Each generated library must declare its cross-namespace dependencies in the `(li
  (public_name ocgtk.gsk.generated)
  (libraries
    ocgtk.common
-   ocgtk.gio.generated    ; For GIO types (GListModel, etc.)
-   ocgtk.gdk.generated    ; For GDK types (GdkTexture, etc.)
-   ocgtk.graphene.generated  ; For Graphene types
+   ocgtk.gio    ; For GIO types (GListModel, etc.)
+   ocgtk.gdk    ; For GDK types (GdkTexture, etc.)
+   ocgtk.graphene  ; For Graphene types
    ctypes
    ctypes.foreign
    base)
@@ -516,19 +501,16 @@ Each generated library must declare its cross-namespace dependencies in the `(li
   (language c)
   (names ml_..._gen)
   (flags -fPIC 
-         -I../../gio/generated
-         -I../../gdk/generated  
-         -I../../graphene/generated
          (:include cflag-gsk.sexp)
          -Wno-deprecated-declarations))
  (c_library_flags (:include clink-gsk.sexp)))
 ```
 
 **Key points:**
-1. **OCaml library dependencies**: Listed in `(libraries)` clause using full public names (e.g., `ocgtk.gdk.generated`)
-2. **C header include paths**: Listed in `(flags)` using `-I../../<lib>/generated` relative paths
-3. **Dependency ordering**: Libraries must be listed in dependency order (dependencies before dependents)
-4. **Generated automatically**: The dune file generator (`generate/dune_file.ml`) produces these entries based on which reference files are passed to gir_gen
+1. **OCaml library dependencies**: Listed in `(libraries)` clause using public library names (e.g., `ocgtk.gdk`) - NOT the internal `.generated` stubs
+2. **Dependency ordering**: Libraries must be listed in dependency order (dependencies before dependents)
+3. **Generated automatically**: The dune file generator (`generate/dune_file.ml`) produces these entries based on which reference files are passed to gir_gen
+4. **Header availability**: The `<ns>_decls.h` headers are made available through the library dependency, no manual `-I` paths needed
 
 **Example: GSK dune configuration**
 ```scheme
@@ -541,8 +523,6 @@ Each generated library must declare its cross-namespace dependencies in the `(li
   (names ml_blend_node_gen ...)
   (flags -fPIC 
          -Igenerated -Icore -I../common
-         -I../../gdk/generated      ; GDK dependency
-         -I../../graphene/generated  ; Graphene dependency
          (:include cflag-gsk.sexp)
          -Wno-deprecated-declarations))
  (c_library_flags (:include cflag-gsk.sexp)))
@@ -552,11 +532,10 @@ Each generated library must declare its cross-namespace dependencies in the `(li
 
 **Files to modify**:
 
-1. **`dune_file.ml`** - Add dependency include paths and library deps
+1. **`dune_file.ml`** - Add library dependencies
    - Modify `generate_dune_library` to accept `dependency_namespaces` parameter
-   - Generate `-I../../<dep>/generated` for each dependency in `(flags ...)`
-   - Generate `ocgtk.<dep>.generated` entries in `(libraries ...)` clause
-   - Map namespace names to library names (e.g., "Gdk" → "ocgtk.gdk.generated")
+   - Generate `ocgtk.<dep>` entries in `(libraries ...)` clause (public library, not .generated stubs)
+   - Map namespace names to library names (e.g., "Gdk" → "ocgtk.gdk")
 
 2. **`gir_gen.ml`** - Pass dependency info to dune generation
    - Extract dependency namespaces from `ctx.cross_references`
@@ -565,17 +544,15 @@ Each generated library must declare its cross-namespace dependencies in the `(li
 **Namespace to library name mapping**:
 ```ocaml
 let library_name_of_namespace ns =
-  "ocgtk." ^ (String.lowercase_ascii ns) ^ ".generated"
-
-let include_path_of_namespace ns =
-  "-I../../" ^ (String.lowercase_ascii ns) ^ "/generated"
+  "ocgtk." ^ (String.lowercase_ascii ns)
+  (* Note: We depend on the public library, not ocgtk.<ns>.generated stubs.
+     The <ns>_decls.h header is made available through the library dependency. *)
 ```
 
-**Directory structure for includes**:
-- Generating `src/gsk/generated/gsk_decls.h`
-- Needs `gdk_decls.h` → include path `-I../../gdk/generated`
-- Needs `gio_decls.h` → include path `-I../../gio/generated`
-- Relative path from `src/gsk/generated/` to `src/gdk/generated/` is `../../gdk/generated`
+**Header availability**:
+- The `<ns>_decls.h` headers are made available through library dependencies
+- No manual `-I` include paths are needed - the dune build system handles this
+- Dependent libraries access headers via the public library interface
 
 ---
 

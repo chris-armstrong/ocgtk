@@ -41,16 +41,16 @@ let test_dependencies_listed_before_common () =
   in
 
   (* Find positions of dependency libraries and ocgtk_common *)
-  let gdk_pos = find_position dune_content "ocgtk.gdk.generated" in
-  let gio_pos = find_position dune_content "ocgtk.gio.generated" in
+  let gdk_pos = find_position dune_content "ocgtk.gdk" in
+  let gio_pos = find_position dune_content "ocgtk.gio" in
   let common_pos = find_position dune_content "ocgtk_common" in
 
   (* Verify all elements are found *)
   (match gdk_pos with
-  | None -> Alcotest.fail "ocgtk.gdk.generated not found in dune file"
+  | None -> Alcotest.fail "ocgtk.gdk not found in dune file"
   | Some _ -> ());
   (match gio_pos with
-  | None -> Alcotest.fail "ocgtk.gio.generated not found in dune file"
+  | None -> Alcotest.fail "ocgtk.gio not found in dune file"
   | Some _ -> ());
   (match common_pos with
   | None -> Alcotest.fail "ocgtk_common not found in dune file"
@@ -80,19 +80,19 @@ let test_multiple_dependencies_preserve_order () =
   in
 
   (* Find positions of each library *)
-  let gsk_pos = find_position dune_content "ocgtk.gsk.generated" in
-  let gdk_pos = find_position dune_content "ocgtk.gdk.generated" in
-  let gio_pos = find_position dune_content "ocgtk.gio.generated" in
+  let gsk_pos = find_position dune_content "ocgtk.gsk" in
+  let gdk_pos = find_position dune_content "ocgtk.gdk" in
+  let gio_pos = find_position dune_content "ocgtk.gio" in
 
   (* Verify all libraries are found *)
   (match gsk_pos with
-  | None -> Alcotest.fail "ocgtk.gsk.generated not found"
+  | None -> Alcotest.fail "ocgtk.gsk not found"
   | Some _ -> ());
   (match gdk_pos with
-  | None -> Alcotest.fail "ocgtk.gdk.generated not found"
+  | None -> Alcotest.fail "ocgtk.gdk not found"
   | Some _ -> ());
   (match gio_pos with
-  | None -> Alcotest.fail "ocgtk.gio.generated not found"
+  | None -> Alcotest.fail "ocgtk.gio not found"
   | Some _ -> ());
 
   (* Verify order is preserved: Gsk < Gdk < Gio *)
@@ -114,7 +114,7 @@ let test_single_dependency_before_common () =
   in
 
   (* Find positions *)
-  let gdk_pos = find_position dune_content "ocgtk.gdk.generated" in
+  let gdk_pos = find_position dune_content "ocgtk.gdk" in
   let common_pos = find_position dune_content "ocgtk_common" in
 
   (* Verify order: dependency before common *)
@@ -122,7 +122,7 @@ let test_single_dependency_before_common () =
   | Some gdk, Some common ->
       if not (gdk < common) then
         Alcotest.fail "Single dependency should be listed before ocgtk_common"
-  | None, _ -> Alcotest.fail "ocgtk.gdk.generated not found"
+  | None, _ -> Alcotest.fail "ocgtk.gdk not found"
   | _, None -> Alcotest.fail "ocgtk_common not found"
 
 (* Stage 7 Test: GTK example with complete dependency chain.
@@ -138,18 +138,18 @@ let test_gtk_complete_dependency_chain () =
   in
 
   (* Find all library positions *)
-  let gsk_pos = find_position dune_content "ocgtk.gsk.generated" in
-  let gdk_pos = find_position dune_content "ocgtk.gdk.generated" in
-  let gio_pos = find_position dune_content "ocgtk.gio.generated" in
+  let gsk_pos = find_position dune_content "ocgtk.gsk" in
+  let gdk_pos = find_position dune_content "ocgtk.gdk" in
+  let gio_pos = find_position dune_content "ocgtk.gio" in
   let common_pos = find_position dune_content "ocgtk_common" in
 
   (* Verify all are present *)
-  assert_contains ~msg:"Should include ocgtk.gsk.generated" dune_content
-    "ocgtk.gsk.generated";
-  assert_contains ~msg:"Should include ocgtk.gdk.generated" dune_content
-    "ocgtk.gdk.generated";
-  assert_contains ~msg:"Should include ocgtk.gio.generated" dune_content
-    "ocgtk.gio.generated";
+  assert_contains ~msg:"Should include ocgtk.gsk" dune_content
+    "ocgtk.gsk";
+  assert_contains ~msg:"Should include ocgtk.gdk" dune_content
+    "ocgtk.gdk";
+  assert_contains ~msg:"Should include ocgtk.gio" dune_content
+    "ocgtk.gio";
   assert_contains ~msg:"Should include ocgtk_common" dune_content "ocgtk_common";
 
   (* Verify all dependencies come before ocgtk_common *)

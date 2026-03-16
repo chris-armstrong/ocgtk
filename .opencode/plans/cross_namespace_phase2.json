@@ -235,63 +235,21 @@
     },
     {
       "stage_number": 6,
-      "title": "Update Dune File Generation - Include Paths",
-      "description": "Modify dune file generation to add `-I../../<dep>/generated` flags for each dependency namespace. This allows the C compiler to find dependency headers during compilation.",
-      "mandatory_guidelines": [
-        "ocgtk/docs/code_guidelines/index.md",
-        "ocgtk/docs/code_guidelines/nesting-and-control-flow.md",
-        "ocgtk/docs/code_guidelines/error-handling.md",
-        "ocgtk/docs/code_guidelines/naming-and-intermediates.md",
-        "ocgtk/docs/code_guidelines/module-boundaries.md",
-        "ocgtk/docs/code_guidelines/pattern-matching.md",
-        "ocgtk/docs/code_guidelines/partial-functions.md",
-        "ocgtk/docs/code_guidelines/type-safety.md",
-        "ocgtk/docs/code_guidelines/code-reuse.md",
-        "ocgtk/docs/code_guidelines/test-patterns.md",
-        "ocgtk/docs/code_guidelines/abstractions.md"
-      ],
-      "files_to_modify": [
-        {
-          "path": "ocgtk/src/tools/gir_gen/generate/dune_file.ml",
-          "changes": [
-            "Add `~dependency_namespaces` parameter to `generate_dune_library` function (line 19)",
-            "Add helper functions (following existing patterns in c_stub_helpers.ml):",
-            "  - `library_name_of_namespace` - maps 'Gdk' -> 'ocgtk.gdk.generated'",
-            "  - `include_path_of_namespace` - maps 'Gdk' -> '-I../../gdk/generated'",
-            "Modify the `(flags ...)` line (line 78) to include dependency include paths",
-            "Include paths should be relative from `src/<ns>/generated/` to `src/<dep>/generated/`, i.e., `../../<dep>/generated`"
-          ]
-        },
-        {
-          "path": "ocgtk/src/tools/gir_gen/gir_gen.ml",
-          "changes": [
-            "Add function to extract dependency namespaces from cross_references (similar to Stage 4)",
-            "Pass dependency namespaces to `generate_dune_library` call (lines 921-925)"
-          ]
-        }
-      ],
+      "title": "SKIPPED: Update Dune File Generation - Include Paths",
+      "description": "SKIPPED: This stage was originally planned to add `-I../../<dep>/generated` flags, but this is not needed. The <library>_decls.h headers are made available through the proper library dependency mechanism. No code changes were made for this stage.",
+      "mandatory_guidelines": [],
+      "files_to_modify": [],
       "test_requirements": {
-        "new_tests": [
-          {
-            "file": "ocgtk/src/tools/test_gir_gen/cross_namespace/dune_include_paths_tests.ml",
-            "description": "Test that dune file includes `-I../../gdk/generated` when GDK is a dependency"
-          },
-          {
-            "file": "ocgtk/src/tools/test_gir_gen/cross_namespace/dune_relative_path_tests.ml",
-            "description": "Test that include paths use correct relative path format `../../<dep>/generated`"
-          }
-        ],
-        "existing_tests_must_pass": [
-          "ocgtk/src/tools/test_gir_gen/integration/core.ml"
-        ]
+        "new_tests": [],
+        "existing_tests_must_pass": []
       },
       "dependencies": [4],
-      "status": "committed"
+      "status": "skipped"
     },
     {
       "stage_number": 7,
       "title": "Update Dune File Generation - Library Dependencies",
-      "description": "Modify dune file generation to add `ocgtk.<dep>.generated` entries in the `(libraries ...)` clause for OCaml-level dependencies.",
+      "description": "Modify dune file generation to add `ocgtk.<dep>` entries in the `(libraries ...)` clause for OCaml-level dependencies. We depend on the public library (not ocgtk.<dep>.generated stubs) to access the <ns>_decls.h header through the proper interface.",
       "mandatory_guidelines": [
         "ocgtk/docs/code_guidelines/index.md",
         "ocgtk/docs/code_guidelines/nesting-and-control-flow.md",
@@ -501,12 +459,7 @@
       "status": "completed"
     },
     {
-      "requirement": "Update dune files to include `-I../../<dep>/generated` paths",
-      "stage": 6,
-      "status": "completed"
-    },
-    {
-      "requirement": "Update dune files to include `ocgtk.<dep>.generated` in libraries clause",
+      "requirement": "Update dune files to include `ocgtk.<dep>` in libraries clause (public library, not .generated stubs)",
       "stage": 7,
       "status": "completed"
     }

@@ -15,16 +15,12 @@ let pkg_config_name_of_namespace namespace_name =
   | "gsk" -> "gsk-4.0"
   | ns -> ns (* Default: use namespace as-is *)
 
-(* Map namespace to library name for dune (ocgtk.<ns>.generated) *)
+(* Map namespace to library name for dune (ocgtk.<ns>)
+   We depend on the public library, not the internal .generated stubs,
+   to access the <ns>_decls.h header through the proper interface. *)
 let library_name_of_namespace namespace_name =
   let ns_lower = String.lowercase_ascii namespace_name in
-  sprintf "ocgtk.%s.generated" ns_lower
-
-(* Map namespace to include path for C compiler
-   Relative from src/<ns>/generated/ to src/<dep>/generated/ *)
-let include_path_of_namespace namespace_name =
-  let ns_lower = String.lowercase_ascii namespace_name in
-  sprintf "-I../../%s/generated" ns_lower
+  sprintf "ocgtk.%s" ns_lower
 
 (* Generate dune library stanza for generated C stubs *)
 let generate_dune_library ~lib_name ~stub_names ~module_names ~package_names
@@ -120,19 +116,11 @@ let generate_dune_library ~lib_name ~stub_names ~module_names ~package_names
 
   Buffer.add_string buf "  )\n";
 
-  (* Generate include paths for dependency namespaces *)
-  let dep_includes =
-    dependency_namespaces
-    |> List.map ~f:include_path_of_namespace
-    |> String.concat ~sep:" "
-  in
-
   bprintf buf
     "  (flags -fPIC -Igenerated -Icore -I../common (:include %s) \
      -Wno-deprecated-declarations -Wno-incompatible-pointer-types \
-     -Wno-int-conversion%s))\n"
-    cflag_file
-    (if String.equal dep_includes "" then "" else " " ^ dep_includes);
+     -Wno-int-conversion))\n"
+    cflag_file;
   bprintf buf " (c_library_flags (:include %s)))\n" clink_file;
 
   Buffer.contents buf
