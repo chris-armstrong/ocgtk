@@ -7,11 +7,11 @@
 ## IMPORTANT: You Have Persistent Memory
 
 This project uses Context (`ctx`) for context persistence across sessions.
-**Your memory is NOT ephemeral** - it lives in `.context/` files.
+**Your memory is NOT ephemeral** - it lives in `$CTX_DIR/*` files.
 
 ## On Session Start
 
-1. **Read `.context/AGENT_PLAYBOOK.md`** first - it explains how to use this system
+1. **Read `$CTX_DIR/AGENT_PLAYBOOK.md`** first - it explains how to use this system
 2. **Run `ctx status`** to see current context summary
 
 ## When Asked "Do You Remember?"
@@ -20,8 +20,8 @@ When the user asks "Do you remember?", "What were we working on?", or any
 memory-related question:
 
 **Do this FIRST (silently):**
-- Read `.context/TASKS.md`
-- Read `.context/DECISIONS.md` and `.context/LEARNINGS.md`
+- Read `$CTX_DIR/TASKS.md`
+- Read `$CTX_DIR/DECISIONS.md` and `$CTX_DIR/LEARNINGS.md`
 - Run `ctx recall list --limit 5` for recent session history
 
 **Then respond with a structured readback:**
@@ -32,7 +32,7 @@ memory-related question:
 4. **Next step**: offer to continue or ask what to focus on
 
 **Never** lead with "I don't have memory", "Let me check if there are files",
-or narrate your discovery process. The `.context/` files are your memory.
+or narrate your discovery process. The `$CTX_DIR/` files are your memory.
 Read them silently, then present what you found as recall, not as a search.
 
 ## Quick Context Load
