@@ -39,4 +39,6 @@ let () =
       ("Dune Relative Paths (Stage 6)", Dune_relative_path_tests.tests);
       ("Dune Library Dependencies (Stage 7)", Dune_library_deps_tests.tests);
       ("Dune Dependency Order (Stage 7)", Dune_dependency_order_tests.tests);
+      ("Integration Tests (Stage 8)", Integration_tests.tests);
+      ("Compilation Tests (Stage 8)", Compilation_tests.tests);
     ]
