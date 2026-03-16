@@ -725,12 +725,9 @@ let generate_bindings filter_file gir_file output_dir reference_files =
   let ns_name = ctx.namespace.namespace_name in
   let ns_lower = String.lowercase_ascii ns_name in
 
-  (* Helper function to extract dependency namespaces from cross_references *)
-  let _get_dependency_namespaces cross_references =
-    StringMap.fold
-      (fun ns _ acc -> ns :: acc)
-      cross_references []
-    |> List.sort_uniq ~cmp:String.compare
+  (* Extract dependency namespaces from cross_references using existing helper *)
+  let dependency_namespaces =
+    Gir_gen_lib.Generate.C_stubs.get_dependency_namespaces ctx.cross_references
   in
 
   (* Generate common header file *)
@@ -741,9 +738,8 @@ let generate_bindings filter_file gir_file output_dir reference_files =
   in
   printf "\n";
   let header_content =
-    Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx
-      ~classes:ctx.classes ~gtk_enums ~gtk_bitfields
-      ~records:ctx.records ~interfaces:ctx.interfaces
+    Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
+      ~gtk_enums ~gtk_bitfields ~records:ctx.records ~interfaces:ctx.interfaces
   in
   write_file ~path:header_file ~content:header_content;
 
@@ -927,7 +923,8 @@ let generate_bindings filter_file gir_file output_dir reference_files =
   let dune_content =
     Gir_gen_lib.Generate.Dune_file.generate_dune_library ~stub_names:stub_list
       ~lib_name:namespace.namespace_name ~module_names:module_list
-      ~package_names:ctx.repository.repository_packages
+      ~package_names:ctx.repository.repository_packages ~dependency_namespaces
+      ()
   in
   write_file ~path:dune_file ~content:dune_content;
 

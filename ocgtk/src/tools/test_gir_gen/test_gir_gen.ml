@@ -35,4 +35,6 @@ let () =
       ("Dependency Includes (Stage 4)", Dependency_includes_tests.tests);
       ("Dependency Exclusion (Stage 4)", Dependency_exclusion_tests.tests);
       ("C Stub Header Include (Stage 5)", C_stub_include_tests.tests);
+      ("Dune Include Paths (Stage 6)", Dune_include_paths_tests.tests);
+      ("Dune Relative Paths (Stage 6)", Dune_relative_path_tests.tests);
     ]

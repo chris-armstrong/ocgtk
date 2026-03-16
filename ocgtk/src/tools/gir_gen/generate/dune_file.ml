@@ -13,10 +13,22 @@ let pkg_config_name_of_namespace namespace_name =
   | "gdkpixbuf" -> "gdk-pixbuf-2.0"
   | "graphene" -> "graphene-1.0"
   | "gsk" -> "gsk-4.0"
-  | ns -> ns  (* Default: use namespace as-is *)
+  | ns -> ns (* Default: use namespace as-is *)
+
+(* Map namespace to library name for dune (ocgtk.<ns>.generated) *)
+let library_name_of_namespace namespace_name =
+  let ns_lower = String.lowercase_ascii namespace_name in
+  sprintf "ocgtk.%s.generated" ns_lower
+
+(* Map namespace to include path for C compiler
+   Relative from src/<ns>/generated/ to src/<dep>/generated/ *)
+let include_path_of_namespace namespace_name =
+  let ns_lower = String.lowercase_ascii namespace_name in
+  sprintf "-I../../%s/generated" ns_lower
 
 (* Generate dune library stanza for generated C stubs *)
-let generate_dune_library ~lib_name ~stub_names ~module_names ~package_names =
+let generate_dune_library ~lib_name ~stub_names ~module_names ~package_names
+    ?(dependency_namespaces = []) () =
   let buf = Buffer.create 2048 in
 
   (* Determine pkg-config package name and generate sexp file names *)
@@ -33,9 +45,9 @@ let generate_dune_library ~lib_name ~stub_names ~module_names ~package_names =
   Buffer.add_string buf " (action\n";
   Buffer.add_string buf "  (with-stdout-to dune-modules.sexp\n";
   Buffer.add_string buf "    (progn\n";
-  List.iter ~f:(fun name ->
-    bprintf buf "      (echo \"%s\")\n" name
-  ) module_names;
+  List.iter
+    ~f:(fun name -> bprintf buf "      (echo \"%s\")\n" name)
+    module_names;
   Buffer.add_string buf "    )))\n";
   Buffer.add_string buf ")\n\n";
 
@@ -46,36 +58,64 @@ let generate_dune_library ~lib_name ~stub_names ~module_names ~package_names =
   bprintf buf "echo '' > %s.tmp && \\\\\n" cflag_file;
   bprintf buf "echo '' > %s.tmp && \\\\\n" clink_file;
 
-  List.iter ~f:(fun package_name ->
-    bprintf buf "pkg-config --cflags %s >> %s.tmp && \\\\\n" package_name cflag_file;
-    bprintf buf "pkg-config --libs %s >> %s.tmp && \\\\\n" package_name clink_file;
-  ) package_names;
+  List.iter
+    ~f:(fun package_name ->
+      bprintf buf "pkg-config --cflags %s >> %s.tmp && \\\\\n" package_name
+        cflag_file;
+      bprintf buf "pkg-config --libs %s >> %s.tmp && \\\\\n" package_name
+        clink_file)
+    package_names;
   bprintf buf "echo \\\"(\\\" > %s && \\\\\n" cflag_file;
-  bprintf buf "tr ' ' '\\\\n' < %s.tmp | sed 's/^\\\\(.*\\\\)$/\\\\1/' | tr '\\\\n' ' ' >> %s && \\\\\n" cflag_file cflag_file;
+  bprintf buf
+    "tr ' ' '\\\\n' < %s.tmp | sed 's/^\\\\(.*\\\\)$/\\\\1/' | tr '\\\\n' ' ' \
+     >> %s && \\\\\n"
+    cflag_file cflag_file;
   bprintf buf "echo \\\")\\\" >> %s && \\\\\n" cflag_file;
   bprintf buf "echo \\\"(\\\" > %s && \\\\\n" clink_file;
-  bprintf buf "tr ' ' '\\\\n' < %s.tmp | sed 's/^\\\\(.*\\\\)$/\\\\1/' | tr '\\\\n' ' ' >> %s && \\\\\n" clink_file clink_file;
+  bprintf buf
+    "tr ' ' '\\\\n' < %s.tmp | sed 's/^\\\\(.*\\\\)$/\\\\1/' | tr '\\\\n' ' ' \
+     >> %s && \\\\\n"
+    clink_file clink_file;
   bprintf buf "echo \\\")\\\" >> %s && \\\\\n" clink_file;
   bprintf buf "rm %s.tmp %s.tmp\\\\\n" cflag_file clink_file;
   bprintf buf "\")))\n\n";
 
   Buffer.add_string buf "(library\n";
-  Buffer.add_string buf (sprintf " (name ocgtk_%s_generated_stubs)\n" (lib_name |> Utils.to_snake_case));
-  Buffer.add_string buf (sprintf " (public_name ocgtk.%s.generated_stubs)\n" (lib_name |> Utils.to_snake_case));
+  Buffer.add_string buf
+    (sprintf " (name ocgtk_%s_generated_stubs)\n"
+       (lib_name |> Utils.to_snake_case));
+  Buffer.add_string buf
+    (sprintf " (public_name ocgtk.%s.generated_stubs)\n"
+       (lib_name |> Utils.to_snake_case));
   Buffer.add_string buf " (wrapped false)\n";
   Buffer.add_string buf " (modules)  ; No OCaml modules, only C stubs\n";
-  Buffer.add_string buf " (libraries ocgtk_common)  ; Depend on common for header files\n";
+  Buffer.add_string buf
+    " (libraries ocgtk_common)  ; Depend on common for header files\n";
   Buffer.add_string buf " (foreign_stubs\n";
   Buffer.add_string buf "  (language c)\n";
   Buffer.add_string buf "  (names\n";
 
-  List.iter ~f:(fun name ->
-    (* Files are in the same directory as this dune file (generated/) *)
-    bprintf buf "   %s\n" name
-  ) stub_names;
+  List.iter
+    ~f:(fun name ->
+      (* Files are in the same directory as this dune file (generated/) *)
+      bprintf buf "   %s\n" name)
+    stub_names;
 
   Buffer.add_string buf "  )\n";
-  bprintf buf "  (flags -fPIC -Igenerated -Icore -I../common (:include %s) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))\n" cflag_file;
+
+  (* Generate include paths for dependency namespaces *)
+  let dep_includes =
+    dependency_namespaces
+    |> List.map ~f:include_path_of_namespace
+    |> String.concat ~sep:" "
+  in
+
+  bprintf buf
+    "  (flags -fPIC -Igenerated -Icore -I../common (:include %s) \
+     -Wno-deprecated-declarations -Wno-incompatible-pointer-types \
+     -Wno-int-conversion%s))\n"
+    cflag_file
+    (if String.equal dep_includes "" then "" else " " ^ dep_includes);
   bprintf buf " (c_library_flags (:include %s)))\n" clink_file;
 
   Buffer.contents buf
