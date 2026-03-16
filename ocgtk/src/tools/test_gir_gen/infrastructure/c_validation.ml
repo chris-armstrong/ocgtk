@@ -529,11 +529,70 @@ let assert_forward_decl_not_exists header_content c_type prefix =
          "Forward declaration '%s' should NOT exist in header, but was found"
          expected_decl)
 
+(* Check if C code contains CAMLxparamN or higher.
+   The CAMLxparam macros are used for registering local variables with the OCaml
+   garbage collector. OCaml runtime only provides CAMLparam0-5 and CAMLxparam0-5,
+   so using CAMLxparam6 or higher would be an error.
+
+   This function checks all CAMLlocal declarations in the given functions and
+   returns true if any CAMLxparam macro with number >= n is found. *)
+let has_camlxparam_n_or_higher functions n =
+  let extract_camlxparam_num macro_name =
+    if String.starts_with ~prefix:"CAMLxparam" macro_name then
+      let num_str = String.sub macro_name 10 (String.length macro_name - 10) in
+      try Some (int_of_string num_str) with _ -> None
+    else None
+  in
+  List.exists
+    (fun f ->
+      let decls = get_caml_local_decls f in
+      List.exists
+        (fun decl ->
+          match extract_camlxparam_num decl with
+          | Some num -> num >= n
+          | None -> false)
+        decls)
+    functions
+
+(* Check if raw C code string contains CAMLxparamN or higher.
+   This is a simpler version that works directly with C code strings. *)
+let c_code_has_camlxparam_n_or_higher c_code n =
+  let lines = String.split_on_char '\n' c_code in
+  List.exists
+    (fun line ->
+      let stripped = String.trim line in
+      if String.starts_with ~prefix:"CAMLxparam" stripped then
+        (* Extract the number from CAMLxparamN *)
+        let macro_name =
+          try
+            let paren_idx = String.index stripped '(' in
+            String.sub stripped 0 paren_idx
+          with Not_found -> stripped
+        in
+        let num_str =
+          String.sub macro_name 10 (String.length macro_name - 10)
+        in
+        try
+          let num = int_of_string num_str in
+          num >= n
+        with _ -> false
+      else false)
+    lines
+
+(* Check if raw C code string contains a specific CAMLparam macro *)
+let c_code_has_caml_param c_code param_name =
+  let lines = String.split_on_char '\n' c_code in
+  List.exists
+    (fun line ->
+      let stripped = String.trim line in
+      String.starts_with ~prefix:(param_name ^ "(") stripped)
+    lines
+
 (* Assert that a header guard exists with the expected pattern.
-   [assert_header_guard_format header_content expected_pattern] validates that
-   the header contains a complete guard (ifndef/define/endif) matching the pattern.
-   The pattern is matched against the guard name using String.ends_with.
-   Fails with a descriptive message if no matching guard is found or if it's incomplete. *)
+    [assert_header_guard_format header_content expected_pattern] validates that
+    the header contains a complete guard (ifndef/define/endif) matching the pattern.
+    The pattern is matched against the guard name using String.ends_with.
+    Fails with a descriptive message if no matching guard is found or if it's incomplete. *)
 let assert_header_guard_format header_content expected_pattern =
   let guards = parse_header_guards header_content in
   (* Find guards matching the expected pattern *)

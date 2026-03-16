@@ -207,7 +207,7 @@
         {
           "stage": 5,
           "title": "Rewrite no_external_bitfield_decls_tests.ml to use AST validation",
-          "status": "pending",
+          "status": "committed",
           "replanned": false,
           "description": "Replace assert_contains/assert_not_contains calls in no_external_bitfield_decls_tests.ml with C_validation assertion functions",
           "files_to_modify": [
