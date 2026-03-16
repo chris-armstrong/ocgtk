@@ -34,4 +34,5 @@ let () =
         No_external_bitfield_decls_tests.tests );
       ("Dependency Includes (Stage 4)", Dependency_includes_tests.tests);
       ("Dependency Exclusion (Stage 4)", Dependency_exclusion_tests.tests);
+      ("C Stub Header Include (Stage 5)", C_stub_include_tests.tests);
     ]
