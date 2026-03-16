@@ -15,8 +15,8 @@ let calculate_layer2_class ~class_module ~class_name =
 
 (** Map a cross-namespace type reference to a type mapping. This function is
     used to convert a cross-reference to a type mapping.*)
-let map_cross_reference_to_type_mapping ~ctx:_ (cr : cross_reference) :
-    type_mapping =
+let map_cross_reference_to_type_mapping ~ctx:_ ~namespace (cr : cross_reference)
+    : type_mapping =
   {
     ocaml_type =
       (match cr.cr_type with
@@ -31,19 +31,30 @@ let map_cross_reference_to_type_mapping ~ctx:_ (cr : cross_reference) :
       | Crt_Enum | Crt_Bitfield | Crt_Record { opaque = false } -> true
       | _ -> false);
     layer2_class =
-      (let class_module = Utils.module_name_of_class cr.cr_name in
-       match cr.cr_type with
-       | Crt_Class ->
-           Some (calculate_layer2_class ~class_module ~class_name:cr.cr_name)
-       | Crt_Interface ->
-           Some
-             (calculate_layer2_class ~class_module
-                ~class_name:(Utils.ocaml_interface_name cr.cr_name))
-       | Crt_Record _ ->
-           Some
-             (calculate_layer2_class ~class_module
-                ~class_name:(Utils.ocaml_record_name cr.cr_name))
-       | Crt_Enum | Crt_Bitfield -> None);
+      (match cr.cr_type with
+      | Crt_Class ->
+          Some
+            {
+              class_module = namespace;
+              class_type = Utils.ocaml_class_name cr.cr_name;
+              class_layer1_accessor = "as_" ^ Utils.ocaml_class_name cr.cr_name;
+            }
+      | Crt_Interface ->
+          Some
+            {
+              class_module = namespace;
+              class_type = Utils.ocaml_interface_name cr.cr_name;
+              class_layer1_accessor =
+                "as_" ^ Utils.ocaml_interface_name cr.cr_name;
+            }
+      | Crt_Record _ ->
+          Some
+            {
+              class_module = namespace;
+              class_type = Utils.ocaml_record_name cr.cr_name;
+              class_layer1_accessor = "as_" ^ Utils.ocaml_record_name cr.cr_name;
+            }
+      | Crt_Enum | Crt_Bitfield -> None);
   }
 
 (** Type mappings for built-in / primitive types (integers, strings, etc.) *)
@@ -474,7 +485,7 @@ and normal_type_lookup ~ctx (gir_type : Types.gir_type) =
       let open Option in
       let* namespace_map = StringMap.find_opt namespace ctx.cross_references in
       let* cross_reference = StringMap.find_opt name namespace_map in
-      Some (map_cross_reference_to_type_mapping ~ctx cross_reference)
+      Some (map_cross_reference_to_type_mapping ~ctx ~namespace cross_reference)
     in
     let namespace, name = Utils.name_to_parts ~ctx lookup_str in
     if String.equal namespace ctx.namespace.namespace_name then
