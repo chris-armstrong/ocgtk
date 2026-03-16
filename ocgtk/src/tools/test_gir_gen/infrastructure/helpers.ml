@@ -6,7 +6,14 @@ open Printf
 (* Alcotest Assertion Helpers *)
 (* ========================================================================= *)
 
+(* DEPRECATED: These functions use string matching which is brittle and
+   violates the test-patterns.md guidelines. Use C_validation.assert_forward_decl_*
+   or Ml_validation.assert_*_exists for AST-based validation instead.
+
+   See docs/code_guidelines/test-patterns.md for details. *)
+
 let string_contains s sub =
+  (* DEPRECATED: Use AST-based validation instead *)
   try
     ignore (Str.search_forward (Str.regexp_string sub) s 0);
     true
@@ -15,10 +22,12 @@ let string_contains s sub =
 let assert_true msg cond = Alcotest.(check bool) msg true cond
 
 let assert_contains msg haystack needle =
+  (* DEPRECATED: Use C_validation.assert_forward_decl_exists or Ml_validation.assert_value_exists *)
   if not (string_contains haystack needle) then
     Alcotest.fail (sprintf "%s: expected to find '%s' in output" msg needle)
 
 let assert_not_contains msg haystack needle =
+  (* DEPRECATED: Use C_validation.assert_forward_decl_not_exists *)
   if string_contains haystack needle then
     Alcotest.fail (sprintf "%s: expected NOT to find '%s' in output" msg needle)
 

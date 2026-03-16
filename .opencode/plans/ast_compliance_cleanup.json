@@ -240,7 +240,7 @@
         {
           "stage": 6,
           "title": "Fix Str.search_forward violations in c_stubs_tests.ml",
-          "status": "pending",
+          "status": "committed",
           "replanned": false,
           "description": "Replace Str.search_forward with AST-based or proper string functions for header guard naming check and CAMLparam validation",
           "files_to_modify": [
@@ -272,7 +272,7 @@
         {
           "stage": 7,
           "title": "Deprecate string-matching helpers in helpers.ml",
-          "status": "pending",
+          "status": "committed",
           "replanned": false,
           "description": "Add deprecation warnings to string_contains, assert_contains, and assert_not_contains functions in helpers.ml",
           "files_to_modify": [
