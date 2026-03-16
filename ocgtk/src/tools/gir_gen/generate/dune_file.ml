@@ -15,9 +15,7 @@ let pkg_config_name_of_namespace namespace_name =
   | "gsk" -> "gsk-4.0"
   | ns -> ns (* Default: use namespace as-is *)
 
-(* Map namespace to library name for dune (ocgtk.<ns>)
-   We depend on the public library, not the internal .generated stubs,
-   to access the <ns>_decls.h header through the proper interface. *)
+(* Map namespace to library name for dune (ocgtk.<ns>) *)
 let library_name_of_namespace namespace_name =
   let ns_lower = String.lowercase_ascii namespace_name in
   sprintf "ocgtk.%s" ns_lower
@@ -47,7 +45,12 @@ let generate_dune_library ~lib_name ~stub_names ~module_names ~package_names
   Buffer.add_string buf "    )))\n";
   Buffer.add_string buf ")\n\n";
 
-  (* Generate pkg-config rules for this library *)
+  (* Collect pkg-config packages from dependencies *)
+  let dep_packages =
+    dependency_namespaces |> List.map ~f:pkg_config_name_of_namespace
+  in
+  let all_packages = package_names @ dep_packages in
+
   bprintf buf "(rule\n";
   bprintf buf " (targets %s %s)\n" cflag_file clink_file;
   bprintf buf " (action (bash \"\\\n";
@@ -60,7 +63,7 @@ let generate_dune_library ~lib_name ~stub_names ~module_names ~package_names
         cflag_file;
       bprintf buf "pkg-config --libs %s >> %s.tmp && \\\\\n" package_name
         clink_file)
-    package_names;
+    all_packages;
   bprintf buf "echo \\\"(\\\" > %s && \\\\\n" cflag_file;
   bprintf buf
     "tr ' ' '\\\\n' < %s.tmp | sed 's/^\\\\(.*\\\\)$/\\\\1/' | tr '\\\\n' ' ' \
@@ -85,7 +88,6 @@ let generate_dune_library ~lib_name ~stub_names ~module_names ~package_names
        (lib_name |> Utils.to_snake_case));
   Buffer.add_string buf " (wrapped false)\n";
   Buffer.add_string buf " (modules)  ; No OCaml modules, only C stubs\n";
-
   (* Generate library dependencies for dependency namespaces *)
   let dep_libraries =
     dependency_namespaces

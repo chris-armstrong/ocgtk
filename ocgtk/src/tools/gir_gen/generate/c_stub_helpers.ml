@@ -20,7 +20,7 @@ open Types
 
 (* Get C include header for a namespace. This uses
    hardcoded values for now because the c:include is
-   not properly parsed from the GIR file *)
+   not properly parsed from the GIR file. *)
 let include_header_for_namespace namespace_name =
   let ns_lower = String.lowercase_ascii namespace_name in
   match ns_lower with

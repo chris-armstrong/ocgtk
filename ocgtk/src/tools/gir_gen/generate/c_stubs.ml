@@ -54,7 +54,11 @@ let generate_decls_header ~ctx ~classes ~interfaces ~gtk_enums ~gtk_bitfields
   bprintf buf "#ifndef _%s_decls_h_\n" ns_lower;
   bprintf buf "#define _%s_decls_h_\n" ns_lower;
   Buffer.add_string buf "\n";
-  bprintf buf "%s\n" (include_header_for_namespace ctx.namespace.namespace_name);
+  (* Include all C headers from the repository (parsed from GIR) *)
+  List.iter
+    ~f:(fun c_include ->
+      Buffer.add_string buf (sprintf "#include <%s>\n" c_include))
+    ctx.repository.repository_c_includes;
   Buffer.add_string buf "#include <caml/mlvalues.h>\n";
   Buffer.add_string buf "\n";
 
