@@ -20,7 +20,7 @@ let map_cross_reference_to_type_mapping ~ctx:_ (cr : cross_reference) :
   {
     ocaml_type =
       (match cr.cr_type with
-      | Crt_Class | Crt_Record _ | Crt_Interface ->
+      | Crt_Class _ | Crt_Record _ | Crt_Interface _ ->
           Utils.module_name_of_class cr.cr_name ^ ".t"
       | Crt_Bitfield | Crt_Enum -> String.lowercase_ascii cr.cr_name);
     c_type = cr.cr_c_type;
@@ -28,14 +28,17 @@ let map_cross_reference_to_type_mapping ~ctx:_ (cr : cross_reference) :
     ml_to_c = cr.cr_c_type ^ "_val";
     needs_copy =
       (match cr.cr_type with
-      | Crt_Enum | Crt_Bitfield | Crt_Record { opaque = false } -> true
+      | Crt_Enum | Crt_Bitfield -> true
+      | Crt_Record r when Bool.equal r.opaque false || Bool.equal r.boxed true
+        ->
+          true
       | _ -> false);
     layer2_class =
       (let class_module = Utils.module_name_of_class cr.cr_name in
        match cr.cr_type with
-       | Crt_Class ->
+       | Crt_Class _ ->
            Some (calculate_layer2_class ~class_module ~class_name:cr.cr_name)
-       | Crt_Interface ->
+       | Crt_Interface _ ->
            Some
              (calculate_layer2_class ~class_module
                 ~class_name:(Utils.ocaml_interface_name cr.cr_name))

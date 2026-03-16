@@ -278,9 +278,9 @@ type gir_repository = {
 }
 
 type cross_reference_type =
-  | Crt_Class
-  | Crt_Interface
-  | Crt_Record of { opaque : bool }
+  | Crt_Class of { parent : string option }
+  | Crt_Interface of { parent : string option }
+  | Crt_Record of { opaque : bool; disguised : bool; boxed : bool }
   | Crt_Enum
   | Crt_Bitfield
 [@@deriving sexp]

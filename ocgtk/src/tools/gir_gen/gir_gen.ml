@@ -988,7 +988,7 @@ let generate_references gir_file output_file =
     |> List.map ~f:(fun cls ->
         {
           cr_name = cls.class_name;
-          cr_type = Crt_Class;
+          cr_type = Crt_Class { parent = cls.parent };
           cr_c_type = cls.c_type;
         }))
     @ List.map
@@ -1012,7 +1012,13 @@ let generate_references gir_file output_file =
       |> List.map ~f:(fun rec_ ->
           {
             cr_name = rec_.record_name;
-            cr_type = Crt_Record { opaque = rec_.opaque };
+            cr_type =
+              Crt_Record
+                {
+                  opaque = rec_.opaque;
+                  boxed = Option.is_some rec_.glib_get_type;
+                  disguised = rec_.disguised;
+                };
             cr_c_type = rec_.c_type;
           }))
   in
