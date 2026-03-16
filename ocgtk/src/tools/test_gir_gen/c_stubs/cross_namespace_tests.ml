@@ -957,7 +957,7 @@ let test_value_record_has_complete_forward_decls () =
   Alcotest.(check int) "Generation succeeds" 0 exit_code;
 
   (* Read the forward declarations header *)
-  let header_path = Filename.concat (generated_dir output_dir) "generated_forward_decls.h" in
+  let header_path = Filename.concat (generated_dir output_dir) "testns_decls.h" in
   let header = read_file header_path in
 
   (* Positive: copy function is declared *)
