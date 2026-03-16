@@ -483,22 +483,22 @@
     {
       "requirement": "Each library generates `<ns>_decls.h` instead of `generated_forward_decls.h`",
       "stage": 1,
-      "status": "pending"
+      "status": "completed"
     },
     {
       "requirement": "Remove external enum forward declarations (use header inclusion instead)",
       "stage": 2,
-      "status": "pending"
+      "status": "completed"
     },
     {
       "requirement": "Remove external bitfield forward declarations (use header inclusion instead)",
       "stage": 3,
-      "status": "pending"
+      "status": "completed"
     },
     {
       "requirement": "Generate `#include \"<dep>_decls.h\"` for each dependency namespace",
       "stage": 4,
-      "status": "pending"
+      "status": "completed"
     },
     {
       "requirement": "Update dune files to include `-I../../<dep>/generated` paths",
