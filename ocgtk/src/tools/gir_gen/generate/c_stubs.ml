@@ -26,7 +26,10 @@ let get_dependency_namespaces cross_references =
   |> List.filter ~f:(fun ns -> not (List.mem ~set:base_namespaces ns))
   |> List.sort_uniq ~cmp:String.compare
 
-(* Generate #include directives for dependency namespaces *)
+(* Generate #include directives for dependency namespaces.
+   Headers are included as "generated/<ns>_decls.h" because OCaml automatically
+   passes -I path/to/<library> when you depend on a library, so the full path
+   resolves to path/to/<library>/generated/<ns>_decls.h *)
 let generate_dependency_includes dependency_namespaces =
   match dependency_namespaces with
   | [] -> ""
@@ -34,7 +37,7 @@ let generate_dependency_includes dependency_namespaces =
       deps
       |> List.map ~f:(fun ns ->
           let ns_lower = String.lowercase_ascii ns in
-          sprintf "#include \"%s_decls.h\"" ns_lower)
+          sprintf "#include \"generated/%s_decls.h\"" ns_lower)
       |> String.concat ~sep:"\n"
       |> fun s -> s ^ "\n"
 

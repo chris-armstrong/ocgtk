@@ -58,8 +58,12 @@ let create_context_with_cross_references ~namespace ~deps =
   }
 
 (* Stage 4 Test: Header includes dependency headers for cross-namespace types.
-    When generating gtk_decls.h with Gdk and Gio as dependencies,
-    the header should include gdk_decls.h and gio_decls.h. *)
+     When generating gtk_decls.h with Gdk and Gio as dependencies,
+     the header should include generated/gdk_decls.h and generated/gio_decls.h.
+     
+     Note: Headers are included as "generated/<ns>_decls.h" because OCaml automatically
+     passes -I path/to/<library> when you depend on a library, so the full path
+     resolves to path/to/<library>/generated/<ns>_decls.h *)
 let test_header_includes_dependency_headers () =
   (* Create context simulating Gtk with Gdk and Gio dependencies *)
   let ctx =
@@ -76,8 +80,8 @@ let test_header_includes_dependency_headers () =
     header_content;
 
   (* Verify dependency headers are included using AST-based validation *)
-  C_validation.assert_local_include_exists header_content "gdk_decls.h";
-  C_validation.assert_local_include_exists header_content "gio_decls.h"
+  C_validation.assert_local_include_exists header_content "generated/gdk_decls.h";
+  C_validation.assert_local_include_exists header_content "generated/gio_decls.h"
 
 (* Stage 4 Test: Dependency headers are sorted alphabetically.
     This ensures consistent output across runs. *)
@@ -98,23 +102,23 @@ let test_dependency_headers_sorted_alphabetically () =
   let gdk_pos =
     try
       Str.search_forward
-        (Str.regexp_string {|#include "gdk_decls.h"|})
+        (Str.regexp_string {|#include "generated/gdk_decls.h"|})
         header_content 0
-    with Not_found -> Alcotest.fail "gdk_decls.h not found in header"
+    with Not_found -> Alcotest.fail "generated/gdk_decls.h not found in header"
   in
   let gio_pos =
     try
       Str.search_forward
-        (Str.regexp_string {|#include "gio_decls.h"|})
+        (Str.regexp_string {|#include "generated/gio_decls.h"|})
         header_content 0
-    with Not_found -> Alcotest.fail "gio_decls.h not found in header"
+    with Not_found -> Alcotest.fail "generated/gio_decls.h not found in header"
   in
   let gsk_pos =
     try
       Str.search_forward
-        (Str.regexp_string {|#include "gsk_decls.h"|})
+        (Str.regexp_string {|#include "generated/gsk_decls.h"|})
         header_content 0
-    with Not_found -> Alcotest.fail "gsk_decls.h not found in header"
+    with Not_found -> Alcotest.fail "generated/gsk_decls.h not found in header"
   in
 
   (* Verify alphabetical order: Gdk < Gio < Gsk *)
@@ -123,7 +127,7 @@ let test_dependency_headers_sorted_alphabetically () =
       "Dependency headers should be sorted alphabetically (Gdk < Gio < Gsk)"
 
 (* Stage 4 Test: Header uses lowercase namespace in include filename.
-     The include directive should be #include "gdk_decls.h" not #include "Gdk_decls.h". *)
+     The include directive should be #include "generated/gdk_decls.h" not #include "generated/Gdk_decls.h". *)
 let test_include_uses_lowercase_namespace () =
   (* Create context with mixed-case namespace *)
   let ctx =
@@ -137,10 +141,10 @@ let test_include_uses_lowercase_namespace () =
   in
 
   (* Verify lowercase is used using AST-based validation *)
-  assert_local_include_exists header_content "gdk_decls.h";
+  assert_local_include_exists header_content "generated/gdk_decls.h";
 
   (* Verify uppercase is NOT used using AST-based validation *)
-  assert_local_include_not_exists header_content "Gdk_decls.h"
+  assert_local_include_not_exists header_content "generated/Gdk_decls.h"
 
 (* Stage 4 Test: Helper function get_dependency_namespaces works correctly.
     Extracts unique namespace names from cross_references map. *)

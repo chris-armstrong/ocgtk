@@ -44,7 +44,7 @@ value copy_GdkTexture(const GdkTexture *ptr);
     "Should find GdkTexture_val declaration" true
     (List.mem "GdkTexture_val" decls)
 
-(* Stage 8 Test: Gtk header with Gdk dependency includes gdk_decls.h *)
+(* Stage 8 Test: Gtk header with Gdk dependency includes generated/gdk_decls.h *)
 let test_gtk_header_includes_gdk () =
   let header_content =
     {|
@@ -55,7 +55,7 @@ let test_gtk_header_includes_gdk () =
 #include <caml/mlvalues.h>
 
 /* Dependency headers for cross-namespace types */
-#include "gdk_decls.h"
+#include "generated/gdk_decls.h"
 
 /* Forward declarations for GtkWidget */
 #define Val_GtkWidget(ptr) Val_gtk_object((GtkObject*)ptr)
@@ -71,8 +71,8 @@ value GtkWidget_val(value v);
   (* Verify header guard *)
   assert_header_guard_format header_content "_gtk_decls_h_";
 
-  (* Critical: Verify gdk_decls.h is included *)
-  assert_local_include_exists header_content "gdk_decls.h"
+  (* Critical: Verify generated/gdk_decls.h is included *)
+  assert_local_include_exists header_content "generated/gdk_decls.h"
 
 (* Stage 8 Test: Multi-level dependency chain headers *)
 let test_multi_level_dependency_headers () =
@@ -84,7 +84,7 @@ let test_multi_level_dependency_headers () =
 
 #include <gsk/gsk.h>
 #include <caml/mlvalues.h>
-#include "gdk_decls.h"
+#include "generated/gdk_decls.h"
 
 #define Val_GskRenderer(ptr) Val_gtk_object((GtkObject*)ptr)
 
@@ -100,8 +100,8 @@ let test_multi_level_dependency_headers () =
 
 #include <gtk/gtk.h>
 #include <caml/mlvalues.h>
-#include "gdk_decls.h"
-#include "gsk_decls.h"
+#include "generated/gdk_decls.h"
+#include "generated/gsk_decls.h"
 
 #define Val_GtkWidget(ptr) Val_gtk_object((GtkObject*)ptr)
 
@@ -111,12 +111,12 @@ let test_multi_level_dependency_headers () =
 
   (* Verify Gsk header structure *)
   assert_header_guard_format gsk_header "_gsk_decls_h_";
-  assert_local_include_exists gsk_header "gdk_decls.h";
+  assert_local_include_exists gsk_header "generated/gdk_decls.h";
 
   (* Verify Gtk header includes both dependencies *)
   assert_header_guard_format gtk_header "_gtk_decls_h_";
-  assert_local_include_exists gtk_header "gdk_decls.h";
-  assert_local_include_exists gtk_header "gsk_decls.h"
+  assert_local_include_exists gtk_header "generated/gdk_decls.h";
+  assert_local_include_exists gtk_header "generated/gsk_decls.h"
 
 (* Stage 8 Test: Headers with circular include guards prevent redefinition *)
 let test_header_guards_prevent_redefinition () =
@@ -140,7 +140,7 @@ let test_header_guards_prevent_redefinition () =
 #define _gtk_decls_h_
 #include <gtk/gtk.h>
 #include <caml/mlvalues.h>
-#include "gdk_decls.h"
+#include "generated/gdk_decls.h"
 #define Val_GtkWidget(ptr) Val_gtk_object((GtkObject*)ptr)
 #define GtkWidget_val(v) (GtkWidget*)GtkObject_val(v)
 #endif /* _gtk_decls_h_ */
@@ -151,8 +151,8 @@ let test_header_guards_prevent_redefinition () =
   assert_header_guard_format gdk_header "_gdk_decls_h_";
   assert_header_guard_format gtk_header "_gtk_decls_h_";
 
-  (* Verify gdk_decls.h is included in gtk_decls.h *)
-  assert_local_include_exists gtk_header "gdk_decls.h";
+  (* Verify generated/gdk_decls.h is included in gtk_decls.h *)
+  assert_local_include_exists gtk_header "generated/gdk_decls.h";
 
   (* Verify no circular includes (gdk should not include gtk) *)
   assert_local_include_not_exists gdk_header "gtk_decls.h"
@@ -212,7 +212,7 @@ let test_complex_cross_namespace_header () =
 #include <caml/mlvalues.h>
 
 /* Dependency headers for cross-namespace types */
-#include "gdk_decls.h"
+#include "generated/gdk_decls.h"
 
 /* Forward declarations for GtkWidget */
 #define Val_GtkWidget(ptr) Val_gtk_object((GtkObject*)ptr)
@@ -229,7 +229,7 @@ value ml_gtk_widget_multi_gdk(value self, value texture, value surface);
 
   (* Verify header structure *)
   assert_header_guard_format header_content "_gtk_decls_h_";
-  assert_local_include_exists header_content "gdk_decls.h";
+  assert_local_include_exists header_content "generated/gdk_decls.h";
 
   (* Verify forward declarations are extractable - only check macros, not function declarations *)
   let decls = extract_forward_decls header_content in
@@ -249,7 +249,7 @@ let test_error_handling_header () =
 
 #include <gtk/gtk.h>
 #include <caml/mlvalues.h>
-#include "gdk_decls.h"
+#include "generated/gdk_decls.h"
 
 /* Method that throws and uses Gdk types - forward declaration */
 #define Val_GtkWidget(ptr) Val_gtk_object((GtkObject*)ptr)
@@ -265,7 +265,7 @@ let test_error_handling_header () =
 
   (* Verify header structure *)
   assert_header_guard_format header_content "_gtk_decls_h_";
-  assert_local_include_exists header_content "gdk_decls.h";
+  assert_local_include_exists header_content "generated/gdk_decls.h";
 
   (* Verify macro declarations are extractable *)
   let decls = extract_forward_decls header_content in
