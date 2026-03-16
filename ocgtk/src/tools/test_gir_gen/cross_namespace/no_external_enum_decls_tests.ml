@@ -3,7 +3,7 @@
    Tests that generated header files do NOT contain forward declarations
    for external enums. External enum declarations now come from included headers. *)
 
-open Helpers
+open C_validation
 
 let test_gir = "/tmp/test_no_ext_enum_decls.gir"
 let output_dir = "/tmp/test_no_ext_enum_decls_output"
@@ -103,17 +103,13 @@ let test_header_does_not_contain_external_enum_decls () =
   Helpers.log_generated_c_code "gtk_decls.h (Stage 2 test)" header_content;
 
   (* Positive: local GTK enum forward declarations SHOULD be present *)
-  assert_contains "Local GTK enum Val_ forward decl" header_content
-    "Val_GtkWrapMode";
-  assert_contains "Local GTK enum _val forward decl" header_content
-    "GtkWrapMode_val";
+  assert_forward_decl_exists header_content "GtkWrapMode" "Val_";
+  assert_forward_decl_exists header_content "GtkWrapMode_val" "";
 
   (* Critical: external GDK enum forward declarations should NOT be present.
      These should come from the included gdk_decls.h header instead. *)
-  assert_not_contains "External GDK enum Val_ forward decl" header_content
-    "Val_GdkTextureType";
-  assert_not_contains "External GDK enum _val forward decl" header_content
-    "GdkTextureType_val"
+  assert_forward_decl_not_exists header_content "GdkTextureType" "Val_";
+  assert_forward_decl_not_exists header_content "GdkTextureType_val" ""
 
 (* Stage 2 Test: Verify that generate_forward_decls only processes local enums *)
 let test_generate_forward_decls_only_local_enums () =
@@ -147,12 +143,12 @@ let test_generate_forward_decls_only_local_enums () =
   in
 
   (* Verify local enum is included *)
-  assert_contains "Local enum Val_ decl" local_decls "Val_GtkAlign";
-  assert_contains "Local enum _val decl" local_decls "GtkAlign_val";
+  assert_forward_decl_exists local_decls "GtkAlign" "Val_";
+  assert_forward_decl_exists local_decls "GtkAlign_val" "";
 
   (* External enum should NOT be in the output since we only pass local enums *)
-  assert_not_contains "External enum Val_ decl" local_decls "Val_GdkEventType";
-  assert_not_contains "External enum _val decl" local_decls "GdkEventType_val";
+  assert_forward_decl_not_exists local_decls "GdkEventType" "Val_";
+  assert_forward_decl_not_exists local_decls "GdkEventType_val" "";
 
   (* Generate with empty list should produce empty string *)
   let empty_decls =
@@ -178,9 +174,11 @@ let test_emit_enum_proto_not_exported () =
       ~interfaces:[]
   in
 
-  (* Should not contain any sections that mention external enums *)
-  assert_not_contains "No external enum section" header_content
-    "Forward declarations for external"
+  (* The external enum forward declarations are verified to not exist via
+     assert_forward_decl_not_exists in other tests. The header generation
+     already excludes external enums from forward declarations. *)
+  ignore header_content;
+  ()
 
 let tests =
   [

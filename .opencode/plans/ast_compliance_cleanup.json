@@ -117,7 +117,7 @@
         {
           "stage": 3,
           "title": "Create header_generation_tests.ml with AST validation",
-          "status": "pending",
+          "status": "committed",
           "replanned": false,
           "description": "Create the missing header_generation_tests.ml file using AST-based validation for forward declaration generation",
           "files_to_modify": [
