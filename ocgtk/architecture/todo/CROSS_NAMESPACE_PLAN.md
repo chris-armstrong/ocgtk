@@ -365,17 +365,103 @@ GdkModifierType GdkModifierType_val(value val);
 #endif
 ```
 
-### 2.2 Update `c_stubs.ml` - Header Inclusion Strategy
+### 2.2 Header Inclusion Strategy
 
 **⚠️ DEPRECATED**: Generating forward declarations for external enums/bitfields in `c_stub_enum.ml` (lines 31-38) and `c_stub_bitfield.ml` (lines 61-68) is deprecated. Use header inclusion instead.
 
-Modify `generate_forward_decls_header` to:
-1. Accept `dependency_headers` parameter (list of header filenames, e.g., `["gdk_decls.h"; "gio_decls.h"]`)
-2. Generate `#include` directives for each dependency header
-3. **Only generate converters for current namespace's types** - never forward declare external types
-4. Remove or deprecate code that generates external enum/bitfield forward declarations
+**Strategy**: Option A - Include all dependency headers in `<ns>_decls.h`
+- Each `<ns>_decls.h` includes its dependency headers via `#include "<dep>_decls.h"`
+- All C stub files automatically get all converters through the single include
+- Simpler than per-file tracking, no changes needed to individual stub file generation
+
+**Determining Dependencies**:
+- Extract from `ctx.cross_references : cross_reference StringMap.t StringMap.t`
+- Keys of the outer map are the dependency namespace names (e.g., "Gdk", "Gio")
+- Generate `#include "<ns_lower>_decls.h"` for each dependency namespace
+- Filter out "GObject", "GLib", "GModule" (low-level, never generate bindings for these)
+
+**Dependency Chain**:
+```
+GIO → GDK → GSK → GTK
+      ↘ PANGO ↗
+      ↘ GDKPIXBUF ↗
+      ↘ GRAPHENE ↗
+```
+
+**Example gdk_decls.h**:
+```c
+#ifndef _gdk_decls_h_
+#define _gdk_decls_h_
+#include <gdk/gdk.h>
+#include <caml/mlvalues.h>
+
+/* Include GIO dependency */
+#include "gio_decls.h"
+
+/* Gdk-specific converters only */
+#define GdkTexture_val(val) ((GdkTexture*)ml_gobject_ext_of_val(val))
+#define Val_GdkTexture(obj) ((value)(ml_gobject_val_of_ext(obj)))
+
+/* ... more Gdk converters ... */
+
+#endif
+```
+
+**Modify `generate_forward_decls_header` to**:
+1. Accept `cross_references` parameter to determine dependencies
+2. Generate `#include` directives for each dependency header at the TOP of the file
+3. Generate converters ONLY for current namespace's types
+4. Remove external enum/bitfield forward declaration generation
 
 **Key principle**: All cross-namespace type converters (classes, interfaces, records, enums, bitfields) are accessed via included headers, not locally declared.
+
+### 2.2.1 Implementation Details
+
+**Files to modify**:
+
+1. **`c_stubs.ml`** - Rename header and add dependency includes
+   - Change filename from `generated_forward_decls.h` to `<ns>_decls.h`
+   - Add function to extract dependency namespaces from `ctx.cross_references`
+   - Generate `#include "<dep>_decls.h"` for each dependency
+   - Remove `~external_enums` and `~external_bitfields` parameters
+
+2. **`c_stub_enum.ml`** - Remove external enum forward declarations
+   - Remove `~external_enums` parameter from `generate_forward_decls`
+   - Delete lines 30-38 (external enum forward declaration generation)
+   - Keep only local namespace enum declarations
+
+3. **`c_stub_bitfield.ml`** - Remove external bitfield forward declarations  
+   - Remove `~external_bitfields` parameter from `generate_forward_decls`
+   - Delete lines 60-68 (external bitfield forward declaration generation)
+   - Keep only local namespace bitfield declarations
+
+4. **`c_stub_helpers.ml`** - Update header include
+   - Change `#include "generated_forward_decls.h"` to `#include "<ns>_decls.h"`
+   - The header name should be derived from the namespace being generated
+
+5. **`gir_gen.ml`** - Update header generation call
+   - Change header filename generation to use `<ns>_decls.h` pattern
+   - Pass `ctx.cross_references` instead of `~external_enums`/`~external_bitfields`
+   - Extract dependency namespaces and pass to header generation
+
+**Example dependency extraction**:
+```ocaml
+(* Extract dependency namespaces from cross_references *)
+let get_dependency_namespaces cross_references current_ns =
+  StringMap.fold (fun ns _ acc ->
+    if ns = current_ns then acc
+    else if List.mem ns ["GLib"; "GModule"; "GObject"] then acc
+    else ns :: acc
+  ) cross_references []
+```
+
+**Header naming**:
+- Gtk → `gtk_decls.h`
+- Gdk → `gdk_decls.h`  
+- Gio → `gio_decls.h`
+- Gsk → `gsk_decls.h`
+- Pango → `pango_decls.h`
+- etc.
 
 ### 2.3 Update dune File Generation
 
@@ -443,8 +529,37 @@ Each generated library must declare its cross-namespace dependencies in the `(li
          -I../../graphene/generated  ; Graphene dependency
          (:include cflag-gsk.sexp)
          -Wno-deprecated-declarations))
- (c_library_flags (:include clink-gsk.sexp)))
+ (c_library_flags (:include cflag-gsk.sexp)))
 ```
+
+### 2.3.1 Implementation Details
+
+**Files to modify**:
+
+1. **`dune_file.ml`** - Add dependency include paths and library deps
+   - Modify `generate_dune_library` to accept `dependency_namespaces` parameter
+   - Generate `-I../../<dep>/generated` for each dependency in `(flags ...)`
+   - Generate `ocgtk.<dep>.generated` entries in `(libraries ...)` clause
+   - Map namespace names to library names (e.g., "Gdk" → "ocgtk.gdk.generated")
+
+2. **`gir_gen.ml`** - Pass dependency info to dune generation
+   - Extract dependency namespaces from `ctx.cross_references`
+   - Pass to `generate_dune_library` when generating dune files
+
+**Namespace to library name mapping**:
+```ocaml
+let library_name_of_namespace ns =
+  "ocgtk." ^ (String.lowercase_ascii ns) ^ ".generated"
+
+let include_path_of_namespace ns =
+  "-I../../" ^ (String.lowercase_ascii ns) ^ "/generated"
+```
+
+**Directory structure for includes**:
+- Generating `src/gsk/generated/gsk_decls.h`
+- Needs `gdk_decls.h` → include path `-I../../gdk/generated`
+- Needs `gio_decls.h` → include path `-I../../gio/generated`
+- Relative path from `src/gsk/generated/` to `src/gdk/generated/` is `../../gdk/generated`
 
 ---
 
@@ -669,6 +784,22 @@ Add to `cross_namespace_tests.ml`:
 **Code Generation Tests:**
 7. **C code generation test**: Verify generated C code uses `Val_GdkEvent` when passing Gdk.Event parameter
 8. **Compilation test**: Verify generated C code compiles with dependency headers included
+
+### Phase 2 Specific Tests
+
+**Header Generation Tests:**
+1. **Library-specific header naming**: Verify each library generates `<ns>_decls.h` (not `generated_forward_decls.h`)
+2. **Dependency header inclusion**: Verify `gtk_decls.h` includes `gdk_decls.h` and `gio_decls.h` via `#include` directive
+3. **No external forward declarations**: Verify no forward declarations are generated for external types
+4. **Local-only declarations**: Verify header contains only current namespace's types
+
+**dune File Tests:**
+5. **Dependency include paths**: Verify `-I../../<dep>/generated` paths are generated in dune files
+6. **Library dependencies**: Verify `ocgtk.<dep>.generated` entries in `(libraries)` clause
+
+**Cross-Namespace Compilation Tests:**
+7. **Multi-library header compilation**: Generate Gdk and Gtk headers, verify Gtk can compile with Gdk header included
+8. **Dependency ordering test**: Verify dune dependencies are listed in correct order (GIO before GDK before GSK before GTK)
 
 ---
 
