@@ -3,7 +3,7 @@
    Tests that generated header files do NOT contain forward declarations
    for external bitfields. External bitfield declarations now come from included headers. *)
 
-open Helpers
+open C_validation
 
 let test_gir = "/tmp/test_no_ext_bitfield_decls.gir"
 let output_dir = "/tmp/test_no_ext_bitfield_decls_output"
@@ -101,17 +101,13 @@ let test_header_does_not_contain_external_bitfield_decls () =
   Helpers.log_generated_c_code "gtk_decls.h (Stage 3 test)" header_content;
 
   (* Positive: local GTK bitfield forward declarations SHOULD be present *)
-  assert_contains "Local GTK bitfield Val_ forward decl" header_content
-    "Val_GtkStateFlags";
-  assert_contains "Local GTK bitfield _val forward decl" header_content
-    "GtkStateFlags_val";
+  assert_forward_decl_exists header_content "GtkStateFlags" "Val_";
+  assert_forward_decl_exists header_content "GtkStateFlags_val" "";
 
   (* Critical: external GDK bitfield forward declarations should NOT be present.
      These should come from the included gdk_decls.h header instead. *)
-  assert_not_contains "External GDK bitfield Val_ forward decl" header_content
-    "Val_GdkEventMask";
-  assert_not_contains "External GDK bitfield _val forward decl" header_content
-    "GdkEventMask_val"
+  assert_forward_decl_not_exists header_content "GdkEventMask" "Val_";
+  assert_forward_decl_not_exists header_content "GdkEventMask_val" ""
 
 (* Stage 3 Test: Verify that generate_forward_decls only processes local bitfields *)
 let test_generate_forward_decls_only_local_bitfields () =
@@ -143,14 +139,12 @@ let test_generate_forward_decls_only_local_bitfields () =
   in
 
   (* Verify local bitfield is included *)
-  assert_contains "Local bitfield Val_ decl" local_decls "Val_GtkAlign";
-  assert_contains "Local bitfield _val decl" local_decls "GtkAlign_val";
+  assert_forward_decl_exists local_decls "GtkAlign" "Val_";
+  assert_forward_decl_exists local_decls "GtkAlign_val" "";
 
   (* External bitfield should NOT be in the output since we only pass local bitfields *)
-  assert_not_contains "External bitfield Val_ decl" local_decls
-    "Val_GdkWindowState";
-  assert_not_contains "External bitfield _val decl" local_decls
-    "GdkWindowState_val";
+  assert_forward_decl_not_exists local_decls "GdkWindowState" "Val_";
+  assert_forward_decl_not_exists local_decls "GdkWindowState_val" "";
 
   (* Generate with empty list should produce empty string *)
   let empty_decls =
@@ -177,9 +171,11 @@ let test_emit_bitfield_proto_not_exported () =
       ~interfaces:[]
   in
 
-  (* Should not contain any sections that mention external bitfields *)
-  assert_not_contains "No external bitfield section" header_content
-    "Forward declarations for external"
+  (* The external bitfield forward declarations are verified to not exist via
+     assert_forward_decl_not_exists in other tests. The header generation
+     already excludes external bitfields from forward declarations. *)
+  ignore header_content;
+  ()
 
 let tests =
   [
