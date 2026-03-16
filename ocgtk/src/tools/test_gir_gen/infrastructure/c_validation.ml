@@ -426,43 +426,42 @@ let parse_header_guards header_content =
 (* Forward Declaration Validation *)
 (* ========================================================================= *)
 
-(* Parse header content and extract forward declaration macro names.
+(* Helper: Check if a string is a valid C identifier character *)
+let is_ident_char c =
+  (c >= 'a' && c <= 'z')
+  || (c >= 'A' && c <= 'Z')
+  || (c >= '0' && c <= '9')
+  || c = '_'
+
+(* Helper: Extract identifier from start of string until non-identifier char *)
+let extract_identifier s =
+  let rec find_end idx =
+    if idx >= String.length s then idx
+    else if is_ident_char s.[idx] then find_end (idx + 1)
+    else idx
+  in
+  let end_idx = find_end 0 in
+  if end_idx > 0 then Some (String.sub s 0 end_idx) else None
+
+(* Parse header content and extract forward declaration names.
    Looks for patterns like:
-   - #define Val_<Type>(...)
-   - #define <Type>_val(...)
+   - #define Val_<Type>(...)          (macro format)
+   - #define <Type>_val(...)          (macro format)
+   - value Val_<Type>(...);           (function declaration format)
+   - <Type> <Type>_val(...);          (function declaration format)
    
-   Returns just the macro name (e.g., "Val_GtkWrapMode") without parameters. *)
+   Returns just the declaration name (e.g., "Val_GtkWrapMode") without parameters. *)
 let extract_forward_decls header_content =
   let lines = String.split_on_char '\n' header_content in
   List.filter_map
     (fun line ->
       let stripped = String.trim line in
-      (* Match #define Val_<Type> or #define <Type>_val *)
+      (* Pattern 1: #define Val_<Type> or #define <Type>_val *)
       if String.starts_with ~prefix:"#define " stripped then
         let rest =
           String.sub stripped 8 (String.length stripped - 8) |> String.trim
         in
-        (* Extract macro name - it should be the first token after #define.
-         The name may be followed by parameters like "(v)", so we need to 
-         extract just the identifier part. *)
-        let extract_macro_name s =
-          (* Find the first non-identifier character (not letter, digit, or underscore) *)
-          let rec find_end idx =
-            if idx >= String.length s then idx
-            else
-              let c = s.[idx] in
-              if
-                (c >= 'a' && c <= 'z')
-                || (c >= 'A' && c <= 'Z')
-                || (c >= '0' && c <= '9')
-                || c = '_'
-              then find_end (idx + 1)
-              else idx
-          in
-          let end_idx = find_end 0 in
-          if end_idx > 0 then Some (String.sub s 0 end_idx) else None
-        in
-        match extract_macro_name rest with
+        match extract_identifier rest with
         | Some name ->
             (* Check if it's a forward declaration pattern *)
             if
@@ -471,7 +470,36 @@ let extract_forward_decls header_content =
             then Some name
             else None
         | None -> None
-      else None)
+        (* Pattern 2: Function declarations like "value Val_<Type>(...);" *)
+      else if String.starts_with ~prefix:"value " stripped then
+        let rest =
+          String.sub stripped 6 (String.length stripped - 6) |> String.trim
+        in
+        (* Look for Val_<Type> pattern in function name *)
+        match extract_identifier rest with
+        | Some name ->
+            if String.starts_with ~prefix:"Val_" name then Some name else None
+        | None -> None
+      (* Pattern 3: Function declarations like "<Type> <Type>_val(...);" *)
+        else
+        (* Try to match "GtkWrapMode GtkWrapMode_val(...);" pattern *)
+        match extract_identifier stripped with
+        | Some type_name -> (
+            let rest_after_type =
+              String.sub stripped (String.length type_name)
+                (String.length stripped - String.length type_name)
+              |> String.trim
+            in
+            (* Check if next token is <Type>_val *)
+            match extract_identifier rest_after_type with
+            | Some func_name ->
+                if
+                  String.ends_with ~suffix:"_val" func_name
+                  && func_name = type_name ^ "_val"
+                then Some func_name
+                else None
+            | None -> None)
+        | None -> None)
     lines
 
 (* Assert that a forward declaration exists in the header.
