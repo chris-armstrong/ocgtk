@@ -16,13 +16,9 @@ let has_copy_method = C_stub_record.has_copy_method
 let is_value_like_record = C_stub_record.is_value_like_record
 let generate_record_c_code = C_stub_record.generate_record_c_code
 
-(* Re-export enum/bitfield proto emission *)
-let emit_enum_proto = C_stub_enum.emit_enum_proto
-let emit_bitfield_proto = C_stub_bitfield.emit_bitfield_proto
-
 (* Generate common header file with forward declarations for enum/bitfield converters *)
-let generate_decls_header ~ctx ~classes ~interfaces ~gtk_enums
-    ~gtk_bitfields ~records =
+let generate_decls_header ~ctx ~classes ~interfaces ~gtk_enums ~gtk_bitfields
+    ~records =
   let buf = Buffer.create 4096 in
   let ns_lower = String.lowercase_ascii ctx.namespace.namespace_name in
   Buffer.add_string buf "/* GENERATED CODE - DO NOT EDIT */\n";
@@ -56,15 +52,13 @@ let generate_decls_header ~ctx ~classes ~interfaces ~gtk_enums
 
   (* Generate enum forward declarations *)
   let namespace_prefix = ctx.namespace.namespace_name in
-  if List.length gtk_enums > 0 then
-  begin
+  if List.length gtk_enums > 0 then begin
     Buffer.add_string buf
       (C_stub_enum.generate_forward_decls ~namespace_prefix ~gtk_enums)
   end;
 
   (* Generate bitfield forward declarations *)
-  if List.length gtk_bitfields > 0 then
-  begin
+  if List.length gtk_bitfields > 0 then begin
     Buffer.add_string buf
       (C_stub_bitfield.generate_forward_decls ~namespace_prefix ~gtk_bitfields)
   end;

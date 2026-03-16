@@ -48,7 +48,7 @@
         ]
       },
       "dependencies": [],
-      "status": "pending"
+      "status": "committed"
     },
     {
       "stage_number": 2,
@@ -92,7 +92,7 @@
         ]
       },
       "dependencies": [1],
-      "status": "pending"
+      "status": "committed"
     },
     {
       "stage_number": 3,
