@@ -49,11 +49,11 @@ ctx status
 
 | File | Purpose |
 |------|---------|
-| `.context/CONSTITUTION.md` | Hard rules - NEVER violate |
-| `.context/TASKS.md` | Current work items |
-| `.context/DECISIONS.md` | Architectural decisions with rationale |
-| `.context/LEARNINGS.md` | Gotchas, tips, lessons learned |
-| `.context/CONVENTIONS.md` | Code patterns and standards |
+| `$CTX_DIR/CONSTITUTION.md` | Hard rules - NEVER violate |
+| `$CTX_DIR/TASKS.md` | Current work items |
+| `$CTX_DIR/DECISIONS.md` | Architectural decisions with rationale |
+| `$CTX_DIR/LEARNINGS.md` | Gotchas, tips, lessons learned |
+| `$CTX_DIR/CONVENTIONS.md` | Code patterns and standards |
 
 ## Before Session Ends
 

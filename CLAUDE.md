@@ -9,11 +9,11 @@
 ## IMPORTANT: You Have Persistent Memory
 
 This project uses Context (`ctx`) for context persistence across sessions.
-**Your memory is NOT ephemeral** - it lives in `.context/` files.
+**Your memory is NOT ephemeral** - it lives in `$CTX_DIR/` files.
 
 ## On Session Start
 
-1. **Read `.context/AGENT_PLAYBOOK.md`** first - it explains how to use this system
+1. **Read `$CTX_DIR/AGENT_PLAYBOOK.md`** first - it explains how to use this system
 2. **Run `ctx status`** to see current context summary
 
 ## When Asked "Do You Remember?"
@@ -22,8 +22,8 @@ When the user asks "Do you remember?", "What were we working on?", or any
 memory-related question:
 
 **Do this FIRST (silently):**
-- Read `.context/TASKS.md`
-- Read `.context/DECISIONS.md` and `.context/LEARNINGS.md`
+- Read `$CTX_DIR/TASKS.md`
+- Read `$CTX_DIR/DECISIONS.md` and `$CTX_DIR/LEARNINGS.md`
 - Run `ctx recall list --limit 5` for recent session history
 
 **Then respond with a structured readback:**
@@ -34,7 +34,7 @@ memory-related question:
 4. **Next step**: offer to continue or ask what to focus on
 
 **Never** lead with "I don't have memory", "Let me check if there are files",
-or narrate your discovery process. The `.context/` files are your memory.
+or narrate your discovery process. The `$CTX_DIR/` files are your memory.
 Read them silently, then present what you found as recall, not as a search.
 
 ## Quick Context Load
@@ -51,11 +51,11 @@ ctx status
 
 | File | Purpose |
 |------|---------|
-| `.context/CONSTITUTION.md` | Hard rules - NEVER violate |
-| `.context/TASKS.md` | Current work items |
-| `.context/DECISIONS.md` | Architectural decisions with rationale |
-| `.context/LEARNINGS.md` | Gotchas, tips, lessons learned |
-| `.context/CONVENTIONS.md` | Code patterns and standards |
+| `$CTX_DIR/CONSTITUTION.md` | Hard rules - NEVER violate |
+| `$CTX_DIR/TASKS.md` | Current work items |
+| `$CTX_DIR/DECISIONS.md` | Architectural decisions with rationale |
+| `$CTX_DIR/LEARNINGS.md` | Gotchas, tips, lessons learned |
+| `$CTX_DIR/CONVENTIONS.md` | Code patterns and standards |
 
 ## Before Session Ends
 
