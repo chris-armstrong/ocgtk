@@ -428,7 +428,7 @@
         ]
       },
       "dependencies": [8],
-      "status": "pending"
+      "status": "committed"
     }
   ],
   "risks": [
@@ -503,12 +503,12 @@
     {
       "requirement": "Update dune files to include `-I../../<dep>/generated` paths",
       "stage": 6,
-      "status": "pending"
+      "status": "completed"
     },
     {
       "requirement": "Update dune files to include `ocgtk.<dep>.generated` in libraries clause",
       "stage": 7,
-      "status": "pending"
+      "status": "completed"
     }
   ]
 }
