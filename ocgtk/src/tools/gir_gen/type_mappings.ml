@@ -39,10 +39,7 @@ let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
       | Crt_Enum | Crt_Bitfield ->
           sprintf "%s%s_val" namespace cr.cr_name
       | _ -> cr.cr_c_type ^ "_val");
-    needs_copy =
-      (match cr.cr_type with
-      | Crt_Enum | Crt_Bitfield | Crt_Record { opaque = false } -> true
-      | _ -> false);
+
     layer2_class =
       (match cr.cr_type with
       | Crt_Class _ ->
@@ -68,6 +65,10 @@ let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
               class_layer1_accessor = "as_" ^ Utils.ocaml_record_name cr.cr_name;
             }
       | Crt_Enum | Crt_Bitfield -> None);
+    is_value_type_record =
+      (match cr.cr_type with
+      | Crt_Record { opaque = false } -> true
+      | _ -> false);
   }
 
 (** Type mappings for built-in / primitive types (integers, strings, etc.) *)
@@ -78,9 +79,10 @@ let type_mappings : (string * Types.type_mapping) list =
          Types.ocaml_type = "int";
          Types.c_to_ml = "Val_int";
          Types.ml_to_c = "Int_val";
-         Types.needs_copy = false;
+
          layer2_class = None;
          c_type = "guint";
+         is_value_type_record = false;
        }
         : Types.type_mapping) );
     ( "gint",
@@ -88,99 +90,110 @@ let type_mappings : (string * Types.type_mapping) list =
         ocaml_type = "int";
         c_to_ml = "Val_int";
         ml_to_c = "Int_val";
-        needs_copy = false;
+
         layer2_class = None;
         c_type = "gint";
+        is_value_type_record = false;
       } );
     ( "gdouble",
       {
         ocaml_type = "float";
         c_to_ml = "caml_copy_double";
         ml_to_c = "Double_val";
-        needs_copy = true;
+
         layer2_class = None;
         c_type = "gdouble";
+        is_value_type_record = false;
       } );
     ( "double",
       {
         ocaml_type = "float";
         c_to_ml = "caml_copy_double";
         ml_to_c = "Double_val";
-        needs_copy = true;
+
         layer2_class = None;
         c_type = "double";
+        is_value_type_record = false;
       } );
     ( "gboolean",
       {
         ocaml_type = "bool";
         c_to_ml = "Val_bool";
         ml_to_c = "Bool_val";
-        needs_copy = false;
+
         layer2_class = None;
         c_type = "gboolean";
+        is_value_type_record = false;
       } );
     ( "gchararray",
       {
         ocaml_type = "string";
         c_to_ml = "caml_copy_string";
         ml_to_c = "String_val";
-        needs_copy = true;
+
         layer2_class = None;
         c_type = "gchararray";
+        is_value_type_record = false;
       } );
     ( "const gchar*",
       {
         ocaml_type = "string";
         c_to_ml = "caml_copy_string";
         ml_to_c = "String_val";
-        needs_copy = true;
+
         layer2_class = None;
         c_type = "const gchar*";
+        is_value_type_record = false;
       } );
     ( "gchar*",
       {
         ocaml_type = "string";
         c_to_ml = "caml_copy_string";
         ml_to_c = "String_val";
-        needs_copy = true;
+
         layer2_class = None;
         c_type = "gchar*";
+        is_value_type_record = false;
       } );
     ( "utf8",
       {
         ocaml_type = "string";
         c_to_ml = "caml_copy_string";
         ml_to_c = "String_val";
-        needs_copy = true;
+
         layer2_class = None;
         c_type = "utf8";
+        is_value_type_record = false;
       } );
     ( "const char*",
       {
         ocaml_type = "string";
         c_to_ml = "caml_copy_string";
         ml_to_c = "String_val";
-        needs_copy = true;
+
         layer2_class = None;
         c_type = "const char*";
+        is_value_type_record = false;
       } );
     ( "gfloat",
       {
         ocaml_type = "float";
         c_to_ml = "caml_copy_double";
         ml_to_c = "Double_val";
-        needs_copy = true;
+
         layer2_class = None;
         c_type = "gfloat";
+        is_value_type_record = false;
       } );
     ( "float",
       {
         ocaml_type = "float";
         c_to_ml = "caml_copy_double";
         ml_to_c = "Double_val";
-        needs_copy = true;
+
         layer2_class = None;
         c_type = "float";
+        is_value_type_record = false;
       } );
   ]
 
@@ -299,7 +312,8 @@ let find_class_mapping ~ctx lookup_str =
       c_to_ml = sprintf "Val_%s" cls.c_type;
       ml_to_c = sprintf "%s_val" cls.c_type;
       c_type = cls.c_type;
-      needs_copy = false;
+
+      is_value_type_record = false;
     }
 
 (** Attempt to find an interface mapping in the context in the current namespace
@@ -332,7 +346,8 @@ let find_interface_mapping ~ctx lookup_str =
       c_to_ml = sprintf "Val_%s" iface.c_type;
       ml_to_c = sprintf "%s_val" iface.c_type;
       c_type = iface.c_type;
-      needs_copy = false;
+
+      is_value_type_record = false;
     }
 
 (** Attempt to find a record mapping in the context in the current namespace *)
@@ -356,7 +371,8 @@ let find_record_mapping ~ctx lookup_str =
       ml_to_c = sprintf "%s_val" record.c_type;
       layer2_class = None;
       c_type = record.c_type;
-      needs_copy = false;
+
+      is_value_type_record = not record.opaque;
     }
 
 let find_enum_mapping ~ctx lookup_str =
@@ -377,7 +393,8 @@ let find_enum_mapping ~ctx lookup_str =
       c_to_ml = sprintf "Val_%s%s" c_namespace enum.enum_name;
       ml_to_c = sprintf "%s%s_val" c_namespace enum.enum_name;
       layer2_class = None;
-      needs_copy = false;
+
+      is_value_type_record = false;
     }
 
 let find_bitfield_mapping ~ctx lookup_str =
@@ -399,9 +416,10 @@ let find_bitfield_mapping ~ctx lookup_str =
         namespace ^ "." ^ String.lowercase_ascii bitfield.bitfield_name;
       c_to_ml = sprintf "Val_%s%s" c_namespace bitfield.bitfield_name;
       ml_to_c = sprintf "%s%s_val" c_namespace bitfield.bitfield_name;
-      needs_copy = false;
+
       layer2_class = None;
       c_type = bitfield.bitfield_c_type;
+      is_value_type_record = false;
     }
 
 let rec find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
@@ -425,8 +443,9 @@ let rec find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
               (* Marker: use inline code generation *)
               ml_to_c = "ARRAY_INLINE";
               (* Marker: use inline code generation *)
-              needs_copy = true;
+      
               layer2_class = None;
+              is_value_type_record = false;
             }
       | None -> None)
   | None ->

@@ -44,9 +44,10 @@ module Code_gen = struct
       ocaml_type = "unit";
       c_to_ml = "Val_unit";
       ml_to_c = "Unit_val";
-      needs_copy = false;
+
       layer2_class = None;
       c_type = "void";
+      is_value_type_record = false;
     }
 
   (* Generate C file header with common includes and type conversions *)
@@ -313,12 +314,18 @@ let default_type_mapping = Code_gen.default_type_mapping
 let nullable_c_to_ml_expr ~ctx ~var ~(gir_type : gir_type)
     ~(mapping : type_mapping) ?(direction : Types.gir_direction = In) () =
   (* out parameters that are record types are stack allocated, so we need to pass by reference
-     to their Val_x function, which will copy them into the OCaml heap *)
+     to their Val_x function, which will copy them into the OCaml heap.
+     Check both the type_mapping flag (works for cross-namespace) and analyze_property_type
+     (works for current namespace records with full record info). *)
   let var_expr =
-    match (direction, analyze_property_type ~ctx gir_type) with
-    | Out, { record_info = Some ({ opaque = false; _ }, _, _); _ }
-    | InOut, { record_info = Some ({ opaque = false; _ }, _, _); _ } ->
+    match direction with
+    | (Out | InOut) when mapping.is_value_type_record ->
         sprintf "&%s" var
+    | Out | InOut -> (
+        match analyze_property_type ~ctx gir_type with
+        | { record_info = Some ({ opaque = false; _ }, _, _); _ } ->
+            sprintf "&%s" var
+        | _ -> var)
     | _ -> var
   in
   if not gir_type.nullable then sprintf "%s(%s)" mapping.c_to_ml var_expr

@@ -26,6 +26,7 @@ depends: [
   "ppxlib" {with-test}
   "sexplib" {build}
   "ppx_sexp_conv" {build}
+  "ppx_deriving" {build}
   "odoc" {with-doc}
 ]
 build: [

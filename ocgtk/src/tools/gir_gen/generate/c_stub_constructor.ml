@@ -239,7 +239,8 @@ let generate_c_constructor ~ctx ~c_type ~class_name (ctor : gir_constructor) =
       }
     in
     match Type_mappings.find_type_mapping_for_gir_type ~ctx dummy_gir_type with
-    | Some mapping when Option.is_some mapping.layer2_class ->
+    | Some mapping when Option.is_some mapping.layer2_class
+                        && not mapping.is_value_type_record ->
         (* This is a GObject type (class or interface) - always need ref_sink for constructors *)
         sprintf "\nif (%s) g_object_ref_sink(%s);" var_name var_name
     | _ -> ""
