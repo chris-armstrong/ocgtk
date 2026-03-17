@@ -1,12 +1,12 @@
 # Cross-Namespace Handling Plan for ocgtk GIR Generator
 
-**Status**: Planning  
-**Created**: 2026-01-23  
-**Last Updated**: 2026-03-10 (added Layer 0 C marshalling requirements, updated current state, updated Section 1.2 with current ml_interface.ml structure)
+**Status**: In Progress
+**Created**: 2026-01-23
+**Last Updated**: 2026-03-17 (cleaned up redundant phases, updated dune naming to match implementation, renumbered Phase 3)
 
 ## Executive Summary
 
-This document outlines a comprehensive plan to add cross-namespace support to the ocgtk GIR code generator. The goal is to generate full bindings for Gtk, Gdk, Pango, GdkPixbuf, Gsk, Graphene, and Gio while excluding low-level namespaces (GLib, GModule, GObject).
+This document outlines a comprehensive plan to add cross-namespace support to the ocgtk GIR code generator. The goal is to generate full bindings for Cairo, Gtk, Gdk, Pango, PangoCairo, GdkPixbuf, Gsk, Graphene, and Gio while excluding low-level namespaces (GLib, GModule, GObject).
 
 The plan prioritizes:
 1. **Refactoring first** - Clean up Layer 1 and Layer 2 generation for maintainability
@@ -18,8 +18,10 @@ The plan prioritizes:
 
 This plan was developed through an interactive planning session. Key decisions made:
 
+- **Cairo**: Generate bindings (GObject type stubs + 22 enumerations, no methods - cairo API is not GObject-based)
 - **Gio**: Include for full binding generation (important for GMenuModel, ListModel, Application, etc.)
 - **Gdk, Pango, GdkPixbuf, Gsk, Graphene**: Generate full bindings for all
+- **PangoCairo**: Generate bindings (2 interfaces: Font, FontMap with cross-namespace deps on Cairo + Pango)
 - **GLib, GModule, GObject**: Excluded from bindings (too low-level)
 - **Special GLib types**: Continue expanding support (PtrArray done, List/Variant planned for future)
 - **Refactoring strategy**: Refactor code before adding cross-namespace complexity
@@ -34,25 +36,40 @@ The `scripts/generate-bindings.sh` script automates the complete cross-namespace
 
 **Phase 1: Reference File Generation**
 ```bash
-# Generates .sexp reference files for each namespace
-gir_gen references /usr/share/gir-1.0/Gio-2.0.gir  _build/references/gio-references.sexp
-gir_gen references /usr/share/gir-1.0/Gdk-4.0.gir  _build/references/gdk-references.sexp
+# Generates .sexp reference files for each namespace (9 total)
+gir_gen references /usr/share/gir-1.0/cairo-1.0.gir     _build/references/cairo-references.sexp
+gir_gen references /usr/share/gir-1.0/Gio-2.0.gir       _build/references/gio-references.sexp
+gir_gen references /usr/share/gir-1.0/Gdk-4.0.gir       _build/references/gdk-references.sexp
+gir_gen references /usr/share/gir-1.0/PangoCairo-1.0.gir _build/references/pangocairo-references.sexp
 # ... etc for Graphene, GdkPixbuf, Pango, GSK, GTK
 ```
 
 **Phase 2: Binding Generation with Cross-References**
 ```bash
 # Each namespace is generated with references to its dependencies
-gir_gen generate -r gio-references.sep -r gdk-references.sep \
-    /usr/share/gir-1.0/Gsk-4.0.gir src/gsk
+gir_gen generate /usr/share/gir-1.0/cairo-1.0.gir src/cairo
 
-gir_gen generate -r gio-references.sexp -r gdk-references.sexp \
-    -r graphene-references.sexp -r gdkpixbuf-references.sexp \
-    -r pango-references.sexp -r gsk-references.sexp \
+gir_gen generate -r cairo-references.sexp -r pango-references.sexp \
+    /usr/share/gir-1.0/PangoCairo-1.0.gir src/pangocairo
+
+gir_gen generate -r cairo-references.sexp -r gio-references.sexp \
+    -r gdk-references.sexp -r graphene-references.sexp \
+    -r gdkpixbuf-references.sexp -r pango-references.sexp \
+    -r pangocairo-references.sexp -r gsk-references.sexp \
     /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
 ```
 
-The script handles the dependency ordering (GIO → GDK → GSK → GTK) and ensures each namespace has access to the type information it needs from its dependencies.
+The script handles the dependency ordering and ensures each namespace has access to the type information it needs from its dependencies.
+
+**Dependency Chain (updated)**:
+```
+CAIRO ──┬──→ GDK ──┬──→ GSK ──→ GTK
+        ├──→ PANGO ─┤          ↗
+        └──→ PANGOCAIRO        │
+GIO ────┤                      │
+        ├──→ GDKPIXBUF ────────┤
+        └──→ GRAPHENE ─────────┘
+```
 
 ---
 
@@ -398,10 +415,12 @@ GdkModifierType GdkModifierType_val(value val);
 
 **Dependency Chain**:
 ```
-GIO → GDK → GSK → GTK
-      ↘ PANGO ↗
-      ↘ GDKPIXBUF ↗
-      ↘ GRAPHENE ↗
+CAIRO ──┬──→ GDK ──┬──→ GSK ──→ GTK
+        ├──→ PANGO ─┤          ↗
+        └──→ PANGOCAIRO        │
+GIO ────┤                      │
+        ├──→ GDKPIXBUF ────────┤
+        └──→ GRAPHENE ─────────┘
 ```
 
 **Example gdk_decls.h**:
@@ -487,113 +506,45 @@ Each generated library must declare its cross-namespace dependencies in the `(li
 
 ```scheme
 (library
- (name gsk_generated)
- (public_name ocgtk.gsk.generated)
+ (name ocgtk_gsk_generated_stubs)
+ (public_name ocgtk.gsk.generated_stubs)
+ (wrapped false)
+ (modules)  ; No OCaml modules, only C stubs
  (libraries
-   ocgtk.common
-   ocgtk.gio    ; For GIO types (GListModel, etc.)
    ocgtk.gdk    ; For GDK types (GdkTexture, etc.)
    ocgtk.graphene  ; For Graphene types
-   ctypes
-   ctypes.foreign
-   base)
+   ocgtk_common)  ; Common header files
  (foreign_stubs
   (language c)
   (names ml_..._gen)
-  (flags -fPIC 
+  (flags -fPIC -Igenerated -Icore -I../common
          (:include cflag-gsk.sexp)
-         -Wno-deprecated-declarations))
+         -Wno-deprecated-declarations
+         -Wno-incompatible-pointer-types
+         -Wno-int-conversion))
  (c_library_flags (:include clink-gsk.sexp)))
 ```
 
 **Key points:**
-1. **OCaml library dependencies**: Listed in `(libraries)` clause using public library names (e.g., `ocgtk.gdk`) - NOT the internal `.generated` stubs
+1. **OCaml library dependencies**: Listed in `(libraries)` clause using public library names (e.g., `ocgtk.gdk`) — dependencies reference the public library, not internal `.generated_stubs`
 2. **Dependency ordering**: Libraries must be listed in dependency order (dependencies before dependents)
-3. **Generated automatically**: The dune file generator (`generate/dune_file.ml`) produces these entries based on which reference files are passed to gir_gen
-4. **Header availability**: The `<ns>_decls.h` headers are made available through the library dependency, no manual `-I` paths needed
-
-**Example: GSK dune configuration**
-```scheme
-; In src/gsk/generated/dune-generated.inc
-(library
- (name gsk_generated)
- ; ... other fields ...
- (foreign_stubs
-  (language c)
-  (names ml_blend_node_gen ...)
-  (flags -fPIC 
-         -Igenerated -Icore -I../common
-         (:include cflag-gsk.sexp)
-         -Wno-deprecated-declarations))
- (c_library_flags (:include cflag-gsk.sexp)))
-```
-
-### 2.3.1 Implementation Details
-
-**Files to modify**:
-
-1. **`dune_file.ml`** - Add library dependencies
-   - Modify `generate_dune_library` to accept `dependency_namespaces` parameter
-   - Generate `ocgtk.<dep>` entries in `(libraries ...)` clause (public library, not .generated stubs)
-   - Map namespace names to library names (e.g., "Gdk" → "ocgtk.gdk")
-
-2. **`gir_gen.ml`** - Pass dependency info to dune generation
-   - Extract dependency namespaces from `ctx.cross_references`
-   - Pass to `generate_dune_library` when generating dune files
-
-**Namespace to library name mapping**:
-```ocaml
-let library_name_of_namespace ns =
-  "ocgtk." ^ (String.lowercase_ascii ns)
-  (* Note: We depend on the public library, not ocgtk.<ns>.generated stubs.
-     The <ns>_decls.h header is made available through the library dependency. *)
-```
-
-**Header availability**:
-- The `<ns>_decls.h` headers are made available through library dependencies
-- No manual `-I` include paths are needed - the dune build system handles this
-- Dependent libraries access headers via the public library interface
+3. **Generated automatically**: The dune file generator (`generate/dune_file.ml`) extracts dependency namespaces from `repository.repository_includes`, filters base namespaces, and maps to `ocgtk.<ns>` library names
+4. **Header availability**: The `<ns>_decls.h` headers are made available through the library dependency mechanism — no manual `-I` include paths to other libraries are needed
+5. **Library naming**: Generated stubs use `ocgtk_<ns>_generated_stubs` (name) / `ocgtk.<ns>.generated_stubs` (public_name), with `(wrapped false)` and `(modules)` since they contain only C stubs
 
 ---
 
-## Phase 3: Extended External Namespace Parsing
+## Phase 3: Cross-Namespace OCaml Type Fixes
 
-**Goal**: Load enough type information from external namespaces for correct FFI generation.
+**Goal**: Fix OCaml type generation for cross-namespace references so libraries like PangoCairo can compile.
 
-### 3.1 Required Information from External Namespaces
+### 3.1 Current Cross-Namespace Infrastructure (Reference)
 
-For **records**, FFI differs based on:
-- `opaque`: Pass as pointer, no field access
-- `disguised`: Special handling (GLib internal)
-- Boxed (has `glib:get-type`): Can copy, has finalizer
-- Non-opaque, non-boxed: Value-like record
+The cross-namespace system uses a two-phase approach:
+1. **Reference generation**: `gir_gen references <gir-file> <output.sexp>` extracts type metadata
+2. **Binding generation**: `gir_gen generate [-r ref.sexp ...] <gir-file> src/<ns>` uses references
 
-For **classes/interfaces**:
-- C type name for `Val_X`/`X_val` macros
-- Parent class (for inheritance chain validation)
-
-For **enums/bitfields**:
-- Already loaded - continue as-is
-
-### 3.2 Extend `Types.generation_context`
-
-The current implementation uses a **nested map structure** for cross-references (`types.ml:312`):
-
-```ocaml
-type generation_context = {
-  (* ... existing fields ... *)
-  
-  (* Cross-references: namespace -> name -> cross_reference *)
-  cross_references : cross_reference StringMap.t StringMap.t;
-  
-  (* Existing enum/bitfield lists *)
-  external_enums : (string * gir_enum) list;
-  external_bitfields : (string * gir_bitfield) list;
-}
-```
-
-The `cross_reference` type (`types.ml:288-293`) is defined as:
-
+**Data model** (`types.ml`):
 ```ocaml
 type cross_reference = {
   cr_name : string;          (* Type name, e.g., "Texture" *)
@@ -602,15 +553,12 @@ type cross_reference = {
 }
 
 and cross_reference_type =
-  | Crt_Class
-  | Crt_Interface
+  | Crt_Class | Crt_Interface
   | Crt_Record of { opaque : bool }
-  | Crt_Enum
-  | Crt_Bitfield
-[@@deriving sexp]
+  | Crt_Enum | Crt_Bitfield
 ```
 
-**Lookup pattern** (from `type_mappings.ml:501-506`):
+**Lookup** (`type_mappings.ml`):
 ```ocaml
 let find_cross_namespace_type_mapping ~ctx ~namespace ~name =
   let open Option in
@@ -619,186 +567,85 @@ let find_cross_namespace_type_mapping ~ctx ~namespace ~name =
   Some (map_cross_reference_to_type_mapping ~ctx cross_reference)
 ```
 
-This nested map structure allows O(1) lookup of cross-namespace types by first finding the namespace map, then the specific type within that namespace.
+**C-side**: Fully working — each library's `<ns>_decls.h` declares its converters, dependent libraries include them via `#include "<ns>_decls.h"`. No forward declarations needed.
 
-### 3.3 Update `gir_parser.ml`
+**Converter naming**: `Val_<c_type>` / `<c_type>_val` (e.g., `Val_GdkTexture` / `GdkTexture_val`). The `cr_type` determines pointer vs value semantics.
 
-Add metadata-only parsing mode:
+### 3.2 Array Handling for Cross-Namespace Types
 
-```ocaml
-type parse_mode =
-  | FullParse           (* For namespaces we're generating *)
-  | MetadataOnly        (* Just type info for cross-refs *)
+**Known issue**: Array conversion uses `Type_mappings.find_type_mapping_for_gir_type` to get element type mapping. If element type is from external namespace, this may fail if the lookup doesn't consult `cross_references`.
 
-val parse_gir_metadata : string -> external_type_metadata list
-(* Fast parser that only extracts:
-   - class/interface names and c:type
-   - record names, c:type, opaque, disguised, glib:get-type
-   Does NOT parse methods, constructors, properties, signals *)
-```
+**Solution**: Ensure `find_type_mapping_for_gir_type` falls through to `find_cross_namespace_type_mapping` for array element types.
 
-### 3.4 Array Handling for Cross-Namespace Types
+---
 
-**Known issue**: Array conversion uses `Type_mappings.find_type_mapping_for_gir_type` to get element type mapping. If element type is from external namespace, this fails.
+### 3.3 Cross-Namespace OCaml Type Generation Bugs
 
-**Solution**: Update `find_type_mapping_for_gir_type` to consult `external_classes`, `external_interfaces`, `external_records`.
+**Status**: Not started - blocking PangoCairo compilation
 
-### 3.5 Layer 0 C Marshalling Requirements
+**Discovery context**: When adding PangoCairo (which depends on Cairo and Pango), the generated OCaml code has three categories of cross-namespace type bugs. These bugs have always existed but were hidden because cross-namespace methods were filtered out (Phase 4 filtering). Now that libraries like PangoCairo have direct cross-namespace references, the bugs are exposed.
 
-For correct C stub generation with cross-namespace types, we need specific information to generate proper converter macros and type handling:
+#### Bug 1: Layer 1 - Unqualified cross-namespace record types
 
-#### Converter Naming Convention
+**Symptom**: `font.ml` generates `Scaled_font.t` for a cairo.ScaledFont return type. Since `Scaled_font` is in the `ocgtk_cairo` library (not `ocgtk_pangocairo`), OCaml can't find it.
 
-The C marshalling layer uses `Val_Xxx` and `Xxx_val` macros for type conversion. For cross-namespace types, these follow the pattern:
+**Root cause**: `map_cross_reference_to_type_mapping` (type_mappings.ml:23-24) generates `ocaml_type = Utils.module_name_of_class cr.cr_name ^ ".t"` without any namespace qualification. For same-namespace types this works because the module is local. For cross-namespace types, it produces `Scaled_font.t` instead of something like `Ocgtk_cairo.Scaled_font.t`.
 
-```c
-// For Gdk.Event (class)
-#define Val_GdkEvent(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#define GdkEvent_val(val) ((GdkEvent*)ml_gobject_ext_of_val(val))
+**Fix needed**: The `ocaml_type` for cross-namespace records/classes/interfaces must be namespace-qualified. The qualification depends on the OCaml library structure — since each library is wrapped (e.g., `ocgtk_cairo`), the external module path is `Ocgtk_<ns>.Module_name.t`.
 
-// For Gdk.ModifierType (enum)
-value Val_GdkModifierType(GdkModifierType val);
-GdkModifierType GdkModifierType_val(value val);
+#### Bug 2: Layer 1 - Unqualified cross-namespace enum types
 
-// For Gdk.Rectangle (record)
-value Val_GdkRectangle(const GdkRectangle *ptr);
-GdkRectangle *GdkRectangle_val(value val);
-```
+**Symptom**: `font_map.ml` generates `fonttype` for a cairo.FontType return type. Since `fonttype` is defined in `cairo_enums.mli` inside `ocgtk_cairo`, it's not accessible from `ocgtk_pangocairo`.
 
-**Required information from external namespace:**
-- `namespace_name` (e.g., "Gdk") - used in converter macro names
-- `c_type` (e.g., "GdkEvent*", "GdkModifierType") - C type for parameter/return
-- `cr_type` (Class/Interface/Record/Enum/Bitfield) - determines pointer/value semantics
+**Root cause**: Same function (type_mappings.ml:25) generates `ocaml_type = String.lowercase_ascii cr.cr_name` for enums/bitfields without namespace qualification.
 
-#### Header Availability Strategy
+**Fix needed**: Cross-namespace enums must reference the external library's enum module, e.g., `Ocgtk_cairo.Cairo_enums.fonttype` or use a type alias.
 
-Cross-namespace types require converters defined in the **foreign namespace's generated code**:
+#### Bug 3: Layer 2 - Invalid OCaml for cross-namespace class references
 
-```
-Generating gtk/ml_event_controller_gen.c (uses Gdk.Event)
-  → Needs Val_GdkEvent / GdkEvent_val
-  → These are defined in gdk/ml_*_gen.c and gdk/generated_forward_decls.h
-  → gtk/ml_event_controller_gen.c must include gdk_decls.h
-```
+**Symptom**: `gFont.ml` generates `cairo.scaled_font` as a class type (for `new cairo.scaled_font ret`). This is invalid OCaml — `cairo` is not a module accessible here, and even if it were, the syntax is wrong.
 
-**Strategy: Header Inclusion for All External Types**
+**Root cause**: `map_cross_reference_to_type_mapping` (type_mappings.ml:38) sets `class_module = namespace` (e.g., `"cairo"`). Then `type_resolution.ml:19` combines as `class_module ^ "." ^ class_type`, producing `"cairo.scaled_font"`. For local types, `class_module` is set to `"G" ^ module_name` (e.g., `"GWidget"`), which works because the G-module is in the same library.
 
-All cross-namespace type converters (classes, interfaces, records, enums, bitfields) are accessed via included headers:
+**Fix needed**: `layer2_class` for cross-namespace types must use the fully-qualified wrapped library module path, or Layer 2 generation must skip wrapping cross-namespace return types as class objects (since the class is defined in another library).
 
-```
-Generating gtk/ml_event_controller_gen.c (uses Gdk.Event, Gdk.ModifierType)
-  → Needs Val_GdkEvent, GdkEvent_val, Val_GdkModifierType, GdkModifierType_val
-  → These are declared in gdk/gdk_decls.h (generated by Gdk library)
-  → gtk/ml_event_controller_gen.c includes gdk_decls.h
-  → No local forward declarations needed
-```
+#### Proposed Fix Strategy
 
-**Implementation approach:**
-1. **Each library generates its own `<ns>_decls.h`** with all its type converters (classes, interfaces, records, enums, bitfields)
-2. **Dependent libraries include these headers** via `#include "<ns>_decls.h"`
-3. **No forward declarations** are generated for external types in any library
-4. **dune files** specify `-I../../<dep>/generated` paths to find dependency headers
+The cleanest approach is to make `map_cross_reference_to_type_mapping` namespace-aware:
 
-**⚠️ Deprecation Notice:**
-The current code that generates forward declarations for external enums/bitfields in `c_stub_enum.ml` (lines 31-38) and `c_stub_bitfield.ml` (lines 61-68) should be:
-- Marked as deprecated with a comment pointing to this plan
-- Removed once all libraries use the header inclusion approach
-- Replaced with header `#include` directives
+1. **Add namespace to the `ocaml_type`**: For cross-namespace types, prefix with the wrapped library module:
+   - Records/Classes: `Ocgtk_<ns_lower>.Module_name.t`
+   - Enums: `Ocgtk_<ns_lower>.<Ns>_enums.enum_name`
 
-#### Pointer vs Value Semantics
+2. **Fix `layer2_class` for cross-namespace**: Either:
+   - (a) Set `layer2_class = None` for cross-namespace types (don't wrap in class objects — just use the Layer 1 type), or
+   - (b) Use fully-qualified module paths like `Ocgtk_<ns_lower>.GModule_name` for `class_module`
 
-Different type categories have different C marshalling patterns:
+   Option (a) is simpler and probably correct — you shouldn't be instantiating a Layer 2 class from another library's module hierarchy.
 
-| Type Category | C Type Pattern | Converter Pattern | Allocation |
-|--------------|----------------|-------------------|------------|
-| **Class** | `GdkEvent*` | `Val_GdkEvent` / `GdkEvent_val` | GObject reference |
-| **Interface** | `GListModel*` | `Val_GListModel` / `GListModel_val` | GObject reference |
-| **Record (opaque)** | `GdkRectangle*` | `Val_GdkRectangle` / `GdkRectangle_val` | Pointer only |
-| **Record (value)** | `graphene_vec3_t` | `Val_graphene_vec3` / `graphene_vec3_val` | Stack/copy |
-| **Enum** | `GdkModifierType` | `Val_GdkModifierType` / `GdkModifierType_val` | Value |
-| **Bitfield** | `GdkPaintableFlags` | `Val_GdkPaintableFlags` / `GdkPaintableFlags_val` | Value |
+3. **The `namespace` parameter** is already passed to `map_cross_reference_to_type_mapping`. The function needs to also receive the *current* namespace to determine if qualification is needed (same-ns → unqualified, cross-ns → qualified).
 
-**Key insight:** The `cross_reference.cr_type` field (types.ml:280-286) determines which converter pattern to use. Classes and interfaces always use pointer converters, while enums/bitfields use value converters.
+#### Files to modify
 
-#### Cross-Namespace Type Mapping Implementation
+| File | Change |
+|------|--------|
+| `type_mappings.ml:18-58` | Add current namespace awareness; qualify cross-namespace ocaml_type; fix layer2_class |
+| `type_resolution.ml:12-22` | May need updates if layer2_class format changes |
 
-The cross-namespace type mapping is implemented in `type_mappings.ml:501-515` via `find_cross_namespace_type_mapping`:
+#### Testing
 
-```ocaml
-let find_cross_namespace_type_mapping ~ctx ~namespace ~name =
-  let open Option in
-  let* namespace_map = StringMap.find_opt namespace ctx.cross_references in
-  let* cross_reference = StringMap.find_opt name namespace_map in
-  Some (map_cross_reference_to_type_mapping ~ctx cross_reference)
-```
-
-The `map_cross_reference_to_type_mapping` function (`type_mappings.ml:14-44`) converts a `cross_reference` to a `type_mapping`:
-
-```ocaml
-let map_cross_reference_to_type_mapping ~ctx:_ (cr : cross_reference) :
-    type_mapping =
-  {
-    ocaml_type =
-      (match cr.cr_type with
-      | Crt_Class | Crt_Record _ | Crt_Interface ->
-          Utils.module_name_of_class cr.cr_name ^ ".t"
-      | Crt_Bitfield | Crt_Enum -> String.lowercase_ascii cr.cr_name);
-    c_type = cr.cr_c_type;
-    c_to_ml = "Val_" ^ cr.cr_c_type;
-    ml_to_c = cr.cr_c_type ^ "_val";
-    needs_copy =
-      (match cr.cr_type with
-      | Crt_Enum | Crt_Bitfield | Crt_Record { opaque = false } -> true
-      | _ -> false);
-    layer2_class = (* ... computed based on cr_type ... *)
-  }
-```
-
-**Mapping rules:**
-1. **Classes/Interfaces**: OCaml type is `ModuleName.t`, C type from `cr_c_type`
-2. **Records**: OCaml type is `RecordName.t`, opaque flag affects `needs_copy`
-3. **Enums/Bitfields**: OCaml type is lowercase name, value semantics (no pointers)
-4. **Converter naming**: Pattern `Val_<cr_c_type>` / `<cr_c_type>_val` (e.g., `Val_GdkTexture` / `GdkTexture_val`)
-
-#### Testing Requirements
-
-Add to `cross_namespace_tests.ml`:
-
-**Header Inclusion Tests:**
-1. **Header generation test**: Verify each library generates `<ns>_decls.h` with its own type converters
-2. **Header inclusion test**: Verify `gtk_decls.h` includes `gdk_decls.h` and `gio_decls.h` via `#include`
-3. **No external forward declarations test**: Verify no forward declarations are generated for external types
-4. **dune flags test**: Verify `-I../../<dep>/generated` paths are generated for dependency headers
-
-**Type Mapping Tests:**
-5. **Type mapping test**: Verify `find_type_mapping_for_gir_type` returns correct mapping for cross-namespace class
-6. **Converter naming test**: Verify converter names follow pattern `Val_<c_type>` / `<c_type>_val`
-
-**Code Generation Tests:**
-7. **C code generation test**: Verify generated C code uses `Val_GdkEvent` when passing Gdk.Event parameter
-8. **Compilation test**: Verify generated C code compiles with dependency headers included
-
-### Phase 2 Specific Tests
-
-**Header Generation Tests:**
-1. **Library-specific header naming**: Verify each library generates `<ns>_decls.h` (not `generated_forward_decls.h`)
-2. **Dependency header inclusion**: Verify `gtk_decls.h` includes `gdk_decls.h` and `gio_decls.h` via `#include` directive
-3. **No external forward declarations**: Verify no forward declarations are generated for external types
-4. **Local-only declarations**: Verify header contains only current namespace's types
-
-**dune File Tests:**
-5. **Dependency include paths**: Verify `-I../../<dep>/generated` paths are generated in dune files
-6. **Library dependencies**: Verify `ocgtk.<dep>.generated` entries in `(libraries)` clause
-
-**Cross-Namespace Compilation Tests:**
-7. **Multi-library header compilation**: Generate Gdk and Gtk headers, verify Gtk can compile with Gdk header included
-8. **Dependency ordering test**: Verify dune dependencies are listed in correct order (GIO before GDK before GSK before GTK)
+Add test cases to `cross_namespace/` tests:
+- Cross-namespace record return type generates qualified `Ocgtk_cairo.Scaled_font.t`
+- Cross-namespace enum parameter generates qualified `Ocgtk_cairo.Cairo_enums.fonttype`
+- Layer 2 does not attempt to wrap cross-namespace return types as class objects
 
 ---
 
 ## Phase 4: Remove Cross-Namespace Filtering
 
 **Goal**: Now that types are properly resolved, remove filtering that skips cross-namespace methods.
+
+**Depends on**: Phase 3.3 (type bugs must be fixed first)
 
 ### 4.1 Changes to `filtering.ml`
 
@@ -808,184 +655,119 @@ Add to `cross_namespace_tests.ml`:
 - `constructor_has_cross_namespace_types`
 
 **Modify:**
-- `should_skip_method_binding` - remove cross-namespace check
-- `should_generate_constructor` - remove cross-namespace check
+- `should_skip_method_binding` - remove cross-namespace check (line ~176)
+- `should_generate_constructor` - remove cross-namespace check (line ~208)
 
 ### 4.2 Changes to `ml_interface.ml` and `class_gen.ml`
 
 Remove all `has_cross_namespace_type` checks that cause method skipping.
 
+### 4.3 Changes to `library_module.ml`
+
+`library_module.ml` (lines ~109, 127, 210, 232) uses `ctx.external_enums` and `ctx.external_bitfields` to detect cross-namespace enum/bitfield usage in the library-level combined module. These checks need updating to use `cross_references` instead.
+
+### 4.4 Remove legacy `external_enums`/`external_bitfields` from context
+
+After all filtering is removed, the `external_enums` and `external_bitfields` fields in `generation_context` (types.ml:320-321) are redundant — all cross-namespace type information is available via `cross_references`. Remove these fields and update all call sites.
+
 ---
 
 ## Phase 5: Multi-Namespace Output Generation
 
-**Goal**: Single gir_gen run produces bindings for multiple namespaces to separate directories.
+**Status**: ✅ COMPLETED (via `scripts/generate-bindings.sh`)
 
-### 5.1 Update gir_gen Main Flow
+**Original goal**: Single gir_gen run produces bindings for multiple namespaces.
 
-```ocaml
-let main () =
-  (* 1. Parse primary namespace fully *)
-  let primary_ctx = parse_full target_gir in
-  
-  (* 2. Determine all dependencies in order *)
-  let deps = compute_dependency_order primary_ctx.repository.repository_includes in
-  
-  (* 3. For each dependency:
-     - Generate full bindings (if in GenerateBindings list)
-     - Parse metadata only (for FFI type info) *)
-  let type_registry = build_type_registry deps in
-  
-  (* 4. Generate for each namespace to its directory *)
-  List.iter deps ~f:(fun ns ->
-    if should_generate ns then
-      let output_dir = Filename.concat base_output_dir (String.lowercase_ascii ns) in
-      let dep_headers = compute_dependency_headers ns deps in
-      generate_namespace_bindings ~ctx:{...} ~output_dir ~dep_headers
-  )
-```
+**Actual implementation**: Instead of a single monolithic invocation, we use `scripts/generate-bindings.sh` which runs gir_gen once per namespace with the appropriate reference files. This is simpler, more flexible, and avoids coupling all namespaces in a single run.
+
+### 5.1 Current Implementation
+
+The script has two phases:
+1. **Reference generation**: `gir_gen references <gir-file> <output.sexp>` for each of 9 namespaces
+2. **Binding generation**: `gir_gen generate [-r ref.sexp ...] <gir-file> src/<ns>` for each namespace
+
+Each namespace is generated independently with explicit dependency references. The dependency order is enforced by the script ordering.
 
 ### 5.2 Output Structure
 
 ```
 src/
-├── common/           # Hand-written common code (unchanged)
-├── gtk/
-│   ├── core/         # Hand-written GTK code
-│   └── generated/
-│       ├── gtk_decls.h
-│       ├── dune-generated.inc
-│       └── *.ml, *.mli, ml_*_gen.c
-├── gdk/
-│   └── generated/
-│       ├── gdk_decls.h
-│       └── ...
-├── gio/
-│   └── generated/
-│       ├── gio_decls.h
-│       └── ...
-└── pango/
-    └── generated/
-        └── ...
+├── common/           # Hand-written common code
+├── cairo/            # ocgtk_cairo (22 enums, 12 record type stubs)
+├── gio/              # ocgtk_gio
+├── gdk/              # ocgtk_gdk
+├── graphene/         # ocgtk_graphene
+├── gdkpixbuf/        # ocgtk_gdkpixbuf
+├── pango/            # ocgtk_pango
+├── pangocairo/       # ocgtk_pangocairo (2 interfaces: Font, FontMap)
+├── gsk/              # ocgtk_gsk
+├── gtk/              # ocgtk_gtk
+├── Cairo.ml          # Wrapper: include Ocgtk_cairo.Cairo
+├── Gio.ml            # Wrapper: include Ocgtk_gio.Gio
+├── Gdk.ml            # Wrapper: include Ocgtk_gdk.Gdk
+├── PangoCairo.ml     # Wrapper: include Ocgtk_pangocairo.PangoCairo
+└── ...etc
 ```
 
 ---
 
 ## Phase 6: Testing Strategy
 
-**Goal**: Ensure refactoring preserves behavior and new functionality works correctly.
+**Goal**: Ensure cross-namespace functionality works correctly.
 
-### 6.1 Before Refactoring: Baseline Tests
+### 6.1 Existing Cross-Namespace Tests
 
-**Layer 1 tests to add** (in `ml_generation/`):
+Tests already exist in `test_gir_gen/cross_namespace/`:
+- `c_stub_include_tests.ml` — header include generation
+- `dune_library_deps_tests.ml` — library dependency generation
+- `no_external_enum_decls_tests.ml` — no external enum forward declarations
+- `no_external_bitfield_decls_tests.ml` — no external bitfield forward declarations
+- `dependency_includes_tests.ml` — dependency header includes
+- `compilation_tests.ml` — end-to-end compilation
 
-1. **Cross-module type references**
-   - Test that `Widget.t` reference in `Button.t` is correctly qualified
-   - Test cyclic module references (`module rec ... and ...`)
+### 6.2 Tests Still Needed
 
-2. **Combined module generation**
-   - Test `generate_combined_ml_modules` produces valid OCaml
-   - Test signature matches implementation for combined modules
+**Cross-namespace OCaml type tests** (for Phase 3.3):
+1. Cross-namespace record return type generates qualified `Ocgtk_cairo.Scaled_font.t`
+2. Cross-namespace enum parameter generates qualified `Ocgtk_cairo.Cairo_enums.fonttype`
+3. Layer 2 does not attempt to wrap cross-namespace return types as class objects
+4. Array of external class type resolves correctly
 
-3. **Property generation**
-   - Test property getter/setter external declarations
-   - Test nullable property types
+**Cross-namespace method generation tests** (for Phase 4):
+5. Method with cross-namespace enum parameter generates valid OCaml + C
+6. Constructor with cross-namespace type parameter generates correctly
+7. Method returning cross-namespace class generates valid OCaml
 
-**Layer 2 tests to add** (new `layer2_generation/` directory):
-
-1. **Method wrapper tests**
-   - Test hierarchy parameter coercion (`#widget` -> `Widget.t`)
-   - Test structural type for same-cluster classes
-   - Test nullable parameter handling in wrappers
-   - Test return value wrapping (new ClassName ret)
-
-2. **Property wrapper tests**
-   - Test property getter/setter method generation
-   - Test Layer 2 class references in property types
-
-3. **Inheritance tests**
-   - Test `inherit widget_skel` generation
-   - Test signal handler inheritance
-   - Test hierarchy accessor methods
-
-4. **Signature consistency tests**
-   - Test that generated `.mli` matches `.ml` for Layer 2
-
-### 6.2 During Refactoring: Regression Tests
-
-For each refactored module:
-1. Run existing test suite - must pass unchanged
-2. Add tests for edge cases discovered during refactoring
-3. Verify generated output is identical (diff testing)
-
-### 6.3 Cross-Namespace Tests
-
-**New test file**: `test_gir_gen/cross_namespace/`
-
-1. **Type resolution tests**
-   - Test that `Gdk.Texture` resolves to correct type mapping
-   - Test that `Gio.ListModel` resolves correctly
-   - Test external record with different flags (opaque, disguised, boxed)
-
-2. **Array element type tests**
-   - Test array of external class (e.g., `Gdk.Monitor array`)
-   - Test array of external enum
-   - Test GPtrArray with external element type
-
-3. **Header inclusion tests**
-   - Test that `gtk_decls.h` includes `gdk_decls.h` via `#include` directive
-   - Test no forward declarations are generated for external types (all come from included headers)
-   - Test dependency headers are properly referenced in generated dune files
-
-4. **Full generation tests**
-   - Test generating a method that uses Gdk type parameter
-   - Test generating a method that returns Gio interface
-   - Test constructor with external namespace parameter
-
-### 6.4 Test Infrastructure Additions
-
-Add to `infrastructure/`:
-
-```ocaml
-(* cross_namespace_helpers.ml *)
-val create_multi_namespace_context : unit -> generation_context
-(* Creates context with Gtk, Gdk, Gio, Pango type registries populated *)
-
-val create_external_class : namespace:string -> name:string -> c_type:string -> external_type_metadata
-
-val create_external_record : 
-  namespace:string -> name:string -> c_type:string -> 
-  opaque:bool -> disguised:bool -> boxed:bool -> 
-  external_type_metadata
-```
+**Layer 1/2 baseline tests** (for Phase 1 refactoring, when undertaken):
+- Cross-module type references (`Widget.t` in `Button.t`)
+- Combined module generation validity
+- Property getter/setter generation
+- Method wrapper hierarchy coercion
+- Signature vs implementation consistency
 
 ---
 
 ## Execution Dependencies
 
 ```
-Phase 6 (Testing Strategy - baseline tests)
+Phase 2 (Library-specific headers)     ✅ COMPLETED
+Phase 5 (Multi-namespace output)       ✅ COMPLETED (via generate-bindings.sh)
+
+Phase 3.3 (Cross-NS OCaml type bugs)  ◄── BLOCKING PangoCairo
               │
               ▼
-        Phase 1 (Refactoring)
+        Phase 4 (Remove cross-NS filtering + cleanup external_enums/external_bitfields)
               │
-              ├─► Phase 2 (Library-specific headers)
-              │
-              └─► Phase 3 (Extended external parsing)
-                        │
-                        ▼
-                  Phase 4 (Remove filtering)
-                        │
-                        ▼
-                  Phase 5 (Multi-namespace output)
+              ▼
+        Phase 1 (Refactoring - optional, for maintainability)
+        Phase 6 (Testing - ongoing)
 ```
 
-Phase 6 (baseline tests) must come first to ensure refactoring preserves behavior.
-Phases 2 and 3 can proceed in parallel after Phase 1.  
-Phase 4 requires both Phase 2 and Phase 3.  
-Phase 5 requires Phase 4.
+**Critical path**: Phase 3.3 must be completed first — it blocks PangoCairo and will block any library with cross-namespace method/property types.
 
-Cross-namespace tests (Phase 6.3) are added incrementally as Phases 3-5 are implemented.
+Phase 4 (removing filtering) depends on Phase 3.3 — once cross-namespace types generate valid OCaml, the filtering can be removed to expose more methods.
+
+Phase 1 (refactoring) is an independent improvement that can happen at any time.
 
 ---
 
@@ -1000,25 +782,25 @@ To continue this planning session in a future conversation, use the following pr
 > I'm working on cross-namespace support for the ocgtk GIR code generator. Please read the plan document at `ocgtk/architecture/todo/CROSS_NAMESPACE_PLAN.md` to understand the context.
 >
 > Key decisions already made:
-> - Generate full bindings for: Gtk, Gdk, Pango, GdkPixbuf, Gsk, Graphene, Gio
+> - Generate full bindings for: Cairo, Gtk, Gdk, Pango, PangoCairo, GdkPixbuf, Gsk, Graphene, Gio
 > - Exclude: GLib, GModule, GObject (too low-level)
-> - Each library generates `<ns>_decls.h`, dependent libraries include them
-> - Refactor Layer 1/2 generation code before adding cross-namespace complexity
-> - Single gir_gen invocation outputs to multiple directories
+> - Each library generates `<ns>_decls.h`, dependent libraries include them (✅ Phase 2 done)
+> - Multi-namespace output via `scripts/generate-bindings.sh` (✅ Phase 5 done)
+> - **Blocking issue**: Phase 3.3 - cross-namespace OCaml type generation produces unqualified/invalid types
 >
-> The plan has 6 phases. Please review the current state and help me with [specific phase or task].
+> The plan has 6 phases. Phase 3.3 is the critical next step. Please review and help with [specific task].
 
 ---
 
 ## Open Questions
 
-1. **Build order enforcement**: How should dune handle cross-library dependencies? Should we generate a dependency graph file?
+1. ~~**Build order enforcement**: How should dune handle cross-library dependencies?~~ → Resolved: `generate-bindings.sh` handles ordering; dune handles library deps via `(libraries ocgtk.<dep>)` in generated dune files.
 
-2. **Incremental generation**: Should gir_gen support generating only specific namespaces, or always all?
+2. ~~**Incremental generation**: Should gir_gen support generating only specific namespaces?~~ → Resolved: Each namespace is a separate gir_gen invocation. Run the script for all, or invoke gir_gen directly for one.
 
 3. **GLib special types priority**: After PtrArray, which GLib types are most important? (Candidates: List, SList, Variant, Bytes)
 
-4. **Testing against real GIR files**: Should tests use actual Gtk-4.0.gir or synthetic test data?
+4. **Cross-namespace Layer 2 class wrapping**: Should cross-namespace return types be wrapped in Layer 2 class objects, or should they be returned as raw Layer 1 types? Wrapping requires the foreign library's G-class to be accessible, which adds coupling. Returning raw types is simpler but less ergonomic.
 
 ---
 
