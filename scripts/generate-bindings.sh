@@ -118,10 +118,11 @@ echo "  [6/9] Generating Pango bindings (with Cairo, GIO references)..."
     src/pango
 
 echo ""
-echo "  [7/9] Generating PangoCairo bindings (with Cairo, Pango references)..."
+echo "  [7/9] Generating PangoCairo bindings (with Cairo, Pango, GIO references)..."
 "$GIR_GEN" generate \
     -r "$BUILD_DIR/cairo-references.sexp" \
     -r "$BUILD_DIR/pango-references.sexp" \
+    -r "$BUILD_DIR/gio-references.sexp" \
     "$GIR_PATH/PangoCairo-1.0.gir" \
     src/pangocairo
 

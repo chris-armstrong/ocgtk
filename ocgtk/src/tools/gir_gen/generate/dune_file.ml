@@ -19,6 +19,29 @@ let pkg_config_name_of_namespace ~ctx namespace_name =
     in
     namespace_packages
 
+(* Recursively collect all pkg-config packages from a namespace and its
+   transitive includes. This is needed because C headers form a transitive
+   inclusion chain (e.g. pangocairo_decls.h -> pango_decls.h -> gio_decls.h)
+   so all transitive pkg-config packages must be available for compilation. *)
+let rec collect_transitive_packages ~ctx ~visited namespace_name =
+  let open Types in
+  if
+    List.mem ~eq:String.equal namespace_name visited
+    || List.mem ~eq:String.equal namespace_name C_stubs.base_namespaces
+  then []
+  else
+    let visited = namespace_name :: visited in
+    let direct = pkg_config_name_of_namespace ~ctx namespace_name in
+    let transitive =
+      match StringMap.find_opt namespace_name ctx.cross_references with
+      | None -> []
+      | Some ncr ->
+          ncr.ncr_namespace_includes
+          |> List.map ~f:(collect_transitive_packages ~ctx ~visited)
+          |> List.flatten
+    in
+    direct @ transitive
+
 (* Map namespace to library name for dune (ocgtk.<ns>) *)
 let library_name_of_namespace namespace_name =
   let ns_lower = String.lowercase_ascii namespace_name in
@@ -46,12 +69,13 @@ let generate_dune_library ~ctx ~lib_name ~stub_names ~module_names ~repository =
   Buffer.add_string buf "    )))\n";
   Buffer.add_string buf ")\n\n";
 
-  (* Collect pkg-config packages from dependencies *)
+  (* Collect pkg-config packages from dependencies, recursively following
+     cross-namespace includes to pick up transitive pkg-config deps *)
   let dep_packages =
     let open Types in
     repository.repository_includes
     |> List.map ~f:(fun include_ ->
-        pkg_config_name_of_namespace ~ctx include_.include_name)
+        collect_transitive_packages ~ctx ~visited:[] include_.include_name)
     |> List.flatten
     |> List.sort_uniq ~cmp:String.compare
   in
@@ -94,12 +118,32 @@ let generate_dune_library ~ctx ~lib_name ~stub_names ~module_names ~repository =
        (lib_name |> Utils.to_snake_case));
   Buffer.add_string buf " (wrapped false)\n";
   Buffer.add_string buf " (modules)  ; No OCaml modules, only C stubs\n";
-  (* Generate library dependencies for dependency namespaces *)
+  (* Generate library dependencies for dependency namespaces, recursively
+     collecting transitive includes *)
+  let rec collect_transitive_namespaces ~visited namespace_name =
+    let open Types in
+    if
+      List.mem ~eq:String.equal namespace_name visited
+      || List.mem ~eq:String.equal namespace_name C_stubs.base_namespaces
+    then []
+    else
+      let visited = namespace_name :: visited in
+      let transitive =
+        match StringMap.find_opt namespace_name ctx.cross_references with
+        | None -> []
+        | Some ncr ->
+            ncr.ncr_namespace_includes
+            |> List.map ~f:(collect_transitive_namespaces ~visited)
+            |> List.flatten
+      in
+      namespace_name :: transitive
+  in
   let dep_libraries =
     Types.(repository.repository_includes)
-    |> List.map ~f:(fun { Types.include_name; _ } -> include_name)
-    |> List.filter ~f:(fun ns ->
-        not (List.mem ~eq:String.equal ns C_stubs.base_namespaces))
+    |> List.map ~f:(fun { Types.include_name; _ } ->
+        collect_transitive_namespaces ~visited:[] include_name)
+    |> List.flatten
+    |> List.sort_uniq ~cmp:String.compare
     |> List.map ~f:library_name_of_namespace
     |> String.concat ~sep:" "
   in
