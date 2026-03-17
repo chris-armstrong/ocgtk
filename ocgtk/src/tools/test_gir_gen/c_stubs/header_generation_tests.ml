@@ -53,25 +53,6 @@ let create_context_with_mixed_enums () =
     }
   in
 
-  (* Create an external GDK enum - forward declarations should NOT be generated *)
-  let external_enum =
-    {
-      enum_name = "TextureType";
-      enum_c_type = "GdkTextureType";
-      members =
-        [
-          {
-            member_name = "PIXBUF";
-            member_value = 0;
-            c_identifier = "GDK_TEXTURE_TYPE_PIXBUF";
-            member_doc = None;
-          };
-        ];
-      functions = [];
-      enum_doc = None;
-    }
-  in
-
   {
     namespace;
     repository =
@@ -85,8 +66,6 @@ let create_context_with_mixed_enums () =
     enums = [ local_enum ];
     bitfields = [];
     records = [];
-    external_enums = [ ("Gdk", external_enum) ];
-    external_bitfields = [];
     hierarchy_map = Hashtbl.create 0;
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
@@ -131,24 +110,6 @@ let create_context_with_mixed_bitfields () =
     }
   in
 
-  (* Create an external GDK bitfield - forward declarations should NOT be generated *)
-  let external_bitfield =
-    {
-      bitfield_name = "EventMask";
-      bitfield_c_type = "GdkEventMask";
-      flags =
-        [
-          {
-            flag_name = "BUTTON_PRESS";
-            flag_value = 1;
-            flag_c_identifier = "GDK_BUTTON_PRESS_MASK";
-            flag_doc = None;
-          };
-        ];
-      bitfield_doc = None;
-    }
-  in
-
   {
     namespace;
     repository =
@@ -162,8 +123,6 @@ let create_context_with_mixed_bitfields () =
     enums = [];
     bitfields = [ local_bitfield ];
     records = [];
-    external_enums = [];
-    external_bitfields = [ ("Gdk", external_bitfield) ];
     hierarchy_map = Hashtbl.create 0;
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];

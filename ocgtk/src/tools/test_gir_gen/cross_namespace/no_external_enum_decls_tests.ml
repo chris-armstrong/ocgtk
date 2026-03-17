@@ -47,25 +47,6 @@ let create_context_with_external_enum () =
     }
   in
 
-  (* Create an external GDK enum - this should NOT appear in forward declarations *)
-  let external_enum =
-    {
-      enum_name = "TextureType";
-      enum_c_type = "GdkTextureType";
-      members =
-        [
-          {
-            member_name = "PIXBUF";
-            member_value = 0;
-            c_identifier = "GDK_TEXTURE_TYPE_PIXBUF";
-            member_doc = None;
-          };
-        ];
-      functions = [];
-      enum_doc = None;
-    }
-  in
-
   {
     namespace;
     repository =
@@ -80,8 +61,6 @@ let create_context_with_external_enum () =
     bitfields = [];
     records = [];
     (* External enum should NOT appear in forward declarations *)
-    external_enums = [ ("Gdk", external_enum) ];
-    external_bitfields = [];
     hierarchy_map = Hashtbl.create 0;
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];

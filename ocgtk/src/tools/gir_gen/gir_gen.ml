@@ -988,9 +988,16 @@ let generate_references gir_file output_file =
     |> List.map ~f:(fun cls ->
         {
           cr_name = cls.class_name;
-          cr_type = Crt_Class;
+          cr_type = Crt_Class { parent = cls.parent };
           cr_c_type = cls.c_type;
         }))
+    @ (interfaces
+      |> List.map ~f:(fun intf ->
+          {
+            cr_name = intf.interface_name;
+            cr_type = Crt_Interface;
+            cr_c_type = intf.c_type;
+          }))
     @ List.map
         ~f:(fun enms ->
           {

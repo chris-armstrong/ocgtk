@@ -362,8 +362,6 @@ let create_test_context () =
     enums = [ text_direction_enum ];
     bitfields = [];
     records = [ gdk_time_coord_record; buildable_parse_context_record ];
-    external_enums = [];
-    external_bitfields = [];
     hierarchy_map = Hashtbl.create 0;
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
@@ -439,6 +437,17 @@ let create_test_context_with_hierarchy () =
 (* ========================================================================= *)
 (* C Code Inspection Helpers *)
 (* ========================================================================= *)
+
+(* Create a cross-reference namespace entry from an entity map *)
+let make_ncr ?(packages=[]) ?(includes=[]) ?(c_includes=[]) namespace_name entities =
+  let open Gir_gen_lib.Types in
+  (namespace_name, {
+    ncr_namespace_name = namespace_name;
+    ncr_namespace_packages = packages;
+    ncr_namespace_includes = includes;
+    ncr_namespace_c_includes = c_includes;
+    ncr_entities = entities;
+  })
 
 (* Log generated C code to test output for debugging *)
 let log_generated_c_code test_name c_code =

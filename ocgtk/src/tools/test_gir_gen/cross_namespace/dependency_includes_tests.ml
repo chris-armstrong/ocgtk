@@ -10,20 +10,28 @@ open C_validation
      headers are included *)
 let create_context_with_cross_references ~namespace ~deps =
   let open Gir_gen_lib.Types in
-  let cross_references_final =
+  let cross_reference_entities =
     List.fold_left
       (fun acc dep_ns ->
         (* Create a dummy cross reference for the dependency *)
         let cr =
           {
             cr_name = "TestClass";
-            cr_type = Crt_Class;
+            cr_type = Crt_Class { parent = None };
             cr_c_type = dep_ns ^ "TestClass";
           }
         in
-        let ns_map = StringMap.add "TestClass" cr StringMap.empty in
-        StringMap.add dep_ns ns_map acc)
+        StringMap.add dep_ns cr acc)
       StringMap.empty deps
+  in
+  let cross_references =
+    {
+      ncr_namespace_includes = [];
+      ncr_namespace_name = "TestNamespace";
+      ncr_entities = cross_reference_entities;
+      ncr_namespace_packages = [];
+      ncr_namespace_c_includes = [];
+    }
   in
 
   let ns =
@@ -49,12 +57,10 @@ let create_context_with_cross_references ~namespace ~deps =
     enums = [];
     bitfields = [];
     records = [];
-    external_enums = [];
-    external_bitfields = [];
     hierarchy_map = Hashtbl.create 0;
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
-    cross_references = cross_references_final;
+    cross_references = StringMap.of_list [ ("TestNamespace", cross_references) ];
   }
 
 (* Stage 4 Test: Header includes dependency headers for cross-namespace types.
@@ -80,8 +86,10 @@ let test_header_includes_dependency_headers () =
     header_content;
 
   (* Verify dependency headers are included using AST-based validation *)
-  C_validation.assert_local_include_exists header_content "generated/gdk_decls.h";
-  C_validation.assert_local_include_exists header_content "generated/gio_decls.h"
+  C_validation.assert_local_include_exists header_content
+    "generated/gdk_decls.h";
+  C_validation.assert_local_include_exists header_content
+    "generated/gio_decls.h"
 
 (* Stage 4 Test: Dependency headers are sorted alphabetically.
     This ensures consistent output across runs. *)
@@ -104,21 +112,24 @@ let test_dependency_headers_sorted_alphabetically () =
       Str.search_forward
         (Str.regexp_string {|#include "generated/gdk_decls.h"|})
         header_content 0
-    with Not_found -> Alcotest.fail "generated/gdk_decls.h not found in header"
+    with Not_found ->
+      Alcotest.fail "generated/gdk_decls.h not found in header"
   in
   let gio_pos =
     try
       Str.search_forward
         (Str.regexp_string {|#include "generated/gio_decls.h"|})
         header_content 0
-    with Not_found -> Alcotest.fail "generated/gio_decls.h not found in header"
+    with Not_found ->
+      Alcotest.fail "generated/gio_decls.h not found in header"
   in
   let gsk_pos =
     try
       Str.search_forward
         (Str.regexp_string {|#include "generated/gsk_decls.h"|})
         header_content 0
-    with Not_found -> Alcotest.fail "generated/gsk_decls.h not found in header"
+    with Not_found ->
+      Alcotest.fail "generated/gsk_decls.h not found in header"
   in
 
   (* Verify alphabetical order: Gdk < Gio < Gsk *)
@@ -152,10 +163,18 @@ let test_get_dependency_namespaces_extracts_unique_namespaces () =
   let open Gir_gen_lib.Types in
   (* Create cross_references map with duplicate namespaces *)
   let cr1 =
-    { cr_name = "Class1"; cr_type = Crt_Class; cr_c_type = "GdkClass1" }
+    {
+      cr_name = "Class1";
+      cr_type = Crt_Class { parent = None };
+      cr_c_type = "GdkClass1";
+    }
   in
   let cr2 =
-    { cr_name = "Class2"; cr_type = Crt_Class; cr_c_type = "GdkClass2" }
+    {
+      cr_name = "Class2";
+      cr_type = Crt_Class { parent = None };
+      cr_c_type = "GdkClass2";
+    }
   in
   let gdk_map =
     StringMap.add "Class1" cr1 StringMap.empty |> StringMap.add "Class2" cr2

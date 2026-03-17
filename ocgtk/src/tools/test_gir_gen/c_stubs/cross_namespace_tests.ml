@@ -26,16 +26,13 @@ let test_non_introspectable_record_filtered () =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file test_gir []
   in
   let record_names =
-    List.map
-      (fun (r : Gir_gen_lib.Types.gir_record) -> r.record_name)
-      records
+    List.map (fun (r : Gir_gen_lib.Types.gir_record) -> r.record_name) records
   in
   Alcotest.(check bool)
     "PublicRecord IS parsed" true
     (List.mem "PublicRecord" record_names);
   Alcotest.(check bool)
-    "PrivateRecord IS parsed (introspectable stored, not filtered)"
-    true
+    "PrivateRecord IS parsed (introspectable stored, not filtered)" true
     (List.mem "PrivateRecord" record_names);
 
   (* Verify introspectable attribute is stored correctly *)
@@ -46,8 +43,7 @@ let test_non_introspectable_record_filtered () =
       records
   in
   Alcotest.(check bool)
-    "PrivateRecord has introspectable=false" false
-    private_rec.introspectable;
+    "PrivateRecord has introspectable=false" false private_rec.introspectable;
 
   let public_rec =
     List.find
@@ -61,12 +57,10 @@ let test_non_introspectable_record_filtered () =
 
   (* Verify generation-level filtering *)
   Alcotest.(check bool)
-    "PublicRecord should be generated"
-    true
+    "PublicRecord should be generated" true
     (Gir_gen_lib.Generate.Filtering.should_generate_record public_rec);
   Alcotest.(check bool)
-    "PrivateRecord should NOT be generated"
-    false
+    "PrivateRecord should NOT be generated" false
     (Gir_gen_lib.Generate.Filtering.should_generate_record private_rec)
 
 (* Bug 9: Constructors with introspectable="0" should be parsed but filtered
@@ -131,12 +125,10 @@ let test_non_introspectable_constructor_filtered () =
   (* Verify generation-level filtering *)
   let ctx = create_test_context () in
   Alcotest.(check bool)
-    "Good constructor should be generated"
-    true
+    "Good constructor should be generated" true
     (Gir_gen_lib.Generate.Filtering.should_generate_constructor ~ctx good_ctor);
   Alcotest.(check bool)
-    "Bad constructor should NOT be generated"
-    false
+    "Bad constructor should NOT be generated" false
     (Gir_gen_lib.Generate.Filtering.should_generate_constructor ~ctx bad_ctor)
 
 (* Bug 12: Methods with introspectable="0" should be parsed but filtered
@@ -193,8 +185,7 @@ let test_non_introspectable_method_skipped () =
       cls.methods
   in
   Alcotest.(check bool)
-    "Bad method has introspectable=false" false
-    bad_method.introspectable;
+    "Bad method has introspectable=false" false bad_method.introspectable;
 
   (* Verify generation-level filtering *)
   let ctx = create_test_context () in
@@ -216,7 +207,14 @@ let test_copy_function_returns_copy_result () =
     {
       method_name = "copy";
       c_identifier = "test_format_copy";
-      return_type = { name = "Format"; c_type = Some "TestFormat*"; nullable = false; transfer_ownership = TransferFull; array = None };
+      return_type =
+        {
+          name = "Format";
+          c_type = Some "TestFormat*";
+          nullable = false;
+          transfer_ownership = TransferFull;
+          array = None;
+        };
       parameters = [];
       doc = None;
       throws = false;
@@ -252,7 +250,9 @@ let test_copy_function_returns_copy_result () =
 
   (* Parse the generated C code *)
   let functions = C_parser.parse_c_code c_code in
-  let copy_func = Option.get (C_ast.find_function functions "copy_TestFormat") in
+  let copy_func =
+    Option.get (C_ast.find_function functions "copy_TestFormat")
+  in
 
   (* Positive: copy function calls the record's copy method *)
   Alcotest.(check bool)
@@ -286,10 +286,18 @@ let test_record_copy_parses_successfully () =
      which has an extra parenthesis causing a syntax error. *)
   let copy_method =
     {
-      method_name = "clone";  (* Not "copy" - triggers fallback *)
-      c_identifier = "test_record_copy";  (* Ends with _copy *)
+      method_name = "clone";
+      (* Not "copy" - triggers fallback *)
+      c_identifier = "test_record_copy";
+      (* Ends with _copy *)
       return_type =
-        { name = "TestRecord"; c_type = Some "TestRecord*"; nullable = false; transfer_ownership = TransferFull; array = None };
+        {
+          name = "TestRecord";
+          c_type = Some "TestRecord*";
+          nullable = false;
+          transfer_ownership = TransferFull;
+          array = None;
+        };
       parameters = [];
       doc = None;
       throws = false;
@@ -327,7 +335,8 @@ let test_record_copy_parses_successfully () =
           };
         ];
       constructors = [];
-      methods = [ copy_method ];  (* Has copy method via c_identifier *)
+      methods = [ copy_method ];
+      (* Has copy method via c_identifier *)
       functions = [];
       record_doc = None;
       introspectable = true;
@@ -343,12 +352,13 @@ let test_record_copy_parses_successfully () =
   (* Positive: code parses without error - this catches unbalanced parens *)
   let functions = C_parser.parse_c_code c_code in
   let copy_func = C_ast.find_function functions "copy_TestRecord" in
-  Alcotest.(check bool) "copy function parses to valid AST" true
-    (Option.is_some copy_func);
+  Alcotest.(check bool)
+    "copy function parses to valid AST" true (Option.is_some copy_func);
 
   (* Positive: the parsed copy function has a return statement *)
   let func = Option.get copy_func in
-  Alcotest.(check bool) "Has return statement" true
+  Alcotest.(check bool)
+    "Has return statement" true
     (Option.is_some (C_ast.return_expr func));
 
   (* Positive: return expression wraps copy in ml_gir_record_val_ptr *)
@@ -356,7 +366,8 @@ let test_record_copy_parses_successfully () =
   match ret with
   | Some expr ->
       let calls = C_ast.get_function_calls expr in
-      Alcotest.(check bool) "Return wraps in ml_gir_record_val_ptr" true
+      Alcotest.(check bool)
+        "Return wraps in ml_gir_record_val_ptr" true
         (List.mem "ml_gir_record_val_ptr" calls)
   | None -> Alcotest.fail "Copy function missing return expression"
 
@@ -379,14 +390,17 @@ let test_enum_module_name_matches_dune_convention () =
   let ctx =
     {
       namespace;
-      repository = { repository_c_includes = []; repository_includes = []; repository_packages = [] };
+      repository =
+        {
+          repository_c_includes = [];
+          repository_includes = [];
+          repository_packages = [];
+        };
       classes = [];
       interfaces = [];
       enums = [];
       bitfields = [];
       records = [];
-      external_enums = [];
-      external_bitfields = [];
       hierarchy_map = Hashtbl.create 0;
       module_groups = Hashtbl.create 0;
       current_cycle_classes = [];
@@ -406,9 +420,9 @@ let test_enum_module_name_matches_dune_convention () =
   (* Check that the module name follows dune convention *)
   let module_name = Gir_gen_lib.Utils.enums_module_name ctx dummy_enum in
   Alcotest.(check string)
-    "Enums module name follows dune convention (first char uppercase, rest lowercase)"
-    "Gdkpixbuf_enums"
-    module_name;
+    "Enums module name follows dune convention (first char uppercase, rest \
+     lowercase)"
+    "Gdkpixbuf_enums" module_name;
 
   (* Also test bitfields_module_name *)
   let dummy_bitfield =
@@ -419,10 +433,11 @@ let test_enum_module_name_matches_dune_convention () =
       bitfield_doc = None;
     }
   in
-  let bitfield_module_name = Gir_gen_lib.Utils.bitfields_module_name ctx dummy_bitfield in
+  let bitfield_module_name =
+    Gir_gen_lib.Utils.bitfields_module_name ctx dummy_bitfield
+  in
   Alcotest.(check string)
-    "Bitfields module name follows dune convention"
-    "Gdkpixbuf_enums"
+    "Bitfields module name follows dune convention" "Gdkpixbuf_enums"
     bitfield_module_name
 
 (* Bug 8: Class with no c:type attribute should use namespace c:identifier-prefixes,
@@ -458,8 +473,7 @@ let test_non_gtk_namespace_c_type_prefix () =
       classes
   in
   Alcotest.(check string)
-    "Class c_type uses namespace prefix (Gdk), not hardcoded Gtk"
-    "GdkNonAnim"
+    "Class c_type uses namespace prefix (Gdk), not hardcoded Gtk" "GdkNonAnim"
     cls.c_type;
 
   (* Verify the inferred c_type for interface uses Gdk prefix, not Gtk *)
@@ -470,8 +484,7 @@ let test_non_gtk_namespace_c_type_prefix () =
       interfaces
   in
   Alcotest.(check string)
-    "Interface c_type uses namespace prefix (Gdk), not hardcoded Gtk"
-    "GdkAnim"
+    "Interface c_type uses namespace prefix (Gdk), not hardcoded Gtk" "GdkAnim"
     intf.c_type
 
 (* Bug 5: Enum array element conversion should not use address-of operator.
@@ -498,11 +511,7 @@ let test_enum_array_element_conversion () =
       enum_doc = None;
     }
   in
-  let ctx =
-    { (Helpers.create_test_context ()) with
-      enums = [ script_enum ];
-    }
-  in
+  let ctx = { (Helpers.create_test_context ()) with enums = [ script_enum ] } in
 
   (* Create a method returning an array of Script enum with length param *)
   let meth =
@@ -600,16 +609,13 @@ let test_enum_array_element_conversion () =
     in
     List.exists check_stmt func.C_ast.body
   in
-  Alcotest.(check bool)
-    "Uses Val_GtkScript converter" true
-    has_enum_converter;
+  Alcotest.(check bool) "Uses Val_GtkScript converter" true has_enum_converter;
 
   (* Critical: verify no AddrOf nodes wrap the enum conversion.
      The generated code should be Val_GtkScript(result[i]), NOT
      Val_GtkScript(&result[i]). *)
   let has_addr_of_in_enum_call =
-    let rec check_stmts stmts =
-      List.exists (fun stmt -> check_stmt stmt) stmts
+    let rec check_stmts stmts = List.exists (fun stmt -> check_stmt stmt) stmts
     and check_stmt = function
       | C_ast.ExprStmt e -> check_expr e
       | C_ast.Return e -> check_expr e
@@ -618,11 +624,9 @@ let test_enum_array_element_conversion () =
           check_stmts then_stmts || check_stmts else_stmts
       | _ -> false
     and check_expr = function
-      | C_ast.Call ("Val_GtkScript", args)
-      | C_ast.Macro ("Val_GtkScript", args) ->
-          List.exists (function
-            | C_ast.AddrOf _ -> true
-            | _ -> false) args
+      | C_ast.Call ("Val_GtkScript", args) | C_ast.Macro ("Val_GtkScript", args)
+        ->
+          List.exists (function C_ast.AddrOf _ -> true | _ -> false) args
       | C_ast.Call (_, args) | C_ast.Macro (_, args) ->
           List.exists check_expr args
       | C_ast.Cast (_, e) -> check_expr e
@@ -657,7 +661,8 @@ let test_bitfield_array_element_conversion () =
     }
   in
   let ctx =
-    { (Helpers.create_test_context ()) with
+    {
+      (Helpers.create_test_context ()) with
       bitfields = [ inhibit_flags_bitfield ];
     }
   in
@@ -745,8 +750,7 @@ let test_bitfield_array_element_conversion () =
 
   (* Critical: verify no AddrOf nodes wrap the bitfield conversion *)
   let has_addr_of_in_bitfield_call =
-    let rec check_stmts stmts =
-      List.exists (fun stmt -> check_stmt stmt) stmts
+    let rec check_stmts stmts = List.exists (fun stmt -> check_stmt stmt) stmts
     and check_stmt = function
       | C_ast.ExprStmt e -> check_expr e
       | C_ast.Return e -> check_expr e
@@ -757,9 +761,7 @@ let test_bitfield_array_element_conversion () =
     and check_expr = function
       | C_ast.Call ("Val_GtkInhibitFlags", args)
       | C_ast.Macro ("Val_GtkInhibitFlags", args) ->
-          List.exists (function
-            | C_ast.AddrOf _ -> true
-            | _ -> false) args
+          List.exists (function C_ast.AddrOf _ -> true | _ -> false) args
       | C_ast.Call (_, args) | C_ast.Macro (_, args) ->
           List.exists check_expr args
       | C_ast.Cast (_, e) -> check_expr e
@@ -793,7 +795,15 @@ let test_inout_record_param_pointer_type () =
         [
           {
             field_name = "x";
-            field_type = Some { name = "gint"; c_type = Some "int"; nullable = false; transfer_ownership = TransferNone; array = None };
+            field_type =
+              Some
+                {
+                  name = "gint";
+                  c_type = Some "int";
+                  nullable = false;
+                  transfer_ownership = TransferNone;
+                  array = None;
+                };
             readable = true;
             writable = true;
             field_doc = None;
@@ -807,9 +817,7 @@ let test_inout_record_param_pointer_type () =
     }
   in
   let ctx =
-    { (Helpers.create_test_context ()) with
-      records = [ rectangle_record ];
-    }
+    { (Helpers.create_test_context ()) with records = [ rectangle_record ] }
   in
 
   (* Create a method with inout Rectangle* parameter - simulates pango_matrix_transform_rectangle *)
@@ -817,13 +825,27 @@ let test_inout_record_param_pointer_type () =
     {
       method_name = "transform_rectangle";
       c_identifier = "pango_matrix_transform_rectangle";
-      return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
+      return_type =
+        {
+          name = "none";
+          c_type = Some "void";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array = None;
+        };
       parameters =
         [
           (* self parameter - PangoMatrix* *)
           {
             param_name = "matrix";
-            param_type = { name = "Matrix"; c_type = Some "PangoMatrix*"; nullable = false; transfer_ownership = TransferNone; array = None };
+            param_type =
+              {
+                name = "Matrix";
+                c_type = Some "PangoMatrix*";
+                nullable = false;
+                transfer_ownership = TransferNone;
+                array = None;
+              };
             direction = In;
             nullable = false;
             varargs = false;
@@ -832,7 +854,14 @@ let test_inout_record_param_pointer_type () =
           (* inout Rectangle* parameter *)
           {
             param_name = "rect";
-            param_type = { name = "Rectangle"; c_type = Some "PangoRectangle*"; nullable = false; transfer_ownership = TransferNone; array = None };
+            param_type =
+              {
+                name = "Rectangle";
+                c_type = Some "PangoRectangle*";
+                nullable = false;
+                transfer_ownership = TransferNone;
+                array = None;
+              };
             direction = InOut;
             nullable = false;
             varargs = false;
@@ -855,13 +884,15 @@ let test_inout_record_param_pointer_type () =
 
   let functions = C_parser.parse_c_code c_code in
   let func =
-    Option.get (C_ast.find_function functions "ml_pango_matrix_transform_rectangle")
+    Option.get
+      (C_ast.find_function functions "ml_pango_matrix_transform_rectangle")
   in
 
   (* Positive: function parses to valid AST *)
   Alcotest.(check bool)
     "Function parses to valid AST" true
-    (Option.is_some (C_ast.find_function functions "ml_pango_matrix_transform_rectangle"));
+    (Option.is_some
+       (C_ast.find_function functions "ml_pango_matrix_transform_rectangle"));
 
   (* Critical: check that we have TWO variable declarations for the inout param:
      1. PangoRectangle inout1_val = PangoRectangle_val(arg1);  (the stack value)
@@ -886,26 +917,23 @@ let test_inout_record_param_pointer_type () =
     List.exists
       (fun (_name, typ, _init) ->
         (* Value type: starts with "PangoRectangle" but NOT "PangoRectangle*" *)
-        String.length typ >= 14 &&
-        String.sub typ 0 14 = "PangoRectangle" &&
-        not (String.contains typ '*'))
+        String.length typ >= 14
+        && String.sub typ 0 14 = "PangoRectangle"
+        && not (String.contains typ '*'))
       inout_decls
   in
   Alcotest.(check bool)
-    "Has value declaration (PangoRectangle inout_val)" true
-    has_value_decl;
+    "Has value declaration (PangoRectangle inout_val)" true has_value_decl;
 
   let has_pointer_decl =
     List.exists
       (fun (_name, typ, _init) ->
         (* Pointer type: "PangoRectangle*" *)
-        String.length typ >= 15 &&
-        String.sub typ 0 15 = "PangoRectangle*")
+        String.length typ >= 15 && String.sub typ 0 15 = "PangoRectangle*")
       inout_decls
   in
   Alcotest.(check bool)
-    "Has pointer declaration (PangoRectangle* inout)" true
-    has_pointer_decl;
+    "Has pointer declaration (PangoRectangle* inout)" true has_pointer_decl;
 
   (* Verify the pointer is initialized with address-of the value *)
   let pointer_decl =
@@ -920,11 +948,10 @@ let test_inout_record_param_pointer_type () =
         "Pointer initialized with &inout_val" true
         (String.length var_name >= 5 && String.sub var_name 0 5 = "inout")
   | Some (_, _, Some _) ->
-      Alcotest.fail "Pointer should be initialized with AddrOf (address-of) expression"
-  | Some (_, _, None) ->
-      Alcotest.fail "Pointer should have initialization"
-  | None ->
-      Alcotest.fail "Pointer declaration not found"
+      Alcotest.fail
+        "Pointer should be initialized with AddrOf (address-of) expression"
+  | Some (_, _, None) -> Alcotest.fail "Pointer should have initialization"
+  | None -> Alcotest.fail "Pointer declaration not found"
 
 (* Bug 6: Value-like records must have complete forward declarations.
     The copy function declaration AND the Val_/val_ macros must both be emitted.
@@ -957,7 +984,9 @@ let test_value_record_has_complete_forward_decls () =
   Alcotest.(check int) "Generation succeeds" 0 exit_code;
 
   (* Read the forward declarations header *)
-  let header_path = Filename.concat (generated_dir output_dir) "testns_decls.h" in
+  let header_path =
+    Filename.concat (generated_dir output_dir) "testns_decls.h"
+  in
   let header = read_file header_path in
 
   (* Positive: copy function is declared *)
@@ -966,12 +995,10 @@ let test_value_record_has_complete_forward_decls () =
 
   (* Critical: Val_ macro MUST be defined using copy function.
      This is the bug - the macro was missing when method_name != "copy". *)
-  assert_contains "Val_TestNsRect macro defined" header
-    "#define Val_TestNsRect";
+  assert_contains "Val_TestNsRect macro defined" header "#define Val_TestNsRect";
 
   (* Positive: _val macro is defined *)
-  assert_contains "TestNsRect_val macro defined" header
-    "#define TestNsRect_val";
+  assert_contains "TestNsRect_val macro defined" header "#define TestNsRect_val";
 
   (* Also verify the C stub file has the copy function *)
   let c_file_path = stub_c_file output_dir "TestRect" in
@@ -979,7 +1006,8 @@ let test_value_record_has_complete_forward_decls () =
     let c_file = read_file c_file_path in
     let functions = C_parser.parse_c_code c_file in
     let copy_func = C_ast.find_function functions "copy_TestNsRect" in
-    Alcotest.(check bool) "copy_TestNsRect function exists in C stub" true
+    Alcotest.(check bool)
+      "copy_TestNsRect function exists in C stub" true
       (Option.is_some copy_func)
   end
 
@@ -1012,9 +1040,7 @@ let test_fixed_size_array_out_param () =
     }
   in
   let ctx =
-    { (Helpers.create_test_context ()) with
-      records = [ vec3_record ];
-    }
+    { (Helpers.create_test_context ()) with records = [ vec3_record ] }
   in
 
   (* Create a method with caller-allocated fixed-size array out param.
@@ -1029,7 +1055,14 @@ let test_fixed_size_array_out_param () =
     {
       method_name = "get_vertices";
       c_identifier = "graphene_box_get_vertices";
-      return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
+      return_type =
+        {
+          name = "none";
+          c_type = Some "void";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array = None;
+        };
       parameters =
         [
           (* fixed-size array out param - caller-allocated *)
@@ -1046,7 +1079,8 @@ let test_fixed_size_array_out_param () =
                     {
                       length = None;
                       zero_terminated = false;
-                      fixed_size = Some 8;  (* KEY: fixed-size=8 *)
+                      fixed_size = Some 8;
+                      (* KEY: fixed-size=8 *)
                       array_name = None;
                       element_type =
                         {
@@ -1061,7 +1095,8 @@ let test_fixed_size_array_out_param () =
             direction = Out;
             nullable = false;
             varargs = false;
-            caller_allocates = true;  (* KEY: caller-allocates=true *)
+            caller_allocates = true;
+            (* KEY: caller-allocates=true *)
           };
         ];
       doc = None;
@@ -1113,10 +1148,11 @@ let test_fixed_size_array_out_param () =
   let has_fixed_size_array_decl =
     List.exists
       (fun (name, c_type, _init) ->
-         (* The parser extracts "graphene_vec3_t[8]" as type and "out1" as name
+        (* The parser extracts "graphene_vec3_t[8]" as type and "out1" as name
             So we check for: type contains "[" (array syntax) and name starts with "out" *)
-         String.contains c_type '['
-         && String.length name >= 3 && String.sub name 0 3 = "out")
+        String.contains c_type '['
+        && String.length name >= 3
+        && String.sub name 0 3 = "out")
       var_decls
   in
   Alcotest.(check bool)
@@ -1128,11 +1164,13 @@ let test_fixed_size_array_out_param () =
   let has_null_init =
     List.exists
       (fun (name, _c_type, init) ->
-         String.length name >= 3 && String.sub name 0 3 = "out" &&
-         match init with
-         | Some (C_ast.Var "NULL") -> true
-         | Some (C_ast.IntLiteral 0) -> true
-         | _ -> false)
+        String.length name >= 3
+        && String.sub name 0 3 = "out"
+        &&
+        match init with
+        | Some (C_ast.Var "NULL") -> true
+        | Some (C_ast.IntLiteral 0) -> true
+        | _ -> false)
       var_decls
   in
   Alcotest.(check bool)
@@ -1176,7 +1214,8 @@ let test_fixed_size_float_array_return () =
               {
                 length = None;
                 zero_terminated = false;
-                fixed_size = Some 4;  (* KEY: fixed-size=4 *)
+                fixed_size = Some 4;
+                (* KEY: fixed-size=4 *)
                 array_name = None;
                 element_type =
                   {
@@ -1188,7 +1227,8 @@ let test_fixed_size_float_array_return () =
                   };
               };
         };
-      parameters = [];  (* Only self, handled separately *)
+      parameters = [];
+      (* Only self, handled separately *)
       doc = None;
       throws = false;
       introspectable = true;
@@ -1239,8 +1279,7 @@ let test_fixed_size_float_array_return () =
     List.exists check_stmt func.C_ast.body
   in
   Alcotest.(check bool)
-    "Uses caml_copy_double for float elements" true
-    uses_float_conversion;
+    "Uses caml_copy_double for float elements" true uses_float_conversion;
 
   (* Critical: verify NO NULL-termination counting loop
      The bug was generating: "while (result[result_length] != NULL) result_length++;"
@@ -1248,13 +1287,14 @@ let test_fixed_size_float_array_return () =
      Check that there's no "while" keyword in the generated code. *)
   let has_null_termination_loop =
     (* Check for the presence of "while" keyword which indicates a counting loop *)
-    String.contains c_code 'w' && 
-    String.length c_code > 5 &&
-    (let lower_code = String.lowercase_ascii c_code in
-     try 
-       let idx = String.index lower_code 'w' in
-       String.sub lower_code idx 5 = "while"
-     with Not_found -> false)
+    String.contains c_code 'w'
+    && String.length c_code > 5
+    &&
+    let lower_code = String.lowercase_ascii c_code in
+    try
+      let idx = String.index lower_code 'w' in
+      String.sub lower_code idx 5 = "while"
+    with Not_found -> false
   in
   Alcotest.(check bool)
     "NO NULL-termination counting loop (Bug 1 fix)" false
@@ -1284,7 +1324,13 @@ let test_out_param_array_without_length_skipped () =
       method_name = "get_tabs";
       c_identifier = "pango_tab_array_get_tabs";
       return_type =
-        { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
+        {
+          name = "none";
+          c_type = Some "void";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array = None;
+        };
       parameters =
         [
           {
@@ -1327,7 +1373,9 @@ let test_out_param_array_without_length_skipped () =
   in
 
   (* Critical: should_skip_method_binding should return true for this case *)
-  let skipped = Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx meth in
+  let skipped =
+    Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx meth
+  in
   Alcotest.(check bool)
     "Out-param array without length should be skipped" true skipped
 
@@ -1345,7 +1393,13 @@ let test_double_pointer_out_param_skipped () =
       method_name = "get_tabs";
       c_identifier = "pango_tab_array_get_tabs";
       return_type =
-        { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
+        {
+          name = "none";
+          c_type = Some "void";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array = None;
+        };
       parameters =
         [
           {
@@ -1356,7 +1410,8 @@ let test_double_pointer_out_param_skipped () =
                 c_type = Some "PangoTabArray**";
                 nullable = false;
                 transfer_ownership = TransferNone;
-                array = None;  (* Not marked as array in GIR *)
+                array = None;
+                (* Not marked as array in GIR *)
               };
             direction = Out;
             nullable = false;
@@ -1373,7 +1428,9 @@ let test_double_pointer_out_param_skipped () =
   in
 
   (* Critical: should_skip_method_binding should return true for double-pointer out params *)
-  let skipped = Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx meth in
+  let skipped =
+    Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx meth
+  in
   Alcotest.(check bool)
     "Double-pointer out param should be skipped" true skipped
 
@@ -1389,7 +1446,13 @@ let test_normal_out_param_not_skipped () =
       method_name = "get_items";
       c_identifier = "gtk_container_get_children";
       return_type =
-        { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
+        {
+          name = "none";
+          c_type = Some "void";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array = None;
+        };
       parameters =
         [
           {
@@ -1403,7 +1466,8 @@ let test_normal_out_param_not_skipped () =
                 array =
                   Some
                     {
-                      length = Some 1;  (* Length is parameter index 1 *)
+                      length = Some 1;
+                      (* Length is parameter index 1 *)
                       zero_terminated = false;
                       fixed_size = None;
                       array_name = None;
@@ -1447,7 +1511,9 @@ let test_normal_out_param_not_skipped () =
   in
 
   (* Critical: should_skip_method_binding should return false for out-param with length *)
-  let skipped = Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx meth in
+  let skipped =
+    Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx meth
+  in
   Alcotest.(check bool)
     "Out-param array WITH length should NOT be skipped" false skipped
 
@@ -1508,8 +1574,14 @@ let test_gdkpixbuf_format_flags_guarded () =
     (string_contains c_code "GdkPixbufFormatFlags_val");
 
   (* Critical: verify ordering - prototypes appear BETWEEN guard start and guard end *)
-  let guard_start = Str.search_forward (Str.regexp_string "#ifndef GDK_PIXBUF_FORMAT_WRITABLE") c_code 0 in
-  let prototype_pos = Str.search_forward (Str.regexp_string "Val_GdkPixbufFormatFlags") c_code 0 in
+  let guard_start =
+    Str.search_forward
+      (Str.regexp_string "#ifndef GDK_PIXBUF_FORMAT_WRITABLE")
+      c_code 0
+  in
+  let prototype_pos =
+    Str.search_forward (Str.regexp_string "Val_GdkPixbufFormatFlags") c_code 0
+  in
   let guard_end = Str.search_forward (Str.regexp_string "#endif") c_code 0 in
   Alcotest.(check bool)
     "Guard start < prototype position" true
@@ -1542,8 +1614,7 @@ let test_normal_bitfield_no_guard () =
   (* Generate forward declarations *)
   let c_code =
     Gir_gen_lib.Generate.C_stub_bitfield.generate_forward_decls
-      ~namespace_prefix:"Gtk"
-      ~gtk_bitfields:[ normal_bitfield ]
+      ~namespace_prefix:"Gtk" ~gtk_bitfields:[ normal_bitfield ]
   in
   Helpers.log_generated_c_code "normal_bitfield_no_guard" c_code;
 
@@ -1584,35 +1655,20 @@ let test_cross_namespace_c_converter_names () =
   in
 
   (* Create the external enum - this simulates GdkPixbuf.Colorspace with c_type "GdkColorspace" *)
-  let colorspace_enum =
-    {
-      enum_name = "Colorspace";
-      enum_c_type = "GdkColorspace";
-      members =
-        [
-          {
-            member_name = "RGB";
-            member_value = 0;
-            c_identifier = "GDK_COLORSPACE_RGB";
-            member_doc = None;
-          };
-        ];
-      functions = [];
-      enum_doc = None;
-    }
-  in
-
   let ctx =
     {
       namespace;
-      repository = { repository_c_includes = []; repository_includes = []; repository_packages = [] };
+      repository =
+        {
+          repository_c_includes = [];
+          repository_includes = [];
+          repository_packages = [];
+        };
       classes = [];
       interfaces = [];
       enums = [];
       bitfields = [];
       records = [];
-      external_enums = [ ("GdkPixbuf", colorspace_enum) ];  (* KEY: external enum from GdkPixbuf namespace *)
-      external_bitfields = [];
       hierarchy_map = Hashtbl.create 0;
       module_groups = Hashtbl.create 0;
       current_cycle_classes = [];
@@ -1680,49 +1736,50 @@ let test_cross_namespace_c_converter_names () =
 
 let tests =
   [
-    Alcotest.test_case "Non-introspectable record filtered at generation"
-      `Quick test_non_introspectable_record_filtered;
+    Alcotest.test_case "Non-introspectable record filtered at generation" `Quick
+      test_non_introspectable_record_filtered;
     Alcotest.test_case "Non-introspectable constructor filtered at generation"
       `Quick test_non_introspectable_constructor_filtered;
-    Alcotest.test_case "Non-introspectable method skipped at generation"
-      `Quick test_non_introspectable_method_skipped;
-    Alcotest.test_case "Copy function returns copy result not g_new0"
-      `Quick test_copy_function_returns_copy_result;
-    Alcotest.test_case "Record copy function has balanced parentheses"
-      `Quick test_record_copy_parses_successfully;
-    Alcotest.test_case "Enum module name matches dune convention"
-      `Quick test_enum_module_name_matches_dune_convention;
+    Alcotest.test_case "Non-introspectable method skipped at generation" `Quick
+      test_non_introspectable_method_skipped;
+    Alcotest.test_case "Copy function returns copy result not g_new0" `Quick
+      test_copy_function_returns_copy_result;
+    Alcotest.test_case "Record copy function has balanced parentheses" `Quick
+      test_record_copy_parses_successfully;
+    Alcotest.test_case "Enum module name matches dune convention" `Quick
+      test_enum_module_name_matches_dune_convention;
     Alcotest.test_case "Non-Gtk namespace c:type prefix inferred correctly"
       `Quick test_non_gtk_namespace_c_type_prefix;
     (* Bug 5 tests *)
-    Alcotest.test_case "Enum array element conversion (no address-of)"
-      `Quick test_enum_array_element_conversion;
+    Alcotest.test_case "Enum array element conversion (no address-of)" `Quick
+      test_enum_array_element_conversion;
     Alcotest.test_case "Bitfield array element conversion (no address-of)"
       `Quick test_bitfield_array_element_conversion;
     (* Bug 4 test *)
-    Alcotest.test_case "Inout record param uses value + pointer (Bug 4)"
-      `Quick test_inout_record_param_pointer_type;
+    Alcotest.test_case "Inout record param uses value + pointer (Bug 4)" `Quick
+      test_inout_record_param_pointer_type;
     (* Bug 6 test *)
-    Alcotest.test_case "Value record has complete forward decls (Bug 6)"
-      `Quick test_value_record_has_complete_forward_decls;
+    Alcotest.test_case "Value record has complete forward decls (Bug 6)" `Quick
+      test_value_record_has_complete_forward_decls;
     (* Bug 1 tests *)
-    Alcotest.test_case "Fixed-size array out param uses stack allocation (Bug 1)"
-      `Quick test_fixed_size_array_out_param;
-    Alcotest.test_case "Fixed-size float array return (Bug 1)"
-      `Quick test_fixed_size_float_array_return;
+    Alcotest.test_case
+      "Fixed-size array out param uses stack allocation (Bug 1)" `Quick
+      test_fixed_size_array_out_param;
+    Alcotest.test_case "Fixed-size float array return (Bug 1)" `Quick
+      test_fixed_size_float_array_return;
     (* Bug 16 tests - Out-param array filtering *)
-    Alcotest.test_case "Out-param array without length skipped (Bug 16)"
-      `Quick test_out_param_array_without_length_skipped;
-    Alcotest.test_case "Double-pointer out param skipped (Bug 16)"
-      `Quick test_double_pointer_out_param_skipped;
+    Alcotest.test_case "Out-param array without length skipped (Bug 16)" `Quick
+      test_out_param_array_without_length_skipped;
+    Alcotest.test_case "Double-pointer out param skipped (Bug 16)" `Quick
+      test_double_pointer_out_param_skipped;
     Alcotest.test_case "Normal out-param with length not skipped (Bug 16)"
       `Quick test_normal_out_param_not_skipped;
     (* Bug 13 test - GdkPixbufFormatFlags guard *)
-    Alcotest.test_case "GdkPixbufFormatFlags has guard (Bug 13)"
-      `Quick test_gdkpixbuf_format_flags_guarded;
-    Alcotest.test_case "Normal bitfield has no guard (Bug 13 negative)"
-      `Quick test_normal_bitfield_no_guard;
+    Alcotest.test_case "GdkPixbufFormatFlags has guard (Bug 13)" `Quick
+      test_gdkpixbuf_format_flags_guarded;
+    Alcotest.test_case "Normal bitfield has no guard (Bug 13 negative)" `Quick
+      test_normal_bitfield_no_guard;
     (* Bug 11 test - C converter name casing for cross-namespace enums *)
-    Alcotest.test_case "Cross-namespace C converter names (Bug 11)"
-      `Quick test_cross_namespace_c_converter_names;
+    Alcotest.test_case "Cross-namespace C converter names (Bug 11)" `Quick
+      test_cross_namespace_c_converter_names;
   ]

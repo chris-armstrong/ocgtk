@@ -22,7 +22,7 @@ let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
   {
     ocaml_type =
       (match cr.cr_type with
-      | Crt_Class | Crt_Record _ | Crt_Interface ->
+      | Crt_Class _ | Crt_Record _ | Crt_Interface ->
           external_namespace ^ ".Wrappers."
           ^ Utils.module_name_of_class cr.cr_name
           ^ ".t"
@@ -45,7 +45,7 @@ let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
       | _ -> false);
     layer2_class =
       (match cr.cr_type with
-      | Crt_Class ->
+      | Crt_Class _ ->
           Some
             {
               class_module = external_namespace;

@@ -12,16 +12,16 @@ let create_context_with_base_namespace_refs () =
   let open Gir_gen_lib.Types in
   (* Create cross_references map including base namespaces *)
   let glib_cr =
-    { cr_name = "Object"; cr_type = Crt_Class; cr_c_type = "GObject" }
+    { cr_name = "Object"; cr_type = Crt_Class { parent = None }; cr_c_type = "GObject" }
   in
   let gobject_cr =
-    { cr_name = "Object"; cr_type = Crt_Class; cr_c_type = "GObject" }
+    { cr_name = "Object"; cr_type = Crt_Class { parent = None }; cr_c_type = "GObject" }
   in
   let gmodule_cr =
-    { cr_name = "Module"; cr_type = Crt_Class; cr_c_type = "GModule" }
+    { cr_name = "Module"; cr_type = Crt_Class { parent = None }; cr_c_type = "GModule" }
   in
   let gdk_cr =
-    { cr_name = "Texture"; cr_type = Crt_Class; cr_c_type = "GdkTexture" }
+    { cr_name = "Texture"; cr_type = Crt_Class { parent = None }; cr_c_type = "GdkTexture" }
   in
 
   let glib_map = StringMap.add "Object" glib_cr StringMap.empty in
@@ -31,10 +31,10 @@ let create_context_with_base_namespace_refs () =
 
   let cross_references =
     StringMap.empty
-    |> StringMap.add "GLib" glib_map
-    |> StringMap.add "GObject" gobject_map
-    |> StringMap.add "GModule" gmodule_map
-    |> StringMap.add "Gdk" gdk_map
+    |> StringMap.add "GLib" (snd (Helpers.make_ncr "GLib" glib_map))
+    |> StringMap.add "GObject" (snd (Helpers.make_ncr "GObject" gobject_map))
+    |> StringMap.add "GModule" (snd (Helpers.make_ncr "GModule" gmodule_map))
+    |> StringMap.add "Gdk" (snd (Helpers.make_ncr "Gdk" gdk_map))
   in
 
   let ns =
@@ -60,8 +60,6 @@ let create_context_with_base_namespace_refs () =
     enums = [];
     bitfields = [];
     records = [];
-    external_enums = [];
-    external_bitfields = [];
     hierarchy_map = Hashtbl.create 0;
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
@@ -137,17 +135,17 @@ let test_get_dependency_namespaces_filters_base_namespaces () =
   let open Gir_gen_lib.Types in
   (* Create cross_references with base and non-base namespaces *)
   let dummy_cr =
-    { cr_name = "Test"; cr_type = Crt_Class; cr_c_type = "Test" }
+    { cr_name = "Test"; cr_type = Crt_Class { parent = None }; cr_c_type = "Test" }
   in
   let dummy_map = StringMap.add "Test" dummy_cr StringMap.empty in
 
   let cross_refs =
     StringMap.empty
-    |> StringMap.add "GLib" dummy_map
-    |> StringMap.add "GObject" dummy_map
-    |> StringMap.add "GModule" dummy_map
-    |> StringMap.add "Gdk" dummy_map
-    |> StringMap.add "Gio" dummy_map
+    |> StringMap.add "GLib" (snd (Helpers.make_ncr "GLib" dummy_map))
+    |> StringMap.add "GObject" (snd (Helpers.make_ncr "GObject" dummy_map))
+    |> StringMap.add "GModule" (snd (Helpers.make_ncr "GModule" dummy_map))
+    |> StringMap.add "Gdk" (snd (Helpers.make_ncr "Gdk" dummy_map))
+    |> StringMap.add "Gio" (snd (Helpers.make_ncr "Gio" dummy_map))
   in
 
   (* Get dependency namespaces *)

@@ -46,23 +46,6 @@ let create_context_with_external_bitfield () =
     }
   in
 
-  (* Create an external GDK bitfield - this should NOT appear in forward declarations *)
-  let external_bitfield =
-    {
-      bitfield_name = "EventMask";
-      bitfield_c_type = "GdkEventMask";
-      flags =
-        [
-          {
-            flag_name = "BUTTON_PRESS";
-            flag_value = 1;
-            flag_c_identifier = "GDK_BUTTON_PRESS_MASK";
-            flag_doc = None;
-          };
-        ];
-      bitfield_doc = None;
-    }
-  in
 
   {
     namespace;
@@ -77,9 +60,7 @@ let create_context_with_external_bitfield () =
     enums = [];
     bitfields = [ local_bitfield ];
     records = [];
-    external_enums = [];
     (* External bitfield should NOT appear in forward declarations *)
-    external_bitfields = [ ("Gdk", external_bitfield) ];
     hierarchy_map = Hashtbl.create 0;
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
