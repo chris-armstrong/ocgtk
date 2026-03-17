@@ -728,11 +728,6 @@ let generate_bindings filter_file gir_file output_dir reference_files =
   let ns_name = ctx.namespace.namespace_name in
   let ns_lower = String.lowercase_ascii ns_name in
 
-  (* Extract dependency namespaces from cross_references using existing helper *)
-  let dependency_namespaces =
-    Gir_gen_lib.Generate.C_stubs.get_dependency_namespaces ctx.cross_references
-  in
-
   (* Generate common header file *)
   let header_file =
     Filename.concat
@@ -924,10 +919,9 @@ let generate_bindings filter_file gir_file output_dir reference_files =
     |> List.sort_uniq ~cmp:String.compare
   in
   let dune_content =
-    Gir_gen_lib.Generate.Dune_file.generate_dune_library ~stub_names:stub_list
-      ~lib_name:namespace.namespace_name ~module_names:module_list
-      ~package_names:ctx.repository.repository_packages ~dependency_namespaces
-      ()
+    Gir_gen_lib.Generate.Dune_file.generate_dune_library ~ctx
+      ~stub_names:stub_list ~lib_name:namespace.namespace_name
+      ~module_names:module_list ~repository
   in
   write_file ~path:dune_file ~content:dune_content;
 

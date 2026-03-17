@@ -1,19 +1,20 @@
 (* Dune File Generation *)
 
-open StdLabels
+open ContainersLabels
 open Printf
 
 (* Map GIR namespace names to pkg-config package names *)
-let pkg_config_name_of_namespace namespace_name =
-  match String.lowercase_ascii namespace_name with
-  | "gtk" -> "gtk4"
-  | "gio" -> "gio-2.0"
-  | "gdk" -> "gdk-4.0"
-  | "pango" -> "pango"
-  | "gdkpixbuf" -> "gdk-pixbuf-2.0"
-  | "graphene" -> "graphene-1.0"
-  | "gsk" -> "gsk-4.0"
-  | ns -> ns (* Default: use namespace as-is *)
+let pkg_config_name_of_namespace ~ctx namespace_name =
+  let open Types in
+  if List.mem ~eq:String.equal namespace_name C_stubs.base_namespaces then []
+  else
+    let ncr_namespace =
+      StringMap.find_opt namespace_name ctx.cross_references
+    in
+    ncr_namespace
+    |> Option.get_exn_or
+         ("Unable to find packages for namespace " ^ namespace_name)
+    |> fun ncr_namespace -> ncr_namespace.ncr_namespace_packages
 
 (* Map namespace to library name for dune (ocgtk.<ns>) *)
 let library_name_of_namespace namespace_name =
@@ -21,8 +22,7 @@ let library_name_of_namespace namespace_name =
   sprintf "ocgtk.%s" ns_lower
 
 (* Generate dune library stanza for generated C stubs *)
-let generate_dune_library ~lib_name ~stub_names ~module_names ~package_names
-    ?(dependency_namespaces = []) () =
+let generate_dune_library ~ctx ~lib_name ~stub_names ~module_names ~repository =
   let buf = Buffer.create 2048 in
 
   (* Determine pkg-config package name and generate sexp file names *)
@@ -47,9 +47,14 @@ let generate_dune_library ~lib_name ~stub_names ~module_names ~package_names
 
   (* Collect pkg-config packages from dependencies *)
   let dep_packages =
-    dependency_namespaces |> List.map ~f:pkg_config_name_of_namespace
+    let open Types in
+    repository.repository_includes
+    |> List.map ~f:(fun include_ ->
+        pkg_config_name_of_namespace ~ctx include_.include_name)
+    |> List.flatten
+    |> List.sort_uniq ~cmp:String.compare
   in
-  let all_packages = package_names @ dep_packages in
+  let all_packages = repository.repository_packages @ dep_packages in
 
   bprintf buf "(rule\n";
   bprintf buf " (targets %s %s)\n" cflag_file clink_file;
@@ -90,7 +95,8 @@ let generate_dune_library ~lib_name ~stub_names ~module_names ~package_names
   Buffer.add_string buf " (modules)  ; No OCaml modules, only C stubs\n";
   (* Generate library dependencies for dependency namespaces *)
   let dep_libraries =
-    dependency_namespaces
+    Types.(repository.repository_includes)
+    |> List.map ~f:(fun { Types.include_name; _ } -> include_name)
     |> List.map ~f:library_name_of_namespace
     |> String.concat ~sep:" "
   in
