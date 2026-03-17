@@ -51,8 +51,14 @@ let simplify_self_reference ~class_name ~ocaml_type =
   if ocaml_type = self_type then
     "t"
   else
-    (* Handle patterns like "Module.t array", "Module.t option", "Module.t array option", etc. *)
-    Re.replace (Re.compile (Re.str self_type)) ~all:true ~f:(fun _ -> "t") ocaml_type
+    (* Handle patterns like "Module.t array", "Module.t option", "Module.t array option", etc.
+       Use a negative lookbehind for '.' to avoid replacing "Surface.t" inside
+       qualified paths like "Ocgtk_cairo.Wrappers.Surface.t" *)
+    let pat = Re.(compile (seq [
+      group (alt [bos; char ' '; char '(']);
+      str self_type
+    ])) in
+    Re.replace pat ~all:true ~f:(fun g -> Re.Group.get g 1 ^ "t") ocaml_type
 
 (** Map a GIR type to its OCaml representation with self-reference simplification.
     Returns "unit" for unknown types with a warning to stderr.

@@ -10,17 +10,13 @@ let should_generate_method ~ctx ~is_record (meth : gir_method) =
   let has_excluded_type =
     Exclude_list.is_excluded_type_name meth.return_type.name
   in
-  let has_cross_namespace_type =
-    Filtering.method_has_cross_namespace_types ~ctx meth
-  in
   not
     (Exclude_list.is_variadic_function meth.method_name
     || has_excluded_type
     || Exclude_list.should_skip_method
          ~find_type_mapping:(Type_mappings.find_type_mapping_for_gir_type ~ctx)
          ~enums:ctx.enums ~bitfields:ctx.bitfields meth
-    || (is_record && is_copy_or_free meth)
-    || has_cross_namespace_type)
+    || (is_record && is_copy_or_free meth))
 
 (** Build the OCaml method signature type string *)
 let build_method_signature ~ctx ~class_name (meth : gir_method) =

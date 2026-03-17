@@ -2,18 +2,6 @@
 
 open Types
 
-(* Check if a type name refers to a cross-namespace enum or bitfield *)
-val is_cross_namespace_enum_or_bitfield :
-  ctx:generation_context -> string -> bool
-
-(* Check if a method has cross-namespace enum/bitfield parameters or return type *)
-val method_has_cross_namespace_types :
-  ctx:generation_context -> gir_method -> bool
-
-(* Check if a constructor has cross-namespace enum/bitfield parameters *)
-val constructor_has_cross_namespace_types :
-  ctx:generation_context -> gir_constructor -> bool
-
 (* Check if a type is simple (has known mapping) *)
 val has_simple_type : ctx:generation_context -> gir_type -> bool
 

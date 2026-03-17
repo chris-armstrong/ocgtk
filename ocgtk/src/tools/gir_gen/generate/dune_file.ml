@@ -11,10 +11,13 @@ let pkg_config_name_of_namespace ~ctx namespace_name =
     let ncr_namespace =
       StringMap.find_opt namespace_name ctx.cross_references
     in
-    ncr_namespace
-    |> Option.get_exn_or
-         ("Unable to find packages for namespace " ^ namespace_name)
-    |> fun ncr_namespace -> ncr_namespace.ncr_namespace_packages
+    let namespace_packages =
+      ncr_namespace
+      |> Option.get_exn_or
+           ("Unable to find packages for namespace " ^ namespace_name)
+      |> fun ncr_namespace -> ncr_namespace.ncr_namespace_packages
+    in
+    namespace_packages
 
 (* Map namespace to library name for dune (ocgtk.<ns>) *)
 let library_name_of_namespace namespace_name =
@@ -25,8 +28,6 @@ let library_name_of_namespace namespace_name =
 let generate_dune_library ~ctx ~lib_name ~stub_names ~module_names ~repository =
   let buf = Buffer.create 2048 in
 
-  (* Determine pkg-config package name and generate sexp file names *)
-  (* let pkg_config_name = pkg_config_name_of_namespace lib_name in *)
   let cflag_file = sprintf "cflag-%s.sexp" (String.lowercase_ascii lib_name) in
   let clink_file = sprintf "clink-%s.sexp" (String.lowercase_ascii lib_name) in
 

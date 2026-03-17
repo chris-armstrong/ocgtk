@@ -9,21 +9,16 @@ include Common
 
 (* Helper types and functions *)
 
-type module_names = {
-  layer1: string;
-  layer2: string;
-}
-
-type property_filters = {
-  method_names: string list;
-  base_names: string list;
-}
+type module_names = { layer1 : string; layer2 : string }
+type property_filters = { method_names : string list; base_names : string list }
 
 let sanitize_name s =
-  s |> String.map ~f:(function '-' -> '_' | c -> c) |> Utils.to_snake_case |> Utils.sanitize_identifier
+  s
+  |> String.map ~f:(function '-' -> '_' | c -> c)
+  |> Utils.to_snake_case |> Utils.sanitize_identifier
 
-let signal_class_name class_name = Utils.ocaml_class_name (
-  sanitize_name class_name ^ "_signals")
+let signal_class_name class_name =
+  Utils.ocaml_class_name (sanitize_name class_name ^ "_signals")
 
 let get_signal_module_name class_snake = "G" ^ class_snake ^ "_signals"
 
@@ -31,10 +26,13 @@ let get_module_names ~ctx class_name =
   let layer1 = Class_utils.get_qualified_module_name ~ctx class_name in
   { layer1; layer2 = "G" ^ layer1 }
 
-let get_property_filters ~ctx ~class_name ~methods  properties = {
-  method_names = Filtering.property_method_names ~ctx ~class_name ~methods properties;
-  base_names = Filtering.property_base_names ~ctx ~class_name ~methods  properties;
-}
+let get_property_filters ~ctx ~class_name ~methods properties =
+  {
+    method_names =
+      Filtering.property_method_names ~ctx ~class_name ~methods properties;
+    base_names =
+      Filtering.property_base_names ~ctx ~class_name ~methods properties;
+  }
 
 (* Helper to check if a class name is in the same cluster *)
 let is_same_cluster_class ~same_cluster_classes class_name =
@@ -43,7 +41,7 @@ let is_same_cluster_class ~same_cluster_classes class_name =
 (* Helper to generate structural type for same-cluster class references *)
 let structural_type_for_class ~ctx class_name =
   let layer1_module = Class_utils.get_qualified_module_name ~ctx class_name in
-  let accessor = "as_" ^ (Utils.ocaml_class_name class_name) in
+  let accessor = "as_" ^ Utils.ocaml_class_name class_name in
   sprintf "<%s: %s.t; ..>" accessor layer1_module
 
 let ocaml_method_name ~class_name ~c_type (meth : gir_method) =
@@ -61,7 +59,9 @@ let get_param_hierarchy_info ~ctx (param : gir_param) : hierarchy_info option =
 (* Helper to determine if a method should be skipped during generation *)
 let should_skip_method ~ctx (meth : gir_method) =
   let has_interface_param = Filtering.method_has_interface_param ~ctx meth in
-  let has_cross_namespace_type = Filtering.method_has_cross_namespace_types ~ctx meth in
-  let has_out_param = List.exists meth.parameters ~f:(fun p -> p.direction = Out || p.direction = InOut) in
+  let has_out_param =
+    List.exists meth.parameters ~f:(fun p ->
+        p.direction = Out || p.direction = InOut)
+  in
   let should_skip_binding = Filtering.should_skip_method_binding ~ctx meth in
-  should_skip_binding || has_out_param || has_interface_param || has_cross_namespace_type
+  should_skip_binding || has_out_param || has_interface_param

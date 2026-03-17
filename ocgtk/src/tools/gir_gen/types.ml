@@ -295,6 +295,7 @@ type cross_reference_entity = {
 type cross_reference_namespace = {
   cr_namespace_name : string;
   cr_namespace_packages : string list;
+  cr_namespace_includes : string list;
   cr_namespace_c_includes : string list;
   cr_entities : cross_reference_entity list;
 }
@@ -305,6 +306,7 @@ module StringMap = Map.Make (String)
 type generation_context_namespace_cross_references = {
   ncr_namespace_name : string;
   ncr_namespace_packages : string list;
+  ncr_namespace_includes : string list;
   ncr_namespace_c_includes : string list;
   ncr_entities : cross_reference_entity StringMap.t;
 }
@@ -317,8 +319,6 @@ type generation_context = {
   enums : gir_enum list;
   bitfields : gir_bitfield list;
   records : gir_record list;
-  external_enums : (string * gir_enum) list;
-  external_bitfields : (string * gir_bitfield) list;
   hierarchy_map : (string, hierarchy_info) Hashtbl.t;
   module_groups : (string, string) Hashtbl.t;
       (* class_name -> combined_module_name *)

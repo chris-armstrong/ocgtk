@@ -46,7 +46,7 @@ let generate_library_interface ~ctx =
     "(* Top-level library module with direct references to all classes and \
      enumerations *)\n\n";
 
-  (* Collect all class/interface names *)
+  (* Collect all class/interface/record names *)
   let all_entities =
     List.filter_map
       (fun (c : gir_class) ->
@@ -55,6 +55,7 @@ let generate_library_interface ~ctx =
         | false -> None)
       ctx.classes
     @ List.map (fun (i : gir_interface) -> i.interface_name) ctx.interfaces
+    @ List.map (fun (r : gir_record) -> r.record_name) ctx.records
   in
   let sorted_entities = List.sort String.compare all_entities in
 
@@ -104,10 +105,6 @@ let generate_library_interface ~ctx =
     if has_enums then begin
       let sorted_enums =
         ctx.enums
-        |> ListLabels.filter ~f:(fun en ->
-            not
-              (ListLabels.exists ctx.external_enums ~f:(fun (_, en') ->
-                   String.equal en.enum_name en'.enum_name)))
         |> List.sort (fun (a : gir_enum) (b : gir_enum) ->
             String.compare a.enum_name b.enum_name)
       in
@@ -122,10 +119,6 @@ let generate_library_interface ~ctx =
     if has_bitfields then begin
       let sorted_bitfields =
         ctx.bitfields
-        |> ListLabels.filter ~f:(fun bf ->
-            not
-              (ListLabels.exists ctx.external_bitfields ~f:(fun (_, bf') ->
-                   String.equal bf.bitfield_name bf'.bitfield_name)))
         |> List.sort (fun (a : gir_bitfield) (b : gir_bitfield) ->
             String.compare a.bitfield_name b.bitfield_name)
       in
@@ -154,6 +147,7 @@ let generate_library_implementation ~ctx =
   let all_entities =
     List.map (fun (c : gir_class) -> c.class_name) ctx.classes
     @ List.map (fun (i : gir_interface) -> i.interface_name) ctx.interfaces
+    @ List.map (fun (r : gir_record) -> r.record_name) ctx.records
   in
   let all_entities =
     ListLabels.filter all_entities ~f:(fun name ->
@@ -205,16 +199,9 @@ let generate_library_implementation ~ctx =
       in
       List.iter
         (fun (enum : gir_enum) ->
-          if
-            not
-              (ListLabels.exists ctx.external_enums ~f:(fun (_, en) ->
-                   String.equal en.enum_name enum.enum_name))
-          then
-            let enum_module = enums_module_name ctx enum in
-            let enum_name = ocaml_enum_name enum in
-            Printf.bprintf buf "type %s = %s.%s\n" enum_name enum_module
-              enum_name
-          else ())
+          let enum_module = enums_module_name ctx enum in
+          let enum_name = ocaml_enum_name enum in
+          Printf.bprintf buf "type %s = %s.%s\n" enum_name enum_module enum_name)
         sorted_enums
     end;
 
@@ -227,15 +214,10 @@ let generate_library_implementation ~ctx =
       in
       List.iter
         (fun (bitfield : gir_bitfield) ->
-          if
-            not
-              (ListLabels.exists ctx.external_bitfields ~f:(fun (_, bf) ->
-                   String.equal bf.bitfield_name bitfield.bitfield_name))
-          then
-            let bitfield_module = bitfields_module_name ctx bitfield in
-            let bitfield_name = ocaml_bitfield_name bitfield in
-            Printf.bprintf buf "type %s = %s.%s\n" bitfield_name bitfield_module
-              bitfield_name)
+          let bitfield_module = bitfields_module_name ctx bitfield in
+          let bitfield_name = ocaml_bitfield_name bitfield in
+          Printf.bprintf buf "type %s = %s.%s\n" bitfield_name bitfield_module
+            bitfield_name)
         sorted_bitfields
     end
   end;

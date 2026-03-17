@@ -494,6 +494,7 @@ let load_reference_files reference_files =
           ncr_namespace_name = cr_namespace.cr_namespace_name;
           ncr_namespace_packages = cr_namespace.cr_namespace_packages;
           ncr_namespace_c_includes = cr_namespace.cr_namespace_c_includes;
+          ncr_namespace_includes = cr_namespace.cr_namespace_includes;
           ncr_entities =
             List.fold_left cr_namespace.cr_entities ~init:StringMap.empty
               ~f:(fun sm cr -> StringMap.add cr.cr_name cr sm);
@@ -639,33 +640,14 @@ let generate_bindings filter_file gir_file output_dir reference_files =
     |> List.filter ~f:(fun (intf : Gir_gen_lib.Types.gir_interface) ->
         Gir_gen_lib.Generate.Filtering.should_generate_interface intf)
   in
-  let all_enums =
-    gtk_enums
-    @ (external_enums_bitfields
-      |> List.concat_map ~f:(fun (_, enums, _) -> enums))
-  in
-  let all_bitfields =
-    gtk_bitfields
-    @ (external_enums_bitfields
-      |> List.concat_map ~f:(fun (_, _, bitfields) -> bitfields))
-  in
+  let all_enums = gtk_enums in
+  let all_bitfields = gtk_bitfields in
 
   let all_records =
     let open Gir_gen_lib.Generate in
     List.filter
       ~f:(fun record -> Filtering.should_generate_record record)
       gtk_records
-  in
-  (* Prepare external namespace enum/bitfield list with namespace prefixes *)
-  let external_enums_with_ns =
-    external_enums_bitfields
-    |> List.concat_map ~f:(fun (ns, ns_enums, _) ->
-        List.map ~f:(fun enum -> (ns, enum)) ns_enums)
-  in
-  let external_bitfields_with_ns =
-    external_enums_bitfields
-    |> List.concat_map ~f:(fun (ns, _, ns_bitfields) ->
-        List.map ~f:(fun bitfield -> (ns, bitfield)) ns_bitfields)
   in
 
   (* Create generation context with all type information *)
@@ -678,8 +660,6 @@ let generate_bindings filter_file gir_file output_dir reference_files =
       enums = all_enums;
       bitfields = all_bitfields;
       records = all_records;
-      external_enums = external_enums_with_ns;
-      external_bitfields = external_bitfields_with_ns;
       hierarchy_map = Hashtbl.create 0;
       (* Temporary empty map *)
       module_groups = Hashtbl.create 0;
@@ -913,6 +893,26 @@ let generate_bindings filter_file gir_file output_dir reference_files =
   write_file ~path:lib_mli_file ~content:lib_mli_content;
   generated_modules := lib_name :: !generated_modules;
 
+  (* ==== LIBRARY WRAPPER MODULE ==== *)
+  (* Generate ocgtk_<ns>.ml that re-exports the library module as the
+     dune wrapper, hiding internal module structure *)
+  let wrapper_name =
+    Gir_gen_lib.Utils.library_wrapper_name namespace.namespace_name
+  in
+  let wrapper_ml_file =
+    Filename.concat (generated_output_dir output_dir) (wrapper_name ^ ".ml")
+  in
+  let wrapper_content =
+    sprintf
+      "(* GENERATED CODE - DO NOT EDIT *)\n\
+       (* Library wrapper module - re-exports %s as the public API *)\n\n\
+       include %s\n"
+      lib_name lib_name
+  in
+  write_file ~path:wrapper_ml_file ~content:wrapper_content;
+  generated_modules :=
+    String.capitalize_ascii wrapper_name :: !generated_modules;
+
   let module_list =
     base_modules @ !generated_modules
     |> List.map ~f:String.capitalize_ascii
@@ -1022,6 +1022,11 @@ let generate_references gir_file output_file =
         cr_namespace_name = namespace.namespace_name;
         cr_namespace_packages = repository.repository_packages;
         cr_namespace_c_includes = repository.repository_c_includes;
+        cr_namespace_includes =
+          (* FIXME: we should probably include the include version too *)
+          List.map
+            ~f:(fun { include_name; _ } -> include_name)
+            repository.repository_includes;
         cr_entities = entities;
       }
   in

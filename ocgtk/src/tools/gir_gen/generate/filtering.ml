@@ -9,35 +9,6 @@ module Log =
          (Logs.Src.create "gir_gen.filtering"
             ~doc:"Shared filtering helpers for GIR generators"))
 
-(* Check if a type name refers to a cross-namespace enum or bitfield *)
-let is_cross_namespace_enum_or_bitfield ~ctx type_name =
-  if type_name = "" then false
-  else
-    (* Type name might be "ModifierType" or "Gdk.ModifierType" *)
-    let base_name =
-      match Str.split (Str.regexp_string ".") type_name with
-      | [ _ns; name ] ->
-          name (* Extract "ModifierType" from "Gdk.ModifierType" *)
-      | _ -> type_name (* Already just "ModifierType" *)
-    in
-    (* Check if this type is from an external namespace *)
-    List.exists ctx.external_enums ~f:(fun ((_, e) : string * Types.gir_enum) ->
-        e.enum_name = base_name)
-    || List.exists ctx.external_bitfields
-         ~f:(fun ((_, b) : string * Types.gir_bitfield) ->
-           b.bitfield_name = base_name)
-
-(* Check if a method has cross-namespace enum/bitfield parameters or return type *)
-let method_has_cross_namespace_types ~ctx (meth : gir_method) =
-  List.exists meth.parameters ~f:(fun p ->
-      is_cross_namespace_enum_or_bitfield ~ctx p.param_type.name)
-  || is_cross_namespace_enum_or_bitfield ~ctx meth.return_type.name
-
-(* Check if a constructor has cross-namespace enum/bitfield parameters *)
-let constructor_has_cross_namespace_types ~ctx (ctor : gir_constructor) =
-  List.exists ctor.ctor_parameters ~f:(fun p ->
-      is_cross_namespace_enum_or_bitfield ~ctx p.param_type.name)
-
 let has_simple_type ~ctx (gir_type : gir_type) =
   let is_excluded = Exclude_list.is_excluded_type_name gir_type.name in
   (not is_excluded)
@@ -172,22 +143,18 @@ let should_skip_method_binding ~ctx (meth : gir_method) =
     List.exists meth.parameters ~f:(fun p -> p.varargs)
     || Exclude_list.is_variadic_function meth.c_identifier
   in
-  (* Check if any parameter or return type references cross-namespace enums/bitfields *)
-  let has_cross_namespace_type = method_has_cross_namespace_types ~ctx meth in
   (* Check if method is marked as non-introspectable *)
   let is_not_introspectable = not meth.introspectable in
   (* Check for out-param arrays that can't be safely converted *)
   let has_unsupported_out_arrays = method_has_unsupported_out_arrays meth in
 
   Logs.debug (fun m ->
-      m "should_skip_method_name: %s -> %b %b %b %b %b %b %b\n"
-        meth.c_identifier is_variadic has_excluded_type has_unknown_type
-        is_excluded_function has_cross_namespace_type is_not_introspectable
-        has_unsupported_out_arrays);
+      m "should_skip_method_name: %s -> %b %b %b %b %b %b\n" meth.c_identifier
+        is_variadic has_excluded_type has_unknown_type is_excluded_function
+        is_not_introspectable has_unsupported_out_arrays);
 
   is_variadic || has_excluded_type || has_unknown_type || is_excluded_function
-  || has_cross_namespace_type || is_not_introspectable
-  || has_unsupported_out_arrays
+  || is_not_introspectable || has_unsupported_out_arrays
 
 let constructor_has_varargs (ctor : gir_constructor) =
   List.exists ctor.ctor_parameters ~f:(fun p -> p.varargs)
@@ -205,7 +172,6 @@ let should_generate_constructor ~ctx (ctor : gir_constructor) =
   in
   ctor.ctor_introspectable && (not ctor.throws)
   && (not (constructor_has_varargs ctor))
-  && (not (constructor_has_cross_namespace_types ~ctx ctor))
   && not has_unknown_type
 
 let banned_records = [ "PrintBackend"; "PixbufModule"; "PixbufModulePattern" ]
