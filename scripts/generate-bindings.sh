@@ -132,6 +132,9 @@ echo "  [8/9] Generating GSK bindings (with Cairo, GIO, GDK, Graphene references
     -r "$BUILD_DIR/cairo-references.sexp" \
     -r "$BUILD_DIR/gio-references.sexp" \
     -r "$BUILD_DIR/gdk-references.sexp" \
+    -r "$BUILD_DIR/pangocairo-references.sexp" \
+    -r "$BUILD_DIR/pango-references.sexp" \
+    -r "$BUILD_DIR/gdkpixbuf-references.sexp" \
     -r "$BUILD_DIR/graphene-references.sexp" \
     "$GIR_PATH/Gsk-4.0.gir" \
     src/gsk

@@ -250,6 +250,7 @@ type hierarchy_kind =
   | LayoutManagerHierarchy
   | ExpressionHierarchy
   | MonomorphicType
+[@@deriving eq]
 
 type hierarchy_info = {
   hierarchy : hierarchy_kind;
