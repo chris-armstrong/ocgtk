@@ -110,9 +110,24 @@ let method_handles_property prop_name methods =
          |> Option.value ~default:false)
     methods
 
+(** Map a GIR type to its OCaml representation with self-reference simplification.
+    Returns "unit" for unknown types with a warning to stderr. *)
+let map_gir_type_to_ocaml ~ctx ~class_name ~gir_type ~is_nullable =
+  match Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type with
+  | Some mapping ->
+      let simplified_type = Type_mappings.simplify_self_reference ~class_name ~ocaml_type:mapping.ocaml_type in
+      if is_nullable then
+        sprintf "%s option" simplified_type
+      else
+        simplified_type
+  | None ->
+      eprintf "Warning: Unknown type: name=%s type=%s\n"
+        gir_type.name gir_type.name;
+      "unit"
+
 (** Convert a constructor parameter to its OCaml type representation *)
 let map_constructor_param ~ctx ~class_name p =
-  Type_resolution.map_gir_type_to_ocaml ~ctx ~class_name ~gir_type:p.param_type
+  map_gir_type_to_ocaml ~ctx ~class_name ~gir_type:p.param_type
     ~is_nullable:p.nullable
 
 (** Convert a method parameter to its OCaml type representation *)
@@ -121,7 +136,7 @@ let convert_method_param_to_ocaml_type ~ctx ~class_name p =
   | Out -> None
   | In | InOut ->
       Some
-        (Type_resolution.map_gir_type_to_ocaml ~ctx ~class_name
+        (map_gir_type_to_ocaml ~ctx ~class_name
            ~gir_type:p.param_type ~is_nullable:p.nullable)
 
 (** Convert an out parameter to its OCaml type representation *)
@@ -129,7 +144,7 @@ let convert_out_param_to_ocaml_type ~ctx ~class_name p =
   match p.direction with
   | Out ->
       Some
-        (Type_resolution.map_gir_type_to_ocaml ~ctx ~class_name
+        (map_gir_type_to_ocaml ~ctx ~class_name
            ~gir_type:p.param_type ~is_nullable:p.nullable)
   | In | InOut -> None
 

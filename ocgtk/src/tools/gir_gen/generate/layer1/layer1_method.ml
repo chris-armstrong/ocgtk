@@ -29,7 +29,7 @@ let build_method_signature ~ctx ~class_name (meth : gir_method) =
   let ret_type_ocaml =
     if Utils.is_void_return_type meth.return_type then "unit"
     else
-      Type_resolution.map_gir_type_to_ocaml ~ctx ~class_name
+      Layer1_helpers.map_gir_type_to_ocaml ~ctx ~class_name
         ~gir_type:meth.return_type ~is_nullable:meth.return_type.nullable
   in
 

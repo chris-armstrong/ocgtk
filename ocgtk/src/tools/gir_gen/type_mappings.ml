@@ -461,3 +461,21 @@ and normal_type_lookup ~ctx (gir_type : Types.gir_type) =
   gir_type.name |> try_lookup
   |> or_else (fun () ->
       Option.bind gir_type.c_type (fun c_type -> try_lookup c_type))
+
+(** Simplify type references when they refer to the current module's type.
+    Converts patterns like "CurrentModule.t" or "CurrentModule.t option" to "t" or "t option".
+    Handles common type wrappers like "option", "array", and combinations. *)
+let simplify_self_reference ~class_name ~ocaml_type =
+  let current_module = Utils.module_name_of_class class_name in
+  let self_type = current_module ^ ".t" in
+  if String.equal ocaml_type self_type then
+    "t"
+  else
+    (* Handle patterns like "Module.t array", "Module.t option", "Module.t array option", etc.
+       Use a negative lookbehind for '.' to avoid replacing "Surface.t" inside
+       qualified paths like "Ocgtk_cairo.Wrappers.Surface.t" *)
+    let pat = Re.(compile (seq [
+      group (alt [bos; char ' '; char '(']);
+      str self_type
+    ])) in
+    Re.replace pat ~all:true ~f:(fun g -> Re.Group.get g 1 ^ "t") ocaml_type

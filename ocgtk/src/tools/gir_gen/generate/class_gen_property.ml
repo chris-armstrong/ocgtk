@@ -24,7 +24,7 @@ let map_param_sig ~ctx ~same_cluster_classes ~current_layer2_module p =
         else
           (* Use # syntax for hierarchy types *)
           (* let class_type = hierarchy_class_type ~current_layer2_module hier in *)
-          let class_name = (Type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:p.param_type) in
+          let class_name = (Class_gen_type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:p.param_type) in
           let class_type = "#"^ (Option.get class_name) in
           if p.nullable || p.param_type.nullable then
               (class_type ^ " option")
@@ -33,7 +33,7 @@ let map_param_sig ~ctx ~same_cluster_classes ~current_layer2_module p =
     | _ ->
         (* Regular type *)
         let gir_type = { p.param_type with nullable = p.nullable || p.param_type.nullable } in
-        Type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:gir_type |> Option.get
+        Class_gen_type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:gir_type |> Option.get
 
 (* Generic property code generation - refactoring #6 *)
 let generate_property_code ~ctx ~class_name ~methods  ~seen ~generate_getter ~generate_setter (prop : gir_property) =
@@ -63,7 +63,7 @@ let generate_property_code ~ctx ~class_name ~methods  ~seen ~generate_getter ~ge
 let generate_property_methods ~ctx ~module_name ~current_layer2_module ~seen ~same_cluster_classes (prop : gir_property) =
   let generate_getter _prop prop_snake =
     let method_name = prop_snake |> Utils.sanitize_identifier in
-    let impl = match Type_resolution.resolve_layer2_class_ref ~ctx ~current_layer2_module ~gir_type:prop.prop_type with
+    let impl = match Class_gen_type_resolution.resolve_layer2_class_ref ~ctx ~current_layer2_module ~gir_type:prop.prop_type with
       | Some class_ref ->
         if prop.prop_type.nullable then
           sprintf "(%s.get_%s obj) |> Option.map (fun x -> new %s x)" module_name prop_snake class_ref
@@ -79,7 +79,7 @@ let generate_property_methods ~ctx ~module_name ~current_layer2_module ~seen ~sa
     let (method_params_expr, value_resolve_expr, impl_wrapper) =
       match Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type with
       | Some { layer2_class = Some class_info ; _} ->
-          let class_ref = (Type_resolution.resolve_layer2_class_ref ~ctx ~current_layer2_module ~gir_type:prop.prop_type |> Option.value ~default:(class_info.class_module ^ "." ^ class_info.class_type)) in
+          let class_ref = (Class_gen_type_resolution.resolve_layer2_class_ref ~ctx ~current_layer2_module ~gir_type:prop.prop_type |> Option.value ~default:(class_info.class_module ^ "." ^ class_info.class_type)) in
           sprintf ": 'a . (#%s as 'a) -> unit " class_ref,
           "v#as_" ^ (Utils.ocaml_class_name class_info.class_type),
           "fun v -> "
@@ -97,7 +97,7 @@ let generate_property_methods ~ctx ~module_name ~current_layer2_module ~seen ~sa
 
 let generate_property_signatures ~ctx ~class_name ~methods  ~seen ~current_layer2_module ~same_cluster_classes (prop : gir_property) =
   let generate_getter _prop prop_snake =
-      let ocaml_type = match Type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:prop.prop_type with
+      let ocaml_type = match Class_gen_type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:prop.prop_type with
         | None -> ""
         | Some ocaml_type ->
       (* Check if this is a same-cluster class reference and convert to structural type *)
