@@ -1,0 +1,28 @@
+; Include subdirectories to find modules in core/ and generated/
+(include_subdirs unqualified)
+
+; Include generated C stubs library definition
+(include generated/dune-generated.inc)
+
+; Configure pkg-config for Cairo
+(rule
+ (targets c_flags.sexp)
+ (action
+  (with-stdout-to %{targets}
+   (bash "echo '(' && pkg-config --cflags cairo-gobject && echo ')'"))))
+
+; Main Cairo library combining core and generated code
+(library
+ (name ocgtk_cairo)
+ (public_name ocgtk.cairo)
+ (synopsis "OCaml bindings for Cairo (GObject types and enumerations)")
+ (wrapped true)
+ (flags :standard -w -3-6-9-27-32-33-34-50)
+ (modules :standard)
+ (modules_without_implementation cairo_enums)
+ (foreign_stubs
+  (language c)
+  (names ml_cairo)
+  (flags :standard -Igenerated -Icore (:include c_flags.sexp)))
+
+ (libraries ocgtk.common ocgtk_cairo_generated_stubs))

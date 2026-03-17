@@ -1,0 +1,27 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* Top-level library module with direct references to all classes and enumerations *)
+
+(** Enumerations and Bitfields *)
+
+type antialias = Cairo_enums.antialias
+type content = Cairo_enums.content
+type devicetype = Cairo_enums.devicetype
+type extend = Cairo_enums.extend
+type fillrule = Cairo_enums.fillrule
+type filter = Cairo_enums.filter
+type fontslant = Cairo_enums.fontslant
+type fonttype = Cairo_enums.fonttype
+type fontweight = Cairo_enums.fontweight
+type format = Cairo_enums.format
+type hintmetrics = Cairo_enums.hintmetrics
+type hintstyle = Cairo_enums.hintstyle
+type linecap = Cairo_enums.linecap
+type linejoin = Cairo_enums.linejoin
+type operator = Cairo_enums.operator
+type pathdatatype = Cairo_enums.pathdatatype
+type patterntype = Cairo_enums.patterntype
+type regionoverlap = Cairo_enums.regionoverlap
+type status = Cairo_enums.status
+type subpixelorder = Cairo_enums.subpixelorder
+type surfacetype = Cairo_enums.surfacetype
+type textclusterflags = Cairo_enums.textclusterflags

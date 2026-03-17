@@ -97,6 +97,8 @@ let generate_dune_library ~ctx ~lib_name ~stub_names ~module_names ~repository =
   let dep_libraries =
     Types.(repository.repository_includes)
     |> List.map ~f:(fun { Types.include_name; _ } -> include_name)
+    |> List.filter ~f:(fun ns ->
+        not (List.mem ~eq:String.equal ns C_stubs.base_namespaces))
     |> List.map ~f:library_name_of_namespace
     |> String.concat ~sep:" "
   in
