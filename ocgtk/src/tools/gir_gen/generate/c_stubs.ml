@@ -17,7 +17,7 @@ let is_value_like_record = C_stub_record.is_value_like_record
 let generate_record_c_code = C_stub_record.generate_record_c_code
 
 (* Base namespaces that should not be included as dependencies *)
-let base_namespaces = [ "GLib"; "GModule"; "GObject" ]
+let base_namespaces = [ "GLib"; "GModule"; "GObject"; "HarfBuzz" ]
 
 (* Extract dependency namespaces from cross_references map.
    Returns sorted list of namespace names (excluding base namespaces like GLib, GObject, GModule) *)

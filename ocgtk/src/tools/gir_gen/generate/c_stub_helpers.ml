@@ -32,6 +32,8 @@ let include_header_for_namespace namespace_name =
   | "graphene" -> "#include <graphene.h>"
   | "gio" -> "#include <gio/gio.h>"
   | "gobject" -> "#include <glib-object.h>"
+  | "cairo" -> "#include <cairo-gobject.h>"
+  | "pangocairo" -> "#include <pango/pangocairo.h>"
   | _ -> sprintf "#include <%s/%s.h>" ns_lower ns_lower
 
 (** Code generation utilities *)
