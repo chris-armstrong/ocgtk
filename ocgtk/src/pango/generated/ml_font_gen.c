@@ -24,21 +24,6 @@ PangoFontMetrics* result = pango_font_get_metrics(PangoFont_val(self), Option_va
 CAMLreturn(Val_PangoFontMetrics(result));
 }
 
-CAMLexport CAMLprim value ml_pango_font_get_languages(value self)
-{
-CAMLparam1(self);
-
-PangoLanguage** result = pango_font_get_languages(PangoFont_val(self));
-    int result_length = 0;
-    while (result[result_length] != NULL) result_length++;
-    CAMLlocal1(ml_result);
-    ml_result = caml_alloc(result_length, 0);
-    for (int i = 0; i < result_length; i++) {
-      Store_field(ml_result, i, Val_PangoLanguage(result[i]));
-    }
-CAMLreturn(ml_result);
-}
-
 CAMLexport CAMLprim value ml_pango_font_get_font_map(value self)
 {
 CAMLparam1(self);

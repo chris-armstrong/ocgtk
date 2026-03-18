@@ -90,20 +90,6 @@ int result = pango_glyph_string_get_width(PangoGlyphString_val(self));
 CAMLreturn(Val_int(result));
 }
 
-CAMLexport CAMLprim value ml_pango_glyph_string_get_logical_widths(value self, value arg1, value arg2, value arg3, value arg4)
-{
-CAMLparam5(self, arg1, arg2, arg3, arg4);
-    int arg4_length = Wosize_val(arg4);
-    int* c_arg4 = (int*)g_malloc(sizeof(int) * arg4_length);
-    for (int i = 0; i < arg4_length; i++) {
-      c_arg4[i] = Int_val(Field(arg4, i));
-    }
-
-pango_glyph_string_get_logical_widths(PangoGlyphString_val(self), String_val(arg1), Int_val(arg2), Int_val(arg3), c_arg4);
-    g_free(c_arg4);
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_pango_glyph_string_free(value self)
 {
 CAMLparam1(self);

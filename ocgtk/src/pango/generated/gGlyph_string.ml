@@ -9,10 +9,6 @@ class glyph_string (obj : Glyph_string.t) = object (self)
     fun () ->
       (Glyph_string.free obj)
 
-  method get_logical_widths : string -> int -> int -> int array -> unit =
-    fun text length embedding_level logical_widths ->
-      (Glyph_string.get_logical_widths obj text length embedding_level logical_widths)
-
   method get_width : unit -> int =
     fun () ->
       (Glyph_string.get_width obj)

@@ -5,7 +5,6 @@ class icon_theme : Icon_theme.t ->
     method add_search_path : string -> unit
     method get_display : unit -> Ocgtk_gdk.Gdk.display option
     method get_icon_names : unit -> string array
-    method get_icon_sizes : string -> int array
     method get_resource_path : unit -> string array option
     method get_theme_name : unit -> string
     method has_gicon : #Ocgtk_gio.Gio.icon -> bool

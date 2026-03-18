@@ -34,6 +34,3 @@ external get_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option = "ml_gtk_icon_pai
 
 (* Properties *)
 
-(** Get property: is-symbolic *)
-external get_is_symbolic : t -> bool = "ml_gtk_icon_paintable_get_is_symbolic"
-

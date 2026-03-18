@@ -8,10 +8,6 @@ type t = [`list_store | `object_] Gobject.obj
 unsorted stores. *)
 external swap : t -> Tree_iter.t -> Tree_iter.t -> unit = "ml_gtk_list_store_swap"
 
-(** Reorders @store to follow the order indicated by @new_order. Note that
-this function only works with unsorted stores. *)
-external reorder : t -> int array -> unit = "ml_gtk_list_store_reorder"
-
 (** Removes the given row from the list store.  After being removed,
 @iter is set to be the next valid row, or invalidated if it pointed
 to the last row in @list_store. *)

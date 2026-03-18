@@ -33,7 +33,6 @@ and font : Context_and__font_and__font_map_and__fontset.Font.t ->
     method get_coverage : Language.t -> GCoverage.coverage
     method get_face : unit -> GFont_face_and__font_family.font_face
     method get_font_map : unit -> font_map option
-    method get_languages : unit -> Language.t array option
     method get_metrics : Language.t option -> Font_metrics.t
     method as_font : Context_and__font_and__font_map_and__fontset.Font.t
   end

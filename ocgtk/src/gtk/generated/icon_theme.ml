@@ -69,13 +69,6 @@ external get_theme_name : t -> string = "ml_gtk_icon_theme_get_theme_name"
 See [method@Gtk.IconTheme.set_resource_path]. *)
 external get_resource_path : t -> string array option = "ml_gtk_icon_theme_get_resource_path"
 
-(** Returns an array of integers describing the sizes at which
-the icon is available without scaling.
-
-A size of -1 means that the icon is available in a scalable
-format. The array is zero-terminated. *)
-external get_icon_sizes : t -> string -> int array = "ml_gtk_icon_theme_get_icon_sizes"
-
 (** Lists the names of icons in the current icon theme. *)
 external get_icon_names : t -> string array = "ml_gtk_icon_theme_get_icon_names"
 

@@ -116,10 +116,6 @@ and font (obj : Context_and__font_and__font_map_and__fontset.Font.t) = object (s
     fun () ->
       Option.map (fun ret -> new font_map ret) (Context_and__font_and__font_map_and__fontset.Font.get_font_map obj)
 
-  method get_languages : unit -> Language.t array option =
-    fun () ->
-      (Context_and__font_and__font_map_and__fontset.Font.get_languages obj)
-
   method get_metrics : Language.t option -> Font_metrics.t =
     fun language ->
       (Context_and__font_and__font_map_and__fontset.Font.get_metrics obj language)

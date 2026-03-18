@@ -20,10 +20,6 @@ class icon_theme (obj : Icon_theme.t) = object (self)
     fun () ->
       (Icon_theme.get_icon_names obj)
 
-  method get_icon_sizes : string -> int array =
-    fun icon_name ->
-      (Icon_theme.get_icon_sizes obj icon_name)
-
   method get_resource_path : unit -> string array option =
     fun () ->
       (Icon_theme.get_resource_path obj)

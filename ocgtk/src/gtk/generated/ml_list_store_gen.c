@@ -25,20 +25,6 @@ gtk_list_store_swap(GtkListStore_val(self), GtkTreeIter_val(arg1), GtkTreeIter_v
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_list_store_reorder(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-    int arg1_length = Wosize_val(arg1);
-    int* c_arg1 = (int*)g_malloc(sizeof(int) * arg1_length);
-    for (int i = 0; i < arg1_length; i++) {
-      c_arg1[i] = Int_val(Field(arg1, i));
-    }
-
-gtk_list_store_reorder(GtkListStore_val(self), c_arg1);
-    g_free(c_arg1);
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_list_store_remove(value self, value arg1)
 {
 CAMLparam2(self, arg1);
