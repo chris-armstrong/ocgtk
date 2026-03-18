@@ -17,14 +17,9 @@ module Array_conv = struct
     |> CCString.replace ~sub:" const" ~by:""
     |> String.trim
 
-  (* Check if an array contains string elements *)
-  let is_string_array (array_info : gir_array) =
-    let elem_name = String.lowercase_ascii array_info.element_type.name in
-    let elem_ctype = array_info.element_type.c_type in
-    String.equal elem_name "utf8"
-    || String.equal elem_name "gchararray"
-    || String.equal elem_name "filename"
-    || C_stub_type_analysis.Type_analysis.is_string_type elem_ctype
+  (** Check if an array contains string elements.
+      Delegates to the canonical definition in [Filtering]. *)
+  let is_string_array = Filtering.is_string_array
 
   (** Generate conversion code for zero-terminated arrays. Handles both pointer
       arrays (NULL-terminated) and non-pointer arrays (structs). *)

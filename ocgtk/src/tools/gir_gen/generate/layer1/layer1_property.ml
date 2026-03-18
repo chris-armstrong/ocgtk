@@ -51,14 +51,12 @@ let generate_property_setter ~ctx ~class_name ~buf (prop : gir_property)
   bprintf buf "external %s : t -> %s -> unit = \"%s\"\n\n" setter_name
     prop_ocaml_type c_setter
 
-(** Generate a single property's getter and/or setter declarations *)
+(** Generate a single property's getter and/or setter declarations.
+    Delegates to the shared [Filtering.should_generate_property] so that
+    layer 0 (C stubs) and layer 1 (OCaml externals) agree on what is emitted. *)
 let generate_property_decl ~ctx ~class_name ~buf ~methods (prop : gir_property)
     =
-  let skip_prop =
-    Exclude_list.is_excluded_type_name prop.prop_type.name
-    || Layer1_helpers.method_handles_property prop.prop_name methods
-  in
-  if (not skip_prop) && has_property_type_mapping ~ctx prop then
+  if Filtering.should_generate_property ~ctx ~class_name ~methods prop then
     match Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type with
     | Some type_mapping ->
         if should_generate_property_getter prop then

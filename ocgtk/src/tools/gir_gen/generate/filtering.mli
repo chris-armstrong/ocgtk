@@ -52,3 +52,15 @@ val should_generate_interface : gir_interface -> bool
 
 (* Check if a method has a parameter with interface type *)
 val method_has_interface_param : ctx:generation_context -> gir_method -> bool
+
+(* Check if a C type is a string type *)
+val is_string_type : string option -> bool
+
+(* Check if an array contains string elements *)
+val is_string_array : gir_array -> bool
+
+(* Check if an array type lacks length information for C code generation *)
+val array_lacks_length_info : gir_array -> bool
+
+(* Check if a standalone function should be generated *)
+val should_generate_function : gir_function -> bool

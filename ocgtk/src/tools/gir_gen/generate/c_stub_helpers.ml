@@ -261,10 +261,10 @@ let is_free_method = C_stub_type_analysis.Type_analysis.is_free_method
 let is_copy_or_free = C_stub_type_analysis.Type_analysis.is_copy_or_free
 let fold_mapi = C_stub_type_analysis.Type_analysis.fold_mapi
 let list_contains = C_stub_type_analysis.Type_analysis.list_contains
-let is_string_type = C_stub_type_analysis.Type_analysis.is_string_type
+let is_string_type = Filtering.is_string_type
 let generate_array_ml_to_c = C_stub_array_conv.Array_conv.generate_array_ml_to_c
 let generate_array_c_to_ml = C_stub_array_conv.Array_conv.generate_array_c_to_ml
-let is_string_array = C_stub_array_conv.Array_conv.is_string_array
+let is_string_array = Filtering.is_string_array
 
 (* Convert prop_info from internal type to public type and call GValue function *)
 let generate_gvalue_getter_assignment ~ml_name ~prop ~c_type_name

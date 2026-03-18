@@ -84,13 +84,9 @@ module Type_analysis = struct
     @ long_types @ ulong_types @ ssize_types @ float_types @ double_types
     @ pointer_types
 
-  let is_string_type ctype =
-    match ctype with
-    | Some
-        ( "char*" | "gchararray" | "gchar*" | "utf8" | "const gchar*"
-        | "const char*" ) ->
-        true
-    | _ -> false
+  (** Check if a C type is a string type.
+      Delegates to the canonical definition in [Filtering]. *)
+  let is_string_type = Filtering.is_string_type
 
   (** Analyze property type and extract GValue conversion information *)
   let analyze_property_type ~ctx (gir_type : gir_type) =
