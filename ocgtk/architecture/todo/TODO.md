@@ -1,37 +1,26 @@
 # Todos
 
-a high level overview of porting and cleanup tasks needed to get ocgtk4 to a 1.0
+A high level overview of porting and cleanup tasks needed to get ocgtk4 to a 1.0
 
 ## Known bugs
 
 See [KNOWN_BUGS.md](./KNOWN_BUGS.md)
 
-## Split up into several sub-libraries.
+## Split up into several sub-libraries ✅ DONE
 
-At the moment, all of gtk4.gir is generated into ocgtk/src. We want to be able to bind against
-other libaries, to at least be able to cross-reference types and classes as needed. This will require
-generating gtk4 into a sub-directory and separating the generated from non-generated files internally.
+All 9 GIR namespaces are generated as separate libraries via `scripts/generate-bindings.sh`:
+Cairo, Gio, Gdk, Graphene, GdkPixbuf, Pango, PangoCairo, Gsk, Gtk.
 
-See [REFACTORING_PLAN.md](./REFACTORING_PLAN.md).
-
+Cross-namespace type resolution works via reference files and `<ns>_decls.h` headers. See [CROSS_NAMESPACE_PLAN.md](./CROSS_NAMESPACE_PLAN.md).
 
 ## Class hierarchy
 
-* Generate all classes in a class hierarchy with #as_<type>, not just those in the Widget hierarchy (e.g. Expression)
+* ~~Generate all classes in a class hierarchy with #as_<type>, not just those in the Widget hierarchy (e.g. Expression)~~ — Active work: removing hierarchy_info abstraction and replacing with parent chain resolver. See `docs/plans/remove_hierarchy_info_abstraction.md`.
 * Update methods that take a class value like "#expression" (which means anything polymorphically implementing that interface) to work
-
-i.e.
-
-```
-  method set_expression : 'a . ((#GExpression.expression_skel as 'a) option) -> unit = 
-    fun expression ->
-      let expression = Option.map (fun (c: #GExpression.expression_skel) -> c#as_expression) expression in
-      String_filter.set_expression obj expression
-```
 
 ## Non-void signals
 
-We don't handle non-void signals / callbacks at this time.
+We don't handle non-void signals / callbacks at this time. Only parameterless void signals are generated.
 
 ## Interface generation
 
