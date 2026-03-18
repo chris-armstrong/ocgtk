@@ -5,18 +5,12 @@ open Printf
 open Types
 open C_stub_helpers
 
-(** Check if a method should be generated in the interface *)
+(** Check if a method should be generated in the interface.
+    Delegates to the shared [Filtering.should_skip_method_binding] so that
+    layer 0 (C stubs) and layer 1 (OCaml externals) agree on what is emitted. *)
 let should_generate_method ~ctx ~is_record (meth : gir_method) =
-  let has_excluded_type =
-    Exclude_list.is_excluded_type_name meth.return_type.name
-  in
-  not
-    (Exclude_list.is_variadic_function meth.method_name
-    || has_excluded_type
-    || Exclude_list.should_skip_method
-         ~find_type_mapping:(Type_mappings.find_type_mapping_for_gir_type ~ctx)
-         ~enums:ctx.enums ~bitfields:ctx.bitfields meth
-    || (is_record && is_copy_or_free meth))
+  (not (Filtering.should_skip_method_binding ~ctx meth))
+  && not (is_record && is_copy_or_free meth)
 
 (** Build the OCaml method signature type string *)
 let build_method_signature ~ctx ~class_name (meth : gir_method) =
