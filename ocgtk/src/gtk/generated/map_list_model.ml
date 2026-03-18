@@ -3,9 +3,6 @@
 
 type t = [`map_list_model | `object_] Gobject.obj
 
-(** Create a new MapListModel *)
-external new_ : Ocgtk_gio.Gio.Wrappers.List_model.t option -> unit -> unit -> unit -> t = "ml_gtk_map_list_model_new"
-
 (* Methods *)
 (** Sets the model to be mapped.
 

@@ -3,9 +3,6 @@
 
 type t = [`tree_list_model | `object_] Gobject.obj
 
-(** Create a new TreeListModel *)
-external new_ : Ocgtk_gio.Gio.Wrappers.List_model.t -> bool -> bool -> unit -> unit -> unit -> t = "ml_gtk_tree_list_model_new_bytecode" "ml_gtk_tree_list_model_new_native"
-
 (* Methods *)
 (** Sets whether the model should autoexpand.
 

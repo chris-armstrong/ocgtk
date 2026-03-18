@@ -19,9 +19,6 @@ to the remote service, you can use [class@Gio.NetworkService]’s
 `GSrvTarget` at all. *)
 type t = [`srv_target] Gobject.obj
 
-(** Create a new SrvTarget *)
-external new_ : string -> unit -> unit -> unit -> t = "ml_g_srv_target_new"
-
 (* Methods *)
 (** Gets @target's hostname (in ASCII form; if you are going to present
 this to the user, you should use g_hostname_is_ascii_encoded() to

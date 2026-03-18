@@ -9,9 +9,6 @@ external new_ : string -> t = "ml_g_desktop_app_info_new"
 (** Create a new DesktopAppInfo *)
 external new_from_filename : string -> t = "ml_g_desktop_app_info_new_from_filename"
 
-(** Create a new DesktopAppInfo *)
-external new_from_keyfile : unit -> t = "ml_g_desktop_app_info_new_from_keyfile"
-
 (* Methods *)
 (** Returns the list of "additional application actions" supported on the
 desktop file, as per the desktop file specification.

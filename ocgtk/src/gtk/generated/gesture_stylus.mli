@@ -50,13 +50,5 @@ This function must be called from the handler of one of the
 signals. *)
 external get_axis : t -> Ocgtk_gdk.Gdk.axisuse -> bool * float = "ml_gtk_gesture_stylus_get_axis"
 
-(** Returns the current values for the requested @axes.
-
-This function must be called from the handler of one of the
-[signal@Gtk.GestureStylus::down], [signal@Gtk.GestureStylus::motion],
-[signal@Gtk.GestureStylus::up] or [signal@Gtk.GestureStylus::proximity]
-signals. *)
-external get_axes : t -> Ocgtk_gdk.Gdk.axisuse array -> bool * float array = "ml_gtk_gesture_stylus_get_axes"
-
 (* Properties *)
 

@@ -45,46 +45,6 @@ position has been made.
 This will typically cause the input method to clear the preedit state. *)
 external reset : t -> unit = "ml_gtk_im_context_reset"
 
-(** Retrieves context around the insertion point.
-
-Input methods typically want context in order to constrain input
-text based on existing text; this is important for languages such
-as Thai where only some sequences of characters are allowed.
-
-This function is implemented by emitting the
-[signal@Gtk.IMContext::retrieve-surrounding] signal on the input method;
-in response to this signal, a widget should provide as much context as
-is available, up to an entire paragraph, by calling
-[method@Gtk.IMContext.set_surrounding_with_selection].
-
-Note that there is no obligation for a widget to respond to the
-`::retrieve-surrounding` signal, so input methods must be prepared to
-function without context. *)
-external get_surrounding_with_selection : t -> bool * string * int * int = "ml_gtk_im_context_get_surrounding_with_selection"
-
-(** Retrieves context around the insertion point.
-
-Input methods typically want context in order to constrain input text
-based on existing text; this is important for languages such as Thai
-where only some sequences of characters are allowed.
-
-This function is implemented by emitting the
-[signal@Gtk.IMContext::retrieve-surrounding] signal on the input method;
-in response to this signal, a widget should provide as much context as
-is available, up to an entire paragraph, by calling
-[method@Gtk.IMContext.set_surrounding].
-
-Note that there is no obligation for a widget to respond to the
-`::retrieve-surrounding` signal, so input methods must be prepared to
-function without context. *)
-external get_surrounding : t -> bool * string * int = "ml_gtk_im_context_get_surrounding"
-
-(** Retrieve the current preedit string for the input context,
-and a list of attributes to apply to the string.
-
-This string should be displayed inserted at the insertion point. *)
-external get_preedit_string : t -> string * Ocgtk_pango.Pango.Wrappers.Attr_list.t * int = "ml_gtk_im_context_get_preedit_string"
-
 (** Notify the input method that the widget to which this
 input context corresponds has lost focus.
 

@@ -38,9 +38,6 @@ type t = [`content_formats] Gobject.obj
 (** Create a new ContentFormats *)
 external new_ : string array option -> int -> t = "ml_gdk_content_formats_new"
 
-(** Create a new ContentFormats *)
-external new_for_gtype : unit -> t = "ml_gdk_content_formats_new_for_gtype"
-
 (* Methods *)
 (** Decreases the reference count of a `GdkContentFormats` by one.
 

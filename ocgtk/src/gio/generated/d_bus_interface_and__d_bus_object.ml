@@ -10,13 +10,6 @@ module rec D_bus_interface : sig
   Note that @interface_ will hold a weak reference to @object. *)
   external set_object : t -> D_bus_object.t option -> unit = "ml_g_dbus_interface_set_object"
 
-  (** Gets the #GDBusObject that @interface_ belongs to, if any.
-
-  It is not safe to use the returned object if @interface_ or
-  the returned object is being used from other threads. See
-  g_dbus_interface_dup_object() for a thread-safe alternative. *)
-  external get_object : t -> D_bus_object.t option = "ml_g_dbus_interface_get_object"
-
   (** Gets D-Bus introspection information for the D-Bus interface
   implemented by @interface_. *)
   external get_info : t -> D_bus_interface_info.t = "ml_g_dbus_interface_get_info"
@@ -33,13 +26,6 @@ end = struct
 
   Note that @interface_ will hold a weak reference to @object. *)
   external set_object : t -> D_bus_object.t option -> unit = "ml_g_dbus_interface_set_object"
-
-  (** Gets the #GDBusObject that @interface_ belongs to, if any.
-
-  It is not safe to use the returned object if @interface_ or
-  the returned object is being used from other threads. See
-  g_dbus_interface_dup_object() for a thread-safe alternative. *)
-  external get_object : t -> D_bus_object.t option = "ml_g_dbus_interface_get_object"
 
   (** Gets D-Bus introspection information for the D-Bus interface
   implemented by @interface_. *)

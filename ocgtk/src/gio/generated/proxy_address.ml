@@ -3,9 +3,6 @@
 
 type t = [`proxy_address | `inet_socket_address | `socket_address | `object_] Gobject.obj
 
-(** Create a new ProxyAddress *)
-external new_ : Inet_address.t -> unit -> string -> string -> unit -> string option -> string option -> t = "ml_g_proxy_address_new_bytecode" "ml_g_proxy_address_new_native"
-
 (* Methods *)
 (** Gets @proxy's username. *)
 external get_username : t -> string option = "ml_g_proxy_address_get_username"

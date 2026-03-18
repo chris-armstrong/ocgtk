@@ -182,10 +182,6 @@ to `0, 0`. Note that this is different from cairo, which starts
 out without a current point. *)
 external get_current_point : t -> Ocgtk_graphene.Graphene.Wrappers.Point.t = "ml_gsk_path_builder_get_current_point"
 
-(** Creates a new `GskPath` from the current state of the
-given builder, and unrefs the @builder instance. *)
-external free_to_path : t -> Path_and__path_measure_and__path_point.Path.t = "ml_gsk_path_builder_free_to_path"
-
 (** Adds a [cubic Bézier curve](https://en.wikipedia.org/wiki/B%C3%A9zier_curve)
 from the current point to @x3, @y3 with @x1, @y1 and @x2, @y2 as the control
 points.

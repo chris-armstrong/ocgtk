@@ -87,9 +87,6 @@ module rec File : sig
   was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
   external set_attributes_from_info : t -> File_info.t -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attributes_from_info"
 
-  (** Finishes setting an attribute started in g_file_set_attributes_async(). *)
-  external set_attributes_finish : t -> Async_result.t -> (bool * File_info.t, GError.t) result = "ml_g_file_set_attributes_finish"
-
   (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_STRING to @value.
   If @attribute is of a different type, this operation will fail.
 
@@ -134,11 +131,6 @@ module rec File : sig
   (** Finishes an asynchronous file replace operation started with
   g_file_replace_async(). *)
   external replace_finish : t -> Async_result.t -> (File_output_stream.t, GError.t) result = "ml_g_file_replace_finish"
-
-  (** Finishes an asynchronous replace of the given @file. See
-  g_file_replace_contents_async(). Sets @new_etag to the new entity
-  tag for the document, if present. *)
-  external replace_contents_finish : t -> Async_result.t -> (bool * string option, GError.t) result = "ml_g_file_replace_contents_finish"
 
   (** Returns an output stream for overwriting the file, possibly
   creating a backup copy of the file first. If the file doesn't exist,
@@ -860,9 +852,6 @@ end = struct
   was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
   external set_attributes_from_info : t -> File_info.t -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attributes_from_info"
 
-  (** Finishes setting an attribute started in g_file_set_attributes_async(). *)
-  external set_attributes_finish : t -> Async_result.t -> (bool * File_info.t, GError.t) result = "ml_g_file_set_attributes_finish"
-
   (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_STRING to @value.
   If @attribute is of a different type, this operation will fail.
 
@@ -907,11 +896,6 @@ end = struct
   (** Finishes an asynchronous file replace operation started with
   g_file_replace_async(). *)
   external replace_finish : t -> Async_result.t -> (File_output_stream.t, GError.t) result = "ml_g_file_replace_finish"
-
-  (** Finishes an asynchronous replace of the given @file. See
-  g_file_replace_contents_async(). Sets @new_etag to the new entity
-  tag for the document, if present. *)
-  external replace_contents_finish : t -> Async_result.t -> (bool * string option, GError.t) result = "ml_g_file_replace_contents_finish"
 
   (** Returns an output stream for overwriting the file, possibly
   creating a backup copy of the file first. If the file doesn't exist,

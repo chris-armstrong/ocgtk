@@ -210,16 +210,6 @@ of textures is needed for the shader in
 [method@Gtk.Snapshot.push_gl_shader]. *)
 external gl_shader_pop_texture : t -> unit = "ml_gtk_snapshot_gl_shader_pop_texture"
 
-(** Returns a paintable for the node that was
-constructed by @snapshot and frees @snapshot. *)
-external free_to_paintable : t -> Ocgtk_graphene.Graphene.Wrappers.Size.t option -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option = "ml_gtk_snapshot_free_to_paintable"
-
-(** Returns the node that was constructed by @snapshot
-and frees @snapshot.
-
-See also [method@Gtk.Snapshot.to_node]. *)
-external free_to_node : t -> Ocgtk_gsk.Gsk.Wrappers.Render_node.t option = "ml_gtk_snapshot_free_to_node"
-
 (** Creates a new render node drawing the @texture
 into the given @bounds and appends it to the
 current render node of @snapshot.

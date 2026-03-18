@@ -3,9 +3,6 @@
 
 type t = [`task | `object_] Gobject.obj
 
-(** Create a new Task *)
-external new_ : unit -> Cancellable.t option -> unit -> unit -> t = "ml_g_task_new"
-
 (* Methods *)
 (** Sets @task’s name, used in debugging and profiling.
 

@@ -6,9 +6,6 @@ type t = [`info_bar | `widget | `initially_unowned] Gobject.obj
 (** Create a new InfoBar *)
 external new_ : unit -> t = "ml_gtk_info_bar_new"
 
-(** Create a new InfoBar *)
-external new_with_buttons : string option -> unit -> t = "ml_gtk_info_bar_new_with_buttons"
-
 (* Methods *)
 (** If true, a standard close button is shown.
 

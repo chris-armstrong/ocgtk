@@ -172,12 +172,6 @@ external path_is_selected : t -> Tree_path.t -> bool = "ml_gtk_icon_view_path_is
 (** Activates the item determined by @path. *)
 external item_activated : t -> Tree_path.t -> unit = "ml_gtk_icon_view_item_activated"
 
-(** Sets @start_path and @end_path to be the first and last visible path.
-Note that there may be invisible paths in between.
-
-Both paths should be freed with gtk_tree_path_free() after use. *)
-external get_visible_range : t -> bool * Tree_path.t * Tree_path.t = "ml_gtk_icon_view_get_visible_range"
-
 (** Returns the column of @icon_view’s model which is being used for
 displaying tooltips on @icon_view’s rows. *)
 external get_tooltip_column : t -> int = "ml_gtk_icon_view_get_tooltip_column"
@@ -231,22 +225,6 @@ external get_item_orientation : t -> Gtk_enums.orientation = "ml_gtk_icon_view_g
 (** Gets the column in which the item @path is currently
 displayed. Column numbers start at 0. *)
 external get_item_column : t -> Tree_path.t -> int = "ml_gtk_icon_view_get_item_column"
-
-(** Gets the path and cell for the icon at the given position. *)
-external get_item_at_pos : t -> int -> int -> bool * Tree_path.t * Cell_renderer.t = "ml_gtk_icon_view_get_item_at_pos"
-
-(** Gets information about the item that is highlighted for feedback. *)
-external get_drag_dest_item : t -> Tree_path.t option * Gtk_enums.iconviewdropposition = "ml_gtk_icon_view_get_drag_dest_item"
-
-(** Determines the destination item for a given position. *)
-external get_dest_item_at_pos : t -> int -> int -> bool * Tree_path.t * Gtk_enums.iconviewdropposition = "ml_gtk_icon_view_get_dest_item_at_pos"
-
-(** Fills in @path and @cell with the current cursor path and cell.
-If the cursor isn’t currently set, then *@path will be %NULL.
-If no cell currently has focus, then *@cell will be %NULL.
-
-The returned `GtkTreePath` must be freed with gtk_tree_path_free(). *)
-external get_cursor : t -> bool * Tree_path.t * Cell_renderer.t = "ml_gtk_icon_view_get_cursor"
 
 (** Returns the value of the ::columns property. *)
 external get_columns : t -> int = "ml_gtk_icon_view_get_columns"

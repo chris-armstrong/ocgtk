@@ -3,9 +3,6 @@
 
 type t = [`list_store | `object_] Gobject.obj
 
-(** Create a new ListStore *)
-external new_ : unit -> t = "ml_g_list_store_new"
-
 (* Methods *)
 (** Removes all items from @store. *)
 external remove_all : t -> unit = "ml_g_list_store_remove_all"

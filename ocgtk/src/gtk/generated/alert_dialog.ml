@@ -3,9 +3,6 @@
 
 type t = [`alert_dialog | `object_] Gobject.obj
 
-(** Create a new AlertDialog *)
-external new_ : string -> unit -> t = "ml_gtk_alert_dialog_new"
-
 (* Methods *)
 (** Show the alert to the user.
 

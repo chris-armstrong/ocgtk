@@ -353,25 +353,6 @@ and Tree_view
   in @tree_view. *)
   external is_rubber_banding_active : t -> bool = "ml_gtk_tree_view_is_rubber_banding_active"
 
-  (** Determine whether the point (@x, @y) in @tree_view is blank, that is no
-  cell content nor an expander arrow is drawn at the location. If so, the
-  location can be considered as the background. You might wish to take
-  special action on clicks on the background, such as clearing a current
-  selection, having a custom context menu or starting rubber banding.
-
-  The @x and @y coordinate that are provided must be relative to bin_window
-  coordinates.  Widget-relative coordinates must be converted using
-  gtk_tree_view_convert_widget_to_bin_window_coords().
-
-  For converting widget coordinates (eg. the ones you get from
-  GtkWidget::query-tooltip), please see
-  gtk_tree_view_convert_widget_to_bin_window_coords().
-
-  The @path, @column, @cell_x and @cell_y arguments will be filled in
-  likewise as for gtk_tree_view_get_path_at_pos().  Please see
-  gtk_tree_view_get_path_at_pos() for more information. *)
-  external is_blank_at_pos : t -> int -> int -> bool * Tree_path.t option * Tree_view_column.t option * int * int = "ml_gtk_tree_view_is_blank_at_pos"
-
   (** This inserts the @column into the @tree_view at @position.  If @position is
   -1, then the column is inserted at the end. If @tree_view has
   “fixed_height” mode enabled, then @column must have its “sizing” property
@@ -384,12 +365,6 @@ and Tree_view
   Tree coordinates start at 0,0 for row 0 of the tree, and cover the entire
   scrollable area of the tree. *)
   external get_visible_rect : t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_tree_view_get_visible_rect"
-
-  (** Sets @start_path and @end_path to be the first and last visible path.
-  Note that there may be invisible paths in between.
-
-  The paths should be freed with gtk_tree_path_free() after use. *)
-  external get_visible_range : t -> bool * Tree_path.t * Tree_path.t = "ml_gtk_tree_view_get_visible_range"
 
   (** Returns the column of @tree_view’s model which is being used for
   displaying tooltips on @tree_view’s rows. *)
@@ -417,24 +392,6 @@ and Tree_view
   (** Retrieves whether the user can reorder the tree via drag-and-drop. See
   gtk_tree_view_set_reorderable(). *)
   external get_reorderable : t -> bool = "ml_gtk_tree_view_get_reorderable"
-
-  (** Finds the path at the point (@x, @y), relative to bin_window coordinates.
-  That is, @x and @y are relative to an events coordinates. Widget-relative
-  coordinates must be converted using
-  gtk_tree_view_convert_widget_to_bin_window_coords(). It is primarily for
-  things like popup menus. If @path is non-%NULL, then it will be filled
-  with the `GtkTreePath` at that point.  This path should be freed with
-  gtk_tree_path_free().  If @column is non-%NULL, then it will be filled
-  with the column at that point.  @cell_x and @cell_y return the coordinates
-  relative to the cell background (i.e. the @background_area passed to
-  gtk_cell_renderer_render()).  This function is only meaningful if
-  @tree_view is realized.  Therefore this function will always return %FALSE
-  if @tree_view is not realized or does not have a model.
-
-  For converting widget coordinates (eg. the ones you get from
-  GtkWidget::query-tooltip), please see
-  gtk_tree_view_convert_widget_to_bin_window_coords(). *)
-  external get_path_at_pos : t -> int -> int -> bool * Tree_path.t option * Tree_view_column.t option * int * int = "ml_gtk_tree_view_get_path_at_pos"
 
   (** Queries the number of columns in the given @tree_view. *)
   external get_n_columns : t -> int = "ml_gtk_tree_view_get_n_columns"
@@ -476,23 +433,6 @@ and Tree_view
   (** Returns whether or not the tree allows to start interactive searching
   by typing in text. *)
   external get_enable_search : t -> bool = "ml_gtk_tree_view_get_enable_search"
-
-  (** Gets information about the row that is highlighted for feedback. *)
-  external get_drag_dest_row : t -> Tree_path.t option * Gtk_enums.treeviewdropposition = "ml_gtk_tree_view_get_drag_dest_row"
-
-  (** Determines the destination row for a given position.  @drag_x and
-  @drag_y are expected to be in widget coordinates.  This function is only
-  meaningful if @tree_view is realized.  Therefore this function will always
-  return %FALSE if @tree_view is not realized or does not have a model. *)
-  external get_dest_row_at_pos : t -> int -> int -> bool * Tree_path.t option * Gtk_enums.treeviewdropposition = "ml_gtk_tree_view_get_dest_row_at_pos"
-
-  (** Fills in @path and @focus_column with the current path and focus column.  If
-  the cursor isn’t currently set, then *@path will be %NULL.  If no column
-  currently has focus, then *@focus_column will be %NULL.
-
-  The returned `GtkTreePath` must be freed with gtk_tree_path_free() when
-  you are done with it. *)
-  external get_cursor : t -> Tree_path.t option * Tree_view_column.t option = "ml_gtk_tree_view_get_cursor"
 
   (** Gets the `GtkTreeViewColumn` at the given position in the #tree_view. *)
   external get_column : t -> int -> Tree_view_column.t option = "ml_gtk_tree_view_get_column"
@@ -827,25 +767,6 @@ end = struct
   in @tree_view. *)
   external is_rubber_banding_active : t -> bool = "ml_gtk_tree_view_is_rubber_banding_active"
 
-  (** Determine whether the point (@x, @y) in @tree_view is blank, that is no
-  cell content nor an expander arrow is drawn at the location. If so, the
-  location can be considered as the background. You might wish to take
-  special action on clicks on the background, such as clearing a current
-  selection, having a custom context menu or starting rubber banding.
-
-  The @x and @y coordinate that are provided must be relative to bin_window
-  coordinates.  Widget-relative coordinates must be converted using
-  gtk_tree_view_convert_widget_to_bin_window_coords().
-
-  For converting widget coordinates (eg. the ones you get from
-  GtkWidget::query-tooltip), please see
-  gtk_tree_view_convert_widget_to_bin_window_coords().
-
-  The @path, @column, @cell_x and @cell_y arguments will be filled in
-  likewise as for gtk_tree_view_get_path_at_pos().  Please see
-  gtk_tree_view_get_path_at_pos() for more information. *)
-  external is_blank_at_pos : t -> int -> int -> bool * Tree_path.t option * Tree_view_column.t option * int * int = "ml_gtk_tree_view_is_blank_at_pos"
-
   (** This inserts the @column into the @tree_view at @position.  If @position is
   -1, then the column is inserted at the end. If @tree_view has
   “fixed_height” mode enabled, then @column must have its “sizing” property
@@ -858,12 +779,6 @@ end = struct
   Tree coordinates start at 0,0 for row 0 of the tree, and cover the entire
   scrollable area of the tree. *)
   external get_visible_rect : t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_tree_view_get_visible_rect"
-
-  (** Sets @start_path and @end_path to be the first and last visible path.
-  Note that there may be invisible paths in between.
-
-  The paths should be freed with gtk_tree_path_free() after use. *)
-  external get_visible_range : t -> bool * Tree_path.t * Tree_path.t = "ml_gtk_tree_view_get_visible_range"
 
   (** Returns the column of @tree_view’s model which is being used for
   displaying tooltips on @tree_view’s rows. *)
@@ -891,24 +806,6 @@ end = struct
   (** Retrieves whether the user can reorder the tree via drag-and-drop. See
   gtk_tree_view_set_reorderable(). *)
   external get_reorderable : t -> bool = "ml_gtk_tree_view_get_reorderable"
-
-  (** Finds the path at the point (@x, @y), relative to bin_window coordinates.
-  That is, @x and @y are relative to an events coordinates. Widget-relative
-  coordinates must be converted using
-  gtk_tree_view_convert_widget_to_bin_window_coords(). It is primarily for
-  things like popup menus. If @path is non-%NULL, then it will be filled
-  with the `GtkTreePath` at that point.  This path should be freed with
-  gtk_tree_path_free().  If @column is non-%NULL, then it will be filled
-  with the column at that point.  @cell_x and @cell_y return the coordinates
-  relative to the cell background (i.e. the @background_area passed to
-  gtk_cell_renderer_render()).  This function is only meaningful if
-  @tree_view is realized.  Therefore this function will always return %FALSE
-  if @tree_view is not realized or does not have a model.
-
-  For converting widget coordinates (eg. the ones you get from
-  GtkWidget::query-tooltip), please see
-  gtk_tree_view_convert_widget_to_bin_window_coords(). *)
-  external get_path_at_pos : t -> int -> int -> bool * Tree_path.t option * Tree_view_column.t option * int * int = "ml_gtk_tree_view_get_path_at_pos"
 
   (** Queries the number of columns in the given @tree_view. *)
   external get_n_columns : t -> int = "ml_gtk_tree_view_get_n_columns"
@@ -950,23 +847,6 @@ end = struct
   (** Returns whether or not the tree allows to start interactive searching
   by typing in text. *)
   external get_enable_search : t -> bool = "ml_gtk_tree_view_get_enable_search"
-
-  (** Gets information about the row that is highlighted for feedback. *)
-  external get_drag_dest_row : t -> Tree_path.t option * Gtk_enums.treeviewdropposition = "ml_gtk_tree_view_get_drag_dest_row"
-
-  (** Determines the destination row for a given position.  @drag_x and
-  @drag_y are expected to be in widget coordinates.  This function is only
-  meaningful if @tree_view is realized.  Therefore this function will always
-  return %FALSE if @tree_view is not realized or does not have a model. *)
-  external get_dest_row_at_pos : t -> int -> int -> bool * Tree_path.t option * Gtk_enums.treeviewdropposition = "ml_gtk_tree_view_get_dest_row_at_pos"
-
-  (** Fills in @path and @focus_column with the current path and focus column.  If
-  the cursor isn’t currently set, then *@path will be %NULL.  If no column
-  currently has focus, then *@focus_column will be %NULL.
-
-  The returned `GtkTreePath` must be freed with gtk_tree_path_free() when
-  you are done with it. *)
-  external get_cursor : t -> Tree_path.t option * Tree_view_column.t option = "ml_gtk_tree_view_get_cursor"
 
   (** Gets the `GtkTreeViewColumn` at the given position in the #tree_view. *)
   external get_column : t -> int -> Tree_view_column.t option = "ml_gtk_tree_view_get_column"

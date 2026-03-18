@@ -19,16 +19,6 @@ not yet know the exact actions it supports, it should set any possible
 actions first and then later call this function again. *)
 external status : t -> Gdk_enums.dragaction -> Gdk_enums.dragaction -> unit = "ml_gdk_drop_status"
 
-(** Finishes an async drop read operation.
-
-Note that you must not use blocking read calls on the returned stream
-in the GTK thread, since some platforms might require communication with
-GTK to complete the data transfer. You can use async APIs such as
-g_input_stream_read_bytes_async().
-
-See [method@Gdk.Drop.read_async]. *)
-external read_finish : t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (Ocgtk_gio.Gio.Wrappers.Input_stream.t option * string, GError.t) result = "ml_gdk_drop_read_finish"
-
 (** Returns the `GdkSurface` performing the drop. *)
 external get_surface : t -> App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Surface.t = "ml_gdk_drop_get_surface"
 

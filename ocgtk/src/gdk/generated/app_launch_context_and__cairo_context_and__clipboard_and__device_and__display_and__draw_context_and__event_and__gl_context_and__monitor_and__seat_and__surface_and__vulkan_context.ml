@@ -136,12 +136,6 @@ and Clipboard
   See [method@Gdk.Clipboard.store_async]. *)
   external store_finish : t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (bool, GError.t) result = "ml_gdk_clipboard_store_finish"
 
-  (** Puts the given @texture into the clipboard. *)
-  external set_texture : t -> Texture.t -> unit = "ml_gdk_clipboard_set_texture"
-
-  (** Puts the given @text into the clipboard. *)
-  external set_text : t -> string -> unit = "ml_gdk_clipboard_set_text"
-
   (** Sets a new content provider on @clipboard.
 
   The clipboard will claim the `GdkDisplay`'s resources and advertise
@@ -165,11 +159,6 @@ and Clipboard
 
   See [method@Gdk.Clipboard.read_text_async]. *)
   external read_text_finish : t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (string option, GError.t) result = "ml_gdk_clipboard_read_text_finish"
-
-  (** Finishes an asynchronous clipboard read.
-
-  See [method@Gdk.Clipboard.read_async]. *)
-  external read_finish : t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (Ocgtk_gio.Gio.Wrappers.Input_stream.t option * string, GError.t) result = "ml_gdk_clipboard_read_finish"
 
   (** Returns if the clipboard is local.
 
@@ -207,12 +196,6 @@ end = struct
   See [method@Gdk.Clipboard.store_async]. *)
   external store_finish : t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (bool, GError.t) result = "ml_gdk_clipboard_store_finish"
 
-  (** Puts the given @texture into the clipboard. *)
-  external set_texture : t -> Texture.t -> unit = "ml_gdk_clipboard_set_texture"
-
-  (** Puts the given @text into the clipboard. *)
-  external set_text : t -> string -> unit = "ml_gdk_clipboard_set_text"
-
   (** Sets a new content provider on @clipboard.
 
   The clipboard will claim the `GdkDisplay`'s resources and advertise
@@ -236,11 +219,6 @@ end = struct
 
   See [method@Gdk.Clipboard.read_text_async]. *)
   external read_text_finish : t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (string option, GError.t) result = "ml_gdk_clipboard_read_text_finish"
-
-  (** Finishes an asynchronous clipboard read.
-
-  See [method@Gdk.Clipboard.read_async]. *)
-  external read_finish : t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (Ocgtk_gio.Gio.Wrappers.Input_stream.t option * string, GError.t) result = "ml_gdk_clipboard_read_finish"
 
   (** Returns if the clipboard is local.
 

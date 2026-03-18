@@ -38,12 +38,6 @@ external set_support_selection : t -> bool -> unit = "ml_gtk_print_operation_set
 a progress dialog during the print operation. *)
 external set_show_progress : t -> bool -> unit = "ml_gtk_print_operation_set_show_progress"
 
-(** Sets the print settings for @op.
-
-This is typically used to re-establish print settings
-from a previous print operation, see [method@Gtk.PrintOperation.run]. *)
-external set_print_settings : t -> Print_settings.t option -> unit = "ml_gtk_print_operation_set_print_settings"
-
 (** Sets the number of pages in the document.
 
 This must be set to a positive number before the rendering
@@ -98,13 +92,6 @@ This can be used for drawing page in another thread.
 This function must be called in the callback of the
 [signal@Gtk.PrintOperation::draw-page] signal. *)
 external set_defer_drawing : t -> unit = "ml_gtk_print_operation_set_defer_drawing"
-
-(** Makes @default_page_setup the default page setup for @op.
-
-This page setup will be used by [method@Gtk.PrintOperation.run],
-but it can be overridden on a per-page basis by connecting
-to the [signal@Gtk.PrintOperation::request-page-setup] signal. *)
-external set_default_page_setup : t -> Page_setup.t option -> unit = "ml_gtk_print_operation_set_default_page_setup"
 
 (** Sets the label for the tab holding custom widgets. *)
 external set_custom_tab_label : t -> string option -> unit = "ml_gtk_print_operation_set_custom_tab_label"

@@ -6,9 +6,6 @@ type t = [`shortcut | `object_] Gobject.obj
 (** Create a new Shortcut *)
 external new_ : Shortcut_trigger.t option -> Shortcut_action.t option -> t = "ml_gtk_shortcut_new"
 
-(** Create a new Shortcut *)
-external new_with_arguments : Shortcut_trigger.t option -> Shortcut_action.t option -> string option -> unit -> t = "ml_gtk_shortcut_new_with_arguments"
-
 (* Methods *)
 (** Sets the new trigger for @self to be @trigger. *)
 external set_trigger : t -> Shortcut_trigger.t option -> unit = "ml_gtk_shortcut_set_trigger"

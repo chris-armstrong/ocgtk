@@ -55,10 +55,6 @@ external get_filter : t -> Filter.t option = "ml_gtk_font_dialog_get_filter"
 and returns the resulting font description. *)
 external choose_font_finish : t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (Ocgtk_pango.Pango.Wrappers.Font_description.t option, GError.t) result = "ml_gtk_font_dialog_choose_font_finish"
 
-(** Finishes the [method@Gtk.FontDialog.choose_font_and_features]
-call and returns the resulting font description and font features. *)
-external choose_font_and_features_finish : t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (bool * Ocgtk_pango.Pango.Wrappers.Font_description.t * string * Ocgtk_pango.Pango.Wrappers.Language.t, GError.t) result = "ml_gtk_font_dialog_choose_font_and_features_finish"
-
 (** Finishes the [method@Gtk.FontDialog.choose_family] call
 and returns the resulting family.
 

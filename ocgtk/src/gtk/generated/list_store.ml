@@ -3,12 +3,6 @@
 
 type t = [`list_store | `object_] Gobject.obj
 
-(** Create a new ListStore *)
-external new_ : int -> unit -> t = "ml_gtk_list_store_new"
-
-(** Create a new ListStore *)
-external newv : int -> unit -> t = "ml_gtk_list_store_newv"
-
 (* Methods *)
 (** Swaps @a and @b in @store. Note that this function only works with
 unsorted stores. *)

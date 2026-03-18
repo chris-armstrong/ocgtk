@@ -6,12 +6,6 @@ type t = [`unix_socket_address | `socket_address | `object_] Gobject.obj
 (** Create a new UnixSocketAddress *)
 external new_ : string -> t = "ml_g_unix_socket_address_new"
 
-(** Create a new UnixSocketAddress *)
-external new_abstract : unit -> int -> t = "ml_g_unix_socket_address_new_abstract"
-
-(** Create a new UnixSocketAddress *)
-external new_with_type : unit -> int -> Gio_enums.unixsocketaddresstype -> t = "ml_g_unix_socket_address_new_with_type"
-
 (* Methods *)
 (** Gets @address's path, or for abstract sockets the "name".
 

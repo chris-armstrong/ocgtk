@@ -6,9 +6,6 @@ type t = [`dialog | `window | `widget | `initially_unowned] Gobject.obj
 (** Create a new Dialog *)
 external new_ : unit -> t = "ml_gtk_dialog_new"
 
-(** Create a new Dialog *)
-external new_with_buttons : string option -> Application_and__window_and__window_group.Window.t option -> Gtk_enums.dialogflags -> string option -> unit -> t = "ml_gtk_dialog_new_with_buttons"
-
 (* Methods *)
 (** A convenient way to sensitize/desensitize dialog buttons.
 

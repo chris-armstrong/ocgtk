@@ -3,23 +3,11 @@
 
 type t = [`tree_store | `object_] Gobject.obj
 
-(** Create a new TreeStore *)
-external new_ : int -> unit -> t = "ml_gtk_tree_store_new"
-
-(** Create a new TreeStore *)
-external newv : int -> unit -> t = "ml_gtk_tree_store_newv"
-
 (* Methods *)
 (** Swaps @a and @b in the same level of @tree_store.
 
 Note that this function only works with unsorted stores. *)
 external swap : t -> Tree_iter.t -> Tree_iter.t -> unit = "ml_gtk_tree_store_swap"
-
-(** Reorders the children of @parent in @tree_store to follow the order
-indicated by @new_order.
-
-Note that this function only works with unsorted stores. *)
-external reorder : t -> Tree_iter.t option -> int array -> unit = "ml_gtk_tree_store_reorder"
 
 (** Removes @iter from @tree_store.
 

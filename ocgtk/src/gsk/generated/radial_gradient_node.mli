@@ -3,9 +3,6 @@
 
 type t = [`radial_gradient_node | `render_node] Gobject.obj
 
-(** Create a new RadialGradientNode *)
-external new_ : Ocgtk_graphene.Graphene.Wrappers.Rect.t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> float -> float -> float -> float -> Color_stop.t array -> unit -> t = "ml_gsk_radial_gradient_node_new_bytecode" "ml_gsk_radial_gradient_node_new_native"
-
 (* Methods *)
 (** Retrieves the vertical radius for the gradient. *)
 external get_vradius : t -> float = "ml_gsk_radial_gradient_node_get_vradius"

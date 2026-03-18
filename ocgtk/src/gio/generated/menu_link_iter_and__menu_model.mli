@@ -20,22 +20,6 @@ module rec Menu_link_iter : sig
   The iterator is not advanced. *)
   external get_value : t -> Menu_model.t = "ml_g_menu_link_iter_get_value"
 
-  (** This function combines g_menu_link_iter_next() with
-  g_menu_link_iter_get_name() and g_menu_link_iter_get_value().
-
-  First the iterator is advanced to the next (possibly first) link.
-  If that fails, then %FALSE is returned and there are no other effects.
-
-  If successful, @out_link and @value are set to the name and #GMenuModel
-  of the link that has just been advanced to.  At this point,
-  g_menu_link_iter_get_name() and g_menu_link_iter_get_value() will return the
-  same values again.
-
-  The value returned in @out_link remains valid for as long as the iterator
-  remains at the current position.  The value returned in @value must
-  be unreffed using g_object_unref() when it is no longer in use. *)
-  external get_next : t -> bool * string * Menu_model.t = "ml_g_menu_link_iter_get_next"
-
   (** Gets the name of the link at the current iterator position.
 
   The iterator is not advanced. *)

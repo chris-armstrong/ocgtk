@@ -3,18 +3,6 @@
 
 type t = [`content_provider | `object_] Gobject.obj
 
-(** Create a new ContentProvider *)
-external new_for_bytes : string -> unit -> t = "ml_gdk_content_provider_new_for_bytes"
-
-(** Create a new ContentProvider *)
-external new_for_value : unit -> t = "ml_gdk_content_provider_new_for_value"
-
-(** Create a new ContentProvider *)
-external new_typed : unit -> unit -> t = "ml_gdk_content_provider_new_typed"
-
-(** Create a new ContentProvider *)
-external new_union : t array option -> unit -> t = "ml_gdk_content_provider_new_union"
-
 (* Methods *)
 (** Finishes an asynchronous write operation.
 

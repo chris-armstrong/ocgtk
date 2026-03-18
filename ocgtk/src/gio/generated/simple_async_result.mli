@@ -3,18 +3,6 @@
 
 type t = [`simple_async_result | `object_] Gobject.obj
 
-(** Create a new SimpleAsyncResult *)
-external new_ : unit -> unit -> unit -> unit -> t = "ml_g_simple_async_result_new"
-
-(** Create a new SimpleAsyncResult *)
-external new_error : unit -> unit -> unit -> unit -> int -> string -> unit -> t = "ml_g_simple_async_result_new_error_bytecode" "ml_g_simple_async_result_new_error_native"
-
-(** Create a new SimpleAsyncResult *)
-external new_from_error : unit -> unit -> unit -> unit -> t = "ml_g_simple_async_result_new_from_error"
-
-(** Create a new SimpleAsyncResult *)
-external new_take_error : unit -> unit -> unit -> unit -> t = "ml_g_simple_async_result_new_take_error"
-
 (* Methods *)
 (** Sets the operation result to a boolean within the asynchronous result. *)
 external set_op_res_gboolean : t -> bool -> unit = "ml_g_simple_async_result_set_op_res_gboolean"

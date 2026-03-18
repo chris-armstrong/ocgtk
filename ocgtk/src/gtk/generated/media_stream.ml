@@ -10,9 +10,6 @@ This causes the stream to release all resources it had
 allocated from @surface. *)
 external unrealize : t -> Ocgtk_gdk.Gdk.Wrappers.Surface.t -> unit = "ml_gtk_media_stream_unrealize"
 
-(** Same as gtk_media_stream_stream_unprepared(). *)
-external unprepared : t -> unit = "ml_gtk_media_stream_unprepared"
-
 (** Resets a given media stream implementation.
 
 [method@Gtk.MediaStream.stream_prepared] can then be called again.
@@ -155,14 +152,6 @@ external get_loop : t -> bool = "ml_gtk_media_stream_get_loop"
 
 (** Returns whether the streams playback is finished. *)
 external get_ended : t -> bool = "ml_gtk_media_stream_get_ended"
-
-(** Pauses the media stream and marks it as ended.
-
-This is a hint only, calls to [method@Gtk.MediaStream.play]
-may still happen.
-
-The media stream must be prepared when this function is called. *)
-external ended : t -> unit = "ml_gtk_media_stream_ended"
 
 (* Properties *)
 

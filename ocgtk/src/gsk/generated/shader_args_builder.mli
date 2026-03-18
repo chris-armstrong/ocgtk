@@ -4,9 +4,6 @@
 (** An object to build the uniforms data for a `GskGLShader`. *)
 type t = [`shader_args_builder] Gobject.obj
 
-(** Create a new ShaderArgsBuilder *)
-external new_ : Gl_shader.t -> unit -> t = "ml_gsk_shader_args_builder_new"
-
 (* Methods *)
 (** Decreases the reference count of a `GskShaderArgBuilder` by one.
 

@@ -17,12 +17,6 @@ external setup_finish : t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (Print_set
 (** Sets the title that will be shown on the print dialog. *)
 external set_title : t -> string -> unit = "ml_gtk_print_dialog_set_title"
 
-(** Sets the print settings for the print dialog. *)
-external set_print_settings : t -> Print_settings.t -> unit = "ml_gtk_print_dialog_set_print_settings"
-
-(** Set the page setup for the print dialog. *)
-external set_page_setup : t -> Page_setup.t -> unit = "ml_gtk_print_dialog_set_page_setup"
-
 (** Sets whether the print dialog blocks
 interaction with the parent window while
 it is presented. *)
