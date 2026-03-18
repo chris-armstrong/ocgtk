@@ -2,7 +2,6 @@
 
 (* High-level class for FlowBoxChild *)
 class flow_box_child (obj : Flow_box_child.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Flow_box_child.as_widget obj)
   inherit Gflow_box_child_signals.flow_box_child_signals obj
 
   method changed : unit -> unit =
@@ -26,7 +25,6 @@ class flow_box_child (obj : Flow_box_child.t) = object (self)
       let child = Option.map (fun (c) -> c#as_widget) child in
       (Flow_box_child.set_child obj child)
 
-  method as_widget = (Flow_box_child.as_widget obj)
     method as_flow_box_child = obj
 end
 

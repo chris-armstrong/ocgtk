@@ -1,6 +1,5 @@
 class list_view : List_view.t ->
   object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
     inherit Glist_view_signals.list_view_signals
     method get_enable_rubberband : unit -> bool
     method get_factory : unit -> GList_item_factory.list_item_factory option
@@ -16,7 +15,6 @@ class list_view : List_view.t ->
     method set_show_separators : bool -> unit
     method set_single_click_activate : bool -> unit
     method set_tab_behavior : Gtk_enums.listtabbehavior -> unit
-  method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
     method as_list_view : List_view.t
   end
 

@@ -1,6 +1,5 @@
 (* High-level class for ApplicationWindow *)
 class application_window (obj : Application_window.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Application_window.as_widget obj)
 
   method get_help_overlay : unit -> GShortcuts_window.shortcuts_window option =
     fun () ->
@@ -23,7 +22,6 @@ class application_window (obj : Application_window.t) = object (self)
     fun show_menubar ->
       (Application_window.set_show_menubar obj show_menubar)
 
-  method as_widget = (Application_window.as_widget obj)
     method as_application_window = obj
 end
 

@@ -60,5 +60,9 @@ external get_cancel_button : t -> int = "ml_gtk_alert_dialog_get_cancel_button"
 (** Returns the button labels for the alert. *)
 external get_buttons : t -> string array option = "ml_gtk_alert_dialog_get_buttons"
 
+(** Finishes the [method@Gtk.AlertDialog.choose] call
+and returns the index of the button that was clicked. *)
+external choose_finish : t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (int, GError.t) result = "ml_gtk_alert_dialog_choose_finish"
+
 (* Properties *)
 

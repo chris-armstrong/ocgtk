@@ -13,10 +13,19 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
+CAMLexport CAMLprim value ml_gtk_directory_list_new(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+
+GtkDirectoryList *obj = gtk_directory_list_new(String_option_val(arg1), Option_val(arg2, GFile_val, NULL));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkDirectoryList(obj));
+}
 CAMLexport CAMLprim value ml_gtk_directory_list_set_monitored(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -30,6 +39,14 @@ CAMLexport CAMLprim value ml_gtk_directory_list_set_io_priority(value self, valu
 CAMLparam2(self, arg1);
 
 gtk_directory_list_set_io_priority(GtkDirectoryList_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_directory_list_set_file(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_directory_list_set_file(GtkDirectoryList_val(self), Option_val(arg1, GFile_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -63,6 +80,15 @@ CAMLparam1(self);
 
 int result = gtk_directory_list_get_io_priority(GtkDirectoryList_val(self));
 CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_directory_list_get_file(value self)
+{
+CAMLparam1(self);
+
+GFile* result = gtk_directory_list_get_file(GtkDirectoryList_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GFile));
 }
 
 CAMLexport CAMLprim value ml_gtk_directory_list_get_attributes(value self)

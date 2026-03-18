@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_gl_area_new(value unit)
@@ -63,6 +63,14 @@ CAMLexport CAMLprim value ml_gtk_gl_area_set_auto_render(value self, value arg1)
 CAMLparam2(self, arg1);
 
 gtk_gl_area_set_auto_render(GtkGLArea_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_gl_area_set_allowed_apis(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_gl_area_set_allowed_apis(GtkGLArea_val(self), GdkGLAPI_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -120,12 +128,37 @@ gboolean result = gtk_gl_area_get_has_depth_buffer(GtkGLArea_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_gl_area_get_context(value self)
+{
+CAMLparam1(self);
+
+GdkGLContext* result = gtk_gl_area_get_context(GtkGLArea_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GdkGLContext));
+}
+
 CAMLexport CAMLprim value ml_gtk_gl_area_get_auto_render(value self)
 {
 CAMLparam1(self);
 
 gboolean result = gtk_gl_area_get_auto_render(GtkGLArea_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_gl_area_get_api(value self)
+{
+CAMLparam1(self);
+
+GdkGLAPI result = gtk_gl_area_get_api(GtkGLArea_val(self));
+CAMLreturn(Val_GdkGLAPI(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_gl_area_get_allowed_apis(value self)
+{
+CAMLparam1(self);
+
+GdkGLAPI result = gtk_gl_area_get_allowed_apis(GtkGLArea_val(self));
+CAMLreturn(Val_GdkGLAPI(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_gl_area_attach_buffers(value self)

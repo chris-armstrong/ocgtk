@@ -1,6 +1,9 @@
 (* High-level class for ProgressBar *)
 class progress_bar (obj : Progress_bar.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Progress_bar.as_widget obj)
+
+  method get_ellipsize : unit -> Ocgtk_pango.Pango.ellipsizemode =
+    fun () ->
+      (Progress_bar.get_ellipsize obj)
 
   method get_fraction : unit -> float =
     fun () ->
@@ -26,6 +29,10 @@ class progress_bar (obj : Progress_bar.t) = object (self)
     fun () ->
       (Progress_bar.pulse obj)
 
+  method set_ellipsize : Ocgtk_pango.Pango.ellipsizemode -> unit =
+    fun mode ->
+      (Progress_bar.set_ellipsize obj mode)
+
   method set_fraction : float -> unit =
     fun fraction ->
       (Progress_bar.set_fraction obj fraction)
@@ -46,7 +53,6 @@ class progress_bar (obj : Progress_bar.t) = object (self)
     fun text ->
       (Progress_bar.set_text obj text)
 
-  method as_widget = (Progress_bar.as_widget obj)
     method as_progress_bar = obj
 end
 

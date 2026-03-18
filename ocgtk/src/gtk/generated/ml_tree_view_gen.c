@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_tree_view_new(value unit)
@@ -304,6 +304,15 @@ int result = gtk_tree_view_insert_column(GtkTreeView_val(self), GtkTreeViewColum
 CAMLreturn(Val_int(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_tree_view_get_visible_rect(value self)
+{
+CAMLparam1(self);
+GdkRectangle out1;
+
+gtk_tree_view_get_visible_rect(GtkTreeView_val(self), &out1);
+CAMLreturn(Val_GdkRectangle(&out1));
+}
+
 CAMLexport CAMLprim value ml_gtk_tree_view_get_tooltip_column(value self)
 {
 CAMLparam1(self);
@@ -469,6 +478,24 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkTreeViewColumn));
 }
 
+CAMLexport CAMLprim value ml_gtk_tree_view_get_cell_area(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GdkRectangle out3;
+
+gtk_tree_view_get_cell_area(GtkTreeView_val(self), Option_val(arg1, GtkTreePath_val, NULL), Option_val(arg2, GtkTreeViewColumn_val, NULL), &out3);
+CAMLreturn(Val_GdkRectangle(&out3));
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_get_background_area(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GdkRectangle out3;
+
+gtk_tree_view_get_background_area(GtkTreeView_val(self), Option_val(arg1, GtkTreePath_val, NULL), Option_val(arg2, GtkTreeViewColumn_val, NULL), &out3);
+CAMLreturn(Val_GdkRectangle(&out3));
+}
+
 CAMLexport CAMLprim value ml_gtk_tree_view_get_activate_on_single_click(value self)
 {
 CAMLparam1(self);
@@ -499,6 +526,30 @@ CAMLparam1(self);
 
 gtk_tree_view_expand_all(GtkTreeView_val(self));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_enable_model_drag_source(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gtk_tree_view_enable_model_drag_source(GtkTreeView_val(self), GdkModifierType_val(arg1), GdkContentFormats_val(arg2), GdkDragAction_val(arg3));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_enable_model_drag_dest(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_tree_view_enable_model_drag_dest(GtkTreeView_val(self), GdkContentFormats_val(arg1), GdkDragAction_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_view_create_row_drag_icon(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GdkPaintable* result = gtk_tree_view_create_row_drag_icon(GtkTreeView_val(self), GtkTreePath_val(arg1));
+CAMLreturn(Val_option(result, Val_GdkPaintable));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_view_convert_widget_to_tree_coords(value self, value arg1, value arg2)

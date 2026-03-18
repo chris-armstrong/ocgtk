@@ -9,6 +9,10 @@ class filter_list_model (obj : Filter_list_model.t) = object (self)
     fun () ->
       (Filter_list_model.get_incremental obj)
 
+  method get_model : unit -> Ocgtk_gio.Gio.list_model option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.list_model ret) (Filter_list_model.get_model obj)
+
   method get_pending : unit -> int =
     fun () ->
       (Filter_list_model.get_pending obj)
@@ -21,6 +25,11 @@ class filter_list_model (obj : Filter_list_model.t) = object (self)
   method set_incremental : bool -> unit =
     fun incremental ->
       (Filter_list_model.set_incremental obj incremental)
+
+  method set_model : 'p1. (#Ocgtk_gio.Gio.list_model as 'p1) option -> unit =
+    fun model ->
+      let model = Option.map (fun (c) -> c#as_list_model) model in
+      (Filter_list_model.set_model obj model)
 
   method n_items = Filter_list_model.get_n_items obj
 

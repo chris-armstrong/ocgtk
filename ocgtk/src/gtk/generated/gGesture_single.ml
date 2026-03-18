@@ -1,6 +1,5 @@
 (* High-level class for GestureSingle *)
 class gesture_single (obj : Gesture_single.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller (Gesture_single.as_event_controller obj)
 
   method get_button : unit -> int =
     fun () ->
@@ -9,6 +8,10 @@ class gesture_single (obj : Gesture_single.t) = object (self)
   method get_current_button : unit -> int =
     fun () ->
       (Gesture_single.get_current_button obj)
+
+  method get_current_sequence : unit -> Ocgtk_gdk.Gdk.event_sequence option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gdk.Gdk.event_sequence ret) (Gesture_single.get_current_sequence obj)
 
   method get_exclusive : unit -> bool =
     fun () ->
@@ -30,7 +33,6 @@ class gesture_single (obj : Gesture_single.t) = object (self)
     fun touch_only ->
       (Gesture_single.set_touch_only obj touch_only)
 
-  method as_event_controller = (Gesture_single.as_event_controller obj)
     method as_gesture_single = obj
 end
 

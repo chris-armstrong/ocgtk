@@ -9,6 +9,10 @@ class tree_list_model (obj : Tree_list_model.t) = object (self)
     fun position ->
       Option.map (fun ret -> new GTree_list_row.tree_list_row ret) (Tree_list_model.get_child_row obj position)
 
+  method get_model : unit -> Ocgtk_gio.Gio.list_model =
+    fun () ->
+      new  Ocgtk_gio.Gio.list_model(Tree_list_model.get_model obj)
+
   method get_passthrough : unit -> bool =
     fun () ->
       (Tree_list_model.get_passthrough obj)

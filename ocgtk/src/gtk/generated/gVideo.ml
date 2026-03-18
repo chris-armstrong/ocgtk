@@ -1,10 +1,13 @@
 (* High-level class for Video *)
 class video (obj : Video.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Video.as_widget obj)
 
   method get_autoplay : unit -> bool =
     fun () ->
       (Video.get_autoplay obj)
+
+  method get_file : unit -> Ocgtk_gio.Gio.file option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.file ret) (Video.get_file obj)
 
   method get_graphics_offload : unit -> Gtk_enums.graphicsoffloadenabled =
     fun () ->
@@ -21,6 +24,11 @@ class video (obj : Video.t) = object (self)
   method set_autoplay : bool -> unit =
     fun autoplay ->
       (Video.set_autoplay obj autoplay)
+
+  method set_file : 'p1. (#Ocgtk_gio.Gio.file as 'p1) option -> unit =
+    fun file ->
+      let file = Option.map (fun (c) -> c#as_file) file in
+      (Video.set_file obj file)
 
   method set_filename : string option -> unit =
     fun filename ->
@@ -43,7 +51,6 @@ class video (obj : Video.t) = object (self)
     fun resource_path ->
       (Video.set_resource obj resource_path)
 
-  method as_widget = (Video.as_widget obj)
     method as_video = obj
 end
 

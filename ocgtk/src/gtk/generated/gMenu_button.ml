@@ -2,7 +2,6 @@
 
 (* High-level class for MenuButton *)
 class menu_button (obj : Menu_button.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Menu_button.as_widget obj)
   inherit Gmenu_button_signals.menu_button_signals obj
 
   method get_active : unit -> bool =
@@ -34,6 +33,10 @@ class menu_button (obj : Menu_button.t) = object (self)
   method get_label : unit -> string option =
     fun () ->
       (Menu_button.get_label obj)
+
+  method get_menu_model : unit -> Ocgtk_gio.Gio.menu_model option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.menu_model ret) (Menu_button.get_menu_model obj)
 
   method get_popover : unit -> GPopover.popover option =
     fun () ->
@@ -86,6 +89,11 @@ class menu_button (obj : Menu_button.t) = object (self)
     fun label ->
       (Menu_button.set_label obj label)
 
+  method set_menu_model : 'p1. (#Ocgtk_gio.Gio.menu_model as 'p1) option -> unit =
+    fun menu_model ->
+      let menu_model = Option.map (fun (c) -> c#as_menu_model) menu_model in
+      (Menu_button.set_menu_model obj menu_model)
+
   method set_popover : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
     fun popover ->
       let popover = Option.map (fun (c) -> c#as_widget) popover in
@@ -99,7 +107,6 @@ class menu_button (obj : Menu_button.t) = object (self)
     fun use_underline ->
       (Menu_button.set_use_underline obj use_underline)
 
-  method as_widget = (Menu_button.as_widget obj)
     method as_menu_button = obj
 end
 

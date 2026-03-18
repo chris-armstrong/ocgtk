@@ -1,6 +1,5 @@
 (* High-level class for AppChooserDialog *)
 class app_chooser_dialog (obj : App_chooser_dialog.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (App_chooser_dialog.as_widget obj)
 
   method get_heading : unit -> string option =
     fun () ->
@@ -14,7 +13,8 @@ class app_chooser_dialog (obj : App_chooser_dialog.t) = object (self)
     fun heading ->
       (App_chooser_dialog.set_heading obj heading)
 
-  method as_widget = (App_chooser_dialog.as_widget obj)
+  method gfile = new Ocgtk_gio.Gio.file (App_chooser_dialog.get_gfile obj)
+
     method as_app_chooser_dialog = obj
 end
 

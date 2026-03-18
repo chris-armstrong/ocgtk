@@ -3,13 +3,16 @@ class text_buffer : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t ->
   object
     inherit Gtext_buffer_signals.text_buffer_signals
     method add_mark : <as_text_mark: Text_buffer_and__text_iter_and__text_mark.Text_mark.t; ..> -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
+    method add_selection_clipboard : #Ocgtk_gdk.Gdk.clipboard -> unit
     method apply_tag : #GText_tag.text_tag -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method apply_tag_by_name : string -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method backspace : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> bool -> bool
     method begin_irreversible_action : unit -> unit
     method begin_user_action : unit -> unit
+    method copy_clipboard : #Ocgtk_gdk.Gdk.clipboard -> unit
     method create_child_anchor : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> GText_child_anchor.text_child_anchor
     method create_mark : string option -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> text_mark
+    method cut_clipboard : #Ocgtk_gdk.Gdk.clipboard -> bool -> unit
     method delete : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method delete_interactive : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> bool
     method delete_mark : <as_text_mark: Text_buffer_and__text_iter_and__text_mark.Text_mark.t; ..> -> unit
@@ -28,6 +31,7 @@ class text_buffer : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t ->
     method get_max_undo_levels : unit -> int
     method get_modified : unit -> bool
     method get_selection_bound : unit -> text_mark
+    method get_selection_content : unit -> Ocgtk_gdk.Gdk.content_provider
     method get_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> string
     method get_tag_table : unit -> GText_tag_table.text_tag_table
     method get_text : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> string
@@ -37,13 +41,16 @@ class text_buffer : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t ->
     method insert_interactive : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string -> int -> bool -> bool
     method insert_interactive_at_cursor : string -> int -> bool -> bool
     method insert_markup : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string -> int -> unit
+    method insert_paintable : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> #Ocgtk_gdk.Gdk.paintable -> unit
     method insert_range : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method insert_range_interactive : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> bool
     method move_mark : <as_text_mark: Text_buffer_and__text_iter_and__text_mark.Text_mark.t; ..> -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method move_mark_by_name : string -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
+    method paste_clipboard : #Ocgtk_gdk.Gdk.clipboard -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t option -> bool -> unit
     method place_cursor : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method redo : unit -> unit
     method remove_all_tags : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
+    method remove_selection_clipboard : #Ocgtk_gdk.Gdk.clipboard -> unit
     method remove_tag : #GText_tag.text_tag -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method remove_tag_by_name : string -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method select_range : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
@@ -109,10 +116,12 @@ and text_iter : Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
     method get_bytes_in_line : unit -> int
     method get_chars_in_line : unit -> int
     method get_child_anchor : unit -> GText_child_anchor.text_child_anchor option
+    method get_language : unit -> Ocgtk_pango.Pango.language
     method get_line : unit -> int
     method get_line_index : unit -> int
     method get_line_offset : unit -> int
     method get_offset : unit -> int
+    method get_paintable : unit -> Ocgtk_gdk.Gdk.paintable option
     method get_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
     method get_text : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
     method get_visible_line_index : unit -> int

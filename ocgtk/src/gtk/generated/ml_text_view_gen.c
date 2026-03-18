@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_text_view_new(value unit)
@@ -57,11 +57,27 @@ gboolean result = gtk_text_view_starts_display_line(GtkTextView_val(self), GtkTe
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_text_view_set_wrap_mode(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_text_view_set_wrap_mode(GtkTextView_val(self), GtkWrapMode_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_view_set_top_margin(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gtk_text_view_set_top_margin(GtkTextView_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_set_tabs(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_text_view_set_tabs(GtkTextView_val(self), PangoTabArray_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -158,6 +174,14 @@ CAMLexport CAMLprim value ml_gtk_text_view_set_gutter(value self, value arg1, va
 CAMLparam3(self, arg1, arg2);
 
 gtk_text_view_set_gutter(GtkTextView_val(self), GtkTextWindowType_val(arg1), Option_val(arg2, GtkWidget_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_set_extra_menu(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_text_view_set_extra_menu(GtkTextView_val(self), Option_val(arg1, GMenuModel_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -291,12 +315,54 @@ gboolean result = gtk_text_view_move_mark_onscreen(GtkTextView_val(self), GtkTex
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_text_view_im_context_filter_keypress(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gboolean result = gtk_text_view_im_context_filter_keypress(GtkTextView_val(self), GdkEvent_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_wrap_mode(value self)
+{
+CAMLparam1(self);
+
+GtkWrapMode result = gtk_text_view_get_wrap_mode(GtkTextView_val(self));
+CAMLreturn(Val_GtkWrapMode(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_visible_rect(value self)
+{
+CAMLparam1(self);
+GdkRectangle out1;
+
+gtk_text_view_get_visible_rect(GtkTextView_val(self), &out1);
+CAMLreturn(Val_GdkRectangle(&out1));
+}
+
 CAMLexport CAMLprim value ml_gtk_text_view_get_top_margin(value self)
 {
 CAMLparam1(self);
 
 int result = gtk_text_view_get_top_margin(GtkTextView_val(self));
 CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_tabs(value self)
+{
+CAMLparam1(self);
+
+PangoTabArray* result = gtk_text_view_get_tabs(GtkTextView_val(self));
+CAMLreturn(Val_option(result, Val_PangoTabArray));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_rtl_context(value self)
+{
+CAMLparam1(self);
+
+PangoContext* result = gtk_text_view_get_rtl_context(GtkTextView_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_PangoContext(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_view_get_right_margin(value self)
@@ -347,6 +413,15 @@ gboolean result = gtk_text_view_get_monospace(GtkTextView_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_text_view_get_ltr_context(value self)
+{
+CAMLparam1(self);
+
+PangoContext* result = gtk_text_view_get_ltr_context(GtkTextView_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_PangoContext(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_text_view_get_line_yrange(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -389,6 +464,15 @@ CAMLparam1(self);
 
 GtkJustification result = gtk_text_view_get_justification(GtkTextView_val(self));
 CAMLreturn(Val_GtkJustification(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_iter_location(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GdkRectangle out2;
+
+gtk_text_view_get_iter_location(GtkTextView_val(self), GtkTextIter_val(arg1), &out2);
+CAMLreturn(Val_GdkRectangle(&out2));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_view_get_iter_at_position(value self, value arg1, value arg2)
@@ -452,6 +536,15 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
+CAMLexport CAMLprim value ml_gtk_text_view_get_extra_menu(value self)
+{
+CAMLparam1(self);
+
+GMenuModel* result = gtk_text_view_get_extra_menu(GtkTextView_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_GMenuModel(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_text_view_get_editable(value self)
 {
 CAMLparam1(self);
@@ -466,6 +559,20 @@ CAMLparam1(self);
 
 gboolean result = gtk_text_view_get_cursor_visible(GtkTextView_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_cursor_locations(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GdkRectangle out2;
+GdkRectangle out3;
+
+gtk_text_view_get_cursor_locations(GtkTextView_val(self), Option_val(arg1, GtkTextIter_val, NULL), &out2, &out3);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_GdkRectangle(&out2));
+    Store_field(ret, 1, Val_GdkRectangle(&out3));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_text_view_get_buffer(value self)

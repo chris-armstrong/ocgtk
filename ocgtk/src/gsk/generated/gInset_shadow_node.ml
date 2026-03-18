@@ -5,6 +5,10 @@ class inset_shadow_node (obj : Inset_shadow_node.t) = object (self)
     fun () ->
       (Inset_shadow_node.get_blur_radius obj)
 
+  method get_color : unit -> Ocgtk_gdk.Gdk.rgb_a =
+    fun () ->
+      new  Ocgtk_gdk.Gdk.rgb_a(Inset_shadow_node.get_color obj)
+
   method get_dx : unit -> float =
     fun () ->
       (Inset_shadow_node.get_dx obj)

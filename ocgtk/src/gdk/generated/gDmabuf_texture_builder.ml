@@ -29,6 +29,10 @@ class dmabuf_texture_builder (obj : Dmabuf_texture_builder.t) = object (self)
     fun plane ->
       (Dmabuf_texture_builder.get_stride obj plane)
 
+  method get_update_region : unit -> Ocgtk_cairo.Cairo.region option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_cairo.Cairo.region ret) (Dmabuf_texture_builder.get_update_region obj)
+
   method get_update_texture : unit -> GTexture.texture option =
     fun () ->
       Option.map (fun ret -> new GTexture.texture ret) (Dmabuf_texture_builder.get_update_texture obj)
@@ -65,6 +69,11 @@ class dmabuf_texture_builder (obj : Dmabuf_texture_builder.t) = object (self)
   method set_stride : int -> int -> unit =
     fun plane stride ->
       (Dmabuf_texture_builder.set_stride obj plane stride)
+
+  method set_update_region : 'p1. (#Ocgtk_cairo.Cairo.region as 'p1) option -> unit =
+    fun region ->
+      let region = Option.map (fun (c) -> c#as_region) region in
+      (Dmabuf_texture_builder.set_update_region obj region)
 
   method set_update_texture : 'p1. (#GTexture.texture as 'p1) option -> unit =
     fun texture ->

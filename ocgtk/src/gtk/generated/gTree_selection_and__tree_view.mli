@@ -21,12 +21,14 @@ class tree_selection : Tree_selection_and__tree_view.Tree_selection.t ->
 
 and tree_view : Tree_selection_and__tree_view.Tree_view.t ->
   object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
     inherit Gtree_view_signals.tree_view_signals
     method append_column : #GTree_view_column.tree_view_column -> int
     method collapse_all : unit -> unit
     method collapse_row : Tree_path.t -> bool
     method columns_autosize : unit -> unit
+    method create_row_drag_icon : Tree_path.t -> Ocgtk_gdk.Gdk.paintable option
+    method enable_model_drag_dest : #Ocgtk_gdk.Gdk.content_formats -> Ocgtk_gdk.Gdk.dragaction -> unit
+    method enable_model_drag_source : Ocgtk_gdk.Gdk.modifiertype -> #Ocgtk_gdk.Gdk.content_formats -> Ocgtk_gdk.Gdk.dragaction -> unit
     method expand_all : unit -> unit
     method expand_row : Tree_path.t -> bool -> bool
     method expand_to_path : Tree_path.t -> unit
@@ -84,6 +86,5 @@ and tree_view : Tree_selection_and__tree_view.Tree_view.t ->
     method unset_rows_drag_source : unit -> unit
     method enable_grid_lines : Gtk_enums.treeviewgridlines
     method set_enable_grid_lines : Gtk_enums.treeviewgridlines -> unit
-  method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
     method as_tree_view : Tree_selection_and__tree_view.Tree_view.t
   end

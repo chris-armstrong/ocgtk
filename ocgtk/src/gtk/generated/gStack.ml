@@ -1,6 +1,5 @@
 (* High-level class for Stack *)
 class stack (obj : Stack.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Stack.as_widget obj)
 
   method add_child : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> GStack_page.stack_page =
     fun child ->
@@ -100,7 +99,6 @@ class stack (obj : Stack.t) = object (self)
     fun name ->
       (Stack.set_visible_child_name obj name)
 
-  method as_widget = (Stack.as_widget obj)
     method as_stack = obj
 end
 

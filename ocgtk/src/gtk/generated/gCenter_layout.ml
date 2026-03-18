@@ -1,6 +1,5 @@
 (* High-level class for CenterLayout *)
 class center_layout (obj : Center_layout.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.layout_manager (Center_layout.as_layoutmanager obj)
 
   method get_baseline_position : unit -> Gtk_enums.baselineposition =
     fun () ->
@@ -53,7 +52,6 @@ class center_layout (obj : Center_layout.t) = object (self)
       let widget = Option.map (fun (c) -> c#as_widget) widget in
       (Center_layout.set_start_widget obj widget)
 
-  method as_layoutmanager = (Center_layout.as_layoutmanager obj)
     method as_center_layout = obj
 end
 

@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <gsk/gsk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gsk_decls.h"
 
 /* Conversion functions for GskStroke (opaque record with hidden fields) */
 GskStroke *GskStroke_val(value v) {
@@ -39,6 +39,14 @@ GskStroke *obj = gsk_stroke_new(Double_val(arg1));
 
 CAMLreturn(Val_GskStroke(obj));
 }
+CAMLexport CAMLprim value ml_gsk_stroke_to_cairo(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gsk_stroke_to_cairo(GskStroke_val(self), cairo_t_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gsk_stroke_set_miter_limit(value self, value arg1)
 {
 CAMLparam2(self, arg1);

@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: FontDialogButton *)
+(* FontDialogButton: FontDialogButton *)
 
 type t = [`font_dialog_button | `widget | `initially_unowned] Gobject.obj
-
-let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new FontDialogButton *)
 external new_ : Font_dialog.t option -> t = "ml_gtk_font_dialog_button_new"
@@ -21,8 +19,14 @@ external set_use_font : t -> bool -> unit = "ml_gtk_font_dialog_button_set_use_f
 lets the user select fonts. *)
 external set_level : t -> Gtk_enums.fontlevel -> unit = "ml_gtk_font_dialog_button_set_level"
 
+(** Sets the language to use for font features. *)
+external set_language : t -> Ocgtk_pango.Pango.Wrappers.Language.t option -> unit = "ml_gtk_font_dialog_button_set_language"
+
 (** Sets the font features of the button. *)
 external set_font_features : t -> string option -> unit = "ml_gtk_font_dialog_button_set_font_features"
+
+(** Sets the font of the button. *)
+external set_font_desc : t -> Ocgtk_pango.Pango.Wrappers.Font_description.t -> unit = "ml_gtk_font_dialog_button_set_font_desc"
 
 (** Sets a `GtkFontDialog` object to use for
 creating the font chooser dialog that is
@@ -39,6 +43,9 @@ external get_use_font : t -> bool = "ml_gtk_font_dialog_button_get_use_font"
 lets the user select fonts. *)
 external get_level : t -> Gtk_enums.fontlevel = "ml_gtk_font_dialog_button_get_level"
 
+(** Returns the language that is used for font features. *)
+external get_language : t -> Ocgtk_pango.Pango.Wrappers.Language.t option = "ml_gtk_font_dialog_button_get_language"
+
 (** Returns the font features of the button.
 
 This function is what should be used to obtain the font features
@@ -49,6 +56,13 @@ Note that the button will only let users choose font features
 if [property@Gtk.FontDialogButton:level] is set to
 `GTK_FONT_LEVEL_FEATURES`. *)
 external get_font_features : t -> string option = "ml_gtk_font_dialog_button_get_font_features"
+
+(** Returns the font of the button.
+
+This function is what should be used to obtain
+the font that was chosen by the user. To get
+informed about changes, listen to "notify::font-desc". *)
+external get_font_desc : t -> Ocgtk_pango.Pango.Wrappers.Font_description.t option = "ml_gtk_font_dialog_button_get_font_desc"
 
 (** Returns the `GtkFontDialog` of @self. *)
 external get_dialog : t -> Font_dialog.t option = "ml_gtk_font_dialog_button_get_dialog"

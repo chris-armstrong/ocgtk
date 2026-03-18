@@ -2,7 +2,6 @@
 
 (* High-level class for CellRendererText *)
 class cell_renderer_text (obj : Cell_renderer_text.t) = object (self)
-  inherit GCell_renderer.cell_renderer (Cell_renderer_text.as_cell_renderer obj)
   inherit Gcell_renderer_text_signals.cell_renderer_text_signals obj
 
   method set_fixed_height_from_font : int -> unit =
@@ -12,8 +11,17 @@ class cell_renderer_text (obj : Cell_renderer_text.t) = object (self)
   method align_set = Cell_renderer_text.get_align_set obj
   method set_align_set v =  Cell_renderer_text.set_align_set obj v
 
+  method alignment = Cell_renderer_text.get_alignment obj
+  method set_alignment v =  Cell_renderer_text.set_alignment obj v
+
+  method attributes = new Ocgtk_pango.Pango.attr_list (Cell_renderer_text.get_attributes obj)
+  method set_attributes : 'a . (#Ocgtk_pango.Pango.attr_list as 'a) -> unit  = fun v ->  Cell_renderer_text.set_attributes obj v#as_attr_list
+
   method background = Cell_renderer_text.get_background obj
   method set_background v =  Cell_renderer_text.set_background obj v
+
+  method background_rgba = new Ocgtk_gdk.Gdk.rgb_a (Cell_renderer_text.get_background_rgba obj)
+  method set_background_rgba : 'a . (#Ocgtk_gdk.Gdk.rgb_a as 'a) -> unit  = fun v ->  Cell_renderer_text.set_background_rgba obj v#as_rgb_a
 
   method background_set = Cell_renderer_text.get_background_set obj
   method set_background_set v =  Cell_renderer_text.set_background_set obj v
@@ -23,6 +31,9 @@ class cell_renderer_text (obj : Cell_renderer_text.t) = object (self)
 
   method editable_set = Cell_renderer_text.get_editable_set obj
   method set_editable_set v =  Cell_renderer_text.set_editable_set obj v
+
+  method ellipsize = Cell_renderer_text.get_ellipsize obj
+  method set_ellipsize v =  Cell_renderer_text.set_ellipsize obj v
 
   method ellipsize_set = Cell_renderer_text.get_ellipsize_set obj
   method set_ellipsize_set v =  Cell_renderer_text.set_ellipsize_set obj v
@@ -36,8 +47,14 @@ class cell_renderer_text (obj : Cell_renderer_text.t) = object (self)
   method font = Cell_renderer_text.get_font obj
   method set_font v =  Cell_renderer_text.set_font obj v
 
+  method font_desc = new Ocgtk_pango.Pango.font_description (Cell_renderer_text.get_font_desc obj)
+  method set_font_desc : 'a . (#Ocgtk_pango.Pango.font_description as 'a) -> unit  = fun v ->  Cell_renderer_text.set_font_desc obj v#as_font_description
+
   method foreground = Cell_renderer_text.get_foreground obj
   method set_foreground v =  Cell_renderer_text.set_foreground obj v
+
+  method foreground_rgba = new Ocgtk_gdk.Gdk.rgb_a (Cell_renderer_text.get_foreground_rgba obj)
+  method set_foreground_rgba : 'a . (#Ocgtk_gdk.Gdk.rgb_a as 'a) -> unit  = fun v ->  Cell_renderer_text.set_foreground_rgba obj v#as_rgb_a
 
   method foreground_set = Cell_renderer_text.get_foreground_set obj
   method set_foreground_set v =  Cell_renderer_text.set_foreground_set obj v
@@ -81,6 +98,9 @@ class cell_renderer_text (obj : Cell_renderer_text.t) = object (self)
   method size_set = Cell_renderer_text.get_size_set obj
   method set_size_set v =  Cell_renderer_text.set_size_set obj v
 
+  method stretch = Cell_renderer_text.get_stretch obj
+  method set_stretch v =  Cell_renderer_text.set_stretch obj v
+
   method stretch_set = Cell_renderer_text.get_stretch_set obj
   method set_stretch_set v =  Cell_renderer_text.set_stretch_set obj v
 
@@ -90,14 +110,23 @@ class cell_renderer_text (obj : Cell_renderer_text.t) = object (self)
   method strikethrough_set = Cell_renderer_text.get_strikethrough_set obj
   method set_strikethrough_set v =  Cell_renderer_text.set_strikethrough_set obj v
 
+  method style = Cell_renderer_text.get_style obj
+  method set_style v =  Cell_renderer_text.set_style obj v
+
   method style_set = Cell_renderer_text.get_style_set obj
   method set_style_set v =  Cell_renderer_text.set_style_set obj v
 
   method text = Cell_renderer_text.get_text obj
   method set_text v =  Cell_renderer_text.set_text obj v
 
+  method underline = Cell_renderer_text.get_underline obj
+  method set_underline v =  Cell_renderer_text.set_underline obj v
+
   method underline_set = Cell_renderer_text.get_underline_set obj
   method set_underline_set v =  Cell_renderer_text.set_underline_set obj v
+
+  method variant = Cell_renderer_text.get_variant obj
+  method set_variant v =  Cell_renderer_text.set_variant obj v
 
   method variant_set = Cell_renderer_text.get_variant_set obj
   method set_variant_set v =  Cell_renderer_text.set_variant_set obj v
@@ -111,10 +140,12 @@ class cell_renderer_text (obj : Cell_renderer_text.t) = object (self)
   method width_chars = Cell_renderer_text.get_width_chars obj
   method set_width_chars v =  Cell_renderer_text.set_width_chars obj v
 
+  method wrap_mode = Cell_renderer_text.get_wrap_mode obj
+  method set_wrap_mode v =  Cell_renderer_text.set_wrap_mode obj v
+
   method wrap_width = Cell_renderer_text.get_wrap_width obj
   method set_wrap_width v =  Cell_renderer_text.set_wrap_width obj v
 
-  method as_cell_renderer = (Cell_renderer_text.as_cell_renderer obj)
     method as_cell_renderer_text = obj
 end
 

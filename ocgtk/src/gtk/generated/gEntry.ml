@@ -2,7 +2,6 @@
 
 (* High-level class for Entry *)
 class entry (obj : Entry.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Entry.as_widget obj)
   inherit Gentry_signals.entry_signals obj
 
   method get_activates_default : unit -> bool =
@@ -12,6 +11,10 @@ class entry (obj : Entry.t) = object (self)
   method get_alignment : unit -> float =
     fun () ->
       (Entry.get_alignment obj)
+
+  method get_attributes : unit -> Ocgtk_pango.Pango.attr_list option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_pango.Pango.attr_list ret) (Entry.get_attributes obj)
 
   method get_buffer : unit -> GEntry_buffer.entry_buffer =
     fun () ->
@@ -25,6 +28,10 @@ class entry (obj : Entry.t) = object (self)
     fun () ->
       (Entry.get_current_icon_drag_source obj)
 
+  method get_extra_menu : unit -> Ocgtk_gio.Gio.menu_model option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.menu_model ret) (Entry.get_extra_menu obj)
+
   method get_has_frame : unit -> bool =
     fun () ->
       (Entry.get_has_frame obj)
@@ -37,9 +44,17 @@ class entry (obj : Entry.t) = object (self)
     fun x y ->
       (Entry.get_icon_at_pos obj x y)
 
+  method get_icon_gicon : Gtk_enums.entryiconposition -> Ocgtk_gio.Gio.icon option =
+    fun icon_pos ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.icon ret) (Entry.get_icon_gicon obj icon_pos)
+
   method get_icon_name : Gtk_enums.entryiconposition -> string option =
     fun icon_pos ->
       (Entry.get_icon_name obj icon_pos)
+
+  method get_icon_paintable : Gtk_enums.entryiconposition -> Ocgtk_gdk.Gdk.paintable option =
+    fun icon_pos ->
+      Option.map (fun ret -> new Ocgtk_gdk.Gdk.paintable ret) (Entry.get_icon_paintable obj icon_pos)
 
   method get_icon_sensitive : Gtk_enums.entryiconposition -> bool =
     fun icon_pos ->
@@ -85,6 +100,10 @@ class entry (obj : Entry.t) = object (self)
     fun () ->
       (Entry.get_progress_pulse_step obj)
 
+  method get_tabs : unit -> Ocgtk_pango.Pango.tab_array option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_pango.Pango.tab_array ret) (Entry.get_tabs obj)
+
   method get_visibility : unit -> bool =
     fun () ->
       (Entry.get_visibility obj)
@@ -109,6 +128,11 @@ class entry (obj : Entry.t) = object (self)
     fun xalign ->
       (Entry.set_alignment obj xalign)
 
+  method set_attributes : 'p1. (#Ocgtk_pango.Pango.attr_list as 'p1) -> unit =
+    fun attrs ->
+      let attrs = attrs#as_attr_list in
+      (Entry.set_attributes obj attrs)
+
   method set_buffer : 'p1. (#GEntry_buffer.entry_buffer as 'p1) -> unit =
     fun buffer ->
       let buffer = buffer#as_entry_buffer in
@@ -119,6 +143,11 @@ class entry (obj : Entry.t) = object (self)
       let completion = Option.map (fun (c) -> c#as_entry_completion) completion in
       (Entry.set_completion obj completion)
 
+  method set_extra_menu : 'p1. (#Ocgtk_gio.Gio.menu_model as 'p1) option -> unit =
+    fun model ->
+      let model = Option.map (fun (c) -> c#as_menu_model) model in
+      (Entry.set_extra_menu obj model)
+
   method set_has_frame : bool -> unit =
     fun setting ->
       (Entry.set_has_frame obj setting)
@@ -127,9 +156,24 @@ class entry (obj : Entry.t) = object (self)
     fun icon_pos activatable ->
       (Entry.set_icon_activatable obj icon_pos activatable)
 
+  method set_icon_drag_source : 'p1. Gtk_enums.entryiconposition -> (#Ocgtk_gdk.Gdk.content_provider as 'p1) -> Ocgtk_gdk.Gdk.dragaction -> unit =
+    fun icon_pos provider actions ->
+      let provider = provider#as_content_provider in
+      (Entry.set_icon_drag_source obj icon_pos provider actions)
+
+  method set_icon_from_gicon : 'p1. Gtk_enums.entryiconposition -> (#Ocgtk_gio.Gio.icon as 'p1) option -> unit =
+    fun icon_pos icon ->
+      let icon = Option.map (fun (c) -> c#as_icon) icon in
+      (Entry.set_icon_from_gicon obj icon_pos icon)
+
   method set_icon_from_icon_name : Gtk_enums.entryiconposition -> string option -> unit =
     fun icon_pos icon_name ->
       (Entry.set_icon_from_icon_name obj icon_pos icon_name)
+
+  method set_icon_from_paintable : 'p1. Gtk_enums.entryiconposition -> (#Ocgtk_gdk.Gdk.paintable as 'p1) option -> unit =
+    fun icon_pos paintable ->
+      let paintable = Option.map (fun (c) -> c#as_paintable) paintable in
+      (Entry.set_icon_from_paintable obj icon_pos paintable)
 
   method set_icon_sensitive : Gtk_enums.entryiconposition -> bool -> unit =
     fun icon_pos sensitive ->
@@ -171,6 +215,11 @@ class entry (obj : Entry.t) = object (self)
     fun fraction ->
       (Entry.set_progress_pulse_step obj fraction)
 
+  method set_tabs : 'p1. (#Ocgtk_pango.Pango.tab_array as 'p1) option -> unit =
+    fun tabs ->
+      let tabs = Option.map (fun (c) -> c#as_tab_array) tabs in
+      (Entry.set_tabs obj tabs)
+
   method set_visibility : bool -> unit =
     fun visible ->
       (Entry.set_visibility obj visible)
@@ -191,8 +240,14 @@ class entry (obj : Entry.t) = object (self)
   method primary_icon_activatable = Entry.get_primary_icon_activatable obj
   method set_primary_icon_activatable v =  Entry.set_primary_icon_activatable obj v
 
+  method primary_icon_gicon = new Ocgtk_gio.Gio.icon (Entry.get_primary_icon_gicon obj)
+  method set_primary_icon_gicon : 'a . (#Ocgtk_gio.Gio.icon as 'a) -> unit  = fun v ->  Entry.set_primary_icon_gicon obj v#as_icon
+
   method primary_icon_name = Entry.get_primary_icon_name obj
   method set_primary_icon_name v =  Entry.set_primary_icon_name obj v
+
+  method primary_icon_paintable = new Ocgtk_gdk.Gdk.paintable (Entry.get_primary_icon_paintable obj)
+  method set_primary_icon_paintable : 'a . (#Ocgtk_gdk.Gdk.paintable as 'a) -> unit  = fun v ->  Entry.set_primary_icon_paintable obj v#as_paintable
 
   method primary_icon_sensitive = Entry.get_primary_icon_sensitive obj
   method set_primary_icon_sensitive v =  Entry.set_primary_icon_sensitive obj v
@@ -210,8 +265,14 @@ class entry (obj : Entry.t) = object (self)
   method secondary_icon_activatable = Entry.get_secondary_icon_activatable obj
   method set_secondary_icon_activatable v =  Entry.set_secondary_icon_activatable obj v
 
+  method secondary_icon_gicon = new Ocgtk_gio.Gio.icon (Entry.get_secondary_icon_gicon obj)
+  method set_secondary_icon_gicon : 'a . (#Ocgtk_gio.Gio.icon as 'a) -> unit  = fun v ->  Entry.set_secondary_icon_gicon obj v#as_icon
+
   method secondary_icon_name = Entry.get_secondary_icon_name obj
   method set_secondary_icon_name v =  Entry.set_secondary_icon_name obj v
+
+  method secondary_icon_paintable = new Ocgtk_gdk.Gdk.paintable (Entry.get_secondary_icon_paintable obj)
+  method set_secondary_icon_paintable : 'a . (#Ocgtk_gdk.Gdk.paintable as 'a) -> unit  = fun v ->  Entry.set_secondary_icon_paintable obj v#as_paintable
 
   method secondary_icon_sensitive = Entry.get_secondary_icon_sensitive obj
   method set_secondary_icon_sensitive v =  Entry.set_secondary_icon_sensitive obj v
@@ -230,7 +291,6 @@ class entry (obj : Entry.t) = object (self)
   method truncate_multiline = Entry.get_truncate_multiline obj
   method set_truncate_multiline v =  Entry.set_truncate_multiline obj v
 
-  method as_widget = (Entry.as_widget obj)
     method as_entry = obj
 end
 

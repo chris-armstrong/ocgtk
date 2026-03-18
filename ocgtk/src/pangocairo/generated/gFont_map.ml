@@ -1,7 +1,7 @@
 (* High-level class for FontMap *)
 class font_map (obj : Font_map.t) = object (self)
 
-  method get_font_type : unit -> fonttype =
+  method get_font_type : unit -> Ocgtk_cairo.Cairo.fonttype =
     fun () ->
       (Font_map.get_font_type obj)
 

@@ -2,7 +2,6 @@
 
 (* High-level class for Popover *)
 class popover (obj : Popover.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Popover.as_widget obj)
   inherit Gpopover_signals.popover_signals obj
 
   method get_autohide : unit -> bool =
@@ -71,11 +70,15 @@ class popover (obj : Popover.t) = object (self)
     fun x_offset y_offset ->
       (Popover.set_offset obj x_offset y_offset)
 
+  method set_pointing_to : 'p1. (#Ocgtk_gdk.Gdk.rectangle as 'p1) option -> unit =
+    fun rect ->
+      let rect = Option.map (fun (c) -> c#as_rectangle) rect in
+      (Popover.set_pointing_to obj rect)
+
   method set_position : Gtk_enums.positiontype -> unit =
     fun position ->
       (Popover.set_position obj position)
 
-  method as_widget = (Popover.as_widget obj)
     method as_popover = obj
 end
 

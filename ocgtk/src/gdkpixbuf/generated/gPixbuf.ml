@@ -77,6 +77,12 @@ class pixbuf (obj : Pixbuf.t) = object (self)
       let dest = dest#as_pixbuf in
       (Pixbuf.saturate_and_pixelate obj dest saturation pixelate)
 
+  method save_to_streamv : 'p1 'p2. (#Ocgtk_gio.Gio.output_stream as 'p1) -> string -> string array option -> string array option -> (#Ocgtk_gio.Gio.cancellable as 'p2) option -> (bool, GError.t) result =
+    fun stream type_ option_keys option_values cancellable ->
+      let stream = stream#as_output_stream in
+      let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
+      (Pixbuf.save_to_streamv obj stream type_ option_keys option_values cancellable)
+
   method savev : string -> string -> string array option -> string array option -> (bool, GError.t) result =
     fun filename type_ option_keys option_values ->
       (Pixbuf.savev obj filename type_ option_keys option_values)

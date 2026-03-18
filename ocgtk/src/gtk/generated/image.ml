@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Image *)
+(* Image: Image *)
 
 type t = [`image | `widget | `initially_unowned] Gobject.obj
-
-let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new Image *)
 external new_ : unit -> t = "ml_gtk_image_new"
@@ -12,16 +10,16 @@ external new_ : unit -> t = "ml_gtk_image_new"
 external new_from_file : string -> t = "ml_gtk_image_new_from_file"
 
 (** Create a new Image *)
-external new_from_gicon : unit -> t = "ml_gtk_image_new_from_gicon"
+external new_from_gicon : Ocgtk_gio.Gio.Wrappers.Icon.t -> t = "ml_gtk_image_new_from_gicon"
 
 (** Create a new Image *)
 external new_from_icon_name : string option -> t = "ml_gtk_image_new_from_icon_name"
 
 (** Create a new Image *)
-external new_from_paintable : unit -> t = "ml_gtk_image_new_from_paintable"
+external new_from_paintable : Ocgtk_gdk.Gdk.Wrappers.Paintable.t option -> t = "ml_gtk_image_new_from_paintable"
 
 (** Create a new Image *)
-external new_from_pixbuf : unit -> t = "ml_gtk_image_new_from_pixbuf"
+external new_from_pixbuf : Ocgtk_gdkpixbuf.GdkPixbuf.Wrappers.Pixbuf.t option -> t = "ml_gtk_image_new_from_pixbuf"
 
 (** Create a new Image *)
 external new_from_resource : string -> t = "ml_gtk_image_new_from_resource"
@@ -41,10 +39,29 @@ external set_icon_size : t -> Gtk_enums.iconsize -> unit = "ml_gtk_image_set_ico
 See [ctor@Gtk.Image.new_from_resource] for details. *)
 external set_from_resource : t -> string option -> unit = "ml_gtk_image_set_from_resource"
 
+(** Sets a `GtkImage` to show a `GdkPixbuf`.
+
+See [ctor@Gtk.Image.new_from_pixbuf] for details.
+
+Note: This is a helper for [method@Gtk.Image.set_from_paintable],
+and you can't get back the exact pixbuf once this is called,
+only a paintable. *)
+external set_from_pixbuf : t -> Ocgtk_gdkpixbuf.GdkPixbuf.Wrappers.Pixbuf.t option -> unit = "ml_gtk_image_set_from_pixbuf"
+
+(** Sets a `GtkImage` to show a `GdkPaintable`.
+
+See [ctor@Gtk.Image.new_from_paintable] for details. *)
+external set_from_paintable : t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option -> unit = "ml_gtk_image_set_from_paintable"
+
 (** Sets a `GtkImage` to show a named icon.
 
 See [ctor@Gtk.Image.new_from_icon_name] for details. *)
 external set_from_icon_name : t -> string option -> unit = "ml_gtk_image_set_from_icon_name"
+
+(** Sets a `GtkImage` to show a `GIcon`.
+
+See [ctor@Gtk.Image.new_from_gicon] for details. *)
+external set_from_gicon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t -> unit = "ml_gtk_image_set_from_gicon"
 
 (** Sets a `GtkImage` to show a file.
 
@@ -61,6 +78,14 @@ external get_storage_type : t -> Gtk_enums.imagetype = "ml_gtk_image_get_storage
 (** Gets the pixel size used for named icons. *)
 external get_pixel_size : t -> int = "ml_gtk_image_get_pixel_size"
 
+(** Gets the image `GdkPaintable` being displayed by the `GtkImage`.
+
+The storage type of the image must be %GTK_IMAGE_EMPTY or
+%GTK_IMAGE_PAINTABLE (see [method@Gtk.Image.get_storage_type]).
+The caller of this function does not own a reference to the
+returned paintable. *)
+external get_paintable : t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option = "ml_gtk_image_get_paintable"
+
 (** Gets the icon size used by the @image when rendering icons. *)
 external get_icon_size : t -> Gtk_enums.iconsize = "ml_gtk_image_get_icon_size"
 
@@ -71,6 +96,14 @@ The storage type of the image must be %GTK_IMAGE_EMPTY or
 The returned string is owned by the `GtkImage` and should not
 be freed. *)
 external get_icon_name : t -> string option = "ml_gtk_image_get_icon_name"
+
+(** Gets the `GIcon` being displayed by the `GtkImage`.
+
+The storage type of the image must be %GTK_IMAGE_EMPTY or
+%GTK_IMAGE_GICON (see [method@Gtk.Image.get_storage_type]).
+The caller of this function does not own a reference to the
+returned `GIcon`. *)
+external get_gicon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t option = "ml_gtk_image_get_gicon"
 
 (** Resets the image to be empty. *)
 external clear : t -> unit = "ml_gtk_image_clear"

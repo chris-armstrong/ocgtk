@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Dialog *)
+(* Dialog: Dialog *)
 
 type t = [`dialog | `window | `widget | `initially_unowned] Gobject.obj
-
-val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new Dialog *)
 external new_ : unit -> t = "ml_gtk_dialog_new"
@@ -40,10 +38,10 @@ external get_response_for_widget : t -> Event_controller_and__layout_child_and__
 
 Note that the headerbar is only used by the dialog if the
 [property@Gtk.Dialog:use-header-bar] property is %TRUE. *)
-external get_header_bar : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = "ml_gtk_dialog_get_header_bar"
+external get_header_bar : t -> Header_bar.t = "ml_gtk_dialog_get_header_bar"
 
 (** Returns the content area of @dialog. *)
-external get_content_area : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = "ml_gtk_dialog_get_content_area"
+external get_content_area : t -> Box.t = "ml_gtk_dialog_get_content_area"
 
 (** Adds a button with the given text.
 

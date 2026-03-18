@@ -12,5 +12,3 @@ module Wrappers = struct
   module Font_map = Font_map
 end
 
-(** Enumerations and Bitfields *)
-

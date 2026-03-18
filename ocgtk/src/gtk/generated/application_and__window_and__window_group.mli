@@ -5,7 +5,7 @@ module rec Application : sig
   type t = [`application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application | `application] Gobject.obj
 
   (** Create a new Application *)
-  external new_ : string option -> unit -> t = "ml_gtk_application_new"
+  external new_ : string option -> Ocgtk_gio.Gio.applicationflags -> t = "ml_gtk_application_new"
 
   (* Methods *)
   (** Removes an inhibitor that has been previously established.
@@ -14,6 +14,26 @@ module rec Application : sig
 
   Inhibitors are also cleared when the application exits. *)
   external uninhibit : t -> int -> unit = "ml_gtk_application_uninhibit"
+
+  (** Sets or unsets the menubar for windows of `application`.
+
+  This is a menubar in the traditional sense.
+
+  This can only be done in the primary instance of the application,
+  after it has been registered. `GApplication::startup` is a good place
+  to call this.
+
+  Depending on the desktop environment, this may appear at the top of
+  each window, or at the top of the screen.  In some environments, if
+  both the application menu and the menubar are set, the application
+  menu will be presented as if it were the first item of the menubar.
+  Other environments treat the two as completely separate — for example,
+  the application menu may be rendered by the desktop shell while the
+  menubar (if set) remains in each individual window.
+
+  Use the base `GActionMap` interface to add actions, to respond to the
+  user selecting these menu items. *)
+  external set_menubar : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> unit = "ml_gtk_application_set_menubar"
 
   (** Sets zero or more keyboard accelerators that will trigger the
   given action.
@@ -73,6 +93,16 @@ module rec Application : sig
   The ID of a `GtkApplicationWindow` can be retrieved with
   [method@Gtk.ApplicationWindow.get_id]. *)
   external get_window_by_id : t -> int -> Window.t option = "ml_gtk_application_get_window_by_id"
+
+  (** Returns the menu model that has been set with
+  [method@Gtk.Application.set_menubar]. *)
+  external get_menubar : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option = "ml_gtk_application_get_menubar"
+
+  (** Gets a menu from automatically loaded resources.
+
+  See [the section on Automatic resources](class.Application.html#automatic-resources)
+  for more information. *)
+  external get_menu_by_id : t -> string -> Ocgtk_gio.Gio.Wrappers.Menu.t option = "ml_gtk_application_get_menu_by_id"
 
   (** Gets the “active” window for the application.
 
@@ -139,8 +169,6 @@ end
 and Window
  : sig
   type t = [`window | `widget | `initially_unowned] Gobject.obj
-
-  val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
   (** Create a new Window *)
   external new_ : unit -> t = "ml_gtk_window_new"
@@ -290,6 +318,12 @@ and Window
   particular widget in the toplevel, it is usually more convenient
   to use [method@Gtk.Widget.grab_focus] instead of this function. *)
   external set_focus : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_window_set_focus"
+
+  (** Sets the `GdkDisplay` where the @window is displayed.
+
+  If the window is already mapped, it will be unmapped,
+  and then remapped on the new display. *)
+  external set_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t -> unit = "ml_gtk_window_set_display"
 
   (** If @setting is %TRUE, then destroying the transient parent of @window
   will also destroy @window itself.
@@ -539,6 +573,17 @@ and Window
 
   (** Gets the `GtkApplication` associated with the window. *)
   external get_application : t -> Application.t option = "ml_gtk_window_get_application"
+
+  (** Asks to place @window in the fullscreen state on the given @monitor.
+
+  Note that you shouldn't assume the window is definitely fullscreen
+  afterward, or that the windowing system allows fullscreen windows on
+  any given monitor.
+
+  You can track the result of this operation via the
+  [property@Gdk.Toplevel:state] property, or by listening to
+  notifications of the [property@Gtk.Window:fullscreened] property. *)
+  external fullscreen_on_monitor : t -> Ocgtk_gdk.Gdk.Wrappers.Monitor.t -> unit = "ml_gtk_window_fullscreen_on_monitor"
 
   (** Asks to place @window in the fullscreen state.
 

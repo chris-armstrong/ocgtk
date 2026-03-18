@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_assistant_new(value unit)
@@ -112,6 +112,14 @@ CAMLparam3(self, arg1, arg2);
 
 int result = gtk_assistant_insert_page(GtkAssistant_val(self), GtkWidget_val(arg1), Int_val(arg2));
 CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_assistant_get_pages(value self)
+{
+CAMLparam1(self);
+
+GListModel* result = gtk_assistant_get_pages(GtkAssistant_val(self));
+CAMLreturn(Val_GListModel(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_assistant_get_page_type(value self, value arg1)

@@ -6,8 +6,10 @@
 class at_context : At_context_and__accessible.At_context.t -> GAt_context_and__accessible.at_context
 class about_dialog : About_dialog.t -> GAbout_dialog.about_dialog
 class accessible : At_context_and__accessible.Accessible.t -> GAt_context_and__accessible.accessible
+class accessible_list : Accessible_list.t -> GAccessible_list.accessible_list
 class accessible_range : Accessible_range.t -> GAccessible_range.accessible_range
 class accessible_text : Accessible_text.t -> GAccessible_text.accessible_text
+class accessible_text_range : Accessible_text_range.t -> GAccessible_text_range.accessible_text_range
 class action_bar : Action_bar.t -> GAction_bar.action_bar
 class actionable : Actionable.t -> GActionable.actionable
 class activate_action : Activate_action.t -> GActivate_action.activate_action
@@ -25,11 +27,16 @@ class aspect_frame : Aspect_frame.t -> GAspect_frame.aspect_frame
 class assistant : Assistant.t -> GAssistant.assistant
 class assistant_page : Assistant_page.t -> GAssistant_page.assistant_page
 class bin_layout : Bin_layout.t -> GBin_layout.bin_layout
+class bitset : Bitset.t -> GBitset.bitset
+class bitset_iter : Bitset_iter.t -> GBitset_iter.bitset_iter
 class bookmark_list : Bookmark_list.t -> GBookmark_list.bookmark_list
 class bool_filter : Bool_filter.t -> GBool_filter.bool_filter
+class border : Border.t -> GBorder.border
 class box : Box.t -> GBox.box
 class box_layout : Box_layout.t -> GBox_layout.box_layout
 class buildable : Buildable.t -> GBuildable.buildable
+class buildable_parse_context : Buildable_parse_context.t -> GBuildable_parse_context.buildable_parse_context
+class buildable_parser : Buildable_parser.t -> GBuildable_parser.buildable_parser
 class builder : Builder.t -> GBuilder.builder
 class builder_c_scope : Builder_c_scope.t -> GBuilder_c_scope.builder_c_scope
 class builder_list_item_factory : Builder_list_item_factory.t -> GBuilder_list_item_factory.builder_list_item_factory
@@ -76,7 +83,10 @@ class constraint_guide : Constraint_guide.t -> GConstraint_guide.constraint_guid
 class constraint_layout : Constraint_layout.t -> GConstraint_layout.constraint_layout
 class constraint_layout_child : Constraint_layout_child.t -> GConstraint_layout_child.constraint_layout_child
 class constraint_target : Constraint_target.t -> GConstraint_target.constraint_target
+class css_location : Css_location.t -> GCss_location.css_location
 class css_provider : Css_provider.t -> GCss_provider.css_provider
+class css_section : Css_section.t -> GCss_section.css_section
+class css_style_change : Css_style_change.t -> GCss_style_change.css_style_change
 class custom_filter : Custom_filter.t -> GCustom_filter.custom_filter
 class custom_layout : Custom_layout.t -> GCustom_layout.custom_layout
 class custom_sorter : Custom_sorter.t -> GCustom_sorter.custom_sorter
@@ -104,6 +114,7 @@ class event_controller_scroll : Event_controller_scroll.t -> GEvent_controller_s
 class every_filter : Every_filter.t -> GEvery_filter.every_filter
 class expander : Expander.t -> GExpander.expander
 class expression : Expression.t -> GExpression.expression
+class expression_watch : Expression_watch.t -> GExpression_watch.expression_watch
 class file_chooser : File_chooser.t -> GFile_chooser.file_chooser
 class file_chooser_dialog : File_chooser_dialog.t -> GFile_chooser_dialog.file_chooser_dialog
 class file_chooser_native : File_chooser_native.t -> GFile_chooser_native.file_chooser_native
@@ -193,9 +204,12 @@ class orientable : Orientable.t -> GOrientable.orientable
 class overlay : Overlay.t -> GOverlay.overlay
 class overlay_layout : Overlay_layout.t -> GOverlay_layout.overlay_layout
 class overlay_layout_child : Overlay_layout_child.t -> GOverlay_layout_child.overlay_layout_child
+class pad_action_entry : Pad_action_entry.t -> GPad_action_entry.pad_action_entry
 class pad_controller : Pad_controller.t -> GPad_controller.pad_controller
+class page_range : Page_range.t -> GPage_range.page_range
 class page_setup : Page_setup.t -> GPage_setup.page_setup
 class paned : Paned.t -> GPaned.paned
+class paper_size : Paper_size.t -> GPaper_size.paper_size
 class param_spec_expression : Param_spec_expression.t -> GParam_spec_expression.param_spec_expression
 class password_entry : Password_entry.t -> GPassword_entry.password_entry
 class password_entry_buffer : Password_entry_buffer.t -> GPassword_entry_buffer.password_entry_buffer
@@ -208,14 +222,20 @@ class print_dialog : Print_dialog.t -> GPrint_dialog.print_dialog
 class print_operation : Print_operation.t -> GPrint_operation.print_operation
 class print_operation_preview : Print_operation_preview.t -> GPrint_operation_preview.print_operation_preview
 class print_settings : Print_settings.t -> GPrint_settings.print_settings
+class print_setup : Print_setup.t -> GPrint_setup.print_setup
 class progress_bar : Progress_bar.t -> GProgress_bar.progress_bar
 class property_expression : Property_expression.t -> GProperty_expression.property_expression
 class range : Range.t -> GRange.range
+class recent_data : Recent_data.t -> GRecent_data.recent_data
+class recent_info : Recent_info.t -> GRecent_info.recent_info
 class recent_manager : Recent_manager.t -> GRecent_manager.recent_manager
+class requested_size : Requested_size.t -> GRequested_size.requested_size
+class requisition : Requisition.t -> GRequisition.requisition
 class revealer : Revealer.t -> GRevealer.revealer
 class root : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Root.t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.root
 class scale : Scale.t -> GScale.scale
 class scale_button : Scale_button.t -> GScale_button.scale_button
+class scroll_info : Scroll_info.t -> GScroll_info.scroll_info
 class scrollable : Scrollable.t -> GScrollable.scrollable
 class scrollbar : Scrollbar.t -> GScrollbar.scrollbar
 class scrolled_window : Scrolled_window.t -> GScrolled_window.scrolled_window
@@ -262,6 +282,7 @@ class symbolic_paintable : Symbolic_paintable.t -> GSymbolic_paintable.symbolic_
 class text : Text.t -> GText.text
 class text_buffer : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t -> GText_buffer_and__text_iter_and__text_mark.text_buffer
 class text_child_anchor : Text_child_anchor.t -> GText_child_anchor.text_child_anchor
+class text_iter : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> GText_buffer_and__text_iter_and__text_mark.text_iter
 class text_mark : Text_buffer_and__text_iter_and__text_mark.Text_mark.t -> GText_buffer_and__text_iter_and__text_mark.text_mark
 class text_tag : Text_tag.t -> GText_tag.text_tag
 class text_tag_table : Text_tag_table.t -> GText_tag_table.text_tag_table
@@ -271,12 +292,15 @@ class tooltip : Tooltip.t -> GTooltip.tooltip
 class tree_drag_dest : Tree_drag_dest.t -> GTree_drag_dest.tree_drag_dest
 class tree_drag_source : Tree_drag_source.t -> GTree_drag_source.tree_drag_source
 class tree_expander : Tree_expander.t -> GTree_expander.tree_expander
+class tree_iter : Tree_iter.t -> GTree_iter.tree_iter
 class tree_list_model : Tree_list_model.t -> GTree_list_model.tree_list_model
 class tree_list_row : Tree_list_row.t -> GTree_list_row.tree_list_row
 class tree_list_row_sorter : Tree_list_row_sorter.t -> GTree_list_row_sorter.tree_list_row_sorter
 class tree_model : Tree_model.t -> GTree_model.tree_model
 class tree_model_filter : Tree_model_filter.t -> GTree_model_filter.tree_model_filter
 class tree_model_sort : Tree_model_sort.t -> GTree_model_sort.tree_model_sort
+class tree_path : Tree_path.t -> GTree_path.tree_path
+class tree_row_reference : Tree_row_reference.t -> GTree_row_reference.tree_row_reference
 class tree_selection : Tree_selection_and__tree_view.Tree_selection.t -> GTree_selection_and__tree_view.tree_selection
 class tree_sortable : Tree_sortable.t -> GTree_sortable.tree_sortable
 class tree_store : Tree_store.t -> GTree_store.tree_store
@@ -302,8 +326,10 @@ module Wrappers : sig
   module At_context = At_context_and__accessible.At_context
   module About_dialog = About_dialog
   module Accessible = At_context_and__accessible.Accessible
+  module Accessible_list = Accessible_list
   module Accessible_range = Accessible_range
   module Accessible_text = Accessible_text
+  module Accessible_text_range = Accessible_text_range
   module Action_bar = Action_bar
   module Actionable = Actionable
   module Activate_action = Activate_action
@@ -321,11 +347,16 @@ module Wrappers : sig
   module Assistant = Assistant
   module Assistant_page = Assistant_page
   module Bin_layout = Bin_layout
+  module Bitset = Bitset
+  module Bitset_iter = Bitset_iter
   module Bookmark_list = Bookmark_list
   module Bool_filter = Bool_filter
+  module Border = Border
   module Box = Box
   module Box_layout = Box_layout
   module Buildable = Buildable
+  module Buildable_parse_context = Buildable_parse_context
+  module Buildable_parser = Buildable_parser
   module Builder = Builder
   module Builder_c_scope = Builder_c_scope
   module Builder_list_item_factory = Builder_list_item_factory
@@ -372,7 +403,10 @@ module Wrappers : sig
   module Constraint_layout = Constraint_layout
   module Constraint_layout_child = Constraint_layout_child
   module Constraint_target = Constraint_target
+  module Css_location = Css_location
   module Css_provider = Css_provider
+  module Css_section = Css_section
+  module Css_style_change = Css_style_change
   module Custom_filter = Custom_filter
   module Custom_layout = Custom_layout
   module Custom_sorter = Custom_sorter
@@ -400,6 +434,7 @@ module Wrappers : sig
   module Every_filter = Every_filter
   module Expander = Expander
   module Expression = Expression
+  module Expression_watch = Expression_watch
   module File_chooser = File_chooser
   module File_chooser_dialog = File_chooser_dialog
   module File_chooser_native = File_chooser_native
@@ -489,9 +524,12 @@ module Wrappers : sig
   module Overlay = Overlay
   module Overlay_layout = Overlay_layout
   module Overlay_layout_child = Overlay_layout_child
+  module Pad_action_entry = Pad_action_entry
   module Pad_controller = Pad_controller
+  module Page_range = Page_range
   module Page_setup = Page_setup
   module Paned = Paned
+  module Paper_size = Paper_size
   module Param_spec_expression = Param_spec_expression
   module Password_entry = Password_entry
   module Password_entry_buffer = Password_entry_buffer
@@ -504,14 +542,20 @@ module Wrappers : sig
   module Print_operation = Print_operation
   module Print_operation_preview = Print_operation_preview
   module Print_settings = Print_settings
+  module Print_setup = Print_setup
   module Progress_bar = Progress_bar
   module Property_expression = Property_expression
   module Range = Range
+  module Recent_data = Recent_data
+  module Recent_info = Recent_info
   module Recent_manager = Recent_manager
+  module Requested_size = Requested_size
+  module Requisition = Requisition
   module Revealer = Revealer
   module Root = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Root
   module Scale = Scale
   module Scale_button = Scale_button
+  module Scroll_info = Scroll_info
   module Scrollable = Scrollable
   module Scrollbar = Scrollbar
   module Scrolled_window = Scrolled_window
@@ -558,6 +602,7 @@ module Wrappers : sig
   module Text = Text
   module Text_buffer = Text_buffer_and__text_iter_and__text_mark.Text_buffer
   module Text_child_anchor = Text_child_anchor
+  module Text_iter = Text_buffer_and__text_iter_and__text_mark.Text_iter
   module Text_mark = Text_buffer_and__text_iter_and__text_mark.Text_mark
   module Text_tag = Text_tag
   module Text_tag_table = Text_tag_table
@@ -567,12 +612,15 @@ module Wrappers : sig
   module Tree_drag_dest = Tree_drag_dest
   module Tree_drag_source = Tree_drag_source
   module Tree_expander = Tree_expander
+  module Tree_iter = Tree_iter
   module Tree_list_model = Tree_list_model
   module Tree_list_row = Tree_list_row
   module Tree_list_row_sorter = Tree_list_row_sorter
   module Tree_model = Tree_model
   module Tree_model_filter = Tree_model_filter
   module Tree_model_sort = Tree_model_sort
+  module Tree_path = Tree_path
+  module Tree_row_reference = Tree_row_reference
   module Tree_selection = Tree_selection_and__tree_view.Tree_selection
   module Tree_sortable = Tree_sortable
   module Tree_store = Tree_store
@@ -696,6 +744,7 @@ type treeviewcolumnsizing = Gtk_enums.treeviewcolumnsizing
 type treeviewdropposition = Gtk_enums.treeviewdropposition
 type treeviewgridlines = Gtk_enums.treeviewgridlines
 type unit = Gtk_enums.unit
+type wrapmode = Gtk_enums.wrapmode
 type applicationinhibitflags = Gtk_enums.applicationinhibitflags
 type builderclosureflags = Gtk_enums.builderclosureflags
 type cellrendererstate = Gtk_enums.cellrendererstate

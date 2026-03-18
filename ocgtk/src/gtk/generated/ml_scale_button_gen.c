@@ -13,18 +13,19 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_scale_button_new(value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam4(arg1, arg2, arg3, arg4);
+    int arg4_length = 0;
     char** c_arg4 = NULL;
     
     if (Is_some(arg4)) {
         value array = Some_val(arg4);
-        int arg4_length = Wosize_val(array);
+        arg4_length = Wosize_val(array);
         c_arg4 = (char**)g_malloc(sizeof(char*) * (arg4_length + 1));
         for (int i = 0; i < arg4_length; i++) {
           c_arg4[i] = String_val(Field(array, i));
@@ -100,7 +101,7 @@ CAMLparam1(self);
 
 GtkWidget* result = gtk_scale_button_get_plus_button(GtkScaleButton_val(self));
 if (result) g_object_ref_sink(result);
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkButton(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_scale_button_get_minus_button(value self)
@@ -109,7 +110,7 @@ CAMLparam1(self);
 
 GtkWidget* result = gtk_scale_button_get_minus_button(GtkScaleButton_val(self));
 if (result) g_object_ref_sink(result);
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkButton(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_scale_button_get_has_frame(value self)

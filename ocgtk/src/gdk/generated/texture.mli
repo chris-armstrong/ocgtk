@@ -4,7 +4,7 @@
 type t = [`texture | `object_] Gobject.obj
 
 (** Create a new Texture *)
-external new_for_pixbuf : unit -> t = "ml_gdk_texture_new_for_pixbuf"
+external new_for_pixbuf : Ocgtk_gdkpixbuf.GdkPixbuf.Wrappers.Pixbuf.t -> t = "ml_gdk_texture_new_for_pixbuf"
 
 (** Create a new Texture *)
 external new_from_resource : string -> t = "ml_gdk_texture_new_from_resource"

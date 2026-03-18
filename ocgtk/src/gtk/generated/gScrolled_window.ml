@@ -2,7 +2,6 @@
 
 (* High-level class for ScrolledWindow *)
 class scrolled_window (obj : Scrolled_window.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Scrolled_window.as_widget obj)
   inherit Gscrolled_window_signals.scrolled_window_signals obj
 
   method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
@@ -137,7 +136,6 @@ class scrolled_window (obj : Scrolled_window.t) = object (self)
   method window_placement = Scrolled_window.get_window_placement obj
   method set_window_placement v =  Scrolled_window.set_window_placement obj v
 
-  method as_widget = (Scrolled_window.as_widget obj)
     method as_scrolled_window = obj
 end
 

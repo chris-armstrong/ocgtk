@@ -45,5 +45,5 @@ CAMLexport CAMLprim value ml_pango_cairo_font_map_get_font_type(value self)
 CAMLparam1(self);
 
 cairo_font_type_t result = pango_cairo_font_map_get_font_type(PangoCairoFontMap_val(self));
-CAMLreturn(Val_cairo_font_type_t(result));
+CAMLreturn(Val_cairoFontType(result));
 }

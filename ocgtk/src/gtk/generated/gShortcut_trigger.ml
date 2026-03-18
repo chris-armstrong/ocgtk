@@ -15,9 +15,19 @@ class shortcut_trigger (obj : Shortcut_trigger.t) = object (self)
     fun () ->
       (Shortcut_trigger.hash obj)
 
+  method to_label : 'p1. (#Ocgtk_gdk.Gdk.display as 'p1) -> string =
+    fun display ->
+      let display = display#as_display in
+      (Shortcut_trigger.to_label obj display)
+
   method to_string : unit -> string =
     fun () ->
       (Shortcut_trigger.to_string obj)
+
+  method trigger : 'p1. (#Ocgtk_gdk.Gdk.event as 'p1) -> bool -> Ocgtk_gdk.Gdk.keymatch =
+    fun event enable_mnemonics ->
+      let event = event#as_event in
+      (Shortcut_trigger.trigger obj event enable_mnemonics)
 
     method as_shortcut_trigger = obj
 end

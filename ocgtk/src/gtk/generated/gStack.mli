@@ -1,6 +1,5 @@
 class stack : Stack.t ->
   object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
     method add_child : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> GStack_page.stack_page
     method add_named : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> string option -> GStack_page.stack_page
     method add_titled : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> string option -> string -> GStack_page.stack_page
@@ -24,7 +23,6 @@ class stack : Stack.t ->
     method set_visible_child : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> unit
     method set_visible_child_full : string -> Gtk_enums.stacktransitiontype -> unit
     method set_visible_child_name : string -> unit
-  method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
     method as_stack : Stack.t
   end
 

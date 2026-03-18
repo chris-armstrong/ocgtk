@@ -16,6 +16,18 @@ external set_width : t -> int -> unit = "ml_gdk_dmabuf_texture_builder_set_width
 [method@Gdk.DmabufTextureBuilder.set_update_region] for an explanation. *)
 external set_update_texture : t -> Texture.t option -> unit = "ml_gdk_dmabuf_texture_builder_set_update_texture"
 
+(** Sets the region to be updated by this texture. Together with
+[property@Gdk.DmabufTextureBuilder:update-texture] this describes an
+update of a previous texture.
+
+When rendering animations of large textures, it is possible that
+consecutive textures are only updating contents in parts of the texture.
+It is then possible to describe this update via these two properties,
+so that GTK can avoid rerendering parts that did not change.
+
+An example would be a screen recording where only the mouse pointer moves. *)
+external set_update_region : t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option -> unit = "ml_gdk_dmabuf_texture_builder_set_update_region"
+
 (** Sets the stride for a plane.
 
 The stride must be set for all planes before calling [method@Gdk.GLTextureBuilder.build]. *)
@@ -55,6 +67,10 @@ external get_width : t -> int = "ml_gdk_dmabuf_texture_builder_get_width"
 (** Gets the texture previously set via gdk_dmabuf_texture_builder_set_update_texture() or
 %NULL if none was set. *)
 external get_update_texture : t -> Texture.t option = "ml_gdk_dmabuf_texture_builder_get_update_texture"
+
+(** Gets the region previously set via gdk_dmabuf_texture_builder_set_update_region() or
+%NULL if none was set. *)
+external get_update_region : t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option = "ml_gdk_dmabuf_texture_builder_get_update_region"
 
 (** Gets the stride value for a plane. *)
 external get_stride : t -> int -> int = "ml_gdk_dmabuf_texture_builder_get_stride"

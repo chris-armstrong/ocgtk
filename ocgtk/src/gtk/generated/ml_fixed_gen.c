@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_fixed_new(value unit)
@@ -26,6 +26,14 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GtkFixed(obj));
 }
+CAMLexport CAMLprim value ml_gtk_fixed_set_child_transform(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_fixed_set_child_transform(GtkFixed_val(self), GtkWidget_val(arg1), Option_val(arg2, GskTransform_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_fixed_remove(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -48,6 +56,15 @@ CAMLparam4(self, arg1, arg2, arg3);
 
 gtk_fixed_move(GtkFixed_val(self), GtkWidget_val(arg1), Double_val(arg2), Double_val(arg3));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_fixed_get_child_transform(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GskTransform* result = gtk_fixed_get_child_transform(GtkFixed_val(self), GtkWidget_val(arg1));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GskTransform));
 }
 
 CAMLexport CAMLprim value ml_gtk_fixed_get_child_position(value self, value arg1)

@@ -1,6 +1,5 @@
 class flow_box : Flow_box.t ->
   object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
     inherit Gflow_box_signals.flow_box_signals
     method append : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> unit
     method get_activate_on_single_click : unit -> bool
@@ -33,7 +32,6 @@ class flow_box : Flow_box.t ->
     method unselect_child : #GFlow_box_child.flow_box_child -> unit
     method accept_unpaired_release : bool
     method set_accept_unpaired_release : bool -> unit
-  method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
     method as_flow_box : Flow_box.t
   end
 

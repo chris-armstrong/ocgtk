@@ -4,6 +4,12 @@
 type t = [`media_stream | `object_] Gobject.obj
 
 (* Methods *)
+(** Undoes a previous call to gtk_media_stream_realize().
+
+This causes the stream to release all resources it had
+allocated from @surface. *)
+external unrealize : t -> Ocgtk_gdk.Gdk.Wrappers.Surface.t -> unit = "ml_gtk_media_stream_unrealize"
+
 (** Same as gtk_media_stream_stream_unprepared(). *)
 external unprepared : t -> unit = "ml_gtk_media_stream_unprepared"
 
@@ -75,6 +81,24 @@ playback continues as if no seek had happened.
 See [method@Gtk.MediaStream.seek_success] for the other way of
 ending a seek. *)
 external seek_failed : t -> unit = "ml_gtk_media_stream_seek_failed"
+
+(** Called by users to attach the media stream to a `GdkSurface` they manage.
+
+The stream can then access the resources of @surface for its
+rendering purposes. In particular, media streams might want to
+create a `GdkGLContext` or sync to the `GdkFrameClock`.
+
+Whoever calls this function is responsible for calling
+[method@Gtk.MediaStream.unrealize] before either the stream
+or @surface get destroyed.
+
+Multiple calls to this function may happen from different
+users of the video, even with the same @surface. Each of these
+calls must be followed by its own call to
+[method@Gtk.MediaStream.unrealize].
+
+It is not required to call this function to make a media stream work. *)
+external realize : t -> Ocgtk_gdk.Gdk.Wrappers.Surface.t -> unit = "ml_gtk_media_stream_realize"
 
 (** Starts playing the stream.
 

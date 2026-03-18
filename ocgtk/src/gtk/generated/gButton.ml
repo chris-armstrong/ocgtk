@@ -2,7 +2,6 @@
 
 (* High-level class for Button *)
 class button (obj : Button.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Button.as_widget obj)
   inherit Gbutton_signals.button_signals obj
 
   method get_can_shrink : unit -> bool =
@@ -54,7 +53,6 @@ class button (obj : Button.t) = object (self)
     fun use_underline ->
       (Button.set_use_underline obj use_underline)
 
-  method as_widget = (Button.as_widget obj)
     method as_button = obj
 end
 

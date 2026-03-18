@@ -110,6 +110,7 @@
       (echo "Matrix")
       (echo "Menu_button")
       (echo "Notebook")
+      (echo "Ocgtk_pango")
       (echo "Paned")
       (echo "Pango")
       (echo "Pango_enums")
@@ -141,6 +142,12 @@ echo '' > cflag-pango.sexp.tmp && \\
 echo '' > clink-pango.sexp.tmp && \\
 pkg-config --cflags pango >> cflag-pango.sexp.tmp && \\
 pkg-config --libs pango >> clink-pango.sexp.tmp && \\
+pkg-config --cflags cairo-gobject >> cflag-pango.sexp.tmp && \\
+pkg-config --libs cairo-gobject >> clink-pango.sexp.tmp && \\
+pkg-config --cflags gio-2.0 >> cflag-pango.sexp.tmp && \\
+pkg-config --libs gio-2.0 >> clink-pango.sexp.tmp && \\
+pkg-config --cflags gio-unix-2.0 >> cflag-pango.sexp.tmp && \\
+pkg-config --libs gio-unix-2.0 >> clink-pango.sexp.tmp && \\
 echo \"(\" > cflag-pango.sexp && \\
 tr ' ' '\\n' < cflag-pango.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> cflag-pango.sexp && \\
 echo \")\" >> cflag-pango.sexp && \\
@@ -155,7 +162,7 @@ rm cflag-pango.sexp.tmp clink-pango.sexp.tmp\\
  (public_name ocgtk.pango.generated_stubs)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk_common)  ; Depend on common for header files
+ (libraries ocgtk.gio ocgtk.cairo ocgtk_common)  ; Dependencies and common for header files
  (foreign_stubs
   (language c)
   (names

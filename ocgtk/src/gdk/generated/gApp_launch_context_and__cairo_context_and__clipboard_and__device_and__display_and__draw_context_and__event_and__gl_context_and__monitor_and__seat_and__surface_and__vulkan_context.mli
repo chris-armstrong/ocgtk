@@ -3,12 +3,14 @@ class app_launch_context : App_launch_context_and__cairo_context_and__clipboard_
   object
     method get_display : unit -> display
     method set_desktop : int -> unit
+    method set_icon : #Ocgtk_gio.Gio.icon option -> unit
     method set_icon_name : string option -> unit
     method as_app_launch_context : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.App_launch_context.t
   end
 
 and cairo_context : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Cairo_context.t ->
   object
+    method cairo_create : unit -> Ocgtk_cairo.Cairo.context option
     method as_cairo_context : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Cairo_context.t
   end
 
@@ -19,7 +21,10 @@ and clipboard : App_launch_context_and__cairo_context_and__clipboard_and__device
     method get_display : unit -> display
     method get_formats : unit -> Content_formats.t
     method is_local : unit -> bool
+    method read_text_finish : #Ocgtk_gio.Gio.async_result -> (string option, GError.t) result
+    method read_texture_finish : #Ocgtk_gio.Gio.async_result -> (GTexture.texture option, GError.t) result
     method set_content : #GContent_provider.content_provider option -> bool
+    method store_finish : #Ocgtk_gio.Gio.async_result -> (bool, GError.t) result
     method local : bool
     method as_clipboard : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Clipboard.t
   end
@@ -29,6 +34,7 @@ and device : App_launch_context_and__cairo_context_and__clipboard_and__device_an
     inherit Gdevice_signals.device_signals
     method get_caps_lock_state : unit -> bool
     method get_device_tool : unit -> GDevice_tool.device_tool option
+    method get_direction : unit -> Ocgtk_pango.Pango.direction
     method get_display : unit -> display
     method get_has_cursor : unit -> bool
     method get_modifier_state : unit -> Gdk_enums.modifiertype
@@ -59,6 +65,7 @@ and display : App_launch_context_and__cairo_context_and__clipboard_and__device_a
     method get_default_seat : unit -> seat option
     method get_dmabuf_formats : unit -> Dmabuf_formats.t
     method get_monitor_at_surface : <as_surface: App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Surface.t; ..> -> monitor option
+    method get_monitors : unit -> Ocgtk_gio.Gio.list_model
     method get_name : unit -> string
     method get_primary_clipboard : unit -> clipboard
     method get_startup_notification_id : unit -> string option
@@ -80,8 +87,10 @@ and display : App_launch_context_and__cairo_context_and__clipboard_and__device_a
 
 and draw_context : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Draw_context.t ->
   object
+    method begin_frame : #Ocgtk_cairo.Cairo.region -> unit
     method end_frame : unit -> unit
     method get_display : unit -> display option
+    method get_frame_region : unit -> Ocgtk_cairo.Cairo.region option
     method get_surface : unit -> surface option
     method is_in_frame : unit -> bool
     method as_draw_context : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Draw_context.t
@@ -161,6 +170,7 @@ and surface : App_launch_context_and__cairo_context_and__clipboard_and__device_a
     method beep : unit -> unit
     method create_cairo_context : unit -> cairo_context
     method create_gl_context : unit -> (gl_context, GError.t) result
+    method create_similar_surface : Ocgtk_cairo.Cairo.content -> int -> int -> Ocgtk_cairo.Cairo.surface
     method create_vulkan_context : unit -> (vulkan_context, GError.t) result
     method destroy : unit -> unit
     method get_cursor : unit -> GCursor.cursor option
@@ -178,6 +188,8 @@ and surface : App_launch_context_and__cairo_context_and__clipboard_and__device_a
     method request_layout : unit -> unit
     method set_cursor : #GCursor.cursor option -> unit
     method set_device_cursor : <as_device: App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Device.t; ..> -> #GCursor.cursor -> unit
+    method set_input_region : #Ocgtk_cairo.Cairo.region -> unit
+    method set_opaque_region : #Ocgtk_cairo.Cairo.region option -> unit
     method as_surface : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Surface.t
   end
 

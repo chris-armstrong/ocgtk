@@ -2,7 +2,6 @@
 
 (* High-level class for LevelBar *)
 class level_bar (obj : Level_bar.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Level_bar.as_widget obj)
   inherit Glevel_bar_signals.level_bar_signals obj
 
   method add_offset_value : string -> float -> unit =
@@ -53,7 +52,6 @@ class level_bar (obj : Level_bar.t) = object (self)
     fun value ->
       (Level_bar.set_value obj value)
 
-  method as_widget = (Level_bar.as_widget obj)
     method as_level_bar = obj
 end
 

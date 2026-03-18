@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <gsk/gsk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gsk_decls.h"
 
 /* Conversion functions for GskPathBuilder (opaque record with hidden fields) */
 GskPathBuilder *GskPathBuilder_val(value v) {
@@ -197,6 +197,14 @@ CAMLexport CAMLprim value ml_gsk_path_builder_html_arc_to_bytecode(value * argv,
 return ml_gsk_path_builder_html_arc_to_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
 }
 
+CAMLexport CAMLprim value ml_gsk_path_builder_get_current_point(value self)
+{
+CAMLparam1(self);
+
+const graphene_point_t* result = gsk_path_builder_get_current_point(GskPathBuilder_val(self));
+CAMLreturn(Val_graphene_point_t(result));
+}
+
 CAMLexport CAMLprim value ml_gsk_path_builder_cubic_to_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
@@ -263,10 +271,42 @@ gsk_path_builder_add_reverse_path(GskPathBuilder_val(self), GskPath_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gsk_path_builder_add_rect(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gsk_path_builder_add_rect(GskPathBuilder_val(self), graphene_rect_t_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gsk_path_builder_add_path(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gsk_path_builder_add_path(GskPathBuilder_val(self), GskPath_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gsk_path_builder_add_layout(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gsk_path_builder_add_layout(GskPathBuilder_val(self), PangoLayout_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gsk_path_builder_add_circle(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gsk_path_builder_add_circle(GskPathBuilder_val(self), graphene_point_t_val(arg1), Double_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gsk_path_builder_add_cairo_path(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gsk_path_builder_add_cairo_path(GskPathBuilder_val(self), cairo_path_t_val(arg1));
 CAMLreturn(Val_unit);
 }

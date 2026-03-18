@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 /* Conversion functions for GtkPrintSetup (opaque record with hidden fields) */
 GtkPrintSetup *GtkPrintSetup_val(value v) {

@@ -8,6 +8,7 @@
 #include <caml/mlvalues.h>
 
 /* Dependency headers for cross-namespace types */
+#include "generated/gio_decls.h"
 #include "generated/pango_decls.h"
 #include "generated/cairo_decls.h"
 

@@ -13,9 +13,17 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
+
+CAMLexport CAMLprim value ml_gtk_print_context_set_cairo_context(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gtk_print_context_set_cairo_context(GtkPrintContext_val(self), cairo_t_val(arg1), Double_val(arg2), Double_val(arg3));
+CAMLreturn(Val_unit);
+}
 
 CAMLexport CAMLprim value ml_gtk_print_context_get_width(value self)
 {
@@ -23,6 +31,15 @@ CAMLparam1(self);
 
 double result = gtk_print_context_get_width(GtkPrintContext_val(self));
 CAMLreturn(caml_copy_double(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_print_context_get_pango_fontmap(value self)
+{
+CAMLparam1(self);
+
+PangoFontMap* result = gtk_print_context_get_pango_fontmap(GtkPrintContext_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_PangoFontMap(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_print_context_get_height(value self)
@@ -66,4 +83,28 @@ CAMLparam1(self);
 
 double result = gtk_print_context_get_dpi_x(GtkPrintContext_val(self));
 CAMLreturn(caml_copy_double(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_print_context_get_cairo_context(value self)
+{
+CAMLparam1(self);
+
+cairo_t* result = gtk_print_context_get_cairo_context(GtkPrintContext_val(self));
+CAMLreturn(Val_cairo_t(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_print_context_create_pango_layout(value self)
+{
+CAMLparam1(self);
+
+PangoLayout* result = gtk_print_context_create_pango_layout(GtkPrintContext_val(self));
+CAMLreturn(Val_PangoLayout(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_print_context_create_pango_context(value self)
+{
+CAMLparam1(self);
+
+PangoContext* result = gtk_print_context_create_pango_context(GtkPrintContext_val(self));
+CAMLreturn(Val_PangoContext(result));
 }

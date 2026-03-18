@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: CellView *)
+(* CellView: CellView *)
 
 type t = [`cell_view | `widget | `initially_unowned] Gobject.obj
-
-val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new CellView *)
 external new_ : unit -> t = "ml_gtk_cell_view_new"
@@ -18,7 +16,7 @@ external new_with_markup : string -> t = "ml_gtk_cell_view_new_with_markup"
 external new_with_text : string -> t = "ml_gtk_cell_view_new_with_text"
 
 (** Create a new CellView *)
-external new_with_texture : unit -> t = "ml_gtk_cell_view_new_with_texture"
+external new_with_texture : Ocgtk_gdk.Gdk.Wrappers.Texture.t -> t = "ml_gtk_cell_view_new_with_texture"
 
 (* Methods *)
 (** Sets the model for @cell_view.  If @cell_view already has a model

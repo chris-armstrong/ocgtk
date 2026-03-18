@@ -1,6 +1,5 @@
 (* High-level class for ShortcutsShortcut *)
 class shortcuts_shortcut (obj : Shortcuts_shortcut.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Shortcuts_shortcut.as_widget obj)
 
   method accel_size_group = new GSize_group.size_group (Shortcuts_shortcut.get_accel_size_group obj)
   method set_accel_size_group : 'a . (#GSize_group.size_group as 'a) -> unit  = fun v ->  Shortcuts_shortcut.set_accel_size_group obj v#as_size_group
@@ -13,6 +12,9 @@ class shortcuts_shortcut (obj : Shortcuts_shortcut.t) = object (self)
 
   method direction = Shortcuts_shortcut.get_direction obj
   method set_direction v =  Shortcuts_shortcut.set_direction obj v
+
+  method icon = new Ocgtk_gio.Gio.icon (Shortcuts_shortcut.get_icon obj)
+  method set_icon : 'a . (#Ocgtk_gio.Gio.icon as 'a) -> unit  = fun v ->  Shortcuts_shortcut.set_icon obj v#as_icon
 
   method icon_set = Shortcuts_shortcut.get_icon_set obj
   method set_icon_set v =  Shortcuts_shortcut.set_icon_set obj v
@@ -32,7 +34,6 @@ class shortcuts_shortcut (obj : Shortcuts_shortcut.t) = object (self)
   method title_size_group = new GSize_group.size_group (Shortcuts_shortcut.get_title_size_group obj)
   method set_title_size_group : 'a . (#GSize_group.size_group as 'a) -> unit  = fun v ->  Shortcuts_shortcut.set_title_size_group obj v#as_size_group
 
-  method as_widget = (Shortcuts_shortcut.as_widget obj)
     method as_shortcuts_shortcut = obj
 end
 

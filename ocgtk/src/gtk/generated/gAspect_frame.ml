@@ -1,6 +1,5 @@
 (* High-level class for AspectFrame *)
 class aspect_frame (obj : Aspect_frame.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Aspect_frame.as_widget obj)
 
   method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
     fun () ->
@@ -43,7 +42,6 @@ class aspect_frame (obj : Aspect_frame.t) = object (self)
     fun yalign ->
       (Aspect_frame.set_yalign obj yalign)
 
-  method as_widget = (Aspect_frame.as_widget obj)
     method as_aspect_frame = obj
 end
 

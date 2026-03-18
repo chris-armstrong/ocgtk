@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 /* Conversion functions for GtkCssSection (opaque record with hidden fields) */
 GtkCssSection *GtkCssSection_val(value v) {
@@ -32,6 +32,14 @@ value Val_GtkCssSection_option(const GtkCssSection *ptr) {
 }
 
 
+CAMLexport CAMLprim value ml_gtk_css_section_new(value arg1, value arg2, value arg3)
+{
+CAMLparam3(arg1, arg2, arg3);
+
+GtkCssSection *obj = gtk_css_section_new(Option_val(arg1, GFile_val, NULL), GtkCssLocation_val(arg2), GtkCssLocation_val(arg3));
+
+CAMLreturn(Val_GtkCssSection(obj));
+}
 CAMLexport CAMLprim value ml_gtk_css_section_unref(value self)
 {
 CAMLparam1(self);
@@ -70,6 +78,15 @@ CAMLparam1(self);
 
 GtkCssSection* result = gtk_css_section_get_parent(GtkCssSection_val(self));
 CAMLreturn(Val_option(result, Val_GtkCssSection));
+}
+
+CAMLexport CAMLprim value ml_gtk_css_section_get_file(value self)
+{
+CAMLparam1(self);
+
+GFile* result = gtk_css_section_get_file(GtkCssSection_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GFile));
 }
 
 CAMLexport CAMLprim value ml_gtk_css_section_get_end_location(value self)

@@ -1,9 +1,11 @@
 class recent_info : Recent_info.t ->
   object
+    method create_app_info : string option -> (Ocgtk_gio.Gio.app_info option, GError.t) result
     method exists : unit -> bool
     method get_age : unit -> int
     method get_description : unit -> string
     method get_display_name : unit -> string
+    method get_gicon : unit -> Ocgtk_gio.Gio.icon option
     method get_mime_type : unit -> string
     method get_private_hint : unit -> bool
     method get_short_name : unit -> string

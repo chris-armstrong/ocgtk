@@ -2,7 +2,6 @@
 
 (* High-level class for CellRendererAccel *)
 class cell_renderer_accel (obj : Cell_renderer_accel.t) = object (self)
-  inherit GCell_renderer.cell_renderer (Cell_renderer_accel.as_cell_renderer obj)
   inherit Gcell_renderer_accel_signals.cell_renderer_accel_signals obj
 
   method accel_key = Cell_renderer_accel.get_accel_key obj
@@ -11,10 +10,12 @@ class cell_renderer_accel (obj : Cell_renderer_accel.t) = object (self)
   method accel_mode = Cell_renderer_accel.get_accel_mode obj
   method set_accel_mode v =  Cell_renderer_accel.set_accel_mode obj v
 
+  method accel_mods = Cell_renderer_accel.get_accel_mods obj
+  method set_accel_mods v =  Cell_renderer_accel.set_accel_mods obj v
+
   method keycode = Cell_renderer_accel.get_keycode obj
   method set_keycode v =  Cell_renderer_accel.set_keycode obj v
 
-  method as_cell_renderer = (Cell_renderer_accel.as_cell_renderer obj)
     method as_cell_renderer_accel = obj
 end
 

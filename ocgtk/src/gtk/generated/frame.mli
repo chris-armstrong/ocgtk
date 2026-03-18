@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Frame *)
+(* Frame: Frame *)
 
 type t = [`frame | `widget | `initially_unowned] Gobject.obj
-
-val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new Frame *)
 external new_ : string option -> t = "ml_gtk_frame_new"

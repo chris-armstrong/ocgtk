@@ -3,29 +3,93 @@
 
 (** Classes and Interfaces *)
 
+class analysis = GAnalysis.analysis
+class attr_class = GAttr_class.attr_class
+class attr_color = GAttr_color.attr_color
+class attr_float = GAttr_float.attr_float
+class attr_font_desc = GAttr_font_desc.attr_font_desc
+class attr_font_features = GAttr_font_features.attr_font_features
+class attr_int = GAttr_int.attr_int
+class attr_iterator = GAttr_iterator.attr_iterator
+class attr_language = GAttr_language.attr_language
+class attr_list = GAttr_list.attr_list
+class attr_shape = GAttr_shape.attr_shape
+class attr_size = GAttr_size.attr_size
+class attr_string = GAttr_string.attr_string
+class attribute = GAttribute.attribute
+class color = GColor.color
 class context = GContext_and__font_and__font_map_and__fontset.context
 class coverage = GCoverage.coverage
 class font = GContext_and__font_and__font_map_and__fontset.font
+class font_description = GFont_description.font_description
 class font_face = GFont_face_and__font_family.font_face
 class font_family = GFont_face_and__font_family.font_family
 class font_map = GContext_and__font_and__font_map_and__fontset.font_map
+class font_metrics = GFont_metrics.font_metrics
 class fontset = GContext_and__font_and__font_map_and__fontset.fontset
 class fontset_simple = GFontset_simple.fontset_simple
+class glyph_geometry = GGlyph_geometry.glyph_geometry
+class glyph_info = GGlyph_info.glyph_info
+class glyph_item = GGlyph_item.glyph_item
+class glyph_item_iter = GGlyph_item_iter.glyph_item_iter
+class glyph_string = GGlyph_string.glyph_string
+class glyph_vis_attr = GGlyph_vis_attr.glyph_vis_attr
+class item = GItem.item
+class language = GLanguage.language
 class layout = GLayout_and__layout_iter.layout
+class layout_iter = GLayout_and__layout_iter.layout_iter
+class layout_line = GLayout_line.layout_line
+class log_attr = GLog_attr.log_attr
+class matrix = GMatrix.matrix
+class rectangle = GRectangle.rectangle
 class renderer = GRenderer.renderer
+class script_iter = GScript_iter.script_iter
+class tab_array = GTab_array.tab_array
 
 (** Layer 1 Module Wrappers *)
 module Wrappers = struct
+  module Analysis = Analysis
+  module Attr_class = Attr_class
+  module Attr_color = Attr_color
+  module Attr_float = Attr_float
+  module Attr_font_desc = Attr_font_desc
+  module Attr_font_features = Attr_font_features
+  module Attr_int = Attr_int
+  module Attr_iterator = Attr_iterator
+  module Attr_language = Attr_language
+  module Attr_list = Attr_list
+  module Attr_shape = Attr_shape
+  module Attr_size = Attr_size
+  module Attr_string = Attr_string
+  module Attribute = Attribute
+  module Color = Color
   module Context = Context_and__font_and__font_map_and__fontset.Context
   module Coverage = Coverage
   module Font = Context_and__font_and__font_map_and__fontset.Font
+  module Font_description = Font_description
   module Font_face = Font_face_and__font_family.Font_face
   module Font_family = Font_face_and__font_family.Font_family
   module Font_map = Context_and__font_and__font_map_and__fontset.Font_map
+  module Font_metrics = Font_metrics
   module Fontset = Context_and__font_and__font_map_and__fontset.Fontset
   module Fontset_simple = Fontset_simple
+  module Glyph_geometry = Glyph_geometry
+  module Glyph_info = Glyph_info
+  module Glyph_item = Glyph_item
+  module Glyph_item_iter = Glyph_item_iter
+  module Glyph_string = Glyph_string
+  module Glyph_vis_attr = Glyph_vis_attr
+  module Item = Item
+  module Language = Language
   module Layout = Layout_and__layout_iter.Layout
+  module Layout_iter = Layout_and__layout_iter.Layout_iter
+  module Layout_line = Layout_line
+  module Log_attr = Log_attr
+  module Matrix = Matrix
+  module Rectangle = Rectangle
   module Renderer = Renderer
+  module Script_iter = Script_iter
+  module Tab_array = Tab_array
 end
 
 (** Enumerations and Bitfields *)

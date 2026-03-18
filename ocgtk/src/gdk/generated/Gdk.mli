@@ -8,6 +8,8 @@ class button_event : Button_event.t -> GButton_event.button_event
 class cairo_context : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Cairo_context.t -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.cairo_context
 class clipboard : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Clipboard.t -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.clipboard
 class content_deserializer : Content_deserializer.t -> GContent_deserializer.content_deserializer
+class content_formats : Content_formats.t -> GContent_formats.content_formats
+class content_formats_builder : Content_formats_builder.t -> GContent_formats_builder.content_formats_builder
 class content_provider : Content_provider.t -> GContent_provider.content_provider
 class content_serializer : Content_serializer.t -> GContent_serializer.content_serializer
 class crossing_event : Crossing_event.t -> GCrossing_event.crossing_event
@@ -19,33 +21,46 @@ class device_pad : Device_pad.t -> GDevice_pad.device_pad
 class device_tool : Device_tool.t -> GDevice_tool.device_tool
 class display : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Display.t -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.display
 class display_manager : Display_manager.t -> GDisplay_manager.display_manager
+class dmabuf_formats : Dmabuf_formats.t -> GDmabuf_formats.dmabuf_formats
 class dmabuf_texture : Dmabuf_texture.t -> GDmabuf_texture.dmabuf_texture
 class dmabuf_texture_builder : Dmabuf_texture_builder.t -> GDmabuf_texture_builder.dmabuf_texture_builder
 class drag : Drag.t -> GDrag.drag
 class drag_surface : Drag_surface.t -> GDrag_surface.drag_surface
+class drag_surface_size : Drag_surface_size.t -> GDrag_surface_size.drag_surface_size
 class draw_context : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Draw_context.t -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.draw_context
 class drop : Drop.t -> GDrop.drop
 class event : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Event.t -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.event
+class event_sequence : Event_sequence.t -> GEvent_sequence.event_sequence
+class file_list : File_list.t -> GFile_list.file_list
 class focus_event : Focus_event.t -> GFocus_event.focus_event
 class frame_clock : Frame_clock.t -> GFrame_clock.frame_clock
+class frame_timings : Frame_timings.t -> GFrame_timings.frame_timings
 class gl_context : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Gl_context.t -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.gl_context
 class gl_texture : Gl_texture.t -> GGl_texture.gl_texture
 class gl_texture_builder : Gl_texture_builder.t -> GGl_texture_builder.gl_texture_builder
 class grab_broken_event : Grab_broken_event.t -> GGrab_broken_event.grab_broken_event
 class key_event : Key_event.t -> GKey_event.key_event
+class keymap_key : Keymap_key.t -> GKeymap_key.keymap_key
 class memory_texture : Memory_texture.t -> GMemory_texture.memory_texture
 class monitor : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Monitor.t -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.monitor
 class motion_event : Motion_event.t -> GMotion_event.motion_event
 class pad_event : Pad_event.t -> GPad_event.pad_event
 class paintable : Paintable.t -> GPaintable.paintable
 class popup : Popup.t -> GPopup.popup
+class popup_layout : Popup_layout.t -> GPopup_layout.popup_layout
 class proximity_event : Proximity_event.t -> GProximity_event.proximity_event
+class rgb_a : Rgb_a.t -> GRgb_a.rgb_a
+class rectangle : Rectangle.t -> GRectangle.rectangle
 class scroll_event : Scroll_event.t -> GScroll_event.scroll_event
 class seat : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Seat.t -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.seat
 class snapshot : Snapshot.t -> GSnapshot.snapshot
 class surface : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Surface.t -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.surface
 class texture : Texture.t -> GTexture.texture
+class texture_downloader : Texture_downloader.t -> GTexture_downloader.texture_downloader
+class time_coord : Time_coord.t -> GTime_coord.time_coord
 class toplevel : Toplevel.t -> GToplevel.toplevel
+class toplevel_layout : Toplevel_layout.t -> GToplevel_layout.toplevel_layout
+class toplevel_size : Toplevel_size.t -> GToplevel_size.toplevel_size
 class touch_event : Touch_event.t -> GTouch_event.touch_event
 class touchpad_event : Touchpad_event.t -> GTouchpad_event.touchpad_event
 class vulkan_context : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Vulkan_context.t -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.vulkan_context
@@ -61,6 +76,8 @@ module Wrappers : sig
   module Cairo_context = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Cairo_context
   module Clipboard = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Clipboard
   module Content_deserializer = Content_deserializer
+  module Content_formats = Content_formats
+  module Content_formats_builder = Content_formats_builder
   module Content_provider = Content_provider
   module Content_serializer = Content_serializer
   module Crossing_event = Crossing_event
@@ -72,33 +89,46 @@ module Wrappers : sig
   module Device_tool = Device_tool
   module Display = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Display
   module Display_manager = Display_manager
+  module Dmabuf_formats = Dmabuf_formats
   module Dmabuf_texture = Dmabuf_texture
   module Dmabuf_texture_builder = Dmabuf_texture_builder
   module Drag = Drag
   module Drag_surface = Drag_surface
+  module Drag_surface_size = Drag_surface_size
   module Draw_context = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Draw_context
   module Drop = Drop
   module Event = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Event
+  module Event_sequence = Event_sequence
+  module File_list = File_list
   module Focus_event = Focus_event
   module Frame_clock = Frame_clock
+  module Frame_timings = Frame_timings
   module Gl_context = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Gl_context
   module Gl_texture = Gl_texture
   module Gl_texture_builder = Gl_texture_builder
   module Grab_broken_event = Grab_broken_event
   module Key_event = Key_event
+  module Keymap_key = Keymap_key
   module Memory_texture = Memory_texture
   module Monitor = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Monitor
   module Motion_event = Motion_event
   module Pad_event = Pad_event
   module Paintable = Paintable
   module Popup = Popup
+  module Popup_layout = Popup_layout
   module Proximity_event = Proximity_event
+  module Rgb_a = Rgb_a
+  module Rectangle = Rectangle
   module Scroll_event = Scroll_event
   module Seat = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Seat
   module Snapshot = Snapshot
   module Surface = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Surface
   module Texture = Texture
+  module Texture_downloader = Texture_downloader
+  module Time_coord = Time_coord
   module Toplevel = Toplevel
+  module Toplevel_layout = Toplevel_layout
+  module Toplevel_size = Toplevel_size
   module Touch_event = Touch_event
   module Touchpad_event = Touchpad_event
   module Vulkan_context = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Vulkan_context
@@ -115,6 +145,7 @@ type dragcancelreason = Gdk_enums.dragcancelreason
 type eventtype = Gdk_enums.eventtype
 type fullscreenmode = Gdk_enums.fullscreenmode
 type glerror = Gdk_enums.glerror
+type gravity = Gdk_enums.gravity
 type inputsource = Gdk_enums.inputsource
 type keymatch = Gdk_enums.keymatch
 type memoryformat = Gdk_enums.memoryformat

@@ -1,6 +1,5 @@
 (* High-level class for Grid *)
 class grid (obj : Grid.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Grid.as_widget obj)
 
   method attach : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> int -> int -> int -> int -> unit =
     fun child column row width height ->
@@ -91,7 +90,6 @@ class grid (obj : Grid.t) = object (self)
     fun spacing ->
       (Grid.set_row_spacing obj spacing)
 
-  method as_widget = (Grid.as_widget obj)
     method as_grid = obj
 end
 

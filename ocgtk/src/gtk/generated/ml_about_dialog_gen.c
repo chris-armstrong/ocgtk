@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_about_dialog_new(value unit)
@@ -87,6 +87,14 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_set_logo_icon_name(value self, val
 CAMLparam2(self, arg1);
 
 gtk_about_dialog_set_logo_icon_name(GtkAboutDialog_val(self), String_option_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_about_dialog_set_logo(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_about_dialog_set_logo(GtkAboutDialog_val(self), Option_val(arg1, GdkPaintable_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -221,6 +229,15 @@ CAMLparam1(self);
 
 const char* result = gtk_about_dialog_get_logo_icon_name(GtkAboutDialog_val(self));
 CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_about_dialog_get_logo(value self)
+{
+CAMLparam1(self);
+
+GdkPaintable* result = gtk_about_dialog_get_logo(GtkAboutDialog_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GdkPaintable));
 }
 
 CAMLexport CAMLprim value ml_gtk_about_dialog_get_license(value self)

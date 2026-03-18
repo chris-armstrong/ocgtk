@@ -2,7 +2,6 @@
 
 (* High-level class for GridView *)
 class grid_view (obj : Grid_view.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Grid_view.as_widget obj)
   inherit Ggrid_view_signals.grid_view_signals obj
 
   method get_enable_rubberband : unit -> bool =
@@ -62,7 +61,6 @@ class grid_view (obj : Grid_view.t) = object (self)
     fun tab_behavior ->
       (Grid_view.set_tab_behavior obj tab_behavior)
 
-  method as_widget = (Grid_view.as_widget obj)
     method as_grid_view = obj
 end
 

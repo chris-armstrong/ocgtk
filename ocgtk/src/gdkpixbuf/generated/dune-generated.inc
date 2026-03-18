@@ -48,6 +48,7 @@
       (echo "Link_button")
       (echo "Menu_button")
       (echo "Notebook")
+      (echo "Ocgtk_gdkpixbuf")
       (echo "Paned")
       (echo "Pango")
       (echo "Pango_enums")
@@ -82,6 +83,10 @@ echo '' > cflag-gdkpixbuf.sexp.tmp && \\
 echo '' > clink-gdkpixbuf.sexp.tmp && \\
 pkg-config --cflags gdk-pixbuf-2.0 >> cflag-gdkpixbuf.sexp.tmp && \\
 pkg-config --libs gdk-pixbuf-2.0 >> clink-gdkpixbuf.sexp.tmp && \\
+pkg-config --cflags gio-2.0 >> cflag-gdkpixbuf.sexp.tmp && \\
+pkg-config --libs gio-2.0 >> clink-gdkpixbuf.sexp.tmp && \\
+pkg-config --cflags gio-unix-2.0 >> cflag-gdkpixbuf.sexp.tmp && \\
+pkg-config --libs gio-unix-2.0 >> clink-gdkpixbuf.sexp.tmp && \\
 echo \"(\" > cflag-gdkpixbuf.sexp && \\
 tr ' ' '\\n' < cflag-gdkpixbuf.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> cflag-gdkpixbuf.sexp && \\
 echo \")\" >> cflag-gdkpixbuf.sexp && \\
@@ -96,7 +101,7 @@ rm cflag-gdkpixbuf.sexp.tmp clink-gdkpixbuf.sexp.tmp\\
  (public_name ocgtk.gdk_pixbuf.generated_stubs)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk_common)  ; Depend on common for header files
+ (libraries ocgtk.gio ocgtk_common)  ; Dependencies and common for header files
  (foreign_stubs
   (language c)
   (names

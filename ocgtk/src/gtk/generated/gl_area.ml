@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: GLArea *)
+(* GLArea: GLArea *)
 
 type t = [`gl_area | `widget | `initially_unowned] Gobject.obj
-
-let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new GLArea *)
 external new_ : unit -> t = "ml_gtk_gl_area_new"
@@ -48,6 +46,14 @@ unless the window is resized. In order to force a rendering
 useful when the scene changes seldom, but takes a long time to redraw. *)
 external set_auto_render : t -> bool -> unit = "ml_gtk_gl_area_set_auto_render"
 
+(** Sets the allowed APIs to create a context with.
+
+You should check [property@Gtk.GLArea:api] before drawing
+with either API.
+
+By default, all APIs are allowed. *)
+external set_allowed_apis : t -> Ocgtk_gdk.Gdk.glapi -> unit = "ml_gtk_gl_area_set_allowed_apis"
+
 (** Marks the currently rendered data (if any) as invalid, and queues
 a redraw of the widget.
 
@@ -83,8 +89,21 @@ external get_has_stencil_buffer : t -> bool = "ml_gtk_gl_area_get_has_stencil_bu
 (** Returns whether the area has a depth buffer. *)
 external get_has_depth_buffer : t -> bool = "ml_gtk_gl_area_get_has_depth_buffer"
 
+(** Retrieves the `GdkGLContext` used by @area. *)
+external get_context : t -> Ocgtk_gdk.Gdk.Wrappers.Gl_context.t option = "ml_gtk_gl_area_get_context"
+
 (** Returns whether the area is in auto render mode or not. *)
 external get_auto_render : t -> bool = "ml_gtk_gl_area_get_auto_render"
+
+(** Gets the API that is currently in use.
+
+If the GL area has not been realized yet, 0 is returned. *)
+external get_api : t -> Ocgtk_gdk.Gdk.glapi = "ml_gtk_gl_area_get_api"
+
+(** Gets the allowed APIs.
+
+See [method@Gtk.GLArea.set_allowed_apis]. *)
+external get_allowed_apis : t -> Ocgtk_gdk.Gdk.glapi = "ml_gtk_gl_area_get_allowed_apis"
 
 (** Binds buffers to the framebuffer.
 

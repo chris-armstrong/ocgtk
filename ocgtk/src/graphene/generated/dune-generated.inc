@@ -56,6 +56,7 @@
       (echo "Link_button")
       (echo "Menu_button")
       (echo "Notebook")
+      (echo "Ocgtk_graphene")
       (echo "Paned")
       (echo "Pango")
       (echo "Pango_enums")

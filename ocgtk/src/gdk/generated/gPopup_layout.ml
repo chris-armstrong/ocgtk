@@ -17,6 +17,14 @@ class popup_layout (obj : Popup_layout.t) = object (self)
     fun () ->
       (Popup_layout.get_anchor_rect obj)
 
+  method get_rect_anchor : unit -> Gdk_enums.gravity =
+    fun () ->
+      (Popup_layout.get_rect_anchor obj)
+
+  method get_surface_anchor : unit -> Gdk_enums.gravity =
+    fun () ->
+      (Popup_layout.get_surface_anchor obj)
+
   method ref : unit -> Popup_layout.t =
     fun () ->
       (Popup_layout.ref obj)
@@ -33,9 +41,17 @@ class popup_layout (obj : Popup_layout.t) = object (self)
     fun dx dy ->
       (Popup_layout.set_offset obj dx dy)
 
+  method set_rect_anchor : Gdk_enums.gravity -> unit =
+    fun anchor ->
+      (Popup_layout.set_rect_anchor obj anchor)
+
   method set_shadow_width : int -> int -> int -> int -> unit =
     fun left right top bottom ->
       (Popup_layout.set_shadow_width obj left right top bottom)
+
+  method set_surface_anchor : Gdk_enums.gravity -> unit =
+    fun anchor ->
+      (Popup_layout.set_surface_anchor obj anchor)
 
   method unref : unit -> unit =
     fun () ->

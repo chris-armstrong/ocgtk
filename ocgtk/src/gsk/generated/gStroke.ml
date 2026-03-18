@@ -49,6 +49,11 @@ class stroke (obj : Stroke.t) = object (self)
     fun limit ->
       (Stroke.set_miter_limit obj limit)
 
+  method to_cairo : 'p1. (#Ocgtk_cairo.Cairo.context as 'p1) -> unit =
+    fun cr ->
+      let cr = cr#as_context in
+      (Stroke.to_cairo obj cr)
+
     method as_stroke = obj
 end
 

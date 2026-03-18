@@ -2,7 +2,6 @@
 
 (* High-level class for Calendar *)
 class calendar (obj : Calendar.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Calendar.as_widget obj)
   inherit Gcalendar_signals.calendar_signals obj
 
   method clear_marks : unit -> unit =
@@ -69,7 +68,6 @@ class calendar (obj : Calendar.t) = object (self)
     fun day ->
       (Calendar.unmark_day obj day)
 
-  method as_widget = (Calendar.as_widget obj)
     method as_calendar = obj
 end
 

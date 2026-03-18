@@ -1,6 +1,14 @@
 (* High-level class for LockButton *)
 class lock_button (obj : Lock_button.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Lock_button.as_widget obj)
+
+  method get_permission : unit -> Ocgtk_gio.Gio.permission option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.permission ret) (Lock_button.get_permission obj)
+
+  method set_permission : 'p1. (#Ocgtk_gio.Gio.permission as 'p1) option -> unit =
+    fun permission ->
+      let permission = Option.map (fun (c) -> c#as_permission) permission in
+      (Lock_button.set_permission obj permission)
 
   method text_lock = Lock_button.get_text_lock obj
   method set_text_lock v =  Lock_button.set_text_lock obj v
@@ -17,7 +25,6 @@ class lock_button (obj : Lock_button.t) = object (self)
   method tooltip_unlock = Lock_button.get_tooltip_unlock obj
   method set_tooltip_unlock v =  Lock_button.set_tooltip_unlock obj v
 
-  method as_widget = (Lock_button.as_widget obj)
     method as_lock_button = obj
 end
 

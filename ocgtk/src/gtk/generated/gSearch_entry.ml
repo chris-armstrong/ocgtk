@@ -2,7 +2,6 @@
 
 (* High-level class for SearchEntry *)
 class search_entry (obj : Search_entry.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Search_entry.as_widget obj)
   inherit Gsearch_entry_signals.search_entry_signals obj
 
   method get_input_hints : unit -> Gtk_enums.inputhints =
@@ -49,7 +48,6 @@ class search_entry (obj : Search_entry.t) = object (self)
   method activates_default = Search_entry.get_activates_default obj
   method set_activates_default v =  Search_entry.set_activates_default obj v
 
-  method as_widget = (Search_entry.as_widget obj)
     method as_search_entry = obj
 end
 

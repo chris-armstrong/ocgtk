@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_native_unrealize(value self)
@@ -45,4 +45,22 @@ CAMLlocal1(ret);
     Store_field(ret, 0, caml_copy_double(out1));
     Store_field(ret, 1, caml_copy_double(out2));
     CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_native_get_surface(value self)
+{
+CAMLparam1(self);
+
+GdkSurface* result = gtk_native_get_surface(GtkNative_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GdkSurface));
+}
+
+CAMLexport CAMLprim value ml_gtk_native_get_renderer(value self)
+{
+CAMLparam1(self);
+
+GskRenderer* result = gtk_native_get_renderer(GtkNative_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GskRenderer));
 }

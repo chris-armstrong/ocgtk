@@ -2,7 +2,6 @@
 
 (* High-level class for ToggleButton *)
 class toggle_button (obj : Toggle_button.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Toggle_button.as_widget obj)
   inherit Gtoggle_button_signals.toggle_button_signals obj
 
   method get_active : unit -> bool =
@@ -22,7 +21,6 @@ class toggle_button (obj : Toggle_button.t) = object (self)
     fun () ->
       (Toggle_button.toggled obj)
 
-  method as_widget = (Toggle_button.as_widget obj)
     method as_toggle_button = obj
 end
 

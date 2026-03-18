@@ -5,6 +5,21 @@
 class cell_area (obj : Cell_area_and__cell_area_context.Cell_area.t) = object (self)
   inherit Gcell_area_signals.cell_area_signals obj
 
+  method activate : 'p1 'p2 'p3. (<as_cell_area_context: Cell_area_and__cell_area_context.Cell_area_context.t; ..> as 'p1) -> (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p2) -> (#Ocgtk_gdk.Gdk.rectangle as 'p3) -> Gtk_enums.cellrendererstate -> bool -> bool =
+    fun context widget cell_area flags edit_only ->
+      let context = context#as_cell_area_context in
+      let widget = widget#as_widget in
+      let cell_area = cell_area#as_rectangle in
+      (Cell_area_and__cell_area_context.Cell_area.activate obj context widget cell_area flags edit_only)
+
+  method activate_cell : 'p1 'p2 'p3 'p4. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> (#GCell_renderer.cell_renderer as 'p2) -> (#Ocgtk_gdk.Gdk.event as 'p3) -> (#Ocgtk_gdk.Gdk.rectangle as 'p4) -> Gtk_enums.cellrendererstate -> bool =
+    fun widget renderer event cell_area flags ->
+      let widget = widget#as_widget in
+      let renderer = renderer#as_cell_renderer in
+      let event = event#as_event in
+      let cell_area = cell_area#as_rectangle in
+      (Cell_area_and__cell_area_context.Cell_area.activate_cell obj widget renderer event cell_area flags)
+
   method add : 'p1. (#GCell_renderer.cell_renderer as 'p1) -> unit =
     fun renderer ->
       let renderer = renderer#as_cell_renderer in
@@ -39,6 +54,14 @@ class cell_area (obj : Cell_area_and__cell_area_context.Cell_area.t) = object (s
   method create_context : unit -> cell_area_context =
     fun () ->
       new  cell_area_context(Cell_area_and__cell_area_context.Cell_area.create_context obj)
+
+  method event : 'p1 'p2 'p3 'p4. (<as_cell_area_context: Cell_area_and__cell_area_context.Cell_area_context.t; ..> as 'p1) -> (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p2) -> (#Ocgtk_gdk.Gdk.event as 'p3) -> (#Ocgtk_gdk.Gdk.rectangle as 'p4) -> Gtk_enums.cellrendererstate -> int =
+    fun context widget event cell_area flags ->
+      let context = context#as_cell_area_context in
+      let widget = widget#as_widget in
+      let event = event#as_event in
+      let cell_area = cell_area#as_rectangle in
+      (Cell_area_and__cell_area_context.Cell_area.event obj context widget event cell_area flags)
 
   method focus : Gtk_enums.directiontype -> bool =
     fun direction ->
@@ -99,6 +122,15 @@ class cell_area (obj : Cell_area_and__cell_area_context.Cell_area.t) = object (s
     fun renderer ->
       let renderer = Option.map (fun (c) -> c#as_cell_renderer) renderer in
       (Cell_area_and__cell_area_context.Cell_area.set_focus_cell obj renderer)
+
+  method snapshot : 'p1 'p2 'p3 'p4 'p5. (<as_cell_area_context: Cell_area_and__cell_area_context.Cell_area_context.t; ..> as 'p1) -> (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p2) -> (#GSnapshot.snapshot as 'p3) -> (#Ocgtk_gdk.Gdk.rectangle as 'p4) -> (#Ocgtk_gdk.Gdk.rectangle as 'p5) -> Gtk_enums.cellrendererstate -> bool -> unit =
+    fun context widget snapshot background_area cell_area flags paint_focus ->
+      let context = context#as_cell_area_context in
+      let widget = widget#as_widget in
+      let snapshot = snapshot#as_snapshot in
+      let background_area = background_area#as_rectangle in
+      let cell_area = cell_area#as_rectangle in
+      (Cell_area_and__cell_area_context.Cell_area.snapshot obj context widget snapshot background_area cell_area flags paint_focus)
 
   method stop_editing : bool -> unit =
     fun canceled ->

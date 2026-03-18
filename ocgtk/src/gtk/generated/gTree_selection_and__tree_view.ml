@@ -67,7 +67,6 @@ end
 
 
 and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Tree_selection_and__tree_view.Tree_view.as_widget obj)
   inherit Gtree_view_signals.tree_view_signals obj
 
   method append_column : 'p1. (#GTree_view_column.tree_view_column as 'p1) -> int =
@@ -86,6 +85,20 @@ and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) = object (self)
   method columns_autosize : unit -> unit =
     fun () ->
       (Tree_selection_and__tree_view.Tree_view.columns_autosize obj)
+
+  method create_row_drag_icon : Tree_path.t -> Ocgtk_gdk.Gdk.paintable option =
+    fun path ->
+      Option.map (fun ret -> new Ocgtk_gdk.Gdk.paintable ret) (Tree_selection_and__tree_view.Tree_view.create_row_drag_icon obj path)
+
+  method enable_model_drag_dest : 'p1. (#Ocgtk_gdk.Gdk.content_formats as 'p1) -> Ocgtk_gdk.Gdk.dragaction -> unit =
+    fun formats actions ->
+      let formats = formats#as_content_formats in
+      (Tree_selection_and__tree_view.Tree_view.enable_model_drag_dest obj formats actions)
+
+  method enable_model_drag_source : 'p1. Ocgtk_gdk.Gdk.modifiertype -> (#Ocgtk_gdk.Gdk.content_formats as 'p1) -> Ocgtk_gdk.Gdk.dragaction -> unit =
+    fun start_button_mask formats actions ->
+      let formats = formats#as_content_formats in
+      (Tree_selection_and__tree_view.Tree_view.enable_model_drag_source obj start_button_mask formats actions)
 
   method expand_all : unit -> unit =
     fun () ->
@@ -321,6 +334,5 @@ and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) = object (self)
   method enable_grid_lines = Tree_selection_and__tree_view.Tree_view.get_enable_grid_lines obj
   method set_enable_grid_lines v =  Tree_selection_and__tree_view.Tree_view.set_enable_grid_lines obj v
 
-  method as_widget = (Tree_selection_and__tree_view.Tree_view.as_widget obj)
     method as_tree_view = obj
 end

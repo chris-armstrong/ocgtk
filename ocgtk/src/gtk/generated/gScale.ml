@@ -1,6 +1,5 @@
 (* High-level class for Scale *)
 class scale (obj : Scale.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Scale.as_widget obj)
 
   method add_mark : float -> Gtk_enums.positiontype -> string option -> unit =
     fun value position markup ->
@@ -22,6 +21,10 @@ class scale (obj : Scale.t) = object (self)
     fun () ->
       (Scale.get_has_origin obj)
 
+  method get_layout : unit -> Ocgtk_pango.Pango.layout option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_pango.Pango.layout ret) (Scale.get_layout obj)
+
   method get_value_pos : unit -> Gtk_enums.positiontype =
     fun () ->
       (Scale.get_value_pos obj)
@@ -42,7 +45,6 @@ class scale (obj : Scale.t) = object (self)
     fun pos ->
       (Scale.set_value_pos obj pos)
 
-  method as_widget = (Scale.as_widget obj)
     method as_scale = obj
 end
 

@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Assistant *)
+(* Assistant: Assistant *)
 
 type t = [`assistant | `window | `widget | `initially_unowned] Gobject.obj
-
-val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new Assistant *)
 external new_ : unit -> t = "ml_gtk_assistant_new"
@@ -73,6 +71,9 @@ external next_page : t -> unit = "ml_gtk_assistant_next_page"
 
 (** Inserts a page in the @assistant at a given position. *)
 external insert_page : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int -> int = "ml_gtk_assistant_insert_page"
+
+(** Gets a list model of the assistant pages. *)
+external get_pages : t -> Ocgtk_gio.Gio.Wrappers.List_model.t = "ml_gtk_assistant_get_pages"
 
 (** Gets the page type of @page. *)
 external get_page_type : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Gtk_enums.assistantpagetype = "ml_gtk_assistant_get_page_type"

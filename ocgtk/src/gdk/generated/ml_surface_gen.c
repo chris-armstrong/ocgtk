@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <gdk/gdk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gdk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gdk_surface_new_popup(value arg1, value arg2)
@@ -47,6 +47,22 @@ CAMLlocal1(ret);
     Store_field(ret, 1, caml_copy_double(inout2));
     Store_field(ret, 2, caml_copy_double(inout3));
     CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gdk_surface_set_opaque_region(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gdk_surface_set_opaque_region(GdkSurface_val(self), Option_val(arg1, cairo_region_t_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gdk_surface_set_input_region(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gdk_surface_set_input_region(GdkSurface_val(self), cairo_region_t_val(arg1));
+CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gdk_surface_set_device_cursor(value self, value arg1, value arg2)
@@ -205,6 +221,14 @@ GError *error = NULL;
 
 GdkVulkanContext* result = gdk_surface_create_vulkan_context(GdkSurface_val(self), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GdkVulkanContext(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_gdk_surface_create_similar_surface(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+cairo_surface_t* result = gdk_surface_create_similar_surface(GdkSurface_val(self), cairoContent_val(arg1), Int_val(arg2), Int_val(arg3));
+CAMLreturn(Val_cairo_surface_t(result));
 }
 
 CAMLexport CAMLprim value ml_gdk_surface_create_gl_context(value self)

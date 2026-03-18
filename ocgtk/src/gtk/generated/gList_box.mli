@@ -1,6 +1,5 @@
 class list_box : List_box.t ->
   object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
     inherit Glist_box_signals.list_box_signals
     method append : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> unit
     method drag_highlight_row : #GList_box_row.list_box_row -> unit
@@ -30,7 +29,6 @@ class list_box : List_box.t ->
     method unselect_row : #GList_box_row.list_box_row -> unit
     method accept_unpaired_release : bool
     method set_accept_unpaired_release : bool -> unit
-  method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
     method as_list_box : List_box.t
   end
 

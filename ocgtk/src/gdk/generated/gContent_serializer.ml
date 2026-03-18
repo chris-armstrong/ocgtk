@@ -1,9 +1,17 @@
 (* High-level class for ContentSerializer *)
 class content_serializer (obj : Content_serializer.t) = object (self)
 
+  method get_cancellable : unit -> Ocgtk_gio.Gio.cancellable option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.cancellable ret) (Content_serializer.get_cancellable obj)
+
   method get_mime_type : unit -> string =
     fun () ->
       (Content_serializer.get_mime_type obj)
+
+  method get_output_stream : unit -> Ocgtk_gio.Gio.output_stream =
+    fun () ->
+      new  Ocgtk_gio.Gio.output_stream(Content_serializer.get_output_stream obj)
 
   method get_priority : unit -> int =
     fun () ->

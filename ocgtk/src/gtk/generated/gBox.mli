@@ -1,6 +1,5 @@
 class box : Box.t ->
   object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
     method append : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> unit
     method get_baseline_child : unit -> int
     method get_baseline_position : unit -> Gtk_enums.baselineposition
@@ -14,7 +13,6 @@ class box : Box.t ->
     method set_baseline_position : Gtk_enums.baselineposition -> unit
     method set_homogeneous : bool -> unit
     method set_spacing : int -> unit
-  method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
     method as_box : Box.t
   end
 

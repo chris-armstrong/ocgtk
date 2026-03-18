@@ -13,9 +13,17 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
+
+CAMLexport CAMLprim value ml_gtk_map_list_model_set_model(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_map_list_model_set_model(GtkMapListModel_val(self), Option_val(arg1, GListModel_val, NULL));
+CAMLreturn(Val_unit);
+}
 
 CAMLexport CAMLprim value ml_gtk_map_list_model_has_map(value self)
 {
@@ -23,6 +31,15 @@ CAMLparam1(self);
 
 gboolean result = gtk_map_list_model_has_map(GtkMapListModel_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_map_list_model_get_model(value self)
+{
+CAMLparam1(self);
+
+GListModel* result = gtk_map_list_model_get_model(GtkMapListModel_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GListModel));
 }
 
 CAMLexport CAMLprim value ml_gtk_map_list_model_get_n_items(value self)

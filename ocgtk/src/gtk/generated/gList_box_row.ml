@@ -2,7 +2,6 @@
 
 (* High-level class for ListBoxRow *)
 class list_box_row (obj : List_box_row.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (List_box_row.as_widget obj)
   inherit Glist_box_row_signals.list_box_row_signals obj
 
   method changed : unit -> unit =
@@ -51,7 +50,6 @@ class list_box_row (obj : List_box_row.t) = object (self)
     fun selectable ->
       (List_box_row.set_selectable obj selectable)
 
-  method as_widget = (List_box_row.as_widget obj)
     method as_list_box_row = obj
 end
 

@@ -1,7 +1,9 @@
 class icon_view : Icon_view.t ->
   object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
     inherit Gicon_view_signals.icon_view_signals
+    method create_drag_icon : Tree_path.t -> Ocgtk_gdk.Gdk.paintable option
+    method enable_model_drag_dest : #Ocgtk_gdk.Gdk.content_formats -> Ocgtk_gdk.Gdk.dragaction -> unit
+    method enable_model_drag_source : Ocgtk_gdk.Gdk.modifiertype -> #Ocgtk_gdk.Gdk.content_formats -> Ocgtk_gdk.Gdk.dragaction -> unit
     method get_activate_on_single_click : unit -> bool
     method get_column_spacing : unit -> int
     method get_columns : unit -> int
@@ -50,7 +52,6 @@ class icon_view : Icon_view.t ->
     method unset_model_drag_dest : unit -> unit
     method unset_model_drag_source : unit -> unit
     method cell_area : GCell_area_and__cell_area_context.cell_area
-  method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
     method as_icon_view : Icon_view.t
   end
 

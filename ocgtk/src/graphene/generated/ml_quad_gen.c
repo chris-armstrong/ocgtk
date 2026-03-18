@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <graphene-gobject.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "graphene_decls.h"
 
 /* Conversion functions for graphene_quad_t (opaque record with hidden fields) */
 graphene_quad_t *graphene_quad_t_val(value v) {

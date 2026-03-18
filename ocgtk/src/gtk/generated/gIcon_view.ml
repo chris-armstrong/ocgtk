@@ -2,8 +2,21 @@
 
 (* High-level class for IconView *)
 class icon_view (obj : Icon_view.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Icon_view.as_widget obj)
   inherit Gicon_view_signals.icon_view_signals obj
+
+  method create_drag_icon : Tree_path.t -> Ocgtk_gdk.Gdk.paintable option =
+    fun path ->
+      Option.map (fun ret -> new Ocgtk_gdk.Gdk.paintable ret) (Icon_view.create_drag_icon obj path)
+
+  method enable_model_drag_dest : 'p1. (#Ocgtk_gdk.Gdk.content_formats as 'p1) -> Ocgtk_gdk.Gdk.dragaction -> unit =
+    fun formats actions ->
+      let formats = formats#as_content_formats in
+      (Icon_view.enable_model_drag_dest obj formats actions)
+
+  method enable_model_drag_source : 'p1. Ocgtk_gdk.Gdk.modifiertype -> (#Ocgtk_gdk.Gdk.content_formats as 'p1) -> Ocgtk_gdk.Gdk.dragaction -> unit =
+    fun start_button_mask formats actions ->
+      let formats = formats#as_content_formats in
+      (Icon_view.enable_model_drag_source obj start_button_mask formats actions)
 
   method get_activate_on_single_click : unit -> bool =
     fun () ->
@@ -196,7 +209,6 @@ class icon_view (obj : Icon_view.t) = object (self)
 
   method cell_area = new GCell_area_and__cell_area_context.cell_area (Icon_view.get_cell_area obj)
 
-  method as_widget = (Icon_view.as_widget obj)
     method as_icon_view = obj
 end
 

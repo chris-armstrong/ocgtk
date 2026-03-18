@@ -69,6 +69,14 @@ If @error is set, `FALSE` will be returned.
 See [method@GdkPixbuf.Pixbuf.save] for more details. *)
 external savev : t -> string -> string -> string array option -> string array option -> (bool, GError.t) result = "ml_gdk_pixbuf_savev"
 
+(** Saves `pixbuf` to an output stream.
+
+Supported file formats are currently "jpeg", "tiff", "png", "ico" or
+"bmp".
+
+See [method@GdkPixbuf.Pixbuf.save_to_stream] for more details. *)
+external save_to_streamv : t -> Ocgtk_gio.Gio.Wrappers.Output_stream.t -> string -> string array option -> string array option -> Ocgtk_gio.Gio.Wrappers.Cancellable.t option -> (bool, GError.t) result = "ml_gdk_pixbuf_save_to_streamv_bytecode" "ml_gdk_pixbuf_save_to_streamv_native"
+
 (** Modifies saturation and optionally pixelates `src`, placing the result in
 `dest`.
 

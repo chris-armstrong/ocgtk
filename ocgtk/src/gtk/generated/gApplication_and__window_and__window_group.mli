@@ -6,11 +6,14 @@ class application : Application_and__window_and__window_group.Application.t ->
     method get_accels_for_action : string -> string array
     method get_actions_for_accel : string -> string array
     method get_active_window : unit -> window option
+    method get_menu_by_id : string -> Ocgtk_gio.Gio.menu option
+    method get_menubar : unit -> Ocgtk_gio.Gio.menu_model option
     method get_window_by_id : int -> window option
     method inhibit : <as_window: Application_and__window_and__window_group.Window.t; ..> option -> Gtk_enums.applicationinhibitflags -> string option -> int
     method list_action_descriptions : unit -> string array
     method remove_window : <as_window: Application_and__window_and__window_group.Window.t; ..> -> unit
     method set_accels_for_action : string -> string array -> unit
+    method set_menubar : #Ocgtk_gio.Gio.menu_model option -> unit
     method uninhibit : int -> unit
     method register_session : bool
     method set_register_session : bool -> unit
@@ -20,11 +23,11 @@ class application : Application_and__window_and__window_group.Application.t ->
 
 and window : Application_and__window_and__window_group.Window.t ->
   object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
     inherit Gwindow_signals.window_signals
     method close : unit -> unit
     method destroy : unit -> unit
     method fullscreen : unit -> unit
+    method fullscreen_on_monitor : #Ocgtk_gdk.Gdk.monitor -> unit
     method get_application : unit -> application option
     method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option
     method get_decorated : unit -> bool
@@ -58,6 +61,7 @@ and window : Application_and__window_and__window_group.Window.t ->
     method set_default_widget : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option -> unit
     method set_deletable : bool -> unit
     method set_destroy_with_parent : bool -> unit
+    method set_display : #Ocgtk_gdk.Gdk.display -> unit
     method set_focus : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option -> unit
     method set_focus_visible : bool -> unit
     method set_handle_menubar_accel : bool -> unit
@@ -84,7 +88,6 @@ and window : Application_and__window_and__window_group.Window.t ->
     method maximized : bool
     method set_maximized : bool -> unit
     method suspended : bool
-  method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
     method as_window : Application_and__window_and__window_group.Window.t
   end
 

@@ -2,7 +2,6 @@
 
 (* High-level class for ListBox *)
 class list_box (obj : List_box.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (List_box.as_widget obj)
   inherit Glist_box_signals.list_box_signals obj
 
   method append : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> unit =
@@ -121,7 +120,6 @@ class list_box (obj : List_box.t) = object (self)
   method accept_unpaired_release = List_box.get_accept_unpaired_release obj
   method set_accept_unpaired_release v =  List_box.set_accept_unpaired_release obj v
 
-  method as_widget = (List_box.as_widget obj)
     method as_list_box = obj
 end
 

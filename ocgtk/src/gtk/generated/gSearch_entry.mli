@@ -1,6 +1,5 @@
 class search_entry : Search_entry.t ->
   object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
     inherit Gsearch_entry_signals.search_entry_signals
     method get_input_hints : unit -> Gtk_enums.inputhints
     method get_input_purpose : unit -> Gtk_enums.inputpurpose
@@ -14,7 +13,6 @@ class search_entry : Search_entry.t ->
     method set_search_delay : int -> unit
     method activates_default : bool
     method set_activates_default : bool -> unit
-  method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
     method as_search_entry : Search_entry.t
   end
 

@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_mount_operation_new(value arg1)
@@ -34,6 +34,14 @@ gtk_mount_operation_set_parent(GtkMountOperation_val(self), Option_val(arg1, Gtk
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_mount_operation_set_display(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_mount_operation_set_display(GtkMountOperation_val(self), GdkDisplay_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_mount_operation_is_showing(value self)
 {
 CAMLparam1(self);
@@ -49,4 +57,13 @@ CAMLparam1(self);
 GtkWindow* result = gtk_mount_operation_get_parent(GtkMountOperation_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWindow));
+}
+
+CAMLexport CAMLprim value ml_gtk_mount_operation_get_display(value self)
+{
+CAMLparam1(self);
+
+GdkDisplay* result = gtk_mount_operation_get_display(GtkMountOperation_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_GdkDisplay(result));
 }

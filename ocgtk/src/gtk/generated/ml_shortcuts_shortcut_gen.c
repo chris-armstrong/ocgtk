@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_shortcuts_shortcut_get_accel_size_group(value self)
@@ -141,6 +141,38 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
           g_value_set_enum(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "direction", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_shortcuts_shortcut_get_icon(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkShortcutsShortcut *obj = (GtkShortcutsShortcut *)GtkShortcutsShortcut_val(self);
+    GIcon *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "icon");
+if (pspec == NULL) caml_failwith("ml_gtk_shortcuts_shortcut_get_icon: property 'icon' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "icon", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GIcon(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_shortcuts_shortcut_set_icon(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkShortcutsShortcut *obj = (GtkShortcutsShortcut *)GtkShortcutsShortcut_val(self);
+    GIcon *c_value = GIcon_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "icon");
+if (pspec == NULL) caml_failwith("ml_gtk_shortcuts_shortcut_set_icon: property 'icon' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "icon", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }

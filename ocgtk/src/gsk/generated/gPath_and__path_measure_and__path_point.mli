@@ -1,9 +1,11 @@
 
 class path : Path_and__path_measure_and__path_point.Path.t ->
   object
+    method in_fill : #Ocgtk_graphene.Graphene.point -> Gsk_enums.fillrule -> bool
     method is_closed : unit -> bool
     method is_empty : unit -> bool
     method ref : unit -> Path_and__path_measure_and__path_point.Path.t
+    method to_cairo : #Ocgtk_cairo.Cairo.context -> unit
     method to_string : unit -> string
     method unref : unit -> unit
     method as_path : Path_and__path_measure_and__path_point.Path.t

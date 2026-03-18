@@ -1,6 +1,5 @@
 (* High-level class for SearchBar *)
 class search_bar (obj : Search_bar.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Search_bar.as_widget obj)
 
   method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
     fun () ->
@@ -39,7 +38,6 @@ class search_bar (obj : Search_bar.t) = object (self)
   method search_mode_enabled = Search_bar.get_search_mode_enabled obj
   method set_search_mode_enabled v =  Search_bar.set_search_mode_enabled obj v
 
-  method as_widget = (Search_bar.as_widget obj)
     method as_search_bar = obj
 end
 

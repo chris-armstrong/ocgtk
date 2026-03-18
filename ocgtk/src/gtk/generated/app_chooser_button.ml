@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: AppChooserButton *)
+(* AppChooserButton: AppChooserButton *)
 
 type t = [`app_chooser_button | `widget | `initially_unowned] Gobject.obj
-
-let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new AppChooserButton *)
 external new_ : string -> t = "ml_gtk_app_chooser_button_new"
@@ -50,6 +48,17 @@ external get_heading : t -> string option = "ml_gtk_app_chooser_button_get_headi
 (** Appends a separator to the list of applications that is shown
 in the popup. *)
 external append_separator : t -> unit = "ml_gtk_app_chooser_button_append_separator"
+
+(** Appends a custom item to the list of applications that is shown
+in the popup.
+
+The item name must be unique per-widget. Clients can use the
+provided name as a detail for the
+[signal@Gtk.AppChooserButton::custom-item-activated] signal, to add a
+callback for the activation of a particular custom item in the list.
+
+See also [method@Gtk.AppChooserButton.append_separator]. *)
+external append_custom_item : t -> string -> string -> Ocgtk_gio.Gio.Wrappers.Icon.t -> unit = "ml_gtk_app_chooser_button_append_custom_item"
 
 (* Properties *)
 

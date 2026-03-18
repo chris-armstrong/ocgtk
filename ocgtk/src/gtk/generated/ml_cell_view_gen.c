@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_cell_view_new(value unit)
@@ -49,6 +49,15 @@ CAMLexport CAMLprim value ml_gtk_cell_view_new_with_text(value arg1)
 CAMLparam1(arg1);
 
 GtkCellView *obj = gtk_cell_view_new_with_text(String_val(arg1));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkCellView(obj));
+}
+CAMLexport CAMLprim value ml_gtk_cell_view_new_with_texture(value arg1)
+{
+CAMLparam1(arg1);
+
+GtkCellView *obj = gtk_cell_view_new_with_texture(GdkTexture_val(arg1));
 if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GtkCellView(obj));

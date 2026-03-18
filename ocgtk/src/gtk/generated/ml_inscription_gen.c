@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_inscription_new(value arg1)
@@ -39,6 +39,14 @@ CAMLexport CAMLprim value ml_gtk_inscription_set_xalign(value self, value arg1)
 CAMLparam2(self, arg1);
 
 gtk_inscription_set_xalign(GtkInscription_val(self), Double_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_inscription_set_wrap_mode(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_inscription_set_wrap_mode(GtkInscription_val(self), PangoWrapMode_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -98,6 +106,14 @@ gtk_inscription_set_markup(GtkInscription_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_inscription_set_attributes(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_inscription_set_attributes(GtkInscription_val(self), Option_val(arg1, PangoAttrList_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_inscription_get_yalign(value self)
 {
 CAMLparam1(self);
@@ -112,6 +128,14 @@ CAMLparam1(self);
 
 float result = gtk_inscription_get_xalign(GtkInscription_val(self));
 CAMLreturn(caml_copy_double(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_inscription_get_wrap_mode(value self)
+{
+CAMLparam1(self);
+
+PangoWrapMode result = gtk_inscription_get_wrap_mode(GtkInscription_val(self));
+CAMLreturn(Val_PangoWrapMode(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_inscription_get_text_overflow(value self)
@@ -160,4 +184,13 @@ CAMLparam1(self);
 
 guint result = gtk_inscription_get_min_chars(GtkInscription_val(self));
 CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_inscription_get_attributes(value self)
+{
+CAMLparam1(self);
+
+PangoAttrList* result = gtk_inscription_get_attributes(GtkInscription_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_PangoAttrList));
 }

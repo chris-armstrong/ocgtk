@@ -1,6 +1,5 @@
 (* High-level class for GridLayout *)
 class grid_layout (obj : Grid_layout.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.layout_manager (Grid_layout.as_layoutmanager obj)
 
   method get_baseline_row : unit -> int =
     fun () ->
@@ -50,7 +49,6 @@ class grid_layout (obj : Grid_layout.t) = object (self)
     fun spacing ->
       (Grid_layout.set_row_spacing obj spacing)
 
-  method as_layoutmanager = (Grid_layout.as_layoutmanager obj)
     method as_grid_layout = obj
 end
 

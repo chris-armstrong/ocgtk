@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Cell renderer: CellRendererToggle *)
+(* CellRendererToggle: CellRendererToggle *)
 
 type t = [`cell_renderer_toggle | `cell_renderer | `initially_unowned] Gobject.obj
-
-val as_cell_renderer : t -> Cell_renderer.t
 
 (** Create a new CellRendererToggle *)
 external new_ : unit -> t = "ml_gtk_cell_renderer_toggle_new"

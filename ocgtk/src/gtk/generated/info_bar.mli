@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: InfoBar *)
+(* InfoBar: InfoBar *)
 
 type t = [`info_bar | `widget | `initially_unowned] Gobject.obj
-
-val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new InfoBar *)
 external new_ : unit -> t = "ml_gtk_info_bar_new"
@@ -78,7 +76,7 @@ Clicking the button will emit the [signal@Gtk.InfoBar::response]
 signal with the given response_id. The button is appended to the
 end of the info bar's action area. The button widget is returned,
 but usually you don't need it. *)
-external add_button : t -> string -> int -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = "ml_gtk_info_bar_add_button"
+external add_button : t -> string -> int -> Button.t = "ml_gtk_info_bar_add_button"
 
 (** Add an activatable widget to the action area of a `GtkInfoBar`.
 

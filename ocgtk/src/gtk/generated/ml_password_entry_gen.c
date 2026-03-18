@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_password_entry_new(value unit)
@@ -34,12 +34,29 @@ gtk_password_entry_set_show_peek_icon(GtkPasswordEntry_val(self), Bool_val(arg1)
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_password_entry_set_extra_menu(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_password_entry_set_extra_menu(GtkPasswordEntry_val(self), Option_val(arg1, GMenuModel_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_password_entry_get_show_peek_icon(value self)
 {
 CAMLparam1(self);
 
 gboolean result = gtk_password_entry_get_show_peek_icon(GtkPasswordEntry_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_password_entry_get_extra_menu(value self)
+{
+CAMLparam1(self);
+
+GMenuModel* result = gtk_password_entry_get_extra_menu(GtkPasswordEntry_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GMenuModel));
 }
 
 CAMLexport CAMLprim value ml_gtk_password_entry_get_activates_default(value self)

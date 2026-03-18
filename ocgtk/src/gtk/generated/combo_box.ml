@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: ComboBox *)
+(* ComboBox: ComboBox *)
 
 type t = [`combo_box | `widget | `initially_unowned] Gobject.obj
-
-let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new ComboBox *)
 external new_ : unit -> t = "ml_gtk_combo_box_new"
@@ -79,6 +77,14 @@ external set_active_id : t -> string option -> bool = "ml_gtk_combo_box_set_acti
 
 (** Sets the active item of @combo_box to be the item at @index. *)
 external set_active : t -> int -> unit = "ml_gtk_combo_box_set_active"
+
+(** Pops up the menu of @combo_box.
+
+Note that currently this does not do anything with the device, as it was
+previously only used for list-mode combo boxes, and those were removed
+in GTK 4. However, it is retained in case similar functionality is added
+back later. *)
+external popup_for_device : t -> Ocgtk_gdk.Gdk.Wrappers.Device.t -> unit = "ml_gtk_combo_box_popup_for_device"
 
 (** Pops up the menu or dropdown list of @combo_box.
 

@@ -2,6 +2,11 @@
 (* Combined classes for cyclic dependencies *)
 class path (obj : Path_and__path_measure_and__path_point.Path.t) = object (self)
 
+  method in_fill : 'p1. (#Ocgtk_graphene.Graphene.point as 'p1) -> Gsk_enums.fillrule -> bool =
+    fun point fill_rule ->
+      let point = point#as_point in
+      (Path_and__path_measure_and__path_point.Path.in_fill obj point fill_rule)
+
   method is_closed : unit -> bool =
     fun () ->
       (Path_and__path_measure_and__path_point.Path.is_closed obj)
@@ -13,6 +18,11 @@ class path (obj : Path_and__path_measure_and__path_point.Path.t) = object (self)
   method ref : unit -> Path_and__path_measure_and__path_point.Path.t =
     fun () ->
       (Path_and__path_measure_and__path_point.Path.ref obj)
+
+  method to_cairo : 'p1. (#Ocgtk_cairo.Cairo.context as 'p1) -> unit =
+    fun cr ->
+      let cr = cr#as_context in
+      (Path_and__path_measure_and__path_point.Path.to_cairo obj cr)
 
   method to_string : unit -> string =
     fun () ->

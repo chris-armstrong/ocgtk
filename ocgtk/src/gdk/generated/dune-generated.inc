@@ -123,6 +123,7 @@
       (echo "Menu_button")
       (echo "Motion_event")
       (echo "Notebook")
+      (echo "Ocgtk_gdk")
       (echo "Pad_event")
       (echo "Paintable")
       (echo "Paned")
@@ -167,6 +168,18 @@ echo '' > cflag-gdk.sexp.tmp && \\
 echo '' > clink-gdk.sexp.tmp && \\
 pkg-config --cflags gtk4 >> cflag-gdk.sexp.tmp && \\
 pkg-config --libs gtk4 >> clink-gdk.sexp.tmp && \\
+pkg-config --cflags cairo-gobject >> cflag-gdk.sexp.tmp && \\
+pkg-config --libs cairo-gobject >> clink-gdk.sexp.tmp && \\
+pkg-config --cflags gdk-pixbuf-2.0 >> cflag-gdk.sexp.tmp && \\
+pkg-config --libs gdk-pixbuf-2.0 >> clink-gdk.sexp.tmp && \\
+pkg-config --cflags gio-2.0 >> cflag-gdk.sexp.tmp && \\
+pkg-config --libs gio-2.0 >> clink-gdk.sexp.tmp && \\
+pkg-config --cflags gio-unix-2.0 >> cflag-gdk.sexp.tmp && \\
+pkg-config --libs gio-unix-2.0 >> clink-gdk.sexp.tmp && \\
+pkg-config --cflags pango >> cflag-gdk.sexp.tmp && \\
+pkg-config --libs pango >> clink-gdk.sexp.tmp && \\
+pkg-config --cflags pangocairo >> cflag-gdk.sexp.tmp && \\
+pkg-config --libs pangocairo >> clink-gdk.sexp.tmp && \\
 echo \"(\" > cflag-gdk.sexp && \\
 tr ' ' '\\n' < cflag-gdk.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> cflag-gdk.sexp && \\
 echo \")\" >> cflag-gdk.sexp && \\
@@ -181,7 +194,7 @@ rm cflag-gdk.sexp.tmp clink-gdk.sexp.tmp\\
  (public_name ocgtk.gdk.generated_stubs)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk_common)  ; Depend on common for header files
+ (libraries ocgtk.gdkpixbuf ocgtk.gio ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocgtk_common)  ; Dependencies and common for header files
  (foreign_stubs
   (language c)
   (names

@@ -1,6 +1,5 @@
 class range : Range.t ->
   object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
     inherit Grange_signals.range_signals
     method get_adjustment : unit -> GAdjustment.adjustment
     method get_fill_level : unit -> float
@@ -22,7 +21,6 @@ class range : Range.t ->
     method set_show_fill_level : bool -> unit
     method set_slider_size_fixed : bool -> unit
     method set_value : float -> unit
-  method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
     method as_range : Range.t
   end
 

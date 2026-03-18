@@ -12,6 +12,10 @@ class icon_theme (obj : Icon_theme.t) = object (self)
     fun path ->
       (Icon_theme.add_search_path obj path)
 
+  method get_display : unit -> Ocgtk_gdk.Gdk.display option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gdk.Gdk.display ret) (Icon_theme.get_display obj)
+
   method get_icon_names : unit -> string array =
     fun () ->
       (Icon_theme.get_icon_names obj)
@@ -28,9 +32,19 @@ class icon_theme (obj : Icon_theme.t) = object (self)
     fun () ->
       (Icon_theme.get_theme_name obj)
 
+  method has_gicon : 'p1. (#Ocgtk_gio.Gio.icon as 'p1) -> bool =
+    fun gicon ->
+      let gicon = gicon#as_icon in
+      (Icon_theme.has_gicon obj gicon)
+
   method has_icon : string -> bool =
     fun icon_name ->
       (Icon_theme.has_icon obj icon_name)
+
+  method lookup_by_gicon : 'p1. (#Ocgtk_gio.Gio.icon as 'p1) -> int -> int -> Gtk_enums.textdirection -> Gtk_enums.iconlookupflags -> GIcon_paintable.icon_paintable =
+    fun icon size scale direction flags ->
+      let icon = icon#as_icon in
+      new  GIcon_paintable.icon_paintable(Icon_theme.lookup_by_gicon obj icon size scale direction flags)
 
   method lookup_icon : string -> string array option -> int -> int -> Gtk_enums.textdirection -> Gtk_enums.iconlookupflags -> GIcon_paintable.icon_paintable =
     fun icon_name fallbacks size scale direction flags ->

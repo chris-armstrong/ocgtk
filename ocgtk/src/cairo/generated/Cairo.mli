@@ -1,6 +1,41 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Top-level library module with direct references to all classes and enumerations *)
 
+(** {1 Classes and Interfaces} *)
+
+class context : Context.t -> GContext.context
+class device : Device.t -> GDevice.device
+class font_face : Font_face.t -> GFont_face.font_face
+class font_options : Font_options.t -> GFont_options.font_options
+class matrix : Matrix.t -> GMatrix.matrix
+class path : Path.t -> GPath.path
+class pattern : Pattern.t -> GPattern.pattern
+class rectangle : Rectangle.t -> GRectangle.rectangle
+class rectangle_int : Rectangle_int.t -> GRectangle_int.rectangle_int
+class region : Region.t -> GRegion.region
+class scaled_font : Scaled_font.t -> GScaled_font.scaled_font
+class surface : Surface.t -> GSurface.surface
+
+(** {1 Layer 1 Module Wrappers}
+    
+    This submodule provides aliases to the layer 1 (low-level) modules.
+    These are the modules containing external declarations and basic bindings.
+ *)
+module Wrappers : sig
+  module Context = Context
+  module Device = Device
+  module Font_face = Font_face
+  module Font_options = Font_options
+  module Matrix = Matrix
+  module Path = Path
+  module Pattern = Pattern
+  module Rectangle = Rectangle
+  module Rectangle_int = Rectangle_int
+  module Region = Region
+  module Scaled_font = Scaled_font
+  module Surface = Surface
+end
+
 (** {1 Enumerations and Bitfields} *)
 
 type antialias = Cairo_enums.antialias

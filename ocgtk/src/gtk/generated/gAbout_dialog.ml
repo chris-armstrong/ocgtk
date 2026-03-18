@@ -2,7 +2,6 @@
 
 (* High-level class for AboutDialog *)
 class about_dialog (obj : About_dialog.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (About_dialog.as_widget obj)
   inherit Gabout_dialog_signals.about_dialog_signals obj
 
   method add_credit_section : string -> string array -> unit =
@@ -32,6 +31,10 @@ class about_dialog (obj : About_dialog.t) = object (self)
   method get_license : unit -> string option =
     fun () ->
       (About_dialog.get_license obj)
+
+  method get_logo : unit -> Ocgtk_gdk.Gdk.paintable option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gdk.Gdk.paintable ret) (About_dialog.get_logo obj)
 
   method get_logo_icon_name : unit -> string option =
     fun () ->
@@ -89,6 +92,11 @@ class about_dialog (obj : About_dialog.t) = object (self)
     fun license ->
       (About_dialog.set_license obj license)
 
+  method set_logo : 'p1. (#Ocgtk_gdk.Gdk.paintable as 'p1) option -> unit =
+    fun logo ->
+      let logo = Option.map (fun (c) -> c#as_paintable) logo in
+      (About_dialog.set_logo obj logo)
+
   method set_logo_icon_name : string option -> unit =
     fun icon_name ->
       (About_dialog.set_logo_icon_name obj icon_name)
@@ -121,7 +129,6 @@ class about_dialog (obj : About_dialog.t) = object (self)
     fun wrap_license ->
       (About_dialog.set_wrap_license obj wrap_license)
 
-  method as_widget = (About_dialog.as_widget obj)
     method as_about_dialog = obj
 end
 

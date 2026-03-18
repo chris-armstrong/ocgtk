@@ -22,6 +22,14 @@ class application (obj : Application_and__window_and__window_group.Application.t
     fun () ->
       Option.map (fun ret -> new window ret) (Application_and__window_and__window_group.Application.get_active_window obj)
 
+  method get_menu_by_id : string -> Ocgtk_gio.Gio.menu option =
+    fun id ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.menu ret) (Application_and__window_and__window_group.Application.get_menu_by_id obj id)
+
+  method get_menubar : unit -> Ocgtk_gio.Gio.menu_model option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.menu_model ret) (Application_and__window_and__window_group.Application.get_menubar obj)
+
   method get_window_by_id : int -> window option =
     fun id ->
       Option.map (fun ret -> new window ret) (Application_and__window_and__window_group.Application.get_window_by_id obj id)
@@ -44,6 +52,11 @@ class application (obj : Application_and__window_and__window_group.Application.t
     fun detailed_action_name accels ->
       (Application_and__window_and__window_group.Application.set_accels_for_action obj detailed_action_name accels)
 
+  method set_menubar : 'p1. (#Ocgtk_gio.Gio.menu_model as 'p1) option -> unit =
+    fun menubar ->
+      let menubar = Option.map (fun (c) -> c#as_menu_model) menubar in
+      (Application_and__window_and__window_group.Application.set_menubar obj menubar)
+
   method uninhibit : int -> unit =
     fun cookie ->
       (Application_and__window_and__window_group.Application.uninhibit obj cookie)
@@ -59,7 +72,6 @@ end
 
 
 and window (obj : Application_and__window_and__window_group.Window.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Application_and__window_and__window_group.Window.as_widget obj)
   inherit Gwindow_signals.window_signals obj
 
   method close : unit -> unit =
@@ -73,6 +85,11 @@ and window (obj : Application_and__window_and__window_group.Window.t) = object (
   method fullscreen : unit -> unit =
     fun () ->
       (Application_and__window_and__window_group.Window.fullscreen obj)
+
+  method fullscreen_on_monitor : 'p1. (#Ocgtk_gdk.Gdk.monitor as 'p1) -> unit =
+    fun monitor ->
+      let monitor = monitor#as_monitor in
+      (Application_and__window_and__window_group.Window.fullscreen_on_monitor obj monitor)
 
   method get_application : unit -> application option =
     fun () ->
@@ -209,6 +226,11 @@ and window (obj : Application_and__window_and__window_group.Window.t) = object (
     fun setting ->
       (Application_and__window_and__window_group.Window.set_destroy_with_parent obj setting)
 
+  method set_display : 'p1. (#Ocgtk_gdk.Gdk.display as 'p1) -> unit =
+    fun display ->
+      let display = display#as_display in
+      (Application_and__window_and__window_group.Window.set_display obj display)
+
   method set_focus : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
     fun focus ->
       let focus = Option.map (fun (c) -> c#as_widget) focus in
@@ -289,7 +311,6 @@ and window (obj : Application_and__window_and__window_group.Window.t) = object (
 
   method suspended = Application_and__window_and__window_group.Window.get_suspended obj
 
-  method as_widget = (Application_and__window_and__window_group.Window.as_widget obj)
     method as_window = obj
 end
 

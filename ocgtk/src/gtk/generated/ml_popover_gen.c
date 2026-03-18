@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_popover_new(value unit)
@@ -31,6 +31,14 @@ CAMLexport CAMLprim value ml_gtk_popover_set_position(value self, value arg1)
 CAMLparam2(self, arg1);
 
 gtk_popover_set_position(GtkPopover_val(self), GtkPositionType_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_popover_set_pointing_to(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_popover_set_pointing_to(GtkPopover_val(self), Option_val(arg1, GdkRectangle_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -120,6 +128,19 @@ CAMLparam1(self);
 
 GtkPositionType result = gtk_popover_get_position(GtkPopover_val(self));
 CAMLreturn(Val_GtkPositionType(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_popover_get_pointing_to(value self)
+{
+CAMLparam1(self);
+GdkRectangle out1;
+
+gboolean result = gtk_popover_get_pointing_to(GtkPopover_val(self), &out1);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_GdkRectangle(&out1));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_popover_get_offset(value self)

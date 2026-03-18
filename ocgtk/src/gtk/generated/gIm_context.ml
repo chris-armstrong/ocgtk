@@ -4,9 +4,19 @@
 class im_context (obj : Im_context.t) = object (self)
   inherit Gim_context_signals.im_context_signals obj
 
+  method activate_osk : 'p1. (#Ocgtk_gdk.Gdk.event as 'p1) option -> bool =
+    fun event ->
+      let event = Option.map (fun (c) -> c#as_event) event in
+      (Im_context.activate_osk obj event)
+
   method delete_surrounding : int -> int -> bool =
     fun offset n_chars ->
       (Im_context.delete_surrounding obj offset n_chars)
+
+  method filter_keypress : 'p1. (#Ocgtk_gdk.Gdk.event as 'p1) -> bool =
+    fun event ->
+      let event = event#as_event in
+      (Im_context.filter_keypress obj event)
 
   method focus_in : unit -> unit =
     fun () ->
@@ -24,6 +34,11 @@ class im_context (obj : Im_context.t) = object (self)
     fun widget ->
       let widget = Option.map (fun (c) -> c#as_widget) widget in
       (Im_context.set_client_widget obj widget)
+
+  method set_cursor_location : 'p1. (#Ocgtk_gdk.Gdk.rectangle as 'p1) -> unit =
+    fun area ->
+      let area = area#as_rectangle in
+      (Im_context.set_cursor_location obj area)
 
   method set_surrounding : string -> int -> int -> unit =
     fun text len cursor_index ->

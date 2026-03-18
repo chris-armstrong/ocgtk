@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <gdk/gdk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gdk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gdk_draw_context_is_in_frame(value self)
@@ -33,6 +33,14 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GdkSurface));
 }
 
+CAMLexport CAMLprim value ml_gdk_draw_context_get_frame_region(value self)
+{
+CAMLparam1(self);
+
+const cairo_region_t* result = gdk_draw_context_get_frame_region(GdkDrawContext_val(self));
+CAMLreturn(Val_option(result, Val_cairo_region_t));
+}
+
 CAMLexport CAMLprim value ml_gdk_draw_context_get_display(value self)
 {
 CAMLparam1(self);
@@ -47,5 +55,13 @@ CAMLexport CAMLprim value ml_gdk_draw_context_end_frame(value self)
 CAMLparam1(self);
 
 gdk_draw_context_end_frame(GdkDrawContext_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gdk_draw_context_begin_frame(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gdk_draw_context_begin_frame(GdkDrawContext_val(self), cairo_region_t_val(arg1));
 CAMLreturn(Val_unit);
 }

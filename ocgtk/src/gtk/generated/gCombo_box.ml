@@ -2,7 +2,6 @@
 
 (* High-level class for ComboBox *)
 class combo_box (obj : Combo_box.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Combo_box.as_widget obj)
   inherit Gcombo_box_signals.combo_box_signals obj
 
   method get_active : unit -> int =
@@ -49,6 +48,11 @@ class combo_box (obj : Combo_box.t) = object (self)
     fun () ->
       (Combo_box.popup obj)
 
+  method popup_for_device : 'p1. (#Ocgtk_gdk.Gdk.device as 'p1) -> unit =
+    fun device ->
+      let device = device#as_device in
+      (Combo_box.popup_for_device obj device)
+
   method set_active : int -> unit =
     fun index_ ->
       (Combo_box.set_active obj index_)
@@ -87,7 +91,6 @@ class combo_box (obj : Combo_box.t) = object (self)
 
   method popup_shown = Combo_box.get_popup_shown obj
 
-  method as_widget = (Combo_box.as_widget obj)
     method as_combo_box = obj
 end
 

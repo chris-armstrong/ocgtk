@@ -2,7 +2,6 @@
 
 (* High-level class for Range *)
 class range (obj : Range.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Range.as_widget obj)
   inherit Grange_signals.range_signals obj
 
   method get_adjustment : unit -> GAdjustment.adjustment =
@@ -86,7 +85,6 @@ class range (obj : Range.t) = object (self)
     fun value ->
       (Range.set_value obj value)
 
-  method as_widget = (Range.as_widget obj)
     method as_range = obj
 end
 

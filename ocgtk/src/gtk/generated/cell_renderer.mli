@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Cell renderer: CellRenderer *)
+(* CellRenderer: CellRenderer *)
 
-type t = [`cell_renderer] Gobject.obj
+type t = [`cell_renderer | `initially_unowned] Gobject.obj
 
 (* Methods *)
 (** Informs the cell renderer that the editing is stopped.
@@ -12,6 +12,19 @@ This function should be called by cell renderer implementations
 in response to the `GtkCellEditable::editing-done` signal of
 `GtkCellEditable`. *)
 external stop_editing : t -> bool -> unit = "ml_gtk_cell_renderer_stop_editing"
+
+(** Starts editing the contents of this @cell, through a new `GtkCellEditable`
+widget created by the `GtkCellRenderer`Class.start_editing virtual function. *)
+external start_editing : t -> Ocgtk_gdk.Gdk.Wrappers.Event.t option -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> string -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> Gtk_enums.cellrendererstate -> Cell_editable.t option = "ml_gtk_cell_renderer_start_editing_bytecode" "ml_gtk_cell_renderer_start_editing_native"
+
+(** Invokes the virtual render function of the `GtkCellRenderer`. The three
+passed-in rectangles are areas in @cr. Most renderers will draw within
+@cell_area; the xalign, yalign, xpad, and ypad fields of the `GtkCellRenderer`
+should be honored with respect to @cell_area. @background_area includes the
+blank space around the cell, and also the area containing the tree expander;
+so the @background_area rectangles for all cells tile to cover the entire
+@window. *)
+external snapshot : t -> Snapshot.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> Gtk_enums.cellrendererstate -> unit = "ml_gtk_cell_renderer_snapshot_bytecode" "ml_gtk_cell_renderer_snapshot_native"
 
 (** Sets the cell renderer’s visibility. *)
 external set_visible : t -> bool -> unit = "ml_gtk_cell_renderer_set_visible"
@@ -85,6 +98,15 @@ external get_fixed_size : t -> int * int = "ml_gtk_cell_renderer_get_fixed_size"
 (** Fills in @xalign and @yalign with the appropriate values of @cell. *)
 external get_alignment : t -> float * float = "ml_gtk_cell_renderer_get_alignment"
 
+(** Gets the aligned area used by @cell inside @cell_area. Used for finding
+the appropriate edit and focus rectangle. *)
+external get_aligned_area : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Gtk_enums.cellrendererstate -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_cell_renderer_get_aligned_area"
+
+(** Passes an activate event to the cell renderer for possible processing.
+Some cell renderers may use events; for example, `GtkCellRendererToggle`
+toggles when it gets a mouse click. *)
+external activate : t -> Ocgtk_gdk.Gdk.Wrappers.Event.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> string -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> Gtk_enums.cellrendererstate -> bool = "ml_gtk_cell_renderer_activate_bytecode" "ml_gtk_cell_renderer_activate_native"
+
 (* Properties *)
 
 (** Get property: cell-background *)
@@ -92,6 +114,12 @@ external get_cell_background : t -> string = "ml_gtk_cell_renderer_get_cell_back
 
 (** Set property: cell-background *)
 external set_cell_background : t -> string -> unit = "ml_gtk_cell_renderer_set_cell_background"
+
+(** Get property: cell-background-rgba *)
+external get_cell_background_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t = "ml_gtk_cell_renderer_get_cell_background_rgba"
+
+(** Set property: cell-background-rgba *)
+external set_cell_background_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> unit = "ml_gtk_cell_renderer_set_cell_background_rgba"
 
 (** Get property: cell-background-set *)
 external get_cell_background_set : t -> bool = "ml_gtk_cell_renderer_get_cell_background_set"

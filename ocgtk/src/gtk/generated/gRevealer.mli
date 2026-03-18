@@ -1,6 +1,5 @@
 class revealer : Revealer.t ->
   object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
     method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option
     method get_child_revealed : unit -> bool
     method get_reveal_child : unit -> bool
@@ -10,7 +9,6 @@ class revealer : Revealer.t ->
     method set_reveal_child : bool -> unit
     method set_transition_duration : int -> unit
     method set_transition_type : Gtk_enums.revealertransitiontype -> unit
-  method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
     method as_revealer : Revealer.t
   end
 

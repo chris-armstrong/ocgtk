@@ -5,6 +5,10 @@ class tree_list_row (obj : Tree_list_row.t) = object (self)
     fun position ->
       Option.map (fun ret -> new tree_list_row ret) (Tree_list_row.get_child_row obj position)
 
+  method get_children : unit -> Ocgtk_gio.Gio.list_model option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.list_model ret) (Tree_list_row.get_children obj)
+
   method get_depth : unit -> int =
     fun () ->
       (Tree_list_row.get_depth obj)

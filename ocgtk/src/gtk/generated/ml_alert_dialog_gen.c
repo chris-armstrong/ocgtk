@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_alert_dialog_show(value self, value arg1)
@@ -133,4 +133,13 @@ const char* const* result = gtk_alert_dialog_get_buttons(GtkAlertDialog_val(self
       Store_field(ml_result, i, caml_copy_string(result[i]));
     }
 CAMLreturn(ml_result);
+}
+
+CAMLexport CAMLprim value ml_gtk_alert_dialog_choose_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+int result = gtk_alert_dialog_choose_finish(GtkAlertDialog_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_int(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }

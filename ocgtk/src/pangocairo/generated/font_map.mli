@@ -35,8 +35,8 @@ See [method@PangoCairo.FontMap.set_resolution]. *)
 external get_resolution : t -> float = "ml_pango_cairo_font_map_get_resolution"
 
 (** Gets the type of Cairo font backend that @fontmap uses. *)
-external get_font_type : t -> fonttype = "ml_pango_cairo_font_map_get_font_type"
+external get_font_type : t -> Ocgtk_cairo.Cairo.fonttype = "ml_pango_cairo_font_map_get_font_type"
 
 (** Create a `PangoContext` for the given fontmap. *)
-external create_context : t -> Ocgtk_pango.Context.t = "ml_pango_cairo_font_map_create_context"
+external create_context : t -> Ocgtk_pango.Pango.Wrappers.Context.t = "ml_pango_cairo_font_map_create_context"
 

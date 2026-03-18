@@ -2,7 +2,6 @@
 
 (* High-level class for Notebook *)
 class notebook (obj : Notebook.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Notebook.as_widget obj)
   inherit Gnotebook_signals.notebook_signals obj
 
   method append_page : 'p1 'p2. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p2) option -> int =
@@ -57,6 +56,10 @@ class notebook (obj : Notebook.t) = object (self)
     fun child ->
       let child = child#as_widget in
       new  GNotebook_page.notebook_page(Notebook.get_page obj child)
+
+  method get_pages : unit -> Ocgtk_gio.Gio.list_model =
+    fun () ->
+      new  Ocgtk_gio.Gio.list_model(Notebook.get_pages obj)
 
   method get_scrollable : unit -> bool =
     fun () ->
@@ -214,7 +217,6 @@ class notebook (obj : Notebook.t) = object (self)
   method enable_popup = Notebook.get_enable_popup obj
   method set_enable_popup v =  Notebook.set_enable_popup obj v
 
-  method as_widget = (Notebook.as_widget obj)
     method as_notebook = obj
 end
 

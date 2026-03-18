@@ -2,8 +2,12 @@
 
 (* High-level class for AppChooserButton *)
 class app_chooser_button (obj : App_chooser_button.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (App_chooser_button.as_widget obj)
   inherit Gapp_chooser_button_signals.app_chooser_button_signals obj
+
+  method append_custom_item : 'p1. string -> string -> (#Ocgtk_gio.Gio.icon as 'p1) -> unit =
+    fun name label icon ->
+      let icon = icon#as_icon in
+      (App_chooser_button.append_custom_item obj name label icon)
 
   method append_separator : unit -> unit =
     fun () ->
@@ -45,7 +49,6 @@ class app_chooser_button (obj : App_chooser_button.t) = object (self)
     fun setting ->
       (App_chooser_button.set_show_dialog_item obj setting)
 
-  method as_widget = (App_chooser_button.as_widget obj)
     method as_app_chooser_button = obj
 end
 

@@ -7,7 +7,7 @@
 #include <caml/fail.h>
 #include <caml/hash.h>
 #include <glib.h>
-#include <cairo/cairo.h>
+#include <cairo-gobject.h>
 /* Convert cairo_status_t to OCaml value */
 value Val_cairoStatus(cairo_status_t val) {
   switch (val) {

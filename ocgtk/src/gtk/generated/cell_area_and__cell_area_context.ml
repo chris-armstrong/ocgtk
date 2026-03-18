@@ -15,6 +15,10 @@ module rec Cell_area : sig
   See gtk_cell_area_get_edited_cell() and gtk_cell_area_get_edit_widget(). *)
   external stop_editing : t -> bool -> unit = "ml_gtk_cell_area_stop_editing"
 
+  (** Snapshots @area’s cells according to @area’s layout onto at
+  the given coordinates. *)
+  external snapshot : t -> Cell_area_context.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Snapshot.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> Gtk_enums.cellrendererstate -> bool -> unit = "ml_gtk_cell_area_snapshot_bytecode" "ml_gtk_cell_area_snapshot_native"
+
   (** Explicitly sets the currently focused cell to @renderer.
 
   This is generally called by implementations of
@@ -44,6 +48,11 @@ module rec Cell_area : sig
   (** Returns whether the area can do anything when activated,
   after applying new attributes to @area. *)
   external is_activatable : t -> bool = "ml_gtk_cell_area_is_activatable"
+
+  (** This is a convenience function for `GtkCellArea` implementations
+  to get the inner area where a given `GtkCellRenderer` will be
+  rendered. It removes any padding previously added by gtk_cell_area_request_renderer(). *)
+  external inner_cell_area : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_cell_area_inner_cell_area"
 
   (** Checks if @area contains @renderer. *)
   external has_renderer : t -> Cell_renderer.t -> bool = "ml_gtk_cell_area_has_renderer"
@@ -129,6 +138,14 @@ module rec Cell_area : sig
   subclasses. *)
   external get_current_path_string : t -> string = "ml_gtk_cell_area_get_current_path_string"
 
+  (** Gets the `GtkCellRenderer` at @x and @y coordinates inside @area and optionally
+  returns the full cell allocation for it inside @cell_area. *)
+  external get_cell_at_position : t -> Cell_area_context.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> int -> int -> Cell_renderer.t * Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_cell_area_get_cell_at_position_bytecode" "ml_gtk_cell_area_get_cell_at_position_native"
+
+  (** Derives the allocation of @renderer inside @area if @area
+  were to be rendered in @cell_area. *)
+  external get_cell_allocation : t -> Cell_area_context.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Cell_renderer.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_cell_area_get_cell_allocation"
+
   (** This should be called by the @area’s owning layout widget
   when focus is to be passed to @area, or moved within @area
   for a given @direction and row data.
@@ -137,6 +154,9 @@ module rec Cell_area : sig
   method to receive and navigate focus in its own way particular
   to how it lays out cells. *)
   external focus : t -> Gtk_enums.directiontype -> bool = "ml_gtk_cell_area_focus"
+
+  (** Delegates event handling to a `GtkCellArea`. *)
+  external event : t -> Cell_area_context.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Ocgtk_gdk.Gdk.Wrappers.Event.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> Gtk_enums.cellrendererstate -> int = "ml_gtk_cell_area_event_bytecode" "ml_gtk_cell_area_event_native"
 
   (** Creates a `GtkCellArea`Context to be used with @area for
   all purposes. `GtkCellArea`Context stores geometry information
@@ -186,6 +206,17 @@ module rec Cell_area : sig
 
   (** Adds @renderer to @area with the default child cell properties. *)
   external add : t -> Cell_renderer.t -> unit = "ml_gtk_cell_area_add"
+
+  (** This is used by `GtkCellArea` subclasses when handling events
+  to activate cells, the base `GtkCellArea` class activates cells
+  for keyboard events for free in its own GtkCellArea->activate()
+  implementation. *)
+  external activate_cell : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Cell_renderer.t -> Ocgtk_gdk.Gdk.Wrappers.Event.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> Gtk_enums.cellrendererstate -> bool = "ml_gtk_cell_area_activate_cell_bytecode" "ml_gtk_cell_area_activate_cell_native"
+
+  (** Activates @area, usually by activating the currently focused
+  cell, however some subclasses which embed widgets in the area
+  can also activate a widget if it currently has the focus. *)
+  external activate : t -> Cell_area_context.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> Gtk_enums.cellrendererstate -> bool -> bool = "ml_gtk_cell_area_activate_bytecode" "ml_gtk_cell_area_activate_native"
 
   (* Properties *)
 
@@ -204,6 +235,10 @@ end = struct
   See gtk_cell_area_get_edited_cell() and gtk_cell_area_get_edit_widget(). *)
   external stop_editing : t -> bool -> unit = "ml_gtk_cell_area_stop_editing"
 
+  (** Snapshots @area’s cells according to @area’s layout onto at
+  the given coordinates. *)
+  external snapshot : t -> Cell_area_context.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Snapshot.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> Gtk_enums.cellrendererstate -> bool -> unit = "ml_gtk_cell_area_snapshot_bytecode" "ml_gtk_cell_area_snapshot_native"
+
   (** Explicitly sets the currently focused cell to @renderer.
 
   This is generally called by implementations of
@@ -233,6 +268,11 @@ end = struct
   (** Returns whether the area can do anything when activated,
   after applying new attributes to @area. *)
   external is_activatable : t -> bool = "ml_gtk_cell_area_is_activatable"
+
+  (** This is a convenience function for `GtkCellArea` implementations
+  to get the inner area where a given `GtkCellRenderer` will be
+  rendered. It removes any padding previously added by gtk_cell_area_request_renderer(). *)
+  external inner_cell_area : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_cell_area_inner_cell_area"
 
   (** Checks if @area contains @renderer. *)
   external has_renderer : t -> Cell_renderer.t -> bool = "ml_gtk_cell_area_has_renderer"
@@ -318,6 +358,14 @@ end = struct
   subclasses. *)
   external get_current_path_string : t -> string = "ml_gtk_cell_area_get_current_path_string"
 
+  (** Gets the `GtkCellRenderer` at @x and @y coordinates inside @area and optionally
+  returns the full cell allocation for it inside @cell_area. *)
+  external get_cell_at_position : t -> Cell_area_context.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> int -> int -> Cell_renderer.t * Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_cell_area_get_cell_at_position_bytecode" "ml_gtk_cell_area_get_cell_at_position_native"
+
+  (** Derives the allocation of @renderer inside @area if @area
+  were to be rendered in @cell_area. *)
+  external get_cell_allocation : t -> Cell_area_context.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Cell_renderer.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_cell_area_get_cell_allocation"
+
   (** This should be called by the @area’s owning layout widget
   when focus is to be passed to @area, or moved within @area
   for a given @direction and row data.
@@ -326,6 +374,9 @@ end = struct
   method to receive and navigate focus in its own way particular
   to how it lays out cells. *)
   external focus : t -> Gtk_enums.directiontype -> bool = "ml_gtk_cell_area_focus"
+
+  (** Delegates event handling to a `GtkCellArea`. *)
+  external event : t -> Cell_area_context.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Ocgtk_gdk.Gdk.Wrappers.Event.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> Gtk_enums.cellrendererstate -> int = "ml_gtk_cell_area_event_bytecode" "ml_gtk_cell_area_event_native"
 
   (** Creates a `GtkCellArea`Context to be used with @area for
   all purposes. `GtkCellArea`Context stores geometry information
@@ -375,6 +426,17 @@ end = struct
 
   (** Adds @renderer to @area with the default child cell properties. *)
   external add : t -> Cell_renderer.t -> unit = "ml_gtk_cell_area_add"
+
+  (** This is used by `GtkCellArea` subclasses when handling events
+  to activate cells, the base `GtkCellArea` class activates cells
+  for keyboard events for free in its own GtkCellArea->activate()
+  implementation. *)
+  external activate_cell : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Cell_renderer.t -> Ocgtk_gdk.Gdk.Wrappers.Event.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> Gtk_enums.cellrendererstate -> bool = "ml_gtk_cell_area_activate_cell_bytecode" "ml_gtk_cell_area_activate_cell_native"
+
+  (** Activates @area, usually by activating the currently focused
+  cell, however some subclasses which embed widgets in the area
+  can also activate a widget if it currently has the focus. *)
+  external activate : t -> Cell_area_context.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> Gtk_enums.cellrendererstate -> bool -> bool = "ml_gtk_cell_area_activate_bytecode" "ml_gtk_cell_area_activate_native"
 
   (* Properties *)
 

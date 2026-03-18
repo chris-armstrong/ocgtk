@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <gsk/gsk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gsk_decls.h"
 
 /* Conversion functions for GskShaderArgsBuilder (opaque record with hidden fields) */
 GskShaderArgsBuilder *GskShaderArgsBuilder_val(value v) {
@@ -36,6 +36,30 @@ CAMLexport CAMLprim value ml_gsk_shader_args_builder_unref(value self)
 CAMLparam1(self);
 
 gsk_shader_args_builder_unref(GskShaderArgsBuilder_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gsk_shader_args_builder_set_vec4(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gsk_shader_args_builder_set_vec4(GskShaderArgsBuilder_val(self), Int_val(arg1), graphene_vec4_t_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gsk_shader_args_builder_set_vec3(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gsk_shader_args_builder_set_vec3(GskShaderArgsBuilder_val(self), Int_val(arg1), graphene_vec3_t_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gsk_shader_args_builder_set_vec2(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gsk_shader_args_builder_set_vec2(GskShaderArgsBuilder_val(self), Int_val(arg1), graphene_vec2_t_val(arg2));
 CAMLreturn(Val_unit);
 }
 

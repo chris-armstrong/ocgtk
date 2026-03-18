@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Event controller: GestureSingle *)
+(* GestureSingle: GestureSingle *)
 
 type t = [`gesture_single | `gesture | `event_controller | `object_] Gobject.obj
-
-let as_event_controller (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t = Obj.magic obj
 
 (* Methods *)
 (** Sets whether to handle only touch events.
@@ -34,6 +32,12 @@ external get_touch_only : t -> bool = "ml_gtk_gesture_single_get_touch_only"
 
 For more information, see [method@Gtk.GestureSingle.set_exclusive]. *)
 external get_exclusive : t -> bool = "ml_gtk_gesture_single_get_exclusive"
+
+(** Returns the event sequence currently interacting with @gesture.
+
+This is only meaningful if [method@Gtk.Gesture.is_active]
+returns %TRUE. *)
+external get_current_sequence : t -> Ocgtk_gdk.Gdk.Wrappers.Event_sequence.t option = "ml_gtk_gesture_single_get_current_sequence"
 
 (** Returns the button number currently interacting
 with @gesture, or 0 if there is none. *)

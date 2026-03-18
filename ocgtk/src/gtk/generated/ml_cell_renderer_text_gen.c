@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_cell_renderer_text_new(value unit)
@@ -66,6 +66,70 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_alignment(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+    PangoAlignment prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "alignment");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_alignment: property 'alignment' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "alignment", &prop_gvalue);
+          prop_value = (PangoAlignment)g_value_get_enum(&prop_gvalue);
+
+      result = Val_PangoAlignment(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_alignment(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+    PangoAlignment c_value = PangoAlignment_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "alignment");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_alignment: property 'alignment' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "alignment", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_attributes(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+    PangoAttrList *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "attributes");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_attributes: property 'attributes' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "attributes", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_PangoAttrList(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_attributes(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+    PangoAttrList *c_value = PangoAttrList_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "attributes");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_attributes: property 'attributes' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "attributes", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_background(value self)
 {
     CAMLparam1(self);
@@ -94,6 +158,38 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
           g_value_set_string(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "background", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_background_rgba(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+    GdkRGBA *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "background-rgba");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_background_rgba: property 'background-rgba' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "background-rgba", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GdkRGBA(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_background_rgba(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+    GdkRGBA *c_value = GdkRGBA_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "background-rgba");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_background_rgba: property 'background-rgba' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "background-rgba", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
@@ -190,6 +286,38 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
           g_value_set_boolean(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "editable-set", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_ellipsize(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+    PangoEllipsizeMode prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "ellipsize");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_ellipsize: property 'ellipsize' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "ellipsize", &prop_gvalue);
+          prop_value = (PangoEllipsizeMode)g_value_get_enum(&prop_gvalue);
+
+      result = Val_PangoEllipsizeMode(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_ellipsize(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+    PangoEllipsizeMode c_value = PangoEllipsizeMode_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "ellipsize");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_ellipsize: property 'ellipsize' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "ellipsize", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
@@ -322,6 +450,38 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_font_desc(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+    PangoFontDescription *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "font-desc");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_font_desc: property 'font-desc' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "font-desc", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_PangoFontDescription(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_font_desc(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+    PangoFontDescription *c_value = PangoFontDescription_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "font-desc");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_font_desc: property 'font-desc' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "font-desc", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_foreground(value self)
 {
     CAMLparam1(self);
@@ -350,6 +510,38 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
           g_value_set_string(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "foreground", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_foreground_rgba(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+    GdkRGBA *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "foreground-rgba");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_foreground_rgba: property 'foreground-rgba' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "foreground-rgba", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GdkRGBA(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_foreground_rgba(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+    GdkRGBA *c_value = GdkRGBA_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "foreground-rgba");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_foreground_rgba: property 'foreground-rgba' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "foreground-rgba", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
@@ -802,6 +994,38 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_stretch(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+    PangoStretch prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "stretch");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_stretch: property 'stretch' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "stretch", &prop_gvalue);
+          prop_value = (PangoStretch)g_value_get_enum(&prop_gvalue);
+
+      result = Val_PangoStretch(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_stretch(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+    PangoStretch c_value = PangoStretch_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "stretch");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_stretch: property 'stretch' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "stretch", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_stretch_set(value self)
 {
     CAMLparam1(self);
@@ -898,6 +1122,38 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_style(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+    PangoStyle prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "style");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_style: property 'style' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "style", &prop_gvalue);
+          prop_value = (PangoStyle)g_value_get_enum(&prop_gvalue);
+
+      result = Val_PangoStyle(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_style(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+    PangoStyle c_value = PangoStyle_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "style");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_style: property 'style' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "style", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_style_set(value self)
 {
     CAMLparam1(self);
@@ -962,6 +1218,38 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_underline(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+    PangoUnderline prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "underline");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_underline: property 'underline' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "underline", &prop_gvalue);
+          prop_value = (PangoUnderline)g_value_get_enum(&prop_gvalue);
+
+      result = Val_PangoUnderline(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_underline(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+    PangoUnderline c_value = PangoUnderline_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "underline");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_underline: property 'underline' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "underline", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_underline_set(value self)
 {
     CAMLparam1(self);
@@ -990,6 +1278,38 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
           g_value_set_boolean(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "underline-set", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_variant(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+    PangoVariant prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "variant");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_variant: property 'variant' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "variant", &prop_gvalue);
+          prop_value = (PangoVariant)g_value_get_enum(&prop_gvalue);
+
+      result = Val_PangoVariant(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_variant(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+    PangoVariant c_value = PangoVariant_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "variant");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_variant: property 'variant' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "variant", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
@@ -1118,6 +1438,38 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
           g_value_set_int(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "width-chars", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_wrap_mode(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+    PangoWrapMode prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "wrap-mode");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_wrap_mode: property 'wrap-mode' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "wrap-mode", &prop_gvalue);
+          prop_value = (PangoWrapMode)g_value_get_enum(&prop_gvalue);
+
+      result = Val_PangoWrapMode(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_wrap_mode(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
+    PangoWrapMode c_value = PangoWrapMode_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "wrap-mode");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_set_wrap_mode: property 'wrap-mode' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "wrap-mode", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }

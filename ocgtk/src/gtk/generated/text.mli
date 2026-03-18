@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Text *)
+(* Text: Text *)
 
 type t = [`text | `widget | `initially_unowned] Gobject.obj
-
-val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new Text *)
 external new_ : unit -> t = "ml_gtk_text_new"
@@ -38,6 +36,9 @@ external set_visibility : t -> bool -> unit = "ml_gtk_text_set_visibility"
 that is pasted into the widget. *)
 external set_truncate_multiline : t -> bool -> unit = "ml_gtk_text_set_truncate_multiline"
 
+(** Sets tabstops that are applied to the text. *)
+external set_tabs : t -> Ocgtk_pango.Pango.Wrappers.Tab_array.t option -> unit = "ml_gtk_text_set_tabs"
+
 (** Sets whether the `GtkText` should grow and shrink with the content. *)
 external set_propagate_text_width : t -> bool -> unit = "ml_gtk_text_set_propagate_text_width"
 
@@ -70,6 +71,10 @@ external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit = "ml_gtk_text_
 to fine-tune their behaviour. *)
 external set_input_hints : t -> Gtk_enums.inputhints -> unit = "ml_gtk_text_set_input_hints"
 
+(** Sets a menu model to add when constructing
+the context menu for @self. *)
+external set_extra_menu : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> unit = "ml_gtk_text_set_extra_menu"
+
 (** Sets whether Emoji completion is enabled.
 
 If it is, typing ':', followed by a recognized keyword,
@@ -80,6 +85,9 @@ external set_enable_emoji_completion : t -> bool -> unit = "ml_gtk_text_set_enab
 (** Set the `GtkEntryBuffer` object which holds the text for
 this widget. *)
 external set_buffer : t -> Entry_buffer.t -> unit = "ml_gtk_text_set_buffer"
+
+(** Sets attributes that are applied to the text. *)
+external set_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t option -> unit = "ml_gtk_text_set_attributes"
 
 (** If @activates is %TRUE, pressing Enter will activate
 the default widget for the window containing @self.
@@ -104,6 +112,11 @@ external get_visibility : t -> bool = "ml_gtk_text_get_visibility"
 (** Returns whether the `GtkText` will truncate multi-line text
 that is pasted into the widget *)
 external get_truncate_multiline : t -> bool = "ml_gtk_text_get_truncate_multiline"
+
+(** Gets the tabstops that were set on the `GtkText`.
+
+See [method@Gtk.Text.set_tabs]. *)
+external get_tabs : t -> Ocgtk_pango.Pango.Wrappers.Tab_array.t option = "ml_gtk_text_get_tabs"
 
 (** Returns whether the `GtkText` will grow and shrink
 with the content. *)
@@ -134,6 +147,11 @@ external get_input_purpose : t -> Gtk_enums.inputpurpose = "ml_gtk_text_get_inpu
 (** Gets the input hints of the `GtkText`. *)
 external get_input_hints : t -> Gtk_enums.inputhints = "ml_gtk_text_get_input_hints"
 
+(** Gets the menu model for extra items in the context menu.
+
+See [method@Gtk.Text.set_extra_menu]. *)
+external get_extra_menu : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option = "ml_gtk_text_get_extra_menu"
+
 (** Returns whether Emoji completion is enabled for this
 `GtkText` widget. *)
 external get_enable_emoji_completion : t -> bool = "ml_gtk_text_get_enable_emoji_completion"
@@ -141,6 +159,11 @@ external get_enable_emoji_completion : t -> bool = "ml_gtk_text_get_enable_emoji
 (** Get the `GtkEntryBuffer` object which holds the text for
 this widget. *)
 external get_buffer : t -> Entry_buffer.t = "ml_gtk_text_get_buffer"
+
+(** Gets the attribute list that was set on the `GtkText`.
+
+See [method@Gtk.Text.set_attributes]. *)
+external get_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t option = "ml_gtk_text_get_attributes"
 
 (** Returns whether pressing Enter will activate
 the default widget for the window containing @self.

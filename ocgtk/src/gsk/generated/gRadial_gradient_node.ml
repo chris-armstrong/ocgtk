@@ -1,6 +1,10 @@
 (* High-level class for RadialGradientNode *)
 class radial_gradient_node (obj : Radial_gradient_node.t) = object (self)
 
+  method get_center : unit -> Ocgtk_graphene.Graphene.point =
+    fun () ->
+      new  Ocgtk_graphene.Graphene.point(Radial_gradient_node.get_center obj)
+
   method get_end : unit -> float =
     fun () ->
       (Radial_gradient_node.get_end obj)

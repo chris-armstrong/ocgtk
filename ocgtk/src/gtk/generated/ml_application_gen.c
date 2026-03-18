@@ -13,15 +13,32 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
+CAMLexport CAMLprim value ml_gtk_application_new(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+
+GtkApplication *obj = gtk_application_new(String_option_val(arg1), GioApplicationFlags_val(arg2));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkApplication(obj));
+}
 CAMLexport CAMLprim value ml_gtk_application_uninhibit(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gtk_application_uninhibit(GtkApplication_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_application_set_menubar(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_application_set_menubar(GtkApplication_val(self), Option_val(arg1, GMenuModel_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -82,6 +99,24 @@ CAMLparam2(self, arg1);
 GtkWindow* result = gtk_application_get_window_by_id(GtkApplication_val(self), Int_val(arg1));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWindow));
+}
+
+CAMLexport CAMLprim value ml_gtk_application_get_menubar(value self)
+{
+CAMLparam1(self);
+
+GMenuModel* result = gtk_application_get_menubar(GtkApplication_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GMenuModel));
+}
+
+CAMLexport CAMLprim value ml_gtk_application_get_menu_by_id(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GMenu* result = gtk_application_get_menu_by_id(GtkApplication_val(self), String_val(arg1));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GMenu));
 }
 
 CAMLexport CAMLprim value ml_gtk_application_get_active_window(value self)

@@ -2,7 +2,6 @@
 
 (* High-level class for FlowBox *)
 class flow_box (obj : Flow_box.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Flow_box.as_widget obj)
   inherit Gflow_box_signals.flow_box_signals obj
 
   method append : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> unit =
@@ -132,7 +131,6 @@ class flow_box (obj : Flow_box.t) = object (self)
   method accept_unpaired_release = Flow_box.get_accept_unpaired_release obj
   method set_accept_unpaired_release v =  Flow_box.set_accept_unpaired_release obj v
 
-  method as_widget = (Flow_box.as_widget obj)
     method as_flow_box = obj
 end
 

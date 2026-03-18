@@ -1,6 +1,5 @@
 (* High-level class for Box *)
 class box (obj : Box.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Box.as_widget obj)
 
   method append : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> unit =
     fun child ->
@@ -61,7 +60,6 @@ class box (obj : Box.t) = object (self)
     fun spacing ->
       (Box.set_spacing obj spacing)
 
-  method as_widget = (Box.as_widget obj)
     method as_box = obj
 end
 

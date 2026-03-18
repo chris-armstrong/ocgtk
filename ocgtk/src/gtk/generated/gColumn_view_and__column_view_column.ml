@@ -3,13 +3,16 @@
 (* Signal class defined in gcolumn_view_signals.ml *)
 
 class column_view (obj : Column_view_and__column_view_column.Column_view.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Column_view_and__column_view_column.Column_view.as_widget obj)
   inherit Gcolumn_view_signals.column_view_signals obj
 
   method append_column : 'p1. (<as_column_view_column: Column_view_and__column_view_column.Column_view_column.t; ..> as 'p1) -> unit =
     fun column ->
       let column = column#as_column_view_column in
       (Column_view_and__column_view_column.Column_view.append_column obj column)
+
+  method get_columns : unit -> Ocgtk_gio.Gio.list_model =
+    fun () ->
+      new  Ocgtk_gio.Gio.list_model(Column_view_and__column_view_column.Column_view.get_columns obj)
 
   method get_enable_rubberband : unit -> bool =
     fun () ->
@@ -105,7 +108,6 @@ class column_view (obj : Column_view_and__column_view_column.Column_view.t) = ob
       let column = Option.map (fun (c) -> c#as_column_view_column) column in
       (Column_view_and__column_view_column.Column_view.sort_by_column obj column direction)
 
-  method as_widget = (Column_view_and__column_view_column.Column_view.as_widget obj)
     method as_column_view = obj
 end
 
@@ -126,6 +128,10 @@ and column_view_column (obj : Column_view_and__column_view_column.Column_view_co
   method get_fixed_width : unit -> int =
     fun () ->
       (Column_view_and__column_view_column.Column_view_column.get_fixed_width obj)
+
+  method get_header_menu : unit -> Ocgtk_gio.Gio.menu_model option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.menu_model ret) (Column_view_and__column_view_column.Column_view_column.get_header_menu obj)
 
   method get_id : unit -> string option =
     fun () ->
@@ -159,6 +165,11 @@ and column_view_column (obj : Column_view_and__column_view_column.Column_view_co
   method set_fixed_width : int -> unit =
     fun fixed_width ->
       (Column_view_and__column_view_column.Column_view_column.set_fixed_width obj fixed_width)
+
+  method set_header_menu : 'p1. (#Ocgtk_gio.Gio.menu_model as 'p1) option -> unit =
+    fun menu ->
+      let menu = Option.map (fun (c) -> c#as_menu_model) menu in
+      (Column_view_and__column_view_column.Column_view_column.set_header_menu obj menu)
 
   method set_id : string option -> unit =
     fun id ->

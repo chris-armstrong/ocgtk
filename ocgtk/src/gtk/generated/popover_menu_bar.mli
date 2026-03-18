@@ -1,17 +1,22 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: PopoverMenuBar *)
+(* PopoverMenuBar: PopoverMenuBar *)
 
 type t = [`popover_menu_bar | `widget | `initially_unowned] Gobject.obj
 
-val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
-
 (** Create a new PopoverMenuBar *)
-external new_from_model : unit -> t = "ml_gtk_popover_menu_bar_new_from_model"
+external new_from_model : Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> t = "ml_gtk_popover_menu_bar_new_from_model"
 
 (* Methods *)
+(** Sets a menu model from which @bar should take
+its contents. *)
+external set_menu_model : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> unit = "ml_gtk_popover_menu_bar_set_menu_model"
+
 (** Removes a widget that has previously been added with
 gtk_popover_menu_bar_add_child(). *)
 external remove_child : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> bool = "ml_gtk_popover_menu_bar_remove_child"
+
+(** Returns the model from which the contents of @bar are taken. *)
+external get_menu_model : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option = "ml_gtk_popover_menu_bar_get_menu_model"
 
 (** Adds a custom widget to a generated menubar.
 

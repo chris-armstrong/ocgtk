@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: ShortcutsGroup *)
+(* ShortcutsGroup: ShortcutsGroup *)
 
 type t = [`shortcuts_group | `box | `widget | `initially_unowned] Gobject.obj
-
-val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (* Methods *)
 (** Adds a shortcut to the shortcuts group.

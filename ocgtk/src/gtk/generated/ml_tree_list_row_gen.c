@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_tree_list_row_set_expanded(value self, value arg1)
@@ -63,6 +63,15 @@ CAMLparam1(self);
 
 guint result = gtk_tree_list_row_get_depth(GtkTreeListRow_val(self));
 CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_list_row_get_children(value self)
+{
+CAMLparam1(self);
+
+GListModel* result = gtk_tree_list_row_get_children(GtkTreeListRow_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GListModel));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_list_row_get_child_row(value self, value arg1)

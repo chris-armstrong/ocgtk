@@ -1,6 +1,5 @@
 class popover : Popover.t ->
   object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
     inherit Gpopover_signals.popover_signals
     method get_autohide : unit -> bool
     method get_cascade_popdown : unit -> bool
@@ -18,8 +17,8 @@ class popover : Popover.t ->
     method set_has_arrow : bool -> unit
     method set_mnemonics_visible : bool -> unit
     method set_offset : int -> int -> unit
+    method set_pointing_to : #Ocgtk_gdk.Gdk.rectangle option -> unit
     method set_position : Gtk_enums.positiontype -> unit
-  method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
     method as_popover : Popover.t
   end
 

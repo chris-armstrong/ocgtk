@@ -1,6 +1,5 @@
 (* High-level class for CenterBox *)
 class center_box (obj : Center_box.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Center_box.as_widget obj)
 
   method get_baseline_position : unit -> Gtk_enums.baselineposition =
     fun () ->
@@ -45,7 +44,6 @@ class center_box (obj : Center_box.t) = object (self)
       let child = Option.map (fun (c) -> c#as_widget) child in
       (Center_box.set_start_widget obj child)
 
-  method as_widget = (Center_box.as_widget obj)
     method as_center_box = obj
 end
 

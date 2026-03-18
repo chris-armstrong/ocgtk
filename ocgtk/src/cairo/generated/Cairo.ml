@@ -1,6 +1,37 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Top-level library module with direct references to all classes and enumerations *)
 
+(** Classes and Interfaces *)
+
+class context = GContext.context
+class device = GDevice.device
+class font_face = GFont_face.font_face
+class font_options = GFont_options.font_options
+class matrix = GMatrix.matrix
+class path = GPath.path
+class pattern = GPattern.pattern
+class rectangle = GRectangle.rectangle
+class rectangle_int = GRectangle_int.rectangle_int
+class region = GRegion.region
+class scaled_font = GScaled_font.scaled_font
+class surface = GSurface.surface
+
+(** Layer 1 Module Wrappers *)
+module Wrappers = struct
+  module Context = Context
+  module Device = Device
+  module Font_face = Font_face
+  module Font_options = Font_options
+  module Matrix = Matrix
+  module Path = Path
+  module Pattern = Pattern
+  module Rectangle = Rectangle
+  module Rectangle_int = Rectangle_int
+  module Region = Region
+  module Scaled_font = Scaled_font
+  module Surface = Surface
+end
+
 (** Enumerations and Bitfields *)
 
 type antialias = Cairo_enums.antialias

@@ -1,6 +1,10 @@
 (* High-level class for RecentInfo *)
 class recent_info (obj : Recent_info.t) = object (self)
 
+  method create_app_info : string option -> (Ocgtk_gio.Gio.app_info option, GError.t) result =
+    fun app_name ->
+      Result.map (fun ret -> Option.map (fun ret -> new Ocgtk_gio.Gio.app_info ret) ret)(Recent_info.create_app_info obj app_name)
+
   method exists : unit -> bool =
     fun () ->
       (Recent_info.exists obj)
@@ -16,6 +20,10 @@ class recent_info (obj : Recent_info.t) = object (self)
   method get_display_name : unit -> string =
     fun () ->
       (Recent_info.get_display_name obj)
+
+  method get_gicon : unit -> Ocgtk_gio.Gio.icon option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.icon ret) (Recent_info.get_gicon obj)
 
   method get_mime_type : unit -> string =
     fun () ->

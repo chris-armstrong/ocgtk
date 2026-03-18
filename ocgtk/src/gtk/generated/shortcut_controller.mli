@@ -1,15 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Event controller: ShortcutController *)
+(* ShortcutController: ShortcutController *)
 
 type t = [`shortcut_controller | `event_controller | `object_] Gobject.obj
-
-val as_event_controller : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t
 
 (** Create a new ShortcutController *)
 external new_ : unit -> t = "ml_gtk_shortcut_controller_new"
 
 (** Create a new ShortcutController *)
-external new_for_model : unit -> t = "ml_gtk_shortcut_controller_new_for_model"
+external new_for_model : Ocgtk_gio.Gio.Wrappers.List_model.t -> t = "ml_gtk_shortcut_controller_new_for_model"
 
 (* Methods *)
 (** Sets the controller to have the given @scope.
@@ -23,6 +21,21 @@ With %GTK_SHORTCUT_SCOPE_LOCAL, shortcuts will only be activated
 when the widget has focus. *)
 external set_scope : t -> Gtk_enums.shortcutscope -> unit = "ml_gtk_shortcut_controller_set_scope"
 
+(** Sets the controller to use the given modifier for mnemonics.
+
+The mnemonics modifiers determines which modifiers need to be pressed to allow
+activation of shortcuts with mnemonics triggers.
+
+GTK normally uses the Alt modifier for mnemonics, except in `GtkPopoverMenu`s,
+where mnemonics can be triggered without any modifiers. It should be very
+rarely necessary to change this, and doing so is likely to interfere with
+other shortcuts.
+
+This value is only relevant for local shortcut controllers. Global and managed
+shortcut controllers will have their shortcuts activated from other places which
+have their own modifiers for activating mnemonics. *)
+external set_mnemonics_modifiers : t -> Ocgtk_gdk.Gdk.modifiertype -> unit = "ml_gtk_shortcut_controller_set_mnemonics_modifiers"
+
 (** Removes @shortcut from the list of shortcuts handled by @self.
 
 If @shortcut had not been added to @controller or this controller
@@ -34,6 +47,9 @@ external remove_shortcut : t -> Shortcut.t -> unit = "ml_gtk_shortcut_controller
 See [method@Gtk.ShortcutController.set_scope] for details. *)
 external get_scope : t -> Gtk_enums.shortcutscope = "ml_gtk_shortcut_controller_get_scope"
 
+(** Gets the mnemonics modifiers for when this controller activates its shortcuts. *)
+external get_mnemonics_modifiers : t -> Ocgtk_gdk.Gdk.modifiertype = "ml_gtk_shortcut_controller_get_mnemonics_modifiers"
+
 (** Adds @shortcut to the list of shortcuts handled by @self.
 
 If this controller uses an external shortcut list, this
@@ -41,6 +57,15 @@ function does nothing. *)
 external add_shortcut : t -> Shortcut.t -> unit = "ml_gtk_shortcut_controller_add_shortcut"
 
 (* Properties *)
+
+(** Get property: mnemonic-modifiers *)
+external get_mnemonic_modifiers : t -> Ocgtk_gdk.Gdk.modifiertype = "ml_gtk_shortcut_controller_get_mnemonic_modifiers"
+
+(** Set property: mnemonic-modifiers *)
+external set_mnemonic_modifiers : t -> Ocgtk_gdk.Gdk.modifiertype -> unit = "ml_gtk_shortcut_controller_set_mnemonic_modifiers"
+
+(** Get property: model *)
+external get_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t = "ml_gtk_shortcut_controller_get_model"
 
 (** Get property: n-items *)
 external get_n_items : t -> int = "ml_gtk_shortcut_controller_get_n_items"

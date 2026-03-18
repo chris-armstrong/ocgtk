@@ -1,6 +1,5 @@
 (* High-level class for Frame *)
 class frame (obj : Frame.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Frame.as_widget obj)
 
   method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
     fun () ->
@@ -39,7 +38,6 @@ class frame (obj : Frame.t) = object (self)
   method label_xalign = Frame.get_label_xalign obj
   method set_label_xalign v =  Frame.set_label_xalign obj v
 
-  method as_widget = (Frame.as_widget obj)
     method as_frame = obj
 end
 

@@ -4,6 +4,11 @@
 class css_provider (obj : Css_provider.t) = object (self)
   inherit Gcss_provider_signals.css_provider_signals obj
 
+  method load_from_file : 'p1. (#Ocgtk_gio.Gio.file as 'p1) -> unit =
+    fun file ->
+      let file = file#as_file in
+      (Css_provider.load_from_file obj file)
+
   method load_from_path : string -> unit =
     fun path ->
       (Css_provider.load_from_path obj path)

@@ -1,6 +1,5 @@
 class scrolled_window : Scrolled_window.t ->
   object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
     inherit Gscrolled_window_signals.scrolled_window_signals
     method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option
     method get_hadjustment : unit -> GAdjustment.adjustment
@@ -38,7 +37,6 @@ class scrolled_window : Scrolled_window.t ->
     method set_vscrollbar_policy : Gtk_enums.policytype -> unit
     method window_placement : Gtk_enums.cornertype
     method set_window_placement : Gtk_enums.cornertype -> unit
-  method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
     method as_scrolled_window : Scrolled_window.t
   end
 

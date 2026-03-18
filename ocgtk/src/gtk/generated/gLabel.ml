@@ -2,12 +2,23 @@
 
 (* High-level class for Label *)
 class label (obj : Label.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Label.as_widget obj)
   inherit Glabel_signals.label_signals obj
+
+  method get_attributes : unit -> Ocgtk_pango.Pango.attr_list option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_pango.Pango.attr_list ret) (Label.get_attributes obj)
 
   method get_current_uri : unit -> string option =
     fun () ->
       (Label.get_current_uri obj)
+
+  method get_ellipsize : unit -> Ocgtk_pango.Pango.ellipsizemode =
+    fun () ->
+      (Label.get_ellipsize obj)
+
+  method get_extra_menu : unit -> Ocgtk_gio.Gio.menu_model option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.menu_model ret) (Label.get_extra_menu obj)
 
   method get_justify : unit -> Gtk_enums.justification =
     fun () ->
@@ -16,6 +27,10 @@ class label (obj : Label.t) = object (self)
   method get_label : unit -> string =
     fun () ->
       (Label.get_label obj)
+
+  method get_layout : unit -> Ocgtk_pango.Pango.layout =
+    fun () ->
+      new  Ocgtk_pango.Pango.layout(Label.get_layout obj)
 
   method get_lines : unit -> int =
     fun () ->
@@ -45,6 +60,10 @@ class label (obj : Label.t) = object (self)
     fun () ->
       (Label.get_single_line_mode obj)
 
+  method get_tabs : unit -> Ocgtk_pango.Pango.tab_array option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_pango.Pango.tab_array ret) (Label.get_tabs obj)
+
   method get_text : unit -> string =
     fun () ->
       (Label.get_text obj)
@@ -65,6 +84,10 @@ class label (obj : Label.t) = object (self)
     fun () ->
       (Label.get_wrap obj)
 
+  method get_wrap_mode : unit -> Ocgtk_pango.Pango.wrapmode =
+    fun () ->
+      (Label.get_wrap_mode obj)
+
   method get_xalign : unit -> float =
     fun () ->
       (Label.get_xalign obj)
@@ -76,6 +99,20 @@ class label (obj : Label.t) = object (self)
   method select_region : int -> int -> unit =
     fun start_offset end_offset ->
       (Label.select_region obj start_offset end_offset)
+
+  method set_attributes : 'p1. (#Ocgtk_pango.Pango.attr_list as 'p1) option -> unit =
+    fun attrs ->
+      let attrs = Option.map (fun (c) -> c#as_attr_list) attrs in
+      (Label.set_attributes obj attrs)
+
+  method set_ellipsize : Ocgtk_pango.Pango.ellipsizemode -> unit =
+    fun mode ->
+      (Label.set_ellipsize obj mode)
+
+  method set_extra_menu : 'p1. (#Ocgtk_gio.Gio.menu_model as 'p1) option -> unit =
+    fun model ->
+      let model = Option.map (fun (c) -> c#as_menu_model) model in
+      (Label.set_extra_menu obj model)
 
   method set_justify : Gtk_enums.justification -> unit =
     fun jtype ->
@@ -118,6 +155,11 @@ class label (obj : Label.t) = object (self)
     fun single_line_mode ->
       (Label.set_single_line_mode obj single_line_mode)
 
+  method set_tabs : 'p1. (#Ocgtk_pango.Pango.tab_array as 'p1) option -> unit =
+    fun tabs ->
+      let tabs = Option.map (fun (c) -> c#as_tab_array) tabs in
+      (Label.set_tabs obj tabs)
+
   method set_text : string -> unit =
     fun str ->
       (Label.set_text obj str)
@@ -142,6 +184,10 @@ class label (obj : Label.t) = object (self)
     fun wrap ->
       (Label.set_wrap obj wrap)
 
+  method set_wrap_mode : Ocgtk_pango.Pango.wrapmode -> unit =
+    fun wrap_mode ->
+      (Label.set_wrap_mode obj wrap_mode)
+
   method set_xalign : float -> unit =
     fun xalign ->
       (Label.set_xalign obj xalign)
@@ -150,7 +196,6 @@ class label (obj : Label.t) = object (self)
     fun yalign ->
       (Label.set_yalign obj yalign)
 
-  method as_widget = (Label.as_widget obj)
     method as_label = obj
 end
 

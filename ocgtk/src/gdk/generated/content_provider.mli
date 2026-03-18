@@ -16,6 +16,11 @@ external new_typed : unit -> unit -> t = "ml_gdk_content_provider_new_typed"
 external new_union : t array option -> unit -> t = "ml_gdk_content_provider_new_union"
 
 (* Methods *)
+(** Finishes an asynchronous write operation.
+
+See [method@Gdk.ContentProvider.write_mime_type_async]. *)
+external write_mime_type_finish : t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (bool, GError.t) result = "ml_gdk_content_provider_write_mime_type_finish"
+
 (** Gets the formats that the provider suggests other applications to store
 the data in.
 

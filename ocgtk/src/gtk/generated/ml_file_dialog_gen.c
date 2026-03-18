@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_file_dialog_new(value unit)
@@ -50,6 +50,30 @@ gtk_file_dialog_set_initial_name(GtkFileDialog_val(self), String_option_val(arg1
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_file_dialog_set_initial_folder(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_file_dialog_set_initial_folder(GtkFileDialog_val(self), Option_val(arg1, GFile_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_set_initial_file(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_file_dialog_set_initial_file(GtkFileDialog_val(self), Option_val(arg1, GFile_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_set_filters(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_file_dialog_set_filters(GtkFileDialog_val(self), Option_val(arg1, GListModel_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_file_dialog_set_default_filter(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -64,6 +88,51 @@ CAMLparam2(self, arg1);
 
 gtk_file_dialog_set_accept_label(GtkFileDialog_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_select_multiple_folders_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GListModel* result = gtk_file_dialog_select_multiple_folders_finish(GtkFileDialog_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_GListModel))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_select_folder_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GFile* result = gtk_file_dialog_select_folder_finish(GtkFileDialog_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_GFile))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_save_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GFile* result = gtk_file_dialog_save_finish(GtkFileDialog_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_GFile))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_open_multiple_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GListModel* result = gtk_file_dialog_open_multiple_finish(GtkFileDialog_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_GListModel))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_open_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GFile* result = gtk_file_dialog_open_finish(GtkFileDialog_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_GFile))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_gtk_file_dialog_get_title(value self)
@@ -88,6 +157,33 @@ CAMLparam1(self);
 
 const char* result = gtk_file_dialog_get_initial_name(GtkFileDialog_val(self));
 CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_get_initial_folder(value self)
+{
+CAMLparam1(self);
+
+GFile* result = gtk_file_dialog_get_initial_folder(GtkFileDialog_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GFile));
+}
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_get_initial_file(value self)
+{
+CAMLparam1(self);
+
+GFile* result = gtk_file_dialog_get_initial_file(GtkFileDialog_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GFile));
+}
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_get_filters(value self)
+{
+CAMLparam1(self);
+
+GListModel* result = gtk_file_dialog_get_filters(GtkFileDialog_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GListModel));
 }
 
 CAMLexport CAMLprim value ml_gtk_file_dialog_get_default_filter(value self)

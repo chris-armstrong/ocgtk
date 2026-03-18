@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <gdk/gdk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gdk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gdk_display_translate_key(value self, value arg1, value arg2, value arg3)
@@ -186,6 +186,15 @@ CAMLparam1(self);
 
 const char* result = gdk_display_get_name(GdkDisplay_val(self));
 CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_gdk_display_get_monitors(value self)
+{
+CAMLparam1(self);
+
+GListModel* result = gdk_display_get_monitors(GdkDisplay_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_GListModel(result));
 }
 
 CAMLexport CAMLprim value ml_gdk_display_get_monitor_at_surface(value self, value arg1)

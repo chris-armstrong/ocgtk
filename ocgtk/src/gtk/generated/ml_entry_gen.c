@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_entry_new(value unit)
@@ -48,6 +48,14 @@ CAMLexport CAMLprim value ml_gtk_entry_set_visibility(value self, value arg1)
 CAMLparam2(self, arg1);
 
 gtk_entry_set_visibility(GtkEntry_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_set_tabs(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_entry_set_tabs(GtkEntry_val(self), Option_val(arg1, PangoTabArray_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -131,11 +139,35 @@ gtk_entry_set_icon_sensitive(GtkEntry_val(self), GtkEntryIconPosition_val(arg1),
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_entry_set_icon_from_paintable(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_entry_set_icon_from_paintable(GtkEntry_val(self), GtkEntryIconPosition_val(arg1), Option_val(arg2, GdkPaintable_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_entry_set_icon_from_icon_name(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
 
 gtk_entry_set_icon_from_icon_name(GtkEntry_val(self), GtkEntryIconPosition_val(arg1), String_option_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_set_icon_from_gicon(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_entry_set_icon_from_gicon(GtkEntry_val(self), GtkEntryIconPosition_val(arg1), Option_val(arg2, GIcon_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_set_icon_drag_source(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gtk_entry_set_icon_drag_source(GtkEntry_val(self), GtkEntryIconPosition_val(arg1), GdkContentProvider_val(arg2), GdkDragAction_val(arg3));
 CAMLreturn(Val_unit);
 }
 
@@ -155,6 +187,14 @@ gtk_entry_set_has_frame(GtkEntry_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_entry_set_extra_menu(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_entry_set_extra_menu(GtkEntry_val(self), Option_val(arg1, GMenuModel_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_entry_set_completion(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -168,6 +208,14 @@ CAMLexport CAMLprim value ml_gtk_entry_set_buffer(value self, value arg1)
 CAMLparam2(self, arg1);
 
 gtk_entry_set_buffer(GtkEntry_val(self), GtkEntryBuffer_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_set_attributes(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_entry_set_attributes(GtkEntry_val(self), PangoAttrList_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -217,6 +265,15 @@ CAMLparam1(self);
 
 gboolean result = gtk_entry_get_visibility(GtkEntry_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_get_tabs(value self)
+{
+CAMLparam1(self);
+
+PangoTabArray* result = gtk_entry_get_tabs(GtkEntry_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_PangoTabArray));
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_progress_pulse_step(value self)
@@ -307,6 +364,15 @@ gboolean result = gtk_entry_get_icon_sensitive(GtkEntry_val(self), GtkEntryIconP
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_entry_get_icon_paintable(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GdkPaintable* result = gtk_entry_get_icon_paintable(GtkEntry_val(self), GtkEntryIconPosition_val(arg1));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GdkPaintable));
+}
+
 CAMLexport CAMLprim value ml_gtk_entry_get_icon_name(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -315,12 +381,30 @@ const char* result = gtk_entry_get_icon_name(GtkEntry_val(self), GtkEntryIconPos
 CAMLreturn(Val_option_string(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_entry_get_icon_gicon(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GIcon* result = gtk_entry_get_icon_gicon(GtkEntry_val(self), GtkEntryIconPosition_val(arg1));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GIcon));
+}
+
 CAMLexport CAMLprim value ml_gtk_entry_get_icon_at_pos(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
 
 int result = gtk_entry_get_icon_at_pos(GtkEntry_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_get_icon_area(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GdkRectangle out2;
+
+gtk_entry_get_icon_area(GtkEntry_val(self), GtkEntryIconPosition_val(arg1), &out2);
+CAMLreturn(Val_GdkRectangle(&out2));
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_icon_activatable(value self, value arg1)
@@ -337,6 +421,15 @@ CAMLparam1(self);
 
 gboolean result = gtk_entry_get_has_frame(GtkEntry_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_get_extra_menu(value self)
+{
+CAMLparam1(self);
+
+GMenuModel* result = gtk_entry_get_extra_menu(GtkEntry_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GMenuModel));
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_current_icon_drag_source(value self)
@@ -363,6 +456,15 @@ CAMLparam1(self);
 GtkEntryBuffer* result = gtk_entry_get_buffer(GtkEntry_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkEntryBuffer(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_get_attributes(value self)
+{
+CAMLparam1(self);
+
+PangoAttrList* result = gtk_entry_get_attributes(GtkEntry_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_PangoAttrList));
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_alignment(value self)
@@ -509,6 +611,38 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_entry_get_primary_icon_gicon(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
+    GIcon *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "primary-icon-gicon");
+if (pspec == NULL) caml_failwith("ml_gtk_entry_get_primary_icon_gicon: property 'primary-icon-gicon' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "primary-icon-gicon", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GIcon(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_entry_set_primary_icon_gicon(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
+    GIcon *c_value = GIcon_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "primary-icon-gicon");
+if (pspec == NULL) caml_failwith("ml_gtk_entry_set_primary_icon_gicon: property 'primary-icon-gicon' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "primary-icon-gicon", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_entry_get_primary_icon_name(value self)
 {
     CAMLparam1(self);
@@ -537,6 +671,38 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
           g_value_set_string(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "primary-icon-name", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_get_primary_icon_paintable(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
+    GdkPaintable *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "primary-icon-paintable");
+if (pspec == NULL) caml_failwith("ml_gtk_entry_get_primary_icon_paintable: property 'primary-icon-paintable' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "primary-icon-paintable", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GdkPaintable(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_entry_set_primary_icon_paintable(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
+    GdkPaintable *c_value = GdkPaintable_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "primary-icon-paintable");
+if (pspec == NULL) caml_failwith("ml_gtk_entry_set_primary_icon_paintable: property 'primary-icon-paintable' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "primary-icon-paintable", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
@@ -703,6 +869,38 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_entry_get_secondary_icon_gicon(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
+    GIcon *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "secondary-icon-gicon");
+if (pspec == NULL) caml_failwith("ml_gtk_entry_get_secondary_icon_gicon: property 'secondary-icon-gicon' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "secondary-icon-gicon", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GIcon(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_entry_set_secondary_icon_gicon(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
+    GIcon *c_value = GIcon_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "secondary-icon-gicon");
+if (pspec == NULL) caml_failwith("ml_gtk_entry_set_secondary_icon_gicon: property 'secondary-icon-gicon' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "secondary-icon-gicon", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_entry_get_secondary_icon_name(value self)
 {
     CAMLparam1(self);
@@ -731,6 +929,38 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
           g_value_set_string(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "secondary-icon-name", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_get_secondary_icon_paintable(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
+    GdkPaintable *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "secondary-icon-paintable");
+if (pspec == NULL) caml_failwith("ml_gtk_entry_get_secondary_icon_paintable: property 'secondary-icon-paintable' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "secondary-icon-paintable", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GdkPaintable(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_entry_set_secondary_icon_paintable(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
+    GdkPaintable *c_value = GdkPaintable_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "secondary-icon-paintable");
+if (pspec == NULL) caml_failwith("ml_gtk_entry_set_secondary_icon_paintable: property 'secondary-icon-paintable' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "secondary-icon-paintable", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }

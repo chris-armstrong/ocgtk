@@ -1,9 +1,13 @@
 class drag_source : Drag_source.t ->
   object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller
     inherit Gdrag_source_signals.drag_source_signals
     method drag_cancel : unit -> unit
-  method as_event_controller : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t
+    method get_actions : unit -> Ocgtk_gdk.Gdk.dragaction
+    method get_content : unit -> Ocgtk_gdk.Gdk.content_provider option
+    method get_drag : unit -> Ocgtk_gdk.Gdk.drag option
+    method set_actions : Ocgtk_gdk.Gdk.dragaction -> unit
+    method set_content : #Ocgtk_gdk.Gdk.content_provider option -> unit
+    method set_icon : #Ocgtk_gdk.Gdk.paintable option -> int -> int -> unit
     method as_drag_source : Drag_source.t
   end
 

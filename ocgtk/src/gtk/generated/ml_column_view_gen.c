@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_column_view_new(value arg1)
@@ -212,6 +212,15 @@ CAMLparam1(self);
 
 gboolean result = gtk_column_view_get_enable_rubberband(GtkColumnView_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_get_columns(value self)
+{
+CAMLparam1(self);
+
+GListModel* result = gtk_column_view_get_columns(GtkColumnView_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_GListModel(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_column_view_append_column(value self, value arg1)

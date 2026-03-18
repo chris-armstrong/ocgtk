@@ -1,6 +1,9 @@
 (* High-level class for Inscription *)
 class inscription (obj : Inscription.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Inscription.as_widget obj)
+
+  method get_attributes : unit -> Ocgtk_pango.Pango.attr_list option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_pango.Pango.attr_list ret) (Inscription.get_attributes obj)
 
   method get_min_chars : unit -> int =
     fun () ->
@@ -26,6 +29,10 @@ class inscription (obj : Inscription.t) = object (self)
     fun () ->
       (Inscription.get_text_overflow obj)
 
+  method get_wrap_mode : unit -> Ocgtk_pango.Pango.wrapmode =
+    fun () ->
+      (Inscription.get_wrap_mode obj)
+
   method get_xalign : unit -> float =
     fun () ->
       (Inscription.get_xalign obj)
@@ -33,6 +40,11 @@ class inscription (obj : Inscription.t) = object (self)
   method get_yalign : unit -> float =
     fun () ->
       (Inscription.get_yalign obj)
+
+  method set_attributes : 'p1. (#Ocgtk_pango.Pango.attr_list as 'p1) option -> unit =
+    fun attrs ->
+      let attrs = Option.map (fun (c) -> c#as_attr_list) attrs in
+      (Inscription.set_attributes obj attrs)
 
   method set_markup : string option -> unit =
     fun markup ->
@@ -62,6 +74,10 @@ class inscription (obj : Inscription.t) = object (self)
     fun overflow ->
       (Inscription.set_text_overflow obj overflow)
 
+  method set_wrap_mode : Ocgtk_pango.Pango.wrapmode -> unit =
+    fun wrap_mode ->
+      (Inscription.set_wrap_mode obj wrap_mode)
+
   method set_xalign : float -> unit =
     fun xalign ->
       (Inscription.set_xalign obj xalign)
@@ -70,7 +86,6 @@ class inscription (obj : Inscription.t) = object (self)
     fun yalign ->
       (Inscription.set_yalign obj yalign)
 
-  method as_widget = (Inscription.as_widget obj)
     method as_inscription = obj
 end
 

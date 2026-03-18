@@ -2,7 +2,6 @@
 
 (* High-level class for DropDown *)
 class drop_down (obj : Drop_down.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Drop_down.as_widget obj)
   inherit Gdrop_down_signals.drop_down_signals obj
 
   method get_enable_search : unit -> bool =
@@ -24,6 +23,10 @@ class drop_down (obj : Drop_down.t) = object (self)
   method get_list_factory : unit -> GList_item_factory.list_item_factory option =
     fun () ->
       Option.map (fun ret -> new GList_item_factory.list_item_factory ret) (Drop_down.get_list_factory obj)
+
+  method get_model : unit -> Ocgtk_gio.Gio.list_model option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.list_model ret) (Drop_down.get_model obj)
 
   method get_search_match_mode : unit -> Gtk_enums.stringfiltermatchmode =
     fun () ->
@@ -61,6 +64,11 @@ class drop_down (obj : Drop_down.t) = object (self)
       let factory = Option.map (fun (c) -> c#as_list_item_factory) factory in
       (Drop_down.set_list_factory obj factory)
 
+  method set_model : 'p1. (#Ocgtk_gio.Gio.list_model as 'p1) option -> unit =
+    fun model ->
+      let model = Option.map (fun (c) -> c#as_list_model) model in
+      (Drop_down.set_model obj model)
+
   method set_search_match_mode : Gtk_enums.stringfiltermatchmode -> unit =
     fun search_match_mode ->
       (Drop_down.set_search_match_mode obj search_match_mode)
@@ -73,7 +81,6 @@ class drop_down (obj : Drop_down.t) = object (self)
     fun show_arrow ->
       (Drop_down.set_show_arrow obj show_arrow)
 
-  method as_widget = (Drop_down.as_widget obj)
     method as_drop_down = obj
 end
 

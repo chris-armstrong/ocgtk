@@ -9,6 +9,18 @@ class file_dialog (obj : File_dialog.t) = object (self)
     fun () ->
       Option.map (fun ret -> new GFile_filter.file_filter ret) (File_dialog.get_default_filter obj)
 
+  method get_filters : unit -> Ocgtk_gio.Gio.list_model option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.list_model ret) (File_dialog.get_filters obj)
+
+  method get_initial_file : unit -> Ocgtk_gio.Gio.file option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.file ret) (File_dialog.get_initial_file obj)
+
+  method get_initial_folder : unit -> Ocgtk_gio.Gio.file option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.file ret) (File_dialog.get_initial_folder obj)
+
   method get_initial_name : unit -> string option =
     fun () ->
       (File_dialog.get_initial_name obj)
@@ -21,6 +33,31 @@ class file_dialog (obj : File_dialog.t) = object (self)
     fun () ->
       (File_dialog.get_title obj)
 
+  method open_finish : 'p1. (#Ocgtk_gio.Gio.async_result as 'p1) -> (Ocgtk_gio.Gio.file option, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      Result.map (fun ret -> Option.map (fun ret -> new Ocgtk_gio.Gio.file ret) ret)(File_dialog.open_finish obj result)
+
+  method open_multiple_finish : 'p1. (#Ocgtk_gio.Gio.async_result as 'p1) -> (Ocgtk_gio.Gio.list_model option, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      Result.map (fun ret -> Option.map (fun ret -> new Ocgtk_gio.Gio.list_model ret) ret)(File_dialog.open_multiple_finish obj result)
+
+  method save_finish : 'p1. (#Ocgtk_gio.Gio.async_result as 'p1) -> (Ocgtk_gio.Gio.file option, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      Result.map (fun ret -> Option.map (fun ret -> new Ocgtk_gio.Gio.file ret) ret)(File_dialog.save_finish obj result)
+
+  method select_folder_finish : 'p1. (#Ocgtk_gio.Gio.async_result as 'p1) -> (Ocgtk_gio.Gio.file option, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      Result.map (fun ret -> Option.map (fun ret -> new Ocgtk_gio.Gio.file ret) ret)(File_dialog.select_folder_finish obj result)
+
+  method select_multiple_folders_finish : 'p1. (#Ocgtk_gio.Gio.async_result as 'p1) -> (Ocgtk_gio.Gio.list_model option, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      Result.map (fun ret -> Option.map (fun ret -> new Ocgtk_gio.Gio.list_model ret) ret)(File_dialog.select_multiple_folders_finish obj result)
+
   method set_accept_label : string option -> unit =
     fun accept_label ->
       (File_dialog.set_accept_label obj accept_label)
@@ -29,6 +66,21 @@ class file_dialog (obj : File_dialog.t) = object (self)
     fun filter ->
       let filter = Option.map (fun (c) -> c#as_file_filter) filter in
       (File_dialog.set_default_filter obj filter)
+
+  method set_filters : 'p1. (#Ocgtk_gio.Gio.list_model as 'p1) option -> unit =
+    fun filters ->
+      let filters = Option.map (fun (c) -> c#as_list_model) filters in
+      (File_dialog.set_filters obj filters)
+
+  method set_initial_file : 'p1. (#Ocgtk_gio.Gio.file as 'p1) option -> unit =
+    fun file ->
+      let file = Option.map (fun (c) -> c#as_file) file in
+      (File_dialog.set_initial_file obj file)
+
+  method set_initial_folder : 'p1. (#Ocgtk_gio.Gio.file as 'p1) option -> unit =
+    fun folder ->
+      let folder = Option.map (fun (c) -> c#as_file) folder in
+      (File_dialog.set_initial_folder obj folder)
 
   method set_initial_name : string option -> unit =
     fun name ->

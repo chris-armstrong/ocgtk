@@ -1,6 +1,10 @@
 (* High-level class for MountOperation *)
 class mount_operation (obj : Mount_operation.t) = object (self)
 
+  method get_display : unit -> Ocgtk_gdk.Gdk.display =
+    fun () ->
+      new  Ocgtk_gdk.Gdk.display(Mount_operation.get_display obj)
+
   method get_parent : unit -> GApplication_and__window_and__window_group.window option =
     fun () ->
       Option.map (fun ret -> new GApplication_and__window_and__window_group.window ret) (Mount_operation.get_parent obj)
@@ -8,6 +12,11 @@ class mount_operation (obj : Mount_operation.t) = object (self)
   method is_showing : unit -> bool =
     fun () ->
       (Mount_operation.is_showing obj)
+
+  method set_display : 'p1. (#Ocgtk_gdk.Gdk.display as 'p1) -> unit =
+    fun display ->
+      let display = display#as_display in
+      (Mount_operation.set_display obj display)
 
   method set_parent : 'p1. (#GApplication_and__window_and__window_group.window as 'p1) option -> unit =
     fun parent ->

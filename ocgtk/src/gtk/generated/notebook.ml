@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Notebook *)
+(* Notebook: Notebook *)
 
 type t = [`notebook | `widget | `initially_unowned] Gobject.obj
-
-let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new Notebook *)
 external new_ : unit -> t = "ml_gtk_notebook_new"
@@ -188,6 +186,13 @@ external get_show_border : t -> bool = "ml_gtk_notebook_get_show_border"
 
 (** Returns whether the tab label area has arrows for scrolling. *)
 external get_scrollable : t -> bool = "ml_gtk_notebook_get_scrollable"
+
+(** Returns a `GListModel` that contains the pages of the notebook.
+
+This can be used to keep an up-to-date view. The model also
+implements [iface@Gtk.SelectionModel] and can be used to track
+and modify the visible page. *)
+external get_pages : t -> Ocgtk_gio.Gio.Wrappers.List_model.t = "ml_gtk_notebook_get_pages"
 
 (** Returns the `GtkNotebookPage` for @child. *)
 external get_page : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> Notebook_page.t = "ml_gtk_notebook_get_page"

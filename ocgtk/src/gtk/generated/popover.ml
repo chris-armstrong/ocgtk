@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Popover *)
+(* Popover: Popover *)
 
 type t = [`popover | `widget | `initially_unowned] Gobject.obj
-
-let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new Popover *)
 external new_ : unit -> t = "ml_gtk_popover_new"
@@ -18,6 +16,11 @@ This preference will be respected where possible, although
 on lack of space (eg. if close to the window edges), the
 `GtkPopover` may choose to appear on the opposite side. *)
 external set_position : t -> Gtk_enums.positiontype -> unit = "ml_gtk_popover_set_position"
+
+(** Sets the rectangle that @popover points to.
+
+This is in the coordinate space of the @popover parent. *)
+external set_pointing_to : t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t option -> unit = "ml_gtk_popover_set_pointing_to"
 
 (** Sets the offset to use when calculating the position
 of the popover.
@@ -80,6 +83,14 @@ external popdown : t -> unit = "ml_gtk_popover_popdown"
 
 (** Returns the preferred position of @popover. *)
 external get_position : t -> Gtk_enums.positiontype = "ml_gtk_popover_get_position"
+
+(** Gets the rectangle that the popover points to.
+
+If a rectangle to point to has been set, this function will
+return %TRUE and fill in @rect with such rectangle, otherwise
+it will return %FALSE and fill in @rect with the parent
+widget coordinates. *)
+external get_pointing_to : t -> bool * Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_popover_get_pointing_to"
 
 (** Gets the offset previous set with [method@Gtk.Popover.set_offset()]. *)
 external get_offset : t -> int * int = "ml_gtk_popover_get_offset"

@@ -1,6 +1,5 @@
 (* High-level class for ComboBoxText *)
 class combo_box_text (obj : Combo_box_text.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Combo_box_text.as_widget obj)
 
   method append : string option -> string -> unit =
     fun id text ->
@@ -38,7 +37,6 @@ class combo_box_text (obj : Combo_box_text.t) = object (self)
     fun () ->
       (Combo_box_text.remove_all obj)
 
-  method as_widget = (Combo_box_text.as_widget obj)
     method as_combo_box_text = obj
 end
 

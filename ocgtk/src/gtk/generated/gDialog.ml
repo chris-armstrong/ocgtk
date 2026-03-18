@@ -2,7 +2,6 @@
 
 (* High-level class for Dialog *)
 class dialog (obj : Dialog.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Dialog.as_widget obj)
   inherit Gdialog_signals.dialog_signals obj
 
   method add_action_widget : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> int -> unit =
@@ -14,13 +13,13 @@ class dialog (obj : Dialog.t) = object (self)
     fun button_text response_id ->
       new  GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget(Dialog.add_button obj button_text response_id)
 
-  method get_content_area : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget =
+  method get_content_area : unit -> GBox.box =
     fun () ->
-      new  GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget(Dialog.get_content_area obj)
+      new  GBox.box(Dialog.get_content_area obj)
 
-  method get_header_bar : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget =
+  method get_header_bar : unit -> GHeader_bar.header_bar =
     fun () ->
-      new  GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget(Dialog.get_header_bar obj)
+      new  GHeader_bar.header_bar(Dialog.get_header_bar obj)
 
   method get_response_for_widget : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> int =
     fun widget ->
@@ -45,7 +44,6 @@ class dialog (obj : Dialog.t) = object (self)
 
   method use_header_bar = Dialog.get_use_header_bar obj
 
-  method as_widget = (Dialog.as_widget obj)
     method as_dialog = obj
 end
 

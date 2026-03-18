@@ -1,6 +1,5 @@
 class spin_button : Spin_button.t ->
   object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
     inherit Gspin_button_signals.spin_button_signals
     method configure : #GAdjustment.adjustment option -> float -> int -> unit
     method get_activates_default : unit -> bool
@@ -26,7 +25,6 @@ class spin_button : Spin_button.t ->
     method set_wrap : bool -> unit
     method spin : Gtk_enums.spintype -> float -> unit
     method update : unit -> unit
-  method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
     method as_spin_button : Spin_button.t
   end
 

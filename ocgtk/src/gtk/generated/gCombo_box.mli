@@ -1,6 +1,5 @@
 class combo_box : Combo_box.t ->
   object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
     inherit Gcombo_box_signals.combo_box_signals
     method get_active : unit -> int
     method get_active_id : unit -> string option
@@ -13,6 +12,7 @@ class combo_box : Combo_box.t ->
     method get_popup_fixed_width : unit -> bool
     method popdown : unit -> unit
     method popup : unit -> unit
+    method popup_for_device : #Ocgtk_gdk.Gdk.device -> unit
     method set_active : int -> unit
     method set_active_id : string option -> bool
     method set_active_iter : Tree_iter.t option -> unit
@@ -24,7 +24,6 @@ class combo_box : Combo_box.t ->
     method has_frame : bool
     method set_has_frame : bool -> unit
     method popup_shown : bool
-  method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
     method as_combo_box : Combo_box.t
   end
 

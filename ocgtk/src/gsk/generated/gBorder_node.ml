@@ -1,6 +1,10 @@
 (* High-level class for BorderNode *)
 class border_node (obj : Border_node.t) = object (self)
 
+  method get_colors : unit -> Ocgtk_gdk.Gdk.rgb_a =
+    fun () ->
+      new  Ocgtk_gdk.Gdk.rgb_a(Border_node.get_colors obj)
+
   method get_outline : unit -> Rounded_rect.t =
     fun () ->
       (Border_node.get_outline obj)

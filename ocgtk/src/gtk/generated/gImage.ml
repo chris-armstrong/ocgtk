@@ -1,10 +1,13 @@
 (* High-level class for Image *)
 class image (obj : Image.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Image.as_widget obj)
 
   method clear : unit -> unit =
     fun () ->
       (Image.clear obj)
+
+  method get_gicon : unit -> Ocgtk_gio.Gio.icon option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.icon ret) (Image.get_gicon obj)
 
   method get_icon_name : unit -> string option =
     fun () ->
@@ -13,6 +16,10 @@ class image (obj : Image.t) = object (self)
   method get_icon_size : unit -> Gtk_enums.iconsize =
     fun () ->
       (Image.get_icon_size obj)
+
+  method get_paintable : unit -> Ocgtk_gdk.Gdk.paintable option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gdk.Gdk.paintable ret) (Image.get_paintable obj)
 
   method get_pixel_size : unit -> int =
     fun () ->
@@ -26,9 +33,24 @@ class image (obj : Image.t) = object (self)
     fun filename ->
       (Image.set_from_file obj filename)
 
+  method set_from_gicon : 'p1. (#Ocgtk_gio.Gio.icon as 'p1) -> unit =
+    fun icon ->
+      let icon = icon#as_icon in
+      (Image.set_from_gicon obj icon)
+
   method set_from_icon_name : string option -> unit =
     fun icon_name ->
       (Image.set_from_icon_name obj icon_name)
+
+  method set_from_paintable : 'p1. (#Ocgtk_gdk.Gdk.paintable as 'p1) option -> unit =
+    fun paintable ->
+      let paintable = Option.map (fun (c) -> c#as_paintable) paintable in
+      (Image.set_from_paintable obj paintable)
+
+  method set_from_pixbuf : 'p1. (#Ocgtk_gdkpixbuf.GdkPixbuf.pixbuf as 'p1) option -> unit =
+    fun pixbuf ->
+      let pixbuf = Option.map (fun (c) -> c#as_pixbuf) pixbuf in
+      (Image.set_from_pixbuf obj pixbuf)
 
   method set_from_resource : string option -> unit =
     fun resource_path ->
@@ -51,7 +73,6 @@ class image (obj : Image.t) = object (self)
   method use_fallback = Image.get_use_fallback obj
   method set_use_fallback v =  Image.set_use_fallback obj v
 
-  method as_widget = (Image.as_widget obj)
     method as_image = obj
 end
 

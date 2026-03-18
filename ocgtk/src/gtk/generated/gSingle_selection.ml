@@ -9,6 +9,10 @@ class single_selection (obj : Single_selection.t) = object (self)
     fun () ->
       (Single_selection.get_can_unselect obj)
 
+  method get_model : unit -> Ocgtk_gio.Gio.list_model option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.list_model ret) (Single_selection.get_model obj)
+
   method get_selected : unit -> int =
     fun () ->
       (Single_selection.get_selected obj)
@@ -20,6 +24,11 @@ class single_selection (obj : Single_selection.t) = object (self)
   method set_can_unselect : bool -> unit =
     fun can_unselect ->
       (Single_selection.set_can_unselect obj can_unselect)
+
+  method set_model : 'p1. (#Ocgtk_gio.Gio.list_model as 'p1) option -> unit =
+    fun model ->
+      let model = Option.map (fun (c) -> c#as_list_model) model in
+      (Single_selection.set_model obj model)
 
   method set_selected : int -> unit =
     fun position ->

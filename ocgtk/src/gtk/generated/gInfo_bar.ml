@@ -2,7 +2,6 @@
 
 (* High-level class for InfoBar *)
 class info_bar (obj : Info_bar.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Info_bar.as_widget obj)
   inherit Ginfo_bar_signals.info_bar_signals obj
 
   method add_action_widget : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> int -> unit =
@@ -10,9 +9,9 @@ class info_bar (obj : Info_bar.t) = object (self)
       let child = child#as_widget in
       (Info_bar.add_action_widget obj child response_id)
 
-  method add_button : string -> int -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget =
+  method add_button : string -> int -> GButton.button =
     fun button_text response_id ->
-      new  GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget(Info_bar.add_button obj button_text response_id)
+      new  GButton.button(Info_bar.add_button obj button_text response_id)
 
   method add_child : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> unit =
     fun widget ->
@@ -65,7 +64,6 @@ class info_bar (obj : Info_bar.t) = object (self)
     fun setting ->
       (Info_bar.set_show_close_button obj setting)
 
-  method as_widget = (Info_bar.as_widget obj)
     method as_info_bar = obj
 end
 

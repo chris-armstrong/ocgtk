@@ -13,9 +13,35 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
+
+CAMLexport CAMLprim value ml_gtk_multi_selection_new(value arg1)
+{
+CAMLparam1(arg1);
+
+GtkMultiSelection *obj = gtk_multi_selection_new(Option_val(arg1, GListModel_val, NULL));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkMultiSelection(obj));
+}
+CAMLexport CAMLprim value ml_gtk_multi_selection_set_model(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_multi_selection_set_model(GtkMultiSelection_val(self), Option_val(arg1, GListModel_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_multi_selection_get_model(value self)
+{
+CAMLparam1(self);
+
+GListModel* result = gtk_multi_selection_get_model(GtkMultiSelection_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GListModel));
+}
 
 CAMLexport CAMLprim value ml_gtk_multi_selection_get_n_items(value self)
 {

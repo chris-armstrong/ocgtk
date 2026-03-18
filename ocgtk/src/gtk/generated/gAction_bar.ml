@@ -1,6 +1,5 @@
 (* High-level class for ActionBar *)
 class action_bar (obj : Action_bar.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Action_bar.as_widget obj)
 
   method get_center_widget : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
     fun () ->
@@ -34,7 +33,6 @@ class action_bar (obj : Action_bar.t) = object (self)
     fun revealed ->
       (Action_bar.set_revealed obj revealed)
 
-  method as_widget = (Action_bar.as_widget obj)
     method as_action_bar = obj
 end
 

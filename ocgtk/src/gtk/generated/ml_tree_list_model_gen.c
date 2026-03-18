@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_tree_list_model_set_autoexpand(value self, value arg1)
@@ -39,6 +39,15 @@ CAMLparam1(self);
 
 gboolean result = gtk_tree_list_model_get_passthrough(GtkTreeListModel_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_list_model_get_model(value self)
+{
+CAMLparam1(self);
+
+GListModel* result = gtk_tree_list_model_get_model(GtkTreeListModel_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_GListModel(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_list_model_get_child_row(value self, value arg1)

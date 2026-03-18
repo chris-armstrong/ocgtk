@@ -6,6 +6,16 @@ class tooltip (obj : Tooltip.t) = object (self)
       let custom_widget = Option.map (fun (c) -> c#as_widget) custom_widget in
       (Tooltip.set_custom obj custom_widget)
 
+  method set_icon : 'p1. (#Ocgtk_gdk.Gdk.paintable as 'p1) option -> unit =
+    fun paintable ->
+      let paintable = Option.map (fun (c) -> c#as_paintable) paintable in
+      (Tooltip.set_icon obj paintable)
+
+  method set_icon_from_gicon : 'p1. (#Ocgtk_gio.Gio.icon as 'p1) option -> unit =
+    fun gicon ->
+      let gicon = Option.map (fun (c) -> c#as_icon) gicon in
+      (Tooltip.set_icon_from_gicon obj gicon)
+
   method set_icon_from_icon_name : string option -> unit =
     fun icon_name ->
       (Tooltip.set_icon_from_icon_name obj icon_name)
@@ -17,6 +27,11 @@ class tooltip (obj : Tooltip.t) = object (self)
   method set_text : string option -> unit =
     fun text ->
       (Tooltip.set_text obj text)
+
+  method set_tip_area : 'p1. (#Ocgtk_gdk.Gdk.rectangle as 'p1) -> unit =
+    fun rect ->
+      let rect = rect#as_rectangle in
+      (Tooltip.set_tip_area obj rect)
 
     method as_tooltip = obj
 end

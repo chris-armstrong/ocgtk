@@ -2,7 +2,6 @@
 
 (* High-level class for SpinButton *)
 class spin_button (obj : Spin_button.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Spin_button.as_widget obj)
   inherit Gspin_button_signals.spin_button_signals obj
 
   method configure : 'p1. (#GAdjustment.adjustment as 'p1) option -> float -> int -> unit =
@@ -103,7 +102,6 @@ class spin_button (obj : Spin_button.t) = object (self)
     fun () ->
       (Spin_button.update obj)
 
-  method as_widget = (Spin_button.as_widget obj)
     method as_spin_button = obj
 end
 

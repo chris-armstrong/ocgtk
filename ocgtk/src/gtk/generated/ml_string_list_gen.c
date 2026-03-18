@@ -13,18 +13,19 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_string_list_new(value arg1)
 {
 CAMLparam1(arg1);
+    int arg1_length = 0;
     char** c_arg1 = NULL;
     
     if (Is_some(arg1)) {
         value array = Some_val(arg1);
-        int arg1_length = Wosize_val(array);
+        arg1_length = Wosize_val(array);
         c_arg1 = (char**)g_malloc(sizeof(char*) * (arg1_length + 1));
         for (int i = 0; i < arg1_length; i++) {
           c_arg1[i] = String_val(Field(array, i));
@@ -49,11 +50,12 @@ CAMLreturn(Val_unit);
 CAMLexport CAMLprim value ml_gtk_string_list_splice(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
+    int arg3_length = 0;
     char** c_arg3 = NULL;
     
     if (Is_some(arg3)) {
         value array = Some_val(arg3);
-        int arg3_length = Wosize_val(array);
+        arg3_length = Wosize_val(array);
         c_arg3 = (char**)g_malloc(sizeof(char*) * (arg3_length + 1));
         for (int i = 0; i < arg3_length; i++) {
           c_arg3[i] = String_val(Field(array, i));

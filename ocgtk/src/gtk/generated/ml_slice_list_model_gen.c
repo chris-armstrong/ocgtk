@@ -13,10 +13,19 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
+CAMLexport CAMLprim value ml_gtk_slice_list_model_new(value arg1, value arg2, value arg3)
+{
+CAMLparam3(arg1, arg2, arg3);
+
+GtkSliceListModel *obj = gtk_slice_list_model_new(Option_val(arg1, GListModel_val, NULL), Int_val(arg2), Int_val(arg3));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkSliceListModel(obj));
+}
 CAMLexport CAMLprim value ml_gtk_slice_list_model_set_size(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -30,6 +39,14 @@ CAMLexport CAMLprim value ml_gtk_slice_list_model_set_offset(value self, value a
 CAMLparam2(self, arg1);
 
 gtk_slice_list_model_set_offset(GtkSliceListModel_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_slice_list_model_set_model(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_slice_list_model_set_model(GtkSliceListModel_val(self), Option_val(arg1, GListModel_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -47,6 +64,15 @@ CAMLparam1(self);
 
 guint result = gtk_slice_list_model_get_offset(GtkSliceListModel_val(self));
 CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_slice_list_model_get_model(value self)
+{
+CAMLparam1(self);
+
+GListModel* result = gtk_slice_list_model_get_model(GtkSliceListModel_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GListModel));
 }
 
 CAMLexport CAMLprim value ml_gtk_slice_list_model_get_n_items(value self)

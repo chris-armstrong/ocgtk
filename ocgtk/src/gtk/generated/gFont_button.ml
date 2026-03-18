@@ -2,7 +2,6 @@
 
 (* High-level class for FontButton *)
 class font_button (obj : Font_button.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Font_button.as_widget obj)
   inherit Gfont_button_signals.font_button_signals obj
 
   method get_modal : unit -> bool =
@@ -37,7 +36,6 @@ class font_button (obj : Font_button.t) = object (self)
     fun use_size ->
       (Font_button.set_use_size obj use_size)
 
-  method as_widget = (Font_button.as_widget obj)
     method as_font_button = obj
 end
 

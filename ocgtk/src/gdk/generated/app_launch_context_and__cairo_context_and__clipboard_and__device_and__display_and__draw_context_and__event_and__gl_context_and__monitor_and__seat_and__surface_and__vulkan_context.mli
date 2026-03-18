@@ -16,6 +16,15 @@ module rec App_launch_context : sig
   for the launched application itself. *)
   external set_icon_name : t -> string option -> unit = "ml_gdk_app_launch_context_set_icon_name"
 
+  (** Sets the icon for applications that are launched with this
+  context.
+
+  Window Managers can use this information when displaying startup
+  notification.
+
+  See also [method@Gdk.AppLaunchContext.set_icon_name]. *)
+  external set_icon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t option -> unit = "ml_gdk_app_launch_context_set_icon"
+
   (** Sets the workspace on which applications will be launched.
 
   This only works when running under a window manager that
@@ -44,6 +53,16 @@ and Cairo_context
   type t = [`cairo_context | `draw_context | `object_] Gobject.obj
 
   (* Methods *)
+  (** Retrieves a Cairo context to be used to draw on the `GdkSurface`
+  of @context.
+
+  A call to [method@Gdk.DrawContext.begin_frame] with this
+  @context must have been done or this function will return %NULL.
+
+  The returned context is guaranteed to be valid until
+  [method@Gdk.DrawContext.end_frame] is called. *)
+  external cairo_create : t -> Ocgtk_cairo.Cairo.Wrappers.Context.t option = "ml_gdk_cairo_context_cairo_create"
+
 
 end
 
@@ -52,6 +71,11 @@ and Clipboard
   type t = [`clipboard | `object_] Gobject.obj
 
   (* Methods *)
+  (** Finishes an asynchronous clipboard store.
+
+  See [method@Gdk.Clipboard.store_async]. *)
+  external store_finish : t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (bool, GError.t) result = "ml_gdk_clipboard_store_finish"
+
   (** Puts the given @texture into the clipboard. *)
   external set_texture : t -> Texture.t -> unit = "ml_gdk_clipboard_set_texture"
 
@@ -71,6 +95,21 @@ and Clipboard
   @clipboard's read functions, @clipboard will select the best format to
   transfer the contents and then request that format from @provider. *)
   external set_content : t -> Content_provider.t option -> bool = "ml_gdk_clipboard_set_content"
+
+  (** Finishes an asynchronous clipboard read.
+
+  See [method@Gdk.Clipboard.read_texture_async]. *)
+  external read_texture_finish : t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (Texture.t option, GError.t) result = "ml_gdk_clipboard_read_texture_finish"
+
+  (** Finishes an asynchronous clipboard read.
+
+  See [method@Gdk.Clipboard.read_text_async]. *)
+  external read_text_finish : t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (string option, GError.t) result = "ml_gdk_clipboard_read_text_finish"
+
+  (** Finishes an asynchronous clipboard read.
+
+  See [method@Gdk.Clipboard.read_async]. *)
+  external read_finish : t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (Ocgtk_gio.Gio.Wrappers.Input_stream.t option * string, GError.t) result = "ml_gdk_clipboard_read_finish"
 
   (** Returns if the clipboard is local.
 
@@ -189,6 +228,14 @@ and Device
 
   (** Returns the `GdkDisplay` to which @device pertains. *)
   external get_display : t -> Display.t = "ml_gdk_device_get_display"
+
+  (** Returns the direction of effective layout of the keyboard.
+
+  This is only relevant for keyboard devices.
+
+  The direction of a layout is the direction of the majority
+  of its symbols. See [func@Pango.unichar_direction]. *)
+  external get_direction : t -> Ocgtk_pango.Pango.direction = "ml_gdk_device_get_direction"
 
   (** Retrieves the current tool for @device. *)
   external get_device_tool : t -> Device_tool.t option = "ml_gdk_device_get_device_tool"
@@ -358,6 +405,15 @@ and Display
   (** Gets the name of the display. *)
   external get_name : t -> string = "ml_gdk_display_get_name"
 
+  (** Gets the list of monitors associated with this display.
+
+  Subsequent calls to this function will always return the
+  same list for the same display.
+
+  You can listen to the GListModel::items-changed signal on
+  this list to monitor changes to the monitor of this display. *)
+  external get_monitors : t -> Ocgtk_gio.Gio.Wrappers.List_model.t = "ml_gdk_display_get_monitors"
+
   (** Gets the monitor in which the largest area of @surface
   resides. *)
   external get_monitor_at_surface : t -> Surface.t -> Monitor.t option = "ml_gdk_display_get_monitor_at_surface"
@@ -452,6 +508,16 @@ and Draw_context
   (** Retrieves the surface that @context is bound to. *)
   external get_surface : t -> Surface.t option = "ml_gdk_draw_context_get_surface"
 
+  (** Retrieves the region that is currently being repainted.
+
+  After a call to [method@Gdk.DrawContext.begin_frame] this function will
+  return a union of the region passed to that function and the area of the
+  surface that the @context determined needs to be repainted.
+
+  If @context is not in between calls to [method@Gdk.DrawContext.begin_frame]
+  and [method@Gdk.DrawContext.end_frame], %NULL will be returned. *)
+  external get_frame_region : t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option = "ml_gdk_draw_context_get_frame_region"
+
   (** Retrieves the `GdkDisplay` the @context is created for *)
   external get_display : t -> Display.t option = "ml_gdk_draw_context_get_display"
 
@@ -464,6 +530,32 @@ and Draw_context
   implicitly before returning; it is not recommended to call `glFlush()`
   explicitly before calling this function. *)
   external end_frame : t -> unit = "ml_gdk_draw_context_end_frame"
+
+  (** Indicates that you are beginning the process of redrawing @region
+  on the @context's surface.
+
+  Calling this function begins a drawing operation using @context on the
+  surface that @context was created from. The actual requirements and
+  guarantees for the drawing operation vary for different implementations
+  of drawing, so a [class@Gdk.CairoContext] and a [class@Gdk.GLContext]
+  need to be treated differently.
+
+  A call to this function is a requirement for drawing and must be
+  followed by a call to [method@Gdk.DrawContext.end_frame], which will
+  complete the drawing operation and ensure the contents become visible
+  on screen.
+
+  Note that the @region passed to this function is the minimum region that
+  needs to be drawn and depending on implementation, windowing system and
+  hardware in use, it might be necessary to draw a larger region. Drawing
+  implementation must use [method@Gdk.DrawContext.get_frame_region] to
+  query the region that must be drawn.
+
+  When using GTK, the widget system automatically places calls to
+  gdk_draw_context_begin_frame() and gdk_draw_context_end_frame() via the
+  use of [GskRenderer](../gsk4/class.Renderer.html)s, so application code
+  does not need to call these functions explicitly. *)
+  external begin_frame : t -> Ocgtk_cairo.Cairo.Wrappers.Region.t -> unit = "ml_gdk_draw_context_begin_frame"
 
   (* Properties *)
 
@@ -866,6 +958,39 @@ and Surface
   transient-for to the same toplevel (directly or indirectly). *)
   external translate_coordinates : t -> t -> float -> float -> bool = "ml_gdk_surface_translate_coordinates"
 
+  (** Marks a region of the `GdkSurface` as opaque.
+
+  For optimisation purposes, compositing window managers may
+  like to not draw obscured regions of surfaces, or turn off blending
+  during for these regions. With RGB windows with no transparency,
+  this is just the shape of the window, but with ARGB32 windows, the
+  compositor does not know what regions of the window are transparent
+  or not.
+
+  This function only works for toplevel surfaces.
+
+  GTK will update this property automatically if the @surface background
+  is opaque, as we know where the opaque regions are. If your surface
+  background is not opaque, please update this property in your
+  [GtkWidgetClass.css_changed](../gtk4/vfunc.Widget.css_changed.html) handler. *)
+  external set_opaque_region : t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option -> unit = "ml_gdk_surface_set_opaque_region"
+
+  (** Apply the region to the surface for the purpose of event
+  handling.
+
+  Mouse events which happen while the pointer position corresponds
+  to an unset bit in the mask will be passed on the surface below
+  @surface.
+
+  An input region is typically used with RGBA surfaces. The alpha
+  channel of the surface defines which pixels are invisible and
+  allows for nicely antialiased borders, and the input region
+  controls where the surface is “clickable”.
+
+  Use [method@Gdk.Display.supports_input_shapes] to find out if
+  a particular backend supports input regions. *)
+  external set_input_region : t -> Ocgtk_cairo.Cairo.Wrappers.Region.t -> unit = "ml_gdk_surface_set_input_region"
+
   (** Sets a specific `GdkCursor` for a given device when it gets inside @surface.
 
   Passing %NULL for the @cursor argument means that @surface will use the
@@ -998,6 +1123,23 @@ and Surface
 
   (** Sets an error and returns %NULL. *)
   external create_vulkan_context : t -> (Vulkan_context.t, GError.t) result = "ml_gdk_surface_create_vulkan_context"
+
+  (** Create a new Cairo surface that is as compatible as possible with the
+  given @surface.
+
+  For example the new surface will have the same fallback resolution
+  and font options as @surface. Generally, the new surface will also
+  use the same backend as @surface, unless that is not possible for
+  some reason. The type of the returned surface may be examined with
+  cairo_surface_get_type().
+
+  Initially the surface contents are all 0 (transparent if contents
+  have transparency, black otherwise.)
+
+  This function always returns a valid pointer, but it will return a
+  pointer to a “nil” surface if @other is already in an error state
+  or any other error occurs. *)
+  external create_similar_surface : t -> Ocgtk_cairo.Cairo.content -> int -> int -> Ocgtk_cairo.Cairo.Wrappers.Surface.t = "ml_gdk_surface_create_similar_surface"
 
   (** Creates a new `GdkGLContext` for the `GdkSurface`.
 

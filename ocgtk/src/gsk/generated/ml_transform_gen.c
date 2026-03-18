@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <gsk/gsk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gsk_decls.h"
 
 /* Conversion functions for GskTransform (opaque record with hidden fields) */
 GskTransform *GskTransform_val(value v) {
@@ -47,6 +47,40 @@ gsk_transform_unref(GskTransform_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gsk_transform_translate_3d(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GskTransform* result = gsk_transform_translate_3d(GskTransform_val(self), graphene_point3d_t_val(arg1));
+CAMLreturn(Val_option(result, Val_GskTransform));
+}
+
+CAMLexport CAMLprim value ml_gsk_transform_translate(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GskTransform* result = gsk_transform_translate(GskTransform_val(self), graphene_point_t_val(arg1));
+CAMLreturn(Val_option(result, Val_GskTransform));
+}
+
+CAMLexport CAMLprim value ml_gsk_transform_transform_point(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+graphene_point_t out2;
+
+gsk_transform_transform_point(GskTransform_val(self), graphene_point_t_val(arg1), &out2);
+CAMLreturn(Val_graphene_point_t(&out2));
+}
+
+CAMLexport CAMLprim value ml_gsk_transform_transform_bounds(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+graphene_rect_t out2;
+
+gsk_transform_transform_bounds(GskTransform_val(self), graphene_rect_t_val(arg1), &out2);
+CAMLreturn(Val_graphene_rect_t(&out2));
+}
+
 CAMLexport CAMLprim value ml_gsk_transform_transform(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -75,6 +109,15 @@ CAMLparam1(self);
 
 char* result = gsk_transform_to_string(GskTransform_val(self));
 CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_gsk_transform_to_matrix(value self)
+{
+CAMLparam1(self);
+graphene_matrix_t out1;
+
+gsk_transform_to_matrix(GskTransform_val(self), &out1);
+CAMLreturn(Val_graphene_matrix_t(&out1));
 }
 
 CAMLexport CAMLprim value ml_gsk_transform_to_affine(value self)
@@ -165,6 +208,14 @@ GskTransform* result = gsk_transform_scale(GskTransform_val(self), Double_val(ar
 CAMLreturn(Val_option(result, Val_GskTransform));
 }
 
+CAMLexport CAMLprim value ml_gsk_transform_rotate_3d(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+GskTransform* result = gsk_transform_rotate_3d(GskTransform_val(self), Double_val(arg1), graphene_vec3_t_val(arg2));
+CAMLreturn(Val_option(result, Val_GskTransform));
+}
+
 CAMLexport CAMLprim value ml_gsk_transform_rotate(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -186,6 +237,14 @@ CAMLexport CAMLprim value ml_gsk_transform_perspective(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GskTransform* result = gsk_transform_perspective(GskTransform_val(self), Double_val(arg1));
+CAMLreturn(Val_GskTransform(result));
+}
+
+CAMLexport CAMLprim value ml_gsk_transform_matrix(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GskTransform* result = gsk_transform_matrix(GskTransform_val(self), graphene_matrix_t_val(arg1));
 CAMLreturn(Val_GskTransform(result));
 }
 

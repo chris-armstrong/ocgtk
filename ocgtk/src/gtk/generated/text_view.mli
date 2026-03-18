@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: TextView *)
+(* TextView: TextView *)
 
 type t = [`text_view | `widget | `initially_unowned] Gobject.obj
-
-val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new TextView *)
 external new_ : unit -> t = "ml_gtk_text_view_new"
@@ -22,11 +20,19 @@ See [method@Gtk.TextView.forward_display_line] for an
 explanation of display lines vs. paragraphs. *)
 external starts_display_line : t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool = "ml_gtk_text_view_starts_display_line"
 
+(** Sets the line wrapping for the view. *)
+external set_wrap_mode : t -> Gtk_enums.wrapmode -> unit = "ml_gtk_text_view_set_wrap_mode"
+
 (** Sets the top margin for text in @text_view.
 
 Note that this function is confusingly named.
 In CSS terms, the value set here is padding. *)
 external set_top_margin : t -> int -> unit = "ml_gtk_text_view_set_top_margin"
+
+(** Sets the default tab stops for paragraphs in @text_view.
+
+Tags in the buffer may override the default. *)
+external set_tabs : t -> Ocgtk_pango.Pango.Wrappers.Tab_array.t -> unit = "ml_gtk_text_view_set_tabs"
 
 (** Sets the default right margin for text in the text view.
 
@@ -95,6 +101,12 @@ external set_indent : t -> int -> unit = "ml_gtk_text_view_set_indent"
 @win must be one of %GTK_TEXT_WINDOW_LEFT, %GTK_TEXT_WINDOW_RIGHT,
 %GTK_TEXT_WINDOW_TOP, or %GTK_TEXT_WINDOW_BOTTOM. *)
 external set_gutter : t -> Gtk_enums.textwindowtype -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_text_view_set_gutter"
+
+(** Sets a menu model to add when constructing the context
+menu for @text_view.
+
+You can pass %NULL to remove a previously set extra menu. *)
+external set_extra_menu : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> unit = "ml_gtk_text_view_set_extra_menu"
 
 (** Sets the default editability of the `GtkTextView`.
 
@@ -211,8 +223,64 @@ external move_overlay : t -> Event_controller_and__layout_child_and__layout_mana
 located within the currently-visible text area. *)
 external move_mark_onscreen : t -> Text_buffer_and__text_iter_and__text_mark.Text_mark.t -> bool = "ml_gtk_text_view_move_mark_onscreen"
 
+(** Allow the `GtkTextView` input method to internally handle key press
+and release events.
+
+If this function returns %TRUE, then no further processing should be
+done for this key event. See [method@Gtk.IMContext.filter_keypress].
+
+Note that you are expected to call this function from your handler
+when overriding key event handling. This is needed in the case when
+you need to insert your own key handling between the input method
+and the default key event handling of the `GtkTextView`.
+
+```c
+static gboolean
+gtk_foo_bar_key_press_event (GtkWidget *widget,
+                             GdkEvent  *event)
+{
+  guint keyval;
+
+  gdk_event_get_keyval ((GdkEvent*\)event, &keyval);
+
+  if (keyval == GDK_KEY_Return || keyval == GDK_KEY_KP_Enter)
+    {
+      if (gtk_text_view_im_context_filter_keypress (GTK_TEXT_VIEW (widget), event))
+        return TRUE;
+    }
+
+  // Do some stuff
+
+  return GTK_WIDGET_CLASS (gtk_foo_bar_parent_class)->key_press_event (widget, event);
+}
+``` *)
+external im_context_filter_keypress : t -> Ocgtk_gdk.Gdk.Wrappers.Event.t -> bool = "ml_gtk_text_view_im_context_filter_keypress"
+
+(** Gets the line wrapping for the view. *)
+external get_wrap_mode : t -> Gtk_enums.wrapmode = "ml_gtk_text_view_get_wrap_mode"
+
+(** Fills @visible_rect with the currently-visible
+region of the buffer, in buffer coordinates.
+
+Convert to window coordinates with
+[method@Gtk.TextView.buffer_to_window_coords]. *)
+external get_visible_rect : t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_text_view_get_visible_rect"
+
 (** Gets the top margin for text in the @text_view. *)
 external get_top_margin : t -> int = "ml_gtk_text_view_get_top_margin"
+
+(** Gets the default tabs for @text_view.
+
+Tags in the buffer may override the defaults. The returned array
+will be %NULL if “standard” (8-space) tabs are used. Free the
+return value with [method@Pango.TabArray.free]. *)
+external get_tabs : t -> Ocgtk_pango.Pango.Wrappers.Tab_array.t option = "ml_gtk_text_view_get_tabs"
+
+(** Gets the `PangoContext` that is used for rendering RTL directed
+text layouts.
+
+The context may be replaced when CSS changes occur. *)
+external get_rtl_context : t -> Ocgtk_pango.Pango.Wrappers.Context.t = "ml_gtk_text_view_get_rtl_context"
 
 (** Gets the default right margin for text in @text_view.
 
@@ -241,6 +309,12 @@ external get_overwrite : t -> bool = "ml_gtk_text_view_get_overwrite"
 (** Gets whether the `GtkTextView` uses monospace styling. *)
 external get_monospace : t -> bool = "ml_gtk_text_view_get_monospace"
 
+(** Gets the `PangoContext` that is used for rendering LTR directed
+text layouts.
+
+The context may be replaced when CSS changes occur. *)
+external get_ltr_context : t -> Ocgtk_pango.Pango.Wrappers.Context.t = "ml_gtk_text_view_get_ltr_context"
+
 (** Gets the y coordinate of the top of the line containing @iter,
 and the height of the line.
 
@@ -266,6 +340,13 @@ external get_left_margin : t -> int = "ml_gtk_text_view_get_left_margin"
 
 Tags in the buffer may override the default. *)
 external get_justification : t -> Gtk_enums.justification = "ml_gtk_text_view_get_justification"
+
+(** Gets a rectangle which roughly contains the character at @iter.
+
+The rectangle position is in buffer coordinates; use
+[method@Gtk.TextView.buffer_to_window_coords] to convert these
+coordinates to coordinates for one of the windows in the text view. *)
+external get_iter_location : t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_text_view_get_iter_location"
 
 (** Retrieves the iterator pointing to the character at buffer
 coordinates @x and @y.
@@ -307,6 +388,10 @@ See [method@Gtk.TextView.set_gutter].
 %GTK_TEXT_WINDOW_TOP, or %GTK_TEXT_WINDOW_BOTTOM. *)
 external get_gutter : t -> Gtk_enums.textwindowtype -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_text_view_get_gutter"
 
+(** Gets the menu model that gets added to the context menu
+or %NULL if none has been set. *)
+external get_extra_menu : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t = "ml_gtk_text_view_get_extra_menu"
+
 (** Returns the default editability of the `GtkTextView`.
 
 Tags in the buffer may override this setting for some ranges of text. *)
@@ -314,6 +399,28 @@ external get_editable : t -> bool = "ml_gtk_text_view_get_editable"
 
 (** Find out whether the cursor should be displayed. *)
 external get_cursor_visible : t -> bool = "ml_gtk_text_view_get_cursor_visible"
+
+(** Determine the positions of the strong and weak cursors if the
+insertion point is at @iter.
+
+The position of each cursor is stored as a zero-width rectangle.
+The strong cursor location is the location where characters of
+the directionality equal to the base direction of the paragraph
+are inserted. The weak cursor location is the location where
+characters of the directionality opposite to the base direction
+of the paragraph are inserted.
+
+If @iter is %NULL, the actual cursor position is used.
+
+Note that if @iter happens to be the actual cursor position, and
+there is currently an IM preedit sequence being entered, the
+returned locations will be adjusted to account for the preedit
+cursor’s offset within the preedit sequence.
+
+The rectangle position is in buffer coordinates; use
+[method@Gtk.TextView.buffer_to_window_coords] to convert these
+coordinates to coordinates for one of the windows in the text view. *)
+external get_cursor_locations : t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t option -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t * Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_text_view_get_cursor_locations"
 
 (** Returns the `GtkTextBuffer` being displayed by this text view.
 

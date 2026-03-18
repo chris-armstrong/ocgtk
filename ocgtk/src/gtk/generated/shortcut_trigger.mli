@@ -7,11 +7,28 @@ type t = [`shortcut_trigger | `object_] Gobject.obj
 external parse_string : string -> t = "ml_gtk_shortcut_trigger_parse_string"
 
 (* Methods *)
+(** Checks if the given @event triggers @self. *)
+external trigger : t -> Ocgtk_gdk.Gdk.Wrappers.Event.t -> bool -> Ocgtk_gdk.Gdk.keymatch = "ml_gtk_shortcut_trigger_trigger"
+
 (** Prints the given trigger into a human-readable string.
 
 This is a small wrapper around [method@Gtk.ShortcutTrigger.print]
 to help when debugging. *)
 external to_string : t -> string = "ml_gtk_shortcut_trigger_to_string"
+
+(** Gets textual representation for the given trigger.
+
+This function is returning a translated string for
+presentation to end users for example in menu items
+or in help texts.
+
+The @display in use may influence the resulting string in
+various forms, such as resolving hardware keycodes or by
+causing display-specific modifier names.
+
+The form of the representation may change at any time and is
+not guaranteed to stay identical. *)
+external to_label : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t -> string = "ml_gtk_shortcut_trigger_to_label"
 
 (** Generates a hash value for a `GtkShortcutTrigger`.
 

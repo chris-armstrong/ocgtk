@@ -2,7 +2,6 @@
 
 (* High-level class for CheckButton *)
 class check_button (obj : Check_button.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Check_button.as_widget obj)
   inherit Gcheck_button_signals.check_button_signals obj
 
   method get_active : unit -> bool =
@@ -51,7 +50,6 @@ class check_button (obj : Check_button.t) = object (self)
     fun setting ->
       (Check_button.set_use_underline obj setting)
 
-  method as_widget = (Check_button.as_widget obj)
     method as_check_button = obj
 end
 

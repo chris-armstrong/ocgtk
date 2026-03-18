@@ -107,6 +107,7 @@
       (echo "Mask_node")
       (echo "Menu_button")
       (echo "Notebook")
+      (echo "Ocgtk_gsk")
       (echo "Opacity_node")
       (echo "Outset_shadow_node")
       (echo "Paned")
@@ -159,6 +160,22 @@ echo '' > cflag-gsk.sexp.tmp && \\
 echo '' > clink-gsk.sexp.tmp && \\
 pkg-config --cflags gtk4 >> cflag-gsk.sexp.tmp && \\
 pkg-config --libs gtk4 >> clink-gsk.sexp.tmp && \\
+pkg-config --cflags cairo-gobject >> cflag-gsk.sexp.tmp && \\
+pkg-config --libs cairo-gobject >> clink-gsk.sexp.tmp && \\
+pkg-config --cflags gdk-pixbuf-2.0 >> cflag-gsk.sexp.tmp && \\
+pkg-config --libs gdk-pixbuf-2.0 >> clink-gsk.sexp.tmp && \\
+pkg-config --cflags gio-2.0 >> cflag-gsk.sexp.tmp && \\
+pkg-config --libs gio-2.0 >> clink-gsk.sexp.tmp && \\
+pkg-config --cflags gio-unix-2.0 >> cflag-gsk.sexp.tmp && \\
+pkg-config --libs gio-unix-2.0 >> clink-gsk.sexp.tmp && \\
+pkg-config --cflags graphene-gobject-1.0 >> cflag-gsk.sexp.tmp && \\
+pkg-config --libs graphene-gobject-1.0 >> clink-gsk.sexp.tmp && \\
+pkg-config --cflags gtk4 >> cflag-gsk.sexp.tmp && \\
+pkg-config --libs gtk4 >> clink-gsk.sexp.tmp && \\
+pkg-config --cflags pango >> cflag-gsk.sexp.tmp && \\
+pkg-config --libs pango >> clink-gsk.sexp.tmp && \\
+pkg-config --cflags pangocairo >> cflag-gsk.sexp.tmp && \\
+pkg-config --libs pangocairo >> clink-gsk.sexp.tmp && \\
 echo \"(\" > cflag-gsk.sexp && \\
 tr ' ' '\\n' < cflag-gsk.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> cflag-gsk.sexp && \\
 echo \")\" >> cflag-gsk.sexp && \\
@@ -173,7 +190,7 @@ rm cflag-gsk.sexp.tmp clink-gsk.sexp.tmp\\
  (public_name ocgtk.gsk.generated_stubs)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk_common)  ; Depend on common for header files
+ (libraries ocgtk.gdk ocgtk.gdkpixbuf ocgtk.gio ocgtk.graphene ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocgtk_common)  ; Dependencies and common for header files
  (foreign_stubs
   (language c)
   (names

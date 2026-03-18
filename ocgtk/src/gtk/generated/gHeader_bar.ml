@@ -1,6 +1,5 @@
 (* High-level class for HeaderBar *)
 class header_bar (obj : Header_bar.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Header_bar.as_widget obj)
 
   method get_decoration_layout : unit -> string option =
     fun () ->
@@ -42,7 +41,6 @@ class header_bar (obj : Header_bar.t) = object (self)
       let title_widget = Option.map (fun (c) -> c#as_widget) title_widget in
       (Header_bar.set_title_widget obj title_widget)
 
-  method as_widget = (Header_bar.as_widget obj)
     method as_header_bar = obj
 end
 

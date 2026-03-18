@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_cell_renderer_pixbuf_new(value unit)
@@ -26,6 +26,38 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GtkCellRendererPixbuf(obj));
 }
+CAMLexport CAMLprim value ml_gtk_cell_renderer_pixbuf_get_gicon(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkCellRendererPixbuf *obj = (GtkCellRendererPixbuf *)GtkCellRendererPixbuf_val(self);
+    GIcon *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gicon");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_pixbuf_get_gicon: property 'gicon' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "gicon", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GIcon(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_pixbuf_set_gicon(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkCellRendererPixbuf *obj = (GtkCellRendererPixbuf *)GtkCellRendererPixbuf_val(self);
+    GIcon *c_value = GIcon_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gicon");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_pixbuf_set_gicon: property 'gicon' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "gicon", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_cell_renderer_pixbuf_get_icon_name(value self)
 {
     CAMLparam1(self);
@@ -86,6 +118,134 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
           g_value_set_enum(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "icon-size", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_pixbuf_get_pixbuf(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkCellRendererPixbuf *obj = (GtkCellRendererPixbuf *)GtkCellRendererPixbuf_val(self);
+    GdkPixbuf *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "pixbuf");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_pixbuf_get_pixbuf: property 'pixbuf' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "pixbuf", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GdkPixbuf(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_pixbuf_set_pixbuf(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkCellRendererPixbuf *obj = (GtkCellRendererPixbuf *)GtkCellRendererPixbuf_val(self);
+    GdkPixbuf *c_value = GdkPixbuf_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "pixbuf");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_pixbuf_set_pixbuf: property 'pixbuf' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "pixbuf", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_pixbuf_get_pixbuf_expander_closed(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkCellRendererPixbuf *obj = (GtkCellRendererPixbuf *)GtkCellRendererPixbuf_val(self);
+    GdkPixbuf *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "pixbuf-expander-closed");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_pixbuf_get_pixbuf_expander_closed: property 'pixbuf-expander-closed' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "pixbuf-expander-closed", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GdkPixbuf(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_pixbuf_set_pixbuf_expander_closed(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkCellRendererPixbuf *obj = (GtkCellRendererPixbuf *)GtkCellRendererPixbuf_val(self);
+    GdkPixbuf *c_value = GdkPixbuf_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "pixbuf-expander-closed");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_pixbuf_set_pixbuf_expander_closed: property 'pixbuf-expander-closed' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "pixbuf-expander-closed", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_pixbuf_get_pixbuf_expander_open(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkCellRendererPixbuf *obj = (GtkCellRendererPixbuf *)GtkCellRendererPixbuf_val(self);
+    GdkPixbuf *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "pixbuf-expander-open");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_pixbuf_get_pixbuf_expander_open: property 'pixbuf-expander-open' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "pixbuf-expander-open", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GdkPixbuf(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_pixbuf_set_pixbuf_expander_open(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkCellRendererPixbuf *obj = (GtkCellRendererPixbuf *)GtkCellRendererPixbuf_val(self);
+    GdkPixbuf *c_value = GdkPixbuf_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "pixbuf-expander-open");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_pixbuf_set_pixbuf_expander_open: property 'pixbuf-expander-open' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "pixbuf-expander-open", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_pixbuf_get_texture(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkCellRendererPixbuf *obj = (GtkCellRendererPixbuf *)GtkCellRendererPixbuf_val(self);
+    GdkTexture *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "texture");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_pixbuf_get_texture: property 'texture' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "texture", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GdkTexture(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_pixbuf_set_texture(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkCellRendererPixbuf *obj = (GtkCellRendererPixbuf *)GtkCellRendererPixbuf_val(self);
+    GdkTexture *c_value = GdkTexture_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "texture");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_pixbuf_set_texture: property 'texture' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "texture", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }

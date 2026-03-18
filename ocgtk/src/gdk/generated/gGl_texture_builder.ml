@@ -21,6 +21,10 @@ class gl_texture_builder (obj : Gl_texture_builder.t) = object (self)
     fun () ->
       (Gl_texture_builder.get_id obj)
 
+  method get_update_region : unit -> Ocgtk_cairo.Cairo.region option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_cairo.Cairo.region ret) (Gl_texture_builder.get_update_region obj)
+
   method get_update_texture : unit -> GTexture.texture option =
     fun () ->
       Option.map (fun ret -> new GTexture.texture ret) (Gl_texture_builder.get_update_texture obj)
@@ -49,6 +53,11 @@ class gl_texture_builder (obj : Gl_texture_builder.t) = object (self)
   method set_id : int -> unit =
     fun id ->
       (Gl_texture_builder.set_id obj id)
+
+  method set_update_region : 'p1. (#Ocgtk_cairo.Cairo.region as 'p1) option -> unit =
+    fun region ->
+      let region = Option.map (fun (c) -> c#as_region) region in
+      (Gl_texture_builder.set_update_region obj region)
 
   method set_update_texture : 'p1. (#GTexture.texture as 'p1) option -> unit =
     fun texture ->

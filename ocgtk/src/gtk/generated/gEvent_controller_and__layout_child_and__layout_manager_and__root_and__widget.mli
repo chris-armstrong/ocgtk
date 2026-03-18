@@ -1,6 +1,9 @@
 
 class event_controller : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t ->
   object
+    method get_current_event : unit -> Ocgtk_gdk.Gdk.event option
+    method get_current_event_device : unit -> Ocgtk_gdk.Gdk.device option
+    method get_current_event_state : unit -> Ocgtk_gdk.Gdk.modifiertype
     method get_name : unit -> string option
     method get_propagation_limit : unit -> Gtk_enums.propagationlimit
     method get_propagation_phase : unit -> Gtk_enums.propagationphase
@@ -32,6 +35,7 @@ and layout_manager : Event_controller_and__layout_child_and__layout_manager_and_
 
 and root : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Root.t ->
   object
+    method get_display : unit -> Ocgtk_gdk.Gdk.display
     method get_focus : unit -> widget option
     method set_focus : <as_widget: Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t; ..> option -> unit
     method as_root : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Root.t
@@ -46,9 +50,12 @@ and widget : Event_controller_and__layout_child_and__layout_manager_and__root_an
     method add_controller : <as_event_controller: Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t; ..> -> unit
     method add_css_class : string -> unit
     method add_mnemonic_label : <as_widget: Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t; ..> -> unit
+    method allocate : int -> int -> int -> #Ocgtk_gsk.Gsk.transform option -> unit
     method child_focus : Gtk_enums.directiontype -> bool
     method compute_expand : Gtk_enums.orientation -> bool
     method contains : float -> float -> bool
+    method create_pango_context : unit -> Ocgtk_pango.Pango.context
+    method create_pango_layout : string option -> Ocgtk_pango.Pango.layout
     method drag_check_threshold : int -> int -> int -> int -> bool
     method error_bell : unit -> unit
     method get_allocated_baseline : unit -> int
@@ -58,13 +65,19 @@ and widget : Event_controller_and__layout_child_and__layout_manager_and__root_an
     method get_can_focus : unit -> bool
     method get_can_target : unit -> bool
     method get_child_visible : unit -> bool
+    method get_clipboard : unit -> Ocgtk_gdk.Gdk.clipboard
     method get_css_classes : unit -> string array
     method get_css_name : unit -> string
+    method get_cursor : unit -> Ocgtk_gdk.Gdk.cursor option
     method get_direction : unit -> Gtk_enums.textdirection
+    method get_display : unit -> Ocgtk_gdk.Gdk.display
     method get_first_child : unit -> widget option
     method get_focus_child : unit -> widget option
     method get_focus_on_click : unit -> bool
     method get_focusable : unit -> bool
+    method get_font_map : unit -> Ocgtk_pango.Pango.font_map option
+    method get_font_options : unit -> Ocgtk_cairo.Cairo.font_options option
+    method get_frame_clock : unit -> Ocgtk_gdk.Gdk.frame_clock option
     method get_halign : unit -> Gtk_enums.align
     method get_has_tooltip : unit -> bool
     method get_height : unit -> int
@@ -82,8 +95,10 @@ and widget : Event_controller_and__layout_child_and__layout_manager_and__root_an
     method get_next_sibling : unit -> widget option
     method get_opacity : unit -> float
     method get_overflow : unit -> Gtk_enums.overflow
+    method get_pango_context : unit -> Ocgtk_pango.Pango.context
     method get_parent : unit -> widget option
     method get_prev_sibling : unit -> widget option
+    method get_primary_clipboard : unit -> Ocgtk_gdk.Gdk.clipboard
     method get_realized : unit -> bool
     method get_receives_default : unit -> bool
     method get_request_mode : unit -> Gtk_enums.sizerequestmode
@@ -109,6 +124,7 @@ and widget : Event_controller_and__layout_child_and__layout_manager_and__root_an
     method hide : unit -> unit
     method in_destruction : unit -> bool
     method init_template : unit -> unit
+    method insert_action_group : string -> #Ocgtk_gio.Gio.action_group option -> unit
     method insert_after : <as_widget: Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t; ..> -> <as_widget: Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t; ..> option -> unit
     method insert_before : <as_widget: Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t; ..> -> <as_widget: Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t; ..> option -> unit
     method is_ancestor : <as_widget: Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t; ..> -> bool
@@ -119,6 +135,8 @@ and widget : Event_controller_and__layout_child_and__layout_manager_and__root_an
     method keynav_failed : Gtk_enums.directiontype -> bool
     method map : unit -> unit
     method mnemonic_activate : bool -> bool
+    method observe_children : unit -> Ocgtk_gio.Gio.list_model
+    method observe_controllers : unit -> Ocgtk_gio.Gio.list_model
     method pick : float -> float -> Gtk_enums.pickflags -> widget option
     method queue_allocate : unit -> unit
     method queue_draw : unit -> unit
@@ -132,11 +150,14 @@ and widget : Event_controller_and__layout_child_and__layout_manager_and__root_an
     method set_can_target : bool -> unit
     method set_child_visible : bool -> unit
     method set_css_classes : string array -> unit
+    method set_cursor : #Ocgtk_gdk.Gdk.cursor option -> unit
     method set_cursor_from_name : string option -> unit
     method set_direction : Gtk_enums.textdirection -> unit
     method set_focus_child : <as_widget: Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t; ..> option -> unit
     method set_focus_on_click : bool -> unit
     method set_focusable : bool -> unit
+    method set_font_map : #Ocgtk_pango.Pango.font_map option -> unit
+    method set_font_options : #Ocgtk_cairo.Cairo.font_options option -> unit
     method set_halign : Gtk_enums.align -> unit
     method set_has_tooltip : bool -> unit
     method set_hexpand : bool -> unit

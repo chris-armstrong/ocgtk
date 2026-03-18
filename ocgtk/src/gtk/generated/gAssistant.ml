@@ -2,7 +2,6 @@
 
 (* High-level class for Assistant *)
 class assistant (obj : Assistant.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Assistant.as_widget obj)
   inherit Gassistant_signals.assistant_signals obj
 
   method add_action_widget : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> unit =
@@ -50,6 +49,10 @@ class assistant (obj : Assistant.t) = object (self)
     fun page ->
       let page = page#as_widget in
       (Assistant.get_page_type obj page)
+
+  method get_pages : unit -> Ocgtk_gio.Gio.list_model =
+    fun () ->
+      new  Ocgtk_gio.Gio.list_model(Assistant.get_pages obj)
 
   method insert_page : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> int -> int =
     fun page position ->
@@ -103,7 +106,6 @@ class assistant (obj : Assistant.t) = object (self)
 
   method use_header_bar = Assistant.get_use_header_bar obj
 
-  method as_widget = (Assistant.as_widget obj)
     method as_assistant = obj
 end
 

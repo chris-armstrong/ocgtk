@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: ApplicationWindow *)
+(* ApplicationWindow: ApplicationWindow *)
 
 type t = [`application_window | `window | `widget | `initially_unowned] Gobject.obj
-
-let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new ApplicationWindow *)
 external new_ : Application_and__window_and__window_group.Application.t -> t = "ml_gtk_application_window_new"

@@ -4,6 +4,7 @@
 (** {1 Classes and Interfaces} *)
 
 class action : Action.t -> GAction.action
+class action_entry : Action_entry.t -> GAction_entry.action_entry
 class action_group : Action_group.t -> GAction_group.action_group
 class action_map : Action_map.t -> GAction_map.action_map
 class app_info : App_info_and__app_launch_context.App_info.t -> GApp_info_and__app_launch_context.app_info
@@ -23,21 +24,31 @@ class converter_input_stream : Converter_input_stream.t -> GConverter_input_stre
 class converter_output_stream : Converter_output_stream.t -> GConverter_output_stream.converter_output_stream
 class credentials : Credentials.t -> GCredentials.credentials
 class d_bus_action_group : D_bus_action_group.t -> GD_bus_action_group.d_bus_action_group
+class d_bus_annotation_info : D_bus_annotation_info.t -> GD_bus_annotation_info.d_bus_annotation_info
+class d_bus_arg_info : D_bus_arg_info.t -> GD_bus_arg_info.d_bus_arg_info
 class d_bus_auth_observer : D_bus_auth_observer.t -> GD_bus_auth_observer.d_bus_auth_observer
 class d_bus_connection : D_bus_connection.t -> GD_bus_connection.d_bus_connection
+class d_bus_error_entry : D_bus_error_entry.t -> GD_bus_error_entry.d_bus_error_entry
 class d_bus_interface : D_bus_interface_and__d_bus_object.D_bus_interface.t -> GD_bus_interface_and__d_bus_object.d_bus_interface
+class d_bus_interface_info : D_bus_interface_info.t -> GD_bus_interface_info.d_bus_interface_info
 class d_bus_interface_skeleton : D_bus_interface_skeleton.t -> GD_bus_interface_skeleton.d_bus_interface_skeleton
+class d_bus_interface_v_table : D_bus_interface_v_table.t -> GD_bus_interface_v_table.d_bus_interface_v_table
 class d_bus_menu_model : D_bus_menu_model.t -> GD_bus_menu_model.d_bus_menu_model
 class d_bus_message : D_bus_message.t -> GD_bus_message.d_bus_message
+class d_bus_method_info : D_bus_method_info.t -> GD_bus_method_info.d_bus_method_info
 class d_bus_method_invocation : D_bus_method_invocation.t -> GD_bus_method_invocation.d_bus_method_invocation
+class d_bus_node_info : D_bus_node_info.t -> GD_bus_node_info.d_bus_node_info
 class d_bus_object : D_bus_interface_and__d_bus_object.D_bus_object.t -> GD_bus_interface_and__d_bus_object.d_bus_object
 class d_bus_object_manager : D_bus_object_manager.t -> GD_bus_object_manager.d_bus_object_manager
 class d_bus_object_manager_client : D_bus_object_manager_client.t -> GD_bus_object_manager_client.d_bus_object_manager_client
 class d_bus_object_manager_server : D_bus_object_manager_server.t -> GD_bus_object_manager_server.d_bus_object_manager_server
 class d_bus_object_proxy : D_bus_object_proxy.t -> GD_bus_object_proxy.d_bus_object_proxy
 class d_bus_object_skeleton : D_bus_object_skeleton.t -> GD_bus_object_skeleton.d_bus_object_skeleton
+class d_bus_property_info : D_bus_property_info.t -> GD_bus_property_info.d_bus_property_info
 class d_bus_proxy : D_bus_proxy.t -> GD_bus_proxy.d_bus_proxy
 class d_bus_server : D_bus_server.t -> GD_bus_server.d_bus_server
+class d_bus_signal_info : D_bus_signal_info.t -> GD_bus_signal_info.d_bus_signal_info
+class d_bus_subtree_v_table : D_bus_subtree_v_table.t -> GD_bus_subtree_v_table.d_bus_subtree_v_table
 class data_input_stream : Data_input_stream.t -> GData_input_stream.data_input_stream
 class data_output_stream : Data_output_stream.t -> GData_output_stream.data_output_stream
 class datagram_based : Datagram_based.t -> GDatagram_based.datagram_based
@@ -52,6 +63,9 @@ class dtls_server_connection : Dtls_server_connection.t -> GDtls_server_connecti
 class emblem : Emblem.t -> GEmblem.emblem
 class emblemed_icon : Emblemed_icon.t -> GEmblemed_icon.emblemed_icon
 class file : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t -> GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume.file
+class file_attribute_info : File_attribute_info.t -> GFile_attribute_info.file_attribute_info
+class file_attribute_info_list : File_attribute_info_list.t -> GFile_attribute_info_list.file_attribute_info_list
+class file_attribute_matcher : File_attribute_matcher.t -> GFile_attribute_matcher.file_attribute_matcher
 class file_descriptor_based : File_descriptor_based.t -> GFile_descriptor_based.file_descriptor_based
 class file_enumerator : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File_enumerator.t -> GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume.file_enumerator
 class file_io_stream : File_io_stream.t -> GFile_io_stream.file_io_stream
@@ -63,14 +77,21 @@ class file_output_stream : File_output_stream.t -> GFile_output_stream.file_outp
 class filename_completer : Filename_completer.t -> GFilename_completer.filename_completer
 class filter_input_stream : Filter_input_stream.t -> GFilter_input_stream.filter_input_stream
 class filter_output_stream : Filter_output_stream.t -> GFilter_output_stream.filter_output_stream
+class io_extension : Io_extension.t -> GIo_extension.io_extension
+class io_extension_point : Io_extension_point.t -> GIo_extension_point.io_extension_point
 class io_module : Io_module.t -> GIo_module.io_module
+class io_module_scope : Io_module_scope.t -> GIo_module_scope.io_module_scope
+class io_scheduler_job : Io_scheduler_job.t -> GIo_scheduler_job.io_scheduler_job
 class io_stream : Io_stream.t -> GIo_stream.io_stream
+class io_stream_adapter : Io_stream_adapter.t -> GIo_stream_adapter.io_stream_adapter
 class icon : Icon.t -> GIcon.icon
 class inet_address : Inet_address.t -> GInet_address.inet_address
 class inet_address_mask : Inet_address_mask.t -> GInet_address_mask.inet_address_mask
 class inet_socket_address : Inet_socket_address.t -> GInet_socket_address.inet_socket_address
 class initable : Initable.t -> GInitable.initable
+class input_message : Input_message.t -> GInput_message.input_message
 class input_stream : Input_stream.t -> GInput_stream.input_stream
+class input_vector : Input_vector.t -> GInput_vector.input_vector
 class list_model : List_model.t -> GList_model.list_model
 class list_store : List_store.t -> GList_store.list_store
 class loadable_icon : Loadable_icon.t -> GLoadable_icon.loadable_icon
@@ -90,7 +111,9 @@ class network_address : Network_address.t -> GNetwork_address.network_address
 class network_monitor : Network_monitor.t -> GNetwork_monitor.network_monitor
 class network_service : Network_service.t -> GNetwork_service.network_service
 class notification : Notification.t -> GNotification.notification
+class output_message : Output_message.t -> GOutput_message.output_message
 class output_stream : Output_stream.t -> GOutput_stream.output_stream
+class output_vector : Output_vector.t -> GOutput_vector.output_vector
 class permission : Permission.t -> GPermission.permission
 class pollable_input_stream : Pollable_input_stream.t -> GPollable_input_stream.pollable_input_stream
 class pollable_output_stream : Pollable_output_stream.t -> GPollable_output_stream.pollable_output_stream
@@ -102,9 +125,13 @@ class proxy_address_enumerator : Proxy_address_enumerator.t -> GProxy_address_en
 class proxy_resolver : Proxy_resolver.t -> GProxy_resolver.proxy_resolver
 class remote_action_group : Remote_action_group.t -> GRemote_action_group.remote_action_group
 class resolver : Resolver.t -> GResolver.resolver
+class resource : Resource.t -> GResource.resource
 class seekable : Seekable.t -> GSeekable.seekable
 class settings : Settings.t -> GSettings.settings
 class settings_backend : Settings_backend.t -> GSettings_backend.settings_backend
+class settings_schema : Settings_schema.t -> GSettings_schema.settings_schema
+class settings_schema_key : Settings_schema_key.t -> GSettings_schema_key.settings_schema_key
+class settings_schema_source : Settings_schema_source.t -> GSettings_schema_source.settings_schema_source
 class simple_action : Simple_action.t -> GSimple_action.simple_action
 class simple_action_group : Simple_action_group.t -> GSimple_action_group.simple_action_group
 class simple_async_result : Simple_async_result.t -> GSimple_async_result.simple_async_result
@@ -120,6 +147,8 @@ class socket_connection : Socket_and__socket_connection.Socket_connection.t -> G
 class socket_control_message : Socket_control_message.t -> GSocket_control_message.socket_control_message
 class socket_listener : Socket_listener.t -> GSocket_listener.socket_listener
 class socket_service : Socket_service.t -> GSocket_service.socket_service
+class srv_target : Srv_target.t -> GSrv_target.srv_target
+class static_resource : Static_resource.t -> GStatic_resource.static_resource
 class subprocess : Subprocess.t -> GSubprocess.subprocess
 class subprocess_launcher : Subprocess_launcher.t -> GSubprocess_launcher.subprocess_launcher
 class task : Task.t -> GTask.task
@@ -143,7 +172,9 @@ class unix_credentials_message : Unix_credentials_message.t -> GUnix_credentials
 class unix_fd_list : Unix_fd_list.t -> GUnix_fd_list.unix_fd_list
 class unix_fd_message : Unix_fd_message.t -> GUnix_fd_message.unix_fd_message
 class unix_input_stream : Unix_input_stream.t -> GUnix_input_stream.unix_input_stream
+class unix_mount_entry : Unix_mount_entry.t -> GUnix_mount_entry.unix_mount_entry
 class unix_mount_monitor : Unix_mount_monitor.t -> GUnix_mount_monitor.unix_mount_monitor
+class unix_mount_point : Unix_mount_point.t -> GUnix_mount_point.unix_mount_point
 class unix_output_stream : Unix_output_stream.t -> GUnix_output_stream.unix_output_stream
 class unix_socket_address : Unix_socket_address.t -> GUnix_socket_address.unix_socket_address
 class vfs : Vfs.t -> GVfs.vfs
@@ -159,6 +190,7 @@ class zlib_decompressor : Zlib_decompressor.t -> GZlib_decompressor.zlib_decompr
  *)
 module Wrappers : sig
   module Action = Action
+  module Action_entry = Action_entry
   module Action_group = Action_group
   module Action_map = Action_map
   module App_info = App_info_and__app_launch_context.App_info
@@ -178,21 +210,31 @@ module Wrappers : sig
   module Converter_output_stream = Converter_output_stream
   module Credentials = Credentials
   module D_bus_action_group = D_bus_action_group
+  module D_bus_annotation_info = D_bus_annotation_info
+  module D_bus_arg_info = D_bus_arg_info
   module D_bus_auth_observer = D_bus_auth_observer
   module D_bus_connection = D_bus_connection
+  module D_bus_error_entry = D_bus_error_entry
   module D_bus_interface = D_bus_interface_and__d_bus_object.D_bus_interface
+  module D_bus_interface_info = D_bus_interface_info
   module D_bus_interface_skeleton = D_bus_interface_skeleton
+  module D_bus_interface_v_table = D_bus_interface_v_table
   module D_bus_menu_model = D_bus_menu_model
   module D_bus_message = D_bus_message
+  module D_bus_method_info = D_bus_method_info
   module D_bus_method_invocation = D_bus_method_invocation
+  module D_bus_node_info = D_bus_node_info
   module D_bus_object = D_bus_interface_and__d_bus_object.D_bus_object
   module D_bus_object_manager = D_bus_object_manager
   module D_bus_object_manager_client = D_bus_object_manager_client
   module D_bus_object_manager_server = D_bus_object_manager_server
   module D_bus_object_proxy = D_bus_object_proxy
   module D_bus_object_skeleton = D_bus_object_skeleton
+  module D_bus_property_info = D_bus_property_info
   module D_bus_proxy = D_bus_proxy
   module D_bus_server = D_bus_server
+  module D_bus_signal_info = D_bus_signal_info
+  module D_bus_subtree_v_table = D_bus_subtree_v_table
   module Data_input_stream = Data_input_stream
   module Data_output_stream = Data_output_stream
   module Datagram_based = Datagram_based
@@ -207,6 +249,9 @@ module Wrappers : sig
   module Emblem = Emblem
   module Emblemed_icon = Emblemed_icon
   module File = File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File
+  module File_attribute_info = File_attribute_info
+  module File_attribute_info_list = File_attribute_info_list
+  module File_attribute_matcher = File_attribute_matcher
   module File_descriptor_based = File_descriptor_based
   module File_enumerator = File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File_enumerator
   module File_io_stream = File_io_stream
@@ -218,14 +263,21 @@ module Wrappers : sig
   module Filename_completer = Filename_completer
   module Filter_input_stream = Filter_input_stream
   module Filter_output_stream = Filter_output_stream
+  module Io_extension = Io_extension
+  module Io_extension_point = Io_extension_point
   module Io_module = Io_module
+  module Io_module_scope = Io_module_scope
+  module Io_scheduler_job = Io_scheduler_job
   module Io_stream = Io_stream
+  module Io_stream_adapter = Io_stream_adapter
   module Icon = Icon
   module Inet_address = Inet_address
   module Inet_address_mask = Inet_address_mask
   module Inet_socket_address = Inet_socket_address
   module Initable = Initable
+  module Input_message = Input_message
   module Input_stream = Input_stream
+  module Input_vector = Input_vector
   module List_model = List_model
   module List_store = List_store
   module Loadable_icon = Loadable_icon
@@ -245,7 +297,9 @@ module Wrappers : sig
   module Network_monitor = Network_monitor
   module Network_service = Network_service
   module Notification = Notification
+  module Output_message = Output_message
   module Output_stream = Output_stream
+  module Output_vector = Output_vector
   module Permission = Permission
   module Pollable_input_stream = Pollable_input_stream
   module Pollable_output_stream = Pollable_output_stream
@@ -257,9 +311,13 @@ module Wrappers : sig
   module Proxy_resolver = Proxy_resolver
   module Remote_action_group = Remote_action_group
   module Resolver = Resolver
+  module Resource = Resource
   module Seekable = Seekable
   module Settings = Settings
   module Settings_backend = Settings_backend
+  module Settings_schema = Settings_schema
+  module Settings_schema_key = Settings_schema_key
+  module Settings_schema_source = Settings_schema_source
   module Simple_action = Simple_action
   module Simple_action_group = Simple_action_group
   module Simple_async_result = Simple_async_result
@@ -275,6 +333,8 @@ module Wrappers : sig
   module Socket_control_message = Socket_control_message
   module Socket_listener = Socket_listener
   module Socket_service = Socket_service
+  module Srv_target = Srv_target
+  module Static_resource = Static_resource
   module Subprocess = Subprocess
   module Subprocess_launcher = Subprocess_launcher
   module Task = Task
@@ -298,7 +358,9 @@ module Wrappers : sig
   module Unix_fd_list = Unix_fd_list
   module Unix_fd_message = Unix_fd_message
   module Unix_input_stream = Unix_input_stream
+  module Unix_mount_entry = Unix_mount_entry
   module Unix_mount_monitor = Unix_mount_monitor
+  module Unix_mount_point = Unix_mount_point
   module Unix_output_stream = Unix_output_stream
   module Unix_socket_address = Unix_socket_address
   module Vfs = Vfs

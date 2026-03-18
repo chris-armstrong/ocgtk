@@ -1,6 +1,5 @@
 (* High-level class for CellView *)
 class cell_view (obj : Cell_view.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Cell_view.as_widget obj)
 
   method get_displayed_row : unit -> Tree_path.t option =
     fun () ->
@@ -34,7 +33,6 @@ class cell_view (obj : Cell_view.t) = object (self)
 
   method cell_area_context = new GCell_area_and__cell_area_context.cell_area_context (Cell_view.get_cell_area_context obj)
 
-  method as_widget = (Cell_view.as_widget obj)
     method as_cell_view = obj
 end
 

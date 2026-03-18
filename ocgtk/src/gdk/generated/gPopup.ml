@@ -17,6 +17,14 @@ class popup (obj : Popup.t) = object (self)
     fun () ->
       (Popup.get_position_y obj)
 
+  method get_rect_anchor : unit -> Gdk_enums.gravity =
+    fun () ->
+      (Popup.get_rect_anchor obj)
+
+  method get_surface_anchor : unit -> Gdk_enums.gravity =
+    fun () ->
+      (Popup.get_surface_anchor obj)
+
   method present : int -> int -> Popup_layout.t -> bool =
     fun width height layout ->
       (Popup.present obj width height layout)

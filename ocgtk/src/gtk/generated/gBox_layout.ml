@@ -1,6 +1,5 @@
 (* High-level class for BoxLayout *)
 class box_layout (obj : Box_layout.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.layout_manager (Box_layout.as_layoutmanager obj)
 
   method get_baseline_child : unit -> int =
     fun () ->
@@ -34,7 +33,6 @@ class box_layout (obj : Box_layout.t) = object (self)
     fun spacing ->
       (Box_layout.set_spacing obj spacing)
 
-  method as_layoutmanager = (Box_layout.as_layoutmanager obj)
     method as_box_layout = obj
 end
 

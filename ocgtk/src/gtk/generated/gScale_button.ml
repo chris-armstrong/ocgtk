@@ -2,7 +2,6 @@
 
 (* High-level class for ScaleButton *)
 class scale_button (obj : Scale_button.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Scale_button.as_widget obj)
   inherit Gscale_button_signals.scale_button_signals obj
 
   method get_active : unit -> bool =
@@ -17,13 +16,13 @@ class scale_button (obj : Scale_button.t) = object (self)
     fun () ->
       (Scale_button.get_has_frame obj)
 
-  method get_minus_button : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget =
+  method get_minus_button : unit -> GButton.button =
     fun () ->
-      new  GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget(Scale_button.get_minus_button obj)
+      new  GButton.button(Scale_button.get_minus_button obj)
 
-  method get_plus_button : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget =
+  method get_plus_button : unit -> GButton.button =
     fun () ->
-      new  GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget(Scale_button.get_plus_button obj)
+      new  GButton.button(Scale_button.get_plus_button obj)
 
   method get_popup : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget =
     fun () ->
@@ -50,7 +49,6 @@ class scale_button (obj : Scale_button.t) = object (self)
     fun value ->
       (Scale_button.set_value obj value)
 
-  method as_widget = (Scale_button.as_widget obj)
     method as_scale_button = obj
 end
 

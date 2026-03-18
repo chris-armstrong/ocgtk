@@ -1,6 +1,7 @@
 class tree_list_row : Tree_list_row.t ->
   object
     method get_child_row : int -> tree_list_row option
+    method get_children : unit -> Ocgtk_gio.Gio.list_model option
     method get_depth : unit -> int
     method get_expanded : unit -> bool
     method get_parent : unit -> tree_list_row option

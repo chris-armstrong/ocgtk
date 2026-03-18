@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_constraint_layout_new(value unit)
@@ -48,6 +48,22 @@ CAMLparam1(self);
 
 gtk_constraint_layout_remove_all_constraints(GtkConstraintLayout_val(self));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_constraint_layout_observe_guides(value self)
+{
+CAMLparam1(self);
+
+GListModel* result = gtk_constraint_layout_observe_guides(GtkConstraintLayout_val(self));
+CAMLreturn(Val_GListModel(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_constraint_layout_observe_constraints(value self)
+{
+CAMLparam1(self);
+
+GListModel* result = gtk_constraint_layout_observe_constraints(GtkConstraintLayout_val(self));
+CAMLreturn(Val_GListModel(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_constraint_layout_add_guide(value self, value arg1)

@@ -7,5 +7,5 @@ type t = [`font] Gobject.obj
 (** Gets the `cairo_scaled_font_t` used by @font.
 The scaled font can be referenced and kept using
 cairo_scaled_font_reference(). *)
-external get_scaled_font : t -> Ocgtk_cairo.Scaled_font.t option = "ml_pango_cairo_font_get_scaled_font"
+external get_scaled_font : t -> Ocgtk_cairo.Cairo.Wrappers.Scaled_font.t option = "ml_pango_cairo_font_get_scaled_font"
 

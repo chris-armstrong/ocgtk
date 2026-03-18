@@ -49,6 +49,11 @@ class media_stream (obj : Media_stream.t) = object (self)
     fun () ->
       (Media_stream.play obj)
 
+  method realize : 'p1. (#Ocgtk_gdk.Gdk.surface as 'p1) -> unit =
+    fun surface ->
+      let surface = surface#as_surface in
+      (Media_stream.realize obj surface)
+
   method seek_failed : unit -> unit =
     fun () ->
       (Media_stream.seek_failed obj)
@@ -80,6 +85,11 @@ class media_stream (obj : Media_stream.t) = object (self)
   method stream_unprepared : unit -> unit =
     fun () ->
       (Media_stream.stream_unprepared obj)
+
+  method unrealize : 'p1. (#Ocgtk_gdk.Gdk.surface as 'p1) -> unit =
+    fun surface ->
+      let surface = surface#as_surface in
+      (Media_stream.unrealize obj surface)
 
   method prepared = Media_stream.get_prepared obj
   method set_prepared v =  Media_stream.set_prepared obj v

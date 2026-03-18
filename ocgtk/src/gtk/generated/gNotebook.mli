@@ -1,6 +1,5 @@
 class notebook : Notebook.t ->
   object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
     inherit Gnotebook_signals.notebook_signals
     method append_page : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option -> int
     method append_page_menu : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option -> #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option -> int
@@ -13,6 +12,7 @@ class notebook : Notebook.t ->
     method get_n_pages : unit -> int
     method get_nth_page : int -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option
     method get_page : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> GNotebook_page.notebook_page
+    method get_pages : unit -> Ocgtk_gio.Gio.list_model
     method get_scrollable : unit -> bool
     method get_show_border : unit -> bool
     method get_show_tabs : unit -> bool
@@ -47,7 +47,6 @@ class notebook : Notebook.t ->
     method set_tab_reorderable : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> bool -> unit
     method enable_popup : bool
     method set_enable_popup : bool -> unit
-  method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
     method as_notebook : Notebook.t
   end
 

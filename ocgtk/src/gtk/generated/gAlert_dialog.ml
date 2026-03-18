@@ -1,6 +1,11 @@
 (* High-level class for AlertDialog *)
 class alert_dialog (obj : Alert_dialog.t) = object (self)
 
+  method choose_finish : 'p1. (#Ocgtk_gio.Gio.async_result as 'p1) -> (int, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      (Alert_dialog.choose_finish obj result)
+
   method get_buttons : unit -> string array option =
     fun () ->
       (Alert_dialog.get_buttons obj)

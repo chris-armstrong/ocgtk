@@ -16,5 +16,3 @@ module Wrappers : sig
   module Font_map = Font_map
 end
 
-(** {1 Enumerations and Bitfields} *)
-

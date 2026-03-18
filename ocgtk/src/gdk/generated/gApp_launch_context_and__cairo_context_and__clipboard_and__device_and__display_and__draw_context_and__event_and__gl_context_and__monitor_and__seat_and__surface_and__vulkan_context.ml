@@ -10,6 +10,11 @@ class app_launch_context (obj : App_launch_context_and__cairo_context_and__clipb
     fun desktop ->
       (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.App_launch_context.set_desktop obj desktop)
 
+  method set_icon : 'p1. (#Ocgtk_gio.Gio.icon as 'p1) option -> unit =
+    fun icon ->
+      let icon = Option.map (fun (c) -> c#as_icon) icon in
+      (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.App_launch_context.set_icon obj icon)
+
   method set_icon_name : string option -> unit =
     fun icon_name ->
       (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.App_launch_context.set_icon_name obj icon_name)
@@ -18,6 +23,10 @@ class app_launch_context (obj : App_launch_context_and__cairo_context_and__clipb
 end
 
 and cairo_context (obj : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Cairo_context.t) = object (self)
+
+  method cairo_create : unit -> Ocgtk_cairo.Cairo.context option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_cairo.Cairo.context ret) (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Cairo_context.cairo_create obj)
 
     method as_cairo_context = obj
 end
@@ -43,10 +52,25 @@ and clipboard (obj : App_launch_context_and__cairo_context_and__clipboard_and__d
     fun () ->
       (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Clipboard.is_local obj)
 
+  method read_text_finish : 'p1. (#Ocgtk_gio.Gio.async_result as 'p1) -> (string option, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Clipboard.read_text_finish obj result)
+
+  method read_texture_finish : 'p1. (#Ocgtk_gio.Gio.async_result as 'p1) -> (GTexture.texture option, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      Result.map (fun ret -> Option.map (fun ret -> new GTexture.texture ret) ret)(App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Clipboard.read_texture_finish obj result)
+
   method set_content : 'p1. (#GContent_provider.content_provider as 'p1) option -> bool =
     fun provider ->
       let provider = Option.map (fun (c) -> c#as_content_provider) provider in
       (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Clipboard.set_content obj provider)
+
+  method store_finish : 'p1. (#Ocgtk_gio.Gio.async_result as 'p1) -> (bool, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Clipboard.store_finish obj result)
 
   method local = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Clipboard.get_local obj
 
@@ -65,6 +89,10 @@ and device (obj : App_launch_context_and__cairo_context_and__clipboard_and__devi
   method get_device_tool : unit -> GDevice_tool.device_tool option =
     fun () ->
       Option.map (fun ret -> new GDevice_tool.device_tool ret) (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Device.get_device_tool obj)
+
+  method get_direction : unit -> Ocgtk_pango.Pango.direction =
+    fun () ->
+      (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Device.get_direction obj)
 
   method get_display : unit -> display =
     fun () ->
@@ -168,6 +196,10 @@ and display (obj : App_launch_context_and__cairo_context_and__clipboard_and__dev
       let surface = surface#as_surface in
       Option.map (fun ret -> new monitor ret) (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Display.get_monitor_at_surface obj surface)
 
+  method get_monitors : unit -> Ocgtk_gio.Gio.list_model =
+    fun () ->
+      new  Ocgtk_gio.Gio.list_model(App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Display.get_monitors obj)
+
   method get_name : unit -> string =
     fun () ->
       (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Display.get_name obj)
@@ -230,6 +262,11 @@ end
 
 and draw_context (obj : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Draw_context.t) = object (self)
 
+  method begin_frame : 'p1. (#Ocgtk_cairo.Cairo.region as 'p1) -> unit =
+    fun region ->
+      let region = region#as_region in
+      (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Draw_context.begin_frame obj region)
+
   method end_frame : unit -> unit =
     fun () ->
       (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Draw_context.end_frame obj)
@@ -237,6 +274,10 @@ and draw_context (obj : App_launch_context_and__cairo_context_and__clipboard_and
   method get_display : unit -> display option =
     fun () ->
       Option.map (fun ret -> new display ret) (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Draw_context.get_display obj)
+
+  method get_frame_region : unit -> Ocgtk_cairo.Cairo.region option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_cairo.Cairo.region ret) (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Draw_context.get_frame_region obj)
 
   method get_surface : unit -> surface option =
     fun () ->
@@ -475,6 +516,10 @@ and surface (obj : App_launch_context_and__cairo_context_and__clipboard_and__dev
     fun () ->
       Result.map (fun ret -> new gl_context ret)(App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Surface.create_gl_context obj)
 
+  method create_similar_surface : Ocgtk_cairo.Cairo.content -> int -> int -> Ocgtk_cairo.Cairo.surface =
+    fun content width height ->
+      new  Ocgtk_cairo.Cairo.surface(App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Surface.create_similar_surface obj content width height)
+
   method create_vulkan_context : unit -> (vulkan_context, GError.t) result =
     fun () ->
       Result.map (fun ret -> new vulkan_context ret)(App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Surface.create_vulkan_context obj)
@@ -546,6 +591,16 @@ and surface (obj : App_launch_context_and__cairo_context_and__clipboard_and__dev
       let device = device#as_device in
       let cursor = cursor#as_cursor in
       (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Surface.set_device_cursor obj device cursor)
+
+  method set_input_region : 'p1. (#Ocgtk_cairo.Cairo.region as 'p1) -> unit =
+    fun region ->
+      let region = region#as_region in
+      (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Surface.set_input_region obj region)
+
+  method set_opaque_region : 'p1. (#Ocgtk_cairo.Cairo.region as 'p1) option -> unit =
+    fun region ->
+      let region = Option.map (fun (c) -> c#as_region) region in
+      (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Surface.set_opaque_region obj region)
 
     method as_surface = obj
 end

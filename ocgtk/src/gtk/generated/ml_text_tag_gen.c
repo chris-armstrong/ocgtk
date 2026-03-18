@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_text_tag_new(value arg1)
@@ -238,6 +238,38 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
           g_value_set_boolean(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "background-full-height-set", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_get_background_rgba(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    GdkRGBA *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "background-rgba");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_background_rgba: property 'background-rgba' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "background-rgba", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GdkRGBA(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_background_rgba(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    GdkRGBA *c_value = GdkRGBA_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "background-rgba");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_background_rgba: property 'background-rgba' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "background-rgba", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
@@ -530,6 +562,38 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_text_tag_get_font_desc(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    PangoFontDescription *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "font-desc");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_font_desc: property 'font-desc' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "font-desc", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_PangoFontDescription(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_font_desc(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    PangoFontDescription *c_value = PangoFontDescription_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "font-desc");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_font_desc: property 'font-desc' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "font-desc", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_tag_get_font_features(value self)
 {
     CAMLparam1(self);
@@ -622,6 +686,38 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
           g_value_set_string(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "foreground", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_get_foreground_rgba(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    GdkRGBA *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "foreground-rgba");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_foreground_rgba: property 'foreground-rgba' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "foreground-rgba", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GdkRGBA(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_foreground_rgba(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    GdkRGBA *c_value = GdkRGBA_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "foreground-rgba");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_foreground_rgba: property 'foreground-rgba' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "foreground-rgba", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
@@ -1187,6 +1283,70 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
+CAMLexport CAMLprim value ml_gtk_text_tag_get_overline(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    PangoOverline prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "overline");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_overline: property 'overline' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "overline", &prop_gvalue);
+          prop_value = (PangoOverline)g_value_get_enum(&prop_gvalue);
+
+      result = Val_PangoOverline(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_overline(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    PangoOverline c_value = PangoOverline_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "overline");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_overline: property 'overline' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "overline", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_get_overline_rgba(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    GdkRGBA *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "overline-rgba");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_overline_rgba: property 'overline-rgba' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "overline-rgba", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GdkRGBA(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_overline_rgba(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    GdkRGBA *c_value = GdkRGBA_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "overline-rgba");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_overline_rgba: property 'overline-rgba' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "overline-rgba", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_tag_get_overline_rgba_set(value self)
 {
     CAMLparam1(self);
@@ -1279,6 +1439,38 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
           g_value_set_string(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "paragraph-background", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_get_paragraph_background_rgba(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    GdkRGBA *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "paragraph-background-rgba");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_paragraph_background_rgba: property 'paragraph-background-rgba' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "paragraph-background-rgba", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GdkRGBA(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_paragraph_background_rgba(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    GdkRGBA *c_value = GdkRGBA_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "paragraph-background-rgba");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_paragraph_background_rgba: property 'paragraph-background-rgba' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "paragraph-background-rgba", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
@@ -1763,6 +1955,38 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_text_tag_get_show_spaces(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    PangoShowFlags prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "show-spaces");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_show_spaces: property 'show-spaces' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "show-spaces", &prop_gvalue);
+          prop_value = (PangoShowFlags)g_value_get_flags(&prop_gvalue);
+
+      result = Val_PangoShowFlags(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_show_spaces(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    PangoShowFlags c_value = PangoShowFlags_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "show-spaces");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_show_spaces: property 'show-spaces' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          g_value_set_flags(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "show-spaces", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_tag_get_show_spaces_set(value self)
 {
     CAMLparam1(self);
@@ -1891,6 +2115,38 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_text_tag_get_stretch(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    PangoStretch prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "stretch");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_stretch: property 'stretch' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "stretch", &prop_gvalue);
+          prop_value = (PangoStretch)g_value_get_enum(&prop_gvalue);
+
+      result = Val_PangoStretch(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_stretch(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    PangoStretch c_value = PangoStretch_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "stretch");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_stretch: property 'stretch' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "stretch", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_tag_get_stretch_set(value self)
 {
     CAMLparam1(self);
@@ -1951,6 +2207,38 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
           g_value_set_boolean(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "strikethrough", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_get_strikethrough_rgba(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    GdkRGBA *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "strikethrough-rgba");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_strikethrough_rgba: property 'strikethrough-rgba' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "strikethrough-rgba", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GdkRGBA(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_strikethrough_rgba(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    GdkRGBA *c_value = GdkRGBA_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "strikethrough-rgba");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_strikethrough_rgba: property 'strikethrough-rgba' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "strikethrough-rgba", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
@@ -2019,6 +2307,38 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_text_tag_get_style(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    PangoStyle prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "style");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_style: property 'style' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "style", &prop_gvalue);
+          prop_value = (PangoStyle)g_value_get_enum(&prop_gvalue);
+
+      result = Val_PangoStyle(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_style(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    PangoStyle c_value = PangoStyle_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "style");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_style: property 'style' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "style", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_tag_get_style_set(value self)
 {
     CAMLparam1(self);
@@ -2047,6 +2367,38 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
           g_value_set_boolean(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "style-set", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_get_tabs(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    PangoTabArray *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "tabs");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_tabs: property 'tabs' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "tabs", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_PangoTabArray(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_tabs(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    PangoTabArray *c_value = PangoTabArray_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "tabs");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_tabs: property 'tabs' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "tabs", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
@@ -2083,6 +2435,38 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_text_tag_get_text_transform(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    PangoTextTransform prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "text-transform");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_text_transform: property 'text-transform' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "text-transform", &prop_gvalue);
+          prop_value = (PangoTextTransform)g_value_get_enum(&prop_gvalue);
+
+      result = Val_PangoTextTransform(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_text_transform(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    PangoTextTransform c_value = PangoTextTransform_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "text-transform");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_text_transform: property 'text-transform' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "text-transform", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_tag_get_text_transform_set(value self)
 {
     CAMLparam1(self);
@@ -2111,6 +2495,70 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
           g_value_set_boolean(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "text-transform-set", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_get_underline(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    PangoUnderline prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "underline");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_underline: property 'underline' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "underline", &prop_gvalue);
+          prop_value = (PangoUnderline)g_value_get_enum(&prop_gvalue);
+
+      result = Val_PangoUnderline(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_underline(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    PangoUnderline c_value = PangoUnderline_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "underline");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_underline: property 'underline' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "underline", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_get_underline_rgba(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    GdkRGBA *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "underline-rgba");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_underline_rgba: property 'underline-rgba' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "underline-rgba", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GdkRGBA(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_underline_rgba(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    GdkRGBA *c_value = GdkRGBA_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "underline-rgba");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_underline_rgba: property 'underline-rgba' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "underline-rgba", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
@@ -2175,6 +2623,38 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
           g_value_set_boolean(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "underline-set", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_get_variant(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    PangoVariant prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "variant");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_variant: property 'variant' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "variant", &prop_gvalue);
+          prop_value = (PangoVariant)g_value_get_enum(&prop_gvalue);
+
+      result = Val_PangoVariant(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_variant(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    PangoVariant c_value = PangoVariant_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "variant");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_variant: property 'variant' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "variant", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }

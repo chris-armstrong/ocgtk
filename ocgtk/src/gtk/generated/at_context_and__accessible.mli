@@ -5,7 +5,7 @@ module rec At_context : sig
   type t = [`at_context | `object_] Gobject.obj
 
   (** Create a new ATContext *)
-  external create : Gtk_enums.accessiblerole -> Accessible.t -> unit -> t = "ml_gtk_at_context_create"
+  external create : Gtk_enums.accessiblerole -> Accessible.t -> Ocgtk_gdk.Gdk.Wrappers.Display.t -> t = "ml_gtk_at_context_create"
 
   (* Methods *)
   (** Retrieves the accessible role of this context. *)
@@ -15,6 +15,12 @@ module rec At_context : sig
   external get_accessible : t -> Accessible.t = "ml_gtk_at_context_get_accessible"
 
   (* Properties *)
+
+  (** Get property: display *)
+  external get_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t = "ml_gtk_at_context_get_display"
+
+  (** Set property: display *)
+  external set_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t -> unit = "ml_gtk_at_context_set_display"
 
 
 end

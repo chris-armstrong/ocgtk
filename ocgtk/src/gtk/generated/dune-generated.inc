@@ -523,6 +523,7 @@
       (echo "Nothing_action")
       (echo "Numeric_sorter")
       (echo "Object_expression")
+      (echo "Ocgtk_gtk")
       (echo "Orientable")
       (echo "Overlay")
       (echo "Overlay_layout")
@@ -645,6 +646,22 @@ echo '' > cflag-gtk.sexp.tmp && \\
 echo '' > clink-gtk.sexp.tmp && \\
 pkg-config --cflags gtk4 >> cflag-gtk.sexp.tmp && \\
 pkg-config --libs gtk4 >> clink-gtk.sexp.tmp && \\
+pkg-config --cflags cairo-gobject >> cflag-gtk.sexp.tmp && \\
+pkg-config --libs cairo-gobject >> clink-gtk.sexp.tmp && \\
+pkg-config --cflags gdk-pixbuf-2.0 >> cflag-gtk.sexp.tmp && \\
+pkg-config --libs gdk-pixbuf-2.0 >> clink-gtk.sexp.tmp && \\
+pkg-config --cflags gio-2.0 >> cflag-gtk.sexp.tmp && \\
+pkg-config --libs gio-2.0 >> clink-gtk.sexp.tmp && \\
+pkg-config --cflags gio-unix-2.0 >> cflag-gtk.sexp.tmp && \\
+pkg-config --libs gio-unix-2.0 >> clink-gtk.sexp.tmp && \\
+pkg-config --cflags graphene-gobject-1.0 >> cflag-gtk.sexp.tmp && \\
+pkg-config --libs graphene-gobject-1.0 >> clink-gtk.sexp.tmp && \\
+pkg-config --cflags gtk4 >> cflag-gtk.sexp.tmp && \\
+pkg-config --libs gtk4 >> clink-gtk.sexp.tmp && \\
+pkg-config --cflags pango >> cflag-gtk.sexp.tmp && \\
+pkg-config --libs pango >> clink-gtk.sexp.tmp && \\
+pkg-config --cflags pangocairo >> cflag-gtk.sexp.tmp && \\
+pkg-config --libs pangocairo >> clink-gtk.sexp.tmp && \\
 echo \"(\" > cflag-gtk.sexp && \\
 tr ' ' '\\n' < cflag-gtk.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> cflag-gtk.sexp && \\
 echo \")\" >> cflag-gtk.sexp && \\
@@ -659,7 +676,7 @@ rm cflag-gtk.sexp.tmp clink-gtk.sexp.tmp\\
  (public_name ocgtk.gtk.generated_stubs)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk_common)  ; Depend on common for header files
+ (libraries ocgtk.gdk ocgtk.gdkpixbuf ocgtk.gio ocgtk.graphene ocgtk.gsk ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocgtk_common)  ; Dependencies and common for header files
  (foreign_stubs
   (language c)
   (names

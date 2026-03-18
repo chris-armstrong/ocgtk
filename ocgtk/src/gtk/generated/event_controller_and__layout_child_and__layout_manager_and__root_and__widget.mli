@@ -2,7 +2,7 @@
 (* Combined modules for cyclic dependencies *)
 
 module rec Event_controller : sig
-  type t = [`event_controller] Gobject.obj
+  type t = [`event_controller | `object_] Gobject.obj
 
   (* Methods *)
   (** Sets a name on the controller that can be used for debugging. *)
@@ -39,6 +39,23 @@ module rec Event_controller : sig
   (** Gets the name of @controller. *)
   external get_name : t -> string option = "ml_gtk_event_controller_get_name"
 
+  (** Returns the modifier state of the event that is currently being
+  handled by the controller.
+
+  At other times, 0 is returned. *)
+  external get_current_event_state : t -> Ocgtk_gdk.Gdk.modifiertype = "ml_gtk_event_controller_get_current_event_state"
+
+  (** Returns the device of the event that is currently being
+  handled by the controller.
+
+  At other times, %NULL is returned. *)
+  external get_current_event_device : t -> Ocgtk_gdk.Gdk.Wrappers.Device.t option = "ml_gtk_event_controller_get_current_event_device"
+
+  (** Returns the event that is currently being handled by the controller.
+
+  At other times, %NULL is returned. *)
+  external get_current_event : t -> Ocgtk_gdk.Gdk.Wrappers.Event.t option = "ml_gtk_event_controller_get_current_event"
+
   (* Properties *)
 
 
@@ -63,7 +80,7 @@ end
 
 and Layout_manager
  : sig
-  type t = [`layout_manager] Gobject.obj
+  type t = [`layout_manager | `object_] Gobject.obj
 
   (* Methods *)
   (** Measures the size of the @widget using @manager, for the
@@ -126,12 +143,15 @@ and Root
   widget. *)
   external get_focus : t -> Widget.t option = "ml_gtk_root_get_focus"
 
+  (** Returns the display that this `GtkRoot` is on. *)
+  external get_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t = "ml_gtk_root_get_display"
+
 
 end
 
 and Widget
  : sig
-  type t = [`widget] Gobject.obj
+  type t = [`widget | `initially_unowned] Gobject.obj
 
   (* Methods *)
   (** Turns off flag values for the current widget state.
@@ -432,6 +452,23 @@ and Widget
   (** Sets the horizontal alignment of @widget. *)
   external set_halign : t -> Gtk_enums.align -> unit = "ml_gtk_widget_set_halign"
 
+  (** Sets the `cairo_font_options_t` used for Pango rendering
+  in this widget.
+
+  When not set, the default font options for the `GdkDisplay`
+  will be used. *)
+  external set_font_options : t -> Ocgtk_cairo.Cairo.Wrappers.Font_options.t option -> unit = "ml_gtk_widget_set_font_options"
+
+  (** Sets the font map to use for Pango rendering.
+
+  The font map is the object that is used to look up fonts.
+  Setting a custom font map can be useful in special situations,
+  e.g. when you need to add application-specific fonts to the set
+  of available fonts.
+
+  When not set, the widget will inherit the font map from its parent. *)
+  external set_font_map : t -> Ocgtk_pango.Pango.Wrappers.Font_map.t option -> unit = "ml_gtk_widget_set_font_map"
+
   (** Specifies whether @widget can own the input focus.
 
   Widget implementations should set @focusable to %TRUE in
@@ -489,6 +526,13 @@ and Widget
   will do the same as calling [method@Gtk.Widget.set_cursor]
   with a %NULL cursor. *)
   external set_cursor_from_name : t -> string option -> unit = "ml_gtk_widget_set_cursor_from_name"
+
+  (** Sets the cursor to be shown when pointer devices point
+  towards @widget.
+
+  If the @cursor is NULL, @widget will use the cursor
+  inherited from the parent widget. *)
+  external set_cursor : t -> Ocgtk_gdk.Gdk.Wrappers.Cursor.t option -> unit = "ml_gtk_widget_set_cursor"
 
   (** Clear all style classes applied to @widget
   and replace them with @classes. *)
@@ -624,6 +668,27 @@ and Widget
   delivering events. *)
   external pick : t -> float -> float -> Gtk_enums.pickflags -> t option = "ml_gtk_widget_pick"
 
+  (** Returns a `GListModel` to track the [class@Gtk.EventController]s
+  of @widget.
+
+  Calling this function will enable extra internal bookkeeping
+  to track controllers and emit signals on the returned listmodel.
+  It may slow down operations a lot.
+
+  Applications should try hard to avoid calling this function
+  because of the slowdowns. *)
+  external observe_controllers : t -> Ocgtk_gio.Gio.Wrappers.List_model.t = "ml_gtk_widget_observe_controllers"
+
+  (** Returns a `GListModel` to track the children of @widget.
+
+  Calling this function will enable extra internal bookkeeping
+  to track children and emit signals on the returned listmodel.
+  It may slow down operations a lot.
+
+  Applications should try hard to avoid calling this function
+  because of the slowdowns. *)
+  external observe_children : t -> Ocgtk_gio.Gio.Wrappers.List_model.t = "ml_gtk_widget_observe_children"
+
   (** Emits the ::mnemonic-activate signal.
 
   See [signal@Gtk.Widget::mnemonic-activate]. *)
@@ -736,6 +801,21 @@ and Widget
   This API is primarily meant for widget implementations; if you are
   just using a widget, you *must* use its own API for adding children. *)
   external insert_after : t -> t -> t option -> unit = "ml_gtk_widget_insert_after"
+
+  (** Inserts @group into @widget.
+
+  Children of @widget that implement [iface@Gtk.Actionable] can
+  then be associated with actions in @group by setting their
+  “action-name” to @prefix.`action-name`.
+
+  Note that inheritance is defined for individual actions. I.e.
+  even if you insert a group with prefix @prefix, actions with
+  the same prefix will still be inherited from the parent, unless
+  the group contains an action with the same name.
+
+  If @group is %NULL, a previously inserted group for @name is
+  removed from @widget. *)
+  external insert_action_group : t -> string -> Ocgtk_gio.Gio.Wrappers.Action_group.t option -> unit = "ml_gtk_widget_insert_action_group"
 
   (** Creates and initializes child widgets defined in templates.
 
@@ -955,6 +1035,15 @@ and Widget
   (** Determines whether @widget is realized. *)
   external get_realized : t -> bool = "ml_gtk_widget_get_realized"
 
+  (** Gets the primary clipboard of @widget.
+
+  This is a utility function to get the primary clipboard object
+  for the `GdkDisplay` that @widget is using.
+
+  Note that this function always works, even when @widget is not
+  realized yet. *)
+  external get_primary_clipboard : t -> Ocgtk_gdk.Gdk.Wrappers.Clipboard.t = "ml_gtk_widget_get_primary_clipboard"
+
   (** Returns the widget’s previous sibling.
 
   This API is primarily meant for widget implementations. *)
@@ -978,6 +1067,17 @@ and Widget
 
   (** Returns the parent widget of @widget. *)
   external get_parent : t -> t option = "ml_gtk_widget_get_parent"
+
+  (** Gets a `PangoContext` with the appropriate font map, font description,
+  and base direction for this widget.
+
+  Unlike the context returned by [method@Gtk.Widget.create_pango_context],
+  this context is owned by the widget (it can be used until the screen
+  for the widget changes or the widget is removed from its toplevel),
+  and will be updated to match any changes to the widget’s attributes.
+  This can be tracked by listening to changes of the
+  [property@Gtk.Widget:root] property on the widget. *)
+  external get_pango_context : t -> Ocgtk_pango.Pango.Wrappers.Context.t = "ml_gtk_widget_get_pango_context"
 
   (** Returns the widget’s overflow value. *)
   external get_overflow : t -> Gtk_enums.overflow = "ml_gtk_widget_get_overflow"
@@ -1084,6 +1184,40 @@ and Widget
   Baselines are not supported for horizontal alignment. *)
   external get_halign : t -> Gtk_enums.align = "ml_gtk_widget_get_halign"
 
+  (** Obtains the frame clock for a widget.
+
+  The frame clock is a global “ticker” that can be used to drive
+  animations and repaints. The most common reason to get the frame
+  clock is to call [method@Gdk.FrameClock.get_frame_time], in order
+  to get a time to use for animating. For example you might record
+  the start of the animation with an initial value from
+  [method@Gdk.FrameClock.get_frame_time], and then update the animation
+  by calling [method@Gdk.FrameClock.get_frame_time] again during each repaint.
+
+  [method@Gdk.FrameClock.request_phase] will result in a new frame on the
+  clock, but won’t necessarily repaint any widgets. To repaint a
+  widget, you have to use [method@Gtk.Widget.queue_draw] which invalidates
+  the widget (thus scheduling it to receive a draw on the next
+  frame). gtk_widget_queue_draw() will also end up requesting a frame
+  on the appropriate frame clock.
+
+  A widget’s frame clock will not change while the widget is
+  mapped. Reparenting a widget (which implies a temporary unmap) can
+  change the widget’s frame clock.
+
+  Unrealized widgets do not have a frame clock. *)
+  external get_frame_clock : t -> Ocgtk_gdk.Gdk.Wrappers.Frame_clock.t option = "ml_gtk_widget_get_frame_clock"
+
+  (** Returns the `cairo_font_options_t` of widget.
+
+  Seee [method@Gtk.Widget.set_font_options]. *)
+  external get_font_options : t -> Ocgtk_cairo.Cairo.Wrappers.Font_options.t option = "ml_gtk_widget_get_font_options"
+
+  (** Gets the font map of @widget.
+
+  See [method@Gtk.Widget.set_font_map]. *)
+  external get_font_map : t -> Ocgtk_pango.Pango.Wrappers.Font_map.t option = "ml_gtk_widget_get_font_map"
+
   (** Determines whether @widget can own the input focus.
 
   See [method@Gtk.Widget.set_focusable]. *)
@@ -1103,16 +1237,49 @@ and Widget
   This API is primarily meant for widget implementations. *)
   external get_first_child : t -> t option = "ml_gtk_widget_get_first_child"
 
+  (** Get the `GdkDisplay` for the toplevel window associated with
+  this widget.
+
+  This function can only be called after the widget has been
+  added to a widget hierarchy with a `GtkWindow` at the top.
+
+  In general, you should only create display specific
+  resources when a widget has been realized, and you should
+  free those resources when the widget is unrealized. *)
+  external get_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t = "ml_gtk_widget_get_display"
+
   (** Gets the reading direction for a particular widget.
 
   See [method@Gtk.Widget.set_direction]. *)
   external get_direction : t -> Gtk_enums.textdirection = "ml_gtk_widget_get_direction"
+
+  (** Queries the cursor set on @widget.
+
+  See [method@Gtk.Widget.set_cursor] for details. *)
+  external get_cursor : t -> Ocgtk_gdk.Gdk.Wrappers.Cursor.t option = "ml_gtk_widget_get_cursor"
 
   (** Returns the CSS name that is used for @self. *)
   external get_css_name : t -> string = "ml_gtk_widget_get_css_name"
 
   (** Returns the list of style classes applied to @widget. *)
   external get_css_classes : t -> string array = "ml_gtk_widget_get_css_classes"
+
+  (** Gets the current foreground color for the widget’s
+  CSS style.
+
+  This function should only be used in snapshot
+  implementations that need to do custom
+  drawing with the foreground color. *)
+  external get_color : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t = "ml_gtk_widget_get_color"
+
+  (** Gets the clipboard object for @widget.
+
+  This is a utility function to get the clipboard object for the
+  `GdkDisplay` that @widget is using.
+
+  Note that this function always works, even when @widget is not
+  realized yet. *)
+  external get_clipboard : t -> Ocgtk_gdk.Gdk.Wrappers.Clipboard.t = "ml_gtk_widget_get_clipboard"
 
   (** Gets the value set with gtk_widget_set_child_visible().
 
@@ -1171,11 +1338,46 @@ and Widget
   (** Checks to see if a drag movement has passed the GTK drag threshold. *)
   external drag_check_threshold : t -> int -> int -> int -> int -> bool = "ml_gtk_drag_check_threshold"
 
+  (** Creates a new `PangoLayout` with the appropriate font map,
+  font description, and base direction for drawing text for
+  this widget.
+
+  If you keep a `PangoLayout` created in this way around,
+  you need to re-create it when the widget `PangoContext`
+  is replaced. This can be tracked by listening to changes
+  of the [property@Gtk.Widget:root] property on the widget. *)
+  external create_pango_layout : t -> string option -> Ocgtk_pango.Pango.Wrappers.Layout.t = "ml_gtk_widget_create_pango_layout"
+
+  (** Creates a new `PangoContext` with the appropriate font map,
+  font options, font description, and base direction for drawing
+  text for this widget.
+
+  See also [method@Gtk.Widget.get_pango_context]. *)
+  external create_pango_context : t -> Ocgtk_pango.Pango.Wrappers.Context.t = "ml_gtk_widget_create_pango_context"
+
   (** Tests if the point at (@x, @y) is contained in @widget.
 
   The coordinates for (@x, @y) must be in widget coordinates, so
   (0, 0) is assumed to be the top left of @widget's content area. *)
   external contains : t -> float -> float -> bool = "ml_gtk_widget_contains"
+
+  (** Computes a matrix suitable to describe a transformation from
+  @widget's coordinate system into @target's coordinate system.
+
+  The transform can not be computed in certain cases, for example
+  when @widget and @target do not share a common ancestor. In that
+  case @out_transform gets set to the identity matrix.
+
+  To learn more about widget coordinate systems, see the coordinate
+  system [overview](coordinates.html). *)
+  external compute_transform : t -> t -> bool * Ocgtk_graphene.Graphene.Wrappers.Matrix.t = "ml_gtk_widget_compute_transform"
+
+  (** Translates the given @point in @widget's coordinates to coordinates
+  relative to @target’s coordinate system.
+
+  In order to perform this operation, both widgets must share a
+  common ancestor. *)
+  external compute_point : t -> t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> bool * Ocgtk_graphene.Graphene.Wrappers.Point.t = "ml_gtk_widget_compute_point"
 
   (** Computes whether a container should give this widget
   extra space when possible.
@@ -1191,6 +1393,20 @@ and Widget
   set on the widget itself, or, if none has been explicitly set,
   the widget may expand if some of its children do. *)
   external compute_expand : t -> Gtk_enums.orientation -> bool = "ml_gtk_widget_compute_expand"
+
+  (** Computes the bounds for @widget in the coordinate space of @target.
+
+  The bounds of widget are (the bounding box of) the region that it is
+  expected to draw in. See the [coordinate system](coordinates.html)
+  overview to learn more.
+
+  If the operation is successful, %TRUE is returned. If @widget has no
+  bounds or the bounds cannot be expressed in @target's coordinate space
+  (for example if both widgets are in different windows), %FALSE is
+  returned and @bounds is set to the zero rectangle.
+
+  It is valid for @widget and @target to be the same widget. *)
+  external compute_bounds : t -> t -> bool * Ocgtk_graphene.Graphene.Wrappers.Rect.t = "ml_gtk_widget_compute_bounds"
 
   (** Called by widgets as the user moves around the window using
   keyboard shortcuts.
@@ -1213,6 +1429,18 @@ and Widget
   writing an app, you’d use [method@Gtk.Widget.grab_focus] to move
   the focus to a particular widget. *)
   external child_focus : t -> Gtk_enums.directiontype -> bool = "ml_gtk_widget_child_focus"
+
+  (** This function is only used by `GtkWidget` subclasses, to
+  assign a size, position and (optionally) baseline to their
+  child widgets.
+
+  In this function, the allocation and baseline may be adjusted.
+  The given allocation will be forced to be bigger than the
+  widget's minimum size, as well as at least 0×0 in size.
+
+  For a version that does not take a transform, see
+  [method@Gtk.Widget.size_allocate]. *)
+  external allocate : t -> int -> int -> int -> Ocgtk_gsk.Gsk.Wrappers.Transform.t option -> unit = "ml_gtk_widget_allocate"
 
   (** Adds a widget to the list of mnemonic labels for this widget.
 

@@ -18,8 +18,8 @@
 #include <gio/gio.h>
 #include <gio/gfiledescriptorbased.h>
 #include <gio/gdesktopappinfo.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gio_decls.h"
 
 
 CAMLexport CAMLprim value ml_g_settings_new(value arg1)
@@ -78,11 +78,12 @@ CAMLreturn(Val_bool(result));
 CAMLexport CAMLprim value ml_g_settings_set_strv(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
+    int arg2_length = 0;
     gchar** c_arg2 = NULL;
     
     if (Is_some(arg2)) {
         value array = Some_val(arg2);
-        int arg2_length = Wosize_val(array);
+        arg2_length = Wosize_val(array);
         c_arg2 = (gchar**)g_malloc(sizeof(gchar*) * (arg2_length + 1));
         for (int i = 0; i < arg2_length; i++) {
           c_arg2[i] = String_val(Field(array, i));

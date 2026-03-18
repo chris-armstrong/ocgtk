@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Event controller: GestureRotate *)
+(* GestureRotate: GestureRotate *)
 
 type t = [`gesture_rotate | `gesture | `event_controller | `object_] Gobject.obj
-
-val as_event_controller : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t
 
 (** Create a new GestureRotate *)
 external new_ : unit -> t = "ml_gtk_gesture_rotate_new"

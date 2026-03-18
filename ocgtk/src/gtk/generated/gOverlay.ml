@@ -2,7 +2,6 @@
 
 (* High-level class for Overlay *)
 class overlay (obj : Overlay.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Overlay.as_widget obj)
   inherit Goverlay_signals.overlay_signals obj
 
   method add_overlay : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> unit =
@@ -44,7 +43,6 @@ class overlay (obj : Overlay.t) = object (self)
       let widget = widget#as_widget in
       (Overlay.set_measure_overlay obj widget measure)
 
-  method as_widget = (Overlay.as_widget obj)
     method as_overlay = obj
 end
 

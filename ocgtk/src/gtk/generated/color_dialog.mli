@@ -31,5 +31,9 @@ blocks interaction with the parent window
 while it is presented. *)
 external get_modal : t -> bool = "ml_gtk_color_dialog_get_modal"
 
+(** Finishes the [method@Gtk.ColorDialog.choose_rgba] call and
+returns the resulting color. *)
+external choose_rgba_finish : t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t option, GError.t) result = "ml_gtk_color_dialog_choose_rgba_finish"
+
 (* Properties *)
 

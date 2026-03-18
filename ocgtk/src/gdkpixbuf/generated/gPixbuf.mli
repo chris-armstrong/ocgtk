@@ -18,6 +18,7 @@ class pixbuf : Pixbuf.t ->
     method remove_option : string -> bool
     method rotate_simple : Gdkpixbuf_enums.pixbufrotation -> pixbuf option
     method saturate_and_pixelate : <as_pixbuf: Pixbuf.t; ..> -> float -> bool -> unit
+    method save_to_streamv : #Ocgtk_gio.Gio.output_stream -> string -> string array option -> string array option -> #Ocgtk_gio.Gio.cancellable option -> (bool, GError.t) result
     method savev : string -> string -> string array option -> string array option -> (bool, GError.t) result
     method scale : <as_pixbuf: Pixbuf.t; ..> -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> unit
     method scale_simple : int -> int -> Gdkpixbuf_enums.interptype -> pixbuf option

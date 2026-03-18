@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Inscription *)
+(* Inscription: Inscription *)
 
 type t = [`inscription | `widget | `initially_unowned] Gobject.obj
-
-val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new Inscription *)
 external new_ : string option -> t = "ml_gtk_inscription_new"
@@ -18,6 +16,9 @@ external set_yalign : t -> float -> unit = "ml_gtk_inscription_set_yalign"
 
 See the [property@Gtk.Inscription:xalign] property. *)
 external set_xalign : t -> float -> unit = "ml_gtk_inscription_set_xalign"
+
+(** Controls how line wrapping is done. *)
+external set_wrap_mode : t -> Ocgtk_pango.Pango.wrapmode -> unit = "ml_gtk_inscription_set_wrap_mode"
 
 (** Sets what to do when the text doesn't fit. *)
 external set_text_overflow : t -> Gtk_enums.inscriptionoverflow -> unit = "ml_gtk_inscription_set_text_overflow"
@@ -50,6 +51,11 @@ external set_min_chars : t -> int -> unit = "ml_gtk_inscription_set_min_chars"
 See the [property@Gtk.Inscription:markup] property. *)
 external set_markup : t -> string option -> unit = "ml_gtk_inscription_set_markup"
 
+(** Apply attributes to the inscription text.
+
+These attributes will not be evaluated for sizing the inscription. *)
+external set_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t option -> unit = "ml_gtk_inscription_set_attributes"
+
 (** Gets the `yalign` of the inscription.
 
 See the [property@Gtk.Inscription:yalign] property. *)
@@ -59,6 +65,11 @@ external get_yalign : t -> float = "ml_gtk_inscription_get_yalign"
 
 See the [property@Gtk.Inscription:xalign] property. *)
 external get_xalign : t -> float = "ml_gtk_inscription_get_xalign"
+
+(** Returns line wrap mode used by the inscription.
+
+See [method@Gtk.Inscription.set_wrap_mode]. *)
+external get_wrap_mode : t -> Ocgtk_pango.Pango.wrapmode = "ml_gtk_inscription_get_wrap_mode"
 
 (** Gets the inscription's overflow method. *)
 external get_text_overflow : t -> Gtk_enums.inscriptionoverflow = "ml_gtk_inscription_get_text_overflow"
@@ -85,6 +96,9 @@ external get_min_lines : t -> int = "ml_gtk_inscription_get_min_lines"
 
 See the [property@Gtk.Inscription:min-chars] property. *)
 external get_min_chars : t -> int = "ml_gtk_inscription_get_min_chars"
+
+(** Gets the inscription's attribute list. *)
+external get_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t option = "ml_gtk_inscription_get_attributes"
 
 (* Properties *)
 

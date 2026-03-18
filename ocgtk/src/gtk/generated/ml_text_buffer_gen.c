@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_text_buffer_new(value arg1)
@@ -90,6 +90,14 @@ gtk_text_buffer_remove_tag(GtkTextBuffer_val(self), GtkTextTag_val(arg1), GtkTex
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_text_buffer_remove_selection_clipboard(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_text_buffer_remove_selection_clipboard(GtkTextBuffer_val(self), GdkClipboard_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_buffer_remove_all_tags(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -111,6 +119,14 @@ CAMLexport CAMLprim value ml_gtk_text_buffer_place_cursor(value self, value arg1
 CAMLparam2(self, arg1);
 
 gtk_text_buffer_place_cursor(GtkTextBuffer_val(self), GtkTextIter_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_paste_clipboard(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gtk_text_buffer_paste_clipboard(GtkTextBuffer_val(self), GdkClipboard_val(arg1), Option_val(arg2, GtkTextIter_val, NULL), Bool_val(arg3));
 CAMLreturn(Val_unit);
 }
 
@@ -143,6 +159,14 @@ CAMLexport CAMLprim value ml_gtk_text_buffer_insert_range(value self, value arg1
 CAMLparam4(self, arg1, arg2, arg3);
 
 gtk_text_buffer_insert_range(GtkTextBuffer_val(self), GtkTextIter_val(arg1), GtkTextIter_val(arg2), GtkTextIter_val(arg3));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_insert_paintable(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_text_buffer_insert_paintable(GtkTextBuffer_val(self), GtkTextIter_val(arg1), GdkPaintable_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -226,6 +250,14 @@ CAMLparam4(self, arg1, arg2, arg3);
 
 char* result = gtk_text_buffer_get_slice(GtkTextBuffer_val(self), GtkTextIter_val(arg1), GtkTextIter_val(arg2), Bool_val(arg3));
 CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_get_selection_content(value self)
+{
+CAMLparam1(self);
+
+GdkContentProvider* result = gtk_text_buffer_get_selection_content(GtkTextBuffer_val(self));
+CAMLreturn(Val_GdkContentProvider(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_buffer_get_selection_bounds(value self)
@@ -479,6 +511,14 @@ gtk_text_buffer_delete(GtkTextBuffer_val(self), GtkTextIter_val(arg1), GtkTextIt
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_text_buffer_cut_clipboard(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_text_buffer_cut_clipboard(GtkTextBuffer_val(self), GdkClipboard_val(arg1), Bool_val(arg2));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_buffer_create_mark(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
@@ -495,6 +535,14 @@ CAMLparam2(self, arg1);
 GtkTextChildAnchor* result = gtk_text_buffer_create_child_anchor(GtkTextBuffer_val(self), GtkTextIter_val(arg1));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkTextChildAnchor(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_copy_clipboard(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_text_buffer_copy_clipboard(GtkTextBuffer_val(self), GdkClipboard_val(arg1));
+CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_text_buffer_begin_user_action(value self)
@@ -534,6 +582,14 @@ CAMLexport CAMLprim value ml_gtk_text_buffer_apply_tag(value self, value arg1, v
 CAMLparam4(self, arg1, arg2, arg3);
 
 gtk_text_buffer_apply_tag(GtkTextBuffer_val(self), GtkTextTag_val(arg1), GtkTextIter_val(arg2), GtkTextIter_val(arg3));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_add_selection_clipboard(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_text_buffer_add_selection_clipboard(GtkTextBuffer_val(self), GdkClipboard_val(arg1));
 CAMLreturn(Val_unit);
 }
 

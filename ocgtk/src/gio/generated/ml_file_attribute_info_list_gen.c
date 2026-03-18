@@ -18,8 +18,8 @@
 #include <gio/gio.h>
 #include <gio/gfiledescriptorbased.h>
 #include <gio/gdesktopappinfo.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gio_decls.h"
 
 /* Conversion functions for GFileAttributeInfoList (opaque record with hidden fields) */
 GFileAttributeInfoList *GFileAttributeInfoList_val(value v) {

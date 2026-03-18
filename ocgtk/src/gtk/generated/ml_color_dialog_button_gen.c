@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_color_dialog_button_new(value arg1)
@@ -26,12 +26,28 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GtkColorDialogButton(obj));
 }
+CAMLexport CAMLprim value ml_gtk_color_dialog_button_set_rgba(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_color_dialog_button_set_rgba(GtkColorDialogButton_val(self), GdkRGBA_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_color_dialog_button_set_dialog(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gtk_color_dialog_button_set_dialog(GtkColorDialogButton_val(self), GtkColorDialog_val(arg1));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_color_dialog_button_get_rgba(value self)
+{
+CAMLparam1(self);
+
+const GdkRGBA* result = gtk_color_dialog_button_get_rgba(GtkColorDialogButton_val(self));
+CAMLreturn(Val_GdkRGBA(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_color_dialog_button_get_dialog(value self)

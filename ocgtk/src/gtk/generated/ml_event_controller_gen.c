@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_event_controller_set_static_name(value self, value arg1)
@@ -88,4 +88,30 @@ CAMLparam1(self);
 
 const char* result = gtk_event_controller_get_name(GtkEventController_val(self));
 CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_event_controller_get_current_event_state(value self)
+{
+CAMLparam1(self);
+
+GdkModifierType result = gtk_event_controller_get_current_event_state(GtkEventController_val(self));
+CAMLreturn(Val_GdkModifierType(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_event_controller_get_current_event_device(value self)
+{
+CAMLparam1(self);
+
+GdkDevice* result = gtk_event_controller_get_current_event_device(GtkEventController_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GdkDevice));
+}
+
+CAMLexport CAMLprim value ml_gtk_event_controller_get_current_event(value self)
+{
+CAMLparam1(self);
+
+GdkEvent* result = gtk_event_controller_get_current_event(GtkEventController_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GdkEvent));
 }

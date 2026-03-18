@@ -59,6 +59,7 @@
       (echo "Matrix")
       (echo "Menu_button")
       (echo "Notebook")
+      (echo "Ocgtk_cairo")
       (echo "Paned")
       (echo "Pango")
       (echo "Pango_enums")

@@ -13,6 +13,11 @@ class transform (obj : Transform.t) = object (self)
     fun () ->
       (Transform.invert obj)
 
+  method matrix : 'p1. (#Ocgtk_graphene.Graphene.matrix as 'p1) -> Transform.t =
+    fun matrix ->
+      let matrix = matrix#as_matrix in
+      (Transform.matrix obj matrix)
+
   method perspective : float -> Transform.t =
     fun depth ->
       (Transform.perspective obj depth)
@@ -24,6 +29,11 @@ class transform (obj : Transform.t) = object (self)
   method rotate : float -> Transform.t option =
     fun angle ->
       (Transform.rotate obj angle)
+
+  method rotate_3d : 'p1. float -> (#Ocgtk_graphene.Graphene.vec3 as 'p1) -> Transform.t option =
+    fun angle axis ->
+      let axis = axis#as_vec3 in
+      (Transform.rotate_3d obj angle axis)
 
   method scale : float -> float -> Transform.t option =
     fun factor_x factor_y ->
@@ -44,6 +54,16 @@ class transform (obj : Transform.t) = object (self)
   method transform : Transform.t option -> Transform.t option =
     fun other ->
       (Transform.transform obj other)
+
+  method translate : 'p1. (#Ocgtk_graphene.Graphene.point as 'p1) -> Transform.t option =
+    fun point ->
+      let point = point#as_point in
+      (Transform.translate obj point)
+
+  method translate_3d : 'p1. (#Ocgtk_graphene.Graphene.point3_d as 'p1) -> Transform.t option =
+    fun point ->
+      let point = point#as_point3_d in
+      (Transform.translate_3d obj point)
 
   method unref : unit -> unit =
     fun () ->

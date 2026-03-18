@@ -12,6 +12,31 @@
 #include "wrappers.h"
 
 #include <gsk/gsk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gsk_decls.h"
 
+
+CAMLexport CAMLprim value ml_gsk_cairo_node_new(value arg1)
+{
+CAMLparam1(arg1);
+
+GskCairoNode *obj = gsk_cairo_node_new(graphene_rect_t_val(arg1));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GskCairoNode(obj));
+}
+CAMLexport CAMLprim value ml_gsk_cairo_node_get_surface(value self)
+{
+CAMLparam1(self);
+
+cairo_surface_t* result = gsk_cairo_node_get_surface(GskCairoNode_val(self));
+CAMLreturn(Val_cairo_surface_t(result));
+}
+
+CAMLexport CAMLprim value ml_gsk_cairo_node_get_draw_context(value self)
+{
+CAMLparam1(self);
+
+cairo_t* result = gsk_cairo_node_get_draw_context(GskCairoNode_val(self));
+CAMLreturn(Val_cairo_t(result));
+}

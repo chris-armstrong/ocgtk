@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: ProgressBar *)
+(* ProgressBar: ProgressBar *)
 
 type t = [`progress_bar | `widget | `initially_unowned] Gobject.obj
-
-let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new ProgressBar *)
 external new_ : unit -> t = "ml_gtk_progress_bar_new"
@@ -52,6 +50,12 @@ of the bar.
 The fraction should be between 0.0 and 1.0, inclusive. *)
 external set_fraction : t -> float -> unit = "ml_gtk_progress_bar_set_fraction"
 
+(** Sets the mode used to ellipsize the text.
+
+The text is ellipsized if there is not enough space
+to render the entire string. *)
+external set_ellipsize : t -> Ocgtk_pango.Pango.ellipsizemode -> unit = "ml_gtk_progress_bar_set_ellipsize"
+
 (** Indicates that some progress has been made, but you don’t know how much.
 
 Causes the progress bar to enter “activity mode,” where a block
@@ -81,6 +85,11 @@ external get_inverted : t -> bool = "ml_gtk_progress_bar_get_inverted"
 
 (** Returns the current fraction of the task that’s been completed. *)
 external get_fraction : t -> float = "ml_gtk_progress_bar_get_fraction"
+
+(** Returns the ellipsizing position of the progress bar.
+
+See [method@Gtk.ProgressBar.set_ellipsize]. *)
+external get_ellipsize : t -> Ocgtk_pango.Pango.ellipsizemode = "ml_gtk_progress_bar_get_ellipsize"
 
 (* Properties *)
 

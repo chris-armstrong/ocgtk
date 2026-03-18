@@ -119,8 +119,6 @@ and Tree_view
  : sig
   type t = [`tree_view | `widget | `initially_unowned] Gobject.obj
 
-  val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
-
   (** Create a new TreeView *)
   external new_ : unit -> t = "ml_gtk_tree_view_new"
 
@@ -380,6 +378,13 @@ and Tree_view
   set to be GTK_TREE_VIEW_COLUMN_FIXED. *)
   external insert_column : t -> Tree_view_column.t -> int -> int = "ml_gtk_tree_view_insert_column"
 
+  (** Fills @visible_rect with the currently-visible region of the
+  buffer, in tree coordinates. Convert to bin_window coordinates with
+  gtk_tree_view_convert_tree_to_bin_window_coords().
+  Tree coordinates start at 0,0 for row 0 of the tree, and cover the entire
+  scrollable area of the tree. *)
+  external get_visible_rect : t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_tree_view_get_visible_rect"
+
   (** Sets @start_path and @end_path to be the first and last visible path.
   Note that there may be invisible paths in between.
 
@@ -492,6 +497,28 @@ and Tree_view
   (** Gets the `GtkTreeViewColumn` at the given position in the #tree_view. *)
   external get_column : t -> int -> Tree_view_column.t option = "ml_gtk_tree_view_get_column"
 
+  (** Fills the bounding rectangle in bin_window coordinates for the cell at the
+  row specified by @path and the column specified by @column.  If @path is
+  %NULL, or points to a path not currently displayed, the @y and @height fields
+  of the rectangle will be filled with 0. If @column is %NULL, the @x and @width
+  fields will be filled with 0.  The sum of all cell rects does not cover the
+  entire tree; there are extra pixels in between rows, for example. The
+  returned rectangle is equivalent to the @cell_area passed to
+  gtk_cell_renderer_render().  This function is only valid if @tree_view is
+  realized. *)
+  external get_cell_area : t -> Tree_path.t option -> Tree_view_column.t option -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_tree_view_get_cell_area"
+
+  (** Fills the bounding rectangle in bin_window coordinates for the cell at the
+  row specified by @path and the column specified by @column.  If @path is
+  %NULL, or points to a node not found in the tree, the @y and @height fields of
+  the rectangle will be filled with 0. If @column is %NULL, the @x and @width
+  fields will be filled with 0.  The returned rectangle is equivalent to the
+  @background_area passed to gtk_cell_renderer_render().  These background
+  areas tile to cover the entire bin window.  Contrast with the @cell_area,
+  returned by gtk_tree_view_get_cell_area(), which returns only the cell
+  itself, excluding surrounding borders and the tree expander area. *)
+  external get_background_area : t -> Tree_path.t option -> Tree_view_column.t option -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_tree_view_get_background_area"
+
   (** Gets the setting set by gtk_tree_view_set_activate_on_single_click(). *)
   external get_activate_on_single_click : t -> bool = "ml_gtk_tree_view_get_activate_on_single_click"
 
@@ -504,6 +531,18 @@ and Tree_view
 
   (** Recursively expands all nodes in the @tree_view. *)
   external expand_all : t -> unit = "ml_gtk_tree_view_expand_all"
+
+  (** Turns @tree_view into a drag source for automatic DND. Calling this
+  method sets `GtkTreeView`:reorderable to %FALSE. *)
+  external enable_model_drag_source : t -> Ocgtk_gdk.Gdk.modifiertype -> Ocgtk_gdk.Gdk.Wrappers.Content_formats.t -> Ocgtk_gdk.Gdk.dragaction -> unit = "ml_gtk_tree_view_enable_model_drag_source"
+
+  (** Turns @tree_view into a drop destination for automatic DND. Calling
+  this method sets `GtkTreeView`:reorderable to %FALSE. *)
+  external enable_model_drag_dest : t -> Ocgtk_gdk.Gdk.Wrappers.Content_formats.t -> Ocgtk_gdk.Gdk.dragaction -> unit = "ml_gtk_tree_view_enable_model_drag_dest"
+
+  (** Creates a `cairo_surface_t` representation of the row at @path.
+  This image is used for a drag icon. *)
+  external create_row_drag_icon : t -> Tree_path.t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option = "ml_gtk_tree_view_create_row_drag_icon"
 
   (** Converts widget coordinates to coordinates for the
   tree (the full scrollable area of the tree). *)
@@ -554,8 +593,6 @@ and Tree_view
 end = struct
   type t = [`tree_view | `widget | `initially_unowned] Gobject.obj
 
-  let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
-
   (** Create a new TreeView *)
   external new_ : unit -> t = "ml_gtk_tree_view_new"
 
@@ -815,6 +852,13 @@ end = struct
   set to be GTK_TREE_VIEW_COLUMN_FIXED. *)
   external insert_column : t -> Tree_view_column.t -> int -> int = "ml_gtk_tree_view_insert_column"
 
+  (** Fills @visible_rect with the currently-visible region of the
+  buffer, in tree coordinates. Convert to bin_window coordinates with
+  gtk_tree_view_convert_tree_to_bin_window_coords().
+  Tree coordinates start at 0,0 for row 0 of the tree, and cover the entire
+  scrollable area of the tree. *)
+  external get_visible_rect : t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_tree_view_get_visible_rect"
+
   (** Sets @start_path and @end_path to be the first and last visible path.
   Note that there may be invisible paths in between.
 
@@ -927,6 +971,28 @@ end = struct
   (** Gets the `GtkTreeViewColumn` at the given position in the #tree_view. *)
   external get_column : t -> int -> Tree_view_column.t option = "ml_gtk_tree_view_get_column"
 
+  (** Fills the bounding rectangle in bin_window coordinates for the cell at the
+  row specified by @path and the column specified by @column.  If @path is
+  %NULL, or points to a path not currently displayed, the @y and @height fields
+  of the rectangle will be filled with 0. If @column is %NULL, the @x and @width
+  fields will be filled with 0.  The sum of all cell rects does not cover the
+  entire tree; there are extra pixels in between rows, for example. The
+  returned rectangle is equivalent to the @cell_area passed to
+  gtk_cell_renderer_render().  This function is only valid if @tree_view is
+  realized. *)
+  external get_cell_area : t -> Tree_path.t option -> Tree_view_column.t option -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_tree_view_get_cell_area"
+
+  (** Fills the bounding rectangle in bin_window coordinates for the cell at the
+  row specified by @path and the column specified by @column.  If @path is
+  %NULL, or points to a node not found in the tree, the @y and @height fields of
+  the rectangle will be filled with 0. If @column is %NULL, the @x and @width
+  fields will be filled with 0.  The returned rectangle is equivalent to the
+  @background_area passed to gtk_cell_renderer_render().  These background
+  areas tile to cover the entire bin window.  Contrast with the @cell_area,
+  returned by gtk_tree_view_get_cell_area(), which returns only the cell
+  itself, excluding surrounding borders and the tree expander area. *)
+  external get_background_area : t -> Tree_path.t option -> Tree_view_column.t option -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_tree_view_get_background_area"
+
   (** Gets the setting set by gtk_tree_view_set_activate_on_single_click(). *)
   external get_activate_on_single_click : t -> bool = "ml_gtk_tree_view_get_activate_on_single_click"
 
@@ -939,6 +1005,18 @@ end = struct
 
   (** Recursively expands all nodes in the @tree_view. *)
   external expand_all : t -> unit = "ml_gtk_tree_view_expand_all"
+
+  (** Turns @tree_view into a drag source for automatic DND. Calling this
+  method sets `GtkTreeView`:reorderable to %FALSE. *)
+  external enable_model_drag_source : t -> Ocgtk_gdk.Gdk.modifiertype -> Ocgtk_gdk.Gdk.Wrappers.Content_formats.t -> Ocgtk_gdk.Gdk.dragaction -> unit = "ml_gtk_tree_view_enable_model_drag_source"
+
+  (** Turns @tree_view into a drop destination for automatic DND. Calling
+  this method sets `GtkTreeView`:reorderable to %FALSE. *)
+  external enable_model_drag_dest : t -> Ocgtk_gdk.Gdk.Wrappers.Content_formats.t -> Ocgtk_gdk.Gdk.dragaction -> unit = "ml_gtk_tree_view_enable_model_drag_dest"
+
+  (** Creates a `cairo_surface_t` representation of the row at @path.
+  This image is used for a drag icon. *)
+  external create_row_drag_icon : t -> Tree_path.t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option = "ml_gtk_tree_view_create_row_drag_icon"
 
   (** Converts widget coordinates to coordinates for the
   tree (the full scrollable area of the tree). *)

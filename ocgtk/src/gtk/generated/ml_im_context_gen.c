@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_im_context_set_use_preedit(value self, value arg1)
@@ -38,6 +38,14 @@ CAMLexport CAMLprim value ml_gtk_im_context_set_surrounding(value self, value ar
 CAMLparam4(self, arg1, arg2, arg3);
 
 gtk_im_context_set_surrounding(GtkIMContext_val(self), String_val(arg1), Int_val(arg2), Int_val(arg3));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_im_context_set_cursor_location(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_im_context_set_cursor_location(GtkIMContext_val(self), GdkRectangle_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -73,11 +81,27 @@ gtk_im_context_focus_in(GtkIMContext_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_im_context_filter_keypress(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gboolean result = gtk_im_context_filter_keypress(GtkIMContext_val(self), GdkEvent_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_im_context_delete_surrounding(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
 
 gboolean result = gtk_im_context_delete_surrounding(GtkIMContext_val(self), Int_val(arg1), Int_val(arg2));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_im_context_activate_osk(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gboolean result = gtk_im_context_activate_osk(GtkIMContext_val(self), Option_val(arg1, GdkEvent_val, NULL));
 CAMLreturn(Val_bool(result));
 }
 

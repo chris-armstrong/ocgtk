@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gdkpixbuf_decls.h"
 
 
 CAMLexport CAMLprim value ml_gdk_pixbuf_animation_is_static_image(value self)

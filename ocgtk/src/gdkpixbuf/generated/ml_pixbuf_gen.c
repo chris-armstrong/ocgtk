@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gdkpixbuf_decls.h"
 
 
 CAMLexport CAMLprim value ml_gdk_pixbuf_new(value arg1, value arg2, value arg3, value arg4, value arg5)
@@ -75,22 +75,24 @@ CAMLexport CAMLprim value ml_gdk_pixbuf_savev(value self, value arg1, value arg2
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 GError *error = NULL;
+    int arg3_length = 0;
     char** c_arg3 = NULL;
     
     if (Is_some(arg3)) {
         value array = Some_val(arg3);
-        int arg3_length = Wosize_val(array);
+        arg3_length = Wosize_val(array);
         c_arg3 = (char**)g_malloc(sizeof(char*) * (arg3_length + 1));
         for (int i = 0; i < arg3_length; i++) {
           c_arg3[i] = String_val(Field(array, i));
         }
         c_arg3[arg3_length] = NULL;
     }
+    int arg4_length = 0;
     char** c_arg4 = NULL;
     
     if (Is_some(arg4)) {
         value array = Some_val(arg4);
-        int arg4_length = Wosize_val(array);
+        arg4_length = Wosize_val(array);
         c_arg4 = (char**)g_malloc(sizeof(char*) * (arg4_length + 1));
         for (int i = 0; i < arg4_length; i++) {
           c_arg4[i] = String_val(Field(array, i));
@@ -102,6 +104,46 @@ gboolean result = gdk_pixbuf_savev(GdkPixbuf_val(self), String_val(arg1), String
     if (c_arg3) g_free(c_arg3);
     if (c_arg4) g_free(c_arg4);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_save_to_streamv_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam1(arg5);
+GError *error = NULL;
+    int arg3_length = 0;
+    char** c_arg3 = NULL;
+    
+    if (Is_some(arg3)) {
+        value array = Some_val(arg3);
+        arg3_length = Wosize_val(array);
+        c_arg3 = (char**)g_malloc(sizeof(char*) * (arg3_length + 1));
+        for (int i = 0; i < arg3_length; i++) {
+          c_arg3[i] = String_val(Field(array, i));
+        }
+        c_arg3[arg3_length] = NULL;
+    }
+    int arg4_length = 0;
+    char** c_arg4 = NULL;
+    
+    if (Is_some(arg4)) {
+        value array = Some_val(arg4);
+        arg4_length = Wosize_val(array);
+        c_arg4 = (char**)g_malloc(sizeof(char*) * (arg4_length + 1));
+        for (int i = 0; i < arg4_length; i++) {
+          c_arg4[i] = String_val(Field(array, i));
+        }
+        c_arg4[arg4_length] = NULL;
+    }
+
+gboolean result = gdk_pixbuf_save_to_streamv(GdkPixbuf_val(self), GOutputStream_val(arg1), String_val(arg2), c_arg3, c_arg4, Option_val(arg5, GCancellable_val, NULL), &error);
+    if (c_arg3) g_free(c_arg3);
+    if (c_arg4) g_free(c_arg4);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));}
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_save_to_streamv_bytecode(value * argv, int argn)
+{
+return ml_gdk_pixbuf_save_to_streamv_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
 }
 
 CAMLexport CAMLprim value ml_gdk_pixbuf_saturate_and_pixelate(value self, value arg1, value arg2, value arg3)

@@ -2,7 +2,6 @@
 
 (* High-level class for Expander *)
 class expander (obj : Expander.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Expander.as_widget obj)
   inherit Gexpander_signals.expander_signals obj
 
   method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
@@ -63,7 +62,6 @@ class expander (obj : Expander.t) = object (self)
     fun use_underline ->
       (Expander.set_use_underline obj use_underline)
 
-  method as_widget = (Expander.as_widget obj)
     method as_expander = obj
 end
 

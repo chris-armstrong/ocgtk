@@ -1,5 +1,6 @@
 class radial_gradient_node : Radial_gradient_node.t ->
   object
+    method get_center : unit -> Ocgtk_graphene.Graphene.point
     method get_end : unit -> float
     method get_hradius : unit -> float
     method get_start : unit -> float

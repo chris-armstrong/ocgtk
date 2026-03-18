@@ -5,6 +5,10 @@ class css_section (obj : Css_section.t) = object (self)
     fun () ->
       (Css_section.get_end_location obj)
 
+  method get_file : unit -> Ocgtk_gio.Gio.file option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.file ret) (Css_section.get_file obj)
+
   method get_parent : unit -> Css_section.t option =
     fun () ->
       (Css_section.get_parent obj)

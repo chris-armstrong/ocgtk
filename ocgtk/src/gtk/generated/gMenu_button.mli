@@ -1,6 +1,5 @@
 class menu_button : Menu_button.t ->
   object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
     inherit Gmenu_button_signals.menu_button_signals
     method get_active : unit -> bool
     method get_always_show_arrow : unit -> bool
@@ -10,6 +9,7 @@ class menu_button : Menu_button.t ->
     method get_has_frame : unit -> bool
     method get_icon_name : unit -> string option
     method get_label : unit -> string option
+    method get_menu_model : unit -> Ocgtk_gio.Gio.menu_model option
     method get_popover : unit -> GPopover.popover option
     method get_primary : unit -> bool
     method get_use_underline : unit -> bool
@@ -23,10 +23,10 @@ class menu_button : Menu_button.t ->
     method set_has_frame : bool -> unit
     method set_icon_name : string -> unit
     method set_label : string -> unit
+    method set_menu_model : #Ocgtk_gio.Gio.menu_model option -> unit
     method set_popover : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option -> unit
     method set_primary : bool -> unit
     method set_use_underline : bool -> unit
-  method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
     method as_menu_button : Menu_button.t
   end
 

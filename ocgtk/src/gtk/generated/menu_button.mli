@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: MenuButton *)
+(* MenuButton: MenuButton *)
 
 type t = [`menu_button | `widget | `initially_unowned] Gobject.obj
-
-val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new MenuButton *)
 external new_ : unit -> t = "ml_gtk_menu_button_new"
@@ -24,6 +22,18 @@ If @popover is %NULL, the button is disabled.
 If [property@Gtk.MenuButton:menu-model] is set, the menu model is dissociated
 from the @menu_button, and the property is set to %NULL. *)
 external set_popover : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_menu_button_set_popover"
+
+(** Sets the `GMenuModel` from which the popup will be constructed.
+
+If @menu_model is %NULL, the button is disabled.
+
+A [class@Gtk.Popover] will be created from the menu model with
+[ctor@Gtk.PopoverMenu.new_from_model]. Actions will be connected
+as documented for this function.
+
+If [property@Gtk.MenuButton:popover] is already set, it will be
+dissociated from the @menu_button, and the property is set to %NULL. *)
+external set_menu_model : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> unit = "ml_gtk_menu_button_set_menu_model"
 
 (** Sets the label to show inside the menu button.
 
@@ -102,6 +112,9 @@ external get_primary : t -> bool = "ml_gtk_menu_button_get_primary"
 If the button is not using a `GtkPopover`, this function
 returns %NULL. *)
 external get_popover : t -> Popover.t option = "ml_gtk_menu_button_get_popover"
+
+(** Returns the `GMenuModel` used to generate the popup. *)
+external get_menu_model : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option = "ml_gtk_menu_button_get_menu_model"
 
 (** Gets the label shown in the button *)
 external get_label : t -> string option = "ml_gtk_menu_button_get_label"

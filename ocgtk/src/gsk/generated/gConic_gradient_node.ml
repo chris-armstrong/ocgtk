@@ -5,6 +5,10 @@ class conic_gradient_node (obj : Conic_gradient_node.t) = object (self)
     fun () ->
       (Conic_gradient_node.get_angle obj)
 
+  method get_center : unit -> Ocgtk_graphene.Graphene.point =
+    fun () ->
+      new  Ocgtk_graphene.Graphene.point(Conic_gradient_node.get_center obj)
+
   method get_rotation : unit -> float =
     fun () ->
       (Conic_gradient_node.get_rotation obj)

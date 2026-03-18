@@ -2,7 +2,6 @@
 
 (* High-level class for ListView *)
 class list_view (obj : List_view.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (List_view.as_widget obj)
   inherit Glist_view_signals.list_view_signals obj
 
   method get_enable_rubberband : unit -> bool =
@@ -63,7 +62,6 @@ class list_view (obj : List_view.t) = object (self)
     fun tab_behavior ->
       (List_view.set_tab_behavior obj tab_behavior)
 
-  method as_widget = (List_view.as_widget obj)
     method as_list_view = obj
 end
 

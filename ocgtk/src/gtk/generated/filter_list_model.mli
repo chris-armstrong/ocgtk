@@ -4,9 +4,17 @@
 type t = [`filter_list_model | `object_] Gobject.obj
 
 (** Create a new FilterListModel *)
-external new_ : unit -> Filter.t option -> t = "ml_gtk_filter_list_model_new"
+external new_ : Ocgtk_gio.Gio.Wrappers.List_model.t option -> Filter.t option -> t = "ml_gtk_filter_list_model_new"
 
 (* Methods *)
+(** Sets the model to be filtered.
+
+Note that GTK makes no effort to ensure that @model conforms to
+the item type of @self. It assumes that the caller knows what they
+are doing and have set up an appropriate filter to ensure that item
+types match. *)
+external set_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option -> unit = "ml_gtk_filter_list_model_set_model"
+
 (** Sets the filter model to do an incremental sort.
 
 When incremental filtering is enabled, the `GtkFilterListModel` will not
@@ -45,6 +53,9 @@ If no filter operation is ongoing - in particular when
 [property@Gtk.FilterListModel:incremental] is %FALSE - this
 function returns 0. *)
 external get_pending : t -> int = "ml_gtk_filter_list_model_get_pending"
+
+(** Gets the model currently filtered or %NULL if none. *)
+external get_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option = "ml_gtk_filter_list_model_get_model"
 
 (** Returns whether incremental filtering is enabled.
 

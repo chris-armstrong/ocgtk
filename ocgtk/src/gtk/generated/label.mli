@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Label *)
+(* Label: Label *)
 
 type t = [`label | `widget | `initially_unowned] Gobject.obj
-
-val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new Label *)
 external new_ : string option -> t = "ml_gtk_label_new"
@@ -21,6 +19,16 @@ external set_yalign : t -> float -> unit = "ml_gtk_label_set_yalign"
 
 See the [property@Gtk.Label:xalign] property. *)
 external set_xalign : t -> float -> unit = "ml_gtk_label_set_xalign"
+
+(** Controls how line wrapping is done.
+
+This only affects the label if line wrapping is on. (See
+[method@Gtk.Label.set_wrap]) The default is %PANGO_WRAP_WORD
+which means wrap on word boundaries.
+
+For sizing behavior, also consider the [property@Gtk.Label:natural-wrap-mode]
+property. *)
+external set_wrap_mode : t -> Ocgtk_pango.Pango.wrapmode -> unit = "ml_gtk_label_set_wrap_mode"
 
 (** Toggles line wrapping within the `GtkLabel` widget.
 
@@ -67,6 +75,9 @@ to %FALSE as a side effect.
 
 See also: [method@Gtk.Label.set_markup] *)
 external set_text : t -> string -> unit = "ml_gtk_label_set_text"
+
+(** Sets the default tab stops for paragraphs in @self. *)
+external set_tabs : t -> Ocgtk_pango.Pango.Wrappers.Tab_array.t option -> unit = "ml_gtk_label_set_tabs"
 
 (** Sets whether the label is in single line mode. *)
 external set_single_line_mode : t -> bool -> unit = "ml_gtk_label_set_single_line_mode"
@@ -169,6 +180,26 @@ the label as a whole, use [method@Gtk.Widget.set_halign] instead.
 only a single line. *)
 external set_justify : t -> Gtk_enums.justification -> unit = "ml_gtk_label_set_justify"
 
+(** Sets a menu model to add when constructing
+the context menu for @label. *)
+external set_extra_menu : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> unit = "ml_gtk_label_set_extra_menu"
+
+(** Sets the mode used to ellipsize the text.
+
+The text will be ellipsized if there is not enough space
+to render the entire string. *)
+external set_ellipsize : t -> Ocgtk_pango.Pango.ellipsizemode -> unit = "ml_gtk_label_set_ellipsize"
+
+(** Apply attributes to the label text.
+
+The attributes set with this function will be applied and merged with
+any other attributes previously effected by way of the
+[property@Gtk.Label:use-underline] or [property@Gtk.Label:use-markup]
+properties. While it is not recommended to mix markup strings with
+manually set attributes, if you must; know that the attributes will
+be applied to the label after the markup string is parsed. *)
+external set_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t option -> unit = "ml_gtk_label_set_attributes"
+
 (** Selects a range of characters in the label, if the label is selectable.
 
 See [method@Gtk.Label.set_selectable]. If the label is not selectable,
@@ -185,6 +216,11 @@ external get_yalign : t -> float = "ml_gtk_label_get_yalign"
 
 See the [property@Gtk.Label:xalign] property. *)
 external get_xalign : t -> float = "ml_gtk_label_get_xalign"
+
+(** Returns line wrap mode used by the label.
+
+See [method@Gtk.Label.set_wrap_mode]. *)
+external get_wrap_mode : t -> Ocgtk_pango.Pango.wrapmode = "ml_gtk_label_get_wrap_mode"
 
 (** Returns whether lines in the label are automatically wrapped.
 
@@ -212,6 +248,12 @@ The returned text is as it appears on screen. This does not include
 any embedded underlines indicating mnemonics or Pango markup. (See
 [method@Gtk.Label.get_label]) *)
 external get_text : t -> string = "ml_gtk_label_get_text"
+
+(** Gets the tabs for @self.
+
+The returned array will be %NULL if “standard” (8-space) tabs are used.
+Free the return value with [method@Pango.TabArray.free]. *)
+external get_tabs : t -> Ocgtk_pango.Pango.Wrappers.Tab_array.t option = "ml_gtk_label_get_tabs"
 
 (** Returns whether the label is in single line mode. *)
 external get_single_line_mode : t -> bool = "ml_gtk_label_get_single_line_mode"
@@ -260,6 +302,15 @@ functions you need to convert to and from pixels using PANGO_PIXELS()
 or [const@Pango.SCALE]. *)
 external get_layout_offsets : t -> int * int = "ml_gtk_label_get_layout_offsets"
 
+(** Gets the `PangoLayout` used to display the label.
+
+The layout is useful to e.g. convert text positions to pixel
+positions, in combination with [method@Gtk.Label.get_layout_offsets].
+The returned layout is owned by the @label so need not be
+freed by the caller. The @label is free to recreate its layout
+at any time, so it should be considered read-only. *)
+external get_layout : t -> Ocgtk_pango.Pango.Wrappers.Layout.t = "ml_gtk_label_get_layout"
+
 (** Fetches the text from a label.
 
 The returned text includes any embedded underlines indicating
@@ -271,6 +322,16 @@ external get_label : t -> string = "ml_gtk_label_get_label"
 See [method@Gtk.Label.set_justify]. *)
 external get_justify : t -> Gtk_enums.justification = "ml_gtk_label_get_justify"
 
+(** Gets the extra menu model of @label.
+
+See [method@Gtk.Label.set_extra_menu]. *)
+external get_extra_menu : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option = "ml_gtk_label_get_extra_menu"
+
+(** Returns the ellipsizing position of the label.
+
+See [method@Gtk.Label.set_ellipsize]. *)
+external get_ellipsize : t -> Ocgtk_pango.Pango.ellipsizemode = "ml_gtk_label_get_ellipsize"
+
 (** Returns the URI for the currently active link in the label.
 
 The active link is the one under the mouse pointer or, in a
@@ -280,6 +341,16 @@ positioned.
 This function is intended for use in a [signal@Gtk.Label::activate-link]
 handler or for use in a [signal@Gtk.Widget::query-tooltip] handler. *)
 external get_current_uri : t -> string option = "ml_gtk_label_get_current_uri"
+
+(** Gets the label's attribute list.
+
+This is the [struct@Pango.AttrList] that was set on the label using
+[method@Gtk.Label.set_attributes], if any. This function does not
+reflect attributes that come from the label's markup (see
+[method@Gtk.Label.set_markup]). If you want to get the effective
+attributes for the label, use
+`pango_layout_get_attributes (gtk_label_get_layout (self))`. *)
+external get_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t option = "ml_gtk_label_get_attributes"
 
 (* Properties *)
 

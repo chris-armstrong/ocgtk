@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Expression: PropertyExpression *)
+(* PropertyExpression: PropertyExpression *)
 
 type t = [`property_expression | `expression] Gobject.obj
-
-let as_expression (obj : t) : Expression.t = Obj.magic obj
 
 (** Create a new PropertyExpression *)
 external new_ : unit -> Expression.t option -> string -> t = "ml_gtk_property_expression_new"

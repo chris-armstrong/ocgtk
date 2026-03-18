@@ -13,6 +13,9 @@ class at_context (obj : At_context_and__accessible.At_context.t) = object (self)
     fun () ->
       (At_context_and__accessible.At_context.get_accessible_role obj)
 
+  method display = new Ocgtk_gdk.Gdk.display (At_context_and__accessible.At_context.get_display obj)
+  method set_display : 'a . (#Ocgtk_gdk.Gdk.display as 'a) -> unit  = fun v ->  At_context_and__accessible.At_context.set_display obj v#as_display
+
     method as_at_context = obj
 end
 

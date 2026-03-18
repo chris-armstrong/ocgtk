@@ -4,8 +4,6 @@
 module rec Column_view : sig
   type t = [`column_view | `widget | `initially_unowned] Gobject.obj
 
-  val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
-
   (** Create a new ColumnView *)
   external new_ : Selection_model.t option -> t = "ml_gtk_column_view_new"
 
@@ -132,6 +130,13 @@ module rec Column_view : sig
   (** Returns whether rows can be selected by dragging with the mouse. *)
   external get_enable_rubberband : t -> bool = "ml_gtk_column_view_get_enable_rubberband"
 
+  (** Gets the list of columns in this column view.
+
+  This list is constant over the lifetime of @self and can be used to
+  monitor changes to the columns of @self by connecting to the
+  ::items-changed signal. *)
+  external get_columns : t -> Ocgtk_gio.Gio.Wrappers.List_model.t = "ml_gtk_column_view_get_columns"
+
   (** Appends the @column to the end of the columns in @self. *)
   external append_column : t -> Column_view_column.t -> unit = "ml_gtk_column_view_append_column"
 
@@ -181,6 +186,10 @@ and Column_view_column
   It is up to callers to ensure uniqueness of IDs. *)
   external set_id : t -> string option -> unit = "ml_gtk_column_view_column_set_id"
 
+  (** Sets the menu model that is used to create the context menu
+  for the column header. *)
+  external set_header_menu : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> unit = "ml_gtk_column_view_column_set_header_menu"
+
   (** If @fixed_width is not -1, sets the fixed width of @column;
   otherwise unsets it.
 
@@ -212,6 +221,10 @@ and Column_view_column
 
   (** Returns the ID set with gtk_column_view_column_set_id(). *)
   external get_id : t -> string option = "ml_gtk_column_view_column_get_id"
+
+  (** Gets the menu model that is used to create the context menu
+  for the column header. *)
+  external get_header_menu : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option = "ml_gtk_column_view_column_get_header_menu"
 
   (** Gets the fixed width of the column. *)
   external get_fixed_width : t -> int = "ml_gtk_column_view_column_get_fixed_width"

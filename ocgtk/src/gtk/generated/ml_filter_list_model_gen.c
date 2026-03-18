@@ -13,9 +13,26 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
+
+CAMLexport CAMLprim value ml_gtk_filter_list_model_new(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+
+GtkFilterListModel *obj = gtk_filter_list_model_new(Option_val(arg1, GListModel_val, NULL), Option_val(arg2, GtkFilter_val, NULL));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkFilterListModel(obj));
+}
+CAMLexport CAMLprim value ml_gtk_filter_list_model_set_model(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_filter_list_model_set_model(GtkFilterListModel_val(self), Option_val(arg1, GListModel_val, NULL));
+CAMLreturn(Val_unit);
+}
 
 CAMLexport CAMLprim value ml_gtk_filter_list_model_set_incremental(value self, value arg1)
 {
@@ -39,6 +56,15 @@ CAMLparam1(self);
 
 guint result = gtk_filter_list_model_get_pending(GtkFilterListModel_val(self));
 CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_filter_list_model_get_model(value self)
+{
+CAMLparam1(self);
+
+GListModel* result = gtk_filter_list_model_get_model(GtkFilterListModel_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GListModel));
 }
 
 CAMLexport CAMLprim value ml_gtk_filter_list_model_get_incremental(value self)

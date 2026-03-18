@@ -13,10 +13,19 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
+CAMLexport CAMLprim value ml_gtk_icon_paintable_new_for_file(value arg1, value arg2, value arg3)
+{
+CAMLparam3(arg1, arg2, arg3);
+
+GtkIconPaintable *obj = gtk_icon_paintable_new_for_file(GFile_val(arg1), Int_val(arg2), Int_val(arg3));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkIconPaintable(obj));
+}
 CAMLexport CAMLprim value ml_gtk_icon_paintable_is_symbolic(value self)
 {
 CAMLparam1(self);
@@ -31,4 +40,12 @@ CAMLparam1(self);
 
 const char* result = gtk_icon_paintable_get_icon_name(GtkIconPaintable_val(self));
 CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_paintable_get_file(value self)
+{
+CAMLparam1(self);
+
+GFile* result = gtk_icon_paintable_get_file(GtkIconPaintable_val(self));
+CAMLreturn(Val_option(result, Val_GFile));
 }

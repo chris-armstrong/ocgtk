@@ -12,6 +12,11 @@ class cell_editable (obj : Cell_editable.t) = object (self)
     fun () ->
       (Cell_editable.remove_widget obj)
 
+  method start_editing : 'p1. (#Ocgtk_gdk.Gdk.event as 'p1) option -> unit =
+    fun event ->
+      let event = Option.map (fun (c) -> c#as_event) event in
+      (Cell_editable.start_editing obj event)
+
   method editing_canceled = Cell_editable.get_editing_canceled obj
   method set_editing_canceled v =  Cell_editable.set_editing_canceled obj v
 

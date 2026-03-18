@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: IconView *)
+(* IconView: IconView *)
 
 type t = [`icon_view | `widget | `initially_unowned] Gobject.obj
-
-val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new IconView *)
 external new_ : unit -> t = "ml_gtk_icon_view_new"
@@ -256,8 +254,26 @@ external get_columns : t -> int = "ml_gtk_icon_view_get_columns"
 (** Returns the value of the ::column-spacing property. *)
 external get_column_spacing : t -> int = "ml_gtk_icon_view_get_column_spacing"
 
+(** Fills the bounding rectangle in widget coordinates for the cell specified by
+@path and @cell. If @cell is %NULL the main cell area is used.
+
+This function is only valid if @icon_view is realized. *)
+external get_cell_rect : t -> Tree_path.t -> Cell_renderer.t option -> bool * Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_icon_view_get_cell_rect"
+
 (** Gets the setting set by gtk_icon_view_set_activate_on_single_click(). *)
 external get_activate_on_single_click : t -> bool = "ml_gtk_icon_view_get_activate_on_single_click"
+
+(** Turns @icon_view into a drag source for automatic DND. Calling this
+method sets `GtkIconView`:reorderable to %FALSE. *)
+external enable_model_drag_source : t -> Ocgtk_gdk.Gdk.modifiertype -> Ocgtk_gdk.Gdk.Wrappers.Content_formats.t -> Ocgtk_gdk.Gdk.dragaction -> unit = "ml_gtk_icon_view_enable_model_drag_source"
+
+(** Turns @icon_view into a drop destination for automatic DND. Calling this
+method sets `GtkIconView`:reorderable to %FALSE. *)
+external enable_model_drag_dest : t -> Ocgtk_gdk.Gdk.Wrappers.Content_formats.t -> Ocgtk_gdk.Gdk.dragaction -> unit = "ml_gtk_icon_view_enable_model_drag_dest"
+
+(** Creates a `GdkPaintable` representation of the item at @path.
+This image is used for a drag icon. *)
+external create_drag_icon : t -> Tree_path.t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option = "ml_gtk_icon_view_create_drag_icon"
 
 (* Properties *)
 

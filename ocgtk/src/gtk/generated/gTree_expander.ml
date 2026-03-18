@@ -1,6 +1,5 @@
 (* High-level class for TreeExpander *)
 class tree_expander (obj : Tree_expander.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Tree_expander.as_widget obj)
 
   method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
     fun () ->
@@ -44,7 +43,6 @@ class tree_expander (obj : Tree_expander.t) = object (self)
       let list_row = Option.map (fun (c) -> c#as_tree_list_row) list_row in
       (Tree_expander.set_list_row obj list_row)
 
-  method as_widget = (Tree_expander.as_widget obj)
     method as_tree_expander = obj
 end
 

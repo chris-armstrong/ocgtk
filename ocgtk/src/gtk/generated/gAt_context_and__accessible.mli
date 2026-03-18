@@ -4,6 +4,8 @@ class at_context : At_context_and__accessible.At_context.t ->
     inherit Gat_context_signals.at_context_signals
     method get_accessible : unit -> accessible
     method get_accessible_role : unit -> Gtk_enums.accessiblerole
+    method display : Ocgtk_gdk.Gdk.display
+    method set_display : #Ocgtk_gdk.Gdk.display -> unit
     method as_at_context : At_context_and__accessible.At_context.t
   end
 

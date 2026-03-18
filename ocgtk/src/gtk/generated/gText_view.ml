@@ -2,7 +2,6 @@
 
 (* High-level class for TextView *)
 class text_view (obj : Text_view.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Text_view.as_widget obj)
   inherit Gtext_view_signals.text_view_signals obj
 
   method add_child_at_anchor : 'p1 'p2. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> (#GText_child_anchor.text_child_anchor as 'p2) -> unit =
@@ -52,6 +51,10 @@ class text_view (obj : Text_view.t) = object (self)
     fun () ->
       (Text_view.get_editable obj)
 
+  method get_extra_menu : unit -> Ocgtk_gio.Gio.menu_model =
+    fun () ->
+      new  Ocgtk_gio.Gio.menu_model(Text_view.get_extra_menu obj)
+
   method get_gutter : Gtk_enums.textwindowtype -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
     fun win ->
       Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Text_view.get_gutter obj win)
@@ -75,6 +78,10 @@ class text_view (obj : Text_view.t) = object (self)
   method get_left_margin : unit -> int =
     fun () ->
       (Text_view.get_left_margin obj)
+
+  method get_ltr_context : unit -> Ocgtk_pango.Pango.context =
+    fun () ->
+      new  Ocgtk_pango.Pango.context(Text_view.get_ltr_context obj)
 
   method get_monospace : unit -> bool =
     fun () ->
@@ -100,9 +107,26 @@ class text_view (obj : Text_view.t) = object (self)
     fun () ->
       (Text_view.get_right_margin obj)
 
+  method get_rtl_context : unit -> Ocgtk_pango.Pango.context =
+    fun () ->
+      new  Ocgtk_pango.Pango.context(Text_view.get_rtl_context obj)
+
+  method get_tabs : unit -> Ocgtk_pango.Pango.tab_array option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_pango.Pango.tab_array ret) (Text_view.get_tabs obj)
+
   method get_top_margin : unit -> int =
     fun () ->
       (Text_view.get_top_margin obj)
+
+  method get_wrap_mode : unit -> Gtk_enums.wrapmode =
+    fun () ->
+      (Text_view.get_wrap_mode obj)
+
+  method im_context_filter_keypress : 'p1. (#Ocgtk_gdk.Gdk.event as 'p1) -> bool =
+    fun event ->
+      let event = event#as_event in
+      (Text_view.im_context_filter_keypress obj event)
 
   method move_mark_onscreen : 'p1. (#GText_buffer_and__text_iter_and__text_mark.text_mark as 'p1) -> bool =
     fun mark ->
@@ -170,6 +194,11 @@ class text_view (obj : Text_view.t) = object (self)
     fun setting ->
       (Text_view.set_editable obj setting)
 
+  method set_extra_menu : 'p1. (#Ocgtk_gio.Gio.menu_model as 'p1) option -> unit =
+    fun model ->
+      let model = Option.map (fun (c) -> c#as_menu_model) model in
+      (Text_view.set_extra_menu obj model)
+
   method set_gutter : 'p1. Gtk_enums.textwindowtype -> (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
     fun win widget ->
       let widget = Option.map (fun (c) -> c#as_widget) widget in
@@ -219,9 +248,18 @@ class text_view (obj : Text_view.t) = object (self)
     fun right_margin ->
       (Text_view.set_right_margin obj right_margin)
 
+  method set_tabs : 'p1. (#Ocgtk_pango.Pango.tab_array as 'p1) -> unit =
+    fun tabs ->
+      let tabs = tabs#as_tab_array in
+      (Text_view.set_tabs obj tabs)
+
   method set_top_margin : int -> unit =
     fun top_margin ->
       (Text_view.set_top_margin obj top_margin)
+
+  method set_wrap_mode : Gtk_enums.wrapmode -> unit =
+    fun wrap_mode ->
+      (Text_view.set_wrap_mode obj wrap_mode)
 
   method starts_display_line : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool =
     fun iter ->
@@ -230,7 +268,6 @@ class text_view (obj : Text_view.t) = object (self)
   method im_module = Text_view.get_im_module obj
   method set_im_module v =  Text_view.set_im_module obj v
 
-  method as_widget = (Text_view.as_widget obj)
     method as_text_view = obj
 end
 
