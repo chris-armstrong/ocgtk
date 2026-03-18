@@ -3,6 +3,11 @@
 open Alcotest
 open Ocgtk_gtk
 
+module Progress_bar = Wrappers.Progress_bar
+module Scale = Wrappers.Scale
+module Range = Wrappers.Range
+module Level_bar = Wrappers.Level_bar
+
 (* Try to initialize GTK once for all tests *)
 let gtk_available =
   try

@@ -1,4 +1,9 @@
 open Ocgtk_gtk
+
+module Button = Wrappers.Button
+module Check_button = Wrappers.Check_button
+module Toggle_button = Wrappers.Toggle_button
+
 (* Comprehensive Demo of ocgtk Bindings *)
 
 let section title =
@@ -79,16 +84,16 @@ let () =
 
   let gbutton_obj = Button.new_ () in
   Button.set_label gbutton_obj "Click Me";
-  let gbutton = new GButton.button gbutton_obj in
+  let gbutton = new Gtk.button gbutton_obj in
   Printf.printf "✓ Created GButton: '%s'\n" (Option.value ~default:"" (gbutton#get_label ()));
 
   let gcheck_obj = Check_button.new_with_label (Some "Feature enabled") in
   Check_button.set_active gcheck_obj true;
-  let _ = new GCheck_button.check_button gcheck_obj in
+  let _ = new Gtk.check_button gcheck_obj in
   Printf.printf "✓ Created GCheck_button (active=%b)\n" (Check_button.get_active gcheck_obj);
 
   let gtoggle_obj = Toggle_button.new_with_label "Power" in
-  let _ = new GToggle_button.toggle_button gtoggle_obj in
+  let _ = new Gtk.toggle_button gtoggle_obj in
   Printf.printf "✓ Created GToggle_button (active=%b)\n" (Toggle_button.get_active gtoggle_obj);
 
   (* Summary *)

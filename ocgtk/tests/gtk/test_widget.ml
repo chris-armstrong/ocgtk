@@ -10,9 +10,12 @@
 open Alcotest
 open Ocgtk_gtk
 
-module Widget =
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
-  .Widget
+module Widget = Wrappers.Widget
+
+module Box = struct
+  include Wrappers.Box
+  let as_widget (box : t) : Widget.t = Obj.magic box
+end
 
 (* Try to initialize GTK once for all tests *)
 let gtk_available =

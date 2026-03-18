@@ -123,13 +123,9 @@ module Type_analysis = struct
     let base_lower = String.lowercase_ascii gir_type.name in
     let record_info = Type_mappings.lookup_record ctx.records gir_type.name in
     let class_info = Type_mappings.lookup_class ctx.classes gir_type.name in
-    let is_enum =
-      List.exists ctx.enums ~f:(fun e -> String.equal e.enum_name gir_type.name)
-    in
-    let is_bitfield =
-      List.exists ctx.bitfields ~f:(fun b ->
-          String.equal b.bitfield_name gir_type.name)
-    in
+    let type_kind = Type_mappings.classify_type ~ctx gir_type in
+    let is_enum = match type_kind with Type_mappings.Tk_Enum -> true | _ -> false in
+    let is_bitfield = match type_kind with Type_mappings.Tk_Bitfield -> true | _ -> false in
     let pointer_like =
       has_pointer
       || List.exists pointer_types ~f:(fun candidate ->

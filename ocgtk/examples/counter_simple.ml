@@ -1,4 +1,9 @@
 open Ocgtk_gtk
+
+module Button = Wrappers.Button
+module Check_button = Wrappers.Check_button
+module Toggle_button = Wrappers.Toggle_button
+
 (* Simple Counter - using only gtkButton and minimal dependencies
    Demonstrates: gtkButton module directly *)
 

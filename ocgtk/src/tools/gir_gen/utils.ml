@@ -172,12 +172,14 @@ let internal_namespace_to_module_name (namespace : string) : string =
 let library_wrapper_name (namespace : string) : string =
   "ocgtk_" ^ String.lowercase_ascii namespace
 
-(** Convert a namespace name to a dune-compliant module name (used with an
-    external namespace reference). This is the capitalized form of
-    [library_wrapper_name], as dune derives module names from filenames.
-    e.g., "Cairo" -> "Ocgtk_cairo", "GdkPixbuf" -> "Ocgtk_gdkpixbuf" *)
+(** Convert a namespace name to a fully-qualified module path for external
+    references. The wrapper module re-exports the library module as a submodule,
+    so the path is [Ocgtk_<ns>.<Ns>].
+    e.g., "Cairo" -> "Ocgtk_cairo.Cairo", "Gdk" -> "Ocgtk_gdk.Gdk",
+    "GdkPixbuf" -> "Ocgtk_gdkpixbuf.GdkPixbuf" *)
 let external_namespace_to_module_name (namespace : string) : string =
   String.capitalize_ascii (library_wrapper_name namespace)
+  ^ "." ^ String.capitalize_ascii namespace
 
 (* Get the name of the enums module (FIXME: doesn't handle cross-namespace enums) *)
 let enums_module_name (ctx : Types.generation_context) (_ : Types.gir_enum) =

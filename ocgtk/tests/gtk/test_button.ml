@@ -3,6 +3,10 @@
 open Alcotest
 open Ocgtk_gtk
 
+module Button = Wrappers.Button
+module Check_button = Wrappers.Check_button
+module Toggle_button = Wrappers.Toggle_button
+
 (* Try to initialize GTK once for all tests *)
 let gtk_available =
   try
@@ -103,7 +107,7 @@ let test_high_level_button () =
   let obj = Button.new_ () in
   Button.set_label obj "Click me";
   Button.set_has_frame obj true;
-  let btn = new GButton.button obj in
+  let btn = new Gtk.button obj in
   check (option string) "GButton label" (Some "Click me") (btn#get_label ());
   btn#set_label "Updated";
   check (option string) "GButton label updated" (Some "Updated") (btn#get_label ());
@@ -113,7 +117,7 @@ let test_high_level_button () =
 let test_high_level_button_with_icon () =
   let obj = Button.new_ () in
   Button.set_icon_name obj "document-open";
-  let btn = new GButton.button obj in
+  let btn = new Gtk.button obj in
   check (option string) "GButton icon" (Some "document-open") (btn#get_icon_name ());
   btn#set_icon_name "document-save";
   check (option string) "GButton icon changed" (Some "document-save") (btn#get_icon_name ())

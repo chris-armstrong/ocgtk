@@ -422,6 +422,50 @@ let find_bitfield_mapping ~ctx lookup_str =
       is_value_type_record = false;
     }
 
+type type_kind =
+  | Tk_Enum
+  | Tk_Bitfield
+  | Tk_Class
+  | Tk_Interface
+  | Tk_Record
+  | Tk_Primitive
+  | Tk_Unknown
+
+let classify_type ~ctx (gir_type : Types.gir_type) =
+  let lookup_str = gir_type.name in
+  let namespace, name = Utils.name_to_parts ~ctx lookup_str in
+  if String.equal namespace ctx.namespace.namespace_name then
+    (* Same namespace: check local lists *)
+    if
+      List.exists ctx.enums ~f:(fun (e : Types.gir_enum) ->
+          String.equal e.enum_name lookup_str)
+    then Tk_Enum
+    else if
+      List.exists ctx.bitfields ~f:(fun (b : Types.gir_bitfield) ->
+          String.equal b.bitfield_name lookup_str)
+    then Tk_Bitfield
+    else if Option.is_some (lookup_class ctx.classes lookup_str) then Tk_Class
+    else if Option.is_some (lookup_interface ctx.interfaces lookup_str) then
+      Tk_Interface
+    else if Option.is_some (lookup_record ctx.records lookup_str) then Tk_Record
+    else if List.assoc_opt lookup_str type_mappings |> Option.is_some then
+      Tk_Primitive
+    else Tk_Unknown
+  else
+    (* Cross-namespace: check cross_references *)
+    match StringMap.find_opt namespace ctx.cross_references with
+    | None -> Tk_Unknown
+    | Some ncr -> (
+        match StringMap.find_opt name ncr.ncr_entities with
+        | None -> Tk_Unknown
+        | Some cr -> (
+            match cr.cr_type with
+            | Crt_Enum -> Tk_Enum
+            | Crt_Bitfield -> Tk_Bitfield
+            | Crt_Class _ -> Tk_Class
+            | Crt_Interface -> Tk_Interface
+            | Crt_Record _ -> Tk_Record))
+
 let rec find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
   (* Handle arrays first *)
   match gir_type.array with

@@ -203,7 +203,7 @@ module Array_conv = struct
               if should_zero_terminate then
                 sprintf
                   "value array = Some_val(%s);\n\
-                  \        int %s = Wosize_val(array);\n\
+                  \        %s = Wosize_val(array);\n\
                   \        %s = (%s*)g_malloc(sizeof(%s) * (%s + 1));\n\
                   \        for (int i = 0; i < %s; i++) {\n\
                   \          %s[i] = %s%s(Field(array, i));\n\
@@ -216,7 +216,7 @@ module Array_conv = struct
               else
                 sprintf
                   "value array = Some_val(%s);\n\
-                  \        int %s = Wosize_val(array);\n\
+                  \        %s = Wosize_val(array);\n\
                   \        %s = (%s*)g_malloc(sizeof(%s) * %s);\n\
                   \        for (int i = 0; i < %s; i++) {\n\
                   \          %s[i] = %s%s(Field(array, i));\n\
@@ -226,12 +226,13 @@ module Array_conv = struct
             in
             let elem_type_nonconst = strip_const element_c_type in
             sprintf
-              "%s* %s = NULL;\n\
+              "int %s = 0;\n\
+              \    %s* %s = NULL;\n\
               \    \n\
               \    if (Is_some(%s)) {\n\
               \        %s\n\
               \    }"
-              elem_type_nonconst c_array_var var inner_conversion
+              length_var elem_type_nonconst c_array_var var inner_conversion
           else
             (* Non-nullable: direct conversion *)
             if should_zero_terminate then
