@@ -2,5 +2,4 @@
 (* Library wrapper module - re-exports PangoCairo as the public API *)
 
 module PangoCairo = PangoCairo
-include PangoCairo
 

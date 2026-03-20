@@ -2,5 +2,4 @@
 (* Library wrapper module - re-exports Gtk as the public API *)
 
 module Gtk = Gtk
-include Gtk
 module GMain = GMain
