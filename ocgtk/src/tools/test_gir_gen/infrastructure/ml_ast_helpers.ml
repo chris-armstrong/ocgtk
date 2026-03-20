@@ -326,6 +326,8 @@ let find_class_type_declaration (ast : signature) (name : string) :
     match item.psig_desc with
     | Psig_class class_decls ->
         List.find_opt (fun cd -> cd.pci_name.txt = name) class_decls
+    | Psig_class_type class_type_decls ->
+        List.find_opt (fun cd -> cd.pci_name.txt = name) class_type_decls
     | _ -> None
   ) ast
 
@@ -356,6 +358,8 @@ let rec get_class_inherit_clauses (class_expr : class_expr) : string list =
   | Pcl_fun (_, _, _, body) ->
       (* For class with parameters, recurse into the body *)
       get_class_inherit_clauses body
+  | Pcl_constraint (body, _) ->
+      get_class_inherit_clauses body
   | _ -> []
 
 (* Find a method by name in a class expression *)
@@ -373,6 +377,8 @@ let rec find_method_in_class (class_expr : class_expr) (method_name : string) : 
   | Pcl_apply (expr, _) ->
       (* Recursively search in the applied expression *)
       find_method_in_class expr method_name
+  | Pcl_constraint (body, _) ->
+      find_method_in_class body method_name
   | _ -> None
 
 (* Get the type annotation of a method *)
@@ -721,6 +727,8 @@ let find_all_methods_in_class (class_expr : class_expr) : string list =
         find_methods_in_class_expr body
     | Pcl_apply (expr, _) ->
         find_methods_in_class_expr expr
+    | Pcl_constraint (body, _) ->
+        find_methods_in_class_expr body
     | _ -> []
   in
   find_methods_in_class_expr class_expr

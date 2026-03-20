@@ -1,5 +1,5 @@
-open Ocgtk_gtk
-
+open Ocgtk_gtk.Gtk
+module GMain = Ocgtk_gtk.GMain
 module Button = Wrappers.Button
 module Check_button = Wrappers.Check_button
 module Toggle_button = Wrappers.Toggle_button

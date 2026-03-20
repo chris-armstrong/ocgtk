@@ -1666,7 +1666,7 @@ let test_cross_namespace_c_converter_names () =
         };
       classes = [];
       interfaces = [];
-      enums = [];
+      enums = [{ enum_name = "Colorspace"; enum_c_type = "GdkColorspace"; members = []; functions = []; enum_doc = None }];
       bitfields = [];
       records = [];
       hierarchy_map = Hashtbl.create 0;

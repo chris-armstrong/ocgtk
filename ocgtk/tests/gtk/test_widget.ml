@@ -8,12 +8,13 @@
     - Basic type definitions are correct *)
 
 open Alcotest
-open Ocgtk_gtk
-
+open Ocgtk_gtk.Gtk
 module Widget = Wrappers.Widget
+module GMain = Ocgtk_gtk.GMain
 
 module Box = struct
   include Wrappers.Box
+
   let as_widget (box : t) : Widget.t = Obj.magic box
 end
 

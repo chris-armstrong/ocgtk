@@ -209,7 +209,7 @@ let test_nullable_parameter_handling () =
    (* Verify the method signature has 'string option' parameter type using AST inspection *)
    Layer2_helpers.validate_method_type_annotation_sig
      ~signature:mli_ast
-     ~class_name:"button"
+     ~class_name:"button_t"
      ~method_name:"set_label"
      ~expected_type:"string option -> unit"
 
@@ -248,11 +248,11 @@ let test_return_value_wrapping () =
   let mli_ast = Ml_ast_helpers.parse_interface mli_code in
 
   (* Verify the method signature has widget return type using AST inspection *)
-  Layer2_helpers.validate_method_type_annotation_sig 
-    ~signature:mli_ast 
-    ~class_name:"container" 
-    ~method_name:"get_child" 
-    ~expected_type:"unit -> GWidget.widget"
+  Layer2_helpers.validate_method_type_annotation_sig
+    ~signature:mli_ast
+    ~class_name:"container_t"
+    ~method_name:"get_child"
+    ~expected_type:"unit -> GWidget.widget_t"
 
 (* ========================================================================= *)
 (* Test 4: Void Method *)
@@ -304,7 +304,7 @@ let test_void_method () =
     (* Validate method signature in .mli using AST parsing *)
     Layer2_helpers.validate_method_type_annotation_sig
       ~signature:mli_ast
-      ~class_name:"widget"
+      ~class_name:"widget_t"
       ~method_name:"show"
       ~expected_type:"unit -> unit"
 
@@ -375,7 +375,7 @@ let test_multiple_parameters () =
     (* Validate method signature in .mli using AST parsing *)
     Layer2_helpers.validate_method_type_annotation_sig
       ~signature:mli_ast
-      ~class_name:"widget"
+      ~class_name:"widget_t"
       ~method_name:"set_size_request"
       ~expected_type:"int -> int -> unit"
 
@@ -433,7 +433,7 @@ let test_method_with_object_parameter () =
 (* Test 7: Same-Cluster Structural Type Parameters *)
 (* ========================================================================= *)
 
-(* Test that same-cluster class references use structural types like <as_widget: Widget.t; ..> *)
+(* Test that same-cluster class references use class type names like widget_t *)
 let test_same_cluster_structural_type () =
   let open Gir_gen_lib.Types in
   let ctx = create_test_context () in
@@ -514,9 +514,8 @@ let test_same_cluster_structural_type () =
   let class_decl = find_class combined_ast "button" in
   let _ = find_method class_decl "set_child" in
 
-  (* Verify the generated code contains structural type pattern using AST validation *)
-  Ml_ast_helpers.assert_method_has_structural_type_param combined_ast "button" "set_child";
-  Ml_ast_helpers.assert_method_has_structural_field combined_ast "button" "set_child" "as_widget"
+  (* Verify the generated code uses class type reference (widget_t) instead of structural types *)
+  validate_method_type combined_ast "button" "set_child" ~expected:"widget_t -> unit"
 
 (* ========================================================================= *)
 (* Test 8: Property Getter Wrapper *)
@@ -564,10 +563,10 @@ let test_property_getter_wrapper () =
   
   (* Verify the getter method has string option return type using AST inspection *)
   (* Property getters with nullable types should return 'string option' *)
-  Layer2_helpers.validate_method_type_annotation_sig 
-    ~signature:mli_ast 
-    ~class_name:"button" 
-    ~method_name:"get_label" 
+  Layer2_helpers.validate_method_type_annotation_sig
+    ~signature:mli_ast
+    ~class_name:"button_t"
+    ~method_name:"get_label"
     ~expected_type:"unit -> string option"
 
 (* ========================================================================= *)
@@ -905,11 +904,11 @@ let test_method_conflict_detection () =
 
   (* Also check the signature (.mli) *)
   let button_class_type_decl =
-    match Ml_ast_helpers.find_class_type_declaration mli_ast "button" with
+    match Ml_ast_helpers.find_class_type_declaration mli_ast "button_t" with
     | Some decl -> decl
-    | None -> Alcotest.fail "Class type 'button' not found in generated .mli AST"
+    | None -> Alcotest.fail "Class type 'button_t' not found in generated .mli AST"
   in
-  Printf.eprintf "Found class type 'button' in .mli\n";
+  Printf.eprintf "Found class type 'button_t' in .mli\n";
 
   (* Check that the 'show' method is NOT present as a signature in the class type *)
   let show_signature_exists = Ml_ast_helpers.method_signature_exists button_class_type_decl.pci_expr "show" in
@@ -1031,16 +1030,16 @@ let test_layer2_signature_consistency () =
 
   (* Find the class/type declarations in both ASTs *)
   let ml_class_opt = Ml_ast_helpers.find_class_declaration ml_ast "button" in
-  let mli_class_type_opt = Ml_ast_helpers.find_class_type_declaration mli_ast "button" in
+  let mli_class_type_opt = Ml_ast_helpers.find_class_type_declaration mli_ast "button_t" in
 
   let () = match ml_class_opt with
     | Some _ -> Printf.eprintf "Found class 'button' in .ml\n"
     | None -> Alcotest.fail "Class 'button' not found in .ml AST"
   in
-  
+
   let () = match mli_class_type_opt with
-    | Some _ -> Printf.eprintf "Found class type 'button' in .mli\n"
-    | None -> Alcotest.fail "Class type 'button' not found in .mli AST"
+    | Some _ -> Printf.eprintf "Found class type 'button_t' in .mli\n"
+    | None -> Alcotest.fail "Class type 'button_t' not found in .mli AST"
   in
 
   (* Validate that method signatures in .mli match method signatures in .ml using AST parsing *)
@@ -1293,8 +1292,9 @@ let test_combined_class_signature_consistency () =
     (* Find class in .ml AST *)
     let ml_class_opt = Ml_ast_helpers.find_class_declaration combined_ml_ast class_name in
 
-    (* Find class type in .mli AST *)
-    let mli_class_type_opt = Ml_ast_helpers.find_class_type_declaration combined_mli_ast class_name in
+    (* Find class type in .mli AST — class types have _t suffix *)
+    let class_type_name = class_name ^ "_t" in
+    let mli_class_type_opt = Ml_ast_helpers.find_class_type_declaration combined_mli_ast class_type_name in
 
     let () = match ml_class_opt with
       | Some _ -> Printf.eprintf "  Found class '%s' in .ml\n" class_name
@@ -1302,8 +1302,8 @@ let test_combined_class_signature_consistency () =
     in
 
     let () = match mli_class_type_opt with
-      | Some _ -> Printf.eprintf "  Found class type '%s' in .mli\n" class_name
-      | None -> Alcotest.fail (Printf.sprintf "Class type '%s' not found in combined .mli AST" class_name)
+      | Some _ -> Printf.eprintf "  Found class type '%s' in .mli\n" class_type_name
+      | None -> Alcotest.fail (Printf.sprintf "Class type '%s' not found in combined .mli AST" class_type_name)
     in
 
     (* Extract method type from .ml implementation *)
@@ -1390,9 +1390,9 @@ let test_throws_method_result_wrapping () =
   let mli_ast = Ml_ast_helpers.parse_interface mli_code in
 
   (* Find the class type declaration *)
-  let class_type_decl = match Ml_ast_helpers.find_class_type_declaration mli_ast "file_chooser" with
+  let class_type_decl = match Ml_ast_helpers.find_class_type_declaration mli_ast "file_chooser_t" with
     | Some decl -> decl
-    | None -> Alcotest.fail "Class type 'file_chooser' not found in generated .mli AST"
+    | None -> Alcotest.fail "Class type 'file_chooser_t' not found in generated .mli AST"
   in
   
   (* Find the load_file method in the class type *)
@@ -1448,9 +1448,9 @@ let test_throws_method_result_wrapping () =
   let mli_ast_with_void = Ml_ast_helpers.parse_interface mli_code_with_void in
 
   (* Validate the void-returning throws method *)
-  let class_type_decl_void = match Ml_ast_helpers.find_class_type_declaration mli_ast_with_void "file_chooser" with
+  let class_type_decl_void = match Ml_ast_helpers.find_class_type_declaration mli_ast_with_void "file_chooser_t" with
     | Some decl -> decl
-    | None -> Alcotest.fail "Class type 'file_chooser' not found in generated .mli AST"
+    | None -> Alcotest.fail "Class type 'file_chooser_t' not found in generated .mli AST"
   in
   
   let method_field_void = match Ml_ast_helpers.find_method_in_class_type class_type_decl_void.pci_expr "create_directory" with

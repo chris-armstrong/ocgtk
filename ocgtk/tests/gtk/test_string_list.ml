@@ -12,7 +12,8 @@
     - Ownership semantics and memory safety *)
 
 open Alcotest
-open Ocgtk_gtk
+open Ocgtk_gtk.Gtk
+module GMain = Ocgtk_gtk.GMain
 
 module String_list = Wrappers.String_list
 
@@ -265,7 +266,7 @@ let test_n_items_after_operations () =
 
 let test_gstring_list_wrapper () =
   let list = String_list.new_ (Some [||]) in
-  let gl = new Gtk.string_list list in
+  let gl = new string_list list in
 
   gl#take "wrapper item";
   check int "Wrapper take adds item" 1 gl#n_items;

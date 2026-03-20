@@ -68,7 +68,7 @@ let test_header_generation_with_gdk_cross_references () =
   assert_header_guard_format header_content "_gtk_decls_h_";
 
   (* Critical: Verify gdk_decls.h is included *)
-  assert_local_include_exists header_content "gdk_decls.h"
+  assert_local_include_exists header_content "generated/gdk_decls.h"
 
 (* Stage 8 Test: Header generation with multiple dependencies *)
 let test_header_generation_with_multiple_dependencies () =
@@ -119,8 +119,8 @@ let test_header_generation_with_multiple_dependencies () =
   in
 
   (* Verify both dependencies are included *)
-  assert_local_include_exists header_content "gdk_decls.h";
-  assert_local_include_exists header_content "gio_decls.h"
+  assert_local_include_exists header_content "generated/gdk_decls.h";
+  assert_local_include_exists header_content "generated/gio_decls.h"
 
 (* Stage 8 Test: Header with no dependencies has no includes *)
 let test_header_no_dependencies_no_includes () =
@@ -212,7 +212,7 @@ let test_base_namespaces_filtered () =
   in
 
   (* Verify GLib is NOT included (it's a base namespace) *)
-  assert_local_include_not_exists header_content "glib_decls.h"
+  assert_local_include_not_exists header_content "generated/glib_decls.h"
 
 (* Stage 8 Test: Gsk with Gdk dependency header structure *)
 let test_gsk_with_gdk_dependency () =
@@ -260,7 +260,7 @@ let test_gsk_with_gdk_dependency () =
 
   (* Verify header structure *)
   assert_header_guard_format header_content "_gsk_decls_h_";
-  assert_local_include_exists header_content "gdk_decls.h"
+  assert_local_include_exists header_content "generated/gdk_decls.h"
 
 (* Stage 8 Test: Complete dependency chain Gtk -> Gsk -> Gdk *)
 let test_complete_dependency_chain () =
@@ -313,8 +313,8 @@ let test_complete_dependency_chain () =
   in
 
   (* Verify all dependencies are included *)
-  assert_local_include_exists header_content "gdk_decls.h";
-  assert_local_include_exists header_content "gsk_decls.h"
+  assert_local_include_exists header_content "generated/gdk_decls.h";
+  assert_local_include_exists header_content "generated/gsk_decls.h"
 
 (* ========================================================================= *)
 (* Test Suite *)

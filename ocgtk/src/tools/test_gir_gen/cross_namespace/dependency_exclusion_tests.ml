@@ -82,7 +82,7 @@ let test_glib_not_included_as_dependency () =
     header_content;
 
   (* Verify GLib header is NOT included using AST-based validation *)
-  assert_local_include_not_exists header_content "glib_decls.h"
+  assert_local_include_not_exists header_content "generated/glib_decls.h"
 
 (* Stage 4 Test: GModule is NOT included as a dependency.
    GModule is a base library that doesn't need explicit header inclusion. *)
@@ -97,7 +97,7 @@ let test_gmodule_not_included_as_dependency () =
   in
 
   (* Verify GModule header is NOT included using AST-based validation *)
-  assert_local_include_not_exists header_content "gmodule_decls.h"
+  assert_local_include_not_exists header_content "generated/gmodule_decls.h"
 
 (* Stage 4 Test: GObject is NOT included as a dependency.
    GObject is a base library that doesn't need explicit header inclusion. *)
@@ -112,7 +112,7 @@ let test_gobject_not_included_as_dependency () =
   in
 
   (* Verify GObject header is NOT included using AST-based validation *)
-  assert_local_include_not_exists header_content "gobject_decls.h"
+  assert_local_include_not_exists header_content "generated/gobject_decls.h"
 
 (* Stage 4 Test: Non-base namespaces ARE included.
    Gdk should be included even though GLib/GObject/GModule are excluded. *)
@@ -127,7 +127,7 @@ let test_non_base_namespaces_are_included () =
   in
 
   (* Verify Gdk header IS included using AST-based validation *)
-  assert_local_include_exists header_content "gdk_decls.h"
+  assert_local_include_exists header_content "generated/gdk_decls.h"
 
 (* Stage 4 Test: Helper function filters base namespaces correctly.
    get_dependency_namespaces should exclude GLib, GModule, GObject. *)

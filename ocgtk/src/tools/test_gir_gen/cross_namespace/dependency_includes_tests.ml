@@ -10,10 +10,11 @@ open C_validation
      headers are included *)
 let create_context_with_cross_references ~namespace ~deps =
   let open Gir_gen_lib.Types in
-  let cross_reference_entities =
+  (* Create per-namespace entries in the outer cross_references map,
+     matching the structure that get_dependency_namespaces expects *)
+  let cross_references =
     List.fold_left
       (fun acc dep_ns ->
-        (* Create a dummy cross reference for the dependency *)
         let cr =
           {
             cr_name = "TestClass";
@@ -21,17 +22,17 @@ let create_context_with_cross_references ~namespace ~deps =
             cr_c_type = dep_ns ^ "TestClass";
           }
         in
-        StringMap.add dep_ns cr acc)
+        let ncr =
+          {
+            ncr_namespace_includes = [];
+            ncr_namespace_name = dep_ns;
+            ncr_entities = StringMap.add "TestClass" cr StringMap.empty;
+            ncr_namespace_packages = [];
+            ncr_namespace_c_includes = [];
+          }
+        in
+        StringMap.add dep_ns ncr acc)
       StringMap.empty deps
-  in
-  let cross_references =
-    {
-      ncr_namespace_includes = [];
-      ncr_namespace_name = "TestNamespace";
-      ncr_entities = cross_reference_entities;
-      ncr_namespace_packages = [];
-      ncr_namespace_c_includes = [];
-    }
   in
 
   let ns =
@@ -60,7 +61,7 @@ let create_context_with_cross_references ~namespace ~deps =
     hierarchy_map = Hashtbl.create 0;
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
-    cross_references = StringMap.of_list [ ("TestNamespace", cross_references) ];
+    cross_references;
   }
 
 (* Stage 4 Test: Header includes dependency headers for cross-namespace types.
