@@ -1,7 +1,17 @@
 (* Signal class defined in gsocket_service_signals.ml *)
 
+class type socket_service_t = object
+    inherit Gsocket_service_signals.socket_service_signals
+    method is_active : unit -> bool
+    method start : unit -> unit
+    method stop : unit -> unit
+    method active : bool
+    method set_active : bool -> unit
+    method as_socket_service : Socket_service.t
+end
+
 (* High-level class for SocketService *)
-class socket_service (obj : Socket_service.t) = object (self)
+class socket_service (obj : Socket_service.t) : socket_service_t = object (self)
   inherit Gsocket_service_signals.socket_service_signals obj
 
   method is_active : unit -> bool =

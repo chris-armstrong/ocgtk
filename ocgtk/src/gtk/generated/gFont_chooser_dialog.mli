@@ -1,5 +1,6 @@
-class font_chooser_dialog : Font_chooser_dialog.t ->
-  object
+class type font_chooser_dialog_t = object
     method as_font_chooser_dialog : Font_chooser_dialog.t
-  end
+end
+
+class font_chooser_dialog : Font_chooser_dialog.t -> font_chooser_dialog_t
 

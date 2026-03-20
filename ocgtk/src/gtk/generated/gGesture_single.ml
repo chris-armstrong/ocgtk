@@ -1,5 +1,17 @@
+class type gesture_single_t = object
+    method get_button : unit -> int
+    method get_current_button : unit -> int
+    method get_current_sequence : unit -> Ocgtk_gdk.Gdk.event_sequence_t option
+    method get_exclusive : unit -> bool
+    method get_touch_only : unit -> bool
+    method set_button : int -> unit
+    method set_exclusive : bool -> unit
+    method set_touch_only : bool -> unit
+    method as_gesture_single : Gesture_single.t
+end
+
 (* High-level class for GestureSingle *)
-class gesture_single (obj : Gesture_single.t) = object (self)
+class gesture_single (obj : Gesture_single.t) : gesture_single_t = object (self)
 
   method get_button : unit -> int =
     fun () ->
@@ -9,7 +21,7 @@ class gesture_single (obj : Gesture_single.t) = object (self)
     fun () ->
       (Gesture_single.get_current_button obj)
 
-  method get_current_sequence : unit -> Ocgtk_gdk.Gdk.event_sequence option =
+  method get_current_sequence : unit -> Ocgtk_gdk.Gdk.event_sequence_t option =
     fun () ->
       Option.map (fun ret -> new Ocgtk_gdk.Gdk.event_sequence ret) (Gesture_single.get_current_sequence obj)
 

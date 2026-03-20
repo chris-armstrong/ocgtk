@@ -1,7 +1,12 @@
-(* High-level class for PropertyExpression *)
-class property_expression (obj : Property_expression.t) = object (self)
+class type property_expression_t = object
+    method get_expression : unit -> GExpression.expression_t option
+    method as_property_expression : Property_expression.t
+end
 
-  method get_expression : unit -> GExpression.expression option =
+(* High-level class for PropertyExpression *)
+class property_expression (obj : Property_expression.t) : property_expression_t = object (self)
+
+  method get_expression : unit -> GExpression.expression_t option =
     fun () ->
       Option.map (fun ret -> new GExpression.expression ret) (Property_expression.get_expression obj)
 

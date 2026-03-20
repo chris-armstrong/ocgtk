@@ -3,13 +3,21 @@
 
 (** {1 Classes and Interfaces} *)
 
-class pixbuf : Pixbuf.t -> GPixbuf.pixbuf
-class pixbuf_animation : Pixbuf_animation.t -> GPixbuf_animation.pixbuf_animation
-class pixbuf_animation_iter : Pixbuf_animation_iter.t -> GPixbuf_animation_iter.pixbuf_animation_iter
-class pixbuf_format : Pixbuf_format.t -> GPixbuf_format.pixbuf_format
-class pixbuf_loader : Pixbuf_loader.t -> GPixbuf_loader.pixbuf_loader
-class pixbuf_simple_anim : Pixbuf_simple_anim.t -> GPixbuf_simple_anim.pixbuf_simple_anim
-class pixbuf_simple_anim_iter : Pixbuf_simple_anim_iter.t -> GPixbuf_simple_anim_iter.pixbuf_simple_anim_iter
+class type pixbuf_t = GPixbuf.pixbuf_t
+class type pixbuf_animation_t = GPixbuf_animation.pixbuf_animation_t
+class type pixbuf_animation_iter_t = GPixbuf_animation_iter.pixbuf_animation_iter_t
+class type pixbuf_format_t = GPixbuf_format.pixbuf_format_t
+class type pixbuf_loader_t = GPixbuf_loader.pixbuf_loader_t
+class type pixbuf_simple_anim_t = GPixbuf_simple_anim.pixbuf_simple_anim_t
+class type pixbuf_simple_anim_iter_t = GPixbuf_simple_anim_iter.pixbuf_simple_anim_iter_t
+
+class pixbuf : Pixbuf.t -> pixbuf_t
+class pixbuf_animation : Pixbuf_animation.t -> pixbuf_animation_t
+class pixbuf_animation_iter : Pixbuf_animation_iter.t -> pixbuf_animation_iter_t
+class pixbuf_format : Pixbuf_format.t -> pixbuf_format_t
+class pixbuf_loader : Pixbuf_loader.t -> pixbuf_loader_t
+class pixbuf_simple_anim : Pixbuf_simple_anim.t -> pixbuf_simple_anim_t
+class pixbuf_simple_anim_iter : Pixbuf_simple_anim_iter.t -> pixbuf_simple_anim_iter_t
 
 (** {1 Layer 1 Module Wrappers}
     

@@ -1,5 +1,4 @@
-class frame_clock : Frame_clock.t ->
-  object
+class type frame_clock_t = object
     inherit Gframe_clock_signals.frame_clock_signals
     method begin_updating : unit -> unit
     method end_updating : unit -> unit
@@ -7,5 +6,7 @@ class frame_clock : Frame_clock.t ->
     method get_fps : unit -> float
     method request_phase : Gdk_enums.frameclockphase -> unit
     method as_frame_clock : Frame_clock.t
-  end
+end
+
+class frame_clock : Frame_clock.t -> frame_clock_t
 

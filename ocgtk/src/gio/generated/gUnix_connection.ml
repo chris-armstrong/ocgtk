@@ -1,22 +1,30 @@
-(* High-level class for UnixConnection *)
-class unix_connection (obj : Unix_connection.t) = object (self)
+class type unix_connection_t = object
+    method receive_credentials : GCancellable.cancellable_t option -> (GCredentials.credentials_t, GError.t) result
+    method receive_fd : GCancellable.cancellable_t option -> (int, GError.t) result
+    method send_credentials : GCancellable.cancellable_t option -> (bool, GError.t) result
+    method send_fd : int -> GCancellable.cancellable_t option -> (bool, GError.t) result
+    method as_unix_connection : Unix_connection.t
+end
 
-  method receive_credentials : 'p1. (#GCancellable.cancellable as 'p1) option -> (GCredentials.credentials, GError.t) result =
+(* High-level class for UnixConnection *)
+class unix_connection (obj : Unix_connection.t) : unix_connection_t = object (self)
+
+  method receive_credentials : GCancellable.cancellable_t option -> (GCredentials.credentials_t, GError.t) result =
     fun cancellable ->
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       Result.map (fun ret -> new GCredentials.credentials ret)(Unix_connection.receive_credentials obj cancellable)
 
-  method receive_fd : 'p1. (#GCancellable.cancellable as 'p1) option -> (int, GError.t) result =
+  method receive_fd : GCancellable.cancellable_t option -> (int, GError.t) result =
     fun cancellable ->
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (Unix_connection.receive_fd obj cancellable)
 
-  method send_credentials : 'p1. (#GCancellable.cancellable as 'p1) option -> (bool, GError.t) result =
+  method send_credentials : GCancellable.cancellable_t option -> (bool, GError.t) result =
     fun cancellable ->
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (Unix_connection.send_credentials obj cancellable)
 
-  method send_fd : 'p1. int -> (#GCancellable.cancellable as 'p1) option -> (bool, GError.t) result =
+  method send_fd : int -> GCancellable.cancellable_t option -> (bool, GError.t) result =
     fun fd cancellable ->
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (Unix_connection.send_fd obj fd cancellable)

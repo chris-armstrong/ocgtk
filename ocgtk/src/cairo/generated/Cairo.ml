@@ -3,6 +3,19 @@
 
 (** Classes and Interfaces *)
 
+class type context_t = GContext.context_t
+class type device_t = GDevice.device_t
+class type font_face_t = GFont_face.font_face_t
+class type font_options_t = GFont_options.font_options_t
+class type matrix_t = GMatrix.matrix_t
+class type path_t = GPath.path_t
+class type pattern_t = GPattern.pattern_t
+class type rectangle_t = GRectangle.rectangle_t
+class type rectangle_int_t = GRectangle_int.rectangle_int_t
+class type region_t = GRegion.region_t
+class type scaled_font_t = GScaled_font.scaled_font_t
+class type surface_t = GSurface.surface_t
+
 class context = GContext.context
 class device = GDevice.device
 class font_face = GFont_face.font_face

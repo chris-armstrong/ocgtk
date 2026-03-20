@@ -1,5 +1,4 @@
-class vec2 : Vec2.t ->
-  object
+class type vec2_t = object
     method dot : Vec2.t -> float
     method equal : Vec2.t -> bool
     method free : unit -> unit
@@ -11,5 +10,7 @@ class vec2 : Vec2.t ->
     method length : unit -> float
     method near : Vec2.t -> float -> bool
     method as_vec2 : Vec2.t
-  end
+end
+
+class vec2 : Vec2.t -> vec2_t
 

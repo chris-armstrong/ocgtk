@@ -1,5 +1,4 @@
-class string_list : String_list.t ->
-  object
+class type string_list_t = object
     method append : string -> unit
     method get_string : int -> string option
     method remove : int -> unit
@@ -8,5 +7,7 @@ class string_list : String_list.t ->
     method n_items : int
     method strings : string array
     method as_string_list : String_list.t
-  end
+end
+
+class string_list : String_list.t -> string_list_t
 

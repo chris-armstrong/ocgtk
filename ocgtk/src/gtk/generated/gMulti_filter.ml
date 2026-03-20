@@ -1,7 +1,14 @@
-(* High-level class for MultiFilter *)
-class multi_filter (obj : Multi_filter.t) = object (self)
+class type multi_filter_t = object
+    method append : GFilter.filter_t -> unit
+    method remove : int -> unit
+    method n_items : int
+    method as_multi_filter : Multi_filter.t
+end
 
-  method append : 'p1. (#GFilter.filter as 'p1) -> unit =
+(* High-level class for MultiFilter *)
+class multi_filter (obj : Multi_filter.t) : multi_filter_t = object (self)
+
+  method append : GFilter.filter_t -> unit =
     fun filter ->
       let filter = filter#as_filter in
       (Multi_filter.append obj filter)

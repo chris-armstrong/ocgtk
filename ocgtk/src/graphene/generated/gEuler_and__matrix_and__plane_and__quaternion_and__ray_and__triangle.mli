@@ -1,6 +1,5 @@
 
-class euler : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.t ->
-  object
+class type euler_t = object
     method equal : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.t -> bool
     method free : unit -> unit
     method get_alpha : unit -> float
@@ -18,10 +17,9 @@ class euler : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangl
     method init_from_vec3 : Vec3_and__vec4.Vec3.t option -> Graphene_enums.eulerorder -> Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.t
     method init_with_order : float -> float -> float -> Graphene_enums.eulerorder -> Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.t
     method as_euler : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.t
-  end
+end
 
-and matrix : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t ->
-  object
+and matrix_t = object
     method determinant : unit -> float
     method equal : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t -> bool
     method equal_fast : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t -> bool
@@ -64,10 +62,9 @@ and matrix : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle
     method skew_yz : float -> unit
     method translate : Point3_d.t -> unit
     method as_matrix : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t
-  end
+end
 
-and plane : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.t ->
-  object
+and plane_t = object
     method distance : Point3_d.t -> float
     method equal : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.t -> bool
     method free : unit -> unit
@@ -78,10 +75,9 @@ and plane : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.
     method init_from_points : Point3_d.t -> Point3_d.t -> Point3_d.t -> Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.t
     method init_from_vec4 : Vec3_and__vec4.Vec4.t -> Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.t
     method as_plane : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.t
-  end
+end
 
-and quaternion : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Quaternion.t ->
-  object
+and quaternion_t = object
     method dot : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Quaternion.t -> float
     method equal : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Quaternion.t -> bool
     method free : unit -> unit
@@ -95,10 +91,9 @@ and quaternion : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__tria
     method init_from_vec4 : Vec3_and__vec4.Vec4.t -> Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Quaternion.t
     method init_identity : unit -> Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Quaternion.t
     method as_quaternion : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Quaternion.t
-  end
+end
 
-and ray : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Ray.t ->
-  object
+and ray_t = object
     method equal : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Ray.t -> bool
     method free : unit -> unit
     method get_distance_to_plane : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.t -> float
@@ -110,10 +105,9 @@ and ray : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Ra
     method intersects_sphere : Box_and__sphere.Sphere.t -> bool
     method intersects_triangle : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Triangle.t -> bool
     method as_ray : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Ray.t
-  end
+end
 
-and triangle : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Triangle.t ->
-  object
+and triangle_t = object
     method contains_point : Point3_d.t -> bool
     method equal : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Triangle.t -> bool
     method free : unit -> unit
@@ -122,4 +116,17 @@ and triangle : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triang
     method init_from_point3d : Point3_d.t option -> Point3_d.t option -> Point3_d.t option -> Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Triangle.t
     method init_from_vec3 : Vec3_and__vec4.Vec3.t option -> Vec3_and__vec4.Vec3.t option -> Vec3_and__vec4.Vec3.t option -> Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Triangle.t
     method as_triangle : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Triangle.t
-  end
+end
+
+
+class euler : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.t -> euler_t
+
+and matrix : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t -> matrix_t
+
+and plane : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.t -> plane_t
+
+and quaternion : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Quaternion.t -> quaternion_t
+
+and ray : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Ray.t -> ray_t
+
+and triangle : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Triangle.t -> triangle_t

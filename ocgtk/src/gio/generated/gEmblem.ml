@@ -1,7 +1,13 @@
-(* High-level class for Emblem *)
-class emblem (obj : Emblem.t) = object (self)
+class type emblem_t = object
+    method get_icon : unit -> GIcon.icon_t
+    method get_origin : unit -> Gio_enums.emblemorigin
+    method as_emblem : Emblem.t
+end
 
-  method get_icon : unit -> GIcon.icon =
+(* High-level class for Emblem *)
+class emblem (obj : Emblem.t) : emblem_t = object (self)
+
+  method get_icon : unit -> GIcon.icon_t =
     fun () ->
       new  GIcon.icon(Emblem.get_icon obj)
 

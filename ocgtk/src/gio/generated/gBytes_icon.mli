@@ -1,5 +1,6 @@
-class bytes_icon : Bytes_icon.t ->
-  object
+class type bytes_icon_t = object
     method as_bytes_icon : Bytes_icon.t
-  end
+end
+
+class bytes_icon : Bytes_icon.t -> bytes_icon_t
 

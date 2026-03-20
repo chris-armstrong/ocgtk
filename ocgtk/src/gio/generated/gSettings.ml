@@ -1,14 +1,51 @@
 (* Signal class defined in gsettings_signals.ml *)
 
+class type settings_t = object
+    inherit Gsettings_signals.settings_signals
+    method apply : unit -> unit
+    method create_action : string -> GAction.action_t
+    method delay : unit -> unit
+    method get_boolean : string -> bool
+    method get_child : string -> settings_t
+    method get_double : string -> float
+    method get_enum : string -> int
+    method get_flags : string -> int
+    method get_has_unapplied : unit -> bool
+    method get_int : string -> int
+    method get_string : string -> string
+    method get_strv : string -> string array
+    method get_uint : string -> int
+    method is_writable : string -> bool
+    method list_children : unit -> string array
+    method list_keys : unit -> string array
+    method reset : string -> unit
+    method revert : unit -> unit
+    method set_boolean : string -> bool -> bool
+    method set_double : string -> float -> bool
+    method set_enum : string -> int -> bool
+    method set_flags : string -> int -> bool
+    method set_int : string -> int -> bool
+    method set_string : string -> string -> bool
+    method set_strv : string -> string array option -> bool
+    method set_uint : string -> int -> bool
+    method backend : GSettings_backend.settings_backend_t
+    method delay_apply : bool
+    method path : string
+    method schema : string
+    method schema_id : string
+    method settings_schema : Settings_schema.t
+    method as_settings : Settings.t
+end
+
 (* High-level class for Settings *)
-class settings (obj : Settings.t) = object (self)
+class settings (obj : Settings.t) : settings_t = object (self)
   inherit Gsettings_signals.settings_signals obj
 
   method apply : unit -> unit =
     fun () ->
       (Settings.apply obj)
 
-  method create_action : string -> GAction.action =
+  method create_action : string -> GAction.action_t =
     fun key ->
       new  GAction.action(Settings.create_action obj key)
 
@@ -20,7 +57,7 @@ class settings (obj : Settings.t) = object (self)
     fun key ->
       (Settings.get_boolean obj key)
 
-  method get_child : string -> settings =
+  method get_child : string -> settings_t =
     fun name ->
       new  settings(Settings.get_child obj name)
 

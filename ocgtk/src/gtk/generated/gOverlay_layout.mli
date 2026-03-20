@@ -1,5 +1,6 @@
-class overlay_layout : Overlay_layout.t ->
-  object
+class type overlay_layout_t = object
     method as_overlay_layout : Overlay_layout.t
-  end
+end
+
+class overlay_layout : Overlay_layout.t -> overlay_layout_t
 

@@ -1,6 +1,25 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined classes for cyclic dependencies *)
-class font_face (obj : Font_face_and__font_family.Font_face.t) = object (self)
+
+class type font_face_t = object
+    method describe : unit -> Font_description.t
+    method get_face_name : unit -> string
+    method get_family : unit -> font_family_t
+    method is_synthesized : unit -> bool
+    method as_font_face : Font_face_and__font_family.Font_face.t
+end
+
+and font_family_t = object
+    method get_face : string option -> font_face_t option
+    method get_name : unit -> string
+    method is_monospace : unit -> bool
+    method is_variable : unit -> bool
+    method n_items : int
+    method as_font_family : Font_face_and__font_family.Font_family.t
+end
+
+
+class font_face (obj : Font_face_and__font_family.Font_face.t) : font_face_t = object (self)
 
   method describe : unit -> Font_description.t =
     fun () ->
@@ -10,7 +29,7 @@ class font_face (obj : Font_face_and__font_family.Font_face.t) = object (self)
     fun () ->
       (Font_face_and__font_family.Font_face.get_face_name obj)
 
-  method get_family : unit -> font_family =
+  method get_family : unit -> font_family_t =
     fun () ->
       new  font_family(Font_face_and__font_family.Font_face.get_family obj)
 
@@ -21,9 +40,9 @@ class font_face (obj : Font_face_and__font_family.Font_face.t) = object (self)
     method as_font_face = obj
 end
 
-and font_family (obj : Font_face_and__font_family.Font_family.t) = object (self)
+and font_family (obj : Font_face_and__font_family.Font_family.t) : font_family_t = object (self)
 
-  method get_face : string option -> font_face option =
+  method get_face : string option -> font_face_t option =
     fun name ->
       Option.map (fun ret -> new font_face ret) (Font_face_and__font_family.Font_family.get_face obj name)
 

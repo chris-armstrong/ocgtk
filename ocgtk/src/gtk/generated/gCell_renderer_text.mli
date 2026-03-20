@@ -1,17 +1,16 @@
-class cell_renderer_text : Cell_renderer_text.t ->
-  object
+class type cell_renderer_text_t = object
     inherit Gcell_renderer_text_signals.cell_renderer_text_signals
     method set_fixed_height_from_font : int -> unit
     method align_set : bool
     method set_align_set : bool -> unit
     method alignment : Ocgtk_pango.Pango.alignment
     method set_alignment : Ocgtk_pango.Pango.alignment -> unit
-    method attributes : Ocgtk_pango.Pango.attr_list
-    method set_attributes : #Ocgtk_pango.Pango.attr_list -> unit
+    method attributes : Ocgtk_pango.Pango.attr_list_t
+    method set_attributes : Ocgtk_pango.Pango.attr_list_t -> unit
     method background : string
     method set_background : string -> unit
-    method background_rgba : Ocgtk_gdk.Gdk.rgb_a
-    method set_background_rgba : #Ocgtk_gdk.Gdk.rgb_a -> unit
+    method background_rgba : Ocgtk_gdk.Gdk.rgb_a_t
+    method set_background_rgba : Ocgtk_gdk.Gdk.rgb_a_t -> unit
     method background_set : bool
     method set_background_set : bool -> unit
     method editable : bool
@@ -28,12 +27,12 @@ class cell_renderer_text : Cell_renderer_text.t ->
     method set_family_set : bool -> unit
     method font : string
     method set_font : string -> unit
-    method font_desc : Ocgtk_pango.Pango.font_description
-    method set_font_desc : #Ocgtk_pango.Pango.font_description -> unit
+    method font_desc : Ocgtk_pango.Pango.font_description_t
+    method set_font_desc : Ocgtk_pango.Pango.font_description_t -> unit
     method foreground : string
     method set_foreground : string -> unit
-    method foreground_rgba : Ocgtk_gdk.Gdk.rgb_a
-    method set_foreground_rgba : #Ocgtk_gdk.Gdk.rgb_a -> unit
+    method foreground_rgba : Ocgtk_gdk.Gdk.rgb_a_t
+    method set_foreground_rgba : Ocgtk_gdk.Gdk.rgb_a_t -> unit
     method foreground_set : bool
     method set_foreground_set : bool -> unit
     method language : string
@@ -95,5 +94,7 @@ class cell_renderer_text : Cell_renderer_text.t ->
     method wrap_width : int
     method set_wrap_width : int -> unit
     method as_cell_renderer_text : Cell_renderer_text.t
-  end
+end
+
+class cell_renderer_text : Cell_renderer_text.t -> cell_renderer_text_t
 

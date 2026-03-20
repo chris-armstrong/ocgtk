@@ -1,5 +1,14 @@
+class type window_controls_t = object
+    method get_decoration_layout : unit -> string option
+    method get_empty : unit -> bool
+    method get_side : unit -> Gtk_enums.packtype
+    method set_decoration_layout : string option -> unit
+    method set_side : Gtk_enums.packtype -> unit
+    method as_window_controls : Window_controls.t
+end
+
 (* High-level class for WindowControls *)
-class window_controls (obj : Window_controls.t) = object (self)
+class window_controls (obj : Window_controls.t) : window_controls_t = object (self)
 
   method get_decoration_layout : unit -> string option =
     fun () ->

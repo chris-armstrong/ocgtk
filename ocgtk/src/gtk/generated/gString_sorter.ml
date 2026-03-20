@@ -1,11 +1,21 @@
+class type string_sorter_t = object
+    method get_collation : unit -> Gtk_enums.collation
+    method get_expression : unit -> GExpression.expression_t option
+    method get_ignore_case : unit -> bool
+    method set_collation : Gtk_enums.collation -> unit
+    method set_expression : GExpression.expression_t option -> unit
+    method set_ignore_case : bool -> unit
+    method as_string_sorter : String_sorter.t
+end
+
 (* High-level class for StringSorter *)
-class string_sorter (obj : String_sorter.t) = object (self)
+class string_sorter (obj : String_sorter.t) : string_sorter_t = object (self)
 
   method get_collation : unit -> Gtk_enums.collation =
     fun () ->
       (String_sorter.get_collation obj)
 
-  method get_expression : unit -> GExpression.expression option =
+  method get_expression : unit -> GExpression.expression_t option =
     fun () ->
       Option.map (fun ret -> new GExpression.expression ret) (String_sorter.get_expression obj)
 
@@ -17,7 +27,7 @@ class string_sorter (obj : String_sorter.t) = object (self)
     fun collation ->
       (String_sorter.set_collation obj collation)
 
-  method set_expression : 'p1. (#GExpression.expression as 'p1) option -> unit =
+  method set_expression : GExpression.expression_t option -> unit =
     fun expression ->
       let expression = Option.map (fun (c) -> c#as_expression) expression in
       (String_sorter.set_expression obj expression)

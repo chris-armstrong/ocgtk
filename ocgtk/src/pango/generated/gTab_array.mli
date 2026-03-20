@@ -1,5 +1,4 @@
-class tab_array : Tab_array.t ->
-  object
+class type tab_array_t = object
     method copy : unit -> Tab_array.t
     method free : unit -> unit
     method get_positions_in_pixels : unit -> bool
@@ -10,5 +9,7 @@ class tab_array : Tab_array.t ->
     method sort : unit -> unit
     method to_string : unit -> string
     method as_tab_array : Tab_array.t
-  end
+end
+
+class tab_array : Tab_array.t -> tab_array_t
 

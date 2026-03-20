@@ -1,21 +1,40 @@
+class type menu_t = object
+    method append : string option -> string option -> unit
+    method append_item : GMenu_item.menu_item_t -> unit
+    method append_section : string option -> GMenu_link_iter_and__menu_model.menu_model_t -> unit
+    method append_submenu : string option -> GMenu_link_iter_and__menu_model.menu_model_t -> unit
+    method freeze : unit -> unit
+    method insert : int -> string option -> string option -> unit
+    method insert_item : int -> GMenu_item.menu_item_t -> unit
+    method insert_section : int -> string option -> GMenu_link_iter_and__menu_model.menu_model_t -> unit
+    method insert_submenu : int -> string option -> GMenu_link_iter_and__menu_model.menu_model_t -> unit
+    method prepend : string option -> string option -> unit
+    method prepend_item : GMenu_item.menu_item_t -> unit
+    method prepend_section : string option -> GMenu_link_iter_and__menu_model.menu_model_t -> unit
+    method prepend_submenu : string option -> GMenu_link_iter_and__menu_model.menu_model_t -> unit
+    method remove : int -> unit
+    method remove_all : unit -> unit
+    method as_menu : Menu.t
+end
+
 (* High-level class for Menu *)
-class menu (obj : Menu.t) = object (self)
+class menu (obj : Menu.t) : menu_t = object (self)
 
   method append : string option -> string option -> unit =
     fun label detailed_action ->
       (Menu.append obj label detailed_action)
 
-  method append_item : 'p1. (#GMenu_item.menu_item as 'p1) -> unit =
+  method append_item : GMenu_item.menu_item_t -> unit =
     fun item ->
       let item = item#as_menu_item in
       (Menu.append_item obj item)
 
-  method append_section : 'p1. string option -> (#GMenu_link_iter_and__menu_model.menu_model as 'p1) -> unit =
+  method append_section : string option -> GMenu_link_iter_and__menu_model.menu_model_t -> unit =
     fun label section ->
       let section = section#as_menu_model in
       (Menu.append_section obj label section)
 
-  method append_submenu : 'p1. string option -> (#GMenu_link_iter_and__menu_model.menu_model as 'p1) -> unit =
+  method append_submenu : string option -> GMenu_link_iter_and__menu_model.menu_model_t -> unit =
     fun label submenu ->
       let submenu = submenu#as_menu_model in
       (Menu.append_submenu obj label submenu)
@@ -28,17 +47,17 @@ class menu (obj : Menu.t) = object (self)
     fun position label detailed_action ->
       (Menu.insert obj position label detailed_action)
 
-  method insert_item : 'p1. int -> (#GMenu_item.menu_item as 'p1) -> unit =
+  method insert_item : int -> GMenu_item.menu_item_t -> unit =
     fun position item ->
       let item = item#as_menu_item in
       (Menu.insert_item obj position item)
 
-  method insert_section : 'p1. int -> string option -> (#GMenu_link_iter_and__menu_model.menu_model as 'p1) -> unit =
+  method insert_section : int -> string option -> GMenu_link_iter_and__menu_model.menu_model_t -> unit =
     fun position label section ->
       let section = section#as_menu_model in
       (Menu.insert_section obj position label section)
 
-  method insert_submenu : 'p1. int -> string option -> (#GMenu_link_iter_and__menu_model.menu_model as 'p1) -> unit =
+  method insert_submenu : int -> string option -> GMenu_link_iter_and__menu_model.menu_model_t -> unit =
     fun position label submenu ->
       let submenu = submenu#as_menu_model in
       (Menu.insert_submenu obj position label submenu)
@@ -47,17 +66,17 @@ class menu (obj : Menu.t) = object (self)
     fun label detailed_action ->
       (Menu.prepend obj label detailed_action)
 
-  method prepend_item : 'p1. (#GMenu_item.menu_item as 'p1) -> unit =
+  method prepend_item : GMenu_item.menu_item_t -> unit =
     fun item ->
       let item = item#as_menu_item in
       (Menu.prepend_item obj item)
 
-  method prepend_section : 'p1. string option -> (#GMenu_link_iter_and__menu_model.menu_model as 'p1) -> unit =
+  method prepend_section : string option -> GMenu_link_iter_and__menu_model.menu_model_t -> unit =
     fun label section ->
       let section = section#as_menu_model in
       (Menu.prepend_section obj label section)
 
-  method prepend_submenu : 'p1. string option -> (#GMenu_link_iter_and__menu_model.menu_model as 'p1) -> unit =
+  method prepend_submenu : string option -> GMenu_link_iter_and__menu_model.menu_model_t -> unit =
     fun label submenu ->
       let submenu = submenu#as_menu_model in
       (Menu.prepend_submenu obj label submenu)

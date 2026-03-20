@@ -1,11 +1,21 @@
+class type outset_shadow_node_t = object
+    method get_blur_radius : unit -> float
+    method get_color : unit -> Ocgtk_gdk.Gdk.rgb_a_t
+    method get_dx : unit -> float
+    method get_dy : unit -> float
+    method get_outline : unit -> Rounded_rect.t
+    method get_spread : unit -> float
+    method as_outset_shadow_node : Outset_shadow_node.t
+end
+
 (* High-level class for OutsetShadowNode *)
-class outset_shadow_node (obj : Outset_shadow_node.t) = object (self)
+class outset_shadow_node (obj : Outset_shadow_node.t) : outset_shadow_node_t = object (self)
 
   method get_blur_radius : unit -> float =
     fun () ->
       (Outset_shadow_node.get_blur_radius obj)
 
-  method get_color : unit -> Ocgtk_gdk.Gdk.rgb_a =
+  method get_color : unit -> Ocgtk_gdk.Gdk.rgb_a_t =
     fun () ->
       new  Ocgtk_gdk.Gdk.rgb_a(Outset_shadow_node.get_color obj)
 

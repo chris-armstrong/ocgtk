@@ -1,5 +1,10 @@
+class type string_object_t = object
+    method get_string : unit -> string
+    method as_string_object : String_object.t
+end
+
 (* High-level class for StringObject *)
-class string_object (obj : String_object.t) = object (self)
+class string_object (obj : String_object.t) : string_object_t = object (self)
 
   method get_string : unit -> string =
     fun () ->

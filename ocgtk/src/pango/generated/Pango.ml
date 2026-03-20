@@ -3,6 +3,49 @@
 
 (** Classes and Interfaces *)
 
+class type analysis_t = GAnalysis.analysis_t
+class type attr_class_t = GAttr_class.attr_class_t
+class type attr_color_t = GAttr_color.attr_color_t
+class type attr_float_t = GAttr_float.attr_float_t
+class type attr_font_desc_t = GAttr_font_desc.attr_font_desc_t
+class type attr_font_features_t = GAttr_font_features.attr_font_features_t
+class type attr_int_t = GAttr_int.attr_int_t
+class type attr_iterator_t = GAttr_iterator.attr_iterator_t
+class type attr_language_t = GAttr_language.attr_language_t
+class type attr_list_t = GAttr_list.attr_list_t
+class type attr_shape_t = GAttr_shape.attr_shape_t
+class type attr_size_t = GAttr_size.attr_size_t
+class type attr_string_t = GAttr_string.attr_string_t
+class type attribute_t = GAttribute.attribute_t
+class type color_t = GColor.color_t
+class type context_t = GContext_and__font_and__font_map_and__fontset.context_t
+class type coverage_t = GCoverage.coverage_t
+class type font_t = GContext_and__font_and__font_map_and__fontset.font_t
+class type font_description_t = GFont_description.font_description_t
+class type font_face_t = GFont_face_and__font_family.font_face_t
+class type font_family_t = GFont_face_and__font_family.font_family_t
+class type font_map_t = GContext_and__font_and__font_map_and__fontset.font_map_t
+class type font_metrics_t = GFont_metrics.font_metrics_t
+class type fontset_t = GContext_and__font_and__font_map_and__fontset.fontset_t
+class type fontset_simple_t = GFontset_simple.fontset_simple_t
+class type glyph_geometry_t = GGlyph_geometry.glyph_geometry_t
+class type glyph_info_t = GGlyph_info.glyph_info_t
+class type glyph_item_t = GGlyph_item.glyph_item_t
+class type glyph_item_iter_t = GGlyph_item_iter.glyph_item_iter_t
+class type glyph_string_t = GGlyph_string.glyph_string_t
+class type glyph_vis_attr_t = GGlyph_vis_attr.glyph_vis_attr_t
+class type item_t = GItem.item_t
+class type language_t = GLanguage.language_t
+class type layout_t = GLayout_and__layout_iter.layout_t
+class type layout_iter_t = GLayout_and__layout_iter.layout_iter_t
+class type layout_line_t = GLayout_line.layout_line_t
+class type log_attr_t = GLog_attr.log_attr_t
+class type matrix_t = GMatrix.matrix_t
+class type rectangle_t = GRectangle.rectangle_t
+class type renderer_t = GRenderer.renderer_t
+class type script_iter_t = GScript_iter.script_iter_t
+class type tab_array_t = GTab_array.tab_array_t
+
 class analysis = GAnalysis.analysis
 class attr_class = GAttr_class.attr_class
 class attr_color = GAttr_color.attr_color

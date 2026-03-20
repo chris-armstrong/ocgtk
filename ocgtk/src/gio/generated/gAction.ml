@@ -1,5 +1,11 @@
+class type action_t = object
+    method get_enabled : unit -> bool
+    method get_name : unit -> string
+    method as_action : Action.t
+end
+
 (* High-level class for Action *)
-class action (obj : Action.t) = object (self)
+class action (obj : Action.t) : action_t = object (self)
 
   method get_enabled : unit -> bool =
     fun () ->

@@ -1,5 +1,4 @@
-class column_view_row : Column_view_row.t ->
-  object
+class type column_view_row_t = object
     method get_accessible_description : unit -> string
     method get_accessible_label : unit -> string
     method get_activatable : unit -> bool
@@ -13,5 +12,7 @@ class column_view_row : Column_view_row.t ->
     method set_focusable : bool -> unit
     method set_selectable : bool -> unit
     method as_column_view_row : Column_view_row.t
-  end
+end
+
+class column_view_row : Column_view_row.t -> column_view_row_t
 

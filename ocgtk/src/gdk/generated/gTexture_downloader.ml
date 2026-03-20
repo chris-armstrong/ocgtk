@@ -1,5 +1,15 @@
+class type texture_downloader_t = object
+    method copy : unit -> Texture_downloader.t
+    method free : unit -> unit
+    method get_format : unit -> Gdk_enums.memoryformat
+    method get_texture : unit -> GTexture.texture_t
+    method set_format : Gdk_enums.memoryformat -> unit
+    method set_texture : GTexture.texture_t -> unit
+    method as_texture_downloader : Texture_downloader.t
+end
+
 (* High-level class for TextureDownloader *)
-class texture_downloader (obj : Texture_downloader.t) = object (self)
+class texture_downloader (obj : Texture_downloader.t) : texture_downloader_t = object (self)
 
   method copy : unit -> Texture_downloader.t =
     fun () ->
@@ -13,7 +23,7 @@ class texture_downloader (obj : Texture_downloader.t) = object (self)
     fun () ->
       (Texture_downloader.get_format obj)
 
-  method get_texture : unit -> GTexture.texture =
+  method get_texture : unit -> GTexture.texture_t =
     fun () ->
       new  GTexture.texture(Texture_downloader.get_texture obj)
 
@@ -21,7 +31,7 @@ class texture_downloader (obj : Texture_downloader.t) = object (self)
     fun format ->
       (Texture_downloader.set_format obj format)
 
-  method set_texture : 'p1. (#GTexture.texture as 'p1) -> unit =
+  method set_texture : GTexture.texture_t -> unit =
     fun texture ->
       let texture = texture#as_texture in
       (Texture_downloader.set_texture obj texture)

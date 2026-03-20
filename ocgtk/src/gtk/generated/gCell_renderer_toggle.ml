@@ -1,7 +1,20 @@
 (* Signal class defined in gcell_renderer_toggle_signals.ml *)
 
+class type cell_renderer_toggle_t = object
+    inherit Gcell_renderer_toggle_signals.cell_renderer_toggle_signals
+    method get_activatable : unit -> bool
+    method get_active : unit -> bool
+    method get_radio : unit -> bool
+    method set_activatable : bool -> unit
+    method set_active : bool -> unit
+    method set_radio : bool -> unit
+    method inconsistent : bool
+    method set_inconsistent : bool -> unit
+    method as_cell_renderer_toggle : Cell_renderer_toggle.t
+end
+
 (* High-level class for CellRendererToggle *)
-class cell_renderer_toggle (obj : Cell_renderer_toggle.t) = object (self)
+class cell_renderer_toggle (obj : Cell_renderer_toggle.t) : cell_renderer_toggle_t = object (self)
   inherit Gcell_renderer_toggle_signals.cell_renderer_toggle_signals obj
 
   method get_activatable : unit -> bool =

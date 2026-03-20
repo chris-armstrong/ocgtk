@@ -1,5 +1,4 @@
-class selection_model : Selection_model.t ->
-  object
+class type selection_model_t = object
     inherit Gselection_model_signals.selection_model_signals
     method get_selection : unit -> Bitset.t
     method get_selection_in_range : int -> int -> Bitset.t
@@ -13,5 +12,7 @@ class selection_model : Selection_model.t ->
     method unselect_item : int -> bool
     method unselect_range : int -> int -> bool
     method as_selection_model : Selection_model.t
-  end
+end
+
+class selection_model : Selection_model.t -> selection_model_t
 

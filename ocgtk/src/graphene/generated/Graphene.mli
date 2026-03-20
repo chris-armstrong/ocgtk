@@ -3,25 +3,45 @@
 
 (** {1 Classes and Interfaces} *)
 
-class box : Box_and__sphere.Box.t -> GBox_and__sphere.box
-class euler : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.t -> GEuler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.euler
-class frustum : Frustum.t -> GFrustum.frustum
-class matrix : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t -> GEuler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.matrix
-class plane : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.t -> GEuler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.plane
-class point : Point.t -> GPoint.point
-class point3_d : Point3_d.t -> GPoint3_d.point3_d
-class quad : Quad.t -> GQuad.quad
-class quaternion : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Quaternion.t -> GEuler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.quaternion
-class ray : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Ray.t -> GEuler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.ray
-class rect : Rect.t -> GRect.rect
-class simd4_f : Simd4_f.t -> GSimd4_f.simd4_f
-class simd4_x4_f : Simd4_x4_f.t -> GSimd4_x4_f.simd4_x4_f
-class size : Size.t -> GSize.size
-class sphere : Box_and__sphere.Sphere.t -> GBox_and__sphere.sphere
-class triangle : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Triangle.t -> GEuler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.triangle
-class vec2 : Vec2.t -> GVec2.vec2
-class vec3 : Vec3_and__vec4.Vec3.t -> GVec3_and__vec4.vec3
-class vec4 : Vec3_and__vec4.Vec4.t -> GVec3_and__vec4.vec4
+class type box_t = GBox_and__sphere.box_t
+class type euler_t = GEuler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.euler_t
+class type frustum_t = GFrustum.frustum_t
+class type matrix_t = GEuler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.matrix_t
+class type plane_t = GEuler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.plane_t
+class type point_t = GPoint.point_t
+class type point3_d_t = GPoint3_d.point3_d_t
+class type quad_t = GQuad.quad_t
+class type quaternion_t = GEuler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.quaternion_t
+class type ray_t = GEuler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.ray_t
+class type rect_t = GRect.rect_t
+class type simd4_f_t = GSimd4_f.simd4_f_t
+class type simd4_x4_f_t = GSimd4_x4_f.simd4_x4_f_t
+class type size_t = GSize.size_t
+class type sphere_t = GBox_and__sphere.sphere_t
+class type triangle_t = GEuler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.triangle_t
+class type vec2_t = GVec2.vec2_t
+class type vec3_t = GVec3_and__vec4.vec3_t
+class type vec4_t = GVec3_and__vec4.vec4_t
+
+class box : Box_and__sphere.Box.t -> box_t
+class euler : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.t -> euler_t
+class frustum : Frustum.t -> frustum_t
+class matrix : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t -> matrix_t
+class plane : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.t -> plane_t
+class point : Point.t -> point_t
+class point3_d : Point3_d.t -> point3_d_t
+class quad : Quad.t -> quad_t
+class quaternion : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Quaternion.t -> quaternion_t
+class ray : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Ray.t -> ray_t
+class rect : Rect.t -> rect_t
+class simd4_f : Simd4_f.t -> simd4_f_t
+class simd4_x4_f : Simd4_x4_f.t -> simd4_x4_f_t
+class size : Size.t -> size_t
+class sphere : Box_and__sphere.Sphere.t -> sphere_t
+class triangle : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Triangle.t -> triangle_t
+class vec2 : Vec2.t -> vec2_t
+class vec3 : Vec3_and__vec4.Vec3.t -> vec3_t
+class vec4 : Vec3_and__vec4.Vec4.t -> vec4_t
 
 (** {1 Layer 1 Module Wrappers}
     

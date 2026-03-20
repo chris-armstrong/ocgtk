@@ -1,7 +1,14 @@
-(* High-level class for ActionMap *)
-class action_map (obj : Action_map.t) = object (self)
+class type action_map_t = object
+    method lookup_action : string -> GAction.action_t option
+    method remove_action : string -> unit
+    method remove_action_entries : Action_entry.t array -> int -> unit
+    method as_action_map : Action_map.t
+end
 
-  method lookup_action : string -> GAction.action option =
+(* High-level class for ActionMap *)
+class action_map (obj : Action_map.t) : action_map_t = object (self)
+
+  method lookup_action : string -> GAction.action_t option =
     fun action_name ->
       Option.map (fun ret -> new GAction.action ret) (Action_map.lookup_action obj action_name)
 

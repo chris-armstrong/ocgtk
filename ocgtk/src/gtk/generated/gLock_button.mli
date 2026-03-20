@@ -1,7 +1,6 @@
-class lock_button : Lock_button.t ->
-  object
-    method get_permission : unit -> Ocgtk_gio.Gio.permission option
-    method set_permission : #Ocgtk_gio.Gio.permission option -> unit
+class type lock_button_t = object
+    method get_permission : unit -> Ocgtk_gio.Gio.permission_t option
+    method set_permission : Ocgtk_gio.Gio.permission_t option -> unit
     method text_lock : string
     method set_text_lock : string -> unit
     method text_unlock : string
@@ -13,5 +12,7 @@ class lock_button : Lock_button.t ->
     method tooltip_unlock : string
     method set_tooltip_unlock : string -> unit
     method as_lock_button : Lock_button.t
-  end
+end
+
+class lock_button : Lock_button.t -> lock_button_t
 

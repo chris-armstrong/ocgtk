@@ -1,5 +1,15 @@
+class type proxy_address_t = object
+    method get_destination_hostname : unit -> string
+    method get_destination_protocol : unit -> string
+    method get_password : unit -> string option
+    method get_protocol : unit -> string
+    method get_uri : unit -> string option
+    method get_username : unit -> string option
+    method as_proxy_address : Proxy_address.t
+end
+
 (* High-level class for ProxyAddress *)
-class proxy_address (obj : Proxy_address.t) = object (self)
+class proxy_address (obj : Proxy_address.t) : proxy_address_t = object (self)
 
   method get_destination_hostname : unit -> string =
     fun () ->

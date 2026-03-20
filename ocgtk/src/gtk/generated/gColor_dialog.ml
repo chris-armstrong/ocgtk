@@ -1,7 +1,18 @@
-(* High-level class for ColorDialog *)
-class color_dialog (obj : Color_dialog.t) = object (self)
+class type color_dialog_t = object
+    method choose_rgba_finish : Ocgtk_gio.Gio.async_result_t -> (Ocgtk_gdk.Gdk.rgb_a_t option, GError.t) result
+    method get_modal : unit -> bool
+    method get_title : unit -> string
+    method get_with_alpha : unit -> bool
+    method set_modal : bool -> unit
+    method set_title : string -> unit
+    method set_with_alpha : bool -> unit
+    method as_color_dialog : Color_dialog.t
+end
 
-  method choose_rgba_finish : 'p1. (#Ocgtk_gio.Gio.async_result as 'p1) -> (Ocgtk_gdk.Gdk.rgb_a option, GError.t) result =
+(* High-level class for ColorDialog *)
+class color_dialog (obj : Color_dialog.t) : color_dialog_t = object (self)
+
+  method choose_rgba_finish : Ocgtk_gio.Gio.async_result_t -> (Ocgtk_gdk.Gdk.rgb_a_t option, GError.t) result =
     fun result ->
       let result = result#as_async_result in
       Result.map (fun ret -> Option.map (fun ret -> new Ocgtk_gdk.Gdk.rgb_a ret) ret)(Color_dialog.choose_rgba_finish obj result)

@@ -1,5 +1,4 @@
-class progress_bar : Progress_bar.t ->
-  object
+class type progress_bar_t = object
     method get_ellipsize : unit -> Ocgtk_pango.Pango.ellipsizemode
     method get_fraction : unit -> float
     method get_inverted : unit -> bool
@@ -14,5 +13,7 @@ class progress_bar : Progress_bar.t ->
     method set_show_text : bool -> unit
     method set_text : string option -> unit
     method as_progress_bar : Progress_bar.t
-  end
+end
+
+class progress_bar : Progress_bar.t -> progress_bar_t
 

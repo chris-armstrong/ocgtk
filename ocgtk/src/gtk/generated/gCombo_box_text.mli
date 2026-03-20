@@ -1,5 +1,4 @@
-class combo_box_text : Combo_box_text.t ->
-  object
+class type combo_box_text_t = object
     method append : string option -> string -> unit
     method append_text : string -> unit
     method get_active_text : unit -> string option
@@ -10,5 +9,7 @@ class combo_box_text : Combo_box_text.t ->
     method remove : int -> unit
     method remove_all : unit -> unit
     method as_combo_box_text : Combo_box_text.t
-  end
+end
+
+class combo_box_text : Combo_box_text.t -> combo_box_text_t
 

@@ -1,11 +1,18 @@
+class type conic_gradient_node_t = object
+    method get_angle : unit -> float
+    method get_center : unit -> Ocgtk_graphene.Graphene.point_t
+    method get_rotation : unit -> float
+    method as_conic_gradient_node : Conic_gradient_node.t
+end
+
 (* High-level class for ConicGradientNode *)
-class conic_gradient_node (obj : Conic_gradient_node.t) = object (self)
+class conic_gradient_node (obj : Conic_gradient_node.t) : conic_gradient_node_t = object (self)
 
   method get_angle : unit -> float =
     fun () ->
       (Conic_gradient_node.get_angle obj)
 
-  method get_center : unit -> Ocgtk_graphene.Graphene.point =
+  method get_center : unit -> Ocgtk_graphene.Graphene.point_t =
     fun () ->
       new  Ocgtk_graphene.Graphene.point(Conic_gradient_node.get_center obj)
 

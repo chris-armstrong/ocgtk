@@ -1,5 +1,4 @@
-class adjustment : Adjustment.t ->
-  object
+class type adjustment_t = object
     inherit Gadjustment_signals.adjustment_signals
     method clamp_page : float -> float -> unit
     method configure : float -> float -> float -> float -> float -> float -> unit
@@ -17,5 +16,7 @@ class adjustment : Adjustment.t ->
     method set_upper : float -> unit
     method set_value : float -> unit
     method as_adjustment : Adjustment.t
-  end
+end
+
+class adjustment : Adjustment.t -> adjustment_t
 

@@ -1,10 +1,54 @@
 (* Signal class defined in gcell_renderer_signals.ml *)
 
+class type cell_renderer_t = object
+    inherit Gcell_renderer_signals.cell_renderer_signals
+    method activate : Ocgtk_gdk.Gdk.event_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> string -> Ocgtk_gdk.Gdk.rectangle_t -> Ocgtk_gdk.Gdk.rectangle_t -> Gtk_enums.cellrendererstate -> bool
+    method get_is_expanded : unit -> bool
+    method get_is_expander : unit -> bool
+    method get_request_mode : unit -> Gtk_enums.sizerequestmode
+    method get_sensitive : unit -> bool
+    method get_state : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> Gtk_enums.cellrendererstate -> Gtk_enums.stateflags
+    method get_visible : unit -> bool
+    method is_activatable : unit -> bool
+    method set_alignment : float -> float -> unit
+    method set_fixed_size : int -> int -> unit
+    method set_is_expanded : bool -> unit
+    method set_is_expander : bool -> unit
+    method set_padding : int -> int -> unit
+    method set_sensitive : bool -> unit
+    method set_visible : bool -> unit
+    method snapshot : GSnapshot.snapshot_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> Ocgtk_gdk.Gdk.rectangle_t -> Ocgtk_gdk.Gdk.rectangle_t -> Gtk_enums.cellrendererstate -> unit
+    method start_editing : Ocgtk_gdk.Gdk.event_t option -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> string -> Ocgtk_gdk.Gdk.rectangle_t -> Ocgtk_gdk.Gdk.rectangle_t -> Gtk_enums.cellrendererstate -> GCell_editable.cell_editable_t option
+    method stop_editing : bool -> unit
+    method cell_background : string
+    method set_cell_background : string -> unit
+    method cell_background_rgba : Ocgtk_gdk.Gdk.rgb_a_t
+    method set_cell_background_rgba : Ocgtk_gdk.Gdk.rgb_a_t -> unit
+    method cell_background_set : bool
+    method set_cell_background_set : bool -> unit
+    method editing : bool
+    method height : int
+    method set_height : int -> unit
+    method mode : Gtk_enums.cellrenderermode
+    method set_mode : Gtk_enums.cellrenderermode -> unit
+    method width : int
+    method set_width : int -> unit
+    method xalign : float
+    method set_xalign : float -> unit
+    method xpad : int
+    method set_xpad : int -> unit
+    method yalign : float
+    method set_yalign : float -> unit
+    method ypad : int
+    method set_ypad : int -> unit
+    method as_cell_renderer : Cell_renderer.t
+end
+
 (* High-level class for CellRenderer *)
-class cell_renderer (obj : Cell_renderer.t) = object (self)
+class cell_renderer (obj : Cell_renderer.t) : cell_renderer_t = object (self)
   inherit Gcell_renderer_signals.cell_renderer_signals obj
 
-  method activate : 'p1 'p2 'p3 'p4. (#Ocgtk_gdk.Gdk.event as 'p1) -> (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p2) -> string -> (#Ocgtk_gdk.Gdk.rectangle as 'p3) -> (#Ocgtk_gdk.Gdk.rectangle as 'p4) -> Gtk_enums.cellrendererstate -> bool =
+  method activate : Ocgtk_gdk.Gdk.event_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> string -> Ocgtk_gdk.Gdk.rectangle_t -> Ocgtk_gdk.Gdk.rectangle_t -> Gtk_enums.cellrendererstate -> bool =
     fun event widget path background_area cell_area flags ->
       let event = event#as_event in
       let widget = widget#as_widget in
@@ -28,7 +72,7 @@ class cell_renderer (obj : Cell_renderer.t) = object (self)
     fun () ->
       (Cell_renderer.get_sensitive obj)
 
-  method get_state : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> Gtk_enums.cellrendererstate -> Gtk_enums.stateflags =
+  method get_state : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> Gtk_enums.cellrendererstate -> Gtk_enums.stateflags =
     fun widget cell_state ->
       let widget = Option.map (fun (c) -> c#as_widget) widget in
       (Cell_renderer.get_state obj widget cell_state)
@@ -69,7 +113,7 @@ class cell_renderer (obj : Cell_renderer.t) = object (self)
     fun visible ->
       (Cell_renderer.set_visible obj visible)
 
-  method snapshot : 'p1 'p2 'p3 'p4. (#GSnapshot.snapshot as 'p1) -> (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p2) -> (#Ocgtk_gdk.Gdk.rectangle as 'p3) -> (#Ocgtk_gdk.Gdk.rectangle as 'p4) -> Gtk_enums.cellrendererstate -> unit =
+  method snapshot : GSnapshot.snapshot_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> Ocgtk_gdk.Gdk.rectangle_t -> Ocgtk_gdk.Gdk.rectangle_t -> Gtk_enums.cellrendererstate -> unit =
     fun snapshot widget background_area cell_area flags ->
       let snapshot = snapshot#as_snapshot in
       let widget = widget#as_widget in
@@ -77,7 +121,7 @@ class cell_renderer (obj : Cell_renderer.t) = object (self)
       let cell_area = cell_area#as_rectangle in
       (Cell_renderer.snapshot obj snapshot widget background_area cell_area flags)
 
-  method start_editing : 'p1 'p2 'p3 'p4. (#Ocgtk_gdk.Gdk.event as 'p1) option -> (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p2) -> string -> (#Ocgtk_gdk.Gdk.rectangle as 'p3) -> (#Ocgtk_gdk.Gdk.rectangle as 'p4) -> Gtk_enums.cellrendererstate -> GCell_editable.cell_editable option =
+  method start_editing : Ocgtk_gdk.Gdk.event_t option -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> string -> Ocgtk_gdk.Gdk.rectangle_t -> Ocgtk_gdk.Gdk.rectangle_t -> Gtk_enums.cellrendererstate -> GCell_editable.cell_editable_t option =
     fun event widget path background_area cell_area flags ->
       let event = Option.map (fun (c) -> c#as_event) event in
       let widget = widget#as_widget in
@@ -93,7 +137,7 @@ class cell_renderer (obj : Cell_renderer.t) = object (self)
   method set_cell_background v =  Cell_renderer.set_cell_background obj v
 
   method cell_background_rgba = new Ocgtk_gdk.Gdk.rgb_a (Cell_renderer.get_cell_background_rgba obj)
-  method set_cell_background_rgba : 'a . (#Ocgtk_gdk.Gdk.rgb_a as 'a) -> unit  = fun v ->  Cell_renderer.set_cell_background_rgba obj v#as_rgb_a
+  method set_cell_background_rgba : Ocgtk_gdk.Gdk.rgb_a_t -> unit  = fun v ->  Cell_renderer.set_cell_background_rgba obj v#as_rgb_a
 
   method cell_background_set = Cell_renderer.get_cell_background_set obj
   method set_cell_background_set v =  Cell_renderer.set_cell_background_set obj v

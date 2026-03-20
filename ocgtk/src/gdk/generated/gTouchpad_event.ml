@@ -1,5 +1,13 @@
+class type touchpad_event_t = object
+    method get_gesture_phase : unit -> Gdk_enums.touchpadgesturephase
+    method get_n_fingers : unit -> int
+    method get_pinch_angle_delta : unit -> float
+    method get_pinch_scale : unit -> float
+    method as_touchpad_event : Touchpad_event.t
+end
+
 (* High-level class for TouchpadEvent *)
-class touchpad_event (obj : Touchpad_event.t) = object (self)
+class touchpad_event (obj : Touchpad_event.t) : touchpad_event_t = object (self)
 
   method get_gesture_phase : unit -> Gdk_enums.touchpadgesturephase =
     fun () ->

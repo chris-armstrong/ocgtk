@@ -1,10 +1,23 @@
 (* Signal class defined in gpaintable_signals.ml *)
 
+class type paintable_t = object
+    inherit Gpaintable_signals.paintable_signals
+    method get_current_image : unit -> paintable_t
+    method get_flags : unit -> Gdk_enums.paintableflags
+    method get_intrinsic_aspect_ratio : unit -> float
+    method get_intrinsic_height : unit -> int
+    method get_intrinsic_width : unit -> int
+    method invalidate_contents : unit -> unit
+    method invalidate_size : unit -> unit
+    method snapshot : GSnapshot.snapshot_t -> float -> float -> unit
+    method as_paintable : Paintable.t
+end
+
 (* High-level class for Paintable *)
-class paintable (obj : Paintable.t) = object (self)
+class paintable (obj : Paintable.t) : paintable_t = object (self)
   inherit Gpaintable_signals.paintable_signals obj
 
-  method get_current_image : unit -> paintable =
+  method get_current_image : unit -> paintable_t =
     fun () ->
       new  paintable(Paintable.get_current_image obj)
 
@@ -32,7 +45,7 @@ class paintable (obj : Paintable.t) = object (self)
     fun () ->
       (Paintable.invalidate_size obj)
 
-  method snapshot : 'p1. (#GSnapshot.snapshot as 'p1) -> float -> float -> unit =
+  method snapshot : GSnapshot.snapshot_t -> float -> float -> unit =
     fun snapshot width height ->
       let snapshot = snapshot#as_snapshot in
       (Paintable.snapshot obj snapshot width height)

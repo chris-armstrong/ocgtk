@@ -3,6 +3,26 @@
 
 (** Classes and Interfaces *)
 
+class type box_t = GBox_and__sphere.box_t
+class type euler_t = GEuler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.euler_t
+class type frustum_t = GFrustum.frustum_t
+class type matrix_t = GEuler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.matrix_t
+class type plane_t = GEuler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.plane_t
+class type point_t = GPoint.point_t
+class type point3_d_t = GPoint3_d.point3_d_t
+class type quad_t = GQuad.quad_t
+class type quaternion_t = GEuler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.quaternion_t
+class type ray_t = GEuler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.ray_t
+class type rect_t = GRect.rect_t
+class type simd4_f_t = GSimd4_f.simd4_f_t
+class type simd4_x4_f_t = GSimd4_x4_f.simd4_x4_f_t
+class type size_t = GSize.size_t
+class type sphere_t = GBox_and__sphere.sphere_t
+class type triangle_t = GEuler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.triangle_t
+class type vec2_t = GVec2.vec2_t
+class type vec3_t = GVec3_and__vec4.vec3_t
+class type vec4_t = GVec3_and__vec4.vec4_t
+
 class box = GBox_and__sphere.box
 class euler = GEuler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.euler
 class frustum = GFrustum.frustum

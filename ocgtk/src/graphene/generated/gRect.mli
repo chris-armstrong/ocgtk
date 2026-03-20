@@ -1,5 +1,4 @@
-class rect : Rect.t ->
-  object
+class type rect_t = object
     method contains_point : Point.t -> bool
     method contains_rect : Rect.t -> bool
     method equal : Rect.t -> bool
@@ -16,5 +15,7 @@ class rect : Rect.t ->
     method offset : float -> float -> Rect.t
     method round_to_pixel : unit -> Rect.t
     method as_rect : Rect.t
-  end
+end
+
+class rect : Rect.t -> rect_t
 

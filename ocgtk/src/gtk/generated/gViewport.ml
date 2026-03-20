@@ -1,7 +1,16 @@
-(* High-level class for Viewport *)
-class viewport (obj : Viewport.t) = object (self)
+class type viewport_t = object
+    method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
+    method get_scroll_to_focus : unit -> bool
+    method scroll_to : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> Scroll_info.t option -> unit
+    method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
+    method set_scroll_to_focus : bool -> unit
+    method as_viewport : Viewport.t
+end
 
-  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
+(* High-level class for Viewport *)
+class viewport (obj : Viewport.t) : viewport_t = object (self)
+
+  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option =
     fun () ->
       Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Viewport.get_child obj)
 
@@ -9,12 +18,12 @@ class viewport (obj : Viewport.t) = object (self)
     fun () ->
       (Viewport.get_scroll_to_focus obj)
 
-  method scroll_to : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> Scroll_info.t option -> unit =
+  method scroll_to : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> Scroll_info.t option -> unit =
     fun descendant scroll ->
       let descendant = descendant#as_widget in
       (Viewport.scroll_to obj descendant scroll)
 
-  method set_child : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
+  method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit =
     fun child ->
       let child = Option.map (fun (c) -> c#as_widget) child in
       (Viewport.set_child obj child)

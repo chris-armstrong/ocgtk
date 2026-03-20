@@ -1,6 +1,5 @@
-class alert_dialog : Alert_dialog.t ->
-  object
-    method choose_finish : #Ocgtk_gio.Gio.async_result -> (int, GError.t) result
+class type alert_dialog_t = object
+    method choose_finish : Ocgtk_gio.Gio.async_result_t -> (int, GError.t) result
     method get_buttons : unit -> string array option
     method get_cancel_button : unit -> int
     method get_default_button : unit -> int
@@ -13,7 +12,9 @@ class alert_dialog : Alert_dialog.t ->
     method set_detail : string -> unit
     method set_message : string -> unit
     method set_modal : bool -> unit
-    method show : #GApplication_and__window_and__window_group.window option -> unit
+    method show : GApplication_and__window_and__window_group.window_t option -> unit
     method as_alert_dialog : Alert_dialog.t
-  end
+end
+
+class alert_dialog : Alert_dialog.t -> alert_dialog_t
 

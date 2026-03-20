@@ -1,5 +1,4 @@
-class recent_manager : Recent_manager.t ->
-  object
+class type recent_manager_t = object
     inherit Grecent_manager_signals.recent_manager_signals
     method add_full : string -> Recent_data.t -> bool
     method add_item : string -> bool
@@ -11,5 +10,7 @@ class recent_manager : Recent_manager.t ->
     method filename : string
     method size : int
     method as_recent_manager : Recent_manager.t
-  end
+end
+
+class recent_manager : Recent_manager.t -> recent_manager_t
 

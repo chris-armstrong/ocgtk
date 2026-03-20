@@ -1,7 +1,14 @@
 (* Signal class defined in ggesture_long_press_signals.ml *)
 
+class type gesture_long_press_t = object
+    inherit Ggesture_long_press_signals.gesture_long_press_signals
+    method get_delay_factor : unit -> float
+    method set_delay_factor : float -> unit
+    method as_gesture_long_press : Gesture_long_press.t
+end
+
 (* High-level class for GestureLongPress *)
-class gesture_long_press (obj : Gesture_long_press.t) = object (self)
+class gesture_long_press (obj : Gesture_long_press.t) : gesture_long_press_t = object (self)
   inherit Ggesture_long_press_signals.gesture_long_press_signals obj
 
   method get_delay_factor : unit -> float =

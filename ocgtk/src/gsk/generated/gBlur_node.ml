@@ -1,7 +1,13 @@
-(* High-level class for BlurNode *)
-class blur_node (obj : Blur_node.t) = object (self)
+class type blur_node_t = object
+    method get_child : unit -> GRender_node.render_node_t
+    method get_radius : unit -> float
+    method as_blur_node : Blur_node.t
+end
 
-  method get_child : unit -> GRender_node.render_node =
+(* High-level class for BlurNode *)
+class blur_node (obj : Blur_node.t) : blur_node_t = object (self)
+
+  method get_child : unit -> GRender_node.render_node_t =
     fun () ->
       new  GRender_node.render_node(Blur_node.get_child obj)
 

@@ -1,5 +1,4 @@
-class list_store : List_store.t ->
-  object
+class type list_store_t = object
     method clear : unit -> unit
     method iter_is_valid : Tree_iter.t -> bool
     method move_after : Tree_iter.t -> Tree_iter.t option -> unit
@@ -7,5 +6,7 @@ class list_store : List_store.t ->
     method remove : Tree_iter.t -> bool
     method swap : Tree_iter.t -> Tree_iter.t -> unit
     method as_list_store : List_store.t
-  end
+end
+
+class list_store : List_store.t -> list_store_t
 

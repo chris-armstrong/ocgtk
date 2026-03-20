@@ -1,7 +1,8 @@
-class border : Border.t ->
-  object
+class type border_t = object
     method copy : unit -> Border.t
     method free : unit -> unit
     method as_border : Border.t
-  end
+end
+
+class border : Border.t -> border_t
 

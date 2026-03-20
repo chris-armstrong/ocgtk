@@ -1,5 +1,12 @@
+class type settings_schema_source_t = object
+    method lookup : string -> bool -> Settings_schema.t option
+    method ref : unit -> Settings_schema_source.t
+    method unref : unit -> unit
+    method as_settings_schema_source : Settings_schema_source.t
+end
+
 (* High-level class for SettingsSchemaSource *)
-class settings_schema_source (obj : Settings_schema_source.t) = object (self)
+class settings_schema_source (obj : Settings_schema_source.t) : settings_schema_source_t = object (self)
 
   method lookup : string -> bool -> Settings_schema.t option =
     fun schema_id recursive ->

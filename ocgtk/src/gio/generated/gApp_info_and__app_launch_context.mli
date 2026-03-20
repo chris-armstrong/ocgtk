@@ -1,16 +1,15 @@
 
-class app_info : App_info_and__app_launch_context.App_info.t ->
-  object
+class type app_info_t = object
     method add_supports_type : string -> (bool, GError.t) result
     method can_delete : unit -> bool
     method can_remove_supports_type : unit -> bool
     method delete : unit -> bool
-    method dup : unit -> app_info
+    method dup : unit -> app_info_t
     method get_commandline : unit -> string option
     method get_description : unit -> string option
     method get_display_name : unit -> string
     method get_executable : unit -> string
-    method get_icon : unit -> GIcon.icon option
+    method get_icon : unit -> GIcon.icon_t option
     method get_id : unit -> string option
     method get_name : unit -> string
     method get_supported_types : unit -> string array
@@ -22,13 +21,17 @@ class app_info : App_info_and__app_launch_context.App_info.t ->
     method supports_files : unit -> bool
     method supports_uris : unit -> bool
     method as_app_info : App_info_and__app_launch_context.App_info.t
-  end
+end
 
-and app_launch_context : App_info_and__app_launch_context.App_launch_context.t ->
-  object
+and app_launch_context_t = object
     inherit Gapp_launch_context_signals.app_launch_context_signals
     method launch_failed : string -> unit
     method setenv : string -> string -> unit
     method unsetenv : string -> unit
     method as_app_launch_context : App_info_and__app_launch_context.App_launch_context.t
-  end
+end
+
+
+class app_info : App_info_and__app_launch_context.App_info.t -> app_info_t
+
+and app_launch_context : App_info_and__app_launch_context.App_launch_context.t -> app_launch_context_t

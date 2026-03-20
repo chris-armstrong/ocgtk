@@ -1,7 +1,24 @@
-(* High-level class for InetAddress *)
-class inet_address (obj : Inet_address.t) = object (self)
+class type inet_address_t = object
+    method equal : inet_address_t -> bool
+    method get_family : unit -> Gio_enums.socketfamily
+    method get_is_any : unit -> bool
+    method get_is_link_local : unit -> bool
+    method get_is_loopback : unit -> bool
+    method get_is_mc_global : unit -> bool
+    method get_is_mc_link_local : unit -> bool
+    method get_is_mc_node_local : unit -> bool
+    method get_is_mc_org_local : unit -> bool
+    method get_is_mc_site_local : unit -> bool
+    method get_is_multicast : unit -> bool
+    method get_is_site_local : unit -> bool
+    method to_string : unit -> string
+    method as_inet_address : Inet_address.t
+end
 
-  method equal : 'p1. (<as_inet_address: Inet_address.t; ..> as 'p1) -> bool =
+(* High-level class for InetAddress *)
+class inet_address (obj : Inet_address.t) : inet_address_t = object (self)
+
+  method equal : inet_address_t -> bool =
     fun other_address ->
       let other_address = other_address#as_inet_address in
       (Inet_address.equal obj other_address)

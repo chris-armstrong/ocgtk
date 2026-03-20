@@ -1,16 +1,24 @@
+class type cell_area_box_t = object
+    method get_spacing : unit -> int
+    method pack_end : GCell_renderer.cell_renderer_t -> bool -> bool -> bool -> unit
+    method pack_start : GCell_renderer.cell_renderer_t -> bool -> bool -> bool -> unit
+    method set_spacing : int -> unit
+    method as_cell_area_box : Cell_area_box.t
+end
+
 (* High-level class for CellAreaBox *)
-class cell_area_box (obj : Cell_area_box.t) = object (self)
+class cell_area_box (obj : Cell_area_box.t) : cell_area_box_t = object (self)
 
   method get_spacing : unit -> int =
     fun () ->
       (Cell_area_box.get_spacing obj)
 
-  method pack_end : 'p1. (#GCell_renderer.cell_renderer as 'p1) -> bool -> bool -> bool -> unit =
+  method pack_end : GCell_renderer.cell_renderer_t -> bool -> bool -> bool -> unit =
     fun renderer expand align fixed ->
       let renderer = renderer#as_cell_renderer in
       (Cell_area_box.pack_end obj renderer expand align fixed)
 
-  method pack_start : 'p1. (#GCell_renderer.cell_renderer as 'p1) -> bool -> bool -> bool -> unit =
+  method pack_start : GCell_renderer.cell_renderer_t -> bool -> bool -> bool -> unit =
     fun renderer expand align fixed ->
       let renderer = renderer#as_cell_renderer in
       (Cell_area_box.pack_start obj renderer expand align fixed)

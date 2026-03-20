@@ -1,5 +1,18 @@
+class type print_dialog_t = object
+    method get_accept_label : unit -> string
+    method get_modal : unit -> bool
+    method get_title : unit -> string
+    method print_file_finish : Ocgtk_gio.Gio.async_result_t -> (bool, GError.t) result
+    method print_finish : Ocgtk_gio.Gio.async_result_t -> (Ocgtk_gio.Gio.output_stream_t option, GError.t) result
+    method set_accept_label : string -> unit
+    method set_modal : bool -> unit
+    method set_title : string -> unit
+    method setup_finish : Ocgtk_gio.Gio.async_result_t -> (Print_setup.t option, GError.t) result
+    method as_print_dialog : Print_dialog.t
+end
+
 (* High-level class for PrintDialog *)
-class print_dialog (obj : Print_dialog.t) = object (self)
+class print_dialog (obj : Print_dialog.t) : print_dialog_t = object (self)
 
   method get_accept_label : unit -> string =
     fun () ->
@@ -13,12 +26,12 @@ class print_dialog (obj : Print_dialog.t) = object (self)
     fun () ->
       (Print_dialog.get_title obj)
 
-  method print_file_finish : 'p1. (#Ocgtk_gio.Gio.async_result as 'p1) -> (bool, GError.t) result =
+  method print_file_finish : Ocgtk_gio.Gio.async_result_t -> (bool, GError.t) result =
     fun result ->
       let result = result#as_async_result in
       (Print_dialog.print_file_finish obj result)
 
-  method print_finish : 'p1. (#Ocgtk_gio.Gio.async_result as 'p1) -> (Ocgtk_gio.Gio.output_stream option, GError.t) result =
+  method print_finish : Ocgtk_gio.Gio.async_result_t -> (Ocgtk_gio.Gio.output_stream_t option, GError.t) result =
     fun result ->
       let result = result#as_async_result in
       Result.map (fun ret -> Option.map (fun ret -> new Ocgtk_gio.Gio.output_stream ret) ret)(Print_dialog.print_finish obj result)
@@ -35,7 +48,7 @@ class print_dialog (obj : Print_dialog.t) = object (self)
     fun title ->
       (Print_dialog.set_title obj title)
 
-  method setup_finish : 'p1. (#Ocgtk_gio.Gio.async_result as 'p1) -> (Print_setup.t option, GError.t) result =
+  method setup_finish : Ocgtk_gio.Gio.async_result_t -> (Print_setup.t option, GError.t) result =
     fun result ->
       let result = result#as_async_result in
       (Print_dialog.setup_finish obj result)

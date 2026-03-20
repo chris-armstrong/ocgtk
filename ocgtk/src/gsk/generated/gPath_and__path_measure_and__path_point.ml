@@ -1,8 +1,40 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined classes for cyclic dependencies *)
-class path (obj : Path_and__path_measure_and__path_point.Path.t) = object (self)
 
-  method in_fill : 'p1. (#Ocgtk_graphene.Graphene.point as 'p1) -> Gsk_enums.fillrule -> bool =
+class type path_t = object
+    method in_fill : Ocgtk_graphene.Graphene.point_t -> Gsk_enums.fillrule -> bool
+    method is_closed : unit -> bool
+    method is_empty : unit -> bool
+    method ref : unit -> Path_and__path_measure_and__path_point.Path.t
+    method to_cairo : Ocgtk_cairo.Cairo.context_t -> unit
+    method to_string : unit -> string
+    method unref : unit -> unit
+    method as_path : Path_and__path_measure_and__path_point.Path.t
+end
+
+and path_measure_t = object
+    method get_length : unit -> float
+    method get_path : unit -> Path_and__path_measure_and__path_point.Path.t
+    method get_tolerance : unit -> float
+    method ref : unit -> Path_and__path_measure_and__path_point.Path_measure.t
+    method unref : unit -> unit
+    method as_path_measure : Path_and__path_measure_and__path_point.Path_measure.t
+end
+
+and path_point_t = object
+    method compare : Path_and__path_measure_and__path_point.Path_point.t -> int
+    method copy : unit -> Path_and__path_measure_and__path_point.Path_point.t
+    method equal : Path_and__path_measure_and__path_point.Path_point.t -> bool
+    method free : unit -> unit
+    method get_distance : Path_and__path_measure_and__path_point.Path_measure.t -> float
+    method get_rotation : Path_and__path_measure_and__path_point.Path.t -> Gsk_enums.pathdirection -> float
+    method as_path_point : Path_and__path_measure_and__path_point.Path_point.t
+end
+
+
+class path (obj : Path_and__path_measure_and__path_point.Path.t) : path_t = object (self)
+
+  method in_fill : Ocgtk_graphene.Graphene.point_t -> Gsk_enums.fillrule -> bool =
     fun point fill_rule ->
       let point = point#as_point in
       (Path_and__path_measure_and__path_point.Path.in_fill obj point fill_rule)
@@ -19,7 +51,7 @@ class path (obj : Path_and__path_measure_and__path_point.Path.t) = object (self)
     fun () ->
       (Path_and__path_measure_and__path_point.Path.ref obj)
 
-  method to_cairo : 'p1. (#Ocgtk_cairo.Cairo.context as 'p1) -> unit =
+  method to_cairo : Ocgtk_cairo.Cairo.context_t -> unit =
     fun cr ->
       let cr = cr#as_context in
       (Path_and__path_measure_and__path_point.Path.to_cairo obj cr)
@@ -35,7 +67,7 @@ class path (obj : Path_and__path_measure_and__path_point.Path.t) = object (self)
     method as_path = obj
 end
 
-and path_measure (obj : Path_and__path_measure_and__path_point.Path_measure.t) = object (self)
+and path_measure (obj : Path_and__path_measure_and__path_point.Path_measure.t) : path_measure_t = object (self)
 
   method get_length : unit -> float =
     fun () ->
@@ -60,7 +92,7 @@ and path_measure (obj : Path_and__path_measure_and__path_point.Path_measure.t) =
     method as_path_measure = obj
 end
 
-and path_point (obj : Path_and__path_measure_and__path_point.Path_point.t) = object (self)
+and path_point (obj : Path_and__path_measure_and__path_point.Path_point.t) : path_point_t = object (self)
 
   method compare : Path_and__path_measure_and__path_point.Path_point.t -> int =
     fun point2 ->

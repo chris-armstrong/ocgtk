@@ -1,8 +1,9 @@
-class unix_input_stream : Unix_input_stream.t ->
-  object
+class type unix_input_stream_t = object
     method get_close_fd : unit -> bool
     method get_fd : unit -> int
     method set_close_fd : bool -> unit
     method as_unix_input_stream : Unix_input_stream.t
-  end
+end
+
+class unix_input_stream : Unix_input_stream.t -> unix_input_stream_t
 

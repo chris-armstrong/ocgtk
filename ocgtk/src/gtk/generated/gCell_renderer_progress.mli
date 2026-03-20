@@ -1,5 +1,4 @@
-class cell_renderer_progress : Cell_renderer_progress.t ->
-  object
+class type cell_renderer_progress_t = object
     method inverted : bool
     method set_inverted : bool -> unit
     method pulse : int
@@ -13,5 +12,7 @@ class cell_renderer_progress : Cell_renderer_progress.t ->
     method value : int
     method set_value : int -> unit
     method as_cell_renderer_progress : Cell_renderer_progress.t
-  end
+end
+
+class cell_renderer_progress : Cell_renderer_progress.t -> cell_renderer_progress_t
 

@@ -1,5 +1,18 @@
+class type combo_box_text_t = object
+    method append : string option -> string -> unit
+    method append_text : string -> unit
+    method get_active_text : unit -> string option
+    method insert : int -> string option -> string -> unit
+    method insert_text : int -> string -> unit
+    method prepend : string option -> string -> unit
+    method prepend_text : string -> unit
+    method remove : int -> unit
+    method remove_all : unit -> unit
+    method as_combo_box_text : Combo_box_text.t
+end
+
 (* High-level class for ComboBoxText *)
-class combo_box_text (obj : Combo_box_text.t) = object (self)
+class combo_box_text (obj : Combo_box_text.t) : combo_box_text_t = object (self)
 
   method append : string option -> string -> unit =
     fun id text ->

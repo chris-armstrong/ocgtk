@@ -1,7 +1,20 @@
-(* High-level class for TlsCertificate *)
-class tls_certificate (obj : Tls_certificate.t) = object (self)
+class type tls_certificate_t = object
+    method get_issuer : unit -> tls_certificate_t option
+    method get_issuer_name : unit -> string option
+    method get_subject_name : unit -> string option
+    method is_same : tls_certificate_t -> bool
+    method certificate_pem : string
+    method password : string
+    method pkcs11_uri : string
+    method private_key_pem : string
+    method private_key_pkcs11_uri : string
+    method as_tls_certificate : Tls_certificate.t
+end
 
-  method get_issuer : unit -> tls_certificate option =
+(* High-level class for TlsCertificate *)
+class tls_certificate (obj : Tls_certificate.t) : tls_certificate_t = object (self)
+
+  method get_issuer : unit -> tls_certificate_t option =
     fun () ->
       Option.map (fun ret -> new tls_certificate ret) (Tls_certificate.get_issuer obj)
 
@@ -13,7 +26,7 @@ class tls_certificate (obj : Tls_certificate.t) = object (self)
     fun () ->
       (Tls_certificate.get_subject_name obj)
 
-  method is_same : 'p1. (<as_tls_certificate: Tls_certificate.t; ..> as 'p1) -> bool =
+  method is_same : tls_certificate_t -> bool =
     fun cert_two ->
       let cert_two = cert_two#as_tls_certificate in
       (Tls_certificate.is_same obj cert_two)

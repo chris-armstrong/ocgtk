@@ -1,5 +1,4 @@
-class statusbar : Statusbar.t ->
-  object
+class type statusbar_t = object
     inherit Gstatusbar_signals.statusbar_signals
     method get_context_id : string -> int
     method pop : int -> unit
@@ -7,5 +6,7 @@ class statusbar : Statusbar.t ->
     method remove : int -> int -> unit
     method remove_all : int -> unit
     method as_statusbar : Statusbar.t
-  end
+end
+
+class statusbar : Statusbar.t -> statusbar_t
 

@@ -1,5 +1,4 @@
-class content_formats : Content_formats.t ->
-  object
+class type content_formats_t = object
     method contain_mime_type : string -> bool
     method match_ : Content_formats.t -> bool
     method match_mime_type : Content_formats.t -> string option
@@ -12,5 +11,7 @@ class content_formats : Content_formats.t ->
     method union_serialize_mime_types : unit -> Content_formats.t
     method unref : unit -> unit
     method as_content_formats : Content_formats.t
-  end
+end
+
+class content_formats : Content_formats.t -> content_formats_t
 

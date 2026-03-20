@@ -1,11 +1,19 @@
+class type app_chooser_dialog_t = object
+    method get_heading : unit -> string option
+    method get_widget : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    method set_heading : string -> unit
+    method gfile : Ocgtk_gio.Gio.file_t
+    method as_app_chooser_dialog : App_chooser_dialog.t
+end
+
 (* High-level class for AppChooserDialog *)
-class app_chooser_dialog (obj : App_chooser_dialog.t) = object (self)
+class app_chooser_dialog (obj : App_chooser_dialog.t) : app_chooser_dialog_t = object (self)
 
   method get_heading : unit -> string option =
     fun () ->
       (App_chooser_dialog.get_heading obj)
 
-  method get_widget : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget =
+  method get_widget : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t =
     fun () ->
       new  GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget(App_chooser_dialog.get_widget obj)
 

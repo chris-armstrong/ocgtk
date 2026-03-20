@@ -1,33 +1,51 @@
 (* Signal class defined in ggesture_signals.ml *)
 
+class type gesture_t = object
+    inherit Ggesture_signals.gesture_signals
+    method get_device : unit -> Ocgtk_gdk.Gdk.device_t option
+    method get_last_event : Ocgtk_gdk.Gdk.event_sequence_t option -> Ocgtk_gdk.Gdk.event_t option
+    method get_last_updated_sequence : unit -> Ocgtk_gdk.Gdk.event_sequence_t option
+    method get_sequence_state : Ocgtk_gdk.Gdk.event_sequence_t -> Gtk_enums.eventsequencestate
+    method group : gesture_t -> unit
+    method handles_sequence : Ocgtk_gdk.Gdk.event_sequence_t option -> bool
+    method is_active : unit -> bool
+    method is_grouped_with : gesture_t -> bool
+    method is_recognized : unit -> bool
+    method set_sequence_state : Ocgtk_gdk.Gdk.event_sequence_t -> Gtk_enums.eventsequencestate -> bool
+    method set_state : Gtk_enums.eventsequencestate -> bool
+    method ungroup : unit -> unit
+    method n_points : int
+    method as_gesture : Gesture.t
+end
+
 (* High-level class for Gesture *)
-class gesture (obj : Gesture.t) = object (self)
+class gesture (obj : Gesture.t) : gesture_t = object (self)
   inherit Ggesture_signals.gesture_signals obj
 
-  method get_device : unit -> Ocgtk_gdk.Gdk.device option =
+  method get_device : unit -> Ocgtk_gdk.Gdk.device_t option =
     fun () ->
       Option.map (fun ret -> new Ocgtk_gdk.Gdk.device ret) (Gesture.get_device obj)
 
-  method get_last_event : 'p1. (#Ocgtk_gdk.Gdk.event_sequence as 'p1) option -> Ocgtk_gdk.Gdk.event option =
+  method get_last_event : Ocgtk_gdk.Gdk.event_sequence_t option -> Ocgtk_gdk.Gdk.event_t option =
     fun sequence ->
       let sequence = Option.map (fun (c) -> c#as_event_sequence) sequence in
       Option.map (fun ret -> new Ocgtk_gdk.Gdk.event ret) (Gesture.get_last_event obj sequence)
 
-  method get_last_updated_sequence : unit -> Ocgtk_gdk.Gdk.event_sequence option =
+  method get_last_updated_sequence : unit -> Ocgtk_gdk.Gdk.event_sequence_t option =
     fun () ->
       Option.map (fun ret -> new Ocgtk_gdk.Gdk.event_sequence ret) (Gesture.get_last_updated_sequence obj)
 
-  method get_sequence_state : 'p1. (#Ocgtk_gdk.Gdk.event_sequence as 'p1) -> Gtk_enums.eventsequencestate =
+  method get_sequence_state : Ocgtk_gdk.Gdk.event_sequence_t -> Gtk_enums.eventsequencestate =
     fun sequence ->
       let sequence = sequence#as_event_sequence in
       (Gesture.get_sequence_state obj sequence)
 
-  method group : 'p1. (<as_gesture: Gesture.t; ..> as 'p1) -> unit =
+  method group : gesture_t -> unit =
     fun gesture ->
       let gesture = gesture#as_gesture in
       (Gesture.group obj gesture)
 
-  method handles_sequence : 'p1. (#Ocgtk_gdk.Gdk.event_sequence as 'p1) option -> bool =
+  method handles_sequence : Ocgtk_gdk.Gdk.event_sequence_t option -> bool =
     fun sequence ->
       let sequence = Option.map (fun (c) -> c#as_event_sequence) sequence in
       (Gesture.handles_sequence obj sequence)
@@ -36,7 +54,7 @@ class gesture (obj : Gesture.t) = object (self)
     fun () ->
       (Gesture.is_active obj)
 
-  method is_grouped_with : 'p1. (<as_gesture: Gesture.t; ..> as 'p1) -> bool =
+  method is_grouped_with : gesture_t -> bool =
     fun other ->
       let other = other#as_gesture in
       (Gesture.is_grouped_with obj other)
@@ -45,7 +63,7 @@ class gesture (obj : Gesture.t) = object (self)
     fun () ->
       (Gesture.is_recognized obj)
 
-  method set_sequence_state : 'p1. (#Ocgtk_gdk.Gdk.event_sequence as 'p1) -> Gtk_enums.eventsequencestate -> bool =
+  method set_sequence_state : Ocgtk_gdk.Gdk.event_sequence_t -> Gtk_enums.eventsequencestate -> bool =
     fun sequence state ->
       let sequence = sequence#as_event_sequence in
       (Gesture.set_sequence_state obj sequence state)

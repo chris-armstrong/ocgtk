@@ -1,5 +1,16 @@
+class type key_event_t = object
+    method get_consumed_modifiers : unit -> Gdk_enums.modifiertype
+    method get_keycode : unit -> int
+    method get_keyval : unit -> int
+    method get_layout : unit -> int
+    method get_level : unit -> int
+    method is_modifier : unit -> bool
+    method matches : int -> Gdk_enums.modifiertype -> Gdk_enums.keymatch
+    method as_key_event : Key_event.t
+end
+
 (* High-level class for KeyEvent *)
-class key_event (obj : Key_event.t) = object (self)
+class key_event (obj : Key_event.t) : key_event_t = object (self)
 
   method get_consumed_modifiers : unit -> Gdk_enums.modifiertype =
     fun () ->

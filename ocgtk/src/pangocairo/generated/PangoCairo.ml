@@ -3,6 +3,9 @@
 
 (** Classes and Interfaces *)
 
+class type font_t = GFont.font_t
+class type font_map_t = GFont_map.font_map_t
+
 class font = GFont.font
 class font_map = GFont_map.font_map
 

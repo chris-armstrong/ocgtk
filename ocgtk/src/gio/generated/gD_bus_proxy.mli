@@ -1,8 +1,7 @@
-class d_bus_proxy : D_bus_proxy.t ->
-  object
+class type d_bus_proxy_t = object
     inherit Gd_bus_proxy_signals.d_bus_proxy_signals
     method get_cached_property_names : unit -> string array option
-    method get_connection : unit -> GD_bus_connection.d_bus_connection
+    method get_connection : unit -> GD_bus_connection.d_bus_connection_t
     method get_default_timeout : unit -> int
     method get_flags : unit -> Gio_enums.dbusproxyflags
     method get_interface_info : unit -> D_bus_interface_info.t option
@@ -13,7 +12,7 @@ class d_bus_proxy : D_bus_proxy.t ->
     method set_default_timeout : int -> unit
     method set_interface_info : D_bus_interface_info.t option -> unit
     method g_bus_type : Gio_enums.bustype
-    method g_connection : GD_bus_connection.d_bus_connection
+    method g_connection : GD_bus_connection.d_bus_connection_t
     method g_default_timeout : int
     method set_g_default_timeout : int -> unit
     method g_flags : Gio_enums.dbusproxyflags
@@ -24,5 +23,7 @@ class d_bus_proxy : D_bus_proxy.t ->
     method g_name_owner : string
     method g_object_path : string
     method as_d_bus_proxy : D_bus_proxy.t
-  end
+end
+
+class d_bus_proxy : D_bus_proxy.t -> d_bus_proxy_t
 

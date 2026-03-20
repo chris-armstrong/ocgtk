@@ -1,5 +1,6 @@
-class io_stream_adapter : Io_stream_adapter.t ->
-  object
+class type io_stream_adapter_t = object
     method as_io_stream_adapter : Io_stream_adapter.t
-  end
+end
+
+class io_stream_adapter : Io_stream_adapter.t -> io_stream_adapter_t
 

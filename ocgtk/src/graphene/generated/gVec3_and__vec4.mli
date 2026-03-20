@@ -1,6 +1,5 @@
 
-class vec3 : Vec3_and__vec4.Vec3.t ->
-  object
+class type vec3_t = object
     method dot : Vec3_and__vec4.Vec3.t -> float
     method equal : Vec3_and__vec4.Vec3.t -> bool
     method free : unit -> unit
@@ -13,10 +12,9 @@ class vec3 : Vec3_and__vec4.Vec3.t ->
     method length : unit -> float
     method near : Vec3_and__vec4.Vec3.t -> float -> bool
     method as_vec3 : Vec3_and__vec4.Vec3.t
-  end
+end
 
-and vec4 : Vec3_and__vec4.Vec4.t ->
-  object
+and vec4_t = object
     method dot : Vec3_and__vec4.Vec4.t -> float
     method equal : Vec3_and__vec4.Vec4.t -> bool
     method free : unit -> unit
@@ -32,4 +30,9 @@ and vec4 : Vec3_and__vec4.Vec4.t ->
     method length : unit -> float
     method near : Vec3_and__vec4.Vec4.t -> float -> bool
     method as_vec4 : Vec3_and__vec4.Vec4.t
-  end
+end
+
+
+class vec3 : Vec3_and__vec4.Vec3.t -> vec3_t
+
+and vec4 : Vec3_and__vec4.Vec4.t -> vec4_t

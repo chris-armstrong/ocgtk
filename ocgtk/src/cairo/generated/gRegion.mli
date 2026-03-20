@@ -1,5 +1,6 @@
-class region : Region.t ->
-  object
+class type region_t = object
     method as_region : Region.t
-  end
+end
+
+class region : Region.t -> region_t
 

@@ -1,5 +1,6 @@
-class delete_event : Delete_event.t ->
-  object
+class type delete_event_t = object
     method as_delete_event : Delete_event.t
-  end
+end
+
+class delete_event : Delete_event.t -> delete_event_t
 

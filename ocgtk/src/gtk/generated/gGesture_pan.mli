@@ -1,8 +1,9 @@
-class gesture_pan : Gesture_pan.t ->
-  object
+class type gesture_pan_t = object
     inherit Ggesture_pan_signals.gesture_pan_signals
     method get_orientation : unit -> Gtk_enums.orientation
     method set_orientation : Gtk_enums.orientation -> unit
     method as_gesture_pan : Gesture_pan.t
-  end
+end
+
+class gesture_pan : Gesture_pan.t -> gesture_pan_t
 

@@ -1,5 +1,4 @@
-class grid_layout : Grid_layout.t ->
-  object
+class type grid_layout_t = object
     method get_baseline_row : unit -> int
     method get_column_homogeneous : unit -> bool
     method get_column_spacing : unit -> int
@@ -13,5 +12,7 @@ class grid_layout : Grid_layout.t ->
     method set_row_homogeneous : bool -> unit
     method set_row_spacing : int -> unit
     method as_grid_layout : Grid_layout.t
-  end
+end
+
+class grid_layout : Grid_layout.t -> grid_layout_t
 

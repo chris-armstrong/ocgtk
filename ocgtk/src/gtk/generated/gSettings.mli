@@ -1,5 +1,4 @@
-class settings : Settings.t ->
-  object
+class type settings_t = object
     method reset_property : string -> unit
     method gtk_alternative_button_order : bool
     method set_gtk_alternative_button_order : bool -> unit
@@ -104,5 +103,7 @@ class settings : Settings.t ->
     method gtk_xft_rgba : string
     method set_gtk_xft_rgba : string -> unit
     method as_settings : Settings.t
-  end
+end
+
+class settings : Settings.t -> settings_t
 

@@ -1,11 +1,17 @@
-(* High-level class for ClipNode *)
-class clip_node (obj : Clip_node.t) = object (self)
+class type clip_node_t = object
+    method get_child : unit -> GRender_node.render_node_t
+    method get_clip : unit -> Ocgtk_graphene.Graphene.rect_t
+    method as_clip_node : Clip_node.t
+end
 
-  method get_child : unit -> GRender_node.render_node =
+(* High-level class for ClipNode *)
+class clip_node (obj : Clip_node.t) : clip_node_t = object (self)
+
+  method get_child : unit -> GRender_node.render_node_t =
     fun () ->
       new  GRender_node.render_node(Clip_node.get_child obj)
 
-  method get_clip : unit -> Ocgtk_graphene.Graphene.rect =
+  method get_clip : unit -> Ocgtk_graphene.Graphene.rect_t =
     fun () ->
       new  Ocgtk_graphene.Graphene.rect(Clip_node.get_clip obj)
 

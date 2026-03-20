@@ -1,5 +1,12 @@
+class type frame_timings_t = object
+    method get_complete : unit -> bool
+    method ref : unit -> Frame_timings.t
+    method unref : unit -> unit
+    method as_frame_timings : Frame_timings.t
+end
+
 (* High-level class for FrameTimings *)
-class frame_timings (obj : Frame_timings.t) = object (self)
+class frame_timings (obj : Frame_timings.t) : frame_timings_t = object (self)
 
   method get_complete : unit -> bool =
     fun () ->

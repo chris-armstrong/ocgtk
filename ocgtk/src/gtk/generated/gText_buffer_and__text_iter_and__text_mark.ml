@@ -1,21 +1,182 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined classes for cyclic dependencies *)
+
+class type text_buffer_t = object
+    inherit Gtext_buffer_signals.text_buffer_signals
+    method add_mark : text_mark_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
+    method add_selection_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> unit
+    method apply_tag : GText_tag.text_tag_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
+    method apply_tag_by_name : string -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
+    method backspace : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> bool -> bool
+    method begin_irreversible_action : unit -> unit
+    method begin_user_action : unit -> unit
+    method copy_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> unit
+    method create_child_anchor : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> GText_child_anchor.text_child_anchor_t
+    method create_mark : string option -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> text_mark_t
+    method cut_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> bool -> unit
+    method delete : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
+    method delete_interactive : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> bool
+    method delete_mark : text_mark_t -> unit
+    method delete_mark_by_name : string -> unit
+    method delete_selection : bool -> bool -> bool
+    method end_irreversible_action : unit -> unit
+    method end_user_action : unit -> unit
+    method get_can_redo : unit -> bool
+    method get_can_undo : unit -> bool
+    method get_char_count : unit -> int
+    method get_enable_undo : unit -> bool
+    method get_has_selection : unit -> bool
+    method get_insert : unit -> text_mark_t
+    method get_line_count : unit -> int
+    method get_mark : string -> text_mark_t option
+    method get_max_undo_levels : unit -> int
+    method get_modified : unit -> bool
+    method get_selection_bound : unit -> text_mark_t
+    method get_selection_content : unit -> Ocgtk_gdk.Gdk.content_provider_t
+    method get_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> string
+    method get_tag_table : unit -> GText_tag_table.text_tag_table_t
+    method get_text : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> string
+    method insert : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string -> int -> unit
+    method insert_at_cursor : string -> int -> unit
+    method insert_child_anchor : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> GText_child_anchor.text_child_anchor_t -> unit
+    method insert_interactive : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string -> int -> bool -> bool
+    method insert_interactive_at_cursor : string -> int -> bool -> bool
+    method insert_markup : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string -> int -> unit
+    method insert_paintable : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Ocgtk_gdk.Gdk.paintable_t -> unit
+    method insert_range : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
+    method insert_range_interactive : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> bool
+    method move_mark : text_mark_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
+    method move_mark_by_name : string -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
+    method paste_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t option -> bool -> unit
+    method place_cursor : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
+    method redo : unit -> unit
+    method remove_all_tags : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
+    method remove_selection_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> unit
+    method remove_tag : GText_tag.text_tag_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
+    method remove_tag_by_name : string -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
+    method select_range : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
+    method set_enable_undo : bool -> unit
+    method set_max_undo_levels : int -> unit
+    method set_modified : bool -> unit
+    method set_text : string -> int -> unit
+    method undo : unit -> unit
+    method cursor_position : int
+    method as_text_buffer : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
+end
+
+and text_iter_t = object
+    method assign : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
+    method backward_char : unit -> bool
+    method backward_chars : int -> bool
+    method backward_cursor_position : unit -> bool
+    method backward_cursor_positions : int -> bool
+    method backward_line : unit -> bool
+    method backward_lines : int -> bool
+    method backward_sentence_start : unit -> bool
+    method backward_sentence_starts : int -> bool
+    method backward_to_tag_toggle : GText_tag.text_tag_t option -> bool
+    method backward_visible_cursor_position : unit -> bool
+    method backward_visible_cursor_positions : int -> bool
+    method backward_visible_line : unit -> bool
+    method backward_visible_lines : int -> bool
+    method backward_visible_word_start : unit -> bool
+    method backward_visible_word_starts : int -> bool
+    method backward_word_start : unit -> bool
+    method backward_word_starts : int -> bool
+    method can_insert : bool -> bool
+    method compare : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> int
+    method copy : unit -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t
+    method editable : bool -> bool
+    method ends_line : unit -> bool
+    method ends_sentence : unit -> bool
+    method ends_tag : GText_tag.text_tag_t option -> bool
+    method ends_word : unit -> bool
+    method equal : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool
+    method forward_char : unit -> bool
+    method forward_chars : int -> bool
+    method forward_cursor_position : unit -> bool
+    method forward_cursor_positions : int -> bool
+    method forward_line : unit -> bool
+    method forward_lines : int -> bool
+    method forward_sentence_end : unit -> bool
+    method forward_sentence_ends : int -> bool
+    method forward_to_end : unit -> unit
+    method forward_to_line_end : unit -> bool
+    method forward_to_tag_toggle : GText_tag.text_tag_t option -> bool
+    method forward_visible_cursor_position : unit -> bool
+    method forward_visible_cursor_positions : int -> bool
+    method forward_visible_line : unit -> bool
+    method forward_visible_lines : int -> bool
+    method forward_visible_word_end : unit -> bool
+    method forward_visible_word_ends : int -> bool
+    method forward_word_end : unit -> bool
+    method forward_word_ends : int -> bool
+    method free : unit -> unit
+    method get_buffer : unit -> text_buffer_t
+    method get_bytes_in_line : unit -> int
+    method get_chars_in_line : unit -> int
+    method get_child_anchor : unit -> GText_child_anchor.text_child_anchor_t option
+    method get_language : unit -> Ocgtk_pango.Pango.language_t
+    method get_line : unit -> int
+    method get_line_index : unit -> int
+    method get_line_offset : unit -> int
+    method get_offset : unit -> int
+    method get_paintable : unit -> Ocgtk_gdk.Gdk.paintable_t option
+    method get_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
+    method get_text : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
+    method get_visible_line_index : unit -> int
+    method get_visible_line_offset : unit -> int
+    method get_visible_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
+    method get_visible_text : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
+    method has_tag : GText_tag.text_tag_t -> bool
+    method in_range : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool
+    method inside_sentence : unit -> bool
+    method inside_word : unit -> bool
+    method is_cursor_position : unit -> bool
+    method is_end : unit -> bool
+    method is_start : unit -> bool
+    method order : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
+    method set_line : int -> unit
+    method set_line_index : int -> unit
+    method set_line_offset : int -> unit
+    method set_offset : int -> unit
+    method set_visible_line_index : int -> unit
+    method set_visible_line_offset : int -> unit
+    method starts_line : unit -> bool
+    method starts_sentence : unit -> bool
+    method starts_tag : GText_tag.text_tag_t option -> bool
+    method starts_word : unit -> bool
+    method toggles_tag : GText_tag.text_tag_t option -> bool
+    method as_text_iter : Text_buffer_and__text_iter_and__text_mark.Text_iter.t
+end
+
+and text_mark_t = object
+    method get_buffer : unit -> text_buffer_t option
+    method get_deleted : unit -> bool
+    method get_left_gravity : unit -> bool
+    method get_name : unit -> string option
+    method get_visible : unit -> bool
+    method set_visible : bool -> unit
+    method as_text_mark : Text_buffer_and__text_iter_and__text_mark.Text_mark.t
+end
+
+
 (* Signal class defined in gtext_buffer_signals.ml *)
 
-class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t) = object (self)
+class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t) : text_buffer_t = object (self)
   inherit Gtext_buffer_signals.text_buffer_signals obj
 
-  method add_mark : 'p1. (<as_text_mark: Text_buffer_and__text_iter_and__text_mark.Text_mark.t; ..> as 'p1) -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit =
+  method add_mark : text_mark_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit =
     fun mark where ->
       let mark = mark#as_text_mark in
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.add_mark obj mark where)
 
-  method add_selection_clipboard : 'p1. (#Ocgtk_gdk.Gdk.clipboard as 'p1) -> unit =
+  method add_selection_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> unit =
     fun clipboard ->
       let clipboard = clipboard#as_clipboard in
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.add_selection_clipboard obj clipboard)
 
-  method apply_tag : 'p1. (#GText_tag.text_tag as 'p1) -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit =
+  method apply_tag : GText_tag.text_tag_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit =
     fun tag start end_ ->
       let tag = tag#as_text_tag in
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.apply_tag obj tag start end_)
@@ -36,20 +197,20 @@ class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
     fun () ->
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.begin_user_action obj)
 
-  method copy_clipboard : 'p1. (#Ocgtk_gdk.Gdk.clipboard as 'p1) -> unit =
+  method copy_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> unit =
     fun clipboard ->
       let clipboard = clipboard#as_clipboard in
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.copy_clipboard obj clipboard)
 
-  method create_child_anchor : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> GText_child_anchor.text_child_anchor =
+  method create_child_anchor : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> GText_child_anchor.text_child_anchor_t =
     fun iter ->
       new  GText_child_anchor.text_child_anchor(Text_buffer_and__text_iter_and__text_mark.Text_buffer.create_child_anchor obj iter)
 
-  method create_mark : string option -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> text_mark =
+  method create_mark : string option -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> text_mark_t =
     fun mark_name where left_gravity ->
       new  text_mark(Text_buffer_and__text_iter_and__text_mark.Text_buffer.create_mark obj mark_name where left_gravity)
 
-  method cut_clipboard : 'p1. (#Ocgtk_gdk.Gdk.clipboard as 'p1) -> bool -> unit =
+  method cut_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> bool -> unit =
     fun clipboard default_editable ->
       let clipboard = clipboard#as_clipboard in
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.cut_clipboard obj clipboard default_editable)
@@ -62,7 +223,7 @@ class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
     fun start_iter end_iter default_editable ->
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.delete_interactive obj start_iter end_iter default_editable)
 
-  method delete_mark : 'p1. (<as_text_mark: Text_buffer_and__text_iter_and__text_mark.Text_mark.t; ..> as 'p1) -> unit =
+  method delete_mark : text_mark_t -> unit =
     fun mark ->
       let mark = mark#as_text_mark in
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.delete_mark obj mark)
@@ -103,7 +264,7 @@ class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
     fun () ->
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_has_selection obj)
 
-  method get_insert : unit -> text_mark =
+  method get_insert : unit -> text_mark_t =
     fun () ->
       new  text_mark(Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_insert obj)
 
@@ -111,7 +272,7 @@ class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
     fun () ->
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_line_count obj)
 
-  method get_mark : string -> text_mark option =
+  method get_mark : string -> text_mark_t option =
     fun name ->
       Option.map (fun ret -> new text_mark ret) (Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_mark obj name)
 
@@ -123,11 +284,11 @@ class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
     fun () ->
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_modified obj)
 
-  method get_selection_bound : unit -> text_mark =
+  method get_selection_bound : unit -> text_mark_t =
     fun () ->
       new  text_mark(Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_selection_bound obj)
 
-  method get_selection_content : unit -> Ocgtk_gdk.Gdk.content_provider =
+  method get_selection_content : unit -> Ocgtk_gdk.Gdk.content_provider_t =
     fun () ->
       new  Ocgtk_gdk.Gdk.content_provider(Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_selection_content obj)
 
@@ -135,7 +296,7 @@ class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
     fun start end_ include_hidden_chars ->
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_slice obj start end_ include_hidden_chars)
 
-  method get_tag_table : unit -> GText_tag_table.text_tag_table =
+  method get_tag_table : unit -> GText_tag_table.text_tag_table_t =
     fun () ->
       new  GText_tag_table.text_tag_table(Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_tag_table obj)
 
@@ -151,7 +312,7 @@ class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
     fun text len ->
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.insert_at_cursor obj text len)
 
-  method insert_child_anchor : 'p1. Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> (#GText_child_anchor.text_child_anchor as 'p1) -> unit =
+  method insert_child_anchor : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> GText_child_anchor.text_child_anchor_t -> unit =
     fun iter anchor ->
       let anchor = anchor#as_text_child_anchor in
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.insert_child_anchor obj iter anchor)
@@ -168,7 +329,7 @@ class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
     fun iter markup len ->
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.insert_markup obj iter markup len)
 
-  method insert_paintable : 'p1. Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> (#Ocgtk_gdk.Gdk.paintable as 'p1) -> unit =
+  method insert_paintable : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Ocgtk_gdk.Gdk.paintable_t -> unit =
     fun iter paintable ->
       let paintable = paintable#as_paintable in
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.insert_paintable obj iter paintable)
@@ -181,7 +342,7 @@ class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
     fun iter start end_ default_editable ->
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.insert_range_interactive obj iter start end_ default_editable)
 
-  method move_mark : 'p1. (<as_text_mark: Text_buffer_and__text_iter_and__text_mark.Text_mark.t; ..> as 'p1) -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit =
+  method move_mark : text_mark_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit =
     fun mark where ->
       let mark = mark#as_text_mark in
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.move_mark obj mark where)
@@ -190,7 +351,7 @@ class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
     fun name where ->
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.move_mark_by_name obj name where)
 
-  method paste_clipboard : 'p1. (#Ocgtk_gdk.Gdk.clipboard as 'p1) -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t option -> bool -> unit =
+  method paste_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t option -> bool -> unit =
     fun clipboard override_location default_editable ->
       let clipboard = clipboard#as_clipboard in
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.paste_clipboard obj clipboard override_location default_editable)
@@ -207,12 +368,12 @@ class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
     fun start end_ ->
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.remove_all_tags obj start end_)
 
-  method remove_selection_clipboard : 'p1. (#Ocgtk_gdk.Gdk.clipboard as 'p1) -> unit =
+  method remove_selection_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> unit =
     fun clipboard ->
       let clipboard = clipboard#as_clipboard in
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.remove_selection_clipboard obj clipboard)
 
-  method remove_tag : 'p1. (#GText_tag.text_tag as 'p1) -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit =
+  method remove_tag : GText_tag.text_tag_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit =
     fun tag start end_ ->
       let tag = tag#as_text_tag in
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.remove_tag obj tag start end_)
@@ -250,7 +411,7 @@ class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
     method as_text_buffer = obj
 end
 
-and text_iter (obj : Text_buffer_and__text_iter_and__text_mark.Text_iter.t) = object (self)
+and text_iter (obj : Text_buffer_and__text_iter_and__text_mark.Text_iter.t) : text_iter_t = object (self)
 
   method assign : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit =
     fun other ->
@@ -288,7 +449,7 @@ and text_iter (obj : Text_buffer_and__text_iter_and__text_mark.Text_iter.t) = ob
     fun count ->
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.backward_sentence_starts obj count)
 
-  method backward_to_tag_toggle : 'p1. (#GText_tag.text_tag as 'p1) option -> bool =
+  method backward_to_tag_toggle : GText_tag.text_tag_t option -> bool =
     fun tag ->
       let tag = Option.map (fun (c) -> c#as_text_tag) tag in
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.backward_to_tag_toggle obj tag)
@@ -349,7 +510,7 @@ and text_iter (obj : Text_buffer_and__text_iter_and__text_mark.Text_iter.t) = ob
     fun () ->
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.ends_sentence obj)
 
-  method ends_tag : 'p1. (#GText_tag.text_tag as 'p1) option -> bool =
+  method ends_tag : GText_tag.text_tag_t option -> bool =
     fun tag ->
       let tag = Option.map (fun (c) -> c#as_text_tag) tag in
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.ends_tag obj tag)
@@ -402,7 +563,7 @@ and text_iter (obj : Text_buffer_and__text_iter_and__text_mark.Text_iter.t) = ob
     fun () ->
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.forward_to_line_end obj)
 
-  method forward_to_tag_toggle : 'p1. (#GText_tag.text_tag as 'p1) option -> bool =
+  method forward_to_tag_toggle : GText_tag.text_tag_t option -> bool =
     fun tag ->
       let tag = Option.map (fun (c) -> c#as_text_tag) tag in
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.forward_to_tag_toggle obj tag)
@@ -443,7 +604,7 @@ and text_iter (obj : Text_buffer_and__text_iter_and__text_mark.Text_iter.t) = ob
     fun () ->
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.free obj)
 
-  method get_buffer : unit -> text_buffer =
+  method get_buffer : unit -> text_buffer_t =
     fun () ->
       new  text_buffer(Text_buffer_and__text_iter_and__text_mark.Text_iter.get_buffer obj)
 
@@ -455,11 +616,11 @@ and text_iter (obj : Text_buffer_and__text_iter_and__text_mark.Text_iter.t) = ob
     fun () ->
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_chars_in_line obj)
 
-  method get_child_anchor : unit -> GText_child_anchor.text_child_anchor option =
+  method get_child_anchor : unit -> GText_child_anchor.text_child_anchor_t option =
     fun () ->
       Option.map (fun ret -> new GText_child_anchor.text_child_anchor ret) (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_child_anchor obj)
 
-  method get_language : unit -> Ocgtk_pango.Pango.language =
+  method get_language : unit -> Ocgtk_pango.Pango.language_t =
     fun () ->
       new  Ocgtk_pango.Pango.language(Text_buffer_and__text_iter_and__text_mark.Text_iter.get_language obj)
 
@@ -479,7 +640,7 @@ and text_iter (obj : Text_buffer_and__text_iter_and__text_mark.Text_iter.t) = ob
     fun () ->
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_offset obj)
 
-  method get_paintable : unit -> Ocgtk_gdk.Gdk.paintable option =
+  method get_paintable : unit -> Ocgtk_gdk.Gdk.paintable_t option =
     fun () ->
       Option.map (fun ret -> new Ocgtk_gdk.Gdk.paintable ret) (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_paintable obj)
 
@@ -507,7 +668,7 @@ and text_iter (obj : Text_buffer_and__text_iter_and__text_mark.Text_iter.t) = ob
     fun end_ ->
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_visible_text obj end_)
 
-  method has_tag : 'p1. (#GText_tag.text_tag as 'p1) -> bool =
+  method has_tag : GText_tag.text_tag_t -> bool =
     fun tag ->
       let tag = tag#as_text_tag in
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.has_tag obj tag)
@@ -572,7 +733,7 @@ and text_iter (obj : Text_buffer_and__text_iter_and__text_mark.Text_iter.t) = ob
     fun () ->
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.starts_sentence obj)
 
-  method starts_tag : 'p1. (#GText_tag.text_tag as 'p1) option -> bool =
+  method starts_tag : GText_tag.text_tag_t option -> bool =
     fun tag ->
       let tag = Option.map (fun (c) -> c#as_text_tag) tag in
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.starts_tag obj tag)
@@ -581,7 +742,7 @@ and text_iter (obj : Text_buffer_and__text_iter_and__text_mark.Text_iter.t) = ob
     fun () ->
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.starts_word obj)
 
-  method toggles_tag : 'p1. (#GText_tag.text_tag as 'p1) option -> bool =
+  method toggles_tag : GText_tag.text_tag_t option -> bool =
     fun tag ->
       let tag = Option.map (fun (c) -> c#as_text_tag) tag in
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.toggles_tag obj tag)
@@ -589,9 +750,9 @@ and text_iter (obj : Text_buffer_and__text_iter_and__text_mark.Text_iter.t) = ob
     method as_text_iter = obj
 end
 
-and text_mark (obj : Text_buffer_and__text_iter_and__text_mark.Text_mark.t) = object (self)
+and text_mark (obj : Text_buffer_and__text_iter_and__text_mark.Text_mark.t) : text_mark_t = object (self)
 
-  method get_buffer : unit -> text_buffer option =
+  method get_buffer : unit -> text_buffer_t option =
     fun () ->
       Option.map (fun ret -> new text_buffer ret) (Text_buffer_and__text_iter_and__text_mark.Text_mark.get_buffer obj)
 

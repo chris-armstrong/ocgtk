@@ -1,6 +1,5 @@
-class d_bus_message : D_bus_message.t ->
-  object
-    method copy : unit -> (d_bus_message, GError.t) result
+class type d_bus_message_t = object
+    method copy : unit -> (d_bus_message_t, GError.t) result
     method get_arg0 : unit -> string option
     method get_arg0_path : unit -> string option
     method get_byte_order : unit -> Gio_enums.dbusmessagebyteorder
@@ -14,10 +13,10 @@ class d_bus_message : D_bus_message.t ->
     method get_path : unit -> string option
     method get_sender : unit -> string option
     method get_signature : unit -> string
-    method get_unix_fd_list : unit -> GUnix_fd_list.unix_fd_list option
+    method get_unix_fd_list : unit -> GUnix_fd_list.unix_fd_list_t option
     method lock : unit -> unit
-    method new_method_error_literal : string -> string -> d_bus_message
-    method new_method_reply : unit -> d_bus_message
+    method new_method_error_literal : string -> string -> d_bus_message_t
+    method new_method_reply : unit -> d_bus_message_t
     method print : int -> string
     method set_byte_order : Gio_enums.dbusmessagebyteorder -> unit
     method set_destination : string option -> unit
@@ -29,8 +28,10 @@ class d_bus_message : D_bus_message.t ->
     method set_path : string option -> unit
     method set_sender : string option -> unit
     method set_signature : string option -> unit
-    method set_unix_fd_list : #GUnix_fd_list.unix_fd_list option -> unit
+    method set_unix_fd_list : GUnix_fd_list.unix_fd_list_t option -> unit
     method to_gerror : unit -> (bool, GError.t) result
     method as_d_bus_message : D_bus_message.t
-  end
+end
+
+class d_bus_message : D_bus_message.t -> d_bus_message_t
 

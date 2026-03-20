@@ -1,11 +1,27 @@
+class type style_context_t = object
+    method add_class : string -> unit
+    method get_display : unit -> Ocgtk_gdk.Gdk.display_t
+    method get_scale : unit -> int
+    method get_state : unit -> Gtk_enums.stateflags
+    method has_class : string -> bool
+    method remove_class : string -> unit
+    method restore : unit -> unit
+    method save : unit -> unit
+    method set_display : Ocgtk_gdk.Gdk.display_t -> unit
+    method set_scale : int -> unit
+    method set_state : Gtk_enums.stateflags -> unit
+    method to_string : Gtk_enums.stylecontextprintflags -> string
+    method as_style_context : Style_context.t
+end
+
 (* High-level class for StyleContext *)
-class style_context (obj : Style_context.t) = object (self)
+class style_context (obj : Style_context.t) : style_context_t = object (self)
 
   method add_class : string -> unit =
     fun class_name ->
       (Style_context.add_class obj class_name)
 
-  method get_display : unit -> Ocgtk_gdk.Gdk.display =
+  method get_display : unit -> Ocgtk_gdk.Gdk.display_t =
     fun () ->
       new  Ocgtk_gdk.Gdk.display(Style_context.get_display obj)
 
@@ -33,7 +49,7 @@ class style_context (obj : Style_context.t) = object (self)
     fun () ->
       (Style_context.save obj)
 
-  method set_display : 'p1. (#Ocgtk_gdk.Gdk.display as 'p1) -> unit =
+  method set_display : Ocgtk_gdk.Gdk.display_t -> unit =
     fun display ->
       let display = display#as_display in
       (Style_context.set_display obj display)

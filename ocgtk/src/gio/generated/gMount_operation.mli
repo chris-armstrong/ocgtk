@@ -1,5 +1,4 @@
-class mount_operation : Mount_operation.t ->
-  object
+class type mount_operation_t = object
     inherit Gmount_operation_signals.mount_operation_signals
     method get_anonymous : unit -> bool
     method get_choice : unit -> int
@@ -21,5 +20,7 @@ class mount_operation : Mount_operation.t ->
     method set_pim : int -> unit
     method set_username : string option -> unit
     method as_mount_operation : Mount_operation.t
-  end
+end
+
+class mount_operation : Mount_operation.t -> mount_operation_t
 

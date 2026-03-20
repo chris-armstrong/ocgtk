@@ -1,5 +1,4 @@
-class font_button : Font_button.t ->
-  object
+class type font_button_t = object
     inherit Gfont_button_signals.font_button_signals
     method get_modal : unit -> bool
     method get_title : unit -> string
@@ -10,5 +9,7 @@ class font_button : Font_button.t ->
     method set_use_font : bool -> unit
     method set_use_size : bool -> unit
     method as_font_button : Font_button.t
-  end
+end
+
+class font_button : Font_button.t -> font_button_t
 

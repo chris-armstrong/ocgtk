@@ -1,5 +1,6 @@
-class attr_size : Attr_size.t ->
-  object
+class type attr_size_t = object
     method as_attr_size : Attr_size.t
-  end
+end
+
+class attr_size : Attr_size.t -> attr_size_t
 

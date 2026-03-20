@@ -1,11 +1,20 @@
-(* High-level class for MountOperation *)
-class mount_operation (obj : Mount_operation.t) = object (self)
+class type mount_operation_t = object
+    method get_display : unit -> Ocgtk_gdk.Gdk.display_t
+    method get_parent : unit -> GApplication_and__window_and__window_group.window_t option
+    method is_showing : unit -> bool
+    method set_display : Ocgtk_gdk.Gdk.display_t -> unit
+    method set_parent : GApplication_and__window_and__window_group.window_t option -> unit
+    method as_mount_operation : Mount_operation.t
+end
 
-  method get_display : unit -> Ocgtk_gdk.Gdk.display =
+(* High-level class for MountOperation *)
+class mount_operation (obj : Mount_operation.t) : mount_operation_t = object (self)
+
+  method get_display : unit -> Ocgtk_gdk.Gdk.display_t =
     fun () ->
       new  Ocgtk_gdk.Gdk.display(Mount_operation.get_display obj)
 
-  method get_parent : unit -> GApplication_and__window_and__window_group.window option =
+  method get_parent : unit -> GApplication_and__window_and__window_group.window_t option =
     fun () ->
       Option.map (fun ret -> new GApplication_and__window_and__window_group.window ret) (Mount_operation.get_parent obj)
 
@@ -13,12 +22,12 @@ class mount_operation (obj : Mount_operation.t) = object (self)
     fun () ->
       (Mount_operation.is_showing obj)
 
-  method set_display : 'p1. (#Ocgtk_gdk.Gdk.display as 'p1) -> unit =
+  method set_display : Ocgtk_gdk.Gdk.display_t -> unit =
     fun display ->
       let display = display#as_display in
       (Mount_operation.set_display obj display)
 
-  method set_parent : 'p1. (#GApplication_and__window_and__window_group.window as 'p1) option -> unit =
+  method set_parent : GApplication_and__window_and__window_group.window_t option -> unit =
     fun parent ->
       let parent = Option.map (fun (c) -> c#as_window) parent in
       (Mount_operation.set_parent obj parent)

@@ -3,6 +3,54 @@
 
 (** Classes and Interfaces *)
 
+class type blend_node_t = GBlend_node.blend_node_t
+class type blur_node_t = GBlur_node.blur_node_t
+class type border_node_t = GBorder_node.border_node_t
+class type cairo_node_t = GCairo_node.cairo_node_t
+class type cairo_renderer_t = GCairo_renderer.cairo_renderer_t
+class type clip_node_t = GClip_node.clip_node_t
+class type color_matrix_node_t = GColor_matrix_node.color_matrix_node_t
+class type color_node_t = GColor_node.color_node_t
+class type color_stop_t = GColor_stop.color_stop_t
+class type conic_gradient_node_t = GConic_gradient_node.conic_gradient_node_t
+class type container_node_t = GContainer_node.container_node_t
+class type cross_fade_node_t = GCross_fade_node.cross_fade_node_t
+class type debug_node_t = GDebug_node.debug_node_t
+class type fill_node_t = GFill_node.fill_node_t
+class type gl_renderer_t = GGl_renderer.gl_renderer_t
+class type gl_shader_t = GGl_shader.gl_shader_t
+class type gl_shader_node_t = GGl_shader_node.gl_shader_node_t
+class type inset_shadow_node_t = GInset_shadow_node.inset_shadow_node_t
+class type linear_gradient_node_t = GLinear_gradient_node.linear_gradient_node_t
+class type mask_node_t = GMask_node.mask_node_t
+class type opacity_node_t = GOpacity_node.opacity_node_t
+class type outset_shadow_node_t = GOutset_shadow_node.outset_shadow_node_t
+class type parse_location_t = GParse_location.parse_location_t
+class type path_t = GPath_and__path_measure_and__path_point.path_t
+class type path_builder_t = GPath_builder.path_builder_t
+class type path_measure_t = GPath_and__path_measure_and__path_point.path_measure_t
+class type path_point_t = GPath_and__path_measure_and__path_point.path_point_t
+class type radial_gradient_node_t = GRadial_gradient_node.radial_gradient_node_t
+class type render_node_t = GRender_node.render_node_t
+class type renderer_t = GRenderer.renderer_t
+class type repeat_node_t = GRepeat_node.repeat_node_t
+class type repeating_linear_gradient_node_t = GRepeating_linear_gradient_node.repeating_linear_gradient_node_t
+class type repeating_radial_gradient_node_t = GRepeating_radial_gradient_node.repeating_radial_gradient_node_t
+class type rounded_clip_node_t = GRounded_clip_node.rounded_clip_node_t
+class type rounded_rect_t = GRounded_rect.rounded_rect_t
+class type shader_args_builder_t = GShader_args_builder.shader_args_builder_t
+class type shadow_t = GShadow.shadow_t
+class type shadow_node_t = GShadow_node.shadow_node_t
+class type stroke_t = GStroke.stroke_t
+class type stroke_node_t = GStroke_node.stroke_node_t
+class type subsurface_node_t = GSubsurface_node.subsurface_node_t
+class type text_node_t = GText_node.text_node_t
+class type texture_node_t = GTexture_node.texture_node_t
+class type texture_scale_node_t = GTexture_scale_node.texture_scale_node_t
+class type transform_t = GTransform.transform_t
+class type transform_node_t = GTransform_node.transform_node_t
+class type vulkan_renderer_t = GVulkan_renderer.vulkan_renderer_t
+
 class blend_node = GBlend_node.blend_node
 class blur_node = GBlur_node.blur_node
 class border_node = GBorder_node.border_node

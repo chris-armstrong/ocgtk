@@ -1,5 +1,6 @@
-class d_bus_subtree_v_table : D_bus_subtree_v_table.t ->
-  object
+class type d_bus_subtree_v_table_t = object
     method as_d_bus_subtree_v_table : D_bus_subtree_v_table.t
-  end
+end
+
+class d_bus_subtree_v_table : D_bus_subtree_v_table.t -> d_bus_subtree_v_table_t
 

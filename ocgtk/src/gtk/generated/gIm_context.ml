@@ -1,10 +1,30 @@
 (* Signal class defined in gim_context_signals.ml *)
 
+class type im_context_t = object
+    inherit Gim_context_signals.im_context_signals
+    method activate_osk : Ocgtk_gdk.Gdk.event_t option -> bool
+    method delete_surrounding : int -> int -> bool
+    method filter_keypress : Ocgtk_gdk.Gdk.event_t -> bool
+    method focus_in : unit -> unit
+    method focus_out : unit -> unit
+    method reset : unit -> unit
+    method set_client_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
+    method set_cursor_location : Ocgtk_gdk.Gdk.rectangle_t -> unit
+    method set_surrounding : string -> int -> int -> unit
+    method set_surrounding_with_selection : string -> int -> int -> int -> unit
+    method set_use_preedit : bool -> unit
+    method input_hints : Gtk_enums.inputhints
+    method set_input_hints : Gtk_enums.inputhints -> unit
+    method input_purpose : Gtk_enums.inputpurpose
+    method set_input_purpose : Gtk_enums.inputpurpose -> unit
+    method as_im_context : Im_context.t
+end
+
 (* High-level class for IMContext *)
-class im_context (obj : Im_context.t) = object (self)
+class im_context (obj : Im_context.t) : im_context_t = object (self)
   inherit Gim_context_signals.im_context_signals obj
 
-  method activate_osk : 'p1. (#Ocgtk_gdk.Gdk.event as 'p1) option -> bool =
+  method activate_osk : Ocgtk_gdk.Gdk.event_t option -> bool =
     fun event ->
       let event = Option.map (fun (c) -> c#as_event) event in
       (Im_context.activate_osk obj event)
@@ -13,7 +33,7 @@ class im_context (obj : Im_context.t) = object (self)
     fun offset n_chars ->
       (Im_context.delete_surrounding obj offset n_chars)
 
-  method filter_keypress : 'p1. (#Ocgtk_gdk.Gdk.event as 'p1) -> bool =
+  method filter_keypress : Ocgtk_gdk.Gdk.event_t -> bool =
     fun event ->
       let event = event#as_event in
       (Im_context.filter_keypress obj event)
@@ -30,12 +50,12 @@ class im_context (obj : Im_context.t) = object (self)
     fun () ->
       (Im_context.reset obj)
 
-  method set_client_widget : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
+  method set_client_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit =
     fun widget ->
       let widget = Option.map (fun (c) -> c#as_widget) widget in
       (Im_context.set_client_widget obj widget)
 
-  method set_cursor_location : 'p1. (#Ocgtk_gdk.Gdk.rectangle as 'p1) -> unit =
+  method set_cursor_location : Ocgtk_gdk.Gdk.rectangle_t -> unit =
     fun area ->
       let area = area#as_rectangle in
       (Im_context.set_cursor_location obj area)

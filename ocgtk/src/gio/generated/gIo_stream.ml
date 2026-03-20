@@ -1,20 +1,32 @@
+class type io_stream_t = object
+    method clear_pending : unit -> unit
+    method close : GCancellable.cancellable_t option -> (bool, GError.t) result
+    method get_input_stream : unit -> GInput_stream.input_stream_t
+    method get_output_stream : unit -> GOutput_stream.output_stream_t
+    method has_pending : unit -> bool
+    method is_closed : unit -> bool
+    method set_pending : unit -> (bool, GError.t) result
+    method closed : bool
+    method as_io_stream : Io_stream.t
+end
+
 (* High-level class for IOStream *)
-class io_stream (obj : Io_stream.t) = object (self)
+class io_stream (obj : Io_stream.t) : io_stream_t = object (self)
 
   method clear_pending : unit -> unit =
     fun () ->
       (Io_stream.clear_pending obj)
 
-  method close : 'p1. (#GCancellable.cancellable as 'p1) option -> (bool, GError.t) result =
+  method close : GCancellable.cancellable_t option -> (bool, GError.t) result =
     fun cancellable ->
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (Io_stream.close obj cancellable)
 
-  method get_input_stream : unit -> GInput_stream.input_stream =
+  method get_input_stream : unit -> GInput_stream.input_stream_t =
     fun () ->
       new  GInput_stream.input_stream(Io_stream.get_input_stream obj)
 
-  method get_output_stream : unit -> GOutput_stream.output_stream =
+  method get_output_stream : unit -> GOutput_stream.output_stream_t =
     fun () ->
       new  GOutput_stream.output_stream(Io_stream.get_output_stream obj)
 

@@ -1,5 +1,20 @@
+class type constraint__t = object
+    method get_constant : unit -> float
+    method get_multiplier : unit -> float
+    method get_relation : unit -> Gtk_enums.constraintrelation
+    method get_source : unit -> GConstraint_target.constraint_target_t option
+    method get_source_attribute : unit -> Gtk_enums.constraintattribute
+    method get_strength : unit -> int
+    method get_target : unit -> GConstraint_target.constraint_target_t option
+    method get_target_attribute : unit -> Gtk_enums.constraintattribute
+    method is_attached : unit -> bool
+    method is_constant : unit -> bool
+    method is_required : unit -> bool
+    method as_constraint_ : Constraint.t
+end
+
 (* High-level class for Constraint *)
-class constraint_ (obj : Constraint.t) = object (self)
+class constraint_ (obj : Constraint.t) : constraint__t = object (self)
 
   method get_constant : unit -> float =
     fun () ->
@@ -13,7 +28,7 @@ class constraint_ (obj : Constraint.t) = object (self)
     fun () ->
       (Constraint.get_relation obj)
 
-  method get_source : unit -> GConstraint_target.constraint_target option =
+  method get_source : unit -> GConstraint_target.constraint_target_t option =
     fun () ->
       Option.map (fun ret -> new GConstraint_target.constraint_target ret) (Constraint.get_source obj)
 
@@ -25,7 +40,7 @@ class constraint_ (obj : Constraint.t) = object (self)
     fun () ->
       (Constraint.get_strength obj)
 
-  method get_target : unit -> GConstraint_target.constraint_target option =
+  method get_target : unit -> GConstraint_target.constraint_target_t option =
     fun () ->
       Option.map (fun ret -> new GConstraint_target.constraint_target ret) (Constraint.get_target obj)
 

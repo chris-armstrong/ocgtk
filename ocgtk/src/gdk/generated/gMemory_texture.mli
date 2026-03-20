@@ -1,5 +1,6 @@
-class memory_texture : Memory_texture.t ->
-  object
+class type memory_texture_t = object
     method as_memory_texture : Memory_texture.t
-  end
+end
+
+class memory_texture : Memory_texture.t -> memory_texture_t
 

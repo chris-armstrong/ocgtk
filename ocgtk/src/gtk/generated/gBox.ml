@@ -1,7 +1,24 @@
-(* High-level class for Box *)
-class box (obj : Box.t) = object (self)
+class type box_t = object
+    method append : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit
+    method get_baseline_child : unit -> int
+    method get_baseline_position : unit -> Gtk_enums.baselineposition
+    method get_homogeneous : unit -> bool
+    method get_spacing : unit -> int
+    method insert_child_after : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
+    method prepend : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit
+    method remove : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit
+    method reorder_child_after : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
+    method set_baseline_child : int -> unit
+    method set_baseline_position : Gtk_enums.baselineposition -> unit
+    method set_homogeneous : bool -> unit
+    method set_spacing : int -> unit
+    method as_box : Box.t
+end
 
-  method append : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> unit =
+(* High-level class for Box *)
+class box (obj : Box.t) : box_t = object (self)
+
+  method append : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit =
     fun child ->
       let child = child#as_widget in
       (Box.append obj child)
@@ -22,23 +39,23 @@ class box (obj : Box.t) = object (self)
     fun () ->
       (Box.get_spacing obj)
 
-  method insert_child_after : 'p1 'p2. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p2) option -> unit =
+  method insert_child_after : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit =
     fun child sibling ->
       let child = child#as_widget in
       let sibling = Option.map (fun (c) -> c#as_widget) sibling in
       (Box.insert_child_after obj child sibling)
 
-  method prepend : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> unit =
+  method prepend : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit =
     fun child ->
       let child = child#as_widget in
       (Box.prepend obj child)
 
-  method remove : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> unit =
+  method remove : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit =
     fun child ->
       let child = child#as_widget in
       (Box.remove obj child)
 
-  method reorder_child_after : 'p1 'p2. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p2) option -> unit =
+  method reorder_child_after : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit =
     fun child sibling ->
       let child = child#as_widget in
       let sibling = Option.map (fun (c) -> c#as_widget) sibling in

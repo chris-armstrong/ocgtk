@@ -1,7 +1,12 @@
-(* High-level class for FileIcon *)
-class file_icon (obj : File_icon.t) = object (self)
+class type file_icon_t = object
+    method get_file : unit -> GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume.file_t
+    method as_file_icon : File_icon.t
+end
 
-  method get_file : unit -> GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume.file =
+(* High-level class for FileIcon *)
+class file_icon (obj : File_icon.t) : file_icon_t = object (self)
+
+  method get_file : unit -> GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume.file_t =
     fun () ->
       new  GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume.file(File_icon.get_file obj)
 

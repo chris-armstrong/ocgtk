@@ -1,7 +1,8 @@
-class rounded_clip_node : Rounded_clip_node.t ->
-  object
-    method get_child : unit -> GRender_node.render_node
+class type rounded_clip_node_t = object
+    method get_child : unit -> GRender_node.render_node_t
     method get_clip : unit -> Rounded_rect.t
     method as_rounded_clip_node : Rounded_clip_node.t
-  end
+end
+
+class rounded_clip_node : Rounded_clip_node.t -> rounded_clip_node_t
 

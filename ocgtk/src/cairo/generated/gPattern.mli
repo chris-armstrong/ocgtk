@@ -1,5 +1,6 @@
-class pattern : Pattern.t ->
-  object
+class type pattern_t = object
     method as_pattern : Pattern.t
-  end
+end
+
+class pattern : Pattern.t -> pattern_t
 

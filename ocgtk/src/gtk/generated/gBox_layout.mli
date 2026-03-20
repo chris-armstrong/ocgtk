@@ -1,5 +1,4 @@
-class box_layout : Box_layout.t ->
-  object
+class type box_layout_t = object
     method get_baseline_child : unit -> int
     method get_baseline_position : unit -> Gtk_enums.baselineposition
     method get_homogeneous : unit -> bool
@@ -9,5 +8,7 @@ class box_layout : Box_layout.t ->
     method set_homogeneous : bool -> unit
     method set_spacing : int -> unit
     method as_box_layout : Box_layout.t
-  end
+end
+
+class box_layout : Box_layout.t -> box_layout_t
 

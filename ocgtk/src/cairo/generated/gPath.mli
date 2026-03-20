@@ -1,5 +1,6 @@
-class path : Path.t ->
-  object
+class type path_t = object
     method as_path : Path.t
-  end
+end
+
+class path : Path.t -> path_t
 

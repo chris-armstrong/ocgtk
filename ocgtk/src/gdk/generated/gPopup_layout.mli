@@ -1,5 +1,4 @@
-class popup_layout : Popup_layout.t ->
-  object
+class type popup_layout_t = object
     method copy : unit -> Popup_layout.t
     method equal : Popup_layout.t -> bool
     method get_anchor_hints : unit -> Gdk_enums.anchorhints
@@ -15,5 +14,7 @@ class popup_layout : Popup_layout.t ->
     method set_surface_anchor : Gdk_enums.gravity -> unit
     method unref : unit -> unit
     method as_popup_layout : Popup_layout.t
-  end
+end
+
+class popup_layout : Popup_layout.t -> popup_layout_t
 

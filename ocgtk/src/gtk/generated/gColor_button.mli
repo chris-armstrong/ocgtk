@@ -1,5 +1,4 @@
-class color_button : Color_button.t ->
-  object
+class type color_button_t = object
     inherit Gcolor_button_signals.color_button_signals
     method get_modal : unit -> bool
     method get_title : unit -> string
@@ -8,5 +7,7 @@ class color_button : Color_button.t ->
     method show_editor : bool
     method set_show_editor : bool -> unit
     method as_color_button : Color_button.t
-  end
+end
+
+class color_button : Color_button.t -> color_button_t
 

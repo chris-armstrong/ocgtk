@@ -1,14 +1,37 @@
 (* Signal class defined in gtoplevel_signals.ml *)
 
+class type toplevel_t = object
+    inherit Gtoplevel_signals.toplevel_signals
+    method get_state : unit -> Gdk_enums.toplevelstate
+    method inhibit_system_shortcuts : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.event_t option -> unit
+    method lower : unit -> bool
+    method minimize : unit -> bool
+    method present : Toplevel_layout.t -> unit
+    method restore_system_shortcuts : unit -> unit
+    method set_decorated : bool -> unit
+    method set_deletable : bool -> unit
+    method set_modal : bool -> unit
+    method set_startup_id : string -> unit
+    method set_title : string -> unit
+    method set_transient_for : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.surface_t -> unit
+    method show_window_menu : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.event_t -> bool
+    method supports_edge_constraints : unit -> bool
+    method titlebar_gesture : Gdk_enums.titlebargesture -> bool
+    method fullscreen_mode : Gdk_enums.fullscreenmode
+    method set_fullscreen_mode : Gdk_enums.fullscreenmode -> unit
+    method shortcuts_inhibited : bool
+    method as_toplevel : Toplevel.t
+end
+
 (* High-level class for Toplevel *)
-class toplevel (obj : Toplevel.t) = object (self)
+class toplevel (obj : Toplevel.t) : toplevel_t = object (self)
   inherit Gtoplevel_signals.toplevel_signals obj
 
   method get_state : unit -> Gdk_enums.toplevelstate =
     fun () ->
       (Toplevel.get_state obj)
 
-  method inhibit_system_shortcuts : 'p1. (#GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.event as 'p1) option -> unit =
+  method inhibit_system_shortcuts : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.event_t option -> unit =
     fun event ->
       let event = Option.map (fun (c) -> c#as_event) event in
       (Toplevel.inhibit_system_shortcuts obj event)
@@ -49,12 +72,12 @@ class toplevel (obj : Toplevel.t) = object (self)
     fun title ->
       (Toplevel.set_title obj title)
 
-  method set_transient_for : 'p1. (#GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.surface as 'p1) -> unit =
+  method set_transient_for : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.surface_t -> unit =
     fun parent ->
       let parent = parent#as_surface in
       (Toplevel.set_transient_for obj parent)
 
-  method show_window_menu : 'p1. (#GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.event as 'p1) -> bool =
+  method show_window_menu : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.event_t -> bool =
     fun event ->
       let event = event#as_event in
       (Toplevel.show_window_menu obj event)

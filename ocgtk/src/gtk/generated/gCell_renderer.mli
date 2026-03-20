@@ -1,12 +1,11 @@
-class cell_renderer : Cell_renderer.t ->
-  object
+class type cell_renderer_t = object
     inherit Gcell_renderer_signals.cell_renderer_signals
-    method activate : #Ocgtk_gdk.Gdk.event -> #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> string -> #Ocgtk_gdk.Gdk.rectangle -> #Ocgtk_gdk.Gdk.rectangle -> Gtk_enums.cellrendererstate -> bool
+    method activate : Ocgtk_gdk.Gdk.event_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> string -> Ocgtk_gdk.Gdk.rectangle_t -> Ocgtk_gdk.Gdk.rectangle_t -> Gtk_enums.cellrendererstate -> bool
     method get_is_expanded : unit -> bool
     method get_is_expander : unit -> bool
     method get_request_mode : unit -> Gtk_enums.sizerequestmode
     method get_sensitive : unit -> bool
-    method get_state : #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option -> Gtk_enums.cellrendererstate -> Gtk_enums.stateflags
+    method get_state : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> Gtk_enums.cellrendererstate -> Gtk_enums.stateflags
     method get_visible : unit -> bool
     method is_activatable : unit -> bool
     method set_alignment : float -> float -> unit
@@ -16,13 +15,13 @@ class cell_renderer : Cell_renderer.t ->
     method set_padding : int -> int -> unit
     method set_sensitive : bool -> unit
     method set_visible : bool -> unit
-    method snapshot : #GSnapshot.snapshot -> #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> #Ocgtk_gdk.Gdk.rectangle -> #Ocgtk_gdk.Gdk.rectangle -> Gtk_enums.cellrendererstate -> unit
-    method start_editing : #Ocgtk_gdk.Gdk.event option -> #GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget -> string -> #Ocgtk_gdk.Gdk.rectangle -> #Ocgtk_gdk.Gdk.rectangle -> Gtk_enums.cellrendererstate -> GCell_editable.cell_editable option
+    method snapshot : GSnapshot.snapshot_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> Ocgtk_gdk.Gdk.rectangle_t -> Ocgtk_gdk.Gdk.rectangle_t -> Gtk_enums.cellrendererstate -> unit
+    method start_editing : Ocgtk_gdk.Gdk.event_t option -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> string -> Ocgtk_gdk.Gdk.rectangle_t -> Ocgtk_gdk.Gdk.rectangle_t -> Gtk_enums.cellrendererstate -> GCell_editable.cell_editable_t option
     method stop_editing : bool -> unit
     method cell_background : string
     method set_cell_background : string -> unit
-    method cell_background_rgba : Ocgtk_gdk.Gdk.rgb_a
-    method set_cell_background_rgba : #Ocgtk_gdk.Gdk.rgb_a -> unit
+    method cell_background_rgba : Ocgtk_gdk.Gdk.rgb_a_t
+    method set_cell_background_rgba : Ocgtk_gdk.Gdk.rgb_a_t -> unit
     method cell_background_set : bool
     method set_cell_background_set : bool -> unit
     method editing : bool
@@ -41,5 +40,7 @@ class cell_renderer : Cell_renderer.t ->
     method ypad : int
     method set_ypad : int -> unit
     method as_cell_renderer : Cell_renderer.t
-  end
+end
+
+class cell_renderer : Cell_renderer.t -> cell_renderer_t
 

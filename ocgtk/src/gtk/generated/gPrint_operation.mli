@@ -1,5 +1,4 @@
-class print_operation : Print_operation.t ->
-  object
+class type print_operation_t = object
     inherit Gprint_operation_signals.print_operation_signals
     method cancel : unit -> unit
     method draw_page_finish : unit -> unit
@@ -11,7 +10,7 @@ class print_operation : Print_operation.t ->
     method get_status_string : unit -> string
     method get_support_selection : unit -> bool
     method is_finished : unit -> bool
-    method run : Gtk_enums.printoperationaction -> #GApplication_and__window_and__window_group.window option -> (Gtk_enums.printoperationresult, GError.t) result
+    method run : Gtk_enums.printoperationaction -> GApplication_and__window_and__window_group.window_t option -> (Gtk_enums.printoperationresult, GError.t) result
     method set_allow_async : bool -> unit
     method set_current_page : int -> unit
     method set_custom_tab_label : string option -> unit
@@ -27,5 +26,7 @@ class print_operation : Print_operation.t ->
     method set_unit : Gtk_enums.unit -> unit
     method set_use_full_page : bool -> unit
     method as_print_operation : Print_operation.t
-  end
+end
+
+class print_operation : Print_operation.t -> print_operation_t
 

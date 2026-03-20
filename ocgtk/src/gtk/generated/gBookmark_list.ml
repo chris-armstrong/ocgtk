@@ -1,5 +1,17 @@
+class type bookmark_list_t = object
+    method get_attributes : unit -> string option
+    method get_filename : unit -> string
+    method get_io_priority : unit -> int
+    method is_loading : unit -> bool
+    method set_attributes : string option -> unit
+    method set_io_priority : int -> unit
+    method loading : bool
+    method n_items : int
+    method as_bookmark_list : Bookmark_list.t
+end
+
 (* High-level class for BookmarkList *)
-class bookmark_list (obj : Bookmark_list.t) = object (self)
+class bookmark_list (obj : Bookmark_list.t) : bookmark_list_t = object (self)
 
   method get_attributes : unit -> string option =
     fun () ->

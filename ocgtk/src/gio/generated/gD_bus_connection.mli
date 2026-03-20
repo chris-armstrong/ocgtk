@@ -1,15 +1,14 @@
-class d_bus_connection : D_bus_connection.t ->
-  object
+class type d_bus_connection_t = object
     inherit Gd_bus_connection_signals.d_bus_connection_signals
-    method close_sync : #GCancellable.cancellable option -> (bool, GError.t) result
-    method export_menu_model : string -> #GMenu_link_iter_and__menu_model.menu_model -> (int, GError.t) result
-    method flush_sync : #GCancellable.cancellable option -> (bool, GError.t) result
+    method close_sync : GCancellable.cancellable_t option -> (bool, GError.t) result
+    method export_menu_model : string -> GMenu_link_iter_and__menu_model.menu_model_t -> (int, GError.t) result
+    method flush_sync : GCancellable.cancellable_t option -> (bool, GError.t) result
     method get_capabilities : unit -> Gio_enums.dbuscapabilityflags
     method get_exit_on_close : unit -> bool
     method get_flags : unit -> Gio_enums.dbusconnectionflags
     method get_guid : unit -> string
-    method get_peer_credentials : unit -> GCredentials.credentials option
-    method get_stream : unit -> GIo_stream.io_stream
+    method get_peer_credentials : unit -> GCredentials.credentials_t option
+    method get_stream : unit -> GIo_stream.io_stream_t
     method get_unique_name : unit -> string option
     method is_closed : unit -> bool
     method remove_filter : int -> unit
@@ -21,8 +20,10 @@ class d_bus_connection : D_bus_connection.t ->
     method unregister_object : int -> bool
     method unregister_subtree : int -> bool
     method address : string
-    method authentication_observer : GD_bus_auth_observer.d_bus_auth_observer
+    method authentication_observer : GD_bus_auth_observer.d_bus_auth_observer_t
     method closed : bool
     method as_d_bus_connection : D_bus_connection.t
-  end
+end
+
+class d_bus_connection : D_bus_connection.t -> d_bus_connection_t
 

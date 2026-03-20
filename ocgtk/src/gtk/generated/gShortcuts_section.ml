@@ -1,10 +1,24 @@
 (* Signal class defined in gshortcuts_section_signals.ml *)
 
+class type shortcuts_section_t = object
+    inherit Gshortcuts_section_signals.shortcuts_section_signals
+    method add_group : GShortcuts_group.shortcuts_group_t -> unit
+    method max_height : int
+    method set_max_height : int -> unit
+    method section_name : string
+    method set_section_name : string -> unit
+    method title : string
+    method set_title : string -> unit
+    method view_name : string
+    method set_view_name : string -> unit
+    method as_shortcuts_section : Shortcuts_section.t
+end
+
 (* High-level class for ShortcutsSection *)
-class shortcuts_section (obj : Shortcuts_section.t) = object (self)
+class shortcuts_section (obj : Shortcuts_section.t) : shortcuts_section_t = object (self)
   inherit Gshortcuts_section_signals.shortcuts_section_signals obj
 
-  method add_group : 'p1. (#GShortcuts_group.shortcuts_group as 'p1) -> unit =
+  method add_group : GShortcuts_group.shortcuts_group_t -> unit =
     fun group ->
       let group = group#as_shortcuts_group in
       (Shortcuts_section.add_group obj group)

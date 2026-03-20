@@ -1,6 +1,5 @@
-class gl_shader : Gl_shader.t ->
-  object
-    method compile : #GRenderer.renderer -> (bool, GError.t) result
+class type gl_shader_t = object
+    method compile : GRenderer.renderer_t -> (bool, GError.t) result
     method find_uniform_by_name : string -> int
     method get_n_textures : unit -> int
     method get_n_uniforms : unit -> int
@@ -9,5 +8,7 @@ class gl_shader : Gl_shader.t ->
     method get_uniform_offset : int -> int
     method get_uniform_type : int -> Gsk_enums.gluniformtype
     method as_gl_shader : Gl_shader.t
-  end
+end
+
+class gl_shader : Gl_shader.t -> gl_shader_t
 

@@ -1,23 +1,32 @@
 (* Signal class defined in gcolor_dialog_button_signals.ml *)
 
+class type color_dialog_button_t = object
+    inherit Gcolor_dialog_button_signals.color_dialog_button_signals
+    method get_dialog : unit -> GColor_dialog.color_dialog_t option
+    method get_rgba : unit -> Ocgtk_gdk.Gdk.rgb_a_t
+    method set_dialog : GColor_dialog.color_dialog_t -> unit
+    method set_rgba : Ocgtk_gdk.Gdk.rgb_a_t -> unit
+    method as_color_dialog_button : Color_dialog_button.t
+end
+
 (* High-level class for ColorDialogButton *)
-class color_dialog_button (obj : Color_dialog_button.t) = object (self)
+class color_dialog_button (obj : Color_dialog_button.t) : color_dialog_button_t = object (self)
   inherit Gcolor_dialog_button_signals.color_dialog_button_signals obj
 
-  method get_dialog : unit -> GColor_dialog.color_dialog option =
+  method get_dialog : unit -> GColor_dialog.color_dialog_t option =
     fun () ->
       Option.map (fun ret -> new GColor_dialog.color_dialog ret) (Color_dialog_button.get_dialog obj)
 
-  method get_rgba : unit -> Ocgtk_gdk.Gdk.rgb_a =
+  method get_rgba : unit -> Ocgtk_gdk.Gdk.rgb_a_t =
     fun () ->
       new  Ocgtk_gdk.Gdk.rgb_a(Color_dialog_button.get_rgba obj)
 
-  method set_dialog : 'p1. (#GColor_dialog.color_dialog as 'p1) -> unit =
+  method set_dialog : GColor_dialog.color_dialog_t -> unit =
     fun dialog ->
       let dialog = dialog#as_color_dialog in
       (Color_dialog_button.set_dialog obj dialog)
 
-  method set_rgba : 'p1. (#Ocgtk_gdk.Gdk.rgb_a as 'p1) -> unit =
+  method set_rgba : Ocgtk_gdk.Gdk.rgb_a_t -> unit =
     fun color ->
       let color = color#as_rgb_a in
       (Color_dialog_button.set_rgba obj color)

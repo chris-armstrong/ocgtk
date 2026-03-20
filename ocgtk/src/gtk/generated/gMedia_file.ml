@@ -1,19 +1,30 @@
+class type media_file_t = object
+    method clear : unit -> unit
+    method get_file : unit -> Ocgtk_gio.Gio.file_t option
+    method get_input_stream : unit -> Ocgtk_gio.Gio.input_stream_t option
+    method set_file : Ocgtk_gio.Gio.file_t option -> unit
+    method set_filename : string option -> unit
+    method set_input_stream : Ocgtk_gio.Gio.input_stream_t option -> unit
+    method set_resource : string option -> unit
+    method as_media_file : Media_file.t
+end
+
 (* High-level class for MediaFile *)
-class media_file (obj : Media_file.t) = object (self)
+class media_file (obj : Media_file.t) : media_file_t = object (self)
 
   method clear : unit -> unit =
     fun () ->
       (Media_file.clear obj)
 
-  method get_file : unit -> Ocgtk_gio.Gio.file option =
+  method get_file : unit -> Ocgtk_gio.Gio.file_t option =
     fun () ->
       Option.map (fun ret -> new Ocgtk_gio.Gio.file ret) (Media_file.get_file obj)
 
-  method get_input_stream : unit -> Ocgtk_gio.Gio.input_stream option =
+  method get_input_stream : unit -> Ocgtk_gio.Gio.input_stream_t option =
     fun () ->
       Option.map (fun ret -> new Ocgtk_gio.Gio.input_stream ret) (Media_file.get_input_stream obj)
 
-  method set_file : 'p1. (#Ocgtk_gio.Gio.file as 'p1) option -> unit =
+  method set_file : Ocgtk_gio.Gio.file_t option -> unit =
     fun file ->
       let file = Option.map (fun (c) -> c#as_file) file in
       (Media_file.set_file obj file)
@@ -22,7 +33,7 @@ class media_file (obj : Media_file.t) = object (self)
     fun filename ->
       (Media_file.set_filename obj filename)
 
-  method set_input_stream : 'p1. (#Ocgtk_gio.Gio.input_stream as 'p1) option -> unit =
+  method set_input_stream : Ocgtk_gio.Gio.input_stream_t option -> unit =
     fun stream ->
       let stream = Option.map (fun (c) -> c#as_input_stream) stream in
       (Media_file.set_input_stream obj stream)

@@ -1,7 +1,25 @@
-(* High-level class for AlertDialog *)
-class alert_dialog (obj : Alert_dialog.t) = object (self)
+class type alert_dialog_t = object
+    method choose_finish : Ocgtk_gio.Gio.async_result_t -> (int, GError.t) result
+    method get_buttons : unit -> string array option
+    method get_cancel_button : unit -> int
+    method get_default_button : unit -> int
+    method get_detail : unit -> string
+    method get_message : unit -> string
+    method get_modal : unit -> bool
+    method set_buttons : string array -> unit
+    method set_cancel_button : int -> unit
+    method set_default_button : int -> unit
+    method set_detail : string -> unit
+    method set_message : string -> unit
+    method set_modal : bool -> unit
+    method show : GApplication_and__window_and__window_group.window_t option -> unit
+    method as_alert_dialog : Alert_dialog.t
+end
 
-  method choose_finish : 'p1. (#Ocgtk_gio.Gio.async_result as 'p1) -> (int, GError.t) result =
+(* High-level class for AlertDialog *)
+class alert_dialog (obj : Alert_dialog.t) : alert_dialog_t = object (self)
+
+  method choose_finish : Ocgtk_gio.Gio.async_result_t -> (int, GError.t) result =
     fun result ->
       let result = result#as_async_result in
       (Alert_dialog.choose_finish obj result)
@@ -54,7 +72,7 @@ class alert_dialog (obj : Alert_dialog.t) = object (self)
     fun modal ->
       (Alert_dialog.set_modal obj modal)
 
-  method show : 'p1. (#GApplication_and__window_and__window_group.window as 'p1) option -> unit =
+  method show : GApplication_and__window_and__window_group.window_t option -> unit =
     fun parent ->
       let parent = Option.map (fun (c) -> c#as_window) parent in
       (Alert_dialog.show obj parent)

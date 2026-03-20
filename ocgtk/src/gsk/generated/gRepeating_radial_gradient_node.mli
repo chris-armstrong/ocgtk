@@ -1,5 +1,6 @@
-class repeating_radial_gradient_node : Repeating_radial_gradient_node.t ->
-  object
+class type repeating_radial_gradient_node_t = object
     method as_repeating_radial_gradient_node : Repeating_radial_gradient_node.t
-  end
+end
+
+class repeating_radial_gradient_node : Repeating_radial_gradient_node.t -> repeating_radial_gradient_node_t
 

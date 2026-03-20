@@ -1,6 +1,5 @@
 
-class box : Box_and__sphere.Box.t ->
-  object
+class type box_t = object
     method contains_box : Box_and__sphere.Box.t -> bool
     method contains_point : Point3_d.t -> bool
     method equal : Box_and__sphere.Box.t -> bool
@@ -14,10 +13,9 @@ class box : Box_and__sphere.Box.t ->
     method init_from_vec3 : Vec3_and__vec4.Vec3.t option -> Vec3_and__vec4.Vec3.t option -> Box_and__sphere.Box.t
     method init_from_vectors : int -> Vec3_and__vec4.Vec3.t array -> Box_and__sphere.Box.t
     method as_box : Box_and__sphere.Box.t
-  end
+end
 
-and sphere : Box_and__sphere.Sphere.t ->
-  object
+and sphere_t = object
     method contains_point : Point3_d.t -> bool
     method distance : Point3_d.t -> float
     method equal : Box_and__sphere.Sphere.t -> bool
@@ -28,4 +26,9 @@ and sphere : Box_and__sphere.Sphere.t ->
     method init_from_vectors : int -> Vec3_and__vec4.Vec3.t array -> Point3_d.t option -> Box_and__sphere.Sphere.t
     method is_empty : unit -> bool
     method as_sphere : Box_and__sphere.Sphere.t
-  end
+end
+
+
+class box : Box_and__sphere.Box.t -> box_t
+
+and sphere : Box_and__sphere.Sphere.t -> sphere_t

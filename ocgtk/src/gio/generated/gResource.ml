@@ -1,5 +1,15 @@
+class type resource_t = object
+    method _register : unit -> unit
+    method _unregister : unit -> unit
+    method enumerate_children : string -> Gio_enums.resourcelookupflags -> (string array, GError.t) result
+    method open_stream : string -> Gio_enums.resourcelookupflags -> (GInput_stream.input_stream_t, GError.t) result
+    method ref : unit -> Resource.t
+    method unref : unit -> unit
+    method as_resource : Resource.t
+end
+
 (* High-level class for Resource *)
-class resource (obj : Resource.t) = object (self)
+class resource (obj : Resource.t) : resource_t = object (self)
 
   method _register : unit -> unit =
     fun () ->
@@ -13,7 +23,7 @@ class resource (obj : Resource.t) = object (self)
     fun path lookup_flags ->
       (Resource.enumerate_children obj path lookup_flags)
 
-  method open_stream : string -> Gio_enums.resourcelookupflags -> (GInput_stream.input_stream, GError.t) result =
+  method open_stream : string -> Gio_enums.resourcelookupflags -> (GInput_stream.input_stream_t, GError.t) result =
     fun path lookup_flags ->
       Result.map (fun ret -> new GInput_stream.input_stream ret)(Resource.open_stream obj path lookup_flags)
 

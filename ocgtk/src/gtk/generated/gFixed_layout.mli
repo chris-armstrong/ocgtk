@@ -1,5 +1,6 @@
-class fixed_layout : Fixed_layout.t ->
-  object
+class type fixed_layout_t = object
     method as_fixed_layout : Fixed_layout.t
-  end
+end
+
+class fixed_layout : Fixed_layout.t -> fixed_layout_t
 

@@ -1,5 +1,4 @@
-class paper_size : Paper_size.t ->
-  object
+class type paper_size_t = object
     method copy : unit -> Paper_size.t
     method free : unit -> unit
     method get_default_bottom_margin : Gtk_enums.unit -> float
@@ -16,5 +15,7 @@ class paper_size : Paper_size.t ->
     method is_ipp : unit -> bool
     method set_size : float -> float -> Gtk_enums.unit -> unit
     method as_paper_size : Paper_size.t
-  end
+end
+
+class paper_size : Paper_size.t -> paper_size_t
 

@@ -1,5 +1,10 @@
+class type socket_address_t = object
+    method get_family : unit -> Gio_enums.socketfamily
+    method as_socket_address : Socket_address.t
+end
+
 (* High-level class for SocketAddress *)
-class socket_address (obj : Socket_address.t) = object (self)
+class socket_address (obj : Socket_address.t) : socket_address_t = object (self)
 
   method get_family : unit -> Gio_enums.socketfamily =
     fun () ->

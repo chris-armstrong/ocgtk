@@ -1,5 +1,13 @@
+class type item_t = object
+    method apply_attrs : Attr_iterator.t -> unit
+    method copy : unit -> Item.t option
+    method free : unit -> unit
+    method split : int -> int -> Item.t
+    method as_item : Item.t
+end
+
 (* High-level class for Item *)
-class item (obj : Item.t) = object (self)
+class item (obj : Item.t) : item_t = object (self)
 
   method apply_attrs : Attr_iterator.t -> unit =
     fun iter ->

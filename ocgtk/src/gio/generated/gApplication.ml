@@ -1,7 +1,41 @@
 (* Signal class defined in gapplication_signals.ml *)
 
+class type application_t = object
+    inherit Gapplication_signals.application_signals
+    method activate : unit -> unit
+    method get_application_id : unit -> string option
+    method get_dbus_connection : unit -> GD_bus_connection.d_bus_connection_t option
+    method get_dbus_object_path : unit -> string option
+    method get_flags : unit -> Gio_enums.applicationflags
+    method get_inactivity_timeout : unit -> int
+    method get_is_busy : unit -> bool
+    method get_is_registered : unit -> bool
+    method get_is_remote : unit -> bool
+    method get_resource_base_path : unit -> string option
+    method get_version : unit -> string option
+    method hold : unit -> unit
+    method mark_busy : unit -> unit
+    method open_ : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t array -> int -> string -> unit
+    method quit : unit -> unit
+    method register : GCancellable.cancellable_t option -> (bool, GError.t) result
+    method release : unit -> unit
+    method send_notification : string option -> GNotification.notification_t -> unit
+    method set_application_id : string option -> unit
+    method set_default : unit -> unit
+    method set_flags : Gio_enums.applicationflags -> unit
+    method set_inactivity_timeout : int -> unit
+    method set_option_context_description : string option -> unit
+    method set_option_context_parameter_string : string option -> unit
+    method set_option_context_summary : string option -> unit
+    method set_resource_base_path : string option -> unit
+    method set_version : string -> unit
+    method unmark_busy : unit -> unit
+    method withdraw_notification : string -> unit
+    method as_application : Application.t
+end
+
 (* High-level class for Application *)
-class application (obj : Application.t) = object (self)
+class application (obj : Application.t) : application_t = object (self)
   inherit Gapplication_signals.application_signals obj
 
   method activate : unit -> unit =
@@ -12,7 +46,7 @@ class application (obj : Application.t) = object (self)
     fun () ->
       (Application.get_application_id obj)
 
-  method get_dbus_connection : unit -> GD_bus_connection.d_bus_connection option =
+  method get_dbus_connection : unit -> GD_bus_connection.d_bus_connection_t option =
     fun () ->
       Option.map (fun ret -> new GD_bus_connection.d_bus_connection ret) (Application.get_dbus_connection obj)
 
@@ -64,7 +98,7 @@ class application (obj : Application.t) = object (self)
     fun () ->
       (Application.quit obj)
 
-  method register : 'p1. (#GCancellable.cancellable as 'p1) option -> (bool, GError.t) result =
+  method register : GCancellable.cancellable_t option -> (bool, GError.t) result =
     fun cancellable ->
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (Application.register obj cancellable)
@@ -73,7 +107,7 @@ class application (obj : Application.t) = object (self)
     fun () ->
       (Application.release obj)
 
-  method send_notification : 'p1. string option -> (#GNotification.notification as 'p1) -> unit =
+  method send_notification : string option -> GNotification.notification_t -> unit =
     fun id notification ->
       let notification = notification#as_notification in
       (Application.send_notification obj id notification)

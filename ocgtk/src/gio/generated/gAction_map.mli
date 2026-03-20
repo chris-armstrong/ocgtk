@@ -1,8 +1,9 @@
-class action_map : Action_map.t ->
-  object
-    method lookup_action : string -> GAction.action option
+class type action_map_t = object
+    method lookup_action : string -> GAction.action_t option
     method remove_action : string -> unit
     method remove_action_entries : Action_entry.t array -> int -> unit
     method as_action_map : Action_map.t
-  end
+end
+
+class action_map : Action_map.t -> action_map_t
 

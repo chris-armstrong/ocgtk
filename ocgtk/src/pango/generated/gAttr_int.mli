@@ -1,5 +1,6 @@
-class attr_int : Attr_int.t ->
-  object
+class type attr_int_t = object
     method as_attr_int : Attr_int.t
-  end
+end
+
+class attr_int : Attr_int.t -> attr_int_t
 

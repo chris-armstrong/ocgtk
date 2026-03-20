@@ -3,18 +3,31 @@
 
 (** {1 Classes and Interfaces} *)
 
-class context : Context.t -> GContext.context
-class device : Device.t -> GDevice.device
-class font_face : Font_face.t -> GFont_face.font_face
-class font_options : Font_options.t -> GFont_options.font_options
-class matrix : Matrix.t -> GMatrix.matrix
-class path : Path.t -> GPath.path
-class pattern : Pattern.t -> GPattern.pattern
-class rectangle : Rectangle.t -> GRectangle.rectangle
-class rectangle_int : Rectangle_int.t -> GRectangle_int.rectangle_int
-class region : Region.t -> GRegion.region
-class scaled_font : Scaled_font.t -> GScaled_font.scaled_font
-class surface : Surface.t -> GSurface.surface
+class type context_t = GContext.context_t
+class type device_t = GDevice.device_t
+class type font_face_t = GFont_face.font_face_t
+class type font_options_t = GFont_options.font_options_t
+class type matrix_t = GMatrix.matrix_t
+class type path_t = GPath.path_t
+class type pattern_t = GPattern.pattern_t
+class type rectangle_t = GRectangle.rectangle_t
+class type rectangle_int_t = GRectangle_int.rectangle_int_t
+class type region_t = GRegion.region_t
+class type scaled_font_t = GScaled_font.scaled_font_t
+class type surface_t = GSurface.surface_t
+
+class context : Context.t -> context_t
+class device : Device.t -> device_t
+class font_face : Font_face.t -> font_face_t
+class font_options : Font_options.t -> font_options_t
+class matrix : Matrix.t -> matrix_t
+class path : Path.t -> path_t
+class pattern : Pattern.t -> pattern_t
+class rectangle : Rectangle.t -> rectangle_t
+class rectangle_int : Rectangle_int.t -> rectangle_int_t
+class region : Region.t -> region_t
+class scaled_font : Scaled_font.t -> scaled_font_t
+class surface : Surface.t -> surface_t
 
 (** {1 Layer 1 Module Wrappers}
     

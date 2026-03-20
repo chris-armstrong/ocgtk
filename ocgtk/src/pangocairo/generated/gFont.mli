@@ -1,6 +1,7 @@
-class font : Font.t ->
-  object
-    method get_scaled_font : unit -> Ocgtk_cairo.Cairo.scaled_font option
+class type font_t = object
+    method get_scaled_font : unit -> Ocgtk_cairo.Cairo.scaled_font_t option
     method as_font : Font.t
-  end
+end
+
+class font : Font.t -> font_t
 

@@ -1,7 +1,21 @@
-(* High-level class for ApplicationCommandLine *)
-class application_command_line (obj : Application_command_line.t) = object (self)
+class type application_command_line_t = object
+    method create_file_for_arg : string -> GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume.file_t
+    method done_ : unit -> unit
+    method get_cwd : unit -> string option
+    method get_exit_status : unit -> int
+    method get_is_remote : unit -> bool
+    method get_stdin : unit -> GInput_stream.input_stream_t option
+    method getenv : string -> string option
+    method print_literal : string -> unit
+    method printerr_literal : string -> unit
+    method set_exit_status : int -> unit
+    method as_application_command_line : Application_command_line.t
+end
 
-  method create_file_for_arg : string -> GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume.file =
+(* High-level class for ApplicationCommandLine *)
+class application_command_line (obj : Application_command_line.t) : application_command_line_t = object (self)
+
+  method create_file_for_arg : string -> GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume.file_t =
     fun arg ->
       new  GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume.file(Application_command_line.create_file_for_arg obj arg)
 
@@ -21,7 +35,7 @@ class application_command_line (obj : Application_command_line.t) = object (self
     fun () ->
       (Application_command_line.get_is_remote obj)
 
-  method get_stdin : unit -> GInput_stream.input_stream option =
+  method get_stdin : unit -> GInput_stream.input_stream_t option =
     fun () ->
       Option.map (fun ret -> new GInput_stream.input_stream ret) (Application_command_line.get_stdin obj)
 

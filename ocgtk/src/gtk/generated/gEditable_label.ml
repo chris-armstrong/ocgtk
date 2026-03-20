@@ -1,5 +1,12 @@
+class type editable_label_t = object
+    method get_editing : unit -> bool
+    method start_editing : unit -> unit
+    method stop_editing : bool -> unit
+    method as_editable_label : Editable_label.t
+end
+
 (* High-level class for EditableLabel *)
-class editable_label (obj : Editable_label.t) = object (self)
+class editable_label (obj : Editable_label.t) : editable_label_t = object (self)
 
   method get_editing : unit -> bool =
     fun () ->

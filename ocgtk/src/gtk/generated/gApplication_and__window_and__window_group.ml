@@ -1,11 +1,109 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined classes for cyclic dependencies *)
+
+class type application_t = object
+    inherit Gapplication_signals.application_signals
+    method add_window : window_t -> unit
+    method get_accels_for_action : string -> string array
+    method get_actions_for_accel : string -> string array
+    method get_active_window : unit -> window_t option
+    method get_menu_by_id : string -> Ocgtk_gio.Gio.menu_t option
+    method get_menubar : unit -> Ocgtk_gio.Gio.menu_model_t option
+    method get_window_by_id : int -> window_t option
+    method inhibit : window_t option -> Gtk_enums.applicationinhibitflags -> string option -> int
+    method list_action_descriptions : unit -> string array
+    method remove_window : window_t -> unit
+    method set_accels_for_action : string -> string array -> unit
+    method set_menubar : Ocgtk_gio.Gio.menu_model_t option -> unit
+    method uninhibit : int -> unit
+    method register_session : bool
+    method set_register_session : bool -> unit
+    method screensaver_active : bool
+    method as_application : Application_and__window_and__window_group.Application.t
+end
+
+and window_t = object
+    inherit Gwindow_signals.window_signals
+    method close : unit -> unit
+    method destroy : unit -> unit
+    method fullscreen : unit -> unit
+    method fullscreen_on_monitor : Ocgtk_gdk.Gdk.monitor_t -> unit
+    method get_application : unit -> application_t option
+    method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
+    method get_decorated : unit -> bool
+    method get_default_widget : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
+    method get_deletable : unit -> bool
+    method get_destroy_with_parent : unit -> bool
+    method get_focus : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
+    method get_focus_visible : unit -> bool
+    method get_group : unit -> window_group_t
+    method get_handle_menubar_accel : unit -> bool
+    method get_hide_on_close : unit -> bool
+    method get_icon_name : unit -> string option
+    method get_mnemonics_visible : unit -> bool
+    method get_modal : unit -> bool
+    method get_resizable : unit -> bool
+    method get_title : unit -> string option
+    method get_titlebar : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
+    method get_transient_for : unit -> window_t option
+    method has_group : unit -> bool
+    method is_active : unit -> bool
+    method is_fullscreen : unit -> bool
+    method is_maximized : unit -> bool
+    method is_suspended : unit -> bool
+    method maximize : unit -> unit
+    method minimize : unit -> unit
+    method present : unit -> unit
+    method set_application : application_t option -> unit
+    method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
+    method set_decorated : bool -> unit
+    method set_default_size : int -> int -> unit
+    method set_default_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
+    method set_deletable : bool -> unit
+    method set_destroy_with_parent : bool -> unit
+    method set_display : Ocgtk_gdk.Gdk.display_t -> unit
+    method set_focus : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
+    method set_focus_visible : bool -> unit
+    method set_handle_menubar_accel : bool -> unit
+    method set_hide_on_close : bool -> unit
+    method set_icon_name : string option -> unit
+    method set_mnemonics_visible : bool -> unit
+    method set_modal : bool -> unit
+    method set_resizable : bool -> unit
+    method set_startup_id : string -> unit
+    method set_title : string option -> unit
+    method set_titlebar : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
+    method set_transient_for : window_t option -> unit
+    method unfullscreen : unit -> unit
+    method unmaximize : unit -> unit
+    method unminimize : unit -> unit
+    method default_height : int
+    method set_default_height : int -> unit
+    method default_width : int
+    method set_default_width : int -> unit
+    method focus_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    method set_focus_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit
+    method fullscreened : bool
+    method set_fullscreened : bool -> unit
+    method maximized : bool
+    method set_maximized : bool -> unit
+    method suspended : bool
+    method as_window : Application_and__window_and__window_group.Window.t
+end
+
+and window_group_t = object
+    method add_window : window_t -> unit
+    method remove_window : window_t -> unit
+    method as_window_group : Application_and__window_and__window_group.Window_group.t
+end
+
+
 (* Signal class defined in gapplication_signals.ml *)
 
-class application (obj : Application_and__window_and__window_group.Application.t) = object (self)
+class application (obj : Application_and__window_and__window_group.Application.t) : application_t = object (self)
   inherit Gapplication_signals.application_signals obj
 
-  method add_window : 'p1. (<as_window: Application_and__window_and__window_group.Window.t; ..> as 'p1) -> unit =
+  method add_window : window_t -> unit =
     fun window ->
       let window = window#as_window in
       (Application_and__window_and__window_group.Application.add_window obj window)
@@ -18,23 +116,23 @@ class application (obj : Application_and__window_and__window_group.Application.t
     fun accel ->
       (Application_and__window_and__window_group.Application.get_actions_for_accel obj accel)
 
-  method get_active_window : unit -> window option =
+  method get_active_window : unit -> window_t option =
     fun () ->
       Option.map (fun ret -> new window ret) (Application_and__window_and__window_group.Application.get_active_window obj)
 
-  method get_menu_by_id : string -> Ocgtk_gio.Gio.menu option =
+  method get_menu_by_id : string -> Ocgtk_gio.Gio.menu_t option =
     fun id ->
       Option.map (fun ret -> new Ocgtk_gio.Gio.menu ret) (Application_and__window_and__window_group.Application.get_menu_by_id obj id)
 
-  method get_menubar : unit -> Ocgtk_gio.Gio.menu_model option =
+  method get_menubar : unit -> Ocgtk_gio.Gio.menu_model_t option =
     fun () ->
       Option.map (fun ret -> new Ocgtk_gio.Gio.menu_model ret) (Application_and__window_and__window_group.Application.get_menubar obj)
 
-  method get_window_by_id : int -> window option =
+  method get_window_by_id : int -> window_t option =
     fun id ->
       Option.map (fun ret -> new window ret) (Application_and__window_and__window_group.Application.get_window_by_id obj id)
 
-  method inhibit : 'p1. (<as_window: Application_and__window_and__window_group.Window.t; ..> as 'p1) option -> Gtk_enums.applicationinhibitflags -> string option -> int =
+  method inhibit : window_t option -> Gtk_enums.applicationinhibitflags -> string option -> int =
     fun window flags reason ->
       let window = Option.map (fun (c) -> c#as_window) window in
       (Application_and__window_and__window_group.Application.inhibit obj window flags reason)
@@ -43,7 +141,7 @@ class application (obj : Application_and__window_and__window_group.Application.t
     fun () ->
       (Application_and__window_and__window_group.Application.list_action_descriptions obj)
 
-  method remove_window : 'p1. (<as_window: Application_and__window_and__window_group.Window.t; ..> as 'p1) -> unit =
+  method remove_window : window_t -> unit =
     fun window ->
       let window = window#as_window in
       (Application_and__window_and__window_group.Application.remove_window obj window)
@@ -52,7 +150,7 @@ class application (obj : Application_and__window_and__window_group.Application.t
     fun detailed_action_name accels ->
       (Application_and__window_and__window_group.Application.set_accels_for_action obj detailed_action_name accels)
 
-  method set_menubar : 'p1. (#Ocgtk_gio.Gio.menu_model as 'p1) option -> unit =
+  method set_menubar : Ocgtk_gio.Gio.menu_model_t option -> unit =
     fun menubar ->
       let menubar = Option.map (fun (c) -> c#as_menu_model) menubar in
       (Application_and__window_and__window_group.Application.set_menubar obj menubar)
@@ -71,7 +169,7 @@ end
 (* Signal class defined in gwindow_signals.ml *)
 
 
-and window (obj : Application_and__window_and__window_group.Window.t) = object (self)
+and window (obj : Application_and__window_and__window_group.Window.t) : window_t = object (self)
   inherit Gwindow_signals.window_signals obj
 
   method close : unit -> unit =
@@ -86,16 +184,16 @@ and window (obj : Application_and__window_and__window_group.Window.t) = object (
     fun () ->
       (Application_and__window_and__window_group.Window.fullscreen obj)
 
-  method fullscreen_on_monitor : 'p1. (#Ocgtk_gdk.Gdk.monitor as 'p1) -> unit =
+  method fullscreen_on_monitor : Ocgtk_gdk.Gdk.monitor_t -> unit =
     fun monitor ->
       let monitor = monitor#as_monitor in
       (Application_and__window_and__window_group.Window.fullscreen_on_monitor obj monitor)
 
-  method get_application : unit -> application option =
+  method get_application : unit -> application_t option =
     fun () ->
       Option.map (fun ret -> new application ret) (Application_and__window_and__window_group.Window.get_application obj)
 
-  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
+  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option =
     fun () ->
       Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Application_and__window_and__window_group.Window.get_child obj)
 
@@ -103,7 +201,7 @@ and window (obj : Application_and__window_and__window_group.Window.t) = object (
     fun () ->
       (Application_and__window_and__window_group.Window.get_decorated obj)
 
-  method get_default_widget : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
+  method get_default_widget : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option =
     fun () ->
       Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Application_and__window_and__window_group.Window.get_default_widget obj)
 
@@ -115,7 +213,7 @@ and window (obj : Application_and__window_and__window_group.Window.t) = object (
     fun () ->
       (Application_and__window_and__window_group.Window.get_destroy_with_parent obj)
 
-  method get_focus : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
+  method get_focus : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option =
     fun () ->
       Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Application_and__window_and__window_group.Window.get_focus obj)
 
@@ -123,7 +221,7 @@ and window (obj : Application_and__window_and__window_group.Window.t) = object (
     fun () ->
       (Application_and__window_and__window_group.Window.get_focus_visible obj)
 
-  method get_group : unit -> window_group =
+  method get_group : unit -> window_group_t =
     fun () ->
       new  window_group(Application_and__window_and__window_group.Window.get_group obj)
 
@@ -155,11 +253,11 @@ and window (obj : Application_and__window_and__window_group.Window.t) = object (
     fun () ->
       (Application_and__window_and__window_group.Window.get_title obj)
 
-  method get_titlebar : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
+  method get_titlebar : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option =
     fun () ->
       Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Application_and__window_and__window_group.Window.get_titlebar obj)
 
-  method get_transient_for : unit -> window option =
+  method get_transient_for : unit -> window_t option =
     fun () ->
       Option.map (fun ret -> new window ret) (Application_and__window_and__window_group.Window.get_transient_for obj)
 
@@ -195,12 +293,12 @@ and window (obj : Application_and__window_and__window_group.Window.t) = object (
     fun () ->
       (Application_and__window_and__window_group.Window.present obj)
 
-  method set_application : 'p1. (<as_application: Application_and__window_and__window_group.Application.t; ..> as 'p1) option -> unit =
+  method set_application : application_t option -> unit =
     fun application ->
       let application = Option.map (fun (c) -> c#as_application) application in
       (Application_and__window_and__window_group.Window.set_application obj application)
 
-  method set_child : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
+  method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit =
     fun child ->
       let child = Option.map (fun (c) -> c#as_widget) child in
       (Application_and__window_and__window_group.Window.set_child obj child)
@@ -213,7 +311,7 @@ and window (obj : Application_and__window_and__window_group.Window.t) = object (
     fun width height ->
       (Application_and__window_and__window_group.Window.set_default_size obj width height)
 
-  method set_default_widget : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
+  method set_default_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit =
     fun default_widget ->
       let default_widget = Option.map (fun (c) -> c#as_widget) default_widget in
       (Application_and__window_and__window_group.Window.set_default_widget obj default_widget)
@@ -226,12 +324,12 @@ and window (obj : Application_and__window_and__window_group.Window.t) = object (
     fun setting ->
       (Application_and__window_and__window_group.Window.set_destroy_with_parent obj setting)
 
-  method set_display : 'p1. (#Ocgtk_gdk.Gdk.display as 'p1) -> unit =
+  method set_display : Ocgtk_gdk.Gdk.display_t -> unit =
     fun display ->
       let display = display#as_display in
       (Application_and__window_and__window_group.Window.set_display obj display)
 
-  method set_focus : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
+  method set_focus : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit =
     fun focus ->
       let focus = Option.map (fun (c) -> c#as_widget) focus in
       (Application_and__window_and__window_group.Window.set_focus obj focus)
@@ -272,12 +370,12 @@ and window (obj : Application_and__window_and__window_group.Window.t) = object (
     fun title ->
       (Application_and__window_and__window_group.Window.set_title obj title)
 
-  method set_titlebar : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
+  method set_titlebar : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit =
     fun titlebar ->
       let titlebar = Option.map (fun (c) -> c#as_widget) titlebar in
       (Application_and__window_and__window_group.Window.set_titlebar obj titlebar)
 
-  method set_transient_for : 'p1. (<as_window: Application_and__window_and__window_group.Window.t; ..> as 'p1) option -> unit =
+  method set_transient_for : window_t option -> unit =
     fun parent ->
       let parent = Option.map (fun (c) -> c#as_window) parent in
       (Application_and__window_and__window_group.Window.set_transient_for obj parent)
@@ -301,7 +399,7 @@ and window (obj : Application_and__window_and__window_group.Window.t) = object (
   method set_default_width v =  Application_and__window_and__window_group.Window.set_default_width obj v
 
   method focus_widget = new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Application_and__window_and__window_group.Window.get_focus_widget obj)
-  method set_focus_widget : 'a . (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'a) -> unit  = fun v ->  Application_and__window_and__window_group.Window.set_focus_widget obj v#as_widget
+  method set_focus_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit  = fun v ->  Application_and__window_and__window_group.Window.set_focus_widget obj v#as_widget
 
   method fullscreened = Application_and__window_and__window_group.Window.get_fullscreened obj
   method set_fullscreened v =  Application_and__window_and__window_group.Window.set_fullscreened obj v
@@ -314,14 +412,14 @@ and window (obj : Application_and__window_and__window_group.Window.t) = object (
     method as_window = obj
 end
 
-and window_group (obj : Application_and__window_and__window_group.Window_group.t) = object (self)
+and window_group (obj : Application_and__window_and__window_group.Window_group.t) : window_group_t = object (self)
 
-  method add_window : 'p1. (<as_window: Application_and__window_and__window_group.Window.t; ..> as 'p1) -> unit =
+  method add_window : window_t -> unit =
     fun window ->
       let window = window#as_window in
       (Application_and__window_and__window_group.Window_group.add_window obj window)
 
-  method remove_window : 'p1. (<as_window: Application_and__window_and__window_group.Window.t; ..> as 'p1) -> unit =
+  method remove_window : window_t -> unit =
     fun window ->
       let window = window#as_window in
       (Application_and__window_and__window_group.Window_group.remove_window obj window)

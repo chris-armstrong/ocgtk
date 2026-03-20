@@ -1,5 +1,12 @@
+class type simple_proxy_resolver_t = object
+    method set_default_proxy : string option -> unit
+    method set_ignore_hosts : string array -> unit
+    method set_uri_proxy : string -> string -> unit
+    method as_simple_proxy_resolver : Simple_proxy_resolver.t
+end
+
 (* High-level class for SimpleProxyResolver *)
-class simple_proxy_resolver (obj : Simple_proxy_resolver.t) = object (self)
+class simple_proxy_resolver (obj : Simple_proxy_resolver.t) : simple_proxy_resolver_t = object (self)
 
   method set_default_proxy : string option -> unit =
     fun default_proxy ->

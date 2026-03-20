@@ -1,7 +1,14 @@
-(* High-level class for DBusObjectProxy *)
-class d_bus_object_proxy (obj : D_bus_object_proxy.t) = object (self)
+class type d_bus_object_proxy_t = object
+    method get_connection : unit -> GD_bus_connection.d_bus_connection_t
+    method g_connection : GD_bus_connection.d_bus_connection_t
+    method g_object_path : string
+    method as_d_bus_object_proxy : D_bus_object_proxy.t
+end
 
-  method get_connection : unit -> GD_bus_connection.d_bus_connection =
+(* High-level class for DBusObjectProxy *)
+class d_bus_object_proxy (obj : D_bus_object_proxy.t) : d_bus_object_proxy_t = object (self)
+
+  method get_connection : unit -> GD_bus_connection.d_bus_connection_t =
     fun () ->
       new  GD_bus_connection.d_bus_connection(D_bus_object_proxy.get_connection obj)
 

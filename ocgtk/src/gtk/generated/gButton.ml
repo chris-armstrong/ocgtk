@@ -1,14 +1,31 @@
 (* Signal class defined in gbutton_signals.ml *)
 
+class type button_t = object
+    inherit Gbutton_signals.button_signals
+    method get_can_shrink : unit -> bool
+    method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
+    method get_has_frame : unit -> bool
+    method get_icon_name : unit -> string option
+    method get_label : unit -> string option
+    method get_use_underline : unit -> bool
+    method set_can_shrink : bool -> unit
+    method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
+    method set_has_frame : bool -> unit
+    method set_icon_name : string -> unit
+    method set_label : string -> unit
+    method set_use_underline : bool -> unit
+    method as_button : Button.t
+end
+
 (* High-level class for Button *)
-class button (obj : Button.t) = object (self)
+class button (obj : Button.t) : button_t = object (self)
   inherit Gbutton_signals.button_signals obj
 
   method get_can_shrink : unit -> bool =
     fun () ->
       (Button.get_can_shrink obj)
 
-  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
+  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option =
     fun () ->
       Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Button.get_child obj)
 
@@ -32,7 +49,7 @@ class button (obj : Button.t) = object (self)
     fun can_shrink ->
       (Button.set_can_shrink obj can_shrink)
 
-  method set_child : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
+  method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit =
     fun child ->
       let child = Option.map (fun (c) -> c#as_widget) child in
       (Button.set_child obj child)

@@ -1,6 +1,5 @@
-class inscription : Inscription.t ->
-  object
-    method get_attributes : unit -> Ocgtk_pango.Pango.attr_list option
+class type inscription_t = object
+    method get_attributes : unit -> Ocgtk_pango.Pango.attr_list_t option
     method get_min_chars : unit -> int
     method get_min_lines : unit -> int
     method get_nat_chars : unit -> int
@@ -10,7 +9,7 @@ class inscription : Inscription.t ->
     method get_wrap_mode : unit -> Ocgtk_pango.Pango.wrapmode
     method get_xalign : unit -> float
     method get_yalign : unit -> float
-    method set_attributes : #Ocgtk_pango.Pango.attr_list option -> unit
+    method set_attributes : Ocgtk_pango.Pango.attr_list_t option -> unit
     method set_markup : string option -> unit
     method set_min_chars : int -> unit
     method set_min_lines : int -> unit
@@ -22,5 +21,7 @@ class inscription : Inscription.t ->
     method set_xalign : float -> unit
     method set_yalign : float -> unit
     method as_inscription : Inscription.t
-  end
+end
+
+class inscription : Inscription.t -> inscription_t
 

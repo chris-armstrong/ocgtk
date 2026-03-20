@@ -1,6 +1,5 @@
-class message_dialog : Message_dialog.t ->
-  object
-    method get_message_area : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
+class type message_dialog_t = object
+    method get_message_area : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     method set_markup : string -> unit
     method buttons : Gtk_enums.buttonstype
     method message_type : Gtk_enums.messagetype
@@ -14,5 +13,7 @@ class message_dialog : Message_dialog.t ->
     method use_markup : bool
     method set_use_markup : bool -> unit
     method as_message_dialog : Message_dialog.t
-  end
+end
+
+class message_dialog : Message_dialog.t -> message_dialog_t
 

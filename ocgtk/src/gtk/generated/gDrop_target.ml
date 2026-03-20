@@ -1,22 +1,35 @@
 (* Signal class defined in gdrop_target_signals.ml *)
 
+class type drop_target_t = object
+    inherit Gdrop_target_signals.drop_target_signals
+    method get_actions : unit -> Ocgtk_gdk.Gdk.dragaction
+    method get_current_drop : unit -> Ocgtk_gdk.Gdk.drop_t option
+    method get_drop : unit -> Ocgtk_gdk.Gdk.drop_t option
+    method get_formats : unit -> Ocgtk_gdk.Gdk.content_formats_t option
+    method get_preload : unit -> bool
+    method reject : unit -> unit
+    method set_actions : Ocgtk_gdk.Gdk.dragaction -> unit
+    method set_preload : bool -> unit
+    method as_drop_target : Drop_target.t
+end
+
 (* High-level class for DropTarget *)
-class drop_target (obj : Drop_target.t) = object (self)
+class drop_target (obj : Drop_target.t) : drop_target_t = object (self)
   inherit Gdrop_target_signals.drop_target_signals obj
 
   method get_actions : unit -> Ocgtk_gdk.Gdk.dragaction =
     fun () ->
       (Drop_target.get_actions obj)
 
-  method get_current_drop : unit -> Ocgtk_gdk.Gdk.drop option =
+  method get_current_drop : unit -> Ocgtk_gdk.Gdk.drop_t option =
     fun () ->
       Option.map (fun ret -> new Ocgtk_gdk.Gdk.drop ret) (Drop_target.get_current_drop obj)
 
-  method get_drop : unit -> Ocgtk_gdk.Gdk.drop option =
+  method get_drop : unit -> Ocgtk_gdk.Gdk.drop_t option =
     fun () ->
       Option.map (fun ret -> new Ocgtk_gdk.Gdk.drop ret) (Drop_target.get_drop obj)
 
-  method get_formats : unit -> Ocgtk_gdk.Gdk.content_formats option =
+  method get_formats : unit -> Ocgtk_gdk.Gdk.content_formats_t option =
     fun () ->
       Option.map (fun ret -> new Ocgtk_gdk.Gdk.content_formats ret) (Drop_target.get_formats obj)
 

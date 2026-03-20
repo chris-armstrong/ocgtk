@@ -1,10 +1,35 @@
 (* Signal class defined in gpaned_signals.ml *)
 
+class type paned_t = object
+    inherit Gpaned_signals.paned_signals
+    method get_end_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
+    method get_position : unit -> int
+    method get_resize_end_child : unit -> bool
+    method get_resize_start_child : unit -> bool
+    method get_shrink_end_child : unit -> bool
+    method get_shrink_start_child : unit -> bool
+    method get_start_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
+    method get_wide_handle : unit -> bool
+    method set_end_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
+    method set_position : int -> unit
+    method set_resize_end_child : bool -> unit
+    method set_resize_start_child : bool -> unit
+    method set_shrink_end_child : bool -> unit
+    method set_shrink_start_child : bool -> unit
+    method set_start_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
+    method set_wide_handle : bool -> unit
+    method max_position : int
+    method min_position : int
+    method position_set : bool
+    method set_position_set : bool -> unit
+    method as_paned : Paned.t
+end
+
 (* High-level class for Paned *)
-class paned (obj : Paned.t) = object (self)
+class paned (obj : Paned.t) : paned_t = object (self)
   inherit Gpaned_signals.paned_signals obj
 
-  method get_end_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
+  method get_end_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option =
     fun () ->
       Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Paned.get_end_child obj)
 
@@ -28,7 +53,7 @@ class paned (obj : Paned.t) = object (self)
     fun () ->
       (Paned.get_shrink_start_child obj)
 
-  method get_start_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
+  method get_start_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option =
     fun () ->
       Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Paned.get_start_child obj)
 
@@ -36,7 +61,7 @@ class paned (obj : Paned.t) = object (self)
     fun () ->
       (Paned.get_wide_handle obj)
 
-  method set_end_child : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
+  method set_end_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit =
     fun child ->
       let child = Option.map (fun (c) -> c#as_widget) child in
       (Paned.set_end_child obj child)
@@ -61,7 +86,7 @@ class paned (obj : Paned.t) = object (self)
     fun resize ->
       (Paned.set_shrink_start_child obj resize)
 
-  method set_start_child : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
+  method set_start_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit =
     fun child ->
       let child = Option.map (fun (c) -> c#as_widget) child in
       (Paned.set_start_child obj child)

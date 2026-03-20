@@ -1,5 +1,35 @@
+class type media_stream_t = object
+    method get_ended : unit -> bool
+    method get_loop : unit -> bool
+    method get_muted : unit -> bool
+    method get_playing : unit -> bool
+    method get_volume : unit -> float
+    method has_audio : unit -> bool
+    method has_video : unit -> bool
+    method is_prepared : unit -> bool
+    method is_seekable : unit -> bool
+    method is_seeking : unit -> bool
+    method pause : unit -> unit
+    method play : unit -> unit
+    method realize : Ocgtk_gdk.Gdk.surface_t -> unit
+    method seek_failed : unit -> unit
+    method seek_success : unit -> unit
+    method set_loop : bool -> unit
+    method set_muted : bool -> unit
+    method set_playing : bool -> unit
+    method set_volume : float -> unit
+    method stream_ended : unit -> unit
+    method stream_unprepared : unit -> unit
+    method unrealize : Ocgtk_gdk.Gdk.surface_t -> unit
+    method prepared : bool
+    method set_prepared : bool -> unit
+    method seekable : bool
+    method seeking : bool
+    method as_media_stream : Media_stream.t
+end
+
 (* High-level class for MediaStream *)
-class media_stream (obj : Media_stream.t) = object (self)
+class media_stream (obj : Media_stream.t) : media_stream_t = object (self)
 
   method get_ended : unit -> bool =
     fun () ->
@@ -49,7 +79,7 @@ class media_stream (obj : Media_stream.t) = object (self)
     fun () ->
       (Media_stream.play obj)
 
-  method realize : 'p1. (#Ocgtk_gdk.Gdk.surface as 'p1) -> unit =
+  method realize : Ocgtk_gdk.Gdk.surface_t -> unit =
     fun surface ->
       let surface = surface#as_surface in
       (Media_stream.realize obj surface)
@@ -86,7 +116,7 @@ class media_stream (obj : Media_stream.t) = object (self)
     fun () ->
       (Media_stream.stream_unprepared obj)
 
-  method unrealize : 'p1. (#Ocgtk_gdk.Gdk.surface as 'p1) -> unit =
+  method unrealize : Ocgtk_gdk.Gdk.surface_t -> unit =
     fun surface ->
       let surface = surface#as_surface in
       (Media_stream.unrealize obj surface)

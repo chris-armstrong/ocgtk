@@ -1,6 +1,7 @@
-class file_icon : File_icon.t ->
-  object
-    method get_file : unit -> GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume.file
+class type file_icon_t = object
+    method get_file : unit -> GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume.file_t
     method as_file_icon : File_icon.t
-  end
+end
+
+class file_icon : File_icon.t -> file_icon_t
 

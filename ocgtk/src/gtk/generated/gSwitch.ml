@@ -1,7 +1,16 @@
 (* Signal class defined in gswitch_signals.ml *)
 
+class type switch_t = object
+    inherit Gswitch_signals.switch_signals
+    method get_active : unit -> bool
+    method get_state : unit -> bool
+    method set_active : bool -> unit
+    method set_state : bool -> unit
+    method as_switch : Switch.t
+end
+
 (* High-level class for Switch *)
-class switch (obj : Switch.t) = object (self)
+class switch (obj : Switch.t) : switch_t = object (self)
   inherit Gswitch_signals.switch_signals obj
 
   method get_active : unit -> bool =

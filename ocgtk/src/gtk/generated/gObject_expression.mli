@@ -1,5 +1,6 @@
-class object_expression : Object_expression.t ->
-  object
+class type object_expression_t = object
     method as_object_expression : Object_expression.t
-  end
+end
+
+class object_expression : Object_expression.t -> object_expression_t
 

@@ -1,5 +1,4 @@
-class notification : Notification.t ->
-  object
+class type notification_t = object
     method add_button : string -> string -> unit
     method set_body : string option -> unit
     method set_category : string option -> unit
@@ -8,5 +7,7 @@ class notification : Notification.t ->
     method set_title : string -> unit
     method set_urgent : bool -> unit
     method as_notification : Notification.t
-  end
+end
+
+class notification : Notification.t -> notification_t
 

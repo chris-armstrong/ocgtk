@@ -1,5 +1,24 @@
+class type picture_t = object
+    method get_alternative_text : unit -> string option
+    method get_can_shrink : unit -> bool
+    method get_content_fit : unit -> Gtk_enums.contentfit
+    method get_file : unit -> Ocgtk_gio.Gio.file_t option
+    method get_keep_aspect_ratio : unit -> bool
+    method get_paintable : unit -> Ocgtk_gdk.Gdk.paintable_t option
+    method set_alternative_text : string option -> unit
+    method set_can_shrink : bool -> unit
+    method set_content_fit : Gtk_enums.contentfit -> unit
+    method set_file : Ocgtk_gio.Gio.file_t option -> unit
+    method set_filename : string option -> unit
+    method set_keep_aspect_ratio : bool -> unit
+    method set_paintable : Ocgtk_gdk.Gdk.paintable_t option -> unit
+    method set_pixbuf : Ocgtk_gdkpixbuf.GdkPixbuf.pixbuf_t option -> unit
+    method set_resource : string option -> unit
+    method as_picture : Picture.t
+end
+
 (* High-level class for Picture *)
-class picture (obj : Picture.t) = object (self)
+class picture (obj : Picture.t) : picture_t = object (self)
 
   method get_alternative_text : unit -> string option =
     fun () ->
@@ -13,7 +32,7 @@ class picture (obj : Picture.t) = object (self)
     fun () ->
       (Picture.get_content_fit obj)
 
-  method get_file : unit -> Ocgtk_gio.Gio.file option =
+  method get_file : unit -> Ocgtk_gio.Gio.file_t option =
     fun () ->
       Option.map (fun ret -> new Ocgtk_gio.Gio.file ret) (Picture.get_file obj)
 
@@ -21,7 +40,7 @@ class picture (obj : Picture.t) = object (self)
     fun () ->
       (Picture.get_keep_aspect_ratio obj)
 
-  method get_paintable : unit -> Ocgtk_gdk.Gdk.paintable option =
+  method get_paintable : unit -> Ocgtk_gdk.Gdk.paintable_t option =
     fun () ->
       Option.map (fun ret -> new Ocgtk_gdk.Gdk.paintable ret) (Picture.get_paintable obj)
 
@@ -37,7 +56,7 @@ class picture (obj : Picture.t) = object (self)
     fun content_fit ->
       (Picture.set_content_fit obj content_fit)
 
-  method set_file : 'p1. (#Ocgtk_gio.Gio.file as 'p1) option -> unit =
+  method set_file : Ocgtk_gio.Gio.file_t option -> unit =
     fun file ->
       let file = Option.map (fun (c) -> c#as_file) file in
       (Picture.set_file obj file)
@@ -50,12 +69,12 @@ class picture (obj : Picture.t) = object (self)
     fun keep_aspect_ratio ->
       (Picture.set_keep_aspect_ratio obj keep_aspect_ratio)
 
-  method set_paintable : 'p1. (#Ocgtk_gdk.Gdk.paintable as 'p1) option -> unit =
+  method set_paintable : Ocgtk_gdk.Gdk.paintable_t option -> unit =
     fun paintable ->
       let paintable = Option.map (fun (c) -> c#as_paintable) paintable in
       (Picture.set_paintable obj paintable)
 
-  method set_pixbuf : 'p1. (#Ocgtk_gdkpixbuf.GdkPixbuf.pixbuf as 'p1) option -> unit =
+  method set_pixbuf : Ocgtk_gdkpixbuf.GdkPixbuf.pixbuf_t option -> unit =
     fun pixbuf ->
       let pixbuf = Option.map (fun (c) -> c#as_pixbuf) pixbuf in
       (Picture.set_pixbuf obj pixbuf)

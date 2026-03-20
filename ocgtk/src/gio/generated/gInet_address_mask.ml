@@ -1,12 +1,22 @@
-(* High-level class for InetAddressMask *)
-class inet_address_mask (obj : Inet_address_mask.t) = object (self)
+class type inet_address_mask_t = object
+    method equal : inet_address_mask_t -> bool
+    method get_address : unit -> GInet_address.inet_address_t
+    method get_family : unit -> Gio_enums.socketfamily
+    method get_length : unit -> int
+    method matches : GInet_address.inet_address_t -> bool
+    method to_string : unit -> string
+    method as_inet_address_mask : Inet_address_mask.t
+end
 
-  method equal : 'p1. (<as_inet_address_mask: Inet_address_mask.t; ..> as 'p1) -> bool =
+(* High-level class for InetAddressMask *)
+class inet_address_mask (obj : Inet_address_mask.t) : inet_address_mask_t = object (self)
+
+  method equal : inet_address_mask_t -> bool =
     fun mask2 ->
       let mask2 = mask2#as_inet_address_mask in
       (Inet_address_mask.equal obj mask2)
 
-  method get_address : unit -> GInet_address.inet_address =
+  method get_address : unit -> GInet_address.inet_address_t =
     fun () ->
       new  GInet_address.inet_address(Inet_address_mask.get_address obj)
 
@@ -18,7 +28,7 @@ class inet_address_mask (obj : Inet_address_mask.t) = object (self)
     fun () ->
       (Inet_address_mask.get_length obj)
 
-  method matches : 'p1. (#GInet_address.inet_address as 'p1) -> bool =
+  method matches : GInet_address.inet_address_t -> bool =
     fun address ->
       let address = address#as_inet_address in
       (Inet_address_mask.matches obj address)

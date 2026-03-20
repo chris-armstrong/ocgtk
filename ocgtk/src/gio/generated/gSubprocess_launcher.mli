@@ -1,5 +1,4 @@
-class subprocess_launcher : Subprocess_launcher.t ->
-  object
+class type subprocess_launcher_t = object
     method close : unit -> unit
     method getenv : string -> string option
     method set_cwd : string -> unit
@@ -15,5 +14,7 @@ class subprocess_launcher : Subprocess_launcher.t ->
     method unsetenv : string -> unit
     method flags : Gio_enums.subprocessflags
     method as_subprocess_launcher : Subprocess_launcher.t
-  end
+end
+
+class subprocess_launcher : Subprocess_launcher.t -> subprocess_launcher_t
 

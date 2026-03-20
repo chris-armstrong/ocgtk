@@ -1,5 +1,11 @@
+class type icon_t = object
+    method hash : unit -> int
+    method to_string : unit -> string option
+    method as_icon : Icon.t
+end
+
 (* High-level class for Icon *)
-class icon (obj : Icon.t) = object (self)
+class icon (obj : Icon.t) : icon_t = object (self)
 
   method hash : unit -> int =
     fun () ->

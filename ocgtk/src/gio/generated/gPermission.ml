@@ -1,7 +1,17 @@
-(* High-level class for Permission *)
-class permission (obj : Permission.t) = object (self)
+class type permission_t = object
+    method acquire : GCancellable.cancellable_t option -> (bool, GError.t) result
+    method get_allowed : unit -> bool
+    method get_can_acquire : unit -> bool
+    method get_can_release : unit -> bool
+    method impl_update : bool -> bool -> bool -> unit
+    method release : GCancellable.cancellable_t option -> (bool, GError.t) result
+    method as_permission : Permission.t
+end
 
-  method acquire : 'p1. (#GCancellable.cancellable as 'p1) option -> (bool, GError.t) result =
+(* High-level class for Permission *)
+class permission (obj : Permission.t) : permission_t = object (self)
+
+  method acquire : GCancellable.cancellable_t option -> (bool, GError.t) result =
     fun cancellable ->
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (Permission.acquire obj cancellable)
@@ -22,7 +32,7 @@ class permission (obj : Permission.t) = object (self)
     fun allowed can_acquire can_release ->
       (Permission.impl_update obj allowed can_acquire can_release)
 
-  method release : 'p1. (#GCancellable.cancellable as 'p1) option -> (bool, GError.t) result =
+  method release : GCancellable.cancellable_t option -> (bool, GError.t) result =
     fun cancellable ->
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (Permission.release obj cancellable)

@@ -1,5 +1,4 @@
-class constraint_guide : Constraint_guide.t ->
-  object
+class type constraint_guide_t = object
     method get_name : unit -> string option
     method get_strength : unit -> Gtk_enums.constraintstrength
     method set_max_size : int -> int -> unit
@@ -20,5 +19,7 @@ class constraint_guide : Constraint_guide.t ->
     method nat_width : int
     method set_nat_width : int -> unit
     method as_constraint_guide : Constraint_guide.t
-  end
+end
+
+class constraint_guide : Constraint_guide.t -> constraint_guide_t
 

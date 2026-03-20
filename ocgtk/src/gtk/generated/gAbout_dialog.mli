@@ -1,5 +1,4 @@
-class about_dialog : About_dialog.t ->
-  object
+class type about_dialog_t = object
     inherit Gabout_dialog_signals.about_dialog_signals
     method add_credit_section : string -> string array -> unit
     method get_artists : unit -> string array
@@ -8,7 +7,7 @@ class about_dialog : About_dialog.t ->
     method get_copyright : unit -> string option
     method get_documenters : unit -> string array
     method get_license : unit -> string option
-    method get_logo : unit -> Ocgtk_gdk.Gdk.paintable option
+    method get_logo : unit -> Ocgtk_gdk.Gdk.paintable_t option
     method get_logo_icon_name : unit -> string option
     method get_program_name : unit -> string option
     method get_system_information : unit -> string option
@@ -23,7 +22,7 @@ class about_dialog : About_dialog.t ->
     method set_copyright : string option -> unit
     method set_documenters : string array -> unit
     method set_license : string option -> unit
-    method set_logo : #Ocgtk_gdk.Gdk.paintable option -> unit
+    method set_logo : Ocgtk_gdk.Gdk.paintable_t option -> unit
     method set_logo_icon_name : string option -> unit
     method set_program_name : string option -> unit
     method set_system_information : string option -> unit
@@ -33,5 +32,7 @@ class about_dialog : About_dialog.t ->
     method set_website_label : string -> unit
     method set_wrap_license : bool -> unit
     method as_about_dialog : About_dialog.t
-  end
+end
+
+class about_dialog : About_dialog.t -> about_dialog_t
 

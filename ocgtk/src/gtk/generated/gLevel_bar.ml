@@ -1,7 +1,24 @@
 (* Signal class defined in glevel_bar_signals.ml *)
 
+class type level_bar_t = object
+    inherit Glevel_bar_signals.level_bar_signals
+    method add_offset_value : string -> float -> unit
+    method get_inverted : unit -> bool
+    method get_max_value : unit -> float
+    method get_min_value : unit -> float
+    method get_mode : unit -> Gtk_enums.levelbarmode
+    method get_value : unit -> float
+    method remove_offset_value : string option -> unit
+    method set_inverted : bool -> unit
+    method set_max_value : float -> unit
+    method set_min_value : float -> unit
+    method set_mode : Gtk_enums.levelbarmode -> unit
+    method set_value : float -> unit
+    method as_level_bar : Level_bar.t
+end
+
 (* High-level class for LevelBar *)
-class level_bar (obj : Level_bar.t) = object (self)
+class level_bar (obj : Level_bar.t) : level_bar_t = object (self)
   inherit Glevel_bar_signals.level_bar_signals obj
 
   method add_offset_value : string -> float -> unit =

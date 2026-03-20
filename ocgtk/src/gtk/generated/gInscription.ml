@@ -1,7 +1,32 @@
-(* High-level class for Inscription *)
-class inscription (obj : Inscription.t) = object (self)
+class type inscription_t = object
+    method get_attributes : unit -> Ocgtk_pango.Pango.attr_list_t option
+    method get_min_chars : unit -> int
+    method get_min_lines : unit -> int
+    method get_nat_chars : unit -> int
+    method get_nat_lines : unit -> int
+    method get_text : unit -> string option
+    method get_text_overflow : unit -> Gtk_enums.inscriptionoverflow
+    method get_wrap_mode : unit -> Ocgtk_pango.Pango.wrapmode
+    method get_xalign : unit -> float
+    method get_yalign : unit -> float
+    method set_attributes : Ocgtk_pango.Pango.attr_list_t option -> unit
+    method set_markup : string option -> unit
+    method set_min_chars : int -> unit
+    method set_min_lines : int -> unit
+    method set_nat_chars : int -> unit
+    method set_nat_lines : int -> unit
+    method set_text : string option -> unit
+    method set_text_overflow : Gtk_enums.inscriptionoverflow -> unit
+    method set_wrap_mode : Ocgtk_pango.Pango.wrapmode -> unit
+    method set_xalign : float -> unit
+    method set_yalign : float -> unit
+    method as_inscription : Inscription.t
+end
 
-  method get_attributes : unit -> Ocgtk_pango.Pango.attr_list option =
+(* High-level class for Inscription *)
+class inscription (obj : Inscription.t) : inscription_t = object (self)
+
+  method get_attributes : unit -> Ocgtk_pango.Pango.attr_list_t option =
     fun () ->
       Option.map (fun ret -> new Ocgtk_pango.Pango.attr_list ret) (Inscription.get_attributes obj)
 
@@ -41,7 +66,7 @@ class inscription (obj : Inscription.t) = object (self)
     fun () ->
       (Inscription.get_yalign obj)
 
-  method set_attributes : 'p1. (#Ocgtk_pango.Pango.attr_list as 'p1) option -> unit =
+  method set_attributes : Ocgtk_pango.Pango.attr_list_t option -> unit =
     fun attrs ->
       let attrs = Option.map (fun (c) -> c#as_attr_list) attrs in
       (Inscription.set_attributes obj attrs)

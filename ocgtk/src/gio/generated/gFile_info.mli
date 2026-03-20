@@ -1,8 +1,7 @@
-class file_info : File_info.t ->
-  object
+class type file_info_t = object
     method clear_status : unit -> unit
-    method copy_into : <as_file_info: File_info.t; ..> -> unit
-    method dup : unit -> file_info
+    method copy_into : file_info_t -> unit
+    method dup : unit -> file_info_t
     method get_attribute_as_string : string -> string option
     method get_attribute_boolean : string -> bool
     method get_attribute_byte_string : string -> string option
@@ -16,12 +15,12 @@ class file_info : File_info.t ->
     method get_edit_name : unit -> string
     method get_etag : unit -> string option
     method get_file_type : unit -> Gio_enums.filetype
-    method get_icon : unit -> GIcon.icon option
+    method get_icon : unit -> GIcon.icon_t option
     method get_is_backup : unit -> bool
     method get_is_hidden : unit -> bool
     method get_is_symlink : unit -> bool
     method get_name : unit -> string
-    method get_symbolic_icon : unit -> GIcon.icon option
+    method get_symbolic_icon : unit -> GIcon.icon_t option
     method get_symlink_target : unit -> string option
     method has_attribute : string -> bool
     method has_namespace : string -> bool
@@ -44,5 +43,7 @@ class file_info : File_info.t ->
     method set_symlink_target : string -> unit
     method unset_attribute_mask : unit -> unit
     method as_file_info : File_info.t
-  end
+end
+
+class file_info : File_info.t -> file_info_t
 

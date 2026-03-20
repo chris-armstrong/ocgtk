@@ -1,5 +1,6 @@
-class bin_layout : Bin_layout.t ->
-  object
+class type bin_layout_t = object
     method as_bin_layout : Bin_layout.t
-  end
+end
+
+class bin_layout : Bin_layout.t -> bin_layout_t
 

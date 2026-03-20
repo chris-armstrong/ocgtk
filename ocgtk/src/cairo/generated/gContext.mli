@@ -1,5 +1,6 @@
-class context : Context.t ->
-  object
+class type context_t = object
     method as_context : Context.t
-  end
+end
+
+class context : Context.t -> context_t
 

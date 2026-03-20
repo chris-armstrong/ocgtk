@@ -1,5 +1,15 @@
+class type point_t = object
+    method equal : Point.t -> bool
+    method free : unit -> unit
+    method init : float -> float -> Point.t
+    method init_from_point : Point.t -> Point.t
+    method init_from_vec2 : Vec2.t -> Point.t
+    method near : Point.t -> float -> bool
+    method as_point : Point.t
+end
+
 (* High-level class for Point *)
-class point (obj : Point.t) = object (self)
+class point (obj : Point.t) : point_t = object (self)
 
   method equal : Point.t -> bool =
     fun b ->

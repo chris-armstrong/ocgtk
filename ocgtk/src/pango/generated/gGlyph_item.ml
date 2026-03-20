@@ -1,5 +1,12 @@
+class type glyph_item_t = object
+    method copy : unit -> Glyph_item.t option
+    method free : unit -> unit
+    method split : string -> int -> Glyph_item.t option
+    method as_glyph_item : Glyph_item.t
+end
+
 (* High-level class for GlyphItem *)
-class glyph_item (obj : Glyph_item.t) = object (self)
+class glyph_item (obj : Glyph_item.t) : glyph_item_t = object (self)
 
   method copy : unit -> Glyph_item.t option =
     fun () ->

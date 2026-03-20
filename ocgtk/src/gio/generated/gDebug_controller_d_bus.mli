@@ -1,8 +1,9 @@
-class debug_controller_d_bus : Debug_controller_d_bus.t ->
-  object
+class type debug_controller_d_bus_t = object
     inherit Gdebug_controller_d_bus_signals.debug_controller_d_bus_signals
     method stop : unit -> unit
-    method connection : GD_bus_connection.d_bus_connection
+    method connection : GD_bus_connection.d_bus_connection_t
     method as_debug_controller_d_bus : Debug_controller_d_bus.t
-  end
+end
+
+class debug_controller_d_bus : Debug_controller_d_bus.t -> debug_controller_d_bus_t
 

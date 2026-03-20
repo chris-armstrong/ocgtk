@@ -1,5 +1,11 @@
+class type tcp_connection_t = object
+    method get_graceful_disconnect : unit -> bool
+    method set_graceful_disconnect : bool -> unit
+    method as_tcp_connection : Tcp_connection.t
+end
+
 (* High-level class for TcpConnection *)
-class tcp_connection (obj : Tcp_connection.t) = object (self)
+class tcp_connection (obj : Tcp_connection.t) : tcp_connection_t = object (self)
 
   method get_graceful_disconnect : unit -> bool =
     fun () ->

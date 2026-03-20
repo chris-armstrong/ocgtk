@@ -1,11 +1,10 @@
-class settings : Settings.t ->
-  object
+class type settings_t = object
     inherit Gsettings_signals.settings_signals
     method apply : unit -> unit
-    method create_action : string -> GAction.action
+    method create_action : string -> GAction.action_t
     method delay : unit -> unit
     method get_boolean : string -> bool
-    method get_child : string -> settings
+    method get_child : string -> settings_t
     method get_double : string -> float
     method get_enum : string -> int
     method get_flags : string -> int
@@ -27,12 +26,14 @@ class settings : Settings.t ->
     method set_string : string -> string -> bool
     method set_strv : string -> string array option -> bool
     method set_uint : string -> int -> bool
-    method backend : GSettings_backend.settings_backend
+    method backend : GSettings_backend.settings_backend_t
     method delay_apply : bool
     method path : string
     method schema : string
     method schema_id : string
     method settings_schema : Settings_schema.t
     method as_settings : Settings.t
-  end
+end
+
+class settings : Settings.t -> settings_t
 

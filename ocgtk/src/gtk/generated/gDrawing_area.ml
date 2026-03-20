@@ -1,7 +1,16 @@
 (* Signal class defined in gdrawing_area_signals.ml *)
 
+class type drawing_area_t = object
+    inherit Gdrawing_area_signals.drawing_area_signals
+    method get_content_height : unit -> int
+    method get_content_width : unit -> int
+    method set_content_height : int -> unit
+    method set_content_width : int -> unit
+    method as_drawing_area : Drawing_area.t
+end
+
 (* High-level class for DrawingArea *)
-class drawing_area (obj : Drawing_area.t) = object (self)
+class drawing_area (obj : Drawing_area.t) : drawing_area_t = object (self)
   inherit Gdrawing_area_signals.drawing_area_signals obj
 
   method get_content_height : unit -> int =

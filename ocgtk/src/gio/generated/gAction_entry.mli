@@ -1,5 +1,6 @@
-class action_entry : Action_entry.t ->
-  object
+class type action_entry_t = object
     method as_action_entry : Action_entry.t
-  end
+end
+
+class action_entry : Action_entry.t -> action_entry_t
 

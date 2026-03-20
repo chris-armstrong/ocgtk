@@ -1,21 +1,20 @@
 
-class text_buffer : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t ->
-  object
+class type text_buffer_t = object
     inherit Gtext_buffer_signals.text_buffer_signals
-    method add_mark : <as_text_mark: Text_buffer_and__text_iter_and__text_mark.Text_mark.t; ..> -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
-    method add_selection_clipboard : #Ocgtk_gdk.Gdk.clipboard -> unit
-    method apply_tag : #GText_tag.text_tag -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
+    method add_mark : text_mark_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
+    method add_selection_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> unit
+    method apply_tag : GText_tag.text_tag_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method apply_tag_by_name : string -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method backspace : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> bool -> bool
     method begin_irreversible_action : unit -> unit
     method begin_user_action : unit -> unit
-    method copy_clipboard : #Ocgtk_gdk.Gdk.clipboard -> unit
-    method create_child_anchor : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> GText_child_anchor.text_child_anchor
-    method create_mark : string option -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> text_mark
-    method cut_clipboard : #Ocgtk_gdk.Gdk.clipboard -> bool -> unit
+    method copy_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> unit
+    method create_child_anchor : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> GText_child_anchor.text_child_anchor_t
+    method create_mark : string option -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> text_mark_t
+    method cut_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> bool -> unit
     method delete : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method delete_interactive : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> bool
-    method delete_mark : <as_text_mark: Text_buffer_and__text_iter_and__text_mark.Text_mark.t; ..> -> unit
+    method delete_mark : text_mark_t -> unit
     method delete_mark_by_name : string -> unit
     method delete_selection : bool -> bool -> bool
     method end_irreversible_action : unit -> unit
@@ -25,33 +24,33 @@ class text_buffer : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t ->
     method get_char_count : unit -> int
     method get_enable_undo : unit -> bool
     method get_has_selection : unit -> bool
-    method get_insert : unit -> text_mark
+    method get_insert : unit -> text_mark_t
     method get_line_count : unit -> int
-    method get_mark : string -> text_mark option
+    method get_mark : string -> text_mark_t option
     method get_max_undo_levels : unit -> int
     method get_modified : unit -> bool
-    method get_selection_bound : unit -> text_mark
-    method get_selection_content : unit -> Ocgtk_gdk.Gdk.content_provider
+    method get_selection_bound : unit -> text_mark_t
+    method get_selection_content : unit -> Ocgtk_gdk.Gdk.content_provider_t
     method get_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> string
-    method get_tag_table : unit -> GText_tag_table.text_tag_table
+    method get_tag_table : unit -> GText_tag_table.text_tag_table_t
     method get_text : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> string
     method insert : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string -> int -> unit
     method insert_at_cursor : string -> int -> unit
-    method insert_child_anchor : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> #GText_child_anchor.text_child_anchor -> unit
+    method insert_child_anchor : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> GText_child_anchor.text_child_anchor_t -> unit
     method insert_interactive : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string -> int -> bool -> bool
     method insert_interactive_at_cursor : string -> int -> bool -> bool
     method insert_markup : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string -> int -> unit
-    method insert_paintable : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> #Ocgtk_gdk.Gdk.paintable -> unit
+    method insert_paintable : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Ocgtk_gdk.Gdk.paintable_t -> unit
     method insert_range : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method insert_range_interactive : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> bool
-    method move_mark : <as_text_mark: Text_buffer_and__text_iter_and__text_mark.Text_mark.t; ..> -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
+    method move_mark : text_mark_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method move_mark_by_name : string -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
-    method paste_clipboard : #Ocgtk_gdk.Gdk.clipboard -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t option -> bool -> unit
+    method paste_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t option -> bool -> unit
     method place_cursor : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method redo : unit -> unit
     method remove_all_tags : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
-    method remove_selection_clipboard : #Ocgtk_gdk.Gdk.clipboard -> unit
-    method remove_tag : #GText_tag.text_tag -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
+    method remove_selection_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> unit
+    method remove_tag : GText_tag.text_tag_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method remove_tag_by_name : string -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method select_range : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method set_enable_undo : bool -> unit
@@ -61,10 +60,9 @@ class text_buffer : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t ->
     method undo : unit -> unit
     method cursor_position : int
     method as_text_buffer : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
-  end
+end
 
-and text_iter : Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
-  object
+and text_iter_t = object
     method assign : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method backward_char : unit -> bool
     method backward_chars : int -> bool
@@ -74,7 +72,7 @@ and text_iter : Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
     method backward_lines : int -> bool
     method backward_sentence_start : unit -> bool
     method backward_sentence_starts : int -> bool
-    method backward_to_tag_toggle : #GText_tag.text_tag option -> bool
+    method backward_to_tag_toggle : GText_tag.text_tag_t option -> bool
     method backward_visible_cursor_position : unit -> bool
     method backward_visible_cursor_positions : int -> bool
     method backward_visible_line : unit -> bool
@@ -89,7 +87,7 @@ and text_iter : Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
     method editable : bool -> bool
     method ends_line : unit -> bool
     method ends_sentence : unit -> bool
-    method ends_tag : #GText_tag.text_tag option -> bool
+    method ends_tag : GText_tag.text_tag_t option -> bool
     method ends_word : unit -> bool
     method equal : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool
     method forward_char : unit -> bool
@@ -102,7 +100,7 @@ and text_iter : Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
     method forward_sentence_ends : int -> bool
     method forward_to_end : unit -> unit
     method forward_to_line_end : unit -> bool
-    method forward_to_tag_toggle : #GText_tag.text_tag option -> bool
+    method forward_to_tag_toggle : GText_tag.text_tag_t option -> bool
     method forward_visible_cursor_position : unit -> bool
     method forward_visible_cursor_positions : int -> bool
     method forward_visible_line : unit -> bool
@@ -112,23 +110,23 @@ and text_iter : Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
     method forward_word_end : unit -> bool
     method forward_word_ends : int -> bool
     method free : unit -> unit
-    method get_buffer : unit -> text_buffer
+    method get_buffer : unit -> text_buffer_t
     method get_bytes_in_line : unit -> int
     method get_chars_in_line : unit -> int
-    method get_child_anchor : unit -> GText_child_anchor.text_child_anchor option
-    method get_language : unit -> Ocgtk_pango.Pango.language
+    method get_child_anchor : unit -> GText_child_anchor.text_child_anchor_t option
+    method get_language : unit -> Ocgtk_pango.Pango.language_t
     method get_line : unit -> int
     method get_line_index : unit -> int
     method get_line_offset : unit -> int
     method get_offset : unit -> int
-    method get_paintable : unit -> Ocgtk_gdk.Gdk.paintable option
+    method get_paintable : unit -> Ocgtk_gdk.Gdk.paintable_t option
     method get_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
     method get_text : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
     method get_visible_line_index : unit -> int
     method get_visible_line_offset : unit -> int
     method get_visible_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
     method get_visible_text : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
-    method has_tag : #GText_tag.text_tag -> bool
+    method has_tag : GText_tag.text_tag_t -> bool
     method in_range : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool
     method inside_sentence : unit -> bool
     method inside_word : unit -> bool
@@ -144,19 +142,25 @@ and text_iter : Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
     method set_visible_line_offset : int -> unit
     method starts_line : unit -> bool
     method starts_sentence : unit -> bool
-    method starts_tag : #GText_tag.text_tag option -> bool
+    method starts_tag : GText_tag.text_tag_t option -> bool
     method starts_word : unit -> bool
-    method toggles_tag : #GText_tag.text_tag option -> bool
+    method toggles_tag : GText_tag.text_tag_t option -> bool
     method as_text_iter : Text_buffer_and__text_iter_and__text_mark.Text_iter.t
-  end
+end
 
-and text_mark : Text_buffer_and__text_iter_and__text_mark.Text_mark.t ->
-  object
-    method get_buffer : unit -> text_buffer option
+and text_mark_t = object
+    method get_buffer : unit -> text_buffer_t option
     method get_deleted : unit -> bool
     method get_left_gravity : unit -> bool
     method get_name : unit -> string option
     method get_visible : unit -> bool
     method set_visible : bool -> unit
     method as_text_mark : Text_buffer_and__text_iter_and__text_mark.Text_mark.t
-  end
+end
+
+
+class text_buffer : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t -> text_buffer_t
+
+and text_iter : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> text_iter_t
+
+and text_mark : Text_buffer_and__text_iter_and__text_mark.Text_mark.t -> text_mark_t

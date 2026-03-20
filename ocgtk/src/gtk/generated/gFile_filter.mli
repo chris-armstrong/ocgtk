@@ -1,5 +1,4 @@
-class file_filter : File_filter.t ->
-  object
+class type file_filter_t = object
     method add_mime_type : string -> unit
     method add_pattern : string -> unit
     method add_pixbuf_formats : unit -> unit
@@ -11,5 +10,7 @@ class file_filter : File_filter.t ->
     method patterns : string array
     method suffixes : string array
     method as_file_filter : File_filter.t
-  end
+end
+
+class file_filter : File_filter.t -> file_filter_t
 

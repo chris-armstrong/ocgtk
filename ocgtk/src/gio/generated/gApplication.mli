@@ -1,9 +1,8 @@
-class application : Application.t ->
-  object
+class type application_t = object
     inherit Gapplication_signals.application_signals
     method activate : unit -> unit
     method get_application_id : unit -> string option
-    method get_dbus_connection : unit -> GD_bus_connection.d_bus_connection option
+    method get_dbus_connection : unit -> GD_bus_connection.d_bus_connection_t option
     method get_dbus_object_path : unit -> string option
     method get_flags : unit -> Gio_enums.applicationflags
     method get_inactivity_timeout : unit -> int
@@ -16,9 +15,9 @@ class application : Application.t ->
     method mark_busy : unit -> unit
     method open_ : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t array -> int -> string -> unit
     method quit : unit -> unit
-    method register : #GCancellable.cancellable option -> (bool, GError.t) result
+    method register : GCancellable.cancellable_t option -> (bool, GError.t) result
     method release : unit -> unit
-    method send_notification : string option -> #GNotification.notification -> unit
+    method send_notification : string option -> GNotification.notification_t -> unit
     method set_application_id : string option -> unit
     method set_default : unit -> unit
     method set_flags : Gio_enums.applicationflags -> unit
@@ -31,5 +30,7 @@ class application : Application.t ->
     method unmark_busy : unit -> unit
     method withdraw_notification : string -> unit
     method as_application : Application.t
-  end
+end
+
+class application : Application.t -> application_t
 

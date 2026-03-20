@@ -1,11 +1,10 @@
-class gl_area : Gl_area.t ->
-  object
+class type gl_area_t = object
     inherit Ggl_area_signals.gl_area_signals
     method attach_buffers : unit -> unit
     method get_allowed_apis : unit -> Ocgtk_gdk.Gdk.glapi
     method get_api : unit -> Ocgtk_gdk.Gdk.glapi
     method get_auto_render : unit -> bool
-    method get_context : unit -> Ocgtk_gdk.Gdk.gl_context option
+    method get_context : unit -> Ocgtk_gdk.Gdk.gl_context_t option
     method get_has_depth_buffer : unit -> bool
     method get_has_stencil_buffer : unit -> bool
     method get_use_es : unit -> bool
@@ -18,5 +17,7 @@ class gl_area : Gl_area.t ->
     method set_required_version : int -> int -> unit
     method set_use_es : bool -> unit
     method as_gl_area : Gl_area.t
-  end
+end
+
+class gl_area : Gl_area.t -> gl_area_t
 

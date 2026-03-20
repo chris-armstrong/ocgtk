@@ -1,7 +1,21 @@
-(* High-level class for TreeExpander *)
-class tree_expander (obj : Tree_expander.t) = object (self)
+class type tree_expander_t = object
+    method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
+    method get_hide_expander : unit -> bool
+    method get_indent_for_depth : unit -> bool
+    method get_indent_for_icon : unit -> bool
+    method get_list_row : unit -> GTree_list_row.tree_list_row_t option
+    method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
+    method set_hide_expander : bool -> unit
+    method set_indent_for_depth : bool -> unit
+    method set_indent_for_icon : bool -> unit
+    method set_list_row : GTree_list_row.tree_list_row_t option -> unit
+    method as_tree_expander : Tree_expander.t
+end
 
-  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
+(* High-level class for TreeExpander *)
+class tree_expander (obj : Tree_expander.t) : tree_expander_t = object (self)
+
+  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option =
     fun () ->
       Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Tree_expander.get_child obj)
 
@@ -17,11 +31,11 @@ class tree_expander (obj : Tree_expander.t) = object (self)
     fun () ->
       (Tree_expander.get_indent_for_icon obj)
 
-  method get_list_row : unit -> GTree_list_row.tree_list_row option =
+  method get_list_row : unit -> GTree_list_row.tree_list_row_t option =
     fun () ->
       Option.map (fun ret -> new GTree_list_row.tree_list_row ret) (Tree_expander.get_list_row obj)
 
-  method set_child : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
+  method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit =
     fun child ->
       let child = Option.map (fun (c) -> c#as_widget) child in
       (Tree_expander.set_child obj child)
@@ -38,7 +52,7 @@ class tree_expander (obj : Tree_expander.t) = object (self)
     fun indent_for_icon ->
       (Tree_expander.set_indent_for_icon obj indent_for_icon)
 
-  method set_list_row : 'p1. (#GTree_list_row.tree_list_row as 'p1) option -> unit =
+  method set_list_row : GTree_list_row.tree_list_row_t option -> unit =
     fun list_row ->
       let list_row = Option.map (fun (c) -> c#as_tree_list_row) list_row in
       (Tree_expander.set_list_row obj list_row)

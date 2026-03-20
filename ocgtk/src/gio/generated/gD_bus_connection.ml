@@ -1,20 +1,47 @@
 (* Signal class defined in gd_bus_connection_signals.ml *)
 
+class type d_bus_connection_t = object
+    inherit Gd_bus_connection_signals.d_bus_connection_signals
+    method close_sync : GCancellable.cancellable_t option -> (bool, GError.t) result
+    method export_menu_model : string -> GMenu_link_iter_and__menu_model.menu_model_t -> (int, GError.t) result
+    method flush_sync : GCancellable.cancellable_t option -> (bool, GError.t) result
+    method get_capabilities : unit -> Gio_enums.dbuscapabilityflags
+    method get_exit_on_close : unit -> bool
+    method get_flags : unit -> Gio_enums.dbusconnectionflags
+    method get_guid : unit -> string
+    method get_peer_credentials : unit -> GCredentials.credentials_t option
+    method get_stream : unit -> GIo_stream.io_stream_t
+    method get_unique_name : unit -> string option
+    method is_closed : unit -> bool
+    method remove_filter : int -> unit
+    method set_exit_on_close : bool -> unit
+    method signal_unsubscribe : int -> unit
+    method start_message_processing : unit -> unit
+    method unexport_action_group : int -> unit
+    method unexport_menu_model : int -> unit
+    method unregister_object : int -> bool
+    method unregister_subtree : int -> bool
+    method address : string
+    method authentication_observer : GD_bus_auth_observer.d_bus_auth_observer_t
+    method closed : bool
+    method as_d_bus_connection : D_bus_connection.t
+end
+
 (* High-level class for DBusConnection *)
-class d_bus_connection (obj : D_bus_connection.t) = object (self)
+class d_bus_connection (obj : D_bus_connection.t) : d_bus_connection_t = object (self)
   inherit Gd_bus_connection_signals.d_bus_connection_signals obj
 
-  method close_sync : 'p1. (#GCancellable.cancellable as 'p1) option -> (bool, GError.t) result =
+  method close_sync : GCancellable.cancellable_t option -> (bool, GError.t) result =
     fun cancellable ->
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (D_bus_connection.close_sync obj cancellable)
 
-  method export_menu_model : 'p1. string -> (#GMenu_link_iter_and__menu_model.menu_model as 'p1) -> (int, GError.t) result =
+  method export_menu_model : string -> GMenu_link_iter_and__menu_model.menu_model_t -> (int, GError.t) result =
     fun object_path menu ->
       let menu = menu#as_menu_model in
       (D_bus_connection.export_menu_model obj object_path menu)
 
-  method flush_sync : 'p1. (#GCancellable.cancellable as 'p1) option -> (bool, GError.t) result =
+  method flush_sync : GCancellable.cancellable_t option -> (bool, GError.t) result =
     fun cancellable ->
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (D_bus_connection.flush_sync obj cancellable)
@@ -35,11 +62,11 @@ class d_bus_connection (obj : D_bus_connection.t) = object (self)
     fun () ->
       (D_bus_connection.get_guid obj)
 
-  method get_peer_credentials : unit -> GCredentials.credentials option =
+  method get_peer_credentials : unit -> GCredentials.credentials_t option =
     fun () ->
       Option.map (fun ret -> new GCredentials.credentials ret) (D_bus_connection.get_peer_credentials obj)
 
-  method get_stream : unit -> GIo_stream.io_stream =
+  method get_stream : unit -> GIo_stream.io_stream_t =
     fun () ->
       new  GIo_stream.io_stream(D_bus_connection.get_stream obj)
 

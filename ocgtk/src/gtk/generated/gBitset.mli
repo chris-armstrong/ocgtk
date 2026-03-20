@@ -1,5 +1,4 @@
-class bitset : Bitset.t ->
-  object
+class type bitset_t = object
     method add : int -> bool
     method add_range : int -> int -> unit
     method add_range_closed : int -> int -> unit
@@ -26,5 +25,7 @@ class bitset : Bitset.t ->
     method union : Bitset.t -> unit
     method unref : unit -> unit
     method as_bitset : Bitset.t
-  end
+end
+
+class bitset : Bitset.t -> bitset_t
 

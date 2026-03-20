@@ -1,5 +1,9 @@
+class type cairo_renderer_t = object
+    method as_cairo_renderer : Cairo_renderer.t
+end
+
 (* High-level class for CairoRenderer *)
-class cairo_renderer (obj : Cairo_renderer.t) = object (self)
+class cairo_renderer (obj : Cairo_renderer.t) : cairo_renderer_t = object (self)
 
     method as_cairo_renderer = obj
 end

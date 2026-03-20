@@ -1,5 +1,6 @@
-class separator : Separator.t ->
-  object
+class type separator_t = object
     method as_separator : Separator.t
-  end
+end
+
+class separator : Separator.t -> separator_t
 

@@ -1,5 +1,6 @@
-class analysis : Analysis.t ->
-  object
+class type analysis_t = object
     method as_analysis : Analysis.t
-  end
+end
+
+class analysis : Analysis.t -> analysis_t
 

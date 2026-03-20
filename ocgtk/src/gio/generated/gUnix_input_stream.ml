@@ -1,5 +1,12 @@
+class type unix_input_stream_t = object
+    method get_close_fd : unit -> bool
+    method get_fd : unit -> int
+    method set_close_fd : bool -> unit
+    method as_unix_input_stream : Unix_input_stream.t
+end
+
 (* High-level class for UnixInputStream *)
-class unix_input_stream (obj : Unix_input_stream.t) = object (self)
+class unix_input_stream (obj : Unix_input_stream.t) : unix_input_stream_t = object (self)
 
   method get_close_fd : unit -> bool =
     fun () ->
