@@ -1,8 +1,8 @@
 # Cross-Namespace Handling Plan for ocgtk GIR Generator
 
-**Status**: Mostly Complete — Phases 1-5 done, Phase 6 (testing) ongoing
+**Status**: Mostly Complete — Phases 1-5 done, Phase 6 (testing) ongoing, Phase 7 (class type separation) awaiting build verification
 **Created**: 2026-01-23
-**Last Updated**: 2026-03-18 (marked Phases 1-5 complete after thorough audit)
+**Last Updated**: 2026-03-20 (Phase 7: Layer 2 class type separation)
 
 ## Executive Summary
 
@@ -282,6 +282,75 @@ Tests in `test_gir_gen/cross_namespace/`:
 2. `classify_type` unit tests for same-namespace and cross-namespace enum/bitfield
 3. Wrapper module structure tests (`module Ns = Ns; include Ns` pattern)
 4. End-to-end compilation tests for all 9 namespaces
+
+---
+
+## Phase 7: Layer 2 Class Type Separation (2026-03-20)
+
+**Status**: Complete (2026-03-20)
+
+Separated Layer 2 generated output into explicit `class type` definitions and `class` implementations constrained by those types. Class type references use plain `class_type_t` names (not `#class_type_t`, which introduces unbound type variables in class type definitions).
+
+### Before
+
+```ocaml
+(* Combined: class types and implementations interleaved *)
+class rec widget (obj : Widget.t) = object (self)
+    method get_parent : unit -> <as_widget: Widget.t; ..> option = ...
+end
+and event_controller (obj : Event_controller.t) = object (self)
+    method get_widget : unit -> <as_widget: Widget.t; ..> = ...
+end
+```
+
+### After
+
+```ocaml
+(* Pass 1: class type definitions — self-referencing and mutual recursion allowed *)
+class type widget_t = object
+    method get_parent : unit -> widget_t option
+    method as_widget : Widget.t
+end
+and event_controller_t = object
+    method get_widget : unit -> widget_t
+    method as_event_controller : Event_controller.t
+end
+
+(* Pass 2: class implementations constrained by types *)
+class widget (obj : Widget.t) : widget_t = object (self)
+    method get_parent () = Option.map (fun ret -> new widget ret) (Widget.get_parent obj)
+    method as_widget = obj
+end
+and event_controller (obj : Event_controller.t) : event_controller_t = object (self)
+    method get_widget () = new widget (Event_controller.get_widget obj)
+    method as_event_controller = obj
+end
+```
+
+### Key Design Decision: No `#` in Class Types
+
+OCaml's `#class_type` syntax introduces a type variable, which is invalid in `class type` definitions (causes "unbound type variable" errors). Therefore:
+
+- **Class type signatures** use plain `widget_t` (not `#widget_t`)
+- **Class implementations** use plain `widget_t` (not `(#widget_t as 'pN)`)
+- **Property setters** use plain `widget_t -> unit` (not `'a . (#widget_t as 'a) -> unit`)
+- Callers must use explicit coercion `(btn :> widget_t)` when passing subtypes
+
+### Key Changes
+
+| File | Change |
+|------|--------|
+| `class_gen.ml` | Two-pass generation: class types first, then classes with `: type_t` constraint |
+| `type_mappings.ml` | `class_type` field has `_t` suffix (e.g., `widget_t`); cross-namespace too |
+| `class_gen_type_resolution.ml` | Added `resolve_layer2_class_name` — strips `_t` for `new` expressions; `convert_to_partial_object_type` is now identity |
+| `class_gen_helpers.ml` | `structural_type_for_class` returns `widget_t` instead of structural type |
+| `class_gen_method.ml` | Removed `#` prefix from all type references; removed same-cluster branching; `has_object_type` always false |
+| `class_gen_property.ml` | Removed `#` prefix; setters use `class_ref -> unit` not `'a . (#class_ref as 'a) -> unit` |
+| `library_module.ml` | Exports `class type cursor_t = GCursor.cursor_t` before `class cursor` |
+
+### Why
+
+OCaml `class type` definitions can self-reference (`widget_t` in its own body) and mutually recurse via `class type ... and ...`. Plain `class` definitions cannot. The previous structural type workaround (`<as_widget: Widget.t; ..>`) was fragile and verbose. The `#class_type` syntax cannot be used in class type definitions because it introduces unbound type variables.
 
 ---
 

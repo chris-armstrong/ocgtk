@@ -59,17 +59,24 @@ let generate_library_interface ~ctx =
   in
   let sorted_entities = List.sort String.compare all_entities in
 
-  (* Generate class references (layer 2 wrapper classes) *)
+  (* Generate class type and class references (layer 2 wrapper classes) *)
   if List.length sorted_entities > 0 then begin
     Buffer.add_string buf "(** {1 Classes and Interfaces} *)\n\n";
     List.iter
       (fun name ->
         let class_name_lower = Utils.ocaml_class_name name in
-        let layer1_module = get_layer1_module_reference ~ctx name in
         let module_ref = get_layer2_class_module_reference ~ctx name in
         let g_module_name = "G" ^ module_ref in
-        Printf.bprintf buf "class %s : %s.t -> %s.%s\n" class_name_lower
-          layer1_module g_module_name class_name_lower)
+        Printf.bprintf buf "class type %s_t = %s.%s_t\n" class_name_lower
+          g_module_name class_name_lower)
+      sorted_entities;
+    Buffer.add_string buf "\n";
+    List.iter
+      (fun name ->
+        let class_name_lower = Utils.ocaml_class_name name in
+        let layer1_module = get_layer1_module_reference ~ctx name in
+        Printf.bprintf buf "class %s : %s.t -> %s_t\n" class_name_lower
+          layer1_module class_name_lower)
       sorted_entities;
     Buffer.add_string buf "\n"
   end;
@@ -155,9 +162,18 @@ let generate_library_implementation ~ctx =
   in
   let sorted_entities = List.sort String.compare all_entities in
 
-  (* Generate class references (layer 2 wrapper classes) *)
+  (* Generate class type and class references (layer 2 wrapper classes) *)
   if List.length sorted_entities > 0 then begin
     Buffer.add_string buf "(** Classes and Interfaces *)\n\n";
+    List.iter
+      (fun name ->
+        let class_name_lower = ocaml_class_name name in
+        let module_ref = get_layer2_class_module_reference ~ctx name in
+        let g_module_name = "G" ^ module_ref in
+        Printf.bprintf buf "class type %s_t = %s.%s_t\n" class_name_lower
+          g_module_name class_name_lower)
+      sorted_entities;
+    Buffer.add_string buf "\n";
     List.iter
       (fun name ->
         let class_name_lower = ocaml_class_name name in

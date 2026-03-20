@@ -5,5 +5,16 @@
  (name ocgtk)
  (public_name ocgtk)
  (wrapped false)
- (modules ocgtk)  ; Wrapper modules to re-export from sub-libraries
- (libraries ocgtk_common ocgtk_gtk ocgtk_gio ocgtk_gdk ocgtk_gdkpixbuf ocgtk_pango ocgtk_pangocairo ocgtk_gsk ocgtk_graphene ocgtk_cairo threads))
+ (modules ocgtk) ; Wrapper modules to re-export from sub-libraries
+ (libraries
+  ocgtk_common
+  ocgtk_gtk
+  ocgtk_gio
+  ocgtk_gdk
+  ocgtk_gdkpixbuf
+  ocgtk_pango
+  ocgtk_pangocairo
+  ocgtk_gsk
+  ocgtk_graphene
+  ocgtk_cairo
+  threads))

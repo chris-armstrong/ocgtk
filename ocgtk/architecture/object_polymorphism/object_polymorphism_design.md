@@ -62,13 +62,14 @@ All three originally identified outstanding issues have been successfully fixed:
    - Record definitions use Obj.t internally while exposing opaque types externally
    - Implementation across [type_mappings.ml](src/tools/gir_gen/type_mappings.ml) and [main.ml](src/tools/gir_gen/main.ml)
 
-## Solution: Class Types with # Syntax
+## Solution: Class Type Definitions with Constrained Classes
 
-OCaml's `#class_type` syntax allows automatic subtype coercion. We generate:
+We generate separate `class type` definitions and `class` implementations constrained by those types:
 
-1. **Class types** (interfaces) for each hierarchy base
-2. **Methods accepting `#class_type`** for automatic coercion
-3. **Internal coercion to Layer 1** types for C FFI
+1. **Class types** (`class type widget_t = object ... end`) for type-safe interfaces — can self-reference and mutually recurse
+2. **Classes** constrained by class types (`class widget : widget_t = object ... end`)
+3. **Plain type references** — `widget_t` not `#widget_t` (the `#` syntax introduces unbound type variables in class type definitions)
+4. **Internal coercion to Layer 1** types via `v#as_widget` accessor methods
 
 ### Current Generated Output Example
 
@@ -87,33 +88,30 @@ external set_child : t -> Widget.t option -> unit = "ml_gtk_button_set_child"
 
 **Layer 2 - gButton.mli:**
 ```ocaml
-class button_skel : Button.t ->
-  object
-    inherit GObj.widget_impl
-    method connect : Gbutton_signals.button_signals
-    method set_child : 'a. #GWidget.widget_skel option -> unit
+class type button_t = object
+    method set_child : widget_t option -> unit
     (* ... other methods ... *)
-  end
+    method as_button : Button.t
+end
 
-class button : Button.t ->
-  object
-    inherit button_skel
-  end
+class button : Button.t -> button_t
 ```
 
 **Layer 2 - gButton.ml:**
 ```ocaml
-class button_skel (obj : Button.t) = object (self)
-  inherit GObj.widget_impl (Button.as_widget obj)
-
-  method connect = new Gbutton_signals.button_signals obj
-
-  method set_child child =
-    Button.set_child obj (Option.map (fun c -> (c#as_widget : Widget.t)) child)
+class type button_t = object
+    method set_child : widget_t option -> unit
+    (* ... other methods ... *)
+    method as_button : Button.t
 end
 
-class button obj = object
-  inherit button_skel obj
+class button (obj : Button.t) : button_t = object (self)
+  method set_child : widget_t option -> unit =
+    fun child ->
+      let child = Option.map (fun c -> c#as_widget) child in
+      Button.set_child obj child
+
+  method as_button = obj
 end
 ```
 
@@ -125,11 +123,11 @@ end
 - ✅ Direct C FFI bindings with proper types
 
 ### Layer 2 (OO Classes)
-- ⚠️ **Class types** - Currently using concrete classes, not class types
-- ✅ **Classes** implement wrappers around Layer 1
-- ✅ **Methods** use `#class_type` for hierarchy parameters
-- ✅ **Internal coercion** to Layer 1 via `#as_widget`
-- ✅ **Hierarchy-aware inheritance** - Only Widget hierarchy inherits from `widget_impl`
+- ✅ **Class types** defined separately (`class type widget_t = object ... end`)
+- ✅ **Classes** constrained by class types (`class widget : widget_t = object ... end`)
+- ✅ **Type references** use plain class type names (`widget_t` not `#widget_t`)
+- ✅ **Internal coercion** to Layer 1 via `v#as_widget`
+- ✅ **Self-referencing** works in class type definitions
 
 ## Implemented Generator Fixes
 

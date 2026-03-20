@@ -1,7 +1,6 @@
 (* Helper functions extracted from class_gen.ml (Phase 1) *)
 
 open StdLabels
-open Printf
 open Types
 
 (* Use Common.StringSet for type compatibility across modules *)
@@ -38,11 +37,9 @@ let get_property_filters ~ctx ~class_name ~methods properties =
 let is_same_cluster_class ~same_cluster_classes class_name =
   List.mem class_name ~set:same_cluster_classes
 
-(* Helper to generate structural type for same-cluster class references *)
-let structural_type_for_class ~ctx class_name =
-  let layer1_module = Class_utils.get_qualified_module_name ~ctx class_name in
-  let accessor = "as_" ^ Utils.ocaml_class_name class_name in
-  sprintf "<%s: %s.t; ..>" accessor layer1_module
+(* Helper to generate class type reference for same-cluster class references *)
+let structural_type_for_class ~ctx:_ class_name =
+  Utils.ocaml_class_name class_name ^ "_t"
 
 let ocaml_method_name ~class_name ~c_type (meth : gir_method) =
   Utils.ocaml_method_name ~class_name ~c_type meth.method_name |> sanitize_name
