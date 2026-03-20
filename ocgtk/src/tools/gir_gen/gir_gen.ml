@@ -908,11 +908,11 @@ let generate_bindings filter_file gir_file output_dir reference_files =
     if Sys.file_exists core_dir && Sys.is_directory core_dir then
       Sys.readdir core_dir |> Array.to_list
       |> List.filter_map ~f:(fun f ->
-             if Filename.check_suffix f ".ml"
-                && not (Filename.check_suffix f ".mli")
-             then
-               Some (String.capitalize_ascii (Filename.chop_suffix f ".ml"))
-             else None)
+          if
+            Filename.check_suffix f ".ml"
+            && not (Filename.check_suffix f ".mli")
+          then Some (String.capitalize_ascii (Filename.chop_suffix f ".ml"))
+          else None)
       |> List.sort ~cmp:String.compare
     else []
   in
@@ -924,9 +924,8 @@ let generate_bindings filter_file gir_file output_dir reference_files =
       "(* GENERATED CODE - DO NOT EDIT *)\n\
        (* Library wrapper module - re-exports %s as the public API *)\n\n\
        module %s = %s\n\
-       include %s\n\
        %s\n"
-      lib_name lib_name lib_name lib_name
+      lib_name lib_name lib_name
       (String.concat ~sep:"\n" core_module_lines)
   in
   write_file ~path:wrapper_ml_file ~content:wrapper_content;
