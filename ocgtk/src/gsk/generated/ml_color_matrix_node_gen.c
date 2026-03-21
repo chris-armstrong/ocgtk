@@ -12,9 +12,34 @@
 #include "wrappers.h"
 
 #include <gsk/gsk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gsk_decls.h"
 
+
+CAMLexport CAMLprim value ml_gsk_color_matrix_node_new(value arg1, value arg2, value arg3)
+{
+CAMLparam3(arg1, arg2, arg3);
+
+GskColorMatrixNode *obj = gsk_color_matrix_node_new(GskRenderNode_val(arg1), graphene_matrix_t_val(arg2), graphene_vec4_t_val(arg3));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GskColorMatrixNode(obj));
+}
+CAMLexport CAMLprim value ml_gsk_color_matrix_node_get_color_offset(value self)
+{
+CAMLparam1(self);
+
+const graphene_vec4_t* result = gsk_color_matrix_node_get_color_offset(GskColorMatrixNode_val(self));
+CAMLreturn(Val_graphene_vec4_t(result));
+}
+
+CAMLexport CAMLprim value ml_gsk_color_matrix_node_get_color_matrix(value self)
+{
+CAMLparam1(self);
+
+const graphene_matrix_t* result = gsk_color_matrix_node_get_color_matrix(GskColorMatrixNode_val(self));
+CAMLreturn(Val_graphene_matrix_t(result));
+}
 
 CAMLexport CAMLprim value ml_gsk_color_matrix_node_get_child(value self)
 {

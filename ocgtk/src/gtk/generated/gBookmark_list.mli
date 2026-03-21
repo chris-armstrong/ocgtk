@@ -1,5 +1,4 @@
-class bookmark_list : Bookmark_list.t ->
-  object
+class type bookmark_list_t = object
     method get_attributes : unit -> string option
     method get_filename : unit -> string
     method get_io_priority : unit -> int
@@ -9,5 +8,7 @@ class bookmark_list : Bookmark_list.t ->
     method loading : bool
     method n_items : int
     method as_bookmark_list : Bookmark_list.t
-  end
+end
+
+class bookmark_list : Bookmark_list.t -> bookmark_list_t
 

@@ -2,18 +2,6 @@
 
 open Types
 
-(* Check if a type name refers to a cross-namespace enum or bitfield *)
-val is_cross_namespace_enum_or_bitfield :
-  ctx:generation_context -> string -> bool
-
-(* Check if a method has cross-namespace enum/bitfield parameters or return type *)
-val method_has_cross_namespace_types :
-  ctx:generation_context -> gir_method -> bool
-
-(* Check if a constructor has cross-namespace enum/bitfield parameters *)
-val constructor_has_cross_namespace_types :
-  ctx:generation_context -> gir_constructor -> bool
-
 (* Check if a type is simple (has known mapping) *)
 val has_simple_type : ctx:generation_context -> gir_type -> bool
 
@@ -64,3 +52,15 @@ val should_generate_interface : gir_interface -> bool
 
 (* Check if a method has a parameter with interface type *)
 val method_has_interface_param : ctx:generation_context -> gir_method -> bool
+
+(* Check if a C type is a string type *)
+val is_string_type : string option -> bool
+
+(* Check if an array contains string elements *)
+val is_string_array : gir_array -> bool
+
+(* Check if an array type lacks length information for C code generation *)
+val array_lacks_length_info : gir_array -> bool
+
+(* Check if a standalone function should be generated *)
+val should_generate_function : gir_function -> bool

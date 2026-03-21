@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 /* Copy function for GtkTreeIter (value-like record with copy method) */
 value copy_GtkTreeIter(const GtkTreeIter *ptr)

@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <gdk/gdk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gdk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_new(value unit)
@@ -38,6 +38,14 @@ CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_set_update_texture(value
 CAMLparam2(self, arg1);
 
 gdk_dmabuf_texture_builder_set_update_texture(GdkDmabufTextureBuilder_val(self), Option_val(arg1, GdkTexture_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_set_update_region(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gdk_dmabuf_texture_builder_set_update_region(GdkDmabufTextureBuilder_val(self), Option_val(arg1, cairo_region_t_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -112,6 +120,14 @@ CAMLparam1(self);
 GdkTexture* result = gdk_dmabuf_texture_builder_get_update_texture(GdkDmabufTextureBuilder_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GdkTexture));
+}
+
+CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_get_update_region(value self)
+{
+CAMLparam1(self);
+
+cairo_region_t* result = gdk_dmabuf_texture_builder_get_update_region(GdkDmabufTextureBuilder_val(self));
+CAMLreturn(Val_option(result, Val_cairo_region_t));
 }
 
 CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_get_stride(value self, value arg1)

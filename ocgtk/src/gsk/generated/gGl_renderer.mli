@@ -1,5 +1,6 @@
-class gl_renderer : Gl_renderer.t ->
-  object
+class type gl_renderer_t = object
     method as_gl_renderer : Gl_renderer.t
-  end
+end
+
+class gl_renderer : Gl_renderer.t -> gl_renderer_t
 

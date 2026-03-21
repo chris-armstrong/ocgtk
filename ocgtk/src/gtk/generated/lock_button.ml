@@ -1,14 +1,18 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: LockButton *)
+(* LockButton: LockButton *)
 
 type t = [`lock_button | `button | `widget | `initially_unowned] Gobject.obj
 
-let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
-
 (** Create a new LockButton *)
-external new_ : unit -> t = "ml_gtk_lock_button_new"
+external new_ : Ocgtk_gio.Gio.Wrappers.Permission.t option -> t = "ml_gtk_lock_button_new"
 
 (* Methods *)
+(** Sets the `GPermission` object that controls @button. *)
+external set_permission : t -> Ocgtk_gio.Gio.Wrappers.Permission.t option -> unit = "ml_gtk_lock_button_set_permission"
+
+(** Obtains the `GPermission` object that controls @button. *)
+external get_permission : t -> Ocgtk_gio.Gio.Wrappers.Permission.t option = "ml_gtk_lock_button_get_permission"
+
 (* Properties *)
 
 (** Get property: text-lock *)

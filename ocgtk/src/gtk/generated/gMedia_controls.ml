@@ -1,17 +1,21 @@
-(* High-level class for MediaControls *)
-class media_controls (obj : Media_controls.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Media_controls.as_widget obj)
+class type media_controls_t = object
+    method get_media_stream : unit -> GMedia_stream.media_stream_t option
+    method set_media_stream : GMedia_stream.media_stream_t option -> unit
+    method as_media_controls : Media_controls.t
+end
 
-  method get_media_stream : unit -> GMedia_stream.media_stream option =
+(* High-level class for MediaControls *)
+class media_controls (obj : Media_controls.t) : media_controls_t = object (self)
+
+  method get_media_stream : unit -> GMedia_stream.media_stream_t option =
     fun () ->
       Option.map (fun ret -> new GMedia_stream.media_stream ret) (Media_controls.get_media_stream obj)
 
-  method set_media_stream : 'p1. (#GMedia_stream.media_stream as 'p1) option -> unit =
+  method set_media_stream : GMedia_stream.media_stream_t option -> unit =
     fun stream ->
       let stream = Option.map (fun (c) -> c#as_media_stream) stream in
       (Media_controls.set_media_stream obj stream)
 
-  method as_widget = (Media_controls.as_widget obj)
     method as_media_controls = obj
 end
 

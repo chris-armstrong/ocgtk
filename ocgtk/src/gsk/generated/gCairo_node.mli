@@ -1,5 +1,8 @@
-class cairo_node : Cairo_node.t ->
-  object
+class type cairo_node_t = object
+    method get_draw_context : unit -> Ocgtk_cairo.Cairo.context_t
+    method get_surface : unit -> Ocgtk_cairo.Cairo.surface_t
     method as_cairo_node : Cairo_node.t
-  end
+end
+
+class cairo_node : Cairo_node.t -> cairo_node_t
 

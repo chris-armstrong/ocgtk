@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_range_set_value(value self, value arg1)
@@ -157,6 +157,15 @@ CAMLparam1(self);
 
 gboolean result = gtk_range_get_restrict_to_fill_level(GtkRange_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_range_get_range_rect(value self)
+{
+CAMLparam1(self);
+GdkRectangle out1;
+
+gtk_range_get_range_rect(GtkRange_val(self), &out1);
+CAMLreturn(Val_GdkRectangle(&out1));
 }
 
 CAMLexport CAMLprim value ml_gtk_range_get_inverted(value self)

@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_font_dialog_button_new(value arg1)
@@ -50,11 +50,27 @@ gtk_font_dialog_button_set_level(GtkFontDialogButton_val(self), GtkFontLevel_val
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_font_dialog_button_set_language(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_font_dialog_button_set_language(GtkFontDialogButton_val(self), Option_val(arg1, PangoLanguage_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_font_dialog_button_set_font_features(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gtk_font_dialog_button_set_font_features(GtkFontDialogButton_val(self), String_option_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_font_dialog_button_set_font_desc(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_font_dialog_button_set_font_desc(GtkFontDialogButton_val(self), PangoFontDescription_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -90,12 +106,29 @@ GtkFontLevel result = gtk_font_dialog_button_get_level(GtkFontDialogButton_val(s
 CAMLreturn(Val_GtkFontLevel(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_font_dialog_button_get_language(value self)
+{
+CAMLparam1(self);
+
+PangoLanguage* result = gtk_font_dialog_button_get_language(GtkFontDialogButton_val(self));
+CAMLreturn(Val_option(result, Val_PangoLanguage));
+}
+
 CAMLexport CAMLprim value ml_gtk_font_dialog_button_get_font_features(value self)
 {
 CAMLparam1(self);
 
 const char* result = gtk_font_dialog_button_get_font_features(GtkFontDialogButton_val(self));
 CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_font_dialog_button_get_font_desc(value self)
+{
+CAMLparam1(self);
+
+PangoFontDescription* result = gtk_font_dialog_button_get_font_desc(GtkFontDialogButton_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_PangoFontDescription));
 }
 
 CAMLexport CAMLprim value ml_gtk_font_dialog_button_get_dialog(value self)

@@ -1,5 +1,14 @@
+class type credentials_t = object
+    method get_unix_pid : unit -> (int, GError.t) result
+    method get_unix_user : unit -> (int, GError.t) result
+    method is_same_user : credentials_t -> (bool, GError.t) result
+    method set_unix_user : int -> (bool, GError.t) result
+    method to_string : unit -> string
+    method as_credentials : Credentials.t
+end
+
 (* High-level class for Credentials *)
-class credentials (obj : Credentials.t) = object (self)
+class credentials (obj : Credentials.t) : credentials_t = object (self)
 
   method get_unix_pid : unit -> (int, GError.t) result =
     fun () ->
@@ -9,7 +18,7 @@ class credentials (obj : Credentials.t) = object (self)
     fun () ->
       (Credentials.get_unix_user obj)
 
-  method is_same_user : 'p1. (<as_credentials: Credentials.t; ..> as 'p1) -> (bool, GError.t) result =
+  method is_same_user : credentials_t -> (bool, GError.t) result =
     fun other_credentials ->
       let other_credentials = other_credentials#as_credentials in
       (Credentials.is_same_user obj other_credentials)

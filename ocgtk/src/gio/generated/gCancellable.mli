@@ -1,5 +1,4 @@
-class cancellable : Cancellable.t ->
-  object
+class type cancellable_t = object
     inherit Gcancellable_signals.cancellable_signals
     method cancel : unit -> unit
     method get_fd : unit -> int
@@ -10,5 +9,7 @@ class cancellable : Cancellable.t ->
     method reset : unit -> unit
     method set_error_if_cancelled : unit -> (bool, GError.t) result
     method as_cancellable : Cancellable.t
-  end
+end
+
+class cancellable : Cancellable.t -> cancellable_t
 

@@ -1,7 +1,8 @@
-class zlib_decompressor : Zlib_decompressor.t ->
-  object
-    method get_file_info : unit -> GFile_info.file_info option
+class type zlib_decompressor_t = object
+    method get_file_info : unit -> GFile_info.file_info_t option
     method format : Gio_enums.zlibcompressorformat
     method as_zlib_decompressor : Zlib_decompressor.t
-  end
+end
+
+class zlib_decompressor : Zlib_decompressor.t -> zlib_decompressor_t
 

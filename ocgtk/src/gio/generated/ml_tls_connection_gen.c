@@ -18,8 +18,8 @@
 #include <gio/gio.h>
 #include <gio/gfiledescriptorbased.h>
 #include <gio/gdesktopappinfo.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gio_decls.h"
 
 
 CAMLexport CAMLprim value ml_g_tls_connection_set_use_system_certdb(value self, value arg1)
@@ -73,11 +73,12 @@ CAMLreturn(Val_unit);
 CAMLexport CAMLprim value ml_g_tls_connection_set_advertised_protocols(value self, value arg1)
 {
 CAMLparam2(self, arg1);
+    int arg1_length = 0;
     gchar** c_arg1 = NULL;
     
     if (Is_some(arg1)) {
         value array = Some_val(arg1);
-        int arg1_length = Wosize_val(array);
+        arg1_length = Wosize_val(array);
         c_arg1 = (gchar**)g_malloc(sizeof(gchar*) * (arg1_length + 1));
         for (int i = 0; i < arg1_length; i++) {
           c_arg1[i] = String_val(Field(array, i));

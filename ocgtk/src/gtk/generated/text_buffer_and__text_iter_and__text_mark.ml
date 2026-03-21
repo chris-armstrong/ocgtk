@@ -76,6 +76,10 @@ module rec Text_buffer : sig
   to be in order. *)
   external remove_tag : t -> Text_tag.t -> Text_iter.t -> Text_iter.t -> unit = "ml_gtk_text_buffer_remove_tag"
 
+  (** Removes a `GdkClipboard` added with
+  [method@Gtk.TextBuffer.add_selection_clipboard] *)
+  external remove_selection_clipboard : t -> Ocgtk_gdk.Gdk.Wrappers.Clipboard.t -> unit = "ml_gtk_text_buffer_remove_selection_clipboard"
+
   (** Removes all tags in the range between @start and @end.
 
   Be careful with this function; it could remove tags added in code
@@ -97,6 +101,17 @@ module rec Text_buffer : sig
   to be recalculated. This function moves them as a unit, which can
   be optimized. *)
   external place_cursor : t -> Text_iter.t -> unit = "ml_gtk_text_buffer_place_cursor"
+
+  (** Pastes the contents of a clipboard.
+
+  If @override_location is %NULL, the pasted text will be inserted
+  at the cursor position, or the buffer selection will be replaced
+  if the selection is non-empty.
+
+  Note: pasting is asynchronous, that is, we’ll ask for the paste data
+  and return, and at some point later after the main loop runs, the paste
+  data will be inserted. *)
+  external paste_clipboard : t -> Ocgtk_gdk.Gdk.Wrappers.Clipboard.t -> Text_iter.t option -> bool -> unit = "ml_gtk_text_buffer_paste_clipboard"
 
   (** Moves the mark named @name (which must exist) to location @where.
 
@@ -131,6 +146,17 @@ module rec Text_buffer : sig
   Implemented via emissions of the ::insert-text and ::apply-tag signals,
   so expect those. *)
   external insert_range : t -> Text_iter.t -> Text_iter.t -> Text_iter.t -> unit = "ml_gtk_text_buffer_insert_range"
+
+  (** Inserts an image into the text buffer at @iter.
+
+  The image will be counted as one character in character counts,
+  and when obtaining the buffer contents as a string, will be
+  represented by the Unicode “object replacement character” 0xFFFC.
+  Note that the “slice” variants for obtaining portions of the buffer
+  as a string include this character for paintable, but the “text”
+  variants do not. e.g. see [method@Gtk.TextBuffer.get_slice] and
+  [method@Gtk.TextBuffer.get_text]. *)
+  external insert_paintable : t -> Text_iter.t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t -> unit = "ml_gtk_text_buffer_insert_paintable"
 
   (** Inserts the text in @markup at position @iter.
 
@@ -223,6 +249,12 @@ module rec Text_buffer : sig
   Note that 0xFFFC can occur in normal text as well, so it is not a
   reliable indicator that a paintable or widget is in the buffer. *)
   external get_slice : t -> Text_iter.t -> Text_iter.t -> bool -> string = "ml_gtk_text_buffer_get_slice"
+
+  (** Get a content provider for this buffer.
+
+  It can be used to make the content of @buffer available
+  in a `GdkClipboard`, see [method@Gdk.Clipboard.set_content]. *)
+  external get_selection_content : t -> Ocgtk_gdk.Gdk.Wrappers.Content_provider.t = "ml_gtk_text_buffer_get_selection_content"
 
   (** Returns %TRUE if some text is selected; places the bounds
   of the selection in @start and @end.
@@ -423,6 +455,10 @@ module rec Text_buffer : sig
   re-initialized to point to the location where text was deleted. *)
   external delete : t -> Text_iter.t -> Text_iter.t -> unit = "ml_gtk_text_buffer_delete"
 
+  (** Copies the currently-selected text to a clipboard,
+  then deletes said text if it’s editable. *)
+  external cut_clipboard : t -> Ocgtk_gdk.Gdk.Wrappers.Clipboard.t -> bool -> unit = "ml_gtk_text_buffer_cut_clipboard"
+
   (** Creates a mark at position @where.
 
   If @mark_name is %NULL, the mark is anonymous; otherwise, the mark
@@ -453,6 +489,9 @@ module rec Text_buffer : sig
   The new anchor is owned by the buffer; no reference count is
   returned to the caller of this function. *)
   external create_child_anchor : t -> Text_iter.t -> Text_child_anchor.t = "ml_gtk_text_buffer_create_child_anchor"
+
+  (** Copies the currently-selected text to a clipboard. *)
+  external copy_clipboard : t -> Ocgtk_gdk.Gdk.Wrappers.Clipboard.t -> unit = "ml_gtk_text_buffer_copy_clipboard"
 
   (** Called to indicate that the buffer operations between here and a
   call to gtk_text_buffer_end_user_action() are part of a single
@@ -513,6 +552,13 @@ module rec Text_buffer : sig
   @tag to the given range. @start and @end do
   not have to be in order. *)
   external apply_tag : t -> Text_tag.t -> Text_iter.t -> Text_iter.t -> unit = "ml_gtk_text_buffer_apply_tag"
+
+  (** Adds @clipboard to the list of clipboards in which the selection
+  contents of @buffer are available.
+
+  In most cases, @clipboard will be the `GdkClipboard` returned by
+  [method@Gtk.Widget.get_primary_clipboard] for a view of @buffer. *)
+  external add_selection_clipboard : t -> Ocgtk_gdk.Gdk.Wrappers.Clipboard.t -> unit = "ml_gtk_text_buffer_add_selection_clipboard"
 
   (** Adds the mark at position @where.
 
@@ -605,6 +651,10 @@ end = struct
   to be in order. *)
   external remove_tag : t -> Text_tag.t -> Text_iter.t -> Text_iter.t -> unit = "ml_gtk_text_buffer_remove_tag"
 
+  (** Removes a `GdkClipboard` added with
+  [method@Gtk.TextBuffer.add_selection_clipboard] *)
+  external remove_selection_clipboard : t -> Ocgtk_gdk.Gdk.Wrappers.Clipboard.t -> unit = "ml_gtk_text_buffer_remove_selection_clipboard"
+
   (** Removes all tags in the range between @start and @end.
 
   Be careful with this function; it could remove tags added in code
@@ -626,6 +676,17 @@ end = struct
   to be recalculated. This function moves them as a unit, which can
   be optimized. *)
   external place_cursor : t -> Text_iter.t -> unit = "ml_gtk_text_buffer_place_cursor"
+
+  (** Pastes the contents of a clipboard.
+
+  If @override_location is %NULL, the pasted text will be inserted
+  at the cursor position, or the buffer selection will be replaced
+  if the selection is non-empty.
+
+  Note: pasting is asynchronous, that is, we’ll ask for the paste data
+  and return, and at some point later after the main loop runs, the paste
+  data will be inserted. *)
+  external paste_clipboard : t -> Ocgtk_gdk.Gdk.Wrappers.Clipboard.t -> Text_iter.t option -> bool -> unit = "ml_gtk_text_buffer_paste_clipboard"
 
   (** Moves the mark named @name (which must exist) to location @where.
 
@@ -660,6 +721,17 @@ end = struct
   Implemented via emissions of the ::insert-text and ::apply-tag signals,
   so expect those. *)
   external insert_range : t -> Text_iter.t -> Text_iter.t -> Text_iter.t -> unit = "ml_gtk_text_buffer_insert_range"
+
+  (** Inserts an image into the text buffer at @iter.
+
+  The image will be counted as one character in character counts,
+  and when obtaining the buffer contents as a string, will be
+  represented by the Unicode “object replacement character” 0xFFFC.
+  Note that the “slice” variants for obtaining portions of the buffer
+  as a string include this character for paintable, but the “text”
+  variants do not. e.g. see [method@Gtk.TextBuffer.get_slice] and
+  [method@Gtk.TextBuffer.get_text]. *)
+  external insert_paintable : t -> Text_iter.t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t -> unit = "ml_gtk_text_buffer_insert_paintable"
 
   (** Inserts the text in @markup at position @iter.
 
@@ -752,6 +824,12 @@ end = struct
   Note that 0xFFFC can occur in normal text as well, so it is not a
   reliable indicator that a paintable or widget is in the buffer. *)
   external get_slice : t -> Text_iter.t -> Text_iter.t -> bool -> string = "ml_gtk_text_buffer_get_slice"
+
+  (** Get a content provider for this buffer.
+
+  It can be used to make the content of @buffer available
+  in a `GdkClipboard`, see [method@Gdk.Clipboard.set_content]. *)
+  external get_selection_content : t -> Ocgtk_gdk.Gdk.Wrappers.Content_provider.t = "ml_gtk_text_buffer_get_selection_content"
 
   (** Returns %TRUE if some text is selected; places the bounds
   of the selection in @start and @end.
@@ -952,6 +1030,10 @@ end = struct
   re-initialized to point to the location where text was deleted. *)
   external delete : t -> Text_iter.t -> Text_iter.t -> unit = "ml_gtk_text_buffer_delete"
 
+  (** Copies the currently-selected text to a clipboard,
+  then deletes said text if it’s editable. *)
+  external cut_clipboard : t -> Ocgtk_gdk.Gdk.Wrappers.Clipboard.t -> bool -> unit = "ml_gtk_text_buffer_cut_clipboard"
+
   (** Creates a mark at position @where.
 
   If @mark_name is %NULL, the mark is anonymous; otherwise, the mark
@@ -982,6 +1064,9 @@ end = struct
   The new anchor is owned by the buffer; no reference count is
   returned to the caller of this function. *)
   external create_child_anchor : t -> Text_iter.t -> Text_child_anchor.t = "ml_gtk_text_buffer_create_child_anchor"
+
+  (** Copies the currently-selected text to a clipboard. *)
+  external copy_clipboard : t -> Ocgtk_gdk.Gdk.Wrappers.Clipboard.t -> unit = "ml_gtk_text_buffer_copy_clipboard"
 
   (** Called to indicate that the buffer operations between here and a
   call to gtk_text_buffer_end_user_action() are part of a single
@@ -1042,6 +1127,13 @@ end = struct
   @tag to the given range. @start and @end do
   not have to be in order. *)
   external apply_tag : t -> Text_tag.t -> Text_iter.t -> Text_iter.t -> unit = "ml_gtk_text_buffer_apply_tag"
+
+  (** Adds @clipboard to the list of clipboards in which the selection
+  contents of @buffer are available.
+
+  In most cases, @clipboard will be the `GdkClipboard` returned by
+  [method@Gtk.Widget.get_primary_clipboard] for a view of @buffer. *)
+  external add_selection_clipboard : t -> Ocgtk_gdk.Gdk.Wrappers.Clipboard.t -> unit = "ml_gtk_text_buffer_add_selection_clipboard"
 
   (** Adds the mark at position @where.
 
@@ -1250,6 +1342,11 @@ and Text_iter
   widget is in the buffer. *)
   external get_slice : t -> t -> string = "ml_gtk_text_iter_get_slice"
 
+  (** If the element at @iter is a paintable, the paintable is returned.
+
+  Otherwise, %NULL is returned. *)
+  external get_paintable : t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option = "ml_gtk_text_iter_get_paintable"
+
   (** Returns the character offset of an iterator.
 
   Each character in a `GtkTextBuffer` has an offset,
@@ -1277,6 +1374,12 @@ and Text_iter
   Lines in a `GtkTextBuffer` are numbered beginning
   with 0 for the first line in the buffer. *)
   external get_line : t -> int = "ml_gtk_text_iter_get_line"
+
+  (** Returns the language in effect at @iter.
+
+  If no tags affecting language apply to @iter, the return
+  value is identical to that of [func@Gtk.get_default_language]. *)
+  external get_language : t -> Ocgtk_pango.Pango.Wrappers.Language.t = "ml_gtk_text_iter_get_language"
 
   (** If the location at @iter contains a child anchor, the
   anchor is returned.
@@ -1896,6 +1999,11 @@ end = struct
   widget is in the buffer. *)
   external get_slice : t -> t -> string = "ml_gtk_text_iter_get_slice"
 
+  (** If the element at @iter is a paintable, the paintable is returned.
+
+  Otherwise, %NULL is returned. *)
+  external get_paintable : t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option = "ml_gtk_text_iter_get_paintable"
+
   (** Returns the character offset of an iterator.
 
   Each character in a `GtkTextBuffer` has an offset,
@@ -1923,6 +2031,12 @@ end = struct
   Lines in a `GtkTextBuffer` are numbered beginning
   with 0 for the first line in the buffer. *)
   external get_line : t -> int = "ml_gtk_text_iter_get_line"
+
+  (** Returns the language in effect at @iter.
+
+  If no tags affecting language apply to @iter, the return
+  value is identical to that of [func@Gtk.get_default_language]. *)
+  external get_language : t -> Ocgtk_pango.Pango.Wrappers.Language.t = "ml_gtk_text_iter_get_language"
 
   (** If the location at @iter contains a child anchor, the
   anchor is returned.

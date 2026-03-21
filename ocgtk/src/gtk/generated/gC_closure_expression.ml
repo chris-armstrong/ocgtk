@@ -1,8 +1,10 @@
-(* High-level class for CClosureExpression *)
-class c_closure_expression (obj : C_closure_expression.t) = object (self)
-  inherit GExpression.expression (C_closure_expression.as_expression obj)
+class type c_closure_expression_t = object
+    method as_c_closure_expression : C_closure_expression.t
+end
 
-  method as_expression = (C_closure_expression.as_expression obj)
+(* High-level class for CClosureExpression *)
+class c_closure_expression (obj : C_closure_expression.t) : c_closure_expression_t = object (self)
+
     method as_c_closure_expression = obj
 end
 

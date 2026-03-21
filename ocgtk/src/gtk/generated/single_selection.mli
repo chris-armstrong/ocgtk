@@ -4,7 +4,7 @@
 type t = [`single_selection | `object_] Gobject.obj
 
 (** Create a new SingleSelection *)
-external new_ : unit -> t = "ml_gtk_single_selection_new"
+external new_ : Ocgtk_gio.Gio.Wrappers.List_model.t option -> t = "ml_gtk_single_selection_new"
 
 (* Methods *)
 (** Selects the item at the given position.
@@ -16,6 +16,11 @@ If it is set, no change will occur and the old item will stay
 selected. If it is unset, the selection will be unset and no item
 will be selected. *)
 external set_selected : t -> int -> unit = "ml_gtk_single_selection_set_selected"
+
+(** Sets the model that @self should wrap.
+
+If @model is %NULL, @self will be empty. *)
+external set_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option -> unit = "ml_gtk_single_selection_set_model"
 
 (** If %TRUE, unselecting the current item via
 gtk_selection_model_unselect_item() is supported.
@@ -36,6 +41,9 @@ external set_autoselect : t -> bool -> unit = "ml_gtk_single_selection_set_autos
 
 If no item is selected, %GTK_INVALID_LIST_POSITION is returned. *)
 external get_selected : t -> int = "ml_gtk_single_selection_get_selected"
+
+(** Gets the model that @self is wrapping. *)
+external get_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option = "ml_gtk_single_selection_get_model"
 
 (** If %TRUE, gtk_selection_model_unselect_item() is supported and allows
 unselecting the selected item. *)

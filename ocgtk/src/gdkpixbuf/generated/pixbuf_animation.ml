@@ -4,12 +4,6 @@
 type t = [`pixbuf_animation | `object_] Gobject.obj
 
 (* Methods *)
-(** Removes a reference from an animation. *)
-external unref : t -> unit = "ml_gdk_pixbuf_animation_unref"
-
-(** Adds a reference to an animation. *)
-external ref : t -> t = "ml_gdk_pixbuf_animation_ref"
-
 (** Checks whether the animation is a static image.
 
 If you load a file with gdk_pixbuf_animation_new_from_file() and it

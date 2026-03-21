@@ -1,7 +1,13 @@
-(* High-level class for DebugNode *)
-class debug_node (obj : Debug_node.t) = object (self)
+class type debug_node_t = object
+    method get_child : unit -> GRender_node.render_node_t
+    method get_message : unit -> string
+    method as_debug_node : Debug_node.t
+end
 
-  method get_child : unit -> GRender_node.render_node =
+(* High-level class for DebugNode *)
+class debug_node (obj : Debug_node.t) : debug_node_t = object (self)
+
+  method get_child : unit -> GRender_node.render_node_t =
     fun () ->
       new  GRender_node.render_node(Debug_node.get_child obj)
 

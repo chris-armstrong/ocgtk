@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <gdk/gdk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gdk_decls.h"
 
 /* Conversion functions for GdkContentFormats (opaque record with hidden fields) */
 GdkContentFormats *GdkContentFormats_val(value v) {
@@ -34,11 +34,12 @@ value Val_GdkContentFormats_option(const GdkContentFormats *ptr) {
 CAMLexport CAMLprim value ml_gdk_content_formats_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
+    int arg1_length = 0;
     char** c_arg1 = NULL;
     
     if (Is_some(arg1)) {
         value array = Some_val(arg1);
-        int arg1_length = Wosize_val(array);
+        arg1_length = Wosize_val(array);
         c_arg1 = (char**)g_malloc(sizeof(char*) * arg1_length);
         for (int i = 0; i < arg1_length; i++) {
           c_arg1[i] = String_val(Field(array, i));

@@ -1,5 +1,6 @@
-class datagram_based : Datagram_based.t ->
-  object
+class type datagram_based_t = object
     method as_datagram_based : Datagram_based.t
-  end
+end
+
+class datagram_based : Datagram_based.t -> datagram_based_t
 

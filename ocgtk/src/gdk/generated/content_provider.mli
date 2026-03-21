@@ -3,19 +3,12 @@
 
 type t = [`content_provider | `object_] Gobject.obj
 
-(** Create a new ContentProvider *)
-external new_for_bytes : string -> unit -> t = "ml_gdk_content_provider_new_for_bytes"
-
-(** Create a new ContentProvider *)
-external new_for_value : unit -> t = "ml_gdk_content_provider_new_for_value"
-
-(** Create a new ContentProvider *)
-external new_typed : unit -> unit -> t = "ml_gdk_content_provider_new_typed"
-
-(** Create a new ContentProvider *)
-external new_union : t array option -> unit -> t = "ml_gdk_content_provider_new_union"
-
 (* Methods *)
+(** Finishes an asynchronous write operation.
+
+See [method@Gdk.ContentProvider.write_mime_type_async]. *)
+external write_mime_type_finish : t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (bool, GError.t) result = "ml_gdk_content_provider_write_mime_type_finish"
+
 (** Gets the formats that the provider suggests other applications to store
 the data in.
 

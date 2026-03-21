@@ -1,8 +1,24 @@
 (* Signal class defined in gapp_chooser_widget_signals.ml *)
 
+class type app_chooser_widget_t = object
+    inherit Gapp_chooser_widget_signals.app_chooser_widget_signals
+    method get_default_text : unit -> string option
+    method get_show_all : unit -> bool
+    method get_show_default : unit -> bool
+    method get_show_fallback : unit -> bool
+    method get_show_other : unit -> bool
+    method get_show_recommended : unit -> bool
+    method set_default_text : string -> unit
+    method set_show_all : bool -> unit
+    method set_show_default : bool -> unit
+    method set_show_fallback : bool -> unit
+    method set_show_other : bool -> unit
+    method set_show_recommended : bool -> unit
+    method as_app_chooser_widget : App_chooser_widget.t
+end
+
 (* High-level class for AppChooserWidget *)
-class app_chooser_widget (obj : App_chooser_widget.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (App_chooser_widget.as_widget obj)
+class app_chooser_widget (obj : App_chooser_widget.t) : app_chooser_widget_t = object (self)
   inherit Gapp_chooser_widget_signals.app_chooser_widget_signals obj
 
   method get_default_text : unit -> string option =
@@ -53,7 +69,6 @@ class app_chooser_widget (obj : App_chooser_widget.t) = object (self)
     fun setting ->
       (App_chooser_widget.set_show_recommended obj setting)
 
-  method as_widget = (App_chooser_widget.as_widget obj)
     method as_app_chooser_widget = obj
 end
 

@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_label_new(value arg1)
@@ -48,6 +48,14 @@ CAMLexport CAMLprim value ml_gtk_label_set_xalign(value self, value arg1)
 CAMLparam2(self, arg1);
 
 gtk_label_set_xalign(GtkLabel_val(self), Double_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_label_set_wrap_mode(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_label_set_wrap_mode(GtkLabel_val(self), PangoWrapMode_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -96,6 +104,14 @@ CAMLexport CAMLprim value ml_gtk_label_set_text(value self, value arg1)
 CAMLparam2(self, arg1);
 
 gtk_label_set_text(GtkLabel_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_label_set_tabs(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_label_set_tabs(GtkLabel_val(self), Option_val(arg1, PangoTabArray_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -179,6 +195,30 @@ gtk_label_set_justify(GtkLabel_val(self), GtkJustification_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_label_set_extra_menu(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_label_set_extra_menu(GtkLabel_val(self), Option_val(arg1, GMenuModel_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_label_set_ellipsize(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_label_set_ellipsize(GtkLabel_val(self), PangoEllipsizeMode_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_label_set_attributes(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_label_set_attributes(GtkLabel_val(self), Option_val(arg1, PangoAttrList_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_label_select_region(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -201,6 +241,14 @@ CAMLparam1(self);
 
 float result = gtk_label_get_xalign(GtkLabel_val(self));
 CAMLreturn(caml_copy_double(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_label_get_wrap_mode(value self)
+{
+CAMLparam1(self);
+
+PangoWrapMode result = gtk_label_get_wrap_mode(GtkLabel_val(self));
+CAMLreturn(Val_PangoWrapMode(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_label_get_wrap(value self)
@@ -241,6 +289,14 @@ CAMLparam1(self);
 
 const char* result = gtk_label_get_text(GtkLabel_val(self));
 CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_label_get_tabs(value self)
+{
+CAMLparam1(self);
+
+PangoTabArray* result = gtk_label_get_tabs(GtkLabel_val(self));
+CAMLreturn(Val_option(result, Val_PangoTabArray));
 }
 
 CAMLexport CAMLprim value ml_gtk_label_get_single_line_mode(value self)
@@ -329,6 +385,15 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
+CAMLexport CAMLprim value ml_gtk_label_get_layout(value self)
+{
+CAMLparam1(self);
+
+PangoLayout* result = gtk_label_get_layout(GtkLabel_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_PangoLayout(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_label_get_label(value self)
 {
 CAMLparam1(self);
@@ -345,10 +410,36 @@ GtkJustification result = gtk_label_get_justify(GtkLabel_val(self));
 CAMLreturn(Val_GtkJustification(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_label_get_extra_menu(value self)
+{
+CAMLparam1(self);
+
+GMenuModel* result = gtk_label_get_extra_menu(GtkLabel_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GMenuModel));
+}
+
+CAMLexport CAMLprim value ml_gtk_label_get_ellipsize(value self)
+{
+CAMLparam1(self);
+
+PangoEllipsizeMode result = gtk_label_get_ellipsize(GtkLabel_val(self));
+CAMLreturn(Val_PangoEllipsizeMode(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_label_get_current_uri(value self)
 {
 CAMLparam1(self);
 
 const char* result = gtk_label_get_current_uri(GtkLabel_val(self));
 CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_label_get_attributes(value self)
+{
+CAMLparam1(self);
+
+PangoAttrList* result = gtk_label_get_attributes(GtkLabel_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_PangoAttrList));
 }

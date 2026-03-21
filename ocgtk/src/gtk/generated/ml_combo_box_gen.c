@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_combo_box_new(value unit)
@@ -122,6 +122,14 @@ CAMLexport CAMLprim value ml_gtk_combo_box_set_active(value self, value arg1)
 CAMLparam2(self, arg1);
 
 gtk_combo_box_set_active(GtkComboBox_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_combo_box_popup_for_device(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_combo_box_popup_for_device(GtkComboBox_val(self), GdkDevice_val(arg1));
 CAMLreturn(Val_unit);
 }
 

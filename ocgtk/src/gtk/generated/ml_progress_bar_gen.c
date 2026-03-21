@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_progress_bar_new(value unit)
@@ -66,6 +66,14 @@ gtk_progress_bar_set_fraction(GtkProgressBar_val(self), Double_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_progress_bar_set_ellipsize(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_progress_bar_set_ellipsize(GtkProgressBar_val(self), PangoEllipsizeMode_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_progress_bar_pulse(value self)
 {
 CAMLparam1(self);
@@ -112,4 +120,12 @@ CAMLparam1(self);
 
 double result = gtk_progress_bar_get_fraction(GtkProgressBar_val(self));
 CAMLreturn(caml_copy_double(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_progress_bar_get_ellipsize(value self)
+{
+CAMLparam1(self);
+
+PangoEllipsizeMode result = gtk_progress_bar_get_ellipsize(GtkProgressBar_val(self));
+CAMLreturn(Val_PangoEllipsizeMode(result));
 }

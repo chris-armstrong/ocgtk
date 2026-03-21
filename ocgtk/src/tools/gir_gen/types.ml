@@ -231,16 +231,102 @@ type ocaml_class = {
   class_layer1_accessor : string;
 }
 
+(** Maps a GIR type to its C and OCaml representations for code generation.
+
+    Used by both Layer 0 (C stubs) and Layer 2 (OCaml class wrappers) generators
+    to convert between C and OCaml values.
+
+    {2 Same-namespace vs cross-namespace examples}
+
+    When generating Gtk bindings:
+
+    {b Same-namespace class} ([GtkWidget] within Gtk):
+    - [ocaml_type = "Widget.t"]
+    - [c_type = "GtkWidget"]
+    - [c_to_ml = "Val_GtkWidget"], [ml_to_c = "GtkWidget_val"]
+    - [layer2_class = Some {class_module="GWidget"; class_type="widget"; ...}]
+    - [is_value_type_record = false]
+
+    {b Cross-namespace class} ([GdkSurface] from Gdk, used in Gtk):
+    - [ocaml_type = "Ocgtk_gdk.Wrappers.Surface.t"]
+    - [c_type = "GdkSurface"]
+    - [c_to_ml = "Val_GdkSurface"], [ml_to_c = "GdkSurface_val"]
+    - [layer2_class = Some {class_module="Ocgtk_gdk"; class_type="surface"; ...}]
+    - [is_value_type_record = false]
+
+    {b Same-namespace record} ([GtkBitset] within Gtk):
+    - [ocaml_type = "Bitset.t"]
+    - [c_type = "GtkBitset"]
+    - [c_to_ml = "Val_GtkBitset"], [ml_to_c = "GtkBitset_val"]
+    - [layer2_class = None]
+    - [is_value_type_record = true] (if non-opaque)
+
+    {b Cross-namespace record} ([GdkRGBA] from Gdk, used in Gsk):
+    - [ocaml_type = "Ocgtk_gdk.Wrappers.Rgb_a.t"]
+    - [c_type = "GdkRGBA"]
+    - [c_to_ml = "Val_GdkRGBA"], [ml_to_c = "GdkRGBA_val"]
+    - [layer2_class = Some {class_module="Ocgtk_gdk"; class_type="rgba"; ...}]
+    - [is_value_type_record = true]
+
+    {b Cross-namespace enum} ([PangoAlignment] from Pango, used in Gtk):
+    - [ocaml_type = "Ocgtk_pango.alignment"]
+    - [c_type = "PangoAlignment"]
+    - [c_to_ml = "Val_PangoAlignment"], [ml_to_c = "PangoAlignment_val"]
+    - [layer2_class = None]
+    - [is_value_type_record = false] *)
 type type_mapping = {
-  ocaml_type : string; (* classes: Application_window.t *)
-  c_type : string; (* C type (struct name or enum name) *)
-  layer2_class : ocaml_class option;
-      (* when this is a class or interface, the OCaml module *)
+  ocaml_type : string;
+      (** Layer 1 OCaml type expression.
+          Same-namespace classes/records: ["Widget.t"], ["Bitset.t"].
+          Cross-namespace classes/records:
+            ["Ocgtk_gdk.Wrappers.Surface.t"], ["Ocgtk_gdk.Wrappers.Rgb_a.t"].
+          Same-namespace enums/bitfields: ["Gtk.align"].
+          Cross-namespace enums/bitfields: ["Ocgtk_pango.alignment"].
+          Primitives: ["int"], ["float"], ["string"], ["bool"]. *)
+  c_type : string;
+      (** The C type name without pointer suffix.
+          Same-namespace: ["GtkWidget"], ["GtkBitset"], ["GtkAlign"].
+          Cross-namespace: ["GdkSurface"], ["GdkRGBA"], ["PangoAlignment"]. *)
   c_to_ml : string;
+      (** C macro/function that converts a C value to an OCaml [value].
+          Same-namespace: ["Val_GtkWidget"], ["Val_GtkBitset"].
+          Cross-namespace: ["Val_GdkRGBA"], ["Val_PangoAlignment"].
+          Primitives: ["Val_int"], ["caml_copy_double"], ["caml_copy_string"].
+          For non-opaque records, the generated function expects a const
+          pointer argument, not a value. *)
   ml_to_c : string;
-  needs_copy : bool;
+      (** C macro/function that converts an OCaml [value] to a C value.
+          Same-namespace: ["GtkWidget_val"], ["GtkBitset_val"].
+          Cross-namespace: ["GdkRGBA_val"], ["PangoAlignment_val"].
+          Primitives: ["Int_val"], ["Double_val"], ["String_val"]. *)
+  layer2_class : ocaml_class option;
+      (** Layer 2 class wrapper info. Present for GObject classes, interfaces,
+          AND records that have OCaml class wrappers. Used by Layer 2 generators
+          for method signatures (e.g. [#widget -> unit]) and coercion accessors
+          (e.g. [obj#as_widget]).
+
+          Same-namespace classes: [Some {class_module="GWidget"; ...}].
+          Cross-namespace classes: [Some {class_module="Ocgtk_gdk"; ...}].
+          Cross-namespace records: [Some {class_module="Ocgtk_gdk"; ...}].
+          Same-namespace records: [None] (layer 2 refs resolved differently).
+          Enums/bitfields/primitives: [None].
+
+          {b Important}: presence does NOT imply the type is a GObject — cross-
+          namespace records also have this set for Layer 2 class references.
+          Use [is_value_type_record] to distinguish records from GObjects. *)
+  is_value_type_record : bool;
+      (** True for non-opaque records: stack-allocated C structs like
+          [graphene_rect_t] or [GdkRGBA]. Affects code generation in two ways:
+          1. Out-parameters need [&var] when calling [c_to_ml] (the Val function
+             expects a pointer, but the out-param is a stack-allocated value).
+          2. Return values must NOT get [g_object_ref_sink] — these are plain
+             structs, not GObjects with floating references.
+
+          True for: same-namespace non-opaque records, cross-namespace
+          non-opaque records ([Crt_Record {opaque=false}]).
+          False for: classes, interfaces, opaque records, enums, bitfields,
+          primitives. *)
 }
-(** Type mapping result from a name lookup *)
 
 (* Hierarchy classification *)
 type hierarchy_kind =
@@ -250,6 +336,7 @@ type hierarchy_kind =
   | LayoutManagerHierarchy
   | ExpressionHierarchy
   | MonomorphicType
+[@@deriving eq]
 
 type hierarchy_info = {
   hierarchy : hierarchy_kind;
@@ -278,21 +365,38 @@ type gir_repository = {
 }
 
 type cross_reference_type =
-  | Crt_Class
+  | Crt_Class of { parent : string option }
   | Crt_Interface
   | Crt_Record of { opaque : bool }
   | Crt_Enum
   | Crt_Bitfield
 [@@deriving sexp]
 
-type cross_reference = {
+type cross_reference_entity = {
   cr_name : string;
   cr_type : cross_reference_type;
   cr_c_type : string;
 }
 [@@deriving sexp]
 
+type cross_reference_namespace = {
+  cr_namespace_name : string;
+  cr_namespace_packages : string list;
+  cr_namespace_includes : string list;
+  cr_namespace_c_includes : string list;
+  cr_entities : cross_reference_entity list;
+}
+[@@deriving sexp]
+
 module StringMap = Map.Make (String)
+
+type generation_context_namespace_cross_references = {
+  ncr_namespace_name : string;
+  ncr_namespace_packages : string list;
+  ncr_namespace_includes : string list;
+  ncr_namespace_c_includes : string list;
+  ncr_entities : cross_reference_entity StringMap.t;
+}
 
 type generation_context = {
   namespace : gir_namespace;
@@ -302,12 +406,10 @@ type generation_context = {
   enums : gir_enum list;
   bitfields : gir_bitfield list;
   records : gir_record list;
-  external_enums : (string * gir_enum) list;
-  external_bitfields : (string * gir_bitfield) list;
   hierarchy_map : (string, hierarchy_info) Hashtbl.t;
   module_groups : (string, string) Hashtbl.t;
       (* class_name -> combined_module_name *)
   current_cycle_classes : string list;
       (* Class names in the current cyclic module being generated *)
-  cross_references : cross_reference StringMap.t StringMap.t;
+  cross_references : generation_context_namespace_cross_references StringMap.t;
 }

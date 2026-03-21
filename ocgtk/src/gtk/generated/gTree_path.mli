@@ -1,5 +1,4 @@
-class tree_path : Tree_path.t ->
-  object
+class type tree_path_t = object
     method append_index : int -> unit
     method compare : Tree_path.t -> int
     method copy : unit -> Tree_path.t
@@ -14,5 +13,7 @@ class tree_path : Tree_path.t ->
     method to_string : unit -> string option
     method up : unit -> bool
     method as_tree_path : Tree_path.t
-  end
+end
+
+class tree_path : Tree_path.t -> tree_path_t
 

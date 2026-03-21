@@ -46,9 +46,28 @@ This information can be used to decide if [ctor@Gsk.ClipNode.new]
 or [ctor@Gsk.RoundedClipNode.new] should be called. *)
 external is_rectilinear : t -> bool = "ml_gsk_rounded_rect_is_rectilinear"
 
+(** Checks if part of the given @rect is contained inside the rounded rectangle. *)
+external intersects_rect : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> bool = "ml_gsk_rounded_rect_intersects_rect"
+
+(** Initializes @self to the given @bounds and sets the radius
+of all four corners to @radius. *)
+external init_from_rect : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> float -> t = "ml_gsk_rounded_rect_init_from_rect"
+
 (** Initializes @self using the given @src rectangle.
 
 This function will not normalize the `GskRoundedRect`,
 so make sure the source is normalized. *)
 external init_copy : t -> t -> t = "ml_gsk_rounded_rect_init_copy"
+
+(** Initializes the given `GskRoundedRect` with the given values.
+
+This function will implicitly normalize the `GskRoundedRect`
+before returning. *)
+external init : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> Ocgtk_graphene.Graphene.Wrappers.Size.t -> Ocgtk_graphene.Graphene.Wrappers.Size.t -> Ocgtk_graphene.Graphene.Wrappers.Size.t -> Ocgtk_graphene.Graphene.Wrappers.Size.t -> t = "ml_gsk_rounded_rect_init_bytecode" "ml_gsk_rounded_rect_init_native"
+
+(** Checks if the given @rect is contained inside the rounded rectangle. *)
+external contains_rect : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> bool = "ml_gsk_rounded_rect_contains_rect"
+
+(** Checks if the given @point is inside the rounded rectangle. *)
+external contains_point : t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> bool = "ml_gsk_rounded_rect_contains_point"
 

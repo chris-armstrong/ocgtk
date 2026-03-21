@@ -3,12 +3,6 @@
 
 type t = [`simple_action | `object_] Gobject.obj
 
-(** Create a new SimpleAction *)
-external new_ : string -> unit -> t = "ml_g_simple_action_new"
-
-(** Create a new SimpleAction *)
-external new_stateful : string -> unit -> unit -> t = "ml_g_simple_action_new_stateful"
-
 (* Methods *)
 (** Sets the action as enabled or not.
 

@@ -1,6 +1,4 @@
-class grid_layout : Grid_layout.t ->
-  object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.layout_manager
+class type grid_layout_t = object
     method get_baseline_row : unit -> int
     method get_column_homogeneous : unit -> bool
     method get_column_spacing : unit -> int
@@ -13,7 +11,8 @@ class grid_layout : Grid_layout.t ->
     method set_row_baseline_position : int -> Gtk_enums.baselineposition -> unit
     method set_row_homogeneous : bool -> unit
     method set_row_spacing : int -> unit
-  method as_layoutmanager : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Layout_manager.t
     method as_grid_layout : Grid_layout.t
-  end
+end
+
+class grid_layout : Grid_layout.t -> grid_layout_t
 

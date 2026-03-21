@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: WindowHandle *)
+(* WindowHandle: WindowHandle *)
 
 type t = [`window_handle | `widget | `initially_unowned] Gobject.obj
-
-val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new WindowHandle *)
 external new_ : unit -> t = "ml_gtk_window_handle_new"

@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: ShortcutsWindow *)
+(* ShortcutsWindow: ShortcutsWindow *)
 
 type t = [`shortcuts_window | `window | `widget | `initially_unowned] Gobject.obj
-
-let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (* Methods *)
 (** Adds a section to the shortcuts window.

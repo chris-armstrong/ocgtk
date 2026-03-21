@@ -26,12 +26,11 @@ let format_constructor_external ~ocaml_ctor_name ~signature ~ml_name ctor =
       ocaml_ctor_name signature ml_name ml_name
   else sprintf "external %s : %s = \"%s\"\n\n" ocaml_ctor_name signature ml_name
 
-(** Check if a constructor should be generated in the interface *)
+(** Check if a constructor should be generated in the interface.
+    Delegates to the shared [Filtering.should_generate_constructor] so that
+    layer 0 (C stubs) and layer 1 (OCaml externals) agree on what is emitted. *)
 let should_generate_constructor ~ctx (ctor : gir_constructor) =
-  let has_cross_namespace_type =
-    Filtering.constructor_has_cross_namespace_types ~ctx ctor
-  in
-  (not ctor.throws) && not has_cross_namespace_type
+  Filtering.should_generate_constructor ~ctx ctor
 
 (** Generate a single constructor declaration and write it to the buffer *)
 let generate_constructor_decl ~ctx ~class_name ~buf (ctor : gir_constructor) =

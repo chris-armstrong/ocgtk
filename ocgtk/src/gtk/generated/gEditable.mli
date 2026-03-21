@@ -1,5 +1,4 @@
-class editable : Editable.t ->
-  object
+class type editable_t = object
     inherit Geditable_signals.editable_signals
     method delegate_get_accessible_platform_state : Gtk_enums.accessibleplatformstate -> bool
     method delete_selection : unit -> unit
@@ -7,7 +6,7 @@ class editable : Editable.t ->
     method finish_delegate : unit -> unit
     method get_alignment : unit -> float
     method get_chars : int -> int -> string
-    method get_delegate : unit -> editable option
+    method get_delegate : unit -> editable_t option
     method get_editable : unit -> bool
     method get_enable_undo : unit -> bool
     method get_max_width_chars : unit -> int
@@ -28,5 +27,7 @@ class editable : Editable.t ->
     method xalign : float
     method set_xalign : float -> unit
     method as_editable : Editable.t
-  end
+end
+
+class editable : Editable.t -> editable_t
 

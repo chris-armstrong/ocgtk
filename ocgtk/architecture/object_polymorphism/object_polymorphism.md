@@ -39,7 +39,7 @@ box#append (GEntry.entry ())
 let button = new GButton.button (Button.new_with_label "OK") in
 
 (* ❌ No explicit coercion *)
-box#append (button :> GWidget.widget_skel);
+box#append (button :> widget_t);
 
 (* ❌ No accessing underlying objects *)
 Widget.set_label (button#as_widget) "New Label"
@@ -62,7 +62,7 @@ Widget.set_label (button#as_widget) "New Label"
 - Generated classes with natural OO API
 - Factory functions for construction
 - Class types for interfaces
-- Automatic coercion via `#class_type` syntax
+- Class type definitions (`class type widget_t = object ... end`) for type-safe interfaces
 - This is the user-facing API
 
 ---
@@ -71,58 +71,65 @@ Widget.set_label (button#as_widget) "New Label"
 
 ### Class Type Definition
 
-Every hierarchy defines a class type (interface):
+Every class first defines a class type, then a class constrained by it:
 
 ```ocaml
 (* In gWidget.mli *)
-class type widget_skel = object
-  method show : unit
-  method hide : unit
+class type widget_t = object
+  method show : unit -> unit
+  method hide : unit -> unit
   method set_visible : bool -> unit
   method as_widget : Widget.t  (* Accessor to Layer 1 *)
   (* ... all widget methods ... *)
 end
 
-class widget : Widget.t -> widget_skel
+class widget : Widget.t -> widget_t
 ```
 
-### The `#` Syntax
+### Type References
 
-Methods accepting hierarchy types use `#class_type` for automatic coercion:
+Methods accepting hierarchy types use the class type name directly:
 
 ```ocaml
 (* In gBox.mli *)
-class type box_skel = object
-  inherit widget_skel
-
-  (* Accepts any widget subclass automatically *)
-  method append : #widget_skel -> unit
-  method prepend : #widget_skel -> unit
+class type box_t = object
+  (* References widget_t directly *)
+  method append : widget_t -> unit
+  method prepend : widget_t -> unit
+  method as_box : Box.t
 end
 ```
+
+**Note:** `#class_type` syntax cannot be used in `class type` definitions because it introduces unbound type variables. Callers must use explicit coercion `(btn :> widget_t)` when passing subtypes.
 
 ### How It Works
 
 **Generated implementation:**
 ```ocaml
 (* In gBox.ml *)
-class box_skel (obj : Box.t) = object (self)
-  inherit GWidget.widget_skel (Box.as_widget obj)
+class type box_t = object
+  method append : widget_t -> unit
+  method prepend : widget_t -> unit
+  method as_box : Box.t
+end
 
-  method append : 'a. (#widget_skel as 'a) -> unit =
+class box (obj : Box.t) : box_t = object (self)
+  method append : widget_t -> unit =
     fun child ->
-      Box.append obj (child#as_widget : Widget.t)
+      Box.append obj (child#as_widget)
 
-  method prepend : 'a. (#widget_skel as 'a) -> unit =
+  method prepend : widget_t -> unit =
     fun child ->
-      Box.prepend obj (child#as_widget : Widget.t)
+      Box.prepend obj (child#as_widget)
+
+  method as_box = obj
 end
 ```
 
 **Key points:**
-1. Explicit polymorphism: `'a. (#widget_skel as 'a) -> unit`
-2. Internal coercion to Layer 1: `child#as_widget`
-3. Users just pass objects directly
+1. Class type defined first, class constrained by `: box_t`
+2. Parameters typed as `widget_t` — caller calls `v#as_widget` to get Layer 1 type
+3. Self-referencing and mutual recursion work in `class type` definitions
 
 ---
 
@@ -134,12 +141,12 @@ Every class gets factory functions instead of exposing Layer 1 constructors:
 
 ```ocaml
 (* In gButton.mli *)
-class type button_skel = object
-  inherit widget_skel
+class type button_t = object
   (* ... button methods ... *)
+  method as_button : Button.t
 end
 
-class button : Button.t -> button_skel
+class button : Button.t -> button_t
 
 (* Factory functions *)
 val button :
@@ -197,11 +204,11 @@ let button_from_icon_name icon_name =
 
 | Hierarchy | Root Class | Layer 2 Module | Class Type | Status |
 |-----------|------------|----------------|------------|--------|
-| Widget | `Widget` | `GWidget` | `widget_skel` | ✅ Implemented |
-| EventController | `EventController` | `GController` | `controller_skel` | 🚧 Planned |
-| CellRenderer | `CellRenderer` | `GCell` | `cell_renderer_skel` | 🚧 Planned |
-| LayoutManager | `LayoutManager` | `GLayout` | `layout_manager_skel` | 🚧 Planned |
-| Expression | `Expression` | `GExpression` | `expression_skel` | 🚧 Planned |
+| Widget | `Widget` | `GWidget` | `widget_t` | ✅ Implemented |
+| EventController | `EventController` | `GEvent_controller` | `event_controller_t` | ✅ Generated |
+| CellRenderer | `CellRenderer` | `GCell_renderer` | `cell_renderer_t` | ✅ Generated |
+| LayoutManager | `LayoutManager` | `GLayout_manager` | `layout_manager_t` | ✅ Generated |
+| Expression | `Expression` | `GExpression` | `expression_t` | ✅ Generated |
 
 ### Hierarchy Detection
 
@@ -245,51 +252,45 @@ classify_class ~class_name:"GestureClick" ~parent_chain:["GestureSingle"; "Gestu
 
 **gExpander.mli:**
 ```ocaml
-class type expander_skel = object
-  inherit GWidget.widget_skel
-
-  method set_child : #widget_skel option -> unit
-  method get_child : unit -> Widget.t option
+class type expander_t = object
+  method set_child : widget_t option -> unit
+  method get_child : unit -> widget_t option
   method set_label : string option -> unit
   method get_label : unit -> string option
   method set_expanded : bool -> unit
   method get_expanded : unit -> bool
+  method as_expander : Expander.t
 end
 
-class expander : Expander.t -> expander_skel
-
-(* Factory function *)
-val expander : ?label:string -> unit -> expander
+class expander : Expander.t -> expander_t
 ```
 
 **gExpander.ml:**
 ```ocaml
-class expander_skel (obj : Expander.t) = object (self)
-  inherit GWidget.widget_skel (Expander.as_widget obj)
+class type expander_t = object
+  method set_child : widget_t option -> unit
+  method get_child : unit -> widget_t option
+  method set_label : string option -> unit
+  method get_label : unit -> string option
+  method set_expanded : bool -> unit
+  method get_expanded : unit -> bool
+  method as_expander : Expander.t
+end
 
-  method as_widget = obj
-
-  method set_child : 'a. (#widget_skel as 'a) option -> unit =
+class expander (obj : Expander.t) : expander_t = object (self)
+  method set_child : widget_t option -> unit =
     fun child_opt ->
-      let layer1_child = Option.map (fun c -> (c#as_widget : Widget.t)) child_opt in
-      Expander.set_child obj layer1_child
+      let child_opt = Option.map (fun c -> c#as_widget) child_opt in
+      Expander.set_child obj child_opt
 
-  method get_child () = Expander.get_child obj
+  method get_child () =
+    Option.map (fun ret -> new widget ret) (Expander.get_child obj)
   method set_label label = Expander.set_label obj label
   method get_label () = Expander.get_label obj
   method set_expanded expanded = Expander.set_expanded obj expanded
   method get_expanded () = Expander.get_expanded obj
+  method as_expander = obj
 end
-
-class expander obj = object
-  inherit expander_skel obj
-end
-
-let expander ?label () =
-  let obj = Expander.new_ () in
-  let exp = new expander obj in
-  Option.iter (fun v -> exp#set_label (Some v)) label;
-  exp
 ```
 
 ### Usage
@@ -315,10 +316,10 @@ exp#set_child None;  (* Clear child *)
 
 ### Phase 1: Widget Hierarchy (Current)
 - ✅ Layer 1 polymorphic variants
-- ✅ Basic Layer 2 classes
-- 🚧 Class types with `#` syntax
+- ✅ Layer 2 classes with separate `class type` definitions
+- ✅ Class types use plain type names (no `#` — incompatible with class type definitions)
 - 🚧 Factory constructors
-- 🚧 Automatic coercion in methods
+- 🚧 Coercion helpers for subtype passing
 
 ### Phase 2: EventController Hierarchy
 - 🚧 Make EventController polymorphic

@@ -26,6 +26,12 @@ This function is expected to be called in response to the
 likely have no effect if called at other times. *)
 external set_surrounding : t -> string -> int -> int -> unit = "ml_gtk_im_context_set_surrounding"
 
+(** Notify the input method that a change in cursor
+position has been made.
+
+The location is relative to the client widget. *)
+external set_cursor_location : t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> unit = "ml_gtk_im_context_set_cursor_location"
+
 (** Set the client widget for the input context.
 
 This is the `GtkWidget` holding the input focus. This widget is
@@ -38,40 +44,6 @@ position has been made.
 
 This will typically cause the input method to clear the preedit state. *)
 external reset : t -> unit = "ml_gtk_im_context_reset"
-
-(** Retrieves context around the insertion point.
-
-Input methods typically want context in order to constrain input
-text based on existing text; this is important for languages such
-as Thai where only some sequences of characters are allowed.
-
-This function is implemented by emitting the
-[signal@Gtk.IMContext::retrieve-surrounding] signal on the input method;
-in response to this signal, a widget should provide as much context as
-is available, up to an entire paragraph, by calling
-[method@Gtk.IMContext.set_surrounding_with_selection].
-
-Note that there is no obligation for a widget to respond to the
-`::retrieve-surrounding` signal, so input methods must be prepared to
-function without context. *)
-external get_surrounding_with_selection : t -> bool * string * int * int = "ml_gtk_im_context_get_surrounding_with_selection"
-
-(** Retrieves context around the insertion point.
-
-Input methods typically want context in order to constrain input text
-based on existing text; this is important for languages such as Thai
-where only some sequences of characters are allowed.
-
-This function is implemented by emitting the
-[signal@Gtk.IMContext::retrieve-surrounding] signal on the input method;
-in response to this signal, a widget should provide as much context as
-is available, up to an entire paragraph, by calling
-[method@Gtk.IMContext.set_surrounding].
-
-Note that there is no obligation for a widget to respond to the
-`::retrieve-surrounding` signal, so input methods must be prepared to
-function without context. *)
-external get_surrounding : t -> bool * string * int = "ml_gtk_im_context_get_surrounding"
 
 (** Notify the input method that the widget to which this
 input context corresponds has lost focus.
@@ -86,6 +58,13 @@ input context corresponds has gained focus.
 The input method may, for example, change the displayed
 feedback to reflect this change. *)
 external focus_in : t -> unit = "ml_gtk_im_context_focus_in"
+
+(** Allow an input method to internally handle key press and release
+events.
+
+If this function returns %TRUE, then no further processing
+should be done for this key event. *)
+external filter_keypress : t -> Ocgtk_gdk.Gdk.Wrappers.Event.t -> bool = "ml_gtk_im_context_filter_keypress"
 
 (** Asks the widget that the input context is attached to delete
 characters around the cursor position by emitting the
@@ -105,6 +84,13 @@ This function is used by an input method that wants to make
 substitutions in the existing text in response to new input.
 It is not useful for applications. *)
 external delete_surrounding : t -> int -> int -> bool = "ml_gtk_im_context_delete_surrounding"
+
+(** Requests the platform to show an on-screen keyboard for user input.
+
+This method will return %TRUE if this request was actually performed
+to the platform, other environmental factors may result in an on-screen
+keyboard effectively not showing up. *)
+external activate_osk : t -> Ocgtk_gdk.Gdk.Wrappers.Event.t option -> bool = "ml_gtk_im_context_activate_osk"
 
 (* Properties *)
 

@@ -1,12 +1,15 @@
 (* C Stub Code Generation - Shared Helpers *)
 
-(** This module provides organized C stub code generation functionality.
-    The following sub-modules have been extracted to separate files for better organization:
-    - Type_analysis: Type classification and property introspection (c_stub_type_analysis.ml)
+(** This module provides organized C stub code generation functionality. The
+    following sub-modules have been extracted to separate files for better
+    organization:
+    - Type_analysis: Type classification and property introspection
+      (c_stub_type_analysis.ml)
     - Array_conv: Array conversion between OCaml and C (c_stub_array_conv.ml)
     - GValue: GValue getter/setter generation (c_stub_gvalue.ml)
 
-    This module re-exports these modules for backward compatibility and provides:
+    This module re-exports these modules for backward compatibility and
+    provides:
     - Code_gen: Code generation utilities (headers, return statements, etc.)
     - Forward_decl: Forward declaration generation helpers *)
 
@@ -17,7 +20,7 @@ open Types
 
 (* Get C include header for a namespace. This uses
    hardcoded values for now because the c:include is
-   not properly parsed from the GIR file *)
+   not properly parsed from the GIR file. *)
 let include_header_for_namespace namespace_name =
   let ns_lower = String.lowercase_ascii namespace_name in
   match ns_lower with
@@ -29,6 +32,8 @@ let include_header_for_namespace namespace_name =
   | "graphene" -> "#include <graphene.h>"
   | "gio" -> "#include <gio/gio.h>"
   | "gobject" -> "#include <glib-object.h>"
+  | "cairo" -> "#include <cairo-gobject.h>"
+  | "pangocairo" -> "#include <pango/pangocairo.h>"
   | _ -> sprintf "#include <%s/%s.h>" ns_lower ns_lower
 
 (** Code generation utilities *)
@@ -39,22 +44,23 @@ module Code_gen = struct
       ocaml_type = "unit";
       c_to_ml = "Val_unit";
       ml_to_c = "Unit_val";
-      needs_copy = false;
+
       layer2_class = None;
       c_type = "void";
+      is_value_type_record = false;
     }
 
   (* Generate C file header with common includes and type conversions *)
-  let generate_c_file_header ~ctx ?(class_name = "") ?(external_enums = [])
-      ?(external_bitfields = []) () =
-    let _ = (external_enums, external_bitfields) in
+  let generate_c_file_header ~ctx ?(class_name = "") () =
     let buf = Buffer.create 1024 in
     Buffer.add_string buf "/* GENERATED CODE - DO NOT EDIT */\n";
     if not (String.equal class_name "") then
       bprintf buf "/* C bindings for %s */\n" class_name
-    else bprintf buf "/* Generated from %s.gir */\n" ctx.namespace.namespace_name;
+    else
+      bprintf buf "/* Generated from %s.gir */\n" ctx.namespace.namespace_name;
     Buffer.add_string buf "\n";
-    bprintf buf "%s\n" (include_header_for_namespace ctx.namespace.namespace_name);
+    bprintf buf "%s\n"
+      (include_header_for_namespace ctx.namespace.namespace_name);
     Buffer.add_string buf "#include <caml/mlvalues.h>\n";
     Buffer.add_string buf "#include <caml/memory.h>\n";
     Buffer.add_string buf "#include <caml/alloc.h>\n";
@@ -72,21 +78,23 @@ module Code_gen = struct
         Buffer.add_string buf (sprintf "#include <%s>\n" c_include))
       ctx.repository.repository_c_includes;
 
-    (* Include common header for type conversions and forward declarations *)
+    (* Include library-specific header for type conversions and forward declarations *)
     Buffer.add_string buf
-      "/* Include common type conversions and forward declarations */\n";
-    Buffer.add_string buf "#include \"generated_forward_decls.h\"\n";
+      "/* Include library-specific type conversions and forward declarations */\n";
+    let ns_lower = String.lowercase_ascii ctx.namespace.namespace_name in
+    bprintf buf "#include \"%s_decls.h\"\n" ns_lower;
     Buffer.add_string buf "\n";
 
-    (* No longer generate type-specific macros here - all macros are in generated_forward_decls.h *)
+    (* Type-specific macros are defined in the library-specific <ns>_decls.h header
+       which is included above. No need to generate them here. *)
     Buffer.contents buf
 
   (* Helper: extract base C type by removing trailing pointer *)
   let base_c_type_of c_type =
     CCString.chop_suffix ~suf:"*" c_type |> Option.value ~default:c_type
 
-  (** Build return statement code based on return type and out parameters. Handles
-      both throwing and non-throwing methods. *)
+  (** Build return statement code based on return type and out parameters.
+      Handles both throwing and non-throwing methods. *)
   let build_return_statement ~throws ml_primary out_conversions =
     match (ml_primary, out_conversions) with
     | None, [] ->
@@ -146,22 +154,24 @@ module Code_gen = struct
           String.concat ~sep:"\n    "
             ([ "CAMLlocal1(ret);"; alloc ] @ stores @ [ "CAMLreturn(ret);" ])
 
-  (** Generate C code for constructors by iterating and filtering.
-      Applies [Filtering.should_generate_constructor] filter and appends
-      generated code to the buffer. *)
-  let generate_constructors ~ctx ~c_type ~class_name ~buf ~generator constructors =
+  (** Generate C code for constructors by iterating and filtering. Applies
+      [Filtering.should_generate_constructor] filter and appends generated code
+      to the buffer. *)
+  let generate_constructors ~ctx ~c_type ~class_name ~buf ~generator
+      constructors =
     List.iter
       ~f:(fun ctor ->
         if Filtering.should_generate_constructor ~ctx ctor then
           try Buffer.add_string buf (generator ~ctx ~c_type ~class_name ctor)
           with Failure msg ->
-            eprintf "  Warning: skipping constructor %s: %s\n" ctor.ctor_name msg)
+            eprintf "  Warning: skipping constructor %s: %s\n" ctor.ctor_name
+              msg)
       constructors
 
-  (** Generate C code for methods by iterating and filtering.
-      Applies [Filtering.should_skip_method_binding] filter plus an optional
-      extra filter predicate, then appends generated code to the buffer.
-      Methods are processed in reverse order (List.rev). *)
+  (** Generate C code for methods by iterating and filtering. Applies
+      [Filtering.should_skip_method_binding] filter plus an optional extra
+      filter predicate, then appends generated code to the buffer. Methods are
+      processed in reverse order (List.rev). *)
   let generate_methods ~ctx ~c_type ~class_name ~buf ~generator ?extra_filter
       methods =
     List.iter
@@ -177,24 +187,21 @@ module Code_gen = struct
       (List.rev methods)
 end
 
-(** Forward declaration generation helpers - shared across record, class, enum, and bitfield modules *)
+(** Forward declaration generation helpers - shared across record, class, enum,
+    and bitfield modules *)
 module Forward_decl = struct
-  (** Generate a section of forward declarations.
-      Common pattern across record, class, enum, and bitfield modules.
-      
+  (** Generate a section of forward declarations. Common pattern across record,
+      class, enum, and bitfield modules.
+
       Parameters:
       - buf: Buffer to append declarations to
-      - items: List of items to generate declarations for  
+      - items: List of items to generate declarations for
       - section_comment: Comment header for this section
       - generate_one: Function to generate declarations for a single item
       - deduplicate: Whether to track seen types with Hashtbl (default: true) *)
-  let generate_section
-      ~(buf : Buffer.t)
-      ~(items : 'a list)
-      ~(section_comment : string)
-      ~(generate_one : 'a -> unit)
-      ?(deduplicate : bool = true)
-      () =
+  let generate_section ~(buf : Buffer.t) ~(items : 'a list)
+      ~(section_comment : string) ~(generate_one : 'a -> unit)
+      ?(deduplicate : bool = true) () =
     if List.length items > 0 then (
       Buffer.add_string buf section_comment;
       let seen = if deduplicate then Some (Hashtbl.create 97) else None in
@@ -225,11 +232,18 @@ type property_gvalue_info = {
 }
 
 (* Accumulator for parameter processing - kept at top level for record field access *)
-type param_acc = { ocaml_idx : int; decls : Buffer.t; args : string list; cleanups : string list }
+type param_acc = {
+  ocaml_idx : int;
+  decls : Buffer.t;
+  args : string list;
+  cleanups : string list;
+}
 
 (* Convert from internal type to public type *)
 let analyze_property_type ~ctx (gir_type : Types.gir_type) =
-  let internal = C_stub_type_analysis.Type_analysis.analyze_property_type ~ctx gir_type in
+  let internal =
+    C_stub_type_analysis.Type_analysis.analyze_property_type ~ctx gir_type
+  in
   {
     base_type = internal.base_type;
     base_lower = internal.base_lower;
@@ -241,44 +255,54 @@ let analyze_property_type ~ctx (gir_type : Types.gir_type) =
     is_bitfield = internal.is_bitfield;
     stack_allocated = internal.stack_allocated;
   }
+
 let is_copy_method = C_stub_type_analysis.Type_analysis.is_copy_method
 let is_free_method = C_stub_type_analysis.Type_analysis.is_free_method
 let is_copy_or_free = C_stub_type_analysis.Type_analysis.is_copy_or_free
 let fold_mapi = C_stub_type_analysis.Type_analysis.fold_mapi
 let list_contains = C_stub_type_analysis.Type_analysis.list_contains
-let is_string_type = C_stub_type_analysis.Type_analysis.is_string_type
+let is_string_type = Filtering.is_string_type
 let generate_array_ml_to_c = C_stub_array_conv.Array_conv.generate_array_ml_to_c
 let generate_array_c_to_ml = C_stub_array_conv.Array_conv.generate_array_c_to_ml
-let is_string_array = C_stub_array_conv.Array_conv.is_string_array
+let is_string_array = Filtering.is_string_array
+
 (* Convert prop_info from internal type to public type and call GValue function *)
-let generate_gvalue_getter_assignment ~ml_name ~prop ~c_type_name ~prop_info:public_prop_info =
-  let internal_prop_info = {
-    C_stub_type_analysis.Type_analysis.base_type = public_prop_info.base_type;
-    base_lower = public_prop_info.base_lower;
-    has_pointer = public_prop_info.has_pointer;
-    pointer_like = public_prop_info.pointer_like;
-    record_info = public_prop_info.record_info;
-    class_info = public_prop_info.class_info;
-    is_enum = public_prop_info.is_enum;
-    is_bitfield = public_prop_info.is_bitfield;
-    stack_allocated = public_prop_info.stack_allocated;
-  } in
-  C_stub_gvalue.GValue.generate_gvalue_getter_assignment ~ml_name ~prop ~c_type_name ~prop_info:internal_prop_info
+let generate_gvalue_getter_assignment ~ml_name ~prop ~c_type_name
+    ~prop_info:public_prop_info =
+  let internal_prop_info =
+    {
+      C_stub_type_analysis.Type_analysis.base_type = public_prop_info.base_type;
+      base_lower = public_prop_info.base_lower;
+      has_pointer = public_prop_info.has_pointer;
+      pointer_like = public_prop_info.pointer_like;
+      record_info = public_prop_info.record_info;
+      class_info = public_prop_info.class_info;
+      is_enum = public_prop_info.is_enum;
+      is_bitfield = public_prop_info.is_bitfield;
+      stack_allocated = public_prop_info.stack_allocated;
+    }
+  in
+  C_stub_gvalue.GValue.generate_gvalue_getter_assignment ~ml_name ~prop
+    ~c_type_name ~prop_info:internal_prop_info
 
 (* Generate setter without the unused prop parameter *)
 let generate_gvalue_setter_assignment ~ml_name ~prop_info:public_prop_info =
-  let internal_prop_info = {
-    C_stub_type_analysis.Type_analysis.base_type = public_prop_info.base_type;
-    base_lower = public_prop_info.base_lower;
-    has_pointer = public_prop_info.has_pointer;
-    pointer_like = public_prop_info.pointer_like;
-    record_info = public_prop_info.record_info;
-    class_info = public_prop_info.class_info;
-    is_enum = public_prop_info.is_enum;
-    is_bitfield = public_prop_info.is_bitfield;
-    stack_allocated = public_prop_info.stack_allocated;
-  } in
-  C_stub_gvalue.GValue.generate_gvalue_setter_assignment ~ml_name ~prop:() ~prop_info:internal_prop_info
+  let internal_prop_info =
+    {
+      C_stub_type_analysis.Type_analysis.base_type = public_prop_info.base_type;
+      base_lower = public_prop_info.base_lower;
+      has_pointer = public_prop_info.has_pointer;
+      pointer_like = public_prop_info.pointer_like;
+      record_info = public_prop_info.record_info;
+      class_info = public_prop_info.class_info;
+      is_enum = public_prop_info.is_enum;
+      is_bitfield = public_prop_info.is_bitfield;
+      stack_allocated = public_prop_info.stack_allocated;
+    }
+  in
+  C_stub_gvalue.GValue.generate_gvalue_setter_assignment ~ml_name ~prop:()
+    ~prop_info:internal_prop_info
+
 let generate_c_file_header = Code_gen.generate_c_file_header
 let base_c_type_of = Code_gen.base_c_type_of
 let build_return_statement = Code_gen.build_return_statement
@@ -290,12 +314,18 @@ let default_type_mapping = Code_gen.default_type_mapping
 let nullable_c_to_ml_expr ~ctx ~var ~(gir_type : gir_type)
     ~(mapping : type_mapping) ?(direction : Types.gir_direction = In) () =
   (* out parameters that are record types are stack allocated, so we need to pass by reference
-     to their Val_x function, which will copy them into the OCaml heap *)
+     to their Val_x function, which will copy them into the OCaml heap.
+     Check both the type_mapping flag (works for cross-namespace) and analyze_property_type
+     (works for current namespace records with full record info). *)
   let var_expr =
-    match (direction, analyze_property_type ~ctx gir_type) with
-    | Out, { record_info = Some ({ opaque = false; _ }, _, _); _ }
-    | InOut, { record_info = Some ({ opaque = false; _ }, _, _); _ } ->
+    match direction with
+    | (Out | InOut) when mapping.is_value_type_record ->
         sprintf "&%s" var
+    | Out | InOut -> (
+        match analyze_property_type ~ctx gir_type with
+        | { record_info = Some ({ opaque = false; _ }, _, _); _ } ->
+            sprintf "&%s" var
+        | _ -> var)
     | _ -> var
   in
   if not gir_type.nullable then sprintf "%s(%s)" mapping.c_to_ml var_expr

@@ -1,6 +1,13 @@
+class type shortcut_label_t = object
+    method get_accelerator : unit -> string option
+    method get_disabled_text : unit -> string option
+    method set_accelerator : string -> unit
+    method set_disabled_text : string -> unit
+    method as_shortcut_label : Shortcut_label.t
+end
+
 (* High-level class for ShortcutLabel *)
-class shortcut_label (obj : Shortcut_label.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Shortcut_label.as_widget obj)
+class shortcut_label (obj : Shortcut_label.t) : shortcut_label_t = object (self)
 
   method get_accelerator : unit -> string option =
     fun () ->
@@ -18,7 +25,6 @@ class shortcut_label (obj : Shortcut_label.t) = object (self)
     fun disabled_text ->
       (Shortcut_label.set_disabled_text obj disabled_text)
 
-  method as_widget = (Shortcut_label.as_widget obj)
     method as_shortcut_label = obj
 end
 

@@ -12,9 +12,26 @@
 #include "wrappers.h"
 
 #include <gsk/gsk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gsk_decls.h"
 
+
+CAMLexport CAMLprim value ml_gsk_repeat_node_new(value arg1, value arg2, value arg3)
+{
+CAMLparam3(arg1, arg2, arg3);
+
+GskRepeatNode *obj = gsk_repeat_node_new(graphene_rect_t_val(arg1), GskRenderNode_val(arg2), Option_val(arg3, graphene_rect_t_val, NULL));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GskRepeatNode(obj));
+}
+CAMLexport CAMLprim value ml_gsk_repeat_node_get_child_bounds(value self)
+{
+CAMLparam1(self);
+
+const graphene_rect_t* result = gsk_repeat_node_get_child_bounds(GskRepeatNode_val(self));
+CAMLreturn(Val_graphene_rect_t(result));
+}
 
 CAMLexport CAMLprim value ml_gsk_repeat_node_get_child(value self)
 {

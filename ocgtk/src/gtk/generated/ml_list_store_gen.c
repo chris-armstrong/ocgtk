@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_list_store_swap(value self, value arg1, value arg2)
@@ -22,20 +22,6 @@ CAMLexport CAMLprim value ml_gtk_list_store_swap(value self, value arg1, value a
 CAMLparam3(self, arg1, arg2);
 
 gtk_list_store_swap(GtkListStore_val(self), GtkTreeIter_val(arg1), GtkTreeIter_val(arg2));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_list_store_reorder(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-    int arg1_length = Wosize_val(arg1);
-    int* c_arg1 = (int*)g_malloc(sizeof(int) * arg1_length);
-    for (int i = 0; i < arg1_length; i++) {
-      c_arg1[i] = Int_val(Field(arg1, i));
-    }
-
-gtk_list_store_reorder(GtkListStore_val(self), c_arg1);
-    g_free(c_arg1);
 CAMLreturn(Val_unit);
 }
 

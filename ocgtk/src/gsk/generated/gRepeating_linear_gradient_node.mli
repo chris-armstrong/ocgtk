@@ -1,5 +1,6 @@
-class repeating_linear_gradient_node : Repeating_linear_gradient_node.t ->
-  object
+class type repeating_linear_gradient_node_t = object
     method as_repeating_linear_gradient_node : Repeating_linear_gradient_node.t
-  end
+end
+
+class repeating_linear_gradient_node : Repeating_linear_gradient_node.t -> repeating_linear_gradient_node_t
 

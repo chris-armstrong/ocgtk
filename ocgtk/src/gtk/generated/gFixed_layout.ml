@@ -1,8 +1,10 @@
-(* High-level class for FixedLayout *)
-class fixed_layout (obj : Fixed_layout.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.layout_manager (Fixed_layout.as_layoutmanager obj)
+class type fixed_layout_t = object
+    method as_fixed_layout : Fixed_layout.t
+end
 
-  method as_layoutmanager = (Fixed_layout.as_layoutmanager obj)
+(* High-level class for FixedLayout *)
+class fixed_layout (obj : Fixed_layout.t) : fixed_layout_t = object (self)
+
     method as_fixed_layout = obj
 end
 

@@ -1,25 +1,82 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined classes for cyclic dependencies *)
+
+class type column_view_t = object
+    inherit Gcolumn_view_signals.column_view_signals
+    method append_column : column_view_column_t -> unit
+    method get_columns : unit -> Ocgtk_gio.Gio.list_model_t
+    method get_enable_rubberband : unit -> bool
+    method get_header_factory : unit -> GList_item_factory.list_item_factory_t option
+    method get_model : unit -> GSelection_model.selection_model_t option
+    method get_reorderable : unit -> bool
+    method get_row_factory : unit -> GList_item_factory.list_item_factory_t option
+    method get_show_column_separators : unit -> bool
+    method get_show_row_separators : unit -> bool
+    method get_single_click_activate : unit -> bool
+    method get_sorter : unit -> GSorter.sorter_t option
+    method get_tab_behavior : unit -> Gtk_enums.listtabbehavior
+    method insert_column : int -> column_view_column_t -> unit
+    method remove_column : column_view_column_t -> unit
+    method scroll_to : int -> column_view_column_t option -> Gtk_enums.listscrollflags -> Scroll_info.t option -> unit
+    method set_enable_rubberband : bool -> unit
+    method set_header_factory : GList_item_factory.list_item_factory_t option -> unit
+    method set_reorderable : bool -> unit
+    method set_row_factory : GList_item_factory.list_item_factory_t option -> unit
+    method set_show_column_separators : bool -> unit
+    method set_show_row_separators : bool -> unit
+    method set_single_click_activate : bool -> unit
+    method set_tab_behavior : Gtk_enums.listtabbehavior -> unit
+    method sort_by_column : column_view_column_t option -> Gtk_enums.sorttype -> unit
+    method as_column_view : Column_view_and__column_view_column.Column_view.t
+end
+
+and column_view_column_t = object
+    method get_column_view : unit -> column_view_t option
+    method get_expand : unit -> bool
+    method get_factory : unit -> GList_item_factory.list_item_factory_t option
+    method get_fixed_width : unit -> int
+    method get_header_menu : unit -> Ocgtk_gio.Gio.menu_model_t option
+    method get_id : unit -> string option
+    method get_resizable : unit -> bool
+    method get_sorter : unit -> GSorter.sorter_t option
+    method get_title : unit -> string option
+    method get_visible : unit -> bool
+    method set_expand : bool -> unit
+    method set_factory : GList_item_factory.list_item_factory_t option -> unit
+    method set_fixed_width : int -> unit
+    method set_header_menu : Ocgtk_gio.Gio.menu_model_t option -> unit
+    method set_id : string option -> unit
+    method set_resizable : bool -> unit
+    method set_sorter : GSorter.sorter_t option -> unit
+    method set_title : string option -> unit
+    method set_visible : bool -> unit
+    method as_column_view_column : Column_view_and__column_view_column.Column_view_column.t
+end
+
+
 (* Signal class defined in gcolumn_view_signals.ml *)
 
-class column_view (obj : Column_view_and__column_view_column.Column_view.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Column_view_and__column_view_column.Column_view.as_widget obj)
+class column_view (obj : Column_view_and__column_view_column.Column_view.t) : column_view_t = object (self)
   inherit Gcolumn_view_signals.column_view_signals obj
 
-  method append_column : 'p1. (<as_column_view_column: Column_view_and__column_view_column.Column_view_column.t; ..> as 'p1) -> unit =
+  method append_column : column_view_column_t -> unit =
     fun column ->
       let column = column#as_column_view_column in
       (Column_view_and__column_view_column.Column_view.append_column obj column)
+
+  method get_columns : unit -> Ocgtk_gio.Gio.list_model_t =
+    fun () ->
+      new  Ocgtk_gio.Gio.list_model(Column_view_and__column_view_column.Column_view.get_columns obj)
 
   method get_enable_rubberband : unit -> bool =
     fun () ->
       (Column_view_and__column_view_column.Column_view.get_enable_rubberband obj)
 
-  method get_header_factory : unit -> GList_item_factory.list_item_factory option =
+  method get_header_factory : unit -> GList_item_factory.list_item_factory_t option =
     fun () ->
       Option.map (fun ret -> new GList_item_factory.list_item_factory ret) (Column_view_and__column_view_column.Column_view.get_header_factory obj)
 
-  method get_model : unit -> GSelection_model.selection_model option =
+  method get_model : unit -> GSelection_model.selection_model_t option =
     fun () ->
       Option.map (fun ret -> new GSelection_model.selection_model ret) (Column_view_and__column_view_column.Column_view.get_model obj)
 
@@ -27,7 +84,7 @@ class column_view (obj : Column_view_and__column_view_column.Column_view.t) = ob
     fun () ->
       (Column_view_and__column_view_column.Column_view.get_reorderable obj)
 
-  method get_row_factory : unit -> GList_item_factory.list_item_factory option =
+  method get_row_factory : unit -> GList_item_factory.list_item_factory_t option =
     fun () ->
       Option.map (fun ret -> new GList_item_factory.list_item_factory ret) (Column_view_and__column_view_column.Column_view.get_row_factory obj)
 
@@ -43,7 +100,7 @@ class column_view (obj : Column_view_and__column_view_column.Column_view.t) = ob
     fun () ->
       (Column_view_and__column_view_column.Column_view.get_single_click_activate obj)
 
-  method get_sorter : unit -> GSorter.sorter option =
+  method get_sorter : unit -> GSorter.sorter_t option =
     fun () ->
       Option.map (fun ret -> new GSorter.sorter ret) (Column_view_and__column_view_column.Column_view.get_sorter obj)
 
@@ -51,17 +108,17 @@ class column_view (obj : Column_view_and__column_view_column.Column_view.t) = ob
     fun () ->
       (Column_view_and__column_view_column.Column_view.get_tab_behavior obj)
 
-  method insert_column : 'p1. int -> (<as_column_view_column: Column_view_and__column_view_column.Column_view_column.t; ..> as 'p1) -> unit =
+  method insert_column : int -> column_view_column_t -> unit =
     fun position column ->
       let column = column#as_column_view_column in
       (Column_view_and__column_view_column.Column_view.insert_column obj position column)
 
-  method remove_column : 'p1. (<as_column_view_column: Column_view_and__column_view_column.Column_view_column.t; ..> as 'p1) -> unit =
+  method remove_column : column_view_column_t -> unit =
     fun column ->
       let column = column#as_column_view_column in
       (Column_view_and__column_view_column.Column_view.remove_column obj column)
 
-  method scroll_to : 'p1. int -> (<as_column_view_column: Column_view_and__column_view_column.Column_view_column.t; ..> as 'p1) option -> Gtk_enums.listscrollflags -> Scroll_info.t option -> unit =
+  method scroll_to : int -> column_view_column_t option -> Gtk_enums.listscrollflags -> Scroll_info.t option -> unit =
     fun pos column flags scroll ->
       let column = Option.map (fun (c) -> c#as_column_view_column) column in
       (Column_view_and__column_view_column.Column_view.scroll_to obj pos column flags scroll)
@@ -70,7 +127,7 @@ class column_view (obj : Column_view_and__column_view_column.Column_view.t) = ob
     fun enable_rubberband ->
       (Column_view_and__column_view_column.Column_view.set_enable_rubberband obj enable_rubberband)
 
-  method set_header_factory : 'p1. (#GList_item_factory.list_item_factory as 'p1) option -> unit =
+  method set_header_factory : GList_item_factory.list_item_factory_t option -> unit =
     fun factory ->
       let factory = Option.map (fun (c) -> c#as_list_item_factory) factory in
       (Column_view_and__column_view_column.Column_view.set_header_factory obj factory)
@@ -79,7 +136,7 @@ class column_view (obj : Column_view_and__column_view_column.Column_view.t) = ob
     fun reorderable ->
       (Column_view_and__column_view_column.Column_view.set_reorderable obj reorderable)
 
-  method set_row_factory : 'p1. (#GList_item_factory.list_item_factory as 'p1) option -> unit =
+  method set_row_factory : GList_item_factory.list_item_factory_t option -> unit =
     fun factory ->
       let factory = Option.map (fun (c) -> c#as_list_item_factory) factory in
       (Column_view_and__column_view_column.Column_view.set_row_factory obj factory)
@@ -100,18 +157,17 @@ class column_view (obj : Column_view_and__column_view_column.Column_view.t) = ob
     fun tab_behavior ->
       (Column_view_and__column_view_column.Column_view.set_tab_behavior obj tab_behavior)
 
-  method sort_by_column : 'p1. (<as_column_view_column: Column_view_and__column_view_column.Column_view_column.t; ..> as 'p1) option -> Gtk_enums.sorttype -> unit =
+  method sort_by_column : column_view_column_t option -> Gtk_enums.sorttype -> unit =
     fun column direction ->
       let column = Option.map (fun (c) -> c#as_column_view_column) column in
       (Column_view_and__column_view_column.Column_view.sort_by_column obj column direction)
 
-  method as_widget = (Column_view_and__column_view_column.Column_view.as_widget obj)
     method as_column_view = obj
 end
 
-and column_view_column (obj : Column_view_and__column_view_column.Column_view_column.t) = object (self)
+and column_view_column (obj : Column_view_and__column_view_column.Column_view_column.t) : column_view_column_t = object (self)
 
-  method get_column_view : unit -> column_view option =
+  method get_column_view : unit -> column_view_t option =
     fun () ->
       Option.map (fun ret -> new column_view ret) (Column_view_and__column_view_column.Column_view_column.get_column_view obj)
 
@@ -119,13 +175,17 @@ and column_view_column (obj : Column_view_and__column_view_column.Column_view_co
     fun () ->
       (Column_view_and__column_view_column.Column_view_column.get_expand obj)
 
-  method get_factory : unit -> GList_item_factory.list_item_factory option =
+  method get_factory : unit -> GList_item_factory.list_item_factory_t option =
     fun () ->
       Option.map (fun ret -> new GList_item_factory.list_item_factory ret) (Column_view_and__column_view_column.Column_view_column.get_factory obj)
 
   method get_fixed_width : unit -> int =
     fun () ->
       (Column_view_and__column_view_column.Column_view_column.get_fixed_width obj)
+
+  method get_header_menu : unit -> Ocgtk_gio.Gio.menu_model_t option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.menu_model ret) (Column_view_and__column_view_column.Column_view_column.get_header_menu obj)
 
   method get_id : unit -> string option =
     fun () ->
@@ -135,7 +195,7 @@ and column_view_column (obj : Column_view_and__column_view_column.Column_view_co
     fun () ->
       (Column_view_and__column_view_column.Column_view_column.get_resizable obj)
 
-  method get_sorter : unit -> GSorter.sorter option =
+  method get_sorter : unit -> GSorter.sorter_t option =
     fun () ->
       Option.map (fun ret -> new GSorter.sorter ret) (Column_view_and__column_view_column.Column_view_column.get_sorter obj)
 
@@ -151,7 +211,7 @@ and column_view_column (obj : Column_view_and__column_view_column.Column_view_co
     fun expand ->
       (Column_view_and__column_view_column.Column_view_column.set_expand obj expand)
 
-  method set_factory : 'p1. (#GList_item_factory.list_item_factory as 'p1) option -> unit =
+  method set_factory : GList_item_factory.list_item_factory_t option -> unit =
     fun factory ->
       let factory = Option.map (fun (c) -> c#as_list_item_factory) factory in
       (Column_view_and__column_view_column.Column_view_column.set_factory obj factory)
@@ -159,6 +219,11 @@ and column_view_column (obj : Column_view_and__column_view_column.Column_view_co
   method set_fixed_width : int -> unit =
     fun fixed_width ->
       (Column_view_and__column_view_column.Column_view_column.set_fixed_width obj fixed_width)
+
+  method set_header_menu : Ocgtk_gio.Gio.menu_model_t option -> unit =
+    fun menu ->
+      let menu = Option.map (fun (c) -> c#as_menu_model) menu in
+      (Column_view_and__column_view_column.Column_view_column.set_header_menu obj menu)
 
   method set_id : string option -> unit =
     fun id ->
@@ -168,7 +233,7 @@ and column_view_column (obj : Column_view_and__column_view_column.Column_view_co
     fun resizable ->
       (Column_view_and__column_view_column.Column_view_column.set_resizable obj resizable)
 
-  method set_sorter : 'p1. (#GSorter.sorter as 'p1) option -> unit =
+  method set_sorter : GSorter.sorter_t option -> unit =
     fun sorter ->
       let sorter = Option.map (fun (c) -> c#as_sorter) sorter in
       (Column_view_and__column_view_column.Column_view_column.set_sorter obj sorter)

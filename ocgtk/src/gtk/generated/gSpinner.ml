@@ -1,6 +1,13 @@
+class type spinner_t = object
+    method get_spinning : unit -> bool
+    method set_spinning : bool -> unit
+    method start : unit -> unit
+    method stop : unit -> unit
+    method as_spinner : Spinner.t
+end
+
 (* High-level class for Spinner *)
-class spinner (obj : Spinner.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Spinner.as_widget obj)
+class spinner (obj : Spinner.t) : spinner_t = object (self)
 
   method get_spinning : unit -> bool =
     fun () ->
@@ -18,7 +25,6 @@ class spinner (obj : Spinner.t) = object (self)
     fun () ->
       (Spinner.stop obj)
 
-  method as_widget = (Spinner.as_widget obj)
     method as_spinner = obj
 end
 

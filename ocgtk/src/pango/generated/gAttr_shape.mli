@@ -1,5 +1,6 @@
-class attr_shape : Attr_shape.t ->
-  object
+class type attr_shape_t = object
     method as_attr_shape : Attr_shape.t
-  end
+end
+
+class attr_shape : Attr_shape.t -> attr_shape_t
 

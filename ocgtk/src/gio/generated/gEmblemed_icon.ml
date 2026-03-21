@@ -1,7 +1,14 @@
-(* High-level class for EmblemedIcon *)
-class emblemed_icon (obj : Emblemed_icon.t) = object (self)
+class type emblemed_icon_t = object
+    method add_emblem : GEmblem.emblem_t -> unit
+    method clear_emblems : unit -> unit
+    method get_icon : unit -> GIcon.icon_t
+    method as_emblemed_icon : Emblemed_icon.t
+end
 
-  method add_emblem : 'p1. (#GEmblem.emblem as 'p1) -> unit =
+(* High-level class for EmblemedIcon *)
+class emblemed_icon (obj : Emblemed_icon.t) : emblemed_icon_t = object (self)
+
+  method add_emblem : GEmblem.emblem_t -> unit =
     fun emblem ->
       let emblem = emblem#as_emblem in
       (Emblemed_icon.add_emblem obj emblem)
@@ -10,7 +17,7 @@ class emblemed_icon (obj : Emblemed_icon.t) = object (self)
     fun () ->
       (Emblemed_icon.clear_emblems obj)
 
-  method get_icon : unit -> GIcon.icon =
+  method get_icon : unit -> GIcon.icon_t =
     fun () ->
       new  GIcon.icon(Emblemed_icon.get_icon obj)
 

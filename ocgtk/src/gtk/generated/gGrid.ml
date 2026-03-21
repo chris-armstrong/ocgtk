@@ -1,13 +1,37 @@
-(* High-level class for Grid *)
-class grid (obj : Grid.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Grid.as_widget obj)
+class type grid_t = object
+    method attach : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> int -> int -> int -> int -> unit
+    method attach_next_to : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> Gtk_enums.positiontype -> int -> int -> unit
+    method get_baseline_row : unit -> int
+    method get_child_at : int -> int -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
+    method get_column_homogeneous : unit -> bool
+    method get_column_spacing : unit -> int
+    method get_row_baseline_position : int -> Gtk_enums.baselineposition
+    method get_row_homogeneous : unit -> bool
+    method get_row_spacing : unit -> int
+    method insert_column : int -> unit
+    method insert_next_to : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> Gtk_enums.positiontype -> unit
+    method insert_row : int -> unit
+    method remove : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit
+    method remove_column : int -> unit
+    method remove_row : int -> unit
+    method set_baseline_row : int -> unit
+    method set_column_homogeneous : bool -> unit
+    method set_column_spacing : int -> unit
+    method set_row_baseline_position : int -> Gtk_enums.baselineposition -> unit
+    method set_row_homogeneous : bool -> unit
+    method set_row_spacing : int -> unit
+    method as_grid : Grid.t
+end
 
-  method attach : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> int -> int -> int -> int -> unit =
+(* High-level class for Grid *)
+class grid (obj : Grid.t) : grid_t = object (self)
+
+  method attach : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> int -> int -> int -> int -> unit =
     fun child column row width height ->
       let child = child#as_widget in
       (Grid.attach obj child column row width height)
 
-  method attach_next_to : 'p1 'p2. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p2) option -> Gtk_enums.positiontype -> int -> int -> unit =
+  method attach_next_to : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> Gtk_enums.positiontype -> int -> int -> unit =
     fun child sibling side width height ->
       let child = child#as_widget in
       let sibling = Option.map (fun (c) -> c#as_widget) sibling in
@@ -17,7 +41,7 @@ class grid (obj : Grid.t) = object (self)
     fun () ->
       (Grid.get_baseline_row obj)
 
-  method get_child_at : int -> int -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
+  method get_child_at : int -> int -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option =
     fun column row ->
       Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Grid.get_child_at obj column row)
 
@@ -45,7 +69,7 @@ class grid (obj : Grid.t) = object (self)
     fun position ->
       (Grid.insert_column obj position)
 
-  method insert_next_to : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> Gtk_enums.positiontype -> unit =
+  method insert_next_to : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> Gtk_enums.positiontype -> unit =
     fun sibling side ->
       let sibling = sibling#as_widget in
       (Grid.insert_next_to obj sibling side)
@@ -54,7 +78,7 @@ class grid (obj : Grid.t) = object (self)
     fun position ->
       (Grid.insert_row obj position)
 
-  method remove : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) -> unit =
+  method remove : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit =
     fun child ->
       let child = child#as_widget in
       (Grid.remove obj child)
@@ -91,7 +115,6 @@ class grid (obj : Grid.t) = object (self)
     fun spacing ->
       (Grid.set_row_spacing obj spacing)
 
-  method as_widget = (Grid.as_widget obj)
     method as_grid = obj
 end
 

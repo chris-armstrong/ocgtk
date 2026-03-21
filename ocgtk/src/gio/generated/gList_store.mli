@@ -1,8 +1,9 @@
-class list_store : List_store.t ->
-  object
+class type list_store_t = object
     method remove : int -> unit
     method remove_all : unit -> unit
     method n_items : int
     method as_list_store : List_store.t
-  end
+end
+
+class list_store : List_store.t -> list_store_t
 

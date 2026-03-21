@@ -1,5 +1,4 @@
-class tls_password : Tls_password.t ->
-  object
+class type tls_password_t = object
     method get_description : unit -> string
     method get_flags : unit -> Gio_enums.tlspasswordflags
     method get_warning : unit -> string
@@ -7,5 +6,7 @@ class tls_password : Tls_password.t ->
     method set_flags : Gio_enums.tlspasswordflags -> unit
     method set_warning : string -> unit
     method as_tls_password : Tls_password.t
-  end
+end
+
+class tls_password : Tls_password.t -> tls_password_t
 

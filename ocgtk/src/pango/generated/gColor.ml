@@ -1,5 +1,13 @@
+class type color_t = object
+    method copy : unit -> Color.t option
+    method free : unit -> unit
+    method parse : string -> bool
+    method to_string : unit -> string
+    method as_color : Color.t
+end
+
 (* High-level class for Color *)
-class color (obj : Color.t) = object (self)
+class color (obj : Color.t) : color_t = object (self)
 
   method copy : unit -> Color.t option =
     fun () ->

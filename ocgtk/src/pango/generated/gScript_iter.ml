@@ -1,5 +1,11 @@
+class type script_iter_t = object
+    method free : unit -> unit
+    method next : unit -> bool
+    method as_script_iter : Script_iter.t
+end
+
 (* High-level class for ScriptIter *)
-class script_iter (obj : Script_iter.t) = object (self)
+class script_iter (obj : Script_iter.t) : script_iter_t = object (self)
 
   method free : unit -> unit =
     fun () ->

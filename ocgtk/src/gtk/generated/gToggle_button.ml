@@ -1,8 +1,16 @@
 (* Signal class defined in gtoggle_button_signals.ml *)
 
+class type toggle_button_t = object
+    inherit Gtoggle_button_signals.toggle_button_signals
+    method get_active : unit -> bool
+    method set_active : bool -> unit
+    method set_group : toggle_button_t option -> unit
+    method toggled : unit -> unit
+    method as_toggle_button : Toggle_button.t
+end
+
 (* High-level class for ToggleButton *)
-class toggle_button (obj : Toggle_button.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Toggle_button.as_widget obj)
+class toggle_button (obj : Toggle_button.t) : toggle_button_t = object (self)
   inherit Gtoggle_button_signals.toggle_button_signals obj
 
   method get_active : unit -> bool =
@@ -13,7 +21,7 @@ class toggle_button (obj : Toggle_button.t) = object (self)
     fun is_active ->
       (Toggle_button.set_active obj is_active)
 
-  method set_group : 'p1. (<as_toggle_button: Toggle_button.t; ..> as 'p1) option -> unit =
+  method set_group : toggle_button_t option -> unit =
     fun group ->
       let group = Option.map (fun (c) -> c#as_toggle_button) group in
       (Toggle_button.set_group obj group)
@@ -22,7 +30,6 @@ class toggle_button (obj : Toggle_button.t) = object (self)
     fun () ->
       (Toggle_button.toggled obj)
 
-  method as_widget = (Toggle_button.as_widget obj)
     method as_toggle_button = obj
 end
 

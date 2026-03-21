@@ -313,6 +313,7 @@
       (echo "Network_service")
       (echo "Notebook")
       (echo "Notification")
+      (echo "Ocgtk_gio")
       (echo "Output_message")
       (echo "Output_stream")
       (echo "Output_vector")

@@ -1,24 +1,22 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Picture *)
+(* Picture: Picture *)
 
 type t = [`picture | `widget | `initially_unowned] Gobject.obj
-
-let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new Picture *)
 external new_ : unit -> t = "ml_gtk_picture_new"
 
 (** Create a new Picture *)
-external new_for_file : unit -> t = "ml_gtk_picture_new_for_file"
+external new_for_file : Ocgtk_gio.Gio.Wrappers.File.t option -> t = "ml_gtk_picture_new_for_file"
 
 (** Create a new Picture *)
 external new_for_filename : string option -> t = "ml_gtk_picture_new_for_filename"
 
 (** Create a new Picture *)
-external new_for_paintable : unit -> t = "ml_gtk_picture_new_for_paintable"
+external new_for_paintable : Ocgtk_gdk.Gdk.Wrappers.Paintable.t option -> t = "ml_gtk_picture_new_for_paintable"
 
 (** Create a new Picture *)
-external new_for_pixbuf : unit -> t = "ml_gtk_picture_new_for_pixbuf"
+external new_for_pixbuf : Ocgtk_gdkpixbuf.GdkPixbuf.Wrappers.Pixbuf.t option -> t = "ml_gtk_picture_new_for_pixbuf"
 
 (** Create a new Picture *)
 external new_for_resource : string option -> t = "ml_gtk_picture_new_for_resource"
@@ -29,6 +27,20 @@ external new_for_resource : string option -> t = "ml_gtk_picture_new_for_resourc
 
 This is a utility function that calls [method@Gtk.Picture.set_file]. *)
 external set_resource : t -> string option -> unit = "ml_gtk_picture_set_resource"
+
+(** Sets a `GtkPicture` to show a `GdkPixbuf`.
+
+See [ctor@Gtk.Picture.new_for_pixbuf] for details.
+
+This is a utility function that calls [method@Gtk.Picture.set_paintable]. *)
+external set_pixbuf : t -> Ocgtk_gdkpixbuf.GdkPixbuf.Wrappers.Pixbuf.t option -> unit = "ml_gtk_picture_set_pixbuf"
+
+(** Makes @self display the given @paintable.
+
+If @paintable is %NULL, nothing will be displayed.
+
+See [ctor@Gtk.Picture.new_for_paintable] for details. *)
+external set_paintable : t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option -> unit = "ml_gtk_picture_set_paintable"
 
 (** If set to %TRUE, the @self will render its contents according to
 their aspect ratio.
@@ -44,6 +56,11 @@ external set_keep_aspect_ratio : t -> bool -> unit = "ml_gtk_picture_set_keep_as
 
 This is a utility function that calls [method@Gtk.Picture.set_file]. *)
 external set_filename : t -> string option -> unit = "ml_gtk_picture_set_filename"
+
+(** Makes @self load and display @file.
+
+See [ctor@Gtk.Picture.new_for_file] for details. *)
+external set_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option -> unit = "ml_gtk_picture_set_file"
 
 (** Sets how the content should be resized to fit the `GtkPicture`.
 
@@ -71,8 +88,17 @@ This text will be made available to accessibility tools.
 If the picture cannot be described textually, set this property to %NULL. *)
 external set_alternative_text : t -> string option -> unit = "ml_gtk_picture_set_alternative_text"
 
+(** Gets the `GdkPaintable` being displayed by the `GtkPicture`. *)
+external get_paintable : t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option = "ml_gtk_picture_get_paintable"
+
 (** Returns whether the `GtkPicture` preserves its contents aspect ratio. *)
 external get_keep_aspect_ratio : t -> bool = "ml_gtk_picture_get_keep_aspect_ratio"
+
+(** Gets the `GFile` currently displayed if @self is displaying a file.
+
+If @self is not displaying a file, for example when
+[method@Gtk.Picture.set_paintable] was used, then %NULL is returned. *)
+external get_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option = "ml_gtk_picture_get_file"
 
 (** Returns the fit mode for the content of the `GtkPicture`.
 

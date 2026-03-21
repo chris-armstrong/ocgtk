@@ -12,6 +12,6 @@
 #include "wrappers.h"
 
 #include <gsk/gsk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gsk_decls.h"
 

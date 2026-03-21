@@ -9,41 +9,66 @@ let or_else f opt = match opt with Some _ -> opt | None -> f ()
 let calculate_layer2_class ~class_module ~class_name =
   {
     class_module = "G" ^ class_module;
-    class_type = class_name;
+    class_type = class_name ^ "_t";
     class_layer1_accessor = "as_" ^ class_name;
   }
 
 (** Map a cross-namespace type reference to a type mapping. This function is
     used to convert a cross-reference to a type mapping.*)
-let map_cross_reference_to_type_mapping ~ctx:_ (cr : cross_reference) :
-    type_mapping =
+let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
+    (cr : cross_reference_entity) : type_mapping =
+  let external_namespace = Utils.external_namespace_to_module_name namespace in
+
   {
     ocaml_type =
       (match cr.cr_type with
-      | Crt_Class | Crt_Record _ | Crt_Interface ->
-          Utils.module_name_of_class cr.cr_name ^ ".t"
-      | Crt_Bitfield | Crt_Enum -> String.lowercase_ascii cr.cr_name);
+      | Crt_Class _ | Crt_Record _ | Crt_Interface ->
+          external_namespace ^ ".Wrappers."
+          ^ Utils.module_name_of_class cr.cr_name
+          ^ ".t"
+      | Crt_Bitfield | Crt_Enum ->
+          external_namespace ^ "." ^ String.lowercase_ascii cr.cr_name);
     c_type = cr.cr_c_type;
-    c_to_ml = "Val_" ^ cr.cr_c_type;
-    ml_to_c = cr.cr_c_type ^ "_val";
-    needs_copy =
+    c_to_ml =
       (match cr.cr_type with
-      | Crt_Enum | Crt_Bitfield | Crt_Record { opaque = false } -> true
-      | _ -> false);
+      | Crt_Enum | Crt_Bitfield ->
+          sprintf "Val_%s%s" namespace cr.cr_name
+      | _ -> "Val_" ^ cr.cr_c_type);
+    ml_to_c =
+      (match cr.cr_type with
+      | Crt_Enum | Crt_Bitfield ->
+          sprintf "%s%s_val" namespace cr.cr_name
+      | _ -> cr.cr_c_type ^ "_val");
+
     layer2_class =
-      (let class_module = Utils.module_name_of_class cr.cr_name in
-       match cr.cr_type with
-       | Crt_Class ->
-           Some (calculate_layer2_class ~class_module ~class_name:cr.cr_name)
-       | Crt_Interface ->
-           Some
-             (calculate_layer2_class ~class_module
-                ~class_name:(Utils.ocaml_interface_name cr.cr_name))
-       | Crt_Record _ ->
-           Some
-             (calculate_layer2_class ~class_module
-                ~class_name:(Utils.ocaml_record_name cr.cr_name))
-       | Crt_Enum | Crt_Bitfield -> None);
+      (match cr.cr_type with
+      | Crt_Class _ ->
+          Some
+            {
+              class_module = external_namespace;
+              class_type = Utils.ocaml_class_name cr.cr_name ^ "_t";
+              class_layer1_accessor = "as_" ^ Utils.ocaml_class_name cr.cr_name;
+            }
+      | Crt_Interface ->
+          Some
+            {
+              class_module = external_namespace;
+              class_type = Utils.ocaml_interface_name cr.cr_name ^ "_t";
+              class_layer1_accessor =
+                "as_" ^ Utils.ocaml_interface_name cr.cr_name;
+            }
+      | Crt_Record _ ->
+          Some
+            {
+              class_module = external_namespace;
+              class_type = Utils.ocaml_record_name cr.cr_name ^ "_t";
+              class_layer1_accessor = "as_" ^ Utils.ocaml_record_name cr.cr_name;
+            }
+      | Crt_Enum | Crt_Bitfield -> None);
+    is_value_type_record =
+      (match cr.cr_type with
+      | Crt_Record { opaque = false } -> true
+      | _ -> false);
   }
 
 (** Type mappings for built-in / primitive types (integers, strings, etc.) *)
@@ -54,9 +79,10 @@ let type_mappings : (string * Types.type_mapping) list =
          Types.ocaml_type = "int";
          Types.c_to_ml = "Val_int";
          Types.ml_to_c = "Int_val";
-         Types.needs_copy = false;
+
          layer2_class = None;
          c_type = "guint";
+         is_value_type_record = false;
        }
         : Types.type_mapping) );
     ( "gint",
@@ -64,99 +90,110 @@ let type_mappings : (string * Types.type_mapping) list =
         ocaml_type = "int";
         c_to_ml = "Val_int";
         ml_to_c = "Int_val";
-        needs_copy = false;
+
         layer2_class = None;
         c_type = "gint";
+        is_value_type_record = false;
       } );
     ( "gdouble",
       {
         ocaml_type = "float";
         c_to_ml = "caml_copy_double";
         ml_to_c = "Double_val";
-        needs_copy = true;
+
         layer2_class = None;
         c_type = "gdouble";
+        is_value_type_record = false;
       } );
     ( "double",
       {
         ocaml_type = "float";
         c_to_ml = "caml_copy_double";
         ml_to_c = "Double_val";
-        needs_copy = true;
+
         layer2_class = None;
         c_type = "double";
+        is_value_type_record = false;
       } );
     ( "gboolean",
       {
         ocaml_type = "bool";
         c_to_ml = "Val_bool";
         ml_to_c = "Bool_val";
-        needs_copy = false;
+
         layer2_class = None;
         c_type = "gboolean";
+        is_value_type_record = false;
       } );
     ( "gchararray",
       {
         ocaml_type = "string";
         c_to_ml = "caml_copy_string";
         ml_to_c = "String_val";
-        needs_copy = true;
+
         layer2_class = None;
         c_type = "gchararray";
+        is_value_type_record = false;
       } );
     ( "const gchar*",
       {
         ocaml_type = "string";
         c_to_ml = "caml_copy_string";
         ml_to_c = "String_val";
-        needs_copy = true;
+
         layer2_class = None;
         c_type = "const gchar*";
+        is_value_type_record = false;
       } );
     ( "gchar*",
       {
         ocaml_type = "string";
         c_to_ml = "caml_copy_string";
         ml_to_c = "String_val";
-        needs_copy = true;
+
         layer2_class = None;
         c_type = "gchar*";
+        is_value_type_record = false;
       } );
     ( "utf8",
       {
         ocaml_type = "string";
         c_to_ml = "caml_copy_string";
         ml_to_c = "String_val";
-        needs_copy = true;
+
         layer2_class = None;
         c_type = "utf8";
+        is_value_type_record = false;
       } );
     ( "const char*",
       {
         ocaml_type = "string";
         c_to_ml = "caml_copy_string";
         ml_to_c = "String_val";
-        needs_copy = true;
+
         layer2_class = None;
         c_type = "const char*";
+        is_value_type_record = false;
       } );
     ( "gfloat",
       {
         ocaml_type = "float";
         c_to_ml = "caml_copy_double";
         ml_to_c = "Double_val";
-        needs_copy = true;
+
         layer2_class = None;
         c_type = "gfloat";
+        is_value_type_record = false;
       } );
     ( "float",
       {
         ocaml_type = "float";
         c_to_ml = "caml_copy_double";
         ml_to_c = "Double_val";
-        needs_copy = true;
+
         layer2_class = None;
         c_type = "float";
+        is_value_type_record = false;
       } );
   ]
 
@@ -275,7 +312,8 @@ let find_class_mapping ~ctx lookup_str =
       c_to_ml = sprintf "Val_%s" cls.c_type;
       ml_to_c = sprintf "%s_val" cls.c_type;
       c_type = cls.c_type;
-      needs_copy = false;
+
+      is_value_type_record = false;
     }
 
 (** Attempt to find an interface mapping in the context in the current namespace
@@ -308,7 +346,8 @@ let find_interface_mapping ~ctx lookup_str =
       c_to_ml = sprintf "Val_%s" iface.c_type;
       ml_to_c = sprintf "%s_val" iface.c_type;
       c_type = iface.c_type;
-      needs_copy = false;
+
+      is_value_type_record = false;
     }
 
 (** Attempt to find a record mapping in the context in the current namespace *)
@@ -332,108 +371,100 @@ let find_record_mapping ~ctx lookup_str =
       ml_to_c = sprintf "%s_val" record.c_type;
       layer2_class = None;
       c_type = record.c_type;
-      needs_copy = false;
+
+      is_value_type_record = not record.opaque;
     }
 
 let find_enum_mapping ~ctx lookup_str =
   (* First, check if this is a known enum in current namespace *)
-  let enum_mapping =
+  let open Option in
+  let* enum =
     List.find_opt
       ~f:(fun (e : Types.gir_enum) -> String.equal e.enum_name lookup_str)
       ctx.enums
   in
-  match enum_mapping with
-  | Some enum ->
-      (* Use the context's namespace for enums from the current library *)
-      let namespace =
-        Utils.namespace_to_module_name ctx.namespace.namespace_name
-      in
-      let c_namespace = ctx.namespace.namespace_name in
-      Some
-        {
-          ocaml_type =
-            namespace ^ "_enums." ^ String.lowercase_ascii enum.enum_name;
-          c_type = enum.enum_c_type;
-          c_to_ml = sprintf "Val_%s%s" c_namespace enum.enum_name;
-          ml_to_c = sprintf "%s%s_val" c_namespace enum.enum_name;
-          layer2_class = None;
-          needs_copy = false;
-        }
-  | None -> (
-      (* DEPRECATED: will use general cross-namespace mechanism eventually *)
-      (* Check external namespaces *)
-      let external_enum_mapping =
-        List.find_opt
-          ~f:(fun ((_, e) : string * Types.gir_enum) ->
-            String.equal e.enum_name lookup_str)
-          ctx.external_enums
-      in
-      match external_enum_mapping with
-      | Some (ns, enum) ->
-          let namespace = Utils.namespace_to_module_name ns in
-          Some
-            {
-              ocaml_type =
-                namespace ^ "_enums." ^ String.lowercase_ascii enum.enum_name;
-              c_type = enum.enum_c_type;
-              c_to_ml = sprintf "Val_%s%s" ns enum.enum_name;
-              ml_to_c = sprintf "%s%s_val" ns enum.enum_name;
-              layer2_class = None;
-              needs_copy = false;
-            }
-      | None -> None)
+  (* Use the context's namespace for enums from the current library *)
+  let namespace = Utils.enums_module_name ctx enum in
+  let c_namespace = ctx.namespace.namespace_name in
+  Some
+    {
+      ocaml_type = namespace ^ "." ^ String.lowercase_ascii enum.enum_name;
+      c_type = enum.enum_c_type;
+      c_to_ml = sprintf "Val_%s%s" c_namespace enum.enum_name;
+      ml_to_c = sprintf "%s%s_val" c_namespace enum.enum_name;
+      layer2_class = None;
+
+      is_value_type_record = false;
+    }
 
 let find_bitfield_mapping ~ctx lookup_str =
   (* Check if this is a known bitfield in current namespace *)
-  let bitfield_mapping =
+  let open Option in
+  let* bitfield =
     List.find_opt
       ~f:(fun (b : Types.gir_bitfield) ->
         String.equal b.bitfield_c_type lookup_str
         || String.equal b.bitfield_name lookup_str)
       ctx.bitfields
   in
-  match bitfield_mapping with
-  | Some bitfield ->
-      (* Use the context's namespace for bitfields from the current library *)
-      let namespace =
-        Utils.namespace_to_module_name ctx.namespace.namespace_name
-      in
-      let c_namespace = ctx.namespace.namespace_name in
-      Some
-        {
-          ocaml_type =
-            namespace ^ "_enums."
-            ^ String.lowercase_ascii bitfield.bitfield_name;
-          c_to_ml = sprintf "Val_%s%s" c_namespace bitfield.bitfield_name;
-          ml_to_c = sprintf "%s%s_val" c_namespace bitfield.bitfield_name;
-          needs_copy = false;
-          layer2_class = None;
-          c_type = bitfield.bitfield_c_type;
-        }
-  | None -> (
-      (* Check external namespaces *)
-      let external_bitfield_mapping =
-        List.find_opt
-          ~f:(fun ((_, b) : string * Types.gir_bitfield) ->
-            String.equal b.bitfield_c_type lookup_str
-            || String.equal b.bitfield_name lookup_str)
-          ctx.external_bitfields
-      in
-      match external_bitfield_mapping with
-      | Some (ns, bitfield) ->
-          let namespace = Utils.namespace_to_module_name ns in
-          Some
-            {
-              ocaml_type =
-                namespace ^ "_enums."
-                ^ String.lowercase_ascii bitfield.bitfield_name;
-              c_to_ml = sprintf "Val_%s%s" ns bitfield.bitfield_name;
-              ml_to_c = sprintf "%s%s_val" ns bitfield.bitfield_name;
-              needs_copy = false;
-              layer2_class = None;
-              c_type = bitfield.bitfield_c_type;
-            }
-      | None -> None)
+  (* Use the context's namespace for bitfields from the current library *)
+  let namespace = Utils.bitfields_module_name ctx bitfield in
+  let c_namespace = ctx.namespace.namespace_name in
+  Some
+    {
+      ocaml_type =
+        namespace ^ "." ^ String.lowercase_ascii bitfield.bitfield_name;
+      c_to_ml = sprintf "Val_%s%s" c_namespace bitfield.bitfield_name;
+      ml_to_c = sprintf "%s%s_val" c_namespace bitfield.bitfield_name;
+
+      layer2_class = None;
+      c_type = bitfield.bitfield_c_type;
+      is_value_type_record = false;
+    }
+
+type type_kind =
+  | Tk_Enum
+  | Tk_Bitfield
+  | Tk_Class
+  | Tk_Interface
+  | Tk_Record
+  | Tk_Primitive
+  | Tk_Unknown
+
+let classify_type ~ctx (gir_type : Types.gir_type) =
+  let lookup_str = gir_type.name in
+  let namespace, name = Utils.name_to_parts ~ctx lookup_str in
+  if String.equal namespace ctx.namespace.namespace_name then
+    (* Same namespace: check local lists *)
+    if
+      List.exists ctx.enums ~f:(fun (e : Types.gir_enum) ->
+          String.equal e.enum_name lookup_str)
+    then Tk_Enum
+    else if
+      List.exists ctx.bitfields ~f:(fun (b : Types.gir_bitfield) ->
+          String.equal b.bitfield_name lookup_str)
+    then Tk_Bitfield
+    else if Option.is_some (lookup_class ctx.classes lookup_str) then Tk_Class
+    else if Option.is_some (lookup_interface ctx.interfaces lookup_str) then
+      Tk_Interface
+    else if Option.is_some (lookup_record ctx.records lookup_str) then Tk_Record
+    else if List.assoc_opt lookup_str type_mappings |> Option.is_some then
+      Tk_Primitive
+    else Tk_Unknown
+  else
+    (* Cross-namespace: check cross_references *)
+    match StringMap.find_opt namespace ctx.cross_references with
+    | None -> Tk_Unknown
+    | Some ncr -> (
+        match StringMap.find_opt name ncr.ncr_entities with
+        | None -> Tk_Unknown
+        | Some cr -> (
+            match cr.cr_type with
+            | Crt_Enum -> Tk_Enum
+            | Crt_Bitfield -> Tk_Bitfield
+            | Crt_Class _ -> Tk_Class
+            | Crt_Interface -> Tk_Interface
+            | Crt_Record _ -> Tk_Record))
 
 let rec find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
   (* Handle arrays first *)
@@ -456,8 +487,9 @@ let rec find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
               (* Marker: use inline code generation *)
               ml_to_c = "ARRAY_INLINE";
               (* Marker: use inline code generation *)
-              needs_copy = true;
+      
               layer2_class = None;
+              is_value_type_record = false;
             }
       | None -> None)
   | None ->
@@ -472,9 +504,11 @@ and normal_type_lookup ~ctx (gir_type : Types.gir_type) =
     in
     let find_cross_namespace_type_mapping ~ctx ~namespace ~name =
       let open Option in
-      let* namespace_map = StringMap.find_opt namespace ctx.cross_references in
-      let* cross_reference = StringMap.find_opt name namespace_map in
-      Some (map_cross_reference_to_type_mapping ~ctx cross_reference)
+      let* ncr_namespace = StringMap.find_opt namespace ctx.cross_references in
+      let* cross_reference =
+        StringMap.find_opt name ncr_namespace.ncr_entities
+      in
+      Some (map_cross_reference_to_type_mapping ~ctx ~namespace cross_reference)
     in
     let namespace, name = Utils.name_to_parts ~ctx lookup_str in
     if String.equal namespace ctx.namespace.namespace_name then
@@ -490,3 +524,21 @@ and normal_type_lookup ~ctx (gir_type : Types.gir_type) =
   gir_type.name |> try_lookup
   |> or_else (fun () ->
       Option.bind gir_type.c_type (fun c_type -> try_lookup c_type))
+
+(** Simplify type references when they refer to the current module's type.
+    Converts patterns like "CurrentModule.t" or "CurrentModule.t option" to "t" or "t option".
+    Handles common type wrappers like "option", "array", and combinations. *)
+let simplify_self_reference ~class_name ~ocaml_type =
+  let current_module = Utils.module_name_of_class class_name in
+  let self_type = current_module ^ ".t" in
+  if String.equal ocaml_type self_type then
+    "t"
+  else
+    (* Handle patterns like "Module.t array", "Module.t option", "Module.t array option", etc.
+       Use a negative lookbehind for '.' to avoid replacing "Surface.t" inside
+       qualified paths like "Ocgtk_cairo.Wrappers.Surface.t" *)
+    let pat = Re.(compile (seq [
+      group (alt [bos; char ' '; char '(']);
+      str self_type
+    ])) in
+    Re.replace pat ~all:true ~f:(fun g -> Re.Group.get g 1 ^ "t") ocaml_type

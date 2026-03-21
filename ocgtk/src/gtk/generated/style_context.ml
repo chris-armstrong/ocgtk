@@ -22,6 +22,16 @@ external set_state : t -> Gtk_enums.stateflags -> unit = "ml_gtk_style_context_s
 (** Sets the scale to use when getting image assets for the style. *)
 external set_scale : t -> int -> unit = "ml_gtk_style_context_set_scale"
 
+(** Attaches @context to the given display.
+
+The display is used to add style information from “global”
+style providers, such as the display's `GtkSettings` instance.
+
+If you are using a `GtkStyleContext` returned from
+[method@Gtk.Widget.get_style_context], you do not need to
+call this yourself. *)
+external set_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t -> unit = "ml_gtk_style_context_set_display"
+
 (** Saves the @context state.
 
 This allows temporary modifications done through
@@ -45,6 +55,9 @@ external remove_provider : t -> Style_provider.t -> unit = "ml_gtk_style_context
 (** Removes @class_name from @context. *)
 external remove_class : t -> string -> unit = "ml_gtk_style_context_remove_class"
 
+(** Looks up and resolves a color name in the @context color map. *)
+external lookup_color : t -> string -> bool * Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t = "ml_gtk_style_context_lookup_color"
+
 (** Returns %TRUE if @context currently has defined the
 given class name. *)
 external has_class : t -> string -> bool = "ml_gtk_style_context_has_class"
@@ -66,6 +79,12 @@ external get_padding : t -> Border.t = "ml_gtk_style_context_get_padding"
 
 (** Gets the margin for a given state as a `GtkBorder`. *)
 external get_margin : t -> Border.t = "ml_gtk_style_context_get_margin"
+
+(** Returns the `GdkDisplay` to which @context is attached. *)
+external get_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t = "ml_gtk_style_context_get_display"
+
+(** Gets the foreground color for a given state. *)
+external get_color : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t = "ml_gtk_style_context_get_color"
 
 (** Gets the border for a given state as a `GtkBorder`. *)
 external get_border : t -> Border.t = "ml_gtk_style_context_get_border"

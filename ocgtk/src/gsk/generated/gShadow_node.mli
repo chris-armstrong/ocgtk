@@ -1,6 +1,7 @@
-class shadow_node : Shadow_node.t ->
-  object
-    method get_child : unit -> GRender_node.render_node
+class type shadow_node_t = object
+    method get_child : unit -> GRender_node.render_node_t
     method as_shadow_node : Shadow_node.t
-  end
+end
+
+class shadow_node : Shadow_node.t -> shadow_node_t
 

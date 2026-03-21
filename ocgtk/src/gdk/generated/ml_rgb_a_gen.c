@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <gdk/gdk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gdk_decls.h"
 
 /* Copy function for GdkRGBA (value-like record with copy method) */
 value copy_GdkRGBA(const GdkRGBA *ptr)

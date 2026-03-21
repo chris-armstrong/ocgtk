@@ -18,8 +18,8 @@
 #include <gio/gio.h>
 #include <gio/gfiledescriptorbased.h>
 #include <gio/gdesktopappinfo.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gio_decls.h"
 
 
 CAMLexport CAMLprim value ml_g_inet_socket_address_new_from_string(value arg1, value arg2)

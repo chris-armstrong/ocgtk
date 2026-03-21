@@ -13,6 +13,23 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
+
+CAMLexport CAMLprim value ml_gtk_fixed_layout_child_set_transform(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_fixed_layout_child_set_transform(GtkFixedLayoutChild_val(self), GskTransform_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_fixed_layout_child_get_transform(value self)
+{
+CAMLparam1(self);
+
+GskTransform* result = gtk_fixed_layout_child_get_transform(GtkFixedLayoutChild_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GskTransform));
+}

@@ -1,0 +1,27 @@
+; Include subdirectories to find modules in core/ and generated/
+(include_subdirs unqualified)
+
+; Include generated C stubs library definition
+(include generated/dune-generated.inc)
+
+; Configure pkg-config for PangoCairo
+(rule
+ (targets c_flags.sexp)
+ (action
+  (with-stdout-to %{targets}
+   (bash "echo '(' && pkg-config --cflags pangocairo && echo ')'"))))
+
+; Main PangoCairo library combining core and generated code
+(library
+ (name ocgtk_pangocairo)
+ (public_name ocgtk.pangocairo)
+ (synopsis "OCaml bindings for PangoCairo")
+ (wrapped true)
+ (flags :standard -w -3-6-9-27-32-33-34-50)
+ (modules :standard)
+ (foreign_stubs
+  (language c)
+  (names ml_pangocairo)
+  (flags :standard -Igenerated -Icore (:include c_flags.sexp)))
+
+ (libraries ocgtk.common ocgtk_pango_cairo_generated_stubs ocgtk_cairo ocgtk_pango))

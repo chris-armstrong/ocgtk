@@ -1,7 +1,17 @@
-(* High-level class for MenuItem *)
-class menu_item (obj : Menu_item.t) = object (self)
+class type menu_item_t = object
+    method get_link : string -> GMenu_link_iter_and__menu_model.menu_model_t option
+    method set_detailed_action : string -> unit
+    method set_label : string option -> unit
+    method set_link : string -> GMenu_link_iter_and__menu_model.menu_model_t option -> unit
+    method set_section : GMenu_link_iter_and__menu_model.menu_model_t option -> unit
+    method set_submenu : GMenu_link_iter_and__menu_model.menu_model_t option -> unit
+    method as_menu_item : Menu_item.t
+end
 
-  method get_link : string -> GMenu_link_iter_and__menu_model.menu_model option =
+(* High-level class for MenuItem *)
+class menu_item (obj : Menu_item.t) : menu_item_t = object (self)
+
+  method get_link : string -> GMenu_link_iter_and__menu_model.menu_model_t option =
     fun link ->
       Option.map (fun ret -> new GMenu_link_iter_and__menu_model.menu_model ret) (Menu_item.get_link obj link)
 
@@ -13,17 +23,17 @@ class menu_item (obj : Menu_item.t) = object (self)
     fun label ->
       (Menu_item.set_label obj label)
 
-  method set_link : 'p1. string -> (#GMenu_link_iter_and__menu_model.menu_model as 'p1) option -> unit =
+  method set_link : string -> GMenu_link_iter_and__menu_model.menu_model_t option -> unit =
     fun link model ->
       let model = Option.map (fun (c) -> c#as_menu_model) model in
       (Menu_item.set_link obj link model)
 
-  method set_section : 'p1. (#GMenu_link_iter_and__menu_model.menu_model as 'p1) option -> unit =
+  method set_section : GMenu_link_iter_and__menu_model.menu_model_t option -> unit =
     fun section ->
       let section = Option.map (fun (c) -> c#as_menu_model) section in
       (Menu_item.set_section obj section)
 
-  method set_submenu : 'p1. (#GMenu_link_iter_and__menu_model.menu_model as 'p1) option -> unit =
+  method set_submenu : GMenu_link_iter_and__menu_model.menu_model_t option -> unit =
     fun submenu ->
       let submenu = Option.map (fun (c) -> c#as_menu_model) submenu in
       (Menu_item.set_submenu obj submenu)

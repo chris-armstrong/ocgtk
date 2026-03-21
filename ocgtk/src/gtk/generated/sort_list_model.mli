@@ -4,7 +4,7 @@
 type t = [`sort_list_model | `object_] Gobject.obj
 
 (** Create a new SortListModel *)
-external new_ : unit -> Sorter.t option -> t = "ml_gtk_sort_list_model_new"
+external new_ : Ocgtk_gio.Gio.Wrappers.List_model.t option -> Sorter.t option -> t = "ml_gtk_sort_list_model_new"
 
 (* Methods *)
 (** Sets a new sorter on @self. *)
@@ -12,6 +12,11 @@ external set_sorter : t -> Sorter.t option -> unit = "ml_gtk_sort_list_model_set
 
 (** Sets a new section sorter on @self. *)
 external set_section_sorter : t -> Sorter.t option -> unit = "ml_gtk_sort_list_model_set_section_sorter"
+
+(** Sets the model to be sorted.
+
+The @model's item type must conform to the item type of @self. *)
+external set_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option -> unit = "ml_gtk_sort_list_model_set_model"
 
 (** Sets the sort model to do an incremental sort.
 
@@ -56,6 +61,9 @@ If no sort operation is ongoing - in particular when
 [property@Gtk.SortListModel:incremental] is %FALSE - this
 function returns 0. *)
 external get_pending : t -> int = "ml_gtk_sort_list_model_get_pending"
+
+(** Gets the model currently sorted or %NULL if none. *)
+external get_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option = "ml_gtk_sort_list_model_get_model"
 
 (** Returns whether incremental sorting is enabled.
 

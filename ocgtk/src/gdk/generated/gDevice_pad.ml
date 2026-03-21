@@ -1,5 +1,13 @@
+class type device_pad_t = object
+    method get_feature_group : Gdk_enums.devicepadfeature -> int -> int
+    method get_group_n_modes : int -> int
+    method get_n_features : Gdk_enums.devicepadfeature -> int
+    method get_n_groups : unit -> int
+    method as_device_pad : Device_pad.t
+end
+
 (* High-level class for DevicePad *)
-class device_pad (obj : Device_pad.t) = object (self)
+class device_pad (obj : Device_pad.t) : device_pad_t = object (self)
 
   method get_feature_group : Gdk_enums.devicepadfeature -> int -> int =
     fun feature feature_idx ->

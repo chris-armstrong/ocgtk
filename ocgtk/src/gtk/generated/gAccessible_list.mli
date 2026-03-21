@@ -1,5 +1,6 @@
-class accessible_list : Accessible_list.t ->
-  object
+class type accessible_list_t = object
     method as_accessible_list : Accessible_list.t
-  end
+end
+
+class accessible_list : Accessible_list.t -> accessible_list_t
 

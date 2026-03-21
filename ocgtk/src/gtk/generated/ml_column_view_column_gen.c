@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_column_view_column_new(value arg1, value arg2)
@@ -63,6 +63,14 @@ CAMLexport CAMLprim value ml_gtk_column_view_column_set_id(value self, value arg
 CAMLparam2(self, arg1);
 
 gtk_column_view_column_set_id(GtkColumnViewColumn_val(self), String_option_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_column_set_header_menu(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_column_view_column_set_header_menu(GtkColumnViewColumn_val(self), Option_val(arg1, GMenuModel_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -129,6 +137,15 @@ CAMLparam1(self);
 
 const char* result = gtk_column_view_column_get_id(GtkColumnViewColumn_val(self));
 CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_column_view_column_get_header_menu(value self)
+{
+CAMLparam1(self);
+
+GMenuModel* result = gtk_column_view_column_get_header_menu(GtkColumnViewColumn_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GMenuModel));
 }
 
 CAMLexport CAMLprim value ml_gtk_column_view_column_get_fixed_width(value self)

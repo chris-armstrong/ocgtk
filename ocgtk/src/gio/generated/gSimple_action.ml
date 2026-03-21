@@ -1,7 +1,14 @@
 (* Signal class defined in gsimple_action_signals.ml *)
 
+class type simple_action_t = object
+    inherit Gsimple_action_signals.simple_action_signals
+    method set_enabled : bool -> unit
+    method name : string
+    method as_simple_action : Simple_action.t
+end
+
 (* High-level class for SimpleAction *)
-class simple_action (obj : Simple_action.t) = object (self)
+class simple_action (obj : Simple_action.t) : simple_action_t = object (self)
   inherit Gsimple_action_signals.simple_action_signals obj
 
   method set_enabled : bool -> unit =

@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 /* Conversion functions for GtkRecentInfo (opaque record with hidden fields) */
 GtkRecentInfo *GtkRecentInfo_val(value v) {
@@ -128,6 +128,14 @@ const char* result = gtk_recent_info_get_mime_type(GtkRecentInfo_val(self));
 CAMLreturn(caml_copy_string(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_recent_info_get_gicon(value self)
+{
+CAMLparam1(self);
+
+GIcon* result = gtk_recent_info_get_gicon(GtkRecentInfo_val(self));
+CAMLreturn(Val_option(result, Val_GIcon));
+}
+
 CAMLexport CAMLprim value ml_gtk_recent_info_get_display_name(value self)
 {
 CAMLparam1(self);
@@ -158,4 +166,13 @@ CAMLparam1(self);
 
 gboolean result = gtk_recent_info_exists(GtkRecentInfo_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_recent_info_create_app_info(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GAppInfo* result = gtk_recent_info_create_app_info(GtkRecentInfo_val(self), String_option_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_GAppInfo))); else CAMLreturn(Res_Error(Val_GError(error)));
 }

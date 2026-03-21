@@ -1,15 +1,55 @@
 (* Signal class defined in gscrolled_window_signals.ml *)
 
+class type scrolled_window_t = object
+    inherit Gscrolled_window_signals.scrolled_window_signals
+    method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
+    method get_hadjustment : unit -> GAdjustment.adjustment_t
+    method get_has_frame : unit -> bool
+    method get_hscrollbar : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    method get_kinetic_scrolling : unit -> bool
+    method get_max_content_height : unit -> int
+    method get_max_content_width : unit -> int
+    method get_min_content_height : unit -> int
+    method get_min_content_width : unit -> int
+    method get_overlay_scrolling : unit -> bool
+    method get_placement : unit -> Gtk_enums.cornertype
+    method get_propagate_natural_height : unit -> bool
+    method get_propagate_natural_width : unit -> bool
+    method get_vadjustment : unit -> GAdjustment.adjustment_t
+    method get_vscrollbar : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
+    method set_hadjustment : GAdjustment.adjustment_t option -> unit
+    method set_has_frame : bool -> unit
+    method set_kinetic_scrolling : bool -> unit
+    method set_max_content_height : int -> unit
+    method set_max_content_width : int -> unit
+    method set_min_content_height : int -> unit
+    method set_min_content_width : int -> unit
+    method set_overlay_scrolling : bool -> unit
+    method set_placement : Gtk_enums.cornertype -> unit
+    method set_policy : Gtk_enums.policytype -> Gtk_enums.policytype -> unit
+    method set_propagate_natural_height : bool -> unit
+    method set_propagate_natural_width : bool -> unit
+    method set_vadjustment : GAdjustment.adjustment_t option -> unit
+    method unset_placement : unit -> unit
+    method hscrollbar_policy : Gtk_enums.policytype
+    method set_hscrollbar_policy : Gtk_enums.policytype -> unit
+    method vscrollbar_policy : Gtk_enums.policytype
+    method set_vscrollbar_policy : Gtk_enums.policytype -> unit
+    method window_placement : Gtk_enums.cornertype
+    method set_window_placement : Gtk_enums.cornertype -> unit
+    method as_scrolled_window : Scrolled_window.t
+end
+
 (* High-level class for ScrolledWindow *)
-class scrolled_window (obj : Scrolled_window.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Scrolled_window.as_widget obj)
+class scrolled_window (obj : Scrolled_window.t) : scrolled_window_t = object (self)
   inherit Gscrolled_window_signals.scrolled_window_signals obj
 
-  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
+  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option =
     fun () ->
       Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Scrolled_window.get_child obj)
 
-  method get_hadjustment : unit -> GAdjustment.adjustment =
+  method get_hadjustment : unit -> GAdjustment.adjustment_t =
     fun () ->
       new  GAdjustment.adjustment(Scrolled_window.get_hadjustment obj)
 
@@ -17,7 +57,7 @@ class scrolled_window (obj : Scrolled_window.t) = object (self)
     fun () ->
       (Scrolled_window.get_has_frame obj)
 
-  method get_hscrollbar : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget =
+  method get_hscrollbar : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t =
     fun () ->
       new  GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget(Scrolled_window.get_hscrollbar obj)
 
@@ -57,20 +97,20 @@ class scrolled_window (obj : Scrolled_window.t) = object (self)
     fun () ->
       (Scrolled_window.get_propagate_natural_width obj)
 
-  method get_vadjustment : unit -> GAdjustment.adjustment =
+  method get_vadjustment : unit -> GAdjustment.adjustment_t =
     fun () ->
       new  GAdjustment.adjustment(Scrolled_window.get_vadjustment obj)
 
-  method get_vscrollbar : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget =
+  method get_vscrollbar : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t =
     fun () ->
       new  GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget(Scrolled_window.get_vscrollbar obj)
 
-  method set_child : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
+  method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit =
     fun child ->
       let child = Option.map (fun (c) -> c#as_widget) child in
       (Scrolled_window.set_child obj child)
 
-  method set_hadjustment : 'p1. (#GAdjustment.adjustment as 'p1) option -> unit =
+  method set_hadjustment : GAdjustment.adjustment_t option -> unit =
     fun hadjustment ->
       let hadjustment = Option.map (fun (c) -> c#as_adjustment) hadjustment in
       (Scrolled_window.set_hadjustment obj hadjustment)
@@ -119,7 +159,7 @@ class scrolled_window (obj : Scrolled_window.t) = object (self)
     fun propagate ->
       (Scrolled_window.set_propagate_natural_width obj propagate)
 
-  method set_vadjustment : 'p1. (#GAdjustment.adjustment as 'p1) option -> unit =
+  method set_vadjustment : GAdjustment.adjustment_t option -> unit =
     fun vadjustment ->
       let vadjustment = Option.map (fun (c) -> c#as_adjustment) vadjustment in
       (Scrolled_window.set_vadjustment obj vadjustment)
@@ -137,7 +177,6 @@ class scrolled_window (obj : Scrolled_window.t) = object (self)
   method window_placement = Scrolled_window.get_window_placement obj
   method set_window_placement v =  Scrolled_window.set_window_placement obj v
 
-  method as_widget = (Scrolled_window.as_widget obj)
     method as_scrolled_window = obj
 end
 

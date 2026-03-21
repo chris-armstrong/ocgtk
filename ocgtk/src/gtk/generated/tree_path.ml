@@ -11,12 +11,6 @@ external new_ : unit -> t = "ml_gtk_tree_path_new"
 external new_first : unit -> t = "ml_gtk_tree_path_new_first"
 
 (** Create a new TreePath *)
-external new_from_indices : int -> unit -> t = "ml_gtk_tree_path_new_from_indices"
-
-(** Create a new TreePath *)
-external new_from_indicesv : int array -> unit -> t = "ml_gtk_tree_path_new_from_indicesv"
-
-(** Create a new TreePath *)
 external new_from_string : string -> t = "ml_gtk_tree_path_new_from_string"
 
 (* Methods *)
@@ -55,14 +49,6 @@ This is an array of integers, each representing a node in a tree.
 It also returns the number of elements in the array.
 The array should not be freed. *)
 external get_indices_with_depth : t -> int array option * int = "ml_gtk_tree_path_get_indices_with_depth"
-
-(** Returns the current indices of @path.
-
-This is an array of integers, each representing a node in a tree.
-This value should not be freed.
-
-The length of the array can be obtained with gtk_tree_path_get_depth(). *)
-external get_indices : t -> int option = "ml_gtk_tree_path_get_indices"
 
 (** Returns the current depth of @path. *)
 external get_depth : t -> int = "ml_gtk_tree_path_get_depth"

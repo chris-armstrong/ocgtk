@@ -1,7 +1,6 @@
-class constant_expression : Constant_expression.t ->
-  object
-    inherit GExpression.expression
-  method as_expression : Expression.t
+class type constant_expression_t = object
     method as_constant_expression : Constant_expression.t
-  end
+end
+
+class constant_expression : Constant_expression.t -> constant_expression_t
 

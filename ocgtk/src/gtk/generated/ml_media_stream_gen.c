@@ -13,9 +13,17 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
+
+CAMLexport CAMLprim value ml_gtk_media_stream_unrealize(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_media_stream_unrealize(GtkMediaStream_val(self), GdkSurface_val(arg1));
+CAMLreturn(Val_unit);
+}
 
 CAMLexport CAMLprim value ml_gtk_media_stream_stream_unprepared(value self)
 {
@@ -78,6 +86,14 @@ CAMLexport CAMLprim value ml_gtk_media_stream_seek_failed(value self)
 CAMLparam1(self);
 
 gtk_media_stream_seek_failed(GtkMediaStream_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_media_stream_realize(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_media_stream_realize(GtkMediaStream_val(self), GdkSurface_val(arg1));
 CAMLreturn(Val_unit);
 }
 

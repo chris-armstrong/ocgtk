@@ -1,5 +1,13 @@
+class type size_t = object
+    method equal : Size.t -> bool
+    method free : unit -> unit
+    method init : float -> float -> Size.t
+    method init_from_size : Size.t -> Size.t
+    method as_size : Size.t
+end
+
 (* High-level class for Size *)
-class size (obj : Size.t) = object (self)
+class size (obj : Size.t) : size_t = object (self)
 
   method equal : Size.t -> bool =
     fun b ->

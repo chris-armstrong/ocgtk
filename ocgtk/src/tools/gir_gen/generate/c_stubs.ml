@@ -16,27 +16,62 @@ let has_copy_method = C_stub_record.has_copy_method
 let is_value_like_record = C_stub_record.is_value_like_record
 let generate_record_c_code = C_stub_record.generate_record_c_code
 
-(* Re-export enum/bitfield proto emission *)
-let emit_enum_proto = C_stub_enum.emit_enum_proto
-let emit_bitfield_proto = C_stub_bitfield.emit_bitfield_proto
+(* Base namespaces that should not be included as dependencies *)
+let base_namespaces = [ "GLib"; "GModule"; "GObject"; "HarfBuzz" ]
+
+(* Extract dependency namespaces from cross_references map.
+   Returns sorted list of namespace names (excluding base namespaces like GLib, GObject, GModule) *)
+let get_dependency_namespaces cross_references =
+  StringMap.fold (fun ns _ acc -> ns :: acc) cross_references []
+  |> List.filter ~f:(fun ns -> not (List.mem ~set:base_namespaces ns))
+  |> List.sort_uniq ~cmp:String.compare
+
+(* Generate #include directives for dependency namespaces.
+   Headers are included as "generated/<ns>_decls.h" because OCaml automatically
+   passes -I path/to/<library> when you depend on a library, so the full path
+   resolves to path/to/<library>/generated/<ns>_decls.h *)
+let generate_dependency_includes dependency_namespaces =
+  match dependency_namespaces with
+  | [] -> ""
+  | deps ->
+      deps
+      |> List.map ~f:(fun ns ->
+          let ns_lower = String.lowercase_ascii ns in
+          sprintf "#include \"generated/%s_decls.h\"" ns_lower)
+      |> String.concat ~sep:"\n"
+      |> fun s -> s ^ "\n"
 
 (* Generate common header file with forward declarations for enum/bitfield converters *)
-let generate_forward_decls_header ~ctx ~classes ~interfaces ~gtk_enums
-    ~gtk_bitfields ~external_enums ~external_bitfields ~records =
+let generate_decls_header ~ctx ~classes ~interfaces ~gtk_enums ~gtk_bitfields
+    ~records =
   let buf = Buffer.create 4096 in
+  let ns_lower = String.lowercase_ascii ctx.namespace.namespace_name in
   Buffer.add_string buf "/* GENERATED CODE - DO NOT EDIT */\n";
   Buffer.add_string buf
     "/* Forward declarations for generated enum, bitfield, class and record \
      converters */\n";
   Buffer.add_string buf "\n";
-  bprintf buf "#ifndef _%s_generated_forward_decls_\n"
-    (String.lowercase_ascii ctx.namespace.namespace_name);
-  bprintf buf "#define _%s_generated_forward_decls_\n"
-    (String.lowercase_ascii ctx.namespace.namespace_name);
+  bprintf buf "#ifndef _%s_decls_h_\n" ns_lower;
+  bprintf buf "#define _%s_decls_h_\n" ns_lower;
   Buffer.add_string buf "\n";
-  bprintf buf "%s\n" (include_header_for_namespace ctx.namespace.namespace_name);
+  (* Include all C headers from the repository (parsed from GIR) *)
+  List.iter
+    ~f:(fun c_include ->
+      Buffer.add_string buf (sprintf "#include <%s>\n" c_include))
+    ctx.repository.repository_c_includes;
   Buffer.add_string buf "#include <caml/mlvalues.h>\n";
   Buffer.add_string buf "\n";
+
+  (* Generate dependency header includes *)
+  let dependency_namespaces = get_dependency_namespaces ctx.cross_references in
+  let dependency_includes =
+    generate_dependency_includes dependency_namespaces
+  in
+  if dependency_includes <> "" then begin
+    Buffer.add_string buf "/* Dependency headers for cross-namespace types */\n";
+    Buffer.add_string buf dependency_includes;
+    Buffer.add_string buf "\n"
+  end;
 
   (* Generate class/interface forward declarations *)
   Buffer.add_string buf
@@ -57,19 +92,17 @@ let generate_forward_decls_header ~ctx ~classes ~interfaces ~gtk_enums
 
   (* Generate enum forward declarations *)
   let namespace_prefix = ctx.namespace.namespace_name in
-  if List.length gtk_enums > 0 || List.length gtk_bitfields > 0 then begin
+  if List.length gtk_enums > 0 then begin
     Buffer.add_string buf
-      (C_stub_enum.generate_forward_decls ~namespace_prefix ~gtk_enums
-         ~external_enums)
+      (C_stub_enum.generate_forward_decls ~namespace_prefix ~gtk_enums)
   end;
 
   (* Generate bitfield forward declarations *)
-  if List.length gtk_bitfields > 0 || List.length external_bitfields > 0 then begin
+  if List.length gtk_bitfields > 0 then begin
     Buffer.add_string buf
-      (C_stub_bitfield.generate_forward_decls ~namespace_prefix ~gtk_bitfields
-         ~external_bitfields)
+      (C_stub_bitfield.generate_forward_decls ~namespace_prefix ~gtk_bitfields)
   end;
 
   Buffer.add_string buf "\n";
-  Buffer.add_string buf "#endif /* _gtk4_generated_forward_decls_ */\n";
+  bprintf buf "#endif /* _%s_decls_h_ */\n" ns_lower;
   Buffer.contents buf

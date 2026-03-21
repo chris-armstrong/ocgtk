@@ -22,6 +22,20 @@ If the reference was the last, the resources associated to the @self are
 freed. *)
 external unref : t -> unit = "ml_gsk_transform_unref"
 
+(** Translates @next by @point. *)
+external translate_3d : t -> Ocgtk_graphene.Graphene.Wrappers.Point3_d.t -> t option = "ml_gsk_transform_translate_3d"
+
+(** Translates @next in 2-dimensional space by @point. *)
+external translate : t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> t option = "ml_gsk_transform_translate"
+
+(** Transforms a `graphene_point_t` using the given transform @self. *)
+external transform_point : t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> Ocgtk_graphene.Graphene.Wrappers.Point.t = "ml_gsk_transform_transform_point"
+
+(** Transforms a `graphene_rect_t` using the given transform @self.
+
+The result is the bounding box containing the coplanar quad. *)
+external transform_bounds : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t = "ml_gsk_transform_transform_bounds"
+
 (** Applies all the operations from @other to @next. *)
 external transform : t -> t option -> t option = "ml_gsk_transform_transform"
 
@@ -41,6 +55,11 @@ The resulting string can be parsed with [func@Gsk.Transform.parse].
 
 This is a wrapper around [method@Gsk.Transform.print]. *)
 external to_string : t -> string = "ml_gsk_transform_to_string"
+
+(** Computes the actual value of @self and stores it in @out_matrix.
+
+The previous value of @out_matrix will be ignored. *)
+external to_matrix : t -> Ocgtk_graphene.Graphene.Wrappers.Matrix.t = "ml_gsk_transform_to_matrix"
 
 (** Converts a `GskTransform` to 2D affine transformation factors.
 
@@ -109,6 +128,11 @@ external scale_3d : t -> float -> float -> float -> t option = "ml_gsk_transform
 Use [method@Gsk.Transform.scale_3d] to scale in all 3 dimensions. *)
 external scale : t -> float -> float -> t option = "ml_gsk_transform_scale"
 
+(** Rotates @next @angle degrees around @axis.
+
+For a rotation in 2D space, use [method@Gsk.Transform.rotate] *)
+external rotate_3d : t -> float -> Ocgtk_graphene.Graphene.Wrappers.Vec3.t -> t option = "ml_gsk_transform_rotate_3d"
+
 (** Rotates @next @angle degrees in 2D - or in 3D-speak, around the Z axis.
 The rotation happens around the origin point of (0, 0). *)
 external rotate : t -> float -> t option = "ml_gsk_transform_rotate"
@@ -123,6 +147,9 @@ scaling points with positive Z values away from the origin, and
 those with negative Z values towards the origin. Points
 on the z=0 plane are unchanged. *)
 external perspective : t -> float -> t = "ml_gsk_transform_perspective"
+
+(** Multiplies @next with the given @matrix. *)
+external matrix : t -> Ocgtk_graphene.Graphene.Wrappers.Matrix.t -> t = "ml_gsk_transform_matrix"
 
 (** Inverts the given transform.
 

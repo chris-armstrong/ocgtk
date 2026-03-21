@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_window_new(value unit)
@@ -143,6 +143,14 @@ CAMLexport CAMLprim value ml_gtk_window_set_focus(value self, value arg1)
 CAMLparam2(self, arg1);
 
 gtk_window_set_focus(GtkWindow_val(self), Option_val(arg1, GtkWidget_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_window_set_display(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_window_set_display(GtkWindow_val(self), GdkDisplay_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -429,6 +437,14 @@ CAMLparam1(self);
 GtkApplication* result = gtk_window_get_application(GtkWindow_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkApplication));
+}
+
+CAMLexport CAMLprim value ml_gtk_window_fullscreen_on_monitor(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_window_fullscreen_on_monitor(GtkWindow_val(self), GdkMonitor_val(arg1));
+CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_window_fullscreen(value self)

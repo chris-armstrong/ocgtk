@@ -8,11 +8,15 @@
     - Basic type definitions are correct *)
 
 open Alcotest
-open Ocgtk_gtk
+open Ocgtk_gtk.Gtk
+module Widget = Wrappers.Widget
+module GMain = Ocgtk_gtk.GMain
 
-module Widget =
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
-  .Widget
+module Box = struct
+  include Wrappers.Box
+
+  let as_widget (box : t) : Widget.t = Obj.magic box
+end
 
 (* Try to initialize GTK once for all tests *)
 let gtk_available =

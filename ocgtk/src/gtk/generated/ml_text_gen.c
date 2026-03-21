@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_text_new(value unit)
@@ -56,6 +56,14 @@ CAMLexport CAMLprim value ml_gtk_text_set_truncate_multiline(value self, value a
 CAMLparam2(self, arg1);
 
 gtk_text_set_truncate_multiline(GtkText_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_set_tabs(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_text_set_tabs(GtkText_val(self), Option_val(arg1, PangoTabArray_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -107,6 +115,14 @@ gtk_text_set_input_hints(GtkText_val(self), GtkInputHints_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_text_set_extra_menu(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_text_set_extra_menu(GtkText_val(self), Option_val(arg1, GMenuModel_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_set_enable_emoji_completion(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -120,6 +136,14 @@ CAMLexport CAMLprim value ml_gtk_text_set_buffer(value self, value arg1)
 CAMLparam2(self, arg1);
 
 gtk_text_set_buffer(GtkText_val(self), GtkEntryBuffer_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_text_set_attributes(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_text_set_attributes(GtkText_val(self), Option_val(arg1, PangoAttrList_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -153,6 +177,15 @@ CAMLparam1(self);
 
 gboolean result = gtk_text_get_truncate_multiline(GtkText_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_get_tabs(value self)
+{
+CAMLparam1(self);
+
+PangoTabArray* result = gtk_text_get_tabs(GtkText_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_PangoTabArray));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_get_propagate_text_width(value self)
@@ -203,6 +236,15 @@ GtkInputHints result = gtk_text_get_input_hints(GtkText_val(self));
 CAMLreturn(Val_GtkInputHints(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_text_get_extra_menu(value self)
+{
+CAMLparam1(self);
+
+GMenuModel* result = gtk_text_get_extra_menu(GtkText_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GMenuModel));
+}
+
 CAMLexport CAMLprim value ml_gtk_text_get_enable_emoji_completion(value self)
 {
 CAMLparam1(self);
@@ -218,6 +260,15 @@ CAMLparam1(self);
 GtkEntryBuffer* result = gtk_text_get_buffer(GtkText_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkEntryBuffer(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_get_attributes(value self)
+{
+CAMLparam1(self);
+
+PangoAttrList* result = gtk_text_get_attributes(GtkText_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_PangoAttrList));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_get_activates_default(value self)

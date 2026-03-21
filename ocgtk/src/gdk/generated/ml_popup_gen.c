@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <gdk/gdk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gdk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gdk_popup_present(value self, value arg1, value arg2, value arg3)
@@ -22,6 +22,22 @@ CAMLparam4(self, arg1, arg2, arg3);
 
 gboolean result = gdk_popup_present(GdkPopup_val(self), Int_val(arg1), Int_val(arg2), GdkPopupLayout_val(arg3));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gdk_popup_get_surface_anchor(value self)
+{
+CAMLparam1(self);
+
+GdkGravity result = gdk_popup_get_surface_anchor(GdkPopup_val(self));
+CAMLreturn(Val_GdkGravity(result));
+}
+
+CAMLexport CAMLprim value ml_gdk_popup_get_rect_anchor(value self)
+{
+CAMLparam1(self);
+
+GdkGravity result = gdk_popup_get_rect_anchor(GdkPopup_val(self));
+CAMLreturn(Val_GdkGravity(result));
 }
 
 CAMLexport CAMLprim value ml_gdk_popup_get_position_y(value self)

@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_cell_renderer_stop_editing(value self, value arg1)
@@ -23,6 +23,33 @@ CAMLparam2(self, arg1);
 
 gtk_cell_renderer_stop_editing(GtkCellRenderer_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_start_editing_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam2(arg5, arg6);
+
+GtkCellEditable* result = gtk_cell_renderer_start_editing(GtkCellRenderer_val(self), Option_val(arg1, GdkEvent_val, NULL), GtkWidget_val(arg2), String_val(arg3), GdkRectangle_val(arg4), GdkRectangle_val(arg5), GtkCellRendererState_val(arg6));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GtkCellEditable));}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_start_editing_bytecode(value * argv, int argn)
+{
+return ml_gtk_cell_renderer_start_editing_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6]);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_snapshot_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam1(arg5);
+
+gtk_cell_renderer_snapshot(GtkCellRenderer_val(self), GtkSnapshot_val(arg1), GtkWidget_val(arg2), GdkRectangle_val(arg3), GdkRectangle_val(arg4), GtkCellRendererState_val(arg5));
+CAMLreturn(Val_unit);}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_snapshot_bytecode(value * argv, int argn)
+{
+return ml_gtk_cell_renderer_snapshot_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
 }
 
 CAMLexport CAMLprim value ml_gtk_cell_renderer_set_visible(value self, value arg1)
@@ -249,6 +276,28 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_aligned_area(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+GdkRectangle out4;
+
+gtk_cell_renderer_get_aligned_area(GtkCellRenderer_val(self), GtkWidget_val(arg1), GtkCellRendererState_val(arg2), GdkRectangle_val(arg3), &out4);
+CAMLreturn(Val_GdkRectangle(&out4));
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_activate_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam2(arg5, arg6);
+
+gboolean result = gtk_cell_renderer_activate(GtkCellRenderer_val(self), GdkEvent_val(arg1), GtkWidget_val(arg2), String_val(arg3), GdkRectangle_val(arg4), GdkRectangle_val(arg5), GtkCellRendererState_val(arg6));
+CAMLreturn(Val_bool(result));}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_activate_bytecode(value * argv, int argn)
+{
+return ml_gtk_cell_renderer_activate_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6]);
+}
+
 CAMLexport CAMLprim value ml_gtk_cell_renderer_get_cell_background(value self)
 {
     CAMLparam1(self);
@@ -277,6 +326,38 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
           g_value_set_string(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "cell-background", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_get_cell_background_rgba(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    GdkRGBA *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "cell-background-rgba");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_get_cell_background_rgba: property 'cell-background-rgba' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "cell-background-rgba", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GdkRGBA(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_set_cell_background_rgba(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkCellRenderer *obj = (GtkCellRenderer *)GtkCellRenderer_val(self);
+    GdkRGBA *c_value = GdkRGBA_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "cell-background-rgba");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_set_cell_background_rgba: property 'cell-background-rgba' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "cell-background-rgba", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }

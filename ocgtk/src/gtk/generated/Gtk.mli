@@ -3,295 +3,633 @@
 
 (** {1 Classes and Interfaces} *)
 
-class at_context : At_context_and__accessible.At_context.t -> GAt_context_and__accessible.at_context
-class about_dialog : About_dialog.t -> GAbout_dialog.about_dialog
-class accessible : At_context_and__accessible.Accessible.t -> GAt_context_and__accessible.accessible
-class accessible_range : Accessible_range.t -> GAccessible_range.accessible_range
-class accessible_text : Accessible_text.t -> GAccessible_text.accessible_text
-class action_bar : Action_bar.t -> GAction_bar.action_bar
-class actionable : Actionable.t -> GActionable.actionable
-class activate_action : Activate_action.t -> GActivate_action.activate_action
-class adjustment : Adjustment.t -> GAdjustment.adjustment
-class alert_dialog : Alert_dialog.t -> GAlert_dialog.alert_dialog
-class alternative_trigger : Alternative_trigger.t -> GAlternative_trigger.alternative_trigger
-class any_filter : Any_filter.t -> GAny_filter.any_filter
-class app_chooser : App_chooser.t -> GApp_chooser.app_chooser
-class app_chooser_button : App_chooser_button.t -> GApp_chooser_button.app_chooser_button
-class app_chooser_dialog : App_chooser_dialog.t -> GApp_chooser_dialog.app_chooser_dialog
-class app_chooser_widget : App_chooser_widget.t -> GApp_chooser_widget.app_chooser_widget
-class application : Application_and__window_and__window_group.Application.t -> GApplication_and__window_and__window_group.application
-class application_window : Application_window.t -> GApplication_window.application_window
-class aspect_frame : Aspect_frame.t -> GAspect_frame.aspect_frame
-class assistant : Assistant.t -> GAssistant.assistant
-class assistant_page : Assistant_page.t -> GAssistant_page.assistant_page
-class bin_layout : Bin_layout.t -> GBin_layout.bin_layout
-class bookmark_list : Bookmark_list.t -> GBookmark_list.bookmark_list
-class bool_filter : Bool_filter.t -> GBool_filter.bool_filter
-class box : Box.t -> GBox.box
-class box_layout : Box_layout.t -> GBox_layout.box_layout
-class buildable : Buildable.t -> GBuildable.buildable
-class builder : Builder.t -> GBuilder.builder
-class builder_c_scope : Builder_c_scope.t -> GBuilder_c_scope.builder_c_scope
-class builder_list_item_factory : Builder_list_item_factory.t -> GBuilder_list_item_factory.builder_list_item_factory
-class builder_scope : Builder_scope.t -> GBuilder_scope.builder_scope
-class button : Button.t -> GButton.button
-class c_closure_expression : C_closure_expression.t -> GC_closure_expression.c_closure_expression
-class calendar : Calendar.t -> GCalendar.calendar
-class callback_action : Callback_action.t -> GCallback_action.callback_action
-class cell_area : Cell_area_and__cell_area_context.Cell_area.t -> GCell_area_and__cell_area_context.cell_area
-class cell_area_box : Cell_area_box.t -> GCell_area_box.cell_area_box
-class cell_area_context : Cell_area_and__cell_area_context.Cell_area_context.t -> GCell_area_and__cell_area_context.cell_area_context
-class cell_editable : Cell_editable.t -> GCell_editable.cell_editable
-class cell_layout : Cell_layout.t -> GCell_layout.cell_layout
-class cell_renderer : Cell_renderer.t -> GCell_renderer.cell_renderer
-class cell_renderer_accel : Cell_renderer_accel.t -> GCell_renderer_accel.cell_renderer_accel
-class cell_renderer_combo : Cell_renderer_combo.t -> GCell_renderer_combo.cell_renderer_combo
-class cell_renderer_pixbuf : Cell_renderer_pixbuf.t -> GCell_renderer_pixbuf.cell_renderer_pixbuf
-class cell_renderer_progress : Cell_renderer_progress.t -> GCell_renderer_progress.cell_renderer_progress
-class cell_renderer_spin : Cell_renderer_spin.t -> GCell_renderer_spin.cell_renderer_spin
-class cell_renderer_spinner : Cell_renderer_spinner.t -> GCell_renderer_spinner.cell_renderer_spinner
-class cell_renderer_text : Cell_renderer_text.t -> GCell_renderer_text.cell_renderer_text
-class cell_renderer_toggle : Cell_renderer_toggle.t -> GCell_renderer_toggle.cell_renderer_toggle
-class cell_view : Cell_view.t -> GCell_view.cell_view
-class center_box : Center_box.t -> GCenter_box.center_box
-class center_layout : Center_layout.t -> GCenter_layout.center_layout
-class check_button : Check_button.t -> GCheck_button.check_button
-class closure_expression : Closure_expression.t -> GClosure_expression.closure_expression
-class color_button : Color_button.t -> GColor_button.color_button
-class color_chooser : Color_chooser.t -> GColor_chooser.color_chooser
-class color_chooser_dialog : Color_chooser_dialog.t -> GColor_chooser_dialog.color_chooser_dialog
-class color_chooser_widget : Color_chooser_widget.t -> GColor_chooser_widget.color_chooser_widget
-class color_dialog : Color_dialog.t -> GColor_dialog.color_dialog
-class color_dialog_button : Color_dialog_button.t -> GColor_dialog_button.color_dialog_button
-class column_view : Column_view_and__column_view_column.Column_view.t -> GColumn_view_and__column_view_column.column_view
-class column_view_cell : Column_view_cell.t -> GColumn_view_cell.column_view_cell
-class column_view_column : Column_view_and__column_view_column.Column_view_column.t -> GColumn_view_and__column_view_column.column_view_column
-class column_view_row : Column_view_row.t -> GColumn_view_row.column_view_row
-class column_view_sorter : Column_view_sorter.t -> GColumn_view_sorter.column_view_sorter
-class combo_box : Combo_box.t -> GCombo_box.combo_box
-class combo_box_text : Combo_box_text.t -> GCombo_box_text.combo_box_text
-class constant_expression : Constant_expression.t -> GConstant_expression.constant_expression
-class constraint_ : Constraint.t -> GConstraint.constraint_
-class constraint_guide : Constraint_guide.t -> GConstraint_guide.constraint_guide
-class constraint_layout : Constraint_layout.t -> GConstraint_layout.constraint_layout
-class constraint_layout_child : Constraint_layout_child.t -> GConstraint_layout_child.constraint_layout_child
-class constraint_target : Constraint_target.t -> GConstraint_target.constraint_target
-class css_provider : Css_provider.t -> GCss_provider.css_provider
-class custom_filter : Custom_filter.t -> GCustom_filter.custom_filter
-class custom_layout : Custom_layout.t -> GCustom_layout.custom_layout
-class custom_sorter : Custom_sorter.t -> GCustom_sorter.custom_sorter
-class dialog : Dialog.t -> GDialog.dialog
-class directory_list : Directory_list.t -> GDirectory_list.directory_list
-class drag_icon : Drag_icon.t -> GDrag_icon.drag_icon
-class drag_source : Drag_source.t -> GDrag_source.drag_source
-class drawing_area : Drawing_area.t -> GDrawing_area.drawing_area
-class drop_controller_motion : Drop_controller_motion.t -> GDrop_controller_motion.drop_controller_motion
-class drop_down : Drop_down.t -> GDrop_down.drop_down
-class drop_target : Drop_target.t -> GDrop_target.drop_target
-class drop_target_async : Drop_target_async.t -> GDrop_target_async.drop_target_async
-class editable : Editable.t -> GEditable.editable
-class editable_label : Editable_label.t -> GEditable_label.editable_label
-class emoji_chooser : Emoji_chooser.t -> GEmoji_chooser.emoji_chooser
-class entry : Entry.t -> GEntry.entry
-class entry_buffer : Entry_buffer.t -> GEntry_buffer.entry_buffer
-class entry_completion : Entry_completion.t -> GEntry_completion.entry_completion
-class event_controller : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller
-class event_controller_focus : Event_controller_focus.t -> GEvent_controller_focus.event_controller_focus
-class event_controller_key : Event_controller_key.t -> GEvent_controller_key.event_controller_key
-class event_controller_legacy : Event_controller_legacy.t -> GEvent_controller_legacy.event_controller_legacy
-class event_controller_motion : Event_controller_motion.t -> GEvent_controller_motion.event_controller_motion
-class event_controller_scroll : Event_controller_scroll.t -> GEvent_controller_scroll.event_controller_scroll
-class every_filter : Every_filter.t -> GEvery_filter.every_filter
-class expander : Expander.t -> GExpander.expander
-class expression : Expression.t -> GExpression.expression
-class file_chooser : File_chooser.t -> GFile_chooser.file_chooser
-class file_chooser_dialog : File_chooser_dialog.t -> GFile_chooser_dialog.file_chooser_dialog
-class file_chooser_native : File_chooser_native.t -> GFile_chooser_native.file_chooser_native
-class file_chooser_widget : File_chooser_widget.t -> GFile_chooser_widget.file_chooser_widget
-class file_dialog : File_dialog.t -> GFile_dialog.file_dialog
-class file_filter : File_filter.t -> GFile_filter.file_filter
-class file_launcher : File_launcher.t -> GFile_launcher.file_launcher
-class filter : Filter.t -> GFilter.filter
-class filter_list_model : Filter_list_model.t -> GFilter_list_model.filter_list_model
-class fixed : Fixed.t -> GFixed.fixed
-class fixed_layout : Fixed_layout.t -> GFixed_layout.fixed_layout
-class fixed_layout_child : Fixed_layout_child.t -> GFixed_layout_child.fixed_layout_child
-class flatten_list_model : Flatten_list_model.t -> GFlatten_list_model.flatten_list_model
-class flow_box : Flow_box.t -> GFlow_box.flow_box
-class flow_box_child : Flow_box_child.t -> GFlow_box_child.flow_box_child
-class font_button : Font_button.t -> GFont_button.font_button
-class font_chooser : Font_chooser.t -> GFont_chooser.font_chooser
-class font_chooser_dialog : Font_chooser_dialog.t -> GFont_chooser_dialog.font_chooser_dialog
-class font_chooser_widget : Font_chooser_widget.t -> GFont_chooser_widget.font_chooser_widget
-class font_dialog : Font_dialog.t -> GFont_dialog.font_dialog
-class font_dialog_button : Font_dialog_button.t -> GFont_dialog_button.font_dialog_button
-class frame : Frame.t -> GFrame.frame
-class gl_area : Gl_area.t -> GGl_area.gl_area
-class gesture : Gesture.t -> GGesture.gesture
-class gesture_click : Gesture_click.t -> GGesture_click.gesture_click
-class gesture_drag : Gesture_drag.t -> GGesture_drag.gesture_drag
-class gesture_long_press : Gesture_long_press.t -> GGesture_long_press.gesture_long_press
-class gesture_pan : Gesture_pan.t -> GGesture_pan.gesture_pan
-class gesture_rotate : Gesture_rotate.t -> GGesture_rotate.gesture_rotate
-class gesture_single : Gesture_single.t -> GGesture_single.gesture_single
-class gesture_stylus : Gesture_stylus.t -> GGesture_stylus.gesture_stylus
-class gesture_swipe : Gesture_swipe.t -> GGesture_swipe.gesture_swipe
-class gesture_zoom : Gesture_zoom.t -> GGesture_zoom.gesture_zoom
-class graphics_offload : Graphics_offload.t -> GGraphics_offload.graphics_offload
-class grid : Grid.t -> GGrid.grid
-class grid_layout : Grid_layout.t -> GGrid_layout.grid_layout
-class grid_layout_child : Grid_layout_child.t -> GGrid_layout_child.grid_layout_child
-class grid_view : Grid_view.t -> GGrid_view.grid_view
-class header_bar : Header_bar.t -> GHeader_bar.header_bar
-class im_context : Im_context.t -> GIm_context.im_context
-class im_context_simple : Im_context_simple.t -> GIm_context_simple.im_context_simple
-class im_multicontext : Im_multicontext.t -> GIm_multicontext.im_multicontext
-class icon_paintable : Icon_paintable.t -> GIcon_paintable.icon_paintable
-class icon_theme : Icon_theme.t -> GIcon_theme.icon_theme
-class icon_view : Icon_view.t -> GIcon_view.icon_view
-class image : Image.t -> GImage.image
-class info_bar : Info_bar.t -> GInfo_bar.info_bar
-class inscription : Inscription.t -> GInscription.inscription
-class keyval_trigger : Keyval_trigger.t -> GKeyval_trigger.keyval_trigger
-class label : Label.t -> GLabel.label
-class layout_child : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Layout_child.t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.layout_child
-class layout_manager : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Layout_manager.t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.layout_manager
-class level_bar : Level_bar.t -> GLevel_bar.level_bar
-class link_button : Link_button.t -> GLink_button.link_button
-class list_base : List_base.t -> GList_base.list_base
-class list_box : List_box.t -> GList_box.list_box
-class list_box_row : List_box_row.t -> GList_box_row.list_box_row
-class list_header : List_header.t -> GList_header.list_header
-class list_item : List_item.t -> GList_item.list_item
-class list_item_factory : List_item_factory.t -> GList_item_factory.list_item_factory
-class list_store : List_store.t -> GList_store.list_store
-class list_view : List_view.t -> GList_view.list_view
-class lock_button : Lock_button.t -> GLock_button.lock_button
-class map_list_model : Map_list_model.t -> GMap_list_model.map_list_model
-class media_controls : Media_controls.t -> GMedia_controls.media_controls
-class media_file : Media_file.t -> GMedia_file.media_file
-class media_stream : Media_stream.t -> GMedia_stream.media_stream
-class menu_button : Menu_button.t -> GMenu_button.menu_button
-class message_dialog : Message_dialog.t -> GMessage_dialog.message_dialog
-class mnemonic_action : Mnemonic_action.t -> GMnemonic_action.mnemonic_action
-class mnemonic_trigger : Mnemonic_trigger.t -> GMnemonic_trigger.mnemonic_trigger
-class mount_operation : Mount_operation.t -> GMount_operation.mount_operation
-class multi_filter : Multi_filter.t -> GMulti_filter.multi_filter
-class multi_selection : Multi_selection.t -> GMulti_selection.multi_selection
-class multi_sorter : Multi_sorter.t -> GMulti_sorter.multi_sorter
-class named_action : Named_action.t -> GNamed_action.named_action
-class native : Native.t -> GNative.native
-class native_dialog : Native_dialog.t -> GNative_dialog.native_dialog
-class never_trigger : Never_trigger.t -> GNever_trigger.never_trigger
-class no_selection : No_selection.t -> GNo_selection.no_selection
-class notebook : Notebook.t -> GNotebook.notebook
-class notebook_page : Notebook_page.t -> GNotebook_page.notebook_page
-class nothing_action : Nothing_action.t -> GNothing_action.nothing_action
-class numeric_sorter : Numeric_sorter.t -> GNumeric_sorter.numeric_sorter
-class object_expression : Object_expression.t -> GObject_expression.object_expression
-class orientable : Orientable.t -> GOrientable.orientable
-class overlay : Overlay.t -> GOverlay.overlay
-class overlay_layout : Overlay_layout.t -> GOverlay_layout.overlay_layout
-class overlay_layout_child : Overlay_layout_child.t -> GOverlay_layout_child.overlay_layout_child
-class pad_controller : Pad_controller.t -> GPad_controller.pad_controller
-class page_setup : Page_setup.t -> GPage_setup.page_setup
-class paned : Paned.t -> GPaned.paned
-class param_spec_expression : Param_spec_expression.t -> GParam_spec_expression.param_spec_expression
-class password_entry : Password_entry.t -> GPassword_entry.password_entry
-class password_entry_buffer : Password_entry_buffer.t -> GPassword_entry_buffer.password_entry_buffer
-class picture : Picture.t -> GPicture.picture
-class popover : Popover.t -> GPopover.popover
-class popover_menu : Popover_menu.t -> GPopover_menu.popover_menu
-class popover_menu_bar : Popover_menu_bar.t -> GPopover_menu_bar.popover_menu_bar
-class print_context : Print_context.t -> GPrint_context.print_context
-class print_dialog : Print_dialog.t -> GPrint_dialog.print_dialog
-class print_operation : Print_operation.t -> GPrint_operation.print_operation
-class print_operation_preview : Print_operation_preview.t -> GPrint_operation_preview.print_operation_preview
-class print_settings : Print_settings.t -> GPrint_settings.print_settings
-class progress_bar : Progress_bar.t -> GProgress_bar.progress_bar
-class property_expression : Property_expression.t -> GProperty_expression.property_expression
-class range : Range.t -> GRange.range
-class recent_manager : Recent_manager.t -> GRecent_manager.recent_manager
-class revealer : Revealer.t -> GRevealer.revealer
-class root : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Root.t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.root
-class scale : Scale.t -> GScale.scale
-class scale_button : Scale_button.t -> GScale_button.scale_button
-class scrollable : Scrollable.t -> GScrollable.scrollable
-class scrollbar : Scrollbar.t -> GScrollbar.scrollbar
-class scrolled_window : Scrolled_window.t -> GScrolled_window.scrolled_window
-class search_bar : Search_bar.t -> GSearch_bar.search_bar
-class search_entry : Search_entry.t -> GSearch_entry.search_entry
-class section_model : Section_model.t -> GSection_model.section_model
-class selection_filter_model : Selection_filter_model.t -> GSelection_filter_model.selection_filter_model
-class selection_model : Selection_model.t -> GSelection_model.selection_model
-class separator : Separator.t -> GSeparator.separator
-class settings : Settings.t -> GSettings.settings
-class shortcut : Shortcut.t -> GShortcut.shortcut
-class shortcut_action : Shortcut_action.t -> GShortcut_action.shortcut_action
-class shortcut_controller : Shortcut_controller.t -> GShortcut_controller.shortcut_controller
-class shortcut_label : Shortcut_label.t -> GShortcut_label.shortcut_label
-class shortcut_manager : Shortcut_manager.t -> GShortcut_manager.shortcut_manager
-class shortcut_trigger : Shortcut_trigger.t -> GShortcut_trigger.shortcut_trigger
-class shortcuts_group : Shortcuts_group.t -> GShortcuts_group.shortcuts_group
-class shortcuts_section : Shortcuts_section.t -> GShortcuts_section.shortcuts_section
-class shortcuts_shortcut : Shortcuts_shortcut.t -> GShortcuts_shortcut.shortcuts_shortcut
-class shortcuts_window : Shortcuts_window.t -> GShortcuts_window.shortcuts_window
-class signal_action : Signal_action.t -> GSignal_action.signal_action
-class signal_list_item_factory : Signal_list_item_factory.t -> GSignal_list_item_factory.signal_list_item_factory
-class single_selection : Single_selection.t -> GSingle_selection.single_selection
-class size_group : Size_group.t -> GSize_group.size_group
-class slice_list_model : Slice_list_model.t -> GSlice_list_model.slice_list_model
-class snapshot : Snapshot.t -> GSnapshot.snapshot
-class sort_list_model : Sort_list_model.t -> GSort_list_model.sort_list_model
-class sorter : Sorter.t -> GSorter.sorter
-class spin_button : Spin_button.t -> GSpin_button.spin_button
-class spinner : Spinner.t -> GSpinner.spinner
-class stack : Stack.t -> GStack.stack
-class stack_page : Stack_page.t -> GStack_page.stack_page
-class stack_sidebar : Stack_sidebar.t -> GStack_sidebar.stack_sidebar
-class stack_switcher : Stack_switcher.t -> GStack_switcher.stack_switcher
-class statusbar : Statusbar.t -> GStatusbar.statusbar
-class string_filter : String_filter.t -> GString_filter.string_filter
-class string_list : String_list.t -> GString_list.string_list
-class string_object : String_object.t -> GString_object.string_object
-class string_sorter : String_sorter.t -> GString_sorter.string_sorter
-class style_context : Style_context.t -> GStyle_context.style_context
-class style_provider : Style_provider.t -> GStyle_provider.style_provider
-class switch : Switch.t -> GSwitch.switch
-class symbolic_paintable : Symbolic_paintable.t -> GSymbolic_paintable.symbolic_paintable
-class text : Text.t -> GText.text
-class text_buffer : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t -> GText_buffer_and__text_iter_and__text_mark.text_buffer
-class text_child_anchor : Text_child_anchor.t -> GText_child_anchor.text_child_anchor
-class text_mark : Text_buffer_and__text_iter_and__text_mark.Text_mark.t -> GText_buffer_and__text_iter_and__text_mark.text_mark
-class text_tag : Text_tag.t -> GText_tag.text_tag
-class text_tag_table : Text_tag_table.t -> GText_tag_table.text_tag_table
-class text_view : Text_view.t -> GText_view.text_view
-class toggle_button : Toggle_button.t -> GToggle_button.toggle_button
-class tooltip : Tooltip.t -> GTooltip.tooltip
-class tree_drag_dest : Tree_drag_dest.t -> GTree_drag_dest.tree_drag_dest
-class tree_drag_source : Tree_drag_source.t -> GTree_drag_source.tree_drag_source
-class tree_expander : Tree_expander.t -> GTree_expander.tree_expander
-class tree_list_model : Tree_list_model.t -> GTree_list_model.tree_list_model
-class tree_list_row : Tree_list_row.t -> GTree_list_row.tree_list_row
-class tree_list_row_sorter : Tree_list_row_sorter.t -> GTree_list_row_sorter.tree_list_row_sorter
-class tree_model : Tree_model.t -> GTree_model.tree_model
-class tree_model_filter : Tree_model_filter.t -> GTree_model_filter.tree_model_filter
-class tree_model_sort : Tree_model_sort.t -> GTree_model_sort.tree_model_sort
-class tree_selection : Tree_selection_and__tree_view.Tree_selection.t -> GTree_selection_and__tree_view.tree_selection
-class tree_sortable : Tree_sortable.t -> GTree_sortable.tree_sortable
-class tree_store : Tree_store.t -> GTree_store.tree_store
-class tree_view : Tree_selection_and__tree_view.Tree_view.t -> GTree_selection_and__tree_view.tree_view
-class tree_view_column : Tree_view_column.t -> GTree_view_column.tree_view_column
-class uri_launcher : Uri_launcher.t -> GUri_launcher.uri_launcher
-class video : Video.t -> GVideo.video
-class viewport : Viewport.t -> GViewport.viewport
-class volume_button : Volume_button.t -> GVolume_button.volume_button
-class widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
-class widget_paintable : Widget_paintable.t -> GWidget_paintable.widget_paintable
-class window : Application_and__window_and__window_group.Window.t -> GApplication_and__window_and__window_group.window
-class window_controls : Window_controls.t -> GWindow_controls.window_controls
-class window_group : Application_and__window_and__window_group.Window_group.t -> GApplication_and__window_and__window_group.window_group
-class window_handle : Window_handle.t -> GWindow_handle.window_handle
+class type at_context_t = GAt_context_and__accessible.at_context_t
+class type about_dialog_t = GAbout_dialog.about_dialog_t
+class type accessible_t = GAt_context_and__accessible.accessible_t
+class type accessible_list_t = GAccessible_list.accessible_list_t
+class type accessible_range_t = GAccessible_range.accessible_range_t
+class type accessible_text_t = GAccessible_text.accessible_text_t
+class type accessible_text_range_t = GAccessible_text_range.accessible_text_range_t
+class type action_bar_t = GAction_bar.action_bar_t
+class type actionable_t = GActionable.actionable_t
+class type activate_action_t = GActivate_action.activate_action_t
+class type adjustment_t = GAdjustment.adjustment_t
+class type alert_dialog_t = GAlert_dialog.alert_dialog_t
+class type alternative_trigger_t = GAlternative_trigger.alternative_trigger_t
+class type any_filter_t = GAny_filter.any_filter_t
+class type app_chooser_t = GApp_chooser.app_chooser_t
+class type app_chooser_button_t = GApp_chooser_button.app_chooser_button_t
+class type app_chooser_dialog_t = GApp_chooser_dialog.app_chooser_dialog_t
+class type app_chooser_widget_t = GApp_chooser_widget.app_chooser_widget_t
+class type application_t = GApplication_and__window_and__window_group.application_t
+class type application_window_t = GApplication_window.application_window_t
+class type aspect_frame_t = GAspect_frame.aspect_frame_t
+class type assistant_t = GAssistant.assistant_t
+class type assistant_page_t = GAssistant_page.assistant_page_t
+class type bin_layout_t = GBin_layout.bin_layout_t
+class type bitset_t = GBitset.bitset_t
+class type bitset_iter_t = GBitset_iter.bitset_iter_t
+class type bookmark_list_t = GBookmark_list.bookmark_list_t
+class type bool_filter_t = GBool_filter.bool_filter_t
+class type border_t = GBorder.border_t
+class type box_t = GBox.box_t
+class type box_layout_t = GBox_layout.box_layout_t
+class type buildable_t = GBuildable.buildable_t
+class type buildable_parse_context_t = GBuildable_parse_context.buildable_parse_context_t
+class type buildable_parser_t = GBuildable_parser.buildable_parser_t
+class type builder_t = GBuilder.builder_t
+class type builder_c_scope_t = GBuilder_c_scope.builder_c_scope_t
+class type builder_list_item_factory_t = GBuilder_list_item_factory.builder_list_item_factory_t
+class type builder_scope_t = GBuilder_scope.builder_scope_t
+class type button_t = GButton.button_t
+class type c_closure_expression_t = GC_closure_expression.c_closure_expression_t
+class type calendar_t = GCalendar.calendar_t
+class type callback_action_t = GCallback_action.callback_action_t
+class type cell_area_t = GCell_area_and__cell_area_context.cell_area_t
+class type cell_area_box_t = GCell_area_box.cell_area_box_t
+class type cell_area_context_t = GCell_area_and__cell_area_context.cell_area_context_t
+class type cell_editable_t = GCell_editable.cell_editable_t
+class type cell_layout_t = GCell_layout.cell_layout_t
+class type cell_renderer_t = GCell_renderer.cell_renderer_t
+class type cell_renderer_accel_t = GCell_renderer_accel.cell_renderer_accel_t
+class type cell_renderer_combo_t = GCell_renderer_combo.cell_renderer_combo_t
+class type cell_renderer_pixbuf_t = GCell_renderer_pixbuf.cell_renderer_pixbuf_t
+class type cell_renderer_progress_t = GCell_renderer_progress.cell_renderer_progress_t
+class type cell_renderer_spin_t = GCell_renderer_spin.cell_renderer_spin_t
+class type cell_renderer_spinner_t = GCell_renderer_spinner.cell_renderer_spinner_t
+class type cell_renderer_text_t = GCell_renderer_text.cell_renderer_text_t
+class type cell_renderer_toggle_t = GCell_renderer_toggle.cell_renderer_toggle_t
+class type cell_view_t = GCell_view.cell_view_t
+class type center_box_t = GCenter_box.center_box_t
+class type center_layout_t = GCenter_layout.center_layout_t
+class type check_button_t = GCheck_button.check_button_t
+class type closure_expression_t = GClosure_expression.closure_expression_t
+class type color_button_t = GColor_button.color_button_t
+class type color_chooser_t = GColor_chooser.color_chooser_t
+class type color_chooser_dialog_t = GColor_chooser_dialog.color_chooser_dialog_t
+class type color_chooser_widget_t = GColor_chooser_widget.color_chooser_widget_t
+class type color_dialog_t = GColor_dialog.color_dialog_t
+class type color_dialog_button_t = GColor_dialog_button.color_dialog_button_t
+class type column_view_t = GColumn_view_and__column_view_column.column_view_t
+class type column_view_cell_t = GColumn_view_cell.column_view_cell_t
+class type column_view_column_t = GColumn_view_and__column_view_column.column_view_column_t
+class type column_view_row_t = GColumn_view_row.column_view_row_t
+class type column_view_sorter_t = GColumn_view_sorter.column_view_sorter_t
+class type combo_box_t = GCombo_box.combo_box_t
+class type combo_box_text_t = GCombo_box_text.combo_box_text_t
+class type constant_expression_t = GConstant_expression.constant_expression_t
+class type constraint__t = GConstraint.constraint__t
+class type constraint_guide_t = GConstraint_guide.constraint_guide_t
+class type constraint_layout_t = GConstraint_layout.constraint_layout_t
+class type constraint_layout_child_t = GConstraint_layout_child.constraint_layout_child_t
+class type constraint_target_t = GConstraint_target.constraint_target_t
+class type css_location_t = GCss_location.css_location_t
+class type css_provider_t = GCss_provider.css_provider_t
+class type css_section_t = GCss_section.css_section_t
+class type css_style_change_t = GCss_style_change.css_style_change_t
+class type custom_filter_t = GCustom_filter.custom_filter_t
+class type custom_layout_t = GCustom_layout.custom_layout_t
+class type custom_sorter_t = GCustom_sorter.custom_sorter_t
+class type dialog_t = GDialog.dialog_t
+class type directory_list_t = GDirectory_list.directory_list_t
+class type drag_icon_t = GDrag_icon.drag_icon_t
+class type drag_source_t = GDrag_source.drag_source_t
+class type drawing_area_t = GDrawing_area.drawing_area_t
+class type drop_controller_motion_t = GDrop_controller_motion.drop_controller_motion_t
+class type drop_down_t = GDrop_down.drop_down_t
+class type drop_target_t = GDrop_target.drop_target_t
+class type drop_target_async_t = GDrop_target_async.drop_target_async_t
+class type editable_t = GEditable.editable_t
+class type editable_label_t = GEditable_label.editable_label_t
+class type emoji_chooser_t = GEmoji_chooser.emoji_chooser_t
+class type entry_t = GEntry.entry_t
+class type entry_buffer_t = GEntry_buffer.entry_buffer_t
+class type entry_completion_t = GEntry_completion.entry_completion_t
+class type event_controller_t = GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller_t
+class type event_controller_focus_t = GEvent_controller_focus.event_controller_focus_t
+class type event_controller_key_t = GEvent_controller_key.event_controller_key_t
+class type event_controller_legacy_t = GEvent_controller_legacy.event_controller_legacy_t
+class type event_controller_motion_t = GEvent_controller_motion.event_controller_motion_t
+class type event_controller_scroll_t = GEvent_controller_scroll.event_controller_scroll_t
+class type every_filter_t = GEvery_filter.every_filter_t
+class type expander_t = GExpander.expander_t
+class type expression_t = GExpression.expression_t
+class type expression_watch_t = GExpression_watch.expression_watch_t
+class type file_chooser_t = GFile_chooser.file_chooser_t
+class type file_chooser_dialog_t = GFile_chooser_dialog.file_chooser_dialog_t
+class type file_chooser_native_t = GFile_chooser_native.file_chooser_native_t
+class type file_chooser_widget_t = GFile_chooser_widget.file_chooser_widget_t
+class type file_dialog_t = GFile_dialog.file_dialog_t
+class type file_filter_t = GFile_filter.file_filter_t
+class type file_launcher_t = GFile_launcher.file_launcher_t
+class type filter_t = GFilter.filter_t
+class type filter_list_model_t = GFilter_list_model.filter_list_model_t
+class type fixed_t = GFixed.fixed_t
+class type fixed_layout_t = GFixed_layout.fixed_layout_t
+class type fixed_layout_child_t = GFixed_layout_child.fixed_layout_child_t
+class type flatten_list_model_t = GFlatten_list_model.flatten_list_model_t
+class type flow_box_t = GFlow_box.flow_box_t
+class type flow_box_child_t = GFlow_box_child.flow_box_child_t
+class type font_button_t = GFont_button.font_button_t
+class type font_chooser_t = GFont_chooser.font_chooser_t
+class type font_chooser_dialog_t = GFont_chooser_dialog.font_chooser_dialog_t
+class type font_chooser_widget_t = GFont_chooser_widget.font_chooser_widget_t
+class type font_dialog_t = GFont_dialog.font_dialog_t
+class type font_dialog_button_t = GFont_dialog_button.font_dialog_button_t
+class type frame_t = GFrame.frame_t
+class type gl_area_t = GGl_area.gl_area_t
+class type gesture_t = GGesture.gesture_t
+class type gesture_click_t = GGesture_click.gesture_click_t
+class type gesture_drag_t = GGesture_drag.gesture_drag_t
+class type gesture_long_press_t = GGesture_long_press.gesture_long_press_t
+class type gesture_pan_t = GGesture_pan.gesture_pan_t
+class type gesture_rotate_t = GGesture_rotate.gesture_rotate_t
+class type gesture_single_t = GGesture_single.gesture_single_t
+class type gesture_stylus_t = GGesture_stylus.gesture_stylus_t
+class type gesture_swipe_t = GGesture_swipe.gesture_swipe_t
+class type gesture_zoom_t = GGesture_zoom.gesture_zoom_t
+class type graphics_offload_t = GGraphics_offload.graphics_offload_t
+class type grid_t = GGrid.grid_t
+class type grid_layout_t = GGrid_layout.grid_layout_t
+class type grid_layout_child_t = GGrid_layout_child.grid_layout_child_t
+class type grid_view_t = GGrid_view.grid_view_t
+class type header_bar_t = GHeader_bar.header_bar_t
+class type im_context_t = GIm_context.im_context_t
+class type im_context_simple_t = GIm_context_simple.im_context_simple_t
+class type im_multicontext_t = GIm_multicontext.im_multicontext_t
+class type icon_paintable_t = GIcon_paintable.icon_paintable_t
+class type icon_theme_t = GIcon_theme.icon_theme_t
+class type icon_view_t = GIcon_view.icon_view_t
+class type image_t = GImage.image_t
+class type info_bar_t = GInfo_bar.info_bar_t
+class type inscription_t = GInscription.inscription_t
+class type keyval_trigger_t = GKeyval_trigger.keyval_trigger_t
+class type label_t = GLabel.label_t
+class type layout_child_t = GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.layout_child_t
+class type layout_manager_t = GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.layout_manager_t
+class type level_bar_t = GLevel_bar.level_bar_t
+class type link_button_t = GLink_button.link_button_t
+class type list_base_t = GList_base.list_base_t
+class type list_box_t = GList_box.list_box_t
+class type list_box_row_t = GList_box_row.list_box_row_t
+class type list_header_t = GList_header.list_header_t
+class type list_item_t = GList_item.list_item_t
+class type list_item_factory_t = GList_item_factory.list_item_factory_t
+class type list_store_t = GList_store.list_store_t
+class type list_view_t = GList_view.list_view_t
+class type lock_button_t = GLock_button.lock_button_t
+class type map_list_model_t = GMap_list_model.map_list_model_t
+class type media_controls_t = GMedia_controls.media_controls_t
+class type media_file_t = GMedia_file.media_file_t
+class type media_stream_t = GMedia_stream.media_stream_t
+class type menu_button_t = GMenu_button.menu_button_t
+class type message_dialog_t = GMessage_dialog.message_dialog_t
+class type mnemonic_action_t = GMnemonic_action.mnemonic_action_t
+class type mnemonic_trigger_t = GMnemonic_trigger.mnemonic_trigger_t
+class type mount_operation_t = GMount_operation.mount_operation_t
+class type multi_filter_t = GMulti_filter.multi_filter_t
+class type multi_selection_t = GMulti_selection.multi_selection_t
+class type multi_sorter_t = GMulti_sorter.multi_sorter_t
+class type named_action_t = GNamed_action.named_action_t
+class type native_t = GNative.native_t
+class type native_dialog_t = GNative_dialog.native_dialog_t
+class type never_trigger_t = GNever_trigger.never_trigger_t
+class type no_selection_t = GNo_selection.no_selection_t
+class type notebook_t = GNotebook.notebook_t
+class type notebook_page_t = GNotebook_page.notebook_page_t
+class type nothing_action_t = GNothing_action.nothing_action_t
+class type numeric_sorter_t = GNumeric_sorter.numeric_sorter_t
+class type object_expression_t = GObject_expression.object_expression_t
+class type orientable_t = GOrientable.orientable_t
+class type overlay_t = GOverlay.overlay_t
+class type overlay_layout_t = GOverlay_layout.overlay_layout_t
+class type overlay_layout_child_t = GOverlay_layout_child.overlay_layout_child_t
+class type pad_action_entry_t = GPad_action_entry.pad_action_entry_t
+class type pad_controller_t = GPad_controller.pad_controller_t
+class type page_range_t = GPage_range.page_range_t
+class type page_setup_t = GPage_setup.page_setup_t
+class type paned_t = GPaned.paned_t
+class type paper_size_t = GPaper_size.paper_size_t
+class type param_spec_expression_t = GParam_spec_expression.param_spec_expression_t
+class type password_entry_t = GPassword_entry.password_entry_t
+class type password_entry_buffer_t = GPassword_entry_buffer.password_entry_buffer_t
+class type picture_t = GPicture.picture_t
+class type popover_t = GPopover.popover_t
+class type popover_menu_t = GPopover_menu.popover_menu_t
+class type popover_menu_bar_t = GPopover_menu_bar.popover_menu_bar_t
+class type print_context_t = GPrint_context.print_context_t
+class type print_dialog_t = GPrint_dialog.print_dialog_t
+class type print_operation_t = GPrint_operation.print_operation_t
+class type print_operation_preview_t = GPrint_operation_preview.print_operation_preview_t
+class type print_settings_t = GPrint_settings.print_settings_t
+class type print_setup_t = GPrint_setup.print_setup_t
+class type progress_bar_t = GProgress_bar.progress_bar_t
+class type property_expression_t = GProperty_expression.property_expression_t
+class type range_t = GRange.range_t
+class type recent_data_t = GRecent_data.recent_data_t
+class type recent_info_t = GRecent_info.recent_info_t
+class type recent_manager_t = GRecent_manager.recent_manager_t
+class type requested_size_t = GRequested_size.requested_size_t
+class type requisition_t = GRequisition.requisition_t
+class type revealer_t = GRevealer.revealer_t
+class type root_t = GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.root_t
+class type scale_t = GScale.scale_t
+class type scale_button_t = GScale_button.scale_button_t
+class type scroll_info_t = GScroll_info.scroll_info_t
+class type scrollable_t = GScrollable.scrollable_t
+class type scrollbar_t = GScrollbar.scrollbar_t
+class type scrolled_window_t = GScrolled_window.scrolled_window_t
+class type search_bar_t = GSearch_bar.search_bar_t
+class type search_entry_t = GSearch_entry.search_entry_t
+class type section_model_t = GSection_model.section_model_t
+class type selection_filter_model_t = GSelection_filter_model.selection_filter_model_t
+class type selection_model_t = GSelection_model.selection_model_t
+class type separator_t = GSeparator.separator_t
+class type settings_t = GSettings.settings_t
+class type shortcut_t = GShortcut.shortcut_t
+class type shortcut_action_t = GShortcut_action.shortcut_action_t
+class type shortcut_controller_t = GShortcut_controller.shortcut_controller_t
+class type shortcut_label_t = GShortcut_label.shortcut_label_t
+class type shortcut_manager_t = GShortcut_manager.shortcut_manager_t
+class type shortcut_trigger_t = GShortcut_trigger.shortcut_trigger_t
+class type shortcuts_group_t = GShortcuts_group.shortcuts_group_t
+class type shortcuts_section_t = GShortcuts_section.shortcuts_section_t
+class type shortcuts_shortcut_t = GShortcuts_shortcut.shortcuts_shortcut_t
+class type shortcuts_window_t = GShortcuts_window.shortcuts_window_t
+class type signal_action_t = GSignal_action.signal_action_t
+class type signal_list_item_factory_t = GSignal_list_item_factory.signal_list_item_factory_t
+class type single_selection_t = GSingle_selection.single_selection_t
+class type size_group_t = GSize_group.size_group_t
+class type slice_list_model_t = GSlice_list_model.slice_list_model_t
+class type snapshot_t = GSnapshot.snapshot_t
+class type sort_list_model_t = GSort_list_model.sort_list_model_t
+class type sorter_t = GSorter.sorter_t
+class type spin_button_t = GSpin_button.spin_button_t
+class type spinner_t = GSpinner.spinner_t
+class type stack_t = GStack.stack_t
+class type stack_page_t = GStack_page.stack_page_t
+class type stack_sidebar_t = GStack_sidebar.stack_sidebar_t
+class type stack_switcher_t = GStack_switcher.stack_switcher_t
+class type statusbar_t = GStatusbar.statusbar_t
+class type string_filter_t = GString_filter.string_filter_t
+class type string_list_t = GString_list.string_list_t
+class type string_object_t = GString_object.string_object_t
+class type string_sorter_t = GString_sorter.string_sorter_t
+class type style_context_t = GStyle_context.style_context_t
+class type style_provider_t = GStyle_provider.style_provider_t
+class type switch_t = GSwitch.switch_t
+class type symbolic_paintable_t = GSymbolic_paintable.symbolic_paintable_t
+class type text_t = GText.text_t
+class type text_buffer_t = GText_buffer_and__text_iter_and__text_mark.text_buffer_t
+class type text_child_anchor_t = GText_child_anchor.text_child_anchor_t
+class type text_iter_t = GText_buffer_and__text_iter_and__text_mark.text_iter_t
+class type text_mark_t = GText_buffer_and__text_iter_and__text_mark.text_mark_t
+class type text_tag_t = GText_tag.text_tag_t
+class type text_tag_table_t = GText_tag_table.text_tag_table_t
+class type text_view_t = GText_view.text_view_t
+class type toggle_button_t = GToggle_button.toggle_button_t
+class type tooltip_t = GTooltip.tooltip_t
+class type tree_drag_dest_t = GTree_drag_dest.tree_drag_dest_t
+class type tree_drag_source_t = GTree_drag_source.tree_drag_source_t
+class type tree_expander_t = GTree_expander.tree_expander_t
+class type tree_iter_t = GTree_iter.tree_iter_t
+class type tree_list_model_t = GTree_list_model.tree_list_model_t
+class type tree_list_row_t = GTree_list_row.tree_list_row_t
+class type tree_list_row_sorter_t = GTree_list_row_sorter.tree_list_row_sorter_t
+class type tree_model_t = GTree_model.tree_model_t
+class type tree_model_filter_t = GTree_model_filter.tree_model_filter_t
+class type tree_model_sort_t = GTree_model_sort.tree_model_sort_t
+class type tree_path_t = GTree_path.tree_path_t
+class type tree_row_reference_t = GTree_row_reference.tree_row_reference_t
+class type tree_selection_t = GTree_selection_and__tree_view.tree_selection_t
+class type tree_sortable_t = GTree_sortable.tree_sortable_t
+class type tree_store_t = GTree_store.tree_store_t
+class type tree_view_t = GTree_selection_and__tree_view.tree_view_t
+class type tree_view_column_t = GTree_view_column.tree_view_column_t
+class type uri_launcher_t = GUri_launcher.uri_launcher_t
+class type video_t = GVideo.video_t
+class type viewport_t = GViewport.viewport_t
+class type volume_button_t = GVolume_button.volume_button_t
+class type widget_t = GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+class type widget_paintable_t = GWidget_paintable.widget_paintable_t
+class type window_t = GApplication_and__window_and__window_group.window_t
+class type window_controls_t = GWindow_controls.window_controls_t
+class type window_group_t = GApplication_and__window_and__window_group.window_group_t
+class type window_handle_t = GWindow_handle.window_handle_t
+
+class at_context : At_context_and__accessible.At_context.t -> at_context_t
+class about_dialog : About_dialog.t -> about_dialog_t
+class accessible : At_context_and__accessible.Accessible.t -> accessible_t
+class accessible_list : Accessible_list.t -> accessible_list_t
+class accessible_range : Accessible_range.t -> accessible_range_t
+class accessible_text : Accessible_text.t -> accessible_text_t
+class accessible_text_range : Accessible_text_range.t -> accessible_text_range_t
+class action_bar : Action_bar.t -> action_bar_t
+class actionable : Actionable.t -> actionable_t
+class activate_action : Activate_action.t -> activate_action_t
+class adjustment : Adjustment.t -> adjustment_t
+class alert_dialog : Alert_dialog.t -> alert_dialog_t
+class alternative_trigger : Alternative_trigger.t -> alternative_trigger_t
+class any_filter : Any_filter.t -> any_filter_t
+class app_chooser : App_chooser.t -> app_chooser_t
+class app_chooser_button : App_chooser_button.t -> app_chooser_button_t
+class app_chooser_dialog : App_chooser_dialog.t -> app_chooser_dialog_t
+class app_chooser_widget : App_chooser_widget.t -> app_chooser_widget_t
+class application : Application_and__window_and__window_group.Application.t -> application_t
+class application_window : Application_window.t -> application_window_t
+class aspect_frame : Aspect_frame.t -> aspect_frame_t
+class assistant : Assistant.t -> assistant_t
+class assistant_page : Assistant_page.t -> assistant_page_t
+class bin_layout : Bin_layout.t -> bin_layout_t
+class bitset : Bitset.t -> bitset_t
+class bitset_iter : Bitset_iter.t -> bitset_iter_t
+class bookmark_list : Bookmark_list.t -> bookmark_list_t
+class bool_filter : Bool_filter.t -> bool_filter_t
+class border : Border.t -> border_t
+class box : Box.t -> box_t
+class box_layout : Box_layout.t -> box_layout_t
+class buildable : Buildable.t -> buildable_t
+class buildable_parse_context : Buildable_parse_context.t -> buildable_parse_context_t
+class buildable_parser : Buildable_parser.t -> buildable_parser_t
+class builder : Builder.t -> builder_t
+class builder_c_scope : Builder_c_scope.t -> builder_c_scope_t
+class builder_list_item_factory : Builder_list_item_factory.t -> builder_list_item_factory_t
+class builder_scope : Builder_scope.t -> builder_scope_t
+class button : Button.t -> button_t
+class c_closure_expression : C_closure_expression.t -> c_closure_expression_t
+class calendar : Calendar.t -> calendar_t
+class callback_action : Callback_action.t -> callback_action_t
+class cell_area : Cell_area_and__cell_area_context.Cell_area.t -> cell_area_t
+class cell_area_box : Cell_area_box.t -> cell_area_box_t
+class cell_area_context : Cell_area_and__cell_area_context.Cell_area_context.t -> cell_area_context_t
+class cell_editable : Cell_editable.t -> cell_editable_t
+class cell_layout : Cell_layout.t -> cell_layout_t
+class cell_renderer : Cell_renderer.t -> cell_renderer_t
+class cell_renderer_accel : Cell_renderer_accel.t -> cell_renderer_accel_t
+class cell_renderer_combo : Cell_renderer_combo.t -> cell_renderer_combo_t
+class cell_renderer_pixbuf : Cell_renderer_pixbuf.t -> cell_renderer_pixbuf_t
+class cell_renderer_progress : Cell_renderer_progress.t -> cell_renderer_progress_t
+class cell_renderer_spin : Cell_renderer_spin.t -> cell_renderer_spin_t
+class cell_renderer_spinner : Cell_renderer_spinner.t -> cell_renderer_spinner_t
+class cell_renderer_text : Cell_renderer_text.t -> cell_renderer_text_t
+class cell_renderer_toggle : Cell_renderer_toggle.t -> cell_renderer_toggle_t
+class cell_view : Cell_view.t -> cell_view_t
+class center_box : Center_box.t -> center_box_t
+class center_layout : Center_layout.t -> center_layout_t
+class check_button : Check_button.t -> check_button_t
+class closure_expression : Closure_expression.t -> closure_expression_t
+class color_button : Color_button.t -> color_button_t
+class color_chooser : Color_chooser.t -> color_chooser_t
+class color_chooser_dialog : Color_chooser_dialog.t -> color_chooser_dialog_t
+class color_chooser_widget : Color_chooser_widget.t -> color_chooser_widget_t
+class color_dialog : Color_dialog.t -> color_dialog_t
+class color_dialog_button : Color_dialog_button.t -> color_dialog_button_t
+class column_view : Column_view_and__column_view_column.Column_view.t -> column_view_t
+class column_view_cell : Column_view_cell.t -> column_view_cell_t
+class column_view_column : Column_view_and__column_view_column.Column_view_column.t -> column_view_column_t
+class column_view_row : Column_view_row.t -> column_view_row_t
+class column_view_sorter : Column_view_sorter.t -> column_view_sorter_t
+class combo_box : Combo_box.t -> combo_box_t
+class combo_box_text : Combo_box_text.t -> combo_box_text_t
+class constant_expression : Constant_expression.t -> constant_expression_t
+class constraint_ : Constraint.t -> constraint__t
+class constraint_guide : Constraint_guide.t -> constraint_guide_t
+class constraint_layout : Constraint_layout.t -> constraint_layout_t
+class constraint_layout_child : Constraint_layout_child.t -> constraint_layout_child_t
+class constraint_target : Constraint_target.t -> constraint_target_t
+class css_location : Css_location.t -> css_location_t
+class css_provider : Css_provider.t -> css_provider_t
+class css_section : Css_section.t -> css_section_t
+class css_style_change : Css_style_change.t -> css_style_change_t
+class custom_filter : Custom_filter.t -> custom_filter_t
+class custom_layout : Custom_layout.t -> custom_layout_t
+class custom_sorter : Custom_sorter.t -> custom_sorter_t
+class dialog : Dialog.t -> dialog_t
+class directory_list : Directory_list.t -> directory_list_t
+class drag_icon : Drag_icon.t -> drag_icon_t
+class drag_source : Drag_source.t -> drag_source_t
+class drawing_area : Drawing_area.t -> drawing_area_t
+class drop_controller_motion : Drop_controller_motion.t -> drop_controller_motion_t
+class drop_down : Drop_down.t -> drop_down_t
+class drop_target : Drop_target.t -> drop_target_t
+class drop_target_async : Drop_target_async.t -> drop_target_async_t
+class editable : Editable.t -> editable_t
+class editable_label : Editable_label.t -> editable_label_t
+class emoji_chooser : Emoji_chooser.t -> emoji_chooser_t
+class entry : Entry.t -> entry_t
+class entry_buffer : Entry_buffer.t -> entry_buffer_t
+class entry_completion : Entry_completion.t -> entry_completion_t
+class event_controller : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t -> event_controller_t
+class event_controller_focus : Event_controller_focus.t -> event_controller_focus_t
+class event_controller_key : Event_controller_key.t -> event_controller_key_t
+class event_controller_legacy : Event_controller_legacy.t -> event_controller_legacy_t
+class event_controller_motion : Event_controller_motion.t -> event_controller_motion_t
+class event_controller_scroll : Event_controller_scroll.t -> event_controller_scroll_t
+class every_filter : Every_filter.t -> every_filter_t
+class expander : Expander.t -> expander_t
+class expression : Expression.t -> expression_t
+class expression_watch : Expression_watch.t -> expression_watch_t
+class file_chooser : File_chooser.t -> file_chooser_t
+class file_chooser_dialog : File_chooser_dialog.t -> file_chooser_dialog_t
+class file_chooser_native : File_chooser_native.t -> file_chooser_native_t
+class file_chooser_widget : File_chooser_widget.t -> file_chooser_widget_t
+class file_dialog : File_dialog.t -> file_dialog_t
+class file_filter : File_filter.t -> file_filter_t
+class file_launcher : File_launcher.t -> file_launcher_t
+class filter : Filter.t -> filter_t
+class filter_list_model : Filter_list_model.t -> filter_list_model_t
+class fixed : Fixed.t -> fixed_t
+class fixed_layout : Fixed_layout.t -> fixed_layout_t
+class fixed_layout_child : Fixed_layout_child.t -> fixed_layout_child_t
+class flatten_list_model : Flatten_list_model.t -> flatten_list_model_t
+class flow_box : Flow_box.t -> flow_box_t
+class flow_box_child : Flow_box_child.t -> flow_box_child_t
+class font_button : Font_button.t -> font_button_t
+class font_chooser : Font_chooser.t -> font_chooser_t
+class font_chooser_dialog : Font_chooser_dialog.t -> font_chooser_dialog_t
+class font_chooser_widget : Font_chooser_widget.t -> font_chooser_widget_t
+class font_dialog : Font_dialog.t -> font_dialog_t
+class font_dialog_button : Font_dialog_button.t -> font_dialog_button_t
+class frame : Frame.t -> frame_t
+class gl_area : Gl_area.t -> gl_area_t
+class gesture : Gesture.t -> gesture_t
+class gesture_click : Gesture_click.t -> gesture_click_t
+class gesture_drag : Gesture_drag.t -> gesture_drag_t
+class gesture_long_press : Gesture_long_press.t -> gesture_long_press_t
+class gesture_pan : Gesture_pan.t -> gesture_pan_t
+class gesture_rotate : Gesture_rotate.t -> gesture_rotate_t
+class gesture_single : Gesture_single.t -> gesture_single_t
+class gesture_stylus : Gesture_stylus.t -> gesture_stylus_t
+class gesture_swipe : Gesture_swipe.t -> gesture_swipe_t
+class gesture_zoom : Gesture_zoom.t -> gesture_zoom_t
+class graphics_offload : Graphics_offload.t -> graphics_offload_t
+class grid : Grid.t -> grid_t
+class grid_layout : Grid_layout.t -> grid_layout_t
+class grid_layout_child : Grid_layout_child.t -> grid_layout_child_t
+class grid_view : Grid_view.t -> grid_view_t
+class header_bar : Header_bar.t -> header_bar_t
+class im_context : Im_context.t -> im_context_t
+class im_context_simple : Im_context_simple.t -> im_context_simple_t
+class im_multicontext : Im_multicontext.t -> im_multicontext_t
+class icon_paintable : Icon_paintable.t -> icon_paintable_t
+class icon_theme : Icon_theme.t -> icon_theme_t
+class icon_view : Icon_view.t -> icon_view_t
+class image : Image.t -> image_t
+class info_bar : Info_bar.t -> info_bar_t
+class inscription : Inscription.t -> inscription_t
+class keyval_trigger : Keyval_trigger.t -> keyval_trigger_t
+class label : Label.t -> label_t
+class layout_child : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Layout_child.t -> layout_child_t
+class layout_manager : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Layout_manager.t -> layout_manager_t
+class level_bar : Level_bar.t -> level_bar_t
+class link_button : Link_button.t -> link_button_t
+class list_base : List_base.t -> list_base_t
+class list_box : List_box.t -> list_box_t
+class list_box_row : List_box_row.t -> list_box_row_t
+class list_header : List_header.t -> list_header_t
+class list_item : List_item.t -> list_item_t
+class list_item_factory : List_item_factory.t -> list_item_factory_t
+class list_store : List_store.t -> list_store_t
+class list_view : List_view.t -> list_view_t
+class lock_button : Lock_button.t -> lock_button_t
+class map_list_model : Map_list_model.t -> map_list_model_t
+class media_controls : Media_controls.t -> media_controls_t
+class media_file : Media_file.t -> media_file_t
+class media_stream : Media_stream.t -> media_stream_t
+class menu_button : Menu_button.t -> menu_button_t
+class message_dialog : Message_dialog.t -> message_dialog_t
+class mnemonic_action : Mnemonic_action.t -> mnemonic_action_t
+class mnemonic_trigger : Mnemonic_trigger.t -> mnemonic_trigger_t
+class mount_operation : Mount_operation.t -> mount_operation_t
+class multi_filter : Multi_filter.t -> multi_filter_t
+class multi_selection : Multi_selection.t -> multi_selection_t
+class multi_sorter : Multi_sorter.t -> multi_sorter_t
+class named_action : Named_action.t -> named_action_t
+class native : Native.t -> native_t
+class native_dialog : Native_dialog.t -> native_dialog_t
+class never_trigger : Never_trigger.t -> never_trigger_t
+class no_selection : No_selection.t -> no_selection_t
+class notebook : Notebook.t -> notebook_t
+class notebook_page : Notebook_page.t -> notebook_page_t
+class nothing_action : Nothing_action.t -> nothing_action_t
+class numeric_sorter : Numeric_sorter.t -> numeric_sorter_t
+class object_expression : Object_expression.t -> object_expression_t
+class orientable : Orientable.t -> orientable_t
+class overlay : Overlay.t -> overlay_t
+class overlay_layout : Overlay_layout.t -> overlay_layout_t
+class overlay_layout_child : Overlay_layout_child.t -> overlay_layout_child_t
+class pad_action_entry : Pad_action_entry.t -> pad_action_entry_t
+class pad_controller : Pad_controller.t -> pad_controller_t
+class page_range : Page_range.t -> page_range_t
+class page_setup : Page_setup.t -> page_setup_t
+class paned : Paned.t -> paned_t
+class paper_size : Paper_size.t -> paper_size_t
+class param_spec_expression : Param_spec_expression.t -> param_spec_expression_t
+class password_entry : Password_entry.t -> password_entry_t
+class password_entry_buffer : Password_entry_buffer.t -> password_entry_buffer_t
+class picture : Picture.t -> picture_t
+class popover : Popover.t -> popover_t
+class popover_menu : Popover_menu.t -> popover_menu_t
+class popover_menu_bar : Popover_menu_bar.t -> popover_menu_bar_t
+class print_context : Print_context.t -> print_context_t
+class print_dialog : Print_dialog.t -> print_dialog_t
+class print_operation : Print_operation.t -> print_operation_t
+class print_operation_preview : Print_operation_preview.t -> print_operation_preview_t
+class print_settings : Print_settings.t -> print_settings_t
+class print_setup : Print_setup.t -> print_setup_t
+class progress_bar : Progress_bar.t -> progress_bar_t
+class property_expression : Property_expression.t -> property_expression_t
+class range : Range.t -> range_t
+class recent_data : Recent_data.t -> recent_data_t
+class recent_info : Recent_info.t -> recent_info_t
+class recent_manager : Recent_manager.t -> recent_manager_t
+class requested_size : Requested_size.t -> requested_size_t
+class requisition : Requisition.t -> requisition_t
+class revealer : Revealer.t -> revealer_t
+class root : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Root.t -> root_t
+class scale : Scale.t -> scale_t
+class scale_button : Scale_button.t -> scale_button_t
+class scroll_info : Scroll_info.t -> scroll_info_t
+class scrollable : Scrollable.t -> scrollable_t
+class scrollbar : Scrollbar.t -> scrollbar_t
+class scrolled_window : Scrolled_window.t -> scrolled_window_t
+class search_bar : Search_bar.t -> search_bar_t
+class search_entry : Search_entry.t -> search_entry_t
+class section_model : Section_model.t -> section_model_t
+class selection_filter_model : Selection_filter_model.t -> selection_filter_model_t
+class selection_model : Selection_model.t -> selection_model_t
+class separator : Separator.t -> separator_t
+class settings : Settings.t -> settings_t
+class shortcut : Shortcut.t -> shortcut_t
+class shortcut_action : Shortcut_action.t -> shortcut_action_t
+class shortcut_controller : Shortcut_controller.t -> shortcut_controller_t
+class shortcut_label : Shortcut_label.t -> shortcut_label_t
+class shortcut_manager : Shortcut_manager.t -> shortcut_manager_t
+class shortcut_trigger : Shortcut_trigger.t -> shortcut_trigger_t
+class shortcuts_group : Shortcuts_group.t -> shortcuts_group_t
+class shortcuts_section : Shortcuts_section.t -> shortcuts_section_t
+class shortcuts_shortcut : Shortcuts_shortcut.t -> shortcuts_shortcut_t
+class shortcuts_window : Shortcuts_window.t -> shortcuts_window_t
+class signal_action : Signal_action.t -> signal_action_t
+class signal_list_item_factory : Signal_list_item_factory.t -> signal_list_item_factory_t
+class single_selection : Single_selection.t -> single_selection_t
+class size_group : Size_group.t -> size_group_t
+class slice_list_model : Slice_list_model.t -> slice_list_model_t
+class snapshot : Snapshot.t -> snapshot_t
+class sort_list_model : Sort_list_model.t -> sort_list_model_t
+class sorter : Sorter.t -> sorter_t
+class spin_button : Spin_button.t -> spin_button_t
+class spinner : Spinner.t -> spinner_t
+class stack : Stack.t -> stack_t
+class stack_page : Stack_page.t -> stack_page_t
+class stack_sidebar : Stack_sidebar.t -> stack_sidebar_t
+class stack_switcher : Stack_switcher.t -> stack_switcher_t
+class statusbar : Statusbar.t -> statusbar_t
+class string_filter : String_filter.t -> string_filter_t
+class string_list : String_list.t -> string_list_t
+class string_object : String_object.t -> string_object_t
+class string_sorter : String_sorter.t -> string_sorter_t
+class style_context : Style_context.t -> style_context_t
+class style_provider : Style_provider.t -> style_provider_t
+class switch : Switch.t -> switch_t
+class symbolic_paintable : Symbolic_paintable.t -> symbolic_paintable_t
+class text : Text.t -> text_t
+class text_buffer : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t -> text_buffer_t
+class text_child_anchor : Text_child_anchor.t -> text_child_anchor_t
+class text_iter : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> text_iter_t
+class text_mark : Text_buffer_and__text_iter_and__text_mark.Text_mark.t -> text_mark_t
+class text_tag : Text_tag.t -> text_tag_t
+class text_tag_table : Text_tag_table.t -> text_tag_table_t
+class text_view : Text_view.t -> text_view_t
+class toggle_button : Toggle_button.t -> toggle_button_t
+class tooltip : Tooltip.t -> tooltip_t
+class tree_drag_dest : Tree_drag_dest.t -> tree_drag_dest_t
+class tree_drag_source : Tree_drag_source.t -> tree_drag_source_t
+class tree_expander : Tree_expander.t -> tree_expander_t
+class tree_iter : Tree_iter.t -> tree_iter_t
+class tree_list_model : Tree_list_model.t -> tree_list_model_t
+class tree_list_row : Tree_list_row.t -> tree_list_row_t
+class tree_list_row_sorter : Tree_list_row_sorter.t -> tree_list_row_sorter_t
+class tree_model : Tree_model.t -> tree_model_t
+class tree_model_filter : Tree_model_filter.t -> tree_model_filter_t
+class tree_model_sort : Tree_model_sort.t -> tree_model_sort_t
+class tree_path : Tree_path.t -> tree_path_t
+class tree_row_reference : Tree_row_reference.t -> tree_row_reference_t
+class tree_selection : Tree_selection_and__tree_view.Tree_selection.t -> tree_selection_t
+class tree_sortable : Tree_sortable.t -> tree_sortable_t
+class tree_store : Tree_store.t -> tree_store_t
+class tree_view : Tree_selection_and__tree_view.Tree_view.t -> tree_view_t
+class tree_view_column : Tree_view_column.t -> tree_view_column_t
+class uri_launcher : Uri_launcher.t -> uri_launcher_t
+class video : Video.t -> video_t
+class viewport : Viewport.t -> viewport_t
+class volume_button : Volume_button.t -> volume_button_t
+class widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> widget_t
+class widget_paintable : Widget_paintable.t -> widget_paintable_t
+class window : Application_and__window_and__window_group.Window.t -> window_t
+class window_controls : Window_controls.t -> window_controls_t
+class window_group : Application_and__window_and__window_group.Window_group.t -> window_group_t
+class window_handle : Window_handle.t -> window_handle_t
 
 (** {1 Layer 1 Module Wrappers}
     
@@ -302,8 +640,10 @@ module Wrappers : sig
   module At_context = At_context_and__accessible.At_context
   module About_dialog = About_dialog
   module Accessible = At_context_and__accessible.Accessible
+  module Accessible_list = Accessible_list
   module Accessible_range = Accessible_range
   module Accessible_text = Accessible_text
+  module Accessible_text_range = Accessible_text_range
   module Action_bar = Action_bar
   module Actionable = Actionable
   module Activate_action = Activate_action
@@ -321,11 +661,16 @@ module Wrappers : sig
   module Assistant = Assistant
   module Assistant_page = Assistant_page
   module Bin_layout = Bin_layout
+  module Bitset = Bitset
+  module Bitset_iter = Bitset_iter
   module Bookmark_list = Bookmark_list
   module Bool_filter = Bool_filter
+  module Border = Border
   module Box = Box
   module Box_layout = Box_layout
   module Buildable = Buildable
+  module Buildable_parse_context = Buildable_parse_context
+  module Buildable_parser = Buildable_parser
   module Builder = Builder
   module Builder_c_scope = Builder_c_scope
   module Builder_list_item_factory = Builder_list_item_factory
@@ -372,7 +717,10 @@ module Wrappers : sig
   module Constraint_layout = Constraint_layout
   module Constraint_layout_child = Constraint_layout_child
   module Constraint_target = Constraint_target
+  module Css_location = Css_location
   module Css_provider = Css_provider
+  module Css_section = Css_section
+  module Css_style_change = Css_style_change
   module Custom_filter = Custom_filter
   module Custom_layout = Custom_layout
   module Custom_sorter = Custom_sorter
@@ -400,6 +748,7 @@ module Wrappers : sig
   module Every_filter = Every_filter
   module Expander = Expander
   module Expression = Expression
+  module Expression_watch = Expression_watch
   module File_chooser = File_chooser
   module File_chooser_dialog = File_chooser_dialog
   module File_chooser_native = File_chooser_native
@@ -489,9 +838,12 @@ module Wrappers : sig
   module Overlay = Overlay
   module Overlay_layout = Overlay_layout
   module Overlay_layout_child = Overlay_layout_child
+  module Pad_action_entry = Pad_action_entry
   module Pad_controller = Pad_controller
+  module Page_range = Page_range
   module Page_setup = Page_setup
   module Paned = Paned
+  module Paper_size = Paper_size
   module Param_spec_expression = Param_spec_expression
   module Password_entry = Password_entry
   module Password_entry_buffer = Password_entry_buffer
@@ -504,14 +856,20 @@ module Wrappers : sig
   module Print_operation = Print_operation
   module Print_operation_preview = Print_operation_preview
   module Print_settings = Print_settings
+  module Print_setup = Print_setup
   module Progress_bar = Progress_bar
   module Property_expression = Property_expression
   module Range = Range
+  module Recent_data = Recent_data
+  module Recent_info = Recent_info
   module Recent_manager = Recent_manager
+  module Requested_size = Requested_size
+  module Requisition = Requisition
   module Revealer = Revealer
   module Root = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Root
   module Scale = Scale
   module Scale_button = Scale_button
+  module Scroll_info = Scroll_info
   module Scrollable = Scrollable
   module Scrollbar = Scrollbar
   module Scrolled_window = Scrolled_window
@@ -558,6 +916,7 @@ module Wrappers : sig
   module Text = Text
   module Text_buffer = Text_buffer_and__text_iter_and__text_mark.Text_buffer
   module Text_child_anchor = Text_child_anchor
+  module Text_iter = Text_buffer_and__text_iter_and__text_mark.Text_iter
   module Text_mark = Text_buffer_and__text_iter_and__text_mark.Text_mark
   module Text_tag = Text_tag
   module Text_tag_table = Text_tag_table
@@ -567,12 +926,15 @@ module Wrappers : sig
   module Tree_drag_dest = Tree_drag_dest
   module Tree_drag_source = Tree_drag_source
   module Tree_expander = Tree_expander
+  module Tree_iter = Tree_iter
   module Tree_list_model = Tree_list_model
   module Tree_list_row = Tree_list_row
   module Tree_list_row_sorter = Tree_list_row_sorter
   module Tree_model = Tree_model
   module Tree_model_filter = Tree_model_filter
   module Tree_model_sort = Tree_model_sort
+  module Tree_path = Tree_path
+  module Tree_row_reference = Tree_row_reference
   module Tree_selection = Tree_selection_and__tree_view.Tree_selection
   module Tree_sortable = Tree_sortable
   module Tree_store = Tree_store
@@ -696,6 +1058,7 @@ type treeviewcolumnsizing = Gtk_enums.treeviewcolumnsizing
 type treeviewdropposition = Gtk_enums.treeviewdropposition
 type treeviewgridlines = Gtk_enums.treeviewgridlines
 type unit = Gtk_enums.unit
+type wrapmode = Gtk_enums.wrapmode
 type applicationinhibitflags = Gtk_enums.applicationinhibitflags
 type builderclosureflags = Gtk_enums.builderclosureflags
 type cellrendererstate = Gtk_enums.cellrendererstate

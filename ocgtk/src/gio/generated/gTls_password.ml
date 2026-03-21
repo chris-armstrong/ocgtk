@@ -1,5 +1,15 @@
+class type tls_password_t = object
+    method get_description : unit -> string
+    method get_flags : unit -> Gio_enums.tlspasswordflags
+    method get_warning : unit -> string
+    method set_description : string -> unit
+    method set_flags : Gio_enums.tlspasswordflags -> unit
+    method set_warning : string -> unit
+    method as_tls_password : Tls_password.t
+end
+
 (* High-level class for TlsPassword *)
-class tls_password (obj : Tls_password.t) = object (self)
+class tls_password (obj : Tls_password.t) : tls_password_t = object (self)
 
   method get_description : unit -> string =
     fun () ->

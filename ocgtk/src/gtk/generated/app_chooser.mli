@@ -11,5 +11,8 @@ external refresh : t -> unit = "ml_gtk_app_chooser_refresh"
 shows applications. *)
 external get_content_type : t -> string = "ml_gtk_app_chooser_get_content_type"
 
+(** Returns the currently selected application. *)
+external get_app_info : t -> Ocgtk_gio.Gio.Wrappers.App_info.t option = "ml_gtk_app_chooser_get_app_info"
+
 (* Properties *)
 

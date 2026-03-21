@@ -1,5 +1,4 @@
-class point : Point.t ->
-  object
+class type point_t = object
     method equal : Point.t -> bool
     method free : unit -> unit
     method init : float -> float -> Point.t
@@ -7,5 +6,7 @@ class point : Point.t ->
     method init_from_vec2 : Vec2.t -> Point.t
     method near : Point.t -> float -> bool
     method as_point : Point.t
-  end
+end
+
+class point : Point.t -> point_t
 

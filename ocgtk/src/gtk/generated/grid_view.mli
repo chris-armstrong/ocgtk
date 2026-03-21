@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: GridView *)
+(* GridView: GridView *)
 
 type t = [`grid_view | `list_base | `widget | `initially_unowned] Gobject.obj
-
-val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new GridView *)
 external new_ : Selection_model.t option -> List_item_factory.t option -> t = "ml_gtk_grid_view_new"

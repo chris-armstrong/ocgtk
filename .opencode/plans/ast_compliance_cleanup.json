@@ -1,0 +1,306 @@
+{
+  "plan_id": "ast_compliance_cleanup",
+  "title": "AST Compliance Cleanup for Test Infrastructure",
+  "source": "Code-reviewer findings for Stages 1-3 of cross_namespace_phase2",
+  "baseline": {
+    "build_passes": true,
+    "tests_pass": true,
+    "known_failures": [],
+    "notes": "Build succeeded. Tests require xvfb-run due to GTK dependencies. The plan addresses violations identified by code-reviewer: string matching in C validation tests instead of AST-based approaches. Existing infrastructure (C_ast.ml, C_parser.ml, C_validation.ml) provides foundation for AST-based validation."
+  },
+  "epochs": [
+    {
+      "epoch": 1,
+      "title": "AST Compliance Cleanup",
+      "status": "pending",
+      "replanned": false,
+      "description": "Convert all string-matching test assertions to AST-based validation, fixCAMLparam validation tests, and deprecate legacy helpers",
+      "stages": [
+        {
+          "stage": 1,
+          "title": "Create C_validation AST-based header validation functions",
+          "status": "committed",
+          "replanned": false,
+          "description": "Addassert_forward_decl_exists, assert_forward_decl_not_exists, andassert_header_guard_format functions to C_validation.ml using the existing C_parser and C_ast infrastructure",
+          "files_to_modify": [
+            "ocgtk/src/tools/test_gir_gen/infrastructure/c_validation.ml",
+            "ocgtk/src/tools/test_gir_gen/infrastructure/c_validation.mli"
+          ],
+          "files_to_create": [],
+          "depends_on": [],
+          "implementation_notes": "C_validation.ml already exists with validation functions. Add three new functions:\n\n1. assert_forward_decl_exists header_content c_type prefix:\n   - Parse header with C_parser to extract forward declarations\n   - Match declarations like Val_<Type> or<Type>_val\n   - Fail with descriptive message if not found\n\n2. assert_forward_decl_not_exists header_content c_type prefix:\n   - Same parsing, but assert ABSENCE\n\n3. assert_header_guard_format header_content expected_pattern:\n   - Parse header guards (already have parse_header_guards in c_stubs_tests.ml, can move or reuse)\n   - Validate guard name matches expected pattern\n\nThe header_guard type already exists in c_stubs_tests.ml (lines 17-22). Consider moving to C_ast.ml for reuse.\n\nFollowthe pattern in ml_validation.ml for assertion functions - use Alcotest.fail with clear messages."
+          ,
+          "coding_guidelines_to_emphasize": [
+            "test-patterns.md — All validation must use AST parsing first, never string_contains",
+            "error-handling.md — Use Alcotest.fail with descriptive messages for assertion failures",
+            "module-boundaries.md — Add .mli interface for new functions"
+          ],
+          "test_requirements": {
+            "existing_tests": [
+              "ocgtk/src/tools/test_gir_gen/c_stubs/c_stubs_tests.ml — existing header guard tests will use new functions"
+            ],
+            "new_tests": [
+              {
+                "file": "ocgtk/src/tools/test_gir_gen/infrastructure/c_validation_tests.ml",
+                "test_name": "test_assert_forward_decl_exists",
+                "description": "Verify assert_forward_decl_exists finds local enum/bitfield declarations",
+                "asserts": "Function succeeds when Val_<Type> exists, fails when absent"
+              },
+              {
+                "file": "ocgtk/src/tools/test_gir_gen/infrastructure/c_validation_tests.ml",
+                "test_name": "test_assert_forward_decl_not_exists",
+                "description": "Verify assert_forward_decl_not_exists rejects external declarations",
+                "asserts": "Function succeeds when declaration absent, fails when present"
+              }
+            ],
+            "test_command": "cd ocgtk && dune runtest"
+          },
+          "acceptance_criteria": [
+            "dune build succeeds",
+            "dune runtest passes",
+            "C_validation.ml has assert_forward_decl_exists, assert_forward_decl_not_exists, assert_header_guard_format",
+            "Each function uses C_parser/C_ast for validation (no string matching)",
+            "Functions have clear error messages on failure"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "Create header_naming_tests.ml with AST validation",
+          "status": "committed",
+          "replanned": false,
+          "description": "Create the missing header_naming_tests.ml file using AST-based validation for header naming conventions",
+          "files_to_modify": [
+            "ocgtk/src/tools/test_gir_gen/c_stubs/dune"
+          ],
+          "files_to_create": [
+            "ocgtk/src/tools/test_gir_gen/c_stubs/header_naming_tests.ml"
+          ],
+          "depends_on": [1],
+          "implementation_notes": "Create header_naming_tests.ml with tests for:\n\n1. Header file naming convention (<namespace>_decls.h)\n2. Header guard naming convention (_<namespace>_decls_h_)\n3. Include guard structure\n\nUse C_validation.assert_header_guard_format for validation.\nFollow test patterns from test-patterns.md:\n- Use arrange-act-assert structure\n- Use descriptive test names\n- Use Alcotest assertions, not Option matching\n\nAdd new module to dune file modules list.\n\nReference: The test_header_file_naming and test_header_guard_format tests in c_stubs_tests.ml (lines1177-1235) show the expected behavior."
+          ,
+          "coding_guidelines_to_emphasize": [
+            "test-patterns.md — All validation must use AST parsing first, never string_contains",
+            "naming-and-intermediates.md — Test names describe what is tested and expected outcome",
+            "error-handling.md — Use Alcotest.fail for assertion failures, not silent passes"
+          ],
+          "test_requirements": {
+            "existing_tests": [],
+            "new_tests": [
+              {
+                "file": "ocgtk/src/tools/test_gir_gen/c_stubs/header_naming_tests.ml",
+                "test_name": "test_header_file_naming_uses_namespace",
+                "description": "Verify header files use namespace-based naming",
+                "asserts": "Generated header file name matches <namespace>_decls.h pattern"
+              },
+              {
+                "file": "ocgtk/src/tools/test_gir_gen/c_stubs/header_naming_tests.ml",
+                "test_name": "test_header_guard_uses_correct_format",
+                "description": "Verify header guards use _<namespace>_decls_h_ format",
+                "asserts": "Guard name matches expected pattern with all three directives"
+              },
+              {
+                "file": "ocgtk/src/tools/test_gir_gen/c_stubs/header_naming_tests.ml",
+                "test_name": "test_header_guard_has_complete_structure",
+                "description": "Verify header guards have ifndef, define, and endif",
+                "asserts": "All three preprocessor directives are present and correctly ordered"
+              }
+            ],
+            "test_command": "cd ocgtk && dune runtest"
+          },
+          "acceptance_criteria": [
+            "dune build succeeds",
+            "dune runtest passes (including new tests)",
+            "header_naming_tests.ml uses C_validation functions, not string matching",
+            "Test file added to dune modules list"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "Create header_generation_tests.ml with AST validation",
+          "status": "committed",
+          "replanned": false,
+          "description": "Create the missing header_generation_tests.ml file using AST-based validation for forward declaration generation",
+          "files_to_modify": [
+            "ocgtk/src/tools/test_gir_gen/c_stubs/dune"
+          ],
+          "files_to_create": [
+            "ocgtk/src/tools/test_gir_gen/c_stubs/header_generation_tests.ml"
+          ],
+          "depends_on": [1],
+          "implementation_notes": "Create header_generation_tests.ml with tests for:\n\n1. Forward declaration generation for enums (Val_<Enum>, <Enum>_val)\n2. Forward declaration generation for bitfields\n3. Local vs external enum/bitfield handling\n\nUse C_validation.assert_forward_decl_exists and assert_forward_decl_not_exists.\n\nReference: The no_external_enum_decls_tests.ml and no_external_bitfield_decls_tests.ml show the expected behavior for local/external handling.\n\nAdd new module to dune file modules list."
+          ,
+          "coding_guidelines_to_emphasize": [
+            "test-patterns.md — AST-based validation required, parse then validate",
+            "module-boundaries.md — Tests should import C_validation and use its public interface",
+            "error-handling.md — Descriptive failure messages including what was found vs expected"
+          ],
+          "test_requirements": {
+            "existing_tests": [],
+            "new_tests": [
+              {
+                "file": "ocgtk/src/tools/test_gir_gen/c_stubs/header_generation_tests.ml",
+                "test_name": "test_local_enum_forward_decls_generated",
+                "description": "Verify local enums produce correct forward declarations",
+                "asserts": "Val_<Enum> and <Enum>_val declarations present in header"
+              },
+              {
+                "file": "ocgtk/src/tools/test_gir_gen/c_stubs/header_generation_tests.ml",
+                "test_name": "test_external_enum_forward_decls_not_generated",
+                "description": "Verify external enums do NOT produce forward declarations",
+                "asserts": "Val_<ExternalEnum> and <ExternalEnum>_val NOT present"
+              },
+              {
+                "file": "ocgtk/src/tools/test_gir_gen/c_stubs/header_generation_tests.ml",
+                "test_name": "test_local_bitfield_forward_decls_generated",
+                "description": "Verify local bitfields produce correct forward declarations",
+                "asserts": "Val_<Bitfield> and <Bitfield>_val declarations present"
+              },
+              {
+                "file": "ocgtk/src/tools/test_gir_gen/c_stubs/header_generation_tests.ml",
+                "test_name": "test_external_bitfield_forward_decls_not_generated",
+                "description": "Verify external bitfields do NOT produce forward declarations",
+                "asserts": "Val_<ExternalBitfield> NOT present in header"
+              }
+            ],
+            "test_command": "cd ocgtk && dune runtest"
+          },
+          "acceptance_criteria": [
+            "dune build succeeds",
+            "dune runtest passes (including new tests)",
+            "header_generation_tests.ml uses C_validation functions",
+            "Test file added to dune modules list"
+          ]
+        },
+        {
+          "stage": 4,
+          "title": "Rewrite no_external_enum_decls_tests.ml to use AST validation",
+          "status": "committed",
+          "replanned": false,
+          "description": "Replace assert_contains/assert_not_contains calls in no_external_enum_decls_tests.ml with C_validation assertion functions",
+          "files_to_modify": [
+            "ocgtk/src/tools/test_gir_gen/cross_namespace/no_external_enum_decls_tests.ml"
+          ],
+          "files_to_create": [],
+          "depends_on": [1],
+          "implementation_notes": "Replace lines 106-116 and 150-155:\n\nOLD (lines 106-116):\n```ocaml\nassert_contains \"Local GTK enum Val_ forward decl\" header_content\n    \"Val_GtkWrapMode\";\nassert_contains \"Local GTK enum _val forward decl\" header_content\n    \"GtkWrapMode_val\";\nassert_not_contains \"External GDK enum Val_ forward decl\" header_content\n    \"Val_GdkTextureType\";\nassert_not_contains \"External GDK enum _val forward decl\" header_content\n    \"GdkTextureType_val\"\n```\n\nNEW:\n```ocaml\nC_validation.assert_forward_decl_exists header_content \"GtkWrapMode\" \"Val_\";\nC_validation.assert_forward_decl_exists header_content \"GtkWrapMode\" \"_val\";\nC_validation.assert_forward_decl_not_exists header_content \"GdkTextureType\" \"Val_\";\nC_validation.assert_forward_decl_not_exists header_content \"GdkTextureType\" \"_val\"\n```\n\nSame pattern for lines 150-155.\n\nRemove reliance on open Helpers - import C_validation instead. Keep Helpers for other utilities like create_test_context."
+          ,
+          "coding_guidelines_to_emphasize": [
+            "test-patterns.md — Anti-pattern checklist: No assert_contains for code validation",
+            "code-reuse.md — Use existing C_validation functions, don't duplicate",
+            "error-handling.md — Let C_validation provide descriptive failure messages"
+          ],
+          "test_requirements": {
+            "existing_tests": [
+              "ocgtk/src/tools/test_gir_gen/cross_namespace/no_external_enum_decls_tests.ml — test_header_does_not_contain_external_enum_decls, test_generate_forward_decls_only_local_enums"
+            ],
+            "new_tests": [],
+            "test_command": "cd ocgtk && dune runtest"
+          },
+          "acceptance_criteria": [
+            "dune build succeeds",
+            "dune runtest passes",
+            "No calls to assert_contains or assert_not_contains in no_external_enum_decls_tests.ml",
+            "All assertions use C_validation functions",
+            "Test behavior unchanged (same validations, just AST-based)"
+          ]
+        },
+        {
+          "stage": 5,
+          "title": "Rewrite no_external_bitfield_decls_tests.ml to use AST validation",
+          "status": "committed",
+          "replanned": false,
+          "description": "Replace assert_contains/assert_not_contains calls in no_external_bitfield_decls_tests.ml with C_validation assertion functions",
+          "files_to_modify": [
+            "ocgtk/src/tools/test_gir_gen/cross_namespace/no_external_bitfield_decls_tests.ml"
+          ],
+          "files_to_create": [],
+          "depends_on": [1],
+          "implementation_notes": "Replace lines 104-114 and 146-153:\n\nOLD (lines 104-114):\n```ocaml\nassert_contains \"Local GTK bitfield Val_ forward decl\" header_content\n    \"Val_GtkStateFlags\";\nassert_contains \"Local GTK bitfield _val forward decl\" header_content\n    \"GtkStateFlags_val\";\nassert_not_contains \"External GDK bitfield Val_ forward decl\" header_content\n    \"Val_GdkEventMask\";\nassert_not_contains \"External GDK bitfield _val forward decl\" header_content\n    \"GdkEventMask_val\"\n```\n\nNEW:\n```ocaml\nC_validation.assert_forward_decl_exists header_content \"GtkStateFlags\" \"Val_\";\nC_validation.assert_forward_decl_exists header_content \"GtkStateFlags\" \"_val\";\nC_validation.assert_forward_decl_not_exists header_content \"GdkEventMask\" \"Val_\";\nC_validation.assert_forward_decl_not_exists header_content \"GdkEventMask\" \"_val\"\n```\n\nSame pattern for lines 146-153.\n\nFollow the same approach as Stage 4 for consistency."
+          ,
+          "coding_guidelines_to_emphasize": [
+            "test-patterns.md — Anti-pattern checklist: No assert_contains for code validation",
+            "code-reuse.md — Use existing C_validation functions",
+            "pattern-matching.md — Consistent pattern with enum tests"
+          ],
+          "test_requirements": {
+            "existing_tests": [
+              "ocgtk/src/tools/test_gir_gen/cross_namespace/no_external_bitfield_decls_tests.ml — test_header_does_not_contain_external_bitfield_decls, test_generate_forward_decls_only_local_bitfields"
+            ],
+            "new_tests": [],
+            "test_command": "cd ocgtk && dune runtest"
+          },
+          "acceptance_criteria": [
+            "dune build succeeds",
+            "dune runtest passes",
+            "No calls to assert_contains or assert_not_contains in no_external_bitfield_decls_tests.ml",
+            "All assertions use C_validation functions",
+            "Test behavior unchanged (same validations, just AST-based)"
+          ]
+        },
+        {
+          "stage": 6,
+          "title": "Fix Str.search_forward violations in c_stubs_tests.ml",
+          "status": "committed",
+          "replanned": false,
+          "description": "Replace Str.search_forward with AST-based or proper string functions for header guard naming check and CAMLparam validation",
+          "files_to_modify": [
+            "ocgtk/src/tools/test_gir_gen/c_stubs/c_stubs_tests.ml"
+          ],
+          "files_to_create": [],
+          "depends_on": [1],
+          "implementation_notes": "Two violations to fix:\n\n**1. contains_old_naming function (lines 67-74):**\n\nOLD:\n```ocaml\nlet contains_old_naming header_content =\n  let guards = parse_header_guards header_content in\n  List.exists (fun g ->\n    try\n      ignore (Str.search_forward (Str.regexp_string \"generated_forward_decls\") g.guard_name 0);\n      true\n    with Not_found -> false\n  ) guards\n```\n\nNEW:\n```ocaml\nlet contains_old_naming header_content =\n  let guards = parse_header_guards header_content in\n  List.exists (fun g ->\n    String.ends_with ~suffix:\"generated_forward_decls_h_\" g.guard_name ||\n    String.ends_with ~suffix:\"_generated_forward_decls_h\" g.guard_name\n  ) guards\n```\n\nUse String.ends_with instead of Str.search_forward - more precise and doesn't use regex.\n\n**2. test_method_camlxparam_chunking (lines 457-481):**\n\nThis tests that CAMLxparam macros are used correctly for chunking parameters.\n\nOLD (lines 457-481):\n```ocaml\nlet has_high_camlxparam =\n  try\n    ignore (Str.search_forward (Str.regexp \"CAMLxparam[6-9]\") c_code 0);\n    true\n  with Not_found ->\n    try\n      ignore (Str.search_forward (Str.regexp \"CAMLxparam1[0-9]\") c_code 0);\n      true\n    with Not_found -> false\nin\n```\n\nThe C_ast module already has get_caml_local_decls function (lines 156-163). Add a validation function to C_validation.ml:\n```ocaml\nlet has_camlxparam_n_or_higher functions n =\n  List.exists (fun f ->\n    let decls = C_ast.get_caml_local_decls f in\n    List.exists (fun decl ->\n      String.starts_with ~prefix:\"CAMLxparam\" decl &&\n      let num_str = String.sub decl 10 (String.length decl - 11) in\n      try\n        let num = int_of_string num_str in\n        num >= n\n      with _ -> false\n    ) decls\n  ) functions\n```\n\nThen use it inthe test:\n```ocaml\nlet functions = parse_c_string c_code in\nAlcotest.(check bool) \"Should NOT contain CAMLxparam6 or higher\" false\n  (C_validation.has_camlxparam_n_or_higher functions 6);\n```"
+          ,
+          "coding_guidelines_to_emphasize": [
+            "test-patterns.md — Use proper string functions or AST parsing, not regex for simple patterns",
+            "type-safety.md — Use typed functions with clear contracts",
+            "partial-functions.md — Avoid exception-based control flow (try/with Not_found)"
+          ],
+          "test_requirements": {
+            "existing_tests": [
+              "ocgtk/src/tools/test_gir_gen/c_stubs/c_stubs_tests.ml — test_header_file_naming, test_header_guard_format, test_method_camlxparam_chunking"
+            ],
+            "new_tests": [],
+            "test_command": "cd ocgtk && dune runtest"
+          },
+          "acceptance_criteria": [
+            "dune build succeeds",
+            "dune runtest passes",
+            "No Str.search_forward in contains_old_naming or test_method_camlxparam_chunking",
+            "Function behavior unchanged"
+          ]
+        },
+        {
+          "stage": 7,
+          "title": "Deprecate string-matching helpers in helpers.ml",
+          "status": "committed",
+          "replanned": false,
+          "description": "Add deprecation warnings to string_contains, assert_contains, and assert_not_contains functions in helpers.ml",
+          "files_to_modify": [
+            "ocgtk/src/tools/test_gir_gen/infrastructure/helpers.ml"
+          ],
+          "files_to_create": [],
+          "depends_on": [4, 5],
+          "implementation_notes": "Add deprecation annotations to lines 9-23:\n\n```ocaml\n(* DEPRECATED: These functions use string matching which is brittle and\n   violates the test-patterns.md guidelines. Use C_validation.assert_forward_decl_*\n   or Ml_validation.assert_*_exists for AST-based validation instead.\n\n   See docs/code_guidelines/test-patterns.md for details. *)\n\n[@@@deprecated \"Use C_validation.assert_forward_decl_* or Ml_validation.assert_*_exists for AST-based validation\"]\n\nlet string_contains s sub =\n  (* DEPRECATED: Use AST-based validation instead *)\n  try\n    ignore (Str.search_forward (Str.regexp_string sub) s 0);\n    true\n  with Not_found -> false\n\nlet assert_true msg cond = Alcotest.(check bool) msg true cond\n\nlet assert_contains msg haystack needle =\n  (* DEPRECATED: Use C_validation.assert_forward_decl_exists or Ml_validation.assert_value_exists *)\n  if not (string_contains haystack needle) then\n    Alcotest.fail (sprintf \"%s: expected to find '%s' in output\" msg needle)\n\nlet assert_not_contains msg haystack needle =\n  (* DEPRECATED: Use C_validation.assert_forward_decl_not_exists *)\n  if string_contains haystack needle then\n    Alcotest.fail (sprintf \"%s: expected NOT to find '%s' in output\" msg needle)\n```\n\nDO NOT remove these functions yet - they may be used elsewhere. Just deprecate.\n\nThis stage must come after Stages 4 and 5 to ensure all uses are converted first."
+          ,
+          "coding_guidelines_to_emphasize": [
+            "test-patterns.md — Reference the guidelines explaining why string matching is discouraged",
+            "code-reuse.md — Functions should be deprecated before removal to allow migration"
+          ],
+          "test_requirements": {
+            "existing_tests": [
+              "All tests should still pass after deprecation warnings are added"
+            ],
+            "new_tests": [],
+            "test_command": "cd ocgtk && dune runtest"
+          },
+          "acceptance_criteria": [
+            "dune build succeeds (deprecation warnings are acceptable)",
+            "dune runtest passes",
+            "string_contains, assert_contains, assert_not_contains have deprecation annotations or comments",
+            "Comment explains why and points to alternatives"
+          ]
+        }
+      ]
+    }
+  ]
+}

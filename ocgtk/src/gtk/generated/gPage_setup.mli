@@ -1,5 +1,4 @@
-class page_setup : Page_setup.t ->
-  object
+class type page_setup_t = object
     method get_bottom_margin : Gtk_enums.unit -> float
     method get_left_margin : Gtk_enums.unit -> float
     method get_orientation : unit -> Gtk_enums.pageorientation
@@ -20,5 +19,7 @@ class page_setup : Page_setup.t ->
     method set_top_margin : float -> Gtk_enums.unit -> unit
     method to_file : string -> (bool, GError.t) result
     method as_page_setup : Page_setup.t
-  end
+end
+
+class page_setup : Page_setup.t -> page_setup_t
 

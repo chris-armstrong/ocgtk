@@ -7,9 +7,6 @@ type t = [`inet_address | `object_] Gobject.obj
 external new_any : Gio_enums.socketfamily -> t = "ml_g_inet_address_new_any"
 
 (** Create a new InetAddress *)
-external new_from_bytes : unit -> Gio_enums.socketfamily -> t = "ml_g_inet_address_new_from_bytes"
-
-(** Create a new InetAddress *)
 external new_from_string : string -> t = "ml_g_inet_address_new_from_string"
 
 (** Create a new InetAddress *)

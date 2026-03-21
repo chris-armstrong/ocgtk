@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_color_dialog_new(value unit)
@@ -72,4 +72,13 @@ CAMLparam1(self);
 
 gboolean result = gtk_color_dialog_get_modal(GtkColorDialog_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_color_dialog_choose_rgba_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GdkRGBA* result = gtk_color_dialog_choose_rgba_finish(GtkColorDialog_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_GdkRGBA))); else CAMLreturn(Res_Error(Val_GError(error)));
 }

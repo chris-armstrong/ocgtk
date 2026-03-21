@@ -36,9 +36,15 @@ accordingly. But you have to be careful avoid changing the size of the popover,
 or it has to be presented again. *)
 type t = [`popup_layout] Gobject.obj
 
+(** Create a new PopupLayout *)
+external new_ : Rectangle.t -> Gdk_enums.gravity -> Gdk_enums.gravity -> t = "ml_gdk_popup_layout_new"
+
 (* Methods *)
 (** Decreases the reference count of @value. *)
 external unref : t -> unit = "ml_gdk_popup_layout_unref"
+
+(** Set the anchor on the popup surface. *)
+external set_surface_anchor : t -> Gdk_enums.gravity -> unit = "ml_gdk_popup_layout_set_surface_anchor"
 
 (** Sets the shadow width of the popup.
 
@@ -46,6 +52,9 @@ The shadow width corresponds to the part of the computed
 surface size that would consist of the shadow margin
 surrounding the window, would there be any. *)
 external set_shadow_width : t -> int -> int -> int -> int -> unit = "ml_gdk_popup_layout_set_shadow_width"
+
+(** Set the anchor on the anchor rectangle. *)
+external set_rect_anchor : t -> Gdk_enums.gravity -> unit = "ml_gdk_popup_layout_set_rect_anchor"
 
 (** Offset the position of the anchor rectangle with the given delta. *)
 external set_offset : t -> int -> int -> unit = "ml_gdk_popup_layout_set_offset"
@@ -65,8 +74,14 @@ external set_anchor_hints : t -> Gdk_enums.anchorhints -> unit = "ml_gdk_popup_l
 (** Increases the reference count of @value. *)
 external ref : t -> t = "ml_gdk_popup_layout_ref"
 
+(** Returns the anchor position on the popup surface. *)
+external get_surface_anchor : t -> Gdk_enums.gravity = "ml_gdk_popup_layout_get_surface_anchor"
+
 (** Obtains the shadow widths of this layout. *)
 external get_shadow_width : t -> int * int * int * int = "ml_gdk_popup_layout_get_shadow_width"
+
+(** Returns the anchor position on the anchor rectangle. *)
+external get_rect_anchor : t -> Gdk_enums.gravity = "ml_gdk_popup_layout_get_rect_anchor"
 
 (** Retrieves the offset for the anchor rectangle. *)
 external get_offset : t -> int * int = "ml_gdk_popup_layout_get_offset"

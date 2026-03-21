@@ -1,5 +1,4 @@
-class stroke : Stroke.t ->
-  object
+class type stroke_t = object
     method copy : unit -> Stroke.t
     method free : unit -> unit
     method get_dash_offset : unit -> float
@@ -12,6 +11,9 @@ class stroke : Stroke.t ->
     method set_line_join : Gsk_enums.linejoin -> unit
     method set_line_width : float -> unit
     method set_miter_limit : float -> unit
+    method to_cairo : Ocgtk_cairo.Cairo.context_t -> unit
     method as_stroke : Stroke.t
-  end
+end
+
+class stroke : Stroke.t -> stroke_t
 

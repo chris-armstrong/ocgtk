@@ -1,5 +1,15 @@
+class type list_store_t = object
+    method clear : unit -> unit
+    method iter_is_valid : Tree_iter.t -> bool
+    method move_after : Tree_iter.t -> Tree_iter.t option -> unit
+    method move_before : Tree_iter.t -> Tree_iter.t option -> unit
+    method remove : Tree_iter.t -> bool
+    method swap : Tree_iter.t -> Tree_iter.t -> unit
+    method as_list_store : List_store.t
+end
+
 (* High-level class for ListStore *)
-class list_store (obj : List_store.t) = object (self)
+class list_store (obj : List_store.t) : list_store_t = object (self)
 
   method clear : unit -> unit =
     fun () ->
@@ -20,10 +30,6 @@ class list_store (obj : List_store.t) = object (self)
   method remove : Tree_iter.t -> bool =
     fun iter ->
       (List_store.remove obj iter)
-
-  method reorder : int array -> unit =
-    fun new_order ->
-      (List_store.reorder obj new_order)
 
   method swap : Tree_iter.t -> Tree_iter.t -> unit =
     fun a b ->

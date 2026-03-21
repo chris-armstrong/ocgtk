@@ -4,9 +4,6 @@
 type t = [`gl_shader | `object_] Gobject.obj
 
 (** Create a new GLShader *)
-external new_from_bytes : unit -> t = "ml_gsk_gl_shader_new_from_bytes"
-
-(** Create a new GLShader *)
 external new_from_resource : string -> t = "ml_gsk_gl_shader_new_from_resource"
 
 (* Methods *)

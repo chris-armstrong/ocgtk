@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <gdk/gdk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gdk_decls.h"
 
 /* Conversion functions for GdkPopupLayout (opaque record with hidden fields) */
 GdkPopupLayout *GdkPopupLayout_val(value v) {
@@ -31,6 +31,14 @@ value Val_GdkPopupLayout_option(const GdkPopupLayout *ptr) {
 }
 
 
+CAMLexport CAMLprim value ml_gdk_popup_layout_new(value arg1, value arg2, value arg3)
+{
+CAMLparam3(arg1, arg2, arg3);
+
+GdkPopupLayout *obj = gdk_popup_layout_new(GdkRectangle_val(arg1), GdkGravity_val(arg2), GdkGravity_val(arg3));
+
+CAMLreturn(Val_GdkPopupLayout(obj));
+}
 CAMLexport CAMLprim value ml_gdk_popup_layout_unref(value self)
 {
 CAMLparam1(self);
@@ -39,11 +47,27 @@ gdk_popup_layout_unref(GdkPopupLayout_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gdk_popup_layout_set_surface_anchor(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gdk_popup_layout_set_surface_anchor(GdkPopupLayout_val(self), GdkGravity_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gdk_popup_layout_set_shadow_width(value self, value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 
 gdk_popup_layout_set_shadow_width(GdkPopupLayout_val(self), Int_val(arg1), Int_val(arg2), Int_val(arg3), Int_val(arg4));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gdk_popup_layout_set_rect_anchor(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gdk_popup_layout_set_rect_anchor(GdkPopupLayout_val(self), GdkGravity_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -79,6 +103,14 @@ GdkPopupLayout* result = gdk_popup_layout_ref(GdkPopupLayout_val(self));
 CAMLreturn(Val_GdkPopupLayout(result));
 }
 
+CAMLexport CAMLprim value ml_gdk_popup_layout_get_surface_anchor(value self)
+{
+CAMLparam1(self);
+
+GdkGravity result = gdk_popup_layout_get_surface_anchor(GdkPopupLayout_val(self));
+CAMLreturn(Val_GdkGravity(result));
+}
+
 CAMLexport CAMLprim value ml_gdk_popup_layout_get_shadow_width(value self)
 {
 CAMLparam1(self);
@@ -95,6 +127,14 @@ CAMLlocal1(ret);
     Store_field(ret, 2, Val_int(out3));
     Store_field(ret, 3, Val_int(out4));
     CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gdk_popup_layout_get_rect_anchor(value self)
+{
+CAMLparam1(self);
+
+GdkGravity result = gdk_popup_layout_get_rect_anchor(GdkPopupLayout_val(self));
+CAMLreturn(Val_GdkGravity(result));
 }
 
 CAMLexport CAMLprim value ml_gdk_popup_layout_get_offset(value self)

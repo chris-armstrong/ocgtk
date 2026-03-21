@@ -12,7 +12,6 @@ depends: [
   "ocaml" {>= "5.0"}
   "dune" {>= "3.13" & >= "3.13"}
   "conf-gtk4"
-  "cairo2"
   "containers" {build}
   "camlp5" {build}
   "camlp-streams" {build}
@@ -27,6 +26,7 @@ depends: [
   "ppxlib" {with-test}
   "sexplib" {build}
   "ppx_sexp_conv" {build}
+  "ppx_deriving" {build}
   "odoc" {with-doc}
 ]
 build: [

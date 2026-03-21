@@ -1,5 +1,13 @@
+class type attr_iterator_t = object
+    method copy : unit -> Attr_iterator.t
+    method destroy : unit -> unit
+    method get : Pango_enums.attrtype -> Attribute.t option
+    method next : unit -> bool
+    method as_attr_iterator : Attr_iterator.t
+end
+
 (* High-level class for AttrIterator *)
-class attr_iterator (obj : Attr_iterator.t) = object (self)
+class attr_iterator (obj : Attr_iterator.t) : attr_iterator_t = object (self)
 
   method copy : unit -> Attr_iterator.t =
     fun () ->

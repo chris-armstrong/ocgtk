@@ -18,8 +18,8 @@
 #include <gio/gio.h>
 #include <gio/gfiledescriptorbased.h>
 #include <gio/gdesktopappinfo.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gio_decls.h"
 
 
 CAMLexport CAMLprim value ml_g_tls_client_connection_set_validation_flags(value self, value arg1)

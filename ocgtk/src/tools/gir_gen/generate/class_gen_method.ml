@@ -16,36 +16,26 @@ let require_type ~location ~gir_type_name (type_opt : string option) : string =
   | Some t -> t
   | None -> failwith (sprintf "Gir_gen.class_gen_method: %s: unresolved type %s" location gir_type_name)
 
-(* Helper: Build type for same-cluster class parameter *)
-let build_same_cluster_type ~ctx ~name ~is_nullable =
-  let structural = structural_type_for_class ~ctx name in
-  if is_nullable then structural ^ " option" else structural
-
 (* Helper: Build type for hierarchy class parameter *)
 let build_hierarchy_type ~ctx ~current_layer2_module ~gir_type ~is_nullable =
-  let class_name_opt = Type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:gir_type in
+  let class_name_opt = Class_gen_type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:gir_type in
   let class_name = require_type ~location:"map_param_sig.hierarchy" ~gir_type_name:gir_type.name class_name_opt in
-  let class_type = "#" ^ class_name in
-  if is_nullable then class_type ^ " option" else class_type
+  if is_nullable then class_name ^ " option" else class_name
 
 (* Helper: Build base type with optional handling *)
 let build_base_type ~is_nullable class_type =
   if is_nullable then Some (class_type ^ " option") else Some class_type
 
 (* Helper: Build parameter type for hierarchy class parameter *)
-let build_param_type_with_hierarchy ~ctx ~same_cluster_classes ~current_layer2_module p =
+let build_param_type_with_hierarchy ~ctx ~same_cluster_classes:_ ~current_layer2_module p =
   let hier_opt = get_param_hierarchy_info ~ctx p in
   let is_nullable = p.nullable || p.param_type.nullable in
   match hier_opt with
   | Some _ ->
-      let is_same_cluster = is_same_cluster_class ~same_cluster_classes p.param_type.name in
-      if is_same_cluster then
-        build_same_cluster_type ~ctx ~name:p.param_type.name ~is_nullable
-      else
-        build_hierarchy_type ~ctx ~current_layer2_module ~gir_type:p.param_type ~is_nullable
+      build_hierarchy_type ~ctx ~current_layer2_module ~gir_type:p.param_type ~is_nullable
   | None ->
       let gir_type = { p.param_type with nullable = is_nullable } in
-      let type_opt = Type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:gir_type in
+      let type_opt = Class_gen_type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:gir_type in
       require_type ~location:"map_param_sig.regular" ~gir_type_name:gir_type.name type_opt
 
 (* Map parameter to type signature string *)
@@ -53,16 +43,9 @@ let map_param_sig ~ctx ~same_cluster_classes ~current_layer2_module p =
   build_param_type_with_hierarchy ~ctx ~same_cluster_classes ~current_layer2_module p
 
 (* Helper: Build class type string for hierarchy parameters *)
-let build_class_type ~ctx ~current_layer2_module ~same_cluster_classes p idx =
-  let same_cluster = is_same_cluster_class ~same_cluster_classes p.param_type.name in
-  let type_var = sprintf "'p%d" (idx + 1) in
-  if same_cluster then
-    let structural = structural_type_for_class ~ctx p.param_type.name in
-    sprintf "(%s as %s)" structural type_var
-  else
-    let class_name_opt = Type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:p.param_type in
-    let class_name = require_type ~location:"build_class_type.hierarchy" ~gir_type_name:p.param_type.name class_name_opt in
-    sprintf "(#%s as %s)" class_name type_var
+let build_class_type ~ctx ~current_layer2_module ~same_cluster_classes:_ p _idx =
+  let class_name_opt = Class_gen_type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:p.param_type in
+  require_type ~location:"build_class_type.hierarchy" ~gir_type_name:p.param_type.name class_name_opt
 
 (* Helper: Build parameter type string for a single parameter *)
 let build_param_type ~ctx ~same_cluster_classes ~current_layer2_module (types, idx) (_, p, hier_opt) =
@@ -71,32 +54,16 @@ let build_param_type ~ctx ~same_cluster_classes ~current_layer2_module (types, i
       let class_type = build_class_type ~ctx ~current_layer2_module ~same_cluster_classes p idx in
       let is_nullable = p.nullable || p.param_type.nullable in
       let base_type = build_base_type ~is_nullable class_type in
-      (types @ [base_type], idx + 1)
+      (types @ [base_type], idx)
   | _ ->
       let gir_type = { p.param_type with nullable = p.nullable || p.param_type.nullable } in
-      let type_mapping = Type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:gir_type in
+      let type_mapping = Class_gen_type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:gir_type in
       (types @ [type_mapping], idx)
 
 (* Helper: Convert a single parameter's class type in the type string *)
-let convert_param_in_string ~ctx ~current_layer2_module ~same_cluster_classes idx acc (p : Types.gir_param) =
-  let is_same = is_same_cluster_class ~same_cluster_classes p.param_type.name in
-  let idx = idx + 1 in
-  if not is_same then
-    let class_name_opt = Type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:p.param_type in
-    let class_name = require_type ~location:"convert_param_in_string.hierarchy" ~gir_type_name:p.param_type.name class_name_opt in
-    let class_type = "#" ^ class_name in
-    let pattern_option = class_type ^ " option" in
-    let type_var = sprintf "'p%d" idx in
-    let partial_option = sprintf "(%s as %s) option" class_type type_var in
-    try
-      let new_acc = Str.global_replace (Str.regexp_string pattern_option) partial_option acc in
-      (idx, new_acc)
-    with
-    | Not_found ->
-        (* Pattern not found in string, return original *)
-        (idx, acc)
-  else
-    (idx, acc)
+let convert_param_in_string ~ctx:_ ~current_layer2_module:_ ~same_cluster_classes:_ idx acc (_p : Types.gir_param) =
+  (* No longer needed - class types are used directly without # prefix *)
+  (idx, acc)
 
 (* Helper: Convert parameter type in string with hierarchy check *)
 let convert_param_type_in_string ~ctx ~current_layer2_module ~same_cluster_classes (idx, acc) (_, p, hier_opt) =
@@ -148,23 +115,23 @@ let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:
     in
     let return_type =
       if Utils.is_void_return_type meth.return_type then Some "unit"
-      else Type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:meth.return_type
+      else Class_gen_type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:meth.return_type
     in
     let ret_wrapper =
-      match Type_resolution.resolve_layer2_class_ref ~ctx ~current_layer2_module ~gir_type:meth.return_type with
-      | Some class_ref ->
+      match Class_gen_type_resolution.resolve_layer2_class_name ~ctx ~current_layer2_module ~gir_type:meth.return_type with
+      | Some class_name ->
         if (meth.throws && meth.return_type.nullable) then
-          sprintf "Result.map (fun ret -> Option.map (fun ret -> new %s ret) ret)" class_ref
+          sprintf "Result.map (fun ret -> Option.map (fun ret -> new %s ret) ret)" class_name
         (* Check if method throws (returns result type) *)
         else if meth.throws then
           (* Result type with class wrapping: Result.map (fun ret -> new ClassName ret) *)
-          sprintf "Result.map (fun ret -> new %s ret)" class_ref
+          sprintf "Result.map (fun ret -> new %s ret)" class_name
         else if meth.return_type.nullable then
           (* Optional type with class wrapping: Option.map (fun ret -> new ClassName ret) *)
-          sprintf "Option.map (fun ret -> new %s ret) " class_ref
+          sprintf "Option.map (fun ret -> new %s ret) " class_name
         else
           (* Non-optional, non-result type: new ClassName *)
-          sprintf "new  %s" class_ref
+          sprintf "new  %s" class_name
       | _ -> ""
     in
 
@@ -192,9 +159,9 @@ let generate_method_wrappers ~ctx ~property_method_names:_ ~property_base_names:
         else ret
       in
       let param_types_clean = if param_types_clean = [] then ["unit"] else param_types_clean in
-      (* Check for # object types or < structural types BEFORE conversion *)
+      (* Check for # class type abbreviations BEFORE conversion *)
       let has_type_var = List.exists (param_types_clean @ [final_ret]) ~f:has_type_variable in
-      let has_object_type = List.exists (param_types_clean @ [final_ret]) ~f:(fun t -> String.contains t '#' || String.contains t '<') in
+      let has_object_type = false in
       let signature = String.concat ~sep:" -> " (param_types_clean @ [final_ret]) in
       (* Convert # syntax to partial object types for .ml files *)
       let signature = convert_to_partial_object_type signature in
@@ -266,7 +233,7 @@ let generate_signature_content ~ctx ~same_cluster_classes ~current_layer2_module
   in
   let return_type =
     let result = if Utils.is_void_return_type meth.return_type then Some "unit"
-    else Type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:meth.return_type in
+    else Class_gen_type_resolution.resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:meth.return_type in
     match result with
     | Some t -> t
     | None -> failwith (sprintf "Unable to resolve return type for method %s" meth.method_name)

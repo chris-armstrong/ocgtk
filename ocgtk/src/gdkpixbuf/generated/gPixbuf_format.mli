@@ -1,5 +1,4 @@
-class pixbuf_format : Pixbuf_format.t ->
-  object
+class type pixbuf_format_t = object
     method copy : unit -> Pixbuf_format.t
     method free : unit -> unit
     method get_description : unit -> string
@@ -13,5 +12,7 @@ class pixbuf_format : Pixbuf_format.t ->
     method is_writable : unit -> bool
     method set_disabled : bool -> unit
     method as_pixbuf_format : Pixbuf_format.t
-  end
+end
+
+class pixbuf_format : Pixbuf_format.t -> pixbuf_format_t
 

@@ -1,5 +1,4 @@
-class file_attribute_matcher : File_attribute_matcher.t ->
-  object
+class type file_attribute_matcher_t = object
     method enumerate_namespace : string -> bool
     method enumerate_next : unit -> string option
     method matches : string -> bool
@@ -9,5 +8,7 @@ class file_attribute_matcher : File_attribute_matcher.t ->
     method to_string : unit -> string
     method unref : unit -> unit
     method as_file_attribute_matcher : File_attribute_matcher.t
-  end
+end
+
+class file_attribute_matcher : File_attribute_matcher.t -> file_attribute_matcher_t
 

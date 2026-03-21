@@ -1,5 +1,4 @@
-class tree_store : Tree_store.t ->
-  object
+class type tree_store_t = object
     method clear : unit -> unit
     method is_ancestor : Tree_iter.t -> Tree_iter.t -> bool
     method iter_depth : Tree_iter.t -> int
@@ -9,5 +8,7 @@ class tree_store : Tree_store.t ->
     method remove : Tree_iter.t -> bool
     method swap : Tree_iter.t -> Tree_iter.t -> unit
     method as_tree_store : Tree_store.t
-  end
+end
+
+class tree_store : Tree_store.t -> tree_store_t
 

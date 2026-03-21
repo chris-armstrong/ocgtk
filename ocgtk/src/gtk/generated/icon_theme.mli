@@ -45,9 +45,19 @@ update the icon. This is usually done by overriding the
 GtkWidgetClass.css-changed() function. *)
 external lookup_icon : t -> string -> string array option -> int -> int -> Gtk_enums.textdirection -> Gtk_enums.iconlookupflags -> Icon_paintable.t = "ml_gtk_icon_theme_lookup_icon_bytecode" "ml_gtk_icon_theme_lookup_icon_native"
 
+(** Looks up a icon for a desired size and window scale.
+
+The icon can then be rendered by using it as a `GdkPaintable`,
+or you can get information such as the filename and size. *)
+external lookup_by_gicon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t -> int -> int -> Gtk_enums.textdirection -> Gtk_enums.iconlookupflags -> Icon_paintable.t = "ml_gtk_icon_theme_lookup_by_gicon_bytecode" "ml_gtk_icon_theme_lookup_by_gicon_native"
+
 (** Checks whether an icon theme includes an icon
 for a particular name. *)
 external has_icon : t -> string -> bool = "ml_gtk_icon_theme_has_icon"
+
+(** Checks whether an icon theme includes an icon
+for a particular `GIcon`. *)
+external has_gicon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t -> bool = "ml_gtk_icon_theme_has_gicon"
 
 (** Gets the current icon theme name.
 
@@ -59,15 +69,12 @@ external get_theme_name : t -> string = "ml_gtk_icon_theme_get_theme_name"
 See [method@Gtk.IconTheme.set_resource_path]. *)
 external get_resource_path : t -> string array option = "ml_gtk_icon_theme_get_resource_path"
 
-(** Returns an array of integers describing the sizes at which
-the icon is available without scaling.
-
-A size of -1 means that the icon is available in a scalable
-format. The array is zero-terminated. *)
-external get_icon_sizes : t -> string -> int array = "ml_gtk_icon_theme_get_icon_sizes"
-
 (** Lists the names of icons in the current icon theme. *)
 external get_icon_names : t -> string array = "ml_gtk_icon_theme_get_icon_names"
+
+(** Returns the display that the `GtkIconTheme` object was
+created for. *)
+external get_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t option = "ml_gtk_icon_theme_get_display"
 
 (** Appends a directory to the search path.
 

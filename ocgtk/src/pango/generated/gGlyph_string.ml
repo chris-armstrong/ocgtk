@@ -1,5 +1,13 @@
+class type glyph_string_t = object
+    method copy : unit -> Glyph_string.t option
+    method free : unit -> unit
+    method get_width : unit -> int
+    method set_size : int -> unit
+    method as_glyph_string : Glyph_string.t
+end
+
 (* High-level class for GlyphString *)
-class glyph_string (obj : Glyph_string.t) = object (self)
+class glyph_string (obj : Glyph_string.t) : glyph_string_t = object (self)
 
   method copy : unit -> Glyph_string.t option =
     fun () ->
@@ -8,10 +16,6 @@ class glyph_string (obj : Glyph_string.t) = object (self)
   method free : unit -> unit =
     fun () ->
       (Glyph_string.free obj)
-
-  method get_logical_widths : string -> int -> int -> int array -> unit =
-    fun text length embedding_level logical_widths ->
-      (Glyph_string.get_logical_widths obj text length embedding_level logical_widths)
 
   method get_width : unit -> int =
     fun () ->

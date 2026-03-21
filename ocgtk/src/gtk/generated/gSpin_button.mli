@@ -1,10 +1,8 @@
-class spin_button : Spin_button.t ->
-  object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
+class type spin_button_t = object
     inherit Gspin_button_signals.spin_button_signals
-    method configure : #GAdjustment.adjustment option -> float -> int -> unit
+    method configure : GAdjustment.adjustment_t option -> float -> int -> unit
     method get_activates_default : unit -> bool
-    method get_adjustment : unit -> GAdjustment.adjustment
+    method get_adjustment : unit -> GAdjustment.adjustment_t
     method get_climb_rate : unit -> float
     method get_digits : unit -> int
     method get_numeric : unit -> bool
@@ -14,7 +12,7 @@ class spin_button : Spin_button.t ->
     method get_value_as_int : unit -> int
     method get_wrap : unit -> bool
     method set_activates_default : bool -> unit
-    method set_adjustment : #GAdjustment.adjustment -> unit
+    method set_adjustment : GAdjustment.adjustment_t -> unit
     method set_climb_rate : float -> unit
     method set_digits : int -> unit
     method set_increments : float -> float -> unit
@@ -26,7 +24,8 @@ class spin_button : Spin_button.t ->
     method set_wrap : bool -> unit
     method spin : Gtk_enums.spintype -> float -> unit
     method update : unit -> unit
-  method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
     method as_spin_button : Spin_button.t
-  end
+end
+
+class spin_button : Spin_button.t -> spin_button_t
 

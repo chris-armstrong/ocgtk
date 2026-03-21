@@ -1,6 +1,9 @@
-class multi_selection : Multi_selection.t ->
-  object
+class type multi_selection_t = object
+    method get_model : unit -> Ocgtk_gio.Gio.list_model_t option
+    method set_model : Ocgtk_gio.Gio.list_model_t option -> unit
     method n_items : int
     method as_multi_selection : Multi_selection.t
-  end
+end
+
+class multi_selection : Multi_selection.t -> multi_selection_t
 

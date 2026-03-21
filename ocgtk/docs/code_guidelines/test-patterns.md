@@ -13,11 +13,17 @@ let mli_ast = Ml_ast_helpers.parse_interface mli_content in
 Ml_validation.assert_type_exists_sig mli_ast "my_type"
 ```
 
-### Bad: String search for code validation
+### Bad: String-based validation of generated code
+
+Any form of string matching to validate code structure is banned. This includes
+direct string functions and convenience wrappers built on top of them:
+
 ```ocaml
-(* WRONG: Brittle, fails on whitespace/formatting changes *)
+(* WRONG: All of these are brittle — they fail on whitespace/formatting changes *)
 if Helpers.string_contains ml_content "my_function" then ...
 if String.contains ml_content "my_function" then ...
+Helpers.assert_contains "msg" ml_content "my_function"
+Helpers.assert_not_contains "msg" ml_content "my_function"
 ```
 
 ### Why AST-Based Validation?
@@ -121,10 +127,10 @@ let test_method_generation () =
   (* Act: Execute the code under test *)
   let result = generate_method method_info in
 
-  (* Assert: Verify the results *)
+  (* Assert: Verify the results using AST validation *)
   let output = Option.get_exn_or "Expected output" result in
-  Alcotest.(check bool) "contains method name" true
-    (String.contains output "get_text")
+  let ast = Ml_ast_helpers.parse_implementation output in
+  Ml_validation.assert_value_exists ast "get_text"
 ```
 
 ---
@@ -174,9 +180,10 @@ See [OCaml AST Reference Guide](../ocaml_ast/AST_REFERENCE_GUIDE.md) for common 
 
 Before submitting test code, verify:
 
-- [ ] No `Helpers.string_contains` for code validation
-- [ ] No `String.contains` for checking if code exists
-- [ ] All validation uses AST parsing first
+- [ ] No string-based validation of generated code structure — this includes
+  `Helpers.string_contains`, `Helpers.assert_contains`, `Helpers.assert_not_contains`,
+  `String.contains`, `Str.search_forward`, or any other string matching approach
+- [ ] All validation uses AST parsing first (`Ml_ast_helpers.parse_*`, `C_validation.*`)
 - [ ] Reusing `Ml_validation` functions, not duplicating
 - [ ] Reusing `Ml_ast_helpers` functions, not duplicating
 - [ ] Tests use Alcotest assertions, not Option matching

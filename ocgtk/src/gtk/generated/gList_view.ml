@@ -1,23 +1,41 @@
 (* Signal class defined in glist_view_signals.ml *)
 
+class type list_view_t = object
+    inherit Glist_view_signals.list_view_signals
+    method get_enable_rubberband : unit -> bool
+    method get_factory : unit -> GList_item_factory.list_item_factory_t option
+    method get_header_factory : unit -> GList_item_factory.list_item_factory_t option
+    method get_model : unit -> GSelection_model.selection_model_t option
+    method get_show_separators : unit -> bool
+    method get_single_click_activate : unit -> bool
+    method get_tab_behavior : unit -> Gtk_enums.listtabbehavior
+    method scroll_to : int -> Gtk_enums.listscrollflags -> Scroll_info.t option -> unit
+    method set_enable_rubberband : bool -> unit
+    method set_factory : GList_item_factory.list_item_factory_t option -> unit
+    method set_header_factory : GList_item_factory.list_item_factory_t option -> unit
+    method set_show_separators : bool -> unit
+    method set_single_click_activate : bool -> unit
+    method set_tab_behavior : Gtk_enums.listtabbehavior -> unit
+    method as_list_view : List_view.t
+end
+
 (* High-level class for ListView *)
-class list_view (obj : List_view.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (List_view.as_widget obj)
+class list_view (obj : List_view.t) : list_view_t = object (self)
   inherit Glist_view_signals.list_view_signals obj
 
   method get_enable_rubberband : unit -> bool =
     fun () ->
       (List_view.get_enable_rubberband obj)
 
-  method get_factory : unit -> GList_item_factory.list_item_factory option =
+  method get_factory : unit -> GList_item_factory.list_item_factory_t option =
     fun () ->
       Option.map (fun ret -> new GList_item_factory.list_item_factory ret) (List_view.get_factory obj)
 
-  method get_header_factory : unit -> GList_item_factory.list_item_factory option =
+  method get_header_factory : unit -> GList_item_factory.list_item_factory_t option =
     fun () ->
       Option.map (fun ret -> new GList_item_factory.list_item_factory ret) (List_view.get_header_factory obj)
 
-  method get_model : unit -> GSelection_model.selection_model option =
+  method get_model : unit -> GSelection_model.selection_model_t option =
     fun () ->
       Option.map (fun ret -> new GSelection_model.selection_model ret) (List_view.get_model obj)
 
@@ -41,12 +59,12 @@ class list_view (obj : List_view.t) = object (self)
     fun enable_rubberband ->
       (List_view.set_enable_rubberband obj enable_rubberband)
 
-  method set_factory : 'p1. (#GList_item_factory.list_item_factory as 'p1) option -> unit =
+  method set_factory : GList_item_factory.list_item_factory_t option -> unit =
     fun factory ->
       let factory = Option.map (fun (c) -> c#as_list_item_factory) factory in
       (List_view.set_factory obj factory)
 
-  method set_header_factory : 'p1. (#GList_item_factory.list_item_factory as 'p1) option -> unit =
+  method set_header_factory : GList_item_factory.list_item_factory_t option -> unit =
     fun factory ->
       let factory = Option.map (fun (c) -> c#as_list_item_factory) factory in
       (List_view.set_header_factory obj factory)
@@ -63,7 +81,6 @@ class list_view (obj : List_view.t) = object (self)
     fun tab_behavior ->
       (List_view.set_tab_behavior obj tab_behavior)
 
-  method as_widget = (List_view.as_widget obj)
     method as_list_view = obj
 end
 

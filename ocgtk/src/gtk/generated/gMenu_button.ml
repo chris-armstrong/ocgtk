@@ -1,8 +1,38 @@
 (* Signal class defined in gmenu_button_signals.ml *)
 
+class type menu_button_t = object
+    inherit Gmenu_button_signals.menu_button_signals
+    method get_active : unit -> bool
+    method get_always_show_arrow : unit -> bool
+    method get_can_shrink : unit -> bool
+    method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
+    (* method get_direction : ... *) (* CONFLICT: incompatible signature with parent method *)
+    method get_has_frame : unit -> bool
+    method get_icon_name : unit -> string option
+    method get_label : unit -> string option
+    method get_menu_model : unit -> Ocgtk_gio.Gio.menu_model_t option
+    method get_popover : unit -> GPopover.popover_t option
+    method get_primary : unit -> bool
+    method get_use_underline : unit -> bool
+    method popdown : unit -> unit
+    method popup : unit -> unit
+    method set_active : bool -> unit
+    method set_always_show_arrow : bool -> unit
+    method set_can_shrink : bool -> unit
+    method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
+    (* method set_direction : ... *) (* CONFLICT: incompatible signature with parent method *)
+    method set_has_frame : bool -> unit
+    method set_icon_name : string -> unit
+    method set_label : string -> unit
+    method set_menu_model : Ocgtk_gio.Gio.menu_model_t option -> unit
+    method set_popover : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
+    method set_primary : bool -> unit
+    method set_use_underline : bool -> unit
+    method as_menu_button : Menu_button.t
+end
+
 (* High-level class for MenuButton *)
-class menu_button (obj : Menu_button.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Menu_button.as_widget obj)
+class menu_button (obj : Menu_button.t) : menu_button_t = object (self)
   inherit Gmenu_button_signals.menu_button_signals obj
 
   method get_active : unit -> bool =
@@ -17,7 +47,7 @@ class menu_button (obj : Menu_button.t) = object (self)
     fun () ->
       (Menu_button.get_can_shrink obj)
 
-  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
+  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option =
     fun () ->
       Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Menu_button.get_child obj)
 
@@ -35,7 +65,11 @@ class menu_button (obj : Menu_button.t) = object (self)
     fun () ->
       (Menu_button.get_label obj)
 
-  method get_popover : unit -> GPopover.popover option =
+  method get_menu_model : unit -> Ocgtk_gio.Gio.menu_model_t option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.menu_model ret) (Menu_button.get_menu_model obj)
+
+  method get_popover : unit -> GPopover.popover_t option =
     fun () ->
       Option.map (fun ret -> new GPopover.popover ret) (Menu_button.get_popover obj)
 
@@ -67,7 +101,7 @@ class menu_button (obj : Menu_button.t) = object (self)
     fun can_shrink ->
       (Menu_button.set_can_shrink obj can_shrink)
 
-  method set_child : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
+  method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit =
     fun child ->
       let child = Option.map (fun (c) -> c#as_widget) child in
       (Menu_button.set_child obj child)
@@ -86,7 +120,12 @@ class menu_button (obj : Menu_button.t) = object (self)
     fun label ->
       (Menu_button.set_label obj label)
 
-  method set_popover : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
+  method set_menu_model : Ocgtk_gio.Gio.menu_model_t option -> unit =
+    fun menu_model ->
+      let menu_model = Option.map (fun (c) -> c#as_menu_model) menu_model in
+      (Menu_button.set_menu_model obj menu_model)
+
+  method set_popover : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit =
     fun popover ->
       let popover = Option.map (fun (c) -> c#as_widget) popover in
       (Menu_button.set_popover obj popover)
@@ -99,7 +138,6 @@ class menu_button (obj : Menu_button.t) = object (self)
     fun use_underline ->
       (Menu_button.set_use_underline obj use_underline)
 
-  method as_widget = (Menu_button.as_widget obj)
     method as_menu_button = obj
 end
 

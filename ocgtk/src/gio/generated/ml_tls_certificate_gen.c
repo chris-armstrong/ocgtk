@@ -18,8 +18,8 @@
 #include <gio/gio.h>
 #include <gio/gfiledescriptorbased.h>
 #include <gio/gdesktopappinfo.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gio_decls.h"
 
 
 CAMLexport CAMLprim value ml_g_tls_certificate_verify(value self, value arg1, value arg2)
@@ -61,22 +61,6 @@ CAMLparam1(self);
 GTlsCertificate* result = g_tls_certificate_get_issuer(GTlsCertificate_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GTlsCertificate));
-}
-
-CAMLexport CAMLprim value ml_g_tls_certificate_get_ip_addresses(value self)
-{
-CAMLparam1(self);
-
-GPtrArray* result = g_tls_certificate_get_ip_addresses(GTlsCertificate_val(self));
-    guint result_length = result->len;
-    gpointer* result_pdata = result->pdata;
-    CAMLlocal1(ml_result);
-    ml_result = caml_alloc(result_length, 0);
-    for (int i = 0; i < result_length; i++) {
-      Store_field(ml_result, i, Val_GInetAddress((GPtrArray*)result_pdata[i]));
-    }
-    g_ptr_array_unref(result);
-CAMLreturn(ml_result);
 }
 
 CAMLexport CAMLprim value ml_g_tls_certificate_get_certificate_pem(value self)

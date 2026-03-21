@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_css_provider_new(value unit)
@@ -63,5 +63,13 @@ CAMLexport CAMLprim value ml_gtk_css_provider_load_from_path(value self, value a
 CAMLparam2(self, arg1);
 
 gtk_css_provider_load_from_path(GtkCssProvider_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_css_provider_load_from_file(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_css_provider_load_from_file(GtkCssProvider_val(self), GFile_val(arg1));
 CAMLreturn(Val_unit);
 }

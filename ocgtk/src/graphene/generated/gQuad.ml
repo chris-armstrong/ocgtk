@@ -1,5 +1,15 @@
+class type quad_t = object
+    method contains : Point.t -> bool
+    method free : unit -> unit
+    method get_point : int -> Point.t
+    method init : Point.t -> Point.t -> Point.t -> Point.t -> Quad.t
+    method init_from_points : Point.t array -> Quad.t
+    method init_from_rect : Rect.t -> Quad.t
+    method as_quad : Quad.t
+end
+
 (* High-level class for Quad *)
-class quad (obj : Quad.t) = object (self)
+class quad (obj : Quad.t) : quad_t = object (self)
 
   method contains : Point.t -> bool =
     fun p ->

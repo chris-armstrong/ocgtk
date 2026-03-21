@@ -1,5 +1,4 @@
-class print_settings : Print_settings.t ->
-  object
+class type print_settings_t = object
     method get : string -> string option
     method get_bool : string -> bool
     method get_collate : unit -> bool
@@ -67,5 +66,7 @@ class print_settings : Print_settings.t ->
     method to_file : string -> (bool, GError.t) result
     method unset : string -> unit
     method as_print_settings : Print_settings.t
-  end
+end
+
+class print_settings : Print_settings.t -> print_settings_t
 

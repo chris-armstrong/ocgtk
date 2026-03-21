@@ -1,10 +1,9 @@
-class gesture_long_press : Gesture_long_press.t ->
-  object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller
+class type gesture_long_press_t = object
     inherit Ggesture_long_press_signals.gesture_long_press_signals
     method get_delay_factor : unit -> float
     method set_delay_factor : float -> unit
-  method as_event_controller : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t
     method as_gesture_long_press : Gesture_long_press.t
-  end
+end
+
+class gesture_long_press : Gesture_long_press.t -> gesture_long_press_t
 

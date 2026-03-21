@@ -13,9 +13,44 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
+
+CAMLexport CAMLprim value ml_gtk_flatten_list_model_new(value arg1)
+{
+CAMLparam1(arg1);
+
+GtkFlattenListModel *obj = gtk_flatten_list_model_new(Option_val(arg1, GListModel_val, NULL));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkFlattenListModel(obj));
+}
+CAMLexport CAMLprim value ml_gtk_flatten_list_model_set_model(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_flatten_list_model_set_model(GtkFlattenListModel_val(self), Option_val(arg1, GListModel_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_flatten_list_model_get_model_for_item(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GListModel* result = gtk_flatten_list_model_get_model_for_item(GtkFlattenListModel_val(self), Int_val(arg1));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GListModel));
+}
+
+CAMLexport CAMLprim value ml_gtk_flatten_list_model_get_model(value self)
+{
+CAMLparam1(self);
+
+GListModel* result = gtk_flatten_list_model_get_model(GtkFlattenListModel_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GListModel));
+}
 
 CAMLexport CAMLprim value ml_gtk_flatten_list_model_get_n_items(value self)
 {

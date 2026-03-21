@@ -1,9 +1,26 @@
-(* High-level class for TreeListRow *)
-class tree_list_row (obj : Tree_list_row.t) = object (self)
+class type tree_list_row_t = object
+    method get_child_row : int -> tree_list_row_t option
+    method get_children : unit -> Ocgtk_gio.Gio.list_model_t option
+    method get_depth : unit -> int
+    method get_expanded : unit -> bool
+    method get_parent : unit -> tree_list_row_t option
+    method get_position : unit -> int
+    method is_expandable : unit -> bool
+    method set_expanded : bool -> unit
+    method expandable : bool
+    method as_tree_list_row : Tree_list_row.t
+end
 
-  method get_child_row : int -> tree_list_row option =
+(* High-level class for TreeListRow *)
+class tree_list_row (obj : Tree_list_row.t) : tree_list_row_t = object (self)
+
+  method get_child_row : int -> tree_list_row_t option =
     fun position ->
       Option.map (fun ret -> new tree_list_row ret) (Tree_list_row.get_child_row obj position)
+
+  method get_children : unit -> Ocgtk_gio.Gio.list_model_t option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.list_model ret) (Tree_list_row.get_children obj)
 
   method get_depth : unit -> int =
     fun () ->
@@ -13,7 +30,7 @@ class tree_list_row (obj : Tree_list_row.t) = object (self)
     fun () ->
       (Tree_list_row.get_expanded obj)
 
-  method get_parent : unit -> tree_list_row option =
+  method get_parent : unit -> tree_list_row_t option =
     fun () ->
       Option.map (fun ret -> new tree_list_row ret) (Tree_list_row.get_parent obj)
 

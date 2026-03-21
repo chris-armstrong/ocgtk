@@ -93,8 +93,8 @@ let test_non_opaque_record_functions () =
   assert_true "Non-opaque record generator should exit successfully" (exit_code = 0);
 
   (* Check that forward declarations are generated as functions, not macros *)
-  let header_file = Filename.concat (Filename.concat output_dir "generated") "generated_forward_decls.h" in
-  assert_true "generated_forward_decls.h should exist" (file_exists header_file);
+  let header_file = Filename.concat (Filename.concat output_dir "generated") "gtk_decls.h" in
+  assert_true "gtk_decls.h should exist" (file_exists header_file);
   let header_content = read_file header_file in
 
   (* Should have forward declarations for functions *)
@@ -136,7 +136,7 @@ let test_non_opaque_vs_opaque_records () =
   let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
   assert_true "Should generate successfully" (exit_code = 0);
 
-  let header_file = Filename.concat (Filename.concat output_dir "generated") "generated_forward_decls.h" in
+  let header_file = Filename.concat (Filename.concat output_dir "generated") "gtk_decls.h" in
   let header_content = read_file header_file in
 
   (* Both records are non-opaque (no disguised="1" attribute) so they use function declarations *)

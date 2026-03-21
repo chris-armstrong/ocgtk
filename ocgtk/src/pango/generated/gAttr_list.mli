@@ -1,5 +1,4 @@
-class attr_list : Attr_list.t ->
-  object
+class type attr_list_t = object
     method change : Attribute.t -> unit
     method copy : unit -> Attr_list.t option
     method equal : Attr_list.t -> bool
@@ -12,5 +11,7 @@ class attr_list : Attr_list.t ->
     method unref : unit -> unit
     method update : int -> int -> int -> unit
     method as_attr_list : Attr_list.t
-  end
+end
+
+class attr_list : Attr_list.t -> attr_list_t
 

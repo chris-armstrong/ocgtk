@@ -1,5 +1,4 @@
-class entry_buffer : Entry_buffer.t ->
-  object
+class type entry_buffer_t = object
     inherit Gentry_buffer_signals.entry_buffer_signals
     method delete_text : int -> int -> int
     method emit_deleted_text : int -> int -> unit
@@ -11,5 +10,7 @@ class entry_buffer : Entry_buffer.t ->
     method set_max_length : int -> unit
     method set_text : string -> int -> unit
     method as_entry_buffer : Entry_buffer.t
-  end
+end
+
+class entry_buffer : Entry_buffer.t -> entry_buffer_t
 

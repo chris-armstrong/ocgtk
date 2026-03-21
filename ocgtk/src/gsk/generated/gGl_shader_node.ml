@@ -1,7 +1,14 @@
-(* High-level class for GLShaderNode *)
-class gl_shader_node (obj : Gl_shader_node.t) = object (self)
+class type gl_shader_node_t = object
+    method get_child : int -> GRender_node.render_node_t
+    method get_n_children : unit -> int
+    method get_shader : unit -> GGl_shader.gl_shader_t
+    method as_gl_shader_node : Gl_shader_node.t
+end
 
-  method get_child : int -> GRender_node.render_node =
+(* High-level class for GLShaderNode *)
+class gl_shader_node (obj : Gl_shader_node.t) : gl_shader_node_t = object (self)
+
+  method get_child : int -> GRender_node.render_node_t =
     fun idx ->
       new  GRender_node.render_node(Gl_shader_node.get_child obj idx)
 
@@ -9,7 +16,7 @@ class gl_shader_node (obj : Gl_shader_node.t) = object (self)
     fun () ->
       (Gl_shader_node.get_n_children obj)
 
-  method get_shader : unit -> GGl_shader.gl_shader =
+  method get_shader : unit -> GGl_shader.gl_shader_t =
     fun () ->
       new  GGl_shader.gl_shader(Gl_shader_node.get_shader obj)
 

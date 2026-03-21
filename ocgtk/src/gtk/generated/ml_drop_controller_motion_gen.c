@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_drop_controller_motion_new(value unit)
@@ -32,6 +32,15 @@ CAMLparam1(self);
 
 gboolean result = gtk_drop_controller_motion_is_pointer(GtkDropControllerMotion_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_drop_controller_motion_get_drop(value self)
+{
+CAMLparam1(self);
+
+GdkDrop* result = gtk_drop_controller_motion_get_drop(GtkDropControllerMotion_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GdkDrop));
 }
 
 CAMLexport CAMLprim value ml_gtk_drop_controller_motion_contains_pointer(value self)

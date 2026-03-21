@@ -1,12 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: DropDown *)
+(* DropDown: DropDown *)
 
 type t = [`drop_down | `widget | `initially_unowned] Gobject.obj
 
-val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
-
 (** Create a new DropDown *)
-external new_ : unit -> Expression.t option -> t = "ml_gtk_drop_down_new"
+external new_ : Ocgtk_gio.Gio.Wrappers.List_model.t option -> Expression.t option -> t = "ml_gtk_drop_down_new"
 
 (** Create a new DropDown *)
 external new_from_strings : string array -> t = "ml_gtk_drop_down_new_from_strings"
@@ -20,6 +18,9 @@ external set_selected : t -> int -> unit = "ml_gtk_drop_down_set_selected"
 
 (** Sets the match mode for the search filter. *)
 external set_search_match_mode : t -> Gtk_enums.stringfiltermatchmode -> unit = "ml_gtk_drop_down_set_search_match_mode"
+
+(** Sets the `GListModel` to use. *)
+external set_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option -> unit = "ml_gtk_drop_down_set_model"
 
 (** Sets the `GtkListItemFactory` to use for populating list items in the popup. *)
 external set_list_factory : t -> List_item_factory.t option -> unit = "ml_gtk_drop_down_set_list_factory"
@@ -51,6 +52,9 @@ external get_selected : t -> int = "ml_gtk_drop_down_get_selected"
 
 (** Returns the match mode that the search filter is using. *)
 external get_search_match_mode : t -> Gtk_enums.stringfiltermatchmode = "ml_gtk_drop_down_get_search_match_mode"
+
+(** Gets the model that provides the displayed items. *)
+external get_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option = "ml_gtk_drop_down_get_model"
 
 (** Gets the factory that's currently used to populate list items in the popup. *)
 external get_list_factory : t -> List_item_factory.t option = "ml_gtk_drop_down_get_list_factory"

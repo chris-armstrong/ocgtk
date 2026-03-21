@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_gesture_single_set_touch_only(value self, value arg1)
@@ -55,6 +55,14 @@ CAMLparam1(self);
 
 gboolean result = gtk_gesture_single_get_exclusive(GtkGestureSingle_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_gesture_single_get_current_sequence(value self)
+{
+CAMLparam1(self);
+
+GdkEventSequence* result = gtk_gesture_single_get_current_sequence(GtkGestureSingle_val(self));
+CAMLreturn(Val_option(result, Val_GdkEventSequence));
 }
 
 CAMLexport CAMLprim value ml_gtk_gesture_single_get_current_button(value self)

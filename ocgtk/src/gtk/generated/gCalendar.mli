@@ -1,6 +1,4 @@
-class calendar : Calendar.t ->
-  object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
+class type calendar_t = object
     inherit Gcalendar_signals.calendar_signals
     method clear_marks : unit -> unit
     method get_day : unit -> int
@@ -18,7 +16,8 @@ class calendar : Calendar.t ->
     method set_show_week_numbers : bool -> unit
     method set_year : int -> unit
     method unmark_day : int -> unit
-  method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
     method as_calendar : Calendar.t
-  end
+end
+
+class calendar : Calendar.t -> calendar_t
 

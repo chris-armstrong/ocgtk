@@ -151,11 +151,12 @@ let normalize_class_name name =
 let module_name_of_class class_name =
   class_name |> to_snake_case |> String.capitalize_ascii
 
-(** Convert a namespace name to a dune-compliant module name. Dune lowercases
-    all characters after the first, so "GdkPixbuf" becomes "Gdkpixbuf". This is
-    needed because dune automatically derives module names from filenames, and
-    the build system enforces this capitalization convention. *)
-let namespace_to_module_name (namespace : string) : string =
+(** Convert an internal namespace name to a dune-compliant module name (used
+    within the same namespace). Dune lowercases all characters after the first,
+    so "GdkPixbuf" becomes "Gdkpixbuf". This is needed because dune
+    automatically derives module names from filenames, and the build system
+    enforces this capitalization convention. *)
+let internal_namespace_to_module_name (namespace : string) : string =
   if String.length namespace = 0 then namespace
   else
     let first = String.capitalize_ascii (String.sub namespace ~pos:0 ~len:1) in
@@ -165,14 +166,29 @@ let namespace_to_module_name (namespace : string) : string =
     in
     first ^ rest
 
+(** Convert a namespace name to the dune library wrapper name.
+    This is the lowercase form used for filenames and dune library names.
+    e.g., "Cairo" -> "ocgtk_cairo", "PangoCairo" -> "ocgtk_pangocairo" *)
+let library_wrapper_name (namespace : string) : string =
+  "ocgtk_" ^ String.lowercase_ascii namespace
+
+(** Convert a namespace name to a fully-qualified module path for external
+    references. The wrapper module re-exports the library module as a submodule,
+    so the path is [Ocgtk_<ns>.<Ns>].
+    e.g., "Cairo" -> "Ocgtk_cairo.Cairo", "Gdk" -> "Ocgtk_gdk.Gdk",
+    "GdkPixbuf" -> "Ocgtk_gdkpixbuf.GdkPixbuf" *)
+let external_namespace_to_module_name (namespace : string) : string =
+  String.capitalize_ascii (library_wrapper_name namespace)
+  ^ "." ^ String.capitalize_ascii namespace
+
 (* Get the name of the enums module (FIXME: doesn't handle cross-namespace enums) *)
 let enums_module_name (ctx : Types.generation_context) (_ : Types.gir_enum) =
-  namespace_to_module_name ctx.namespace.namespace_name ^ "_enums"
+  internal_namespace_to_module_name ctx.namespace.namespace_name ^ "_enums"
 
 (* Get the name of the bitfields module (FIXME: doesn't handle cross-namespace enums) *)
 let bitfields_module_name (ctx : Types.generation_context)
     (_ : Types.gir_bitfield) =
-  namespace_to_module_name ctx.namespace.namespace_name ^ "_enums"
+  internal_namespace_to_module_name ctx.namespace.namespace_name ^ "_enums"
 
 (* Read filter file and return set of class names to generate *)
 let read_filter_file filename =

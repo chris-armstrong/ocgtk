@@ -1,5 +1,4 @@
-class attribute : Attribute.t ->
-  object
+class type attribute_t = object
     method as_color : unit -> Attr_color.t option
     method as_float : unit -> Attr_float.t option
     method as_font_desc : unit -> Attr_font_desc.t option
@@ -14,5 +13,7 @@ class attribute : Attribute.t ->
     method equal : Attribute.t -> bool
     method init : Attr_class.t -> unit
     method as_attribute : Attribute.t
-  end
+end
+
+class attribute : Attribute.t -> attribute_t
 

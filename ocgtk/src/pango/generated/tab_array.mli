@@ -11,9 +11,6 @@ type t = [`tab_array] Gobject.obj
 (** Create a new TabArray *)
 external new_ : int -> bool -> t = "ml_pango_tab_array_new"
 
-(** Create a new TabArray *)
-external new_with_positions : int -> bool -> Pango_enums.tabalign -> int -> unit -> t = "ml_pango_tab_array_new_with_positions"
-
 (* Methods *)
 (** Serializes a `PangoTabArray` to a string.
 
@@ -40,13 +37,6 @@ external set_positions_in_pixels : t -> bool -> unit = "ml_pango_tab_array_set_p
 You must subsequently initialize any tabs
 that were added as a result of growing the array. *)
 external resize : t -> int -> unit = "ml_pango_tab_array_resize"
-
-(** If non-%NULL, @alignments and @locations are filled with allocated
-arrays.
-
-The arrays are of length [method@Pango.TabArray.get_size].
-You must free the returned array. *)
-external get_tabs : t -> Pango_enums.tabalign * int array = "ml_pango_tab_array_get_tabs"
 
 (** Gets the alignment and position of a tab stop. *)
 external get_tab : t -> int -> Pango_enums.tabalign * int = "ml_pango_tab_array_get_tab"

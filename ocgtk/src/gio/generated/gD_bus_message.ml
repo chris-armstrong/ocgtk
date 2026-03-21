@@ -1,7 +1,42 @@
-(* High-level class for DBusMessage *)
-class d_bus_message (obj : D_bus_message.t) = object (self)
+class type d_bus_message_t = object
+    method copy : unit -> (d_bus_message_t, GError.t) result
+    method get_arg0 : unit -> string option
+    method get_arg0_path : unit -> string option
+    method get_byte_order : unit -> Gio_enums.dbusmessagebyteorder
+    method get_destination : unit -> string option
+    method get_error_name : unit -> string option
+    method get_flags : unit -> Gio_enums.dbusmessageflags
+    method get_interface : unit -> string option
+    method get_locked : unit -> bool
+    method get_member : unit -> string option
+    method get_message_type : unit -> Gio_enums.dbusmessagetype
+    method get_path : unit -> string option
+    method get_sender : unit -> string option
+    method get_signature : unit -> string
+    method get_unix_fd_list : unit -> GUnix_fd_list.unix_fd_list_t option
+    method lock : unit -> unit
+    method new_method_error_literal : string -> string -> d_bus_message_t
+    method new_method_reply : unit -> d_bus_message_t
+    method print : int -> string
+    method set_byte_order : Gio_enums.dbusmessagebyteorder -> unit
+    method set_destination : string option -> unit
+    method set_error_name : string -> unit
+    method set_flags : Gio_enums.dbusmessageflags -> unit
+    method set_interface : string option -> unit
+    method set_member : string option -> unit
+    method set_message_type : Gio_enums.dbusmessagetype -> unit
+    method set_path : string option -> unit
+    method set_sender : string option -> unit
+    method set_signature : string option -> unit
+    method set_unix_fd_list : GUnix_fd_list.unix_fd_list_t option -> unit
+    method to_gerror : unit -> (bool, GError.t) result
+    method as_d_bus_message : D_bus_message.t
+end
 
-  method copy : unit -> (d_bus_message, GError.t) result =
+(* High-level class for DBusMessage *)
+class d_bus_message (obj : D_bus_message.t) : d_bus_message_t = object (self)
+
+  method copy : unit -> (d_bus_message_t, GError.t) result =
     fun () ->
       Result.map (fun ret -> new d_bus_message ret)(D_bus_message.copy obj)
 
@@ -57,7 +92,7 @@ class d_bus_message (obj : D_bus_message.t) = object (self)
     fun () ->
       (D_bus_message.get_signature obj)
 
-  method get_unix_fd_list : unit -> GUnix_fd_list.unix_fd_list option =
+  method get_unix_fd_list : unit -> GUnix_fd_list.unix_fd_list_t option =
     fun () ->
       Option.map (fun ret -> new GUnix_fd_list.unix_fd_list ret) (D_bus_message.get_unix_fd_list obj)
 
@@ -65,11 +100,11 @@ class d_bus_message (obj : D_bus_message.t) = object (self)
     fun () ->
       (D_bus_message.lock obj)
 
-  method new_method_error_literal : string -> string -> d_bus_message =
+  method new_method_error_literal : string -> string -> d_bus_message_t =
     fun error_name error_message ->
       new  d_bus_message(D_bus_message.new_method_error_literal obj error_name error_message)
 
-  method new_method_reply : unit -> d_bus_message =
+  method new_method_reply : unit -> d_bus_message_t =
     fun () ->
       new  d_bus_message(D_bus_message.new_method_reply obj)
 
@@ -117,7 +152,7 @@ class d_bus_message (obj : D_bus_message.t) = object (self)
     fun value ->
       (D_bus_message.set_signature obj value)
 
-  method set_unix_fd_list : 'p1. (#GUnix_fd_list.unix_fd_list as 'p1) option -> unit =
+  method set_unix_fd_list : GUnix_fd_list.unix_fd_list_t option -> unit =
     fun fd_list ->
       let fd_list = Option.map (fun (c) -> c#as_unix_fd_list) fd_list in
       (D_bus_message.set_unix_fd_list obj fd_list)

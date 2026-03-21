@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Cell renderer: CellRendererText *)
+(* CellRendererText: CellRendererText *)
 
 type t = [`cell_renderer_text | `cell_renderer | `initially_unowned] Gobject.obj
-
-let as_cell_renderer (obj : t) : Cell_renderer.t = Obj.magic obj
 
 (** Create a new CellRendererText *)
 external new_ : unit -> t = "ml_gtk_cell_renderer_text_new"
@@ -26,11 +24,29 @@ external get_align_set : t -> bool = "ml_gtk_cell_renderer_text_get_align_set"
 (** Set property: align-set *)
 external set_align_set : t -> bool -> unit = "ml_gtk_cell_renderer_text_set_align_set"
 
+(** Get property: alignment *)
+external get_alignment : t -> Ocgtk_pango.Pango.alignment = "ml_gtk_cell_renderer_text_get_alignment"
+
+(** Set property: alignment *)
+external set_alignment : t -> Ocgtk_pango.Pango.alignment -> unit = "ml_gtk_cell_renderer_text_set_alignment"
+
+(** Get property: attributes *)
+external get_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t = "ml_gtk_cell_renderer_text_get_attributes"
+
+(** Set property: attributes *)
+external set_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t -> unit = "ml_gtk_cell_renderer_text_set_attributes"
+
 (** Get property: background *)
 external get_background : t -> string = "ml_gtk_cell_renderer_text_get_background"
 
 (** Set property: background *)
 external set_background : t -> string -> unit = "ml_gtk_cell_renderer_text_set_background"
+
+(** Get property: background-rgba *)
+external get_background_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t = "ml_gtk_cell_renderer_text_get_background_rgba"
+
+(** Set property: background-rgba *)
+external set_background_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> unit = "ml_gtk_cell_renderer_text_set_background_rgba"
 
 (** Get property: background-set *)
 external get_background_set : t -> bool = "ml_gtk_cell_renderer_text_get_background_set"
@@ -49,6 +65,12 @@ external get_editable_set : t -> bool = "ml_gtk_cell_renderer_text_get_editable_
 
 (** Set property: editable-set *)
 external set_editable_set : t -> bool -> unit = "ml_gtk_cell_renderer_text_set_editable_set"
+
+(** Get property: ellipsize *)
+external get_ellipsize : t -> Ocgtk_pango.Pango.ellipsizemode = "ml_gtk_cell_renderer_text_get_ellipsize"
+
+(** Set property: ellipsize *)
+external set_ellipsize : t -> Ocgtk_pango.Pango.ellipsizemode -> unit = "ml_gtk_cell_renderer_text_set_ellipsize"
 
 (** Get property: ellipsize-set *)
 external get_ellipsize_set : t -> bool = "ml_gtk_cell_renderer_text_get_ellipsize_set"
@@ -74,11 +96,23 @@ external get_font : t -> string = "ml_gtk_cell_renderer_text_get_font"
 (** Set property: font *)
 external set_font : t -> string -> unit = "ml_gtk_cell_renderer_text_set_font"
 
+(** Get property: font-desc *)
+external get_font_desc : t -> Ocgtk_pango.Pango.Wrappers.Font_description.t = "ml_gtk_cell_renderer_text_get_font_desc"
+
+(** Set property: font-desc *)
+external set_font_desc : t -> Ocgtk_pango.Pango.Wrappers.Font_description.t -> unit = "ml_gtk_cell_renderer_text_set_font_desc"
+
 (** Get property: foreground *)
 external get_foreground : t -> string = "ml_gtk_cell_renderer_text_get_foreground"
 
 (** Set property: foreground *)
 external set_foreground : t -> string -> unit = "ml_gtk_cell_renderer_text_set_foreground"
+
+(** Get property: foreground-rgba *)
+external get_foreground_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t = "ml_gtk_cell_renderer_text_get_foreground_rgba"
+
+(** Set property: foreground-rgba *)
+external set_foreground_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> unit = "ml_gtk_cell_renderer_text_set_foreground_rgba"
 
 (** Get property: foreground-set *)
 external get_foreground_set : t -> bool = "ml_gtk_cell_renderer_text_get_foreground_set"
@@ -164,6 +198,12 @@ external get_size_set : t -> bool = "ml_gtk_cell_renderer_text_get_size_set"
 (** Set property: size-set *)
 external set_size_set : t -> bool -> unit = "ml_gtk_cell_renderer_text_set_size_set"
 
+(** Get property: stretch *)
+external get_stretch : t -> Ocgtk_pango.Pango.stretch = "ml_gtk_cell_renderer_text_get_stretch"
+
+(** Set property: stretch *)
+external set_stretch : t -> Ocgtk_pango.Pango.stretch -> unit = "ml_gtk_cell_renderer_text_set_stretch"
+
 (** Get property: stretch-set *)
 external get_stretch_set : t -> bool = "ml_gtk_cell_renderer_text_get_stretch_set"
 
@@ -182,6 +222,12 @@ external get_strikethrough_set : t -> bool = "ml_gtk_cell_renderer_text_get_stri
 (** Set property: strikethrough-set *)
 external set_strikethrough_set : t -> bool -> unit = "ml_gtk_cell_renderer_text_set_strikethrough_set"
 
+(** Get property: style *)
+external get_style : t -> Ocgtk_pango.Pango.style = "ml_gtk_cell_renderer_text_get_style"
+
+(** Set property: style *)
+external set_style : t -> Ocgtk_pango.Pango.style -> unit = "ml_gtk_cell_renderer_text_set_style"
+
 (** Get property: style-set *)
 external get_style_set : t -> bool = "ml_gtk_cell_renderer_text_get_style_set"
 
@@ -194,11 +240,23 @@ external get_text : t -> string = "ml_gtk_cell_renderer_text_get_text"
 (** Set property: text *)
 external set_text : t -> string -> unit = "ml_gtk_cell_renderer_text_set_text"
 
+(** Get property: underline *)
+external get_underline : t -> Ocgtk_pango.Pango.underline = "ml_gtk_cell_renderer_text_get_underline"
+
+(** Set property: underline *)
+external set_underline : t -> Ocgtk_pango.Pango.underline -> unit = "ml_gtk_cell_renderer_text_set_underline"
+
 (** Get property: underline-set *)
 external get_underline_set : t -> bool = "ml_gtk_cell_renderer_text_get_underline_set"
 
 (** Set property: underline-set *)
 external set_underline_set : t -> bool -> unit = "ml_gtk_cell_renderer_text_set_underline_set"
+
+(** Get property: variant *)
+external get_variant : t -> Ocgtk_pango.Pango.variant = "ml_gtk_cell_renderer_text_get_variant"
+
+(** Set property: variant *)
+external set_variant : t -> Ocgtk_pango.Pango.variant -> unit = "ml_gtk_cell_renderer_text_set_variant"
 
 (** Get property: variant-set *)
 external get_variant_set : t -> bool = "ml_gtk_cell_renderer_text_get_variant_set"
@@ -223,6 +281,12 @@ external get_width_chars : t -> int = "ml_gtk_cell_renderer_text_get_width_chars
 
 (** Set property: width-chars *)
 external set_width_chars : t -> int -> unit = "ml_gtk_cell_renderer_text_set_width_chars"
+
+(** Get property: wrap-mode *)
+external get_wrap_mode : t -> Ocgtk_pango.Pango.wrapmode = "ml_gtk_cell_renderer_text_get_wrap_mode"
+
+(** Set property: wrap-mode *)
+external set_wrap_mode : t -> Ocgtk_pango.Pango.wrapmode -> unit = "ml_gtk_cell_renderer_text_set_wrap_mode"
 
 (** Get property: wrap-width *)
 external get_wrap_width : t -> int = "ml_gtk_cell_renderer_text_get_wrap_width"

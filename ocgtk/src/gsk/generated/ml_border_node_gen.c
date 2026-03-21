@@ -12,10 +12,31 @@
 #include "wrappers.h"
 
 #include <gsk/gsk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gsk_decls.h"
 
 
+CAMLexport CAMLprim value ml_gsk_border_node_new(value arg1, value arg2, value arg3)
+{
+CAMLparam3(arg1, arg2, arg3);
+    int arg2_length = Wosize_val(arg2);
+    float* c_arg2 = (float*)g_malloc(sizeof(float) * arg2_length);
+    for (int i = 0; i < arg2_length; i++) {
+      c_arg2[i] = Double_val(Field(arg2, i));
+    }
+    int arg3_length = Wosize_val(arg3);
+    GdkRGBA* c_arg3 = (GdkRGBA*)g_malloc(sizeof(GdkRGBA) * arg3_length);
+    for (int i = 0; i < arg3_length; i++) {
+      c_arg3[i] = *GdkRGBA_val(Field(arg3, i));
+    }
+
+GskBorderNode *obj = gsk_border_node_new(GskRoundedRect_val(arg1), c_arg2, c_arg3);
+if (obj) g_object_ref_sink(obj);
+
+    g_free(c_arg2);
+    g_free(c_arg3);
+CAMLreturn(Val_GskBorderNode(obj));
+}
 CAMLexport CAMLprim value ml_gsk_border_node_get_widths(value self)
 {
 CAMLparam1(self);
@@ -36,4 +57,12 @@ CAMLparam1(self);
 
 const GskRoundedRect* result = gsk_border_node_get_outline(GskBorderNode_val(self));
 CAMLreturn(Val_GskRoundedRect(result));
+}
+
+CAMLexport CAMLprim value ml_gsk_border_node_get_colors(value self)
+{
+CAMLparam1(self);
+
+const GdkRGBA* result = gsk_border_node_get_colors(GskBorderNode_val(self));
+CAMLreturn(Val_GdkRGBA(result));
 }

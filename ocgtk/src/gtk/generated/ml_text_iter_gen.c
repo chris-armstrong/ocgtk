@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 /* Copy function for GtkTextIter (value-like record with copy method) */
 value copy_GtkTextIter(const GtkTextIter *ptr)
@@ -225,6 +225,15 @@ char* result = gtk_text_iter_get_slice(GtkTextIter_val(self), GtkTextIter_val(ar
 CAMLreturn(caml_copy_string(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_text_iter_get_paintable(value self)
+{
+CAMLparam1(self);
+
+GdkPaintable* result = gtk_text_iter_get_paintable(GtkTextIter_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GdkPaintable));
+}
+
 CAMLexport CAMLprim value ml_gtk_text_iter_get_offset(value self)
 {
 CAMLparam1(self);
@@ -255,6 +264,14 @@ CAMLparam1(self);
 
 int result = gtk_text_iter_get_line(GtkTextIter_val(self));
 CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_iter_get_language(value self)
+{
+CAMLparam1(self);
+
+PangoLanguage* result = gtk_text_iter_get_language(GtkTextIter_val(self));
+CAMLreturn(Val_PangoLanguage(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_iter_get_child_anchor(value self)

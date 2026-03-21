@@ -53,15 +53,6 @@ is in fact only a convenience function that computes the sum of
 @geometry.width for each glyph in the @glyphs. *)
 external get_width : t -> int = "ml_pango_glyph_string_get_width"
 
-(** Given a `PangoGlyphString` and corresponding text, determine the width
-corresponding to each character.
-
-When multiple characters compose a single cluster, the width of the
-entire cluster is divided equally among the characters.
-
-See also [method@Pango.GlyphItem.get_logical_widths]. *)
-external get_logical_widths : t -> string -> int -> int -> int array -> unit = "ml_pango_glyph_string_get_logical_widths"
-
 (** Free a glyph string and associated storage. *)
 external free : t -> unit = "ml_pango_glyph_string_free"
 

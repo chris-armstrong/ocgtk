@@ -13,10 +13,19 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
+CAMLexport CAMLprim value ml_gtk_sort_list_model_new(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+
+GtkSortListModel *obj = gtk_sort_list_model_new(Option_val(arg1, GListModel_val, NULL), Option_val(arg2, GtkSorter_val, NULL));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkSortListModel(obj));
+}
 CAMLexport CAMLprim value ml_gtk_sort_list_model_set_sorter(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -30,6 +39,14 @@ CAMLexport CAMLprim value ml_gtk_sort_list_model_set_section_sorter(value self, 
 CAMLparam2(self, arg1);
 
 gtk_sort_list_model_set_section_sorter(GtkSortListModel_val(self), Option_val(arg1, GtkSorter_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_sort_list_model_set_model(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_sort_list_model_set_model(GtkSortListModel_val(self), Option_val(arg1, GListModel_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -65,6 +82,15 @@ CAMLparam1(self);
 
 guint result = gtk_sort_list_model_get_pending(GtkSortListModel_val(self));
 CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_sort_list_model_get_model(value self)
+{
+CAMLparam1(self);
+
+GListModel* result = gtk_sort_list_model_get_model(GtkSortListModel_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GListModel));
 }
 
 CAMLexport CAMLprim value ml_gtk_sort_list_model_get_incremental(value self)

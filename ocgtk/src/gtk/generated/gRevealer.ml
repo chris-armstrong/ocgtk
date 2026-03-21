@@ -1,8 +1,20 @@
-(* High-level class for Revealer *)
-class revealer (obj : Revealer.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Revealer.as_widget obj)
+class type revealer_t = object
+    method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
+    method get_child_revealed : unit -> bool
+    method get_reveal_child : unit -> bool
+    method get_transition_duration : unit -> int
+    method get_transition_type : unit -> Gtk_enums.revealertransitiontype
+    method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
+    method set_reveal_child : bool -> unit
+    method set_transition_duration : int -> unit
+    method set_transition_type : Gtk_enums.revealertransitiontype -> unit
+    method as_revealer : Revealer.t
+end
 
-  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
+(* High-level class for Revealer *)
+class revealer (obj : Revealer.t) : revealer_t = object (self)
+
+  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option =
     fun () ->
       Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Revealer.get_child obj)
 
@@ -22,7 +34,7 @@ class revealer (obj : Revealer.t) = object (self)
     fun () ->
       (Revealer.get_transition_type obj)
 
-  method set_child : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
+  method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit =
     fun child ->
       let child = Option.map (fun (c) -> c#as_widget) child in
       (Revealer.set_child obj child)
@@ -39,7 +51,6 @@ class revealer (obj : Revealer.t) = object (self)
     fun transition ->
       (Revealer.set_transition_type obj transition)
 
-  method as_widget = (Revealer.as_widget obj)
     method as_revealer = obj
 end
 

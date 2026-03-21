@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_menu_button_new(value unit)
@@ -47,6 +47,14 @@ CAMLexport CAMLprim value ml_gtk_menu_button_set_popover(value self, value arg1)
 CAMLparam2(self, arg1);
 
 gtk_menu_button_set_popover(GtkMenuButton_val(self), Option_val(arg1, GtkWidget_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_menu_button_set_menu_model(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_menu_button_set_menu_model(GtkMenuButton_val(self), Option_val(arg1, GMenuModel_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -153,6 +161,15 @@ CAMLparam1(self);
 GtkPopover* result = gtk_menu_button_get_popover(GtkMenuButton_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkPopover));
+}
+
+CAMLexport CAMLprim value ml_gtk_menu_button_get_menu_model(value self)
+{
+CAMLparam1(self);
+
+GMenuModel* result = gtk_menu_button_get_menu_model(GtkMenuButton_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GMenuModel));
 }
 
 CAMLexport CAMLprim value ml_gtk_menu_button_get_label(value self)

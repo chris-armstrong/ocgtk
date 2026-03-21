@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_icon_theme_new(value unit)
@@ -37,11 +37,12 @@ CAMLreturn(Val_unit);
 CAMLexport CAMLprim value ml_gtk_icon_theme_set_resource_path(value self, value arg1)
 {
 CAMLparam2(self, arg1);
+    int arg1_length = 0;
     char** c_arg1 = NULL;
     
     if (Is_some(arg1)) {
         value array = Some_val(arg1);
-        int arg1_length = Wosize_val(array);
+        arg1_length = Wosize_val(array);
         c_arg1 = (char**)g_malloc(sizeof(char*) * (arg1_length + 1));
         for (int i = 0; i < arg1_length; i++) {
           c_arg1[i] = String_val(Field(array, i));
@@ -58,11 +59,12 @@ CAMLexport CAMLprim value ml_gtk_icon_theme_lookup_icon_native(value self, value
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam2(arg5, arg6);
+    int arg2_length = 0;
     char** c_arg2 = NULL;
     
     if (Is_some(arg2)) {
         value array = Some_val(arg2);
-        int arg2_length = Wosize_val(array);
+        arg2_length = Wosize_val(array);
         c_arg2 = (char**)g_malloc(sizeof(char*) * (arg2_length + 1));
         for (int i = 0; i < arg2_length; i++) {
           c_arg2[i] = String_val(Field(array, i));
@@ -79,11 +81,32 @@ CAMLexport CAMLprim value ml_gtk_icon_theme_lookup_icon_bytecode(value * argv, i
 return ml_gtk_icon_theme_lookup_icon_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6]);
 }
 
+CAMLexport CAMLprim value ml_gtk_icon_theme_lookup_by_gicon_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam1(arg5);
+
+GtkIconPaintable* result = gtk_icon_theme_lookup_by_gicon(GtkIconTheme_val(self), GIcon_val(arg1), Int_val(arg2), Int_val(arg3), GtkTextDirection_val(arg4), GtkIconLookupFlags_val(arg5));
+CAMLreturn(Val_GtkIconPaintable(result));}
+
+CAMLexport CAMLprim value ml_gtk_icon_theme_lookup_by_gicon_bytecode(value * argv, int argn)
+{
+return ml_gtk_icon_theme_lookup_by_gicon_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+}
+
 CAMLexport CAMLprim value ml_gtk_icon_theme_has_icon(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gboolean result = gtk_icon_theme_has_icon(GtkIconTheme_val(self), String_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_theme_has_gicon(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gboolean result = gtk_icon_theme_has_gicon(GtkIconTheme_val(self), GIcon_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -131,6 +154,15 @@ char** result = gtk_icon_theme_get_icon_names(GtkIconTheme_val(self));
     }
     g_free(result);
 CAMLreturn(ml_result);
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_theme_get_display(value self)
+{
+CAMLparam1(self);
+
+GdkDisplay* result = gtk_icon_theme_get_display(GtkIconTheme_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GdkDisplay));
 }
 
 CAMLexport CAMLprim value ml_gtk_icon_theme_add_search_path(value self, value arg1)

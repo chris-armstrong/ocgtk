@@ -4,18 +4,18 @@ This directory contains coding guidelines for the ocgtk project, organized by co
 
 ## MANDATORY GUIDELINES INDEX
 
-| Document | Concerns Covered | Original Sections |
-|----------|-----------------|-------------------|
-| [nesting-and-control-flow.md](./nesting-and-control-flow.md) | Reducing nesting, bind operators | 1 |
-| [error-handling.md](./error-handling.md) | Result vs exceptions, error context | 2 |
-| [naming-and-intermediates.md](./naming-and-intermediates.md) | Named values, pipeline clarity | 3 |
-| [module-boundaries.md](./module-boundaries.md) | .mli files, type annotations, module structure | 4, 7 |
-| [pattern-matching.md](./pattern-matching.md) | Exhaustive matching, catch-all avoidance | 5 |
-| [partial-functions.md](./partial-functions.md) | Total functions, banned partials | 6 |
-| [type-safety.md](./type-safety.md) | Stringly-typed code, phantom types, encapsulation | 9, NEW |
-| [code-reuse.md](./code-reuse.md) | Record updates, deduplication, labelled args | 8, 10, 11 |
-| [test-patterns.md](./test-patterns.md) | AST-based validation, test helpers | 12 |
-| [abstractions.md](./abstractions.md) | Module design, parameter reduction, functors | NEW |
+| Document | Concerns Covered |
+|----------|-----------------|
+| [nesting-and-control-flow.md](./nesting-and-control-flow.md) | Reducing nesting, bind operators |
+| [error-handling.md](./error-handling.md) | Result vs exceptions, error context |
+| [naming-and-intermediates.md](./naming-and-intermediates.md) | Named values, pipeline clarity |
+| [module-boundaries.md](./module-boundaries.md) | .mli files, type annotations, module structure |
+| [pattern-matching.md](./pattern-matching.md) | Exhaustive matching, catch-all avoidance |
+| [partial-functions.md](./partial-functions.md) | Total functions, banned partials |
+| [type-safety.md](./type-safety.md) | Stringly-typed code, phantom types, encapsulation |
+| [code-reuse.md](./code-reuse.md) | Record updates, deduplication, labelled args |
+| [test-patterns.md](./test-patterns.md) | AST-based validation, test helpers |
+| [abstractions.md](./abstractions.md) | Module design, parameter reduction, functors |
 
 ## Usage
 

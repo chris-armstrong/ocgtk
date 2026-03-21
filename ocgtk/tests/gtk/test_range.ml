@@ -1,7 +1,13 @@
 (* Phase 5.4 Range Widget Tests *)
 
 open Alcotest
-open Ocgtk_gtk
+open Ocgtk_gtk.Gtk
+module GMain = Ocgtk_gtk.GMain
+
+module Progress_bar = Wrappers.Progress_bar
+module Scale = Wrappers.Scale
+module Range = Wrappers.Range
+module Level_bar = Wrappers.Level_bar
 
 (* Try to initialize GTK once for all tests *)
 let gtk_available =

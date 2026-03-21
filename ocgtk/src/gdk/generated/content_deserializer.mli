@@ -15,3 +15,13 @@ external get_priority : t -> int = "ml_gdk_content_deserializer_get_priority"
 (** Gets the mime type to deserialize from. *)
 external get_mime_type : t -> string = "ml_gdk_content_deserializer_get_mime_type"
 
+(** Gets the input stream for the current operation.
+
+This is the stream that was passed to [func@Gdk.content_deserialize_async]. *)
+external get_input_stream : t -> Ocgtk_gio.Gio.Wrappers.Input_stream.t = "ml_gdk_content_deserializer_get_input_stream"
+
+(** Gets the cancellable for the current operation.
+
+This is the `GCancellable` that was passed to [func@Gdk.content_deserialize_async]. *)
+external get_cancellable : t -> Ocgtk_gio.Gio.Wrappers.Cancellable.t option = "ml_gdk_content_deserializer_get_cancellable"
+

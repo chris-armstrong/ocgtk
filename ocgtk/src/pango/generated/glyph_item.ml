@@ -23,19 +23,6 @@ This function is similar in function to pango_item_split() (and uses
 it internally.) *)
 external split : t -> string -> int -> t option = "ml_pango_glyph_item_split"
 
-(** Adds spacing between the graphemes of @glyph_item to
-give the effect of typographic letter spacing. *)
-external letter_space : t -> string -> Log_attr.t array -> int -> unit = "ml_pango_glyph_item_letter_space"
-
-(** Given a `PangoGlyphItem` and the corresponding text, determine the
-width corresponding to each character.
-
-When multiple characters compose a single cluster, the width of the
-entire cluster is divided equally among the characters.
-
-See also [method@Pango.GlyphString.get_logical_widths]. *)
-external get_logical_widths : t -> string -> int array -> unit = "ml_pango_glyph_item_get_logical_widths"
-
 (** Frees a `PangoGlyphItem` and resources to which it points. *)
 external free : t -> unit = "ml_pango_glyph_item_free"
 

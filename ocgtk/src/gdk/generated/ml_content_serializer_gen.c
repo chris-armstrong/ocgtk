@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <gdk/gdk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gdk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gdk_content_serializer_return_success(value self)
@@ -32,10 +32,28 @@ int result = gdk_content_serializer_get_priority(GdkContentSerializer_val(self))
 CAMLreturn(Val_int(result));
 }
 
+CAMLexport CAMLprim value ml_gdk_content_serializer_get_output_stream(value self)
+{
+CAMLparam1(self);
+
+GOutputStream* result = gdk_content_serializer_get_output_stream(GdkContentSerializer_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_GOutputStream(result));
+}
+
 CAMLexport CAMLprim value ml_gdk_content_serializer_get_mime_type(value self)
 {
 CAMLparam1(self);
 
 const char* result = gdk_content_serializer_get_mime_type(GdkContentSerializer_val(self));
 CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_gdk_content_serializer_get_cancellable(value self)
+{
+CAMLparam1(self);
+
+GCancellable* result = gdk_content_serializer_get_cancellable(GdkContentSerializer_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GCancellable));
 }

@@ -83,8 +83,6 @@ val generate_gvalue_setter_assignment
 val generate_c_file_header
   :  ctx:Types.generation_context
   -> ?class_name:string
-  -> ?external_enums:(string * Types.gir_enum) list
-  -> ?external_bitfields:(string * Types.gir_bitfield) list
   -> unit
   -> string
 

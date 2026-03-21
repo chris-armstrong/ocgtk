@@ -13,10 +13,19 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
+CAMLexport CAMLprim value ml_gtk_pad_controller_new(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+
+GtkPadController *obj = gtk_pad_controller_new(GActionGroup_val(arg1), Option_val(arg2, GdkDevice_val, NULL));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkPadController(obj));
+}
 CAMLexport CAMLprim value ml_gtk_pad_controller_set_action_entries(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -43,3 +52,37 @@ CAMLexport CAMLprim value ml_gtk_pad_controller_set_action_bytecode(value * argv
 {
 return ml_gtk_pad_controller_set_action_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
 }
+
+CAMLexport CAMLprim value ml_gtk_pad_controller_get_action_group(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkPadController *obj = (GtkPadController *)GtkPadController_val(self);
+    GActionGroup *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "action-group");
+if (pspec == NULL) caml_failwith("ml_gtk_pad_controller_get_action_group: property 'action-group' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "action-group", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GActionGroup(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_pad_controller_get_pad(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkPadController *obj = (GtkPadController *)GtkPadController_val(self);
+    GdkDevice *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "pad");
+if (pspec == NULL) caml_failwith("ml_gtk_pad_controller_get_pad: property 'pad' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "pad", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GdkDevice(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}

@@ -1,7 +1,14 @@
-(* High-level class for PixbufSimpleAnim *)
-class pixbuf_simple_anim (obj : Pixbuf_simple_anim.t) = object (self)
+class type pixbuf_simple_anim_t = object
+    method add_frame : GPixbuf.pixbuf_t -> unit
+    method get_loop : unit -> bool
+    method set_loop : bool -> unit
+    method as_pixbuf_simple_anim : Pixbuf_simple_anim.t
+end
 
-  method add_frame : 'p1. (#GPixbuf.pixbuf as 'p1) -> unit =
+(* High-level class for PixbufSimpleAnim *)
+class pixbuf_simple_anim (obj : Pixbuf_simple_anim.t) : pixbuf_simple_anim_t = object (self)
+
+  method add_frame : GPixbuf.pixbuf_t -> unit =
     fun pixbuf ->
       let pixbuf = pixbuf#as_pixbuf in
       (Pixbuf_simple_anim.add_frame obj pixbuf)

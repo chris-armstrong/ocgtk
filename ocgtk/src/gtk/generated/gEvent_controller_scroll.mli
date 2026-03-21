@@ -1,10 +1,10 @@
-class event_controller_scroll : Event_controller_scroll.t ->
-  object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller
+class type event_controller_scroll_t = object
     inherit Gevent_controller_scroll_signals.event_controller_scroll_signals
     method get_flags : unit -> Gtk_enums.eventcontrollerscrollflags
+    method get_unit : unit -> Ocgtk_gdk.Gdk.scrollunit
     method set_flags : Gtk_enums.eventcontrollerscrollflags -> unit
-  method as_event_controller : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t
     method as_event_controller_scroll : Event_controller_scroll.t
-  end
+end
+
+class event_controller_scroll : Event_controller_scroll.t -> event_controller_scroll_t
 

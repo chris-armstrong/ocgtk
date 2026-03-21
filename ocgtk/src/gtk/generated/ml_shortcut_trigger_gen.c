@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_shortcut_trigger_parse_string(value arg1)
@@ -26,11 +26,27 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GtkShortcutTrigger(obj));
 }
+CAMLexport CAMLprim value ml_gtk_shortcut_trigger_trigger(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+GdkKeyMatch result = gtk_shortcut_trigger_trigger(GtkShortcutTrigger_val(self), GdkEvent_val(arg1), Bool_val(arg2));
+CAMLreturn(Val_GdkKeyMatch(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_shortcut_trigger_to_string(value self)
 {
 CAMLparam1(self);
 
 char* result = gtk_shortcut_trigger_to_string(GtkShortcutTrigger_val(self));
+CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_shortcut_trigger_to_label(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+char* result = gtk_shortcut_trigger_to_label(GtkShortcutTrigger_val(self), GdkDisplay_val(arg1));
 CAMLreturn(caml_copy_string(result));
 }
 

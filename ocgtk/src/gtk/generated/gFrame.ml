@@ -1,8 +1,21 @@
-(* High-level class for Frame *)
-class frame (obj : Frame.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Frame.as_widget obj)
+class type frame_t = object
+    method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
+    method get_label : unit -> string option
+    method get_label_align : unit -> float
+    method get_label_widget : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
+    method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
+    method set_label : string option -> unit
+    method set_label_align : float -> unit
+    method set_label_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
+    method label_xalign : float
+    method set_label_xalign : float -> unit
+    method as_frame : Frame.t
+end
 
-  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
+(* High-level class for Frame *)
+class frame (obj : Frame.t) : frame_t = object (self)
+
+  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option =
     fun () ->
       Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Frame.get_child obj)
 
@@ -14,11 +27,11 @@ class frame (obj : Frame.t) = object (self)
     fun () ->
       (Frame.get_label_align obj)
 
-  method get_label_widget : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
+  method get_label_widget : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option =
     fun () ->
       Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Frame.get_label_widget obj)
 
-  method set_child : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
+  method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit =
     fun child ->
       let child = Option.map (fun (c) -> c#as_widget) child in
       (Frame.set_child obj child)
@@ -31,7 +44,7 @@ class frame (obj : Frame.t) = object (self)
     fun xalign ->
       (Frame.set_label_align obj xalign)
 
-  method set_label_widget : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
+  method set_label_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit =
     fun label_widget ->
       let label_widget = Option.map (fun (c) -> c#as_widget) label_widget in
       (Frame.set_label_widget obj label_widget)
@@ -39,7 +52,6 @@ class frame (obj : Frame.t) = object (self)
   method label_xalign = Frame.get_label_xalign obj
   method set_label_xalign v =  Frame.set_label_xalign obj v
 
-  method as_widget = (Frame.as_widget obj)
     method as_frame = obj
 end
 

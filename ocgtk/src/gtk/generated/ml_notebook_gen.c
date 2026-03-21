@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_notebook_new(value unit)
@@ -281,6 +281,14 @@ CAMLparam1(self);
 
 gboolean result = gtk_notebook_get_scrollable(GtkNotebook_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_notebook_get_pages(value self)
+{
+CAMLparam1(self);
+
+GListModel* result = gtk_notebook_get_pages(GtkNotebook_val(self));
+CAMLreturn(Val_GListModel(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_notebook_get_page(value self, value arg1)

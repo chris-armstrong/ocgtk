@@ -12,9 +12,6 @@ external new_from_file : string -> t = "ml_gtk_builder_new_from_file"
 (** Create a new Builder *)
 external new_from_resource : string -> t = "ml_gtk_builder_new_from_resource"
 
-(** Create a new Builder *)
-external new_from_string : string -> unit -> t = "ml_gtk_builder_new_from_string"
-
 (* Methods *)
 (** Sets the translation domain of @builder. *)
 external set_translation_domain : t -> string option -> unit = "ml_gtk_builder_set_translation_domain"

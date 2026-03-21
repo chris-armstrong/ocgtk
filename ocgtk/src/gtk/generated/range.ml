@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Range *)
+(* Range: Range *)
 
 type t = [`range | `widget | `initially_unowned] Gobject.obj
-
-let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (* Methods *)
 (** Sets the current value of the range.
@@ -122,6 +120,12 @@ external get_round_digits : t -> int = "ml_gtk_range_get_round_digits"
 
 (** Gets whether the range is restricted to the fill level. *)
 external get_restrict_to_fill_level : t -> bool = "ml_gtk_range_get_restrict_to_fill_level"
+
+(** This function returns the area that contains the range’s trough,
+in coordinates relative to @range's origin.
+
+This function is useful mainly for `GtkRange` subclasses. *)
+external get_range_rect : t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_range_get_range_rect"
 
 (** Gets whether the range is inverted.
 

@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <gsk/gsk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gsk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gsk_render_node_write_to_file(value self, value arg1)
@@ -47,4 +47,21 @@ CAMLparam1(self);
 
 GskRenderNodeType result = gsk_render_node_get_node_type(GskRenderNode_val(self));
 CAMLreturn(Val_GskRenderNodeType(result));
+}
+
+CAMLexport CAMLprim value ml_gsk_render_node_get_bounds(value self)
+{
+CAMLparam1(self);
+graphene_rect_t out1;
+
+gsk_render_node_get_bounds(GskRenderNode_val(self), &out1);
+CAMLreturn(Val_graphene_rect_t(&out1));
+}
+
+CAMLexport CAMLprim value ml_gsk_render_node_draw(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gsk_render_node_draw(GskRenderNode_val(self), cairo_t_val(arg1));
+CAMLreturn(Val_unit);
 }

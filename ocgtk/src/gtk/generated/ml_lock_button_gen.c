@@ -13,9 +13,35 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
+
+CAMLexport CAMLprim value ml_gtk_lock_button_new(value arg1)
+{
+CAMLparam1(arg1);
+
+GtkLockButton *obj = gtk_lock_button_new(Option_val(arg1, GPermission_val, NULL));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkLockButton(obj));
+}
+CAMLexport CAMLprim value ml_gtk_lock_button_set_permission(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_lock_button_set_permission(GtkLockButton_val(self), Option_val(arg1, GPermission_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_lock_button_get_permission(value self)
+{
+CAMLparam1(self);
+
+GPermission* result = gtk_lock_button_get_permission(GtkLockButton_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GPermission));
+}
 
 CAMLexport CAMLprim value ml_gtk_lock_button_get_text_lock(value self)
 {

@@ -1,6 +1,62 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined classes for cyclic dependencies *)
-class context (obj : Context_and__font_and__font_map_and__fontset.Context.t) = object (self)
+
+class type context_t = object
+    method changed : unit -> unit
+    method get_base_dir : unit -> Pango_enums.direction
+    method get_base_gravity : unit -> Pango_enums.gravity
+    method get_font_description : unit -> Font_description.t option
+    method get_font_map : unit -> font_map_t option
+    method get_gravity : unit -> Pango_enums.gravity
+    method get_gravity_hint : unit -> Pango_enums.gravityhint
+    method get_language : unit -> Language.t
+    method get_matrix : unit -> Matrix.t option
+    method get_metrics : Font_description.t option -> Language.t option -> Font_metrics.t
+    method get_round_glyph_positions : unit -> bool
+    method get_serial : unit -> int
+    method load_font : Font_description.t -> font_t option
+    method load_fontset : Font_description.t -> Language.t -> fontset_t option
+    method set_base_dir : Pango_enums.direction -> unit
+    method set_base_gravity : Pango_enums.gravity -> unit
+    method set_font_description : Font_description.t option -> unit
+    method set_font_map : font_map_t option -> unit
+    method set_gravity_hint : Pango_enums.gravityhint -> unit
+    method set_language : Language.t option -> unit
+    method set_matrix : Matrix.t option -> unit
+    method set_round_glyph_positions : bool -> unit
+    method as_context : Context_and__font_and__font_map_and__fontset.Context.t
+end
+
+and font_t = object
+    method describe : unit -> Font_description.t
+    method describe_with_absolute_size : unit -> Font_description.t
+    method get_coverage : Language.t -> GCoverage.coverage_t
+    method get_face : unit -> GFont_face_and__font_family.font_face_t
+    method get_font_map : unit -> font_map_t option
+    method get_metrics : Language.t option -> Font_metrics.t
+    method as_font : Context_and__font_and__font_map_and__fontset.Font.t
+end
+
+and font_map_t = object
+    method changed : unit -> unit
+    method create_context : unit -> context_t
+    method get_family : string -> GFont_face_and__font_family.font_family_t
+    method get_serial : unit -> int
+    method load_font : context_t -> Font_description.t -> font_t option
+    method load_fontset : context_t -> Font_description.t -> Language.t -> fontset_t option
+    method reload_font : font_t -> float -> context_t option -> string option -> font_t
+    method n_items : int
+    method as_font_map : Context_and__font_and__font_map_and__fontset.Font_map.t
+end
+
+and fontset_t = object
+    method get_font : int -> font_t
+    method get_metrics : unit -> Font_metrics.t
+    method as_fontset : Context_and__font_and__font_map_and__fontset.Fontset.t
+end
+
+
+class context (obj : Context_and__font_and__font_map_and__fontset.Context.t) : context_t = object (self)
 
   method changed : unit -> unit =
     fun () ->
@@ -18,7 +74,7 @@ class context (obj : Context_and__font_and__font_map_and__fontset.Context.t) = o
     fun () ->
       (Context_and__font_and__font_map_and__fontset.Context.get_font_description obj)
 
-  method get_font_map : unit -> font_map option =
+  method get_font_map : unit -> font_map_t option =
     fun () ->
       Option.map (fun ret -> new font_map ret) (Context_and__font_and__font_map_and__fontset.Context.get_font_map obj)
 
@@ -50,11 +106,11 @@ class context (obj : Context_and__font_and__font_map_and__fontset.Context.t) = o
     fun () ->
       (Context_and__font_and__font_map_and__fontset.Context.get_serial obj)
 
-  method load_font : Font_description.t -> font option =
+  method load_font : Font_description.t -> font_t option =
     fun desc ->
       Option.map (fun ret -> new font ret) (Context_and__font_and__font_map_and__fontset.Context.load_font obj desc)
 
-  method load_fontset : Font_description.t -> Language.t -> fontset option =
+  method load_fontset : Font_description.t -> Language.t -> fontset_t option =
     fun desc language ->
       Option.map (fun ret -> new fontset ret) (Context_and__font_and__font_map_and__fontset.Context.load_fontset obj desc language)
 
@@ -70,7 +126,7 @@ class context (obj : Context_and__font_and__font_map_and__fontset.Context.t) = o
     fun desc ->
       (Context_and__font_and__font_map_and__fontset.Context.set_font_description obj desc)
 
-  method set_font_map : 'p1. (<as_font_map: Context_and__font_and__font_map_and__fontset.Font_map.t; ..> as 'p1) option -> unit =
+  method set_font_map : font_map_t option -> unit =
     fun font_map ->
       let font_map = Option.map (fun (c) -> c#as_font_map) font_map in
       (Context_and__font_and__font_map_and__fontset.Context.set_font_map obj font_map)
@@ -94,7 +150,7 @@ class context (obj : Context_and__font_and__font_map_and__fontset.Context.t) = o
     method as_context = obj
 end
 
-and font (obj : Context_and__font_and__font_map_and__fontset.Font.t) = object (self)
+and font (obj : Context_and__font_and__font_map_and__fontset.Font.t) : font_t = object (self)
 
   method describe : unit -> Font_description.t =
     fun () ->
@@ -104,21 +160,17 @@ and font (obj : Context_and__font_and__font_map_and__fontset.Font.t) = object (s
     fun () ->
       (Context_and__font_and__font_map_and__fontset.Font.describe_with_absolute_size obj)
 
-  method get_coverage : Language.t -> GCoverage.coverage =
+  method get_coverage : Language.t -> GCoverage.coverage_t =
     fun language ->
       new  GCoverage.coverage(Context_and__font_and__font_map_and__fontset.Font.get_coverage obj language)
 
-  method get_face : unit -> GFont_face_and__font_family.font_face =
+  method get_face : unit -> GFont_face_and__font_family.font_face_t =
     fun () ->
       new  GFont_face_and__font_family.font_face(Context_and__font_and__font_map_and__fontset.Font.get_face obj)
 
-  method get_font_map : unit -> font_map option =
+  method get_font_map : unit -> font_map_t option =
     fun () ->
       Option.map (fun ret -> new font_map ret) (Context_and__font_and__font_map_and__fontset.Font.get_font_map obj)
-
-  method get_languages : unit -> Language.t array option =
-    fun () ->
-      (Context_and__font_and__font_map_and__fontset.Font.get_languages obj)
 
   method get_metrics : Language.t option -> Font_metrics.t =
     fun language ->
@@ -127,17 +179,17 @@ and font (obj : Context_and__font_and__font_map_and__fontset.Font.t) = object (s
     method as_font = obj
 end
 
-and font_map (obj : Context_and__font_and__font_map_and__fontset.Font_map.t) = object (self)
+and font_map (obj : Context_and__font_and__font_map_and__fontset.Font_map.t) : font_map_t = object (self)
 
   method changed : unit -> unit =
     fun () ->
       (Context_and__font_and__font_map_and__fontset.Font_map.changed obj)
 
-  method create_context : unit -> context =
+  method create_context : unit -> context_t =
     fun () ->
       new  context(Context_and__font_and__font_map_and__fontset.Font_map.create_context obj)
 
-  method get_family : string -> GFont_face_and__font_family.font_family =
+  method get_family : string -> GFont_face_and__font_family.font_family_t =
     fun name ->
       new  GFont_face_and__font_family.font_family(Context_and__font_and__font_map_and__fontset.Font_map.get_family obj name)
 
@@ -145,17 +197,17 @@ and font_map (obj : Context_and__font_and__font_map_and__fontset.Font_map.t) = o
     fun () ->
       (Context_and__font_and__font_map_and__fontset.Font_map.get_serial obj)
 
-  method load_font : 'p1. (<as_context: Context_and__font_and__font_map_and__fontset.Context.t; ..> as 'p1) -> Font_description.t -> font option =
+  method load_font : context_t -> Font_description.t -> font_t option =
     fun context desc ->
       let context = context#as_context in
       Option.map (fun ret -> new font ret) (Context_and__font_and__font_map_and__fontset.Font_map.load_font obj context desc)
 
-  method load_fontset : 'p1. (<as_context: Context_and__font_and__font_map_and__fontset.Context.t; ..> as 'p1) -> Font_description.t -> Language.t -> fontset option =
+  method load_fontset : context_t -> Font_description.t -> Language.t -> fontset_t option =
     fun context desc language ->
       let context = context#as_context in
       Option.map (fun ret -> new fontset ret) (Context_and__font_and__font_map_and__fontset.Font_map.load_fontset obj context desc language)
 
-  method reload_font : 'p1 'p2. (<as_font: Context_and__font_and__font_map_and__fontset.Font.t; ..> as 'p1) -> float -> (<as_context: Context_and__font_and__font_map_and__fontset.Context.t; ..> as 'p2) option -> string option -> font =
+  method reload_font : font_t -> float -> context_t option -> string option -> font_t =
     fun font scale context variations ->
       let font = font#as_font in
       let context = Option.map (fun (c) -> c#as_context) context in
@@ -166,9 +218,9 @@ and font_map (obj : Context_and__font_and__font_map_and__fontset.Font_map.t) = o
     method as_font_map = obj
 end
 
-and fontset (obj : Context_and__font_and__font_map_and__fontset.Fontset.t) = object (self)
+and fontset (obj : Context_and__font_and__font_map_and__fontset.Fontset.t) : fontset_t = object (self)
 
-  method get_font : int -> font =
+  method get_font : int -> font_t =
     fun wc ->
       new  font(Context_and__font_and__font_map_and__fontset.Fontset.get_font obj wc)
 

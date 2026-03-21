@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <pango/pango.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "pango_decls.h"
 
 
 CAMLexport CAMLprim value ml_pango_font_map_reload_font(value self, value arg1, value arg2, value arg3, value arg4)

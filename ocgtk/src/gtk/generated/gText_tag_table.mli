@@ -1,10 +1,11 @@
-class text_tag_table : Text_tag_table.t ->
-  object
+class type text_tag_table_t = object
     inherit Gtext_tag_table_signals.text_tag_table_signals
-    method add : #GText_tag.text_tag -> bool
+    method add : GText_tag.text_tag_t -> bool
     method get_size : unit -> int
-    method lookup : string -> GText_tag.text_tag option
-    method remove : #GText_tag.text_tag -> unit
+    method lookup : string -> GText_tag.text_tag_t option
+    method remove : GText_tag.text_tag_t -> unit
     method as_text_tag_table : Text_tag_table.t
-  end
+end
+
+class text_tag_table : Text_tag_table.t -> text_tag_table_t
 

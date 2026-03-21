@@ -1,8 +1,10 @@
-(* High-level class for ObjectExpression *)
-class object_expression (obj : Object_expression.t) = object (self)
-  inherit GExpression.expression (Object_expression.as_expression obj)
+class type object_expression_t = object
+    method as_object_expression : Object_expression.t
+end
 
-  method as_expression = (Object_expression.as_expression obj)
+(* High-level class for ObjectExpression *)
+class object_expression (obj : Object_expression.t) : object_expression_t = object (self)
+
     method as_object_expression = obj
 end
 

@@ -1,5 +1,4 @@
-class font_metrics : Font_metrics.t ->
-  object
+class type font_metrics_t = object
     method get_approximate_char_width : unit -> int
     method get_approximate_digit_width : unit -> int
     method get_ascent : unit -> int
@@ -12,5 +11,7 @@ class font_metrics : Font_metrics.t ->
     method ref : unit -> Font_metrics.t option
     method unref : unit -> unit
     method as_font_metrics : Font_metrics.t
-  end
+end
+
+class font_metrics : Font_metrics.t -> font_metrics_t
 

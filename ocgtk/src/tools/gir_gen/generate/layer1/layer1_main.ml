@@ -20,7 +20,7 @@ let generate_hierarchy_accessor_section ~ctx ~output_mode ~class_name buf =
           Layer1_helpers.build_accessor_base_type ~ctx ~hier_info
         in
         let base_type =
-          Type_resolution.simplify_self_reference ~class_name
+          Type_mappings.simplify_self_reference ~class_name
             ~ocaml_type:base_type
         in
         let declaration =

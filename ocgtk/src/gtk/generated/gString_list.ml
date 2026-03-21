@@ -1,5 +1,16 @@
+class type string_list_t = object
+    method append : string -> unit
+    method get_string : int -> string option
+    method remove : int -> unit
+    method splice : int -> int -> string array option -> unit
+    method take : string -> unit
+    method n_items : int
+    method strings : string array
+    method as_string_list : String_list.t
+end
+
 (* High-level class for StringList *)
-class string_list (obj : String_list.t) = object (self)
+class string_list (obj : String_list.t) : string_list_t = object (self)
 
   method append : string -> unit =
     fun string ->

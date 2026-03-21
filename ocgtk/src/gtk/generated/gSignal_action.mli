@@ -1,6 +1,7 @@
-class signal_action : Signal_action.t ->
-  object
+class type signal_action_t = object
     method get_signal_name : unit -> string
     method as_signal_action : Signal_action.t
-  end
+end
+
+class signal_action : Signal_action.t -> signal_action_t
 

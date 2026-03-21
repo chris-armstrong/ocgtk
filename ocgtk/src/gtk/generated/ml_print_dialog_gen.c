@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_print_dialog_new(value unit)
@@ -26,6 +26,15 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GtkPrintDialog(obj));
 }
+CAMLexport CAMLprim value ml_gtk_print_dialog_setup_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GtkPrintSetup* result = gtk_print_dialog_setup_finish(GtkPrintDialog_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_GtkPrintSetup))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_gtk_print_dialog_set_title(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -48,6 +57,24 @@ CAMLparam2(self, arg1);
 
 gtk_print_dialog_set_accept_label(GtkPrintDialog_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_print_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GOutputStream* result = gtk_print_dialog_print_finish(GtkPrintDialog_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_GOutputStream))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_print_file_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = gtk_print_dialog_print_file_finish(GtkPrintDialog_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_gtk_print_dialog_get_title(value self)

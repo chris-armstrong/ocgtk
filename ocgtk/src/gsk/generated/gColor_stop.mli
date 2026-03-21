@@ -1,5 +1,6 @@
-class color_stop : Color_stop.t ->
-  object
+class type color_stop_t = object
     method as_color_stop : Color_stop.t
-  end
+end
+
+class color_stop : Color_stop.t -> color_stop_t
 

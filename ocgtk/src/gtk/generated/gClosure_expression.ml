@@ -1,8 +1,10 @@
-(* High-level class for ClosureExpression *)
-class closure_expression (obj : Closure_expression.t) = object (self)
-  inherit GExpression.expression (Closure_expression.as_expression obj)
+class type closure_expression_t = object
+    method as_closure_expression : Closure_expression.t
+end
 
-  method as_expression = (Closure_expression.as_expression obj)
+(* High-level class for ClosureExpression *)
+class closure_expression (obj : Closure_expression.t) : closure_expression_t = object (self)
+
     method as_closure_expression = obj
 end
 

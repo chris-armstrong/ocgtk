@@ -60,6 +60,9 @@ external get_private_hint : t -> bool = "ml_gtk_recent_info_get_private_hint"
 (** Gets the MIME type of the resource. *)
 external get_mime_type : t -> string = "ml_gtk_recent_info_get_mime_type"
 
+(** Retrieves the icon associated to the resource MIME type. *)
+external get_gicon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t option = "ml_gtk_recent_info_get_gicon"
+
 (** Gets the name of the resource.
 
 If none has been defined, the basename
@@ -77,4 +80,10 @@ external get_age : t -> int = "ml_gtk_recent_info_get_age"
 At the moment this check is done only on resources pointing
 to local files. *)
 external exists : t -> bool = "ml_gtk_recent_info_exists"
+
+(** Creates a `GAppInfo` for the specified `GtkRecentInfo`
+
+In case of error, @error will be set either with a
+%GTK_RECENT_MANAGER_ERROR or a %G_IO_ERROR *)
+external create_app_info : t -> string option -> (Ocgtk_gio.Gio.Wrappers.App_info.t option, GError.t) result = "ml_gtk_recent_info_create_app_info"
 

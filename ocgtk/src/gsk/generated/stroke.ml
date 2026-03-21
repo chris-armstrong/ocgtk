@@ -9,6 +9,10 @@ type t = [`stroke] Gobject.obj
 external new_ : float -> t = "ml_gsk_stroke_new"
 
 (* Methods *)
+(** A helper function that sets the stroke parameters
+of @cr from the values found in @self. *)
+external to_cairo : t -> Ocgtk_cairo.Cairo.Wrappers.Context.t -> unit = "ml_gsk_stroke_to_cairo"
+
 (** Sets the limit for the distance from the corner where sharp
 turns of joins get cut off.
 

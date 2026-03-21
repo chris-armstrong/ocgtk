@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Scale *)
+(* Scale: Scale *)
 
 type t = [`scale | `range | `widget | `initially_unowned] Gobject.obj
-
-val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new Scale *)
 external new_ : Gtk_enums.orientation -> Adjustment.t option -> t = "ml_gtk_scale_new"
@@ -52,6 +50,12 @@ convert to and from pixels using `PANGO_PIXELS()` or `PANGO_SCALE`.
 If the [property@Gtk.Scale:draw-value] property is %FALSE, the return
 values are undefined. *)
 external get_layout_offsets : t -> int * int = "ml_gtk_scale_get_layout_offsets"
+
+(** Gets the `PangoLayout` used to display the scale.
+
+The returned object is owned by the scale so does not need
+to be freed by the caller. *)
+external get_layout : t -> Ocgtk_pango.Pango.Wrappers.Layout.t option = "ml_gtk_scale_get_layout"
 
 (** Returns whether the scale has an origin. *)
 external get_has_origin : t -> bool = "ml_gtk_scale_get_has_origin"

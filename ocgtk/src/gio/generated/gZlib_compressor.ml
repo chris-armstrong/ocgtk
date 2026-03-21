@@ -1,11 +1,19 @@
-(* High-level class for ZlibCompressor *)
-class zlib_compressor (obj : Zlib_compressor.t) = object (self)
+class type zlib_compressor_t = object
+    method get_file_info : unit -> GFile_info.file_info_t option
+    method set_file_info : GFile_info.file_info_t option -> unit
+    method format : Gio_enums.zlibcompressorformat
+    method level : int
+    method as_zlib_compressor : Zlib_compressor.t
+end
 
-  method get_file_info : unit -> GFile_info.file_info option =
+(* High-level class for ZlibCompressor *)
+class zlib_compressor (obj : Zlib_compressor.t) : zlib_compressor_t = object (self)
+
+  method get_file_info : unit -> GFile_info.file_info_t option =
     fun () ->
       Option.map (fun ret -> new GFile_info.file_info ret) (Zlib_compressor.get_file_info obj)
 
-  method set_file_info : 'p1. (#GFile_info.file_info as 'p1) option -> unit =
+  method set_file_info : GFile_info.file_info_t option -> unit =
     fun file_info ->
       let file_info = Option.map (fun (c) -> c#as_file_info) file_info in
       (Zlib_compressor.set_file_info obj file_info)

@@ -1,8 +1,24 @@
-(* High-level class for MessageDialog *)
-class message_dialog (obj : Message_dialog.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Message_dialog.as_widget obj)
+class type message_dialog_t = object
+    method get_message_area : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    method set_markup : string -> unit
+    method buttons : Gtk_enums.buttonstype
+    method message_type : Gtk_enums.messagetype
+    method set_message_type : Gtk_enums.messagetype -> unit
+    method secondary_text : string
+    method set_secondary_text : string -> unit
+    method secondary_use_markup : bool
+    method set_secondary_use_markup : bool -> unit
+    method text : string
+    method set_text : string -> unit
+    method use_markup : bool
+    method set_use_markup : bool -> unit
+    method as_message_dialog : Message_dialog.t
+end
 
-  method get_message_area : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget =
+(* High-level class for MessageDialog *)
+class message_dialog (obj : Message_dialog.t) : message_dialog_t = object (self)
+
+  method get_message_area : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t =
     fun () ->
       new  GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget(Message_dialog.get_message_area obj)
 
@@ -27,7 +43,6 @@ class message_dialog (obj : Message_dialog.t) = object (self)
   method use_markup = Message_dialog.get_use_markup obj
   method set_use_markup v =  Message_dialog.set_use_markup obj v
 
-  method as_widget = (Message_dialog.as_widget obj)
     method as_message_dialog = obj
 end
 

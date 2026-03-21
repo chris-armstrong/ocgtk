@@ -7,11 +7,11 @@
 ## IMPORTANT: You Have Persistent Memory
 
 This project uses Context (`ctx`) for context persistence across sessions.
-**Your memory is NOT ephemeral** - it lives in `.context/` files.
+**Your memory is NOT ephemeral** - it lives in `$CTX_DIR/*` files.
 
 ## On Session Start
 
-1. **Read `.context/AGENT_PLAYBOOK.md`** first - it explains how to use this system
+1. **Read `$CTX_DIR/AGENT_PLAYBOOK.md`** first - it explains how to use this system
 2. **Run `ctx status`** to see current context summary
 
 ## When Asked "Do You Remember?"
@@ -20,8 +20,8 @@ When the user asks "Do you remember?", "What were we working on?", or any
 memory-related question:
 
 **Do this FIRST (silently):**
-- Read `.context/TASKS.md`
-- Read `.context/DECISIONS.md` and `.context/LEARNINGS.md`
+- Read `$CTX_DIR/TASKS.md`
+- Read `$CTX_DIR/DECISIONS.md` and `$CTX_DIR/LEARNINGS.md`
 - Run `ctx recall list --limit 5` for recent session history
 
 **Then respond with a structured readback:**
@@ -32,7 +32,7 @@ memory-related question:
 4. **Next step**: offer to continue or ask what to focus on
 
 **Never** lead with "I don't have memory", "Let me check if there are files",
-or narrate your discovery process. The `.context/` files are your memory.
+or narrate your discovery process. The `$CTX_DIR/` files are your memory.
 Read them silently, then present what you found as recall, not as a search.
 
 ## Quick Context Load
@@ -49,11 +49,11 @@ ctx status
 
 | File | Purpose |
 |------|---------|
-| `.context/CONSTITUTION.md` | Hard rules - NEVER violate |
-| `.context/TASKS.md` | Current work items |
-| `.context/DECISIONS.md` | Architectural decisions with rationale |
-| `.context/LEARNINGS.md` | Gotchas, tips, lessons learned |
-| `.context/CONVENTIONS.md` | Code patterns and standards |
+| `$CTX_DIR/CONSTITUTION.md` | Hard rules - NEVER violate |
+| `$CTX_DIR/TASKS.md` | Current work items |
+| `$CTX_DIR/DECISIONS.md` | Architectural decisions with rationale |
+| `$CTX_DIR/LEARNINGS.md` | Gotchas, tips, lessons learned |
+| `$CTX_DIR/CONVENTIONS.md` | Code patterns and standards |
 
 ## Before Session Ends
 
@@ -132,13 +132,21 @@ For instructions and best practices for writing and updating OCaml / C FFI, see 
 ### GIR Code Generator
 For generating GTK bindings from GObject Introspection (GIR) files:
 - See [ocgtk/src/tools/README_GIR_GEN.md](ocgtk/src/tools/README_GIR_GEN.md) for complete usage instructions
-- Generates C FFI bindings and OCaml interfaces from Gtk-4.0.gir
-- Supports error handling with result types for throwing functions
+- Generates C FFI bindings and OCaml interfaces for 9 namespaces: Cairo, Gio, Gdk, Graphene, GdkPixbuf, Pango, PangoCairo, Gsk, Gtk
+- Cross-namespace type resolution via reference files and `<ns>_decls.h` headers
 
-**To regenerate GTK bindings:**
+**To regenerate all bindings (recommended):**
+```bash
+# From repository root (NOT ocgtk/):
+bash scripts/generate-bindings.sh
+```
+
+This builds the generator, generates reference files for all 9 namespaces, then generates bindings with correct cross-namespace dependencies.
+
+**To regenerate a single library manually:**
 ```bash
 cd ocgtk
-dune exec gir_gen -- /usr/share/gir-1.0/Gtk-4.0.gir generate src/gtk
+dune exec src/tools/gir_gen/gir_gen.exe -- generate /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
 ```
 
 NOTE: For other libraries, use `src/<short_name>`. For example, src/pango for Pango, src/gsk for GSK, src/gdk for GDK, etc.

@@ -1,5 +1,12 @@
+class type static_resource_t = object
+    method fini : unit -> unit
+    method get_resource : unit -> Resource.t
+    method init : unit -> unit
+    method as_static_resource : Static_resource.t
+end
+
 (* High-level class for StaticResource *)
-class static_resource (obj : Static_resource.t) = object (self)
+class static_resource (obj : Static_resource.t) : static_resource_t = object (self)
 
   method fini : unit -> unit =
     fun () ->

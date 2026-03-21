@@ -42,9 +42,7 @@ let entity_generator_by_entity_type =
      fun ~ctx ~entity buf ->
       (* Add header *)
       Buffer.add_string buf
-        (C_stub_helpers.generate_c_file_header ~ctx ~class_name:entity.name
-           ~external_enums:ctx.external_enums
-           ~external_bitfields:ctx.external_bitfields ())
+        (C_stub_helpers.generate_c_file_header ~ctx ~class_name:entity.name ())
     in
     let generate_c_stub_constructors =
      fun ~ctx ~(entity : entity) buf ->
@@ -486,19 +484,23 @@ let generate_enum_files ~output_dir ~generated_stubs ~generated_modules
   end
 
 let load_reference_files reference_files =
-  let converter =
-    Sexplib.Conv.(
-      pair_of_sexp string_of_sexp
-        (list_of_sexp Gir_gen_lib.Types.cross_reference_of_sexp))
-  in
+  let open Gir_gen_lib.Types in
+  let converter = cross_reference_namespace_of_sexp in
   List.fold_left reference_files ~init:StringMap.empty ~f:(fun acc file ->
       (* NOTE: this loads everything at once into memory so it is slower than a progressive load, but we're embedding something valuable at the start so we don't have a homogenous list to play with *)
-      let namespace, cr_list = Sexplib.Sexp.load_sexp_conv_exn file converter in
-      let sm =
-        List.fold_left cr_list ~init:StringMap.empty ~f:(fun sm cr ->
-            StringMap.add cr.cr_name cr sm)
+      let cr_namespace = Sexplib.Sexp.load_sexp_conv_exn file converter in
+      let ncr_namespace =
+        {
+          ncr_namespace_name = cr_namespace.cr_namespace_name;
+          ncr_namespace_packages = cr_namespace.cr_namespace_packages;
+          ncr_namespace_c_includes = cr_namespace.cr_namespace_c_includes;
+          ncr_namespace_includes = cr_namespace.cr_namespace_includes;
+          ncr_entities =
+            List.fold_left cr_namespace.cr_entities ~init:StringMap.empty
+              ~f:(fun sm cr -> StringMap.add cr.cr_name cr sm);
+        }
       in
-      StringMap.add namespace sm acc)
+      StringMap.add cr_namespace.cr_namespace_name ncr_namespace acc)
 
 (* Main generation function *)
 let generate_bindings filter_file gir_file output_dir reference_files =
@@ -638,33 +640,14 @@ let generate_bindings filter_file gir_file output_dir reference_files =
     |> List.filter ~f:(fun (intf : Gir_gen_lib.Types.gir_interface) ->
         Gir_gen_lib.Generate.Filtering.should_generate_interface intf)
   in
-  let all_enums =
-    gtk_enums
-    @ (external_enums_bitfields
-      |> List.concat_map ~f:(fun (_, enums, _) -> enums))
-  in
-  let all_bitfields =
-    gtk_bitfields
-    @ (external_enums_bitfields
-      |> List.concat_map ~f:(fun (_, _, bitfields) -> bitfields))
-  in
+  let all_enums = gtk_enums in
+  let all_bitfields = gtk_bitfields in
 
   let all_records =
     let open Gir_gen_lib.Generate in
     List.filter
       ~f:(fun record -> Filtering.should_generate_record record)
       gtk_records
-  in
-  (* Prepare external namespace enum/bitfield list with namespace prefixes *)
-  let external_enums_with_ns =
-    external_enums_bitfields
-    |> List.concat_map ~f:(fun (ns, ns_enums, _) ->
-        List.map ~f:(fun enum -> (ns, enum)) ns_enums)
-  in
-  let external_bitfields_with_ns =
-    external_enums_bitfields
-    |> List.concat_map ~f:(fun (ns, _, ns_bitfields) ->
-        List.map ~f:(fun bitfield -> (ns, bitfield)) ns_bitfields)
   in
 
   (* Create generation context with all type information *)
@@ -677,8 +660,6 @@ let generate_bindings filter_file gir_file output_dir reference_files =
       enums = all_enums;
       bitfields = all_bitfields;
       records = all_records;
-      external_enums = external_enums_with_ns;
-      external_bitfields = external_bitfields_with_ns;
       hierarchy_map = Hashtbl.create 0;
       (* Temporary empty map *)
       module_groups = Hashtbl.create 0;
@@ -723,24 +704,23 @@ let generate_bindings filter_file gir_file output_dir reference_files =
 
   (* ==== GENERATION STAGE ==== *)
 
+  (* Generate enum and bitfield files for current namespace *)
+  let ns_name = ctx.namespace.namespace_name in
+  let ns_lower = String.lowercase_ascii ns_name in
+
   (* Generate common header file *)
   let header_file =
     Filename.concat
       (generated_output_dir output_dir)
-      "generated_forward_decls.h"
+      (sprintf "%s_decls.h" ns_lower)
   in
   printf "\n";
   let header_content =
-    Gir_gen_lib.Generate.C_stubs.generate_forward_decls_header ~ctx
-      ~classes:ctx.classes ~gtk_enums ~gtk_bitfields
-      ~external_enums:ctx.external_enums ~records:ctx.records
-      ~interfaces:ctx.interfaces ~external_bitfields:ctx.external_bitfields
+    Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
+      ~gtk_enums ~gtk_bitfields ~records:ctx.records ~interfaces:ctx.interfaces
   in
   write_file ~path:header_file ~content:header_content;
 
-  (* Generate enum and bitfield files for current namespace *)
-  let ns_name = ctx.namespace.namespace_name in
-  let ns_lower = String.lowercase_ascii ns_name in
   let current_namespace =
     {
       name = ns_name;
@@ -913,15 +893,54 @@ let generate_bindings filter_file gir_file output_dir reference_files =
   write_file ~path:lib_mli_file ~content:lib_mli_content;
   generated_modules := lib_name :: !generated_modules;
 
+  (* ==== LIBRARY WRAPPER MODULE ==== *)
+  (* Generate ocgtk_<ns>.ml that re-exports the library module as the
+     dune wrapper, hiding internal module structure *)
+  let wrapper_name =
+    Gir_gen_lib.Utils.library_wrapper_name namespace.namespace_name
+  in
+  let wrapper_ml_file =
+    Filename.concat (generated_output_dir output_dir) (wrapper_name ^ ".ml")
+  in
+  (* Scan for hand-written modules in core/ subdirectory *)
+  let core_dir = Filename.concat output_dir "core" in
+  let core_modules =
+    if Sys.file_exists core_dir && Sys.is_directory core_dir then
+      Sys.readdir core_dir |> Array.to_list
+      |> List.filter_map ~f:(fun f ->
+          if
+            Filename.check_suffix f ".ml"
+            && not (Filename.check_suffix f ".mli")
+          then Some (String.capitalize_ascii (Filename.chop_suffix f ".ml"))
+          else None)
+      |> List.sort ~cmp:String.compare
+    else []
+  in
+  let core_module_lines =
+    List.map core_modules ~f:(fun m -> sprintf "module %s = %s" m m)
+  in
+  let wrapper_content =
+    sprintf
+      "(* GENERATED CODE - DO NOT EDIT *)\n\
+       (* Library wrapper module - re-exports %s as the public API *)\n\n\
+       module %s = %s\n\
+       %s\n"
+      lib_name lib_name lib_name
+      (String.concat ~sep:"\n" core_module_lines)
+  in
+  write_file ~path:wrapper_ml_file ~content:wrapper_content;
+  generated_modules :=
+    String.capitalize_ascii wrapper_name :: !generated_modules;
+
   let module_list =
     base_modules @ !generated_modules
     |> List.map ~f:String.capitalize_ascii
     |> List.sort_uniq ~cmp:String.compare
   in
   let dune_content =
-    Gir_gen_lib.Generate.Dune_file.generate_dune_library ~stub_names:stub_list
-      ~lib_name:namespace.namespace_name ~module_names:module_list
-      ~package_names:ctx.repository.repository_packages
+    Gir_gen_lib.Generate.Dune_file.generate_dune_library ~ctx
+      ~stub_names:stub_list ~lib_name:namespace.namespace_name
+      ~module_names:module_list ~repository
   in
   write_file ~path:dune_file ~content:dune_content;
 
@@ -988,9 +1007,16 @@ let generate_references gir_file output_file =
     |> List.map ~f:(fun cls ->
         {
           cr_name = cls.class_name;
-          cr_type = Crt_Class;
+          cr_type = Crt_Class { parent = cls.parent };
           cr_c_type = cls.c_type;
         }))
+    @ (interfaces
+      |> List.map ~f:(fun intf ->
+          {
+            cr_name = intf.interface_name;
+            cr_type = Crt_Interface;
+            cr_c_type = intf.c_type;
+          }))
     @ List.map
         ~f:(fun enms ->
           {
@@ -1016,13 +1042,22 @@ let generate_references gir_file output_file =
             cr_c_type = rec_.c_type;
           }))
   in
-  let converter =
-    Sexplib.Conv.(
-      sexp_of_pair sexp_of_string
-        (sexp_of_list Gir_gen_lib.Types.sexp_of_cross_reference))
+  let crns =
+    Gir_gen_lib.Types.
+      {
+        cr_namespace_name = namespace.namespace_name;
+        cr_namespace_packages = repository.repository_packages;
+        cr_namespace_c_includes = repository.repository_c_includes;
+        cr_namespace_includes =
+          (* FIXME: we should probably include the include version too *)
+          List.map
+            ~f:(fun { include_name; _ } -> include_name)
+            repository.repository_includes;
+        cr_entities = entities;
+      }
   in
-  Sexplib.Sexp.(
-    save_hum output_file (converter (namespace.namespace_name, entities)));
+  let converter = Gir_gen_lib.Types.sexp_of_cross_reference_namespace in
+  Sexplib.Sexp.(save_hum output_file (converter crns));
   `Ok ()
 
 (* Cmdliner argument definitions *)

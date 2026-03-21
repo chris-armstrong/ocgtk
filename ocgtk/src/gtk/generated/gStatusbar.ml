@@ -1,8 +1,17 @@
 (* Signal class defined in gstatusbar_signals.ml *)
 
+class type statusbar_t = object
+    inherit Gstatusbar_signals.statusbar_signals
+    method get_context_id : string -> int
+    method pop : int -> unit
+    method push : int -> string -> int
+    method remove : int -> int -> unit
+    method remove_all : int -> unit
+    method as_statusbar : Statusbar.t
+end
+
 (* High-level class for Statusbar *)
-class statusbar (obj : Statusbar.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Statusbar.as_widget obj)
+class statusbar (obj : Statusbar.t) : statusbar_t = object (self)
   inherit Gstatusbar_signals.statusbar_signals obj
 
   method get_context_id : string -> int =
@@ -25,7 +34,6 @@ class statusbar (obj : Statusbar.t) = object (self)
     fun context_id ->
       (Statusbar.remove_all obj context_id)
 
-  method as_widget = (Statusbar.as_widget obj)
     method as_statusbar = obj
 end
 

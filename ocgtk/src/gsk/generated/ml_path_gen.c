@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <gsk/gsk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gsk_decls.h"
 
 /* Conversion functions for GskPath (opaque record with hidden fields) */
 GskPath *GskPath_val(value v) {
@@ -47,6 +47,14 @@ char* result = gsk_path_to_string(GskPath_val(self));
 CAMLreturn(caml_copy_string(result));
 }
 
+CAMLexport CAMLprim value ml_gsk_path_to_cairo(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gsk_path_to_cairo(GskPath_val(self), cairo_t_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gsk_path_ref(value self)
 {
 CAMLparam1(self);
@@ -69,6 +77,27 @@ CAMLparam1(self);
 
 gboolean result = gsk_path_is_closed(GskPath_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gsk_path_in_fill(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gboolean result = gsk_path_in_fill(GskPath_val(self), graphene_point_t_val(arg1), GskFillRule_val(arg2));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gsk_path_get_stroke_bounds(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+graphene_rect_t out2;
+
+gboolean result = gsk_path_get_stroke_bounds(GskPath_val(self), GskStroke_val(arg1), &out2);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_graphene_rect_t(&out2));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gsk_path_get_start_point(value self)
@@ -94,5 +123,33 @@ CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
     Store_field(ret, 1, Val_GskPathPoint(&out1));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gsk_path_get_closest_point(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GskPathPoint out3;
+float out4;
+
+gboolean result = gsk_path_get_closest_point(GskPath_val(self), graphene_point_t_val(arg1), Double_val(arg2), &out3, &out4);
+CAMLlocal1(ret);
+    ret = caml_alloc(3, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_GskPathPoint(&out3));
+    Store_field(ret, 2, caml_copy_double(out4));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gsk_path_get_bounds(value self)
+{
+CAMLparam1(self);
+graphene_rect_t out1;
+
+gboolean result = gsk_path_get_bounds(GskPath_val(self), &out1);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_graphene_rect_t(&out1));
     CAMLreturn(ret);
 }

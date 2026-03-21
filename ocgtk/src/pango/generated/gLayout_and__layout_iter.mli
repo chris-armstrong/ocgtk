@@ -1,14 +1,13 @@
 
-class layout : Layout_and__layout_iter.Layout.t ->
-  object
+class type layout_t = object
     method context_changed : unit -> unit
-    method copy : unit -> layout
+    method copy : unit -> layout_t
     method get_alignment : unit -> Pango_enums.alignment
     method get_attributes : unit -> Attr_list.t option
     method get_auto_dir : unit -> bool
     method get_baseline : unit -> int
     method get_character_count : unit -> int
-    method get_context : unit -> GContext_and__font_and__font_map_and__fontset.context
+    method get_context : unit -> GContext_and__font_and__font_map_and__fontset.context_t
     method get_direction : int -> Pango_enums.direction
     method get_ellipsize : unit -> Pango_enums.ellipsizemode
     method get_font_description : unit -> Font_description.t option
@@ -50,16 +49,15 @@ class layout : Layout_and__layout_iter.Layout.t ->
     method set_wrap : Pango_enums.wrapmode -> unit
     method write_to_file : Pango_enums.layoutserializeflags -> string -> (bool, GError.t) result
     method as_layout : Layout_and__layout_iter.Layout.t
-  end
+end
 
-and layout_iter : Layout_and__layout_iter.Layout_iter.t ->
-  object
+and layout_iter_t = object
     method at_last_line : unit -> bool
     method copy : unit -> Layout_and__layout_iter.Layout_iter.t option
     method free : unit -> unit
     method get_baseline : unit -> int
     method get_index : unit -> int
-    method get_layout : unit -> layout option
+    method get_layout : unit -> layout_t option
     method get_line : unit -> Layout_line.t option
     method get_line_readonly : unit -> Layout_line.t option
     method get_run_baseline : unit -> int
@@ -68,4 +66,9 @@ and layout_iter : Layout_and__layout_iter.Layout_iter.t ->
     method next_line : unit -> bool
     method next_run : unit -> bool
     method as_layout_iter : Layout_and__layout_iter.Layout_iter.t
-  end
+end
+
+
+class layout : Layout_and__layout_iter.Layout.t -> layout_t
+
+and layout_iter : Layout_and__layout_iter.Layout_iter.t -> layout_iter_t

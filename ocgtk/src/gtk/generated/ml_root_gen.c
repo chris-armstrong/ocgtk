@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_root_set_focus(value self, value arg1)
@@ -32,4 +32,13 @@ CAMLparam1(self);
 GtkWidget* result = gtk_root_get_focus(GtkRoot_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
+}
+
+CAMLexport CAMLprim value ml_gtk_root_get_display(value self)
+{
+CAMLparam1(self);
+
+GdkDisplay* result = gtk_root_get_display(GtkRoot_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_GdkDisplay(result));
 }

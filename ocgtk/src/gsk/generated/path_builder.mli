@@ -172,9 +172,15 @@ the circle with the given radius touches the line from
 @x1, @y1 to @x2, @y2. *)
 external html_arc_to : t -> float -> float -> float -> float -> float -> unit = "ml_gsk_path_builder_html_arc_to_bytecode" "ml_gsk_path_builder_html_arc_to_native"
 
-(** Creates a new `GskPath` from the current state of the
-given builder, and unrefs the @builder instance. *)
-external free_to_path : t -> Path_and__path_measure_and__path_point.Path.t = "ml_gsk_path_builder_free_to_path"
+(** Gets the current point.
+
+The current point is used for relative drawing commands and
+updated after every operation.
+
+When the builder is created, the default current point is set
+to `0, 0`. Note that this is different from cairo, which starts
+out without a current point. *)
+external get_current_point : t -> Ocgtk_graphene.Graphene.Wrappers.Point.t = "ml_gsk_path_builder_get_current_point"
 
 (** Adds a [cubic Bézier curve](https://en.wikipedia.org/wiki/B%C3%A9zier_curve)
 from the current point to @x3, @y3 with @x1, @y1 and @x2, @y2 as the control
@@ -250,6 +256,30 @@ external add_rounded_rect : t -> Rounded_rect.t -> unit = "ml_gsk_path_builder_a
 (** Appends all of @path to the builder, in reverse order. *)
 external add_reverse_path : t -> Path_and__path_measure_and__path_point.Path.t -> unit = "ml_gsk_path_builder_add_reverse_path"
 
+(** Adds @rect as a new contour to the path built by the builder.
+
+The path is going around the rectangle in clockwise direction.
+
+If the the width or height are 0, the path will be a closed
+horizontal or vertical line. If both are 0, it'll be a closed dot. *)
+external add_rect : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> unit = "ml_gsk_path_builder_add_rect"
+
 (** Appends all of @path to the builder. *)
 external add_path : t -> Path_and__path_measure_and__path_point.Path.t -> unit = "ml_gsk_path_builder_add_path"
+
+(** Adds the outlines for the glyphs in @layout to the builder. *)
+external add_layout : t -> Ocgtk_pango.Pango.Wrappers.Layout.t -> unit = "ml_gsk_path_builder_add_layout"
+
+(** Adds a circle with the @center and @radius.
+
+The path is going around the circle in clockwise direction.
+
+If @radius is zero, the contour will be a closed point. *)
+external add_circle : t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> float -> unit = "ml_gsk_path_builder_add_circle"
+
+(** Adds a Cairo path to the builder.
+
+You can use cairo_copy_path() to access the path
+from a Cairo context. *)
+external add_cairo_path : t -> Ocgtk_cairo.Cairo.Wrappers.Path.t -> unit = "ml_gsk_path_builder_add_cairo_path"
 

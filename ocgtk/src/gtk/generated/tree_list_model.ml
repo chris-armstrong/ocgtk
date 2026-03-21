@@ -3,9 +3,6 @@
 
 type t = [`tree_list_model | `object_] Gobject.obj
 
-(** Create a new TreeListModel *)
-external new_ : unit -> bool -> bool -> unit -> unit -> unit -> t = "ml_gtk_tree_list_model_new_bytecode" "ml_gtk_tree_list_model_new_native"
-
 (* Methods *)
 (** Sets whether the model should autoexpand.
 
@@ -44,6 +41,9 @@ If %TRUE, the values of the child models are passed through in their
 original state. You then need to call [method@Gtk.TreeListModel.get_row]
 to get the custom `GtkTreeListRow`s. *)
 external get_passthrough : t -> bool = "ml_gtk_tree_list_model_get_passthrough"
+
+(** Gets the root model that @self was created with. *)
+external get_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t = "ml_gtk_tree_list_model_get_model"
 
 (** Gets the row item corresponding to the child at index @position for
 @self's root model.

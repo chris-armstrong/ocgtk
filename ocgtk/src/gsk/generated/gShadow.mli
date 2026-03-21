@@ -1,5 +1,6 @@
-class shadow : Shadow.t ->
-  object
+class type shadow_t = object
     method as_shadow : Shadow.t
-  end
+end
+
+class shadow : Shadow.t -> shadow_t
 

@@ -104,14 +104,17 @@ let handle_inout_param ~ctx ~param_index ~base_type ~acc ~tm (p : gir_param) =
   let arg_name = sprintf "arg%d" ocaml_idx in
   let var_name = sprintf "inout%d" (param_index + 1) in
   
-  (* Check if this is a record type that needs special pointer handling *)
-  let prop_info = C_stub_helpers.analyze_property_type ~ctx p.param_type in
+  (* Check if this is a record type that needs special pointer handling.
+     Check both the type_mapping flag (works for cross-namespace) and
+     analyze_property_type (works for current namespace). *)
   let is_record_with_pointer =
-    match prop_info.record_info with
-    | Some (record, _, _) when not record.opaque ->
-        (* Non-opaque record types need value + pointer pattern *)
-        true
-    | _ -> false
+    match tm with
+    | Some mapping when mapping.is_value_type_record -> true
+    | _ ->
+        let prop_info = C_stub_helpers.analyze_property_type ~ctx p.param_type in
+        (match prop_info.record_info with
+        | Some (record, _, _) when not record.opaque -> true
+        | _ -> false)
   in
   
   if is_record_with_pointer then begin
@@ -241,14 +244,15 @@ let handle_in_param ~ctx ~acc ~length_param_map ~base_type ~tm (p : gir_param) =
    for GObject types. Returns a newline + g_object_ref_sink call for TransferNone/Floating
    transfer modes (to ensure proper reference counting). Returns empty string for
    TransferFull/TransferContainer (already owned) or if not a GObject type. *)
-let generate_ref_sink_stmt ~transfer_ownership mapping =
-  mapping.layer2_class
-  |> Option.map (fun _ ->
+let generate_ref_sink_stmt ~transfer_ownership (mapping : Types.type_mapping) =
+  (* Only GObject types (classes/interfaces) need ref_sink, not records *)
+  match mapping.layer2_class with
+  | Some _ when not mapping.is_value_type_record -> (
       match transfer_ownership with
       | Types.TransferNone | Types.TransferFloating ->
           "\nif (result) g_object_ref_sink(result);"
       | Types.TransferFull | Types.TransferContainer -> "")
-  |> Option.value ~default:""
+  | _ -> ""
 
 (* [handle_void_return ~c_name ~args ~out_array_conv_code ~out_array_cleanup_list]
    generates the C call, return statement, and cleanup list for void return functions.

@@ -13,9 +13,35 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
+
+CAMLexport CAMLprim value ml_gtk_popover_menu_new_from_model(value arg1)
+{
+CAMLparam1(arg1);
+
+GtkPopoverMenu *obj = gtk_popover_menu_new_from_model(Option_val(arg1, GMenuModel_val, NULL));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkPopoverMenu(obj));
+}
+CAMLexport CAMLprim value ml_gtk_popover_menu_new_from_model_full(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+
+GtkPopoverMenu *obj = gtk_popover_menu_new_from_model_full(GMenuModel_val(arg1), GtkPopoverMenuFlags_val(arg2));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkPopoverMenu(obj));
+}
+CAMLexport CAMLprim value ml_gtk_popover_menu_set_menu_model(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_popover_menu_set_menu_model(GtkPopoverMenu_val(self), Option_val(arg1, GMenuModel_val, NULL));
+CAMLreturn(Val_unit);
+}
 
 CAMLexport CAMLprim value ml_gtk_popover_menu_set_flags(value self, value arg1)
 {
@@ -31,6 +57,15 @@ CAMLparam2(self, arg1);
 
 gboolean result = gtk_popover_menu_remove_child(GtkPopoverMenu_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_popover_menu_get_menu_model(value self)
+{
+CAMLparam1(self);
+
+GMenuModel* result = gtk_popover_menu_get_menu_model(GtkPopoverMenu_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GMenuModel));
 }
 
 CAMLexport CAMLprim value ml_gtk_popover_menu_get_flags(value self)

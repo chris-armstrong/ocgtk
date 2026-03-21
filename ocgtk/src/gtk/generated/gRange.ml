@@ -1,11 +1,35 @@
 (* Signal class defined in grange_signals.ml *)
 
+class type range_t = object
+    inherit Grange_signals.range_signals
+    method get_adjustment : unit -> GAdjustment.adjustment_t
+    method get_fill_level : unit -> float
+    method get_flippable : unit -> bool
+    method get_inverted : unit -> bool
+    method get_restrict_to_fill_level : unit -> bool
+    method get_round_digits : unit -> int
+    method get_show_fill_level : unit -> bool
+    method get_slider_size_fixed : unit -> bool
+    method get_value : unit -> float
+    method set_adjustment : GAdjustment.adjustment_t -> unit
+    method set_fill_level : float -> unit
+    method set_flippable : bool -> unit
+    method set_increments : float -> float -> unit
+    method set_inverted : bool -> unit
+    method set_range : float -> float -> unit
+    method set_restrict_to_fill_level : bool -> unit
+    method set_round_digits : int -> unit
+    method set_show_fill_level : bool -> unit
+    method set_slider_size_fixed : bool -> unit
+    method set_value : float -> unit
+    method as_range : Range.t
+end
+
 (* High-level class for Range *)
-class range (obj : Range.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Range.as_widget obj)
+class range (obj : Range.t) : range_t = object (self)
   inherit Grange_signals.range_signals obj
 
-  method get_adjustment : unit -> GAdjustment.adjustment =
+  method get_adjustment : unit -> GAdjustment.adjustment_t =
     fun () ->
       new  GAdjustment.adjustment(Range.get_adjustment obj)
 
@@ -41,7 +65,7 @@ class range (obj : Range.t) = object (self)
     fun () ->
       (Range.get_value obj)
 
-  method set_adjustment : 'p1. (#GAdjustment.adjustment as 'p1) -> unit =
+  method set_adjustment : GAdjustment.adjustment_t -> unit =
     fun adjustment ->
       let adjustment = adjustment#as_adjustment in
       (Range.set_adjustment obj adjustment)
@@ -86,7 +110,6 @@ class range (obj : Range.t) = object (self)
     fun value ->
       (Range.set_value obj value)
 
-  method as_widget = (Range.as_widget obj)
     method as_range = obj
 end
 

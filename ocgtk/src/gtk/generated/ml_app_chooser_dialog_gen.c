@@ -13,10 +13,19 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
+CAMLexport CAMLprim value ml_gtk_app_chooser_dialog_new(value arg1, value arg2, value arg3)
+{
+CAMLparam3(arg1, arg2, arg3);
+
+GtkAppChooserDialog *obj = gtk_app_chooser_dialog_new(Option_val(arg1, GtkWindow_val, NULL), GtkDialogFlags_val(arg2), GFile_val(arg3));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkAppChooserDialog(obj));
+}
 CAMLexport CAMLprim value ml_gtk_app_chooser_dialog_new_for_content_type(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
@@ -50,3 +59,20 @@ CAMLparam1(self);
 const char* result = gtk_app_chooser_dialog_get_heading(GtkAppChooserDialog_val(self));
 CAMLreturn(Val_option_string(result));
 }
+
+CAMLexport CAMLprim value ml_gtk_app_chooser_dialog_get_gfile(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkAppChooserDialog *obj = (GtkAppChooserDialog *)GtkAppChooserDialog_val(self);
+    GFile *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gfile");
+if (pspec == NULL) caml_failwith("ml_gtk_app_chooser_dialog_get_gfile: property 'gfile' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "gfile", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GFile(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}

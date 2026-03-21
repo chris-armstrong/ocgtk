@@ -25,3 +25,18 @@ external ref : t -> t = "ml_gsk_render_node_ref"
 (** Returns the type of the @node. *)
 external get_node_type : t -> Gsk_enums.rendernodetype = "ml_gsk_render_node_get_node_type"
 
+(** Retrieves the boundaries of the @node.
+
+The node will not draw outside of its boundaries. *)
+external get_bounds : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t = "ml_gsk_render_node_get_bounds"
+
+(** Draw the contents of @node to the given cairo context.
+
+Typically, you'll use this function to implement fallback rendering
+of `GskRenderNode`s on an intermediate Cairo context, instead of using
+the drawing context associated to a [class@Gdk.Surface]'s rendering buffer.
+
+For advanced nodes that cannot be supported using Cairo, in particular
+for nodes doing 3D operations, this function may fail. *)
+external draw : t -> Ocgtk_cairo.Cairo.Wrappers.Context.t -> unit = "ml_gsk_render_node_draw"
+

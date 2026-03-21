@@ -53,6 +53,14 @@ The depth of a row never changes until the row is removed from its model
 at which point it will forever return 0. *)
 external get_depth : t -> int = "ml_gtk_tree_list_row_get_depth"
 
+(** If the row is expanded, gets the model holding the children of @self.
+
+This model is the model created by the
+[callback@Gtk.TreeListModelCreateModelFunc]
+and contains the original items, no matter what value
+[property@Gtk.TreeListModel:passthrough] is set to. *)
+external get_children : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option = "ml_gtk_tree_list_row_get_children"
+
 (** If @self is not expanded or @position is greater than the
 number of children, %NULL is returned. *)
 external get_child_row : t -> int -> t option = "ml_gtk_tree_list_row_get_child_row"

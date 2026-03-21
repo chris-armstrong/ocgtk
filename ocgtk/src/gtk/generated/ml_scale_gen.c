@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_scale_new(value arg1, value arg2)
@@ -87,6 +87,15 @@ CAMLlocal1(ret);
     Store_field(ret, 0, Val_int(out1));
     Store_field(ret, 1, Val_int(out2));
     CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gtk_scale_get_layout(value self)
+{
+CAMLparam1(self);
+
+PangoLayout* result = gtk_scale_get_layout(GtkScale_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_PangoLayout));
 }
 
 CAMLexport CAMLprim value ml_gtk_scale_get_has_origin(value self)

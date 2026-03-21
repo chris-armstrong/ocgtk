@@ -353,3 +353,355 @@ let uses_pointer_conversion f _expr_pattern =
     | _ -> false
   in
   List.exists check_stmt f.body
+
+(* ========================================================================= *)
+(* Header Guard Types and Parsing *)
+(* ========================================================================= *)
+
+type header_guard = {
+  guard_name : string;
+  has_ifndef : bool;
+  has_define : bool;
+  has_endif : bool;
+}
+
+(* Extract header guard directives from header content using line-by-line parsing *)
+let parse_header_guards header_content =
+  let lines = String.split_on_char '\n' header_content in
+  let rec extract_directives acc = function
+    | [] -> acc
+    | line :: rest ->
+        let stripped = String.trim line in
+        (* Match #ifndef _<name>_ *)
+        if String.starts_with ~prefix:"#ifndef " stripped then
+          let name =
+            String.sub stripped 8 (String.length stripped - 8) |> String.trim
+          in
+          extract_directives
+            ({
+               guard_name = name;
+               has_ifndef = true;
+               has_define = false;
+               has_endif = false;
+             }
+            :: acc)
+            rest (* Match #define _<name>_ *)
+        else if String.starts_with ~prefix:"#define " stripped then
+          let name =
+            String.sub stripped 8 (String.length stripped - 8) |> String.trim
+          in
+          (* Find and update matching guard *)
+          let updated =
+            List.map
+              (fun g ->
+                if g.guard_name = name then { g with has_define = true } else g)
+              acc
+          in
+          extract_directives updated rest (* Match #endif with comment *)
+        else if String.starts_with ~prefix:"#endif" stripped then
+          (* Extract guard name from comment if present: #endif /* _name_ */ *)
+          let guard_name =
+            try
+              let comment_start = String.index stripped '/' in
+              let start = comment_start + 3 in
+              let finish = String.index_from stripped start '*' - 1 in
+              String.sub stripped start (finish - start) |> String.trim
+            with Not_found -> ""
+          in
+          if guard_name <> "" then
+            let updated =
+              List.map
+                (fun g ->
+                  if g.guard_name = guard_name then { g with has_endif = true }
+                  else g)
+                acc
+            in
+            extract_directives updated rest
+          else extract_directives acc rest
+        else extract_directives acc rest
+  in
+  extract_directives [] lines
+
+(* ========================================================================= *)
+(* Forward Declaration Validation *)
+(* ========================================================================= *)
+
+(* Helper: Check if a string is a valid C identifier character *)
+let is_ident_char c =
+  (c >= 'a' && c <= 'z')
+  || (c >= 'A' && c <= 'Z')
+  || (c >= '0' && c <= '9')
+  || c = '_'
+
+(* Helper: Extract identifier from start of string until non-identifier char *)
+let extract_identifier s =
+  let rec find_end idx =
+    if idx >= String.length s then idx
+    else if is_ident_char s.[idx] then find_end (idx + 1)
+    else idx
+  in
+  let end_idx = find_end 0 in
+  if end_idx > 0 then Some (String.sub s 0 end_idx) else None
+
+(* Parse header content and extract forward declaration names.
+   Looks for patterns like:
+   - #define Val_<Type>(...)          (macro format)
+   - #define <Type>_val(...)          (macro format)
+   - value Val_<Type>(...);           (function declaration format)
+   - <Type> <Type>_val(...);          (function declaration format)
+   
+   Returns just the declaration name (e.g., "Val_GtkWrapMode") without parameters. *)
+let extract_forward_decls header_content =
+  let lines = String.split_on_char '\n' header_content in
+  List.filter_map
+    (fun line ->
+      let stripped = String.trim line in
+      (* Pattern 1: #define Val_<Type> or #define <Type>_val *)
+      if String.starts_with ~prefix:"#define " stripped then
+        let rest =
+          String.sub stripped 8 (String.length stripped - 8) |> String.trim
+        in
+        match extract_identifier rest with
+        | Some name ->
+            (* Check if it's a forward declaration pattern *)
+            if
+              String.starts_with ~prefix:"Val_" name
+              || String.ends_with ~suffix:"_val" name
+            then Some name
+            else None
+        | None -> None
+        (* Pattern 2: Function declarations like "value Val_<Type>(...);" *)
+      else if String.starts_with ~prefix:"value " stripped then
+        let rest =
+          String.sub stripped 6 (String.length stripped - 6) |> String.trim
+        in
+        (* Look for Val_<Type> pattern in function name *)
+        match extract_identifier rest with
+        | Some name ->
+            if String.starts_with ~prefix:"Val_" name then Some name else None
+        | None -> None
+      (* Pattern 3: Function declarations like "<Type> <Type>_val(...);" *)
+        else
+        (* Try to match "GtkWrapMode GtkWrapMode_val(...);" pattern *)
+        match extract_identifier stripped with
+        | Some type_name -> (
+            let rest_after_type =
+              String.sub stripped (String.length type_name)
+                (String.length stripped - String.length type_name)
+              |> String.trim
+            in
+            (* Check if next token is <Type>_val *)
+            match extract_identifier rest_after_type with
+            | Some func_name ->
+                if
+                  String.ends_with ~suffix:"_val" func_name
+                  && func_name = type_name ^ "_val"
+                then Some func_name
+                else None
+            | None -> None)
+        | None -> None)
+    lines
+
+(* Assert that a forward declaration exists in the header.
+   [assert_forward_decl_exists header_content c_type prefix] checks for declarations
+   like [prefix<c_type>] (e.g., Val_GtkWrapMode when prefix="Val_").
+   Fails with a descriptive message if the declaration is not found. *)
+let assert_forward_decl_exists header_content c_type prefix =
+  let decls = extract_forward_decls header_content in
+  let expected_decl = prefix ^ c_type in
+  if not (List.mem expected_decl decls) then
+    Alcotest.fail
+      (Printf.sprintf
+         "Expected forward declaration '%s' not found in header. Found \
+          declarations: [%s]"
+         expected_decl (String.concat ", " decls))
+
+(* Assert that a forward declaration does NOT exist in the header.
+   [assert_forward_decl_not_exists header_content c_type prefix] checks that declarations
+   like [prefix<c_type>] are NOT present.
+   Fails with a descriptive message if the declaration is found. *)
+let assert_forward_decl_not_exists header_content c_type prefix =
+  let decls = extract_forward_decls header_content in
+  let expected_decl = prefix ^ c_type in
+  if List.mem expected_decl decls then
+    Alcotest.fail
+      (Printf.sprintf
+         "Forward declaration '%s' should NOT exist in header, but was found"
+         expected_decl)
+
+(* Check if C code contains CAMLxparamN or higher.
+   The CAMLxparam macros are used for registering local variables with the OCaml
+   garbage collector. OCaml runtime only provides CAMLparam0-5 and CAMLxparam0-5,
+   so using CAMLxparam6 or higher would be an error.
+
+   This function checks all CAMLlocal declarations in the given functions and
+   returns true if any CAMLxparam macro with number >= n is found. *)
+let has_camlxparam_n_or_higher functions n =
+  let extract_camlxparam_num macro_name =
+    if String.starts_with ~prefix:"CAMLxparam" macro_name then
+      let num_str = String.sub macro_name 10 (String.length macro_name - 10) in
+      try Some (int_of_string num_str) with _ -> None
+    else None
+  in
+  List.exists
+    (fun f ->
+      let decls = get_caml_local_decls f in
+      List.exists
+        (fun decl ->
+          match extract_camlxparam_num decl with
+          | Some num -> num >= n
+          | None -> false)
+        decls)
+    functions
+
+(* Check if raw C code string contains CAMLxparamN or higher.
+   This is a simpler version that works directly with C code strings. *)
+let c_code_has_camlxparam_n_or_higher c_code n =
+  let lines = String.split_on_char '\n' c_code in
+  List.exists
+    (fun line ->
+      let stripped = String.trim line in
+      if String.starts_with ~prefix:"CAMLxparam" stripped then
+        (* Extract the number from CAMLxparamN *)
+        let macro_name =
+          try
+            let paren_idx = String.index stripped '(' in
+            String.sub stripped 0 paren_idx
+          with Not_found -> stripped
+        in
+        let num_str =
+          String.sub macro_name 10 (String.length macro_name - 10)
+        in
+        try
+          let num = int_of_string num_str in
+          num >= n
+        with _ -> false
+      else false)
+    lines
+
+(* Check if raw C code string contains a specific CAMLparam macro *)
+let c_code_has_caml_param c_code param_name =
+  let lines = String.split_on_char '\n' c_code in
+  List.exists
+    (fun line ->
+      let stripped = String.trim line in
+      String.starts_with ~prefix:(param_name ^ "(") stripped)
+    lines
+
+(* ========================================================================= *)
+(* Include Directive Validation *)
+(* ========================================================================= *)
+
+type include_directive = {
+  include_path : string;
+  is_system : bool; (* true for <path>, false for "path" *)
+}
+
+(* Extract #include directives from header content using line-by-line parsing.
+   Returns a list of include_directive records for both system (<...>) and
+   local ("...") includes. *)
+let extract_includes header_content =
+  let lines = String.split_on_char '\n' header_content in
+  List.filter_map
+    (fun line ->
+      let stripped = String.trim line in
+      if String.starts_with ~prefix:"#include " stripped then
+        let rest =
+          String.sub stripped 9 (String.length stripped - 9) |> String.trim
+        in
+        (* Check for system include: <path> *)
+        if
+          String.starts_with ~prefix:"<" rest
+          && String.ends_with ~suffix:">" rest
+        then
+          let path_len = String.length rest - 2 in
+          if path_len > 0 then
+            let path = String.sub rest 1 path_len in
+            Some { include_path = path; is_system = true }
+          else None (* Check for local include: "path" *)
+        else if
+          String.starts_with ~prefix:{|"|} rest
+          && String.ends_with ~suffix:{|"|} rest
+        then
+          let path_len = String.length rest - 2 in
+          if path_len > 0 then
+            let path = String.sub rest 1 path_len in
+            Some { include_path = path; is_system = false }
+          else None
+        else None
+      else None)
+    lines
+
+(* Assert that a local include directive exists in the header.
+   [assert_local_include_exists header_content expected_path] checks for an
+   include directive like [#include "path"].
+   Fails with a descriptive message if the include is not found. *)
+let assert_local_include_exists header_content expected_path =
+  let includes = extract_includes header_content in
+  let local_includes =
+    List.filter_map
+      (fun inc -> if not inc.is_system then Some inc.include_path else None)
+      includes
+  in
+  if not (List.mem expected_path local_includes) then
+    Alcotest.fail
+      (Printf.sprintf
+         "Expected local include '%s' not found in header. Found local \
+          includes: [%s]"
+         expected_path
+         (String.concat ", " local_includes))
+
+(* Assert that a local include directive does NOT exist in the header.
+   [assert_local_include_not_exists header_content unexpected_path] checks that
+   an include directive like [#include "path"] is NOT present.
+   Fails with a descriptive message if the include is found. *)
+let assert_local_include_not_exists header_content unexpected_path =
+  let includes = extract_includes header_content in
+  let local_includes =
+    List.filter_map
+      (fun inc -> if not inc.is_system then Some inc.include_path else None)
+      includes
+  in
+  if List.mem unexpected_path local_includes then
+    Alcotest.fail
+      (Printf.sprintf
+         "Local include '%s' should NOT exist in header, but was found"
+         unexpected_path)
+
+(* Assert that a header guard exists with the expected pattern.
+     [assert_header_guard_format header_content expected_pattern] validates that
+     the header contains a complete guard (ifndef/define/endif) matching the pattern.
+     The pattern is matched against the guard name using String.ends_with.
+     Fails with a descriptive message if no matching guard is found or if it's incomplete. *)
+let assert_header_guard_format header_content expected_pattern =
+  let guards = parse_header_guards header_content in
+  (* Find guards matching the expected pattern *)
+  let matching_guards =
+    List.filter
+      (fun g -> String.ends_with ~suffix:expected_pattern g.guard_name)
+      guards
+  in
+  match matching_guards with
+  | [] ->
+      (* No matching guard found *)
+      let available_guards =
+        List.map (fun g -> g.guard_name) guards |> String.concat ", "
+      in
+      Alcotest.fail
+        (Printf.sprintf
+           "No header guard with pattern '%s' found. Available guards: [%s]"
+           expected_pattern available_guards)
+  | guard :: _ ->
+      (* Found a matching guard, verify it has complete structure *)
+      if not guard.has_ifndef then
+        Alcotest.fail
+          (Printf.sprintf "Header guard '%s' is missing #ifndef directive"
+             guard.guard_name);
+      if not guard.has_define then
+        Alcotest.fail
+          (Printf.sprintf "Header guard '%s' is missing #define directive"
+             guard.guard_name);
+      if not guard.has_endif then
+        Alcotest.fail
+          (Printf.sprintf "Header guard '%s' is missing #endif directive"
+             guard.guard_name)

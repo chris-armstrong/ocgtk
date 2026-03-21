@@ -1,7 +1,8 @@
-class proxy : Proxy.t ->
-  object
-    method connect : #GIo_stream.io_stream -> #GProxy_address.proxy_address -> #GCancellable.cancellable option -> (GIo_stream.io_stream, GError.t) result
+class type proxy_t = object
+    method connect : GIo_stream.io_stream_t -> GProxy_address.proxy_address_t -> GCancellable.cancellable_t option -> (GIo_stream.io_stream_t, GError.t) result
     method supports_hostname : unit -> bool
     method as_proxy : Proxy.t
-  end
+end
+
+class proxy : Proxy.t -> proxy_t
 

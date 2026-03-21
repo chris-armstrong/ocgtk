@@ -1,5 +1,4 @@
-class frustum : Frustum.t ->
-  object
+class type frustum_t = object
     method contains_point : Point3_d.t -> bool
     method equal : Frustum.t -> bool
     method free : unit -> unit
@@ -9,5 +8,7 @@ class frustum : Frustum.t ->
     method intersects_box : Box_and__sphere.Box.t -> bool
     method intersects_sphere : Box_and__sphere.Sphere.t -> bool
     method as_frustum : Frustum.t
-  end
+end
+
+class frustum : Frustum.t -> frustum_t
 

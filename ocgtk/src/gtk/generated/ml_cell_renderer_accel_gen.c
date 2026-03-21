@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_cell_renderer_accel_new(value unit)
@@ -86,6 +86,38 @@ GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
           g_value_set_enum(&prop_gvalue, c_value);
 g_object_set_property(G_OBJECT(obj), "accel-mode", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_accel_get_accel_mods(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkCellRendererAccel *obj = (GtkCellRendererAccel *)GtkCellRendererAccel_val(self);
+    GdkModifierType prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accel-mods");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_accel_get_accel_mods: property 'accel-mods' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "accel-mods", &prop_gvalue);
+          prop_value = (GdkModifierType)g_value_get_flags(&prop_gvalue);
+
+      result = Val_GdkModifierType(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_accel_set_accel_mods(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkCellRendererAccel *obj = (GtkCellRendererAccel *)GtkCellRendererAccel_val(self);
+    GdkModifierType c_value = GdkModifierType_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "accel-mods");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_accel_set_accel_mods: property 'accel-mods' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          g_value_set_flags(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "accel-mods", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }

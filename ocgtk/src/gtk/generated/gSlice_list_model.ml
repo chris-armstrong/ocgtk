@@ -1,5 +1,20 @@
+class type slice_list_model_t = object
+    method get_model : unit -> Ocgtk_gio.Gio.list_model_t option
+    method get_offset : unit -> int
+    method get_size : unit -> int
+    method set_model : Ocgtk_gio.Gio.list_model_t option -> unit
+    method set_offset : int -> unit
+    method set_size : int -> unit
+    method n_items : int
+    method as_slice_list_model : Slice_list_model.t
+end
+
 (* High-level class for SliceListModel *)
-class slice_list_model (obj : Slice_list_model.t) = object (self)
+class slice_list_model (obj : Slice_list_model.t) : slice_list_model_t = object (self)
+
+  method get_model : unit -> Ocgtk_gio.Gio.list_model_t option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.list_model ret) (Slice_list_model.get_model obj)
 
   method get_offset : unit -> int =
     fun () ->
@@ -8,6 +23,11 @@ class slice_list_model (obj : Slice_list_model.t) = object (self)
   method get_size : unit -> int =
     fun () ->
       (Slice_list_model.get_size obj)
+
+  method set_model : Ocgtk_gio.Gio.list_model_t option -> unit =
+    fun model ->
+      let model = Option.map (fun (c) -> c#as_list_model) model in
+      (Slice_list_model.set_model obj model)
 
   method set_offset : int -> unit =
     fun offset ->

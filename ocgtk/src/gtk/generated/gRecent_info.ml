@@ -1,5 +1,31 @@
+class type recent_info_t = object
+    method create_app_info : string option -> (Ocgtk_gio.Gio.app_info_t option, GError.t) result
+    method exists : unit -> bool
+    method get_age : unit -> int
+    method get_description : unit -> string
+    method get_display_name : unit -> string
+    method get_gicon : unit -> Ocgtk_gio.Gio.icon_t option
+    method get_mime_type : unit -> string
+    method get_private_hint : unit -> bool
+    method get_short_name : unit -> string
+    method get_uri : unit -> string
+    method get_uri_display : unit -> string option
+    method has_application : string -> bool
+    method has_group : string -> bool
+    method is_local : unit -> bool
+    method last_application : unit -> string
+    method match_ : Recent_info.t -> bool
+    method ref : unit -> Recent_info.t
+    method unref : unit -> unit
+    method as_recent_info : Recent_info.t
+end
+
 (* High-level class for RecentInfo *)
-class recent_info (obj : Recent_info.t) = object (self)
+class recent_info (obj : Recent_info.t) : recent_info_t = object (self)
+
+  method create_app_info : string option -> (Ocgtk_gio.Gio.app_info_t option, GError.t) result =
+    fun app_name ->
+      Result.map (fun ret -> Option.map (fun ret -> new Ocgtk_gio.Gio.app_info ret) ret)(Recent_info.create_app_info obj app_name)
 
   method exists : unit -> bool =
     fun () ->
@@ -16,6 +42,10 @@ class recent_info (obj : Recent_info.t) = object (self)
   method get_display_name : unit -> string =
     fun () ->
       (Recent_info.get_display_name obj)
+
+  method get_gicon : unit -> Ocgtk_gio.Gio.icon_t option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_gio.Gio.icon ret) (Recent_info.get_gicon obj)
 
   method get_mime_type : unit -> string =
     fun () ->

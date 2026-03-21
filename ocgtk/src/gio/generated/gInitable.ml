@@ -1,7 +1,12 @@
-(* High-level class for Initable *)
-class initable (obj : Initable.t) = object (self)
+class type initable_t = object
+    method init : GCancellable.cancellable_t option -> (bool, GError.t) result
+    method as_initable : Initable.t
+end
 
-  method init : 'p1. (#GCancellable.cancellable as 'p1) option -> (bool, GError.t) result =
+(* High-level class for Initable *)
+class initable (obj : Initable.t) : initable_t = object (self)
+
+  method init : GCancellable.cancellable_t option -> (bool, GError.t) result =
     fun cancellable ->
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (Initable.init obj cancellable)

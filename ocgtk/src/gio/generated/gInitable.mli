@@ -1,6 +1,7 @@
-class initable : Initable.t ->
-  object
-    method init : #GCancellable.cancellable option -> (bool, GError.t) result
+class type initable_t = object
+    method init : GCancellable.cancellable_t option -> (bool, GError.t) result
     method as_initable : Initable.t
-  end
+end
+
+class initable : Initable.t -> initable_t
 

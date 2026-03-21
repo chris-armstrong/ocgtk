@@ -1,6 +1,5 @@
-class task : Task.t ->
-  object
-    method get_cancellable : unit -> GCancellable.cancellable option
+class type task_t = object
+    method get_cancellable : unit -> GCancellable.cancellable_t option
     method get_check_cancellable : unit -> bool
     method get_completed : unit -> bool
     method get_name : unit -> string option
@@ -16,5 +15,7 @@ class task : Task.t ->
     method set_return_on_cancel : bool -> bool
     method set_static_name : string option -> unit
     method as_task : Task.t
-  end
+end
+
+class task : Task.t -> task_t
 

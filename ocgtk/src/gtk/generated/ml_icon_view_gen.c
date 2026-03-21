@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_icon_view_new(value unit)
@@ -421,12 +421,49 @@ int result = gtk_icon_view_get_column_spacing(GtkIconView_val(self));
 CAMLreturn(Val_int(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_icon_view_get_cell_rect(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GdkRectangle out3;
+
+gboolean result = gtk_icon_view_get_cell_rect(GtkIconView_val(self), GtkTreePath_val(arg1), Option_val(arg2, GtkCellRenderer_val, NULL), &out3);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_GdkRectangle(&out3));
+    CAMLreturn(ret);
+}
+
 CAMLexport CAMLprim value ml_gtk_icon_view_get_activate_on_single_click(value self)
 {
 CAMLparam1(self);
 
 gboolean result = gtk_icon_view_get_activate_on_single_click(GtkIconView_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_enable_model_drag_source(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gtk_icon_view_enable_model_drag_source(GtkIconView_val(self), GdkModifierType_val(arg1), GdkContentFormats_val(arg2), GdkDragAction_val(arg3));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_enable_model_drag_dest(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_icon_view_enable_model_drag_dest(GtkIconView_val(self), GdkContentFormats_val(arg1), GdkDragAction_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_view_create_drag_icon(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GdkPaintable* result = gtk_icon_view_create_drag_icon(GtkIconView_val(self), GtkTreePath_val(arg1));
+CAMLreturn(Val_option(result, Val_GdkPaintable));
 }
 
 CAMLexport CAMLprim value ml_gtk_icon_view_get_cell_area(value self)

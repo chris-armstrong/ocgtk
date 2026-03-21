@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_tree_drag_source_row_draggable(value self, value arg1)
@@ -23,6 +23,14 @@ CAMLparam2(self, arg1);
 
 gboolean result = gtk_tree_drag_source_row_draggable(GtkTreeDragSource_val(self), GtkTreePath_val(arg1));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_tree_drag_source_drag_data_get(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GdkContentProvider* result = gtk_tree_drag_source_drag_data_get(GtkTreeDragSource_val(self), GtkTreePath_val(arg1));
+CAMLreturn(Val_option(result, Val_GdkContentProvider));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_drag_source_drag_data_delete(value self, value arg1)

@@ -1,6 +1,7 @@
-class im_context_simple : Im_context_simple.t ->
-  object
+class type im_context_simple_t = object
     method add_compose_file : string -> unit
     method as_im_context_simple : Im_context_simple.t
-  end
+end
+
+class im_context_simple : Im_context_simple.t -> im_context_simple_t
 

@@ -1,7 +1,6 @@
-class file_chooser_dialog : File_chooser_dialog.t ->
-  object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
-  method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
+class type file_chooser_dialog_t = object
     method as_file_chooser_dialog : File_chooser_dialog.t
-  end
+end
+
+class file_chooser_dialog : File_chooser_dialog.t -> file_chooser_dialog_t
 

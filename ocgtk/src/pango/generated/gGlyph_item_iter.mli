@@ -1,5 +1,4 @@
-class glyph_item_iter : Glyph_item_iter.t ->
-  object
+class type glyph_item_iter_t = object
     method copy : unit -> Glyph_item_iter.t option
     method free : unit -> unit
     method init_end : Glyph_item.t -> string -> bool
@@ -7,5 +6,7 @@ class glyph_item_iter : Glyph_item_iter.t ->
     method next_cluster : unit -> bool
     method prev_cluster : unit -> bool
     method as_glyph_item_iter : Glyph_item_iter.t
-  end
+end
+
+class glyph_item_iter : Glyph_item_iter.t -> glyph_item_iter_t
 

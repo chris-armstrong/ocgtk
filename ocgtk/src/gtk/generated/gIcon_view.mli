@@ -1,7 +1,8 @@
-class icon_view : Icon_view.t ->
-  object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
+class type icon_view_t = object
     inherit Gicon_view_signals.icon_view_signals
+    method create_drag_icon : Tree_path.t -> Ocgtk_gdk.Gdk.paintable_t option
+    method enable_model_drag_dest : Ocgtk_gdk.Gdk.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit
+    method enable_model_drag_source : Ocgtk_gdk.Gdk.modifiertype -> Ocgtk_gdk.Gdk.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit
     method get_activate_on_single_click : unit -> bool
     method get_column_spacing : unit -> int
     method get_columns : unit -> int
@@ -12,7 +13,7 @@ class icon_view : Icon_view.t ->
     method get_item_width : unit -> int
     method get_margin : unit -> int
     method get_markup_column : unit -> int
-    method get_model : unit -> GTree_model.tree_model option
+    method get_model : unit -> GTree_model.tree_model_t option
     method get_path_at_pos : int -> int -> Tree_path.t option
     method get_pixbuf_column : unit -> int
     method get_reorderable : unit -> bool
@@ -42,15 +43,16 @@ class icon_view : Icon_view.t ->
     method set_selection_mode : Gtk_enums.selectionmode -> unit
     method set_spacing : int -> unit
     method set_text_column : int -> unit
-    method set_tooltip_cell : #GTooltip.tooltip -> Tree_path.t -> #GCell_renderer.cell_renderer option -> unit
+    method set_tooltip_cell : GTooltip.tooltip_t -> Tree_path.t -> GCell_renderer.cell_renderer_t option -> unit
     method set_tooltip_column : int -> unit
-    method set_tooltip_item : #GTooltip.tooltip -> Tree_path.t -> unit
+    method set_tooltip_item : GTooltip.tooltip_t -> Tree_path.t -> unit
     method unselect_all : unit -> unit
     method unselect_path : Tree_path.t -> unit
     method unset_model_drag_dest : unit -> unit
     method unset_model_drag_source : unit -> unit
-    method cell_area : GCell_area_and__cell_area_context.cell_area
-  method as_widget : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
+    method cell_area : GCell_area_and__cell_area_context.cell_area_t
     method as_icon_view : Icon_view.t
-  end
+end
+
+class icon_view : Icon_view.t -> icon_view_t
 

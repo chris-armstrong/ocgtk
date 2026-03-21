@@ -12,9 +12,26 @@
 #include "wrappers.h"
 
 #include <gsk/gsk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gsk_decls.h"
 
+
+CAMLexport CAMLprim value ml_gsk_clip_node_new(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+
+GskClipNode *obj = gsk_clip_node_new(GskRenderNode_val(arg1), graphene_rect_t_val(arg2));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GskClipNode(obj));
+}
+CAMLexport CAMLprim value ml_gsk_clip_node_get_clip(value self)
+{
+CAMLparam1(self);
+
+const graphene_rect_t* result = gsk_clip_node_get_clip(GskClipNode_val(self));
+CAMLreturn(Val_graphene_rect_t(result));
+}
 
 CAMLexport CAMLprim value ml_gsk_clip_node_get_child(value self)
 {

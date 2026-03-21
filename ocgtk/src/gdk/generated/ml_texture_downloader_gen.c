@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <gdk/gdk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gdk_decls.h"
 
 /* Conversion functions for GdkTextureDownloader (opaque record with hidden fields) */
 GdkTextureDownloader *GdkTextureDownloader_val(value v) {

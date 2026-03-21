@@ -1,5 +1,6 @@
-class input_message : Input_message.t ->
-  object
+class type input_message_t = object
     method as_input_message : Input_message.t
-  end
+end
+
+class input_message : Input_message.t -> input_message_t
 

@@ -13,9 +13,17 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
+
+CAMLexport CAMLprim value ml_gtk_cell_editable_start_editing(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_cell_editable_start_editing(GtkCellEditable_val(self), Option_val(arg1, GdkEvent_val, NULL));
+CAMLreturn(Val_unit);
+}
 
 CAMLexport CAMLprim value ml_gtk_cell_editable_remove_widget(value self)
 {

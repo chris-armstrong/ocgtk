@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_snapshot_new(value unit)
@@ -26,6 +26,54 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GtkSnapshot(obj));
 }
+CAMLexport CAMLprim value ml_gtk_snapshot_translate_3d(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_snapshot_translate_3d(GtkSnapshot_val(self), graphene_point3d_t_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_translate(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_snapshot_translate(GtkSnapshot_val(self), graphene_point_t_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_transform_matrix(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_snapshot_transform_matrix(GtkSnapshot_val(self), graphene_matrix_t_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_transform(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_snapshot_transform(GtkSnapshot_val(self), Option_val(arg1, GskTransform_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_to_paintable(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GdkPaintable* result = gtk_snapshot_to_paintable(GtkSnapshot_val(self), Option_val(arg1, graphene_size_t_val, NULL));
+CAMLreturn(Val_option(result, Val_GdkPaintable));
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_to_node(value self)
+{
+CAMLparam1(self);
+
+GskRenderNode* result = gtk_snapshot_to_node(GtkSnapshot_val(self));
+CAMLreturn(Val_option(result, Val_GskRenderNode));
+}
+
 CAMLexport CAMLprim value ml_gtk_snapshot_scale_3d(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
@@ -50,6 +98,14 @@ gtk_snapshot_save(GtkSnapshot_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_snapshot_rotate_3d(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_snapshot_rotate_3d(GtkSnapshot_val(self), Double_val(arg1), graphene_vec3_t_val(arg2));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_snapshot_rotate(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -64,6 +120,27 @@ CAMLparam1(self);
 
 gtk_snapshot_restore(GtkSnapshot_val(self));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_render_layout(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+
+gtk_snapshot_render_layout(GtkSnapshot_val(self), GtkStyleContext_val(arg1), Double_val(arg2), Double_val(arg3), PangoLayout_val(arg4));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_render_insertion_cursor_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam2(arg5, arg6);
+
+gtk_snapshot_render_insertion_cursor(GtkSnapshot_val(self), GtkStyleContext_val(arg1), Double_val(arg2), Double_val(arg3), PangoLayout_val(arg4), Int_val(arg5), PangoDirection_val(arg6));
+CAMLreturn(Val_unit);}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_render_insertion_cursor_bytecode(value * argv, int argn)
+{
+return ml_gtk_snapshot_render_insertion_cursor_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6]);
 }
 
 CAMLexport CAMLprim value ml_gtk_snapshot_render_frame_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
@@ -105,11 +182,51 @@ CAMLexport CAMLprim value ml_gtk_snapshot_render_background_bytecode(value * arg
 return ml_gtk_snapshot_render_background_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
 }
 
+CAMLexport CAMLprim value ml_gtk_snapshot_push_stroke(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_snapshot_push_stroke(GtkSnapshot_val(self), GskPath_val(arg1), GskStroke_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_push_rounded_clip(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_snapshot_push_rounded_clip(GtkSnapshot_val(self), GskRoundedRect_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_push_repeat(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_snapshot_push_repeat(GtkSnapshot_val(self), graphene_rect_t_val(arg1), Option_val(arg2, graphene_rect_t_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_snapshot_push_opacity(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gtk_snapshot_push_opacity(GtkSnapshot_val(self), Double_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_push_mask(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_snapshot_push_mask(GtkSnapshot_val(self), GskMaskMode_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_push_fill(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_snapshot_push_fill(GtkSnapshot_val(self), GskPath_val(arg1), GskFillRule_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -121,11 +238,35 @@ gtk_snapshot_push_cross_fade(GtkSnapshot_val(self), Double_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_snapshot_push_color_matrix(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_snapshot_push_color_matrix(GtkSnapshot_val(self), graphene_matrix_t_val(arg1), graphene_vec4_t_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_push_clip(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_snapshot_push_clip(GtkSnapshot_val(self), graphene_rect_t_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_snapshot_push_blur(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gtk_snapshot_push_blur(GtkSnapshot_val(self), Double_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_push_blend(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_snapshot_push_blend(GtkSnapshot_val(self), GskBlendMode_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -150,5 +291,115 @@ CAMLexport CAMLprim value ml_gtk_snapshot_gl_shader_pop_texture(value self)
 CAMLparam1(self);
 
 gtk_snapshot_gl_shader_pop_texture(GtkSnapshot_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_append_texture(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_snapshot_append_texture(GtkSnapshot_val(self), GdkTexture_val(arg1), graphene_rect_t_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_append_stroke(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gtk_snapshot_append_stroke(GtkSnapshot_val(self), GskPath_val(arg1), GskStroke_val(arg2), GdkRGBA_val(arg3));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_append_scaled_texture(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gtk_snapshot_append_scaled_texture(GtkSnapshot_val(self), GdkTexture_val(arg1), GskScalingFilter_val(arg2), graphene_rect_t_val(arg3));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_append_outset_shadow_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam2(arg5, arg6);
+
+gtk_snapshot_append_outset_shadow(GtkSnapshot_val(self), GskRoundedRect_val(arg1), GdkRGBA_val(arg2), Double_val(arg3), Double_val(arg4), Double_val(arg5), Double_val(arg6));
+CAMLreturn(Val_unit);}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_append_outset_shadow_bytecode(value * argv, int argn)
+{
+return ml_gtk_snapshot_append_outset_shadow_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6]);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_append_node(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_snapshot_append_node(GtkSnapshot_val(self), GskRenderNode_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_append_layout(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_snapshot_append_layout(GtkSnapshot_val(self), PangoLayout_val(arg1), GdkRGBA_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_append_inset_shadow_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam2(arg5, arg6);
+
+gtk_snapshot_append_inset_shadow(GtkSnapshot_val(self), GskRoundedRect_val(arg1), GdkRGBA_val(arg2), Double_val(arg3), Double_val(arg4), Double_val(arg5), Double_val(arg6));
+CAMLreturn(Val_unit);}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_append_inset_shadow_bytecode(value * argv, int argn)
+{
+return ml_gtk_snapshot_append_inset_shadow_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6]);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_append_fill(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gtk_snapshot_append_fill(GtkSnapshot_val(self), GskPath_val(arg1), GskFillRule_val(arg2), GdkRGBA_val(arg3));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_append_color(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_snapshot_append_color(GtkSnapshot_val(self), GdkRGBA_val(arg1), graphene_rect_t_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_append_cairo(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+cairo_t* result = gtk_snapshot_append_cairo(GtkSnapshot_val(self), graphene_rect_t_val(arg1));
+CAMLreturn(Val_cairo_t(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_append_border(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+    int arg2_length = Wosize_val(arg2);
+    float* c_arg2 = (float*)g_malloc(sizeof(float) * arg2_length);
+    for (int i = 0; i < arg2_length; i++) {
+      c_arg2[i] = Double_val(Field(arg2, i));
+    }
+    int arg3_length = Wosize_val(arg3);
+    GdkRGBA* c_arg3 = (GdkRGBA*)g_malloc(sizeof(GdkRGBA) * arg3_length);
+    for (int i = 0; i < arg3_length; i++) {
+      c_arg3[i] = *GdkRGBA_val(Field(arg3, i));
+    }
+
+gtk_snapshot_append_border(GtkSnapshot_val(self), GskRoundedRect_val(arg1), c_arg2, c_arg3);
+    g_free(c_arg2);
+    g_free(c_arg3);
 CAMLreturn(Val_unit);
 }

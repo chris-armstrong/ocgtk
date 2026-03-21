@@ -1,7 +1,31 @@
-(* High-level class for DmabufTextureBuilder *)
-class dmabuf_texture_builder (obj : Dmabuf_texture_builder.t) = object (self)
+class type dmabuf_texture_builder_t = object
+    method get_display : unit -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.display_t
+    method get_fd : int -> int
+    method get_height : unit -> int
+    method get_n_planes : unit -> int
+    method get_offset : int -> int
+    method get_premultiplied : unit -> bool
+    method get_stride : int -> int
+    method get_update_region : unit -> Ocgtk_cairo.Cairo.region_t option
+    method get_update_texture : unit -> GTexture.texture_t option
+    method get_width : unit -> int
+    method set_display : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.display_t -> unit
+    method set_fd : int -> int -> unit
+    method set_height : int -> unit
+    method set_n_planes : int -> unit
+    method set_offset : int -> int -> unit
+    method set_premultiplied : bool -> unit
+    method set_stride : int -> int -> unit
+    method set_update_region : Ocgtk_cairo.Cairo.region_t option -> unit
+    method set_update_texture : GTexture.texture_t option -> unit
+    method set_width : int -> unit
+    method as_dmabuf_texture_builder : Dmabuf_texture_builder.t
+end
 
-  method get_display : unit -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.display =
+(* High-level class for DmabufTextureBuilder *)
+class dmabuf_texture_builder (obj : Dmabuf_texture_builder.t) : dmabuf_texture_builder_t = object (self)
+
+  method get_display : unit -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.display_t =
     fun () ->
       new  GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.display(Dmabuf_texture_builder.get_display obj)
 
@@ -29,7 +53,11 @@ class dmabuf_texture_builder (obj : Dmabuf_texture_builder.t) = object (self)
     fun plane ->
       (Dmabuf_texture_builder.get_stride obj plane)
 
-  method get_update_texture : unit -> GTexture.texture option =
+  method get_update_region : unit -> Ocgtk_cairo.Cairo.region_t option =
+    fun () ->
+      Option.map (fun ret -> new Ocgtk_cairo.Cairo.region ret) (Dmabuf_texture_builder.get_update_region obj)
+
+  method get_update_texture : unit -> GTexture.texture_t option =
     fun () ->
       Option.map (fun ret -> new GTexture.texture ret) (Dmabuf_texture_builder.get_update_texture obj)
 
@@ -37,7 +65,7 @@ class dmabuf_texture_builder (obj : Dmabuf_texture_builder.t) = object (self)
     fun () ->
       (Dmabuf_texture_builder.get_width obj)
 
-  method set_display : 'p1. (#GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.display as 'p1) -> unit =
+  method set_display : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.display_t -> unit =
     fun display ->
       let display = display#as_display in
       (Dmabuf_texture_builder.set_display obj display)
@@ -66,7 +94,12 @@ class dmabuf_texture_builder (obj : Dmabuf_texture_builder.t) = object (self)
     fun plane stride ->
       (Dmabuf_texture_builder.set_stride obj plane stride)
 
-  method set_update_texture : 'p1. (#GTexture.texture as 'p1) option -> unit =
+  method set_update_region : Ocgtk_cairo.Cairo.region_t option -> unit =
+    fun region ->
+      let region = Option.map (fun (c) -> c#as_region) region in
+      (Dmabuf_texture_builder.set_update_region obj region)
+
+  method set_update_texture : GTexture.texture_t option -> unit =
     fun texture ->
       let texture = Option.map (fun (c) -> c#as_texture) texture in
       (Dmabuf_texture_builder.set_update_texture obj texture)

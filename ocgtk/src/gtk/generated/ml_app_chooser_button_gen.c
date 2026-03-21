@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_app_chooser_button_new(value arg1)
@@ -103,5 +103,13 @@ CAMLexport CAMLprim value ml_gtk_app_chooser_button_append_separator(value self)
 CAMLparam1(self);
 
 gtk_app_chooser_button_append_separator(GtkAppChooserButton_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_app_chooser_button_append_custom_item(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gtk_app_chooser_button_append_custom_item(GtkAppChooserButton_val(self), String_val(arg1), String_val(arg2), GIcon_val(arg3));
 CAMLreturn(Val_unit);
 }

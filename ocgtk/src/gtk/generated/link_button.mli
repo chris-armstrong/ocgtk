@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: LinkButton *)
+(* LinkButton: LinkButton *)
 
 type t = [`link_button | `button | `widget | `initially_unowned] Gobject.obj
-
-val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new LinkButton *)
 external new_ : string -> t = "ml_gtk_link_button_new"

@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <pango/pango.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "pango_decls.h"
 
 /* Copy function for PangoMatrix (value-like record with copy method) */
 value copy_PangoMatrix(const PangoMatrix *ptr)

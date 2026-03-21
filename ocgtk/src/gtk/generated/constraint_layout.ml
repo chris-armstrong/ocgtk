@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Layout manager: ConstraintLayout *)
+(* ConstraintLayout: ConstraintLayout *)
 
 type t = [`constraint_layout | `layout_manager | `object_] Gobject.obj
-
-let as_layoutmanager (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Layout_manager.t = Obj.magic obj
 
 (** Create a new ConstraintLayout *)
 external new_ : unit -> t = "ml_gtk_constraint_layout_new"
@@ -19,6 +17,28 @@ external remove_constraint : t -> Constraint.t -> unit = "ml_gtk_constraint_layo
 
 (** Removes all constraints from the layout manager. *)
 external remove_all_constraints : t -> unit = "ml_gtk_constraint_layout_remove_all_constraints"
+
+(** Returns a `GListModel` to track the guides that are
+part of the layout.
+
+Calling this function will enable extra internal bookkeeping
+to track guides and emit signals on the returned listmodel.
+It may slow down operations a lot.
+
+Applications should try hard to avoid calling this function
+because of the slowdowns. *)
+external observe_guides : t -> Ocgtk_gio.Gio.Wrappers.List_model.t = "ml_gtk_constraint_layout_observe_guides"
+
+(** Returns a `GListModel` to track the constraints that are
+part of the layout.
+
+Calling this function will enable extra internal bookkeeping
+to track constraints and emit signals on the returned listmodel.
+It may slow down operations a lot.
+
+Applications should try hard to avoid calling this function
+because of the slowdowns. *)
+external observe_constraints : t -> Ocgtk_gio.Gio.Wrappers.List_model.t = "ml_gtk_constraint_layout_observe_constraints"
 
 (** Adds a guide to `layout`.
 

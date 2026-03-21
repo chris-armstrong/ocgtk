@@ -17,7 +17,11 @@
       "Bash(ocamlfind query:*)",
       "Bash(xargs ls:*)",
       "Bash(dune clean:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(pkg-config:*)",
+      "Bash(grep:*)",
+      "Bash(git stash:*)",
+      "Skill(ctx:ctx-add-learning)"
     ],
     "deny": [],
     "ask": []

@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: AboutDialog *)
+(* AboutDialog: AboutDialog *)
 
 type t = [`about_dialog | `window | `widget | `initially_unowned] Gobject.obj
-
-val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new AboutDialog *)
 external new_ : unit -> t = "ml_gtk_about_dialog_new"
@@ -60,6 +58,9 @@ external set_program_name : t -> string option -> unit = "ml_gtk_about_dialog_se
 (** Sets the icon name to be displayed as logo in the about dialog. *)
 external set_logo_icon_name : t -> string option -> unit = "ml_gtk_about_dialog_set_logo_icon_name"
 
+(** Sets the logo in the about dialog. *)
+external set_logo : t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option -> unit = "ml_gtk_about_dialog_set_logo"
+
 (** Sets the license information to be displayed in the
 about dialog.
 
@@ -113,6 +114,9 @@ external get_program_name : t -> string option = "ml_gtk_about_dialog_get_progra
 
 (** Returns the icon name displayed as logo in the about dialog. *)
 external get_logo_icon_name : t -> string option = "ml_gtk_about_dialog_get_logo_icon_name"
+
+(** Returns the paintable displayed as logo in the about dialog. *)
+external get_logo : t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option = "ml_gtk_about_dialog_get_logo"
 
 (** Returns the license information. *)
 external get_license : t -> string option = "ml_gtk_about_dialog_get_license"

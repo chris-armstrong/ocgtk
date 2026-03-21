@@ -1,5 +1,12 @@
+class type crossing_event_t = object
+    method get_detail : unit -> Gdk_enums.notifytype
+    method get_focus : unit -> bool
+    method get_mode : unit -> Gdk_enums.crossingmode
+    method as_crossing_event : Crossing_event.t
+end
+
 (* High-level class for CrossingEvent *)
-class crossing_event (obj : Crossing_event.t) = object (self)
+class crossing_event (obj : Crossing_event.t) : crossing_event_t = object (self)
 
   method get_detail : unit -> Gdk_enums.notifytype =
     fun () ->

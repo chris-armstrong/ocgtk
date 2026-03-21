@@ -4,8 +4,11 @@
 type t = [`media_stream | `object_] Gobject.obj
 
 (* Methods *)
-(** Same as gtk_media_stream_stream_unprepared(). *)
-external unprepared : t -> unit = "ml_gtk_media_stream_unprepared"
+(** Undoes a previous call to gtk_media_stream_realize().
+
+This causes the stream to release all resources it had
+allocated from @surface. *)
+external unrealize : t -> Ocgtk_gdk.Gdk.Wrappers.Surface.t -> unit = "ml_gtk_media_stream_unrealize"
 
 (** Resets a given media stream implementation.
 
@@ -76,6 +79,24 @@ See [method@Gtk.MediaStream.seek_success] for the other way of
 ending a seek. *)
 external seek_failed : t -> unit = "ml_gtk_media_stream_seek_failed"
 
+(** Called by users to attach the media stream to a `GdkSurface` they manage.
+
+The stream can then access the resources of @surface for its
+rendering purposes. In particular, media streams might want to
+create a `GdkGLContext` or sync to the `GdkFrameClock`.
+
+Whoever calls this function is responsible for calling
+[method@Gtk.MediaStream.unrealize] before either the stream
+or @surface get destroyed.
+
+Multiple calls to this function may happen from different
+users of the video, even with the same @surface. Each of these
+calls must be followed by its own call to
+[method@Gtk.MediaStream.unrealize].
+
+It is not required to call this function to make a media stream work. *)
+external realize : t -> Ocgtk_gdk.Gdk.Wrappers.Surface.t -> unit = "ml_gtk_media_stream_realize"
+
 (** Starts playing the stream.
 
 If the stream is in error or already playing, do nothing. *)
@@ -131,14 +152,6 @@ external get_loop : t -> bool = "ml_gtk_media_stream_get_loop"
 
 (** Returns whether the streams playback is finished. *)
 external get_ended : t -> bool = "ml_gtk_media_stream_get_ended"
-
-(** Pauses the media stream and marks it as ended.
-
-This is a hint only, calls to [method@Gtk.MediaStream.play]
-may still happen.
-
-The media stream must be prepared when this function is called. *)
-external ended : t -> unit = "ml_gtk_media_stream_ended"
 
 (* Properties *)
 

@@ -1,15 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: Video *)
+(* Video: Video *)
 
 type t = [`video | `widget | `initially_unowned] Gobject.obj
-
-let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new Video *)
 external new_ : unit -> t = "ml_gtk_video_new"
 
 (** Create a new Video *)
-external new_for_file : unit -> t = "ml_gtk_video_new_for_file"
+external new_for_file : Ocgtk_gio.Gio.Wrappers.File.t option -> t = "ml_gtk_video_new_for_file"
 
 (** Create a new Video *)
 external new_for_filename : string option -> t = "ml_gtk_video_new_for_filename"
@@ -49,6 +47,9 @@ external set_graphics_offload : t -> Gtk_enums.graphicsoffloadenabled -> unit = 
 This is a utility function that calls gtk_video_set_file(), *)
 external set_filename : t -> string option -> unit = "ml_gtk_video_set_filename"
 
+(** Makes @self play the given @file. *)
+external set_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option -> unit = "ml_gtk_video_set_file"
+
 (** Sets whether @self automatically starts playback when it
 becomes visible or when a new file gets loaded. *)
 external set_autoplay : t -> bool -> unit = "ml_gtk_video_set_autoplay"
@@ -63,6 +64,10 @@ external get_loop : t -> bool = "ml_gtk_video_get_loop"
 
 See [class@Gtk.GraphicsOffload] for more information on graphics offload. *)
 external get_graphics_offload : t -> Gtk_enums.graphicsoffloadenabled = "ml_gtk_video_get_graphics_offload"
+
+(** Gets the file played by @self or %NULL if not playing back
+a file. *)
+external get_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option = "ml_gtk_video_get_file"
 
 (** Returns %TRUE if videos have been set to loop. *)
 external get_autoplay : t -> bool = "ml_gtk_video_get_autoplay"

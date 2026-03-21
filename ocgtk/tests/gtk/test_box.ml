@@ -9,11 +9,15 @@
     - GTK3 compatibility helpers *)
 
 open Alcotest
-open Ocgtk_gtk
+open Ocgtk_gtk.Gtk
+module GMain = Ocgtk_gtk.GMain
 
-module Widget =
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
-  .Widget
+module Widget = Wrappers.Widget
+
+module Box = struct
+  include Wrappers.Box
+  let as_widget (box : t) : Widget.t = Obj.magic box
+end
 
 (* Try to initialize GTK once for all tests *)
 let gtk_available =
@@ -29,21 +33,21 @@ let require_gtk f () = if not gtk_available then skip () else f ()
 let test_module_accessible () =
   (* Test that we can reference the types *)
   let _box_type : Box.t option = None in
-  let _orientation : Gtk_enums.orientation = `HORIZONTAL in
-  let _baseline : Gtk_enums.baselineposition = `CENTER in
+  let _orientation : orientation = `HORIZONTAL in
+  let _baseline : baselineposition = `CENTER in
 
   check bool "module accessible" true true
 
 (* Test type constructors for orientation and baseline_position *)
 let test_type_constructors () =
   (* Test orientation *)
-  let _horiz : Gtk_enums.orientation = `HORIZONTAL in
-  let _vert : Gtk_enums.orientation = `VERTICAL in
+  let _horiz : orientation = `HORIZONTAL in
+  let _vert : orientation = `VERTICAL in
 
   (* Test baseline_position *)
-  let _top : Gtk_enums.baselineposition = `TOP in
-  let _center : Gtk_enums.baselineposition = `CENTER in
-  let _bottom : Gtk_enums.baselineposition = `BOTTOM in
+  let _top : baselineposition = `TOP in
+  let _center : baselineposition = `CENTER in
+  let _bottom : baselineposition = `BOTTOM in
 
   check bool "types construct" true true
 
@@ -113,7 +117,7 @@ let test_packing_properties () =
 let test_gbox_wrapper () =
   (* Create horizontal box with wrapper *)
   let hbox_obj = Box.new_ `HORIZONTAL 10 in
-  let hbox = new GBox.box hbox_obj in
+  let hbox = new box hbox_obj in
   check int "gbox hbox spacing" 10 (hbox#get_spacing ());
 
   (* Set properties *)
@@ -125,7 +129,7 @@ let test_gbox_wrapper () =
 
   (* Create vertical box with wrapper *)
   let vbox_obj = Box.new_ `VERTICAL 5 in
-  let vbox = new GBox.box vbox_obj in
+  let vbox = new box vbox_obj in
   vbox#set_homogeneous true;
   check int "gbox vbox spacing" 5 (vbox#get_spacing ());
   check bool "gbox vbox homogeneous" true (vbox#get_homogeneous ())

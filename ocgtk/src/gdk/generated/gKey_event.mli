@@ -1,5 +1,4 @@
-class key_event : Key_event.t ->
-  object
+class type key_event_t = object
     method get_consumed_modifiers : unit -> Gdk_enums.modifiertype
     method get_keycode : unit -> int
     method get_keyval : unit -> int
@@ -8,5 +7,7 @@ class key_event : Key_event.t ->
     method is_modifier : unit -> bool
     method matches : int -> Gdk_enums.modifiertype -> Gdk_enums.keymatch
     method as_key_event : Key_event.t
-  end
+end
+
+class key_event : Key_event.t -> key_event_t
 

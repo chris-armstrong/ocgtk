@@ -1,8 +1,10 @@
-(* High-level class for OverlayLayout *)
-class overlay_layout (obj : Overlay_layout.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.layout_manager (Overlay_layout.as_layoutmanager obj)
+class type overlay_layout_t = object
+    method as_overlay_layout : Overlay_layout.t
+end
 
-  method as_layoutmanager = (Overlay_layout.as_layoutmanager obj)
+(* High-level class for OverlayLayout *)
+class overlay_layout (obj : Overlay_layout.t) : overlay_layout_t = object (self)
+
     method as_overlay_layout = obj
 end
 

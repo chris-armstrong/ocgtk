@@ -1,8 +1,24 @@
 (* Signal class defined in gcss_provider_signals.ml *)
 
+class type css_provider_t = object
+    inherit Gcss_provider_signals.css_provider_signals
+    method load_from_file : Ocgtk_gio.Gio.file_t -> unit
+    method load_from_path : string -> unit
+    method load_from_resource : string -> unit
+    method load_from_string : string -> unit
+    method load_named : string -> string option -> unit
+    method to_string : unit -> string
+    method as_css_provider : Css_provider.t
+end
+
 (* High-level class for CssProvider *)
-class css_provider (obj : Css_provider.t) = object (self)
+class css_provider (obj : Css_provider.t) : css_provider_t = object (self)
   inherit Gcss_provider_signals.css_provider_signals obj
+
+  method load_from_file : Ocgtk_gio.Gio.file_t -> unit =
+    fun file ->
+      let file = file#as_file in
+      (Css_provider.load_from_file obj file)
 
   method load_from_path : string -> unit =
     fun path ->

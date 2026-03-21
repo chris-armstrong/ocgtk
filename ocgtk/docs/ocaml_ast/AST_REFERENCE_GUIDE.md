@@ -5,9 +5,9 @@ Use this as a reference when writing AST validation tests.
 
 ## Quick Reference: Core Type Patterns
 
-### Hierarchy Type: `#GWidget.widget`
+### Hierarchy Type: `#GWidget.widget` (HISTORICAL — no longer generated, incompatible with class type defs)
 ```ocaml
-(* OCaml syntax *)
+(* OCaml syntax — replaced by plain class type references like widget_t *)
 method set_focus (w : #GWidget.widget) = ...
 
 (* AST pattern *)
@@ -33,9 +33,9 @@ Ppat_constraint
     ]
 ```
 
-### Structural Type with Method: `<as_widget: Widget.t; ..>`
+### Structural Type with Method: `<as_widget: Widget.t; ..>` (HISTORICAL — no longer generated)
 ```ocaml
-(* OCaml syntax *)
+(* OCaml syntax — replaced by class type references like widget_t *)
 method set_child (w : <as_widget: Widget.t; ..>) = ...
 
 (* AST pattern *)

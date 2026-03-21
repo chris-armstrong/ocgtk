@@ -1,8 +1,35 @@
 (* Signal class defined in gcombo_box_signals.ml *)
 
+class type combo_box_t = object
+    inherit Gcombo_box_signals.combo_box_signals
+    method get_active : unit -> int
+    method get_active_id : unit -> string option
+    method get_button_sensitivity : unit -> Gtk_enums.sensitivitytype
+    method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
+    method get_entry_text_column : unit -> int
+    method get_has_entry : unit -> bool
+    method get_id_column : unit -> int
+    method get_model : unit -> GTree_model.tree_model_t option
+    method get_popup_fixed_width : unit -> bool
+    method popdown : unit -> unit
+    method popup : unit -> unit
+    method popup_for_device : Ocgtk_gdk.Gdk.device_t -> unit
+    method set_active : int -> unit
+    method set_active_id : string option -> bool
+    method set_active_iter : Tree_iter.t option -> unit
+    method set_button_sensitivity : Gtk_enums.sensitivitytype -> unit
+    method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
+    method set_entry_text_column : int -> unit
+    method set_id_column : int -> unit
+    method set_popup_fixed_width : bool -> unit
+    method has_frame : bool
+    method set_has_frame : bool -> unit
+    method popup_shown : bool
+    method as_combo_box : Combo_box.t
+end
+
 (* High-level class for ComboBox *)
-class combo_box (obj : Combo_box.t) = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Combo_box.as_widget obj)
+class combo_box (obj : Combo_box.t) : combo_box_t = object (self)
   inherit Gcombo_box_signals.combo_box_signals obj
 
   method get_active : unit -> int =
@@ -17,7 +44,7 @@ class combo_box (obj : Combo_box.t) = object (self)
     fun () ->
       (Combo_box.get_button_sensitivity obj)
 
-  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget option =
+  method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option =
     fun () ->
       Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Combo_box.get_child obj)
 
@@ -33,7 +60,7 @@ class combo_box (obj : Combo_box.t) = object (self)
     fun () ->
       (Combo_box.get_id_column obj)
 
-  method get_model : unit -> GTree_model.tree_model option =
+  method get_model : unit -> GTree_model.tree_model_t option =
     fun () ->
       Option.map (fun ret -> new GTree_model.tree_model ret) (Combo_box.get_model obj)
 
@@ -48,6 +75,11 @@ class combo_box (obj : Combo_box.t) = object (self)
   method popup : unit -> unit =
     fun () ->
       (Combo_box.popup obj)
+
+  method popup_for_device : Ocgtk_gdk.Gdk.device_t -> unit =
+    fun device ->
+      let device = device#as_device in
+      (Combo_box.popup_for_device obj device)
 
   method set_active : int -> unit =
     fun index_ ->
@@ -65,7 +97,7 @@ class combo_box (obj : Combo_box.t) = object (self)
     fun sensitivity ->
       (Combo_box.set_button_sensitivity obj sensitivity)
 
-  method set_child : 'p1. (#GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget as 'p1) option -> unit =
+  method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit =
     fun child ->
       let child = Option.map (fun (c) -> c#as_widget) child in
       (Combo_box.set_child obj child)
@@ -87,7 +119,6 @@ class combo_box (obj : Combo_box.t) = object (self)
 
   method popup_shown = Combo_box.get_popup_shown obj
 
-  method as_widget = (Combo_box.as_widget obj)
     method as_combo_box = obj
 end
 

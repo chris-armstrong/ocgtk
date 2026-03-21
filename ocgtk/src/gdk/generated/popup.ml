@@ -21,6 +21,18 @@ and is immediately hidden upon being presented. If presenting failed,
 the [signal@Gdk.Surface::layout] signal will not me emitted. *)
 external present : t -> int -> int -> Popup_layout.t -> bool = "ml_gdk_popup_present"
 
+(** Gets the current popup surface anchor.
+
+The value returned may change after calling [method@Gdk.Popup.present],
+or after the [signal@Gdk.Surface::layout] signal is emitted. *)
+external get_surface_anchor : t -> Gdk_enums.gravity = "ml_gdk_popup_get_surface_anchor"
+
+(** Gets the current popup rectangle anchor.
+
+The value returned may change after calling [method@Gdk.Popup.present],
+or after the [signal@Gdk.Surface::layout] signal is emitted. *)
+external get_rect_anchor : t -> Gdk_enums.gravity = "ml_gdk_popup_get_rect_anchor"
+
 (** Obtains the position of the popup relative to its parent. *)
 external get_position_y : t -> int = "ml_gdk_popup_get_position_y"
 

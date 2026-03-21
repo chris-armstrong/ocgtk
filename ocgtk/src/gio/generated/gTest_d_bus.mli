@@ -1,5 +1,4 @@
-class test_d_bus : Test_d_bus.t ->
-  object
+class type test_d_bus_t = object
     method add_service_dir : string -> unit
     method down : unit -> unit
     method get_bus_address : unit -> string option
@@ -7,5 +6,7 @@ class test_d_bus : Test_d_bus.t ->
     method stop : unit -> unit
     method up : unit -> unit
     method as_test_d_bus : Test_d_bus.t
-  end
+end
+
+class test_d_bus : Test_d_bus.t -> test_d_bus_t
 

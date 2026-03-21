@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_dialog_new(value unit)
@@ -73,7 +73,7 @@ CAMLparam1(self);
 
 GtkWidget* result = gtk_dialog_get_header_bar(GtkDialog_val(self));
 if (result) g_object_ref_sink(result);
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkHeaderBar(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_dialog_get_content_area(value self)
@@ -82,7 +82,7 @@ CAMLparam1(self);
 
 GtkWidget* result = gtk_dialog_get_content_area(GtkDialog_val(self));
 if (result) g_object_ref_sink(result);
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_GtkBox(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_dialog_add_button(value self, value arg1, value arg2)

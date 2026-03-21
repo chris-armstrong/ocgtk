@@ -39,3 +39,8 @@ external load_from_resource : t -> string -> unit = "ml_gtk_css_provider_load_fr
 This clears any previously loaded information. *)
 external load_from_path : t -> string -> unit = "ml_gtk_css_provider_load_from_path"
 
+(** Loads the data contained in @file into @css_provider.
+
+This clears any previously loaded information. *)
+external load_from_file : t -> Ocgtk_gio.Gio.Wrappers.File.t -> unit = "ml_gtk_css_provider_load_from_file"
+

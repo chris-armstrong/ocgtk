@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_cell_area_stop_editing(value self, value arg1)
@@ -23,6 +23,19 @@ CAMLparam2(self, arg1);
 
 gtk_cell_area_stop_editing(GtkCellArea_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_area_snapshot_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam3(arg5, arg6, arg7);
+
+gtk_cell_area_snapshot(GtkCellArea_val(self), GtkCellAreaContext_val(arg1), GtkWidget_val(arg2), GtkSnapshot_val(arg3), GdkRectangle_val(arg4), GdkRectangle_val(arg5), GtkCellRendererState_val(arg6), Bool_val(arg7));
+CAMLreturn(Val_unit);}
+
+CAMLexport CAMLprim value ml_gtk_cell_area_snapshot_bytecode(value * argv, int argn)
+{
+return ml_gtk_cell_area_snapshot_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6], argv[7]);
 }
 
 CAMLexport CAMLprim value ml_gtk_cell_area_set_focus_cell(value self, value arg1)
@@ -77,6 +90,15 @@ CAMLparam1(self);
 
 gboolean result = gtk_cell_area_is_activatable(GtkCellArea_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_area_inner_cell_area(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GdkRectangle out3;
+
+gtk_cell_area_inner_cell_area(GtkCellArea_val(self), GtkWidget_val(arg1), GdkRectangle_val(arg2), &out3);
+CAMLreturn(Val_GdkRectangle(&out3));
 }
 
 CAMLexport CAMLprim value ml_gtk_cell_area_has_renderer(value self, value arg1)
@@ -195,12 +217,53 @@ const char* result = gtk_cell_area_get_current_path_string(GtkCellArea_val(self)
 CAMLreturn(caml_copy_string(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_cell_area_get_cell_at_position_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam1(arg5);
+GdkRectangle out6;
+
+GtkCellRenderer* result = gtk_cell_area_get_cell_at_position(GtkCellArea_val(self), GtkCellAreaContext_val(arg1), GtkWidget_val(arg2), GdkRectangle_val(arg3), Int_val(arg4), Int_val(arg5), &out6);
+if (result) g_object_ref_sink(result);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_GtkCellRenderer(result));
+    Store_field(ret, 1, Val_GdkRectangle(&out6));
+    CAMLreturn(ret);}
+
+CAMLexport CAMLprim value ml_gtk_cell_area_get_cell_at_position_bytecode(value * argv, int argn)
+{
+return ml_gtk_cell_area_get_cell_at_position_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_area_get_cell_allocation(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+GdkRectangle out5;
+
+gtk_cell_area_get_cell_allocation(GtkCellArea_val(self), GtkCellAreaContext_val(arg1), GtkWidget_val(arg2), GtkCellRenderer_val(arg3), GdkRectangle_val(arg4), &out5);
+CAMLreturn(Val_GdkRectangle(&out5));
+}
+
 CAMLexport CAMLprim value ml_gtk_cell_area_focus(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gboolean result = gtk_cell_area_focus(GtkCellArea_val(self), GtkDirectionType_val(arg1));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_area_event_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam1(arg5);
+
+int result = gtk_cell_area_event(GtkCellArea_val(self), GtkCellAreaContext_val(arg1), GtkWidget_val(arg2), GdkEvent_val(arg3), GdkRectangle_val(arg4), GtkCellRendererState_val(arg5));
+CAMLreturn(Val_int(result));}
+
+CAMLexport CAMLprim value ml_gtk_cell_area_event_bytecode(value * argv, int argn)
+{
+return ml_gtk_cell_area_event_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
 }
 
 CAMLexport CAMLprim value ml_gtk_cell_area_create_context(value self)
@@ -265,4 +328,30 @@ CAMLparam2(self, arg1);
 
 gtk_cell_area_add(GtkCellArea_val(self), GtkCellRenderer_val(arg1));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_area_activate_cell_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam1(arg5);
+
+gboolean result = gtk_cell_area_activate_cell(GtkCellArea_val(self), GtkWidget_val(arg1), GtkCellRenderer_val(arg2), GdkEvent_val(arg3), GdkRectangle_val(arg4), GtkCellRendererState_val(arg5));
+CAMLreturn(Val_bool(result));}
+
+CAMLexport CAMLprim value ml_gtk_cell_area_activate_cell_bytecode(value * argv, int argn)
+{
+return ml_gtk_cell_area_activate_cell_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_area_activate_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam1(arg5);
+
+gboolean result = gtk_cell_area_activate(GtkCellArea_val(self), GtkCellAreaContext_val(arg1), GtkWidget_val(arg2), GdkRectangle_val(arg3), GtkCellRendererState_val(arg4), Bool_val(arg5));
+CAMLreturn(Val_bool(result));}
+
+CAMLexport CAMLprim value ml_gtk_cell_area_activate_bytecode(value * argv, int argn)
+{
+return ml_gtk_cell_area_activate_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
 }

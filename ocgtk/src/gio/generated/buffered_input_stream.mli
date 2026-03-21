@@ -6,9 +6,6 @@ type t = [`buffered_input_stream | `filter_input_stream | `input_stream | `objec
 (** Create a new BufferedInputStream *)
 external new_ : Input_stream.t -> t = "ml_g_buffered_input_stream_new"
 
-(** Create a new BufferedInputStream *)
-external new_sized : Input_stream.t -> unit -> t = "ml_g_buffered_input_stream_new_sized"
-
 (* Methods *)
 (** Tries to read a single byte from the stream or the buffer. Will block
 during this read.

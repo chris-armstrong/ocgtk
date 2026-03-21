@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: IconView *)
+(* IconView: IconView *)
 
 type t = [`icon_view | `widget | `initially_unowned] Gobject.obj
-
-let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (** Create a new IconView *)
 external new_ : unit -> t = "ml_gtk_icon_view_new"
@@ -174,12 +172,6 @@ external path_is_selected : t -> Tree_path.t -> bool = "ml_gtk_icon_view_path_is
 (** Activates the item determined by @path. *)
 external item_activated : t -> Tree_path.t -> unit = "ml_gtk_icon_view_item_activated"
 
-(** Sets @start_path and @end_path to be the first and last visible path.
-Note that there may be invisible paths in between.
-
-Both paths should be freed with gtk_tree_path_free() after use. *)
-external get_visible_range : t -> bool * Tree_path.t * Tree_path.t = "ml_gtk_icon_view_get_visible_range"
-
 (** Returns the column of @icon_view’s model which is being used for
 displaying tooltips on @icon_view’s rows. *)
 external get_tooltip_column : t -> int = "ml_gtk_icon_view_get_tooltip_column"
@@ -234,30 +226,32 @@ external get_item_orientation : t -> Gtk_enums.orientation = "ml_gtk_icon_view_g
 displayed. Column numbers start at 0. *)
 external get_item_column : t -> Tree_path.t -> int = "ml_gtk_icon_view_get_item_column"
 
-(** Gets the path and cell for the icon at the given position. *)
-external get_item_at_pos : t -> int -> int -> bool * Tree_path.t * Cell_renderer.t = "ml_gtk_icon_view_get_item_at_pos"
-
-(** Gets information about the item that is highlighted for feedback. *)
-external get_drag_dest_item : t -> Tree_path.t option * Gtk_enums.iconviewdropposition = "ml_gtk_icon_view_get_drag_dest_item"
-
-(** Determines the destination item for a given position. *)
-external get_dest_item_at_pos : t -> int -> int -> bool * Tree_path.t * Gtk_enums.iconviewdropposition = "ml_gtk_icon_view_get_dest_item_at_pos"
-
-(** Fills in @path and @cell with the current cursor path and cell.
-If the cursor isn’t currently set, then *@path will be %NULL.
-If no cell currently has focus, then *@cell will be %NULL.
-
-The returned `GtkTreePath` must be freed with gtk_tree_path_free(). *)
-external get_cursor : t -> bool * Tree_path.t * Cell_renderer.t = "ml_gtk_icon_view_get_cursor"
-
 (** Returns the value of the ::columns property. *)
 external get_columns : t -> int = "ml_gtk_icon_view_get_columns"
 
 (** Returns the value of the ::column-spacing property. *)
 external get_column_spacing : t -> int = "ml_gtk_icon_view_get_column_spacing"
 
+(** Fills the bounding rectangle in widget coordinates for the cell specified by
+@path and @cell. If @cell is %NULL the main cell area is used.
+
+This function is only valid if @icon_view is realized. *)
+external get_cell_rect : t -> Tree_path.t -> Cell_renderer.t option -> bool * Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_icon_view_get_cell_rect"
+
 (** Gets the setting set by gtk_icon_view_set_activate_on_single_click(). *)
 external get_activate_on_single_click : t -> bool = "ml_gtk_icon_view_get_activate_on_single_click"
+
+(** Turns @icon_view into a drag source for automatic DND. Calling this
+method sets `GtkIconView`:reorderable to %FALSE. *)
+external enable_model_drag_source : t -> Ocgtk_gdk.Gdk.modifiertype -> Ocgtk_gdk.Gdk.Wrappers.Content_formats.t -> Ocgtk_gdk.Gdk.dragaction -> unit = "ml_gtk_icon_view_enable_model_drag_source"
+
+(** Turns @icon_view into a drop destination for automatic DND. Calling this
+method sets `GtkIconView`:reorderable to %FALSE. *)
+external enable_model_drag_dest : t -> Ocgtk_gdk.Gdk.Wrappers.Content_formats.t -> Ocgtk_gdk.Gdk.dragaction -> unit = "ml_gtk_icon_view_enable_model_drag_dest"
+
+(** Creates a `GdkPaintable` representation of the item at @path.
+This image is used for a drag icon. *)
+external create_drag_icon : t -> Tree_path.t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option = "ml_gtk_icon_view_create_drag_icon"
 
 (* Properties *)
 

@@ -1,5 +1,6 @@
-class output_vector : Output_vector.t ->
-  object
+class type output_vector_t = object
     method as_output_vector : Output_vector.t
-  end
+end
+
+class output_vector : Output_vector.t -> output_vector_t
 

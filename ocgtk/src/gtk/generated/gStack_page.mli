@@ -1,6 +1,5 @@
-class stack_page : Stack_page.t ->
-  object
-    method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget
+class type stack_page_t = object
+    method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     method get_icon_name : unit -> string option
     method get_name : unit -> string option
     method get_needs_attention : unit -> bool
@@ -14,5 +13,7 @@ class stack_page : Stack_page.t ->
     method set_use_underline : bool -> unit
     method set_visible : bool -> unit
     method as_stack_page : Stack_page.t
-  end
+end
+
+class stack_page : Stack_page.t -> stack_page_t
 

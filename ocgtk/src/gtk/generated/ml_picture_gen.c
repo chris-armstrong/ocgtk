@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_picture_new(value unit)
@@ -26,11 +26,38 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GtkPicture(obj));
 }
+CAMLexport CAMLprim value ml_gtk_picture_new_for_file(value arg1)
+{
+CAMLparam1(arg1);
+
+GtkPicture *obj = gtk_picture_new_for_file(Option_val(arg1, GFile_val, NULL));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkPicture(obj));
+}
 CAMLexport CAMLprim value ml_gtk_picture_new_for_filename(value arg1)
 {
 CAMLparam1(arg1);
 
 GtkPicture *obj = gtk_picture_new_for_filename(String_option_val(arg1));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkPicture(obj));
+}
+CAMLexport CAMLprim value ml_gtk_picture_new_for_paintable(value arg1)
+{
+CAMLparam1(arg1);
+
+GtkPicture *obj = gtk_picture_new_for_paintable(Option_val(arg1, GdkPaintable_val, NULL));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkPicture(obj));
+}
+CAMLexport CAMLprim value ml_gtk_picture_new_for_pixbuf(value arg1)
+{
+CAMLparam1(arg1);
+
+GtkPicture *obj = gtk_picture_new_for_pixbuf(Option_val(arg1, GdkPixbuf_val, NULL));
 if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GtkPicture(obj));
@@ -52,6 +79,22 @@ gtk_picture_set_resource(GtkPicture_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_picture_set_pixbuf(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_picture_set_pixbuf(GtkPicture_val(self), Option_val(arg1, GdkPixbuf_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_picture_set_paintable(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_picture_set_paintable(GtkPicture_val(self), Option_val(arg1, GdkPaintable_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_picture_set_keep_aspect_ratio(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -65,6 +108,14 @@ CAMLexport CAMLprim value ml_gtk_picture_set_filename(value self, value arg1)
 CAMLparam2(self, arg1);
 
 gtk_picture_set_filename(GtkPicture_val(self), String_option_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_picture_set_file(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_picture_set_file(GtkPicture_val(self), Option_val(arg1, GFile_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -92,12 +143,30 @@ gtk_picture_set_alternative_text(GtkPicture_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_picture_get_paintable(value self)
+{
+CAMLparam1(self);
+
+GdkPaintable* result = gtk_picture_get_paintable(GtkPicture_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GdkPaintable));
+}
+
 CAMLexport CAMLprim value ml_gtk_picture_get_keep_aspect_ratio(value self)
 {
 CAMLparam1(self);
 
 gboolean result = gtk_picture_get_keep_aspect_ratio(GtkPicture_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_picture_get_file(value self)
+{
+CAMLparam1(self);
+
+GFile* result = gtk_picture_get_file(GtkPicture_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GFile));
 }
 
 CAMLexport CAMLprim value ml_gtk_picture_get_content_fit(value self)

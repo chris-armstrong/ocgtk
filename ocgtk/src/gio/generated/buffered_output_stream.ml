@@ -6,9 +6,6 @@ type t = [`buffered_output_stream | `filter_output_stream | `output_stream | `ob
 (** Create a new BufferedOutputStream *)
 external new_ : Output_stream.t -> t = "ml_g_buffered_output_stream_new"
 
-(** Create a new BufferedOutputStream *)
-external new_sized : Output_stream.t -> unit -> t = "ml_g_buffered_output_stream_new_sized"
-
 (* Methods *)
 (** Sets whether or not the @stream's buffer should automatically grow.
 If @auto_grow is true, then each write will just make the buffer

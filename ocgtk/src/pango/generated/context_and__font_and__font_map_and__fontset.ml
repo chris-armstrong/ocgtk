@@ -334,16 +334,6 @@ and Font
   output variables and returns. *)
   external get_metrics : t -> Language.t option -> Font_metrics.t = "ml_pango_font_get_metrics"
 
-  (** Returns the languages that are supported by @font.
-
-  If the font backend does not provide this information,
-  %NULL is returned. For the fontconfig backend, this
-  corresponds to the FC_LANG member of the FcPattern.
-
-  The returned array is only valid as long as the font
-  and its fontmap are valid. *)
-  external get_languages : t -> Language.t array option = "ml_pango_font_get_languages"
-
   (** Gets the font map for which the font was created.
 
   Note that the font maintains a *weak* reference to
@@ -389,16 +379,6 @@ end = struct
   If @font is %NULL, this function gracefully sets some sane values in the
   output variables and returns. *)
   external get_metrics : t -> Language.t option -> Font_metrics.t = "ml_pango_font_get_metrics"
-
-  (** Returns the languages that are supported by @font.
-
-  If the font backend does not provide this information,
-  %NULL is returned. For the fontconfig backend, this
-  corresponds to the FC_LANG member of the FcPattern.
-
-  The returned array is only valid as long as the font
-  and its fontmap are valid. *)
-  external get_languages : t -> Language.t array option = "ml_pango_font_get_languages"
 
   (** Gets the font map for which the font was created.
 

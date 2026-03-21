@@ -159,13 +159,15 @@ dune exec src/tools/gir_gen/gir_gen.exe -- generate \
 
 ## Output Files
 
-Generated files are written to `src/gtk/generated/`:
+Generated files are written to `src/<ns>/generated/` (e.g., `src/gtk/generated/`):
 
 - **C FFI stubs**: `ml_*_gen.c` - C bindings for classes, interfaces, enums
 - **Layer 1 (low-level)**: `<class_name>.ml/.mli` - External declarations (snake_case)
 - **Layer 2 (high-level)**: `g<Class>.ml/.mli` - OCaml wrapper classes (PascalCase)
-- **Enums**: `gtk_enums.ml/.mli`, `gdk_enums.ml/.mli`, etc. - Enumeration types
-- **Library module**: `Gtk.ml/.mli` - Top-level module with all exports
+- **Enums**: `<ns>_enums.ml/.mli` - Enumeration and bitfield types for this namespace
+- **Library module**: `<Ns>.ml/.mli` - Combined library module with all re-exports
+- **Wrapper module**: `ocgtk_<ns>.ml` - Library wrapper: `module <Ns> = <Ns>; include <Ns>` + core module aliases
+- **Declaration header**: `<ns>_decls.h` - C type converter declarations, includes dependency headers
 
 ## Common Issues
 
@@ -189,11 +191,11 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 - Polymorphic variant converters using `caml_hash_variant` (see `generate/enum_code.ml`)
 - Boxed record converters with NULL checking and deep copies (see `generate/c_stubs.ml`)
 - Property getters/setters via GValue marshalling
-- Forward declarations header for cross-module references
+- Per-library `<ns>_decls.h` headers with type converter declarations; dependent libraries include them
 - Proper CAMLparam/CAMLreturn macros throughout
 
 ### Layer 2: Low-Level OCaml Interfaces (`<class_name>.ml/.mli`)
-- Polymorphic variant type definitions: `type t = [`widget | ...] Gobject.obj` (see `generate/ml_interface.ml`)
+- Polymorphic variant type definitions: `type t = [`widget | ...] Gobject.obj` (see `generate/layer1/layer1_main.ml`)
 - External function declarations for constructors, methods, and properties
 - Hierarchy accessor methods (`as_widget`, `as_event_controller`, etc.) 
 - Combined modules for cyclic dependencies using Tarjan's SCC algorithm (see `dependency_analysis.ml`)
@@ -229,7 +231,7 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 - Interface extraction with methods, properties, c:symbol-prefix
 - Enumeration and bitfield extraction with values and C identifiers
 - Record extraction with boxed types, disguised/opaque flags, fields, methods
-- External namespace loading for Gdk-4.0, Pango-1.0, GdkPixbuf-2.0, Gsk-4.0, Graphene-1.0
+- Cross-namespace reference loading for all 9 namespaces via sexp reference files
 - Documentation string extraction
 - Constructor `throws` attribute detection
 
@@ -239,7 +241,7 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 - Callback types not extracted
 - Interface method implementations not tracked beyond interface names
 
-### Type Mapping (type_mappings.ml - 500+ lines)
+### Type Mapping (type_mappings.ml - 544 lines)
 **Working:**
 - ~150 hardcoded GTK/GLib type mappings to OCaml types
 - Nullable type handling with `option` wrapper
@@ -247,13 +249,15 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 - Boxed record converters (`Val_*` / `*_val` macros)
 - Widget type mappings (`GtkWidget*` → `Widget.t`)
 - EventController, CellRenderer, LayoutManager, Expression hierarchies
-- Pango, Gdk, and GdkPixbuf type support
-- GdkEvent special handling
+- Cross-namespace type resolution via reference files:
+  - Classes, interfaces, records: qualified as `Ocgtk_<ns>.<Ns>.Wrappers.<Module>.t`
+  - Enums/bitfields: qualified as `Ocgtk_<ns>.<Ns>.<enum_name>`
+  - `classify_type` for cross-namespace enum/bitfield detection in property analysis
 - Context-aware cyclic module type resolution:
   - Detects when generating within a cyclic module via `current_cycle_classes`
   - Uses unqualified names for same-cycle references
   - Uses fully qualified names for cross-module references
-  - Applies to classes, interfaces, and records
+- Modular lookup pipeline: `find_class_mapping`, `find_interface_mapping`, `find_record_mapping`, `find_enum_mapping`, `find_bitfield_mapping` chained via `or_else`
 
 **Limitations:**
 - No variadic argument support (filtered in `exclude_list.ml`)
@@ -267,21 +271,22 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 - Type converter macros for enums, records, nullable types
 - Property access via g_object_get_property/g_object_set_property with GValue
 - Record allocation/deallocation with copy semantics
-- Forward declarations for cross-module dependencies
+- Per-library `<ns>_decls.h` declaration headers with dependency includes
 
-**OCaml Interfaces (generate/ml_interface.ml - 434 lines):**
+**OCaml Interfaces (generate/layer1/ - 546 lines across 5 modules):**
 - Polymorphic variant types with inheritance chains
 - External declarations matching C stubs
 - Accessor methods for 5 hierarchies (Widget, EventController, CellRenderer, LayoutManager, Expression)
 - Combined module generation for cyclic SCCs
 - Handles nullable parameters/returns
 
-**High-Level Classes (generate/class_gen.ml - 600+ lines):**
+**High-Level Classes (generate/class_gen*.ml - 952 lines across 8 modules):**
 - Skeleton class generation with `GObj.widget_impl` inheritance
 - Property methods (get_property, set_property patterns)
 - Method wrappers with type coercion to parent types
 - Concrete class instantiation
 - Signal handler wiring via `connect` method
+- Cross-namespace type resolution via `class_gen_type_resolution.ml`
 
 **Signals (generate/signal_gen.ml - ~80 lines):**
 - Signal classes with `Gobject.Signal.connect_simple` connections
@@ -311,17 +316,19 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 - Parent chain traversal with depth limit (100 iterations)
 - Accessor method generation (`as_widget`, etc.)
 
+**Note:** Active plan to remove `hierarchy_info` abstraction entirely, replacing with parent chain on `Crt_Class` from cross-reference data. See `docs/plans/remove_hierarchy_info_abstraction.md`.
+
 ### Filtering and Exclusions (filtering.ml - 150+ lines, exclude_list.ml - 85 lines)
 **Working:**
 - Platform-specific type filtering (PrintJob, etc.)
 - Variadic function detection and filtering
-- Unknown type detection with skip logic
+- Unknown type detection with skip logic (cross-namespace types resolved via `cross_references`)
 - Duplicate property detection between class and interfaces
 - Virtual method de-duplication
 
 **What Gets Filtered:**
-- Methods with Out/InOut parameters (see `class_gen.ml` filtering)
-- Methods with unknown types in parameters/returns
+- Methods with Out/InOut parameters (see `filtering.ml`)
+- Methods with unknown types in parameters/returns (cross-namespace types are NOT filtered — they resolve via references)
 - Signals with parameters or non-void returns
 - Variadic functions (hardcoded list in `exclude_list.ml`)
 - Platform-specific classes (Windows/macOS-only widgets)
@@ -418,27 +425,19 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 
 **Impact:** Users cannot access struct fields without writing manual C stubs.
 
-### 9. Dynamic Hierarchy Detection - Hardcoded Only
+### 9. Dynamic Hierarchy Detection - Hardcoded Only (Active Removal Plan)
 **Issue:** 5 hierarchies hardcoded in `hierarchy_detection.ml`; no automatic discovery.
 
-**Missing:**
-- Automatic hierarchy classification from GIR parent chains
-- Root detection algorithm
-- Accessor method generation for arbitrary hierarchies
-- Multiple inheritance path handling
+**Status:** Active work to remove the hierarchy_info abstraction entirely. `Crt_Class` now stores `parent : string option` in cross-reference sexp files. See `docs/plans/remove_hierarchy_info_abstraction.md` for the 7-step removal plan (Step 1 done, Steps 2-7 pending).
 
-**Impact:** New widget hierarchies require manual code changes to gir_gen.
+**Impact:** New widget hierarchies require manual code changes to gir_gen until the removal is complete.
 
-### 10. Type Coverage - Static Mapping List
-**Issue:** ~150 hardcoded type mappings in `type_mappings.ml`; no auto-discovery.
+### 10. Type Coverage - Mostly Resolved via Cross-Namespace References
+**Issue:** ~150 hardcoded type mappings in `type_mappings.ml` for primitive/GLib types.
 
-**Missing:**
-- Automatic type mapping generation from GIR type system
-- Gdk/Pango/GdkPixbuf type auto-mapping beyond enums
-- Custom type registration mechanism
-- Type alias resolution
+**Status:** Cross-namespace classes, interfaces, records, enums, and bitfields are now automatically resolved via the reference file system (`cross_references`). The hardcoded mappings are only needed for GLib primitives (`gint`, `gboolean`, `gchar*`, etc.) and special types. Adding new GIR namespaces with classes/records/enums/bitfields requires no changes to `type_mappings.ml`.
 
-**Impact:** Adding new types requires manual editing of `type_mappings.ml`. Scaling challenge for full GTK4 coverage.
+**Remaining gap:** Callback types, union types, and some GLib collection types still have no mapping.
 
 ### 11. Property Observer Generation - Not Implemented
 **Issue:** No property change notification wrappers (marked TODO in `test_gir_gen.ml`).
@@ -533,11 +532,12 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 | Low-Level OCaml Bindings | ✓ Working | 85% (missing some type conversions) |
 | High-Level Class Wrappers | ⚠ Basic | 60% (no specializations) |
 | Signal Handling | ⚠ Minimal | 30% (parameterless only) |
-| Enum/Bitfield Support | ✓ Complete | 95% |
+| Enum/Bitfield Support | ✓ Complete | 95% (same + cross-namespace) |
+| Cross-Namespace Types | ✓ Working | 90% (classes, records, enums, bitfields) |
 | Factory Functions | ✗ Missing | 0% |
 | Container Helpers | ✗ Missing | 0% |
-| Hierarchy Detection | ⚠ Hardcoded | 50% (5 hierarchies only) |
-| Type Coverage | ⚠ Partial | 60% (~150 types) |
+| Hierarchy Detection | ⚠ Hardcoded | 50% (5 hierarchies, removal planned) |
+| Multi-Library Generation | ✓ Complete | 100% (9 namespaces via generate-bindings.sh) |
 | Dependency Handling | ✓ Excellent | 100% |
 | Documentation | ✗ Missing | 0% |
 | Test Coverage | ⚠ Basic | 40% (unit tests only) |
@@ -570,49 +570,50 @@ The original design plan (formerly lines 74-676 of this document) outlined a com
 ## References for Understanding Implementation
 
 ### Parser and Type System
-- `parse/gir_parser.ml` (1090 lines) - GIR XML parsing, extracts classes/interfaces/enums/records/signals
-- `types.ml` (204 lines) - AST type definitions for GIR elements, generation_context with:
+- `parse/gir_parser.ml` - GIR XML parsing, extracts classes/interfaces/enums/records/signals
+- `types.ml` - AST type definitions for GIR elements, `generation_context` with:
+  - `cross_references : generation_context_namespace_cross_references StringMap.t` - Cross-namespace type data
   - `module_groups: (string, string) Hashtbl.t` - Maps class names to combined module names for cyclic groups
   - `current_cycle_classes: string list` - Tracks which classes are in the currently-generating cyclic module
-- `type_mappings.ml` (500+ lines) - GTK/GLib to OCaml type mappings, nullable handling, record/class lookups, context-aware cyclic module resolution
-- `hierarchy_detection.ml` (108 lines) - 5 hardcoded widget hierarchies, parent chain traversal
-- `dependency_analysis.ml` (225+ lines) - Tarjan's SCC algorithm for cyclic dependency resolution, module group management:
-  - `create_module_groups_table()` - Builds class-to-module mapping
-  - `module_name_of_group()` - Generates proper snake_case-then-capitalized module names
-  - `create_module_name_for_cycle()` - Combines multiple class names with `_and_` separator
+- `type_mappings.ml` (544 lines) - Type mappings, cross-namespace resolution, `classify_type`, `find_type_mapping_for_gir_type`
+- `utils.ml` - String normalization, snake_case conversion, `library_wrapper_name`, `external_namespace_to_module_name`
+- `hierarchy_detection.ml` (108 lines) - 5 hardcoded widget hierarchies (removal planned)
+- `dependency_analysis.ml` (225+ lines) - Tarjan's SCC algorithm for cyclic dependency resolution
 
 ### Code Generators
-- `generate/c_stubs.ml` (943 lines) - C FFI stubs, type converters, property GValue access, memory management
-- `generate/ml_interface.ml` (434 lines) - OCaml types, external declarations, accessor methods, combined modules
-- `generate/class_gen.ml` (600+ lines) - Skeleton/concrete classes, property/method wrappers, inheritance
-- `generate/signal_gen.ml` (~80 lines) - Signal handler classes (parameterless void signals only)
-- `generate/enum_code.ml` (250+ lines) - Enum/bitfield types and C converters for 5 namespaces
-- `generate/dune_file.ml` (~43 lines) - Build configuration generation
+- `generate/c_stubs.ml` - C FFI stubs, type converters, property GValue access, `<ns>_decls.h` headers
+- `generate/layer1/` (5 modules, 546 lines) - Layer 1 OCaml interfaces: helpers, constructors, methods, properties, main orchestration
+- `generate/ml_interface.ml` (10 lines) - Thin re-export wrapper for layer1/
+- `generate/class_gen*.ml` (8 modules, 952 lines) - Layer 2 high-level wrappers: body, method, property, type resolution, helpers, conflict detection, converter
+- `generate/signal_gen.ml` - Signal handler classes (parameterless void signals only)
+- `generate/enum_code.ml` - Enum/bitfield types and C converters for all namespaces
+- `generate/dune_file.ml` - Build configuration generation with cross-namespace library dependencies
 
 ### Filtering and Utilities
-- `filtering.ml` (150+ lines) - Method/property filtering, unknown type detection, duplicate removal
-- `exclude_list.ml` (85 lines) - Platform-specific types, variadic functions, skip rules
-- `utils.ml` - String normalization, snake_case conversion, module naming
+- `filtering.ml` - Method/property filtering, unknown type detection, duplicate removal (no cross-namespace filtering)
+- `exclude_list.ml` - Platform-specific types, variadic functions, skip rules
 
-### Entry Point and Testing
-- `main.ml` (628 lines) - Generation pipeline orchestration, external namespace loading
-- `test/test_gir_gen.ml` (~200+ lines) - Unit tests for parsing and generation
+### Entry Point
+- `gir_gen.ml` (1164 lines) - CLI entry point, generation pipeline orchestration, reference file loading, binding generation
+
+### Build Automation
+- `scripts/generate-bindings.sh` - Two-phase generation: reference files then bindings for all 9 namespaces
 
 ### Example Generated Code (for reference patterns)
-- `ocgtk/src/button.ml/.mli` - Low-level FFI example with polymorphic variant types
-- `ocgtk/src/gButton.ml/.mli` - High-level class wrapper example (if manually created)
-- `ocgtk/src/gtk_enums.ml/.mli` - Enum/bitfield type examples
-- `ocgtk/src/application_and__window_and__window_group.ml/.mli` - Combined cyclic module example showing:
-  - `module rec Application : sig ... end and Window : sig ... end and Window_group : sig ... end` structure
-  - Internal references using simple names (e.g., `Window.t`)
-  - External files using fully qualified names (e.g., `Application_and__window_and__window_group.Window.t`)
+- `src/gtk/generated/button.ml/.mli` - Low-level FFI with polymorphic variant types
+- `src/gtk/generated/gButton.ml/.mli` - High-level class wrapper
+- `src/gtk/generated/gtk_enums.ml/.mli` - Enum/bitfield type examples
+- `src/gtk/generated/application_and__window_and__window_group.ml/.mli` - Combined cyclic module
+- `src/pangocairo/generated/font.ml` - Cross-namespace type example (`Ocgtk_cairo.Cairo.Wrappers.Scaled_font.t`)
+- `src/gtk/generated/ocgtk_gtk.ml` - Library wrapper module (`module Gtk = Gtk; include Gtk; module GMain = GMain`)
 
 ### Runtime Dependencies
-- `ocgtk/src/gObj.ml` - Base `widget_impl` class for high-level wrappers
-- `ocgtk/src/gobject.ml` - GObject type system, signal connection infrastructure
-- `ocgtk/src/widget.ml/.mli` - Core Widget module
+- `src/common/gObj.ml` - Base `widget_impl` class for high-level wrappers
+- `src/common/gobject.ml` - GObject type system, signal connection infrastructure
 
+### External References
 - **GObject Introspection Spec**: https://gi.readthedocs.io/
 - **GTK4 API Reference**: https://docs.gtk.org/gtk4/
 - **GIR Format Annotations**: https://gi.readthedocs.io/en/latest/annotations/giannotations.html
 - **lablgtk3 Reference** - Polymorphic variant type patterns for GTK3 bindings
+- **Cross-Namespace Plan**: `architecture/todo/CROSS_NAMESPACE_PLAN.md`

@@ -1,7 +1,13 @@
-(* High-level class for RoundedClipNode *)
-class rounded_clip_node (obj : Rounded_clip_node.t) = object (self)
+class type rounded_clip_node_t = object
+    method get_child : unit -> GRender_node.render_node_t
+    method get_clip : unit -> Rounded_rect.t
+    method as_rounded_clip_node : Rounded_clip_node.t
+end
 
-  method get_child : unit -> GRender_node.render_node =
+(* High-level class for RoundedClipNode *)
+class rounded_clip_node (obj : Rounded_clip_node.t) : rounded_clip_node_t = object (self)
+
+  method get_child : unit -> GRender_node.render_node_t =
     fun () ->
       new  GRender_node.render_node(Rounded_clip_node.get_child obj)
 

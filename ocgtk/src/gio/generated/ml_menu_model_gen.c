@@ -18,8 +18,8 @@
 #include <gio/gio.h>
 #include <gio/gfiledescriptorbased.h>
 #include <gio/gdesktopappinfo.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gio_decls.h"
 
 
 CAMLexport CAMLprim value ml_g_menu_model_iterate_item_links(value self, value arg1)

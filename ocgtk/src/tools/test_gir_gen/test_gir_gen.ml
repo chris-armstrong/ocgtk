@@ -9,7 +9,10 @@ let () =
     [
       ("Core", Core.tests);
       ("Parser", Parser.tests);
+      ("C Validation", C_validation_tests.tests);
       ("C Stubs", C_stubs_tests.tests);
+      ("Header Naming", Header_naming_tests.tests);
+      ("Header Generation", Header_generation_tests.tests);
       ("Nullable", Nullable_tests.tests);
       ("Error Handling", Error_handling_tests.tests);
       ("Out Params", Out_params_tests.tests);
@@ -26,4 +29,12 @@ let () =
       ("Edge Cases", Edge_cases.tests);
       ("Layer2 Method Wrappers", Method_wrapper_tests.tests);
       ("Cross-Namespace", Cross_namespace_tests.tests);
+      ("No External Enum Decls (Stage 2)", No_external_enum_decls_tests.tests);
+      ( "No External Bitfield Decls (Stage 3)",
+        No_external_bitfield_decls_tests.tests );
+      ("Dependency Includes (Stage 4)", Dependency_includes_tests.tests);
+      ("Dependency Exclusion (Stage 4)", Dependency_exclusion_tests.tests);
+      ("C Stub Header Include (Stage 5)", C_stub_include_tests.tests);
+      ("Integration Tests (Stage 8)", Integration_tests.tests);
+      ("Compilation Tests (Stage 8)", Compilation_tests.tests);
     ]

@@ -13,8 +13,8 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gtk_video_new(value unit)
@@ -22,6 +22,15 @@ CAMLexport CAMLprim value ml_gtk_video_new(value unit)
 CAMLparam1(unit);
 
 GtkVideo *obj = gtk_video_new();
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkVideo(obj));
+}
+CAMLexport CAMLprim value ml_gtk_video_new_for_file(value arg1)
+{
+CAMLparam1(arg1);
+
+GtkVideo *obj = gtk_video_new_for_file(Option_val(arg1, GFile_val, NULL));
 if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GtkVideo(obj));
@@ -93,6 +102,14 @@ gtk_video_set_filename(GtkVideo_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_video_set_file(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_video_set_file(GtkVideo_val(self), Option_val(arg1, GFile_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_video_set_autoplay(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -124,6 +141,15 @@ CAMLparam1(self);
 
 GtkGraphicsOffloadEnabled result = gtk_video_get_graphics_offload(GtkVideo_val(self));
 CAMLreturn(Val_GtkGraphicsOffloadEnabled(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_video_get_file(value self)
+{
+CAMLparam1(self);
+
+GFile* result = gtk_video_get_file(GtkVideo_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GFile));
 }
 
 CAMLexport CAMLprim value ml_gtk_video_get_autoplay(value self)

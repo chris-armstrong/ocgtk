@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <gsk/gsk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gsk_decls.h"
 
 /* Copy function for GskPathPoint (value-like record with copy method) */
 value copy_GskPathPoint(const GskPathPoint *ptr)
@@ -24,6 +24,15 @@ value copy_GskPathPoint(const GskPathPoint *ptr)
 }
 
 
+CAMLexport CAMLprim value ml_gsk_path_point_get_tangent(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+graphene_vec2_t out3;
+
+gsk_path_point_get_tangent(GskPathPoint_val(self), GskPath_val(arg1), GskPathDirection_val(arg2), &out3);
+CAMLreturn(Val_graphene_vec2_t(&out3));
+}
+
 CAMLexport CAMLprim value ml_gsk_path_point_get_rotation(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -32,12 +41,34 @@ float result = gsk_path_point_get_rotation(GskPathPoint_val(self), GskPath_val(a
 CAMLreturn(caml_copy_double(result));
 }
 
+CAMLexport CAMLprim value ml_gsk_path_point_get_position(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+graphene_point_t out2;
+
+gsk_path_point_get_position(GskPathPoint_val(self), GskPath_val(arg1), &out2);
+CAMLreturn(Val_graphene_point_t(&out2));
+}
+
 CAMLexport CAMLprim value ml_gsk_path_point_get_distance(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 float result = gsk_path_point_get_distance(GskPathPoint_val(self), GskPathMeasure_val(arg1));
 CAMLreturn(caml_copy_double(result));
+}
+
+CAMLexport CAMLprim value ml_gsk_path_point_get_curvature(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+graphene_point_t out3;
+
+float result = gsk_path_point_get_curvature(GskPathPoint_val(self), GskPath_val(arg1), GskPathDirection_val(arg2), &out3);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, caml_copy_double(result));
+    Store_field(ret, 1, Val_graphene_point_t(&out3));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gsk_path_point_free(value self)

@@ -10,7 +10,6 @@
     - GTK4 patterns are different from GTK3 *)
 
 open Alcotest
-open Ocgtk_gtk
 
 (** {2 API Pattern Compilation Tests} *)
 
@@ -19,7 +18,7 @@ let test_keyboard_shortcut_pattern_compiles () =
   let _handler :
       keyval:int ->
       keycode:int ->
-      state:Gdk_enums.modifiertype_flag list ->
+      state:[> `CONTROL_MASK | `SHIFT_MASK | `ALT_MASK ] list ->
       bool =
    fun ~keyval ~keycode:_ ~state ->
     (* Pattern: Ctrl+S shortcut *)
@@ -47,7 +46,7 @@ let test_modifier_checking_pattern_compiles () =
   let _handler :
       keyval:int ->
       keycode:int ->
-      state:Gdk_enums.modifiertype_flag list ->
+      state:[> `CONTROL_MASK | `SHIFT_MASK | `ALT_MASK ] list ->
       bool =
    fun ~keyval:_ ~keycode:_ ~state ->
     let _has_ctrl = List.mem `CONTROL_MASK state in

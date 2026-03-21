@@ -1,5 +1,4 @@
-class matrix : Matrix.t ->
-  object
+class type matrix_t = object
     method concat : Matrix.t -> unit
     method copy : unit -> Matrix.t option
     method free : unit -> unit
@@ -9,5 +8,7 @@ class matrix : Matrix.t ->
     method scale : float -> float -> unit
     method translate : float -> float -> unit
     method as_matrix : Matrix.t
-  end
+end
+
+class matrix : Matrix.t -> matrix_t
 

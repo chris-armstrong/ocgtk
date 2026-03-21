@@ -1,7 +1,6 @@
-class closure_expression : Closure_expression.t ->
-  object
-    inherit GExpression.expression
-  method as_expression : Expression.t
+class type closure_expression_t = object
     method as_closure_expression : Closure_expression.t
-  end
+end
+
+class closure_expression : Closure_expression.t -> closure_expression_t
 

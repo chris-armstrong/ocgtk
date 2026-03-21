@@ -1,5 +1,4 @@
-class font_description : Font_description.t ->
-  object
+class type font_description_t = object
     method better_match : Font_description.t option -> Font_description.t -> bool
     method copy : unit -> Font_description.t option
     method copy_static : unit -> Font_description.t option
@@ -33,5 +32,7 @@ class font_description : Font_description.t ->
     method to_string : unit -> string
     method unset_fields : Pango_enums.fontmask -> unit
     method as_font_description : Font_description.t
-  end
+end
+
+class font_description : Font_description.t -> font_description_t
 

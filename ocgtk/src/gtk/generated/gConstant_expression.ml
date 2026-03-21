@@ -1,8 +1,10 @@
-(* High-level class for ConstantExpression *)
-class constant_expression (obj : Constant_expression.t) = object (self)
-  inherit GExpression.expression (Constant_expression.as_expression obj)
+class type constant_expression_t = object
+    method as_constant_expression : Constant_expression.t
+end
 
-  method as_expression = (Constant_expression.as_expression obj)
+(* High-level class for ConstantExpression *)
+class constant_expression (obj : Constant_expression.t) : constant_expression_t = object (self)
+
     method as_constant_expression = obj
 end
 

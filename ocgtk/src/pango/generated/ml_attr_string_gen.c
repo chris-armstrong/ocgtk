@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <pango/pango.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "pango_decls.h"
 
 /* Conversion functions for PangoAttrString (opaque record with hidden fields) */
 PangoAttrString *PangoAttrString_val(value v) {

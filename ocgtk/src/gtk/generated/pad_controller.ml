@@ -1,12 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Event controller: PadController *)
+(* PadController: PadController *)
 
 type t = [`pad_controller | `event_controller | `object_] Gobject.obj
 
-let as_event_controller (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t = Obj.magic obj
-
 (** Create a new PadController *)
-external new_ : unit -> unit -> t = "ml_gtk_pad_controller_new"
+external new_ : Ocgtk_gio.Gio.Wrappers.Action_group.t -> Ocgtk_gdk.Gdk.Wrappers.Device.t option -> t = "ml_gtk_pad_controller_new"
 
 (* Methods *)
 (** A convenience function to add a group of action entries on
@@ -27,4 +25,10 @@ feedback. *)
 external set_action : t -> Gtk_enums.padactiontype -> int -> int -> string -> string -> unit = "ml_gtk_pad_controller_set_action_bytecode" "ml_gtk_pad_controller_set_action_native"
 
 (* Properties *)
+
+(** Get property: action-group *)
+external get_action_group : t -> Ocgtk_gio.Gio.Wrappers.Action_group.t = "ml_gtk_pad_controller_get_action_group"
+
+(** Get property: pad *)
+external get_pad : t -> Ocgtk_gdk.Gdk.Wrappers.Device.t = "ml_gtk_pad_controller_get_pad"
 

@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <pango/pango.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "pango_decls.h"
 
 
 CAMLexport CAMLprim value ml_pango_font_get_metrics(value self, value arg1)
@@ -22,21 +22,6 @@ CAMLparam2(self, arg1);
 
 PangoFontMetrics* result = pango_font_get_metrics(PangoFont_val(self), Option_val(arg1, PangoLanguage_val, NULL));
 CAMLreturn(Val_PangoFontMetrics(result));
-}
-
-CAMLexport CAMLprim value ml_pango_font_get_languages(value self)
-{
-CAMLparam1(self);
-
-PangoLanguage** result = pango_font_get_languages(PangoFont_val(self));
-    int result_length = 0;
-    while (result[result_length] != NULL) result_length++;
-    CAMLlocal1(ml_result);
-    ml_result = caml_alloc(result_length, 0);
-    for (int i = 0; i < result_length; i++) {
-      Store_field(ml_result, i, Val_PangoLanguage(result[i]));
-    }
-CAMLreturn(ml_result);
 }
 
 CAMLexport CAMLprim value ml_pango_font_get_font_map(value self)

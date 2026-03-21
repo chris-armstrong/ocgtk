@@ -13,9 +13,17 @@
 #include "converters.h"
 
 #include <gtk/gtk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gtk_decls.h"
 
+
+CAMLexport CAMLprim value ml_gtk_tooltip_set_tip_area(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_tooltip_set_tip_area(GtkTooltip_val(self), GdkRectangle_val(arg1));
+CAMLreturn(Val_unit);
+}
 
 CAMLexport CAMLprim value ml_gtk_tooltip_set_text(value self, value arg1)
 {
@@ -38,6 +46,22 @@ CAMLexport CAMLprim value ml_gtk_tooltip_set_icon_from_icon_name(value self, val
 CAMLparam2(self, arg1);
 
 gtk_tooltip_set_icon_from_icon_name(GtkTooltip_val(self), String_option_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_tooltip_set_icon_from_gicon(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_tooltip_set_icon_from_gicon(GtkTooltip_val(self), Option_val(arg1, GIcon_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_tooltip_set_icon(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_tooltip_set_icon(GtkTooltip_val(self), Option_val(arg1, GdkPaintable_val, NULL));
 CAMLreturn(Val_unit);
 }
 

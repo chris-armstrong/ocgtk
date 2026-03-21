@@ -12,8 +12,8 @@
 #include "wrappers.h"
 
 #include <gsk/gsk.h>
-/* Include common type conversions and forward declarations */
-#include "generated_forward_decls.h"
+/* Include library-specific type conversions and forward declarations */
+#include "gsk_decls.h"
 
 
 CAMLexport CAMLprim value ml_gsk_radial_gradient_node_get_vradius(value self)
@@ -46,4 +46,12 @@ CAMLparam1(self);
 
 float result = gsk_radial_gradient_node_get_end(GskRadialGradientNode_val(self));
 CAMLreturn(caml_copy_double(result));
+}
+
+CAMLexport CAMLprim value ml_gsk_radial_gradient_node_get_center(value self)
+{
+CAMLparam1(self);
+
+const graphene_point_t* result = gsk_radial_gradient_node_get_center(GskRadialGradientNode_val(self));
+CAMLreturn(Val_graphene_point_t(result));
 }

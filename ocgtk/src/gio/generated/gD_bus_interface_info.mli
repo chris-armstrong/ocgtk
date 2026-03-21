@@ -1,5 +1,4 @@
-class d_bus_interface_info : D_bus_interface_info.t ->
-  object
+class type d_bus_interface_info_t = object
     method cache_build : unit -> unit
     method cache_release : unit -> unit
     method lookup_method : string -> D_bus_method_info.t option
@@ -8,5 +7,7 @@ class d_bus_interface_info : D_bus_interface_info.t ->
     method ref : unit -> D_bus_interface_info.t
     method unref : unit -> unit
     method as_d_bus_interface_info : D_bus_interface_info.t
-  end
+end
+
+class d_bus_interface_info : D_bus_interface_info.t -> d_bus_interface_info_t
 

@@ -1,5 +1,4 @@
-class action_group : Action_group.t ->
-  object
+class type action_group_t = object
     inherit Gaction_group_signals.action_group_signals
     method action_added : string -> unit
     method action_enabled_changed : string -> bool -> unit
@@ -8,5 +7,7 @@ class action_group : Action_group.t ->
     method has_action : string -> bool
     method list_actions : unit -> string array
     method as_action_group : Action_group.t
-  end
+end
+
+class action_group : Action_group.t -> action_group_t
 

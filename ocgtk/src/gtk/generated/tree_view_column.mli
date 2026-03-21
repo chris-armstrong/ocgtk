@@ -9,9 +9,6 @@ external new_ : unit -> t = "ml_gtk_tree_view_column_new"
 (** Create a new TreeViewColumn *)
 external new_with_area : Cell_area_and__cell_area_context.Cell_area.t -> t = "ml_gtk_tree_view_column_new_with_area"
 
-(** Create a new TreeViewColumn *)
-external new_with_attributes : string -> Cell_renderer.t -> unit -> t = "ml_gtk_tree_view_column_new_with_attributes"
-
 (* Methods *)
 (** Sets the widget in the header to be @widget.  If widget is %NULL, then the
 header button is set with a `GtkLabel` set to the title of @tree_column. *)

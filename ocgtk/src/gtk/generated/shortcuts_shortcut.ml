@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: ShortcutsShortcut *)
+(* ShortcutsShortcut: ShortcutsShortcut *)
 
 type t = [`shortcuts_shortcut | `widget | `initially_unowned] Gobject.obj
-
-let as_widget (obj : t) : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t = Obj.magic obj
 
 (* Methods *)
 (* Properties *)
@@ -31,6 +29,12 @@ external get_direction : t -> Gtk_enums.textdirection = "ml_gtk_shortcuts_shortc
 
 (** Set property: direction *)
 external set_direction : t -> Gtk_enums.textdirection -> unit = "ml_gtk_shortcuts_shortcut_set_direction"
+
+(** Get property: icon *)
+external get_icon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t = "ml_gtk_shortcuts_shortcut_get_icon"
+
+(** Set property: icon *)
+external set_icon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t -> unit = "ml_gtk_shortcuts_shortcut_set_icon"
 
 (** Get property: icon-set *)
 external get_icon_set : t -> bool = "ml_gtk_shortcuts_shortcut_get_icon_set"

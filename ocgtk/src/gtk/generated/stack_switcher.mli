@@ -1,9 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Widget: StackSwitcher *)
+(* StackSwitcher: StackSwitcher *)
 
 type t = [`stack_switcher | `widget | `initially_unowned] Gobject.obj
-
-val as_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t
 
 (** Create a new StackSwitcher *)
 external new_ : unit -> t = "ml_gtk_stack_switcher_new"

@@ -7,18 +7,9 @@ type t = [`pixbuf | `object_] Gobject.obj
 external new_ : Gdkpixbuf_enums.colorspace -> bool -> int -> int -> int -> t = "ml_gdk_pixbuf_new"
 
 (** Create a new Pixbuf *)
-external new_from_bytes : unit -> Gdkpixbuf_enums.colorspace -> bool -> int -> int -> int -> int -> t = "ml_gdk_pixbuf_new_from_bytes_bytecode" "ml_gdk_pixbuf_new_from_bytes_native"
-
-(** Create a new Pixbuf *)
-external new_from_data : unit -> Gdkpixbuf_enums.colorspace -> bool -> int -> int -> int -> int -> unit -> unit -> t = "ml_gdk_pixbuf_new_from_data_bytecode" "ml_gdk_pixbuf_new_from_data_native"
-
-(** Create a new Pixbuf *)
 external new_from_xpm_data : string array -> t = "ml_gdk_pixbuf_new_from_xpm_data"
 
 (* Methods *)
-(** Removes a reference from a pixbuf. *)
-external unref : t -> unit = "ml_gdk_pixbuf_unref"
-
 (** Attaches a key/value pair as an option to a `GdkPixbuf`.
 
 If `key` already exists in the list of options attached to the `pixbuf`,
@@ -69,6 +60,14 @@ If @error is set, `FALSE` will be returned.
 See [method@GdkPixbuf.Pixbuf.save] for more details. *)
 external savev : t -> string -> string -> string array option -> string array option -> (bool, GError.t) result = "ml_gdk_pixbuf_savev"
 
+(** Saves `pixbuf` to an output stream.
+
+Supported file formats are currently "jpeg", "tiff", "png", "ico" or
+"bmp".
+
+See [method@GdkPixbuf.Pixbuf.save_to_stream] for more details. *)
+external save_to_streamv : t -> Ocgtk_gio.Gio.Wrappers.Output_stream.t -> string -> string array option -> string array option -> Ocgtk_gio.Gio.Wrappers.Cancellable.t option -> (bool, GError.t) result = "ml_gdk_pixbuf_save_to_streamv_bytecode" "ml_gdk_pixbuf_save_to_streamv_native"
+
 (** Modifies saturation and optionally pixelates `src`, placing the result in
 `dest`.
 
@@ -93,9 +92,6 @@ external rotate_simple : t -> Gdkpixbuf_enums.pixbufrotation -> t option = "ml_g
 
 (** Removes the key/value pair option attached to a `GdkPixbuf`. *)
 external remove_option : t -> string -> bool = "ml_gdk_pixbuf_remove_option"
-
-(** Adds a reference to a pixbuf. *)
-external ref : t -> t = "ml_gdk_pixbuf_ref"
 
 (** Creates a new pixbuf which represents a sub-region of `src_pixbuf`.
 
