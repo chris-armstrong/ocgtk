@@ -31,10 +31,10 @@ expander#set_child button  (* Works automatically - no :> needed! *)
    - Accessor methods generated for hierarchy roots: `val as_widget : t -> Widget.t`
 
 3. **Layer 2 Automatic Coercion** ([class_gen.ml](src/tools/gir_gen/generate/class_gen.ml))
-   - Methods accepting hierarchy types use `#` syntax: `method set_child : 'a. #GWidget.widget_skel option -> unit`
-   - Explicit polymorphism (`'a.`) added for methods with hierarchy parameters
-   - Automatic coercion in implementations: `child#as_widget : Widget.t`
-   - Optional parameter handling: `Option.map (fun c -> (c#as_widget : Widget.t)) child_opt`
+   - Methods use plain class type references: `method set_child : widget_t option -> unit`
+   - No `#` prefix (invalid in class type definitions — introduces unbound type variable)
+   - Internal coercion in implementations: `child#as_widget`
+   - Optional parameter handling: `Option.map (fun c -> c#as_widget) child_opt`
 
 ### ✅ All Original Issues Resolved
 
@@ -274,16 +274,16 @@ let hierarchy_definitions = [
     hierarchy = WidgetHierarchy;
     gir_root = "Widget";
     layer2_module = "GWidget";
-    class_type_name = "widget_skel";
+    class_type_name = "widget_t";
     accessor_method = "as_widget";
     layer1_base_type = "Widget.t";
   };
   {
     hierarchy = EventControllerHierarchy;
     gir_root = "EventController";
-    layer2_module = "GController";
-    class_type_name = "controller_skel";
-    accessor_method = "as_controller";
+    layer2_module = "GEvent_controller";
+    class_type_name = "event_controller_t";
+    accessor_method = "as_event_controller";
     layer1_base_type = "EventController.t";
   };
   (* ... 3 more hierarchies ... *)
@@ -302,7 +302,7 @@ let hierarchy_definitions = [
 
 ### Phase 2: Layer 2 Automatic Coercion ✅
 - [x] Detect hierarchy parameters in methods
-- [x] Generate `#GWidget.widget_skel` syntax in signatures
+- [x] Generate plain class type references in signatures (no `#` — invalid in class type defs)
 - [x] Add explicit polymorphism `'a.` for hierarchy parameters
 - [x] Generate automatic coercion in implementations
 - [x] Handle optional hierarchy parameters

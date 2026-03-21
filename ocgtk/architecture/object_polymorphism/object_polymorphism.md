@@ -39,7 +39,7 @@ box#append (GEntry.entry ())
 let button = new GButton.button (Button.new_with_label "OK") in
 
 (* ❌ No explicit coercion *)
-box#append (button :> GWidget.widget_skel);
+box#append (button :> widget_t);
 
 (* ❌ No accessing underlying objects *)
 Widget.set_label (button#as_widget) "New Label"
@@ -141,12 +141,12 @@ Every class gets factory functions instead of exposing Layer 1 constructors:
 
 ```ocaml
 (* In gButton.mli *)
-class type button_skel = object
-  inherit widget_skel
+class type button_t = object
   (* ... button methods ... *)
+  method as_button : Button.t
 end
 
-class button : Button.t -> button_skel
+class button : Button.t -> button_t
 
 (* Factory functions *)
 val button :
@@ -204,11 +204,11 @@ let button_from_icon_name icon_name =
 
 | Hierarchy | Root Class | Layer 2 Module | Class Type | Status |
 |-----------|------------|----------------|------------|--------|
-| Widget | `Widget` | `GWidget` | `widget_skel` | ✅ Implemented |
-| EventController | `EventController` | `GController` | `controller_skel` | 🚧 Planned |
-| CellRenderer | `CellRenderer` | `GCell` | `cell_renderer_skel` | 🚧 Planned |
-| LayoutManager | `LayoutManager` | `GLayout` | `layout_manager_skel` | 🚧 Planned |
-| Expression | `Expression` | `GExpression` | `expression_skel` | 🚧 Planned |
+| Widget | `Widget` | `GWidget` | `widget_t` | ✅ Implemented |
+| EventController | `EventController` | `GEvent_controller` | `event_controller_t` | ✅ Generated |
+| CellRenderer | `CellRenderer` | `GCell_renderer` | `cell_renderer_t` | ✅ Generated |
+| LayoutManager | `LayoutManager` | `GLayout_manager` | `layout_manager_t` | ✅ Generated |
+| Expression | `Expression` | `GExpression` | `expression_t` | ✅ Generated |
 
 ### Hierarchy Detection
 
