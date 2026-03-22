@@ -9,7 +9,7 @@ let _ =
 
   (* Create main window *)
   let window_obj = Wrappers.Window.new_ () in
-  let window = new window window_obj in
+  let window = new Window.window window_obj in
   window#set_title (Some "Counter App");
   window#set_default_size 300 100;
 
@@ -17,8 +17,8 @@ let _ =
 
   (* Create vertical box for layout *)
   let vbox_obj = Wrappers.Box.new_ `VERTICAL 10 in
-  let vbox = new box vbox_obj in
-  window#set_child (Some (vbox :> widget));
+  let vbox = new Box.box vbox_obj in
+  window#set_child (Some (vbox :> Widget.widget_t));
 
   (* Counter state *)
   let count = ref 0 in
@@ -27,12 +27,12 @@ let _ =
   let label_obj =
     Wrappers.Label.new_ (Some (Printf.sprintf "Count: %d" !count))
   in
-  vbox#append (new widget (Obj.magic label_obj));
+  vbox#append (new Widget.widget (Obj.magic label_obj));
 
   (* Create button to increment *)
   let button_obj = Wrappers.Button.new_with_label "Click Me!" in
-  let button = new button button_obj in
-  vbox#append (button :> widget);
+  let button = new Button.button button_obj in
+  vbox#append (button :> Widget.widget_t);
   ignore
     (button#on_clicked ~callback:(fun () ->
          count := !count + 1;
@@ -40,8 +40,8 @@ let _ =
 
   (* Create reset button *)
   let reset_obj = Wrappers.Button.new_with_label "Reset" in
-  let reset_btn = new button reset_obj in
-  vbox#append (reset_btn :> widget);
+  let reset_btn = new Button.button reset_obj in
+  vbox#append (reset_btn :> Widget.widget_t);
   ignore
     (reset_btn#on_clicked ~callback:(fun () ->
          count := 0;

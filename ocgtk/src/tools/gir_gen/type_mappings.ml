@@ -45,14 +45,14 @@ let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
       | Crt_Class _ ->
           Some
             {
-              class_module = external_namespace;
+              class_module = external_namespace ^ "." ^ Utils.module_name_of_class cr.cr_name;
               class_type = Utils.ocaml_class_name cr.cr_name ^ "_t";
               class_layer1_accessor = "as_" ^ Utils.ocaml_class_name cr.cr_name;
             }
       | Crt_Interface ->
           Some
             {
-              class_module = external_namespace;
+              class_module = external_namespace ^ "." ^ Utils.module_name_of_class cr.cr_name;
               class_type = Utils.ocaml_interface_name cr.cr_name ^ "_t";
               class_layer1_accessor =
                 "as_" ^ Utils.ocaml_interface_name cr.cr_name;
@@ -60,7 +60,7 @@ let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
       | Crt_Record _ ->
           Some
             {
-              class_module = external_namespace;
+              class_module = external_namespace ^ "." ^ Utils.module_name_of_class cr.cr_name;
               class_type = Utils.ocaml_record_name cr.cr_name ^ "_t";
               class_layer1_accessor = "as_" ^ Utils.ocaml_record_name cr.cr_name;
             }

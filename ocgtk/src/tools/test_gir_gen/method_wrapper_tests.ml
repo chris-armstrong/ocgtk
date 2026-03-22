@@ -143,8 +143,9 @@ let test_hierarchy_parameter_coercion () =
     ~parent_chain:["Widget"]
     ~methods:[meth]
     ~properties:[]
-    ~signals:[] in
-  
+    ~signals:[]
+    ~constructors:[] in
+
   let _mli_code = Gir_gen_lib.Generate.Class_gen.generate_class_signature
     ~ctx
     ~class_name:"Button"
@@ -152,7 +153,8 @@ let test_hierarchy_parameter_coercion () =
     ~parent_chain:["Widget"]
     ~methods:[meth]
     ~properties:[]
-    ~signals:[] in
+    ~signals:[]
+    ~constructors:[] in
 
   (* Parse the generated code into AST *)
   let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -201,7 +203,8 @@ let test_nullable_parameter_handling () =
      ~parent_chain:["Widget"]
      ~methods:[meth]
      ~properties:[]
-     ~signals:[] in
+     ~signals:[]
+     ~constructors:[] in
    
    (* Parse the generated signature into AST *)
    let mli_ast = Ml_ast_helpers.parse_interface mli_code in
@@ -242,7 +245,8 @@ let test_return_value_wrapping () =
     ~parent_chain:["Widget"]
     ~methods:[meth]
     ~properties:[]
-    ~signals:[] in
+    ~signals:[]
+    ~constructors:[] in
    
    (* Parse the generated signature into AST *)
   let mli_ast = Ml_ast_helpers.parse_interface mli_code in
@@ -283,7 +287,8 @@ let test_void_method () =
     ~parent_chain:[]
     ~methods:[meth]
     ~properties:[]
-    ~signals:[] in
+    ~signals:[]
+    ~constructors:[] in
   
    let mli_code = Gir_gen_lib.Generate.Class_gen.generate_class_signature
      ~ctx
@@ -292,7 +297,8 @@ let test_void_method () =
      ~parent_chain:[]
      ~methods:[meth]
      ~properties:[]
-     ~signals:[] in
+     ~signals:[]
+    ~constructors:[] in
    
     (* Parse the generated code into ASTs *)
     let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -354,7 +360,8 @@ let test_multiple_parameters () =
     ~parent_chain:[]
     ~methods:[meth]
     ~properties:[]
-    ~signals:[] in
+    ~signals:[]
+    ~constructors:[] in
   
    let mli_code = Gir_gen_lib.Generate.Class_gen.generate_class_signature
      ~ctx
@@ -363,7 +370,8 @@ let test_multiple_parameters () =
      ~parent_chain:[]
      ~methods:[meth]
      ~properties:[]
-     ~signals:[] in
+     ~signals:[]
+    ~constructors:[] in
    
     (* Parse the generated code into ASTs *)
     let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -417,7 +425,8 @@ let test_method_with_object_parameter () =
     ~parent_chain:["Widget"]
     ~methods:[meth]
     ~properties:[]
-    ~signals:[] in
+    ~signals:[]
+    ~constructors:[] in
    
    (* Parse the generated code into AST *)
     let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -556,7 +565,8 @@ let test_property_getter_wrapper () =
     ~parent_chain:["Widget"]
     ~methods:[get_label_method]
     ~properties:[label_property]
-    ~signals:[] in
+    ~signals:[]
+    ~constructors:[] in
   
   (* Parse the generated signature into AST *)
   let mli_ast = Ml_ast_helpers.parse_interface mli_code in
@@ -617,7 +627,8 @@ let test_property_setter_wrapper () =
      ~parent_chain:["Widget"]
      ~methods:[set_child_method]
      ~properties:[child_property]
-     ~signals:[] in
+     ~signals:[]
+    ~constructors:[] in
 
    (* Parse the generated code into AST *)
    let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -664,7 +675,8 @@ let test_inheritance_generation () =
     ~parent_chain:["Widget"]
     ~methods:[meth]
     ~properties:[]
-    ~signals:[] in
+    ~signals:[]
+    ~constructors:[] in
   
   Printf.eprintf "Generated class module for inheritance test:\n%s\n" ml_code;
   
@@ -696,7 +708,8 @@ let test_signal_handler_inheritance () =
     ~parent_chain:["Widget"]
     ~methods:[]
     ~properties:[]
-    ~signals:[clicked_signal] in
+    ~signals:[clicked_signal]
+    ~constructors:[] in
 
    Printf.eprintf "Generated class module for signal inheritance test:\n%s\n" ml_code;
 
@@ -725,7 +738,8 @@ let test_class_accessor_method () =
     ~parent_chain:["Widget"]
     ~methods:[]
     ~properties:[]
-    ~signals:[] in
+    ~signals:[]
+    ~constructors:[] in
 
   (* Parse the generated code into AST *)
   let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -824,7 +838,8 @@ let test_method_conflict_detection () =
     ~parent_chain:["Widget"]
     ~methods:[button_show_method]
     ~properties:[]
-    ~signals:[] in
+    ~signals:[]
+    ~constructors:[] in
 
   let mli_code = Gir_gen_lib.Generate.Class_gen.generate_class_signature
     ~ctx:updated_ctx
@@ -833,7 +848,8 @@ let test_method_conflict_detection () =
     ~parent_chain:["Widget"]
     ~methods:[button_show_method]
     ~properties:[]
-    ~signals:[] in
+    ~signals:[]
+    ~constructors:[] in
 
   Printf.eprintf "Generated .ml code for conflict test:\n%s\n\n" ml_code;
   Printf.eprintf "Generated .mli code for conflict test:\n%s\n\n" mli_code;
@@ -961,7 +977,8 @@ let test_layer2_signature_consistency () =
     ~parent_chain:["Widget"]
     ~methods
     ~properties:[]
-    ~signals:[] in
+    ~signals:[]
+    ~constructors:[] in
 
   let mli_code = Gir_gen_lib.Generate.Class_gen.generate_class_signature
     ~ctx
@@ -970,7 +987,8 @@ let test_layer2_signature_consistency () =
     ~parent_chain:["Widget"]
     ~methods
     ~properties:[]
-    ~signals:[] in
+    ~signals:[]
+    ~constructors:[] in
 
   (* Debug: Print generated code for inspection *)
   Printf.eprintf "Generated .mli code:\n%s\n\n" mli_code;
@@ -1333,7 +1351,8 @@ let test_throws_method_result_wrapping () =
     ~parent_chain:["Widget"]
     ~methods:[load_file_method]
     ~properties:[]
-    ~signals:[] in
+    ~signals:[]
+    ~constructors:[] in
 
   (* Debug: Print the generated signature *)
   Printf.eprintf "Generated .mli code for throws test:\n%s\n\n" mli_code;
@@ -1395,7 +1414,8 @@ let test_throws_method_result_wrapping () =
     ~parent_chain:["Widget"]
     ~methods:[load_file_method; create_directory_method]
     ~properties:[]
-    ~signals:[] in
+    ~signals:[]
+    ~constructors:[] in
 
   let mli_ast_with_void = Ml_ast_helpers.parse_interface mli_code_with_void in
 
@@ -1449,7 +1469,8 @@ let test_parent_inherit_in_implementation () =
     ~parent_chain:["Widget"]
     ~methods:[]
     ~properties:[]
-    ~signals:[] in
+    ~signals:[]
+    ~constructors:[] in
 
   Printf.eprintf "Generated class module for parent inherit test:\n%s\n" ml_code;
 
@@ -1479,7 +1500,8 @@ let test_parent_inherit_in_class_type () =
     ~parent_chain:["Widget"]
     ~methods:[]
     ~properties:[]
-    ~signals:[] in
+    ~signals:[]
+    ~constructors:[] in
 
   Printf.eprintf "Generated class signature for parent inherit test:\n%s\n" mli_code;
 

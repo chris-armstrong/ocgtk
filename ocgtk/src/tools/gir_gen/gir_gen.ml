@@ -271,7 +271,8 @@ let generate_high_level_class ~ctx ~output_dir ~generated_modules entity
            ~class_name:entity.Gir_gen_lib.Types.name ~parent_chain
            ~methods:entity.Gir_gen_lib.Types.methods
            ~properties:entity.Gir_gen_lib.Types.properties
-           ~signals:entity.Gir_gen_lib.Types.signals);
+           ~signals:entity.Gir_gen_lib.Types.signals
+           ~constructors:entity.Gir_gen_lib.Types.constructors);
     generated_modules := sprintf "g%s" module_name :: !generated_modules;
 
     (* Always overwrite signature files too *)
@@ -286,7 +287,8 @@ let generate_high_level_class ~ctx ~output_dir ~generated_modules entity
            ~class_name:entity.Gir_gen_lib.Types.name ~parent_chain
            ~methods:entity.Gir_gen_lib.Types.methods
            ~properties:entity.Gir_gen_lib.Types.properties
-           ~signals:entity.Gir_gen_lib.Types.signals)
+           ~signals:entity.Gir_gen_lib.Types.signals
+           ~constructors:entity.Gir_gen_lib.Types.constructors)
   in
   match entity.kind with
   | Gir_gen_lib.Types.Class clazz ->
@@ -423,6 +425,46 @@ let generate_combined_class_files ~ctx ~output_dir ~generated_modules
   generated_modules :=
     ("g" ^ Gir_gen_lib.Utils.module_name_of_class combined_name)
     :: !generated_modules
+
+(* Generate shim modules for entities in cyclic groups *)
+let generate_cyclic_shim_files ~ctx ~output_dir ~generated_modules
+    ~combined_module_name ~entity =
+  let open Gir_gen_lib in
+  let open Gir_gen_lib.Generate in
+
+  (* Get the layer 1 module name for this entity *)
+  let layer1_module_name =
+    Utils.module_name_of_class entity.Types.name
+  in
+
+  (* Get the shim module names (gWindow, gApplication, etc.) *)
+  let shim_module_name = "g" ^ layer1_module_name in
+  let shim_file =
+    Filename.concat (generated_output_dir output_dir) (shim_module_name ^ ".ml")
+  in
+  let shim_sig_file =
+    Filename.concat (generated_output_dir output_dir) (shim_module_name ^ ".mli")
+  in
+
+  (* Get the combined G module name *)
+  let combined_g_module_name =
+    "G" ^ Utils.module_name_of_class combined_module_name
+  in
+
+  (* Generate content using class_gen functions *)
+  let ml_content =
+    Class_gen.generate_cyclic_shim_module ~ctx ~entity
+      ~combined_module_name ~g_combined_module_name:combined_g_module_name
+  in
+  let mli_content =
+    Class_gen.generate_cyclic_shim_signature ~ctx ~entity
+      ~combined_module_name ~g_combined_module_name:combined_g_module_name
+  in
+
+  (* Write files *)
+  write_file ~path:shim_file ~content:ml_content;
+  write_file ~path:shim_sig_file ~content:mli_content;
+  generated_modules := shim_module_name :: !generated_modules
 
 (* Generate enum and bitfield files for a namespace *)
 let generate_enum_files ~output_dir ~generated_stubs ~generated_modules
@@ -787,7 +829,14 @@ let generate_bindings filter_file gir_file output_dir reference_files =
           in
           printf "  Generating combined class for cycle: %s\n" names;
           generate_combined_class_files ~ctx ~output_dir ~generated_modules
-            ~module_group:group ~parent_chain_for_class)
+            ~module_group:group ~parent_chain_for_class;
+          (* Generate shim modules for each entity in the cycle *)
+          let combined_module_name =
+            Gir_gen_lib.Dependency_analysis.module_name_of_group group
+          in
+          List.iter cycle_entities ~f:(fun entity ->
+              generate_cyclic_shim_files ~ctx ~output_dir ~generated_modules
+                ~combined_module_name ~entity))
     module_groups_list;
 
   (* Generate signal classes for all entities (classes and interfaces) *)
