@@ -1,6 +1,7 @@
 (* Signal class defined in gdialog_signals.ml *)
 
 class type dialog_t = object
+    inherit GApplication_and__window_and__window_group.window_t
     inherit Gdialog_signals.dialog_signals
     method add_action_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> int -> unit
     method add_button : string -> int -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
@@ -17,6 +18,7 @@ end
 
 (* High-level class for Dialog *)
 class dialog (obj : Dialog.t) : dialog_t = object (self)
+  inherit GApplication_and__window_and__window_group.window (Obj.magic obj : Application_and__window_and__window_group.Window.t)
   inherit Gdialog_signals.dialog_signals obj
 
   method add_action_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> int -> unit =

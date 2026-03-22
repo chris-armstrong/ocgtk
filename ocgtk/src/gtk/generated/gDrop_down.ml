@@ -1,6 +1,7 @@
 (* Signal class defined in gdrop_down_signals.ml *)
 
 class type drop_down_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gdrop_down_signals.drop_down_signals
     method get_enable_search : unit -> bool
     method get_expression : unit -> GExpression.expression_t option
@@ -25,6 +26,7 @@ end
 
 (* High-level class for DropDown *)
 class drop_down (obj : Drop_down.t) : drop_down_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gdrop_down_signals.drop_down_signals obj
 
   method get_enable_search : unit -> bool =

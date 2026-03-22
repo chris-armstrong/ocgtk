@@ -1,6 +1,7 @@
 (* Signal class defined in gapp_chooser_widget_signals.ml *)
 
 class type app_chooser_widget_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gapp_chooser_widget_signals.app_chooser_widget_signals
     method get_default_text : unit -> string option
     method get_show_all : unit -> bool
@@ -19,6 +20,7 @@ end
 
 (* High-level class for AppChooserWidget *)
 class app_chooser_widget (obj : App_chooser_widget.t) : app_chooser_widget_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gapp_chooser_widget_signals.app_chooser_widget_signals obj
 
   method get_default_text : unit -> string option =

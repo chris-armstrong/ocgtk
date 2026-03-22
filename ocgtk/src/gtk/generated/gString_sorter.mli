@@ -1,4 +1,5 @@
 class type string_sorter_t = object
+    inherit GSorter.sorter_t
     method get_collation : unit -> Gtk_enums.collation
     method get_expression : unit -> GExpression.expression_t option
     method get_ignore_case : unit -> bool

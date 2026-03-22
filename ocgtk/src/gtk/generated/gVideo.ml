@@ -1,4 +1,5 @@
 class type video_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     method get_autoplay : unit -> bool
     method get_file : unit -> Ocgtk_gio.Gio.file_t option
     method get_graphics_offload : unit -> Gtk_enums.graphicsoffloadenabled
@@ -16,6 +17,7 @@ end
 
 (* High-level class for Video *)
 class video (obj : Video.t) : video_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
 
   method get_autoplay : unit -> bool =
     fun () ->

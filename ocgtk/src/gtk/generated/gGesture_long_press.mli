@@ -1,4 +1,5 @@
 class type gesture_long_press_t = object
+    inherit GGesture_single.gesture_single_t
     inherit Ggesture_long_press_signals.gesture_long_press_signals
     method get_delay_factor : unit -> float
     method set_delay_factor : float -> unit

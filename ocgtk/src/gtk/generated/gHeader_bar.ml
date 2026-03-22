@@ -1,4 +1,5 @@
 class type header_bar_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     method get_decoration_layout : unit -> string option
     method get_show_title_buttons : unit -> bool
     method get_title_widget : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
@@ -13,6 +14,7 @@ end
 
 (* High-level class for HeaderBar *)
 class header_bar (obj : Header_bar.t) : header_bar_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
 
   method get_decoration_layout : unit -> string option =
     fun () ->

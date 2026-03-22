@@ -1,4 +1,5 @@
 class type flow_box_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gflow_box_signals.flow_box_signals
     method append : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit
     method get_activate_on_single_click : unit -> bool

@@ -1,4 +1,5 @@
 class type tree_list_row_sorter_t = object
+    inherit GSorter.sorter_t
     method get_sorter : unit -> GSorter.sorter_t option
     method set_sorter : GSorter.sorter_t option -> unit
     method as_tree_list_row_sorter : Tree_list_row_sorter.t
@@ -6,6 +7,7 @@ end
 
 (* High-level class for TreeListRowSorter *)
 class tree_list_row_sorter (obj : Tree_list_row_sorter.t) : tree_list_row_sorter_t = object (self)
+  inherit GSorter.sorter (Obj.magic obj : Sorter.t)
 
   method get_sorter : unit -> GSorter.sorter_t option =
     fun () ->

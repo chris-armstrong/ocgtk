@@ -1,4 +1,5 @@
 class type shortcuts_group_t = object
+    inherit GBox.box_t
     method add_shortcut : GShortcuts_shortcut.shortcuts_shortcut_t -> unit
     method accel_size_group : GSize_group.size_group_t
     method set_accel_size_group : GSize_group.size_group_t -> unit

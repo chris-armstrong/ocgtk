@@ -1,4 +1,5 @@
 class type drag_source_t = object
+    inherit GGesture_single.gesture_single_t
     inherit Gdrag_source_signals.drag_source_signals
     method drag_cancel : unit -> unit
     method get_actions : unit -> Ocgtk_gdk.Gdk.dragaction

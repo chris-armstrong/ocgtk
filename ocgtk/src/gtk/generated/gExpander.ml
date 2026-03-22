@@ -1,6 +1,7 @@
 (* Signal class defined in gexpander_signals.ml *)
 
 class type expander_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gexpander_signals.expander_signals
     method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
     method get_expanded : unit -> bool
@@ -21,6 +22,7 @@ end
 
 (* High-level class for Expander *)
 class expander (obj : Expander.t) : expander_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gexpander_signals.expander_signals obj
 
   method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option =

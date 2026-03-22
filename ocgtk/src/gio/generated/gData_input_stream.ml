@@ -1,4 +1,5 @@
 class type data_input_stream_t = object
+    inherit GBuffered_input_stream.buffered_input_stream_t
     method get_byte_order : unit -> Gio_enums.datastreambyteorder
     method get_newline_type : unit -> Gio_enums.datastreamnewlinetype
     method set_byte_order : Gio_enums.datastreambyteorder -> unit
@@ -8,6 +9,7 @@ end
 
 (* High-level class for DataInputStream *)
 class data_input_stream (obj : Data_input_stream.t) : data_input_stream_t = object (self)
+  inherit GBuffered_input_stream.buffered_input_stream (Obj.magic obj : Buffered_input_stream.t)
 
   method get_byte_order : unit -> Gio_enums.datastreambyteorder =
     fun () ->

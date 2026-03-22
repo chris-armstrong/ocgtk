@@ -1,6 +1,7 @@
 (* Signal class defined in gpopover_signals.ml *)
 
 class type popover_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gpopover_signals.popover_signals
     method get_autohide : unit -> bool
     method get_cascade_popdown : unit -> bool
@@ -25,6 +26,7 @@ end
 
 (* High-level class for Popover *)
 class popover (obj : Popover.t) : popover_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gpopover_signals.popover_signals obj
 
   method get_autohide : unit -> bool =

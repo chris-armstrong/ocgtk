@@ -1,4 +1,5 @@
 class type gl_renderer_t = object
+    inherit GRenderer.renderer_t
     method as_gl_renderer : Gl_renderer.t
 end
 

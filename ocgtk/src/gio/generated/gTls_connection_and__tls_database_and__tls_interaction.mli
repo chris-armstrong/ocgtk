@@ -1,5 +1,6 @@
 
 class type tls_connection_t = object
+    inherit GIo_stream.io_stream_t
     inherit Gtls_connection_signals.tls_connection_signals
     method emit_accept_certificate : GTls_certificate.tls_certificate_t -> Gio_enums.tlscertificateflags -> bool
     method get_certificate : unit -> GTls_certificate.tls_certificate_t option

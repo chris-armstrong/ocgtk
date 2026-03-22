@@ -1,4 +1,5 @@
 class type cell_renderer_spinner_t = object
+    inherit GCell_renderer.cell_renderer_t
     method active : bool
     method set_active : bool -> unit
     method pulse : int

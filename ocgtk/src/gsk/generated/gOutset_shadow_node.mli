@@ -1,4 +1,5 @@
 class type outset_shadow_node_t = object
+    inherit GRender_node.render_node_t
     method get_blur_radius : unit -> float
     method get_color : unit -> Ocgtk_gdk.Gdk.rgb_a_t
     method get_dx : unit -> float

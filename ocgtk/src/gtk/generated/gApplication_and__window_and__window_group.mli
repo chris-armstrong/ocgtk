@@ -21,6 +21,7 @@ class type application_t = object
 end
 
 and window_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gwindow_signals.window_signals
     method close : unit -> unit
     method destroy : unit -> unit

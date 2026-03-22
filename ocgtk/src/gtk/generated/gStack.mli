@@ -1,4 +1,5 @@
 class type stack_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     method add_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GStack_page.stack_page_t
     method add_named : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> string option -> GStack_page.stack_page_t
     method add_titled : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> string option -> string -> GStack_page.stack_page_t

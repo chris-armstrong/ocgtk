@@ -1,4 +1,5 @@
 class type link_button_t = object
+    inherit GButton.button_t
     inherit Glink_button_signals.link_button_signals
     method get_uri : unit -> string
     method get_visited : unit -> bool

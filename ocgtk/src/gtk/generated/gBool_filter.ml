@@ -1,4 +1,5 @@
 class type bool_filter_t = object
+    inherit GFilter.filter_t
     method get_expression : unit -> GExpression.expression_t option
     method get_invert : unit -> bool
     method set_expression : GExpression.expression_t option -> unit
@@ -8,6 +9,7 @@ end
 
 (* High-level class for BoolFilter *)
 class bool_filter (obj : Bool_filter.t) : bool_filter_t = object (self)
+  inherit GFilter.filter (Obj.magic obj : Filter.t)
 
   method get_expression : unit -> GExpression.expression_t option =
     fun () ->

@@ -1,10 +1,10 @@
 class type cell_renderer_text_t = object
+    inherit GCell_renderer.cell_renderer_t
     inherit Gcell_renderer_text_signals.cell_renderer_text_signals
     method set_fixed_height_from_font : int -> unit
     method align_set : bool
     method set_align_set : bool -> unit
     method alignment : Ocgtk_pango.Pango.alignment
-    method set_alignment : Ocgtk_pango.Pango.alignment -> unit
     method attributes : Ocgtk_pango.Pango.attr_list_t
     method set_attributes : Ocgtk_pango.Pango.attr_list_t -> unit
     method background : string

@@ -1,4 +1,5 @@
 class type unix_output_stream_t = object
+    inherit GOutput_stream.output_stream_t
     method get_close_fd : unit -> bool
     method get_fd : unit -> int
     method set_close_fd : bool -> unit
@@ -7,6 +8,7 @@ end
 
 (* High-level class for UnixOutputStream *)
 class unix_output_stream (obj : Unix_output_stream.t) : unix_output_stream_t = object (self)
+  inherit GOutput_stream.output_stream (Obj.magic obj : Output_stream.t)
 
   method get_close_fd : unit -> bool =
     fun () ->

@@ -1,4 +1,5 @@
 class type grid_layout_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.layout_manager_t
     method get_baseline_row : unit -> int
     method get_column_homogeneous : unit -> bool
     method get_column_spacing : unit -> int
@@ -16,6 +17,7 @@ end
 
 (* High-level class for GridLayout *)
 class grid_layout (obj : Grid_layout.t) : grid_layout_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.layout_manager (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Layout_manager.t)
 
   method get_baseline_row : unit -> int =
     fun () ->

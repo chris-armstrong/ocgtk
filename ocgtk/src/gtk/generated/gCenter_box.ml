@@ -1,4 +1,5 @@
 class type center_box_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     method get_baseline_position : unit -> Gtk_enums.baselineposition
     method get_center_widget : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
     method get_end_widget : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
@@ -14,6 +15,7 @@ end
 
 (* High-level class for CenterBox *)
 class center_box (obj : Center_box.t) : center_box_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
 
   method get_baseline_position : unit -> Gtk_enums.baselineposition =
     fun () ->

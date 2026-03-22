@@ -1,4 +1,5 @@
 class type string_sorter_t = object
+    inherit GSorter.sorter_t
     method get_collation : unit -> Gtk_enums.collation
     method get_expression : unit -> GExpression.expression_t option
     method get_ignore_case : unit -> bool
@@ -10,6 +11,7 @@ end
 
 (* High-level class for StringSorter *)
 class string_sorter (obj : String_sorter.t) : string_sorter_t = object (self)
+  inherit GSorter.sorter (Obj.magic obj : Sorter.t)
 
   method get_collation : unit -> Gtk_enums.collation =
     fun () ->

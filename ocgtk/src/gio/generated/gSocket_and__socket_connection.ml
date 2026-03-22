@@ -48,6 +48,7 @@ class type socket_t = object
 end
 
 and socket_connection_t = object
+    inherit GIo_stream.io_stream_t
     method connect : GSocket_address.socket_address_t -> GCancellable.cancellable_t option -> (bool, GError.t) result
     method get_local_address : unit -> (GSocket_address.socket_address_t, GError.t) result
     method get_remote_address : unit -> (GSocket_address.socket_address_t, GError.t) result
@@ -241,6 +242,7 @@ class socket (obj : Socket_and__socket_connection.Socket.t) : socket_t = object 
 end
 
 and socket_connection (obj : Socket_and__socket_connection.Socket_connection.t) : socket_connection_t = object (self)
+  inherit GIo_stream.io_stream (Obj.magic obj : Io_stream.t)
 
   method connect : GSocket_address.socket_address_t -> GCancellable.cancellable_t option -> (bool, GError.t) result =
     fun address cancellable ->

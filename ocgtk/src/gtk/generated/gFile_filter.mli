@@ -1,4 +1,5 @@
 class type file_filter_t = object
+    inherit GFilter.filter_t
     method add_mime_type : string -> unit
     method add_pattern : string -> unit
     method add_pixbuf_formats : unit -> unit

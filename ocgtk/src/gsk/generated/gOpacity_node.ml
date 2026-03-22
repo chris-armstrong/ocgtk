@@ -1,4 +1,5 @@
 class type opacity_node_t = object
+    inherit GRender_node.render_node_t
     method get_child : unit -> GRender_node.render_node_t
     method get_opacity : unit -> float
     method as_opacity_node : Opacity_node.t
@@ -6,6 +7,7 @@ end
 
 (* High-level class for OpacityNode *)
 class opacity_node (obj : Opacity_node.t) : opacity_node_t = object (self)
+  inherit GRender_node.render_node (Obj.magic obj : Render_node.t)
 
   method get_child : unit -> GRender_node.render_node_t =
     fun () ->

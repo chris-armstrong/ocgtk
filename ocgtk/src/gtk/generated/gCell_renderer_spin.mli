@@ -1,4 +1,5 @@
 class type cell_renderer_spin_t = object
+    inherit GCell_renderer_text.cell_renderer_text_t
     method adjustment : GAdjustment.adjustment_t
     method set_adjustment : GAdjustment.adjustment_t -> unit
     method climb_rate : float

@@ -1,4 +1,5 @@
 class type picture_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     method get_alternative_text : unit -> string option
     method get_can_shrink : unit -> bool
     method get_content_fit : unit -> Gtk_enums.contentfit

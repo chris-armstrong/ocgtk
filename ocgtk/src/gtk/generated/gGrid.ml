@@ -1,4 +1,5 @@
 class type grid_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     method attach : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> int -> int -> int -> int -> unit
     method attach_next_to : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> Gtk_enums.positiontype -> int -> int -> unit
     method get_baseline_row : unit -> int
@@ -25,6 +26,7 @@ end
 
 (* High-level class for Grid *)
 class grid (obj : Grid.t) : grid_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
 
   method attach : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> int -> int -> int -> int -> unit =
     fun child column row width height ->

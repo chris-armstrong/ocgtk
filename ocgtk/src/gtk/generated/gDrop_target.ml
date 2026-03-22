@@ -1,6 +1,7 @@
 (* Signal class defined in gdrop_target_signals.ml *)
 
 class type drop_target_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller_t
     inherit Gdrop_target_signals.drop_target_signals
     method get_actions : unit -> Ocgtk_gdk.Gdk.dragaction
     method get_current_drop : unit -> Ocgtk_gdk.Gdk.drop_t option
@@ -15,6 +16,7 @@ end
 
 (* High-level class for DropTarget *)
 class drop_target (obj : Drop_target.t) : drop_target_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t)
   inherit Gdrop_target_signals.drop_target_signals obj
 
   method get_actions : unit -> Ocgtk_gdk.Gdk.dragaction =

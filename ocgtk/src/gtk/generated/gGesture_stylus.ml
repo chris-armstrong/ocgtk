@@ -1,6 +1,7 @@
 (* Signal class defined in ggesture_stylus_signals.ml *)
 
 class type gesture_stylus_t = object
+    inherit GGesture_single.gesture_single_t
     inherit Ggesture_stylus_signals.gesture_stylus_signals
     method get_device_tool : unit -> Ocgtk_gdk.Gdk.device_tool_t option
     method get_stylus_only : unit -> bool
@@ -10,6 +11,7 @@ end
 
 (* High-level class for GestureStylus *)
 class gesture_stylus (obj : Gesture_stylus.t) : gesture_stylus_t = object (self)
+  inherit GGesture_single.gesture_single (Obj.magic obj : Gesture_single.t)
   inherit Ggesture_stylus_signals.gesture_stylus_signals obj
 
   method get_device_tool : unit -> Ocgtk_gdk.Gdk.device_tool_t option =

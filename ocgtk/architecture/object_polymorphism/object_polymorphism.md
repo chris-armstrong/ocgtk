@@ -17,32 +17,42 @@ This document specifies the object polymorphism system for ocgtk, enabling type-
 3. **Hide Layer 1**: Users shouldn't interact with low-level C bindings
 4. **Consistent**: Same patterns across all GTK hierarchies
 
-### User Experience
+### User Experience (Current)
 
 **What users write:**
 ```ocaml
-(* Create widgets with factory functions *)
-let button = GButton.button ~label:"OK" () in
-let box = GBox.box ~orientation:`HORIZONTAL () in
+open Ocgtk_gtk.Gtk
+module GMain = Ocgtk_gtk.GMain
 
-(* Pass widgets naturally - automatic coercion *)
-box#append button;
+(* Create Layer 1 objects, wrap in Layer 2 classes *)
+let window = new window (Wrappers.Window.new_ ()) in
+let vbox = new box (Wrappers.Box.new_ `VERTICAL 10) in
+let btn = new button (Wrappers.Button.new_with_label "OK") in
 
-(* Works with any widget subclass *)
-box#append (GLabel.label ~text:"Status" ());
-box#append (GEntry.entry ())
+(* Coerce child classes to parent type with :> *)
+window#set_child (Some (vbox :> widget));
+vbox#append (btn :> widget);
+
+(* Use Layer 2 methods for properties and signals *)
+btn#set_label "Click Me";
+ignore (btn#on_clicked ~callback:(fun () -> print_endline "clicked"));
 ```
 
-**What users DON'T write:**
+**What users DON'T write (old pattern):**
 ```ocaml
-(* ❌ No Layer 1 exposure *)
-let button = new GButton.button (Button.new_with_label "OK") in
+(* ❌ Long generated module names *)
+let widget = new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget obj in
 
-(* ❌ No explicit coercion *)
-box#append (button :> widget_t);
+(* ❌ Manual as_widget unwrapping *)
+box#append (new widget (Obj.magic btn#as_button));
+```
 
-(* ❌ No accessing underlying objects *)
-Widget.set_label (button#as_widget) "New Label"
+**Future: Factory functions (not yet implemented)**
+```ocaml
+(* Factory functions will eliminate Layer 1 exposure *)
+let btn = GButton.button ~label:"OK" () in
+let box = GBox.box ~orientation:`HORIZONTAL () in
+box#append btn;  (* Automatic coercion, no :> needed *)
 ```
 
 ---
@@ -296,17 +306,20 @@ end
 ### Usage
 
 ```ocaml
-(* Create expander with label *)
-let exp = GExpander.expander ~label:"Details" () in
+open Ocgtk_gtk.Gtk
+
+(* Create expander *)
+let exp = new expander (Wrappers.Expander.new_ (Some "Details")) in
 
 (* Create button *)
-let btn = GButton.button ~label:"Click me" () in
+let btn = new button (Wrappers.Button.new_with_label "Click me") in
 
-(* Set button as child - automatic coercion! *)
-exp#set_child (Some btn);
+(* Set button as child - coerce to widget_t *)
+exp#set_child (Some (btn :> widget));
 
-(* Works with any widget *)
-exp#set_child (Some (GLabel.label ~text:"Hello" ()));
+(* Works with any widget subclass *)
+let lbl = new label (Wrappers.Label.new_ (Some "Hello")) in
+exp#set_child (Some (lbl :> widget));
 exp#set_child None;  (* Clear child *)
 ```
 
@@ -318,19 +331,16 @@ exp#set_child None;  (* Clear child *)
 - ✅ Layer 1 polymorphic variants
 - ✅ Layer 2 classes with separate `class type` definitions
 - ✅ Class types use plain type names (no `#` — incompatible with class type definitions)
-- 🚧 Factory constructors
-- 🚧 Coercion helpers for subtype passing
+- ✅ Parent class inheritance via `inherit` (e.g., `button_t` inherits `widget_t`)
+- ✅ Inherited method conflict suppression (seen set)
+- ✅ Type coercion with `:>` (e.g., `(btn :> widget)`)
+- 🚧 Factory constructors (with optional property params)
 
-### Phase 2: EventController Hierarchy
-- 🚧 Make EventController polymorphic
-- 🚧 Create GController module
-- 🚧 Handle Gesture intermediate base
-- 🚧 Update controller_ops in GObj
-
-### Phase 3: Other Hierarchies
-- 🚧 CellRenderer
-- 🚧 LayoutManager
-- 🚧 Expression
+### Phase 2: Other Hierarchies
+- ✅ EventController hierarchy generated
+- ✅ CellRenderer hierarchy generated
+- ✅ LayoutManager hierarchy generated
+- ✅ Expression hierarchy generated
 
 ---
 
@@ -349,25 +359,30 @@ exp#set_child None;  (* Clear child *)
 
 ### Updating Existing Code
 
-**Old pattern:**
+**Old pattern (long module names, manual wrapping):**
 ```ocaml
-let btn = new GButton.button (Button.new_with_label "OK") in
-let box = new GBox.box (Box.new_ ()) in
-box#append (btn#as_widget)
+open Ocgtk_gtk
+let vbox = new GBox.box vbox_obj in
+let lbl_widget = Label.as_widget lbl_obj in
+vbox#append (new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget lbl_widget);
+vbox#append (apply_btn :> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget);
 ```
 
-**New pattern:**
+**New pattern (short names, type coercion):**
 ```ocaml
-let btn = GButton.button ~label:"OK" () in
-let box = GBox.box ~orientation:`HORIZONTAL () in
-box#append btn
+open Ocgtk_gtk.Gtk
+let vbox = new box (Wrappers.Box.new_ `VERTICAL 10) in
+let lbl = new label (Wrappers.Label.new_ (Some "Status")) in
+vbox#append (lbl :> widget);
+vbox#append (apply_btn :> widget);
 ```
 
-### Compatibility
-
-- Old `new GButton.button obj` constructor still works
-- Existing code doesn't break
-- Can migrate incrementally
+### Key changes
+- `open Ocgtk_gtk.Gtk` instead of `open Ocgtk_gtk` — brings short class names (`widget`, `button`, `box`) and `Wrappers` module into scope
+- `Wrappers.ClassName.new_*` for Layer 1 construction
+- `new classname l1_obj` for Layer 2 wrapping
+- `(:> widget)` for passing any widget subclass — works because all generated class types inherit `widget_t`
+- For interfaces not modeled in the type system (e.g., `Editable` on `Entry`), use `Obj.magic` cast to the interface L1 type
 
 ---
 

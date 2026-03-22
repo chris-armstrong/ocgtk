@@ -1,4 +1,5 @@
 class type media_file_t = object
+    inherit GMedia_stream.media_stream_t
     method clear : unit -> unit
     method get_file : unit -> Ocgtk_gio.Gio.file_t option
     method get_input_stream : unit -> Ocgtk_gio.Gio.input_stream_t option

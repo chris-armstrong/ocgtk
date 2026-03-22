@@ -1,4 +1,5 @@
 class type text_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gtext_signals.text_signals
     method get_activates_default : unit -> bool
     method get_attributes : unit -> Ocgtk_pango.Pango.attr_list_t option

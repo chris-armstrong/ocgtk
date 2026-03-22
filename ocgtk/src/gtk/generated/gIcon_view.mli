@@ -1,4 +1,5 @@
 class type icon_view_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gicon_view_signals.icon_view_signals
     method create_drag_icon : Tree_path.t -> Ocgtk_gdk.Gdk.paintable_t option
     method enable_model_drag_dest : Ocgtk_gdk.Gdk.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit
@@ -30,7 +31,6 @@ class type icon_view_t = object
     method set_activate_on_single_click : bool -> unit
     method set_column_spacing : int -> unit
     method set_columns : int -> unit
-    (* method set_cursor : ... *) (* CONFLICT: incompatible signature with parent method *)
     method set_drag_dest_item : Tree_path.t option -> Gtk_enums.iconviewdropposition -> unit
     method set_item_orientation : Gtk_enums.orientation -> unit
     method set_item_padding : int -> unit

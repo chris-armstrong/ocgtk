@@ -1,4 +1,5 @@
 class type filter_output_stream_t = object
+    inherit GOutput_stream.output_stream_t
     method get_base_stream : unit -> GOutput_stream.output_stream_t
     method get_close_base_stream : unit -> bool
     method set_close_base_stream : bool -> unit
@@ -7,6 +8,7 @@ end
 
 (* High-level class for FilterOutputStream *)
 class filter_output_stream (obj : Filter_output_stream.t) : filter_output_stream_t = object (self)
+  inherit GOutput_stream.output_stream (Obj.magic obj : Output_stream.t)
 
   method get_base_stream : unit -> GOutput_stream.output_stream_t =
     fun () ->

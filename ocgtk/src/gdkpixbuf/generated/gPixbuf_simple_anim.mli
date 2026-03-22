@@ -1,4 +1,5 @@
 class type pixbuf_simple_anim_t = object
+    inherit GPixbuf_animation.pixbuf_animation_t
     method add_frame : GPixbuf.pixbuf_t -> unit
     method get_loop : unit -> bool
     method set_loop : bool -> unit

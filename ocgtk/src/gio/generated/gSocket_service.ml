@@ -1,6 +1,7 @@
 (* Signal class defined in gsocket_service_signals.ml *)
 
 class type socket_service_t = object
+    inherit GSocket_listener.socket_listener_t
     inherit Gsocket_service_signals.socket_service_signals
     method is_active : unit -> bool
     method start : unit -> unit
@@ -12,6 +13,7 @@ end
 
 (* High-level class for SocketService *)
 class socket_service (obj : Socket_service.t) : socket_service_t = object (self)
+  inherit GSocket_listener.socket_listener (Obj.magic obj : Socket_listener.t)
   inherit Gsocket_service_signals.socket_service_signals obj
 
   method is_active : unit -> bool =

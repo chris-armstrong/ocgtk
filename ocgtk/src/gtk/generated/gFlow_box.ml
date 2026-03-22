@@ -1,6 +1,7 @@
 (* Signal class defined in gflow_box_signals.ml *)
 
 class type flow_box_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gflow_box_signals.flow_box_signals
     method append : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit
     method get_activate_on_single_click : unit -> bool
@@ -38,6 +39,7 @@ end
 
 (* High-level class for FlowBox *)
 class flow_box (obj : Flow_box.t) : flow_box_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gflow_box_signals.flow_box_signals obj
 
   method append : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit =

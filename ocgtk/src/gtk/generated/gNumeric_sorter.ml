@@ -1,4 +1,5 @@
 class type numeric_sorter_t = object
+    inherit GSorter.sorter_t
     method get_expression : unit -> GExpression.expression_t option
     method get_sort_order : unit -> Gtk_enums.sorttype
     method set_expression : GExpression.expression_t option -> unit
@@ -8,6 +9,7 @@ end
 
 (* High-level class for NumericSorter *)
 class numeric_sorter (obj : Numeric_sorter.t) : numeric_sorter_t = object (self)
+  inherit GSorter.sorter (Obj.magic obj : Sorter.t)
 
   method get_expression : unit -> GExpression.expression_t option =
     fun () ->

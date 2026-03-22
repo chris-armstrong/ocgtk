@@ -21,6 +21,7 @@ class type tree_selection_t = object
 end
 
 and tree_view_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gtree_view_signals.tree_view_signals
     method append_column : GTree_view_column.tree_view_column_t -> int
     method collapse_all : unit -> unit
@@ -62,7 +63,6 @@ and tree_view_t = object
     method scroll_to_cell : Tree_path.t option -> GTree_view_column.tree_view_column_t option -> bool -> float -> float -> unit
     method scroll_to_point : int -> int -> unit
     method set_activate_on_single_click : bool -> unit
-    (* method set_cursor : ... *) (* CONFLICT: incompatible signature with parent method *)
     method set_cursor_on_cell : Tree_path.t -> GTree_view_column.tree_view_column_t option -> GCell_renderer.cell_renderer_t option -> bool -> unit
     method set_drag_dest_row : Tree_path.t option -> Gtk_enums.treeviewdropposition -> unit
     method set_enable_search : bool -> unit
@@ -157,6 +157,7 @@ end
 
 
 and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) : tree_view_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gtree_view_signals.tree_view_signals obj
 
   method append_column : GTree_view_column.tree_view_column_t -> int =
@@ -327,8 +328,6 @@ and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) : tree_view_t = 
   method set_activate_on_single_click : bool -> unit =
     fun single ->
       (Tree_selection_and__tree_view.Tree_view.set_activate_on_single_click obj single)
-
-  (* method set_cursor = ... *) (* CONFLICT: incompatible signature with parent method *)
 
   method set_cursor_on_cell : Tree_path.t -> GTree_view_column.tree_view_column_t option -> GCell_renderer.cell_renderer_t option -> bool -> unit =
     fun path focus_column focus_cell start_editing ->

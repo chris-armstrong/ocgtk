@@ -1,4 +1,5 @@
 class type border_node_t = object
+    inherit GRender_node.render_node_t
     method get_colors : unit -> Ocgtk_gdk.Gdk.rgb_a_t
     method get_outline : unit -> Rounded_rect.t
     method get_widths : unit -> float array
@@ -7,6 +8,7 @@ end
 
 (* High-level class for BorderNode *)
 class border_node (obj : Border_node.t) : border_node_t = object (self)
+  inherit GRender_node.render_node (Obj.magic obj : Render_node.t)
 
   method get_colors : unit -> Ocgtk_gdk.Gdk.rgb_a_t =
     fun () ->

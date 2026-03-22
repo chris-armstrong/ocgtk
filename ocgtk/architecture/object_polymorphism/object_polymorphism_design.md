@@ -316,56 +316,54 @@ let hierarchy_definitions = [
 - [x] Fix self-reference simplification (Tree_model.t → t in same file)
 - [ ] Resolve circular type dependencies in GTK API
 
-### Phase 4: Testing & Validation
-- [ ] Test Box.append with different widget types
-- [ ] Test Expander.set_child with optional widgets
-- [ ] Test EventController parameter coercion
-- [ ] Build examples with new API
-- [ ] Verify no manual `:>` coercions needed
+### Phase 4: Parent Class Inheritance ✅
+- [x] Add `inherit parent_t` to class types (e.g., `button_t` inherits `widget_t`)
+- [x] Add `inherit parent` to class implementations (with `Obj.magic` for L1 type cast)
+- [x] Suppress inherited methods via seen set (conflict detection)
+- [x] Build examples with `:>` coercion pattern
+- [x] All 9 namespaces compile with inheritance
 
 ## Benefits
 
-1. **Natural OO API**: `expander#set_child button` - no coercion needed
-2. **Type Safety**: Still type-checked, can't pass non-widgets
-3. **Automatic Subtyping**: Works with any widget subclass
-4. **No Runtime Cost**: Coercions compile to identity functions
-5. **Consistent with OO Patterns**: Feels like Java/C++ virtual methods
+1. **Type-safe coercion**: `(btn :> widget)` — checked at compile time
+2. **Inherited methods**: Button instances automatically have all Widget methods
+3. **Short class names**: `open Ocgtk_gtk.Gtk` brings `widget`, `button`, `box`, etc.
+4. **Type Safety**: Can't pass Button where Label expected
+5. **No Runtime Cost**: `:>` coercions are compile-time only
 
 ## Known Working Examples
 
-From the current generated code:
+From the current generated code (see `examples/` directory):
 
 ```ocaml
-(* Box can accept any widget *)
-let box = new GBox.box (Box.new_ Gtk_enums.Horizontal 0) in
-let button = new GButton.button (Button.new_ ()) in
-box#append button  (* Works! *)
+open Ocgtk_gtk.Gtk
+module GMain = Ocgtk_gtk.GMain
 
-(* Button can accept optional widget as child *)
-let button = new GButton.button (Button.new_ ()) in
-let label = new GLabel.label (Label.new_ "Click me") in
-button#set_child (Some label)  (* Works! *)
+(* Box accepts any widget via :> coercion *)
+let vbox = new box (Wrappers.Box.new_ `VERTICAL 10) in
+let btn = new button (Wrappers.Button.new_with_label "OK") in
+vbox#append (btn :> widget);
+
+(* Window.set_child takes widget_t option *)
+let window = new window (Wrappers.Window.new_ ()) in
+window#set_child (Some (vbox :> widget));
+
+(* Label, Entry, etc. all coerce to widget *)
+let lbl = new label (Wrappers.Label.new_ (Some "Hello")) in
+vbox#append (lbl :> widget);
 ```
 
 ## Summary
 
-The polymorphic object system is **98% complete**:
+The polymorphic object system is **complete for current scope**:
 - ✅ Layer 1 polymorphic variants work correctly
-- ✅ Layer 2 automatic coercion works for Widget hierarchy
+- ✅ Layer 2 class type inheritance (`button_t` inherits `widget_t`)
+- ✅ Layer 2 class implementation inheritance (with `Obj.magic` for L1 type casts)
+- ✅ Type coercion via `:>` (e.g., `(btn :> widget)`) works for all widget subclasses
 - ✅ Keyword escaping prevents syntax errors
-- ✅ Fixed non-widget classes inheriting from widget_impl
-- ✅ Fixed hierarchy root circular references (no more `Widget.as_widget : t -> Widget.t`)
-- ✅ Fixed all type mapping issues:
-  - ✅ Classes use proper module types (Button.t, Label.t)
-  - ✅ Interfaces use proper module types (Tree_model.t, Accessible.t)
-  - ✅ Records use proper module types (Tree_iter.t, Tree_path.t instead of Obj.t)
-  - ✅ Self-references simplified (`t` instead of `Module.t` in same file)
-  - ✅ Record definitions use `Obj.t` internally but expose opaque `type t` in .mli
-- ⚠️ Dependency cycles in GTK API need resolution:
-  - Widget <-> EventController cycle
-  - LayoutManager <-> LayoutChild cycle
-  - CellArea <-> CellAreaContext cycle
-  - TreeView <-> TreeSelection cycle
-  - And others
-
-The code generation is working correctly with precise type mapping. The remaining issue is resolving circular type dependencies that exist in GTK's actual API design.
+- ✅ Inherited method conflict suppression via seen set
+- ✅ All 9 namespaces generate and compile cleanly
+- ✅ Fixed all type mapping issues (classes, interfaces, records, self-references)
+- ⚠️ Dependency cycles in GTK API handled via clustered modules (e.g., `gEvent_controller_and__layout_child_and__...`)
+- 🚧 Factory constructors (with optional property params) not yet implemented
+- 🚧 Interface implementation not modeled in type system (e.g., Entry doesn't expose Editable — requires `Obj.magic` cast)

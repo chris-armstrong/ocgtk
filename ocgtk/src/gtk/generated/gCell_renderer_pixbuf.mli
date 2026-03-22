@@ -1,4 +1,5 @@
 class type cell_renderer_pixbuf_t = object
+    inherit GCell_renderer.cell_renderer_t
     method gicon : Ocgtk_gio.Gio.icon_t
     method set_gicon : Ocgtk_gio.Gio.icon_t -> unit
     method icon_name : string

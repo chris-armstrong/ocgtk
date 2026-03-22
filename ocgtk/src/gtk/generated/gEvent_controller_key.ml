@@ -1,6 +1,7 @@
 (* Signal class defined in gevent_controller_key_signals.ml *)
 
 class type event_controller_key_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller_t
     inherit Gevent_controller_key_signals.event_controller_key_signals
     method forward : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> bool
     method get_group : unit -> int
@@ -11,6 +12,7 @@ end
 
 (* High-level class for EventControllerKey *)
 class event_controller_key (obj : Event_controller_key.t) : event_controller_key_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t)
   inherit Gevent_controller_key_signals.event_controller_key_signals obj
 
   method forward : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> bool =

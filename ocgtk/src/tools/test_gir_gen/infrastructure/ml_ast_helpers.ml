@@ -362,6 +362,21 @@ let rec get_class_inherit_clauses (class_expr : class_expr) : string list =
       get_class_inherit_clauses body
   | _ -> []
 
+(* Get inherit clauses from a class type definition *)
+let get_class_type_inherit_clauses (class_type : class_type) : string list =
+  match class_type.pcty_desc with
+  | Pcty_signature { pcsig_fields; _ } ->
+      List.filter_map (fun ctf ->
+        match ctf.pctf_desc with
+        | Pctf_inherit ct ->
+            (match ct.pcty_desc with
+             | Pcty_constr (lid, _) ->
+                 Some (longident_loc_to_string lid)
+             | _ -> None)
+        | _ -> None
+      ) pcsig_fields
+  | _ -> []
+
 (* Find a method by name in a class expression *)
 let rec find_method_in_class (class_expr : class_expr) (method_name : string) : class_field option =
   match class_expr.pcl_desc with

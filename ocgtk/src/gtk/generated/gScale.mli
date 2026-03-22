@@ -1,4 +1,5 @@
 class type scale_t = object
+    inherit GRange.range_t
     method add_mark : float -> Gtk_enums.positiontype -> string option -> unit
     method clear_marks : unit -> unit
     method get_digits : unit -> int

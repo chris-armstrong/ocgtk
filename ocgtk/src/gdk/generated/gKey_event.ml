@@ -1,4 +1,5 @@
 class type key_event_t = object
+    inherit GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.event_t
     method get_consumed_modifiers : unit -> Gdk_enums.modifiertype
     method get_keycode : unit -> int
     method get_keyval : unit -> int
@@ -11,6 +12,7 @@ end
 
 (* High-level class for KeyEvent *)
 class key_event (obj : Key_event.t) : key_event_t = object (self)
+  inherit GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.event (Obj.magic obj : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Event.t)
 
   method get_consumed_modifiers : unit -> Gdk_enums.modifiertype =
     fun () ->

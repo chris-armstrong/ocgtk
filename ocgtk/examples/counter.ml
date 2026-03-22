@@ -18,19 +18,21 @@ let _ =
   (* Create vertical box for layout *)
   let vbox_obj = Wrappers.Box.new_ `VERTICAL 10 in
   let vbox = new box vbox_obj in
-  window#set_child (Some (new widget (Obj.magic vbox#as_box)));
+  window#set_child (Some (vbox :> widget));
 
   (* Counter state *)
   let count = ref 0 in
 
   (* Create label to display count *)
-  let label_obj = Wrappers.Label.new_ (Some (Printf.sprintf "Count: %d" !count)) in
+  let label_obj =
+    Wrappers.Label.new_ (Some (Printf.sprintf "Count: %d" !count))
+  in
   vbox#append (new widget (Obj.magic label_obj));
 
   (* Create button to increment *)
   let button_obj = Wrappers.Button.new_with_label "Click Me!" in
   let button = new button button_obj in
-  vbox#append (new widget (Obj.magic button#as_button));
+  vbox#append (button :> widget);
   ignore
     (button#on_clicked ~callback:(fun () ->
          count := !count + 1;
@@ -39,7 +41,7 @@ let _ =
   (* Create reset button *)
   let reset_obj = Wrappers.Button.new_with_label "Reset" in
   let reset_btn = new button reset_obj in
-  vbox#append (new widget (Obj.magic reset_btn#as_button));
+  vbox#append (reset_btn :> widget);
   ignore
     (reset_btn#on_clicked ~callback:(fun () ->
          count := 0;

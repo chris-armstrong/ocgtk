@@ -1,4 +1,5 @@
 class type color_button_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gcolor_button_signals.color_button_signals
     method get_modal : unit -> bool
     method get_title : unit -> string

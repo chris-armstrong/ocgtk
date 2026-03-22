@@ -1,4 +1,5 @@
 class type cell_renderer_toggle_t = object
+    inherit GCell_renderer.cell_renderer_t
     inherit Gcell_renderer_toggle_signals.cell_renderer_toggle_signals
     method get_activatable : unit -> bool
     method get_active : unit -> bool

@@ -1,4 +1,5 @@
 class type shortcuts_shortcut_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     method accel_size_group : GSize_group.size_group_t
     method set_accel_size_group : GSize_group.size_group_t -> unit
     method accelerator : string
@@ -6,7 +7,6 @@ class type shortcuts_shortcut_t = object
     method action_name : string
     method set_action_name : string -> unit
     method direction : Gtk_enums.textdirection
-    method set_direction : Gtk_enums.textdirection -> unit
     method icon : Ocgtk_gio.Gio.icon_t
     method set_icon : Ocgtk_gio.Gio.icon_t -> unit
     method icon_set : bool

@@ -1,4 +1,5 @@
 class type cell_renderer_spin_t = object
+    inherit GCell_renderer_text.cell_renderer_text_t
     method adjustment : GAdjustment.adjustment_t
     method set_adjustment : GAdjustment.adjustment_t -> unit
     method climb_rate : float
@@ -10,6 +11,7 @@ end
 
 (* High-level class for CellRendererSpin *)
 class cell_renderer_spin (obj : Cell_renderer_spin.t) : cell_renderer_spin_t = object (self)
+  inherit GCell_renderer_text.cell_renderer_text (Obj.magic obj : Cell_renderer_text.t)
 
   method adjustment = new GAdjustment.adjustment (Cell_renderer_spin.get_adjustment obj)
   method set_adjustment : GAdjustment.adjustment_t -> unit  = fun v ->  Cell_renderer_spin.set_adjustment obj v#as_adjustment

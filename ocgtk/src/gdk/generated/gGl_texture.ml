@@ -1,10 +1,12 @@
 class type gl_texture_t = object
+    inherit GTexture.texture_t
     method release : unit -> unit
     method as_gl_texture : Gl_texture.t
 end
 
 (* High-level class for GLTexture *)
 class gl_texture (obj : Gl_texture.t) : gl_texture_t = object (self)
+  inherit GTexture.texture (Obj.magic obj : Texture.t)
 
   method release : unit -> unit =
     fun () ->

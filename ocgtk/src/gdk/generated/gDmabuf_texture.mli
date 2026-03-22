@@ -1,4 +1,5 @@
 class type dmabuf_texture_t = object
+    inherit GTexture.texture_t
     method as_dmabuf_texture : Dmabuf_texture.t
 end
 

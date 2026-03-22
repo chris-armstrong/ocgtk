@@ -1,4 +1,5 @@
 class type notebook_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gnotebook_signals.notebook_signals
     method append_page : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> int
     method append_page_menu : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> int

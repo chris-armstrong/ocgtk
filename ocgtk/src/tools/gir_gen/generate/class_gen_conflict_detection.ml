@@ -82,3 +82,41 @@ let detect_method_conflicts ~ctx ~class_name ~c_type ~methods : StringSet.t =
   let parent_chain = build_parent_chain ~ctx class_name in
   let parent_methods = get_parent_methods ~ctx ~parent_chain in
   List.fold_left ~init:StringSet.empty ~f:(process_child_against_parents ~ctx ~class_name ~c_type parent_methods) methods
+
+(* Get properties for a class *)
+let get_class_properties ~ctx class_name : gir_property list =
+  match List.find_opt ~f:(fun cls -> cls.class_name = class_name) ctx.classes with
+  | Some cls -> cls.properties
+  | None -> []
+
+(* Get OCaml method names generated for a property (getter/setter) *)
+let property_method_names (prop : gir_property) : string list =
+  let prop_snake = Utils.ocaml_property_name prop.prop_name in
+  let getter = prop_snake |> Utils.sanitize_identifier in
+  let setter = ("set_" ^ prop_snake) |> Utils.sanitize_identifier in
+  if prop.writable && not prop.construct_only then [getter; setter]
+  else [getter]
+
+(* Collect all OCaml method names inherited from ancestors (methods + properties).
+   Used to detect conflicts when inheriting from the parent class type. *)
+let collect_inherited_method_names ~ctx ~class_name : StringSet.t =
+  let parent_chain = build_parent_chain ~ctx class_name in
+  let names = StringSet.empty in
+  (* Add method names from all ancestors *)
+  let names = List.fold_left parent_chain ~init:names ~f:(fun acc parent_name ->
+    let methods = get_class_methods ~ctx parent_name in
+    let parent_c_type = match List.find_opt ~f:(fun cls -> cls.class_name = parent_name) ctx.classes with
+      | Some cls -> cls.c_type
+      | None -> ""
+    in
+    List.fold_left methods ~init:acc ~f:(fun acc meth ->
+      StringSet.add (ocaml_method_name ~class_name:parent_name ~c_type:parent_c_type meth) acc)
+  ) in
+  (* Add property-generated method names from all ancestors *)
+  let names = List.fold_left parent_chain ~init:names ~f:(fun acc parent_name ->
+    let props = get_class_properties ~ctx parent_name in
+    List.fold_left props ~init:acc ~f:(fun acc prop ->
+      List.fold_left (property_method_names prop) ~init:acc ~f:(fun acc n ->
+        StringSet.add n acc))
+  ) in
+  names

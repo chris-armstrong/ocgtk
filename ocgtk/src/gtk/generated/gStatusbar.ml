@@ -1,6 +1,7 @@
 (* Signal class defined in gstatusbar_signals.ml *)
 
 class type statusbar_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gstatusbar_signals.statusbar_signals
     method get_context_id : string -> int
     method pop : int -> unit
@@ -12,6 +13,7 @@ end
 
 (* High-level class for Statusbar *)
 class statusbar (obj : Statusbar.t) : statusbar_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gstatusbar_signals.statusbar_signals obj
 
   method get_context_id : string -> int =

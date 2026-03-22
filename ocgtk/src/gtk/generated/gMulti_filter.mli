@@ -1,4 +1,5 @@
 class type multi_filter_t = object
+    inherit GFilter.filter_t
     method append : GFilter.filter_t -> unit
     method remove : int -> unit
     method n_items : int

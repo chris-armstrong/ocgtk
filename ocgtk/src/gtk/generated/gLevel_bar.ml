@@ -1,6 +1,7 @@
 (* Signal class defined in glevel_bar_signals.ml *)
 
 class type level_bar_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Glevel_bar_signals.level_bar_signals
     method add_offset_value : string -> float -> unit
     method get_inverted : unit -> bool
@@ -19,6 +20,7 @@ end
 
 (* High-level class for LevelBar *)
 class level_bar (obj : Level_bar.t) : level_bar_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Glevel_bar_signals.level_bar_signals obj
 
   method add_offset_value : string -> float -> unit =

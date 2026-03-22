@@ -1,4 +1,5 @@
 class type menu_t = object
+    inherit GMenu_link_iter_and__menu_model.menu_model_t
     method append : string option -> string option -> unit
     method append_item : GMenu_item.menu_item_t -> unit
     method append_section : string option -> GMenu_link_iter_and__menu_model.menu_model_t -> unit

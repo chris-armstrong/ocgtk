@@ -1,4 +1,5 @@
 class type text_node_t = object
+    inherit GRender_node.render_node_t
     method get_color : unit -> Ocgtk_gdk.Gdk.rgb_a_t
     method get_font : unit -> Ocgtk_pango.Pango.font_t
     method get_num_glyphs : unit -> int
@@ -9,6 +10,7 @@ end
 
 (* High-level class for TextNode *)
 class text_node (obj : Text_node.t) : text_node_t = object (self)
+  inherit GRender_node.render_node (Obj.magic obj : Render_node.t)
 
   method get_color : unit -> Ocgtk_gdk.Gdk.rgb_a_t =
     fun () ->

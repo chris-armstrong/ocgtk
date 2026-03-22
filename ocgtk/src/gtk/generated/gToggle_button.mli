@@ -1,4 +1,5 @@
 class type toggle_button_t = object
+    inherit GButton.button_t
     inherit Gtoggle_button_signals.toggle_button_signals
     method get_active : unit -> bool
     method set_active : bool -> unit

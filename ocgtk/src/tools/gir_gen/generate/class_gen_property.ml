@@ -30,16 +30,18 @@ let generate_property_code ~ctx ~class_name ~methods  ~seen ~generate_getter ~ge
   if not (Filtering.should_generate_property ~ctx ~class_name ~methods  prop) then ("", seen)
   else
     let prop_snake = Utils.ocaml_property_name prop.prop_name in
-    if StringSet.mem prop_snake seen then ("", seen) else
-    let seen = StringSet.add prop_snake seen in
+    if StringSet.mem prop_snake seen && StringSet.mem ("set_" ^ prop_snake) seen then ("", seen) else
     let buf = Buffer.create 128 in
 
-    if prop.readable then begin
+    (* Generate getter if readable and not already seen *)
+    if prop.readable && not (StringSet.mem prop_snake seen) then begin
       let code = generate_getter prop prop_snake in
       Buffer.add_string buf code;
     end;
+    let seen = StringSet.add prop_snake seen in
 
-    if prop.writable && not prop.construct_only then begin
+    (* Generate setter if writable and not already seen *)
+    if prop.writable && not prop.construct_only && not (StringSet.mem ("set_" ^ prop_snake) seen) then begin
       let code = generate_setter prop prop_snake in
       Buffer.add_string buf code;
     end;

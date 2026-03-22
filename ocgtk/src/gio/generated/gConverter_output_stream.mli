@@ -1,4 +1,5 @@
 class type converter_output_stream_t = object
+    inherit GFilter_output_stream.filter_output_stream_t
     method get_converter : unit -> GConverter.converter_t
     method as_converter_output_stream : Converter_output_stream.t
 end

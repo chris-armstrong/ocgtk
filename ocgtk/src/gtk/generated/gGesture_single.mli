@@ -1,4 +1,5 @@
 class type gesture_single_t = object
+    inherit GGesture.gesture_t
     method get_button : unit -> int
     method get_current_button : unit -> int
     method get_current_sequence : unit -> Ocgtk_gdk.Gdk.event_sequence_t option
