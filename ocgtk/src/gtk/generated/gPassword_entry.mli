@@ -1,9 +1,9 @@
 class type password_entry_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gpassword_entry_signals.password_entry_signals
-    method get_extra_menu : unit -> Ocgtk_gio.Gio.menu_model_t option
+    method get_extra_menu : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option
     method get_show_peek_icon : unit -> bool
-    method set_extra_menu : Ocgtk_gio.Gio.menu_model_t option -> unit
+    method set_extra_menu : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit
     method set_show_peek_icon : bool -> unit
     method activates_default : bool
     method set_activates_default : bool -> unit
@@ -14,3 +14,4 @@ end
 
 class password_entry : Password_entry.t -> password_entry_t
 
+val new_ : unit -> password_entry_t

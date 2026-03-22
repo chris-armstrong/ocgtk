@@ -8,7 +8,7 @@ class type drop_down_t = object
     method get_factory : unit -> GList_item_factory.list_item_factory_t option
     method get_header_factory : unit -> GList_item_factory.list_item_factory_t option
     method get_list_factory : unit -> GList_item_factory.list_item_factory_t option
-    method get_model : unit -> Ocgtk_gio.Gio.list_model_t option
+    method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option
     method get_search_match_mode : unit -> Gtk_enums.stringfiltermatchmode
     method get_selected : unit -> int
     method get_show_arrow : unit -> bool
@@ -17,7 +17,7 @@ class type drop_down_t = object
     method set_factory : GList_item_factory.list_item_factory_t option -> unit
     method set_header_factory : GList_item_factory.list_item_factory_t option -> unit
     method set_list_factory : GList_item_factory.list_item_factory_t option -> unit
-    method set_model : Ocgtk_gio.Gio.list_model_t option -> unit
+    method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit
     method set_search_match_mode : Gtk_enums.stringfiltermatchmode -> unit
     method set_selected : int -> unit
     method set_show_arrow : bool -> unit
@@ -49,9 +49,9 @@ class drop_down (obj : Drop_down.t) : drop_down_t = object (self)
     fun () ->
       Option.map (fun ret -> new GList_item_factory.list_item_factory ret) (Drop_down.get_list_factory obj)
 
-  method get_model : unit -> Ocgtk_gio.Gio.list_model_t option =
+  method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gio.Gio.list_model ret) (Drop_down.get_model obj)
+      Option.map (fun ret -> new Ocgtk_gio.Gio.List_model.list_model ret) (Drop_down.get_model obj)
 
   method get_search_match_mode : unit -> Gtk_enums.stringfiltermatchmode =
     fun () ->
@@ -89,7 +89,7 @@ class drop_down (obj : Drop_down.t) : drop_down_t = object (self)
       let factory = Option.map (fun (c) -> c#as_list_item_factory) factory in
       (Drop_down.set_list_factory obj factory)
 
-  method set_model : Ocgtk_gio.Gio.list_model_t option -> unit =
+  method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit =
     fun model ->
       let model = Option.map (fun (c) -> c#as_list_model) model in
       (Drop_down.set_model obj model)
@@ -108,4 +108,12 @@ class drop_down (obj : Drop_down.t) : drop_down_t = object (self)
 
     method as_drop_down = obj
 end
+
+let new_ (model : Ocgtk_gio.Gio.List_model.list_model_t option) (expression : GExpression.expression_t option) : drop_down_t =
+  let model = Option.map (fun c -> c#as_list_model) model in
+  let expression = Option.map (fun c -> c#as_expression) expression in
+  new drop_down (Drop_down.new_ model expression)
+
+let new_from_strings (strings : string array) : drop_down_t =
+  new drop_down (Drop_down.new_from_strings strings)
 

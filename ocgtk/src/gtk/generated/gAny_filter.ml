@@ -10,3 +10,6 @@ class any_filter (obj : Any_filter.t) : any_filter_t = object (self)
     method as_any_filter = obj
 end
 
+let new_ () : any_filter_t =
+  new any_filter (Any_filter.new_ ())
+

@@ -5,3 +5,4 @@ end
 
 class fixed_layout : Fixed_layout.t -> fixed_layout_t
 
+val new_ : unit -> fixed_layout_t

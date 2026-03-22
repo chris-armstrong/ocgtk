@@ -40,3 +40,6 @@ class cell_renderer_progress (obj : Cell_renderer_progress.t) : cell_renderer_pr
     method as_cell_renderer_progress = obj
 end
 
+let new_ () : cell_renderer_progress_t =
+  new cell_renderer_progress (Cell_renderer_progress.new_ ())
+

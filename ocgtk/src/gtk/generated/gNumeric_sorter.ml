@@ -31,3 +31,7 @@ class numeric_sorter (obj : Numeric_sorter.t) : numeric_sorter_t = object (self)
     method as_numeric_sorter = obj
 end
 
+let new_ (expression : GExpression.expression_t option) : numeric_sorter_t =
+  let expression = Option.map (fun c -> c#as_expression) expression in
+  new numeric_sorter (Numeric_sorter.new_ expression)
+

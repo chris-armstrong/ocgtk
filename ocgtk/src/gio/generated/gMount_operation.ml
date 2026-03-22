@@ -107,3 +107,6 @@ class mount_operation (obj : Mount_operation.t) : mount_operation_t = object (se
     method as_mount_operation = obj
 end
 
+let new_ () : mount_operation_t =
+  new mount_operation (Mount_operation.new_ ())
+

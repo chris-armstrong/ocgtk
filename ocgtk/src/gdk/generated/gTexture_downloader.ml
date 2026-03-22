@@ -39,3 +39,7 @@ class texture_downloader (obj : Texture_downloader.t) : texture_downloader_t = o
     method as_texture_downloader = obj
 end
 
+let new_ (texture : GTexture.texture_t) : texture_downloader_t =
+  let texture = texture#as_texture in
+  new texture_downloader (Texture_downloader.new_ texture)
+

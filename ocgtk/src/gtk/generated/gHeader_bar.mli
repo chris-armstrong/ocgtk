@@ -14,3 +14,4 @@ end
 
 class header_bar : Header_bar.t -> header_bar_t
 
+val new_ : unit -> header_bar_t

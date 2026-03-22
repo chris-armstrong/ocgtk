@@ -33,3 +33,6 @@ class network_service (obj : Network_service.t) : network_service_t = object (se
     method as_network_service = obj
 end
 
+let new_ (service : string) (protocol : string) (domain : string) : network_service_t =
+  new network_service (Network_service.new_ service protocol domain)
+

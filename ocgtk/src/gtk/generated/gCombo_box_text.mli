@@ -14,3 +14,5 @@ end
 
 class combo_box_text : Combo_box_text.t -> combo_box_text_t
 
+val new_ : unit -> combo_box_text_t
+val new_with_entry : unit -> combo_box_text_t

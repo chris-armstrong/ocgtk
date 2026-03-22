@@ -26,3 +26,7 @@ class data_output_stream (obj : Data_output_stream.t) : data_output_stream_t = o
     method as_data_output_stream = obj
 end
 
+let new_ (base_stream : GOutput_stream.output_stream_t) : data_output_stream_t =
+  let base_stream = base_stream#as_output_stream in
+  new data_output_stream (Data_output_stream.new_ base_stream)
+

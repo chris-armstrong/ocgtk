@@ -5,3 +5,4 @@ end
 
 class shortcut_action : Shortcut_action.t -> shortcut_action_t
 
+val parse_string : string -> shortcut_action_t

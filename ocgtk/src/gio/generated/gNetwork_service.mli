@@ -9,3 +9,4 @@ end
 
 class network_service : Network_service.t -> network_service_t
 
+val new_ : string -> string -> string -> network_service_t

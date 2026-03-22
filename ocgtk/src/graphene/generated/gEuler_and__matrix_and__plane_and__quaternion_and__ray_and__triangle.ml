@@ -530,3 +530,21 @@ and triangle (obj : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__t
 
     method as_triangle = obj
 end
+let alloc () : euler_t =
+  new euler (Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.alloc ())
+
+let alloc () : matrix_t =
+  new matrix (Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.alloc ())
+
+let alloc () : quaternion_t =
+  new quaternion (Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Quaternion.alloc ())
+
+let alloc () : ray_t =
+  new ray (Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Ray.alloc ())
+
+let alloc () : plane_t =
+  new plane (Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.alloc ())
+
+let alloc () : triangle_t =
+  new triangle (Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Triangle.alloc ())
+

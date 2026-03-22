@@ -9,3 +9,4 @@ end
 
 class unix_socket_address : Unix_socket_address.t -> unix_socket_address_t
 
+val new_ : string -> unix_socket_address_t

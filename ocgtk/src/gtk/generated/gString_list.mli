@@ -11,3 +11,4 @@ end
 
 class string_list : String_list.t -> string_list_t
 
+val new_ : string array option -> string_list_t

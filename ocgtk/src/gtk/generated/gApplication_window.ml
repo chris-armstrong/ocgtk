@@ -36,3 +36,7 @@ class application_window (obj : Application_window.t) : application_window_t = o
     method as_application_window = obj
 end
 
+let new_ (application : GApplication_and__window_and__window_group.application_t) : application_window_t =
+  let application = application#as_application in
+  new application_window (Application_window.new_ application)
+

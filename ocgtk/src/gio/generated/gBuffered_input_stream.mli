@@ -6,3 +6,4 @@ end
 
 class buffered_input_stream : Buffered_input_stream.t -> buffered_input_stream_t
 
+val new_ : GInput_stream.input_stream_t -> buffered_input_stream_t

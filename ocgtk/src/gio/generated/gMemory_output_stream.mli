@@ -5,3 +5,4 @@ end
 
 class memory_output_stream : Memory_output_stream.t -> memory_output_stream_t
 
+val new_resizable : unit -> memory_output_stream_t

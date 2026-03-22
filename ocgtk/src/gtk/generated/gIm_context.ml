@@ -2,14 +2,14 @@
 
 class type im_context_t = object
     inherit Gim_context_signals.im_context_signals
-    method activate_osk : Ocgtk_gdk.Gdk.event_t option -> bool
+    method activate_osk : Ocgtk_gdk.Gdk.Event.event_t option -> bool
     method delete_surrounding : int -> int -> bool
-    method filter_keypress : Ocgtk_gdk.Gdk.event_t -> bool
+    method filter_keypress : Ocgtk_gdk.Gdk.Event.event_t -> bool
     method focus_in : unit -> unit
     method focus_out : unit -> unit
     method reset : unit -> unit
     method set_client_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
-    method set_cursor_location : Ocgtk_gdk.Gdk.rectangle_t -> unit
+    method set_cursor_location : Ocgtk_gdk.Gdk.Rectangle.rectangle_t -> unit
     method set_surrounding : string -> int -> int -> unit
     method set_surrounding_with_selection : string -> int -> int -> int -> unit
     method set_use_preedit : bool -> unit
@@ -24,7 +24,7 @@ end
 class im_context (obj : Im_context.t) : im_context_t = object (self)
   inherit Gim_context_signals.im_context_signals obj
 
-  method activate_osk : Ocgtk_gdk.Gdk.event_t option -> bool =
+  method activate_osk : Ocgtk_gdk.Gdk.Event.event_t option -> bool =
     fun event ->
       let event = Option.map (fun (c) -> c#as_event) event in
       (Im_context.activate_osk obj event)
@@ -33,7 +33,7 @@ class im_context (obj : Im_context.t) : im_context_t = object (self)
     fun offset n_chars ->
       (Im_context.delete_surrounding obj offset n_chars)
 
-  method filter_keypress : Ocgtk_gdk.Gdk.event_t -> bool =
+  method filter_keypress : Ocgtk_gdk.Gdk.Event.event_t -> bool =
     fun event ->
       let event = event#as_event in
       (Im_context.filter_keypress obj event)
@@ -55,7 +55,7 @@ class im_context (obj : Im_context.t) : im_context_t = object (self)
       let widget = Option.map (fun (c) -> c#as_widget) widget in
       (Im_context.set_client_widget obj widget)
 
-  method set_cursor_location : Ocgtk_gdk.Gdk.rectangle_t -> unit =
+  method set_cursor_location : Ocgtk_gdk.Gdk.Rectangle.rectangle_t -> unit =
     fun area ->
       let area = area#as_rectangle in
       (Im_context.set_cursor_location obj area)

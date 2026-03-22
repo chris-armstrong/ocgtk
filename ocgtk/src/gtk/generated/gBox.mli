@@ -18,3 +18,4 @@ end
 
 class box : Box.t -> box_t
 
+val new_ : Gtk_enums.orientation -> int -> box_t

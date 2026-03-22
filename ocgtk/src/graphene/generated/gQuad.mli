@@ -10,3 +10,4 @@ end
 
 class quad : Quad.t -> quad_t
 
+val alloc : unit -> quad_t

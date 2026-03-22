@@ -1,12 +1,12 @@
 class type video_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     method get_autoplay : unit -> bool
-    method get_file : unit -> Ocgtk_gio.Gio.file_t option
+    method get_file : unit -> Ocgtk_gio.Gio.File.file_t option
     method get_graphics_offload : unit -> Gtk_enums.graphicsoffloadenabled
     method get_loop : unit -> bool
     method get_media_stream : unit -> GMedia_stream.media_stream_t option
     method set_autoplay : bool -> unit
-    method set_file : Ocgtk_gio.Gio.file_t option -> unit
+    method set_file : Ocgtk_gio.Gio.File.file_t option -> unit
     method set_filename : string option -> unit
     method set_graphics_offload : Gtk_enums.graphicsoffloadenabled -> unit
     method set_loop : bool -> unit
@@ -23,9 +23,9 @@ class video (obj : Video.t) : video_t = object (self)
     fun () ->
       (Video.get_autoplay obj)
 
-  method get_file : unit -> Ocgtk_gio.Gio.file_t option =
+  method get_file : unit -> Ocgtk_gio.Gio.File.file_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gio.Gio.file ret) (Video.get_file obj)
+      Option.map (fun ret -> new Ocgtk_gio.Gio.File.file ret) (Video.get_file obj)
 
   method get_graphics_offload : unit -> Gtk_enums.graphicsoffloadenabled =
     fun () ->
@@ -43,7 +43,7 @@ class video (obj : Video.t) : video_t = object (self)
     fun autoplay ->
       (Video.set_autoplay obj autoplay)
 
-  method set_file : Ocgtk_gio.Gio.file_t option -> unit =
+  method set_file : Ocgtk_gio.Gio.File.file_t option -> unit =
     fun file ->
       let file = Option.map (fun (c) -> c#as_file) file in
       (Video.set_file obj file)
@@ -71,4 +71,21 @@ class video (obj : Video.t) : video_t = object (self)
 
     method as_video = obj
 end
+
+let new_ () : video_t =
+  new video (Video.new_ ())
+
+let new_for_file (file : Ocgtk_gio.Gio.File.file_t option) : video_t =
+  let file = Option.map (fun c -> c#as_file) file in
+  new video (Video.new_for_file file)
+
+let new_for_filename (filename : string option) : video_t =
+  new video (Video.new_for_filename filename)
+
+let new_for_media_stream (stream : GMedia_stream.media_stream_t option) : video_t =
+  let stream = Option.map (fun c -> c#as_media_stream) stream in
+  new video (Video.new_for_media_stream stream)
+
+let new_for_resource (resource_path : string option) : video_t =
+  new video (Video.new_for_resource resource_path)
 

@@ -8,3 +8,4 @@ end
 
 class pixbuf_simple_anim : Pixbuf_simple_anim.t -> pixbuf_simple_anim_t
 
+val new_ : int -> int -> float -> pixbuf_simple_anim_t

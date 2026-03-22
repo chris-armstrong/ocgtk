@@ -11,3 +11,4 @@ end
 
 class string_sorter : String_sorter.t -> string_sorter_t
 
+val new_ : GExpression.expression_t option -> string_sorter_t

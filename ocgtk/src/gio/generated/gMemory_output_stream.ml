@@ -10,3 +10,6 @@ class memory_output_stream (obj : Memory_output_stream.t) : memory_output_stream
     method as_memory_output_stream = obj
 end
 
+let new_resizable () : memory_output_stream_t =
+  new memory_output_stream (Memory_output_stream.new_resizable ())
+

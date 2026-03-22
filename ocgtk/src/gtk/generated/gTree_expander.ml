@@ -62,3 +62,6 @@ class tree_expander (obj : Tree_expander.t) : tree_expander_t = object (self)
     method as_tree_expander = obj
 end
 
+let new_ () : tree_expander_t =
+  new tree_expander (Tree_expander.new_ ())
+

@@ -25,3 +25,8 @@ class mask_node (obj : Mask_node.t) : mask_node_t = object (self)
     method as_mask_node = obj
 end
 
+let new_ (source : GRender_node.render_node_t) (mask : GRender_node.render_node_t) (mask_mode : Gsk_enums.maskmode) : mask_node_t =
+  let source = source#as_render_node in
+  let mask = mask#as_render_node in
+  new mask_node (Mask_node.new_ source mask mask_mode)
+

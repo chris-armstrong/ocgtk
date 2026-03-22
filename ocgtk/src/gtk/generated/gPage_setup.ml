@@ -103,3 +103,6 @@ class page_setup (obj : Page_setup.t) : page_setup_t = object (self)
     method as_page_setup = obj
 end
 
+let new_ () : page_setup_t =
+  new page_setup (Page_setup.new_ ())
+

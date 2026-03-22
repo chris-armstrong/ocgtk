@@ -10,3 +10,6 @@ class bin_layout (obj : Bin_layout.t) : bin_layout_t = object (self)
     method as_bin_layout = obj
 end
 
+let new_ () : bin_layout_t =
+  new bin_layout (Bin_layout.new_ ())
+

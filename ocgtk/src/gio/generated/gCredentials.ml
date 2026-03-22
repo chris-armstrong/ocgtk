@@ -34,3 +34,6 @@ class credentials (obj : Credentials.t) : credentials_t = object (self)
     method as_credentials = obj
 end
 
+let new_ () : credentials_t =
+  new credentials (Credentials.new_ ())
+

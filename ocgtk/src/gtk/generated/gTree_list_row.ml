@@ -1,6 +1,6 @@
 class type tree_list_row_t = object
     method get_child_row : int -> tree_list_row_t option
-    method get_children : unit -> Ocgtk_gio.Gio.list_model_t option
+    method get_children : unit -> Ocgtk_gio.Gio.List_model.list_model_t option
     method get_depth : unit -> int
     method get_expanded : unit -> bool
     method get_parent : unit -> tree_list_row_t option
@@ -18,9 +18,9 @@ class tree_list_row (obj : Tree_list_row.t) : tree_list_row_t = object (self)
     fun position ->
       Option.map (fun ret -> new tree_list_row ret) (Tree_list_row.get_child_row obj position)
 
-  method get_children : unit -> Ocgtk_gio.Gio.list_model_t option =
+  method get_children : unit -> Ocgtk_gio.Gio.List_model.list_model_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gio.Gio.list_model ret) (Tree_list_row.get_children obj)
+      Option.map (fun ret -> new Ocgtk_gio.Gio.List_model.list_model ret) (Tree_list_row.get_children obj)
 
   method get_depth : unit -> int =
     fun () ->

@@ -6,3 +6,4 @@ end
 
 class simple_action_group : Simple_action_group.t -> simple_action_group_t
 
+val new_ : unit -> simple_action_group_t

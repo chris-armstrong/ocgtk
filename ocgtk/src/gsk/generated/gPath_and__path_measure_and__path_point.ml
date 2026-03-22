@@ -2,11 +2,11 @@
 (* Combined classes for cyclic dependencies *)
 
 class type path_t = object
-    method in_fill : Ocgtk_graphene.Graphene.point_t -> Gsk_enums.fillrule -> bool
+    method in_fill : Ocgtk_graphene.Graphene.Point.point_t -> Gsk_enums.fillrule -> bool
     method is_closed : unit -> bool
     method is_empty : unit -> bool
     method ref : unit -> Path_and__path_measure_and__path_point.Path.t
-    method to_cairo : Ocgtk_cairo.Cairo.context_t -> unit
+    method to_cairo : Ocgtk_cairo.Cairo.Context.context_t -> unit
     method to_string : unit -> string
     method unref : unit -> unit
     method as_path : Path_and__path_measure_and__path_point.Path.t
@@ -34,7 +34,7 @@ end
 
 class path (obj : Path_and__path_measure_and__path_point.Path.t) : path_t = object (self)
 
-  method in_fill : Ocgtk_graphene.Graphene.point_t -> Gsk_enums.fillrule -> bool =
+  method in_fill : Ocgtk_graphene.Graphene.Point.point_t -> Gsk_enums.fillrule -> bool =
     fun point fill_rule ->
       let point = point#as_point in
       (Path_and__path_measure_and__path_point.Path.in_fill obj point fill_rule)
@@ -51,7 +51,7 @@ class path (obj : Path_and__path_measure_and__path_point.Path.t) : path_t = obje
     fun () ->
       (Path_and__path_measure_and__path_point.Path.ref obj)
 
-  method to_cairo : Ocgtk_cairo.Cairo.context_t -> unit =
+  method to_cairo : Ocgtk_cairo.Cairo.Context.context_t -> unit =
     fun cr ->
       let cr = cr#as_context in
       (Path_and__path_measure_and__path_point.Path.to_cairo obj cr)
@@ -120,3 +120,9 @@ and path_point (obj : Path_and__path_measure_and__path_point.Path_point.t) : pat
 
     method as_path_point = obj
 end
+let new_ (path : Path_and__path_measure_and__path_point.Path.t) : path_measure_t =
+  new path_measure (Path_and__path_measure_and__path_point.Path_measure.new_ path)
+
+let new_with_tolerance (path : Path_and__path_measure_and__path_point.Path.t) (tolerance : float) : path_measure_t =
+  new path_measure (Path_and__path_measure_and__path_point.Path_measure.new_with_tolerance path tolerance)
+

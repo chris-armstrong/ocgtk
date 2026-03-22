@@ -11,7 +11,7 @@ class type assistant_t = object
     method get_page_complete : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> bool
     method get_page_title : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> string
     method get_page_type : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> Gtk_enums.assistantpagetype
-    method get_pages : unit -> Ocgtk_gio.Gio.list_model_t
+    method get_pages : unit -> Ocgtk_gio.Gio.List_model.list_model_t
     method insert_page : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> int -> int
     method next_page : unit -> unit
     method prepend_page : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> int
@@ -29,3 +29,4 @@ end
 
 class assistant : Assistant.t -> assistant_t
 
+val new_ : unit -> assistant_t

@@ -20,3 +20,7 @@ class opacity_node (obj : Opacity_node.t) : opacity_node_t = object (self)
     method as_opacity_node = obj
 end
 
+let new_ (child : GRender_node.render_node_t) (opacity : float) : opacity_node_t =
+  let child = child#as_render_node in
+  new opacity_node (Opacity_node.new_ child opacity)
+

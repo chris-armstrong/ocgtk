@@ -24,3 +24,8 @@ class emblemed_icon (obj : Emblemed_icon.t) : emblemed_icon_t = object (self)
     method as_emblemed_icon = obj
 end
 
+let new_ (icon : GIcon.icon_t) (emblem : GEmblem.emblem_t option) : emblemed_icon_t =
+  let icon = icon#as_icon in
+  let emblem = Option.map (fun c -> c#as_emblem) emblem in
+  new emblemed_icon (Emblemed_icon.new_ icon emblem)
+

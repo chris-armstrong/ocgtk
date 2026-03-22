@@ -20,3 +20,7 @@ class debug_node (obj : Debug_node.t) : debug_node_t = object (self)
     method as_debug_node = obj
 end
 
+let new_ (child : GRender_node.render_node_t) (message : string) : debug_node_t =
+  let child = child#as_render_node in
+  new debug_node (Debug_node.new_ child message)
+

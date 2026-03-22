@@ -19,3 +19,7 @@ class widget_paintable (obj : Widget_paintable.t) : widget_paintable_t = object 
     method as_widget_paintable = obj
 end
 
+let new_ (widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option) : widget_paintable_t =
+  let widget = Option.map (fun c -> c#as_widget) widget in
+  new widget_paintable (Widget_paintable.new_ widget)
+

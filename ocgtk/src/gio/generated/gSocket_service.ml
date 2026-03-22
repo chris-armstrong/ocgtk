@@ -34,3 +34,6 @@ class socket_service (obj : Socket_service.t) : socket_service_t = object (self)
     method as_socket_service = obj
 end
 
+let new_ () : socket_service_t =
+  new socket_service (Socket_service.new_ ())
+

@@ -25,3 +25,7 @@ class stroke_node (obj : Stroke_node.t) : stroke_node_t = object (self)
     method as_stroke_node = obj
 end
 
+let new_ (child : GRender_node.render_node_t) (path : Path_and__path_measure_and__path_point.Path.t) (stroke : Stroke.t) : stroke_node_t =
+  let child = child#as_render_node in
+  new stroke_node (Stroke_node.new_ child path stroke)
+

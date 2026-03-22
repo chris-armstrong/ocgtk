@@ -28,3 +28,6 @@ class unix_socket_address (obj : Unix_socket_address.t) : unix_socket_address_t 
     method as_unix_socket_address = obj
 end
 
+let new_ (path : string) : unix_socket_address_t =
+  new unix_socket_address (Unix_socket_address.new_ path)
+

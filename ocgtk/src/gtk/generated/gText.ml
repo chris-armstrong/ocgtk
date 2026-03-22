@@ -4,32 +4,32 @@ class type text_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gtext_signals.text_signals
     method get_activates_default : unit -> bool
-    method get_attributes : unit -> Ocgtk_pango.Pango.attr_list_t option
+    method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option
     method get_buffer : unit -> GEntry_buffer.entry_buffer_t
     method get_enable_emoji_completion : unit -> bool
-    method get_extra_menu : unit -> Ocgtk_gio.Gio.menu_model_t option
+    method get_extra_menu : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option
     method get_input_hints : unit -> Gtk_enums.inputhints
     method get_input_purpose : unit -> Gtk_enums.inputpurpose
     method get_max_length : unit -> int
     method get_overwrite_mode : unit -> bool
     method get_placeholder_text : unit -> string option
     method get_propagate_text_width : unit -> bool
-    method get_tabs : unit -> Ocgtk_pango.Pango.tab_array_t option
+    method get_tabs : unit -> Ocgtk_pango.Pango.Tab_array.tab_array_t option
     method get_truncate_multiline : unit -> bool
     method get_visibility : unit -> bool
     method grab_focus_without_selecting : unit -> bool
     method set_activates_default : bool -> unit
-    method set_attributes : Ocgtk_pango.Pango.attr_list_t option -> unit
+    method set_attributes : Ocgtk_pango.Pango.Attr_list.attr_list_t option -> unit
     method set_buffer : GEntry_buffer.entry_buffer_t -> unit
     method set_enable_emoji_completion : bool -> unit
-    method set_extra_menu : Ocgtk_gio.Gio.menu_model_t option -> unit
+    method set_extra_menu : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit
     method set_input_hints : Gtk_enums.inputhints -> unit
     method set_input_purpose : Gtk_enums.inputpurpose -> unit
     method set_max_length : int -> unit
     method set_overwrite_mode : bool -> unit
     method set_placeholder_text : string option -> unit
     method set_propagate_text_width : bool -> unit
-    method set_tabs : Ocgtk_pango.Pango.tab_array_t option -> unit
+    method set_tabs : Ocgtk_pango.Pango.Tab_array.tab_array_t option -> unit
     method set_truncate_multiline : bool -> unit
     method set_visibility : bool -> unit
     method unset_invisible_char : unit -> unit
@@ -50,9 +50,9 @@ class text (obj : Text.t) : text_t = object (self)
     fun () ->
       (Text.get_activates_default obj)
 
-  method get_attributes : unit -> Ocgtk_pango.Pango.attr_list_t option =
+  method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_pango.Pango.attr_list ret) (Text.get_attributes obj)
+      Option.map (fun ret -> new Ocgtk_pango.Pango.Attr_list.attr_list ret) (Text.get_attributes obj)
 
   method get_buffer : unit -> GEntry_buffer.entry_buffer_t =
     fun () ->
@@ -62,9 +62,9 @@ class text (obj : Text.t) : text_t = object (self)
     fun () ->
       (Text.get_enable_emoji_completion obj)
 
-  method get_extra_menu : unit -> Ocgtk_gio.Gio.menu_model_t option =
+  method get_extra_menu : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gio.Gio.menu_model ret) (Text.get_extra_menu obj)
+      Option.map (fun ret -> new Ocgtk_gio.Gio.Menu_model.menu_model ret) (Text.get_extra_menu obj)
 
   method get_input_hints : unit -> Gtk_enums.inputhints =
     fun () ->
@@ -90,9 +90,9 @@ class text (obj : Text.t) : text_t = object (self)
     fun () ->
       (Text.get_propagate_text_width obj)
 
-  method get_tabs : unit -> Ocgtk_pango.Pango.tab_array_t option =
+  method get_tabs : unit -> Ocgtk_pango.Pango.Tab_array.tab_array_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_pango.Pango.tab_array ret) (Text.get_tabs obj)
+      Option.map (fun ret -> new Ocgtk_pango.Pango.Tab_array.tab_array ret) (Text.get_tabs obj)
 
   method get_truncate_multiline : unit -> bool =
     fun () ->
@@ -110,7 +110,7 @@ class text (obj : Text.t) : text_t = object (self)
     fun activates ->
       (Text.set_activates_default obj activates)
 
-  method set_attributes : Ocgtk_pango.Pango.attr_list_t option -> unit =
+  method set_attributes : Ocgtk_pango.Pango.Attr_list.attr_list_t option -> unit =
     fun attrs ->
       let attrs = Option.map (fun (c) -> c#as_attr_list) attrs in
       (Text.set_attributes obj attrs)
@@ -124,7 +124,7 @@ class text (obj : Text.t) : text_t = object (self)
     fun enable_emoji_completion ->
       (Text.set_enable_emoji_completion obj enable_emoji_completion)
 
-  method set_extra_menu : Ocgtk_gio.Gio.menu_model_t option -> unit =
+  method set_extra_menu : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit =
     fun model ->
       let model = Option.map (fun (c) -> c#as_menu_model) model in
       (Text.set_extra_menu obj model)
@@ -153,7 +153,7 @@ class text (obj : Text.t) : text_t = object (self)
     fun propagate_text_width ->
       (Text.set_propagate_text_width obj propagate_text_width)
 
-  method set_tabs : Ocgtk_pango.Pango.tab_array_t option -> unit =
+  method set_tabs : Ocgtk_pango.Pango.Tab_array.tab_array_t option -> unit =
     fun tabs ->
       let tabs = Option.map (fun (c) -> c#as_tab_array) tabs in
       (Text.set_tabs obj tabs)
@@ -180,4 +180,11 @@ class text (obj : Text.t) : text_t = object (self)
 
     method as_text = obj
 end
+
+let new_ () : text_t =
+  new text (Text.new_ ())
+
+let new_with_buffer (buffer : GEntry_buffer.entry_buffer_t) : text_t =
+  let buffer = buffer#as_entry_buffer in
+  new text (Text.new_with_buffer buffer)
 

@@ -24,3 +24,6 @@ class event_controller_motion (obj : Event_controller_motion.t) : event_controll
     method as_event_controller_motion = obj
 end
 
+let new_ () : event_controller_motion_t =
+  new event_controller_motion (Event_controller_motion.new_ ())
+

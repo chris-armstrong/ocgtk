@@ -30,3 +30,6 @@ class shortcut_label (obj : Shortcut_label.t) : shortcut_label_t = object (self)
     method as_shortcut_label = obj
 end
 
+let new_ (accelerator : string) : shortcut_label_t =
+  new shortcut_label (Shortcut_label.new_ accelerator)
+

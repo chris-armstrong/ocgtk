@@ -25,3 +25,8 @@ class cross_fade_node (obj : Cross_fade_node.t) : cross_fade_node_t = object (se
     method as_cross_fade_node = obj
 end
 
+let new_ (start : GRender_node.render_node_t) (end_ : GRender_node.render_node_t) (progress : float) : cross_fade_node_t =
+  let start = start#as_render_node in
+  let end_ = end_#as_render_node in
+  new cross_fade_node (Cross_fade_node.new_ start end_ progress)
+

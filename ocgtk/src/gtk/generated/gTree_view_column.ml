@@ -246,3 +246,10 @@ class tree_view_column (obj : Tree_view_column.t) : tree_view_column_t = object 
     method as_tree_view_column = obj
 end
 
+let new_ () : tree_view_column_t =
+  new tree_view_column (Tree_view_column.new_ ())
+
+let new_with_area (area : GCell_area_and__cell_area_context.cell_area_t) : tree_view_column_t =
+  let area = area#as_cell_area in
+  new tree_view_column (Tree_view_column.new_with_area area)
+

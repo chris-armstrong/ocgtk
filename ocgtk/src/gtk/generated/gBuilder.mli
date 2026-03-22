@@ -11,3 +11,6 @@ end
 
 class builder : Builder.t -> builder_t
 
+val new_ : unit -> builder_t
+val new_from_file : string -> builder_t
+val new_from_resource : string -> builder_t

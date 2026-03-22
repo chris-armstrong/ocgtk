@@ -1,7 +1,7 @@
 class type tree_list_model_t = object
     method get_autoexpand : unit -> bool
     method get_child_row : int -> GTree_list_row.tree_list_row_t option
-    method get_model : unit -> Ocgtk_gio.Gio.list_model_t
+    method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t
     method get_passthrough : unit -> bool
     method get_row : int -> GTree_list_row.tree_list_row_t option
     method set_autoexpand : bool -> unit

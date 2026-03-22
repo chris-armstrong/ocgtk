@@ -14,3 +14,6 @@ class event_controller_legacy (obj : Event_controller_legacy.t) : event_controll
     method as_event_controller_legacy = obj
 end
 
+let new_ () : event_controller_legacy_t =
+  new event_controller_legacy (Event_controller_legacy.new_ ())
+

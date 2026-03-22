@@ -14,3 +14,5 @@ end
 
 class font_button : Font_button.t -> font_button_t
 
+val new_ : unit -> font_button_t
+val new_with_font : string -> font_button_t

@@ -7,3 +7,4 @@ end
 
 class opacity_node : Opacity_node.t -> opacity_node_t
 
+val new_ : GRender_node.render_node_t -> float -> opacity_node_t

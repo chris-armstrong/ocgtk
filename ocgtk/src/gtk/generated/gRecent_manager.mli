@@ -14,3 +14,4 @@ end
 
 class recent_manager : Recent_manager.t -> recent_manager_t
 
+val new_ : unit -> recent_manager_t

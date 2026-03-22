@@ -9,3 +9,4 @@ end
 
 class data_input_stream : Data_input_stream.t -> data_input_stream_t
 
+val new_ : GInput_stream.input_stream_t -> data_input_stream_t

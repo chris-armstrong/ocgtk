@@ -38,3 +38,6 @@ class scroll_info (obj : Scroll_info.t) : scroll_info_t = object (self)
     method as_scroll_info = obj
 end
 
+let new_ () : scroll_info_t =
+  new scroll_info (Scroll_info.new_ ())
+

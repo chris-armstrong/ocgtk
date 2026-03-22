@@ -18,3 +18,4 @@ end
 
 class subprocess_launcher : Subprocess_launcher.t -> subprocess_launcher_t
 
+val new_ : Gio_enums.subprocessflags -> subprocess_launcher_t

@@ -24,3 +24,4 @@ end
 
 class mount_operation : Mount_operation.t -> mount_operation_t
 
+val new_ : unit -> mount_operation_t

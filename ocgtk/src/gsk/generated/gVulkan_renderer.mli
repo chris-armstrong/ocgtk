@@ -5,3 +5,4 @@ end
 
 class vulkan_renderer : Vulkan_renderer.t -> vulkan_renderer_t
 
+val new_ : unit -> vulkan_renderer_t

@@ -3,7 +3,7 @@
 class type gesture_stylus_t = object
     inherit GGesture_single.gesture_single_t
     inherit Ggesture_stylus_signals.gesture_stylus_signals
-    method get_device_tool : unit -> Ocgtk_gdk.Gdk.device_tool_t option
+    method get_device_tool : unit -> Ocgtk_gdk.Gdk.Device_tool.device_tool_t option
     method get_stylus_only : unit -> bool
     method set_stylus_only : bool -> unit
     method as_gesture_stylus : Gesture_stylus.t
@@ -14,9 +14,9 @@ class gesture_stylus (obj : Gesture_stylus.t) : gesture_stylus_t = object (self)
   inherit GGesture_single.gesture_single (Obj.magic obj : Gesture_single.t)
   inherit Ggesture_stylus_signals.gesture_stylus_signals obj
 
-  method get_device_tool : unit -> Ocgtk_gdk.Gdk.device_tool_t option =
+  method get_device_tool : unit -> Ocgtk_gdk.Gdk.Device_tool.device_tool_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gdk.Gdk.device_tool ret) (Gesture_stylus.get_device_tool obj)
+      Option.map (fun ret -> new Ocgtk_gdk.Gdk.Device_tool.device_tool ret) (Gesture_stylus.get_device_tool obj)
 
   method get_stylus_only : unit -> bool =
     fun () ->
@@ -28,4 +28,7 @@ class gesture_stylus (obj : Gesture_stylus.t) : gesture_stylus_t = object (self)
 
     method as_gesture_stylus = obj
 end
+
+let new_ () : gesture_stylus_t =
+  new gesture_stylus (Gesture_stylus.new_ ())
 

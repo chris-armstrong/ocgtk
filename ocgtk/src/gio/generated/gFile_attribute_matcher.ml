@@ -48,3 +48,6 @@ class file_attribute_matcher (obj : File_attribute_matcher.t) : file_attribute_m
     method as_file_attribute_matcher = obj
 end
 
+let new_ (attributes : string) : file_attribute_matcher_t =
+  new file_attribute_matcher (File_attribute_matcher.new_ attributes)
+

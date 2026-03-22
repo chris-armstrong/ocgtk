@@ -10,3 +10,4 @@ end
 
 class test_d_bus : Test_d_bus.t -> test_d_bus_t
 
+val new_ : Gio_enums.testdbusflags -> test_d_bus_t

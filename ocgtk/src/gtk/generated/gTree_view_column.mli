@@ -51,3 +51,5 @@ end
 
 class tree_view_column : Tree_view_column.t -> tree_view_column_t
 
+val new_ : unit -> tree_view_column_t
+val new_with_area : GCell_area_and__cell_area_context.cell_area_t -> tree_view_column_t

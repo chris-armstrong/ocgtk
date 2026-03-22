@@ -20,3 +20,5 @@ end
 
 class expander : Expander.t -> expander_t
 
+val new_ : string option -> expander_t
+val new_with_mnemonic : string option -> expander_t

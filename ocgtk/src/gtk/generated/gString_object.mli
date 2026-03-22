@@ -5,3 +5,4 @@ end
 
 class string_object : String_object.t -> string_object_t
 
+val new_ : string -> string_object_t

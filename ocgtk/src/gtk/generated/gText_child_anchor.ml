@@ -13,3 +13,9 @@ class text_child_anchor (obj : Text_child_anchor.t) : text_child_anchor_t = obje
     method as_text_child_anchor = obj
 end
 
+let new_ () : text_child_anchor_t =
+  new text_child_anchor (Text_child_anchor.new_ ())
+
+let new_with_replacement (character : string) : text_child_anchor_t =
+  new text_child_anchor (Text_child_anchor.new_with_replacement character)
+

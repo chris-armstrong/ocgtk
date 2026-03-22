@@ -44,3 +44,6 @@ class d_bus_object_skeleton (obj : D_bus_object_skeleton.t) : d_bus_object_skele
     method as_d_bus_object_skeleton = obj
 end
 
+let new_ (object_path : string) : d_bus_object_skeleton_t =
+  new d_bus_object_skeleton (D_bus_object_skeleton.new_ object_path)
+

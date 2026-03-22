@@ -15,3 +15,6 @@ class volume_button (obj : Volume_button.t) : volume_button_t = object (self)
     method as_volume_button = obj
 end
 
+let new_ () : volume_button_t =
+  new volume_button (Volume_button.new_ ())
+

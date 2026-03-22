@@ -2,9 +2,9 @@ class type drop_target_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller_t
     inherit Gdrop_target_signals.drop_target_signals
     method get_actions : unit -> Ocgtk_gdk.Gdk.dragaction
-    method get_current_drop : unit -> Ocgtk_gdk.Gdk.drop_t option
-    method get_drop : unit -> Ocgtk_gdk.Gdk.drop_t option
-    method get_formats : unit -> Ocgtk_gdk.Gdk.content_formats_t option
+    method get_current_drop : unit -> Ocgtk_gdk.Gdk.Drop.drop_t option
+    method get_drop : unit -> Ocgtk_gdk.Gdk.Drop.drop_t option
+    method get_formats : unit -> Ocgtk_gdk.Gdk.Content_formats.content_formats_t option
     method get_preload : unit -> bool
     method reject : unit -> unit
     method set_actions : Ocgtk_gdk.Gdk.dragaction -> unit

@@ -10,3 +10,4 @@ end
 
 class event_controller_key : Event_controller_key.t -> event_controller_key_t
 
+val new_ : unit -> event_controller_key_t

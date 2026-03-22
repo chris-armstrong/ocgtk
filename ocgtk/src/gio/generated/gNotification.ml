@@ -43,3 +43,6 @@ class notification (obj : Notification.t) : notification_t = object (self)
     method as_notification = obj
 end
 
+let new_ (title : string) : notification_t =
+  new notification (Notification.new_ title)
+

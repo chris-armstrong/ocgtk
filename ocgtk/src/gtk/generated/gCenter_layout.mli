@@ -17,3 +17,4 @@ end
 
 class center_layout : Center_layout.t -> center_layout_t
 
+val new_ : unit -> center_layout_t

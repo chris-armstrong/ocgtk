@@ -8,3 +8,4 @@ end
 
 class size_group : Size_group.t -> size_group_t
 
+val new_ : Gtk_enums.sizegroupmode -> size_group_t

@@ -8,3 +8,4 @@ end
 
 class zlib_compressor : Zlib_compressor.t -> zlib_compressor_t
 
+val new_ : Gio_enums.zlibcompressorformat -> int -> zlib_compressor_t

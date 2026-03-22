@@ -7,3 +7,4 @@ end
 
 class emblemed_icon : Emblemed_icon.t -> emblemed_icon_t
 
+val new_ : GIcon.icon_t -> GEmblem.emblem_t option -> emblemed_icon_t

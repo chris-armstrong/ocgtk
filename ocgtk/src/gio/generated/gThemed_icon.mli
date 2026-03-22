@@ -9,3 +9,6 @@ end
 
 class themed_icon : Themed_icon.t -> themed_icon_t
 
+val new_ : string -> themed_icon_t
+val new_from_names : string array -> int -> themed_icon_t
+val new_with_default_fallbacks : string -> themed_icon_t

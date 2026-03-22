@@ -57,3 +57,6 @@ class frame (obj : Frame.t) : frame_t = object (self)
     method as_frame = obj
 end
 
+let new_ (label : string option) : frame_t =
+  new frame (Frame.new_ label)
+

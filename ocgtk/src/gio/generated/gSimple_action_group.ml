@@ -18,3 +18,6 @@ class simple_action_group (obj : Simple_action_group.t) : simple_action_group_t 
     method as_simple_action_group = obj
 end
 
+let new_ () : simple_action_group_t =
+  new simple_action_group (Simple_action_group.new_ ())
+

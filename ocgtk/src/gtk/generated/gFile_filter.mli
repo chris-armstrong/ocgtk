@@ -15,3 +15,4 @@ end
 
 class file_filter : File_filter.t -> file_filter_t
 
+val new_ : unit -> file_filter_t

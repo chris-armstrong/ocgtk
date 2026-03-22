@@ -13,3 +13,7 @@ class file_icon (obj : File_icon.t) : file_icon_t = object (self)
     method as_file_icon = obj
 end
 
+let new_ (file : GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume.file_t) : file_icon_t =
+  let file = file#as_file in
+  new file_icon (File_icon.new_ file)
+

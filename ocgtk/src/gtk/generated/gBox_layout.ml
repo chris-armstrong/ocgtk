@@ -50,3 +50,6 @@ class box_layout (obj : Box_layout.t) : box_layout_t = object (self)
     method as_box_layout = obj
 end
 
+let new_ (orientation : Gtk_enums.orientation) : box_layout_t =
+  new box_layout (Box_layout.new_ orientation)
+

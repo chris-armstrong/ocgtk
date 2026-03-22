@@ -61,3 +61,6 @@ class overlay (obj : Overlay.t) : overlay_t = object (self)
     method as_overlay = obj
 end
 
+let new_ () : overlay_t =
+  new overlay (Overlay.new_ ())
+

@@ -124,3 +124,9 @@ and sphere (obj : Box_and__sphere.Sphere.t) : sphere_t = object (self)
 
     method as_sphere = obj
 end
+let alloc () : box_t =
+  new box (Box_and__sphere.Box.alloc ())
+
+let alloc () : sphere_t =
+  new sphere (Box_and__sphere.Sphere.alloc ())
+

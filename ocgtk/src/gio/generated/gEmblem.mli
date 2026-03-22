@@ -6,3 +6,5 @@ end
 
 class emblem : Emblem.t -> emblem_t
 
+val new_ : GIcon.icon_t -> emblem_t
+val new_with_origin : GIcon.icon_t -> Gio_enums.emblemorigin -> emblem_t

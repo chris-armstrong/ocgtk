@@ -20,3 +20,6 @@ class im_multicontext (obj : Im_multicontext.t) : im_multicontext_t = object (se
     method as_im_multicontext = obj
 end
 
+let new_ () : im_multicontext_t =
+  new im_multicontext (Im_multicontext.new_ ())
+

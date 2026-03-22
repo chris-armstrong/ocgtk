@@ -10,3 +10,4 @@ end
 
 class texture_downloader : Texture_downloader.t -> texture_downloader_t
 
+val new_ : GTexture.texture_t -> texture_downloader_t

@@ -10,3 +10,4 @@ end
 
 class pixbuf_loader : Pixbuf_loader.t -> pixbuf_loader_t
 
+val new_ : unit -> pixbuf_loader_t

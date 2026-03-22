@@ -29,3 +29,6 @@ class event_controller_scroll (obj : Event_controller_scroll.t) : event_controll
     method as_event_controller_scroll = obj
 end
 
+let new_ (flags : Gtk_enums.eventcontrollerscrollflags) : event_controller_scroll_t =
+  new event_controller_scroll (Event_controller_scroll.new_ flags)
+

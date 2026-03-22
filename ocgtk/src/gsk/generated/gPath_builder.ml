@@ -1,9 +1,9 @@
 class type path_builder_t = object
-    method add_cairo_path : Ocgtk_cairo.Cairo.path_t -> unit
-    method add_circle : Ocgtk_graphene.Graphene.point_t -> float -> unit
-    method add_layout : Ocgtk_pango.Pango.layout_t -> unit
+    method add_cairo_path : Ocgtk_cairo.Cairo.Path.path_t -> unit
+    method add_circle : Ocgtk_graphene.Graphene.Point.point_t -> float -> unit
+    method add_layout : Ocgtk_pango.Pango.Layout.layout_t -> unit
     method add_path : Path_and__path_measure_and__path_point.Path.t -> unit
-    method add_rect : Ocgtk_graphene.Graphene.rect_t -> unit
+    method add_rect : Ocgtk_graphene.Graphene.Rect.rect_t -> unit
     method add_reverse_path : Path_and__path_measure_and__path_point.Path.t -> unit
     method add_rounded_rect : Rounded_rect.t -> unit
     method add_segment : Path_and__path_measure_and__path_point.Path.t -> Path_and__path_measure_and__path_point.Path_point.t -> Path_and__path_measure_and__path_point.Path_point.t -> unit
@@ -11,7 +11,7 @@ class type path_builder_t = object
     method close : unit -> unit
     method conic_to : float -> float -> float -> float -> float -> unit
     method cubic_to : float -> float -> float -> float -> float -> float -> unit
-    method get_current_point : unit -> Ocgtk_graphene.Graphene.point_t
+    method get_current_point : unit -> Ocgtk_graphene.Graphene.Point.point_t
     method html_arc_to : float -> float -> float -> float -> float -> unit
     method line_to : float -> float -> unit
     method move_to : float -> float -> unit
@@ -34,17 +34,17 @@ end
 (* High-level class for PathBuilder *)
 class path_builder (obj : Path_builder.t) : path_builder_t = object (self)
 
-  method add_cairo_path : Ocgtk_cairo.Cairo.path_t -> unit =
+  method add_cairo_path : Ocgtk_cairo.Cairo.Path.path_t -> unit =
     fun path ->
       let path = path#as_path in
       (Path_builder.add_cairo_path obj path)
 
-  method add_circle : Ocgtk_graphene.Graphene.point_t -> float -> unit =
+  method add_circle : Ocgtk_graphene.Graphene.Point.point_t -> float -> unit =
     fun center radius ->
       let center = center#as_point in
       (Path_builder.add_circle obj center radius)
 
-  method add_layout : Ocgtk_pango.Pango.layout_t -> unit =
+  method add_layout : Ocgtk_pango.Pango.Layout.layout_t -> unit =
     fun layout ->
       let layout = layout#as_layout in
       (Path_builder.add_layout obj layout)
@@ -53,7 +53,7 @@ class path_builder (obj : Path_builder.t) : path_builder_t = object (self)
     fun path ->
       (Path_builder.add_path obj path)
 
-  method add_rect : Ocgtk_graphene.Graphene.rect_t -> unit =
+  method add_rect : Ocgtk_graphene.Graphene.Rect.rect_t -> unit =
     fun rect ->
       let rect = rect#as_rect in
       (Path_builder.add_rect obj rect)
@@ -86,9 +86,9 @@ class path_builder (obj : Path_builder.t) : path_builder_t = object (self)
     fun x1 y1 x2 y2 x3 y3 ->
       (Path_builder.cubic_to obj x1 y1 x2 y2 x3 y3)
 
-  method get_current_point : unit -> Ocgtk_graphene.Graphene.point_t =
+  method get_current_point : unit -> Ocgtk_graphene.Graphene.Point.point_t =
     fun () ->
-      new  Ocgtk_graphene.Graphene.point(Path_builder.get_current_point obj)
+      new  Ocgtk_graphene.Graphene.Point.point(Path_builder.get_current_point obj)
 
   method html_arc_to : float -> float -> float -> float -> float -> unit =
     fun x1 y1 x2 y2 radius ->
@@ -156,4 +156,7 @@ class path_builder (obj : Path_builder.t) : path_builder_t = object (self)
 
     method as_path_builder = obj
 end
+
+let new_ () : path_builder_t =
+  new path_builder (Path_builder.new_ ())
 

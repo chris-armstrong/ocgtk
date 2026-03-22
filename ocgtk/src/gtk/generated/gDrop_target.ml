@@ -4,9 +4,9 @@ class type drop_target_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller_t
     inherit Gdrop_target_signals.drop_target_signals
     method get_actions : unit -> Ocgtk_gdk.Gdk.dragaction
-    method get_current_drop : unit -> Ocgtk_gdk.Gdk.drop_t option
-    method get_drop : unit -> Ocgtk_gdk.Gdk.drop_t option
-    method get_formats : unit -> Ocgtk_gdk.Gdk.content_formats_t option
+    method get_current_drop : unit -> Ocgtk_gdk.Gdk.Drop.drop_t option
+    method get_drop : unit -> Ocgtk_gdk.Gdk.Drop.drop_t option
+    method get_formats : unit -> Ocgtk_gdk.Gdk.Content_formats.content_formats_t option
     method get_preload : unit -> bool
     method reject : unit -> unit
     method set_actions : Ocgtk_gdk.Gdk.dragaction -> unit
@@ -23,17 +23,17 @@ class drop_target (obj : Drop_target.t) : drop_target_t = object (self)
     fun () ->
       (Drop_target.get_actions obj)
 
-  method get_current_drop : unit -> Ocgtk_gdk.Gdk.drop_t option =
+  method get_current_drop : unit -> Ocgtk_gdk.Gdk.Drop.drop_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gdk.Gdk.drop ret) (Drop_target.get_current_drop obj)
+      Option.map (fun ret -> new Ocgtk_gdk.Gdk.Drop.drop ret) (Drop_target.get_current_drop obj)
 
-  method get_drop : unit -> Ocgtk_gdk.Gdk.drop_t option =
+  method get_drop : unit -> Ocgtk_gdk.Gdk.Drop.drop_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gdk.Gdk.drop ret) (Drop_target.get_drop obj)
+      Option.map (fun ret -> new Ocgtk_gdk.Gdk.Drop.drop ret) (Drop_target.get_drop obj)
 
-  method get_formats : unit -> Ocgtk_gdk.Gdk.content_formats_t option =
+  method get_formats : unit -> Ocgtk_gdk.Gdk.Content_formats.content_formats_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gdk.Gdk.content_formats ret) (Drop_target.get_formats obj)
+      Option.map (fun ret -> new Ocgtk_gdk.Gdk.Content_formats.content_formats ret) (Drop_target.get_formats obj)
 
   method get_preload : unit -> bool =
     fun () ->

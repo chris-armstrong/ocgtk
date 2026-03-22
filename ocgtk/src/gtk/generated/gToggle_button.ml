@@ -35,3 +35,12 @@ class toggle_button (obj : Toggle_button.t) : toggle_button_t = object (self)
     method as_toggle_button = obj
 end
 
+let new_ () : toggle_button_t =
+  new toggle_button (Toggle_button.new_ ())
+
+let new_with_label (label : string) : toggle_button_t =
+  new toggle_button (Toggle_button.new_with_label label)
+
+let new_with_mnemonic (label : string) : toggle_button_t =
+  new toggle_button (Toggle_button.new_with_mnemonic label)
+

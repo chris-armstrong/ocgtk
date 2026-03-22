@@ -7,3 +7,4 @@ end
 
 class d_bus_object_proxy : D_bus_object_proxy.t -> d_bus_object_proxy_t
 
+val new_ : GD_bus_connection.d_bus_connection_t -> string -> d_bus_object_proxy_t

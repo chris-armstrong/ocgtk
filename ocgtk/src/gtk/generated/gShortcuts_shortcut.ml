@@ -7,8 +7,8 @@ class type shortcuts_shortcut_t = object
     method action_name : string
     method set_action_name : string -> unit
     method direction : Gtk_enums.textdirection
-    method icon : Ocgtk_gio.Gio.icon_t
-    method set_icon : Ocgtk_gio.Gio.icon_t -> unit
+    method icon : Ocgtk_gio.Gio.Icon.icon_t
+    method set_icon : Ocgtk_gio.Gio.Icon.icon_t -> unit
     method icon_set : bool
     method set_icon_set : bool -> unit
     method shortcut_type : Gtk_enums.shortcuttype
@@ -39,8 +39,8 @@ class shortcuts_shortcut (obj : Shortcuts_shortcut.t) : shortcuts_shortcut_t = o
 
   method direction = Shortcuts_shortcut.get_direction obj
 
-  method icon = new Ocgtk_gio.Gio.icon (Shortcuts_shortcut.get_icon obj)
-  method set_icon : Ocgtk_gio.Gio.icon_t -> unit  = fun v ->  Shortcuts_shortcut.set_icon obj v#as_icon
+  method icon = new Ocgtk_gio.Gio.Icon.icon (Shortcuts_shortcut.get_icon obj)
+  method set_icon : Ocgtk_gio.Gio.Icon.icon_t -> unit  = fun v ->  Shortcuts_shortcut.set_icon obj v#as_icon
 
   method icon_set = Shortcuts_shortcut.get_icon_set obj
   method set_icon_set v =  Shortcuts_shortcut.set_icon_set obj v

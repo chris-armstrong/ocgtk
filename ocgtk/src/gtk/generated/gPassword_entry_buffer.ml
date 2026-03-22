@@ -10,3 +10,6 @@ class password_entry_buffer (obj : Password_entry_buffer.t) : password_entry_buf
     method as_password_entry_buffer = obj
 end
 
+let new_ () : password_entry_buffer_t =
+  new password_entry_buffer (Password_entry_buffer.new_ ())
+

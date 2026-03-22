@@ -71,3 +71,12 @@ class check_button (obj : Check_button.t) : check_button_t = object (self)
     method as_check_button = obj
 end
 
+let new_ () : check_button_t =
+  new check_button (Check_button.new_ ())
+
+let new_with_label (label : string option) : check_button_t =
+  new check_button (Check_button.new_with_label label)
+
+let new_with_mnemonic (label : string option) : check_button_t =
+  new check_button (Check_button.new_with_mnemonic label)
+

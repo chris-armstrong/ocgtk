@@ -49,3 +49,6 @@ class gl_shader (obj : Gl_shader.t) : gl_shader_t = object (self)
     method as_gl_shader = obj
 end
 
+let new_from_resource (resource_path : string) : gl_shader_t =
+  new gl_shader (Gl_shader.new_from_resource resource_path)
+

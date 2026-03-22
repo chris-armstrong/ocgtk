@@ -17,3 +17,4 @@ end
 
 class grid_layout : Grid_layout.t -> grid_layout_t
 
+val new_ : unit -> grid_layout_t

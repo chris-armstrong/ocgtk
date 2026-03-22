@@ -21,3 +21,6 @@ class window_handle (obj : Window_handle.t) : window_handle_t = object (self)
     method as_window_handle = obj
 end
 
+let new_ () : window_handle_t =
+  new window_handle (Window_handle.new_ ())
+

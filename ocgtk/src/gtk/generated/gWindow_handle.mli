@@ -7,3 +7,4 @@ end
 
 class window_handle : Window_handle.t -> window_handle_t
 
+val new_ : unit -> window_handle_t

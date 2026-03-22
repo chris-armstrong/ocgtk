@@ -40,3 +40,6 @@ class flow_box_child (obj : Flow_box_child.t) : flow_box_child_t = object (self)
     method as_flow_box_child = obj
 end
 
+let new_ () : flow_box_child_t =
+  new flow_box_child (Flow_box_child.new_ ())
+

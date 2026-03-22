@@ -38,3 +38,6 @@ class point (obj : Point.t) : point_t = object (self)
     method as_point = obj
 end
 
+let alloc () : point_t =
+  new point (Point.alloc ())
+

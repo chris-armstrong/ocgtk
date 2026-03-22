@@ -20,3 +20,6 @@ class container_node (obj : Container_node.t) : container_node_t = object (self)
     method as_container_node = obj
 end
 
+let new_ (children : Render_node.t array) (n_children : int) : container_node_t =
+  new container_node (Container_node.new_ children n_children)
+

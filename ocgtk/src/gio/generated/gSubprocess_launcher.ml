@@ -76,3 +76,6 @@ class subprocess_launcher (obj : Subprocess_launcher.t) : subprocess_launcher_t 
     method as_subprocess_launcher = obj
 end
 
+let new_ (flags : Gio_enums.subprocessflags) : subprocess_launcher_t =
+  new subprocess_launcher (Subprocess_launcher.new_ flags)
+

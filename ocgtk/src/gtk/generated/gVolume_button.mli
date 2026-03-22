@@ -7,3 +7,4 @@ end
 
 class volume_button : Volume_button.t -> volume_button_t
 
+val new_ : unit -> volume_button_t

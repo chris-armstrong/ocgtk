@@ -11,3 +11,4 @@ end
 
 class socket_service : Socket_service.t -> socket_service_t
 
+val new_ : unit -> socket_service_t

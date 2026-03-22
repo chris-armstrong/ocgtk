@@ -35,3 +35,4 @@ end
 class app_info : App_info_and__app_launch_context.App_info.t -> app_info_t
 
 and app_launch_context : App_info_and__app_launch_context.App_launch_context.t -> app_launch_context_t
+val new_ : unit -> app_launch_context_t

@@ -27,3 +27,6 @@ class socket_listener (obj : Socket_listener.t) : socket_listener_t = object (se
     method as_socket_listener = obj
 end
 
+let new_ () : socket_listener_t =
+  new socket_listener (Socket_listener.new_ ())
+

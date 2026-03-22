@@ -54,3 +54,6 @@ class toplevel_layout (obj : Toplevel_layout.t) : toplevel_layout_t = object (se
     method as_toplevel_layout = obj
 end
 
+let new_ () : toplevel_layout_t =
+  new toplevel_layout (Toplevel_layout.new_ ())
+

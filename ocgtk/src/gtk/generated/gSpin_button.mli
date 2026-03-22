@@ -30,3 +30,5 @@ end
 
 class spin_button : Spin_button.t -> spin_button_t
 
+val new_ : GAdjustment.adjustment_t option -> float -> int -> spin_button_t
+val new_with_range : float -> float -> float -> spin_button_t

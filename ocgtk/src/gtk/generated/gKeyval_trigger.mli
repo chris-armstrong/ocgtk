@@ -7,3 +7,4 @@ end
 
 class keyval_trigger : Keyval_trigger.t -> keyval_trigger_t
 
+val new_ : int -> Ocgtk_gdk.Gdk.modifiertype -> keyval_trigger_t

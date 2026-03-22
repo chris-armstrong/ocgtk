@@ -38,3 +38,7 @@ class tree_model_sort (obj : Tree_model_sort.t) : tree_model_sort_t = object (se
     method as_tree_model_sort = obj
 end
 
+let new_with_model (child_model : GTree_model.tree_model_t) : tree_model_sort_t =
+  let child_model = child_model#as_tree_model in
+  new tree_model_sort (Tree_model_sort.new_with_model child_model)
+

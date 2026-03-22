@@ -6,3 +6,4 @@ end
 
 class gesture_click : Gesture_click.t -> gesture_click_t
 
+val new_ : unit -> gesture_click_t

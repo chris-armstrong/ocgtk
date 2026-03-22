@@ -5,3 +5,4 @@ end
 
 class font_chooser_dialog : Font_chooser_dialog.t -> font_chooser_dialog_t
 
+val new_ : string option -> GApplication_and__window_and__window_group.window_t option -> font_chooser_dialog_t

@@ -14,3 +14,6 @@ class emoji_chooser (obj : Emoji_chooser.t) : emoji_chooser_t = object (self)
     method as_emoji_chooser = obj
 end
 
+let new_ () : emoji_chooser_t =
+  new emoji_chooser (Emoji_chooser.new_ ())
+

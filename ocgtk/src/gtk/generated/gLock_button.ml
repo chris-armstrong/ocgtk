@@ -1,7 +1,7 @@
 class type lock_button_t = object
     inherit GButton.button_t
-    method get_permission : unit -> Ocgtk_gio.Gio.permission_t option
-    method set_permission : Ocgtk_gio.Gio.permission_t option -> unit
+    method get_permission : unit -> Ocgtk_gio.Gio.Permission.permission_t option
+    method set_permission : Ocgtk_gio.Gio.Permission.permission_t option -> unit
     method text_lock : string
     method set_text_lock : string -> unit
     method text_unlock : string
@@ -19,11 +19,11 @@ end
 class lock_button (obj : Lock_button.t) : lock_button_t = object (self)
   inherit GButton.button (Obj.magic obj : Button.t)
 
-  method get_permission : unit -> Ocgtk_gio.Gio.permission_t option =
+  method get_permission : unit -> Ocgtk_gio.Gio.Permission.permission_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gio.Gio.permission ret) (Lock_button.get_permission obj)
+      Option.map (fun ret -> new Ocgtk_gio.Gio.Permission.permission ret) (Lock_button.get_permission obj)
 
-  method set_permission : Ocgtk_gio.Gio.permission_t option -> unit =
+  method set_permission : Ocgtk_gio.Gio.Permission.permission_t option -> unit =
     fun permission ->
       let permission = Option.map (fun (c) -> c#as_permission) permission in
       (Lock_button.set_permission obj permission)
@@ -45,4 +45,8 @@ class lock_button (obj : Lock_button.t) : lock_button_t = object (self)
 
     method as_lock_button = obj
 end
+
+let new_ (permission : Ocgtk_gio.Gio.Permission.permission_t option) : lock_button_t =
+  let permission = Option.map (fun c -> c#as_permission) permission in
+  new lock_button (Lock_button.new_ permission)
 

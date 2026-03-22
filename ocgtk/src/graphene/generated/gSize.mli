@@ -8,3 +8,4 @@ end
 
 class size : Size.t -> size_t
 
+val alloc : unit -> size_t

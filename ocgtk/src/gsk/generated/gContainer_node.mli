@@ -7,3 +7,4 @@ end
 
 class container_node : Container_node.t -> container_node_t
 
+val new_ : Render_node.t array -> int -> container_node_t

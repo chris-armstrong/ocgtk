@@ -21,3 +21,7 @@ class tree_list_row_sorter (obj : Tree_list_row_sorter.t) : tree_list_row_sorter
     method as_tree_list_row_sorter = obj
 end
 
+let new_ (sorter : GSorter.sorter_t option) : tree_list_row_sorter_t =
+  let sorter = Option.map (fun c -> c#as_sorter) sorter in
+  new tree_list_row_sorter (Tree_list_row_sorter.new_ sorter)
+

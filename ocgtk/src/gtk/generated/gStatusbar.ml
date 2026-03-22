@@ -39,3 +39,6 @@ class statusbar (obj : Statusbar.t) : statusbar_t = object (self)
     method as_statusbar = obj
 end
 
+let new_ () : statusbar_t =
+  new statusbar (Statusbar.new_ ())
+

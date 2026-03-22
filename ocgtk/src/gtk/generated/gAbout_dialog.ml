@@ -10,7 +10,7 @@ class type about_dialog_t = object
     method get_copyright : unit -> string option
     method get_documenters : unit -> string array
     method get_license : unit -> string option
-    method get_logo : unit -> Ocgtk_gdk.Gdk.paintable_t option
+    method get_logo : unit -> Ocgtk_gdk.Gdk.Paintable.paintable_t option
     method get_logo_icon_name : unit -> string option
     method get_program_name : unit -> string option
     method get_system_information : unit -> string option
@@ -25,7 +25,7 @@ class type about_dialog_t = object
     method set_copyright : string option -> unit
     method set_documenters : string array -> unit
     method set_license : string option -> unit
-    method set_logo : Ocgtk_gdk.Gdk.paintable_t option -> unit
+    method set_logo : Ocgtk_gdk.Gdk.Paintable.paintable_t option -> unit
     method set_logo_icon_name : string option -> unit
     method set_program_name : string option -> unit
     method set_system_information : string option -> unit
@@ -70,9 +70,9 @@ class about_dialog (obj : About_dialog.t) : about_dialog_t = object (self)
     fun () ->
       (About_dialog.get_license obj)
 
-  method get_logo : unit -> Ocgtk_gdk.Gdk.paintable_t option =
+  method get_logo : unit -> Ocgtk_gdk.Gdk.Paintable.paintable_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gdk.Gdk.paintable ret) (About_dialog.get_logo obj)
+      Option.map (fun ret -> new Ocgtk_gdk.Gdk.Paintable.paintable ret) (About_dialog.get_logo obj)
 
   method get_logo_icon_name : unit -> string option =
     fun () ->
@@ -130,7 +130,7 @@ class about_dialog (obj : About_dialog.t) : about_dialog_t = object (self)
     fun license ->
       (About_dialog.set_license obj license)
 
-  method set_logo : Ocgtk_gdk.Gdk.paintable_t option -> unit =
+  method set_logo : Ocgtk_gdk.Gdk.Paintable.paintable_t option -> unit =
     fun logo ->
       let logo = Option.map (fun (c) -> c#as_paintable) logo in
       (About_dialog.set_logo obj logo)
@@ -169,4 +169,7 @@ class about_dialog (obj : About_dialog.t) : about_dialog_t = object (self)
 
     method as_about_dialog = obj
 end
+
+let new_ () : about_dialog_t =
+  new about_dialog (About_dialog.new_ ())
 

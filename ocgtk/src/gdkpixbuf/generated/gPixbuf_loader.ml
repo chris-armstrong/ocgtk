@@ -37,3 +37,6 @@ class pixbuf_loader (obj : Pixbuf_loader.t) : pixbuf_loader_t = object (self)
     method as_pixbuf_loader = obj
 end
 
+let new_ () : pixbuf_loader_t =
+  new pixbuf_loader (Pixbuf_loader.new_ ())
+

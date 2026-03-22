@@ -38,3 +38,6 @@ class quad (obj : Quad.t) : quad_t = object (self)
     method as_quad = obj
 end
 
+let alloc () : quad_t =
+  new quad (Quad.alloc ())
+

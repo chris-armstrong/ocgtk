@@ -21,3 +21,6 @@ class stack_switcher (obj : Stack_switcher.t) : stack_switcher_t = object (self)
     method as_stack_switcher = obj
 end
 
+let new_ () : stack_switcher_t =
+  new stack_switcher (Stack_switcher.new_ ())
+

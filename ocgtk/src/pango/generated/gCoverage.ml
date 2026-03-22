@@ -39,3 +39,6 @@ class coverage (obj : Coverage.t) : coverage_t = object (self)
     method as_coverage = obj
 end
 
+let new_ () : coverage_t =
+  new coverage (Coverage.new_ ())
+

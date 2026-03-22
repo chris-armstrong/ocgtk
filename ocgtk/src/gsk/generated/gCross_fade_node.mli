@@ -8,3 +8,4 @@ end
 
 class cross_fade_node : Cross_fade_node.t -> cross_fade_node_t
 
+val new_ : GRender_node.render_node_t -> GRender_node.render_node_t -> float -> cross_fade_node_t

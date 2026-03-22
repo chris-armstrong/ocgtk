@@ -15,3 +15,6 @@ class signal_action (obj : Signal_action.t) : signal_action_t = object (self)
     method as_signal_action = obj
 end
 
+let new_ (signal_name : string) : signal_action_t =
+  new signal_action (Signal_action.new_ signal_name)
+

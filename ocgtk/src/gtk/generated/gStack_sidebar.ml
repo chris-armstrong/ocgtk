@@ -21,3 +21,6 @@ class stack_sidebar (obj : Stack_sidebar.t) : stack_sidebar_t = object (self)
     method as_stack_sidebar = obj
 end
 
+let new_ () : stack_sidebar_t =
+  new stack_sidebar (Stack_sidebar.new_ ())
+

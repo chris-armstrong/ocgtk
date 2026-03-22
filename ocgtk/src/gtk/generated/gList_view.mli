@@ -20,3 +20,4 @@ end
 
 class list_view : List_view.t -> list_view_t
 
+val new_ : GSelection_model.selection_model_t option -> GList_item_factory.list_item_factory_t option -> list_view_t

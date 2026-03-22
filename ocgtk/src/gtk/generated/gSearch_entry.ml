@@ -70,3 +70,6 @@ class search_entry (obj : Search_entry.t) : search_entry_t = object (self)
     method as_search_entry = obj
 end
 
+let new_ () : search_entry_t =
+  new search_entry (Search_entry.new_ ())
+

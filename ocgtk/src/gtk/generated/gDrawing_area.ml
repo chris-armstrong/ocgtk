@@ -34,3 +34,6 @@ class drawing_area (obj : Drawing_area.t) : drawing_area_t = object (self)
     method as_drawing_area = obj
 end
 
+let new_ () : drawing_area_t =
+  new drawing_area (Drawing_area.new_ ())
+

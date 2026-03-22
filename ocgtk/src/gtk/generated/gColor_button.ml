@@ -39,3 +39,10 @@ class color_button (obj : Color_button.t) : color_button_t = object (self)
     method as_color_button = obj
 end
 
+let new_ () : color_button_t =
+  new color_button (Color_button.new_ ())
+
+let new_with_rgba (rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t) : color_button_t =
+  let rgba = rgba#as_rgb_a in
+  new color_button (Color_button.new_with_rgba rgba)
+

@@ -24,3 +24,6 @@ class multi_sorter (obj : Multi_sorter.t) : multi_sorter_t = object (self)
     method as_multi_sorter = obj
 end
 
+let new_ () : multi_sorter_t =
+  new multi_sorter (Multi_sorter.new_ ())
+

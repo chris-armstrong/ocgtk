@@ -30,3 +30,8 @@ class shortcut (obj : Shortcut.t) : shortcut_t = object (self)
     method as_shortcut = obj
 end
 
+let new_ (trigger : GShortcut_trigger.shortcut_trigger_t option) (action : GShortcut_action.shortcut_action_t option) : shortcut_t =
+  let trigger = Option.map (fun c -> c#as_shortcut_trigger) trigger in
+  let action = Option.map (fun c -> c#as_shortcut_action) action in
+  new shortcut (Shortcut.new_ trigger action)
+

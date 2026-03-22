@@ -34,3 +34,6 @@ class switch (obj : Switch.t) : switch_t = object (self)
     method as_switch = obj
 end
 
+let new_ () : switch_t =
+  new switch (Switch.new_ ())
+

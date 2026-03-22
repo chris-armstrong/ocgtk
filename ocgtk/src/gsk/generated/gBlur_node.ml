@@ -20,3 +20,7 @@ class blur_node (obj : Blur_node.t) : blur_node_t = object (self)
     method as_blur_node = obj
 end
 
+let new_ (child : GRender_node.render_node_t) (radius : float) : blur_node_t =
+  let child = child#as_render_node in
+  new blur_node (Blur_node.new_ child radius)
+

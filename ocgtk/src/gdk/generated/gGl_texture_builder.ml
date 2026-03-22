@@ -4,7 +4,7 @@ class type gl_texture_builder_t = object
     method get_has_mipmap : unit -> bool
     method get_height : unit -> int
     method get_id : unit -> int
-    method get_update_region : unit -> Ocgtk_cairo.Cairo.region_t option
+    method get_update_region : unit -> Ocgtk_cairo.Cairo.Region.region_t option
     method get_update_texture : unit -> GTexture.texture_t option
     method get_width : unit -> int
     method set_context : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.gl_context_t option -> unit
@@ -12,7 +12,7 @@ class type gl_texture_builder_t = object
     method set_has_mipmap : bool -> unit
     method set_height : int -> unit
     method set_id : int -> unit
-    method set_update_region : Ocgtk_cairo.Cairo.region_t option -> unit
+    method set_update_region : Ocgtk_cairo.Cairo.Region.region_t option -> unit
     method set_update_texture : GTexture.texture_t option -> unit
     method set_width : int -> unit
     method as_gl_texture_builder : Gl_texture_builder.t
@@ -41,9 +41,9 @@ class gl_texture_builder (obj : Gl_texture_builder.t) : gl_texture_builder_t = o
     fun () ->
       (Gl_texture_builder.get_id obj)
 
-  method get_update_region : unit -> Ocgtk_cairo.Cairo.region_t option =
+  method get_update_region : unit -> Ocgtk_cairo.Cairo.Region.region_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_cairo.Cairo.region ret) (Gl_texture_builder.get_update_region obj)
+      Option.map (fun ret -> new Ocgtk_cairo.Cairo.Region.region ret) (Gl_texture_builder.get_update_region obj)
 
   method get_update_texture : unit -> GTexture.texture_t option =
     fun () ->
@@ -74,7 +74,7 @@ class gl_texture_builder (obj : Gl_texture_builder.t) : gl_texture_builder_t = o
     fun id ->
       (Gl_texture_builder.set_id obj id)
 
-  method set_update_region : Ocgtk_cairo.Cairo.region_t option -> unit =
+  method set_update_region : Ocgtk_cairo.Cairo.Region.region_t option -> unit =
     fun region ->
       let region = Option.map (fun (c) -> c#as_region) region in
       (Gl_texture_builder.set_update_region obj region)
@@ -90,4 +90,7 @@ class gl_texture_builder (obj : Gl_texture_builder.t) : gl_texture_builder_t = o
 
     method as_gl_texture_builder = obj
 end
+
+let new_ () : gl_texture_builder_t =
+  new gl_texture_builder (Gl_texture_builder.new_ ())
 

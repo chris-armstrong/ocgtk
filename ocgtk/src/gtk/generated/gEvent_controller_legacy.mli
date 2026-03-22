@@ -6,3 +6,4 @@ end
 
 class event_controller_legacy : Event_controller_legacy.t -> event_controller_legacy_t
 
+val new_ : unit -> event_controller_legacy_t

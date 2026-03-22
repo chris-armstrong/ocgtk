@@ -9,3 +9,5 @@ end
 
 class texture : Texture.t -> texture_t
 
+val new_for_pixbuf : Ocgtk_gdkpixbuf.GdkPixbuf.Pixbuf.pixbuf_t -> texture_t
+val new_from_resource : string -> texture_t

@@ -2,8 +2,8 @@
 (* Combined classes for cyclic dependencies *)
 
 class type event_controller_t = object
-    method get_current_event : unit -> Ocgtk_gdk.Gdk.event_t option
-    method get_current_event_device : unit -> Ocgtk_gdk.Gdk.device_t option
+    method get_current_event : unit -> Ocgtk_gdk.Gdk.Event.event_t option
+    method get_current_event_device : unit -> Ocgtk_gdk.Gdk.Device.device_t option
     method get_current_event_state : unit -> Ocgtk_gdk.Gdk.modifiertype
     method get_name : unit -> string option
     method get_propagation_limit : unit -> Gtk_enums.propagationlimit
@@ -33,7 +33,7 @@ and layout_manager_t = object
 end
 
 and root_t = object
-    method get_display : unit -> Ocgtk_gdk.Gdk.display_t
+    method get_display : unit -> Ocgtk_gdk.Gdk.Display.display_t
     method get_focus : unit -> widget_t option
     method set_focus : widget_t option -> unit
     method as_root : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Root.t
@@ -47,12 +47,12 @@ and widget_t = object
     method add_controller : event_controller_t -> unit
     method add_css_class : string -> unit
     method add_mnemonic_label : widget_t -> unit
-    method allocate : int -> int -> int -> Ocgtk_gsk.Gsk.transform_t option -> unit
+    method allocate : int -> int -> int -> Ocgtk_gsk.Gsk.Transform.transform_t option -> unit
     method child_focus : Gtk_enums.directiontype -> bool
     method compute_expand : Gtk_enums.orientation -> bool
     method contains : float -> float -> bool
-    method create_pango_context : unit -> Ocgtk_pango.Pango.context_t
-    method create_pango_layout : string option -> Ocgtk_pango.Pango.layout_t
+    method create_pango_context : unit -> Ocgtk_pango.Pango.Context.context_t
+    method create_pango_layout : string option -> Ocgtk_pango.Pango.Layout.layout_t
     method drag_check_threshold : int -> int -> int -> int -> bool
     method error_bell : unit -> unit
     method get_allocated_baseline : unit -> int
@@ -62,19 +62,19 @@ and widget_t = object
     method get_can_focus : unit -> bool
     method get_can_target : unit -> bool
     method get_child_visible : unit -> bool
-    method get_clipboard : unit -> Ocgtk_gdk.Gdk.clipboard_t
+    method get_clipboard : unit -> Ocgtk_gdk.Gdk.Clipboard.clipboard_t
     method get_css_classes : unit -> string array
     method get_css_name : unit -> string
-    method get_cursor : unit -> Ocgtk_gdk.Gdk.cursor_t option
+    method get_cursor : unit -> Ocgtk_gdk.Gdk.Cursor.cursor_t option
     method get_direction : unit -> Gtk_enums.textdirection
-    method get_display : unit -> Ocgtk_gdk.Gdk.display_t
+    method get_display : unit -> Ocgtk_gdk.Gdk.Display.display_t
     method get_first_child : unit -> widget_t option
     method get_focus_child : unit -> widget_t option
     method get_focus_on_click : unit -> bool
     method get_focusable : unit -> bool
-    method get_font_map : unit -> Ocgtk_pango.Pango.font_map_t option
-    method get_font_options : unit -> Ocgtk_cairo.Cairo.font_options_t option
-    method get_frame_clock : unit -> Ocgtk_gdk.Gdk.frame_clock_t option
+    method get_font_map : unit -> Ocgtk_pango.Pango.Font_map.font_map_t option
+    method get_font_options : unit -> Ocgtk_cairo.Cairo.Font_options.font_options_t option
+    method get_frame_clock : unit -> Ocgtk_gdk.Gdk.Frame_clock.frame_clock_t option
     method get_halign : unit -> Gtk_enums.align
     method get_has_tooltip : unit -> bool
     method get_height : unit -> int
@@ -92,10 +92,10 @@ and widget_t = object
     method get_next_sibling : unit -> widget_t option
     method get_opacity : unit -> float
     method get_overflow : unit -> Gtk_enums.overflow
-    method get_pango_context : unit -> Ocgtk_pango.Pango.context_t
+    method get_pango_context : unit -> Ocgtk_pango.Pango.Context.context_t
     method get_parent : unit -> widget_t option
     method get_prev_sibling : unit -> widget_t option
-    method get_primary_clipboard : unit -> Ocgtk_gdk.Gdk.clipboard_t
+    method get_primary_clipboard : unit -> Ocgtk_gdk.Gdk.Clipboard.clipboard_t
     method get_realized : unit -> bool
     method get_receives_default : unit -> bool
     method get_request_mode : unit -> Gtk_enums.sizerequestmode
@@ -121,7 +121,7 @@ and widget_t = object
     method hide : unit -> unit
     method in_destruction : unit -> bool
     method init_template : unit -> unit
-    method insert_action_group : string -> Ocgtk_gio.Gio.action_group_t option -> unit
+    method insert_action_group : string -> Ocgtk_gio.Gio.Action_group.action_group_t option -> unit
     method insert_after : widget_t -> widget_t option -> unit
     method insert_before : widget_t -> widget_t option -> unit
     method is_ancestor : widget_t -> bool
@@ -132,8 +132,8 @@ and widget_t = object
     method keynav_failed : Gtk_enums.directiontype -> bool
     method map : unit -> unit
     method mnemonic_activate : bool -> bool
-    method observe_children : unit -> Ocgtk_gio.Gio.list_model_t
-    method observe_controllers : unit -> Ocgtk_gio.Gio.list_model_t
+    method observe_children : unit -> Ocgtk_gio.Gio.List_model.list_model_t
+    method observe_controllers : unit -> Ocgtk_gio.Gio.List_model.list_model_t
     method pick : float -> float -> Gtk_enums.pickflags -> widget_t option
     method queue_allocate : unit -> unit
     method queue_draw : unit -> unit
@@ -147,14 +147,14 @@ and widget_t = object
     method set_can_target : bool -> unit
     method set_child_visible : bool -> unit
     method set_css_classes : string array -> unit
-    method set_cursor : Ocgtk_gdk.Gdk.cursor_t option -> unit
+    method set_cursor : Ocgtk_gdk.Gdk.Cursor.cursor_t option -> unit
     method set_cursor_from_name : string option -> unit
     method set_direction : Gtk_enums.textdirection -> unit
     method set_focus_child : widget_t option -> unit
     method set_focus_on_click : bool -> unit
     method set_focusable : bool -> unit
-    method set_font_map : Ocgtk_pango.Pango.font_map_t option -> unit
-    method set_font_options : Ocgtk_cairo.Cairo.font_options_t option -> unit
+    method set_font_map : Ocgtk_pango.Pango.Font_map.font_map_t option -> unit
+    method set_font_options : Ocgtk_cairo.Cairo.Font_options.font_options_t option -> unit
     method set_halign : Gtk_enums.align -> unit
     method set_has_tooltip : bool -> unit
     method set_hexpand : bool -> unit
@@ -196,13 +196,13 @@ end
 
 class event_controller (obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t) : event_controller_t = object (self)
 
-  method get_current_event : unit -> Ocgtk_gdk.Gdk.event_t option =
+  method get_current_event : unit -> Ocgtk_gdk.Gdk.Event.event_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gdk.Gdk.event ret) (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.get_current_event obj)
+      Option.map (fun ret -> new Ocgtk_gdk.Gdk.Event.event ret) (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.get_current_event obj)
 
-  method get_current_event_device : unit -> Ocgtk_gdk.Gdk.device_t option =
+  method get_current_event_device : unit -> Ocgtk_gdk.Gdk.Device.device_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gdk.Gdk.device ret) (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.get_current_event_device obj)
+      Option.map (fun ret -> new Ocgtk_gdk.Gdk.Device.device ret) (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.get_current_event_device obj)
 
   method get_current_event_state : unit -> Ocgtk_gdk.Gdk.modifiertype =
     fun () ->
@@ -289,9 +289,9 @@ end
 
 and root (obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Root.t) : root_t = object (self)
 
-  method get_display : unit -> Ocgtk_gdk.Gdk.display_t =
+  method get_display : unit -> Ocgtk_gdk.Gdk.Display.display_t =
     fun () ->
-      new  Ocgtk_gdk.Gdk.display(Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Root.get_display obj)
+      new  Ocgtk_gdk.Gdk.Display.display(Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Root.get_display obj)
 
   method get_focus : unit -> widget_t option =
     fun () ->
@@ -336,7 +336,7 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
       let label = label#as_widget in
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.add_mnemonic_label obj label)
 
-  method allocate : int -> int -> int -> Ocgtk_gsk.Gsk.transform_t option -> unit =
+  method allocate : int -> int -> int -> Ocgtk_gsk.Gsk.Transform.transform_t option -> unit =
     fun width height baseline transform ->
       let transform = Option.map (fun (c) -> c#as_transform) transform in
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.allocate obj width height baseline transform)
@@ -353,13 +353,13 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
     fun x y ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.contains obj x y)
 
-  method create_pango_context : unit -> Ocgtk_pango.Pango.context_t =
+  method create_pango_context : unit -> Ocgtk_pango.Pango.Context.context_t =
     fun () ->
-      new  Ocgtk_pango.Pango.context(Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.create_pango_context obj)
+      new  Ocgtk_pango.Pango.Context.context(Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.create_pango_context obj)
 
-  method create_pango_layout : string option -> Ocgtk_pango.Pango.layout_t =
+  method create_pango_layout : string option -> Ocgtk_pango.Pango.Layout.layout_t =
     fun text ->
-      new  Ocgtk_pango.Pango.layout(Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.create_pango_layout obj text)
+      new  Ocgtk_pango.Pango.Layout.layout(Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.create_pango_layout obj text)
 
   method drag_check_threshold : int -> int -> int -> int -> bool =
     fun start_x start_y current_x current_y ->
@@ -397,9 +397,9 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
     fun () ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_child_visible obj)
 
-  method get_clipboard : unit -> Ocgtk_gdk.Gdk.clipboard_t =
+  method get_clipboard : unit -> Ocgtk_gdk.Gdk.Clipboard.clipboard_t =
     fun () ->
-      new  Ocgtk_gdk.Gdk.clipboard(Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_clipboard obj)
+      new  Ocgtk_gdk.Gdk.Clipboard.clipboard(Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_clipboard obj)
 
   method get_css_classes : unit -> string array =
     fun () ->
@@ -409,17 +409,17 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
     fun () ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_css_name obj)
 
-  method get_cursor : unit -> Ocgtk_gdk.Gdk.cursor_t option =
+  method get_cursor : unit -> Ocgtk_gdk.Gdk.Cursor.cursor_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gdk.Gdk.cursor ret) (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_cursor obj)
+      Option.map (fun ret -> new Ocgtk_gdk.Gdk.Cursor.cursor ret) (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_cursor obj)
 
   method get_direction : unit -> Gtk_enums.textdirection =
     fun () ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_direction obj)
 
-  method get_display : unit -> Ocgtk_gdk.Gdk.display_t =
+  method get_display : unit -> Ocgtk_gdk.Gdk.Display.display_t =
     fun () ->
-      new  Ocgtk_gdk.Gdk.display(Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_display obj)
+      new  Ocgtk_gdk.Gdk.Display.display(Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_display obj)
 
   method get_first_child : unit -> widget_t option =
     fun () ->
@@ -437,17 +437,17 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
     fun () ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_focusable obj)
 
-  method get_font_map : unit -> Ocgtk_pango.Pango.font_map_t option =
+  method get_font_map : unit -> Ocgtk_pango.Pango.Font_map.font_map_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_pango.Pango.font_map ret) (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_font_map obj)
+      Option.map (fun ret -> new Ocgtk_pango.Pango.Font_map.font_map ret) (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_font_map obj)
 
-  method get_font_options : unit -> Ocgtk_cairo.Cairo.font_options_t option =
+  method get_font_options : unit -> Ocgtk_cairo.Cairo.Font_options.font_options_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_cairo.Cairo.font_options ret) (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_font_options obj)
+      Option.map (fun ret -> new Ocgtk_cairo.Cairo.Font_options.font_options ret) (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_font_options obj)
 
-  method get_frame_clock : unit -> Ocgtk_gdk.Gdk.frame_clock_t option =
+  method get_frame_clock : unit -> Ocgtk_gdk.Gdk.Frame_clock.frame_clock_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gdk.Gdk.frame_clock ret) (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_frame_clock obj)
+      Option.map (fun ret -> new Ocgtk_gdk.Gdk.Frame_clock.frame_clock ret) (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_frame_clock obj)
 
   method get_halign : unit -> Gtk_enums.align =
     fun () ->
@@ -517,9 +517,9 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
     fun () ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_overflow obj)
 
-  method get_pango_context : unit -> Ocgtk_pango.Pango.context_t =
+  method get_pango_context : unit -> Ocgtk_pango.Pango.Context.context_t =
     fun () ->
-      new  Ocgtk_pango.Pango.context(Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_pango_context obj)
+      new  Ocgtk_pango.Pango.Context.context(Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_pango_context obj)
 
   method get_parent : unit -> widget_t option =
     fun () ->
@@ -529,9 +529,9 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
     fun () ->
       Option.map (fun ret -> new widget ret) (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_prev_sibling obj)
 
-  method get_primary_clipboard : unit -> Ocgtk_gdk.Gdk.clipboard_t =
+  method get_primary_clipboard : unit -> Ocgtk_gdk.Gdk.Clipboard.clipboard_t =
     fun () ->
-      new  Ocgtk_gdk.Gdk.clipboard(Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_primary_clipboard obj)
+      new  Ocgtk_gdk.Gdk.Clipboard.clipboard(Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_primary_clipboard obj)
 
   method get_realized : unit -> bool =
     fun () ->
@@ -633,7 +633,7 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
     fun () ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.init_template obj)
 
-  method insert_action_group : string -> Ocgtk_gio.Gio.action_group_t option -> unit =
+  method insert_action_group : string -> Ocgtk_gio.Gio.Action_group.action_group_t option -> unit =
     fun name group ->
       let group = Option.map (fun (c) -> c#as_action_group) group in
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.insert_action_group obj name group)
@@ -683,13 +683,13 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
     fun group_cycling ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.mnemonic_activate obj group_cycling)
 
-  method observe_children : unit -> Ocgtk_gio.Gio.list_model_t =
+  method observe_children : unit -> Ocgtk_gio.Gio.List_model.list_model_t =
     fun () ->
-      new  Ocgtk_gio.Gio.list_model(Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.observe_children obj)
+      new  Ocgtk_gio.Gio.List_model.list_model(Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.observe_children obj)
 
-  method observe_controllers : unit -> Ocgtk_gio.Gio.list_model_t =
+  method observe_controllers : unit -> Ocgtk_gio.Gio.List_model.list_model_t =
     fun () ->
-      new  Ocgtk_gio.Gio.list_model(Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.observe_controllers obj)
+      new  Ocgtk_gio.Gio.List_model.list_model(Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.observe_controllers obj)
 
   method pick : float -> float -> Gtk_enums.pickflags -> widget_t option =
     fun x y flags ->
@@ -745,7 +745,7 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
     fun classes ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.set_css_classes obj classes)
 
-  method set_cursor : Ocgtk_gdk.Gdk.cursor_t option -> unit =
+  method set_cursor : Ocgtk_gdk.Gdk.Cursor.cursor_t option -> unit =
     fun cursor ->
       let cursor = Option.map (fun (c) -> c#as_cursor) cursor in
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.set_cursor obj cursor)
@@ -771,12 +771,12 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
     fun focusable ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.set_focusable obj focusable)
 
-  method set_font_map : Ocgtk_pango.Pango.font_map_t option -> unit =
+  method set_font_map : Ocgtk_pango.Pango.Font_map.font_map_t option -> unit =
     fun font_map ->
       let font_map = Option.map (fun (c) -> c#as_font_map) font_map in
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.set_font_map obj font_map)
 
-  method set_font_options : Ocgtk_cairo.Cairo.font_options_t option -> unit =
+  method set_font_options : Ocgtk_cairo.Cairo.Font_options.font_options_t option -> unit =
     fun options ->
       let options = Option.map (fun (c) -> c#as_font_options) options in
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.set_font_options obj options)

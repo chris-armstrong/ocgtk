@@ -72,3 +72,4 @@ end
 class layout : Layout_and__layout_iter.Layout.t -> layout_t
 
 and layout_iter : Layout_and__layout_iter.Layout_iter.t -> layout_iter_t
+val new_ : GContext_and__font_and__font_map_and__fontset.context_t -> layout_t

@@ -9,3 +9,4 @@ end
 
 class credentials : Credentials.t -> credentials_t
 
+val new_ : unit -> credentials_t

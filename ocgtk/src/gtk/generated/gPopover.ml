@@ -19,7 +19,7 @@ class type popover_t = object
     method set_has_arrow : bool -> unit
     method set_mnemonics_visible : bool -> unit
     method set_offset : int -> int -> unit
-    method set_pointing_to : Ocgtk_gdk.Gdk.rectangle_t option -> unit
+    method set_pointing_to : Ocgtk_gdk.Gdk.Rectangle.rectangle_t option -> unit
     method set_position : Gtk_enums.positiontype -> unit
     method as_popover : Popover.t
 end
@@ -95,7 +95,7 @@ class popover (obj : Popover.t) : popover_t = object (self)
     fun x_offset y_offset ->
       (Popover.set_offset obj x_offset y_offset)
 
-  method set_pointing_to : Ocgtk_gdk.Gdk.rectangle_t option -> unit =
+  method set_pointing_to : Ocgtk_gdk.Gdk.Rectangle.rectangle_t option -> unit =
     fun rect ->
       let rect = Option.map (fun (c) -> c#as_rectangle) rect in
       (Popover.set_pointing_to obj rect)
@@ -106,4 +106,7 @@ class popover (obj : Popover.t) : popover_t = object (self)
 
     method as_popover = obj
 end
+
+let new_ () : popover_t =
+  new popover (Popover.new_ ())
 

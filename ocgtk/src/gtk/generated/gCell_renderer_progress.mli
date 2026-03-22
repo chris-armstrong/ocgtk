@@ -17,3 +17,4 @@ end
 
 class cell_renderer_progress : Cell_renderer_progress.t -> cell_renderer_progress_t
 
+val new_ : unit -> cell_renderer_progress_t

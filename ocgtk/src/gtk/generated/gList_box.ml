@@ -158,3 +158,6 @@ class list_box (obj : List_box.t) : list_box_t = object (self)
     method as_list_box = obj
 end
 
+let new_ () : list_box_t =
+  new list_box (List_box.new_ ())
+

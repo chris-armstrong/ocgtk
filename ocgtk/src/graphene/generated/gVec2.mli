@@ -14,3 +14,4 @@ end
 
 class vec2 : Vec2.t -> vec2_t
 
+val alloc : unit -> vec2_t

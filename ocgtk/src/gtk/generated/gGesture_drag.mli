@@ -6,3 +6,4 @@ end
 
 class gesture_drag : Gesture_drag.t -> gesture_drag_t
 
+val new_ : unit -> gesture_drag_t

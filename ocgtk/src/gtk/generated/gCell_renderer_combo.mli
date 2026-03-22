@@ -10,3 +10,4 @@ end
 
 class cell_renderer_combo : Cell_renderer_combo.t -> cell_renderer_combo_t
 
+val new_ : unit -> cell_renderer_combo_t

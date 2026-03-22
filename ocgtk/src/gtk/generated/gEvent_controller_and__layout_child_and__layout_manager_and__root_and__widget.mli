@@ -1,7 +1,7 @@
 
 class type event_controller_t = object
-    method get_current_event : unit -> Ocgtk_gdk.Gdk.event_t option
-    method get_current_event_device : unit -> Ocgtk_gdk.Gdk.device_t option
+    method get_current_event : unit -> Ocgtk_gdk.Gdk.Event.event_t option
+    method get_current_event_device : unit -> Ocgtk_gdk.Gdk.Device.device_t option
     method get_current_event_state : unit -> Ocgtk_gdk.Gdk.modifiertype
     method get_name : unit -> string option
     method get_propagation_limit : unit -> Gtk_enums.propagationlimit
@@ -31,7 +31,7 @@ and layout_manager_t = object
 end
 
 and root_t = object
-    method get_display : unit -> Ocgtk_gdk.Gdk.display_t
+    method get_display : unit -> Ocgtk_gdk.Gdk.Display.display_t
     method get_focus : unit -> widget_t option
     method set_focus : widget_t option -> unit
     method as_root : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Root.t
@@ -45,12 +45,12 @@ and widget_t = object
     method add_controller : event_controller_t -> unit
     method add_css_class : string -> unit
     method add_mnemonic_label : widget_t -> unit
-    method allocate : int -> int -> int -> Ocgtk_gsk.Gsk.transform_t option -> unit
+    method allocate : int -> int -> int -> Ocgtk_gsk.Gsk.Transform.transform_t option -> unit
     method child_focus : Gtk_enums.directiontype -> bool
     method compute_expand : Gtk_enums.orientation -> bool
     method contains : float -> float -> bool
-    method create_pango_context : unit -> Ocgtk_pango.Pango.context_t
-    method create_pango_layout : string option -> Ocgtk_pango.Pango.layout_t
+    method create_pango_context : unit -> Ocgtk_pango.Pango.Context.context_t
+    method create_pango_layout : string option -> Ocgtk_pango.Pango.Layout.layout_t
     method drag_check_threshold : int -> int -> int -> int -> bool
     method error_bell : unit -> unit
     method get_allocated_baseline : unit -> int
@@ -60,19 +60,19 @@ and widget_t = object
     method get_can_focus : unit -> bool
     method get_can_target : unit -> bool
     method get_child_visible : unit -> bool
-    method get_clipboard : unit -> Ocgtk_gdk.Gdk.clipboard_t
+    method get_clipboard : unit -> Ocgtk_gdk.Gdk.Clipboard.clipboard_t
     method get_css_classes : unit -> string array
     method get_css_name : unit -> string
-    method get_cursor : unit -> Ocgtk_gdk.Gdk.cursor_t option
+    method get_cursor : unit -> Ocgtk_gdk.Gdk.Cursor.cursor_t option
     method get_direction : unit -> Gtk_enums.textdirection
-    method get_display : unit -> Ocgtk_gdk.Gdk.display_t
+    method get_display : unit -> Ocgtk_gdk.Gdk.Display.display_t
     method get_first_child : unit -> widget_t option
     method get_focus_child : unit -> widget_t option
     method get_focus_on_click : unit -> bool
     method get_focusable : unit -> bool
-    method get_font_map : unit -> Ocgtk_pango.Pango.font_map_t option
-    method get_font_options : unit -> Ocgtk_cairo.Cairo.font_options_t option
-    method get_frame_clock : unit -> Ocgtk_gdk.Gdk.frame_clock_t option
+    method get_font_map : unit -> Ocgtk_pango.Pango.Font_map.font_map_t option
+    method get_font_options : unit -> Ocgtk_cairo.Cairo.Font_options.font_options_t option
+    method get_frame_clock : unit -> Ocgtk_gdk.Gdk.Frame_clock.frame_clock_t option
     method get_halign : unit -> Gtk_enums.align
     method get_has_tooltip : unit -> bool
     method get_height : unit -> int
@@ -90,10 +90,10 @@ and widget_t = object
     method get_next_sibling : unit -> widget_t option
     method get_opacity : unit -> float
     method get_overflow : unit -> Gtk_enums.overflow
-    method get_pango_context : unit -> Ocgtk_pango.Pango.context_t
+    method get_pango_context : unit -> Ocgtk_pango.Pango.Context.context_t
     method get_parent : unit -> widget_t option
     method get_prev_sibling : unit -> widget_t option
-    method get_primary_clipboard : unit -> Ocgtk_gdk.Gdk.clipboard_t
+    method get_primary_clipboard : unit -> Ocgtk_gdk.Gdk.Clipboard.clipboard_t
     method get_realized : unit -> bool
     method get_receives_default : unit -> bool
     method get_request_mode : unit -> Gtk_enums.sizerequestmode
@@ -119,7 +119,7 @@ and widget_t = object
     method hide : unit -> unit
     method in_destruction : unit -> bool
     method init_template : unit -> unit
-    method insert_action_group : string -> Ocgtk_gio.Gio.action_group_t option -> unit
+    method insert_action_group : string -> Ocgtk_gio.Gio.Action_group.action_group_t option -> unit
     method insert_after : widget_t -> widget_t option -> unit
     method insert_before : widget_t -> widget_t option -> unit
     method is_ancestor : widget_t -> bool
@@ -130,8 +130,8 @@ and widget_t = object
     method keynav_failed : Gtk_enums.directiontype -> bool
     method map : unit -> unit
     method mnemonic_activate : bool -> bool
-    method observe_children : unit -> Ocgtk_gio.Gio.list_model_t
-    method observe_controllers : unit -> Ocgtk_gio.Gio.list_model_t
+    method observe_children : unit -> Ocgtk_gio.Gio.List_model.list_model_t
+    method observe_controllers : unit -> Ocgtk_gio.Gio.List_model.list_model_t
     method pick : float -> float -> Gtk_enums.pickflags -> widget_t option
     method queue_allocate : unit -> unit
     method queue_draw : unit -> unit
@@ -145,14 +145,14 @@ and widget_t = object
     method set_can_target : bool -> unit
     method set_child_visible : bool -> unit
     method set_css_classes : string array -> unit
-    method set_cursor : Ocgtk_gdk.Gdk.cursor_t option -> unit
+    method set_cursor : Ocgtk_gdk.Gdk.Cursor.cursor_t option -> unit
     method set_cursor_from_name : string option -> unit
     method set_direction : Gtk_enums.textdirection -> unit
     method set_focus_child : widget_t option -> unit
     method set_focus_on_click : bool -> unit
     method set_focusable : bool -> unit
-    method set_font_map : Ocgtk_pango.Pango.font_map_t option -> unit
-    method set_font_options : Ocgtk_cairo.Cairo.font_options_t option -> unit
+    method set_font_map : Ocgtk_pango.Pango.Font_map.font_map_t option -> unit
+    method set_font_options : Ocgtk_cairo.Cairo.Font_options.font_options_t option -> unit
     method set_halign : Gtk_enums.align -> unit
     method set_has_tooltip : bool -> unit
     method set_hexpand : bool -> unit

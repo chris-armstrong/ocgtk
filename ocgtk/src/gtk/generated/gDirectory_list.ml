@@ -1,11 +1,11 @@
 class type directory_list_t = object
     method get_attributes : unit -> string option
-    method get_file : unit -> Ocgtk_gio.Gio.file_t option
+    method get_file : unit -> Ocgtk_gio.Gio.File.file_t option
     method get_io_priority : unit -> int
     method get_monitored : unit -> bool
     method is_loading : unit -> bool
     method set_attributes : string option -> unit
-    method set_file : Ocgtk_gio.Gio.file_t option -> unit
+    method set_file : Ocgtk_gio.Gio.File.file_t option -> unit
     method set_io_priority : int -> unit
     method set_monitored : bool -> unit
     method loading : bool
@@ -20,9 +20,9 @@ class directory_list (obj : Directory_list.t) : directory_list_t = object (self)
     fun () ->
       (Directory_list.get_attributes obj)
 
-  method get_file : unit -> Ocgtk_gio.Gio.file_t option =
+  method get_file : unit -> Ocgtk_gio.Gio.File.file_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gio.Gio.file ret) (Directory_list.get_file obj)
+      Option.map (fun ret -> new Ocgtk_gio.Gio.File.file ret) (Directory_list.get_file obj)
 
   method get_io_priority : unit -> int =
     fun () ->
@@ -40,7 +40,7 @@ class directory_list (obj : Directory_list.t) : directory_list_t = object (self)
     fun attributes ->
       (Directory_list.set_attributes obj attributes)
 
-  method set_file : Ocgtk_gio.Gio.file_t option -> unit =
+  method set_file : Ocgtk_gio.Gio.File.file_t option -> unit =
     fun file ->
       let file = Option.map (fun (c) -> c#as_file) file in
       (Directory_list.set_file obj file)
@@ -59,4 +59,8 @@ class directory_list (obj : Directory_list.t) : directory_list_t = object (self)
 
     method as_directory_list = obj
 end
+
+let new_ (attributes : string option) (file : Ocgtk_gio.Gio.File.file_t option) : directory_list_t =
+  let file = Option.map (fun c -> c#as_file) file in
+  new directory_list (Directory_list.new_ attributes file)
 

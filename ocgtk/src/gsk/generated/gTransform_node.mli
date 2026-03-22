@@ -7,3 +7,4 @@ end
 
 class transform_node : Transform_node.t -> transform_node_t
 
+val new_ : GRender_node.render_node_t -> Transform.t -> transform_node_t

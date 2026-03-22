@@ -13,3 +13,6 @@ class string_object (obj : String_object.t) : string_object_t = object (self)
     method as_string_object = obj
 end
 
+let new_ (string : string) : string_object_t =
+  new string_object (String_object.new_ string)
+

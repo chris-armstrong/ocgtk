@@ -5,7 +5,7 @@ class type gl_area_t = object
     method get_allowed_apis : unit -> Ocgtk_gdk.Gdk.glapi
     method get_api : unit -> Ocgtk_gdk.Gdk.glapi
     method get_auto_render : unit -> bool
-    method get_context : unit -> Ocgtk_gdk.Gdk.gl_context_t option
+    method get_context : unit -> Ocgtk_gdk.Gdk.Gl_context.gl_context_t option
     method get_has_depth_buffer : unit -> bool
     method get_has_stencil_buffer : unit -> bool
     method get_use_es : unit -> bool
@@ -22,3 +22,4 @@ end
 
 class gl_area : Gl_area.t -> gl_area_t
 
+val new_ : unit -> gl_area_t

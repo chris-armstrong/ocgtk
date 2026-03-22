@@ -10,3 +10,6 @@ end
 
 class toggle_button : Toggle_button.t -> toggle_button_t
 
+val new_ : unit -> toggle_button_t
+val new_with_label : string -> toggle_button_t
+val new_with_mnemonic : string -> toggle_button_t

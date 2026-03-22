@@ -26,3 +26,4 @@ end
 
 class grid : Grid.t -> grid_t
 
+val new_ : unit -> grid_t

@@ -6,3 +6,4 @@ end
 
 class signal_action : Signal_action.t -> signal_action_t
 
+val new_ : string -> signal_action_t

@@ -7,3 +7,4 @@ end
 
 class rounded_clip_node : Rounded_clip_node.t -> rounded_clip_node_t
 
+val new_ : GRender_node.render_node_t -> Rounded_rect.t -> rounded_clip_node_t

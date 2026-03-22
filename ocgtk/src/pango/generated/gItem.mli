@@ -8,3 +8,4 @@ end
 
 class item : Item.t -> item_t
 
+val new_ : unit -> item_t

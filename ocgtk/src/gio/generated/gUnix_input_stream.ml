@@ -25,3 +25,6 @@ class unix_input_stream (obj : Unix_input_stream.t) : unix_input_stream_t = obje
     method as_unix_input_stream = obj
 end
 
+let new_ (fd : int) (close_fd : bool) : unix_input_stream_t =
+  new unix_input_stream (Unix_input_stream.new_ fd close_fd)
+

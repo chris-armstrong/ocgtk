@@ -26,3 +26,4 @@ end
 
 class socket_client : Socket_client.t -> socket_client_t
 
+val new_ : unit -> socket_client_t

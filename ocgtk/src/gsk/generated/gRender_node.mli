@@ -1,5 +1,5 @@
 class type render_node_t = object
-    method draw : Ocgtk_cairo.Cairo.context_t -> unit
+    method draw : Ocgtk_cairo.Cairo.Context.context_t -> unit
     method get_node_type : unit -> Gsk_enums.rendernodetype
     method ref : unit -> render_node_t
     method unref : unit -> unit

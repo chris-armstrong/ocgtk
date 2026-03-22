@@ -78,3 +78,6 @@ class popup_layout (obj : Popup_layout.t) : popup_layout_t = object (self)
     method as_popup_layout = obj
 end
 
+let new_ (anchor_rect : Rectangle.t) (rect_anchor : Gdk_enums.gravity) (surface_anchor : Gdk_enums.gravity) : popup_layout_t =
+  new popup_layout (Popup_layout.new_ anchor_rect rect_anchor surface_anchor)
+

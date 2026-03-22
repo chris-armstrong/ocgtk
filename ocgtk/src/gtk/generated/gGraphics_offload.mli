@@ -9,3 +9,4 @@ end
 
 class graphics_offload : Graphics_offload.t -> graphics_offload_t
 
+val new_ : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> graphics_offload_t

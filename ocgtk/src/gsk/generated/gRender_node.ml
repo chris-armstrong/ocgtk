@@ -1,5 +1,5 @@
 class type render_node_t = object
-    method draw : Ocgtk_cairo.Cairo.context_t -> unit
+    method draw : Ocgtk_cairo.Cairo.Context.context_t -> unit
     method get_node_type : unit -> Gsk_enums.rendernodetype
     method ref : unit -> render_node_t
     method unref : unit -> unit
@@ -10,7 +10,7 @@ end
 (* High-level class for RenderNode *)
 class render_node (obj : Render_node.t) : render_node_t = object (self)
 
-  method draw : Ocgtk_cairo.Cairo.context_t -> unit =
+  method draw : Ocgtk_cairo.Cairo.Context.context_t -> unit =
     fun cr ->
       let cr = cr#as_context in
       (Render_node.draw obj cr)

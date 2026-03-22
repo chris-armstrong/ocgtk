@@ -75,3 +75,15 @@ class button (obj : Button.t) : button_t = object (self)
     method as_button = obj
 end
 
+let new_ () : button_t =
+  new button (Button.new_ ())
+
+let new_from_icon_name (icon_name : string) : button_t =
+  new button (Button.new_from_icon_name icon_name)
+
+let new_with_label (label : string) : button_t =
+  new button (Button.new_with_label label)
+
+let new_with_mnemonic (label : string) : button_t =
+  new button (Button.new_with_mnemonic label)
+

@@ -7,3 +7,4 @@ end
 
 class scrollbar : Scrollbar.t -> scrollbar_t
 
+val new_ : Gtk_enums.orientation -> GAdjustment.adjustment_t option -> scrollbar_t

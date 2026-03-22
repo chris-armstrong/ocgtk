@@ -8,3 +8,4 @@ end
 
 class glyph_string : Glyph_string.t -> glyph_string_t
 
+val new_ : unit -> glyph_string_t

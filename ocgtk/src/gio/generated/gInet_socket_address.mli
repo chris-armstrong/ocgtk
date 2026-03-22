@@ -6,3 +6,4 @@ end
 
 class inet_socket_address : Inet_socket_address.t -> inet_socket_address_t
 
+val new_from_string : string -> int -> inet_socket_address_t

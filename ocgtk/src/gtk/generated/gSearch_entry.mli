@@ -18,3 +18,4 @@ end
 
 class search_entry : Search_entry.t -> search_entry_t
 
+val new_ : unit -> search_entry_t

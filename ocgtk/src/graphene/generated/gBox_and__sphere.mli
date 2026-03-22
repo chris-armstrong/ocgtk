@@ -32,3 +32,5 @@ end
 class box : Box_and__sphere.Box.t -> box_t
 
 and sphere : Box_and__sphere.Sphere.t -> sphere_t
+val alloc : unit -> box_t
+val alloc : unit -> sphere_t

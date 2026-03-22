@@ -70,3 +70,6 @@ class scale_button (obj : Scale_button.t) : scale_button_t = object (self)
     method as_scale_button = obj
 end
 
+let new_ (min : float) (max : float) (step : float) (icons : string array option) : scale_button_t =
+  new scale_button (Scale_button.new_ min max step icons)
+

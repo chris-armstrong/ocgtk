@@ -12,3 +12,4 @@ end
 
 class gl_shader : Gl_shader.t -> gl_shader_t
 
+val new_from_resource : string -> gl_shader_t

@@ -28,3 +28,6 @@ class size (obj : Size.t) : size_t = object (self)
     method as_size = obj
 end
 
+let alloc () : size_t =
+  new size (Size.alloc ())
+

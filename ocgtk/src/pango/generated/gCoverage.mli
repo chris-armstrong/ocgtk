@@ -10,3 +10,4 @@ end
 
 class coverage : Coverage.t -> coverage_t
 
+val new_ : unit -> coverage_t

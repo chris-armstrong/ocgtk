@@ -18,3 +18,4 @@ end
 
 class app_chooser_widget : App_chooser_widget.t -> app_chooser_widget_t
 
+val new_ : string -> app_chooser_widget_t

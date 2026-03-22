@@ -1,5 +1,5 @@
 class type alert_dialog_t = object
-    method choose_finish : Ocgtk_gio.Gio.async_result_t -> (int, GError.t) result
+    method choose_finish : Ocgtk_gio.Gio.Async_result.async_result_t -> (int, GError.t) result
     method get_buttons : unit -> string array option
     method get_cancel_button : unit -> int
     method get_default_button : unit -> int

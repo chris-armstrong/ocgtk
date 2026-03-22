@@ -15,3 +15,6 @@ class inet_socket_address (obj : Inet_socket_address.t) : inet_socket_address_t 
     method as_inet_socket_address = obj
 end
 
+let new_from_string (address : string) (port : int) : inet_socket_address_t =
+  new inet_socket_address (Inet_socket_address.new_from_string address port)
+

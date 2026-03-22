@@ -3,8 +3,8 @@ class type at_context_t = object
     inherit Gat_context_signals.at_context_signals
     method get_accessible : unit -> accessible_t
     method get_accessible_role : unit -> Gtk_enums.accessiblerole
-    method display : Ocgtk_gdk.Gdk.display_t
-    method set_display : Ocgtk_gdk.Gdk.display_t -> unit
+    method display : Ocgtk_gdk.Gdk.Display.display_t
+    method set_display : Ocgtk_gdk.Gdk.Display.display_t -> unit
     method as_at_context : At_context_and__accessible.At_context.t
 end
 
@@ -26,3 +26,4 @@ end
 class at_context : At_context_and__accessible.At_context.t -> at_context_t
 
 and accessible : At_context_and__accessible.Accessible.t -> accessible_t
+val create : Gtk_enums.accessiblerole -> accessible_t -> Ocgtk_gdk.Gdk.Display.display_t -> at_context_t

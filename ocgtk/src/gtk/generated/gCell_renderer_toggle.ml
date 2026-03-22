@@ -49,3 +49,6 @@ class cell_renderer_toggle (obj : Cell_renderer_toggle.t) : cell_renderer_toggle
     method as_cell_renderer_toggle = obj
 end
 
+let new_ () : cell_renderer_toggle_t =
+  new cell_renderer_toggle (Cell_renderer_toggle.new_ ())
+

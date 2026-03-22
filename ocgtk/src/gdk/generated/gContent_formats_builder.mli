@@ -9,3 +9,4 @@ end
 
 class content_formats_builder : Content_formats_builder.t -> content_formats_builder_t
 
+val new_ : unit -> content_formats_builder_t

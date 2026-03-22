@@ -37,3 +37,8 @@ class viewport (obj : Viewport.t) : viewport_t = object (self)
     method as_viewport = obj
 end
 
+let new_ (hadjustment : GAdjustment.adjustment_t option) (vadjustment : GAdjustment.adjustment_t option) : viewport_t =
+  let hadjustment = Option.map (fun c -> c#as_adjustment) hadjustment in
+  let vadjustment = Option.map (fun c -> c#as_adjustment) vadjustment in
+  new viewport (Viewport.new_ hadjustment vadjustment)
+

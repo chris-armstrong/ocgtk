@@ -6,3 +6,4 @@ end
 
 class emoji_chooser : Emoji_chooser.t -> emoji_chooser_t
 
+val new_ : unit -> emoji_chooser_t

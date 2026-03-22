@@ -224,3 +224,6 @@ class file_info (obj : File_info.t) : file_info_t = object (self)
     method as_file_info = obj
 end
 
+let new_ () : file_info_t =
+  new file_info (File_info.new_ ())
+

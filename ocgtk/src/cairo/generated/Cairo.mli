@@ -1,34 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Top-level library module with direct references to all classes and enumerations *)
 
-(** {1 Classes and Interfaces} *)
-
-class type context_t = GContext.context_t
-class type device_t = GDevice.device_t
-class type font_face_t = GFont_face.font_face_t
-class type font_options_t = GFont_options.font_options_t
-class type matrix_t = GMatrix.matrix_t
-class type path_t = GPath.path_t
-class type pattern_t = GPattern.pattern_t
-class type rectangle_t = GRectangle.rectangle_t
-class type rectangle_int_t = GRectangle_int.rectangle_int_t
-class type region_t = GRegion.region_t
-class type scaled_font_t = GScaled_font.scaled_font_t
-class type surface_t = GSurface.surface_t
-
-class context : Context.t -> context_t
-class device : Device.t -> device_t
-class font_face : Font_face.t -> font_face_t
-class font_options : Font_options.t -> font_options_t
-class matrix : Matrix.t -> matrix_t
-class path : Path.t -> path_t
-class pattern : Pattern.t -> pattern_t
-class rectangle : Rectangle.t -> rectangle_t
-class rectangle_int : Rectangle_int.t -> rectangle_int_t
-class region : Region.t -> region_t
-class scaled_font : Scaled_font.t -> scaled_font_t
-class surface : Surface.t -> surface_t
-
 (** {1 Layer 1 Module Wrappers}
     
     This submodule provides aliases to the layer 1 (low-level) modules.
@@ -48,6 +20,21 @@ module Wrappers : sig
   module Scaled_font = Scaled_font
   module Surface = Surface
 end
+
+(** {1 Classes and Interfaces} *)
+
+module Context = GContext
+module Device = GDevice
+module Font_face = GFont_face
+module Font_options = GFont_options
+module Matrix = GMatrix
+module Path = GPath
+module Pattern = GPattern
+module Rectangle = GRectangle
+module Rectangle_int = GRectangle_int
+module Region = GRegion
+module Scaled_font = GScaled_font
+module Surface = GSurface
 
 (** {1 Enumerations and Bitfields} *)
 

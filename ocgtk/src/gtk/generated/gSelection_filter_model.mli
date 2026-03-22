@@ -6,3 +6,4 @@ end
 
 class selection_filter_model : Selection_filter_model.t -> selection_filter_model_t
 
+val new_ : GSelection_model.selection_model_t option -> selection_filter_model_t

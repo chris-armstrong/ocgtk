@@ -94,3 +94,6 @@ class calendar (obj : Calendar.t) : calendar_t = object (self)
     method as_calendar = obj
 end
 
+let new_ () : calendar_t =
+  new calendar (Calendar.new_ ())
+

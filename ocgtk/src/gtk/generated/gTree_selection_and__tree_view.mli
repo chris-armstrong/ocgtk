@@ -25,9 +25,9 @@ and tree_view_t = object
     method collapse_all : unit -> unit
     method collapse_row : Tree_path.t -> bool
     method columns_autosize : unit -> unit
-    method create_row_drag_icon : Tree_path.t -> Ocgtk_gdk.Gdk.paintable_t option
-    method enable_model_drag_dest : Ocgtk_gdk.Gdk.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit
-    method enable_model_drag_source : Ocgtk_gdk.Gdk.modifiertype -> Ocgtk_gdk.Gdk.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit
+    method create_row_drag_icon : Tree_path.t -> Ocgtk_gdk.Gdk.Paintable.paintable_t option
+    method enable_model_drag_dest : Ocgtk_gdk.Gdk.Content_formats.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit
+    method enable_model_drag_source : Ocgtk_gdk.Gdk.modifiertype -> Ocgtk_gdk.Gdk.Content_formats.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit
     method expand_all : unit -> unit
     method expand_row : Tree_path.t -> bool -> bool
     method expand_to_path : Tree_path.t -> unit
@@ -91,3 +91,5 @@ end
 class tree_selection : Tree_selection_and__tree_view.Tree_selection.t -> tree_selection_t
 
 and tree_view : Tree_selection_and__tree_view.Tree_view.t -> tree_view_t
+val new_ : unit -> tree_view_t
+val new_with_model : GTree_model.tree_model_t -> tree_view_t

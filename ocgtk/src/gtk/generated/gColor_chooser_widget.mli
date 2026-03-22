@@ -7,3 +7,4 @@ end
 
 class color_chooser_widget : Color_chooser_widget.t -> color_chooser_widget_t
 
+val new_ : unit -> color_chooser_widget_t

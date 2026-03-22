@@ -9,3 +9,4 @@ end
 
 class spinner : Spinner.t -> spinner_t
 
+val new_ : unit -> spinner_t

@@ -7,3 +7,4 @@ end
 
 class gesture_zoom : Gesture_zoom.t -> gesture_zoom_t
 
+val new_ : unit -> gesture_zoom_t

@@ -5,3 +5,4 @@ end
 
 class gl_renderer : Gl_renderer.t -> gl_renderer_t
 
+val new_ : unit -> gl_renderer_t

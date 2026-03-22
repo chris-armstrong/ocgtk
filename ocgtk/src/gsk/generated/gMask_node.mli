@@ -8,3 +8,4 @@ end
 
 class mask_node : Mask_node.t -> mask_node_t
 
+val new_ : GRender_node.render_node_t -> GRender_node.render_node_t -> Gsk_enums.maskmode -> mask_node_t

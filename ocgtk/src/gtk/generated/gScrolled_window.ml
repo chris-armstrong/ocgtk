@@ -182,3 +182,6 @@ class scrolled_window (obj : Scrolled_window.t) : scrolled_window_t = object (se
     method as_scrolled_window = obj
 end
 
+let new_ () : scrolled_window_t =
+  new scrolled_window (Scrolled_window.new_ ())
+

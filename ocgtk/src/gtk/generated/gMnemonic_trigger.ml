@@ -15,3 +15,6 @@ class mnemonic_trigger (obj : Mnemonic_trigger.t) : mnemonic_trigger_t = object 
     method as_mnemonic_trigger = obj
 end
 
+let new_ (keyval : int) : mnemonic_trigger_t =
+  new mnemonic_trigger (Mnemonic_trigger.new_ keyval)
+

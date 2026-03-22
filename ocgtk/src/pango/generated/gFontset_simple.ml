@@ -21,3 +21,6 @@ class fontset_simple (obj : Fontset_simple.t) : fontset_simple_t = object (self)
     method as_fontset_simple = obj
 end
 
+let new_ (language : Language.t) : fontset_simple_t =
+  new fontset_simple (Fontset_simple.new_ language)
+

@@ -7,3 +7,5 @@ end
 
 class unix_fd_list : Unix_fd_list.t -> unix_fd_list_t
 
+val new_ : unit -> unix_fd_list_t
+val new_from_array : int array -> int -> unix_fd_list_t

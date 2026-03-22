@@ -10,7 +10,7 @@ class type menu_button_t = object
     method get_has_frame : unit -> bool
     method get_icon_name : unit -> string option
     method get_label : unit -> string option
-    method get_menu_model : unit -> Ocgtk_gio.Gio.menu_model_t option
+    method get_menu_model : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option
     method get_popover : unit -> GPopover.popover_t option
     method get_primary : unit -> bool
     method get_use_underline : unit -> bool
@@ -23,7 +23,7 @@ class type menu_button_t = object
     method set_has_frame : bool -> unit
     method set_icon_name : string -> unit
     method set_label : string -> unit
-    method set_menu_model : Ocgtk_gio.Gio.menu_model_t option -> unit
+    method set_menu_model : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit
     method set_popover : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
     method set_primary : bool -> unit
     method set_use_underline : bool -> unit
@@ -63,9 +63,9 @@ class menu_button (obj : Menu_button.t) : menu_button_t = object (self)
     fun () ->
       (Menu_button.get_label obj)
 
-  method get_menu_model : unit -> Ocgtk_gio.Gio.menu_model_t option =
+  method get_menu_model : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gio.Gio.menu_model ret) (Menu_button.get_menu_model obj)
+      Option.map (fun ret -> new Ocgtk_gio.Gio.Menu_model.menu_model ret) (Menu_button.get_menu_model obj)
 
   method get_popover : unit -> GPopover.popover_t option =
     fun () ->
@@ -116,7 +116,7 @@ class menu_button (obj : Menu_button.t) : menu_button_t = object (self)
     fun label ->
       (Menu_button.set_label obj label)
 
-  method set_menu_model : Ocgtk_gio.Gio.menu_model_t option -> unit =
+  method set_menu_model : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit =
     fun menu_model ->
       let menu_model = Option.map (fun (c) -> c#as_menu_model) menu_model in
       (Menu_button.set_menu_model obj menu_model)
@@ -136,4 +136,7 @@ class menu_button (obj : Menu_button.t) : menu_button_t = object (self)
 
     method as_menu_button = obj
 end
+
+let new_ () : menu_button_t =
+  new menu_button (Menu_button.new_ ())
 

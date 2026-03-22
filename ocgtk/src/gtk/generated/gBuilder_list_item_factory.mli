@@ -7,3 +7,4 @@ end
 
 class builder_list_item_factory : Builder_list_item_factory.t -> builder_list_item_factory_t
 
+val new_from_resource : GBuilder_scope.builder_scope_t option -> string -> builder_list_item_factory_t

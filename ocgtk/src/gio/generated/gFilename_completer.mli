@@ -8,3 +8,4 @@ end
 
 class filename_completer : Filename_completer.t -> filename_completer_t
 
+val new_ : unit -> filename_completer_t

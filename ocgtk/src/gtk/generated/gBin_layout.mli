@@ -5,3 +5,4 @@ end
 
 class bin_layout : Bin_layout.t -> bin_layout_t
 
+val new_ : unit -> bin_layout_t

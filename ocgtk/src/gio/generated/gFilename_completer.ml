@@ -27,3 +27,6 @@ class filename_completer (obj : Filename_completer.t) : filename_completer_t = o
     method as_filename_completer = obj
 end
 
+let new_ () : filename_completer_t =
+  new filename_completer (Filename_completer.new_ ())
+

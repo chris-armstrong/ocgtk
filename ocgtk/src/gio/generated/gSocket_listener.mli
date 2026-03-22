@@ -9,3 +9,4 @@ end
 
 class socket_listener : Socket_listener.t -> socket_listener_t
 
+val new_ : unit -> socket_listener_t

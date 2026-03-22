@@ -18,3 +18,7 @@ end
 
 class button : Button.t -> button_t
 
+val new_ : unit -> button_t
+val new_from_icon_name : string -> button_t
+val new_with_label : string -> button_t
+val new_with_mnemonic : string -> button_t

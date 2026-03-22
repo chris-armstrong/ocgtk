@@ -13,3 +13,6 @@ class shortcut_action (obj : Shortcut_action.t) : shortcut_action_t = object (se
     method as_shortcut_action = obj
 end
 
+let parse_string (string : string) : shortcut_action_t =
+  new shortcut_action (Shortcut_action.parse_string string)
+

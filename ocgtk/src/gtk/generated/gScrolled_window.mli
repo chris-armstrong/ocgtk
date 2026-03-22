@@ -42,3 +42,4 @@ end
 
 class scrolled_window : Scrolled_window.t -> scrolled_window_t
 
+val new_ : unit -> scrolled_window_t

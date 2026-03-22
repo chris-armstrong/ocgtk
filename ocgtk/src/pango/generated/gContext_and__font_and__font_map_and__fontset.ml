@@ -230,3 +230,6 @@ and fontset (obj : Context_and__font_and__font_map_and__fontset.Fontset.t) : fon
 
     method as_fontset = obj
 end
+let new_ () : context_t =
+  new context (Context_and__font_and__font_map_and__fontset.Context.new_ ())
+

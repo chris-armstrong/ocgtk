@@ -24,3 +24,6 @@ class gesture_long_press (obj : Gesture_long_press.t) : gesture_long_press_t = o
     method as_gesture_long_press = obj
 end
 
+let new_ () : gesture_long_press_t =
+  new gesture_long_press (Gesture_long_press.new_ ())
+

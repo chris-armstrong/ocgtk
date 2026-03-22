@@ -21,3 +21,7 @@ class media_controls (obj : Media_controls.t) : media_controls_t = object (self)
     method as_media_controls = obj
 end
 
+let new_ (stream : GMedia_stream.media_stream_t option) : media_controls_t =
+  let stream = Option.map (fun c -> c#as_media_stream) stream in
+  new media_controls (Media_controls.new_ stream)
+

@@ -7,3 +7,4 @@ end
 
 class d_bus_auth_observer : D_bus_auth_observer.t -> d_bus_auth_observer_t
 
+val new_ : unit -> d_bus_auth_observer_t

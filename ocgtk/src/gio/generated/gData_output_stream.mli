@@ -8,3 +8,4 @@ end
 
 class data_output_stream : Data_output_stream.t -> data_output_stream_t
 
+val new_ : GOutput_stream.output_stream_t -> data_output_stream_t

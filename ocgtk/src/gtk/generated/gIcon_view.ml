@@ -3,9 +3,9 @@
 class type icon_view_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gicon_view_signals.icon_view_signals
-    method create_drag_icon : Tree_path.t -> Ocgtk_gdk.Gdk.paintable_t option
-    method enable_model_drag_dest : Ocgtk_gdk.Gdk.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit
-    method enable_model_drag_source : Ocgtk_gdk.Gdk.modifiertype -> Ocgtk_gdk.Gdk.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit
+    method create_drag_icon : Tree_path.t -> Ocgtk_gdk.Gdk.Paintable.paintable_t option
+    method enable_model_drag_dest : Ocgtk_gdk.Gdk.Content_formats.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit
+    method enable_model_drag_source : Ocgtk_gdk.Gdk.modifiertype -> Ocgtk_gdk.Gdk.Content_formats.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit
     method get_activate_on_single_click : unit -> bool
     method get_column_spacing : unit -> int
     method get_columns : unit -> int
@@ -61,16 +61,16 @@ class icon_view (obj : Icon_view.t) : icon_view_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gicon_view_signals.icon_view_signals obj
 
-  method create_drag_icon : Tree_path.t -> Ocgtk_gdk.Gdk.paintable_t option =
+  method create_drag_icon : Tree_path.t -> Ocgtk_gdk.Gdk.Paintable.paintable_t option =
     fun path ->
-      Option.map (fun ret -> new Ocgtk_gdk.Gdk.paintable ret) (Icon_view.create_drag_icon obj path)
+      Option.map (fun ret -> new Ocgtk_gdk.Gdk.Paintable.paintable ret) (Icon_view.create_drag_icon obj path)
 
-  method enable_model_drag_dest : Ocgtk_gdk.Gdk.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit =
+  method enable_model_drag_dest : Ocgtk_gdk.Gdk.Content_formats.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit =
     fun formats actions ->
       let formats = formats#as_content_formats in
       (Icon_view.enable_model_drag_dest obj formats actions)
 
-  method enable_model_drag_source : Ocgtk_gdk.Gdk.modifiertype -> Ocgtk_gdk.Gdk.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit =
+  method enable_model_drag_source : Ocgtk_gdk.Gdk.modifiertype -> Ocgtk_gdk.Gdk.Content_formats.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit =
     fun start_button_mask formats actions ->
       let formats = formats#as_content_formats in
       (Icon_view.enable_model_drag_source obj start_button_mask formats actions)
@@ -266,4 +266,15 @@ class icon_view (obj : Icon_view.t) : icon_view_t = object (self)
 
     method as_icon_view = obj
 end
+
+let new_ () : icon_view_t =
+  new icon_view (Icon_view.new_ ())
+
+let new_with_area (area : GCell_area_and__cell_area_context.cell_area_t) : icon_view_t =
+  let area = area#as_cell_area in
+  new icon_view (Icon_view.new_with_area area)
+
+let new_with_model (model : GTree_model.tree_model_t) : icon_view_t =
+  let model = model#as_tree_model in
+  new icon_view (Icon_view.new_with_model model)
 

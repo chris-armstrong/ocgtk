@@ -7,3 +7,4 @@ end
 
 class debug_node : Debug_node.t -> debug_node_t
 
+val new_ : GRender_node.render_node_t -> string -> debug_node_t

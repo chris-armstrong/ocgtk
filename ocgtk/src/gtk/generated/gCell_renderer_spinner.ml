@@ -25,3 +25,6 @@ class cell_renderer_spinner (obj : Cell_renderer_spinner.t) : cell_renderer_spin
     method as_cell_renderer_spinner = obj
 end
 
+let new_ () : cell_renderer_spinner_t =
+  new cell_renderer_spinner (Cell_renderer_spinner.new_ ())
+

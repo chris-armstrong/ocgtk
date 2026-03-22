@@ -12,7 +12,7 @@ class type notebook_t = object
     method get_n_pages : unit -> int
     method get_nth_page : int -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
     method get_page : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GNotebook_page.notebook_page_t
-    method get_pages : unit -> Ocgtk_gio.Gio.list_model_t
+    method get_pages : unit -> Ocgtk_gio.Gio.List_model.list_model_t
     method get_scrollable : unit -> bool
     method get_show_border : unit -> bool
     method get_show_tabs : unit -> bool
@@ -52,3 +52,4 @@ end
 
 class notebook : Notebook.t -> notebook_t
 
+val new_ : unit -> notebook_t

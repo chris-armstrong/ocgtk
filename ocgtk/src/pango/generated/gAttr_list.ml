@@ -63,3 +63,6 @@ class attr_list (obj : Attr_list.t) : attr_list_t = object (self)
     method as_attr_list = obj
 end
 
+let new_ () : attr_list_t =
+  new attr_list (Attr_list.new_ ())
+

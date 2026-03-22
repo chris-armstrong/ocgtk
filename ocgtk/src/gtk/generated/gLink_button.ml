@@ -34,3 +34,9 @@ class link_button (obj : Link_button.t) : link_button_t = object (self)
     method as_link_button = obj
 end
 
+let new_ (uri : string) : link_button_t =
+  new link_button (Link_button.new_ uri)
+
+let new_with_label (uri : string) (label : string option) : link_button_t =
+  new link_button (Link_button.new_with_label uri label)
+

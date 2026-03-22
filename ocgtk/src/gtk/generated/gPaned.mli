@@ -26,3 +26,4 @@ end
 
 class paned : Paned.t -> paned_t
 
+val new_ : Gtk_enums.orientation -> paned_t

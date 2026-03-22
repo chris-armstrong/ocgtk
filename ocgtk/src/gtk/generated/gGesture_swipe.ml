@@ -14,3 +14,6 @@ class gesture_swipe (obj : Gesture_swipe.t) : gesture_swipe_t = object (self)
     method as_gesture_swipe = obj
 end
 
+let new_ () : gesture_swipe_t =
+  new gesture_swipe (Gesture_swipe.new_ ())
+

@@ -5,3 +5,4 @@ end
 
 class cairo_renderer : Cairo_renderer.t -> cairo_renderer_t
 
+val new_ : unit -> cairo_renderer_t

@@ -10,3 +10,6 @@ class cairo_renderer (obj : Cairo_renderer.t) : cairo_renderer_t = object (self)
     method as_cairo_renderer = obj
 end
 
+let new_ () : cairo_renderer_t =
+  new cairo_renderer (Cairo_renderer.new_ ())
+

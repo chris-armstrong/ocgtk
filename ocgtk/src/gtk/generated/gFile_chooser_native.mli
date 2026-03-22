@@ -9,3 +9,4 @@ end
 
 class file_chooser_native : File_chooser_native.t -> file_chooser_native_t
 
+val new_ : string option -> GApplication_and__window_and__window_group.window_t option -> Gtk_enums.filechooseraction -> string option -> string option -> file_chooser_native_t

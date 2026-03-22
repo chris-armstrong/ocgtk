@@ -10,3 +10,4 @@ end
 
 class viewport : Viewport.t -> viewport_t
 
+val new_ : GAdjustment.adjustment_t option -> GAdjustment.adjustment_t option -> viewport_t

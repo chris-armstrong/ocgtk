@@ -1,6 +1,6 @@
 class type radial_gradient_node_t = object
     inherit GRender_node.render_node_t
-    method get_center : unit -> Ocgtk_graphene.Graphene.point_t
+    method get_center : unit -> Ocgtk_graphene.Graphene.Point.point_t
     method get_end : unit -> float
     method get_hradius : unit -> float
     method get_start : unit -> float
@@ -12,9 +12,9 @@ end
 class radial_gradient_node (obj : Radial_gradient_node.t) : radial_gradient_node_t = object (self)
   inherit GRender_node.render_node (Obj.magic obj : Render_node.t)
 
-  method get_center : unit -> Ocgtk_graphene.Graphene.point_t =
+  method get_center : unit -> Ocgtk_graphene.Graphene.Point.point_t =
     fun () ->
-      new  Ocgtk_graphene.Graphene.point(Radial_gradient_node.get_center obj)
+      new  Ocgtk_graphene.Graphene.Point.point(Radial_gradient_node.get_center obj)
 
   method get_end : unit -> float =
     fun () ->

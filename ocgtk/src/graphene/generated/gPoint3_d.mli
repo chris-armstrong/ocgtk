@@ -12,3 +12,4 @@ end
 
 class point3_d : Point3_d.t -> point3_d_t
 
+val alloc : unit -> point3_d_t

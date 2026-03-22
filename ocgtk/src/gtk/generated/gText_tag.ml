@@ -14,8 +14,8 @@ class type text_tag_t = object
     method set_background_full_height : bool -> unit
     method background_full_height_set : bool
     method set_background_full_height_set : bool -> unit
-    method background_rgba : Ocgtk_gdk.Gdk.rgb_a_t
-    method set_background_rgba : Ocgtk_gdk.Gdk.rgb_a_t -> unit
+    method background_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t
+    method set_background_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit
     method background_set : bool
     method set_background_set : bool -> unit
     method direction : Gtk_enums.textdirection
@@ -34,16 +34,16 @@ class type text_tag_t = object
     method set_family_set : bool -> unit
     method font : string
     method set_font : string -> unit
-    method font_desc : Ocgtk_pango.Pango.font_description_t
-    method set_font_desc : Ocgtk_pango.Pango.font_description_t -> unit
+    method font_desc : Ocgtk_pango.Pango.Font_description.font_description_t
+    method set_font_desc : Ocgtk_pango.Pango.Font_description.font_description_t -> unit
     method font_features : string
     method set_font_features : string -> unit
     method font_features_set : bool
     method set_font_features_set : bool -> unit
     method foreground : string
     method set_foreground : string -> unit
-    method foreground_rgba : Ocgtk_gdk.Gdk.rgb_a_t
-    method set_foreground_rgba : Ocgtk_gdk.Gdk.rgb_a_t -> unit
+    method foreground_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t
+    method set_foreground_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit
     method foreground_set : bool
     method set_foreground_set : bool -> unit
     method indent : int
@@ -81,16 +81,16 @@ class type text_tag_t = object
     method name : string
     method overline : Ocgtk_pango.Pango.overline
     method set_overline : Ocgtk_pango.Pango.overline -> unit
-    method overline_rgba : Ocgtk_gdk.Gdk.rgb_a_t
-    method set_overline_rgba : Ocgtk_gdk.Gdk.rgb_a_t -> unit
+    method overline_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t
+    method set_overline_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit
     method overline_rgba_set : bool
     method set_overline_rgba_set : bool -> unit
     method overline_set : bool
     method set_overline_set : bool -> unit
     method paragraph_background : string
     method set_paragraph_background : string -> unit
-    method paragraph_background_rgba : Ocgtk_gdk.Gdk.rgb_a_t
-    method set_paragraph_background_rgba : Ocgtk_gdk.Gdk.rgb_a_t -> unit
+    method paragraph_background_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t
+    method set_paragraph_background_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit
     method paragraph_background_set : bool
     method set_paragraph_background_set : bool -> unit
     method pixels_above_lines : int
@@ -137,8 +137,8 @@ class type text_tag_t = object
     method set_stretch_set : bool -> unit
     method strikethrough : bool
     method set_strikethrough : bool -> unit
-    method strikethrough_rgba : Ocgtk_gdk.Gdk.rgb_a_t
-    method set_strikethrough_rgba : Ocgtk_gdk.Gdk.rgb_a_t -> unit
+    method strikethrough_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t
+    method set_strikethrough_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit
     method strikethrough_rgba_set : bool
     method set_strikethrough_rgba_set : bool -> unit
     method strikethrough_set : bool
@@ -147,8 +147,8 @@ class type text_tag_t = object
     method set_style : Ocgtk_pango.Pango.style -> unit
     method style_set : bool
     method set_style_set : bool -> unit
-    method tabs : Ocgtk_pango.Pango.tab_array_t
-    method set_tabs : Ocgtk_pango.Pango.tab_array_t -> unit
+    method tabs : Ocgtk_pango.Pango.Tab_array.tab_array_t
+    method set_tabs : Ocgtk_pango.Pango.Tab_array.tab_array_t -> unit
     method tabs_set : bool
     method set_tabs_set : bool -> unit
     method text_transform : Ocgtk_pango.Pango.texttransform
@@ -157,8 +157,8 @@ class type text_tag_t = object
     method set_text_transform_set : bool -> unit
     method underline : Ocgtk_pango.Pango.underline
     method set_underline : Ocgtk_pango.Pango.underline -> unit
-    method underline_rgba : Ocgtk_gdk.Gdk.rgb_a_t
-    method set_underline_rgba : Ocgtk_gdk.Gdk.rgb_a_t -> unit
+    method underline_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t
+    method set_underline_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit
     method underline_rgba_set : bool
     method set_underline_rgba_set : bool -> unit
     method underline_set : bool
@@ -215,8 +215,8 @@ class text_tag (obj : Text_tag.t) : text_tag_t = object (self)
   method background_full_height_set = Text_tag.get_background_full_height_set obj
   method set_background_full_height_set v =  Text_tag.set_background_full_height_set obj v
 
-  method background_rgba = new Ocgtk_gdk.Gdk.rgb_a (Text_tag.get_background_rgba obj)
-  method set_background_rgba : Ocgtk_gdk.Gdk.rgb_a_t -> unit  = fun v ->  Text_tag.set_background_rgba obj v#as_rgb_a
+  method background_rgba = new Ocgtk_gdk.Gdk.Rgb_a.rgb_a (Text_tag.get_background_rgba obj)
+  method set_background_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit  = fun v ->  Text_tag.set_background_rgba obj v#as_rgb_a
 
   method background_set = Text_tag.get_background_set obj
   method set_background_set v =  Text_tag.set_background_set obj v
@@ -245,8 +245,8 @@ class text_tag (obj : Text_tag.t) : text_tag_t = object (self)
   method font = Text_tag.get_font obj
   method set_font v =  Text_tag.set_font obj v
 
-  method font_desc = new Ocgtk_pango.Pango.font_description (Text_tag.get_font_desc obj)
-  method set_font_desc : Ocgtk_pango.Pango.font_description_t -> unit  = fun v ->  Text_tag.set_font_desc obj v#as_font_description
+  method font_desc = new Ocgtk_pango.Pango.Font_description.font_description (Text_tag.get_font_desc obj)
+  method set_font_desc : Ocgtk_pango.Pango.Font_description.font_description_t -> unit  = fun v ->  Text_tag.set_font_desc obj v#as_font_description
 
   method font_features = Text_tag.get_font_features obj
   method set_font_features v =  Text_tag.set_font_features obj v
@@ -257,8 +257,8 @@ class text_tag (obj : Text_tag.t) : text_tag_t = object (self)
   method foreground = Text_tag.get_foreground obj
   method set_foreground v =  Text_tag.set_foreground obj v
 
-  method foreground_rgba = new Ocgtk_gdk.Gdk.rgb_a (Text_tag.get_foreground_rgba obj)
-  method set_foreground_rgba : Ocgtk_gdk.Gdk.rgb_a_t -> unit  = fun v ->  Text_tag.set_foreground_rgba obj v#as_rgb_a
+  method foreground_rgba = new Ocgtk_gdk.Gdk.Rgb_a.rgb_a (Text_tag.get_foreground_rgba obj)
+  method set_foreground_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit  = fun v ->  Text_tag.set_foreground_rgba obj v#as_rgb_a
 
   method foreground_set = Text_tag.get_foreground_set obj
   method set_foreground_set v =  Text_tag.set_foreground_set obj v
@@ -316,8 +316,8 @@ class text_tag (obj : Text_tag.t) : text_tag_t = object (self)
   method overline = Text_tag.get_overline obj
   method set_overline v =  Text_tag.set_overline obj v
 
-  method overline_rgba = new Ocgtk_gdk.Gdk.rgb_a (Text_tag.get_overline_rgba obj)
-  method set_overline_rgba : Ocgtk_gdk.Gdk.rgb_a_t -> unit  = fun v ->  Text_tag.set_overline_rgba obj v#as_rgb_a
+  method overline_rgba = new Ocgtk_gdk.Gdk.Rgb_a.rgb_a (Text_tag.get_overline_rgba obj)
+  method set_overline_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit  = fun v ->  Text_tag.set_overline_rgba obj v#as_rgb_a
 
   method overline_rgba_set = Text_tag.get_overline_rgba_set obj
   method set_overline_rgba_set v =  Text_tag.set_overline_rgba_set obj v
@@ -328,8 +328,8 @@ class text_tag (obj : Text_tag.t) : text_tag_t = object (self)
   method paragraph_background = Text_tag.get_paragraph_background obj
   method set_paragraph_background v =  Text_tag.set_paragraph_background obj v
 
-  method paragraph_background_rgba = new Ocgtk_gdk.Gdk.rgb_a (Text_tag.get_paragraph_background_rgba obj)
-  method set_paragraph_background_rgba : Ocgtk_gdk.Gdk.rgb_a_t -> unit  = fun v ->  Text_tag.set_paragraph_background_rgba obj v#as_rgb_a
+  method paragraph_background_rgba = new Ocgtk_gdk.Gdk.Rgb_a.rgb_a (Text_tag.get_paragraph_background_rgba obj)
+  method set_paragraph_background_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit  = fun v ->  Text_tag.set_paragraph_background_rgba obj v#as_rgb_a
 
   method paragraph_background_set = Text_tag.get_paragraph_background_set obj
   method set_paragraph_background_set v =  Text_tag.set_paragraph_background_set obj v
@@ -400,8 +400,8 @@ class text_tag (obj : Text_tag.t) : text_tag_t = object (self)
   method strikethrough = Text_tag.get_strikethrough obj
   method set_strikethrough v =  Text_tag.set_strikethrough obj v
 
-  method strikethrough_rgba = new Ocgtk_gdk.Gdk.rgb_a (Text_tag.get_strikethrough_rgba obj)
-  method set_strikethrough_rgba : Ocgtk_gdk.Gdk.rgb_a_t -> unit  = fun v ->  Text_tag.set_strikethrough_rgba obj v#as_rgb_a
+  method strikethrough_rgba = new Ocgtk_gdk.Gdk.Rgb_a.rgb_a (Text_tag.get_strikethrough_rgba obj)
+  method set_strikethrough_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit  = fun v ->  Text_tag.set_strikethrough_rgba obj v#as_rgb_a
 
   method strikethrough_rgba_set = Text_tag.get_strikethrough_rgba_set obj
   method set_strikethrough_rgba_set v =  Text_tag.set_strikethrough_rgba_set obj v
@@ -415,8 +415,8 @@ class text_tag (obj : Text_tag.t) : text_tag_t = object (self)
   method style_set = Text_tag.get_style_set obj
   method set_style_set v =  Text_tag.set_style_set obj v
 
-  method tabs = new Ocgtk_pango.Pango.tab_array (Text_tag.get_tabs obj)
-  method set_tabs : Ocgtk_pango.Pango.tab_array_t -> unit  = fun v ->  Text_tag.set_tabs obj v#as_tab_array
+  method tabs = new Ocgtk_pango.Pango.Tab_array.tab_array (Text_tag.get_tabs obj)
+  method set_tabs : Ocgtk_pango.Pango.Tab_array.tab_array_t -> unit  = fun v ->  Text_tag.set_tabs obj v#as_tab_array
 
   method tabs_set = Text_tag.get_tabs_set obj
   method set_tabs_set v =  Text_tag.set_tabs_set obj v
@@ -430,8 +430,8 @@ class text_tag (obj : Text_tag.t) : text_tag_t = object (self)
   method underline = Text_tag.get_underline obj
   method set_underline v =  Text_tag.set_underline obj v
 
-  method underline_rgba = new Ocgtk_gdk.Gdk.rgb_a (Text_tag.get_underline_rgba obj)
-  method set_underline_rgba : Ocgtk_gdk.Gdk.rgb_a_t -> unit  = fun v ->  Text_tag.set_underline_rgba obj v#as_rgb_a
+  method underline_rgba = new Ocgtk_gdk.Gdk.Rgb_a.rgb_a (Text_tag.get_underline_rgba obj)
+  method set_underline_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit  = fun v ->  Text_tag.set_underline_rgba obj v#as_rgb_a
 
   method underline_rgba_set = Text_tag.get_underline_rgba_set obj
   method set_underline_rgba_set v =  Text_tag.set_underline_rgba_set obj v
@@ -465,4 +465,7 @@ class text_tag (obj : Text_tag.t) : text_tag_t = object (self)
 
     method as_text_tag = obj
 end
+
+let new_ (name : string option) : text_tag_t =
+  new text_tag (Text_tag.new_ name)
 

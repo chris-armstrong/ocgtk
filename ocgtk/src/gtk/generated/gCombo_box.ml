@@ -14,7 +14,7 @@ class type combo_box_t = object
     method get_popup_fixed_width : unit -> bool
     method popdown : unit -> unit
     method popup : unit -> unit
-    method popup_for_device : Ocgtk_gdk.Gdk.device_t -> unit
+    method popup_for_device : Ocgtk_gdk.Gdk.Device.device_t -> unit
     method set_active : int -> unit
     method set_active_id : string option -> bool
     method set_active_iter : Tree_iter.t option -> unit
@@ -78,7 +78,7 @@ class combo_box (obj : Combo_box.t) : combo_box_t = object (self)
     fun () ->
       (Combo_box.popup obj)
 
-  method popup_for_device : Ocgtk_gdk.Gdk.device_t -> unit =
+  method popup_for_device : Ocgtk_gdk.Gdk.Device.device_t -> unit =
     fun device ->
       let device = device#as_device in
       (Combo_box.popup_for_device obj device)
@@ -123,4 +123,18 @@ class combo_box (obj : Combo_box.t) : combo_box_t = object (self)
 
     method as_combo_box = obj
 end
+
+let new_ () : combo_box_t =
+  new combo_box (Combo_box.new_ ())
+
+let new_with_entry () : combo_box_t =
+  new combo_box (Combo_box.new_with_entry ())
+
+let new_with_model (model : GTree_model.tree_model_t) : combo_box_t =
+  let model = model#as_tree_model in
+  new combo_box (Combo_box.new_with_model model)
+
+let new_with_model_and_entry (model : GTree_model.tree_model_t) : combo_box_t =
+  let model = model#as_tree_model in
+  new combo_box (Combo_box.new_with_model_and_entry model)
 

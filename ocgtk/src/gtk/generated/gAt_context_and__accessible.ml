@@ -5,8 +5,8 @@ class type at_context_t = object
     inherit Gat_context_signals.at_context_signals
     method get_accessible : unit -> accessible_t
     method get_accessible_role : unit -> Gtk_enums.accessiblerole
-    method display : Ocgtk_gdk.Gdk.display_t
-    method set_display : Ocgtk_gdk.Gdk.display_t -> unit
+    method display : Ocgtk_gdk.Gdk.Display.display_t
+    method set_display : Ocgtk_gdk.Gdk.Display.display_t -> unit
     method as_at_context : At_context_and__accessible.At_context.t
 end
 
@@ -38,8 +38,8 @@ class at_context (obj : At_context_and__accessible.At_context.t) : at_context_t 
     fun () ->
       (At_context_and__accessible.At_context.get_accessible_role obj)
 
-  method display = new Ocgtk_gdk.Gdk.display (At_context_and__accessible.At_context.get_display obj)
-  method set_display : Ocgtk_gdk.Gdk.display_t -> unit  = fun v ->  At_context_and__accessible.At_context.set_display obj v#as_display
+  method display = new Ocgtk_gdk.Gdk.Display.display (At_context_and__accessible.At_context.get_display obj)
+  method set_display : Ocgtk_gdk.Gdk.Display.display_t -> unit  = fun v ->  At_context_and__accessible.At_context.set_display obj v#as_display
 
     method as_at_context = obj
 end
@@ -88,3 +88,8 @@ and accessible (obj : At_context_and__accessible.Accessible.t) : accessible_t = 
 
     method as_accessible = obj
 end
+let create (accessible_role : Gtk_enums.accessiblerole) (accessible : accessible_t) (display : Ocgtk_gdk.Gdk.Display.display_t) : at_context_t =
+  let accessible = accessible#as_accessible in
+  let display = display#as_display in
+  new at_context (At_context_and__accessible.At_context.create accessible_role accessible display)
+

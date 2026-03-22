@@ -6,3 +6,4 @@ end
 
 class named_action : Named_action.t -> named_action_t
 
+val new_ : string -> named_action_t

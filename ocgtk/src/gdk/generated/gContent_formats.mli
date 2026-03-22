@@ -15,3 +15,4 @@ end
 
 class content_formats : Content_formats.t -> content_formats_t
 
+val new_ : string array option -> int -> content_formats_t

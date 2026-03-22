@@ -61,3 +61,4 @@ and font : Context_and__font_and__font_map_and__fontset.Font.t -> font_t
 and font_map : Context_and__font_and__font_map_and__fontset.Font_map.t -> font_map_t
 
 and fontset : Context_and__font_and__font_map_and__fontset.Fontset.t -> fontset_t
+val new_ : unit -> context_t

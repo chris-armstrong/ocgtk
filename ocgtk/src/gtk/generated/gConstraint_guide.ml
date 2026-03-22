@@ -73,3 +73,6 @@ class constraint_guide (obj : Constraint_guide.t) : constraint_guide_t = object 
     method as_constraint_guide = obj
 end
 
+let new_ () : constraint_guide_t =
+  new constraint_guide (Constraint_guide.new_ ())
+

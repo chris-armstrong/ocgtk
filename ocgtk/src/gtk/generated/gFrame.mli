@@ -15,3 +15,4 @@ end
 
 class frame : Frame.t -> frame_t
 
+val new_ : string option -> frame_t

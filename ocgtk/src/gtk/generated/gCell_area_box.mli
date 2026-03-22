@@ -9,3 +9,4 @@ end
 
 class cell_area_box : Cell_area_box.t -> cell_area_box_t
 
+val new_ : unit -> cell_area_box_t

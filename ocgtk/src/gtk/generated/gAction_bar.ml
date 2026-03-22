@@ -49,3 +49,6 @@ class action_bar (obj : Action_bar.t) : action_bar_t = object (self)
     method as_action_bar = obj
 end
 
+let new_ () : action_bar_t =
+  new action_bar (Action_bar.new_ ())
+

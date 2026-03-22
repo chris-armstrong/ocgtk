@@ -28,3 +28,6 @@ class item (obj : Item.t) : item_t = object (self)
     method as_item = obj
 end
 
+let new_ () : item_t =
+  new item (Item.new_ ())
+

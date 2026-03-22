@@ -53,3 +53,6 @@ class recent_manager (obj : Recent_manager.t) : recent_manager_t = object (self)
     method as_recent_manager = obj
 end
 
+let new_ () : recent_manager_t =
+  new recent_manager (Recent_manager.new_ ())
+

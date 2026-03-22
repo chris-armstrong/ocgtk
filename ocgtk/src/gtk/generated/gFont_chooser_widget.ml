@@ -1,6 +1,6 @@
 class type font_chooser_widget_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
-    method tweak_action : Ocgtk_gio.Gio.action_t
+    method tweak_action : Ocgtk_gio.Gio.Action.action_t
     method as_font_chooser_widget : Font_chooser_widget.t
 end
 
@@ -8,8 +8,11 @@ end
 class font_chooser_widget (obj : Font_chooser_widget.t) : font_chooser_widget_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
 
-  method tweak_action = new Ocgtk_gio.Gio.action (Font_chooser_widget.get_tweak_action obj)
+  method tweak_action = new Ocgtk_gio.Gio.Action.action (Font_chooser_widget.get_tweak_action obj)
 
     method as_font_chooser_widget = obj
 end
+
+let new_ () : font_chooser_widget_t =
+  new font_chooser_widget (Font_chooser_widget.new_ ())
 

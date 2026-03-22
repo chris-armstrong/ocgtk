@@ -6,3 +6,4 @@ end
 
 class unix_mount_monitor : Unix_mount_monitor.t -> unix_mount_monitor_t
 
+val new_ : unit -> unix_mount_monitor_t

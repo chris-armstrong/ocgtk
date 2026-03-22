@@ -10,3 +10,4 @@ end
 
 class drawing_area : Drawing_area.t -> drawing_area_t
 
+val new_ : unit -> drawing_area_t

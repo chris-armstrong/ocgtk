@@ -8,3 +8,4 @@ end
 
 class editable_label : Editable_label.t -> editable_label_t
 
+val new_ : string -> editable_label_t

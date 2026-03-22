@@ -84,3 +84,9 @@ class desktop_app_info (obj : Desktop_app_info.t) : desktop_app_info_t = object 
     method as_desktop_app_info = obj
 end
 
+let new_ (desktop_id : string) : desktop_app_info_t =
+  new desktop_app_info (Desktop_app_info.new_ desktop_id)
+
+let new_from_filename (filename : string) : desktop_app_info_t =
+  new desktop_app_info (Desktop_app_info.new_from_filename filename)
+

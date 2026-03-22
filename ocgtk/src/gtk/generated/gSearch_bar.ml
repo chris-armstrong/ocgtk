@@ -57,3 +57,6 @@ class search_bar (obj : Search_bar.t) : search_bar_t = object (self)
     method as_search_bar = obj
 end
 
+let new_ () : search_bar_t =
+  new search_bar (Search_bar.new_ ())
+

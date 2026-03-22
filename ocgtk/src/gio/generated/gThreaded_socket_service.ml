@@ -17,3 +17,6 @@ class threaded_socket_service (obj : Threaded_socket_service.t) : threaded_socke
     method as_threaded_socket_service = obj
 end
 
+let new_ (max_threads : int) : threaded_socket_service_t =
+  new threaded_socket_service (Threaded_socket_service.new_ max_threads)
+

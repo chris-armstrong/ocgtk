@@ -17,3 +17,6 @@ end
 
 class check_button : Check_button.t -> check_button_t
 
+val new_ : unit -> check_button_t
+val new_with_label : string option -> check_button_t
+val new_with_mnemonic : string option -> check_button_t
