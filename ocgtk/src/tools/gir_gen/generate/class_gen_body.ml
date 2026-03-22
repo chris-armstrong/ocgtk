@@ -25,18 +25,22 @@ let generate_section ~buf ~items_seen ~items ~generator_fn ~add_newline =
   items_seen
 
 (** Generate the body of a class module (implementation) *)
-let generate_class_module_body ~ctx ~buf ~layer1_module_name ~current_layer2_module ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info ~same_cluster_classes () =
+let generate_class_module_body ~ctx ~buf ~layer1_module_name ~current_layer2_module ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info:_ ~same_cluster_classes ~parent_name () =
   let has_any_signals = List.length signals > 0 in
   let property_filters = Class_gen_helpers.get_property_filters ~ctx ~class_name ~methods properties in
 
   (* Detect method conflicts with parent classes *)
   let conflicting_methods = Class_gen_conflict_detection.detect_method_conflicts ~ctx ~class_name ~c_type ~methods in
 
-  (* Inheritance *)
-  Option.iter (fun hier_info ->
-    if not (String.equal hier_info.gir_root class_name) then
-      bprintf buf "  inherit %s.%s (%s.%s obj)\n" hier_info.layer2_module hier_info.class_type_name layer1_module_name hier_info.accessor_method
-  ) hierarchy_info;
+  (* Parent class inheritance — skip if parent is in the same cyclic cluster *)
+  (match Class_gen_helpers.resolve_parent_gir_type ~same_cluster_classes ~parent_name with
+   | Some gir_type ->
+     (match Class_gen_type_resolution.resolve_layer2_class_name ~ctx ~current_layer2_module ~gir_type with
+      | Some parent_class_name ->
+        let parent_l1 = Class_utils.get_qualified_module_name ~ctx gir_type.name in
+        bprintf buf "  inherit %s (Obj.magic obj : %s.t)\n" parent_class_name parent_l1
+      | None -> ())
+   | None -> ());
 
   (* Signal handlers via inherit *)
   if has_any_signals then begin
@@ -46,7 +50,9 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name ~current_layer2_mod
 
   bprintf buf "\n";
 
-  let seen = StringSet.empty in
+  (* Pre-populate seen with inherited method names to suppress conflicts *)
+  let inherited_names = Class_gen_conflict_detection.collect_inherited_method_names ~ctx ~class_name in
+  let seen = inherited_names in
   (* Methods *)
   let seen =
     let generate seen m =
@@ -64,22 +70,23 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name ~current_layer2_mod
   ignore seen;
 
   (* Converter methods *)
-  Option.iter (fun hier_info -> Class_gen_converter.generate_hierarchy_converter_method_impl ~ctx ~class_name ~hierarchy_info:hier_info buf) hierarchy_info;
   Class_gen_converter.generate_class_converter_method_impl ~class_name buf
 
 (** Generate the body of a class signature *)
-let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_ ~current_layer2_module ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info ~same_cluster_classes () =
+let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_ ~current_layer2_module ~class_name ~class_snake ~c_type ~methods ~properties ~signals ~hierarchy_info:_ ~same_cluster_classes ~parent_name () =
   let has_any_signals = List.length signals > 0 in
   let property_filters = Class_gen_helpers.get_property_filters ~ctx ~class_name ~methods properties in
 
   (* Detect method conflicts with parent classes *)
   let conflicting_methods = Class_gen_conflict_detection.detect_method_conflicts ~ctx ~class_name ~c_type ~methods in
 
-  (* Inheritance *)
-  Option.iter (fun hier_info ->
-    if not (String.equal hier_info.gir_root class_name) then
-      bprintf buf "    inherit %s.%s\n" hier_info.layer2_module hier_info.class_type_name
-  ) hierarchy_info;
+  (* Parent class inheritance — skip if parent is in the same cyclic cluster *)
+  (match Class_gen_helpers.resolve_parent_gir_type ~same_cluster_classes ~parent_name with
+   | Some gir_type ->
+     (match Class_gen_type_resolution.resolve_layer2_class_ref ~ctx ~current_layer2_module ~gir_type with
+      | Some parent_class_type -> bprintf buf "    inherit %s\n" parent_class_type
+      | None -> ())
+   | None -> ());
 
   (* Signal handlers via inherit *)
   if has_any_signals then begin
@@ -87,7 +94,9 @@ let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_ ~current_layer
     bprintf buf "    inherit %s.%s\n" signal_module (signal_class_name class_name)
   end;
 
-  let seen = StringSet.empty in
+  (* Pre-populate seen with inherited method names to suppress conflicts *)
+  let inherited_names = Class_gen_conflict_detection.collect_inherited_method_names ~ctx ~class_name in
+  let seen = inherited_names in
   (* Methods *)
   let _seen =
     let generate seen meth =
@@ -112,5 +121,4 @@ let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_ ~current_layer
   in
 
   (* Converter methods *)
-  Option.iter (fun hier_info -> Class_gen_converter.generate_hierarchy_converter_method_sig ~hierarchy_info:hier_info ~class_name buf) hierarchy_info;
   Class_gen_converter.generate_class_converter_method_sig ~ctx ~class_name buf

@@ -260,13 +260,33 @@ In `class_gen_method.ml`, replace the hierarchy-based unwrapping with
 
 Apply same pattern to `class_gen_property.ml` and `class_gen_type_resolution.ml`.
 
-### Step 4: Migrate layer 2 inheritance to parent chain
+### Step 4: Migrate layer 2 inheritance to parent chain ✅ DONE
 
-In `class_gen_body.ml`, replace `hierarchy_info`-based `inherit` generation
-with parent-chain-based logic:
-- Use `parent_chain.resolve` to find the immediate parent
-- Derive the skel class name and module from the parent name
-- Generate `inherit GParent.parent_skel (Layer1.as_parent obj)`
+Parent class inheritance is now generated in `class_gen_body.ml` using the
+entity's direct parent name (from `parent_chain`) and
+`resolve_layer2_class_ref`/`resolve_layer2_class_name` from
+`class_gen_type_resolution.ml`.
+
+**What was done:**
+- `class_gen_body.ml`: Added `~parent_name` parameter to both
+  `generate_class_module_body` and `generate_class_signature_body`.
+  Emits `inherit parent_t` in class types and `inherit parent (Obj.magic obj : Parent.t)`
+  in implementations. Skips parent inherit when parent is in the same cyclic cluster.
+- `class_gen.ml`: Threads `parent_name` (first element of `parent_chain`)
+  through to body generators for both single and combined class generation.
+- `class_gen_conflict_detection.ml`: Added `collect_inherited_method_names`
+  which gathers all OCaml method names (from both methods and properties) across
+  the entire ancestor chain. Used to pre-populate the `seen` set so inherited
+  methods are not re-generated in the child.
+- `class_gen_property.ml`: Updated `generate_property_code` to check getter and
+  setter names individually against `seen`, rather than skipping the entire property.
+- `method_wrapper_tests.ml`: Updated test 13 (conflict detection) — conflicting
+  methods are now silently suppressed via inherit rather than commented out.
+
+**Note:** The legacy `hierarchy_info`-based inherit lines remain in
+`class_gen_body.ml` but are effectively dead code (they never fire because
+`classify_class` always returns `MonomorphicType`). They will be removed in
+Step 6 when `hierarchy_detection.ml` is deleted.
 
 ### Step 5: Migrate layer 1 type/accessor generation
 
@@ -275,7 +295,7 @@ In `layer1_helpers.ml` and `layer1_main.ml`:
 - Remove `hierarchy_kind` string labels ("Widget", "Event controller", etc.)
 - Keep the same variant structure but derive it from parent chain
 
-### Step 6: Regenerate bindings and verify
+### Step 6: Remove hierarchy_detection.ml and regenerate bindings
 
 ```bash
 bash scripts/generate-bindings.sh

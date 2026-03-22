@@ -401,6 +401,17 @@ let validate_class_inherits ~structure ~class_name ~parent_class =
   | None ->
       Alcotest.fail (sprintf "Class '%s' not found in structure" class_name)
 
+(* Validate that a class type inherits from a specific parent class type *)
+let validate_class_type_inherits ~signature ~class_name ~parent_class_type =
+  match Ml_ast_helpers.find_class_type_declaration signature class_name with
+  | Some ct_decl ->
+      let inherit_clauses = Ml_ast_helpers.get_class_type_inherit_clauses ct_decl.pci_expr in
+      if not (List.mem parent_class_type inherit_clauses) then
+        Alcotest.fail (sprintf "Class type '%s' does not inherit from '%s'. Inherits from: [%s]"
+          class_name parent_class_type (String.concat "; " inherit_clauses))
+  | None ->
+      Alcotest.fail (sprintf "Class type '%s' not found in signature" class_name)
+
 (* ========================================================================= *)
 (* Method Type Annotation Validation Helpers *)
 (* ========================================================================= *)

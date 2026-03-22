@@ -639,7 +639,7 @@ let test_property_setter_wrapper () =
 (* Test 10: Inheritance Generation *)
 (* ========================================================================= *)
 
-(* Test that generated classes inherit from GWidget.widget_skel *)
+(* Test that generated classes inherit from parent via GWidget.widget *)
 let test_inheritance_generation () =
   let ctx = create_test_context () in
   
@@ -671,11 +671,11 @@ let test_inheritance_generation () =
   (* Parse the generated code into AST *)
   let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
   
-  (* Validate that the generated class inherits from GWidget.widget_skel using AST parsing *)
+  (* Validate that the generated class inherits from GWidget.widget via parent_name *)
   Layer2_helpers.validate_class_inherits
     ~structure:ml_ast
     ~class_name:"button"
-    ~parent_class:"GWidget.widget_skel"
+    ~parent_class:"GWidget.widget"
 
 (* ========================================================================= *)
 (* Test 11: Signal Handler Inheritance *)
@@ -708,35 +708,6 @@ let test_signal_handler_inheritance () =
      ~structure:ml_ast
      ~class_name:"button"
      ~parent_class:"Gbutton_signals.button_signals"
-
-(* ========================================================================= *)
-(* Test 12: Hierarchy Accessor Method *)
-(* ========================================================================= *)
-
-(* Test that generated classes have 'method as_widget = (ClassName.as_widget obj)' pattern *)
-let test_hierarchy_accessor_method () =
-  let ctx = create_test_context () in
-
-  (* Generate Layer 2 class module for Button that inherits from Widget *)
-  let ml_code = Gir_gen_lib.Generate.Class_gen.generate_class_module
-    ~ctx
-    ~class_name:"Button"
-    ~c_type:"GtkButton"
-    ~parent_chain:["Widget"]
-    ~methods:[]
-    ~properties:[]
-    ~signals:[] in
-
-  (* Parse the generated code into AST *)
-  let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
-
-  (* Find the button class declaration and as_widget method in the AST *)
-  let class_decl = find_class ml_ast "button" in
-  let method_field = find_method class_decl "as_widget" in
-  let method_body = get_method_body method_field in
-
-  (* Validate that the method body calls Button.as_widget *)
-  assert_method_body_calls method_body "Button" "as_widget"
 
 (* ========================================================================= *)
 (* Test 13: Class Accessor Method *)
@@ -885,22 +856,9 @@ let test_method_conflict_detection () =
   Printf.eprintf "Method 'show' exists as definition in .ml: %b\n" show_method_exists;
   
   if show_method_exists then
-    Alcotest.fail "Method 'show' should be commented out due to conflict with parent method but is present as a definition";
+    Alcotest.fail "Method 'show' should be suppressed (inherited from parent) but is present as a definition";
 
-  (* Check that the 'show' method IS mentioned in a comment in the generated code *)
-  let show_mentioned_in_comment = Ml_ast_helpers.method_mentioned_in_comment ml_code "show" in
-  Printf.eprintf "Method 'show' mentioned in comment in .ml: %b\n" show_mentioned_in_comment;
-
-  if not show_mentioned_in_comment then
-    Alcotest.fail "Method 'show' should be mentioned in a comment but is not";
-
-  (* Validate using the helper function *)
-  Ml_ast_helpers.validate_method_is_commented_out
-    ~class_expr:button_class_decl.pci_expr
-    ~class_code:ml_code
-    ~method_name:"show";
-
-  Printf.eprintf "Validated that 'show' method is properly commented out in .ml\n";
+  Printf.eprintf "Confirmed 'show' method is not present in .ml (inherited from parent)\n";
 
   (* Also check the signature (.mli) *)
   let button_class_type_decl =
@@ -910,21 +868,15 @@ let test_method_conflict_detection () =
   in
   Printf.eprintf "Found class type 'button_t' in .mli\n";
 
-  (* Check that the 'show' method is NOT present as a signature in the class type *)
+  (* Check that the 'show' method is NOT present as a signature in the class type
+     — it is inherited from the parent class type via 'inherit widget_t' *)
   let show_signature_exists = Ml_ast_helpers.method_signature_exists button_class_type_decl.pci_expr "show" in
   Printf.eprintf "Method 'show' signature exists in .mli: %b\n" show_signature_exists;
 
   if show_signature_exists then
-    Alcotest.fail "Method 'show' should be commented out due to conflict with parent method but signature exists";
+    Alcotest.fail "Method 'show' should be inherited from parent, not re-declared in child class type";
 
-  (* Check that the 'show' method IS mentioned in a comment in the generated signature *)
-  let show_mentioned_in_comment = Ml_ast_helpers.method_mentioned_in_comment mli_code "show" in
-  Printf.eprintf "Method 'show' mentioned in comment in .mli: %b\n" show_mentioned_in_comment;
-
-  if not show_mentioned_in_comment then
-    Alcotest.fail "Method 'show' should be mentioned in a comment in .mli but is not";
-
-  Printf.eprintf "Validated that 'show' method is properly commented out in .mli\n";
+  Printf.eprintf "Confirmed 'show' method is inherited, not re-declared in .mli\n";
 
   Printf.eprintf "Method conflict detection test passed.\n"
 
@@ -1481,6 +1433,162 @@ let test_throws_method_result_wrapping () =
   Printf.eprintf "Throws method result wrapping test passed.\n"
 
 (* ========================================================================= *)
+(* Test 18: Parent Inherit in Class Implementation (.ml) *)
+(* ========================================================================= *)
+
+(* Test that Button class inherits from GWidget.widget in the implementation *)
+let test_parent_inherit_in_implementation () =
+  let ctx = create_test_context () in
+
+  (* Generate class module for Button with parent chain *)
+  (* Note: Widget is already in ctx from create_test_context *)
+  let ml_code = Gir_gen_lib.Generate.Class_gen.generate_class_module
+    ~ctx
+    ~class_name:"Button"
+    ~c_type:"GtkButton"
+    ~parent_chain:["Widget"]
+    ~methods:[]
+    ~properties:[]
+    ~signals:[] in
+
+  Printf.eprintf "Generated class module for parent inherit test:\n%s\n" ml_code;
+
+  (* Parse the generated code into AST *)
+  let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
+
+  (* Validate that the button class inherits from GWidget.widget *)
+  Layer2_helpers.validate_class_inherits
+    ~structure:ml_ast
+    ~class_name:"button"
+    ~parent_class:"GWidget.widget"
+
+(* ========================================================================= *)
+(* Test 19: Parent Inherit in Class Type (.mli) *)
+(* ========================================================================= *)
+
+(* Test that button_t class type inherits from GWidget.widget_t in the signature *)
+let test_parent_inherit_in_class_type () =
+  let ctx = create_test_context () in
+
+  (* Generate class signature for Button with parent chain *)
+  (* Note: Widget is already in ctx from create_test_context *)
+  let mli_code = Gir_gen_lib.Generate.Class_gen.generate_class_signature
+    ~ctx
+    ~class_name:"Button"
+    ~c_type:"GtkButton"
+    ~parent_chain:["Widget"]
+    ~methods:[]
+    ~properties:[]
+    ~signals:[] in
+
+  Printf.eprintf "Generated class signature for parent inherit test:\n%s\n" mli_code;
+
+  (* Parse the generated code into AST *)
+  let mli_ast = Ml_ast_helpers.parse_interface mli_code in
+
+  (* Validate that the button_t class type inherits from GWidget.widget_t *)
+  Layer2_helpers.validate_class_type_inherits
+    ~signature:mli_ast
+    ~class_name:"button_t"
+    ~parent_class_type:"GWidget.widget_t"
+
+(* ========================================================================= *)
+(* Test 20: Cyclic Cluster Skips Parent Inherit *)
+(* ========================================================================= *)
+
+(* Test that when Button and Widget are in the same cluster, Button does NOT inherit from Widget *)
+let test_cyclic_cluster_skips_parent_inherit () =
+  let open Gir_gen_lib.Types in
+  let ctx = create_test_context () in
+
+  (* Add hierarchy info for both Widget and Button to make them same-cluster *)
+  Hashtbl.add ctx.hierarchy_map "Widget" (hierarchy_entry "Widget" "GWidget" "widget_skel");
+  Hashtbl.add ctx.hierarchy_map "Button" (hierarchy_entry "Widget" "GWidget" "widget_skel");
+
+  (* Create Widget class *)
+  let widget_class = {
+    class_name = "Widget";
+    c_type = "GtkWidget";
+    parent = None;
+    implements = [];
+    introspectable = true;
+    constructors = [];
+    methods = [];
+    properties = [];
+    signals = [];
+    class_doc = None;
+  } in
+
+  (* Create Button class with Widget as parent *)
+  let button_class = {
+    class_name = "Button";
+    c_type = "GtkButton";
+    parent = Some "Widget";
+    implements = [];
+    introspectable = true;
+    constructors = [];
+    methods = [];
+    properties = [];
+    signals = [];
+    class_doc = None;
+  } in
+
+  (* Add both classes to context *)
+  let updated_ctx = { ctx with classes = [widget_class; button_class] } in
+
+  (* Generate code for Button using generate_combined_class_module *)
+  let widget_entity = {
+    Gir_gen_lib.Types.kind = Gir_gen_lib.Types.Class widget_class;
+    name = "Widget";
+    c_type = "GtkWidget";
+    doc = None;
+    parent = None;
+    implements = [];
+    constructors = [];
+    methods = [];
+    properties = [];
+    signals = [];
+  } in
+  let button_entity = {
+    Gir_gen_lib.Types.kind = Gir_gen_lib.Types.Class button_class;
+    name = "Button";
+    c_type = "GtkButton";
+    doc = None;
+    parent = Some "Widget";
+    implements = [];
+    constructors = [];
+    methods = [];
+    properties = [];
+    signals = [];
+  } in
+  let entities = [widget_entity; button_entity] in
+
+  let ml_code = Gir_gen_lib.Generate.Class_gen.generate_combined_class_module
+    ~ctx:updated_ctx
+    ~combined_module_name:"WidgetButton"
+    ~entities
+    ~parent_chain_for_entity:(fun class_name ->
+      match class_name with "Button" -> ["Widget"] | _ -> []) in
+
+  Printf.eprintf "Generated combined class module for cyclic cluster test:\n%s\n" ml_code;
+
+  (* Parse the generated code into AST *)
+  let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
+
+  (* Find the button class and check its inherit clauses *)
+  let button_decl = find_class ml_ast "button" in
+  let inherit_clauses = Ml_ast_helpers.get_class_inherit_clauses button_decl.pci_expr in
+
+  (* Should NOT contain any GWidget inherit since both are in the same cluster *)
+  let has_gwidget_inherit = List.exists (fun c ->
+    String.length c > 0 && String.equal c "GWidget.widget"
+  ) inherit_clauses in
+
+  if has_gwidget_inherit then
+    Alcotest.fail (Printf.sprintf "Button should NOT inherit from GWidget.widget when in same cluster. Inherits: [%s]"
+      (String.concat "; " inherit_clauses))
+
+(* ========================================================================= *)
 (* Test Suite *)
 (* ========================================================================= *)
 
@@ -1507,8 +1615,6 @@ let tests = [
     test_inheritance_generation;
   Alcotest.test_case "Signal handler inheritance" `Quick
     test_signal_handler_inheritance;
-  Alcotest.test_case "Hierarchy accessor method" `Quick
-    test_hierarchy_accessor_method;
   Alcotest.test_case "Class accessor method" `Quick
     test_class_accessor_method;
   Alcotest.test_case "Method conflict detection" `Quick
@@ -1519,4 +1625,10 @@ let tests = [
     test_combined_class_signature_consistency;
   Alcotest.test_case "Throws method result wrapping" `Quick
     test_throws_method_result_wrapping;
+  Alcotest.test_case "Parent inherit in implementation" `Quick
+    test_parent_inherit_in_implementation;
+  Alcotest.test_case "Parent inherit in class type" `Quick
+    test_parent_inherit_in_class_type;
+  Alcotest.test_case "Cyclic cluster skips parent inherit" `Quick
+    test_cyclic_cluster_skips_parent_inherit;
 ]
