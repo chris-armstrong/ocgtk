@@ -13,7 +13,7 @@
 (executable
  (name counter)
  (modules counter)
- (libraries ocgtk))
+ (libraries ocgtk.gtk))
 
 ; (executable
 ;  (name settings_panel)
