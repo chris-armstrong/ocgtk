@@ -1,4 +1,5 @@
 class type app_chooser_button_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gapp_chooser_button_signals.app_chooser_button_signals
     method append_custom_item : string -> string -> Ocgtk_gio.Gio.icon_t -> unit
     method append_separator : unit -> unit

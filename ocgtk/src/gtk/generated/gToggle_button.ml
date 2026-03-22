@@ -1,6 +1,7 @@
 (* Signal class defined in gtoggle_button_signals.ml *)
 
 class type toggle_button_t = object
+    inherit GButton.button_t
     inherit Gtoggle_button_signals.toggle_button_signals
     method get_active : unit -> bool
     method set_active : bool -> unit
@@ -11,6 +12,7 @@ end
 
 (* High-level class for ToggleButton *)
 class toggle_button (obj : Toggle_button.t) : toggle_button_t = object (self)
+  inherit GButton.button (Obj.magic obj : Button.t)
   inherit Gtoggle_button_signals.toggle_button_signals obj
 
   method get_active : unit -> bool =

@@ -1,4 +1,5 @@
 class type text_node_t = object
+    inherit GRender_node.render_node_t
     method get_color : unit -> Ocgtk_gdk.Gdk.rgb_a_t
     method get_font : unit -> Ocgtk_pango.Pango.font_t
     method get_num_glyphs : unit -> int

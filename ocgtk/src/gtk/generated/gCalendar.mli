@@ -1,4 +1,5 @@
 class type calendar_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gcalendar_signals.calendar_signals
     method clear_marks : unit -> unit
     method get_day : unit -> int

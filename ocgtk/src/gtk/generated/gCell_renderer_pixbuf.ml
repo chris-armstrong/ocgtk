@@ -1,4 +1,5 @@
 class type cell_renderer_pixbuf_t = object
+    inherit GCell_renderer.cell_renderer_t
     method gicon : Ocgtk_gio.Gio.icon_t
     method set_gicon : Ocgtk_gio.Gio.icon_t -> unit
     method icon_name : string
@@ -18,6 +19,7 @@ end
 
 (* High-level class for CellRendererPixbuf *)
 class cell_renderer_pixbuf (obj : Cell_renderer_pixbuf.t) : cell_renderer_pixbuf_t = object (self)
+  inherit GCell_renderer.cell_renderer (Obj.magic obj : Cell_renderer.t)
 
   method gicon = new Ocgtk_gio.Gio.icon (Cell_renderer_pixbuf.get_gicon obj)
   method set_gicon : Ocgtk_gio.Gio.icon_t -> unit  = fun v ->  Cell_renderer_pixbuf.set_gicon obj v#as_icon

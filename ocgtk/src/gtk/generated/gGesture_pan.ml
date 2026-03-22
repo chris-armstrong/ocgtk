@@ -1,6 +1,7 @@
 (* Signal class defined in ggesture_pan_signals.ml *)
 
 class type gesture_pan_t = object
+    inherit GGesture_drag.gesture_drag_t
     inherit Ggesture_pan_signals.gesture_pan_signals
     method get_orientation : unit -> Gtk_enums.orientation
     method set_orientation : Gtk_enums.orientation -> unit
@@ -9,6 +10,7 @@ end
 
 (* High-level class for GesturePan *)
 class gesture_pan (obj : Gesture_pan.t) : gesture_pan_t = object (self)
+  inherit GGesture_drag.gesture_drag (Obj.magic obj : Gesture_drag.t)
   inherit Ggesture_pan_signals.gesture_pan_signals obj
 
   method get_orientation : unit -> Gtk_enums.orientation =

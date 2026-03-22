@@ -1,4 +1,5 @@
 class type unix_socket_address_t = object
+    inherit GSocket_address.socket_address_t
     method get_address_type : unit -> Gio_enums.unixsocketaddresstype
     method get_is_abstract : unit -> bool
     method get_path : unit -> string
@@ -8,6 +9,7 @@ end
 
 (* High-level class for UnixSocketAddress *)
 class unix_socket_address (obj : Unix_socket_address.t) : unix_socket_address_t = object (self)
+  inherit GSocket_address.socket_address (Obj.magic obj : Socket_address.t)
 
   method get_address_type : unit -> Gio_enums.unixsocketaddresstype =
     fun () ->

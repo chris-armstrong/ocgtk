@@ -110,10 +110,8 @@ and gl_context_t = object
     method get_allowed_apis : unit -> Gdk_enums.glapi
     method get_api : unit -> Gdk_enums.glapi
     method get_debug_enabled : unit -> bool
-    method get_display : unit -> display_t option
     method get_forward_compatible : unit -> bool
     method get_shared_context : unit -> gl_context_t option
-    method get_surface : unit -> surface_t option
     method get_use_es : unit -> bool
     method is_legacy : unit -> bool
     method is_shared : gl_context_t -> bool

@@ -1,6 +1,7 @@
 (* Signal class defined in gentry_signals.ml *)
 
 class type entry_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gentry_signals.entry_signals
     method get_activates_default : unit -> bool
     method get_alignment : unit -> float
@@ -102,6 +103,7 @@ end
 
 (* High-level class for Entry *)
 class entry (obj : Entry.t) : entry_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gentry_signals.entry_signals obj
 
   method get_activates_default : unit -> bool =

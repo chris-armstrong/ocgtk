@@ -1,6 +1,7 @@
 (* Signal class defined in gspin_button_signals.ml *)
 
 class type spin_button_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gspin_button_signals.spin_button_signals
     method configure : GAdjustment.adjustment_t option -> float -> int -> unit
     method get_activates_default : unit -> bool
@@ -31,6 +32,7 @@ end
 
 (* High-level class for SpinButton *)
 class spin_button (obj : Spin_button.t) : spin_button_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gspin_button_signals.spin_button_signals obj
 
   method configure : GAdjustment.adjustment_t option -> float -> int -> unit =

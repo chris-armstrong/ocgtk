@@ -1,12 +1,12 @@
 (* Signal class defined in gmenu_button_signals.ml *)
 
 class type menu_button_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gmenu_button_signals.menu_button_signals
     method get_active : unit -> bool
     method get_always_show_arrow : unit -> bool
     method get_can_shrink : unit -> bool
     method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
-    (* method get_direction : ... *) (* CONFLICT: incompatible signature with parent method *)
     method get_has_frame : unit -> bool
     method get_icon_name : unit -> string option
     method get_label : unit -> string option
@@ -20,7 +20,6 @@ class type menu_button_t = object
     method set_always_show_arrow : bool -> unit
     method set_can_shrink : bool -> unit
     method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
-    (* method set_direction : ... *) (* CONFLICT: incompatible signature with parent method *)
     method set_has_frame : bool -> unit
     method set_icon_name : string -> unit
     method set_label : string -> unit
@@ -33,6 +32,7 @@ end
 
 (* High-level class for MenuButton *)
 class menu_button (obj : Menu_button.t) : menu_button_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gmenu_button_signals.menu_button_signals obj
 
   method get_active : unit -> bool =
@@ -50,8 +50,6 @@ class menu_button (obj : Menu_button.t) : menu_button_t = object (self)
   method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option =
     fun () ->
       Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Menu_button.get_child obj)
-
-  (* method get_direction = ... *) (* CONFLICT: incompatible signature with parent method *)
 
   method get_has_frame : unit -> bool =
     fun () ->
@@ -105,8 +103,6 @@ class menu_button (obj : Menu_button.t) : menu_button_t = object (self)
     fun child ->
       let child = Option.map (fun (c) -> c#as_widget) child in
       (Menu_button.set_child obj child)
-
-  (* method set_direction = ... *) (* CONFLICT: incompatible signature with parent method *)
 
   method set_has_frame : bool -> unit =
     fun has_frame ->

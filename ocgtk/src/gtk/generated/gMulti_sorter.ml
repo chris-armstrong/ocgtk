@@ -1,4 +1,5 @@
 class type multi_sorter_t = object
+    inherit GSorter.sorter_t
     method append : GSorter.sorter_t -> unit
     method remove : int -> unit
     method n_items : int
@@ -7,6 +8,7 @@ end
 
 (* High-level class for MultiSorter *)
 class multi_sorter (obj : Multi_sorter.t) : multi_sorter_t = object (self)
+  inherit GSorter.sorter (Obj.magic obj : Sorter.t)
 
   method append : GSorter.sorter_t -> unit =
     fun sorter ->

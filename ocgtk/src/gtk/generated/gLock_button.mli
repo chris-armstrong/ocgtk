@@ -1,4 +1,5 @@
 class type lock_button_t = object
+    inherit GButton.button_t
     method get_permission : unit -> Ocgtk_gio.Gio.permission_t option
     method set_permission : Ocgtk_gio.Gio.permission_t option -> unit
     method text_lock : string

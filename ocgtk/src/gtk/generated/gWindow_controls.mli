@@ -1,4 +1,5 @@
 class type window_controls_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     method get_decoration_layout : unit -> string option
     method get_empty : unit -> bool
     method get_side : unit -> Gtk_enums.packtype

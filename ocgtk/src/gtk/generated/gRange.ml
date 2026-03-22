@@ -1,6 +1,7 @@
 (* Signal class defined in grange_signals.ml *)
 
 class type range_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Grange_signals.range_signals
     method get_adjustment : unit -> GAdjustment.adjustment_t
     method get_fill_level : unit -> float
@@ -27,6 +28,7 @@ end
 
 (* High-level class for Range *)
 class range (obj : Range.t) : range_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Grange_signals.range_signals obj
 
   method get_adjustment : unit -> GAdjustment.adjustment_t =

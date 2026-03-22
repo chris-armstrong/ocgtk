@@ -46,6 +46,7 @@ class type socket_t = object
 end
 
 and socket_connection_t = object
+    inherit GIo_stream.io_stream_t
     method connect : GSocket_address.socket_address_t -> GCancellable.cancellable_t option -> (bool, GError.t) result
     method get_local_address : unit -> (GSocket_address.socket_address_t, GError.t) result
     method get_remote_address : unit -> (GSocket_address.socket_address_t, GError.t) result

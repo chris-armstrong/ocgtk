@@ -1,4 +1,5 @@
 class type multi_filter_t = object
+    inherit GFilter.filter_t
     method append : GFilter.filter_t -> unit
     method remove : int -> unit
     method n_items : int
@@ -7,6 +8,7 @@ end
 
 (* High-level class for MultiFilter *)
 class multi_filter (obj : Multi_filter.t) : multi_filter_t = object (self)
+  inherit GFilter.filter (Obj.magic obj : Filter.t)
 
   method append : GFilter.filter_t -> unit =
     fun filter ->

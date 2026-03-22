@@ -1,6 +1,7 @@
 (* Signal class defined in gflow_box_child_signals.ml *)
 
 class type flow_box_child_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gflow_box_child_signals.flow_box_child_signals
     method changed : unit -> unit
     method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
@@ -12,6 +13,7 @@ end
 
 (* High-level class for FlowBoxChild *)
 class flow_box_child (obj : Flow_box_child.t) : flow_box_child_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gflow_box_child_signals.flow_box_child_signals obj
 
   method changed : unit -> unit =

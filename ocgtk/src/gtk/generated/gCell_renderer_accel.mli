@@ -1,4 +1,5 @@
 class type cell_renderer_accel_t = object
+    inherit GCell_renderer_text.cell_renderer_text_t
     inherit Gcell_renderer_accel_signals.cell_renderer_accel_signals
     method accel_key : int
     method set_accel_key : int -> unit

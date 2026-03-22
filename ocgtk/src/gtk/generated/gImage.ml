@@ -1,4 +1,5 @@
 class type image_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     method clear : unit -> unit
     method get_gicon : unit -> Ocgtk_gio.Gio.icon_t option
     method get_icon_name : unit -> string option
@@ -25,6 +26,7 @@ end
 
 (* High-level class for Image *)
 class image (obj : Image.t) : image_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
 
   method clear : unit -> unit =
     fun () ->

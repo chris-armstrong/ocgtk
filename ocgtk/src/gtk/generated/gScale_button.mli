@@ -1,4 +1,5 @@
 class type scale_button_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gscale_button_signals.scale_button_signals
     method get_active : unit -> bool
     method get_adjustment : unit -> GAdjustment.adjustment_t

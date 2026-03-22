@@ -1,4 +1,5 @@
 class type button_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gbutton_signals.button_signals
     method get_can_shrink : unit -> bool
     method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option

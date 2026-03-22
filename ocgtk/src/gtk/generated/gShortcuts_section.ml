@@ -1,6 +1,7 @@
 (* Signal class defined in gshortcuts_section_signals.ml *)
 
 class type shortcuts_section_t = object
+    inherit GBox.box_t
     inherit Gshortcuts_section_signals.shortcuts_section_signals
     method add_group : GShortcuts_group.shortcuts_group_t -> unit
     method max_height : int
@@ -16,6 +17,7 @@ end
 
 (* High-level class for ShortcutsSection *)
 class shortcuts_section (obj : Shortcuts_section.t) : shortcuts_section_t = object (self)
+  inherit GBox.box (Obj.magic obj : Box.t)
   inherit Gshortcuts_section_signals.shortcuts_section_signals obj
 
   method add_group : GShortcuts_group.shortcuts_group_t -> unit =

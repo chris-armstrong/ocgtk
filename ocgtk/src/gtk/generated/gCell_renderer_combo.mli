@@ -1,4 +1,5 @@
 class type cell_renderer_combo_t = object
+    inherit GCell_renderer_text.cell_renderer_text_t
     inherit Gcell_renderer_combo_signals.cell_renderer_combo_signals
     method has_entry : bool
     method set_has_entry : bool -> unit

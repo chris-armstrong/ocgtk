@@ -1,4 +1,5 @@
 class type mnemonic_trigger_t = object
+    inherit GShortcut_trigger.shortcut_trigger_t
     method get_keyval : unit -> int
     method as_mnemonic_trigger : Mnemonic_trigger.t
 end

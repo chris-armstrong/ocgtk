@@ -1,6 +1,7 @@
 (* Signal class defined in ggl_area_signals.ml *)
 
 class type gl_area_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Ggl_area_signals.gl_area_signals
     method attach_buffers : unit -> unit
     method get_allowed_apis : unit -> Ocgtk_gdk.Gdk.glapi
@@ -23,6 +24,7 @@ end
 
 (* High-level class for GLArea *)
 class gl_area (obj : Gl_area.t) : gl_area_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Ggl_area_signals.gl_area_signals obj
 
   method attach_buffers : unit -> unit =

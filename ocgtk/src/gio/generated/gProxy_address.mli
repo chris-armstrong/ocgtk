@@ -1,4 +1,5 @@
 class type proxy_address_t = object
+    inherit GInet_socket_address.inet_socket_address_t
     method get_destination_hostname : unit -> string
     method get_destination_protocol : unit -> string
     method get_password : unit -> string option

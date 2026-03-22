@@ -1,4 +1,5 @@
 class type tcp_connection_t = object
+    inherit GSocket_and__socket_connection.socket_connection_t
     method get_graceful_disconnect : unit -> bool
     method set_graceful_disconnect : bool -> unit
     method as_tcp_connection : Tcp_connection.t
@@ -6,6 +7,7 @@ end
 
 (* High-level class for TcpConnection *)
 class tcp_connection (obj : Tcp_connection.t) : tcp_connection_t = object (self)
+  inherit GSocket_and__socket_connection.socket_connection (Obj.magic obj : Socket_and__socket_connection.Socket_connection.t)
 
   method get_graceful_disconnect : unit -> bool =
     fun () ->

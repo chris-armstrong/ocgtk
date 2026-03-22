@@ -1,4 +1,5 @@
 class type cell_view_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     method get_displayed_row : unit -> Tree_path.t option
     method get_draw_sensitive : unit -> bool
     method get_fit_model : unit -> bool
@@ -13,6 +14,7 @@ end
 
 (* High-level class for CellView *)
 class cell_view (obj : Cell_view.t) : cell_view_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
 
   method get_displayed_row : unit -> Tree_path.t option =
     fun () ->

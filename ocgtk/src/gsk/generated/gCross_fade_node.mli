@@ -1,4 +1,5 @@
 class type cross_fade_node_t = object
+    inherit GRender_node.render_node_t
     method get_end_child : unit -> GRender_node.render_node_t
     method get_progress : unit -> float
     method get_start_child : unit -> GRender_node.render_node_t

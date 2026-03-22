@@ -1,4 +1,5 @@
 class type info_bar_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Ginfo_bar_signals.info_bar_signals
     method add_action_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> int -> unit
     method add_button : string -> int -> GButton.button_t

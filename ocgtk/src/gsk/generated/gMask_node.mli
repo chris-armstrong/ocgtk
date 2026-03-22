@@ -1,4 +1,5 @@
 class type mask_node_t = object
+    inherit GRender_node.render_node_t
     method get_mask : unit -> GRender_node.render_node_t
     method get_mask_mode : unit -> Gsk_enums.maskmode
     method get_source : unit -> GRender_node.render_node_t

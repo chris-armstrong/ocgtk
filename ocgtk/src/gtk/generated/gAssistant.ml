@@ -1,6 +1,7 @@
 (* Signal class defined in gassistant_signals.ml *)
 
 class type assistant_t = object
+    inherit GApplication_and__window_and__window_group.window_t
     inherit Gassistant_signals.assistant_signals
     method add_action_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit
     method append_page : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> int
@@ -30,6 +31,7 @@ end
 
 (* High-level class for Assistant *)
 class assistant (obj : Assistant.t) : assistant_t = object (self)
+  inherit GApplication_and__window_and__window_group.window (Obj.magic obj : Application_and__window_and__window_group.Window.t)
   inherit Gassistant_signals.assistant_signals obj
 
   method add_action_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit =

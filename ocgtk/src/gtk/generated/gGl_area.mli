@@ -1,4 +1,5 @@
 class type gl_area_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Ggl_area_signals.gl_area_signals
     method attach_buffers : unit -> unit
     method get_allowed_apis : unit -> Ocgtk_gdk.Gdk.glapi

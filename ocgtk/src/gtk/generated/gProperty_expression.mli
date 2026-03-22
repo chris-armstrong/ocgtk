@@ -1,4 +1,5 @@
 class type property_expression_t = object
+    inherit GExpression.expression_t
     method get_expression : unit -> GExpression.expression_t option
     method as_property_expression : Property_expression.t
 end

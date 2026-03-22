@@ -1,4 +1,5 @@
 class type memory_output_stream_t = object
+    inherit GOutput_stream.output_stream_t
     method as_memory_output_stream : Memory_output_stream.t
 end
 

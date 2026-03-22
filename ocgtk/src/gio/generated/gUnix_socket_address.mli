@@ -1,4 +1,5 @@
 class type unix_socket_address_t = object
+    inherit GSocket_address.socket_address_t
     method get_address_type : unit -> Gio_enums.unixsocketaddresstype
     method get_is_abstract : unit -> bool
     method get_path : unit -> string

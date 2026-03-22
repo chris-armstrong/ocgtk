@@ -2,6 +2,7 @@
 (* Combined classes for cyclic dependencies *)
 
 class type column_view_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gcolumn_view_signals.column_view_signals
     method append_column : column_view_column_t -> unit
     method get_columns : unit -> Ocgtk_gio.Gio.list_model_t
@@ -57,6 +58,7 @@ end
 (* Signal class defined in gcolumn_view_signals.ml *)
 
 class column_view (obj : Column_view_and__column_view_column.Column_view.t) : column_view_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gcolumn_view_signals.column_view_signals obj
 
   method append_column : column_view_column_t -> unit =

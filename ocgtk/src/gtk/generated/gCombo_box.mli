@@ -1,4 +1,5 @@
 class type combo_box_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gcombo_box_signals.combo_box_signals
     method get_active : unit -> int
     method get_active_id : unit -> string option

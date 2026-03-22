@@ -1,4 +1,5 @@
 class type popover_menu_t = object
+    inherit GPopover.popover_t
     method add_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> string -> bool
     method get_flags : unit -> Gtk_enums.popovermenuflags
     method get_menu_model : unit -> Ocgtk_gio.Gio.menu_model_t option
@@ -12,6 +13,7 @@ end
 
 (* High-level class for PopoverMenu *)
 class popover_menu (obj : Popover_menu.t) : popover_menu_t = object (self)
+  inherit GPopover.popover (Obj.magic obj : Popover.t)
 
   method add_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> string -> bool =
     fun child id ->

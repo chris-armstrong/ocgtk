@@ -1,4 +1,5 @@
 class type shortcut_controller_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller_t
     method add_shortcut : GShortcut.shortcut_t -> unit
     method get_mnemonics_modifiers : unit -> Ocgtk_gdk.Gdk.modifiertype
     method get_scope : unit -> Gtk_enums.shortcutscope
@@ -14,6 +15,7 @@ end
 
 (* High-level class for ShortcutController *)
 class shortcut_controller (obj : Shortcut_controller.t) : shortcut_controller_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t)
 
   method add_shortcut : GShortcut.shortcut_t -> unit =
     fun shortcut ->

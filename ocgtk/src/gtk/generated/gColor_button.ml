@@ -1,6 +1,7 @@
 (* Signal class defined in gcolor_button_signals.ml *)
 
 class type color_button_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gcolor_button_signals.color_button_signals
     method get_modal : unit -> bool
     method get_title : unit -> string
@@ -13,6 +14,7 @@ end
 
 (* High-level class for ColorButton *)
 class color_button (obj : Color_button.t) : color_button_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gcolor_button_signals.color_button_signals obj
 
   method get_modal : unit -> bool =

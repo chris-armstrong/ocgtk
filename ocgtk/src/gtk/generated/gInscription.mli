@@ -1,4 +1,5 @@
 class type inscription_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     method get_attributes : unit -> Ocgtk_pango.Pango.attr_list_t option
     method get_min_chars : unit -> int
     method get_min_lines : unit -> int

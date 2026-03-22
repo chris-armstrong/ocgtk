@@ -112,10 +112,8 @@ and gl_context_t = object
     method get_allowed_apis : unit -> Gdk_enums.glapi
     method get_api : unit -> Gdk_enums.glapi
     method get_debug_enabled : unit -> bool
-    method get_display : unit -> display_t option
     method get_forward_compatible : unit -> bool
     method get_shared_context : unit -> gl_context_t option
-    method get_surface : unit -> surface_t option
     method get_use_es : unit -> bool
     method is_legacy : unit -> bool
     method is_shared : gl_context_t -> bool
@@ -547,10 +545,6 @@ and gl_context (obj : App_launch_context_and__cairo_context_and__clipboard_and__
     fun () ->
       (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Gl_context.get_debug_enabled obj)
 
-  method get_display : unit -> display_t option =
-    fun () ->
-      Option.map (fun ret -> new display ret) (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Gl_context.get_display obj)
-
   method get_forward_compatible : unit -> bool =
     fun () ->
       (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Gl_context.get_forward_compatible obj)
@@ -558,10 +552,6 @@ and gl_context (obj : App_launch_context_and__cairo_context_and__clipboard_and__
   method get_shared_context : unit -> gl_context_t option =
     fun () ->
       Option.map (fun ret -> new gl_context ret) (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Gl_context.get_shared_context obj)
-
-  method get_surface : unit -> surface_t option =
-    fun () ->
-      Option.map (fun ret -> new surface ret) (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Gl_context.get_surface obj)
 
   method get_use_es : unit -> bool =
     fun () ->

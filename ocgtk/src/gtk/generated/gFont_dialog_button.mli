@@ -1,4 +1,5 @@
 class type font_dialog_button_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gfont_dialog_button_signals.font_dialog_button_signals
     method get_dialog : unit -> GFont_dialog.font_dialog_t option
     method get_font_desc : unit -> Ocgtk_pango.Pango.font_description_t option

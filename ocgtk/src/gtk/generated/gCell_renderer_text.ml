@@ -1,12 +1,12 @@
 (* Signal class defined in gcell_renderer_text_signals.ml *)
 
 class type cell_renderer_text_t = object
+    inherit GCell_renderer.cell_renderer_t
     inherit Gcell_renderer_text_signals.cell_renderer_text_signals
     method set_fixed_height_from_font : int -> unit
     method align_set : bool
     method set_align_set : bool -> unit
     method alignment : Ocgtk_pango.Pango.alignment
-    method set_alignment : Ocgtk_pango.Pango.alignment -> unit
     method attributes : Ocgtk_pango.Pango.attr_list_t
     method set_attributes : Ocgtk_pango.Pango.attr_list_t -> unit
     method background : string
@@ -100,6 +100,7 @@ end
 
 (* High-level class for CellRendererText *)
 class cell_renderer_text (obj : Cell_renderer_text.t) : cell_renderer_text_t = object (self)
+  inherit GCell_renderer.cell_renderer (Obj.magic obj : Cell_renderer.t)
   inherit Gcell_renderer_text_signals.cell_renderer_text_signals obj
 
   method set_fixed_height_from_font : int -> unit =
@@ -110,7 +111,6 @@ class cell_renderer_text (obj : Cell_renderer_text.t) : cell_renderer_text_t = o
   method set_align_set v =  Cell_renderer_text.set_align_set obj v
 
   method alignment = Cell_renderer_text.get_alignment obj
-  method set_alignment v =  Cell_renderer_text.set_alignment obj v
 
   method attributes = new Ocgtk_pango.Pango.attr_list (Cell_renderer_text.get_attributes obj)
   method set_attributes : Ocgtk_pango.Pango.attr_list_t -> unit  = fun v ->  Cell_renderer_text.set_attributes obj v#as_attr_list

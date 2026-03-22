@@ -1,4 +1,5 @@
 class type text_view_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gtext_view_signals.text_view_signals
     method add_child_at_anchor : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GText_child_anchor.text_child_anchor_t -> unit
     method add_overlay : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> int -> int -> unit

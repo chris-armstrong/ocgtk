@@ -1,4 +1,5 @@
 class type clip_node_t = object
+    inherit GRender_node.render_node_t
     method get_child : unit -> GRender_node.render_node_t
     method get_clip : unit -> Ocgtk_graphene.Graphene.rect_t
     method as_clip_node : Clip_node.t
@@ -6,6 +7,7 @@ end
 
 (* High-level class for ClipNode *)
 class clip_node (obj : Clip_node.t) : clip_node_t = object (self)
+  inherit GRender_node.render_node (Obj.magic obj : Render_node.t)
 
   method get_child : unit -> GRender_node.render_node_t =
     fun () ->

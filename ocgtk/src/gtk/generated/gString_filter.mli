@@ -1,4 +1,5 @@
 class type string_filter_t = object
+    inherit GFilter.filter_t
     method get_expression : unit -> GExpression.expression_t option
     method get_ignore_case : unit -> bool
     method get_match_mode : unit -> Gtk_enums.stringfiltermatchmode

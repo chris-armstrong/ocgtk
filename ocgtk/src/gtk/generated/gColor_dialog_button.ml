@@ -1,6 +1,7 @@
 (* Signal class defined in gcolor_dialog_button_signals.ml *)
 
 class type color_dialog_button_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gcolor_dialog_button_signals.color_dialog_button_signals
     method get_dialog : unit -> GColor_dialog.color_dialog_t option
     method get_rgba : unit -> Ocgtk_gdk.Gdk.rgb_a_t
@@ -11,6 +12,7 @@ end
 
 (* High-level class for ColorDialogButton *)
 class color_dialog_button (obj : Color_dialog_button.t) : color_dialog_button_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gcolor_dialog_button_signals.color_dialog_button_signals obj
 
   method get_dialog : unit -> GColor_dialog.color_dialog_t option =

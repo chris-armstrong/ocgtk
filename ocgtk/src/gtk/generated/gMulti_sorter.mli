@@ -1,4 +1,5 @@
 class type multi_sorter_t = object
+    inherit GSorter.sorter_t
     method append : GSorter.sorter_t -> unit
     method remove : int -> unit
     method n_items : int

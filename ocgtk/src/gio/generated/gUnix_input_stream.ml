@@ -1,4 +1,5 @@
 class type unix_input_stream_t = object
+    inherit GInput_stream.input_stream_t
     method get_close_fd : unit -> bool
     method get_fd : unit -> int
     method set_close_fd : bool -> unit
@@ -7,6 +8,7 @@ end
 
 (* High-level class for UnixInputStream *)
 class unix_input_stream (obj : Unix_input_stream.t) : unix_input_stream_t = object (self)
+  inherit GInput_stream.input_stream (Obj.magic obj : Input_stream.t)
 
   method get_close_fd : unit -> bool =
     fun () ->

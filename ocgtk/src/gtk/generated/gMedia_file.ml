@@ -1,4 +1,5 @@
 class type media_file_t = object
+    inherit GMedia_stream.media_stream_t
     method clear : unit -> unit
     method get_file : unit -> Ocgtk_gio.Gio.file_t option
     method get_input_stream : unit -> Ocgtk_gio.Gio.input_stream_t option
@@ -11,6 +12,7 @@ end
 
 (* High-level class for MediaFile *)
 class media_file (obj : Media_file.t) : media_file_t = object (self)
+  inherit GMedia_stream.media_stream (Obj.magic obj : Media_stream.t)
 
   method clear : unit -> unit =
     fun () ->

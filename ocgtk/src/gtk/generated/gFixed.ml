@@ -1,4 +1,5 @@
 class type fixed_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     method get_child_transform : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> Ocgtk_gsk.Gsk.transform_t option
     method move : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> float -> float -> unit
     method put : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> float -> float -> unit
@@ -9,6 +10,7 @@ end
 
 (* High-level class for Fixed *)
 class fixed (obj : Fixed.t) : fixed_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
 
   method get_child_transform : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> Ocgtk_gsk.Gsk.transform_t option =
     fun widget ->

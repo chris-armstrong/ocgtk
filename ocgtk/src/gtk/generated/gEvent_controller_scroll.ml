@@ -1,6 +1,7 @@
 (* Signal class defined in gevent_controller_scroll_signals.ml *)
 
 class type event_controller_scroll_t = object
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller_t
     inherit Gevent_controller_scroll_signals.event_controller_scroll_signals
     method get_flags : unit -> Gtk_enums.eventcontrollerscrollflags
     method get_unit : unit -> Ocgtk_gdk.Gdk.scrollunit
@@ -10,6 +11,7 @@ end
 
 (* High-level class for EventControllerScroll *)
 class event_controller_scroll (obj : Event_controller_scroll.t) : event_controller_scroll_t = object (self)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t)
   inherit Gevent_controller_scroll_signals.event_controller_scroll_signals obj
 
   method get_flags : unit -> Gtk_enums.eventcontrollerscrollflags =

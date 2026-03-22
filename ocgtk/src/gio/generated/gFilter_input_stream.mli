@@ -1,4 +1,5 @@
 class type filter_input_stream_t = object
+    inherit GInput_stream.input_stream_t
     method get_base_stream : unit -> GInput_stream.input_stream_t
     method get_close_base_stream : unit -> bool
     method set_close_base_stream : bool -> unit

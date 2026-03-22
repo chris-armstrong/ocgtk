@@ -1,4 +1,5 @@
 class type gesture_single_t = object
+    inherit GGesture.gesture_t
     method get_button : unit -> int
     method get_current_button : unit -> int
     method get_current_sequence : unit -> Ocgtk_gdk.Gdk.event_sequence_t option
@@ -12,6 +13,7 @@ end
 
 (* High-level class for GestureSingle *)
 class gesture_single (obj : Gesture_single.t) : gesture_single_t = object (self)
+  inherit GGesture.gesture (Obj.magic obj : Gesture.t)
 
   method get_button : unit -> int =
     fun () ->
