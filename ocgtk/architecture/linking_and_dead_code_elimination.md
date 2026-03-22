@@ -91,17 +91,39 @@ These are correctly erased by the compiler and do not force linking. The problem
 is specifically in the hand-authored/generated `Gtk.ml` umbrella module which
 uses `class` re-exports rather than `module` aliases.
 
-### Potential solutions
+### Planned fix: replace class re-exports with module aliases
 
-1. **Remove class re-exports from Gtk.ml** -- users import from individual
-   modules (e.g., `GButton.button`) rather than through the umbrella.
+The `G*` modules (e.g. `GButton`, `GWindow`) already contain the class type,
+class definition, and constructor functions. The umbrella `Gtk.ml` just needs to
+alias them instead of re-exporting their classes:
 
-2. **Replace `class c = M.c` with `module` re-exports** -- e.g.,
-   `module Button = GButton` which the compiler can erase.
+```ocaml
+(* Before: class re-exports — creates runtime references, defeats DCE *)
+class button = GButton.button
+class window = GWindow.window
+class type button_t = GButton.button_t
+class type window_t = GWindow.window_t
 
-3. **Keep `class type` re-exports only** -- these are type-level and don't
-   create linker dependencies. Users would instantiate classes from the
-   individual modules.
+(* After: module aliases — erased by compiler, DCE works *)
+module Button = GButton
+module Window = GWindow
+```
+
+This changes the user-facing API from:
+
+```ocaml
+let btn = new Gtk.button obj       (* old *)
+let btn = new Gtk.Button.button obj  (* new *)
+```
+
+With this approach, `module Button = GButton` is a pure alias that the compiler
+erases. Only the `G*` modules that are actually referenced by user code get
+linked into the binary. No additional wrapper files are needed.
+
+Note that `let` bindings and `class` re-exports in a single file cannot be
+selectively linked -- a compilation unit is an indivisible linking atom. The
+module alias approach works because each `G*` module is its own compilation unit,
+and the aliases in `Gtk.ml` do not create runtime references to them.
 
 ## References
 
