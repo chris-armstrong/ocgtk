@@ -16,78 +16,31 @@ hardcoded in `hierarchy_detection.ml`.
 - **Parent info on Crt_Class**: `Crt_Class` now carries
   `{ parent : string option }`, so cross-namespace parent chain resolution
   works.
+- **Parent-based inheritance**: `class_gen_body.ml` uses `~parent_name`
+  for generating `inherit` lines. `~hierarchy_info` is accepted but ignored.
+- **Conflict suppression**: `class_gen_conflict_detection.ml` walks the
+  ancestor chain to suppress re-declared methods via a `seen` set.
 
 ### What remains
 
-1. **Unnecessary complexity**: Everything `hierarchy_info` provides is
-   derivable from the parent chain (already on `gir_class.parent` and
-   `Crt_Class.parent`) and `type_mapping.layer2_class` (already has accessor
-   info). The `hierarchy_kind` enum, `hierarchy_info` record,
-   `base_hierarchy_definitions`, `build_hierarchy_definitions`, and
-   `hierarchy_map` are all redundant layers.
+1. **Layer 2 dead code**: `hierarchy_info` is passed through Layer 2 but
+   never used. `get_param_hierarchy_info` is called in 3 files but both
+   `Some`/`None` branches do equivalent work. `class_gen_converter.ml` has
+   hierarchy functions that are never called. All of this can be deleted.
 
-2. **Hardcoded hierarchy roots**: The five GTK-specific hierarchies
-   (Widget, EventController, CellRenderer, LayoutManager, Expression) are
-   still hardcoded in `base_hierarchy_definitions`. Adding a new hierarchy
-   root requires editing this list rather than being derived automatically.
+2. **Layer 1 live usage**: `layer1_helpers.ml` and `layer1_main.ml` are the
+   **only genuine consumers** of `hierarchy_info`. They use it to determine
+   polymorphic variant types and generate accessor methods.
 
 3. **Missing interface prerequisites**: `Crt_Interface` and `gir_interface`
-   don't carry prerequisite info, which will be needed for complete
-   cross-namespace interface resolution.
+   don't carry prerequisite info.
 
 ## Goal
 
 Replace `hierarchy_info`/`hierarchy_kind`/`hierarchy_map` with:
 - Parent info on `Crt_Class` (**done**) and prerequisites on `Crt_Interface`
-- A unified parent chain resolver that walks across namespaces (note:
-  `build_parent_chain` in `hierarchy_detection.ml` already does this — the
-  goal is to extract it into a standalone module and remove the surrounding
-  hierarchy_info machinery)
+- A parent chain resolver extracted from `hierarchy_detection.ml`
 - Direct use of `type_mapping.layer2_class` for param unwrapping
-
-## Files Involved
-
-### Types and Infrastructure
-- `src/tools/gir_gen/types.ml` — Remove `hierarchy_kind`, `hierarchy_info`,
-  `hierarchy_map` from `generation_context`. Add parent to `Crt_Class`, add
-  prerequisites to `Crt_Interface` and `gir_interface`.
-- `src/tools/gir_gen/hierarchy_helper.ml` — NEW FILE: unified parent chain resolver
-- `src/tools/gir_gen/hierarchy_detection.ml` — REMOVE after migration
-- `src/tools/gir_gen/type_mappings.ml` — No changes expected
-
-### Parsing and Sexp Generation
-- `src/tools/gir_gen/parse/gir_parser.ml` — Parse `<prerequisite>` in interfaces
-- `src/tools/gir_gen/gir_gen.ml` — Populate `Crt_Interface` with prerequisites,
-  copy `cls.parent` into `Crt_Class`. Remove `hierarchy_map` construction.
-
-### Layer 2 Generation (the bug fix)
-- `src/tools/gir_gen/generate/class_gen_method.ml` — Use `type_mapping.layer2_class`
-  instead of `hierarchy_info` for param unwrapping
-- `src/tools/gir_gen/generate/class_gen_property.ml` — Same
-- `src/tools/gir_gen/generate/class_gen_type_resolution.ml` — Same
-- `src/tools/gir_gen/generate/class_gen_helpers.ml` — Remove `get_param_hierarchy_info`
-- `src/tools/gir_gen/generate/class_gen_body.ml` — Use parent chain for
-  `inherit` lines
-- `src/tools/gir_gen/generate/class_gen_converter.ml` — Derive from parent
-  chain instead of hierarchy_info
-
-### Layer 1 Generation
-- `src/tools/gir_gen/generate/layer1/layer1_helpers.ml` — Use parent chain
-  for polymorphic variant type building
-- `src/tools/gir_gen/generate/layer1/layer1_main.ml` — Use parent chain for
-  accessor generation
-
-### Tests
-- `src/tools/test_gir_gen/method_wrapper_tests.ml`
-- `src/tools/test_gir_gen/infrastructure/helpers.ml`
-- `src/tools/test_gir_gen/infrastructure/layer2_helpers.ml`
-- `src/tools/test_gir_gen/integration/signals.ml`
-- `src/tools/test_gir_gen/cross_namespace/integration_tests.ml`
-- `src/tools/test_gir_gen/cross_namespace/no_external_bitfield_decls_tests.ml`
-- `src/tools/test_gir_gen/cross_namespace/no_external_enum_decls_tests.ml`
-- `src/tools/test_gir_gen/c_stubs/header_generation_tests.ml`
-- `src/tools/test_gir_gen/c_stubs/header_naming_tests.ml`
-- `src/tools/test_gir_gen/c_stubs/cross_namespace_tests.ml`
 
 ## Steps
 
@@ -96,220 +49,75 @@ Replace `hierarchy_info`/`hierarchy_kind`/`hierarchy_map` with:
 `Crt_Class` now carries `{ parent : string option }`. `gir_gen.ml` populates
 it from `cls.parent`. All pattern matches and tests updated.
 
-Additionally, `hierarchy_detection.ml` was updated (commit `718effc9`) to use
-`ctx.cross_references` for cross-namespace resolution:
-- `build_parent_chain` walks both `ctx.classes` and `ctx.cross_references`
-- `get_hierarchy_info` delegates to `classify_external_class` for non-local
-  classes
-- `classify_external_class` looks up entities in cross-references and builds
-  `hierarchy_info` for external classes/interfaces/records
+### Step 2: Migrate Layer 2 inheritance to parent chain ✅ DONE
 
-### Step 2: Build unified parent chain resolver
+Parent class inheritance generated in `class_gen_body.ml` using the entity's
+direct parent name. `inherit parent_t` in class types, `inherit parent
+(Obj.magic obj : Parent.t)` in implementations. Skips parent inherit when
+parent is in the same cyclic cluster. Conflict suppression via
+`collect_inherited_method_names`.
 
-**Goal:** Create `hierarchy_helper.ml` with functions for walking parent chains
-across namespaces, parsing interface prerequisites, and updating cross-reference
-types.
+### Step 3: Remove dead hierarchy_info code from Layer 2
 
-#### 2a. Update types.ml
+**Status: Not started**
 
-1. Add `prerequisites : string list` to `gir_interface`:
-   ```ocaml
-   type gir_interface = {
-     interface_name : string;
-     c_type : string;
-     c_symbol_prefix : string;
-     prerequisites : string list;  (* NEW *)
-     methods : gir_method list;
-     properties : gir_property list;
-     signals : gir_signal list;
-     interface_doc : string option;
-   }
-   ```
+See [constructor_wrapper_cleanup.md](./constructor_wrapper_cleanup.md) Step 5.
 
-2. Update `Crt_Interface` to carry prerequisites:
-   ```ocaml
-   type cross_reference_type =
-     | Crt_Class of { parent : string option }
-     | Crt_Interface of { prerequisites : string list }  (* UPDATED *)
-     | Crt_Record of { opaque : bool }
-     | Crt_Enum
-     | Crt_Bitfield
-   ```
+Summary:
+- Delete dead `generate_hierarchy_converter_method_impl/sig` from
+  `class_gen_converter.ml` (never called)
+- Collapse dead `get_param_hierarchy_info` branches in
+  `class_gen_method.ml`, `class_gen_property.ml`,
+  `class_gen_type_resolution.ml` (both branches equivalent)
+- Remove `~hierarchy_info` parameter from `class_gen_body.ml`,
+  `class_gen.ml`, and all Layer 2 callers
+- Delete `get_param_hierarchy_info` from `class_gen_helpers.ml`
 
-3. Update `entity_of_interface` in `types.ml` to include prerequisites in the
-   `entity` type (note: `entity.parent` for interfaces should remain `None`,
-   prerequisites are separate).
+### Step 4: Migrate Layer 1 and delete hierarchy_detection.ml
 
-#### 2b. Update gir_parser.ml
+**Status: Not started**
 
-Parse `<prerequisite name="..."/>` elements in interface definitions:
+See [constructor_wrapper_cleanup.md](./constructor_wrapper_cleanup.md) Step 6.
 
-```ocaml
-(* In parse_interface, add prerequisite collection *)
-let prerequisites = ref [] in
-(* Add case in parse_class_contents for "prerequisite" tag *)
-| "prerequisite" ->
-    (match get_attr "name" tag_attrs with
-     | Some name -> prerequisites := name :: !prerequisites
-     | None -> ());
-    skip_element input 1;
-    parse_class_contents ()
+Summary:
+- Extract `build_parent_chain` → `hierarchy_helper.ml`
+- Add `prerequisites` to `gir_interface`/`Crt_Interface`, parse
+  `<prerequisite>` in `gir_parser.ml`
+- Migrate `layer1_helpers.ml` (polymorphic variant types) to use parent chain
+- Migrate `layer1_main.ml` (accessor generation) to use parent chain
+- Delete `hierarchy_detection.ml`
+- Remove `hierarchy_kind`, `hierarchy_info`, `hierarchy_map` from `types.ml`
+- Update all tests, regenerate bindings
 
-(* Return interface with prerequisites *)
-{
-  interface_name = name;
-  c_type;
-  c_symbol_prefix = name;
-  prerequisites = List.rev !prerequisites;  (* NEW*)
-  methods;
-  properties = List.rev !properties;
-  signals = List.rev !signals;
-  interface_doc = None;
-}
-```
+## Files Involved
 
-#### 2c. Update gir_gen.ml
+### Types and Infrastructure
+- `src/tools/gir_gen/types.ml` — Remove `hierarchy_kind`, `hierarchy_info`,
+  `hierarchy_map` from `generation_context`
+- `src/tools/gir_gen/hierarchy_helper.ml` — NEW: extracted parent chain resolver
+- `src/tools/gir_gen/hierarchy_detection.ml` — DELETE after migration
 
-When building cross-reference entities for interfaces, populate prerequisites:
-```ocaml
-@ (interfaces
-  |> List.map ~f:(fun intf ->
-      {cr_name = intf.interface_name;
-       cr_type = Crt_Interface { prerequisites = intf.prerequisites };
-       cr_c_type = intf.c_type;
-      }))
-```
+### Layer 2 Generation (Step 3 — dead code removal)
+- `src/tools/gir_gen/generate/class_gen.ml` — Remove hierarchy_info threading
+- `src/tools/gir_gen/generate/class_gen_body.ml` — Remove ~hierarchy_info param
+- `src/tools/gir_gen/generate/class_gen_converter.ml` — Delete dead functions
+- `src/tools/gir_gen/generate/class_gen_helpers.ml` — Delete get_param_hierarchy_info
+- `src/tools/gir_gen/generate/class_gen_method.ml` — Collapse dead branches
+- `src/tools/gir_gen/generate/class_gen_property.ml` — Same
+- `src/tools/gir_gen/generate/class_gen_type_resolution.ml` — Same
 
-#### 2d. Create hierarchy_helper.ml
+### Layer 1 Generation (Step 4 — actual migration)
+- `src/tools/gir_gen/generate/layer1/layer1_helpers.ml` — Use parent chain
+- `src/tools/gir_gen/generate/layer1/layer1_main.ml` — Use parent chain
 
-New module `src/tools/gir_gen/hierarchy_helper.ml`:
-
-```ocaml
-(** Parent chain resolution across namespaces.
-
-    Provides functions to walk class inheritance chains, crossingnamespace
-    boundaries using cross-reference entities. *)
-
-(** Get the parent of a class from current namespace or cross-references.
-    Returns:
-    - Some (Some parent) if class found with a parent
-    - Some None if class found but has no parent (root class)
-    - None if class not found anywhere *)
-val get_parent : generation_context -> string -> string option option
-
-(** Walk the parent chain for a class, crossing namespace boundaries.
-    Returns [parent; grandparent; ...root] or None if entity not found.
-    Only works for classes (interfaces don't have a linear parent chain). *)
-val resolve : generation_context -> string -> string list option
-
-(** Check if a class has a given ancestor in its inheritance chain. *)
-val has_ancestor : generation_context -> class_name:string -> ancestor:string -> bool
-```
-
-Implementation:
-- `get_parent` checks `ctx.classes` first, then `ctx.cross_references`
-- For cross-references, extracts parent from `Crt_Class { parent }`
-- `resolve` recursively walks using `get_parent`
-- `has_ancestor` uses `resolve` and checks if ancestor is in the chain
-
-#### 2e. Remove hierarchy_info/hierarchy_kind/hierarchy_map
-
-1. Delete `hierarchy_kind` and `hierarchy_info` from `types.ml`
-2. Remove `hierarchy_map` from `generation_context`
-3. Update all call sites:
-
-| File | Change |
-|------|--------|
-| `class_gen_helpers.ml` | Remove `get_param_hierarchy_info`, use `Type_mappings` directly |
-| `class_gen_method.ml` | Replace `get_param_hierarchy_info` with `Type_mappings.find_type_mapping_for_gir_type` |
-| `class_gen_property.ml` | Same |
-| `class_gen_type_resolution.ml` | Same |
-| `class_gen_converter.ml` | Remove `hierarchy_info` parameter, derive accessor from parent chain or remove |
-| `class_gen_body.ml` | Remove `hierarchy_info` parameter, derive from parent |
-| `class_gen.ml` | Remove `hierarchy_info` propagation |
-| `layer1_main.ml` | Use `Hierarchy_helper.resolve` instead of `get_hierarchy_info` |
-| `layer1_helpers.ml` | Same|
-
-4. Delete `hierarchy_detection.ml`
-5. Update all tests
-
-#### 2f. Update tests
-
-Update all test files that construct `Crt_Class`/`Crt_Interface`:
-- `test_gir_gen/infrastructure/helpers.ml`
-- `test_gir_gen/method_wrapper_tests.ml`
-- `test_gir_gen/infrastructure/layer2_helpers.ml`
-
-#### 2g. Build and test
-
-```bash
-cd ocgtk && dune build
-cd ocgtk && xvfb-run dune runtest
-```
-
-### Step 3: Fix layer 2 param unwrapping using type_mapping
-
-In `class_gen_method.ml`, replace the hierarchy-based unwrapping with
-`type_mapping.layer2_class`-based unwrapping:
-
-- For each method parameter, check `Type_mappings.find_type_mapping_for_gir_type`
-- If it returns `Some { layer2_class = Some lc; _ }`, the parameter is a
-  class/interface/record that needs unwrapping via `lc.class_layer1_accessor`
-- Generate `let param = param#as_xxx in` (or `Option.map` for nullable)
-- This works identically for same-namespace and cross-namespace types
-
-Apply same pattern to `class_gen_property.ml` and `class_gen_type_resolution.ml`.
-
-### Step 4: Migrate layer 2 inheritance to parent chain ✅ DONE
-
-Parent class inheritance is now generated in `class_gen_body.ml` using the
-entity's direct parent name (from `parent_chain`) and
-`resolve_layer2_class_ref`/`resolve_layer2_class_name` from
-`class_gen_type_resolution.ml`.
-
-**What was done:**
-- `class_gen_body.ml`: Added `~parent_name` parameter to both
-  `generate_class_module_body` and `generate_class_signature_body`.
-  Emits `inherit parent_t` in class types and `inherit parent (Obj.magic obj : Parent.t)`
-  in implementations. Skips parent inherit when parent is in the same cyclic cluster.
-- `class_gen.ml`: Threads `parent_name` (first element of `parent_chain`)
-  through to body generators for both single and combined class generation.
-- `class_gen_conflict_detection.ml`: Added `collect_inherited_method_names`
-  which gathers all OCaml method names (from both methods and properties) across
-  the entire ancestor chain. Used to pre-populate the `seen` set so inherited
-  methods are not re-generated in the child.
-- `class_gen_property.ml`: Updated `generate_property_code` to check getter and
-  setter names individually against `seen`, rather than skipping the entire property.
-- `method_wrapper_tests.ml`: Updated test 13 (conflict detection) — conflicting
-  methods are now silently suppressed via inherit rather than commented out.
-
-**Note:** The legacy `hierarchy_info`-based inherit lines remain in
-`class_gen_body.ml` but are effectively dead code (they never fire because
-`classify_class` always returns `MonomorphicType`). They will be removed in
-Step 6 when `hierarchy_detection.ml` is deleted.
-
-### Step 5: Migrate layer 1 type/accessor generation
-
-In `layer1_helpers.ml` and `layer1_main.ml`:
-- Use `parent_chain.resolve` to build the polymorphic variant chain
-- Remove `hierarchy_kind` string labels ("Widget", "Event controller", etc.)
-- Keep the same variant structure but derive it from parent chain
-
-### Step 6: Remove hierarchy_detection.ml and regenerate bindings
-
-```bash
-bash scripts/generate-bindings.sh
-cd ocgtk && dune build
-cd ocgtk && xvfb-run dune runtest
-```
+### Parsing (Step 4)
+- `src/tools/gir_gen/parse/gir_parser.ml` — Parse `<prerequisite>`
+- `src/tools/gir_gen/gir_gen.ml` — Populate `Crt_Interface` prerequisites
 
 ## Verification
 
 After each step:
-1. `cd ocgtk && dune build` must succeed (or only fail on expected issues)
+1. `cd ocgtk && dune build` must succeed
 2. `cd ocgtk && xvfb-run dune runtest` must pass
-
-After Step 6:
-- All layer 2 cross-namespace type errors must be resolved
-- No regressions in existing tests
-- Generated code compiles cleanly
+3. Regenerate bindings and diff — no output changes for Step 3 (dead code
+   removal); Step 4 may change accessor generation
