@@ -20,7 +20,6 @@ let () =
       ("Type Conversion", Type_conversion_tests.tests);
       ("Type Definitions (ML)", Type_definition_tests.tests);
       ("External Declarations (ML)", External_decl_tests.tests);
-      ("Accessor Methods (ML)", Accessor_method_tests.tests);
       ("Signatures (ML)", Signature_tests.tests);
       ("Properties", Properties.tests);
       ("Signals", Signals.tests);

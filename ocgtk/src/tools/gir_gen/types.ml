@@ -328,26 +328,6 @@ type type_mapping = {
           primitives. *)
 }
 
-(* Hierarchy classification *)
-type hierarchy_kind =
-  | WidgetHierarchy
-  | EventControllerHierarchy
-  | CellRendererHierarchy
-  | LayoutManagerHierarchy
-  | ExpressionHierarchy
-  | MonomorphicType
-[@@deriving eq]
-
-type hierarchy_info = {
-  hierarchy : hierarchy_kind;
-  gir_root : string; (* "Widget", "EventController", etc. *)
-  layer2_module : string; (* "GWidget", "GController", etc. *)
-  class_type_name : string; (* "widget_skel", "controller_skel", etc. *)
-  accessor_method : string; (* "as_widget", "as_controller", etc. *)
-  layer1_base_type : string; (* "Widget.t", "EventController.t", etc. *)
-  base_conversion_method : string; (* Widget.as_widget *)
-}
-
 type gir_namespace = {
   namespace_name : string;
   namespace_version : string;
@@ -406,7 +386,6 @@ type generation_context = {
   enums : gir_enum list;
   bitfields : gir_bitfield list;
   records : gir_record list;
-  hierarchy_map : (string, hierarchy_info) Hashtbl.t;
   module_groups : (string, string) Hashtbl.t;
       (* class_name -> combined_module_name *)
   current_cycle_classes : string list;

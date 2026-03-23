@@ -31,7 +31,6 @@ let create_test_context ~namespace =
     enums = [];
     bitfields = [];
     records = [];
-    hierarchy_map = Hashtbl.create 0;
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
     cross_references = StringMap.empty;

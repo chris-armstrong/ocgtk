@@ -9,17 +9,6 @@ let create_test_context = Helpers.create_test_context_with_hierarchy
 (* Helper Functions - Reduce nesting and verbosity                          *)
 (* ========================================================================= *)
 
-let hierarchy_entry gir_root layer2_module class_type_name =
-  {
-    gir_root;
-    hierarchy = WidgetHierarchy;
-    layer2_module;
-    class_type_name;
-    accessor_method = "as_widget";
-    layer1_base_type = gir_root ^ ".t";
-    base_conversion_method = gir_root ^ ".as_widget";
-  }
-
 let simple_class class_name c_type =
   {
     class_name;
@@ -447,9 +436,6 @@ let test_same_cluster_structural_type () =
   let open Gir_gen_lib.Types in
   let ctx = create_test_context () in
 
-  (* Add hierarchy info for Widget and Button to make them same-cluster *)
-  Hashtbl.add ctx.hierarchy_map "Widget" (hierarchy_entry "Widget" "GWidget" "widget_skel");
-  Hashtbl.add ctx.hierarchy_map "Button" (hierarchy_entry "Widget" "GWidget" "widget_skel");
 
   (* Create a method on Button that takes a Widget parameter (same cluster) *)
   let set_child_method = {
@@ -761,9 +747,6 @@ let test_method_conflict_detection () =
   let open Gir_gen_lib.Types in
   let ctx = create_test_context () in
 
-  (* Add hierarchy info for both Widget and Button to make them same-cluster *)
-  Hashtbl.add ctx.hierarchy_map "Widget" (hierarchy_entry "Widget" "GWidget" "widget_skel");
-  Hashtbl.add ctx.hierarchy_map "Button" (hierarchy_entry "Widget" "GWidget" "widget_skel");
 
   (* Create a parent Widget class with a 'show' method that takes no parameters *)
   let widget_show_method = {
@@ -1079,29 +1062,6 @@ let test_layer2_signature_consistency () =
 let test_combined_class_signature_consistency () =
   let open Gir_gen_lib.Types in
   let ctx = create_test_context () in
-
-  (* Add hierarchy info for Widget and Button to make them same-cluster *)
-  Hashtbl.add ctx.hierarchy_map "Widget"
-    {
-      gir_root = "Widget";
-      hierarchy = WidgetHierarchy;
-      layer2_module = "GWidget";
-      class_type_name = "widget_skel";
-      accessor_method = "as_widget";
-      layer1_base_type = "Widget.t";
-      base_conversion_method = "Widget.as_widget";
-    };
-
-  Hashtbl.add ctx.hierarchy_map "Button"
-    {
-      gir_root = "Widget";
-      hierarchy = WidgetHierarchy;
-      layer2_module = "GWidget";
-      class_type_name = "widget_skel";
-      accessor_method = "as_widget";
-      layer1_base_type = "Widget.t";
-      base_conversion_method = "Widget.as_widget";
-    };
 
   (* Create methods for Widget class *)
   let widget_show_method = {
@@ -1523,9 +1483,6 @@ let test_cyclic_cluster_skips_parent_inherit () =
   let open Gir_gen_lib.Types in
   let ctx = create_test_context () in
 
-  (* Add hierarchy info for both Widget and Button to make them same-cluster *)
-  Hashtbl.add ctx.hierarchy_map "Widget" (hierarchy_entry "Widget" "GWidget" "widget_skel");
-  Hashtbl.add ctx.hierarchy_map "Button" (hierarchy_entry "Widget" "GWidget" "widget_skel");
 
   (* Create Widget class *)
   let widget_class = {

@@ -61,7 +61,6 @@ let create_context_with_external_enum () =
     bitfields = [];
     records = [];
     (* External enum should NOT appear in forward declarations *)
-    hierarchy_map = Hashtbl.create 0;
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
     cross_references = StringMap.empty;

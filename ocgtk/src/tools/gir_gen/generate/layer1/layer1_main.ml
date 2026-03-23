@@ -10,27 +10,6 @@ let generate_type_declaration ~output_mode ~is_record ~base_type buf =
   | true, Layer1_helpers.Interface -> bprintf buf "type t\n\n"
   | _ -> bprintf buf "type t = %s\n\n" base_type
 
-(** Generate hierarchy accessor method if needed *)
-let generate_hierarchy_accessor_section ~ctx ~output_mode ~class_name buf =
-  match Hierarchy_detection.get_hierarchy_info ctx class_name with
-  | Some hier_info when hier_info.hierarchy <> MonomorphicType ->
-      if Layer1_helpers.should_generate_accessor ~class_name hier_info then begin
-        let accessor = hier_info.accessor_method in
-        let base_type =
-          Layer1_helpers.build_accessor_base_type ~ctx ~hier_info
-        in
-        let base_type =
-          Type_mappings.simplify_self_reference ~class_name
-            ~ocaml_type:base_type
-        in
-        let declaration =
-          Layer1_helpers.format_accessor_declaration ~output_mode ~accessor
-            ~base_type
-        in
-        bprintf buf "%s" declaration
-      end
-  | _ -> ()
-
 (** Generate constructors section *)
 let generate_constructors_section ~ctx ~class_name ~constructors buf =
   List.iter
@@ -64,7 +43,6 @@ let generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
     ~constructors ~methods ~properties ~base_type ?c_symbol_prefix
     ?(is_record = false) buf =
   generate_type_declaration ~output_mode ~is_record ~base_type buf;
-  generate_hierarchy_accessor_section ~ctx ~output_mode ~class_name buf;
   generate_constructors_section ~ctx ~class_name ~constructors buf;
   generate_methods_section ~ctx ~class_name ~c_type ~c_symbol_prefix ~is_record
     ~methods buf;

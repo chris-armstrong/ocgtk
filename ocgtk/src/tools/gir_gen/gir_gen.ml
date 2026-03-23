@@ -694,8 +694,6 @@ let generate_bindings filter_file gir_file output_dir reference_files =
       enums = all_enums;
       bitfields = all_bitfields;
       records = all_records;
-      hierarchy_map = Hashtbl.create 0;
-      (* Temporary empty map *)
       module_groups = Hashtbl.create 0;
       (* Temporary empty map *)
       current_cycle_classes = [];
@@ -721,20 +719,12 @@ let generate_bindings filter_file gir_file output_dir reference_files =
       module_groups_list
   in
 
-  (* Create context with module_groups populated so hierarchy info can use correct module names *)
+  (* Create context with module_groups populated *)
   let ctx_with_modules =
     { ctx_initial with module_groups; current_cycle_classes = [] }
   in
 
-  (* Build hierarchy map based on class inheritance chains, now with correct module names *)
-  let hierarchy_map =
-    Gir_gen_lib.Hierarchy_detection.build_hierarchy_map ctx_with_modules
-  in
-
-  (* Final context with both hierarchy map and module_groups populated *)
-  let ctx : Gir_gen_lib.Types.generation_context =
-    { ctx_with_modules with hierarchy_map }
-  in
+  let ctx = ctx_with_modules in
 
   (* ==== GENERATION STAGE ==== *)
 
