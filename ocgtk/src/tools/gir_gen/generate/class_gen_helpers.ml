@@ -47,19 +47,21 @@ let has_type_variable type_str =
   List.exists ~f:(fun part -> part = "'a") parts
 
 let gir_type_of_name name =
-  { Types.name; c_type = None; nullable = false; transfer_ownership = TransferNone; array = None }
+  {
+    Types.name;
+    c_type = None;
+    nullable = false;
+    transfer_ownership = TransferNone;
+    array = None;
+  }
 
 (* Resolve parent to gir_type, returning None if parent is absent or in the same cyclic cluster *)
 let resolve_parent_gir_type ~same_cluster_classes ~parent_name =
   match parent_name with
   | None -> None
   | Some parent ->
-    if List.exists ~f:(String.equal parent) same_cluster_classes then None
-    else Some (gir_type_of_name parent)
-
-(* Check if a parameter is a hierarchy type and get its info *)
-let get_param_hierarchy_info ~ctx (param : gir_param) : hierarchy_info option =
-  Hierarchy_detection.get_hierarchy_info ctx param.param_type.name
+      if List.exists ~f:(String.equal parent) same_cluster_classes then None
+      else Some (gir_type_of_name parent)
 
 (* Helper to determine if a method should be skipped during generation *)
 let should_skip_method ~ctx (meth : gir_method) =

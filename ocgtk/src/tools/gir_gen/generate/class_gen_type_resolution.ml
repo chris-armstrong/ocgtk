@@ -16,7 +16,8 @@ include Class_gen_helpers
 
 (** Resolve a GIR type to its layer 2 class type reference (with _t suffix).
     Returns the fully qualified type reference if found, or None if no mapping
-    exists. If the class is in the current module, returns just the type name. *)
+    exists. If the class is in the current module, returns just the type name.
+*)
 let resolve_layer2_class_ref ~ctx ~current_layer2_module ~(gir_type : gir_type)
     =
   match Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type with
@@ -29,8 +30,8 @@ let resolve_layer2_class_ref ~ctx ~current_layer2_module ~(gir_type : gir_type)
       Some qualified
   | _ -> None
 
-(** Like resolve_layer2_class_ref but returns the class name (without _t suffix),
-    for use in [new] expressions. *)
+(** Like resolve_layer2_class_ref but returns the class name (without _t
+    suffix), for use in [new] expressions. *)
 let resolve_layer2_class_name ~ctx ~current_layer2_module ~(gir_type : gir_type)
     =
   match Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type with
@@ -68,21 +69,11 @@ let resolve_ocaml_type ~ctx ~current_layer2_module ~(gir_type : gir_type) =
       if gir_type.nullable then base ^ " option" else base)
 
 let map_param_sig ~ctx ~same_cluster_classes:_ ~current_layer2_module p =
-  let hier_opt = get_param_hierarchy_info ~ctx p in
-  match hier_opt with
-  | Some _ ->
-      let class_name =
-        resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type:p.param_type
-      in
-      let class_type = Option.get class_name in
-      if p.nullable || p.param_type.nullable then class_type ^ " option"
-      else class_type
-  | _ ->
-      (* Regular type *)
-      let gir_type =
-        { p.param_type with nullable = p.nullable || p.param_type.nullable }
-      in
-      resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type |> Option.get
+  (* Regular type *)
+  let gir_type =
+    { p.param_type with nullable = p.nullable || p.param_type.nullable }
+  in
+  resolve_ocaml_type ~ctx ~current_layer2_module ~gir_type |> Option.get
 
 (* No longer needed - class types are used directly without # prefix.
    Kept as identity function for API compatibility. *)
