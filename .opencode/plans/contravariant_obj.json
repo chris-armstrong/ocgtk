@@ -93,7 +93,8 @@
         ]
       },
       "decision_gate": "If variance tests fail with contravariant -'a obj, STOP and investigate. Do NOT proceed to Stage 2.",
-      "status": "pending"
+      "status": "committed",
+      "notes": "Note: Plan referenced Initially_unowned.t which doesn't exist in generated namespaces (GObject-only type). Executor adapted with valid alternative tests (Box → Widget, etc.). All tests pass. Variance change validated."
     },
     {
       "stage_number": 2,

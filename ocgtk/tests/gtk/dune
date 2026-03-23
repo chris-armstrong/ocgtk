@@ -24,3 +24,8 @@
  (name test_range)
  (modules test_range)
  (libraries ocgtk.gtk alcotest))
+
+(test
+ (name test_variance)
+ (modules test_variance)
+ (libraries ocgtk.gtk alcotest))
