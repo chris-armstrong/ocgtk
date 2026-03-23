@@ -4,5 +4,5 @@
 class type vec3_t = GVec3_and__vec4.vec3_t
 
 class vec3 : Vec3_and__vec4.Vec3.t -> vec3_t
-
 val alloc : unit -> vec3_t
+

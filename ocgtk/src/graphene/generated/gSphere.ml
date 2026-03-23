@@ -4,7 +4,6 @@
 class type sphere_t = GBox_and__sphere.sphere_t
 
 class sphere = GBox_and__sphere.sphere
-
 let alloc () : sphere_t =
-  new sphere
-    (Box_and__sphere.Sphere.alloc ())
+  new sphere (Box_and__sphere.Sphere.alloc ())
+
