@@ -1,6 +1,6 @@
 class type css_section_t = object
     method get_end_location : unit -> Css_location.t
-    method get_file : unit -> Ocgtk_gio.Gio.file_t option
+    method get_file : unit -> Ocgtk_gio.Gio.File.file_t option
     method get_parent : unit -> Css_section.t option
     method get_start_location : unit -> Css_location.t
     method ref : unit -> Css_section.t
@@ -16,9 +16,9 @@ class css_section (obj : Css_section.t) : css_section_t = object (self)
     fun () ->
       (Css_section.get_end_location obj)
 
-  method get_file : unit -> Ocgtk_gio.Gio.file_t option =
+  method get_file : unit -> Ocgtk_gio.Gio.File.file_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gio.Gio.file ret) (Css_section.get_file obj)
+      Option.map (fun ret -> new Ocgtk_gio.Gio.File.file ret) (Css_section.get_file obj)
 
   method get_parent : unit -> Css_section.t option =
     fun () ->
@@ -42,4 +42,8 @@ class css_section (obj : Css_section.t) : css_section_t = object (self)
 
     method as_css_section = obj
 end
+
+let new_ (file : Ocgtk_gio.Gio.File.file_t option) (start : Css_location.t) (end_ : Css_location.t) : css_section_t =
+  let file = Option.map (fun c -> c#as_file) file in
+  new css_section (Css_section.new_ file start end_)
 

@@ -11,9 +11,10 @@ class type stroke_t = object
     method set_line_join : Gsk_enums.linejoin -> unit
     method set_line_width : float -> unit
     method set_miter_limit : float -> unit
-    method to_cairo : Ocgtk_cairo.Cairo.context_t -> unit
+    method to_cairo : Ocgtk_cairo.Cairo.Context.context_t -> unit
     method as_stroke : Stroke.t
 end
 
 class stroke : Stroke.t -> stroke_t
 
+val new_ : float -> stroke_t

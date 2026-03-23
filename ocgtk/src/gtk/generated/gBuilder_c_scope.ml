@@ -8,3 +8,6 @@ class builder_c_scope (obj : Builder_c_scope.t) : builder_c_scope_t = object (se
     method as_builder_c_scope = obj
 end
 
+let new_ () : builder_c_scope_t =
+  new builder_c_scope (Builder_c_scope.new_ ())
+

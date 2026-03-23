@@ -87,3 +87,6 @@ class adjustment (obj : Adjustment.t) : adjustment_t = object (self)
     method as_adjustment = obj
 end
 
+let new_ (value : float) (lower : float) (upper : float) (step_increment : float) (page_increment : float) (page_size : float) : adjustment_t =
+  new adjustment (Adjustment.new_ value lower upper step_increment page_increment page_size)
+

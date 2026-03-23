@@ -5,12 +5,12 @@ class type cell_renderer_text_t = object
     method align_set : bool
     method set_align_set : bool -> unit
     method alignment : Ocgtk_pango.Pango.alignment
-    method attributes : Ocgtk_pango.Pango.attr_list_t
-    method set_attributes : Ocgtk_pango.Pango.attr_list_t -> unit
+    method attributes : Ocgtk_pango.Pango.Attr_list.attr_list_t
+    method set_attributes : Ocgtk_pango.Pango.Attr_list.attr_list_t -> unit
     method background : string
     method set_background : string -> unit
-    method background_rgba : Ocgtk_gdk.Gdk.rgb_a_t
-    method set_background_rgba : Ocgtk_gdk.Gdk.rgb_a_t -> unit
+    method background_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t
+    method set_background_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit
     method background_set : bool
     method set_background_set : bool -> unit
     method editable : bool
@@ -27,12 +27,12 @@ class type cell_renderer_text_t = object
     method set_family_set : bool -> unit
     method font : string
     method set_font : string -> unit
-    method font_desc : Ocgtk_pango.Pango.font_description_t
-    method set_font_desc : Ocgtk_pango.Pango.font_description_t -> unit
+    method font_desc : Ocgtk_pango.Pango.Font_description.font_description_t
+    method set_font_desc : Ocgtk_pango.Pango.Font_description.font_description_t -> unit
     method foreground : string
     method set_foreground : string -> unit
-    method foreground_rgba : Ocgtk_gdk.Gdk.rgb_a_t
-    method set_foreground_rgba : Ocgtk_gdk.Gdk.rgb_a_t -> unit
+    method foreground_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t
+    method set_foreground_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit
     method foreground_set : bool
     method set_foreground_set : bool -> unit
     method language : string
@@ -98,3 +98,4 @@ end
 
 class cell_renderer_text : Cell_renderer_text.t -> cell_renderer_text_t
 
+val new_ : unit -> cell_renderer_text_t

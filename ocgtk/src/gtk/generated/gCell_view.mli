@@ -14,3 +14,8 @@ end
 
 class cell_view : Cell_view.t -> cell_view_t
 
+val new_ : unit -> cell_view_t
+val new_with_context : GCell_area_and__cell_area_context.cell_area_t -> GCell_area_and__cell_area_context.cell_area_context_t -> cell_view_t
+val new_with_markup : string -> cell_view_t
+val new_with_text : string -> cell_view_t
+val new_with_texture : Ocgtk_gdk.Gdk.Texture.texture_t -> cell_view_t

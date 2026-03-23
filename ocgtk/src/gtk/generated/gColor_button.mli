@@ -12,3 +12,5 @@ end
 
 class color_button : Color_button.t -> color_button_t
 
+val new_ : unit -> color_button_t
+val new_with_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> color_button_t

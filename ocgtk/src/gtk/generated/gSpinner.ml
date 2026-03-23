@@ -30,3 +30,6 @@ class spinner (obj : Spinner.t) : spinner_t = object (self)
     method as_spinner = obj
 end
 
+let new_ () : spinner_t =
+  new spinner (Spinner.new_ ())
+

@@ -14,3 +14,6 @@ class signal_list_item_factory (obj : Signal_list_item_factory.t) : signal_list_
     method as_signal_list_item_factory = obj
 end
 
+let new_ () : signal_list_item_factory_t =
+  new signal_list_item_factory (Signal_list_item_factory.new_ ())
+

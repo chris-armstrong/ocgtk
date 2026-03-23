@@ -13,3 +13,4 @@ end
 
 class box_layout : Box_layout.t -> box_layout_t
 
+val new_ : Gtk_enums.orientation -> box_layout_t

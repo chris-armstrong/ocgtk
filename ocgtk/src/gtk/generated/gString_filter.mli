@@ -13,3 +13,4 @@ end
 
 class string_filter : String_filter.t -> string_filter_t
 
+val new_ : GExpression.expression_t option -> string_filter_t

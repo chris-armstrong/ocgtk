@@ -7,3 +7,5 @@ end
 
 class unix_fd_message : Unix_fd_message.t -> unix_fd_message_t
 
+val new_ : unit -> unix_fd_message_t
+val new_with_fd_list : GUnix_fd_list.unix_fd_list_t -> unix_fd_message_t

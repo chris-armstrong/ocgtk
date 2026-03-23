@@ -24,3 +24,6 @@ class cell_renderer_combo (obj : Cell_renderer_combo.t) : cell_renderer_combo_t 
     method as_cell_renderer_combo = obj
 end
 
+let new_ () : cell_renderer_combo_t =
+  new cell_renderer_combo (Cell_renderer_combo.new_ ())
+

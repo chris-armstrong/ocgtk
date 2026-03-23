@@ -48,3 +48,6 @@ class frustum (obj : Frustum.t) : frustum_t = object (self)
     method as_frustum = obj
 end
 
+let alloc () : frustum_t =
+  new frustum (Frustum.alloc ())
+

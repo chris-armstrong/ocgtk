@@ -12,3 +12,4 @@ end
 
 class file_attribute_matcher : File_attribute_matcher.t -> file_attribute_matcher_t
 
+val new_ : string -> file_attribute_matcher_t

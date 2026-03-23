@@ -620,8 +620,9 @@ let rec contains_function_call (expr : expression) (func_name : string) : bool =
   | Pexp_ident { txt = Longident.Ldot (parent, name); _ } ->
       let full_name = Printf.sprintf "%s.%s" (longident_to_string parent) name in
       full_name = func_name
-  | Pexp_apply (func_expr, _) ->
+  | Pexp_apply (func_expr, args) ->
       contains_function_call func_expr func_name
+      || List.exists (fun (_, arg) -> contains_function_call arg func_name) args
   | Pexp_let (_, bindings, body) ->
       List.exists (fun vb -> contains_function_call vb.pvb_expr func_name) bindings
       || contains_function_call body func_name
@@ -650,9 +651,10 @@ let rec contains_function_call (expr : expression) (func_name : string) : bool =
   | Pexp_field (expr, _) -> contains_function_call expr func_name
   | Pexp_setfield (expr1, _, expr2) ->
       contains_function_call expr1 func_name || contains_function_call expr2 func_name
-   | Pexp_function (_, _, _) ->
-       (* Lambda/fun expression - pattern match case, body search not supported *)
-       false
+   | Pexp_function (_, _, Pfunction_body body) ->
+       contains_function_call body func_name
+   | Pexp_function (_, _, Pfunction_cases (cases, _, _)) ->
+       List.exists (fun case -> contains_function_call case.pc_rhs func_name) cases
    | Pexp_assert expr
    | Pexp_lazy expr
    | Pexp_coerce (expr, _, _)
@@ -705,6 +707,39 @@ let assert_let_binding_calls_function ast func_name binding_name =
   | Some binding ->
       if not (contains_function_call binding.pvb_expr func_name) then
         Alcotest.fail (Printf.sprintf "Function %s does not call %s" binding_name func_name)
+
+(* Check if an expression contains a method send (#method_name) *)
+let rec contains_method_send (expr : expression) (method_name : string) : bool =
+  match expr.pexp_desc with
+  | Pexp_send (_, { txt; _ }) when txt = method_name -> true
+  | Pexp_send (recv, _) -> contains_method_send recv method_name
+  | Pexp_apply (func_expr, args) ->
+      contains_method_send func_expr method_name
+      || List.exists (fun (_, arg) -> contains_method_send arg method_name) args
+  | Pexp_let (_, bindings, body) ->
+      List.exists (fun vb -> contains_method_send vb.pvb_expr method_name) bindings
+      || contains_method_send body method_name
+  | Pexp_constraint (expr, _) -> contains_method_send expr method_name
+  | Pexp_function (_, _, Pfunction_body body) -> contains_method_send body method_name
+  | Pexp_function (_, _, Pfunction_cases (cases, _, _)) ->
+      List.exists (fun case -> contains_method_send case.pc_rhs method_name) cases
+  | Pexp_sequence (e1, e2) ->
+      contains_method_send e1 method_name || contains_method_send e2 method_name
+  | Pexp_ifthenelse (cond, if_true, if_false_opt) ->
+      contains_method_send cond method_name
+      || contains_method_send if_true method_name
+      || (match if_false_opt with Some e -> contains_method_send e method_name | None -> false)
+  | Pexp_tuple exprs | Pexp_array exprs ->
+      List.exists (fun e -> contains_method_send e method_name) exprs
+  | _ -> false
+
+(* Assert that a let binding contains a method send (#method_name) *)
+let assert_let_binding_sends_method ast method_name binding_name =
+  match find_let_binding ast binding_name with
+  | None -> Alcotest.fail (Printf.sprintf "Function %s not found" binding_name)
+  | Some binding ->
+      if not (contains_method_send binding.pvb_expr method_name) then
+        Alcotest.fail (Printf.sprintf "Function %s does not send #%s" binding_name method_name)
 
 (* ========================================================================= *)
 (* Method Conflict Detection Helpers *)

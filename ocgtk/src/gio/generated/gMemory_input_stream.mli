@@ -5,3 +5,4 @@ end
 
 class memory_input_stream : Memory_input_stream.t -> memory_input_stream_t
 
+val new_ : unit -> memory_input_stream_t

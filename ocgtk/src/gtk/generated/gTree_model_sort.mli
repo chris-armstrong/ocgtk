@@ -10,3 +10,4 @@ end
 
 class tree_model_sort : Tree_model_sort.t -> tree_model_sort_t
 
+val new_with_model : GTree_model.tree_model_t -> tree_model_sort_t

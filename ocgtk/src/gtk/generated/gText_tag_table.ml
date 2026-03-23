@@ -34,3 +34,6 @@ class text_tag_table (obj : Text_tag_table.t) : text_tag_table_t = object (self)
     method as_text_tag_table = obj
 end
 
+let new_ () : text_tag_table_t =
+  new text_tag_table (Text_tag_table.new_ ())
+

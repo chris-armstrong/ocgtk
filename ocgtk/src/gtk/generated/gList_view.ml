@@ -86,3 +86,8 @@ class list_view (obj : List_view.t) : list_view_t = object (self)
     method as_list_view = obj
 end
 
+let new_ (model : GSelection_model.selection_model_t option) (factory : GList_item_factory.list_item_factory_t option) : list_view_t =
+  let model = Option.map (fun c -> c#as_selection_model) model in
+  let factory = Option.map (fun c -> c#as_list_item_factory) factory in
+  new list_view (List_view.new_ model factory)
+

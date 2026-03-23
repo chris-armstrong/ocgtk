@@ -10,3 +10,6 @@ class vulkan_renderer (obj : Vulkan_renderer.t) : vulkan_renderer_t = object (se
     method as_vulkan_renderer = obj
 end
 
+let new_ () : vulkan_renderer_t =
+  new vulkan_renderer (Vulkan_renderer.new_ ())
+

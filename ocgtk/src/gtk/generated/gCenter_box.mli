@@ -15,3 +15,4 @@ end
 
 class center_box : Center_box.t -> center_box_t
 
+val new_ : unit -> center_box_t

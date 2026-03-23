@@ -6,3 +6,4 @@ end
 
 class border : Border.t -> border_t
 
+val new_ : unit -> border_t

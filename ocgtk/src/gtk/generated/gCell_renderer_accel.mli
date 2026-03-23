@@ -14,3 +14,4 @@ end
 
 class cell_renderer_accel : Cell_renderer_accel.t -> cell_renderer_accel_t
 
+val new_ : unit -> cell_renderer_accel_t

@@ -15,3 +15,4 @@ end
 
 class tree_expander : Tree_expander.t -> tree_expander_t
 
+val new_ : unit -> tree_expander_t

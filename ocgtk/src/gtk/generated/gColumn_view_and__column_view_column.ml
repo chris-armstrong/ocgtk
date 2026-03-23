@@ -5,7 +5,7 @@ class type column_view_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gcolumn_view_signals.column_view_signals
     method append_column : column_view_column_t -> unit
-    method get_columns : unit -> Ocgtk_gio.Gio.list_model_t
+    method get_columns : unit -> Ocgtk_gio.Gio.List_model.list_model_t
     method get_enable_rubberband : unit -> bool
     method get_header_factory : unit -> GList_item_factory.list_item_factory_t option
     method get_model : unit -> GSelection_model.selection_model_t option
@@ -36,7 +36,7 @@ and column_view_column_t = object
     method get_expand : unit -> bool
     method get_factory : unit -> GList_item_factory.list_item_factory_t option
     method get_fixed_width : unit -> int
-    method get_header_menu : unit -> Ocgtk_gio.Gio.menu_model_t option
+    method get_header_menu : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option
     method get_id : unit -> string option
     method get_resizable : unit -> bool
     method get_sorter : unit -> GSorter.sorter_t option
@@ -45,7 +45,7 @@ and column_view_column_t = object
     method set_expand : bool -> unit
     method set_factory : GList_item_factory.list_item_factory_t option -> unit
     method set_fixed_width : int -> unit
-    method set_header_menu : Ocgtk_gio.Gio.menu_model_t option -> unit
+    method set_header_menu : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit
     method set_id : string option -> unit
     method set_resizable : bool -> unit
     method set_sorter : GSorter.sorter_t option -> unit
@@ -66,9 +66,9 @@ class column_view (obj : Column_view_and__column_view_column.Column_view.t) : co
       let column = column#as_column_view_column in
       (Column_view_and__column_view_column.Column_view.append_column obj column)
 
-  method get_columns : unit -> Ocgtk_gio.Gio.list_model_t =
+  method get_columns : unit -> Ocgtk_gio.Gio.List_model.list_model_t =
     fun () ->
-      new  Ocgtk_gio.Gio.list_model(Column_view_and__column_view_column.Column_view.get_columns obj)
+      new  Ocgtk_gio.Gio.List_model.list_model(Column_view_and__column_view_column.Column_view.get_columns obj)
 
   method get_enable_rubberband : unit -> bool =
     fun () ->
@@ -185,9 +185,9 @@ and column_view_column (obj : Column_view_and__column_view_column.Column_view_co
     fun () ->
       (Column_view_and__column_view_column.Column_view_column.get_fixed_width obj)
 
-  method get_header_menu : unit -> Ocgtk_gio.Gio.menu_model_t option =
+  method get_header_menu : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gio.Gio.menu_model ret) (Column_view_and__column_view_column.Column_view_column.get_header_menu obj)
+      Option.map (fun ret -> new Ocgtk_gio.Gio.Menu_model.menu_model ret) (Column_view_and__column_view_column.Column_view_column.get_header_menu obj)
 
   method get_id : unit -> string option =
     fun () ->
@@ -222,7 +222,7 @@ and column_view_column (obj : Column_view_and__column_view_column.Column_view_co
     fun fixed_width ->
       (Column_view_and__column_view_column.Column_view_column.set_fixed_width obj fixed_width)
 
-  method set_header_menu : Ocgtk_gio.Gio.menu_model_t option -> unit =
+  method set_header_menu : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit =
     fun menu ->
       let menu = Option.map (fun (c) -> c#as_menu_model) menu in
       (Column_view_and__column_view_column.Column_view_column.set_header_menu obj menu)
@@ -250,3 +250,11 @@ and column_view_column (obj : Column_view_and__column_view_column.Column_view_co
 
     method as_column_view_column = obj
 end
+let new_ (model : GSelection_model.selection_model_t option) : column_view_t =
+  let model = Option.map (fun c -> c#as_selection_model) model in
+  new column_view (Column_view_and__column_view_column.Column_view.new_ model)
+
+let new_ (title : string option) (factory : GList_item_factory.list_item_factory_t option) : column_view_column_t =
+  let factory = Option.map (fun c -> c#as_list_item_factory) factory in
+  new column_view_column (Column_view_and__column_view_column.Column_view_column.new_ title factory)
+

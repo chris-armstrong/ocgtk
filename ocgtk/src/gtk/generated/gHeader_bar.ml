@@ -59,3 +59,6 @@ class header_bar (obj : Header_bar.t) : header_bar_t = object (self)
     method as_header_bar = obj
 end
 
+let new_ () : header_bar_t =
+  new header_bar (Header_bar.new_ ())
+

@@ -2,16 +2,16 @@ class type font_dialog_button_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gfont_dialog_button_signals.font_dialog_button_signals
     method get_dialog : unit -> GFont_dialog.font_dialog_t option
-    method get_font_desc : unit -> Ocgtk_pango.Pango.font_description_t option
+    method get_font_desc : unit -> Ocgtk_pango.Pango.Font_description.font_description_t option
     method get_font_features : unit -> string option
-    method get_language : unit -> Ocgtk_pango.Pango.language_t option
+    method get_language : unit -> Ocgtk_pango.Pango.Language.language_t option
     method get_level : unit -> Gtk_enums.fontlevel
     method get_use_font : unit -> bool
     method get_use_size : unit -> bool
     method set_dialog : GFont_dialog.font_dialog_t -> unit
-    method set_font_desc : Ocgtk_pango.Pango.font_description_t -> unit
+    method set_font_desc : Ocgtk_pango.Pango.Font_description.font_description_t -> unit
     method set_font_features : string option -> unit
-    method set_language : Ocgtk_pango.Pango.language_t option -> unit
+    method set_language : Ocgtk_pango.Pango.Language.language_t option -> unit
     method set_level : Gtk_enums.fontlevel -> unit
     method set_use_font : bool -> unit
     method set_use_size : bool -> unit
@@ -20,3 +20,4 @@ end
 
 class font_dialog_button : Font_dialog_button.t -> font_dialog_button_t
 
+val new_ : GFont_dialog.font_dialog_t option -> font_dialog_button_t

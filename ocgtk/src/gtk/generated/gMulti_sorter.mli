@@ -8,3 +8,4 @@ end
 
 class multi_sorter : Multi_sorter.t -> multi_sorter_t
 
+val new_ : unit -> multi_sorter_t

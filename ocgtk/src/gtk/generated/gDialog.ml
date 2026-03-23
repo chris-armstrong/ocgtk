@@ -64,3 +64,6 @@ class dialog (obj : Dialog.t) : dialog_t = object (self)
     method as_dialog = obj
 end
 
+let new_ () : dialog_t =
+  new dialog (Dialog.new_ ())
+

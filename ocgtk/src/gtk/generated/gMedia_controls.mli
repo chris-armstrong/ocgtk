@@ -7,3 +7,4 @@ end
 
 class media_controls : Media_controls.t -> media_controls_t
 
+val new_ : GMedia_stream.media_stream_t option -> media_controls_t

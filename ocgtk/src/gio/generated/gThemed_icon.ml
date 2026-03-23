@@ -29,3 +29,12 @@ class themed_icon (obj : Themed_icon.t) : themed_icon_t = object (self)
     method as_themed_icon = obj
 end
 
+let new_ (iconname : string) : themed_icon_t =
+  new themed_icon (Themed_icon.new_ iconname)
+
+let new_from_names (iconnames : string array) (len : int) : themed_icon_t =
+  new themed_icon (Themed_icon.new_from_names iconnames len)
+
+let new_with_default_fallbacks (iconname : string) : themed_icon_t =
+  new themed_icon (Themed_icon.new_with_default_fallbacks iconname)
+

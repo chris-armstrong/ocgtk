@@ -34,3 +34,4 @@ end
 
 class application : Application.t -> application_t
 
+val new_ : string option -> Gio_enums.applicationflags -> application_t

@@ -10,3 +10,5 @@ end
 
 class link_button : Link_button.t -> link_button_t
 
+val new_ : string -> link_button_t
+val new_with_label : string -> string option -> link_button_t

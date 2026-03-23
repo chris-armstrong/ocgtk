@@ -36,3 +36,4 @@ end
 
 class font_description : Font_description.t -> font_description_t
 
+val new_ : unit -> font_description_t

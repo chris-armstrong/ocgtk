@@ -6,3 +6,4 @@ end
 
 class converter_output_stream : Converter_output_stream.t -> converter_output_stream_t
 
+val new_ : GOutput_stream.output_stream_t -> GConverter.converter_t -> converter_output_stream_t

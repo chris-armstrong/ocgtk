@@ -15,3 +15,10 @@ class unix_credentials_message (obj : Unix_credentials_message.t) : unix_credent
     method as_unix_credentials_message = obj
 end
 
+let new_ () : unix_credentials_message_t =
+  new unix_credentials_message (Unix_credentials_message.new_ ())
+
+let new_with_credentials (credentials : GCredentials.credentials_t) : unix_credentials_message_t =
+  let credentials = credentials#as_credentials in
+  new unix_credentials_message (Unix_credentials_message.new_with_credentials credentials)
+

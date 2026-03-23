@@ -7,3 +7,4 @@ end
 
 class tree_list_row_sorter : Tree_list_row_sorter.t -> tree_list_row_sorter_t
 
+val new_ : GSorter.sorter_t option -> tree_list_row_sorter_t

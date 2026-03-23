@@ -73,3 +73,12 @@ class tree_path (obj : Tree_path.t) : tree_path_t = object (self)
     method as_tree_path = obj
 end
 
+let new_ () : tree_path_t =
+  new tree_path (Tree_path.new_ ())
+
+let new_first () : tree_path_t =
+  new tree_path (Tree_path.new_first ())
+
+let new_from_string (path : string) : tree_path_t =
+  new tree_path (Tree_path.new_from_string path)
+

@@ -17,3 +17,6 @@ class unix_mount_monitor (obj : Unix_mount_monitor.t) : unix_mount_monitor_t = o
     method as_unix_mount_monitor = obj
 end
 
+let new_ () : unix_mount_monitor_t =
+  new unix_mount_monitor (Unix_mount_monitor.new_ ())
+

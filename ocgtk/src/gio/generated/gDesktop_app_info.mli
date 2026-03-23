@@ -19,3 +19,5 @@ end
 
 class desktop_app_info : Desktop_app_info.t -> desktop_app_info_t
 
+val new_ : string -> desktop_app_info_t
+val new_from_filename : string -> desktop_app_info_t

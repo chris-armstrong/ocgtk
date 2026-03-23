@@ -18,3 +18,4 @@ end
 
 class progress_bar : Progress_bar.t -> progress_bar_t
 
+val new_ : unit -> progress_bar_t

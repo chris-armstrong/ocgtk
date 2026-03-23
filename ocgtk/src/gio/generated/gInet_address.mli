@@ -17,3 +17,6 @@ end
 
 class inet_address : Inet_address.t -> inet_address_t
 
+val new_any : Gio_enums.socketfamily -> inet_address_t
+val new_from_string : string -> inet_address_t
+val new_loopback : Gio_enums.socketfamily -> inet_address_t

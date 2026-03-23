@@ -6,3 +6,4 @@ end
 
 class zlib_decompressor : Zlib_decompressor.t -> zlib_decompressor_t
 
+val new_ : Gio_enums.zlibcompressorformat -> zlib_decompressor_t

@@ -38,3 +38,6 @@ class tls_password (obj : Tls_password.t) : tls_password_t = object (self)
     method as_tls_password = obj
 end
 
+let new_ (flags : Gio_enums.tlspasswordflags) (description : string) : tls_password_t =
+  new tls_password (Tls_password.new_ flags description)
+

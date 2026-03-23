@@ -56,3 +56,6 @@ class revealer (obj : Revealer.t) : revealer_t = object (self)
     method as_revealer = obj
 end
 
+let new_ () : revealer_t =
+  new revealer (Revealer.new_ ())
+

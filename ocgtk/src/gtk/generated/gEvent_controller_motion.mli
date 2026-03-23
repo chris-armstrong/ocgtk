@@ -8,3 +8,4 @@ end
 
 class event_controller_motion : Event_controller_motion.t -> event_controller_motion_t
 
+val new_ : unit -> event_controller_motion_t

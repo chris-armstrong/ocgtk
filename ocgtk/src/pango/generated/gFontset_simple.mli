@@ -7,3 +7,4 @@ end
 
 class fontset_simple : Fontset_simple.t -> fontset_simple_t
 
+val new_ : Language.t -> fontset_simple_t

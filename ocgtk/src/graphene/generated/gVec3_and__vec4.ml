@@ -144,3 +144,9 @@ and vec4 (obj : Vec3_and__vec4.Vec4.t) : vec4_t = object (self)
 
     method as_vec4 = obj
 end
+let alloc () : vec3_t =
+  new vec3 (Vec3_and__vec4.Vec3.alloc ())
+
+let alloc () : vec4_t =
+  new vec4 (Vec3_and__vec4.Vec4.alloc ())
+

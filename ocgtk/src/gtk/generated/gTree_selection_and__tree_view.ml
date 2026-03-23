@@ -27,9 +27,9 @@ and tree_view_t = object
     method collapse_all : unit -> unit
     method collapse_row : Tree_path.t -> bool
     method columns_autosize : unit -> unit
-    method create_row_drag_icon : Tree_path.t -> Ocgtk_gdk.Gdk.paintable_t option
-    method enable_model_drag_dest : Ocgtk_gdk.Gdk.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit
-    method enable_model_drag_source : Ocgtk_gdk.Gdk.modifiertype -> Ocgtk_gdk.Gdk.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit
+    method create_row_drag_icon : Tree_path.t -> Ocgtk_gdk.Gdk.Paintable.paintable_t option
+    method enable_model_drag_dest : Ocgtk_gdk.Gdk.Content_formats.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit
+    method enable_model_drag_source : Ocgtk_gdk.Gdk.modifiertype -> Ocgtk_gdk.Gdk.Content_formats.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit
     method expand_all : unit -> unit
     method expand_row : Tree_path.t -> bool -> bool
     method expand_to_path : Tree_path.t -> unit
@@ -177,16 +177,16 @@ and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) : tree_view_t = 
     fun () ->
       (Tree_selection_and__tree_view.Tree_view.columns_autosize obj)
 
-  method create_row_drag_icon : Tree_path.t -> Ocgtk_gdk.Gdk.paintable_t option =
+  method create_row_drag_icon : Tree_path.t -> Ocgtk_gdk.Gdk.Paintable.paintable_t option =
     fun path ->
-      Option.map (fun ret -> new Ocgtk_gdk.Gdk.paintable ret) (Tree_selection_and__tree_view.Tree_view.create_row_drag_icon obj path)
+      Option.map (fun ret -> new Ocgtk_gdk.Gdk.Paintable.paintable ret) (Tree_selection_and__tree_view.Tree_view.create_row_drag_icon obj path)
 
-  method enable_model_drag_dest : Ocgtk_gdk.Gdk.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit =
+  method enable_model_drag_dest : Ocgtk_gdk.Gdk.Content_formats.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit =
     fun formats actions ->
       let formats = formats#as_content_formats in
       (Tree_selection_and__tree_view.Tree_view.enable_model_drag_dest obj formats actions)
 
-  method enable_model_drag_source : Ocgtk_gdk.Gdk.modifiertype -> Ocgtk_gdk.Gdk.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit =
+  method enable_model_drag_source : Ocgtk_gdk.Gdk.modifiertype -> Ocgtk_gdk.Gdk.Content_formats.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit =
     fun start_button_mask formats actions ->
       let formats = formats#as_content_formats in
       (Tree_selection_and__tree_view.Tree_view.enable_model_drag_source obj start_button_mask formats actions)
@@ -425,3 +425,10 @@ and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) : tree_view_t = 
 
     method as_tree_view = obj
 end
+let new_ () : tree_view_t =
+  new tree_view (Tree_selection_and__tree_view.Tree_view.new_ ())
+
+let new_with_model (model : GTree_model.tree_model_t) : tree_view_t =
+  let model = model#as_tree_model in
+  new tree_view (Tree_selection_and__tree_view.Tree_view.new_with_model model)
+

@@ -5,3 +5,4 @@ end
 
 class password_entry_buffer : Password_entry_buffer.t -> password_entry_buffer_t
 
+val new_ : unit -> password_entry_buffer_t

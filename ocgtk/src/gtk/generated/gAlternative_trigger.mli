@@ -7,3 +7,4 @@ end
 
 class alternative_trigger : Alternative_trigger.t -> alternative_trigger_t
 
+val new_ : GShortcut_trigger.shortcut_trigger_t -> GShortcut_trigger.shortcut_trigger_t -> alternative_trigger_t

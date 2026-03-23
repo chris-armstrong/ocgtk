@@ -131,3 +131,6 @@ class stack (obj : Stack.t) : stack_t = object (self)
     method as_stack = obj
 end
 
+let new_ () : stack_t =
+  new stack (Stack.new_ ())
+

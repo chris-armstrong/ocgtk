@@ -1,6 +1,6 @@
 class type radial_gradient_node_t = object
     inherit GRender_node.render_node_t
-    method get_center : unit -> Ocgtk_graphene.Graphene.point_t
+    method get_center : unit -> Ocgtk_graphene.Graphene.Point.point_t
     method get_end : unit -> float
     method get_hradius : unit -> float
     method get_start : unit -> float

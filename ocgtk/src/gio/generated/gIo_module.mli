@@ -4,3 +4,4 @@ end
 
 class io_module : Io_module.t -> io_module_t
 
+val new_ : string -> io_module_t

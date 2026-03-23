@@ -61,3 +61,6 @@ class aspect_frame (obj : Aspect_frame.t) : aspect_frame_t = object (self)
     method as_aspect_frame = obj
 end
 
+let new_ (xalign : float) (yalign : float) (ratio : float) (obey_child : bool) : aspect_frame_t =
+  new aspect_frame (Aspect_frame.new_ xalign yalign ratio obey_child)
+

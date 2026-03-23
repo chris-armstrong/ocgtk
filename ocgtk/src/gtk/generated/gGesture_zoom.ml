@@ -19,3 +19,6 @@ class gesture_zoom (obj : Gesture_zoom.t) : gesture_zoom_t = object (self)
     method as_gesture_zoom = obj
 end
 
+let new_ () : gesture_zoom_t =
+  new gesture_zoom (Gesture_zoom.new_ ())
+

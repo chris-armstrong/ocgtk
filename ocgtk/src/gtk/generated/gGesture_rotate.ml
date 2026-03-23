@@ -19,3 +19,6 @@ class gesture_rotate (obj : Gesture_rotate.t) : gesture_rotate_t = object (self)
     method as_gesture_rotate = obj
 end
 
+let new_ () : gesture_rotate_t =
+  new gesture_rotate (Gesture_rotate.new_ ())
+

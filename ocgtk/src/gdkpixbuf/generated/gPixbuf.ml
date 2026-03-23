@@ -17,7 +17,7 @@ class type pixbuf_t = object
     method remove_option : string -> bool
     method rotate_simple : Gdkpixbuf_enums.pixbufrotation -> pixbuf_t option
     method saturate_and_pixelate : pixbuf_t -> float -> bool -> unit
-    method save_to_streamv : Ocgtk_gio.Gio.output_stream_t -> string -> string array option -> string array option -> Ocgtk_gio.Gio.cancellable_t option -> (bool, GError.t) result
+    method save_to_streamv : Ocgtk_gio.Gio.Output_stream.output_stream_t -> string -> string array option -> string array option -> Ocgtk_gio.Gio.Cancellable.cancellable_t option -> (bool, GError.t) result
     method savev : string -> string -> string array option -> string array option -> (bool, GError.t) result
     method scale : pixbuf_t -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> unit
     method scale_simple : int -> int -> Gdkpixbuf_enums.interptype -> pixbuf_t option
@@ -104,7 +104,7 @@ class pixbuf (obj : Pixbuf.t) : pixbuf_t = object (self)
       let dest = dest#as_pixbuf in
       (Pixbuf.saturate_and_pixelate obj dest saturation pixelate)
 
-  method save_to_streamv : Ocgtk_gio.Gio.output_stream_t -> string -> string array option -> string array option -> Ocgtk_gio.Gio.cancellable_t option -> (bool, GError.t) result =
+  method save_to_streamv : Ocgtk_gio.Gio.Output_stream.output_stream_t -> string -> string array option -> string array option -> Ocgtk_gio.Gio.Cancellable.cancellable_t option -> (bool, GError.t) result =
     fun stream type_ option_keys option_values cancellable ->
       let stream = stream#as_output_stream in
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
@@ -129,4 +129,10 @@ class pixbuf (obj : Pixbuf.t) : pixbuf_t = object (self)
 
     method as_pixbuf = obj
 end
+
+let new_ (colorspace : Gdkpixbuf_enums.colorspace) (has_alpha : bool) (bits_per_sample : int) (width : int) (height : int) : pixbuf_t =
+  new pixbuf (Pixbuf.new_ colorspace has_alpha bits_per_sample width height)
+
+let new_from_xpm_data (data : string array) : pixbuf_t =
+  new pixbuf (Pixbuf.new_from_xpm_data data)
 

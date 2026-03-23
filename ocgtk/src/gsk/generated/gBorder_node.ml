@@ -1,6 +1,6 @@
 class type border_node_t = object
     inherit GRender_node.render_node_t
-    method get_colors : unit -> Ocgtk_gdk.Gdk.rgb_a_t
+    method get_colors : unit -> Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t
     method get_outline : unit -> Rounded_rect.t
     method get_widths : unit -> float array
     method as_border_node : Border_node.t
@@ -10,9 +10,9 @@ end
 class border_node (obj : Border_node.t) : border_node_t = object (self)
   inherit GRender_node.render_node (Obj.magic obj : Render_node.t)
 
-  method get_colors : unit -> Ocgtk_gdk.Gdk.rgb_a_t =
+  method get_colors : unit -> Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t =
     fun () ->
-      new  Ocgtk_gdk.Gdk.rgb_a(Border_node.get_colors obj)
+      new  Ocgtk_gdk.Gdk.Rgb_a.rgb_a(Border_node.get_colors obj)
 
   method get_outline : unit -> Rounded_rect.t =
     fun () ->
@@ -24,4 +24,7 @@ class border_node (obj : Border_node.t) : border_node_t = object (self)
 
     method as_border_node = obj
 end
+
+let new_ (outline : Rounded_rect.t) (border_width : float array) (border_color : Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t array) : border_node_t =
+  new border_node (Border_node.new_ outline border_width border_color)
 

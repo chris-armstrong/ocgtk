@@ -8,3 +8,4 @@ end
 
 class stroke_node : Stroke_node.t -> stroke_node_t
 
+val new_ : GRender_node.render_node_t -> Path_and__path_measure_and__path_point.Path.t -> Stroke.t -> stroke_node_t

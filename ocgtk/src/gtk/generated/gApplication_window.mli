@@ -10,3 +10,4 @@ end
 
 class application_window : Application_window.t -> application_window_t
 
+val new_ : GApplication_and__window_and__window_group.application_t -> application_window_t

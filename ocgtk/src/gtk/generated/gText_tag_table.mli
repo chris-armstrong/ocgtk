@@ -9,3 +9,4 @@ end
 
 class text_tag_table : Text_tag_table.t -> text_tag_table_t
 
+val new_ : unit -> text_tag_table_t

@@ -11,3 +11,4 @@ end
 
 class cell_renderer_spinner : Cell_renderer_spinner.t -> cell_renderer_spinner_t
 
+val new_ : unit -> cell_renderer_spinner_t

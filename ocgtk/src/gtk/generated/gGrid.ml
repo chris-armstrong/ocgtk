@@ -120,3 +120,6 @@ class grid (obj : Grid.t) : grid_t = object (self)
     method as_grid = obj
 end
 
+let new_ () : grid_t =
+  new grid (Grid.new_ ())
+

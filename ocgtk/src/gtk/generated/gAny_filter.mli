@@ -5,3 +5,4 @@ end
 
 class any_filter : Any_filter.t -> any_filter_t
 
+val new_ : unit -> any_filter_t

@@ -53,3 +53,6 @@ class tab_array (obj : Tab_array.t) : tab_array_t = object (self)
     method as_tab_array = obj
 end
 
+let new_ (initial_size : int) (positions_in_pixels : bool) : tab_array_t =
+  new tab_array (Tab_array.new_ initial_size positions_in_pixels)
+

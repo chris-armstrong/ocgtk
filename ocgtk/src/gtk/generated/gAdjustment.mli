@@ -20,3 +20,4 @@ end
 
 class adjustment : Adjustment.t -> adjustment_t
 
+val new_ : float -> float -> float -> float -> float -> float -> adjustment_t

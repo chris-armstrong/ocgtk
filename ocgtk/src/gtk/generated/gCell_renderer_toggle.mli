@@ -14,3 +14,4 @@ end
 
 class cell_renderer_toggle : Cell_renderer_toggle.t -> cell_renderer_toggle_t
 
+val new_ : unit -> cell_renderer_toggle_t

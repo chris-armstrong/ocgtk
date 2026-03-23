@@ -15,3 +15,4 @@ end
 
 class aspect_frame : Aspect_frame.t -> aspect_frame_t
 
+val new_ : float -> float -> float -> bool -> aspect_frame_t

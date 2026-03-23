@@ -7,3 +7,4 @@ end
 
 class gesture_rotate : Gesture_rotate.t -> gesture_rotate_t
 
+val new_ : unit -> gesture_rotate_t

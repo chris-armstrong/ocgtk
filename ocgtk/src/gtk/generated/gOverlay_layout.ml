@@ -10,3 +10,6 @@ class overlay_layout (obj : Overlay_layout.t) : overlay_layout_t = object (self)
     method as_overlay_layout = obj
 end
 
+let new_ () : overlay_layout_t =
+  new overlay_layout (Overlay_layout.new_ ())
+

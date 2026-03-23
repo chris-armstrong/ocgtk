@@ -75,3 +75,6 @@ class progress_bar (obj : Progress_bar.t) : progress_bar_t = object (self)
     method as_progress_bar = obj
 end
 
+let new_ () : progress_bar_t =
+  new progress_bar (Progress_bar.new_ ())
+

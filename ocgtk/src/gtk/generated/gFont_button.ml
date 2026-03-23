@@ -54,3 +54,9 @@ class font_button (obj : Font_button.t) : font_button_t = object (self)
     method as_font_button = obj
 end
 
+let new_ () : font_button_t =
+  new font_button (Font_button.new_ ())
+
+let new_with_font (fontname : string) : font_button_t =
+  new font_button (Font_button.new_with_font fontname)
+

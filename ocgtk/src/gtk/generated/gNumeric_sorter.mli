@@ -9,3 +9,4 @@ end
 
 class numeric_sorter : Numeric_sorter.t -> numeric_sorter_t
 
+val new_ : GExpression.expression_t option -> numeric_sorter_t

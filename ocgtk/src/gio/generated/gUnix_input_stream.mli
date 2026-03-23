@@ -8,3 +8,4 @@ end
 
 class unix_input_stream : Unix_input_stream.t -> unix_input_stream_t
 
+val new_ : int -> bool -> unix_input_stream_t

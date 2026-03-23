@@ -11,10 +11,7 @@ include Common
 type module_names = { layer1 : string; layer2 : string }
 type property_filters = { method_names : string list; base_names : string list }
 
-let sanitize_name s =
-  s
-  |> String.map ~f:(function '-' -> '_' | c -> c)
-  |> Utils.to_snake_case |> Utils.sanitize_identifier
+let sanitize_name = Utils.ocaml_class_name
 
 let signal_class_name class_name =
   Utils.ocaml_class_name (sanitize_name class_name ^ "_signals")
@@ -23,7 +20,7 @@ let get_signal_module_name class_snake = "G" ^ class_snake ^ "_signals"
 
 let get_module_names ~ctx class_name =
   let layer1 = Class_utils.get_qualified_module_name ~ctx class_name in
-  { layer1; layer2 = "G" ^ layer1 }
+  { layer1; layer2 = Utils.layer2_module_name class_name }
 
 let get_property_filters ~ctx ~class_name ~methods properties =
   {
@@ -39,7 +36,7 @@ let is_same_cluster_class ~same_cluster_classes class_name =
 
 (* Helper to generate class type reference for same-cluster class references *)
 let structural_type_for_class ~ctx:_ class_name =
-  Utils.ocaml_class_name class_name ^ "_t"
+  Utils.class_type_name class_name
 
 let ocaml_method_name ~class_name ~c_type (meth : gir_method) =
   Utils.ocaml_method_name ~class_name ~c_type meth.method_name |> sanitize_name
@@ -50,19 +47,21 @@ let has_type_variable type_str =
   List.exists ~f:(fun part -> part = "'a") parts
 
 let gir_type_of_name name =
-  { Types.name; c_type = None; nullable = false; transfer_ownership = TransferNone; array = None }
+  {
+    Types.name;
+    c_type = None;
+    nullable = false;
+    transfer_ownership = TransferNone;
+    array = None;
+  }
 
 (* Resolve parent to gir_type, returning None if parent is absent or in the same cyclic cluster *)
 let resolve_parent_gir_type ~same_cluster_classes ~parent_name =
   match parent_name with
   | None -> None
   | Some parent ->
-    if List.exists ~f:(String.equal parent) same_cluster_classes then None
-    else Some (gir_type_of_name parent)
-
-(* Check if a parameter is a hierarchy type and get its info *)
-let get_param_hierarchy_info ~ctx (param : gir_param) : hierarchy_info option =
-  Hierarchy_detection.get_hierarchy_info ctx param.param_type.name
+      if List.exists ~f:(String.equal parent) same_cluster_classes then None
+      else Some (gir_type_of_name parent)
 
 (* Helper to determine if a method should be skipped during generation *)
 let should_skip_method ~ctx (meth : gir_method) =

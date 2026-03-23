@@ -30,3 +30,4 @@ end
 
 class print_operation : Print_operation.t -> print_operation_t
 
+val new_ : unit -> print_operation_t

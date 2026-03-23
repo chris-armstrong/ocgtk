@@ -54,3 +54,6 @@ class file_filter (obj : File_filter.t) : file_filter_t = object (self)
     method as_file_filter = obj
 end
 
+let new_ () : file_filter_t =
+  new file_filter (File_filter.new_ ())
+

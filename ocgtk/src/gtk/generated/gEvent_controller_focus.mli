@@ -8,3 +8,4 @@ end
 
 class event_controller_focus : Event_controller_focus.t -> event_controller_focus_t
 
+val new_ : unit -> event_controller_focus_t

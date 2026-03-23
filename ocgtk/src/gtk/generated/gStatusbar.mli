@@ -11,3 +11,4 @@ end
 
 class statusbar : Statusbar.t -> statusbar_t
 
+val new_ : unit -> statusbar_t

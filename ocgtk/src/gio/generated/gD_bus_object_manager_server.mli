@@ -11,3 +11,4 @@ end
 
 class d_bus_object_manager_server : D_bus_object_manager_server.t -> d_bus_object_manager_server_t
 
+val new_ : string -> d_bus_object_manager_server_t

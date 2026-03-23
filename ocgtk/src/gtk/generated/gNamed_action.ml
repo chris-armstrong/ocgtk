@@ -15,3 +15,6 @@ class named_action (obj : Named_action.t) : named_action_t = object (self)
     method as_named_action = obj
 end
 
+let new_ (name : string) : named_action_t =
+  new named_action (Named_action.new_ name)
+

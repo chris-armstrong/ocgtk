@@ -14,3 +14,4 @@ end
 
 class entry_buffer : Entry_buffer.t -> entry_buffer_t
 
+val new_ : string option -> int -> entry_buffer_t

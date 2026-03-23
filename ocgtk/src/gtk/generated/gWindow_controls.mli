@@ -10,3 +10,4 @@ end
 
 class window_controls : Window_controls.t -> window_controls_t
 
+val new_ : Gtk_enums.packtype -> window_controls_t

@@ -51,3 +51,7 @@ class string_filter (obj : String_filter.t) : string_filter_t = object (self)
     method as_string_filter = obj
 end
 
+let new_ (expression : GExpression.expression_t option) : string_filter_t =
+  let expression = Option.map (fun c -> c#as_expression) expression in
+  new string_filter (String_filter.new_ expression)
+

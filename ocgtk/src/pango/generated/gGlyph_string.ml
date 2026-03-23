@@ -28,3 +28,6 @@ class glyph_string (obj : Glyph_string.t) : glyph_string_t = object (self)
     method as_glyph_string = obj
 end
 
+let new_ () : glyph_string_t =
+  new glyph_string (Glyph_string.new_ ())
+

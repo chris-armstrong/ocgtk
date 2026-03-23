@@ -10,3 +10,4 @@ end
 
 class file_chooser_widget : File_chooser_widget.t -> file_chooser_widget_t
 
+val new_ : Gtk_enums.filechooseraction -> file_chooser_widget_t

@@ -94,3 +94,6 @@ class menu (obj : Menu.t) : menu_t = object (self)
     method as_menu = obj
 end
 
+let new_ () : menu_t =
+  new menu (Menu.new_ ())
+

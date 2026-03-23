@@ -13,3 +13,4 @@ end
 
 class tab_array : Tab_array.t -> tab_array_t
 
+val new_ : int -> bool -> tab_array_t

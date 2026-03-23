@@ -18,3 +18,5 @@ end
 
 class level_bar : Level_bar.t -> level_bar_t
 
+val new_ : unit -> level_bar_t
+val new_for_interval : float -> float -> level_bar_t

@@ -10,3 +10,4 @@ end
 
 class scroll_info : Scroll_info.t -> scroll_info_t
 
+val new_ : unit -> scroll_info_t

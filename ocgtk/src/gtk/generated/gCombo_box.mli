@@ -12,7 +12,7 @@ class type combo_box_t = object
     method get_popup_fixed_width : unit -> bool
     method popdown : unit -> unit
     method popup : unit -> unit
-    method popup_for_device : Ocgtk_gdk.Gdk.device_t -> unit
+    method popup_for_device : Ocgtk_gdk.Gdk.Device.device_t -> unit
     method set_active : int -> unit
     method set_active_id : string option -> bool
     method set_active_iter : Tree_iter.t option -> unit
@@ -29,3 +29,7 @@ end
 
 class combo_box : Combo_box.t -> combo_box_t
 
+val new_ : unit -> combo_box_t
+val new_with_entry : unit -> combo_box_t
+val new_with_model : GTree_model.tree_model_t -> combo_box_t
+val new_with_model_and_entry : GTree_model.tree_model_t -> combo_box_t

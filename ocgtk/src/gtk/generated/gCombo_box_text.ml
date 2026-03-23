@@ -55,3 +55,9 @@ class combo_box_text (obj : Combo_box_text.t) : combo_box_text_t = object (self)
     method as_combo_box_text = obj
 end
 
+let new_ () : combo_box_text_t =
+  new combo_box_text (Combo_box_text.new_ ())
+
+let new_with_entry () : combo_box_text_t =
+  new combo_box_text (Combo_box_text.new_with_entry ())
+

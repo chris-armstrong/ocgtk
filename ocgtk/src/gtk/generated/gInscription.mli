@@ -1,6 +1,6 @@
 class type inscription_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
-    method get_attributes : unit -> Ocgtk_pango.Pango.attr_list_t option
+    method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option
     method get_min_chars : unit -> int
     method get_min_lines : unit -> int
     method get_nat_chars : unit -> int
@@ -10,7 +10,7 @@ class type inscription_t = object
     method get_wrap_mode : unit -> Ocgtk_pango.Pango.wrapmode
     method get_xalign : unit -> float
     method get_yalign : unit -> float
-    method set_attributes : Ocgtk_pango.Pango.attr_list_t option -> unit
+    method set_attributes : Ocgtk_pango.Pango.Attr_list.attr_list_t option -> unit
     method set_markup : string option -> unit
     method set_min_chars : int -> unit
     method set_min_lines : int -> unit
@@ -26,3 +26,4 @@ end
 
 class inscription : Inscription.t -> inscription_t
 
+val new_ : string option -> inscription_t

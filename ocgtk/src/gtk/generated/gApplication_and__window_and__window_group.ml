@@ -7,14 +7,14 @@ class type application_t = object
     method get_accels_for_action : string -> string array
     method get_actions_for_accel : string -> string array
     method get_active_window : unit -> window_t option
-    method get_menu_by_id : string -> Ocgtk_gio.Gio.menu_t option
-    method get_menubar : unit -> Ocgtk_gio.Gio.menu_model_t option
+    method get_menu_by_id : string -> Ocgtk_gio.Gio.Menu.menu_t option
+    method get_menubar : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option
     method get_window_by_id : int -> window_t option
     method inhibit : window_t option -> Gtk_enums.applicationinhibitflags -> string option -> int
     method list_action_descriptions : unit -> string array
     method remove_window : window_t -> unit
     method set_accels_for_action : string -> string array -> unit
-    method set_menubar : Ocgtk_gio.Gio.menu_model_t option -> unit
+    method set_menubar : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit
     method uninhibit : int -> unit
     method register_session : bool
     method set_register_session : bool -> unit
@@ -28,7 +28,7 @@ and window_t = object
     method close : unit -> unit
     method destroy : unit -> unit
     method fullscreen : unit -> unit
-    method fullscreen_on_monitor : Ocgtk_gdk.Gdk.monitor_t -> unit
+    method fullscreen_on_monitor : Ocgtk_gdk.Gdk.Monitor.monitor_t -> unit
     method get_application : unit -> application_t option
     method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
     method get_decorated : unit -> bool
@@ -62,7 +62,7 @@ and window_t = object
     method set_default_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
     method set_deletable : bool -> unit
     method set_destroy_with_parent : bool -> unit
-    method set_display : Ocgtk_gdk.Gdk.display_t -> unit
+    method set_display : Ocgtk_gdk.Gdk.Display.display_t -> unit
     method set_focus : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
     method set_focus_visible : bool -> unit
     method set_handle_menubar_accel : bool -> unit
@@ -121,13 +121,13 @@ class application (obj : Application_and__window_and__window_group.Application.t
     fun () ->
       Option.map (fun ret -> new window ret) (Application_and__window_and__window_group.Application.get_active_window obj)
 
-  method get_menu_by_id : string -> Ocgtk_gio.Gio.menu_t option =
+  method get_menu_by_id : string -> Ocgtk_gio.Gio.Menu.menu_t option =
     fun id ->
-      Option.map (fun ret -> new Ocgtk_gio.Gio.menu ret) (Application_and__window_and__window_group.Application.get_menu_by_id obj id)
+      Option.map (fun ret -> new Ocgtk_gio.Gio.Menu.menu ret) (Application_and__window_and__window_group.Application.get_menu_by_id obj id)
 
-  method get_menubar : unit -> Ocgtk_gio.Gio.menu_model_t option =
+  method get_menubar : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gio.Gio.menu_model ret) (Application_and__window_and__window_group.Application.get_menubar obj)
+      Option.map (fun ret -> new Ocgtk_gio.Gio.Menu_model.menu_model ret) (Application_and__window_and__window_group.Application.get_menubar obj)
 
   method get_window_by_id : int -> window_t option =
     fun id ->
@@ -151,7 +151,7 @@ class application (obj : Application_and__window_and__window_group.Application.t
     fun detailed_action_name accels ->
       (Application_and__window_and__window_group.Application.set_accels_for_action obj detailed_action_name accels)
 
-  method set_menubar : Ocgtk_gio.Gio.menu_model_t option -> unit =
+  method set_menubar : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit =
     fun menubar ->
       let menubar = Option.map (fun (c) -> c#as_menu_model) menubar in
       (Application_and__window_and__window_group.Application.set_menubar obj menubar)
@@ -186,7 +186,7 @@ and window (obj : Application_and__window_and__window_group.Window.t) : window_t
     fun () ->
       (Application_and__window_and__window_group.Window.fullscreen obj)
 
-  method fullscreen_on_monitor : Ocgtk_gdk.Gdk.monitor_t -> unit =
+  method fullscreen_on_monitor : Ocgtk_gdk.Gdk.Monitor.monitor_t -> unit =
     fun monitor ->
       let monitor = monitor#as_monitor in
       (Application_and__window_and__window_group.Window.fullscreen_on_monitor obj monitor)
@@ -326,7 +326,7 @@ and window (obj : Application_and__window_and__window_group.Window.t) : window_t
     fun setting ->
       (Application_and__window_and__window_group.Window.set_destroy_with_parent obj setting)
 
-  method set_display : Ocgtk_gdk.Gdk.display_t -> unit =
+  method set_display : Ocgtk_gdk.Gdk.Display.display_t -> unit =
     fun display ->
       let display = display#as_display in
       (Application_and__window_and__window_group.Window.set_display obj display)
@@ -428,3 +428,12 @@ and window_group (obj : Application_and__window_and__window_group.Window_group.t
 
     method as_window_group = obj
 end
+let new_ () : window_t =
+  new window (Application_and__window_and__window_group.Window.new_ ())
+
+let new_ (application_id : string option) (flags : Ocgtk_gio.Gio.applicationflags) : application_t =
+  new application (Application_and__window_and__window_group.Application.new_ application_id flags)
+
+let new_ () : window_group_t =
+  new window_group (Application_and__window_and__window_group.Window_group.new_ ())
+

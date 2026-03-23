@@ -7,3 +7,4 @@ end
 
 class buffered_output_stream : Buffered_output_stream.t -> buffered_output_stream_t
 
+val new_ : GOutput_stream.output_stream_t -> buffered_output_stream_t

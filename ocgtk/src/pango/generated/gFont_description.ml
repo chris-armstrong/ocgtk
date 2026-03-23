@@ -168,3 +168,6 @@ class font_description (obj : Font_description.t) : font_description_t = object 
     method as_font_description = obj
 end
 
+let new_ () : font_description_t =
+  new font_description (Font_description.new_ ())
+

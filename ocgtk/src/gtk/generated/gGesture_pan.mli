@@ -8,3 +8,4 @@ end
 
 class gesture_pan : Gesture_pan.t -> gesture_pan_t
 
+val new_ : Gtk_enums.orientation -> gesture_pan_t

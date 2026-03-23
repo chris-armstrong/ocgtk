@@ -2,8 +2,8 @@ class type pad_controller_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller_t
     method set_action : Gtk_enums.padactiontype -> int -> int -> string -> string -> unit
     method set_action_entries : Pad_action_entry.t array -> int -> unit
-    method action_group : Ocgtk_gio.Gio.action_group_t
-    method pad : Ocgtk_gdk.Gdk.device_t
+    method action_group : Ocgtk_gio.Gio.Action_group.action_group_t
+    method pad : Ocgtk_gdk.Gdk.Device.device_t
     method as_pad_controller : Pad_controller.t
 end
 
@@ -19,10 +19,15 @@ class pad_controller (obj : Pad_controller.t) : pad_controller_t = object (self)
     fun entries n_entries ->
       (Pad_controller.set_action_entries obj entries n_entries)
 
-  method action_group = new Ocgtk_gio.Gio.action_group (Pad_controller.get_action_group obj)
+  method action_group = new Ocgtk_gio.Gio.Action_group.action_group (Pad_controller.get_action_group obj)
 
-  method pad = new Ocgtk_gdk.Gdk.device (Pad_controller.get_pad obj)
+  method pad = new Ocgtk_gdk.Gdk.Device.device (Pad_controller.get_pad obj)
 
     method as_pad_controller = obj
 end
+
+let new_ (group : Ocgtk_gio.Gio.Action_group.action_group_t) (pad : Ocgtk_gdk.Gdk.Device.device_t option) : pad_controller_t =
+  let group = group#as_action_group in
+  let pad = Option.map (fun c -> c#as_device) pad in
+  new pad_controller (Pad_controller.new_ group pad)
 

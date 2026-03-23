@@ -15,3 +15,6 @@ class color_chooser_widget (obj : Color_chooser_widget.t) : color_chooser_widget
     method as_color_chooser_widget = obj
 end
 
+let new_ () : color_chooser_widget_t =
+  new color_chooser_widget (Color_chooser_widget.new_ ())
+

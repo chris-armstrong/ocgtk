@@ -5,3 +5,4 @@ end
 
 class overlay_layout : Overlay_layout.t -> overlay_layout_t
 
+val new_ : unit -> overlay_layout_t

@@ -5,7 +5,7 @@ class type scale_t = object
     method get_digits : unit -> int
     method get_draw_value : unit -> bool
     method get_has_origin : unit -> bool
-    method get_layout : unit -> Ocgtk_pango.Pango.layout_t option
+    method get_layout : unit -> Ocgtk_pango.Pango.Layout.layout_t option
     method get_value_pos : unit -> Gtk_enums.positiontype
     method set_digits : int -> unit
     method set_draw_value : bool -> unit
@@ -38,9 +38,9 @@ class scale (obj : Scale.t) : scale_t = object (self)
     fun () ->
       (Scale.get_has_origin obj)
 
-  method get_layout : unit -> Ocgtk_pango.Pango.layout_t option =
+  method get_layout : unit -> Ocgtk_pango.Pango.Layout.layout_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_pango.Pango.layout ret) (Scale.get_layout obj)
+      Option.map (fun ret -> new Ocgtk_pango.Pango.Layout.layout ret) (Scale.get_layout obj)
 
   method get_value_pos : unit -> Gtk_enums.positiontype =
     fun () ->
@@ -64,4 +64,11 @@ class scale (obj : Scale.t) : scale_t = object (self)
 
     method as_scale = obj
 end
+
+let new_ (orientation : Gtk_enums.orientation) (adjustment : GAdjustment.adjustment_t option) : scale_t =
+  let adjustment = Option.map (fun c -> c#as_adjustment) adjustment in
+  new scale (Scale.new_ orientation adjustment)
+
+let new_with_range (orientation : Gtk_enums.orientation) (min : float) (max : float) (step : float) : scale_t =
+  new scale (Scale.new_with_range orientation min max step)
 

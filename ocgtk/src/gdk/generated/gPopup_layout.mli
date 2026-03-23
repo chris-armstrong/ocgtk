@@ -18,3 +18,4 @@ end
 
 class popup_layout : Popup_layout.t -> popup_layout_t
 
+val new_ : Rectangle.t -> Gdk_enums.gravity -> Gdk_enums.gravity -> popup_layout_t

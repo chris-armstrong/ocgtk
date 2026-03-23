@@ -1,11 +1,11 @@
 class type filter_list_model_t = object
     method get_filter : unit -> GFilter.filter_t option
     method get_incremental : unit -> bool
-    method get_model : unit -> Ocgtk_gio.Gio.list_model_t option
+    method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option
     method get_pending : unit -> int
     method set_filter : GFilter.filter_t option -> unit
     method set_incremental : bool -> unit
-    method set_model : Ocgtk_gio.Gio.list_model_t option -> unit
+    method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit
     method n_items : int
     method as_filter_list_model : Filter_list_model.t
 end
@@ -21,9 +21,9 @@ class filter_list_model (obj : Filter_list_model.t) : filter_list_model_t = obje
     fun () ->
       (Filter_list_model.get_incremental obj)
 
-  method get_model : unit -> Ocgtk_gio.Gio.list_model_t option =
+  method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gio.Gio.list_model ret) (Filter_list_model.get_model obj)
+      Option.map (fun ret -> new Ocgtk_gio.Gio.List_model.list_model ret) (Filter_list_model.get_model obj)
 
   method get_pending : unit -> int =
     fun () ->
@@ -38,7 +38,7 @@ class filter_list_model (obj : Filter_list_model.t) : filter_list_model_t = obje
     fun incremental ->
       (Filter_list_model.set_incremental obj incremental)
 
-  method set_model : Ocgtk_gio.Gio.list_model_t option -> unit =
+  method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit =
     fun model ->
       let model = Option.map (fun (c) -> c#as_list_model) model in
       (Filter_list_model.set_model obj model)
@@ -47,4 +47,9 @@ class filter_list_model (obj : Filter_list_model.t) : filter_list_model_t = obje
 
     method as_filter_list_model = obj
 end
+
+let new_ (model : Ocgtk_gio.Gio.List_model.list_model_t option) (filter : GFilter.filter_t option) : filter_list_model_t =
+  let model = Option.map (fun c -> c#as_list_model) model in
+  let filter = Option.map (fun c -> c#as_filter) filter in
+  new filter_list_model (Filter_list_model.new_ model filter)
 

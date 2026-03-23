@@ -52,3 +52,6 @@ class cancellable (obj : Cancellable.t) : cancellable_t = object (self)
     method as_cancellable = obj
 end
 
+let new_ () : cancellable_t =
+  new cancellable (Cancellable.new_ ())
+

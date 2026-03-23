@@ -57,3 +57,6 @@ class entry_buffer (obj : Entry_buffer.t) : entry_buffer_t = object (self)
     method as_entry_buffer = obj
 end
 
+let new_ (initial_chars : string option) (n_initial_chars : int) : entry_buffer_t =
+  new entry_buffer (Entry_buffer.new_ initial_chars n_initial_chars)
+

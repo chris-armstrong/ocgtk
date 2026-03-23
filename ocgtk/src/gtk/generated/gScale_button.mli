@@ -17,3 +17,4 @@ end
 
 class scale_button : Scale_button.t -> scale_button_t
 
+val new_ : float -> float -> float -> string array option -> scale_button_t

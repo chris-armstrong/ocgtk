@@ -3,8 +3,8 @@
 
 class type cell_area_t = object
     inherit Gcell_area_signals.cell_area_signals
-    method activate : cell_area_context_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> Ocgtk_gdk.Gdk.rectangle_t -> Gtk_enums.cellrendererstate -> bool -> bool
-    method activate_cell : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GCell_renderer.cell_renderer_t -> Ocgtk_gdk.Gdk.event_t -> Ocgtk_gdk.Gdk.rectangle_t -> Gtk_enums.cellrendererstate -> bool
+    method activate : cell_area_context_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> Ocgtk_gdk.Gdk.Rectangle.rectangle_t -> Gtk_enums.cellrendererstate -> bool -> bool
+    method activate_cell : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GCell_renderer.cell_renderer_t -> Ocgtk_gdk.Gdk.Event.event_t -> Ocgtk_gdk.Gdk.Rectangle.rectangle_t -> Gtk_enums.cellrendererstate -> bool
     method add : GCell_renderer.cell_renderer_t -> unit
     method add_focus_sibling : GCell_renderer.cell_renderer_t -> GCell_renderer.cell_renderer_t -> unit
     method attribute_connect : GCell_renderer.cell_renderer_t -> string -> int -> unit
@@ -12,7 +12,7 @@ class type cell_area_t = object
     method attribute_get_column : GCell_renderer.cell_renderer_t -> string -> int
     method copy_context : cell_area_context_t -> cell_area_context_t
     method create_context : unit -> cell_area_context_t
-    method event : cell_area_context_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> Ocgtk_gdk.Gdk.event_t -> Ocgtk_gdk.Gdk.rectangle_t -> Gtk_enums.cellrendererstate -> int
+    method event : cell_area_context_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> Ocgtk_gdk.Gdk.Event.event_t -> Ocgtk_gdk.Gdk.Rectangle.rectangle_t -> Gtk_enums.cellrendererstate -> int
     method focus : Gtk_enums.directiontype -> bool
     method get_current_path_string : unit -> string
     method get_edit_widget : unit -> GCell_editable.cell_editable_t option
@@ -26,7 +26,7 @@ class type cell_area_t = object
     method remove : GCell_renderer.cell_renderer_t -> unit
     method remove_focus_sibling : GCell_renderer.cell_renderer_t -> GCell_renderer.cell_renderer_t -> unit
     method set_focus_cell : GCell_renderer.cell_renderer_t option -> unit
-    method snapshot : cell_area_context_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GSnapshot.snapshot_t -> Ocgtk_gdk.Gdk.rectangle_t -> Ocgtk_gdk.Gdk.rectangle_t -> Gtk_enums.cellrendererstate -> bool -> unit
+    method snapshot : cell_area_context_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GSnapshot.snapshot_t -> Ocgtk_gdk.Gdk.Rectangle.rectangle_t -> Ocgtk_gdk.Gdk.Rectangle.rectangle_t -> Gtk_enums.cellrendererstate -> bool -> unit
     method stop_editing : bool -> unit
     method as_cell_area : Cell_area_and__cell_area_context.Cell_area.t
 end
@@ -50,14 +50,14 @@ end
 class cell_area (obj : Cell_area_and__cell_area_context.Cell_area.t) : cell_area_t = object (self)
   inherit Gcell_area_signals.cell_area_signals obj
 
-  method activate : cell_area_context_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> Ocgtk_gdk.Gdk.rectangle_t -> Gtk_enums.cellrendererstate -> bool -> bool =
+  method activate : cell_area_context_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> Ocgtk_gdk.Gdk.Rectangle.rectangle_t -> Gtk_enums.cellrendererstate -> bool -> bool =
     fun context widget cell_area flags edit_only ->
       let context = context#as_cell_area_context in
       let widget = widget#as_widget in
       let cell_area = cell_area#as_rectangle in
       (Cell_area_and__cell_area_context.Cell_area.activate obj context widget cell_area flags edit_only)
 
-  method activate_cell : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GCell_renderer.cell_renderer_t -> Ocgtk_gdk.Gdk.event_t -> Ocgtk_gdk.Gdk.rectangle_t -> Gtk_enums.cellrendererstate -> bool =
+  method activate_cell : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GCell_renderer.cell_renderer_t -> Ocgtk_gdk.Gdk.Event.event_t -> Ocgtk_gdk.Gdk.Rectangle.rectangle_t -> Gtk_enums.cellrendererstate -> bool =
     fun widget renderer event cell_area flags ->
       let widget = widget#as_widget in
       let renderer = renderer#as_cell_renderer in
@@ -100,7 +100,7 @@ class cell_area (obj : Cell_area_and__cell_area_context.Cell_area.t) : cell_area
     fun () ->
       new  cell_area_context(Cell_area_and__cell_area_context.Cell_area.create_context obj)
 
-  method event : cell_area_context_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> Ocgtk_gdk.Gdk.event_t -> Ocgtk_gdk.Gdk.rectangle_t -> Gtk_enums.cellrendererstate -> int =
+  method event : cell_area_context_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> Ocgtk_gdk.Gdk.Event.event_t -> Ocgtk_gdk.Gdk.Rectangle.rectangle_t -> Gtk_enums.cellrendererstate -> int =
     fun context widget event cell_area flags ->
       let context = context#as_cell_area_context in
       let widget = widget#as_widget in
@@ -168,7 +168,7 @@ class cell_area (obj : Cell_area_and__cell_area_context.Cell_area.t) : cell_area
       let renderer = Option.map (fun (c) -> c#as_cell_renderer) renderer in
       (Cell_area_and__cell_area_context.Cell_area.set_focus_cell obj renderer)
 
-  method snapshot : cell_area_context_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GSnapshot.snapshot_t -> Ocgtk_gdk.Gdk.rectangle_t -> Ocgtk_gdk.Gdk.rectangle_t -> Gtk_enums.cellrendererstate -> bool -> unit =
+  method snapshot : cell_area_context_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GSnapshot.snapshot_t -> Ocgtk_gdk.Gdk.Rectangle.rectangle_t -> Ocgtk_gdk.Gdk.Rectangle.rectangle_t -> Gtk_enums.cellrendererstate -> bool -> unit =
     fun context widget snapshot background_area cell_area flags paint_focus ->
       let context = context#as_cell_area_context in
       let widget = widget#as_widget in

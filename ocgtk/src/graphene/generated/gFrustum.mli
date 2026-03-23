@@ -12,3 +12,4 @@ end
 
 class frustum : Frustum.t -> frustum_t
 
+val alloc : unit -> frustum_t

@@ -39,3 +39,6 @@ class string_list (obj : String_list.t) : string_list_t = object (self)
     method as_string_list = obj
 end
 
+let new_ (strings : string array option) : string_list_t =
+  new string_list (String_list.new_ strings)
+

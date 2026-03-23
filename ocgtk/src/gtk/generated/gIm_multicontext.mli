@@ -7,3 +7,4 @@ end
 
 class im_multicontext : Im_multicontext.t -> im_multicontext_t
 
+val new_ : unit -> im_multicontext_t

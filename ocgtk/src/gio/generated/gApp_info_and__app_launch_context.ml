@@ -138,3 +138,6 @@ and app_launch_context (obj : App_info_and__app_launch_context.App_launch_contex
 
     method as_app_launch_context = obj
 end
+let new_ () : app_launch_context_t =
+  new app_launch_context (App_info_and__app_launch_context.App_launch_context.new_ ())
+

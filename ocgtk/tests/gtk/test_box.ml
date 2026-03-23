@@ -14,10 +14,18 @@ module GMain = Ocgtk_gtk.GMain
 
 module Widget = Wrappers.Widget
 
-module Box = struct
-  include Wrappers.Box
-  let as_widget (box : t) : Widget.t = Obj.magic box
-end
+(* Layer 1 (raw) box functions *)
+let box_new = Wrappers.Box.new_
+let box_get_spacing = Wrappers.Box.get_spacing
+let box_set_spacing = Wrappers.Box.set_spacing
+let box_get_homogeneous = Wrappers.Box.get_homogeneous
+let box_set_homogeneous = Wrappers.Box.set_homogeneous
+let box_get_baseline_position = Wrappers.Box.get_baseline_position
+let box_set_baseline_position = Wrappers.Box.set_baseline_position
+let box_append = Wrappers.Box.append
+let box_prepend = Wrappers.Box.prepend
+let box_remove = Wrappers.Box.remove
+let box_as_widget (box : Wrappers.Box.t) : Widget.t = Obj.magic box
 
 (* Try to initialize GTK once for all tests *)
 let gtk_available =
@@ -32,7 +40,7 @@ let require_gtk f () = if not gtk_available then skip () else f ()
 (* Test that Box module is accessible and types compile *)
 let test_module_accessible () =
   (* Test that we can reference the types *)
-  let _box_type : Box.t option = None in
+  let _box_type : Wrappers.Box.t option = None in
   let _orientation : orientation = `HORIZONTAL in
   let _baseline : baselineposition = `CENTER in
 
@@ -54,37 +62,37 @@ let test_type_constructors () =
 (* Test box creation - requires GTK init *)
 let test_box_creation () =
   (* Create horizontal box *)
-  let hbox = Box.new_ `HORIZONTAL 5 in
-  check int "horizontal box spacing" 5 (Box.get_spacing hbox);
-  check bool "horizontal box not homogeneous" false (Box.get_homogeneous hbox);
+  let hbox = box_new `HORIZONTAL 5 in
+  check int "horizontal box spacing" 5 (box_get_spacing hbox);
+  check bool "horizontal box not homogeneous" false (box_get_homogeneous hbox);
 
   (* Create vertical box *)
-  let vbox = Box.new_ `VERTICAL 10 in
-  check int "vertical box spacing" 10 (Box.get_spacing vbox);
-  check bool "vertical box not homogeneous" false (Box.get_homogeneous vbox)
+  let vbox = box_new `VERTICAL 10 in
+  check int "vertical box spacing" 10 (box_get_spacing vbox);
+  check bool "vertical box not homogeneous" false (box_get_homogeneous vbox)
 
 (* Test box properties *)
 let test_box_properties () =
-  let box = Box.new_ `HORIZONTAL 0 in
+  let box = box_new `HORIZONTAL 0 in
 
   (* Test spacing *)
-  Box.set_spacing box 15;
-  check int "spacing set to 15" 15 (Box.get_spacing box);
+  box_set_spacing box 15;
+  check int "spacing set to 15" 15 (box_get_spacing box);
 
   (* Test homogeneous *)
-  Box.set_homogeneous box true;
-  check bool "homogeneous set to true" true (Box.get_homogeneous box);
+  box_set_homogeneous box true;
+  check bool "homogeneous set to true" true (box_get_homogeneous box);
 
   (* Test baseline position *)
-  Box.set_baseline_position box `TOP;
+  box_set_baseline_position box `TOP;
   check bool "baseline position set to TOP"
-    (`TOP = Box.get_baseline_position box)
+    (`TOP = box_get_baseline_position box)
     true
 
 (* Test widget packing properties *)
 let test_packing_properties () =
-  let box = Box.new_ `HORIZONTAL 0 in
-  let widget = Box.as_widget box in
+  let box = box_new `HORIZONTAL 0 in
+  let widget = box_as_widget box in
 
   (* Test hexpand/vexpand *)
   Widget.set_hexpand widget true;
@@ -116,8 +124,8 @@ let test_packing_properties () =
 (* Test high-level GBox wrapper *)
 let test_gbox_wrapper () =
   (* Create horizontal box with wrapper *)
-  let hbox_obj = Box.new_ `HORIZONTAL 10 in
-  let hbox = new box hbox_obj in
+  let hbox_obj = box_new `HORIZONTAL 10 in
+  let hbox = new Box.box hbox_obj in
   check int "gbox hbox spacing" 10 (hbox#get_spacing ());
 
   (* Set properties *)
@@ -128,36 +136,36 @@ let test_gbox_wrapper () =
   check bool "gbox homogeneous" true (hbox#get_homogeneous ());
 
   (* Create vertical box with wrapper *)
-  let vbox_obj = Box.new_ `VERTICAL 5 in
-  let vbox = new box vbox_obj in
+  let vbox_obj = box_new `VERTICAL 5 in
+  let vbox = new Box.box vbox_obj in
   vbox#set_homogeneous true;
   check int "gbox vbox spacing" 5 (vbox#get_spacing ());
   check bool "gbox vbox homogeneous" true (vbox#get_homogeneous ())
 
 (* Test child append/prepend - requires actual child widgets *)
 let test_child_management () =
-  let parent_box = Box.new_ `HORIZONTAL 0 in
-  let child_box = Box.new_ `VERTICAL 0 in
-  let child_widget = Box.as_widget child_box in
+  let parent_box = box_new `HORIZONTAL 0 in
+  let child_box = box_new `VERTICAL 0 in
+  let child_widget = box_as_widget child_box in
 
   (* Test append *)
-  Box.append parent_box child_widget;
+  box_append parent_box child_widget;
 
   (* Test prepend - create another child *)
-  let child2_box = Box.new_ `VERTICAL 0 in
-  let child2_widget = Box.as_widget child2_box in
-  Box.prepend parent_box child2_widget;
+  let child2_box = box_new `VERTICAL 0 in
+  let child2_widget = box_as_widget child2_box in
+  box_prepend parent_box child2_widget;
 
   (* Test remove *)
-  Box.remove parent_box child_widget;
-  Box.remove parent_box child2_widget;
+  box_remove parent_box child_widget;
+  box_remove parent_box child2_widget;
 
   check bool "child management successful" true true
 
 (* Test as_widget function *)
 let test_as_widget () =
-  let box = Box.new_ `HORIZONTAL 0 in
-  let widget = Box.as_widget box in
+  let box = box_new `HORIZONTAL 0 in
+  let widget = box_as_widget box in
 
   (* Verify it's a valid widget by calling widget methods *)
   Widget.set_name widget "test_box";

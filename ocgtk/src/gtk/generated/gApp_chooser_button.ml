@@ -3,7 +3,7 @@
 class type app_chooser_button_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gapp_chooser_button_signals.app_chooser_button_signals
-    method append_custom_item : string -> string -> Ocgtk_gio.Gio.icon_t -> unit
+    method append_custom_item : string -> string -> Ocgtk_gio.Gio.Icon.icon_t -> unit
     method append_separator : unit -> unit
     method get_heading : unit -> string option
     method get_modal : unit -> bool
@@ -22,7 +22,7 @@ class app_chooser_button (obj : App_chooser_button.t) : app_chooser_button_t = o
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gapp_chooser_button_signals.app_chooser_button_signals obj
 
-  method append_custom_item : string -> string -> Ocgtk_gio.Gio.icon_t -> unit =
+  method append_custom_item : string -> string -> Ocgtk_gio.Gio.Icon.icon_t -> unit =
     fun name label icon ->
       let icon = icon#as_icon in
       (App_chooser_button.append_custom_item obj name label icon)
@@ -69,4 +69,7 @@ class app_chooser_button (obj : App_chooser_button.t) : app_chooser_button_t = o
 
     method as_app_chooser_button = obj
 end
+
+let new_ (content_type : string) : app_chooser_button_t =
+  new app_chooser_button (App_chooser_button.new_ content_type)
 

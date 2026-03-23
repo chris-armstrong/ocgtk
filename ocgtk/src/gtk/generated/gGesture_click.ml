@@ -14,3 +14,6 @@ class gesture_click (obj : Gesture_click.t) : gesture_click_t = object (self)
     method as_gesture_click = obj
 end
 
+let new_ () : gesture_click_t =
+  new gesture_click (Gesture_click.new_ ())
+

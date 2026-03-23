@@ -35,3 +35,6 @@ end
 
 class d_bus_message : D_bus_message.t -> d_bus_message_t
 
+val new_ : unit -> d_bus_message_t
+val new_method_call : string option -> string -> string option -> string -> d_bus_message_t
+val new_signal : string -> string -> string -> d_bus_message_t

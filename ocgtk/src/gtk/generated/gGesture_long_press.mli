@@ -8,3 +8,4 @@ end
 
 class gesture_long_press : Gesture_long_press.t -> gesture_long_press_t
 
+val new_ : unit -> gesture_long_press_t

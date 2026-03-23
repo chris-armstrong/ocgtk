@@ -25,3 +25,6 @@ class zlib_compressor (obj : Zlib_compressor.t) : zlib_compressor_t = object (se
     method as_zlib_compressor = obj
 end
 
+let new_ (format : Gio_enums.zlibcompressorformat) (level : int) : zlib_compressor_t =
+  new zlib_compressor (Zlib_compressor.new_ format level)
+

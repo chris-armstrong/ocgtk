@@ -9,3 +9,4 @@ end
 
 class shortcut_label : Shortcut_label.t -> shortcut_label_t
 
+val new_ : string -> shortcut_label_t

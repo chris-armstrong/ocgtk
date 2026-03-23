@@ -5,3 +5,5 @@ end
 
 class text_child_anchor : Text_child_anchor.t -> text_child_anchor_t
 
+val new_ : unit -> text_child_anchor_t
+val new_with_replacement : string -> text_child_anchor_t

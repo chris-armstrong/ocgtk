@@ -2,7 +2,7 @@
 
 class type css_provider_t = object
     inherit Gcss_provider_signals.css_provider_signals
-    method load_from_file : Ocgtk_gio.Gio.file_t -> unit
+    method load_from_file : Ocgtk_gio.Gio.File.file_t -> unit
     method load_from_path : string -> unit
     method load_from_resource : string -> unit
     method load_from_string : string -> unit
@@ -15,7 +15,7 @@ end
 class css_provider (obj : Css_provider.t) : css_provider_t = object (self)
   inherit Gcss_provider_signals.css_provider_signals obj
 
-  method load_from_file : Ocgtk_gio.Gio.file_t -> unit =
+  method load_from_file : Ocgtk_gio.Gio.File.file_t -> unit =
     fun file ->
       let file = file#as_file in
       (Css_provider.load_from_file obj file)
@@ -42,4 +42,7 @@ class css_provider (obj : Css_provider.t) : css_provider_t = object (self)
 
     method as_css_provider = obj
 end
+
+let new_ () : css_provider_t =
+  new css_provider (Css_provider.new_ ())
 

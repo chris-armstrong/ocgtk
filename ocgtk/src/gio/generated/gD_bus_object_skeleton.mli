@@ -12,3 +12,4 @@ end
 
 class d_bus_object_skeleton : D_bus_object_skeleton.t -> d_bus_object_skeleton_t
 
+val new_ : string -> d_bus_object_skeleton_t

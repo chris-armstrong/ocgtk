@@ -9,3 +9,5 @@ end
 
 class cursor : Cursor.t -> cursor_t
 
+val new_from_name : string -> cursor_t option -> cursor_t
+val new_from_texture : GTexture.texture_t -> int -> int -> cursor_t option -> cursor_t

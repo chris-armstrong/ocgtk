@@ -11,3 +11,4 @@ end
 
 class notification : Notification.t -> notification_t
 
+val new_ : string -> notification_t

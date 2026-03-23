@@ -38,3 +38,6 @@ class test_d_bus (obj : Test_d_bus.t) : test_d_bus_t = object (self)
     method as_test_d_bus = obj
 end
 
+let new_ (flags : Gio_enums.testdbusflags) : test_d_bus_t =
+  new test_d_bus (Test_d_bus.new_ flags)
+

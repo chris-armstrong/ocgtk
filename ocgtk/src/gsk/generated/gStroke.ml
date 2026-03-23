@@ -11,7 +11,7 @@ class type stroke_t = object
     method set_line_join : Gsk_enums.linejoin -> unit
     method set_line_width : float -> unit
     method set_miter_limit : float -> unit
-    method to_cairo : Ocgtk_cairo.Cairo.context_t -> unit
+    method to_cairo : Ocgtk_cairo.Cairo.Context.context_t -> unit
     method as_stroke : Stroke.t
 end
 
@@ -66,11 +66,14 @@ class stroke (obj : Stroke.t) : stroke_t = object (self)
     fun limit ->
       (Stroke.set_miter_limit obj limit)
 
-  method to_cairo : Ocgtk_cairo.Cairo.context_t -> unit =
+  method to_cairo : Ocgtk_cairo.Cairo.Context.context_t -> unit =
     fun cr ->
       let cr = cr#as_context in
       (Stroke.to_cairo obj cr)
 
     method as_stroke = obj
 end
+
+let new_ (line_width : float) : stroke_t =
+  new stroke (Stroke.new_ line_width)
 

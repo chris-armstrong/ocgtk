@@ -15,3 +15,4 @@ end
 
 class search_bar : Search_bar.t -> search_bar_t
 
+val new_ : unit -> search_bar_t

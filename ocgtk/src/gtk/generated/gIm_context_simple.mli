@@ -6,3 +6,4 @@ end
 
 class im_context_simple : Im_context_simple.t -> im_context_simple_t
 
+val new_ : unit -> im_context_simple_t

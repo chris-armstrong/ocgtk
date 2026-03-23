@@ -5,14 +5,14 @@ class type application_t = object
     method get_accels_for_action : string -> string array
     method get_actions_for_accel : string -> string array
     method get_active_window : unit -> window_t option
-    method get_menu_by_id : string -> Ocgtk_gio.Gio.menu_t option
-    method get_menubar : unit -> Ocgtk_gio.Gio.menu_model_t option
+    method get_menu_by_id : string -> Ocgtk_gio.Gio.Menu.menu_t option
+    method get_menubar : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option
     method get_window_by_id : int -> window_t option
     method inhibit : window_t option -> Gtk_enums.applicationinhibitflags -> string option -> int
     method list_action_descriptions : unit -> string array
     method remove_window : window_t -> unit
     method set_accels_for_action : string -> string array -> unit
-    method set_menubar : Ocgtk_gio.Gio.menu_model_t option -> unit
+    method set_menubar : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit
     method uninhibit : int -> unit
     method register_session : bool
     method set_register_session : bool -> unit
@@ -26,7 +26,7 @@ and window_t = object
     method close : unit -> unit
     method destroy : unit -> unit
     method fullscreen : unit -> unit
-    method fullscreen_on_monitor : Ocgtk_gdk.Gdk.monitor_t -> unit
+    method fullscreen_on_monitor : Ocgtk_gdk.Gdk.Monitor.monitor_t -> unit
     method get_application : unit -> application_t option
     method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
     method get_decorated : unit -> bool
@@ -60,7 +60,7 @@ and window_t = object
     method set_default_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
     method set_deletable : bool -> unit
     method set_destroy_with_parent : bool -> unit
-    method set_display : Ocgtk_gdk.Gdk.display_t -> unit
+    method set_display : Ocgtk_gdk.Gdk.Display.display_t -> unit
     method set_focus : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
     method set_focus_visible : bool -> unit
     method set_handle_menubar_accel : bool -> unit
@@ -102,3 +102,6 @@ class application : Application_and__window_and__window_group.Application.t -> a
 and window : Application_and__window_and__window_group.Window.t -> window_t
 
 and window_group : Application_and__window_and__window_group.Window_group.t -> window_group_t
+val new_ : unit -> window_t
+val new_ : string option -> Ocgtk_gio.Gio.applicationflags -> application_t
+val new_ : unit -> window_group_t

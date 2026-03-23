@@ -36,3 +36,5 @@ end
 class vec3 : Vec3_and__vec4.Vec3.t -> vec3_t
 
 and vec4 : Vec3_and__vec4.Vec4.t -> vec4_t
+val alloc : unit -> vec3_t
+val alloc : unit -> vec4_t

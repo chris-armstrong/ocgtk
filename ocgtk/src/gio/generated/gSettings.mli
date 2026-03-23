@@ -37,3 +37,8 @@ end
 
 class settings : Settings.t -> settings_t
 
+val new_ : string -> settings_t
+val new_full : Settings_schema.t -> GSettings_backend.settings_backend_t option -> string option -> settings_t
+val new_with_backend : string -> GSettings_backend.settings_backend_t -> settings_t
+val new_with_backend_and_path : string -> GSettings_backend.settings_backend_t -> string -> settings_t
+val new_with_path : string -> string -> settings_t

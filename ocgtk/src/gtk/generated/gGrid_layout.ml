@@ -70,3 +70,6 @@ class grid_layout (obj : Grid_layout.t) : grid_layout_t = object (self)
     method as_grid_layout = obj
 end
 
+let new_ () : grid_layout_t =
+  new grid_layout (Grid_layout.new_ ())
+

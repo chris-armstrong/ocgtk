@@ -71,3 +71,6 @@ class list_box_row (obj : List_box_row.t) : list_box_row_t = object (self)
     method as_list_box_row = obj
 end
 
+let new_ () : list_box_row_t =
+  new list_box_row (List_box_row.new_ ())
+

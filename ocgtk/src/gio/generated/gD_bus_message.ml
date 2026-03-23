@@ -164,3 +164,12 @@ class d_bus_message (obj : D_bus_message.t) : d_bus_message_t = object (self)
     method as_d_bus_message = obj
 end
 
+let new_ () : d_bus_message_t =
+  new d_bus_message (D_bus_message.new_ ())
+
+let new_method_call (name : string option) (path : string) (interface_ : string option) (method_ : string) : d_bus_message_t =
+  new d_bus_message (D_bus_message.new_method_call name path interface_ method_)
+
+let new_signal (path : string) (interface_ : string) (signal : string) : d_bus_message_t =
+  new d_bus_message (D_bus_message.new_signal path interface_ signal)
+

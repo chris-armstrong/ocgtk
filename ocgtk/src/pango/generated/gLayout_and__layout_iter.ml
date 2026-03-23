@@ -324,3 +324,7 @@ and layout_iter (obj : Layout_and__layout_iter.Layout_iter.t) : layout_iter_t = 
 
     method as_layout_iter = obj
 end
+let new_ (context : GContext_and__font_and__font_map_and__fontset.context_t) : layout_t =
+  let context = context#as_context in
+  new layout (Layout_and__layout_iter.Layout.new_ context)
+

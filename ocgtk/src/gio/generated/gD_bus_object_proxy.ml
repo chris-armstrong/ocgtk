@@ -19,3 +19,7 @@ class d_bus_object_proxy (obj : D_bus_object_proxy.t) : d_bus_object_proxy_t = o
     method as_d_bus_object_proxy = obj
 end
 
+let new_ (connection : GD_bus_connection.d_bus_connection_t) (object_path : string) : d_bus_object_proxy_t =
+  let connection = connection#as_d_bus_connection in
+  new d_bus_object_proxy (D_bus_object_proxy.new_ connection object_path)
+

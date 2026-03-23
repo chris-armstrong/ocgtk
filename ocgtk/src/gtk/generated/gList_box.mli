@@ -34,3 +34,4 @@ end
 
 class list_box : List_box.t -> list_box_t
 
+val new_ : unit -> list_box_t

@@ -7,7 +7,7 @@ class type gl_area_t = object
     method get_allowed_apis : unit -> Ocgtk_gdk.Gdk.glapi
     method get_api : unit -> Ocgtk_gdk.Gdk.glapi
     method get_auto_render : unit -> bool
-    method get_context : unit -> Ocgtk_gdk.Gdk.gl_context_t option
+    method get_context : unit -> Ocgtk_gdk.Gdk.Gl_context.gl_context_t option
     method get_has_depth_buffer : unit -> bool
     method get_has_stencil_buffer : unit -> bool
     method get_use_es : unit -> bool
@@ -43,9 +43,9 @@ class gl_area (obj : Gl_area.t) : gl_area_t = object (self)
     fun () ->
       (Gl_area.get_auto_render obj)
 
-  method get_context : unit -> Ocgtk_gdk.Gdk.gl_context_t option =
+  method get_context : unit -> Ocgtk_gdk.Gdk.Gl_context.gl_context_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gdk.Gdk.gl_context ret) (Gl_area.get_context obj)
+      Option.map (fun ret -> new Ocgtk_gdk.Gdk.Gl_context.gl_context ret) (Gl_area.get_context obj)
 
   method get_has_depth_buffer : unit -> bool =
     fun () ->
@@ -93,4 +93,7 @@ class gl_area (obj : Gl_area.t) : gl_area_t = object (self)
 
     method as_gl_area = obj
 end
+
+let new_ () : gl_area_t =
+  new gl_area (Gl_area.new_ ())
 

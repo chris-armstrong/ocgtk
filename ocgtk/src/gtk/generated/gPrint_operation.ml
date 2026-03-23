@@ -138,3 +138,6 @@ class print_operation (obj : Print_operation.t) : print_operation_t = object (se
     method as_print_operation = obj
 end
 
+let new_ () : print_operation_t =
+  new print_operation (Print_operation.new_ ())
+

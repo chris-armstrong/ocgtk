@@ -23,3 +23,4 @@ end
 
 class page_setup : Page_setup.t -> page_setup_t
 
+val new_ : unit -> page_setup_t

@@ -33,3 +33,10 @@ class texture (obj : Texture.t) : texture_t = object (self)
     method as_texture = obj
 end
 
+let new_for_pixbuf (pixbuf : Ocgtk_gdkpixbuf.GdkPixbuf.Pixbuf.pixbuf_t) : texture_t =
+  let pixbuf = pixbuf#as_pixbuf in
+  new texture (Texture.new_for_pixbuf pixbuf)
+
+let new_from_resource (resource_path : string) : texture_t =
+  new texture (Texture.new_from_resource resource_path)
+

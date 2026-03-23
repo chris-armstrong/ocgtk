@@ -7,3 +7,4 @@ end
 
 class blur_node : Blur_node.t -> blur_node_t
 
+val new_ : GRender_node.render_node_t -> float -> blur_node_t

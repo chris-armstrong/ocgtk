@@ -11,3 +11,4 @@ end
 
 class flow_box_child : Flow_box_child.t -> flow_box_child_t
 
+val new_ : unit -> flow_box_child_t

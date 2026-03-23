@@ -37,3 +37,4 @@ end
 
 class flow_box : Flow_box.t -> flow_box_t
 
+val new_ : unit -> flow_box_t

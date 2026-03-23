@@ -10,3 +10,7 @@ end
 
 class menu_item : Menu_item.t -> menu_item_t
 
+val new_ : string option -> string option -> menu_item_t
+val new_from_model : GMenu_link_iter_and__menu_model.menu_model_t -> int -> menu_item_t
+val new_section : string option -> GMenu_link_iter_and__menu_model.menu_model_t -> menu_item_t
+val new_submenu : string option -> GMenu_link_iter_and__menu_model.menu_model_t -> menu_item_t

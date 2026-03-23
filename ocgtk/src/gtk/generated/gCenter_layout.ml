@@ -73,3 +73,6 @@ class center_layout (obj : Center_layout.t) : center_layout_t = object (self)
     method as_center_layout = obj
 end
 
+let new_ () : center_layout_t =
+  new center_layout (Center_layout.new_ ())
+

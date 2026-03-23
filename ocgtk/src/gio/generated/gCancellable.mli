@@ -13,3 +13,4 @@ end
 
 class cancellable : Cancellable.t -> cancellable_t
 
+val new_ : unit -> cancellable_t

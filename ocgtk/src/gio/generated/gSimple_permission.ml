@@ -10,3 +10,6 @@ class simple_permission (obj : Simple_permission.t) : simple_permission_t = obje
     method as_simple_permission = obj
 end
 
+let new_ (allowed : bool) : simple_permission_t =
+  new simple_permission (Simple_permission.new_ allowed)
+

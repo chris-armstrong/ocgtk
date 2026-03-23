@@ -51,3 +51,21 @@ class cell_view (obj : Cell_view.t) : cell_view_t = object (self)
     method as_cell_view = obj
 end
 
+let new_ () : cell_view_t =
+  new cell_view (Cell_view.new_ ())
+
+let new_with_context (area : GCell_area_and__cell_area_context.cell_area_t) (context : GCell_area_and__cell_area_context.cell_area_context_t) : cell_view_t =
+  let area = area#as_cell_area in
+  let context = context#as_cell_area_context in
+  new cell_view (Cell_view.new_with_context area context)
+
+let new_with_markup (markup : string) : cell_view_t =
+  new cell_view (Cell_view.new_with_markup markup)
+
+let new_with_text (text : string) : cell_view_t =
+  new cell_view (Cell_view.new_with_text text)
+
+let new_with_texture (texture : Ocgtk_gdk.Gdk.Texture.texture_t) : cell_view_t =
+  let texture = texture#as_texture in
+  new cell_view (Cell_view.new_with_texture texture)
+

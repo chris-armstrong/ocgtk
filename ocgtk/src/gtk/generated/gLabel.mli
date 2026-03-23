@@ -1,13 +1,13 @@
 class type label_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Glabel_signals.label_signals
-    method get_attributes : unit -> Ocgtk_pango.Pango.attr_list_t option
+    method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option
     method get_current_uri : unit -> string option
     method get_ellipsize : unit -> Ocgtk_pango.Pango.ellipsizemode
-    method get_extra_menu : unit -> Ocgtk_gio.Gio.menu_model_t option
+    method get_extra_menu : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option
     method get_justify : unit -> Gtk_enums.justification
     method get_label : unit -> string
-    method get_layout : unit -> Ocgtk_pango.Pango.layout_t
+    method get_layout : unit -> Ocgtk_pango.Pango.Layout.layout_t
     method get_lines : unit -> int
     method get_max_width_chars : unit -> int
     method get_mnemonic_keyval : unit -> int
@@ -15,7 +15,7 @@ class type label_t = object
     method get_natural_wrap_mode : unit -> Gtk_enums.naturalwrapmode
     method get_selectable : unit -> bool
     method get_single_line_mode : unit -> bool
-    method get_tabs : unit -> Ocgtk_pango.Pango.tab_array_t option
+    method get_tabs : unit -> Ocgtk_pango.Pango.Tab_array.tab_array_t option
     method get_text : unit -> string
     method get_use_markup : unit -> bool
     method get_use_underline : unit -> bool
@@ -25,9 +25,9 @@ class type label_t = object
     method get_xalign : unit -> float
     method get_yalign : unit -> float
     method select_region : int -> int -> unit
-    method set_attributes : Ocgtk_pango.Pango.attr_list_t option -> unit
+    method set_attributes : Ocgtk_pango.Pango.Attr_list.attr_list_t option -> unit
     method set_ellipsize : Ocgtk_pango.Pango.ellipsizemode -> unit
-    method set_extra_menu : Ocgtk_gio.Gio.menu_model_t option -> unit
+    method set_extra_menu : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit
     method set_justify : Gtk_enums.justification -> unit
     method set_label : string -> unit
     method set_lines : int -> unit
@@ -38,7 +38,7 @@ class type label_t = object
     method set_natural_wrap_mode : Gtk_enums.naturalwrapmode -> unit
     method set_selectable : bool -> unit
     method set_single_line_mode : bool -> unit
-    method set_tabs : Ocgtk_pango.Pango.tab_array_t option -> unit
+    method set_tabs : Ocgtk_pango.Pango.Tab_array.tab_array_t option -> unit
     method set_text : string -> unit
     method set_text_with_mnemonic : string -> unit
     method set_use_markup : bool -> unit
@@ -53,3 +53,5 @@ end
 
 class label : Label.t -> label_t
 
+val new_ : string option -> label_t
+val new_with_mnemonic : string option -> label_t

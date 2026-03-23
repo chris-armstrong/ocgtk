@@ -6,3 +6,5 @@ end
 
 class unix_credentials_message : Unix_credentials_message.t -> unix_credentials_message_t
 
+val new_ : unit -> unix_credentials_message_t
+val new_with_credentials : GCredentials.credentials_t -> unix_credentials_message_t

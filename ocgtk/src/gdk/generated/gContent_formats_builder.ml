@@ -33,3 +33,6 @@ class content_formats_builder (obj : Content_formats_builder.t) : content_format
     method as_content_formats_builder = obj
 end
 
+let new_ () : content_formats_builder_t =
+  new content_formats_builder (Content_formats_builder.new_ ())
+

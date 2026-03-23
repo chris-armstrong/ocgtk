@@ -20,3 +20,4 @@ end
 
 class info_bar : Info_bar.t -> info_bar_t
 
+val new_ : unit -> info_bar_t

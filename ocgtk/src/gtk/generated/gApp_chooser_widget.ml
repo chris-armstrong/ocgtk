@@ -74,3 +74,6 @@ class app_chooser_widget (obj : App_chooser_widget.t) : app_chooser_widget_t = o
     method as_app_chooser_widget = obj
 end
 
+let new_ (content_type : string) : app_chooser_widget_t =
+  new app_chooser_widget (App_chooser_widget.new_ content_type)
+

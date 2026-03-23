@@ -24,3 +24,6 @@ class event_controller_focus (obj : Event_controller_focus.t) : event_controller
     method as_event_controller_focus = obj
 end
 
+let new_ () : event_controller_focus_t =
+  new event_controller_focus (Event_controller_focus.new_ ())
+

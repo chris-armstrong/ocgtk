@@ -6,3 +6,4 @@ end
 
 class signal_list_item_factory : Signal_list_item_factory.t -> signal_list_item_factory_t
 
+val new_ : unit -> signal_list_item_factory_t

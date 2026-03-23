@@ -74,3 +74,12 @@ class inet_address (obj : Inet_address.t) : inet_address_t = object (self)
     method as_inet_address = obj
 end
 
+let new_any (family : Gio_enums.socketfamily) : inet_address_t =
+  new inet_address (Inet_address.new_any family)
+
+let new_from_string (string : string) : inet_address_t =
+  new inet_address (Inet_address.new_from_string string)
+
+let new_loopback (family : Gio_enums.socketfamily) : inet_address_t =
+  new inet_address (Inet_address.new_loopback family)
+

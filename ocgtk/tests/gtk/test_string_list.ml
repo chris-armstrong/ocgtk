@@ -15,7 +15,13 @@ open Alcotest
 open Ocgtk_gtk.Gtk
 module GMain = Ocgtk_gtk.GMain
 
-module String_list = Wrappers.String_list
+(* Layer 1 (raw) string_list functions *)
+let string_list_new = Wrappers.String_list.new_
+let string_list_append = Wrappers.String_list.append
+let string_list_take = Wrappers.String_list.take
+let string_list_get_string = Wrappers.String_list.get_string
+let string_list_remove = Wrappers.String_list.remove
+let string_list_get_n_items = Wrappers.String_list.get_n_items
 
 (* Try to initialize GTK once for all tests *)
 let gtk_available =
@@ -30,44 +36,44 @@ let require_gtk f () = if not gtk_available then skip () else f ()
 (* ========== Module Accessibility Tests ========== *)
 
 let test_string_list_module_accessible () =
-  let _t : String_list.t option = None in
+  let _t : Wrappers.String_list.t option = None in
   check bool "String_list module accessible" true true
 
 let test_string_list_type () =
   (* Verify the type is correctly defined as an object subtype
-     The type String_list.t = [`string_list | `object_] Gobject.obj
+     The type Wrappers.String_list.t = [`string_list | `object_] Gobject.obj
      already proves it's GObject-based; we just test creation works *)
-  let list = String_list.new_ (Some [||]) in
+  let list = string_list_new (Some [||]) in
   check bool "String_list instance created" true (list <> Obj.magic 0)
 
 (* ========== Creation Tests ========== *)
 
 let test_creation_empty_list () =
-  let list = String_list.new_ (Some [||]) in
-  check int "Empty list has 0 items" 0 (String_list.get_n_items list)
+  let list = string_list_new (Some [||]) in
+  check int "Empty list has 0 items" 0 (string_list_get_n_items list)
 
 let test_creation_with_empty_string () =
-  let list = String_list.new_ (Some [||]) in
-  String_list.take list "";
-  check int "Empty string adds item" 1 (String_list.get_n_items list)
+  let list = string_list_new (Some [||]) in
+  string_list_take list "";
+  check int "Empty string adds item" 1 (string_list_get_n_items list)
 
 (* ========== Take Method Tests (String_copy validation) ========== *)
 
 let test_take_basic () =
-  let list = String_list.new_ (Some [||]) in
+  let list = string_list_new (Some [||]) in
   let test_str = "test string for take" in
-  String_list.take list test_str;
-  check int "take: 1 item added" 1 (String_list.get_n_items list)
+  string_list_take list test_str;
+  check int "take: 1 item added" 1 (string_list_get_n_items list)
 
 let test_take_string_copy_independence () =
   (* CRITICAL TEST: Verify String_copy creates independent memory *)
-  let list = String_list.new_ (Some [||]) in
+  let list = string_list_new (Some [||]) in
   let original = "mutable string" in
   (* Note: OCaml strings are immutable, but this tests the C boundary *)
-  String_list.take list original;
+  string_list_take list original;
 
   (* Retrieve and verify the string is accessible *)
-  (match String_list.get_string list 0 with
+  (match string_list_get_string list 0 with
   | Some retrieved ->
       check string "take: retrieved equals original" "mutable string" retrieved
   | None -> fail "Expected Some string from get_string");
@@ -80,15 +86,15 @@ let test_take_copies_ownership () =
      1. Adding a string via take
      2. Verifying the string survives GC cycles
      3. Verifying memory is properly managed *)
-  let list = String_list.new_ (Some [||]) in
+  let list = string_list_new (Some [||]) in
   let owned = String.make 100 'x' in
   (* Create larger string *)
-  String_list.take list owned;
+  string_list_take list owned;
 
   (* Force potential GC by allocating more data *)
   let _ = String.make 10000 'y' in
 
-  match String_list.get_string list 0 with
+  match string_list_get_string list 0 with
   | Some retrieved ->
       (* Verify the string content is intact *)
       if String.length retrieved = 100 && retrieved.[0] = 'x' then
@@ -97,34 +103,34 @@ let test_take_copies_ownership () =
   | None -> fail "String lost after GC pressure"
 
 let test_take_special_chars () =
-  let list = String_list.new_ (Some [||]) in
+  let list = string_list_new (Some [||]) in
   (* Note: Embedded null bytes (\x00) are not supported in GTK strings (C null-terminated strings).
      Test other special characters: tab, newline, carriage return, quotes, backslash *)
   let special = "Hello\tWorld\n\r\"\\!" in
-  String_list.take list special;
+  string_list_take list special;
 
-  match String_list.get_string list 0 with
+  match string_list_get_string list 0 with
   | Some retrieved ->
       check string "take: special chars preserved" special retrieved
   | None -> fail "Special characters not preserved"
 
 let test_take_unicode () =
-  let list = String_list.new_ (Some [||]) in
+  let list = string_list_new (Some [||]) in
   let unicode = "Unicode: \xE2\x9D\xA4\xE2\x9D\xA4" in
   (* Hearts: ❤❤ *)
-  String_list.take list unicode;
+  string_list_take list unicode;
 
-  match String_list.get_string list 0 with
+  match string_list_get_string list 0 with
   | Some retrieved -> check string "take: unicode preserved" unicode retrieved
   | None -> fail "Unicode characters not preserved"
 
 let test_take_long_string () =
-  let list = String_list.new_ (Some [||]) in
+  let list = string_list_new (Some [||]) in
   let long = String.make 10000 'z' in
   (* 10KB string *)
-  String_list.take list long;
+  string_list_take list long;
 
-  match String_list.get_string list 0 with
+  match string_list_get_string list 0 with
   | Some retrieved ->
       check int "Long string length preserved" 10000 (String.length retrieved);
       check bool "Long string content correct" (retrieved = long) true
@@ -133,20 +139,20 @@ let test_take_long_string () =
 (* ========== Append Method Tests ========== *)
 
 let test_append_basic () =
-  let list = String_list.new_ (Some [||]) in
-  String_list.append list "appended";
-  check int "append: 1 item" 1 (String_list.get_n_items list)
+  let list = string_list_new (Some [||]) in
+  string_list_append list "appended";
+  check int "append: 1 item" 1 (string_list_get_n_items list)
 
 let test_append_vs_take () =
   (* Both should add items, but with different ownership semantics *)
-  let list = String_list.new_ (Some [||]) in
-  String_list.append list "via append";
-  String_list.take list "via take";
+  let list = string_list_new (Some [||]) in
+  string_list_append list "via append";
+  string_list_take list "via take";
 
-  check int "Both methods add items" 2 (String_list.get_n_items list);
+  check int "Both methods add items" 2 (string_list_get_n_items list);
 
   (* Verify both strings are retrievable *)
-  match (String_list.get_string list 0, String_list.get_string list 1) with
+  match (string_list_get_string list 0, string_list_get_string list 1) with
   | Some s0, Some s1 ->
       (* Order: append adds first, then take *)
       check string "First string is append" "via append" s0;
@@ -156,47 +162,47 @@ let test_append_vs_take () =
 (* ========== Get String Extraction Safety Tests ========== *)
 
 let test_get_string_valid_index () =
-  let list = String_list.new_ (Some [||]) in
-  String_list.take list "item0";
-  String_list.take list "item1";
+  let list = string_list_new (Some [||]) in
+  string_list_take list "item0";
+  string_list_take list "item1";
 
-  (match String_list.get_string list 0 with
+  (match string_list_get_string list 0 with
   | Some s -> check string "Index 0" "item0" s
   | None -> fail "Index 0 should return Some");
 
-  match String_list.get_string list 1 with
+  match string_list_get_string list 1 with
   | Some s -> check string "Index 1" "item1" s
   | None -> fail "Index 1 should return Some"
 
 let test_get_string_negative_index () =
-  let list = String_list.new_ (Some [||]) in
-  String_list.take list "item";
+  let list = string_list_new (Some [||]) in
+  string_list_take list "item";
 
   (* Negative index - GTK returns NULL/None *)
-  match String_list.get_string list (-1) with
+  match string_list_get_string list (-1) with
   | None -> check bool "Negative index returns None" true true
   | Some _ -> fail "Negative index should return None"
 
 let test_get_string_out_of_bounds () =
-  let list = String_list.new_ (Some [||]) in
-  String_list.take list "only item";
+  let list = string_list_new (Some [||]) in
+  string_list_take list "only item";
 
-  match String_list.get_string list 10 with
+  match string_list_get_string list 10 with
   | None -> check bool "Out of bounds returns None" true true
   | Some _ -> fail "Out of bounds should return None"
 
 let test_get_string_empty_list () =
-  let list = String_list.new_ (Some [||]) in
-  match String_list.get_string list 0 with
+  let list = string_list_new (Some [||]) in
+  match string_list_get_string list 0 with
   | None -> check bool "Empty list returns None" true true
   | Some _ -> fail "Empty list should return None"
 
 let test_get_string_returns_copy () =
   (* Verify get_string returns a copy we can mutate safely *)
-  let list = String_list.new_ (Some [||]) in
-  String_list.take list "original";
+  let list = string_list_new (Some [||]) in
+  string_list_take list "original";
 
-  match String_list.get_string list 0 with
+  match string_list_get_string list 0 with
   | Some retrieved ->
       (* Modify the "copy" - should not affect internal state *)
       let _modified = retrieved ^ " modified" in
@@ -206,39 +212,39 @@ let test_get_string_returns_copy () =
 (* ========== Remove Operation Tests ========== *)
 
 let test_remove_first () =
-  let list = String_list.new_ (Some [||]) in
-  String_list.take list "first";
-  String_list.take list "second";
-  String_list.take list "third";
+  let list = string_list_new (Some [||]) in
+  string_list_take list "first";
+  string_list_take list "second";
+  string_list_take list "third";
 
-  check int "3 items before remove" 3 (String_list.get_n_items list);
-  String_list.remove list 0;
-  check int "2 items after removing first" 2 (String_list.get_n_items list);
+  check int "3 items before remove" 3 (string_list_get_n_items list);
+  string_list_remove list 0;
+  check int "2 items after removing first" 2 (string_list_get_n_items list);
 
   (* Verify remaining items shifted correctly *)
-  match String_list.get_string list 0 with
+  match string_list_get_string list 0 with
   | Some s -> check string "First is now 'second'" "second" s
   | None -> fail "Expected 'second' at index 0"
 
 let test_remove_last () =
-  let list = String_list.new_ (Some [||]) in
-  String_list.take list "first";
-  String_list.take list "second";
+  let list = string_list_new (Some [||]) in
+  string_list_take list "first";
+  string_list_take list "second";
 
-  String_list.remove list 1;
-  check int "1 item after removing last" 1 (String_list.get_n_items list);
+  string_list_remove list 1;
+  check int "1 item after removing last" 1 (string_list_get_n_items list);
 
-  match String_list.get_string list 0 with
+  match string_list_get_string list 0 with
   | Some s -> check string "Only 'first' remains" "first" s
   | None -> fail "Expected 'first'"
 
 let test_remove_invalid_index () =
-  let list = String_list.new_ (Some [||]) in
-  String_list.take list "item";
+  let list = string_list_new (Some [||]) in
+  string_list_take list "item";
 
   (* Removing invalid index should not crash *)
   try
-    String_list.remove list 10;
+    string_list_remove list 10;
     check bool "Invalid remove handled gracefully" true true
   with e -> fail ("Invalid remove threw: " ^ Printexc.to_string e)
 
@@ -246,27 +252,27 @@ let test_remove_invalid_index () =
 
 let test_n_items_empty () =
   check int "Empty n_items" 0
-    (String_list.get_n_items (String_list.new_ (Some [||])))
+    (string_list_get_n_items (string_list_new (Some [||])))
 
 let test_n_items_after_operations () =
-  let list = String_list.new_ (Some [||]) in
-  String_list.append list "a";
-  check int "1 item" 1 (String_list.get_n_items list);
+  let list = string_list_new (Some [||]) in
+  string_list_append list "a";
+  check int "1 item" 1 (string_list_get_n_items list);
 
-  String_list.take list "b";
-  check int "2 items" 2 (String_list.get_n_items list);
+  string_list_take list "b";
+  check int "2 items" 2 (string_list_get_n_items list);
 
-  String_list.take list "c";
-  check int "3 items" 3 (String_list.get_n_items list);
+  string_list_take list "c";
+  check int "3 items" 3 (string_list_get_n_items list);
 
-  String_list.remove list 0;
-  check int "2 items after remove" 2 (String_list.get_n_items list)
+  string_list_remove list 0;
+  check int "2 items after remove" 2 (string_list_get_n_items list)
 
 (* ========== High-Level OO Wrapper Tests ========== *)
 
 let test_gstring_list_wrapper () =
-  let list = String_list.new_ (Some [||]) in
-  let gl = new string_list list in
+  let list = string_list_new (Some [||]) in
+  let gl = new String_list.string_list list in
 
   gl#take "wrapper item";
   check int "Wrapper take adds item" 1 gl#n_items;
@@ -278,34 +284,34 @@ let test_gstring_list_wrapper () =
 (* ========== Integration/Concurrency Tests ========== *)
 
 let test_mixed_operations () =
-  let list = String_list.new_ (Some [||]) in
+  let list = string_list_new (Some [||]) in
   let items = [| "a"; "b"; "c"; "d"; "e" |] in
 
   (* Mix of append and take *)
-  String_list.append list items.(0);
-  String_list.take list items.(1);
-  String_list.append list items.(2);
-  String_list.take list items.(3);
-  String_list.take list items.(4);
+  string_list_append list items.(0);
+  string_list_take list items.(1);
+  string_list_append list items.(2);
+  string_list_take list items.(3);
+  string_list_take list items.(4);
 
-  check int "5 items" 5 (String_list.get_n_items list);
+  check int "5 items" 5 (string_list_get_n_items list);
 
   (* Verify all items in order *)
   for i = 0 to 4 do
-    match String_list.get_string list i with
+    match string_list_get_string list i with
     | Some s -> check string (Printf.sprintf "Item %d" i) items.(i) s
     | None -> fail (Printf.sprintf "Missing item at index %d" i)
   done
 
 let test_string_list_survives_gc () =
-  let list = String_list.new_ (Some [||]) in
-  String_list.take list (String.make 1000 'x');
+  let list = string_list_new (Some [||]) in
+  string_list_take list (String.make 1000 'x');
 
   (* Create GC pressure *)
   let rec loop n = if n > 0 then String.make 1000 'y' :: loop (n - 1) else [] in
   let _ = loop 100 in
 
-  match String_list.get_string list 0 with
+  match string_list_get_string list 0 with
   | Some s ->
       if s <> String.make 1000 'x' then fail "String corrupted after GC"
       else check bool "String survived GC" true true

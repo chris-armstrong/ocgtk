@@ -7,3 +7,4 @@ end
 
 class stack_sidebar : Stack_sidebar.t -> stack_sidebar_t
 
+val new_ : unit -> stack_sidebar_t

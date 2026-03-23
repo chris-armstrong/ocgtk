@@ -33,3 +33,6 @@ class file_attribute_info_list (obj : File_attribute_info_list.t) : file_attribu
     method as_file_attribute_info_list = obj
 end
 
+let new_ () : file_attribute_info_list_t =
+  new file_attribute_info_list (File_attribute_info_list.new_ ())
+

@@ -13,3 +13,4 @@ end
 
 class toplevel_layout : Toplevel_layout.t -> toplevel_layout_t
 
+val new_ : unit -> toplevel_layout_t

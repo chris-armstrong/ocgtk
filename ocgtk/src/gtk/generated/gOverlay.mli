@@ -14,3 +14,4 @@ end
 
 class overlay : Overlay.t -> overlay_t
 
+val new_ : unit -> overlay_t

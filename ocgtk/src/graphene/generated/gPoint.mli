@@ -10,3 +10,4 @@ end
 
 class point : Point.t -> point_t
 
+val alloc : unit -> point_t

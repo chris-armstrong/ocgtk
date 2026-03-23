@@ -41,3 +41,7 @@ class string_sorter (obj : String_sorter.t) : string_sorter_t = object (self)
     method as_string_sorter = obj
 end
 
+let new_ (expression : GExpression.expression_t option) : string_sorter_t =
+  let expression = Option.map (fun c -> c#as_expression) expression in
+  new string_sorter (String_sorter.new_ expression)
+

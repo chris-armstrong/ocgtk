@@ -11,7 +11,7 @@ class type media_stream_t = object
     method is_seeking : unit -> bool
     method pause : unit -> unit
     method play : unit -> unit
-    method realize : Ocgtk_gdk.Gdk.surface_t -> unit
+    method realize : Ocgtk_gdk.Gdk.Surface.surface_t -> unit
     method seek_failed : unit -> unit
     method seek_success : unit -> unit
     method set_loop : bool -> unit
@@ -20,7 +20,7 @@ class type media_stream_t = object
     method set_volume : float -> unit
     method stream_ended : unit -> unit
     method stream_unprepared : unit -> unit
-    method unrealize : Ocgtk_gdk.Gdk.surface_t -> unit
+    method unrealize : Ocgtk_gdk.Gdk.Surface.surface_t -> unit
     method prepared : bool
     method set_prepared : bool -> unit
     method seekable : bool

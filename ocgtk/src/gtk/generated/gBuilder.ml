@@ -43,3 +43,12 @@ class builder (obj : Builder.t) : builder_t = object (self)
     method as_builder = obj
 end
 
+let new_ () : builder_t =
+  new builder (Builder.new_ ())
+
+let new_from_file (filename : string) : builder_t =
+  new builder (Builder.new_from_file filename)
+
+let new_from_resource (resource_path : string) : builder_t =
+  new builder (Builder.new_from_resource resource_path)
+

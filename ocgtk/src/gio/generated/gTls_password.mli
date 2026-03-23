@@ -10,3 +10,4 @@ end
 
 class tls_password : Tls_password.t -> tls_password_t
 
+val new_ : Gio_enums.tlspasswordflags -> string -> tls_password_t

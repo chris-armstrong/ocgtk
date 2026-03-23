@@ -74,3 +74,9 @@ class level_bar (obj : Level_bar.t) : level_bar_t = object (self)
     method as_level_bar = obj
 end
 
+let new_ () : level_bar_t =
+  new level_bar (Level_bar.new_ ())
+
+let new_for_interval (min_value : float) (max_value : float) : level_bar_t =
+  new level_bar (Level_bar.new_for_interval min_value max_value)
+

@@ -36,3 +36,6 @@ class event_controller_key (obj : Event_controller_key.t) : event_controller_key
     method as_event_controller_key = obj
 end
 
+let new_ () : event_controller_key_t =
+  new event_controller_key (Event_controller_key.new_ ())
+

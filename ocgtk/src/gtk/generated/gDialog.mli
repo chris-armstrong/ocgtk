@@ -16,3 +16,4 @@ end
 
 class dialog : Dialog.t -> dialog_t
 
+val new_ : unit -> dialog_t

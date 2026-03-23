@@ -1,34 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Top-level library module with direct references to all classes and enumerations *)
 
-(** Classes and Interfaces *)
-
-class type context_t = GContext.context_t
-class type device_t = GDevice.device_t
-class type font_face_t = GFont_face.font_face_t
-class type font_options_t = GFont_options.font_options_t
-class type matrix_t = GMatrix.matrix_t
-class type path_t = GPath.path_t
-class type pattern_t = GPattern.pattern_t
-class type rectangle_t = GRectangle.rectangle_t
-class type rectangle_int_t = GRectangle_int.rectangle_int_t
-class type region_t = GRegion.region_t
-class type scaled_font_t = GScaled_font.scaled_font_t
-class type surface_t = GSurface.surface_t
-
-class context = GContext.context
-class device = GDevice.device
-class font_face = GFont_face.font_face
-class font_options = GFont_options.font_options
-class matrix = GMatrix.matrix
-class path = GPath.path
-class pattern = GPattern.pattern
-class rectangle = GRectangle.rectangle
-class rectangle_int = GRectangle_int.rectangle_int
-class region = GRegion.region
-class scaled_font = GScaled_font.scaled_font
-class surface = GSurface.surface
-
 (** Layer 1 Module Wrappers *)
 module Wrappers = struct
   module Context = Context
@@ -44,6 +16,21 @@ module Wrappers = struct
   module Scaled_font = Scaled_font
   module Surface = Surface
 end
+
+(** Classes and Interfaces *)
+
+module Context = GContext
+module Device = GDevice
+module Font_face = GFont_face
+module Font_options = GFont_options
+module Matrix = GMatrix
+module Path = GPath
+module Pattern = GPattern
+module Rectangle = GRectangle
+module Rectangle_int = GRectangle_int
+module Region = GRegion
+module Scaled_font = GScaled_font
+module Surface = GSurface
 
 (** Enumerations and Bitfields *)
 

@@ -24,3 +24,6 @@ class d_bus_auth_observer (obj : D_bus_auth_observer.t) : d_bus_auth_observer_t 
     method as_d_bus_auth_observer = obj
 end
 
+let new_ () : d_bus_auth_observer_t =
+  new d_bus_auth_observer (D_bus_auth_observer.new_ ())
+

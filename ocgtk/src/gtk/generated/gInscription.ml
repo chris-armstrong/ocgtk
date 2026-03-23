@@ -1,6 +1,6 @@
 class type inscription_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
-    method get_attributes : unit -> Ocgtk_pango.Pango.attr_list_t option
+    method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option
     method get_min_chars : unit -> int
     method get_min_lines : unit -> int
     method get_nat_chars : unit -> int
@@ -10,7 +10,7 @@ class type inscription_t = object
     method get_wrap_mode : unit -> Ocgtk_pango.Pango.wrapmode
     method get_xalign : unit -> float
     method get_yalign : unit -> float
-    method set_attributes : Ocgtk_pango.Pango.attr_list_t option -> unit
+    method set_attributes : Ocgtk_pango.Pango.Attr_list.attr_list_t option -> unit
     method set_markup : string option -> unit
     method set_min_chars : int -> unit
     method set_min_lines : int -> unit
@@ -28,9 +28,9 @@ end
 class inscription (obj : Inscription.t) : inscription_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
 
-  method get_attributes : unit -> Ocgtk_pango.Pango.attr_list_t option =
+  method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_pango.Pango.attr_list ret) (Inscription.get_attributes obj)
+      Option.map (fun ret -> new Ocgtk_pango.Pango.Attr_list.attr_list ret) (Inscription.get_attributes obj)
 
   method get_min_chars : unit -> int =
     fun () ->
@@ -68,7 +68,7 @@ class inscription (obj : Inscription.t) : inscription_t = object (self)
     fun () ->
       (Inscription.get_yalign obj)
 
-  method set_attributes : Ocgtk_pango.Pango.attr_list_t option -> unit =
+  method set_attributes : Ocgtk_pango.Pango.Attr_list.attr_list_t option -> unit =
     fun attrs ->
       let attrs = Option.map (fun (c) -> c#as_attr_list) attrs in
       (Inscription.set_attributes obj attrs)
@@ -115,4 +115,7 @@ class inscription (obj : Inscription.t) : inscription_t = object (self)
 
     method as_inscription = obj
 end
+
+let new_ (text : string option) : inscription_t =
+  new inscription (Inscription.new_ text)
 

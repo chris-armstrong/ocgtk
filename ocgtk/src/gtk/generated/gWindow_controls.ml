@@ -35,3 +35,6 @@ class window_controls (obj : Window_controls.t) : window_controls_t = object (se
     method as_window_controls = obj
 end
 
+let new_ (side : Gtk_enums.packtype) : window_controls_t =
+  new window_controls (Window_controls.new_ side)
+

@@ -29,3 +29,5 @@ end
 
 class bitset : Bitset.t -> bitset_t
 
+val new_empty : unit -> bitset_t
+val new_range : int -> int -> bitset_t

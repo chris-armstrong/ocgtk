@@ -15,3 +15,4 @@ end
 
 class attr_list : Attr_list.t -> attr_list_t
 
+val new_ : unit -> attr_list_t

@@ -20,3 +20,7 @@ class transform_node (obj : Transform_node.t) : transform_node_t = object (self)
     method as_transform_node = obj
 end
 
+let new_ (child : GRender_node.render_node_t) (transform : Transform.t) : transform_node_t =
+  let child = child#as_render_node in
+  new transform_node (Transform_node.new_ child transform)
+

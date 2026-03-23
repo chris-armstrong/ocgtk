@@ -13,7 +13,7 @@ class type assistant_t = object
     method get_page_complete : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> bool
     method get_page_title : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> string
     method get_page_type : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> Gtk_enums.assistantpagetype
-    method get_pages : unit -> Ocgtk_gio.Gio.list_model_t
+    method get_pages : unit -> Ocgtk_gio.Gio.List_model.list_model_t
     method insert_page : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> int -> int
     method next_page : unit -> unit
     method prepend_page : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> int
@@ -80,9 +80,9 @@ class assistant (obj : Assistant.t) : assistant_t = object (self)
       let page = page#as_widget in
       (Assistant.get_page_type obj page)
 
-  method get_pages : unit -> Ocgtk_gio.Gio.list_model_t =
+  method get_pages : unit -> Ocgtk_gio.Gio.List_model.list_model_t =
     fun () ->
-      new  Ocgtk_gio.Gio.list_model(Assistant.get_pages obj)
+      new  Ocgtk_gio.Gio.List_model.list_model(Assistant.get_pages obj)
 
   method insert_page : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> int -> int =
     fun page position ->
@@ -138,4 +138,7 @@ class assistant (obj : Assistant.t) : assistant_t = object (self)
 
     method as_assistant = obj
 end
+
+let new_ () : assistant_t =
+  new assistant (Assistant.new_ ())
 

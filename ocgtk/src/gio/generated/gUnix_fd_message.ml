@@ -20,3 +20,10 @@ class unix_fd_message (obj : Unix_fd_message.t) : unix_fd_message_t = object (se
     method as_unix_fd_message = obj
 end
 
+let new_ () : unix_fd_message_t =
+  new unix_fd_message (Unix_fd_message.new_ ())
+
+let new_with_fd_list (fd_list : GUnix_fd_list.unix_fd_list_t) : unix_fd_message_t =
+  let fd_list = fd_list#as_unix_fd_list in
+  new unix_fd_message (Unix_fd_message.new_with_fd_list fd_list)
+

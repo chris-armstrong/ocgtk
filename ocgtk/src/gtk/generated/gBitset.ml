@@ -133,3 +133,9 @@ class bitset (obj : Bitset.t) : bitset_t = object (self)
     method as_bitset = obj
 end
 
+let new_empty () : bitset_t =
+  new bitset (Bitset.new_empty ())
+
+let new_range (start : int) (n_items : int) : bitset_t =
+  new bitset (Bitset.new_range start n_items)
+

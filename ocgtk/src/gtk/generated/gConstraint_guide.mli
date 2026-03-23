@@ -23,3 +23,4 @@ end
 
 class constraint_guide : Constraint_guide.t -> constraint_guide_t
 
+val new_ : unit -> constraint_guide_t

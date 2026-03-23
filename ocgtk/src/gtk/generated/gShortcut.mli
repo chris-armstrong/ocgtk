@@ -8,3 +8,4 @@ end
 
 class shortcut : Shortcut.t -> shortcut_t
 
+val new_ : GShortcut_trigger.shortcut_trigger_t option -> GShortcut_action.shortcut_action_t option -> shortcut_t

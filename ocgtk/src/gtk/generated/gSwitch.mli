@@ -10,3 +10,4 @@ end
 
 class switch : Switch.t -> switch_t
 
+val new_ : unit -> switch_t

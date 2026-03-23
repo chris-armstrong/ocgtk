@@ -15,3 +15,6 @@ class im_context_simple (obj : Im_context_simple.t) : im_context_simple_t = obje
     method as_im_context_simple = obj
 end
 
+let new_ () : im_context_simple_t =
+  new im_context_simple (Im_context_simple.new_ ())
+

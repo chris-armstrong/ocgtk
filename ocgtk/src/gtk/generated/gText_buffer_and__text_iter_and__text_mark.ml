@@ -4,16 +4,16 @@
 class type text_buffer_t = object
     inherit Gtext_buffer_signals.text_buffer_signals
     method add_mark : text_mark_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
-    method add_selection_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> unit
+    method add_selection_clipboard : Ocgtk_gdk.Gdk.Clipboard.clipboard_t -> unit
     method apply_tag : GText_tag.text_tag_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method apply_tag_by_name : string -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method backspace : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> bool -> bool
     method begin_irreversible_action : unit -> unit
     method begin_user_action : unit -> unit
-    method copy_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> unit
+    method copy_clipboard : Ocgtk_gdk.Gdk.Clipboard.clipboard_t -> unit
     method create_child_anchor : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> GText_child_anchor.text_child_anchor_t
     method create_mark : string option -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> text_mark_t
-    method cut_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> bool -> unit
+    method cut_clipboard : Ocgtk_gdk.Gdk.Clipboard.clipboard_t -> bool -> unit
     method delete : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method delete_interactive : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> bool
     method delete_mark : text_mark_t -> unit
@@ -32,7 +32,7 @@ class type text_buffer_t = object
     method get_max_undo_levels : unit -> int
     method get_modified : unit -> bool
     method get_selection_bound : unit -> text_mark_t
-    method get_selection_content : unit -> Ocgtk_gdk.Gdk.content_provider_t
+    method get_selection_content : unit -> Ocgtk_gdk.Gdk.Content_provider.content_provider_t
     method get_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> string
     method get_tag_table : unit -> GText_tag_table.text_tag_table_t
     method get_text : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> string
@@ -42,16 +42,16 @@ class type text_buffer_t = object
     method insert_interactive : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string -> int -> bool -> bool
     method insert_interactive_at_cursor : string -> int -> bool -> bool
     method insert_markup : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string -> int -> unit
-    method insert_paintable : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Ocgtk_gdk.Gdk.paintable_t -> unit
+    method insert_paintable : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Ocgtk_gdk.Gdk.Paintable.paintable_t -> unit
     method insert_range : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method insert_range_interactive : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> bool
     method move_mark : text_mark_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method move_mark_by_name : string -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
-    method paste_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t option -> bool -> unit
+    method paste_clipboard : Ocgtk_gdk.Gdk.Clipboard.clipboard_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t option -> bool -> unit
     method place_cursor : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method redo : unit -> unit
     method remove_all_tags : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
-    method remove_selection_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> unit
+    method remove_selection_clipboard : Ocgtk_gdk.Gdk.Clipboard.clipboard_t -> unit
     method remove_tag : GText_tag.text_tag_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method remove_tag_by_name : string -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
     method select_range : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
@@ -116,12 +116,12 @@ and text_iter_t = object
     method get_bytes_in_line : unit -> int
     method get_chars_in_line : unit -> int
     method get_child_anchor : unit -> GText_child_anchor.text_child_anchor_t option
-    method get_language : unit -> Ocgtk_pango.Pango.language_t
+    method get_language : unit -> Ocgtk_pango.Pango.Language.language_t
     method get_line : unit -> int
     method get_line_index : unit -> int
     method get_line_offset : unit -> int
     method get_offset : unit -> int
-    method get_paintable : unit -> Ocgtk_gdk.Gdk.paintable_t option
+    method get_paintable : unit -> Ocgtk_gdk.Gdk.Paintable.paintable_t option
     method get_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
     method get_text : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
     method get_visible_line_index : unit -> int
@@ -171,7 +171,7 @@ class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
       let mark = mark#as_text_mark in
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.add_mark obj mark where)
 
-  method add_selection_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> unit =
+  method add_selection_clipboard : Ocgtk_gdk.Gdk.Clipboard.clipboard_t -> unit =
     fun clipboard ->
       let clipboard = clipboard#as_clipboard in
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.add_selection_clipboard obj clipboard)
@@ -197,7 +197,7 @@ class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
     fun () ->
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.begin_user_action obj)
 
-  method copy_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> unit =
+  method copy_clipboard : Ocgtk_gdk.Gdk.Clipboard.clipboard_t -> unit =
     fun clipboard ->
       let clipboard = clipboard#as_clipboard in
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.copy_clipboard obj clipboard)
@@ -210,7 +210,7 @@ class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
     fun mark_name where left_gravity ->
       new  text_mark(Text_buffer_and__text_iter_and__text_mark.Text_buffer.create_mark obj mark_name where left_gravity)
 
-  method cut_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> bool -> unit =
+  method cut_clipboard : Ocgtk_gdk.Gdk.Clipboard.clipboard_t -> bool -> unit =
     fun clipboard default_editable ->
       let clipboard = clipboard#as_clipboard in
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.cut_clipboard obj clipboard default_editable)
@@ -288,9 +288,9 @@ class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
     fun () ->
       new  text_mark(Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_selection_bound obj)
 
-  method get_selection_content : unit -> Ocgtk_gdk.Gdk.content_provider_t =
+  method get_selection_content : unit -> Ocgtk_gdk.Gdk.Content_provider.content_provider_t =
     fun () ->
-      new  Ocgtk_gdk.Gdk.content_provider(Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_selection_content obj)
+      new  Ocgtk_gdk.Gdk.Content_provider.content_provider(Text_buffer_and__text_iter_and__text_mark.Text_buffer.get_selection_content obj)
 
   method get_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool -> string =
     fun start end_ include_hidden_chars ->
@@ -329,7 +329,7 @@ class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
     fun iter markup len ->
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.insert_markup obj iter markup len)
 
-  method insert_paintable : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Ocgtk_gdk.Gdk.paintable_t -> unit =
+  method insert_paintable : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> Ocgtk_gdk.Gdk.Paintable.paintable_t -> unit =
     fun iter paintable ->
       let paintable = paintable#as_paintable in
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.insert_paintable obj iter paintable)
@@ -351,7 +351,7 @@ class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
     fun name where ->
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.move_mark_by_name obj name where)
 
-  method paste_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t option -> bool -> unit =
+  method paste_clipboard : Ocgtk_gdk.Gdk.Clipboard.clipboard_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t option -> bool -> unit =
     fun clipboard override_location default_editable ->
       let clipboard = clipboard#as_clipboard in
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.paste_clipboard obj clipboard override_location default_editable)
@@ -368,7 +368,7 @@ class text_buffer (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
     fun start end_ ->
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.remove_all_tags obj start end_)
 
-  method remove_selection_clipboard : Ocgtk_gdk.Gdk.clipboard_t -> unit =
+  method remove_selection_clipboard : Ocgtk_gdk.Gdk.Clipboard.clipboard_t -> unit =
     fun clipboard ->
       let clipboard = clipboard#as_clipboard in
       (Text_buffer_and__text_iter_and__text_mark.Text_buffer.remove_selection_clipboard obj clipboard)
@@ -620,9 +620,9 @@ and text_iter (obj : Text_buffer_and__text_iter_and__text_mark.Text_iter.t) : te
     fun () ->
       Option.map (fun ret -> new GText_child_anchor.text_child_anchor ret) (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_child_anchor obj)
 
-  method get_language : unit -> Ocgtk_pango.Pango.language_t =
+  method get_language : unit -> Ocgtk_pango.Pango.Language.language_t =
     fun () ->
-      new  Ocgtk_pango.Pango.language(Text_buffer_and__text_iter_and__text_mark.Text_iter.get_language obj)
+      new  Ocgtk_pango.Pango.Language.language(Text_buffer_and__text_iter_and__text_mark.Text_iter.get_language obj)
 
   method get_line : unit -> int =
     fun () ->
@@ -640,9 +640,9 @@ and text_iter (obj : Text_buffer_and__text_iter_and__text_mark.Text_iter.t) : te
     fun () ->
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_offset obj)
 
-  method get_paintable : unit -> Ocgtk_gdk.Gdk.paintable_t option =
+  method get_paintable : unit -> Ocgtk_gdk.Gdk.Paintable.paintable_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gdk.Gdk.paintable ret) (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_paintable obj)
+      Option.map (fun ret -> new Ocgtk_gdk.Gdk.Paintable.paintable ret) (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_paintable obj)
 
   method get_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string =
     fun end_ ->
@@ -778,3 +778,10 @@ and text_mark (obj : Text_buffer_and__text_iter_and__text_mark.Text_mark.t) : te
 
     method as_text_mark = obj
 end
+let new_ (table : GText_tag_table.text_tag_table_t option) : text_buffer_t =
+  let table = Option.map (fun c -> c#as_text_tag_table) table in
+  new text_buffer (Text_buffer_and__text_iter_and__text_mark.Text_buffer.new_ table)
+
+let new_ (name : string option) (left_gravity : bool) : text_mark_t =
+  new text_mark (Text_buffer_and__text_iter_and__text_mark.Text_mark.new_ name left_gravity)
+

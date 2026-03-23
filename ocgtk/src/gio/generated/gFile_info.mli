@@ -47,3 +47,4 @@ end
 
 class file_info : File_info.t -> file_info_t
 
+val new_ : unit -> file_info_t

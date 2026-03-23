@@ -6,3 +6,4 @@ end
 
 class mnemonic_trigger : Mnemonic_trigger.t -> mnemonic_trigger_t
 
+val new_ : int -> mnemonic_trigger_t

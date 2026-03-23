@@ -17,10 +17,11 @@ class type popover_t = object
     method set_has_arrow : bool -> unit
     method set_mnemonics_visible : bool -> unit
     method set_offset : int -> int -> unit
-    method set_pointing_to : Ocgtk_gdk.Gdk.rectangle_t option -> unit
+    method set_pointing_to : Ocgtk_gdk.Gdk.Rectangle.rectangle_t option -> unit
     method set_position : Gtk_enums.positiontype -> unit
     method as_popover : Popover.t
 end
 
 class popover : Popover.t -> popover_t
 
+val new_ : unit -> popover_t

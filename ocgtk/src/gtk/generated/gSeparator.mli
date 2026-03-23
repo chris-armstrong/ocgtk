@@ -5,3 +5,4 @@ end
 
 class separator : Separator.t -> separator_t
 
+val new_ : Gtk_enums.orientation -> separator_t

@@ -1,13 +1,13 @@
 class type im_context_t = object
     inherit Gim_context_signals.im_context_signals
-    method activate_osk : Ocgtk_gdk.Gdk.event_t option -> bool
+    method activate_osk : Ocgtk_gdk.Gdk.Event.event_t option -> bool
     method delete_surrounding : int -> int -> bool
-    method filter_keypress : Ocgtk_gdk.Gdk.event_t -> bool
+    method filter_keypress : Ocgtk_gdk.Gdk.Event.event_t -> bool
     method focus_in : unit -> unit
     method focus_out : unit -> unit
     method reset : unit -> unit
     method set_client_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
-    method set_cursor_location : Ocgtk_gdk.Gdk.rectangle_t -> unit
+    method set_cursor_location : Ocgtk_gdk.Gdk.Rectangle.rectangle_t -> unit
     method set_surrounding : string -> int -> int -> unit
     method set_surrounding_with_selection : string -> int -> int -> int -> unit
     method set_use_preedit : bool -> unit

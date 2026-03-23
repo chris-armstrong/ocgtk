@@ -12,3 +12,4 @@ end
 
 class bookmark_list : Bookmark_list.t -> bookmark_list_t
 
+val new_ : string option -> string option -> bookmark_list_t

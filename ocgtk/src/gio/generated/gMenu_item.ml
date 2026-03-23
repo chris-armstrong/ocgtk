@@ -41,3 +41,18 @@ class menu_item (obj : Menu_item.t) : menu_item_t = object (self)
     method as_menu_item = obj
 end
 
+let new_ (label : string option) (detailed_action : string option) : menu_item_t =
+  new menu_item (Menu_item.new_ label detailed_action)
+
+let new_from_model (model : GMenu_link_iter_and__menu_model.menu_model_t) (item_index : int) : menu_item_t =
+  let model = model#as_menu_model in
+  new menu_item (Menu_item.new_from_model model item_index)
+
+let new_section (label : string option) (section : GMenu_link_iter_and__menu_model.menu_model_t) : menu_item_t =
+  let section = section#as_menu_model in
+  new menu_item (Menu_item.new_section label section)
+
+let new_submenu (label : string option) (submenu : GMenu_link_iter_and__menu_model.menu_model_t) : menu_item_t =
+  let submenu = submenu#as_menu_model in
+  new menu_item (Menu_item.new_submenu label submenu)
+

@@ -31,3 +31,7 @@ class bool_filter (obj : Bool_filter.t) : bool_filter_t = object (self)
     method as_bool_filter = obj
 end
 
+let new_ (expression : GExpression.expression_t option) : bool_filter_t =
+  let expression = Option.map (fun c -> c#as_expression) expression in
+  new bool_filter (Bool_filter.new_ expression)
+

@@ -10,3 +10,6 @@ class memory_input_stream (obj : Memory_input_stream.t) : memory_input_stream_t 
     method as_memory_input_stream = obj
 end
 
+let new_ () : memory_input_stream_t =
+  new memory_input_stream (Memory_input_stream.new_ ())
+

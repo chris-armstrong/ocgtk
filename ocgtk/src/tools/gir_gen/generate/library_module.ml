@@ -59,30 +59,8 @@ let generate_library_interface ~ctx =
   in
   let sorted_entities = List.sort String.compare all_entities in
 
-  (* Generate class type and class references (layer 2 wrapper classes) *)
-  if List.length sorted_entities > 0 then begin
-    Buffer.add_string buf "(** {1 Classes and Interfaces} *)\n\n";
-    List.iter
-      (fun name ->
-        let class_name_lower = Utils.ocaml_class_name name in
-        let module_ref = get_layer2_class_module_reference ~ctx name in
-        let g_module_name = "G" ^ module_ref in
-        Printf.bprintf buf "class type %s_t = %s.%s_t\n" class_name_lower
-          g_module_name class_name_lower)
-      sorted_entities;
-    Buffer.add_string buf "\n";
-    List.iter
-      (fun name ->
-        let class_name_lower = Utils.ocaml_class_name name in
-        let layer1_module = get_layer1_module_reference ~ctx name in
-        Printf.bprintf buf "class %s : %s.t -> %s_t\n" class_name_lower
-          layer1_module class_name_lower)
-      sorted_entities;
-    Buffer.add_string buf "\n"
-  end;
-
-  (* Generate Wrappers submodule with layer 1 module aliases *)
-  if List.length sorted_entities > 0 then begin
+  (* Generate Wrappers submodule BEFORE module aliases to avoid shadowing *)
+  if sorted_entities <> [] then begin
     Buffer.add_string buf "(** {1 Layer 1 Module Wrappers}\n";
     Buffer.add_string buf "    \n";
     Buffer.add_string buf
@@ -102,9 +80,21 @@ let generate_library_interface ~ctx =
     Buffer.add_string buf "end\n\n"
   end;
 
+  (* Generate module aliases for classes and interfaces *)
+  if sorted_entities <> [] then begin
+    Buffer.add_string buf "(** {1 Classes and Interfaces} *)\n\n";
+    List.iter
+      (fun name ->
+        let module_name = module_name_of_class name in
+        let g_module_name = Utils.layer2_module_name name in
+        Printf.bprintf buf "module %s = %s\n" module_name g_module_name)
+      sorted_entities;
+    Buffer.add_string buf "\n"
+  end;
+
   (* Generate enumeration and bitfield references *)
-  let has_enums = List.length ctx.enums > 0 in
-  let has_bitfields = List.length ctx.bitfields > 0 in
+  let has_enums = ctx.enums <> [] in
+  let has_bitfields = ctx.bitfields <> [] in
 
   if has_enums || has_bitfields then begin
     Buffer.add_string buf "(** {1 Enumerations and Bitfields} *)\n\n";
@@ -162,31 +152,8 @@ let generate_library_implementation ~ctx =
   in
   let sorted_entities = List.sort String.compare all_entities in
 
-  (* Generate class type and class references (layer 2 wrapper classes) *)
-  if List.length sorted_entities > 0 then begin
-    Buffer.add_string buf "(** Classes and Interfaces *)\n\n";
-    List.iter
-      (fun name ->
-        let class_name_lower = ocaml_class_name name in
-        let module_ref = get_layer2_class_module_reference ~ctx name in
-        let g_module_name = "G" ^ module_ref in
-        Printf.bprintf buf "class type %s_t = %s.%s_t\n" class_name_lower
-          g_module_name class_name_lower)
-      sorted_entities;
-    Buffer.add_string buf "\n";
-    List.iter
-      (fun name ->
-        let class_name_lower = ocaml_class_name name in
-        let module_ref = get_layer2_class_module_reference ~ctx name in
-        let g_module_name = "G" ^ module_ref in
-        Printf.bprintf buf "class %s = %s.%s\n" class_name_lower g_module_name
-          class_name_lower)
-      sorted_entities;
-    Buffer.add_string buf "\n"
-  end;
-
-  (* Generate Wrappers submodule *)
-  if List.length sorted_entities > 0 then begin
+  (* Generate Wrappers submodule BEFORE module aliases to avoid shadowing *)
+  if sorted_entities <> [] then begin
     Buffer.add_string buf "(** Layer 1 Module Wrappers *)\n";
     Buffer.add_string buf "module Wrappers = struct\n";
     List.iter
@@ -199,9 +166,21 @@ let generate_library_implementation ~ctx =
     Buffer.add_string buf "end\n\n"
   end;
 
+  (* Generate module aliases for classes and interfaces *)
+  if sorted_entities <> [] then begin
+    Buffer.add_string buf "(** Classes and Interfaces *)\n\n";
+    List.iter
+      (fun name ->
+        let module_name = module_name_of_class name in
+        let g_module_name = Utils.layer2_module_name name in
+        Printf.bprintf buf "module %s = %s\n" module_name g_module_name)
+      sorted_entities;
+    Buffer.add_string buf "\n"
+  end;
+
   (* Generate enumeration and bitfield references *)
-  let has_enums = List.length ctx.enums > 0 in
-  let has_bitfields = List.length ctx.bitfields > 0 in
+  let has_enums = ctx.enums <> [] in
+  let has_bitfields = ctx.bitfields <> [] in
 
   if has_enums || has_bitfields then begin
     Buffer.add_string buf "(** Enumerations and Bitfields *)\n\n";

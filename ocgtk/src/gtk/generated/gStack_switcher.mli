@@ -7,3 +7,4 @@ end
 
 class stack_switcher : Stack_switcher.t -> stack_switcher_t
 
+val new_ : unit -> stack_switcher_t

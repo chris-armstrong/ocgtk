@@ -32,3 +32,6 @@ class cell_area_box (obj : Cell_area_box.t) : cell_area_box_t = object (self)
     method as_cell_area_box = obj
 end
 
+let new_ () : cell_area_box_t =
+  new cell_area_box (Cell_area_box.new_ ())
+

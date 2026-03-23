@@ -12,3 +12,4 @@ end
 
 class action_bar : Action_bar.t -> action_bar_t
 
+val new_ : unit -> action_bar_t

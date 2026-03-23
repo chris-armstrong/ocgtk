@@ -34,3 +34,6 @@ class cell_renderer_accel (obj : Cell_renderer_accel.t) : cell_renderer_accel_t 
     method as_cell_renderer_accel = obj
 end
 
+let new_ () : cell_renderer_accel_t =
+  new cell_renderer_accel (Cell_renderer_accel.new_ ())
+

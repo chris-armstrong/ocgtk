@@ -26,3 +26,6 @@ class pixbuf_simple_anim (obj : Pixbuf_simple_anim.t) : pixbuf_simple_anim_t = o
     method as_pixbuf_simple_anim = obj
 end
 
+let new_ (width : int) (height : int) (rate : float) : pixbuf_simple_anim_t =
+  new pixbuf_simple_anim (Pixbuf_simple_anim.new_ width height rate)
+

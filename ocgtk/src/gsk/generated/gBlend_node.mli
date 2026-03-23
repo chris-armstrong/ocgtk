@@ -8,3 +8,4 @@ end
 
 class blend_node : Blend_node.t -> blend_node_t
 
+val new_ : GRender_node.render_node_t -> GRender_node.render_node_t -> Gsk_enums.blendmode -> blend_node_t

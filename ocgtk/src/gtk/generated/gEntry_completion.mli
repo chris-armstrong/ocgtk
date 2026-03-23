@@ -26,3 +26,5 @@ end
 
 class entry_completion : Entry_completion.t -> entry_completion_t
 
+val new_ : unit -> entry_completion_t
+val new_with_area : GCell_area_and__cell_area_context.cell_area_t -> entry_completion_t

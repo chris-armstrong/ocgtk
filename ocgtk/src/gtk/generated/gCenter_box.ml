@@ -63,3 +63,6 @@ class center_box (obj : Center_box.t) : center_box_t = object (self)
     method as_center_box = obj
 end
 
+let new_ () : center_box_t =
+  new center_box (Center_box.new_ ())
+

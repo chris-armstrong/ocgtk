@@ -1,94 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Top-level library module with direct references to all classes and enumerations *)
 
-(** Classes and Interfaces *)
-
-class type analysis_t = GAnalysis.analysis_t
-class type attr_class_t = GAttr_class.attr_class_t
-class type attr_color_t = GAttr_color.attr_color_t
-class type attr_float_t = GAttr_float.attr_float_t
-class type attr_font_desc_t = GAttr_font_desc.attr_font_desc_t
-class type attr_font_features_t = GAttr_font_features.attr_font_features_t
-class type attr_int_t = GAttr_int.attr_int_t
-class type attr_iterator_t = GAttr_iterator.attr_iterator_t
-class type attr_language_t = GAttr_language.attr_language_t
-class type attr_list_t = GAttr_list.attr_list_t
-class type attr_shape_t = GAttr_shape.attr_shape_t
-class type attr_size_t = GAttr_size.attr_size_t
-class type attr_string_t = GAttr_string.attr_string_t
-class type attribute_t = GAttribute.attribute_t
-class type color_t = GColor.color_t
-class type context_t = GContext_and__font_and__font_map_and__fontset.context_t
-class type coverage_t = GCoverage.coverage_t
-class type font_t = GContext_and__font_and__font_map_and__fontset.font_t
-class type font_description_t = GFont_description.font_description_t
-class type font_face_t = GFont_face_and__font_family.font_face_t
-class type font_family_t = GFont_face_and__font_family.font_family_t
-class type font_map_t = GContext_and__font_and__font_map_and__fontset.font_map_t
-class type font_metrics_t = GFont_metrics.font_metrics_t
-class type fontset_t = GContext_and__font_and__font_map_and__fontset.fontset_t
-class type fontset_simple_t = GFontset_simple.fontset_simple_t
-class type glyph_geometry_t = GGlyph_geometry.glyph_geometry_t
-class type glyph_info_t = GGlyph_info.glyph_info_t
-class type glyph_item_t = GGlyph_item.glyph_item_t
-class type glyph_item_iter_t = GGlyph_item_iter.glyph_item_iter_t
-class type glyph_string_t = GGlyph_string.glyph_string_t
-class type glyph_vis_attr_t = GGlyph_vis_attr.glyph_vis_attr_t
-class type item_t = GItem.item_t
-class type language_t = GLanguage.language_t
-class type layout_t = GLayout_and__layout_iter.layout_t
-class type layout_iter_t = GLayout_and__layout_iter.layout_iter_t
-class type layout_line_t = GLayout_line.layout_line_t
-class type log_attr_t = GLog_attr.log_attr_t
-class type matrix_t = GMatrix.matrix_t
-class type rectangle_t = GRectangle.rectangle_t
-class type renderer_t = GRenderer.renderer_t
-class type script_iter_t = GScript_iter.script_iter_t
-class type tab_array_t = GTab_array.tab_array_t
-
-class analysis = GAnalysis.analysis
-class attr_class = GAttr_class.attr_class
-class attr_color = GAttr_color.attr_color
-class attr_float = GAttr_float.attr_float
-class attr_font_desc = GAttr_font_desc.attr_font_desc
-class attr_font_features = GAttr_font_features.attr_font_features
-class attr_int = GAttr_int.attr_int
-class attr_iterator = GAttr_iterator.attr_iterator
-class attr_language = GAttr_language.attr_language
-class attr_list = GAttr_list.attr_list
-class attr_shape = GAttr_shape.attr_shape
-class attr_size = GAttr_size.attr_size
-class attr_string = GAttr_string.attr_string
-class attribute = GAttribute.attribute
-class color = GColor.color
-class context = GContext_and__font_and__font_map_and__fontset.context
-class coverage = GCoverage.coverage
-class font = GContext_and__font_and__font_map_and__fontset.font
-class font_description = GFont_description.font_description
-class font_face = GFont_face_and__font_family.font_face
-class font_family = GFont_face_and__font_family.font_family
-class font_map = GContext_and__font_and__font_map_and__fontset.font_map
-class font_metrics = GFont_metrics.font_metrics
-class fontset = GContext_and__font_and__font_map_and__fontset.fontset
-class fontset_simple = GFontset_simple.fontset_simple
-class glyph_geometry = GGlyph_geometry.glyph_geometry
-class glyph_info = GGlyph_info.glyph_info
-class glyph_item = GGlyph_item.glyph_item
-class glyph_item_iter = GGlyph_item_iter.glyph_item_iter
-class glyph_string = GGlyph_string.glyph_string
-class glyph_vis_attr = GGlyph_vis_attr.glyph_vis_attr
-class item = GItem.item
-class language = GLanguage.language
-class layout = GLayout_and__layout_iter.layout
-class layout_iter = GLayout_and__layout_iter.layout_iter
-class layout_line = GLayout_line.layout_line
-class log_attr = GLog_attr.log_attr
-class matrix = GMatrix.matrix
-class rectangle = GRectangle.rectangle
-class renderer = GRenderer.renderer
-class script_iter = GScript_iter.script_iter
-class tab_array = GTab_array.tab_array
-
 (** Layer 1 Module Wrappers *)
 module Wrappers = struct
   module Analysis = Analysis
@@ -134,6 +46,51 @@ module Wrappers = struct
   module Script_iter = Script_iter
   module Tab_array = Tab_array
 end
+
+(** Classes and Interfaces *)
+
+module Analysis = GAnalysis
+module Attr_class = GAttr_class
+module Attr_color = GAttr_color
+module Attr_float = GAttr_float
+module Attr_font_desc = GAttr_font_desc
+module Attr_font_features = GAttr_font_features
+module Attr_int = GAttr_int
+module Attr_iterator = GAttr_iterator
+module Attr_language = GAttr_language
+module Attr_list = GAttr_list
+module Attr_shape = GAttr_shape
+module Attr_size = GAttr_size
+module Attr_string = GAttr_string
+module Attribute = GAttribute
+module Color = GColor
+module Context = GContext
+module Coverage = GCoverage
+module Font = GFont
+module Font_description = GFont_description
+module Font_face = GFont_face
+module Font_family = GFont_family
+module Font_map = GFont_map
+module Font_metrics = GFont_metrics
+module Fontset = GFontset
+module Fontset_simple = GFontset_simple
+module Glyph_geometry = GGlyph_geometry
+module Glyph_info = GGlyph_info
+module Glyph_item = GGlyph_item
+module Glyph_item_iter = GGlyph_item_iter
+module Glyph_string = GGlyph_string
+module Glyph_vis_attr = GGlyph_vis_attr
+module Item = GItem
+module Language = GLanguage
+module Layout = GLayout
+module Layout_iter = GLayout_iter
+module Layout_line = GLayout_line
+module Log_attr = GLog_attr
+module Matrix = GMatrix
+module Rectangle = GRectangle
+module Renderer = GRenderer
+module Script_iter = GScript_iter
+module Tab_array = GTab_array
 
 (** Enumerations and Bitfields *)
 

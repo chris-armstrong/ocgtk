@@ -58,3 +58,6 @@ class vec2 (obj : Vec2.t) : vec2_t = object (self)
     method as_vec2 = obj
 end
 
+let alloc () : vec2_t =
+  new vec2 (Vec2.alloc ())
+

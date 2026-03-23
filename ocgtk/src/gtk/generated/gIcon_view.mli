@@ -1,9 +1,9 @@
 class type icon_view_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     inherit Gicon_view_signals.icon_view_signals
-    method create_drag_icon : Tree_path.t -> Ocgtk_gdk.Gdk.paintable_t option
-    method enable_model_drag_dest : Ocgtk_gdk.Gdk.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit
-    method enable_model_drag_source : Ocgtk_gdk.Gdk.modifiertype -> Ocgtk_gdk.Gdk.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit
+    method create_drag_icon : Tree_path.t -> Ocgtk_gdk.Gdk.Paintable.paintable_t option
+    method enable_model_drag_dest : Ocgtk_gdk.Gdk.Content_formats.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit
+    method enable_model_drag_source : Ocgtk_gdk.Gdk.modifiertype -> Ocgtk_gdk.Gdk.Content_formats.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit
     method get_activate_on_single_click : unit -> bool
     method get_column_spacing : unit -> int
     method get_columns : unit -> int
@@ -56,3 +56,6 @@ end
 
 class icon_view : Icon_view.t -> icon_view_t
 
+val new_ : unit -> icon_view_t
+val new_with_area : GCell_area_and__cell_area_context.cell_area_t -> icon_view_t
+val new_with_model : GTree_model.tree_model_t -> icon_view_t

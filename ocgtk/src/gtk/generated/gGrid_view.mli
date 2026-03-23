@@ -20,3 +20,4 @@ end
 
 class grid_view : Grid_view.t -> grid_view_t
 
+val new_ : GSelection_model.selection_model_t option -> GList_item_factory.list_item_factory_t option -> grid_view_t

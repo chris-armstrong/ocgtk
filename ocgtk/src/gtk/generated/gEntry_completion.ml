@@ -115,3 +115,10 @@ class entry_completion (obj : Entry_completion.t) : entry_completion_t = object 
     method as_entry_completion = obj
 end
 
+let new_ () : entry_completion_t =
+  new entry_completion (Entry_completion.new_ ())
+
+let new_with_area (area : GCell_area_and__cell_area_context.cell_area_t) : entry_completion_t =
+  let area = area#as_cell_area in
+  new entry_completion (Entry_completion.new_with_area area)
+

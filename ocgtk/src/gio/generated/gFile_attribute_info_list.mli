@@ -9,3 +9,4 @@ end
 
 class file_attribute_info_list : File_attribute_info_list.t -> file_attribute_info_list_t
 
+val new_ : unit -> file_attribute_info_list_t

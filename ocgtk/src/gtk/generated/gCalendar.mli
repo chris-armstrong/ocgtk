@@ -22,3 +22,4 @@ end
 
 class calendar : Calendar.t -> calendar_t
 
+val new_ : unit -> calendar_t

@@ -338,3 +338,6 @@ class print_settings (obj : Print_settings.t) : print_settings_t = object (self)
     method as_print_settings = obj
 end
 
+let new_ () : print_settings_t =
+  new print_settings (Print_settings.new_ ())
+

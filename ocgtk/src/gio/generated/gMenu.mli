@@ -20,3 +20,4 @@ end
 
 class menu : Menu.t -> menu_t
 
+val new_ : unit -> menu_t

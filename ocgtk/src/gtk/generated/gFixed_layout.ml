@@ -10,3 +10,6 @@ class fixed_layout (obj : Fixed_layout.t) : fixed_layout_t = object (self)
     method as_fixed_layout = obj
 end
 
+let new_ () : fixed_layout_t =
+  new fixed_layout (Fixed_layout.new_ ())
+

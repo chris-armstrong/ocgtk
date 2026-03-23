@@ -130,3 +130,9 @@ and quaternion : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__tria
 and ray : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Ray.t -> ray_t
 
 and triangle : Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Triangle.t -> triangle_t
+val alloc : unit -> euler_t
+val alloc : unit -> matrix_t
+val alloc : unit -> quaternion_t
+val alloc : unit -> ray_t
+val alloc : unit -> plane_t
+val alloc : unit -> triangle_t

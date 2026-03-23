@@ -172,3 +172,6 @@ class flow_box (obj : Flow_box.t) : flow_box_t = object (self)
     method as_flow_box = obj
 end
 
+let new_ () : flow_box_t =
+  new flow_box (Flow_box.new_ ())
+

@@ -9,3 +9,4 @@ end
 
 class event_controller_scroll : Event_controller_scroll.t -> event_controller_scroll_t
 
+val new_ : Gtk_enums.eventcontrollerscrollflags -> event_controller_scroll_t

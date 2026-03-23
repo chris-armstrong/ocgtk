@@ -17,3 +17,4 @@ end
 
 class list_box_row : List_box_row.t -> list_box_row_t
 
+val new_ : unit -> list_box_row_t

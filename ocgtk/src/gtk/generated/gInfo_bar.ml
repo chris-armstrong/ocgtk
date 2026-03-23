@@ -88,3 +88,6 @@ class info_bar (obj : Info_bar.t) : info_bar_t = object (self)
     method as_info_bar = obj
 end
 
+let new_ () : info_bar_t =
+  new info_bar (Info_bar.new_ ())
+

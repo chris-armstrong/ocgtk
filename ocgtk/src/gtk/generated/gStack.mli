@@ -28,3 +28,4 @@ end
 
 class stack : Stack.t -> stack_t
 
+val new_ : unit -> stack_t

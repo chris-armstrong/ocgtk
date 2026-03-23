@@ -1,10 +1,10 @@
 class type recent_info_t = object
-    method create_app_info : string option -> (Ocgtk_gio.Gio.app_info_t option, GError.t) result
+    method create_app_info : string option -> (Ocgtk_gio.Gio.App_info.app_info_t option, GError.t) result
     method exists : unit -> bool
     method get_age : unit -> int
     method get_description : unit -> string
     method get_display_name : unit -> string
-    method get_gicon : unit -> Ocgtk_gio.Gio.icon_t option
+    method get_gicon : unit -> Ocgtk_gio.Gio.Icon.icon_t option
     method get_mime_type : unit -> string
     method get_private_hint : unit -> bool
     method get_short_name : unit -> string
@@ -23,9 +23,9 @@ end
 (* High-level class for RecentInfo *)
 class recent_info (obj : Recent_info.t) : recent_info_t = object (self)
 
-  method create_app_info : string option -> (Ocgtk_gio.Gio.app_info_t option, GError.t) result =
+  method create_app_info : string option -> (Ocgtk_gio.Gio.App_info.app_info_t option, GError.t) result =
     fun app_name ->
-      Result.map (fun ret -> Option.map (fun ret -> new Ocgtk_gio.Gio.app_info ret) ret)(Recent_info.create_app_info obj app_name)
+      Result.map (fun ret -> Option.map (fun ret -> new Ocgtk_gio.Gio.App_info.app_info ret) ret)(Recent_info.create_app_info obj app_name)
 
   method exists : unit -> bool =
     fun () ->
@@ -43,9 +43,9 @@ class recent_info (obj : Recent_info.t) : recent_info_t = object (self)
     fun () ->
       (Recent_info.get_display_name obj)
 
-  method get_gicon : unit -> Ocgtk_gio.Gio.icon_t option =
+  method get_gicon : unit -> Ocgtk_gio.Gio.Icon.icon_t option =
     fun () ->
-      Option.map (fun ret -> new Ocgtk_gio.Gio.icon ret) (Recent_info.get_gicon obj)
+      Option.map (fun ret -> new Ocgtk_gio.Gio.Icon.icon ret) (Recent_info.get_gicon obj)
 
   method get_mime_type : unit -> string =
     fun () ->

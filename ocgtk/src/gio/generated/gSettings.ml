@@ -160,3 +160,21 @@ class settings (obj : Settings.t) : settings_t = object (self)
     method as_settings = obj
 end
 
+let new_ (schema_id : string) : settings_t =
+  new settings (Settings.new_ schema_id)
+
+let new_full (schema : Settings_schema.t) (backend : GSettings_backend.settings_backend_t option) (path : string option) : settings_t =
+  let backend = Option.map (fun c -> c#as_settings_backend) backend in
+  new settings (Settings.new_full schema backend path)
+
+let new_with_backend (schema_id : string) (backend : GSettings_backend.settings_backend_t) : settings_t =
+  let backend = backend#as_settings_backend in
+  new settings (Settings.new_with_backend schema_id backend)
+
+let new_with_backend_and_path (schema_id : string) (backend : GSettings_backend.settings_backend_t) (path : string) : settings_t =
+  let backend = backend#as_settings_backend in
+  new settings (Settings.new_with_backend_and_path schema_id backend path)
+
+let new_with_path (schema_id : string) (path : string) : settings_t =
+  new settings (Settings.new_with_path schema_id path)
+

@@ -114,3 +114,6 @@ class socket_client (obj : Socket_client.t) : socket_client_t = object (self)
     method as_socket_client = obj
 end
 
+let new_ () : socket_client_t =
+  new socket_client (Socket_client.new_ ())
+

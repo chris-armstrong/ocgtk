@@ -14,3 +14,4 @@ end
 
 class revealer : Revealer.t -> revealer_t
 
+val new_ : unit -> revealer_t

@@ -15,3 +15,8 @@ class converter_input_stream (obj : Converter_input_stream.t) : converter_input_
     method as_converter_input_stream = obj
 end
 
+let new_ (base_stream : GInput_stream.input_stream_t) (converter : GConverter.converter_t) : converter_input_stream_t =
+  let base_stream = base_stream#as_input_stream in
+  let converter = converter#as_converter in
+  new converter_input_stream (Converter_input_stream.new_ base_stream converter)
+

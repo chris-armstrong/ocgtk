@@ -14,3 +14,6 @@ class gesture_drag (obj : Gesture_drag.t) : gesture_drag_t = object (self)
     method as_gesture_drag = obj
 end
 
+let new_ () : gesture_drag_t =
+  new gesture_drag (Gesture_drag.new_ ())
+

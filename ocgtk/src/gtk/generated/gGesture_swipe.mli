@@ -6,3 +6,4 @@ end
 
 class gesture_swipe : Gesture_swipe.t -> gesture_swipe_t
 
+val new_ : unit -> gesture_swipe_t

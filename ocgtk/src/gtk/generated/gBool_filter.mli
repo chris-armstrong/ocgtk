@@ -9,3 +9,4 @@ end
 
 class bool_filter : Bool_filter.t -> bool_filter_t
 
+val new_ : GExpression.expression_t option -> bool_filter_t
