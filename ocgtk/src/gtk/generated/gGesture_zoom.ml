@@ -9,7 +9,7 @@ end
 
 (* High-level class for GestureZoom *)
 class gesture_zoom (obj : Gesture_zoom.t) : gesture_zoom_t = object (self)
-  inherit GGesture.gesture (Obj.magic obj : Gesture.t)
+  inherit GGesture.gesture (obj :> Gesture.t)
   inherit Ggesture_zoom_signals.gesture_zoom_signals obj
 
   method get_scale_delta : unit -> float =

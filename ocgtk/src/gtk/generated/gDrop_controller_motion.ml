@@ -11,7 +11,7 @@ end
 
 (* High-level class for DropControllerMotion *)
 class drop_controller_motion (obj : Drop_controller_motion.t) : drop_controller_motion_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t)
   inherit Gdrop_controller_motion_signals.drop_controller_motion_signals obj
 
   method contains_pointer : unit -> bool =

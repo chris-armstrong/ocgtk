@@ -5,7 +5,7 @@ end
 
 (* High-level class for ColumnViewCell *)
 class column_view_cell (obj : Column_view_cell.t) : column_view_cell_t = object (self)
-  inherit GList_item.list_item (Obj.magic obj : List_item.t)
+  inherit GList_item.list_item (obj :> List_item.t)
 
     method as_column_view_cell = obj
 end

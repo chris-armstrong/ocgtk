@@ -19,7 +19,7 @@ end
 
 (* High-level class for AppChooserButton *)
 class app_chooser_button (obj : App_chooser_button.t) : app_chooser_button_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gapp_chooser_button_signals.app_chooser_button_signals obj
 
   method append_custom_item : string -> string -> Ocgtk_gio.Gio.Icon.icon_t -> unit =

@@ -6,7 +6,7 @@ end
 
 (* High-level class for SignalAction *)
 class signal_action (obj : Signal_action.t) : signal_action_t = object (self)
-  inherit GShortcut_action.shortcut_action (Obj.magic obj : Shortcut_action.t)
+  inherit GShortcut_action.shortcut_action (obj :> Shortcut_action.t)
 
   method get_signal_name : unit -> string =
     fun () ->

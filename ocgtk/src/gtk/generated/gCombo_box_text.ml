@@ -14,7 +14,7 @@ end
 
 (* High-level class for ComboBoxText *)
 class combo_box_text (obj : Combo_box_text.t) : combo_box_text_t = object (self)
-  inherit GCombo_box.combo_box (Obj.magic obj : Combo_box.t)
+  inherit GCombo_box.combo_box (obj :> Combo_box.t)
 
   method append : string option -> string -> unit =
     fun id text ->

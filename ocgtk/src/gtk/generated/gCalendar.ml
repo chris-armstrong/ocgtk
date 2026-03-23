@@ -24,7 +24,7 @@ end
 
 (* High-level class for Calendar *)
 class calendar (obj : Calendar.t) : calendar_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gcalendar_signals.calendar_signals obj
 
   method clear_marks : unit -> unit =

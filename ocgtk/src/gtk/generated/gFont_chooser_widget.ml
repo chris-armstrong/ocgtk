@@ -6,7 +6,7 @@ end
 
 (* High-level class for FontChooserWidget *)
 class font_chooser_widget (obj : Font_chooser_widget.t) : font_chooser_widget_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
 
   method tweak_action = new Ocgtk_gio.Gio.Action.action (Font_chooser_widget.get_tweak_action obj)
 

@@ -157,7 +157,7 @@ end
 
 
 and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) : tree_view_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gtree_view_signals.tree_view_signals obj
 
   method append_column : GTree_view_column.tree_view_column_t -> int =

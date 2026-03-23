@@ -22,7 +22,7 @@ end
 
 (* High-level class for FontDialogButton *)
 class font_dialog_button (obj : Font_dialog_button.t) : font_dialog_button_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gfont_dialog_button_signals.font_dialog_button_signals obj
 
   method get_dialog : unit -> GFont_dialog.font_dialog_t option =

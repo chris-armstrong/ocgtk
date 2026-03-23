@@ -8,7 +8,7 @@ end
 
 (* High-level class for MaskNode *)
 class mask_node (obj : Mask_node.t) : mask_node_t = object (self)
-  inherit GRender_node.render_node (Obj.magic obj : Render_node.t)
+  inherit GRender_node.render_node (obj :> Render_node.t)
 
   method get_mask : unit -> GRender_node.render_node_t =
     fun () ->

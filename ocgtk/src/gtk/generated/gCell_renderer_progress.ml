@@ -17,7 +17,7 @@ end
 
 (* High-level class for CellRendererProgress *)
 class cell_renderer_progress (obj : Cell_renderer_progress.t) : cell_renderer_progress_t = object (self)
-  inherit GCell_renderer.cell_renderer (Obj.magic obj : Cell_renderer.t)
+  inherit GCell_renderer.cell_renderer (obj :> Cell_renderer.t)
 
   method inverted = Cell_renderer_progress.get_inverted obj
   method set_inverted v =  Cell_renderer_progress.set_inverted obj v

@@ -8,7 +8,7 @@ end
 
 (* High-level class for EmojiChooser *)
 class emoji_chooser (obj : Emoji_chooser.t) : emoji_chooser_t = object (self)
-  inherit GPopover.popover (Obj.magic obj : Popover.t)
+  inherit GPopover.popover (obj :> Popover.t)
   inherit Gemoji_chooser_signals.emoji_chooser_signals obj
 
     method as_emoji_chooser = obj

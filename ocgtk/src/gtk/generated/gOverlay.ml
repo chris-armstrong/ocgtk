@@ -16,7 +16,7 @@ end
 
 (* High-level class for Overlay *)
 class overlay (obj : Overlay.t) : overlay_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Goverlay_signals.overlay_signals obj
 
   method add_overlay : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit =

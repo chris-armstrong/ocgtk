@@ -31,7 +31,7 @@ end
 
 (* High-level class for Assistant *)
 class assistant (obj : Assistant.t) : assistant_t = object (self)
-  inherit GApplication_and__window_and__window_group.window (Obj.magic obj : Application_and__window_and__window_group.Window.t)
+  inherit GApplication_and__window_and__window_group.window (obj :> Application_and__window_and__window_group.Window.t)
   inherit Gassistant_signals.assistant_signals obj
 
   method add_action_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit =

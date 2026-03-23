@@ -22,7 +22,7 @@ end
 
 (* High-level class for GridView *)
 class grid_view (obj : Grid_view.t) : grid_view_t = object (self)
-  inherit GList_base.list_base (Obj.magic obj : List_base.t)
+  inherit GList_base.list_base (obj :> List_base.t)
   inherit Ggrid_view_signals.grid_view_signals obj
 
   method get_enable_rubberband : unit -> bool =

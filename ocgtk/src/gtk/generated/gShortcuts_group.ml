@@ -15,7 +15,7 @@ end
 
 (* High-level class for ShortcutsGroup *)
 class shortcuts_group (obj : Shortcuts_group.t) : shortcuts_group_t = object (self)
-  inherit GBox.box (Obj.magic obj : Box.t)
+  inherit GBox.box (obj :> Box.t)
 
   method add_shortcut : GShortcuts_shortcut.shortcuts_shortcut_t -> unit =
     fun shortcut ->

@@ -7,7 +7,7 @@ end
 
 (* High-level class for IMMulticontext *)
 class im_multicontext (obj : Im_multicontext.t) : im_multicontext_t = object (self)
-  inherit GIm_context.im_context (Obj.magic obj : Im_context.t)
+  inherit GIm_context.im_context (obj :> Im_context.t)
 
   method get_context_id : unit -> string =
     fun () ->

@@ -31,7 +31,7 @@ end
 
 (* High-level class for ComboBox *)
 class combo_box (obj : Combo_box.t) : combo_box_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gcombo_box_signals.combo_box_signals obj
 
   method get_active : unit -> int =

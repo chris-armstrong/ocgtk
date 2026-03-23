@@ -16,7 +16,7 @@ end
 
 (* High-level class for Scale *)
 class scale (obj : Scale.t) : scale_t = object (self)
-  inherit GRange.range (Obj.magic obj : Range.t)
+  inherit GRange.range (obj :> Range.t)
 
   method add_mark : float -> Gtk_enums.positiontype -> string option -> unit =
     fun value position markup ->

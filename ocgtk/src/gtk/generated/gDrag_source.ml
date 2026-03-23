@@ -15,7 +15,7 @@ end
 
 (* High-level class for DragSource *)
 class drag_source (obj : Drag_source.t) : drag_source_t = object (self)
-  inherit GGesture_single.gesture_single (Obj.magic obj : Gesture_single.t)
+  inherit GGesture_single.gesture_single (obj :> Gesture_single.t)
   inherit Gdrag_source_signals.drag_source_signals obj
 
   method drag_cancel : unit -> unit =

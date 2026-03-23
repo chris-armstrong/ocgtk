@@ -13,7 +13,7 @@ end
 
 (* High-level class for GestureSingle *)
 class gesture_single (obj : Gesture_single.t) : gesture_single_t = object (self)
-  inherit GGesture.gesture (Obj.magic obj : Gesture.t)
+  inherit GGesture.gesture (obj :> Gesture.t)
 
   method get_button : unit -> int =
     fun () ->

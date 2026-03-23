@@ -5,7 +5,7 @@ end
 
 (* High-level class for NothingAction *)
 class nothing_action (obj : Nothing_action.t) : nothing_action_t = object (self)
-  inherit GShortcut_action.shortcut_action (Obj.magic obj : Shortcut_action.t)
+  inherit GShortcut_action.shortcut_action (obj :> Shortcut_action.t)
 
     method as_nothing_action = obj
 end

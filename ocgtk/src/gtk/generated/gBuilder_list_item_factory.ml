@@ -7,7 +7,7 @@ end
 
 (* High-level class for BuilderListItemFactory *)
 class builder_list_item_factory (obj : Builder_list_item_factory.t) : builder_list_item_factory_t = object (self)
-  inherit GList_item_factory.list_item_factory (Obj.magic obj : List_item_factory.t)
+  inherit GList_item_factory.list_item_factory (obj :> List_item_factory.t)
 
   method get_resource : unit -> string option =
     fun () ->

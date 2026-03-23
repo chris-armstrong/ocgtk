@@ -6,7 +6,7 @@ end
 
 (* High-level class for SubsurfaceNode *)
 class subsurface_node (obj : Subsurface_node.t) : subsurface_node_t = object (self)
-  inherit GRender_node.render_node (Obj.magic obj : Render_node.t)
+  inherit GRender_node.render_node (obj :> Render_node.t)
 
   method get_child : unit -> GRender_node.render_node_t =
     fun () ->

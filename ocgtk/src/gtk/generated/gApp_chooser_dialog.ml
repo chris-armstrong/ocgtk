@@ -9,7 +9,7 @@ end
 
 (* High-level class for AppChooserDialog *)
 class app_chooser_dialog (obj : App_chooser_dialog.t) : app_chooser_dialog_t = object (self)
-  inherit GDialog.dialog (Obj.magic obj : Dialog.t)
+  inherit GDialog.dialog (obj :> Dialog.t)
 
   method get_heading : unit -> string option =
     fun () ->

@@ -7,7 +7,7 @@ end
 
 (* High-level class for UnixFDMessage *)
 class unix_fd_message (obj : Unix_fd_message.t) : unix_fd_message_t = object (self)
-  inherit GSocket_control_message.socket_control_message (Obj.magic obj : Socket_control_message.t)
+  inherit GSocket_control_message.socket_control_message (obj :> Socket_control_message.t)
 
   method append_fd : int -> (bool, GError.t) result =
     fun fd ->

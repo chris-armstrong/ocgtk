@@ -26,7 +26,7 @@ end
 
 (* High-level class for ShortcutsShortcut *)
 class shortcuts_shortcut (obj : Shortcuts_shortcut.t) : shortcuts_shortcut_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
 
   method accel_size_group = new GSize_group.size_group (Shortcuts_shortcut.get_accel_size_group obj)
   method set_accel_size_group : GSize_group.size_group_t -> unit  = fun v ->  Shortcuts_shortcut.set_accel_size_group obj v#as_size_group

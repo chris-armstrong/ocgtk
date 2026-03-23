@@ -10,7 +10,7 @@ end
 
 (* High-level class for RadialGradientNode *)
 class radial_gradient_node (obj : Radial_gradient_node.t) : radial_gradient_node_t = object (self)
-  inherit GRender_node.render_node (Obj.magic obj : Render_node.t)
+  inherit GRender_node.render_node (obj :> Render_node.t)
 
   method get_center : unit -> Ocgtk_graphene.Graphene.Point.point_t =
     fun () ->

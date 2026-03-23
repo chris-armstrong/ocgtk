@@ -6,7 +6,7 @@ end
 
 (* High-level class for TextureNode *)
 class texture_node (obj : Texture_node.t) : texture_node_t = object (self)
-  inherit GRender_node.render_node (Obj.magic obj : Render_node.t)
+  inherit GRender_node.render_node (obj :> Render_node.t)
 
   method get_texture : unit -> Ocgtk_gdk.Gdk.Texture.texture_t =
     fun () ->

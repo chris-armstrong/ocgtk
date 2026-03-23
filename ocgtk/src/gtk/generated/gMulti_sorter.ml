@@ -8,7 +8,7 @@ end
 
 (* High-level class for MultiSorter *)
 class multi_sorter (obj : Multi_sorter.t) : multi_sorter_t = object (self)
-  inherit GSorter.sorter (Obj.magic obj : Sorter.t)
+  inherit GSorter.sorter (obj :> Sorter.t)
 
   method append : GSorter.sorter_t -> unit =
     fun sorter ->

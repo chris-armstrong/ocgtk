@@ -10,7 +10,7 @@ end
 
 (* High-level class for TextNode *)
 class text_node (obj : Text_node.t) : text_node_t = object (self)
-  inherit GRender_node.render_node (Obj.magic obj : Render_node.t)
+  inherit GRender_node.render_node (obj :> Render_node.t)
 
   method get_color : unit -> Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t =
     fun () ->

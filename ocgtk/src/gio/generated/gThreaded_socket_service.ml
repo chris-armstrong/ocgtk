@@ -9,7 +9,7 @@ end
 
 (* High-level class for ThreadedSocketService *)
 class threaded_socket_service (obj : Threaded_socket_service.t) : threaded_socket_service_t = object (self)
-  inherit GSocket_service.socket_service (Obj.magic obj : Socket_service.t)
+  inherit GSocket_service.socket_service (obj :> Socket_service.t)
   inherit Gthreaded_socket_service_signals.threaded_socket_service_signals obj
 
   method max_threads = Threaded_socket_service.get_max_threads obj

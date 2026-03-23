@@ -9,7 +9,7 @@ end
 
 (* High-level class for UnixConnection *)
 class unix_connection (obj : Unix_connection.t) : unix_connection_t = object (self)
-  inherit GSocket_and__socket_connection.socket_connection (Obj.magic obj : Socket_and__socket_connection.Socket_connection.t)
+  inherit GSocket_and__socket_connection.socket_connection (obj :> Socket_and__socket_connection.Socket_connection.t)
 
   method receive_credentials : GCancellable.cancellable_t option -> (GCredentials.credentials_t, GError.t) result =
     fun cancellable ->

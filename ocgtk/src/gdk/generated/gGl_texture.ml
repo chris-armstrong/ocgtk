@@ -6,7 +6,7 @@ end
 
 (* High-level class for GLTexture *)
 class gl_texture (obj : Gl_texture.t) : gl_texture_t = object (self)
-  inherit GTexture.texture (Obj.magic obj : Texture.t)
+  inherit GTexture.texture (obj :> Texture.t)
 
   method release : unit -> unit =
     fun () ->

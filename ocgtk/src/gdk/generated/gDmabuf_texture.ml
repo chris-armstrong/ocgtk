@@ -5,7 +5,7 @@ end
 
 (* High-level class for DmabufTexture *)
 class dmabuf_texture (obj : Dmabuf_texture.t) : dmabuf_texture_t = object (self)
-  inherit GTexture.texture (Obj.magic obj : Texture.t)
+  inherit GTexture.texture (obj :> Texture.t)
 
     method as_dmabuf_texture = obj
 end

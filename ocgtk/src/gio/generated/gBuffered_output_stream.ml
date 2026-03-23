@@ -7,7 +7,7 @@ end
 
 (* High-level class for BufferedOutputStream *)
 class buffered_output_stream (obj : Buffered_output_stream.t) : buffered_output_stream_t = object (self)
-  inherit GFilter_output_stream.filter_output_stream (Obj.magic obj : Filter_output_stream.t)
+  inherit GFilter_output_stream.filter_output_stream (obj :> Filter_output_stream.t)
 
   method get_auto_grow : unit -> bool =
     fun () ->

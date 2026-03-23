@@ -100,7 +100,7 @@ end
 
 (* High-level class for CellRendererText *)
 class cell_renderer_text (obj : Cell_renderer_text.t) : cell_renderer_text_t = object (self)
-  inherit GCell_renderer.cell_renderer (Obj.magic obj : Cell_renderer.t)
+  inherit GCell_renderer.cell_renderer (obj :> Cell_renderer.t)
   inherit Gcell_renderer_text_signals.cell_renderer_text_signals obj
 
   method set_fixed_height_from_font : int -> unit =

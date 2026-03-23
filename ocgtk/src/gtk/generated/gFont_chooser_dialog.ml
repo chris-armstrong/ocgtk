@@ -5,7 +5,7 @@ end
 
 (* High-level class for FontChooserDialog *)
 class font_chooser_dialog (obj : Font_chooser_dialog.t) : font_chooser_dialog_t = object (self)
-  inherit GDialog.dialog (Obj.magic obj : Dialog.t)
+  inherit GDialog.dialog (obj :> Dialog.t)
 
     method as_font_chooser_dialog = obj
 end

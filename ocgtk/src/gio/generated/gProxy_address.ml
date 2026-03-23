@@ -11,7 +11,7 @@ end
 
 (* High-level class for ProxyAddress *)
 class proxy_address (obj : Proxy_address.t) : proxy_address_t = object (self)
-  inherit GInet_socket_address.inet_socket_address (Obj.magic obj : Inet_socket_address.t)
+  inherit GInet_socket_address.inet_socket_address (obj :> Inet_socket_address.t)
 
   method get_destination_hostname : unit -> string =
     fun () ->

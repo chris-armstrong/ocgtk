@@ -8,7 +8,7 @@ end
 
 (* High-level class for ColumnViewSorter *)
 class column_view_sorter (obj : Column_view_sorter.t) : column_view_sorter_t = object (self)
-  inherit GSorter.sorter (Obj.magic obj : Sorter.t)
+  inherit GSorter.sorter (obj :> Sorter.t)
 
   method get_n_sort_columns : unit -> int =
     fun () ->

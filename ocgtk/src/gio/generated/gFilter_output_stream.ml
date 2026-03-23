@@ -8,7 +8,7 @@ end
 
 (* High-level class for FilterOutputStream *)
 class filter_output_stream (obj : Filter_output_stream.t) : filter_output_stream_t = object (self)
-  inherit GOutput_stream.output_stream (Obj.magic obj : Output_stream.t)
+  inherit GOutput_stream.output_stream (obj :> Output_stream.t)
 
   method get_base_stream : unit -> GOutput_stream.output_stream_t =
     fun () ->

@@ -11,7 +11,7 @@ end
 
 (* High-level class for StringSorter *)
 class string_sorter (obj : String_sorter.t) : string_sorter_t = object (self)
-  inherit GSorter.sorter (Obj.magic obj : Sorter.t)
+  inherit GSorter.sorter (obj :> Sorter.t)
 
   method get_collation : unit -> Gtk_enums.collation =
     fun () ->

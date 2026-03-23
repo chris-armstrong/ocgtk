@@ -32,7 +32,7 @@ end
 
 (* High-level class for MenuButton *)
 class menu_button (obj : Menu_button.t) : menu_button_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gmenu_button_signals.menu_button_signals obj
 
   method get_active : unit -> bool =

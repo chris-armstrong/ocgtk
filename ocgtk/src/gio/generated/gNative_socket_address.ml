@@ -5,7 +5,7 @@ end
 
 (* High-level class for NativeSocketAddress *)
 class native_socket_address (obj : Native_socket_address.t) : native_socket_address_t = object (self)
-  inherit GSocket_address.socket_address (Obj.magic obj : Socket_address.t)
+  inherit GSocket_address.socket_address (obj :> Socket_address.t)
 
     method as_native_socket_address = obj
 end

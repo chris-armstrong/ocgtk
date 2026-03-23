@@ -13,7 +13,7 @@ end
 
 (* High-level class for SocketService *)
 class socket_service (obj : Socket_service.t) : socket_service_t = object (self)
-  inherit GSocket_listener.socket_listener (Obj.magic obj : Socket_listener.t)
+  inherit GSocket_listener.socket_listener (obj :> Socket_listener.t)
   inherit Gsocket_service_signals.socket_service_signals obj
 
   method is_active : unit -> bool =

@@ -8,7 +8,7 @@ end
 
 (* High-level class for ColorMatrixNode *)
 class color_matrix_node (obj : Color_matrix_node.t) : color_matrix_node_t = object (self)
-  inherit GRender_node.render_node (Obj.magic obj : Render_node.t)
+  inherit GRender_node.render_node (obj :> Render_node.t)
 
   method get_child : unit -> GRender_node.render_node_t =
     fun () ->

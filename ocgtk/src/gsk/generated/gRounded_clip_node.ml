@@ -7,7 +7,7 @@ end
 
 (* High-level class for RoundedClipNode *)
 class rounded_clip_node (obj : Rounded_clip_node.t) : rounded_clip_node_t = object (self)
-  inherit GRender_node.render_node (Obj.magic obj : Render_node.t)
+  inherit GRender_node.render_node (obj :> Render_node.t)
 
   method get_child : unit -> GRender_node.render_node_t =
     fun () ->

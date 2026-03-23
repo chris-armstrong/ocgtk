@@ -12,7 +12,7 @@ end
 
 (* High-level class for LinkButton *)
 class link_button (obj : Link_button.t) : link_button_t = object (self)
-  inherit GButton.button (Obj.magic obj : Button.t)
+  inherit GButton.button (obj :> Button.t)
   inherit Glink_button_signals.link_button_signals obj
 
   method get_uri : unit -> string =

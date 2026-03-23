@@ -5,7 +5,7 @@ end
 
 (* High-level class for ClosureExpression *)
 class closure_expression (obj : Closure_expression.t) : closure_expression_t = object (self)
-  inherit GExpression.expression (Obj.magic obj : Expression.t)
+  inherit GExpression.expression (obj :> Expression.t)
 
     method as_closure_expression = obj
 end

@@ -36,7 +36,7 @@ end
 
 (* High-level class for ListBox *)
 class list_box (obj : List_box.t) : list_box_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Glist_box_signals.list_box_signals obj
 
   method append : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit =

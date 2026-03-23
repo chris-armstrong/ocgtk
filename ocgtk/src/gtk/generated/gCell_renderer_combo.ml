@@ -12,7 +12,7 @@ end
 
 (* High-level class for CellRendererCombo *)
 class cell_renderer_combo (obj : Cell_renderer_combo.t) : cell_renderer_combo_t = object (self)
-  inherit GCell_renderer_text.cell_renderer_text (Obj.magic obj : Cell_renderer_text.t)
+  inherit GCell_renderer_text.cell_renderer_text (obj :> Cell_renderer_text.t)
   inherit Gcell_renderer_combo_signals.cell_renderer_combo_signals obj
 
   method has_entry = Cell_renderer_combo.get_has_entry obj

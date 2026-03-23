@@ -8,7 +8,7 @@ end
 
 (* High-level class for GestureClick *)
 class gesture_click (obj : Gesture_click.t) : gesture_click_t = object (self)
-  inherit GGesture_single.gesture_single (Obj.magic obj : Gesture_single.t)
+  inherit GGesture_single.gesture_single (obj :> Gesture_single.t)
   inherit Ggesture_click_signals.gesture_click_signals obj
 
     method as_gesture_click = obj
