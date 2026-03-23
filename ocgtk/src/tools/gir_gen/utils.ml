@@ -354,6 +354,22 @@ let ocaml_bitfield_name (bitfield : Types.gir_bitfield) =
 let ocaml_enum_name (enum : Types.gir_enum) =
   String.lowercase_ascii enum.enum_name
 
+(** Layer 2 module name for a class: "G" ^ Module_name.
+    e.g., "Button" -> "GButton", "Window" -> "GWindow" *)
+let layer2_module_name class_name = "G" ^ module_name_of_class class_name
+
+(** Layer 2 module filename (lowercase first char): "g" ^ Module_name.
+    e.g., "Button" -> "gButton", "Window" -> "gWindow" *)
+let layer2_module_filename class_name = "g" ^ module_name_of_class class_name
+
+(** Class type name with _t suffix from a class name.
+    e.g., "Button" -> "button_t", "TextView" -> "text_view_t" *)
+let class_type_name class_name = ocaml_class_name class_name ^ "_t"
+
+(** Layer 1 accessor method name.
+    e.g., "Button" -> "as_button", "TextView" -> "as_text_view" *)
+let accessor_name class_name = "as_" ^ ocaml_class_name class_name
+
 let name_to_parts ~(ctx : Types.generation_context) name =
   match Re.Str.split (Re.Str.regexp_string ".") name with
   | [ ns; name ] -> (ns, name)

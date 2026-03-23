@@ -236,18 +236,15 @@ let generate_ml_interfaces ~ctx ~output_dir ~generated_modules ~parent_chain
 let generate_high_level_class ~ctx ~output_dir ~generated_modules entity
     parent_chain =
   let generate_ () =
-    let module_name =
-      Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name
-    in
     let g_file =
       Filename.concat
         (generated_output_dir output_dir)
-        (sprintf "g%s.ml" module_name)
+        (Gir_gen_lib.Utils.layer2_module_filename entity.Gir_gen_lib.Types.name ^ ".ml")
     in
     let g_sig_file =
       Filename.concat
         (generated_output_dir output_dir)
-        (sprintf "g%s.mli" module_name)
+        (Gir_gen_lib.Utils.layer2_module_filename entity.Gir_gen_lib.Types.name ^ ".mli")
     in
 
     (* Check if we're generating to src directory *)
@@ -273,7 +270,7 @@ let generate_high_level_class ~ctx ~output_dir ~generated_modules entity
            ~properties:entity.Gir_gen_lib.Types.properties
            ~signals:entity.Gir_gen_lib.Types.signals
            ~constructors:entity.Gir_gen_lib.Types.constructors);
-    generated_modules := sprintf "g%s" module_name :: !generated_modules;
+    generated_modules := Gir_gen_lib.Utils.layer2_module_filename entity.Gir_gen_lib.Types.name :: !generated_modules;
 
     (* Always overwrite signature files too *)
     let g_sig_exists = output_under_src && Sys.file_exists g_sig_file in
@@ -398,12 +395,12 @@ let generate_combined_class_files ~ctx ~output_dir ~generated_modules
   let g_file =
     Filename.concat
       (generated_output_dir output_dir)
-      ("g" ^ Gir_gen_lib.Utils.module_name_of_class combined_name ^ ".ml")
+      (Gir_gen_lib.Utils.layer2_module_filename combined_name ^ ".ml")
   in
   let g_sig_file =
     Filename.concat
       (generated_output_dir output_dir)
-      ("g" ^ Gir_gen_lib.Utils.module_name_of_class combined_name ^ ".mli")
+      (Gir_gen_lib.Utils.layer2_module_filename combined_name ^ ".mli")
   in
 
   let parent_chain_for_entity name = parent_chain_for_class name in
@@ -423,7 +420,7 @@ let generate_combined_class_files ~ctx ~output_dir ~generated_modules
   write_file ~path:g_file ~content:g_content;
   write_file ~path:g_sig_file ~content:g_sig;
   generated_modules :=
-    ("g" ^ Gir_gen_lib.Utils.module_name_of_class combined_name)
+    (Gir_gen_lib.Utils.layer2_module_filename combined_name)
     :: !generated_modules
 
 (* Generate shim modules for entities in cyclic groups *)
@@ -432,13 +429,8 @@ let generate_cyclic_shim_files ~ctx ~output_dir ~generated_modules
   let open Gir_gen_lib in
   let open Gir_gen_lib.Generate in
 
-  (* Get the layer 1 module name for this entity *)
-  let layer1_module_name =
-    Utils.module_name_of_class entity.Types.name
-  in
-
   (* Get the shim module names (gWindow, gApplication, etc.) *)
-  let shim_module_name = "g" ^ layer1_module_name in
+  let shim_module_name = Gir_gen_lib.Utils.layer2_module_filename entity.Types.name in
   let shim_file =
     Filename.concat (generated_output_dir output_dir) (shim_module_name ^ ".ml")
   in
@@ -448,7 +440,7 @@ let generate_cyclic_shim_files ~ctx ~output_dir ~generated_modules
 
   (* Get the combined G module name *)
   let combined_g_module_name =
-    "G" ^ Utils.module_name_of_class combined_module_name
+    Utils.layer2_module_name combined_module_name
   in
 
   (* Generate content using class_gen functions *)

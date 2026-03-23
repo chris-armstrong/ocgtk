@@ -60,7 +60,7 @@ let generate_library_interface ~ctx =
   let sorted_entities = List.sort String.compare all_entities in
 
   (* Generate Wrappers submodule BEFORE module aliases to avoid shadowing *)
-  if List.length sorted_entities > 0 then begin
+  if sorted_entities <> [] then begin
     Buffer.add_string buf "(** {1 Layer 1 Module Wrappers}\n";
     Buffer.add_string buf "    \n";
     Buffer.add_string buf
@@ -81,20 +81,20 @@ let generate_library_interface ~ctx =
   end;
 
   (* Generate module aliases for classes and interfaces *)
-  if List.length sorted_entities > 0 then begin
+  if sorted_entities <> [] then begin
     Buffer.add_string buf "(** {1 Classes and Interfaces} *)\n\n";
     List.iter
       (fun name ->
         let module_name = module_name_of_class name in
-        let g_module_name = "G" ^ module_name in
+        let g_module_name = Utils.layer2_module_name name in
         Printf.bprintf buf "module %s = %s\n" module_name g_module_name)
       sorted_entities;
     Buffer.add_string buf "\n"
   end;
 
   (* Generate enumeration and bitfield references *)
-  let has_enums = List.length ctx.enums > 0 in
-  let has_bitfields = List.length ctx.bitfields > 0 in
+  let has_enums = ctx.enums <> [] in
+  let has_bitfields = ctx.bitfields <> [] in
 
   if has_enums || has_bitfields then begin
     Buffer.add_string buf "(** {1 Enumerations and Bitfields} *)\n\n";
@@ -153,7 +153,7 @@ let generate_library_implementation ~ctx =
   let sorted_entities = List.sort String.compare all_entities in
 
   (* Generate Wrappers submodule BEFORE module aliases to avoid shadowing *)
-  if List.length sorted_entities > 0 then begin
+  if sorted_entities <> [] then begin
     Buffer.add_string buf "(** Layer 1 Module Wrappers *)\n";
     Buffer.add_string buf "module Wrappers = struct\n";
     List.iter
@@ -167,20 +167,20 @@ let generate_library_implementation ~ctx =
   end;
 
   (* Generate module aliases for classes and interfaces *)
-  if List.length sorted_entities > 0 then begin
+  if sorted_entities <> [] then begin
     Buffer.add_string buf "(** Classes and Interfaces *)\n\n";
     List.iter
       (fun name ->
         let module_name = module_name_of_class name in
-        let g_module_name = "G" ^ module_name in
+        let g_module_name = Utils.layer2_module_name name in
         Printf.bprintf buf "module %s = %s\n" module_name g_module_name)
       sorted_entities;
     Buffer.add_string buf "\n"
   end;
 
   (* Generate enumeration and bitfield references *)
-  let has_enums = List.length ctx.enums > 0 in
-  let has_bitfields = List.length ctx.bitfields > 0 in
+  let has_enums = ctx.enums <> [] in
+  let has_bitfields = ctx.bitfields <> [] in
 
   if has_enums || has_bitfields then begin
     Buffer.add_string buf "(** Enumerations and Bitfields *)\n\n";
