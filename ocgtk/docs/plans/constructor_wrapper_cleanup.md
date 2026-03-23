@@ -34,7 +34,7 @@ complete the hierarchy removal.
 
 ---
 
-## Step 1: Add naming helpers to Utils and use them consistently
+## Step 1: Add naming helpers to Utils and use them consistently ✅ DONE
 
 ### Problem
 
@@ -106,7 +106,7 @@ git diff -- src/*/generated/
 
 ---
 
-## Step 2: Extract constructor wrapper helpers to eliminate duplication
+## Step 2: Extract constructor wrapper helpers to eliminate duplication ✅ DONE
 
 ### Problem
 
@@ -221,7 +221,7 @@ Same as Step 1c — build, test, regenerate, diff.
 
 ---
 
-## Step 3: Replace `List.length x = 0` with pattern matching
+## Step 3: Replace `List.length x = 0` with pattern matching ✅ DONE
 
 ### Problem
 
