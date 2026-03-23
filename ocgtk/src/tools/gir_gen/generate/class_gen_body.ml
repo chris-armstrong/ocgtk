@@ -54,7 +54,7 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name
           let parent_l1 =
             Class_utils.get_qualified_module_name ~ctx gir_type.name
           in
-          bprintf buf "  inherit %s (Obj.magic obj : %s.t)\n" parent_class_name
+          bprintf buf "  inherit %s (obj :> %s.t)\n" parent_class_name
             parent_l1
       | None -> ())
   | None -> ());

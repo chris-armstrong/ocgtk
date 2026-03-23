@@ -25,7 +25,7 @@ let box_set_baseline_position = Wrappers.Box.set_baseline_position
 let box_append = Wrappers.Box.append
 let box_prepend = Wrappers.Box.prepend
 let box_remove = Wrappers.Box.remove
-let box_as_widget (box : Wrappers.Box.t) : Widget.t = Obj.magic box
+let box_as_widget (box : Wrappers.Box.t) : Widget.t = (box :> Widget.t)
 
 (* Try to initialize GTK once for all tests *)
 let gtk_available =
