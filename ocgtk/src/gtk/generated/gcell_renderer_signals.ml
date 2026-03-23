@@ -6,6 +6,6 @@ editing when the user presses Escape.
 
 See also: gtk_cell_renderer_stop_editing(). *)
   method on_editing_canceled ~callback =
-    Gobject.Signal.connect_simple (Obj.magic obj :> _ Gobject.obj) ~name:"editing-canceled" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"editing-canceled" ~callback ~after:false
 
 end

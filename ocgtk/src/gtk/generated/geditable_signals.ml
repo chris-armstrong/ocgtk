@@ -9,6 +9,6 @@ is implemented by first deleting the selection, then inserting
 the new content, and may cause multiple ::notify::text signals
 to be emitted). *)
   method on_changed ~callback =
-    Gobject.Signal.connect_simple (Obj.magic obj :> _ Gobject.obj) ~name:"changed" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"changed" ~callback ~after:false
 
 end

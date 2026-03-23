@@ -8,6 +8,6 @@ example, user switches from the USB mouse to a tablet); in
 that case the logical device will change to reflect the axes
 and keys on the new physical device. *)
   method on_changed ~callback =
-    Gobject.Signal.connect_simple (Obj.magic obj :> _ Gobject.obj) ~name:"changed" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"changed" ~callback ~after:false
 
 end

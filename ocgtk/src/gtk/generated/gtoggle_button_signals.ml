@@ -2,6 +2,6 @@
 class toggle_button_signals (obj : Toggle_button.t) = object
   (** Emitted whenever the `GtkToggleButton`'s state is changed. *)
   method on_toggled ~callback =
-    Gobject.Signal.connect_simple (Obj.magic (obj :> _ Gobject.obj) : [`widget] Gobject.obj) ~name:"toggled" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"toggled" ~callback ~after:false
 
 end

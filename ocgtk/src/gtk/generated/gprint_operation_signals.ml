@@ -6,6 +6,6 @@ See [enum@Gtk.PrintStatus] for the phases that are being discriminated.
 Use [method@Gtk.PrintOperation.get_status] to find out the current
 status. *)
   method on_status_changed ~callback =
-    Gobject.Signal.connect_simple (Obj.magic obj :> _ Gobject.obj) ~name:"status-changed" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"status-changed" ~callback ~after:false
 
 end

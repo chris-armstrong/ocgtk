@@ -6,6 +6,6 @@ If you want to be notified when the user activates a row (by key or not),
 use the [signal@Gtk.ListBox::row-activated] signal on the row’s parent
 `GtkListBox`. *)
   method on_activate ~callback =
-    Gobject.Signal.connect_simple (Obj.magic (obj :> _ Gobject.obj) : [`widget] Gobject.obj) ~name:"activate" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"activate" ~callback ~after:false
 
 end

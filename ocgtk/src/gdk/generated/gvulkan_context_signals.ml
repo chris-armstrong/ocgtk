@@ -5,6 +5,6 @@ class vulkan_context_signals (obj : App_launch_context_and__cairo_context_and__c
 Usually this means that the swapchain had to be recreated,
 for example in response to a change of the surface size. *)
   method on_images_updated ~callback =
-    Gobject.Signal.connect_simple (Obj.magic obj :> _ Gobject.obj) ~name:"images-updated" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"images-updated" ~callback ~after:false
 
 end

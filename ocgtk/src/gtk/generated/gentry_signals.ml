@@ -4,6 +4,6 @@ class entry_signals (obj : Entry.t) = object
 
 The keybindings for this signal are all forms of the Enter key. *)
   method on_activate ~callback =
-    Gobject.Signal.connect_simple (Obj.magic (obj :> _ Gobject.obj) : [`widget] Gobject.obj) ~name:"activate" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"activate" ~callback ~after:false
 
 end

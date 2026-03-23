@@ -10,6 +10,6 @@ but it can be used by applications for their own purposes.
 
 The default bindings are <kbd>Space</kbd> and <kbd>Enter</kbd>. *)
   method on_activate ~callback =
-    Gobject.Signal.connect_simple (Obj.magic (obj :> _ Gobject.obj) : [`widget] Gobject.obj) ~name:"activate" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"activate" ~callback ~after:false
 
 end

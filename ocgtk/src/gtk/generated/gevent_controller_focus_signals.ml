@@ -11,7 +11,7 @@ in these cases, you can monitor the
 [property@Gtk.EventControllerFocus:is-focus]
 property for changes. *)
   method on_enter ~callback =
-    Gobject.Signal.connect_simple (Obj.magic obj :> _ Gobject.obj) ~name:"enter" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"enter" ~callback ~after:false
 
   (** Emitted whenever the focus leaves the widget hierarchy
 that is rooted at the widget that the controller is attached to.
@@ -23,6 +23,6 @@ to a descendent). If you are interested in these cases, you
 can monitor the [property@Gtk.EventControllerFocus:is-focus]
 property for changes. *)
   method on_leave ~callback =
-    Gobject.Signal.connect_simple (Obj.magic obj :> _ Gobject.obj) ~name:"leave" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"leave" ~callback ~after:false
 
 end
