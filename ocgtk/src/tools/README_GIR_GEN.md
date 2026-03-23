@@ -361,12 +361,11 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 - Proper handling of snake_case → capitalization for OCaml module name mapping
 - Constructor wrappers and method implementations properly scoped within combined modules
 
-### Hierarchy Support (hierarchy_detection.ml - 108 lines)
-**Working:**
-- Parent chain traversal with depth limit (100 iterations)
-- Accessor method generation (`as_widget`, etc.)
-
-**Note:** Active plan to remove `hierarchy_info` abstraction entirely, replacing with parent chain on `Crt_Class` from cross-reference data. See `docs/plans/remove_hierarchy_info_abstraction.md`.
+### Parent Chain Support
+Parent chain traversal (from `gir_class.parent` and `Crt_Class { parent }`)
+drives polymorphic variant types in Layer 1 and `inherit` in Layer 2.
+The former `hierarchy_detection.ml` module was removed (2026-03-23) as it
+was entirely dead code.
 
 ### Filtering and Exclusions (filtering.ml - 150+ lines, exclude_list.ml - 85 lines)
 **Working:**
@@ -475,12 +474,14 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 
 **Impact:** Users cannot access struct fields without writing manual C stubs.
 
-### 9. Dynamic Hierarchy Detection - Hardcoded Only (Active Removal Plan)
-**Issue:** 5 hierarchies hardcoded in `hierarchy_detection.ml`; no automatic discovery.
+### 9. Layer 1 Accessor Methods Not Generated
+**Issue:** `as_widget : t -> Widget.t` and similar parent chain accessor
+methods are not generated in Layer 1 modules. The former hierarchy detection
+system was supposed to generate these but was dead code (removed 2026-03-23).
 
-**Status:** Active work to remove the hierarchy_info abstraction entirely. `Crt_Class` now stores `parent : string option` in cross-reference sexp files. See `docs/plans/remove_hierarchy_info_abstraction.md` for the 7-step removal plan (Step 1 done, Steps 2-7 pending).
-
-**Impact:** New widget hierarchies require manual code changes to gir_gen until the removal is complete.
+**Impact:** Layer 2 `inherit` provides parent method access, but there's no
+direct L1 function to upcast a type to its ancestor's type. Could be
+implemented by walking the parent chain.
 
 ### 10. Type Coverage - Mostly Resolved via Cross-Namespace References
 **Issue:** ~150 hardcoded type mappings in `type_mappings.ml` for primitive/GLib types.

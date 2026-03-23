@@ -356,9 +356,13 @@ OCaml `class type` definitions can self-reference (`widget_t` in its own body) a
 
 ## Remaining Work
 
-### Related but separate: Hierarchy Removal
+### Hierarchy Removal (completed 2026-03-23)
 
-The hierarchy_info abstraction removal is tracked in a separate plan (`docs/plans/remove_hierarchy_info_abstraction.md`). It replaces the 5 hardcoded hierarchies with a parent chain resolver using `Crt_Class.parent` from cross-reference data. Steps 2-7 are pending.
+The `hierarchy_info` abstraction has been fully removed. The 5 hardcoded
+hierarchies and `hierarchy_detection.ml` were dead code — `classify_class`
+always returned `MonomorphicType`. Parent chain (from `Crt_Class.parent`)
+now drives polymorphic variant types in Layer 1. See
+`architecture/object_polymorphism/object_polymorphism_design.md` for details.
 
 ### Open Questions
 
@@ -372,4 +376,4 @@ The hierarchy_info abstraction removal is tracked in a separate plan (`docs/plan
 - `ocgtk/architecture/gir_gen/array_handling.md` - Array conversion documentation
 - `ocgtk/STYLE_GUIDELINES.md` - OCaml code style guidelines
 - `ocgtk/architecture/FFI_GUIDELINES.md` - C FFI guidelines
-- `ocgtk/docs/plans/remove_hierarchy_info_abstraction.md` - Hierarchy removal plan
+- `ocgtk/architecture/object_polymorphism/object_polymorphism_design.md` - Object polymorphism design and history
