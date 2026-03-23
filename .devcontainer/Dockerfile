@@ -14,7 +14,7 @@ RUN opam update
 RUN curl -fsSL https://opencode.ai/install | bash
 
 # Install Claude Code
-RUN curl -fsSL https://claude.ai/install.sh | bash
+RUN npm install -g @anthropic-ai/claude-code
 
 # Copy ctx binary from builder stage
 COPY --from=ctx-builder /ctx/ctx /usr/local/bin/ctx

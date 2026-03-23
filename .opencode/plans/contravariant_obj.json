@@ -237,7 +237,13 @@
         ]
       },
       "decision_gate": "If build fails after generator change, verify the :> syntax is correct for the parent type relationship. Check that parent_l1 is correctly resolved.",
-      "status": "pending"
+      "status": "committed",
+      "results": {
+        "obj_magic_class_files": 0,
+        "obj_magic_signal_files": 61,
+        "build_status": "PASS",
+        "test_status": "PASS (78 tests)"
+      }
     },
     {
       "stage_number": 3,
