@@ -13,32 +13,7 @@ let generate_signal_bindings ~output_mode:_ ~module_name:_ ~has_widget_parent:__
     _signals =
   "" (* Signals are only generated in high-level g*.ml wrappers *)
 
-(** Build parent chain variants up to hierarchy root *)
-let build_parent_chain_variants ~normalized_class ~parent_chain ~hier_info =
-  if
-    String.lowercase_ascii normalized_class
-    = String.lowercase_ascii hier_info.gir_root
-  then []
-  else
-    List.fold_left parent_chain ~init:[] ~f:(fun acc parent ->
-        let tag =
-          "`" ^ (Utils.to_snake_case parent |> Utils.sanitize_identifier)
-        in
-        acc @ [ tag ])
-
-(** Build hierarchy variants for a monomorphic class *)
-let build_hierarchy_variants ~normalized_class ~parent_chain =
-  let self_variant =
-    "`" ^ (Utils.to_snake_case normalized_class |> Utils.sanitize_identifier)
-  in
-  let parent_variants =
-    List.map parent_chain ~f:(fun p ->
-        "`" ^ (Utils.to_snake_case p |> Utils.sanitize_identifier))
-  in
-  let all_variants = self_variant :: parent_variants in
-  String.concat ~sep:" | " all_variants
-
-let detect_class_hierarchy_names ~ctx ~class_name ~parent_chain
+let detect_class_hierarchy_names ~ctx:_ ~class_name ~parent_chain
     ?record_base_type ?(is_record = false) () =
   let normalized_class = Utils.normalize_class_name class_name in
   let parent_chain =
@@ -48,36 +23,17 @@ let detect_class_hierarchy_names ~ctx ~class_name ~parent_chain
   in
   if is_record then ("Record", Option.value record_base_type ~default:"Obj.t")
   else
-    (* Use hierarchy detection to determine type *)
-    match Hierarchy_detection.get_hierarchy_info ctx class_name with
-    | Some hier_info when hier_info.hierarchy <> MonomorphicType ->
-        (* This class is in a known hierarchy *)
-        let self_variant =
-          "`"
-          ^ (Utils.to_snake_case normalized_class |> Utils.sanitize_identifier)
-        in
-        let parent_variants =
-          build_parent_chain_variants ~normalized_class ~parent_chain ~hier_info
-        in
-        let variants =
-          String.concat ~sep:" | " (self_variant :: parent_variants)
-        in
-        let type_name =
-          match hier_info.hierarchy with
-          | WidgetHierarchy -> "Widget"
-          | EventControllerHierarchy -> "Event controller"
-          | CellRendererHierarchy -> "Cell renderer"
-          | LayoutManagerHierarchy -> "Layout manager"
-          | ExpressionHierarchy -> "Expression"
-          | MonomorphicType -> class_name
-        in
-        (type_name, sprintf "[%s] Gobject.obj" variants)
-    | _ ->
-        (* Monomorphic type or unknown - still use polymorphic variant since all GTK classes inherit from GObject *)
-        let variants =
-          build_hierarchy_variants ~normalized_class ~parent_chain
-        in
-        (class_name, sprintf "[%s] Gobject.obj" variants)
+    let self_variant =
+      "`" ^ (Utils.to_snake_case normalized_class |> Utils.sanitize_identifier)
+    in
+    let parent_variants =
+      List.map parent_chain ~f:(fun p ->
+          "`" ^ (Utils.to_snake_case p |> Utils.sanitize_identifier))
+    in
+    let variants =
+      String.concat ~sep:" | " (self_variant :: parent_variants)
+    in
+    (class_name, sprintf "[%s] Gobject.obj" variants)
 
 (** Indent content with 2 spaces, preserving empty lines *)
 let print_indent contents buf =
@@ -148,33 +104,3 @@ let convert_out_param_to_ocaml_type ~ctx ~class_name p =
            ~gir_type:p.param_type ~is_nullable:p.nullable)
   | In | InOut -> None
 
-(** Check if we should generate an accessor method for this class *)
-let should_generate_accessor ~class_name hier_info =
-  (* Only generate accessor if this is NOT the hierarchy root itself *)
-  (* (e.g., Button should have as_widget, but Widget should not have as_widget : t -> Widget.t) *)
-  class_name <> hier_info.gir_root
-
-(** Build the base type reference for a hierarchy accessor *)
-let build_accessor_base_type ~ctx ~hier_info =
-  let gir_root_class = hier_info.gir_root in
-  (* Check if the root class is in a cyclic group *)
-  match Hashtbl.find_opt ctx.module_groups gir_root_class with
-  | Some combined_module_name ->
-      let simple_module_name = Utils.module_name_of_class gir_root_class in
-      (* Check if this is actually a cyclic module (combined != simple) *)
-      if combined_module_name <> simple_module_name then
-        (* For cyclic modules, use CombinedModule.ClassName.t *)
-        combined_module_name ^ "." ^ simple_module_name ^ ".t"
-      else
-        (* Single-class module, just use ClassName.t *)
-        simple_module_name ^ ".t"
-  | None ->
-      (* Not in module_groups table at all, use simple ClassName.t *)
-      Utils.module_name_of_class gir_root_class ^ ".t"
-
-(** Format an accessor declaration based on output mode *)
-let format_accessor_declaration ~output_mode ~accessor ~base_type =
-  match output_mode with
-  | Implementation ->
-      sprintf "let %s (obj : t) : %s = Obj.magic obj\n\n" accessor base_type
-  | Interface -> sprintf "val %s : t -> %s\n\n" accessor base_type

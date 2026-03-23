@@ -46,16 +46,12 @@ let test_signal_parsing_and_generation () =
       enums = gtk_enums;
       bitfields = gtk_bitfields;
       records = gtk_records;
-      hierarchy_map = Hashtbl.create 0;
       module_groups = Hashtbl.create 0;
       current_cycle_classes = [];
       cross_references = Gir_gen_lib.Types.StringMap.empty;
     }
   in
-  let hierarchy_map =
-    Gir_gen_lib.Hierarchy_detection.build_hierarchy_map ctx_initial
-  in
-  let ctx = { ctx_initial with hierarchy_map } in
+  let ctx = ctx_initial in
   let code =
     Gir_gen_lib.Generate.Signal_gen.generate_signal_class ~ctx
       ~class_name:button.class_name ~signals:button.signals ~parent_chain

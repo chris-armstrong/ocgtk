@@ -401,7 +401,6 @@ let test_enum_module_name_matches_dune_convention () =
       enums = [];
       bitfields = [];
       records = [];
-      hierarchy_map = Hashtbl.create 0;
       module_groups = Hashtbl.create 0;
       current_cycle_classes = [];
       cross_references = Gir_gen_lib.Types.StringMap.empty;
@@ -1669,7 +1668,6 @@ let test_cross_namespace_c_converter_names () =
       enums = [{ enum_name = "Colorspace"; enum_c_type = "GdkColorspace"; members = []; functions = []; enum_doc = None }];
       bitfields = [];
       records = [];
-      hierarchy_map = Hashtbl.create 0;
       module_groups = Hashtbl.create 0;
       current_cycle_classes = [];
       cross_references = Gir_gen_lib.Types.StringMap.empty;

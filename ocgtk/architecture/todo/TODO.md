@@ -15,7 +15,7 @@ Cross-namespace type resolution works via reference files and `<ns>_decls.h` hea
 
 ## Class hierarchy
 
-* ~~Generate all classes in a class hierarchy with #as_<type>, not just those in the Widget hierarchy (e.g. Expression)~~ — Active work: removing hierarchy_info abstraction and replacing with parent chain resolver. See `docs/plans/remove_hierarchy_info_abstraction.md`.
+* ~~Generate all classes in a class hierarchy with #as_<type>, not just those in the Widget hierarchy (e.g. Expression)~~ — Done: hierarchy_info abstraction removed (was dead code). Parent chain drives polymorphic variant types. Layer 1 accessors not yet generated from parent chain.
 * Update methods that take a class value like "#expression" (which means anything polymorphically implementing that interface) to work
 
 ## Non-void signals

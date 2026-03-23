@@ -229,20 +229,6 @@ let validate_base_type_conversion ~ml_ast ~class_name:_ ~base_type =
   let conversion_method = "as_" ^ String.lowercase_ascii base_type in
   Ml_validation.assert_value_exists ml_ast conversion_method
 
-(* Validate that hierarchy information is available *)
-let validate_hierarchy_info ~context ~class_name =
-  match Hashtbl.find_opt context.hierarchy_map class_name with
-  | None ->
-      Alcotest.fail (sprintf "Hierarchy info not found for class '%s'"
-        class_name)
-  | Some info ->
-      (* Verify that hierarchy info has required fields *)
-      if String.length info.gir_root = 0 then
-        Alcotest.fail (sprintf "Hierarchy info for '%s' has empty gir_root"
-          class_name);
-      if String.length info.layer2_module = 0 then
-        Alcotest.fail (sprintf "Hierarchy info for '%s' has empty layer2_module"
-          class_name)
 
 (* ========================================================================= *)
 (* Property and Signal Validation *)
@@ -498,75 +484,22 @@ let create_gir_method_with_param ~method_name ~c_name ~param_name ~param_type =
 (* Test Context Helpers *)
 (* ========================================================================= *)
 
-(* Add a class with hierarchy info to the context *)
-let add_class_with_hierarchy ~context ~class_name ~parent_name ~layer2_module
-    ~base_type =
+(* Add a class to the context *)
+let add_class_with_hierarchy ~context ~class_name ~parent_name ~layer2_module:_
+    ~base_type:_ =
   let class_obj = create_test_class_with_parent ~name:class_name
     ~c_type:("Gtk" ^ class_name) ~parent:(Some parent_name) () in
-
-  (* Add to classes list *)
-  let updated_classes = context.classes @ [ class_obj ] in
-
-  (* Add hierarchy info *)
-  let hierarchy_info =
-    {
-      gir_root = parent_name;
-      hierarchy = WidgetHierarchy;
-      layer2_module;
-      class_type_name = String.lowercase_ascii class_name ^ "_skel";
-      accessor_method = "as_" ^ String.lowercase_ascii parent_name;
-      layer1_base_type = base_type;
-      base_conversion_method = parent_name ^ ".as_" ^ String.lowercase_ascii parent_name;
-    }
-  in
-  Hashtbl.add context.hierarchy_map class_name hierarchy_info;
-
-  { context with classes = updated_classes }
+  { context with classes = context.classes @ [ class_obj ] }
 
 (* Create a test context with multiple related classes *)
 let create_test_context_with_hierarchy_chain ~base_class ~derived_classes =
-  (* Use the shared helper from Helpers module to create base context *)
   let ctx = Helpers.create_test_context_with_hierarchy () in
-  
-  (* Create base class if not already present *)
   let base_class_obj = create_test_class_with_parent ~name:base_class
     ~c_type:("Gtk" ^ base_class) ~parent:None () in
-
-  (* Create derived classes *)
   let derived_class_objs =
     List.map (fun derived_name ->
       create_test_class_with_parent ~name:derived_name
         ~c_type:("Gtk" ^ derived_name) ~parent:(Some base_class) ()
     ) derived_classes
   in
-
-  let all_classes = base_class_obj :: derived_class_objs in
-
-  (* Add hierarchy info for base class *)
-  Hashtbl.add ctx.hierarchy_map base_class
-    {
-      gir_root = base_class;
-      hierarchy = WidgetHierarchy;
-      layer2_module = "G" ^ base_class;
-      class_type_name = String.lowercase_ascii base_class ^ "_skel";
-      accessor_method = "as_" ^ String.lowercase_ascii base_class;
-      layer1_base_type = base_class ^ ".t";
-      base_conversion_method = base_class ^ ".as_" ^ String.lowercase_ascii base_class;
-    };
-
-  (* Add hierarchy info for derived classes *)
-  List.iter (fun derived_name ->
-    Hashtbl.add ctx.hierarchy_map derived_name
-      {
-        gir_root = base_class;
-        hierarchy = WidgetHierarchy;
-        layer2_module = "G" ^ base_class;
-        class_type_name = String.lowercase_ascii base_class ^ "_skel";
-        accessor_method = "as_" ^ String.lowercase_ascii base_class;
-        layer1_base_type = base_class ^ ".t";
-        base_conversion_method = base_class ^ ".as_" ^ String.lowercase_ascii base_class;
-      }
-  ) derived_classes;
-
-  (* Update context with new classes *)
-  { ctx with classes = ctx.classes @ all_classes }
+  { ctx with classes = ctx.classes @ (base_class_obj :: derived_class_objs) }
