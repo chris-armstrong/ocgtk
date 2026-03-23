@@ -1,0 +1,355 @@
+{
+  "title": "Contravariant Gobject.obj Implementation Plan",
+  "description": "Change Gobject.obj from covariant (+'a obj) to contravariant (-'a obj) to enable safe upcasting from derived to base types, eliminating the need for Obj.magic in generated code.",
+  "baseline_status": {
+    "build": "PASS (clean)",
+    "tests": "RPC server not running error (infrastructure issue, not code issue)"
+  },
+  "stages": [
+    {
+      "stage_number": 1,
+      "short_description": "Foundation - Change Gobject.obj variance and create variance test suite",
+      "description": "This stage implements the core type system change and validates it with tests. It involves: (1) Creating a comprehensive variance test suite that demonstrates upcasting works with contravariant obj, (2) Changing type +'a obj to -'a obj in both gobject.ml and gobject.mli, (3) Verifying that upcasting works with the :> operator and that downcasting still correctly fails.",
+      "files_to_modify": [
+        {
+          "path": "src/common/gobject.ml",
+          "line": 18,
+          "current_code": "type +'a obj",
+          "new_code": "type -'a obj",
+          "reason": "Change from covariant to contravariant to enable safe upcasting from derived types to base types"
+        },
+        {
+          "path": "src/common/gobject.mli",
+          "line": 18,
+          "current_code": "type +'a obj",
+          "new_code": "type -'a obj",
+          "reason": "Interface must match implementation for variance annotation"
+        }
+      ],
+      "files_to_create": [
+        {
+          "path": "tests/test_variance.ml",
+          "description": "Comprehensive variance test suite validating upcasting behavior",
+          "content_template": "(* Test contravariant Gobject.obj upcasting *)\n\n(* With contravariant -'a obj, we expect: *)\n(* - Derived types can be upcast to base types via :> *)\n\nlet test_upcast_button_to_widget () =\n  (* Button.t has polymorphic variant [`button | `widget | `initially_unowned] *)\n  (* Widget.t has polymorphic variant [`widget | `initially_unowned] *)\n  (* Button variant ⊆ Widget variant, so Button.t should upcast to Widget.t *)\n  let btn = Button.new_ () in\n  (* This should compile without Obj.magic *)\n  let _ = (btn : Button.t :> Widget.t) in\n  ()\n\nlet test_upcast_widget_to_initially_unowned () =\n  let w = Widget.new_ () in\n  let _ = (w : Widget.t :> Initially_unowned.t) in\n  ()\n\nlet test_nested_upcast () =\n  let btn = Button.new_ () in\n  (* Direct upcast to base's base *)\n  let _ = (btn : Button.t :> Initially_unowned.t) in\n  ()\n"
+        },
+        {
+          "path": "tests/gtk/dune_variance",
+          "description": "Dune entry for variance test (needs to be added to tests/gtk/dune)",
+          "content_template": "\n(test\n (name test_variance)\n (modules test_variance)\n (libraries ocgtk.gtk alcotest))"
+        }
+      ],
+      "commands_to_run": [
+        {
+          "command": "cd ocgtk && dune build",
+          "description": "Build after changing variance annotation",
+          "expected_result": "Build may fail in generated code - this is expected at this stage"
+        },
+        {
+          "command": "cd ocgtk && dune runtest test_variance",
+          "description": "Run variance tests specifically",
+          "expected_result": "Tests should compile and pass if variance change is correct"
+        }
+      ],
+      "test_requirements": {
+        "new_tests": [
+          {
+            "file": "tests/test_variance.ml",
+            "functions": [
+              "test_upcast_button_to_widget",
+              "test_upcast_widget_to_initially_unowned",
+              "test_nested_upcast"
+            ],
+            "criteria": "All upcast tests must compile and pass with :> operator (no Obj.magic)"
+          }
+        ],
+        "verify_existing": [
+          {
+            "file": "tests/test_gobject_stress.ml",
+            "reason": "Core object stress tests must continue to pass"
+          },
+          {
+            "file": "tests/test_closure_stress.ml",
+            "reason": "Closure tests must continue to work"
+          },
+          {
+            "file": "tests/test_gtk_init.ml",
+            "reason": "GTK initialization tests must pass"
+          }
+        ]
+      },
+      "dependencies": [],
+      "risk_assessment": {
+        "risks": [
+          {
+            "risk": "Variance change may break existing type inference in unexpected places",
+            "mitigation": "Comprehensive test suite validates the change before proceeding",
+            "impact": "High if wrong, Low if tests pass"
+          },
+          {
+            "risk": "Polymorphic variant subtyping may not work as expected with contravariance",
+            "mitigation": "Phase 0 tests verify the theory before any infrastructure changes",
+            "impact": "Medium - would require reverting to covariant approach"
+          }
+        ]
+      },
+      "decision_gate": "If variance tests fail with contravariant -'a obj, STOP and investigate. Do NOT proceed to Stage 2.",
+      "status": "pending"
+    },
+    {
+      "stage_number": 2,
+      "short_description": "Generator Modification - Update class_gen_body.ml and regenerate bindings",
+      "description": "This stage modifies the code generator to emit explicit upcast syntax (obj :> Parent.t) instead of Obj.magic, then regenerates all bindings. It involves: (1) Updating class_gen_body.ml line 57 to use :> instead of Obj.magic, (2) Updating test files that currently use Obj.magic to use the new upcast syntax, (3) Regenerating all 9 namespace bindings, (4) Verifying compilation and test passes.",
+      "files_to_modify": [
+        {
+          "path": "src/tools/gir_gen/generate/class_gen_body.ml",
+          "line": 57,
+          "current_code": "bprintf buf \"  inherit %s (Obj.magic obj : %s.t)\\n\" parent_class_name parent_l1",
+          "new_code": "bprintf buf \"  inherit %s (obj :> %s.t)\\n\" parent_class_name parent_l1",
+          "reason": "Replace unsafe Obj.magic with explicit upcast syntax"
+        },
+        {
+          "path": "tests/gtk/test_widget.ml",
+          "line": 18,
+          "current_code": "let as_widget (box : t) : Widget.t = Obj.magic box",
+          "new_code": "let as_widget (box : t) : Widget.t = (box :> Widget.t)",
+          "reason": "Update test to use safe upcast instead of Obj.magic"
+        },
+        {
+          "path": "tests/gtk/test_box.ml",
+          "line": 28,
+          "current_code": "let box_as_widget (box : Wrappers.Box.t) : Widget.t = Obj.magic box",
+          "new_code": "let box_as_widget (box : Wrappers.Box.t) : Widget.t = (box :> Widget.t)",
+          "reason": "Update test to use safe upcast instead of Obj.magic"
+        },
+        {
+          "path": "tests/gtk/test_range.ml",
+          "line": 66,
+          "current_code": "let r = (Obj.magic scale : Range.t) in",
+          "new_code": "let r = (scale :> Range.t) in",
+          "reason": "Update test to use safe upcast instead of Obj.magic"
+        },
+        {
+          "path": "tests/gtk/test_range.ml",
+          "line": 72,
+          "current_code": "let r = (Obj.magic scale : Range.t) in",
+          "new_code": "let r = (scale :> Range.t) in",
+          "reason": "Update test to use safe upcast instead of Obj.magic"
+        },
+        {
+          "path": "tests/gtk/test_range.ml",
+          "line": 80,
+          "current_code": "let r = (Obj.magic scale : Range.t) in",
+          "new_code": "let r = (scale :> Range.t) in",
+          "reason": "Update test to use safe upcast instead of Obj.magic"
+        },
+        {
+          "path": "tests/gtk/test_range.ml",
+          "line": 86,
+          "current_code": "let r = (Obj.magic scale : Range.t) in",
+          "new_code": "let r = (scale :> Range.t) in",
+          "reason": "Update test to use safe upcast instead of Obj.magic"
+        },
+        {
+          "path": "tests/gtk/test_range.ml",
+          "line": 92,
+          "current_code": "let r = (Obj.magic scale : Range.t) in",
+          "new_code": "let r = (scale :> Range.t) in",
+          "reason": "Update test to use safe upcast instead of Obj.magic"
+        },
+        {
+          "path": "tests/gtk/test_range.ml",
+          "line": 98,
+          "current_code": "let r = (Obj.magic scale : Range.t) in",
+          "new_code": "let r = (scale :> Range.t) in",
+          "reason": "Update test to use safe upcast instead of Obj.magic"
+        },
+        {
+          "path": "tests/gtk/test_range.ml",
+          "line": 104,
+          "current_code": "let r = (Obj.magic scale : Range.t) in",
+          "new_code": "let r = (scale :> Range.t) in",
+          "reason": "Update test to use safe upcast instead of Obj.magic"
+        }
+      ],
+      "files_to_create": [],
+      "commands_to_run": [
+        {
+          "command": "cd ocgtk && dune exec src/tools/gir_gen/gir_gen.exe -- generate /usr/share/gir-1.0/Gtk-4.0.gir src/gtk",
+          "description": "Regenerate GTK bindings with new upcast syntax",
+          "expected_result": "Generator should complete successfully"
+        },
+        {
+          "command": "cd ocgtk && dune build",
+          "description": "Build all namespaces with regenerated bindings",
+          "expected_result": "All namespaces should compile successfully"
+        },
+        {
+          "command": "cd ocgtk && grep -c 'Obj.magic' src/gtk/generated/gButton.ml",
+          "description": "Verify Obj.magic removed from class inheritance",
+          "expected_result": "Should be 0 (signal files may still have Obj.magic)"
+        },
+        {
+          "command": "cd ocgtk && xvfb-run dune runtest",
+          "description": "Run full test suite",
+          "expected_result": "All tests should pass"
+        }
+      ],
+      "test_requirements": {
+        "new_tests": [],
+        "verify_existing": [
+          {
+            "file": "tests/gtk/test_widget.ml",
+            "reason": "Verify Box.as_widget works with new upcast syntax"
+          },
+          {
+            "file": "tests/gtk/test_box.ml",
+            "reason": "Verify box_as_widget works with new upcast syntax"
+          },
+          {
+            "file": "tests/gtk/test_range.ml",
+            "reason": "Verify Scale to Range upcast works"
+          },
+          {
+            "file": "tests/test_variance.ml",
+            "reason": "Variance tests should still pass"
+          }
+        ]
+      },
+      "dependencies": [1],
+      "risk_assessment": {
+        "risks": [
+          {
+            "risk": "Regenerated bindings may have compilation errors",
+            "mitigation": "Verify with dune build before committing",
+            "impact": "Medium - can fix and regenerate"
+          },
+          {
+            "risk": "Obj.magic in signal files (deferred to Stage 3) may cause issues",
+            "mitigation": "This is expected and will be addressed in Stage 3",
+            "impact": "Low - signal files are separate concern"
+          },
+          {
+            "risk": "Test files may fail with new upcast syntax",
+            "mitigation": "All test file changes are explicitly documented and can be reverted",
+            "impact": "Low - test changes are minimal"
+          }
+        ]
+      },
+      "decision_gate": "If build fails after generator change, verify the :> syntax is correct for the parent type relationship. Check that parent_l1 is correctly resolved.",
+      "status": "pending"
+    },
+    {
+      "stage_number": 3,
+      "short_description": "Signal Generator - Update signal_gen.ml (deferred)",
+      "description": "This stage is DEFERRED until Stage 1 and Stage 2 are validated. It updates signal_gen.ml to remove Obj.magic from signal connections. Currently, signal files use two patterns: (1) '(Obj.magic (obj :> _ Gobject.obj) : [`widget] Gobject.obj)' for widget hierarchy, and (2) '(Obj.magic obj :> _ Gobject.obj)' for generic objects. This stage would replace these with proper upcast syntax for signal connections.",
+      "files_to_modify": [
+        {
+          "path": "src/tools/gir_gen/generate/signal_gen.ml",
+          "line": 32,
+          "current_code": "let connect_target_expr ~has_widget_parent =\n  if has_widget_parent then\n    (* Use Obj.magic to coerce widget subtypes to base widget type for signal connection *)\n    \"(Obj.magic (obj :> _ Gobject.obj) : [`widget] Gobject.obj)\"\n  else\n    \"(Obj.magic obj :> _ Gobject.obj)\"",
+          "new_code": "let connect_target_expr ~has_widget_parent =\n  if has_widget_parent then\n    (* Safe upcast to widget type for signal connection *)\n    \"(obj :> [`widget] Gobject.obj)\"\n  else\n    \"(obj :> _ Gobject.obj)\"",
+          "reason": "Replace Obj.magic with explicit upcast syntax for signal connections",
+          "note": "This is a DEFERRED stage - implement only after Stage 1 and Stage 2 are validated"
+        }
+      ],
+      "files_to_create": [],
+      "commands_to_run": [
+        {
+          "command": "cd ocgtk && dune exec src/tools/gir_gen/gir_gen.exe -- generate /usr/share/gir-1.0/Gtk-4.0.gir src/gtk",
+          "description": "Regenerate signal files with new upcast syntax",
+          "expected_result": "Generator should complete successfully"
+        },
+        {
+          "command": "cd ocgtk && dune build",
+          "description": "Build with regenerated signal files",
+          "expected_result": "All signal files should compile"
+        },
+        {
+          "command": "cd ocgtk && grep -c 'Obj.magic' src/gtk/generated/*_signals.ml | grep -v ':0' | wc -l",
+          "description": "Verify Obj.magic removed from signal files",
+          "expected_result": "Should be 0 or near-zero"
+        }
+      ],
+      "test_requirements": {
+        "new_tests": [
+          {
+            "file": "tests/test_signal_connections.ml",
+            "functions": ["test_signal_connect_widget", "test_signal_connect_generic"],
+            "criteria": "Signal connections should work with new upcast syntax"
+          }
+        ],
+        "verify_existing": [
+          {
+            "file": "tests/test_closure_stress.ml",
+            "reason": "Signal/closure stress tests must still pass"
+          }
+        ]
+      },
+      "dependencies": [1, 2],
+      "risk_assessment": {
+        "risks": [
+          {
+            "risk": "Signal upcasting may have different requirements than class inheritance",
+            "mitigation": "Defer until Stage 2 validates the core pattern",
+            "impact": "Medium - requires understanding of signal connection type requirements"
+          },
+          {
+            "risk": "Widget hierarchy detection may be incomplete",
+            "mitigation": "has_widget_parent logic already exists and works",
+            "impact": "Low"
+          }
+        ]
+      },
+      "decision_gate": "Only proceed with Stage 3 after Stage 1 and Stage 2 are fully validated and merged.",
+      "status": "pending",
+      "note": "DEFERRED: This stage is planned but not part of the immediate work. Stage 1 and Stage 2 provide the foundation."
+    }
+  ],
+  "coding_guidelines_applicable": [
+    {
+      "document": "type-safety.md",
+      "relevance": "Variance change improves type safety by making upcasting explicit and compile-time checked"
+    },
+    {
+      "document": "partial-functions.md",
+      "relevance": "Removing Obj.magic eliminates a partial/unsafe function from generated code"
+    },
+    {
+      "document": "module-boundaries.md",
+      "relevance": "Gobject.mli defines the public interface that must have explicit variance"
+    },
+    {
+      "document": "test-patterns.md",
+      "relevance": "New variance tests should use Alcotest patterns consistent with existing tests"
+    }
+  ],
+  "metrics_to_track": {
+    "before": {
+      "obj_magic_count_in_class_files": "Approximately 200+ occurrences across g*.ml files (excludes *_signals.ml)",
+      "obj_magic_count_in_signal_files": "Approximately 100+ occurrences across *_signals.ml files"
+    },
+    "after_stage_2": {
+      "obj_magic_count_in_class_files": "0 (all replaced with :> operator)",
+      "obj_magic_count_in_signal_files": "Unchanged (addressed in Stage 3)"
+    },
+    "after_stage_3": {
+      "obj_magic_count_in_class_files": "0",
+      "obj_magic_count_in_signal_files": "0 or minimal"
+    }
+  },
+  "rollback_plan": {
+    "trigger": "If contravariance causes unexpected issues in production",
+    "steps": [
+      "1. Revert gobject.ml and gobject.mli to type +'a obj",
+      "2. Revert class_gen_body.ml to use Obj.magic",
+      "3. Regenerate all bindings with original generator",
+      "4. Revert test file changes back to Obj.magic",
+      "5. Document the issues encountered for future reference"
+    ]
+  },
+  "references": [
+    "Polymorphic Variants in OCaml: https://v2.ocaml.org/manual/polyvariants.html",
+    "Variance Annotations: https://v2.ocaml.org/manual/variances.html",
+    "lablgtk3 Gobject.ml: Reference implementation (uses contravariant -'a obj)"
+  ]
+}
