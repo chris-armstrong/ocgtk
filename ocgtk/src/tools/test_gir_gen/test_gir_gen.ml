@@ -28,6 +28,7 @@ let () =
       ("Records", Records.tests);
       ("Edge Cases", Edge_cases.tests);
       ("Layer2 Method Wrappers", Method_wrapper_tests.tests);
+      ("Constructor Wrappers", Constructor_wrapper_tests.tests);
       ("Cross-Namespace", Cross_namespace_tests.tests);
       ("No External Enum Decls (Stage 2)", No_external_enum_decls_tests.tests);
       ( "No External Bitfield Decls (Stage 3)",
