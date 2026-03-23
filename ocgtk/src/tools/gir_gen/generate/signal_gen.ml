@@ -28,12 +28,7 @@ let has_widget_parent class_name parent_chain =
   List.exists parent_chain ~f:(fun p ->
     String.lowercase_ascii (Utils.normalize_class_name p) = "widget")
 
-let connect_target_expr ~has_widget_parent =
-  if has_widget_parent then
-    (* Use Obj.magic to coerce widget subtypes to base widget type for signal connection *)
-    "(Obj.magic (obj :> _ Gobject.obj) : [`widget] Gobject.obj)"
-  else
-    "(Obj.magic obj :> _ Gobject.obj)"
+let connect_target_expr ~has_widget_parent:_ = "obj"
 
 let is_void_signal (signal : gir_signal) =
   Utils.is_void_return_type signal.return_type
