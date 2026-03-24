@@ -1,27 +1,13 @@
 open Ocgtk_gtk.Gtk
-module GMain = Ocgtk_gtk.GMain
 (* Simple Counter Application
-   Demonstrates: Button, Label, event handling *)
+   Demonstrates: GtkApplication lifecycle, Button, Label, event handling *)
 
-(* close-request returns bool — not yet supported by signal generator,
-   so we connect manually via Gobject.Closure *)
-let on_close_request window_obj callback =
-  let closure = Gobject.Closure.create (fun argv ->
-    callback ();
-    Gobject.Value.set_boolean (Gobject.Closure.result argv) false
-  ) in
-  ignore (Gobject.Signal.connect window_obj ~name:"close-request" ~callback:closure ~after:false)
-
-let () =
-  (* Initialize GTK *)
-  ignore (GMain.init ());
-
+let activate app =
   (* Create main window *)
-  let window_obj = Wrappers.Window.new_ () in
-  let window = new Window.window window_obj in
+  let window = Window.new_ () in
   window#set_title (Some "Counter App");
   window#set_default_size 300 100;
-  on_close_request window_obj (fun () -> GMain.quit ());
+  (app :> Application.application_t)#add_window window;
 
   (* Create vertical box for layout *)
   let vbox = new Box.box (Wrappers.Box.new_ `VERTICAL 10) in
@@ -53,10 +39,11 @@ let () =
          count := 0;
          label#set_label (Printf.sprintf "Count: %d" !count)));
 
-  (* Show window and run main loop *)
-  window#present ();
-  GMain.main ();
+  (* Show window *)
+  window#present ()
 
-  (* Force GC to finalize remaining objects *)
-  Gc.full_major ();
-  Gc.full_major ()
+let () =
+  let app = Application.new_ (Some "org.ocgtk.Counter") [`DEFAULT_FLAGS] in
+  ignore (app#on_activate ~callback:(fun () -> activate app));
+  let status = app#run 0 None in
+  exit status
