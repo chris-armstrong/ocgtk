@@ -28,5 +28,6 @@ end
 let new_ (bottom : GRender_node.render_node_t) (top : GRender_node.render_node_t) (blend_mode : Gsk_enums.blendmode) : blend_node_t =
   let bottom = bottom#as_render_node in
   let top = top#as_render_node in
-  new blend_node (Blend_node.new_ bottom top blend_mode)
+  let obj_ = Blend_node.new_ bottom top blend_mode in
+  new blend_node obj_
 

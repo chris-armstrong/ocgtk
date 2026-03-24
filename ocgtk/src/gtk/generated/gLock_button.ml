@@ -48,5 +48,6 @@ end
 
 let new_ (permission : Ocgtk_gio.Gio.Permission.permission_t option) : lock_button_t =
   let permission = Option.map (fun c -> c#as_permission) permission in
-  new lock_button (Lock_button.new_ permission)
+  let obj_ = Lock_button.new_ permission in
+  new lock_button obj_
 

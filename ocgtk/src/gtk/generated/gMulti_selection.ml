@@ -24,5 +24,6 @@ end
 
 let new_ (model : Ocgtk_gio.Gio.List_model.list_model_t option) : multi_selection_t =
   let model = Option.map (fun c -> c#as_list_model) model in
-  new multi_selection (Multi_selection.new_ model)
+  let obj_ = Multi_selection.new_ model in
+  new multi_selection obj_
 

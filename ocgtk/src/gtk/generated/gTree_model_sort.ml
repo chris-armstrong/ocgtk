@@ -40,5 +40,6 @@ end
 
 let new_with_model (child_model : GTree_model.tree_model_t) : tree_model_sort_t =
   let child_model = child_model#as_tree_model in
-  new tree_model_sort (Tree_model_sort.new_with_model child_model)
+  let obj_ = Tree_model_sort.new_with_model child_model in
+  new tree_model_sort obj_
 

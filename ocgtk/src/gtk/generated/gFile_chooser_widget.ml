@@ -26,5 +26,6 @@ class file_chooser_widget (obj : File_chooser_widget.t) : file_chooser_widget_t 
 end
 
 let new_ (action : Gtk_enums.filechooseraction) : file_chooser_widget_t =
-  new file_chooser_widget (File_chooser_widget.new_ action)
+  let obj_ = File_chooser_widget.new_ action in
+  new file_chooser_widget obj_
 

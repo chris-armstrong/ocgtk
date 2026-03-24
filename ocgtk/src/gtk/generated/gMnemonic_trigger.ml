@@ -16,5 +16,6 @@ class mnemonic_trigger (obj : Mnemonic_trigger.t) : mnemonic_trigger_t = object 
 end
 
 let new_ (keyval : int) : mnemonic_trigger_t =
-  new mnemonic_trigger (Mnemonic_trigger.new_ keyval)
+  let obj_ = Mnemonic_trigger.new_ keyval in
+  new mnemonic_trigger obj_
 

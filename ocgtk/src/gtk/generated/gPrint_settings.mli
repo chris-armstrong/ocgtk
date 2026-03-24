@@ -71,3 +71,4 @@ end
 class print_settings : Print_settings.t -> print_settings_t
 
 val new_ : unit -> print_settings_t
+val new_from_file : string -> (print_settings_t, GError.t) result

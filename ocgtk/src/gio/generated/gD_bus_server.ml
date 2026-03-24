@@ -51,3 +51,9 @@ class d_bus_server (obj : D_bus_server.t) : d_bus_server_t = object (self)
     method as_d_bus_server = obj
 end
 
+let new_sync (address : string) (flags : Gio_enums.dbusserverflags) (guid : string) (observer : GD_bus_auth_observer.d_bus_auth_observer_t option) (cancellable : GCancellable.cancellable_t option) : (d_bus_server_t, GError.t) result =
+  let observer = Option.map (fun c -> c#as_d_bus_auth_observer) observer in
+  let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
+  let obj_ = D_bus_server.new_sync address flags guid observer cancellable in
+Result.map (fun obj_ ->  new d_bus_server obj_) obj_
+

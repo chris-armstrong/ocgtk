@@ -186,5 +186,6 @@ let new_ () : text_t =
 
 let new_with_buffer (buffer : GEntry_buffer.entry_buffer_t) : text_t =
   let buffer = buffer#as_entry_buffer in
-  new text (Text.new_with_buffer buffer)
+  let obj_ = Text.new_with_buffer buffer in
+  new text obj_
 

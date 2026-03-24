@@ -108,5 +108,6 @@ class paned (obj : Paned.t) : paned_t = object (self)
 end
 
 let new_ (orientation : Gtk_enums.orientation) : paned_t =
-  new paned (Paned.new_ orientation)
+  let obj_ = Paned.new_ orientation in
+  new paned obj_
 

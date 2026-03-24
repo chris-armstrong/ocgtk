@@ -45,5 +45,6 @@ end
 
 let new_ (file : Ocgtk_gio.Gio.File.file_t option) (start : Css_location.t) (end_ : Css_location.t) : css_section_t =
   let file = Option.map (fun c -> c#as_file) file in
-  new css_section (Css_section.new_ file start end_)
+  let obj_ = Css_section.new_ file start end_ in
+  new css_section obj_
 

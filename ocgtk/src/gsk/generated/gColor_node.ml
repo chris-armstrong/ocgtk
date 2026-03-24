@@ -18,5 +18,6 @@ end
 let new_ (rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t) (bounds : Ocgtk_graphene.Graphene.Rect.rect_t) : color_node_t =
   let rgba = rgba#as_rgb_a in
   let bounds = bounds#as_rect in
-  new color_node (Color_node.new_ rgba bounds)
+  let obj_ = Color_node.new_ rgba bounds in
+  new color_node obj_
 

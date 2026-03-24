@@ -131,8 +131,47 @@ class pixbuf (obj : Pixbuf.t) : pixbuf_t = object (self)
 end
 
 let new_ (colorspace : Gdkpixbuf_enums.colorspace) (has_alpha : bool) (bits_per_sample : int) (width : int) (height : int) : pixbuf_t =
-  new pixbuf (Pixbuf.new_ colorspace has_alpha bits_per_sample width height)
+  let obj_ = Pixbuf.new_ colorspace has_alpha bits_per_sample width height in
+  new pixbuf obj_
+
+let new_from_file (filename : string) : (pixbuf_t, GError.t) result =
+  let obj_ = Pixbuf.new_from_file filename in
+Result.map (fun obj_ ->  new pixbuf obj_) obj_
+
+let new_from_file_at_scale (filename : string) (width : int) (height : int) (preserve_aspect_ratio : bool) : (pixbuf_t, GError.t) result =
+  let obj_ = Pixbuf.new_from_file_at_scale filename width height preserve_aspect_ratio in
+Result.map (fun obj_ ->  new pixbuf obj_) obj_
+
+let new_from_file_at_size (filename : string) (width : int) (height : int) : (pixbuf_t, GError.t) result =
+  let obj_ = Pixbuf.new_from_file_at_size filename width height in
+Result.map (fun obj_ ->  new pixbuf obj_) obj_
+
+let new_from_resource (resource_path : string) : (pixbuf_t, GError.t) result =
+  let obj_ = Pixbuf.new_from_resource resource_path in
+Result.map (fun obj_ ->  new pixbuf obj_) obj_
+
+let new_from_resource_at_scale (resource_path : string) (width : int) (height : int) (preserve_aspect_ratio : bool) : (pixbuf_t, GError.t) result =
+  let obj_ = Pixbuf.new_from_resource_at_scale resource_path width height preserve_aspect_ratio in
+Result.map (fun obj_ ->  new pixbuf obj_) obj_
+
+let new_from_stream (stream : Ocgtk_gio.Gio.Input_stream.input_stream_t) (cancellable : Ocgtk_gio.Gio.Cancellable.cancellable_t option) : (pixbuf_t, GError.t) result =
+  let stream = stream#as_input_stream in
+  let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
+  let obj_ = Pixbuf.new_from_stream stream cancellable in
+Result.map (fun obj_ ->  new pixbuf obj_) obj_
+
+let new_from_stream_at_scale (stream : Ocgtk_gio.Gio.Input_stream.input_stream_t) (width : int) (height : int) (preserve_aspect_ratio : bool) (cancellable : Ocgtk_gio.Gio.Cancellable.cancellable_t option) : (pixbuf_t, GError.t) result =
+  let stream = stream#as_input_stream in
+  let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
+  let obj_ = Pixbuf.new_from_stream_at_scale stream width height preserve_aspect_ratio cancellable in
+Result.map (fun obj_ ->  new pixbuf obj_) obj_
+
+let new_from_stream_finish (async_result : Ocgtk_gio.Gio.Async_result.async_result_t) : (pixbuf_t, GError.t) result =
+  let async_result = async_result#as_async_result in
+  let obj_ = Pixbuf.new_from_stream_finish async_result in
+Result.map (fun obj_ ->  new pixbuf obj_) obj_
 
 let new_from_xpm_data (data : string array) : pixbuf_t =
-  new pixbuf (Pixbuf.new_from_xpm_data data)
+  let obj_ = Pixbuf.new_from_xpm_data data in
+  new pixbuf obj_
 

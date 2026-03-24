@@ -31,5 +31,6 @@ class shortcut_label (obj : Shortcut_label.t) : shortcut_label_t = object (self)
 end
 
 let new_ (accelerator : string) : shortcut_label_t =
-  new shortcut_label (Shortcut_label.new_ accelerator)
+  let obj_ = Shortcut_label.new_ accelerator in
+  new shortcut_label obj_
 

@@ -47,8 +47,10 @@ let new_ () : builder_t =
   new builder (Builder.new_ ())
 
 let new_from_file (filename : string) : builder_t =
-  new builder (Builder.new_from_file filename)
+  let obj_ = Builder.new_from_file filename in
+  new builder obj_
 
 let new_from_resource (resource_path : string) : builder_t =
-  new builder (Builder.new_from_resource resource_path)
+  let obj_ = Builder.new_from_resource resource_path in
+  new builder obj_
 

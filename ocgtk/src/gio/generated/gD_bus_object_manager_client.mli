@@ -11,3 +11,5 @@ end
 
 class d_bus_object_manager_client : D_bus_object_manager_client.t -> d_bus_object_manager_client_t
 
+val new_finish : GAsync_result.async_result_t -> (d_bus_object_manager_client_t, GError.t) result
+val new_for_bus_finish : GAsync_result.async_result_t -> (d_bus_object_manager_client_t, GError.t) result

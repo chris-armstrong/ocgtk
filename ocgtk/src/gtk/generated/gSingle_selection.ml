@@ -54,5 +54,6 @@ end
 
 let new_ (model : Ocgtk_gio.Gio.List_model.list_model_t option) : single_selection_t =
   let model = Option.map (fun c -> c#as_list_model) model in
-  new single_selection (Single_selection.new_ model)
+  let obj_ = Single_selection.new_ model in
+  new single_selection obj_
 

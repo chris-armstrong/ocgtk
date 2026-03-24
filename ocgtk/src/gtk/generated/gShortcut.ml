@@ -33,5 +33,6 @@ end
 let new_ (trigger : GShortcut_trigger.shortcut_trigger_t option) (action : GShortcut_action.shortcut_action_t option) : shortcut_t =
   let trigger = Option.map (fun c -> c#as_shortcut_trigger) trigger in
   let action = Option.map (fun c -> c#as_shortcut_action) action in
-  new shortcut (Shortcut.new_ trigger action)
+  let obj_ = Shortcut.new_ trigger action in
+  new shortcut obj_
 

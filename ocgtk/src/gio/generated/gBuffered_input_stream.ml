@@ -18,5 +18,6 @@ end
 
 let new_ (base_stream : GInput_stream.input_stream_t) : buffered_input_stream_t =
   let base_stream = base_stream#as_input_stream in
-  new buffered_input_stream (Buffered_input_stream.new_ base_stream)
+  let obj_ = Buffered_input_stream.new_ base_stream in
+  new buffered_input_stream obj_
 

@@ -26,5 +26,6 @@ class zlib_compressor (obj : Zlib_compressor.t) : zlib_compressor_t = object (se
 end
 
 let new_ (format : Gio_enums.zlibcompressorformat) (level : int) : zlib_compressor_t =
-  new zlib_compressor (Zlib_compressor.new_ format level)
+  let obj_ = Zlib_compressor.new_ format level in
+  new zlib_compressor obj_
 

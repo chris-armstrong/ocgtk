@@ -22,5 +22,6 @@ end
 
 let new_ (child : GRender_node.render_node_t) (message : string) : debug_node_t =
   let child = child#as_render_node in
-  new debug_node (Debug_node.new_ child message)
+  let obj_ = Debug_node.new_ child message in
+  new debug_node obj_
 

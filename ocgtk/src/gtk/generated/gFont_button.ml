@@ -58,5 +58,6 @@ let new_ () : font_button_t =
   new font_button (Font_button.new_ ())
 
 let new_with_font (fontname : string) : font_button_t =
-  new font_button (Font_button.new_with_font fontname)
+  let obj_ = Font_button.new_with_font fontname in
+  new font_button obj_
 

@@ -23,5 +23,6 @@ end
 let new_ (first : GShortcut_trigger.shortcut_trigger_t) (second : GShortcut_trigger.shortcut_trigger_t) : alternative_trigger_t =
   let first = first#as_shortcut_trigger in
   let second = second#as_shortcut_trigger in
-  new alternative_trigger (Alternative_trigger.new_ first second)
+  let obj_ = Alternative_trigger.new_ first second in
+  new alternative_trigger obj_
 

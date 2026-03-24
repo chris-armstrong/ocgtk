@@ -112,8 +112,10 @@ end
 let new_ (model : Ocgtk_gio.Gio.List_model.list_model_t option) (expression : GExpression.expression_t option) : drop_down_t =
   let model = Option.map (fun c -> c#as_list_model) model in
   let expression = Option.map (fun c -> c#as_expression) expression in
-  new drop_down (Drop_down.new_ model expression)
+  let obj_ = Drop_down.new_ model expression in
+  new drop_down obj_
 
 let new_from_strings (strings : string array) : drop_down_t =
-  new drop_down (Drop_down.new_from_strings strings)
+  let obj_ = Drop_down.new_from_strings strings in
+  new drop_down obj_
 

@@ -3,6 +3,9 @@
 
 type t = [`subprocess | `object_] Gobject.obj
 
+(** Create a new Subprocess *)
+external newv : string array -> Gio_enums.subprocessflags -> (t, GError.t) result = "ml_g_subprocess_newv"
+
 (* Methods *)
 (** Collects the result of a previous call to
 g_subprocess_wait_async(). *)

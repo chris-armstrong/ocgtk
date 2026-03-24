@@ -780,8 +780,10 @@ and text_mark (obj : Text_buffer_and__text_iter_and__text_mark.Text_mark.t) : te
 end
 let new_ (table : GText_tag_table.text_tag_table_t option) : text_buffer_t =
   let table = Option.map (fun c -> c#as_text_tag_table) table in
-  new text_buffer (Text_buffer_and__text_iter_and__text_mark.Text_buffer.new_ table)
+  let obj_ = Text_buffer_and__text_iter_and__text_mark.Text_buffer.new_ table in
+  new text_buffer obj_
 
 let new_ (name : string option) (left_gravity : bool) : text_mark_t =
-  new text_mark (Text_buffer_and__text_iter_and__text_mark.Text_mark.new_ name left_gravity)
+  let obj_ = Text_buffer_and__text_iter_and__text_mark.Text_mark.new_ name left_gravity in
+  new text_mark obj_
 

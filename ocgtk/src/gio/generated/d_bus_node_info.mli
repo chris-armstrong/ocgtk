@@ -4,6 +4,9 @@
 (** Information about nodes in a remote object hierarchy. *)
 type t = [`d_bus_node_info] Gobject.obj
 
+(** Create a new DBusNodeInfo *)
+external new_for_xml : string -> (t, GError.t) result = "ml_g_dbus_node_info_new_for_xml"
+
 (* Methods *)
 (** If @info is statically allocated, does nothing. Otherwise decreases
 the reference count of @info. When its reference count drops to 0,

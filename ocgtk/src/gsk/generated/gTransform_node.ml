@@ -22,5 +22,6 @@ end
 
 let new_ (child : GRender_node.render_node_t) (transform : Transform.t) : transform_node_t =
   let child = child#as_render_node in
-  new transform_node (Transform_node.new_ child transform)
+  let obj_ = Transform_node.new_ child transform in
+  new transform_node obj_
 

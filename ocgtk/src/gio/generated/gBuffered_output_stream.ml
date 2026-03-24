@@ -22,5 +22,6 @@ end
 
 let new_ (base_stream : GOutput_stream.output_stream_t) : buffered_output_stream_t =
   let base_stream = base_stream#as_output_stream in
-  new buffered_output_stream (Buffered_output_stream.new_ base_stream)
+  let obj_ = Buffered_output_stream.new_ base_stream in
+  new buffered_output_stream obj_
 

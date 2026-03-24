@@ -137,5 +137,6 @@ let new_empty () : bitset_t =
   new bitset (Bitset.new_empty ())
 
 let new_range (start : int) (n_items : int) : bitset_t =
-  new bitset (Bitset.new_range start n_items)
+  let obj_ = Bitset.new_range start n_items in
+  new bitset obj_
 

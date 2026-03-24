@@ -17,5 +17,6 @@ let new_ () : text_child_anchor_t =
   new text_child_anchor (Text_child_anchor.new_ ())
 
 let new_with_replacement (character : string) : text_child_anchor_t =
-  new text_child_anchor (Text_child_anchor.new_with_replacement character)
+  let obj_ = Text_child_anchor.new_with_replacement character in
+  new text_child_anchor obj_
 

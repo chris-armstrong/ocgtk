@@ -20,3 +20,9 @@ class debug_controller_d_bus (obj : Debug_controller_d_bus.t) : debug_controller
     method as_debug_controller_d_bus = obj
 end
 
+let new_ (connection : GD_bus_connection.d_bus_connection_t) (cancellable : GCancellable.cancellable_t option) : (debug_controller_d_bus_t, GError.t) result =
+  let connection = connection#as_d_bus_connection in
+  let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
+  let obj_ = Debug_controller_d_bus.new_ connection cancellable in
+Result.map (fun obj_ ->  new debug_controller_d_bus obj_) obj_
+

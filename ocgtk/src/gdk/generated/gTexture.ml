@@ -35,8 +35,19 @@ end
 
 let new_for_pixbuf (pixbuf : Ocgtk_gdkpixbuf.GdkPixbuf.Pixbuf.pixbuf_t) : texture_t =
   let pixbuf = pixbuf#as_pixbuf in
-  new texture (Texture.new_for_pixbuf pixbuf)
+  let obj_ = Texture.new_for_pixbuf pixbuf in
+  new texture obj_
+
+let new_from_file (file : Ocgtk_gio.Gio.File.file_t) : (texture_t, GError.t) result =
+  let file = file#as_file in
+  let obj_ = Texture.new_from_file file in
+Result.map (fun obj_ ->  new texture obj_) obj_
+
+let new_from_filename (path : string) : (texture_t, GError.t) result =
+  let obj_ = Texture.new_from_filename path in
+Result.map (fun obj_ ->  new texture obj_) obj_
 
 let new_from_resource (resource_path : string) : texture_t =
-  new texture (Texture.new_from_resource resource_path)
+  let obj_ = Texture.new_from_resource resource_path in
+  new texture obj_
 

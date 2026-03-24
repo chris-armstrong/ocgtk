@@ -11,3 +11,5 @@ end
 class pixbuf_loader : Pixbuf_loader.t -> pixbuf_loader_t
 
 val new_ : unit -> pixbuf_loader_t
+val new_with_mime_type : string -> (pixbuf_loader_t, GError.t) result
+val new_with_type : string -> (pixbuf_loader_t, GError.t) result

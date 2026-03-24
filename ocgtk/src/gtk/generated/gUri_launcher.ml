@@ -25,5 +25,6 @@ class uri_launcher (obj : Uri_launcher.t) : uri_launcher_t = object (self)
 end
 
 let new_ (uri : string option) : uri_launcher_t =
-  new uri_launcher (Uri_launcher.new_ uri)
+  let obj_ = Uri_launcher.new_ uri in
+  new uri_launcher obj_
 

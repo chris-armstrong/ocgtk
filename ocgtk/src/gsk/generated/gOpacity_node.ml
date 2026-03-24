@@ -22,5 +22,6 @@ end
 
 let new_ (child : GRender_node.render_node_t) (opacity : float) : opacity_node_t =
   let child = child#as_render_node in
-  new opacity_node (Opacity_node.new_ child opacity)
+  let obj_ = Opacity_node.new_ child opacity in
+  new opacity_node obj_
 

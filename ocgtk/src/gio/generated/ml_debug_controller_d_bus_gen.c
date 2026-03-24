@@ -22,6 +22,16 @@
 #include "gio_decls.h"
 
 
+CAMLexport CAMLprim value ml_g_debug_controller_dbus_new(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+GError *error = NULL;
+    
+GDebugControllerDBus *obj = g_debug_controller_dbus_new(GDBusConnection_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GDebugControllerDBus(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 CAMLexport CAMLprim value ml_g_debug_controller_dbus_stop(value self)
 {
 CAMLparam1(self);

@@ -85,8 +85,10 @@ class desktop_app_info (obj : Desktop_app_info.t) : desktop_app_info_t = object 
 end
 
 let new_ (desktop_id : string) : desktop_app_info_t =
-  new desktop_app_info (Desktop_app_info.new_ desktop_id)
+  let obj_ = Desktop_app_info.new_ desktop_id in
+  new desktop_app_info obj_
 
 let new_from_filename (filename : string) : desktop_app_info_t =
-  new desktop_app_info (Desktop_app_info.new_from_filename filename)
+  let obj_ = Desktop_app_info.new_from_filename filename in
+  new desktop_app_info obj_
 

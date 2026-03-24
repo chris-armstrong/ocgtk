@@ -86,3 +86,7 @@ class subprocess (obj : Subprocess.t) : subprocess_t = object (self)
     method as_subprocess = obj
 end
 
+let newv (argv : string array) (flags : Gio_enums.subprocessflags) : (subprocess_t, GError.t) result =
+  let obj_ = Subprocess.newv argv flags in
+Result.map (fun obj_ ->  new subprocess obj_) obj_
+

@@ -251,5 +251,6 @@ let new_ () : tree_view_column_t =
 
 let new_with_area (area : GCell_area_and__cell_area_context.cell_area_t) : tree_view_column_t =
   let area = area#as_cell_area in
-  new tree_view_column (Tree_view_column.new_with_area area)
+  let obj_ = Tree_view_column.new_with_area area in
+  new tree_view_column obj_
 

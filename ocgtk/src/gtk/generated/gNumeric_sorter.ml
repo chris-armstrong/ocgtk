@@ -33,5 +33,6 @@ end
 
 let new_ (expression : GExpression.expression_t option) : numeric_sorter_t =
   let expression = Option.map (fun c -> c#as_expression) expression in
-  new numeric_sorter (Numeric_sorter.new_ expression)
+  let obj_ = Numeric_sorter.new_ expression in
+  new numeric_sorter obj_
 

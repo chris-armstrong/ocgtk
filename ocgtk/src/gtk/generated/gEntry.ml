@@ -401,5 +401,6 @@ let new_ () : entry_t =
 
 let new_with_buffer (buffer : GEntry_buffer.entry_buffer_t) : entry_t =
   let buffer = buffer#as_entry_buffer in
-  new entry (Entry.new_with_buffer buffer)
+  let obj_ = Entry.new_with_buffer buffer in
+  new entry obj_
 

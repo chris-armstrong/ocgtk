@@ -7,3 +7,4 @@ end
 
 class settings_schema_source : Settings_schema_source.t -> settings_schema_source_t
 
+val new_from_directory : string -> Settings_schema_source.t option -> bool -> (settings_schema_source_t, GError.t) result

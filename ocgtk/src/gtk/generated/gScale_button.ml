@@ -71,5 +71,6 @@ class scale_button (obj : Scale_button.t) : scale_button_t = object (self)
 end
 
 let new_ (min : float) (max : float) (step : float) (icons : string array option) : scale_button_t =
-  new scale_button (Scale_button.new_ min max step icons)
+  let obj_ = Scale_button.new_ min max step icons in
+  new scale_button obj_
 

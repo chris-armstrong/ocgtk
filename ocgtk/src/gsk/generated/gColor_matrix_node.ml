@@ -29,5 +29,6 @@ let new_ (child : GRender_node.render_node_t) (color_matrix : Ocgtk_graphene.Gra
   let child = child#as_render_node in
   let color_matrix = color_matrix#as_matrix in
   let color_offset = color_offset#as_vec4 in
-  new color_matrix_node (Color_matrix_node.new_ child color_matrix color_offset)
+  let obj_ = Color_matrix_node.new_ child color_matrix color_offset in
+  new color_matrix_node obj_
 

@@ -3,6 +3,9 @@
 
 type t = [`charset_converter | `object_] Gobject.obj
 
+(** Create a new CharsetConverter *)
+external new_ : string -> string -> (t, GError.t) result = "ml_g_charset_converter_new"
+
 (* Methods *)
 (** Sets the #GCharsetConverter:use-fallback property. *)
 external set_use_fallback : t -> bool -> unit = "ml_g_charset_converter_set_use_fallback"

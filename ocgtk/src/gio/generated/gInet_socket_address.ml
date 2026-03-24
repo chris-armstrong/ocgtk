@@ -16,5 +16,6 @@ class inet_socket_address (obj : Inet_socket_address.t) : inet_socket_address_t 
 end
 
 let new_from_string (address : string) (port : int) : inet_socket_address_t =
-  new inet_socket_address (Inet_socket_address.new_from_string address port)
+  let obj_ = Inet_socket_address.new_from_string address port in
+  new inet_socket_address obj_
 

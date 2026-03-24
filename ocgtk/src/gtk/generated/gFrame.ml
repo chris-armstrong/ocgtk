@@ -58,5 +58,6 @@ class frame (obj : Frame.t) : frame_t = object (self)
 end
 
 let new_ (label : string option) : frame_t =
-  new frame (Frame.new_ label)
+  let obj_ = Frame.new_ label in
+  new frame obj_
 

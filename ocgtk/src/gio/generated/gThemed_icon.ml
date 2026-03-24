@@ -30,11 +30,14 @@ class themed_icon (obj : Themed_icon.t) : themed_icon_t = object (self)
 end
 
 let new_ (iconname : string) : themed_icon_t =
-  new themed_icon (Themed_icon.new_ iconname)
+  let obj_ = Themed_icon.new_ iconname in
+  new themed_icon obj_
 
 let new_from_names (iconnames : string array) (len : int) : themed_icon_t =
-  new themed_icon (Themed_icon.new_from_names iconnames len)
+  let obj_ = Themed_icon.new_from_names iconnames len in
+  new themed_icon obj_
 
 let new_with_default_fallbacks (iconname : string) : themed_icon_t =
-  new themed_icon (Themed_icon.new_with_default_fallbacks iconname)
+  let obj_ = Themed_icon.new_with_default_fallbacks iconname in
+  new themed_icon obj_
 

@@ -7,3 +7,4 @@ end
 
 class d_bus_node_info : D_bus_node_info.t -> d_bus_node_info_t
 
+val new_for_xml : string -> (d_bus_node_info_t, GError.t) result

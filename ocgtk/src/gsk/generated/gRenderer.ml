@@ -54,5 +54,6 @@ end
 
 let new_for_surface (surface : Ocgtk_gdk.Gdk.Surface.surface_t) : renderer_t =
   let surface = surface#as_surface in
-  new renderer (Renderer.new_for_surface surface)
+  let obj_ = Renderer.new_for_surface surface in
+  new renderer obj_
 

@@ -11,5 +11,6 @@ class separator (obj : Separator.t) : separator_t = object (self)
 end
 
 let new_ (orientation : Gtk_enums.orientation) : separator_t =
-  new separator (Separator.new_ orientation)
+  let obj_ = Separator.new_ orientation in
+  new separator obj_
 

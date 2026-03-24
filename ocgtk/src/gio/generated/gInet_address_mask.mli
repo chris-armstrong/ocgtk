@@ -10,3 +10,5 @@ end
 
 class inet_address_mask : Inet_address_mask.t -> inet_address_mask_t
 
+val new_ : GInet_address.inet_address_t -> int -> (inet_address_mask_t, GError.t) result
+val new_from_string : string -> (inet_address_mask_t, GError.t) result

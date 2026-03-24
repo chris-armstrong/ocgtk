@@ -3,6 +3,9 @@
 
 type t = [`d_bus_server | `object_] Gobject.obj
 
+(** Create a new DBusServer *)
+external new_sync : string -> Gio_enums.dbusserverflags -> string -> D_bus_auth_observer.t option -> Cancellable.t option -> (t, GError.t) result = "ml_g_dbus_server_new_sync"
+
 (* Methods *)
 (** Stops @server. *)
 external stop : t -> unit = "ml_g_dbus_server_stop"
