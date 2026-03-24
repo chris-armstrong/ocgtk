@@ -1732,6 +1732,126 @@ let test_cross_namespace_c_converter_names () =
     "Does NOT contain GdkpixbufColorspace_val (wrong lowercase)" false
     (string_contains c_code "GdkpixbufColorspace_val")
 
+(* Cross-namespace enum array element conversion should not use address-of.
+   Before the fix, c_stub_array_conv.ml only checked ctx.enums (same-namespace)
+   to determine if an element type is a value type. Cross-namespace enums were
+   missed, causing incorrect &result[i] instead of result[i]. *)
+let test_cross_namespace_enum_array_element_conversion () =
+  let open Gir_gen_lib.Types in
+  (* Create a Gtk context with Gdk.ModifierType as a cross-namespace enum *)
+  let gdk_entities =
+    StringMap.empty
+    |> StringMap.add "ModifierType"
+         { cr_name = "ModifierType"; cr_type = Crt_Enum;
+           cr_c_type = "GdkModifierType" }
+  in
+  let cross_refs =
+    StringMap.empty
+    |> StringMap.add "Gdk"
+         (snd (Helpers.make_ncr "Gdk" gdk_entities))
+  in
+  let ctx =
+    { (Helpers.create_test_context ()) with
+      cross_references = cross_refs }
+  in
+
+  (* Create a method returning an array of Gdk.ModifierType with length param *)
+  let meth =
+    {
+      method_name = "get_modifiers";
+      c_identifier = "gtk_widget_get_modifiers";
+      return_type =
+        {
+          name = "Gdk.ModifierType";
+          c_type = Some "const GdkModifierType*";
+          nullable = false;
+          transfer_ownership = TransferNone;
+          array =
+            Some
+              {
+                length = Some 0;
+                zero_terminated = false;
+                fixed_size = None;
+                array_name = None;
+                element_type =
+                  {
+                    name = "Gdk.ModifierType";
+                    c_type = Some "GdkModifierType";
+                    nullable = false;
+                    transfer_ownership = TransferNone;
+                    array = None;
+                  };
+              };
+        };
+      parameters =
+        [
+          {
+            param_name = "num_modifiers";
+            param_type =
+              {
+                name = "gint";
+                c_type = Some "int*";
+                nullable = false;
+                transfer_ownership = TransferFull;
+                array = None;
+              };
+            direction = Out;
+            nullable = false;
+            varargs = false;
+            caller_allocates = false;
+          };
+        ];
+      doc = None;
+      throws = false;
+      introspectable = true;
+      get_property = None;
+      set_property = None;
+    }
+  in
+
+  let c_code =
+    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
+      ~c_type:"GtkWidget" meth "Widget"
+  in
+  Helpers.log_generated_c_code "cross_ns_enum_array" c_code;
+
+  let functions = C_parser.parse_c_code c_code in
+  let func =
+    Option.get (C_ast.find_function functions "ml_gtk_widget_get_modifiers")
+  in
+
+  (* Positive: has Store_field conversion loop *)
+  Alcotest.(check bool)
+    "Has Store_field conversion loop" true
+    (C_validation.has_conversion_loop func);
+
+  (* Critical: verify no AddrOf nodes wrap the enum conversion.
+     The generated code should be Val_GdkModifierType(result[i]), NOT
+     Val_GdkModifierType(&result[i]). *)
+  let has_addr_of_in_enum_call =
+    let rec check_stmts stmts = List.exists (fun stmt -> check_stmt stmt) stmts
+    and check_stmt = function
+      | C_ast.ExprStmt e -> check_expr e
+      | C_ast.Return e -> check_expr e
+      | C_ast.VarDecl (_, _, Some e) -> check_expr e
+      | C_ast.IfStmt (_, then_stmts, else_stmts) ->
+          check_stmts then_stmts || check_stmts else_stmts
+      | _ -> false
+    and check_expr = function
+      | C_ast.Call ("Val_GdkModifierType", args)
+      | C_ast.Macro ("Val_GdkModifierType", args) ->
+          List.exists (function C_ast.AddrOf _ -> true | _ -> false) args
+      | C_ast.Call (_, args) | C_ast.Macro (_, args) ->
+          List.exists check_expr args
+      | C_ast.Cast (_, e) -> check_expr e
+      | _ -> false
+    in
+    check_stmts func.C_ast.body
+  in
+  Alcotest.(check bool)
+    "No AddrOf wrapping cross-ns enum converter" false
+    has_addr_of_in_enum_call
+
 let tests =
   [
     Alcotest.test_case "Non-introspectable record filtered at generation" `Quick
@@ -1780,4 +1900,8 @@ let tests =
     (* Bug 11 test - C converter name casing for cross-namespace enums *)
     Alcotest.test_case "Cross-namespace C converter names (Bug 11)" `Quick
       test_cross_namespace_c_converter_names;
+    (* Cross-namespace enum array element - no address-of *)
+    Alcotest.test_case
+      "Cross-namespace enum array element (no address-of)" `Quick
+      test_cross_namespace_enum_array_element_conversion;
   ]
