@@ -82,17 +82,25 @@ let generate_param_unwrapping ~ctx ~buf params =
         else bprintf buf "  let %s = %s#%s in\n" pi.cp_name pi.cp_name accessor
       end)
 
+let calculate_return_type ~class_type_name ctor =
+  let return_type =
+    match ctor.throws with
+    | true -> sprintf "(%s, GError.t) result" class_type_name
+    | false -> class_type_name
+  in
+  return_type
+
 (** Generate a constructor wrapper implementation *)
 let generate_constructor_impl ~ctx ~buf ~class_snake ~class_type_name
     ~current_layer2_module ~layer1_ctor_prefix (ctor : gir_constructor) =
-  if not (Layer1.Layer1_constructor.should_generate_constructor ~ctx ctor) then
-    ()
+  if not (Filtering.should_generate_constructor ~ctx ctor) then ()
   else
     let ocaml_ctor_name = Utils.ocaml_constructor_name ~class_name:"" ctor in
     let params = collect_constructor_params ~ctx ~current_layer2_module ctor in
+    let return_type = calculate_return_type ~class_type_name ctor in
     match params with
     | [] ->
-        bprintf buf "let %s () : %s =\n" ocaml_ctor_name class_type_name;
+        bprintf buf "let %s () : %s =\n" ocaml_ctor_name return_type;
         bprintf buf "  new %s (%s.%s ())\n\n" class_snake layer1_ctor_prefix
           ocaml_ctor_name
     | _ ->
@@ -101,13 +109,17 @@ let generate_constructor_impl ~ctx ~buf ~class_snake ~class_type_name
             (List.map params ~f:(fun pi ->
                  sprintf "(%s : %s)" pi.cp_name pi.cp_type))
         in
-        bprintf buf "let %s %s : %s =\n" ocaml_ctor_name sig_str class_type_name;
+        bprintf buf "let %s %s : %s =\n" ocaml_ctor_name sig_str return_type;
         generate_param_unwrapping ~ctx ~buf params;
         let call_str =
           String.concat ~sep:" " (List.map params ~f:(fun pi -> pi.cp_name))
         in
-        bprintf buf "  new %s (%s.%s %s)\n\n" class_snake layer1_ctor_prefix
-          ocaml_ctor_name call_str
+        bprintf buf "  let obj_ = %s.%s %s in\n" layer1_ctor_prefix
+          ocaml_ctor_name call_str;
+        if ctor.throws then
+          bprintf buf "Result.map (fun obj_ ->  new %s obj_) obj_\n\n"
+            class_snake
+        else bprintf buf "  new %s obj_\n\n" class_snake
 
 (** Generate a constructor wrapper signature *)
 let generate_constructor_sig ~ctx ~buf ~class_type_name ~current_layer2_module
@@ -117,14 +129,15 @@ let generate_constructor_sig ~ctx ~buf ~class_type_name ~current_layer2_module
   else
     let ocaml_ctor_name = Utils.ocaml_constructor_name ~class_name:"" ctor in
     let params = collect_constructor_params ~ctx ~current_layer2_module ctor in
+    let return_type = calculate_return_type ~class_type_name ctor in
     match params with
-    | [] -> bprintf buf "val %s : unit -> %s\n" ocaml_ctor_name class_type_name
+    | [] -> bprintf buf "val %s : unit -> %s\n" ocaml_ctor_name return_type
     | _ ->
         let sig_str =
           String.concat ~sep:""
             (List.map params ~f:(fun pi -> sprintf "%s -> " pi.cp_type))
         in
-        bprintf buf "val %s : %s%s\n" ocaml_ctor_name sig_str class_type_name
+        bprintf buf "val %s : %s%s\n" ocaml_ctor_name sig_str return_type
 
 (** Generate a class module (implementation) *)
 let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods
