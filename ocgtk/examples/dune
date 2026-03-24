@@ -15,18 +15,17 @@
  (modules counter)
  (libraries ocgtk.gtk))
 
-; (executable
-;  (name settings_panel)
-;  (modules settings_panel)
-;  (libraries ocgtk))
+(executable
+ (name settings_panel)
+ (modules settings_panel)
+ (libraries ocgtk))
 
-; (executable
-;  (name text_editor)
-;  (modules text_editor)
-;  (libraries ocgtk))
+(executable
+ (name text_editor)
+ (modules text_editor)
+ (libraries ocgtk))
 
-; DISABLED: Uses GWindow and high-level convenience APIs that need to be rewritten
-; (executable
-;  (name login_form)
-;  (modules login_form)
-;  (libraries ocgtk))
+(executable
+ (name login_form)
+ (modules login_form)
+ (libraries ocgtk))
