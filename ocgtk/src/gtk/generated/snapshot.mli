@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Snapshot: Snapshot *)
 
-type t = [`snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot | `snapshot] Gobject.obj
+type t = [`snapshot | `object_] Gobject.obj
 
 (** Create a new Snapshot *)
 external new_ : unit -> t = "ml_gtk_snapshot_new"

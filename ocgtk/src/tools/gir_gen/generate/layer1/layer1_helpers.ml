@@ -23,16 +23,25 @@ let detect_class_hierarchy_names ~ctx:_ ~class_name ~parent_chain
   in
   if is_record then ("Record", Option.value record_base_type ~default:"Obj.t")
   else
-    let self_variant =
-      "`" ^ (Utils.to_snake_case normalized_class |> Utils.sanitize_identifier)
+    let self_tag =
+      Utils.to_snake_case normalized_class |> Utils.sanitize_identifier
     in
-    let parent_variants =
-      List.map parent_chain ~f:(fun p ->
-          "`" ^ (Utils.to_snake_case p |> Utils.sanitize_identifier))
+    let parent_tags =
+      List.filter_map parent_chain ~f:(fun p ->
+          let tag = Utils.to_snake_case p |> Utils.sanitize_identifier in
+          if String.equal tag self_tag then None else Some tag)
     in
-    let variants =
-      String.concat ~sep:" | " (self_variant :: parent_variants)
+    (* Deduplicate while preserving order *)
+    let seen = Hashtbl.create 8 in
+    let unique_tags =
+      List.filter parent_tags ~f:(fun tag ->
+          if Hashtbl.mem seen tag then false
+          else begin Hashtbl.replace seen tag (); true end)
     in
+    let all_variants =
+      List.map (self_tag :: unique_tags) ~f:(fun t -> "`" ^ t)
+    in
+    let variants = String.concat ~sep:" | " all_variants in
     (class_name, sprintf "[%s] Gobject.obj" variants)
 
 (** Indent content with 2 spaces, preserving empty lines *)

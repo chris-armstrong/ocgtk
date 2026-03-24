@@ -1,4 +1,5 @@
 class type snapshot_t = object
+    inherit Ocgtk_gdk.Gdk.Snapshot.snapshot_t
     method append_border : Ocgtk_gsk.Gsk.Rounded_rect.rounded_rect_t -> float array -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t array -> unit
     method append_cairo : Ocgtk_graphene.Graphene.Rect.rect_t -> Ocgtk_cairo.Cairo.Context.context_t
     method append_color : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> Ocgtk_graphene.Graphene.Rect.rect_t -> unit
@@ -41,7 +42,6 @@ class type snapshot_t = object
     method transform_matrix : Ocgtk_graphene.Graphene.Matrix.matrix_t -> unit
     method translate : Ocgtk_graphene.Graphene.Point.point_t -> unit
     method translate_3d : Ocgtk_graphene.Graphene.Point3_d.point3_d_t -> unit
-    method as_snapshot : Snapshot.t
 end
 
 class snapshot : Snapshot.t -> snapshot_t

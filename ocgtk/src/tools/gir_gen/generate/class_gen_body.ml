@@ -52,7 +52,18 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name
       with
       | Some parent_class_name ->
           let parent_l1 =
-            Class_utils.get_qualified_module_name ~ctx gir_type.name
+            if String.contains gir_type.name '.' then
+              (* Cross-namespace parent: use type mapping for qualified L1 path *)
+              match Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type with
+              | Some tm ->
+                  (* ocaml_type is e.g. "Ocgtk_gio.Gio.Wrappers.Application.t" — strip ".t" *)
+                  let ot = tm.ocaml_type in
+                  if Filename.check_suffix ot ".t" then
+                    String.sub ot ~pos:0 ~len:(String.length ot - 2)
+                  else ot
+              | None -> Class_utils.get_qualified_module_name ~ctx gir_type.name
+            else
+              Class_utils.get_qualified_module_name ~ctx gir_type.name
           in
           bprintf buf "  inherit %s (obj :> %s.t)\n" parent_class_name
             parent_l1
@@ -97,8 +108,16 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name
   in
   ignore seen;
 
-  (* Converter methods *)
-  Class_gen_converter.generate_class_converter_method_impl ~class_name buf
+  (* Converter methods — skip if parent already provides the same accessor *)
+  let self_accessor = Utils.ocaml_class_name class_name in
+  let parent_provides_accessor = match parent_name with
+    | Some p ->
+        let parent_accessor = Utils.ocaml_class_name (Utils.normalize_class_name p) in
+        String.equal self_accessor parent_accessor
+    | None -> false
+  in
+  if not parent_provides_accessor then
+    Class_gen_converter.generate_class_converter_method_impl ~class_name buf
 
 (** Generate the body of a class signature *)
 let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_
@@ -175,5 +194,15 @@ let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_
       ~generator_fn:generate ~add_newline:false
   in
 
-  (* Converter methods *)
-  Class_gen_converter.generate_class_converter_method_sig ~ctx ~class_name buf
+  (* Converter methods — skip if parent already provides the same accessor *)
+  let self_accessor = Utils.ocaml_class_name class_name in
+  let parent_provides_accessor =
+    match parent_name with
+    | Some p ->
+        String.equal self_accessor
+          (Utils.ocaml_class_name (Utils.normalize_class_name p))
+    | None -> false
+  in
+  if not parent_provides_accessor then
+    Class_gen_converter.generate_class_converter_method_sig ~ctx ~class_name buf
+

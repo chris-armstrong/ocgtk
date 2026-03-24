@@ -589,21 +589,73 @@ let generate_bindings filter_file gir_file output_dir reference_files =
 
   (* ==== PREPROCESSING STAGE ==== *)
 
+  (* Load cross-references early so parent chain can use them *)
+  let cross_references = load_reference_files reference_files in
+
   (* Build parent lookup table for inheritance chains *)
   let parent_table = Hashtbl.create (List.length classes + 10) in
   List.iter
     ~f:(fun (cls : Gir_gen_lib.Types.gir_class) ->
       Hashtbl.replace parent_table
         (Gir_gen_lib.Utils.normalize_class_name cls.class_name)
-        (Option.map Gir_gen_lib.Utils.normalize_class_name cls.parent))
+        (Option.map (fun p ->
+          if String.contains p '.' then
+            (* Cross-namespace parent: preserve qualified name (e.g. "Gio.Application") *)
+            p
+          else
+            Gir_gen_lib.Utils.normalize_class_name p) cls.parent))
     classes;
+
+  (* Resolve parent chain through cross-namespace references.
+     Note: GObject namespace is not in cross-references, so GObject.Object
+     is handled as a known terminal producing the `object_` tag.
+     WARNING: without namespace-prefixed tags, a type from one namespace could
+     be coerced to a same-named type in another namespace even if there is no
+     actual GObject inheritance relationship. Namespace-prefixed tags would fix
+     this but require a larger L1 type system change. *)
+  let cross_ns_parent_chain ns name =
+    let open Gir_gen_lib.Types in
+    let rec aux ns name depth =
+      if depth > 100 then []
+      else if String.equal ns "GObject" then
+        (* GObject namespace isn't in cross-references; Object is the root *)
+        [ ns ^ "." ^ name ]
+      else
+        match StringMap.find_opt ns cross_references with
+        | None -> [ ns ^ "." ^ name ]
+        | Some ncr ->
+            match StringMap.find_opt name ncr.ncr_entities with
+            | None -> [ ns ^ "." ^ name ]
+            | Some cr ->
+                let qualified = ns ^ "." ^ name in
+                match cr.cr_type with
+                | Crt_Class { parent = Some p } ->
+                    if String.contains p '.' then
+                      let dot = String.rindex p '.' in
+                      let p_ns = String.sub p ~pos:0 ~len:dot in
+                      let p_name = String.sub p ~pos:(dot + 1) ~len:(String.length p - dot - 1) in
+                      qualified :: aux p_ns p_name (depth + 1)
+                    else
+                      qualified :: aux ns p (depth + 1)
+                | Crt_Class { parent = None } -> [ qualified ]
+                | _ -> [ qualified ]
+    in
+    aux ns name 0
+  in
 
   let parent_chain_for_class name =
     let rec aux current depth =
       if depth > 100 then []
-      (* avoid accidental cycles *) else
+      else
         match Hashtbl.find_opt parent_table current with
-        | Some (Some parent) -> parent :: aux parent (depth + 1)
+        | Some (Some parent) ->
+            if String.contains parent '.' then
+              (* Cross-namespace parent: resolve full chain via cross-references *)
+              let dot = String.rindex parent '.' in
+              let ns = String.sub parent ~pos:0 ~len:dot in
+              let pname = String.sub parent ~pos:(dot + 1) ~len:(String.length parent - dot - 1) in
+              cross_ns_parent_chain ns pname
+            else parent :: aux parent (depth + 1)
         | _ -> []
     in
     aux (Gir_gen_lib.Utils.normalize_class_name name) 0
@@ -698,7 +750,7 @@ let generate_bindings filter_file gir_file output_dir reference_files =
       (* Temporary empty map *)
       current_cycle_classes = [];
       (* No cycle context initially *)
-      cross_references = load_reference_files reference_files;
+      cross_references;
       (* cross references initialised to empty *)
     }
   in
