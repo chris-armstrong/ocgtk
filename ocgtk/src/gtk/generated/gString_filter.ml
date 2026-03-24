@@ -13,7 +13,7 @@ end
 
 (* High-level class for StringFilter *)
 class string_filter (obj : String_filter.t) : string_filter_t = object (self)
-  inherit GFilter.filter (Obj.magic obj : Filter.t)
+  inherit GFilter.filter (obj :> Filter.t)
 
   method get_expression : unit -> GExpression.expression_t option =
     fun () ->

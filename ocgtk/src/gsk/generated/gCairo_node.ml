@@ -7,7 +7,7 @@ end
 
 (* High-level class for CairoNode *)
 class cairo_node (obj : Cairo_node.t) : cairo_node_t = object (self)
-  inherit GRender_node.render_node (Obj.magic obj : Render_node.t)
+  inherit GRender_node.render_node (obj :> Render_node.t)
 
   method get_draw_context : unit -> Ocgtk_cairo.Cairo.Context.context_t =
     fun () ->

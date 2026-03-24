@@ -20,7 +20,7 @@ end
 
 (* High-level class for Menu *)
 class menu (obj : Menu.t) : menu_t = object (self)
-  inherit GMenu_link_iter_and__menu_model.menu_model (Obj.magic obj : Menu_link_iter_and__menu_model.Menu_model.t)
+  inherit GMenu_link_iter_and__menu_model.menu_model (obj :> Menu_link_iter_and__menu_model.Menu_model.t)
 
   method append : string option -> string option -> unit =
     fun label detailed_action ->

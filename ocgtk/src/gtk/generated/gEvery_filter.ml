@@ -5,7 +5,7 @@ end
 
 (* High-level class for EveryFilter *)
 class every_filter (obj : Every_filter.t) : every_filter_t = object (self)
-  inherit GMulti_filter.multi_filter (Obj.magic obj : Multi_filter.t)
+  inherit GMulti_filter.multi_filter (obj :> Multi_filter.t)
 
     method as_every_filter = obj
 end

@@ -6,7 +6,7 @@ end
 
 (* High-level class for FileInputStream *)
 class file_input_stream (obj : File_input_stream.t) : file_input_stream_t = object (self)
-  inherit GInput_stream.input_stream (Obj.magic obj : Input_stream.t)
+  inherit GInput_stream.input_stream (obj :> Input_stream.t)
 
   method query_info : string -> GCancellable.cancellable_t option -> (GFile_info.file_info_t, GError.t) result =
     fun attributes cancellable ->

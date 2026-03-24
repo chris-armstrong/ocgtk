@@ -9,7 +9,7 @@ end
 
 (* High-level class for PadController *)
 class pad_controller (obj : Pad_controller.t) : pad_controller_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t)
 
   method set_action : Gtk_enums.padactiontype -> int -> int -> string -> string -> unit =
     fun type_ index mode label action_name ->

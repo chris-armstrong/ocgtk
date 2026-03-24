@@ -28,7 +28,7 @@ end
 
 (* High-level class for Stack *)
 class stack (obj : Stack.t) : stack_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
 
   method add_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GStack_page.stack_page_t =
     fun child ->

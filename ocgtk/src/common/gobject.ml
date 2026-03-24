@@ -15,7 +15,7 @@
 
 (** {2 Core Types} *)
 
-type +'a obj
+type -'a obj
 (** GObject instance - abstract pointer type *)
 
 type g_type = int

@@ -5,7 +5,7 @@ end
 
 (* High-level class for NeverTrigger *)
 class never_trigger (obj : Never_trigger.t) : never_trigger_t = object (self)
-  inherit GShortcut_trigger.shortcut_trigger (Obj.magic obj : Shortcut_trigger.t)
+  inherit GShortcut_trigger.shortcut_trigger (obj :> Shortcut_trigger.t)
 
     method as_never_trigger = obj
 end

@@ -6,6 +6,6 @@ its contents.
 This can happen either by calling [method@Gtk.RecentManager.add_item]
 or by another application. *)
   method on_changed ~callback =
-    Gobject.Signal.connect_simple (Obj.magic obj :> _ Gobject.obj) ~name:"changed" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"changed" ~callback ~after:false
 
 end

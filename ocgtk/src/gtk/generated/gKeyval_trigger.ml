@@ -7,7 +7,7 @@ end
 
 (* High-level class for KeyvalTrigger *)
 class keyval_trigger (obj : Keyval_trigger.t) : keyval_trigger_t = object (self)
-  inherit GShortcut_trigger.shortcut_trigger (Obj.magic obj : Shortcut_trigger.t)
+  inherit GShortcut_trigger.shortcut_trigger (obj :> Shortcut_trigger.t)
 
   method get_keyval : unit -> int =
     fun () ->

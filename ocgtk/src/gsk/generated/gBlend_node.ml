@@ -8,7 +8,7 @@ end
 
 (* High-level class for BlendNode *)
 class blend_node (obj : Blend_node.t) : blend_node_t = object (self)
-  inherit GRender_node.render_node (Obj.magic obj : Render_node.t)
+  inherit GRender_node.render_node (obj :> Render_node.t)
 
   method get_blend_mode : unit -> Gsk_enums.blendmode =
     fun () ->

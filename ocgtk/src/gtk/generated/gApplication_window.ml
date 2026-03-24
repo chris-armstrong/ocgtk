@@ -10,7 +10,7 @@ end
 
 (* High-level class for ApplicationWindow *)
 class application_window (obj : Application_window.t) : application_window_t = object (self)
-  inherit GApplication_and__window_and__window_group.window (Obj.magic obj : Application_and__window_and__window_group.Window.t)
+  inherit GApplication_and__window_and__window_group.window (obj :> Application_and__window_and__window_group.Window.t)
 
   method get_help_overlay : unit -> GShortcuts_window.shortcuts_window_t option =
     fun () ->

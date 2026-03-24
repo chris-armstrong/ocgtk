@@ -8,7 +8,7 @@ end
 
 (* High-level class for BorderNode *)
 class border_node (obj : Border_node.t) : border_node_t = object (self)
-  inherit GRender_node.render_node (Obj.magic obj : Render_node.t)
+  inherit GRender_node.render_node (obj :> Render_node.t)
 
   method get_colors : unit -> Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t =
     fun () ->

@@ -16,7 +16,7 @@ end
 
 (* High-level class for CellRendererToggle *)
 class cell_renderer_toggle (obj : Cell_renderer_toggle.t) : cell_renderer_toggle_t = object (self)
-  inherit GCell_renderer.cell_renderer (Obj.magic obj : Cell_renderer.t)
+  inherit GCell_renderer.cell_renderer (obj :> Cell_renderer.t)
   inherit Gcell_renderer_toggle_signals.cell_renderer_toggle_signals obj
 
   method get_activatable : unit -> bool =

@@ -5,7 +5,7 @@ end
 
 (* High-level class for CustomSorter *)
 class custom_sorter (obj : Custom_sorter.t) : custom_sorter_t = object (self)
-  inherit GSorter.sorter (Obj.magic obj : Sorter.t)
+  inherit GSorter.sorter (obj :> Sorter.t)
 
     method as_custom_sorter = obj
 end

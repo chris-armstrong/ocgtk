@@ -39,7 +39,7 @@ end
 
 (* High-level class for AboutDialog *)
 class about_dialog (obj : About_dialog.t) : about_dialog_t = object (self)
-  inherit GApplication_and__window_and__window_group.window (Obj.magic obj : Application_and__window_and__window_group.Window.t)
+  inherit GApplication_and__window_and__window_group.window (obj :> Application_and__window_and__window_group.Window.t)
   inherit Gabout_dialog_signals.about_dialog_signals obj
 
   method add_credit_section : string -> string array -> unit =

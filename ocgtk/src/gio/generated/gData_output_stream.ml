@@ -8,7 +8,7 @@ end
 
 (* High-level class for DataOutputStream *)
 class data_output_stream (obj : Data_output_stream.t) : data_output_stream_t = object (self)
-  inherit GFilter_output_stream.filter_output_stream (Obj.magic obj : Filter_output_stream.t)
+  inherit GFilter_output_stream.filter_output_stream (obj :> Filter_output_stream.t)
 
   method get_byte_order : unit -> Gio_enums.datastreambyteorder =
     fun () ->

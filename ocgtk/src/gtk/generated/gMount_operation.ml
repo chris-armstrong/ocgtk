@@ -1,14 +1,15 @@
 class type mount_operation_t = object
+    inherit Ocgtk_gio.Gio.Mount_operation.mount_operation_t
     method get_display : unit -> Ocgtk_gdk.Gdk.Display.display_t
     method get_parent : unit -> GApplication_and__window_and__window_group.window_t option
     method is_showing : unit -> bool
     method set_display : Ocgtk_gdk.Gdk.Display.display_t -> unit
     method set_parent : GApplication_and__window_and__window_group.window_t option -> unit
-    method as_mount_operation : Mount_operation.t
 end
 
 (* High-level class for MountOperation *)
 class mount_operation (obj : Mount_operation.t) : mount_operation_t = object (self)
+  inherit Ocgtk_gio.Gio.Mount_operation.mount_operation (obj :> Ocgtk_gio.Gio.Wrappers.Mount_operation.t)
 
   method get_display : unit -> Ocgtk_gdk.Gdk.Display.display_t =
     fun () ->
@@ -32,7 +33,6 @@ class mount_operation (obj : Mount_operation.t) : mount_operation_t = object (se
       let parent = Option.map (fun (c) -> c#as_window) parent in
       (Mount_operation.set_parent obj parent)
 
-    method as_mount_operation = obj
 end
 
 let new_ (parent : GApplication_and__window_and__window_group.window_t option) : mount_operation_t =

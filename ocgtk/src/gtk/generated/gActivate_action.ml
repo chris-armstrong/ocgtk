@@ -5,7 +5,7 @@ end
 
 (* High-level class for ActivateAction *)
 class activate_action (obj : Activate_action.t) : activate_action_t = object (self)
-  inherit GShortcut_action.shortcut_action (Obj.magic obj : Shortcut_action.t)
+  inherit GShortcut_action.shortcut_action (obj :> Shortcut_action.t)
 
     method as_activate_action = obj
 end

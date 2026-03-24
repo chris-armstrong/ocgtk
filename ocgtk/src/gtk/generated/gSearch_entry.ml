@@ -20,7 +20,7 @@ end
 
 (* High-level class for SearchEntry *)
 class search_entry (obj : Search_entry.t) : search_entry_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gsearch_entry_signals.search_entry_signals obj
 
   method get_input_hints : unit -> Gtk_enums.inputhints =

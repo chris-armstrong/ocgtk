@@ -5,7 +5,7 @@ end
 
 (* High-level class for VulkanRenderer *)
 class vulkan_renderer (obj : Vulkan_renderer.t) : vulkan_renderer_t = object (self)
-  inherit GRenderer.renderer (Obj.magic obj : Renderer.t)
+  inherit GRenderer.renderer (obj :> Renderer.t)
 
     method as_vulkan_renderer = obj
 end

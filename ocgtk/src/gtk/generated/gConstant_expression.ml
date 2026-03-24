@@ -5,7 +5,7 @@ end
 
 (* High-level class for ConstantExpression *)
 class constant_expression (obj : Constant_expression.t) : constant_expression_t = object (self)
-  inherit GExpression.expression (Obj.magic obj : Expression.t)
+  inherit GExpression.expression (obj :> Expression.t)
 
     method as_constant_expression = obj
 end

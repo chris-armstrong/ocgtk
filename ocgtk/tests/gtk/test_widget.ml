@@ -15,7 +15,7 @@ module GMain = Ocgtk_gtk.GMain
 module Box = struct
   include Wrappers.Box
 
-  let as_widget (box : t) : Widget.t = Obj.magic box
+  let as_widget (box : t) : Widget.t = (box :> Widget.t)
 end
 
 (* Try to initialize GTK once for all tests *)

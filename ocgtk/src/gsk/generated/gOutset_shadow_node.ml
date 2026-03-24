@@ -11,7 +11,7 @@ end
 
 (* High-level class for OutsetShadowNode *)
 class outset_shadow_node (obj : Outset_shadow_node.t) : outset_shadow_node_t = object (self)
-  inherit GRender_node.render_node (Obj.magic obj : Render_node.t)
+  inherit GRender_node.render_node (obj :> Render_node.t)
 
   method get_blur_radius : unit -> float =
     fun () ->

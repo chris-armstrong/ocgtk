@@ -22,7 +22,7 @@ end
 
 (* High-level class for ListView *)
 class list_view (obj : List_view.t) : list_view_t = object (self)
-  inherit GList_base.list_base (Obj.magic obj : List_base.t)
+  inherit GList_base.list_base (obj :> List_base.t)
   inherit Glist_view_signals.list_view_signals obj
 
   method get_enable_rubberband : unit -> bool =

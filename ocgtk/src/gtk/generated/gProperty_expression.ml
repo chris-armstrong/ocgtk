@@ -6,7 +6,7 @@ end
 
 (* High-level class for PropertyExpression *)
 class property_expression (obj : Property_expression.t) : property_expression_t = object (self)
-  inherit GExpression.expression (Obj.magic obj : Expression.t)
+  inherit GExpression.expression (obj :> Expression.t)
 
   method get_expression : unit -> GExpression.expression_t option =
     fun () ->

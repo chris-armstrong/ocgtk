@@ -6,6 +6,6 @@ while a mount operation is in progress.
 Implementations of GMountOperation should handle this signal
 by dismissing open password dialogs. *)
   method on_aborted ~callback =
-    Gobject.Signal.connect_simple (Obj.magic obj :> _ Gobject.obj) ~name:"aborted" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"aborted" ~callback ~after:false
 
 end

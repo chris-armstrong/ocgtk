@@ -17,7 +17,7 @@ end
 
 (* High-level class for CenterLayout *)
 class center_layout (obj : Center_layout.t) : center_layout_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.layout_manager (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Layout_manager.t)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.layout_manager (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Layout_manager.t)
 
   method get_baseline_position : unit -> Gtk_enums.baselineposition =
     fun () ->

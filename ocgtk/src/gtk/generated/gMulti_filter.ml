@@ -8,7 +8,7 @@ end
 
 (* High-level class for MultiFilter *)
 class multi_filter (obj : Multi_filter.t) : multi_filter_t = object (self)
-  inherit GFilter.filter (Obj.magic obj : Filter.t)
+  inherit GFilter.filter (obj :> Filter.t)
 
   method append : GFilter.filter_t -> unit =
     fun filter ->

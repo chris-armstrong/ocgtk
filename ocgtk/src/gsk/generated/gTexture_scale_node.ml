@@ -7,7 +7,7 @@ end
 
 (* High-level class for TextureScaleNode *)
 class texture_scale_node (obj : Texture_scale_node.t) : texture_scale_node_t = object (self)
-  inherit GRender_node.render_node (Obj.magic obj : Render_node.t)
+  inherit GRender_node.render_node (obj :> Render_node.t)
 
   method get_filter : unit -> Gsk_enums.scalingfilter =
     fun () ->

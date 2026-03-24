@@ -7,7 +7,7 @@ end
 
 (* High-level class for DebugNode *)
 class debug_node (obj : Debug_node.t) : debug_node_t = object (self)
-  inherit GRender_node.render_node (Obj.magic obj : Render_node.t)
+  inherit GRender_node.render_node (obj :> Render_node.t)
 
   method get_child : unit -> GRender_node.render_node_t =
     fun () ->

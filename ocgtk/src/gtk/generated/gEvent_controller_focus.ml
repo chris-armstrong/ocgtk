@@ -10,7 +10,7 @@ end
 
 (* High-level class for EventControllerFocus *)
 class event_controller_focus (obj : Event_controller_focus.t) : event_controller_focus_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.t)
   inherit Gevent_controller_focus_signals.event_controller_focus_signals obj
 
   method contains_focus : unit -> bool =

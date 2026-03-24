@@ -5,6 +5,6 @@ this signal is mostly a hint.  It may only be emitted once when a range
 of rows are selected, and it may occasionally be emitted when nothing
 has happened. *)
   method on_changed ~callback =
-    Gobject.Signal.connect_simple (Obj.magic obj :> _ Gobject.obj) ~name:"changed" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"changed" ~callback ~after:false
 
 end

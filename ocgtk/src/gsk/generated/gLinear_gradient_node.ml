@@ -7,7 +7,7 @@ end
 
 (* High-level class for LinearGradientNode *)
 class linear_gradient_node (obj : Linear_gradient_node.t) : linear_gradient_node_t = object (self)
-  inherit GRender_node.render_node (Obj.magic obj : Render_node.t)
+  inherit GRender_node.render_node (obj :> Render_node.t)
 
   method get_end : unit -> Ocgtk_graphene.Graphene.Point.point_t =
     fun () ->

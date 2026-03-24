@@ -9,7 +9,7 @@ end
 
 (* High-level class for UnixSocketAddress *)
 class unix_socket_address (obj : Unix_socket_address.t) : unix_socket_address_t = object (self)
-  inherit GSocket_address.socket_address (Obj.magic obj : Socket_address.t)
+  inherit GSocket_address.socket_address (obj :> Socket_address.t)
 
   method get_address_type : unit -> Gio_enums.unixsocketaddresstype =
     fun () ->

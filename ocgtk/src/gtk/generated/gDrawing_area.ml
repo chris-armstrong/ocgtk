@@ -12,7 +12,7 @@ end
 
 (* High-level class for DrawingArea *)
 class drawing_area (obj : Drawing_area.t) : drawing_area_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gdrawing_area_signals.drawing_area_signals obj
 
   method get_content_height : unit -> int =

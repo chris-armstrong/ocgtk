@@ -7,7 +7,7 @@ end
 
 (* High-level class for MediaControls *)
 class media_controls (obj : Media_controls.t) : media_controls_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
 
   method get_media_stream : unit -> GMedia_stream.media_stream_t option =
     fun () ->

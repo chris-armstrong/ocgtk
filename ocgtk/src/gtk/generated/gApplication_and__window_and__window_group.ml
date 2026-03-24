@@ -2,6 +2,7 @@
 (* Combined classes for cyclic dependencies *)
 
 class type application_t = object
+    inherit Ocgtk_gio.Gio.Application.application_t
     inherit Gapplication_signals.application_signals
     method add_window : window_t -> unit
     method get_accels_for_action : string -> string array
@@ -19,7 +20,6 @@ class type application_t = object
     method register_session : bool
     method set_register_session : bool -> unit
     method screensaver_active : bool
-    method as_application : Application_and__window_and__window_group.Application.t
 end
 
 and window_t = object
@@ -102,6 +102,7 @@ end
 (* Signal class defined in gapplication_signals.ml *)
 
 class application (obj : Application_and__window_and__window_group.Application.t) : application_t = object (self)
+  inherit Ocgtk_gio.Gio.Application.application (obj :> Ocgtk_gio.Gio.Wrappers.Application.t)
   inherit Gapplication_signals.application_signals obj
 
   method add_window : window_t -> unit =
@@ -165,13 +166,12 @@ class application (obj : Application_and__window_and__window_group.Application.t
 
   method screensaver_active = Application_and__window_and__window_group.Application.get_screensaver_active obj
 
-    method as_application = obj
 end
 (* Signal class defined in gwindow_signals.ml *)
 
 
 and window (obj : Application_and__window_and__window_group.Window.t) : window_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
   inherit Gwindow_signals.window_signals obj
 
   method close : unit -> unit =

@@ -8,7 +8,7 @@ end
 
 (* High-level class for CrossFadeNode *)
 class cross_fade_node (obj : Cross_fade_node.t) : cross_fade_node_t = object (self)
-  inherit GRender_node.render_node (Obj.magic obj : Render_node.t)
+  inherit GRender_node.render_node (obj :> Render_node.t)
 
   method get_end_child : unit -> GRender_node.render_node_t =
     fun () ->

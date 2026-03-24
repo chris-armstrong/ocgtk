@@ -8,7 +8,7 @@ end
 
 (* High-level class for PixbufSimpleAnim *)
 class pixbuf_simple_anim (obj : Pixbuf_simple_anim.t) : pixbuf_simple_anim_t = object (self)
-  inherit GPixbuf_animation.pixbuf_animation (Obj.magic obj : Pixbuf_animation.t)
+  inherit GPixbuf_animation.pixbuf_animation (obj :> Pixbuf_animation.t)
 
   method add_frame : GPixbuf.pixbuf_t -> unit =
     fun pixbuf ->

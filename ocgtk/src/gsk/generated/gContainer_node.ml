@@ -7,7 +7,7 @@ end
 
 (* High-level class for ContainerNode *)
 class container_node (obj : Container_node.t) : container_node_t = object (self)
-  inherit GRender_node.render_node (Obj.magic obj : Render_node.t)
+  inherit GRender_node.render_node (obj :> Render_node.t)
 
   method get_child : int -> GRender_node.render_node_t =
     fun idx ->

@@ -12,7 +12,7 @@ end
 
 (* High-level class for MediaFile *)
 class media_file (obj : Media_file.t) : media_file_t = object (self)
-  inherit GMedia_stream.media_stream (Obj.magic obj : Media_stream.t)
+  inherit GMedia_stream.media_stream (obj :> Media_stream.t)
 
   method clear : unit -> unit =
     fun () ->

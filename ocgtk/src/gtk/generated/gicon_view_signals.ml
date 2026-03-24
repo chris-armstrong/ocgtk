@@ -9,7 +9,7 @@ programmatically.
 
 The default binding for this signal is Ctrl-a. *)
   method on_select_all ~callback =
-    Gobject.Signal.connect_simple (Obj.magic (obj :> _ Gobject.obj) : [`widget] Gobject.obj) ~name:"select-all" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"select-all" ~callback ~after:false
 
   (** A [keybinding signal][class@Gtk.SignalAction]
 which gets emitted when the user selects the item that is currently
@@ -21,12 +21,12 @@ programmatically.
 
 There is no default binding for this signal. *)
   method on_select_cursor_item ~callback =
-    Gobject.Signal.connect_simple (Obj.magic (obj :> _ Gobject.obj) : [`widget] Gobject.obj) ~name:"select-cursor-item" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"select-cursor-item" ~callback ~after:false
 
   (** The ::selection-changed signal is emitted when the selection
 (i.e. the set of selected items) changes. *)
   method on_selection_changed ~callback =
-    Gobject.Signal.connect_simple (Obj.magic (obj :> _ Gobject.obj) : [`widget] Gobject.obj) ~name:"selection-changed" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"selection-changed" ~callback ~after:false
 
   (** A [keybinding signal][class@Gtk.SignalAction]
 which gets emitted when the user toggles whether the currently
@@ -39,7 +39,7 @@ programmatically.
 
 There is no default binding for this signal is Ctrl-Space. *)
   method on_toggle_cursor_item ~callback =
-    Gobject.Signal.connect_simple (Obj.magic (obj :> _ Gobject.obj) : [`widget] Gobject.obj) ~name:"toggle-cursor-item" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"toggle-cursor-item" ~callback ~after:false
 
   (** A [keybinding signal][class@Gtk.SignalAction]
 which gets emitted when the user unselects all items.
@@ -50,6 +50,6 @@ programmatically.
 
 The default binding for this signal is Ctrl-Shift-a. *)
   method on_unselect_all ~callback =
-    Gobject.Signal.connect_simple (Obj.magic (obj :> _ Gobject.obj) : [`widget] Gobject.obj) ~name:"unselect-all" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"unselect-all" ~callback ~after:false
 
 end

@@ -9,7 +9,7 @@ end
 
 (* High-level class for GestureRotate *)
 class gesture_rotate (obj : Gesture_rotate.t) : gesture_rotate_t = object (self)
-  inherit GGesture.gesture (Obj.magic obj : Gesture.t)
+  inherit GGesture.gesture (obj :> Gesture.t)
   inherit Ggesture_rotate_signals.gesture_rotate_signals obj
 
   method get_angle_delta : unit -> float =

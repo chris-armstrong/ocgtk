@@ -1,10 +1,10 @@
 
 class type app_launch_context_t = object
+    inherit Ocgtk_gio.Gio.App_launch_context.app_launch_context_t
     method get_display : unit -> display_t
     method set_desktop : int -> unit
     method set_icon : Ocgtk_gio.Gio.Icon.icon_t option -> unit
     method set_icon_name : string option -> unit
-    method as_app_launch_context : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.App_launch_context.t
 end
 
 and cairo_context_t = object

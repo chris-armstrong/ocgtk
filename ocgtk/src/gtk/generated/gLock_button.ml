@@ -17,7 +17,7 @@ end
 
 (* High-level class for LockButton *)
 class lock_button (obj : Lock_button.t) : lock_button_t = object (self)
-  inherit GButton.button (Obj.magic obj : Button.t)
+  inherit GButton.button (obj :> Button.t)
 
   method get_permission : unit -> Ocgtk_gio.Gio.Permission.permission_t option =
     fun () ->

@@ -8,7 +8,7 @@ end
 
 (* High-level class for EditableLabel *)
 class editable_label (obj : Editable_label.t) : editable_label_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
 
   method get_editing : unit -> bool =
     fun () ->

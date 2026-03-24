@@ -10,7 +10,7 @@ end
 
 (* High-level class for GestureLongPress *)
 class gesture_long_press (obj : Gesture_long_press.t) : gesture_long_press_t = object (self)
-  inherit GGesture_single.gesture_single (Obj.magic obj : Gesture_single.t)
+  inherit GGesture_single.gesture_single (obj :> Gesture_single.t)
   inherit Ggesture_long_press_signals.gesture_long_press_signals obj
 
   method get_delay_factor : unit -> float =

@@ -11,7 +11,7 @@ end
 
 (* High-level class for CellRendererSpinner *)
 class cell_renderer_spinner (obj : Cell_renderer_spinner.t) : cell_renderer_spinner_t = object (self)
-  inherit GCell_renderer.cell_renderer (Obj.magic obj : Cell_renderer.t)
+  inherit GCell_renderer.cell_renderer (obj :> Cell_renderer.t)
 
   method active = Cell_renderer_spinner.get_active obj
   method set_active v =  Cell_renderer_spinner.set_active obj v

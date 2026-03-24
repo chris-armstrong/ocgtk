@@ -5,7 +5,7 @@ end
 
 (* High-level class for MemoryInputStream *)
 class memory_input_stream (obj : Memory_input_stream.t) : memory_input_stream_t = object (self)
-  inherit GInput_stream.input_stream (Obj.magic obj : Input_stream.t)
+  inherit GInput_stream.input_stream (obj :> Input_stream.t)
 
     method as_memory_input_stream = obj
 end

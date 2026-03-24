@@ -5,7 +5,7 @@ end
 
 (* High-level class for ThreadedResolver *)
 class threaded_resolver (obj : Threaded_resolver.t) : threaded_resolver_t = object (self)
-  inherit GResolver.resolver (Obj.magic obj : Resolver.t)
+  inherit GResolver.resolver (obj :> Resolver.t)
 
     method as_threaded_resolver = obj
 end

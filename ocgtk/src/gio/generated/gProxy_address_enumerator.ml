@@ -7,7 +7,7 @@ end
 
 (* High-level class for ProxyAddressEnumerator *)
 class proxy_address_enumerator (obj : Proxy_address_enumerator.t) : proxy_address_enumerator_t = object (self)
-  inherit GSocket_address_enumerator.socket_address_enumerator (Obj.magic obj : Socket_address_enumerator.t)
+  inherit GSocket_address_enumerator.socket_address_enumerator (obj :> Socket_address_enumerator.t)
 
   method default_port = Proxy_address_enumerator.get_default_port obj
 

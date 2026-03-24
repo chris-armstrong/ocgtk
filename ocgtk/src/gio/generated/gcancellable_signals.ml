@@ -52,6 +52,6 @@ Note that the cancelled signal is emitted in the thread that
 the user cancelled from, which may be the main thread. So, the
 cancellable signal should not do something that can block. *)
   method on_cancelled ~callback =
-    Gobject.Signal.connect_simple (Obj.magic obj :> _ Gobject.obj) ~name:"cancelled" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"cancelled" ~callback ~after:false
 
 end

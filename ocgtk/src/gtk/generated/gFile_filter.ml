@@ -15,7 +15,7 @@ end
 
 (* High-level class for FileFilter *)
 class file_filter (obj : File_filter.t) : file_filter_t = object (self)
-  inherit GFilter.filter (Obj.magic obj : Filter.t)
+  inherit GFilter.filter (obj :> Filter.t)
 
   method add_mime_type : string -> unit =
     fun mime_type ->

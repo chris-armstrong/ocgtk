@@ -7,7 +7,7 @@ end
 
 (* High-level class for FileIOStream *)
 class file_io_stream (obj : File_io_stream.t) : file_io_stream_t = object (self)
-  inherit GIo_stream.io_stream (Obj.magic obj : Io_stream.t)
+  inherit GIo_stream.io_stream (obj :> Io_stream.t)
 
   method get_etag : unit -> string option =
     fun () ->

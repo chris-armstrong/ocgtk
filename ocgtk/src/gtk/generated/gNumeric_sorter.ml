@@ -9,7 +9,7 @@ end
 
 (* High-level class for NumericSorter *)
 class numeric_sorter (obj : Numeric_sorter.t) : numeric_sorter_t = object (self)
-  inherit GSorter.sorter (Obj.magic obj : Sorter.t)
+  inherit GSorter.sorter (obj :> Sorter.t)
 
   method get_expression : unit -> GExpression.expression_t option =
     fun () ->

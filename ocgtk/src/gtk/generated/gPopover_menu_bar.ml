@@ -9,7 +9,7 @@ end
 
 (* High-level class for PopoverMenuBar *)
 class popover_menu_bar (obj : Popover_menu_bar.t) : popover_menu_bar_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
 
   method add_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> string -> bool =
     fun child id ->

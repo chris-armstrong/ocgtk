@@ -5,6 +5,6 @@ class drop_target_signals (obj : Drop_target.t) = object
 Its main purpose it to undo things done in
 [signal@Gtk.DropTarget::enter]. *)
   method on_leave ~callback =
-    Gobject.Signal.connect_simple (Obj.magic obj :> _ Gobject.obj) ~name:"leave" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"leave" ~callback ~after:false
 
 end

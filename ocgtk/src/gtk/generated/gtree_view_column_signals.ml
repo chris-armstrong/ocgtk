@@ -2,6 +2,6 @@
 class tree_view_column_signals (obj : Tree_view_column.t) = object
   (** Emitted when the column's header has been clicked. *)
   method on_clicked ~callback =
-    Gobject.Signal.connect_simple (Obj.magic obj :> _ Gobject.obj) ~name:"clicked" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"clicked" ~callback ~after:false
 
 end

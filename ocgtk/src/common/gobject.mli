@@ -15,7 +15,7 @@
 
 (** {2 Core Types} *)
 
-type +'a obj
+type -'a obj
 (** Type for GObject instances. The type parameter provides type safety. *)
 
 type g_type = int

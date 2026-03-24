@@ -4,6 +4,6 @@ class tree_sortable_signals (obj : Tree_sortable.t) = object
 or sort order of @sortable is changed. The signal is emitted before
 the contents of @sortable are resorted. *)
   method on_sort_column_changed ~callback =
-    Gobject.Signal.connect_simple (Obj.magic obj :> _ Gobject.obj) ~name:"sort-column-changed" ~callback ~after:false
+    Gobject.Signal.connect_simple obj ~name:"sort-column-changed" ~callback ~after:false
 
 end

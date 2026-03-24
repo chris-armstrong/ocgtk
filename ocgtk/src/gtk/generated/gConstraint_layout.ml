@@ -12,7 +12,7 @@ end
 
 (* High-level class for ConstraintLayout *)
 class constraint_layout (obj : Constraint_layout.t) : constraint_layout_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.layout_manager (Obj.magic obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Layout_manager.t)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.layout_manager (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Layout_manager.t)
 
   method add_constraint : GConstraint.constraint__t -> unit =
     fun constraint_ ->

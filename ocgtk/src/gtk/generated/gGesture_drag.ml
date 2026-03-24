@@ -8,7 +8,7 @@ end
 
 (* High-level class for GestureDrag *)
 class gesture_drag (obj : Gesture_drag.t) : gesture_drag_t = object (self)
-  inherit GGesture_single.gesture_single (Obj.magic obj : Gesture_single.t)
+  inherit GGesture_single.gesture_single (obj :> Gesture_single.t)
   inherit Ggesture_drag_signals.gesture_drag_signals obj
 
     method as_gesture_drag = obj

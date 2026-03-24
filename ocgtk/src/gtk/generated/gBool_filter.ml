@@ -9,7 +9,7 @@ end
 
 (* High-level class for BoolFilter *)
 class bool_filter (obj : Bool_filter.t) : bool_filter_t = object (self)
-  inherit GFilter.filter (Obj.magic obj : Filter.t)
+  inherit GFilter.filter (obj :> Filter.t)
 
   method get_expression : unit -> GExpression.expression_t option =
     fun () ->

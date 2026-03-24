@@ -63,13 +63,13 @@ let test_progress_bar_inverted () =
 let test_range_fill_level () =
   (* Create a scale (which is a range) for testing *)
   let scale = Scale.new_ `HORIZONTAL None in
-  let r = (Obj.magic scale : Range.t) in
+  let r = (scale :> Range.t) in
   Range.set_fill_level r 0.75;
   check (float 0.01) "fill level set" 0.75 (Range.get_fill_level r)
 
 let test_range_inverted () =
   let scale = Scale.new_ `HORIZONTAL None in
-  let r = (Obj.magic scale : Range.t) in
+  let r = (scale :> Range.t) in
   Range.set_inverted r true;
   check bool "range inverted" true (Range.get_inverted r);
   Range.set_inverted r false;
@@ -77,31 +77,31 @@ let test_range_inverted () =
 
 let test_range_restrict_to_fill_level () =
   let scale = Scale.new_ `HORIZONTAL None in
-  let r = (Obj.magic scale : Range.t) in
+  let r = (scale :> Range.t) in
   Range.set_restrict_to_fill_level r true;
   check bool "restrict to fill level" true (Range.get_restrict_to_fill_level r)
 
 let test_range_round_digits () =
   let scale = Scale.new_ `HORIZONTAL None in
-  let r = (Obj.magic scale : Range.t) in
+  let r = (scale :> Range.t) in
   Range.set_round_digits r 2;
   check int "round digits" 2 (Range.get_round_digits r)
 
 let test_range_show_fill_level () =
   let scale = Scale.new_ `HORIZONTAL None in
-  let r = (Obj.magic scale : Range.t) in
+  let r = (scale :> Range.t) in
   Range.set_show_fill_level r true;
   check bool "show fill level" true (Range.get_show_fill_level r)
 
 let test_range_slider_size_fixed () =
   let scale = Scale.new_ `HORIZONTAL None in
-  let r = (Obj.magic scale : Range.t) in
+  let r = (scale :> Range.t) in
   Range.set_slider_size_fixed r true;
   check bool "slider size fixed" true (Range.get_slider_size_fixed r)
 
 let test_range_flippable () =
   let scale = Scale.new_ `HORIZONTAL None in
-  let r = (Obj.magic scale : Range.t) in
+  let r = (scale :> Range.t) in
   Range.set_flippable r true;
   check bool "flippable" true (Range.get_flippable r)
 

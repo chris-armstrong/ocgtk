@@ -6,7 +6,7 @@ end
 
 (* High-level class for ConverterInputStream *)
 class converter_input_stream (obj : Converter_input_stream.t) : converter_input_stream_t = object (self)
-  inherit GFilter_input_stream.filter_input_stream (Obj.magic obj : Filter_input_stream.t)
+  inherit GFilter_input_stream.filter_input_stream (obj :> Filter_input_stream.t)
 
   method get_converter : unit -> GConverter.converter_t =
     fun () ->
