@@ -79,7 +79,7 @@ Full keyboard mapping via `EventControllerKey`:
 
 ### GTK CSS Styling — MUST HAVE
 - Create `CssProvider`, call `load_from_string` with flat modern styling
-- Apply via `Style_context.add_provider` (requires CssProvider → StyleProvider cast)
+- Apply via `Style_context.add_provider` (requires CssProvider → StyleProvider cast, priority=600 for `GTK_STYLE_PROVIDER_PRIORITY_APPLICATION`)
 - Use `widget#add_css_class` for class-based styling (buttons, display)
 
 ## Known Technical Issues
@@ -100,18 +100,15 @@ external css_provider_as_style_provider : Css_provider.t -> Style_provider.t
   = "ml_gtk_css_provider_as_style_provider"
 ```
 
-### 2. No `g_application_run()` binding
-The `run` method is not generated for `Gio.Application`.
-
-**Fix approach**: Use manual signal connection for `activate`:
+### 2. ~~No `g_application_run()` binding~~ RESOLVED
+`Gio.Application.run` is now generated. The `on_activate` signal is also generated on `Application`.
+Use the same pattern as `counter.ml`:
 ```ocaml
-let on_activate app callback =
-  let closure = Gobject.Closure.create (fun _argv -> callback ()) in
-  ignore (Gobject.Signal.connect app ~name:"activate" ~callback:closure ~after:false)
+let app = Application.new_ (Some "org.ocgtk.Calculator") [`DEFAULT_FLAGS] in
+ignore (app#on_activate ~callback:(fun () -> activate app));
+let status = app#run 0 None in
+exit status
 ```
-Then call `GMain.init()`, create app, connect activate, and use `GMain.main()`.
-
-**Alternative**: Add a manual C stub for `g_application_run`.
 
 ### 3. No generated key-pressed/key-released signals
 `EventControllerKey` signals only generate `on_im_update`. The `key-pressed` signal has a complex signature (`guint keyval, guint keycode, GdkModifierType → gboolean`).
@@ -120,15 +117,17 @@ Then call `GMain.init()`, create app, connect activate, and use `GMain.main()`.
 ```ocaml
 let on_key_pressed controller callback =
   let closure = Gobject.Closure.create (fun argv ->
-    let keyval = Gobject.Closure.nth argv 1 |> Gobject.Value.get_uint in
-    let _keycode = Gobject.Closure.nth argv 2 |> Gobject.Value.get_uint in
+    let keyval = Gobject.Closure.nth argv 1 |> Gobject.Value.get_int in
+    let _keycode = Gobject.Closure.nth argv 2 |> Gobject.Value.get_int in
     let _modifiers = Gobject.Closure.nth argv 3 |> Gobject.Value.get_int in
     let handled = callback keyval in
     Gobject.Value.set_boolean (Gobject.Closure.result argv) handled
   ) in
   ignore (Gobject.Signal.connect controller ~name:"key-pressed" ~callback:closure ~after:false)
 ```
-Need to verify `Gobject.Value.get_uint` exists or use appropriate accessor.
+**Note**: `Gobject.Value.get_uint` does not exist. Use `get_int` instead — the values
+(keyval, keycode) fit in OCaml int. Available Value accessors: `get_int`, `get_boolean`,
+`get_string`, `get_float`, `get_double`, `get_object`.
 
 ### 4. No `pango_attr_font_desc_new()` binding
 AttrFontDesc has no constructor generated.
@@ -137,9 +136,20 @@ AttrFontDesc has no constructor generated.
 ```ocaml
 label#set_markup "<span font_desc=\"Monospace Bold 24\">0</span>"
 ```
-Or use CSS classes instead.
+Or use CSS classes instead (preferred — the CSS theme already sets font styling).
 
-### 5. `0` button spanning 2 columns — NICE TO HAVE
+### 5. `PANGO_SCALE` constant not exposed
+GIR defines `<constant name="SCALE" value="1024">` but the generator does not yet
+handle `<constant>` elements. Constants are first-class GIR artifacts (Pango has 13,
+GTK has 97, GDK has 2287, Gio has 130).
+
+**Workaround**: Hardcode `let pango_scale = 1024` if needed. The CSS/markup approach
+for font styling avoids needing this constant entirely.
+
+**Future**: Add `<constant>` generation to gir_gen — straightforward `let` bindings
+for typed values.
+
+### 6. `0` button spanning 2 columns — NICE TO HAVE
 `Grid.attach` supports width/height span parameters. Should work but needs verification.
 
 ## Module Structure
@@ -246,7 +256,7 @@ Entry point:
 | Signal | Widget | Method |
 |--------|--------|--------|
 | clicked | Button | `button#on_clicked` (generated) |
-| activate | Gio.Application | Manual via `Gobject.Signal.connect` |
+| activate | Gio.Application | `app#on_activate` (generated) |
 | key-pressed | EventControllerKey | Manual via `Gobject.Signal.connect` |
 | close-request | Window | Manual via `Gobject.Signal.connect` (pattern from counter.ml) |
 
@@ -296,7 +306,7 @@ OCaml test executable that:
 1. **calc_expr.ml** — expression parser/evaluator (pure, testable standalone)
 2. **calc_state.ml** — state machine wrapping calc_expr
 3. **calc_ui.ml** — basic window + vbox + two labels + grid with buttons + click handlers
-4. **calculator.ml** — GtkApplication entry point with activate signal
+4. **calculator.ml** — GtkApplication entry point (`app#on_activate`, `app#run`)
 5. **CssProvider cast fix** — small C stub for StyleProvider interface
 6. **CSS styling** — flat modern theme via CssProvider
 7. **Keyboard input** — EventControllerKey with manual signal connection
