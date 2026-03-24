@@ -378,6 +378,27 @@ always returned `MonomorphicType`. Parent chain (from `Crt_Class.parent`)
 now drives polymorphic variant types in Layer 1. See
 `architecture/object_polymorphism/object_polymorphism_design.md` for details.
 
+### Method Count Impact (measured 2026-03-24)
+
+Cross-namespace type resolution increased the total number of generated `external` bindings by **+305 net** (4647 → 4952):
+
+| Namespace | Before | After | Delta | Notes |
+|-----------|--------|-------|-------|-------|
+| cairo | 0 | 0 | — | Enum/record stubs only (no GObject API) |
+| gio | 932 | 897 | -35 | Filtering improvements (unsupported out-params) |
+| gdk | 236 | 242 | +6 | |
+| graphene | 104 | 104 | — | |
+| gdkpixbuf | 61 | 56 | -5 | Filtering improvements |
+| pango | 178 | 172 | -6 | Filtering improvements |
+| pangocairo | 0 | 5 | +5 | New library (added during cross-ns work) |
+| gsk | 175 | 212 | +37 | Many Graphene-typed methods unblocked |
+| gtk | 2961 | 3264 | +303 | Largest gain — depends on most external namespaces |
+| **Total** | **4647** | **4952** | **+305** | |
+
+**+351 methods gained** from cross-namespace type resolution (methods previously filtered because they referenced types in other namespaces). **-46 methods removed** from improved filtering that now correctly skips unsupported parameter patterns (out-param arrays without length annotations, double-pointer out-params not marked as arrays in GIR).
+
+Baseline commit: `d5f5890f` (merge before cross-namespace work began).
+
 ### Open Questions
 
 1. **GLib special types priority**: After PtrArray, which GLib types are most important? (Candidates: List, SList, Variant, Bytes)
