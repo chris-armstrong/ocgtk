@@ -71,6 +71,22 @@ g_subprocess_launcher_take_fd(GSubprocessLauncher_val(self), Int_val(arg1), Int_
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_subprocess_launcher_spawnv(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+    int arg1_length = Wosize_val(arg1);
+    gchar** c_arg1 = (gchar**)g_malloc(sizeof(gchar*) * (arg1_length + 1));
+    for (int i = 0; i < arg1_length; i++) {
+      c_arg1[i] = String_val(Field(arg1, i));
+    }
+    c_arg1[arg1_length] = NULL;
+
+GSubprocess* result = g_subprocess_launcher_spawnv(GSubprocessLauncher_val(self), c_arg1, &error);
+    g_free(c_arg1);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GSubprocess(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_g_subprocess_launcher_setenv(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
@@ -108,6 +124,21 @@ CAMLexport CAMLprim value ml_g_subprocess_launcher_set_flags(value self, value a
 CAMLparam2(self, arg1);
 
 g_subprocess_launcher_set_flags(GSubprocessLauncher_val(self), GioSubprocessFlags_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_subprocess_launcher_set_environ(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+    int arg1_length = Wosize_val(arg1);
+    gchar** c_arg1 = (gchar**)g_malloc(sizeof(gchar*) * (arg1_length + 1));
+    for (int i = 0; i < arg1_length; i++) {
+      c_arg1[i] = String_val(Field(arg1, i));
+    }
+    c_arg1[arg1_length] = NULL;
+
+g_subprocess_launcher_set_environ(GSubprocessLauncher_val(self), c_arg1);
+    g_free(c_arg1);
 CAMLreturn(Val_unit);
 }
 

@@ -521,6 +521,17 @@ module rec File : sig
   This call does no blocking I/O. *)
   external get_uri : t -> string = "ml_g_file_get_uri"
 
+  (** Gets the path for @descendant relative to @parent.
+
+  This call does no blocking I/O. *)
+  external get_relative_path : t -> t -> string option = "ml_g_file_get_relative_path"
+
+  (** Gets the local pathname for #GFile, if one exists. If non-%NULL, this is
+  guaranteed to be an absolute, canonical path. It might contain symlinks.
+
+  This call does no blocking I/O. *)
+  external get_path : t -> string option = "ml_g_file_get_path"
+
   (** Gets the parse name of the @file.
   A parse name is a UTF-8 string that describes the
   file such that one can get the #GFile back using
@@ -562,6 +573,21 @@ module rec File : sig
 
   This call does no blocking I/O. *)
   external get_child : t -> string -> t = "ml_g_file_get_child"
+
+  (** Gets the base name (the last component of the path) for a given #GFile.
+
+  If called for the top level of a system (such as the filesystem root
+  or a uri like sftp://host/) it will return a single directory separator
+  (and on Windows, possibly a drive letter).
+
+  The base name is a byte string (not UTF-8). It has no defined encoding
+  or rules other than it may not contain zero bytes.  If you want to use
+  filenames in a user interface you should use the display name that you
+  can get by requesting the %G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME
+  attribute with g_file_query_info().
+
+  This call does no blocking I/O. *)
+  external get_basename : t -> string option = "ml_g_file_get_basename"
 
   (** Finishes an asynchronous find mount request.
   See g_file_find_enclosing_mount_async(). *)

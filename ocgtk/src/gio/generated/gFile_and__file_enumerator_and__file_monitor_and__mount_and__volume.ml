@@ -10,10 +10,12 @@ class type file_t = object
     method dup : unit -> file_t
     method enumerate_children : string -> Gio_enums.filequeryinfoflags -> GCancellable.cancellable_t option -> (file_enumerator_t, GError.t) result
     method find_enclosing_mount : GCancellable.cancellable_t option -> (mount_t, GError.t) result
+    method get_basename : unit -> string option
     method get_child : string -> file_t
     method get_child_for_display_name : string -> (file_t, GError.t) result
     method get_parent : unit -> file_t option
     method get_parse_name : unit -> string
+    method get_path : unit -> string option
     method get_uri : unit -> string
     method get_uri_scheme : unit -> string option
     method has_uri_scheme : string -> bool
@@ -147,6 +149,10 @@ class file (obj : File_and__file_enumerator_and__file_monitor_and__mount_and__vo
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       Result.map (fun ret -> new mount ret)(File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.find_enclosing_mount obj cancellable)
 
+  method get_basename : unit -> string option =
+    fun () ->
+      (File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.get_basename obj)
+
   method get_child : string -> file_t =
     fun name ->
       new  file(File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.get_child obj name)
@@ -162,6 +168,10 @@ class file (obj : File_and__file_enumerator_and__file_monitor_and__mount_and__vo
   method get_parse_name : unit -> string =
     fun () ->
       (File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.get_parse_name obj)
+
+  method get_path : unit -> string option =
+    fun () ->
+      (File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.get_path obj)
 
   method get_uri : unit -> string =
     fun () ->

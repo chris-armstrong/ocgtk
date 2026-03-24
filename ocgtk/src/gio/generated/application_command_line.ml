@@ -76,6 +76,23 @@ external get_is_remote : t -> bool = "ml_g_application_command_line_get_is_remot
 g_application_command_line_set_exit_status() for more information. *)
 external get_exit_status : t -> int = "ml_g_application_command_line_get_exit_status"
 
+(** Gets the contents of the 'environ' variable of the command line
+invocation, as would be returned by g_get_environ(), ie as a
+%NULL-terminated list of strings in the form 'NAME=VALUE'.
+The strings may contain non-utf8 data.
+
+The remote application usually does not send an environment.  Use
+%G_APPLICATION_SEND_ENVIRONMENT to affect that.  Even with this flag
+set it is possible that the environment is still not available (due
+to invocation messages from other applications).
+
+The return value should not be modified or freed and is valid for as
+long as @cmdline exists.
+
+See g_application_command_line_getenv() if you are only interested
+in the value of a single environment variable. *)
+external get_environ : t -> string array = "ml_g_application_command_line_get_environ"
+
 (** Gets the working directory of the command line invocation.
 The string may contain non-utf8 data.
 
@@ -85,6 +102,19 @@ directory, so this may be %NULL.
 The return value should not be modified or freed and is valid for as
 long as @cmdline exists. *)
 external get_cwd : t -> string option = "ml_g_application_command_line_get_cwd"
+
+(** Gets the list of arguments that was passed on the command line.
+
+The strings in the array may contain non-UTF-8 data on UNIX (such as
+filenames or arguments given in the system locale) but are always in
+UTF-8 on Windows.
+
+If you wish to use the return value with #GOptionContext, you must
+use g_option_context_parse_strv().
+
+The return value is %NULL-terminated and should be freed using
+g_strfreev(). *)
+external get_arguments : t -> string array * int = "ml_g_application_command_line_get_arguments"
 
 (** Signals that command line processing is completed.
 

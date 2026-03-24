@@ -78,12 +78,50 @@ int result = g_application_command_line_get_exit_status(GApplicationCommandLine_
 CAMLreturn(Val_int(result));
 }
 
+CAMLexport CAMLprim value ml_g_application_command_line_get_environ(value self)
+{
+CAMLparam1(self);
+
+const gchar* const* result = g_application_command_line_get_environ(GApplicationCommandLine_val(self));
+    int result_length = 0;
+    while (result[result_length] != NULL) result_length++;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+CAMLreturn(ml_result);
+}
+
 CAMLexport CAMLprim value ml_g_application_command_line_get_cwd(value self)
 {
 CAMLparam1(self);
 
 const gchar* result = g_application_command_line_get_cwd(GApplicationCommandLine_val(self));
 CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_g_application_command_line_get_arguments(value self)
+{
+CAMLparam1(self);
+int out1;
+
+gchar** result = g_application_command_line_get_arguments(GApplicationCommandLine_val(self), &out1);
+    int result_length = out1;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+    for (int i = 0; i < result_length; i++) {
+      g_free((gpointer)result[i]);
+    }
+    g_free(result);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, ml_result);
+    Store_field(ret, 1, Val_int(out1));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_g_application_command_line_done(value self)

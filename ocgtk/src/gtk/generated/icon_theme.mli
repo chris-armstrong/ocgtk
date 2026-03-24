@@ -14,6 +14,23 @@ This function cannot be called on the icon theme objects returned
 from [func@Gtk.IconTheme.get_for_display]. *)
 external set_theme_name : t -> string option -> unit = "ml_gtk_icon_theme_set_theme_name"
 
+(** Sets the search path for the icon theme object.
+
+When looking for an icon theme, GTK will search for a subdirectory
+of one or more of the directories in @path with the same name
+as the icon theme containing an index.theme file. (Themes from
+multiple of the path elements are combined to allow themes to be
+extended by adding icons in the user’s home directory.)
+
+In addition if an icon found isn’t found either in the current
+icon theme or the default icon theme, and an image file with
+the right name is found directly in one of the elements of
+@path, then that image will be used for the icon name.
+(This is legacy feature, and new icons should be put
+into the fallback icon theme, which is called hicolor,
+rather than directly on the icon path.) *)
+external set_search_path : t -> string array option -> unit = "ml_gtk_icon_theme_set_search_path"
+
 (** Sets the resource paths that will be looked at when
 looking for icons, similar to search paths.
 
@@ -63,6 +80,11 @@ external has_gicon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t -> bool = "ml_gtk_icon_t
 
 Returns (transfer full): the current icon theme name, *)
 external get_theme_name : t -> string = "ml_gtk_icon_theme_get_theme_name"
+
+(** Gets the current search path.
+
+See [method@Gtk.IconTheme.set_search_path]. *)
+external get_search_path : t -> string array option = "ml_gtk_icon_theme_get_search_path"
 
 (** Gets the current resource path.
 

@@ -27,6 +27,7 @@ end
 
 and app_launch_context_t = object
     inherit Gapp_launch_context_signals.app_launch_context_signals
+    method get_environment : unit -> string array
     method launch_failed : string -> unit
     method setenv : string -> string -> unit
     method unsetenv : string -> unit
@@ -123,6 +124,10 @@ end
 
 and app_launch_context (obj : App_info_and__app_launch_context.App_launch_context.t) : app_launch_context_t = object (self)
   inherit Gapp_launch_context_signals.app_launch_context_signals obj
+
+  method get_environment : unit -> string array =
+    fun () ->
+      (App_info_and__app_launch_context.App_launch_context.get_environment obj)
 
   method launch_failed : string -> unit =
     fun startup_notify_id ->

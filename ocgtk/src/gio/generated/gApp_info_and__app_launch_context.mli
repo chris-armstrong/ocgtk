@@ -25,6 +25,7 @@ end
 
 and app_launch_context_t = object
     inherit Gapp_launch_context_signals.app_launch_context_signals
+    method get_environment : unit -> string array
     method launch_failed : string -> unit
     method setenv : string -> string -> unit
     method unsetenv : string -> unit

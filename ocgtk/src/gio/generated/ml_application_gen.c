@@ -135,6 +135,26 @@ g_application_send_notification(GApplication_val(self), String_option_val(arg1),
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_application_run(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+    int arg2_length = 0;
+    char** c_arg2 = NULL;
+    
+    if (Is_some(arg2)) {
+        value array = Some_val(arg2);
+        arg2_length = Wosize_val(array);
+        c_arg2 = (char**)g_malloc(sizeof(char*) * arg2_length);
+        for (int i = 0; i < arg2_length; i++) {
+          c_arg2[i] = String_val(Field(array, i));
+        }
+    }
+
+int result = g_application_run(GApplication_val(self), Int_val(arg1), c_arg2);
+    if (c_arg2) g_free(c_arg2);
+CAMLreturn(Val_int(result));
+}
+
 CAMLexport CAMLprim value ml_g_application_release(value self)
 {
 CAMLparam1(self);

@@ -8,10 +8,12 @@ class type file_t = object
     method dup : unit -> file_t
     method enumerate_children : string -> Gio_enums.filequeryinfoflags -> GCancellable.cancellable_t option -> (file_enumerator_t, GError.t) result
     method find_enclosing_mount : GCancellable.cancellable_t option -> (mount_t, GError.t) result
+    method get_basename : unit -> string option
     method get_child : string -> file_t
     method get_child_for_display_name : string -> (file_t, GError.t) result
     method get_parent : unit -> file_t option
     method get_parse_name : unit -> string
+    method get_path : unit -> string option
     method get_uri : unit -> string
     method get_uri_scheme : unit -> string option
     method has_uri_scheme : string -> bool

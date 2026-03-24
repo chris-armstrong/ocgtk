@@ -34,6 +34,27 @@ gtk_icon_theme_set_theme_name(GtkIconTheme_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_icon_theme_set_search_path(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+    int arg1_length = 0;
+    char** c_arg1 = NULL;
+    
+    if (Is_some(arg1)) {
+        value array = Some_val(arg1);
+        arg1_length = Wosize_val(array);
+        c_arg1 = (char**)g_malloc(sizeof(char*) * (arg1_length + 1));
+        for (int i = 0; i < arg1_length; i++) {
+          c_arg1[i] = String_val(Field(array, i));
+        }
+        c_arg1[arg1_length] = NULL;
+    }
+
+gtk_icon_theme_set_search_path(GtkIconTheme_val(self), c_arg1);
+    if (c_arg1) g_free(c_arg1);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_icon_theme_set_resource_path(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -116,6 +137,25 @@ CAMLparam1(self);
 
 char* result = gtk_icon_theme_get_theme_name(GtkIconTheme_val(self));
 CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_icon_theme_get_search_path(value self)
+{
+CAMLparam1(self);
+
+char** result = gtk_icon_theme_get_search_path(GtkIconTheme_val(self));
+    int result_length = 0;
+    while (result[result_length] != NULL) result_length++;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+    for (int i = 0; i < result_length; i++) {
+      g_free((gpointer)result[i]);
+    }
+    g_free(result);
+CAMLreturn(ml_result);
 }
 
 CAMLexport CAMLprim value ml_gtk_icon_theme_get_resource_path(value self)

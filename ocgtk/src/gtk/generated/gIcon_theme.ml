@@ -7,12 +7,14 @@ class type icon_theme_t = object
     method get_display : unit -> Ocgtk_gdk.Gdk.Display.display_t option
     method get_icon_names : unit -> string array
     method get_resource_path : unit -> string array option
+    method get_search_path : unit -> string array option
     method get_theme_name : unit -> string
     method has_gicon : Ocgtk_gio.Gio.Icon.icon_t -> bool
     method has_icon : string -> bool
     method lookup_by_gicon : Ocgtk_gio.Gio.Icon.icon_t -> int -> int -> Gtk_enums.textdirection -> Gtk_enums.iconlookupflags -> GIcon_paintable.icon_paintable_t
     method lookup_icon : string -> string array option -> int -> int -> Gtk_enums.textdirection -> Gtk_enums.iconlookupflags -> GIcon_paintable.icon_paintable_t
     method set_resource_path : string array option -> unit
+    method set_search_path : string array option -> unit
     method set_theme_name : string option -> unit
     method as_icon_theme : Icon_theme.t
 end
@@ -41,6 +43,10 @@ class icon_theme (obj : Icon_theme.t) : icon_theme_t = object (self)
     fun () ->
       (Icon_theme.get_resource_path obj)
 
+  method get_search_path : unit -> string array option =
+    fun () ->
+      (Icon_theme.get_search_path obj)
+
   method get_theme_name : unit -> string =
     fun () ->
       (Icon_theme.get_theme_name obj)
@@ -66,6 +72,10 @@ class icon_theme (obj : Icon_theme.t) : icon_theme_t = object (self)
   method set_resource_path : string array option -> unit =
     fun path ->
       (Icon_theme.set_resource_path obj path)
+
+  method set_search_path : string array option -> unit =
+    fun path ->
+      (Icon_theme.set_search_path obj path)
 
   method set_theme_name : string option -> unit =
     fun theme_name ->

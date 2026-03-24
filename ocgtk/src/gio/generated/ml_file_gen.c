@@ -469,6 +469,22 @@ char* result = g_file_get_uri(GFile_val(self));
 CAMLreturn(caml_copy_string(result));
 }
 
+CAMLexport CAMLprim value ml_g_file_get_relative_path(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+char* result = g_file_get_relative_path(GFile_val(self), GFile_val(arg1));
+CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_g_file_get_path(value self)
+{
+CAMLparam1(self);
+
+char* result = g_file_get_path(GFile_val(self));
+CAMLreturn(Val_option_string(result));
+}
+
 CAMLexport CAMLprim value ml_g_file_get_parse_name(value self)
 {
 CAMLparam1(self);
@@ -500,6 +516,14 @@ CAMLparam2(self, arg1);
 
 GFile* result = g_file_get_child(GFile_val(self), String_val(arg1));
 CAMLreturn(Val_GFile(result));
+}
+
+CAMLexport CAMLprim value ml_g_file_get_basename(value self)
+{
+CAMLparam1(self);
+
+char* result = g_file_get_basename(GFile_val(self));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_g_file_find_enclosing_mount_finish(value self, value arg1)
