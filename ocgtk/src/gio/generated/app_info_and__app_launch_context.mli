@@ -125,5 +125,11 @@ and App_launch_context
   the application startup notification started in g_app_launch_context_get_startup_notify_id(). *)
   external launch_failed : t -> string -> unit = "ml_g_app_launch_context_launch_failed"
 
+  (** Gets the complete environment variable list to be passed to
+  the child process when @context is used to launch an application.
+  This is a %NULL-terminated array of strings, where each string has
+  the form `KEY=VALUE`. *)
+  external get_environment : t -> string array = "ml_g_app_launch_context_get_environment"
+
 
 end

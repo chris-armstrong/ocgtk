@@ -165,6 +165,16 @@ let type_mappings : (string * Types.type_mapping) list =
         c_type = "utf8";
         is_value_type_record = false;
       } );
+    ( "filename",
+      {
+        ocaml_type = "string";
+        c_to_ml = "caml_copy_string";
+        ml_to_c = "String_val";
+
+        layer2_class = None;
+        c_type = "filename";
+        is_value_type_record = false;
+      } );
     ( "const char*",
       {
         ocaml_type = "string";

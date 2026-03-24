@@ -2,11 +2,13 @@ class type subprocess_launcher_t = object
     method close : unit -> unit
     method getenv : string -> string option
     method set_cwd : string -> unit
+    method set_environ : string array -> unit
     method set_flags : Gio_enums.subprocessflags -> unit
     method set_stderr_file_path : string option -> unit
     method set_stdin_file_path : string option -> unit
     method set_stdout_file_path : string option -> unit
     method setenv : string -> string -> bool -> unit
+    method spawnv : string array -> (GSubprocess.subprocess_t, GError.t) result
     method take_fd : int -> int -> unit
     method take_stderr_fd : int -> unit
     method take_stdin_fd : int -> unit
@@ -31,6 +33,10 @@ class subprocess_launcher (obj : Subprocess_launcher.t) : subprocess_launcher_t 
     fun cwd ->
       (Subprocess_launcher.set_cwd obj cwd)
 
+  method set_environ : string array -> unit =
+    fun env ->
+      (Subprocess_launcher.set_environ obj env)
+
   method set_flags : Gio_enums.subprocessflags -> unit =
     fun flags ->
       (Subprocess_launcher.set_flags obj flags)
@@ -50,6 +56,10 @@ class subprocess_launcher (obj : Subprocess_launcher.t) : subprocess_launcher_t 
   method setenv : string -> string -> bool -> unit =
     fun variable value overwrite ->
       (Subprocess_launcher.setenv obj variable value overwrite)
+
+  method spawnv : string array -> (GSubprocess.subprocess_t, GError.t) result =
+    fun argv ->
+      Result.map (fun ret -> new GSubprocess.subprocess ret)(Subprocess_launcher.spawnv obj argv)
 
   method take_fd : int -> int -> unit =
     fun source_fd target_fd ->

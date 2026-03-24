@@ -213,7 +213,6 @@ let constructor_has_varargs (ctor : gir_constructor) =
 (* Check if a constructor should be generated based on multiple criteria:
    - Not throwing GError
    - No varargs
-   - No cross-namespace enum/bitfield parameters
    - No unknown parameter types *)
 let should_generate_constructor ~ctx (ctor : gir_constructor) =
   let has_unknown_type =

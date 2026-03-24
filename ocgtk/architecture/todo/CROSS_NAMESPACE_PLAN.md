@@ -267,21 +267,35 @@ Each `<ns>/generated/` directory contains:
 
 ### Existing Cross-Namespace Tests
 
-Tests in `test_gir_gen/cross_namespace/`:
+Tests in `test_gir_gen/c_stubs/cross_namespace_tests.ml` (20 tests):
+- Non-introspectable record/constructor/method filtering
+- Copy function return types, record copy parsing
+- Enum/bitfield array element conversion (validates converter macros)
+- Inout record param pointer types, value record forward decls
+- Fixed-size array out-params and float array returns
+- Out-param array without length / double-pointer out-param skipping
+- GdkPixbuf format flags guarding
+- Cross-namespace C converter name casing
+
+Tests in `test_gir_gen/cross_namespace/` (36 tests across 7 files):
 - `c_stub_include_tests.ml` — header include generation
 - `dune_library_deps_tests.ml` — library dependency generation
 - `no_external_enum_decls_tests.ml` — no external enum forward declarations
 - `no_external_bitfield_decls_tests.ml` — no external bitfield forward declarations
 - `dependency_includes_tests.ml` — dependency header includes
-- `compilation_tests.ml` — end-to-end compilation
-- `cross_namespace_tests.ml` — cross-namespace type resolution
+- `dependency_exclusion_tests.ml` — base namespace (GLib/GModule/GObject) filtering
+- `compilation_tests.ml` — C header structure and syntax validation
+- `integration_tests.ml` — multi-library header generation chains
 
 ### Tests Still Needed
 
-1. Cross-namespace array element type resolution
-2. `classify_type` unit tests for same-namespace and cross-namespace enum/bitfield
-3. Wrapper module structure tests (`module Ns = Ns; include Ns` pattern)
-4. End-to-end compilation tests for all 9 namespaces
+1. **`classify_type` unit tests** — dedicated tests for same-namespace (enum, bitfield, class, interface, record, primitive) and cross-namespace (enum, bitfield, class) classification. Currently only tested indirectly via C converter name casing.
+2. **Cross-namespace array element type resolution** — validate that `find_type_mapping_for_gir_type` recursively resolves array element types through cross-namespace lookup (e.g. `GArray<Gdk.Texture>` producing correct OCaml type and C converters).
+
+### Tests Dropped (redundant)
+
+- ~~Wrapper module structure tests~~ — the `module Ns = Ns; include Ns` pattern described in the original plan is outdated. Current implementation uses pure module aliasing in `library_module.ml`, validated by CI compilation.
+- ~~End-to-end compilation for all 9 namespaces~~ — CI already runs `dune build` across all 9 libraries on every push. A unit test replicating this adds no value.
 
 ---
 
@@ -363,6 +377,27 @@ hierarchies and `hierarchy_detection.ml` were dead code — `classify_class`
 always returned `MonomorphicType`. Parent chain (from `Crt_Class.parent`)
 now drives polymorphic variant types in Layer 1. See
 `architecture/object_polymorphism/object_polymorphism_design.md` for details.
+
+### Method Count Impact (measured 2026-03-24)
+
+Cross-namespace type resolution increased the total number of generated `external` bindings by **+305 net** (4647 → 4952):
+
+| Namespace | Before | After | Delta | Notes |
+|-----------|--------|-------|-------|-------|
+| cairo | 0 | 0 | — | Enum/record stubs only (no GObject API) |
+| gio | 932 | 897 | -35 | Filtering improvements (unsupported out-params) |
+| gdk | 236 | 242 | +6 | |
+| graphene | 104 | 104 | — | |
+| gdkpixbuf | 61 | 56 | -5 | Filtering improvements |
+| pango | 178 | 172 | -6 | Filtering improvements |
+| pangocairo | 0 | 5 | +5 | New library (added during cross-ns work) |
+| gsk | 175 | 212 | +37 | Many Graphene-typed methods unblocked |
+| gtk | 2961 | 3264 | +303 | Largest gain — depends on most external namespaces |
+| **Total** | **4647** | **4952** | **+305** | |
+
+**+351 methods gained** from cross-namespace type resolution (methods previously filtered because they referenced types in other namespaces). **-46 methods removed** from improved filtering that now correctly skips unsupported parameter patterns (out-param arrays without length annotations, double-pointer out-params not marked as arrays in GIR).
+
+Baseline commit: `d5f5890f` (merge before cross-namespace work began).
 
 ### Open Questions
 

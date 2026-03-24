@@ -17,6 +17,7 @@ class type application_t = object
     method quit : unit -> unit
     method register : GCancellable.cancellable_t option -> (bool, GError.t) result
     method release : unit -> unit
+    method run : int -> string array option -> int
     method send_notification : string option -> GNotification.notification_t -> unit
     method set_application_id : string option -> unit
     method set_default : unit -> unit

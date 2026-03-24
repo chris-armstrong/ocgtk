@@ -85,6 +85,9 @@ An example use case is GNUPG, which has a command line argument
 the passphrase to be written. *)
 external take_fd : t -> int -> int -> unit = "ml_g_subprocess_launcher_take_fd"
 
+(** Creates a #GSubprocess given a provided array of arguments. *)
+external spawnv : t -> string array -> (Subprocess.t, GError.t) result = "ml_g_subprocess_launcher_spawnv"
+
 (** Sets the environment variable @variable in the environment of
 processes launched from this launcher.
 
@@ -147,6 +150,27 @@ You may also not set a flag that conflicts with a previous call to a
 function like g_subprocess_launcher_set_stdin_file_path() or
 g_subprocess_launcher_take_stdout_fd(). *)
 external set_flags : t -> Gio_enums.subprocessflags -> unit = "ml_g_subprocess_launcher_set_flags"
+
+(** Replace the entire environment of processes launched from this
+launcher with the given 'environ' variable.
+
+Typically you will build this variable by using g_listenv() to copy
+the process 'environ' and using the functions g_environ_setenv(),
+g_environ_unsetenv(), etc.
+
+As an alternative, you can use g_subprocess_launcher_setenv(),
+g_subprocess_launcher_unsetenv(), etc.
+
+Pass an empty array to set an empty environment. Pass %NULL to inherit the
+parent process’ environment. As of GLib 2.54, the parent process’ environment
+will be copied when g_subprocess_launcher_set_environ() is called.
+Previously, it was copied when the subprocess was executed. This means the
+copied environment may now be modified (using g_subprocess_launcher_setenv(),
+etc.) before launching the subprocess.
+
+On UNIX, all strings in this array can be arbitrary byte strings.
+On Windows, they should be in UTF-8. *)
+external set_environ : t -> string array -> unit = "ml_g_subprocess_launcher_set_environ"
 
 (** Sets the current working directory that processes will be launched
 with.

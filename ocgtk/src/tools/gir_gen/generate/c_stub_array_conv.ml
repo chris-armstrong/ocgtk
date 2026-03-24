@@ -309,18 +309,13 @@ module Array_conv = struct
           || String.equal element_tm.c_to_ml "caml_copy_double"
           || String.equal element_tm.c_to_ml "caml_copy_string"
         in
-        (* Check if element type is an enum or bitfield - these take values, not pointers *)
-        let element_type_name = array_info.element_type.name in
-        let is_enum_type =
-          List.exists ctx.enums ~f:(fun (e : Types.gir_enum) ->
-              String.equal e.enum_name element_type_name)
-        in
-        let is_bitfield_type =
-          List.exists ctx.bitfields ~f:(fun (b : Types.gir_bitfield) ->
-              String.equal b.bitfield_name element_type_name
-              || String.equal b.bitfield_c_type element_type_name)
-        in
-        let is_value_type = is_primitive_converter || is_enum_type || is_bitfield_type in
+        (* Check if element type is an enum or bitfield - these take values, not pointers.
+           Use classify_type to handle both same-namespace and cross-namespace types. *)
+        let element_type_kind = Type_mappings.classify_type ~ctx array_info.element_type in
+        let is_value_type = is_primitive_converter
+          || match element_type_kind with
+             | Type_mappings.Tk_Enum | Type_mappings.Tk_Bitfield -> true
+             | _ -> false in
         let addr_prefix =
           if is_pointer_array || is_value_type then "" else "&"
         in
