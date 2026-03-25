@@ -7,7 +7,7 @@
 ## IMPORTANT: You Have Persistent Memory
 
 This project uses Context (`ctx`) for context persistence across sessions.
-**Your memory is NOT ephemeral** - it lives in `$CTX_DIR/*` files.
+**Your memory is NOT ephemeral** - it lives in `$CTX_DIR/*` files (where CTX_DIR is an environment variable containing the context directory).
 
 ## On Session Start
 
