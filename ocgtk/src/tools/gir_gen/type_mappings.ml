@@ -192,6 +192,26 @@ let type_mappings : (string * Types.type_mapping) list =
         c_type = "float";
         is_value_type_record = false;
       } );
+    (* GObject namespace types — not generated from GIR, mapped to
+       hand-written wrappers in src/common/gobject.ml *)
+    ( "GObject.Object",
+      {
+        ocaml_type = "[`object_] Gobject.obj";
+        c_to_ml = "ml_gobject_val_of_ext";
+        ml_to_c = "GObject_ext_of_val";
+        layer2_class = None;
+        c_type = "GObject*";
+        is_value_type_record = false;
+      } );
+    ( "GObject.InitiallyUnowned",
+      {
+        ocaml_type = "[`initially_unowned | `object_] Gobject.obj";
+        c_to_ml = "ml_gobject_val_of_ext";
+        ml_to_c = "GObject_ext_of_val";
+        layer2_class = None;
+        c_type = "GInitiallyUnowned*";
+        is_value_type_record = false;
+      } );
   ]
 
 let normalize_c_pointer_type lookup_str =
@@ -444,19 +464,25 @@ let classify_type ~ctx (gir_type : Types.gir_type) =
       Tk_Primitive
     else Tk_Unknown
   else
-    (* Cross-namespace: check cross_references *)
+    (* Cross-namespace: check cross_references first, then hardcoded mappings *)
     match StringMap.find_opt namespace ctx.cross_references with
-    | None -> Tk_Unknown
     | Some ncr -> (
         match StringMap.find_opt name ncr.ncr_entities with
-        | None -> Tk_Unknown
         | Some cr -> (
             match cr.cr_type with
             | Crt_Enum -> Tk_Enum
             | Crt_Bitfield -> Tk_Bitfield
             | Crt_Class _ -> Tk_Class
             | Crt_Interface -> Tk_Interface
-            | Crt_Record _ -> Tk_Record))
+            | Crt_Record _ -> Tk_Record)
+        | None ->
+            if List.assoc_opt lookup_str type_mappings |> Option.is_some then
+              Tk_Primitive
+            else Tk_Unknown)
+    | None ->
+        if List.assoc_opt lookup_str type_mappings |> Option.is_some then
+          Tk_Primitive
+        else Tk_Unknown
 
 let rec find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
   (* Handle arrays first *)
@@ -509,7 +535,9 @@ and normal_type_lookup ~ctx (gir_type : Types.gir_type) =
       |> or_else (fun () -> find_enum_mapping ~ctx lookup_str)
       |> or_else (fun () -> find_bitfield_mapping ~ctx lookup_str)
       |> or_else find_hardcoded_mapping
-    else find_cross_namespace_type_mapping ~ctx ~namespace ~name
+    else
+      find_cross_namespace_type_mapping ~ctx ~namespace ~name
+      |> or_else find_hardcoded_mapping
   in
   (* Try gir_name first, then c_type if that fails *)
   gir_type.name |> try_lookup
