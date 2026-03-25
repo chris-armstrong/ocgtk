@@ -99,6 +99,10 @@ external propagate_boolean : t -> (bool, GError.t) result = "ml_g_task_propagate
 (** Tests if @task resulted in an error. *)
 external had_error : t -> bool = "ml_g_task_had_error"
 
+(** Gets the source object from @task. Like
+g_async_result_get_source_object(), but does not ref the object. *)
+external get_source_object : t -> [`object_] Gobject.obj option = "ml_g_task_get_source_object"
+
 (** Gets @task's return-on-cancel flag. See
 g_task_set_return_on_cancel() for more details. *)
 external get_return_on_cancel : t -> bool = "ml_g_task_get_return_on_cancel"

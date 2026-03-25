@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ListBase: ListBase *)
 
-type t = [`list_base | `widget | `initially_unowned] Gobject.obj
+type t = [`list_base | `widget | `initially_unowned | `object_] Gobject.obj
 
 (* Methods *)
 (* Properties *)

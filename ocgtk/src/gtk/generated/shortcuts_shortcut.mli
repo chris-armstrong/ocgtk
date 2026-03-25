@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ShortcutsShortcut: ShortcutsShortcut *)
 
-type t = [`shortcuts_shortcut | `widget | `initially_unowned] Gobject.obj
+type t = [`shortcuts_shortcut | `widget | `initially_unowned | `object_] Gobject.obj
 
 (* Methods *)
 (* Properties *)

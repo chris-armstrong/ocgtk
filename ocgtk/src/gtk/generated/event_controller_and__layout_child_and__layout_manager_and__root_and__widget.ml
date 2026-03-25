@@ -288,7 +288,7 @@ end
 
 and Widget
  : sig
-  type t = [`widget | `initially_unowned] Gobject.obj
+  type t = [`widget | `initially_unowned | `object_] Gobject.obj
 
   (* Methods *)
   (** Turns off flag values for the current widget state.
@@ -1641,7 +1641,7 @@ and Widget
 
 
 end = struct
-  type t = [`widget | `initially_unowned] Gobject.obj
+  type t = [`widget | `initially_unowned | `object_] Gobject.obj
 
   (* Methods *)
   (** Turns off flag values for the current widget state.

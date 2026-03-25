@@ -2,7 +2,7 @@
 (* Combined modules for cyclic dependencies *)
 
 module rec Cell_area : sig
-  type t = [`cell_area | `initially_unowned] Gobject.obj
+  type t = [`cell_area | `initially_unowned | `object_] Gobject.obj
 
   (* Methods *)
   (** Explicitly stops the editing of the currently edited cell.

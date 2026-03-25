@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FontButton: FontButton *)
 
-type t = [`font_button | `widget | `initially_unowned] Gobject.obj
+type t = [`font_button | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new FontButton *)
 external new_ : unit -> t = "ml_gtk_font_button_new"

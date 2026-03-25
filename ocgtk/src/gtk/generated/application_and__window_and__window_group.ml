@@ -331,7 +331,7 @@ end
 
 and Window
  : sig
-  type t = [`window | `widget | `initially_unowned] Gobject.obj
+  type t = [`window | `widget | `initially_unowned | `object_] Gobject.obj
 
   (** Create a new Window *)
   external new_ : unit -> t = "ml_gtk_window_new"
@@ -809,7 +809,7 @@ and Window
 
 
 end = struct
-  type t = [`window | `widget | `initially_unowned] Gobject.obj
+  type t = [`window | `widget | `initially_unowned | `object_] Gobject.obj
 
   (** Create a new Window *)
   external new_ : unit -> t = "ml_gtk_window_new"

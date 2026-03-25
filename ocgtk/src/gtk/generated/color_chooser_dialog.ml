@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ColorChooserDialog: ColorChooserDialog *)
 
-type t = [`color_chooser_dialog | `dialog | `window | `widget | `initially_unowned] Gobject.obj
+type t = [`color_chooser_dialog | `dialog | `window | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new ColorChooserDialog *)
 external new_ : string option -> Application_and__window_and__window_group.Window.t option -> t = "ml_gtk_color_chooser_dialog_new"

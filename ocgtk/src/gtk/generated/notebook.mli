@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Notebook: Notebook *)
 
-type t = [`notebook | `widget | `initially_unowned] Gobject.obj
+type t = [`notebook | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new Notebook *)
 external new_ : unit -> t = "ml_gtk_notebook_new"

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Label: Label *)
 
-type t = [`label | `widget | `initially_unowned] Gobject.obj
+type t = [`label | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new Label *)
 external new_ : string option -> t = "ml_gtk_label_new"

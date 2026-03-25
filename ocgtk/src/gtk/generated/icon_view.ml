@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* IconView: IconView *)
 
-type t = [`icon_view | `widget | `initially_unowned] Gobject.obj
+type t = [`icon_view | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new IconView *)
 external new_ : unit -> t = "ml_gtk_icon_view_new"

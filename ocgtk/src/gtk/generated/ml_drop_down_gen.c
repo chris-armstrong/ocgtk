@@ -122,6 +122,14 @@ gboolean result = gtk_drop_down_get_show_arrow(GtkDropDown_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_drop_down_get_selected_item(value self)
+{
+CAMLparam1(self);
+
+gpointer result = gtk_drop_down_get_selected_item(GtkDropDown_val(self));
+CAMLreturn(ml_gobject_val_of_ext(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_drop_down_get_selected(value self)
 {
 CAMLparam1(self);

@@ -60,6 +60,14 @@ gtk_builder_set_scope(GtkBuilder_val(self), Option_val(arg1, GtkBuilderScope_val
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_builder_set_current_object(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_builder_set_current_object(GtkBuilder_val(self), Option_val(arg1, GObject_ext_of_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_builder_get_translation_domain(value self)
 {
 CAMLparam1(self);
@@ -75,6 +83,30 @@ CAMLparam1(self);
 GtkBuilderScope* result = gtk_builder_get_scope(GtkBuilder_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkBuilderScope(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_builder_get_object(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GObject* result = gtk_builder_get_object(GtkBuilder_val(self), String_val(arg1));
+CAMLreturn(Val_option(result, ml_gobject_val_of_ext));
+}
+
+CAMLexport CAMLprim value ml_gtk_builder_get_current_object(value self)
+{
+CAMLparam1(self);
+
+GObject* result = gtk_builder_get_current_object(GtkBuilder_val(self));
+CAMLreturn(Val_option(result, ml_gobject_val_of_ext));
+}
+
+CAMLexport CAMLprim value ml_gtk_builder_expose_object(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_builder_expose_object(GtkBuilder_val(self), String_val(arg1), GObject_ext_of_val(arg2));
+CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_builder_add_objects_from_resource(value self, value arg1, value arg2)

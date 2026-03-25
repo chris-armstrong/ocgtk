@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GLArea: GLArea *)
 
-type t = [`gl_area | `widget | `initially_unowned] Gobject.obj
+type t = [`gl_area | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new GLArea *)
 external new_ : unit -> t = "ml_gtk_gl_area_new"

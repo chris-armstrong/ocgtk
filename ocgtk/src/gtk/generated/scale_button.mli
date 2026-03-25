@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ScaleButton: ScaleButton *)
 
-type t = [`scale_button | `widget | `initially_unowned] Gobject.obj
+type t = [`scale_button | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new ScaleButton *)
 external new_ : float -> float -> float -> string array option -> t = "ml_gtk_scale_button_new"

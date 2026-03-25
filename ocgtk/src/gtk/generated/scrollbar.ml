@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Scrollbar: Scrollbar *)
 
-type t = [`scrollbar | `widget | `initially_unowned] Gobject.obj
+type t = [`scrollbar | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new Scrollbar *)
 external new_ : Gtk_enums.orientation -> Adjustment.t option -> t = "ml_gtk_scrollbar_new"

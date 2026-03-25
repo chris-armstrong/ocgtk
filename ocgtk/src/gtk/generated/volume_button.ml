@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* VolumeButton: VolumeButton *)
 
-type t = [`volume_button | `scale_button | `widget | `initially_unowned] Gobject.obj
+type t = [`volume_button | `scale_button | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new VolumeButton *)
 external new_ : unit -> t = "ml_gtk_volume_button_new"

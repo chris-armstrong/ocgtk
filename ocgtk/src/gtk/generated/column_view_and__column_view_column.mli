@@ -2,7 +2,7 @@
 (* Combined modules for cyclic dependencies *)
 
 module rec Column_view : sig
-  type t = [`column_view | `widget | `initially_unowned] Gobject.obj
+  type t = [`column_view | `widget | `initially_unowned | `object_] Gobject.obj
 
   (** Create a new ColumnView *)
   external new_ : Selection_model.t option -> t = "ml_gtk_column_view_new"

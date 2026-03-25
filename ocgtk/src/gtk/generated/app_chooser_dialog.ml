@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AppChooserDialog: AppChooserDialog *)
 
-type t = [`app_chooser_dialog | `dialog | `window | `widget | `initially_unowned] Gobject.obj
+type t = [`app_chooser_dialog | `dialog | `window | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new AppChooserDialog *)
 external new_ : Application_and__window_and__window_group.Window.t option -> Gtk_enums.dialogflags -> Ocgtk_gio.Gio.Wrappers.File.t -> t = "ml_gtk_app_chooser_dialog_new"

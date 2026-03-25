@@ -117,7 +117,7 @@ end
 
 and Tree_view
  : sig
-  type t = [`tree_view | `widget | `initially_unowned] Gobject.obj
+  type t = [`tree_view | `widget | `initially_unowned | `object_] Gobject.obj
 
   (** Create a new TreeView *)
   external new_ : unit -> t = "ml_gtk_tree_view_new"
@@ -531,7 +531,7 @@ and Tree_view
 
 
 end = struct
-  type t = [`tree_view | `widget | `initially_unowned] Gobject.obj
+  type t = [`tree_view | `widget | `initially_unowned | `object_] Gobject.obj
 
   (** Create a new TreeView *)
   external new_ : unit -> t = "ml_gtk_tree_view_new"

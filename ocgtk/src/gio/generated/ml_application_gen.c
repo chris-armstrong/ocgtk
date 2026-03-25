@@ -47,6 +47,14 @@ g_application_unmark_busy(GApplication_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_application_unbind_busy_property(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+g_application_unbind_busy_property(GApplication_val(self), GObject_ext_of_val(arg1), String_val(arg2));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_g_application_set_version(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -289,6 +297,14 @@ CAMLparam1(self);
 
 const gchar* result = g_application_get_application_id(GApplication_val(self));
 CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_g_application_bind_busy_property(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+g_application_bind_busy_property(GApplication_val(self), GObject_ext_of_val(arg1), String_val(arg2));
+CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_g_application_activate(value self)

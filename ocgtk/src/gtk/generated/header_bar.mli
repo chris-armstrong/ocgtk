@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* HeaderBar: HeaderBar *)
 
-type t = [`header_bar | `widget | `initially_unowned] Gobject.obj
+type t = [`header_bar | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new HeaderBar *)
 external new_ : unit -> t = "ml_gtk_header_bar_new"

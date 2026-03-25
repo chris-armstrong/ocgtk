@@ -3,6 +3,7 @@ class type single_selection_t = object
     method get_can_unselect : unit -> bool
     method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option
     method get_selected : unit -> int
+    method get_selected_item : unit -> [`object_] Gobject.obj option
     method set_autoselect : bool -> unit
     method set_can_unselect : bool -> unit
     method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit
@@ -29,6 +30,10 @@ class single_selection (obj : Single_selection.t) : single_selection_t = object 
   method get_selected : unit -> int =
     fun () ->
       (Single_selection.get_selected obj)
+
+  method get_selected_item : unit -> [`object_] Gobject.obj option =
+    fun () ->
+      (Single_selection.get_selected_item obj)
 
   method set_autoselect : bool -> unit =
     fun autoselect ->

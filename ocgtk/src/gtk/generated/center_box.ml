@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CenterBox: CenterBox *)
 
-type t = [`center_box | `widget | `initially_unowned] Gobject.obj
+type t = [`center_box | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new CenterBox *)
 external new_ : unit -> t = "ml_gtk_center_box_new"

@@ -72,6 +72,11 @@ external get_selectable : t -> bool = "ml_gtk_list_item_get_selectable"
 If @self is unbound, %GTK_INVALID_LIST_POSITION is returned. *)
 external get_position : t -> int = "ml_gtk_list_item_get_position"
 
+(** Gets the model item that associated with @self.
+
+If @self is unbound, this function returns %NULL. *)
+external get_item : t -> [`object_] Gobject.obj option = "ml_gtk_list_item_get_item"
+
 (** Checks if a list item has been set to be focusable via
 gtk_list_item_set_focusable(). *)
 external get_focusable : t -> bool = "ml_gtk_list_item_get_focusable"

@@ -69,6 +69,10 @@ The attribute must exist in @info for this to work. Otherwise %FALSE
 is returned and @info is unchanged. *)
 external set_attribute_status : t -> string -> Gio_enums.fileattributestatus -> bool = "ml_g_file_info_set_attribute_status"
 
+(** Sets the @attribute to contain the given @attr_value,
+if possible. *)
+external set_attribute_object : t -> string -> [`object_] Gobject.obj -> unit = "ml_g_file_info_set_attribute_object"
+
 (** Sets @mask on @info to match specific attribute types. *)
 external set_attribute_mask : t -> File_attribute_matcher.t -> unit = "ml_g_file_info_set_attribute_mask"
 
@@ -187,6 +191,10 @@ external get_attribute_string : t -> string -> string option = "ml_g_file_info_g
 
 (** Gets the attribute status for an attribute key. *)
 external get_attribute_status : t -> string -> Gio_enums.fileattributestatus = "ml_g_file_info_get_attribute_status"
+
+(** Gets the value of a #GObject attribute. If the attribute does
+not contain a #GObject, %NULL will be returned. *)
+external get_attribute_object : t -> string -> [`object_] Gobject.obj option = "ml_g_file_info_get_attribute_object"
 
 (** Gets the value of a byte string attribute as a file path.
 

@@ -4,6 +4,9 @@
 type t = [`filter | `object_] Gobject.obj
 
 (* Methods *)
+(** Checks if the given @item is matched by the filter or not. *)
+external match_ : t -> [`object_] Gobject.obj -> bool = "ml_gtk_filter_match"
+
 (** Gets the known strictness of @filters.
 
 If the strictness is not known, %GTK_FILTER_MATCH_SOME is returned.

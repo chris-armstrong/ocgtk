@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SpinButton: SpinButton *)
 
-type t = [`spin_button | `widget | `initially_unowned] Gobject.obj
+type t = [`spin_button | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new SpinButton *)
 external new_ : Adjustment.t option -> float -> int -> t = "ml_gtk_spin_button_new"

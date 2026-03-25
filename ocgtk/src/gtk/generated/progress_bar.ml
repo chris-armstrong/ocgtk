@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ProgressBar: ProgressBar *)
 
-type t = [`progress_bar | `widget | `initially_unowned] Gobject.obj
+type t = [`progress_bar | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new ProgressBar *)
 external new_ : unit -> t = "ml_gtk_progress_bar_new"

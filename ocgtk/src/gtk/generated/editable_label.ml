@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* EditableLabel: EditableLabel *)
 
-type t = [`editable_label | `widget | `initially_unowned] Gobject.obj
+type t = [`editable_label | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new EditableLabel *)
 external new_ : string -> t = "ml_gtk_editable_label_new"
