@@ -346,7 +346,9 @@ stage until the current one passes its verification.
 
 ---
 
-### Stage 3: Pango Cross-Namespace Styling
+### Stage 3: Pango Cross-Namespace Styling ✅ COMPLETE
+**Status**: Completed 2026-03-25
+
 **Goal**: Validate GTK→Pango cross-namespace type flow early, while the UI is simple.
 
 **Deliverable**: Update result label to use `Label.set_markup` with Pango font description.
@@ -364,10 +366,12 @@ stage until the current one passes its verification.
 
 ---
 
-### Stage 4: Expression Parser
+### Stage 4: Expression Parser ✅ COMPLETE
+**Status**: Completed 2026-03-25
+
 **Goal**: Pure OCaml expression evaluator with operator precedence and parentheses.
 
-**Deliverable**: `calc_expr.ml` + `test_calc_expr.ml`
+**Deliverable**: `calc_expr.ml` + `test_calc_expr.ml` + `calc_expr.mli`
 - Tokenizer: string → token list (numbers, operators `+-*/`, parens, decimal point)
 - Recursive descent parser with correct precedence (`*`/`/` before `+`/`-`)
 - Evaluator: token list → `(float, string) result`
@@ -376,21 +380,33 @@ stage until the current one passes its verification.
 
 **Files**: `examples/calculator/calc_expr.ml`, `examples/calculator/test_calc_expr.ml`, update `dune`
 
-**Test cases** (unit tests in `test_calc_expr.ml`, run via `dune runtest`):
-- `"2+3"` → `Ok 5.0`
-- `"2+3*4"` → `Ok 14.0` (precedence)
-- `"(2+3)*4"` → `Ok 20.0` (parens)
-- `"10/0"` → `Error "Division by zero"`
-- `""` → `Error _` (empty)
-- `"2*(3+4"` → `Ok 14.0` (auto-close)
-- `"2*(3+"` → `Error _` (invalid auto-close)
-- `"3.14*2"` → `Ok 6.28` (decimals)
-- `"  2 + 3  "` → `Ok 5.0` (whitespace tolerance)
-- `"((2+3))"` → `Ok 5.0` (nested parens)
+**Test cases** (20 unit tests in `test_calc_expr.ml`, run via `dune runtest`):
+- Basic arithmetic: `"2+3"` → `Ok 5.0`
+- Operator precedence: `"2+3*4"` → `Ok 14.0`
+- Parentheses: `"(2+3)*4"` → `Ok 20.0`
+- Division by zero: `"10/0"` → `Error`
+- Empty expression: `""` → `Error`
+- Auto-close parens: `"2*(3+4"` → `Ok 14.0`
+- Invalid auto-close: `"2*(3+"` → `Error`
+- Decimals: `"3.14*2"` → `Ok 6.28`
+- Whitespace tolerance: `"  2 + 3  "` → `Ok 5.0`
+- Nested parens: `"((2+3))"` → `Ok 5.0`
+- Multiple unclosed: `"((2+3"` → `Ok 5.0`
+- Deeply nested: `"(((1+2)+3)+4)"` → `Ok 10.0`
+- Negative numbers: `"-5"` → `Ok -5.0`
+- Safe evaluate exception handling
+- Plus 6 more tests covering edge cases
 
 **Verification**:
-- `dune build` succeeds
-- `xvfb-run dune runtest` passes all test cases (check return code)
+- ✅ `dune build` succeeds
+- ✅ `dune runtest examples/calculator` passes all 20 tests
+
+**Implementation Notes**:
+- Uses `Result.Syntax` bind operators (`let*`) for clean evaluator code
+- Array-based token access for O(1) lookup (avoids banned `List.nth`)
+- Minimal public interface via `calc_expr.mli` (only 5 exposed functions)
+- Type-safe token equality via `[@@deriving eq]`
+- Left-associative chaining: `8/2*3 = 12`, not `8/(2*3)`
 
 ---
 
