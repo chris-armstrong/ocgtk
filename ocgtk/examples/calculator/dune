@@ -3,3 +3,10 @@
  (modules calculator calc_ui)
  (libraries ocgtk.gtk ocgtk.gio ocgtk.pango)
 )
+
+(test
+ (name test_calc_expr)
+ (modules test_calc_expr calc_expr)
+ (preprocess (pps ppx_deriving.eq))
+ (libraries alcotest containers)
+)
