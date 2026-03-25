@@ -301,15 +301,224 @@ OCaml test executable that:
 4. Captures screenshots via xdotool/import
 5. Validates output (method TBD — possibly reading widget text via AT-SPI, or screenshot OCR as fallback)
 
-## Implementation Sequence
+## Implementation Stages
 
-1. **calc_expr.ml** — expression parser/evaluator (pure, testable standalone)
-2. **calc_state.ml** — state machine wrapping calc_expr
-3. **calc_ui.ml** — basic window + vbox + two labels + grid with buttons + click handlers
-4. **calculator.ml** — GtkApplication entry point (`app#on_activate`, `app#run`)
-5. **CssProvider cast fix** — small C stub for StyleProvider interface
-6. **CSS styling** — flat modern theme via CssProvider
-7. **Keyboard input** — EventControllerKey with manual signal connection
-8. **Pango font styling** — FontDescription or markup for result display
-9. **E2E test harness** — xdotool-based test runner
-10. **0-button column span** — if time permits
+Each stage has a clear deliverable and verification step. Do not proceed to the next
+stage until the current one passes its verification.
+
+---
+
+### Stage 1: App Shell
+**Goal**: Minimal GtkApplication that opens a window and can be closed cleanly.
+
+**Deliverable**: `calculator.ml` — single file, no other modules yet.
+- `GtkApplication` with app ID `"org.ocgtk.Calculator"`
+- `on_activate` creates a `Window` with title "OCaml GTK4 Calculator", default size 400x500
+- Window is presented and can be closed normally
+
+**Files**: `examples/calculator/calculator.ml`, `examples/calculator/dune`
+
+**Verification**:
+- `dune build` succeeds
+- `xvfb-run dune exec examples/calculator/calculator.exe` starts without crash
+- Interactive: window appears, closes with window manager close button
+- Process exits with status 0 after window close
+
+---
+
+### Stage 2: Button Grid Layout
+**Goal**: All calculator buttons displayed in correct grid layout with two display labels.
+
+**Deliverable**: `calc_ui.ml` + updated `calculator.ml`
+- Vertical `Box` containing:
+  - Expression label (top, right-aligned, shows placeholder text e.g. "0")
+  - Result label (below expression, right-aligned, shows "0")
+  - `Grid` (4 columns x 5 rows, homogeneous) with all buttons:
+    Row 0: C ( ) /  |  Row 1: 7 8 9 *  |  Row 2: 4 5 6 -  |  Row 3: 1 2 3 +  |  Row 4: 0 . =
+- Buttons have correct labels, no click handlers yet (just layout)
+
+**Files**: `examples/calculator/calc_ui.ml`, update `calculator.ml` and `dune`
+
+**Verification**:
+- `dune build` succeeds
+- Interactive: launch app, visually confirm 5x4 grid of buttons plus two label rows
+- Take screenshot under `xvfb-run` for review: `xvfb-run -- bash -c 'dune exec examples/calculator/calculator.exe & sleep 1 && import -window root /tmp/calc_stage2.png && kill %1'`
+
+---
+
+### Stage 3: Pango Cross-Namespace Styling
+**Goal**: Validate GTK→Pango cross-namespace type flow early, while the UI is simple.
+
+**Deliverable**: Update result label to use `Label.set_markup` with Pango font description.
+- Result label rendered with `<span font_desc="Monospace Bold 24">0</span>`
+- Expression label uses smaller dim styling via markup (e.g. `<span font_desc="Monospace 12" foreground="#aaaaaa">`)
+- Demonstrates cross-namespace type flow: Pango markup interpreted by GTK Label
+
+**Files**: Update `calc_ui.ml`
+
+**Verification**:
+- `dune build` succeeds
+- Interactive/screenshot: result text is visibly larger and bolder than expression text
+- Both labels use monospace font
+- Screenshot: `xvfb-run -- bash -c 'dune exec examples/calculator/calculator.exe & sleep 1 && import -window root /tmp/calc_stage3.png && kill %1'`
+
+---
+
+### Stage 4: Expression Parser
+**Goal**: Pure OCaml expression evaluator with operator precedence and parentheses.
+
+**Deliverable**: `calc_expr.ml` + `test_calc_expr.ml`
+- Tokenizer: string → token list (numbers, operators `+-*/`, parens, decimal point)
+- Recursive descent parser with correct precedence (`*`/`/` before `+`/`-`)
+- Evaluator: token list → `(float, string) result`
+- Parenthesis auto-close: if unclosed parens at end, auto-close when valid, error when not
+- Error cases: division by zero, malformed expressions, unbalanced parens
+
+**Files**: `examples/calculator/calc_expr.ml`, `examples/calculator/test_calc_expr.ml`, update `dune`
+
+**Test cases** (unit tests in `test_calc_expr.ml`, run via `dune runtest`):
+- `"2+3"` → `Ok 5.0`
+- `"2+3*4"` → `Ok 14.0` (precedence)
+- `"(2+3)*4"` → `Ok 20.0` (parens)
+- `"10/0"` → `Error "Division by zero"`
+- `""` → `Error _` (empty)
+- `"2*(3+4"` → `Ok 14.0` (auto-close)
+- `"2*(3+"` → `Error _` (invalid auto-close)
+- `"3.14*2"` → `Ok 6.28` (decimals)
+- `"  2 + 3  "` → `Ok 5.0` (whitespace tolerance)
+- `"((2+3))"` → `Ok 5.0` (nested parens)
+
+**Verification**:
+- `dune build` succeeds
+- `xvfb-run dune runtest` passes all test cases (check return code)
+
+---
+
+### Stage 5: Calculator State Machine
+**Goal**: State module that mediates between raw input events and the expression evaluator.
+
+**Deliverable**: `calc_state.ml` + `test_calc_state.ml`
+- `type t = { expression: string; result: string; error: bool }`
+- `create ()` → initial state
+- `append_char t c` → appends digit/operator/paren to expression
+- `backspace t` → removes last character
+- `clear t` → resets to initial state
+- `evaluate t` → runs `calc_expr.evaluate`, updates result/error fields
+- Input validation: prevent consecutive operators, leading operators (except minus), etc.
+
+**Files**: `examples/calculator/calc_state.ml`, `examples/calculator/test_calc_state.ml`, update `dune`
+
+**Test cases**:
+- `create() |> append '1' |> append '2' |> append '3'` → expression = `"123"`
+- `... |> backspace` → expression = `"12"`
+- `... |> clear` → expression = `""`, result = `"0"`, error = false
+- `append '2' |> append '+' |> append '3' |> evaluate` → result = `"5"`
+- After error, `append` is blocked; only `clear` works
+- Consecutive operator replacement: `2+*` → `2*` (last operator wins)
+
+**Verification**:
+- `dune build` succeeds
+- `xvfb-run dune runtest` passes all test cases
+
+---
+
+### Stage 6: Button Click Handling
+**Goal**: Clicking buttons updates the display labels via the state machine.
+
+**Deliverable**: Updated `calc_ui.ml` — wire button `on_clicked` signals to `calc_state`.
+- Each button click calls appropriate `calc_state` function
+- Expression label updates to show current expression
+- Result label updates when `=` is pressed
+- `C` button clears both displays
+- Error state shows "Error" in result label
+
+**Files**: Update `calc_ui.ml`, update `dune` (add `calc_state` and `calc_expr` modules)
+
+**Verification**:
+- `dune build` succeeds
+- Interactive: launch app, click buttons, confirm expression label updates live
+- Click `2`, `+`, `3`, `=` → result shows `5`
+- Click `C` → both displays reset
+- Click `1`, `/`, `0`, `=` → result shows "Error"
+
+---
+
+### Stage 7: Keyboard Input
+**Goal**: Full keyboard control via `EventControllerKey`.
+
+**Deliverable**: Keyboard handler in `calc_ui.ml`
+- Manual `key-pressed` signal connection via `Gobject.Signal.connect` (see Known Issue #3)
+- Key mappings: `0-9`, `.`, `+`, `-`, `*`, `/`, `(`, `)`, Enter/`=`, Escape, Backspace
+- Same state machine flow as button clicks
+
+**Files**: Update `calc_ui.ml`
+
+**Verification**:
+- `dune build` succeeds
+- Interactive: launch app, type `2+3` then Enter → result shows `5`
+- Escape clears, Backspace deletes last char
+
+---
+
+### Stage 8: E2E Test Harness
+**Goal**: Automated xdotool-based test that validates keyboard-driven interaction.
+
+Validate the automation pipeline now — before investing in visual polish — so that
+all subsequent stages can be regression-tested automatically.
+
+**Deliverable**: `test_calculator_e2e.ml`
+- Launches calculator as subprocess under xvfb
+- Uses `xdotool` for keyboard input simulation (type digits/operators, press Enter/Escape)
+- Captures screenshots at each step for manual review
+- Validates at least:
+  - Digit entry: type `123`, screenshot shows expression
+  - Basic arithmetic: type `2+3=`, screenshot after `=`
+  - Operator precedence: type `2+3*4=`, screenshot after `=`
+  - Clear: press Escape, screenshot shows reset
+- Exit with non-zero status on failure
+
+**Files**: `examples/calculator/test_calculator_e2e.ml`, update `dune`
+
+**Verification**:
+- `dune build` succeeds
+- `xvfb-run dune runtest` includes E2E tests and they pass
+- Screenshots saved to `/tmp/` for manual review
+
+---
+
+### Stage 9: CSS Styling
+**Goal**: Flat modern theme applied via CssProvider.
+
+**Deliverable**: CSS theme + C stub for CssProvider→StyleProvider cast
+- C stub: `ml_gtk_css_provider_as_style_provider` (see Known Issue #1)
+- CSS classes applied to buttons (operator, equals, clear) and display labels
+- `CssProvider.load_from_string` with the theme CSS
+- `Style_context.add_provider` via the cast stub
+
+**Files**: `examples/calculator/calc_stubs.c`, update `calc_ui.ml`, update `dune` (add `(c_names calc_stubs)` or `(foreign_stubs ...)`)
+
+**Verification**:
+- `dune build` succeeds
+- Interactive/screenshot: buttons have colored backgrounds (orange operators, green equals, red clear)
+- Display has dark background with white text
+- E2E harness screenshot confirms styled UI
+
+---
+
+### Stage 10: Polish and Edge Cases
+**Goal**: Handle remaining edge cases, 0-button span, final visual polish.
+
+**Deliverable**:
+- 0 button spans 2 columns (if `Grid.attach` width param works)
+- Decimal point validation (prevent `1.2.3`)
+- Negative number handling (leading minus)
+- Large number display formatting
+- Window not resizable or has sensible min size
+
+**Files**: Update `calc_ui.ml`, `calc_state.ml`, `test_calc_state.ml`
+
+**Verification**:
+- All existing tests still pass (unit + E2E)
+- New edge case tests pass
+- Interactive: 0 button is wider, app looks polished
+- Final screenshot for review

@@ -1,0 +1,5 @@
+(executable
+ (name calculator)
+ (modules calculator calc_ui)
+ (libraries ocgtk.gtk ocgtk.gio ocgtk.pango)
+)
