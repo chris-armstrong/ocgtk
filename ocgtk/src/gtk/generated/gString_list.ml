@@ -40,5 +40,6 @@ class string_list (obj : String_list.t) : string_list_t = object (self)
 end
 
 let new_ (strings : string array option) : string_list_t =
-  new string_list (String_list.new_ strings)
+  let obj_ = String_list.new_ strings in
+  new string_list obj_
 

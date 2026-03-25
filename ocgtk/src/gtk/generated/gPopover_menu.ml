@@ -50,9 +50,11 @@ end
 
 let new_from_model (model : Ocgtk_gio.Gio.Menu_model.menu_model_t option) : popover_menu_t =
   let model = Option.map (fun c -> c#as_menu_model) model in
-  new popover_menu (Popover_menu.new_from_model model)
+  let obj_ = Popover_menu.new_from_model model in
+  new popover_menu obj_
 
 let new_from_model_full (model : Ocgtk_gio.Gio.Menu_model.menu_model_t) (flags : Gtk_enums.popovermenuflags) : popover_menu_t =
   let model = model#as_menu_model in
-  new popover_menu (Popover_menu.new_from_model_full model flags)
+  let obj_ = Popover_menu.new_from_model_full model flags in
+  new popover_menu obj_
 

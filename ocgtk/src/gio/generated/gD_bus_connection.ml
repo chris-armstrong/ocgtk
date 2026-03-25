@@ -119,3 +119,26 @@ class d_bus_connection (obj : D_bus_connection.t) : d_bus_connection_t = object 
     method as_d_bus_connection = obj
 end
 
+let new_finish (res : GAsync_result.async_result_t) : (d_bus_connection_t, GError.t) result =
+  let res = res#as_async_result in
+  let obj_ = D_bus_connection.new_finish res in
+Result.map (fun obj_ ->  new d_bus_connection obj_) obj_
+
+let new_for_address_finish (res : GAsync_result.async_result_t) : (d_bus_connection_t, GError.t) result =
+  let res = res#as_async_result in
+  let obj_ = D_bus_connection.new_for_address_finish res in
+Result.map (fun obj_ ->  new d_bus_connection obj_) obj_
+
+let new_for_address_sync (address : string) (flags : Gio_enums.dbusconnectionflags) (observer : GD_bus_auth_observer.d_bus_auth_observer_t option) (cancellable : GCancellable.cancellable_t option) : (d_bus_connection_t, GError.t) result =
+  let observer = Option.map (fun c -> c#as_d_bus_auth_observer) observer in
+  let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
+  let obj_ = D_bus_connection.new_for_address_sync address flags observer cancellable in
+Result.map (fun obj_ ->  new d_bus_connection obj_) obj_
+
+let new_sync (stream : GIo_stream.io_stream_t) (guid : string option) (flags : Gio_enums.dbusconnectionflags) (observer : GD_bus_auth_observer.d_bus_auth_observer_t option) (cancellable : GCancellable.cancellable_t option) : (d_bus_connection_t, GError.t) result =
+  let stream = stream#as_io_stream in
+  let observer = Option.map (fun c -> c#as_d_bus_auth_observer) observer in
+  let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
+  let obj_ = D_bus_connection.new_sync stream guid flags observer cancellable in
+Result.map (fun obj_ ->  new d_bus_connection obj_) obj_
+

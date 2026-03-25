@@ -83,5 +83,6 @@ class box (obj : Box.t) : box_t = object (self)
 end
 
 let new_ (orientation : Gtk_enums.orientation) (spacing : int) : box_t =
-  new box (Box.new_ orientation spacing)
+  let obj_ = Box.new_ orientation spacing in
+  new box obj_
 

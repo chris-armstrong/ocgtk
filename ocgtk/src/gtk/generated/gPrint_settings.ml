@@ -341,3 +341,7 @@ end
 let new_ () : print_settings_t =
   new print_settings (Print_settings.new_ ())
 
+let new_from_file (file_name : string) : (print_settings_t, GError.t) result =
+  let obj_ = Print_settings.new_from_file file_name in
+Result.map (fun obj_ ->  new print_settings obj_) obj_
+

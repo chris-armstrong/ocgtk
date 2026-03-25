@@ -11,5 +11,6 @@ class simple_permission (obj : Simple_permission.t) : simple_permission_t = obje
 end
 
 let new_ (allowed : bool) : simple_permission_t =
-  new simple_permission (Simple_permission.new_ allowed)
+  let obj_ = Simple_permission.new_ allowed in
+  new simple_permission obj_
 

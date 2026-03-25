@@ -21,5 +21,6 @@ class keyval_trigger (obj : Keyval_trigger.t) : keyval_trigger_t = object (self)
 end
 
 let new_ (keyval : int) (modifiers : Ocgtk_gdk.Gdk.modifiertype) : keyval_trigger_t =
-  new keyval_trigger (Keyval_trigger.new_ keyval modifiers)
+  let obj_ = Keyval_trigger.new_ keyval modifiers in
+  new keyval_trigger obj_
 

@@ -25,6 +25,86 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GdkPixbuf(obj));
 }
+CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_file(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GdkPixbuf *obj = gdk_pixbuf_new_from_file(String_val(arg1), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbuf(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_file_at_scale(value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam4(arg1, arg2, arg3, arg4);
+GError *error = NULL;
+    
+GdkPixbuf *obj = gdk_pixbuf_new_from_file_at_scale(String_val(arg1), Int_val(arg2), Int_val(arg3), Bool_val(arg4), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbuf(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_file_at_size(value arg1, value arg2, value arg3)
+{
+CAMLparam3(arg1, arg2, arg3);
+GError *error = NULL;
+    
+GdkPixbuf *obj = gdk_pixbuf_new_from_file_at_size(String_val(arg1), Int_val(arg2), Int_val(arg3), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbuf(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_resource(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GdkPixbuf *obj = gdk_pixbuf_new_from_resource(String_val(arg1), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbuf(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_resource_at_scale(value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam4(arg1, arg2, arg3, arg4);
+GError *error = NULL;
+    
+GdkPixbuf *obj = gdk_pixbuf_new_from_resource_at_scale(String_val(arg1), Int_val(arg2), Int_val(arg3), Bool_val(arg4), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbuf(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_stream(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+GError *error = NULL;
+    
+GdkPixbuf *obj = gdk_pixbuf_new_from_stream(GInputStream_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbuf(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_stream_at_scale(value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(arg1, arg2, arg3, arg4, arg5);
+GError *error = NULL;
+    
+GdkPixbuf *obj = gdk_pixbuf_new_from_stream_at_scale(GInputStream_val(arg1), Int_val(arg2), Int_val(arg3), Bool_val(arg4), Option_val(arg5, GCancellable_val, NULL), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbuf(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_stream_finish(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GdkPixbuf *obj = gdk_pixbuf_new_from_stream_finish(GAsyncResult_val(arg1), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbuf(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_xpm_data(value arg1)
 {
 CAMLparam1(arg1);

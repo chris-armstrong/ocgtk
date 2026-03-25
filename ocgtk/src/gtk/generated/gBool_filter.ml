@@ -33,5 +33,6 @@ end
 
 let new_ (expression : GExpression.expression_t option) : bool_filter_t =
   let expression = Option.map (fun c -> c#as_expression) expression in
-  new bool_filter (Bool_filter.new_ expression)
+  let obj_ = Bool_filter.new_ expression in
+  new bool_filter obj_
 

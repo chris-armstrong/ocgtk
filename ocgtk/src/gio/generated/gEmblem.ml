@@ -20,9 +20,11 @@ end
 
 let new_ (icon : GIcon.icon_t) : emblem_t =
   let icon = icon#as_icon in
-  new emblem (Emblem.new_ icon)
+  let obj_ = Emblem.new_ icon in
+  new emblem obj_
 
 let new_with_origin (icon : GIcon.icon_t) (origin : Gio_enums.emblemorigin) : emblem_t =
   let icon = icon#as_icon in
-  new emblem (Emblem.new_with_origin icon origin)
+  let obj_ = Emblem.new_with_origin icon origin in
+  new emblem obj_
 

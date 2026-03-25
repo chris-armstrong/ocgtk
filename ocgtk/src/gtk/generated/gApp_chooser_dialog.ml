@@ -31,9 +31,11 @@ end
 let new_ (parent : GApplication_and__window_and__window_group.window_t option) (flags : Gtk_enums.dialogflags) (file : Ocgtk_gio.Gio.File.file_t) : app_chooser_dialog_t =
   let parent = Option.map (fun c -> c#as_window) parent in
   let file = file#as_file in
-  new app_chooser_dialog (App_chooser_dialog.new_ parent flags file)
+  let obj_ = App_chooser_dialog.new_ parent flags file in
+  new app_chooser_dialog obj_
 
 let new_for_content_type (parent : GApplication_and__window_and__window_group.window_t option) (flags : Gtk_enums.dialogflags) (content_type : string) : app_chooser_dialog_t =
   let parent = Option.map (fun c -> c#as_window) parent in
-  new app_chooser_dialog (App_chooser_dialog.new_for_content_type parent flags content_type)
+  let obj_ = App_chooser_dialog.new_for_content_type parent flags content_type in
+  new app_chooser_dialog obj_
 

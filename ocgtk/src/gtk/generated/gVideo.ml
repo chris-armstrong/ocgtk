@@ -77,15 +77,19 @@ let new_ () : video_t =
 
 let new_for_file (file : Ocgtk_gio.Gio.File.file_t option) : video_t =
   let file = Option.map (fun c -> c#as_file) file in
-  new video (Video.new_for_file file)
+  let obj_ = Video.new_for_file file in
+  new video obj_
 
 let new_for_filename (filename : string option) : video_t =
-  new video (Video.new_for_filename filename)
+  let obj_ = Video.new_for_filename filename in
+  new video obj_
 
 let new_for_media_stream (stream : GMedia_stream.media_stream_t option) : video_t =
   let stream = Option.map (fun c -> c#as_media_stream) stream in
-  new video (Video.new_for_media_stream stream)
+  let obj_ = Video.new_for_media_stream stream in
+  new video obj_
 
 let new_for_resource (resource_path : string option) : video_t =
-  new video (Video.new_for_resource resource_path)
+  let obj_ = Video.new_for_resource resource_path in
+  new video obj_
 

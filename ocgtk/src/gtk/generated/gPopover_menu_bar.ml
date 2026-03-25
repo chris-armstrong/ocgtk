@@ -35,5 +35,6 @@ end
 
 let new_from_model (model : Ocgtk_gio.Gio.Menu_model.menu_model_t option) : popover_menu_bar_t =
   let model = Option.map (fun c -> c#as_menu_model) model in
-  new popover_menu_bar (Popover_menu_bar.new_from_model model)
+  let obj_ = Popover_menu_bar.new_from_model model in
+  new popover_menu_bar obj_
 

@@ -79,11 +79,14 @@ let new_ () : button_t =
   new button (Button.new_ ())
 
 let new_from_icon_name (icon_name : string) : button_t =
-  new button (Button.new_from_icon_name icon_name)
+  let obj_ = Button.new_from_icon_name icon_name in
+  new button obj_
 
 let new_with_label (label : string) : button_t =
-  new button (Button.new_with_label label)
+  let obj_ = Button.new_with_label label in
+  new button obj_
 
 let new_with_mnemonic (label : string) : button_t =
-  new button (Button.new_with_mnemonic label)
+  let obj_ = Button.new_with_mnemonic label in
+  new button obj_
 

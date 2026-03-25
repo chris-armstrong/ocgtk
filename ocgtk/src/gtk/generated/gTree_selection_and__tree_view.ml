@@ -430,5 +430,6 @@ let new_ () : tree_view_t =
 
 let new_with_model (model : GTree_model.tree_model_t) : tree_view_t =
   let model = model#as_tree_model in
-  new tree_view (Tree_selection_and__tree_view.Tree_view.new_with_model model)
+  let obj_ = Tree_selection_and__tree_view.Tree_view.new_with_model model in
+  new tree_view obj_
 

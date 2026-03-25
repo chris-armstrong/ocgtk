@@ -106,3 +106,7 @@ end
 let new_ () : page_setup_t =
   new page_setup (Page_setup.new_ ())
 
+let new_from_file (file_name : string) : (page_setup_t, GError.t) result =
+  let obj_ = Page_setup.new_from_file file_name in
+Result.map (fun obj_ ->  new page_setup obj_) obj_
+

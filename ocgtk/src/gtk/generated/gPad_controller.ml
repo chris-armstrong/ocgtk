@@ -29,5 +29,6 @@ end
 let new_ (group : Ocgtk_gio.Gio.Action_group.action_group_t) (pad : Ocgtk_gdk.Gdk.Device.device_t option) : pad_controller_t =
   let group = group#as_action_group in
   let pad = Option.map (fun c -> c#as_device) pad in
-  new pad_controller (Pad_controller.new_ group pad)
+  let obj_ = Pad_controller.new_ group pad in
+  new pad_controller obj_
 

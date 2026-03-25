@@ -44,5 +44,6 @@ class notification (obj : Notification.t) : notification_t = object (self)
 end
 
 let new_ (title : string) : notification_t =
-  new notification (Notification.new_ title)
+  let obj_ = Notification.new_ title in
+  new notification obj_
 

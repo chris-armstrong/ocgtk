@@ -19,5 +19,6 @@ class script_iter (obj : Script_iter.t) : script_iter_t = object (self)
 end
 
 let new_ (text : string) (length : int) : script_iter_t =
-  new script_iter (Script_iter.new_ text length)
+  let obj_ = Script_iter.new_ text length in
+  new script_iter obj_
 

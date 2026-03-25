@@ -107,23 +107,29 @@ let new_ () : image_t =
   new image (Image.new_ ())
 
 let new_from_file (filename : string) : image_t =
-  new image (Image.new_from_file filename)
+  let obj_ = Image.new_from_file filename in
+  new image obj_
 
 let new_from_gicon (icon : Ocgtk_gio.Gio.Icon.icon_t) : image_t =
   let icon = icon#as_icon in
-  new image (Image.new_from_gicon icon)
+  let obj_ = Image.new_from_gicon icon in
+  new image obj_
 
 let new_from_icon_name (icon_name : string option) : image_t =
-  new image (Image.new_from_icon_name icon_name)
+  let obj_ = Image.new_from_icon_name icon_name in
+  new image obj_
 
 let new_from_paintable (paintable : Ocgtk_gdk.Gdk.Paintable.paintable_t option) : image_t =
   let paintable = Option.map (fun c -> c#as_paintable) paintable in
-  new image (Image.new_from_paintable paintable)
+  let obj_ = Image.new_from_paintable paintable in
+  new image obj_
 
 let new_from_pixbuf (pixbuf : Ocgtk_gdkpixbuf.GdkPixbuf.Pixbuf.pixbuf_t option) : image_t =
   let pixbuf = Option.map (fun c -> c#as_pixbuf) pixbuf in
-  new image (Image.new_from_pixbuf pixbuf)
+  let obj_ = Image.new_from_pixbuf pixbuf in
+  new image obj_
 
 let new_from_resource (resource_path : string) : image_t =
-  new image (Image.new_from_resource resource_path)
+  let obj_ = Image.new_from_resource resource_path in
+  new image obj_
 

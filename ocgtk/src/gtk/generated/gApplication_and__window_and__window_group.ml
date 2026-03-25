@@ -432,7 +432,8 @@ let new_ () : window_t =
   new window (Application_and__window_and__window_group.Window.new_ ())
 
 let new_ (application_id : string option) (flags : Ocgtk_gio.Gio.applicationflags) : application_t =
-  new application (Application_and__window_and__window_group.Application.new_ application_id flags)
+  let obj_ = Application_and__window_and__window_group.Application.new_ application_id flags in
+  new application obj_
 
 let new_ () : window_group_t =
   new window_group (Application_and__window_and__window_group.Window_group.new_ ())

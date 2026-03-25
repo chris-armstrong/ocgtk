@@ -29,3 +29,7 @@ class charset_converter (obj : Charset_converter.t) : charset_converter_t = obje
     method as_charset_converter = obj
 end
 
+let new_ (to_charset : string) (from_charset : string) : (charset_converter_t, GError.t) result =
+  let obj_ = Charset_converter.new_ to_charset from_charset in
+Result.map (fun obj_ ->  new charset_converter obj_) obj_
+

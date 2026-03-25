@@ -12,5 +12,6 @@ end
 
 let new_ (title : string option) (parent : GApplication_and__window_and__window_group.window_t option) : font_chooser_dialog_t =
   let parent = Option.map (fun c -> c#as_window) parent in
-  new font_chooser_dialog (Font_chooser_dialog.new_ title parent)
+  let obj_ = Font_chooser_dialog.new_ title parent in
+  new font_chooser_dialog obj_
 

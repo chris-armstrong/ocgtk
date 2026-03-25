@@ -39,8 +39,10 @@ let new_ () : toggle_button_t =
   new toggle_button (Toggle_button.new_ ())
 
 let new_with_label (label : string) : toggle_button_t =
-  new toggle_button (Toggle_button.new_with_label label)
+  let obj_ = Toggle_button.new_with_label label in
+  new toggle_button obj_
 
 let new_with_mnemonic (label : string) : toggle_button_t =
-  new toggle_button (Toggle_button.new_with_mnemonic label)
+  let obj_ = Toggle_button.new_with_mnemonic label in
+  new toggle_button obj_
 

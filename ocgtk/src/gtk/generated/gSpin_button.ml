@@ -138,8 +138,10 @@ end
 
 let new_ (adjustment : GAdjustment.adjustment_t option) (climb_rate : float) (digits : int) : spin_button_t =
   let adjustment = Option.map (fun c -> c#as_adjustment) adjustment in
-  new spin_button (Spin_button.new_ adjustment climb_rate digits)
+  let obj_ = Spin_button.new_ adjustment climb_rate digits in
+  new spin_button obj_
 
 let new_with_range (min : float) (max : float) (step : float) : spin_button_t =
-  new spin_button (Spin_button.new_with_range min max step)
+  let obj_ = Spin_button.new_with_range min max step in
+  new spin_button obj_
 

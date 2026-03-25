@@ -22,6 +22,16 @@
 #include "gio_decls.h"
 
 
+CAMLexport CAMLprim value ml_g_dbus_server_new_sync(value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(arg1, arg2, arg3, arg4, arg5);
+GError *error = NULL;
+    
+GDBusServer *obj = g_dbus_server_new_sync(String_val(arg1), GioDBusServerFlags_val(arg2), String_val(arg3), Option_val(arg4, GDBusAuthObserver_val, NULL), Option_val(arg5, GCancellable_val, NULL), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GDBusServer(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 CAMLexport CAMLprim value ml_g_dbus_server_stop(value self)
 {
 CAMLparam1(self);

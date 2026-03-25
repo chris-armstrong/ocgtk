@@ -22,6 +22,26 @@
 #include "gio_decls.h"
 
 
+CAMLexport CAMLprim value ml_g_dbus_object_manager_client_new_finish(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GDBusObjectManagerClient *obj = g_dbus_object_manager_client_new_finish(GAsyncResult_val(arg1), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GDBusObjectManagerClient(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_g_dbus_object_manager_client_new_for_bus_finish(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GDBusObjectManagerClient *obj = g_dbus_object_manager_client_new_for_bus_finish(GAsyncResult_val(arg1), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GDBusObjectManagerClient(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 CAMLexport CAMLprim value ml_g_dbus_object_manager_client_get_name_owner(value self)
 {
 CAMLparam1(self);

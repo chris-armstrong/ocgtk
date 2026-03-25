@@ -165,5 +165,6 @@ class application (obj : Application.t) : application_t = object (self)
 end
 
 let new_ (application_id : string option) (flags : Gio_enums.applicationflags) : application_t =
-  new application (Application.new_ application_id flags)
+  let obj_ = Application.new_ application_id flags in
+  new application obj_
 

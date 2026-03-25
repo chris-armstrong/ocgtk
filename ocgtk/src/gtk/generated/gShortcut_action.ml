@@ -14,5 +14,6 @@ class shortcut_action (obj : Shortcut_action.t) : shortcut_action_t = object (se
 end
 
 let parse_string (string : string) : shortcut_action_t =
-  new shortcut_action (Shortcut_action.parse_string string)
+  let obj_ = Shortcut_action.parse_string string in
+  new shortcut_action obj_
 

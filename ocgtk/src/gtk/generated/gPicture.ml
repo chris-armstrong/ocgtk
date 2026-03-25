@@ -93,19 +93,24 @@ let new_ () : picture_t =
 
 let new_for_file (file : Ocgtk_gio.Gio.File.file_t option) : picture_t =
   let file = Option.map (fun c -> c#as_file) file in
-  new picture (Picture.new_for_file file)
+  let obj_ = Picture.new_for_file file in
+  new picture obj_
 
 let new_for_filename (filename : string option) : picture_t =
-  new picture (Picture.new_for_filename filename)
+  let obj_ = Picture.new_for_filename filename in
+  new picture obj_
 
 let new_for_paintable (paintable : Ocgtk_gdk.Gdk.Paintable.paintable_t option) : picture_t =
   let paintable = Option.map (fun c -> c#as_paintable) paintable in
-  new picture (Picture.new_for_paintable paintable)
+  let obj_ = Picture.new_for_paintable paintable in
+  new picture obj_
 
 let new_for_pixbuf (pixbuf : Ocgtk_gdkpixbuf.GdkPixbuf.Pixbuf.pixbuf_t option) : picture_t =
   let pixbuf = Option.map (fun c -> c#as_pixbuf) pixbuf in
-  new picture (Picture.new_for_pixbuf pixbuf)
+  let obj_ = Picture.new_for_pixbuf pixbuf in
+  new picture obj_
 
 let new_for_resource (resource_path : string option) : picture_t =
-  new picture (Picture.new_for_resource resource_path)
+  let obj_ = Picture.new_for_resource resource_path in
+  new picture obj_
 

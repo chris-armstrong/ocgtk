@@ -23,3 +23,7 @@ class d_bus_node_info (obj : D_bus_node_info.t) : d_bus_node_info_t = object (se
     method as_d_bus_node_info = obj
 end
 
+let new_for_xml (xml_data : string) : (d_bus_node_info_t, GError.t) result =
+  let obj_ = D_bus_node_info.new_for_xml xml_data in
+Result.map (fun obj_ ->  new d_bus_node_info obj_) obj_
+

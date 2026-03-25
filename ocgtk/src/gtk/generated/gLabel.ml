@@ -254,8 +254,10 @@ class label (obj : Label.t) : label_t = object (self)
 end
 
 let new_ (str : string option) : label_t =
-  new label (Label.new_ str)
+  let obj_ = Label.new_ str in
+  new label obj_
 
 let new_with_mnemonic (str : string option) : label_t =
-  new label (Label.new_with_mnemonic str)
+  let obj_ = Label.new_with_mnemonic str in
+  new label obj_
 

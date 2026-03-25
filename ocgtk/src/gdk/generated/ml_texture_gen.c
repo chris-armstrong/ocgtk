@@ -25,6 +25,26 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GdkTexture(obj));
 }
+CAMLexport CAMLprim value ml_gdk_texture_new_from_file(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GdkTexture *obj = gdk_texture_new_from_file(GFile_val(arg1), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GdkTexture(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_gdk_texture_new_from_filename(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GdkTexture *obj = gdk_texture_new_from_filename(String_val(arg1), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GdkTexture(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 CAMLexport CAMLprim value ml_gdk_texture_new_from_resource(value arg1)
 {
 CAMLparam1(arg1);

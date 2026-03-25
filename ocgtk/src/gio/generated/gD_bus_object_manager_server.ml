@@ -46,5 +46,6 @@ class d_bus_object_manager_server (obj : D_bus_object_manager_server.t) : d_bus_
 end
 
 let new_ (object_path : string) : d_bus_object_manager_server_t =
-  new d_bus_object_manager_server (D_bus_object_manager_server.new_ object_path)
+  let obj_ = D_bus_object_manager_server.new_ object_path in
+  new d_bus_object_manager_server obj_
 

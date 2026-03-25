@@ -30,5 +30,6 @@ class event_controller_scroll (obj : Event_controller_scroll.t) : event_controll
 end
 
 let new_ (flags : Gtk_enums.eventcontrollerscrollflags) : event_controller_scroll_t =
-  new event_controller_scroll (Event_controller_scroll.new_ flags)
+  let obj_ = Event_controller_scroll.new_ flags in
+  new event_controller_scroll obj_
 

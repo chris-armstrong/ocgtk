@@ -26,5 +26,6 @@ class editable_label (obj : Editable_label.t) : editable_label_t = object (self)
 end
 
 let new_ (str : string) : editable_label_t =
-  new editable_label (Editable_label.new_ str)
+  let obj_ = Editable_label.new_ str in
+  new editable_label obj_
 

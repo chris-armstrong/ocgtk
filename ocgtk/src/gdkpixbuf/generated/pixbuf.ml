@@ -7,6 +7,30 @@ type t = [`pixbuf | `object_] Gobject.obj
 external new_ : Gdkpixbuf_enums.colorspace -> bool -> int -> int -> int -> t = "ml_gdk_pixbuf_new"
 
 (** Create a new Pixbuf *)
+external new_from_file : string -> (t, GError.t) result = "ml_gdk_pixbuf_new_from_file"
+
+(** Create a new Pixbuf *)
+external new_from_file_at_scale : string -> int -> int -> bool -> (t, GError.t) result = "ml_gdk_pixbuf_new_from_file_at_scale"
+
+(** Create a new Pixbuf *)
+external new_from_file_at_size : string -> int -> int -> (t, GError.t) result = "ml_gdk_pixbuf_new_from_file_at_size"
+
+(** Create a new Pixbuf *)
+external new_from_resource : string -> (t, GError.t) result = "ml_gdk_pixbuf_new_from_resource"
+
+(** Create a new Pixbuf *)
+external new_from_resource_at_scale : string -> int -> int -> bool -> (t, GError.t) result = "ml_gdk_pixbuf_new_from_resource_at_scale"
+
+(** Create a new Pixbuf *)
+external new_from_stream : Ocgtk_gio.Gio.Wrappers.Input_stream.t -> Ocgtk_gio.Gio.Wrappers.Cancellable.t option -> (t, GError.t) result = "ml_gdk_pixbuf_new_from_stream"
+
+(** Create a new Pixbuf *)
+external new_from_stream_at_scale : Ocgtk_gio.Gio.Wrappers.Input_stream.t -> int -> int -> bool -> Ocgtk_gio.Gio.Wrappers.Cancellable.t option -> (t, GError.t) result = "ml_gdk_pixbuf_new_from_stream_at_scale"
+
+(** Create a new Pixbuf *)
+external new_from_stream_finish : Ocgtk_gio.Gio.Wrappers.Async_result.t -> (t, GError.t) result = "ml_gdk_pixbuf_new_from_stream_finish"
+
+(** Create a new Pixbuf *)
 external new_from_xpm_data : string array -> t = "ml_gdk_pixbuf_new_from_xpm_data"
 
 (* Methods *)

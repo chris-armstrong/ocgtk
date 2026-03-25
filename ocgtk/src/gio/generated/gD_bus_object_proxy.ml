@@ -21,5 +21,6 @@ end
 
 let new_ (connection : GD_bus_connection.d_bus_connection_t) (object_path : string) : d_bus_object_proxy_t =
   let connection = connection#as_d_bus_connection in
-  new d_bus_object_proxy (D_bus_object_proxy.new_ connection object_path)
+  let obj_ = D_bus_object_proxy.new_ connection object_path in
+  new d_bus_object_proxy obj_
 

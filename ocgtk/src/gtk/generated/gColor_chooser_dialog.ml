@@ -17,5 +17,6 @@ end
 
 let new_ (title : string option) (parent : GApplication_and__window_and__window_group.window_t option) : color_chooser_dialog_t =
   let parent = Option.map (fun c -> c#as_window) parent in
-  new color_chooser_dialog (Color_chooser_dialog.new_ title parent)
+  let obj_ = Color_chooser_dialog.new_ title parent in
+  new color_chooser_dialog obj_
 

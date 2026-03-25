@@ -272,9 +272,11 @@ let new_ () : icon_view_t =
 
 let new_with_area (area : GCell_area_and__cell_area_context.cell_area_t) : icon_view_t =
   let area = area#as_cell_area in
-  new icon_view (Icon_view.new_with_area area)
+  let obj_ = Icon_view.new_with_area area in
+  new icon_view obj_
 
 let new_with_model (model : GTree_model.tree_model_t) : icon_view_t =
   let model = model#as_tree_model in
-  new icon_view (Icon_view.new_with_model model)
+  let obj_ = Icon_view.new_with_model model in
+  new icon_view obj_
 

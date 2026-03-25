@@ -24,3 +24,4 @@ end
 class page_setup : Page_setup.t -> page_setup_t
 
 val new_ : unit -> page_setup_t
+val new_from_file : string -> (page_setup_t, GError.t) result

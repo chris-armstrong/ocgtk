@@ -31,5 +31,6 @@ class size_group (obj : Size_group.t) : size_group_t = object (self)
 end
 
 let new_ (mode : Gtk_enums.sizegroupmode) : size_group_t =
-  new size_group (Size_group.new_ mode)
+  let obj_ = Size_group.new_ mode in
+  new size_group obj_
 

@@ -18,5 +18,6 @@ end
 let new_ (texture : Ocgtk_gdk.Gdk.Texture.texture_t) (bounds : Ocgtk_graphene.Graphene.Rect.rect_t) : texture_node_t =
   let texture = texture#as_texture in
   let bounds = bounds#as_rect in
-  new texture_node (Texture_node.new_ texture bounds)
+  let obj_ = Texture_node.new_ texture bounds in
+  new texture_node obj_
 

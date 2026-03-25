@@ -794,9 +794,11 @@ and vulkan_context (obj : App_launch_context_and__cairo_context_and__clipboard_a
 end
 let new_popup (parent : surface_t) (autohide : bool) : surface_t =
   let parent = parent#as_surface in
-  new surface (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Surface.new_popup parent autohide)
+  let obj_ = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Surface.new_popup parent autohide in
+  new surface obj_
 
 let new_toplevel (display : display_t) : surface_t =
   let display = display#as_display in
-  new surface (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Surface.new_toplevel display)
+  let obj_ = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Surface.new_toplevel display in
+  new surface obj_
 

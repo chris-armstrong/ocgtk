@@ -53,5 +53,6 @@ end
 
 let new_ (file : Ocgtk_gio.Gio.File.file_t option) : file_launcher_t =
   let file = Option.map (fun c -> c#as_file) file in
-  new file_launcher (File_launcher.new_ file)
+  let obj_ = File_launcher.new_ file in
+  new file_launcher obj_
 

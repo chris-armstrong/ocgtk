@@ -23,5 +23,6 @@ end
 let new_ (child : GRender_node.render_node_t) (clip : Ocgtk_graphene.Graphene.Rect.rect_t) : clip_node_t =
   let child = child#as_render_node in
   let clip = clip#as_rect in
-  new clip_node (Clip_node.new_ child clip)
+  let obj_ = Clip_node.new_ child clip in
+  new clip_node obj_
 

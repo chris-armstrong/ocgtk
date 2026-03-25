@@ -132,9 +132,7 @@ let array_lacks_length_info (arr : gir_array) =
   let elem_c_type = Option.value ~default:"" arr.element_type.c_type in
   let is_pointer_element = String.contains elem_c_type '*' in
   Option.is_none arr.fixed_size
-  && (not arr.zero_terminated)
-  && (not is_string)
-  && (not is_pointer_element)
+  && (not arr.zero_terminated) && (not is_string) && (not is_pointer_element)
   && Option.is_none arr.length
 
 (** Check if a method has any array (in parameters or return type) that would
@@ -200,12 +198,14 @@ let should_skip_method_binding ~ctx (meth : gir_method) =
   let has_unsupported_arrays = method_has_unsupported_arrays meth in
 
   Logs.debug (fun m ->
-      m "should_skip_method_name: %s -> %b %b %b %b %b %b %b\n" meth.c_identifier
-        is_variadic has_excluded_type has_unknown_type is_excluded_function
-        is_not_introspectable has_unsupported_out_arrays has_unsupported_arrays);
+      m "should_skip_method_name: %s -> %b %b %b %b %b %b %b\n"
+        meth.c_identifier is_variadic has_excluded_type has_unknown_type
+        is_excluded_function is_not_introspectable has_unsupported_out_arrays
+        has_unsupported_arrays);
 
   is_variadic || has_excluded_type || has_unknown_type || is_excluded_function
-  || is_not_introspectable || has_unsupported_out_arrays || has_unsupported_arrays
+  || is_not_introspectable || has_unsupported_out_arrays
+  || has_unsupported_arrays
 
 let constructor_has_varargs (ctor : gir_constructor) =
   List.exists ctor.ctor_parameters ~f:(fun p -> p.varargs)
@@ -220,7 +220,7 @@ let should_generate_constructor ~ctx (ctor : gir_constructor) =
       ~find_type_mapping:(Type_mappings.find_type_mapping_for_gir_type ~ctx)
       ~enums:ctx.enums ~bitfields:ctx.bitfields ctor
   in
-  ctor.ctor_introspectable && (not ctor.throws)
+  ctor.ctor_introspectable
   && (not (constructor_has_varargs ctor))
   && not has_unknown_type
 

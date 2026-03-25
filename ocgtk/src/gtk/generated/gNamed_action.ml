@@ -16,5 +16,6 @@ class named_action (obj : Named_action.t) : named_action_t = object (self)
 end
 
 let new_ (name : string) : named_action_t =
-  new named_action (Named_action.new_ name)
+  let obj_ = Named_action.new_ name in
+  new named_action obj_
 

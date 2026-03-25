@@ -120,5 +120,6 @@ let new_ () : entry_completion_t =
 
 let new_with_area (area : GCell_area_and__cell_area_context.cell_area_t) : entry_completion_t =
   let area = area#as_cell_area in
-  new entry_completion (Entry_completion.new_with_area area)
+  let obj_ = Entry_completion.new_with_area area in
+  new entry_completion obj_
 

@@ -18,5 +18,6 @@ class threaded_socket_service (obj : Threaded_socket_service.t) : threaded_socke
 end
 
 let new_ (max_threads : int) : threaded_socket_service_t =
-  new threaded_socket_service (Threaded_socket_service.new_ max_threads)
+  let obj_ = Threaded_socket_service.new_ max_threads in
+  new threaded_socket_service obj_
 
