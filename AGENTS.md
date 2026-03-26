@@ -6,7 +6,8 @@
 
 ## IMPORTANT: You Have Persistent Memory
 
-This project uses Context (`ctx`) for context persistence across sessions.
+This project uses Context (`ctx`) for context persistence across sessions. The directory is stored in the CTX_DIR environment variable ($CTX_DIR hereafter). **IMPORTANT: CTX_DIR must be set to continue reading context.** If CTX_DIR is not set in the environment, stop and ask the user which directory should be used.
+
 **Your memory is NOT ephemeral** - it lives in `$CTX_DIR/*` files.
 
 ## On Session Start
@@ -99,12 +100,14 @@ shellcheck is available to lint & check shell scripts.
 
 If you are running in a clean container (e.g. Claude Code Web), you will need to follow the instructions in [SETUP.md](./SETUP.md) for instructions.
 
-## Code Layout
+## Project Layout and Architecture
 
 `ocgtk` lives in the `ocgtk` sub-directory i.e. ocgtk/ocgtk - remember to `cd ocgtk` before running tools like `dune` or `ocamlformat`.
 
+[The architecture documentation](./ocgtk/architecture/README.md) describes the project layout and system architecture.
 
-## Writing or refactoring Code or Rewriting Documentation
+
+## Code Guidelines - how to write or refactor code 
 
 **Always consult the [code guidelines](./ocgtk/docs/code_guidelines/index.md) for how to structure or restructure code.
 
