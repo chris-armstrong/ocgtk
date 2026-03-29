@@ -97,55 +97,47 @@ external size : t -> int = "ml_g_bytes_get_size"
 
 C side: custom block wrapping `GBytes*` with `g_bytes_unref` finalizer. `create` copies the OCaml string into a new `GBytes`. `to_string` copies the `GBytes` data into a new OCaml string.
 
-### DD4: GList/GSList — Opaque Abstraction with Typed Accessors
+### DD4: GList/GSList — Macro-Based Typed Conversion ✅ IMPLEMENTED
 
-The existing C helpers (`Val_GList`/`GList_val` in `ml_glib.c`) take a function pointer `value (*func)(gpointer)` for element conversion. This won't work directly with most `Val_*` macros (e.g., `Val_int` is a macro, not a function pointer).
+**Design:** Macro-based conversion in `wrappers.h` rather than inline loop generation. Each macro takes caller-declared `CAMLlocal3` variables and an element converter expression. This provides code reuse, consistent GC safety, and easier maintenance vs emitting loops per call site.
 
-**Design: Inline conversion in generated code.** The generator emits a conversion loop for each GList/GSList usage, parameterized by the element type. This follows the same pattern as array conversion in `c_stub_array_conv.ml`.
+**Macros (in `src/common/wrappers.h`):**
 
-For return values (C → OCaml):
+| Macro | Direction | CAMLlocal slots | Purpose |
+|-------|-----------|----------------|---------|
+| `Val_GList_with(list, result, item, cell, conv)` | C→OCaml | 3 (result, item, cell) | GList to OCaml list (iterates via `g_list_last`/`prev`) |
+| `Val_GSList_with(list, result, item, cell, conv)` | C→OCaml | 3 (result, item, cell) | GSList to OCaml list (iterates forward, reverses) |
+| `GList_val_with(ml_list, result, conv)` | OCaml→C | 0 (C pointer only) | OCaml list to GList (prepend + reverse) |
+| `GSList_val_with(ml_list, result, conv)` | OCaml→C | 0 (C pointer only) | OCaml list to GSList (prepend + reverse) |
+
+**Critical GC safety rule:** `CAMLlocal3(result, item, cell)` MUST be declared at function scope, never inside the macro. Nested scopes corrupt OCaml's GC root chain and hide variables from `CAMLreturn`.
+
+**Generated code example (C→OCaml return):**
 ```c
-// Generated for a method returning GList of GtkWidget*
-GList *c_list = gtk_some_method(self);
-value ml_list = Val_emptylist;
-for (GList *l = g_list_last(c_list); l != NULL; l = l->prev) {
-    value item = Val_GtkWidget((GtkWidget*)l->data);
-    value cell = caml_alloc(2, 0);
-    Store_field(cell, 0, item);
-    Store_field(cell, 1, ml_list);
-    ml_list = cell;
+CAMLprim value ml_gtk_application_get_windows(value self) {
+    CAMLparam1(self);
+    CAMLlocal3(result, item, cell);
+    GList* c_result = gtk_application_get_windows(GtkApplication_val(self));
+    Val_GList_with(c_result, result, item, cell, Val_GtkWindow((gpointer)_tmp->data));
+    g_list_free(c_result);
+    CAMLreturn(result);
 }
 ```
 
-For parameters (OCaml → C):
-```c
-// Generated for a method taking GList of GObject*
-GList *c_list = NULL;
-value ml_iter = ml_param;
-while (ml_iter != Val_emptylist) {
-    c_list = g_list_append(c_list, GObject_ext_of_val(Field(ml_iter, 0)));
-    ml_iter = Field(ml_iter, 1);
-}
-// ... call function ...
-g_list_free(c_list);  // free the list container (not elements)
-```
+**Generator architecture:**
+- `type_mappings.ml`: `GLib.List`/`GLib.SList` entries use `LIST_INLINE` marker (not a real converter name)
+- `c_stub_list_conv.ml`: New module — `generate_list_c_to_ml`, `generate_list_ml_to_c`, element converter resolution, transfer ownership cleanup
+- `c_stub_method.ml`: Detects `LIST_INLINE` marker via `Type_mappings.is_list_type`, dispatches to `c_stub_list_conv`
+- `gir_parser.ml`: Updated to parse nested `<type>` elements within `<type name="GLib.List">` for element type extraction
+- `filtering.ml`: `is_interface_type`/`list_has_interface_element` filter out methods with interface element types
 
-**Implementation Note:** We use macro-based conversion (`Val_GList_with`/`Val_GSList_with` in `wrappers.h`) rather than emitting inline loops. This provides:
-- Better code reuse across generated bindings
-- Consistent GC safety patterns
-- Easier maintenance
+**Type resolution:** Element types resolved at generation time. Returns `None` (method filtered out) when element type can't be resolved — no generic `'a list` fallback.
 
-**Limitation:** GList/GSList of interface types (e.g., `GSList<Gio.File>`) cannot be generated because:
-- GObject interfaces have opaque struct definitions
-- The C stub generator currently tries to copy them by value, which fails
-- These are filtered out during generation (see `filtering.ml:is_interface_type`)
+**Transfer ownership handling:**
+- `TransferNone`/`Container`: `g_list_free(c_list)` (free container only)
+- `TransferFull`/`Floating`: `g_list_foreach(...g_object_unref...)` + `g_list_free()` (free elements + container)
 
-The generator needs to:
-1. ✅ Recognize `GLib.List` and `GLib.SList` as container types (via `LIST_INLINE` marker)
-2. ✅ Read the child `<type>` element from GIR for the element type (parser updated)
-3. ✅ Resolve the element type's `Val_*`/`*_val` macros (via type_mappings)
-4. ✅ Emit the appropriate conversion code (via `c_stub_list_conv.ml`)
-5. ✅ Handle GIR transfer annotations (`transfer-ownership="container"` vs `"full"`)
+**Limitation:** GList/GSList of interface types (e.g., `GSList<Gio.File>`) cannot be generated — interfaces have opaque struct definitions without proper C converters. Filtered out in `filtering.ml`.
 
 ### DD5: GLib.Variant — Primitives + Basic Collections
 
@@ -322,28 +314,34 @@ Regenerate all bindings, build, count actual methods unlocked. Report results.
 
 ### Phase 2: GList/GSList Container Support ✓ COMPLETED
 
-**Status:** ✅ **COMPLETED** - March 2026
+**Status:** ✅ **COMPLETED** — March 2026 (commit c517fe9c)
 
 **Goal:** Support parameterized list container types in generated code.
 
-#### Task 2.1: Add LIST_INLINE code generation path ✓ DONE
+**Implementation:** See DD4 for full design. Three phases executed:
 
-Following the pattern of `c_stub_array_conv.ml`, create list conversion code generation that:
-1. ✅ Recognizes `GLib.List`/`GLib.SList` via a `LIST_INLINE` marker in type mappings
-2. ✅ Reads the GIR child `<type>` for element type
-3. ✅ Resolves element type's `Val_*`/`*_val` converters
-4. ✅ Emits inline conversion loops (see DD4)
-5. ✅ Respects GIR `transfer-ownership` annotations for memory management
+1. **Phase A — Manual Prototype** (2026-03-26): Validated `Val_GList_with` macro with string lists in `tests/test_glist_manual.{c,ml}`. All 5 alcotest cases passed (multi-element, empty, single, GC stress ×1000, pattern matching). Confirmed CAMLlocal must be at function scope.
 
-**Implementation details:**
-- Created `c_stub_list_conv.ml` with macro-based conversion
-- Parser updated to extract nested type elements from both return values and parameters
-- Type resolution works for same-namespace and cross-namespace element types
-- Methods with interface element types are filtered out (see KNOWN_BUGS.md)
+2. **Phase B — Generator Validation** (2026-03-29): Tested with real GTK APIs:
+   - `gtk_application_get_windows` → `Window.t list` (GList of objects)
+   - `gtk_size_group_get_widgets` → `Widget.t list` (GSList of widgets)
+   - Cross-namespace: `new_from_list : Ocgtk_gio.Gio.Wrappers.File.t list`
 
-#### Task 2.2: Intersection test
+3. **Phase C — Full Implementation** (2026-03-29): Created `c_stub_list_conv.ml`, wired into `c_stub_method.ml`, added type mappings and macros to `wrappers.h`.
 
-Regenerate, build, measure unlock count.
+**Files created/modified:**
+- `src/tools/gir_gen/c_stub_list_conv.ml` (new — list conversion generation)
+- `src/tools/gir_gen/type_mappings.ml` (GLib.List/GLib.SList entries with `LIST_INLINE` marker)
+- `src/tools/gir_gen/generate/c_stub_method.ml` (`handle_list_return`, `handle_in_list_param`)
+- `src/tools/gir_gen/generate/filtering.ml` (`is_interface_type`, `list_has_interface_element`)
+- `src/tools/gir_gen/gir_parser.ml` (nested `<type>` element parsing)
+- `src/common/wrappers.h` (4 conversion macros)
+
+**Intersection test results:** 30+ methods unlocked across namespaces:
+- **GTK:** `Application.get_windows`, `FlowBox.get_selected_children`, `ListBox.get_selected_rows`, `SizeGroup.get_widgets`, `TextBuffer.get_marks`, `IconView.get_selected_items`, etc.
+- **GDK:** `Display.list_seats`, `Seat.get_devices`, `Toplevel.set_icon_list`
+- **Gio:** `AppInfo.get_all`, `FileEnumerator.next_files_finish`, `DBusInterfaceSkeleton.get_connections`
+- **Pango:** `AttrList.get_attributes`, `Layout.get_lines`
 
 ### Phase 3: Core Opaque Wrappers
 
