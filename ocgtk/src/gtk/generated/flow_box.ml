@@ -121,6 +121,9 @@ external insert : t -> Event_controller_and__layout_child_and__layout_manager_an
 (** Gets the selection mode of @box. *)
 external get_selection_mode : t -> Gtk_enums.selectionmode = "ml_gtk_flow_box_get_selection_mode"
 
+(** Creates a list of all selected children. *)
+external get_selected_children : t -> Flow_box_child.t list = "ml_gtk_flow_box_get_selected_children"
+
 (** Gets the vertical spacing. *)
 external get_row_spacing : t -> int = "ml_gtk_flow_box_get_row_spacing"
 

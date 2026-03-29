@@ -19,6 +19,83 @@ itself as the default resolver for all later code to use. *)
 external set_default : t -> unit = "ml_g_resolver_set_default"
 
 (** Retrieves the result of a previous call to
+g_resolver_lookup_service_async().
+
+If the DNS resolution failed, @error (if non-%NULL) will be set to
+a value from #GResolverError. If the operation was cancelled,
+@error will be set to %G_IO_ERROR_CANCELLED. *)
+external lookup_service_finish : t -> Async_result.t -> (Srv_target.t list, GError.t) result = "ml_g_resolver_lookup_service_finish"
+
+(** Synchronously performs a DNS SRV lookup for the given @service and
+@protocol in the given @domain and returns an array of #GSrvTarget.
+@domain may be an ASCII-only or UTF-8 hostname. Note also that the
+@service and @protocol arguments do not include the leading underscore
+that appears in the actual DNS entry.
+
+On success, g_resolver_lookup_service() will return a non-empty #GList of
+#GSrvTarget, sorted in order of preference. (That is, you should
+attempt to connect to the first target first, then the second if
+the first fails, etc.)
+
+If the DNS resolution fails, @error (if non-%NULL) will be set to
+a value from #GResolverError and %NULL will be returned.
+
+If @cancellable is non-%NULL, it can be used to cancel the
+operation, in which case @error (if non-%NULL) will be set to
+%G_IO_ERROR_CANCELLED.
+
+If you are planning to connect to the service, it is usually easier
+to create a #GNetworkService and use its #GSocketConnectable
+interface. *)
+external lookup_service : t -> string -> string -> string -> Cancellable.t option -> (Srv_target.t list, GError.t) result = "ml_g_resolver_lookup_service"
+
+(** Retrieves the result of a call to
+g_resolver_lookup_by_name_with_flags_async().
+
+If the DNS resolution failed, @error (if non-%NULL) will be set to
+a value from #GResolverError. If the operation was cancelled,
+@error will be set to %G_IO_ERROR_CANCELLED. *)
+external lookup_by_name_with_flags_finish : t -> Async_result.t -> (Inet_address.t list, GError.t) result = "ml_g_resolver_lookup_by_name_with_flags_finish"
+
+(** This differs from g_resolver_lookup_by_name() in that you can modify
+the lookup behavior with @flags. For example this can be used to limit
+results with %G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY. *)
+external lookup_by_name_with_flags : t -> string -> Gio_enums.resolvernamelookupflags -> Cancellable.t option -> (Inet_address.t list, GError.t) result = "ml_g_resolver_lookup_by_name_with_flags"
+
+(** Retrieves the result of a call to
+g_resolver_lookup_by_name_async().
+
+If the DNS resolution failed, @error (if non-%NULL) will be set to
+a value from #GResolverError. If the operation was cancelled,
+@error will be set to %G_IO_ERROR_CANCELLED. *)
+external lookup_by_name_finish : t -> Async_result.t -> (Inet_address.t list, GError.t) result = "ml_g_resolver_lookup_by_name_finish"
+
+(** Synchronously resolves @hostname to determine its associated IP
+address(es). @hostname may be an ASCII-only or UTF-8 hostname, or
+the textual form of an IP address (in which case this just becomes
+a wrapper around g_inet_address_new_from_string()).
+
+On success, g_resolver_lookup_by_name() will return a non-empty #GList of
+#GInetAddress, sorted in order of preference and guaranteed to not
+contain duplicates. That is, if using the result to connect to
+@hostname, you should attempt to connect to the first address
+first, then the second if the first fails, etc. If you are using
+the result to listen on a socket, it is appropriate to add each
+result using e.g. g_socket_listener_add_address().
+
+If the DNS resolution fails, @error (if non-%NULL) will be set to a
+value from #GResolverError and %NULL will be returned.
+
+If @cancellable is non-%NULL, it can be used to cancel the
+operation, in which case @error (if non-%NULL) will be set to
+%G_IO_ERROR_CANCELLED.
+
+If you are planning to connect to a socket on the resolved IP
+address, it may be easier to create a #GNetworkAddress and use its
+#GSocketConnectable interface. *)
+external lookup_by_name : t -> string -> Cancellable.t option -> (Inet_address.t list, GError.t) result = "ml_g_resolver_lookup_by_name"
+
+(** Retrieves the result of a previous call to
 g_resolver_lookup_by_address_async().
 
 If the DNS resolution failed, @error (if non-%NULL) will be set to

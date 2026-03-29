@@ -34,6 +34,17 @@ gtk_window_group_remove_window(GtkWindowGroup_val(self), GtkWindow_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_window_group_list_windows(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = gtk_window_group_list_windows(GtkWindowGroup_val(self));
+Val_GList_with(c_result, result, item, cell, Val_GtkWindow((gpointer)_tmp->data));
+    g_list_free(c_result);
+    CAMLreturn(result);
+}
+
 CAMLexport CAMLprim value ml_gtk_window_group_add_window(value self, value arg1)
 {
 CAMLparam2(self, arg1);

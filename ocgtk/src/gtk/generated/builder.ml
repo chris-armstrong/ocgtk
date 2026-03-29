@@ -38,6 +38,12 @@ external get_translation_domain : t -> string option = "ml_gtk_builder_get_trans
 (** Gets the scope in use that was set via gtk_builder_set_scope(). *)
 external get_scope : t -> Builder_scope.t = "ml_gtk_builder_get_scope"
 
+(** Gets all objects that have been constructed by @builder.
+
+Note that this function does not increment the reference
+counts of the returned objects. *)
+external get_objects : t -> [`object_] Gobject.obj list = "ml_gtk_builder_get_objects"
+
 (** Gets the object named @name.
 
 Note that this function does not increment the reference count

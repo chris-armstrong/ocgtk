@@ -72,6 +72,17 @@ gdk_toplevel_set_modal(GdkToplevel_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gdk_toplevel_set_icon_list(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+    GList* arg1_list = NULL;
+    GList_val_with(arg1, arg1_list, (gpointer)GdkTexture_val(Field(_iter, 0)));
+
+gdk_toplevel_set_icon_list(GdkToplevel_val(self), arg1_list);
+    g_list_free(arg1_list);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gdk_toplevel_set_deletable(value self, value arg1)
 {
 CAMLparam2(self, arg1);

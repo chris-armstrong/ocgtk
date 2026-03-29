@@ -47,3 +47,15 @@ CAMLparam1(self);
 PangoGlyphItem* result = pango_glyph_item_copy(PangoGlyphItem_val(self));
 CAMLreturn(Val_option(result, Val_PangoGlyphItem));
 }
+
+CAMLexport CAMLprim value ml_pango_glyph_item_apply_attrs(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = pango_glyph_item_apply_attrs(PangoGlyphItem_val(self), String_val(arg1), PangoAttrList_val(arg2));
+Val_GSList_with(c_result, result, item, cell, Val_PangoGlyphItem((gpointer)_tmp->data));
+    g_slist_foreach(c_result, (GFunc)g_object_unref, NULL);
+    g_slist_free(c_result);
+    CAMLreturn(result);
+}

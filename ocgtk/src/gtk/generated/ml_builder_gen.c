@@ -85,6 +85,17 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkBuilderScope(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_builder_get_objects(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = gtk_builder_get_objects(GtkBuilder_val(self));
+Val_GSList_with(c_result, result, item, cell, ml_gobject_val_of_ext((gpointer)_tmp->data));
+    g_slist_free(c_result);
+    CAMLreturn(result);
+}
+
 CAMLexport CAMLprim value ml_gtk_builder_get_object(value self, value arg1)
 {
 CAMLparam2(self, arg1);

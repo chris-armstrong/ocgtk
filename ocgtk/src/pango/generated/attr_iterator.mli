@@ -22,6 +22,10 @@ external range : t -> int * int = "ml_pango_attr_iterator_range"
 (** Advance the iterator until the next change of style. *)
 external next : t -> bool = "ml_pango_attr_iterator_next"
 
+(** Gets a list of all attributes at the current position of the
+iterator. *)
+external get_attrs : t -> Attribute.t list = "ml_pango_attr_iterator_get_attrs"
+
 (** Find the current attribute of a particular type
 at the iterator location.
 

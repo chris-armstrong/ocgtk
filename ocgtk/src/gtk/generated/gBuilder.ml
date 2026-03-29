@@ -6,6 +6,7 @@ class type builder_t = object
     method expose_object : string -> [`object_] Gobject.obj -> unit
     method get_current_object : unit -> [`object_] Gobject.obj option
     method get_object : string -> [`object_] Gobject.obj option
+    method get_objects : unit -> [`object_] Gobject.obj list
     method get_scope : unit -> GBuilder_scope.builder_scope_t
     method get_translation_domain : unit -> string option
     method set_current_object : [`object_] Gobject.obj option -> unit
@@ -43,6 +44,10 @@ class builder (obj : Builder.t) : builder_t = object (self)
   method get_object : string -> [`object_] Gobject.obj option =
     fun name ->
       (Builder.get_object obj name)
+
+  method get_objects : unit -> [`object_] Gobject.obj list =
+    fun () ->
+      (Builder.get_objects obj)
 
   method get_scope : unit -> GBuilder_scope.builder_scope_t =
     fun () ->

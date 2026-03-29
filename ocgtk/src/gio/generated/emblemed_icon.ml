@@ -10,6 +10,9 @@ external new_ : Icon.t -> Emblem.t option -> t = "ml_g_emblemed_icon_new"
 (** Gets the main icon for @emblemed. *)
 external get_icon : t -> Icon.t = "ml_g_emblemed_icon_get_icon"
 
+(** Gets the list of emblems for the @icon. *)
+external get_emblems : t -> Emblem.t list = "ml_g_emblemed_icon_get_emblems"
+
 (** Removes all the emblems from @icon. *)
 external clear_emblems : t -> unit = "ml_g_emblemed_icon_clear_emblems"
 

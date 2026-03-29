@@ -134,6 +134,10 @@ on one group, every other gesture group attached to the same
 %GTK_EVENT_SEQUENCE_DENIED. *)
 external group : t -> t -> unit = "ml_gtk_gesture_group"
 
+(** Returns the list of `GdkEventSequences` currently being interpreted
+by @gesture. *)
+external get_sequences : t -> Ocgtk_gdk.Gdk.Wrappers.Event_sequence.t list = "ml_gtk_gesture_get_sequences"
+
 (** Returns the @sequence state, as seen by @gesture. *)
 external get_sequence_state : t -> Ocgtk_gdk.Gdk.Wrappers.Event_sequence.t -> Gtk_enums.eventsequencestate = "ml_gtk_gesture_get_sequence_state"
 
@@ -153,6 +157,9 @@ Note that the returned pointer is only valid as long as the
 @sequence is still interpreted by the @gesture. If in doubt,
 you should make a copy of the event. *)
 external get_last_event : t -> Ocgtk_gdk.Gdk.Wrappers.Event_sequence.t option -> Ocgtk_gdk.Gdk.Wrappers.Event.t option = "ml_gtk_gesture_get_last_event"
+
+(** Returns all gestures in the group of @gesture *)
+external get_group : t -> t list = "ml_gtk_gesture_get_group"
 
 (** Returns the logical `GdkDevice` that is currently operating
 on @gesture.

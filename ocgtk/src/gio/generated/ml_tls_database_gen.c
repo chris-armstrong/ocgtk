@@ -45,6 +45,20 @@ CAMLexport CAMLprim value ml_g_tls_database_verify_chain_bytecode(value * argv, 
 return ml_g_tls_database_verify_chain_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6]);
 }
 
+CAMLexport CAMLprim value ml_g_tls_database_lookup_certificates_issued_by_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = g_tls_database_lookup_certificates_issued_by_finish(GTlsDatabase_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) {
+        Val_GList_with(c_result, result, item, cell, Val_GTlsCertificate((gpointer)_tmp->data));
+    g_list_free(c_result);
+        CAMLreturn(Res_Ok(result));
+    } else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_g_tls_database_lookup_certificate_issuer_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);

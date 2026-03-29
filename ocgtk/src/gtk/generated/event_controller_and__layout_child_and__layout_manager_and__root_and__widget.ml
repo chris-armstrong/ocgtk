@@ -846,6 +846,19 @@ and Widget
   This function is only for use in widget implementations. *)
   external map : t -> unit = "ml_gtk_widget_map"
 
+  (** Returns the widgets for which this widget is the target of a
+  mnemonic.
+
+  Typically, these widgets will be labels. See, for example,
+  [method@Gtk.Label.set_mnemonic_widget].
+
+  The widgets in the list are not individually referenced.
+  If you want to iterate through the list and perform actions
+  involving callbacks that might destroy the widgets, you
+  must call `g_list_foreach (result, (GFunc)g_object_ref, NULL)`
+  first, and then unref all the widgets afterwards. *)
+  external list_mnemonic_labels : t -> t list = "ml_gtk_widget_list_mnemonic_labels"
+
   (** Emits the `::keynav-failed` signal on the widget.
 
   This function should be called whenever keyboard navigation
@@ -2198,6 +2211,19 @@ end = struct
 
   This function is only for use in widget implementations. *)
   external map : t -> unit = "ml_gtk_widget_map"
+
+  (** Returns the widgets for which this widget is the target of a
+  mnemonic.
+
+  Typically, these widgets will be labels. See, for example,
+  [method@Gtk.Label.set_mnemonic_widget].
+
+  The widgets in the list are not individually referenced.
+  If you want to iterate through the list and perform actions
+  involving callbacks that might destroy the widgets, you
+  must call `g_list_foreach (result, (GFunc)g_object_ref, NULL)`
+  first, and then unref all the widgets afterwards. *)
+  external list_mnemonic_labels : t -> t list = "ml_gtk_widget_list_mnemonic_labels"
 
   (** Emits the `::keynav-failed` signal on the widget.
 
