@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AppChooserButton: AppChooserButton *)
 
-type t = [`app_chooser_button | `widget | `initially_unowned] Gobject.obj
+type t = [`app_chooser_button | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new AppChooserButton *)
 external new_ : string -> t = "ml_gtk_app_chooser_button_new"

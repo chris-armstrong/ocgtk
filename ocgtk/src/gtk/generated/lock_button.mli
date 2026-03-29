@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* LockButton: LockButton *)
 
-type t = [`lock_button | `button | `widget | `initially_unowned] Gobject.obj
+type t = [`lock_button | `button | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new LockButton *)
 external new_ : Ocgtk_gio.Gio.Wrappers.Permission.t option -> t = "ml_gtk_lock_button_new"

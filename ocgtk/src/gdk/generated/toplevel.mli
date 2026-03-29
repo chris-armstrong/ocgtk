@@ -53,6 +53,17 @@ You should only use this on surfaces for which you have
 previously called [method@Gdk.Toplevel.set_transient_for]. *)
 external set_modal : t -> bool -> unit = "ml_gdk_toplevel_set_modal"
 
+(** Sets a list of icons for the surface.
+
+One of these will be used to represent the surface in iconic form.
+The icon may be shown in window lists or task bars. Which icon
+size is shown depends on the window manager. The window manager
+can scale the icon but setting several size icons can give better
+image quality.
+
+Note that some platforms don't support surface icons. *)
+external set_icon_list : t -> Texture.t list -> unit = "ml_gdk_toplevel_set_icon_list"
+
 (** Sets the toplevel to be deletable.
 
 Setting @deletable to %TRUE hints the desktop environment

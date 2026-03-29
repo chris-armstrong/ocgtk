@@ -505,6 +505,10 @@ and Tls_database
   perform the verification operation asynchronously. *)
   external verify_chain : t -> Tls_certificate.t -> string -> Socket_connectable.t option -> Tls_interaction.t option -> Gio_enums.tlsdatabaseverifyflags -> Cancellable.t option -> (Gio_enums.tlscertificateflags, GError.t) result = "ml_g_tls_database_verify_chain_bytecode" "ml_g_tls_database_verify_chain_native"
 
+  (** Finish an asynchronous lookup of certificates. See
+  g_tls_database_lookup_certificates_issued_by() for more information. *)
+  external lookup_certificates_issued_by_finish : t -> Async_result.t -> (Tls_certificate.t list, GError.t) result = "ml_g_tls_database_lookup_certificates_issued_by_finish"
+
   (** Finish an asynchronous lookup issuer operation. See
   g_tls_database_lookup_certificate_issuer() for more information. *)
   external lookup_certificate_issuer_finish : t -> Async_result.t -> (Tls_certificate.t, GError.t) result = "ml_g_tls_database_lookup_certificate_issuer_finish"
@@ -641,6 +645,10 @@ end = struct
   This function can block. Use g_tls_database_verify_chain_async() to
   perform the verification operation asynchronously. *)
   external verify_chain : t -> Tls_certificate.t -> string -> Socket_connectable.t option -> Tls_interaction.t option -> Gio_enums.tlsdatabaseverifyflags -> Cancellable.t option -> (Gio_enums.tlscertificateflags, GError.t) result = "ml_g_tls_database_verify_chain_bytecode" "ml_g_tls_database_verify_chain_native"
+
+  (** Finish an asynchronous lookup of certificates. See
+  g_tls_database_lookup_certificates_issued_by() for more information. *)
+  external lookup_certificates_issued_by_finish : t -> Async_result.t -> (Tls_certificate.t list, GError.t) result = "ml_g_tls_database_lookup_certificates_issued_by_finish"
 
   (** Finish an asynchronous lookup issuer operation. See
   g_tls_database_lookup_certificate_issuer() for more information. *)

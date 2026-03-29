@@ -31,6 +31,11 @@ This function must only be called to cancel the effect of a previous
 call to g_application_mark_busy(). *)
 external unmark_busy : t -> unit = "ml_g_application_unmark_busy"
 
+(** Destroys a binding between @property and the busy state of
+@application that was previously created with
+g_application_bind_busy_property(). *)
+external unbind_busy_property : t -> [`object_] Gobject.obj -> string -> unit = "ml_g_application_unbind_busy_property"
+
 (** Sets the version number of @application. This will be used to implement
 a `--version` command line argument
 
@@ -406,6 +411,14 @@ external get_dbus_connection : t -> D_bus_connection.t option = "ml_g_applicatio
 
 (** Gets the unique identifier for @application. *)
 external get_application_id : t -> string option = "ml_g_application_get_application_id"
+
+(** Marks @application as busy (see g_application_mark_busy()) while
+@property on @object is %TRUE.
+
+The binding holds a reference to @application while it is active, but
+not to @object. Instead, the binding is destroyed when @object is
+finalized. *)
+external bind_busy_property : t -> [`object_] Gobject.obj -> string -> unit = "ml_g_application_bind_busy_property"
 
 (** Activates the application.
 

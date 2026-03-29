@@ -40,6 +40,14 @@ GtkTreeRowReference *obj = gtk_tree_row_reference_new(GtkTreeModel_val(arg1), Gt
 
 CAMLreturn(Val_GtkTreeRowReference(obj));
 }
+CAMLexport CAMLprim value ml_gtk_tree_row_reference_new_proxy(value arg1, value arg2, value arg3)
+{
+CAMLparam3(arg1, arg2, arg3);
+
+GtkTreeRowReference *obj = gtk_tree_row_reference_new_proxy(GObject_ext_of_val(arg1), GtkTreeModel_val(arg2), GtkTreePath_val(arg3));
+
+CAMLreturn(Val_GtkTreeRowReference(obj));
+}
 CAMLexport CAMLprim value ml_gtk_tree_row_reference_valid(value self)
 {
 CAMLparam1(self);

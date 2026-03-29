@@ -81,6 +81,14 @@ guint result = gtk_column_view_row_get_position(GtkColumnViewRow_val(self));
 CAMLreturn(Val_int(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_column_view_row_get_item(value self)
+{
+CAMLparam1(self);
+
+gpointer result = gtk_column_view_row_get_item(GtkColumnViewRow_val(self));
+CAMLreturn(ml_gobject_val_of_ext(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_column_view_row_get_focusable(value self)
 {
 CAMLparam1(self);

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AppChooserWidget: AppChooserWidget *)
 
-type t = [`app_chooser_widget | `widget | `initially_unowned] Gobject.obj
+type t = [`app_chooser_widget | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new AppChooserWidget *)
 external new_ : string -> t = "ml_gtk_app_chooser_widget_new"

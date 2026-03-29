@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CellRenderer: CellRenderer *)
 
-type t = [`cell_renderer | `initially_unowned] Gobject.obj
+type t = [`cell_renderer | `initially_unowned | `object_] Gobject.obj
 
 (* Methods *)
 (** Informs the cell renderer that the editing is stopped.

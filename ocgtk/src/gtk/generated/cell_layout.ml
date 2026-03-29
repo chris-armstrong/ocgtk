@@ -24,6 +24,9 @@ divided evenly between cells for which @expand is %TRUE.
 Note that reusing the same cell renderer is not supported. *)
 external pack_end : t -> Cell_renderer.t -> bool -> unit = "ml_gtk_cell_layout_pack_end"
 
+(** Returns the cell renderers which have been added to @cell_layout. *)
+external get_cells : t -> Cell_renderer.t list = "ml_gtk_cell_layout_get_cells"
+
 (** Returns the underlying `GtkCellArea` which might be @cell_layout
 if called on a `GtkCellArea` or might be %NULL if no `GtkCellArea`
 is used by @cell_layout. *)

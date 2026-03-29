@@ -11,6 +11,7 @@ class type application_t = object
     method get_menu_by_id : string -> Ocgtk_gio.Gio.Menu.menu_t option
     method get_menubar : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option
     method get_window_by_id : int -> window_t option
+    method get_windows : unit -> Application_and__window_and__window_group.Window.t list
     method inhibit : window_t option -> Gtk_enums.applicationinhibitflags -> string option -> int
     method list_action_descriptions : unit -> string array
     method remove_window : window_t -> unit
@@ -94,6 +95,7 @@ end
 
 and window_group_t = object
     method add_window : window_t -> unit
+    method list_windows : unit -> Application_and__window_and__window_group.Window.t list
     method remove_window : window_t -> unit
     method as_window_group : Application_and__window_and__window_group.Window_group.t
 end
@@ -133,6 +135,10 @@ class application (obj : Application_and__window_and__window_group.Application.t
   method get_window_by_id : int -> window_t option =
     fun id ->
       Option.map (fun ret -> new window ret) (Application_and__window_and__window_group.Application.get_window_by_id obj id)
+
+  method get_windows : unit -> Application_and__window_and__window_group.Window.t list =
+    fun () ->
+      (Application_and__window_and__window_group.Application.get_windows obj)
 
   method inhibit : window_t option -> Gtk_enums.applicationinhibitflags -> string option -> int =
     fun window flags reason ->
@@ -420,6 +426,10 @@ and window_group (obj : Application_and__window_and__window_group.Window_group.t
     fun window ->
       let window = window#as_window in
       (Application_and__window_and__window_group.Window_group.add_window obj window)
+
+  method list_windows : unit -> Application_and__window_and__window_group.Window.t list =
+    fun () ->
+      (Application_and__window_and__window_group.Window_group.list_windows obj)
 
   method remove_window : window_t -> unit =
     fun window ->

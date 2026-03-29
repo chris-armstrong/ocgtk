@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MediaControls: MediaControls *)
 
-type t = [`media_controls | `widget | `initially_unowned] Gobject.obj
+type t = [`media_controls | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new MediaControls *)
 external new_ : Media_stream.t option -> t = "ml_gtk_media_controls_new"

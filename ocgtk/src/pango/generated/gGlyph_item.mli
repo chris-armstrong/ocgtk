@@ -1,4 +1,5 @@
 class type glyph_item_t = object
+    method apply_attrs : string -> Attr_list.t -> Glyph_item.t list
     method copy : unit -> Glyph_item.t option
     method free : unit -> unit
     method split : string -> int -> Glyph_item.t option

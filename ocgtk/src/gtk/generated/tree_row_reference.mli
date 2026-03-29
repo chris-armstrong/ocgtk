@@ -9,6 +9,9 @@ type t = [`tree_row_reference] Gobject.obj
 (** Create a new TreeRowReference *)
 external new_ : Tree_model.t -> Tree_path.t -> t = "ml_gtk_tree_row_reference_new"
 
+(** Create a new TreeRowReference *)
+external new_proxy : [`object_] Gobject.obj -> Tree_model.t -> Tree_path.t -> t = "ml_gtk_tree_row_reference_new_proxy"
+
 (* Methods *)
 (** Returns %TRUE if the @reference is non-%NULL and refers to
 a current valid path. *)

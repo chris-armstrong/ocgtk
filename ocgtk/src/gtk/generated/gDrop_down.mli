@@ -9,6 +9,7 @@ class type drop_down_t = object
     method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option
     method get_search_match_mode : unit -> Gtk_enums.stringfiltermatchmode
     method get_selected : unit -> int
+    method get_selected_item : unit -> [`object_] Gobject.obj option
     method get_show_arrow : unit -> bool
     method set_enable_search : bool -> unit
     method set_expression : GExpression.expression_t option -> unit

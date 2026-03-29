@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Picture: Picture *)
 
-type t = [`picture | `widget | `initially_unowned] Gobject.obj
+type t = [`picture | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new Picture *)
 external new_ : unit -> t = "ml_gtk_picture_new"

@@ -3,6 +3,9 @@
 
 type t = [`property_action | `object_] Gobject.obj
 
+(** Create a new PropertyAction *)
+external new_ : string -> [`object_] Gobject.obj -> string -> t = "ml_g_property_action_new"
+
 (* Methods *)
 (* Properties *)
 
@@ -14,6 +17,9 @@ external get_invert_boolean : t -> bool = "ml_g_property_action_get_invert_boole
 
 (** Get property: name *)
 external get_name : t -> string = "ml_g_property_action_get_name"
+
+(** Get property: object *)
+external get_object : t -> [`object_] Gobject.obj = "ml_g_property_action_get_object"
 
 (** Get property: property-name *)
 external get_property_name : t -> string = "ml_g_property_action_get_property_name"

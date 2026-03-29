@@ -21,6 +21,7 @@ class type icon_view_t = object
     method get_pixbuf_column : unit -> int
     method get_reorderable : unit -> bool
     method get_row_spacing : unit -> int
+    method get_selected_items : unit -> Tree_path.t list
     method get_selection_mode : unit -> Gtk_enums.selectionmode
     method get_spacing : unit -> int
     method get_text_column : unit -> int
@@ -134,6 +135,10 @@ class icon_view (obj : Icon_view.t) : icon_view_t = object (self)
   method get_row_spacing : unit -> int =
     fun () ->
       (Icon_view.get_row_spacing obj)
+
+  method get_selected_items : unit -> Tree_path.t list =
+    fun () ->
+      (Icon_view.get_selected_items obj)
 
   method get_selection_mode : unit -> Gtk_enums.selectionmode =
     fun () ->

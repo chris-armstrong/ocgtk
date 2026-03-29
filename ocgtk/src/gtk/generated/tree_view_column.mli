@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TreeViewColumn: TreeViewColumn *)
 
-type t = [`tree_view_column | `initially_unowned] Gobject.obj
+type t = [`tree_view_column | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new TreeViewColumn *)
 external new_ : unit -> t = "ml_gtk_tree_view_column_new"

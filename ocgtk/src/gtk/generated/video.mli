@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Video: Video *)
 
-type t = [`video | `widget | `initially_unowned] Gobject.obj
+type t = [`video | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new Video *)
 external new_ : unit -> t = "ml_gtk_video_new"

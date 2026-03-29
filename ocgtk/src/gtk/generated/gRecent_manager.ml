@@ -4,6 +4,7 @@ class type recent_manager_t = object
     inherit Grecent_manager_signals.recent_manager_signals
     method add_full : string -> Recent_data.t -> bool
     method add_item : string -> bool
+    method get_items : unit -> Recent_info.t list
     method has_item : string -> bool
     method lookup_item : string -> (Recent_info.t option, GError.t) result
     method move_item : string -> string option -> (bool, GError.t) result
@@ -25,6 +26,10 @@ class recent_manager (obj : Recent_manager.t) : recent_manager_t = object (self)
   method add_item : string -> bool =
     fun uri ->
       (Recent_manager.add_item obj uri)
+
+  method get_items : unit -> Recent_info.t list =
+    fun () ->
+      (Recent_manager.get_items obj)
 
   method has_item : string -> bool =
     fun uri ->

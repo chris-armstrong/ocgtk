@@ -98,3 +98,32 @@ Only parameterless void signals are generated. Signals with parameters or return
 ## When a parameter type is `<varargs>`, we are not handling it correctly
 
 `<varargs>` is not parsed, and we default it to `void`. The method is correctly suppressed, but we should handle this more gracefully and not default types.
+
+---
+
+## GList/GSList of interface types generates broken C stubs [KNOWN ISSUE]
+
+**Status**: ⚠️ **KNOWN ISSUE** - Affects cross-namespace and interface element types
+
+When generating C stubs for GList/GSList parameters containing interface types (e.g., `GSList<Gio.File>` in `gdk_file_list_new_from_list`), the generator produces incorrect code that attempts to copy the interface struct by value:
+
+```c
+// Generated code (BROKEN):
+GFile* c_arg1 = (GFile*)g_malloc(sizeof(GFile) * arg1_length);  // ERROR: incomplete type
+c_arg1[i] = *GFile_val(Field(arg1, i));  // ERROR: cannot copy opaque interface
+```
+
+**Root cause**: GObject interfaces don't have public struct definitions—they're opaque types accessed only via pointers. The C stub generator incorrectly treats them as value types and tries to allocate/copy them instead of storing pointers in the list.
+
+**Impact**: Methods and constructors using GList/GSList of interface types are currently filtered out during generation to prevent broken code.
+
+**Workaround**: 
+- For same-namespace class types (e.g., `Window.t`, `Texture.t`): Works correctly ✅
+- For interface types: Currently filtered out; use manual C stubs if needed
+
+**Future Work**: 
+1. Fix C stub generator to detect interface types and generate pointer-based list handling
+2. Properly handle cross-namespace references in C stub generation
+3. The C generator should use `gpointer` for interface elements and cast appropriately
+
+**Related**: See `filtering.ml:is_interface_type` and `list_has_interface_element` for current filtering logic.

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ListBoxRow: ListBoxRow *)
 
-type t = [`list_box_row | `widget | `initially_unowned] Gobject.obj
+type t = [`list_box_row | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new ListBoxRow *)
 external new_ : unit -> t = "ml_gtk_list_box_row_new"

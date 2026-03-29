@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PasswordEntry: PasswordEntry *)
 
-type t = [`password_entry | `widget | `initially_unowned] Gobject.obj
+type t = [`password_entry | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new PasswordEntry *)
 external new_ : unit -> t = "ml_gtk_password_entry_new"

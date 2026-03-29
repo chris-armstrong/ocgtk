@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AspectFrame: AspectFrame *)
 
-type t = [`aspect_frame | `widget | `initially_unowned] Gobject.obj
+type t = [`aspect_frame | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new AspectFrame *)
 external new_ : float -> float -> float -> bool -> t = "ml_gtk_aspect_frame_new"

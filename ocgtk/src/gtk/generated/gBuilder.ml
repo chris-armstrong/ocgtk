@@ -3,8 +3,13 @@ class type builder_t = object
     method add_from_resource : string -> (bool, GError.t) result
     method add_objects_from_file : string -> string array -> (bool, GError.t) result
     method add_objects_from_resource : string -> string array -> (bool, GError.t) result
+    method expose_object : string -> [`object_] Gobject.obj -> unit
+    method get_current_object : unit -> [`object_] Gobject.obj option
+    method get_object : string -> [`object_] Gobject.obj option
+    method get_objects : unit -> [`object_] Gobject.obj list
     method get_scope : unit -> GBuilder_scope.builder_scope_t
     method get_translation_domain : unit -> string option
+    method set_current_object : [`object_] Gobject.obj option -> unit
     method set_translation_domain : string option -> unit
     method as_builder : Builder.t
 end
@@ -28,6 +33,22 @@ class builder (obj : Builder.t) : builder_t = object (self)
     fun resource_path object_ids ->
       (Builder.add_objects_from_resource obj resource_path object_ids)
 
+  method expose_object : string -> [`object_] Gobject.obj -> unit =
+    fun name object_ ->
+      (Builder.expose_object obj name object_)
+
+  method get_current_object : unit -> [`object_] Gobject.obj option =
+    fun () ->
+      (Builder.get_current_object obj)
+
+  method get_object : string -> [`object_] Gobject.obj option =
+    fun name ->
+      (Builder.get_object obj name)
+
+  method get_objects : unit -> [`object_] Gobject.obj list =
+    fun () ->
+      (Builder.get_objects obj)
+
   method get_scope : unit -> GBuilder_scope.builder_scope_t =
     fun () ->
       new  GBuilder_scope.builder_scope(Builder.get_scope obj)
@@ -35,6 +56,10 @@ class builder (obj : Builder.t) : builder_t = object (self)
   method get_translation_domain : unit -> string option =
     fun () ->
       (Builder.get_translation_domain obj)
+
+  method set_current_object : [`object_] Gobject.obj option -> unit =
+    fun current_object ->
+      (Builder.set_current_object obj current_object)
 
   method set_translation_domain : string option -> unit =
     fun domain ->

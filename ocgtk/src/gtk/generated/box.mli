@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Box: Box *)
 
-type t = [`box | `widget | `initially_unowned] Gobject.obj
+type t = [`box | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new Box *)
 external new_ : Gtk_enums.orientation -> int -> t = "ml_gtk_box_new"

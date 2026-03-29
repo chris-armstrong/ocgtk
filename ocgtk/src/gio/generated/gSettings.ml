@@ -3,6 +3,8 @@
 class type settings_t = object
     inherit Gsettings_signals.settings_signals
     method apply : unit -> unit
+    method bind : string -> [`object_] Gobject.obj -> string -> Gio_enums.settingsbindflags -> unit
+    method bind_writable : string -> [`object_] Gobject.obj -> string -> bool -> unit
     method create_action : string -> GAction.action_t
     method delay : unit -> unit
     method get_boolean : string -> bool
@@ -44,6 +46,14 @@ class settings (obj : Settings.t) : settings_t = object (self)
   method apply : unit -> unit =
     fun () ->
       (Settings.apply obj)
+
+  method bind : string -> [`object_] Gobject.obj -> string -> Gio_enums.settingsbindflags -> unit =
+    fun key object_ property flags ->
+      (Settings.bind obj key object_ property flags)
+
+  method bind_writable : string -> [`object_] Gobject.obj -> string -> bool -> unit =
+    fun key object_ property inverted ->
+      (Settings.bind_writable obj key object_ property inverted)
 
   method create_action : string -> GAction.action_t =
     fun key ->

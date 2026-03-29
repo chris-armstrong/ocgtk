@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PopoverMenu: PopoverMenu *)
 
-type t = [`popover_menu | `popover | `widget | `initially_unowned] Gobject.obj
+type t = [`popover_menu | `popover | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new PopoverMenu *)
 external new_from_model : Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> t = "ml_gtk_popover_menu_new_from_model"

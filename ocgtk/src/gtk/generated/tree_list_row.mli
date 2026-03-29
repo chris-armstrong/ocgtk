@@ -40,6 +40,9 @@ until the row is removed from its model at which point
 it will forever return %NULL. *)
 external get_parent : t -> t option = "ml_gtk_tree_list_row_get_parent"
 
+(** Gets the item corresponding to this row, *)
+external get_item : t -> [`object_] Gobject.obj option = "ml_gtk_tree_list_row_get_item"
+
 (** Gets if a row is currently expanded. *)
 external get_expanded : t -> bool = "ml_gtk_tree_list_row_get_expanded"
 

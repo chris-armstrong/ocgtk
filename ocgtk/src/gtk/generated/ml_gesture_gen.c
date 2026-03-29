@@ -81,6 +81,17 @@ gtk_gesture_group(GtkGesture_val(self), GtkGesture_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_gesture_get_sequences(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = gtk_gesture_get_sequences(GtkGesture_val(self));
+Val_GList_with(c_result, result, item, cell, Val_GdkEventSequence((gpointer)_tmp->data));
+    g_list_free(c_result);
+    CAMLreturn(result);
+}
+
 CAMLexport CAMLprim value ml_gtk_gesture_get_sequence_state(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -120,6 +131,17 @@ CAMLparam2(self, arg1);
 GdkEvent* result = gtk_gesture_get_last_event(GtkGesture_val(self), Option_val(arg1, GdkEventSequence_val, NULL));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GdkEvent));
+}
+
+CAMLexport CAMLprim value ml_gtk_gesture_get_group(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = gtk_gesture_get_group(GtkGesture_val(self));
+Val_GList_with(c_result, result, item, cell, Val_GtkGesture((gpointer)_tmp->data));
+    g_list_free(c_result);
+    CAMLreturn(result);
 }
 
 CAMLexport CAMLprim value ml_gtk_gesture_get_device(value self)

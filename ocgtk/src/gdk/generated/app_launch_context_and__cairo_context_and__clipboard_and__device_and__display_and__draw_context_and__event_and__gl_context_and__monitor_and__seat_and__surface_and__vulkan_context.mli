@@ -353,6 +353,9 @@ and Display
   Free the returned arrays with g_free(). *)
   external map_keycode : t -> int -> bool * Keymap_key.t array * int array * int = "ml_gdk_display_map_keycode"
 
+  (** Returns the list of seats known to @display. *)
+  external list_seats : t -> Seat.t list = "ml_gdk_display_list_seats"
+
   (** Returns whether surfaces on this @display are created with an
   alpha channel.
 
@@ -913,6 +916,9 @@ and Seat
   type t = [`seat | `object_] Gobject.obj
 
   (* Methods *)
+  (** Returns all `GdkDeviceTools` that are known to the application. *)
+  external get_tools : t -> Device_tool.t list = "ml_gdk_seat_get_tools"
+
   (** Returns the device that routes pointer events. *)
   external get_pointer : t -> Device.t option = "ml_gdk_seat_get_pointer"
 
@@ -921,6 +927,9 @@ and Seat
 
   (** Returns the `GdkDisplay` this seat belongs to. *)
   external get_display : t -> Display.t = "ml_gdk_seat_get_display"
+
+  (** Returns the devices that match the given capabilities. *)
+  external get_devices : t -> Gdk_enums.seatcapabilities -> Device.t list = "ml_gdk_seat_get_devices"
 
   (** Returns the capabilities this `GdkSeat` currently has. *)
   external get_capabilities : t -> Gdk_enums.seatcapabilities = "ml_gdk_seat_get_capabilities"

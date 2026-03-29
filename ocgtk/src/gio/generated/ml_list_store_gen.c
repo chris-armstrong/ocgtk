@@ -22,6 +22,20 @@
 #include "gio_decls.h"
 
 
+CAMLexport CAMLprim value ml_g_list_store_splice(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+    int arg3_length = Wosize_val(arg3);
+    gpointer* c_arg3 = (gpointer*)g_malloc(sizeof(gpointer) * arg3_length);
+    for (int i = 0; i < arg3_length; i++) {
+      c_arg3[i] = GObject_ext_of_val(Field(arg3, i));
+    }
+
+g_list_store_splice(GListStore_val(self), Int_val(arg1), Int_val(arg2), c_arg3, Int_val(arg4));
+    g_free(c_arg3);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_g_list_store_remove_all(value self)
 {
 CAMLparam1(self);
@@ -35,6 +49,35 @@ CAMLexport CAMLprim value ml_g_list_store_remove(value self, value arg1)
 CAMLparam2(self, arg1);
 
 g_list_store_remove(GListStore_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_list_store_insert(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+g_list_store_insert(GListStore_val(self), Int_val(arg1), GObject_ext_of_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_list_store_find(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+guint out2;
+
+gboolean result = g_list_store_find(GListStore_val(self), GObject_ext_of_val(arg1), &out2);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_int(out2));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_g_list_store_append(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_list_store_append(GListStore_val(self), GObject_ext_of_val(arg1));
 CAMLreturn(Val_unit);
 }
 

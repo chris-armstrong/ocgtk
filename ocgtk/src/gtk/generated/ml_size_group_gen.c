@@ -42,6 +42,17 @@ gtk_size_group_remove_widget(GtkSizeGroup_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_size_group_get_widgets(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = gtk_size_group_get_widgets(GtkSizeGroup_val(self));
+Val_GSList_with(c_result, result, item, cell, Val_GtkWidget((gpointer)_tmp->data));
+    g_slist_free(c_result);
+    CAMLreturn(result);
+}
+
 CAMLexport CAMLprim value ml_gtk_size_group_get_mode(value self)
 {
 CAMLparam1(self);

@@ -38,6 +38,9 @@ external get_info : t -> D_bus_interface_info.t = "ml_g_dbus_interface_skeleton_
 of @interface_ *)
 external get_flags : t -> Gio_enums.dbusinterfaceskeletonflags = "ml_g_dbus_interface_skeleton_get_flags"
 
+(** Gets a list of the connections that @interface_ is exported on. *)
+external get_connections : t -> D_bus_connection.t list = "ml_g_dbus_interface_skeleton_get_connections"
+
 (** Gets the first connection that @interface_ is exported on, if any. *)
 external get_connection : t -> D_bus_connection.t option = "ml_g_dbus_interface_skeleton_get_connection"
 

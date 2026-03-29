@@ -55,6 +55,10 @@ g_io_extension_point_implement ("my-extension-point",
 type t = [`io_extension_point] Gobject.obj
 
 (* Methods *)
+(** Gets a list of all extensions that implement this extension point.
+The list is sorted by priority, beginning with the highest priority. *)
+external get_extensions : t -> Io_extension.t list = "ml_g_io_extension_point_get_extensions"
+
 (** Finds a #GIOExtension for an extension point by name. *)
 external get_extension_by_name : t -> string -> Io_extension.t = "ml_g_io_extension_point_get_extension_by_name"
 

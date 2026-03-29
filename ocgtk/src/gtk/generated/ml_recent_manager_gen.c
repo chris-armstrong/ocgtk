@@ -70,6 +70,17 @@ gboolean result = gtk_recent_manager_has_item(GtkRecentManager_val(self), String
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_recent_manager_get_items(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = gtk_recent_manager_get_items(GtkRecentManager_val(self));
+Val_GList_with(c_result, result, item, cell, Val_GtkRecentInfo((gpointer)_tmp->data));
+    g_list_free(c_result);
+    CAMLreturn(result);
+}
+
 CAMLexport CAMLprim value ml_gtk_recent_manager_add_item(value self, value arg1)
 {
 CAMLparam2(self, arg1);

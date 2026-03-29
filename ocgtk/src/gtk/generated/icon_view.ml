@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* IconView: IconView *)
 
-type t = [`icon_view | `widget | `initially_unowned] Gobject.obj
+type t = [`icon_view | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new IconView *)
 external new_ : unit -> t = "ml_gtk_icon_view_new"
@@ -184,6 +184,24 @@ external get_spacing : t -> int = "ml_gtk_icon_view_get_spacing"
 
 (** Gets the selection mode of the @icon_view. *)
 external get_selection_mode : t -> Gtk_enums.selectionmode = "ml_gtk_icon_view_get_selection_mode"
+
+(** Creates a list of paths of all selected items. Additionally, if you are
+planning on modifying the model after calling this function, you may
+want to convert the returned list into a list of `GtkTreeRowReferences`.
+To do this, you can use gtk_tree_row_reference_new().
+
+To free the return value, use `g_list_free_full`:
+|[<!-- language="C" -->
+GtkWidget *icon_view = gtk_icon_view_new ();
+// Use icon_view
+
+GList *list = gtk_icon_view_get_selected_items (GTK_ICON_VIEW (icon_view));
+
+// use list
+
+g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
+]| *)
+external get_selected_items : t -> Tree_path.t list = "ml_gtk_icon_view_get_selected_items"
 
 (** Returns the value of the ::row-spacing property. *)
 external get_row_spacing : t -> int = "ml_gtk_icon_view_get_row_spacing"

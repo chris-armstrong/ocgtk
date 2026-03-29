@@ -186,6 +186,17 @@ GtkSelectionMode result = gtk_flow_box_get_selection_mode(GtkFlowBox_val(self));
 CAMLreturn(Val_GtkSelectionMode(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_flow_box_get_selected_children(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = gtk_flow_box_get_selected_children(GtkFlowBox_val(self));
+Val_GList_with(c_result, result, item, cell, Val_GtkFlowBoxChild((gpointer)_tmp->data));
+    g_list_free(c_result);
+    CAMLreturn(result);
+}
+
 CAMLexport CAMLprim value ml_gtk_flow_box_get_row_spacing(value self)
 {
 CAMLparam1(self);

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DropDown: DropDown *)
 
-type t = [`drop_down | `widget | `initially_unowned] Gobject.obj
+type t = [`drop_down | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new DropDown *)
 external new_ : Ocgtk_gio.Gio.Wrappers.List_model.t option -> Expression.t option -> t = "ml_gtk_drop_down_new"
@@ -46,6 +46,9 @@ external set_enable_search : t -> bool -> unit = "ml_gtk_drop_down_set_enable_se
 
 (** Returns whether to show an arrow within the widget. *)
 external get_show_arrow : t -> bool = "ml_gtk_drop_down_get_show_arrow"
+
+(** Gets the selected item. If no item is selected, %NULL is returned. *)
+external get_selected_item : t -> [`object_] Gobject.obj option = "ml_gtk_drop_down_get_selected_item"
 
 (** Gets the position of the selected item. *)
 external get_selected : t -> int = "ml_gtk_drop_down_get_selected"

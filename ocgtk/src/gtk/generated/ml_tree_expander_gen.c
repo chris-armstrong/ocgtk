@@ -75,6 +75,14 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkTreeListRow));
 }
 
+CAMLexport CAMLprim value ml_gtk_tree_expander_get_item(value self)
+{
+CAMLparam1(self);
+
+gpointer result = gtk_tree_expander_get_item(GtkTreeExpander_val(self));
+CAMLreturn(ml_gobject_val_of_ext(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_tree_expander_get_indent_for_icon(value self)
 {
 CAMLparam1(self);

@@ -177,16 +177,21 @@ module Array_conv = struct
 
         (* For struct arrays (non-pointer elements), we need to dereference the
            conversion result only if the converter returns a pointer.
-           Primitive converters (Int_val, Double_val, Bool_val, String_val) 
-           return values directly, not pointers. *)
+           Primitive converters (Int_val, Double_val, Bool_val, String_val)
+           return values directly, not pointers.
+           GObject converters (GObject_ext_of_val etc.) return pointers that
+           should be stored directly into gpointer arrays without dereference. *)
         let is_primitive_converter =
           String.equal element_tm.ml_to_c "Int_val"
           || String.equal element_tm.ml_to_c "Double_val"
           || String.equal element_tm.ml_to_c "Bool_val"
           || String.equal element_tm.ml_to_c "String_val"
         in
+        let is_gobject_converter =
+          String.equal element_tm.ml_to_c "GObject_ext_of_val"
+        in
         let deref_prefix =
-          if is_pointer_array || is_primitive_converter then "" else "*"
+          if is_pointer_array || is_primitive_converter || is_gobject_converter then "" else "*"
         in
 
         (* Generate conversion code based on array type and nullable *)

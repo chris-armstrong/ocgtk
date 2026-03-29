@@ -92,6 +92,17 @@ guint result = gtk_application_inhibit(GtkApplication_val(self), Option_val(arg1
 CAMLreturn(Val_int(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_application_get_windows(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = gtk_application_get_windows(GtkApplication_val(self));
+Val_GList_with(c_result, result, item, cell, Val_GtkWindow((gpointer)_tmp->data));
+    g_list_free(c_result);
+    CAMLreturn(result);
+}
+
 CAMLexport CAMLprim value ml_gtk_application_get_window_by_id(value self, value arg1)
 {
 CAMLparam2(self, arg1);

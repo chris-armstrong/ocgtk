@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Assistant: Assistant *)
 
-type t = [`assistant | `window | `widget | `initially_unowned] Gobject.obj
+type t = [`assistant | `window | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new Assistant *)
 external new_ : unit -> t = "ml_gtk_assistant_new"

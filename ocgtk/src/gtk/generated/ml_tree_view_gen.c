@@ -469,6 +469,17 @@ gboolean result = gtk_tree_view_get_enable_search(GtkTreeView_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_tree_view_get_columns(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = gtk_tree_view_get_columns(GtkTreeView_val(self));
+Val_GList_with(c_result, result, item, cell, Val_GtkTreeViewColumn((gpointer)_tmp->data));
+    g_list_free(c_result);
+    CAMLreturn(result);
+}
+
 CAMLexport CAMLprim value ml_gtk_tree_view_get_column(value self, value arg1)
 {
 CAMLparam2(self, arg1);

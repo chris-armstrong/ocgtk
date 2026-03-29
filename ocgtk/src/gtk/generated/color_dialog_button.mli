@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ColorDialogButton: ColorDialogButton *)
 
-type t = [`color_dialog_button | `widget | `initially_unowned] Gobject.obj
+type t = [`color_dialog_button | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new ColorDialogButton *)
 external new_ : Color_dialog.t option -> t = "ml_gtk_color_dialog_button_new"

@@ -385,6 +385,19 @@ module rec Layout : sig
   the @layout. *)
   external get_log_attrs : t -> Log_attr.t array * int = "ml_pango_layout_get_log_attrs"
 
+  (** Returns the lines of the @layout as a list.
+
+  This is a faster alternative to [method@Pango.Layout.get_lines],
+  but the user is not expected to modify the contents of the lines
+  (glyphs, glyph widths, etc.). *)
+  external get_lines_readonly : t -> Layout_line.t list = "ml_pango_layout_get_lines_readonly"
+
+  (** Returns the lines of the @layout as a list.
+
+  Use the faster [method@Pango.Layout.get_lines_readonly] if you do not
+  plan to modify the contents of the lines (glyphs, glyph widths, etc.). *)
+  external get_lines : t -> Layout_line.t list = "ml_pango_layout_get_lines"
+
   (** Gets the line spacing factor of @layout.
 
   See [method@Pango.Layout.set_line_spacing]. *)

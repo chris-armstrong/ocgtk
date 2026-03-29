@@ -21,11 +21,46 @@ external set_translation_domain : t -> string option -> unit = "ml_gtk_builder_s
 If @scope is %NULL, a new [class@Gtk.BuilderCScope] will be created. *)
 external set_scope : t -> Builder_scope.t option -> unit = "ml_gtk_builder_set_scope"
 
+(** Sets the current object for the @builder.
+
+The current object can be thought of as the `this` object that the
+builder is working for and will often be used as the default object
+when an object is optional.
+
+[method@Gtk.Widget.init_template] for example will set the current
+object to the widget the template is inited for. For functions like
+[ctor@Gtk.Builder.new_from_resource], the current object will be %NULL. *)
+external set_current_object : t -> [`object_] Gobject.obj option -> unit = "ml_gtk_builder_set_current_object"
+
 (** Gets the translation domain of @builder. *)
 external get_translation_domain : t -> string option = "ml_gtk_builder_get_translation_domain"
 
 (** Gets the scope in use that was set via gtk_builder_set_scope(). *)
 external get_scope : t -> Builder_scope.t = "ml_gtk_builder_get_scope"
+
+(** Gets all objects that have been constructed by @builder.
+
+Note that this function does not increment the reference
+counts of the returned objects. *)
+external get_objects : t -> [`object_] Gobject.obj list = "ml_gtk_builder_get_objects"
+
+(** Gets the object named @name.
+
+Note that this function does not increment the reference count
+of the returned object. *)
+external get_object : t -> string -> [`object_] Gobject.obj option = "ml_gtk_builder_get_object"
+
+(** Gets the current object set via gtk_builder_set_current_object(). *)
+external get_current_object : t -> [`object_] Gobject.obj option = "ml_gtk_builder_get_current_object"
+
+(** Add @object to the @builder object pool so it can be
+referenced just like any other object built by builder.
+
+Only a single object may be added using @name. However,
+it is not an error to expose the same object under multiple
+names. `gtk_builder_get_object()` may be used to determine
+if an object has already been added with @name. *)
+external expose_object : t -> string -> [`object_] Gobject.obj -> unit = "ml_gtk_builder_expose_object"
 
 (** Parses a resource file containing a UI definition, building
 only the requested objects and merges them with the current

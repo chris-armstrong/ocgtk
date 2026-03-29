@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ActionBar: ActionBar *)
 
-type t = [`action_bar | `widget | `initially_unowned] Gobject.obj
+type t = [`action_bar | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new ActionBar *)
 external new_ : unit -> t = "ml_gtk_action_bar_new"

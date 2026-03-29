@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AboutDialog: AboutDialog *)
 
-type t = [`about_dialog | `window | `widget | `initially_unowned] Gobject.obj
+type t = [`about_dialog | `window | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new AboutDialog *)
 external new_ : unit -> t = "ml_gtk_about_dialog_new"

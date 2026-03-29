@@ -4,6 +4,17 @@ open StdLabels
 open Printf
 open Types
 
+(** Check if a GIR type represents a GList *)
+let is_glist_type (gir_type : gir_type) = String.equal gir_type.name "GLib.List"
+
+(** Check if a GIR type represents a GSList *)
+let is_gslist_type (gir_type : gir_type) =
+  String.equal gir_type.name "GLib.SList"
+
+(** Check if a GIR type represents a GList or GSList *)
+let is_list_type (gir_type : gir_type) =
+  is_glist_type gir_type || is_gslist_type gir_type
+
 let or_else f opt = match opt with Some _ -> opt | None -> f ()
 
 let calculate_layer2_class ~class_module ~class_name =
@@ -190,6 +201,47 @@ let type_mappings : (string * Types.type_mapping) list =
         ml_to_c = "Double_val";
         layer2_class = None;
         c_type = "float";
+        is_value_type_record = false;
+      } );
+    (* GObject namespace types — not generated from GIR, mapped to
+       hand-written wrappers in src/common/gobject.ml *)
+    ( "GObject.Object",
+      {
+        ocaml_type = "[`object_] Gobject.obj";
+        c_to_ml = "ml_gobject_val_of_ext";
+        ml_to_c = "GObject_ext_of_val";
+        layer2_class = None;
+        c_type = "GObject*";
+        is_value_type_record = false;
+      } );
+    ( "GObject.InitiallyUnowned",
+      {
+        ocaml_type = "[`initially_unowned | `object_] Gobject.obj";
+        c_to_ml = "ml_gobject_val_of_ext";
+        ml_to_c = "GObject_ext_of_val";
+        layer2_class = None;
+        c_type = "GInitiallyUnowned*";
+        is_value_type_record = false;
+      } );
+    (* GLib.List - GList* container type, elements resolved at generation time
+       c_to_ml/ml_to_c use LIST_INLINE marker for generator to handle specially *)
+    ( "GLib.List",
+      {
+        ocaml_type = "'a list";
+        c_to_ml = "LIST_INLINE";
+        ml_to_c = "LIST_INLINE";
+        layer2_class = None;
+        c_type = "GList*";
+        is_value_type_record = false;
+      } );
+    (* GLib.SList - GSList* container type, elements resolved at generation time *)
+    ( "GLib.SList",
+      {
+        ocaml_type = "'a list";
+        c_to_ml = "LIST_INLINE";
+        ml_to_c = "LIST_INLINE";
+        layer2_class = None;
+        c_type = "GSList*";
         is_value_type_record = false;
       } );
   ]
@@ -444,48 +496,85 @@ let classify_type ~ctx (gir_type : Types.gir_type) =
       Tk_Primitive
     else Tk_Unknown
   else
-    (* Cross-namespace: check cross_references *)
+    (* Cross-namespace: check cross_references first, then hardcoded mappings *)
     match StringMap.find_opt namespace ctx.cross_references with
-    | None -> Tk_Unknown
     | Some ncr -> (
         match StringMap.find_opt name ncr.ncr_entities with
-        | None -> Tk_Unknown
         | Some cr -> (
             match cr.cr_type with
             | Crt_Enum -> Tk_Enum
             | Crt_Bitfield -> Tk_Bitfield
             | Crt_Class _ -> Tk_Class
             | Crt_Interface -> Tk_Interface
-            | Crt_Record _ -> Tk_Record))
+            | Crt_Record _ -> Tk_Record)
+        | None ->
+            if List.assoc_opt lookup_str type_mappings |> Option.is_some then
+              Tk_Primitive
+            else Tk_Unknown)
+    | None ->
+        if List.assoc_opt lookup_str type_mappings |> Option.is_some then
+          Tk_Primitive
+        else Tk_Unknown
+
+(* Option.bind operator for cleaner sequential logic *)
+let ( let* ) = Option.bind
 
 let rec find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
-  (* Handle arrays first *)
+  if is_list_type gir_type then handle_list_type ~ctx gir_type
+  else if Option.is_some gir_type.array then handle_array_type ~ctx gir_type
+  else normal_type_lookup ~ctx gir_type
+
+(** Determine C type for GList/GSList based on type name *)
+and list_c_type_of_gir_type gir_type c_type_opt =
+  Option.value c_type_opt
+    ~default:(if is_glist_type gir_type then "GList*" else "GSList*")
+
+(** Build a type mapping for a container type (array or list) with resolved
+    element type *)
+and build_container_mapping ~(element_mapping : type_mapping) ~container_suffix
+    ~c_type ~marker =
+  {
+    ocaml_type = element_mapping.ocaml_type ^ container_suffix;
+    c_type;
+    c_to_ml = marker;
+    ml_to_c = marker;
+    layer2_class = None;
+    is_value_type_record = false;
+  }
+
+(** Handle GList/GSList container types. Returns None if the element type cannot
+    be resolved (instead of generating a generic type). This ensures we only
+    generate typed lists when we can properly resolve the element type. *)
+and handle_list_type ~ctx (gir_type : Types.gir_type) =
   match gir_type.array with
-  | Some array_info -> (
-      (* Recursively resolve the element type *)
-      match find_type_mapping_for_gir_type ~ctx array_info.element_type with
-      | Some element_mapping ->
-          let ocaml_type = element_mapping.ocaml_type ^ " array" in
-          let c_type =
-            match gir_type.c_type with
-            | Some ct -> ct
-            | None -> element_mapping.c_type ^ "*"
-          in
-          Some
-            {
-              ocaml_type;
-              c_type;
-              c_to_ml = "ARRAY_INLINE";
-              (* Marker: use inline code generation *)
-              ml_to_c = "ARRAY_INLINE";
-              (* Marker: use inline code generation *)
-              layer2_class = None;
-              is_value_type_record = false;
-            }
-      | None -> None)
+  | Some array_info ->
+      (* Try to resolve the element type *)
+      let* elem_mapping =
+        find_type_mapping_for_gir_type ~ctx array_info.element_type
+      in
+      let c_type =
+        Option.value gir_type.c_type
+          ~default:(list_c_type_of_gir_type gir_type None)
+      in
+      Some
+        (build_container_mapping ~element_mapping:elem_mapping
+           ~container_suffix:" list" ~c_type ~marker:"LIST_INLINE")
   | None ->
-      (* Not an array - proceed with normal type lookup *)
-      normal_type_lookup ~ctx gir_type
+      (* GList/GSList without element type info - this shouldn't happen in practice *)
+      None
+
+(** Handle array types *)
+and handle_array_type ~ctx (gir_type : Types.gir_type) =
+  let* array_info = gir_type.array in
+  let* elem_mapping =
+    find_type_mapping_for_gir_type ~ctx array_info.element_type
+  in
+  let c_type =
+    Option.value gir_type.c_type ~default:(elem_mapping.c_type ^ "*")
+  in
+  Some
+    (build_container_mapping ~element_mapping:elem_mapping
+       ~container_suffix:" array" ~c_type ~marker:"ARRAY_INLINE")
 
 and normal_type_lookup ~ctx (gir_type : Types.gir_type) =
   let try_lookup lookup_str =
@@ -509,7 +598,9 @@ and normal_type_lookup ~ctx (gir_type : Types.gir_type) =
       |> or_else (fun () -> find_enum_mapping ~ctx lookup_str)
       |> or_else (fun () -> find_bitfield_mapping ~ctx lookup_str)
       |> or_else find_hardcoded_mapping
-    else find_cross_namespace_type_mapping ~ctx ~namespace ~name
+    else
+      find_cross_namespace_type_mapping ~ctx ~namespace ~name
+      |> or_else find_hardcoded_mapping
   in
   (* Try gir_name first, then c_type if that fails *)
   gir_type.name |> try_lookup

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FlowBoxChild: FlowBoxChild *)
 
-type t = [`flow_box_child | `widget | `initially_unowned] Gobject.obj
+type t = [`flow_box_child | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new FlowBoxChild *)
 external new_ : unit -> t = "ml_gtk_flow_box_child_new"

@@ -246,6 +246,47 @@ activations take the new value for the key (which must have the
 correct type). *)
 external create_action : t -> string -> Action.t = "ml_g_settings_create_action"
 
+(** Create a binding between the writability of @key in the
+@settings object and the property @property of @object.
+The property must be boolean; "sensitive" or "visible"
+properties of widgets are the most likely candidates.
+
+Writable bindings are always uni-directional; changes of the
+writability of the setting will be propagated to the object
+property, not the other way.
+
+When the @inverted argument is %TRUE, the binding inverts the
+value as it passes from the setting to the object, i.e. @property
+will be set to %TRUE if the key is not writable.
+
+Note that the lifecycle of the binding is tied to @object,
+and that you can have only one binding per object property.
+If you bind the same property twice on the same object, the second
+binding overrides the first one. *)
+external bind_writable : t -> string -> [`object_] Gobject.obj -> string -> bool -> unit = "ml_g_settings_bind_writable"
+
+(** Create a binding between the @key in the @settings object
+and the property @property of @object.
+
+The binding uses the default GIO mapping functions to map
+between the settings and property values. These functions
+handle booleans, numeric types and string types in a
+straightforward way. Use g_settings_bind_with_mapping() if
+you need a custom mapping, or map between types that are not
+supported by the default mapping functions.
+
+Unless the @flags include %G_SETTINGS_BIND_NO_SENSITIVITY, this
+function also establishes a binding between the writability of
+@key and the "sensitive" property of @object (if @object has
+a boolean property by that name). See g_settings_bind_writable()
+for more details about writable bindings.
+
+Note that the lifecycle of the binding is tied to @object,
+and that you can have only one binding per object property.
+If you bind the same property twice on the same object, the second
+binding overrides the first one. *)
+external bind : t -> string -> [`object_] Gobject.obj -> string -> Gio_enums.settingsbindflags -> unit = "ml_g_settings_bind"
+
 (** Applies any changes that have been made to the settings.  This
 function does nothing unless @settings is in 'delay-apply' mode;
 see g_settings_delay().  In the normal case settings are always
