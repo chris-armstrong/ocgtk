@@ -130,12 +130,22 @@ while (ml_iter != Val_emptylist) {
 g_list_free(c_list);  // free the list container (not elements)
 ```
 
+**Implementation Note:** We use macro-based conversion (`Val_GList_with`/`Val_GSList_with` in `wrappers.h`) rather than emitting inline loops. This provides:
+- Better code reuse across generated bindings
+- Consistent GC safety patterns
+- Easier maintenance
+
+**Limitation:** GList/GSList of interface types (e.g., `GSList<Gio.File>`) cannot be generated because:
+- GObject interfaces have opaque struct definitions
+- The C stub generator currently tries to copy them by value, which fails
+- These are filtered out during generation (see `filtering.ml:is_interface_type`)
+
 The generator needs to:
-1. Recognize `GLib.List` and `GLib.SList` as container types (new marker, like `LIST_INLINE`)
-2. Read the child `<type>` element from GIR for the element type
-3. Resolve the element type's `Val_*`/`*_val` macros
-4. Emit the appropriate conversion loop
-5. Handle GIR transfer annotations (`transfer-ownership="container"` vs `"full"`) to determine whether to free elements
+1. ✅ Recognize `GLib.List` and `GLib.SList` as container types (via `LIST_INLINE` marker)
+2. ✅ Read the child `<type>` element from GIR for the element type (parser updated)
+3. ✅ Resolve the element type's `Val_*`/`*_val` macros (via type_mappings)
+4. ✅ Emit the appropriate conversion code (via `c_stub_list_conv.ml`)
+5. ✅ Handle GIR transfer annotations (`transfer-ownership="container"` vs `"full"`)
 
 ### DD5: GLib.Variant — Primitives + Basic Collections
 
@@ -310,18 +320,26 @@ Wire to existing `Gobject.Closure` module.
 
 Regenerate all bindings, build, count actual methods unlocked. Report results.
 
-### Phase 2: GList/GSList Container Support
+### Phase 2: GList/GSList Container Support ✓ COMPLETED
+
+**Status:** ✅ **COMPLETED** - March 2026
 
 **Goal:** Support parameterized list container types in generated code.
 
-#### Task 2.1: Add LIST_INLINE code generation path
+#### Task 2.1: Add LIST_INLINE code generation path ✓ DONE
 
 Following the pattern of `c_stub_array_conv.ml`, create list conversion code generation that:
-1. Recognizes `GLib.List`/`GLib.SList` via a `LIST_INLINE` marker in type mappings
-2. Reads the GIR child `<type>` for element type
-3. Resolves element type's `Val_*`/`*_val` converters
-4. Emits inline conversion loops (see DD4)
-5. Respects GIR `transfer-ownership` annotations for memory management
+1. ✅ Recognizes `GLib.List`/`GLib.SList` via a `LIST_INLINE` marker in type mappings
+2. ✅ Reads the GIR child `<type>` for element type
+3. ✅ Resolves element type's `Val_*`/`*_val` converters
+4. ✅ Emits inline conversion loops (see DD4)
+5. ✅ Respects GIR `transfer-ownership` annotations for memory management
+
+**Implementation details:**
+- Created `c_stub_list_conv.ml` with macro-based conversion
+- Parser updated to extract nested type elements from both return values and parameters
+- Type resolution works for same-namespace and cross-namespace element types
+- Methods with interface element types are filtered out (see KNOWN_BUGS.md)
 
 #### Task 2.2: Intersection test
 

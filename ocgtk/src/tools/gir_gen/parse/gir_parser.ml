@@ -701,16 +701,58 @@ let parse_gir_file filename filter_classes =
           let nullable =
             get_attr "nullable" attrs |> Utils.parse_bool || nullable_attr
           in
+          (* Parse nested type element for element type (always do this for generic handling)
+             EXCEPT for GLib.HashTable which has key/value types, not an element type *)
+          let is_hash_table = type_name = "GLib.HashTable" in
+          let element_type_ref = ref None in
+          if not is_hash_table then begin
+            let rec parse_element_type () =
+              match Xmlm.input input with
+              | `El_start ((_, "type"), elem_attrs) ->
+                  let elem_name =
+                    match get_attr "name" elem_attrs with Some n -> n | None -> "unknown"
+                  in
+                  let elem_c_type = get_attr "c:type" elem_attrs in
+                  element_type_ref :=
+                    Some
+                      {
+                        name = elem_name;
+                        c_type = elem_c_type;
+                        nullable = false;
+                        transfer_ownership = transfer_ownership_attr;
+                        array = None;
+                      };
+                  skip_element input 1;
+                  parse_element_type ()
+              | `El_start _ ->
+                  skip_element input 1;
+                  parse_element_type ()
+              | `El_end -> ()
+              | `Data _ | `Dtd _ -> parse_element_type ()
+            in
+            parse_element_type ()
+          end
+          else
+            skip_element input 1;
           type_info :=
-            ({
-               name = type_name;
-               c_type = c_type_name;
-               nullable;
-               transfer_ownership = transfer_ownership_attr;
-               array = None;
-             }
-              : gir_type);
-          skip_element input 1;
+            {
+              name = type_name;
+              c_type = c_type_name;
+              nullable;
+              transfer_ownership = transfer_ownership_attr;
+              array =
+                (match !element_type_ref with
+                | Some elem_type ->
+                    Some
+                      {
+                        Types.length = None;
+                        zero_terminated = false;
+                        fixed_size = None;
+                        element_type = elem_type;
+                        array_name = Some type_name;
+                      }
+                | None -> None);
+            };
           parse_rv_contents ()
       | `El_start ((_, "array"), array_attrs) ->
           let array_info =
@@ -849,15 +891,57 @@ let parse_gir_file filename filter_classes =
                 in
                 let c_type_name = get_attr "c:type" attrs in
                 let nullable = get_attr "nullable" attrs |> Utils.parse_bool in
+                (* Parse nested type element for element type (but not for HashTable) *)
+                let is_hash_table = type_name = "GLib.HashTable" in
+                let element_type_ref = ref None in
+                if not is_hash_table then begin
+                  let rec parse_element_type () =
+                    match Xmlm.input input with
+                    | `El_start ((_, "type"), elem_attrs) ->
+                        let elem_name =
+                          match get_attr "name" elem_attrs with Some n -> n | None -> "unknown"
+                        in
+                        let elem_c_type = get_attr "c:type" elem_attrs in
+                        element_type_ref :=
+                          Some
+                            {
+                              name = elem_name;
+                              c_type = elem_c_type;
+                              nullable = false;
+                              transfer_ownership = transfer_ownership;
+                              array = None;
+                            };
+                        skip_element input 1;
+                        parse_element_type ()
+                    | `El_start _ ->
+                        skip_element input 1;
+                        parse_element_type ()
+                    | `El_end -> ()
+                    | `Data _ | `Dtd _ -> parse_element_type ()
+                  in
+                  parse_element_type ()
+                end
+                else
+                  skip_element input 1;
                 type_ :=
                   {
                     name = type_name;
                     c_type = c_type_name;
                     nullable;
                     transfer_ownership;
-                    array = None;
+                    array =
+                      (match !element_type_ref with
+                      | Some elem_type ->
+                          Some
+                            {
+                              Types.length = None;
+                              zero_terminated = false;
+                              fixed_size = None;
+                              element_type = elem_type;
+                              array_name = Some type_name;
+                            }
+                      | None -> None);
                   };
-                skip_element input 1;
                 parse_param_contents ()
             | `El_start ((_, "array"), array_attrs) ->
                 let nullable_param =

@@ -2,6 +2,7 @@
 
 open StdLabels
 open Printf
+open Types
 
 module Log = (val Logs.src_log (Logs.Src.create "gir_gen.exclude_list" ~doc:"Exclusion lists and filtering logic for GIR Code Generator"))
 
