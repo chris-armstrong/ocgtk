@@ -20,16 +20,6 @@ type token =
 
 exception Parse_error of string
 
-let[@warning "-32"] string_of_token = function
-  | Number f -> Printf.sprintf "Number(%.2f)" f
-  | Plus -> "Plus"
-  | Minus -> "Minus"
-  | Multiply -> "Multiply"
-  | Divide -> "Divide"
-  | LParen -> "LParen"
-  | RParen -> "RParen"
-  | EOF -> "EOF"
-
 (* Tokenizer *)
 let rec tokenize s pos =
   if pos >= String.length s then [ EOF ]
@@ -51,14 +41,10 @@ let rec tokenize s pos =
         in
         let end_pos = read_number pos in
         let num_str = String.sub s start (end_pos - start) in
-        try
-          let f = float_of_string num_str in
-          Number f :: tokenize s end_pos
-        with Failure _ -> raise (Parse_error ("Invalid number: " ^ num_str)))
+        (match float_of_string_opt num_str with
+        | Some f -> Number f :: tokenize s end_pos
+        | None -> raise (Parse_error ("Invalid number: " ^ num_str))))
     | c -> raise (Parse_error (Printf.sprintf "Unexpected character: %c" c))
-
-let[@warning "-32"] tokenize_string s =
-  try Ok (tokenize s 0) with Parse_error msg -> Error msg
 
 (* Parser - recursive descent with precedence
    Grammar:
@@ -144,52 +130,13 @@ let parse tokens =
     | Minus ->
         advance ();
         Neg (parse_factor ())
-    | _ ->
+    | _ -> 
         raise (Parse_error "Unexpected token")
   in
 
   let ast = parse_expr () in
   expect EOF;
   ast
-
-(* Check if auto-closing parentheses is valid at end of expression *)
-let can_auto_close_parens tokens =
-  let rec count_parens count tokens =
-    match tokens with
-    | [] -> count
-    | LParen :: rest -> count_parens (count + 1) rest
-    | RParen :: rest -> count_parens (count - 1) rest
-    | _ :: rest -> count_parens count rest
-  in
-  let unclosed = count_parens 0 tokens in
-  if unclosed <= 0 then Ok tokens (* No unclosed parens or already balanced *)
-  else
-    (* Check if we can auto-close *)
-    let rec find_unclosed_pos count pos tokens =
-      match tokens with
-      | [] -> pos
-      | LParen :: rest -> find_unclosed_pos (count + 1) (pos + 1) rest
-      | RParen :: rest -> find_unclosed_pos (count - 1) (pos + 1) rest
-      | _ :: rest -> find_unclosed_pos count (pos + 1) rest
-    in
-    let unclosed_pos = find_unclosed_pos 0 0 tokens in
-    (* Check if position is valid for closing paren *)
-    (* A paren can be closed after a number or a closing paren *)
-    let rec check_valid_after pos tokens =
-      match tokens with
-      | [] -> false
-      | _ :: rest when pos > 1 -> check_valid_after (pos - 1) rest
-      | token :: _ when pos = 1 -> (
-          match token with Number _ | RParen -> true | _ -> false)
-      | _ -> false
-    in
-    if check_valid_after unclosed_pos tokens then
-      (* Add closing parens *)
-      let rec add_parens n tokens =
-        if n = 0 then tokens else add_parens (n - 1) (tokens @ [ RParen ])
-      in
-      Ok (add_parens unclosed tokens)
-    else Error "Cannot auto-close parentheses: invalid expression"
 
 (* Evaluate expression AST using Result bind operators for cleaner code *)
 let rec eval_expr expr =
@@ -217,23 +164,16 @@ let rec eval_expr expr =
       Ok (~-.v)
 
 (* Main evaluation function *)
+(* The parser handles auto-closing unclosed parentheses directly:
+   when it encounters EOF instead of RParen after a valid sub-expression,
+   it auto-closes. Invalid positions (e.g. "2*(3+") raise Parse_error. *)
 let evaluate s =
   if String.equal (String.trim s) "" then Error "Empty expression"
   else
     try
       let tokens = tokenize s 0 in
-      (* Remove EOF for auto-close check *)
-      let tokens_no_eof =
-        List.filter (fun t -> not (equal_token t EOF)) tokens
-      in
-      (* Check and apply auto-close if needed *)
-      match can_auto_close_parens tokens_no_eof with
-      | Error e -> Error e
-      | Ok tokens_with_parens ->
-          (* Add EOF back *)
-          let final_tokens = tokens_with_parens @ [ EOF ] in
-          let ast = parse final_tokens in
-          eval_expr ast
+      let ast = parse tokens in
+      eval_expr ast
     with
     | Parse_error msg -> Error msg
     | Failure msg -> Error msg

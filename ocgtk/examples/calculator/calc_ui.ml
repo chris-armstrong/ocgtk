@@ -15,6 +15,9 @@ let escape_pango_markup s =
     s;
   Buffer.contents b
 
+(* TODO: Replace Obj.magic with a proper C stub or generated interface cast
+   once the binding generator supports GInterface -> GObject conversions.
+   See calculator_app.md Known Issue #1. *)
 let css_provider_as_style_provider :
     Wrappers.Css_provider.t -> Wrappers.Style_provider.t =
   Obj.magic

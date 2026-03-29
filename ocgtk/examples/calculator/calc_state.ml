@@ -15,20 +15,14 @@ let create () = { expression = ""; result = "0"; error = false }
 (** Check if a character is an operator. *)
 let is_operator = function '+' | '-' | '*' | '/' -> true | _ -> false
 
-(** Check if a character is a digit. *)
-let is_digit = function '0' .. '9' -> true | _ -> false
-
 (** Check if a character is a valid expression character. *)
-let is_valid_char c =
-  let open Char in
-  is_digit c || is_operator c || equal c '.' || equal c '(' || equal c ')'
+let is_valid_char = function
+  | '0' .. '9' | '+' | '-' | '*' | '/' | '.' | '(' | ')' -> true
+  | _ -> false
 
 (** Get the last character of a string, if any. *)
 let last_char_opt s =
   if String.is_empty s then None else Some s.[String.length s - 1]
-
-(** Check if character is a closing parenthesis. *)
-let is_rparen = function ')' -> true | _ -> false
 
 (** Validate if we can append the given character to the current expression.
     Returns Some error_message if invalid, None if valid. *)
