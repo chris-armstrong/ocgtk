@@ -1,4 +1,5 @@
 open Ocgtk_gtk.Gtk
+open Calc_core
 
 (* Escape text for safe use in Pango markup (XML escaping) *)
 let escape_pango_markup s =
@@ -14,24 +15,15 @@ let escape_pango_markup s =
     s;
   Buffer.contents b
 
-
-
 let css_provider_as_style_provider :
     Wrappers.Css_provider.t -> Wrappers.Style_provider.t =
   Obj.magic
 
 let css_theme =
   {css|
-.calculator-display {
-  background-color: #2d2d2d;
-  color: #ffffff;
-  padding: 16px;
-  border-radius: 8px;
-}
-
 .calculator-expression {
   font-size: 14px;
-  color: #aaaaaa;
+  opacity: 0.7;
 }
 
 .calculator-result {
@@ -47,23 +39,28 @@ let css_theme =
   min-width: 48px;
 }
 
+/* Operator buttons - suggested action style */
 .calculator-button-operator {
-  background-color: #ff9500;
-  color: white;
+  background: alpha(@accent_bg_color, 0.3);
 }
 
+/* Equals button - accent/suggested action */
 .calculator-button-equals {
-  background-color: #34c759;
-  color: white;
+  background: @accent_bg_color;
+  color: @accent_fg_color;
 }
 
+/* Clear button - destructive action */
 .calculator-button-clear {
-  background-color: #ff3b30;
-  color: white;
+  background: alpha(@error_bg_color, 0.4);
 }
 |css}
 
-type t = { expression_label : Label.label_t; result_label : Label.label_t }
+type t = {
+  expression_label : Label.label_t;
+  result_label : Label.label_t;
+  state : Calc_state.t ref;
+}
 
 let button_layout =
   [|
@@ -99,6 +96,41 @@ let apply_css_provider (provider : Css_provider.css_provider_t)
   Wrappers.Style_context.add_provider style_ctx#as_style_context style_provider
     600
 
+let set_expression_text ui text =
+  let markup =
+    Printf.sprintf "<span font_desc='Monospace 12'>%s</span>"
+      (escape_pango_markup text)
+  in
+  ui.expression_label#set_markup markup
+
+let set_result_text ui text =
+  let markup =
+    Printf.sprintf "<span font_desc='Monospace Bold 24'>%s</span>"
+      (escape_pango_markup text)
+  in
+  ui.result_label#set_markup markup
+
+let update_display ui () =
+  let expr_text = Calc_state.get_expression_display !(ui.state) in
+  let result_text = Calc_state.get_result_display !(ui.state) in
+  set_expression_text ui expr_text;
+  set_result_text ui result_text
+
+let handle_button_click ui text () =
+  let open Calc_state in
+  let state_ref = ui.state in
+  let current_state = !state_ref in
+  let new_state =
+    match text with
+    | "C" -> clear ()
+    | "=" -> evaluate current_state
+    | "DEL" -> backspace current_state
+    | _ when String.length text = 1 -> append_char current_state text.[0]
+    | _ -> current_state
+  in
+  state_ref := new_state;
+  update_display ui ()
+
 let build (window : Window.window_t) =
   let vbox = Box.new_ `VERTICAL 5 in
   vbox#set_margin_top 8;
@@ -114,8 +146,7 @@ let build (window : Window.window_t) =
   expression_label#set_margin_top 8;
   expression_label#set_margin_bottom 4;
   expression_label#add_css_class "calculator-expression";
-  expression_label#set_markup
-    "<span font_desc='Monospace 12' foreground='#aaaaaa'></span>";
+  expression_label#set_markup "<span font_desc='Monospace 12'></span>";
   apply_css_provider css_provider (expression_label :> Widget.widget_t);
   vbox#append (expression_label :> Widget.widget_t);
 
@@ -123,8 +154,7 @@ let build (window : Window.window_t) =
   let result_label = create_display_label "0" in
   result_label#set_margin_bottom 8;
   result_label#add_css_class "calculator-result";
-  result_label#set_markup
-    "<span font_desc='Monospace Bold 24' foreground='#ffffff'>0</span>";
+  result_label#set_markup "<span font_desc='Monospace Bold 24'>0</span>";
   apply_css_provider css_provider (result_label :> Widget.widget_t);
   vbox#append (result_label :> Widget.widget_t);
 
@@ -137,6 +167,12 @@ let build (window : Window.window_t) =
   grid#set_vexpand true;
   vbox#append (grid :> Widget.widget_t);
 
+  (* Create the state ref that will be shared by all button handlers *)
+  let state = ref (Calc_state.create ()) in
+
+  (* Build the UI record for callbacks *)
+  let ui = { expression_label; result_label; state } in
+
   Array.iteri
     (fun row cols ->
       Array.iteri
@@ -144,28 +180,19 @@ let build (window : Window.window_t) =
           let btn = new Button.button (Wrappers.Button.new_with_label text) in
           btn#add_css_class "calculator-button";
           (match text with
-           | "C" -> btn#add_css_class "calculator-button-clear"
-           | "=" -> btn#add_css_class "calculator-button-equals"
-           | "/" | "*" | "-" | "+" ->
-               btn#add_css_class "calculator-button-operator"
-           | _ -> ());
+          | "C" -> btn#add_css_class "calculator-button-clear"
+          | "=" -> btn#add_css_class "calculator-button-equals"
+          | "/" | "*" | "-" | "+" ->
+              btn#add_css_class "calculator-button-operator"
+          | _ -> ());
+
+          (* Wire up the click handler *)
+          let callback = handle_button_click ui text in
+          ignore (btn#on_clicked ~callback);
+
           apply_css_provider css_provider (btn :> Widget.widget_t);
           grid#attach (btn :> Widget.widget_t) col row 1 1)
         cols)
     button_layout;
 
-  { expression_label; result_label }
-
-let set_expression_text ui text =
-  let markup =
-    Printf.sprintf "<span font_desc='Monospace 12' foreground='#aaaaaa'>%s</span>"
-      (escape_pango_markup text)
-  in
-  ui.expression_label#set_markup markup
-
-let set_result_text ui text =
-  let markup =
-    Printf.sprintf "<span font_desc='Monospace Bold 24' foreground='#ffffff'>%s</span>"
-      (escape_pango_markup text)
-  in
-  ui.result_label#set_markup markup
+  ui

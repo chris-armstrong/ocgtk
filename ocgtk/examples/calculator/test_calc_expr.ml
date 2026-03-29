@@ -3,10 +3,12 @@
     Run with: dune runtest examples/calculator
 *)
 
+open Containers
+open Calc_core
 open Calc_expr
 
 (* Alcotest testable for float with tolerance *)
-let float_eq ~eps a b = abs_float (a -. b) < eps
+let float_eq ~eps a b = Float.(abs (a -. b) < eps)
 
 let testable_float =
   Alcotest.testable
