@@ -518,7 +518,9 @@ stage until the current one passes its verification.
 
 ---
 
-### Stage 7: Keyboard Input
+### Stage 7: Keyboard Input ✅ COMPLETE
+**Status**: Completed 2026-03-30
+
 **Goal**: Full keyboard control via `EventControllerKey`.
 
 **Deliverable**: Keyboard handler in `calc_ui.ml`
@@ -529,9 +531,15 @@ stage until the current one passes its verification.
 **Files**: Update `calc_ui.ml`
 
 **Verification**:
-- `dune build` succeeds
+- ✅ `dune build` succeeds
 - Interactive: launch app, type `2+3` then Enter → result shows `5`
 - Escape clears, Backspace deletes last char
+
+**Implementation Notes**:
+- Printable ASCII keyvals (0x20–0x7e) map directly to `Char.chr` — no per-key special cases needed
+- GDK_KEY_* constants hardcoded (Return=0xff0d, KP_Enter=0xff8d, Escape=0xff1b, Backspace=0xff08) pending Milestone 4 constant generation
+- Controller attached to window (not individual buttons) so keyboard works regardless of focus
+- L2 coercion required: `(key_controller :> Event_controller.event_controller_t)`
 
 ---
 
