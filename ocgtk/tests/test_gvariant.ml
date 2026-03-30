@@ -331,17 +331,32 @@ let test_print_double () =
     true (String.contains s '3' && String.contains s '.')
 
 let test_parse_simple () =
-  (* Note: Parsing requires explicit type context. Test skipped. *)
-  Alcotest.(check bool) "parse test skipped" true true
+  let v = Gvariant.parse "42" in
+  Alcotest.(check string) "parse int32 type" "i" (Gvariant.type_string v);
+  Alcotest.(check int32) "parse int32 value" 42l (Gvariant.to_int32 v)
 
 let test_parse_string () =
-  Alcotest.(check bool) "parse test skipped" true true
+  let v = Gvariant.parse "\"hello world\"" in
+  Alcotest.(check string) "parse string type" "s" (Gvariant.type_string v);
+  Alcotest.(check string) "parse string value" "hello world" (Gvariant.to_string v)
 
 let test_parse_boolean () =
-  Alcotest.(check bool) "parse test skipped" true true
+  let v_true = Gvariant.parse "true" in
+  let v_false = Gvariant.parse "false" in
+  Alcotest.(check string) "parse true type" "b" (Gvariant.type_string v_true);
+  Alcotest.(check bool) "parse true value" true (Gvariant.to_boolean v_true);
+  Alcotest.(check string) "parse false type" "b" (Gvariant.type_string v_false);
+  Alcotest.(check bool) "parse false value" false (Gvariant.to_boolean v_false)
 
 let test_parse_roundtrip () =
-  Alcotest.(check bool) "parse test skipped" true true
+  let original = "(1, 'test', true)" in
+  let v = Gvariant.parse original in
+  let printed = Gvariant.print v false in
+  (* Parse the printed version and verify it matches *)
+  let v2 = Gvariant.parse printed in
+  Alcotest.(check int32) "roundtrip child 0" 1l (Gvariant.to_int32 (Gvariant.get_child_value v2 0));
+  Alcotest.(check string) "roundtrip child 1" "test" (Gvariant.to_string (Gvariant.get_child_value v2 1));
+  Alcotest.(check bool) "roundtrip child 2" true (Gvariant.to_boolean (Gvariant.get_child_value v2 2))
 
 (** {2 GC Stress Tests} *)
 
