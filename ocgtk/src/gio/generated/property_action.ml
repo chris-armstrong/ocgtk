@@ -18,9 +18,12 @@ external get_invert_boolean : t -> bool = "ml_g_property_action_get_invert_boole
 (** Get property: name *)
 external get_name : t -> string = "ml_g_property_action_get_name"
 
-(** Get property: object *)
-external get_object : t -> [`object_] Gobject.obj = "ml_g_property_action_get_object"
+(** Get property: parameter-type *)
+external get_parameter_type : t -> Gvariant_type.t = "ml_g_property_action_get_parameter_type"
 
-(** Get property: property-name *)
-external get_property_name : t -> string = "ml_g_property_action_get_property_name"
+(** Get property: state *)
+external get_state : t -> Gvariant.t = "ml_g_property_action_get_state"
+
+(** Get property: state-type *)
+external get_state_type : t -> Gvariant_type.t = "ml_g_property_action_get_state_type"
 

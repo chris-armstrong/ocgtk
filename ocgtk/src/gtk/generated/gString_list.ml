@@ -5,7 +5,6 @@ class type string_list_t = object
     method splice : int -> int -> string array option -> unit
     method take : string -> unit
     method n_items : int
-    method strings : string array
     method as_string_list : String_list.t
 end
 
@@ -33,8 +32,6 @@ class string_list (obj : String_list.t) : string_list_t = object (self)
       (String_list.take obj string)
 
   method n_items = String_list.get_n_items obj
-
-  method strings = String_list.get_strings obj
 
     method as_string_list = obj
 end

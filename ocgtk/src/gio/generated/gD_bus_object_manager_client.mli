@@ -4,7 +4,6 @@ class type d_bus_object_manager_client_t = object
     method get_flags : unit -> Gio_enums.dbusobjectmanagerclientflags
     method get_name : unit -> string
     method get_name_owner : unit -> string option
-    method bus_type : Gio_enums.bustype
     method object_path : string
     method as_d_bus_object_manager_client : D_bus_object_manager_client.t
 end

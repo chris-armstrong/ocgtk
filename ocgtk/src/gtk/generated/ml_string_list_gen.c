@@ -108,24 +108,3 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
-
-CAMLexport CAMLprim value ml_gtk_string_list_get_strings(value self)
-{
-GtkStringList *obj = (GtkStringList *)GtkStringList_val(self);
-CAMLparam1(self);
-GValue prop_gvalue = G_VALUE_INIT;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "strings");
-if (pspec == NULL) caml_failwith("ml_gtk_string_list_get_strings: property 'strings' not found");
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "strings", &prop_gvalue);
-utf8* c_result = (utf8*)g_value_get_boxed(&prop_gvalue);
-int c_result_length = 0;
-    while (c_result[c_result_length] != NULL) c_result_length++;
-    CAMLlocal1(ml_c_result);
-    ml_c_result = caml_alloc(c_result_length, 0);
-    for (int i = 0; i < c_result_length; i++) {
-      Store_field(ml_c_result, i, caml_copy_string(c_result[i]));
-    }
-g_value_unset(&prop_gvalue);
-CAMLreturn(ml_c_result);
-}

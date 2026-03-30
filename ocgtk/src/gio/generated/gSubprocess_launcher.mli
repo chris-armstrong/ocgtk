@@ -14,7 +14,6 @@ class type subprocess_launcher_t = object
     method take_stdin_fd : int -> unit
     method take_stdout_fd : int -> unit
     method unsetenv : string -> unit
-    method flags : Gio_enums.subprocessflags
     method as_subprocess_launcher : Subprocess_launcher.t
 end
 

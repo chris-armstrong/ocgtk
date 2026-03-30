@@ -2,10 +2,12 @@ class type d_bus_message_t = object
     method copy : unit -> (d_bus_message_t, GError.t) result
     method get_arg0 : unit -> string option
     method get_arg0_path : unit -> string option
+    method get_body : unit -> Gvariant.t option
     method get_byte_order : unit -> Gio_enums.dbusmessagebyteorder
     method get_destination : unit -> string option
     method get_error_name : unit -> string option
     method get_flags : unit -> Gio_enums.dbusmessageflags
+    method get_header : Gio_enums.dbusmessageheaderfield -> Gvariant.t option
     method get_interface : unit -> string option
     method get_locked : unit -> bool
     method get_member : unit -> string option
@@ -18,10 +20,12 @@ class type d_bus_message_t = object
     method new_method_error_literal : string -> string -> d_bus_message_t
     method new_method_reply : unit -> d_bus_message_t
     method print : int -> string
+    method set_body : Gvariant.t -> unit
     method set_byte_order : Gio_enums.dbusmessagebyteorder -> unit
     method set_destination : string option -> unit
     method set_error_name : string -> unit
     method set_flags : Gio_enums.dbusmessageflags -> unit
+    method set_header : Gio_enums.dbusmessageheaderfield -> Gvariant.t option -> unit
     method set_interface : string option -> unit
     method set_member : string option -> unit
     method set_message_type : Gio_enums.dbusmessagetype -> unit

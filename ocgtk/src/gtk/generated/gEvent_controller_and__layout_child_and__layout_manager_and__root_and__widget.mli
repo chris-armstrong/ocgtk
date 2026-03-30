@@ -41,6 +41,7 @@ and widget_t = object
     inherit Gwidget_signals.widget_signals
     method action_set_enabled : string -> bool -> unit
     method activate : unit -> bool
+    method activate_action_variant : string -> Gvariant.t option -> bool
     method activate_default : unit -> unit
     method add_controller : event_controller_t -> unit
     method add_css_class : string -> unit

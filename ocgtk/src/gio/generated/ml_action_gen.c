@@ -22,6 +22,38 @@
 #include "gio_decls.h"
 
 
+CAMLexport CAMLprim value ml_g_action_get_state_type(value self)
+{
+CAMLparam1(self);
+
+const GVariantType* result = g_action_get_state_type(GAction_val(self));
+CAMLreturn(Val_option(result, Val_GVariantType));
+}
+
+CAMLexport CAMLprim value ml_g_action_get_state_hint(value self)
+{
+CAMLparam1(self);
+
+GVariant* result = g_action_get_state_hint(GAction_val(self));
+CAMLreturn(Val_option(result, Val_GVariant));
+}
+
+CAMLexport CAMLprim value ml_g_action_get_state(value self)
+{
+CAMLparam1(self);
+
+GVariant* result = g_action_get_state(GAction_val(self));
+CAMLreturn(Val_option(result, Val_GVariant));
+}
+
+CAMLexport CAMLprim value ml_g_action_get_parameter_type(value self)
+{
+CAMLparam1(self);
+
+const GVariantType* result = g_action_get_parameter_type(GAction_val(self));
+CAMLreturn(Val_option(result, Val_GVariantType));
+}
+
 CAMLexport CAMLprim value ml_g_action_get_name(value self)
 {
 CAMLparam1(self);
@@ -36,4 +68,20 @@ CAMLparam1(self);
 
 gboolean result = g_action_get_enabled(GAction_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_g_action_change_state(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_action_change_state(GAction_val(self), GVariant_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_action_activate(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_action_activate(GAction_val(self), Option_val(arg1, GVariant_val, NULL));
+CAMLreturn(Val_unit);
 }

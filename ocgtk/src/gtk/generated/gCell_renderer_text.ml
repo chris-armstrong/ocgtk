@@ -9,7 +9,6 @@ class type cell_renderer_text_t = object
     method alignment : Ocgtk_pango.Pango.alignment
     method attributes : Ocgtk_pango.Pango.Attr_list.attr_list_t
     method set_attributes : Ocgtk_pango.Pango.Attr_list.attr_list_t -> unit
-    method background : string
     method set_background : string -> unit
     method background_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t
     method set_background_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit
@@ -31,7 +30,6 @@ class type cell_renderer_text_t = object
     method set_font : string -> unit
     method font_desc : Ocgtk_pango.Pango.Font_description.font_description_t
     method set_font_desc : Ocgtk_pango.Pango.Font_description.font_description_t -> unit
-    method foreground : string
     method set_foreground : string -> unit
     method foreground_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t
     method set_foreground_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit
@@ -41,7 +39,6 @@ class type cell_renderer_text_t = object
     method set_language : string -> unit
     method language_set : bool
     method set_language_set : bool -> unit
-    method markup : string
     method set_markup : string -> unit
     method max_width_chars : int
     method set_max_width_chars : int -> unit
@@ -115,7 +112,6 @@ class cell_renderer_text (obj : Cell_renderer_text.t) : cell_renderer_text_t = o
   method attributes = new Ocgtk_pango.Pango.Attr_list.attr_list (Cell_renderer_text.get_attributes obj)
   method set_attributes : Ocgtk_pango.Pango.Attr_list.attr_list_t -> unit  = fun v ->  Cell_renderer_text.set_attributes obj v#as_attr_list
 
-  method background = Cell_renderer_text.get_background obj
   method set_background v =  Cell_renderer_text.set_background obj v
 
   method background_rgba = new Ocgtk_gdk.Gdk.Rgb_a.rgb_a (Cell_renderer_text.get_background_rgba obj)
@@ -148,7 +144,6 @@ class cell_renderer_text (obj : Cell_renderer_text.t) : cell_renderer_text_t = o
   method font_desc = new Ocgtk_pango.Pango.Font_description.font_description (Cell_renderer_text.get_font_desc obj)
   method set_font_desc : Ocgtk_pango.Pango.Font_description.font_description_t -> unit  = fun v ->  Cell_renderer_text.set_font_desc obj v#as_font_description
 
-  method foreground = Cell_renderer_text.get_foreground obj
   method set_foreground v =  Cell_renderer_text.set_foreground obj v
 
   method foreground_rgba = new Ocgtk_gdk.Gdk.Rgb_a.rgb_a (Cell_renderer_text.get_foreground_rgba obj)
@@ -163,7 +158,6 @@ class cell_renderer_text (obj : Cell_renderer_text.t) : cell_renderer_text_t = o
   method language_set = Cell_renderer_text.get_language_set obj
   method set_language_set v =  Cell_renderer_text.set_language_set obj v
 
-  method markup = Cell_renderer_text.get_markup obj
   method set_markup v =  Cell_renderer_text.set_markup obj v
 
   method max_width_chars = Cell_renderer_text.get_max_width_chars obj

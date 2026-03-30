@@ -21,12 +21,18 @@ external new_ : string option -> t = "ml_gtk_paper_size_new"
 external new_custom : string -> string -> float -> float -> Gtk_enums.unit -> t = "ml_gtk_paper_size_new_custom"
 
 (** Create a new PaperSize *)
+external new_from_gvariant : Gvariant.t -> t = "ml_gtk_paper_size_new_from_gvariant"
+
+(** Create a new PaperSize *)
 external new_from_ipp : string -> float -> float -> t = "ml_gtk_paper_size_new_from_ipp"
 
 (** Create a new PaperSize *)
 external new_from_ppd : string -> string -> float -> float -> t = "ml_gtk_paper_size_new_from_ppd"
 
 (* Methods *)
+(** Serialize a paper size to an `a{sv}` variant. *)
+external to_gvariant : t -> Gvariant.t = "ml_gtk_paper_size_to_gvariant"
+
 (** Changes the dimensions of a @size to @width x @height. *)
 external set_size : t -> float -> float -> Gtk_enums.unit -> unit = "ml_gtk_paper_size_set_size"
 

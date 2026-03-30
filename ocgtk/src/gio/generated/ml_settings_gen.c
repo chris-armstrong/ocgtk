@@ -67,6 +67,14 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GSettings(obj));
 }
+CAMLexport CAMLprim value ml_g_settings_set_value(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gboolean result = g_settings_set_value(GSettings_val(self), String_val(arg1), GVariant_val(arg2));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_g_settings_set_uint(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -160,6 +168,14 @@ g_settings_reset(GSettings_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_settings_range_check(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gboolean result = g_settings_range_check(GSettings_val(self), String_val(arg1), GVariant_val(arg2));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_g_settings_list_keys(value self)
 {
 CAMLparam1(self);
@@ -206,6 +222,22 @@ gboolean result = g_settings_is_writable(GSettings_val(self), String_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_g_settings_get_value(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GVariant* result = g_settings_get_value(GSettings_val(self), String_val(arg1));
+CAMLreturn(Val_GVariant(result));
+}
+
+CAMLexport CAMLprim value ml_g_settings_get_user_value(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GVariant* result = g_settings_get_user_value(GSettings_val(self), String_val(arg1));
+CAMLreturn(Val_option(result, Val_GVariant));
+}
+
 CAMLexport CAMLprim value ml_g_settings_get_uint(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -239,6 +271,14 @@ CAMLparam2(self, arg1);
 
 gchar* result = g_settings_get_string(GSettings_val(self), String_val(arg1));
 CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_g_settings_get_range(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GVariant* result = g_settings_get_range(GSettings_val(self), String_val(arg1));
+CAMLreturn(Val_GVariant(result));
 }
 
 CAMLexport CAMLprim value ml_g_settings_get_int(value self, value arg1)
@@ -279,6 +319,14 @@ CAMLparam2(self, arg1);
 
 gdouble result = g_settings_get_double(GSettings_val(self), String_val(arg1));
 CAMLreturn(caml_copy_double(result));
+}
+
+CAMLexport CAMLprim value ml_g_settings_get_default_value(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GVariant* result = g_settings_get_default_value(GSettings_val(self), String_val(arg1));
+CAMLreturn(Val_option(result, Val_GVariant));
 }
 
 CAMLexport CAMLprim value ml_g_settings_get_child(value self, value arg1)

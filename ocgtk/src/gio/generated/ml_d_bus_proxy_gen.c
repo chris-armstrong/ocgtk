@@ -90,6 +90,14 @@ g_dbus_proxy_set_default_timeout(GDBusProxy_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_dbus_proxy_set_cached_property(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+g_dbus_proxy_set_cached_property(GDBusProxy_val(self), String_val(arg1), Option_val(arg2, GVariant_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_g_dbus_proxy_get_object_path(value self)
 {
 CAMLparam1(self);
@@ -174,22 +182,36 @@ gchar** result = g_dbus_proxy_get_cached_property_names(GDBusProxy_val(self));
 CAMLreturn(ml_result);
 }
 
-CAMLexport CAMLprim value ml_g_d_bus_proxy_get_g_bus_type(value self)
+CAMLexport CAMLprim value ml_g_dbus_proxy_get_cached_property(value self, value arg1)
 {
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GDBusProxy *obj = (GDBusProxy *)GDBusProxy_val(self);
-    GBusType prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "g-bus-type");
-if (pspec == NULL) caml_failwith("ml_g_d_bus_proxy_get_g_bus_type: property 'g-bus-type' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "g-bus-type", &prop_gvalue);
-          prop_value = (GBusType)g_value_get_enum(&prop_gvalue);
+CAMLparam2(self, arg1);
 
-      result = Val_GioBusType(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
+GVariant* result = g_dbus_proxy_get_cached_property(GDBusProxy_val(self), String_val(arg1));
+CAMLreturn(Val_option(result, Val_GVariant));
+}
+
+CAMLexport CAMLprim value ml_g_dbus_proxy_call_sync_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam1(arg5);
+GError *error = NULL;
+
+GVariant* result = g_dbus_proxy_call_sync(GDBusProxy_val(self), String_val(arg1), Option_val(arg2, GVariant_val, NULL), GioDBusCallFlags_val(arg3), Int_val(arg4), Option_val(arg5, GCancellable_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GVariant(result))); else CAMLreturn(Res_Error(Val_GError(error)));}
+
+CAMLexport CAMLprim value ml_g_dbus_proxy_call_sync_bytecode(value * argv, int argn)
+{
+return ml_g_dbus_proxy_call_sync_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+}
+
+CAMLexport CAMLprim value ml_g_dbus_proxy_call_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GVariant* result = g_dbus_proxy_call_finish(GDBusProxy_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GVariant(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 
 CAMLexport CAMLprim value ml_g_d_bus_proxy_get_g_connection(value self)
 {

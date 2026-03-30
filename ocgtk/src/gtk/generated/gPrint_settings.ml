@@ -64,6 +64,7 @@ class type print_settings_t = object
     method set_scale : float -> unit
     method set_use_color : bool -> unit
     method to_file : string -> (bool, GError.t) result
+    method to_gvariant : unit -> Gvariant.t
     method unset : string -> unit
     method as_print_settings : Print_settings.t
 end
@@ -331,6 +332,10 @@ class print_settings (obj : Print_settings.t) : print_settings_t = object (self)
     fun file_name ->
       (Print_settings.to_file obj file_name)
 
+  method to_gvariant : unit -> Gvariant.t =
+    fun () ->
+      (Print_settings.to_gvariant obj)
+
   method unset : string -> unit =
     fun key ->
       (Print_settings.unset obj key)
@@ -344,4 +349,8 @@ let new_ () : print_settings_t =
 let new_from_file (file_name : string) : (print_settings_t, GError.t) result =
   let obj_ = Print_settings.new_from_file file_name in
 Result.map (fun obj_ ->  new print_settings obj_) obj_
+
+let new_from_gvariant (variant : Gvariant.t) : print_settings_t =
+  let obj_ = Print_settings.new_from_gvariant variant in
+  new print_settings obj_
 

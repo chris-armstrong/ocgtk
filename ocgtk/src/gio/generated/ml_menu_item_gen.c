@@ -106,10 +106,34 @@ g_menu_item_set_detailed_action(GMenuItem_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_menu_item_set_attribute_value(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+g_menu_item_set_attribute_value(GMenuItem_val(self), String_val(arg1), Option_val(arg2, GVariant_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_menu_item_set_action_and_target_value(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+g_menu_item_set_action_and_target_value(GMenuItem_val(self), String_option_val(arg1), Option_val(arg2, GVariant_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_g_menu_item_get_link(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 GMenuModel* result = g_menu_item_get_link(GMenuItem_val(self), String_val(arg1));
 CAMLreturn(Val_option(result, Val_GMenuModel));
+}
+
+CAMLexport CAMLprim value ml_g_menu_item_get_attribute_value(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+GVariant* result = g_menu_item_get_attribute_value(GMenuItem_val(self), String_val(arg1), Option_val(arg2, GVariantType_val, NULL));
+CAMLreturn(Val_option(result, Val_GVariant));
 }

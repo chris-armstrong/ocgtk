@@ -14,6 +14,7 @@ class type paper_size_t = object
     method is_equal : Paper_size.t -> bool
     method is_ipp : unit -> bool
     method set_size : float -> float -> Gtk_enums.unit -> unit
+    method to_gvariant : unit -> Gvariant.t
     method as_paper_size : Paper_size.t
 end
 
@@ -21,5 +22,6 @@ class paper_size : Paper_size.t -> paper_size_t
 
 val new_ : string option -> paper_size_t
 val new_custom : string -> string -> float -> float -> Gtk_enums.unit -> paper_size_t
+val new_from_gvariant : Gvariant.t -> paper_size_t
 val new_from_ipp : string -> float -> float -> paper_size_t
 val new_from_ppd : string -> string -> float -> float -> paper_size_t

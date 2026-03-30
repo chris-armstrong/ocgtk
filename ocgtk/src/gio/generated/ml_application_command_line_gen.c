@@ -62,6 +62,14 @@ GInputStream* result = g_application_command_line_get_stdin(GApplicationCommandL
 CAMLreturn(Val_option(result, Val_GInputStream));
 }
 
+CAMLexport CAMLprim value ml_g_application_command_line_get_platform_data(value self)
+{
+CAMLparam1(self);
+
+GVariant* result = g_application_command_line_get_platform_data(GApplicationCommandLine_val(self));
+CAMLreturn(Val_option(result, Val_GVariant));
+}
+
 CAMLexport CAMLprim value ml_g_application_command_line_get_is_remote(value self)
 {
 CAMLparam1(self);

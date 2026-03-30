@@ -53,9 +53,6 @@ external get_allow_breaks_set : t -> bool = "ml_gtk_text_tag_get_allow_breaks_se
 (** Set property: allow-breaks-set *)
 external set_allow_breaks_set : t -> bool -> unit = "ml_gtk_text_tag_set_allow_breaks_set"
 
-(** Get property: background *)
-external get_background : t -> string = "ml_gtk_text_tag_get_background"
-
 (** Set property: background *)
 external set_background : t -> string -> unit = "ml_gtk_text_tag_set_background"
 
@@ -148,9 +145,6 @@ external get_font_features_set : t -> bool = "ml_gtk_text_tag_get_font_features_
 
 (** Set property: font-features-set *)
 external set_font_features_set : t -> bool -> unit = "ml_gtk_text_tag_set_font_features_set"
-
-(** Get property: foreground *)
-external get_foreground : t -> string = "ml_gtk_text_tag_get_foreground"
 
 (** Set property: foreground *)
 external set_foreground : t -> string -> unit = "ml_gtk_text_tag_set_foreground"
@@ -289,9 +283,6 @@ external get_overline_set : t -> bool = "ml_gtk_text_tag_get_overline_set"
 
 (** Set property: overline-set *)
 external set_overline_set : t -> bool -> unit = "ml_gtk_text_tag_set_overline_set"
-
-(** Get property: paragraph-background *)
-external get_paragraph_background : t -> string = "ml_gtk_text_tag_get_paragraph_background"
 
 (** Set property: paragraph-background *)
 external set_paragraph_background : t -> string -> unit = "ml_gtk_text_tag_set_paragraph_background"

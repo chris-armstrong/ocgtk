@@ -40,5 +40,6 @@ let new_ (model : GTree_model.tree_model_t) (path : Tree_path.t) : tree_row_refe
 
 let new_proxy (proxy : [`object_] Gobject.obj) (model : GTree_model.tree_model_t) (path : Tree_path.t) : tree_row_reference_t =
   let model = model#as_tree_model in
-  new tree_row_reference (Tree_row_reference.new_proxy proxy model path)
+  let obj_ = Tree_row_reference.new_proxy proxy model path in
+  new tree_row_reference obj_
 

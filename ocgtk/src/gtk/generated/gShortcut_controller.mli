@@ -8,7 +8,6 @@ class type shortcut_controller_t = object
     method set_scope : Gtk_enums.shortcutscope -> unit
     method mnemonic_modifiers : Ocgtk_gdk.Gdk.modifiertype
     method set_mnemonic_modifiers : Ocgtk_gdk.Gdk.modifiertype -> unit
-    method model : Ocgtk_gio.Gio.List_model.list_model_t
     method n_items : int
     method as_shortcut_controller : Shortcut_controller.t
 end

@@ -30,6 +30,14 @@ gchar* result = g_icon_to_string(GIcon_val(self));
 CAMLreturn(Val_option_string(result));
 }
 
+CAMLexport CAMLprim value ml_g_icon_serialize(value self)
+{
+CAMLparam1(self);
+
+GVariant* result = g_icon_serialize(GIcon_val(self));
+CAMLreturn(Val_option(result, Val_GVariant));
+}
+
 CAMLexport CAMLprim value ml_g_icon_hash(value self)
 {
 CAMLparam1(self);

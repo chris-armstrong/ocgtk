@@ -6,7 +6,6 @@ class type d_bus_object_manager_client_t = object
     method get_flags : unit -> Gio_enums.dbusobjectmanagerclientflags
     method get_name : unit -> string
     method get_name_owner : unit -> string option
-    method bus_type : Gio_enums.bustype
     method object_path : string
     method as_d_bus_object_manager_client : D_bus_object_manager_client.t
 end
@@ -30,8 +29,6 @@ class d_bus_object_manager_client (obj : D_bus_object_manager_client.t) : d_bus_
   method get_name_owner : unit -> string option =
     fun () ->
       (D_bus_object_manager_client.get_name_owner obj)
-
-  method bus_type = D_bus_object_manager_client.get_bus_type obj
 
   method object_path = D_bus_object_manager_client.get_object_path obj
 

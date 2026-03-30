@@ -237,6 +237,20 @@ guint result = g_dbus_connection_export_action_group(GDBusConnection_val(self), 
 if (error == NULL) CAMLreturn(Res_Ok(Val_int(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+CAMLexport CAMLprim value ml_g_dbus_connection_emit_signal_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam1(arg5);
+GError *error = NULL;
+
+gboolean result = g_dbus_connection_emit_signal(GDBusConnection_val(self), String_option_val(arg1), String_val(arg2), String_val(arg3), String_val(arg4), Option_val(arg5, GVariant_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));}
+
+CAMLexport CAMLprim value ml_g_dbus_connection_emit_signal_bytecode(value * argv, int argn)
+{
+return ml_g_dbus_connection_emit_signal_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+}
+
 CAMLexport CAMLprim value ml_g_dbus_connection_close_sync(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -255,39 +269,28 @@ gboolean result = g_dbus_connection_close_finish(GDBusConnection_val(self), GAsy
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-CAMLexport CAMLprim value ml_g_d_bus_connection_get_address(value self)
+CAMLexport CAMLprim value ml_g_dbus_connection_call_sync_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7, value arg8, value arg9)
 {
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GDBusConnection *obj = (GDBusConnection *)GDBusConnection_val(self);
-    gchar* *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "address");
-if (pspec == NULL) caml_failwith("ml_g_d_bus_connection_get_address: property 'address' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "address", &prop_gvalue);
-          prop_value = g_value_get_string(&prop_gvalue);
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam5(arg5, arg6, arg7, arg8, arg9);
+GError *error = NULL;
 
-      result = caml_copy_string(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
+GVariant* result = g_dbus_connection_call_sync(GDBusConnection_val(self), String_option_val(arg1), String_val(arg2), String_val(arg3), String_val(arg4), Option_val(arg5, GVariant_val, NULL), Option_val(arg6, GVariantType_val, NULL), GioDBusCallFlags_val(arg7), Int_val(arg8), Option_val(arg9, GCancellable_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GVariant(result))); else CAMLreturn(Res_Error(Val_GError(error)));}
 
-CAMLexport CAMLprim value ml_g_d_bus_connection_get_authentication_observer(value self)
+CAMLexport CAMLprim value ml_g_dbus_connection_call_sync_bytecode(value * argv, int argn)
 {
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GDBusConnection *obj = (GDBusConnection *)GDBusConnection_val(self);
-    GDBusAuthObserver *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "authentication-observer");
-if (pspec == NULL) caml_failwith("ml_g_d_bus_connection_get_authentication_observer: property 'authentication-observer' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "authentication-observer", &prop_gvalue);
-          prop_value = (GDBusAuthObserver*)g_value_get_object(&prop_gvalue);
+return ml_g_dbus_connection_call_sync_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6], argv[7], argv[8], argv[9]);
+}
 
-      result = Val_GDBusAuthObserver(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
+CAMLexport CAMLprim value ml_g_dbus_connection_call_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GVariant* result = g_dbus_connection_call_finish(GDBusConnection_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GVariant(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 
 CAMLexport CAMLprim value ml_g_d_bus_connection_get_closed(value self)
 {

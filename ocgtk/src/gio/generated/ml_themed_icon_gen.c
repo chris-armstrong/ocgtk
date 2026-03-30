@@ -86,23 +86,6 @@ g_themed_icon_append_name(GThemedIcon_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_g_themed_icon_get_name(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GThemedIcon *obj = (GThemedIcon *)GThemedIcon_val(self);
-    gchar* *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "name");
-if (pspec == NULL) caml_failwith("ml_g_themed_icon_get_name: property 'name' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "name", &prop_gvalue);
-          prop_value = g_value_get_string(&prop_gvalue);
-
-      result = caml_copy_string(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
-
 CAMLexport CAMLprim value ml_g_themed_icon_get_use_default_fallbacks(value self)
 {
     CAMLparam1(self);

@@ -17,9 +17,6 @@ external get_message_area : t -> Event_controller_and__layout_child_and__layout_
 
 (* Properties *)
 
-(** Get property: buttons *)
-external get_buttons : t -> Gtk_enums.buttonstype = "ml_gtk_message_dialog_get_buttons"
-
 (** Get property: message-type *)
 external get_message_type : t -> Gtk_enums.messagetype = "ml_gtk_message_dialog_get_message_type"
 

@@ -200,6 +200,3 @@ external close : t -> unit = "ml_g_subprocess_launcher_close"
 
 (* Properties *)
 
-(** Get property: flags *)
-external get_flags : t -> Gio_enums.subprocessflags = "ml_g_subprocess_launcher_get_flags"
-

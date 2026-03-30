@@ -4,7 +4,6 @@ class type tls_certificate_t = object
     method get_subject_name : unit -> string option
     method is_same : tls_certificate_t -> bool
     method certificate_pem : string
-    method password : string
     method pkcs11_uri : string
     method private_key_pem : string
     method private_key_pkcs11_uri : string

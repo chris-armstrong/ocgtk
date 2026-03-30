@@ -62,6 +62,14 @@ GDBusInterfaceVTable* result = g_dbus_interface_skeleton_get_vtable(GDBusInterfa
 CAMLreturn(Val_GDBusInterfaceVTable(result));
 }
 
+CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_get_properties(value self)
+{
+CAMLparam1(self);
+
+GVariant* result = g_dbus_interface_skeleton_get_properties(GDBusInterfaceSkeleton_val(self));
+CAMLreturn(Val_GVariant(result));
+}
+
 CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_get_object_path(value self)
 {
 CAMLparam1(self);

@@ -13,9 +13,6 @@ external add_shortcut : t -> Shortcuts_shortcut.t -> unit = "ml_gtk_shortcuts_gr
 
 (* Properties *)
 
-(** Get property: accel-size-group *)
-external get_accel_size_group : t -> Size_group.t = "ml_gtk_shortcuts_group_get_accel_size_group"
-
 (** Set property: accel-size-group *)
 external set_accel_size_group : t -> Size_group.t -> unit = "ml_gtk_shortcuts_group_set_accel_size_group"
 
@@ -27,9 +24,6 @@ external get_title : t -> string = "ml_gtk_shortcuts_group_get_title"
 
 (** Set property: title *)
 external set_title : t -> string -> unit = "ml_gtk_shortcuts_group_set_title"
-
-(** Get property: title-size-group *)
-external get_title_size_group : t -> Size_group.t = "ml_gtk_shortcuts_group_get_title_size_group"
 
 (** Set property: title-size-group *)
 external set_title_size_group : t -> Size_group.t -> unit = "ml_gtk_shortcuts_group_set_title_size_group"

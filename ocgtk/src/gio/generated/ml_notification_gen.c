@@ -63,6 +63,14 @@ g_notification_set_icon(GNotification_val(self), GIcon_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_notification_set_default_action_and_target_value(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+g_notification_set_default_action_and_target_value(GNotification_val(self), String_val(arg1), Option_val(arg2, GVariant_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_g_notification_set_default_action(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -84,6 +92,14 @@ CAMLexport CAMLprim value ml_g_notification_set_body(value self, value arg1)
 CAMLparam2(self, arg1);
 
 g_notification_set_body(GNotification_val(self), String_option_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_notification_add_button_with_target_value(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+g_notification_add_button_with_target_value(GNotification_val(self), String_val(arg1), String_val(arg2), Option_val(arg3, GVariant_val, NULL));
 CAMLreturn(Val_unit);
 }
 

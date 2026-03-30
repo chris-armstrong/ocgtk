@@ -4,7 +4,6 @@ class type tls_certificate_t = object
     method get_subject_name : unit -> string option
     method is_same : tls_certificate_t -> bool
     method certificate_pem : string
-    method password : string
     method pkcs11_uri : string
     method private_key_pem : string
     method private_key_pkcs11_uri : string
@@ -32,8 +31,6 @@ class tls_certificate (obj : Tls_certificate.t) : tls_certificate_t = object (se
       (Tls_certificate.is_same obj cert_two)
 
   method certificate_pem = Tls_certificate.get_certificate_pem obj
-
-  method password = Tls_certificate.get_password obj
 
   method pkcs11_uri = Tls_certificate.get_pkcs11_uri obj
 

@@ -69,3 +69,11 @@ CAMLparam3(self, arg1, arg2);
 GMenuModel* result = g_menu_model_get_item_link(GMenuModel_val(self), Int_val(arg1), String_val(arg2));
 CAMLreturn(Val_option(result, Val_GMenuModel));
 }
+
+CAMLexport CAMLprim value ml_g_menu_model_get_item_attribute_value(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+GVariant* result = g_menu_model_get_item_attribute_value(GMenuModel_val(self), Int_val(arg1), String_val(arg2), Option_val(arg3, GVariantType_val, NULL));
+CAMLreturn(Val_option(result, Val_GVariant));
+}

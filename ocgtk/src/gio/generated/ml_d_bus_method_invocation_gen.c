@@ -22,6 +22,22 @@
 #include "gio_decls.h"
 
 
+CAMLexport CAMLprim value ml_g_dbus_method_invocation_return_value_with_unix_fd_list(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+g_dbus_method_invocation_return_value_with_unix_fd_list(GDBusMethodInvocation_val(self), Option_val(arg1, GVariant_val, NULL), Option_val(arg2, GUnixFDList_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_dbus_method_invocation_return_value(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_dbus_method_invocation_return_value(GDBusMethodInvocation_val(self), Option_val(arg1, GVariant_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_g_dbus_method_invocation_return_dbus_error(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -44,6 +60,14 @@ CAMLparam1(self);
 
 const GDBusPropertyInfo* result = g_dbus_method_invocation_get_property_info(GDBusMethodInvocation_val(self));
 CAMLreturn(Val_option(result, Val_GDBusPropertyInfo));
+}
+
+CAMLexport CAMLprim value ml_g_dbus_method_invocation_get_parameters(value self)
+{
+CAMLparam1(self);
+
+GVariant* result = g_dbus_method_invocation_get_parameters(GDBusMethodInvocation_val(self));
+CAMLreturn(Val_GVariant(result));
 }
 
 CAMLexport CAMLprim value ml_g_dbus_method_invocation_get_object_path(value self)

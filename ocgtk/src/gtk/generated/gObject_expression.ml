@@ -16,5 +16,6 @@ class object_expression (obj : Object_expression.t) : object_expression_t = obje
 end
 
 let new_ (object_ : [`object_] Gobject.obj) : object_expression_t =
-  new object_expression (Object_expression.new_ object_)
+  let obj_ = Object_expression.new_ object_ in
+  new object_expression obj_
 

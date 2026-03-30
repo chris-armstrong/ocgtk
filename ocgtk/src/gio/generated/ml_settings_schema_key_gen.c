@@ -53,12 +53,36 @@ GSettingsSchemaKey* result = g_settings_schema_key_ref(GSettingsSchemaKey_val(se
 CAMLreturn(Val_GSettingsSchemaKey(result));
 }
 
+CAMLexport CAMLprim value ml_g_settings_schema_key_range_check(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gboolean result = g_settings_schema_key_range_check(GSettingsSchemaKey_val(self), GVariant_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_g_settings_schema_key_get_value_type(value self)
+{
+CAMLparam1(self);
+
+const GVariantType* result = g_settings_schema_key_get_value_type(GSettingsSchemaKey_val(self));
+CAMLreturn(Val_GVariantType(result));
+}
+
 CAMLexport CAMLprim value ml_g_settings_schema_key_get_summary(value self)
 {
 CAMLparam1(self);
 
 const gchar* result = g_settings_schema_key_get_summary(GSettingsSchemaKey_val(self));
 CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_g_settings_schema_key_get_range(value self)
+{
+CAMLparam1(self);
+
+GVariant* result = g_settings_schema_key_get_range(GSettingsSchemaKey_val(self));
+CAMLreturn(Val_GVariant(result));
 }
 
 CAMLexport CAMLprim value ml_g_settings_schema_key_get_name(value self)
@@ -75,4 +99,12 @@ CAMLparam1(self);
 
 const gchar* result = g_settings_schema_key_get_description(GSettingsSchemaKey_val(self));
 CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_g_settings_schema_key_get_default_value(value self)
+{
+CAMLparam1(self);
+
+GVariant* result = g_settings_schema_key_get_default_value(GSettingsSchemaKey_val(self));
+CAMLreturn(Val_GVariant(result));
 }

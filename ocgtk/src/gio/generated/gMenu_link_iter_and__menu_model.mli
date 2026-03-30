@@ -8,6 +8,7 @@ end
 
 and menu_model_t = object
     inherit Gmenu_model_signals.menu_model_signals
+    method get_item_attribute_value : int -> string -> Gvariant_type.t option -> Gvariant.t option
     method get_item_link : int -> string -> menu_model_t option
     method get_n_items : unit -> int
     method is_mutable : unit -> bool

@@ -115,23 +115,6 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_shortcut_controller_get_model(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GtkShortcutController *obj = (GtkShortcutController *)GtkShortcutController_val(self);
-    GListModel *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "model");
-if (pspec == NULL) caml_failwith("ml_gtk_shortcut_controller_get_model: property 'model' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "model", &prop_gvalue);
-          caml_failwith("unsupported property type");
-
-      result = Val_GListModel(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
-
 CAMLexport CAMLprim value ml_gtk_shortcut_controller_get_n_items(value self)
 {
     CAMLparam1(self);

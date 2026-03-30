@@ -9,11 +9,17 @@ external new_ : unit -> t = "ml_gtk_print_settings_new"
 (** Create a new PrintSettings *)
 external new_from_file : string -> (t, GError.t) result = "ml_gtk_print_settings_new_from_file"
 
+(** Create a new PrintSettings *)
+external new_from_gvariant : Gvariant.t -> t = "ml_gtk_print_settings_new_from_gvariant"
+
 (* Methods *)
 (** Removes any value associated with @key.
 
 This has the same effect as setting the value to %NULL. *)
 external unset : t -> string -> unit = "ml_gtk_print_settings_unset"
+
+(** Serialize print settings to an a{sv} variant. *)
+external to_gvariant : t -> Gvariant.t = "ml_gtk_print_settings_to_gvariant"
 
 (** This function saves the print settings from @settings to @file_name.
 

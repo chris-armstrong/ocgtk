@@ -18,6 +18,7 @@ class type page_setup_t = object
     method set_right_margin : float -> Gtk_enums.unit -> unit
     method set_top_margin : float -> Gtk_enums.unit -> unit
     method to_file : string -> (bool, GError.t) result
+    method to_gvariant : unit -> Gvariant.t
     method as_page_setup : Page_setup.t
 end
 
@@ -100,6 +101,10 @@ class page_setup (obj : Page_setup.t) : page_setup_t = object (self)
     fun file_name ->
       (Page_setup.to_file obj file_name)
 
+  method to_gvariant : unit -> Gvariant.t =
+    fun () ->
+      (Page_setup.to_gvariant obj)
+
     method as_page_setup = obj
 end
 
@@ -109,4 +114,8 @@ let new_ () : page_setup_t =
 let new_from_file (file_name : string) : (page_setup_t, GError.t) result =
   let obj_ = Page_setup.new_from_file file_name in
 Result.map (fun obj_ ->  new page_setup obj_) obj_
+
+let new_from_gvariant (variant : Gvariant.t) : page_setup_t =
+  let obj_ = Page_setup.new_from_gvariant variant in
+  new page_setup obj_
 
