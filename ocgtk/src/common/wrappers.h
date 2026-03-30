@@ -325,6 +325,21 @@ value Val_GError(GError *error);
 
 CAMLprim GValue *GValue_val(value val);
 
+/* ==================================================================== */
+/* GVariant                                                             */
+/* ==================================================================== */
+
+/* Defined in ml_gvariant.c - wrap/unwrap GVariant with ref counting */
+CAMLexport value Val_GVariant(GVariant *variant);
+#define GVariant_val(val) (*((GVariant**)Data_custom_val(val)))
+
+/* ==================================================================== */
+/* GVariantType                                                         */
+/* ==================================================================== */
+
+/* Defined in ml_gvariant_type.c - wrap/unwrap GVariantType with copy/free */
+CAMLexport value Val_GVariantType(const GVariantType *type);
+#define GVariantType_val(val) (*((GVariantType**)Data_custom_val(val)))
 
 typedef gchar utf8;
 
