@@ -70,9 +70,6 @@ value Val_GVariantType(const GVariantType *type) {
     CAMLreturn(v);
 }
 
-/* Extract GVariantType pointer from custom block (do not free - owned by OCaml) */
-#define GVariantType_val(val) (*((GVariantType**)Data_custom_val(val)))
-
 /* ==================================================================== */
 /* Constructors                                                         */
 /* ==================================================================== */
@@ -97,9 +94,12 @@ CAMLprim value ml_g_variant_type_new(value type_str) {
 
 CAMLprim value ml_g_variant_type_get_string(value type) {
     CAMLparam1(type);
+    CAMLlocal1(result);
     const GVariantType *t = GVariantType_val(type);
-    const gchar *str = g_variant_type_peek_string(t);
-    CAMLreturn(caml_copy_string(str));
+    gchar *str = g_variant_type_dup_string(t);
+    result = caml_copy_string(str);
+    g_free(str);
+    CAMLreturn(result);
 }
 
 /* ==================================================================== */

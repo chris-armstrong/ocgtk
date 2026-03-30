@@ -84,8 +84,6 @@ value Val_GVariant(GVariant *variant) {
     CAMLreturn(v);
 }
 
-#define GVariant_val(val) (*((GVariant**)Data_custom_val(val)))
-
 /* ==================================================================== */
 /* Type Introspection                                                   */
 /* ==================================================================== */
@@ -361,6 +359,9 @@ CAMLprim value ml_g_variant_new_strv(value arr) {
     
     int length = Wosize_val(arr);
     const gchar **strv = g_new(const gchar*, length + 1);
+    if (strv == NULL) {
+        caml_raise_out_of_memory();
+    }
     
     for (int i = 0; i < length; i++) {
         item = Field(arr, i);
@@ -402,6 +403,9 @@ CAMLprim value ml_g_variant_new_objv(value arr) {
     
     int length = Wosize_val(arr);
     const gchar **objv = g_new(const gchar*, length + 1);
+    if (objv == NULL) {
+        caml_raise_out_of_memory();
+    }
     
     for (int i = 0; i < length; i++) {
         item = Field(arr, i);
