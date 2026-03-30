@@ -134,6 +134,51 @@ let handle_button_click ui text () =
   state_ref := new_state;
   update_display ui ()
 
+(* GDK keysym constants for non-printable keys.
+   GDK_KEY_* constants are not yet generated (Milestone 4), hardcode for now. *)
+let gdk_key_return    = 0xff0d
+let gdk_key_kp_enter  = 0xff8d
+let gdk_key_escape    = 0xff1b
+let gdk_key_backspace = 0xff08
+
+let handle_key ui keyval =
+  let open Calc_state in
+  let state = !(ui.state) in
+  let new_state, handled =
+    if keyval >= 0x20 && keyval <= 0x7e then
+      (* Printable ASCII: keyval maps directly to char code *)
+      match Char.chr keyval with
+      | '0' .. '9' | '.' | '+' | '-' | '*' | '/' | '(' | ')' as c ->
+          (append_char state c, true)
+      | '=' -> (evaluate state, true)
+      | _ -> (state, false)
+    else if keyval = gdk_key_return || keyval = gdk_key_kp_enter then
+      (evaluate state, true)
+    else if keyval = gdk_key_escape then
+      (clear (), true)
+    else if keyval = gdk_key_backspace then
+      (backspace state, true)
+    else
+      (state, false)
+  in
+  ui.state := new_state;
+  update_display ui ();
+  handled
+
+let setup_keyboard ui (window : Window.window_t) =
+  let key_controller = Event_controller_key.new_ () in
+  (* key-pressed has a complex signature (keyval, keycode, modifiers -> bool)
+     so it is not auto-generated. Connect manually via Gobject.Signal. *)
+  let closure = Gobject.Closure.create (fun argv ->
+    let keyval = Gobject.Value.get_int (Gobject.Closure.nth argv ~pos:1) in
+    let handled = handle_key ui keyval in
+    Gobject.Value.set_boolean (Gobject.Closure.result argv) handled
+  ) in
+  ignore
+    (Gobject.Signal.connect key_controller#as_event_controller_key
+       ~name:"key-pressed" ~callback:closure ~after:false);
+  window#add_controller (key_controller :> Event_controller.event_controller_t)
+
 let build (window : Window.window_t) =
   let vbox = Box.new_ `VERTICAL 5 in
   vbox#set_margin_top 8;
@@ -198,4 +243,5 @@ let build (window : Window.window_t) =
         cols)
     button_layout;
 
+  setup_keyboard ui window;
   ui
