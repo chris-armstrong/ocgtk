@@ -15,9 +15,8 @@ let escape_pango_markup s =
     s;
   Buffer.contents b
 
-(* TODO: Replace Obj.magic with a proper C stub or generated interface cast
-   once the binding generator supports GInterface -> GObject conversions.
-   See calculator_app.md Known Issue #1. *)
+(* CssProvider implements GtkStyleProvider interface. Both share the same
+   underlying GObject pointer, so Obj.magic is safe here — no conversion needed. *)
 let css_provider_as_style_provider :
     Wrappers.Css_provider.t -> Wrappers.Style_provider.t =
   Obj.magic
@@ -223,24 +222,29 @@ let build (window : Window.window_t) =
 
   Array.iteri
     (fun row cols ->
-      Array.iteri
-        (fun col text ->
-          let btn = new Button.button (Wrappers.Button.new_with_label text) in
-          btn#add_css_class "calculator-button";
-          (match text with
-          | "C" -> btn#add_css_class "calculator-button-clear"
-          | "=" -> btn#add_css_class "calculator-button-equals"
-          | "/" | "*" | "-" | "+" ->
-              btn#add_css_class "calculator-button-operator"
-          | _ -> ());
+      (* Track cumulative column offset to account for spanning buttons. *)
+      ignore
+        (Array.fold_left
+           (fun col_offset text ->
+             let btn =
+               new Button.button (Wrappers.Button.new_with_label text)
+             in
+             btn#add_css_class "calculator-button";
+             (match text with
+             | "C" -> btn#add_css_class "calculator-button-clear"
+             | "=" -> btn#add_css_class "calculator-button-equals"
+             | "/" | "*" | "-" | "+" ->
+                 btn#add_css_class "calculator-button-operator"
+             | _ -> ());
 
-          (* Wire up the click handler *)
-          let callback = handle_button_click ui text in
-          ignore (btn#on_clicked ~callback);
+             let span = if text = "0" then 2 else 1 in
+             let callback = handle_button_click ui text in
+             ignore (btn#on_clicked ~callback);
 
-          apply_css_provider css_provider (btn :> Widget.widget_t);
-          grid#attach (btn :> Widget.widget_t) col row 1 1)
-        cols)
+             apply_css_provider css_provider (btn :> Widget.widget_t);
+             grid#attach (btn :> Widget.widget_t) col_offset row span 1;
+             col_offset + span)
+           0 cols))
     button_layout;
 
   setup_keyboard ui window;

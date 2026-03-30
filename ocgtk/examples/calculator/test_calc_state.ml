@@ -160,6 +160,28 @@ let test_multiple_consecutive_operators () =
   let s = Calc_state.append_char s '*' in
   Alcotest.(check string) "last operator wins" "2*" (Calc_state.get_expression s)
 
+let test_double_decimal_rejected () =
+  let s = Calc_state.create () in
+  let s = Calc_state.append_char s '1' in
+  let s = Calc_state.append_char s '.' in
+  let s = Calc_state.append_char s '5' in
+  let s_before = s in
+  let s = Calc_state.append_char s '.' in
+  Alcotest.(check state) "second decimal rejected" s_before s
+
+let test_decimal_allowed_in_second_operand () =
+  (* After an operator, decimal should be allowed in the new number. *)
+  let s = Calc_state.create () in
+  let s = Calc_state.append_char s '1' in
+  let s = Calc_state.append_char s '.' in
+  let s = Calc_state.append_char s '5' in
+  let s = Calc_state.append_char s '+' in
+  let s = Calc_state.append_char s '2' in
+  let s = Calc_state.append_char s '.' in
+  let s = Calc_state.append_char s '5' in
+  Alcotest.(check string) "expression is 1.5+2.5" "1.5+2.5"
+    (Calc_state.get_expression s)
+
 let () =
   Alcotest.run "Calc_state"
     [
@@ -168,6 +190,8 @@ let () =
         [
           Alcotest.test_case "digits" `Quick test_append_digit;
           Alcotest.test_case "decimal" `Quick test_decimal_point;
+          Alcotest.test_case "double decimal rejected" `Quick test_double_decimal_rejected;
+          Alcotest.test_case "decimal in second operand" `Quick test_decimal_allowed_in_second_operand;
           Alcotest.test_case "consecutive operators" `Quick test_consecutive_operators;
           Alcotest.test_case "leading minus" `Quick test_leading_minus_allowed;
           Alcotest.test_case "leading plus rejected" `Quick test_leading_plus_rejected;

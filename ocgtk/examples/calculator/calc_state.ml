@@ -24,6 +24,20 @@ let is_valid_char = function
 let last_char_opt s =
   if String.is_empty s then None else Some s.[String.length s - 1]
 
+(** Check if the current number token (after the last operator/paren) already
+    contains a decimal point. Prevents inputs like 1.2.3. *)
+let has_decimal_in_current_number expr =
+  let len = String.length expr in
+  let rec find_start i =
+    if i < 0 then 0
+    else
+      match expr.[i] with
+      | '+' | '-' | '*' | '/' | '(' -> i + 1
+      | _ -> find_start (i - 1)
+  in
+  let start = find_start (len - 1) in
+  String.contains (String.sub expr start (len - start)) '.'
+
 (** Validate if we can append the given character to the current expression.
     Returns Some error_message if invalid, None if valid. *)
 let validate_append t c =
@@ -42,6 +56,9 @@ let validate_append t c =
     | Some last_c, ('+' | '-' | '*' | '/') when is_operator last_c ->
         (* Consecutive operators - replace is allowed, handled in append. *)
         None
+    | _, '.' when has_decimal_in_current_number t.expression ->
+        (* Prevent a second decimal in the same number token. *)
+        Some "Decimal already in current number"
     | Some _last_c, ('0' .. '9' | '(' | ')' | '.') -> None
     | Some _, ('+' | '-' | '*' | '/') -> None
     | _ -> None

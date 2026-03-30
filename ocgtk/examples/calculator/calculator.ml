@@ -5,6 +5,7 @@ let activate app =
   let window = Window.new_ () in
   window#set_title (Some "OCaml GTK4 Calculator");
   window#set_default_size 400 500;
+  window#set_resizable false;
 
   (* Keep the application alive while the window is open *)
   app#hold ();
