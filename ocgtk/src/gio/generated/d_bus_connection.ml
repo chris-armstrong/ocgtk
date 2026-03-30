@@ -183,6 +183,15 @@ limits a given action group to being exported from only one main
 context. *)
 external export_action_group : t -> string -> Action_group.t -> (int, GError.t) result = "ml_g_dbus_connection_export_action_group"
 
+(** Emits a signal.
+
+If the parameters GVariant is floating, it is consumed.
+
+This can only fail if @parameters is not compatible with the D-Bus protocol
+(%G_IO_ERROR_INVALID_ARGUMENT), or if @connection has been closed
+(%G_IO_ERROR_CLOSED). *)
+external emit_signal : t -> string option -> string -> string -> string -> Gvariant.t option -> (bool, GError.t) result = "ml_g_dbus_connection_emit_signal_bytecode" "ml_g_dbus_connection_emit_signal_native"
+
 (** Synchronously closes @connection. The calling thread is blocked
 until this is done. See g_dbus_connection_close() for the
 asynchronous version of this method and more details about what it
@@ -192,13 +201,48 @@ external close_sync : t -> Cancellable.t option -> (bool, GError.t) result = "ml
 (** Finishes an operation started with g_dbus_connection_close(). *)
 external close_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_dbus_connection_close_finish"
 
+(** Synchronously invokes the @method_name method on the
+@interface_name D-Bus interface on the remote object at
+@object_path owned by @bus_name.
+
+If @connection is closed then the operation will fail with
+%G_IO_ERROR_CLOSED. If @cancellable is canceled, the
+operation will fail with %G_IO_ERROR_CANCELLED. If @parameters
+contains a value not compatible with the D-Bus protocol, the operation
+fails with %G_IO_ERROR_INVALID_ARGUMENT.
+
+If @reply_type is non-%NULL then the reply will be checked for having
+this type and an error will be raised if it does not match.  Said
+another way, if you give a @reply_type then any non-%NULL return
+value will be of this type.
+
+If the @parameters #GVariant is floating, it is consumed.
+This allows convenient 'inline' use of g_variant_new(), e.g.:
+|[<!-- language="C" -->
+ g_dbus_connection_call_sync (connection,
+                              "org.freedesktop.StringThings",
+                              "/org/freedesktop/StringThings",
+                              "org.freedesktop.StringThings",
+                              "TwoStrings",
+                              g_variant_new ("(ss)",
+                                             "Thing One",
+                                             "Thing Two"),
+                              NULL,
+                              G_DBUS_CALL_FLAGS_NONE,
+                              -1,
+                              NULL,
+                              &error);
+]|
+
+The calling thread is blocked until a reply is received. See
+g_dbus_connection_call() for the asynchronous version of
+this method. *)
+external call_sync : t -> string option -> string -> string -> string -> Gvariant.t option -> Gvariant_type.t option -> Gio_enums.dbuscallflags -> int -> Cancellable.t option -> (Gvariant.t, GError.t) result = "ml_g_dbus_connection_call_sync_bytecode" "ml_g_dbus_connection_call_sync_native"
+
+(** Finishes an operation started with g_dbus_connection_call(). *)
+external call_finish : t -> Async_result.t -> (Gvariant.t, GError.t) result = "ml_g_dbus_connection_call_finish"
+
 (* Properties *)
-
-(** Get property: address *)
-external get_address : t -> string = "ml_g_d_bus_connection_get_address"
-
-(** Get property: authentication-observer *)
-external get_authentication_observer : t -> D_bus_auth_observer.t = "ml_g_d_bus_connection_get_authentication_observer"
 
 (** Get property: closed *)
 external get_closed : t -> bool = "ml_g_d_bus_connection_get_closed"

@@ -72,7 +72,27 @@ GMenuModel* result = g_menu_model_get_item_link(GMenuModel_val(self), Int_val(ar
 CAMLreturn(Val_option(result, Val_GMenuModel));
 }
 
+CAMLexport CAMLprim value ml_g_menu_model_get_item_attribute_value(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+GVariant* result = g_menu_model_get_item_attribute_value(GMenuModel_val(self), Int_val(arg1), String_val(arg2), Option_val(arg3, GVariantType_val, NULL));
+CAMLreturn(Val_option(result, Val_GVariant));
+}
+
 #else
+
+
+CAMLexport CAMLprim value ml_g_menu_model_get_item_attribute_value(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("MenuModel requires GLib >= 2.32");
+return Val_unit;
+}
 
 
 CAMLexport CAMLprim value ml_g_menu_model_get_item_link(value self, value arg1, value arg2)

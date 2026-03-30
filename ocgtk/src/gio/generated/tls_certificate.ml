@@ -72,9 +72,6 @@ external get_issuer : t -> t option = "ml_g_tls_certificate_get_issuer"
 (** Get property: certificate-pem *)
 external get_certificate_pem : t -> string = "ml_g_tls_certificate_get_certificate_pem"
 
-(** Get property: password *)
-external get_password : t -> string = "ml_g_tls_certificate_get_password"
-
 (** Get property: pkcs11-uri *)
 external get_pkcs11_uri : t -> string = "ml_g_tls_certificate_get_pkcs11_uri"
 

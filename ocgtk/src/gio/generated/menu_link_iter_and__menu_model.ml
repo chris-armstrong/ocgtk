@@ -103,6 +103,19 @@ and Menu_model
   does not exist, %NULL is returned. *)
   external get_item_link : t -> int -> string -> t option = "ml_g_menu_model_get_item_link"
 
+  (** Queries the item at position @item_index in @model for the attribute
+  specified by @attribute.
+
+  If @expected_type is non-%NULL then it specifies the expected type of
+  the attribute.  If it is %NULL then any type will be accepted.
+
+  If the attribute exists and matches @expected_type (or if the
+  expected type is unspecified) then the value is returned.
+
+  If the attribute does not exist, or does not match the expected type
+  then %NULL is returned. *)
+  external get_item_attribute_value : t -> int -> string -> Gvariant_type.t option -> Gvariant.t option = "ml_g_menu_model_get_item_attribute_value"
+
 
 end = struct
   type t = [`menu_model | `object_] Gobject.obj
@@ -152,6 +165,19 @@ end = struct
   If the link exists, the linked #GMenuModel is returned.  If the link
   does not exist, %NULL is returned. *)
   external get_item_link : t -> int -> string -> t option = "ml_g_menu_model_get_item_link"
+
+  (** Queries the item at position @item_index in @model for the attribute
+  specified by @attribute.
+
+  If @expected_type is non-%NULL then it specifies the expected type of
+  the attribute.  If it is %NULL then any type will be accepted.
+
+  If the attribute exists and matches @expected_type (or if the
+  expected type is unspecified) then the value is returned.
+
+  If the attribute does not exist, or does not match the expected type
+  then %NULL is returned. *)
+  external get_item_attribute_value : t -> int -> string -> Gvariant_type.t option -> Gvariant.t option = "ml_g_menu_model_get_item_attribute_value"
 
 
 end

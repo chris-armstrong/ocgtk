@@ -7,12 +7,11 @@ class type file_filter_t = object
     method get_attributes : unit -> string array
     method get_name : unit -> string option
     method set_name : string option -> unit
-    method mime_types : string array
-    method patterns : string array
-    method suffixes : string array
+    method to_gvariant : unit -> Gvariant.t
     method as_file_filter : File_filter.t
 end
 
 class file_filter : File_filter.t -> file_filter_t
 
 val new_ : unit -> file_filter_t
+val new_from_gvariant : Gvariant.t -> file_filter_t

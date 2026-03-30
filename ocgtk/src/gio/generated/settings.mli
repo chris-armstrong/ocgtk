@@ -12,6 +12,15 @@ external new_with_path : string -> string -> t = "ml_g_settings_new_with_path"
 (* Methods *)
 (** Sets @key in @settings to @value.
 
+It is a programmer error to give a @key that isn't contained in the
+schema for @settings or for @value to have the incorrect type, per
+the schema.
+
+If @value is floating then this function consumes the reference. *)
+external set_value : t -> string -> Gvariant.t -> bool = "ml_g_settings_set_value"
+
+(** Sets @key in @settings to @value.
+
 A convenience variant of g_settings_set() for 32-bit unsigned
 integers.
 
@@ -100,6 +109,10 @@ That might be the value specified in the schema or the one set by the
 administrator. *)
 external reset : t -> string -> unit = "ml_g_settings_reset"
 
+(** Checks if the given @value is of the correct type and within the
+permitted range for @key. *)
+external range_check : t -> string -> Gvariant.t -> bool = "ml_g_settings_range_check"
+
 (** Introspects the list of keys on @settings.
 
 You should probably not be calling this function from "normal" code
@@ -126,6 +139,32 @@ external list_children : t -> string array = "ml_g_settings_list_children"
 (** Finds out if a key can be written or not *)
 external is_writable : t -> string -> bool = "ml_g_settings_is_writable"
 
+(** Gets the value that is stored in @settings for @key.
+
+It is a programmer error to give a @key that isn't contained in the
+schema for @settings. *)
+external get_value : t -> string -> Gvariant.t = "ml_g_settings_get_value"
+
+(** Checks the "user value" of a key, if there is one.
+
+The user value of a key is the last value that was set by the user.
+
+After calling g_settings_reset() this function should always return
+%NULL (assuming something is not wrong with the system
+configuration).
+
+It is possible that g_settings_get_value() will return a different
+value than this function.  This can happen in the case that the user
+set a value for a key that was subsequently locked down by the system
+administrator -- this function will return the user's old value.
+
+This function may be useful for adding a "reset" option to a UI or
+for providing indication that a particular value has been changed.
+
+It is a programmer error to give a @key that isn't contained in the
+schema for @settings. *)
+external get_user_value : t -> string -> Gvariant.t option = "ml_g_settings_get_user_value"
+
 (** Gets the value that is stored at @key in @settings.
 
 A convenience variant of g_settings_get() for 32-bit unsigned
@@ -148,6 +187,9 @@ A convenience variant of g_settings_get() for strings.
 It is a programmer error to give a @key that isn't specified as
 having a string type in the schema for @settings. *)
 external get_string : t -> string -> string = "ml_g_settings_get_string"
+
+(** Queries the range of a key. *)
+external get_range : t -> string -> Gvariant.t = "ml_g_settings_get_range"
 
 (** Gets the value that is stored at @key in @settings.
 
@@ -196,6 +238,29 @@ A convenience variant of g_settings_get() for doubles.
 It is a programmer error to give a @key that isn't specified as
 having a 'double' type in the schema for @settings. *)
 external get_double : t -> string -> float = "ml_g_settings_get_double"
+
+(** Gets the "default value" of a key.
+
+This is the value that would be read if g_settings_reset() were to be
+called on the key.
+
+Note that this may be a different value than returned by
+g_settings_schema_key_get_default_value() if the system administrator
+has provided a default value.
+
+Comparing the return values of g_settings_get_default_value() and
+g_settings_get_value() is not sufficient for determining if a value
+has been set because the user may have explicitly set the value to
+something that happens to be equal to the default.  The difference
+here is that if the default changes in the future, the user's key
+will still be set.
+
+This function may be useful for adding an indication to a UI of what
+the default value was before the user set it.
+
+It is a programmer error to give a @key that isn't contained in the
+schema for @settings. *)
+external get_default_value : t -> string -> Gvariant.t option = "ml_g_settings_get_default_value"
 
 (** Creates a child settings object which has a base path of
 `base-path/@name`, where `base-path` is the base path of

@@ -79,6 +79,49 @@ return Val_unit;
 }
 #endif
 
+#if GLIB_CHECK_VERSION(2,40,0)
+
+CAMLexport CAMLprim value ml_g_settings_schema_key_range_check(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gboolean result = g_settings_schema_key_range_check(GSettingsSchemaKey_val(self), GVariant_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_settings_schema_key_range_check(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SettingsSchemaKey requires GLib >= 2.40");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,40,0)
+
+CAMLexport CAMLprim value ml_g_settings_schema_key_get_value_type(value self)
+{
+CAMLparam1(self);
+
+const GVariantType* result = g_settings_schema_key_get_value_type(GSettingsSchemaKey_val(self));
+CAMLreturn(Val_GVariantType(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_settings_schema_key_get_value_type(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SettingsSchemaKey requires GLib >= 2.40");
+return Val_unit;
+}
+#endif
+
 #if GLIB_CHECK_VERSION(2,34,0)
 
 CAMLexport CAMLprim value ml_g_settings_schema_key_get_summary(value self)
@@ -96,6 +139,27 @@ CAMLexport CAMLprim value ml_g_settings_schema_key_get_summary(value self)
 CAMLparam1(self);
 (void)self;
 caml_failwith("SettingsSchemaKey requires GLib >= 2.34");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,40,0)
+
+CAMLexport CAMLprim value ml_g_settings_schema_key_get_range(value self)
+{
+CAMLparam1(self);
+
+GVariant* result = g_settings_schema_key_get_range(GSettingsSchemaKey_val(self));
+CAMLreturn(Val_GVariant(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_settings_schema_key_get_range(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SettingsSchemaKey requires GLib >= 2.40");
 return Val_unit;
 }
 #endif
@@ -138,6 +202,27 @@ CAMLexport CAMLprim value ml_g_settings_schema_key_get_description(value self)
 CAMLparam1(self);
 (void)self;
 caml_failwith("SettingsSchemaKey requires GLib >= 2.34");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,40,0)
+
+CAMLexport CAMLprim value ml_g_settings_schema_key_get_default_value(value self)
+{
+CAMLparam1(self);
+
+GVariant* result = g_settings_schema_key_get_default_value(GSettingsSchemaKey_val(self));
+CAMLreturn(Val_GVariant(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_settings_schema_key_get_default_value(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SettingsSchemaKey requires GLib >= 2.40");
 return Val_unit;
 }
 #endif

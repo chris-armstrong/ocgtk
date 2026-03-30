@@ -64,9 +64,6 @@ external get_mnemonic_modifiers : t -> Ocgtk_gdk.Gdk.modifiertype = "ml_gtk_shor
 (** Set property: mnemonic-modifiers *)
 external set_mnemonic_modifiers : t -> Ocgtk_gdk.Gdk.modifiertype -> unit = "ml_gtk_shortcut_controller_set_mnemonic_modifiers"
 
-(** Get property: model *)
-external get_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t = "ml_gtk_shortcut_controller_get_model"
-
 (** Get property: n-items *)
 external get_n_items : t -> int = "ml_gtk_shortcut_controller_get_n_items"
 

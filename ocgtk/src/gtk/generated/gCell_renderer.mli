@@ -18,7 +18,6 @@ class type cell_renderer_t = object
     method snapshot : GSnapshot.snapshot_t -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> Ocgtk_gdk.Gdk.Rectangle.rectangle_t -> Ocgtk_gdk.Gdk.Rectangle.rectangle_t -> Gtk_enums.cellrendererstate -> unit
     method start_editing : Ocgtk_gdk.Gdk.Event.event_t option -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> string -> Ocgtk_gdk.Gdk.Rectangle.rectangle_t -> Ocgtk_gdk.Gdk.Rectangle.rectangle_t -> Gtk_enums.cellrendererstate -> GCell_editable.cell_editable_t option
     method stop_editing : bool -> unit
-    method cell_background : string
     method set_cell_background : string -> unit
     method cell_background_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t
     method set_cell_background_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit

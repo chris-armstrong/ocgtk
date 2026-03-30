@@ -124,6 +124,66 @@ return Val_unit;
 }
 #endif
 
+#if GLIB_CHECK_VERSION(2,34,0)
+
+CAMLexport CAMLprim value ml_g_resolver_lookup_records_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = g_resolver_lookup_records_finish(GResolver_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) {
+        Val_GList_with(c_result, result, item, cell, Val_GVariant((gpointer)_tmp->data));
+    g_list_foreach(c_result, (GFunc)g_object_unref, NULL);
+    g_list_free(c_result);
+        CAMLreturn(Res_Ok(result));
+    } else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_resolver_lookup_records_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Resolver requires GLib >= 2.34");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,34,0)
+
+CAMLexport CAMLprim value ml_g_resolver_lookup_records(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+GError *error = NULL;
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = g_resolver_lookup_records(GResolver_val(self), String_val(arg1), GioResolverRecordType_val(arg2), Option_val(arg3, GCancellable_val, NULL), &error);
+if (error == NULL) {
+        Val_GList_with(c_result, result, item, cell, Val_GVariant((gpointer)_tmp->data));
+    g_list_foreach(c_result, (GFunc)g_object_unref, NULL);
+    g_list_free(c_result);
+        CAMLreturn(Res_Ok(result));
+    } else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_resolver_lookup_records(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Resolver requires GLib >= 2.34");
+return Val_unit;
+}
+#endif
+
 #if GLIB_CHECK_VERSION(2,60,0)
 
 CAMLexport CAMLprim value ml_g_resolver_lookup_by_name_with_flags_finish(value self, value arg1)

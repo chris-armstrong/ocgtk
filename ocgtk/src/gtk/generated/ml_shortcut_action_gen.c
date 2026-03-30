@@ -33,3 +33,11 @@ CAMLparam1(self);
 char* result = gtk_shortcut_action_to_string(GtkShortcutAction_val(self));
 CAMLreturn(caml_copy_string(result));
 }
+
+CAMLexport CAMLprim value ml_gtk_shortcut_action_activate(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gboolean result = gtk_shortcut_action_activate(GtkShortcutAction_val(self), GtkShortcutActionFlags_val(arg1), GtkWidget_val(arg2), Option_val(arg3, GVariant_val, NULL));
+CAMLreturn(Val_bool(result));
+}

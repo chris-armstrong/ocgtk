@@ -1481,6 +1481,18 @@ and Widget
   (** Activates the `default.activate` action from @widget. *)
   external activate_default : t -> unit = "ml_gtk_widget_activate_default"
 
+  (** Looks up the action in the action groups associated with
+  @widget and its ancestors, and activates it.
+
+  If the action is in an action group added with
+  [method@Gtk.Widget.insert_action_group], the @name is expected
+  to be prefixed with the prefix that was used when the group was
+  inserted.
+
+  The arguments must match the actions expected parameter type,
+  as returned by `g_action_get_parameter_type()`. *)
+  external activate_action_variant : t -> string -> Gvariant.t option -> bool = "ml_gtk_widget_activate_action_variant"
+
   (** For widgets that can be “activated” (buttons, menu items, etc.),
   this function activates them.
 

@@ -1344,6 +1344,14 @@ gtk_widget_activate_default(GtkWidget_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_widget_activate_action_variant(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gboolean result = gtk_widget_activate_action_variant(GtkWidget_val(self), String_val(arg1), Option_val(arg2, GVariant_val, NULL));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_widget_activate(value self)
 {
 CAMLparam1(self);

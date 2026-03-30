@@ -53,6 +53,11 @@ external set_member : t -> string option -> unit = "ml_g_dbus_message_set_member
 (** Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field. *)
 external set_interface : t -> string option -> unit = "ml_g_dbus_message_set_interface"
 
+(** Sets a header field on @message.
+
+If @value is floating, @message assumes ownership of @value. *)
+external set_header : t -> Gio_enums.dbusmessageheaderfield -> Gvariant.t option -> unit = "ml_g_dbus_message_set_header"
+
 (** Sets the flags to set on @message. *)
 external set_flags : t -> Gio_enums.dbusmessageflags -> unit = "ml_g_dbus_message_set_flags"
 
@@ -64,6 +69,13 @@ external set_destination : t -> string option -> unit = "ml_g_dbus_message_set_d
 
 (** Sets the byte order of @message. *)
 external set_byte_order : t -> Gio_enums.dbusmessagebyteorder -> unit = "ml_g_dbus_message_set_byte_order"
+
+(** Sets the body @message. As a side-effect the
+%G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field is set to the
+type string of @body (or cleared if @body is %NULL).
+
+If @body is floating, @message assumes ownership of @body. *)
+external set_body : t -> Gvariant.t -> unit = "ml_g_dbus_message_set_body"
 
 (** Produces a human-readable multi-line description of @message.
 
@@ -144,6 +156,12 @@ external get_locked : t -> bool = "ml_g_dbus_message_get_locked"
 (** Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field. *)
 external get_interface : t -> string option = "ml_g_dbus_message_get_interface"
 
+(** Gets a header field on @message.
+
+The caller is responsible for checking the type of the returned #GVariant
+matches what is expected. *)
+external get_header : t -> Gio_enums.dbusmessageheaderfield -> Gvariant.t option = "ml_g_dbus_message_get_header"
+
 (** Gets the flags for @message. *)
 external get_flags : t -> Gio_enums.dbusmessageflags = "ml_g_dbus_message_get_flags"
 
@@ -155,6 +173,9 @@ external get_destination : t -> string option = "ml_g_dbus_message_get_destinati
 
 (** Gets the byte order of @message. *)
 external get_byte_order : t -> Gio_enums.dbusmessagebyteorder = "ml_g_dbus_message_get_byte_order"
+
+(** Gets the body of a message. *)
+external get_body : t -> Gvariant.t option = "ml_g_dbus_message_get_body"
 
 (** Convenience to get the first item in the body of @message.
 

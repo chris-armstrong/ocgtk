@@ -24,6 +24,37 @@
 #if GLIB_CHECK_VERSION(2,26,0)
 
 
+#if GLIB_CHECK_VERSION(2,30,0)
+
+CAMLexport CAMLprim value ml_g_dbus_method_invocation_return_value_with_unix_fd_list(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+g_dbus_method_invocation_return_value_with_unix_fd_list(GDBusMethodInvocation_val(self), Option_val(arg1, GVariant_val, NULL), Option_val(arg2, GUnixFDList_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_dbus_method_invocation_return_value_with_unix_fd_list(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("DBusMethodInvocation requires GLib >= 2.30");
+return Val_unit;
+}
+#endif
+
+CAMLexport CAMLprim value ml_g_dbus_method_invocation_return_value(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_dbus_method_invocation_return_value(GDBusMethodInvocation_val(self), Option_val(arg1, GVariant_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_g_dbus_method_invocation_return_dbus_error(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -60,6 +91,14 @@ caml_failwith("DBusMethodInvocation requires GLib >= 2.38");
 return Val_unit;
 }
 #endif
+
+CAMLexport CAMLprim value ml_g_dbus_method_invocation_get_parameters(value self)
+{
+CAMLparam1(self);
+
+GVariant* result = g_dbus_method_invocation_get_parameters(GDBusMethodInvocation_val(self));
+CAMLreturn(Val_GVariant(result));
+}
 
 CAMLexport CAMLprim value ml_g_dbus_method_invocation_get_object_path(value self)
 {
@@ -168,6 +207,15 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_g_dbus_method_invocation_get_parameters(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusMethodInvocation requires GLib >= 2.26");
+return Val_unit;
+}
+
+
 CAMLexport CAMLprim value ml_g_dbus_method_invocation_get_property_info(value self)
 {
 CAMLparam1(self);
@@ -187,6 +235,27 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_g_dbus_method_invocation_return_dbus_error(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("DBusMethodInvocation requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_method_invocation_return_value(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusMethodInvocation requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_method_invocation_return_value_with_unix_fd_list(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
 (void)self;

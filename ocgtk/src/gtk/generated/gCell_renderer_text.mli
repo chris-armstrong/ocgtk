@@ -7,7 +7,6 @@ class type cell_renderer_text_t = object
     method alignment : Ocgtk_pango.Pango.alignment
     method attributes : Ocgtk_pango.Pango.Attr_list.attr_list_t
     method set_attributes : Ocgtk_pango.Pango.Attr_list.attr_list_t -> unit
-    method background : string
     method set_background : string -> unit
     method background_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t
     method set_background_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit
@@ -29,7 +28,6 @@ class type cell_renderer_text_t = object
     method set_font : string -> unit
     method font_desc : Ocgtk_pango.Pango.Font_description.font_description_t
     method set_font_desc : Ocgtk_pango.Pango.Font_description.font_description_t -> unit
-    method foreground : string
     method set_foreground : string -> unit
     method foreground_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t
     method set_foreground_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit
@@ -39,7 +37,6 @@ class type cell_renderer_text_t = object
     method set_language : string -> unit
     method language_set : bool
     method set_language_set : bool -> unit
-    method markup : string
     method set_markup : string -> unit
     method max_width_chars : int
     method set_max_width_chars : int -> unit

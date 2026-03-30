@@ -9,17 +9,22 @@ class type settings_t = object
     method delay : unit -> unit
     method get_boolean : string -> bool
     method get_child : string -> settings_t
+    method get_default_value : string -> Gvariant.t option
     method get_double : string -> float
     method get_enum : string -> int
     method get_flags : string -> int
     method get_has_unapplied : unit -> bool
     method get_int : string -> int
+    method get_range : string -> Gvariant.t
     method get_string : string -> string
     method get_strv : string -> string array
     method get_uint : string -> int
+    method get_user_value : string -> Gvariant.t option
+    method get_value : string -> Gvariant.t
     method is_writable : string -> bool
     method list_children : unit -> string array
     method list_keys : unit -> string array
+    method range_check : string -> Gvariant.t -> bool
     method reset : string -> unit
     method revert : unit -> unit
     method set_boolean : string -> bool -> bool
@@ -30,6 +35,7 @@ class type settings_t = object
     method set_string : string -> string -> bool
     method set_strv : string -> string array option -> bool
     method set_uint : string -> int -> bool
+    method set_value : string -> Gvariant.t -> bool
     method delay_apply : bool
     method path : string
     method schema : string
@@ -70,6 +76,10 @@ class settings (obj : Settings.t) : settings_t = object (self)
     fun name ->
       new  settings(Settings.get_child obj name)
 
+  method get_default_value : string -> Gvariant.t option =
+    fun key ->
+      (Settings.get_default_value obj key)
+
   method get_double : string -> float =
     fun key ->
       (Settings.get_double obj key)
@@ -90,6 +100,10 @@ class settings (obj : Settings.t) : settings_t = object (self)
     fun key ->
       (Settings.get_int obj key)
 
+  method get_range : string -> Gvariant.t =
+    fun key ->
+      (Settings.get_range obj key)
+
   method get_string : string -> string =
     fun key ->
       (Settings.get_string obj key)
@@ -102,6 +116,14 @@ class settings (obj : Settings.t) : settings_t = object (self)
     fun key ->
       (Settings.get_uint obj key)
 
+  method get_user_value : string -> Gvariant.t option =
+    fun key ->
+      (Settings.get_user_value obj key)
+
+  method get_value : string -> Gvariant.t =
+    fun key ->
+      (Settings.get_value obj key)
+
   method is_writable : string -> bool =
     fun name ->
       (Settings.is_writable obj name)
@@ -113,6 +135,10 @@ class settings (obj : Settings.t) : settings_t = object (self)
   method list_keys : unit -> string array =
     fun () ->
       (Settings.list_keys obj)
+
+  method range_check : string -> Gvariant.t -> bool =
+    fun key value ->
+      (Settings.range_check obj key value)
 
   method reset : string -> unit =
     fun key ->
@@ -153,6 +179,10 @@ class settings (obj : Settings.t) : settings_t = object (self)
   method set_uint : string -> int -> bool =
     fun key value ->
       (Settings.set_uint obj key value)
+
+  method set_value : string -> Gvariant.t -> bool =
+    fun key value ->
+      (Settings.set_value obj key value)
 
   method delay_apply = Settings.get_delay_apply obj
 

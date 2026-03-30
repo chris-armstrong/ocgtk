@@ -1,5 +1,8 @@
 class type menu_item_t = object
+    method get_attribute_value : string -> Gvariant_type.t option -> Gvariant.t option
     method get_link : string -> GMenu_link_iter_and__menu_model.menu_model_t option
+    method set_action_and_target_value : string option -> Gvariant.t option -> unit
+    method set_attribute_value : string -> Gvariant.t option -> unit
     method set_detailed_action : string -> unit
     method set_label : string option -> unit
     method set_link : string -> GMenu_link_iter_and__menu_model.menu_model_t option -> unit
@@ -11,9 +14,21 @@ end
 (* High-level class for MenuItem *)
 class menu_item (obj : Menu_item.t) : menu_item_t = object (self)
 
+  method get_attribute_value : string -> Gvariant_type.t option -> Gvariant.t option =
+    fun attribute expected_type ->
+      (Menu_item.get_attribute_value obj attribute expected_type)
+
   method get_link : string -> GMenu_link_iter_and__menu_model.menu_model_t option =
     fun link ->
       Option.map (fun ret -> new GMenu_link_iter_and__menu_model.menu_model ret) (Menu_item.get_link obj link)
+
+  method set_action_and_target_value : string option -> Gvariant.t option -> unit =
+    fun action target_value ->
+      (Menu_item.set_action_and_target_value obj action target_value)
+
+  method set_attribute_value : string -> Gvariant.t option -> unit =
+    fun attribute value ->
+      (Menu_item.set_attribute_value obj attribute value)
 
   method set_detailed_action : string -> unit =
     fun detailed_action ->

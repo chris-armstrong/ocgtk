@@ -36,12 +36,29 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GtkPrintSettings(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+CAMLexport CAMLprim value ml_gtk_print_settings_new_from_gvariant(value arg1)
+{
+CAMLparam1(arg1);
+
+GtkPrintSettings *obj = gtk_print_settings_new_from_gvariant(GVariant_val(arg1));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkPrintSettings(obj));
+}
 CAMLexport CAMLprim value ml_gtk_print_settings_unset(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gtk_print_settings_unset(GtkPrintSettings_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_print_settings_to_gvariant(value self)
+{
+CAMLparam1(self);
+
+GVariant* result = gtk_print_settings_to_gvariant(GtkPrintSettings_val(self));
+CAMLreturn(Val_GVariant(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_print_settings_to_file(value self, value arg1)
