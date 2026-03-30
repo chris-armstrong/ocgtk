@@ -244,6 +244,26 @@ let type_mappings : (string * Types.type_mapping) list =
         c_type = "GSList*";
         is_value_type_record = false;
       } );
+    (* GLib.Variant - Opaque boxed type with reference counting *)
+    ( "GLib.Variant",
+      {
+        ocaml_type = "Gvariant.t";
+        c_to_ml = "Val_GVariant";
+        ml_to_c = "GVariant_val";
+        layer2_class = None;
+        c_type = "GVariant*";
+        is_value_type_record = false;
+      } );
+    (* GLib.VariantType - Immutable type description for GVariant *)
+    ( "GLib.VariantType",
+      {
+        ocaml_type = "Gvariant_type.t";
+        c_to_ml = "Val_GVariantType";
+        ml_to_c = "GVariantType_val";
+        layer2_class = None;
+        c_type = "GVariantType*";
+        is_value_type_record = false;
+      } );
   ]
 
 let normalize_c_pointer_type lookup_str =
