@@ -135,10 +135,26 @@ let handle_button_click ui text () =
 
 (* GDK keysym constants for non-printable keys.
    GDK_KEY_* constants are not yet generated (Milestone 4), hardcode for now. *)
-let gdk_key_return    = 0xff0d
-let gdk_key_kp_enter  = 0xff8d
-let gdk_key_escape    = 0xff1b
-let gdk_key_backspace = 0xff08
+let gdk_key_return     = 0xff0d
+let gdk_key_kp_enter   = 0xff8d
+let gdk_key_escape     = 0xff1b
+let gdk_key_backspace  = 0xff08
+let gdk_key_kp_multiply  = 0xffaa
+let gdk_key_kp_add       = 0xffab
+let gdk_key_kp_subtract  = 0xffad
+let gdk_key_kp_decimal   = 0xffae
+let gdk_key_kp_divide    = 0xffaf
+let gdk_key_kp_0         = 0xffb0
+
+let numpad_char keyval =
+  if keyval >= gdk_key_kp_0 && keyval <= gdk_key_kp_0 + 9 then
+    Some (Char.chr (Char.code '0' + keyval - gdk_key_kp_0))
+  else if keyval = gdk_key_kp_multiply then Some '*'
+  else if keyval = gdk_key_kp_add then Some '+'
+  else if keyval = gdk_key_kp_subtract then Some '-'
+  else if keyval = gdk_key_kp_decimal then Some '.'
+  else if keyval = gdk_key_kp_divide then Some '/'
+  else None
 
 let handle_key ui keyval =
   let open Calc_state in
@@ -158,7 +174,9 @@ let handle_key ui keyval =
     else if keyval = gdk_key_backspace then
       (backspace state, true)
     else
-      (state, false)
+      match numpad_char keyval with
+      | Some c -> (append_char state c, true)
+      | None -> (state, false)
   in
   ui.state := new_state;
   update_display ui ();
@@ -166,10 +184,12 @@ let handle_key ui keyval =
 
 let setup_keyboard ui (window : Window.window_t) =
   let key_controller = Event_controller_key.new_ () in
+  (* Capture phase so we see keys before focused buttons consume Enter/Escape *)
+  key_controller#set_propagation_phase `CAPTURE;
   (* key-pressed has a complex signature (keyval, keycode, modifiers -> bool)
      so it is not auto-generated. Connect manually via Gobject.Signal. *)
   let closure = Gobject.Closure.create (fun argv ->
-    let keyval = Gobject.Value.get_int (Gobject.Closure.nth argv ~pos:1) in
+    let keyval = Gobject.Value.get_uint (Gobject.Closure.nth argv ~pos:1) in
     let handled = handle_key ui keyval in
     Gobject.Value.set_boolean (Gobject.Closure.result argv) handled
   ) in

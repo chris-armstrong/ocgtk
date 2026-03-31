@@ -8,9 +8,10 @@ type t = {
   expression : string;
   result : string;
   error : bool;
+  just_evaluated : bool;
 }
 
-let create () = { expression = ""; result = "0"; error = false }
+let create () = { expression = ""; result = "0"; error = false; just_evaluated = false }
 
 (** Check if a character is an operator. *)
 let is_operator = function '+' | '-' | '*' | '/' -> true | _ -> false
@@ -64,6 +65,15 @@ let validate_append t c =
     | _ -> None
 
 let append_char t c =
+  (* After evaluate: digits/decimal/parens start fresh, operators chain *)
+  let t =
+    if t.just_evaluated then
+      if is_operator c then
+        { t with just_evaluated = false }
+      else
+        { t with expression = ""; just_evaluated = false }
+    else t
+  in
   match validate_append t c with
   | Some _error ->
       (* If invalid, return state unchanged. *)
@@ -115,8 +125,8 @@ let evaluate t =
             | Error _ -> "Error"
           in
           let error = String.equal result_str "Error" in
-          if error then { t with result = result_str; error }
-          else { expression = result_str; result = result_str; error }
+          if error then { t with result = result_str; error; just_evaluated = false }
+          else { expression = result_str; result = result_str; error; just_evaluated = true }
 
 let get_expression t = t.expression
 
