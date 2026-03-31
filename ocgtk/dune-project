@@ -25,14 +25,19 @@
   (dune
    (>= 3.13))
   conf-gtk4
-  xmlm
-  fmt
-  logs
-  containers
-  re
-  sexplib
-  ppx_sexp_conv
-  ppx_deriving
-  cmdliner
-  ppxlib
-  (alcotest :with-test)))
+  (integers (>= 0.7.0))
+  (containers :build)
+  (camlp5 :build)
+  (camlp-streams :build)
+  (xmlm :build)
+  (re :build)
+  (uutf :build)
+  (uuseg :build)
+  (fmt :build)
+  (fpath :build)
+  (yojson :build)
+  (alcotest :with-test)
+  (ppxlib :with-test)
+  (sexplib :build)
+  (ppx_sexp_conv :build)
+  (ppx_deriving :build)))
