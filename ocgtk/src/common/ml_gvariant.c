@@ -315,9 +315,10 @@ CAMLprim value ml_g_variant_new_variant(value variant_val) {
 
 CAMLprim value ml_g_variant_get_variant(value variant_val) {
     CAMLparam1(variant_val);
+    CAMLlocal1(result);
     GVariant *v = GVariant_val(variant_val);
     GVariant *child = g_variant_get_variant(v);
-    value result = Val_GVariant(child);
+    result = Val_GVariant(child);
     g_variant_unref(child);
     CAMLreturn(result);
 }
@@ -501,6 +502,206 @@ CAMLprim value ml_g_variant_lookup_boolean(value variant, value key) {
     CAMLreturn(result);
 }
 
+CAMLprim value ml_g_variant_lookup_byte(value variant, value key) {
+    CAMLparam2(variant, key);
+    CAMLlocal2(result, byte_val);
+    
+    GVariant *v = GVariant_val(variant);
+    GVariant *child = g_variant_lookup_value(v, String_val(key), G_VARIANT_TYPE_BYTE);
+    
+    if (child == NULL) {
+        CAMLreturn(Val_none);
+    }
+    
+    guchar val = g_variant_get_byte(child);
+    byte_val = Val_int(val);
+    result = caml_alloc(1, 0); /* Some */
+    Store_field(result, 0, byte_val);
+    g_variant_unref(child);
+    
+    CAMLreturn(result);
+}
+
+CAMLprim value ml_g_variant_lookup_int16(value variant, value key) {
+    CAMLparam2(variant, key);
+    CAMLlocal2(result, int_val);
+    
+    GVariant *v = GVariant_val(variant);
+    GVariant *child = g_variant_lookup_value(v, String_val(key), G_VARIANT_TYPE_INT16);
+    
+    if (child == NULL) {
+        CAMLreturn(Val_none);
+    }
+    
+    gint16 val = g_variant_get_int16(child);
+    int_val = Val_int(val);
+    result = caml_alloc(1, 0); /* Some */
+    Store_field(result, 0, int_val);
+    g_variant_unref(child);
+    
+    CAMLreturn(result);
+}
+
+CAMLprim value ml_g_variant_lookup_uint16(value variant, value key) {
+    CAMLparam2(variant, key);
+    CAMLlocal2(result, int_val);
+    
+    GVariant *v = GVariant_val(variant);
+    GVariant *child = g_variant_lookup_value(v, String_val(key), G_VARIANT_TYPE_UINT16);
+    
+    if (child == NULL) {
+        CAMLreturn(Val_none);
+    }
+    
+    guint16 val = g_variant_get_uint16(child);
+    int_val = Val_int(val);
+    result = caml_alloc(1, 0); /* Some */
+    Store_field(result, 0, int_val);
+    g_variant_unref(child);
+    
+    CAMLreturn(result);
+}
+
+CAMLprim value ml_g_variant_lookup_uint32(value variant, value key) {
+    CAMLparam2(variant, key);
+    CAMLlocal2(result, int_val);
+    
+    GVariant *v = GVariant_val(variant);
+    GVariant *child = g_variant_lookup_value(v, String_val(key), G_VARIANT_TYPE_UINT32);
+    
+    if (child == NULL) {
+        CAMLreturn(Val_none);
+    }
+    
+    guint32 val = g_variant_get_uint32(child);
+    int_val = caml_copy_int32((int32_t)val);
+    result = caml_alloc(1, 0); /* Some */
+    Store_field(result, 0, int_val);
+    g_variant_unref(child);
+    
+    CAMLreturn(result);
+}
+
+CAMLprim value ml_g_variant_lookup_int64(value variant, value key) {
+    CAMLparam2(variant, key);
+    CAMLlocal2(result, int_val);
+    
+    GVariant *v = GVariant_val(variant);
+    GVariant *child = g_variant_lookup_value(v, String_val(key), G_VARIANT_TYPE_INT64);
+    
+    if (child == NULL) {
+        CAMLreturn(Val_none);
+    }
+    
+    gint64 val = g_variant_get_int64(child);
+    int_val = caml_copy_int64(val);
+    result = caml_alloc(1, 0); /* Some */
+    Store_field(result, 0, int_val);
+    g_variant_unref(child);
+    
+    CAMLreturn(result);
+}
+
+CAMLprim value ml_g_variant_lookup_uint64(value variant, value key) {
+    CAMLparam2(variant, key);
+    CAMLlocal2(result, int_val);
+    
+    GVariant *v = GVariant_val(variant);
+    GVariant *child = g_variant_lookup_value(v, String_val(key), G_VARIANT_TYPE_UINT64);
+    
+    if (child == NULL) {
+        CAMLreturn(Val_none);
+    }
+    
+    guint64 val = g_variant_get_uint64(child);
+    int_val = caml_copy_int64((int64_t)val);
+    result = caml_alloc(1, 0); /* Some */
+    Store_field(result, 0, int_val);
+    g_variant_unref(child);
+    
+    CAMLreturn(result);
+}
+
+CAMLprim value ml_g_variant_lookup_double(value variant, value key) {
+    CAMLparam2(variant, key);
+    CAMLlocal2(result, dbl_val);
+    
+    GVariant *v = GVariant_val(variant);
+    GVariant *child = g_variant_lookup_value(v, String_val(key), G_VARIANT_TYPE_DOUBLE);
+    
+    if (child == NULL) {
+        CAMLreturn(Val_none);
+    }
+    
+    gdouble val = g_variant_get_double(child);
+    dbl_val = caml_copy_double(val);
+    result = caml_alloc(1, 0); /* Some */
+    Store_field(result, 0, dbl_val);
+    g_variant_unref(child);
+    
+    CAMLreturn(result);
+}
+
+CAMLprim value ml_g_variant_lookup_object_path(value variant, value key) {
+    CAMLparam2(variant, key);
+    CAMLlocal2(result, str_val);
+    
+    GVariant *v = GVariant_val(variant);
+    GVariant *child = g_variant_lookup_value(v, String_val(key), G_VARIANT_TYPE_OBJECT_PATH);
+    
+    if (child == NULL) {
+        CAMLreturn(Val_none);
+    }
+    
+    const gchar *str = g_variant_get_string(child, NULL);
+    str_val = caml_copy_string(str);
+    result = caml_alloc(1, 0); /* Some */
+    Store_field(result, 0, str_val);
+    g_variant_unref(child);
+    
+    CAMLreturn(result);
+}
+
+CAMLprim value ml_g_variant_lookup_signature(value variant, value key) {
+    CAMLparam2(variant, key);
+    CAMLlocal2(result, str_val);
+    
+    GVariant *v = GVariant_val(variant);
+    GVariant *child = g_variant_lookup_value(v, String_val(key), G_VARIANT_TYPE_SIGNATURE);
+    
+    if (child == NULL) {
+        CAMLreturn(Val_none);
+    }
+    
+    const gchar *str = g_variant_get_string(child, NULL);
+    str_val = caml_copy_string(str);
+    result = caml_alloc(1, 0); /* Some */
+    Store_field(result, 0, str_val);
+    g_variant_unref(child);
+    
+    CAMLreturn(result);
+}
+
+CAMLprim value ml_g_variant_lookup_handle(value variant, value key) {
+    CAMLparam2(variant, key);
+    CAMLlocal2(result, handle_val);
+    
+    GVariant *v = GVariant_val(variant);
+    GVariant *child = g_variant_lookup_value(v, String_val(key), G_VARIANT_TYPE_HANDLE);
+    
+    if (child == NULL) {
+        CAMLreturn(Val_none);
+    }
+    
+    gint32 val = g_variant_get_handle(child);
+    handle_val = Val_int(val);
+    result = caml_alloc(1, 0); /* Some */
+    Store_field(result, 0, handle_val);
+    g_variant_unref(child);
+    
+    CAMLreturn(result);
+}
+
 /* ==================================================================== */
 /* Child Access                                                         */
 /* ==================================================================== */
@@ -513,12 +714,13 @@ CAMLprim value ml_g_variant_n_children(value variant) {
 
 CAMLprim value ml_g_variant_get_child_value(value variant, value index) {
     CAMLparam2(variant, index);
+    CAMLlocal1(result);
     GVariant *v = GVariant_val(variant);
     GVariant *child = g_variant_get_child_value(v, Int_val(index));
     if (child == NULL) {
         caml_failwith("ml_g_variant_get_child_value: invalid index");
     }
-    value result = Val_GVariant(child);
+    result = Val_GVariant(child);
     g_variant_unref(child);
     CAMLreturn(result);
 }

@@ -100,3 +100,33 @@ external variant : unit -> t = "ml_g_variant_type_variant"
 (** The variant type "v" *)
 
 let variant = variant ()
+
+external byte : unit -> t = "ml_g_variant_type_byte"
+(** The byte type "y" *)
+
+let byte = byte ()
+
+external int16 : unit -> t = "ml_g_variant_type_int16"
+(** The int16 type "n" *)
+
+let int16 = int16 ()
+
+external uint16 : unit -> t = "ml_g_variant_type_uint16"
+(** The uint16 type "q" *)
+
+let uint16 = uint16 ()
+
+external uint32 : unit -> t = "ml_g_variant_type_uint32"
+(** The uint32 type "u" *)
+
+let uint32 = uint32 ()
+
+external uint64 : unit -> t = "ml_g_variant_type_uint64"
+(** The uint64 type "t" *)
+
+let uint64 = uint64 ()
+
+external handle : unit -> t = "ml_g_variant_type_handle"
+(** The handle type "h" *)
+
+let handle = handle ()

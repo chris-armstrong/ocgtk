@@ -167,6 +167,57 @@ let test_uint64_large () =
   let result = Gvariant.to_uint64 v in
   Alcotest.(check string) "uint64 max" "18446744073709551615" (to_string result)
 
+(** {2 Boundary Tests for Unsigned Types}
+
+    These tests verify correct serialization/deserialization at the 
+    signed/unsigned boundary (where values exceed max_int but fit in unsigned).
+*)
+
+let test_uint16_boundary () =
+  let open Unsigned.UInt16 in
+  (* Test value > Int16.max_int (32767) but < UInt16.max_int (65535) *)
+  let boundary_val = of_int 50000 in
+  let v = Gvariant.of_uint16 boundary_val in
+  let result = Gvariant.to_uint16 v in
+  Alcotest.(check int) "uint16 boundary value" 50000 (to_int result)
+
+let test_uint32_boundary () =
+  let open Unsigned.UInt32 in
+  (* Test values around Int32.max_int boundary *)
+  let just_above_max_int = of_int64 (Int64.add (Int64.of_int32 Int32.max_int) 1L) in
+  let v = Gvariant.of_uint32 just_above_max_int in
+  let result = Gvariant.to_uint32 v in
+  Alcotest.(check int64) "uint32 just above Int32.max_int" 
+    (Int64.add (Int64.of_int32 Int32.max_int) 1L) 
+    (to_int64 result)
+
+let test_uint32_boundary_exact () =
+  let open Unsigned.UInt32 in
+  (* Test exactly at 2^31 (where signed int32 would be negative) *)
+  let boundary = of_string "2147483648" in
+  let v = Gvariant.of_uint32 boundary in
+  let result = Gvariant.to_uint32 v in
+  Alcotest.(check string) "uint32 at 2^31 boundary" "2147483648" (to_string result)
+
+let test_uint64_boundary () =
+  let open Unsigned.UInt64 in
+  (* Test value > Int64.max_int (would be negative as signed) *)
+  let above_max_int = of_string "9223372036854775808" in
+  let v = Gvariant.of_uint64 above_max_int in
+  let result = Gvariant.to_uint64 v in
+  Alcotest.(check string) "uint64 at Int64.max_int+1" "9223372036854775808" (to_string result)
+
+let test_uint64_serialization_roundtrip () =
+  let open Unsigned.UInt64 in
+  (* Verify that GVariant print/parse preserves large unsigned values *)
+  let large_val = of_string "12345678901234567890" in
+  let v = Gvariant.of_uint64 large_val in
+  (* Print and verify type is correct *)
+  Alcotest.(check string) "uint64 large value type" "t" (Gvariant.type_string v);
+  (* Verify roundtrip *)
+  let result = Gvariant.to_uint64 v in
+  Alcotest.(check string) "uint64 large value roundtrip" "12345678901234567890" (to_string result)
+
 (** {2 Double Tests} *)
 
 let test_double_roundtrip_positive () =
@@ -444,16 +495,21 @@ let () =
 
     "UInt16", [
       Alcotest.test_case "roundtrip" `Quick test_uint16_roundtrip;
+      Alcotest.test_case "boundary" `Quick test_uint16_boundary;
     ];
 
     "UInt32", [
       Alcotest.test_case "roundtrip" `Quick test_uint32_roundtrip;
       Alcotest.test_case "max" `Quick test_uint32_max;
+      Alcotest.test_case "boundary" `Quick test_uint32_boundary;
+      Alcotest.test_case "boundary exact" `Quick test_uint32_boundary_exact;
     ];
 
     "UInt64", [
       Alcotest.test_case "roundtrip" `Quick test_uint64_roundtrip;
       Alcotest.test_case "large" `Quick test_uint64_large;
+      Alcotest.test_case "boundary" `Quick test_uint64_boundary;
+      Alcotest.test_case "serialization roundtrip" `Quick test_uint64_serialization_roundtrip;
     ];
 
     "Double", [

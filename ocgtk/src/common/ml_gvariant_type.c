@@ -82,8 +82,9 @@ CAMLprim value ml_g_variant_type_new(value type_str) {
         caml_failwith("ml_g_variant_type_new: invalid type string");
     }
     
+    CAMLlocal1(result);
     GVariantType *type = g_variant_type_new(str);
-    value result = Val_GVariantType(type);
+    result = Val_GVariantType(type);
     g_variant_type_free(type);
     CAMLreturn(result);
 }
@@ -198,4 +199,40 @@ CAMLprim value ml_g_variant_type_variant(value unit) {
     CAMLparam1(unit);
     (void)unit;
     CAMLreturn(Val_GVariantType(G_VARIANT_TYPE_VARIANT));
+}
+
+CAMLprim value ml_g_variant_type_byte(value unit) {
+    CAMLparam1(unit);
+    (void)unit;
+    CAMLreturn(Val_GVariantType(G_VARIANT_TYPE_BYTE));
+}
+
+CAMLprim value ml_g_variant_type_int16(value unit) {
+    CAMLparam1(unit);
+    (void)unit;
+    CAMLreturn(Val_GVariantType(G_VARIANT_TYPE_INT16));
+}
+
+CAMLprim value ml_g_variant_type_uint16(value unit) {
+    CAMLparam1(unit);
+    (void)unit;
+    CAMLreturn(Val_GVariantType(G_VARIANT_TYPE_UINT16));
+}
+
+CAMLprim value ml_g_variant_type_uint32(value unit) {
+    CAMLparam1(unit);
+    (void)unit;
+    CAMLreturn(Val_GVariantType(G_VARIANT_TYPE_UINT32));
+}
+
+CAMLprim value ml_g_variant_type_uint64(value unit) {
+    CAMLparam1(unit);
+    (void)unit;
+    CAMLreturn(Val_GVariantType(G_VARIANT_TYPE_UINT64));
+}
+
+CAMLprim value ml_g_variant_type_handle(value unit) {
+    CAMLparam1(unit);
+    (void)unit;
+    CAMLreturn(Val_GVariantType(G_VARIANT_TYPE_HANDLE));
 }
