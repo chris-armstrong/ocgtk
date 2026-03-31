@@ -16,6 +16,7 @@ This directory contains coding guidelines for the ocgtk project, organized by co
 | [code-reuse.md](./code-reuse.md) | Record updates, deduplication, labelled args |
 | [test-patterns.md](./test-patterns.md) | AST-based validation, test helpers |
 | [abstractions.md](./abstractions.md) | Module design, parameter reduction, functors |
+| [atspi-e2e-testing.md](./atspi-e2e-testing.md) | AT-SPI E2E test structure, best practices |
 
 ## Usage
 
