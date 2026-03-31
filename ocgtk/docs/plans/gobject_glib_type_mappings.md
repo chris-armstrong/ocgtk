@@ -67,8 +67,6 @@ The caller uses `Gobject.try_cast` to downcast from the generic object. No layer
 - `c_stub_helpers.ml:build_return_statement` wraps results in `Res_Ok`/`Res_Error(Val_GError(error))`
 - `layer1_method.ml` wraps the OCaml return type in `('a, GError.t) result` when `throws=true`
 
-**What's remaining:** Constructors that throw are currently **skipped** by `filtering.ml:223`: `ctor.ctor_introspectable && (not ctor.throws)`. This drops 53 constructors across all namespaces:
-
 | Namespace  | Throwing Constructors Skipped |
 |------------|------------------------------|
 | Gio        | 30                           |
@@ -371,10 +369,6 @@ Add remaining types as specific API usage demands:
 - Callback types — manually wrap specific ones as use cases arise
 - `GObject.ParamSpec` — for property introspection
 - `GLib.MainContext`, `GLib.VariantDict` — for advanced use cases
-
-### Separate Track: Throwing Constructors
-
-Not gated on type mappings. Remove the `not ctor.throws` filter in `filtering.ml:223` and add `Res_Ok`/`Res_Error` result wrapping to `c_stub_constructor.ml`, following the existing pattern in `c_stub_method.ml` and `c_stub_helpers.ml`. This unlocks 53 constructors (30 Gio, 15 GdkPixbuf, 5 Gtk, 3 Gdk) including important ones like `gdk_texture_new_from_file` and `gdk_pixbuf_new_from_file`.
 
 ## Generator Changes Required
 
