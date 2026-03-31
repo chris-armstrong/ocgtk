@@ -218,24 +218,24 @@ CAMLexport CAMLprim value ml_gtk_file_chooser_add_choice(value self, value arg1,
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
     int arg3_length = 0;
-    char** c_arg3 = NULL;
+    const char** c_arg3 = NULL;
     
     if (Is_some(arg3)) {
         value array = Some_val(arg3);
         arg3_length = Wosize_val(array);
-        c_arg3 = (char**)g_malloc(sizeof(char*) * (arg3_length + 1));
+        c_arg3 = (const char**)g_malloc(sizeof(const char*) * (arg3_length + 1));
         for (int i = 0; i < arg3_length; i++) {
           c_arg3[i] = String_val(Field(array, i));
         }
         c_arg3[arg3_length] = NULL;
     }
     int arg4_length = 0;
-    char** c_arg4 = NULL;
+    const char** c_arg4 = NULL;
     
     if (Is_some(arg4)) {
         value array = Some_val(arg4);
         arg4_length = Wosize_val(array);
-        c_arg4 = (char**)g_malloc(sizeof(char*) * (arg4_length + 1));
+        c_arg4 = (const char**)g_malloc(sizeof(const char*) * (arg4_length + 1));
         for (int i = 0; i < arg4_length; i++) {
           c_arg4[i] = String_val(Field(array, i));
         }

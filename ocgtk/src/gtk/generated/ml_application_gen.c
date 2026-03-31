@@ -46,7 +46,7 @@ CAMLexport CAMLprim value ml_gtk_application_set_accels_for_action(value self, v
 {
 CAMLparam3(self, arg1, arg2);
     int arg2_length = Wosize_val(arg2);
-    char** c_arg2 = (char**)g_malloc(sizeof(char*) * (arg2_length + 1));
+    const char** c_arg2 = (const char**)g_malloc(sizeof(const char*) * (arg2_length + 1));
     for (int i = 0; i < arg2_length; i++) {
       c_arg2[i] = String_val(Field(arg2, i));
     }

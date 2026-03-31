@@ -38,12 +38,12 @@ CAMLexport CAMLprim value ml_gtk_icon_theme_set_search_path(value self, value ar
 {
 CAMLparam2(self, arg1);
     int arg1_length = 0;
-    char** c_arg1 = NULL;
+    const char** c_arg1 = NULL;
     
     if (Is_some(arg1)) {
         value array = Some_val(arg1);
         arg1_length = Wosize_val(array);
-        c_arg1 = (char**)g_malloc(sizeof(char*) * (arg1_length + 1));
+        c_arg1 = (const char**)g_malloc(sizeof(const char*) * (arg1_length + 1));
         for (int i = 0; i < arg1_length; i++) {
           c_arg1[i] = String_val(Field(array, i));
         }
@@ -59,12 +59,12 @@ CAMLexport CAMLprim value ml_gtk_icon_theme_set_resource_path(value self, value 
 {
 CAMLparam2(self, arg1);
     int arg1_length = 0;
-    char** c_arg1 = NULL;
+    const char** c_arg1 = NULL;
     
     if (Is_some(arg1)) {
         value array = Some_val(arg1);
         arg1_length = Wosize_val(array);
-        c_arg1 = (char**)g_malloc(sizeof(char*) * (arg1_length + 1));
+        c_arg1 = (const char**)g_malloc(sizeof(const char*) * (arg1_length + 1));
         for (int i = 0; i < arg1_length; i++) {
           c_arg1[i] = String_val(Field(array, i));
         }
@@ -81,12 +81,12 @@ CAMLexport CAMLprim value ml_gtk_icon_theme_lookup_icon_native(value self, value
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam2(arg5, arg6);
     int arg2_length = 0;
-    char** c_arg2 = NULL;
+    const char** c_arg2 = NULL;
     
     if (Is_some(arg2)) {
         value array = Some_val(arg2);
         arg2_length = Wosize_val(array);
-        c_arg2 = (char**)g_malloc(sizeof(char*) * (arg2_length + 1));
+        c_arg2 = (const char**)g_malloc(sizeof(const char*) * (arg2_length + 1));
         for (int i = 0; i < arg2_length; i++) {
           c_arg2[i] = String_val(Field(array, i));
         }

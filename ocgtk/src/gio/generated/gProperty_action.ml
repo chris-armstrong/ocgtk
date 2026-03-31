@@ -24,5 +24,6 @@ class property_action (obj : Property_action.t) : property_action_t = object (se
 end
 
 let new_ (name : string) (object_ : [`object_] Gobject.obj) (property_name : string) : property_action_t =
-  new property_action (Property_action.new_ name object_ property_name)
+  let obj_ = Property_action.new_ name object_ property_name in
+  new property_action obj_
 
