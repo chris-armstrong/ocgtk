@@ -387,12 +387,6 @@ Work these in priority order, intersection testing after each:
 - Helper macros added to `wrappers.h`: `Val_GVariant`, `GVariant_val`, `Val_GVariantType`, `GVariantType_val`
 - Uses `integers` library for proper unsigned integer support (UInt16, UInt32, UInt64)
 
-**Implementation details:**
-- Reference counting via `g_variant_ref/unref` for GVariant
-- Copy/free via `g_variant_type_copy/free` for GVariantType
-- Type mappings added to `type_mappings.ml` for `GLib.Variant` → `Gvariant.t` and `GLib.VariantType` → `Gvariant_type.t`
-- Helper macros added to `wrappers.h`: `Val_GVariant`, `GVariant_val`, `Val_GVariantType`, `GVariantType_val`
-
 **Issues discovered during implementation:**
 
 1. **GVariant text format parsing is strict and poorly documented**
@@ -430,20 +424,28 @@ Bindings successfully regenerated with GLib.Variant type mappings. Fixed parser 
 - GVariantType Tests: **19/19 passing**
 - Total: **74 tests** covering all implemented types
 
-##### 3.1.R4: Add GVariantType tests
-Create `tests/test_gvariant_type.ml` testing:
-- Type constant constructors (boolean, int32, string, etc.)
-- `of_string` / `to_string` roundtrip
-- Predicate functions (is_basic, is_container, is_array, etc.)
+##### 3.1.R4: ✅ COMPLETED - GVariantType test module
+Created `tests/test_gvariant_type.ml` with 19 tests covering:
+- Type constant constructors (boolean, int32, string, object_path, signature, variant, unit, int64, double)
+- `of_string` / `to_string` roundtrip for basic, array, dict, and tuple types
+- Predicate functions (is_basic, is_container, is_array, is_tuple, is_dict_entry, is_variant)
 
 **Acceptance Criteria:**
-- [ ] External C test documents valid GVariant text format syntax
-- [ ] test_gvariant.ml dictionary tests pass with correct syntax
-- [ ] Bindings regenerate successfully with type mappings
-- [ ] At least 50 methods using GLib.Variant are verified unlocked (intersection testing)
-- [ ] GVariantType test module with 10+ tests
+- [x] External C test documents valid GVariant text format syntax
+- [x] test_gvariant.ml dictionary tests pass with correct syntax
+- [x] Bindings regenerate successfully with type mappings
+- [ ] At least 50 methods using GLib.Variant are verified unlocked (intersection testing) — **TODO**
+- [x] GVariantType test module with 10+ tests (19 tests)
 
-#### Task 3.2: GLib.Bytes (291 hits)
+**Post-review fixes applied (code review 2026-03-30):**
+- Added `.mli` files for `gvariant.ml` and `gvariant_type.ml`
+- Replaced `g_variant_type_peek_string` with `g_variant_type_dup_string` in `ml_gvariant_type_get_string`
+- Added `g_new()` NULL checks in `ml_g_variant_new_strv` and `ml_g_variant_new_objv`
+- Removed duplicate `GVariant_val`/`GVariantType_val` macro definitions from `.c` files
+- Replaced stub parse tests with real tests
+
+**Known remaining issue:**
+- `value result` declared without `CAMLlocal1` in `ml_g_variant_get_variant`, `ml_g_variant_get_child_value`, and `ml_g_variant_type_new`. Currently safe (no GC between allocation and return) but violates OCaml FFI convention.
 
 #### Task 3.2: GLib.Bytes (291 hits)
 
