@@ -26,6 +26,16 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GtkPageSetup(obj));
 }
+CAMLexport CAMLprim value ml_gtk_page_setup_new_from_file(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GtkPageSetup *obj = gtk_page_setup_new_from_file(String_val(arg1), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GtkPageSetup(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 CAMLexport CAMLprim value ml_gtk_page_setup_to_file(value self, value arg1)
 {
 CAMLparam2(self, arg1);

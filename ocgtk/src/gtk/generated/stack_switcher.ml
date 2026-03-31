@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* StackSwitcher: StackSwitcher *)
 
-type t = [`stack_switcher | `widget | `initially_unowned] Gobject.obj
+type t = [`stack_switcher | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new StackSwitcher *)
 external new_ : unit -> t = "ml_gtk_stack_switcher_new"

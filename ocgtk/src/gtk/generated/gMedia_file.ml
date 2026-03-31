@@ -52,15 +52,19 @@ let new_ () : media_file_t =
 
 let new_for_file (file : Ocgtk_gio.Gio.File.file_t) : media_file_t =
   let file = file#as_file in
-  new media_file (Media_file.new_for_file file)
+  let obj_ = Media_file.new_for_file file in
+  new media_file obj_
 
 let new_for_filename (filename : string) : media_file_t =
-  new media_file (Media_file.new_for_filename filename)
+  let obj_ = Media_file.new_for_filename filename in
+  new media_file obj_
 
 let new_for_input_stream (stream : Ocgtk_gio.Gio.Input_stream.input_stream_t) : media_file_t =
   let stream = stream#as_input_stream in
-  new media_file (Media_file.new_for_input_stream stream)
+  let obj_ = Media_file.new_for_input_stream stream in
+  new media_file obj_
 
 let new_for_resource (resource_path : string) : media_file_t =
-  new media_file (Media_file.new_for_resource resource_path)
+  let obj_ = Media_file.new_for_resource resource_path in
+  new media_file obj_
 

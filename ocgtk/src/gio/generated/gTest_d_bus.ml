@@ -39,5 +39,6 @@ class test_d_bus (obj : Test_d_bus.t) : test_d_bus_t = object (self)
 end
 
 let new_ (flags : Gio_enums.testdbusflags) : test_d_bus_t =
-  new test_d_bus (Test_d_bus.new_ flags)
+  let obj_ = Test_d_bus.new_ flags in
+  new test_d_bus obj_
 

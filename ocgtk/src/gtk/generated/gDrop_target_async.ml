@@ -43,5 +43,6 @@ end
 
 let new_ (formats : Ocgtk_gdk.Gdk.Content_formats.content_formats_t option) (actions : Ocgtk_gdk.Gdk.dragaction) : drop_target_async_t =
   let formats = Option.map (fun c -> c#as_content_formats) formats in
-  new drop_target_async (Drop_target_async.new_ formats actions)
+  let obj_ = Drop_target_async.new_ formats actions in
+  new drop_target_async obj_
 

@@ -9,3 +9,4 @@ end
 
 class charset_converter : Charset_converter.t -> charset_converter_t
 
+val new_ : string -> string -> (charset_converter_t, GError.t) result

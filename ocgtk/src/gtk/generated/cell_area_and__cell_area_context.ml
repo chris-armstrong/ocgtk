@@ -2,7 +2,7 @@
 (* Combined modules for cyclic dependencies *)
 
 module rec Cell_area : sig
-  type t = [`cell_area | `initially_unowned] Gobject.obj
+  type t = [`cell_area | `initially_unowned | `object_] Gobject.obj
 
   (* Methods *)
   (** Explicitly stops the editing of the currently edited cell.
@@ -110,6 +110,9 @@ module rec Cell_area : sig
   consult gtk_cell_area_context_get_preferred_height() after a series of
   requests. *)
   external get_preferred_height : t -> Cell_area_context.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int * int = "ml_gtk_cell_area_get_preferred_height"
+
+  (** Gets the focus sibling cell renderers for @renderer. *)
+  external get_focus_siblings : t -> Cell_renderer.t -> Cell_renderer.t list = "ml_gtk_cell_area_get_focus_siblings"
 
   (** Gets the `GtkCellRenderer` which is expected to be focusable
   for which @renderer is, or may be a sibling.
@@ -222,7 +225,7 @@ module rec Cell_area : sig
 
 
 end = struct
-  type t = [`cell_area | `initially_unowned] Gobject.obj
+  type t = [`cell_area | `initially_unowned | `object_] Gobject.obj
 
   (* Methods *)
   (** Explicitly stops the editing of the currently edited cell.
@@ -330,6 +333,9 @@ end = struct
   consult gtk_cell_area_context_get_preferred_height() after a series of
   requests. *)
   external get_preferred_height : t -> Cell_area_context.t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> int * int = "ml_gtk_cell_area_get_preferred_height"
+
+  (** Gets the focus sibling cell renderers for @renderer. *)
+  external get_focus_siblings : t -> Cell_renderer.t -> Cell_renderer.t list = "ml_gtk_cell_area_get_focus_siblings"
 
   (** Gets the `GtkCellRenderer` which is expected to be focusable
   for which @renderer is, or may be a sibling.

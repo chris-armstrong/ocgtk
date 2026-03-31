@@ -11,9 +11,12 @@ let build_constructor_signature ~ctx ~class_name ctor =
       ~f:(Layer1_helpers.map_constructor_param ~ctx ~class_name)
       ctor.ctor_parameters
   in
+  let return_type =
+    match ctor.throws with true -> "(t, GError.t) result" | false -> "t"
+  in
   (* Generate signature: param1 -> param2 -> ... -> t *)
-  if List.length param_types = 0 then "unit -> t"
-  else String.concat ~sep:" -> " (param_types @ [ "t" ])
+  if List.length param_types = 0 then Fmt.str "unit -> %s" return_type
+  else String.concat ~sep:" -> " (param_types @ [ return_type ])
 
 (** Format constructor external declaration with bytecode/native support *)
 let format_constructor_external ~ocaml_ctor_name ~signature ~ml_name ctor =
@@ -26,9 +29,9 @@ let format_constructor_external ~ocaml_ctor_name ~signature ~ml_name ctor =
       ocaml_ctor_name signature ml_name ml_name
   else sprintf "external %s : %s = \"%s\"\n\n" ocaml_ctor_name signature ml_name
 
-(** Check if a constructor should be generated in the interface.
-    Delegates to the shared [Filtering.should_generate_constructor] so that
-    layer 0 (C stubs) and layer 1 (OCaml externals) agree on what is emitted. *)
+(** Check if a constructor should be generated in the interface. Delegates to
+    the shared [Filtering.should_generate_constructor] so that layer 0 (C stubs)
+    and layer 1 (OCaml externals) agree on what is emitted. *)
 let should_generate_constructor ~ctx (ctor : gir_constructor) =
   Filtering.should_generate_constructor ~ctx ctor
 

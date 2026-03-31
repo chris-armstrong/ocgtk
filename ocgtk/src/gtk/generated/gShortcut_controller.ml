@@ -58,5 +58,6 @@ let new_ () : shortcut_controller_t =
 
 let new_for_model (model : Ocgtk_gio.Gio.List_model.list_model_t) : shortcut_controller_t =
   let model = model#as_list_model in
-  new shortcut_controller (Shortcut_controller.new_for_model model)
+  let obj_ = Shortcut_controller.new_for_model model in
+  new shortcut_controller obj_
 

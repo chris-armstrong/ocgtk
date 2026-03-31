@@ -43,5 +43,6 @@ class shortcut_trigger (obj : Shortcut_trigger.t) : shortcut_trigger_t = object 
 end
 
 let parse_string (string : string) : shortcut_trigger_t =
-  new shortcut_trigger (Shortcut_trigger.parse_string string)
+  let obj_ = Shortcut_trigger.parse_string string in
+  new shortcut_trigger obj_
 

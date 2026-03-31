@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Viewport: Viewport *)
 
-type t = [`viewport | `widget | `initially_unowned] Gobject.obj
+type t = [`viewport | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new Viewport *)
 external new_ : Adjustment.t option -> Adjustment.t option -> t = "ml_gtk_viewport_new"

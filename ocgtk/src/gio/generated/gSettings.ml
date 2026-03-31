@@ -3,6 +3,8 @@
 class type settings_t = object
     inherit Gsettings_signals.settings_signals
     method apply : unit -> unit
+    method bind : string -> [`object_] Gobject.obj -> string -> Gio_enums.settingsbindflags -> unit
+    method bind_writable : string -> [`object_] Gobject.obj -> string -> bool -> unit
     method create_action : string -> GAction.action_t
     method delay : unit -> unit
     method get_boolean : string -> bool
@@ -44,6 +46,14 @@ class settings (obj : Settings.t) : settings_t = object (self)
   method apply : unit -> unit =
     fun () ->
       (Settings.apply obj)
+
+  method bind : string -> [`object_] Gobject.obj -> string -> Gio_enums.settingsbindflags -> unit =
+    fun key object_ property flags ->
+      (Settings.bind obj key object_ property flags)
+
+  method bind_writable : string -> [`object_] Gobject.obj -> string -> bool -> unit =
+    fun key object_ property inverted ->
+      (Settings.bind_writable obj key object_ property inverted)
 
   method create_action : string -> GAction.action_t =
     fun key ->
@@ -161,20 +171,25 @@ class settings (obj : Settings.t) : settings_t = object (self)
 end
 
 let new_ (schema_id : string) : settings_t =
-  new settings (Settings.new_ schema_id)
+  let obj_ = Settings.new_ schema_id in
+  new settings obj_
 
 let new_full (schema : Settings_schema.t) (backend : GSettings_backend.settings_backend_t option) (path : string option) : settings_t =
   let backend = Option.map (fun c -> c#as_settings_backend) backend in
-  new settings (Settings.new_full schema backend path)
+  let obj_ = Settings.new_full schema backend path in
+  new settings obj_
 
 let new_with_backend (schema_id : string) (backend : GSettings_backend.settings_backend_t) : settings_t =
   let backend = backend#as_settings_backend in
-  new settings (Settings.new_with_backend schema_id backend)
+  let obj_ = Settings.new_with_backend schema_id backend in
+  new settings obj_
 
 let new_with_backend_and_path (schema_id : string) (backend : GSettings_backend.settings_backend_t) (path : string) : settings_t =
   let backend = backend#as_settings_backend in
-  new settings (Settings.new_with_backend_and_path schema_id backend path)
+  let obj_ = Settings.new_with_backend_and_path schema_id backend path in
+  new settings obj_
 
 let new_with_path (schema_id : string) (path : string) : settings_t =
-  new settings (Settings.new_with_path schema_id path)
+  let obj_ = Settings.new_with_path schema_id path in
+  new settings obj_
 

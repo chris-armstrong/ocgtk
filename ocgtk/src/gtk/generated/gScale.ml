@@ -67,8 +67,10 @@ end
 
 let new_ (orientation : Gtk_enums.orientation) (adjustment : GAdjustment.adjustment_t option) : scale_t =
   let adjustment = Option.map (fun c -> c#as_adjustment) adjustment in
-  new scale (Scale.new_ orientation adjustment)
+  let obj_ = Scale.new_ orientation adjustment in
+  new scale obj_
 
 let new_with_range (orientation : Gtk_enums.orientation) (min : float) (max : float) (step : float) : scale_t =
-  new scale (Scale.new_with_range orientation min max step)
+  let obj_ = Scale.new_with_range orientation min max step in
+  new scale obj_
 

@@ -313,6 +313,22 @@ GAction* result = g_settings_create_action(GSettings_val(self), String_val(arg1)
 CAMLreturn(Val_GAction(result));
 }
 
+CAMLexport CAMLprim value ml_g_settings_bind_writable(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+
+g_settings_bind_writable(GSettings_val(self), String_val(arg1), GObject_ext_of_val(arg2), String_val(arg3), Bool_val(arg4));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_settings_bind(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+
+g_settings_bind(GSettings_val(self), String_val(arg1), GObject_ext_of_val(arg2), String_val(arg3), GioSettingsBindFlags_val(arg4));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_g_settings_apply(value self)
 {
 CAMLparam1(self);

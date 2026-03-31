@@ -40,3 +40,11 @@ end
 let new_ () : pixbuf_loader_t =
   new pixbuf_loader (Pixbuf_loader.new_ ())
 
+let new_with_mime_type (mime_type : string) : (pixbuf_loader_t, GError.t) result =
+  let obj_ = Pixbuf_loader.new_with_mime_type mime_type in
+Result.map (fun obj_ ->  new pixbuf_loader obj_) obj_
+
+let new_with_type (image_type : string) : (pixbuf_loader_t, GError.t) result =
+  let obj_ = Pixbuf_loader.new_with_type image_type in
+Result.map (fun obj_ ->  new pixbuf_loader obj_) obj_
+

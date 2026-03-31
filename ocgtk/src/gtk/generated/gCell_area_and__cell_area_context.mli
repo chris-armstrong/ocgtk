@@ -17,6 +17,7 @@ class type cell_area_t = object
     method get_edited_cell : unit -> GCell_renderer.cell_renderer_t option
     method get_focus_cell : unit -> GCell_renderer.cell_renderer_t option
     method get_focus_from_sibling : GCell_renderer.cell_renderer_t -> GCell_renderer.cell_renderer_t option
+    method get_focus_siblings : GCell_renderer.cell_renderer_t -> Cell_renderer.t list
     method get_request_mode : unit -> Gtk_enums.sizerequestmode
     method has_renderer : GCell_renderer.cell_renderer_t -> bool
     method is_activatable : unit -> bool

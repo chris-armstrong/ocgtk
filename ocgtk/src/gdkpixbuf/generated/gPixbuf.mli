@@ -28,4 +28,12 @@ end
 class pixbuf : Pixbuf.t -> pixbuf_t
 
 val new_ : Gdkpixbuf_enums.colorspace -> bool -> int -> int -> int -> pixbuf_t
+val new_from_file : string -> (pixbuf_t, GError.t) result
+val new_from_file_at_scale : string -> int -> int -> bool -> (pixbuf_t, GError.t) result
+val new_from_file_at_size : string -> int -> int -> (pixbuf_t, GError.t) result
+val new_from_resource : string -> (pixbuf_t, GError.t) result
+val new_from_resource_at_scale : string -> int -> int -> bool -> (pixbuf_t, GError.t) result
+val new_from_stream : Ocgtk_gio.Gio.Input_stream.input_stream_t -> Ocgtk_gio.Gio.Cancellable.cancellable_t option -> (pixbuf_t, GError.t) result
+val new_from_stream_at_scale : Ocgtk_gio.Gio.Input_stream.input_stream_t -> int -> int -> bool -> Ocgtk_gio.Gio.Cancellable.cancellable_t option -> (pixbuf_t, GError.t) result
+val new_from_stream_finish : Ocgtk_gio.Gio.Async_result.async_result_t -> (pixbuf_t, GError.t) result
 val new_from_xpm_data : string array -> pixbuf_t

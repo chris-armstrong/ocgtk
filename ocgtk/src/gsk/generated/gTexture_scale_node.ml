@@ -23,5 +23,6 @@ end
 let new_ (texture : Ocgtk_gdk.Gdk.Texture.texture_t) (bounds : Ocgtk_graphene.Graphene.Rect.rect_t) (filter : Gsk_enums.scalingfilter) : texture_scale_node_t =
   let texture = texture#as_texture in
   let bounds = bounds#as_rect in
-  new texture_scale_node (Texture_scale_node.new_ texture bounds filter)
+  let obj_ = Texture_scale_node.new_ texture bounds filter in
+  new texture_scale_node obj_
 

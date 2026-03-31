@@ -86,6 +86,17 @@ GDBusInterfaceSkeletonFlags result = g_dbus_interface_skeleton_get_flags(GDBusIn
 CAMLreturn(Val_GioDBusInterfaceSkeletonFlags(result));
 }
 
+CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_get_connections(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = g_dbus_interface_skeleton_get_connections(GDBusInterfaceSkeleton_val(self));
+Val_GList_with(c_result, result, item, cell, Val_GDBusConnection((gpointer)_tmp->data));
+    g_list_free(c_result);
+    CAMLreturn(result);
+}
+
 CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_get_connection(value self)
 {
 CAMLparam1(self);

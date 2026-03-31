@@ -3,6 +3,12 @@
 
 type t = [`inet_address_mask | `object_] Gobject.obj
 
+(** Create a new InetAddressMask *)
+external new_ : Inet_address.t -> int -> (t, GError.t) result = "ml_g_inet_address_mask_new"
+
+(** Create a new InetAddressMask *)
+external new_from_string : string -> (t, GError.t) result = "ml_g_inet_address_mask_new_from_string"
+
 (* Methods *)
 (** Converts @mask back to its corresponding string form. *)
 external to_string : t -> string = "ml_g_inet_address_mask_to_string"

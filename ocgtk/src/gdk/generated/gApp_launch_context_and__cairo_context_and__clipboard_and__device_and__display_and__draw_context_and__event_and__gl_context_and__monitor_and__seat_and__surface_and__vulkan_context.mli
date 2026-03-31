@@ -67,6 +67,7 @@ and display_t = object
     method is_closed : unit -> bool
     method is_composited : unit -> bool
     method is_rgba : unit -> bool
+    method list_seats : unit -> App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Seat.t list
     method notify_startup_complete : string -> unit
     method prepare_gl : unit -> (bool, GError.t) result
     method put_event : event_t -> unit
@@ -146,9 +147,11 @@ end
 and seat_t = object
     inherit Gseat_signals.seat_signals
     method get_capabilities : unit -> Gdk_enums.seatcapabilities
+    method get_devices : Gdk_enums.seatcapabilities -> App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Device.t list
     method get_display : unit -> display_t
     method get_keyboard : unit -> device_t option
     method get_pointer : unit -> device_t option
+    method get_tools : unit -> Device_tool.t list
     method as_seat : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Seat.t
 end
 

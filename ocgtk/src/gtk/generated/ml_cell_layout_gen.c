@@ -41,6 +41,17 @@ gtk_cell_layout_pack_end(GtkCellLayout_val(self), GtkCellRenderer_val(arg1), Boo
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_cell_layout_get_cells(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = gtk_cell_layout_get_cells(GtkCellLayout_val(self));
+Val_GList_with(c_result, result, item, cell, Val_GtkCellRenderer((gpointer)_tmp->data));
+    g_list_free(c_result);
+    CAMLreturn(result);
+}
+
 CAMLexport CAMLprim value ml_gtk_cell_layout_get_area(value self)
 {
 CAMLparam1(self);

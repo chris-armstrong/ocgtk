@@ -75,5 +75,6 @@ class stroke (obj : Stroke.t) : stroke_t = object (self)
 end
 
 let new_ (line_width : float) : stroke_t =
-  new stroke (Stroke.new_ line_width)
+  let obj_ = Stroke.new_ line_width in
+  new stroke obj_
 

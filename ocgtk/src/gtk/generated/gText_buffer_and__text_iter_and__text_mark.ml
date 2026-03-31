@@ -120,10 +120,13 @@ and text_iter_t = object
     method get_line : unit -> int
     method get_line_index : unit -> int
     method get_line_offset : unit -> int
+    method get_marks : unit -> Text_buffer_and__text_iter_and__text_mark.Text_mark.t list
     method get_offset : unit -> int
     method get_paintable : unit -> Ocgtk_gdk.Gdk.Paintable.paintable_t option
     method get_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
+    method get_tags : unit -> Text_tag.t list
     method get_text : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
+    method get_toggled_tags : bool -> Text_tag.t list
     method get_visible_line_index : unit -> int
     method get_visible_line_offset : unit -> int
     method get_visible_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
@@ -636,6 +639,10 @@ and text_iter (obj : Text_buffer_and__text_iter_and__text_mark.Text_iter.t) : te
     fun () ->
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_line_offset obj)
 
+  method get_marks : unit -> Text_buffer_and__text_iter_and__text_mark.Text_mark.t list =
+    fun () ->
+      (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_marks obj)
+
   method get_offset : unit -> int =
     fun () ->
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_offset obj)
@@ -648,9 +655,17 @@ and text_iter (obj : Text_buffer_and__text_iter_and__text_mark.Text_iter.t) : te
     fun end_ ->
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_slice obj end_)
 
+  method get_tags : unit -> Text_tag.t list =
+    fun () ->
+      (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_tags obj)
+
   method get_text : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string =
     fun end_ ->
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_text obj end_)
+
+  method get_toggled_tags : bool -> Text_tag.t list =
+    fun toggled_on ->
+      (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_toggled_tags obj toggled_on)
 
   method get_visible_line_index : unit -> int =
     fun () ->
@@ -780,8 +795,10 @@ and text_mark (obj : Text_buffer_and__text_iter_and__text_mark.Text_mark.t) : te
 end
 let new_ (table : GText_tag_table.text_tag_table_t option) : text_buffer_t =
   let table = Option.map (fun c -> c#as_text_tag_table) table in
-  new text_buffer (Text_buffer_and__text_iter_and__text_mark.Text_buffer.new_ table)
+  let obj_ = Text_buffer_and__text_iter_and__text_mark.Text_buffer.new_ table in
+  new text_buffer obj_
 
 let new_ (name : string option) (left_gravity : bool) : text_mark_t =
-  new text_mark (Text_buffer_and__text_iter_and__text_mark.Text_mark.new_ name left_gravity)
+  let obj_ = Text_buffer_and__text_iter_and__text_mark.Text_mark.new_ name left_gravity in
+  new text_mark obj_
 

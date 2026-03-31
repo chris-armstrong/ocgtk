@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ShortcutLabel: ShortcutLabel *)
 
-type t = [`shortcut_label | `widget | `initially_unowned] Gobject.obj
+type t = [`shortcut_label | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new ShortcutLabel *)
 external new_ : string -> t = "ml_gtk_shortcut_label_new"

@@ -8,6 +8,7 @@ class type toplevel_t = object
     method restore_system_shortcuts : unit -> unit
     method set_decorated : bool -> unit
     method set_deletable : bool -> unit
+    method set_icon_list : Texture.t list -> unit
     method set_modal : bool -> unit
     method set_startup_id : string -> unit
     method set_title : string -> unit

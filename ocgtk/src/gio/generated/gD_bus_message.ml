@@ -168,8 +168,10 @@ let new_ () : d_bus_message_t =
   new d_bus_message (D_bus_message.new_ ())
 
 let new_method_call (name : string option) (path : string) (interface_ : string option) (method_ : string) : d_bus_message_t =
-  new d_bus_message (D_bus_message.new_method_call name path interface_ method_)
+  let obj_ = D_bus_message.new_method_call name path interface_ method_ in
+  new d_bus_message obj_
 
 let new_signal (path : string) (interface_ : string) (signal : string) : d_bus_message_t =
-  new d_bus_message (D_bus_message.new_signal path interface_ signal)
+  let obj_ = D_bus_message.new_signal path interface_ signal in
+  new d_bus_message obj_
 

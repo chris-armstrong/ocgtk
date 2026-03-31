@@ -40,5 +40,6 @@ let new_ (font : Ocgtk_pango.Pango.Font.font_t) (glyphs : Ocgtk_pango.Pango.Glyp
   let glyphs = glyphs#as_glyph_string in
   let color = color#as_rgb_a in
   let offset = offset#as_point in
-  new text_node (Text_node.new_ font glyphs color offset)
+  let obj_ = Text_node.new_ font glyphs color offset in
+  new text_node obj_
 

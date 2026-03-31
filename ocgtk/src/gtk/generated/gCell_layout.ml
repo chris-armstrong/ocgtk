@@ -3,6 +3,7 @@ class type cell_layout_t = object
     method clear : unit -> unit
     method clear_attributes : GCell_renderer.cell_renderer_t -> unit
     method get_area : unit -> GCell_area_and__cell_area_context.cell_area_t option
+    method get_cells : unit -> Cell_renderer.t list
     method pack_end : GCell_renderer.cell_renderer_t -> bool -> unit
     method pack_start : GCell_renderer.cell_renderer_t -> bool -> unit
     method reorder : GCell_renderer.cell_renderer_t -> int -> unit
@@ -29,6 +30,10 @@ class cell_layout (obj : Cell_layout.t) : cell_layout_t = object (self)
   method get_area : unit -> GCell_area_and__cell_area_context.cell_area_t option =
     fun () ->
       Option.map (fun ret -> new GCell_area_and__cell_area_context.cell_area ret) (Cell_layout.get_area obj)
+
+  method get_cells : unit -> Cell_renderer.t list =
+    fun () ->
+      (Cell_layout.get_cells obj)
 
   method pack_end : GCell_renderer.cell_renderer_t -> bool -> unit =
     fun cell expand ->

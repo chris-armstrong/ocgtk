@@ -33,6 +33,20 @@ module rec App_info : sig
   (** Finishes a g_app_info_launch_uris_async() operation. *)
   external launch_uris_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_app_info_launch_uris_finish"
 
+  (** Launches the application. This passes the @uris to the launched application
+  as arguments, using the optional @context to get information
+  about the details of the launcher (like what screen it is on).
+  On error, @error will be set accordingly. If the application only supports
+  one URI per invocation as part of their command-line, multiple instances
+  of the application will be spawned.
+
+  To launch the application without arguments pass a %NULL @uris list.
+
+  Note that even if the launch is successful the application launched
+  can fail to start if it runs into problems during startup. There is
+  no way to detect this. *)
+  external launch_uris : t -> string list option -> App_launch_context.t option -> (bool, GError.t) result = "ml_g_app_info_launch_uris"
+
   (** Retrieves the list of content types that @app_info claims to support.
   If this information is not provided by the environment, this function
   will return %NULL.
@@ -134,6 +148,20 @@ end = struct
 
   (** Finishes a g_app_info_launch_uris_async() operation. *)
   external launch_uris_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_app_info_launch_uris_finish"
+
+  (** Launches the application. This passes the @uris to the launched application
+  as arguments, using the optional @context to get information
+  about the details of the launcher (like what screen it is on).
+  On error, @error will be set accordingly. If the application only supports
+  one URI per invocation as part of their command-line, multiple instances
+  of the application will be spawned.
+
+  To launch the application without arguments pass a %NULL @uris list.
+
+  Note that even if the launch is successful the application launched
+  can fail to start if it runs into problems during startup. There is
+  no way to detect this. *)
+  external launch_uris : t -> string list option -> App_launch_context.t option -> (bool, GError.t) result = "ml_g_app_info_launch_uris"
 
   (** Retrieves the list of content types that @app_info claims to support.
   If this information is not provided by the environment, this function

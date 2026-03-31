@@ -40,6 +40,17 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GIcon(result));
 }
 
+CAMLexport CAMLprim value ml_g_emblemed_icon_get_emblems(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = g_emblemed_icon_get_emblems(GEmblemedIcon_val(self));
+Val_GList_with(c_result, result, item, cell, Val_GEmblem((gpointer)_tmp->data));
+    g_list_free(c_result);
+    CAMLreturn(result);
+}
+
 CAMLexport CAMLprim value ml_g_emblemed_icon_clear_emblems(value self)
 {
 CAMLparam1(self);

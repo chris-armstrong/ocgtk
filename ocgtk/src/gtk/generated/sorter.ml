@@ -12,6 +12,20 @@ of the possible return values.
 This function is intended to allow optimizations. *)
 external get_order : t -> Gtk_enums.sorterorder = "ml_gtk_sorter_get_order"
 
+(** Compares two given items according to the sort order implemented
+by the sorter.
+
+Sorters implement a partial order:
+
+* It is reflexive, ie a = a
+* It is antisymmetric, ie if a < b and b < a, then a = b
+* It is transitive, ie given any 3 items with a ≤ b and b ≤ c,
+  then a ≤ c
+
+The sorter may signal it conforms to additional constraints
+via the return value of [method@Gtk.Sorter.get_order]. *)
+external compare : t -> [`object_] Gobject.obj -> [`object_] Gobject.obj -> Gtk_enums.ordering = "ml_gtk_sorter_compare"
+
 (** Notifies all users of the sorter that it has changed.
 
 This emits the [signal@Gtk.Sorter::changed] signal. Users

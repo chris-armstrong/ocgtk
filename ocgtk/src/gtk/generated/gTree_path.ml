@@ -80,5 +80,6 @@ let new_first () : tree_path_t =
   new tree_path (Tree_path.new_first ())
 
 let new_from_string (path : string) : tree_path_t =
-  new tree_path (Tree_path.new_from_string path)
+  let obj_ = Tree_path.new_from_string path in
+  new tree_path obj_
 

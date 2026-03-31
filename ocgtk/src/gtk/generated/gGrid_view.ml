@@ -88,5 +88,6 @@ end
 let new_ (model : GSelection_model.selection_model_t option) (factory : GList_item_factory.list_item_factory_t option) : grid_view_t =
   let model = Option.map (fun c -> c#as_selection_model) model in
   let factory = Option.map (fun c -> c#as_list_item_factory) factory in
-  new grid_view (Grid_view.new_ model factory)
+  let obj_ = Grid_view.new_ model factory in
+  new grid_view obj_
 

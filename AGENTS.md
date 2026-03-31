@@ -99,12 +99,14 @@ shellcheck is available to lint & check shell scripts.
 
 If you are running in a clean container (e.g. Claude Code Web), you will need to follow the instructions in [SETUP.md](./SETUP.md) for instructions.
 
-## Code Layout
+## Project Layout and Architecture
 
 `ocgtk` lives in the `ocgtk` sub-directory i.e. ocgtk/ocgtk - remember to `cd ocgtk` before running tools like `dune` or `ocamlformat`.
 
+[The architecture documentation](./ocgtk/architecture/README.md) describes the project layout and system architecture.
 
-## Writing or refactoring Code or Rewriting Documentation
+
+## Code Guidelines - how to write or refactor code 
 
 **Always consult the [code guidelines](./ocgtk/docs/code_guidelines/index.md) for how to structure or restructure code.
 

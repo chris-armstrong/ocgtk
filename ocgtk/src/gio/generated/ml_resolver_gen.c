@@ -38,6 +38,90 @@ g_resolver_set_default(GResolver_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_resolver_lookup_service_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = g_resolver_lookup_service_finish(GResolver_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) {
+        Val_GList_with(c_result, result, item, cell, Val_GSrvTarget((gpointer)_tmp->data));
+    g_list_free(c_result);
+        CAMLreturn(Res_Ok(result));
+    } else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_resolver_lookup_service(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+GError *error = NULL;
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = g_resolver_lookup_service(GResolver_val(self), String_val(arg1), String_val(arg2), String_val(arg3), Option_val(arg4, GCancellable_val, NULL), &error);
+if (error == NULL) {
+        Val_GList_with(c_result, result, item, cell, Val_GSrvTarget((gpointer)_tmp->data));
+    g_list_free(c_result);
+        CAMLreturn(Res_Ok(result));
+    } else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_resolver_lookup_by_name_with_flags_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = g_resolver_lookup_by_name_with_flags_finish(GResolver_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) {
+        Val_GList_with(c_result, result, item, cell, Val_GInetAddress((gpointer)_tmp->data));
+    g_list_free(c_result);
+        CAMLreturn(Res_Ok(result));
+    } else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_resolver_lookup_by_name_with_flags(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+GError *error = NULL;
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = g_resolver_lookup_by_name_with_flags(GResolver_val(self), String_val(arg1), GioResolverNameLookupFlags_val(arg2), Option_val(arg3, GCancellable_val, NULL), &error);
+if (error == NULL) {
+        Val_GList_with(c_result, result, item, cell, Val_GInetAddress((gpointer)_tmp->data));
+    g_list_free(c_result);
+        CAMLreturn(Res_Ok(result));
+    } else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_resolver_lookup_by_name_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = g_resolver_lookup_by_name_finish(GResolver_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) {
+        Val_GList_with(c_result, result, item, cell, Val_GInetAddress((gpointer)_tmp->data));
+    g_list_free(c_result);
+        CAMLreturn(Res_Ok(result));
+    } else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_resolver_lookup_by_name(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GError *error = NULL;
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = g_resolver_lookup_by_name(GResolver_val(self), String_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
+if (error == NULL) {
+        Val_GList_with(c_result, result, item, cell, Val_GInetAddress((gpointer)_tmp->data));
+    g_list_free(c_result);
+        CAMLreturn(Res_Ok(result));
+    } else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_g_resolver_lookup_by_address_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);

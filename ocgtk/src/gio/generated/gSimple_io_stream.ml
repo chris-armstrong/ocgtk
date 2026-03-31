@@ -13,5 +13,6 @@ end
 let new_ (input_stream : GInput_stream.input_stream_t) (output_stream : GOutput_stream.output_stream_t) : simple_io_stream_t =
   let input_stream = input_stream#as_input_stream in
   let output_stream = output_stream#as_output_stream in
-  new simple_io_stream (Simple_io_stream.new_ input_stream output_stream)
+  let obj_ = Simple_io_stream.new_ input_stream output_stream in
+  new simple_io_stream obj_
 

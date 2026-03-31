@@ -37,5 +37,6 @@ end
 
 let new_ (parent : GApplication_and__window_and__window_group.window_t option) : mount_operation_t =
   let parent = Option.map (fun c -> c#as_window) parent in
-  new mount_operation (Mount_operation.new_ parent)
+  let obj_ = Mount_operation.new_ parent in
+  new mount_operation obj_
 

@@ -17,5 +17,6 @@ class zlib_decompressor (obj : Zlib_decompressor.t) : zlib_decompressor_t = obje
 end
 
 let new_ (format : Gio_enums.zlibcompressorformat) : zlib_decompressor_t =
-  new zlib_decompressor (Zlib_decompressor.new_ format)
+  let obj_ = Zlib_decompressor.new_ format in
+  new zlib_decompressor obj_
 

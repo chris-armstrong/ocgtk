@@ -41,5 +41,6 @@ end
 
 let new_ (texture : GTexture.texture_t) : texture_downloader_t =
   let texture = texture#as_texture in
-  new texture_downloader (Texture_downloader.new_ texture)
+  let obj_ = Texture_downloader.new_ texture in
+  new texture_downloader obj_
 

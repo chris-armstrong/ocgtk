@@ -1,6 +1,8 @@
 class type settings_t = object
     inherit Gsettings_signals.settings_signals
     method apply : unit -> unit
+    method bind : string -> [`object_] Gobject.obj -> string -> Gio_enums.settingsbindflags -> unit
+    method bind_writable : string -> [`object_] Gobject.obj -> string -> bool -> unit
     method create_action : string -> GAction.action_t
     method delay : unit -> unit
     method get_boolean : string -> bool

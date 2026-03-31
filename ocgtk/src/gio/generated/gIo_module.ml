@@ -9,5 +9,6 @@ class io_module (obj : Io_module.t) : io_module_t = object (self)
 end
 
 let new_ (filename : string) : io_module_t =
-  new io_module (Io_module.new_ filename)
+  let obj_ = Io_module.new_ filename in
+  new io_module obj_
 

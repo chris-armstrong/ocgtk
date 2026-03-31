@@ -29,3 +29,22 @@ external free : t -> unit = "ml_pango_glyph_item_free"
 (** Make a deep copy of an existing `PangoGlyphItem` structure. *)
 external copy : t -> t option = "ml_pango_glyph_item_copy"
 
+(** Splits a shaped item (`PangoGlyphItem`) into multiple items based
+on an attribute list.
+
+The idea is that if you have attributes that don't affect shaping,
+such as color or underline, to avoid affecting shaping, you filter
+them out ([method@Pango.AttrList.filter]), apply the shaping process
+and then reapply them to the result using this function.
+
+All attributes that start or end inside a cluster are applied
+to that cluster; for instance, if half of a cluster is underlined
+and the other-half strikethrough, then the cluster will end
+up with both underline and strikethrough attributes. In these
+cases, it may happen that @item->extra_attrs for some of the
+result items can have multiple attributes of the same type.
+
+This function takes ownership of @glyph_item; it will be reused
+as one of the elements in the list. *)
+external apply_attrs : t -> string -> Attr_list.t -> t list = "ml_pango_glyph_item_apply_attrs"
+

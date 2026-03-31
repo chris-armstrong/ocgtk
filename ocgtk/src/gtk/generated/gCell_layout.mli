@@ -3,6 +3,7 @@ class type cell_layout_t = object
     method clear : unit -> unit
     method clear_attributes : GCell_renderer.cell_renderer_t -> unit
     method get_area : unit -> GCell_area_and__cell_area_context.cell_area_t option
+    method get_cells : unit -> Cell_renderer.t list
     method pack_end : GCell_renderer.cell_renderer_t -> bool -> unit
     method pack_start : GCell_renderer.cell_renderer_t -> bool -> unit
     method reorder : GCell_renderer.cell_renderer_t -> int -> unit

@@ -103,6 +103,17 @@ PangoAttrIterator* result = pango_attr_list_get_iterator(PangoAttrList_val(self)
 CAMLreturn(Val_PangoAttrIterator(result));
 }
 
+CAMLexport CAMLprim value ml_pango_attr_list_get_attributes(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = pango_attr_list_get_attributes(PangoAttrList_val(self));
+Val_GSList_with(c_result, result, item, cell, Val_PangoAttribute((gpointer)_tmp->data));
+    g_slist_free(c_result);
+    CAMLreturn(result);
+}
+
 CAMLexport CAMLprim value ml_pango_attr_list_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);

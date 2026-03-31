@@ -37,6 +37,15 @@ value Val_GDBusNodeInfo_option(const GDBusNodeInfo *ptr) {
 }
 
 
+CAMLexport CAMLprim value ml_g_dbus_node_info_new_for_xml(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GDBusNodeInfo *obj = g_dbus_node_info_new_for_xml(String_val(arg1), &error);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GDBusNodeInfo(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 CAMLexport CAMLprim value ml_g_dbus_node_info_unref(value self)
 {
 CAMLparam1(self);

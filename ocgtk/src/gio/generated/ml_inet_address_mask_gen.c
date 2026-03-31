@@ -22,6 +22,26 @@
 #include "gio_decls.h"
 
 
+CAMLexport CAMLprim value ml_g_inet_address_mask_new(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+GError *error = NULL;
+    
+GInetAddressMask *obj = g_inet_address_mask_new(GInetAddress_val(arg1), Int_val(arg2), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GInetAddressMask(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_g_inet_address_mask_new_from_string(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GInetAddressMask *obj = g_inet_address_mask_new_from_string(String_val(arg1), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GInetAddressMask(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 CAMLexport CAMLprim value ml_g_inet_address_mask_to_string(value self)
 {
 CAMLparam1(self);

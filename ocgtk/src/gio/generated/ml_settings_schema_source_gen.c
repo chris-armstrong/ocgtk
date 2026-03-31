@@ -37,6 +37,15 @@ value Val_GSettingsSchemaSource_option(const GSettingsSchemaSource *ptr) {
 }
 
 
+CAMLexport CAMLprim value ml_g_settings_schema_source_new_from_directory(value arg1, value arg2, value arg3)
+{
+CAMLparam3(arg1, arg2, arg3);
+GError *error = NULL;
+    
+GSettingsSchemaSource *obj = g_settings_schema_source_new_from_directory(String_val(arg1), Option_val(arg2, GSettingsSchemaSource_val, NULL), Bool_val(arg3), &error);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GSettingsSchemaSource(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 CAMLexport CAMLprim value ml_g_settings_schema_source_unref(value self)
 {
 CAMLparam1(self);

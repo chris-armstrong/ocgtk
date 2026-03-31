@@ -4,6 +4,12 @@
 module rec Socket : sig
   type t = [`socket | `object_] Gobject.obj
 
+  (** Create a new Socket *)
+  external new_ : Gio_enums.socketfamily -> Gio_enums.sockettype -> Gio_enums.socketprotocol -> (t, GError.t) result = "ml_g_socket_new"
+
+  (** Create a new Socket *)
+  external new_from_fd : int -> (t, GError.t) result = "ml_g_socket_new_from_fd"
+
   (* Methods *)
   (** Checks if a socket is capable of speaking IPv4.
 

@@ -3,6 +3,18 @@
 
 type t = [`tls_certificate | `object_] Gobject.obj
 
+(** Create a new TlsCertificate *)
+external new_from_file : string -> (t, GError.t) result = "ml_g_tls_certificate_new_from_file"
+
+(** Create a new TlsCertificate *)
+external new_from_file_with_password : string -> string -> (t, GError.t) result = "ml_g_tls_certificate_new_from_file_with_password"
+
+(** Create a new TlsCertificate *)
+external new_from_files : string -> string -> (t, GError.t) result = "ml_g_tls_certificate_new_from_files"
+
+(** Create a new TlsCertificate *)
+external new_from_pkcs11_uris : string -> string option -> (t, GError.t) result = "ml_g_tls_certificate_new_from_pkcs11_uris"
+
 (* Methods *)
 (** This verifies @cert and returns a set of #GTlsCertificateFlags
 indicating any problems found with it. This can be used to verify a

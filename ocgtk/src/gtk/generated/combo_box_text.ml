@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ComboBoxText: ComboBoxText *)
 
-type t = [`combo_box_text | `combo_box | `widget | `initially_unowned] Gobject.obj
+type t = [`combo_box_text | `combo_box | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new ComboBoxText *)
 external new_ : unit -> t = "ml_gtk_combo_box_text_new"

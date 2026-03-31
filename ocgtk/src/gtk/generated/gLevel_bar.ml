@@ -78,5 +78,6 @@ let new_ () : level_bar_t =
   new level_bar (Level_bar.new_ ())
 
 let new_for_interval (min_value : float) (max_value : float) : level_bar_t =
-  new level_bar (Level_bar.new_for_interval min_value max_value)
+  let obj_ = Level_bar.new_for_interval min_value max_value in
+  new level_bar obj_
 

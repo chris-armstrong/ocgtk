@@ -150,6 +150,14 @@ gboolean result = g_file_info_set_attribute_status(GFileInfo_val(self), String_v
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_g_file_info_set_attribute_object(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+g_file_info_set_attribute_object(GFileInfo_val(self), String_val(arg1), GObject_ext_of_val(arg2));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_g_file_info_set_attribute_mask(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -360,6 +368,14 @@ CAMLparam2(self, arg1);
 
 GFileAttributeStatus result = g_file_info_get_attribute_status(GFileInfo_val(self), String_val(arg1));
 CAMLreturn(Val_GioFileAttributeStatus(result));
+}
+
+CAMLexport CAMLprim value ml_g_file_info_get_attribute_object(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GObject* result = g_file_info_get_attribute_object(GFileInfo_val(self), String_val(arg1));
+CAMLreturn(Val_option(result, ml_gobject_val_of_ext));
 }
 
 CAMLexport CAMLprim value ml_g_file_info_get_attribute_file_path(value self, value arg1)

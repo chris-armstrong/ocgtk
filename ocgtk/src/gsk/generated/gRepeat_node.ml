@@ -24,5 +24,6 @@ let new_ (bounds : Ocgtk_graphene.Graphene.Rect.rect_t) (child : GRender_node.re
   let bounds = bounds#as_rect in
   let child = child#as_render_node in
   let child_bounds = Option.map (fun c -> c#as_rect) child_bounds in
-  new repeat_node (Repeat_node.new_ bounds child child_bounds)
+  let obj_ = Repeat_node.new_ bounds child child_bounds in
+  new repeat_node obj_
 

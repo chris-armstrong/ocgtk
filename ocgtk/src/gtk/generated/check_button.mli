@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CheckButton: CheckButton *)
 
-type t = [`check_button | `widget | `initially_unowned] Gobject.obj
+type t = [`check_button | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new CheckButton *)
 external new_ : unit -> t = "ml_gtk_check_button_new"

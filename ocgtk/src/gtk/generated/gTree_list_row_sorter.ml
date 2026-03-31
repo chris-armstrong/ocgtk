@@ -23,5 +23,6 @@ end
 
 let new_ (sorter : GSorter.sorter_t option) : tree_list_row_sorter_t =
   let sorter = Option.map (fun c -> c#as_sorter) sorter in
-  new tree_list_row_sorter (Tree_list_row_sorter.new_ sorter)
+  let obj_ = Tree_list_row_sorter.new_ sorter in
+  new tree_list_row_sorter obj_
 

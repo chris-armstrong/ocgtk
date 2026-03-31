@@ -25,6 +25,26 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GdkPixbufLoader(obj));
 }
+CAMLexport CAMLprim value ml_gdk_pixbuf_loader_new_with_mime_type(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GdkPixbufLoader *obj = gdk_pixbuf_loader_new_with_mime_type(String_val(arg1), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbufLoader(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_gdk_pixbuf_loader_new_with_type(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GdkPixbufLoader *obj = gdk_pixbuf_loader_new_with_type(String_val(arg1), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbufLoader(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 CAMLexport CAMLprim value ml_gdk_pixbuf_loader_set_size(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);

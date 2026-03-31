@@ -22,6 +22,58 @@
 #include "gio_decls.h"
 
 
+CAMLexport CAMLprim value ml_g_dbus_proxy_new_finish(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GDBusProxy *obj = g_dbus_proxy_new_finish(GAsyncResult_val(arg1), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GDBusProxy(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_g_dbus_proxy_new_for_bus_finish(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GDBusProxy *obj = g_dbus_proxy_new_for_bus_finish(GAsyncResult_val(arg1), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GDBusProxy(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_g_dbus_proxy_new_for_bus_sync_native(value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7)
+{
+CAMLparam5(arg1, arg2, arg3, arg4, arg5);
+CAMLxparam2(arg6, arg7);
+GError *error = NULL;
+    
+GDBusProxy *obj = g_dbus_proxy_new_for_bus_sync(GioBusType_val(arg1), GioDBusProxyFlags_val(arg2), Option_val(arg3, GDBusInterfaceInfo_val, NULL), String_val(arg4), String_val(arg5), String_val(arg6), Option_val(arg7, GCancellable_val, NULL), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GDBusProxy(obj))); else CAMLreturn(Res_Error(Val_GError(error)));}
+
+CAMLexport CAMLprim value ml_g_dbus_proxy_new_for_bus_sync_bytecode(value * argv, int argn)
+{
+return ml_g_dbus_proxy_new_for_bus_sync_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6]);
+}
+
+CAMLexport CAMLprim value ml_g_dbus_proxy_new_sync_native(value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7)
+{
+CAMLparam5(arg1, arg2, arg3, arg4, arg5);
+CAMLxparam2(arg6, arg7);
+GError *error = NULL;
+    
+GDBusProxy *obj = g_dbus_proxy_new_sync(GDBusConnection_val(arg1), GioDBusProxyFlags_val(arg2), Option_val(arg3, GDBusInterfaceInfo_val, NULL), String_option_val(arg4), String_val(arg5), String_val(arg6), Option_val(arg7, GCancellable_val, NULL), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GDBusProxy(obj))); else CAMLreturn(Res_Error(Val_GError(error)));}
+
+CAMLexport CAMLprim value ml_g_dbus_proxy_new_sync_bytecode(value * argv, int argn)
+{
+return ml_g_dbus_proxy_new_sync_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6]);
+}
+
 CAMLexport CAMLprim value ml_g_dbus_proxy_set_interface_info(value self, value arg1)
 {
 CAMLparam2(self, arg1);

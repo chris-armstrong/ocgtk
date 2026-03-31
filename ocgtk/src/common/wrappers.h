@@ -203,15 +203,99 @@ value copy_string_v(const gchar * const *v);
 /* List Conversions */
 /* ==================================================================== */
 
-/* GList conversions */
+/* GList conversions - function-based (existing) */
 CAMLprim value Val_GList(GList *list, value (*func)(gpointer));
 CAMLprim value Val_GList_free(GList *list, value (*func)(gpointer));
 CAMLprim GList *GList_val(value list, gpointer (*func)(value));
 
-/* GSList conversions */
+/* GSList conversions - function-based (existing) */
 CAMLprim value Val_GSList(GSList *list, value (*func)(gpointer));
 CAMLprim value Val_GSList_free(GSList *list, value (*func)(gpointer));
 CAMLprim GSList *GSList_val(value list, gpointer (*func)(value));
+
+/* ==================================================================== */
+/* List Conversions - Macro-based (for generated code) */
+/* ==================================================================== */
+
+/**
+ * GList: C -> OCaml
+ *
+ * REQUIRED: Function must declare CAMLlocal3(result, item, cell) before use
+ *
+ * Example:
+ *   CAMLprim value example(value self) {
+ *       CAMLparam1(self);
+ *       CAMLlocal3(result, item, cell);  // MUST be at function scope
+ *       GList* c_list = gtk_something_get_list(...);
+ *       Val_GList_with(c_list, result, item, cell, Val_GtkWidget((GtkWidget*)_tmp->data));
+ *       g_list_free(c_list);
+ *       CAMLreturn(result);
+ *   }
+ */
+#define Val_GList_with(list, result_var, item_var, cell_var, elem_conv_expr) \
+    do { \
+        result_var = Val_emptylist; \
+        GList *_tmp = g_list_last(list); \
+        while (_tmp != NULL) { \
+            item_var = (elem_conv_expr); \
+            cell_var = caml_alloc_small(2, 0); \
+            Field(cell_var, 0) = item_var; \
+            Field(cell_var, 1) = result_var; \
+            result_var = cell_var; \
+            _tmp = _tmp->prev; \
+        } \
+    } while(0)
+
+/**
+ * GSList: C -> OCaml
+ *
+ * REQUIRED: Function must declare CAMLlocal3(result, item, cell) before use
+ * GSList is singly-linked, so we iterate forward (not reverse like GList)
+ */
+#define Val_GSList_with(list, result_var, item_var, cell_var, elem_conv_expr) \
+    do { \
+        result_var = Val_emptylist; \
+        GSList *_tmp = (list); \
+        while (_tmp != NULL) { \
+            item_var = (elem_conv_expr); \
+            cell_var = caml_alloc_small(2, 0); \
+            Field(cell_var, 0) = item_var; \
+            Field(cell_var, 1) = result_var; \
+            result_var = cell_var; \
+            _tmp = _tmp->next; \
+        } \
+    } while(0)
+
+/**
+ * OCaml list -> GList
+ * Returns GList* (caller must free if transfer-ownership="none")
+ */
+#define GList_val_with(ml_list, result_var, elem_conv_expr) \
+    do { \
+        result_var = NULL; \
+        value _iter = (ml_list); \
+        while (_iter != Val_emptylist) { \
+            gpointer _elem = (gpointer)(elem_conv_expr); \
+            result_var = g_list_prepend(result_var, _elem); \
+            _iter = Field(_iter, 1); \
+        } \
+        result_var = g_list_reverse(result_var); \
+    } while(0)
+
+/**
+ * OCaml list -> GSList
+ */
+#define GSList_val_with(ml_list, result_var, elem_conv_expr) \
+    do { \
+        result_var = NULL; \
+        value _iter = (ml_list); \
+        while (_iter != Val_emptylist) { \
+            gpointer _elem = (gpointer)(elem_conv_expr); \
+            result_var = g_slist_prepend(result_var, _elem); \
+            _iter = Field(_iter, 1); \
+        } \
+        result_var = g_slist_reverse(result_var); \
+    } while(0)
 
 /* ==================================================================== */
 /* Error Handling */

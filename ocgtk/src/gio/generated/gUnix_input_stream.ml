@@ -26,5 +26,6 @@ class unix_input_stream (obj : Unix_input_stream.t) : unix_input_stream_t = obje
 end
 
 let new_ (fd : int) (close_fd : bool) : unix_input_stream_t =
-  new unix_input_stream (Unix_input_stream.new_ fd close_fd)
+  let obj_ = Unix_input_stream.new_ fd close_fd in
+  new unix_input_stream obj_
 

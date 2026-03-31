@@ -4,6 +4,17 @@ open StdLabels
 open Printf
 open Types
 
+(** Check if a GIR type represents a GList *)
+let is_glist_type (gir_type : gir_type) = String.equal gir_type.name "GLib.List"
+
+(** Check if a GIR type represents a GSList *)
+let is_gslist_type (gir_type : gir_type) =
+  String.equal gir_type.name "GLib.SList"
+
+(** Check if a GIR type represents a GList or GSList *)
+let is_list_type (gir_type : gir_type) =
+  is_glist_type gir_type || is_gslist_type gir_type
+
 let or_else f opt = match opt with Some _ -> opt | None -> f ()
 
 let calculate_layer2_class ~class_module ~class_name =
@@ -31,28 +42,27 @@ let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
     c_type = cr.cr_c_type;
     c_to_ml =
       (match cr.cr_type with
-      | Crt_Enum | Crt_Bitfield ->
-          sprintf "Val_%s%s" namespace cr.cr_name
+      | Crt_Enum | Crt_Bitfield -> sprintf "Val_%s%s" namespace cr.cr_name
       | _ -> "Val_" ^ cr.cr_c_type);
     ml_to_c =
       (match cr.cr_type with
-      | Crt_Enum | Crt_Bitfield ->
-          sprintf "%s%s_val" namespace cr.cr_name
+      | Crt_Enum | Crt_Bitfield -> sprintf "%s%s_val" namespace cr.cr_name
       | _ -> cr.cr_c_type ^ "_val");
-
     layer2_class =
       (match cr.cr_type with
       | Crt_Class _ ->
           Some
             {
-              class_module = external_namespace ^ "." ^ Utils.module_name_of_class cr.cr_name;
+              class_module =
+                external_namespace ^ "." ^ Utils.module_name_of_class cr.cr_name;
               class_type = Utils.ocaml_class_name cr.cr_name ^ "_t";
               class_layer1_accessor = "as_" ^ Utils.ocaml_class_name cr.cr_name;
             }
       | Crt_Interface ->
           Some
             {
-              class_module = external_namespace ^ "." ^ Utils.module_name_of_class cr.cr_name;
+              class_module =
+                external_namespace ^ "." ^ Utils.module_name_of_class cr.cr_name;
               class_type = Utils.ocaml_interface_name cr.cr_name ^ "_t";
               class_layer1_accessor =
                 "as_" ^ Utils.ocaml_interface_name cr.cr_name;
@@ -60,7 +70,8 @@ let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
       | Crt_Record _ ->
           Some
             {
-              class_module = external_namespace ^ "." ^ Utils.module_name_of_class cr.cr_name;
+              class_module =
+                external_namespace ^ "." ^ Utils.module_name_of_class cr.cr_name;
               class_type = Utils.ocaml_record_name cr.cr_name ^ "_t";
               class_layer1_accessor = "as_" ^ Utils.ocaml_record_name cr.cr_name;
             }
@@ -79,7 +90,6 @@ let type_mappings : (string * Types.type_mapping) list =
          Types.ocaml_type = "int";
          Types.c_to_ml = "Val_int";
          Types.ml_to_c = "Int_val";
-
          layer2_class = None;
          c_type = "guint";
          is_value_type_record = false;
@@ -90,7 +100,6 @@ let type_mappings : (string * Types.type_mapping) list =
         ocaml_type = "int";
         c_to_ml = "Val_int";
         ml_to_c = "Int_val";
-
         layer2_class = None;
         c_type = "gint";
         is_value_type_record = false;
@@ -100,7 +109,6 @@ let type_mappings : (string * Types.type_mapping) list =
         ocaml_type = "float";
         c_to_ml = "caml_copy_double";
         ml_to_c = "Double_val";
-
         layer2_class = None;
         c_type = "gdouble";
         is_value_type_record = false;
@@ -110,7 +118,6 @@ let type_mappings : (string * Types.type_mapping) list =
         ocaml_type = "float";
         c_to_ml = "caml_copy_double";
         ml_to_c = "Double_val";
-
         layer2_class = None;
         c_type = "double";
         is_value_type_record = false;
@@ -120,7 +127,6 @@ let type_mappings : (string * Types.type_mapping) list =
         ocaml_type = "bool";
         c_to_ml = "Val_bool";
         ml_to_c = "Bool_val";
-
         layer2_class = None;
         c_type = "gboolean";
         is_value_type_record = false;
@@ -130,7 +136,6 @@ let type_mappings : (string * Types.type_mapping) list =
         ocaml_type = "string";
         c_to_ml = "caml_copy_string";
         ml_to_c = "String_val";
-
         layer2_class = None;
         c_type = "gchararray";
         is_value_type_record = false;
@@ -140,7 +145,6 @@ let type_mappings : (string * Types.type_mapping) list =
         ocaml_type = "string";
         c_to_ml = "caml_copy_string";
         ml_to_c = "String_val";
-
         layer2_class = None;
         c_type = "const gchar*";
         is_value_type_record = false;
@@ -150,7 +154,6 @@ let type_mappings : (string * Types.type_mapping) list =
         ocaml_type = "string";
         c_to_ml = "caml_copy_string";
         ml_to_c = "String_val";
-
         layer2_class = None;
         c_type = "gchar*";
         is_value_type_record = false;
@@ -160,7 +163,6 @@ let type_mappings : (string * Types.type_mapping) list =
         ocaml_type = "string";
         c_to_ml = "caml_copy_string";
         ml_to_c = "String_val";
-
         layer2_class = None;
         c_type = "utf8";
         is_value_type_record = false;
@@ -170,9 +172,8 @@ let type_mappings : (string * Types.type_mapping) list =
         ocaml_type = "string";
         c_to_ml = "caml_copy_string";
         ml_to_c = "String_val";
-
         layer2_class = None;
-        c_type = "filename";
+        c_type = "const gchar*";
         is_value_type_record = false;
       } );
     ( "const char*",
@@ -180,7 +181,6 @@ let type_mappings : (string * Types.type_mapping) list =
         ocaml_type = "string";
         c_to_ml = "caml_copy_string";
         ml_to_c = "String_val";
-
         layer2_class = None;
         c_type = "const char*";
         is_value_type_record = false;
@@ -190,7 +190,6 @@ let type_mappings : (string * Types.type_mapping) list =
         ocaml_type = "float";
         c_to_ml = "caml_copy_double";
         ml_to_c = "Double_val";
-
         layer2_class = None;
         c_type = "gfloat";
         is_value_type_record = false;
@@ -200,9 +199,49 @@ let type_mappings : (string * Types.type_mapping) list =
         ocaml_type = "float";
         c_to_ml = "caml_copy_double";
         ml_to_c = "Double_val";
-
         layer2_class = None;
         c_type = "float";
+        is_value_type_record = false;
+      } );
+    (* GObject namespace types — not generated from GIR, mapped to
+       hand-written wrappers in src/common/gobject.ml *)
+    ( "GObject.Object",
+      {
+        ocaml_type = "[`object_] Gobject.obj";
+        c_to_ml = "ml_gobject_val_of_ext";
+        ml_to_c = "GObject_ext_of_val";
+        layer2_class = None;
+        c_type = "GObject*";
+        is_value_type_record = false;
+      } );
+    ( "GObject.InitiallyUnowned",
+      {
+        ocaml_type = "[`initially_unowned | `object_] Gobject.obj";
+        c_to_ml = "ml_gobject_val_of_ext";
+        ml_to_c = "GObject_ext_of_val";
+        layer2_class = None;
+        c_type = "GInitiallyUnowned*";
+        is_value_type_record = false;
+      } );
+    (* GLib.List - GList* container type, elements resolved at generation time
+       c_to_ml/ml_to_c use LIST_INLINE marker for generator to handle specially *)
+    ( "GLib.List",
+      {
+        ocaml_type = "'a list";
+        c_to_ml = "LIST_INLINE";
+        ml_to_c = "LIST_INLINE";
+        layer2_class = None;
+        c_type = "GList*";
+        is_value_type_record = false;
+      } );
+    (* GLib.SList - GSList* container type, elements resolved at generation time *)
+    ( "GLib.SList",
+      {
+        ocaml_type = "'a list";
+        c_to_ml = "LIST_INLINE";
+        ml_to_c = "LIST_INLINE";
+        layer2_class = None;
+        c_type = "GSList*";
         is_value_type_record = false;
       } );
   ]
@@ -322,7 +361,6 @@ let find_class_mapping ~ctx lookup_str =
       c_to_ml = sprintf "Val_%s" cls.c_type;
       ml_to_c = sprintf "%s_val" cls.c_type;
       c_type = cls.c_type;
-
       is_value_type_record = false;
     }
 
@@ -356,7 +394,6 @@ let find_interface_mapping ~ctx lookup_str =
       c_to_ml = sprintf "Val_%s" iface.c_type;
       ml_to_c = sprintf "%s_val" iface.c_type;
       c_type = iface.c_type;
-
       is_value_type_record = false;
     }
 
@@ -381,7 +418,6 @@ let find_record_mapping ~ctx lookup_str =
       ml_to_c = sprintf "%s_val" record.c_type;
       layer2_class = None;
       c_type = record.c_type;
-
       is_value_type_record = not record.opaque;
     }
 
@@ -403,7 +439,6 @@ let find_enum_mapping ~ctx lookup_str =
       c_to_ml = sprintf "Val_%s%s" c_namespace enum.enum_name;
       ml_to_c = sprintf "%s%s_val" c_namespace enum.enum_name;
       layer2_class = None;
-
       is_value_type_record = false;
     }
 
@@ -426,7 +461,6 @@ let find_bitfield_mapping ~ctx lookup_str =
         namespace ^ "." ^ String.lowercase_ascii bitfield.bitfield_name;
       c_to_ml = sprintf "Val_%s%s" c_namespace bitfield.bitfield_name;
       ml_to_c = sprintf "%s%s_val" c_namespace bitfield.bitfield_name;
-
       layer2_class = None;
       c_type = bitfield.bitfield_c_type;
       is_value_type_record = false;
@@ -462,49 +496,85 @@ let classify_type ~ctx (gir_type : Types.gir_type) =
       Tk_Primitive
     else Tk_Unknown
   else
-    (* Cross-namespace: check cross_references *)
+    (* Cross-namespace: check cross_references first, then hardcoded mappings *)
     match StringMap.find_opt namespace ctx.cross_references with
-    | None -> Tk_Unknown
     | Some ncr -> (
         match StringMap.find_opt name ncr.ncr_entities with
-        | None -> Tk_Unknown
         | Some cr -> (
             match cr.cr_type with
             | Crt_Enum -> Tk_Enum
             | Crt_Bitfield -> Tk_Bitfield
             | Crt_Class _ -> Tk_Class
             | Crt_Interface -> Tk_Interface
-            | Crt_Record _ -> Tk_Record))
+            | Crt_Record _ -> Tk_Record)
+        | None ->
+            if List.assoc_opt lookup_str type_mappings |> Option.is_some then
+              Tk_Primitive
+            else Tk_Unknown)
+    | None ->
+        if List.assoc_opt lookup_str type_mappings |> Option.is_some then
+          Tk_Primitive
+        else Tk_Unknown
+
+(* Option.bind operator for cleaner sequential logic *)
+let ( let* ) = Option.bind
 
 let rec find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
-  (* Handle arrays first *)
+  if is_list_type gir_type then handle_list_type ~ctx gir_type
+  else if Option.is_some gir_type.array then handle_array_type ~ctx gir_type
+  else normal_type_lookup ~ctx gir_type
+
+(** Determine C type for GList/GSList based on type name *)
+and list_c_type_of_gir_type gir_type c_type_opt =
+  Option.value c_type_opt
+    ~default:(if is_glist_type gir_type then "GList*" else "GSList*")
+
+(** Build a type mapping for a container type (array or list) with resolved
+    element type *)
+and build_container_mapping ~(element_mapping : type_mapping) ~container_suffix
+    ~c_type ~marker =
+  {
+    ocaml_type = element_mapping.ocaml_type ^ container_suffix;
+    c_type;
+    c_to_ml = marker;
+    ml_to_c = marker;
+    layer2_class = None;
+    is_value_type_record = false;
+  }
+
+(** Handle GList/GSList container types. Returns None if the element type cannot
+    be resolved (instead of generating a generic type). This ensures we only
+    generate typed lists when we can properly resolve the element type. *)
+and handle_list_type ~ctx (gir_type : Types.gir_type) =
   match gir_type.array with
-  | Some array_info -> (
-      (* Recursively resolve the element type *)
-      match find_type_mapping_for_gir_type ~ctx array_info.element_type with
-      | Some element_mapping ->
-          let ocaml_type = element_mapping.ocaml_type ^ " array" in
-          let c_type =
-            match gir_type.c_type with
-            | Some ct -> ct
-            | None -> element_mapping.c_type ^ "*"
-          in
-          Some
-            {
-              ocaml_type;
-              c_type;
-              c_to_ml = "ARRAY_INLINE";
-              (* Marker: use inline code generation *)
-              ml_to_c = "ARRAY_INLINE";
-              (* Marker: use inline code generation *)
-      
-              layer2_class = None;
-              is_value_type_record = false;
-            }
-      | None -> None)
+  | Some array_info ->
+      (* Try to resolve the element type *)
+      let* elem_mapping =
+        find_type_mapping_for_gir_type ~ctx array_info.element_type
+      in
+      let c_type =
+        Option.value gir_type.c_type
+          ~default:(list_c_type_of_gir_type gir_type None)
+      in
+      Some
+        (build_container_mapping ~element_mapping:elem_mapping
+           ~container_suffix:" list" ~c_type ~marker:"LIST_INLINE")
   | None ->
-      (* Not an array - proceed with normal type lookup *)
-      normal_type_lookup ~ctx gir_type
+      (* GList/GSList without element type info - this shouldn't happen in practice *)
+      None
+
+(** Handle array types *)
+and handle_array_type ~ctx (gir_type : Types.gir_type) =
+  let* array_info = gir_type.array in
+  let* elem_mapping =
+    find_type_mapping_for_gir_type ~ctx array_info.element_type
+  in
+  let c_type =
+    Option.value gir_type.c_type ~default:(elem_mapping.c_type ^ "*")
+  in
+  Some
+    (build_container_mapping ~element_mapping:elem_mapping
+       ~container_suffix:" array" ~c_type ~marker:"ARRAY_INLINE")
 
 and normal_type_lookup ~ctx (gir_type : Types.gir_type) =
   let try_lookup lookup_str =
@@ -528,7 +598,9 @@ and normal_type_lookup ~ctx (gir_type : Types.gir_type) =
       |> or_else (fun () -> find_enum_mapping ~ctx lookup_str)
       |> or_else (fun () -> find_bitfield_mapping ~ctx lookup_str)
       |> or_else find_hardcoded_mapping
-    else find_cross_namespace_type_mapping ~ctx ~namespace ~name
+    else
+      find_cross_namespace_type_mapping ~ctx ~namespace ~name
+      |> or_else find_hardcoded_mapping
   in
   (* Try gir_name first, then c_type if that fails *)
   gir_type.name |> try_lookup
@@ -536,19 +608,19 @@ and normal_type_lookup ~ctx (gir_type : Types.gir_type) =
       Option.bind gir_type.c_type (fun c_type -> try_lookup c_type))
 
 (** Simplify type references when they refer to the current module's type.
-    Converts patterns like "CurrentModule.t" or "CurrentModule.t option" to "t" or "t option".
-    Handles common type wrappers like "option", "array", and combinations. *)
+    Converts patterns like "CurrentModule.t" or "CurrentModule.t option" to "t"
+    or "t option". Handles common type wrappers like "option", "array", and
+    combinations. *)
 let simplify_self_reference ~class_name ~ocaml_type =
   let current_module = Utils.module_name_of_class class_name in
   let self_type = current_module ^ ".t" in
-  if String.equal ocaml_type self_type then
-    "t"
+  if String.equal ocaml_type self_type then "t"
   else
     (* Handle patterns like "Module.t array", "Module.t option", "Module.t array option", etc.
        Use a negative lookbehind for '.' to avoid replacing "Surface.t" inside
        qualified paths like "Ocgtk_cairo.Wrappers.Surface.t" *)
-    let pat = Re.(compile (seq [
-      group (alt [bos; char ' '; char '(']);
-      str self_type
-    ])) in
+    let pat =
+      Re.(
+        compile (seq [ group (alt [ bos; char ' '; char '(' ]); str self_type ]))
+    in
     Re.replace pat ~all:true ~f:(fun g -> Re.Group.get g 1 ^ "t") ocaml_type

@@ -34,5 +34,6 @@ class network_service (obj : Network_service.t) : network_service_t = object (se
 end
 
 let new_ (service : string) (protocol : string) (domain : string) : network_service_t =
-  new network_service (Network_service.new_ service protocol domain)
+  let obj_ = Network_service.new_ service protocol domain in
+  new network_service obj_
 

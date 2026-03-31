@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SearchEntry: SearchEntry *)
 
-type t = [`search_entry | `widget | `initially_unowned] Gobject.obj
+type t = [`search_entry | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new SearchEntry *)
 external new_ : unit -> t = "ml_gtk_search_entry_new"

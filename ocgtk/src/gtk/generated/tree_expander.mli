@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TreeExpander: TreeExpander *)
 
-type t = [`tree_expander | `widget | `initially_unowned] Gobject.obj
+type t = [`tree_expander | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new TreeExpander *)
 external new_ : unit -> t = "ml_gtk_tree_expander_new"
@@ -24,6 +24,15 @@ external set_child : t -> Event_controller_and__layout_child_and__layout_manager
 
 (** Gets the list row managed by @self. *)
 external get_list_row : t -> Tree_list_row.t option = "ml_gtk_tree_expander_get_list_row"
+
+(** Forwards the item set on the `GtkTreeListRow` that @self is managing.
+
+This call is essentially equivalent to calling:
+
+```c
+gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
+``` *)
+external get_item : t -> [`object_] Gobject.obj option = "ml_gtk_tree_expander_get_item"
 
 (** TreeExpander indents the child by the width of an expander-icon if it is not expandable. *)
 external get_indent_for_icon : t -> bool = "ml_gtk_tree_expander_get_indent_for_icon"

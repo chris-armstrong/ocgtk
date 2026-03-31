@@ -23,3 +23,7 @@ class settings_schema_source (obj : Settings_schema_source.t) : settings_schema_
     method as_settings_schema_source = obj
 end
 
+let new_from_directory (directory : string) (parent : Settings_schema_source.t option) (trusted : bool) : (settings_schema_source_t, GError.t) result =
+  let obj_ = Settings_schema_source.new_from_directory directory parent trusted in
+Result.map (fun obj_ ->  new settings_schema_source obj_) obj_
+

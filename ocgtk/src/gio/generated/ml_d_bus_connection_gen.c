@@ -22,6 +22,46 @@
 #include "gio_decls.h"
 
 
+CAMLexport CAMLprim value ml_g_dbus_connection_new_finish(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GDBusConnection *obj = g_dbus_connection_new_finish(GAsyncResult_val(arg1), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GDBusConnection(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_g_dbus_connection_new_for_address_finish(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GDBusConnection *obj = g_dbus_connection_new_for_address_finish(GAsyncResult_val(arg1), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GDBusConnection(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_g_dbus_connection_new_for_address_sync(value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam4(arg1, arg2, arg3, arg4);
+GError *error = NULL;
+    
+GDBusConnection *obj = g_dbus_connection_new_for_address_sync(String_val(arg1), GioDBusConnectionFlags_val(arg2), Option_val(arg3, GDBusAuthObserver_val, NULL), Option_val(arg4, GCancellable_val, NULL), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GDBusConnection(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_g_dbus_connection_new_sync(value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(arg1, arg2, arg3, arg4, arg5);
+GError *error = NULL;
+    
+GDBusConnection *obj = g_dbus_connection_new_sync(GIOStream_val(arg1), String_option_val(arg2), GioDBusConnectionFlags_val(arg3), Option_val(arg4, GDBusAuthObserver_val, NULL), Option_val(arg5, GCancellable_val, NULL), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GDBusConnection(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 CAMLexport CAMLprim value ml_g_dbus_connection_unregister_subtree(value self, value arg1)
 {
 CAMLparam2(self, arg1);

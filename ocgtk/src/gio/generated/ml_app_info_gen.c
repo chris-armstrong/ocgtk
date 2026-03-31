@@ -91,6 +91,18 @@ gboolean result = g_app_info_launch_uris_finish(GAppInfo_val(self), GAsyncResult
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+CAMLexport CAMLprim value ml_g_app_info_launch_uris(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GError *error = NULL;
+    GList* arg1_list = NULL;
+    GList_val_with(arg1, arg1_list, (gpointer)g_strdup(String_val(Field(_iter, 0))));
+
+gboolean result = g_app_info_launch_uris(GAppInfo_val(self), arg1_list, Option_val(arg2, GAppLaunchContext_val, NULL), &error);
+    g_list_free(arg1_list);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_g_app_info_get_supported_types(value self)
 {
 CAMLparam1(self);

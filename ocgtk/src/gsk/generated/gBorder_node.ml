@@ -26,5 +26,6 @@ class border_node (obj : Border_node.t) : border_node_t = object (self)
 end
 
 let new_ (outline : Rounded_rect.t) (border_width : float array) (border_color : Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t array) : border_node_t =
-  new border_node (Border_node.new_ outline border_width border_color)
+  let obj_ = Border_node.new_ outline border_width border_color in
+  new border_node obj_
 

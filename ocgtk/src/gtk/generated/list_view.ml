@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ListView: ListView *)
 
-type t = [`list_view | `list_base | `widget | `initially_unowned] Gobject.obj
+type t = [`list_view | `list_base | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new ListView *)
 external new_ : Selection_model.t option -> List_item_factory.t option -> t = "ml_gtk_list_view_new"

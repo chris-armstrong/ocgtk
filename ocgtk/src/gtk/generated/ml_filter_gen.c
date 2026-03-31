@@ -17,6 +17,14 @@
 #include "gtk_decls.h"
 
 
+CAMLexport CAMLprim value ml_gtk_filter_match(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gboolean result = gtk_filter_match(GtkFilter_val(self), GObject_ext_of_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_filter_get_strictness(value self)
 {
 CAMLparam1(self);

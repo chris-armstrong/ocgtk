@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MenuButton: MenuButton *)
 
-type t = [`menu_button | `widget | `initially_unowned] Gobject.obj
+type t = [`menu_button | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new MenuButton *)
 external new_ : unit -> t = "ml_gtk_menu_button_new"

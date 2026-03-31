@@ -95,6 +95,14 @@ gboolean result = g_task_had_error(GTask_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_g_task_get_source_object(value self)
+{
+CAMLparam1(self);
+
+gpointer result = g_task_get_source_object(GTask_val(self));
+CAMLreturn(ml_gobject_val_of_ext(result));
+}
+
 CAMLexport CAMLprim value ml_g_task_get_return_on_cancel(value self)
 {
 CAMLparam1(self);

@@ -3,6 +3,7 @@ class type column_view_row_t = object
     method get_accessible_label : unit -> string
     method get_activatable : unit -> bool
     method get_focusable : unit -> bool
+    method get_item : unit -> [`object_] Gobject.obj option
     method get_position : unit -> int
     method get_selectable : unit -> bool
     method get_selected : unit -> bool
@@ -32,6 +33,10 @@ class column_view_row (obj : Column_view_row.t) : column_view_row_t = object (se
   method get_focusable : unit -> bool =
     fun () ->
       (Column_view_row.get_focusable obj)
+
+  method get_item : unit -> [`object_] Gobject.obj option =
+    fun () ->
+      (Column_view_row.get_item obj)
 
   method get_position : unit -> int =
     fun () ->

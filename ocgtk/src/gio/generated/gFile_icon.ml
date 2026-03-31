@@ -15,5 +15,6 @@ end
 
 let new_ (file : GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume.file_t) : file_icon_t =
   let file = file#as_file in
-  new file_icon (File_icon.new_ file)
+  let obj_ = File_icon.new_ file in
+  new file_icon obj_
 

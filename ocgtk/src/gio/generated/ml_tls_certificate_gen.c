@@ -22,6 +22,46 @@
 #include "gio_decls.h"
 
 
+CAMLexport CAMLprim value ml_g_tls_certificate_new_from_file(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GTlsCertificate *obj = g_tls_certificate_new_from_file(String_val(arg1), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GTlsCertificate(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_g_tls_certificate_new_from_file_with_password(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+GError *error = NULL;
+    
+GTlsCertificate *obj = g_tls_certificate_new_from_file_with_password(String_val(arg1), String_val(arg2), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GTlsCertificate(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_g_tls_certificate_new_from_files(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+GError *error = NULL;
+    
+GTlsCertificate *obj = g_tls_certificate_new_from_files(String_val(arg1), String_val(arg2), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GTlsCertificate(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_g_tls_certificate_new_from_pkcs11_uris(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+GError *error = NULL;
+    
+GTlsCertificate *obj = g_tls_certificate_new_from_pkcs11_uris(String_val(arg1), String_option_val(arg2), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GTlsCertificate(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 CAMLexport CAMLprim value ml_g_tls_certificate_verify(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);

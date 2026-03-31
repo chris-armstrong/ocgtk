@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Paned: Paned *)
 
-type t = [`paned | `widget | `initially_unowned] Gobject.obj
+type t = [`paned | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new Paned *)
 external new_ : Gtk_enums.orientation -> t = "ml_gtk_paned_new"

@@ -22,6 +22,16 @@
 #include "gio_decls.h"
 
 
+CAMLexport CAMLprim value ml_g_charset_converter_new(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+GError *error = NULL;
+    
+GCharsetConverter *obj = g_charset_converter_new(String_val(arg1), String_val(arg2), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GCharsetConverter(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 CAMLexport CAMLprim value ml_g_charset_converter_set_use_fallback(value self, value arg1)
 {
 CAMLparam2(self, arg1);

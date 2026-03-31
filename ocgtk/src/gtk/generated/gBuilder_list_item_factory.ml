@@ -22,5 +22,6 @@ end
 
 let new_from_resource (scope : GBuilder_scope.builder_scope_t option) (resource_path : string) : builder_list_item_factory_t =
   let scope = Option.map (fun c -> c#as_builder_scope) scope in
-  new builder_list_item_factory (Builder_list_item_factory.new_from_resource scope resource_path)
+  let obj_ = Builder_list_item_factory.new_from_resource scope resource_path in
+  new builder_list_item_factory obj_
 

@@ -38,3 +38,13 @@ class d_bus_object_manager_client (obj : D_bus_object_manager_client.t) : d_bus_
     method as_d_bus_object_manager_client = obj
 end
 
+let new_finish (res : GAsync_result.async_result_t) : (d_bus_object_manager_client_t, GError.t) result =
+  let res = res#as_async_result in
+  let obj_ = D_bus_object_manager_client.new_finish res in
+Result.map (fun obj_ ->  new d_bus_object_manager_client obj_) obj_
+
+let new_for_bus_finish (res : GAsync_result.async_result_t) : (d_bus_object_manager_client_t, GError.t) result =
+  let res = res#as_async_result in
+  let obj_ = D_bus_object_manager_client.new_for_bus_finish res in
+Result.map (fun obj_ ->  new d_bus_object_manager_client obj_) obj_
+

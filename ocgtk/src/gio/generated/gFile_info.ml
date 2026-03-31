@@ -6,6 +6,7 @@ class type file_info_t = object
     method get_attribute_boolean : string -> bool
     method get_attribute_byte_string : string -> string option
     method get_attribute_file_path : string -> string option
+    method get_attribute_object : string -> [`object_] Gobject.obj option
     method get_attribute_status : string -> Gio_enums.fileattributestatus
     method get_attribute_string : string -> string option
     method get_attribute_stringv : string -> string array option
@@ -30,6 +31,7 @@ class type file_info_t = object
     method set_attribute_byte_string : string -> string -> unit
     method set_attribute_file_path : string -> string -> unit
     method set_attribute_mask : File_attribute_matcher.t -> unit
+    method set_attribute_object : string -> [`object_] Gobject.obj -> unit
     method set_attribute_status : string -> Gio_enums.fileattributestatus -> bool
     method set_attribute_string : string -> string -> unit
     method set_attribute_stringv : string -> string array -> unit
@@ -76,6 +78,10 @@ class file_info (obj : File_info.t) : file_info_t = object (self)
   method get_attribute_file_path : string -> string option =
     fun attribute ->
       (File_info.get_attribute_file_path obj attribute)
+
+  method get_attribute_object : string -> [`object_] Gobject.obj option =
+    fun attribute ->
+      (File_info.get_attribute_object obj attribute)
 
   method get_attribute_status : string -> Gio_enums.fileattributestatus =
     fun attribute ->
@@ -172,6 +178,10 @@ class file_info (obj : File_info.t) : file_info_t = object (self)
   method set_attribute_mask : File_attribute_matcher.t -> unit =
     fun mask ->
       (File_info.set_attribute_mask obj mask)
+
+  method set_attribute_object : string -> [`object_] Gobject.obj -> unit =
+    fun attribute attr_value ->
+      (File_info.set_attribute_object obj attribute attr_value)
 
   method set_attribute_status : string -> Gio_enums.fileattributestatus -> bool =
     fun attribute status ->

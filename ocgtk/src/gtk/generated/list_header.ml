@@ -22,6 +22,13 @@ external get_start : t -> int = "ml_gtk_list_header_get_start"
 If @self is unbound, 0 is returned. *)
 external get_n_items : t -> int = "ml_gtk_list_header_get_n_items"
 
+(** Gets the model item at the start of the section.
+This is the item that occupies the list model at position
+[property@Gtk.ListHeader:start].
+
+If @self is unbound, this function returns %NULL. *)
+external get_item : t -> [`object_] Gobject.obj option = "ml_gtk_list_header_get_item"
+
 (** Gets the end position in the model of the section that @self is
 currently the header for.
 

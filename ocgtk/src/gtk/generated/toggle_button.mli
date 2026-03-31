@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ToggleButton: ToggleButton *)
 
-type t = [`toggle_button | `button | `widget | `initially_unowned] Gobject.obj
+type t = [`toggle_button | `button | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new ToggleButton *)
 external new_ : unit -> t = "ml_gtk_toggle_button_new"

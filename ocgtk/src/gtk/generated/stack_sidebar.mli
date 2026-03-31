@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* StackSidebar: StackSidebar *)
 
-type t = [`stack_sidebar | `widget | `initially_unowned] Gobject.obj
+type t = [`stack_sidebar | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new StackSidebar *)
 external new_ : unit -> t = "ml_gtk_stack_sidebar_new"

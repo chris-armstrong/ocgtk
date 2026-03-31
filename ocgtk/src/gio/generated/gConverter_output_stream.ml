@@ -18,5 +18,6 @@ end
 let new_ (base_stream : GOutput_stream.output_stream_t) (converter : GConverter.converter_t) : converter_output_stream_t =
   let base_stream = base_stream#as_output_stream in
   let converter = converter#as_converter in
-  new converter_output_stream (Converter_output_stream.new_ base_stream converter)
+  let obj_ = Converter_output_stream.new_ base_stream converter in
+  new converter_output_stream obj_
 

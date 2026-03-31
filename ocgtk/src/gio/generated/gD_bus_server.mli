@@ -14,3 +14,4 @@ end
 
 class d_bus_server : D_bus_server.t -> d_bus_server_t
 
+val new_sync : string -> Gio_enums.dbusserverflags -> string -> GD_bus_auth_observer.d_bus_auth_observer_t option -> GCancellable.cancellable_t option -> (d_bus_server_t, GError.t) result

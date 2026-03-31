@@ -132,9 +132,11 @@ let new_with_entry () : combo_box_t =
 
 let new_with_model (model : GTree_model.tree_model_t) : combo_box_t =
   let model = model#as_tree_model in
-  new combo_box (Combo_box.new_with_model model)
+  let obj_ = Combo_box.new_with_model model in
+  new combo_box obj_
 
 let new_with_model_and_entry (model : GTree_model.tree_model_t) : combo_box_t =
   let model = model#as_tree_model in
-  new combo_box (Combo_box.new_with_model_and_entry model)
+  let obj_ = Combo_box.new_with_model_and_entry model in
+  new combo_box obj_
 

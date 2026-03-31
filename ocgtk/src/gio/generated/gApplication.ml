@@ -3,6 +3,7 @@
 class type application_t = object
     inherit Gapplication_signals.application_signals
     method activate : unit -> unit
+    method bind_busy_property : [`object_] Gobject.obj -> string -> unit
     method get_application_id : unit -> string option
     method get_dbus_connection : unit -> GD_bus_connection.d_bus_connection_t option
     method get_dbus_object_path : unit -> string option
@@ -30,6 +31,7 @@ class type application_t = object
     method set_option_context_summary : string option -> unit
     method set_resource_base_path : string option -> unit
     method set_version : string -> unit
+    method unbind_busy_property : [`object_] Gobject.obj -> string -> unit
     method unmark_busy : unit -> unit
     method withdraw_notification : string -> unit
     method as_application : Application.t
@@ -42,6 +44,10 @@ class application (obj : Application.t) : application_t = object (self)
   method activate : unit -> unit =
     fun () ->
       (Application.activate obj)
+
+  method bind_busy_property : [`object_] Gobject.obj -> string -> unit =
+    fun object_ property ->
+      (Application.bind_busy_property obj object_ property)
 
   method get_application_id : unit -> string option =
     fun () ->
@@ -153,6 +159,10 @@ class application (obj : Application.t) : application_t = object (self)
     fun version ->
       (Application.set_version obj version)
 
+  method unbind_busy_property : [`object_] Gobject.obj -> string -> unit =
+    fun object_ property ->
+      (Application.unbind_busy_property obj object_ property)
+
   method unmark_busy : unit -> unit =
     fun () ->
       (Application.unmark_busy obj)
@@ -165,5 +175,6 @@ class application (obj : Application.t) : application_t = object (self)
 end
 
 let new_ (application_id : string option) (flags : Gio_enums.applicationflags) : application_t =
-  new application (Application.new_ application_id flags)
+  let obj_ = Application.new_ application_id flags in
+  new application obj_
 

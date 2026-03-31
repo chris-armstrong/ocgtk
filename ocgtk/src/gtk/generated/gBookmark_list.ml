@@ -45,5 +45,6 @@ class bookmark_list (obj : Bookmark_list.t) : bookmark_list_t = object (self)
 end
 
 let new_ (filename : string option) (attributes : string option) : bookmark_list_t =
-  new bookmark_list (Bookmark_list.new_ filename attributes)
+  let obj_ = Bookmark_list.new_ filename attributes in
+  new bookmark_list obj_
 

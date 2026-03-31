@@ -38,5 +38,6 @@ end
 
 let new_ (application : GApplication_and__window_and__window_group.application_t) : application_window_t =
   let application = application#as_application in
-  new application_window (Application_window.new_ application)
+  let obj_ = Application_window.new_ application in
+  new application_window obj_
 

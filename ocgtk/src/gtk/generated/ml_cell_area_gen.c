@@ -173,6 +173,17 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
+CAMLexport CAMLprim value ml_gtk_cell_area_get_focus_siblings(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = gtk_cell_area_get_focus_siblings(GtkCellArea_val(self), GtkCellRenderer_val(arg1));
+Val_GList_with(c_result, result, item, cell, Val_GtkCellRenderer((gpointer)_tmp->data));
+    g_list_free(c_result);
+    CAMLreturn(result);
+}
+
 CAMLexport CAMLprim value ml_gtk_cell_area_get_focus_from_sibling(value self, value arg1)
 {
 CAMLparam2(self, arg1);

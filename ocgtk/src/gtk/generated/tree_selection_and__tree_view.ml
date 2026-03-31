@@ -117,7 +117,7 @@ end
 
 and Tree_view
  : sig
-  type t = [`tree_view | `widget | `initially_unowned] Gobject.obj
+  type t = [`tree_view | `widget | `initially_unowned | `object_] Gobject.obj
 
   (** Create a new TreeView *)
   external new_ : unit -> t = "ml_gtk_tree_view_new"
@@ -433,6 +433,10 @@ and Tree_view
   (** Returns whether or not the tree allows to start interactive searching
   by typing in text. *)
   external get_enable_search : t -> bool = "ml_gtk_tree_view_get_enable_search"
+
+  (** Returns a `GList` of all the `GtkTreeViewColumn`s currently in @tree_view.
+  The returned list must be freed with g_list_free (). *)
+  external get_columns : t -> Tree_view_column.t list = "ml_gtk_tree_view_get_columns"
 
   (** Gets the `GtkTreeViewColumn` at the given position in the #tree_view. *)
   external get_column : t -> int -> Tree_view_column.t option = "ml_gtk_tree_view_get_column"
@@ -531,7 +535,7 @@ and Tree_view
 
 
 end = struct
-  type t = [`tree_view | `widget | `initially_unowned] Gobject.obj
+  type t = [`tree_view | `widget | `initially_unowned | `object_] Gobject.obj
 
   (** Create a new TreeView *)
   external new_ : unit -> t = "ml_gtk_tree_view_new"
@@ -847,6 +851,10 @@ end = struct
   (** Returns whether or not the tree allows to start interactive searching
   by typing in text. *)
   external get_enable_search : t -> bool = "ml_gtk_tree_view_get_enable_search"
+
+  (** Returns a `GList` of all the `GtkTreeViewColumn`s currently in @tree_view.
+  The returned list must be freed with g_list_free (). *)
+  external get_columns : t -> Tree_view_column.t list = "ml_gtk_tree_view_get_columns"
 
   (** Gets the `GtkTreeViewColumn` at the given position in the #tree_view. *)
   external get_column : t -> int -> Tree_view_column.t option = "ml_gtk_tree_view_get_column"

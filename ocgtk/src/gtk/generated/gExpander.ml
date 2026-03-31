@@ -87,8 +87,10 @@ class expander (obj : Expander.t) : expander_t = object (self)
 end
 
 let new_ (label : string option) : expander_t =
-  new expander (Expander.new_ label)
+  let obj_ = Expander.new_ label in
+  new expander obj_
 
 let new_with_mnemonic (label : string option) : expander_t =
-  new expander (Expander.new_with_mnemonic label)
+  let obj_ = Expander.new_with_mnemonic label in
+  new expander obj_
 

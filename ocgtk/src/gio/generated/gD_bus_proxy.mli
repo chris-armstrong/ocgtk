@@ -27,3 +27,7 @@ end
 
 class d_bus_proxy : D_bus_proxy.t -> d_bus_proxy_t
 
+val new_finish : GAsync_result.async_result_t -> (d_bus_proxy_t, GError.t) result
+val new_for_bus_finish : GAsync_result.async_result_t -> (d_bus_proxy_t, GError.t) result
+val new_for_bus_sync : Gio_enums.bustype -> Gio_enums.dbusproxyflags -> D_bus_interface_info.t option -> string -> string -> string -> GCancellable.cancellable_t option -> (d_bus_proxy_t, GError.t) result
+val new_sync : GD_bus_connection.d_bus_connection_t -> Gio_enums.dbusproxyflags -> D_bus_interface_info.t option -> string option -> string -> string -> GCancellable.cancellable_t option -> (d_bus_proxy_t, GError.t) result

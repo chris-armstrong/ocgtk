@@ -14,5 +14,6 @@ class string_object (obj : String_object.t) : string_object_t = object (self)
 end
 
 let new_ (string : string) : string_object_t =
-  new string_object (String_object.new_ string)
+  let obj_ = String_object.new_ string in
+  new string_object obj_
 

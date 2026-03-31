@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Fixed: Fixed *)
 
-type t = [`fixed | `widget | `initially_unowned] Gobject.obj
+type t = [`fixed | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new Fixed *)
 external new_ : unit -> t = "ml_gtk_fixed_new"

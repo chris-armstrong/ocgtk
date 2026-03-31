@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* InfoBar: InfoBar *)
 
-type t = [`info_bar | `widget | `initially_unowned] Gobject.obj
+type t = [`info_bar | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new InfoBar *)
 external new_ : unit -> t = "ml_gtk_info_bar_new"

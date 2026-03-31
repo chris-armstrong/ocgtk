@@ -343,6 +343,10 @@ let nullable_c_to_ml_expr ~ctx ~var ~(gir_type : gir_type)
 
 let nullable_ml_to_c_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping)
     =
+  (* Handle LIST_INLINE marker - should not reach here, handled by caller *)
+  if String.equal mapping.ml_to_c "LIST_INLINE" then
+    failwith "nullable_ml_to_c_expr: LIST_INLINE should be handled by caller before reaching here"
+  else
   (* Check for string types with transfer-ownership="full" - need to copy to mutable buffer *)
   match gir_type.transfer_ownership with
   | TransferFull when is_string_type gir_type.c_type ->

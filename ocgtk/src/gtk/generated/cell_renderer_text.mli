@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CellRendererText: CellRendererText *)
 
-type t = [`cell_renderer_text | `cell_renderer | `initially_unowned] Gobject.obj
+type t = [`cell_renderer_text | `cell_renderer | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new CellRendererText *)
 external new_ : unit -> t = "ml_gtk_cell_renderer_text_new"

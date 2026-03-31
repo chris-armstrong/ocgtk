@@ -30,6 +30,20 @@ g_file_enumerator_set_pending(GFileEnumerator_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_file_enumerator_next_files_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = g_file_enumerator_next_files_finish(GFileEnumerator_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) {
+        Val_GList_with(c_result, result, item, cell, Val_GFileInfo((gpointer)_tmp->data));
+    g_list_free(c_result);
+        CAMLreturn(Res_Ok(result));
+    } else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_g_file_enumerator_next_file(value self, value arg1)
 {
 CAMLparam2(self, arg1);
