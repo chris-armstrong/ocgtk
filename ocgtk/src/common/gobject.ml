@@ -13,6 +13,8 @@
 
 (** GObject module for GTK4 type system, properties, and signals *)
 
+let () = Callback.register "Printexc.to_string" Printexc.to_string
+
 (** {2 Core Types} *)
 
 type -'a obj
@@ -138,6 +140,9 @@ module Value = struct
 
   external get_int : t -> int = "ml_g_value_get_int"
   external set_int : t -> int -> unit = "ml_g_value_set_int"
+
+  external get_uint : t -> int = "ml_g_value_get_uint"
+  external set_uint : t -> int -> unit = "ml_g_value_set_uint"
 
   external get_boolean : t -> bool = "ml_g_value_get_boolean"
   external set_boolean : t -> bool -> unit = "ml_g_value_set_boolean"

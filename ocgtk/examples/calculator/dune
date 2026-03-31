@@ -1,0 +1,24 @@
+(library
+ (name calc_core)
+ (modules calc_expr calc_state)
+ (libraries containers)
+ (preprocess (pps ppx_deriving.eq))
+)
+
+(executable
+ (name calculator)
+ (modules calculator calc_ui)
+ (libraries calc_core ocgtk.gtk ocgtk.gio ocgtk.pango)
+)
+
+(test
+ (name test_calc_expr)
+ (modules test_calc_expr)
+ (libraries calc_core alcotest)
+)
+
+(test
+ (name test_calc_state)
+ (modules test_calc_state)
+ (libraries calc_core alcotest)
+)

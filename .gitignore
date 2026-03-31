@@ -1,6 +1,7 @@
 _build
 .merlin
 *.install
+__pycache__/
 .claude/scratchpad/
 .opencode/scratchpad/
 

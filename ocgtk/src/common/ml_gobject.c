@@ -309,6 +309,23 @@ CAMLprim value ml_g_value_set_int(value val, value i)
     CAMLreturn(Val_unit);
 }
 
+CAMLprim value ml_g_value_get_uint(value val)
+{
+    CAMLparam1(val);
+    GValue *gv = GValue_val(val);
+    if (!G_VALUE_HOLDS_UINT(gv))
+        caml_invalid_argument("g_value_get_uint: not a uint");
+    CAMLreturn(Val_int(g_value_get_uint(gv)));
+}
+
+CAMLprim value ml_g_value_set_uint(value val, value i)
+{
+    CAMLparam2(val, i);
+    GValue *gv = GValue_val(val);
+    g_value_set_uint(gv, Int_val(i));
+    CAMLreturn(Val_unit);
+}
+
 CAMLprim value ml_g_value_get_boolean(value val)
 {
     CAMLparam1(val);
@@ -503,7 +520,6 @@ CAMLprim value ml_g_object_notify(value obj, value prop_name)
 void finalise_gclosure(value v) {
     GClosure *closure = GClosure_val(v);
     g_closure_unref(closure);
-    printf("[f][clos]  %p\n", closure);
 }
 
 
@@ -545,7 +561,6 @@ static value Val_GClosure_sink(GClosure *closure)
  */
 static void ml_closure_invalidate(gpointer data, GClosure *closure)
 {
-    printf("[i][clos]  %p\n", closure);
     /* closure->data contains the OCaml closure value */
     caml_remove_global_root((value*)&closure->data);
 }
@@ -595,10 +610,19 @@ static void ml_closure_marshal(GClosure *closure,
 
     /* Check for exceptions */
     if (Is_exception_result(result)) {
-        /* Log the exception for debugging */
         exn = Extract_exception(result);
-        /* Note: We can't do much here except log - GLib doesn't have exception handling */
-        /* In production, consider logging to a file or using g_warning */
+        /* Format and log the exception so closure failures are visible */
+        const value *exn_to_string = caml_named_value("Printexc.to_string");
+        if (exn_to_string != NULL) {
+            value msg = caml_callback_exn(*exn_to_string, exn);
+            if (!Is_exception_result(msg)) {
+                g_warning("OCaml closure exception: %s", String_val(msg));
+            } else {
+                g_warning("OCaml closure exception (could not format)");
+            }
+        } else {
+            g_warning("OCaml closure exception (Printexc.to_string not registered)");
+        }
     }
 
     /* Copy result back if needed */

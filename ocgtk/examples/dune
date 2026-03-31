@@ -13,7 +13,7 @@
 (executable
  (name counter)
  (modules counter)
- (libraries ocgtk.gtk))
+ (libraries ocgtk.gtk ocgtk.gio))
 
 (executable
  (name settings_panel)

@@ -79,7 +79,7 @@ Full keyboard mapping via `EventControllerKey`:
 
 ### GTK CSS Styling — MUST HAVE
 - Create `CssProvider`, call `load_from_string` with flat modern styling
-- Apply via `Style_context.add_provider` (requires CssProvider → StyleProvider cast)
+- Apply via `Style_context.add_provider` (requires CssProvider → StyleProvider cast, priority=600 for `GTK_STYLE_PROVIDER_PRIORITY_APPLICATION`)
 - Use `widget#add_css_class` for class-based styling (buttons, display)
 
 ## Known Technical Issues
@@ -100,18 +100,15 @@ external css_provider_as_style_provider : Css_provider.t -> Style_provider.t
   = "ml_gtk_css_provider_as_style_provider"
 ```
 
-### 2. No `g_application_run()` binding
-The `run` method is not generated for `Gio.Application`.
-
-**Fix approach**: Use manual signal connection for `activate`:
+### 2. ~~No `g_application_run()` binding~~ RESOLVED
+`Gio.Application.run` is now generated. The `on_activate` signal is also generated on `Application`.
+Use the same pattern as `counter.ml`:
 ```ocaml
-let on_activate app callback =
-  let closure = Gobject.Closure.create (fun _argv -> callback ()) in
-  ignore (Gobject.Signal.connect app ~name:"activate" ~callback:closure ~after:false)
+let app = Application.new_ (Some "org.ocgtk.Calculator") [`DEFAULT_FLAGS] in
+ignore (app#on_activate ~callback:(fun () -> activate app));
+let status = app#run 0 None in
+exit status
 ```
-Then call `GMain.init()`, create app, connect activate, and use `GMain.main()`.
-
-**Alternative**: Add a manual C stub for `g_application_run`.
 
 ### 3. No generated key-pressed/key-released signals
 `EventControllerKey` signals only generate `on_im_update`. The `key-pressed` signal has a complex signature (`guint keyval, guint keycode, GdkModifierType → gboolean`).
@@ -120,15 +117,17 @@ Then call `GMain.init()`, create app, connect activate, and use `GMain.main()`.
 ```ocaml
 let on_key_pressed controller callback =
   let closure = Gobject.Closure.create (fun argv ->
-    let keyval = Gobject.Closure.nth argv 1 |> Gobject.Value.get_uint in
-    let _keycode = Gobject.Closure.nth argv 2 |> Gobject.Value.get_uint in
+    let keyval = Gobject.Closure.nth argv 1 |> Gobject.Value.get_int in
+    let _keycode = Gobject.Closure.nth argv 2 |> Gobject.Value.get_int in
     let _modifiers = Gobject.Closure.nth argv 3 |> Gobject.Value.get_int in
     let handled = callback keyval in
     Gobject.Value.set_boolean (Gobject.Closure.result argv) handled
   ) in
   ignore (Gobject.Signal.connect controller ~name:"key-pressed" ~callback:closure ~after:false)
 ```
-Need to verify `Gobject.Value.get_uint` exists or use appropriate accessor.
+**Note**: `Gobject.Value.get_uint` does not exist. Use `get_int` instead — the values
+(keyval, keycode) fit in OCaml int. Available Value accessors: `get_int`, `get_boolean`,
+`get_string`, `get_float`, `get_double`, `get_object`.
 
 ### 4. No `pango_attr_font_desc_new()` binding
 AttrFontDesc has no constructor generated.
@@ -137,9 +136,20 @@ AttrFontDesc has no constructor generated.
 ```ocaml
 label#set_markup "<span font_desc=\"Monospace Bold 24\">0</span>"
 ```
-Or use CSS classes instead.
+Or use CSS classes instead (preferred — the CSS theme already sets font styling).
 
-### 5. `0` button spanning 2 columns — NICE TO HAVE
+### 5. `PANGO_SCALE` constant not exposed
+GIR defines `<constant name="SCALE" value="1024">` but the generator does not yet
+handle `<constant>` elements. Constants are first-class GIR artifacts (Pango has 13,
+GTK has 97, GDK has 2287, Gio has 130).
+
+**Workaround**: Hardcode `let pango_scale = 1024` if needed. The CSS/markup approach
+for font styling avoids needing this constant entirely.
+
+**Future**: Add `<constant>` generation to gir_gen — straightforward `let` bindings
+for typed values.
+
+### 6. `0` button spanning 2 columns — NICE TO HAVE
 `Grid.attach` supports width/height span parameters. Should work but needs verification.
 
 ## Module Structure
@@ -246,7 +256,7 @@ Entry point:
 | Signal | Widget | Method |
 |--------|--------|--------|
 | clicked | Button | `button#on_clicked` (generated) |
-| activate | Gio.Application | Manual via `Gobject.Signal.connect` |
+| activate | Gio.Application | `app#on_activate` (generated) |
 | key-pressed | EventControllerKey | Manual via `Gobject.Signal.connect` |
 | close-request | Window | Manual via `Gobject.Signal.connect` (pattern from counter.ml) |
 
@@ -263,43 +273,338 @@ Entry point:
 
 Tests live alongside the calculator in `examples/calculator/`.
 
-### Approach
-- Run calculator under `xvfb-run`
-- Use `xdotool` for input simulation (keyboard typing, mouse clicks)
-  - If AT-SPI bindings are available, prefer those for semantic widget interaction
-- Automated validation: capture widget state (label text) to verify functionality
-- Screenshot capture for manual visual review
+### Approach: AT-SPI Accessibility Testing ✅ IMPLEMENTED
 
-### Test Cases
-1. **Digit entry**: type `123`, verify expression display shows `123`
-2. **Basic arithmetic**: type `2+3=`, verify result shows `5`
-3. **Operator precedence**: type `2+3*4=`, verify result shows `14`
-4. **Parentheses**: type `(2+3)*4=`, verify result shows `20`
-5. **Division by zero**: type `1/0=`, verify error state
-6. **Clear**: type `123`, press C, verify cleared
-7. **Backspace**: type `123`, backspace, verify `12`
-8. **Paren auto-close**: type `2*(3+4=`, verify result shows `14`
-9. **Invalid paren close**: type `2*(3+=`, verify error
-10. **Keyboard input**: full keyboard-driven test
-11. **Button clicks**: mouse-driven test via xdotool coordinates or AT-SPI
+**Status**: AT-SPI test harness created 2026-03-26
 
-### Test Harness
-OCaml test executable that:
-1. Launches calculator as subprocess
-2. Waits for window to appear
-3. Sends input via xdotool
-4. Captures screenshots via xdotool/import
-5. Validates output (method TBD — possibly reading widget text via AT-SPI, or screenshot OCR as fallback)
+We use the **Accessibility Service Provider Interface (AT-SPI)** for E2E testing:
+- **Widget Discovery**: AT-SPI exposes the GTK widget hierarchy via accessibility names (button labels)
+- **Action Simulation**: `Atspi.Action.do_action(0)` simulates button clicks
+- **State Verification**: Read label text via accessible interfaces to verify calculations
+- **Language Bridge**: Python AT-SPI bindings control the OCaml application
 
-## Implementation Sequence
+**Why AT-SPI over xdotool:**
+1. Semantic widget interaction (find by label, not coordinates)
+2. No need to calculate button positions
+3. Works with layout changes
+4. Standard accessibility interface (tests real user-facing accessibility)
+5. Cross-platform potential (AT-SPI on Linux, AX API on macOS, UI Automation on Windows)
 
-1. **calc_expr.ml** — expression parser/evaluator (pure, testable standalone)
-2. **calc_state.ml** — state machine wrapping calc_expr
-3. **calc_ui.ml** — basic window + vbox + two labels + grid with buttons + click handlers
-4. **calculator.ml** — GtkApplication entry point with activate signal
-5. **CssProvider cast fix** — small C stub for StyleProvider interface
-6. **CSS styling** — flat modern theme via CssProvider
-7. **Keyboard input** — EventControllerKey with manual signal connection
-8. **Pango font styling** — FontDescription or markup for result display
-9. **E2E test harness** — xdotool-based test runner
-10. **0-button column span** — if time permits
+### Test Files
+- `test_calculator_atspi.py` — Python test harness using AT-SPI
+- `README_ATSPI.md` — Documentation for running AT-SPI tests
+
+**Prerequisites:**
+```bash
+# Install system GTK/AT-SPI libraries
+sudo apt-get install python3-gi gir1.2-atspi-2.0
+```
+
+**Running Tests:**
+```bash
+# Terminal 1: Start calculator
+cd ocgtk && ./_build/default/examples/calculator/calculator.exe
+
+# Terminal 2: Run AT-SPI tests
+cd ocgtk/examples/calculator
+python3 test_calculator_atspi.py
+```
+
+### Test Cases Implemented
+1. ✓ **Basic arithmetic**: `2 + 3 = 5`
+2. ✓ **Chained operations**: `(2 + 3) * 4 = 20` — validates `=` behavior fix
+3. ✓ **Clear button**: Resets calculator state
+
+### Future E2E Enhancements
+- [ ] Keyboard input simulation via `Atspi.KeySynth`
+- [ ] Screenshot comparison for visual regression
+- [ ] Property-based testing (random expression generation)
+- [ ] CI integration with Xvfb + dbus-run-session
+- [ ] Error state testing (division by zero, malformed input)
+- [ ] Performance testing (rapid input handling)
+
+## Recent Changes
+
+### Equals Button Behavior Fix (2026-03-26)
+**Issue**: After pressing `=`, the expression was not cleared, causing chained operations to use the wrong base value.
+
+**Example of bug:**
+- Enter `2+3=` → result shows `5`, expression still shows `2+3`
+- Press `*` → expression becomes `2+3*` (wrong!)
+- Press `4=` → evaluates `2+3*4 = 14` instead of `(2+3)*4 = 20`
+
+**Fix in `calc_state.ml:evaluate`:**
+After successful evaluation, set expression to the result value:
+```ocaml
+if error then { t with result = result_str; error }
+else { expression = result_str; result = result_str; error }
+```
+
+**Behavior after fix:**
+- Enter `2+3=` → expression becomes `5`, result is `5`
+- Press `*` → expression becomes `5*`
+- Press `4=` → evaluates `5*4 = 20` ✓
+
+This matches standard calculator behavior (Windows Calculator, macOS Calculator, etc.).
+
+### Unit Tests Status
+All unit tests passing:
+- `test_calc_expr.ml` — 20 tests for expression evaluation
+- `test_calc_state.ml` — 17 tests for state machine
+- Run via: `dune runtest examples/calculator`
+
+## Implementation Stages
+
+Each stage has a clear deliverable and verification step. Do not proceed to the next
+stage until the current one passes its verification.
+
+---
+
+### Stage 1: App Shell
+**Goal**: Minimal GtkApplication that opens a window and can be closed cleanly.
+
+**Deliverable**: `calculator.ml` — single file, no other modules yet.
+- `GtkApplication` with app ID `"org.ocgtk.Calculator"`
+- `on_activate` creates a `Window` with title "OCaml GTK4 Calculator", default size 400x500
+- Window is presented and can be closed normally
+
+**Files**: `examples/calculator/calculator.ml`, `examples/calculator/dune`
+
+**Verification**:
+- `dune build` succeeds
+- `xvfb-run dune exec examples/calculator/calculator.exe` starts without crash
+- Interactive: window appears, closes with window manager close button
+- Process exits with status 0 after window close
+
+---
+
+### Stage 2: Button Grid Layout
+**Goal**: All calculator buttons displayed in correct grid layout with two display labels.
+
+**Deliverable**: `calc_ui.ml` + updated `calculator.ml`
+- Vertical `Box` containing:
+  - Expression label (top, right-aligned, shows placeholder text e.g. "0")
+  - Result label (below expression, right-aligned, shows "0")
+  - `Grid` (4 columns x 5 rows, homogeneous) with all buttons:
+    Row 0: C ( ) /  |  Row 1: 7 8 9 *  |  Row 2: 4 5 6 -  |  Row 3: 1 2 3 +  |  Row 4: 0 . =
+- Buttons have correct labels, no click handlers yet (just layout)
+
+**Files**: `examples/calculator/calc_ui.ml`, update `calculator.ml` and `dune`
+
+**Verification**:
+- `dune build` succeeds
+- Interactive: launch app, visually confirm 5x4 grid of buttons plus two label rows
+- Take screenshot under `xvfb-run` for review: `xvfb-run -- bash -c 'dune exec examples/calculator/calculator.exe & sleep 1 && import -window root /tmp/calc_stage2.png && kill %1'`
+
+---
+
+### Stage 3: Pango Cross-Namespace Styling ✅ COMPLETE
+**Status**: Completed 2026-03-25
+
+**Goal**: Validate GTK→Pango cross-namespace type flow early, while the UI is simple.
+
+**Deliverable**: Update result label to use `Label.set_markup` with Pango font description.
+- Result label rendered with `<span font_desc="Monospace Bold 24">0</span>`
+- Expression label uses smaller dim styling via markup (e.g. `<span font_desc="Monospace 12" foreground="#aaaaaa">`)
+- Demonstrates cross-namespace type flow: Pango markup interpreted by GTK Label
+
+**Files**: Update `calc_ui.ml`
+
+**Verification**:
+- `dune build` succeeds
+- Interactive/screenshot: result text is visibly larger and bolder than expression text
+- Both labels use monospace font
+- Screenshot: `xvfb-run -- bash -c 'dune exec examples/calculator/calculator.exe & sleep 1 && import -window root /tmp/calc_stage3.png && kill %1'`
+
+---
+
+### Stage 4: Expression Parser ✅ COMPLETE
+**Status**: Completed 2026-03-25
+
+**Goal**: Pure OCaml expression evaluator with operator precedence and parentheses.
+
+**Deliverable**: `calc_expr.ml` + `test_calc_expr.ml` + `calc_expr.mli`
+- Tokenizer: string → token list (numbers, operators `+-*/`, parens, decimal point)
+- Recursive descent parser with correct precedence (`*`/`/` before `+`/`-`)
+- Evaluator: token list → `(float, string) result`
+- Parenthesis auto-close: if unclosed parens at end, auto-close when valid, error when not
+- Error cases: division by zero, malformed expressions, unbalanced parens
+
+**Files**: `examples/calculator/calc_expr.ml`, `examples/calculator/test_calc_expr.ml`, update `dune`
+
+**Test cases** (20 unit tests in `test_calc_expr.ml`, run via `dune runtest`):
+- Basic arithmetic: `"2+3"` → `Ok 5.0`
+- Operator precedence: `"2+3*4"` → `Ok 14.0`
+- Parentheses: `"(2+3)*4"` → `Ok 20.0`
+- Division by zero: `"10/0"` → `Error`
+- Empty expression: `""` → `Error`
+- Auto-close parens: `"2*(3+4"` → `Ok 14.0`
+- Invalid auto-close: `"2*(3+"` → `Error`
+- Decimals: `"3.14*2"` → `Ok 6.28`
+- Whitespace tolerance: `"  2 + 3  "` → `Ok 5.0`
+- Nested parens: `"((2+3))"` → `Ok 5.0`
+- Multiple unclosed: `"((2+3"` → `Ok 5.0`
+- Deeply nested: `"(((1+2)+3)+4)"` → `Ok 10.0`
+- Negative numbers: `"-5"` → `Ok -5.0`
+- Safe evaluate exception handling
+- Plus 6 more tests covering edge cases
+
+**Verification**:
+- ✅ `dune build` succeeds
+- ✅ `dune runtest examples/calculator` passes all 20 tests
+
+**Implementation Notes**:
+- Uses `Result.Syntax` bind operators (`let*`) for clean evaluator code
+- Array-based token access for O(1) lookup (avoids banned `List.nth`)
+- Minimal public interface via `calc_expr.mli` (only 5 exposed functions)
+- Type-safe token equality via `[@@deriving eq]`
+- Left-associative chaining: `8/2*3 = 12`, not `8/(2*3)`
+
+---
+
+### Stage 5: Calculator State Machine ✅ COMPLETE
+**Status**: Completed 2026-03-25, equals behavior fix 2026-03-26
+
+**Goal**: State module that mediates between raw input events and the expression evaluator.
+
+**Deliverable**: `calc_state.ml` + `test_calc_state.ml`
+- `type t = { expression: string; result: string; error: bool }`
+- `create ()` → initial state
+- `append_char t c` → appends digit/operator/paren to expression
+- `backspace t` → removes last character
+- `clear t` → resets to initial state
+- `evaluate t` → runs `calc_expr.evaluate`, updates result/error fields, **clears expression to result on success**
+- Input validation: prevent consecutive operators, leading operators (except minus), etc.
+
+**Files**: `examples/calculator/calc_state.ml`, `examples/calculator/test_calc_state.ml`, update `dune`
+
+**Test cases** (17 tests):
+- `create() |> append '1' |> append '2' |> append '3'` → expression = `"123"`
+- `... |> backspace` → expression = `"12"`
+- `... |> clear` → expression = `""`, result = `"0"`, error = false
+- `append '2' |> append '+' |> append '3' |> evaluate` → result = `"5"`, expression = `"5"`
+- **Chained operations**: After `2+3=`, pressing `*4=` yields `20` (not `14`)
+- After error, `append` is blocked; only `clear` works
+- Consecutive operator replacement: `2+*` → `2*` (last operator wins)
+
+**Verification**:
+- ✅ `dune build` succeeds
+- ✅ `dune runtest examples/calculator` passes all 17 tests
+- ✅ AT-SPI E2E test validates chained operation `(2+3)*4=20`
+
+---
+
+### Stage 6: Button Click Handling ✅ COMPLETE
+**Status**: Completed 2026-03-25
+
+**Goal**: Clicking buttons updates the display labels via the state machine.
+
+**Deliverable**: Updated `calc_ui.ml` — wire button `on_clicked` signals to `calc_state`.
+- Each button click calls appropriate `calc_state` function
+- Expression label updates to show current expression
+- Result label updates when `=` is pressed
+- `C` button clears both displays
+- Error state shows "Error" in result label
+
+**Files**: `examples/calculator/calc_ui.ml`, update `dune`
+
+**Verification**:
+- ✅ `dune build` succeeds
+- ✅ Interactive: launch app, click buttons, confirm expression label updates live
+- ✅ Click `2`, `+`, `3`, `=` → result shows `5`
+- ✅ Click `C` → both displays reset
+- ✅ Click `1`, `/`, `0`, `=` → result shows "Error"
+- ✅ AT-SPI E2E tests validate button click behavior
+
+---
+
+### Stage 7: Keyboard Input ✅ COMPLETE
+**Status**: Completed 2026-03-30
+
+**Goal**: Full keyboard control via `EventControllerKey`.
+
+**Deliverable**: Keyboard handler in `calc_ui.ml`
+- Manual `key-pressed` signal connection via `Gobject.Signal.connect` (see Known Issue #3)
+- Key mappings: `0-9`, `.`, `+`, `-`, `*`, `/`, `(`, `)`, Enter/`=`, Escape, Backspace
+- Same state machine flow as button clicks
+
+**Files**: Update `calc_ui.ml`
+
+**Verification**:
+- ✅ `dune build` succeeds
+- Interactive: launch app, type `2+3` then Enter → result shows `5`
+- Escape clears, Backspace deletes last char
+
+**Implementation Notes**:
+- Printable ASCII keyvals (0x20–0x7e) map directly to `Char.chr` — no per-key special cases needed
+- GDK_KEY_* constants hardcoded (Return=0xff0d, KP_Enter=0xff8d, Escape=0xff1b, Backspace=0xff08) pending Milestone 4 constant generation
+- Controller attached to window (not individual buttons) so keyboard works regardless of focus
+- L2 coercion required: `(key_controller :> Event_controller.event_controller_t)`
+
+---
+
+### Stage 8: E2E Test Harness ✅ COMPLETE
+**Status**: Completed 2026-03-26 (AT-SPI approach)
+
+**Goal**: Automated E2E test harness using AT-SPI for semantic widget interaction.
+
+**Deliverable**: `test_calculator_atspi.py` + `README_ATSPI.md`
+- Python-based AT-SPI test harness (see E2E Testing section above)
+- Uses `Atspi.Action.do_action()` for button click simulation
+- Validates calculations by reading accessible label text
+- Tests:
+  - Basic arithmetic: `2+3=` → result shows `5`
+  - Chained operations: `(2+3)*4=` → result shows `20` (validates equals behavior fix)
+  - Clear button: resets calculator to initial state
+
+**Files**: `examples/calculator/test_calculator_atspi.py`, `examples/calculator/README_ATSPI.md`
+
+**Why AT-SPI instead of xdotool:**
+- Semantic widget discovery (find by label, not screen coordinates)
+- More robust to layout changes
+- Tests real accessibility (screen reader compatibility)
+- Cross-platform potential (AX API on macOS, UI Automation on Windows)
+
+**Verification**:
+- ✅ `dune build` succeeds
+- ✅ AT-SPI tests run with: `python3 test_calculator_atspi.py`
+- ✅ All test cases pass (basic arithmetic, chained operations, clear)
+
+---
+
+### Stage 9: CSS Styling
+**Goal**: Flat modern theme applied via CssProvider.
+
+**Deliverable**: CSS theme + C stub for CssProvider→StyleProvider cast
+- C stub: `ml_gtk_css_provider_as_style_provider` (see Known Issue #1)
+- CSS classes applied to buttons (operator, equals, clear) and display labels
+- `CssProvider.load_from_string` with the theme CSS
+- `Style_context.add_provider` via the cast stub
+
+**Files**: `examples/calculator/calc_stubs.c`, update `calc_ui.ml`, update `dune` (add `(c_names calc_stubs)` or `(foreign_stubs ...)`)
+
+**Verification**:
+- `dune build` succeeds
+- Interactive/screenshot: buttons have colored backgrounds (orange operators, green equals, red clear)
+- Display has dark background with white text
+- E2E harness screenshot confirms styled UI
+
+---
+
+### Stage 10: Polish and Edge Cases
+**Goal**: Handle remaining edge cases, 0-button span, final visual polish.
+
+**Deliverable**:
+- 0 button spans 2 columns (if `Grid.attach` width param works)
+- Decimal point validation (prevent `1.2.3`)
+- Negative number handling (leading minus)
+- Large number display formatting
+- Window not resizable or has sensible min size
+
+**Files**: Update `calc_ui.ml`, `calc_state.ml`, `test_calc_state.ml`
+
+**Verification**:
+- All existing tests still pass (unit + E2E)
+- New edge case tests pass
+- Interactive: 0 button is wider, app looks polished
+- Final screenshot for review

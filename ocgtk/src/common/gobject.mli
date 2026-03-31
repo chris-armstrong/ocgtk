@@ -119,6 +119,9 @@ module Value : sig
   val get_int : t -> int
   val set_int : t -> int -> unit
 
+  val get_uint : t -> int
+  val set_uint : t -> int -> unit
+
   val get_boolean : t -> bool
   val set_boolean : t -> bool -> unit
 

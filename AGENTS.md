@@ -6,9 +6,8 @@
 
 ## IMPORTANT: You Have Persistent Memory
 
-This project uses Context (`ctx`) for context persistence across sessions. The directory is stored in the CTX_DIR environment variable ($CTX_DIR hereafter). **IMPORTANT: CTX_DIR must be set to continue reading context.** If CTX_DIR is not set in the environment, stop and ask the user which directory should be used.
-
-**Your memory is NOT ephemeral** - it lives in `$CTX_DIR/*` files.
+This project uses Context (`ctx`) for context persistence across sessions.
+**Your memory is NOT ephemeral** - it lives in `$CTX_DIR/*` files (where CTX_DIR is an environment variable containing the context directory).
 
 ## On Session Start
 
