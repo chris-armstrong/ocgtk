@@ -44,6 +44,7 @@
 #include <caml/custom.h>
 
 #include "wrappers.h"
+#include <ocaml_integers.h>
 
 /* ==================================================================== */
 /* GVariant custom block with reference counting                        */
@@ -115,6 +116,9 @@ CAMLprim value ml_g_variant_new_boolean(value bool_val) {
 CAMLprim value ml_g_variant_get_boolean(value variant) {
     CAMLparam1(variant);
     GVariant *v = GVariant_val(variant);
+    if (!g_variant_is_of_type(v, G_VARIANT_TYPE_BOOLEAN)) {
+        caml_failwith("GVariant.get_boolean: variant is not a boolean");
+    }
     CAMLreturn(Val_bool(g_variant_get_boolean(v)));
 }
 
@@ -131,6 +135,9 @@ CAMLprim value ml_g_variant_new_byte(value byte_val) {
 CAMLprim value ml_g_variant_get_byte(value variant) {
     CAMLparam1(variant);
     GVariant *v = GVariant_val(variant);
+    if (!g_variant_is_of_type(v, G_VARIANT_TYPE_BYTE)) {
+        caml_failwith("GVariant.get_byte: variant is not a byte");
+    }
     CAMLreturn(Val_int(g_variant_get_byte(v)));
 }
 
@@ -147,6 +154,9 @@ CAMLprim value ml_g_variant_new_int16(value int16_val) {
 CAMLprim value ml_g_variant_get_int16(value variant) {
     CAMLparam1(variant);
     GVariant *v = GVariant_val(variant);
+    if (!g_variant_is_of_type(v, G_VARIANT_TYPE_INT16)) {
+        caml_failwith("GVariant.get_int16: variant is not an int16");
+    }
     CAMLreturn(Val_int(g_variant_get_int16(v)));
 }
 
@@ -156,14 +166,17 @@ CAMLprim value ml_g_variant_get_int16(value variant) {
 
 CAMLprim value ml_g_variant_new_uint16(value uint16_val) {
     CAMLparam1(uint16_val);
-    GVariant *v = g_variant_new_uint16((guint16)Int_val(uint16_val));
+    GVariant *v = g_variant_new_uint16((guint16)Uint16_val(uint16_val));
     CAMLreturn(Val_GVariant(v));
 }
 
 CAMLprim value ml_g_variant_get_uint16(value variant) {
     CAMLparam1(variant);
     GVariant *v = GVariant_val(variant);
-    CAMLreturn(Val_int(g_variant_get_uint16(v)));
+    if (!g_variant_is_of_type(v, G_VARIANT_TYPE_UINT16)) {
+        caml_failwith("GVariant.get_uint16: variant is not a uint16");
+    }
+    CAMLreturn(Integers_val_uint16(g_variant_get_uint16(v)));
 }
 
 /* ==================================================================== */
@@ -179,6 +192,9 @@ CAMLprim value ml_g_variant_new_int32(value int32_val) {
 CAMLprim value ml_g_variant_get_int32(value variant) {
     CAMLparam1(variant);
     GVariant *v = GVariant_val(variant);
+    if (!g_variant_is_of_type(v, G_VARIANT_TYPE_INT32)) {
+        caml_failwith("GVariant.get_int32: variant is not an int32");
+    }
     CAMLreturn(caml_copy_int32(g_variant_get_int32(v)));
 }
 
@@ -188,14 +204,17 @@ CAMLprim value ml_g_variant_get_int32(value variant) {
 
 CAMLprim value ml_g_variant_new_uint32(value uint32_val) {
     CAMLparam1(uint32_val);
-    GVariant *v = g_variant_new_uint32((guint32)Int32_val(uint32_val));
+    GVariant *v = g_variant_new_uint32((guint32)Uint32_val(uint32_val));
     CAMLreturn(Val_GVariant(v));
 }
 
 CAMLprim value ml_g_variant_get_uint32(value variant) {
     CAMLparam1(variant);
     GVariant *v = GVariant_val(variant);
-    CAMLreturn(caml_copy_int32((int32_t)g_variant_get_uint32(v)));
+    if (!g_variant_is_of_type(v, G_VARIANT_TYPE_UINT32)) {
+        caml_failwith("GVariant.get_uint32: variant is not a uint32");
+    }
+    CAMLreturn(integers_copy_uint32(g_variant_get_uint32(v)));
 }
 
 /* ==================================================================== */
@@ -211,6 +230,9 @@ CAMLprim value ml_g_variant_new_int64(value int64_val) {
 CAMLprim value ml_g_variant_get_int64(value variant) {
     CAMLparam1(variant);
     GVariant *v = GVariant_val(variant);
+    if (!g_variant_is_of_type(v, G_VARIANT_TYPE_INT64)) {
+        caml_failwith("GVariant.get_int64: variant is not an int64");
+    }
     CAMLreturn(caml_copy_int64(g_variant_get_int64(v)));
 }
 
@@ -220,14 +242,17 @@ CAMLprim value ml_g_variant_get_int64(value variant) {
 
 CAMLprim value ml_g_variant_new_uint64(value uint64_val) {
     CAMLparam1(uint64_val);
-    GVariant *v = g_variant_new_uint64((guint64)Int64_val(uint64_val));
+    GVariant *v = g_variant_new_uint64((guint64)Uint64_val(uint64_val));
     CAMLreturn(Val_GVariant(v));
 }
 
 CAMLprim value ml_g_variant_get_uint64(value variant) {
     CAMLparam1(variant);
     GVariant *v = GVariant_val(variant);
-    CAMLreturn(caml_copy_int64((int64_t)g_variant_get_uint64(v)));
+    if (!g_variant_is_of_type(v, G_VARIANT_TYPE_UINT64)) {
+        caml_failwith("GVariant.get_uint64: variant is not a uint64");
+    }
+    CAMLreturn(integers_copy_uint64(g_variant_get_uint64(v)));
 }
 
 /* ==================================================================== */
@@ -243,6 +268,9 @@ CAMLprim value ml_g_variant_new_double(value double_val) {
 CAMLprim value ml_g_variant_get_double(value variant) {
     CAMLparam1(variant);
     GVariant *v = GVariant_val(variant);
+    if (!g_variant_is_of_type(v, G_VARIANT_TYPE_DOUBLE)) {
+        caml_failwith("GVariant.get_double: variant is not a double");
+    }
     CAMLreturn(caml_copy_double(g_variant_get_double(v)));
 }
 
@@ -260,6 +288,11 @@ CAMLprim value ml_g_variant_get_string(value variant) {
     CAMLparam1(variant);
     CAMLlocal1(result);
     GVariant *v = GVariant_val(variant);
+    if (!g_variant_is_of_type(v, G_VARIANT_TYPE_STRING) &&
+        !g_variant_is_of_type(v, G_VARIANT_TYPE_OBJECT_PATH) &&
+        !g_variant_is_of_type(v, G_VARIANT_TYPE_SIGNATURE)) {
+        caml_failwith("GVariant.get_string: variant is not a string, object path, or signature");
+    }
     gsize length;
     const gchar *str = g_variant_get_string(v, &length);
     result = caml_copy_string(str);
@@ -299,6 +332,9 @@ CAMLprim value ml_g_variant_new_handle(value handle_val) {
 CAMLprim value ml_g_variant_get_handle(value variant) {
     CAMLparam1(variant);
     GVariant *v = GVariant_val(variant);
+    if (!g_variant_is_of_type(v, G_VARIANT_TYPE_HANDLE)) {
+        caml_failwith("GVariant.get_handle: variant is not a handle");
+    }
     CAMLreturn(Val_int(g_variant_get_handle(v)));
 }
 
@@ -317,6 +353,9 @@ CAMLprim value ml_g_variant_get_variant(value variant_val) {
     CAMLparam1(variant_val);
     CAMLlocal1(result);
     GVariant *v = GVariant_val(variant_val);
+    if (!g_variant_is_of_type(v, G_VARIANT_TYPE_VARIANT)) {
+        caml_failwith("GVariant.get_variant: variant is not a variant type");
+    }
     GVariant *child = g_variant_get_variant(v);
     result = Val_GVariant(child);
     g_variant_unref(child);
@@ -339,6 +378,9 @@ CAMLprim value ml_g_variant_get_maybe(value variant) {
     CAMLparam1(variant);
     CAMLlocal1(result);
     GVariant *v = GVariant_val(variant);
+    if (!g_variant_is_of_type(v, G_VARIANT_TYPE_MAYBE)) {
+        caml_failwith("GVariant.get_maybe: variant is not a maybe type");
+    }
     GVariant *child = g_variant_get_maybe(v);
     if (child == NULL) {
         result = Val_none;
@@ -381,6 +423,9 @@ CAMLprim value ml_g_variant_get_strv(value variant) {
     CAMLlocal2(result, str);
     
     GVariant *v = GVariant_val(variant);
+    if (!g_variant_is_of_type(v, G_VARIANT_TYPE_STRING_ARRAY)) {
+        caml_failwith("GVariant.get_strv: variant is not a string array");
+    }
     gsize length;
     const gchar **strv = g_variant_get_strv(v, &length);
     
@@ -425,6 +470,9 @@ CAMLprim value ml_g_variant_get_objv(value variant) {
     CAMLlocal2(result, str);
     
     GVariant *v = GVariant_val(variant);
+    if (!g_variant_is_of_type(v, G_VARIANT_TYPE_OBJECT_PATH_ARRAY)) {
+        caml_failwith("GVariant.get_objv: variant is not an object path array");
+    }
     gsize length;
     const gchar **objv = g_variant_get_objv(v, &length);
     

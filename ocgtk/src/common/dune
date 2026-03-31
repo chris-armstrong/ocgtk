@@ -14,15 +14,15 @@
  (public_name ocgtk.common)
  (wrapped false)
  (libraries integers)
-  (foreign_stubs
-   (language c)
-   (names wrappers ml_glib ml_gobject ml_gvariant ml_gvariant_type)
-   (flags
-    -fPIC
-    -I../gtk/generated
-    (:include cflag-gtk4.sexp)
-    -Wno-deprecated-declarations))
-  (c_library_flags
-   (:include clink-gtk4.sexp))
-  (install_c_headers wrappers)
-   (modules ocgtk_common Gaux Gpointer GError Gobject Glib Gvariant Gvariant_type))
+ (foreign_stubs
+  (language c)
+  (names wrappers ml_glib ml_gobject ml_gvariant ml_gvariant_type)
+  (flags
+   -fPIC
+   -I../gtk/generated
+   (:include cflag-gtk4.sexp)
+   -Wno-deprecated-declarations))
+ (c_library_flags
+  (:include clink-gtk4.sexp))
+ (install_c_headers wrappers)
+  (modules ocgtk_common Gaux Gpointer GError Gobject Glib Gvariant Gvariant_type))
