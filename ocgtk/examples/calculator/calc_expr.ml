@@ -41,9 +41,9 @@ let rec tokenize s pos =
         in
         let end_pos = read_number pos in
         let num_str = String.sub s start (end_pos - start) in
-        (match float_of_string_opt num_str with
+        match float_of_string_opt num_str with
         | Some f -> Number f :: tokenize s end_pos
-        | None -> raise (Parse_error ("Invalid number: " ^ num_str))))
+        | None -> raise (Parse_error ("Invalid number: " ^ num_str)))
     | c -> raise (Parse_error (Printf.sprintf "Unexpected character: %c" c))
 
 (* Parser - recursive descent with precedence
@@ -130,8 +130,7 @@ let parse tokens =
     | Minus ->
         advance ();
         Neg (parse_factor ())
-    | _ -> 
-        raise (Parse_error "Unexpected token")
+    | _ -> raise (Parse_error "Unexpected token")
   in
 
   let ast = parse_expr () in
@@ -140,7 +139,7 @@ let parse tokens =
 
 (* Evaluate expression AST using Result bind operators for cleaner code *)
 let rec eval_expr expr =
-  let open Result.Syntax in
+  let ( let* ) = Result.bind in
   match expr with
   | Num n -> Ok n
   | Add (l, r) ->
@@ -161,7 +160,7 @@ let rec eval_expr expr =
       if Float.equal rv 0.0 then Error "Division by zero" else Ok (lv /. rv)
   | Neg e ->
       let* v = eval_expr e in
-      Ok (~-.v)
+      Ok ~-.v
 
 (* Main evaluation function *)
 (* The parser handles auto-closing unclosed parentheses directly:
