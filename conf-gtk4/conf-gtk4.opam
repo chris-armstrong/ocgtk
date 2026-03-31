@@ -32,8 +32,7 @@ depexts: [
   ["gtk4"] {os = "macos" & os-distribution = "macports"}
 
   # Windows via mingw
-  ["gtk4"] {os = "win32" & os-distribution = "cygwinports"}
-  ["libgtk4-devel"] {os = "cygwin"}
+  ["mingw-w64-x86_64-gtk4"] {os = "win32" & os-distribution = "cygwinports"}
   ["gtk4"] {os = "freebsd"}
 ]
 
