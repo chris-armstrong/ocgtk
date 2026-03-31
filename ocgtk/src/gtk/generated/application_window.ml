@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ApplicationWindow: ApplicationWindow *)
 
-type t = [`application_window | `window | `widget | `initially_unowned] Gobject.obj
+type t = [`application_window | `window | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new ApplicationWindow *)
 external new_ : Application_and__window_and__window_group.Application.t -> t = "ml_gtk_application_window_new"

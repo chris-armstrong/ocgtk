@@ -24,5 +24,6 @@ end
 
 let new_ (model : Ocgtk_gio.Gio.List_model.list_model_t option) : no_selection_t =
   let model = Option.map (fun c -> c#as_list_model) model in
-  new no_selection (No_selection.new_ model)
+  let obj_ = No_selection.new_ model in
+  new no_selection obj_
 

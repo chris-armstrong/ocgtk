@@ -22,5 +22,6 @@ end
 
 let new_ (bounds : Ocgtk_graphene.Graphene.Rect.rect_t) : cairo_node_t =
   let bounds = bounds#as_rect in
-  new cairo_node (Cairo_node.new_ bounds)
+  let obj_ = Cairo_node.new_ bounds in
+  new cairo_node obj_
 

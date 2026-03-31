@@ -11,6 +11,7 @@ class type drop_down_t = object
     method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option
     method get_search_match_mode : unit -> Gtk_enums.stringfiltermatchmode
     method get_selected : unit -> int
+    method get_selected_item : unit -> [`object_] Gobject.obj option
     method get_show_arrow : unit -> bool
     method set_enable_search : bool -> unit
     method set_expression : GExpression.expression_t option -> unit
@@ -60,6 +61,10 @@ class drop_down (obj : Drop_down.t) : drop_down_t = object (self)
   method get_selected : unit -> int =
     fun () ->
       (Drop_down.get_selected obj)
+
+  method get_selected_item : unit -> [`object_] Gobject.obj option =
+    fun () ->
+      (Drop_down.get_selected_item obj)
 
   method get_show_arrow : unit -> bool =
     fun () ->
@@ -112,8 +117,10 @@ end
 let new_ (model : Ocgtk_gio.Gio.List_model.list_model_t option) (expression : GExpression.expression_t option) : drop_down_t =
   let model = Option.map (fun c -> c#as_list_model) model in
   let expression = Option.map (fun c -> c#as_expression) expression in
-  new drop_down (Drop_down.new_ model expression)
+  let obj_ = Drop_down.new_ model expression in
+  new drop_down obj_
 
 let new_from_strings (strings : string array) : drop_down_t =
-  new drop_down (Drop_down.new_from_strings strings)
+  let obj_ = Drop_down.new_from_strings strings in
+  new drop_down obj_
 

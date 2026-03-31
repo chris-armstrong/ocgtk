@@ -873,6 +873,158 @@ let test_parse_nested_array_type () =
   | None -> Alcotest.fail "Array info should be present"
 
 (* ========================================================================= *)
+(* Nested Type Element Parsing Tests - for GList/GSList support *)
+(* ========================================================================= *)
+
+let test_parse_glist_return_type () =
+  let gir_xml = wrap_namespace {|
+    <class name="Application" c:type="GtkApplication">
+      <method name="get_windows" c:identifier="gtk_application_get_windows">
+        <return-value transfer-ownership="none">
+          <type name="GLib.List" c:type="GList*">
+            <type name="Window" c:type="GtkWindow*"/>
+          </type>
+        </return-value>
+      </method>
+    </class>
+  |}
+  in
+
+  let (_, _, classes, _, _, _, _) = parse_gir_string gir_xml in
+  let app = List.hd classes in
+  let method_ = List.hd app.methods in
+
+  Alcotest.(check string) "Return type is GLib.List" "GLib.List" method_.return_type.name;
+  Alcotest.(check (option string)) "C type is GList*" (Some "GList*") method_.return_type.c_type;
+  Alcotest.(check bool) "Return type has array info for element"
+    (Option.is_some method_.return_type.array) true;
+
+  match method_.return_type.array with
+  | Some array_info ->
+      Alcotest.(check string) "Element type name is Window" "Window" array_info.element_type.name;
+      Alcotest.(check (option string)) "Element c:type is GtkWindow*" (Some "GtkWindow*") array_info.element_type.c_type;
+      Alcotest.(check (option string)) "Array name is GLib.List" (Some "GLib.List") array_info.array_name
+  | None -> Alcotest.fail "Array info should be present for GList element"
+
+let test_parse_gslist_parameter () =
+  let gir_xml = wrap_namespace {|
+    <class name="SizeGroup" c:type="GtkSizeGroup">
+      <method name="get_widgets" c:identifier="gtk_size_group_get_widgets">
+        <return-value transfer-ownership="none">
+          <type name="GLib.SList" c:type="GSList*">
+            <type name="Widget" c:type="GtkWidget*"/>
+          </type>
+        </return-value>
+      </method>
+    </class>
+  |}
+  in
+
+  let (_, _, classes, _, _, _, _) = parse_gir_string gir_xml in
+  let size_group = List.hd classes in
+  let method_ = List.hd size_group.methods in
+
+  Alcotest.(check string) "Return type is GLib.SList" "GLib.SList" method_.return_type.name;
+  Alcotest.(check (option string)) "C type is GSList*" (Some "GSList*") method_.return_type.c_type;
+
+  match method_.return_type.array with
+  | Some array_info ->
+      Alcotest.(check string) "Element type name is Widget" "Widget" array_info.element_type.name;
+      Alcotest.(check (option string)) "Element c:type is GtkWidget*" (Some "GtkWidget*") array_info.element_type.c_type
+  | None -> Alcotest.fail "Array info should be present for GSList element"
+
+let test_parse_generic_type_without_nested () =
+  let gir_xml = wrap_namespace {|
+    <class name="Widget" c:type="GtkWidget">
+      <method name="get_parent" c:identifier="gtk_widget_get_parent">
+        <return-value transfer-ownership="none">
+          <type name="Widget" c:type="GtkWidget*"/>
+        </return-value>
+      </method>
+    </class>
+  |}
+  in
+
+  let (_, _, classes, _, _, _, _) = parse_gir_string gir_xml in
+  let widget = List.hd classes in
+  let method_ = List.hd widget.methods in
+
+  Alcotest.(check string) "Return type is Widget" "Widget" method_.return_type.name;
+  Alcotest.(check (option string)) "C type is GtkWidget*" (Some "GtkWidget*") method_.return_type.c_type;
+  Alcotest.(check bool) "Return type has no array info for simple type"
+    (Option.is_none method_.return_type.array) true
+
+(* Test cross-namespace element type parsing *)
+let test_parse_glist_with_cross_namespace_element () =
+  let gir_xml = wrap_namespace ~namespace_name:"Gdk" {|
+    <class name="FileList" c:type="GdkFileList">
+      <constructor name="new_from_list" c:identifier="gdk_file_list_new_from_list">
+        <return-value transfer-ownership="full">
+          <type name="FileList" c:type="GdkFileList*"/>
+        </return-value>
+        <parameters>
+          <parameter name="files" transfer-ownership="none">
+            <type name="GLib.SList" c:type="GSList*">
+              <type name="Gio.File"/>
+            </type>
+          </parameter>
+        </parameters>
+      </constructor>
+    </class>
+  |}
+  in
+
+  let (_, _, classes, _, _, _, _) = parse_gir_string gir_xml in
+  let file_list = List.hd classes in
+  let ctor = List.hd file_list.constructors in
+  let files_param = List.hd ctor.ctor_parameters in
+
+  Alcotest.(check string) "Parameter type is GLib.SList" "GLib.SList" files_param.param_type.name;
+  Alcotest.(check bool) "Parameter has array info"
+    (Option.is_some files_param.param_type.array) true;
+
+  match files_param.param_type.array with
+  | Some array_info ->
+      Alcotest.(check string) "Element type name is Gio.File" "Gio.File" array_info.element_type.name;
+      Alcotest.(check (option string)) "Element c:type is None (not provided)" None array_info.element_type.c_type
+  | None -> Alcotest.fail "Array info should be present for cross-namespace element"
+
+(* Test same-namespace element type parsing *)
+let test_parse_glist_with_same_namespace_element () =
+  let gir_xml = wrap_namespace ~namespace_name:"Gdk" {|
+    <class name="Texture" c:type="GdkTexture">
+    </class>
+    <class name="Toplevel" c:type="GdkToplevel">
+      <method name="set_icon_list" c:identifier="gdk_toplevel_set_icon_list">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="surfaces" transfer-ownership="none">
+            <type name="GLib.List" c:type="GList*">
+              <type name="Texture"/>
+            </type>
+          </parameter>
+        </parameters>
+      </method>
+    </class>
+  |}
+  in
+
+  let (_, _, classes, _, _, _, _) = parse_gir_string gir_xml in
+  let toplevel = List.find (fun c -> c.class_name = "Toplevel") classes in
+  let method_ = List.hd toplevel.methods in
+  let surfaces_param = List.hd method_.parameters in
+
+  Alcotest.(check string) "Parameter name is surfaces" "surfaces" surfaces_param.param_name;
+  Alcotest.(check string) "Parameter type is GLib.List" "GLib.List" surfaces_param.param_type.name;
+
+  match surfaces_param.param_type.array with
+  | Some array_info ->
+      Alcotest.(check string) "Element type name is Texture" "Texture" array_info.element_type.name
+  | None -> Alcotest.fail "Array info should be present for same-namespace element"
+
+(* ========================================================================= *)
 (* Test Suite *)
 (* ========================================================================= *)
 
@@ -928,4 +1080,13 @@ let tests =
     Alcotest.test_case "Parse array property" `Quick test_parse_array_property;
     Alcotest.test_case "Parse array without attributes" `Quick test_parse_array_without_attributes;
     Alcotest.test_case "Parse nested array type" `Quick test_parse_nested_array_type;
+
+    (* Nested type element tests for GList/GSList *)
+    Alcotest.test_case "Parse GList return type with element" `Quick test_parse_glist_return_type;
+    Alcotest.test_case "Parse GSList return type with element" `Quick test_parse_gslist_parameter;
+    Alcotest.test_case "Parse simple type without nested element" `Quick test_parse_generic_type_without_nested;
+
+    (* Cross-namespace and same-namespace element type tests *)
+    Alcotest.test_case "Parse GList with cross-namespace element (Gio.File)" `Quick test_parse_glist_with_cross_namespace_element;
+    Alcotest.test_case "Parse GList with same-namespace element (Texture)" `Quick test_parse_glist_with_same_namespace_element;
   ]

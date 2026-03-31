@@ -59,3 +59,5 @@ end
 class socket : Socket_and__socket_connection.Socket.t -> socket_t
 
 and socket_connection : Socket_and__socket_connection.Socket_connection.t -> socket_connection_t
+val new_ : Gio_enums.socketfamily -> Gio_enums.sockettype -> Gio_enums.socketprotocol -> (socket_t, GError.t) result
+val new_from_fd : int -> (socket_t, GError.t) result

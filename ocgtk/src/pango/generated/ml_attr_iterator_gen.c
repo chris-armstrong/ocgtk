@@ -53,6 +53,17 @@ gboolean result = pango_attr_iterator_next(PangoAttrIterator_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_pango_attr_iterator_get_attrs(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = pango_attr_iterator_get_attrs(PangoAttrIterator_val(self));
+Val_GSList_with(c_result, result, item, cell, Val_PangoAttribute((gpointer)_tmp->data));
+    g_slist_free(c_result);
+    CAMLreturn(result);
+}
+
 CAMLexport CAMLprim value ml_pango_attr_iterator_get(value self, value arg1)
 {
 CAMLparam2(self, arg1);

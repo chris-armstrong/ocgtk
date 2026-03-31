@@ -347,5 +347,6 @@ let new_ () : text_view_t =
 
 let new_with_buffer (buffer : GText_buffer_and__text_iter_and__text_mark.text_buffer_t) : text_view_t =
   let buffer = buffer#as_text_buffer in
-  new text_view (Text_view.new_with_buffer buffer)
+  let obj_ = Text_view.new_with_buffer buffer in
+  new text_view obj_
 

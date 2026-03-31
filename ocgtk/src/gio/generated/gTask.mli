@@ -5,6 +5,7 @@ class type task_t = object
     method get_name : unit -> string option
     method get_priority : unit -> int
     method get_return_on_cancel : unit -> bool
+    method get_source_object : unit -> [`object_] Gobject.obj option
     method had_error : unit -> bool
     method propagate_boolean : unit -> (bool, GError.t) result
     method return_boolean : bool -> unit

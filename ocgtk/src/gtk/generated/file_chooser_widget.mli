@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FileChooserWidget: FileChooserWidget *)
 
-type t = [`file_chooser_widget | `widget | `initially_unowned] Gobject.obj
+type t = [`file_chooser_widget | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new FileChooserWidget *)
 external new_ : Gtk_enums.filechooseraction -> t = "ml_gtk_file_chooser_widget_new"

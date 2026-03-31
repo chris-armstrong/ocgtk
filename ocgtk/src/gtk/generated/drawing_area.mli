@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DrawingArea: DrawingArea *)
 
-type t = [`drawing_area | `widget | `initially_unowned] Gobject.obj
+type t = [`drawing_area | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new DrawingArea *)
 external new_ : unit -> t = "ml_gtk_drawing_area_new"

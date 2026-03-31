@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Switch: Switch *)
 
-type t = [`switch | `widget | `initially_unowned] Gobject.obj
+type t = [`switch | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new Switch *)
 external new_ : unit -> t = "ml_gtk_switch_new"

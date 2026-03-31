@@ -6,6 +6,9 @@ type t = [`print_settings | `object_] Gobject.obj
 (** Create a new PrintSettings *)
 external new_ : unit -> t = "ml_gtk_print_settings_new"
 
+(** Create a new PrintSettings *)
+external new_from_file : string -> (t, GError.t) result = "ml_gtk_print_settings_new_from_file"
+
 (* Methods *)
 (** Removes any value associated with @key.
 

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Frame: Frame *)
 
-type t = [`frame | `widget | `initially_unowned] Gobject.obj
+type t = [`frame | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new Frame *)
 external new_ : string option -> t = "ml_gtk_frame_new"

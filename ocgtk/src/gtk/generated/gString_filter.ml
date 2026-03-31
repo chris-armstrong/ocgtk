@@ -53,5 +53,6 @@ end
 
 let new_ (expression : GExpression.expression_t option) : string_filter_t =
   let expression = Option.map (fun c -> c#as_expression) expression in
-  new string_filter (String_filter.new_ expression)
+  let obj_ = String_filter.new_ expression in
+  new string_filter obj_
 

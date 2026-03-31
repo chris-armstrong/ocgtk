@@ -10,6 +10,7 @@ class type toplevel_t = object
     method restore_system_shortcuts : unit -> unit
     method set_decorated : bool -> unit
     method set_deletable : bool -> unit
+    method set_icon_list : Texture.t list -> unit
     method set_modal : bool -> unit
     method set_startup_id : string -> unit
     method set_title : string -> unit
@@ -59,6 +60,10 @@ class toplevel (obj : Toplevel.t) : toplevel_t = object (self)
   method set_deletable : bool -> unit =
     fun deletable ->
       (Toplevel.set_deletable obj deletable)
+
+  method set_icon_list : Texture.t list -> unit =
+    fun surfaces ->
+      (Toplevel.set_icon_list obj surfaces)
 
   method set_modal : bool -> unit =
     fun modal ->

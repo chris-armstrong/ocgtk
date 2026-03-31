@@ -29,5 +29,6 @@ end
 
 let new_ (model : Ocgtk_gio.Gio.List_model.list_model_t option) : flatten_list_model_t =
   let model = Option.map (fun c -> c#as_list_model) model in
-  new flatten_list_model (Flatten_list_model.new_ model)
+  let obj_ = Flatten_list_model.new_ model in
+  new flatten_list_model obj_
 

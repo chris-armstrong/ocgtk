@@ -385,6 +385,28 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
+CAMLexport CAMLprim value ml_pango_layout_get_lines_readonly(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = pango_layout_get_lines_readonly(PangoLayout_val(self));
+Val_GSList_with(c_result, result, item, cell, Val_PangoLayoutLine((gpointer)_tmp->data));
+    g_slist_free(c_result);
+    CAMLreturn(result);
+}
+
+CAMLexport CAMLprim value ml_pango_layout_get_lines(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = pango_layout_get_lines(PangoLayout_val(self));
+Val_GSList_with(c_result, result, item, cell, Val_PangoLayoutLine((gpointer)_tmp->data));
+    g_slist_free(c_result);
+    CAMLreturn(result);
+}
+
 CAMLexport CAMLprim value ml_pango_layout_get_line_spacing(value self)
 {
 CAMLparam1(self);

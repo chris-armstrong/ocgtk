@@ -62,5 +62,6 @@ end
 let new_ (model : Ocgtk_gio.Gio.List_model.list_model_t option) (sorter : GSorter.sorter_t option) : sort_list_model_t =
   let model = Option.map (fun c -> c#as_list_model) model in
   let sorter = Option.map (fun c -> c#as_sorter) sorter in
-  new sort_list_model (Sort_list_model.new_ model sorter)
+  let obj_ = Sort_list_model.new_ model sorter in
+  new sort_list_model obj_
 

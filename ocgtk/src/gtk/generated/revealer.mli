@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Revealer: Revealer *)
 
-type t = [`revealer | `widget | `initially_unowned] Gobject.obj
+type t = [`revealer | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new Revealer *)
 external new_ : unit -> t = "ml_gtk_revealer_new"

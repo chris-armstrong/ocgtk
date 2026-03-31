@@ -308,6 +308,17 @@ GtkSelectionMode result = gtk_icon_view_get_selection_mode(GtkIconView_val(self)
 CAMLreturn(Val_GtkSelectionMode(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_icon_view_get_selected_items(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = gtk_icon_view_get_selected_items(GtkIconView_val(self));
+Val_GList_with(c_result, result, item, cell, Val_GtkTreePath((gpointer)_tmp->data));
+    g_list_free(c_result);
+    CAMLreturn(result);
+}
+
 CAMLexport CAMLprim value ml_gtk_icon_view_get_row_spacing(value self)
 {
 CAMLparam1(self);

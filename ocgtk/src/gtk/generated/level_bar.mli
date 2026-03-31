@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* LevelBar: LevelBar *)
 
-type t = [`level_bar | `widget | `initially_unowned] Gobject.obj
+type t = [`level_bar | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new LevelBar *)
 external new_ : unit -> t = "ml_gtk_level_bar_new"

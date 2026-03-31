@@ -28,5 +28,6 @@ end
 let new_ (start : GRender_node.render_node_t) (end_ : GRender_node.render_node_t) (progress : float) : cross_fade_node_t =
   let start = start#as_render_node in
   let end_ = end_#as_render_node in
-  new cross_fade_node (Cross_fade_node.new_ start end_ progress)
+  let obj_ = Cross_fade_node.new_ start end_ progress in
+  new cross_fade_node obj_
 

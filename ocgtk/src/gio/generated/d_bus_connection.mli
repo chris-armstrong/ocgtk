@@ -3,6 +3,18 @@
 
 type t = [`d_bus_connection | `object_] Gobject.obj
 
+(** Create a new DBusConnection *)
+external new_finish : Async_result.t -> (t, GError.t) result = "ml_g_dbus_connection_new_finish"
+
+(** Create a new DBusConnection *)
+external new_for_address_finish : Async_result.t -> (t, GError.t) result = "ml_g_dbus_connection_new_for_address_finish"
+
+(** Create a new DBusConnection *)
+external new_for_address_sync : string -> Gio_enums.dbusconnectionflags -> D_bus_auth_observer.t option -> Cancellable.t option -> (t, GError.t) result = "ml_g_dbus_connection_new_for_address_sync"
+
+(** Create a new DBusConnection *)
+external new_sync : Io_stream.t -> string option -> Gio_enums.dbusconnectionflags -> D_bus_auth_observer.t option -> Cancellable.t option -> (t, GError.t) result = "ml_g_dbus_connection_new_sync"
+
 (* Methods *)
 (** Unregisters a subtree. *)
 external unregister_subtree : t -> int -> bool = "ml_g_dbus_connection_unregister_subtree"

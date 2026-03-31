@@ -139,6 +139,17 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
+CAMLexport CAMLprim value ml_gdk_display_list_seats(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = gdk_display_list_seats(GdkDisplay_val(self));
+Val_GList_with(c_result, result, item, cell, Val_GdkSeat((gpointer)_tmp->data));
+    g_list_free(c_result);
+    CAMLreturn(result);
+}
+
 CAMLexport CAMLprim value ml_gdk_display_is_rgba(value self)
 {
 CAMLparam1(self);

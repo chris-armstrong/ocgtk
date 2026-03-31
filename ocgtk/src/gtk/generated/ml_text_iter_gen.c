@@ -209,12 +209,34 @@ int result = gtk_text_iter_get_visible_line_index(GtkTextIter_val(self));
 CAMLreturn(Val_int(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_text_iter_get_toggled_tags(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = gtk_text_iter_get_toggled_tags(GtkTextIter_val(self), Bool_val(arg1));
+Val_GSList_with(c_result, result, item, cell, Val_GtkTextTag((gpointer)_tmp->data));
+    g_slist_free(c_result);
+    CAMLreturn(result);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_iter_get_text(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 char* result = gtk_text_iter_get_text(GtkTextIter_val(self), GtkTextIter_val(arg1));
 CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_iter_get_tags(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = gtk_text_iter_get_tags(GtkTextIter_val(self));
+Val_GSList_with(c_result, result, item, cell, Val_GtkTextTag((gpointer)_tmp->data));
+    g_slist_free(c_result);
+    CAMLreturn(result);
 }
 
 CAMLexport CAMLprim value ml_gtk_text_iter_get_slice(value self, value arg1)
@@ -240,6 +262,17 @@ CAMLparam1(self);
 
 int result = gtk_text_iter_get_offset(GtkTextIter_val(self));
 CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_iter_get_marks(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = gtk_text_iter_get_marks(GtkTextIter_val(self));
+Val_GSList_with(c_result, result, item, cell, Val_GtkTextMark((gpointer)_tmp->data));
+    g_slist_free(c_result);
+    CAMLreturn(result);
 }
 
 CAMLexport CAMLprim value ml_gtk_text_iter_get_line_offset(value self)

@@ -35,10 +35,12 @@ end
 
 let new_from_name (name : string) (fallback : cursor_t option) : cursor_t =
   let fallback = Option.map (fun c -> c#as_cursor) fallback in
-  new cursor (Cursor.new_from_name name fallback)
+  let obj_ = Cursor.new_from_name name fallback in
+  new cursor obj_
 
 let new_from_texture (texture : GTexture.texture_t) (hotspot_x : int) (hotspot_y : int) (fallback : cursor_t option) : cursor_t =
   let texture = texture#as_texture in
   let fallback = Option.map (fun c -> c#as_cursor) fallback in
-  new cursor (Cursor.new_from_texture texture hotspot_x hotspot_y fallback)
+  let obj_ = Cursor.new_from_texture texture hotspot_x hotspot_y fallback in
+  new cursor obj_
 

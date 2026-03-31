@@ -170,6 +170,17 @@ GtkSelectionMode result = gtk_list_box_get_selection_mode(GtkListBox_val(self));
 CAMLreturn(Val_GtkSelectionMode(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_list_box_get_selected_rows(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = gtk_list_box_get_selected_rows(GtkListBox_val(self));
+Val_GList_with(c_result, result, item, cell, Val_GtkListBoxRow((gpointer)_tmp->data));
+    g_list_free(c_result);
+    CAMLreturn(result);
+}
+
 CAMLexport CAMLprim value ml_gtk_list_box_get_selected_row(value self)
 {
 CAMLparam1(self);

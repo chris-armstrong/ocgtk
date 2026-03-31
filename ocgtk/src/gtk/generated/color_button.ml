@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ColorButton: ColorButton *)
 
-type t = [`color_button | `widget | `initially_unowned] Gobject.obj
+type t = [`color_button | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new ColorButton *)
 external new_ : unit -> t = "ml_gtk_color_button_new"

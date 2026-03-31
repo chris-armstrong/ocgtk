@@ -29,6 +29,9 @@ external lookup_item : t -> string -> (Recent_info.t option, GError.t) result = 
 with @uri inside the recent manager. *)
 external has_item : t -> string -> bool = "ml_gtk_recent_manager_has_item"
 
+(** Gets the list of recently used resources. *)
+external get_items : t -> Recent_info.t list = "ml_gtk_recent_manager_get_items"
+
 (** Adds a new resource, pointed by @uri, into the recently used
 resources list.
 

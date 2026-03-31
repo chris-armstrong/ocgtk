@@ -38,5 +38,6 @@ end
 
 let new_ (dialog : GColor_dialog.color_dialog_t option) : color_dialog_button_t =
   let dialog = Option.map (fun c -> c#as_color_dialog) dialog in
-  new color_dialog_button (Color_dialog_button.new_ dialog)
+  let obj_ = Color_dialog_button.new_ dialog in
+  new color_dialog_button obj_
 

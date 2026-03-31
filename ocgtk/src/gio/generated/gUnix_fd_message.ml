@@ -25,5 +25,6 @@ let new_ () : unix_fd_message_t =
 
 let new_with_fd_list (fd_list : GUnix_fd_list.unix_fd_list_t) : unix_fd_message_t =
   let fd_list = fd_list#as_unix_fd_list in
-  new unix_fd_message (Unix_fd_message.new_with_fd_list fd_list)
+  let obj_ = Unix_fd_message.new_with_fd_list fd_list in
+  new unix_fd_message obj_
 

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Inscription: Inscription *)
 
-type t = [`inscription | `widget | `initially_unowned] Gobject.obj
+type t = [`inscription | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new Inscription *)
 external new_ : string option -> t = "ml_gtk_inscription_new"

@@ -13,6 +13,7 @@ class type app_info_t = object
     method get_id : unit -> string option
     method get_name : unit -> string
     method get_supported_types : unit -> string array
+    method launch_uris : string list option -> app_launch_context_t option -> (bool, GError.t) result
     method remove_supports_type : string -> (bool, GError.t) result
     method set_as_default_for_extension : string -> (bool, GError.t) result
     method set_as_default_for_type : string -> (bool, GError.t) result

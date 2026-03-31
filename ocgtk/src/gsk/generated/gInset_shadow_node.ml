@@ -42,5 +42,6 @@ end
 
 let new_ (outline : Rounded_rect.t) (color : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t) (dx : float) (dy : float) (spread : float) (blur_radius : float) : inset_shadow_node_t =
   let color = color#as_rgb_a in
-  new inset_shadow_node (Inset_shadow_node.new_ outline color dx dy spread blur_radius)
+  let obj_ = Inset_shadow_node.new_ outline color dx dy spread blur_radius in
+  new inset_shadow_node obj_
 

@@ -16,3 +16,20 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gtk_decls.h"
 
+
+CAMLexport CAMLprim value ml_gtk_object_expression_new(value arg1)
+{
+CAMLparam1(arg1);
+
+GtkObjectExpression *obj = gtk_object_expression_new(GObject_ext_of_val(arg1));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkObjectExpression(obj));
+}
+CAMLexport CAMLprim value ml_gtk_object_expression_get_object(value self)
+{
+CAMLparam1(self);
+
+GObject* result = gtk_object_expression_get_object(GtkObjectExpression_val(self));
+CAMLreturn(Val_option(result, ml_gobject_val_of_ext));
+}

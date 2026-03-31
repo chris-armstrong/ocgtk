@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Spinner: Spinner *)
 
-type t = [`spinner | `widget | `initially_unowned] Gobject.obj
+type t = [`spinner | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new Spinner *)
 external new_ : unit -> t = "ml_gtk_spinner_new"

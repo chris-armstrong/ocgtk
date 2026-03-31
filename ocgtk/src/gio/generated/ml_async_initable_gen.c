@@ -22,6 +22,15 @@
 #include "gio_decls.h"
 
 
+CAMLexport CAMLprim value ml_g_async_initable_new_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GObject* result = g_async_initable_new_finish(GAsyncInitable_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(ml_gobject_val_of_ext(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_g_async_initable_init_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);

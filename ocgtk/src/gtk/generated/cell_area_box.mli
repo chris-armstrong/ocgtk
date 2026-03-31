@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CellAreaBox: CellAreaBox *)
 
-type t = [`cell_area_box | `cell_area | `initially_unowned] Gobject.obj
+type t = [`cell_area_box | `cell_area | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new CellAreaBox *)
 external new_ : unit -> t = "ml_gtk_cell_area_box_new"

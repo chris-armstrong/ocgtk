@@ -44,5 +44,6 @@ end
 
 let new_ (model : Ocgtk_gio.Gio.List_model.list_model_t option) (offset : int) (size : int) : slice_list_model_t =
   let model = Option.map (fun c -> c#as_list_model) model in
-  new slice_list_model (Slice_list_model.new_ model offset size)
+  let obj_ = Slice_list_model.new_ model offset size in
+  new slice_list_model obj_
 

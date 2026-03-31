@@ -98,3 +98,24 @@ class d_bus_proxy (obj : D_bus_proxy.t) : d_bus_proxy_t = object (self)
     method as_d_bus_proxy = obj
 end
 
+let new_finish (res : GAsync_result.async_result_t) : (d_bus_proxy_t, GError.t) result =
+  let res = res#as_async_result in
+  let obj_ = D_bus_proxy.new_finish res in
+Result.map (fun obj_ ->  new d_bus_proxy obj_) obj_
+
+let new_for_bus_finish (res : GAsync_result.async_result_t) : (d_bus_proxy_t, GError.t) result =
+  let res = res#as_async_result in
+  let obj_ = D_bus_proxy.new_for_bus_finish res in
+Result.map (fun obj_ ->  new d_bus_proxy obj_) obj_
+
+let new_for_bus_sync (bus_type : Gio_enums.bustype) (flags : Gio_enums.dbusproxyflags) (info : D_bus_interface_info.t option) (name : string) (object_path : string) (interface_name : string) (cancellable : GCancellable.cancellable_t option) : (d_bus_proxy_t, GError.t) result =
+  let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
+  let obj_ = D_bus_proxy.new_for_bus_sync bus_type flags info name object_path interface_name cancellable in
+Result.map (fun obj_ ->  new d_bus_proxy obj_) obj_
+
+let new_sync (connection : GD_bus_connection.d_bus_connection_t) (flags : Gio_enums.dbusproxyflags) (info : D_bus_interface_info.t option) (name : string option) (object_path : string) (interface_name : string) (cancellable : GCancellable.cancellable_t option) : (d_bus_proxy_t, GError.t) result =
+  let connection = connection#as_d_bus_connection in
+  let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
+  let obj_ = D_bus_proxy.new_sync connection flags info name object_path interface_name cancellable in
+Result.map (fun obj_ ->  new d_bus_proxy obj_) obj_
+

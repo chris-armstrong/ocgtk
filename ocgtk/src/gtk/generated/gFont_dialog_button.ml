@@ -89,5 +89,6 @@ end
 
 let new_ (dialog : GFont_dialog.font_dialog_t option) : font_dialog_button_t =
   let dialog = Option.map (fun c -> c#as_font_dialog) dialog in
-  new font_dialog_button (Font_dialog_button.new_ dialog)
+  let obj_ = Font_dialog_button.new_ dialog in
+  new font_dialog_button obj_
 

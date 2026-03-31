@@ -5,6 +5,7 @@ class type d_bus_interface_skeleton_t = object
     method export : GD_bus_connection.d_bus_connection_t -> string -> (bool, GError.t) result
     method flush : unit -> unit
     method get_connection : unit -> GD_bus_connection.d_bus_connection_t option
+    method get_connections : unit -> D_bus_connection.t list
     method get_flags : unit -> Gio_enums.dbusinterfaceskeletonflags
     method get_info : unit -> D_bus_interface_info.t
     method get_object_path : unit -> string option
@@ -34,6 +35,10 @@ class d_bus_interface_skeleton (obj : D_bus_interface_skeleton.t) : d_bus_interf
   method get_connection : unit -> GD_bus_connection.d_bus_connection_t option =
     fun () ->
       Option.map (fun ret -> new GD_bus_connection.d_bus_connection ret) (D_bus_interface_skeleton.get_connection obj)
+
+  method get_connections : unit -> D_bus_connection.t list =
+    fun () ->
+      (D_bus_interface_skeleton.get_connections obj)
 
   method get_flags : unit -> Gio_enums.dbusinterfaceskeletonflags =
     fun () ->

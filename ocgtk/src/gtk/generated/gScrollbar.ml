@@ -23,5 +23,6 @@ end
 
 let new_ (orientation : Gtk_enums.orientation) (adjustment : GAdjustment.adjustment_t option) : scrollbar_t =
   let adjustment = Option.map (fun c -> c#as_adjustment) adjustment in
-  new scrollbar (Scrollbar.new_ orientation adjustment)
+  let obj_ = Scrollbar.new_ orientation adjustment in
+  new scrollbar obj_
 

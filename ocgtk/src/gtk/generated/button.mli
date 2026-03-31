@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Button: Button *)
 
-type t = [`button | `widget | `initially_unowned] Gobject.obj
+type t = [`button | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new Button *)
 external new_ : unit -> t = "ml_gtk_button_new"

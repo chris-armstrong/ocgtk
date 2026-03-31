@@ -64,5 +64,6 @@ class content_formats (obj : Content_formats.t) : content_formats_t = object (se
 end
 
 let new_ (mime_types : string array option) (n_mime_types : int) : content_formats_t =
-  new content_formats (Content_formats.new_ mime_types n_mime_types)
+  let obj_ = Content_formats.new_ mime_types n_mime_types in
+  new content_formats obj_
 

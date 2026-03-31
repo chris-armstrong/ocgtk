@@ -6,6 +6,12 @@ type t = [`pixbuf_loader | `object_] Gobject.obj
 (** Create a new PixbufLoader *)
 external new_ : unit -> t = "ml_gdk_pixbuf_loader_new"
 
+(** Create a new PixbufLoader *)
+external new_with_mime_type : string -> (t, GError.t) result = "ml_gdk_pixbuf_loader_new_with_mime_type"
+
+(** Create a new PixbufLoader *)
+external new_with_type : string -> (t, GError.t) result = "ml_gdk_pixbuf_loader_new_with_type"
+
 (* Methods *)
 (** Causes the image to be scaled while it is loaded.
 

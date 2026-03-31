@@ -117,5 +117,6 @@ class inscription (obj : Inscription.t) : inscription_t = object (self)
 end
 
 let new_ (text : string option) : inscription_t =
-  new inscription (Inscription.new_ text)
+  let obj_ = Inscription.new_ text in
+  new inscription obj_
 

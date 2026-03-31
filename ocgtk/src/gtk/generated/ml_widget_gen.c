@@ -506,6 +506,17 @@ gtk_widget_map(GtkWidget_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_widget_list_mnemonic_labels(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = gtk_widget_list_mnemonic_labels(GtkWidget_val(self));
+Val_GList_with(c_result, result, item, cell, Val_GtkWidget((gpointer)_tmp->data));
+    g_list_free(c_result);
+    CAMLreturn(result);
+}
+
 CAMLexport CAMLprim value ml_gtk_widget_keynav_failed(value self, value arg1)
 {
 CAMLparam2(self, arg1);

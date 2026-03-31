@@ -29,5 +29,6 @@ class unix_socket_address (obj : Unix_socket_address.t) : unix_socket_address_t 
 end
 
 let new_ (path : string) : unix_socket_address_t =
-  new unix_socket_address (Unix_socket_address.new_ path)
+  let obj_ = Unix_socket_address.new_ path in
+  new unix_socket_address obj_
 

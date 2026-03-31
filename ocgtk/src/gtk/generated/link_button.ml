@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* LinkButton: LinkButton *)
 
-type t = [`link_button | `button | `widget | `initially_unowned] Gobject.obj
+type t = [`link_button | `button | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new LinkButton *)
 external new_ : string -> t = "ml_gtk_link_button_new"

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Entry: Entry *)
 
-type t = [`entry | `widget | `initially_unowned] Gobject.obj
+type t = [`entry | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new Entry *)
 external new_ : unit -> t = "ml_gtk_entry_new"

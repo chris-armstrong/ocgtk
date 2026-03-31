@@ -41,6 +41,14 @@ guint result = gtk_list_header_get_n_items(GtkListHeader_val(self));
 CAMLreturn(Val_int(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_list_header_get_item(value self)
+{
+CAMLparam1(self);
+
+gpointer result = gtk_list_header_get_item(GtkListHeader_val(self));
+CAMLreturn(ml_gobject_val_of_ext(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_list_header_get_end(value self)
 {
 CAMLparam1(self);

@@ -62,5 +62,6 @@ end
 
 let new_ (attributes : string option) (file : Ocgtk_gio.Gio.File.file_t option) : directory_list_t =
   let file = Option.map (fun c -> c#as_file) file in
-  new directory_list (Directory_list.new_ attributes file)
+  let obj_ = Directory_list.new_ attributes file in
+  new directory_list obj_
 

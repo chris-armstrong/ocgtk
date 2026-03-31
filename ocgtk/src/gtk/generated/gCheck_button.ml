@@ -75,8 +75,10 @@ let new_ () : check_button_t =
   new check_button (Check_button.new_ ())
 
 let new_with_label (label : string option) : check_button_t =
-  new check_button (Check_button.new_with_label label)
+  let obj_ = Check_button.new_with_label label in
+  new check_button obj_
 
 let new_with_mnemonic (label : string option) : check_button_t =
-  new check_button (Check_button.new_with_mnemonic label)
+  let obj_ = Check_button.new_with_mnemonic label in
+  new check_button obj_
 

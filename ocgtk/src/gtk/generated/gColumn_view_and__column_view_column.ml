@@ -252,9 +252,11 @@ and column_view_column (obj : Column_view_and__column_view_column.Column_view_co
 end
 let new_ (model : GSelection_model.selection_model_t option) : column_view_t =
   let model = Option.map (fun c -> c#as_selection_model) model in
-  new column_view (Column_view_and__column_view_column.Column_view.new_ model)
+  let obj_ = Column_view_and__column_view_column.Column_view.new_ model in
+  new column_view obj_
 
 let new_ (title : string option) (factory : GList_item_factory.list_item_factory_t option) : column_view_column_t =
   let factory = Option.map (fun c -> c#as_list_item_factory) factory in
-  new column_view_column (Column_view_and__column_view_column.Column_view_column.new_ title factory)
+  let obj_ = Column_view_and__column_view_column.Column_view_column.new_ title factory in
+  new column_view_column obj_
 

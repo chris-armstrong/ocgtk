@@ -30,6 +30,14 @@ g_list_model_items_changed(GListModel_val(self), Int_val(arg1), Int_val(arg2), I
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_list_model_get_object(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GObject* result = g_list_model_get_object(GListModel_val(self), Int_val(arg1));
+CAMLreturn(Val_option(result, ml_gobject_val_of_ext));
+}
+
 CAMLexport CAMLprim value ml_g_list_model_get_n_items(value self)
 {
 CAMLparam1(self);

@@ -27,5 +27,6 @@ end
 
 let new_ (child : GRender_node.render_node_t) (path : Path_and__path_measure_and__path_point.Path.t) (fill_rule : Gsk_enums.fillrule) : fill_node_t =
   let child = child#as_render_node in
-  new fill_node (Fill_node.new_ child path fill_rule)
+  let obj_ = Fill_node.new_ child path fill_rule in
+  new fill_node obj_
 

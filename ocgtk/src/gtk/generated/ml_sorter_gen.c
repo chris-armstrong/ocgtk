@@ -25,6 +25,14 @@ GtkSorterOrder result = gtk_sorter_get_order(GtkSorter_val(self));
 CAMLreturn(Val_GtkSorterOrder(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_sorter_compare(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+GtkOrdering result = gtk_sorter_compare(GtkSorter_val(self), GObject_ext_of_val(arg1), GObject_ext_of_val(arg2));
+CAMLreturn(Val_GtkOrdering(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_sorter_changed(value self, value arg1)
 {
 CAMLparam2(self, arg1);

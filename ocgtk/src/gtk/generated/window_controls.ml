@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* WindowControls: WindowControls *)
 
-type t = [`window_controls | `widget | `initially_unowned] Gobject.obj
+type t = [`window_controls | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new WindowControls *)
 external new_ : Gtk_enums.packtype -> t = "ml_gtk_window_controls_new"

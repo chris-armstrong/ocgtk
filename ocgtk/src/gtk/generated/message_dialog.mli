@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MessageDialog: MessageDialog *)
 
-type t = [`message_dialog | `dialog | `window | `widget | `initially_unowned] Gobject.obj
+type t = [`message_dialog | `dialog | `window | `widget | `initially_unowned | `object_] Gobject.obj
 
 (* Methods *)
 (** Sets the text of the message dialog. *)

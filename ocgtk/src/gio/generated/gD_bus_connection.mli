@@ -27,3 +27,7 @@ end
 
 class d_bus_connection : D_bus_connection.t -> d_bus_connection_t
 
+val new_finish : GAsync_result.async_result_t -> (d_bus_connection_t, GError.t) result
+val new_for_address_finish : GAsync_result.async_result_t -> (d_bus_connection_t, GError.t) result
+val new_for_address_sync : string -> Gio_enums.dbusconnectionflags -> GD_bus_auth_observer.d_bus_auth_observer_t option -> GCancellable.cancellable_t option -> (d_bus_connection_t, GError.t) result
+val new_sync : GIo_stream.io_stream_t -> string option -> Gio_enums.dbusconnectionflags -> GD_bus_auth_observer.d_bus_auth_observer_t option -> GCancellable.cancellable_t option -> (d_bus_connection_t, GError.t) result

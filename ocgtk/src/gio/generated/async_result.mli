@@ -16,3 +16,6 @@ set by virtual methods should also be extracted by virtual methods,
 to enable subclasses to chain up correctly. *)
 external legacy_propagate_error : t -> (bool, GError.t) result = "ml_g_async_result_legacy_propagate_error"
 
+(** Gets the source object from a #GAsyncResult. *)
+external get_source_object : t -> [`object_] Gobject.obj option = "ml_g_async_result_get_source_object"
+

@@ -20,6 +20,8 @@ class type layout_t = object
     method get_line_count : unit -> int
     method get_line_readonly : int -> Layout_line.t option
     method get_line_spacing : unit -> float
+    method get_lines : unit -> Layout_line.t list
+    method get_lines_readonly : unit -> Layout_line.t list
     method get_serial : unit -> int
     method get_single_paragraph_mode : unit -> bool
     method get_spacing : unit -> int

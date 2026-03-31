@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Range: Range *)
 
-type t = [`range | `widget | `initially_unowned] Gobject.obj
+type t = [`range | `widget | `initially_unowned | `object_] Gobject.obj
 
 (* Methods *)
 (** Sets the current value of the range.

@@ -1593,6 +1593,9 @@ and File_enumerator
   (** Sets the file enumerator as having pending operations. *)
   external set_pending : t -> bool -> unit = "ml_g_file_enumerator_set_pending"
 
+  (** Finishes the asynchronous operation started with g_file_enumerator_next_files_async(). *)
+  external next_files_finish : t -> Async_result.t -> (File_info.t list, GError.t) result = "ml_g_file_enumerator_next_files_finish"
+
   (** Returns information for the next file in the enumerated object.
   Will block until the information is available. The #GFileInfo
   returned from this function will contain attributes that match the
@@ -1659,6 +1662,9 @@ end = struct
   (* Methods *)
   (** Sets the file enumerator as having pending operations. *)
   external set_pending : t -> bool -> unit = "ml_g_file_enumerator_set_pending"
+
+  (** Finishes the asynchronous operation started with g_file_enumerator_next_files_async(). *)
+  external next_files_finish : t -> Async_result.t -> (File_info.t list, GError.t) result = "ml_g_file_enumerator_next_files_finish"
 
   (** Returns information for the next file in the enumerated object.
   Will block until the information is available. The #GFileInfo

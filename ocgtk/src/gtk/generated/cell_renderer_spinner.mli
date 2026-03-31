@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CellRendererSpinner: CellRendererSpinner *)
 
-type t = [`cell_renderer_spinner | `cell_renderer | `initially_unowned] Gobject.obj
+type t = [`cell_renderer_spinner | `cell_renderer | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new CellRendererSpinner *)
 external new_ : unit -> t = "ml_gtk_cell_renderer_spinner_new"

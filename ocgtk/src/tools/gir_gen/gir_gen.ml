@@ -613,13 +613,25 @@ let generate_bindings filter_file gir_file output_dir reference_files =
      be coerced to a same-named type in another namespace even if there is no
      actual GObject inheritance relationship. Namespace-prefixed tags would fix
      this but require a larger L1 type system change. *)
+  (* Known classes in the GObject namespace with their parents.
+     GObject/GLib aren't generated from GIR, so we hardcode the hierarchy
+     here so that parent chain resolution can continue through them. *)
+  let gobject_known_classes =
+    [ ("Object", None);
+      ("InitiallyUnowned", Some "Object");
+    ]
+  in
+
   let cross_ns_parent_chain ns name =
     let open Gir_gen_lib.Types in
     let rec aux ns name depth =
       if depth > 100 then []
       else if String.equal ns "GObject" then
-        (* GObject namespace isn't in cross-references; Object is the root *)
-        [ ns ^ "." ^ name ]
+        let qualified = ns ^ "." ^ name in
+        match List.assoc_opt name gobject_known_classes with
+        | Some (Some parent) -> qualified :: aux ns parent (depth + 1)
+        | Some None -> [ qualified ]  (* root class *)
+        | None -> [ qualified ]       (* unknown GObject class, treat as terminal *)
       else
         match StringMap.find_opt ns cross_references with
         | None -> [ ns ^ "." ^ name ]

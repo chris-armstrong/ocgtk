@@ -3,6 +3,7 @@
 class type sorter_t = object
     inherit Gsorter_signals.sorter_signals
     method changed : Gtk_enums.sorterchange -> unit
+    method compare : [`object_] Gobject.obj -> [`object_] Gobject.obj -> Gtk_enums.ordering
     method get_order : unit -> Gtk_enums.sorterorder
     method as_sorter : Sorter.t
 end
@@ -14,6 +15,10 @@ class sorter (obj : Sorter.t) : sorter_t = object (self)
   method changed : Gtk_enums.sorterchange -> unit =
     fun change ->
       (Sorter.changed obj change)
+
+  method compare : [`object_] Gobject.obj -> [`object_] Gobject.obj -> Gtk_enums.ordering =
+    fun item1 item2 ->
+      (Sorter.compare obj item1 item2)
 
   method get_order : unit -> Gtk_enums.sorterorder =
     fun () ->

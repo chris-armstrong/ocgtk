@@ -3,6 +3,7 @@ class type column_view_row_t = object
     method get_accessible_label : unit -> string
     method get_activatable : unit -> bool
     method get_focusable : unit -> bool
+    method get_item : unit -> [`object_] Gobject.obj option
     method get_position : unit -> int
     method get_selectable : unit -> bool
     method get_selected : unit -> bool

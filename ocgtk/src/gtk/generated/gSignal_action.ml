@@ -16,5 +16,6 @@ class signal_action (obj : Signal_action.t) : signal_action_t = object (self)
 end
 
 let new_ (signal_name : string) : signal_action_t =
-  new signal_action (Signal_action.new_ signal_name)
+  let obj_ = Signal_action.new_ signal_name in
+  new signal_action obj_
 

@@ -40,3 +40,12 @@ class inet_address_mask (obj : Inet_address_mask.t) : inet_address_mask_t = obje
     method as_inet_address_mask = obj
 end
 
+let new_ (addr : GInet_address.inet_address_t) (length : int) : (inet_address_mask_t, GError.t) result =
+  let addr = addr#as_inet_address in
+  let obj_ = Inet_address_mask.new_ addr length in
+Result.map (fun obj_ ->  new inet_address_mask obj_) obj_
+
+let new_from_string (mask_string : string) : (inet_address_mask_t, GError.t) result =
+  let obj_ = Inet_address_mask.new_from_string mask_string in
+Result.map (fun obj_ ->  new inet_address_mask obj_) obj_
+

@@ -3,6 +3,18 @@
 
 type t = [`pixbuf_animation | `object_] Gobject.obj
 
+(** Create a new PixbufAnimation *)
+external new_from_file : string -> (t, GError.t) result = "ml_gdk_pixbuf_animation_new_from_file"
+
+(** Create a new PixbufAnimation *)
+external new_from_resource : string -> (t, GError.t) result = "ml_gdk_pixbuf_animation_new_from_resource"
+
+(** Create a new PixbufAnimation *)
+external new_from_stream : Ocgtk_gio.Gio.Wrappers.Input_stream.t -> Ocgtk_gio.Gio.Wrappers.Cancellable.t option -> (t, GError.t) result = "ml_gdk_pixbuf_animation_new_from_stream"
+
+(** Create a new PixbufAnimation *)
+external new_from_stream_finish : Ocgtk_gio.Gio.Wrappers.Async_result.t -> (t, GError.t) result = "ml_gdk_pixbuf_animation_new_from_stream_finish"
+
 (* Methods *)
 (** Checks whether the animation is a static image.
 

@@ -467,5 +467,6 @@ class text_tag (obj : Text_tag.t) : text_tag_t = object (self)
 end
 
 let new_ (name : string option) : text_tag_t =
-  new text_tag (Text_tag.new_ name)
+  let obj_ = Text_tag.new_ name in
+  new text_tag obj_
 

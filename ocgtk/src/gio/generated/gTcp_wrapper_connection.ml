@@ -18,5 +18,6 @@ end
 let new_ (base_io_stream : GIo_stream.io_stream_t) (socket : GSocket_and__socket_connection.socket_t) : tcp_wrapper_connection_t =
   let base_io_stream = base_io_stream#as_io_stream in
   let socket = socket#as_socket in
-  new tcp_wrapper_connection (Tcp_wrapper_connection.new_ base_io_stream socket)
+  let obj_ = Tcp_wrapper_connection.new_ base_io_stream socket in
+  new tcp_wrapper_connection obj_
 

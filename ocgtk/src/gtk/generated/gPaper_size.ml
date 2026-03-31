@@ -84,14 +84,18 @@ class paper_size (obj : Paper_size.t) : paper_size_t = object (self)
 end
 
 let new_ (name : string option) : paper_size_t =
-  new paper_size (Paper_size.new_ name)
+  let obj_ = Paper_size.new_ name in
+  new paper_size obj_
 
 let new_custom (name : string) (display_name : string) (width : float) (height : float) (unit : Gtk_enums.unit) : paper_size_t =
-  new paper_size (Paper_size.new_custom name display_name width height unit)
+  let obj_ = Paper_size.new_custom name display_name width height unit in
+  new paper_size obj_
 
 let new_from_ipp (ipp_name : string) (width : float) (height : float) : paper_size_t =
-  new paper_size (Paper_size.new_from_ipp ipp_name width height)
+  let obj_ = Paper_size.new_from_ipp ipp_name width height in
+  new paper_size obj_
 
 let new_from_ppd (ppd_name : string) (ppd_display_name : string) (width : float) (height : float) : paper_size_t =
-  new paper_size (Paper_size.new_from_ppd ppd_name ppd_display_name width height)
+  let obj_ = Paper_size.new_from_ppd ppd_name ppd_display_name width height in
+  new paper_size obj_
 

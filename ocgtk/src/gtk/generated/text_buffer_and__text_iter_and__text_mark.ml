@@ -1321,6 +1321,16 @@ and Text_iter
   toggled on. *)
   external get_visible_line_index : t -> int = "ml_gtk_text_iter_get_visible_line_index"
 
+  (** Returns a list of `GtkTextTag` that are toggled on or off at this
+  point.
+
+  If @toggled_on is %TRUE, the list contains tags that are
+  toggled on. If a tag is toggled on at @iter, then some non-empty
+  range of characters following @iter has that tag applied to it.  If
+  a tag is toggled off, then some non-empty range following @iter
+  does not have the tag applied to it. *)
+  external get_toggled_tags : t -> bool -> Text_tag.t list = "ml_gtk_text_iter_get_toggled_tags"
+
   (** Returns text in the given range.
 
   If the range
@@ -1329,6 +1339,15 @@ and Text_iter
   byte offsets in the buffer. If you want offsets to correspond, see
   [method@Gtk.TextIter.get_slice]. *)
   external get_text : t -> t -> string = "ml_gtk_text_iter_get_text"
+
+  (** Returns a list of tags that apply to @iter, in ascending order of
+  priority.
+
+  The highest-priority tags are last.
+
+  The `GtkTextTag`s in the list don’t have a reference added,
+  but you have to free the list itself. *)
+  external get_tags : t -> Text_tag.t list = "ml_gtk_text_iter_get_tags"
 
   (** Returns the text in the given range.
 
@@ -1354,6 +1373,15 @@ and Text_iter
   Use [method@Gtk.TextBuffer.get_iter_at_offset] to convert
   an offset back into an iterator. *)
   external get_offset : t -> int = "ml_gtk_text_iter_get_offset"
+
+  (** Returns a list of all `GtkTextMark` at this location.
+
+  Because marks are not iterable (they don’t take up any "space"
+  in the buffer, they are just marks in between iterable locations),
+  multiple marks can exist in the same place.
+
+  The returned list is not in any meaningful order. *)
+  external get_marks : t -> Text_mark.t list = "ml_gtk_text_iter_get_marks"
 
   (** Returns the character offset of the iterator,
   counting from the start of a newline-terminated line.
@@ -1978,6 +2006,16 @@ end = struct
   toggled on. *)
   external get_visible_line_index : t -> int = "ml_gtk_text_iter_get_visible_line_index"
 
+  (** Returns a list of `GtkTextTag` that are toggled on or off at this
+  point.
+
+  If @toggled_on is %TRUE, the list contains tags that are
+  toggled on. If a tag is toggled on at @iter, then some non-empty
+  range of characters following @iter has that tag applied to it.  If
+  a tag is toggled off, then some non-empty range following @iter
+  does not have the tag applied to it. *)
+  external get_toggled_tags : t -> bool -> Text_tag.t list = "ml_gtk_text_iter_get_toggled_tags"
+
   (** Returns text in the given range.
 
   If the range
@@ -1986,6 +2024,15 @@ end = struct
   byte offsets in the buffer. If you want offsets to correspond, see
   [method@Gtk.TextIter.get_slice]. *)
   external get_text : t -> t -> string = "ml_gtk_text_iter_get_text"
+
+  (** Returns a list of tags that apply to @iter, in ascending order of
+  priority.
+
+  The highest-priority tags are last.
+
+  The `GtkTextTag`s in the list don’t have a reference added,
+  but you have to free the list itself. *)
+  external get_tags : t -> Text_tag.t list = "ml_gtk_text_iter_get_tags"
 
   (** Returns the text in the given range.
 
@@ -2011,6 +2058,15 @@ end = struct
   Use [method@Gtk.TextBuffer.get_iter_at_offset] to convert
   an offset back into an iterator. *)
   external get_offset : t -> int = "ml_gtk_text_iter_get_offset"
+
+  (** Returns a list of all `GtkTextMark` at this location.
+
+  Because marks are not iterable (they don’t take up any "space"
+  in the buffer, they are just marks in between iterable locations),
+  multiple marks can exist in the same place.
+
+  The returned list is not in any meaningful order. *)
+  external get_marks : t -> Text_mark.t list = "ml_gtk_text_iter_get_marks"
 
   (** Returns the character offset of the iterator,
   counting from the start of a newline-terminated line.

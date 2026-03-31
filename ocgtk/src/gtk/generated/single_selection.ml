@@ -37,6 +37,11 @@ selected. It will select a new item when the currently selected
 item is deleted and it will disallow unselecting the current item. *)
 external set_autoselect : t -> bool -> unit = "ml_gtk_single_selection_set_autoselect"
 
+(** Gets the selected item.
+
+If no item is selected, %NULL is returned. *)
+external get_selected_item : t -> [`object_] Gobject.obj option = "ml_gtk_single_selection_get_selected_item"
+
 (** Gets the position of the selected item.
 
 If no item is selected, %GTK_INVALID_LIST_POSITION is returned. *)

@@ -118,6 +118,9 @@ external insert : t -> Attribute.t -> unit = "ml_pango_attr_list_insert"
 @list must not be modified until this iterator is freed. *)
 external get_iterator : t -> Attr_iterator.t = "ml_pango_attr_list_get_iterator"
 
+(** Gets a list of all attributes in @list. *)
+external get_attributes : t -> Attribute.t list = "ml_pango_attr_list_get_attributes"
+
 (** Checks whether @list and @other_list contain the same
 attributes and whether those attributes apply to the
 same ranges.

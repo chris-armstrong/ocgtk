@@ -22,6 +22,8 @@ class type layout_t = object
     method get_line_count : unit -> int
     method get_line_readonly : int -> Layout_line.t option
     method get_line_spacing : unit -> float
+    method get_lines : unit -> Layout_line.t list
+    method get_lines_readonly : unit -> Layout_line.t list
     method get_serial : unit -> int
     method get_single_paragraph_mode : unit -> bool
     method get_spacing : unit -> int
@@ -152,6 +154,14 @@ class layout (obj : Layout_and__layout_iter.Layout.t) : layout_t = object (self)
   method get_line_spacing : unit -> float =
     fun () ->
       (Layout_and__layout_iter.Layout.get_line_spacing obj)
+
+  method get_lines : unit -> Layout_line.t list =
+    fun () ->
+      (Layout_and__layout_iter.Layout.get_lines obj)
+
+  method get_lines_readonly : unit -> Layout_line.t list =
+    fun () ->
+      (Layout_and__layout_iter.Layout.get_lines_readonly obj)
 
   method get_serial : unit -> int =
     fun () ->
@@ -326,5 +336,6 @@ and layout_iter (obj : Layout_and__layout_iter.Layout_iter.t) : layout_iter_t = 
 end
 let new_ (context : GContext_and__font_and__font_map_and__fontset.context_t) : layout_t =
   let context = context#as_context in
-  new layout (Layout_and__layout_iter.Layout.new_ context)
+  let obj_ = Layout_and__layout_iter.Layout.new_ context in
+  new layout obj_
 

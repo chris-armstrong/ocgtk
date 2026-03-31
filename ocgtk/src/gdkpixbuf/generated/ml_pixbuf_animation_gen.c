@@ -16,6 +16,46 @@
 #include "gdkpixbuf_decls.h"
 
 
+CAMLexport CAMLprim value ml_gdk_pixbuf_animation_new_from_file(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GdkPixbufAnimation *obj = gdk_pixbuf_animation_new_from_file(String_val(arg1), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbufAnimation(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_gdk_pixbuf_animation_new_from_resource(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GdkPixbufAnimation *obj = gdk_pixbuf_animation_new_from_resource(String_val(arg1), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbufAnimation(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_gdk_pixbuf_animation_new_from_stream(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+GError *error = NULL;
+    
+GdkPixbufAnimation *obj = gdk_pixbuf_animation_new_from_stream(GInputStream_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbufAnimation(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_gdk_pixbuf_animation_new_from_stream_finish(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GdkPixbufAnimation *obj = gdk_pixbuf_animation_new_from_stream_finish(GAsyncResult_val(arg1), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbufAnimation(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 CAMLexport CAMLprim value ml_gdk_pixbuf_animation_is_static_image(value self)
 {
 CAMLparam1(self);

@@ -88,6 +88,17 @@ module rec Application : sig
   this window to find out more about why the action is inhibited. *)
   external inhibit : t -> Window.t option -> Gtk_enums.applicationinhibitflags -> string option -> int = "ml_gtk_application_inhibit"
 
+  (** Gets a list of the [class@Gtk.Window] instances associated with `application`.
+
+  The list is sorted by most recently focused window, such that the first
+  element is the currently focused window. (Useful for choosing a parent
+  for a transient window.)
+
+  The list that is returned should not be modified in any way. It will
+  only remain valid until the next focus change or window creation or
+  deletion. *)
+  external get_windows : t -> Window.t list = "ml_gtk_application_get_windows"
+
   (** Returns the [class@Gtk.ApplicationWindow] with the given ID.
 
   The ID of a `GtkApplicationWindow` can be retrieved with
@@ -168,7 +179,7 @@ end
 
 and Window
  : sig
-  type t = [`window | `widget | `initially_unowned] Gobject.obj
+  type t = [`window | `widget | `initially_unowned | `object_] Gobject.obj
 
   (** Create a new Window *)
   external new_ : unit -> t = "ml_gtk_window_new"
@@ -657,6 +668,9 @@ and Window_group
   (* Methods *)
   (** Removes a window from a `GtkWindowGroup`. *)
   external remove_window : t -> Window.t -> unit = "ml_gtk_window_group_remove_window"
+
+  (** Returns a list of the `GtkWindows` that belong to @window_group. *)
+  external list_windows : t -> Window.t list = "ml_gtk_window_group_list_windows"
 
   (** Adds a window to a `GtkWindowGroup`. *)
   external add_window : t -> Window.t -> unit = "ml_gtk_window_group_add_window"

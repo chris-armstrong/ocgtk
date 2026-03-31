@@ -22,5 +22,6 @@ end
 
 let new_ (child : GRender_node.render_node_t) (clip : Rounded_rect.t) : rounded_clip_node_t =
   let child = child#as_render_node in
-  new rounded_clip_node (Rounded_clip_node.new_ child clip)
+  let obj_ = Rounded_clip_node.new_ child clip in
+  new rounded_clip_node obj_
 

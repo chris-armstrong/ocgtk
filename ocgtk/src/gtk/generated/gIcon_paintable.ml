@@ -25,5 +25,6 @@ end
 
 let new_for_file (file : Ocgtk_gio.Gio.File.file_t) (size : int) (scale : int) : icon_paintable_t =
   let file = file#as_file in
-  new icon_paintable (Icon_paintable.new_for_file file size scale)
+  let obj_ = Icon_paintable.new_for_file file size scale in
+  new icon_paintable obj_
 

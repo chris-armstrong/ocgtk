@@ -27,5 +27,6 @@ let new_ () : unix_fd_list_t =
   new unix_fd_list (Unix_fd_list.new_ ())
 
 let new_from_array (fds : int array) (n_fds : int) : unix_fd_list_t =
-  new unix_fd_list (Unix_fd_list.new_from_array fds n_fds)
+  let obj_ = Unix_fd_list.new_from_array fds n_fds in
+  new unix_fd_list obj_
 

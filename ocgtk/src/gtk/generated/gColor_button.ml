@@ -44,5 +44,6 @@ let new_ () : color_button_t =
 
 let new_with_rgba (rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t) : color_button_t =
   let rgba = rgba#as_rgb_a in
-  new color_button (Color_button.new_with_rgba rgba)
+  let obj_ = Color_button.new_with_rgba rgba in
+  new color_button obj_
 

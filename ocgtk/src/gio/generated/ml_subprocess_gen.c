@@ -22,6 +22,23 @@
 #include "gio_decls.h"
 
 
+CAMLexport CAMLprim value ml_g_subprocess_newv(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+    int arg1_length = Wosize_val(arg1);
+    gchar** c_arg1 = (gchar**)g_malloc(sizeof(gchar*) * (arg1_length + 1));
+    for (int i = 0; i < arg1_length; i++) {
+      c_arg1[i] = String_val(Field(arg1, i));
+    }
+    c_arg1[arg1_length] = NULL;
+GError *error = NULL;
+    
+GSubprocess *obj = g_subprocess_newv(c_arg1, GioSubprocessFlags_val(arg2), &error);
+if (obj) g_object_ref_sink(obj);
+
+    g_free(c_arg1);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GSubprocess(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 CAMLexport CAMLprim value ml_g_subprocess_wait_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);

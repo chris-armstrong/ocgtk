@@ -209,6 +209,23 @@ let handle_scalar_param ~arg_name ~ocaml_idx ~length_param_map ~p ~tm =
             ~gir_type:param_type ~mapping
       | None -> arg_name)
 
+(* [handle_in_list_param ~ctx ~acc ~arg_name p] processes an in-direction GList/GSList parameter.
+   Generates conversion code from OCaml list to C list. *)
+let handle_in_list_param ~ctx ~acc ~arg_name (p : gir_param) =
+  match C_stub_list_conv.generate_param_list_conversion ~ctx ~ocaml_var:arg_name ~gir_type:p.param_type with
+  | Some (c_var, conversion_code) ->
+      bprintf acc.C_stub_helpers.decls "    %s\n" conversion_code;
+      let cleanup_code = 
+        match p.param_type.transfer_ownership with
+        | Types.TransferNone | Types.TransferContainer ->
+            sprintf "g_list_free(%s);" c_var
+        | Types.TransferFull | Types.TransferFloating ->
+            sprintf "g_list_foreach(%s, (GFunc)g_free, NULL);\n    g_list_free(%s);" c_var c_var
+      in
+      (c_var, acc.cleanups @ [ cleanup_code ])
+  | None ->
+      (arg_name, acc.cleanups)
+
 (* [handle_in_param ~ctx ~acc ~length_param_map ~base_type ~tm p] processes an in-direction parameter.
    Handles both array and scalar types. For arrays, generates conversion code. For scalars,
    uses type mapping or substitutes length variable from length_param_map. Returns updated
@@ -216,27 +233,37 @@ let handle_scalar_param ~arg_name ~ocaml_idx ~length_param_map ~p ~tm =
 let handle_in_param ~ctx ~acc ~length_param_map ~base_type ~tm (p : gir_param) =
   let ocaml_idx = acc.C_stub_helpers.ocaml_idx + 1 in
   let arg_name = sprintf "arg%d" ocaml_idx in
-  match p.param_type.array with
-  | Some array_info ->
-      let arg_expr, new_cleanups =
-        handle_in_array_param ~ctx ~acc ~arg_name ~base_type ~tm p array_info
-      in
-      {
-        C_stub_helpers.ocaml_idx;
-        decls = acc.decls;
-        args = acc.args @ [ arg_expr ];
-        cleanups = new_cleanups;
-      }
-  | None ->
-      let arg_expr =
-        handle_scalar_param ~arg_name ~ocaml_idx ~length_param_map ~p ~tm
-      in
-      {
-        C_stub_helpers.ocaml_idx;
-        decls = acc.decls;
-        args = acc.args @ [ arg_expr ];
-        cleanups = acc.cleanups;
-      }
+  (* Check for GList/GSList types first *)
+  if Type_mappings.is_list_type p.param_type then
+    let c_var, new_cleanups = handle_in_list_param ~ctx ~acc ~arg_name p in
+    {
+      C_stub_helpers.ocaml_idx;
+      decls = acc.decls;
+      args = acc.args @ [ c_var ];
+      cleanups = new_cleanups;
+    }
+  else
+    match p.param_type.array with
+    | Some array_info ->
+        let arg_expr, new_cleanups =
+          handle_in_array_param ~ctx ~acc ~arg_name ~base_type ~tm p array_info
+        in
+        {
+          C_stub_helpers.ocaml_idx;
+          decls = acc.decls;
+          args = acc.args @ [ arg_expr ];
+          cleanups = new_cleanups;
+        }
+    | None ->
+        let arg_expr =
+          handle_scalar_param ~arg_name ~ocaml_idx ~length_param_map ~p ~tm
+        in
+        {
+          C_stub_helpers.ocaml_idx;
+          decls = acc.decls;
+          args = acc.args @ [ arg_expr ];
+          cleanups = acc.cleanups;
+        }
 
 (* Out parameter conversion functions moved to C_stub_method_out module *)
 
@@ -349,31 +376,65 @@ let handle_scalar_return ~ctx ~(meth : gir_method) ~c_name ~args
       out_conversions,
     out_array_cleanup_list )
 
+(* [handle_list_return ~ctx ~meth ~c_name ~args ~ret_type ~out_array_conv_code
+                        ~out_conversions ~out_array_cleanup_list] handles GList/GSList return types.
+    Uses the macro-based conversion from C_stub_list_conv. *)
+let handle_list_return ~ctx ~(meth : gir_method) ~c_name ~args
+    ~out_array_conv_code ~out_conversions:_ ~out_array_cleanup_list =
+  match C_stub_list_conv.generate_return_list_conversion ~ctx ~c_var:"c_result"
+          ~gir_type:meth.return_type with
+  | None ->
+      failwith
+        "handle_list_return: generate_return_list_conversion returned None - \
+         this is a bug"
+  | Some (decls, conv_code, ret_code) ->
+      let c_call_base = sprintf "GList* c_result = %s(%s);" c_name args in
+      let c_call =
+        if String.length out_array_conv_code > 0 then
+          sprintf "%s\n    %s\n    %s" decls c_call_base out_array_conv_code
+        else sprintf "%s\n    %s" decls c_call_base
+      in
+      let ret_conv =
+        if meth.throws then
+          sprintf
+            "if (error == NULL) {\n\
+             \        %s\n\
+             \        CAMLreturn(Res_Ok(result));\n\
+             \    } else CAMLreturn(Res_Error(Val_GError(error)));"
+            conv_code
+        else sprintf "%s\n    %s" conv_code ret_code
+      in
+      (c_call, ret_conv, out_array_cleanup_list)
+
 (* [handle_non_void_return ~ctx ~meth ~c_name ~args ~ret_type ~out_array_conv_code
                            ~out_conversions ~out_array_cleanup_list] handles non-void return types.
-   Dispatches to array or scalar handlers based on whether return type has array info.
-   Raises failwith if no type mapping found for the return type. *)
+    Dispatches to array, list, or scalar handlers based on return type.
+    Raises failwith if no type mapping found for the return type. *)
 let handle_non_void_return ~ctx ~(meth : gir_method) ~c_name ~args ~ret_type
     ~out_array_conv_code ~out_conversions ~out_array_cleanup_list =
-  match Type_mappings.find_type_mapping_for_gir_type ~ctx meth.return_type with
-  | Some mapping -> (
-      match meth.return_type.array with
-      | Some _array_info ->
+  (* Check for GList/GSList types first - they need special handling *)
+  if Type_mappings.is_list_type meth.return_type then
+    handle_list_return ~ctx ~meth ~c_name ~args ~out_array_conv_code
+      ~out_conversions ~out_array_cleanup_list
+  else
+    match Type_mappings.find_type_mapping_for_gir_type ~ctx meth.return_type with
+    | Some mapping ->
+        if Option.is_some meth.return_type.array then
           handle_array_return ~ctx ~meth ~c_name ~args ~out_array_conv_code
             ~ret_type ~out_conversions ~out_array_cleanup_list
-      | None ->
+        else
           handle_scalar_return ~ctx ~meth ~c_name ~args ~out_array_conv_code
-            ~ret_type ~mapping ~out_conversions ~out_array_cleanup_list)
-  | None ->
-      (* No type mapping found - fail with clear error *)
-      failwith
-        (sprintf
-           "No type mapping found for return type: name='%s' c_type='%s' in \
-            method %s. This indicates missing type information in the context \
-            or GIR metadata."
-           meth.return_type.name
-           (Option.value meth.return_type.c_type ~default:"<none>")
-           meth.c_identifier)
+            ~ret_type ~mapping ~out_conversions ~out_array_cleanup_list
+    | None ->
+        (* No type mapping found - fail with clear error *)
+        failwith
+          (sprintf
+             "No type mapping found for return type: name='%s' c_type='%s' in \
+              method %s. This indicates missing type information in the context \
+              or GIR metadata."
+             meth.return_type.name
+             (Option.value meth.return_type.c_type ~default:"<none>")
+             meth.c_identifier)
 
 (* [build_return_conversion ~ctx ~meth ~c_name ~args ~ret_type ~out_array_conv_code
                              ~out_conversions ~out_array_cleanup_list] builds the complete return

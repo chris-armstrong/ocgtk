@@ -51,5 +51,6 @@ class box_layout (obj : Box_layout.t) : box_layout_t = object (self)
 end
 
 let new_ (orientation : Gtk_enums.orientation) : box_layout_t =
-  new box_layout (Box_layout.new_ orientation)
+  let obj_ = Box_layout.new_ orientation in
+  new box_layout obj_
 

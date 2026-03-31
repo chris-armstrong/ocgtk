@@ -268,3 +268,11 @@ and socket_connection (obj : Socket_and__socket_connection.Socket_connection.t) 
 
     method as_socket_connection = obj
 end
+let new_ (family : Gio_enums.socketfamily) (type_ : Gio_enums.sockettype) (protocol : Gio_enums.socketprotocol) : (socket_t, GError.t) result =
+  let obj_ = Socket_and__socket_connection.Socket.new_ family type_ protocol in
+Result.map (fun obj_ ->  new socket obj_) obj_
+
+let new_from_fd (fd : int) : (socket_t, GError.t) result =
+  let obj_ = Socket_and__socket_connection.Socket.new_from_fd fd in
+Result.map (fun obj_ ->  new socket obj_) obj_
+

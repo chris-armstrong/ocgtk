@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ListBox: ListBox *)
 
-type t = [`list_box | `widget | `initially_unowned] Gobject.obj
+type t = [`list_box | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new ListBox *)
 external new_ : unit -> t = "ml_gtk_list_box_new"
@@ -98,6 +98,9 @@ external get_show_separators : t -> bool = "ml_gtk_list_box_get_show_separators"
 
 (** Gets the selection mode of the listbox. *)
 external get_selection_mode : t -> Gtk_enums.selectionmode = "ml_gtk_list_box_get_selection_mode"
+
+(** Creates a list of all selected children. *)
+external get_selected_rows : t -> List_box_row.t list = "ml_gtk_list_box_get_selected_rows"
 
 (** Gets the selected row, or %NULL if no rows are selected.
 

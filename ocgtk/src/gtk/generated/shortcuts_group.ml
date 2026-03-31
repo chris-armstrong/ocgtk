@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ShortcutsGroup: ShortcutsGroup *)
 
-type t = [`shortcuts_group | `box | `widget | `initially_unowned] Gobject.obj
+type t = [`shortcuts_group | `box | `widget | `initially_unowned | `object_] Gobject.obj
 
 (* Methods *)
 (** Adds a shortcut to the shortcuts group.

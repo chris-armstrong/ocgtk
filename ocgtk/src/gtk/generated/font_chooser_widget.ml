@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FontChooserWidget: FontChooserWidget *)
 
-type t = [`font_chooser_widget | `widget | `initially_unowned] Gobject.obj
+type t = [`font_chooser_widget | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new FontChooserWidget *)
 external new_ : unit -> t = "ml_gtk_font_chooser_widget_new"

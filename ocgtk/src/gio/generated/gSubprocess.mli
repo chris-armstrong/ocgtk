@@ -20,3 +20,4 @@ end
 
 class subprocess : Subprocess.t -> subprocess_t
 
+val newv : string array -> Gio_enums.subprocessflags -> (subprocess_t, GError.t) result

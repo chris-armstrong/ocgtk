@@ -1,6 +1,7 @@
 class type size_group_t = object
     method add_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit
     method get_mode : unit -> Gtk_enums.sizegroupmode
+    method get_widgets : unit -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t list
     method remove_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit
     method set_mode : Gtk_enums.sizegroupmode -> unit
     method as_size_group : Size_group.t
@@ -18,6 +19,10 @@ class size_group (obj : Size_group.t) : size_group_t = object (self)
     fun () ->
       (Size_group.get_mode obj)
 
+  method get_widgets : unit -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t list =
+    fun () ->
+      (Size_group.get_widgets obj)
+
   method remove_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit =
     fun widget ->
       let widget = widget#as_widget in
@@ -31,5 +36,6 @@ class size_group (obj : Size_group.t) : size_group_t = object (self)
 end
 
 let new_ (mode : Gtk_enums.sizegroupmode) : size_group_t =
-  new size_group (Size_group.new_ mode)
+  let obj_ = Size_group.new_ mode in
+  new size_group obj_
 

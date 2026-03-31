@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Scale: Scale *)
 
-type t = [`scale | `range | `widget | `initially_unowned] Gobject.obj
+type t = [`scale | `range | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new Scale *)
 external new_ : Gtk_enums.orientation -> Adjustment.t option -> t = "ml_gtk_scale_new"

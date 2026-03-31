@@ -2,6 +2,7 @@ class type attr_list_t = object
     method change : Attribute.t -> unit
     method copy : unit -> Attr_list.t option
     method equal : Attr_list.t -> bool
+    method get_attributes : unit -> Attribute.t list
     method get_iterator : unit -> Attr_iterator.t
     method insert : Attribute.t -> unit
     method insert_before : Attribute.t -> unit

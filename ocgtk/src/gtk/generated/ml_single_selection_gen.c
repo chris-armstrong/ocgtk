@@ -58,6 +58,14 @@ gtk_single_selection_set_autoselect(GtkSingleSelection_val(self), Bool_val(arg1)
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_single_selection_get_selected_item(value self)
+{
+CAMLparam1(self);
+
+gpointer result = gtk_single_selection_get_selected_item(GtkSingleSelection_val(self));
+CAMLreturn(ml_gobject_val_of_ext(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_single_selection_get_selected(value self)
 {
 CAMLparam1(self);

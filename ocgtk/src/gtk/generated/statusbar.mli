@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Statusbar: Statusbar *)
 
-type t = [`statusbar | `widget | `initially_unowned] Gobject.obj
+type t = [`statusbar | `widget | `initially_unowned | `object_] Gobject.obj
 
 (** Create a new Statusbar *)
 external new_ : unit -> t = "ml_gtk_statusbar_new"

@@ -25,5 +25,6 @@ class gesture_pan (obj : Gesture_pan.t) : gesture_pan_t = object (self)
 end
 
 let new_ (orientation : Gtk_enums.orientation) : gesture_pan_t =
-  new gesture_pan (Gesture_pan.new_ orientation)
+  let obj_ = Gesture_pan.new_ orientation in
+  new gesture_pan obj_
 

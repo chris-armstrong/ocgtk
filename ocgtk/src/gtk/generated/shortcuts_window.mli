@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ShortcutsWindow: ShortcutsWindow *)
 
-type t = [`shortcuts_window | `window | `widget | `initially_unowned] Gobject.obj
+type t = [`shortcuts_window | `window | `widget | `initially_unowned | `object_] Gobject.obj
 
 (* Methods *)
 (** Adds a section to the shortcuts window.

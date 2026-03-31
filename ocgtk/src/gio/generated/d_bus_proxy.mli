@@ -3,6 +3,18 @@
 
 type t = [`d_bus_proxy | `object_] Gobject.obj
 
+(** Create a new DBusProxy *)
+external new_finish : Async_result.t -> (t, GError.t) result = "ml_g_dbus_proxy_new_finish"
+
+(** Create a new DBusProxy *)
+external new_for_bus_finish : Async_result.t -> (t, GError.t) result = "ml_g_dbus_proxy_new_for_bus_finish"
+
+(** Create a new DBusProxy *)
+external new_for_bus_sync : Gio_enums.bustype -> Gio_enums.dbusproxyflags -> D_bus_interface_info.t option -> string -> string -> string -> Cancellable.t option -> (t, GError.t) result = "ml_g_dbus_proxy_new_for_bus_sync_bytecode" "ml_g_dbus_proxy_new_for_bus_sync_native"
+
+(** Create a new DBusProxy *)
+external new_sync : D_bus_connection.t -> Gio_enums.dbusproxyflags -> D_bus_interface_info.t option -> string option -> string -> string -> Cancellable.t option -> (t, GError.t) result = "ml_g_dbus_proxy_new_sync_bytecode" "ml_g_dbus_proxy_new_sync_native"
+
 (* Methods *)
 (** Ensure that interactions with @proxy conform to the given
 interface. See the #GDBusProxy:g-interface-info property for more

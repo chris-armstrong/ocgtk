@@ -3,6 +3,12 @@
 
 type t = [`d_bus_object_manager_client | `object_] Gobject.obj
 
+(** Create a new DBusObjectManagerClient *)
+external new_finish : Async_result.t -> (t, GError.t) result = "ml_g_dbus_object_manager_client_new_finish"
+
+(** Create a new DBusObjectManagerClient *)
+external new_for_bus_finish : Async_result.t -> (t, GError.t) result = "ml_g_dbus_object_manager_client_new_for_bus_finish"
+
 (* Methods *)
 (** The unique name that owns the name that @manager is for or %NULL if
 no-one currently owns that name. You can connect to the

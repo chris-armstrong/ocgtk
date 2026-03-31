@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DragIcon: DragIcon *)
 
-type t = [`drag_icon | `widget | `initially_unowned] Gobject.obj
+type t = [`drag_icon | `widget | `initially_unowned | `object_] Gobject.obj
 
 (* Methods *)
 (** Sets the widget to display as the drag icon. *)

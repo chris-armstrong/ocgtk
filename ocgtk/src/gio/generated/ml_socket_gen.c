@@ -22,6 +22,26 @@
 #include "gio_decls.h"
 
 
+CAMLexport CAMLprim value ml_g_socket_new(value arg1, value arg2, value arg3)
+{
+CAMLparam3(arg1, arg2, arg3);
+GError *error = NULL;
+    
+GSocket *obj = g_socket_new(GioSocketFamily_val(arg1), GioSocketType_val(arg2), GioSocketProtocol_val(arg3), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GSocket(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_g_socket_new_from_fd(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GSocket *obj = g_socket_new_from_fd(Int_val(arg1), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GSocket(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 CAMLexport CAMLprim value ml_g_socket_speaks_ipv4(value self)
 {
 CAMLparam1(self);

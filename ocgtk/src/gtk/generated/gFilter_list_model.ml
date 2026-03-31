@@ -51,5 +51,6 @@ end
 let new_ (model : Ocgtk_gio.Gio.List_model.list_model_t option) (filter : GFilter.filter_t option) : filter_list_model_t =
   let model = Option.map (fun c -> c#as_list_model) model in
   let filter = Option.map (fun c -> c#as_filter) filter in
-  new filter_list_model (Filter_list_model.new_ model filter)
+  let obj_ = Filter_list_model.new_ model filter in
+  new filter_list_model obj_
 
