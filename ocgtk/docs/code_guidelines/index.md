@@ -17,6 +17,14 @@ This directory contains coding guidelines for the ocgtk project, organized by co
 | [test-patterns.md](./test-patterns.md) | AST-based validation, test helpers |
 | [abstractions.md](./abstractions.md) | Module design, parameter reduction, functors |
 
+## C FFI GUIDELINES
+
+When writing or reviewing OCaml/C bindings, also consult:
+
+| Document | Concerns Covered |
+|----------|-----------------|
+| [../../architecture/FFI_GUIDELINES.md](../../architecture/FFI_GUIDELINES.md) | GC safety (CAMLlocal), pointer wrapping, GValue memory, GClosure pattern, common pitfalls |
+
 ## Usage
 
 MANDATORY: Load ALL the MANDATORY GUIDELINES from the index above.
