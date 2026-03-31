@@ -57,6 +57,11 @@ let should_skip_class class_name =
       "PixbufNonAnim";
       "BroadwayRenderer";
       "NglRenderer";
+      (* GSettingsBackend requires #define G_SETTINGS_ENABLE_BACKEND before
+         including gsettingsbackend.h, and is only useful for implementing
+         custom settings backends (which requires GObject subclassing support
+         we don't have). Skip the entire class. *)
+      "SettingsBackend";
     ]
   in
   List.mem class_name ~set:skip_list
