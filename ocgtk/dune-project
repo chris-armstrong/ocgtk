@@ -21,10 +21,11 @@
  (description "ocgtk provides OCaml bindings for GTK 4")
  (depends
   (ocaml
-   (>= 5.0))
+   (>= 5.3))
   (dune
    (>= 3.13))
   conf-gtk4
+  (integers (>= 0.7.0))
   (containers :build)
   (camlp5 :build)
   (camlp-streams :build)
