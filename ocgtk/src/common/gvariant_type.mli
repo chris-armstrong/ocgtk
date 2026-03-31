@@ -82,3 +82,21 @@ val signature : t
 
 val variant : t
 (** The variant type "v" *)
+
+val byte : t
+(** The byte type "y" *)
+
+val int16 : t
+(** The int16 type "n" *)
+
+val uint16 : t
+(** The uint16 type "q" *)
+
+val uint32 : t
+(** The uint32 type "u" *)
+
+val uint64 : t
+(** The uint64 type "t" *)
+
+val handle : t
+(** The handle type "h" *)
