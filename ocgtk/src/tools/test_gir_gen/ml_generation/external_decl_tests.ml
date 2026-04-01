@@ -38,6 +38,7 @@ let test_method_multiple_params () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -95,6 +96,7 @@ let test_method_with_object_param () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -151,6 +153,7 @@ let test_method_with_bool_param () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -198,6 +201,7 @@ let test_method_with_int_return () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -258,7 +262,8 @@ let test_constructor_with_multiple_params () =
     ctor_doc = None;
     throws = false;
     ctor_introspectable = true;
-  } in
+    version = None;
+    } in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
     ~ctx
@@ -314,6 +319,7 @@ let test_method_with_nullable_object () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -360,6 +366,7 @@ let test_property_getter () =
     get_property = Some "label";
     set_property = None;
     introspectable = true;
+    version = None;
   } in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -413,6 +420,7 @@ let test_property_setter () =
     get_property = None;
     set_property = Some "label";
     introspectable = true;
+    version = None;
   } in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -458,6 +466,7 @@ let test_property_getter_nullable () =
     get_property = Some "tooltip-text";
     set_property = None;
     introspectable = true;
+    version = None;
   } in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface

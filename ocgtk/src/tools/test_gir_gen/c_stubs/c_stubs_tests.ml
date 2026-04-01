@@ -135,6 +135,7 @@ let test_simple_constructor () =
       ctor_doc = None;
       throws = false;
       ctor_introspectable = true;
+      version = None;
     }
   in
 
@@ -185,6 +186,7 @@ let test_constructor_with_params () =
       ctor_doc = None;
       throws = false;
       ctor_introspectable = true;
+      version = None;
     }
   in
 
@@ -236,6 +238,7 @@ let test_constructor_many_params () =
       ctor_doc = None;
       throws = false;
       ctor_introspectable = true;
+      version = None;
     }
   in
 
@@ -294,6 +297,7 @@ let test_simple_method () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -334,6 +338,7 @@ let test_method_with_return_value () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -395,6 +400,7 @@ let test_method_many_params () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -455,6 +461,7 @@ let test_method_camlxparam_chunking () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -503,6 +510,7 @@ let test_constructor_type_conversion () =
       ctor_doc = None;
       throws = false;
       ctor_introspectable = true;
+      version = None;
     }
   in
 
@@ -556,6 +564,7 @@ let test_method_calls_c_function () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -582,6 +591,7 @@ let test_variable_declarations () =
       ctor_doc = None;
       throws = false;
       ctor_introspectable = true;
+      version = None;
     }
   in
 
@@ -614,6 +624,7 @@ let test_parameter_flow_to_return () =
       ctor_doc = None;
       throws = false;
       ctor_introspectable = true;
+      version = None;
     }
   in
 
@@ -665,6 +676,7 @@ let test_bytecode_calls_native () =
       ctor_doc = None;
       throws = false;
       ctor_introspectable = true;
+      version = None;
     }
   in
 
@@ -722,6 +734,7 @@ let test_non_opaque_record_return () =
       introspectable = true;
       record_doc = None;
       functions = [];
+      version = None;
     }
   in
 
@@ -745,6 +758,7 @@ let test_non_opaque_record_return () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -799,6 +813,7 @@ let test_non_opaque_record_parameter () =
       introspectable = true;
       record_doc = None;
       functions = [];
+      version = None;
     }
   in
 
@@ -839,6 +854,7 @@ let test_non_opaque_record_parameter () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -880,6 +896,7 @@ let test_opaque_record_return () =
       introspectable = true;
       record_doc = None;
       functions = [];
+      version = None;
     }
   in
 
@@ -903,6 +920,7 @@ let test_opaque_record_return () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -940,6 +958,7 @@ let test_opaque_record_parameter () =
       introspectable = true;
       record_doc = None;
       functions = [];
+      version = None;
     }
   in
 
@@ -980,6 +999,7 @@ let test_opaque_record_parameter () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -1037,6 +1057,7 @@ let test_nullable_record_return () =
       introspectable = true;
       record_doc = None;
       functions = [];
+      version = None;
     }
   in
 
@@ -1060,6 +1081,7 @@ let test_nullable_record_return () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -1116,6 +1138,7 @@ let test_nullable_record_parameter () =
       introspectable = true;
       record_doc = None;
       functions = [];
+      version = None;
     }
   in
 
@@ -1156,6 +1179,7 @@ let test_nullable_record_parameter () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 

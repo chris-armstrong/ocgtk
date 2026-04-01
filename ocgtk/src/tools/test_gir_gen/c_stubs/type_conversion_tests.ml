@@ -35,6 +35,7 @@ let test_gboolean_conversion () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -70,6 +71,7 @@ let test_gint_conversion () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -105,6 +107,7 @@ let test_gdouble_conversion () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -140,6 +143,7 @@ let test_utf8_string_conversion () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -192,6 +196,7 @@ let test_utf8_string_parameter () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -225,6 +230,7 @@ let test_object_type_conversion () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -260,6 +266,7 @@ let test_enum_type_conversion () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -314,6 +321,7 @@ let test_gboolean_parameter () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -379,6 +387,7 @@ let test_multiple_type_conversions () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 

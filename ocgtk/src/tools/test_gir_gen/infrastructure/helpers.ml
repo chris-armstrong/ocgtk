@@ -249,6 +249,7 @@ let create_test_context () =
       properties = [];
       signals = [];
       class_doc = None;
+      version = None;
     }
   in
 
@@ -265,6 +266,7 @@ let create_test_context () =
       properties = [];
       signals = [];
       class_doc = None;
+      version = None;
     }
   in
 
@@ -281,6 +283,7 @@ let create_test_context () =
       properties = [];
       signals = [];
       class_doc = None;
+      version = None;
     }
   in
 
@@ -297,6 +300,7 @@ let create_test_context () =
       properties = [];
       signals = [];
       class_doc = None;
+      version = None;
     }
   in
 
@@ -328,6 +332,7 @@ let create_test_context () =
       methods = [];
       functions = [];
       record_doc = None;
+      version = None;
     }
   in
 
@@ -348,6 +353,7 @@ let create_test_context () =
       methods = [];
       functions = [];
       record_doc = None;
+      version = None;
     }
   in
 

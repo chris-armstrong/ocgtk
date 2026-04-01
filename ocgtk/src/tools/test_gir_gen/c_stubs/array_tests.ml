@@ -1,12 +1,16 @@
 (* Array Handling Tests - validates array conversion code generation *)
 
 open Gir_gen_lib.Types
+open Type_factory
 
 (* Use shared test helpers *)
 let create_test_context = Helpers.create_test_context
 let parse_c_string = C_parser.parse_c_code
 let find_function = C_ast.find_function
 let generate_c_method = Gir_gen_lib.Generate.C_stub_method.generate_c_method
+
+let utf8_element = make_gir_type ~name:"utf8" ~c_type:"char*" ()
+let gint_element = make_gir_type ~name:"gint" ~c_type:"gint" ()
 
 (* =================================================================== *)
 (* Array Input Parameter Tests *)
@@ -15,57 +19,20 @@ let generate_c_method = Gir_gen_lib.Generate.C_stub_method.generate_c_method
 let test_zero_terminated_string_array_input () =
   let ctx = create_test_context () in
   let meth =
-    {
-      method_name = "set_authors";
-      c_identifier = "gtk_about_dialog_set_authors";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
+    make_gir_method
+      ~method_name:"set_authors"
+      ~c_identifier:"gtk_about_dialog_set_authors"
+      ~return_type:void_type
+      ~parameters:
         [
-          {
-            param_name = "authors";
-            param_type =
-              {
-                name = "utf8";
-                c_type = Some "const char**";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array =
-                  Some
-                    {
-                      length = None;
-                      zero_terminated = false;
-                      (* Will be inferred *)
-                      fixed_size = None;
-                      array_name = None;
-                      element_type =
-                        {
-                          name = "utf8";
-                          c_type = Some "char*";
-                          nullable = false;
-                          transfer_ownership = TransferNone;
-                          array = None;
-                        };
-                    };
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-    }
+          make_gir_param ~param_name:"authors"
+            ~param_type:
+              (make_gir_type ~name:"utf8" ~c_type:"const char**"
+                 ~array:(make_gir_array ~zero_terminated:false ~element_type:utf8_element ())
+                 ())
+            ~direction:In ();
+        ]
+      ()
   in
 
   let c_code =
@@ -88,13 +55,6 @@ let test_zero_terminated_string_array_input () =
     "Has variable declarations" true
     (List.length var_decls > 0);
 
-  (* Manual verification: Generated code inspection shows:
-     - Allocates with g_malloc for array with space for NULL terminator
-     - Sets array element at length index to NULL
-     - Uses const char** type
-     - Calls g_free after function call
-     All correct per generated output above *)
-
   (* Check that cleanup code is present *)
   Alcotest.(check bool)
     "Has cleanup code" true
@@ -107,40 +67,15 @@ let test_zero_terminated_string_array_input () =
 let test_zero_terminated_string_array_return () =
   let ctx = create_test_context () in
   let meth =
-    {
-      method_name = "get_artists";
-      c_identifier = "gtk_about_dialog_get_artists";
-      return_type =
-        {
-          name = "utf8";
-          c_type = Some "const char* const*";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array =
-            Some
-              {
-                length = None;
-                zero_terminated = false;
-                (* Will be inferred *)
-                fixed_size = None;
-                array_name = None;
-                element_type =
-                  {
-                    name = "utf8";
-                    c_type = Some "char*";
-                    nullable = false;
-                    transfer_ownership = TransferNone;
-                    array = None;
-                  };
-              };
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-    }
+    make_gir_method
+      ~method_name:"get_artists"
+      ~c_identifier:"gtk_about_dialog_get_artists"
+      ~return_type:
+        (make_gir_type ~name:"utf8" ~c_type:"const char* const*"
+           ~array:(make_gir_array ~zero_terminated:false ~element_type:utf8_element ())
+           ())
+      ~parameters:[]
+      ()
   in
 
   let c_code =
@@ -176,72 +111,23 @@ let test_zero_terminated_string_array_return () =
 let test_array_with_length_parameter () =
   let ctx = create_test_context () in
   let meth =
-    {
-      method_name = "set_items";
-      c_identifier = "gtk_list_set_items";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
+    make_gir_method
+      ~method_name:"set_items"
+      ~c_identifier:"gtk_list_set_items"
+      ~return_type:void_type
+      ~parameters:
         [
-          {
-            param_name = "items";
-            param_type =
-              {
-                name = "gint";
-                c_type = Some "gint*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array =
-                  Some
-                    {
-                      length = Some 1;
-                      (* Length is parameter index 1 *)
-                      zero_terminated = false;
-                      fixed_size = None;
-                      array_name = None;
-                      element_type =
-                        {
-                          name = "gint";
-                          c_type = Some "gint";
-                          nullable = false;
-                          transfer_ownership = TransferNone;
-                          array = None;
-                        };
-                    };
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-          {
-            param_name = "n_items";
-            param_type =
-              {
-                name = "gint";
-                c_type = Some "gint";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-    }
+          make_gir_param ~param_name:"items"
+            ~param_type:
+              (make_gir_type ~name:"gint" ~c_type:"gint*"
+                 ~array:(make_gir_array ~length:1 ~zero_terminated:false ~element_type:gint_element ())
+                 ())
+            ~direction:In ();
+          make_gir_param ~param_name:"n_items"
+            ~param_type:gint_type
+            ~direction:In ();
+        ]
+      ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkList" meth "List" in
@@ -264,12 +150,6 @@ let test_array_with_length_parameter () =
     "Has variable declarations" true
     (List.length var_decls > 0);
 
-  (* Manual verification: Generated code should:
-     - Compute arg1_length = Wosize_val(arg1)
-     - Allocate C array
-     - Pass arg1_length as second argument to C function
-     Parser limitations prevent automated verification of this *)
-
   (* Basic structure check *)
   Alcotest.(check bool)
     "Calls underlying C function" true
@@ -282,73 +162,24 @@ let test_array_with_length_parameter () =
 let test_out_parameter_array_with_length () =
   let ctx = create_test_context () in
   let meth =
-    {
-      method_name = "get_selection";
-      c_identifier = "gtk_list_get_selection";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
+    make_gir_method
+      ~method_name:"get_selection"
+      ~c_identifier:"gtk_list_get_selection"
+      ~return_type:void_type
+      ~parameters:
         [
-          {
-            param_name = "indices";
-            param_type =
-              {
-                name = "gint";
-                c_type = Some "gint*";
-                nullable = false;
-                transfer_ownership = TransferFull;
-                (* We own the array *)
-                array =
-                  Some
-                    {
-                      length = Some 1;
-                      (* Length is parameter index 1 *)
-                      zero_terminated = false;
-                      fixed_size = None;
-                      array_name = None;
-                      element_type =
-                        {
-                          name = "gint";
-                          c_type = Some "gint";
-                          nullable = false;
-                          transfer_ownership = TransferNone;
-                          array = None;
-                        };
-                    };
-              };
-            direction = Out;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-          {
-            param_name = "n_indices";
-            param_type =
-              {
-                name = "gint";
-                c_type = Some "gint";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = Out;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-    }
+          make_gir_param ~param_name:"indices"
+            ~param_type:
+              (make_gir_type ~name:"gint" ~c_type:"gint*"
+                 ~transfer_ownership:TransferFull
+                 ~array:(make_gir_array ~length:1 ~zero_terminated:false ~element_type:gint_element ())
+                 ())
+            ~direction:Out ();
+          make_gir_param ~param_name:"n_indices"
+            ~param_type:gint_type
+            ~direction:Out ();
+        ]
+      ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkList" meth "List" in
@@ -367,15 +198,6 @@ let test_out_parameter_array_with_length () =
     "Declares local variables" true
     (List.length var_decls > 0);
 
-  (* Manual verification: Generated code should:
-     - Declare out1 (array pointer) and out2 (length)
-     - Call C function with &out1, &out2
-     - Use out2 as length to convert array
-     - Allocate OCaml array with caml_alloc
-     - Convert elements with Store_field
-     - Free array if transfer-full
-     Parser limitations prevent full automated verification *)
-
   (* Basic structure checks *)
   Alcotest.(check bool)
     "Calls underlying C function" true
@@ -384,71 +206,24 @@ let test_out_parameter_array_with_length () =
 let test_out_parameter_string_array () =
   let ctx = create_test_context () in
   let meth =
-    {
-      method_name = "get_names";
-      c_identifier = "gtk_widget_get_names";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
+    make_gir_method
+      ~method_name:"get_names"
+      ~c_identifier:"gtk_widget_get_names"
+      ~return_type:void_type
+      ~parameters:
         [
-          {
-            param_name = "names";
-            param_type =
-              {
-                name = "utf8";
-                c_type = Some "char**";
-                nullable = false;
-                transfer_ownership = TransferFull;
-                array =
-                  Some
-                    {
-                      length = Some 1;
-                      zero_terminated = false;
-                      fixed_size = None;
-                      array_name = None;
-                      element_type =
-                        {
-                          name = "utf8";
-                          c_type = Some "char*";
-                          nullable = false;
-                          transfer_ownership = TransferNone;
-                          array = None;
-                        };
-                    };
-              };
-            direction = Out;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-          {
-            param_name = "n_names";
-            param_type =
-              {
-                name = "gint";
-                c_type = Some "gint";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = Out;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-    }
+          make_gir_param ~param_name:"names"
+            ~param_type:
+              (make_gir_type ~name:"utf8" ~c_type:"char**"
+                 ~transfer_ownership:TransferFull
+                 ~array:(make_gir_array ~length:1 ~zero_terminated:false ~element_type:utf8_element ())
+                 ())
+            ~direction:Out ();
+          make_gir_param ~param_name:"n_names"
+            ~param_type:gint_type
+            ~direction:Out ();
+        ]
+      ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -486,57 +261,20 @@ let test_out_parameter_string_array () =
 let test_array_cleanup_transfer_none () =
   let ctx = create_test_context () in
   let meth =
-    {
-      method_name = "set_values";
-      c_identifier = "gtk_widget_set_values";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
+    make_gir_method
+      ~method_name:"set_values"
+      ~c_identifier:"gtk_widget_set_values"
+      ~return_type:void_type
+      ~parameters:
         [
-          {
-            param_name = "values";
-            param_type =
-              {
-                name = "utf8";
-                c_type = Some "const char**";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                (* We free after call *)
-                array =
-                  Some
-                    {
-                      length = None;
-                      zero_terminated = true;
-                      fixed_size = None;
-                      array_name = None;
-                      element_type =
-                        {
-                          name = "utf8";
-                          c_type = Some "char*";
-                          nullable = false;
-                          transfer_ownership = TransferNone;
-                          array = None;
-                        };
-                    };
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-    }
+          make_gir_param ~param_name:"values"
+            ~param_type:
+              (make_gir_type ~name:"utf8" ~c_type:"const char**"
+                 ~array:(make_gir_array ~zero_terminated:true ~element_type:utf8_element ())
+                 ())
+            ~direction:In ();
+        ]
+      ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -554,57 +292,21 @@ let test_array_cleanup_transfer_none () =
 let test_array_cleanup_transfer_full () =
   let ctx = create_test_context () in
   let meth =
-    {
-      method_name = "set_owned_values";
-      c_identifier = "gtk_widget_set_owned_values";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
+    make_gir_method
+      ~method_name:"set_owned_values"
+      ~c_identifier:"gtk_widget_set_owned_values"
+      ~return_type:void_type
+      ~parameters:
         [
-          {
-            param_name = "values";
-            param_type =
-              {
-                name = "utf8";
-                c_type = Some "char**";
-                nullable = false;
-                transfer_ownership = TransferFull;
-                (* GTK owns, we don't free *)
-                array =
-                  Some
-                    {
-                      length = None;
-                      zero_terminated = true;
-                      fixed_size = None;
-                      array_name = None;
-                      element_type =
-                        {
-                          name = "utf8";
-                          c_type = Some "char*";
-                          nullable = false;
-                          transfer_ownership = TransferNone;
-                          array = None;
-                        };
-                    };
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-    }
+          make_gir_param ~param_name:"values"
+            ~param_type:
+              (make_gir_type ~name:"utf8" ~c_type:"char**"
+                 ~transfer_ownership:TransferFull
+                 ~array:(make_gir_array ~zero_terminated:true ~element_type:utf8_element ())
+                 ())
+            ~direction:In ();
+        ]
+      ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -628,56 +330,20 @@ let test_array_cleanup_transfer_full () =
 let test_gptr_array_return () =
   let ctx = create_test_context () in
   let meth =
-    {
-      method_name = "get_element_stack";
-      c_identifier = "gtk_buildable_parse_context_get_element_stack";
-      return_type =
-        {
-          name = "utf8";
-          c_type = Some "GPtrArray*";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array =
-            Some
-              {
-                length = None;
-                zero_terminated = false;
-                fixed_size = None;
-                array_name = None;
-                element_type =
-                  {
-                    name = "utf8";
-                    c_type = Some "char*";
-                    nullable = false;
-                    transfer_ownership = TransferNone;
-                    array = None;
-                  };
-              };
-        };
-      parameters =
+    make_gir_method
+      ~method_name:"get_element_stack"
+      ~c_identifier:"gtk_buildable_parse_context_get_element_stack"
+      ~return_type:
+        (make_gir_type ~name:"utf8" ~c_type:"GPtrArray*"
+           ~array:(make_gir_array ~zero_terminated:false ~element_type:utf8_element ())
+           ())
+      ~parameters:
         [
-          {
-            param_name = "context";
-            param_type =
-              {
-                name = "BuildableParseContext";
-                c_type = Some "GtkBuildableParseContext*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-    }
+          make_gir_param ~param_name:"context"
+            ~param_type:(make_gir_type ~name:"BuildableParseContext" ~c_type:"GtkBuildableParseContext*" ())
+            ~direction:In ();
+        ]
+      ()
   in
 
   let c_code =
@@ -690,7 +356,8 @@ let test_gptr_array_return () =
   let functions = parse_c_string c_code in
   let func =
     Option.get
-      (find_function functions "ml_gtk_buildable_parse_context_get_element_stack")
+      (find_function functions
+         "ml_gtk_buildable_parse_context_get_element_stack")
   in
 
   (* Should have variable declarations (indicates GPtrArray processing) *)
@@ -710,58 +377,23 @@ let test_gptr_array_return () =
 
 let test_gptr_array_transfer_full () =
   let ctx = create_test_context () in
+  let ginet_address_element = make_gir_type ~name:"GInetAddress" ~c_type:"GInetAddress*" () in
   let meth =
-    {
-      method_name = "get_ip_addresses";
-      c_identifier = "g_tls_certificate_get_ip_addresses";
-      return_type =
-        {
-          name = "GInetAddress";
-          c_type = Some "GPtrArray*";
-          nullable = false;
-          transfer_ownership = TransferFull;
-          (* GTK transfers ownership of the array to us *)
-          array =
-            Some
-              {
-                length = None;
-                zero_terminated = false;
-                fixed_size = None;
-                array_name = None;
-                element_type =
-                  {
-                    name = "GInetAddress";
-                    c_type = Some "GInetAddress*";
-                    nullable = false;
-                    transfer_ownership = TransferNone;
-                    array = None;
-                  };
-              };
-        };
-      parameters =
+    make_gir_method
+      ~method_name:"get_ip_addresses"
+      ~c_identifier:"g_tls_certificate_get_ip_addresses"
+      ~return_type:
+        (make_gir_type ~name:"GInetAddress" ~c_type:"GPtrArray*"
+           ~transfer_ownership:TransferFull
+           ~array:(make_gir_array ~zero_terminated:false ~element_type:ginet_address_element ())
+           ())
+      ~parameters:
         [
-          {
-            param_name = "cert";
-            param_type =
-              {
-                name = "GTlsCertificate";
-                c_type = Some "GTlsCertificate*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-    }
+          make_gir_param ~param_name:"cert"
+            ~param_type:(make_gir_type ~name:"GTlsCertificate" ~c_type:"GTlsCertificate*" ())
+            ~direction:In ();
+        ]
+      ()
   in
 
   let c_code =
@@ -792,69 +424,30 @@ let test_gptr_array_transfer_full () =
 
 let test_gptr_array_with_incompatible_element_type () =
   let ctx = create_test_context () in
+  let gdk_time_coord_element = make_gir_type ~name:"GdkTimeCoord" ~c_type:"GdkTimeCoord*" () in
   let meth =
-    {
-      method_name = "get_time_coords";
-      c_identifier = "gdk_event_get_history";
-      return_type =
-        {
-          name = "GdkTimeCoord";
-          c_type = Some "GPtrArray*";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array =
-            Some
-              {
-                length = None;
-                zero_terminated = false;
-                fixed_size = None;
-                array_name = None;
-                element_type =
-                  {
-                    name = "GdkTimeCoord";
-                    c_type = Some "GdkTimeCoord*";
-                    nullable = false;
-                    transfer_ownership = TransferNone;
-                    array = None;
-                  };
-              };
-        };
-      parameters =
+    make_gir_method
+      ~method_name:"get_time_coords"
+      ~c_identifier:"gdk_event_get_history"
+      ~return_type:
+        (make_gir_type ~name:"GdkTimeCoord" ~c_type:"GPtrArray*"
+           ~array:(make_gir_array ~zero_terminated:false ~element_type:gdk_time_coord_element ())
+           ())
+      ~parameters:
         [
-          {
-            param_name = "event";
-            param_type =
-              {
-                name = "GdkEvent";
-                c_type = Some "GdkEvent*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-    }
+          make_gir_param ~param_name:"event"
+            ~param_type:(make_gir_type ~name:"GdkEvent" ~c_type:"GdkEvent*" ())
+            ~direction:In ();
+        ]
+      ()
   in
 
-  let c_code =
-    generate_c_method ~ctx ~c_type:"GdkEvent" meth "Event"
-  in
+  let c_code = generate_c_method ~ctx ~c_type:"GdkEvent" meth "Event" in
 
   Helpers.log_generated_c_code "GPtrArray with struct elements" c_code;
 
   let functions = parse_c_string c_code in
-  let func =
-    Option.get (find_function functions "ml_gdk_event_get_history")
-  in
+  let func = Option.get (find_function functions "ml_gdk_event_get_history") in
 
   (* Should have variable declarations (indicates GPtrArray processing) *)
   Alcotest.(check bool)
@@ -878,87 +471,40 @@ let test_gptr_array_with_incompatible_element_type () =
 let test_nonpointer_array_without_length_raises () =
   let ctx = create_test_context () in
   let meth =
-    {
-      method_name = "get_values";
-      c_identifier = "gtk_widget_get_values";
-      return_type =
-        {
-          name = "gint";
-          c_type = Some "gint*";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array =
-            Some
-              {
-                length = None;
-                zero_terminated = false;
-                fixed_size = None;
-                array_name = None;
-                element_type =
-                  {
-                    name = "gint";
-                    c_type = Some "gint";
-                    nullable = false;
-                    transfer_ownership = TransferNone;
-                    array = None;
-                  };
-              };
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-    }
+    make_gir_method
+      ~method_name:"get_values"
+      ~c_identifier:"gtk_widget_get_values"
+      ~return_type:
+        (make_gir_type ~name:"gint" ~c_type:"gint*"
+           ~array:(make_gir_array ~zero_terminated:false ~element_type:gint_element ())
+           ())
+      ~parameters:[]
+      ()
   in
 
   Alcotest.check_raises "Fails for non-pointer array without length"
-    (Failure "Array has no length information for result (element type: gint). Either zero-terminated, length, or fixed-size attribute required.")
-    (fun () -> ignore (generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget"))
+    (Failure
+       "Array has no length information for result (element type: gint). \
+        Either zero-terminated, length, or fixed-size attribute required.")
+    (fun () ->
+      ignore (generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget"))
 
 let test_pointer_array_without_length_uses_null_termination () =
   let ctx = create_test_context () in
   let meth =
-    {
-      method_name = "get_tags";
-      c_identifier = "gtk_widget_get_tags";
-      return_type =
-        {
-          name = "utf8";
-          c_type = Some "const char**";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array =
-            Some
-              {
-                length = None;
-                zero_terminated = false;
-                fixed_size = None;
-                array_name = None;
-                element_type =
-                  {
-                    name = "utf8";
-                    c_type = Some "char*";
-                    nullable = false;
-                    transfer_ownership = TransferNone;
-                    array = None;
-                  };
-              };
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-    }
+    make_gir_method
+      ~method_name:"get_tags"
+      ~c_identifier:"gtk_widget_get_tags"
+      ~return_type:
+        (make_gir_type ~name:"utf8" ~c_type:"const char**"
+           ~array:(make_gir_array ~zero_terminated:false ~element_type:utf8_element ())
+           ())
+      ~parameters:[]
+      ()
   in
 
   (* Pointer arrays without length should use NULL-termination, not raise *)
-  let c_code =
-    generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget"
-  in
+  let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
 
   Helpers.log_generated_c_code "pointer array without length" c_code;
 
@@ -978,71 +524,31 @@ let test_generate_methods_skips_failing_method () =
 
   (* Valid method - simple void return *)
   let valid_method =
-    {
-      method_name = "do_something";
-      c_identifier = "gtk_widget_do_something";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-    }
+    make_gir_method
+      ~method_name:"do_something"
+      ~c_identifier:"gtk_widget_do_something"
+      ~return_type:void_type
+      ~parameters:[]
+      ()
   in
 
   (* Failing method - returns gint array without length info (will raise Failure) *)
   let failing_method =
-    {
-      method_name = "get_values";
-      c_identifier = "gtk_widget_get_values";
-      return_type =
-        {
-          name = "gint";
-          c_type = Some "gint*";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array =
-            Some
-              {
-                length = None;
-                zero_terminated = false;
-                fixed_size = None;
-                array_name = None;
-                element_type =
-                  {
-                    name = "gint";
-                    c_type = Some "gint";
-                    nullable = false;
-                    transfer_ownership = TransferNone;
-                    array = None;
-                  };
-              };
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-    }
+    make_gir_method
+      ~method_name:"get_values"
+      ~c_identifier:"gtk_widget_get_values"
+      ~return_type:
+        (make_gir_type ~name:"gint" ~c_type:"gint*"
+           ~array:(make_gir_array ~zero_terminated:false ~element_type:gint_element ())
+           ())
+      ~parameters:[]
+      ()
   in
 
   (* Generate methods - should NOT raise, should skip failing method *)
-  Gir_gen_lib.Generate.C_stub_helpers.generate_methods
-    ~ctx
-    ~c_type:"GtkWidget"
-    ~class_name:"Widget"
-    ~buf
-    ~generator:generate_c_method
-    [valid_method; failing_method];
+  Gir_gen_lib.Generate.C_stub_helpers.generate_methods ~ctx ~c_type:"GtkWidget"
+    ~class_name:"Widget" ~buf ~generator:generate_c_method
+    [ valid_method; failing_method ];
 
   let output = Buffer.contents buf in
 
@@ -1093,6 +599,9 @@ let tests =
     (* Non-pointer array without length tests (c_stub_array_conv.ml fix) *)
     Alcotest.test_case "Non-pointer array without length raises" `Quick
       test_nonpointer_array_without_length_raises;
-    Alcotest.test_case "Pointer array without length uses NULL-termination" `Quick
-      test_pointer_array_without_length_uses_null_termination;
+    Alcotest.test_case "Pointer array without length uses NULL-termination"
+      `Quick test_pointer_array_without_length_uses_null_termination;
+    (* generate_methods skipping tests *)
+    Alcotest.test_case "generate_methods skips failing method" `Quick
+      test_generate_methods_skips_failing_method;
   ]

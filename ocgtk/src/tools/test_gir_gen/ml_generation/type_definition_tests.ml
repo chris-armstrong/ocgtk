@@ -91,6 +91,7 @@ let test_constructor_external_declaration () =
     ctor_doc = None;
     throws = false;
     ctor_introspectable = true;
+      version = None;
   } in
 
   (* Generate .ml with constructor *)
@@ -150,6 +151,7 @@ let test_method_with_nullable_param () =
     get_property = None;
     set_property = None;
     introspectable = true;
+      version = None;
   } in
 
   (* Generate .ml with method *)
@@ -199,6 +201,7 @@ let test_method_with_return_value () =
     get_property = None;
     set_property = None;
     introspectable = true;
+      version = None;
   } in
 
   (* Generate .ml with method *)
@@ -244,6 +247,7 @@ let test_nullable_return_value () =
     get_property = None;
     set_property = None;
     introspectable = true;
+      version = None;
   } in
 
   (* Generate .ml with method *)

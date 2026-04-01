@@ -221,6 +221,7 @@ let test_copy_function_returns_copy_result () =
       get_property = None;
       set_property = None;
       introspectable = true;
+      version = None;
     }
   in
   let record =
@@ -239,6 +240,7 @@ let test_copy_function_returns_copy_result () =
       functions = [];
       record_doc = None;
       introspectable = true;
+      version = None;
     }
   in
 
@@ -304,6 +306,7 @@ let test_record_copy_parses_successfully () =
       get_property = None;
       set_property = None;
       introspectable = true;
+      version = None;
     }
   in
   let record =
@@ -340,6 +343,7 @@ let test_record_copy_parses_successfully () =
       functions = [];
       record_doc = None;
       introspectable = true;
+      version = None;
     }
   in
 
@@ -564,6 +568,7 @@ let test_enum_array_element_conversion () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -717,6 +722,7 @@ let test_bitfield_array_element_conversion () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -813,6 +819,7 @@ let test_inout_record_param_pointer_type () =
       functions = [];
       record_doc = None;
       introspectable = true;
+      version = None;
     }
   in
   let ctx =
@@ -872,6 +879,7 @@ let test_inout_record_param_pointer_type () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -1036,6 +1044,7 @@ let test_fixed_size_array_out_param () =
       functions = [];
       record_doc = None;
       introspectable = true;
+      version = None;
     }
   in
   let ctx =
@@ -1103,6 +1112,7 @@ let test_fixed_size_array_out_param () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -1233,6 +1243,7 @@ let test_fixed_size_float_array_return () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -1368,6 +1379,7 @@ let test_out_param_array_without_length_skipped () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -1423,6 +1435,7 @@ let test_double_pointer_out_param_skipped () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -1506,6 +1519,7 @@ let test_normal_out_param_not_skipped () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -1712,6 +1726,7 @@ let test_cross_namespace_c_converter_names () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -1806,6 +1821,7 @@ let test_cross_namespace_enum_array_element_conversion () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 

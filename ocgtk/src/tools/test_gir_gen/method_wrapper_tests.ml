@@ -21,6 +21,7 @@ let simple_class class_name c_type =
     properties = [];
     signals = [];
     class_doc = None;
+    version = None;
   }
 
 let find_class ast class_name =
@@ -122,6 +123,7 @@ let test_hierarchy_parameter_coercion () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
   
   (* Generate Layer 2 class module and signature *)
@@ -182,6 +184,7 @@ let test_nullable_parameter_handling () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
   
    (* Generate Layer 2 class signature *)
@@ -224,6 +227,7 @@ let test_return_value_wrapping () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
   
   (* Generate Layer 2 class signature *)
@@ -266,6 +270,7 @@ let test_void_method () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
   
   (* Generate Layer 2 class module and signature *)
@@ -339,6 +344,7 @@ let test_multiple_parameters () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
   
   (* Generate Layer 2 class module and signature *)
@@ -404,6 +410,7 @@ let test_method_with_object_parameter () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
   
   (* Generate Layer 2 class module and signature *)
@@ -457,6 +464,7 @@ let test_same_cluster_structural_type () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
   
   (* Create classes for combined module generation *)
@@ -471,6 +479,7 @@ let test_same_cluster_structural_type () =
     properties = [];
     signals = [];
     class_doc = None;
+    version = None;
   } in
   
   let button_class = {
@@ -484,6 +493,7 @@ let test_same_cluster_structural_type () =
     properties = [];
     signals = [];
     class_doc = None;
+    version = None;
   } in
 
   (* Convert classes to entities *)
@@ -528,6 +538,7 @@ let test_property_getter_wrapper () =
     writable = true;
     construct_only = false;
     prop_doc = None;
+    version = None;
   } in
   
   (* Create a property getter method that returns the property value *)
@@ -541,6 +552,7 @@ let test_property_getter_wrapper () =
     get_property = Some "label";
     set_property = None;
     introspectable = true;
+    version = None;
   } in
   
   (* Generate Layer 2 class signature *)
@@ -581,6 +593,7 @@ let test_property_setter_wrapper () =
     writable = true;
     construct_only = false;
     prop_doc = None;
+    version = None;
   } in
   
   (* Create a property setter method that takes Widget parameter *)
@@ -603,6 +616,7 @@ let test_property_setter_wrapper () =
     get_property = None;
     set_property = Some "child";
     introspectable = true;
+    version = None;
   } in
   
    (* Generate Layer 2 class module *)
@@ -651,6 +665,7 @@ let test_inheritance_generation () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
   
   (* Generate Layer 2 class module with Widget as parent *)
@@ -759,6 +774,7 @@ let test_method_conflict_detection () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
 
   let widget_class = {
@@ -772,6 +788,7 @@ let test_method_conflict_detection () =
     properties = [];
     signals = [];
     class_doc = None;
+    version = None;
   } in
 
   (* Create a child Button class with a 'show' method that has DIFFERENT signature *)
@@ -795,6 +812,7 @@ let test_method_conflict_detection () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
 
   let button_class = {
@@ -808,6 +826,7 @@ let test_method_conflict_detection () =
     properties = [];
     signals = [];
     class_doc = None;
+    version = None;
   } in
 
   (* Add the classes to the context *)
@@ -915,6 +934,7 @@ let test_layer2_signature_consistency () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
 
   let get_label_method = {
@@ -927,6 +947,7 @@ let test_layer2_signature_consistency () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
 
   let set_child_method = {
@@ -948,6 +969,7 @@ let test_layer2_signature_consistency () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
 
   let methods = [set_size_method; get_label_method; set_child_method] in
@@ -1074,6 +1096,7 @@ let test_combined_class_signature_consistency () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
 
   let widget_hide_method = {
@@ -1086,6 +1109,7 @@ let test_combined_class_signature_consistency () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
 
   (* Create method for Button class *)
@@ -1099,6 +1123,7 @@ let test_combined_class_signature_consistency () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
 
   let button_set_label_method = {
@@ -1120,6 +1145,7 @@ let test_combined_class_signature_consistency () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
 
   let button_get_label_method = {
@@ -1132,6 +1158,7 @@ let test_combined_class_signature_consistency () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
 
   (* Create classes for combined module generation *)
@@ -1146,6 +1173,7 @@ let test_combined_class_signature_consistency () =
     properties = [];
     signals = [];
     class_doc = None;
+    version = None;
   } in
 
   let button_class = {
@@ -1159,6 +1187,7 @@ let test_combined_class_signature_consistency () =
     properties = [];
     signals = [];
     class_doc = None;
+    version = None;
   } in
 
   (* Convert classes to entities *)
@@ -1301,6 +1330,7 @@ let test_throws_method_result_wrapping () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
 
   (* Generate Layer 2 class signature *)
@@ -1364,6 +1394,7 @@ let test_throws_method_result_wrapping () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   } in
 
   (* Generate Layer 2 class signature with both methods *)
@@ -1496,6 +1527,7 @@ let test_cyclic_cluster_skips_parent_inherit () =
     properties = [];
     signals = [];
     class_doc = None;
+    version = None;
   } in
 
   (* Create Button class with Widget as parent *)
@@ -1510,6 +1542,7 @@ let test_cyclic_cluster_skips_parent_inherit () =
     properties = [];
     signals = [];
     class_doc = None;
+    version = None;
   } in
 
   (* Add both classes to context *)
@@ -1527,6 +1560,7 @@ let test_cyclic_cluster_skips_parent_inherit () =
     methods = [];
     properties = [];
     signals = [];
+    version = None;
   } in
   let button_entity = {
     Gir_gen_lib.Types.kind = Gir_gen_lib.Types.Class button_class;
@@ -1539,6 +1573,7 @@ let test_cyclic_cluster_skips_parent_inherit () =
     methods = [];
     properties = [];
     signals = [];
+    version = None;
   } in
   let entities = [widget_entity; button_entity] in
 
