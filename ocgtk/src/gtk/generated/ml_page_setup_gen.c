@@ -50,6 +50,7 @@ CAMLexport CAMLprim value ml_gtk_page_setup_to_gvariant(value self)
 CAMLparam1(self);
 
 GVariant* result = gtk_page_setup_to_gvariant(GtkPageSetup_val(self));
+if (result) g_variant_ref(result);
 CAMLreturn(Val_GVariant(result));
 }
 

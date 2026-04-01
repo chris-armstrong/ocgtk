@@ -58,6 +58,7 @@ CAMLexport CAMLprim value ml_gtk_print_settings_to_gvariant(value self)
 CAMLparam1(self);
 
 GVariant* result = gtk_print_settings_to_gvariant(GtkPrintSettings_val(self));
+if (result) g_variant_ref(result);
 CAMLreturn(Val_GVariant(result));
 }
 

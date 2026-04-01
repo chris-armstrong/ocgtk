@@ -77,6 +77,7 @@ CAMLexport CAMLprim value ml_gtk_paper_size_to_gvariant(value self)
 CAMLparam1(self);
 
 GVariant* result = gtk_paper_size_to_gvariant(GtkPaperSize_val(self));
+if (result) g_variant_ref(result);
 CAMLreturn(Val_GVariant(result));
 }
 
