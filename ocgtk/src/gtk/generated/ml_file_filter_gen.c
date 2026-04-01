@@ -40,6 +40,7 @@ CAMLexport CAMLprim value ml_gtk_file_filter_to_gvariant(value self)
 CAMLparam1(self);
 
 GVariant* result = gtk_file_filter_to_gvariant(GtkFileFilter_val(self));
+if (result) g_variant_ref(result);
 CAMLreturn(Val_GVariant(result));
 }
 

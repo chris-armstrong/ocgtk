@@ -125,7 +125,7 @@ if (pspec == NULL) caml_failwith("ml_g_property_action_get_state: property 'stat
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "state", &prop_gvalue);
-          prop_value = (GVariant*)g_value_get_pointer(&prop_gvalue);
+          prop_value = g_variant_ref(g_value_get_variant(&prop_gvalue));
 
       result = Val_GVariant(prop_value);
 g_value_unset(&prop_gvalue);

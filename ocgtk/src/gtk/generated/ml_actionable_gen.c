@@ -46,6 +46,7 @@ CAMLexport CAMLprim value ml_gtk_actionable_get_action_target_value(value self)
 CAMLparam1(self);
 
 GVariant* result = gtk_actionable_get_action_target_value(GtkActionable_val(self));
+if (result) g_variant_ref(result);
 CAMLreturn(Val_option(result, Val_GVariant));
 }
 

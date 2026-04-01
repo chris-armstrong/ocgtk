@@ -266,6 +266,7 @@ CAMLexport CAMLprim value ml_g_dbus_message_get_header(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GVariant* result = g_dbus_message_get_header(GDBusMessage_val(self), GioDBusMessageHeaderField_val(arg1));
+if (result) g_variant_ref(result);
 CAMLreturn(Val_option(result, Val_GVariant));
 }
 
@@ -306,6 +307,7 @@ CAMLexport CAMLprim value ml_g_dbus_message_get_body(value self)
 CAMLparam1(self);
 
 GVariant* result = g_dbus_message_get_body(GDBusMessage_val(self));
+if (result) g_variant_ref(result);
 CAMLreturn(Val_option(result, Val_GVariant));
 }
 

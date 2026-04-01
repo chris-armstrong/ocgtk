@@ -97,6 +97,7 @@ CAMLexport CAMLprim value ml_g_dbus_method_invocation_get_parameters(value self)
 CAMLparam1(self);
 
 GVariant* result = g_dbus_method_invocation_get_parameters(GDBusMethodInvocation_val(self));
+if (result) g_variant_ref(result);
 CAMLreturn(Val_GVariant(result));
 }
 
