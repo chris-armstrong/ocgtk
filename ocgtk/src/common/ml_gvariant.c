@@ -57,19 +57,60 @@ static void finalize_gvariant(value v) {
     }
 }
 
+/* Compare two GVariants.
+ * For same-typed basic variants uses g_variant_compare (natural ordering).
+ * For containers or mixed types falls back to text-representation comparison.
+ */
+static int compare_gvariant(value v1, value v2) {
+    GVariant *g1 = *((GVariant**)Data_custom_val(v1));
+    GVariant *g2 = *((GVariant**)Data_custom_val(v2));
+    if (g1 == g2) return 0;
+    if (g_variant_type_is_basic(g_variant_get_type(g1)) &&
+        g_variant_is_of_type(g2, g_variant_get_type(g1))) {
+        return g_variant_compare(g1, g2);
+    }
+    if (g_variant_equal(g1, g2)) return 0;
+    /* Stable ordering for containers/mixed types via text representation */
+    gchar *s1 = g_variant_print(g1, TRUE);
+    gchar *s2 = g_variant_print(g2, TRUE);
+    int cmp = strcmp(s1, s2);
+    g_free(s1);
+    g_free(s2);
+    return cmp;
+}
+
+/* Hash a GVariant.
+ * Uses g_variant_hash for basic types; falls back to hashing the
+ * text representation for containers.
+ */
+static intnat hash_gvariant(value v) {
+    GVariant *g = *((GVariant**)Data_custom_val(v));
+    if (g_variant_type_is_basic(g_variant_get_type(g))) {
+        return (intnat)g_variant_hash(g);
+    }
+    gchar *str = g_variant_print(g, TRUE);
+    guint h = g_str_hash(str);
+    g_free(str);
+    return (intnat)h;
+}
+
 static struct custom_operations gvariant_custom_ops = {
     "ocgtk.gvariant",
     finalize_gvariant,
-    custom_compare_default,
-    custom_hash_default,
+    compare_gvariant,
+    hash_gvariant,
     custom_serialize_default,
     custom_deserialize_default,
     custom_compare_ext_default,
     custom_fixed_length_default
 };
 
-/* Wrap a GVariant in a custom block with automatic unref finalizer.
- * The GVariant is ref'd when wrapped, so the caller should NOT unref it.
+/* Wrap a GVariant pointer in a custom block, taking ownership of the
+ * reference.  The finalizer calls g_variant_unref exactly once.
+ *
+ * Ownership rules:
+ *   transfer-full return  → pass directly: Val_GVariant(result)
+ *   transfer-none return  → caller must ref first: Val_GVariant(g_variant_ref(result))
  */
 value Val_GVariant(GVariant *variant) {
     CAMLparam0();
@@ -80,7 +121,7 @@ value Val_GVariant(GVariant *variant) {
     }
 
     v = caml_alloc_custom(&gvariant_custom_ops, sizeof(GVariant*), 0, 1);
-    *((GVariant**)Data_custom_val(v)) = g_variant_ref(variant);
+    *((GVariant**)Data_custom_val(v)) = variant;
 
     CAMLreturn(v);
 }
@@ -357,8 +398,7 @@ CAMLprim value ml_g_variant_get_variant(value variant_val) {
         caml_failwith("GVariant.get_variant: variant is not a variant type");
     }
     GVariant *child = g_variant_get_variant(v);
-    result = Val_GVariant(child);
-    g_variant_unref(child);
+    result = Val_GVariant(child);  /* takes ownership of the ref returned by get_variant */
     CAMLreturn(result);
 }
 
@@ -376,7 +416,7 @@ CAMLprim value ml_g_variant_new_maybe(value type_val, value child_val) {
 
 CAMLprim value ml_g_variant_get_maybe(value variant) {
     CAMLparam1(variant);
-    CAMLlocal1(result);
+    CAMLlocal2(result, child_val);
     GVariant *v = GVariant_val(variant);
     if (!g_variant_is_of_type(v, G_VARIANT_TYPE_MAYBE)) {
         caml_failwith("GVariant.get_maybe: variant is not a maybe type");
@@ -385,9 +425,12 @@ CAMLprim value ml_g_variant_get_maybe(value variant) {
     if (child == NULL) {
         result = Val_none;
     } else {
+        /* Val_GVariant takes ownership of child's ref returned by get_maybe.
+         * Must be called before caml_alloc to avoid leaving the Some block
+         * with an uninitialised field 0 visible to the GC. */
+        child_val = Val_GVariant(child);
         result = caml_alloc(1, 0); /* Some */
-        Store_field(result, 0, Val_GVariant(child));
-        g_variant_unref(child);
+        Store_field(result, 0, child_val);
     }
     CAMLreturn(result);
 }
@@ -622,7 +665,7 @@ CAMLprim value ml_g_variant_lookup_uint32(value variant, value key) {
     }
     
     guint32 val = g_variant_get_uint32(child);
-    int_val = caml_copy_int32((int32_t)val);
+    int_val = integers_copy_uint32(val);
     result = caml_alloc(1, 0); /* Some */
     Store_field(result, 0, int_val);
     g_variant_unref(child);
@@ -662,7 +705,7 @@ CAMLprim value ml_g_variant_lookup_uint64(value variant, value key) {
     }
     
     guint64 val = g_variant_get_uint64(child);
-    int_val = caml_copy_int64((int64_t)val);
+    int_val = integers_copy_uint64(val);
     result = caml_alloc(1, 0); /* Some */
     Store_field(result, 0, int_val);
     g_variant_unref(child);
@@ -768,8 +811,7 @@ CAMLprim value ml_g_variant_get_child_value(value variant, value index) {
     if (child == NULL) {
         caml_failwith("ml_g_variant_get_child_value: invalid index");
     }
-    result = Val_GVariant(child);
-    g_variant_unref(child);
+    result = Val_GVariant(child);  /* takes ownership */
     CAMLreturn(result);
 }
 
@@ -805,8 +847,6 @@ CAMLprim value ml_g_variant_parse(value text) {
         caml_failwith(msg);
     }
     
-    result = Val_GVariant(v);
-    g_variant_unref(v); /* Val_GVariant takes a ref, so unref the original */
-    
+    result = Val_GVariant(v);  /* takes ownership of the ref from g_variant_parse */
     CAMLreturn(result);
 }

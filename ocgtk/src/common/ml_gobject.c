@@ -71,6 +71,8 @@ CAMLprim value ml_g_object_get_ref_count(value obj)
         caml_invalid_argument("g_object_get_ref_count: NULL object");
 
     GObject *gobj = GObject_ext_of_val(obj);
+    /* Direct struct access: g_object_get_ref_count() isn't reliably available
+     * in packaged GLib builds; ref_count is public API in GObject's struct. */
     CAMLreturn(Val_int(gobj->ref_count));
 }
 
@@ -523,10 +525,9 @@ void finalise_gclosure(value v) {
 }
 
 
-/* Custom block for GClosure - NO finalizer to avoid GC complications */
 static struct custom_operations ml_custom_GClosure = {
     "GClosure/4.0/",
-    finalise_gclosure,  /* No finalizer - GLib manages GClosure lifecycle */
+    finalise_gclosure,
     custom_compare_default,
     custom_hash_default,
     custom_serialize_default,
@@ -714,6 +715,13 @@ CAMLprim value ml_g_closure_get_arg_type(value argv_val, value pos)
     CAMLparam2(argv_val, pos);
     const GValue *param_values = (const GValue *)(Field(argv_val, 2));
     int index = Int_val(pos);
+    int nargs = Int_val(Field(argv_val, 1));
+
+    if (param_values == NULL)
+        caml_invalid_argument("closure_get_arg_type: invalid argv (param_values is NULL)");
+    if (index < 0 || index >= nargs)
+        caml_invalid_argument("closure_get_arg_type: index out of bounds");
+
     CAMLreturn(Val_long(G_VALUE_TYPE(&param_values[index])));
 }
 

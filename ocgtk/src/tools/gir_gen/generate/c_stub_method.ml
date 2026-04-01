@@ -272,14 +272,20 @@ let handle_in_param ~ctx ~acc ~length_param_map ~base_type ~tm (p : gir_param) =
    transfer modes (to ensure proper reference counting). Returns empty string for
    TransferFull/TransferContainer (already owned) or if not a GObject type. *)
 let generate_ref_sink_stmt ~transfer_ownership (mapping : Types.type_mapping) =
-  (* Only GObject types (classes/interfaces) need ref_sink, not records *)
+  (* GObject types (classes/interfaces) need ref_sink for transfer-none returns *)
   match mapping.layer2_class with
   | Some _ when not mapping.is_value_type_record -> (
       match transfer_ownership with
       | Types.TransferNone | Types.TransferFloating ->
           "\nif (result) g_object_ref_sink(result);"
       | Types.TransferFull | Types.TransferContainer -> "")
-  | _ -> ""
+  | _ ->
+      (* Val_GVariant takes ownership; transfer-none returns need an explicit ref *)
+      if String.equal mapping.c_to_ml "Val_GVariant" then
+        match transfer_ownership with
+        | Types.TransferNone -> "\nif (result) g_variant_ref(result);"
+        | _ -> ""
+      else ""
 
 (* [handle_void_return ~c_name ~args ~out_array_conv_code ~out_array_cleanup_list]
    generates the C call, return statement, and cleanup list for void return functions.
